@@ -81,7 +81,10 @@ function toBool(v: boolean | string | undefined): boolean {
   return v === true || v === "true";
 }
 
-async function postForm(url: string, form: Record<string, string>): Promise<Record<string, unknown>> {
+async function postForm(
+  url: string,
+  form: Record<string, string>,
+): Promise<Record<string, unknown>> {
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
@@ -121,7 +124,11 @@ export class GoogleAuthProvider implements AuthProvider {
     return `${GOOGLE_AUTH}?${q.toString()}`;
   }
 
-  async exchange(code: string, pkceVerifier: string, expectedNonce?: string): Promise<ExternalProfile> {
+  async exchange(
+    code: string,
+    pkceVerifier: string,
+    expectedNonce?: string,
+  ): Promise<ExternalProfile> {
     const tokens = await postForm(GOOGLE_TOKEN, {
       grant_type: "authorization_code",
       code,
@@ -133,7 +140,11 @@ export class GoogleAuthProvider implements AuthProvider {
     const idToken = tokens.id_token;
     if (typeof idToken !== "string") throw new Error("Google response missing id_token");
     const claims = decodeJwtPayload(idToken);
-    assertClaims(claims, { issuers: GOOGLE_ISSUERS, audience: this.creds.clientId, nonce: expectedNonce });
+    assertClaims(claims, {
+      issuers: GOOGLE_ISSUERS,
+      audience: this.creds.clientId,
+      nonce: expectedNonce,
+    });
     return {
       provider: "google",
       sub: claims.sub as string,
@@ -156,7 +167,10 @@ const APPLE_AUD = "https://appleid.apple.com";
  * Mint the ES256-signed JWT Apple accepts as the OAuth client secret.
  * Signed in JOSE (raw R||S) form, not DER, via the ieee-p1363 encoding.
  */
-export function createAppleClientSecret(creds: AppleCredentials, now: number = Math.floor(Date.now() / 1000)): string {
+export function createAppleClientSecret(
+  creds: AppleCredentials,
+  now: number = Math.floor(Date.now() / 1000),
+): string {
   const header = { alg: "ES256", kid: creds.keyId, typ: "JWT" };
   const payload = {
     iss: creds.teamId,
@@ -191,7 +205,11 @@ export class AppleAuthProvider implements AuthProvider {
     return `${APPLE_AUTH}?${q.toString()}`;
   }
 
-  async exchange(code: string, pkceVerifier: string, expectedNonce?: string): Promise<ExternalProfile> {
+  async exchange(
+    code: string,
+    pkceVerifier: string,
+    expectedNonce?: string,
+  ): Promise<ExternalProfile> {
     const tokens = await postForm(APPLE_TOKEN, {
       grant_type: "authorization_code",
       code,
@@ -203,7 +221,11 @@ export class AppleAuthProvider implements AuthProvider {
     const idToken = tokens.id_token;
     if (typeof idToken !== "string") throw new Error("Apple response missing id_token");
     const claims = decodeJwtPayload(idToken);
-    assertClaims(claims, { issuers: [APPLE_ISSUER], audience: this.creds.clientId, nonce: expectedNonce });
+    assertClaims(claims, {
+      issuers: [APPLE_ISSUER],
+      audience: this.creds.clientId,
+      nonce: expectedNonce,
+    });
     return {
       provider: "apple",
       sub: claims.sub as string,

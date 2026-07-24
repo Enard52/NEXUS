@@ -132,7 +132,10 @@ body.mobile {
   padding: ${t.space[2]}px ${t.space[5]}px ${t.space[3]}px; border-bottom: 1px solid var(--surface);
 }
 .appbar .logo { width: 26px; height: 26px; }
-.appbar .apptitle { font-weight: 700; font-size: ${t.font.size.lg}px; }
+.appbar .apptitle {
+  font-family: 'Outfit', sans-serif; font-weight: 800; font-size: ${t.font.size.lg}px; letter-spacing: -0.02em;
+  color: var(--text);
+}
 .appbar-right { margin-left: auto; display: flex; align-items: center; gap: ${t.space[3]}px; }
 .appbar .avatar-wrap { display: flex; }
 .m-lang { display: inline-flex; gap: 4px; font-size: 11px; }
@@ -248,16 +251,29 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
   const moreScreens = screens.nav.filter((s) => !primaryIds.has(s.id));
 
   const appScreens = screens.nav
-    .map((s) => `<section id="${s.id}">${renderScreenBody(s.id, screens, userAgent, "mobile")}</section>`)
+    .map(
+      (s) =>
+        `<section id="${s.id}">${renderScreenBody(s.id, screens, userAgent, "mobile")}</section>`,
+    )
     .join("\n");
 
   const isTr = CURRENT_LOCALE === "tr";
   const moreSubtitles: Record<string, string> = {
-    suggestions: isTr ? "Zamanlanmış 3 akıllı otomasyon önerisi" : "3 scheduled smart automation suggestions",
-    skills: isTr ? "Öğrenilen 5 aktif ses yeteneği & senaryo" : "5 learned active voice skills & scenarios",
-    personalization: isTr ? "Asistan adı, ses modeli & gizlilik ayarları" : "Assistant name, voice model & privacy settings",
-    billing: isTr ? "NEXUS Aile Paketi · Aktif Abonelik" : "NEXUS Family Plan · Active Subscription",
-    "download-center": isTr ? "Çevrimdışı dosyalar & yerel model önbelleği" : "Offline files & local model cache",
+    suggestions: isTr
+      ? "Zamanlanmış 3 akıllı otomasyon önerisi"
+      : "3 scheduled smart automation suggestions",
+    skills: isTr
+      ? "Öğrenilen 5 aktif ses yeteneği & senaryo"
+      : "5 learned active voice skills & scenarios",
+    personalization: isTr
+      ? "Asistan adı, ses modeli & gizlilik ayarları"
+      : "Assistant name, voice model & privacy settings",
+    billing: isTr
+      ? "NEXUS Aile Paketi · Aktif Abonelik"
+      : "NEXUS Family Plan · Active Subscription",
+    "download-center": isTr
+      ? "Çevrimdışı dosyalar & yerel model önbelleği"
+      : "Offline files & local model cache",
   };
 
   const moreBadges: Record<string, string> = {
@@ -301,7 +317,7 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-top:14px;display:flex;flex-direction:column;gap:10px;">` +
     `<div style="font-weight:700;font-size:12px;color:var(--muted);letter-spacing:0.04em;">${isTr ? "HIZLI KONTROLLER" : "QUICK CONTROLS"}</div>` +
     `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? "Çevrimdışı Gizlilik Kalkanı" : "Offline Privacy Shield"}</span><span style="color:#10b981;font-weight:700;">✓ ${isTr ? "Aktif" : "Active"}</span></div>` +
-    `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? "Sesle Uyanma (\"NEXUS\")" : "Voice Wake (\"NEXUS\")"}</span><span style="color:var(--primary);font-weight:700;">✓ ${isTr ? "Açık" : "On"}</span></div>` +
+    `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? 'Sesle Uyanma ("NEXUS")' : 'Voice Wake ("NEXUS")'}</span><span style="color:var(--primary);font-weight:700;">✓ ${isTr ? "Açık" : "On"}</span></div>` +
     `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? "Otomatik Ev Yedeği" : "Auto Home Backup"}</span><span style="color:var(--muted);">${isTr ? "Her Gün 03:00" : "Daily 03:00"}</span></div>` +
     `</div>`;
 
@@ -327,7 +343,7 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
       `<div class="avatar-wrap">${renderAvatar(undefined, initial)}</div>` +
       `<button class="m-logout" id="m-logout" type="button" aria-label="${escapeHtml(label("auth.logout"))}">` +
       `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>`
-    : `<div class="avatar-wrap" aria-hidden="true">${renderAvatar(initial, screens.personalization.avatarUrl)}</div>`;
+    : `<div class="avatar-wrap" aria-hidden="true">${renderAvatar(screens.personalization.avatarUrl, initial)}</div>`;
 
   // Installable-PWA wiring only in the authenticated app (served by the sync server,
   // where /manifest.webmanifest and /sw.js exist); the standalone demo stays a plain file.

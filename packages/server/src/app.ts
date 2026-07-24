@@ -15,19 +15,44 @@
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize, sep } from "node:path";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { AuthError, generateNonce, generatePkce, generateState, type AccountService } from "@nexus/accounts";
-import { resolveFromAcceptLanguage, SUPPORTED_LOCALES, type Locale } from "@nexus/i18n";
-import { renderAppDocument, renderLoginDocument, renderMarketingDocument, renderMobileAppDocument, renderDesktopAppDocument } from "./pages.js";
+import {
+  AuthError,
+  generateNonce,
+  generatePkce,
+  generateState,
+  type AccountService,
+} from "@nexus/accounts";
+import { RateLimiter, LoginLockout } from "@nexus/security";
+import { summarizeUsage, type UsageEntry } from "@nexus/devices";
+import { TelemetryService, type TelemetryEventType, SupportService } from "@nexus/support";
+import { PlatformService } from "@nexus/platform";
+import { RoutineSuggestionEngine } from "@nexus/routines";
+import { resolveFromAcceptLanguage, SUPPORTED_LOCALES, translate, type Locale } from "@nexus/i18n";
+import {
+  renderAppDocument,
+  renderLoginDocument,
+  renderMarketingDocument,
+  renderMobileAppDocument,
+  renderDesktopAppDocument,
+} from "./pages.js";
 import { OAUTH_PROVIDERS, type OAuthRegistry } from "./oauth.js";
 import type { UserDataStore } from "./userdata.js";
+import { handleCommandApi } from "./command.js";
 
 export interface AppDeps {
   readonly accounts: AccountService;
   readonly userData: UserDataStore;
+  readonly core: import("@nexus/core").NexusCore;
   /** Absolute path to the built web assets (for /downloads and static files). */
   readonly staticRoot?: string;
   /** Configured social sign-in providers (Google/Apple). Optional in tests. */
   readonly oauth?: OAuthRegistry;
+  readonly connectors?: any; // ConnectorStore
+  readonly telemetry?: TelemetryService;
+  readonly support?: SupportService;
+  readonly billing?: import("@nexus/billing").BillingService;
+  readonly legal?: import("@nexus/legal").LegalService;
+  readonly platform?: PlatformService;
 }
 
 const SESSION_COOKIE = "nx_session";
@@ -83,7 +108,12 @@ function clearCookie(res: ServerResponse, name: string): void {
 // the ~10 minutes of a login round-trip. SameSite=Lax works for the Google GET
 // callback; Apple's cross-site form_post callback additionally requires the app
 // to be served over HTTPS with SameSite=None (see .env.example).
-const OAUTH_COOKIES = ["nx_oauth_state", "nx_oauth_pkce", "nx_oauth_nonce", "nx_oauth_provider"] as const;
+const OAUTH_COOKIES = [
+  "nx_oauth_state",
+  "nx_oauth_pkce",
+  "nx_oauth_nonce",
+  "nx_oauth_provider",
+] as const;
 function setOAuthCookie(res: ServerResponse, name: string, value: string): void {
   appendHeader(
     res,
@@ -192,10 +222,13 @@ async function serveStatic(res: ServerResponse, root: string, urlPath: string): 
   try {
     const info = await stat(abs);
     if (!info.isFile()) return false;
-    const headers: Record<string, string> = { "Content-Type": MIME[ext] ?? "application/octet-stream" };
+    const headers: Record<string, string> = {
+      "Content-Type": MIME[ext] ?? "application/octet-stream",
+    };
     // Force a download (not inline) for installer binaries.
     if (ext === ".exe" || ext === ".dmg" || ext === ".appimage") {
-      headers["Content-Disposition"] = `attachment; filename="${rel.split("/").pop() ?? "download"}"`;
+      headers["Content-Disposition"] =
+        `attachment; filename="${rel.split("/").pop() ?? "download"}"`;
     }
     res.writeHead(200, headers);
     res.end(await readFile(abs));
@@ -207,7 +240,9 @@ async function serveStatic(res: ServerResponse, root: string, urlPath: string): 
 
 /** Coarse mobile/tablet detection from the User-Agent, enough to pick phone chrome. */
 function isMobileUserAgent(ua: string): boolean {
-  return /Android|iPhone|iPod|iPad|Mobile|Windows Phone|webOS|BlackBerry|Opera Mini|IEMobile/i.test(ua);
+  return /Android|iPhone|iPod|iPad|Mobile|Windows Phone|webOS|BlackBerry|Opera Mini|IEMobile/i.test(
+    ua,
+  );
 }
 
 /** The native desktop shell (Electron) identifies itself in the User-Agent. */
@@ -250,8 +285,20 @@ self.addEventListener("fetch", function (e) {
  * Build the request handler. Pure over {@link AppDeps} — no sockets, no globals —
  * so it can be exercised directly in tests or mounted on any `http.Server`.
  */
-export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res: ServerResponse) => void {
-  const { accounts, userData, staticRoot, oauth } = deps;
+export function createRequestHandler(
+  deps: AppDeps,
+): (req: IncomingMessage, res: ServerResponse) => void {
+  // @ts-expect-error unused core
+  const { accounts, userData, staticRoot, oauth, core } = deps;
+  const rateLimiter = new RateLimiter({ maxRequests: 10, windowMs: 60 * 1000 }); // 10 per min
+  const lockout = new LoginLockout();
+  const telemetry =
+    deps.telemetry ??
+    new TelemetryService({
+      optIn: true,
+      sink: (e) => console.log(`[Telemetry] ${e.type}`, e.payload ?? ""),
+    });
+  const suggestionEngine = new RoutineSuggestionEngine({ threshold: 3 });
 
   return (req, res) => {
     handle(req, res).catch((err: unknown) => {
@@ -274,19 +321,29 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-    res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'");
+    res.setHeader(
+      "Content-Security-Policy",
+      "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'",
+    );
 
     // ── Auth API ─────────────────────────────────────────────────────────────
     if (path === "/api/register" && method === "POST") {
       const body = await readJsonBody(req);
       const email = String(body.email ?? "");
       const password = String(body.password ?? "");
+      const locale = localeFrom(cookies, req);
+
+      const rl = rateLimiter.check(email);
+      if (!rl.allowed) {
+        return sendJson(res, 429, { error: translate(locale, "auth.rateLimited") });
+      }
+
       try {
         // The account owner is the admin of their own household.
         const created = accounts.register({ email, password, role: "admin" });
         const session = accounts.login(email, password);
         setCookie(res, SESSION_COOKIE, session.token, 60 * 60 * 24);
-        userData.ensure(created.id, created.email, localeFrom(cookies, req));
+        userData.ensure(created.id, created.email, locale);
         return sendJson(res, 201, { user: publicUser(created) });
       } catch (err) {
         return sendJson(res, 400, { error: authMessage(err) });
@@ -297,13 +354,28 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
       const body = await readJsonBody(req);
       const email = String(body.email ?? "");
       const password = String(body.password ?? "");
+      const locale = localeFrom(cookies, req);
+
+      const rl = rateLimiter.check(email);
+      if (!rl.allowed) {
+        return sendJson(res, 429, { error: translate(locale, "auth.rateLimited") });
+      }
+
+      const lo = lockout.isLocked(email);
+      if (lo.locked) {
+        const time = Math.ceil((lo.remainingMs ?? 0) / 1000) + "s";
+        return sendJson(res, 423, { error: translate(locale, "auth.locked", { time }) });
+      }
+
       try {
         const session = accounts.login(email, password);
+        lockout.recordSuccess(email);
         const user = accounts.validateSession(session.token)!;
         setCookie(res, SESSION_COOKIE, session.token, 60 * 60 * 24);
-        userData.ensure(user.id, user.email, localeFrom(cookies, req));
+        userData.ensure(user.id, user.email, locale);
         return sendJson(res, 200, { user: publicUser(user) });
       } catch (err) {
+        lockout.recordFailure(email);
         return sendJson(res, 401, { error: authMessage(err) });
       }
     }
@@ -345,14 +417,21 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
     if (cbMatch && (method === "GET" || method === "POST")) {
       const id = cbMatch[1] ?? "";
       const provider = oauth?.get(id);
-      const params = method === "POST" ? await readFormBody(req) : Object.fromEntries(url.searchParams);
+      const params =
+        method === "POST" ? await readFormBody(req) : Object.fromEntries(url.searchParams);
       const code = String(params.code ?? "");
       const returnedState = String(params.state ?? "");
       const savedState = cookies["nx_oauth_state"];
       const verifier = cookies["nx_oauth_pkce"] ?? "";
       const savedProvider = cookies["nx_oauth_provider"];
       clearOAuthCookies(res);
-      if (!provider || !code || !savedState || returnedState !== savedState || savedProvider !== id) {
+      if (
+        !provider ||
+        !code ||
+        !savedState ||
+        returnedState !== savedState ||
+        savedProvider !== id
+      ) {
         return redirect(res, "/login?oauth=error");
       }
       try {
@@ -372,6 +451,132 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
       return sendJson(res, 200, { user: publicUser(account) });
     }
 
+    // ── Command API ──────────────────────────────────────────────────────────
+    if (path === "/api/command" && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      return handleCommandApi(req, res, deps.core, account.id, false, suggestionEngine, userData);
+    }
+    if (path === "/api/command/confirm" && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      return handleCommandApi(req, res, deps.core, account.id, true, suggestionEngine, userData);
+    }
+
+    // ── Suggestions API ──────────────────────────────────────────────────────
+    const acceptMatch = path.match(/^\/api\/suggestions\/([^/]+)\/accept$/);
+    if (acceptMatch && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      const id = decodeURIComponent(acceptMatch[1]);
+      const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
+      const sigIndex = data.suggestions.findIndex(s => s.id === id);
+      if (sigIndex > -1) {
+        const suggestion = data.suggestions[sigIndex];
+        const updatedData = {
+          ...data,
+          suggestions: data.suggestions.filter(s => s.id !== id),
+          routines: [...data.routines, {
+            id: Math.random().toString(36).slice(2),
+            name: suggestion.text,
+            usageCount: 0,
+          }]
+        };
+        userData.set(account.id, updatedData);
+      }
+      return sendJson(res, 200, { success: true });
+    }
+
+    const dismissMatch = path.match(/^\/api\/suggestions\/([^/]+)\/dismiss$/);
+    if (dismissMatch && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      const id = decodeURIComponent(dismissMatch[1]);
+      const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
+      const sigIndex = data.suggestions.findIndex(s => s.id === id);
+      if (sigIndex > -1) {
+        const updatedData = {
+          ...data,
+          suggestions: data.suggestions.filter(s => s.id !== id)
+        };
+        userData.set(account.id, updatedData);
+        suggestionEngine.dismiss(id);
+      }
+      return sendJson(res, 200, { success: true });
+    }
+
+    // ── Billing API (FAZ 10) ──────────────────────────────────────────────────
+    if (path === "/api/billing/subscribe" && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.billing) return sendJson(res, 501, { error: "Billing not enabled" });
+      const body = await readJsonBody(req);
+      const plan = String(body.plan ?? "free") as import("@nexus/interface").PlanId;
+      try {
+        let sub = deps.billing.get(account.id);
+        if (!sub) sub = deps.billing.subscribe(account.id, plan);
+        else sub = deps.billing.changePlan(account.id, plan);
+        
+        // Update user data to reflect new plan
+        const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
+        userData.patch(account.id, account.email, data.language, { plan });
+        
+        return sendJson(res, 200, { ok: true, sub });
+      } catch (err: any) {
+        return sendJson(res, 400, { error: err.message });
+      }
+    }
+
+    if (path === "/api/billing/cancel" && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.billing) return sendJson(res, 501, { error: "Billing not enabled" });
+      try {
+        deps.billing.cancel(account.id);
+        const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
+        userData.patch(account.id, account.email, data.language, { plan: "free" });
+        return sendJson(res, 200, { ok: true });
+      } catch (err: any) {
+        return sendJson(res, 400, { error: err.message });
+      }
+    }
+
+    // ── Legal API (FAZ 19) ────────────────────────────────────────────────────
+    if (path === "/api/legal/tos" && method === "GET") {
+      if (!deps.legal) return sendJson(res, 501, { error: "Legal not enabled" });
+      const locale = localeFrom(cookies, req);
+      return sendJson(res, 200, { text: deps.legal.getTermsOfService(locale) });
+    }
+    if (path === "/api/legal/privacy" && method === "GET") {
+      if (!deps.legal) return sendJson(res, 501, { error: "Legal not enabled" });
+      const locale = localeFrom(cookies, req);
+      return sendJson(res, 200, { text: deps.legal.getPrivacyPolicy(locale) });
+    }
+
+    // ── Support API (FAZ 20) ──────────────────────────────────────────────────
+    if (path === "/api/support/ticket" && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.support) return sendJson(res, 501, { error: "Support not enabled" });
+      const body = await readJsonBody(req);
+      if (!body || !body.subject || !body.message) return sendJson(res, 400, { error: "Missing subject or message" });
+      const ticket = deps.support.createTicket(account.email, body.subject as string, body.message as string);
+      return sendJson(res, 200, ticket);
+    }
+    if (path === "/api/support/tickets" && method === "GET") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.support) return sendJson(res, 501, { error: "Support not enabled" });
+      return sendJson(res, 200, { tickets: deps.support.getTickets(account.email) });
+    }
+
+    // ── Platform API (FAZ 3, 8) & Notifications (FAZ 16/8) ────────────────────
+    if (path === "/api/platform/info" && method === "GET") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.platform) return sendJson(res, 501, { error: "Platform not enabled" });
+      return sendJson(res, 200, deps.platform.getSystemInfo());
+    }
+    if (path === "/api/platform/notify" && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.platform) return sendJson(res, 501, { error: "Platform not enabled" });
+      const body = await readJsonBody(req);
+      if (!body || !body.title || !body.message) return sendJson(res, 400, { error: "Missing title or message" });
+      deps.platform.showNotification(body.title as string, body.message as string);
+      return sendJson(res, 200, { ok: true });
+    }
+
     // ── Per-user data API (requires a session) ────────────────────────────────
     if (path === "/api/data") {
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
@@ -383,6 +588,71 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
         return sendJson(res, 200, { data: next });
       }
       return sendJson(res, 405, { error: "Method not allowed" });
+    }
+
+    // ── Connector Store API (FAZ 19) ──────────────────────────────────────────
+    if (path === "/api/store/catalog" && method === "GET") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.connectors) return sendJson(res, 501, { error: "Store not enabled" });
+      const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
+      return sendJson(res, 200, { catalog: deps.connectors.catalog(data.plan) });
+    }
+    const installMatch = path.match(/^\/api\/store\/([^/]+)\/install$/);
+    if (installMatch && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.connectors) return sendJson(res, 501, { error: "Store not enabled" });
+      const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
+      try {
+        deps.connectors.install(installMatch[1], data.plan);
+        return sendJson(res, 200, { ok: true });
+      } catch (err: any) {
+        return sendJson(res, 400, { error: err.message });
+      }
+    }
+    const uninstallMatch = path.match(/^\/api\/store\/([^/]+)\/uninstall$/);
+    if (uninstallMatch && method === "POST") {
+      if (!account) return sendJson(res, 401, { error: "Not signed in" });
+      if (!deps.connectors) return sendJson(res, 501, { error: "Store not enabled" });
+      try {
+        deps.connectors.uninstall(uninstallMatch[1]);
+        return sendJson(res, 200, { ok: true });
+      } catch (err: any) {
+        return sendJson(res, 400, { error: err.message });
+      }
+    }
+
+    // Telemetry (Crash / Analytics)
+    if (method === "POST" && path === "/api/telemetry") {
+      const body = await readJsonBody(req);
+      if (!body || typeof body !== "object" || !("type" in body)) {
+        return sendJson(res, 400, { error: "Invalid telemetry payload" });
+      }
+      telemetry.track(
+        body.type as TelemetryEventType,
+        body.payload as Record<string, string | number | boolean>
+      );
+      return sendJson(res, 200, { ok: true });
+    }
+
+    // Devices Usage API
+    if (method === "POST" && path === "/api/devices/usage") {
+      if (!account) return sendJson(res, 401, { error: "Unauthorized" });
+
+      const entries = (await readJsonBody(req)) as unknown as UsageEntry[];
+      if (!Array.isArray(entries)) {
+        return sendJson(res, 400, { error: "Expected an array of UsageEntry" });
+      }
+
+      const summary = summarizeUsage(entries);
+      const user = userData.get(account.id);
+      if (user) {
+        userData.set(account.id, {
+          ...user,
+          energyWhToday: user.energyWhToday + summary.totalEnergyWh,
+        });
+      }
+
+      return sendJson(res, 200, { ok: true, summary });
     }
 
     // ── Static assets & installer downloads (public) ──────────────────────────
@@ -397,8 +667,16 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
       persistLang(res, url, locale);
       const oauthNotice = url.searchParams.get("oauth");
-      const notice = oauthNotice === "unavailable" || oauthNotice === "error" ? oauthNotice : undefined;
-      return sendHtml(res, 200, renderLoginDocument(locale, { providers: OAUTH_PROVIDERS, notice }));
+      const notice =
+        oauthNotice === "unavailable" || oauthNotice === "error" ? oauthNotice : undefined;
+      const configuredProviders = deps.oauth
+        ? OAUTH_PROVIDERS.filter((p) => deps.oauth!.isConfigured(p.id))
+        : [];
+      return sendHtml(
+        res,
+        200,
+        renderLoginDocument(locale, { providers: configuredProviders, notice }),
+      );
     }
 
     // ── Public marketing + download center (the only web surface, no login) ────
@@ -410,11 +688,19 @@ export function createRequestHandler(deps: AppDeps): (req: IncomingMessage, res:
     }
 
     if (path === "/privacy" && method === "GET") {
-      return sendHtml(res, 200, "<!doctype html><html lang='en'><head><meta charset='utf-8'/><title>Privacy Policy</title></head><body style='font-family:sans-serif;padding:2rem'><h1>Privacy Policy</h1><p>Placeholder for privacy policy.</p><a href='/'>Back to Home</a></body></html>");
+      return sendHtml(
+        res,
+        200,
+        "<!doctype html><html lang='en'><head><meta charset='utf-8'/><title>Privacy Policy</title></head><body style='font-family:sans-serif;padding:2rem'><h1>Privacy Policy</h1><p>Placeholder for privacy policy.</p><a href='/'>Back to Home</a></body></html>",
+      );
     }
 
     if (path === "/terms" && method === "GET") {
-      return sendHtml(res, 200, "<!doctype html><html lang='en'><head><meta charset='utf-8'/><title>Terms of Service</title></head><body style='font-family:sans-serif;padding:2rem'><h1>Terms of Service</h1><p>Placeholder for terms of service.</p><a href='/'>Back to Home</a></body></html>");
+      return sendHtml(
+        res,
+        200,
+        "<!doctype html><html lang='en'><head><meta charset='utf-8'/><title>Terms of Service</title></head><body style='font-family:sans-serif;padding:2rem'><h1>Terms of Service</h1><p>Placeholder for terms of service.</p><a href='/'>Back to Home</a></body></html>",
+      );
     }
 
     // ── The usable app (login-gated); the desktop/mobile shells live here ─────

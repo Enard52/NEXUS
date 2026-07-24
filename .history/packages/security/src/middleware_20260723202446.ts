@@ -25,7 +25,7 @@ export interface PolicyConfig {
 
 export const DEFAULT_POLICY_CONFIG: PolicyConfig = {
   confirmAtOrAbove: 2, // RiskLevel.Medium
-  denyAtOrAbove: 5,    // RiskLevel.Critical + 1
+  denyAtOrAbove: 5, // RiskLevel.Critical + 1
   riskOverrides: {},
 };
 

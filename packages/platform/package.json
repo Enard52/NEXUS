@@ -11,8 +11,5 @@
   },
   "scripts": {
     "test": "vitest run"
-  },
-  "dependencies": {
-    "@nexus/security": "workspace:*"
   }
 }

@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderDesktopDocument, renderSetupDocument } from "./index.js";
@@ -7,6 +7,8 @@ const { setLocale } = await import("@nexus/web");
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, "..", "dist");
+// Clear stale build output (e.g. orphan root index.html from older layouts) so only current pages ship.
+rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
 
 const pages: ReadonlyArray<{ file: string; theme: "dark" | "light" }> = [
@@ -27,7 +29,9 @@ for (const loc of ["en", "tr"] as const) {
         : renderDesktopDocument({ theme: page.theme, os });
       writeFileSync(join(locDir, page.file), html, "utf8");
       // eslint-disable-next-line no-console
-      console.log(`wrote ${join(loc === "en" ? `dist/${os}` : `dist/${loc}/${os}`, page.file)} (${html.length} bytes, ${page.theme} theme, ${os})`);
+      console.log(
+        `wrote ${join(loc === "en" ? `dist/${os}` : `dist/${loc}/${os}`, page.file)} (${html.length} bytes, ${page.theme} theme, ${os})`,
+      );
     }
   }
 }

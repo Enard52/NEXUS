@@ -5,7 +5,8 @@ import * as fs from "node:fs";
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const SCRATCH_DIR = "C:\\Users\\ensar\\.gemini\\antigravity\\brain\\f2a0d4be-b441-47c4-a125-7b52d8ad09f8\\scratch";
+const SCRATCH_DIR =
+  "C:\\Users\\ensar\\.gemini\\antigravity\\brain\\f2a0d4be-b441-47c4-a125-7b52d8ad09f8\\scratch";
 const DOCS_DIR = path.join(ROOT, "docs", "screenshots");
 
 fs.mkdirSync(SCRATCH_DIR, { recursive: true });
@@ -44,7 +45,9 @@ async function main() {
     await savePic(page, `web_${loc.code}_dark_landing_full.png`, true);
 
     // Light version landing page
-    const lightUrl = url.pathToFileURL(path.join(ROOT, "packages", "web", "dist", loc.lightPath)).href;
+    const lightUrl = url.pathToFileURL(
+      path.join(ROOT, "packages", "web", "dist", loc.lightPath),
+    ).href;
     await page.goto(lightUrl, { waitUntil: "networkidle" });
     await savePic(page, `web_${loc.code}_light_landing_full.png`, true);
 
@@ -86,7 +89,9 @@ async function main() {
     for (const os of ["windows", "mac"]) {
       await page.setViewportSize(deskRes);
       const relPath = loc === "en" ? `${os}/index.html` : `tr/${os}/index.html`;
-      const deskUrl = url.pathToFileURL(path.join(ROOT, "packages", "desktop", "dist", relPath)).href;
+      const deskUrl = url.pathToFileURL(
+        path.join(ROOT, "packages", "desktop", "dist", relPath),
+      ).href;
 
       for (const sec of desktopScreens) {
         await page.goto(`${deskUrl}#${sec}`, { waitUntil: "networkidle" });
@@ -96,7 +101,9 @@ async function main() {
       // Setup wizard all 5 steps
       await page.setViewportSize(setupRes);
       const setupRelPath = loc === "en" ? `${os}/setup.html` : `tr/${os}/setup.html`;
-      const setupUrl = url.pathToFileURL(path.join(ROOT, "packages", "desktop", "dist", setupRelPath)).href;
+      const setupUrl = url.pathToFileURL(
+        path.join(ROOT, "packages", "desktop", "dist", setupRelPath),
+      ).href;
       await page.goto(setupUrl, { waitUntil: "networkidle" });
 
       const setupSteps = ["welcome", "license", "location", "installing", "finish"];

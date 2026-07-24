@@ -17,15 +17,19 @@ interface Running {
   server: Server;
   base: string;
   store: SqliteKeyValueStore;
+  memory: import("@nexus/memory").SqliteUserMemoryStore;
 }
 
 const running: Running[] = [];
 
 async function boot(dbFile: string): Promise<Running> {
   const store = new SqliteKeyValueStore(dbFile);
-  const app = createNexusApp({ store });
+  const memoryDbFile = dbFile + ".memory";
+  const { SqliteUserMemoryStore } = await import("@nexus/memory");
+  const memory = new SqliteUserMemoryStore(memoryDbFile);
+  const app = createNexusApp({ store, memory });
   const { server, port } = await startServer(app, 0);
-  const r: Running = { server, base: `http://127.0.0.1:${port}`, store };
+  const r: Running = { server, base: `http://127.0.0.1:${port}`, store, memory };
   running.push(r);
   return r;
 }
@@ -36,6 +40,7 @@ function closeAll(): Promise<void> {
       new Promise<void>((resolve) => {
         r.server.close(() => {
           r.store.close();
+          r.memory.close();
           resolve();
         });
       }),
@@ -71,7 +76,7 @@ describe("local sync server", () => {
     expect(html).toContain("Google Play");
     // Cookie banner should be rendered
     expect(html).toContain('id="cookie-banner"');
-    expect(html).toContain('Privacy & Cookies'); // Or Turkish equivalent depending on default lang
+    expect(html).toContain("Privacy & Cookies"); // Or Turkish equivalent depending on default lang
   });
 
   it("applies global security headers", async () => {
@@ -101,6 +106,12 @@ describe("local sync server", () => {
   });
 
   it("offers Google + Apple social sign-in buttons on the login page", async () => {
+    process.env.GOOGLE_CLIENT_ID = "test-google";
+    process.env.GOOGLE_CLIENT_SECRET = "test-secret";
+    process.env.APPLE_CLIENT_ID = "test-apple";
+    process.env.APPLE_TEAM_ID = "test";
+    process.env.APPLE_KEY_ID = "test";
+    process.env.APPLE_PRIVATE_KEY = "test";
     const { base } = await boot(join(tmp, "social.db"));
     const html = await (await fetch(`${base}/login`)).text();
     expect(html).toContain('href="/api/oauth/google/start"');
@@ -109,6 +120,9 @@ describe("local sync server", () => {
     expect(html).toContain("Continue with Apple");
     // The "or continue with email" divider ties the social + password paths together.
     expect(html).toContain("auth-divider");
+    delete process.env.GOOGLE_CLIENT_ID;
+    delete process.env.GOOGLE_CLIENT_SECRET;
+    delete process.env.APPLE_CLIENT_ID;
   });
 
   it("reports honestly when an unconfigured provider is started", async () => {

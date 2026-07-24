@@ -40,22 +40,22 @@ export interface DesignTokens {
   };
 }
 
-const SPACE = [0, 4, 8, 12, 16, 24, 32, 48, 64] as const;
+const SPACE = [0, 4, 8, 12, 16, 24, 32, 48, 64, 96, 128] as const;
 
 const FONT = {
-  family: "Inter, system-ui, sans-serif",
-  size: { sm: 12, md: 14, lg: 18, xl: 24 },
+  family: "'Outfit', 'Inter', system-ui, -apple-system, sans-serif",
+  size: { sm: 12, md: 14, lg: 18, xl: 24, xxl: 32 },
 } as const;
 
-const RADIUS = { sm: 4, md: 8, lg: 16 } as const;
+const RADIUS = { sm: 6, md: 12, lg: 24, xl: 32 } as const;
 
 export const lightTheme: DesignTokens = {
   color: {
-    bg: "#ffffff",
-    surface: "#f4f5f7",
-    text: "#1a1a1a",
-    textMuted: "#5c5f66",
-    primary: "#2f6fed",
+    bg: "#f8f9fa",
+    surface: "#ffffff",
+    text: "#12141a",
+    textMuted: "#64748b",
+    primary: "#4f46e5",
     onPrimary: "#ffffff",
   },
   space: SPACE,
@@ -65,12 +65,12 @@ export const lightTheme: DesignTokens = {
 
 export const darkTheme: DesignTokens = {
   color: {
-    bg: "#0e0f12",
-    surface: "#1a1c21",
-    text: "#f2f3f5",
-    textMuted: "#a2a6ad",
-    primary: "#5b8dff",
-    onPrimary: "#0e0f12",
+    bg: "#0a0a0b",
+    surface: "#111113",
+    text: "#f8fafc",
+    textMuted: "#94a3b8",
+    primary: "#818cf8",
+    onPrimary: "#0f172a",
   },
   space: SPACE,
   radius: RADIUS,

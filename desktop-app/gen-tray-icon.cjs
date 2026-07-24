@@ -22,7 +22,9 @@ function roundedTile(x, y) {
     (x < r && y < r && (x - r) ** 2 + (y - r) ** 2 > r * r) ||
     (x >= SIZE - r && y < r && (x - (SIZE - 1 - r)) ** 2 + (y - r) ** 2 > r * r) ||
     (x < r && y >= SIZE - r && (x - r) ** 2 + (y - (SIZE - 1 - r)) ** 2 > r * r) ||
-    (x >= SIZE - r && y >= SIZE - r && (x - (SIZE - 1 - r)) ** 2 + (y - (SIZE - 1 - r)) ** 2 > r * r);
+    (x >= SIZE - r &&
+      y >= SIZE - r &&
+      (x - (SIZE - 1 - r)) ** 2 + (y - (SIZE - 1 - r)) ** 2 > r * r);
   return !inCorner;
 }
 

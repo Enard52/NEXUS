@@ -64,6 +64,9 @@ importers:
       '@nexus/config':
         specifier: workspace:*
         version: link:../config
+      '@nexus/devices':
+        specifier: workspace:*
+        version: link:../devices
       '@nexus/logger':
         specifier: workspace:*
         version: link:../logger
@@ -76,6 +79,9 @@ importers:
       '@nexus/security':
         specifier: workspace:*
         version: link:../security
+      '@nexus/voice':
+        specifier: workspace:*
+        version: link:../voice
 
   packages/database: {}
 
@@ -129,11 +135,7 @@ importers:
         specifier: workspace:*
         version: link:../web
 
-  packages/platform:
-    dependencies:
-      '@nexus/security':
-        specifier: workspace:*
-        version: link:../security
+  packages/platform: {}
 
   packages/plugins:
     dependencies:
@@ -143,13 +145,35 @@ importers:
 
   packages/routines: {}
 
-  packages/security: {}
+  packages/security:
+    dependencies:
+      '@nexus/database':
+        specifier: workspace:*
+        version: link:../database
 
   packages/server:
     dependencies:
       '@nexus/accounts':
         specifier: workspace:*
         version: link:../accounts
+      '@nexus/agents':
+        specifier: workspace:*
+        version: link:../agents
+      '@nexus/ai':
+        specifier: workspace:*
+        version: link:../ai
+      '@nexus/billing':
+        specifier: workspace:*
+        version: link:../billing
+      '@nexus/config':
+        specifier: workspace:*
+        version: link:../config
+      '@nexus/connectors':
+        specifier: workspace:*
+        version: link:../connectors
+      '@nexus/core':
+        specifier: workspace:*
+        version: link:../core
       '@nexus/database':
         specifier: workspace:*
         version: link:../database
@@ -159,18 +183,42 @@ importers:
       '@nexus/desktop':
         specifier: workspace:*
         version: link:../desktop
+      '@nexus/devices':
+        specifier: workspace:*
+        version: link:../devices
       '@nexus/i18n':
         specifier: workspace:*
         version: link:../i18n
       '@nexus/interface':
         specifier: workspace:*
         version: link:../interface
+      '@nexus/legal':
+        specifier: workspace:*
+        version: link:../legal
+      '@nexus/memory':
+        specifier: workspace:*
+        version: link:../memory
       '@nexus/mobile':
         specifier: workspace:*
         version: link:../mobile
+      '@nexus/platform':
+        specifier: workspace:*
+        version: link:../platform
+      '@nexus/plugins':
+        specifier: workspace:*
+        version: link:../plugins
+      '@nexus/routines':
+        specifier: workspace:*
+        version: link:../routines
       '@nexus/security':
         specifier: workspace:*
         version: link:../security
+      '@nexus/skills':
+        specifier: workspace:*
+        version: link:../skills
+      '@nexus/support':
+        specifier: workspace:*
+        version: link:../support
       '@nexus/web':
         specifier: workspace:*
         version: link:../web

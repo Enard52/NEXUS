@@ -18,6 +18,7 @@ import {
   type SecurityPolicy,
 } from "./policy.js";
 export * from "./policy.js";
+import type { KeyValueStore } from "@nexus/database";
 
 export interface SecurityEvaluation {
   readonly action: SecurityAction;
@@ -28,10 +29,23 @@ export interface SecurityEvaluation {
 
 export class SecurityEngine {
   private readonly policy: SecurityPolicy;
+  private readonly store?: KeyValueStore;
   private readonly audit: SecurityEvaluation[] = [];
+  private static readonly AUDIT_KEY = "security:audit_log";
 
-  constructor(policy: SecurityPolicy = DEFAULT_POLICY) {
+  constructor(policy: SecurityPolicy = DEFAULT_POLICY, store?: KeyValueStore) {
     this.policy = policy;
+    this.store = store;
+    if (this.store) {
+      const saved = this.store.get(SecurityEngine.AUDIT_KEY);
+      if (saved) {
+        try {
+          this.audit = JSON.parse(saved);
+        } catch (e) {
+          // ignore invalid JSON
+        }
+      }
+    }
   }
 
   /** Evaluate a single action against the policy and record the decision. */
@@ -57,6 +71,11 @@ export class SecurityEngine {
       at: new Date().toISOString(),
     };
     this.audit.push(evaluation);
+
+    if (this.store) {
+      this.store.set(SecurityEngine.AUDIT_KEY, JSON.stringify(this.audit));
+    }
+
     return evaluation;
   }
 

@@ -72,7 +72,9 @@ export class SqliteKeyValueStore implements KeyValueStore {
 
   set(key: string, value: string): void {
     this.db
-      .prepare("INSERT INTO kv (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value")
+      .prepare(
+        "INSERT INTO kv (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+      )
       .run(key, value);
   }
 

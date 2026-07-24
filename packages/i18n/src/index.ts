@@ -28,9 +28,13 @@ export type MessageKey =
   | "screen.skills"
   | "screen.family"
   | "screen.devices"
+  | "screen.platform"
+  | "screen.agents"
+  | "screen.agents.empty"
   | "screen.personalization"
   | "screen.billing"
   | "screen.downloadCenter"
+  | "screen.adminDashboard"
   | "today.devicesOnline"
   | "today.energy"
   | "today.activeRoutines"
@@ -55,6 +59,8 @@ export type MessageKey =
   | "auth.switchToSignIn"
   | "auth.passwordHint"
   | "auth.genericError"
+  | "auth.locked"
+  | "auth.rateLimited"
   | "auth.logout"
   | "auth.welcome"
   | "auth.continue"
@@ -183,14 +189,18 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "screen.skills": "Skills",
     "screen.family": "Family",
     "screen.devices": "Devices",
+    "screen.platform": "Platforms",
+    "screen.agents": "Agents",
     "screen.personalization": "Personalization",
     "screen.billing": "Subscription",
     "screen.downloadCenter": "Download",
+    "screen.adminDashboard": "Admin Dashboard",
     "today.devicesOnline": "Devices online",
     "today.energy": "Energy today",
     "today.activeRoutines": "Active routines",
     "today.suggestions": "Suggestions",
     "screen.devices.empty": "No devices connected yet.",
+    "screen.agents.empty": "No agents configured yet.",
     "screen.suggestions.empty": "No suggestions yet — NEXUS AI is still learning.",
     "screen.skills.empty": "No skills learned yet.",
     "screen.homeState.empty": "No rooms with devices yet.",
@@ -209,6 +219,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "auth.switchToSignIn": "Already have an account? Sign in",
     "auth.passwordHint": "At least 8 characters",
     "auth.genericError": "Something went wrong. Please try again.",
+    "auth.locked": "Too many failed attempts. Try again in {time}.",
+    "auth.rateLimited": "Too many requests. Please try again later.",
     "auth.logout": "Sign out",
     "auth.welcome": "Welcome, {name}",
     "auth.continue": "Continue",
@@ -226,7 +238,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.nav.signIn": "Sign In",
     "mkt.hero.badge": "v{version} · Windows · macOS · Linux",
     "mkt.hero.title": "Download NEXUS for every device you own",
-    "mkt.hero.desc": "NEXUS is a voice-first, privacy-focused personal operating system. Install the desktop app or the mobile companion and control every device from one place — 100% on-device. You use it from the real app, not the browser.",
+    "mkt.hero.desc":
+      "NEXUS is a voice-first, privacy-focused personal operating system. Install the desktop app or the mobile companion and control every device from one place — 100% on-device. You use it from the real app, not the browser.",
     "mkt.hero.actionPrimary": "Download for {os} · v{version}",
     "mkt.hero.actionSecondary": "See it in action",
     "mkt.hero.trust": "★ 500,000+ users · 2000+ smart devices · 100% local privacy",
@@ -271,12 +284,14 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.pricing.familyDesc": "Up to 5 accounts with full access control.",
     "mkt.pricing.cta": "Start for free",
     "mkt.testimonials.title": "Loved by smart home enthusiasts",
-    "mkt.testimonials.quote1": "NEXUS completely changed how I interact with my home. It's so much faster when everything is local.",
+    "mkt.testimonials.quote1":
+      "NEXUS completely changed how I interact with my home. It's so much faster when everything is local.",
     "mkt.integrations.title": "Works with your favorite devices",
     "mkt.changelog.title": "What's new in v3.14.2",
     "mkt.requirements.title": "System Requirements",
     "mkt.requirements.desc": "Requires a 64-bit OS and at least 2GB RAM.",
-    "mkt.footer.desc": "Your voice-first personal home operating system. Completely local, entirely yours.",
+    "mkt.footer.desc":
+      "Your voice-first personal home operating system. Completely local, entirely yours.",
     "mkt.footer.product": "Product",
     "mkt.footer.company": "Company & Legal",
     "mkt.footer.about": "About Us",
@@ -284,7 +299,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.footer.terms": "Terms of Service",
     "mkt.footer.noCookies": "We use zero cookies.",
     "mkt.cookie.title": "Privacy & Cookies",
-    "mkt.cookie.desc": "We use essential cookies to provide our services. By continuing, you agree to our use of these necessary technologies.",
+    "mkt.cookie.desc":
+      "We use essential cookies to provide our services. By continuing, you agree to our use of these necessary technologies.",
     "mkt.cookie.accept": "Got it",
     "mkt.cookie.decline": "Settings",
     "mkt.feat.why": "Why NEXUS",
@@ -302,9 +318,11 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.faq.2.q": "Which devices are supported?",
     "mkt.faq.2.a": "Matter, Zigbee, Z-Wave devices and over 500 API-based ecosystems.",
     "mkt.faq.3.q": "Does it work without cloud connection?",
-    "mkt.faq.3.a": "Yes. It communicates with your devices over local network, working even if internet goes down.",
+    "mkt.faq.3.a":
+      "Yes. It communicates with your devices over local network, working even if internet goes down.",
     "mkt.faq.4.q": "How is remote access provided?",
-    "mkt.faq.4.a": "Through a secure end-to-end encrypted tunnel with Premium plan or your own VPN.",
+    "mkt.faq.4.a":
+      "Through a secure end-to-end encrypted tunnel with Premium plan or your own VPN.",
     "Dim living room lights": "Dim living room lights",
     "Start morning news briefing": "Start morning news briefing",
     "Movie night": "Movie night",
@@ -316,7 +334,7 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "status.suggestionReady": "{count} suggestion ready for you.",
     "status.suggestionsReady": "{count} suggestions ready for you.",
     "status.caughtUp": "You're all caught up.",
-    "status.onlineOfTotal": "{online}/{total} online"
+    "status.onlineOfTotal": "{online}/{total} online",
   },
   tr: {
     "app.greeting": "Merhaba {name}, nasıl yardımcı olabilirim?",
@@ -331,14 +349,18 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "screen.skills": "Yetenekler",
     "screen.family": "Aile",
     "screen.devices": "Cihazlar",
+    "screen.platform": "Platformlar",
+    "screen.agents": "Ajanlar",
     "screen.personalization": "Kişiselleştirme",
     "screen.billing": "Abonelik",
     "screen.downloadCenter": "İndirme Merkezi",
+    "screen.adminDashboard": "Yönetici Paneli",
     "today.devicesOnline": "Çevrimiçi cihazlar",
     "today.energy": "Bugünkü enerji",
     "today.activeRoutines": "Aktif rutinler",
     "today.suggestions": "Öneriler",
     "screen.devices.empty": "Henüz bağlanan cihaz yok.",
+    "screen.agents.empty": "Henüz yapılandırılmış bir ajan yok.",
     "screen.suggestions.empty": "Henüz öneri yok — Nexus AI hâlâ öğreniyor.",
     "screen.skills.empty": "Henüz öğrenilen bir yetenek yok.",
     "screen.homeState.empty": "Henüz cihaz eklenmiş bir oda yok.",
@@ -356,7 +378,9 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "auth.switchToSignUp": "Yeni misin? Hesap oluştur",
     "auth.switchToSignIn": "Zaten hesabın var mı? Giriş yap",
     "auth.passwordHint": "En az 8 karakter",
-    "auth.genericError": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+    "auth.genericError": "Bir sorun oluştu. Lütfen tekrar deneyin.",
+    "auth.locked": "Çok fazla başarısız deneme. {time} sonra tekrar deneyin.",
+    "auth.rateLimited": "Çok fazla istek. Lütfen daha sonra tekrar deneyin.",
     "auth.logout": "Çıkış yap",
     "auth.welcome": "Hoş geldin, {name}",
     "auth.continue": "Devam et",
@@ -374,7 +398,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.nav.signIn": "Giriş Yap",
     "mkt.hero.badge": "v{version} · Windows · macOS · Linux",
     "mkt.hero.title": "Sahip olduğun her cihaz için NEXUS'u indir",
-    "mkt.hero.desc": "NEXUS, sesle çalışan ve gizliliğe odaklanan kişisel işletim sistemidir. Masaüstü uygulamasını ya da mobil uygulamayı kur; tüm cihazlarını tek yerden, %100 cihaz üzerinde yönet. Web'den değil, gerçek uygulamadan kullanılır.",
+    "mkt.hero.desc":
+      "NEXUS, sesle çalışan ve gizliliğe odaklanan kişisel işletim sistemidir. Masaüstü uygulamasını ya da mobil uygulamayı kur; tüm cihazlarını tek yerden, %100 cihaz üzerinde yönet. Web'den değil, gerçek uygulamadan kullanılır.",
     "mkt.hero.actionPrimary": "İndir ({os}) · v{version}",
     "mkt.hero.actionSecondary": "İş başında gör",
     "mkt.hero.trust": "★ 500.000+ kullanıcı · 2000+ akıllı cihaz · %100 yerel gizlilik",
@@ -395,7 +420,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.how.step3.title": "Cihazlarını bağla",
     "mkt.how.step3.desc": "Akıllı cihazlarınızı güvenle yönetmeye başlayın.",
     "mkt.preview.title": "NEXUS'u iş başında gör",
-    "mkt.preview.desc": "Uygulamayı kurduğunda karşılaşacağın gerçek Bugün panelinin canlı bir görünümü.",
+    "mkt.preview.desc":
+      "Uygulamayı kurduğunda karşılaşacağın gerçek Bugün panelinin canlı bir görünümü.",
     "mkt.preview.tab.today": "Bugün",
     "mkt.preview.tab.devices": "Cihazlar",
     "mkt.preview.tab.skills": "Rutinler",
@@ -419,7 +445,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.pricing.familyDesc": "Tam erişim kontrolüne sahip 5 adede kadar hesap.",
     "mkt.pricing.cta": "Ücretsiz başla",
     "mkt.testimonials.title": "Akıllı ev tutkunları tarafından seviliyor",
-    "mkt.testimonials.quote1": "NEXUS evimle etkileşimimi tamamen değiştirdi. Her şeyin yerel olması çok daha hızlı.",
+    "mkt.testimonials.quote1":
+      "NEXUS evimle etkileşimimi tamamen değiştirdi. Her şeyin yerel olması çok daha hızlı.",
     "mkt.integrations.title": "Favori cihazlarınızla çalışır",
     "mkt.changelog.title": "v3.14.2 sürümündeki yenilikler",
     "mkt.requirements.title": "Sistem Gereksinimleri",
@@ -432,7 +459,8 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.footer.terms": "Kullanım Şartları",
     "mkt.footer.noCookies": "Sıfır çerez kullanıyoruz.",
     "mkt.cookie.title": "Gizlilik ve Çerezler",
-    "mkt.cookie.desc": "Hizmetlerimizi sunabilmek için gerekli çerezleri kullanıyoruz. Devam ederek bu temel teknolojilerin kullanımını kabul etmiş olursunuz.",
+    "mkt.cookie.desc":
+      "Hizmetlerimizi sunabilmek için gerekli çerezleri kullanıyoruz. Devam ederek bu temel teknolojilerin kullanımını kabul etmiş olursunuz.",
     "mkt.cookie.accept": "Anladım",
     "mkt.cookie.decline": "Tercihler",
     "mkt.feat.why": "Neden NEXUS",
@@ -450,9 +478,11 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.faq.2.q": "Hangi cihazları destekliyor?",
     "mkt.faq.2.a": "Matter, Zigbee, Z-Wave cihazları ve 500'den fazla API tabanlı ekosistem.",
     "mkt.faq.3.q": "Bulut bağlantısı olmadan çalışır mı?",
-    "mkt.faq.3.a": "Evet. Cihazlarınızla yerel ağ üzerinden iletişim kurar, internet kesilse bile çalışır.",
+    "mkt.faq.3.a":
+      "Evet. Cihazlarınızla yerel ağ üzerinden iletişim kurar, internet kesilse bile çalışır.",
     "mkt.faq.4.q": "Uzaktan erişim nasıl sağlanıyor?",
-    "mkt.faq.4.a": "Premium plan ile güvenli bir uçtan-uca şifrelenmiş tünel veya kendi VPN'iniz ile.",
+    "mkt.faq.4.a":
+      "Premium plan ile güvenli bir uçtan-uca şifrelenmiş tünel veya kendi VPN'iniz ile.",
     "Dim living room lights": "Salon ışıklarını kıs",
     "Start morning news briefing": "Sabah haber bültenini başlat",
     "Movie night": "Film gecesi",
@@ -464,7 +494,7 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "status.suggestionReady": "Senin için {count} öneri hazır.",
     "status.suggestionsReady": "Senin için {count} öneri hazır.",
     "status.caughtUp": "Her şey yolunda.",
-    "status.onlineOfTotal": "{online}/{total} çevrimiçi"
+    "status.onlineOfTotal": "{online}/{total} çevrimiçi",
   },
 };
 

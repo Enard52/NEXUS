@@ -6,11 +6,7 @@
 
 import { describe, expect, it } from "vitest";
 import { generateKeyPairSync } from "node:crypto";
-import {
-  AppleAuthProvider,
-  GoogleAuthProvider,
-  createAppleClientSecret,
-} from "./providers.js";
+import { AppleAuthProvider, GoogleAuthProvider, createAppleClientSecret } from "./providers.js";
 
 function decodeSegment(seg: string): Record<string, unknown> {
   return JSON.parse(Buffer.from(seg, "base64url").toString("utf8")) as Record<string, unknown>;

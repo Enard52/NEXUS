@@ -115,7 +115,12 @@ for (const idEntry of iconIds) {
   const dataSize = buf.readUInt32LE(dataEntryOff + 4);
   const off = rvaToFile(dataRVA);
   const head = buf.slice(off, Math.min(off + 8, buf.length));
-  const isPng = head.length >= 4 && head[0] === 0x89 && head[1] === 0x50 && head[2] === 0x4e && head[3] === 0x47;
+  const isPng =
+    head.length >= 4 &&
+    head[0] === 0x89 &&
+    head[1] === 0x50 &&
+    head[2] === 0x4e &&
+    head[3] === 0x47;
   let desc;
   if (isPng) {
     const w = buf.readUInt32BE(off + 16);

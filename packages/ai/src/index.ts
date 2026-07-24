@@ -72,12 +72,29 @@ export class OpenAiProvider implements AiProvider {
     this.model = options.model ?? "gpt-4o-mini";
   }
 
-  async complete(_request: CompletionRequest): Promise<CompletionResult> {
-    void this.#apiKey;
-    throw new Error(
-      "OpenAiProvider.complete is not wired yet (FAZ 1 dev mode). " +
-        "Implement the API call before using a real provider.",
-    );
+  async complete(request: CompletionRequest): Promise<CompletionResult> {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.#apiKey}`,
+      },
+      body: JSON.stringify({
+        model: this.model,
+        messages: request.messages,
+        temperature: request.temperature ?? 0.7,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(`OpenAI API failed: ${response.status} ${errorBody}`);
+    }
+
+    const data = (await response.json()) as any;
+    const text = data.choices?.[0]?.message?.content || "";
+
+    return { text, provider: this.name, model: this.model };
   }
 }
 

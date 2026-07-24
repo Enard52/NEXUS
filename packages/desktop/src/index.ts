@@ -101,7 +101,7 @@ nav.side { display: flex; flex-direction: column; gap: ${t.space[1]}px; margin: 
 nav.side a {
   display: flex; align-items: center; gap: ${t.space[3]}px;
   padding: ${t.space[3]}px ${t.space[4]}px; border: 0; border-radius: var(--radius);
-  background: transparent; color: var(--muted); font-size: ${t.font.size.md}px; font-weight: 500;
+  background: transparent; color: var(--muted); font-size: ${t.font.size.md}px; font-weight: 500; text-decoration: none;
 }
 nav.side a .sideicon { flex: none; }
 nav.side a:hover { background: var(--bg); color: var(--text); }
@@ -175,7 +175,10 @@ export function renderDesktopDocument(options: DesktopOptions = {}): string {
   const screens = options.screens ?? buildDemoScreens();
 
   const sections = screens.nav
-    .map((s) => `<section id="${s.id}">${renderScreenBody(s.id, screens, userAgent, "desktop")}</section>`)
+    .map(
+      (s) =>
+        `<section id="${s.id}">${renderScreenBody(s.id, screens, userAgent, "desktop")}</section>`,
+    )
     .join("\n");
 
   const locale = options.locale ?? CURRENT_LOCALE;

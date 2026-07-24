@@ -15,6 +15,8 @@ import type { DigitalTwin, Personalization, UserMemoryStore } from "@nexus/memor
 import { resolveLightPlan } from "@nexus/memory";
 import type { RoutineEngine, SceneAction } from "@nexus/routines";
 import { RiskLevel, SecurityEngine, type SecurityAction } from "@nexus/security";
+import { DeviceManager } from "@nexus/devices";
+import { VoiceEngine } from "@nexus/voice";
 
 export interface Intent {
   /** Coarse intent name, e.g. "personalization.setName", "home.control". */
@@ -223,6 +225,7 @@ export interface NexusCoreDeps {
   readonly twin?: DigitalTwin;
   /** Optional user-defined Scenes & Routines checked before intent parsing. */
   readonly routines?: RoutineEngine;
+  readonly devices?: DeviceManager;
 }
 
 export class NexusCore {
@@ -231,6 +234,9 @@ export class NexusCore {
   private readonly security: SecurityEngine;
   private readonly twin?: DigitalTwin;
   private readonly routines?: RoutineEngine;
+  readonly devices: DeviceManager;
+  // @ts-expect-error: unused currently
+  private readonly voiceEngine: VoiceEngine;
   private readonly agents: Agent[];
 
   constructor(deps: NexusCoreDeps) {
@@ -239,6 +245,8 @@ export class NexusCore {
     this.security = deps.security ?? new SecurityEngine();
     this.twin = deps.twin;
     this.routines = deps.routines;
+    this.devices = deps.devices ?? new DeviceManager();
+    this.voiceEngine = new VoiceEngine();
     // Order matters: specific agents first, chitchat is the fallback.
     this.agents = [new PersonalizationAgent(), new HomeAgent(), new ChitchatAgent()];
   }

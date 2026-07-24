@@ -195,7 +195,9 @@ function chunk(type, data) {
 
 /** Multi-resolution .ico from {size: rgbaBuf}, using PNG-compressed entries. */
 function encodeIco(images) {
-  const sizes = Object.keys(images).map(Number).sort((a, b) => b - a);
+  const sizes = Object.keys(images)
+    .map(Number)
+    .sort((a, b) => b - a);
   const header = Buffer.alloc(6);
   header.writeUInt16LE(0, 0);
   header.writeUInt16LE(1, 2); // icon
@@ -240,6 +242,6 @@ for (const dir of targets) {
   writeFileSync(join(dir, "icon.ico"), ico);
   writeFileSync(join(dir, "tray.png"), trayPng);
   console.log(
-    `wrote ${dir}{icon.png(${png512.length}), icon.ico(${ico.length}), tray.png(${trayPng.length})}`
+    `wrote ${dir}{icon.png(${png512.length}), icon.ico(${ico.length}), tray.png(${trayPng.length})}`,
   );
 }

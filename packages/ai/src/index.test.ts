@@ -19,11 +19,31 @@ describe("OpenAiProvider", () => {
     expect(() => new OpenAiProvider({ apiKey: "" })).toThrow(/non-empty apiKey/);
   });
 
-  it("does not fake a completion in FAZ 1 dev mode", async () => {
+  it("makes a real network request using the provided API key", async () => {
     const p = new OpenAiProvider({ apiKey: "sk-test" });
-    await expect(p.complete({ messages: [{ role: "user", content: "hi" }] })).rejects.toThrow(
-      /not wired yet/,
-    );
+
+    // Mock fetch for this test
+    const originalFetch = globalThis.fetch;
+    let fetchCallCount = 0;
+    globalThis.fetch = (async (url: any, options: any) => {
+      fetchCallCount++;
+      expect(url).toBe("https://api.openai.com/v1/chat/completions");
+      expect(options.headers.Authorization).toBe("Bearer sk-test");
+      return {
+        ok: true,
+        json: async () => ({
+          choices: [{ message: { content: "mock response from openai" } }],
+        }),
+      };
+    }) as any;
+
+    try {
+      const res = await p.complete({ messages: [{ role: "user", content: "hi" }] });
+      expect(res.text).toBe("mock response from openai");
+      expect(fetchCallCount).toBe(1);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
   });
 });
 

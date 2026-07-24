@@ -23,7 +23,6 @@ export interface PolicyConfig {
   readonly riskOverrides?: Readonly<Record<string, number>>;
 }
 
-
 export type AuditKind = "decision" | "executed" | "approved" | "rejected" | "denied";
 
 export interface AuditEntry {

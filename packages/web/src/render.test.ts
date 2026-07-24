@@ -262,7 +262,7 @@ describe("bento layout screen renderers (Section E)", () => {
   it("renderSkills renders skill-bar-wrap inside bento grid", () => {
     const model = buildSkillsModel([{ id: "sk1", nameKey: "Weather", usageCount: 50 }]);
     const html = renderSkills(model);
-    expect(html).toContain('<div class="bento-grid wide">');
+    expect(html).toContain('class="bento-grid wide"');
     expect(html).toContain('class="skill-bar-wrap"');
     expect(html).toContain('style="width: 100%"');
   });

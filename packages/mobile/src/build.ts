@@ -22,6 +22,8 @@ for (const loc of ["en", "tr"] as const) {
     const html = renderMobileDocument({ theme: page.theme });
     writeFileSync(join(locDir, page.file), html, "utf8");
     // eslint-disable-next-line no-console
-    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, page.file)} (${html.length} bytes, ${page.theme} theme)`);
+    console.log(
+      `wrote ${join(loc === "en" ? "dist" : "dist/" + loc, page.file)} (${html.length} bytes, ${page.theme} theme)`,
+    );
   }
 }

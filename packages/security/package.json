@@ -11,5 +11,8 @@
   },
   "scripts": {
     "test": "vitest run"
+  },
+  "dependencies": {
+    "@nexus/database": "workspace:*"
   }
 }

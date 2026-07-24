@@ -26,8 +26,11 @@ export type ScreenId =
   | "family"
   | "devices"
   | "personalization"
+  | "platform"
+  | "agents"
   | "billing"
-  | "download-center";
+  | "download-center"
+  | "admin-dashboard";
 
 export interface ScreenDescriptor {
   readonly id: ScreenId;
@@ -58,7 +61,15 @@ export const SCREENS: readonly ScreenDescriptor[] = [
   },
   { id: "devices", titleKey: "screen.devices", requiresAuth: true },
   { id: "personalization", titleKey: "screen.personalization", requiresAuth: true },
+  { id: "platform", titleKey: "screen.platform", requiresAuth: true },
+  { id: "agents", titleKey: "screen.agents", requiresAuth: true },
   { id: "billing", titleKey: "screen.billing", requiresAuth: true, roles: ["admin"] },
+  {
+    id: "admin-dashboard",
+    titleKey: "screen.adminDashboard",
+    requiresAuth: true,
+    roles: ["admin"],
+  },
   // The Download Center is the public marketing page — no auth (FAZ 10/18).
   { id: "download-center", titleKey: "screen.downloadCenter", requiresAuth: false },
 ];
@@ -110,6 +121,26 @@ export function buildDeviceListModel(devices: readonly DeviceRow[]): DeviceListM
     rows: devices,
     onlineCount,
     emptyStateKey: devices.length === 0 ? "screen.devices.empty" : undefined,
+  };
+}
+
+export interface PlatformModel {
+  readonly titleKey: string;
+  readonly platforms: readonly {
+    readonly id: string;
+    readonly name: string;
+    readonly active: boolean;
+  }[];
+}
+
+export function buildPlatformModel(): PlatformModel {
+  return {
+    titleKey: "screen.platform",
+    platforms: [
+      { id: "web", name: "Web App", active: true },
+      { id: "desktop", name: "Desktop", active: false },
+      { id: "mobile", name: "Mobile", active: false },
+    ],
   };
 }
 
@@ -203,6 +234,46 @@ export interface SuggestionRow {
   readonly at: string;
 }
 
+export interface DemoScreens {
+  readonly nav: readonly ScreenDescriptor[];
+  readonly today: TodayModel;
+  readonly home: HomeStateModel;
+  readonly devices: DeviceListModel;
+  readonly releases: any;
+  readonly suggestions: SuggestionsModel;
+  readonly skills: SkillsModel;
+  readonly family: FamilyModel;
+  readonly personalization: PersonalizationModel;
+  readonly platform: PlatformModel;
+  readonly agents: AgentsModel;
+  readonly billing: BillingModel;
+  readonly adminDashboard: AdminDashboardModel;
+}
+
+export interface AdminDashboardModel {
+  readonly id: "admin-dashboard";
+  readonly titleKey: string;
+  readonly totalUsers: number;
+  readonly activeDevices: number;
+  readonly revenue: string;
+  readonly recentLogs: readonly { readonly time: string; readonly event: string }[];
+}
+
+export function buildAdminDashboardModel(): AdminDashboardModel {
+  return {
+    id: "admin-dashboard",
+    titleKey: getScreen("admin-dashboard").titleKey,
+    totalUsers: 14502,
+    activeDevices: 45290,
+    revenue: "$32,500",
+    recentLogs: [
+      { time: "12:04", event: "User registration (us-east)" },
+      { time: "11:59", event: "Device sync (hue-bridge)" },
+      { time: "11:58", event: "Payment success (sub_123)" },
+    ],
+  };
+}
+
 export interface SuggestionsModel {
   readonly titleKey: string;
   readonly rows: readonly SuggestionRow[];
@@ -218,6 +289,14 @@ export function buildSuggestionsModel(rows: readonly SuggestionRow[]): Suggestio
   };
 }
 
+export interface DiscoverableSkillRow {
+  readonly id: string;
+  readonly nameKey: string;
+  readonly descriptionKey: string;
+  readonly icon: string;
+  readonly tags: readonly string[];
+}
+
 export interface SkillRow {
   readonly id: string;
   readonly nameKey: string;
@@ -229,15 +308,38 @@ export interface SkillsModel {
   readonly titleKey: string;
   /** Most-used skills first. */
   readonly rows: readonly SkillRow[];
+  readonly discoverable: readonly DiscoverableSkillRow[];
   readonly emptyStateKey?: string;
 }
 
-export function buildSkillsModel(rows: readonly SkillRow[]): SkillsModel {
+export function buildSkillsModel(rows: readonly SkillRow[], discoverable: readonly DiscoverableSkillRow[] = []): SkillsModel {
   const sorted = [...rows].sort((a, b) => b.usageCount - a.usageCount);
   return {
     titleKey: getScreen("skills").titleKey,
     rows: sorted,
-    emptyStateKey: rows.length === 0 ? "screen.skills.empty" : undefined,
+    discoverable,
+    emptyStateKey: sorted.length === 0 ? "screen.skills.empty" : undefined,
+  };
+}
+
+export interface AgentRow {
+  readonly id: string;
+  readonly nameKey: string;
+  readonly icon: string;
+  readonly status: "active" | "sleeping" | "learning";
+}
+
+export interface AgentsModel {
+  readonly titleKey: string;
+  readonly rows: readonly AgentRow[];
+  readonly emptyStateKey?: string;
+}
+
+export function buildAgentsModel(rows: readonly AgentRow[]): AgentsModel {
+  return {
+    titleKey: getScreen("agents").titleKey,
+    rows,
+    emptyStateKey: rows.length === 0 ? "screen.agents.empty" : undefined,
   };
 }
 

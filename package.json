@@ -9,14 +9,16 @@
   },
   "packageManager": "pnpm@10.32.1",
   "scripts": {
-    "dev": "pnpm --filter @nexus/core dev",
-    "start": "pnpm --filter @nexus/core start",
+    "dev": "pnpm --filter @nexus/server dev",
+    "start": "pnpm --filter @nexus/server start",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "scaffold:modules": "node scripts/scaffold-modules.mjs"
+    "scaffold:modules": "node scripts/scaffold-modules.mjs",
+    "build:static": "pnpm --filter @nexus/web build:demo && pnpm --filter @nexus/desktop build:demo && node scripts/copy-static.mjs",
+    "build:desktop": "cd desktop-app && npm install && npm run build:win"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

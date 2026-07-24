@@ -11,15 +11,20 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
 import { SqliteKeyValueStore } from "@nexus/database";
+import { loadConfig } from "@nexus/config";
+import { SqliteUserMemoryStore } from "@nexus/memory";
 import { createNexusApp, startServer } from "./index.js";
 
+const config = loadConfig();
 const dataDir = process.env.NEXUS_DATA_DIR ?? join(homedir(), ".nexus");
 const dbFile = join(dataDir, "nexus.db");
+const memoryDbFile = join(dataDir, "memory.db");
 const here = dirname(fileURLToPath(import.meta.url));
 const staticRoot = resolve(here, "../../web/dist");
 
 const store = new SqliteKeyValueStore(dbFile);
-const app = createNexusApp({ store, staticRoot });
+const memory = new SqliteUserMemoryStore(memoryDbFile);
+const app = createNexusApp({ store, memory, staticRoot, config });
 const port = Number(process.env.PORT ?? 4178);
 
 void startServer(app, port).then(({ port: bound }) => {

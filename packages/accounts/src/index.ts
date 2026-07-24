@@ -149,7 +149,8 @@ export class AccountService {
       throw new AuthError("This email domain is not accepted.");
     }
     if (input.password.length < 8) throw new AuthError("Password must be at least 8 characters.");
-    if (this.accountByEmail(email)) throw new AuthError("An account with this email already exists.");
+    if (this.accountByEmail(email))
+      throw new AuthError("An account with this email already exists.");
 
     const salt = randomBytes(16).toString("hex");
     const stored: StoredAccount = {

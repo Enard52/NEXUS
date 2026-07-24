@@ -27,11 +27,20 @@ export interface EnvironmentContext {
   readonly occupied: boolean;
 }
 
+export interface HabitRecord {
+  readonly id: string;
+  readonly kind: string;
+  readonly room: string;
+  readonly timeOfDay: TimeOfDay;
+  readonly frequency: number;
+}
+
 const DEFAULT_CONTEXT: EnvironmentContext = { timeOfDay: "day", occupied: true };
 
 /** Mutable world model. FAZ 16 will back this with cloud/persistent storage. */
 export class DigitalTwin {
   private readonly devices = new Map<string, DeviceState>();
+  private readonly habits = new Map<string, HabitRecord>();
   private context: EnvironmentContext = { ...DEFAULT_CONTEXT };
 
   upsertDevice(state: DeviceState): void {
@@ -49,6 +58,22 @@ export class DigitalTwin {
       if (d.room === room && d.kind === kind) return { ...d };
     }
     return undefined;
+  }
+
+  recordHabit(kind: string, room: string, timeOfDay: TimeOfDay): void {
+    const key = `${kind}-${room}-${timeOfDay}`;
+    const existing = this.habits.get(key);
+    if (existing) {
+      this.habits.set(key, { ...existing, frequency: existing.frequency + 1 });
+    } else {
+      this.habits.set(key, { id: key, kind, room, timeOfDay, frequency: 1 });
+    }
+  }
+
+  getHabitsForTime(timeOfDay: TimeOfDay): HabitRecord[] {
+    return Array.from(this.habits.values())
+      .filter((h) => h.timeOfDay === timeOfDay)
+      .sort((a, b) => b.frequency - a.frequency);
   }
 
   setContext(patch: Partial<EnvironmentContext>): EnvironmentContext {

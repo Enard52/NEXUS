@@ -73,5 +73,7 @@ export function definePlugin(
   };
 }
 
+export * from "./hue.js";
+export * from "./tuya.js";
 export const moduleName = "plugins" as const;
 export const implemented = true;

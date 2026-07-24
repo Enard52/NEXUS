@@ -99,6 +99,7 @@ export class InMemoryUserMemory implements UserMemoryStore {
 
 export * from "./digital-twin.js";
 export * from "./cloud.js";
+export * from "./sqlite.js";
 
 export const moduleName = "memory" as const;
 export const implemented = true;

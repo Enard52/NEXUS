@@ -10,12 +10,14 @@
 
 import { getTheme, type ThemeName } from "@nexus/design-system";
 import {
+  buildAdminDashboardModel,
   buildBillingModel,
   buildDeviceListModel,
   buildFamilyModel,
   buildHomeStateModel,
   buildNavigation,
   buildPersonalizationModel,
+  buildPlatformModel,
   buildSkillsModel,
   buildSuggestionsModel,
   buildTodayModel,
@@ -26,6 +28,7 @@ import { computeChecksum, VersionInfoService } from "@nexus/infra";
 import {
   escapeHtml,
   faviconDataUri,
+  renderAdminDashboard,
   renderBilling,
   renderDevices,
   renderDownloadCenter,
@@ -37,11 +40,11 @@ import {
   renderHomeState,
   renderNav,
   renderPersonalization,
+  renderPlatform,
   renderRichFooter,
   renderSkills,
   renderStyles,
   renderSuggestions,
-  renderToday,
   renderTodayPanel,
   CURRENT_LOCALE,
 } from "./render.js";
@@ -66,7 +69,7 @@ deviceManager.registerConnector(
     { id: "camera", name: "Garden Security Camera", room: "Garden", capabilities: [] },
     { id: "thermostat", name: "Hallway Smart Thermostat", room: "Hallway", capabilities: [] },
     { id: "curtain", name: "Bedroom Motorized Shades", room: "Bedroom", capabilities: [] },
-  ])
+  ]),
 );
 
 /** Seed the version-info service exactly as a real release pipeline would. */
@@ -193,22 +196,64 @@ export interface DemoScreens {
   readonly family: ReturnType<typeof buildFamilyModel>;
   readonly billing: ReturnType<typeof buildBillingModel>;
   readonly personalization: ReturnType<typeof buildPersonalizationModel>;
+  readonly platform: ReturnType<typeof buildPlatformModel>;
+  readonly adminDashboard: ReturnType<typeof buildAdminDashboardModel>;
 }
 
 /** Build the shared demo view-models (platform-agnostic; no HTML here). */
 export function buildDemoScreens(): DemoScreens {
   const isTr = CURRENT_LOCALE === "tr";
   const ctx: NavContext = { authenticated: true, plan: "family", role: "admin" };
-  
+
   const devices = [
-    { id: "lamp", nameKey: isTr ? "Salon Ortam Lambası" : "Living room ambient lamp", room: isTr ? "Salon" : "Living room", online: true },
-    { id: "tv", nameKey: isTr ? "Salon 4K OLED TV" : "Living room 4K OLED TV", room: isTr ? "Salon" : "Living room", online: true },
-    { id: "ac", nameKey: isTr ? "Yatak Odası Kliması" : "Bedroom Climate AC", room: isTr ? "Yatak Odası" : "Bedroom", online: true },
-    { id: "lock", nameKey: isTr ? "Ön Kapı Akıllı Kilit" : "Front Door Smart Lock", room: isTr ? "Giriş" : "Entrance", online: false },
-    { id: "speaker", nameKey: isTr ? "Stüdyo Dolby Soundbar" : "Studio Dolby Soundbar", room: isTr ? "Stüdyo" : "Studio", online: true },
-    { id: "camera", nameKey: isTr ? "Bahçe Güvenlik Kamerası" : "Garden Security Camera", room: isTr ? "Bahçe" : "Garden", online: false },
-    { id: "thermostat", nameKey: isTr ? "Koridor Akıllı Termostat" : "Hallway Smart Thermostat", room: isTr ? "Koridor" : "Hallway", online: true },
-    { id: "curtain", nameKey: isTr ? "Yatak Odası Motorlu Perde" : "Bedroom Motorized Shades", room: isTr ? "Yatak Odası" : "Bedroom", online: true },
+    {
+      id: "lamp",
+      nameKey: isTr ? "Salon Ortam Lambası" : "Living room ambient lamp",
+      room: isTr ? "Salon" : "Living room",
+      online: true,
+    },
+    {
+      id: "tv",
+      nameKey: isTr ? "Salon 4K OLED TV" : "Living room 4K OLED TV",
+      room: isTr ? "Salon" : "Living room",
+      online: true,
+    },
+    {
+      id: "ac",
+      nameKey: isTr ? "Yatak Odası Kliması" : "Bedroom Climate AC",
+      room: isTr ? "Yatak Odası" : "Bedroom",
+      online: true,
+    },
+    {
+      id: "lock",
+      nameKey: isTr ? "Ön Kapı Akıllı Kilit" : "Front Door Smart Lock",
+      room: isTr ? "Giriş" : "Entrance",
+      online: false,
+    },
+    {
+      id: "speaker",
+      nameKey: isTr ? "Stüdyo Dolby Soundbar" : "Studio Dolby Soundbar",
+      room: isTr ? "Stüdyo" : "Studio",
+      online: true,
+    },
+    {
+      id: "camera",
+      nameKey: isTr ? "Bahçe Güvenlik Kamerası" : "Garden Security Camera",
+      room: isTr ? "Bahçe" : "Garden",
+      online: false,
+    },
+    {
+      id: "thermostat",
+      nameKey: isTr ? "Koridor Akıllı Termostat" : "Hallway Smart Thermostat",
+      room: isTr ? "Koridor" : "Hallway",
+      online: true,
+    },
+    {
+      id: "curtain",
+      nameKey: isTr ? "Yatak Odası Motorlu Perde" : "Bedroom Motorized Shades",
+      room: isTr ? "Yatak Odası" : "Bedroom",
+      online: true,
+    },
   ];
 
   return {
@@ -225,16 +270,8 @@ export function buildDemoScreens(): DemoScreens {
     releases: demoReleases(),
     suggestions: buildSuggestionsModel(
       isTr
-        ? [
-            { id: "s1", textKey: "Akşam 19:00'da salon aydınlatmasını %40 seviyesine düşür", at: "19:00" },
-            { id: "s2", textKey: "Sabah 07:30'da haber özetini ve hava durumunu seslendir", at: "07:30" },
-            { id: "s3", textKey: "Sıcaklık 24°C üzerine çıktığında klimayı otomatik başlat", at: "Otomatik" },
-          ]
-        : [
-            { id: "s1", textKey: "Dim living room lights to 40% at 19:00", at: "19:00" },
-            { id: "s2", textKey: "Read morning news briefing & weather at 07:30", at: "07:30" },
-            { id: "s3", textKey: "Auto-start AC when temperature exceeds 24°C", at: "Auto" },
-          ],
+        ? [{ id: "s1", textKey: "Akşam 19:00'da salon aydınlatmasını %40 seviyesine düşür", at: "19:00" }]
+        : [{ id: "s1", textKey: "Dim living room lights to 40% at 19:00", at: "19:00" }]
     ),
     skills: buildSkillsModel(
       isTr
@@ -252,6 +289,17 @@ export function buildDemoScreens(): DemoScreens {
             { id: "k1", nameKey: "Movie Night Mode", usageCount: 42 },
             { id: "k4", nameKey: "Study Focus Mode", usageCount: 31 },
           ],
+      isTr
+        ? [
+            { id: "skill_security", nameKey: "Güvenlik Modu", descriptionKey: "Hareket algılandığında kameraları kayda alır ve ışıkları yakar.", icon: "shield", tags: ["güvenlik", "lokal"] },
+            { id: "skill_energy", nameKey: "Enerji Tasarrufu", descriptionKey: "Boş odalardaki cihazları otomatik kapatır.", icon: "leaf", tags: ["enerji", "otomasyon"] },
+            { id: "skill_movie", nameKey: "Sinema Modu", descriptionKey: "TV açıldığında ışıkları kısar ve perdeleri kapatır.", icon: "film", tags: ["eğlence", "aydınlatma"] }
+          ]
+        : [
+            { id: "skill_security", nameKey: "Security Mode", descriptionKey: "Records cameras and turns on lights when motion is detected.", icon: "shield", tags: ["security", "local"] },
+            { id: "skill_energy", nameKey: "Energy Saver", descriptionKey: "Automatically turns off devices in empty rooms.", icon: "leaf", tags: ["energy", "automation"] },
+            { id: "skill_movie", nameKey: "Movie Mode", descriptionKey: "Dims lights and closes shades when the TV is turned on.", icon: "film", tags: ["entertainment", "lighting"] }
+          ]
     ),
     family: buildFamilyModel(
       isTr
@@ -270,10 +318,12 @@ export function buildDemoScreens(): DemoScreens {
     ),
     billing: buildBillingModel("family"),
     personalization: buildPersonalizationModel({
-      assistantName: "Nexus AI",
-      userAddress: isTr ? "Sistem Yöneticisi" : "System Administrator",
+      assistantName: "NEXUS",
+      userAddress: "Boss",
       language: CURRENT_LOCALE,
     }),
+    platform: buildPlatformModel(),
+    adminDashboard: buildAdminDashboardModel(),
   };
 }
 
@@ -294,6 +344,8 @@ export function renderDemoDocument(options: DemoOptions = {}): string {
     family,
     billing,
     personalization,
+    platform,
+    adminDashboard,
   } = buildDemoScreens();
 
   const section = (id: string, html: string): string => `<section id="${id}">${html}</section>`;
@@ -325,7 +377,9 @@ ${section("skills", renderSkills(skills))}
 ${section("devices", renderDevices(devices))}
 ${section("family", renderFamily(family))}
 ${section("personalization", renderPersonalization(personalization))}
+${section("platform", renderPlatform(platform))}
 ${section("billing", renderBilling(billing))}
+${section("admin-dashboard", renderAdminDashboard(adminDashboard))}
 ${section("download-center", renderDownloadCenter(releases, userAgent))}
 </main>
 ${renderFeatures()}
@@ -359,10 +413,16 @@ export function renderScreenBody(
       return renderDevices(s.devices);
     case "personalization":
       return renderPersonalization(s.personalization);
+    case "platform":
+      return renderPlatform(s.platform);
     case "billing":
       return renderBilling(s.billing);
+    case "admin-dashboard":
+      return renderAdminDashboard(s.adminDashboard);
     case "download-center":
       return renderDownloadCenter(s.releases, userAgent, surface);
+    default:
+      return "";
   }
 }
 

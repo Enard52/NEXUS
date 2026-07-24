@@ -30,10 +30,16 @@ for (const loc of ["en", "tr"] as const) {
   const locDir = join(outDir, loc === "en" ? "" : loc);
   mkdirSync(locDir, { recursive: true });
   for (const page of pages) {
-    const html = renderMarketingDocument(loc, "Mozilla/5.0 (Windows NT 10.0; Win64; x64)", page.theme);
+    const html = renderMarketingDocument(
+      loc,
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      page.theme,
+    );
     writeFileSync(join(locDir, page.file), html, "utf8");
     // eslint-disable-next-line no-console
-    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, page.file)} (${html.length} bytes, ${page.theme} theme)`);
+    console.log(
+      `wrote ${join(loc === "en" ? "dist" : "dist/" + loc, page.file)} (${html.length} bytes, ${page.theme} theme)`,
+    );
   }
 }
 
