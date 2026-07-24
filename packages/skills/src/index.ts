@@ -21,4 +21,3 @@ export function skillsInfo(): ModuleInfo {
 }
 
 export * from "./discovery.js";
-

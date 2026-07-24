@@ -4,3 +4,5 @@ build/
 coverage/
 pnpm-lock.yaml
 *.tsbuildinfo
+public/
+.history/

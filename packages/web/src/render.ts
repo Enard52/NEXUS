@@ -214,8 +214,9 @@ export function renderSkills(model: SkillsModel): string {
 
   if (model.discoverable && model.discoverable.length > 0) {
     const discoverTitle = isTr ? "Keşfet" : "Discover";
-    const discoverCards = model.discoverable.map((d) => {
-      return `<div class="bento-tile" style="display:flex;flex-direction:column;gap:12px;">
+    const discoverCards = model.discoverable
+      .map((d) => {
+        return `<div class="bento-tile" style="display:flex;flex-direction:column;gap:12px;">
         <div style="display:flex;align-items:center;gap:12px;">
           <div style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius);background:var(--tint);color:var(--primary);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -227,7 +228,8 @@ export function renderSkills(model: SkillsModel): string {
         <div style="font-size:13px;color:var(--muted);flex:1;">${escapeHtml(d.descriptionKey)}</div>
         <button class="btn primary" style="align-self:flex-start;">${isTr ? "Ekle" : "Add"}</button>
       </div>`;
-    }).join("");
+      })
+      .join("");
     content += `<h3>${escapeHtml(discoverTitle)}</h3><div class="bento-grid">${discoverCards}</div>`;
   }
 
@@ -263,7 +265,7 @@ export function renderFamily(model: FamilyModel): string {
 export function renderBilling(model: BillingModel): string {
   const isTr = CURRENT_LOCALE === "tr";
   const planLabel = label(model.planLabelKey);
-  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide"><div class="plan-card"><div class="price">${model.plan === "free" ? "$0" : (model.plan === "premium" ? "$49" : "$99")} <span>/ ${isTr ? "ay" : "mo"}</span></div><div>${escapeHtml(planLabel)}</div>${model.canUpgrade ? `<button class="btn primary" data-action="billing-subscribe" data-plan="premium">${isTr ? "Yükselt" : "Upgrade"}</button>` : `<button class="btn" data-action="billing-cancel">${isTr ? "İptal Et" : "Cancel"}</button>`}</div></div>`;
+  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide"><div class="plan-card"><div class="price">${model.plan === "free" ? "$0" : model.plan === "premium" ? "$49" : "$99"} <span>/ ${isTr ? "ay" : "mo"}</span></div><div>${escapeHtml(planLabel)}</div>${model.canUpgrade ? `<button class="btn primary" data-action="billing-subscribe" data-plan="premium">${isTr ? "Yükselt" : "Upgrade"}</button>` : `<button class="btn" data-action="billing-cancel">${isTr ? "İptal Et" : "Cancel"}</button>`}</div></div>`;
 }
 
 export function renderPersonalization(model: PersonalizationModel): string {
@@ -1197,7 +1199,9 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 `;
 }
 
-export function renderAdminDashboard(model: import("@nexus/interface").AdminDashboardModel): string {
+export function renderAdminDashboard(
+  model: import("@nexus/interface").AdminDashboardModel,
+): string {
   return `
 <div class="wrap">
   <h2>${label(model.titleKey)}</h2>

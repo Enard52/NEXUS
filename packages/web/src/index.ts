@@ -270,8 +270,14 @@ export function buildDemoScreens(): DemoScreens {
     releases: demoReleases(),
     suggestions: buildSuggestionsModel(
       isTr
-        ? [{ id: "s1", textKey: "Akşam 19:00'da salon aydınlatmasını %40 seviyesine düşür", at: "19:00" }]
-        : [{ id: "s1", textKey: "Dim living room lights to 40% at 19:00", at: "19:00" }]
+        ? [
+            {
+              id: "s1",
+              textKey: "Akşam 19:00'da salon aydınlatmasını %40 seviyesine düşür",
+              at: "19:00",
+            },
+          ]
+        : [{ id: "s1", textKey: "Dim living room lights to 40% at 19:00", at: "19:00" }],
     ),
     skills: buildSkillsModel(
       isTr
@@ -291,15 +297,51 @@ export function buildDemoScreens(): DemoScreens {
           ],
       isTr
         ? [
-            { id: "skill_security", nameKey: "Güvenlik Modu", descriptionKey: "Hareket algılandığında kameraları kayda alır ve ışıkları yakar.", icon: "shield", tags: ["güvenlik", "lokal"] },
-            { id: "skill_energy", nameKey: "Enerji Tasarrufu", descriptionKey: "Boş odalardaki cihazları otomatik kapatır.", icon: "leaf", tags: ["enerji", "otomasyon"] },
-            { id: "skill_movie", nameKey: "Sinema Modu", descriptionKey: "TV açıldığında ışıkları kısar ve perdeleri kapatır.", icon: "film", tags: ["eğlence", "aydınlatma"] }
+            {
+              id: "skill_security",
+              nameKey: "Güvenlik Modu",
+              descriptionKey: "Hareket algılandığında kameraları kayda alır ve ışıkları yakar.",
+              icon: "shield",
+              tags: ["güvenlik", "lokal"],
+            },
+            {
+              id: "skill_energy",
+              nameKey: "Enerji Tasarrufu",
+              descriptionKey: "Boş odalardaki cihazları otomatik kapatır.",
+              icon: "leaf",
+              tags: ["enerji", "otomasyon"],
+            },
+            {
+              id: "skill_movie",
+              nameKey: "Sinema Modu",
+              descriptionKey: "TV açıldığında ışıkları kısar ve perdeleri kapatır.",
+              icon: "film",
+              tags: ["eğlence", "aydınlatma"],
+            },
           ]
         : [
-            { id: "skill_security", nameKey: "Security Mode", descriptionKey: "Records cameras and turns on lights when motion is detected.", icon: "shield", tags: ["security", "local"] },
-            { id: "skill_energy", nameKey: "Energy Saver", descriptionKey: "Automatically turns off devices in empty rooms.", icon: "leaf", tags: ["energy", "automation"] },
-            { id: "skill_movie", nameKey: "Movie Mode", descriptionKey: "Dims lights and closes shades when the TV is turned on.", icon: "film", tags: ["entertainment", "lighting"] }
-          ]
+            {
+              id: "skill_security",
+              nameKey: "Security Mode",
+              descriptionKey: "Records cameras and turns on lights when motion is detected.",
+              icon: "shield",
+              tags: ["security", "local"],
+            },
+            {
+              id: "skill_energy",
+              nameKey: "Energy Saver",
+              descriptionKey: "Automatically turns off devices in empty rooms.",
+              icon: "leaf",
+              tags: ["energy", "automation"],
+            },
+            {
+              id: "skill_movie",
+              nameKey: "Movie Mode",
+              descriptionKey: "Dims lights and closes shades when the TV is turned on.",
+              icon: "film",
+              tags: ["entertainment", "lighting"],
+            },
+          ],
     ),
     family: buildFamilyModel(
       isTr

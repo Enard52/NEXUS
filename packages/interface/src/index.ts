@@ -312,7 +312,10 @@ export interface SkillsModel {
   readonly emptyStateKey?: string;
 }
 
-export function buildSkillsModel(rows: readonly SkillRow[], discoverable: readonly DiscoverableSkillRow[] = []): SkillsModel {
+export function buildSkillsModel(
+  rows: readonly SkillRow[],
+  discoverable: readonly DiscoverableSkillRow[] = [],
+): SkillsModel {
   const sorted = [...rows].sort((a, b) => b.usageCount - a.usageCount);
   return {
     titleKey: getScreen("skills").titleKey,

@@ -150,7 +150,7 @@ export function buildUserScreens(
     ),
     skills: buildSkillsModel(
       data.routines.map((r) => ({ id: r.id, nameKey: r.name, usageCount: r.usageCount })),
-      skillDiscovery.getDiscoverableSkills()
+      skillDiscovery.getDiscoverableSkills(),
     ),
     family: buildFamilyModel(data.family.map((m) => ({ id: m.id, nameKey: m.name, role: m.role }))),
     billing: buildBillingModel(data.plan),

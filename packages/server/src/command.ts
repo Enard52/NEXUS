@@ -45,7 +45,7 @@ export async function handleCommandApi(
   userId: string,
   confirm: boolean,
   suggestionEngine?: RoutineSuggestionEngine,
-  userDataStore?: UserDataStore
+  userDataStore?: UserDataStore,
 ): Promise<void> {
   const body = await readJsonBody(req);
   const utterance = String(body.utterance ?? "");
@@ -55,25 +55,28 @@ export async function handleCommandApi(
     const data = userDataStore.get(userId);
     if (data) {
       // Simulate real time or use a mock time if provided via headers/body for testing
-      const testTime = Array.isArray(req.headers["x-test-time"]) 
-        ? req.headers["x-test-time"][0] 
+      const testTime = Array.isArray(req.headers["x-test-time"])
+        ? req.headers["x-test-time"][0]
         : req.headers["x-test-time"];
       let at = testTime;
       if (!at) {
         const now = new Date();
         at = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
       }
-      
+
       for (const step of response.executed) {
         suggestionEngine.observe({ action: step.action as any, at });
       }
-      
+
       const newSuggestions = suggestionEngine.suggest();
       let changed = false;
       let suggestions = [...data.suggestions];
       for (const s of newSuggestions) {
         // Only add if not already suggested and not already a routine
-        if (!suggestions.some(ex => ex.id === s.signature) && !data.routines.some(r => r.name === s.proposal.name)) {
+        if (
+          !suggestions.some((ex) => ex.id === s.signature) &&
+          !data.routines.some((r) => r.name === s.proposal.name)
+        ) {
           suggestions.push({
             id: s.signature,
             text: s.proposal.name,

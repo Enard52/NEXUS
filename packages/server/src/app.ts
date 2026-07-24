@@ -473,17 +473,20 @@ export function createRequestHandler(
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       const id = decodeURIComponent(acceptMatch[1]);
       const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
-      const sigIndex = data.suggestions.findIndex(s => s.id === id);
+      const sigIndex = data.suggestions.findIndex((s) => s.id === id);
       if (sigIndex > -1) {
         const suggestion = data.suggestions[sigIndex];
         const updatedData = {
           ...data,
-          suggestions: data.suggestions.filter(s => s.id !== id),
-          routines: [...data.routines, {
-            id: Math.random().toString(36).slice(2),
-            name: suggestion.text,
-            usageCount: 0,
-          }]
+          suggestions: data.suggestions.filter((s) => s.id !== id),
+          routines: [
+            ...data.routines,
+            {
+              id: Math.random().toString(36).slice(2),
+              name: suggestion.text,
+              usageCount: 0,
+            },
+          ],
         };
         userData.set(account.id, updatedData);
       }
@@ -495,11 +498,11 @@ export function createRequestHandler(
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       const id = decodeURIComponent(dismissMatch[1]);
       const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
-      const sigIndex = data.suggestions.findIndex(s => s.id === id);
+      const sigIndex = data.suggestions.findIndex((s) => s.id === id);
       if (sigIndex > -1) {
         const updatedData = {
           ...data,
-          suggestions: data.suggestions.filter(s => s.id !== id)
+          suggestions: data.suggestions.filter((s) => s.id !== id),
         };
         userData.set(account.id, updatedData);
         suggestionEngine.dismiss(id);
@@ -517,11 +520,11 @@ export function createRequestHandler(
         let sub = deps.billing.get(account.id);
         if (!sub) sub = deps.billing.subscribe(account.id, plan);
         else sub = deps.billing.changePlan(account.id, plan);
-        
+
         // Update user data to reflect new plan
         const data = userData.ensure(account.id, account.email, localeFrom(cookies, req));
         userData.patch(account.id, account.email, data.language, { plan });
-        
+
         return sendJson(res, 200, { ok: true, sub });
       } catch (err: any) {
         return sendJson(res, 400, { error: err.message });
@@ -558,8 +561,13 @@ export function createRequestHandler(
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       if (!deps.support) return sendJson(res, 501, { error: "Support not enabled" });
       const body = await readJsonBody(req);
-      if (!body || !body.subject || !body.message) return sendJson(res, 400, { error: "Missing subject or message" });
-      const ticket = deps.support.createTicket(account.email, body.subject as string, body.message as string);
+      if (!body || !body.subject || !body.message)
+        return sendJson(res, 400, { error: "Missing subject or message" });
+      const ticket = deps.support.createTicket(
+        account.email,
+        body.subject as string,
+        body.message as string,
+      );
       return sendJson(res, 200, ticket);
     }
     if (path === "/api/support/tickets" && method === "GET") {
@@ -578,7 +586,8 @@ export function createRequestHandler(
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       if (!deps.platform) return sendJson(res, 501, { error: "Platform not enabled" });
       const body = await readJsonBody(req);
-      if (!body || !body.title || !body.message) return sendJson(res, 400, { error: "Missing title or message" });
+      if (!body || !body.title || !body.message)
+        return sendJson(res, 400, { error: "Missing title or message" });
       deps.platform.showNotification(body.title as string, body.message as string);
       return sendJson(res, 200, { ok: true });
     }
@@ -635,7 +644,7 @@ export function createRequestHandler(
       }
       telemetry.track(
         body.type as TelemetryEventType,
-        body.payload as Record<string, string | number | boolean>
+        body.payload as Record<string, string | number | boolean>,
       );
       return sendJson(res, 200, { ok: true });
     }

@@ -91,7 +91,19 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
     support,
     platform,
   });
-  return { handler, accounts, userData, staticRoot: opts.staticRoot, oauth, core, connectors, billing, legal, support, platform };
+  return {
+    handler,
+    accounts,
+    userData,
+    staticRoot: opts.staticRoot,
+    oauth,
+    core,
+    connectors,
+    billing,
+    legal,
+    support,
+    platform,
+  };
 }
 
 /** Open an HTTP server on the given port (0 = ephemeral, useful for tests). */

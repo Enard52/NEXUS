@@ -7,11 +7,7 @@
  */
 
 export type TelemetryEventType =
-  | "app_start"
-  | "device_added"
-  | "routine_executed"
-  | "crash"
-  | "page_view";
+  "app_start" | "device_added" | "routine_executed" | "crash" | "page_view";
 
 export interface TelemetryEvent {
   readonly type: TelemetryEventType;
