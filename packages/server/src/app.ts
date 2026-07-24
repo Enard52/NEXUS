@@ -325,7 +325,13 @@ export function createRequestHandler(
 
     // ── Global Security Headers ──────────────────────────────────────────────
     res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("X-Frame-Options", "DENY");
+    // Allow demo preview pages to be embedded as iframes on the marketing page;
+    // everything else (login, app, API) is denied.
+    const isEmbeddableDemoPath =
+      path === "/desktop" || path === "/desktop/light" ||
+      path === "/mobile" || path === "/mobile/light" ||
+      path.startsWith("/preview/");
+    res.setHeader("X-Frame-Options", isEmbeddableDemoPath ? "SAMEORIGIN" : "DENY");
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     res.setHeader(
       "Content-Security-Policy",
