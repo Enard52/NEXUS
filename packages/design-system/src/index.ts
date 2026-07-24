@@ -30,6 +30,8 @@ export interface DesignTokens {
   readonly radius: { readonly sm: number; readonly md: number; readonly lg: number };
   readonly font: {
     readonly family: string;
+    /** Monospace font stack for code/terminal surfaces. */
+    readonly familyMono: string;
     /** Type scale in px. */
     readonly size: {
       readonly sm: number;
@@ -43,7 +45,10 @@ export interface DesignTokens {
 const SPACE = [0, 4, 8, 12, 16, 24, 32, 48, 64, 96, 128] as const;
 
 const FONT = {
-  family: "'Outfit', 'Inter', system-ui, -apple-system, sans-serif",
+  /** Primary display / UI font: Space Grotesk → Inter → system fallback. */
+  family: "'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif",
+  /** Monospace font for code, checksums, and terminal output. */
+  familyMono: "'JetBrains Mono', 'Courier New', monospace",
   size: { sm: 12, md: 14, lg: 18, xl: 24, xxl: 32 },
 } as const;
 

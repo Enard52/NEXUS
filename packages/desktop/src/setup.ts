@@ -420,7 +420,7 @@ function stepLicense(): string {
         ? "Lütfen devam etmeden önce aşağıdaki lisans koşullarını okuyun ve kabul edin."
         : "Please read and accept the following license terms before continuing."
     }</p>` +
-    `<div class="license-box"><pre style="margin:0;white-space:pre-wrap;font-family:inherit;">${licenseText}</pre></div>` +
+    `<div class="license-box"><pre style="margin:0;white-space:pre-wrap;font-family:var(--font-mono, 'JetBrains Mono', monospace);font-size:12px;">${licenseText}</pre></div>` +
     `<label class="check-row" id="license-check-label">` +
     `<input type="checkbox" id="license-accept" onchange="window.__nx_licenseChanged(this)"> ` +
     `${isTr ? "Sözleşmeyi kabul ediyorum" : "I accept the agreement"}` +

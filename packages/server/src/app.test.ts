@@ -341,8 +341,9 @@ describe("local sync server", () => {
       expect(res.status).toBe(200);
       const html = await res.text();
       // Uses the local, offline font stack and the same design tokens as the native shells.
+      expect(html).toContain("/fonts/space-grotesk-latin-400-normal.woff2");
       expect(html).toContain("/fonts/inter-latin-400-normal.woff2");
-      expect(html).toContain("/fonts/outfit-latin-400-normal.woff2");
+      expect(html).toContain("/fonts/jetbrains-mono-latin-400-normal.woff2");
       expect(html).toContain("--primary");
       expect(html).toContain("prefers-reduced-motion");
       // No Google Fonts import remains in any generated surface.

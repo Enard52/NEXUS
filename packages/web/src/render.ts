@@ -29,15 +29,53 @@ export function escapeHtml(str: string): string {
     .replace(/'/g, "&#39;");
 }
 
-/** Local font faces shared by every generated surface. */
+/**
+ * Self-hosted brand font faces for every generated surface.
+ *
+ * NEXUS brand font stack (all served from /fonts/, offline-capable):
+ *   - Space Grotesk  — primary display / UI         (300-700)
+ *   - Inter          — body / secondary text        (400-800)
+ *   - JetBrains Mono — code, checksums, monospace   (400-700)
+ */
 function renderFontFaces(): string {
-  const weights = [400, 500, 600, 700, 800];
-  const faces = weights.flatMap((weight) => [
-    `@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/inter-latin-ext-${weight}-normal.woff2') format('woff2'); unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB; }`,
-    `@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/inter-latin-${weight}-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }`,
-    `@font-face { font-family: 'Outfit'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/outfit-latin-ext-${weight}-normal.woff2') format('woff2'); unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB; }`,
-    `@font-face { font-family: 'Outfit'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/outfit-latin-${weight}-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }`,
-  ]);
+  const latinRange =
+    "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD";
+  const latinExtRange = "U+0100-024F, U+1E00-1EFF, U+20A0-20AB";
+
+  function face(
+    family: string,
+    weight: number,
+    subset: "latin" | "latin-ext",
+    range: string,
+  ): string {
+    return (
+      `@font-face { font-family: '${family}'; font-style: normal; font-display: swap; ` +
+      `font-weight: ${weight}; ` +
+      `src: url('/fonts/${family.toLowerCase().replace(/\s+/g, "-")}-${subset}-${weight}-normal.woff2') format('woff2'); ` +
+      `unicode-range: ${range}; }`
+    );
+  }
+
+  const faces: string[] = [];
+
+  // Space Grotesk — 300-700
+  for (const w of [300, 400, 500, 600, 700]) {
+    faces.push(face("Space Grotesk", w, "latin-ext", latinExtRange));
+    faces.push(face("Space Grotesk", w, "latin", latinRange));
+  }
+
+  // Inter — 400-800
+  for (const w of [400, 500, 600, 700, 800]) {
+    faces.push(face("Inter", w, "latin-ext", latinExtRange));
+    faces.push(face("Inter", w, "latin", latinRange));
+  }
+
+  // JetBrains Mono — 400-700
+  for (const w of [400, 500, 600, 700]) {
+    faces.push(face("JetBrains Mono", w, "latin-ext", latinExtRange));
+    faces.push(face("JetBrains Mono", w, "latin", latinRange));
+  }
+
   return faces.join("\n");
 }
 
@@ -538,6 +576,7 @@ export function renderStyles(theme: DesignTokens): string {
   --radius: ${t.radius.md}px;
   --radius-lg: ${t.radius.lg}px;
   --font: ${t.font.family};
+  --font-mono: ${t.font.familyMono};
   --gap: ${t.space[4]}px;
   --border: color-mix(in srgb, var(--text) 8%, transparent);
   --border-strong: color-mix(in srgb, var(--text) 14%, transparent);
@@ -905,7 +944,7 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--surface); }
 th { color: var(--muted); font-weight: 600; }
-code { color: var(--muted); word-break: break-all; }
+code { color: var(--muted); word-break: break-all; font-family: var(--font-mono); font-size: 0.88em; }
 .badge {
   font-size: 12px; padding: 2px 8px; border-radius: 999px;
   background: var(--primary); color: var(--on-primary);
