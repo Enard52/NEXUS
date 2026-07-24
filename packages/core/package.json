@@ -1,0 +1,28 @@
+{
+  "name": "@nexus/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NEXUS AI core runtime — boots the service, wires config/logging, runs a heartbeat (FAZ 0).",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "nexus-core": "./src/main.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nexus/ai": "workspace:*",
+    "@nexus/config": "workspace:*",
+    "@nexus/logger": "workspace:*",
+    "@nexus/memory": "workspace:*",
+    "@nexus/routines": "workspace:*",
+    "@nexus/security": "workspace:*"
+  }
+}

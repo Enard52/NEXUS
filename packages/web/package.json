@@ -1,0 +1,23 @@
+{
+  "name": "@nexus/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NEXUS AI — Web front end: Download Center + app-shell demo (FAZ 9/10/18).",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "build:demo": "tsx src/build.ts"
+  },
+  "dependencies": {
+    "@nexus/design-system": "workspace:*",
+    "@nexus/devices": "workspace:*",
+    "@nexus/i18n": "workspace:*",
+    "@nexus/infra": "workspace:*",
+    "@nexus/interface": "workspace:*"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@nexus/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NEXUS AI — Local sync server: auth, per-user data, static app hosting (FAZ 18).",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@nexus/accounts": "workspace:*",
+    "@nexus/database": "workspace:*",
+    "@nexus/design-system": "workspace:*",
+    "@nexus/desktop": "workspace:*",
+    "@nexus/i18n": "workspace:*",
+    "@nexus/interface": "workspace:*",
+    "@nexus/mobile": "workspace:*",
+    "@nexus/security": "workspace:*",
+    "@nexus/web": "workspace:*"
+  }
+}

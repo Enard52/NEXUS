@@ -1,0 +1,240 @@
+/**
+ * NEXUS AI — Desktop front end (FAZ 9/10)
+ *
+ * The desktop surface: a native-style application window (title bar with window
+ * controls + a persistent left sidebar) that renders the *same* screen bodies as
+ * the web and mobile front ends. It reuses:
+ *   - design tokens (@nexus/design-system) for brand-consistent colors/spacing,
+ *   - screen view-models + the shared `renderScreenBody` (@nexus/web) so every
+ *     platform draws identical content through its own chrome.
+ *
+ * Like the rest of the codebase this is a dependency-free `data -> HTML string`
+ * renderer: deterministic, unit-testable, and viewable as a standalone file. A
+ * production build wraps this markup in a real shell (Electron/Tauri) — that
+ * native packaging is an external boundary; the *design* lives here.
+ */
+
+import { getTheme, type DesignTokens, type ThemeName } from "@nexus/design-system";
+
+import { type ScreenDescriptor, type ScreenId } from "@nexus/interface";
+import {
+  buildDemoScreens,
+  escapeHtml,
+  label,
+  renderAvatar,
+  renderLogo,
+  renderScreenBody,
+  renderStyles,
+  setLocale,
+  CURRENT_LOCALE,
+  type DemoScreens,
+} from "@nexus/web";
+
+import { renderSideIcon, renderWindowControls } from "./utils.js";
+
+/** Persistent left navigation rail, one entry per accessible screen. */
+export function renderSidebar(
+  primary: string,
+  nav: readonly ScreenDescriptor[],
+  activeId: ScreenId,
+): string {
+  const links = nav
+    .map((s) => {
+      const on = s.id === activeId;
+      return (
+        `<a class="${on ? "active" : ""}" href="#${s.id}" data-nav="${s.id}"` +
+        `${on ? ' aria-current="page"' : ""}>${renderSideIcon(s.id)}` +
+        `<span>${escapeHtml(label(s.titleKey))}</span></a>`
+      );
+    })
+    .join("");
+  return (
+    `<aside class="sidebar">` +
+    `<div class="brandrow">${renderLogo(primary)}<span class="brand">NEXUS</span></div>` +
+    `<nav class="side" aria-label="Primary">${links}</nav>` +
+    `<div class="sidefoot">v3.14.2 · ${escapeHtml(label("plan.family"))}</div>` +
+    `</aside>`
+  );
+}
+
+/** Desktop chrome on top of the shared token-driven component styles. */
+export function renderDesktopStyles(t: DesignTokens): string {
+  return `${renderStyles(t)}
+body.desktop { padding: ${t.space[6]}px; background: #05060a; }
+.window {
+  max-width: 1120px; margin: 0 auto; background: var(--bg);
+  border: 1px solid var(--surface); border-radius: ${t.radius.lg}px; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.titlebar {
+  display: flex; align-items: center; gap: ${t.space[4]}px;
+  height: 44px; padding: 0 ${t.space[4]}px; background: var(--surface);
+  border-bottom: 1px solid var(--bg);
+}
+.wctl { display: flex; gap: ${t.space[1]}px; }
+.wctl-btn {
+  width: 28px; height: 28px; border-radius: var(--radius);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--muted);
+}
+.wctl-btn:hover { background: var(--bg); color: var(--text); }
+.titlebar .title { flex: 1; text-align: center; font-size: ${t.font.size.sm}px; color: var(--muted); }
+.titlebar .title-actions { display: flex; align-items: center; gap: ${t.space[3]}px; }
+.title-lang { display: inline-flex; gap: 4px; font-size: ${t.font.size.sm}px; }
+.title-lang a { color: var(--muted); text-decoration: none; }
+.title-lang a.active { color: var(--primary); font-weight: 700; }
+.title-logout {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 28px; padding: 0 ${t.space[3]}px; border-radius: var(--radius);
+  border: 1px solid var(--border-strong); background: transparent; color: var(--muted);
+  font-size: ${t.font.size.sm}px; cursor: pointer; transition: all .15s ease;
+}
+.title-logout:hover { border-color: var(--primary); color: var(--primary); }
+.titlebar .avatar-wrap { display: inline-flex; }
+.app { display: flex; min-height: 620px; }
+.sidebar {
+  width: 248px; flex: none; background: var(--surface); padding: ${t.space[5]}px;
+  border-right: 1px solid var(--bg); display: flex; flex-direction: column; gap: ${t.space[5]}px;
+}
+.brandrow { display: flex; align-items: center; gap: ${t.space[3]}px; }
+nav.side { display: flex; flex-direction: column; gap: ${t.space[1]}px; margin: 0; }
+nav.side a {
+  display: flex; align-items: center; gap: ${t.space[3]}px;
+  padding: ${t.space[3]}px ${t.space[4]}px; border: 0; border-radius: var(--radius);
+  background: transparent; color: var(--muted); font-size: ${t.font.size.md}px; font-weight: 500;
+}
+nav.side a .sideicon { flex: none; }
+nav.side a:hover { background: var(--bg); color: var(--text); }
+nav.side a.active {
+  background: var(--tint); color: var(--primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+.sidefoot { margin-top: auto; color: var(--muted); font-size: ${t.font.size.sm}px; }
+.content { flex: 1; padding: ${t.space[6]}px; overflow: auto; }
+.content h2:first-child { margin-top: 0; }
+html.js-tabs .content section[hidden] { display: none; }
+@media (max-width: 720px) {
+  body.desktop { padding: 0; }
+  .app { flex-direction: column; }
+  .sidebar { width: auto; flex-direction: row; flex-wrap: wrap; }
+  nav.side { flex-direction: row; flex-wrap: wrap; }
+}`;
+}
+
+/** Progressive-enhancement tab switching for the desktop content pane. */
+const DESKTOP_NAV_SCRIPT = `
+document.documentElement.classList.add("js-tabs");
+var sections = Array.prototype.slice.call(document.querySelectorAll(".content > section"));
+var links = Array.prototype.slice.call(document.querySelectorAll("nav a[data-nav]"));
+function show(id) {
+  sections.forEach(function (s) { s.hidden = s.id !== id; });
+  links.forEach(function (a) {
+    var on = a.getAttribute("data-nav") === id;
+    a.classList.toggle("active", on);
+    if (on) { a.setAttribute("aria-current", "page"); } else { a.removeAttribute("aria-current"); }
+  });
+}
+function fromHash() {
+  var id = location.hash.replace("#", "");
+  show(sections.some(function (s) { return s.id === id; }) ? id : sections[0].id);
+}
+links.forEach(function (a) {
+  a.addEventListener("click", function (e) {
+    e.preventDefault();
+    var id = a.getAttribute("data-nav");
+    if (history.replaceState) { history.replaceState(null, "", "#" + id); } else { location.hash = id; }
+    show(id);
+  });
+});
+window.addEventListener("hashchange", fromHash);
+fromHash();
+`.trim();
+
+export interface DesktopOptions {
+  readonly theme?: ThemeName;
+  readonly userAgent?: string;
+  readonly os?: "windows" | "mac";
+  /** Real per-user screens (defaults to the demo fixtures for the standalone preview). */
+  readonly screens?: DemoScreens;
+  /** Signed-in user's display name — drives the avatar initial and title-bar identity. */
+  readonly displayName?: string;
+  /** Active locale, so the title bar can offer a language switch that matches the web/mobile apps. */
+  readonly locale?: string;
+  /** When true, render the authenticated chrome (logout, language switch, installable PWA). */
+  readonly authenticated?: boolean;
+}
+
+/** Render the desktop shell as one HTML document (demo fixtures by default, real user data when provided). */
+export function renderDesktopDocument(options: DesktopOptions = {}): string {
+  const themeName: ThemeName = options.theme ?? "dark";
+  const os = options.os ?? "windows";
+  const userAgent = options.userAgent ?? "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)";
+  const theme = getTheme(themeName);
+  if (options.locale) setLocale(options.locale);
+  const authed = options.authenticated ?? false;
+  const screens = options.screens ?? buildDemoScreens();
+
+  const sections = screens.nav
+    .map((s) => `<section id="${s.id}">${renderScreenBody(s.id, screens, userAgent, "desktop")}</section>`)
+    .join("\n");
+
+  const locale = options.locale ?? CURRENT_LOCALE;
+  const other = locale === "tr" ? "en" : "tr";
+  const titleText = `NEXUS — ${CURRENT_LOCALE === "tr" ? "Kişisel İşletim Sistemi" : "Personal Operating System"}`;
+
+  // Authenticated chrome carries a language switch + letter avatar + logout, mirroring
+  // the web top bar and mobile app bar; the standalone shell keeps a neutral spacer.
+  const nameForInitial = options.displayName || screens.personalization.userAddress || "N";
+  const initial = escapeHtml(nameForInitial.trim().charAt(0).toUpperCase() || "N");
+  const titleRight = authed
+    ? `<div class="title-actions">` +
+      `<span class="title-lang"><a href="?lang=${locale}" class="active">${locale.toUpperCase()}</a>` +
+      `<a href="?lang=${other}">${other.toUpperCase()}</a></span>` +
+      `<div class="avatar-wrap">${renderAvatar(undefined, initial)}</div>` +
+      `<button type="button" class="title-logout" id="desk-logout">` +
+      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>` +
+      `<span>${escapeHtml(label("auth.logout"))}</span></button>` +
+      `</div>`
+    : `<div class="wctl" style="width:68px"></div>`;
+
+  // Installable-PWA wiring only in the authenticated app (served by the sync server,
+  // where /manifest.webmanifest and /sw.js exist); the standalone preview stays a plain file.
+  const pwaHead = authed ? `\n<link rel="manifest" href="/manifest.webmanifest" />` : "";
+  const authScript = authed
+    ? `\n<script>\nif("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}\nvar _dl=document.getElementById("desk-logout");if(_dl){_dl.addEventListener("click",function(){fetch("/api/logout",{method:"POST"}).then(function(){location.href="/login";});});}\n</script>`
+    : "";
+
+  return `<!doctype html>
+<html lang="${locale}" data-theme="${escapeHtml(themeName)}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="${theme.color.bg}" />${pwaHead}
+<title>NEXUS Desktop</title>
+<style>${renderDesktopStyles(theme)}</style>
+<script>${DESKTOP_NAV_SCRIPT}</script>
+</head>
+<body class="desktop">
+<div class="window">
+  <div class="titlebar">
+    ${renderWindowControls(os)}
+    <div class="title">${titleText}</div>
+    ${titleRight}
+  </div>
+<div class="app">
+${renderSidebar(theme.color.primary, screens.nav, screens.nav[0]?.id ?? "today")}
+<main class="content" id="main">
+${sections}
+</main>
+</div>
+</div>
+<script>${DESKTOP_NAV_SCRIPT}</script>${authScript}
+</body>
+</html>`;
+}
+
+export const moduleName = "desktop" as const;
+export const implemented = true;
+
+export * from "./utils.js";
+export * from "./setup.js";
