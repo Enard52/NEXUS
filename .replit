@@ -1,4 +1,4 @@
-modules = ["web", "dotnet-7.0", "nodejs-22"]
+modules = ["web", "nodejs-20", "dotnet-7.0"]
 
 [nix]
 channel = "stable-25_05"
