@@ -25,13 +25,11 @@ import {
   type ScreenDescriptor,
 } from "@nexus/interface";
 import {
-  buildDemoScreens,
   demoReleases,
   escapeHtml,
   faviconDataUri,
   label,
   renderAvatar,
-  renderDownloadCenter,
   renderFaq,
   renderFeatures,
   renderLogo,
@@ -43,10 +41,7 @@ import {
   type DemoScreens,
   renderHead,
   demoSeo,
-  renderPricing,
-  renderTestimonials,
   renderIntegrationMarquee,
-  renderCookieBanner,
 } from "@nexus/web";
 import type { Account } from "@nexus/accounts";
 import { renderMobileDocument } from "@nexus/mobile";
@@ -471,21 +466,63 @@ export function renderDesktopAppDocument(
   });
 }
 
-/** Marketing-only styles: the download hero, stats strip, product-preview frame and store buttons. */
+/** Marketing-only styles: hero, stats, desktop showcase, mobile showcase, FAQ, CTA. */
 function marketingCss(): string {
   return `
 html { scroll-behavior: smooth; }
 .mkt { max-width: 1140px; margin: 0 auto; padding: 0 24px 24px; position: relative; z-index: 1; }
-.mkt-anchor, #preview, #download { scroll-margin-top: 84px; }
+.mkt-anchor, #desktop, #mobile, #faq { scroll-margin-top: 84px; }
 body { background: radial-gradient(circle at top, color-mix(in srgb, var(--primary) 15%, transparent) 0%, var(--bg) 60%); }
+
+/* ── Hero ── */
+.hero { position: relative; overflow: hidden; padding: 56px 0 40px; border-bottom: 1px solid var(--surface); margin-bottom: 32px; }
+.hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
 .hero-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px;
   font-weight: 700; color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent);
   padding: 8px 16px; border-radius: 999px; margin-bottom: 24px; letter-spacing: 0.04em;
   box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 30%, transparent); border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent); }
+.hero-badge .plat-ic { display: inline-flex; gap: 6px; margin-left: 4px; }
+.hero-badge .plat-ic svg { opacity: 0.85; }
 .hero h1 { color: var(--text); text-shadow: 0 4px 24px color-mix(in srgb, var(--primary) 22%, transparent); }
 .hero .btn.primary { color: var(--on-primary); box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 40%, transparent); transition: transform 0.2s, box-shadow 0.2s; }
 .hero .btn.primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 60%, transparent); }
-/* Stats strip */
+@media (prefers-reduced-motion: no-preference) {
+  .hero .btn.primary { animation: nxPulseRing 2.8s ease-in-out infinite; }
+}
+@keyframes nxPulseRing {
+  0%, 100% { box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 40%, transparent), 0 0 0 0 color-mix(in srgb, var(--primary) 30%, transparent); }
+  50% { box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 60%, transparent), 0 0 0 8px color-mix(in srgb, var(--primary) 0%, transparent); }
+}
+/* Scroll indicator */
+.scroll-hint { margin-top: 28px; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+.scroll-hint .mouse { width: 20px; height: 32px; border: 2px solid color-mix(in srgb, var(--muted) 50%, transparent); border-radius: 12px; position: relative; }
+.scroll-hint .mouse::after { content: ""; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; border-radius: 999px; background: var(--muted); animation: nxScrollDot 1.6s ease-in-out infinite; }
+@keyframes nxScrollDot { 0% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, 10px); } }
+
+/* Hero mockup */
+.hero-mockup { position: relative; perspective: 1000px; }
+.hero-mockup .mockup-frame {
+  border: 1px solid color-mix(in srgb, var(--border-strong) 40%, transparent);
+  border-radius: var(--radius-lg); overflow: hidden;
+  background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 32px 80px color-mix(in srgb, var(--primary) 15%, transparent), 0 0 0 1px rgba(255,255,255,0.05) inset;
+  transform: rotateY(-6deg) rotateX(4deg); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hero-mockup .mockup-frame:hover { transform: rotateY(-3deg) rotateX(2deg) scale(1.02); }
+.mockup-bar { display: flex; align-items: center; gap: 8px; padding: 12px 18px;
+  background: color-mix(in srgb, var(--bg) 40%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent); }
+.mockup-bar .bdot { width: 11px; height: 11px; border-radius: 50%; box-shadow: inset 0 1px 2px rgba(255,255,255,0.2); }
+.mockup-bar .bdot.r { background: #ff5f57; } .mockup-bar .bdot.y { background: #febc2e; } .mockup-bar .bdot.g { background: #28c840; }
+.mockup-bar .murl { flex: 1; text-align: center; font-size: 12px; color: var(--muted); font-weight: 500;
+  background: color-mix(in srgb, var(--bg) 60%, transparent); border-radius: 999px; padding: 5px 14px; margin: 0 12px; }
+.mockup-body { padding: 24px; max-height: 380px; overflow: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-mockup { animation: nxFloat 6s ease-in-out infinite; }
+  @keyframes nxFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+}
+@media (max-width: 860px) { .hero-inner { grid-template-columns: 1fr; } .hero-mockup { display: none; } }
+
+/* ── Stats strip ── */
 .mkt-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
   margin: 16px 0; padding: 32px; border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
   border-radius: var(--radius-lg); background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -494,100 +531,99 @@ body { background: radial-gradient(circle at top, color-mix(in srgb, var(--prima
 .mkt-stats .stat:hover { transform: translateY(-4px) scale(1.02); }
 .mkt-stats .stat-num { display: block; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); text-shadow: 0 2px 10px color-mix(in srgb, var(--primary) 20%, transparent); }
 .mkt-stats .stat-label { display: block; color: var(--muted); font-size: 13px; margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
-/* Section headings shared by preview + download */
+
+/* ── Section headings ── */
 .mkt-heading { text-align: center; margin: 80px 0 16px; }
 .mkt-heading h2 { font-size: 36px; letter-spacing: -0.02em; margin: 0; color: var(--text); }
 .mkt-heading p { color: var(--muted); font-size: 16px; margin: 12px auto 0; max-width: 52ch; line-height: 1.6; }
-/* Steps grid for How it works */
-.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
-.step-card { text-align: center; padding: 40px 24px; background: color-mix(in srgb, var(--surface) 70%, transparent); backdrop-filter: blur(12px); border: 1px solid color-mix(in srgb, var(--border) 50%, transparent); border-radius: var(--radius-lg); box-shadow: 0 12px 30px rgba(0,0,0,0.03); transition: all 0.3s ease; }
-.step-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px color-mix(in srgb, var(--primary) 15%, transparent); border-color: color-mix(in srgb, var(--primary) 30%, transparent); }
-.step-num { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 60%, black)); color: var(--on-primary); font-size: 22px; font-weight: 800; margin-bottom: 20px; box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 40%, transparent); }
-/* Product preview browser frame */
-.mkt-tabs-wrap { margin-top: 40px; display: flex; justify-content: center; }
-.browser-frame { margin-top: 24px; border: 1px solid color-mix(in srgb, var(--border-strong) 40%, transparent);
-  border-radius: var(--radius-lg); overflow: hidden; background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 32px 80px color-mix(in srgb, var(--primary) 15%, transparent), 0 0 0 1px rgba(255,255,255,0.05) inset; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.browser-frame:hover { transform: translateY(-4px) scale(1.005); box-shadow: 0 40px 100px color-mix(in srgb, var(--primary) 20%, transparent), 0 0 0 1px rgba(255,255,255,0.1) inset; }
-.browser-bar { display: flex; align-items: center; gap: 8px; padding: 14px 20px;
-  background: color-mix(in srgb, var(--bg) 40%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent); }
-.browser-bar .bdot { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 1px 2px rgba(255,255,255,0.2); }
-.browser-bar .bdot.r { background: #ff5f57; } .browser-bar .bdot.y { background: #febc2e; } .browser-bar .bdot.g { background: #28c840; }
-.browser-url { flex: 1; text-align: center; font-size: 13px; color: var(--muted); font-weight: 500;
-  background: color-mix(in srgb, var(--bg) 60%, transparent); border-radius: 999px; padding: 6px 16px; margin: 0 16px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
-.browser-body { padding: 32px; max-height: 640px; overflow: hidden; overflow-y: auto;
-  -webkit-mask-image: linear-gradient(180deg, #000 85%, transparent);
-  mask-image: linear-gradient(180deg, #000 85%, transparent); }
-.browser-body section { margin-bottom: 32px; animation: fadeUp 0.4s ease forwards; }
-.browser-body section[hidden] { display: none; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-/* Download center wrapper + mobile store buttons */
-.mkt-download h2 { text-align: center; font-size: 36px; letter-spacing: -0.02em; margin: 80px 0 24px; color: var(--text); }
-.mkt-download { text-align: center; }
-.mkt-download table { text-align: left; margin-top: 32px; background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(12px); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.02); }
-.mkt-download th, .mkt-download td { border-color: color-mix(in srgb, var(--border) 40%, transparent); }
-.store-block { margin-top: 48px; }
-.store-block h3 { font-size: 20px; margin: 0 0 6px; font-weight: 700; }
-.store-block .sub { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
-.store-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.eyebrow { display: block; text-align: center; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--primary); margin-bottom: 8px; }
+
+/* ── Desktop showcase ── */
+.desktop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+.dsk-card {
+  display: flex; flex-direction: column; gap: 16px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent); border-radius: var(--radius-lg);
+  padding: 24px; box-shadow: 0 12px 30px rgba(0,0,0,0.03); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative; overflow: hidden;
+}
+.dsk-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px color-mix(in srgb, var(--primary) 15%, transparent); border-color: color-mix(in srgb, var(--primary) 30%, transparent); }
+.dsk-card .dsk-chrome { border-radius: 10px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--border) 50%, transparent); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.dsk-card .dsk-titlebar { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: color-mix(in srgb, var(--bg) 50%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); }
+.dsk-card .dsk-titlebar .dot { width: 10px; height: 10px; border-radius: 50%; }
+.dsk-card .dsk-titlebar .dot.r { background: #ff5f57; } .dsk-card .dsk-titlebar .dot.y { background: #febc2e; } .dsk-card .dsk-titlebar .dot.g { background: #28c840; }
+.dsk-card .dsk-shot { background: var(--bg); padding: 16px; min-height: 160px; display: flex; align-items: center; justify-content: center; }
+.dsk-card .dsk-shot .dsk-placeholder { width: 100%; height: 140px; border-radius: 8px; background: linear-gradient(135deg, var(--tint-soft), var(--surface)); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+.dsk-card .dsk-shot .dsk-placeholder svg { opacity: 0.4; }
+.dsk-card .dsk-info { display: flex; flex-direction: column; gap: 4px; }
+.dsk-card .dsk-info h3 { font-size: 18px; font-weight: 700; margin: 0; }
+.dsk-card .dsk-info p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.dsk-card .dsk-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: var(--radius); font-size: 13px; font-weight: 600; text-decoration: none; background: var(--primary); color: var(--on-primary); box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 38%, transparent); transition: transform 0.18s, box-shadow 0.18s; margin-top: auto; }
+.dsk-card .dsk-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px color-mix(in srgb, var(--primary) 52%, transparent); }
+@media (max-width: 860px) { .desktop-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; } }
+
+/* ── Mobile showcase ── */
+.mobile-showcase { margin-top: 40px; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: center; }
+.phone-row { display: flex; gap: 24px; justify-content: center; }
+.phone-mockup { width: 200px; height: 420px; border-radius: 36px; border: 4px solid color-mix(in srgb, var(--border-strong) 60%, transparent); background: var(--bg); box-shadow: 0 24px 60px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05) inset; overflow: hidden; position: relative; }
+.phone-mockup .ph-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 20px; background: color-mix(in srgb, var(--border-strong) 80%, transparent); border-radius: 0 0 14px 14px; z-index: 2; }
+.phone-mockup .ph-screen { padding: 28px 14px 14px; height: 100%; display: flex; flex-direction: column; gap: 12px; }
+.phone-mockup .ph-statusbar { display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--muted); padding: 0 4px 4px; }
+.phone-mockup .ph-card { background: linear-gradient(155deg, var(--tint-soft), var(--surface) 62%); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+.phone-mockup .ph-card .ph-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.phone-mockup .ph-card .ph-val { font-size: 18px; font-weight: 700; margin-top: 2px; }
+.phone-mockup .ph-card .ph-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.phone-mockup .ph-card .ph-dot { width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; }
+.phone-mockup .ph-tabbar { margin-top: auto; display: flex; justify-content: space-around; padding: 8px 0 4px; border-top: 1px solid var(--border); }
+.phone-mockup .ph-tabbar .ph-tab { width: 24px; height: 24px; border-radius: 8px; background: var(--tint); }
+@media (prefers-reduced-motion: no-preference) {
+  .phone-mockup:nth-child(1) { animation: nxPhoneFloat 5s ease-in-out infinite; }
+  .phone-mockup:nth-child(2) { animation: nxPhoneFloat 5s ease-in-out infinite 1.5s; }
+  @keyframes nxPhoneFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+}
+.mobile-features { display: flex; flex-direction: column; gap: 20px; }
+.mobile-features .mf-item { display: flex; gap: 14px; align-items: flex-start; }
+.mobile-features .mf-ic { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--radius); background: var(--tint); color: var(--primary); flex: none; }
+.mobile-features .mf-text h4 { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+.mobile-features .mf-text p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+.mobile-stores { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
 .store-btn { display: inline-flex; align-items: center; gap: 12px; text-align: left;
   padding: 14px 24px; border-radius: var(--radius-lg); border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent);
-  background: color-mix(in srgb, var(--surface) 70%, transparent); backdrop-filter: blur(10px); color: var(--text); min-width: 200px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; }
-.store-btn:not(.soon):hover { transform: translateY(-2px); box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 20%, transparent); border-color: color-mix(in srgb, var(--primary) 40%, transparent); }
-.store-btn.soon { opacity: 0.6; cursor: not-allowed; filter: grayscale(100%); }
+  background: color-mix(in srgb, var(--surface) 70%, transparent); backdrop-filter: blur(10px); color: var(--text); min-width: 200px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; position: relative; }
+.store-btn.soon { opacity: 0.7; }
 .store-btn .store-ic { display: inline-flex; }
 .store-btn .store-top { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
 .store-btn .store-name { display: block; font-size: 16px; font-weight: 800; margin-top: 2px; }
 .store-btn .store-tag { margin-left: auto; font-size: 11px; font-weight: 800; color: var(--primary);
   background: color-mix(in srgb, var(--primary) 15%, transparent); padding: 4px 10px; border-radius: 999px; }
-@media (max-width: 720px) { .mkt-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px; } .steps-grid { grid-template-columns: 1fr; } }
-/* Pricing */
-.mkt-pricing { margin-top: 80px; }
-.pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 800px; margin: 40px auto 0; }
-.pricing-card { background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(12px); border: 1px solid color-mix(in srgb, var(--border) 40%, transparent); border-radius: var(--radius-lg); padding: 40px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.02); transition: transform 0.3s; }
-.pricing-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px color-mix(in srgb, var(--primary) 10%, transparent); border-color: color-mix(in srgb, var(--primary) 20%, transparent); }
-.pricing-card h3 { font-size: 24px; margin: 0 0 12px; }
-.pricing-card p { color: var(--muted); font-size: 15px; margin: 0 0 24px; }
-.pricing-card .price { font-size: 48px; font-weight: 800; color: var(--primary); margin-bottom: 32px; }
-.pricing-card .price span { font-size: 16px; color: var(--muted); font-weight: 500; }
-.pricing-card .btn { display: inline-block; width: 100%; padding: 14px; text-decoration: none; text-align: center; border-radius: var(--radius-lg); background: color-mix(in srgb, var(--surface) 90%, transparent); color: var(--text); font-weight: 600; border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent); transition: all 0.2s; }
-.pricing-card .btn:hover { background: color-mix(in srgb, var(--primary) 10%, transparent); border-color: var(--primary); color: var(--primary); }
-/* Testimonials */
-.mkt-testimonials { margin-top: 80px; }
-.testimonial-card { max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, color-mix(in srgb, var(--tint-soft) 80%, transparent), color-mix(in srgb, var(--surface) 40%, transparent)); padding: 40px; border-radius: var(--radius-lg); border: 1px solid color-mix(in srgb, var(--border) 50%, transparent); text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.04); }
-.testimonial-card::before { content: "“"; position: absolute; top: -10px; left: 20px; font-size: 80px; color: color-mix(in srgb, var(--primary) 20%, transparent); font-family: serif; line-height: 1; }
-.testimonial-card p { font-size: 20px; line-height: 1.6; font-weight: 500; margin: 0 0 24px; color: var(--text); position: relative; z-index: 1; }
-.testimonial-card .author { font-size: 15px; color: var(--primary); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
-/* Integrations */
+@media (max-width: 860px) { .mobile-showcase { grid-template-columns: 1fr; } .phone-row { margin-bottom: 16px; } }
+
+/* ── Integrations marquee ── */
 .mkt-integrations { margin-top: 80px; padding: 40px 0; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface) 60%, transparent), transparent); overflow: hidden; border-top: 1px solid color-mix(in srgb, var(--border) 30%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--border) 30%, transparent); text-align: center; }
 .integration-title { font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 24px; }
 .marquee { font-size: 24px; font-weight: 800; color: color-mix(in srgb, var(--text) 40%, transparent); white-space: nowrap; word-spacing: 16px; }
 .marquee span { color: color-mix(in srgb, var(--text) 70%, transparent); transition: color 0.3s; cursor: default; }
 .marquee span:hover { color: var(--primary); }
-/* Cookie Banner */
-.cookie-banner { position: fixed; bottom: 24px; left: 24px; right: 24px; max-width: 600px; margin: 0 auto; z-index: 1000;
-  display: flex; flex-direction: column; gap: 16px; padding: 24px;
-  background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent); border-radius: var(--radius-lg);
-  box-shadow: 0 16px 40px color-mix(in srgb, var(--bg) 80%, transparent), 0 0 0 1px rgba(255,255,255,0.05) inset;
-  animation: slideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; transform: translateY(100%); opacity: 0; }
-@keyframes slideUp { to { transform: translateY(0); opacity: 1; } }
-.cb-content strong { display: block; font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
-.cb-content p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
-.cb-actions { display: flex; gap: 12px; justify-content: flex-end; }
-.cb-actions .btn { padding: 10px 20px; font-size: 14px; border-radius: var(--radius-lg); font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
-.cb-actions .cb-decline { background: transparent; color: var(--muted); border-color: color-mix(in srgb, var(--border) 50%, transparent); }
-.cb-actions .cb-decline:hover { color: var(--text); background: color-mix(in srgb, var(--surface) 50%, transparent); }
-.cb-actions .cb-accept { background: var(--primary); color: var(--on-primary); box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 40%, transparent); }
-.cb-actions .cb-accept:hover { transform: translateY(-1px); box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 50%, transparent); }
-@media (min-width: 600px) { .cookie-banner { flex-direction: row; align-items: center; justify-content: space-between; } .cb-actions { flex-shrink: 0; } }
-@media (max-width: 720px) { .pricing-grid { grid-template-columns: 1fr; } }
-/* Testimonial hover polish */
-.testimonial-card { transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease, border-color 0.3s ease; }
-.testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 28px 60px color-mix(in srgb, var(--primary) 12%, transparent); border-color: color-mix(in srgb, var(--primary) 25%, transparent); }
-/* Step-card number pop on hover */
-.step-card .step-num { transition: transform 0.3s cubic-bezier(.2,.8,.2,1); }
-.step-card:hover .step-num { transform: scale(1.08) rotate(-4deg); }
+
+/* ── Closing CTA band ── */
+.cta-band { margin: 80px 0 0; padding: 48px 24px; text-align: center;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 12%, var(--surface)), color-mix(in srgb, var(--primary) 4%, var(--surface)));
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent); border-radius: var(--radius-lg);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--primary) 10%, transparent); }
+.cta-band .cta-logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.cta-band .cta-logo .brand { font-size: 22px; font-weight: 800; letter-spacing: 0.05em; }
+.cta-band h2 { font-size: 28px; margin: 0 0 12px; letter-spacing: -0.02em; color: var(--text); }
+.cta-band p { color: var(--muted); font-size: 15px; margin: 0 0 24px; }
+.cta-band .btn.primary { font-size: 15px; padding: 14px 32px; }
+
+/* ── Download center (kept for direct links) ── */
+.mkt-download h2 { text-align: center; font-size: 36px; letter-spacing: -0.02em; margin: 80px 0 24px; color: var(--text); }
+.mkt-download { text-align: center; }
+.mkt-download table { text-align: left; margin-top: 32px; background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(12px); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.02); }
+.mkt-download th, .mkt-download td { border-color: color-mix(in srgb, var(--border) 40%, transparent); }
+
+@media (max-width: 720px) { .mkt-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px; } }
+
 /* Scroll-reveal — .nx-reveal is added by JS only, so no-JS visitors see everything */
 @media (prefers-reduced-motion: no-preference) {
   .nx-reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1); transition-delay: var(--nx-d, 0ms); }
@@ -612,7 +648,6 @@ export function renderMarketingDocument(
   setLocale(locale);
   const t = getTheme(theme);
   const releases = demoReleases();
-  const screens = buildDemoScreens();
   const featured = releases.featuredFor(userAgent);
   const osName = featured
     ? featured.platform === "windows"
@@ -633,27 +668,46 @@ export function renderMarketingDocument(
 
   const hamburger = `<button class="hamburger" aria-label="Menu" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>`;
 
-  const navbar = `<div class="navbar"><div class="nav-container">
+  const navbar = `<div class="navbar" id="navbar"><div class="nav-container">
 <a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
 <nav class="nav-links" aria-label="Primary">
 <a class="nav-link" href="#features">${label("mkt.nav.features")}</a>
-<a class="nav-link" href="#preview">${label("mkt.nav.preview")}</a>
-<a class="nav-link" href="#download">${label("mkt.nav.download")}</a>
+<a class="nav-link" href="#desktop">${label("mkt.nav.preview")}</a>
+<a class="nav-link" href="#mobile">${label("mkt.nav.download")}</a>
 <a class="nav-link" href="#faq">${label("mkt.nav.faq")}</a>
 </nav>
-<div class="nav-actions">${langSwitch}<a class="btn nav-cta" href="/login">${label("mkt.nav.signIn")}</a><a class="btn primary nav-cta" href="#download">${label("mkt.nav.download")}</a>${hamburger}</div>
+<div class="nav-actions">${langSwitch}<a class="btn nav-cta" href="/login">${label("mkt.nav.signIn")}</a><a class="btn primary nav-cta" href="#desktop">${label("mkt.nav.download")}</a>${hamburger}</div>
 </div></div>`;
 
   const heroDl = featured
     ? `<a class="btn primary" href="${escapeHtml(featured.downloadUrl)}" download>${label("mkt.hero.actionPrimary").replace("{os}", osName).replace("{version}", escapeHtml(featured.version))}</a>`
-    : `<a class="btn primary" href="#download">${label("mkt.nav.download")}</a>`;
+    : `<a class="btn primary" href="#desktop">${label("mkt.nav.download")}</a>`;
+
+  const platformIcons = `<span class="plat-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5L10.5 4.5v7H3v-6zM3 12.5h7.5v7L3 18.5v-6zM12.5 4.2L21 3v8.5h-8.5v-7.3zM12.5 12.5H21V21l-8.5-1.2v-7.3z"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.7 17.3c-.5 1.1-.7 1.6-1.3 2.6-.9 1.4-2.1 3.2-3.7 3.2-1.4 0-1.7-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.7-1.6-3.6-3-2.5-3.8-2.8-8.3-1.2-10.7 1.1-1.7 2.8-2.7 4.5-2.7 1.7 0 2.7.9 4.1.9 1.3 0 2.1-.9 4-.9 1.4 0 2.9.8 4 2.1-3.5 1.9-2.9 6.9.4 8.5zM14.5 3.6c.8-1 1.4-2.4 1.3-3.8-1.3.1-2.8.9-3.7 1.9-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.8z"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 2c1.5 0 3 2.5 3.5 6.5h-7C9 6.5 10.5 4 12 4zm-7.9 6.5h3.4c.1-2 .5-3.8 1-5.3-2.4.8-4.1 2.9-4.4 5.3zm0 3c.3 2.4 2 4.5 4.4 5.3-.5-1.5-.9-3.3-1-5.3H4.1zm7.9 6.5c-1.5 0-3-2.5-3.5-6.5h7C15 17.5 13.5 20 12 20zm3.5-1.2c2.4-.8 4.1-2.9 4.4-5.3h-3.4c-.1 2-.5 3.8-1 5.3zm1-6.5c.1-2 .5-3.8 1-5.3 2.4.8 4.1 2.9 4.4 5.3h-5.4z"/></svg></span>`;
+
+  const heroMockup = `<div class="hero-mockup"><div class="mockup-frame">
+<div class="mockup-bar"><span class="bdot r"></span><span class="bdot y"></span><span class="bdot g"></span><span class="murl">nexus://app</span></div>
+<div class="mockup-body">
+<div class="bento" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+<article class="bento-tile featured" style="grid-column:span 2;grid-row:auto;"><div class="tile-head"><span class="cardicon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><rect x="16" y="9" width="6" height="11" rx="1.5"/></svg></span><span class="tile-title">Devices online</span></div><div class="ring-wrap"><svg class="ring" width="80" height="80" viewBox="0 0 96 96" role="img" aria-hidden="true"><circle cx="48" cy="48" r="34" fill="none" stroke="var(--border)" stroke-width="9"/><circle cx="48" cy="48" r="34" fill="none" stroke="var(--primary)" stroke-width="9" stroke-linecap="round" stroke-dasharray="160.2 213.6" transform="rotate(-90 48 48)"/><text x="48" y="54" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)">6/8</text></svg><div class="ring-meta"><span class="value">75% online</span><span class="label">2 offline</span></div></div></article>
+<article class="bento-tile"><div class="tile-head"><span class="cardicon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span class="tile-title">Energy today</span></div><div class="value">2.72 kWh</div></article>
+<article class="bento-tile"><div class="tile-head"><span class="cardicon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span class="tile-title">Active routines</span></div><div class="value">5</div></article>
+</div>
+</div>
+</div></div>`;
 
   const hero = `<section class="hero">
-<span class="hero-badge">${label("mkt.hero.badge").replace("{version}", featured ? escapeHtml(featured.version) : "3.14.2")}</span>
+<div class="hero-inner">
+<div class="hero-text">
+<span class="hero-badge">${label("mkt.hero.badge").replace("{version}", featured ? escapeHtml(featured.version) : "3.14.2")}${platformIcons}</span>
 <h1>${label("mkt.hero.title")}</h1>
 <p class="lede">${label("mkt.hero.desc")}</p>
-<div class="actions">${heroDl}<a class="btn" href="#preview">${label("mkt.hero.actionSecondary")}</a></div>
+<div class="actions">${heroDl}<a class="btn" href="#desktop">${label("mkt.hero.actionSecondary")}</a></div>
 <p class="trust">${label("mkt.hero.trust")}</p>
+<div class="scroll-hint"><span class="mouse"></span><span>Scroll to explore</span></div>
+</div>
+${heroMockup}
+</div>
 </section>`;
 
   const stats = `<section class="mkt-stats" aria-label="${label("mkt.stats.title")}">
@@ -663,61 +717,67 @@ export function renderMarketingDocument(
 <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label">${label("mkt.stats.rating")}</span></div>
 </section>`;
 
-  const privacySection = `<section class="features" aria-label="${label("mkt.privacy.title")}">
-<div class="mkt-heading"><h2>${label("mkt.privacy.title")}</h2></div>
-<div class="feature-grid">
-<div class="feature-card"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></span><h3>${label("mkt.privacy.processing")}</h3></div>
-<div class="feature-card"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span><h3>${label("mkt.privacy.encryption")}</h3></div>
-<div class="feature-card"><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19C15.6 20.3 13.5 21 12 21C6.5 21 2 16.5 2 11C2 9.5 2.7 7.4 4 5.5"/><path d="M22 12A10 10 0 0 0 12 2"/></svg></span><h3>${label("mkt.privacy.logging")}</h3></div>
-</div>
-</section>`;
-
-  const howItWorks = `<section class="features" aria-label="${label("mkt.how.title")}">
-<div class="mkt-heading"><h2>${label("mkt.how.title")}</h2></div>
-<div class="steps-grid">
-<div class="step-card"><span class="step-num">1</span><h3>${label("mkt.how.step1.title")}</h3><p>${label("mkt.how.step1.desc")}</p></div>
-<div class="step-card"><span class="step-num">2</span><h3>${label("mkt.how.step2.title")}</h3><p>${label("mkt.how.step2.desc")}</p></div>
-<div class="step-card"><span class="step-num">3</span><h3>${label("mkt.how.step3.title")}</h3><p>${label("mkt.how.step3.desc")}</p></div>
-</div>
-</section>`;
-
-  const previewTabs = `<div class="mkt-tabs-wrap"><nav class="web-nav mkt-tabs" aria-label="Preview Tabs">
-        <a href="#preview-today" data-nav="today" class="active" aria-current="page">${label("mkt.preview.tab.today")}</a>
-        <a href="#preview-devices" data-nav="devices">${label("mkt.preview.tab.devices")}</a>
-        <a href="#preview-skills" data-nav="skills">${label("mkt.preview.tab.skills")}</a>
-        <a href="#preview-family" data-nav="family">${label("mkt.preview.tab.family")}</a>
-       </nav></div>`;
-
-  const preview = `<section id="preview" class="mkt-preview">
-<div class="mkt-heading"><h2>${label("mkt.preview.title")}</h2>
-<p>${label("mkt.preview.desc")}</p></div>
-${previewTabs}
-<div class="browser-frame">
-<div class="browser-bar"><span class="bdot r"></span><span class="bdot y"></span><span class="bdot g"></span><span class="browser-url">nexus://app</span></div>
-<div class="browser-body">
-<section id="today">${renderScreenBody("today", screens, userAgent, "web")}</section>
-<section id="devices" hidden>${renderScreenBody("devices", screens, userAgent, "web")}</section>
-<section id="skills" hidden>${renderScreenBody("skills", screens, userAgent, "web")}</section>
-<section id="family" hidden>${renderScreenBody("family", screens, userAgent, "web")}</section>
-</div>
-</div>
-</section>`;
-
-  const stores = `<div class="store-block">
-<h3>${label("mkt.download.mobile.title")}</h3>
-<p class="sub">${label("mkt.download.mobile.desc")}</p>
-<div class="store-row">
-<span class="store-btn soon" aria-disabled="true"><span class="store-ic">${appleStoreIcon()}</span><span><span class="store-top">${label("mkt.download.mobile.apple")}</span><span class="store-name">${label("mkt.download.mobile.appleStore")}</span></span><span class="store-tag">${label("mkt.download.mobile.soon")}</span></span>
-<span class="store-btn soon" aria-disabled="true"><span class="store-ic">${googlePlayIcon()}</span><span><span class="store-top">${label("mkt.download.mobile.google")}</span><span class="store-name">${label("mkt.download.mobile.googlePlay")}</span></span><span class="store-tag">${label("mkt.download.mobile.soon")}</span></span>
-</div>
+  const desktopCard = (platform: string, titleKey: string, descKey: string, downloadUrl: string) => {
+    const chromeBar = platform === "macos"
+      ? `<div class="dsk-titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>`
+      : `<div class="dsk-titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>`;
+    return `<div class="dsk-card">
+<div class="dsk-chrome">${chromeBar}<div class="dsk-shot"><div class="dsk-placeholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/></svg></div></div></div>
+<div class="dsk-info"><h3>${label(titleKey)}</h3><p>${label(descKey)}</p></div>
+<a class="dsk-btn" href="${escapeHtml(downloadUrl)}" download>${label("mkt.desktop.download")} · ${escapeHtml(featured ? featured.version : "3.14.2")}</a>
 </div>`;
+  };
 
-  const requirements = `<div class="sys-req">
-    <h4>${label("mkt.requirements.title")}</h4>
-    <p>${label("mkt.requirements.desc")}</p>
-  </div>`;
+  const winUrl = releases.all().find((r) => r.platform === "windows")?.downloadUrl ?? "#";
+  const macUrl = releases.all().find((r) => r.platform === "macos")?.downloadUrl ?? "#";
+  const linUrl = releases.all().find((r) => r.platform === "linux")?.downloadUrl ?? "#";
 
-  const download = `<section id="download" class="mkt-download">${renderDownloadCenter(releases, userAgent)}${requirements}${stores}</section>`;
+  const desktopSection = `<section id="desktop" class="mkt-anchor">
+<div class="mkt-heading"><span class="eyebrow">${label("mkt.desktop.eyebrow")}</span><h2>${label("mkt.desktop.title")}</h2><p>${label("mkt.desktop.desc")}</p></div>
+<div class="desktop-grid">
+${desktopCard("windows", "mkt.desktop.windows", "mkt.desktop.windowsDesc", winUrl)}
+${desktopCard("macos", "mkt.desktop.macos", "mkt.desktop.macosDesc", macUrl)}
+${desktopCard("linux", "mkt.desktop.linux", "mkt.desktop.linuxDesc", linUrl)}
+</div>
+</section>`;
+
+  const mobilePhone = (variant: "ios" | "android") => {
+    const notch = variant === "ios" ? `<div class="ph-notch"></div>` : "";
+    return `<div class="phone-mockup">${notch}<div class="ph-screen">
+<div class="ph-statusbar"><span>9:41</span><span>5G</span></div>
+<div class="ph-card"><div class="ph-label">Devices</div><div class="ph-val">6/8 online</div><div class="ph-row"><span class="ph-dot"></span><span style="font-size:10px;color:var(--muted);">Living room lamp</span></div></div>
+<div class="ph-card"><div class="ph-label">Energy today</div><div class="ph-val">2.72 kWh</div></div>
+<div class="ph-card"><div class="ph-label">Active routines</div><div class="ph-val">5</div></div>
+<div class="ph-tabbar"><span class="ph-tab"></span><span class="ph-tab"></span><span class="ph-tab"></span><span class="ph-tab"></span></div>
+</div></div>`;
+  };
+
+  const mobileFeature = (icon: string, titleKey: string, descKey: string) =>
+    `<div class="mf-item"><span class="mf-ic">${icon}</span><div class="mf-text"><h4>${label(titleKey)}</h4><p>${label(descKey)}</p></div></div>`;
+
+  const mobileSection = `<section id="mobile" class="mkt-anchor">
+<div class="mkt-heading"><span class="eyebrow">${label("mkt.mobile.eyebrow")}</span><h2>${label("mkt.mobile.title")}</h2><p>${label("mkt.mobile.desc")}</p></div>
+<div class="mobile-showcase">
+<div class="phone-row">${mobilePhone("ios")}${mobilePhone("android")}</div>
+<div class="mobile-features">
+${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`, "mkt.mobile.feat1.title", "mkt.mobile.feat1.desc")}
+${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`, "mkt.mobile.feat2.title", "mkt.mobile.feat2.desc")}
+${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`, "mkt.mobile.feat3.title", "mkt.mobile.feat3.desc")}
+${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 14c-3 0-6 2-6 5v1h12v-1c0-3-3-5-6-5z"/></svg>`, "mkt.mobile.feat4.title", "mkt.mobile.feat4.desc")}
+<div class="mobile-stores">
+<span class="store-btn soon"><span class="store-ic">${appleStoreIcon()}</span><span><span class="store-top">${label("mkt.download.mobile.apple")}</span><span class="store-name">${label("mkt.download.mobile.appleStore")}</span></span><span class="store-tag">${label("mkt.download.mobile.soon")}</span></span>
+<span class="store-btn soon"><span class="store-ic">${googlePlayIcon()}</span><span><span class="store-top">${label("mkt.download.mobile.google")}</span><span class="store-name">${label("mkt.download.mobile.googlePlay")}</span></span><span class="store-tag">${label("mkt.download.mobile.soon")}</span></span>
+</div>
+</div>
+</div>
+</section>`;
+
+  const ctaBand = `<section class="cta-band">
+<div class="cta-logo">${renderLogo()}<span class="brand">NEXUS</span></div>
+<h2>${label("mkt.cta.title")}</h2>
+<p>${label("mkt.cta.desc")}</p>
+${heroDl}
+</section>`;
 
   const seoConfig = {
     ...demoSeo(t.color.primary),
@@ -748,21 +808,17 @@ ${hero}
 ${renderIntegrationMarquee()}
 ${stats}
 <div id="features" class="mkt-anchor">${renderFeatures()}</div>
-${privacySection}
-${howItWorks}
-${preview}
-${renderTestimonials()}
-${renderPricing()}
-${download}
+${desktopSection}
+${mobileSection}
 <div id="faq" class="mkt-anchor">${renderFaq()}</div>
+${ctaBand}
 </div>
 ${renderRichFooter(t.color.primary)}
-${renderCookieBanner()}
 <script>
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduce) {
-    var sel = '.mkt-stats .stat, .feature-card, .step-card, .pricing-card, .testimonial-card, .faq-item, .browser-frame, .mkt-heading';
+    var sel = '.mkt-stats .stat, .feature-card, .dsk-card, .phone-mockup, .mf-item, .faq-item, .cta-band, .mkt-heading';
     var revealEls = Array.prototype.slice.call(document.querySelectorAll(sel));
     revealEls.forEach(function(el){ el.classList.add('nx-reveal'); });
     var io = new IntersectionObserver(function(entries){
@@ -782,33 +838,15 @@ ${renderCookieBanner()}
       document.querySelector('.nav-links').classList.toggle('open');
     });
   }
-  var mktLinks = Array.prototype.slice.call(document.querySelectorAll(".mkt-tabs a"));
-  var mktSections = Array.prototype.slice.call(document.querySelectorAll(".browser-body section"));
-  mktLinks.forEach(function(a) {
-    a.addEventListener("click", function(e) {
-      e.preventDefault();
-      var id = a.getAttribute("data-nav");
-      mktSections.forEach(function(s) { s.hidden = s.id !== id; });
-      mktLinks.forEach(function(l) {
-        var on = l.getAttribute("data-nav") === id;
-        l.classList.toggle("active", on);
-        if (on) l.setAttribute("aria-current", "page"); else l.removeAttribute("aria-current");
-      });
-    });
-  });
-
-  var cb = document.getElementById("cookie-banner");
-  if (cb && !localStorage.getItem("cookie_consent")) {
-    cb.querySelector(".cb-accept").addEventListener("click", function() {
-      localStorage.setItem("cookie_consent", "accepted");
-      cb.classList.add("hidden");
-    });
-    cb.querySelector(".cb-decline").addEventListener("click", function() {
-      localStorage.setItem("cookie_consent", "declined");
-      cb.classList.add("hidden");
-    });
-  } else if (cb) {
-    cb.classList.add("hidden");
+  var navbar = document.getElementById('navbar');
+  if (navbar) {
+    var lastScroll = 0;
+    window.addEventListener('scroll', function() {
+      var sc = window.scrollY;
+      if (sc > 60) { navbar.style.boxShadow = '0 8px 30px color-mix(in srgb, var(--bg) 70%, transparent)'; navbar.style.height = 'auto'; }
+      else { navbar.style.boxShadow = ''; }
+      lastScroll = sc;
+    }, { passive: true });
   }
 })();
 </script>

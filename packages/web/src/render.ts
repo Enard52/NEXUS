@@ -381,6 +381,12 @@ export function renderNav(nav: readonly ScreenDescriptor[], activeId: ScreenId):
 }
 
 export function renderFeatures(): string {
+  const icons = [
+    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`,
+    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
+    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1l2.1-2.1M17 7l2.1-2.1"/></svg>`,
+    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 2.5 2.5 0 0 1-1.32-4.24 2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 7 5.06 2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 2.5 2.5 0 0 0 1.32-4.24 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 17 5.06 2.5 2.5 0 0 0 14.5 2z"/></svg>`,
+  ];
   const features = [
     { title: label("mkt.feat.1.title"), desc: label("mkt.feat.1.desc") },
     { title: label("mkt.feat.2.title"), desc: label("mkt.feat.2.desc") },
@@ -389,8 +395,8 @@ export function renderFeatures(): string {
   ];
   const items = features
     .map(
-      (f) =>
-        `<div class="feature-card"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span><h3>${escapeHtml(f.title)}</h3><p>${escapeHtml(f.desc)}</p></div>`,
+      (f, i) =>
+        `<div class="feature-card"><span class="icon">${icons[i] ?? icons[0]}</span><h3>${escapeHtml(f.title)}</h3><p>${escapeHtml(f.desc)}</p></div>`,
     )
     .join("");
   return `<section class="features" aria-label="${label("mkt.feat.why")}"><div class="feature-grid">${items}</div></section>`;
@@ -406,7 +412,7 @@ export function renderFaq(): string {
   const items = faqs
     .map(
       (f) =>
-        `<details class="faq-item" open><summary class="faq-q"><span>${escapeHtml(f.q)}</span><span class="faq-icon">+</span></summary><p class="faq-a">${escapeHtml(f.a)}</p></details>`,
+        `<details class="faq-item"><summary class="faq-q"><span>${escapeHtml(f.q)}</span><span class="faq-icon">+</span></summary><p class="faq-a">${escapeHtml(f.a)}</p></details>`,
     )
     .join("");
   return `<section class="faq-section" aria-label="${label("mkt.faq.title")}"><h2>${label("mkt.faq.title")}</h2><div class="faq-grid">${items}</div></section>`;
@@ -422,19 +428,12 @@ export function renderRichFooter(_primaryColor: string): string {
         <span class="version-badge">v3.14.2</span>
       </div>
       <div class="footer-col">
-        <h4>${label("mkt.footer.product")}</h4>
+        <h4>${label("mkt.footer.platforms")}</h4>
         <ul>
-          <li><a href="#features">${label("mkt.nav.features")}</a></li>
-          <li><a href="#preview">${label("mkt.nav.preview")}</a></li>
-          <li><a href="#faq">${label("mkt.nav.faq")}</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>${label("mkt.nav.download")}</h4>
-        <ul>
-          <li><a href="#download">Windows</a></li>
-          <li><a href="#download">macOS</a></li>
-          <li><a href="#download">Linux</a></li>
+          <li><a href="#desktop">Windows</a></li>
+          <li><a href="#desktop">macOS</a></li>
+          <li><a href="#desktop">Linux</a></li>
+          <li><a href="#mobile">iOS &amp; Android</a></li>
         </ul>
       </div>
       <div class="footer-col">

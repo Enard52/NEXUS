@@ -68,15 +68,13 @@ describe("local sync server", () => {
     const res = await fetch(`${base}/`, { redirect: "manual" });
     expect(res.status).toBe(200);
     const html = await res.text();
-    // Download-center content is present for everyone (no session required).
+    // Marketing content is present for everyone (no session required).
     expect(html).toContain("NEXUS");
-    expect(html).toContain("SHA-256");
+    // Desktop showcase cards are rendered.
+    expect(html).toContain("desktop-grid");
     // Mobile apps are advertised as coming soon.
     expect(html).toContain("App Store");
     expect(html).toContain("Google Play");
-    // Cookie banner should be rendered
-    expect(html).toContain('id="cookie-banner"');
-    expect(html).toContain("Privacy & Cookies"); // Or Turkish equivalent depending on default lang
   });
 
   it("applies global security headers", async () => {

@@ -159,6 +159,31 @@ export type MessageKey =
   | "mkt.faq.3.a"
   | "mkt.faq.4.q"
   | "mkt.faq.4.a"
+  | "mkt.desktop.eyebrow"
+  | "mkt.desktop.title"
+  | "mkt.desktop.desc"
+  | "mkt.desktop.windows"
+  | "mkt.desktop.windowsDesc"
+  | "mkt.desktop.macos"
+  | "mkt.desktop.macosDesc"
+  | "mkt.desktop.linux"
+  | "mkt.desktop.linuxDesc"
+  | "mkt.desktop.download"
+  | "mkt.mobile.eyebrow"
+  | "mkt.mobile.title"
+  | "mkt.mobile.desc"
+  | "mkt.mobile.feat1.title"
+  | "mkt.mobile.feat1.desc"
+  | "mkt.mobile.feat2.title"
+  | "mkt.mobile.feat2.desc"
+  | "mkt.mobile.feat3.title"
+  | "mkt.mobile.feat3.desc"
+  | "mkt.mobile.feat4.title"
+  | "mkt.mobile.feat4.desc"
+  | "mkt.cta.title"
+  | "mkt.cta.desc"
+  | "mkt.cta.button"
+  | "mkt.footer.platforms"
   // Dynamic keys added from mock data
   | "Dim living room lights"
   | "Start morning news briefing"
@@ -323,6 +348,31 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.faq.4.q": "How is remote access provided?",
     "mkt.faq.4.a":
       "Through a secure end-to-end encrypted tunnel with Premium plan or your own VPN.",
+    "mkt.desktop.eyebrow": "Desktop",
+    "mkt.desktop.title": "One app for every desktop",
+    "mkt.desktop.desc": "Native builds for Windows, macOS, and Linux — each tuned for its platform.",
+    "mkt.desktop.windows": "Windows",
+    "mkt.desktop.windowsDesc": "System tray integration and global hotkeys.",
+    "mkt.desktop.macos": "macOS",
+    "mkt.desktop.macosDesc": "Menu bar companion and native notifications.",
+    "mkt.desktop.linux": "Linux",
+    "mkt.desktop.linuxDesc": "AppImage and deb packages for any distro.",
+    "mkt.desktop.download": "Download",
+    "mkt.mobile.eyebrow": "Mobile",
+    "mkt.mobile.title": "Your home in your pocket",
+    "mkt.mobile.desc": "The NEXUS companion app puts control at your fingertips — wherever you are.",
+    "mkt.mobile.feat1.title": "Voice on the go",
+    "mkt.mobile.feat1.desc": "Talk to your home from anywhere with on-device speech recognition.",
+    "mkt.mobile.feat2.title": "Remote access",
+    "mkt.mobile.feat2.desc": "Securely reach your home network over an encrypted tunnel.",
+    "mkt.mobile.feat3.title": "Push notifications",
+    "mkt.mobile.feat3.desc": "Get instant alerts for events that matter to you.",
+    "mkt.mobile.feat4.title": "Biometric lock",
+    "mkt.mobile.feat4.desc": "Face ID and fingerprint keep your home controls private.",
+    "mkt.cta.title": "Your home, your rules.",
+    "mkt.cta.desc": "Download NEXUS and take control of every device from one place.",
+    "mkt.cta.button": "Download Free",
+    "mkt.footer.platforms": "Platforms",
     "Dim living room lights": "Dim living room lights",
     "Start morning news briefing": "Start morning news briefing",
     "Movie night": "Movie night",
@@ -483,6 +533,31 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.faq.4.q": "Uzaktan erişim nasıl sağlanıyor?",
     "mkt.faq.4.a":
       "Premium plan ile güvenli bir uçtan-uca şifrelenmiş tünel veya kendi VPN'iniz ile.",
+    "mkt.desktop.eyebrow": "Masaüstü",
+    "mkt.desktop.title": "Her masaüstü için tek uygulama",
+    "mkt.desktop.desc": "Windows, macOS ve Linux için yerel derlemeler — her biri platformuna göre özelleştirilmiş.",
+    "mkt.desktop.windows": "Windows",
+    "mkt.desktop.windowsDesc": "Sistem tepsisi entegrasyonu ve global kısayollar.",
+    "mkt.desktop.macos": "macOS",
+    "mkt.desktop.macosDesc": "Menü çubuğu yardımcısı ve yerel bildirimler.",
+    "mkt.desktop.linux": "Linux",
+    "mkt.desktop.linuxDesc": "Her dağıtım için AppImage ve deb paketleri.",
+    "mkt.desktop.download": "İndir",
+    "mkt.mobile.eyebrow": "Mobil",
+    "mkt.mobile.title": "Evin cebinde",
+    "mkt.mobile.desc": "NEXUS mobil uygulaması kontrolü parmak uçlarına getirir — nerede olursan ol.",
+    "mkt.mobile.feat1.title": "Yolda sesli kontrol",
+    "mkt.mobile.feat1.desc": "Cihaz üzerinde konuşma tanıma ile her yerden evinle konuş.",
+    "mkt.mobile.feat2.title": "Uzaktan erişim",
+    "mkt.mobile.feat2.desc": "Şifrelenmiş tünel üzerinden ev ağına güvenle eriş.",
+    "mkt.mobile.feat3.title": "Anlık bildirimler",
+    "mkt.mobile.feat3.desc": "Senin için önemli olaylar için anlık uyarılar al.",
+    "mkt.mobile.feat4.title": "Biyometrik kilit",
+    "mkt.mobile.feat4.desc": "Face ID ve parmak izi ev kontrollerini gizli tutar.",
+    "mkt.cta.title": "Evin, kuralların.",
+    "mkt.cta.desc": "NEXUS'u indir ve her cihazı tek yerden kontrol et.",
+    "mkt.cta.button": "Ücretsiz İndir",
+    "mkt.footer.platforms": "Platformlar",
     "Dim living room lights": "Salon ışıklarını kıs",
     "Start morning news briefing": "Sabah haber bültenini başlat",
     "Movie night": "Film gecesi",
