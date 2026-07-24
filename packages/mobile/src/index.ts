@@ -68,11 +68,12 @@ export function renderTabIcon(name: TabIcon): string {
   );
 }
 
-/** iOS-style status bar (decorative): time on the left, system glyphs on the right. */
+/** Dynamic-island style status bar (decorative): pill notch at top centre, time left, glyphs right. */
 export function renderStatusBar(): string {
   return (
     `<div class="statusbar" aria-hidden="true">` +
     `<span class="time">9:41</span>` +
+    `<span class="dynamic-island" aria-hidden="true"></span>` +
     `<span class="sys">` +
     `<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="1" width="3" height="11" rx="1"/><rect x="15" y="1" width="3" height="11" rx="1" opacity="0.4"/></svg>` +
     `<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 11 1 4a10 10 0 0 1 14 0Z" opacity="0.9"/></svg>` +
@@ -112,6 +113,26 @@ export function renderTabBar(activeId: ScreenId | "more"): string {
 /** Mobile chrome on top of the shared token-driven component styles. */
 export function renderMobileStyles(t: DesignTokens): string {
   return `${renderStyles(t)}
+@keyframes phone-float {
+  0%,100% { transform: translateY(0px); box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
+  50%      { transform: translateY(-7px); box-shadow: 0 38px 90px rgba(0,0,0,0.48); }
+}
+@keyframes screen-slide-in {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes tab-pill-slide {
+  from { opacity: 0; transform: scaleX(0.5); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+@keyframes more-row-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  0%   { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
 body.mobile {
   background: #05060a; padding: ${t.space[6]}px;
   display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
@@ -120,16 +141,31 @@ body.mobile {
   width: 390px; max-width: 100%; height: 844px; background: var(--bg);
   border: 12px solid #000; border-radius: 52px; overflow: hidden;
   display: flex; flex-direction: column; position: relative;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  animation: phone-float 5s ease-in-out infinite;
 }
 .statusbar {
-  height: 48px; flex: none; display: flex; align-items: center; justify-content: space-between;
+  height: 52px; flex: none; display: flex; align-items: center; justify-content: space-between;
   padding: 0 ${t.space[6]}px; color: var(--text); font-size: 15px; font-weight: 600;
+  position: relative;
+}
+.dynamic-island {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 34px; background: #000; border-radius: 20px;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.06);
+  pointer-events: none;
 }
 .statusbar .sys { display: flex; align-items: center; gap: ${t.space[2]}px; }
 .appbar {
   flex: none; display: flex; align-items: center; gap: ${t.space[3]}px;
-  padding: ${t.space[2]}px ${t.space[5]}px ${t.space[3]}px; border-bottom: 1px solid var(--surface);
+  padding: ${t.space[2]}px ${t.space[5]}px ${t.space[3]}px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 72%, var(--primary)) 0%, var(--bg) 100%);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary) 18%, var(--surface));
+  position: relative;
+}
+.appbar::after {
+  content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb,var(--primary) 40%,transparent), transparent);
 }
 .appbar .logo { width: 26px; height: 26px; }
 .appbar .apptitle {
@@ -143,10 +179,12 @@ body.mobile {
 .m-lang a.active { color: var(--primary); font-weight: 700; }
 .m-logout { display: inline-flex; align-items: center; justify-content: center;
   width: 34px; height: 34px; border-radius: var(--radius); border: 1px solid var(--border);
-  background: transparent; color: var(--muted); cursor: pointer; transition: all .15s ease; }
+  background: transparent; color: var(--muted); cursor: pointer;
+  transition: border-color .18s ease, color .18s ease; }
 .m-logout:hover { border-color: var(--primary); color: var(--primary); }
 .screen { flex: 1; overflow-y: auto; padding: ${t.space[5]}px; }
 .screen h2:first-child { margin-top: 0; }
+.screen section.screen-enter { animation: screen-slide-in 0.26s cubic-bezier(0.22,1,0.36,1) both; }
 .screen .cards { grid-template-columns: 1fr 1fr; }
 /* The phone frame is a fixed-width container, so the shared bento/grids must
    collapse to fit the frame — not the viewport — or they overflow on wide
@@ -161,27 +199,51 @@ body.mobile {
 .screen .ring-wrap { gap: ${t.space[4]}px; }
 .tabbar {
   flex: none; display: flex; border-top: 1px solid var(--surface);
-  background: var(--surface); padding-bottom: ${t.space[3]}px; margin: 0;
+  background: var(--surface); padding-bottom: ${t.space[3]}px; margin: 0; position: relative;
 }
 .tabbar a {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
   padding: ${t.space[2]}px ${t.space[1]}px; color: var(--muted);
   text-decoration: none; font-size: 10px; background: transparent; border: 0; border-radius: 0;
+  position: relative; transition: color 0.22s ease;
 }
+.tabbar a svg { transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1); }
 .tabbar a.active { background: transparent; box-shadow: none; color: var(--primary); }
+.tabbar a.active svg { transform: scale(1.18) translateY(-1px); }
+.tab-indicator {
+  position: absolute; top: 0; height: 2.5px; border-radius: 0 0 3px 3px;
+  background: var(--primary); pointer-events: none;
+  transition: left 0.28s cubic-bezier(0.22,1,0.36,1), width 0.28s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 0 8px color-mix(in srgb,var(--primary) 50%,transparent);
+}
 .morelist { list-style: none; margin: 0; padding: 0; display: grid; gap: ${t.space[2]}px; }
 .morerow {
   display: flex; align-items: center; gap: ${t.space[3]}px;
   background: var(--surface); border-radius: var(--radius); padding: ${t.space[4]}px;
-  color: var(--text); text-decoration: none;
+  color: var(--text); text-decoration: none; transition: background 0.18s ease;
 }
-.morerow svg { color: var(--primary); }
+.morerow:hover { background: color-mix(in srgb, var(--surface) 80%, var(--primary)); }
+.morerow svg { color: var(--primary); transition: transform 0.18s ease; }
+.morerow:hover > svg:last-child { transform: translateX(3px); }
+.morelist li { opacity: 0; animation: more-row-in 0.28s cubic-bezier(0.22,1,0.36,1) forwards; }
+.morelist li:nth-child(1) { animation-delay: 0.04s; }
+.morelist li:nth-child(2) { animation-delay: 0.08s; }
+.morelist li:nth-child(3) { animation-delay: 0.12s; }
+.morelist li:nth-child(4) { animation-delay: 0.16s; }
+.morelist li:nth-child(5) { animation-delay: 0.20s; }
 html.js-tabs .screen > section[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .phone { animation: none; }
+  .tabbar a svg, .tabbar a, .m-logout, .morerow, .morerow svg { transition: none; }
+  .screen section.screen-enter { animation: none; }
+  .morelist li { animation: none; opacity: 1; }
+  .tab-indicator { transition: none; }
+}
 @media (max-width: 480px) {
   body.mobile { padding: 0; }
   .phone {
     width: 100%; max-width: 100%; height: 100vh; height: 100dvh;
-    border: 0; border-radius: 0; box-shadow: none;
+    border: 0; border-radius: 0; box-shadow: none; animation: none;
   }
   .screen .cards { grid-template-columns: 1fr; }
   .screen .bento-tile, .screen .plan-card, .screen .skill-card-rich, .screen .suggestion-card { padding: 14px; }
@@ -196,10 +258,37 @@ const MOBILE_NAV_SCRIPT = `
 document.documentElement.classList.add("js-tabs");
 var sections = Array.prototype.slice.call(document.querySelectorAll(".screen > section"));
 var links = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
+var tabIndicator = null;
+function positionTabIndicator() {
+  var tabbar = document.querySelector(".tabbar");
+  if (!tabbar) return;
+  if (!tabIndicator) {
+    tabIndicator = document.createElement("span");
+    tabIndicator.className = "tab-indicator";
+    tabbar.appendChild(tabIndicator);
+  }
+  var active = tabbar.querySelector("a.active");
+  if (active) {
+    var barRect = tabbar.getBoundingClientRect();
+    var aRect = active.getBoundingClientRect();
+    tabIndicator.style.left = (aRect.left - barRect.left) + "px";
+    tabIndicator.style.width = aRect.width + "px";
+  }
+}
 function show(id) {
   var primaryIds = ["today", "home-state", "devices", "family"];
   var isMoreScreen = primaryIds.indexOf(id) < 0;
-  sections.forEach(function (s) { s.hidden = s.id !== id; });
+  sections.forEach(function (s) {
+    var becoming = s.id === id;
+    if (becoming && s.hidden) {
+      s.hidden = false;
+      s.classList.remove("screen-enter");
+      void s.offsetWidth;
+      s.classList.add("screen-enter");
+    } else if (!becoming) {
+      s.hidden = true;
+    }
+  });
   links.forEach(function (a) {
     var target = a.getAttribute("data-nav");
     var on = target === id || (isMoreScreen && target === "more");
@@ -208,6 +297,7 @@ function show(id) {
       if (on) { a.setAttribute("aria-current", "page"); } else { a.removeAttribute("aria-current"); }
     }
   });
+  positionTabIndicator();
 }
 function fromHash() {
   var id = location.hash.replace("#", "");

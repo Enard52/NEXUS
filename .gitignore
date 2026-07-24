@@ -28,3 +28,7 @@ Thumbs.db
 
 # Temporary headless-browser profiles used for screenshotting demos
 .shot*/
+
+# Generated demo/static assets
+public/desktop/
+packages/server/data/

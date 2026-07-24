@@ -18,14 +18,14 @@ export function renderWindowControls(os: "windows" | "mac" = "windows"): string 
       `</div>`
     );
   }
-  const btn = (path: string): string =>
-    `<span class="wctl-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" ` +
+  const btn = (path: string, cls = ""): string =>
+    `<span class="wctl-btn${cls ? " " + cls : ""}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" ` +
     `stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg></span>`;
   return (
     `<div class="wctl" aria-hidden="true">` +
     btn(`<path d="M5 12h14"/>`) +
     btn(`<rect x="5" y="5" width="14" height="14" rx="2"/>`) +
-    btn(`<path d="M6 6l12 12M18 6 6 18"/>`) +
+    btn(`<path d="M6 6l12 12M18 6 6 18"/>`, "close") +
     `</div>`
   );
 }

@@ -60,24 +60,45 @@ export function renderSidebar(
 /** Desktop chrome on top of the shared token-driven component styles. */
 export function renderDesktopStyles(t: DesignTokens): string {
   return `${renderStyles(t)}
+@keyframes win-open {
+  from { opacity: 0; transform: scale(0.975) translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sidebar-pulse {
+  0%,100% { box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--primary) 28%,transparent); }
+  50%      { box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--primary) 52%,transparent),
+                         0 0 14px color-mix(in srgb,var(--primary) 18%,transparent); }
+}
+@keyframes content-slide {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: none; }
+}
 body.desktop { padding: ${t.space[6]}px; background: #05060a; }
 .window {
   max-width: 1120px; margin: 0 auto; background: var(--bg);
   border: 1px solid var(--surface); border-radius: ${t.radius.lg}px; overflow: hidden;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  animation: win-open 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .titlebar {
   display: flex; align-items: center; gap: ${t.space[4]}px;
-  height: 44px; padding: 0 ${t.space[4]}px; background: var(--surface);
-  border-bottom: 1px solid var(--bg);
+  height: 44px; padding: 0 ${t.space[4]}px; position: relative;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, var(--primary)) 0%, var(--surface) 100%);
+  backdrop-filter: blur(20px);
+  border-bottom: 0;
+}
+.titlebar::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, color-mix(in srgb,var(--primary) 60%,transparent) 30%, color-mix(in srgb,var(--primary) 60%,transparent) 70%, transparent 100%);
 }
 .wctl { display: flex; gap: ${t.space[1]}px; }
 .wctl-btn {
   width: 28px; height: 28px; border-radius: var(--radius);
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--muted);
+  color: var(--muted); transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
 }
 .wctl-btn:hover { background: var(--bg); color: var(--text); }
+.wctl-btn.close:hover { background: #ef4444; color: #fff; box-shadow: 0 0 10px rgba(239,68,68,0.45); }
 .titlebar .title { flex: 1; text-align: center; font-size: ${t.font.size.sm}px; color: var(--muted); }
 .titlebar .title-actions { display: flex; align-items: center; gap: ${t.space[3]}px; }
 .title-lang { display: inline-flex; gap: 4px; font-size: ${t.font.size.sm}px; }
@@ -87,7 +108,7 @@ body.desktop { padding: ${t.space[6]}px; background: #05060a; }
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   height: 28px; padding: 0 ${t.space[3]}px; border-radius: var(--radius);
   border: 1px solid var(--border-strong); background: transparent; color: var(--muted);
-  font-size: ${t.font.size.sm}px; cursor: pointer; transition: all .15s ease;
+  font-size: ${t.font.size.sm}px; cursor: pointer; transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 .title-logout:hover { border-color: var(--primary); color: var(--primary); }
 .titlebar .avatar-wrap { display: inline-flex; }
@@ -97,22 +118,37 @@ body.desktop { padding: ${t.space[6]}px; background: #05060a; }
   border-right: 1px solid var(--bg); display: flex; flex-direction: column; gap: ${t.space[5]}px;
 }
 .brandrow { display: flex; align-items: center; gap: ${t.space[3]}px; }
-nav.side { display: flex; flex-direction: column; gap: ${t.space[1]}px; margin: 0; }
+nav.side { display: flex; flex-direction: column; gap: ${t.space[1]}px; margin: 0; position: relative; }
+.side-indicator {
+  position: absolute; left: 0; width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--primary); pointer-events: none;
+  transition: top 0.28s cubic-bezier(0.22,1,0.36,1), height 0.28s cubic-bezier(0.22,1,0.36,1);
+}
 nav.side a {
   display: flex; align-items: center; gap: ${t.space[3]}px;
   padding: ${t.space[3]}px ${t.space[4]}px; border: 0; border-radius: var(--radius);
-  background: transparent; color: var(--muted); font-size: ${t.font.size.md}px; font-weight: 500; text-decoration: none;
+  background: transparent; color: var(--muted); font-size: ${t.font.size.md}px; font-weight: 500;
+  text-decoration: none; transition: background 0.2s ease, color 0.2s ease;
 }
-nav.side a .sideicon { flex: none; }
+nav.side a .sideicon { flex: none; transition: transform 0.2s ease; }
 nav.side a:hover { background: var(--bg); color: var(--text); }
+nav.side a:hover .sideicon { transform: scale(1.12); }
 nav.side a.active {
   background: var(--tint); color: var(--primary);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent);
+  animation: sidebar-pulse 3s ease infinite;
 }
 .sidefoot { margin-top: auto; color: var(--muted); font-size: ${t.font.size.sm}px; }
 .content { flex: 1; padding: ${t.space[6]}px; overflow: auto; }
 .content h2:first-child { margin-top: 0; }
 html.js-tabs .content section[hidden] { display: none; }
+.content section.content-enter { animation: content-slide 0.24s cubic-bezier(0.22,1,0.36,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .window { animation: none; }
+  nav.side a.active { animation: none; }
+  .side-indicator { transition: none; }
+  nav.side a, nav.side a .sideicon, .wctl-btn, .title-logout { transition: none; }
+  .content section.content-enter { animation: none; }
+}
 @media (max-width: 720px) {
   body.desktop { padding: 0; }
   .app { flex-direction: column; }
@@ -126,13 +162,41 @@ const DESKTOP_NAV_SCRIPT = `
 document.documentElement.classList.add("js-tabs");
 var sections = Array.prototype.slice.call(document.querySelectorAll(".content > section"));
 var links = Array.prototype.slice.call(document.querySelectorAll("nav a[data-nav]"));
+var indicator = null;
+function positionIndicator() {
+  var nav = document.querySelector("nav.side");
+  if (!nav) return;
+  if (!indicator) {
+    indicator = document.createElement("span");
+    indicator.className = "side-indicator";
+    nav.appendChild(indicator);
+  }
+  var active = nav.querySelector("a.active");
+  if (active) {
+    var navRect = nav.getBoundingClientRect();
+    var aRect = active.getBoundingClientRect();
+    indicator.style.top = (aRect.top - navRect.top) + "px";
+    indicator.style.height = aRect.height + "px";
+  }
+}
 function show(id) {
-  sections.forEach(function (s) { s.hidden = s.id !== id; });
+  sections.forEach(function (s) {
+    var becoming = s.id === id;
+    if (becoming && s.hidden) {
+      s.hidden = false;
+      s.classList.remove("content-enter");
+      void s.offsetWidth;
+      s.classList.add("content-enter");
+    } else if (!becoming) {
+      s.hidden = true;
+    }
+  });
   links.forEach(function (a) {
     var on = a.getAttribute("data-nav") === id;
     a.classList.toggle("active", on);
     if (on) { a.setAttribute("aria-current", "page"); } else { a.removeAttribute("aria-current"); }
   });
+  positionIndicator();
 }
 function fromHash() {
   var id = location.hash.replace("#", "");

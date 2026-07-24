@@ -35,6 +35,40 @@
       body {
         height: 100%;
       }
+      /* ── Entrance animations ──────────────────────────────────────── */
+      @keyframes wizard-open {
+        from { opacity: 0; transform: scale(0.97) translateY(8px); }
+        to   { opacity: 1; transform: none; }
+      }
+      @keyframes step-slide-in {
+        from { opacity: 0; transform: translateX(22px); }
+        to   { opacity: 1; transform: none; }
+      }
+      @keyframes tile-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: none; }
+      }
+      @keyframes ring-pulse {
+        0%,100% { box-shadow: 0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent); }
+        50%      { box-shadow: 0 0 0 8px color-mix(in srgb,var(--primary) 8%,transparent); }
+      }
+      @keyframes check-pop {
+        0%   { opacity: 0; transform: scale(0.5); }
+        70%  { transform: scale(1.14); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      @keyframes ring-radiate {
+        0%   { opacity: 0.7; transform: scale(1); }
+        100% { opacity: 0;   transform: scale(2.2); }
+      }
+      @keyframes shimmer-sweep {
+        from { background-position: -300px 0; }
+        to   { background-position: 300px 0; }
+      }
+      @keyframes rail-line-fill {
+        from { height: 0; }
+        to   { height: 100%; }
+      }
       body {
         font-family: var(--font);
         background: var(--bg);
@@ -43,6 +77,7 @@
         user-select: none;
         display: flex;
         flex-direction: column;
+        animation: wizard-open 0.38s cubic-bezier(0.22,1,0.36,1) both;
       }
       /* ── Custom title bar (draggable) ─────────────────────────────── */
       .titlebar {
@@ -55,6 +90,13 @@
         padding: 0 8px 0 16px;
         background: linear-gradient(180deg, var(--surface-2), var(--surface));
         border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+      .titlebar::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, color-mix(in srgb,var(--primary) 55%,transparent) 30%, color-mix(in srgb,var(--primary) 55%,transparent) 70%, transparent);
       }
       .titlebar .tb-brand {
         display: flex;
@@ -132,7 +174,35 @@
         display: flex;
         flex-direction: column;
         gap: 6px;
+        position: relative;
       }
+      /* Vertical connecting line */
+      .steps::before {
+        content: '';
+        position: absolute;
+        left: 22px; top: 20px; bottom: 20px;
+        width: 2px;
+        background: var(--border-strong);
+        border-radius: 2px;
+        z-index: 0;
+      }
+      /* Filled portion of the connecting line */
+      .steps::after {
+        content: '';
+        position: absolute;
+        left: 22px; top: 20px;
+        width: 2px;
+        height: 0%;
+        background: var(--primary);
+        border-radius: 2px;
+        z-index: 0;
+        transition: height 0.45s cubic-bezier(0.22,1,0.36,1);
+        box-shadow: 0 0 8px color-mix(in srgb,var(--primary) 50%,transparent);
+      }
+      .steps[data-progress="1"]::after { height: 25%; }
+      .steps[data-progress="2"]::after { height: 50%; }
+      .steps[data-progress="3"]::after { height: 75%; }
+      .steps[data-progress="4"]::after { height: 100%; }
       .steps li {
         display: flex;
         align-items: center;
@@ -142,9 +212,9 @@
         font-size: 13px;
         font-weight: 500;
         color: var(--muted);
-        transition:
-          background 0.2s,
-          color 0.2s;
+        transition: background 0.2s, color 0.2s;
+        position: relative;
+        z-index: 1;
       }
       .steps li .num {
         width: 24px;
@@ -157,11 +227,8 @@
         justify-content: center;
         font-size: 11px;
         font-weight: 800;
-        transition:
-          background 0.2s,
-          border-color 0.2s,
-          color 0.2s,
-          transform 0.2s;
+        background: var(--bg);
+        transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
       }
       .steps li.active {
         background: var(--tint);
@@ -171,7 +238,8 @@
         background: var(--primary);
         border-color: var(--primary);
         color: var(--on-primary);
-        transform: scale(1.06);
+        transform: scale(1.1);
+        animation: ring-pulse 2.4s ease infinite;
       }
       .steps li.done .num {
         background: var(--primary);
@@ -179,6 +247,7 @@
         color: var(--on-primary);
         font-size: 0;
         position: relative;
+        animation: check-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
       }
       .steps li.done .num::after {
         content: "\2713";
@@ -206,20 +275,10 @@
         display: none;
         flex-direction: column;
         gap: 18px;
-        animation: fade 0.32s ease;
       }
       .step.active {
         display: flex;
-      }
-      @keyframes fade {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
+        animation: step-slide-in 0.3s cubic-bezier(0.22,1,0.36,1) both;
       }
       .step h1 {
         font-size: 25px;
@@ -255,7 +314,18 @@
         display: flex;
         gap: 11px;
         align-items: flex-start;
+        opacity: 0;
+        animation: tile-in 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
+      .tile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      }
+      .tile:nth-child(1) { animation-delay: 0.06s; }
+      .tile:nth-child(2) { animation-delay: 0.12s; }
+      .tile:nth-child(3) { animation-delay: 0.18s; }
+      .tile:nth-child(4) { animation-delay: 0.24s; }
       .tile .ico {
         width: 30px;
         height: 30px;
@@ -350,14 +420,29 @@
         border-radius: 999px;
         background: var(--border);
         overflow: hidden;
+        position: relative;
       }
       .progress .fill {
         height: 100%;
         width: 0%;
         border-radius: 999px;
         background: var(--primary);
-        box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 60%, transparent);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 60%, transparent),
+                    4px 0 12px color-mix(in srgb, var(--primary) 80%, transparent);
         transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        position: relative; overflow: hidden;
+      }
+      .progress .fill::after {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(255,255,255,0.28) 40%,
+          rgba(255,255,255,0.42) 50%,
+          rgba(255,255,255,0.28) 60%,
+          transparent 100%);
+        background-size: 300px 100%;
+        animation: shimmer-sweep 1.5s linear infinite;
       }
       .pct {
         font-size: 30px;
@@ -369,6 +454,11 @@
         color: var(--muted);
         min-height: 18px;
       }
+      .finish-icon-wrap {
+        position: relative;
+        width: 66px;
+        height: 66px;
+      }
       .finish-icon {
         width: 66px;
         height: 66px;
@@ -379,7 +469,15 @@
         justify-content: center;
         font-size: 34px;
         color: var(--primary);
-        box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 10%, transparent);
+        position: relative;
+        animation: check-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+      }
+      .finish-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 2px solid color-mix(in srgb,var(--primary) 60%,transparent);
+        animation: ring-radiate 1.2s ease-out 0.3s both;
       }
       /* ── Footer ───────────────────────────────────────────────────── */
       .footer {
@@ -434,6 +532,28 @@
         opacity: 0.4;
         cursor: not-allowed;
         box-shadow: none;
+      }
+      .btn:active:not(:disabled) {
+        transform: scale(0.97);
+        transition: transform 0.08s ease, opacity 0.08s, background 0.08s, box-shadow 0.08s;
+      }
+      .win-btn {
+        transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+      }
+      .win-btn.close:hover {
+        box-shadow: 0 0 10px rgba(225,29,72,0.4);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body { animation: none; }
+        .step.active { animation: none; }
+        .tile { animation: none; opacity: 1; }
+        .steps li .num { animation: none; }
+        .steps::after { transition: none; }
+        .progress .fill { transition: none; }
+        .progress .fill::after { animation: none; }
+        .finish-icon { animation: none; }
+        .finish-ring { animation: none; }
+        .tile, .btn, .win-btn { transition: none; }
       }
     </style>
   </head>
@@ -659,7 +779,10 @@
 
           <!-- 5. Finish -->
           <section class="step" data-step="4">
-            <div class="finish-icon">✓</div>
+            <div class="finish-icon-wrap">
+              <div class="finish-icon">✓</div>
+              <div class="finish-ring"></div>
+            </div>
             <h1>NEXUS Hazır</h1>
             <p>
               NEXUS AI başarıyla kuruldu. Kurulum sihirbazından çıkmak için <strong>Bitir</strong>'e
@@ -711,6 +834,9 @@
             li.classList.toggle("active", i === current);
             li.classList.toggle("done", i < current);
           });
+          // Drive the vertical rail fill line
+          var stepsEl = document.getElementById("steps");
+          if (stepsEl) { stepsEl.setAttribute("data-progress", String(current)); }
           elNext.textContent = labelFor(current);
           elNext.disabled = current === 1 && !elAccept.checked;
           elBack.style.visibility = current === 0 ? "hidden" : "visible";
