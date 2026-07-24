@@ -24,7 +24,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "pnpm start"
+args = "pnpm install --no-frozen-lockfile && pnpm start"
 waitForPort = 4178
 
 [workflows.workflow.metadata]
