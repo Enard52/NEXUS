@@ -9,7 +9,7 @@
  */
 
 import { getTheme, type ThemeName } from "@nexus/design-system";
-import { escapeHtml, renderLogo, renderStyles, CURRENT_LOCALE } from "@nexus/web";
+import { escapeHtml, renderLogo, renderStyles, setLocale, CURRENT_LOCALE } from "@nexus/web";
 import { renderWindowControls } from "./utils.js";
 
 // ── Step definitions ─────────────────────────────────────────────────────────
@@ -494,15 +494,17 @@ function stepFinish(): string {
 export interface SetupDocumentOptions {
   readonly theme: ThemeName;
   readonly os?: "windows" | "mac";
+  readonly locale?: "en" | "tr";
 }
 
 /**
  * Renders the NEXUS desktop setup wizard as a standalone HTML document.
  * Both dark and light themes are supported.
  */
-export function renderSetupDocument({ theme, os = "windows" }: SetupDocumentOptions): string {
+export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocumentOptions): string {
   const t = getTheme(theme);
   const logoSvg = renderLogo(t.color.primary);
+  if (locale) setLocale(locale);
   const isTr = CURRENT_LOCALE === "tr";
   const stepLabels = isTr
     ? ["Hoş Geldiniz", "Lisans", "Konum", "Yükleniyor", "Tamamlandı"]

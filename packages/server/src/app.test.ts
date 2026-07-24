@@ -23,11 +23,15 @@ interface Running {
 const running: Running[] = [];
 
 async function boot(dbFile: string): Promise<Running> {
+  return bootWithStatic(dbFile, undefined);
+}
+
+async function bootWithStatic(dbFile: string, staticRoot: string | undefined): Promise<Running> {
   const store = new SqliteKeyValueStore(dbFile);
   const memoryDbFile = dbFile + ".memory";
   const { SqliteUserMemoryStore } = await import("@nexus/memory");
   const memory = new SqliteUserMemoryStore(memoryDbFile);
-  const app = createNexusApp({ store, memory });
+  const app = createNexusApp({ store, memory, staticRoot });
   const { server, port } = await startServer(app, 0);
   const r: Running = { server, base: `http://127.0.0.1:${port}`, store, memory };
   running.push(r);
@@ -318,5 +322,41 @@ describe("local sync server", () => {
     expect(js).toContain("addEventListener");
     // API traffic must bypass the cache so live data is never stale.
     expect(js).toContain("/api/");
+  });
+
+  it("serves self-hosted brand font files with correct MIME type", async () => {
+    const { base } = await bootWithStatic(join(tmp, "fonts.db"), join(process.cwd(), "packages/web/dist"));
+    const res = await fetch(`${base}/fonts/inter-latin-400-normal.woff2`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toBe("font/woff2");
+    const buf = await res.arrayBuffer();
+    expect(buf.byteLength).toBeGreaterThan(1000);
+  });
+
+  it("exposes public web previews for mobile, desktop and installer without login", async () => {
+    const { base } = await boot(join(tmp, "preview.db"));
+    const routes = ["/mobile", "/desktop", "/installer"];
+    for (const route of routes) {
+      const res = await fetch(`${base}${route}`, { redirect: "manual" });
+      expect(res.status).toBe(200);
+      const html = await res.text();
+      // Uses the local, offline font stack and the same design tokens as the native shells.
+      expect(html).toContain("/fonts/inter-latin-400-normal.woff2");
+      expect(html).toContain("/fonts/outfit-latin-400-normal.woff2");
+      expect(html).toContain("--primary");
+      expect(html).toContain("prefers-reduced-motion");
+      // No Google Fonts import remains in any generated surface.
+      expect(html).not.toContain("fonts.googleapis.com");
+      expect(html).not.toContain("fonts.gstatic.com");
+    }
+  });
+
+  it("sets a CSP that no longer allows external font origins", async () => {
+    const { base } = await boot(join(tmp, "csp.db"));
+    const res = await fetch(`${base}/`, { redirect: "manual" });
+    const csp = res.headers.get("content-security-policy") ?? "";
+    expect(csp).toContain("font-src 'self'");
+    expect(csp).not.toContain("https://fonts.gstatic.com");
+    expect(csp).not.toContain("https://fonts.googleapis.com");
   });
 });

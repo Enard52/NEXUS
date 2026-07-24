@@ -29,6 +29,18 @@ export function escapeHtml(str: string): string {
     .replace(/'/g, "&#39;");
 }
 
+/** Local font faces shared by every generated surface. */
+function renderFontFaces(): string {
+  const weights = [400, 500, 600, 700, 800];
+  const faces = weights.flatMap((weight) => [
+    `@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/inter-latin-ext-${weight}-normal.woff2') format('woff2'); unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB; }`,
+    `@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/inter-latin-${weight}-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }`,
+    `@font-face { font-family: 'Outfit'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/outfit-latin-ext-${weight}-normal.woff2') format('woff2'); unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB; }`,
+    `@font-face { font-family: 'Outfit'; font-style: normal; font-display: swap; font-weight: ${weight}; src: url('/fonts/outfit-latin-${weight}-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }`,
+  ]);
+  return faces.join("\n");
+}
+
 export function faviconDataUri(primaryColor: string): string {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="nxfav" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="${primaryColor}"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#nxfav)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
@@ -512,7 +524,7 @@ export function renderIntegrationMarquee(): string {
 
 export function renderStyles(theme: DesignTokens): string {
   const t = theme;
-  return `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap');
+  return `${renderFontFaces()}
 
 :root {
   --bg: ${t.color.bg};
@@ -537,7 +549,12 @@ html { box-sizing: border-box; scroll-behavior: smooth; }
 *, *:before, *:after { box-sizing: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 body {
   margin: 0;

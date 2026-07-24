@@ -35,6 +35,8 @@ import {
   renderMobileAppDocument,
   renderDesktopAppDocument,
 } from "./pages.js";
+import { renderMobileDocument } from "@nexus/mobile";
+import { renderDesktopDocument, renderSetupDocument } from "@nexus/desktop";
 import { OAUTH_PROVIDERS, type OAuthRegistry } from "./oauth.js";
 import type { UserDataStore } from "./userdata.js";
 import { handleCommandApi } from "./command.js";
@@ -71,6 +73,10 @@ const MIME: Record<string, string> = {
   ".ico": "image/x-icon",
   ".webmanifest": "application/manifest+json",
   ".txt": "text/plain; charset=utf-8",
+  ".woff2": "font/woff2",
+  ".woff": "font/woff",
+  ".ttf": "font/ttf",
+  ".otf": "font/otf",
   ".exe": "application/vnd.microsoft.portable-executable",
   ".dmg": "application/x-apple-diskimage",
   ".appimage": "application/x-executable",
@@ -323,7 +329,7 @@ export function createRequestHandler(
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     res.setHeader(
       "Content-Security-Policy",
-      "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'",
+      "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'",
     );
 
     // ── Auth API ─────────────────────────────────────────────────────────────
@@ -685,6 +691,34 @@ export function createRequestHandler(
       persistLang(res, url, locale);
       const ua = String(req.headers["user-agent"] ?? "");
       return sendHtml(res, 200, renderMarketingDocument(locale, ua));
+    }
+
+    // Public visual QA routes use the same renderers as the native shells. They
+    // are intentionally not login-gated so product and design reviews can open
+    // them directly in a browser without creating a demo account.
+    if (method === "GET" && (path === "/mobile" || path === "/preview/mobile")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderMobileDocument({ theme: "dark", locale }));
+    }
+    if (method === "GET" && (path === "/mobile/light" || path === "/preview/mobile/light")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderMobileDocument({ theme: "light", locale }));
+    }
+    if (method === "GET" && (path === "/desktop" || path === "/preview/desktop")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderDesktopDocument({ theme: "dark", locale }));
+    }
+    if (method === "GET" && (path === "/desktop/light" || path === "/preview/desktop/light")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderDesktopDocument({ theme: "light", locale }));
+    }
+    if (method === "GET" && (path === "/installer" || path === "/preview/installer")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderSetupDocument({ theme: "dark", locale: locale as "en" | "tr" }));
+    }
+    if (method === "GET" && (path === "/installer/light" || path === "/preview/installer/light")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderSetupDocument({ theme: "light", locale: locale as "en" | "tr" }));
     }
 
     if (path === "/privacy" && method === "GET") {
