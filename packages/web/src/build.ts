@@ -6,18 +6,25 @@
  * Pure output of {@link renderDemoDocument}; no server or bundler required.
  */
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SITE_URL } from "./index.js";
 import { renderAppIconSvg, renderOgImageSvg } from "./render.js";
 import { getTheme } from "@nexus/design-system";
 import { renderManifest, renderRobotsTxt, renderSitemap } from "./seo.js";
-import { renderMarketingDocument } from "../../server/src/pages.js";
+import { renderMarketingDocument, renderLegalPage, renderNotFoundPage } from "../../server/src/pages.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, "..", "dist");
 mkdirSync(outDir, { recursive: true });
+
+// Copy self-hosted font files to dist so the static server can serve them.
+const fontsSource = join(here, "..", "..", "..", "public", "fonts");
+const fontsDest = join(outDir, "fonts");
+cpSync(fontsSource, fontsDest, { recursive: true });
+// eslint-disable-next-line no-console
+console.log("copied public/fonts → dist/fonts");
 
 const { setLocale } = await import("./render.js");
 const pages: ReadonlyArray<{ file: string; theme: "dark" | "light" }> = [
@@ -41,6 +48,20 @@ for (const loc of ["en", "tr"] as const) {
       `wrote ${join(loc === "en" ? "dist" : "dist/" + loc, page.file)} (${html.length} bytes, ${page.theme} theme)`,
     );
   }
+
+  // Legal pages
+  for (const legalPage of ["privacy", "terms"] as const) {
+    const html = renderLegalPage(loc, "dark", legalPage);
+    writeFileSync(join(locDir, `${legalPage}.html`), html, "utf8");
+    // eslint-disable-next-line no-console
+    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, legalPage + ".html")}`);
+  }
+
+  // 404 page
+  const notFound = renderNotFoundPage(loc, "dark");
+  writeFileSync(join(locDir, "404.html"), notFound, "utf8");
+  // eslint-disable-next-line no-console
+  console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "404.html")}`);
 }
 
 // SEO discovery files, generated from the same canonical origin as the pages.
@@ -48,6 +69,8 @@ const today = new Date().toISOString().slice(0, 10);
 const sitemap = renderSitemap([
   { url: SITE_URL, lastmod: today, changefreq: "weekly", priority: 1 },
   { url: `${SITE_URL}tr/`, lastmod: today, changefreq: "weekly", priority: 0.9 },
+  { url: `${SITE_URL}privacy.html`, lastmod: today, changefreq: "monthly", priority: 0.3 },
+  { url: `${SITE_URL}terms.html`, lastmod: today, changefreq: "monthly", priority: 0.3 },
 ]);
 writeFileSync(join(outDir, "sitemap.xml"), sitemap, "utf8");
 writeFileSync(join(outDir, "robots.txt"), renderRobotsTxt(`${SITE_URL}sitemap.xml`), "utf8");

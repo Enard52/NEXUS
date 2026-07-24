@@ -84,10 +84,10 @@ describe("@nexus/web renderer", () => {
 
   it("ships accessible semantic landmarks, a brand mark, and a footer", () => {
     const html = renderDemoDocument({ theme: "dark" });
-    expect(html).toContain('<header class="site-header">');
+    expect(html).toContain('<header class="site-header" role="banner">');
     expect(html).toContain('<main id="main">');
     expect(html).toContain('<nav class="web-nav" aria-label="Primary">');
-    expect(html).toContain('<footer class="footer">');
+    expect(html).toContain('<footer class="footer" role="contentinfo">');
     // Brand mark is an inline SVG (no external asset needed).
     expect(html).toContain('aria-label="NEXUS logo"');
     // The brand wordmark is a span so the hero can own the single <h1>.

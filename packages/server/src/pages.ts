@@ -30,7 +30,7 @@ import {
   faviconDataUri,
   label,
   renderAvatar,
-  renderFaq,
+  renderCookieBanner,
   renderFeatures,
   renderLogo,
   renderNav,
@@ -41,7 +41,6 @@ import {
   type DemoScreens,
   renderHead,
   demoSeo,
-  renderIntegrationMarquee,
 } from "@nexus/web";
 import type { Account } from "@nexus/accounts";
 import { renderMobileDocument } from "@nexus/mobile";
@@ -466,7 +465,7 @@ export function renderDesktopAppDocument(
   });
 }
 
-/** Marketing-only styles: hero, stats, desktop showcase, mobile showcase, FAQ, CTA. */
+/** Marketing-only styles: hero, stats, desktop showcase, how-it-works, CTA. */
 function marketingCss(): string {
   return `
 html { scroll-behavior: smooth; }
@@ -498,18 +497,18 @@ body {
 [data-theme="light"] .theme-toggle .icon-sun  { display: none; }
 
 /* ── Hero ── */
-.hero { position: relative; overflow: hidden; padding: 56px 0 40px; border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); margin-bottom: 32px; }
-.hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.hero { position: relative; overflow: hidden; padding: 72px 0 48px; border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); margin-bottom: 40px; }
+.hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
 .hero-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px;
   font-weight: 700; color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent);
-  padding: 8px 16px; border-radius: 999px; margin-bottom: 24px; letter-spacing: 0.04em;
-  box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 30%, transparent); border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent); }
+  padding: 8px 16px; border-radius: 999px; margin-bottom: 28px; letter-spacing: 0.04em;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--primary) 30%, transparent); border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent); }
 .hero-badge .plat-ic { display: inline-flex; gap: 6px; margin-left: 4px; }
 .hero-badge .plat-ic svg { opacity: 0.85; }
-.hero h1 { color: var(--text); font-size: 48px; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 20px; }
-.hero .lede { color: var(--muted); font-size: 17px; line-height: 1.65; max-width: 50ch; margin: 0 0 28px; }
-.hero .btn.primary { color: var(--on-primary); box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 40%, transparent); transition: transform 0.2s, box-shadow 0.2s; }
-.hero .btn.primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 60%, transparent); }
+.hero h1 { color: var(--text); font-size: 52px; line-height: 1.06; letter-spacing: -0.035em; margin: 0 0 22px; font-weight: 800; }
+.hero .lede { color: var(--muted); font-size: 18px; line-height: 1.7; max-width: 48ch; margin: 0 0 32px; }
+.hero .btn.primary { color: var(--on-primary); background: var(--gradient); box-shadow: 0 8px 28px color-mix(in srgb, var(--primary) 45%, transparent); transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease; font-size: 15px; padding: 14px 32px; }
+.hero .btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px color-mix(in srgb, var(--primary) 60%, transparent); }
 .hero .trust { color: var(--muted); font-size: 12px; margin-top: 16px; }
 @media (prefers-reduced-motion: no-preference) {
   .hero .btn.primary { animation: nxPulseRing 2.8s ease-in-out infinite; }
@@ -548,123 +547,42 @@ body {
 @media (max-width: 860px) { .hero-inner { grid-template-columns: 1fr; } .hero-mockup { display: none; } }
 
 /* ── Stats strip ── */
-.mkt-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-  margin: 16px 0; padding: 32px; border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+.mkt-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  margin: 20px 0; padding: 36px; border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
   border-radius: var(--radius-lg); background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 16px 40px rgba(0,0,0,0.05); }
-.mkt-stats .stat { text-align: center; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.mkt-stats .stat:hover { transform: translateY(-4px) scale(1.02); }
-.mkt-stats .stat-num { display: block; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); }
-.mkt-stats .stat-label { display: block; color: var(--muted); font-size: 12px; margin-top: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.mkt-stats .stat { text-align: center; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.mkt-stats .stat:hover { transform: translateY(-5px) scale(1.03); }
+.mkt-stats .stat-num { display: block; font-size: 34px; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); }
+.mkt-stats .stat-label { display: block; color: var(--muted); font-size: 12px; margin-top: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* ── Section headings ── */
-.mkt-heading { text-align: center; margin: 80px 0 16px; }
-.mkt-heading h2 { font-size: 36px; letter-spacing: -0.02em; margin: 0; color: var(--text); }
-.mkt-heading p { color: var(--muted); font-size: 16px; margin: 12px auto 0; max-width: 52ch; line-height: 1.65; }
-.eyebrow { display: block; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--primary); margin-bottom: 10px; }
+.mkt-heading { text-align: center; margin: 96px 0 18px; }
+.mkt-heading h2 { font-size: 38px; letter-spacing: -0.025em; margin: 0; color: var(--text); font-weight: 800; }
+.mkt-heading p { color: var(--muted); font-size: 16px; margin: 14px auto 0; max-width: 52ch; line-height: 1.7; }
+.eyebrow { display: block; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 12px; }
 
 /* ── Desktop showcase ── */
-.desktop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+.desktop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 44px; }
 .dsk-card {
-  display: flex; flex-direction: column; gap: 16px;
+  display: flex; flex-direction: column; gap: 18px; align-items: center; text-align: center;
   background: color-mix(in srgb, var(--surface) 70%, transparent); backdrop-filter: blur(16px);
   border: 1px solid color-mix(in srgb, var(--border) 50%, transparent); border-radius: var(--radius-lg);
-  padding: 20px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  padding: 36px 24px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.3s ease;
   position: relative; overflow: hidden;
 }
-.dsk-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px color-mix(in srgb, var(--primary) 18%, transparent); border-color: color-mix(in srgb, var(--primary) 36%, transparent); }
-.dsk-card .dsk-chrome { border-radius: 10px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--border) 60%, transparent); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-.dsk-card .dsk-titlebar { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: color-mix(in srgb, var(--bg) 60%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); }
-.dsk-card .dsk-titlebar .dot { width: 9px; height: 9px; border-radius: 50%; }
-.dsk-card .dsk-titlebar .dot.r { background: #ff5f57; } .dsk-card .dsk-titlebar .dot.y { background: #febc2e; } .dsk-card .dsk-titlebar .dot.g { background: #28c840; }
-/* Desktop iframe preview */
-.dsk-iframe-wrap { width: 100%; height: 152px; overflow: hidden; position: relative; background: var(--bg); }
-.dsk-iframe-wrap iframe { width: 1120px; height: 680px; transform: scale(0.224); transform-origin: top left; pointer-events: none; border: none; display: block; }
-.dsk-card .dsk-info { display: flex; flex-direction: column; gap: 6px; }
-.dsk-plat-header { display: flex; align-items: center; gap: 10px; }
-.dsk-plat-header h3 { font-size: 17px; font-weight: 700; margin: 0; }
+.dsk-card:hover { transform: translateY(-8px); box-shadow: 0 28px 56px color-mix(in srgb, var(--primary) 20%, transparent); border-color: color-mix(in srgb, var(--primary) 40%, transparent); }
+.dsk-card-icon { display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: var(--radius-lg); background: var(--tint); margin-bottom: 10px; transition: background 0.3s ease; }
+.dsk-card:hover .dsk-card-icon { background: color-mix(in srgb, var(--primary) 20%, transparent); }
+.dsk-card-icon svg, .dsk-plat-logo-lg svg { width: 32px; height: 32px; }
+.dsk-card .dsk-info { display: flex; flex-direction: column; gap: 8px; }
+.dsk-plat-header { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.dsk-plat-header h3 { font-size: 18px; font-weight: 700; margin: 0; }
 .dsk-plat-logo { flex: none; display: inline-flex; align-items: center; }
-.dsk-card .dsk-info p { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.55; }
-.dsk-card .dsk-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 11px 20px; border-radius: var(--radius); font-size: 13px; font-weight: 600; text-decoration: none; background: var(--primary); color: var(--on-primary); box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 38%, transparent); transition: transform 0.18s, box-shadow 0.18s; margin-top: auto; }
-.dsk-card .dsk-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px color-mix(in srgb, var(--primary) 52%, transparent); }
+.dsk-card .dsk-info p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.6; }
+.dsk-card .dsk-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 22px; border-radius: var(--radius); font-size: 13px; font-weight: 600; text-decoration: none; background: var(--gradient); color: #ffffff; box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 40%, transparent); transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease; margin-top: auto; }
+.dsk-card .dsk-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 55%, transparent); }
 @media (max-width: 860px) { .desktop-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }
-
-/* ── Mobile showcase ── */
-.mobile-showcase { margin-top: 40px; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: center; }
-.phone-row { display: flex; gap: 20px; justify-content: center; align-items: flex-end; }
-/* Realistic phone frame */
-.phone-mockup {
-  width: 210px; height: 440px; border-radius: 40px;
-  border: 9px solid #1a1a1e;
-  background: var(--bg);
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,0.08) inset,
-    0 0 0 1.5px #0a0a0b,
-    0 28px 70px rgba(0,0,0,0.45), 0 8px 20px rgba(0,0,0,0.25);
-  overflow: hidden; position: relative; flex: none;
-}
-.phone-mockup .ph-di { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 100px; height: 28px; background: #0a0a0b; border-radius: 16px; z-index: 5; }
-.phone-mockup .ph-screen { height: 100%; display: flex; flex-direction: column; background: var(--bg); overflow: hidden; }
-/* Status bar */
-.ph-sb { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 11px; font-weight: 700; color: var(--text); }
-.ph-sb .ph-time { padding-top: 4px; }
-.ph-sb .ph-sys { display: flex; align-items: center; gap: 4px; padding-top: 4px; }
-/* App bar */
-.ph-appbar { height: 44px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: color-mix(in srgb, var(--bg) 80%, var(--primary)); border-bottom: 1px solid color-mix(in srgb, var(--primary) 16%, var(--surface)); }
-.ph-appbar-logo { width: 20px; height: 20px; border-radius: 5px; background: var(--primary); display: flex; align-items: center; justify-content: center; }
-.ph-appbar-title { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; color: var(--text); }
-.ph-appbar-avatar { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; background: var(--tint); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--primary); }
-/* Screen content */
-.ph-content { flex: 1; overflow: hidden; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-.ph-card2 { background: linear-gradient(155deg, var(--tint-soft), var(--surface) 70%); border: 1px solid var(--border); border-radius: 10px; padding: 10px; flex: none; }
-.ph-card2-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.ph-card2-val { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); margin-top: 2px; }
-.ph-card2-sub { font-size: 9px; color: var(--muted); margin-top: 2px; }
-.ph-cards-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: none; }
-.ph-card-sm { background: linear-gradient(155deg, var(--tint-soft), var(--surface) 70%); border: 1px solid var(--border); border-radius: 10px; padding: 8px; }
-.ph-card-sm .ph-card2-val { font-size: 15px; }
-.ph-ai { background: linear-gradient(120deg, color-mix(in srgb, var(--primary) 16%, var(--surface)), var(--surface)); border: 1px solid color-mix(in srgb, var(--primary) 26%, var(--border)); border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; flex: none; }
-.ph-ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 6px var(--primary); flex: none; }
-.ph-ai-msg { font-size: 9px; color: var(--text); flex: 1; font-weight: 500; }
-/* Tab bar */
-.ph-tabs { flex: none; border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent); background: var(--surface); display: flex; justify-content: space-around; padding: 8px 0 10px; }
-.ph-tab2 { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.ph-tab2 .ph-tab2-ic { width: 22px; height: 22px; border-radius: 7px; background: var(--tint); opacity: 0.5; }
-.ph-tab2.active .ph-tab2-ic { opacity: 1; background: var(--primary); }
-.ph-tab2 .ph-tab2-lbl { font-size: 8px; font-weight: 600; color: var(--muted); }
-.ph-tab2.active .ph-tab2-lbl { color: var(--primary); }
-
-@media (prefers-reduced-motion: no-preference) {
-  .phone-mockup:nth-child(1) { animation: nxPhoneFloat 5s ease-in-out infinite; }
-  .phone-mockup:nth-child(2) { animation: nxPhoneFloat 5s ease-in-out infinite 1.8s; }
-  @keyframes nxPhoneFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-}
-.mobile-features { display: flex; flex-direction: column; gap: 20px; }
-.mobile-features .mf-item { display: flex; gap: 14px; align-items: flex-start; }
-.mobile-features .mf-ic { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: var(--radius); background: var(--tint); color: var(--primary); flex: none; }
-.mobile-features .mf-text h4 { font-size: 15px; font-weight: 700; margin: 0 0 4px; color: var(--text); }
-.mobile-features .mf-text p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.55; }
-
-/* ── Store download buttons ── */
-.mobile-stores { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
-.store-btn {
-  display: inline-flex; align-items: center; gap: 14px; text-align: left;
-  padding: 14px 22px; border-radius: var(--radius-lg);
-  border: 1px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
-  background: color-mix(in srgb, var(--surface) 80%, transparent); backdrop-filter: blur(12px);
-  color: var(--text); min-width: 190px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  transition: all 0.22s; position: relative; cursor: pointer; text-decoration: none; font-family: inherit;
-}
-.store-btn:hover { border-color: color-mix(in srgb, var(--primary) 50%, transparent); background: color-mix(in srgb, var(--tint) 50%, var(--surface)); transform: translateY(-2px); box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 16%, transparent); }
-.store-btn .store-ic { display: inline-flex; flex: none; }
-.store-btn .store-text { display: flex; flex-direction: column; gap: 1px; }
-.store-btn .store-top { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; }
-.store-btn .store-name { font-size: 16px; font-weight: 800; color: var(--text); }
-.store-qr-badge { margin-left: auto; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.store-qr-badge .qr-mini { width: 36px; height: 36px; border-radius: 4px; background: #fff; padding: 3px; }
-.store-qr-badge .qr-mini svg { width: 30px; height: 30px; display: block; }
-.store-coming { font-size: 9px; font-weight: 700; color: var(--primary); letter-spacing: 0.04em; text-align: center; margin-top: 2px; }
-@media (max-width: 860px) { .mobile-showcase { grid-template-columns: 1fr; } .phone-row { margin-bottom: 24px; } }
 
 /* ── Integrations strip ── */
 .mkt-integrations { margin-top: 80px; padding: 40px 0; overflow: hidden; border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); text-align: center; background: color-mix(in srgb, var(--surface) 30%, transparent); }
@@ -682,21 +600,54 @@ body {
 .brand-logo-pill svg { flex: none; }
 
 /* ── Closing CTA band ── */
-.cta-band { margin: 80px 0 0; padding: 56px 32px; text-align: center;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 14%, var(--surface)), color-mix(in srgb, var(--primary) 4%, var(--surface)));
-  border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent); border-radius: var(--radius-lg);
-  box-shadow: 0 20px 48px color-mix(in srgb, var(--primary) 12%, transparent); }
-.cta-band .cta-logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.cta-band { margin: 96px 0 0; padding: 64px 40px; text-align: center;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 16%, var(--surface)), color-mix(in srgb, var(--accent) 6%, var(--surface)));
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent); border-radius: var(--radius-lg);
+  box-shadow: 0 24px 56px color-mix(in srgb, var(--primary) 14%, transparent); }
+.cta-band .cta-logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .cta-band .cta-logo .brand { font-size: 22px; font-weight: 800; letter-spacing: 0.05em; }
-.cta-band h2 { font-size: 30px; margin: 0 0 12px; letter-spacing: -0.02em; color: var(--text); }
-.cta-band p { color: var(--muted); font-size: 15px; margin: 0 0 28px; line-height: 1.6; }
-.cta-band .btn.primary { font-size: 15px; padding: 15px 36px; }
+.cta-band h2 { font-size: 32px; margin: 0 0 14px; letter-spacing: -0.025em; color: var(--text); font-weight: 800; }
+.cta-band p { color: var(--muted); font-size: 16px; margin: 0 0 32px; line-height: 1.65; }
+.cta-band .btn.primary { font-size: 16px; padding: 16px 40px; background: var(--gradient); color: #ffffff; box-shadow: 0 8px 28px color-mix(in srgb, var(--primary) 45%, transparent); transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease; }
+.cta-band .btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px color-mix(in srgb, var(--primary) 60%, transparent); }
+
+/* ── How It Works ── */
+.how-section { margin: 96px 0 0; }
+.how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-top: 44px; }
+.how-step {
+  text-align: center; padding: 36px 28px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent); border-radius: var(--radius-lg);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+.how-step:hover { transform: translateY(-6px); box-shadow: 0 20px 48px color-mix(in srgb, var(--primary) 14%, transparent); }
+.how-num { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--gradient); color: #ffffff; font-size: 17px; font-weight: 800; margin-bottom: 18px; box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 35%, transparent); }
+.how-step h3 { font-size: 18px; font-weight: 700; margin: 0 0 10px; color: var(--text); }
+.how-step p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.6; }
+@media (max-width: 720px) { .how-steps { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; } }
 
 /* ── Download center (kept for direct links) ── */
 .mkt-download h2 { text-align: center; font-size: 36px; letter-spacing: -0.02em; margin: 80px 0 24px; color: var(--text); }
 .mkt-download { text-align: center; }
 .mkt-download table { text-align: left; margin-top: 32px; background: color-mix(in srgb, var(--surface) 60%, transparent); backdrop-filter: blur(12px); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.02); }
 .mkt-download th, .mkt-download td { border-color: color-mix(in srgb, var(--border) 40%, transparent); }
+
+/* ── Cookie banner ── */
+.cookie-banner {
+  display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  max-width: 520px; width: calc(100% - 32px); z-index: 9999;
+  background: color-mix(in srgb, var(--surface) 95%, transparent); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-lg); padding: 22px 26px;
+  box-shadow: 0 24px 56px rgba(0,0,0,0.22);
+  align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.cookie-banner .cb-content { flex: 1; min-width: 200px; }
+.cookie-banner .cb-content strong { font-size: 14px; color: var(--text); font-weight: 700; }
+.cookie-banner .cb-content p { font-size: 13px; color: var(--muted); margin: 6px 0 0; line-height: 1.55; }
+.cookie-banner .cb-actions { display: flex; gap: 10px; flex: none; }
+.cookie-banner .cb-actions .btn { font-size: 13px; padding: 9px 18px; border-radius: var(--radius); }
+.cookie-banner .cb-actions .btn.primary { background: var(--gradient); color: #ffffff; }
 
 @media (max-width: 720px) { .mkt-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px; } }
 
@@ -705,6 +656,10 @@ body {
   .nx-reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1); transition-delay: var(--nx-d, 0ms); }
   .nx-reveal.nx-in { opacity: 1; transform: none; }
 }
+
+/* ── Focus styles (accessibility) ── */
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+.btn:focus-visible { outline-offset: 4px; }
 `.trim();
 }
 
@@ -750,15 +705,13 @@ export function renderMarketingDocument(
 
   const hamburger = `<button class="hamburger" aria-label="Menu" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>`;
 
-  const navbar = `<div class="navbar" id="navbar"><div class="nav-container">
+  const navbar = `<div class="navbar" role="banner" id="navbar"><div class="nav-container">
 <a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
 <nav class="nav-links" aria-label="Primary">
 <a class="nav-link" href="#features">${label("mkt.nav.features")}</a>
-<a class="nav-link" href="#desktop">${label("mkt.nav.preview")}</a>
-<a class="nav-link" href="#mobile">${label("mkt.nav.download")}</a>
-<a class="nav-link" href="#faq">${label("mkt.nav.faq")}</a>
+<a class="nav-link" href="#desktop">${label("mkt.nav.download")}</a>
 </nav>
-<div class="nav-actions">${langSwitch}${themeToggle}<a class="btn nav-cta" href="/login">${label("mkt.nav.signIn")}</a><a class="btn primary nav-cta" href="#desktop">${label("mkt.nav.download")}</a>${hamburger}</div>
+<div class="nav-actions">${langSwitch}${themeToggle}<a class="btn primary nav-cta" href="#desktop">${label("mkt.nav.download")}</a>${hamburger}</div>
 </div></div>`;
 
   const heroDl = featured
@@ -804,21 +757,16 @@ ${heroMockup}
   const osLogoMac = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.7 17.3c-.5 1.1-.7 1.6-1.3 2.6-.9 1.4-2.1 3.2-3.7 3.2-1.4 0-1.7-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.7-1.6-3.6-3-2.5-3.8-2.8-8.3-1.2-10.7 1.1-1.7 2.8-2.7 4.5-2.7 1.7 0 2.7.9 4.1.9 1.3 0 2.1-.9 4-.9 1.4 0 2.9.8 4 2.1-3.5 1.9-2.9 6.9.4 8.5zM14.5 3.6c.8-1 1.4-2.4 1.3-3.8-1.3.1-2.8.9-3.7 1.9-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.8z"/></svg>`;
   const osLogoLin = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 2c1.5 0 3 2.5 3.5 6.5h-7C9 6.5 10.5 4 12 4zm-7.9 6.5h3.4c.1-2 .5-3.8 1-5.3-2.4.8-4.1 2.9-4.4 5.3zm0 3c.3 2.4 2 4.5 4.4 5.3-.5-1.5-.9-3.3-1-5.3H4.1zm7.9 6.5c-1.5 0-3-2.5-3.5-6.5h7C15 17.5 13.5 20 12 20zm3.5-1.2c2.4-.8 4.1-2.9 4.4-5.3h-3.4c-.1 2-.5 3.8-1 5.3zm1-6.5c.1-2 .5-3.8 1-5.3 2.4.8 4.1 2.9 4.4 5.3h-5.4z"/></svg>`;
 
-  const desktopCard = (platform: string, titleKey: string, descKey: string, downloadUrl: string, iframeSrc: string) => {
+  const desktopCard = (platform: string, titleKey: string, descKey: string, downloadUrl: string, _iframeSrc: string) => {
     const osLogo = platform === "windows" ? osLogoWin : platform === "macos" ? osLogoMac : osLogoLin;
-    const titlebarDots = platform === "macos"
-      ? `<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>`
-      : `<span class="dot r" style="border-radius:2px;width:10px;height:8px;"></span><span class="dot y" style="border-radius:2px;width:10px;height:8px;"></span><span class="dot g" style="border-radius:2px;width:10px;height:8px;"></span>`;
+    const platformLabel = platform === "windows" ? "Windows" : platform === "macos" ? "macOS" : "Linux";
     return `<div class="dsk-card">
-<div class="dsk-chrome">
-<div class="dsk-titlebar">${titlebarDots}</div>
-<div class="dsk-iframe-wrap"><iframe src="${escapeHtml(iframeSrc)}" title="${label(titleKey)} Preview" loading="lazy" sandbox="allow-scripts" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
-</div>
+<div class="dsk-card-icon"><span class="dsk-plat-logo-lg">${osLogo}</span></div>
 <div class="dsk-info">
 <div class="dsk-plat-header"><span class="dsk-plat-logo">${osLogo}</span><h3>${label(titleKey)}</h3></div>
 <p>${label(descKey)}</p>
 </div>
-<a class="dsk-btn" href="${escapeHtml(downloadUrl)}" download>${osLogo}<span>${label("mkt.desktop.download")} · ${escapeHtml(featured ? featured.version : "3.14.2")}</span></a>
+<a class="dsk-btn" href="${escapeHtml(downloadUrl)}" download aria-label="${label("mkt.desktop.download")} ${platformLabel}">${osLogo}<span>${label("mkt.desktop.download")} · ${escapeHtml(featured ? featured.version : "3.14.2")}</span></a>
 </div>`;
   };
 
@@ -832,129 +780,6 @@ ${heroMockup}
 ${desktopCard("windows", "mkt.desktop.windows", "mkt.desktop.windowsDesc", winUrl, "/desktop")}
 ${desktopCard("macos", "mkt.desktop.macos", "mkt.desktop.macosDesc", macUrl, "/desktop")}
 ${desktopCard("linux", "mkt.desktop.linux", "mkt.desktop.linuxDesc", linUrl, "/desktop")}
-</div>
-</section>`;
-
-  // Battery SVG for phone status bar
-  const battSvg = `<svg width="20" height="10" viewBox="0 0 20 10" fill="currentColor" aria-hidden="true"><rect x="0" y="1" width="17" height="8" rx="2" stroke="currentColor" stroke-width="1" fill="none"/><rect x="1" y="2.5" width="12" height="5" rx="1"/><rect x="18" y="3.5" width="1.5" height="3" rx="0.75"/></svg>`;
-  const wifiSvg = `<svg width="13" height="10" viewBox="0 0 13 10" fill="currentColor" aria-hidden="true"><path d="M6.5 8.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-2.5a4 4 0 0 1 2.83 1.17l1.06-1.06A5.5 5.5 0 0 0 1.61 6.11l1.06 1.06A4 4 0 0 1 6.5 6zm0-3a7 7 0 0 1 4.95 2.05l1.06-1.06A8.5 8.5 0 0 0 .49 4l1.06 1.05A7 7 0 0 1 6.5 3z"/></svg>`;
-  // NEXUS logo mark for phone app bar
-  const phoneLogo = `<svg width="14" height="14" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="var(--primary)"/><path d="M10 22V10L22 22V10" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
-  const isTr = locale === "tr";
-
-  const mobilePhone = (variant: "ios" | "android") => {
-    const isIos = variant === "ios";
-    const screen1Label = isTr ? "Cihazlar" : "DEVICES ONLINE";
-    const screen1Val = "6/8";
-    const screen1Sub = isTr ? "2 çevrimdışı" : "2 offline";
-    const energyLabel = isTr ? "BUGÜN ENERJİ" : "ENERGY TODAY";
-    const routinesLabel = isTr ? "AKTİF RUTIN" : "ACTIVE ROUTINES";
-    const aiMsg = isTr ? "Salon ışıklarını kısayım mı?" : "Dim living room lights?";
-    const tabs = isTr
-      ? ["Bugün", "Ev", "Cihazlar", "Aile", "Daha"]
-      : ["Today", "Home", "Devices", "Family", "More"];
-    const tabIcons = [
-      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18"/></svg>`,
-      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/></svg>`,
-      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="14" height="10" rx="1.5"/><rect x="16" y="9" width="6" height="11" rx="1.5"/></svg>`,
-      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><path d="M2 20a6 6 0 0 1 12 0"/></svg>`,
-      `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg>`,
-    ];
-    return `<div class="phone-mockup">
-${isIos ? `<div class="ph-di" aria-hidden="true"></div>` : ""}
-<div class="ph-screen">
-<div class="ph-sb" aria-hidden="true">
-  <span class="ph-time">9:41</span>
-  <span class="ph-sys">${wifiSvg}&nbsp;${battSvg}</span>
-</div>
-<div class="ph-appbar">
-  <span class="ph-appbar-logo">${phoneLogo}</span>
-  <span class="ph-appbar-title">NEXUS</span>
-  <span class="ph-appbar-avatar">N</span>
-</div>
-<div class="ph-content">
-  <div class="ph-card2">
-    <div class="ph-card2-label">${screen1Label}</div>
-    <div class="ph-card2-val">${screen1Val} <span style="font-size:11px;font-weight:500;color:var(--muted);">online</span></div>
-    <div class="ph-card2-sub">${screen1Sub}</div>
-  </div>
-  <div class="ph-cards-row">
-    <div class="ph-card-sm ph-card2"><div class="ph-card2-label">${energyLabel}</div><div class="ph-card2-val">2.72<span style="font-size:9px;font-weight:600;color:var(--muted);"> kWh</span></div></div>
-    <div class="ph-card-sm ph-card2"><div class="ph-card2-label">${routinesLabel}</div><div class="ph-card2-val">5</div></div>
-  </div>
-  <div class="ph-ai">
-    <span class="ph-ai-dot"></span>
-    <span class="ph-ai-msg">${aiMsg}</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </div>
-</div>
-<nav class="ph-tabs" aria-hidden="true">
-${tabs.map((t, i) => `<div class="ph-tab2${i === 0 ? " active" : ""}"><div class="ph-tab2-ic">${tabIcons[i] ?? ""}</div><div class="ph-tab2-lbl">${t}</div></div>`).join("")}
-</nav>
-</div>
-</div>`;
-  };
-
-  const mobileFeature = (icon: string, titleKey: string, descKey: string) =>
-    `<div class="mf-item"><span class="mf-ic">${icon}</span><div class="mf-text"><h4>${label(titleKey)}</h4><p>${label(descKey)}</p></div></div>`;
-
-  // Branded placeholder QR codes (will be replaced with real QR when store listing goes live)
-  const nexusQrPattern = (id: string) =>
-    `<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="30" height="30" fill="white"/>
-      <rect x="2" y="2" width="10" height="10" fill="#111" rx="1"/>
-      <rect x="3" y="3" width="8" height="8" fill="white" rx="0.5"/>
-      <rect x="4" y="4" width="6" height="6" fill="#111" rx="0.5"/>
-      <rect x="18" y="2" width="10" height="10" fill="#111" rx="1"/>
-      <rect x="19" y="3" width="8" height="8" fill="white" rx="0.5"/>
-      <rect x="20" y="4" width="6" height="6" fill="#111" rx="0.5"/>
-      <rect x="2" y="18" width="10" height="10" fill="#111" rx="1"/>
-      <rect x="3" y="19" width="8" height="8" fill="white" rx="0.5"/>
-      <rect x="4" y="20" width="6" height="6" fill="#111" rx="0.5"/>
-      ${id === "ios"
-        ? `<rect x="14" y="2" width="2" height="2" fill="#111"/><rect x="14" y="6" width="2" height="2" fill="#111"/>
-           <rect x="14" y="14" width="2" height="2" fill="#111"/><rect x="18" y="14" width="2" height="2" fill="#111"/>
-           <rect x="22" y="14" width="2" height="2" fill="#111"/><rect x="14" y="18" width="2" height="2" fill="#111"/>
-           <rect x="14" y="22" width="2" height="2" fill="#111"/><rect x="18" y="22" width="2" height="2" fill="#111"/>
-           <rect x="22" y="18" width="2" height="2" fill="#111"/><rect x="26" y="22" width="2" height="2" fill="#111"/>`
-        : `<rect x="14" y="2" width="2" height="2" fill="#111"/><rect x="14" y="6" width="2" height="2" fill="#111"/>
-           <rect x="16" y="14" width="2" height="2" fill="#111"/><rect x="20" y="14" width="2" height="2" fill="#111"/>
-           <rect x="24" y="14" width="2" height="2" fill="#111"/><rect x="16" y="18" width="2" height="2" fill="#111"/>
-           <rect x="20" y="22" width="2" height="2" fill="#111"/><rect x="24" y="18" width="2" height="2" fill="#111"/>
-           <rect x="14" y="22" width="2" height="2" fill="#111"/><rect x="28" y="18" width="2" height="2" fill="#111"/>`}
-    </svg>`;
-
-  const dlText = isTr ? "İndir" : "Download";
-
-  const mobileSection = `<section id="mobile" class="mkt-anchor">
-<div class="mkt-heading"><span class="eyebrow">${label("mkt.mobile.eyebrow")}</span><h2>${label("mkt.mobile.title")}</h2><p>${label("mkt.mobile.desc")}</p></div>
-<div class="mobile-showcase">
-<div class="phone-row">${mobilePhone("ios")}${mobilePhone("android")}</div>
-<div class="mobile-features">
-${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`, "mkt.mobile.feat1.title", "mkt.mobile.feat1.desc")}
-${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`, "mkt.mobile.feat2.title", "mkt.mobile.feat2.desc")}
-${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`, "mkt.mobile.feat3.title", "mkt.mobile.feat3.desc")}
-${mobileFeature(`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 14c-3 0-6 2-6 5v1h12v-1c0-3-3-5-6-5z"/></svg>`, "mkt.mobile.feat4.title", "mkt.mobile.feat4.desc")}
-<div class="mobile-stores">
-<button class="store-btn" type="button" aria-label="${isTr ? "App Store\'dan İndir" : "Download on the App Store"}">
-  <span class="store-ic">${appleStoreIcon()}</span>
-  <span class="store-text">
-    <span class="store-top">${isTr ? "App Store\'dan" : "Download on the"}</span>
-    <span class="store-name">App Store</span>
-  </span>
-  <span class="store-qr-badge"><span class="qr-mini">${nexusQrPattern("ios")}</span><span class="store-coming">${isTr ? "Yakında" : "Coming soon"}</span></span>
-</button>
-<button class="store-btn" type="button" aria-label="${isTr ? "Google Play\'den İndir" : "Download on Google Play"}">
-  <span class="store-ic">${googlePlayIcon()}</span>
-  <span class="store-text">
-    <span class="store-top">${isTr ? "Google Play\'den" : "Download on"}</span>
-    <span class="store-name">Google Play</span>
-  </span>
-  <span class="store-qr-badge"><span class="qr-mini">${nexusQrPattern("android")}</span><span class="store-coming">${isTr ? "Yakında" : "Coming soon"}</span></span>
-</button>
-</div>
-</div>
 </div>
 </section>`;
 
@@ -999,10 +824,13 @@ ${heroDl}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 ${renderHead(seoConfig)}
+<link rel="preload" href="/fonts/space-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta name="theme-color" content="${t.color.bg}" />
 <style>${renderStyles(t)}${marketingCss()}</style>
+<!-- Analytics: privacy-respecting, no cookies. Replace with Plausible/Umami script when ready. -->
 </head>
 <body>
 <a class="skip" href="#features">${label("mkt.skipToContent")}</a>
@@ -1012,9 +840,15 @@ ${hero}
 ${integrationStrip}
 ${stats}
 <div id="features" class="mkt-anchor">${renderFeatures()}</div>
+<section class="how-section mkt-anchor" id="how">
+<div class="mkt-heading"><h2>${label("mkt.how.title")}</h2></div>
+<div class="how-steps">
+<div class="how-step"><span class="how-num">1</span><h3>${label("mkt.how.step1.title")}</h3><p>${label("mkt.how.step1.desc")}</p></div>
+<div class="how-step"><span class="how-num">2</span><h3>${label("mkt.how.step2.title")}</h3><p>${label("mkt.how.step2.desc")}</p></div>
+<div class="how-step"><span class="how-num">3</span><h3>${label("mkt.how.step3.title")}</h3><p>${label("mkt.how.step3.desc")}</p></div>
+</div>
+</section>
 ${desktopSection}
-${mobileSection}
-<div id="faq" class="mkt-anchor">${renderFaq()}</div>
 ${ctaBand}
 </div>
 ${renderRichFooter(t.color.primary)}
@@ -1035,7 +869,7 @@ ${renderRichFooter(t.color.primary)}
   // ── Scroll reveal ──
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduce) {
-    var sel = '.mkt-stats .stat, .feature-card, .dsk-card, .phone-mockup, .mf-item, .faq-item, .cta-band, .mkt-heading, .brand-logo-pill';
+    var sel = '.mkt-stats .stat, .feature-card, .how-step, .dsk-card, .cta-band, .mkt-heading, .brand-logo-pill';
     var revealEls = Array.prototype.slice.call(document.querySelectorAll(sel));
     revealEls.forEach(function(el){ el.classList.add('nx-reveal'); });
     var io = new IntersectionObserver(function(entries){
@@ -1077,16 +911,157 @@ ${renderRichFooter(t.color.primary)}
   }
 })();
 </script>
+${renderCookieBanner()}
+<script>
+(function(){
+  var banner = document.getElementById('cookie-banner');
+  if (!banner || localStorage.getItem('nx-cookies')) { if (banner) banner.remove(); return; }
+  banner.style.display = 'flex';
+  banner.querySelector('.cb-accept').addEventListener('click', function() { localStorage.setItem('nx-cookies','accepted'); banner.remove(); });
+  banner.querySelector('.cb-decline').addEventListener('click', function() { localStorage.setItem('nx-cookies','declined'); banner.remove(); });
+})();
+</script>
 </body>
 </html>`;
 }
 
-/** Apple App Store glyph (inline, currentColor). */
-function appleStoreIcon(): string {
-  return `<svg width="22" height="22" viewBox="0 0 16 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.09 9.54c-.02-1.9 1.55-2.81 1.62-2.86-.88-1.29-2.26-1.47-2.75-1.49-1.17-.12-2.28.69-2.87.69-.59 0-1.5-.67-2.47-.65-1.27.02-2.44.74-3.09 1.87-1.32 2.29-.34 5.68.95 7.54.63.9 1.38 1.92 2.36 1.88.95-.04 1.31-.61 2.45-.61s1.47.61 2.47.59c1.02-.02 1.66-.92 2.28-1.83.72-1.05 1.02-2.07 1.03-2.12-.02-.01-1.97-.76-1.99-3.01zM11.2 3.9c.52-.64.88-1.51.78-2.4-.75.03-1.67.5-2.21 1.13-.48.56-.91 1.46-.79 2.32.84.07 1.69-.42 2.22-1.05z"/></svg>`;
+/**
+ * Renders a minimal legal page (Privacy Policy or Terms of Service).
+ * Uses the same design system for visual consistency.
+ */
+export function renderLegalPage(
+  locale: string,
+  theme: ThemeName = "dark",
+  page: "privacy" | "terms",
+): string {
+  setLocale(locale);
+  const t = getTheme(theme);
+
+  const titles = {
+    privacy: { en: "Privacy Policy", tr: "Gizlilik Politikası" },
+    terms: { en: "Terms of Service", tr: "Kullanım Koşulları" },
+  };
+
+  const contents: Record<string, Record<string, string>> = {
+    privacy: {
+      en: `<h2>Your Privacy Matters</h2>
+<p>NEXUS is designed with privacy at its core. All data processing happens locally on your devices.</p>
+<h3>Data Collection</h3>
+<p>We do not collect, store, or transmit any personal data to external servers. All voice commands, routines, and device data remain on your local network.</p>
+<h3>Local Processing</h3>
+<p>All AI processing, including voice recognition and routine automation, occurs entirely on your device. No cloud dependency is required for core functionality.</p>
+<h3>Analytics</h3>
+<p>We use privacy-respecting, cookie-free analytics that collect only aggregate page view counts. No personal identifiers are tracked.</p>
+<h3>Contact</h3>
+<p>For privacy-related questions, contact us at <a href="mailto:privacy@nexus-ai.example.com">privacy@nexus-ai.example.com</a>.</p>`,
+      tr: `<h2>Gizliliğiniz Önemli</h2>
+<p>NEXUS, gizliliği temel alarak tasarlanmıştır. Tüm veri işleme cihazlarınızda yerel olarak gerçekleşir.</p>
+<h3>Veri Toplama</h3>
+<p>Kişisel verileri toplamıyor, saklamıyor veya harici sunuculara iletmiyoruz. Tüm sesli komutlar, rutinler ve cihaz verileri yerel ağınızda kalır.</p>
+<h3>Yerel İşleme</h3>
+<p>Ses tanıma ve rutin otomasyonu dahil tüm yapay zeka işlemleri tamamen cihazınızda gerçekleşir. Temel işlevsellik için bulut bağımlılığı gerekmez.</p>
+<h3>Analitik</h3>
+<p>Yalnızca toplam sayfa görüntüleme sayılarını toplayan, gizliliğe saygılı, çerez kullanmayan analitik kullanıyoruz. Kişisel tanımlayıcılar izlenmez.</p>
+<h3>İletişim</h3>
+<p>Gizlilikle ilgili sorularınız için <a href="mailto:privacy@nexus-ai.example.com">privacy@nexus-ai.example.com</a> adresinden bize ulaşın.</p>`,
+    },
+    terms: {
+      en: `<h2>Terms of Service</h2>
+<p>By downloading or using NEXUS, you agree to these terms.</p>
+<h3>License</h3>
+<p>NEXUS grants you a personal, non-transferable license to use the software on your devices for personal and home automation purposes.</p>
+<h3>Acceptable Use</h3>
+<p>You agree not to reverse-engineer, decompile, or attempt to extract source code from the application beyond what is permitted by applicable law.</p>
+<h3>Disclaimer</h3>
+<p>NEXUS is provided "as is" without warranty of any kind. We are not liable for any damages arising from the use of the software.</p>
+<h3>Updates</h3>
+<p>We may update these terms from time to time. Continued use of NEXUS after changes constitutes acceptance of the new terms.</p>`,
+      tr: `<h2>Kullanım Koşulları</h2>
+<p>NEXUS'u indirerek veya kullanarak bu koşulları kabul etmiş olursunuz.</p>
+<h3>Lisans</h3>
+<p>NEXUS, yazılımı kişisel ve ev otomasyonu amaçlarıyla cihazlarınızda kullanmanız için kişisel, devredilemez bir lisans verir.</p>
+<h3>Kabul Edilebilir Kullanım</h3>
+<p>Uygulamayı tersine mühendislik yapmayı, kaynak kodunu çıkarmayı veya yürürlükteki yasaların izin verdiğinin ötesinde herhangi bir işlem yapmayı kabul etmezsiniz.</p>
+<h3>Sorumluluk Reddi</h3>
+<p>NEXUS, herhangi bir garanti olmaksızın "olduğu gibi" sunulmaktadır. Yazılımın kullanımından kaynaklanan zararlardan sorumlu değiliz.</p>
+<h3>Güncellemeler</h3>
+<p>Bu koşulları zaman zaman güncelleyebiliriz. Değişikliklerden sonra NEXUS'u kullanmaya devam etmeniz yeni koşulların kabulü anlamına gelir.</p>`,
+    },
+  };
+
+  const lang = locale === "tr" ? "tr" : "en";
+  const title = titles[page][lang];
+  const content = contents[page][lang];
+
+  return `<!doctype html>
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${escapeHtml(title)} \u2014 NEXUS</title>
+<link rel="icon" href="${faviconDataUri(t.color.primary)}" />
+<meta name="theme-color" content="${t.color.bg}" />
+<style>${renderStyles(t)}${legalPageCss()}</style>
+</head>
+<body>
+<div class="navbar" id="navbar"><div class="nav-container">
+<a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
+<div class="nav-actions"><a class="btn primary nav-cta" href="/">${lang === "tr" ? "Ana Sayfa" : "Home"}</a></div>
+</div></div>
+<main class="legal-content">
+<h1>${escapeHtml(title)}</h1>
+<p class="legal-updated">${lang === "tr" ? "Son g\u00fcncelleme: Temmuz 2026" : "Last updated: July 2026"}</p>
+${content}
+</main>
+${renderRichFooter(t.color.primary)}
+</body>
+</html>`;
 }
 
-/** Google Play glyph (inline, brand colors). */
-function googlePlayIcon(): string {
-  return `<svg width="20" height="22" viewBox="0 0 20 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#00d3ff" d="M.7.8C.4 1.1.2 1.5.2 2.1v17.8c0 .6.2 1 .5 1.3l.1.1L10.8 11v-.2L.7.8z"/><path fill="#ffce00" d="M14.1 14.4l-3.3-3.3v-.2l3.3-3.3.1.1 4 2.3c1.1.6 1.1 1.7 0 2.3l-4.1 2.1z"/><path fill="#00f076" d="M14.2 14.3L10.8 11 .7 21.1c.4.4 1 .4 1.6.1l11.9-6.9z"/><path fill="#ff3131" d="M14.2 7.7L2.3.8C1.7.5 1.1.5.7.9L10.8 11l3.4-3.3z"/></svg>`;
+/**
+ * Renders a 404 Not Found page.
+ */
+export function renderNotFoundPage(
+  locale: string,
+  theme: ThemeName = "dark",
+): string {
+  setLocale(locale);
+  const t = getTheme(theme);
+
+  return `<!doctype html>
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>404 \u2014 NEXUS</title>
+<link rel="icon" href="${faviconDataUri(t.color.primary)}" />
+<meta name="theme-color" content="${t.color.bg}" />
+<style>${renderStyles(t)}${legalPageCss()}</style>
+</head>
+<body>
+<div class="navbar" id="navbar"><div class="nav-container">
+<a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
+<div class="nav-actions"><a class="btn primary nav-cta" href="/">${locale === "tr" ? "Ana Sayfa" : "Home"}</a></div>
+</div></div>
+<main class="legal-content" style="text-align:center;padding-top:120px;">
+<h1 style="font-size:72px;margin:0;">404</h1>
+<p style="font-size:18px;color:var(--muted);margin:16px 0 32px;">${locale === "tr" ? "Sayfa bulunamad\u0131" : "Page not found"}</p>
+<a class="btn primary" href="/">${locale === "tr" ? "Ana Sayfaya D\u00f6n" : "Back to Home"}</a>
+</main>
+${renderRichFooter(t.color.primary)}
+</body>
+</html>`;
+}
+
+/** Minimal CSS for legal/404 pages. */
+function legalPageCss(): string {
+  return `
+.legal-content { max-width: 720px; margin: 0 auto; padding: 100px 24px 60px; }
+.legal-content h1 { font-size: 36px; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--text); }
+.legal-content h2 { font-size: 24px; margin: 40px 0 12px; color: var(--text); }
+.legal-content h3 { font-size: 17px; margin: 24px 0 8px; color: var(--text); }
+.legal-content p { font-size: 15px; color: var(--muted); line-height: 1.7; margin: 0 0 16px; }
+.legal-content a { color: var(--primary); text-decoration: underline; }
+.legal-updated { font-size: 12px; color: var(--muted); margin-bottom: 32px; opacity: 0.7; }
+`.trim();
 }

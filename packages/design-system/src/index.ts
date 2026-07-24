@@ -21,6 +21,8 @@ export interface ColorScale {
   readonly textMuted: string;
   readonly primary: string;
   readonly onPrimary: string;
+  /** Accent / secondary brand color (cyan). */
+  readonly accent: string;
 }
 
 export interface DesignTokens {
@@ -60,8 +62,9 @@ export const lightTheme: DesignTokens = {
     surface: "#ffffff",
     text: "#12141a",
     textMuted: "#64748b",
-    primary: "#4f46e5",
+    primary: "#6C4FE8",
     onPrimary: "#ffffff",
+    accent: "#0EA5C9",
   },
   space: SPACE,
   radius: RADIUS,
@@ -74,8 +77,9 @@ export const darkTheme: DesignTokens = {
     surface: "#111113",
     text: "#f8fafc",
     textMuted: "#94a3b8",
-    primary: "#818cf8",
-    onPrimary: "#0f172a",
+    primary: "#7C5CFF",
+    onPrimary: "#0f0a1e",
+    accent: "#22D3EE",
   },
   space: SPACE,
   radius: RADIUS,

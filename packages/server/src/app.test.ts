@@ -76,9 +76,10 @@ describe("local sync server", () => {
     expect(html).toContain("NEXUS");
     // Desktop showcase cards are rendered.
     expect(html).toContain("desktop-grid");
-    // Mobile apps are advertised as coming soon.
-    expect(html).toContain("App Store");
-    expect(html).toContain("Google Play");
+    // How It Works section is present.
+    expect(html).toContain("how-steps");
+    // Cookie consent banner is included.
+    expect(html).toContain("cookie-banner");
   });
 
   it("applies global security headers", async () => {
