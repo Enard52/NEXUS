@@ -1,4 +1,4 @@
-﻿import { type DesignTokens } from "@nexus/design-system";
+import { type DesignTokens } from "@nexus/design-system";
 import { type VersionInfoService } from "@nexus/infra";
 import { CATALOGS, type Locale } from "@nexus/i18n";
 import {
