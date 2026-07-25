@@ -98,9 +98,55 @@ export class OpenAiProvider implements AiProvider {
   }
 }
 
+export interface LocalOllamaProviderOptions {
+  readonly baseUrl?: string;
+  readonly model?: string;
+}
+
+/**
+ * Local Ollama-backed provider. Enables 100% on-device, offline NLP.
+ * Connects to a local Ollama instance (default: http://127.0.0.1:11434).
+ */
+export class LocalOllamaProvider implements AiProvider {
+  readonly name = "local-ollama";
+  readonly model: string;
+  readonly #baseUrl: string;
+
+  constructor(options?: LocalOllamaProviderOptions) {
+    this.#baseUrl = options?.baseUrl ?? "http://127.0.0.1:11434";
+    this.model = options?.model ?? "llama3";
+  }
+
+  async complete(request: CompletionRequest): Promise<CompletionResult> {
+    const response = await fetch(`${this.#baseUrl}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: this.model,
+        messages: request.messages,
+        options: {
+          temperature: request.temperature ?? 0.7,
+        },
+        stream: false,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(`Ollama API failed: ${response.status} ${errorBody}`);
+    }
+
+    const data = (await response.json()) as any;
+    const text = data.message?.content || "";
+
+    return { text, provider: this.name, model: this.model };
+  }
+}
+
 export interface SelectProviderInput {
   readonly provider: "openai" | "anthropic" | "local";
   readonly openaiApiKey?: string;
+  readonly localBaseUrl?: string;
 }
 
 /**
@@ -111,6 +157,9 @@ export interface SelectProviderInput {
 export function selectProvider(input: SelectProviderInput): AiProvider {
   if (input.provider === "openai" && input.openaiApiKey) {
     return new OpenAiProvider({ apiKey: input.openaiApiKey });
+  }
+  if (input.provider === "local") {
+    return new LocalOllamaProvider({ baseUrl: input.localBaseUrl });
   }
   return new MockProvider();
 }

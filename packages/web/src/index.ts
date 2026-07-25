@@ -11,6 +11,7 @@
 import { getTheme, type ThemeName } from "@nexus/design-system";
 import {
   buildAdminDashboardModel,
+  buildAgentsModel,
   buildBillingModel,
   buildDeviceListModel,
   buildFamilyModel,
@@ -21,6 +22,7 @@ import {
   buildSkillsModel,
   buildSuggestionsModel,
   buildTodayModel,
+  type DeviceRow,
   type NavContext,
   type ScreenId,
 } from "@nexus/interface";
@@ -29,6 +31,7 @@ import {
   escapeHtml,
   faviconDataUri,
   renderAdminDashboard,
+  renderAgents,
   renderBilling,
   renderDevices,
   renderDownloadCenter,
@@ -45,7 +48,10 @@ import {
   renderSkills,
   renderStyles,
   renderSuggestions,
+  renderToday,
   renderTodayPanel,
+  renderPricing,
+  renderTestimonials,
   CURRENT_LOCALE,
 } from "./render.js";
 import { renderHead, type SeoConfig } from "./seo.js";
@@ -61,14 +67,14 @@ export const SITE_URL = "https://nexus-ai.example.com/";
 const deviceManager = new DeviceManager();
 deviceManager.registerConnector(
   new InMemoryConnector("system", [
-    { id: "lamp", name: "Living room ambient lamp", room: "Living room", capabilities: [] },
-    { id: "tv", name: "Living room 4K OLED TV", room: "Living room", capabilities: [] },
-    { id: "ac", name: "Bedroom Climate AC", room: "Bedroom", capabilities: [] },
-    { id: "lock", name: "Front Door Smart Lock", room: "Entrance", capabilities: [] },
-    { id: "speaker", name: "Studio Dolby Soundbar", room: "Studio", capabilities: [] },
-    { id: "camera", name: "Garden Security Camera", room: "Garden", capabilities: [] },
-    { id: "thermostat", name: "Hallway Smart Thermostat", room: "Hallway", capabilities: [] },
-    { id: "curtain", name: "Bedroom Motorized Shades", room: "Bedroom", capabilities: [] },
+    { id: "lamp", name: "Philips Hue Play Gradient Lightstrip", room: "Living room", capabilities: [] },
+    { id: "tv", name: 'LG C3 65" 4K OLED Smart TV', room: "Living room", capabilities: [] },
+    { id: "ac", name: "Daikin Sensira 18000 BTU Inverter AC", room: "Bedroom", capabilities: [] },
+    { id: "lock", name: "August Smart Lock Pro + Connect", room: "Entrance", capabilities: [] },
+    { id: "speaker", name: "Sonos Arc Dolby Atmos Soundbar", room: "Studio", capabilities: [] },
+    { id: "camera", name: "Arlo Pro 4 Spotlight Security Camera", room: "Garden", capabilities: [] },
+    { id: "thermostat", name: "Ecobee Smart Thermostat Premium", room: "Hallway", capabilities: [] },
+    { id: "curtain", name: "Somfy Tahoma Motorized Smart Shades", room: "Bedroom", capabilities: [] },
   ]),
 );
 
@@ -80,21 +86,21 @@ export function demoReleases(): VersionInfoService {
     version: "3.14.2",
     minOs: "Windows 10 and later",
     checksumSha256: "642c097c01c7a7597e8725bb494cbcb0e43be7e63c7c8d20ac1c829b9ea10287",
-    downloadUrl: "https://cdn.nexus-ai.com/nexus-setup-3.14.2.exe",
+    downloadUrl: "/downloads/NEXUS-Setup-3.14.2.exe",
   });
   svc.publish({
     platform: "macos",
-    version: "3.14.2",
+    version: "3.14.1",
     minOs: "macOS 12 and later",
-    checksumSha256: computeChecksum("nexus-3.14.2-macos"),
-    downloadUrl: "https://cdn.nexus-ai.com/nexus-3.14.2.dmg",
+    checksumSha256: computeChecksum("nexus-3.14.1-macos"),
+    downloadUrl: "/downloads/NEXUS-3.14.1.dmg",
   });
   svc.publish({
     platform: "linux",
-    version: "3.14.2",
+    version: "3.13.8",
     minOs: "Ubuntu 22.04 and later",
-    checksumSha256: computeChecksum("nexus-3.14.2-linux"),
-    downloadUrl: "https://cdn.nexus-ai.com/nexus-3.14.2.AppImage",
+    checksumSha256: computeChecksum("nexus-3.13.8-linux"),
+    downloadUrl: "/downloads/NEXUS-3.13.8.AppImage",
   });
   return svc;
 }
@@ -194,6 +200,7 @@ export interface DemoScreens {
   readonly suggestions: ReturnType<typeof buildSuggestionsModel>;
   readonly skills: ReturnType<typeof buildSkillsModel>;
   readonly family: ReturnType<typeof buildFamilyModel>;
+  readonly agents: ReturnType<typeof buildAgentsModel>;
   readonly billing: ReturnType<typeof buildBillingModel>;
   readonly personalization: ReturnType<typeof buildPersonalizationModel>;
   readonly platform: ReturnType<typeof buildPlatformModel>;
@@ -205,54 +212,130 @@ export function buildDemoScreens(): DemoScreens {
   const isTr = CURRENT_LOCALE === "tr";
   const ctx: NavContext = { authenticated: true, plan: "family", role: "admin" };
 
-  const devices = [
+  const devices: DeviceRow[] = [
     {
       id: "lamp",
-      nameKey: isTr ? "Salon Ortam Lambası" : "Living room ambient lamp",
+      nameKey: isTr ? "Philips Hue Play Gradient Aydınlatma" : "Philips Hue Play Gradient Lightstrip",
       room: isTr ? "Salon" : "Living room",
       online: true,
+      manufacturer: "Philips",
+      model: "Hue Play Gradient",
+      firmwareVersion: "1.93.11",
+      ipAddress: "192.168.1.104",
+      macAddress: "00:17:88:01:00:FF",
+      connectionStatus: "online",
+      lastSeen: new Date().toISOString(),
+      analytics: {
+        dailyUsageWh: [12, 15, 14, 18, 12, 11, 14],
+        weeklyUsageWh: [84, 92, 88, 95],
+        anomalyDetected: false,
+      },
     },
     {
       id: "tv",
-      nameKey: isTr ? "Salon 4K OLED TV" : "Living room 4K OLED TV",
+      nameKey: isTr ? 'LG C3 65" 4K OLED TV' : 'LG C3 65" 4K OLED Smart TV',
       room: isTr ? "Salon" : "Living room",
       online: true,
+      manufacturer: "LG",
+      model: "OLED65C3PUA",
+      firmwareVersion: "03.20.14",
+      ipAddress: "192.168.1.108",
+      macAddress: "A4:B3:C2:11:00:AA",
+      connectionStatus: "online",
+      lastSeen: new Date().toISOString(),
+      analytics: {
+        dailyUsageWh: [200, 180, 250, 300, 150, 190, 220],
+        weeklyUsageWh: [1400, 1500, 1300, 1450],
+        anomalyDetected: false,
+      },
     },
     {
       id: "ac",
-      nameKey: isTr ? "Yatak Odası Kliması" : "Bedroom Climate AC",
+      nameKey: isTr ? "Daikin Sensira Inverter Klima" : "Daikin Sensira 18000 BTU Inverter AC",
       room: isTr ? "Yatak Odası" : "Bedroom",
       online: true,
+      manufacturer: "Daikin",
+      model: "FTXC50C",
+      firmwareVersion: "1.0.4",
+      ipAddress: "192.168.1.115",
+      macAddress: "00:22:33:44:55:66",
+      connectionStatus: "online",
+      lastSeen: new Date().toISOString(),
+      analytics: {
+        dailyUsageWh: [800, 900, 850, 1000, 750, 800, 950],
+        weeklyUsageWh: [6000, 5800, 6200, 5900],
+        anomalyDetected: true,
+      },
     },
     {
       id: "lock",
-      nameKey: isTr ? "Ön Kapı Akıllı Kilit" : "Front Door Smart Lock",
+      nameKey: isTr ? "August Smart Lock Pro Akıllı Kilit" : "August Smart Lock Pro + Connect",
       room: isTr ? "Giriş" : "Entrance",
       online: false,
+      manufacturer: "August",
+      model: "Smart Lock Pro",
+      firmwareVersion: "1.2.3",
+      ipAddress: "192.168.1.120",
+      macAddress: "AA:BB:CC:DD:EE:FF",
+      connectionStatus: "offline",
+      lastSeen: new Date(Date.now() - 86400000).toISOString(),
     },
     {
       id: "speaker",
-      nameKey: isTr ? "Stüdyo Dolby Soundbar" : "Studio Dolby Soundbar",
+      nameKey: isTr ? "Sonos Arc Soundbar" : "Sonos Arc Dolby Atmos Soundbar",
       room: isTr ? "Stüdyo" : "Studio",
       online: true,
+      manufacturer: "Sonos",
+      model: "Arc",
+      firmwareVersion: "15.1.1",
+      ipAddress: "192.168.1.130",
+      macAddress: "11:22:33:44:55:66",
+      connectionStatus: "online",
+      lastSeen: new Date().toISOString(),
     },
     {
       id: "camera",
-      nameKey: isTr ? "Bahçe Güvenlik Kamerası" : "Garden Security Camera",
+      nameKey: isTr ? "Arlo Pro 4 Güvenlik Kamerası" : "Arlo Pro 4 Spotlight Security Camera",
       room: isTr ? "Bahçe" : "Garden",
       online: false,
+      manufacturer: "Arlo",
+      model: "Pro 4",
+      firmwareVersion: "1.090",
+      ipAddress: "192.168.1.140",
+      macAddress: "99:88:77:66:55:44",
+      connectionStatus: "error",
+      lastSeen: new Date(Date.now() - 3600000).toISOString(),
     },
     {
       id: "thermostat",
-      nameKey: isTr ? "Koridor Akıllı Termostat" : "Hallway Smart Thermostat",
+      nameKey: isTr ? "Ecobee Akıllı Termostat Premium" : "Ecobee Smart Thermostat Premium",
       room: isTr ? "Koridor" : "Hallway",
       online: true,
+      manufacturer: "Ecobee",
+      model: "Premium",
+      firmwareVersion: "4.7.5",
+      ipAddress: "192.168.1.150",
+      macAddress: "44:55:66:77:88:99",
+      connectionStatus: "online",
+      lastSeen: new Date().toISOString(),
+      analytics: {
+        dailyUsageWh: [100, 110, 105, 95, 120, 115, 100],
+        weeklyUsageWh: [700, 750, 720, 740],
+        anomalyDetected: false,
+      },
     },
     {
       id: "curtain",
-      nameKey: isTr ? "Yatak Odası Motorlu Perde" : "Bedroom Motorized Shades",
+      nameKey: isTr ? "Somfy Tahoma Motorlu Perde" : "Somfy Tahoma Motorized Smart Shades",
       room: isTr ? "Yatak Odası" : "Bedroom",
       online: true,
+      manufacturer: "Somfy",
+      model: "Tahoma",
+      firmwareVersion: "2.1.0",
+      ipAddress: "192.168.1.160",
+      macAddress: "22:33:44:55:66:77",
+      connectionStatus: "online",
+      lastSeen: new Date().toISOString(),
     },
   ];
 
@@ -265,7 +348,7 @@ export function buildDemoScreens(): DemoScreens {
       activeRoutines: 5,
       pendingSuggestions: 3,
     }),
-    home: buildHomeStateModel(devices.map((d) => ({ room: d.room, online: d.online }))),
+    home: buildHomeStateModel(devices.map((d) => ({ room: d.room ?? "Home", online: d.online }))),
     devices: buildDeviceListModel(devices),
     releases: demoReleases(),
     suggestions: buildSuggestionsModel(
@@ -346,21 +429,32 @@ export function buildDemoScreens(): DemoScreens {
     family: buildFamilyModel(
       isTr
         ? [
-            { id: "m1", nameKey: "Ana Profil (Yönetici)", role: "admin" },
-            { id: "m2", nameKey: "Aile Üyesi (Standart Erişimi)", role: "member" },
-            { id: "m3", nameKey: "Çocuk Profili (Korumalı)", role: "member" },
-            { id: "m4", nameKey: "Misafir Hesabı (Geçici)", role: "guest" },
+            { id: "m1", nameKey: "Ensar", role: "admin", avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
+            { id: "m2", nameKey: "Eray", role: "member", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" },
           ]
         : [
-            { id: "m1", nameKey: "Primary Profile (Admin)", role: "admin" },
-            { id: "m2", nameKey: "Family Member (Standard)", role: "member" },
-            { id: "m3", nameKey: "Child Profile (Restricted)", role: "member" },
-            { id: "m4", nameKey: "Guest Account (Temporary)", role: "guest" },
+            { id: "m1", nameKey: "Ensar", role: "admin", avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
+            { id: "m2", nameKey: "Eray", role: "member", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" },
           ],
     ),
     billing: buildBillingModel("family"),
+    agents: buildAgentsModel(
+      isTr
+        ? [
+            { id: "a1", nameKey: "Enerji Yöneticisi", icon: "zap", status: "active" },
+            { id: "a2", nameKey: "Güvenlik Gözcüsü", icon: "shield", status: "active" },
+            { id: "a3", nameKey: "Konfor Asistanı", icon: "thermometer", status: "learning" },
+            { id: "a4", nameKey: "Rutin Planlayıcı", icon: "clipboard", status: "sleeping" },
+          ]
+        : [
+            { id: "a1", nameKey: "Energy Manager", icon: "zap", status: "active" },
+            { id: "a2", nameKey: "Security Watcher", icon: "shield", status: "active" },
+            { id: "a3", nameKey: "Comfort Assistant", icon: "thermometer", status: "learning" },
+            { id: "a4", nameKey: "Routine Planner", icon: "clipboard", status: "sleeping" },
+          ],
+    ),
     personalization: buildPersonalizationModel({
-      assistantName: "NEXUS",
+      assistantName: "NEXUS AI",
       userAddress: "Boss",
       language: CURRENT_LOCALE,
     }),
@@ -384,6 +478,7 @@ export function renderDemoDocument(options: DemoOptions = {}): string {
     suggestions,
     skills,
     family,
+    agents,
     billing,
     personalization,
     platform,
@@ -412,12 +507,13 @@ ${renderHeader(theme.color.primary)}
 ${renderHero()}
 ${renderNav(nav, "today")}
 <main id="main">
-${section("today", renderTodayPanel(today))}
+${section("today", renderToday(today))}
 ${section("home-state", renderHomeState(home))}
 ${section("suggestions", renderSuggestions(suggestions))}
 ${section("skills", renderSkills(skills))}
 ${section("devices", renderDevices(devices))}
 ${section("family", renderFamily(family))}
+${section("agents", renderAgents(agents))}
 ${section("personalization", renderPersonalization(personalization))}
 ${section("platform", renderPlatform(platform))}
 ${section("billing", renderBilling(billing))}
@@ -451,6 +547,8 @@ export function renderScreenBody(
       return renderSkills(s.skills);
     case "family":
       return renderFamily(s.family);
+    case "agents":
+      return renderAgents(s.agents);
     case "devices":
       return renderDevices(s.devices);
     case "personalization":

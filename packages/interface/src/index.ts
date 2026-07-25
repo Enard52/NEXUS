@@ -105,6 +105,21 @@ export interface DeviceRow {
   readonly id: string;
   readonly nameKey: string;
   readonly online: boolean;
+  readonly room?: string;
+  readonly manufacturer?: string;
+  readonly model?: string;
+  readonly imageUrl?: string;
+  readonly firmwareVersion?: string;
+  readonly ipAddress?: string;
+  readonly macAddress?: string;
+  readonly connectionStatus?: "online" | "offline" | "error";
+  readonly lastSeen?: string;
+  readonly updateAvailable?: boolean;
+  readonly analytics?: {
+    readonly dailyUsageWh?: number[];
+    readonly weeklyUsageWh?: number[];
+    readonly anomalyDetected?: boolean;
+  };
 }
 
 export interface DeviceListModel {
@@ -350,6 +365,7 @@ export interface FamilyMemberRow {
   readonly id: string;
   readonly nameKey: string;
   readonly role: Role;
+  readonly avatarUrl?: string;
 }
 
 export interface FamilyModel {

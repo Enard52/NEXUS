@@ -1,4 +1,4 @@
-import { type DesignTokens } from "@nexus/design-system";
+import { type DesignTokens, getTheme } from "@nexus/design-system";
 import { type VersionInfoService } from "@nexus/infra";
 import { CATALOGS, type Locale } from "@nexus/i18n";
 import {
@@ -79,8 +79,8 @@ function renderFontFaces(): string {
   return faces.join("\n");
 }
 
-export function faviconDataUri(primaryColor: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="nxfav" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="${primaryColor}"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#nxfav)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+export function faviconDataUri(_primaryColor?: string): string {
+  const svg = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
@@ -141,6 +141,7 @@ function bentoTile(icon: string, title: string, value: string, extraClass = ""):
 }
 
 export function renderTodayPanel(model: TodayModel): string {
+  const isTr = CURRENT_LOCALE === "tr";
   const byKey = (k: string): string => model.cards.find((c) => c.labelKey === k)?.value ?? "";
   const devicesVal = byKey("today.devicesOnline");
   const ratio = parseRatio(devicesVal);
@@ -168,6 +169,38 @@ export function renderTodayPanel(model: TodayModel): string {
     byKey("today.suggestions"),
   );
 
+  const weeklyEnergyCard =
+    `<article class="bento-tile analytics-tile">` +
+    `<div class="tile-head"><span class="cardicon">${renderStatIcon("energy")}</span>` +
+    `<span class="tile-title">${isTr ? "Haftalık Enerji Trendi" : "Weekly Energy Trend"}</span></div>` +
+    `<div class="analytics-value" style="font-size:20px;font-weight:700;margin-top:6px;">19.4 kWh <span style="font-size:12px;color:#10b981;font-weight:600;">-12%</span></div>` +
+    `<div class="sparkline-wrap" style="margin-top:8px;">` +
+    `<svg class="sparkline" width="100%" height="28" viewBox="0 0 140 28" fill="none">` +
+    `<path d="M0 22 L20 16 L40 20 L60 10 L80 14 L100 6 L120 12 L140 4" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>` +
+    `<path d="M0 22 L20 16 L40 20 L60 10 L80 14 L100 6 L120 12 L140 4 L140 28 L0 28 Z" fill="color-mix(in srgb, var(--primary) 15%, transparent)"/>` +
+    `</svg></div></article>`;
+
+  const uptimeCard =
+    `<article class="bento-tile analytics-tile">` +
+    `<div class="tile-head"><span class="cardicon">${renderStatIcon("devices")}</span>` +
+    `<span class="tile-title">${isTr ? "Sistem Çalışma Süresi" : "System Uptime"}</span></div>` +
+    `<div class="analytics-value" style="font-size:20px;font-weight:700;margin-top:6px;">99.98%</div>` +
+    `<div class="analytics-sub" style="font-size:11px;color:var(--muted);margin-top:4px;">${isTr ? "14 gün 6 saat kesintisiz" : "14d 6h uninterrupted"}</div></article>`;
+
+  const automationsCard =
+    `<article class="bento-tile analytics-tile">` +
+    `<div class="tile-head"><span class="cardicon">${renderStatIcon("routines")}</span>` +
+    `<span class="tile-title">${isTr ? "Toplam Otomasyon" : "Total Automations"}</span></div>` +
+    `<div class="analytics-value" style="font-size:20px;font-weight:700;margin-top:6px;">1,420</div>` +
+    `<div class="analytics-sub" style="font-size:11px;color:var(--muted);margin-top:4px;">${isTr ? "Bu ay tetiklendi" : "Triggered this month"}</div></article>`;
+
+  const activeDeviceCard =
+    `<article class="bento-tile analytics-tile">` +
+    `<div class="tile-head"><span class="cardicon">${renderStatIcon("devices")}</span>` +
+    `<span class="tile-title">${isTr ? "En Aktif Cihaz" : "Most Active Device"}</span></div>` +
+    `<div class="analytics-value" style="font-size:14px;font-weight:700;margin-top:6px;">${isTr ? 'LG C3 65" 4K OLED TV' : 'LG C3 65" 4K OLED Smart TV'}</div>` +
+    `<div class="analytics-sub" style="font-size:11px;color:var(--muted);margin-top:4px;">${isTr ? "Ort. 6.2 saat/gün" : "Avg 6.2 hrs/day"}</div></article>`;
+
   const sug = model.cards.find((c) => c.labelKey === "today.suggestions")?.value ?? "0";
   const msg = model.hasNudge
     ? `${sug} suggestion${sug === "1" ? "" : "s"} ready for you.`
@@ -178,7 +211,7 @@ export function renderTodayPanel(model: TodayModel): string {
     `<a class="btn" href="#suggestions" data-nav="suggestions">Review</a></div>`;
 
   const nudge = model.hasNudge ? '<span class="nudge" aria-label="new"></span>' : "";
-  return `${nudge ? `<h2>${escapeHtml(label(model.titleKey))}<span class="nudge" aria-label="new"></span></h2>` : `<h2>${escapeHtml(label(model.titleKey))}</h2>`}<div class="bento">${featured}${energy}${routines}${suggestions}${strip}</div>`;
+  return `${nudge ? `<h2>${escapeHtml(label(model.titleKey))}<span class="nudge" aria-label="new"></span></h2>` : `<h2>${escapeHtml(label(model.titleKey))}</h2>`}<div class="bento">${featured}${energy}${routines}${suggestions}${weeklyEnergyCard}${uptimeCard}${automationsCard}${activeDeviceCard}${strip}</div>`;
 }
 
 export function renderToday(model: TodayModel): string {
@@ -210,11 +243,66 @@ export function renderDevices(model: DeviceListModel): string {
   if (model.rows.length === 0) {
     return `<h2>${escapeHtml(label(model.titleKey))}</h2>${renderEmptyState(label(model.emptyStateKey ?? "screen.devices.empty"))}`;
   }
+  const deviceDetails: Record<string, { en: string; tr: string }> = {
+    lamp: { en: "Brightness: 80%", tr: "Parlaklık: %80" },
+    tv: { en: "HDMI 1 (PlayStation 5)", tr: "HDMI 1 (PlayStation 5)" },
+    ac: { en: "Target: 22°C", tr: "Hedef: 22°C" },
+    lock: { en: "Battery: 92%", tr: "Pil: %92" },
+    speaker: { en: "Volume: 45%", tr: "Ses: %45" },
+    camera: { en: "Battery: 88%", tr: "Pil: %88" },
+    thermostat: { en: "Humidity: 45%", tr: "Nem: %45" },
+    curtain: { en: "Position: 100% Open", tr: "Konum: %100 Açık" },
+  };
+
   const pills = model.rows
-    .map(
-      (d) =>
-        `<div class="device-pill"><span class="dev-icon">${renderStatIcon("devices")}</span><div class="dev-info"><div class="dev-name">${escapeHtml(d.nameKey)}</div><div class="dev-room">${d.online ? (isTr ? "Çevrimiçi" : "Online") : isTr ? "Çevrimdışı" : "Offline"}</div></div><span class="dot ${d.online ? "on" : "off"}" title="${d.online ? "Online" : "Offline"}"></span></div>`,
-    )
+    .map((d: any) => {
+      const detail = deviceDetails[d.id]
+        ? isTr
+          ? deviceDetails[d.id].tr
+          : deviceDetails[d.id].en
+        : "";
+      const roomStr = d.room ? `${escapeHtml(d.room)} · ` : "";
+      const statusText = d.online ? (isTr ? "Çevrimiçi" : "Online") : isTr ? "Çevrimdışı" : "Offline";
+      
+      const devIcons: Record<string, string> = {
+        lamp: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
+        tv: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>',
+        ac: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 22l6-6"/><path d="M19 25l6-6"/></svg>',
+        lock: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+        speaker: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+        camera: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+        thermostat: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+        curtain: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>'
+      };
+
+      const devIconSvg = devIcons[d.id] || renderStatIcon("devices");
+      const iconHtml = `<span class="dev-icon" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--primary) 10%, var(--surface));color:var(--primary);border-radius:14px;box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent);">${devIconSvg}</span>`;
+
+      let advHtml = "";
+      if (d.manufacturer || d.ipAddress || d.analytics) {
+         const ip = d.ipAddress ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>IP:</strong> ${escapeHtml(d.ipAddress)}</div>` : "";
+         const mac = d.macAddress ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>MAC:</strong> ${escapeHtml(d.macAddress)}</div>` : "";
+         const fw = d.firmwareVersion ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>Firmware:</strong> ${escapeHtml(d.firmwareVersion)} ${d.updateAvailable ? '<span style="color:#f59e0b;font-weight:700;">(Update)</span>' : ''}</div>` : "";
+         const last = d.lastSeen ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>Seen:</strong> ${new Date(d.lastSeen).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>` : "";
+         
+         let chartHtml = "";
+         if (d.analytics?.dailyUsageWh && d.analytics.dailyUsageWh.length > 1) {
+           const pts = d.analytics.dailyUsageWh;
+           const min = Math.min(...pts) * 0.8;
+           const max = Math.max(...pts, min + 1);
+           const range = max - min;
+           const path = pts.map((v: number, i: number) => `${(i / (pts.length-1)) * 140} ${28 - ((v - min) / range)*24}`).join(" L ");
+           const total = d.analytics.weeklyUsageWh ? d.analytics.weeklyUsageWh.reduce((a:number,b:number)=>a+b,0) : pts.reduce((a:number,b:number)=>a+b,0);
+           chartHtml = `<div style="margin-top:12px;font-size:11px;color:var(--muted);"><div style="margin-bottom:4px;display:flex;justify-content:space-between;"><span>${isTr ? "Haftalık Tüketim (Wh)" : "Weekly Usage (Wh)"}</span><span style="color:var(--text);font-weight:700;">${total}</span></div><svg width="100%" height="28" viewBox="0 0 140 28" fill="none" preserveAspectRatio="none"><path d="M0 28 L ${path} L 140 28 Z" fill="color-mix(in srgb, var(--primary) 15%, transparent)"/><path d="M ${path}" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+         }
+         
+         const anomaly = d.analytics?.anomalyDetected ? `<div style="margin-top:8px;padding:6px 8px;background:color-mix(in srgb, #ef4444 15%, transparent);color:#ef4444;border-radius:6px;font-size:10px;font-weight:600;display:flex;align-items:center;gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${isTr ? "Anormal tüketim tespit edildi!" : "Anomaly detected in usage!"}</div>` : "";
+
+         advHtml = `<details style="margin-top:8px;"><summary style="font-size:11px;color:var(--primary);cursor:pointer;font-weight:600;outline:none;">${isTr ? "Cihaz Detayları" : "Device Details"}</summary><div style="margin-top:12px;padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);display:grid;grid-template-columns:1fr 1fr;gap:8px;white-space:nowrap;">${ip}${mac}${fw}${last}</div>${anomaly}${chartHtml}</div></details>`;
+      }
+
+      return `<div class="device-pill" style="flex-direction:column;align-items:stretch;padding:12px;gap:8px;"><div style="display:flex;align-items:center;gap:12px;width:100%;">${iconHtml}<div class="dev-info" style="flex:1;"><div class="dev-name" style="font-size:13px;font-weight:600;color:var(--text);">${escapeHtml(d.nameKey)}</div><div class="dev-room" style="font-size:11px;color:var(--muted);margin-top:3px;">${roomStr}${statusText}${detail ? ` · <span style="color:var(--muted);">${escapeHtml(detail)}</span>` : ""}</div></div><span class="dot ${d.online ? "on" : "off"}" title="${statusText}" style="margin:auto 0 auto auto;"></span></div>${advHtml}</div>`;
+    })
     .join("");
   const meta = `${model.onlineCount}/${model.rows.length} ${isTr ? "çevrimiçi" : "online"}`;
   return `<h2>${escapeHtml(label(model.titleKey))} <span class="meta">${meta}</span></h2><div class="bento-grid">${pills}</div>`;
@@ -228,7 +316,7 @@ export function renderSuggestions(model: SuggestionsModel): string {
   const cards = model.rows
     .map(
       (s) =>
-        `<div class="suggest-card" data-suggestion-id="${escapeHtml(s.id)}"><div class="value" style="font-size:14px;font-weight:600;">${escapeHtml(s.textKey)}</div><div class="meta">${s.at}</div><div class="actions"><button class="btn primary" data-action="accept-suggestion" data-id="${escapeHtml(s.id)}">${isTr ? "Kabul Et" : "Accept"}</button><button class="btn" data-action="dismiss-suggestion" data-id="${escapeHtml(s.id)}">${isTr ? "Reddet" : "Dismiss"}</button></div></div>`,
+        `<div class="suggest-card" data-suggestion-id="${escapeHtml(s.id)}" style="transition: all 0.4s ease;"><div class="value" style="font-size:14px;font-weight:600;">${escapeHtml(s.textKey)}</div><div class="meta">${s.at}</div><div class="actions"><button class="btn primary" data-action="accept-suggestion" data-id="${escapeHtml(s.id)}" onclick="const card = this.closest('.suggest-card'); this.innerText='${isTr ? 'Kabul Edildi' : 'Accepted'}'; this.classList.remove('primary'); this.style.backgroundColor='rgba(16,185,129,0.15)'; this.style.color='#10b981'; this.disabled=true; this.nextElementSibling.style.display='none'; setTimeout(() => { card.style.opacity='0'; card.style.transform='scale(0.9)'; setTimeout(() => card.style.display='none', 400); }, 800);">${isTr ? "Kabul Et" : "Accept"}</button><button class="btn" data-action="dismiss-suggestion" data-id="${escapeHtml(s.id)}" onclick="const card = this.closest('.suggest-card'); card.style.opacity='0'; card.style.transform='scale(0.9)'; setTimeout(() => card.style.display='none', 400);">${isTr ? "Reddet" : "Dismiss"}</button></div></div>`,
     )
     .join("");
   return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid">${cards}</div>`;
@@ -244,7 +332,7 @@ export function renderSkills(model: SkillsModel): string {
     const bars = model.rows
       .map((s) => {
         const pct = Math.round((s.usageCount / maxCount) * 100);
-        return `<div class="skill-bar-wrap"><div class="skill-bar-header"><span>${escapeHtml(s.nameKey)}</span><span class="count">${s.usageCount}&times;</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width: ${pct}%"></div></div></div>`;
+        return `<div class="skill-bar-wrap" style="position:relative; overflow:hidden; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.07)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'" onclick="this.querySelector('.play-btn').style.transform='scale(0.8)'; setTimeout(() => this.querySelector('.play-btn').style.transform='scale(1)', 150); this.querySelector('.play-icon').outerHTML='<svg class=\\'play-icon\\' width=\\'16\\' height=\\'16\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'#10b981\\' stroke-width=\\'3\\' stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\'><polyline points=\\'20 6 9 17 4 12\\\'></polyline></svg>'; this.querySelector('.play-btn').style.background='rgba(16,185,129,0.15)'; this.querySelector('.play-btn').style.boxShadow='none'; this.querySelector('.skill-bar-fill').style.background='#10b981';"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;"><div style="display:flex; align-items:center; gap:12px;"><div class="play-btn" style="width:32px; height:32px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; transition: all 0.2s; box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 40%, transparent);"><svg class="play-icon" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div><span style="font-weight:600; font-size:14px; color:var(--text); letter-spacing:-0.01em;">${escapeHtml(s.nameKey)}</span></div><span class="count" style="font-size:11px; color:var(--muted); font-weight:700; background:rgba(0,0,0,0.4); padding: 4px 8px; border-radius:12px;">${s.usageCount}&times;</span></div><div class="skill-bar-track" style="height: 6px; background: rgba(0,0,0,0.4); border-radius: 3px; overflow:hidden;"><div class="skill-bar-fill" style="height:100%; width: ${pct}%; background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, white)); border-radius:3px; transition: background 0.3s;"></div></div></div>`;
       })
       .join("");
     content = `<div class="bento-grid wide" style="margin-bottom:32px;">${bars}</div>`;
@@ -258,13 +346,13 @@ export function renderSkills(model: SkillsModel): string {
         <div style="display:flex;align-items:center;gap:12px;">
           <div style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius);background:var(--tint);color:var(--primary);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              <path d="m12 3 2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5Z"/>
             </svg>
           </div>
           <div style="font-weight:700;font-size:16px;">${escapeHtml(d.nameKey)}</div>
         </div>
         <div style="font-size:13px;color:var(--muted);flex:1;">${escapeHtml(d.descriptionKey)}</div>
-        <button class="btn primary" style="align-self:flex-start;">${isTr ? "Ekle" : "Add"}</button>
+        <button class="btn primary" style="align-self:flex-start; transition: all 0.2s;" onclick="this.innerText='${isTr ? 'Yüklendi' : 'Installed'}'; this.classList.remove('primary'); this.style.backgroundColor='rgba(16,185,129,0.15)'; this.style.color='#10b981'; this.disabled=true;">${isTr ? "Ekle" : "Add"}</button>
       </div>`;
       })
       .join("");
@@ -278,13 +366,20 @@ export function renderAgents(model: import("@nexus/interface").AgentsModel): str
   if (model.rows.length === 0) {
     return `<h2>${escapeHtml(label(model.titleKey))}</h2>${renderEmptyState(label(model.emptyStateKey ?? "screen.agents.empty"))}`;
   }
+  const icons: Record<string, string> = {
+    zap: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4z"/></svg>',
+    shield: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    thermometer: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+    clipboard: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>'
+  };
+
   const cards = model.rows
     .map((a) => {
       const statusLabel =
         a.status === "active" ? "Active" : a.status === "learning" ? "Learning" : "Sleeping";
       const statusClass =
         a.status === "active" ? "on" : a.status === "learning" ? "learning" : "off";
-      return `<div class="agent-card"><span class="avatar" style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--tint);color:var(--primary);font-weight:700;">${escapeHtml(a.icon)}</span><div><div style="font-weight:600;">${escapeHtml(label(a.nameKey))}</div><div class="meta" style="display:flex;align-items:center;gap:4px;"><span class="dot ${statusClass}"></span>${statusLabel}</div></div></div>`;
+      return `<div class="agent-card" style="display:flex; align-items:center; gap:16px; padding: 16px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; transition: transform 0.2s, background 0.2s; cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.05)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.transform='translateY(0)'"><span class="avatar" style="width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--primary) 15%, transparent);color:var(--primary);box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent);">${icons[a.icon] || escapeHtml(a.icon)}</span><div><div style="font-weight:700; font-size:15px; margin-bottom:4px; letter-spacing:-0.01em;">${escapeHtml(label(a.nameKey))}</div><div class="meta" style="display:flex;align-items:center;gap:6px; font-size:12px; font-weight:600;"><span class="dot ${statusClass}" style="width:8px; height:8px; box-shadow:0 0 8px currentColor;"></span>${statusLabel}</div></div></div>`;
     })
     .join("");
   return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid">${cards}</div>`;
@@ -293,8 +388,10 @@ export function renderAgents(model: import("@nexus/interface").AgentsModel): str
 export function renderFamily(model: FamilyModel): string {
   const cards = model.members
     .map((m) => {
-      const initial = m.nameKey.charAt(0).toUpperCase();
-      return `<div class="member-card"><span class="avatar" style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--tint);color:var(--primary);font-weight:700;font-size:12.8px;">${escapeHtml(initial)}</span><div><div style="font-weight:600;">${escapeHtml(m.nameKey)}</div><div class="meta">${escapeHtml(m.role)}</div></div></div>`;
+      const avatarHtml = m.avatarUrl
+        ? `<img class="avatar" src="${escapeHtml(m.avatarUrl)}" alt="${escapeHtml(m.nameKey)}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">`
+        : `<span class="avatar" style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--tint);color:var(--primary);font-weight:700;font-size:12.8px;">${escapeHtml(m.nameKey.charAt(0).toUpperCase())}</span>`;
+      return `<div class="member-card">${avatarHtml}<div><div style="font-weight:600;">${escapeHtml(m.nameKey)}</div><div class="meta">${escapeHtml(m.role)}</div></div></div>`;
     })
     .join("");
   return `<h2>${escapeHtml(label(model.titleKey))} <span class="meta">${model.adminCount} admin</span></h2><div class="bento-grid">${cards}</div>`;
@@ -303,13 +400,101 @@ export function renderFamily(model: FamilyModel): string {
 export function renderBilling(model: BillingModel): string {
   const isTr = CURRENT_LOCALE === "tr";
   const planLabel = label(model.planLabelKey);
-  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide"><div class="plan-card"><div class="price">${model.plan === "free" ? "$0" : model.plan === "premium" ? "$49" : "$99"} <span>/ ${isTr ? "ay" : "mo"}</span></div><div>${escapeHtml(planLabel)}</div>${model.canUpgrade ? `<button class="btn primary" data-action="billing-subscribe" data-plan="premium">${isTr ? "Yükselt" : "Upgrade"}</button>` : `<button class="btn" data-action="billing-cancel">${isTr ? "İptal Et" : "Cancel"}</button>`}</div></div>`;
+
+  const activeChecklist = [
+    isTr ? "✓ %100 Yerel Yapay Zeka Motoru" : "✓ 100% Local AI Engine",
+    isTr ? "✓ Sınırsız Cihaz & Oda" : "✓ Unlimited Devices & Rooms",
+    isTr ? "✓ Çapraz Oda Senaryoları" : "✓ Multi-room Routines",
+    isTr ? "✓ Şifrelenmiş Bulut Yedeği Senkronizasyonu" : "✓ Encrypted Cloud Backup Sync",
+  ]
+    .map((item) => `<div style="font-size:12px;color:var(--text);display:flex;align-items:center;gap:6px;">${item}</div>`)
+    .join("");
+
+  const activePlanCard =
+    `<div class="plan-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 12%, var(--surface)), var(--surface)); border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--border)); padding: 20px; border-radius: var(--radius-lg);">` +
+    `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">` +
+    `<div>` +
+    `<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--primary);color:#fff;text-transform:uppercase;letter-spacing:0.05em;">${isTr ? "Aktif Abonelik" : "Active Subscription"}</span>` +
+    `<h3 style="margin:8px 0 2px 0;font-size:20px;font-weight:700;">${escapeHtml(planLabel)}</h3>` +
+    `<div style="font-size:12px;color:var(--muted);">${isTr ? "Yenilenme: 24 Ağu 2026" : "Renews Aug 24, 2026"}</div>` +
+    `</div>` +
+    `<div class="price" style="font-size:24px;font-weight:800;">${model.plan === "free" ? "$0" : model.plan === "premium" ? "$5" : "$10"} <span style="font-size:12px;color:var(--muted);font-weight:400;">/ ${isTr ? "ay" : "mo"}</span></div>` +
+    `</div>` +
+    `<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">${activeChecklist}</div>` +
+    `<div style="margin-top:16px;display:flex;gap:10px;">` +
+    `${model.canUpgrade ? `<button class="btn primary" data-action="billing-subscribe" data-plan="premium">${isTr ? "Planı Yükselt" : "Upgrade Plan"}</button>` : `<button class="btn" data-action="billing-cancel" style="color:var(--muted);">${isTr ? "Aboneliği Yönet / İptal Et" : "Manage / Cancel Subscription"}</button>`}` +
+    `</div></div>`;
+
+  const comparisonTiers =
+    `<div style="grid-column: 1 / -1; margin-top: 16px;">` +
+    `<h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">${isTr ? "Plan Karşılaştırma Matrisi" : "Plan Comparison Matrix"}</h3>` +
+    `<div style="display:flex;overflow-x:auto;gap:14px;scroll-snap-type:x mandatory;padding-bottom:12px;margin:0 -8px;padding-left:8px;" class="tier-matrix">` +
+    `<div class="bento-tile" style="padding:16px; min-width: 180px; flex: 0 0 75%; scroll-snap-align: center;">` +
+    `<div style="font-weight:700;font-size:15px;">Free</div>` +
+    `<div style="font-size:20px;font-weight:800;margin:6px 0;">$0 <span style="font-size:11px;color:var(--muted);">${isTr ? "/ay" : "/mo"}</span></div>` +
+    `<ul style="list-style:none;padding:0;margin:12px 0;font-size:12px;display:grid;gap:6px;color:var(--muted);">` +
+    `<li>✓ 1 ${isTr ? "Cihaz" : "Device"}</li>` +
+    `<li>✓ ${isTr ? "Yerel Sesli Kontrol" : "Local Voice Control"}</li>` +
+    `<li>✓ ${isTr ? "Temel Senaryolar" : "Basic Routines"}</li>` +
+    `</ul></div>` +
+    `<div class="bento-tile" style="padding:16px; min-width: 180px; flex: 0 0 75%; scroll-snap-align: center;">` +
+    `<div style="font-weight:700;font-size:15px;">Premium</div>` +
+    `<div style="font-size:20px;font-weight:800;margin:6px 0;">$5 <span style="font-size:11px;color:var(--muted);">${isTr ? "/ay" : "/mo"}</span></div>` +
+    `<ul style="list-style:none;padding:0;margin:12px 0;font-size:12px;display:grid;gap:6px;color:var(--muted);">` +
+    `<li>✓ ${isTr ? "Sınırsız Cihaz" : "Unlimited Devices"}</li>` +
+    `<li>✓ ${isTr ? "Gelişmiş Otomasyonlar" : "Advanced Routines"}</li>` +
+    `<li>✓ ${isTr ? "Öncelikli Yerel Yapay Zeka" : "Priority Local AI"}</li>` +
+    `<li>✓ ${isTr ? "Bulut Senkronizasyon" : "Cloud Sync"}</li>` +
+    `</ul></div>` +
+    `<div class="bento-tile" style="padding:16px;border:1px solid var(--primary); min-width: 180px; flex: 0 0 75%; scroll-snap-align: center;">` +
+    `<div style="font-weight:700;font-size:15px;color:var(--primary);">Family</div>` +
+    `<div style="font-size:20px;font-weight:800;margin:6px 0;">$10 <span style="font-size:11px;color:var(--muted);">${isTr ? "/ay" : "/mo"}</span></div>` +
+    `<ul style="list-style:none;padding:0;margin:12px 0;font-size:12px;display:grid;gap:6px;color:var(--muted);">` +
+    `<li>✓ ${isTr ? "Premium'daki Her Şey" : "Everything in Premium"}</li>` +
+    `<li>✓ ${isTr ? "Çoklu Kullanıcı Aile Paylaşımı" : "Multi-User Family Sharing"}</li>` +
+    `<li>✓ ${isTr ? "Yönetici Kontrolleri" : "Admin Controls"}</li>` +
+    `<li>✓ ${isTr ? "Öncelikli Destek" : "Priority Support"}</li>` +
+    `</ul></div>` +
+    `</div></div>`;
+
+  const paymentHistory =
+    `<div style="grid-column: 1 / -1; margin-top: 16px;">` +
+    `<h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">${isTr ? "Ödeme Geçmişi & Faturalar" : "Payment History & Invoices"}</h3>` +
+    `<div style="overflow-x:auto; width:100%;">` +
+    `<table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;" class="payment-table">` +
+    `<thead><tr style="border-bottom:1px solid var(--border);color:var(--muted);">` +
+    `<th style="padding:8px 12px; white-space:nowrap;">${isTr ? "Tarih" : "Date"}</th>` +
+    `<th style="padding:8px 12px; min-width:180px;">${isTr ? "Açıklama" : "Description"}</th>` +
+    `<th style="padding:8px 12px; white-space:nowrap;">${isTr ? "Tutar" : "Amount"}</th>` +
+    `<th style="padding:8px 12px; white-space:nowrap;">${isTr ? "Durum / Fatura" : "Status / Invoice"}</th>` +
+    `</tr></thead>` +
+    `<tbody>` +
+    `<tr style="border-bottom:1px solid color-mix(in srgb,var(--border) 50%,transparent);"><td style="padding:10px 12px; white-space:nowrap;">2026-07-01</td><td style="padding:10px 12px;">NEXUS Family Plan (Monthly)</td><td style="padding:10px 12px;">$10.00</td><td style="padding:10px 12px; white-space:nowrap;"><span style="color:#10b981;font-weight:600;">Paid (INV-2026-007)</span></td></tr>` +
+    `<tr style="border-bottom:1px solid color-mix(in srgb,var(--border) 50%,transparent);"><td style="padding:10px 12px; white-space:nowrap;">2026-06-01</td><td style="padding:10px 12px;">NEXUS Family Plan (Monthly)</td><td style="padding:10px 12px;">$10.00</td><td style="padding:10px 12px; white-space:nowrap;"><span style="color:#10b981;font-weight:600;">Paid (INV-2026-006)</span></td></tr>` +
+    `<tr><td style="padding:10px 12px; white-space:nowrap;">2026-05-01</td><td style="padding:10px 12px;">NEXUS Family Plan (Monthly)</td><td style="padding:10px 12px;">$10.00</td><td style="padding:10px 12px; white-space:nowrap;"><span style="color:#10b981;font-weight:600;">Paid (INV-2026-005)</span></td></tr>` +
+    `</tbody></table></div></div>`;
+
+  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide">${activePlanCard}${comparisonTiers}${paymentHistory}</div>`;
 }
 
 export function renderPersonalization(model: PersonalizationModel): string {
   const isTr = CURRENT_LOCALE === "tr";
   const lang = model.language === "tr" ? "Türkçe (TR)" : "English (EN)";
-  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide"><div class="field-row"><span class="label">${isTr ? "Asistan Adı" : "Assistant Name"}</span><span class="value">${escapeHtml(model.assistantName)}</span></div><div class="field-row"><span class="label">${isTr ? "Size Hitap Şekli" : "Addresses You As"}</span><span class="value">${escapeHtml(model.userAddress)}</span></div><div class="field-row"><span class="label">${isTr ? "Dil" : "Language"}</span><span class="value">${escapeHtml(lang)}</span></div></div>`;
+  
+  const rowStyle = `display: flex; justify-content: space-between; padding: 14px 10px; border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); cursor: pointer; transition: background 0.2s; border-radius: 6px;`
+  const hoverScript = `onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'"`;
+  const clickScript = (key: string, current: string) => `onclick="const res = prompt('${isTr ? "Yeni değer girin:" : "Enter new value:"}', '${current}'); if (res) this.querySelector('.value').innerText = res;"`;
+  
+  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide">` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('assistantName', escapeHtml(model.assistantName))}><span class="label">${isTr ? "Asistan Adı" : "Assistant Name"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(model.assistantName)}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('userAddress', escapeHtml(model.userAddress))}><span class="label">${isTr ? "Size Hitap Şekli" : "Addresses You As"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(model.userAddress)}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('wakeWord', 'Hey Nexus')}><span class="label">${isTr ? "Tetikleme Kelimesi" : "Wake Word"}</span><span class="value" style="font-weight:600; color:var(--text);">Hey Nexus</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('voiceType', isTr ? 'Sakin ve Profesyonel' : 'Calm & Professional')}><span class="label">${isTr ? "Ses Tonu (TTS)" : "Voice Personality"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Sakin ve Profesyonel" : "Calm & Professional"}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('language', escapeHtml(lang))}><span class="label">${isTr ? "Dil" : "Language"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(lang)}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('theme', isTr ? 'Koyu' : 'Dark')}><span class="label">${isTr ? "Tema" : "Theme"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Koyu" : "Dark"}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('location', isTr ? 'İstanbul' : 'Istanbul')}><span class="label">${isTr ? "Konum" : "Location"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "İstanbul, TR" : "Istanbul, TR"}</span></div>` +
+    `<div class="field-row" style="${rowStyle} border-bottom: none;" ${hoverScript} ${clickScript('privacy', isTr ? 'Maksimum' : 'Maximum')}><span class="label">${isTr ? "Güvenlik Hassasiyeti" : "Security Sensitivity"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Maksimum (Sadece Yerel)" : "Maximum (Local Only)"}</span></div>` +
+    `</div>`;
 }
 
 export function renderPlatform(model: any): string {
@@ -414,7 +599,7 @@ export function renderOgImageSvg(theme: DesignTokens): string {
 }
 
 export function renderHeader(_primaryColor: string): string {
-  return `<header class="site-header" role="banner"><a class="skip" href="#main">Skip to content</a><div class="navbar"><div class="nav-container"><div class="nav-brand-group"><a href="#" class="nav-brand">${renderLogo()}<span class="brand">NEXUS</span></a></div></div></div></header>`;
+  return `<header class="site-header" role="banner"><a class="skip" href="#main">Skip to content</a><div class="navbar"><div class="nav-container"><div class="nav-brand-group"><a href="/" class="nav-brand">${renderLogo()}<span class="brand">NEXUS</span></a></div></div></div></header>`;
 }
 
 export function renderHero(): string {
@@ -438,12 +623,17 @@ export function renderFeatures(): string {
     `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
     `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1l2.1-2.1M17 7l2.1-2.1"/></svg>`,
     `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 2.5 2.5 0 0 1-1.32-4.24 2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 7 5.06 2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 2.5 2.5 0 0 0 1.32-4.24 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 17 5.06 2.5 2.5 0 0 0 14.5 2z"/></svg>`,
+    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
   ];
+  const isTr = CURRENT_LOCALE === "tr";
   const features = [
     { title: label("mkt.feat.1.title"), desc: label("mkt.feat.1.desc") },
     { title: label("mkt.feat.2.title"), desc: label("mkt.feat.2.desc") },
     { title: label("mkt.feat.3.title"), desc: label("mkt.feat.3.desc") },
     { title: label("mkt.feat.4.title"), desc: label("mkt.feat.4.desc") },
+    { title: isTr ? "Yerel İşlem Motoru" : "100% Local Engine", desc: isTr ? "Verileriniz tamamen yerel ağınızda işlenir, buluta bağımlılık yok." : "Zero cloud dependency for instant responsiveness and total privacy." },
+    { title: isTr ? "Evrensel Ekosistem" : "Unified Standards", desc: isTr ? "Matter, HomeKit, Zigbee ve Philips Hue cihazlarını tek yerde yönetin." : "Connect Matter, HomeKit, Zigbee, and Philips Hue seamlessly." },
   ];
   const items = features
     .map(
@@ -463,11 +653,41 @@ export function renderFaq(): string {
   ];
   const items = faqs
     .map(
-      (f) =>
-        `<details class="faq-item"><summary class="faq-q"><span>${escapeHtml(f.q)}</span><span class="faq-icon">+</span></summary><p class="faq-a">${escapeHtml(f.a)}</p></details>`,
+      (f, i) =>
+        `<div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>${escapeHtml(f.q)}</span><svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div><div class="faq-a-wrapper"><div class="faq-a">${escapeHtml(f.a)}</div></div></div>`,
     )
     .join("");
-  return `<section class="faq-section" aria-label="${label("mkt.faq.title")}"><h2>${label("mkt.faq.title")}</h2><div class="faq-grid">${items}</div></section>`;
+  return `<section id="faq" class="faq-section mkt-anchor" aria-label="${label("mkt.faq.title")}">
+  <div class="faq-container">
+    <div class="faq-header">
+      <h2>${label("mkt.faq.title")}</h2>
+    </div>
+    <div class="faq-grid">
+      ${items}
+    </div>
+  </div>
+<style>
+.faq-section { margin: 120px 0; padding: 0 24px; }
+.faq-container { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: start; }
+.faq-header { position: sticky; top: 120px; text-align: left; }
+.faq-header h2 { font-size: 38px; letter-spacing: -0.025em; margin: 0; color: var(--text); font-weight: 800; }
+@media (max-width: 860px) {
+  .faq-container { grid-template-columns: 1fr; gap: 32px; }
+  .faq-header { position: static; }
+  .faq-header h2 { font-size: 32px; }
+}
+.faq-item { background: color-mix(in srgb, var(--surface) 60%, transparent); border: 1px solid color-mix(in srgb, var(--border) 40%, transparent); border-radius: 12px; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease; }
+.faq-item:hover { border-color: color-mix(in srgb, var(--primary) 30%, transparent); background: color-mix(in srgb, var(--surface) 80%, transparent); transform: translateX(4px); }
+.faq-item.open { border-color: color-mix(in srgb, var(--primary) 50%, transparent); box-shadow: 0 12px 32px rgba(0,0,0,0.06); transform: translateX(4px); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 22px 24px; font-weight: 600; font-size: 16px; color: var(--text); }
+.faq-icon { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); color: var(--muted); flex: none; margin-left: 16px; }
+.faq-item.open .faq-icon { transform: rotate(180deg); color: var(--primary); }
+.faq-a-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.faq-item.open .faq-a-wrapper { grid-template-rows: 1fr; }
+.faq-a { overflow: hidden; padding: 0 24px; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.faq-item.open .faq-a { padding: 0 24px 24px; }
+</style>
+</section>`;
 }
 
 export function renderRichFooter(_primaryColor: string): string {
@@ -477,12 +697,6 @@ export function renderRichFooter(_primaryColor: string): string {
       <div class="footer-col">
         <div class="footer-brand">${renderLogo()}<span class="brand">NEXUS</span></div>
         <p class="footer-desc">${label("mkt.footer.desc")}</p>
-        <span class="version-badge">v3.14.2</span>
-        <div class="footer-social">
-          <a href="https://github.com/nexus-ai" aria-label="GitHub" class="social-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/></svg></a>
-          <a href="https://twitter.com/nexus_ai" aria-label="Twitter" class="social-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-          <a href="https://discord.gg/nexus" aria-label="Discord" class="social-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></a>
-        </div>
       </div>
       <div class="footer-col">
         <h4>${label("mkt.footer.platforms")}</h4>
@@ -495,7 +709,7 @@ export function renderRichFooter(_primaryColor: string): string {
       <div class="footer-col">
         <h4>${label("mkt.footer.company")}</h4>
         <ul>
-          <li><a href="#about">${label("mkt.footer.about")}</a></li>
+          <li><a href="/about">${label("mkt.footer.about")}</a></li>
           <li><a href="/privacy">${label("mkt.footer.privacy")}</a></li>
           <li><a href="/terms">${label("mkt.footer.terms")}</a></li>
         </ul>
@@ -522,43 +736,98 @@ export function renderCookieBanner(): string {
 }
 
 export function renderPricing(): string {
+  const isTr = CURRENT_LOCALE === "tr";
+  const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="pricing-check"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
   return `<section id="pricing" class="mkt-pricing mkt-anchor">
 <div class="mkt-heading"><h2>${label("mkt.pricing.title")}</h2></div>
 <div class="pricing-grid">
   <div class="pricing-card">
     <h3>${label("mkt.pricing.free")}</h3>
     <p>${label("mkt.pricing.freeDesc")}</p>
-    <div class="price">$0<span>/mo</span></div>
-    <a href="#download" class="btn primary">${label("mkt.pricing.cta")}</a>
+    <div class="price">$0<span>/${isTr ? "ay" : "mo"}</span></div>
+    <ul class="pricing-features">
+      <li>${checkIcon} <span>${isTr ? "5 cihaza kadar bağlantı" : "Up to 5 devices connected"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Temel sesli komutlar & rutinler" : "Basic voice commands & routines"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "%100 yerel işleme" : "100% local processing"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Topluluk desteği" : "Standard community support"}</span></li>
+    </ul>
+    <a href="/login" class="btn secondary">${label("mkt.pricing.cta")}</a>
   </div>
   <div class="pricing-card premium">
+    <span class="popular-badge">${isTr ? "En Popüler" : "Most Popular"}</span>
     <h3>${label("mkt.pricing.premium")}</h3>
     <p>${label("mkt.pricing.premiumDesc")}</p>
-    <div class="price">$5<span>/mo</span></div>
-    <a href="#download" class="btn">${label("mkt.pricing.cta")}</a>
+    <div class="price">$5<span>/${isTr ? "ay" : "mo"}</span></div>
+    <ul class="pricing-features">
+      <li>${checkIcon} <span>${isTr ? "Sınırsız cihaz bağlantısı" : "Unlimited devices connected"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Gelişmiş YZ otomasyonu & rutinler" : "Advanced AI routines & automation"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Çoklu oda ses & sahneleri" : "Multi-room audio & scenes"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "7/24 öncelikli destek" : "Priority 24/7 support"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Güvenli uzaktan erişim" : "Secure remote access"}</span></li>
+    </ul>
+    <a href="/login" class="btn primary">${label("mkt.pricing.cta")}</a>
   </div>
   <div class="pricing-card">
     <h3>${label("mkt.pricing.family")}</h3>
     <p>${label("mkt.pricing.familyDesc")}</p>
-    <div class="price">$10<span>/mo</span></div>
-    <a href="#download" class="btn">${label("mkt.pricing.cta")}</a>
+    <div class="price">$10<span>/${isTr ? "ay" : "mo"}</span></div>
+    <ul class="pricing-features">
+      <li>${checkIcon} <span>${isTr ? "Premium'daki tüm özellikler" : "Everything in Premium"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "6 aile üyesi profiline kadar" : "Up to 6 family profiles"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Gelişmiş ebeveyn kontrolleri" : "Granular parental controls"}</span></li>
+      <li>${checkIcon} <span>${isTr ? "Özel aile paneli" : "Dedicated family dashboard"}</span></li>
+    </ul>
+    <a href="/login" class="btn secondary">${label("mkt.pricing.cta")}</a>
   </div>
 </div>
 </section>`;
 }
 
 export function renderTestimonials(): string {
+  const renderStars = () => `<div class="stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>').join('')}</div>`;
+  
   return `<section class="mkt-testimonials">
 <div class="mkt-heading"><h2>${label("mkt.testimonials.title")}</h2></div>
-<div class="testimonial-card">
-  <p>${label("mkt.testimonials.quote1")}</p>
-  <div class="author">&mdash; Early Adopter</div>
+<div class="testimonials-grid">
+  <div class="testimonial-card">
+    ${renderStars()}
+    <p>"${label("mkt.testimonials.quote1")}"</p>
+    <div class="author-info">
+      <img class="author-avatar" src="https://randomuser.me/api/portraits/women/79.jpg" alt="" style="object-fit:cover;">
+      <div>
+        <div class="author-name">${label("mkt.testimonials.author1")}</div>
+        <div class="author-role">${label("mkt.testimonials.role1")}</div>
+      </div>
+    </div>
+  </div>
+  <div class="testimonial-card">
+    ${renderStars()}
+    <p>"${label("mkt.testimonials.quote2")}"</p>
+    <div class="author-info">
+      <img class="author-avatar" src="https://randomuser.me/api/portraits/men/75.jpg" alt="" style="object-fit:cover;">
+      <div>
+        <div class="author-name">${label("mkt.testimonials.author2")}</div>
+        <div class="author-role">${label("mkt.testimonials.role2")}</div>
+      </div>
+    </div>
+  </div>
+  <div class="testimonial-card">
+    ${renderStars()}
+    <p>"${label("mkt.testimonials.quote3")}"</p>
+    <div class="author-info">
+      <img class="author-avatar" src="https://randomuser.me/api/portraits/women/63.jpg" alt="" style="object-fit:cover;">
+      <div>
+        <div class="author-name">${label("mkt.testimonials.author3")}</div>
+        <div class="author-role">${label("mkt.testimonials.role3")}</div>
+      </div>
+    </div>
+  </div>
 </div>
 </section>`;
 }
 
 export function renderIntegrationMarquee(): string {
-  return `<section class="mkt-integrations">
+  return `<section id="integrations" class="mkt-integrations mkt-anchor">
 <p class="integration-title">${label("mkt.integrations.title")}</p>
 <div class="marquee">
   <span>Matter</span> &middot; <span>Zigbee</span> &middot; <span>Z-Wave</span> &middot; <span>HomeKit</span> &middot; <span>Philips Hue</span> &middot; <span>Sonos</span> &middot; <span>Nest</span> &middot; <span>Ring</span>
@@ -568,29 +837,92 @@ export function renderIntegrationMarquee(): string {
 
 export function renderStyles(theme: DesignTokens): string {
   const t = theme;
-  return `${renderFontFaces()}
+  const lightTheme = getTheme("light");
+  const darkTheme = getTheme("dark");
 
-:root {
-  --bg: ${t.color.bg};
-  --surface: ${t.color.surface};
-  --text: ${t.color.text};
-  --muted: ${t.color.textMuted};
-  --primary: ${t.color.primary};
-  --on-primary: ${t.color.onPrimary};
-  --accent: ${t.color.accent};
-  --radius: ${t.radius.md}px;
-  --radius-lg: ${t.radius.lg}px;
-  --font: ${t.font.family};
-  --font-mono: ${t.font.familyMono};
-  --gap: ${t.space[4]}px;
+  const renderVars = (t2: DesignTokens) => `  --bg: ${t2.color.bg};
+  --surface: ${t2.color.surface};
+  --text: ${t2.color.text};
+  --muted: ${t2.color.textMuted};
+  --primary: ${t2.color.primary};
+  --on-primary: ${t2.color.onPrimary};
+  --accent: ${t2.color.accent};
+  --radius: ${t2.radius.md}px;
+  --radius-lg: ${t2.radius.lg}px;
+  --font: ${t2.font.family};
+  --font-mono: ${t2.font.familyMono};
+  --gap: ${t2.space[4]}px;
   --border: color-mix(in srgb, var(--text) 8%, transparent);
   --border-strong: color-mix(in srgb, var(--text) 14%, transparent);
   --tint: color-mix(in srgb, var(--primary) 12%, transparent);
   --tint-soft: color-mix(in srgb, var(--primary) 6%, var(--surface));
   --elev: 0 4px 12px rgba(0,0,0,0.05), 0 24px 48px rgba(0,0,0,0.08);
   --ring: 0 0 0 2px color-mix(in srgb, var(--primary) 40%, transparent);
-  --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+  --gradient: linear-gradient(135deg, var(--primary), var(--accent));`;
+
+  return `${renderFontFaces()}
+
+:root {
+${renderVars(t)}
 }
+
+[data-theme="light"] {
+${renderVars(lightTheme)}
+}
+
+[data-theme="dark"] {
+${renderVars(darkTheme)}
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--primary) 40%, transparent) transparent;
+}
+a, button, .btn, nav, header, footer, .badge, .popular-badge, .stat, .eyebrow, img, svg, .brand,
+.hero-mockup, .phone-frame, .mockup-sidebar-full, .dsk-card, .pricing-card, .testimonial-card, 
+.faq-q, .how-step, .brand-logo-pill, .integration-title, .version-badge, .theme-toggle, .mouse {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.testimonial-card p { user-select: text; -webkit-user-select: text; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--primary) 40%, transparent); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+.pricing-card {
+  position: relative; display: flex; flex-direction: column; gap: 20px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent); backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: 24px; padding: 40px 32px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.pricing-card h3 { font-size: 24px; margin: 0; font-weight: 700; color: var(--text); }
+.pricing-card p { margin: 0; color: color-mix(in srgb, var(--text) 70%, transparent); font-size: 14px; line-height: 1.5; min-height: 42px; }
+.pricing-card .price { font-size: 48px; font-weight: 800; color: var(--text); display: flex; align-items: baseline; gap: 4px; margin: 8px 0; }
+.pricing-card .price span { font-size: 16px; font-weight: 500; color: color-mix(in srgb, var(--text) 50%, transparent); }
+.pricing-card:hover { transform: translateY(-8px); border-color: color-mix(in srgb, var(--primary) 50%, transparent); box-shadow: 0 24px 48px color-mix(in srgb, var(--primary) 15%, rgba(0,0,0,0.2)); }
+.pricing-card.premium {
+  border: 2px solid var(--primary);
+  background: linear-gradient(165deg, color-mix(in srgb, var(--primary) 15%, var(--surface)), color-mix(in srgb, var(--surface) 90%, transparent));
+  box-shadow: 0 24px 64px color-mix(in srgb, var(--primary) 25%, transparent);
+  transform: scale(1.05);
+  z-index: 2;
+}
+.pricing-card.premium:hover { transform: scale(1.05) translateY(-8px); }
+.popular-badge {
+  position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+  background: var(--gradient); color: #ffffff;
+  font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 6px 16px; border-radius: 999px; box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 40%, transparent);
+}
+.pricing-features { list-style: none; padding: 0; margin: 8px 0 24px; display: flex; flex-direction: column; gap: 16px; font-size: 14px; color: var(--text); flex: 1; }
+.pricing-features li { display: flex; align-items: flex-start; gap: 12px; line-height: 1.4; color: color-mix(in srgb, var(--text) 85%, transparent); }
+.pricing-features li .pricing-check { flex-shrink: 0; width: 18px; height: 18px; color: var(--primary); margin-top: 1px; }
+.pricing-card .btn { margin-top: auto; padding: 14px 24px; font-size: 15px; font-weight: 600; border-radius: 12px; width: 100%; text-align: center; }
+.pricing-card.premium .btn { box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 30%, transparent); }
+@media (max-width: 860px) { .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; } }
 
 html { box-sizing: border-box; scroll-behavior: smooth; }
 *, *:before, *:after { box-sizing: inherit; }
@@ -646,10 +978,19 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
   position: relative;
   display: flex; flex-direction: column; gap: 12px;
   min-height: 132px;
-  background: linear-gradient(155deg, var(--tint-soft), var(--surface) 62%);
-  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   border-radius: var(--radius-lg);
   padding: 24px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 16px 32px color-mix(in srgb, var(--primary) 15%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
 }
 .card .cardicon {
   display: inline-flex; align-items: center; justify-content: center;
@@ -665,8 +1006,18 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 .bento { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(96px, auto); gap: var(--gap); }
 .bento-tile {
   position: relative; display: flex; flex-direction: column; gap: 12px;
-  background: linear-gradient(155deg, var(--tint-soft), var(--surface) 62%);
-  border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  border-radius: var(--radius-lg); padding: 24px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.bento-tile:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 16px 32px color-mix(in srgb, var(--primary) 12%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 30%, transparent);
 }
 .bento-tile .tile-head { display: flex; align-items: center; gap: 12px; color: var(--muted); }
 .bento-tile .tile-head .tile-title { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -684,10 +1035,16 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 .ring-meta .value { font-size: 22px; margin-top: 0; }
 .assistant-strip {
   grid-column: 1 / -1; display: flex; align-items: center; gap: 16px;
-  background: linear-gradient(120deg, var(--tint), transparent 60%), var(--surface);
-  border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
-  padding: 16px 24px;
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 40%, transparent);
+  border-radius: 999px; /* Floating capsule look */
+  padding: 12px 24px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 12px 32px color-mix(in srgb, var(--primary) 15%, transparent);
+  transition: transform 0.3s ease;
 }
+.assistant-strip:hover { transform: scale(1.02); }
 .assistant-strip .cardicon {
   display: inline-flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: var(--radius);
@@ -710,6 +1067,15 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
   border-radius: var(--radius); padding: 16px 16px;
 }
 .bento-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.plan-card {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--primary) 40%, transparent);
+  border-radius: var(--radius-lg); padding: 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 16px color-mix(in srgb, var(--primary) 15%, transparent);
+}
 .bento-grid.wide { grid-template-columns: 1fr; }
 .room-card {
   display: flex; align-items: center; justify-content: space-between;
@@ -902,14 +1268,22 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 
 .suggest-card {
   display: flex; flex-direction: column; gap: 12px;
-  background: var(--surface); border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   border-radius: var(--radius-lg); padding: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0,0,0,0.05);
 }
 .suggest-card .actions { margin-top: auto; justify-content: flex-end; }
 
 .skill-bar-wrap {
-  background: var(--surface); border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; gap: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0,0,0,0.05);
 }
 .skill-bar-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
 .skill-bar-header .count { color: var(--muted); }
@@ -918,8 +1292,12 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 
 .member-card {
   display: flex; align-items: center; gap: 16px;
-  background: var(--surface); border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   border-radius: var(--radius-lg); padding: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .plan-card {
@@ -1007,7 +1385,7 @@ html.js-tabs section[hidden] { display: none; }
 .features { margin-top: 48px; }
 .feature-grid {
   display: grid; gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
 }
 .feature {
   background: linear-gradient(155deg, var(--tint-soft), var(--surface) 62%);
@@ -1022,6 +1400,9 @@ html.js-tabs section[hidden] { display: none; }
 .feature h3 { margin: 0 0 8px; font-size: 18px; }
 .feature p { margin: 0; color: var(--muted); font-size: 12px; }
 
+@media (max-width: 900px) {
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 600px) {
   .wrap { padding: 16px 12px; }
   .row { flex-wrap: wrap; gap: 8px; }
@@ -1254,21 +1635,21 @@ export function renderAdminDashboard(
 <div class="wrap">
   <h2>${label(model.titleKey)}</h2>
   <div class="bento-grid">
-    <div class="bento-tile">
+    <div class="bento-tile" style="transition: transform 0.2s, background 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--surface)'" onmouseout="this.style.transform='translateY(0)'; this.style.background=''">
       <div class="tile-head">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         <span class="tile-title">Total Users</span>
       </div>
       <div class="value">${model.totalUsers}</div>
     </div>
-    <div class="bento-tile">
+    <div class="bento-tile" style="transition: transform 0.2s, background 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--surface)'" onmouseout="this.style.transform='translateY(0)'; this.style.background=''">
       <div class="tile-head">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
         <span class="tile-title">Active Devices</span>
       </div>
       <div class="value">${model.activeDevices}</div>
     </div>
-    <div class="bento-tile">
+    <div class="bento-tile" style="transition: transform 0.2s, background 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.background='var(--surface)'" onmouseout="this.style.transform='translateY(0)'; this.style.background=''">
       <div class="tile-head">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
         <span class="tile-title">Revenue (MRR)</span>
@@ -1287,7 +1668,7 @@ export function renderAdminDashboard(
         </tr>
       </thead>
       <tbody>
-        ${model.recentLogs.map((l) => `<tr><td>${l.time}</td><td>${l.event}</td></tr>`).join("")}
+        ${model.recentLogs.map((l) => `<tr style="transition: background 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background=''"><td>${l.time}</td><td>${l.event}</td></tr>`).join("")}
       </tbody>
     </table>
   </div>

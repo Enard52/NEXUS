@@ -10,7 +10,7 @@
  *
  * Like the rest of the codebase this is a dependency-free `data -> HTML string`
  * renderer: deterministic, unit-testable, and viewable as a standalone file. A
- * production build wraps this markup in a real shell (Electron/Tauri) — that
+ * production build wraps this markup in a real desktop shell — that
  * native packaging is an external boundary; the *design* lives here.
  */
 
@@ -73,11 +73,11 @@ export function renderDesktopStyles(t: DesignTokens): string {
   from { opacity: 0; transform: translateX(14px); }
   to   { opacity: 1; transform: none; }
 }
-body.desktop { padding: ${t.space[6]}px; background: #05060a; }
+body.desktop { padding: ${t.space[6]}px; background: #05060a; font-family: 'Space Grotesk', Inter, system-ui, sans-serif; }
 .window {
   max-width: 1120px; margin: 0 auto; background: var(--bg);
-  border: 1px solid var(--surface); border-radius: ${t.radius.lg}px; overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--surface)); border-radius: ${t.radius.lg}px; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 1px 1px color-mix(in srgb, var(--primary) 20%, transparent);
   animation: win-open 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .titlebar {
@@ -95,11 +95,17 @@ body.desktop { padding: ${t.space[6]}px; background: #05060a; }
 .wctl-btn {
   width: 28px; height: 28px; border-radius: var(--radius);
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--muted); transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  color: var(--muted); transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
-.wctl-btn:hover { background: var(--bg); color: var(--text); }
-.wctl-btn.close:hover { background: #ef4444; color: #fff; box-shadow: 0 0 10px rgba(239,68,68,0.45); }
-.titlebar .title { flex: 1; text-align: center; font-size: ${t.font.size.sm}px; color: var(--muted); }
+.gnome-btn {
+  width: 22px; height: 22px; border-radius: 50%; background: color-mix(in srgb, var(--surface) 75%, var(--text));
+  color: var(--muted); display: inline-flex; align-items: center; justify-content: center;
+}
+.gnome-btn:hover { background: color-mix(in srgb, var(--surface) 50%, var(--text)); color: var(--text); }
+.gnome-btn.close:hover { background: #ef4444; color: #fff; box-shadow: 0 0 10px rgba(239,68,68,0.45); }
+.wctl-btn:hover { background: color-mix(in srgb, var(--text) 8%, transparent); color: var(--text); transform: translateY(-1px); }
+.wctl-btn.close:hover { background: #ef4444; color: #fff; box-shadow: 0 0 12px rgba(239,68,68,0.5); transform: translateY(-1px); }
+.titlebar .title { flex: 1; text-align: center; font-size: ${t.font.size.sm}px; color: var(--muted); letter-spacing: 0.03em; font-weight: 600; }
 .titlebar .title-actions { display: flex; align-items: center; gap: ${t.space[3]}px; }
 .title-lang { display: inline-flex; gap: 4px; font-size: ${t.font.size.sm}px; }
 .title-lang a { color: var(--muted); text-decoration: none; }
@@ -114,8 +120,9 @@ body.desktop { padding: ${t.space[6]}px; background: #05060a; }
 .titlebar .avatar-wrap { display: inline-flex; }
 .app { display: flex; min-height: 620px; }
 .sidebar {
-  width: 248px; flex: none; background: var(--surface); padding: ${t.space[5]}px;
-  border-right: 1px solid var(--bg); display: flex; flex-direction: column; gap: ${t.space[5]}px;
+  width: 248px; flex: none; background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, var(--primary) 8%) 0%, var(--surface) 100%);
+  backdrop-filter: blur(16px); padding: ${t.space[5]}px;
+  border-right: 1px solid color-mix(in srgb, var(--text) 8%, transparent); display: flex; flex-direction: column; gap: ${t.space[5]}px;
 }
 .brandrow { display: flex; align-items: center; gap: ${t.space[3]}px; }
 nav.side { display: flex; flex-direction: column; gap: ${t.space[1]}px; margin: 0; position: relative; }
@@ -217,7 +224,7 @@ fromHash();
 export interface DesktopOptions {
   readonly theme?: ThemeName;
   readonly userAgent?: string;
-  readonly os?: "windows" | "mac";
+  readonly os?: "windows" | "mac" | "linux";
   /** Real per-user screens (defaults to the demo fixtures for the standalone preview). */
   readonly screens?: DemoScreens;
   /** Signed-in user's display name — drives the avatar initial and title-bar identity. */

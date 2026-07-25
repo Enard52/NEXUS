@@ -19,6 +19,7 @@ describe("PluginRegistry (FAZ 16)", () => {
           name: "Generic LAN",
           vendor: "lan",
           version: "1.0.0",
+          protocol: "lan",
           capabilities: ["switch"],
           premium: false,
         },
@@ -37,6 +38,7 @@ describe("PluginRegistry (FAZ 16)", () => {
       name: "Dup",
       vendor: "x",
       version: "1.0.0",
+      protocol: "wifi",
       capabilities: [],
       premium: false,
     });
@@ -53,6 +55,7 @@ describe("PluginRegistry (FAZ 16)", () => {
           name: "Matter",
           vendor: "matter",
           version: "1.0.0",
+          protocol: "matter",
           capabilities: ["switch"],
           premium: false,
         },

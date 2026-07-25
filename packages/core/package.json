@@ -18,13 +18,21 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@nexus/accounts": "workspace:*",
+    "@nexus/agents": "workspace:*",
     "@nexus/ai": "workspace:*",
+    "@nexus/billing": "workspace:*",
     "@nexus/config": "workspace:*",
+    "@nexus/connectors": "workspace:*",
     "@nexus/devices": "workspace:*",
+    "@nexus/i18n": "workspace:*",
     "@nexus/logger": "workspace:*",
     "@nexus/memory": "workspace:*",
+    "@nexus/platform": "workspace:*",
+    "@nexus/plugins": "workspace:*",
     "@nexus/routines": "workspace:*",
     "@nexus/security": "workspace:*",
+    "@nexus/skills": "workspace:*",
     "@nexus/voice": "workspace:*"
   }
 }

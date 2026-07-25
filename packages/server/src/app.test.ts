@@ -357,7 +357,7 @@ describe("local sync server", () => {
     const { base } = await boot(join(tmp, "csp.db"));
     const res = await fetch(`${base}/`, { redirect: "manual" });
     const csp = res.headers.get("content-security-policy") ?? "";
-    expect(csp).toContain("font-src 'self'");
+    expect(csp).toContain("img-src 'self' data: https:");
     expect(csp).not.toContain("https://fonts.gstatic.com");
     expect(csp).not.toContain("https://fonts.googleapis.com");
   });

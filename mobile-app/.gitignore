@@ -1,0 +1,21 @@
+# Generated web bundle (rebuilt from repo sources by scripts/build-web.mjs)
+www/
+
+# Dependencies
+node_modules/
+
+# Capacitor build output / native build artifacts
+android/build/
+android/app/build/
+android/.gradle/
+android/captures/
+android/local.properties
+ios/build/
+ios/Pods/
+ios/App/output/
+
+# macOS / IDE
+.DS_Store
+*.iml
+.idea/
+.vscode/

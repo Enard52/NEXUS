@@ -109,8 +109,8 @@ describe("@nexus/web renderer", () => {
     const features = renderFeatures();
     expect(features).toContain('<section class="features"');
     expect(features).toContain('class="feature-grid"');
-    // Four benefit pillars, each with its own subheading.
-    expect(features.match(/<h3>/g)?.length).toBe(4);
+    // Six benefit pillars, each with its own subheading.
+    expect(features.match(/<h3>/g)?.length).toBe(6);
     expect(features).toContain("Voice-first control");
     expect(features).toContain("Private by design");
 
@@ -264,7 +264,7 @@ describe("bento layout screen renderers (Section E)", () => {
     const html = renderSkills(model);
     expect(html).toContain('class="bento-grid wide"');
     expect(html).toContain('class="skill-bar-wrap"');
-    expect(html).toContain('style="width: 100%"');
+    expect(html).toContain('width: 100%');
   });
 
   it("renderFamily renders member-card bento grid", () => {
@@ -275,12 +275,40 @@ describe("bento layout screen renderers (Section E)", () => {
     expect(html).toContain("admin");
   });
 
-  it("renderBilling renders plan-card bento grid", () => {
-    const model = buildBillingModel("premium");
+  it("renderBilling renders plan-card bento grid with checklists, comparison matrix, and payment history (R5.2)", () => {
+    const model = buildBillingModel("family");
     const html = renderBilling(model);
     expect(html).toContain('<div class="bento-grid wide">');
-    expect(html).toContain('class="plan-card"');
-    expect(html).toContain("Premium");
+    expect(html).toContain('class="plan-card');
+    expect(html).toContain("Family");
+    expect(html).toContain("100% Local AI Engine");
+    expect(html).toContain("Plan Comparison Matrix");
+    expect(html).toContain("Payment History & Invoices");
+    expect(html).toContain("INV-2026-007");
+  });
+
+  it("renderTodayPanel renders 4 user analytics cards (R5.4)", () => {
+    const html = renderTodayPanel(buildTodayModel({ devicesOnline: 3, devicesTotal: 4, energyWhToday: 1500, activeRoutines: 5, pendingSuggestions: 1 }));
+    expect(html).toContain("Weekly Energy Trend");
+    expect(html).toContain("19.4 kWh");
+    expect(html).toContain("System Uptime");
+    expect(html).toContain("99.98%");
+    expect(html).toContain("Total Automations");
+    expect(html).toContain("1,420");
+    expect(html).toContain("Most Active Device");
+    expect(html).toContain("LG C3 65");
+  });
+
+  it("renderDevices renders branded devices and status detail indicators (R5.3)", () => {
+    const model = buildDeviceListModel([
+      { id: "lamp", nameKey: "Philips Hue Play Gradient Lightstrip", room: "Living room", online: true },
+      { id: "tv", nameKey: 'LG C3 65" 4K OLED Smart TV', room: "Living room", online: true },
+    ]);
+    const html = renderDevices(model);
+    expect(html).toContain("Philips Hue Play Gradient Lightstrip");
+    expect(html).toContain(escapeHtml('LG C3 65" 4K OLED Smart TV'));
+    expect(html).toContain("Brightness: 80%");
+    expect(html).toContain("HDMI 1 (PlayStation 5)");
   });
 
   it("renderPersonalization renders field-row inside bento grid", () => {

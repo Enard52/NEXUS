@@ -1,11 +1,17 @@
-import { mkdirSync, cpSync, rmSync } from "node:fs";
+import { mkdirSync, cpSync, rmSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
 const publicDir = join(root, "public");
 
-// Clear existing public directory
-rmSync(publicDir, { recursive: true, force: true });
+// Clear existing public directory, but keep real installer binaries in
+// public/downloads — they are release artifacts, not generated output.
+if (existsSync(publicDir)) {
+  for (const entry of readdirSync(publicDir)) {
+    if (entry === "downloads") continue;
+    rmSync(join(publicDir, entry), { recursive: true, force: true });
+  }
+}
 mkdirSync(publicDir, { recursive: true });
 
 // Copy web demo to public

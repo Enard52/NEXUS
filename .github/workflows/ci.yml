@@ -35,3 +35,41 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+  release:
+    name: build & publish release artifacts
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Generate SHA-256 checksums
+        run: |
+          mkdir -p dist/checksums
+          find dist -type f \( -name "*.exe" -o -name "*.msi" -o -name "*.dmg" -o -name "*.AppImage" \) \
+            -exec sh -c 'sha256sum "$1" > "$1.sha256"' _ {} \;
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ github.sha }}
+          path: dist/
+          retention-days: 30

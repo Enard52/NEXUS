@@ -394,6 +394,7 @@ export class AccountService {
 export * from "./family.js";
 export * from "./oauth.js";
 export * from "./providers.js";
+export * from "./bridge.js";
 
 export const moduleName = "accounts" as const;
 export const implemented = true;

@@ -12,6 +12,9 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   minimize: () => ipcRenderer.send("nx:minimize"),
   toggleMaximize: () => ipcRenderer.send("nx:toggle-maximize"),
   close: () => ipcRenderer.send("nx:close"),
+  // Offline page helpers: retry the server connection / show its address.
+  retry: () => ipcRenderer.send("nx:retry"),
+  appUrl: () => ipcRenderer.invoke("nx:app-url"),
 });
 
 window.addEventListener("DOMContentLoaded", () => {

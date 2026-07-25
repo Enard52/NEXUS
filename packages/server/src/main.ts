@@ -10,6 +10,7 @@
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
+import { existsSync } from "node:fs";
 import { SqliteKeyValueStore } from "@nexus/database";
 import { loadConfig } from "@nexus/config";
 import { SqliteUserMemoryStore } from "@nexus/memory";
@@ -20,7 +21,10 @@ const dataDir = process.env.NEXUS_DATA_DIR ?? join(homedir(), ".nexus");
 const dbFile = join(dataDir, "nexus.db");
 const memoryDbFile = join(dataDir, "memory.db");
 const here = dirname(fileURLToPath(import.meta.url));
-const staticRoot = resolve(here, "../../web/dist");
+// Prefer the aggregated repo-root public/ (built pages + real installer
+// binaries under public/downloads); fall back to the raw web build output.
+const publicRoot = resolve(here, "../../../public");
+const staticRoot = existsSync(publicRoot) ? publicRoot : resolve(here, "../../web/dist");
 
 const store = new SqliteKeyValueStore(dbFile);
 const memory = new SqliteUserMemoryStore(memoryDbFile);

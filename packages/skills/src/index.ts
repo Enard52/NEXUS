@@ -1,14 +1,19 @@
 /**
- * NEXUS AI — @nexus/skills
- * Skill system & experience memory (FAZ 5).
+ * NEXUS AI — @nexus/skills (FAZ 5)
  *
- * FAZ 0 placeholder: the module is wired into the monorepo but not yet
- * implemented. Real behavior is added in the phase noted above.
+ * Experience memory + auto-learned Skills. The system observes repeated
+ * fine-tuning patterns, proposes saving them as Skills (with user consent),
+ * and auto-applies them on subsequent matching requests.
+ *
+ * Key components:
+ *  - SkillStore: CRUD + lifecycle for Skill definitions
+ *  - SkillLearningEngine: Detects repetitive patterns → proposes Skills
+ *  - SkillExecutor: Pattern-matches incoming intents → auto-applies active Skills
+ *  - SkillConsentManager: User approval flow for proposed Skills
+ *  - SkillDiscoveryService: Static catalog of discoverable system skills
  */
 
 export const moduleName = "skills" as const;
-
-/** Flipped to true since we now ship Skill Discovery. */
 export const implemented = true;
 
 export interface ModuleInfo {
@@ -21,3 +26,5 @@ export function skillsInfo(): ModuleInfo {
 }
 
 export * from "./discovery.js";
+export * from "./skill-store.js";
+export * from "./learning-engine.js";

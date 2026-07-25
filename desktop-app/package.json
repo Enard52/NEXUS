@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop-app",
   "version": "3.14.2",
-  "description": "NEXUS AI — real desktop application (Electron): tray + background, loads the synced app.",
+  "description": "NEXUS AI — real desktop application: tray + background, loads the synced app.",
   "main": "main.cjs",
   "author": "NEXUS Technologies Inc.",
   "license": "UNLICENSED",
@@ -9,7 +9,9 @@
   "scripts": {
     "gen:icon": "node gen-tray-icon.cjs",
     "start": "electron .",
-    "build:win": "electron-builder --win portable"
+    "build:win": "electron-builder --win portable",
+    "build:mac": "electron-builder --mac dmg",
+    "build:linux": "electron-builder --linux AppImage deb"
   },
   "devDependencies": {
     "electron": "^33.2.0",
@@ -24,6 +26,7 @@
     "files": [
       "main.cjs",
       "preload.cjs",
+      "offline.html",
       "assets/**"
     ],
     "win": {
@@ -32,6 +35,19 @@
     },
     "portable": {
       "artifactName": "NEXUS-${version}.exe"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.png",
+      "category": "public.app-category.utilities",
+      "artifactName": "NEXUS-${version}.dmg"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "assets/icon.png",
+      "category": "Utility",
+      "maintainer": "NEXUS Technologies Inc.",
+      "artifactName": "NEXUS-${version}.${ext}"
     }
   }
 }

@@ -36,6 +36,7 @@ export interface NexusApp extends AppDeps {
     req: import("node:http").IncomingMessage,
     res: import("node:http").ServerResponse,
   ) => void;
+  readonly destroy?: () => void;
 }
 
 export interface NexusAppOptions {
@@ -91,6 +92,36 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
     support,
     platform,
   });
+
+  // Routine Runner Engine: Checks every minute if there is a routine scheduled for the current time
+  const timer = setInterval(() => {
+    const now = new Date();
+    const timeString = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+    
+    try {
+      const dueRoutines = routines.due(timeString);
+      for (const routine of dueRoutines) {
+        // eslint-disable-next-line no-console
+        console.log(`[RoutineRunner] Executing scheduled routine: ${routine.name} at ${timeString}`);
+        // In a real system we would dispatch these via core or device manager.
+        // For now, we mock the execution log to verify it fires.
+        const actions = routines.plan(routine);
+        for (const action of actions) {
+          // eslint-disable-next-line no-console
+          console.log(`[RoutineRunner] -> Action: ${action.kind}`, action.params);
+        }
+      }
+    } catch (e) {
+      // Ignore errors if time string is somehow invalid
+    }
+  }, 60000);
+  
+  // Allow node to exit even if this interval is running (important for tests)
+  timer.unref();
+
+  // Allow tests to clean up the interval by exposing a destroy method
+  const destroy = () => clearInterval(timer);
+
   return {
     handler,
     accounts,
@@ -103,6 +134,7 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
     legal,
     support,
     platform,
+    destroy,
   };
 }
 

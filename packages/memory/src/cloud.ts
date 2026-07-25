@@ -100,3 +100,74 @@ export class CloudMemory {
       : (local.personalization ?? DEFAULT_PERSONALIZATION);
   }
 }
+
+import type { UserMemoryStore } from "./index.js";
+import { InMemoryUserMemory } from "./index.js";
+
+/**
+ * A UserMemoryStore that auto-syncs every write to a CloudMemoryBackend.
+ * Pulls the latest snapshot on init and on explicit sync(). This is the
+ * FAZ 16 deliverable: "hafızası cloud'da güvenli şekilde saklanıyor."
+ */
+export class CloudSyncedUserMemory implements UserMemoryStore {
+  private readonly local: InMemoryUserMemory;
+  private readonly cloud: CloudMemory;
+  private versions = new Map<string, number>();
+
+  constructor(
+    private readonly backend: CloudMemoryBackend,
+    options: CloudMemoryOptions = {},
+  ) {
+    this.local = new InMemoryUserMemory();
+    this.cloud = new CloudMemory(backend, options);
+  }
+
+  /** Pull the latest cloud state for a user into local memory. */
+  syncDown(userId: string): void {
+    const remote = this.cloud.pull(userId);
+    if (remote) {
+      const localVer = this.versions.get(userId) ?? 0;
+      if (remote.version > localVer) {
+        this.local.updatePersonalization(userId, remote.personalization);
+        for (const turn of remote.turns) {
+          this.local.remember(userId, { role: turn.role, text: turn.text });
+        }
+        this.versions.set(userId, remote.version);
+      }
+    }
+  }
+
+  /** Push local state to the cloud. */
+  syncUp(userId: string): void {
+    const profile = this.local.getProfile(userId);
+    const turns = this.local.recent(userId);
+    const ver = (this.versions.get(userId) ?? 0) + 1;
+    this.versions.set(userId, ver);
+    this.cloud.push(userId, profile.personalization, turns, ver);
+  }
+
+  getProfile(userId: string): UserProfile {
+    return this.local.getProfile(userId);
+  }
+
+  updatePersonalization(userId: string, patch: Partial<Personalization>): UserProfile {
+    const result = this.local.updatePersonalization(userId, patch);
+    this.syncUp(userId);
+    return result;
+  }
+
+  remember(userId: string, turn: Omit<MemoryTurn, "at">): void {
+    this.local.remember(userId, turn);
+    // Batch: don't push on every turn, only on explicit syncUp or personalization change
+  }
+
+  recent(userId: string): readonly MemoryTurn[] {
+    return this.local.recent(userId);
+  }
+
+  /** Full bidirectional sync: pull remote changes, then push local updates. */
+  sync(userId: string): void {
+    this.syncDown(userId);
+    this.syncUp(userId);
+  }
+}

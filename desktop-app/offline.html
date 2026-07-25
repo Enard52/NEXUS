@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'"
+    />
+    <title>NEXUS — Connecting…</title>
+    <style>
+      :root {
+        --bg: #05060a;
+        --surface: #12141b;
+        --text: #f2f3f5;
+        --muted: #a2a6ad;
+        --primary: #7c5cff;
+        --border: rgba(242, 243, 245, 0.1);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        font-family: "Segoe UI", Inter, system-ui, sans-serif;
+        background: radial-gradient(120% 100% at 50% 0%, #0b0d16 0%, var(--bg) 60%);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        -webkit-app-region: drag;
+      }
+      .card {
+        -webkit-app-region: no-drag;
+        width: min(440px, 88vw);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 36px 32px;
+        text-align: center;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      }
+      .logo { margin: 0 auto 18px; width: 56px; height: 56px; }
+      h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 10px; }
+      p { color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+      .spinner {
+        margin: 22px auto 0;
+        width: 26px; height: 26px;
+        border-radius: 50%;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .btn {
+        -webkit-app-region: no-drag;
+        margin-top: 22px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 24px;
+        border-radius: 8px;
+        border: none;
+        background: var(--primary);
+        color: #0e0f12;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .btn:hover { opacity: 0.9; }
+      .hint { margin-top: 14px; font-size: 11.5px; color: var(--muted); }
+      code { color: var(--text); background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <svg class="logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img">
+        <defs>
+          <linearGradient id="nxlogo-off" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#7C5CFF"/><stop offset="1" stop-color="#8b7bff"/>
+          </linearGradient>
+        </defs>
+        <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-off)"/>
+        <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>Waiting for the NEXUS sync server</h1>
+      <p>
+        NEXUS keeps your data local: the app connects to the sync server running on this
+        computer. It doesn't seem to be reachable right now.
+      </p>
+      <div class="spinner" aria-hidden="true"></div>
+      <button class="btn" id="retry" type="button">Retry connection</button>
+      <p class="hint">The app retries automatically. Server address: <code id="addr">localhost</code></p>
+    </div>
+    <script>
+      (function () {
+        var native = window.nexusDesktop || window.nx || {};
+        function retry() {
+          if (native.retry) native.retry();
+          else location.reload();
+        }
+        document.getElementById("retry").addEventListener("click", retry);
+        if (native.appUrl) {
+          Promise.resolve(native.appUrl()).then(function (u) {
+            if (u) document.getElementById("addr").textContent = u;
+          });
+        }
+        setInterval(retry, 5000);
+      })();
+    </script>
+  </body>
+</html>

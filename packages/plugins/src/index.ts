@@ -11,7 +11,7 @@
  * Deterministic and dependency-free beyond the devices contract.
  */
 
-import type { CapabilityKind, Connector, UniversalDevice } from "@nexus/devices";
+import type { CapabilityKind, Connector, UniversalDevice, ProtocolType } from "@nexus/devices";
 import { InMemoryConnector } from "@nexus/devices";
 
 /** Self-describing metadata a plugin publishes to the store catalog. */
@@ -21,6 +21,8 @@ export interface ConnectorManifest {
   /** Brand/protocol family, e.g. "matter", "zigbee" — never leaks to Core/Agent. */
   readonly vendor: string;
   readonly version: string;
+  /** Primary communication protocol used by this connector. */
+  readonly protocol: ProtocolType;
   /** Capabilities the plugin's devices expose, for catalog filtering. */
   readonly capabilities: readonly CapabilityKind[];
   /** When true, installation requires a paid plan (gated by the store, FAZ 15). */
@@ -75,5 +77,8 @@ export function definePlugin(
 
 export * from "./hue.js";
 export * from "./tuya.js";
+export * from "./ikea.js";
+export * from "./xiaomi.js";
+export * from "./sonoff.js";
 export const moduleName = "plugins" as const;
 export const implemented = true;

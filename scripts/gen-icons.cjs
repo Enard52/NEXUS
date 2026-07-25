@@ -19,8 +19,14 @@ const { deflateSync, crc32 } = require("node:zlib");
 const { writeFileSync, mkdirSync } = require("node:fs");
 const { join, resolve } = require("node:path");
 
-// Brand palette (matches the design-system primary / bg tokens).
-const BRAND = [91, 141, 255, 255]; // #5b8dff
+// Brand palette (matches the design-system primary / bg tokens with brand gradient).
+function getBrandColor(x, y, S) {
+  const t = (x + y) / (2 * S);
+  const r = Math.round(111 + (139 - 111) * t);
+  const g = Math.round(155 + (123 - 155) * t);
+  const b = 255;
+  return [r, g, b, 255];
+}
 const WHITE = [255, 255, 255, 255];
 const CLEAR = [0, 0, 0, 0];
 
@@ -115,7 +121,7 @@ function renderMark(size, ss = 4) {
   for (let y = 0; y < S; y++) {
     for (let x = 0; x < S; x++) {
       let c = CLEAR;
-      if (inTile(x, y)) c = inGlyph(x, y) ? WHITE : BRAND;
+      if (inTile(x, y)) c = inGlyph(x, y) ? WHITE : getBrandColor(x, y, S);
       const o = (y * S + x) * 4;
       px[o] = c[0];
       px[o + 1] = c[1];

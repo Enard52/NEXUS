@@ -428,17 +428,21 @@ function stepLicense(): string {
   );
 }
 
-function stepLocation(): string {
+function stepLocation(os: "windows" | "mac" = "windows"): string {
   const isTr = CURRENT_LOCALE === "tr";
+  const defaultPath = os === "mac" ? "/Applications/NEXUS.app" : "C:\\Program Files\\NEXUS";
+  const desc = isTr
+    ? (os === "mac"
+        ? "NEXUS AI uygulamasının nereye yükleneceğini seçin. macOS için /Applications klasörü önerilir."
+        : "NEXUS AI uygulamasının nereye yükleneceğini seçin. Çoğu kullanıcı için varsayılan konum önerilir.")
+    : (os === "mac"
+        ? "Choose where NEXUS AI will be installed. The /Applications folder is recommended on macOS."
+        : "Choose where NEXUS AI will be installed. The default location is recommended for most users.");
   return (
     `<h2>${isTr ? "Kurulum Konumu" : "Installation Location"}</h2>` +
-    `<p>${
-      isTr
-        ? "NEXUS AI uygulamasının nereye yükleneceğini seçin. Çoğu kullanıcı için varsayılan konum önerilir."
-        : "Choose where NEXUS AI will be installed. The default location is recommended for most users."
-    }</p>` +
+    `<p>${desc}</p>` +
     `<div class="field">` +
-    `<input type="text" id="install-path" value="C:\\Program Files\\NEXUS" aria-label="Installation path">` +
+    `<input type="text" id="install-path" value="${escapeHtml(defaultPath)}" aria-label="Installation path">` +
     `<button class="btn-browse btn" onclick="window.__nx_browse()" type="button">${
       isTr ? "Gözat\u2026" : "Browse\u2026"
     }</button>` +
@@ -616,7 +620,7 @@ export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocu
   const stepPanels: Record<StepId, string> = {
     welcome: stepWelcome(logoSvg),
     license: stepLicense(),
-    location: stepLocation(),
+    location: stepLocation(os),
     installing: stepInstalling(),
     finish: stepFinish(),
   };

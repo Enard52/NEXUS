@@ -65,27 +65,51 @@ importers:
 
   packages/core:
     dependencies:
+      '@nexus/accounts':
+        specifier: workspace:*
+        version: link:../accounts
+      '@nexus/agents':
+        specifier: workspace:*
+        version: link:../agents
       '@nexus/ai':
         specifier: workspace:*
         version: link:../ai
+      '@nexus/billing':
+        specifier: workspace:*
+        version: link:../billing
       '@nexus/config':
         specifier: workspace:*
         version: link:../config
+      '@nexus/connectors':
+        specifier: workspace:*
+        version: link:../connectors
       '@nexus/devices':
         specifier: workspace:*
         version: link:../devices
+      '@nexus/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@nexus/logger':
         specifier: workspace:*
         version: link:../logger
       '@nexus/memory':
         specifier: workspace:*
         version: link:../memory
+      '@nexus/platform':
+        specifier: workspace:*
+        version: link:../platform
+      '@nexus/plugins':
+        specifier: workspace:*
+        version: link:../plugins
       '@nexus/routines':
         specifier: workspace:*
         version: link:../routines
       '@nexus/security':
         specifier: workspace:*
         version: link:../security
+      '@nexus/skills':
+        specifier: workspace:*
+        version: link:../skills
       '@nexus/voice':
         specifier: workspace:*
         version: link:../voice
@@ -142,7 +166,14 @@ importers:
         specifier: workspace:*
         version: link:../web
 
-  packages/platform: {}
+  packages/platform:
+    dependencies:
+      '@nexus/infra':
+        specifier: workspace:*
+        version: link:../infra
+      '@nexus/security':
+        specifier: workspace:*
+        version: link:../security
 
   packages/plugins:
     dependencies:
@@ -234,7 +265,11 @@ importers:
 
   packages/support: {}
 
-  packages/voice: {}
+  packages/voice:
+    dependencies:
+      '@nexus/memory':
+        specifier: workspace:*
+        version: link:../memory
 
   packages/web:
     dependencies:

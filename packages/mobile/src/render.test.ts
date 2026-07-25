@@ -22,7 +22,8 @@ describe("@nexus/mobile", () => {
     // The app bar now carries the brand logo and a profile avatar.
     expect(html).toContain('aria-label="NEXUS logo"');
     expect(html).toContain('<span class="avatar"');
-    expect(renderStatusBar()).toContain('<div class="statusbar" aria-hidden="true">');
+    expect(renderStatusBar()).toContain('class="statusbar');
+    expect(renderStatusBar()).toContain('aria-hidden="true"');
     expect(renderStatusBar()).toContain(">9:41<");
   });
 
@@ -60,5 +61,38 @@ describe("@nexus/mobile", () => {
     expect(css).toContain(".tabbar a.active");
     // The active tab must stay transparent (no leaked web nav-pill background).
     expect(css).toContain(".tabbar a.active { background: transparent;");
+    // Glassmorphism header and tabbar styles
+    expect(css).toContain("backdrop-filter: blur(20px)");
+    expect(css).toContain(".statusbar-android");
+  });
+
+  it("renders new tab icons for platform, agents, and admin-dashboard (R5.1)", () => {
+    expect(renderTabIcon("platform")).toContain("<svg");
+    expect(renderTabIcon("platform")).toContain('<rect x="2" y="3"');
+    expect(renderTabIcon("agents")).toContain("<svg");
+    expect(renderTabIcon("agents")).toContain('<circle cx="12" cy="5"');
+    expect(renderTabIcon("admin-dashboard")).toContain("<svg");
+
+    const html = renderMobileDocument({ theme: "dark", authenticated: true });
+    expect(html).toContain('data-nav="platform"');
+    expect(html).toContain('data-nav="agents"');
+    expect(html).toContain('data-nav="admin-dashboard"');
+  });
+
+  it("supports Android status bar variant with punch-hole camera (R6.2)", () => {
+    const iosBar = renderStatusBar("ios");
+    expect(iosBar).toContain("statusbar-ios");
+    expect(iosBar).toContain("dynamic-island");
+    expect(iosBar).toContain("9:41");
+
+    const androidBar = renderStatusBar("android");
+    expect(androidBar).toContain("statusbar-android");
+    expect(androidBar).toContain("punch-hole");
+    expect(androidBar).toContain("10:00");
+    expect(androidBar).toContain("5G");
+
+    const html = renderMobileDocument({ theme: "dark", platform: "android" });
+    expect(html).toContain("statusbar-android");
+    expect(html).toContain("punch-hole");
   });
 });

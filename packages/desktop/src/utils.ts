@@ -7,7 +7,7 @@
  */
 
 /** Premium monochrome window controls (minimize / maximize / close). Decorative. */
-export function renderWindowControls(os: "windows" | "mac" = "windows"): string {
+export function renderWindowControls(os: "windows" | "mac" | "linux" = "windows"): string {
   if (os === "mac") {
     const dot = (color: string) => `<circle cx="6" cy="6" r="6" fill="${color}"/>`;
     return (
@@ -15,6 +15,18 @@ export function renderWindowControls(os: "windows" | "mac" = "windows"): string 
       `<svg width="12" height="12">${dot("#ff5f56")}</svg>` +
       `<svg width="12" height="12">${dot("#ffbd2e")}</svg>` +
       `<svg width="12" height="12">${dot("#27c93f")}</svg>` +
+      `</div>`
+    );
+  }
+  if (os === "linux") {
+    const btn = (path: string, cls = ""): string =>
+      `<span class="wctl-btn gnome-btn${cls ? " " + cls : ""}"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" ` +
+      `stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg></span>`;
+    return (
+      `<div class="wctl wctl-gnome" style="gap: 6px;" aria-hidden="true">` +
+      btn(`<path d="M2 6h8"/>`, "min") +
+      btn(`<rect x="2" y="2" width="8" height="8" rx="1.5"/>`, "max") +
+      btn(`<path d="M3 3l6 6M9 3l-6 6"/>`, "close") +
       `</div>`
     );
   }

@@ -1,0 +1,17 @@
+{
+  "appId": "ai.nexus.app",
+  "appName": "NEXUS",
+  "webDir": "www",
+  "backgroundColor": "#0a0a0b",
+  "android": {
+    "backgroundColor": "#0a0a0b",
+    "allowMixedContent": false
+  },
+  "ios": {
+    "backgroundColor": "#0a0a0b",
+    "contentInset": "always"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

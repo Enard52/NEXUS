@@ -22,3 +22,4 @@ export function supportInfo(): ModuleInfo {
 
 export * from "./telemetry.js";
 export * from "./ticket.js";
+export * from "./onboarding.js";

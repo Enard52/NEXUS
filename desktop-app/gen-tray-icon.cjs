@@ -11,8 +11,14 @@ const { writeFileSync, mkdirSync } = require("node:fs");
 const { join } = require("node:path");
 
 const SIZE = 32;
-// Brand palette (matches the design-system primary / bg tokens).
-const BRAND = [91, 141, 255, 255]; // #5b8dff
+// Brand palette (matches the design-system primary / bg tokens with brand gradient).
+function getBrandColor(x, y, S) {
+  const t = (x + y) / (2 * S);
+  const r = Math.round(111 + (139 - 111) * t);
+  const g = Math.round(155 + (123 - 155) * t);
+  const b = 255;
+  return [r, g, b, 255];
+}
 const WHITE = [255, 255, 255, 255];
 const CLEAR = [0, 0, 0, 0];
 
@@ -49,7 +55,7 @@ for (let y = 0; y < SIZE; y++) {
   raw[rowStart] = 0; // filter: none
   for (let x = 0; x < SIZE; x++) {
     let px = CLEAR;
-    if (roundedTile(x, y)) px = isGlyph(x, y) ? WHITE : BRAND;
+    if (roundedTile(x, y)) px = isGlyph(x, y) ? WHITE : getBrandColor(x, y, SIZE);
     const o = rowStart + 1 + x * 4;
     raw[o] = px[0];
     raw[o + 1] = px[1];

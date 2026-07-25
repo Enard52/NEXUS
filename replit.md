@@ -1,6 +1,6 @@
 # NEXUS AI
 
-Local-first personal operating system (TypeScript monorepo). The repo contains the web app, desktop shell, mobile phone shell, sync server, and an Electron-style installer wizard — all sharing the same design tokens and screen view-models.
+Local-first personal operating system (TypeScript monorepo). The repo contains the web app, desktop shell, mobile phone shell, sync server, and a native installer wizard — all sharing the same design tokens and screen view-models.
 
 ## How to run
 

@@ -45,7 +45,10 @@ type TabIcon =
   | "skills"
   | "personalization"
   | "billing"
-  | "download-center";
+  | "download-center"
+  | "platform"
+  | "agents"
+  | "admin-dashboard";
 
 /** Small inline tab-bar icons — dependency-free, currentColor line art. */
 export function renderTabIcon(name: TabIcon): string {
@@ -60,18 +63,33 @@ export function renderTabIcon(name: TabIcon): string {
     personalization: `<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>`,
     billing: `<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>`,
     "download-center": `<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>`,
+    platform: `<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`,
+    agents: `<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 15h.01M16 15h.01"/>`,
+    "admin-dashboard": `<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>`,
   };
   return (
     `<svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-hidden="true" ` +
     `fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" ` +
-    `stroke-linejoin="round">${paths[name]}</svg>`
+    `stroke-linejoin="round">${paths[name] ?? ""}</svg>`
   );
 }
 
-/** Dynamic-island style status bar (decorative): pill notch at top centre, time left, glyphs right. */
-export function renderStatusBar(): string {
+/** Dynamic-island (iOS) or Punch-hole (Android) status bar (decorative). */
+export function renderStatusBar(platform: "ios" | "android" = "ios"): string {
+  if (platform === "android") {
+    return (
+      `<div class="statusbar statusbar-android" aria-hidden="true">` +
+      `<span class="time">10:00</span>` +
+      `<span class="punch-hole" aria-hidden="true"></span>` +
+      `<span class="sys">` +
+      `<span class="net-type" style="font-size:10px;font-weight:800;margin-right:2px;letter-spacing:-0.5px;">5G</span>` +
+      `<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="1" width="3" height="11" rx="1"/><rect x="15" y="1" width="3" height="11" rx="1"/></svg>` +
+      `<svg width="26" height="12" viewBox="0 0 26 12" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="21" height="10" rx="2.5"/><rect x="3" y="3" width="16" height="6" rx="1" fill="currentColor" stroke="none"/><rect x="23.5" y="4" width="1.5" height="4" rx="0.75" fill="currentColor" stroke="none"/></svg>` +
+      `</span></div>`
+    );
+  }
   return (
-    `<div class="statusbar" aria-hidden="true">` +
+    `<div class="statusbar statusbar-ios" aria-hidden="true">` +
     `<span class="time">9:41</span>` +
     `<span class="dynamic-island" aria-hidden="true"></span>` +
     `<span class="sys">` +
@@ -95,11 +113,11 @@ export function renderTabBar(activeId: ScreenId | "more"): string {
 
   const tabs = [
     ...primaryTabs.map((t) => ({ id: t.id, label: label(t.titleKey), icon: t.icon })),
-    { id: "more", label: CURRENT_LOCALE === "tr" ? "Daha Fazla" : "More", icon: "more" as TabIcon },
+    { id: "more", label: CURRENT_LOCALE === "tr" ? "Menü" : "Menu", icon: "more" as TabIcon },
   ];
   const items = tabs
     .map((t) => {
-      const on = t.id === "more" ? isMoreActive : t.id === activeId;
+      const on = (t.id === "more" && isMoreActive) || t.id === activeId;
       return (
         `<a class="${on ? "active" : ""}" href="#${t.id}" data-nav="${t.id}"` +
         `${on ? ' aria-current="page"' : ""}>${renderTabIcon(t.icon)}` +
@@ -129,6 +147,11 @@ export function renderMobileStyles(t: DesignTokens): string {
   from { opacity: 0; transform: translateX(16px); }
   to   { opacity: 1; transform: none; }
 }
+@keyframes status-pulse {
+  0% { opacity: 0.6; box-shadow: 0 0 4px #10b981; }
+  50% { opacity: 1; box-shadow: 0 0 12px #10b981; transform: scale(1.1); }
+  100% { opacity: 0.6; box-shadow: 0 0 4px #10b981; }
+}
 @keyframes shimmer {
   0%   { background-position: -300px 0; }
   100% { background-position: 300px 0; }
@@ -148,18 +171,26 @@ body.mobile {
   padding: 0 ${t.space[6]}px; color: var(--text); font-size: 15px; font-weight: 600;
   position: relative;
 }
+.statusbar-android {
+  padding: 0 ${t.space[5]}px;
+}
 .dynamic-island {
   position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
   width: 120px; height: 34px; background: #000; border-radius: 20px;
   box-shadow: 0 0 0 1.5px rgba(255,255,255,0.06);
   pointer-events: none;
 }
+.statusbar .punch-hole {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  width: 14px; height: 14px; background: #000; border-radius: 50%;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.06); pointer-events: none;
+}
 .statusbar .sys { display: flex; align-items: center; gap: ${t.space[2]}px; }
 .appbar {
   flex: none; display: flex; align-items: center; gap: ${t.space[3]}px;
   padding: ${t.space[2]}px ${t.space[5]}px ${t.space[3]}px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 72%, var(--primary)) 0%, var(--bg) 100%);
-  backdrop-filter: blur(24px);
+  background: rgba(15, 18, 28, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid color-mix(in srgb, var(--primary) 18%, var(--surface));
   position: relative;
 }
@@ -198,8 +229,9 @@ body.mobile {
 .screen .quick-commands-grid { grid-template-columns: repeat(2, 1fr); }
 .screen .ring-wrap { gap: ${t.space[4]}px; }
 .tabbar {
-  flex: none; display: flex; border-top: 1px solid var(--surface);
-  background: var(--surface); padding-bottom: ${t.space[3]}px; margin: 0; position: relative;
+  flex: none; display: flex; border-top: 1px solid color-mix(in srgb, var(--primary) 15%, var(--border));
+  background: rgba(15, 18, 28, 0.75); backdrop-filter: blur(20px) saturate(180%);
+  padding-bottom: calc(${t.space[3]}px + 20px); margin: 0; position: relative;
 }
 .tabbar a {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
@@ -220,9 +252,9 @@ body.mobile {
 .morerow {
   display: flex; align-items: center; gap: ${t.space[3]}px;
   background: var(--surface); border-radius: var(--radius); padding: ${t.space[4]}px;
-  color: var(--text); text-decoration: none; transition: background 0.18s ease;
+  color: var(--text); text-decoration: none; transition: background 0.18s ease, transform 0.18s ease;
 }
-.morerow:hover { background: color-mix(in srgb, var(--surface) 80%, var(--primary)); }
+.morerow:hover { background: color-mix(in srgb, var(--surface) 80%, var(--primary)); transform: translateY(-1px); }
 .morerow svg { color: var(--primary); transition: transform 0.18s ease; }
 .morerow:hover > svg:last-child { transform: translateX(3px); }
 .morelist li { opacity: 0; animation: more-row-in 0.28s cubic-bezier(0.22,1,0.36,1) forwards; }
@@ -231,6 +263,9 @@ body.mobile {
 .morelist li:nth-child(3) { animation-delay: 0.12s; }
 .morelist li:nth-child(4) { animation-delay: 0.16s; }
 .morelist li:nth-child(5) { animation-delay: 0.20s; }
+.morelist li:nth-child(6) { animation-delay: 0.24s; }
+.morelist li:nth-child(7) { animation-delay: 0.28s; }
+.morelist li:nth-child(8) { animation-delay: 0.32s; }
 html.js-tabs .screen > section[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .phone { animation: none; }
@@ -362,8 +397,17 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
       ? "NEXUS Aile Paketi · Aktif Abonelik"
       : "NEXUS Family Plan · Active Subscription",
     "download-center": isTr
-      ? "Çevrimdışı dosyalar & yerel model önbelleği"
-      : "Offline files & local model cache",
+      ? "3 OS platform sürümleri & SHA-256 doğrulama"
+      : "3 OS platform releases & SHA-256 validation",
+    platform: isTr
+      ? "Çapraz platform senkronizasyonu"
+      : "Cross-platform device sync",
+    agents: isTr
+      ? "Otonom yapay zeka ajanları"
+      : "Autonomous AI agents",
+    "admin-dashboard": isTr
+      ? "Sistem yönetimi & canlı metrikler"
+      : "System administration & metrics",
   };
 
   const moreBadges: Record<string, string> = {
@@ -372,6 +416,9 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     personalization: isTr ? "Yön" : "Adm",
     billing: "PRO",
     "download-center": "140 MB",
+    platform: "3 OS",
+    agents: "4 Active",
+    "admin-dashboard": "LIVE",
   };
 
   const moreRows = moreScreens
@@ -395,20 +442,82 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     .join("");
 
   const systemStatusBanner =
-    `<div style="background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 15%,var(--surface)),var(--surface) 90%);border:1px solid color-mix(in srgb,var(--primary) 30%,var(--border));border-radius:var(--radius-lg);padding:14px;margin-bottom:14px;">` +
-    `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">` +
-    `<div style="font-weight:700;font-size:13px;color:var(--text);">${isTr ? "NEXUS Sistem Durumu" : "NEXUS System Status"}</div>` +
-    `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,0.15);color:#10b981;">● ${isTr ? "%100 Çevrimdışı" : "100% Offline"}</span>` +
+    `<div style="position:relative; background:rgba(20,22,35,0.6); backdrop-filter:blur(12px); border:1px solid color-mix(in srgb, var(--primary) 20%, var(--border)); border-radius: 20px; padding: 18px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.05); overflow:hidden;">` +
+    `<div style="position:absolute; top:-20px; right:-20px; width:100px; height:100px; background:var(--primary); filter:blur(50px); opacity:0.15; border-radius:50%;"></div>` +
+    `<div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom: 14px; position:relative; z-index:1;">` +
+    `<div style="display:flex; align-items:center; gap: 8px;">` +
+    `<div style="width:32px; height:32px; border-radius:10px; background:color-mix(in srgb, var(--primary) 15%, transparent); color:var(--primary); display:flex; align-items:center; justify-content:center;">` +
+    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>` +
     `</div>` +
-    `<div style="font-size:11px;color:var(--muted);line-height:1.4;">${isTr ? "Yerel Ses Motoru: v3.14-Tr (Çalışıyor) · 6/8 Cihaz Çevrimiçi" : "Local AI Engine: v3.14-Tr (Active) · 6/8 Devices Online"}</div>` +
+    `<div>` +
+    `<div style="font-weight:700; font-size:14px; color:var(--text); letter-spacing:-0.01em;">${isTr ? "NEXUS Sistem Durumu" : "NEXUS System Status"}</div>` +
+    `<div style="font-size:11px; color:var(--muted); margin-top:2px;">${isTr ? "Yerel Ağ Bağlantısı" : "Local Network Connection"}</div>` +
+    `</div>` +
+    `</div>` +
+    `<div style="display:flex; align-items:center; gap:6px; background:rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); padding: 4px 10px; border-radius: 999px;">` +
+    `<span style="width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow: 0 0 8px #10b981; animation: status-pulse 2s infinite;"></span>` +
+    `<span style="font-size:11px; font-weight:700; color:#10b981;">${isTr ? "%100 Çevrimdışı" : "100% Offline"}</span>` +
+    `</div>` +
+    `</div>` +
+    `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; position:relative; z-index:1;">` +
+    `<div style="background:rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; display:flex; flex-direction:column; gap:4px;">` +
+    `<div style="display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; font-weight:600;">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"></path><path d="M12 6v6l4 2"></path></svg>` +
+    `${isTr ? "Yerel Ses Motoru" : "Local AI Engine"}` +
+    `</div>` +
+    `<div style="font-size:12px; font-weight:700; color:var(--text);">v3.14-Tr <span style="color:var(--primary); font-weight:600; font-size:11px; margin-left:4px;">(Aktif)</span></div>` +
+    `</div>` +
+    `<div style="background:rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; display:flex; flex-direction:column; gap:4px;">` +
+    `<div style="display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; font-weight:600;">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"></path><path d="M4 8h16"></path><path d="M8 4v4"></path></svg>` +
+    `${isTr ? "Cihaz Ağı" : "Device Network"}` +
+    `</div>` +
+    `<div style="font-size:12px; font-weight:700; color:var(--text);">6/8 <span style="color:var(--muted); font-weight:500; font-size:11px; margin-left:4px;">${isTr ? "Çevrimiçi" : "Online"}</span></div>` +
+    `</div>` +
+    `</div>` +
     `</div>`;
 
   const quickSettingsCard =
-    `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-top:14px;display:flex;flex-direction:column;gap:10px;">` +
-    `<div style="font-weight:700;font-size:12px;color:var(--muted);letter-spacing:0.04em;">${isTr ? "HIZLI KONTROLLER" : "QUICK CONTROLS"}</div>` +
-    `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? "Çevrimdışı Gizlilik Kalkanı" : "Offline Privacy Shield"}</span><span style="color:#10b981;font-weight:700;">✓ ${isTr ? "Aktif" : "Active"}</span></div>` +
-    `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? 'Sesle Uyanma ("NEXUS")' : 'Voice Wake ("NEXUS")'}</span><span style="color:var(--primary);font-weight:700;">✓ ${isTr ? "Açık" : "On"}</span></div>` +
-    `<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text);">${isTr ? "Otomatik Ev Yedeği" : "Auto Home Backup"}</span><span style="color:var(--muted);">${isTr ? "Her Gün 03:00" : "Daily 03:00"}</span></div>` +
+    `<div style="background:rgba(20,22,35,0.6); backdrop-filter:blur(12px); border:1px solid color-mix(in srgb, var(--border) 60%, transparent); border-radius: 20px; padding: 6px; margin-top: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">` +
+    `<div style="padding: 12px 14px 6px; display:flex; align-items:center; gap:6px;">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--primary);"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>` +
+    `<div style="font-weight:800; font-size:11px; color:var(--muted); letter-spacing:0.06em;">${isTr ? "HIZLI KONTROLLER" : "QUICK CONTROLS"}</div>` +
+    `</div>` +
+    `<div style="display:flex; flex-direction:column; gap:4px; padding:4px;">` +
+    `<div style="display:flex; align-items:center; justify-content:space-between; padding: 12px; background:var(--surface); border-radius:14px; border:1px solid transparent; transition:border 0.2s;">` +
+    `<div style="display:flex; align-items:center; gap:10px;">` +
+    `<div style="width:28px; height:28px; border-radius:8px; background:rgba(16,185,129,0.15); color:#10b981; display:flex; align-items:center; justify-content:center;">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>` +
+    `</div>` +
+    `<span style="color:var(--text); font-size:13px; font-weight:600;">${isTr ? "Çevrimdışı Gizlilik Kalkanı" : "Offline Privacy Shield"}</span>` +
+    `</div>` +
+    `<div style="background:#10b981; color:#000; font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; display:flex; align-items:center; gap:4px;">` +
+    `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> ${isTr ? "Aktif" : "Active"}` +
+    `</div>` +
+    `</div>` +
+    `<div style="display:flex; align-items:center; justify-content:space-between; padding: 12px; background:var(--surface); border-radius:14px; border:1px solid transparent; transition:border 0.2s;">` +
+    `<div style="display:flex; align-items:center; gap:10px;">` +
+    `<div style="width:28px; height:28px; border-radius:8px; background:color-mix(in srgb, var(--primary) 15%, transparent); color:var(--primary); display:flex; align-items:center; justify-content:center;">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>` +
+    `</div>` +
+    `<span style="color:var(--text); font-size:13px; font-weight:600;">${isTr ? 'Sesle Uyanma ("NEXUS")' : 'Voice Wake ("NEXUS")'}</span>` +
+    `</div>` +
+    `<div style="background:var(--primary); color:#fff; font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; display:flex; align-items:center; gap:4px;">` +
+    `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> ${isTr ? "Açık" : "On"}` +
+    `</div>` +
+    `</div>` +
+    `<div style="display:flex; align-items:center; justify-content:space-between; padding: 12px; background:var(--surface); border-radius:14px; border:1px solid transparent; transition:border 0.2s;">` +
+    `<div style="display:flex; align-items:center; gap:10px;">` +
+    `<div style="width:28px; height:28px; border-radius:8px; background:rgba(255,255,255,0.05); color:var(--muted); display:flex; align-items:center; justify-content:center;">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>` +
+    `</div>` +
+    `<span style="color:var(--text); font-size:13px; font-weight:600;">${isTr ? "Otomatik Ev Yedeği" : "Auto Home Backup"}</span>` +
+    `</div>` +
+    `<div style="color:var(--muted); font-size:12px; font-weight:600; padding:4px 4px; display:flex; align-items:center; gap:4px;">` +
+    `${isTr ? "Her Gün 03:00" : "Daily 03:00"}` +
+    `</div>` +
+    `</div>` +
+    `</div>` +
     `</div>`;
 
   const moreSection =
@@ -461,7 +570,7 @@ ${pwaHead}
 </head>
 <body class="mobile">
 <div class="phone">
-${renderStatusBar()}
+${renderStatusBar(options.platform)}
 <header class="appbar">${renderLogo(theme.color.primary)}<span class="apptitle">NEXUS</span><div class="appbar-right">${appbarRight}</div></header>
 <main class="screen" id="main">
 ${appScreens}
@@ -476,3 +585,12 @@ ${renderTabBar("today")}
 
 export const moduleName = "mobile" as const;
 export const implemented = true;
+
+// ─── FAZ 9: Native Bridge Layer Exports ──────────────────────────────────────
+export { type MobileBridge, type MobilePlatform, type BatteryInfo, type NetworkStatus, type GeoPosition, type HapticStyle, type AppInfo, type SharePayload, CapacitorBridge, MockBridge } from "./bridge.js";
+export { PushManager, DEFAULT_CHANNELS, type PushToken, type NotificationPayload, type NotificationChannel, type NotificationHandler } from "./notifications.js";
+export { PermissionsManager, getDefaultPermissions, FEATURE_PERMISSION_MAP, type PermissionName, type PermissionStatus, type PermissionEntry, type FeaturePermissionMap } from "./permissions.js";
+export { MobileVoiceBridge, DEFAULT_VOICE_CONFIG, type VoiceBridgeConfig, type VoiceSession, type VoiceSessionState, type AudioSessionCategory, type VoiceBridgeEvent } from "./voice-bridge.js";
+export { RemoteConnection, DEFAULT_CONNECTION_OPTIONS, type ConnectionMode, type ConnectionState, type ServerEndpoint, type ConnectionOptions, type RemoteRequest, type RemoteResponse } from "./remote-access.js";
+export { DeepLinkRouter, type DeepLinkResult, type DeepLinkAction, type DeepLinkHandler } from "./deep-links.js";
+export { MobileService, type MobileServiceConfig, type AppLifecycleState, type ServiceEvent, type ServiceEventHandler } from "./mobile-service.js";

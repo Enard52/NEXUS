@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   CapabilityError,
   DeviceManager,
+  DeviceNameRegistry,
   InMemoryConnector,
   implemented,
   moduleName,
@@ -81,5 +82,73 @@ describe("DeviceManager (FAZ 4)", () => {
     };
     mgr.registerConnector(new InMemoryConnector("connector-c", [thermostat]));
     expect(mgr.findByRoomCapability("bedroom", "colorTemp")?.id).toBe("dev-3");
+  });
+});
+
+describe("DeviceNameRegistry", () => {
+  it("rename sets a name and resolve returns the deviceId", () => {
+    const reg = new DeviceNameRegistry();
+    reg.rename("dev-1", "Aurora");
+    expect(reg.resolve("Aurora")).toBe("dev-1");
+  });
+
+  it("resolve is case-insensitive", () => {
+    const reg = new DeviceNameRegistry();
+    reg.rename("dev-1", "Aurora");
+    expect(reg.resolve("aurora")).toBe("dev-1");
+    expect(reg.resolve("AURORA")).toBe("dev-1");
+  });
+
+  it("addAlias supports multiple aliases for the same device", () => {
+    const reg = new DeviceNameRegistry();
+    reg.rename("dev-1", "Aurora");
+    reg.addAlias("dev-1", "My Lamp");
+    expect(reg.resolve("aurora")).toBe("dev-1");
+    expect(reg.resolve("my lamp")).toBe("dev-1");
+    expect(reg.getAliases("dev-1")).toContain("aurora");
+    expect(reg.getAliases("dev-1")).toContain("my lamp");
+  });
+
+  it("throws when assigning an alias already taken by another device", () => {
+    const reg = new DeviceNameRegistry();
+    reg.rename("dev-1", "Aurora");
+    expect(() => reg.rename("dev-2", "Aurora")).toThrow(CapabilityError);
+  });
+
+  it("removeAlias removes the alias and returns true", () => {
+    const reg = new DeviceNameRegistry();
+    reg.rename("dev-1", "Aurora");
+    expect(reg.removeAlias("Aurora")).toBe(true);
+    expect(reg.resolve("Aurora")).toBeUndefined();
+  });
+
+  it("removeAlias returns false for non-existent alias", () => {
+    const reg = new DeviceNameRegistry();
+    expect(reg.removeAlias("ghost")).toBe(false);
+  });
+
+  it("allNames returns all registered mappings", () => {
+    const reg = new DeviceNameRegistry();
+    reg.rename("dev-1", "Aurora");
+    reg.addAlias("dev-2", "Star");
+    const all = reg.allNames();
+    expect(all.size).toBe(2);
+    expect(all.get("aurora")).toBe("dev-1");
+    expect(all.get("star")).toBe("dev-2");
+  });
+});
+
+describe("DeviceManager.findByName", () => {
+  it("resolves a device by its registered alias", () => {
+    const mgr = managerWithTwoConnectors();
+    mgr.names.rename("dev-1", "Aurora");
+    const found = mgr.findByName("aurora");
+    expect(found).toBeDefined();
+    expect(found!.id).toBe("dev-1");
+  });
+
+  it("returns undefined for unknown names", () => {
+    const mgr = managerWithTwoConnectors();
+    expect(mgr.findByName("ghost")).toBeUndefined();
   });
 });

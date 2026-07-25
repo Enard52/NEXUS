@@ -128,6 +128,7 @@ export class SyncEngine {
 }
 
 export * from "./distribution.js";
+export * from "./ops.js";
 
 export const moduleName = "infra" as const;
 export const implemented = true;

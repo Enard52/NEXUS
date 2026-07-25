@@ -1,0 +1,108 @@
+version: 1
+
+scope:
+  include:
+    - "packages/**"
+    - "desktop-app/**"
+    - "scripts/**"
+    - "public/**"
+  exclude:
+    - "node_modules/**"
+    - "dist/**"
+    - ".history/**"
+    - ".recovery-ref/**"
+    - "**/*.woff2"
+    - "**/*.png"
+    - "**/*.ico"
+    - "**/*.exe"
+
+repowiki:
+  template: architecture
+  notes:
+    - text: "NEXUS AI, yerel öncelikli (local-first) bir kişisel işletim sistemidir (POS). Monorepo yapısındadır ve pnpm workspace ile yönetilir. 27 paket içerir."
+      author: "project-owner"
+
+    - text: "Marketing web sitesi YALNIZCA tanıtım + indirme sayfası olarak hizmet verir. Uygulama işlevselliği, oturum açma, FAQ, mobil bölüm gibi öğeler bilinçli olarak kaldırılmıştır. Bu kısıtlama kesindir."
+      author: "project-owner"
+
+    - text: "Marka renkleri: Primary mor #7C5CFF (dark) / #6C4FE8 (light), Accent cyan #22D3EE (dark) / #0EA5C9 (light). Tüm CTA butonları purple→cyan gradient kullanır."
+      author: "project-owner"
+
+    - text: "Font stack: Space Grotesk (display/headings), Inter (body), JetBrains Mono (code). Tümü self-hosted woff2 olarak /fonts/ altından sunulur, font-display: swap ile."
+      author: "project-owner"
+
+    - text: "Design token'lar tek kaynaktan gelir: @nexus/design-system. Tüm platformlar (web, desktop, mobile, installer) aynı token'ları tüketir. CSS değişkenleri renderStyles() ile enjekte edilir."
+      author: "project-owner"
+
+    - text: "GitHub repo: https://github.com/Enard52/NEXUS — branch: main. Proje sahibi: Enard52."
+      author: "project-owner"
+
+    - text: "Doğrulama akışı: pnpm test (vitest, 285 test), npx tsc --noEmit (typecheck), pnpm --filter @nexus/web build:demo (static build). Tümü sıfır hata ile geçmeli."
+      author: "project-owner"
+
+    - text: "Animasyonlar cubic-bezier(0.34, 1.56, 0.64, 1) springy easing kullanır. prefers-reduced-motion: reduce durumunda tüm animasyonlar devre dışı bırakılır."
+      author: "project-owner"
+
+    - text: "SSR-to-static yaklaşım kullanılır — React/Next.js gibi framework YOK. renderMarketingDocument() fonksiyonu tam HTML üretir, build.ts bunu dosyaya yazar. Sıfır JS framework overhead."
+      author: "project-owner"
+
+    - text: "i18n: EN ve TR dilleri desteklenir. Tüm çeviriler @nexus/i18n paketindeki CATALOGS objesinde tutulur. label() fonksiyonu ile erişilir."
+      author: "project-owner"
+
+  documents:
+    - title: "Proje Genel Bakış"
+      goal: "NEXUS AI'nin ne olduğu, monorepo yapısı, paket listesi ve sorumlulukları"
+      parent: ""
+
+    - title: "Mimari ve Paket Yapısı"
+      goal: "27 paketin sorumluluk alanları, bağımlılık ilişkileri ve veri akışı"
+      parent: ""
+
+    - title: "Design System"
+      goal: "Renk token'ları, tipografi, spacing scale, radius, gradient ve bunların CSS'e nasıl aktığı"
+      parent: "Mimari ve Paket Yapısı"
+
+    - title: "Marketing Site Mimarisi"
+      goal: "renderMarketingDocument() yapısı, sayfa bölümleri, CSS organizasyonu, build pipeline"
+      parent: "Mimari ve Paket Yapısı"
+
+    - title: "Sunucu ve Yönlendirme"
+      goal: "app.ts request handler, static serving, OAuth, session yönetimi, güvenlik başlıkları"
+      parent: "Mimari ve Paket Yapısı"
+
+    - title: "Tasarım Kararları"
+      goal: "Neden framework yok, neden inline CSS, neden sadece tanıtım+indirme, neden bu renkler"
+      parent: ""
+
+    - title: "Kaldırılan Bölümler ve Gerekçeleri"
+      goal: "FAQ, mobil bölüm, iframe preview, sign-in butonu — neden kaldırıldı, geri ekleme koşulları"
+      parent: "Tasarım Kararları"
+
+    - title: "Eklenen Özellikler"
+      goal: "Cookie banner, legal sayfalar, 404 sayfası, How It Works, sosyal linkler, analytics placeholder"
+      parent: "Tasarım Kararları"
+
+    - title: "Build ve Deploy"
+      goal: "build.ts pipeline'ı, pnpm komutları, statik çıktı yapısı, font kopyalama, sitemap üretimi"
+      parent: ""
+
+    - title: "Erişilebilirlik ve Performans"
+      goal: "WCAG AA uyumu, focus-visible, role attribute'ları, font-display swap, preload stratejisi"
+      parent: ""
+
+knowledgecard:
+  notes:
+    - text: "packages/server/src/pages.ts ana düzenleme hedefidir — marketing sayfasının tüm HTML ve CSS üretimi burada. renderMarketingDocument(), renderLegalPage(), renderNotFoundPage() fonksiyonlarını içerir."
+      author: "project-owner"
+
+    - text: "packages/web/src/render.ts paylaşılan render fonksiyonlarını ve global CSS'i (renderStyles) içerir. renderScreenBody() fonksiyonu masaüstü/mobil shell'ler tarafından kullanılır — KESİNLİKLE bozulmamalı."
+      author: "project-owner"
+
+    - text: "packages/web/src/build.ts statik site üretir: EN/TR × dark/light HTML + legal + 404 + sitemap + fonts + manifest. Tek komut: pnpm --filter @nexus/web build:demo"
+      author: "project-owner"
+
+    - text: "Marketing sayfasının body yapısı sırasıyla: navbar → hero → integrationStrip → stats → features → how-it-works → desktopSection → ctaBand → footer → cookieBanner"
+      author: "project-owner"
+
+    - text: "ColorScale interface'ine accent field'ı eklendi. Tüm platformlarda --accent ve --gradient CSS değişkenleri mevcut. .btn.primary sınıfı global olarak gradient kullanır."
+      author: "project-owner"

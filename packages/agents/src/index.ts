@@ -1,14 +1,14 @@
 /**
- * NEXUS AI — @nexus/agents
- * Multi-agent system & messaging (FAZ 7).
+ * NEXUS AI — @nexus/agents (FAZ 7)
  *
- * FAZ 0 placeholder: the module is wired into the monorepo but not yet
- * implemented. Real behavior is added in the phase noted above.
+ * Multi-Agent System with:
+ *  - Agent Protocol: scope-based permissions, capability declaration, confidence scoring
+ *  - Agent Router: multi-agent routing, delegation handling, result consolidation
+ *  - Specialized Agents: Home, Life, Knowledge, Security, Finance
+ *  - Inter-Agent Messaging: agents can delegate sub-tasks to each other
  */
 
 export const moduleName = "agents" as const;
-
-/** Flipped to true once this module ships real behavior. */
 export const implemented = true;
 
 export interface ModuleInfo {
@@ -22,3 +22,5 @@ export function agentsInfo(): ModuleInfo {
 
 export { AgentRegistry } from "./registry.js";
 export type { AgentSpec } from "./registry.js";
+export * from "./protocol.js";
+export * from "./specialized.js";

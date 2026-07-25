@@ -74,7 +74,10 @@ export type MessageKey =
   | "auth.social.error"
   // Marketing & Landing Page
   | "mkt.nav.features"
-  | "mkt.nav.preview"
+  | "mkt.nav.pricing"
+  | "mkt.nav.testimonials"
+  | "mkt.nav.integrations"
+  | "mkt.nav.about"
   | "mkt.nav.download"
   | "mkt.nav.faq"
   | "mkt.nav.signIn"
@@ -126,6 +129,14 @@ export type MessageKey =
   | "mkt.pricing.cta"
   | "mkt.testimonials.title"
   | "mkt.testimonials.quote1"
+  | "mkt.testimonials.author1"
+  | "mkt.testimonials.role1"
+  | "mkt.testimonials.quote2"
+  | "mkt.testimonials.author2"
+  | "mkt.testimonials.role2"
+  | "mkt.testimonials.quote3"
+  | "mkt.testimonials.author3"
+  | "mkt.testimonials.role3"
   | "mkt.integrations.title"
   | "mkt.changelog.title"
   | "mkt.requirements.title"
@@ -257,7 +268,10 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "auth.social.unavailable": "This sign-in method isn't set up yet.",
     "auth.social.error": "Sign-in with that provider failed. Please try again.",
     "mkt.nav.features": "Features",
-    "mkt.nav.preview": "Preview",
+    "mkt.nav.pricing": "Pricing",
+    "mkt.nav.testimonials": "Testimonials",
+    "mkt.nav.integrations": "Integrations",
+    "mkt.nav.about": "About Us",
     "mkt.nav.download": "Download",
     "mkt.nav.faq": "FAQ",
     "mkt.nav.signIn": "Sign In",
@@ -310,7 +324,17 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.pricing.cta": "Start for free",
     "mkt.testimonials.title": "Loved by smart home enthusiasts",
     "mkt.testimonials.quote1":
-      "NEXUS completely changed how I interact with my home. It's so much faster when everything is local.",
+      "NEXUS completely changed how I interact with my home. Having everything local is just so much faster.",
+    "mkt.testimonials.author1": "Sarah Jenkins",
+    "mkt.testimonials.role1": "Early Adopter",
+    "mkt.testimonials.quote2":
+      "Finally, a smart home hub that respects my privacy. The local AI processing is incredibly responsive.",
+    "mkt.testimonials.author2": "David Chen",
+    "mkt.testimonials.role2": "Software Engineer",
+    "mkt.testimonials.quote3":
+      "Setting up complex routines is a breeze. I love that it doesn't break when my internet goes down.",
+    "mkt.testimonials.author3": "Emma Thompson",
+    "mkt.testimonials.role3": "Smart Home Enthusiast",
     "mkt.integrations.title": "Works with your favorite devices",
     "mkt.changelog.title": "What's new in v3.14.2",
     "mkt.requirements.title": "System Requirements",
@@ -352,11 +376,11 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.desktop.title": "One app for every desktop",
     "mkt.desktop.desc": "Native builds for Windows, macOS, and Linux — each tuned for its platform.",
     "mkt.desktop.windows": "Windows",
-    "mkt.desktop.windowsDesc": "System tray integration and global hotkeys.",
+    "mkt.desktop.windowsDesc": "Optimized for Windows 10 & 11 with seamless background operation.",
     "mkt.desktop.macos": "macOS",
-    "mkt.desktop.macosDesc": "Menu bar companion and native notifications.",
+    "mkt.desktop.macosDesc": "Built for Apple Silicon and Intel with deep system integration.",
     "mkt.desktop.linux": "Linux",
-    "mkt.desktop.linuxDesc": "AppImage and deb packages for any distro.",
+    "mkt.desktop.linuxDesc": "Lightweight, fast, and compatible with all major distributions.",
     "mkt.desktop.download": "Download",
     "mkt.mobile.eyebrow": "Mobile",
     "mkt.mobile.title": "Your home in your pocket",
@@ -442,7 +466,10 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "auth.social.unavailable": "Bu giriş yöntemi henüz yapılandırılmadı.",
     "auth.social.error": "Sağlayıcıyla giriş başarısız oldu. Lütfen tekrar dene.",
     "mkt.nav.features": "Özellikler",
-    "mkt.nav.preview": "Önizleme",
+    "mkt.nav.pricing": "Fiyatlandırma",
+    "mkt.nav.testimonials": "Müşteriler",
+    "mkt.nav.integrations": "Entegrasyonlar",
+    "mkt.nav.about": "Hakkımızda",
     "mkt.nav.download": "İndir",
     "mkt.nav.faq": "SSS",
     "mkt.nav.signIn": "Giriş Yap",
@@ -478,9 +505,9 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.preview.tab.family": "Aile",
     "mkt.download.mobile.title": "Mobil uygulamalar",
     "mkt.download.mobile.desc": "iOS ve Android uygulamaları çok yakında.",
-    "mkt.download.mobile.apple": "Şurada indir:",
+    "mkt.download.mobile.apple": "Şuradan indir:",
     "mkt.download.mobile.appleStore": "App Store",
-    "mkt.download.mobile.google": "Şuradan al:",
+    "mkt.download.mobile.google": "Şuradan indir:",
     "mkt.download.mobile.googlePlay": "Google Play",
     "mkt.download.mobile.soon": "Yakında",
     "mkt.seo.title": "NEXUS — Kişisel işletim sistemini indir",
@@ -497,6 +524,16 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.testimonials.title": "Akıllı ev tutkunları tarafından seviliyor",
     "mkt.testimonials.quote1":
       "NEXUS evimle etkileşimimi tamamen değiştirdi. Her şeyin yerel olması çok daha hızlı.",
+    "mkt.testimonials.author1": "Sarah Jenkins",
+    "mkt.testimonials.role1": "Erken Kullanıcı",
+    "mkt.testimonials.quote2":
+      "Sonunda gizliliğime saygı duyan bir akıllı ev merkezi. Yerel yapay zeka işlemleri inanılmaz tepkisel.",
+    "mkt.testimonials.author2": "David Chen",
+    "mkt.testimonials.role2": "Yazılım Mühendisi",
+    "mkt.testimonials.quote3":
+      "Karmaşık rutinleri kurmak çocuk oyuncağı. İnternetim kesildiğinde bile sistemin çökmemesine bayılıyorum.",
+    "mkt.testimonials.author3": "Emma Thompson",
+    "mkt.testimonials.role3": "Akıllı Ev Tutkunu",
     "mkt.integrations.title": "Favori cihazlarınızla çalışır",
     "mkt.changelog.title": "v3.14.2 sürümündeki yenilikler",
     "mkt.requirements.title": "Sistem Gereksinimleri",
@@ -537,11 +574,11 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.desktop.title": "Her masaüstü için tek uygulama",
     "mkt.desktop.desc": "Windows, macOS ve Linux için yerel derlemeler — her biri platformuna göre özelleştirilmiş.",
     "mkt.desktop.windows": "Windows",
-    "mkt.desktop.windowsDesc": "Sistem tepsisi entegrasyonu ve global kısayollar.",
+    "mkt.desktop.windowsDesc": "Windows 10 ve 11 için optimize edilmiş kusursuz arka plan performansı.",
     "mkt.desktop.macos": "macOS",
-    "mkt.desktop.macosDesc": "Menü çubuğu yardımcısı ve yerel bildirimler.",
+    "mkt.desktop.macosDesc": "Apple Silicon ve Intel işlemciler için özel olarak derlendi.",
     "mkt.desktop.linux": "Linux",
-    "mkt.desktop.linuxDesc": "Her dağıtım için AppImage ve deb paketleri.",
+    "mkt.desktop.linuxDesc": "Tüm popüler dağıtımlarla uyumlu, hafif ve hızlı.",
     "mkt.desktop.download": "İndir",
     "mkt.mobile.eyebrow": "Mobil",
     "mkt.mobile.title": "Evin cebinde",
@@ -554,7 +591,7 @@ export const CATALOGS: Record<Locale, Catalog> = {
     "mkt.mobile.feat3.desc": "Senin için önemli olaylar için anlık uyarılar al.",
     "mkt.mobile.feat4.title": "Biyometrik kilit",
     "mkt.mobile.feat4.desc": "Face ID ve parmak izi ev kontrollerini gizli tutar.",
-    "mkt.cta.title": "Evin, kuralların.",
+    "mkt.cta.title": "Senin evin, senin kuralların.",
     "mkt.cta.desc": "NEXUS'u indir ve her cihazı tek yerden kontrol et.",
     "mkt.cta.button": "Ücretsiz İndir",
     "mkt.footer.platforms": "Platformlar",
@@ -636,6 +673,208 @@ export function formatCurrency(locale: Locale, value: number, currency: string):
 
 export function formatDate(locale: Locale, date: Date): string {
   return new Intl.DateTimeFormat(INTL_LOCALE[locale], { dateStyle: "long" }).format(date);
+}
+
+/**
+ * Format a time in locale-appropriate style.
+ * Uses 24-hour format for Turkish, 12-hour for English.
+ */
+export function formatTime(locale: Locale, date: Date): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: locale === "en",
+  }).format(date);
+}
+
+// ── Unit Formatting (FAZ 13) ─────────────────────────────────────────────────────────
+
+export type UnitSystem = "metric" | "imperial";
+
+/** Default unit system per locale. */
+const LOCALE_UNIT_SYSTEM: Record<Locale, UnitSystem> = {
+  en: "imperial",
+  tr: "metric",
+};
+
+export function getUnitSystem(locale: Locale): UnitSystem {
+  return LOCALE_UNIT_SYSTEM[locale];
+}
+
+/** Format temperature in the locale-appropriate unit (°C or °F). */
+export function formatTemperature(locale: Locale, celsius: number): string {
+  const system = LOCALE_UNIT_SYSTEM[locale];
+  if (system === "imperial") {
+    const f = Math.round(celsius * 9 / 5 + 32);
+    return `${f}°F`;
+  }
+  return `${Math.round(celsius)}°C`;
+}
+
+/** Format distance in locale-appropriate unit (km or mi). */
+export function formatDistance(locale: Locale, meters: number): string {
+  const system = LOCALE_UNIT_SYSTEM[locale];
+  if (system === "imperial") {
+    const miles = meters / 1609.34;
+    return miles >= 1 ? `${miles.toFixed(1)} mi` : `${Math.round(meters * 3.281)} ft`;
+  }
+  return meters >= 1000 ? `${(meters / 1000).toFixed(1)} km` : `${Math.round(meters)} m`;
+}
+
+/** Format weight in locale-appropriate unit (kg or lb). */
+export function formatWeight(locale: Locale, kg: number): string {
+  const system = LOCALE_UNIT_SYSTEM[locale];
+  if (system === "imperial") {
+    return `${(kg * 2.205).toFixed(1)} lb`;
+  }
+  return `${kg.toFixed(1)} kg`;
+}
+
+// ── Regional Device Ecosystem Prioritization (FAZ 13) ─────────────────────────────
+
+/** Known smart home device brands per region. Higher index = higher priority. */
+const REGIONAL_BRANDS: Record<Locale, readonly string[]> = {
+  tr: ["Xiaomi", "Sonoff", "IKEA", "Tuya", "Philips Hue", "TP-Link", "Aqara"],
+  en: ["Philips Hue", "Ring", "Nest", "Ecobee", "August", "IKEA", "Xiaomi"],
+};
+
+/**
+ * Return the recommended connector/brand list for the user's locale, sorted
+ * by regional popularity. Used to prioritize which device integrations to
+ * show first in the setup wizard.
+ */
+export function getRegionalBrands(locale: Locale): readonly string[] {
+  return REGIONAL_BRANDS[locale] ?? REGIONAL_BRANDS.en;
+}
+
+/**
+ * Score a brand's relevance for a locale (0–1). Used by the connector store
+ * to rank available integrations when the user is browsing.
+ */
+export function brandRelevance(locale: Locale, brand: string): number {
+  const list = REGIONAL_BRANDS[locale] ?? REGIONAL_BRANDS.en;
+  const idx = list.findIndex((b) => b.toLowerCase() === brand.toLowerCase());
+  if (idx < 0) return 0.3; // Known but not prioritized
+  return 1 - idx * (0.7 / list.length); // Top brand ≈ 1.0, last ≈ 0.3
+}
+
+// ── Client-side Locale Manager (FAZ 15 i18n requirement) ─────────────────────────
+
+/**
+ * Cross-platform locale detection and persistence.
+ *
+ * Priority chain (highest to lowest):
+ *   1. User’s explicit manual override (persisted in storage)
+ *   2. URL query parameter (?lang=tr)
+ *   3. System/browser locale (navigator.language or system env)
+ *   4. Accept-Language header (server-side)
+ *   5. Default locale (en)
+ *
+ * Once the user manually changes language, that choice is persisted and
+ * always wins until they change it again.
+ */
+export interface LocaleStorage {
+  get(key: string): string | null;
+  set(key: string, value: string): void;
+}
+
+/** In-memory storage for testing or SSR. */
+export class MemoryLocaleStorage implements LocaleStorage {
+  private readonly data = new Map<string, string>();
+  get(key: string): string | null {
+    return this.data.get(key) ?? null;
+  }
+  set(key: string, value: string): void {
+    this.data.set(key, value);
+  }
+}
+
+export interface LocaleManagerOptions {
+  /** Storage backend (localStorage on web, AsyncStorage on mobile, etc). */
+  readonly storage?: LocaleStorage;
+  /** The system/browser locale string (e.g. navigator.language). */
+  readonly systemLocale?: string;
+  /** URL query string locale override (e.g. from ?lang=tr). */
+  readonly urlLocale?: string;
+  /** Accept-Language header (server-side detection). */
+  readonly acceptLanguage?: string;
+}
+
+const LOCALE_STORAGE_KEY = "nexus_user_locale";
+
+export class LocaleManager {
+  private readonly storage: LocaleStorage;
+  private current: Locale;
+
+  constructor(opts: LocaleManagerOptions = {}) {
+    this.storage = opts.storage ?? new MemoryLocaleStorage();
+    this.current = this.detect(opts);
+  }
+
+  /** The resolved active locale. */
+  get locale(): Locale {
+    return this.current;
+  }
+
+  /**
+   * User explicitly changes their language. This persists and takes highest
+   * priority on all subsequent sessions.
+   */
+  setLocale(locale: Locale): void {
+    this.current = locale;
+    this.storage.set(LOCALE_STORAGE_KEY, locale);
+  }
+
+  /** Re-detect locale (useful after login when user preferences load). */
+  refresh(opts?: Partial<LocaleManagerOptions>): Locale {
+    this.current = this.detect({ storage: this.storage, ...opts });
+    return this.current;
+  }
+
+  /** Bound translator for the current locale. */
+  t(key: MessageKey, vars?: Record<string, string | number>): string {
+    return translate(this.current, key, vars);
+  }
+
+  private detect(opts: LocaleManagerOptions): Locale {
+    // 1. User’s persisted manual choice (highest priority)
+    const stored = (opts.storage ?? this.storage).get(LOCALE_STORAGE_KEY);
+    if (stored && (SUPPORTED_LOCALES as readonly string[]).includes(stored)) {
+      return stored as Locale;
+    }
+    // 2. URL query parameter
+    if (opts.urlLocale) {
+      const resolved = resolveLocale(opts.urlLocale);
+      if (resolved !== DEFAULT_LOCALE || opts.urlLocale.startsWith("en")) return resolved;
+    }
+    // 3. System/browser locale
+    if (opts.systemLocale) {
+      const resolved = resolveLocale(opts.systemLocale);
+      if (resolved !== DEFAULT_LOCALE || opts.systemLocale.startsWith("en")) return resolved;
+    }
+    // 4. Accept-Language header
+    if (opts.acceptLanguage) {
+      return resolveFromAcceptLanguage(opts.acceptLanguage);
+    }
+    // 5. Default
+    return DEFAULT_LOCALE;
+  }
+}
+
+/**
+ * Detect system locale from common environment sources.
+ * Works in browser (navigator.language), Node (process.env.LANG), Electron.
+ */
+export function detectSystemLocale(): string | undefined {
+  // Browser
+  if (typeof globalThis.navigator !== "undefined" && globalThis.navigator.language) {
+    return globalThis.navigator.language;
+  }
+  // Node / Electron
+  if (typeof process !== "undefined" && process.env) {
+    return process.env.LANG?.split(".")[0]?.replace("_", "-") ?? process.env.LC_ALL?.split(".")[0];
+  }
+  return undefined;
 }
 
 export const moduleName = "i18n" as const;

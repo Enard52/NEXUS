@@ -1,4 +1,4 @@
-// NEXUS AI — Real desktop application (Electron main process)
+// NEXUS AI — Real desktop application
 //
 // This is the genuine desktop *program* (not the setup wizard): it boots the
 // local NEXUS sync server, opens a frameless window that loads the exact same
@@ -13,12 +13,39 @@
 // Dev launch:  npm start   (spawns the workspace server via tsx if none is up)
 
 const { app, BrowserWindow, Tray, Menu, ipcMain, shell, nativeImage } = require("electron");
+
+app.setName("NEXUS");
+app.setAppUserModelId("ai.nexus.desktop");
+
+// Brand-only application menu — no framework identifiers visible anywhere.
+app.setAboutPanelOptions({
+  applicationName: "NEXUS",
+  applicationVersion: "3.14.2",
+  copyright: "© NEXUS Technologies Inc.",
+});
+if (process.platform === "darwin") {
+  Menu.setApplicationMenu(Menu.buildFromTemplate([{
+    label: "NEXUS",
+    submenu: [
+      { label: "About NEXUS", role: "about" },
+      { type: "separator" },
+      { role: "hide", label: "Hide NEXUS" },
+      { role: "unhide" },
+      { type: "separator" },
+      { role: "quit", label: "Quit NEXUS" },
+    ],
+  }]));
+} else {
+  Menu.setApplicationMenu(null);
+}
+
 const { spawn } = require("node:child_process");
+const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
 
 const PORT = Number(process.env.NEXUS_PORT || 4178);
-const APP_URL = `http://localhost:${PORT}/`;
+const APP_URL = `http://localhost:${PORT}/app`;
 const REPO_ROOT = path.join(__dirname, "..");
 const SERVER_ENTRY = path.join("packages", "server", "src", "main.ts");
 
@@ -53,9 +80,16 @@ async function waitForServer(timeoutMs) {
   return false;
 }
 
-/** Start the workspace sync server via tsx if it is not already running. */
+/** Start the workspace sync server via tsx if it is not already running.
+ *  Packaged builds outside the repo have no server sources to spawn: in that
+ *  case we simply keep probing and let the offline page take over. */
 async function ensureServer() {
-  if (await probeServer()) return; // already running (e.g. `pnpm --filter @nexus/server start`)
+  if (await probeServer()) return true; // already running (e.g. `pnpm --filter @nexus/server start`)
+  if (!fs.existsSync(path.join(REPO_ROOT, SERVER_ENTRY))) {
+    // No workspace next to the binary (installed build) — wait briefly in case
+    // a locally installed server is still booting, then fall back to offline UI.
+    return waitForServer(4000);
+  }
   serverProc = spawn("npx", ["tsx", SERVER_ENTRY], {
     cwd: REPO_ROOT,
     env: { ...process.env, PORT: String(PORT) },
@@ -66,7 +100,7 @@ async function ensureServer() {
     serverProc = null;
     if (!app.isQuitting) console.error(`[nexus] sync server exited (code ${code})`);
   });
-  await waitForServer(20000);
+  return waitForServer(20000);
 }
 
 function stopServer() {
@@ -82,7 +116,7 @@ function stopServer() {
 
 // ── Window + tray ────────────────────────────────────────────────────────────
 
-function createWindow() {
+function createWindow(serverUp = true) {
   win = new BrowserWindow({
     width: 1180,
     height: 780,
@@ -101,12 +135,21 @@ function createWindow() {
     },
   });
 
-  // Make the server return the windowed desktop shell for this client.
-  const ua = `${win.webContents.getUserAgent()} NexusDesktop/3.14.2`;
+  // Custom User-Agent: brand-only identifier, no framework/engine names.
+  const ua = `Mozilla/5.0 (${process.platform === "win32" ? "Windows NT 10.0; Win64; x64" : process.platform === "darwin" ? "Macintosh; Intel Mac OS X" : "X11; Linux x86_64"}) AppleWebKit/537.36 (KHTML, like Gecko) NexusDesktop/3.14.2`;
   win.webContents.setUserAgent(ua);
 
-  win.loadURL(APP_URL, { userAgent: ua });
+  if (serverUp) win.loadURL(APP_URL, { userAgent: ua });
+  else win.loadFile(path.join(__dirname, "offline.html"));
   win.once("ready-to-show", () => win.show());
+
+  // If the server drops while the app is open, fall back to the offline page
+  // instead of Chromium's default error surface.
+  win.webContents.on("did-fail-load", (_e, code, _desc, failedUrl) => {
+    if (code !== -3 /* ERR_ABORTED (in-page nav) */ && String(failedUrl).startsWith("http")) {
+      win.loadFile(path.join(__dirname, "offline.html"));
+    }
+  });
 
   // Open external links in the OS browser, keep app links in-window.
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -168,6 +211,13 @@ ipcMain.on("nx:toggle-maximize", () => {
 });
 ipcMain.on("nx:close", () => win && win.close());
 
+// Offline page: report the app URL and retry the connection on demand.
+ipcMain.on("nx:retry", async () => {
+  if (!win) return;
+  if (await probeServer()) win.loadURL(APP_URL);
+});
+ipcMain.handle("nx:app-url", () => APP_URL);
+
 // ── App lifecycle ─────────────────────────────────────────────────────────────
 
 const gotLock = app.requestSingleInstanceLock();
@@ -183,8 +233,8 @@ if (!gotLock) {
 
   app.whenReady().then(async () => {
     createTray();
-    await ensureServer();
-    createWindow();
+    const up = await ensureServer();
+    createWindow(up !== false);
   });
 
   app.on("activate", () => {

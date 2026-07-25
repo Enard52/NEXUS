@@ -55,6 +55,9 @@ describe("renderSetupDocument — desktop setup wizard", () => {
     expect(dark).toContain('id="install-path"');
     expect(dark).toContain("Program Files");
     expect(dark).toContain("Space required");
+
+    const macSetup = renderSetupDocument({ theme: "dark", os: "mac" });
+    expect(macSetup).toContain("/Applications/NEXUS.app");
   });
 
   it("renders the Finish step with NEXUS is ready message", () => {

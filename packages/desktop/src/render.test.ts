@@ -80,4 +80,14 @@ describe("@nexus/desktop", () => {
     expect(html).not.toContain('id="desk-logout"');
     expect(html).not.toContain('rel="manifest"');
   });
+
+  it("supports Linux GNOME circular window controls (R6.1)", () => {
+    const linuxWctl = renderWindowControls("linux");
+    expect(linuxWctl).toContain("wctl-gnome");
+    expect(linuxWctl).toContain("gnome-btn");
+
+    const html = renderDesktopDocument({ theme: "dark", os: "linux" });
+    expect(html).toContain("wctl-gnome");
+    expect(html).toContain("gnome-btn");
+  });
 });

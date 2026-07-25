@@ -54,6 +54,9 @@ describe("selectProvider", () => {
 
   it("falls back to the mock provider without credentials", () => {
     expect(selectProvider({ provider: "openai" }).name).toBe("mock");
-    expect(selectProvider({ provider: "local" }).name).toBe("mock");
+  });
+
+  it("returns LocalOllamaProvider for local provider since it uses localhost", () => {
+    expect(selectProvider({ provider: "local" }).name).toBe("local-ollama");
   });
 });

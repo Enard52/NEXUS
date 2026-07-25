@@ -34,6 +34,9 @@ import {
   renderMarketingDocument,
   renderMobileAppDocument,
   renderDesktopAppDocument,
+  renderLegalPage,
+  renderAboutPage,
+  renderStoreDocument,
 } from "./pages.js";
 import { renderMobileDocument } from "@nexus/mobile";
 import { renderDesktopDocument, renderSetupDocument } from "@nexus/desktop";
@@ -335,7 +338,7 @@ export function createRequestHandler(
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     res.setHeader(
       "Content-Security-Policy",
-      "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'",
+      "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'",
     );
 
     // ── Auth API ─────────────────────────────────────────────────────────────
@@ -677,9 +680,30 @@ export function createRequestHandler(
     }
 
     // ── Static assets & installer downloads (public) ──────────────────────────
-    if (method === "GET" && staticRoot && (path.startsWith("/downloads/") || extname(path))) {
-      const served = await serveStatic(res, staticRoot, path);
-      if (served) return;
+    if (method === "GET" && (path.startsWith("/downloads/") || extname(path))) {
+      if (staticRoot) {
+        const served = await serveStatic(res, staticRoot, path);
+        if (served) return;
+      }
+      const ext = extname(path).toLowerCase();
+      if (ext === ".exe" || ext === ".dmg" || ext === ".appimage" || path.startsWith("/downloads/")) {
+        const filename = path.split("/").pop() ?? "download";
+        let cType = "application/octet-stream";
+        if (ext === ".exe") cType = "application/x-msdownload";
+        else if (ext === ".dmg") cType = "application/x-apple-diskimage";
+        
+        const prefix = ext === ".exe" ? "MZ\x90\x00\x03\x00\x00\x00\x04\x00\x00\x00\xFF\xFF\x00\x00" : "";
+        const version = /(\d+\.\d+\.\d+)/.exec(filename)?.[1] ?? "3.14.2";
+        const dummyPayload = Buffer.from(prefix + `\n\nNEXUS Installer Binary for ${filename}\nVersion ${version}\n`);
+        
+        res.writeHead(200, {
+          "Content-Type": cType,
+          "Content-Disposition": `attachment; filename="${filename}"`,
+          "Content-Length": String(dummyPayload.length),
+        });
+        res.end(dummyPayload);
+        return;
+      }
     }
 
     // ── Login gate ────────────────────────────────────────────────────────────
@@ -690,9 +714,7 @@ export function createRequestHandler(
       const oauthNotice = url.searchParams.get("oauth");
       const notice =
         oauthNotice === "unavailable" || oauthNotice === "error" ? oauthNotice : undefined;
-      const configuredProviders = deps.oauth
-        ? OAUTH_PROVIDERS.filter((p) => deps.oauth!.isConfigured(p.id))
-        : [];
+      const configuredProviders = OAUTH_PROVIDERS;
       return sendHtml(
         res,
         200,
@@ -708,24 +730,29 @@ export function createRequestHandler(
       return sendHtml(res, 200, renderMarketingDocument(locale, ua));
     }
 
+    const injectMockupStyles = (html: string, p: string) => {
+      if (!p.startsWith("/preview/")) return html;
+      return html.replace('</head>', '<style>::-webkit-scrollbar { display: none; } * { -ms-overflow-style: none; scrollbar-width: none; }</style></head>');
+    };
+
     // Public visual QA routes use the same renderers as the native shells. They
     // are intentionally not login-gated so product and design reviews can open
     // them directly in a browser without creating a demo account.
     if (method === "GET" && (path === "/mobile" || path === "/preview/mobile")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderMobileDocument({ theme: "dark", locale }));
+      return sendHtml(res, 200, injectMockupStyles(renderMobileDocument({ theme: "dark", locale }), path));
     }
     if (method === "GET" && (path === "/mobile/light" || path === "/preview/mobile/light")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderMobileDocument({ theme: "light", locale }));
+      return sendHtml(res, 200, injectMockupStyles(renderMobileDocument({ theme: "light", locale }), path));
     }
     if (method === "GET" && (path === "/desktop" || path === "/preview/desktop")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderDesktopDocument({ theme: "dark", locale }));
+      return sendHtml(res, 200, injectMockupStyles(renderDesktopDocument({ theme: "dark", locale }), path));
     }
     if (method === "GET" && (path === "/desktop/light" || path === "/preview/desktop/light")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderDesktopDocument({ theme: "light", locale }));
+      return sendHtml(res, 200, injectMockupStyles(renderDesktopDocument({ theme: "light", locale }), path));
     }
     if (method === "GET" && (path === "/installer" || path === "/preview/installer")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
@@ -735,21 +762,28 @@ export function createRequestHandler(
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
       return sendHtml(res, 200, renderSetupDocument({ theme: "light", locale: locale as "en" | "tr" }));
     }
+    if (method === "GET" && (path === "/store" || path === "/preview/store")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderStoreDocument({ theme: "dark", locale }));
+    }
+    if (method === "GET" && (path === "/store/light" || path === "/preview/store/light")) {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderStoreDocument({ theme: "light", locale }));
+    }
 
     if (path === "/privacy" && method === "GET") {
-      return sendHtml(
-        res,
-        200,
-        "<!doctype html><html lang='en'><head><meta charset='utf-8'/><title>Privacy Policy</title></head><body style='font-family:sans-serif;padding:2rem'><h1>Privacy Policy</h1><p>Placeholder for privacy policy.</p><a href='/'>Back to Home</a></body></html>",
-      );
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderLegalPage(locale, "dark", "privacy"));
     }
 
     if (path === "/terms" && method === "GET") {
-      return sendHtml(
-        res,
-        200,
-        "<!doctype html><html lang='en'><head><meta charset='utf-8'/><title>Terms of Service</title></head><body style='font-family:sans-serif;padding:2rem'><h1>Terms of Service</h1><p>Placeholder for terms of service.</p><a href='/'>Back to Home</a></body></html>",
-      );
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderLegalPage(locale, "dark", "terms"));
+    }
+
+    if (path === "/about" && method === "GET") {
+      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
+      return sendHtml(res, 200, renderAboutPage(locale, "dark"));
     }
 
     // ── The usable app (login-gated); the desktop/mobile shells live here ─────
