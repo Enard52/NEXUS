@@ -20,7 +20,7 @@ describe("renderSetupDocument — desktop setup wizard", () => {
   });
 
   it("renders the license acceptance checkbox", () => {
-    expect(dark).toContain("I accept the agreement");
+    expect(dark).toContain("I accept the license agreement");
     expect(dark).toContain('id="license-accept"');
   });
 

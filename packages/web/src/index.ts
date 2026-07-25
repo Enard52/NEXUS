@@ -56,6 +56,7 @@ import {
 } from "./render.js";
 import { renderHead, type SeoConfig } from "./seo.js";
 
+import { isRtl, type Locale } from "@nexus/i18n";
 import { DeviceManager, InMemoryConnector } from "@nexus/devices";
 
 export * from "./render.js";
@@ -489,7 +490,7 @@ export function renderDemoDocument(options: DemoOptions = {}): string {
 
   const isTr = CURRENT_LOCALE === "tr";
   return `<!doctype html>
-<html lang="${CURRENT_LOCALE}" data-theme="${escapeHtml(themeName)}">
+<html lang="${CURRENT_LOCALE}" data-theme="${escapeHtml(themeName)}"${isRtl(CURRENT_LOCALE as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

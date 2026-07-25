@@ -756,11 +756,11 @@ export function createRequestHandler(
     }
     if (method === "GET" && (path === "/installer" || path === "/preview/installer")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderSetupDocument({ theme: "dark", locale: locale as "en" | "tr" }));
+      return sendHtml(res, 200, renderSetupDocument({ theme: "dark", locale }));
     }
     if (method === "GET" && (path === "/installer/light" || path === "/preview/installer/light")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderSetupDocument({ theme: "light", locale: locale as "en" | "tr" }));
+      return sendHtml(res, 200, renderSetupDocument({ theme: "light", locale }));
     }
     if (method === "GET" && (path === "/store" || path === "/preview/store")) {
       const locale = resolveLocale(url, cookies, req.headers["accept-language"]);

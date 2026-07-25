@@ -57,6 +57,7 @@ import type { Account } from "@nexus/accounts";
 import { renderMobileDocument } from "@nexus/mobile";
 import { renderDesktopDocument } from "@nexus/desktop";
 import { SkillDiscoveryService } from "@nexus/skills";
+import { isRtl, SUPPORTED_LOCALES, type Locale } from "@nexus/i18n";
 import type { OAuthProviderMeta } from "./oauth.js";
 import type { UserData } from "./userdata.js";
 
@@ -125,6 +126,14 @@ function extraCss(): string {
 .app-lang { display: inline-flex; gap: 4px; font-size: 12px; margin-right: 4px; }
 .app-lang a { color: var(--muted); text-decoration: none; }
 .app-lang a.active { color: var(--primary); font-weight: 700; }
+.auth-lang .lang-dropdown, .app-lang .lang-dropdown {
+  appearance: none; -webkit-appearance: none; background: transparent; border: none;
+  color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer;
+  padding: 2px 18px 2px 4px; outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 2px center; background-size: 10px 6px;
+}
+.auth-lang .lang-dropdown option, .app-lang .lang-dropdown option { background: var(--surface); color: var(--text); }
 .app-logout { font-size: 12px; padding: 8px 14px; border-radius: 999px;
   border: 1px solid var(--border-strong); background: transparent; color: var(--text);
   cursor: pointer; transition: all .15s ease; }
@@ -272,12 +281,14 @@ export function renderLoginDocument(locale: string, opts: LoginOptions = {}): st
   setLocale(locale);
   const theme = opts.theme ?? "dark";
   const t = getTheme(theme);
-  const other = locale === "tr" ? "en" : "tr";
+  const authLangOptions = SUPPORTED_LOCALES.map(
+    (l) => `<option value="${l}"${l === locale ? " selected" : ""}>${l.toUpperCase()}</option>`
+  ).join("");
   const notice = opts.notice
     ? `<div class="auth-error show">${escapeHtml(label(opts.notice === "unavailable" ? "auth.social.unavailable" : "auth.social.error"))}</div>`
     : "";
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -308,7 +319,7 @@ ${renderSocialAuth(opts.providers)}
 <button type="button" class="oauth-btn auth-guest" id="auth-guest"><span>${escapeHtml(label("auth.guest"))}</span></button>
 <p class="auth-guest-hint">${escapeHtml(label("auth.guestHint"))}</p>
 <button type="button" class="auth-toggle" id="auth-toggle">${escapeHtml(label("auth.switchToSignUp"))}</button>
-<p class="auth-lang"><a href="?lang=${locale}" class="active">${locale.toUpperCase()}</a> · <a href="?lang=${other}">${other.toUpperCase()}</a></p>
+<p class="auth-lang"><select class="lang-dropdown" onchange="location.href='?lang='+this.value" aria-label="Language">${authLangOptions}</select></p>
 </main>
 <script>${loginScript(label("auth.signInTitle"), label("auth.signUpTitle"), label("auth.signInButton"), label("auth.signUpButton"), label("auth.switchToSignUp"), label("auth.switchToSignIn"), label("auth.genericError"))}</script>
 </body>
@@ -397,7 +408,6 @@ export function renderAppDocument(
   setLocale(locale);
   const t = getTheme(theme);
   const { screens, nav } = buildUserScreens(account, data);
-  const other = locale === "tr" ? "en" : "tr";
 
   const first = nav[0]?.id ?? "today";
   const sections = nav
@@ -408,7 +418,7 @@ export function renderAppDocument(
     .join("");
 
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -422,7 +432,7 @@ export function renderAppDocument(
 <header class="app-topbar">
 <a href="/" class="brand-group" style="text-decoration:none;">${renderLogo()}<span class="brand">NEXUS</span></a>
 <div class="spacer"></div>
-<span class="app-lang"><a href="?lang=${locale}" class="active">${locale.toUpperCase()}</a> · <a href="?lang=${other}">${other.toUpperCase()}</a></span>
+<span class="app-lang"><select class="lang-dropdown" onchange="location.href='?lang='+this.value" aria-label="Language">${SUPPORTED_LOCALES.map((l) => `<option value="${l}"${l === locale ? " selected" : ""}>${l.toUpperCase()}</option>`).join("")}</select></span>
 <div class="app-user">${renderAvatar(undefined, data.displayName)}<span class="who">${escapeHtml(data.displayName)}</span></div>
 <button class="app-logout" id="app-logout">${escapeHtml(label("auth.logout"))}</button>
 </header>
@@ -910,12 +920,24 @@ export function renderMarketingDocument(
   const linRelease = releases.all().find((r) => r.platform === "linux");
   const demoScreens = buildDemoScreens();
 
+  const langLabels: Record<string, string> = {
+    en: "English", tr: "Türkçe", es: "Español", fr: "Français", de: "Deutsch",
+    it: "Italiano", pt: "Português", nl: "Nederlands", pl: "Polski", cs: "Čeština",
+    ru: "Русский", uk: "Українська", ar: "العربية", he: "עברית", hi: "हिन्दी",
+    ja: "日本語", ko: "한국어", "zh-Hans": "简体中文", "zh-Hant": "繁體中文", vi: "Tiếng Việt",
+  };
+  const langItems = SUPPORTED_LOCALES.map(
+    (l) => `<a class="ld-item${l === locale ? " active" : ""}" href="?lang=${l}" data-lang="${l}">${langLabels[l] || l.toUpperCase()}</a>`
+  ).join("");
   const langSwitch =
-    `<span class="nav-controls-pill"><span class="lang-switch-clean">` +
-    `<a class="lang-opt ${locale === "en" ? "active" : ""}" href="?lang=en">EN</a>` +
-    `<span class="lang-sep">/</span>` +
-    `<a class="lang-opt ${locale === "tr" ? "active" : ""}" href="?lang=tr">TR</a>` +
-    `</span></span>`;
+    `<div class="lang-picker">` +
+    `<button class="lang-picker-btn" type="button" aria-expanded="false" aria-haspopup="listbox">` +
+    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>` +
+    `<span>${langLabels[locale] || locale.toUpperCase()}</span>` +
+    `<svg class="ld-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>` +
+    `</button>` +
+    `<div class="ld-menu" role="listbox">${langItems}</div>` +
+    `</div>`;
 
   const themeToggle =
     `<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" type="button">` +
@@ -1024,7 +1046,7 @@ ${heroMockup}
   const desktopSection = `<section id="desktop" class="mkt-anchor">
 <div class="mkt-heading"><span class="eyebrow">${label("mkt.desktop.eyebrow")}</span><h2>${label("mkt.desktop.title")}</h2><p>${label("mkt.desktop.desc")}</p></div>
 <div class="desktop-showcase" style="width:100%; max-width:1200px; margin: 40px auto; border-radius:12px; overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,0.3); border:1px solid color-mix(in srgb,var(--border) 40%,transparent); background:var(--bg);">
-  <iframe src="/preview/desktop" style="width:100%; height:800px; border:none; display:block;"></iframe>
+  <iframe src="/desktop/" style="width:100%; height:800px; border:none; display:block;"></iframe>
 </div>
 <div class="desktop-grid">
 ${desktopCard("windows", "mkt.desktop.windows", "mkt.desktop.windowsDesc", winUrl, winRelease?.version ?? "3.14.2")}
@@ -1037,7 +1059,7 @@ ${desktopCard("linux", "mkt.desktop.linux", "mkt.desktop.linuxDesc", linUrl, lin
   const mobileSection = `<section id="mobile" class="mkt-anchor">
 <div class="mkt-heading"><span class="eyebrow">${label("mkt.download.mobile.soon")}</span><h2>${label("mkt.download.mobile.title")}</h2><p>${label("mkt.download.mobile.desc")}</p></div>
 <div class="mobile-showcase">
-  <iframe src="/preview/mobile" style="width:100%; max-width: 500px; height:900px; border:none; display:block; margin:0 auto; background:transparent;"></iframe>
+  <iframe src="/mobile/" style="width:100%; max-width: 500px; height:900px; border:none; display:block; margin:0 auto; background:transparent;"></iframe>
   <div class="store-badges">
     <a href="#" class="store-badge-btn" onclick="openQrModal('apple'); return false;">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.7 17.3c-.5 1.1-.7 1.6-1.3 2.6-.9 1.4-2.1 3.2-3.7 3.2-1.4 0-1.7-.9-3.6-.9s-2.3.9-3.6.9c-1.6 0-2.7-1.6-3.6-3-2.5-3.8-2.8-8.3-1.2-10.7 1.1-1.7 2.8-2.7 4.5-2.7 1.7 0 2.7.9 4.1.9 1.3 0 2.1-.9 4-.9 1.4 0 2.9.8 4 2.1-3.5 1.9-2.9 6.9.4 8.5zM14.5 3.6c.8-1 1.4-2.4 1.3-3.8-1.3.1-2.8.9-3.7 1.9-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.8z"/></svg>
@@ -1066,8 +1088,21 @@ ${desktopCard("linux", "mkt.desktop.linux", "mkt.desktop.linuxDesc", linUrl, lin
   ];
   const integrationStrip = `<section id="integrations" class="mkt-integrations mkt-anchor">
 <p class="integration-title">${label("mkt.integrations.title")}</p>
+<style>
+.brand-logo-pill {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: var(--shadow-sm);
+}
+.brand-logo-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e1 !important;
+}
+</style>
 <div class="brand-logos">
-${brandLogos.map(b => `<span class="brand-logo-pill"><img src="https://cdn.simpleicons.org/${b.si}/ffffff" class="brand-logo-img" alt="${b.name}" width="18" height="18" loading="lazy" onerror="this.style.display='none'"><span>${b.name}</span></span>`).join("")}
+${brandLogos.map(b => `<span class="brand-logo-pill"><img src="https://cdn.simpleicons.org/${b.si}" class="brand-logo-img" alt="${b.name}" width="18" height="18" loading="lazy" onerror="this.style.display='none'"><span>${b.name}</span></span>`).join("")}
 </div>
 </section>`;
 
@@ -1082,16 +1117,13 @@ ${brandLogos.map(b => `<span class="brand-logo-pill"><img src="https://cdn.simpl
     ...demoSeo(t.color.primary),
     title: label("mkt.seo.title"),
     description: label("mkt.seo.desc"),
-    alternates: [
-      { lang: "en", url: "/?lang=en" },
-      { lang: "tr", url: "/?lang=tr" },
-    ],
+    alternates: SUPPORTED_LOCALES.map((l) => ({ lang: l, url: `/?lang=${l}` })),
   };
 
   const blockingThemeScript = `<script>(function(){var t=localStorage.getItem("nx-theme");if(t)document.documentElement.setAttribute("data-theme",t);})()</script>`;
 
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -1161,14 +1193,27 @@ ${renderRichFooter(t.color.primary)}
     google: ${JSON.stringify(locale === "tr" ? "Android için NEXUS" : "NEXUS for Android")}
   };
   window.openQrModal = function(store){
-    var target = location.origin + '/mobile';
+    var target = location.origin + '/mobile/';
     title.textContent = titles[store] || 'NEXUS Mobile';
     urlLine.textContent = target;
-    // External QR service with a resilient inline-SVG fallback if unreachable.
+    // Inline QR-like graphic with direct link (no external service dependency)
     img.onerror = function(){
       img.onerror = null;
       img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#fff"/><text x="100" y="96" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#111">QR unavailable</text><text x="100" y="116" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">' + target.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</text></svg>');
+        '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">' +
+        '<rect width="200" height="200" rx="16" fill="%23f8f9fa"/>' +
+        '<rect x="20" y="20" width="50" height="50" rx="4" fill="%23111"/>' +
+        '<rect x="130" y="20" width="50" height="50" rx="4" fill="%23111"/>' +
+        '<rect x="20" y="130" width="50" height="50" rx="4" fill="%23111"/>' +
+        '<rect x="28" y="28" width="34" height="34" rx="2" fill="%23fff"/>' +
+        '<rect x="138" y="28" width="34" height="34" rx="2" fill="%23fff"/>' +
+        '<rect x="28" y="138" width="34" height="34" rx="2" fill="%23fff"/>' +
+        '<rect x="36" y="36" width="18" height="18" fill="%23111"/>' +
+        '<rect x="146" y="36" width="18" height="18" fill="%23111"/>' +
+        '<rect x="36" y="146" width="18" height="18" fill="%23111"/>' +
+        '<rect x="80" y="80" width="40" height="40" rx="8" fill="%237C5CFF"/>' +
+        '<text x="100" y="105" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="%23fff">N</text>' +
+        '</svg>');
     };
     img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=' + encodeURIComponent(target);
     modal.style.display = 'flex';
@@ -1192,6 +1237,28 @@ ${renderRichFooter(t.color.primary)}
     var next = cur === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('nx-theme', next);
+  });
+
+  // ── Language picker ──
+  var pickers = document.querySelectorAll('.lang-picker');
+  pickers.forEach(function(picker) {
+    var pbtn = picker.querySelector('.lang-picker-btn');
+    var menu = picker.querySelector('.ld-menu');
+    if (!pbtn || !menu) return;
+    pbtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = menu.classList.contains('open');
+      menu.classList.toggle('open');
+      pbtn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+  document.addEventListener('click', function() {
+    pickers.forEach(function(p) {
+      var m = p.querySelector('.ld-menu');
+      var b = p.querySelector('.lang-picker-btn');
+      if (m) m.classList.remove('open');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
   });
 
   // ── Scroll reveal ──
@@ -1362,11 +1429,11 @@ export function renderLegalPage(
   const content = contents[page][lang];
 
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${escapeHtml(title)} \u2014 NEXUS</title>
+<title>${escapeHtml(title)} — NEXUS</title>
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <meta name="theme-color" content="${t.color.bg}" />
 <style>${renderStyles(t)}${legalPageCss()}</style>
@@ -1378,7 +1445,7 @@ export function renderLegalPage(
 </div></div>
 <main class="legal-content">
 <h1>${escapeHtml(title)}</h1>
-<p class="legal-updated">${lang === "tr" ? "Son g\u00fcncelleme: Temmuz 2026" : "Last updated: July 2026"}</p>
+<p class="legal-updated">${lang === "tr" ? "Son güncelleme: Temmuz 2026" : "Last updated: July 2026"}</p>
 ${content}
 </main>
 ${renderRichFooter(t.color.primary)}
@@ -1397,11 +1464,11 @@ export function renderNotFoundPage(
   const t = getTheme(theme);
 
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>404 \u2014 NEXUS</title>
+<title>404 — NEXUS</title>
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <meta name="theme-color" content="${t.color.bg}" />
 <style>${renderStyles(t)}${legalPageCss()}</style>
@@ -1448,11 +1515,11 @@ export function renderAboutPage(
   const title = isTr ? "NEXUS Hakkında" : "About NEXUS";
 
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${escapeHtml(title)} \u2014 NEXUS</title>
+<title>${escapeHtml(title)} — NEXUS</title>
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <meta name="theme-color" content="${t.color.bg}" />
 <style>${renderStyles(t)}${legalPageCss()}</style>
@@ -1497,7 +1564,7 @@ export function renderStoreDocument(options: { theme?: ThemeName; locale?: strin
   const isTr = locale === "tr";
 
   return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}">
+<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

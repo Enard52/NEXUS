@@ -79,8 +79,8 @@ describe("@nexus/interface", () => {
   });
 
   it("resolves brand design tokens for rendering", () => {
-    expect(themeFor("dark").color.bg).toBe("#0a0a0b");
-    expect(themeFor("light").color.bg).toBe("#f8f9fa");
+    expect(themeFor("dark").color.bg).toBe("#09090b");
+    expect(themeFor("light").color.bg).toBe("#fcfcfd");
   });
 
   it("composes a Today model from live home signals", () => {

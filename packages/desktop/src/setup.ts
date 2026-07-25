@@ -9,7 +9,8 @@
  */
 
 import { getTheme, type ThemeName } from "@nexus/design-system";
-import { escapeHtml, renderLogo, renderStyles, setLocale, CURRENT_LOCALE } from "@nexus/web";
+import { escapeHtml, label, renderLogo, renderStyles, setLocale, CURRENT_LOCALE } from "@nexus/web";
+import { type Locale } from "@nexus/i18n";
 import { renderWindowControls } from "./utils.js";
 
 // ── Step definitions ─────────────────────────────────────────────────────────
@@ -42,12 +43,13 @@ body.setup {
   margin: 0;
 }
 .setup-window {
-  width: 640px;
+  width: 720px;
+  height: 520px;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--elev);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
   overflow: hidden;
   background: var(--surface);
 }
@@ -74,14 +76,14 @@ body.setup {
 }
 /* ── Left rail ──────────────────────────────────────────────────────────── */
 .setup-rail {
-  width: 192px;
+  width: 220px;
   flex: none;
   display: flex;
   flex-direction: column;
-  padding: ${t.space[5]}px ${t.space[4]}px;
-  border-right: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--tint-soft) 0%, var(--surface) 100%);
-  gap: ${t.space[5]}px;
+  padding: ${t.space[6]}px ${t.space[5]}px;
+  border-right: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tint) 20%, transparent), transparent);
+  gap: ${t.space[6]}px;
 }
 .setup-brand {
   display: flex;
@@ -140,7 +142,7 @@ body.setup {
   border-color: var(--primary);
   color: var(--on-primary);
   font-size: 0;
-  /* ✓ checkmark via pseudo */
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 40%, transparent);
   position: relative;
 }
 .steps li.done .step-num::after {
@@ -285,7 +287,7 @@ body.setup {
   100% { width: 100%; }
 }
 .progress-fill.running {
-  animation: nx-install 4.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: nx-install 4.2s var(--transition-spring) forwards;
 }
 .status-line {
   font-size: ${t.font.size.sm}px;
@@ -351,141 +353,63 @@ body.setup {
 // ── Step content renderers ────────────────────────────────────────────────────
 
 function stepWelcome(logoSvg: string): string {
-  const isTr = CURRENT_LOCALE === "tr";
   return (
     `<div class="setup-brand">${logoSvg}<span class="brand-name">NEXUS</span></div>` +
-    `<h2>${isTr ? "NEXUS AI Kurulumuna Hoş Geldiniz" : "Welcome to NEXUS Setup"}</h2>` +
-    `<p>${
-      isTr
-        ? "Bu sihirbaz eviniz için kişisel işletim sisteminiz olan NEXUS AI kurulumunda size rehberlik edecektir."
-        : "This wizard will guide you through the installation of NEXUS AI — your personal operating system for the home."
-    }</p>` +
+    `<h2>${label("setup.welcomeTitle")}</h2>` +
+    `<p>${label("setup.welcomeDesc")}</p>` +
     `<ul class="setup-bullets">` +
-    `<li>${isTr ? "Hafif arka plan servisi — boşta 50 MB RAM altında" : "Lightweight background service — under 50 MB RAM at idle"}</li>` +
-    `<li>${
-      isTr
-        ? "Varsayılan olarak tamamen yerel — verileriniz cihazınızdan asla ayrılmaz"
-        : "Fully local by default — your data never leaves your device"
-    }</li>` +
-    `<li>${
-      isTr
-        ? "Kutudan çıktığı gibi 2.000+ akıllı ev cihazıyla çalışır"
-        : "Works with 2 000+ smart home devices out of the box"
-    }</li>` +
+    `<li>${label("setup.bullet1")}</li>` +
+    `<li>${label("setup.bullet2")}</li>` +
+    `<li>${label("setup.bullet3")}</li>` +
     `</ul>` +
-    `<p>${
-      isTr
-        ? "Devam etmek için <strong>Devam Et</strong> düğmesine tıklayın."
-        : "Click <strong>Continue</strong> to proceed."
-    }</p>`
+    `<p>${label("setup.continueHint")}</p>`
   );
 }
 
 function stepLicense(): string {
-  const isTr = CURRENT_LOCALE === "tr";
-  const licenseText = escapeHtml(
-    isTr
-      ? `NEXUS AI YAZILIM LİSANS SÖZLEŞMESİ\n\n` +
-          `Telif Hakkı © 2024 NEXUS AI Teknolojileri. Tüm hakları saklıdır.\n\n` +
-          `LÜTFEN YAZILIMI YÜKLEMEDEN VEYA KULLANMADAN ÖNCE BU LİSANS SÖZLEŞMESİNİ DİKKATLE OKUYUN.\n\n` +
-          `1. LİSANS VERİLMESİ. Bu Sözleşmenin koşullarına tabi olarak NEXUS AI Teknolojileri, ` +
-          `NEXUS AI'yı yalnızca kişisel, ticari olmayan amaçlarınız için yüklemeniz ve kullanmanız amacıyla ` +
-          `size münhasır olmayan, devredilemez bir lisans verir.\n\n` +
-          `2. KISITLAMALAR. Şunları yapamazsınız: (a) Yazılımı kopyalamak, değiştirmek veya dağıtmak; ` +
-          `(b) Yazılıma tersine mühendislik uygulamak, kaynak koda dönüştürmek; ` +
-          `(c) Yazılımı alt lisanslamak veya satmak.\n\n` +
-          `3. GİZLİLİK. Yazılım öncelikle cihaz üzerinde çalışır. Tüm bulut özellikleri ` +
-          `açık onay gerektirir ve ayrı Gizlilik Politikasına tabidir.\n\n` +
-          `4. FERAGAT. YAZILIM HERHANGİ BİR GARANTİ OLMAKSIZIN "OLDUĞU GİBİ" SAĞLANIR.\n\n` +
-          `5. FESHETME. Bu lisans, buradaki herhangi bir şartın ihlali durumunda otomatik olarak sona erer.`
-      : `NEXUS AI SOFTWARE LICENSE AGREEMENT\n\n` +
-          `Copyright © 2024 NEXUS AI Technologies. All rights reserved.\n\n` +
-          `PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING THE SOFTWARE.\n\n` +
-          `1. GRANT OF LICENSE. Subject to the terms of this Agreement, NEXUS AI Technologies ` +
-          `grants you a non-exclusive, non-transferable license to install and use NEXUS AI ` +
-          `solely for your personal, non-commercial purposes.\n\n` +
-          `2. RESTRICTIONS. You may not: (a) copy, modify, or distribute the Software; ` +
-          `(b) reverse engineer, decompile, or disassemble the Software; ` +
-          `(c) sublicense or sell the Software.\n\n` +
-          `3. PRIVACY. The Software operates primarily on-device. Any cloud features require ` +
-          `explicit opt-in and are governed by the separate Privacy Policy.\n\n` +
-          `4. DISCLAIMER. THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.\n\n` +
-          `5. TERMINATION. This license terminates automatically upon breach of any term herein.`,
-  );
-
   return (
-    `<h2>${isTr ? "Lisans Sözleşmesi" : "License Agreement"}</h2>` +
-    `<p>${
-      isTr
-        ? "Lütfen devam etmeden önce aşağıdaki lisans koşullarını okuyun ve kabul edin."
-        : "Please read and accept the following license terms before continuing."
-    }</p>` +
-    `<div class="license-box"><pre style="margin:0;white-space:pre-wrap;font-family:var(--font-mono, 'JetBrains Mono', monospace);font-size:12px;">${licenseText}</pre></div>` +
+    `<h2>${label("setup.licenseTitle")}</h2>` +
+    `<p>${label("setup.licenseHint")}</p>` +
+    `<div class="license-box"><pre style="margin:0;white-space:pre-wrap;font-family:var(--font-mono, 'JetBrains Mono', monospace);font-size:12px;">${escapeHtml(label("setup.licenseText"))}</pre></div>` +
     `<label class="check-row" id="license-check-label">` +
     `<input type="checkbox" id="license-accept" onchange="window.__nx_licenseChanged(this)"> ` +
-    `${isTr ? "Sözleşmeyi kabul ediyorum" : "I accept the agreement"}` +
+    `${label("setup.accept")}` +
     `</label>`
   );
 }
 
 function stepLocation(os: "windows" | "mac" = "windows"): string {
-  const isTr = CURRENT_LOCALE === "tr";
   const defaultPath = os === "mac" ? "/Applications/NEXUS.app" : "C:\\Program Files\\NEXUS";
-  const desc = isTr
-    ? (os === "mac"
-        ? "NEXUS AI uygulamasının nereye yükleneceğini seçin. macOS için /Applications klasörü önerilir."
-        : "NEXUS AI uygulamasının nereye yükleneceğini seçin. Çoğu kullanıcı için varsayılan konum önerilir.")
-    : (os === "mac"
-        ? "Choose where NEXUS AI will be installed. The /Applications folder is recommended on macOS."
-        : "Choose where NEXUS AI will be installed. The default location is recommended for most users.");
   return (
-    `<h2>${isTr ? "Kurulum Konumu" : "Installation Location"}</h2>` +
-    `<p>${desc}</p>` +
+    `<h2>${label("setup.locationTitle")}</h2>` +
+    `<p>${label(os === "mac" ? "setup.locationDescMac" : "setup.locationDesc")}</p>` +
     `<div class="field">` +
     `<input type="text" id="install-path" value="${escapeHtml(defaultPath)}" aria-label="Installation path">` +
-    `<button class="btn-browse btn" onclick="window.__nx_browse()" type="button">${
-      isTr ? "Gözat\u2026" : "Browse\u2026"
-    }</button>` +
+    `<button class="btn-browse btn" onclick="window.__nx_browse()" type="button">${label("setup.browse")}</button>` +
     `</div>` +
-    `<p class="disk-info">${
-      isTr
-        ? "Gerekli alan: <strong>240 MB</strong> &nbsp;·&nbsp; Kullanılabilir: <strong>48.2 GB</strong>"
-        : "Space required: <strong>240 MB</strong> &nbsp;·&nbsp; Available: <strong>48.2 GB</strong>"
-    }</p>`
+    `<p class="disk-info">${label("setup.spaceInfo")}</p>`
   );
 }
 
 function stepInstalling(): string {
-  const isTr = CURRENT_LOCALE === "tr";
   return (
-    `<h2>${isTr ? "NEXUS AI Yükleniyor" : "Installing NEXUS AI"}</h2>` +
-    `<p>${
-      isTr
-        ? "NEXUS bilgisayarınıza yüklenirken lütfen bekleyin. Bu işlem birkaç dakika sürebilir."
-        : "Please wait while NEXUS is installed on your computer. This may take a few minutes."
-    }</p>` +
+    `<h2>${label("setup.installingTitle")}</h2>` +
+    `<p>${label("setup.installingDesc")}</p>` +
     `<div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Installation progress">` +
     `<div class="progress-fill" id="install-progress"></div>` +
     `</div>` +
-    `<p class="status-line" id="install-status">${
-      isTr ? "Çekirdek servisler yükleniyor\u2026" : "Installing core services\u2026"
-    }</p>`
+    `<p class="status-line" id="install-status">${label("setup.installingStatus")}</p>`
   );
 }
 
 function stepFinish(): string {
-  const isTr = CURRENT_LOCALE === "tr";
   return (
     `<div class="finish-icon" aria-hidden="true">\u2713</div>` +
-    `<h2>${isTr ? "NEXUS Hazır" : "NEXUS is ready"}</h2>` +
-    `<p>${
-      isTr
-        ? "NEXUS AI başarıyla kuruldu. Kurulum sihirbazından çıkmak için <strong>Tamamla</strong> düğmesine tıklayın."
-        : "NEXUS AI has been successfully installed. Click <strong>Finish</strong> to exit the Setup wizard."
-    }</p>` +
+    `<h2>${label("setup.finishTitle")}</h2>` +
+    `<p>${label("setup.finishDesc")}</p>` +
     `<label class="check-row">` +
     `<input type="checkbox" id="launch-now" checked> ` +
-    `${isTr ? "NEXUS'u şimdi başlat" : "Launch NEXUS now"}` +
+    `${label("setup.launchNow")}` +
     `</label>`
   );
 }
@@ -498,7 +422,7 @@ function stepFinish(): string {
 export interface SetupDocumentOptions {
   readonly theme: ThemeName;
   readonly os?: "windows" | "mac";
-  readonly locale?: "en" | "tr";
+  readonly locale?: Locale | string;
 }
 
 /**
@@ -509,16 +433,15 @@ export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocu
   const t = getTheme(theme);
   const logoSvg = renderLogo(t.color.primary);
   if (locale) setLocale(locale);
-  const isTr = CURRENT_LOCALE === "tr";
-  const stepLabels = isTr
-    ? ["Hoş Geldiniz", "Lisans", "Konum", "Yükleniyor", "Tamamlandı"]
-    : ["Welcome", "License", "Location", "Installing", "Finish"];
+  const stepLabels = [
+    label("setup.welcome"), label("setup.license"), label("setup.location"),
+    label("setup.installing"), label("setup.finish"),
+  ];
 
-  const txtInstall = isTr ? "Yükle" : "Install";
-  const txtFinish = isTr ? "Bitir" : "Finish";
-  const txtContinue = isTr ? "Devam Et" : "Continue";
+  const txtInstall = label("setup.installBtn");
+  const txtFinish = label("setup.finish");
+  const txtContinue = label("setup.continue");
   const setupScript = /* js */ `
-  const txtInstall = "Install";
 (function () {
   var steps = ${JSON.stringify(STEPS.map((s) => s.id))};
   var current = 0;
@@ -577,30 +500,20 @@ export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocu
   };
 
   window.__nx_browse = function () {
-    alert(${JSON.stringify(
-      isTr
-        ? "Gözat iletişim kutusu — yerel kabuk köprüsü ile entegre edin."
-        : "Browse dialog — integrate with your native shell bridge.",
-    )});
+    alert(${JSON.stringify(label("setup.browseHint"))});
   };
 
   document.getElementById('btn-next').addEventListener('click', function () {
     if (current < steps.length - 1) { current++; update(); }
     else {
-      alert(${JSON.stringify(
-        isTr
-          ? "Kurulum tamamlandı. NEXUS AI başlatılmaya hazır."
-          : "Setup complete. NEXUS AI is ready to launch.",
-      )});
+      alert(${JSON.stringify(label("setup.completeAlert"))});
     }
   });
   document.getElementById('btn-back').addEventListener('click', function () {
     if (current > 0) { current--; update(); }
   });
   document.getElementById('btn-cancel').addEventListener('click', function () {
-    if (confirm(${JSON.stringify(
-      isTr ? "Kurulumu iptal etmek istiyor musunuz?" : "Cancel the installation?",
-    )})) window.close();
+    if (confirm(${JSON.stringify(label("setup.cancelConfirm"))})) window.close();
   });
 
   update();
@@ -638,14 +551,14 @@ export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocu
     `<head>\n` +
     `<meta charset="utf-8">\n` +
     `<meta name="viewport" content="width=device-width, initial-scale=1">\n` +
-    `<title>${isTr ? "NEXUS Kurulumu" : "NEXUS Setup"}</title>\n` +
+    `<title>${label("setup.windowTitle")}</title>\n` +
     `<style>${renderSetupStyles(theme)}</style>\n` +
     `</head>\n` +
     `<body class="setup">\n` +
     `<div class="setup-window">\n` +
     `  <!-- Title bar -->\n` +
     `  <div class="titlebar">\n` +
-    `    <span class="title">${isTr ? "NEXUS AI Kurulumu" : "NEXUS AI Setup"}</span>\n` +
+    `    <span class="title">${label("setup.titlebarText")}</span>\n` +
     `    ${renderWindowControls(os)}\n` +
     `  </div>\n` +
     `  <!-- Two-pane body -->\n` +
@@ -660,10 +573,10 @@ export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocu
     `${panels}\n` +
     `      <!-- Footer -->\n` +
     `      <div class="setup-footer">\n` +
-    `        <button class="btn btn-ghost" id="btn-cancel" type="button">${isTr ? "İptal" : "Cancel"}</button>\n` +
+    `        <button class="btn btn-ghost" id="btn-cancel" type="button">${label("setup.cancel")}</button>\n` +
     `        <div class="footer-right">\n` +
-    `          <button class="btn btn-ghost" id="btn-back" type="button" style="visibility:hidden">${isTr ? "Geri" : "Back"}</button>\n` +
-    `          <button class="btn btn-primary" id="btn-next" type="button">${isTr ? "Devam Et" : "Continue"}</button>\n` +
+    `          <button class="btn btn-ghost" id="btn-back" type="button" style="visibility:hidden">${label("setup.back")}</button>\n` +
+    `          <button class="btn btn-primary" id="btn-next" type="button">${label("setup.continue")}</button>\n` +
     `        </div>\n` +
     `      </div>\n` +
     `    </div>\n` +

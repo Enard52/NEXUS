@@ -17,6 +17,7 @@
 import { getTheme, type DesignTokens, type ThemeName } from "@nexus/design-system";
 
 import { type ScreenDescriptor, type ScreenId } from "@nexus/interface";
+import { SUPPORTED_LOCALES } from "@nexus/i18n";
 import {
   buildDemoScreens,
   escapeHtml,
@@ -253,8 +254,7 @@ export function renderDesktopDocument(options: DesktopOptions = {}): string {
     .join("\n");
 
   const locale = options.locale ?? CURRENT_LOCALE;
-  const other = locale === "tr" ? "en" : "tr";
-  const titleText = `NEXUS — ${CURRENT_LOCALE === "tr" ? "Kişisel İşletim Sistemi" : "Personal Operating System"}`;
+  const titleText = `NEXUS — ${label("desktop.title")}`;
 
   // Authenticated chrome carries a language switch + letter avatar + logout, mirroring
   // the web top bar and mobile app bar; the standalone shell keeps a neutral spacer.
@@ -262,8 +262,7 @@ export function renderDesktopDocument(options: DesktopOptions = {}): string {
   const initial = escapeHtml(nameForInitial.trim().charAt(0).toUpperCase() || "N");
   const titleRight = authed
     ? `<div class="title-actions">` +
-      `<span class="title-lang"><a href="?lang=${locale}" class="active">${locale.toUpperCase()}</a>` +
-      `<a href="?lang=${other}">${other.toUpperCase()}</a></span>` +
+      `<span class="title-lang"><select class="lang-dropdown" onchange="location.href='?lang='+this.value" aria-label="Language">${SUPPORTED_LOCALES.map((l) => `<option value="${l}"${l === locale ? " selected" : ""}>${l.toUpperCase()}</option>`).join("")}</select></span>` +
       `<div class="avatar-wrap">${renderAvatar(undefined, initial)}</div>` +
       `<button type="button" class="title-logout" id="desk-logout">` +
       `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>` +

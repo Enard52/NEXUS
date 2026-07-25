@@ -29,7 +29,7 @@ export interface DesignTokens {
   readonly color: ColorScale;
   /** Spacing scale in px, indexed 0..n (4pt grid). */
   readonly space: readonly number[];
-  readonly radius: { readonly sm: number; readonly md: number; readonly lg: number };
+  readonly radius: { readonly sm: number; readonly md: number; readonly lg: number; readonly xl: number };
   readonly font: {
     readonly family: string;
     /** Monospace font stack for code/terminal surfaces. */
@@ -40,7 +40,21 @@ export interface DesignTokens {
       readonly md: number;
       readonly lg: number;
       readonly xl: number;
+      readonly xxl: number;
     };
+  };
+  readonly shadow: {
+    readonly sm: string;
+    readonly md: string;
+    readonly lg: string;
+    readonly xl: string;
+    readonly ring: string;
+  };
+  readonly transition: {
+    readonly fast: string;
+    readonly normal: string;
+    readonly slow: string;
+    readonly spring: string;
   };
 }
 
@@ -56,34 +70,57 @@ const FONT = {
 
 const RADIUS = { sm: 6, md: 12, lg: 24, xl: 32 } as const;
 
+const TRANSITIONS = {
+  fast: "160ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+  normal: "220ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+  slow: "320ms ease",
+  spring: "400ms cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+} as const;
+
 export const lightTheme: DesignTokens = {
   color: {
-    bg: "#f8f9fa",
+    bg: "#fcfcfd", // softer white
     surface: "#ffffff",
-    text: "#12141a",
+    text: "#0f172a", // rich slate
     textMuted: "#64748b",
-    primary: "#6C4FE8",
+    primary: "#4f46e5", // indigo primary for a premium feel, passes AA
     onPrimary: "#ffffff",
-    accent: "#0EA5C9",
+    accent: "#0ea5e9", // vibrant sky
   },
   space: SPACE,
   radius: RADIUS,
   font: FONT,
+  shadow: {
+    sm: "0 2px 4px rgba(0,0,0,0.02)",
+    md: "0 4px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03)",
+    lg: "0 12px 32px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04)",
+    xl: "0 24px 64px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06)",
+    ring: "0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent)",
+  },
+  transition: TRANSITIONS,
 };
 
 export const darkTheme: DesignTokens = {
   color: {
-    bg: "#0a0a0b",
+    bg: "#09090b", // deep zinc
     surface: "#111113",
     text: "#f8fafc",
     textMuted: "#94a3b8",
-    primary: "#7C5CFF",
-    onPrimary: "#0f0a1e",
-    accent: "#22D3EE",
+    primary: "#818cf8", // slightly softer indigo for dark mode
+    onPrimary: "#09090b",
+    accent: "#38bdf8",
   },
   space: SPACE,
   radius: RADIUS,
   font: FONT,
+  shadow: {
+    sm: "0 2px 4px rgba(0,0,0,0.2)",
+    md: "0 4px 12px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2)",
+    lg: "0 12px 32px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.2)",
+    xl: "0 24px 64px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3)",
+    ring: "0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent)",
+  },
+  transition: TRANSITIONS,
 };
 
 export type ThemeName = "light" | "dark";

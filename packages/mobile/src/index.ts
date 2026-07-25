@@ -14,6 +14,7 @@
 
 import { getTheme, type DesignTokens, type ThemeName } from "@nexus/design-system";
 import { type ScreenId } from "@nexus/interface";
+import { SUPPORTED_LOCALES } from "@nexus/i18n";
 import {
   buildDemoScreens,
   escapeHtml,
@@ -113,7 +114,7 @@ export function renderTabBar(activeId: ScreenId | "more"): string {
 
   const tabs = [
     ...primaryTabs.map((t) => ({ id: t.id, label: label(t.titleKey), icon: t.icon })),
-    { id: "more", label: CURRENT_LOCALE === "tr" ? "Menü" : "Menu", icon: "more" as TabIcon },
+    { id: "more", label: label("mobile.menu"), icon: "more" as TabIcon },
   ];
   const items = tabs
     .map((t) => {
@@ -382,38 +383,21 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     )
     .join("\n");
 
-  const isTr = CURRENT_LOCALE === "tr";
   const moreSubtitles: Record<string, string> = {
-    suggestions: isTr
-      ? "Zamanlanmış 3 akıllı otomasyon önerisi"
-      : "3 scheduled smart automation suggestions",
-    skills: isTr
-      ? "Öğrenilen 5 aktif ses yeteneği & senaryo"
-      : "5 learned active voice skills & scenarios",
-    personalization: isTr
-      ? "Asistan adı, ses modeli & gizlilik ayarları"
-      : "Assistant name, voice model & privacy settings",
-    billing: isTr
-      ? "NEXUS Aile Paketi · Aktif Abonelik"
-      : "NEXUS Family Plan · Active Subscription",
-    "download-center": isTr
-      ? "3 OS platform sürümleri & SHA-256 doğrulama"
-      : "3 OS platform releases & SHA-256 validation",
-    platform: isTr
-      ? "Çapraz platform senkronizasyonu"
-      : "Cross-platform device sync",
-    agents: isTr
-      ? "Otonom yapay zeka ajanları"
-      : "Autonomous AI agents",
-    "admin-dashboard": isTr
-      ? "Sistem yönetimi & canlı metrikler"
-      : "System administration & metrics",
+    suggestions: label("mobile.moreSub.suggestions"),
+    skills: label("mobile.moreSub.skills"),
+    personalization: label("mobile.moreSub.personalization"),
+    billing: label("mobile.moreSub.billing"),
+    "download-center": label("mobile.moreSub.downloads"),
+    platform: label("mobile.moreSub.platform"),
+    agents: label("mobile.moreSub.agents"),
+    "admin-dashboard": label("mobile.moreSub.admin"),
   };
 
   const moreBadges: Record<string, string> = {
     suggestions: "3",
     skills: "5",
-    personalization: isTr ? "Yön" : "Adm",
+    personalization: "Adm",
     billing: "PRO",
     "download-center": "140 MB",
     platform: "3 OS",
@@ -450,29 +434,29 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>` +
     `</div>` +
     `<div>` +
-    `<div style="font-weight:700; font-size:14px; color:var(--text); letter-spacing:-0.01em;">${isTr ? "NEXUS Sistem Durumu" : "NEXUS System Status"}</div>` +
-    `<div style="font-size:11px; color:var(--muted); margin-top:2px;">${isTr ? "Yerel Ağ Bağlantısı" : "Local Network Connection"}</div>` +
+    `<div style="font-weight:700; font-size:14px; color:var(--text); letter-spacing:-0.01em;">${label("mobile.systemStatus")}</div>` +
+    `<div style="font-size:11px; color:var(--muted); margin-top:2px;">${label("mobile.localNetwork")}</div>` +
     `</div>` +
     `</div>` +
     `<div style="display:flex; align-items:center; gap:6px; background:rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); padding: 4px 10px; border-radius: 999px;">` +
     `<span style="width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow: 0 0 8px #10b981; animation: status-pulse 2s infinite;"></span>` +
-    `<span style="font-size:11px; font-weight:700; color:#10b981;">${isTr ? "%100 Çevrimdışı" : "100% Offline"}</span>` +
+    `<span style="font-size:11px; font-weight:700; color:#10b981;">${label("mobile.offline")}</span>` +
     `</div>` +
     `</div>` +
     `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; position:relative; z-index:1;">` +
     `<div style="background:rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; display:flex; flex-direction:column; gap:4px;">` +
     `<div style="display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; font-weight:600;">` +
     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"></path><path d="M12 6v6l4 2"></path></svg>` +
-    `${isTr ? "Yerel Ses Motoru" : "Local AI Engine"}` +
+    `${label("mobile.localAI")}` +
     `</div>` +
     `<div style="font-size:12px; font-weight:700; color:var(--text);">v3.14-Tr <span style="color:var(--primary); font-weight:600; font-size:11px; margin-left:4px;">(Aktif)</span></div>` +
     `</div>` +
     `<div style="background:rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; display:flex; flex-direction:column; gap:4px;">` +
     `<div style="display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; font-weight:600;">` +
     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"></path><path d="M4 8h16"></path><path d="M8 4v4"></path></svg>` +
-    `${isTr ? "Cihaz Ağı" : "Device Network"}` +
+    `${label("mobile.deviceNetwork")}` +
     `</div>` +
-    `<div style="font-size:12px; font-weight:700; color:var(--text);">6/8 <span style="color:var(--muted); font-weight:500; font-size:11px; margin-left:4px;">${isTr ? "Çevrimiçi" : "Online"}</span></div>` +
+    `<div style="font-size:12px; font-weight:700; color:var(--text);">6/8 <span style="color:var(--muted); font-weight:500; font-size:11px; margin-left:4px;">${label("mobile.online")}</span></div>` +
     `</div>` +
     `</div>` +
     `</div>`;
@@ -481,7 +465,7 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     `<div style="background:rgba(20,22,35,0.6); backdrop-filter:blur(12px); border:1px solid color-mix(in srgb, var(--border) 60%, transparent); border-radius: 20px; padding: 6px; margin-top: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">` +
     `<div style="padding: 12px 14px 6px; display:flex; align-items:center; gap:6px;">` +
     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--primary);"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>` +
-    `<div style="font-weight:800; font-size:11px; color:var(--muted); letter-spacing:0.06em;">${isTr ? "HIZLI KONTROLLER" : "QUICK CONTROLS"}</div>` +
+    `<div style="font-weight:800; font-size:11px; color:var(--muted); letter-spacing:0.06em;">${label("mobile.quickControls")}</div>` +
     `</div>` +
     `<div style="display:flex; flex-direction:column; gap:4px; padding:4px;">` +
     `<div style="display:flex; align-items:center; justify-content:space-between; padding: 12px; background:var(--surface); border-radius:14px; border:1px solid transparent; transition:border 0.2s;">` +
@@ -489,10 +473,10 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     `<div style="width:28px; height:28px; border-radius:8px; background:rgba(16,185,129,0.15); color:#10b981; display:flex; align-items:center; justify-content:center;">` +
     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>` +
     `</div>` +
-    `<span style="color:var(--text); font-size:13px; font-weight:600;">${isTr ? "Çevrimdışı Gizlilik Kalkanı" : "Offline Privacy Shield"}</span>` +
+    `<span style="color:var(--text); font-size:13px; font-weight:600;">${label("mobile.privacyShield")}</span>` +
     `</div>` +
     `<div style="background:#10b981; color:#000; font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; display:flex; align-items:center; gap:4px;">` +
-    `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> ${isTr ? "Aktif" : "Active"}` +
+    `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> ${label("mobile.active")}` +
     `</div>` +
     `</div>` +
     `<div style="display:flex; align-items:center; justify-content:space-between; padding: 12px; background:var(--surface); border-radius:14px; border:1px solid transparent; transition:border 0.2s;">` +
@@ -500,10 +484,10 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     `<div style="width:28px; height:28px; border-radius:8px; background:color-mix(in srgb, var(--primary) 15%, transparent); color:var(--primary); display:flex; align-items:center; justify-content:center;">` +
     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>` +
     `</div>` +
-    `<span style="color:var(--text); font-size:13px; font-weight:600;">${isTr ? 'Sesle Uyanma ("NEXUS")' : 'Voice Wake ("NEXUS")'}</span>` +
+    `<span style="color:var(--text); font-size:13px; font-weight:600;">${label("mobile.voiceWake")}</span>` +
     `</div>` +
     `<div style="background:var(--primary); color:#fff; font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; display:flex; align-items:center; gap:4px;">` +
-    `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> ${isTr ? "Açık" : "On"}` +
+    `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> ${label("mobile.on")}` +
     `</div>` +
     `</div>` +
     `<div style="display:flex; align-items:center; justify-content:space-between; padding: 12px; background:var(--surface); border-radius:14px; border:1px solid transparent; transition:border 0.2s;">` +
@@ -511,10 +495,10 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
     `<div style="width:28px; height:28px; border-radius:8px; background:rgba(255,255,255,0.05); color:var(--muted); display:flex; align-items:center; justify-content:center;">` +
     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>` +
     `</div>` +
-    `<span style="color:var(--text); font-size:13px; font-weight:600;">${isTr ? "Otomatik Ev Yedeği" : "Auto Home Backup"}</span>` +
+    `<span style="color:var(--text); font-size:13px; font-weight:600;">${label("mobile.autoBackup")}</span>` +
     `</div>` +
     `<div style="color:var(--muted); font-size:12px; font-weight:600; padding:4px 4px; display:flex; align-items:center; gap:4px;">` +
-    `${isTr ? "Her Gün 03:00" : "Daily 03:00"}` +
+    `${label("mobile.backupTime")}` +
     `</div>` +
     `</div>` +
     `</div>` +
@@ -522,7 +506,7 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
 
   const moreSection =
     `<section id="more">` +
-    `<h2>${isTr ? "Daha Fazla" : "More"}</h2>` +
+    `<h2>${label("mobile.more")}</h2>` +
     `${authed ? "" : systemStatusBanner}` +
     `<ul class="morelist">${moreRows}</ul>` +
     `${authed ? "" : quickSettingsCard}` +
@@ -532,13 +516,24 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
   const initial = escapeHtml(nameForInitial.trim().charAt(0).toUpperCase() || "N");
 
   const locale = options.locale ?? CURRENT_LOCALE;
-  const other = locale === "tr" ? "en" : "tr";
 
-  // Authenticated app bar carries a language switch + logout; the standalone demo
+  // Authenticated app bar carries a language dropdown + logout; the standalone demo
   // keeps a decorative avatar only. Both reuse the shared avatar (letter fallback).
+  const langLabels: Record<string, string> = {
+    en: "EN", tr: "TR", es: "ES", fr: "FR", de: "DE", it: "IT", pt: "PT", nl: "NL", pl: "PL", cs: "CS",
+    ru: "RU", uk: "UK", ar: "AR", he: "HE", hi: "HI", ja: "JA", ko: "KO", "zh-Hans": "中简", "zh-Hant": "中繁", vi: "VI",
+  };
+  const langItems = SUPPORTED_LOCALES.map(
+    (l) => `<a class="ld-item${l === locale ? " active" : ""}" href="?lang=${l}" data-lang="${l}">${langLabels[l] || l.toUpperCase()}</a>`
+  ).join("");
   const appbarRight = authed
-    ? `<span class="m-lang"><a href="?lang=${locale}" class="active">${locale.toUpperCase()}</a>` +
-      `<a href="?lang=${other}">${other.toUpperCase()}</a></span>` +
+    ? `<div class="lang-picker">` +
+      `<button class="lang-picker-btn" type="button" aria-expanded="false" aria-haspopup="listbox">` +
+      `<span>${langLabels[locale] || locale.toUpperCase()}</span>` +
+      `<svg class="ld-caret" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>` +
+      `</button>` +
+      `<div class="ld-menu" role="listbox">${langItems}</div>` +
+      `</div>` +
       `<div class="avatar-wrap">${renderAvatar(undefined, initial)}</div>` +
       `<button class="m-logout" id="m-logout" type="button" aria-label="${escapeHtml(label("auth.logout"))}">` +
       `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>`
