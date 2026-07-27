@@ -3,6 +3,7 @@ import { type VersionInfoService } from "@nexus/infra";
 import { CATALOGS, type Locale, SUPPORTED_LOCALES } from "@nexus/i18n";
 import {
   type BillingModel,
+  type BillingManageModel,
   type DeviceListModel,
   type FamilyModel,
   type HomeStateModel,
@@ -277,7 +278,12 @@ export function renderDevices(model: DeviceListModel): string {
       };
 
       const devIconSvg = devIcons[d.id] || renderStatIcon("devices");
-      const iconHtml = `<span class="dev-icon" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--primary) 10%, var(--surface));color:var(--primary);border-radius:14px;box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent);">${devIconSvg}</span>`;
+      // Real product photo when the catalog provides one; onerror removes the
+      // img so the icon tile underneath never turns into an empty square.
+      const photoHtml = d.imageUrl
+        ? `<img src="${escapeHtml(d.imageUrl)}" alt="" loading="lazy" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:4px;background:#fff;"/>`
+        : "";
+      const iconHtml = `<span class="dev-icon" style="position:relative;overflow:hidden;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--primary) 10%, var(--surface));color:var(--primary);border-radius:14px;box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent);">${devIconSvg}${photoHtml}</span>`;
 
       let advHtml = "";
       if (d.manufacturer || d.ipAddress || d.analytics) {
@@ -478,6 +484,154 @@ export function renderBilling(model: BillingModel): string {
   return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide">${activePlanCard}${comparisonTiers}${paymentHistory}</div>`;
 }
 
+// ── Subscription management (billing-manage) ──────────────────────────────
+
+const CHECK_MARK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+/** Small inline card-network mark for the payment method row. */
+function renderCardBrand(brand: string): string {
+  return `<span class="pm-brand" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:30px;border-radius:6px;background:linear-gradient(135deg,#1a1f71,#3949ab);color:#fff;font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;">${escapeHtml(brand)}</span>`;
+}
+
+/** Full subscription-management screen: comparison, payment, renewal, invoices. */
+export function renderBillingManage(model: BillingManageModel): string {
+  const isTr = CURRENT_LOCALE === "tr";
+
+  const planCards = model.plans
+    .map((p) => {
+      const feats = model.featureKeys
+        .map((k, i) => {
+          const on = p.includes[i];
+          return `<li style="display:flex;align-items:center;gap:8px;color:${on ? "var(--text)" : "var(--muted)"};${on ? "" : "opacity:0.55;"}"><span style="color:${on ? "#10b981" : "var(--muted)"};display:inline-flex;">${on ? CHECK_MARK : "–"}</span>${escapeHtml(label(k))}</li>`;
+        })
+        .join("");
+      return (
+        `<div class="plan-compare-card${p.current ? " current" : ""}" style="padding:18px;border-radius:var(--radius-lg);background:${p.current ? "linear-gradient(145deg, color-mix(in srgb, var(--primary) 14%, var(--surface)), var(--surface))" : "var(--surface)"};border:1px solid ${p.current ? "var(--primary)" : "var(--border)"};">` +
+        `${p.current ? `<span style=\"font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--primary);color:#fff;text-transform:uppercase;letter-spacing:0.05em;\">${isTr ? "Mevcut Plan" : "Current Plan"}</span>` : ""}` +
+        `<div style="font-weight:700;font-size:16px;margin-top:${p.current ? "8px" : "0"};">${escapeHtml(label(p.labelKey))}</div>` +
+        `<div style="font-size:22px;font-weight:800;margin:6px 0;">${escapeHtml(p.price)} <span style="font-size:11px;color:var(--muted);font-weight:400;">/ ${isTr ? "ay" : "mo"}</span></div>` +
+        `<ul style="list-style:none;padding:0;margin:12px 0 0;font-size:12px;display:grid;gap:7px;">${feats}</ul></div>`
+      );
+    })
+    .join("");
+
+  const paymentCard =
+    `<div class="payment-method-card" style="grid-column:1 / -1;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);">` +
+    renderCardBrand(model.paymentMethod.brand) +
+    `<div style="flex:1;"><div style="font-weight:700;font-size:14px;">•••• ${escapeHtml(model.paymentMethod.last4)}</div>` +
+    `<div style="font-size:12px;color:var(--muted);">${isTr ? "Son kullanma" : "Expires"} ${escapeHtml(model.paymentMethod.expires)}</div></div>` +
+    `<button class="btn" type="button" data-action="billing-change-payment">${escapeHtml(label(model.changeActionKey))}</button></div>`;
+
+  const renewalCard = model.nextRenewal
+    ? `<div class="renewal-card" style="grid-column:1 / -1;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);">` +
+      `<div style="flex:1;"><div style="font-weight:700;font-size:14px;">${isTr ? "Sonraki yenileme" : "Next renewal"}</div>` +
+      `<div style="font-size:12px;color:var(--muted);">${escapeHtml(model.nextRenewal.date)} · ${escapeHtml(model.nextRenewal.amount)}</div></div>` +
+      `<button class="btn" type="button" data-action="billing-cancel-renewal" onclick="return confirm('${isTr ? "Yenileme iptal edilsin mi? Dönem sonunda planınız Ücretsiz plana döner." : "Cancel renewal? Your plan reverts to Free at period end."}')" style="color:#f43f5e;border-color:color-mix(in srgb,#f43f5e 40%,var(--border));">${escapeHtml(label(model.cancelActionKey))}</button></div>`
+    : "";
+
+  const invoiceRows = model.invoices
+    .map(
+      (inv) =>
+        `<tr style="border-bottom:1px solid color-mix(in srgb,var(--border) 50%,transparent);"><td style="padding:10px 12px;white-space:nowrap;">${escapeHtml(inv.date)}</td><td style="padding:10px 12px;">${escapeHtml(inv.amount)}</td><td style="padding:10px 12px;"><span style="color:${inv.status === "paid" ? "#10b981" : "#f59e0b"};font-weight:600;">${inv.status === "paid" ? (isTr ? "Ödendi" : "Paid") : isTr ? "Bekliyor" : "Due"}</span></td><td style="padding:10px 12px;"><a href="#" onclick="return false;" style="color:var(--primary);font-weight:600;text-decoration:none;">PDF</a></td></tr>`,
+    )
+    .join("");
+  const invoicesCard = model.invoices.length
+    ? `<div class="invoice-history" style="grid-column:1 / -1;"><h3 style="font-size:16px;font-weight:700;margin:8px 0 12px;">${isTr ? "Fatura Geçmişi" : "Invoice History"}</h3>` +
+      `<div style="overflow-x:auto;width:100%;"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">` +
+      `<thead><tr style="border-bottom:1px solid var(--border);color:var(--muted);"><th style="padding:8px 12px;">${isTr ? "Tarih" : "Date"}</th><th style="padding:8px 12px;">${isTr ? "Tutar" : "Amount"}</th><th style="padding:8px 12px;">${isTr ? "Durum" : "Status"}</th><th style="padding:8px 12px;">${isTr ? "Fatura" : "Invoice"}</th></tr></thead>` +
+      `<tbody>${invoiceRows}</tbody></table></div></div>`
+    : "";
+
+  return (
+    `<h2>${escapeHtml(label(model.titleKey))}</h2>` +
+    `<div class="plan-compare-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px;">${planCards}</div>` +
+    `<div class="bento-grid wide" style="gap:14px;">${paymentCard}${renewalCard}${invoicesCard}</div>`
+  );
+}
+
+// ── Device pairing (add-device) ─────────────────────────────────────────────
+
+export interface AddDeviceBrand {
+  readonly id: string;
+  readonly name: string;
+  /** Simple Icons slug for the brand mark (self-removing <img> on error). */
+  readonly slug: string;
+  readonly protocol: string;
+  readonly installed: boolean;
+  /** Premium connector (FAZ 16 gating) — badge only; demo plan is paid. */
+  readonly premium: boolean;
+}
+
+/** Deterministic connector catalog mirroring the @nexus/plugins manifests. */
+export const ADD_DEVICE_BRANDS: readonly AddDeviceBrand[] = [
+  { id: "hue", name: "Philips Hue", slug: "philipshue", protocol: "Zigbee", installed: true, premium: true },
+  { id: "tuya", name: "Tuya Smart", slug: "tuya", protocol: "Wi-Fi", installed: true, premium: true },
+  { id: "ikea", name: "IKEA DIRIGERA", slug: "ikea", protocol: "Zigbee", installed: false, premium: false },
+  { id: "xiaomi", name: "Xiaomi Mi Home", slug: "xiaomi", protocol: "Wi-Fi", installed: false, premium: false },
+  { id: "sonoff", name: "Sonoff eWeLink", slug: "sonoff", protocol: "MQTT", installed: false, premium: false },
+  { id: "smartthings", name: "SmartThings", slug: "samsungsmartthings", protocol: "Matter", installed: false, premium: true },
+  { id: "aqara", name: "Aqara", slug: "aqara", protocol: "Zigbee", installed: false, premium: true },
+  { id: "shelly", name: "Shelly", slug: "shelly", protocol: "Wi-Fi", installed: false, premium: false },
+];
+
+/** Mock LAN-scan results (LocalNetworkConnector idiom — deterministic demo). */
+export const SCAN_RESULTS: readonly { name: string; detail: string }[] = [
+  { name: "Shelly Plug S", detail: "192.168.1.171 · Wi-Fi" },
+  { name: "Nanoleaf Shapes", detail: "192.168.1.184 · Thread" },
+  { name: "Chromecast Ultra", detail: "192.168.1.190 · mDNS" },
+];
+
+/** Device pairing screen: brand catalog + manual protocols + LAN scan. */
+export function renderAddDevice(): string {
+  const isTr = CURRENT_LOCALE === "tr";
+
+  const brands = ADD_DEVICE_BRANDS.map((b) => {
+    const badge = b.installed
+      ? `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,#10b981 18%,transparent);color:#10b981;">${isTr ? "Kurulu" : "Installed"}</span>`
+      : b.premium
+        ? `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,#f59e0b 18%,transparent);color:#f59e0b;">Premium</span>`
+        : `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--primary);">${isTr ? "Ekle" : "Add"}</span>`;
+    return (
+      `<div class="brand-card" style="display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:16px;border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);">` +
+      `<span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--primary) 12%,transparent);">` +
+      `<img src="https://cdn.simpleicons.org/${b.slug}" alt="" width="24" height="24" loading="lazy" onerror="this.remove()"/></span>` +
+      `<div><div style="font-weight:700;font-size:13.5px;">${escapeHtml(b.name)}</div>` +
+      `<div style="font-size:11.5px;color:var(--muted);">${escapeHtml(b.protocol)}</div></div>${badge}</div>`
+    );
+  }).join("");
+
+  const protocols = [
+    { id: "bluetooth", label: "Bluetooth" },
+    { id: "matter", label: "Matter" },
+    { id: "wifi", label: "Wi-Fi" },
+    { id: "other", label: isTr ? "Diğer" : "Other" },
+  ]
+    .map(
+      (p) =>
+        `<button class="btn pair-option" type="button" data-pair="${p.id}" style="flex:1;min-width:110px;">${escapeHtml(p.label)}</button>`,
+    )
+    .join("");
+
+  const scanRows = SCAN_RESULTS.map(
+    (r) =>
+      `<div class="scan-result" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border);"><span class="dot on" style="width:8px;height:8px;"></span><div style="flex:1;"><div style="font-weight:600;font-size:13px;">${escapeHtml(r.name)}</div><div style="font-size:11.5px;color:var(--muted);">${escapeHtml(r.detail)}</div></div><button class="btn" type="button" data-action="pair-device">${isTr ? "Eşleştir" : "Pair"}</button></div>`,
+  ).join("");
+
+  return (
+    `<h2>${escapeHtml(label("screen.addDevice"))}</h2>` +
+    `<h3 style="font-size:15px;font-weight:700;margin:4px 0 12px;">${isTr ? "Markaya göre ekle" : "Add by brand"}</h3>` +
+    `<div class="brand-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px;">${brands}</div>` +
+    `<h3 style="font-size:15px;font-weight:700;margin:0 0 12px;">${isTr ? "Manuel eşleştirme" : "Manual pairing"}</h3>` +
+    `<div class="pair-options" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">${protocols}</div>` +
+    `<div class="scan-card" style="padding:16px;border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);">` +
+    `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-weight:700;font-size:14px;">${isTr ? "Ağ taraması" : "Network scan"}</div>` +
+    `<button class="btn primary" type="button" data-action="scan-network">${isTr ? "Cihazları ara" : "Scan for devices"}</button></div>` +
+    `<div class="scan-results" style="display:grid;gap:8px;">${scanRows}</div></div>` +
+    `<div class="pair-help" style="margin-top:16px;padding:14px 16px;border-radius:var(--radius-lg);background:color-mix(in srgb,var(--primary) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--primary) 25%,var(--border));font-size:12.5px;color:var(--muted);">` +
+    `💡 ${isTr ? "Yardım: Cihazını eşleştirme moduna almak için üzerindeki düğmeye 5 sn basılı tut." : "Help: Hold the button on your device for 5s to enter pairing mode."}</div>`
+  );
+}
+
 export function renderPersonalization(model: PersonalizationModel): string {
   const isTr = CURRENT_LOCALE === "tr";
   const lang = model.language === "tr" ? "Türkçe (TR)" : "English (EN)";
@@ -590,6 +744,11 @@ export function renderAvatar(url?: string, initial?: string): string {
   }
   const ch = (initial ?? "?").charAt(0).toUpperCase();
   return `<span class="avatar" style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--tint);color:var(--primary);font-weight:700;font-size:12.8px;">${escapeHtml(ch)}</span>`;
+}
+
+function renderLocalAuthorAvatar(name: string, hue: string): string {
+  const initial = name.trim().charAt(0).toUpperCase() || "?";
+  return `<span class="author-avatar" aria-hidden="true" style="width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg, color-mix(in srgb, ${hue} 82%, #ffffff 18%), color-mix(in srgb, ${hue} 58%, #111827 42%));color:#fff;font-weight:800;font-size:16px;box-shadow:inset 0 0 0 1px color-mix(in srgb, #ffffff 18%, transparent), 0 8px 20px rgba(0,0,0,0.16);">${escapeHtml(initial)}</span>`;
 }
 
 export function renderOgImageSvg(theme: DesignTokens): string {
@@ -786,6 +945,9 @@ export function renderPricing(): string {
 
 export function renderTestimonials(): string {
   const renderStars = () => `<div class="stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>').join('')}</div>`;
+  const author1 = label("mkt.testimonials.author1");
+  const author2 = label("mkt.testimonials.author2");
+  const author3 = label("mkt.testimonials.author3");
   
   return `<section class="mkt-testimonials">
 <div class="mkt-heading"><h2>${label("mkt.testimonials.title")}</h2></div>
@@ -794,9 +956,9 @@ export function renderTestimonials(): string {
     ${renderStars()}
     <p>"${label("mkt.testimonials.quote1")}"</p>
     <div class="author-info">
-      <img class="author-avatar" src="https://randomuser.me/api/portraits/women/79.jpg" alt="" style="object-fit:cover;">
+      ${renderLocalAuthorAvatar(author1, "#6f9bff")}
       <div>
-        <div class="author-name">${label("mkt.testimonials.author1")}</div>
+        <div class="author-name">${author1}</div>
         <div class="author-role">${label("mkt.testimonials.role1")}</div>
       </div>
     </div>
@@ -805,9 +967,9 @@ export function renderTestimonials(): string {
     ${renderStars()}
     <p>"${label("mkt.testimonials.quote2")}"</p>
     <div class="author-info">
-      <img class="author-avatar" src="https://randomuser.me/api/portraits/men/75.jpg" alt="" style="object-fit:cover;">
+      ${renderLocalAuthorAvatar(author2, "#5b8dff")}
       <div>
-        <div class="author-name">${label("mkt.testimonials.author2")}</div>
+        <div class="author-name">${author2}</div>
         <div class="author-role">${label("mkt.testimonials.role2")}</div>
       </div>
     </div>
@@ -816,9 +978,9 @@ export function renderTestimonials(): string {
     ${renderStars()}
     <p>"${label("mkt.testimonials.quote3")}"</p>
     <div class="author-info">
-      <img class="author-avatar" src="https://randomuser.me/api/portraits/women/63.jpg" alt="" style="object-fit:cover;">
+      ${renderLocalAuthorAvatar(author3, "#8b7bff")}
       <div>
-        <div class="author-name">${label("mkt.testimonials.author3")}</div>
+        <div class="author-name">${author3}</div>
         <div class="author-role">${label("mkt.testimonials.role3")}</div>
       </div>
     </div>
@@ -1326,8 +1488,10 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 .field-row .value { font-weight: 500; }
 
 .dot { width: 10px; height: 10px; border-radius: 50%; }
-.on { background: #2ecc71; }
-.off { background: var(--muted); }
+/* Scoped to .dot — a bare .off/.on rule would paint grey blocks over any
+ * other element (e.g. the mobile plan-compare feature rows) using the class. */
+.dot.on { background: #2ecc71; }
+.dot.off { background: var(--muted); }
 .dl-primary {
   display: inline-block; background: var(--primary); color: var(--on-primary);
   padding: 16px 32px; border-radius: var(--radius); font-weight: 600;

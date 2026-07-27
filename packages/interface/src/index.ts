@@ -29,6 +29,8 @@ export type ScreenId =
   | "platform"
   | "agents"
   | "billing"
+  | "billing-manage"
+  | "add-device"
   | "download-center"
   | "admin-dashboard";
 
@@ -64,6 +66,13 @@ export const SCREENS: readonly ScreenDescriptor[] = [
   { id: "platform", titleKey: "screen.platform", requiresAuth: true },
   { id: "agents", titleKey: "screen.agents", requiresAuth: true },
   { id: "billing", titleKey: "screen.billing", requiresAuth: true, roles: ["admin"] },
+  {
+    id: "billing-manage",
+    titleKey: "screen.billingManage",
+    requiresAuth: true,
+    roles: ["admin"],
+  },
+  { id: "add-device", titleKey: "screen.addDevice", requiresAuth: true },
   {
     id: "admin-dashboard",
     titleKey: "screen.adminDashboard",
@@ -101,6 +110,55 @@ export function getScreen(id: ScreenId): ScreenDescriptor {
 
 // ── View-model builders (domain data → render-ready screen state) ─────────────
 
+/**
+ * Semantic device type discriminator — drives type-specific control blocks in
+ * the device-detail screen and themed tile styling. Aligned with the
+ * `DEVICE_TILE_STYLE` keys used by the mobile/web renderers (lamp/tv/ac/…).
+ */
+export type DeviceTypeId =
+  | "lamp"
+  | "tv"
+  | "ac"
+  | "lock"
+  | "speaker"
+  | "camera"
+  | "thermostat"
+  | "curtain";
+
+/**
+ * Kinds of controllable capabilities a device exposes. Mirrors the domain
+ * `CapabilityKind` in @nexus/devices (kept independent here to avoid a package
+ * cycle) and extends it with TV/audio/curtain controls (volume/channel/position).
+ */
+export type CapabilityKind =
+  | "switch"
+  | "brightness"
+  | "colorTemp"
+  | "color"
+  | "motion"
+  | "temperature"
+  | "humidity"
+  | "power"
+  | "volume"
+  | "channel"
+  | "source"
+  | "position"
+  | "mode"
+  | "fanSpeed"
+  | "lockState"
+  | "privacyMode"
+  | "quality";
+
+/** A single controllable capability with its current value and range. */
+export interface Capability {
+  readonly kind: CapabilityKind;
+  readonly value: boolean | number | string;
+  readonly min?: number;
+  readonly max?: number;
+  /** For enumerated kinds (mode/source/quality) — the allowed values. */
+  readonly options?: readonly string[];
+}
+
 export interface DeviceRow {
   readonly id: string;
   readonly nameKey: string;
@@ -108,6 +166,9 @@ export interface DeviceRow {
   readonly room?: string;
   readonly manufacturer?: string;
   readonly model?: string;
+  /** Semantic device type — powers type-specific detail controls + tile styling. */
+  readonly type?: DeviceTypeId;
+  /** Locally-vendored product photo (e.g. "/img/devices/lamp.webp"); falls back to the gradient tile. */
   readonly imageUrl?: string;
   readonly firmwareVersion?: string;
   readonly ipAddress?: string;
@@ -120,6 +181,8 @@ export interface DeviceRow {
     readonly weeklyUsageWh?: number[];
     readonly anomalyDetected?: boolean;
   };
+  /** Type-specific controllable capabilities (brightness, temperature, volume…). */
+  readonly capabilities?: readonly Capability[];
 }
 
 export interface DeviceListModel {
@@ -174,6 +237,101 @@ export function buildBillingModel(plan: PlanId): BillingModel {
     planLabelKey: `plan.${plan}`,
     canUpgrade: plan !== "family",
     manageActionKey: "billing.manage",
+  };
+}
+
+// ── Billing management (subscription screen) ─────────────────────────────────
+
+/** One plan column in the comparison grid (current plan is highlighted). */
+export interface PlanCompareRow {
+  readonly plan: PlanId;
+  readonly labelKey: string;
+  /** Monthly price, display-formatted (demo currency). */
+  readonly price: string;
+  /** Which comparison features this plan includes (parallel to featureKeys). */
+  readonly includes: readonly boolean[];
+  readonly current: boolean;
+}
+
+export interface InvoiceRow {
+  readonly id: string;
+  /** ISO date of the invoice (YYYY-MM-DD). */
+  readonly date: string;
+  readonly amount: string;
+  readonly status: "paid" | "due";
+}
+
+/**
+ * Render-ready state for the subscription-management screen: plan comparison,
+ * payment method on file, next renewal and the invoice history. Deterministic
+ * demo data — a production build would hydrate this from the billing service.
+ */
+export interface BillingManageModel {
+  readonly titleKey: string;
+  readonly plan: PlanId;
+  readonly planLabelKey: string;
+  /** Feature rows of the comparison grid (i18n keys). */
+  readonly featureKeys: readonly string[];
+  readonly plans: readonly PlanCompareRow[];
+  readonly paymentMethod: {
+    readonly brand: "visa" | "mastercard" | "amex";
+    readonly last4: string;
+    readonly expires: string;
+  };
+  /** Next renewal — absent on the free plan (nothing renews). */
+  readonly nextRenewal?: {
+    readonly date: string;
+    readonly amount: string;
+  };
+  readonly invoices: readonly InvoiceRow[];
+  readonly changeActionKey: string;
+  readonly cancelActionKey: string;
+}
+
+const PLAN_PRICES: Record<PlanId, string> = {
+  free: "$0",
+  premium: "$9.99",
+  family: "$14.99",
+};
+
+/** Feature inclusion matrix, parallel to `featureKeys` below. */
+const PLAN_FEATURES: Record<PlanId, readonly boolean[]> = {
+  free: [true, false, false, false],
+  premium: [true, true, true, false],
+  family: [true, true, true, true],
+};
+
+export function buildBillingManageModel(plan: PlanId): BillingManageModel {
+  const plans: PlanCompareRow[] = (Object.keys(PLAN_RANK) as PlanId[]).map((p) => ({
+    plan: p,
+    labelKey: `plan.${p}`,
+    price: PLAN_PRICES[p],
+    includes: PLAN_FEATURES[p],
+    current: p === plan,
+  }));
+  const paying = plan !== "free";
+  return {
+    titleKey: getScreen("billing-manage").titleKey,
+    plan,
+    planLabelKey: `plan.${plan}`,
+    featureKeys: [
+      "billing.feature.devices",
+      "billing.feature.connectors",
+      "billing.feature.ai",
+      "billing.feature.family",
+    ],
+    plans,
+    paymentMethod: { brand: "visa", last4: "4242", expires: "12/27" },
+    nextRenewal: paying ? { date: "2026-08-15", amount: PLAN_PRICES[plan] } : undefined,
+    invoices: paying
+      ? [
+          { id: "inv-2026-07", date: "2026-07-15", amount: PLAN_PRICES[plan], status: "paid" },
+          { id: "inv-2026-06", date: "2026-06-15", amount: PLAN_PRICES[plan], status: "paid" },
+          { id: "inv-2026-05", date: "2026-05-15", amount: PLAN_PRICES[plan], status: "paid" },
+        ]
+      : [],
+    changeActionKey: "billing.changePayment",
+    cancelActionKey: "billing.cancelRenewal",
   };
 }
 
@@ -262,6 +420,7 @@ export interface DemoScreens {
   readonly platform: PlatformModel;
   readonly agents: AgentsModel;
   readonly billing: BillingModel;
+  readonly billingManage: BillingManageModel;
   readonly adminDashboard: AdminDashboardModel;
 }
 

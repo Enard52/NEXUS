@@ -7,6 +7,7 @@ import {
   buildSkillsModel,
   buildFamilyModel,
   buildBillingModel,
+  buildBillingManageModel,
   buildPersonalizationModel,
   buildHomeStateModel,
 } from "@nexus/interface";
@@ -28,6 +29,8 @@ import {
   renderSkills,
   renderFamily,
   renderBilling,
+  renderBillingManage,
+  renderAddDevice,
   renderPersonalization,
 } from "./index.js";
 
@@ -80,6 +83,25 @@ describe("@nexus/web renderer", () => {
     // Family admin badge and a suggestion action are present.
     expect(html).toContain(">admin<");
     expect(html).toContain(">Accept<");
+  });
+
+  it("renders the subscription-management and device-pairing screens", () => {
+    const html = renderDemoDocument({ theme: "dark" });
+    // Both new screens render as anchored sections in the nav flow.
+    expect(html).toContain('<section id="billing-manage">');
+    expect(html).toContain('<section id="add-device">');
+    // Subscription management: comparison grid, card on file, invoices.
+    const manage = renderBillingManage(buildBillingManageModel("family"));
+    expect(manage).toContain("plan-compare-card");
+    expect(manage).toContain("•••• 4242");
+    expect(manage).toContain("billing-cancel-renewal");
+    expect(manage).toContain("invoice-history");
+    // Device pairing: brand catalog, manual protocols and the LAN scan.
+    const pair = renderAddDevice();
+    expect(pair).toContain("brand-card");
+    expect(pair).toContain("Philips Hue");
+    expect(pair).toContain('data-pair="matter"');
+    expect(pair).toContain('data-action="scan-network"');
   });
 
   it("ships accessible semantic landmarks, a brand mark, and a footer", () => {

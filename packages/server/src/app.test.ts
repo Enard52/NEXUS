@@ -74,12 +74,12 @@ describe("local sync server", () => {
     const html = await res.text();
     // Marketing content is present for everyone (no session required).
     expect(html).toContain("NEXUS");
-    // Desktop showcase cards are rendered.
-    expect(html).toContain("desktop-grid");
-    // How It Works section is present.
-    expect(html).toContain("how-steps");
-    // Cookie consent banner is included.
-    expect(html).toContain("cookie-banner");
+    // Premium desktop download cards are rendered.
+    expect(html).toContain("downloads-grid");
+    // How It Works flow section is present.
+    expect(html).toContain("flow-shell");
+    // No unsafe inline event handlers on the public surface.
+    expect(html).not.toContain("onerror=");
   });
 
   it("applies global security headers", async () => {

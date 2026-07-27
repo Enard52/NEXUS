@@ -153,6 +153,9 @@ importers:
 
   packages/mobile:
     dependencies:
+      '@nexus/billing':
+        specifier: workspace:*
+        version: link:../billing
       '@nexus/design-system':
         specifier: workspace:*
         version: link:../design-system
@@ -162,6 +165,9 @@ importers:
       '@nexus/interface':
         specifier: workspace:*
         version: link:../interface
+      '@nexus/plugins':
+        specifier: workspace:*
+        version: link:../plugins
       '@nexus/web':
         specifier: workspace:*
         version: link:../web

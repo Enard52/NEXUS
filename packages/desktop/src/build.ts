@@ -1,7 +1,8 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderDesktopDocument, renderSetupDocument } from "./index.js";
+import { renderSetupDocument } from "./index.js";
+import { renderDesktopPremiumDocument } from "./premium.js";
 
 const { setLocale } = await import("@nexus/web");
 
@@ -20,13 +21,15 @@ const pages: ReadonlyArray<{ file: string; theme: "dark" | "light" }> = [
 
 for (const loc of ["en", "tr"] as const) {
   setLocale(loc);
-  for (const os of ["windows", "mac"] as const) {
+  for (const os of ["windows", "mac", "linux"] as const) {
     const locDir = join(outDir, loc === "en" ? os : `${loc}/${os}`);
     mkdirSync(locDir, { recursive: true });
     for (const page of pages) {
+      // Every OS ships the same approved premium main shell (only the OS
+      // mentions differ); setup pages keep the dedicated wizard renderer.
       const html = page.file.startsWith("setup")
         ? renderSetupDocument({ theme: page.theme, os })
-        : renderDesktopDocument({ theme: page.theme, os });
+        : renderDesktopPremiumDocument({ theme: page.theme, locale: loc, os });
       writeFileSync(join(locDir, page.file), html, "utf8");
       // eslint-disable-next-line no-console
       console.log(

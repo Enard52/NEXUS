@@ -164,11 +164,12 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
       expect(unknownSvg.endsWith("></svg>")).toBe(true);
     });
 
-    it("includes platform, agents, and admin-dashboard items in mobile More view", () => {
+    it("keeps agents on mobile but omits web-only platform/admin surfaces", () => {
       const authedDoc = renderMobileDocument({ theme: "dark", authenticated: true });
-      expect(authedDoc).toContain('data-nav="platform"');
       expect(authedDoc).toContain('data-nav="agents"');
-      expect(authedDoc).toContain('data-nav="admin-dashboard"');
+      // User feedback: platform hub and admin panel are web-only surfaces.
+      expect(authedDoc).not.toContain('data-nav="platform"');
+      expect(authedDoc).not.toContain('data-nav="admin-dashboard"');
     });
   });
 
@@ -309,11 +310,10 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
       expect(webCss).toContain("@keyframes nxRise");
 
       const mobileCss = renderMobileStyles(darkTheme);
-      expect(mobileCss).toContain("@keyframes phone-float");
       expect(mobileCss).toContain("@keyframes screen-slide-in");
-      expect(mobileCss).toContain("@keyframes tab-pill-slide");
       expect(mobileCss).toContain("@keyframes more-row-in");
-      expect(mobileCss).toContain("@keyframes shimmer");
+      expect(mobileCss).toContain("@keyframes status-pulse");
+      expect(mobileCss).toContain("@keyframes mic-pulse");
 
       const desktopCss = renderDesktopStyles(darkTheme);
       expect(desktopCss).toContain("@keyframes win-open");

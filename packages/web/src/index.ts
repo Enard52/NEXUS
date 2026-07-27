@@ -12,6 +12,7 @@ import { getTheme, type ThemeName } from "@nexus/design-system";
 import {
   buildAdminDashboardModel,
   buildAgentsModel,
+  buildBillingManageModel,
   buildBillingModel,
   buildDeviceListModel,
   buildFamilyModel,
@@ -30,9 +31,11 @@ import { computeChecksum, VersionInfoService } from "@nexus/infra";
 import {
   escapeHtml,
   faviconDataUri,
+  renderAddDevice,
   renderAdminDashboard,
   renderAgents,
   renderBilling,
+  renderBillingManage,
   renderDevices,
   renderDownloadCenter,
   renderFamily,
@@ -203,10 +206,17 @@ export interface DemoScreens {
   readonly family: ReturnType<typeof buildFamilyModel>;
   readonly agents: ReturnType<typeof buildAgentsModel>;
   readonly billing: ReturnType<typeof buildBillingModel>;
+  readonly billingManage: ReturnType<typeof buildBillingManageModel>;
   readonly personalization: ReturnType<typeof buildPersonalizationModel>;
   readonly platform: ReturnType<typeof buildPlatformModel>;
   readonly adminDashboard: ReturnType<typeof buildAdminDashboardModel>;
 }
+
+/** Real product photos — Wikimedia Commons allows hotlinking (unlike Unsplash
+ * et al., which 403 on hotlinks). Renderers keep the gradient+logo tile as an
+ * onerror fallback, so a broken CDN never leaves an empty square. */
+const productPhoto = (file: string): string =>
+  `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=160`;
 
 /** Build the shared demo view-models (platform-agnostic; no HTML here). */
 export function buildDemoScreens(): DemoScreens {
@@ -221,6 +231,13 @@ export function buildDemoScreens(): DemoScreens {
       online: true,
       manufacturer: "Philips",
       model: "Hue Play Gradient",
+      type: "lamp",
+      imageUrl: productPhoto("Philips Hue white bulb - June 2018 (1944).jpg"),
+      capabilities: [
+        { kind: "brightness", value: 72, min: 0, max: 100 },
+        { kind: "colorTemp", value: 3400, min: 2700, max: 6500 },
+        { kind: "color", value: "#ffb86b" },
+      ],
       firmwareVersion: "1.93.11",
       ipAddress: "192.168.1.104",
       macAddress: "00:17:88:01:00:FF",
@@ -239,6 +256,13 @@ export function buildDemoScreens(): DemoScreens {
       online: true,
       manufacturer: "LG",
       model: "OLED65C3PUA",
+      type: "tv",
+      imageUrl: productPhoto("LG OLED TV.jpg"),
+      capabilities: [
+        { kind: "volume", value: 35, min: 0, max: 100 },
+        { kind: "channel", value: 7 },
+        { kind: "source", value: "HDMI1", options: ["HDMI1", "HDMI2", "Streaming"] },
+      ],
       firmwareVersion: "03.20.14",
       ipAddress: "192.168.1.108",
       macAddress: "A4:B3:C2:11:00:AA",
@@ -257,6 +281,13 @@ export function buildDemoScreens(): DemoScreens {
       online: true,
       manufacturer: "Daikin",
       model: "FTXC50C",
+      type: "ac",
+      imageUrl: productPhoto("DAIKIN AIR CONDITIONER INDOOR UNIT (4).jpg"),
+      capabilities: [
+        { kind: "temperature", value: 22, min: 16, max: 30 },
+        { kind: "mode", value: "cool", options: ["cool", "heat", "auto", "dry"] },
+        { kind: "fanSpeed", value: "auto", options: ["low", "medium", "high", "auto"] },
+      ],
       firmwareVersion: "1.0.4",
       ipAddress: "192.168.1.115",
       macAddress: "00:22:33:44:55:66",
@@ -275,6 +306,9 @@ export function buildDemoScreens(): DemoScreens {
       online: false,
       manufacturer: "August",
       model: "Smart Lock Pro",
+      type: "lock",
+      imageUrl: productPhoto("August 2nd-gen smart lock.jpg"),
+      capabilities: [{ kind: "lockState", value: "locked", options: ["locked", "unlocked"] }],
       firmwareVersion: "1.2.3",
       ipAddress: "192.168.1.120",
       macAddress: "AA:BB:CC:DD:EE:FF",
@@ -288,6 +322,12 @@ export function buildDemoScreens(): DemoScreens {
       online: true,
       manufacturer: "Sonos",
       model: "Arc",
+      type: "speaker",
+      imageUrl: productPhoto("Sonos One speaker white - vertical (40299333622).jpg"),
+      capabilities: [
+        { kind: "volume", value: 48, min: 0, max: 100 },
+        { kind: "switch", value: true },
+      ],
       firmwareVersion: "15.1.1",
       ipAddress: "192.168.1.130",
       macAddress: "11:22:33:44:55:66",
@@ -301,6 +341,12 @@ export function buildDemoScreens(): DemoScreens {
       online: false,
       manufacturer: "Arlo",
       model: "Pro 4",
+      type: "camera",
+      imageUrl: productPhoto("Interior Arlo Camera for Verisure.jpg"),
+      capabilities: [
+        { kind: "privacyMode", value: false },
+        { kind: "quality", value: "2K", options: ["720p", "1080p", "2K"] },
+      ],
       firmwareVersion: "1.090",
       ipAddress: "192.168.1.140",
       macAddress: "99:88:77:66:55:44",
@@ -314,6 +360,12 @@ export function buildDemoScreens(): DemoScreens {
       online: true,
       manufacturer: "Ecobee",
       model: "Premium",
+      type: "thermostat",
+      imageUrl: productPhoto("Ecobee Pro Thermostat.jpg"),
+      capabilities: [
+        { kind: "temperature", value: 21, min: 10, max: 30 },
+        { kind: "mode", value: "heat", options: ["heat", "cool", "auto"] },
+      ],
       firmwareVersion: "4.7.5",
       ipAddress: "192.168.1.150",
       macAddress: "44:55:66:77:88:99",
@@ -332,6 +384,8 @@ export function buildDemoScreens(): DemoScreens {
       online: true,
       manufacturer: "Somfy",
       model: "Tahoma",
+      type: "curtain",
+      capabilities: [{ kind: "position", value: 65, min: 0, max: 100 }],
       firmwareVersion: "2.1.0",
       ipAddress: "192.168.1.160",
       macAddress: "22:33:44:55:66:77",
@@ -430,15 +484,16 @@ export function buildDemoScreens(): DemoScreens {
     family: buildFamilyModel(
       isTr
         ? [
-            { id: "m1", nameKey: "Ensar", role: "admin", avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
-            { id: "m2", nameKey: "Eray", role: "member", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" },
+            { id: "m1", nameKey: "Ensar", role: "admin" },
+            { id: "m2", nameKey: "Eray", role: "member" },
           ]
         : [
-            { id: "m1", nameKey: "Ensar", role: "admin", avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
-            { id: "m2", nameKey: "Eray", role: "member", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" },
+            { id: "m1", nameKey: "Ensar", role: "admin" },
+            { id: "m2", nameKey: "Eray", role: "member" },
           ],
     ),
     billing: buildBillingModel("family"),
+    billingManage: buildBillingManageModel("family"),
     agents: buildAgentsModel(
       isTr
         ? [
@@ -481,6 +536,7 @@ export function renderDemoDocument(options: DemoOptions = {}): string {
     family,
     agents,
     billing,
+    billingManage,
     personalization,
     platform,
     adminDashboard,
@@ -518,6 +574,8 @@ ${section("agents", renderAgents(agents))}
 ${section("personalization", renderPersonalization(personalization))}
 ${section("platform", renderPlatform(platform))}
 ${section("billing", renderBilling(billing))}
+${section("billing-manage", renderBillingManage(billingManage))}
+${section("add-device", renderAddDevice())}
 ${section("admin-dashboard", renderAdminDashboard(adminDashboard))}
 ${section("download-center", renderDownloadCenter(releases, userAgent))}
 </main>
@@ -558,6 +616,10 @@ export function renderScreenBody(
       return renderPlatform(s.platform);
     case "billing":
       return renderBilling(s.billing);
+    case "billing-manage":
+      return renderBillingManage(s.billingManage);
+    case "add-device":
+      return renderAddDevice();
     case "admin-dashboard":
       return renderAdminDashboard(s.adminDashboard);
     case "download-center":

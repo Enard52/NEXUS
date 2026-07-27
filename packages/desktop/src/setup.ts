@@ -378,8 +378,9 @@ function stepLicense(): string {
   );
 }
 
-function stepLocation(os: "windows" | "mac" = "windows"): string {
-  const defaultPath = os === "mac" ? "/Applications/NEXUS.app" : "C:\\Program Files\\NEXUS";
+function stepLocation(os: "windows" | "mac" | "linux" = "windows"): string {
+  const defaultPath =
+    os === "mac" ? "/Applications/NEXUS.app" : os === "linux" ? "/opt/nexus" : "C:\\Program Files\\NEXUS";
   return (
     `<h2>${label("setup.locationTitle")}</h2>` +
     `<p>${label(os === "mac" ? "setup.locationDescMac" : "setup.locationDesc")}</p>` +
@@ -421,7 +422,7 @@ function stepFinish(): string {
 /** Options for the setup document. */
 export interface SetupDocumentOptions {
   readonly theme: ThemeName;
-  readonly os?: "windows" | "mac";
+  readonly os?: "windows" | "mac" | "linux";
   readonly locale?: Locale | string;
 }
 

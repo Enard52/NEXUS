@@ -1,0 +1,134 @@
+=== titlebar markup ===
+18" r="2" />
+      </symbol>
+    </svg>
+
+    <header class="titlebar">
+      <div class="titlebar-brand">
+        <span class="app-mark" aria-hidden="true">
+          <svg
+            class="brand-logo-svg"
+            width="20"
+            height="20"
+            viewBox="0 0 32 32"
+            fill="none"
+          >
+            <defs>
+              <linearGradient
+                id="nxlogo-title"
+                x1="3"
+                y1="2"
+                x2="29"
+                y2="30"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#6f9bff" />
+                <stop offset="0.55" stop-color="#5b8dff" />
+                <stop offset="1" stop-color="#8b7bff" />
+              </linearGradient>
+              <linearGradient
+                id="nxsheen-title"
+                x1="16"
+                y1="1"
+                x2="16"
+                y2="17"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#fff" stop-opacity="0.3" />
+                <stop offset="1" stop-color="#fff" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect
+              x="1"
+              y="1"
+              width="30"
+              height="30"
+              rx="9"
+              fill="url(#nxlogo-title)"
+            />
+            <rect
+              x="1"
+              y="1"
+              width="30"
+              height="30"
+              rx="9"
+              fill="url(#nxsheen-title)"
+            />
+            <rect
+              x="1.5"
+              y="1.5"
+              width="29"
+              height="29"
+              rx="8.5"
+              stroke="#fff"
+              stroke-opacity="0.22"
+            />
+            <path
+              d="M10.5 22.5V10.5L21.5 22.5V10.5"
+              stroke="#fff"
+              stroke-width="2.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+        <strong>NEXUS</strong
+        ><span class="titlebar-context">Local Personal Operating System</span>
+      </div>
+      <div class="window-controls" aria-label="Window controls">
+        <button
+          class="window-control"
+          type="button
+
+=== attributes ===
+aria-label (24):
+  Window controls
+  Minimize
+  Maximize or restore
+  Close
+  Primary navigation
+  Open profile for Ensar Yılmaz
+  Change theme
+  Notifications
+  NEXUS Home Studio
+  Browse your home
+  Connected devices
+  Add device
+  NEXUS AI
+  Change NEXUS AI execution mode
+  Talk to NEXUS AI
+  Close device controls
+  Toggle selected device
+  Device context
+  Device level
+  Warm white
+  Soft white
+  Daylight
+  Cool blue
+  Local execution route
+placeholder (3):
+  Search settings and devices
+  Try “Set a calm evening in the living room”…
+  Search setup, devices, agents, security, and billing…
+title (5):
+  Windows · Local Core
+  Ensar Yılmaz
+  Owner · Family
+  Living room · 82°F · occupied · 3 local devices
+  Change theme
+alt (5):
+  Nest Learning Thermostat third generation
+  Philips Hue White A19 smart bulb
+  Black Sonos One speaker
+  Nuki Smart Lock
+  Roborock S4 at charging dock
+aria-live (1):
+  polite
+
+=== data-* attrs ===
+current-view, window, view, toast, initials, device-ui-state, home-mode, prompt, device-state-action, device, room, assistant-state, ai-mode, inspector-tab, inspector-panel, setting, label, value, type, options, copy
+
+=== ids (106) ===
+i-nexus, i-home, i-spark, i-devices, i-light, i-star, i-users, i-grid, i-agents, i-settings, i-shield, i-card, i-update, i-help, i-bell, i-search, i-minus, i-square, i-close, i-chevron, i-more, i-panel, i-mic, i-plus, i-bolt, i-clock, i-lock, i-download, i-check, i-copy, i-globe, i-sliders, nxlogo-title, nxsheen-title, nxlogo-sidebar, nxsheen-sidebar, page-eyebrow, page-title, home, product-brand, product-name, product-description, product-status, device-room, device-category, product-image, device-state-panel, device-state-icon, device-state-kicker, device-state-title, device-state-copy, device-state-primary, ribbon-label, nexus-compose, nxlogo-assistant, nxsheen-assistant, trace-status, assistant-form, assistant-input, trace-understand, trace-policy, trace-route, control-title, control-subtitle, tab-control, tab-details, tab-related, tab-history, panel-control, range-value, range-label, device-range, preset-row, live-metric-label, live-metric-value, live-connection, live-activity, trust-protocol, trust-device, trust-copy, panel-details, detail-protocol, detail-model, detail-capability, detail-connection, detail-firmware, detail-power, panel-related, panel-history, suggestions, devices, skills, agents, platforms, family, personalization, security, billing, updates, support, setting-dialog, setting-form, dialog-title, dialog-label, dialog-control, toast-region
+
+script without b64: 32815 chars (saved tmp-an4-script.js)

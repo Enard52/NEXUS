@@ -12,6 +12,12 @@
  * renderer: deterministic, unit-testable, and viewable as a standalone file. A
  * production build wraps this markup in a real desktop shell — that
  * native packaging is an external boundary; the *design* lives here.
+ *
+ * This package (packages/desktop/src) is the single source of truth for ALL
+ * desktop shell HTML: the runtime authenticated shell below, the setup wizard
+ * (setup.ts) and the generated static premium shell (premium*.ts, emitted by
+ * build.ts). public/desktop/** and public/desktop-home.html are downstream
+ * build mirrors — never hand-edit them (see scripts/copy-static.mjs).
  */
 
 import { getTheme, type DesignTokens, type ThemeName } from "@nexus/design-system";

@@ -51,6 +51,14 @@ export type MessageKey =
   | "plan.premium"
   | "plan.family"
   | "billing.manage"
+  | "screen.billingManage"
+  | "screen.addDevice"
+  | "billing.feature.devices"
+  | "billing.feature.connectors"
+  | "billing.feature.ai"
+  | "billing.feature.family"
+  | "billing.changePayment"
+  | "billing.cancelRenewal"
   // Authentication & signed-in shell (FAZ 14/18)
   | "auth.tagline"
   | "auth.signInTitle"
@@ -312,6 +320,14 @@ export const CATALOGS: Record<"en" | "tr", Catalog> & Record<Exclude<Locale, "en
     "plan.premium": "Premium",
     "plan.family": "Family",
     "billing.manage": "Manage subscription",
+    "screen.billingManage": "Manage Subscription",
+    "screen.addDevice": "Add Device",
+    "billing.feature.devices": "Unlimited devices",
+    "billing.feature.connectors": "Premium connectors",
+    "billing.feature.ai": "Priority local AI",
+    "billing.feature.family": "Family sharing",
+    "billing.changePayment": "Change",
+    "billing.cancelRenewal": "Cancel renewal",
     "auth.tagline": "Your personal operating system for home",
     "auth.signInTitle": "Sign in to NEXUS",
     "auth.signUpTitle": "Create your NEXUS account",
@@ -573,6 +589,14 @@ export const CATALOGS: Record<"en" | "tr", Catalog> & Record<Exclude<Locale, "en
     "plan.premium": "Premium",
     "plan.family": "Aile",
     "billing.manage": "Aboneliği yönet",
+    "screen.billingManage": "Abonelik Yönetimi",
+    "screen.addDevice": "Cihaz Ekle",
+    "billing.feature.devices": "Sınırsız cihaz",
+    "billing.feature.connectors": "Premium bağlayıcılar",
+    "billing.feature.ai": "Öncelikli yerel yapay zeka",
+    "billing.feature.family": "Aile paylaşımı",
+    "billing.changePayment": "Değiştir",
+    "billing.cancelRenewal": "Yenilemeyi iptal et",
     "auth.tagline": "Evini tanıyan kişisel işletim sistemin",
     "auth.signInTitle": "NEXUS'a giriş yap",
     "auth.signUpTitle": "NEXUS hesabını oluştur",

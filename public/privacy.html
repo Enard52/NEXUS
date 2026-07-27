@@ -568,8 +568,10 @@ h2 { font-size: 18px; margin: 32px 0 16px; }
 .field-row .value { font-weight: 500; }
 
 .dot { width: 10px; height: 10px; border-radius: 50%; }
-.on { background: #2ecc71; }
-.off { background: var(--muted); }
+/* Scoped to .dot — a bare .off/.on rule would paint grey blocks over any
+ * other element (e.g. the mobile plan-compare feature rows) using the class. */
+.dot.on { background: #2ecc71; }
+.dot.off { background: var(--muted); }
 .dl-primary {
   display: inline-block; background: var(--primary); color: var(--on-primary);
   padding: 16px 32px; border-radius: var(--radius); font-weight: 600;

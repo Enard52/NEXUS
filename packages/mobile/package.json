@@ -14,9 +14,11 @@
     "build:demo": "tsx src/build.ts"
   },
   "dependencies": {
+    "@nexus/billing": "workspace:*",
     "@nexus/design-system": "workspace:*",
     "@nexus/i18n": "workspace:*",
     "@nexus/interface": "workspace:*",
+    "@nexus/plugins": "workspace:*",
     "@nexus/web": "workspace:*"
   }
 }
