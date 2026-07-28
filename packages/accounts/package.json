@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Accounts & authentication (FAZ 14).",
+  "description": "NEXUS AI — Accounts & authentication.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -15,5 +15,7 @@
   "dependencies": {
     "@nexus/database": "workspace:*",
     "@nexus/security": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

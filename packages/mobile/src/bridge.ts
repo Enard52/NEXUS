@@ -1,10 +1,10 @@
 /**
- * NEXUS AI — Mobile Native Bridge (FAZ 9)
+ * NEXUS AI — Mobile Native Bridge
  *
  * Defines the contract between the WebView-hosted UI and the native platform
- * layer (Capacitor plugins on iOS/Android). Two implementations:
+ * layer (Nexus native APIs on iOS/Android). Two implementations:
  *
- * - CapacitorBridge: real device communication via Capacitor plugin APIs.
+ * - NexusNativeBridge: real device communication via Nexus native APIs.
  * - MockBridge: deterministic in-memory stub for tests and SSR pre-render.
  */
 
@@ -114,16 +114,16 @@ export interface MobileBridge {
   openExternal(url: string): Promise<void>;
 }
 
-// ─── Capacitor Bridge (real implementation) ──────────────────────────────────
+// ─── Nexus Native Bridge (real implementation) ──────────────────────────────────
 
 /**
- * CapacitorBridge — communicates with actual Capacitor plugins.
+ * NexusNativeBridge — communicates with the actual Nexus native APIs.
  *
- * In a production build this would import from @capacitor/core, etc.
+ * In a production build this would use the Nexus native platform APIs.
  * We model the calls here as the *specification* of what the native layer
- * must provide; actual plugin wiring happens in the mobile-app shell.
+ * must provide; actual implementation happens in the mobile-app shell.
  */
-export class CapacitorBridge implements MobileBridge {
+export class NexusNativeBridge implements MobileBridge {
   readonly platform: MobilePlatform;
 
   private resumeCallbacks: Array<() => void> = [];
@@ -134,7 +134,7 @@ export class CapacitorBridge implements MobileBridge {
   }
 
   async getAppInfo(): Promise<AppInfo> {
-    // In production: import { App } from '@capacitor/app'; return App.getInfo();
+    // In production: Nexus native App.getInfo() plugin.
     return {
       id: "ai.nexus.app",
       name: "NEXUS",
@@ -145,35 +145,35 @@ export class CapacitorBridge implements MobileBridge {
   }
 
   async getBatteryInfo(): Promise<BatteryInfo> {
-    // In production: import { Device } from '@capacitor/device';
+    // In production: Nexus native Device plugin.
     return { level: 1, isCharging: false };
   }
 
   async getNetworkStatus(): Promise<NetworkStatus> {
-    // In production: import { Network } from '@capacitor/network';
+    // In production: Nexus native Network plugin.
     return { connected: true, type: "wifi" };
   }
 
   async getCurrentPosition(): Promise<GeoPosition> {
-    // In production: import { Geolocation } from '@capacitor/geolocation';
+    // In production: Nexus native Geolocation plugin.
     return { latitude: 0, longitude: 0, accuracy: 0, timestamp: Date.now() };
   }
 
   async hapticFeedback(_style: HapticStyle): Promise<void> {
-    // In production: import { Haptics } from '@capacitor/haptics';
+    // In production: Nexus native Haptics plugin.
   }
 
   async getClipboard(): Promise<ClipboardContent> {
-    // In production: import { Clipboard } from '@capacitor/clipboard';
+    // In production: Nexus native Clipboard plugin.
     return { text: "" };
   }
 
   async setClipboard(_text: string): Promise<void> {
-    // In production: Clipboard.write({ string: text });
+    // In production: Nexus native Clipboard.write({ string: text });
   }
 
   async share(payload: SharePayload): Promise<void> {
-    // In production: import { Share } from '@capacitor/share';
+    // In production: Nexus native Share plugin.
     void payload;
   }
 
@@ -201,7 +201,7 @@ export class CapacitorBridge implements MobileBridge {
   }
 
   async setStatusBarStyle(_style: "light" | "dark"): Promise<void> {
-    // In production: import { StatusBar } from '@capacitor/status-bar';
+    // In production: Nexus native StatusBar plugin.
   }
 
   async setStatusBarHidden(_hidden: boolean): Promise<void> {
@@ -217,7 +217,7 @@ export class CapacitorBridge implements MobileBridge {
   }
 
   async openExternal(url: string): Promise<void> {
-    // In production: import { Browser } from '@capacitor/browser';
+    // In production: Nexus native Browser plugin.
     void url;
   }
 

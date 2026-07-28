@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Per-user application data (FAZ 18)
+ * NEXUS AI — Per-user application data
  *
  * Every signed-in user owns a private, durable record: their devices, routines,
  * suggestions, household and personalization. It is stored in the same

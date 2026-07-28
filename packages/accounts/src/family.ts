@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Multi-User & Family System (FAZ 12)
+ * NEXUS AI — Multi-User & Family System
  *
  * A household owner (admin) invites members and assigns per-member roles
  * (admin / member / guest). Access to a device is checked at two levels: the
@@ -8,7 +8,7 @@
  * here we own membership, invitations and device authorization.
  *
  * Dependency-free and deterministic. Reuses the Role model from the account
- * system (FAZ 14) so a household member maps directly onto an account role.
+ * system so a household member maps directly onto an account role.
  */
 
 import { randomBytes } from "node:crypto";

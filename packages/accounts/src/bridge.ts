@@ -1,8 +1,8 @@
 /**
- * NEXUS AI — Account ↔ Household Bridge (FAZ 14)
+ * NEXUS AI — Account ↔ Household Bridge
  *
- * Bridges the Account System (FAZ 14) with the Multi-User / Household System
- * (FAZ 12). Provides the missing link the ROADMAP requires:
+ * Bridges the Account System with the Multi-User / Household System
+ * . Provides the missing link the ROADMAP requires:
  *   "Rol/yetki modelinin (Faz 12) hesap sistemine bağlanması."
  *
  * Responsibilities:

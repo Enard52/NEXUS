@@ -1,9 +1,9 @@
 /**
- * NEXUS AI — Security Engine v0 (FAZ 1)
+ * NEXUS AI — Security Engine
  *
- * The single decision point every risky action must pass through. FAZ 1 ships
- * the risk-level model and a threshold-based policy; FAZ 11 turns this into the
- * mandatory middleware with a policy file and immutable audit logging.
+ * The single decision point every risky action must pass through.
+ * Ships the risk-level model, threshold-based policy, mandatory middleware,
+ * and immutable audit logging.
  */
 
 // Runtime policy primitives live in a leaf module so the SecurityEngine here
@@ -79,7 +79,7 @@ export class SecurityEngine {
     return evaluation;
   }
 
-  /** Read-only view of every decision made so far (FAZ 11 makes this immutable/persistent). */
+  /** Read-only view of every decision made so far. */
   auditLog(): readonly SecurityEvaluation[] {
     return [...this.audit];
   }

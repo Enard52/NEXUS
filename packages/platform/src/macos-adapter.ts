@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — macOS Platform Adapter (FAZ 3)
+ * NEXUS AI — macOS Platform Adapter
  *
  * Primary platform adapter using osascript (AppleScript/JXA) and native
  * macOS CLI tools for application control, file operations, and system management.
@@ -134,7 +134,9 @@ export class MacosPlatformAdapter implements PlatformAdapter {
     try {
       const [volResult, dndResult, battResult] = await Promise.all([
         applescript("output volume of (get volume settings)"),
-        run("defaults -currentHost read com.apple.notificationcenterui doNotDisturb 2>/dev/null || echo 0"),
+        run(
+          "defaults -currentHost read com.apple.notificationcenterui doNotDisturb 2>/dev/null || echo 0",
+        ),
         run("pmset -g batt"),
       ]);
 
@@ -188,7 +190,7 @@ export class MacosPlatformAdapter implements PlatformAdapter {
 
   async lockScreen(): Promise<PlatformResult> {
     return run(
-      '/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend',
+      "/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend",
     );
   }
 
@@ -214,17 +216,15 @@ export class MacosPlatformAdapter implements PlatformAdapter {
     const result = await run("ps aux --sort=-%cpu | head -20");
     if (!result.success) return { success: false, error: result.error };
     const lines = (result.data ?? "").split("\n").slice(1); // skip header
-    const procs: ProcessInfo[] = lines
-      .filter(Boolean)
-      .map((line) => {
-        const parts = line.trim().split(/\s+/);
-        return {
-          pid: parseInt(parts[1] ?? "0", 10),
-          name: parts.slice(10).join(" ") || parts[10] || "unknown",
-          cpu: parseFloat(parts[2] ?? "0"),
-          memory: parseFloat(parts[3] ?? "0"),
-        };
-      });
+    const procs: ProcessInfo[] = lines.filter(Boolean).map((line) => {
+      const parts = line.trim().split(/\s+/);
+      return {
+        pid: parseInt(parts[1] ?? "0", 10),
+        name: parts.slice(10).join(" ") || parts[10] || "unknown",
+        cpu: parseFloat(parts[2] ?? "0"),
+        memory: parseFloat(parts[3] ?? "0"),
+      };
+    });
     return { success: true, data: procs };
   }
 

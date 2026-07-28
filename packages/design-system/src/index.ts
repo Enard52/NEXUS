@@ -1,17 +1,17 @@
 /**
- * NEXUS AI — Design System (FAZ 10)
+ * NEXUS AI — Design System
  *
  * The single source of truth for design tokens (color, spacing, typography,
  * radii) and theme resolution. Every surface — desktop, mobile and the web
  * Download Center — must consume these tokens rather than hard-coding values,
- * so the brand identity stays consistent everywhere (FAZ 10 intent).
+ * so the brand identity stays consistent everywhere .
  *
  * Includes a WCAG contrast helper so accessibility can be verified in tests
  * instead of eyeballed. Dependency-free and deterministic.
  *
  * NOTE: the rendered Download Center page, live theming in a real UI, and the
  * "≥2 languages in the interface" acceptance all require the web/mobile front
- * ends (FAZ 9). This package provides the token + a11y foundation they build on.
+ * ends . This package provides the token + a11y foundation they build on.
  */
 
 export interface ColorScale {
@@ -29,7 +29,12 @@ export interface DesignTokens {
   readonly color: ColorScale;
   /** Spacing scale in px, indexed 0..n (4pt grid). */
   readonly space: readonly number[];
-  readonly radius: { readonly sm: number; readonly md: number; readonly lg: number; readonly xl: number };
+  readonly radius: {
+    readonly sm: number;
+    readonly md: number;
+    readonly lg: number;
+    readonly xl: number;
+  };
   readonly font: {
     readonly family: string;
     /** Monospace font stack for code/terminal surfaces. */
@@ -61,8 +66,8 @@ export interface DesignTokens {
 const SPACE = [0, 4, 8, 12, 16, 24, 32, 48, 64, 96, 128] as const;
 
 const FONT = {
-  /** Primary display / UI font: Space Grotesk → Inter → system fallback. */
-  family: "'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif",
+  /** Primary display / UI font: Inter → system fallback (Space Grotesk removed for licensing). */
+  family: "'Inter', system-ui, -apple-system, sans-serif",
   /** Monospace font for code, checksums, and terminal output. */
   familyMono: "'JetBrains Mono', 'Courier New', monospace",
   size: { sm: 12, md: 14, lg: 18, xl: 24, xxl: 32 },
@@ -83,9 +88,10 @@ export const lightTheme: DesignTokens = {
     surface: "#ffffff",
     text: "#0f172a", // rich slate
     textMuted: "#64748b",
-    primary: "#4f46e5", // indigo primary for a premium feel, passes AA
-    onPrimary: "#ffffff",
-    accent: "#0ea5e9", // vibrant sky
+    primary: "#6f9bff", // premium blue, matches premium-body.ts
+    // Dark ink keeps the primary button above WCAG AA without muting the fill.
+    onPrimary: "#0f172a",
+    accent: "#5b8dff", // premium sky blue, matches premium-body.ts
   },
   space: SPACE,
   radius: RADIUS,
@@ -106,9 +112,9 @@ export const darkTheme: DesignTokens = {
     surface: "#111113",
     text: "#f8fafc",
     textMuted: "#94a3b8",
-    primary: "#818cf8", // slightly softer indigo for dark mode
+    primary: "#8b7bff", // premium blue for dark mode, matches premium-body.ts
     onPrimary: "#09090b",
-    accent: "#38bdf8",
+    accent: "#6f9bff", // premium sky blue for dark mode
   },
   space: SPACE,
   radius: RADIUS,
@@ -127,6 +133,22 @@ export type ThemeName = "light" | "dark";
 
 export function getTheme(name: ThemeName): DesignTokens {
   return name === "dark" ? darkTheme : lightTheme;
+}
+
+/**
+ * Detect the OS color-scheme preference via `prefers-color-scheme`. Returns the
+ * preferred theme when the media query is available (browsers, desktop shells, and any
+ * WebView that exposes `matchMedia`), otherwise `undefined` so callers can fall
+ * back to their own default. Used by the desktop shell and web app to follow the
+ * system theme out of the box while keeping an explicit user choice authoritative.
+ */
+export function detectSystemTheme(): ThemeName | undefined {
+  if (typeof (globalThis as any).matchMedia !== "function") return undefined;
+  const query = (globalThis as any).matchMedia("(prefers-color-scheme: dark)");
+  // Older browsers expose `matches` without the newer `media`-check helpers; the
+  // `matches` boolean is all we need. Guard `media` access for safety.
+  if (!query || typeof query.matches !== "boolean") return undefined;
+  return query.matches ? "dark" : "light";
 }
 
 // ── Accessibility: WCAG 2.1 relative luminance + contrast ratio ──────────────
@@ -172,3 +194,48 @@ export function meetsAaNormalText(fg: string, bg: string): boolean {
 
 export const moduleName = "design-system" as const;
 export const implemented = true;
+
+/**
+ * Apply a smooth theme switch on the document element using design-system
+ * transition tokens. Safe to call from web, desktop, and mobile shells.
+ */
+export function applyThemeTransition(
+  theme: "light" | "dark",
+  root?: {
+    style: { setProperty: (k: string, v: string) => void };
+    setAttribute: (k: string, v: string) => void;
+  },
+  transition: string = TRANSITIONS.normal,
+): void {
+  const el =
+    root ??
+    (typeof (globalThis as any).document !== "undefined"
+      ? ((globalThis as any).document.documentElement as unknown as {
+          style: { setProperty: (k: string, v: string) => void };
+          setAttribute: (k: string, v: string) => void;
+        })
+      : { style: { setProperty() {} }, setAttribute() {} });
+  el.style.setProperty("transition", `background-color ${transition}, color ${transition}`);
+  el.setAttribute("data-theme", theme);
+}
+
+/** RTL locales used by NEXUS. */
+export const RTL_LOCALES = new Set(["ar", "he"]);
+
+/** Set document direction from a BCP-47 language tag. */
+export function applyDocumentDirection(
+  lang: string,
+  root?: { setAttribute: (k: string, v: string) => void },
+): void {
+  const el =
+    root ??
+    (typeof (globalThis as any).document !== "undefined"
+      ? ((globalThis as any).document.documentElement as unknown as {
+          setAttribute: (k: string, v: string) => void;
+        })
+      : { setAttribute() {} });
+  const base = (lang || "en").split("-")[0].toLowerCase();
+  const dir = RTL_LOCALES.has(base) ? "rtl" : "ltr";
+  el.setAttribute("dir", dir);
+  el.setAttribute("lang", lang);
+}

@@ -3,7 +3,7 @@
  *
  * Inspired by the energy dashboards in Samsung SmartThings and Home Assistant:
  * turn raw device on-time into a per-device and whole-home energy picture the
- * "Today" screen (FAZ 10) can surface. Brand-agnostic — it works off Universal
+ * "Today" screen can surface. Brand-agnostic — it works off Universal
  * Capability devices, not any vendor's cloud.
  *
  * Deterministic and dependency-free: on-durations and power ratings are inputs,

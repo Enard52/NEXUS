@@ -3,15 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Mobile front end & native bridge: phone-frame app shell + Capacitor bridge layer for iOS/Android (FAZ 9/10).",
+  "description": "NEXUS AI — Mobile front end & native bridge for Nexus ecosystem.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts"
   },
   "scripts": {
-    "test": "vitest run",
-    "build:demo": "tsx src/build.ts"
+    "test": "vitest run"
   },
   "dependencies": {
     "@nexus/billing": "workspace:*",
@@ -20,5 +19,7 @@
     "@nexus/interface": "workspace:*",
     "@nexus/plugins": "workspace:*",
     "@nexus/web": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

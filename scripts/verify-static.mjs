@@ -4,7 +4,10 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 const pages = ["public/index.html", "public/light.html", "public/tr/index.html"];
 let ok = true;
 
-console.log("downloads dir:", existsSync("public/downloads") ? readdirSync("public/downloads") : "MISSING");
+console.log(
+  "downloads dir:",
+  existsSync("public/downloads") ? readdirSync("public/downloads") : "MISSING",
+);
 
 for (const p of pages) {
   const html = readFileSync(p, "utf8");

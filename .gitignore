@@ -4,8 +4,12 @@ node_modules/
 
 # Build output
 dist/
+dist-mobile/
 build/
 *.tsbuildinfo
+
+# Generated release manifest (rebuilt by `pnpm release:manifest`)
+sbom.json
 
 # Environment & secrets
 .env
@@ -25,6 +29,10 @@ vitest.config.ts.timestamp-*.mjs
 scripts/tmp-*
 .audit-*.png
 
+# Legacy recovery/scratch folders — must never come back
+.history/
+.recovery-ref/
+
 # Editor / OS
 .DS_Store
 Thumbs.db
@@ -35,6 +43,5 @@ Thumbs.db
 # Temporary headless-browser profiles used for screenshotting demos
 .shot*/
 
-# Generated demo/static assets
-public/desktop/
+# Generated static assets (build mirrors)
 packages/server/data/

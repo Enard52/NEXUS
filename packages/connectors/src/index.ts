@@ -1,14 +1,14 @@
 /**
- * NEXUS AI — Connector Store (FAZ 16)
+ * NEXUS AI — Connector Store
  *
  * A marketplace on top of the plugin runtime (@nexus/plugins): the user browses
  * a catalog of connectors, installs the ones they want, and the store wires the
- * resulting Connector into the Device Manager (FAZ 4) — with zero changes to
- * Core/Agent code. Some connectors are gated behind a paid plan (FAZ 15): the
+ * resulting Connector into the Device Manager — with zero changes to
+ * Core/Agent code. Some connectors are gated behind a paid plan : the
  * store refuses to install a premium connector on the Free plan.
  *
  * This is the continuous-expansion path (new brands/protocols keep arriving)
- * and the on-ramp for cross-device memory (FAZ 22). Deterministic; time-free.
+ * and the on-ramp for cross-device memory . Deterministic; time-free.
  */
 
 import type { PlanId } from "@nexus/billing";

@@ -1,8 +1,8 @@
 /**
- * NEXUS AI — Voice Profile / Speaker Identification (FAZ 2)
+ * NEXUS AI — Voice Profile / Speaker Identification
  *
  * Enrollment-based speaker identification for the multi-user family scenario
- * (connected to FAZ 12). Each family member enrolls their voice with a short
+ * (connected to ). Each family member enrolls their voice with a short
  * sample; subsequent utterances are compared against enrolled profiles to
  * determine "who is speaking."
  *
@@ -111,7 +111,7 @@ export class MockVoiceEmbedder implements VoiceEmbedder {
 /**
  * Simple energy-based voice feature extractor. Computes spectral energy
  * distribution across frequency bands from raw PCM-like data. This is a
- * lightweight placeholder; for production, replace with a neural model.
+ * lightweight energy-based embedder for offline/dev; swap for a neural model when deploying speaker ID.
  */
 export class EnergyVoiceEmbedder implements VoiceEmbedder {
   readonly name = "energy-embedder";

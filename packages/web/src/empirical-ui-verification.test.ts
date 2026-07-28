@@ -12,12 +12,7 @@ import {
   renderMobileDocument,
   renderMobileStyles,
 } from "../../mobile/src/index.js";
-import {
-  renderBilling,
-  renderTodayPanel,
-  renderStyles,
-  setLocale,
-} from "./index.js";
+import { renderBilling, renderTodayPanel, renderStyles, setLocale } from "./index.js";
 
 describe("Empirical Challenger — UI Components & Cross-Platform Layout Verification", () => {
   describe("1. GNOME Linux Window Controls", () => {
@@ -176,7 +171,7 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
   describe("4. Enriched Billing View Comparison Tables", () => {
     it("renders plan comparison matrix cards and payment history invoice table (English)", () => {
       setLocale("en");
-      const model = buildBillingModel({ plan: "family", invoiceCount: 3 });
+      const model = buildBillingModel("family" as any);
       const html = renderBilling(model);
 
       // Plan Comparison Matrix
@@ -192,7 +187,9 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
 
       // Payment History & Invoices Table
       expect(html).toContain("Payment History & Invoices");
-      expect(html).toContain('<table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;" class="payment-table">');
+      expect(html).toContain(
+        '<table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;" class="payment-table">',
+      );
       expect(html).toContain(">Date</th>");
       expect(html).toContain(">Description</th>");
       expect(html).toContain(">Amount</th>");
@@ -200,12 +197,12 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
       expect(html).toContain("INV-2026-007");
       expect(html).toContain("INV-2026-006");
       expect(html).toContain("INV-2026-005");
-      expect(html).toContain('Paid (INV-2026-007)');
+      expect(html).toContain("Paid (INV-2026-007)");
     });
 
     it("renders plan comparison matrix cards and payment history invoice table (Turkish)", () => {
       setLocale("tr");
-      const model = buildBillingModel({ plan: "family", invoiceCount: 3 });
+      const model = buildBillingModel("family" as any);
       const html = renderBilling(model);
 
       expect(html).toContain("Plan Karşılaştırma Matrisi");

@@ -1,8 +1,8 @@
 # NEXUS Mobile App
 
-Native Android & iOS application wrapping the NEXUS mobile web UI via [Capacitor](https://capacitorjs.com/).
+Native Android & iOS application shipping the shared NEXUS React SPA (`packages/client`) via [Capacitor](https://capacitorjs.com/).
 
-The app loads the same premium HTML/CSS/JS mobile interface that powers `public/mobile/` inside a native WebView shell — single source of truth for the design, zero duplicated UI code.
+The app bundles the exact same React application that the desktop shell and the web `/app` route run — single source of truth for the UI, zero duplicated code. The bundle talks to the user's NEXUS core over HTTP with bearer-token auth.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ The app loads the same premium HTML/CSS/JS mobile interface that powers `public/
 # Install dependencies
 npm install
 
-# Build the web bundle (copies public/mobile/ → www/ with path rewrites)
+# Build the web bundle (builds packages/client in mobile mode → www/)
 npm run build:web
 
 # Sync to both native platforms
@@ -56,6 +56,7 @@ npm run ios
 ```
 
 Then in Xcode:
+
 1. Select a simulator or connected device
 2. Build & Run (⌘R)
 
@@ -68,11 +69,10 @@ mobile-app/
 ├─ capacitor.config.json      # Capacitor config (appId, webDir, etc.)
 ├─ package.json               # Dependencies & scripts
 ├─ scripts/
-│  └─ build-web.mjs           # Bundle builder: copies HTML + fonts, rewrites paths
+│  └─ build-web.mjs           # Bundle builder: builds the React SPA (mobile mode) into www/
 ├─ www/                       # Generated web bundle (gitignored, rebuilt by build:web)
-│  ├─ index.html              # Main page (dark theme)
-│  ├─ light.html              # Light theme variant
-│  ├─ tr/                     # Turkish locale variants
+│  ├─ index.html              # SPA entry
+│  ├─ assets/                 # Hashed JS/CSS chunks
 │  └─ fonts/                  # woff2 font files
 ├─ android/                   # Android native project (Capacitor-generated)
 └─ ios/                       # iOS native project (Capacitor-generated)
@@ -80,14 +80,13 @@ mobile-app/
 
 ## Bundle Builder (`scripts/build-web.mjs`)
 
-The mobile web UI references fonts with root-relative paths (`/fonts/...`). In the Capacitor WebView, root-relative URLs resolve against the app origin and break. The builder rewrites every `/fonts/...` to `fonts/...` so the bundle is fully self-contained and offline.
+Runs `pnpm --filter @nexus/client build:mobile` (Vite build with relative base and bearer-token transport) and copies `packages/client/dist-mobile/` into `www/` so `cap sync` ships the exact same code as every other platform.
 
 ## Updating the App
 
-1. Modify the mobile UI in `packages/mobile/src/index.ts`
-2. Rebuild: `pnpm build:static` (from repo root)
-3. Rebuild native bundle: `cd mobile-app && npm run build:web && npx cap sync`
-4. Rebuild & deploy the native app
+1. Modify the shared UI in `packages/client/src/`
+2. Rebuild native bundle: `cd mobile-app && npm run build:web && npx cap sync`
+3. Rebuild & deploy the native app
 
 ## License
 

@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  BetaManager,
-  LaunchChecklist,
-  StoreSubmissionTracker,
-} from "./launch.js";
+import { BetaManager, LaunchChecklist, StoreSubmissionTracker } from "./launch.js";
 import { InMemorySyncBackend, SyncEngine } from "@nexus/infra";
 
 const clock = () => new Date("2026-07-01T12:00:00.000Z");
@@ -15,15 +11,33 @@ const clock = () => new Date("2026-07-01T12:00:00.000Z");
 describe("BetaManager (FAZ 21)", () => {
   it("registers testers in cohorts", () => {
     const beta = new BetaManager({ now: clock });
-    beta.addTester({ userId: "u1", email: "a@t.com", cohort: "early", deviceBrands: ["ikea", "xiaomi"], locale: "tr" });
-    beta.addTester({ userId: "u2", email: "b@t.com", cohort: "early", deviceBrands: ["sonoff"], locale: "en" });
+    beta.addTester({
+      userId: "u1",
+      email: "a@t.com",
+      cohort: "early",
+      deviceBrands: ["ikea", "xiaomi"],
+      locale: "tr",
+    });
+    beta.addTester({
+      userId: "u2",
+      email: "b@t.com",
+      cohort: "early",
+      deviceBrands: ["sonoff"],
+      locale: "en",
+    });
     expect(beta.testerCount).toBe(2);
     expect(beta.getCohort("early")).toHaveLength(2);
   });
 
   it("collects feedback from testers", () => {
     const beta = new BetaManager({ now: clock });
-    beta.addTester({ userId: "u1", email: "a@t.com", cohort: "c1", deviceBrands: [], locale: "tr" });
+    beta.addTester({
+      userId: "u1",
+      email: "a@t.com",
+      cohort: "c1",
+      deviceBrands: [],
+      locale: "tr",
+    });
     const fb = beta.submitFeedback("u1", "bug", "Light doesn't turn off", "high");
     expect(fb.category).toBe("bug");
     expect(fb.severity).toBe("high");
@@ -32,7 +46,13 @@ describe("BetaManager (FAZ 21)", () => {
 
   it("resolves feedback", () => {
     const beta = new BetaManager({ now: clock });
-    beta.addTester({ userId: "u1", email: "a@t.com", cohort: "c1", deviceBrands: [], locale: "en" });
+    beta.addTester({
+      userId: "u1",
+      email: "a@t.com",
+      cohort: "c1",
+      deviceBrands: [],
+      locale: "en",
+    });
     const fb = beta.submitFeedback("u1", "usability", "Confusing settings", "medium");
     beta.resolveFeedback("u1", fb.id);
     expect(beta.getBlockingFeedback()).toHaveLength(0);
@@ -40,7 +60,13 @@ describe("BetaManager (FAZ 21)", () => {
 
   it("identifies blocking feedback (critical/high unresolved)", () => {
     const beta = new BetaManager({ now: clock });
-    beta.addTester({ userId: "u1", email: "a@t.com", cohort: "c1", deviceBrands: [], locale: "tr" });
+    beta.addTester({
+      userId: "u1",
+      email: "a@t.com",
+      cohort: "c1",
+      deviceBrands: [],
+      locale: "tr",
+    });
     beta.submitFeedback("u1", "bug", "App crashes on start", "critical");
     beta.submitFeedback("u1", "feature", "Dark mode", "low");
     const blockers = beta.getBlockingFeedback();
@@ -50,8 +76,20 @@ describe("BetaManager (FAZ 21)", () => {
 
   it("manages feature flags per cohort", () => {
     const beta = new BetaManager({ now: clock });
-    beta.addTester({ userId: "u1", email: "a@t.com", cohort: "alpha", deviceBrands: [], locale: "en" });
-    beta.addTester({ userId: "u2", email: "b@t.com", cohort: "beta", deviceBrands: [], locale: "tr" });
+    beta.addTester({
+      userId: "u1",
+      email: "a@t.com",
+      cohort: "alpha",
+      deviceBrands: [],
+      locale: "en",
+    });
+    beta.addTester({
+      userId: "u2",
+      email: "b@t.com",
+      cohort: "beta",
+      deviceBrands: [],
+      locale: "tr",
+    });
     beta.setFlag("new-ui", true, ["alpha"]);
     expect(beta.isEnabled("new-ui", "u1")).toBe(true);
     expect(beta.isEnabled("new-ui", "u2")).toBe(false);
@@ -59,7 +97,13 @@ describe("BetaManager (FAZ 21)", () => {
 
   it("feature flag with empty cohorts is available to all", () => {
     const beta = new BetaManager({ now: clock });
-    beta.addTester({ userId: "u1", email: "a@t.com", cohort: "any", deviceBrands: [], locale: "en" });
+    beta.addTester({
+      userId: "u1",
+      email: "a@t.com",
+      cohort: "any",
+      deviceBrands: [],
+      locale: "en",
+    });
     beta.setFlag("global-flag", true);
     expect(beta.isEnabled("global-flag", "u1")).toBe(true);
   });

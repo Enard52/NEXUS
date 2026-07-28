@@ -132,7 +132,11 @@ describe("WakeWordDetector", () => {
   });
 
   it("respects minimum length constraint", () => {
-    const result = detectWakeWord("a b c", "a", { threshold: 0.5, minLength: 3, usePhonetic: true });
+    const result = detectWakeWord("a b c", "a", {
+      threshold: 0.5,
+      minLength: 3,
+      usePhonetic: true,
+    });
     expect(result.detected).toBe(false);
   });
 });

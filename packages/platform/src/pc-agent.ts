@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — PC Agent (FAZ 3)
+ * NEXUS AI — PC Agent
  *
  * The PC Agent is the orchestration layer that translates user intents
  * (natural-language or structured) into platform-specific operations.

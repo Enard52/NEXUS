@@ -1,7 +1,7 @@
 /**
- * NEXUS AI — Security Middleware (FAZ 11)
+ * NEXUS AI — Security Middleware
  *
- * Turns the FAZ 1 risk model into the mandatory gate every action passes
+ * Turns the  risk model into the mandatory gate every action passes
  * through. Nothing risky executes without going through `guard`:
  *   - allow  → run immediately
  *   - confirm → held as a pending approval; runs only after explicit approve()

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — VoiceEngine orchestrator (FAZ 2)
+ * NEXUS AI — VoiceEngine orchestrator
  *
  * The central voice interaction engine that composes wake word detection, STT,
  * TTS, and speaker identification into a unified pipeline:
@@ -124,10 +124,7 @@ export class VoiceEngine {
       : new MockTtsProvider();
 
     // Initialize wake word detector
-    this.wakeDetector = new WakeWordDetector(
-      config.wakePhrase ?? "NEXUS",
-      config.wakeConfig,
-    );
+    this.wakeDetector = new WakeWordDetector(config.wakePhrase ?? "NEXUS", config.wakeConfig);
 
     // Initialize speaker identification
     const embedder = config.embedder ?? new MockVoiceEmbedder();

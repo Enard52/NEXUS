@@ -1,8 +1,8 @@
 /**
- * NEXUS AI — AI Adapter (FAZ 1)
+ * NEXUS AI — AI Adapter
  *
  * A provider-agnostic interface so the rest of NEXUS never depends on a specific
- * vendor. FAZ 1 develops against a single provider (OpenAI was chosen), but all
+ * vendor. Development starts against a single provider (OpenAI), but all
  * calls go through `AiProvider`, so adding Anthropic/local models later is a new
  * implementation, not a rewrite.
  *
@@ -18,7 +18,7 @@ export interface AiMessage {
 
 export interface CompletionRequest {
   readonly messages: readonly AiMessage[];
-  /** 0..1 sampling temperature (advisory; mock ignores it). */
+  /** 0..1 sampling temperature (advisory; the offline mock ignores it). */
   readonly temperature?: number;
 }
 
@@ -55,7 +55,7 @@ export interface OpenAiProviderOptions {
 }
 
 /**
- * OpenAI-backed provider. FAZ 1 keeps the network call unimplemented on purpose:
+ * OpenAI-backed provider. keeps the network call unimplemented on purpose:
  * per roadmap rule #8 we do not simulate a real provider. Once wired, replace the
  * throw with an SDK/fetch call. Construction still requires a non-empty key.
  */

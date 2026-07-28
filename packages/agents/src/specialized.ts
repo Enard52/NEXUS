@@ -1,8 +1,8 @@
 /**
- * NEXUS AI — Specialized Agents (FAZ 7)
+ * NEXUS AI — Specialized Agents
  *
  * Four domain-specific agents that provide real functionality:
- *  - HomeAgent: Smart home control (wraps FAZ 1-4 home logic)
+ * - HomeAgent: Smart home control (wraps 4 home logic)
  *  - LifeAgent: Daily routines, wellness, reminders
  *  - KnowledgeAgent: Information queries, facts, calculations
  *  - SecurityAgent: Home security monitoring, access control
@@ -39,13 +39,28 @@ export class MultiHomeAgent implements NexusAgent {
     {
       domain: "home",
       intents: ["home.*", "device.*", "scene.*", "routine.*"],
-      keywords: ["light", "lamp", "switch", "temperature", "thermostat", "blinds",
-        "ışık", "lamba", "sıcaklık", "perde", "aç", "kapat", "room", "oda"],
+      keywords: [
+        "light",
+        "lamp",
+        "switch",
+        "temperature",
+        "thermostat",
+        "blinds",
+        "ışık",
+        "lamba",
+        "sıcaklık",
+        "perde",
+        "aç",
+        "kapat",
+        "room",
+        "oda",
+      ],
     },
   ];
 
   score(intent: string, slots: Record<string, unknown>): number {
-    if (intent.startsWith("home.") || intent.startsWith("device.") || intent.startsWith("scene.")) return 0.95;
+    if (intent.startsWith("home.") || intent.startsWith("device.") || intent.startsWith("scene."))
+      return 0.95;
     if (intent.startsWith("routine.")) return 0.7;
     // Keyword scan for unstructured intents
     const text = String(slots.text ?? "").toLowerCase();
@@ -53,7 +68,11 @@ export class MultiHomeAgent implements NexusAgent {
     return 0;
   }
 
-  async handle(intent: string, slots: Record<string, unknown>, _ctx: MultiAgentContext): Promise<AgentResult> {
+  async handle(
+    intent: string,
+    slots: Record<string, unknown>,
+    _ctx: MultiAgentContext,
+  ): Promise<AgentResult> {
     const room = String(slots.room ?? "living");
     const device = String(slots.device ?? "light");
     const state = String(slots.state ?? "on");
@@ -61,12 +80,14 @@ export class MultiHomeAgent implements NexusAgent {
     if (intent === "home.control" || intent.startsWith("device.")) {
       return {
         text: `${device} in ${room} set to ${state}.`,
-        actions: [{
-          kind: "device.set",
-          params: { room, device, state },
-          risk: "medium",
-          description: `Set ${device} in ${room} to ${state}`,
-        }],
+        actions: [
+          {
+            kind: "device.set",
+            params: { room, device, state },
+            risk: "medium",
+            description: `Set ${device} in ${room} to ${state}`,
+          },
+        ],
         confidence: 0.9,
       };
     }
@@ -75,12 +96,14 @@ export class MultiHomeAgent implements NexusAgent {
       const sceneName = intent.replace("scene.", "");
       return {
         text: `Activating scene: ${sceneName}.`,
-        actions: [{
-          kind: "scene.activate",
-          params: { scene: sceneName },
-          risk: "low",
-          description: `Activate scene ${sceneName}`,
-        }],
+        actions: [
+          {
+            kind: "scene.activate",
+            params: { scene: sceneName },
+            risk: "low",
+            description: `Activate scene ${sceneName}`,
+          },
+        ],
         confidence: 0.85,
       };
     }
@@ -112,27 +135,61 @@ export class LifeAgent implements NexusAgent {
     {
       domain: "life",
       intents: ["life.*", "wellness.*", "reminder.*", "schedule.*"],
-      keywords: ["reminder", "schedule", "morning", "evening", "routine", "sleep",
-        "water", "exercise", "break", "hatırlatıcı", "sabah", "akşam", "uyku", "su", "egzersiz"],
+      keywords: [
+        "reminder",
+        "schedule",
+        "morning",
+        "evening",
+        "routine",
+        "sleep",
+        "water",
+        "exercise",
+        "break",
+        "hatırlatıcı",
+        "sabah",
+        "akşam",
+        "uyku",
+        "su",
+        "egzersiz",
+      ],
     },
   ];
 
   score(intent: string, slots: Record<string, unknown>): number {
-    if (intent.startsWith("life.") || intent.startsWith("wellness.") || intent.startsWith("reminder.")) return 0.9;
+    if (
+      intent.startsWith("life.") ||
+      intent.startsWith("wellness.") ||
+      intent.startsWith("reminder.")
+    )
+      return 0.9;
     if (intent.startsWith("schedule.")) return 0.7;
     const text = String(slots.text ?? "").toLowerCase();
-    if (/\b(remind|schedule|morning|routine|sleep|water|exercise|break|sabah|akşam|uyku|su)\b/.test(text)) return 0.6;
+    if (
+      /\b(remind|schedule|morning|routine|sleep|water|exercise|break|sabah|akşam|uyku|su)\b/.test(
+        text,
+      )
+    )
+      return 0.6;
     return 0;
   }
 
-  async handle(intent: string, slots: Record<string, unknown>, ctx: MultiAgentContext): Promise<AgentResult> {
+  async handle(
+    intent: string,
+    slots: Record<string, unknown>,
+    ctx: MultiAgentContext,
+  ): Promise<AgentResult> {
     if (intent === "life.morning_briefing" || /morning|sabah/.test(String(slots.text ?? ""))) {
       return {
         text: this.generateMorningBriefing(ctx),
         actions: [],
         confidence: 0.85,
         delegations: [
-          { targetAgent: "home", intent: "scene.morning", payload: {}, reason: "Activate morning scene" },
+          {
+            targetAgent: "home",
+            intent: "scene.morning",
+            payload: {},
+            reason: "Activate morning scene",
+          },
         ],
       };
     }
@@ -140,12 +197,14 @@ export class LifeAgent implements NexusAgent {
     if (intent === "life.hydration" || /water|su/.test(String(slots.text ?? ""))) {
       return {
         text: "💧 Hydration reminder set! I'll remind you to drink water every 2 hours.",
-        actions: [{
-          kind: "reminder.set",
-          params: { type: "hydration", intervalMinutes: 120 },
-          risk: "low",
-          description: "Set hydration reminder every 2 hours",
-        }],
+        actions: [
+          {
+            kind: "reminder.set",
+            params: { type: "hydration", intervalMinutes: 120 },
+            risk: "low",
+            description: "Set hydration reminder every 2 hours",
+          },
+        ],
         confidence: 0.9,
       };
     }
@@ -153,12 +212,14 @@ export class LifeAgent implements NexusAgent {
     if (intent === "life.break" || /break|mola/.test(String(slots.text ?? ""))) {
       return {
         text: "⏰ Break reminder activated. I'll suggest a 5-minute break every 50 minutes.",
-        actions: [{
-          kind: "reminder.set",
-          params: { type: "break", intervalMinutes: 50, durationMinutes: 5 },
-          risk: "low",
-          description: "Set break reminder every 50 minutes",
-        }],
+        actions: [
+          {
+            kind: "reminder.set",
+            params: { type: "break", intervalMinutes: 50, durationMinutes: 5 },
+            risk: "low",
+            description: "Set break reminder every 50 minutes",
+          },
+        ],
         confidence: 0.85,
       };
     }
@@ -166,15 +227,22 @@ export class LifeAgent implements NexusAgent {
     if (intent === "life.sleep" || /sleep|uyku/.test(String(slots.text ?? ""))) {
       return {
         text: "🌙 Sleep mode preparation: I'll dim the lights, enable DnD, and remind you 30 minutes before your target bedtime.",
-        actions: [{
-          kind: "life.sleep_prep",
-          params: { reminderBeforeMinutes: 30 },
-          risk: "low",
-          description: "Prepare for sleep mode",
-        }],
+        actions: [
+          {
+            kind: "life.sleep_prep",
+            params: { reminderBeforeMinutes: 30 },
+            risk: "low",
+            description: "Prepare for sleep mode",
+          },
+        ],
         confidence: 0.9,
         delegations: [
-          { targetAgent: "home", intent: "scene.night", payload: {}, reason: "Dim lights for sleep" },
+          {
+            targetAgent: "home",
+            intent: "scene.night",
+            payload: {},
+            reason: "Dim lights for sleep",
+          },
         ],
       };
     }
@@ -210,13 +278,33 @@ export class KnowledgeAgent implements NexusAgent {
     {
       domain: "knowledge",
       intents: ["knowledge.*", "calculate.*", "define.*", "explain.*"],
-      keywords: ["what", "how", "why", "when", "calculate", "define", "explain",
-        "ne", "nasıl", "neden", "ne zaman", "hesapla", "tanımla", "açıkla", "kaç"],
+      keywords: [
+        "what",
+        "how",
+        "why",
+        "when",
+        "calculate",
+        "define",
+        "explain",
+        "ne",
+        "nasıl",
+        "neden",
+        "ne zaman",
+        "hesapla",
+        "tanımla",
+        "açıkla",
+        "kaç",
+      ],
     },
   ];
 
   score(intent: string, slots: Record<string, unknown>): number {
-    if (intent.startsWith("knowledge.") || intent.startsWith("calculate.") || intent.startsWith("explain.")) return 0.9;
+    if (
+      intent.startsWith("knowledge.") ||
+      intent.startsWith("calculate.") ||
+      intent.startsWith("explain.")
+    )
+      return 0.9;
     const text = String(slots.text ?? "").toLowerCase();
     // Math expression detection (highest priority for unstructured)
     if (/[\d]+\s*[+\-*/^]\s*[\d]+/.test(text)) return 0.8;
@@ -224,7 +312,11 @@ export class KnowledgeAgent implements NexusAgent {
     return 0;
   }
 
-  async handle(intent: string, slots: Record<string, unknown>, _ctx: MultiAgentContext): Promise<AgentResult> {
+  async handle(
+    intent: string,
+    slots: Record<string, unknown>,
+    _ctx: MultiAgentContext,
+  ): Promise<AgentResult> {
     const text = String(slots.text ?? slots.query ?? "");
     const mathMatch = text.match(/([\d.]+)\s*([+\-*/^])\s*([\d.]+)/);
     if (mathMatch || intent === "calculate.math") {
@@ -272,12 +364,18 @@ export class KnowledgeAgent implements NexusAgent {
     const op = match[2]!;
     const b = parseFloat(match[3]!);
     switch (op) {
-      case "+": return a + b;
-      case "-": return a - b;
-      case "*": return a * b;
-      case "/": return b !== 0 ? a / b : undefined;
-      case "^": return Math.pow(a, b);
-      default: return undefined;
+      case "+":
+        return a + b;
+      case "-":
+        return a - b;
+      case "*":
+        return a * b;
+      case "/":
+        return b !== 0 ? a / b : undefined;
+      case "^":
+        return Math.pow(a, b);
+      default:
+        return undefined;
     }
   }
 
@@ -285,12 +383,12 @@ export class KnowledgeAgent implements NexusAgent {
     const celToFah = text.match(/([\d.]+)\s*(?:°?C|celsius)\s*(?:to|in)\s*(?:°?F|fahrenheit)/i);
     if (celToFah) {
       const c = parseFloat(celToFah[1]!);
-      return `${c}°C = ${(c * 9/5 + 32).toFixed(1)}°F`;
+      return `${c}°C = ${((c * 9) / 5 + 32).toFixed(1)}°F`;
     }
     const fahToCel = text.match(/([\d.]+)\s*(?:°?F|fahrenheit)\s*(?:to|in)\s*(?:°?C|celsius)/i);
     if (fahToCel) {
       const f = parseFloat(fahToCel[1]!);
-      return `${f}°F = ${((f - 32) * 5/9).toFixed(1)}°C`;
+      return `${f}°F = ${(((f - 32) * 5) / 9).toFixed(1)}°C`;
     }
     const kmToMile = text.match(/([\d.]+)\s*km\s*(?:to|in)\s*mile/i);
     if (kmToMile) {
@@ -320,8 +418,21 @@ export class SecurityAgent implements NexusAgent {
     {
       domain: "security",
       intents: ["security.*", "alarm.*", "access.*", "lock.*"],
-      keywords: ["security", "alarm", "lock", "unlock", "camera", "door", "motion",
-        "güvenlik", "alarm", "kilit", "kapı", "kamera", "hareket"],
+      keywords: [
+        "security",
+        "alarm",
+        "lock",
+        "unlock",
+        "camera",
+        "door",
+        "motion",
+        "güvenlik",
+        "alarm",
+        "kilit",
+        "kapı",
+        "kamera",
+        "hareket",
+      ],
     },
   ];
 
@@ -329,24 +440,32 @@ export class SecurityAgent implements NexusAgent {
   private readonly accessLog: Array<{ action: string; at: string }> = [];
 
   score(intent: string, slots: Record<string, unknown>): number {
-    if (intent.startsWith("security.") || intent.startsWith("alarm.") || intent.startsWith("lock.")) return 0.95;
+    if (intent.startsWith("security.") || intent.startsWith("alarm.") || intent.startsWith("lock."))
+      return 0.95;
     const text = String(slots.text ?? "").toLowerCase();
-    if (/\b(security|alarm|lock|unlock|camera|door|güvenlik|kilit|kapı|kamera)\b/.test(text)) return 0.7;
+    if (/\b(security|alarm|lock|unlock|camera|door|güvenlik|kilit|kapı|kamera)\b/.test(text))
+      return 0.7;
     return 0;
   }
 
-  async handle(intent: string, slots: Record<string, unknown>, _ctx: MultiAgentContext): Promise<AgentResult> {
+  async handle(
+    intent: string,
+    slots: Record<string, unknown>,
+    _ctx: MultiAgentContext,
+  ): Promise<AgentResult> {
     if (intent === "security.arm" || /arm|kur/.test(String(slots.text ?? ""))) {
       this.armed = true;
       this.log("armed");
       return {
         text: "🔒 Security system armed. All sensors active. I'll alert you to any unusual activity.",
-        actions: [{
-          kind: "security.arm",
-          params: { mode: "full" },
-          risk: "medium",
-          description: "Arm security system",
-        }],
+        actions: [
+          {
+            kind: "security.arm",
+            params: { mode: "full" },
+            risk: "medium",
+            description: "Arm security system",
+          },
+        ],
         confidence: 0.95,
       };
     }
@@ -356,12 +475,14 @@ export class SecurityAgent implements NexusAgent {
       this.log("disarmed");
       return {
         text: "🔓 Security system disarmed.",
-        actions: [{
-          kind: "security.disarm",
-          params: {},
-          risk: "high",
-          description: "Disarm security system",
-        }],
+        actions: [
+          {
+            kind: "security.disarm",
+            params: {},
+            risk: "high",
+            description: "Disarm security system",
+          },
+        ],
         confidence: 0.95,
       };
     }
@@ -380,12 +501,14 @@ export class SecurityAgent implements NexusAgent {
       this.log(`locked:${target}`);
       return {
         text: `🔐 ${target} locked.`,
-        actions: [{
-          kind: "lock.set",
-          params: { target, locked: true },
-          risk: "medium",
-          description: `Lock ${target}`,
-        }],
+        actions: [
+          {
+            kind: "lock.set",
+            params: { target, locked: true },
+            risk: "medium",
+            description: `Lock ${target}`,
+          },
+        ],
         confidence: 0.9,
       };
     }
@@ -433,8 +556,20 @@ export class FinanceAgent implements NexusAgent {
     {
       domain: "finance",
       intents: ["finance.*", "budget.*", "expense.*"],
-      keywords: ["budget", "expense", "spend", "money", "cost", "save",
-        "bütçe", "harcama", "para", "maliyet", "tasarruf", "fiyat"],
+      keywords: [
+        "budget",
+        "expense",
+        "spend",
+        "money",
+        "cost",
+        "save",
+        "bütçe",
+        "harcama",
+        "para",
+        "maliyet",
+        "tasarruf",
+        "fiyat",
+      ],
     },
   ];
 
@@ -442,15 +577,25 @@ export class FinanceAgent implements NexusAgent {
   private budget = 0;
 
   score(intent: string, slots: Record<string, unknown>): number {
-    if (intent.startsWith("finance.") || intent.startsWith("budget.") || intent.startsWith("expense.")) return 0.9;
+    if (
+      intent.startsWith("finance.") ||
+      intent.startsWith("budget.") ||
+      intent.startsWith("expense.")
+    )
+      return 0.9;
     const text = String(slots.text ?? "").toLowerCase();
-    if (/\b(budget|expense|spend|money|cost|save|bütçe|harcama|para|fiyat)\b/.test(text)) return 0.65;
+    if (/\b(budget|expense|spend|money|cost|save|bütçe|harcama|para|fiyat)\b/.test(text))
+      return 0.65;
     // Amount pattern (e.g. "$50", "50 TL")
     if (/\$?\d+(?:\.\d{2})?\s*(?:TL|USD|EUR|\$|₺)?/.test(text)) return 0.4;
     return 0;
   }
 
-  async handle(intent: string, slots: Record<string, unknown>, _ctx: MultiAgentContext): Promise<AgentResult> {
+  async handle(
+    intent: string,
+    slots: Record<string, unknown>,
+    _ctx: MultiAgentContext,
+  ): Promise<AgentResult> {
     if (intent === "finance.add_expense" || intent === "expense.add") {
       const amount = Number(slots.amount ?? 0);
       const category = String(slots.category ?? "general");
@@ -461,12 +606,14 @@ export class FinanceAgent implements NexusAgent {
         const total = this.getTotalSpending();
         return {
           text: `💰 Expense recorded: ${amount} for "${desc}" (${category}). Total spending: ${total}.`,
-          actions: [{
-            kind: "finance.record",
-            params: { amount, category, description: desc },
-            risk: "low",
-            description: `Record expense: ${amount}`,
-          }],
+          actions: [
+            {
+              kind: "finance.record",
+              params: { amount, category, description: desc },
+              risk: "low",
+              description: `Record expense: ${amount}`,
+            },
+          ],
           confidence: 0.9,
         };
       }
@@ -478,18 +625,24 @@ export class FinanceAgent implements NexusAgent {
         this.budget = amount;
         return {
           text: `📊 Monthly budget set to ${amount}. I'll track your spending against this.`,
-          actions: [{
-            kind: "finance.set_budget",
-            params: { amount },
-            risk: "low",
-            description: `Set budget to ${amount}`,
-          }],
+          actions: [
+            {
+              kind: "finance.set_budget",
+              params: { amount },
+              risk: "low",
+              description: `Set budget to ${amount}`,
+            },
+          ],
           confidence: 0.9,
         };
       }
     }
 
-    if (intent === "finance.summary" || intent === "budget.status" || /summary|özet|durum/.test(String(slots.text ?? ""))) {
+    if (
+      intent === "finance.summary" ||
+      intent === "budget.status" ||
+      /summary|özet|durum/.test(String(slots.text ?? ""))
+    ) {
       const total = this.getTotalSpending();
       const remaining = this.budget > 0 ? this.budget - total : undefined;
       const categories = this.getCategoryBreakdown();

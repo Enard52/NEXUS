@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Mobile Service Orchestrator (FAZ 9)
+ * NEXUS AI — Mobile Service Orchestrator
  *
  * The top-level coordinator that wires all mobile-native subsystems together:
  * - MobileBridge (native platform access)
@@ -9,7 +9,7 @@
  * - RemoteConnection (server connectivity)
  * - DeepLinkRouter (URL handling)
  *
- * MobileService is the single entry point the Capacitor shell instantiates
+ * MobileService is the single entry point the Nexus native shell instantiates
  * at app launch. It manages the full mobile lifecycle: init → ready → active
  * → background → terminated.
  */
@@ -18,11 +18,7 @@ import type { MobileBridge, MobilePlatform } from "./bridge.js";
 import { PushManager, type NotificationPayload } from "./notifications.js";
 import { PermissionsManager, type PermissionName } from "./permissions.js";
 import { MobileVoiceBridge, type VoiceBridgeConfig } from "./voice-bridge.js";
-import {
-  RemoteConnection,
-  type ConnectionOptions,
-  type ServerEndpoint,
-} from "./remote-access.js";
+import { RemoteConnection, type ConnectionOptions, type ServerEndpoint } from "./remote-access.js";
 import { DeepLinkRouter, type DeepLinkResult } from "./deep-links.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -156,7 +152,10 @@ export class MobileService {
    * Process an intent from any source (voice, deep link, notification).
    * This is the central dispatch point that would forward to NexusCore.
    */
-  async processIntent(text: string, source: Extract<ServiceEvent, { type: "intent" }>["source"]): Promise<void> {
+  async processIntent(
+    text: string,
+    source: Extract<ServiceEvent, { type: "intent" }>["source"],
+  ): Promise<void> {
     this.emit({ type: "intent", text, source });
 
     // Forward to remote server if connected

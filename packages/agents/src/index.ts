@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — @nexus/agents (FAZ 7)
+ * NEXUS AI — @nexus/agents
  *
  * Multi-Agent System with:
  *  - Agent Protocol: scope-based permissions, capability declaration, confidence scoring

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — DevOps & Operations Layer (FAZ 18)
+ * NEXUS AI — DevOps & Operations Layer
  *
  * Production readiness: monitoring, backup/disaster-recovery, OTA updates,
  * and mobile deep-link configuration. All classes are deterministic with
@@ -227,10 +227,16 @@ export class OtaUpdateChecker {
   check(channel: string, currentVersion: string): VersionComparison {
     const latest = this.latestVersions.get(channel);
     if (!latest) {
-      return { current: currentVersion, latest: currentVersion, updateAvailable: false, mandatory: false };
+      return {
+        current: currentVersion,
+        latest: currentVersion,
+        updateAvailable: false,
+        mandatory: false,
+      };
     }
     const updateAvailable = this.isNewer(latest.version, currentVersion);
-    const mandatory = updateAvailable && (latest.mandatory || this.isMajorBump(currentVersion, latest.version));
+    const mandatory =
+      updateAvailable && (latest.mandatory || this.isMajorBump(currentVersion, latest.version));
     return { current: currentVersion, latest: latest.version, updateAvailable, mandatory };
   }
 
@@ -285,7 +291,14 @@ export class DeepLinkManager {
   }
 
   /** Generate assetlinks.json for Android App Links. */
-  generateAssetLinks(): object[] {
+  generateAssetLinks(): Array<{
+    relation: readonly string[];
+    target: {
+      namespace: string;
+      package_name: string;
+      sha256_cert_fingerprints: readonly string[];
+    };
+  }> {
     const android = this.configs.filter((c) => c.platform === "android");
     return android.map((c) => ({
       relation: ["delegate_permission/common.handle_all_urls"],

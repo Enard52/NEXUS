@@ -1,6 +1,6 @@
 /**
  * NEXUS AI — @nexus/platform
- * Platform Abstraction Layer (FAZ 3, 8).
+ * Platform Abstraction Layer .
  *
  * Provides a cross-platform adapter interface for OS-level operations:
  *  - Application control (launch, close, focus)

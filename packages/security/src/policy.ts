@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Security policy primitives (FAZ 1).
+ * NEXUS AI — Security policy primitives .
  *
  * Leaf module holding the risk model and default policy so that both the
  * SecurityEngine (index.ts) and the SecurityMiddleware (middleware.ts) can
@@ -24,6 +24,8 @@ export interface SecurityAction {
   readonly kind: string;
   /** Assessed risk of performing the action. */
   readonly risk: RiskLevel;
+  /** User who initiated the action. */
+  readonly userId?: string;
   /** Optional human-readable context for the audit trail. */
   readonly description?: string;
 }

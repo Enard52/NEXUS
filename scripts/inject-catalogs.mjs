@@ -15,7 +15,11 @@ const lines = content.split("\n");
 // Search for the "  // ── Spanish ──" line (start of partial catalogs)
 let startIdx = -1;
 for (let i = 0; i < lines.length; i++) {
-  if (lines[i].includes("// ── Spanish") || lines[i].includes("// ─── Spanish") || (lines[i].includes("// ──") && lines[i].includes("Spanish"))) {
+  if (
+    lines[i].includes("// ── Spanish") ||
+    lines[i].includes("// ─── Spanish") ||
+    (lines[i].includes("// ──") && lines[i].includes("Spanish"))
+  ) {
     startIdx = i;
     break;
   }

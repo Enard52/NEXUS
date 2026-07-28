@@ -5,7 +5,7 @@ Local-first personal operating system (TypeScript monorepo). The repo contains t
 ## How to run
 
 - Install dependencies: `pnpm install`
-- Start the sync server: `pnpm start`  (or `pnpm dev` for watch mode)
+- Start the sync server: `pnpm start` (or `pnpm dev` for watch mode)
 - The server runs on the port set by `PORT` (default `4178`) and reads `SESSION_SECRET` for session signing.
 
 ## Environment

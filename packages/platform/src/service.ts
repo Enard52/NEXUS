@@ -22,7 +22,8 @@ export class PlatformService {
   }
 
   showNotification(title: string, message: string): void {
-    // Basic mock for desktop notification (MARKA 8 / FAZ 16 prep)
-    console.log(`[Notification] ${title}: ${message}`);
+    // Basic mock for desktop notification (MARKA 8 /  prep)
+    if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+      console.log(`[Notification] ${title}: ${message}`);
   }
 }

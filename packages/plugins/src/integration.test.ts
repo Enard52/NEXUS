@@ -172,7 +172,11 @@ describe("FAZ 4 Bitiş Kriteri — 3 brand discover–authorize–status–comma
     });
 
     it("IKEA: turn on a light", () => {
-      const result = manager.execute({ deviceId: "ikea-bulb-1", capability: "switch", value: true });
+      const result = manager.execute({
+        deviceId: "ikea-bulb-1",
+        capability: "switch",
+        value: true,
+      });
       expect(result.ok).toBe(true);
       expect(result.device.capabilities.find((c) => c.kind === "switch")!.value).toBe(true);
       // Broker state is also updated
@@ -180,31 +184,51 @@ describe("FAZ 4 Bitiş Kriteri — 3 brand discover–authorize–status–comma
     });
 
     it("IKEA: set brightness", () => {
-      const result = manager.execute({ deviceId: "ikea-bulb-1", capability: "brightness", value: 150 });
+      const result = manager.execute({
+        deviceId: "ikea-bulb-1",
+        capability: "brightness",
+        value: 150,
+      });
       expect(result.ok).toBe(true);
       expect(broker.getDeviceState("ikea-bulb-1")!.brightness).toBe(150);
     });
 
     it("Xiaomi: turn on smart plug", () => {
-      const result = manager.execute({ deviceId: "xiaomi-plug-1", capability: "switch", value: true });
+      const result = manager.execute({
+        deviceId: "xiaomi-plug-1",
+        capability: "switch",
+        value: true,
+      });
       expect(result.ok).toBe(true);
       expect(broker.getDeviceState("xiaomi-plug-1")!.switch).toBe(true);
     });
 
     it("Xiaomi: adjust light brightness", () => {
-      const result = manager.execute({ deviceId: "xiaomi-bulb-1", capability: "brightness", value: 50 });
+      const result = manager.execute({
+        deviceId: "xiaomi-bulb-1",
+        capability: "brightness",
+        value: 50,
+      });
       expect(result.ok).toBe(true);
       expect(broker.getDeviceState("xiaomi-bulb-1")!.brightness).toBe(50);
     });
 
     it("Sonoff: toggle switch", () => {
-      const result = manager.execute({ deviceId: "sonoff-basic-1", capability: "switch", value: true });
+      const result = manager.execute({
+        deviceId: "sonoff-basic-1",
+        capability: "switch",
+        value: true,
+      });
       expect(result.ok).toBe(true);
       expect(broker.getDeviceState("sonoff-basic-1")!.switch).toBe(true);
     });
 
     it("Sonoff: turn off power monitoring device", () => {
-      const result = manager.execute({ deviceId: "sonoff-pow-1", capability: "switch", value: false });
+      const result = manager.execute({
+        deviceId: "sonoff-pow-1",
+        capability: "switch",
+        value: false,
+      });
       expect(result.ok).toBe(true);
       expect(broker.getDeviceState("sonoff-pow-1")!.switch).toBe(false);
     });

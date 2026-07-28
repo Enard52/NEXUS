@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Multi-Agent System Tests (FAZ 7)
+ * NEXUS AI — Multi-Agent System Tests
  *
  * Tests for: Agent Protocol, Router, Specialized Agents, Delegation,
  * Scoring, Scope permissions, and multi-agent consolidation.
@@ -138,7 +138,11 @@ describe("AgentRouter", () => {
   });
 
   it("routes finance intent to FinanceAgent", async () => {
-    const result = await router.route("finance.add_expense", { amount: 50, category: "food", description: "lunch" }, mockCtx);
+    const result = await router.route(
+      "finance.add_expense",
+      { amount: 50, category: "food", description: "lunch" },
+      mockCtx,
+    );
     expect(result.agents).toContain("finance");
     expect(result.text).toContain("50");
   });
@@ -208,7 +212,12 @@ describe("Inter-agent delegation", () => {
 
 describe("KnowledgeAgent calculations", () => {
   const knowledge = new KnowledgeAgent();
-  const ctx: MultiAgentContext = { userId: "u1", language: "en", timeOfDay: "day", sendMessage: async () => undefined };
+  const ctx: MultiAgentContext = {
+    userId: "u1",
+    language: "en",
+    timeOfDay: "day",
+    sendMessage: async () => undefined,
+  };
 
   it("evaluates addition", async () => {
     const r = await knowledge.handle("calculate.math", { text: "100 + 200" }, ctx);
@@ -227,7 +236,11 @@ describe("KnowledgeAgent calculations", () => {
   });
 
   it("handles temperature conversion", async () => {
-    const r = await knowledge.handle("knowledge.convert", { text: "100 celsius to fahrenheit" }, ctx);
+    const r = await knowledge.handle(
+      "knowledge.convert",
+      { text: "100 celsius to fahrenheit" },
+      ctx,
+    );
     expect(r.text).toContain("212");
   });
 
@@ -239,7 +252,12 @@ describe("KnowledgeAgent calculations", () => {
 
 describe("SecurityAgent state management", () => {
   const security = new SecurityAgent();
-  const ctx: MultiAgentContext = { userId: "u1", language: "en", timeOfDay: "day", sendMessage: async () => undefined };
+  const ctx: MultiAgentContext = {
+    userId: "u1",
+    language: "en",
+    timeOfDay: "day",
+    sendMessage: async () => undefined,
+  };
 
   it("arms and disarms the system", async () => {
     expect(security.isArmed()).toBe(false);
@@ -263,12 +281,25 @@ describe("SecurityAgent state management", () => {
 });
 
 describe("FinanceAgent expense tracking", () => {
-  const ctx: MultiAgentContext = { userId: "u1", language: "en", timeOfDay: "day", sendMessage: async () => undefined };
+  const ctx: MultiAgentContext = {
+    userId: "u1",
+    language: "en",
+    timeOfDay: "day",
+    sendMessage: async () => undefined,
+  };
 
   it("records expenses and tracks total", async () => {
     const finance = new FinanceAgent();
-    await finance.handle("finance.add_expense", { amount: 50, category: "food", description: "lunch" }, ctx);
-    await finance.handle("finance.add_expense", { amount: 30, category: "transport", description: "taxi" }, ctx);
+    await finance.handle(
+      "finance.add_expense",
+      { amount: 50, category: "food", description: "lunch" },
+      ctx,
+    );
+    await finance.handle(
+      "finance.add_expense",
+      { amount: 30, category: "transport", description: "taxi" },
+      ctx,
+    );
 
     const summary = await finance.handle("finance.summary", {}, ctx);
     expect(summary.text).toContain("80");
@@ -278,7 +309,11 @@ describe("FinanceAgent expense tracking", () => {
   it("sets budget and shows remaining", async () => {
     const finance = new FinanceAgent();
     await finance.handle("finance.set_budget", { amount: 1000 }, ctx);
-    await finance.handle("finance.add_expense", { amount: 200, category: "shopping", description: "clothes" }, ctx);
+    await finance.handle(
+      "finance.add_expense",
+      { amount: 200, category: "shopping", description: "clothes" },
+      ctx,
+    );
 
     const summary = await finance.handle("finance.summary", {}, ctx);
     expect(summary.text).toContain("1000");
@@ -288,7 +323,12 @@ describe("FinanceAgent expense tracking", () => {
 
 describe("LifeAgent wellness features", () => {
   const life = new LifeAgent();
-  const ctx: MultiAgentContext = { userId: "u1", language: "en", timeOfDay: "morning", sendMessage: async () => undefined };
+  const ctx: MultiAgentContext = {
+    userId: "u1",
+    language: "en",
+    timeOfDay: "morning",
+    sendMessage: async () => undefined,
+  };
 
   it("provides morning briefing", async () => {
     const r = await life.handle("life.morning_briefing", {}, ctx);
@@ -315,7 +355,12 @@ describe("LifeAgent wellness features", () => {
 
 describe("FAZ 7 Bitiş Kriteri", () => {
   let router: AgentRouter;
-  const ctx: MultiAgentContext = { userId: "u1", language: "en", timeOfDay: "day", sendMessage: async () => undefined };
+  const ctx: MultiAgentContext = {
+    userId: "u1",
+    language: "en",
+    timeOfDay: "day",
+    sendMessage: async () => undefined,
+  };
 
   beforeEach(() => {
     router = new AgentRouter();

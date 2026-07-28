@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Local sync server request handler (FAZ 18)
+ * NEXUS AI — Local sync server request handler
  *
  * A zero-dependency Node `http` handler that is the single synchronization hub
  * for every surface (web, desktop, mobile):
@@ -36,10 +36,7 @@ import {
   renderDesktopAppDocument,
   renderLegalPage,
   renderAboutPage,
-  renderStoreDocument,
 } from "./pages.js";
-import { renderMobileDocument } from "@nexus/mobile";
-import { renderDesktopDocument, renderSetupDocument } from "@nexus/desktop";
 import { OAUTH_PROVIDERS, type OAuthRegistry } from "./oauth.js";
 import type { UserDataStore } from "./userdata.js";
 import { handleCommandApi } from "./command.js";
@@ -50,6 +47,8 @@ export interface AppDeps {
   readonly core: import("@nexus/core").NexusCore;
   /** Absolute path to the built web assets (for /downloads and static files). */
   readonly staticRoot?: string;
+  /** Absolute path to the built client SPA (packages/client/dist). When set, /app serves the SPA. */
+  readonly clientRoot?: string;
   /** Configured social sign-in providers (Google/Apple). Optional in tests. */
   readonly oauth?: OAuthRegistry;
   readonly connectors?: any; // ConnectorStore
@@ -62,6 +61,20 @@ export interface AppDeps {
 
 const SESSION_COOKIE = "nx_session";
 const LANG_COOKIE = "nx_lang";
+
+// Origins the native shells (Capacitor iOS/Android, local dev) may call from.
+const CORS_ORIGINS = new Set(["capacitor://localhost", "ionic://localhost"]);
+function isAllowedOrigin(origin: string): boolean {
+  return CORS_ORIGINS.has(origin) || /^https?:\/\/localhost(:\d+)?$/.test(origin);
+}
+
+/** Extract a bearer token so the native shells can authenticate without cookies. */
+function bearerToken(req: IncomingMessage): string | undefined {
+  const header = req.headers.authorization;
+  if (!header) return undefined;
+  const match = /^Bearer\s+(.+)$/i.exec(header);
+  return match?.[1];
+}
 const MAX_BODY = 64 * 1024; // 64 KB is plenty for auth + data payloads.
 
 const MIME: Record<string, string> = {
@@ -254,9 +267,9 @@ function isMobileUserAgent(ua: string): boolean {
   );
 }
 
-/** The native desktop shell (Electron) identifies itself in the User-Agent. */
+/** The native desktop shell identifies itself in the User-Agent. */
 function isDesktopUserAgent(ua: string): boolean {
-  return /Electron|NexusDesktop/i.test(ua);
+  return /NexusDesktop/i.test(ua);
 }
 
 /**
@@ -298,7 +311,7 @@ export function createRequestHandler(
   deps: AppDeps,
 ): (req: IncomingMessage, res: ServerResponse) => void {
   // @ts-expect-error unused core
-  const { accounts, userData, staticRoot, oauth, core } = deps;
+  const { accounts, userData, staticRoot, clientRoot, oauth, core } = deps;
   const rateLimiter = new RateLimiter({ maxRequests: 10, windowMs: 60 * 1000 }); // 10 per min
   const lockout = new LoginLockout();
   const telemetry =
@@ -323,23 +336,39 @@ export function createRequestHandler(
     const path = url.pathname;
     const method = req.method ?? "GET";
     const cookies = parseCookies(req.headers.cookie);
-    const token = cookies[SESSION_COOKIE];
+    // Cookie session (web/desktop) with a bearer fallback for the mobile shell.
+    const token = cookies[SESSION_COOKIE] ?? bearerToken(req);
     const account = token ? accounts.validateSession(token) : undefined;
+
+    // ── CORS: only the native shell origins may call the API cross-origin ────
+    const origin = String(req.headers.origin ?? "");
+    if (origin && isAllowedOrigin(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Vary", "Origin");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    }
+    if (method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
 
     // ── Global Security Headers ──────────────────────────────────────────────
     res.setHeader("X-Content-Type-Options", "nosniff");
-    // Allow demo preview pages to be embedded as iframes on the marketing page;
-    // everything else (login, app, API) is denied.
-    const isEmbeddableDemoPath =
-      path === "/desktop" || path === "/desktop/light" ||
-      path === "/mobile" || path === "/mobile/light" ||
-      path.startsWith("/preview/");
-    res.setHeader("X-Frame-Options", isEmbeddableDemoPath ? "SAMEORIGIN" : "DENY");
+    res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    res.setHeader("Permissions-Policy", "camera=(), geolocation=(), payment=()");
     res.setHeader(
       "Content-Security-Policy",
       "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'",
     );
+
+    // ── Health probe: lets clients verify they reached a real NEXUS core ─────
+    if (path === "/health" && method === "GET") {
+      return sendJson(res, 200, { ok: true, service: "nexus-local-core" });
+    }
 
     // ── Auth API ─────────────────────────────────────────────────────────────
     if (path === "/api/register" && method === "POST") {
@@ -359,7 +388,7 @@ export function createRequestHandler(
         const session = accounts.login(email, password);
         setCookie(res, SESSION_COOKIE, session.token, 60 * 60 * 24);
         userData.ensure(created.id, created.email, locale);
-        return sendJson(res, 201, { user: publicUser(created) });
+        return sendJson(res, 201, { user: publicUser(created), token: session.token });
       } catch (err) {
         return sendJson(res, 400, { error: authMessage(err) });
       }
@@ -388,7 +417,7 @@ export function createRequestHandler(
         const user = accounts.validateSession(session.token)!;
         setCookie(res, SESSION_COOKIE, session.token, 60 * 60 * 24);
         userData.ensure(user.id, user.email, locale);
-        return sendJson(res, 200, { user: publicUser(user) });
+        return sendJson(res, 200, { user: publicUser(user), token: session.token });
       } catch (err) {
         lockout.recordFailure(email);
         return sendJson(res, 401, { error: authMessage(err) });
@@ -407,7 +436,7 @@ export function createRequestHandler(
       const user = accounts.validateSession(session.token)!;
       setCookie(res, SESSION_COOKIE, session.token, 60 * 60 * 24);
       userData.ensure(user.id, user.email, localeFrom(cookies, req));
-      return sendJson(res, 200, { user: publicUser(user) });
+      return sendJson(res, 200, { user: publicUser(user), token: session.token });
     }
 
     // ── Social sign-in: start the Authorization Code + PKCE round-trip ────────
@@ -519,7 +548,7 @@ export function createRequestHandler(
       return sendJson(res, 200, { success: true });
     }
 
-    // ── Billing API (FAZ 10) ──────────────────────────────────────────────────
+    // ── Billing API ──────────────────────────────────────────────────
     if (path === "/api/billing/subscribe" && method === "POST") {
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       if (!deps.billing) return sendJson(res, 501, { error: "Billing not enabled" });
@@ -553,7 +582,7 @@ export function createRequestHandler(
       }
     }
 
-    // ── Legal API (FAZ 19) ────────────────────────────────────────────────────
+    // ── Legal API ────────────────────────────────────────────────────
     if (path === "/api/legal/tos" && method === "GET") {
       if (!deps.legal) return sendJson(res, 501, { error: "Legal not enabled" });
       const locale = localeFrom(cookies, req);
@@ -565,7 +594,7 @@ export function createRequestHandler(
       return sendJson(res, 200, { text: deps.legal.getPrivacyPolicy(locale) });
     }
 
-    // ── Support API (FAZ 20) ──────────────────────────────────────────────────
+    // ── Support API ──────────────────────────────────────────────────
     if (path === "/api/support/ticket" && method === "POST") {
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       if (!deps.support) return sendJson(res, 501, { error: "Support not enabled" });
@@ -585,7 +614,7 @@ export function createRequestHandler(
       return sendJson(res, 200, { tickets: deps.support.getTickets(account.email) });
     }
 
-    // ── Platform API (FAZ 3, 8) & Notifications (FAZ 16/8) ────────────────────
+    // ── Platform API & Notifications ────────────────────
     if (path === "/api/platform/info" && method === "GET") {
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       if (!deps.platform) return sendJson(res, 501, { error: "Platform not enabled" });
@@ -614,7 +643,7 @@ export function createRequestHandler(
       return sendJson(res, 405, { error: "Method not allowed" });
     }
 
-    // ── Connector Store API (FAZ 19) ──────────────────────────────────────────
+    // ── Connector Store API ──────────────────────────────────────────
     if (path === "/api/store/catalog" && method === "GET") {
       if (!account) return sendJson(res, 401, { error: "Not signed in" });
       if (!deps.connectors) return sendJson(res, 501, { error: "Store not enabled" });
@@ -679,30 +708,44 @@ export function createRequestHandler(
       return sendJson(res, 200, { ok: true, summary });
     }
 
+    // ── Client SPA (React/Vite build) — the real desktop/mobile/web app ───────
+    // Served before the generic static branch because /app/assets/*.js has an
+    // extension. Auth is enforced by the API (/api/me), not by the HTML shell.
+    if (clientRoot && method === "GET" && (path === "/app" || path.startsWith("/app/"))) {
+      // The SPA bundle is fully external, so inline scripts can be forbidden here.
+      res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self'",
+      );
+      const sub = path === "/app" ? "" : path.slice("/app".length);
+      if (sub && extname(sub)) {
+        const served = await serveStatic(res, clientRoot, sub);
+        if (served) return;
+        return sendJson(res, 404, { error: "Not found" });
+      }
+      try {
+        const html = await readFile(join(clientRoot, "index.html"), "utf8");
+        return sendHtml(res, 200, html);
+      } catch {
+        // No built client available; fall through to the server-rendered app.
+      }
+    }
+
     // ── Static assets & installer downloads (public) ──────────────────────────
     if (method === "GET" && (path.startsWith("/downloads/") || extname(path))) {
       if (staticRoot) {
         const served = await serveStatic(res, staticRoot, path);
         if (served) return;
       }
+      // Installer downloads must be real binaries on disk — never synthesized.
       const ext = extname(path).toLowerCase();
-      if (ext === ".exe" || ext === ".dmg" || ext === ".appimage" || path.startsWith("/downloads/")) {
-        const filename = path.split("/").pop() ?? "download";
-        let cType = "application/octet-stream";
-        if (ext === ".exe") cType = "application/x-msdownload";
-        else if (ext === ".dmg") cType = "application/x-apple-diskimage";
-        
-        const prefix = ext === ".exe" ? "MZ\x90\x00\x03\x00\x00\x00\x04\x00\x00\x00\xFF\xFF\x00\x00" : "";
-        const version = /(\d+\.\d+\.\d+)/.exec(filename)?.[1] ?? "3.14.2";
-        const dummyPayload = Buffer.from(prefix + `\n\nNEXUS Installer Binary for ${filename}\nVersion ${version}\n`);
-        
-        res.writeHead(200, {
-          "Content-Type": cType,
-          "Content-Disposition": `attachment; filename="${filename}"`,
-          "Content-Length": String(dummyPayload.length),
-        });
-        res.end(dummyPayload);
-        return;
+      if (
+        ext === ".exe" ||
+        ext === ".dmg" ||
+        ext === ".appimage" ||
+        path.startsWith("/downloads/")
+      ) {
+        return sendJson(res, 404, { error: "Download not available" });
       }
     }
 
@@ -728,47 +771,6 @@ export function createRequestHandler(
       persistLang(res, url, locale);
       const ua = String(req.headers["user-agent"] ?? "");
       return sendHtml(res, 200, renderMarketingDocument(locale, ua));
-    }
-
-    const injectMockupStyles = (html: string, p: string) => {
-      if (!p.startsWith("/preview/")) return html;
-      return html.replace('</head>', '<style>::-webkit-scrollbar { display: none; } * { -ms-overflow-style: none; scrollbar-width: none; }</style></head>');
-    };
-
-    // Public visual QA routes use the same renderers as the native shells. They
-    // are intentionally not login-gated so product and design reviews can open
-    // them directly in a browser without creating a demo account.
-    if (method === "GET" && (path === "/mobile" || path === "/preview/mobile")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, injectMockupStyles(renderMobileDocument({ theme: "dark", locale }), path));
-    }
-    if (method === "GET" && (path === "/mobile/light" || path === "/preview/mobile/light")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, injectMockupStyles(renderMobileDocument({ theme: "light", locale }), path));
-    }
-    if (method === "GET" && (path === "/desktop" || path === "/preview/desktop")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, injectMockupStyles(renderDesktopDocument({ theme: "dark", locale }), path));
-    }
-    if (method === "GET" && (path === "/desktop/light" || path === "/preview/desktop/light")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, injectMockupStyles(renderDesktopDocument({ theme: "light", locale }), path));
-    }
-    if (method === "GET" && (path === "/installer" || path === "/preview/installer")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderSetupDocument({ theme: "dark", locale }));
-    }
-    if (method === "GET" && (path === "/installer/light" || path === "/preview/installer/light")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderSetupDocument({ theme: "light", locale }));
-    }
-    if (method === "GET" && (path === "/store" || path === "/preview/store")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderStoreDocument({ theme: "dark", locale }));
-    }
-    if (method === "GET" && (path === "/store/light" || path === "/preview/store/light")) {
-      const locale = resolveLocale(url, cookies, req.headers["accept-language"]);
-      return sendHtml(res, 200, renderStoreDocument({ theme: "light", locale }));
     }
 
     if (path === "/privacy" && method === "GET") {

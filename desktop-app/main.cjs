@@ -5,7 +5,17 @@
 // When a setup page is available, the app can also show the local onboarding
 // flow before the first successful launch.
 
-const { app, BrowserWindow, Tray, Menu, ipcMain, shell, nativeImage, dialog } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Tray,
+  Menu,
+  ipcMain,
+  shell,
+  nativeImage,
+  dialog,
+  Notification,
+} = require("electron");
 const { spawn } = require("node:child_process");
 const fs = require("node:fs");
 const http = require("node:http");
@@ -35,28 +45,229 @@ app.setAboutPanelOptions({
   copyright: "Copyright NEXUS Technologies Inc.",
 });
 
-if (process.platform === "darwin") {
-  Menu.setApplicationMenu(
-    Menu.buildFromTemplate([
+// ── High DPI support ──────────────────────────────────────────────────────
+// Let Chromium honor the OS scale factor for crisp rendering on Retina/4K
+// displays, and let windows grow larger than the physical screen so maximized
+// frameless windows are never clipped at high zoom levels.
+app.commandLine.appendSwitch("high-dpi-support", "1");
+app.commandLine.appendSwitch("force-device-scale-factor", "1");
+
+function showAboutDialog() {
+  if (win && !win.isDestroyed()) {
+    dialog.showMessageBox(win, {
+      type: "info",
+      title: "About NEXUS",
+      message: "NEXUS",
+      detail: [
+        "Personal Operating System",
+        `Version 3.14.2`,
+        "",
+        "Copyright NEXUS Technologies Inc.",
+      ].join("\n"),
+      buttons: ["OK"],
+    });
+  }
+}
+
+function checkForUpdatesMenu() {
+  // Auto-update is wired in updater.cjs (loaded lazily when packaged); when it
+  // is unavailable (dev mode) we surface a friendly message instead of a no-op.
+  if (typeof globalThis.__nexusCheckForUpdates === "function") {
+    const handled = globalThis.__nexusCheckForUpdates();
+    if (handled) return;
+  }
+  dialog.showMessageBox(win, {
+    type: "info",
+    title: "NEXUS — Updates",
+    message: "Update checks run automatically on launch.",
+    detail: "You are running NEXUS 3.14.2. The latest version is checked on every start.",
+    buttons: ["OK"],
+  });
+}
+
+// ── Auto-update (electron-updater, lazy-loaded) ─────────────────────────────
+// Only armed in packaged builds; in dev the updater module is absent and the
+// menu falls back to the informational dialog above.
+function initAutoUpdater() {
+  try {
+    const updater = require("./updater.cjs");
+    const armed = updater.initAutoUpdater(app, showNotification);
+    if (armed) {
+      globalThis.__nexusCheckForUpdates = updater.checkForUpdates;
+    }
+  } catch (err) {
+    console.error("[nexus] auto-update init skipped:", err && err.message);
+  }
+}
+
+// ── Application menu (platform-specific) ───────────────────────────────────
+// macOS gets the full app-name menu plus Edit/View/Window/Help; Windows and
+// Linux get a File/Edit/View/Window/Help menu bar that mirrors native desktop
+// conventions. Roles are used where possible so Chromium provides correct
+// localized accelerators and behavior.
+function buildAppMenu() {
+  const isMac = process.platform === "darwin";
+  const appMenu = {
+    label: "NEXUS",
+    submenu: [
+      isMac
+        ? { label: "About NEXUS", role: "about" }
+        : { label: "About NEXUS", click: showAboutDialog },
+      { type: "separator" },
+      { label: "Check for Updates…", click: checkForUpdatesMenu },
+      { type: "separator" },
+      isMac ? { role: "services" } : null,
+      isMac ? { type: "separator" } : null,
+      isMac ? { role: "hide", label: "Hide NEXUS" } : null,
+      isMac ? { role: "hideOthers" } : null,
+      isMac ? { role: "unhide" } : null,
+      { type: "separator" },
+      { role: "quit", label: isMac ? "Quit NEXUS" : "Exit" },
+    ].filter(Boolean),
+  };
+
+  const fileMenu = {
+    label: "File",
+    submenu: [
       {
-        label: "NEXUS",
-        submenu: [
-          { label: "About NEXUS", role: "about" },
-          { type: "separator" },
-          { role: "hide", label: "Hide NEXUS" },
-          { role: "unhide" },
-          { type: "separator" },
-          { role: "quit", label: "Quit NEXUS" },
-        ],
+        label: "New Window",
+        accelerator: "CmdOrCtrl+N",
+        click: () => toggleWindow(),
       },
+      { type: "separator" },
+      {
+        label: "Open Data Folder…",
+        accelerator: "CmdOrCtrl+O",
+        click: () => {
+          const config = readStoredConfig();
+          if (config && fs.existsSync(config.path)) {
+            shell.openPath(config.path);
+          } else {
+            dialog.showMessageBox(win, {
+              type: "info",
+              title: "NEXUS",
+              message: "No data folder configured yet.",
+              detail: "Complete the setup wizard to choose a Local Core data folder.",
+              buttons: ["OK"],
+            });
+          }
+        },
+      },
+      isMac ? { role: "close", label: "Close Window" } : { role: "quit", label: "Exit" },
+    ],
+  };
+
+  const editMenu = {
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      isMac ? { role: "pasteAndMatchStyle" } : null,
+      { role: "delete" },
+      { role: "selectAll" },
+    ].filter(Boolean),
+  };
+
+  const viewMenu = {
+    label: "View",
+    submenu: [
+      { role: "reload" },
+      { role: "forceReload" },
+      { role: "toggleDevTools" },
+      { type: "separator" },
+      { role: "resetZoom" },
+      { role: "zoomIn" },
+      { role: "zoomOut" },
+      { type: "separator" },
+      { role: "togglefullscreen" },
+      { type: "separator" },
+      {
+        label: "Toggle Dark/Light Theme",
+        accelerator: "CmdOrCtrl+Shift+T",
+        click: () => {
+          if (win && !win.isDestroyed()) {
+            win.webContents
+              .executeJavaScript(
+                `(function(){try{var d=document.documentElement;var cur=d.getAttribute('data-theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');d.setAttribute('data-theme',cur==='dark'?'light':'dark');}catch(e){}})();`,
+              )
+              .catch(() => {});
+          }
+        },
+      },
+    ],
+  };
+
+  const windowMenu = {
+    label: "Window",
+    submenu: [
+      { role: "minimize" },
+      { role: "zoom" },
+      { type: "separator" },
+      { role: "front" },
+      { type: "separator" },
+      {
+        label: "Show NEXUS",
+        click: () => toggleWindow(),
+      },
+    ],
+  };
+
+  const helpMenu = {
+    label: "Help",
+    submenu: [
+      {
+        label: "NEXUS Documentation",
+        click: () => shell.openExternal("https://nexus-ai.app/docs"),
+      },
+      {
+        label: "Report an Issue",
+        click: () => shell.openExternal("https://nexus-ai.app/support"),
+      },
+      { type: "separator" },
+      isMac
+        ? { label: "About NEXUS", role: "about" }
+        : { label: "About NEXUS", click: showAboutDialog },
+    ],
+  };
+
+  return Menu.buildFromTemplate([appMenu, fileMenu, editMenu, viewMenu, windowMenu, helpMenu]);
+}
+
+Menu.setApplicationMenu(buildAppMenu());
+
+// macOS dock menu (quick actions when right-clicking the dock icon).
+if (process.platform === "darwin" && typeof app.dock !== "undefined") {
+  app.dock.setMenu(
+    Menu.buildFromTemplate([
+      { label: "Open NEXUS", click: () => toggleWindow() },
+      { type: "separator" },
+      { label: "Check for Updates…", click: checkForUpdatesMenu },
     ]),
   );
-} else {
-  Menu.setApplicationMenu(null);
 }
 
 function getDataDir() {
   return process.env.NEXUS_DATA_DIR || path.join(app.getPath("userData"), "nexus-data");
+}
+
+// ── Native notifications helper ─────────────────────────────────────────────
+// Centralizes OS-level notifications so every app event (server crash, update
+// availability, renderer-initiated alerts) goes through one supported path.
+function showNotification(title, body) {
+  if (!Notification.isSupported()) return;
+  try {
+    new Notification({
+      title: (title && String(title).trim()) || "NEXUS",
+      body: (body && String(body).trim()) || "A desktop update is ready.",
+      silent: false,
+    }).show();
+  } catch {
+    /* notifications are best-effort; never block the app on them */
+  }
 }
 
 function getConfigPath() {
@@ -101,7 +312,8 @@ function writeStoredConfig(config) {
 }
 
 function getSetupHtmlPath() {
-  const os = process.platform === "win32" ? "windows" : process.platform === "darwin" ? "mac" : "linux";
+  const os =
+    process.platform === "win32" ? "windows" : process.platform === "darwin" ? "mac" : "linux";
   const locale = app.getLocale().startsWith("tr") ? "tr" : "en";
   const candidates = [
     path.join(SETUP_BASE, locale, os, "setup.html"),
@@ -190,6 +402,12 @@ async function startLocalCore() {
     serverProc = null;
     if (!app.isQuitting) {
       console.error(`[nexus] sync server exited (code ${code})`);
+      // Surface the crash via an OS notification so a hidden/tray-only app still
+      // tells the user something went wrong, then fall back to the offline UI.
+      showNotification(
+        "NEXUS — Local Core stopped",
+        "The sync server stopped unexpectedly. Restarting…",
+      );
       if (win && !win.isDestroyed()) {
         win.webContents.send("nx:server-crashed", code);
         loadOfflineScreen();
@@ -263,12 +481,19 @@ function createWindow(mode = "app") {
     icon: path.join(__dirname, "assets", "icon.png"),
     show: false,
     title: "NEXUS",
+    // High DPI: allow the window to grow larger than the physical screen so a
+    // maximized frameless window is never clipped at high OS zoom levels.
+    enableLargerThanScreen: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
       webSecurity: true,
+      // Let the renderer read the real device pixel ratio for crisp custom
+      // canvases/icons; defaults keep text legible on high-density displays.
+      backgroundThrottling: false,
+      spellcheck: true,
     },
   };
 
@@ -294,7 +519,10 @@ function createWindow(mode = "app") {
 
   win.once("ready-to-show", () => win.show());
 
-  win.webContents.on("will-navigate", (event, url) => {
+  // Stable memory: keep references to long-lived listeners so they can be
+  // removed when the window is destroyed, preventing leaks if createWindow is
+  // ever called again and guaranteeing a clean teardown on quit.
+  const onWillNavigate = (event, url) => {
     try {
       const parsed = new URL(url);
       const allowedLocal =
@@ -308,9 +536,8 @@ function createWindow(mode = "app") {
     } catch {
       event.preventDefault();
     }
-  });
-
-  win.webContents.setWindowOpenHandler(({ url }) => {
+  };
+  const windowOpenHandler = ({ url }) => {
     if (
       url.startsWith(`http://${HOST}:${PORT}`) ||
       url.startsWith(`http://localhost:${PORT}`) ||
@@ -322,7 +549,10 @@ function createWindow(mode = "app") {
       shell.openExternal(url);
     }
     return { action: "deny" };
-  });
+  };
+
+  win.webContents.on("will-navigate", onWillNavigate);
+  win.webContents.setWindowOpenHandler(windowOpenHandler);
 
   win.on("close", (e) => {
     if (!app.isQuitting) {
@@ -332,6 +562,16 @@ function createWindow(mode = "app") {
   });
 
   win.on("closed", () => {
+    // Detach listeners and null the reference so a fresh window can be created
+    // without the old webContents retaining handlers/GC roots.
+    try {
+      if (win && !win.isDestroyed()) {
+        win.webContents.removeAllListeners("will-navigate");
+        win.webContents.destroy();
+      }
+    } catch {
+      /* window already torn down */
+    }
     win = null;
   });
 }
@@ -393,6 +633,18 @@ ipcMain.on("nx:close", (event) => {
   BrowserWindow.fromWebContents(event.sender)?.close();
 });
 
+ipcMain.on("nx:renderer-event", (event, payload) => {
+  if (!isTrustedSender(event)) return;
+  if (!payload || typeof payload.name !== "string") return;
+
+  if (payload.name === "notify") {
+    const detail = payload.detail && typeof payload.detail === "object" ? payload.detail : {};
+    const title = typeof detail.title === "string" ? detail.title : "NEXUS";
+    const body = typeof detail.body === "string" ? detail.body : "A desktop update is ready.";
+    showNotification(title, body);
+  }
+});
+
 ipcMain.handle("nx:setup-browse", async (event) => {
   if (!isTrustedSender(event)) return { ok: false, error: "UNAUTHORIZED" };
   const window = BrowserWindow.fromWebContents(event.sender);
@@ -408,6 +660,28 @@ ipcMain.handle("nx:setup-browse", async (event) => {
   }
 
   return { ok: true, path: result.filePaths[0] };
+});
+
+// ── Native save dialog (export / "save as" flows) ───────────────────────────
+// Lets the renderer request a real OS save dialog (file picker for writing)
+// without exposing Node primitives. The renderer receives the chosen path and
+// is responsible for the actual write via its own fetch/IPC.
+ipcMain.handle("nx:save-dialog", async (event, options = {}) => {
+  if (!isTrustedSender(event)) return { ok: false, error: "UNAUTHORIZED" };
+  const window = BrowserWindow.fromWebContents(event.sender);
+  if (!window) return { ok: false, error: "WINDOW_NOT_FOUND" };
+
+  const result = await dialog.showSaveDialog(window, {
+    title: typeof options.title === "string" ? options.title : "Save File",
+    defaultPath: typeof options.defaultPath === "string" ? options.defaultPath : undefined,
+    filters: Array.isArray(options.filters) ? options.filters : undefined,
+    buttonLabel: typeof options.buttonLabel === "string" ? options.buttonLabel : undefined,
+  });
+
+  if (result.canceled || !result.filePath) {
+    return { ok: false, canceled: true };
+  }
+  return { ok: true, path: result.filePath };
 });
 
 ipcMain.handle("nx:setup-cancel", async (event) => {
@@ -496,6 +770,18 @@ ipcMain.handle("nx:app-url", (event) => {
   return APP_URL;
 });
 
+// Renderer can request an immediate install of an already-downloaded update.
+ipcMain.handle("nx:install-update", (event) => {
+  if (!isTrustedSender(event)) return { ok: false, error: "UNAUTHORIZED" };
+  try {
+    const updater = require("./updater.cjs");
+    const installed = updater.quitAndInstall();
+    return { ok: installed };
+  } catch {
+    return { ok: false };
+  }
+});
+
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
   app.quit();
@@ -510,10 +796,19 @@ if (!gotLock) {
 
   app.whenReady().then(async () => {
     createTray();
+    initAutoUpdater();
     const config = readStoredConfig();
     if (config) {
-      const up = await startLocalCore();
-      createWindow(up !== false);
+      // Fast startup: show the window immediately with the offline screen so the
+      // user sees a responsive app, then boot the server in the background and
+      // navigate to the live app URL once it is healthy. This avoids a blank/
+      // blocked first paint while the Local Core bundle spins up.
+      createWindow("offline");
+      startLocalCore().then((up) => {
+        if (up && win && !win.isDestroyed()) {
+          win.loadURL(APP_URL, { userAgent: win.webContents.userAgent });
+        }
+      });
     } else {
       createWindow("setup");
     }
@@ -523,8 +818,12 @@ if (!gotLock) {
     if (BrowserWindow.getAllWindows().length === 0) {
       const config = readStoredConfig();
       if (config) {
-        const up = await startLocalCore();
-        createWindow(up !== false);
+        createWindow("offline");
+        startLocalCore().then((up) => {
+          if (up && win && !win.isDestroyed()) {
+            win.loadURL(APP_URL, { userAgent: win.webContents.userAgent });
+          }
+        });
       } else {
         createWindow("setup");
       }

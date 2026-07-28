@@ -1,9 +1,9 @@
 /**
- * NEXUS AI — Cloud Memory (FAZ 16)
+ * NEXUS AI — Cloud Memory
  *
  * Moves user memory (personalization + recent turns) off a single device into a
  * portable, versioned snapshot that a cloud backend can store and serve. This is
- * the prerequisite for cross-device sync (FAZ 22): a device pushes its snapshot
+ * the prerequisite for cross-device sync : a device pushes its snapshot
  * up and pulls the latest down, so a preference set on one device appears on
  * another.
  *
@@ -107,17 +107,14 @@ import { InMemoryUserMemory } from "./index.js";
 /**
  * A UserMemoryStore that auto-syncs every write to a CloudMemoryBackend.
  * Pulls the latest snapshot on init and on explicit sync(). This is the
- * FAZ 16 deliverable: "hafızası cloud'da güvenli şekilde saklanıyor."
+ * deliverable: "hafızası cloud'da güvenli şekilde saklanıyor."
  */
 export class CloudSyncedUserMemory implements UserMemoryStore {
   private readonly local: InMemoryUserMemory;
   private readonly cloud: CloudMemory;
   private versions = new Map<string, number>();
 
-  constructor(
-    private readonly backend: CloudMemoryBackend,
-    options: CloudMemoryOptions = {},
-  ) {
+  constructor(backend: CloudMemoryBackend, options: CloudMemoryOptions = {}) {
     this.local = new InMemoryUserMemory();
     this.cloud = new CloudMemory(backend, options);
   }

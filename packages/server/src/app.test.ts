@@ -6,7 +6,7 @@
  */
 
 import { afterEach, describe, expect, it } from "vitest";
-import { mkdtempSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Server } from "node:http";
@@ -32,6 +32,18 @@ async function bootWithStatic(dbFile: string, staticRoot: string | undefined): P
   const { SqliteUserMemoryStore } = await import("@nexus/memory");
   const memory = new SqliteUserMemoryStore(memoryDbFile);
   const app = createNexusApp({ store, memory, staticRoot });
+  const { server, port } = await startServer(app, 0);
+  const r: Running = { server, base: `http://127.0.0.1:${port}`, store, memory };
+  running.push(r);
+  return r;
+}
+
+async function bootWithClient(dbFile: string, clientRoot: string): Promise<Running> {
+  const store = new SqliteKeyValueStore(dbFile);
+  const memoryDbFile = dbFile + ".memory";
+  const { SqliteUserMemoryStore } = await import("@nexus/memory");
+  const memory = new SqliteUserMemoryStore(memoryDbFile);
+  const app = createNexusApp({ store, memory, clientRoot });
   const { server, port } = await startServer(app, 0);
   const r: Running = { server, base: `http://127.0.0.1:${port}`, store, memory };
   running.push(r);
@@ -326,7 +338,10 @@ describe("local sync server", () => {
   });
 
   it("serves self-hosted brand font files with correct MIME type", async () => {
-    const { base } = await bootWithStatic(join(tmp, "fonts.db"), join(process.cwd(), "packages/web/dist"));
+    const { base } = await bootWithStatic(
+      join(tmp, "fonts.db"),
+      join(process.cwd(), "packages/web/dist"),
+    );
     const res = await fetch(`${base}/fonts/inter-latin-400-normal.woff2`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("font/woff2");
@@ -334,22 +349,14 @@ describe("local sync server", () => {
     expect(buf.byteLength).toBeGreaterThan(1000);
   });
 
-  it("exposes public web previews for mobile, desktop and installer without login", async () => {
+  it("no longer exposes the old HTML mockup preview routes", async () => {
     const { base } = await boot(join(tmp, "preview.db"));
-    const routes = ["/mobile", "/desktop", "/installer"];
+    const routes = ["/mobile", "/desktop", "/installer", "/store", "/preview/mobile"];
     for (const route of routes) {
       const res = await fetch(`${base}${route}`, { redirect: "manual" });
-      expect(res.status).toBe(200);
-      const html = await res.text();
-      // Uses the local, offline font stack and the same design tokens as the native shells.
-      expect(html).toContain("/fonts/space-grotesk-latin-400-normal.woff2");
-      expect(html).toContain("/fonts/inter-latin-400-normal.woff2");
-      expect(html).toContain("/fonts/jetbrains-mono-latin-400-normal.woff2");
-      expect(html).toContain("--primary");
-      expect(html).toContain("prefers-reduced-motion");
-      // No Google Fonts import remains in any generated surface.
-      expect(html).not.toContain("fonts.googleapis.com");
-      expect(html).not.toContain("fonts.gstatic.com");
+      // Unknown routes send anonymous visitors to the real login flow.
+      expect(res.status).toBe(302);
+      expect(res.headers.get("location")).toBe("/login");
     }
   });
 
@@ -360,5 +367,85 @@ describe("local sync server", () => {
     expect(csp).toContain("img-src 'self' data: https:");
     expect(csp).not.toContain("https://fonts.gstatic.com");
     expect(csp).not.toContain("https://fonts.googleapis.com");
+  });
+
+  it("answers the /health probe with the nexus-local-core signature", async () => {
+    const { base } = await boot(join(tmp, "health.db"));
+    const res = await fetch(`${base}/health`);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, service: "nexus-local-core" });
+  });
+
+  it("issues a bearer token on login and accepts it on /api/me (no cookies)", async () => {
+    const { base } = await boot(join(tmp, "bearer.db"));
+    const guest = await fetch(`${base}/api/guest`, { method: "POST" });
+    expect(guest.status).toBe(200);
+    const body = (await guest.json()) as { token?: string };
+    expect(typeof body.token).toBe("string");
+    const me = await fetch(`${base}/api/me`, {
+      headers: { Authorization: `Bearer ${body.token}` },
+    });
+    expect(me.status).toBe(200);
+  });
+
+  it("rejects a bogus bearer token", async () => {
+    const { base } = await boot(join(tmp, "bearer-bad.db"));
+    const me = await fetch(`${base}/api/me`, {
+      headers: { Authorization: "Bearer not-a-real-token" },
+    });
+    expect(me.status).toBe(401);
+  });
+
+  it("answers CORS preflight for the native shells and reflects the origin", async () => {
+    const { base } = await boot(join(tmp, "cors.db"));
+    const res = await fetch(`${base}/api/me`, {
+      method: "OPTIONS",
+      headers: { Origin: "capacitor://localhost" },
+    });
+    expect(res.status).toBe(204);
+    expect(res.headers.get("access-control-allow-origin")).toBe("capacitor://localhost");
+    expect(res.headers.get("access-control-allow-headers")).toContain("Authorization");
+  });
+
+  it("does not reflect untrusted origins in CORS headers", async () => {
+    const { base } = await boot(join(tmp, "cors-bad.db"));
+    const res = await fetch(`${base}/health`, {
+      headers: { Origin: "https://evil.example" },
+    });
+    expect(res.headers.get("access-control-allow-origin")).toBeNull();
+  });
+
+  it("serves the built SPA at /app with a strict script-src CSP", async () => {
+    const clientRoot = mkdtempSync(join(tmpdir(), "nexus-client-"));
+    writeFileSync(
+      join(clientRoot, "index.html"),
+      "<!doctype html><html><body><div id='root'></div></body></html>",
+    );
+    mkdirSync(join(clientRoot, "assets"), { recursive: true });
+    writeFileSync(join(clientRoot, "assets", "app.js"), "console.log('nexus');");
+
+    const { base } = await bootWithClient(join(tmp, "spa.db"), clientRoot);
+    const page = await fetch(`${base}/app`);
+    expect(page.status).toBe(200);
+    expect(await page.text()).toContain("id='root'");
+    const csp = page.headers.get("content-security-policy") ?? "";
+    expect(csp).toContain("script-src 'self'");
+    expect(csp).not.toContain("script-src 'self' 'unsafe-inline'");
+
+    const asset = await fetch(`${base}/app/assets/app.js`);
+    expect(asset.status).toBe(200);
+    expect(asset.headers.get("content-type")).toContain("javascript");
+
+    const missing = await fetch(`${base}/app/assets/nope.js`);
+    expect(missing.status).toBe(404);
+  });
+
+  it("sends the hardened security headers on every response", async () => {
+    const { base } = await boot(join(tmp, "headers.db"));
+    const res = await fetch(`${base}/health`);
+    expect(res.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(res.headers.get("x-frame-options")).toBe("DENY");
+    expect(res.headers.get("referrer-policy")).toBe("strict-origin-when-cross-origin");
+    expect(res.headers.get("permissions-policy")).toContain("camera=()");
   });
 });

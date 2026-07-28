@@ -2,7 +2,7 @@
  * NEXUS AI — Rate Limiting & Login Lockout (Section G)
  *
  * Sliding-window rate limiter and exponential-backoff lockout for login/register
- * endpoints. Dev: in-memory Map. FAZ 18: swap to Redis without changing callers.
+ * endpoints. Dev: in-memory Map. : swap to Redis without changing callers.
  * Both classes accept a `now` clock injection for deterministic unit tests.
  */
 

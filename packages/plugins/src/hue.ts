@@ -13,7 +13,7 @@ export const hueManifest: ConnectorManifest = {
   version: "1.0.0",
   protocol: "zigbee",
   capabilities: ["switch", "brightness", "colorTemp"],
-  premium: true, // Requires paid plan according to FAZ 19
+  premium: true,
 };
 
 /**

@@ -13,7 +13,11 @@ import { SITE_URL } from "./index.js";
 import { renderAppIconSvg, renderOgImageSvg } from "./render.js";
 import { getTheme } from "@nexus/design-system";
 import { renderManifest, renderRobotsTxt, renderSitemap } from "./seo.js";
-import { renderMarketingDocument, renderLegalPage, renderNotFoundPage } from "../../server/src/pages.js";
+import {
+  renderMarketingDocument,
+  renderLegalPage,
+  renderNotFoundPage,
+} from "../../server/src/pages.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, "..", "dist");
@@ -24,7 +28,8 @@ const fontsSource = join(here, "..", "..", "..", "public", "fonts");
 const fontsDest = join(outDir, "fonts");
 cpSync(fontsSource, fontsDest, { recursive: true });
 // eslint-disable-next-line no-console
-console.log("copied public/fonts → dist/fonts");
+if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+  console.log("copied public/fonts → dist/fonts");
 
 const { setLocale } = await import("./render.js");
 const pages: ReadonlyArray<{ file: string; theme: "dark" | "light" }> = [
@@ -54,14 +59,16 @@ for (const loc of ["en", "tr"] as const) {
     const html = renderLegalPage(loc, "dark", legalPage);
     writeFileSync(join(locDir, `${legalPage}.html`), html, "utf8");
     // eslint-disable-next-line no-console
-    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, legalPage + ".html")}`);
+    if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+      console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, legalPage + ".html")}`);
   }
 
   // 404 page
   const notFound = renderNotFoundPage(loc, "dark");
   writeFileSync(join(locDir, "404.html"), notFound, "utf8");
   // eslint-disable-next-line no-console
-  console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "404.html")}`);
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "404.html")}`);
 }
 
 // SEO discovery files, generated from the same canonical origin as the pages.
@@ -92,4 +99,5 @@ writeFileSync(
   "utf8",
 );
 // eslint-disable-next-line no-console
-console.log("wrote dist/sitemap.xml, robots.txt, og-cover.svg, icon.svg, manifest.webmanifest");
+if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+  console.log("wrote dist/sitemap.xml, robots.txt, og-cover.svg, icon.svg, manifest.webmanifest");

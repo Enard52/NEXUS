@@ -150,7 +150,11 @@ export class XiaomiConnector implements AuthorizableConnector {
 
   execute(command: CapabilityCommand): CommandResult {
     if (!this._authorized) {
-      return { ok: false, device: this.devices[0]!, message: "Not authorized — link Mi Home account first" };
+      return {
+        ok: false,
+        device: this.devices[0]!,
+        message: "Not authorized — link Mi Home account first",
+      };
     }
     const d = this.devices.find((x) => x.id === command.deviceId);
     if (!d) throw new Error(`Device not found: ${command.deviceId}`);

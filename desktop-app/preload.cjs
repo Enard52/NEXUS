@@ -13,12 +13,19 @@ const bridge = {
     toggleMaximize: () => ipcRenderer.send("nx:toggle-maximize"),
     close: () => ipcRenderer.send("nx:close"),
   },
+  api: {
+    send: (name, detail = {}) => ipcRenderer.send("nx:renderer-event", { name, detail }),
+  },
   setup: {
     browse: () => ipcRenderer.invoke("nx:setup-browse"),
     cancel: () => ipcRenderer.invoke("nx:setup-cancel"),
     complete: (config) => ipcRenderer.invoke("nx:setup-complete", config),
     launch: () => ipcRenderer.invoke("nx:setup-launch"),
   },
+  // Native OS save dialog for export / "save as" flows.
+  saveDialog: (options) => ipcRenderer.invoke("nx:save-dialog", options),
+  // Auto-update: renderer can install a downloaded update immediately.
+  installUpdate: () => ipcRenderer.invoke("nx:install-update"),
   retry: () => ipcRenderer.send("nx:retry"),
   appUrl: () => ipcRenderer.invoke("nx:app-url"),
 };

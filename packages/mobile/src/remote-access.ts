@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Remote Access (FAZ 9)
+ * NEXUS AI — Remote Access
  *
  * Enables the mobile app to communicate with the local NEXUS server (running
  * on the user's home machine) when away from the home network.
@@ -24,12 +24,7 @@ export type ConnectionMode = "local" | "remote" | "auto";
 
 /** Connection state. */
 export type ConnectionState =
-  | "disconnected"
-  | "connecting"
-  | "connected_local"
-  | "connected_remote"
-  | "reconnecting"
-  | "error";
+  "disconnected" | "connecting" | "connected_local" | "connected_remote" | "reconnecting" | "error";
 
 /** Server endpoint configuration. */
 export interface ServerEndpoint {

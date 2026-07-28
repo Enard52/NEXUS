@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Subscriptions, payments & metrics (FAZ 15).",
+  "description": "NEXUS AI — Subscriptions, payments & metrics.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -11,5 +11,7 @@
   },
   "scripts": {
     "test": "vitest run"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

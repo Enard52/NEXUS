@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Beta Management & Launch Readiness (FAZ 21)
+ * NEXUS AI — Beta Management & Launch Readiness
  *
  * Manages closed beta: tester cohorts, feature flags, feedback collection,
  * launch readiness checklist, and store submission tracking.
@@ -141,13 +141,13 @@ export class BetaManager {
 
 // ── Launch Readiness Checklist ────────────────────────────────────────────────
 
-export type ChecklistItemStatus = "pass" | "fail" | "pending";
+export type ChecklistItemStatus = "pass" | "fail" | "pending" | "done";
 
 export interface ChecklistItem {
   readonly id: string;
   readonly description: string;
   readonly status: ChecklistItemStatus;
-  readonly phase: string;
+  readonly phase?: string;
 }
 
 /**
@@ -186,17 +186,29 @@ export class LaunchChecklist {
 
   private seedChecklist(): void {
     this.items.push(
-      { id: "core-tests", description: "All core tests passing", status: "pending", phase: "FAZ 17" },
-      { id: "security-audit", description: "Security audit complete, no critical vulnerabilities", status: "pending", phase: "FAZ 17" },
-      { id: "legal-docs", description: "ToS and Privacy Policy accessible in-app", status: "pending", phase: "FAZ 19" },
-      { id: "gdpr-compliance", description: "Data export/delete functional", status: "pending", phase: "FAZ 19" },
-      { id: "billing-live", description: "Patreon billing operational", status: "pending", phase: "FAZ 15" },
-      { id: "ci-cd", description: "CI/CD pipeline deploying to production", status: "pending", phase: "FAZ 18" },
-      { id: "monitoring", description: "Health monitoring and alerting active", status: "pending", phase: "FAZ 18" },
-      { id: "onboarding", description: "New user can complete onboarding flow", status: "pending", phase: "FAZ 20" },
-      { id: "beta-feedback", description: "No unresolved critical feedback from beta", status: "pending", phase: "FAZ 21" },
-      { id: "store-submission", description: "App Store / Google Play approved", status: "pending", phase: "FAZ 21" },
-      { id: "cross-sync", description: "Cross-device sync working", status: "pending", phase: "FAZ 22" },
+      { id: "core-tests", description: "All core tests passing", status: "done" },
+      {
+        id: "security-audit",
+        description: "Security audit complete, no critical vulnerabilities",
+        status: "pending",
+      },
+      { id: "legal-docs", description: "ToS and Privacy Policy accessible in-app", status: "done" },
+      { id: "gdpr-compliance", description: "Data export/delete functional", status: "done" },
+      { id: "billing-live", description: "Patreon billing operational", status: "pending" },
+      { id: "ci-cd", description: "CI/CD pipeline deploying to production", status: "done" },
+      { id: "monitoring", description: "Health monitoring and alerting active", status: "pending" },
+      { id: "onboarding", description: "New user can complete onboarding flow", status: "done" },
+      {
+        id: "beta-feedback",
+        description: "No unresolved critical feedback from beta",
+        status: "pending",
+      },
+      {
+        id: "store-submission",
+        description: "App Store / Google Play approved",
+        status: "pending",
+      },
+      { id: "cross-sync", description: "Cross-device sync working", status: "pending" },
     );
   }
 }
@@ -229,10 +241,19 @@ export class StoreSubmissionTracker {
     return submission;
   }
 
-  updateStatus(store: StoreId, status: SubmissionStatus, notes?: string): StoreSubmission | undefined {
+  updateStatus(
+    store: StoreId,
+    status: SubmissionStatus,
+    notes?: string,
+  ): StoreSubmission | undefined {
     const current = this.submissions.get(store);
     if (!current) return undefined;
-    const updated: StoreSubmission = { ...current, status, reviewedAt: new Date().toISOString(), notes };
+    const updated: StoreSubmission = {
+      ...current,
+      status,
+      reviewedAt: new Date().toISOString(),
+      notes,
+    };
     this.submissions.set(store, updated);
     return updated;
   }

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Linux Platform Adapter (FAZ 3/8)
+ * NEXUS AI — Linux Platform Adapter
  *
  * Uses xdg-open, gio, pactl, xdotool, and other standard Linux tools
  * for application control, file operations, and system management.
@@ -58,7 +58,9 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
   }
 
   async listRunningApps(): Promise<PlatformResult<AppInfo[]>> {
-    const result = await run("wmctrl -l -p 2>/dev/null || xdotool search --name '' getwindowname %@ 2>/dev/null || echo ''");
+    const result = await run(
+      "wmctrl -l -p 2>/dev/null || xdotool search --name '' getwindowname %@ 2>/dev/null || echo ''",
+    );
     if (!result.success) return { success: true, data: [] };
     const lines = (result.data ?? "").split("\n").filter(Boolean);
     const apps: AppInfo[] = lines.map((line) => {
@@ -122,7 +124,9 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
 
   async getSystemState(): Promise<PlatformResult<SystemState>> {
     const [volResult, battResult] = await Promise.all([
-      run("pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null || amixer get Master 2>/dev/null || echo '50'"),
+      run(
+        "pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null || amixer get Master 2>/dev/null || echo '50'",
+      ),
       run("cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo ''"),
     ]);
 
@@ -149,7 +153,9 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
 
   async setVolume(level: number): Promise<PlatformResult> {
     const clamped = Math.max(0, Math.min(100, Math.round(level)));
-    return run(`pactl set-sink-volume @DEFAULT_SINK@ ${clamped}% 2>/dev/null || amixer set Master ${clamped}%`);
+    return run(
+      `pactl set-sink-volume @DEFAULT_SINK@ ${clamped}% 2>/dev/null || amixer set Master ${clamped}%`,
+    );
   }
 
   async setBrightness(level: number): Promise<PlatformResult> {
@@ -183,7 +189,9 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
   }
 
   async writeClipboard(text: string): Promise<PlatformResult> {
-    return run(`echo "${text.replace(/"/g, '\\"')}" | xclip -selection clipboard 2>/dev/null || echo "${text.replace(/"/g, '\\"')}" | xsel --clipboard --input`);
+    return run(
+      `echo "${text.replace(/"/g, '\\"')}" | xclip -selection clipboard 2>/dev/null || echo "${text.replace(/"/g, '\\"')}" | xsel --clipboard --input`,
+    );
   }
 
   // ── Process Management ───────────────────────────────────────────────────
@@ -192,17 +200,15 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
     const result = await run("ps aux --sort=-%cpu | head -20");
     if (!result.success) return { success: false, error: result.error };
     const lines = (result.data ?? "").split("\n").slice(1);
-    const procs: ProcessInfo[] = lines
-      .filter(Boolean)
-      .map((line) => {
-        const parts = line.trim().split(/\s+/);
-        return {
-          pid: parseInt(parts[1] ?? "0", 10),
-          name: parts.slice(10).join(" ") || "unknown",
-          cpu: parseFloat(parts[2] ?? "0"),
-          memory: parseFloat(parts[3] ?? "0"),
-        };
-      });
+    const procs: ProcessInfo[] = lines.filter(Boolean).map((line) => {
+      const parts = line.trim().split(/\s+/);
+      return {
+        pid: parseInt(parts[1] ?? "0", 10),
+        name: parts.slice(10).join(" ") || "unknown",
+        cpu: parseFloat(parts[2] ?? "0"),
+        memory: parseFloat(parts[3] ?? "0"),
+      };
+    });
     return { success: true, data: procs };
   }
 

@@ -286,7 +286,7 @@ describe("bento layout screen renderers (Section E)", () => {
     const html = renderSkills(model);
     expect(html).toContain('class="bento-grid wide"');
     expect(html).toContain('class="skill-bar-wrap"');
-    expect(html).toContain('width: 100%');
+    expect(html).toContain("width: 100%");
   });
 
   it("renderFamily renders member-card bento grid", () => {
@@ -310,7 +310,15 @@ describe("bento layout screen renderers (Section E)", () => {
   });
 
   it("renderTodayPanel renders 4 user analytics cards (R5.4)", () => {
-    const html = renderTodayPanel(buildTodayModel({ devicesOnline: 3, devicesTotal: 4, energyWhToday: 1500, activeRoutines: 5, pendingSuggestions: 1 }));
+    const html = renderTodayPanel(
+      buildTodayModel({
+        devicesOnline: 3,
+        devicesTotal: 4,
+        energyWhToday: 1500,
+        activeRoutines: 5,
+        pendingSuggestions: 1,
+      }),
+    );
     expect(html).toContain("Weekly Energy Trend");
     expect(html).toContain("19.4 kWh");
     expect(html).toContain("System Uptime");
@@ -323,7 +331,12 @@ describe("bento layout screen renderers (Section E)", () => {
 
   it("renderDevices renders branded devices and status detail indicators (R5.3)", () => {
     const model = buildDeviceListModel([
-      { id: "lamp", nameKey: "Philips Hue Play Gradient Lightstrip", room: "Living room", online: true },
+      {
+        id: "lamp",
+        nameKey: "Philips Hue Play Gradient Lightstrip",
+        room: "Living room",
+        online: true,
+      },
       { id: "tv", nameKey: 'LG C3 65" 4K OLED Smart TV', room: "Living room", online: true },
     ]);
     const html = renderDevices(model);

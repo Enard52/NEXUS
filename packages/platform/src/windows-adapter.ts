@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Windows Platform Adapter (FAZ 3/8)
+ * NEXUS AI — Windows Platform Adapter
  *
  * Uses PowerShell commands for application control, file operations,
  * and system management on Windows.
@@ -50,7 +50,9 @@ export class WindowsPlatformAdapter implements PlatformAdapter {
   // ── Application Control ──────────────────────────────────────────────────
 
   async launchApp(appName: string): Promise<PlatformResult<AppInfo>> {
-    const result = await ps(`Start-Process '${appName}' -PassThru | Select-Object -Property Id,Name | ConvertTo-Json`);
+    const result = await ps(
+      `Start-Process '${appName}' -PassThru | Select-Object -Property Id,Name | ConvertTo-Json`,
+    );
     if (!result.success) return { success: false, error: result.error, command: result.command };
     return {
       success: true,

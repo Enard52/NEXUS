@@ -4,7 +4,7 @@
  * Inspired by Amazon Alexa Hunches and Google Home's suggested routines: the
  * system watches what the user repeatedly does at similar times and *proposes*
  * turning it into a scheduled Routine — it never creates one silently (same
- * consent rule as learned Skills, FAZ 5).
+ * consent rule as learned Skills, ).
  *
  * Deterministic and dependency-free: observations carry their own timestamp
  * ("HH:MM"), so the engine is fully testable without a clock. A pattern is the

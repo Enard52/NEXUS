@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Speech-to-Text providers (FAZ 2)
+ * NEXUS AI — Speech-to-Text providers
  *
  * Provider-agnostic STT interface with implementations:
  *  - OpenAI Whisper API (primary, cloud-based, multilingual)

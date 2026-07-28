@@ -1,6 +1,6 @@
 // Verifies the freshly built premium static pages and copies web dist → public/
-// without touching public/desktop, public/mobile or public/downloads.
-// Run after: pnpm --filter @nexus/web build:demo
+// without touching public/downloads.
+// Run after: pnpm --filter @nexus/web build:site
 // Usage: node scripts/verify-premium-static.mjs
 import { readFileSync, cpSync } from "node:fs";
 
@@ -38,9 +38,18 @@ if (process.exitCode) process.exit(1);
 
 // Selective copy: only the web-owned files, keep desktop/mobile/downloads intact.
 const entries = [
-  "index.html", "light.html", "privacy.html", "terms.html", "404.html",
-  "sitemap.xml", "robots.txt", "og-cover.svg", "icon.svg", "manifest.webmanifest",
-  "tr", "fonts",
+  "index.html",
+  "light.html",
+  "privacy.html",
+  "terms.html",
+  "404.html",
+  "sitemap.xml",
+  "robots.txt",
+  "og-cover.svg",
+  "icon.svg",
+  "manifest.webmanifest",
+  "tr",
+  "fonts",
 ];
 for (const e of entries) {
   cpSync(`packages/web/dist/${e}`, `public/${e}`, { recursive: true, force: true });

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Server-rendered pages (FAZ 18)
+ * NEXUS AI — Server-rendered pages
  *
  * Both the login gate and the signed-in dashboard are drawn with the project's
  * real design system: the same `renderStyles` tokens, the same `renderNav`,
@@ -271,7 +271,7 @@ export function renderLoginDocument(locale: string, opts: LoginOptions = {}): st
   const theme = opts.theme ?? "dark";
   const t = getTheme(theme);
   const authLangOptions = SUPPORTED_LOCALES.map(
-    (l) => `<option value="${l}"${l === locale ? " selected" : ""}>${l.toUpperCase()}</option>`
+    (l) => `<option value="${l}"${l === locale ? " selected" : ""}>${l.toUpperCase()}</option>`,
   ).join("");
   const notice = opts.notice
     ? `<div class="auth-error show">${escapeHtml(label(opts.notice === "unavailable" ? "auth.social.unavailable" : "auth.social.error"))}</div>`
@@ -605,10 +605,7 @@ ${renderRichFooter(t.color.primary)}
 /**
  * Renders a 404 Not Found page.
  */
-export function renderNotFoundPage(
-  locale: string,
-  theme: ThemeName = "dark",
-): string {
+export function renderNotFoundPage(locale: string, theme: ThemeName = "dark"): string {
   setLocale(locale);
   const t = getTheme(theme);
 
@@ -653,10 +650,7 @@ function legalPageCss(): string {
 /**
  * Renders an About page introducing the NEXUS platform.
  */
-export function renderAboutPage(
-  locale: string,
-  theme: ThemeName = "dark",
-): string {
+export function renderAboutPage(locale: string, theme: ThemeName = "dark"): string {
   setLocale(locale);
   const t = getTheme(theme);
   const isTr = locale === "tr";
@@ -696,81 +690,6 @@ export function renderAboutPage(
 
 <h2>${isTr ? "Ekibimiz" : "Our Team"}</h2>
 <p>${isTr ? "NEXUS, dünyanın dört bir yanından gelen teknoloji meraklıları, mühendisler ve tasarımcıların ortak bir tutkuyla bir araya geldiği bir ekiptir. Uzaktan çalışan dağıtık bir yapıya sahibiz ve gücümüzü topluluğumuzdan alıyoruz. Siz de bu devrimin bir parçası olmak istiyorsanız, bize katılın!" : "NEXUS is a team of technology enthusiasts, engineers, and designers from around the world brought together by a shared passion. We have a distributed, remote structure and draw our strength from our community. If you want to be part of this revolution, join us!"}</p>
-</main>
-${renderRichFooter(t.color.primary)}
-</body>
-</html>`;
-}
-
-/**
- * Renders a mock App Store / Google Play store listing page for NEXUS AI.
- */
-export function renderStoreDocument(options: { theme?: ThemeName; locale?: string } = {}): string {
-  const theme: ThemeName = options.theme ?? "dark";
-  const locale = options.locale ?? "en";
-  setLocale(locale);
-  const t = getTheme(theme);
-  const isTr = locale === "tr";
-
-  return `<!doctype html>
-<html lang="${escapeHtml(locale)}" data-theme="${escapeHtml(theme)}"${isRtl(locale as Locale) ? ' dir="rtl"' : ""}>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NEXUS AI — App Store & Play Store</title>
-<link rel="icon" href="${faviconDataUri(t.color.primary)}" />
-<meta name="theme-color" content="${t.color.bg}" />
-<style>${renderStyles(t)}
-.store-container { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
-.store-header { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px; }
-.store-icon { width: 100px; height: 100px; border-radius: 22px; background: var(--surface); border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; box-shadow: var(--elev); flex: none; }
-.store-meta { flex: 1; }
-.store-title { font-size: 28px; font-weight: 800; margin: 0 0 4px; letter-spacing: -0.02em; }
-.store-subtitle { font-size: 15px; color: var(--muted); margin: 0 0 16px; }
-.store-stats { display: flex; gap: 24px; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-.stat-item { display: flex; flex-direction: column; }
-.stat-item .val { font-weight: 800; font-size: 16px; color: var(--text); }
-.stat-item .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
-.store-cta { display: flex; gap: 12px; }
-.store-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--tint); color: var(--primary); text-transform: uppercase; display: inline-block; margin-bottom: 8px; }
-.store-screenshots { display: flex; gap: 14px; overflow-x: auto; padding: 12px 0 24px; margin-bottom: 32px; }
-.screen-mock { width: 200px; height: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; flex: none; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
-</style>
-</head>
-<body>
-<div class="navbar" id="navbar"><div class="nav-container">
-<a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
-<div class="nav-actions"><a class="btn primary nav-cta" href="/">${isTr ? "Ana Sayfa" : "Home"}</a></div>
-</div></div>
-<main class="store-container">
-<span class="store-badge">${isTr ? "Öne Çıkan Uygulama" : "Featured App"}</span>
-<div class="store-header">
-  <div class="store-icon">${renderLogo(t.color.primary)}</div>
-  <div class="store-meta">
-    <h1 class="store-title">NEXUS AI</h1>
-    <div class="store-subtitle">${isTr ? "Kişisel İşletim Sistemi & Akıllı Ev Asistanı" : "Personal Operating System & Smart Home AI"}</div>
-    <div class="store-stats">
-      <div class="stat-item"><span class="val">4.9 ★</span><span class="lbl">12.4K ${isTr ? "Değerlendirme" : "Ratings"}</span></div>
-      <div class="stat-item"><span class="val">#1</span><span class="lbl">${isTr ? "Ev Otomasyonu" : "Smart Home"}</span></div>
-      <div class="stat-item"><span class="val">4+</span><span class="lbl">${isTr ? "Yaş Sınırı" : "Age Rating"}</span></div>
-      <div class="stat-item"><span class="val">100%</span><span class="lbl">${isTr ? "Gizlilik Odaklı" : "Private"}</span></div>
-    </div>
-    <div class="store-cta">
-      <a href="/downloads" class="btn primary">${isTr ? "İndir / Yükle" : "Get / Install"}</a>
-      <a href="/preview/mobile" class="btn">${isTr ? "Mobil Önizleme" : "Mobile Preview"}</a>
-    </div>
-  </div>
-</div>
-<h2>${isTr ? "Ekran Görüntüleri" : "Screenshots"}</h2>
-<div class="store-screenshots">
-  <div class="screen-mock"><div style="font-weight:700;font-size:14px;">Today Dashboard</div><div style="font-size:12px;color:var(--muted);">19.4 kWh · 99.98% Uptime</div><div style="font-size:10px;color:var(--primary);font-weight:700;">NEXUS AI ACTIVE</div></div>
-  <div class="screen-mock"><div style="font-weight:700;font-size:14px;">Smart Devices</div><div style="font-size:12px;color:var(--muted);">Philips Hue · LG C3 OLED</div><div style="font-size:10px;color:#10b981;font-weight:700;">6 ONLINE</div></div>
-  <div class="screen-mock"><div style="font-weight:700;font-size:14px;">Family & Sync</div><div style="font-size:12px;color:var(--muted);">Multi-user control</div><div style="font-size:10px;color:var(--primary);font-weight:700;">3 OS SYNC</div></div>
-</div>
-<h2>${isTr ? "Açıklama" : "Description"}</h2>
-<p style="color:var(--muted);line-height:1.7;font-size:15px;">
-${isTr ? "NEXUS AI, akıllı evinizi ve kişisel otomasyonlarınızı internet bağımlılığı olmadan yerel olarak yöneten ses odaklı kişisel işletim sistemidir. Gizliliğinizi %100 korurken, cihazlarınızı ve senaryolarınızı anında senkronize eder." : "NEXUS AI is a voice-first, privacy-focused personal operating system that controls your smart home, learns your routines, and works across iOS, Android, Windows, macOS, and Linux with zero external cloud dependencies."}
-</p>
 </main>
 ${renderRichFooter(t.color.primary)}
 </body>

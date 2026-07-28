@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Deep Links & Universal Links (FAZ 9)
+ * NEXUS AI — Deep Links & Universal Links
  *
  * Handles incoming deep links (nexus:// custom scheme) and Universal Links
  * (https://nexus.ai/...) — maps URLs to NEXUS intents and navigation targets.
@@ -50,7 +50,11 @@ export type DeepLinkHandler = (result: DeepLinkResult) => void;
 interface DeepLinkRoute {
   pattern: RegExp;
   action: DeepLinkAction;
-  extract: (match: RegExpMatchArray) => { params: Record<string, string>; intent: string | null; screen: string | null };
+  extract: (match: RegExpMatchArray) => {
+    params: Record<string, string>;
+    intent: string | null;
+    screen: string | null;
+  };
 }
 
 // ─── Route Definitions ───────────────────────────────────────────────────────
@@ -107,7 +111,9 @@ const ROUTES: DeepLinkRoute[] = [
     extract: (m) => {
       const searchParams = new URLSearchParams(m[1]?.replace("?", "") ?? "");
       const params: Record<string, string> = {};
-      searchParams.forEach((v, k) => { params[k] = v; });
+      searchParams.forEach((v, k) => {
+        params[k] = v;
+      });
       return { params, intent: null, screen: null };
     },
   },

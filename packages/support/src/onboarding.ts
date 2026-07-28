@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Onboarding Wizard (FAZ 20)
+ * NEXUS AI — Onboarding Wizard
  *
  * Guides new users through first-time setup: account → language/addressing
  * preference → first device connection → first skill suggestion.
@@ -157,24 +157,120 @@ export class FaqService {
   private seedFaqs(): void {
     // English
     this.entries.push(
-      { id: "faq-1", category: "account", question: "How do I create an account?", answer: "Download NEXUS and follow the onboarding wizard to create your account.", locale: "en" },
-      { id: "faq-2", category: "account", question: "How do I reset my password?", answer: "Go to Settings > Account > Reset Password. A reset link will be sent to your email.", locale: "en" },
-      { id: "faq-3", category: "devices", question: "Which devices are supported?", answer: "NEXUS supports IKEA, Xiaomi, Sonoff, Tuya, and Philips Hue devices, with more added regularly.", locale: "en" },
-      { id: "faq-4", category: "devices", question: "How do I connect a new device?", answer: "Go to Settings > Devices > Add Device. Follow the pairing instructions for your device brand.", locale: "en" },
-      { id: "faq-5", category: "billing", question: "How do I upgrade to Premium?", answer: "Go to Settings > Subscription > Upgrade. You'll be redirected to Patreon to complete the payment.", locale: "en" },
-      { id: "faq-6", category: "billing", question: "How do I cancel my subscription?", answer: "Go to Settings > Subscription > Cancel. Your access continues until the end of the billing period.", locale: "en" },
-      { id: "faq-7", category: "privacy", question: "How is my data protected?", answer: "All data is encrypted at rest. Voice processing requires explicit consent. You can export or delete your data at any time.", locale: "en" },
+      {
+        id: "faq-1",
+        category: "account",
+        question: "How do I create an account?",
+        answer: "Download NEXUS and follow the onboarding wizard to create your account.",
+        locale: "en",
+      },
+      {
+        id: "faq-2",
+        category: "account",
+        question: "How do I reset my password?",
+        answer:
+          "Go to Settings > Account > Reset Password. A reset link will be sent to your email.",
+        locale: "en",
+      },
+      {
+        id: "faq-3",
+        category: "devices",
+        question: "Which devices are supported?",
+        answer:
+          "NEXUS supports IKEA, Xiaomi, Sonoff, Tuya, and Philips Hue devices, with more added regularly.",
+        locale: "en",
+      },
+      {
+        id: "faq-4",
+        category: "devices",
+        question: "How do I connect a new device?",
+        answer:
+          "Go to Settings > Devices > Add Device. Follow the pairing instructions for your device brand.",
+        locale: "en",
+      },
+      {
+        id: "faq-5",
+        category: "billing",
+        question: "How do I upgrade to Premium?",
+        answer:
+          "Go to Settings > Subscription > Upgrade. You'll be redirected to Patreon to complete the payment.",
+        locale: "en",
+      },
+      {
+        id: "faq-6",
+        category: "billing",
+        question: "How do I cancel my subscription?",
+        answer:
+          "Go to Settings > Subscription > Cancel. Your access continues until the end of the billing period.",
+        locale: "en",
+      },
+      {
+        id: "faq-7",
+        category: "privacy",
+        question: "How is my data protected?",
+        answer:
+          "All data is encrypted at rest. Voice processing requires explicit consent. You can export or delete your data at any time.",
+        locale: "en",
+      },
     );
 
     // Turkish
     this.entries.push(
-      { id: "faq-tr-1", category: "account", question: "Hesap nasıl oluştururum?", answer: "NEXUS'u indirin ve onboarding sihirbazını takip ederek hesabınızı oluşturun.", locale: "tr" },
-      { id: "faq-tr-2", category: "account", question: "Şifremi nasıl sıfırlarım?", answer: "Ayarlar > Hesap > Şifre Sıfırla bölümüne gidin. E-postanıza sıfırlama linki gönderilecektir.", locale: "tr" },
-      { id: "faq-tr-3", category: "devices", question: "Hangi cihazlar destekleniyor?", answer: "NEXUS; IKEA, Xiaomi, Sonoff, Tuya ve Philips Hue cihazlarını destekler, sürekli yenileri eklenmektedir.", locale: "tr" },
-      { id: "faq-tr-4", category: "devices", question: "Yeni cihaz nasıl bağlarım?", answer: "Ayarlar > Cihazlar > Cihaz Ekle bölümüne gidin. Cihaz markanız için eşleştirme talimatlarını izleyin.", locale: "tr" },
-      { id: "faq-tr-5", category: "billing", question: "Premium'a nasıl geçerim?", answer: "Ayarlar > Abonelik > Yükselt bölümüne gidin. Ödemeyi tamamlamak için Patreon'a yönlendirileceksiniz.", locale: "tr" },
-      { id: "faq-tr-6", category: "billing", question: "Aboneliğimi nasıl iptal ederim?", answer: "Ayarlar > Abonelik > İptal Et. Erişiminiz fatura döneminin sonuna kadar devam eder.", locale: "tr" },
-      { id: "faq-tr-7", category: "privacy", question: "Verilerim nasıl korunuyor?", answer: "Tüm veriler şifreli saklanır. Ses işleme açık onay gerektirir. Verilerinizi istediğiniz zaman dışa aktarabilir veya silebilirsiniz.", locale: "tr" },
+      {
+        id: "faq-tr-1",
+        category: "account",
+        question: "Hesap nasıl oluştururum?",
+        answer: "NEXUS'u indirin ve onboarding sihirbazını takip ederek hesabınızı oluşturun.",
+        locale: "tr",
+      },
+      {
+        id: "faq-tr-2",
+        category: "account",
+        question: "Şifremi nasıl sıfırlarım?",
+        answer:
+          "Ayarlar > Hesap > Şifre Sıfırla bölümüne gidin. E-postanıza sıfırlama linki gönderilecektir.",
+        locale: "tr",
+      },
+      {
+        id: "faq-tr-3",
+        category: "devices",
+        question: "Hangi cihazlar destekleniyor?",
+        answer:
+          "NEXUS; IKEA, Xiaomi, Sonoff, Tuya ve Philips Hue cihazlarını destekler, sürekli yenileri eklenmektedir.",
+        locale: "tr",
+      },
+      {
+        id: "faq-tr-4",
+        category: "devices",
+        question: "Yeni cihaz nasıl bağlarım?",
+        answer:
+          "Ayarlar > Cihazlar > Cihaz Ekle bölümüne gidin. Cihaz markanız için eşleştirme talimatlarını izleyin.",
+        locale: "tr",
+      },
+      {
+        id: "faq-tr-5",
+        category: "billing",
+        question: "Premium'a nasıl geçerim?",
+        answer:
+          "Ayarlar > Abonelik > Yükselt bölümüne gidin. Ödemeyi tamamlamak için Patreon'a yönlendirileceksiniz.",
+        locale: "tr",
+      },
+      {
+        id: "faq-tr-6",
+        category: "billing",
+        question: "Aboneliğimi nasıl iptal ederim?",
+        answer:
+          "Ayarlar > Abonelik > İptal Et. Erişiminiz fatura döneminin sonuna kadar devam eder.",
+        locale: "tr",
+      },
+      {
+        id: "faq-tr-7",
+        category: "privacy",
+        question: "Verilerim nasıl korunuyor?",
+        answer:
+          "Tüm veriler şifreli saklanır. Ses işleme açık onay gerektirir. Verilerinizi istediğiniz zaman dışa aktarabilir veya silebilirsiniz.",
+        locale: "tr",
+      },
     );
   }
 }

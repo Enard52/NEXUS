@@ -1,8 +1,8 @@
 /**
- * NEXUS AI — Multi-Agent Protocol (FAZ 7)
+ * NEXUS AI — Multi-Agent Protocol
  *
- * Defines the contract every NEXUS agent must fulfill. Unlike the FAZ 1 inline
- * agents (which only have canHandle/plan), the FAZ 7 protocol adds:
+ * Defines the contract every NEXUS agent must fulfill. Unlike the inline
+ * agents (which only have canHandle/plan), the protocol adds:
  *  - Scoped permissions (what resources an agent can access)
  *  - Structured capabilities (what domains the agent covers)
  *  - Inter-agent messaging (agents can request help from each other)
@@ -15,15 +15,15 @@
 
 /** Resource categories an agent can request access to. */
 export type AgentScope =
-  | "devices"        // Smart home device control
-  | "memory"         // User memory read/write
-  | "platform"       // OS-level operations (PC Agent)
-  | "network"        // External API calls
-  | "personalization"// User preferences
-  | "security"       // Security system access
-  | "finance"        // Financial data access
-  | "knowledge"      // Knowledge base queries
-  | "routines";      // Routines & scenes
+  | "devices" // Smart home device control
+  | "memory" // User memory read/write
+  | "platform" // OS-level operations (PC Agent)
+  | "network" // External API calls
+  | "personalization" // User preferences
+  | "security" // Security system access
+  | "finance" // Financial data access
+  | "knowledge" // Knowledge base queries
+  | "routines"; // Routines & scenes
 
 /** Permissions granted to an agent based on its declared scopes. */
 export interface AgentPermissions {
@@ -97,12 +97,16 @@ export interface MultiAgentContext {
   readonly language: string;
   readonly timeOfDay: string;
   /** Send a message to another agent (inter-agent communication). */
-  readonly sendMessage: (to: string, intent: string, payload: Record<string, unknown>) => Promise<AgentResult | undefined>;
+  readonly sendMessage: (
+    to: string,
+    intent: string,
+    payload: Record<string, unknown>,
+  ) => Promise<AgentResult | undefined>;
 }
 
 /**
- * The multi-agent protocol. Every FAZ 7+ agent implements this interface.
- * It extends beyond the simple FAZ 1 canHandle/plan with scoring, scoping,
+ * The multi-agent protocol. Every + agent implements this interface.
+ * It extends beyond the simple canHandle/plan with scoring, scoping,
  * and structured messaging.
  */
 export interface NexusAgent {
@@ -132,7 +136,11 @@ export interface NexusAgent {
    * Process a request and return a result.
    * The agent should only use resources within its declared scopes.
    */
-  handle(intent: string, slots: Record<string, unknown>, ctx: MultiAgentContext): Promise<AgentResult>;
+  handle(
+    intent: string,
+    slots: Record<string, unknown>,
+    ctx: MultiAgentContext,
+  ): Promise<AgentResult>;
 }
 
 // ── Agent Router ──────────────────────────────────────────────────────────────
@@ -281,9 +289,7 @@ export class AgentRouter {
     results: Map<string, AgentResult>,
     delegations: { from: string; to: string; result?: AgentResult }[],
   ): RoutedResult {
-    const entries = [...results.entries()].sort(
-      (a, b) => b[1].confidence - a[1].confidence,
-    );
+    const entries = [...results.entries()].sort((a, b) => b[1].confidence - a[1].confidence);
 
     if (entries.length === 0) {
       return { text: "", actions: [], agents: [], results, delegations };
@@ -298,9 +304,8 @@ export class AgentRouter {
       .filter(([, r]) => r.text && r.confidence > 0.5)
       .map(([id, r]) => `[${id}] ${r.text}`);
 
-    const text = supplements.length > 0
-      ? `${primaryText}\n\n${supplements.join("\n")}`
-      : primaryText;
+    const text =
+      supplements.length > 0 ? `${primaryText}\n\n${supplements.join("\n")}` : primaryText;
 
     // Merge all actions
     const actions = entries.flatMap(([, r]) => r.actions);

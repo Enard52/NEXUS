@@ -1,19 +1,20 @@
 /**
- * NEXUS AI — Device System & Universal Capability (FAZ 4)
+ * NEXUS AI — Device System & Universal Capability
  *
  * The Core and agents never speak a brand's language. Every integration is a
  * Connector that exposes devices through a Universal Capability schema
  * (switch / brightness / colorTemp / …). The Device Manager discovers devices
  * across connectors and routes a capability command to the connector that owns
  * the target device — so adding a new brand connector requires zero changes to
- * Core/Agent code (FAZ 4 Bitiş Kriteri).
+ * Core/Agent code .
  *
  * Connectors here are generic in-memory stand-ins; real brand/protocol
  * connectors (Matter, Zigbee, cloud APIs, …) implement the same interface and
- * plug in via the FAZ 16 store. Deterministic and dependency-free.
+ * plug in via the store. Deterministic and dependency-free.
  */
 
-export type CapabilityKind = "switch" | "brightness" | "colorTemp" | "color" | "motion" | "temperature" | "humidity" | "power";
+export type CapabilityKind =
+  "switch" | "brightness" | "colorTemp" | "color" | "motion" | "temperature" | "humidity" | "power";
 
 export interface Capability {
   readonly kind: CapabilityKind;
@@ -161,7 +162,7 @@ export class LocalNetworkConnector implements Connector {
   async scanNetwork(): Promise<void> {
     if (this.isScanning) return;
     this.isScanning = true;
-    
+
     // Simulate network delay and finding a real device
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -178,7 +179,7 @@ export class LocalNetworkConnector implements Connector {
             lastSeen: new Date().toISOString(),
             capabilities: [
               { kind: "switch", value: true },
-              { kind: "brightness", value: 80, min: 1, max: 100 }
+              { kind: "brightness", value: 80, min: 1, max: 100 },
             ],
           },
           {
@@ -191,10 +192,8 @@ export class LocalNetworkConnector implements Connector {
             macAddress: "11:22:33:44:55:66",
             connectionStatus: "online",
             lastSeen: new Date().toISOString(),
-            capabilities: [
-              { kind: "switch", value: false }
-            ],
-          }
+            capabilities: [{ kind: "switch", value: false }],
+          },
         ];
         this.isScanning = false;
         resolve();
@@ -207,11 +206,11 @@ export class LocalNetworkConnector implements Connector {
   }
 
   supports(deviceId: string): boolean {
-    return this.scannedDevices.some(d => d.id === deviceId);
+    return this.scannedDevices.some((d) => d.id === deviceId);
   }
 
   execute(command: CapabilityCommand): CommandResult {
-    const deviceIndex = this.scannedDevices.findIndex(d => d.id === command.deviceId);
+    const deviceIndex = this.scannedDevices.findIndex((d) => d.id === command.deviceId);
     if (deviceIndex === -1) {
       throw new CapabilityError(`Unknown device ${command.deviceId} on LocalNetworkConnector`);
     }
@@ -228,13 +227,20 @@ export class LocalNetworkConnector implements Connector {
         c.kind === command.capability ? { ...c, value: command.value } : c,
       ),
     };
-    
+
     this.scannedDevices[deviceIndex] = updated;
-    
+
     // In a real implementation, this would send an HTTP/CoAP request to the IP address.
-    console.log(`[LocalNetworkConnector] Sent network command to ${device.ipAddress}: ${command.capability} = ${command.value}`);
-    
-    return { ok: true, device: updated, message: `${device.name}: ${command.capability} set via LAN` };
+    if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+      console.log(
+        `[LocalNetworkConnector] Sent network command to ${device.ipAddress}: ${command.capability} = ${command.value}`,
+      );
+
+    return {
+      ok: true,
+      device: updated,
+      message: `${device.name}: ${command.capability} set via LAN`,
+    };
   }
 }
 
@@ -300,7 +306,7 @@ export class DeviceManager {
     this.connectors.push(connector);
   }
 
-  /** Remove a connector (and its devices) by id — used by the store on uninstall (FAZ 16). */
+  /** Remove a connector (and its devices) by id — used by the store on uninstall. */
   unregisterConnector(id: string): boolean {
     const index = this.connectors.findIndex((c) => c.id === id);
     if (index === -1) return false;

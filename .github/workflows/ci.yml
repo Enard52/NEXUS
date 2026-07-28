@@ -37,7 +37,7 @@ jobs:
         run: pnpm test
 
   release:
-    name: build & publish release artifacts
+    name: build server bundle + static assets
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -58,18 +58,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build all packages
+      - name: Build all packages (static + client SPA + server bundle + desktop resources)
         run: pnpm build
 
-      - name: Generate SHA-256 checksums
-        run: |
-          mkdir -p dist/checksums
-          find dist -type f \( -name "*.exe" -o -name "*.msi" -o -name "*.dmg" -o -name "*.AppImage" \) \
-            -exec sh -c 'sha256sum "$1" > "$1.sha256"' _ {} \;
+      - name: Generate release manifest (checksums + SBOM)
+        run: pnpm release:manifest
 
-      - name: Upload release artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: release-${{ github.sha }}
-          path: dist/
-          retention-days: 30
+          name: nexus-build-${{ github.sha }}
+          path: |
+            packages/server/dist/main.cjs
+            packages/client/dist/
+            packages/desktop/dist/
+            sbom.json
+          retention-days: 14

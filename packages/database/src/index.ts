@@ -1,16 +1,16 @@
 /**
- * NEXUS AI — Persistence layer & migrations (FAZ 0 foundation, used by 16/18)
+ * NEXUS AI — Persistence layer & migrations
  *
  * A dependency-free persistence abstraction so the rest of the system talks to
- * "a database" through one seam. FAZ 16 (cloud memory) and FAZ 18 (backup /
+ * "a database" through one seam. (cloud memory) and (backup /
  * disaster recovery) build on this: swap the backend without touching callers.
  *
  * What is real here: a key/value contract, an in-memory backend, typed
  * collections (repository pattern), an idempotent migration runner, and a
- * snapshot/restore path that FAZ 18 backups rely on.
+ * snapshot/restore path that backups rely on.
  *
  * External boundary: a durable driver (SQLite/Postgres/managed cloud DB) is a
- * production dependency (FAZ 18). It implements `KeyValueStore` and drops in
+ * production dependency . It implements `KeyValueStore` and drops in
  * with no caller changes. We never pretend an in-memory store is durable.
  */
 
@@ -150,7 +150,7 @@ export class MigrationRunner {
   }
 }
 
-// ── Snapshot / restore (FAZ 18 backup & disaster recovery seam) ───────────────
+// ── Snapshot / restore ───────────────
 
 export interface DatabaseSnapshot {
   readonly takenAt: string;
@@ -180,7 +180,7 @@ export class Database {
     return new MigrationRunner(this);
   }
 
-  /** Point-in-time copy of every key. FAZ 18 persists this off-box. */
+  /** Point-in-time copy of every key. persists this off-box. */
   snapshot(): DatabaseSnapshot {
     const entries: Record<string, string> = {};
     for (const key of this.raw.keys()) {

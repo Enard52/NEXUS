@@ -1,14 +1,14 @@
 /**
- * NEXUS AI — App shells & screens (FAZ 10)
+ * NEXUS AI — App shells & screens
  *
- * The application shell: the catalog of main screens from FAZ 10, i18n-ready
- * (screens carry title *keys*, never literal copy — FAZ 13 resolves them), and
- * navigation that respects auth, subscription plan (FAZ 15) and role (FAZ 12).
+ * The application shell: the catalog of main screens from , i18n-ready
+ * (screens carry title *keys*, never literal copy — resolves them), and
+ * navigation that respects auth, subscription plan and role .
  *
  * View-model builders turn domain data (devices, subscription, personalization)
  * into render-ready screen state. They are pure and deterministic; the actual
- * pixels are drawn by the desktop/mobile front ends (FAZ 9) using these models
- * plus the design tokens (FAZ 10). No framework here — just the contract those
+ * pixels are drawn by the desktop/mobile front ends using these models
+ * plus the design tokens . No framework here — just the contract those
  * front ends consume, so the same screen state drives every platform.
  */
 
@@ -17,7 +17,7 @@ import { getTheme, type DesignTokens, type ThemeName } from "@nexus/design-syste
 export type PlanId = "free" | "premium" | "family";
 export type Role = "admin" | "member" | "guest";
 
-/** The main screens listed in FAZ 10. */
+/** The main screens listed in . */
 export type ScreenId =
   | "today"
   | "home-state"
@@ -36,7 +36,7 @@ export type ScreenId =
 
 export interface ScreenDescriptor {
   readonly id: ScreenId;
-  /** i18n key, resolved by FAZ 13 — never a hard-coded label. */
+  /** i18n key, resolved by never a hard-coded label. */
   readonly titleKey: string;
   /** Screen is only reachable after sign-in. */
   readonly requiresAuth: boolean;
@@ -79,7 +79,7 @@ export const SCREENS: readonly ScreenDescriptor[] = [
     requiresAuth: true,
     roles: ["admin"],
   },
-  // The Download Center is the public marketing page — no auth (FAZ 10/18).
+  // The Download Center is the public marketing page — no auth.
   { id: "download-center", titleKey: "screen.downloadCenter", requiresAuth: false },
 ];
 
@@ -116,14 +116,7 @@ export function getScreen(id: ScreenId): ScreenDescriptor {
  * `DEVICE_TILE_STYLE` keys used by the mobile/web renderers (lamp/tv/ac/…).
  */
 export type DeviceTypeId =
-  | "lamp"
-  | "tv"
-  | "ac"
-  | "lock"
-  | "speaker"
-  | "camera"
-  | "thermostat"
-  | "curtain";
+  "lamp" | "tv" | "ac" | "lock" | "speaker" | "camera" | "thermostat" | "curtain";
 
 /**
  * Kinds of controllable capabilities a device exposes. Mirrors the domain
@@ -383,7 +376,7 @@ export interface TodayModel {
 /**
  * Compose the "Bugün" (Today) summary from live signals: device presence,
  * energy use, active routines and any proactive suggestions. Values are
- * formatted minimally here; full locale formatting is FAZ 13's job.
+ * formatted minimally here; full locale formatting is 's job.
  */
 export function buildTodayModel(input: TodayInput): TodayModel {
   const kwh = (input.energyWhToday / 1000).toFixed(2);
@@ -533,7 +526,7 @@ export interface FamilyModel {
   readonly adminCount: number;
 }
 
-/** Household members and their roles (FAZ 12). Admins are surfaced for count. */
+/** Household members and their roles. Admins are surfaced for count. */
 export function buildFamilyModel(members: readonly FamilyMemberRow[]): FamilyModel {
   return {
     titleKey: getScreen("family").titleKey,
@@ -560,7 +553,7 @@ export interface HomeStateModel {
   readonly emptyStateKey?: string;
 }
 
-/** Group devices by room for the "Home" overview (FAZ 4/10). Deterministic. */
+/** Group devices by room for the "Home" overview. Deterministic. */
 export function buildHomeStateModel(devices: readonly HomeDeviceInput[]): HomeStateModel {
   const byRoom = new Map<string, { total: number; online: number }>();
   for (const d of devices) {

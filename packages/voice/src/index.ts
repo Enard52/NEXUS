@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — @nexus/voice (FAZ 2)
+ * NEXUS AI — @nexus/voice
  *
  * Complete voice interaction engine:
  *  - Wake word detection (phonetic matching, instant rename support)

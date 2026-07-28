@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Core entrypoint (FAZ 0)
+ * NEXUS AI — Core entrypoint
  *
  * Boots the core service and keeps the process alive until it receives a
  * termination signal, then shuts down gracefully.

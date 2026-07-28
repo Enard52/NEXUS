@@ -380,7 +380,11 @@ function stepLicense(): string {
 
 function stepLocation(os: "windows" | "mac" | "linux" = "windows"): string {
   const defaultPath =
-    os === "mac" ? "/Applications/NEXUS.app" : os === "linux" ? "/opt/nexus" : "C:\\Program Files\\NEXUS";
+    os === "mac"
+      ? "/Applications/NEXUS.app"
+      : os === "linux"
+        ? "/opt/nexus"
+        : "C:\\Program Files\\NEXUS";
   return (
     `<h2>${label("setup.locationTitle")}</h2>` +
     `<p>${label(os === "mac" ? "setup.locationDescMac" : "setup.locationDesc")}</p>` +
@@ -430,13 +434,20 @@ export interface SetupDocumentOptions {
  * Renders the NEXUS desktop setup wizard as a standalone HTML document.
  * Both dark and light themes are supported.
  */
-export function renderSetupDocument({ theme, os = "windows", locale }: SetupDocumentOptions): string {
+export function renderSetupDocument({
+  theme,
+  os = "windows",
+  locale,
+}: SetupDocumentOptions): string {
   const t = getTheme(theme);
   const logoSvg = renderLogo(t.color.primary);
   if (locale) setLocale(locale);
   const stepLabels = [
-    label("setup.welcome"), label("setup.license"), label("setup.location"),
-    label("setup.installing"), label("setup.finish"),
+    label("setup.welcome"),
+    label("setup.license"),
+    label("setup.location"),
+    label("setup.installing"),
+    label("setup.finish"),
   ];
 
   const txtInstall = label("setup.installBtn");

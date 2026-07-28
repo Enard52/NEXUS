@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — IKEA DIRIGERA Connector (FAZ 4)
+ * NEXUS AI — IKEA DIRIGERA Connector
  *
  * Mock adapter for IKEA smart home products (TRÅDFRI / DIRIGERA hub).
  * Uses Zigbee protocol via the DIRIGERA gateway. In a real implementation,
@@ -144,7 +144,11 @@ export class IkeaConnector implements AuthorizableConnector {
 
   execute(command: CapabilityCommand): CommandResult {
     if (!this._authorized) {
-      return { ok: false, device: this.devices[0]!, message: "Not authorized — pair with DIRIGERA hub first" };
+      return {
+        ok: false,
+        device: this.devices[0]!,
+        message: "Not authorized — pair with DIRIGERA hub first",
+      };
     }
     const d = this.devices.find((x) => x.id === command.deviceId);
     if (!d) throw new Error(`Device not found: ${command.deviceId}`);

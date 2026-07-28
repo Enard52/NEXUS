@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Subscription & Revenue via Patreon (FAZ 15)
+ * NEXUS AI — Subscription & Revenue via Patreon
  *
  * Uses Patreon as the payment/subscription provider. Patreon handles all
  * PCI-DSS compliance, tax/VAT collection, and payment processing. NEXUS never
@@ -31,7 +31,14 @@ export interface Plan {
 }
 
 export const PLAN_CATALOG: Record<PlanId, Plan> = {
-  free: { id: "free", priceCents: 0, currency: "USD", maxDevices: 3, allSkills: false, familySeats: 1 },
+  free: {
+    id: "free",
+    priceCents: 0,
+    currency: "USD",
+    maxDevices: 3,
+    allSkills: false,
+    familySeats: 1,
+  },
   premium: {
     id: "premium",
     priceCents: 999,
@@ -71,9 +78,7 @@ export interface Subscription {
 // ── Patreon webhook events ──────────────────────────────────────────────────
 
 export type PatreonWebhookType =
-  | "members:pledge:create"
-  | "members:pledge:update"
-  | "members:pledge:delete";
+  "members:pledge:create" | "members:pledge:update" | "members:pledge:delete";
 
 export interface PatreonWebhookEvent {
   readonly type: PatreonWebhookType;
@@ -436,10 +441,16 @@ export class BillingService {
 
   private handleDecline(customerId: string): Subscription {
     const sub = this.subs.get(customerId);
-    if (!sub) return { customerId, plan: "free", status: "active", trialEndsAt: null, failedAttempts: 0 };
+    if (!sub)
+      return { customerId, plan: "free", status: "active", trialEndsAt: null, failedAttempts: 0 };
     const failedAttempts = sub.failedAttempts + 1;
     if (failedAttempts >= this.maxDunning) {
-      const downgraded: Subscription = { ...sub, plan: "free", status: "active", failedAttempts: 0 };
+      const downgraded: Subscription = {
+        ...sub,
+        plan: "free",
+        status: "active",
+        failedAttempts: 0,
+      };
       this.subs.set(customerId, downgraded);
       return downgraded;
     }
@@ -453,7 +464,13 @@ export class BillingService {
     const result = this.provider.charge(sub.customerId, price, PLAN_CATALOG[sub.plan].currency);
 
     if (result.ok) {
-      this.writeInvoice(sub.customerId, sub.plan, price, PLAN_CATALOG[sub.plan].currency, "sandbox");
+      this.writeInvoice(
+        sub.customerId,
+        sub.plan,
+        price,
+        PLAN_CATALOG[sub.plan].currency,
+        "sandbox",
+      );
       const settled: Subscription = {
         ...sub,
         status: "active",
@@ -467,7 +484,12 @@ export class BillingService {
     // Dunning: count the failure; after the limit, gracefully downgrade to free.
     const failedAttempts = sub.failedAttempts + 1;
     if (failedAttempts >= this.maxDunning) {
-      const downgraded: Subscription = { ...sub, plan: "free", status: "active", failedAttempts: 0 };
+      const downgraded: Subscription = {
+        ...sub,
+        plan: "free",
+        status: "active",
+        failedAttempts: 0,
+      };
       this.subs.set(sub.customerId, downgraded);
       return downgraded;
     }

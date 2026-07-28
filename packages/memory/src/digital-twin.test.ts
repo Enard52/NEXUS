@@ -44,7 +44,13 @@ describe("DigitalTwin (FAZ 6)", () => {
 
   it("findByDisplayName locates device by custom name (case-insensitive)", () => {
     const twin = new DigitalTwin();
-    twin.upsertDevice({ id: "l1", kind: "light", room: "living", on: false, displayName: "Aurora" });
+    twin.upsertDevice({
+      id: "l1",
+      kind: "light",
+      room: "living",
+      on: false,
+      displayName: "Aurora",
+    });
     twin.upsertDevice({ id: "l2", kind: "light", room: "bedroom", on: true });
 
     expect(twin.findByDisplayName("aurora")?.id).toBe("l1");

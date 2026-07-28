@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — @nexus/skills (FAZ 5)
+ * NEXUS AI — @nexus/skills
  *
  * Experience memory + auto-learned Skills. The system observes repeated
  * fine-tuning patterns, proposes saving them as Skills (with user consent),

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Skill System Tests (FAZ 5)
+ * NEXUS AI — Skill System Tests
  *
  * Full-cycle tests: pattern observation → threshold → proposal → consent →
  * auto-application on subsequent matching requests.
@@ -7,12 +7,7 @@
 
 import { describe, expect, it, beforeEach } from "vitest";
 import { moduleName, skillsInfo, SkillDiscoveryService } from "./index.js";
-import {
-  SkillStore,
-  matchesPattern,
-  matchesSlots,
-  __resetIdCounter,
-} from "./skill-store.js";
+import { SkillStore, matchesPattern, matchesSlots, __resetIdCounter } from "./skill-store.js";
 import {
   SkillLearningEngine,
   SkillExecutor,
@@ -228,8 +223,18 @@ describe("SkillStore", () => {
   });
 
   it("list filters by status", () => {
-    store.create({ name: "A", description: "", trigger: { intentPattern: "a", slots: {} }, actions: [] });
-    store.propose({ name: "B", description: "", trigger: { intentPattern: "b", slots: {} }, actions: [] });
+    store.create({
+      name: "A",
+      description: "",
+      trigger: { intentPattern: "a", slots: {} },
+      actions: [],
+    });
+    store.propose({
+      name: "B",
+      description: "",
+      trigger: { intentPattern: "b", slots: {} },
+      actions: [],
+    });
 
     expect(store.list("active")).toHaveLength(1);
     expect(store.list("proposed")).toHaveLength(1);
@@ -322,11 +327,27 @@ describe("SkillLearningEngine", () => {
   it("evicts lowest-count pattern when maxPatterns is reached", () => {
     const smallEngine = new SkillLearningEngine(store, { threshold: 3, maxPatterns: 2 });
 
-    smallEngine.observe({ intentName: "a", slots: {}, followUpActions: [{ kind: "x", params: {} }] });
-    smallEngine.observe({ intentName: "b", slots: {}, followUpActions: [{ kind: "y", params: {} }] });
-    smallEngine.observe({ intentName: "b", slots: {}, followUpActions: [{ kind: "y", params: {} }] });
+    smallEngine.observe({
+      intentName: "a",
+      slots: {},
+      followUpActions: [{ kind: "x", params: {} }],
+    });
+    smallEngine.observe({
+      intentName: "b",
+      slots: {},
+      followUpActions: [{ kind: "y", params: {} }],
+    });
+    smallEngine.observe({
+      intentName: "b",
+      slots: {},
+      followUpActions: [{ kind: "y", params: {} }],
+    });
     // At this point: a=1, b=2. Adding c should evict a (lowest).
-    smallEngine.observe({ intentName: "c", slots: {}, followUpActions: [{ kind: "z", params: {} }] });
+    smallEngine.observe({
+      intentName: "c",
+      slots: {},
+      followUpActions: [{ kind: "z", params: {} }],
+    });
 
     expect(smallEngine.patternCount).toBe(2);
     const sigs = smallEngine.getPatterns().map((p) => p.signature);
@@ -490,8 +511,18 @@ describe("SkillConsentManager", () => {
   });
 
   it("dismisses all pending proposals", () => {
-    store.propose({ name: "A", description: "", trigger: { intentPattern: "a", slots: {} }, actions: [] });
-    store.propose({ name: "B", description: "", trigger: { intentPattern: "b", slots: {} }, actions: [] });
+    store.propose({
+      name: "A",
+      description: "",
+      trigger: { intentPattern: "a", slots: {} },
+      actions: [],
+    });
+    store.propose({
+      name: "B",
+      description: "",
+      trigger: { intentPattern: "b", slots: {} },
+      actions: [],
+    });
 
     const dismissed = consent.dismissAll();
     expect(dismissed).toBe(2);

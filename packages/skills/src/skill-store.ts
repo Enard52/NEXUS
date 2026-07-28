@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Skill Data Model & Store (FAZ 5)
+ * NEXUS AI — Skill Data Model & Store
  *
  * A "Skill" in NEXUS is a learned micro-automation: the system detects that
  * the user repeats a specific fine-tuning pattern (e.g. "every time I say
@@ -112,7 +112,10 @@ export class SkillStore {
   }
 
   /** Find active skills whose trigger matches the given intent + slots. */
-  findMatching(intentName: string, slots: Record<string, unknown> = {}): readonly SkillDefinition[] {
+  findMatching(
+    intentName: string,
+    slots: Record<string, unknown> = {},
+  ): readonly SkillDefinition[] {
     return this.list("active").filter((skill) => {
       // Check intent pattern match
       if (!matchesPattern(skill.trigger.intentPattern, intentName)) return false;

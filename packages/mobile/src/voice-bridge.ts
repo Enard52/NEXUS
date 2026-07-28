@@ -1,7 +1,7 @@
 /**
- * NEXUS AI — Mobile Voice Bridge (FAZ 9)
+ * NEXUS AI — Mobile Voice Bridge
  *
- * Connects the FAZ 2 VoiceEngine (wake word → STT → NLU → TTS) to the
+ * Connects the VoiceEngine (wake word → STT → NLU → TTS) to the
  * mobile platform's audio hardware via native microphone/speaker access.
  *
  * Responsibilities:
@@ -61,12 +61,7 @@ export interface VoiceSession {
 }
 
 export type VoiceSessionState =
-  | "listening"
-  | "processing"
-  | "speaking"
-  | "complete"
-  | "cancelled"
-  | "error";
+  "listening" | "processing" | "speaking" | "complete" | "cancelled" | "error";
 
 /** Event emitted by the voice bridge. */
 export type VoiceBridgeEvent =

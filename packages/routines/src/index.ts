@@ -7,14 +7,14 @@
  * device actions, e.g. "Movie night") fired by a *trigger* (a spoken phrase, a
  * time of day, or an event like sunset / arriving home).
  *
- * NEXUS already had auto-learned Skills (FAZ 5: the system notices repetition
+ * NEXUS already had auto-learned Skills (: the system notices repetition
  * and proposes a shortcut). This adds the complementary half: routines the user
  * declares up front. Together they cover both "learn what I do" and "do exactly
- * what I told you". This engine also powers the FAZ 17 "Film izleyeceğim"
+ * what I told you". This engine also powers the  "Film izleyeceğim"
  * (movie-night) end-to-end scenario.
  *
  * Consistent with the Skill/Platform pattern: the engine *plans* the actions to
- * run and never executes them itself — Core + Security (FAZ 11) still gate and
+ * run and never executes them itself — Core + Security  still gate and
  * carry out every action. Dependency-free and deterministic; time/events are
  * inputs, so it is fully testable.
  */

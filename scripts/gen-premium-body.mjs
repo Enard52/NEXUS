@@ -49,7 +49,7 @@ if (menuStart === -1) {
 } else {
   const menuClose = body.indexOf("</div>", menuStart);
   const block = body.slice(menuStart, menuClose + "</div>".length);
-  if (!block.includes('?lang=vi')) problems.push("language-menu block looks truncated");
+  if (!block.includes("?lang=vi")) problems.push("language-menu block looks truncated");
   body = body.slice(0, menuStart) + "${dyn.langMenu}" + body.slice(menuClose + "</div>".length);
 }
 

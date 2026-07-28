@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Mobile front end (FAZ 9/10)
+ * NEXUS AI — Mobile front end
  *
  * The mobile surface: a Tuya-style *smart-home companion app*. Four bottom
  * tabs — Home / Smart / Discover / Profile — with the NEXUS AI assistant one
@@ -12,7 +12,7 @@
  * screen bodies via `renderScreenBody` (@nexus/web).
  *
  * Dependency-free, deterministic `data -> HTML string` renderer. A production
- * build would host this in a native/WebView shell (React Native / Capacitor);
+ * build would host this in a Nexus native shell;
  * that packaging is an external boundary — the *design* lives here.
  */
 
@@ -50,7 +50,13 @@ const PRIMARY_TABS: readonly { id: MobileTabId; icon: TabIcon }[] = [
 ];
 
 /** Shared-screen ids that are recomposed into the mobile tabs (no own section). */
-const RECOMPOSED_IDS: readonly ScreenId[] = ["today", "home-state", "suggestions", "skills", "devices"];
+const RECOMPOSED_IDS: readonly ScreenId[] = [
+  "today",
+  "home-state",
+  "suggestions",
+  "skills",
+  "devices",
+];
 /** Web-only / admin surfaces the mobile app intentionally leaves out
  * (user feedback: no admin panel, download center or platform hub on phone). */
 const MOBILE_HIDDEN_IDS: readonly ScreenId[] = ["platform", "admin-dashboard", "download-center"];
@@ -962,7 +968,8 @@ document.addEventListener("click", function (e) {
     var ann = document.getElementById("a11y-live");
     if (ann) ann.textContent = next ? "Açık" : "Kapalı";
     document.dispatchEvent(new CustomEvent("nexus:toggle", { detail: { state: next } }));
-    if (window.Capacitor?.Plugins?.Haptics) window.Capacitor.Plugins.Haptics.impact({ style: "Light" });
+    // Nexus native haptics feedback (NexusNative runtime API)
+    if (window.NexusNative?.Plugins?.Haptics) window.NexusNative.Plugins.Haptics.impact({ style: "Light" });
     else if (navigator.vibrate) navigator.vibrate(10);
     var card = el.closest(".device-card");
     if (card) {
@@ -994,12 +1001,13 @@ document.addEventListener("click", function (e) {
     var ann = document.getElementById("a11y-live");
     if (ann) ann.textContent = "Çalıştırılıyor...";
     document.dispatchEvent(new CustomEvent("nexus:action", { detail: { type: "run" } }));
-    if (window.Capacitor?.Plugins?.Haptics) window.Capacitor.Plugins.Haptics.impact({ style: "Medium" });
+    if (window.NexusNative?.Plugins?.Haptics) window.NexusNative.Plugins.Haptics.impact({ style: "Medium" });
       ico.innerHTML = spin;
       setTimeout(function () {
         el.classList.remove("running");
         el.classList.add("done");
-    if (window.Capacitor?.Plugins?.Haptics) window.Capacitor.Plugins.Haptics.notification({ type: "Success" });
+    // Nexus native haptics feedback (NexusNative runtime API)
+    if (window.NexusNative?.Plugins?.Haptics) window.NexusNative.Plugins.Haptics.notification({ type: "Success" });
         ico.innerHTML = check;
         setTimeout(function () { el.classList.remove("done"); ico.innerHTML = icoOrig; }, 2200);
       }, 900);
@@ -1130,29 +1138,46 @@ function showEmptyIfNone() {
 // ─── Control-first section compositions (shared data, mobile-native layout) ──
 
 /** Play triangle used on scene/routine chips. */
-const PLAY_ICON =
-  `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
+const PLAY_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
 
-const MIC_ICON =
-  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>`;
+const MIC_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>`;
 
-const CHEVRON_ICON =
-  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);flex:none;" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`;
+const CHEVRON_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);flex:none;" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`;
 
-const MENU_ARROW =
-  `<svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`;
+const MENU_ARROW = `<svg class="menu-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`;
 
 /** Per-device gradient swatch + line-art icon — no external product photos
  * (Unsplash hotlinks are blocked; the glossy tile keeps the Tuya look). */
 const DEVICE_TILE_STYLE: Record<string, { grad: string; icon: string }> = {
-  lamp: { grad: "bg-yellow", icon: `<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z"/>` },
-  tv: { grad: "bg-blue", icon: `<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>` },
+  lamp: {
+    grad: "bg-yellow",
+    icon: `<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z"/>`,
+  },
+  tv: {
+    grad: "bg-blue",
+    icon: `<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>`,
+  },
   ac: { grad: "bg-cyan", icon: `<path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19"/>` },
-  lock: { grad: "bg-orange", icon: `<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4M12 15v2"/>` },
-  speaker: { grad: "bg-purple", icon: `<rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="15" r="3.4"/><circle cx="12" cy="7" r="1.4"/>` },
-  camera: { grad: "bg-green", icon: `<path d="M15 8.5 21 6v12l-6-2.5"/><rect x="2" y="6" width="13" height="12" rx="2"/>` },
-  thermostat: { grad: "bg-orange", icon: `<path d="M14 4a2 2 0 1 0-4 0v9.5a4 4 0 1 0 4 0Z"/><path d="M12 9v6"/>` },
-  curtain: { grad: "bg-purple", icon: `<path d="M4 3h16v18"/><path d="M4 3v18M8 3v18M12 3v18M16 3v18M20 3v18" opacity="0.75"/>` },
+  lock: {
+    grad: "bg-orange",
+    icon: `<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4M12 15v2"/>`,
+  },
+  speaker: {
+    grad: "bg-purple",
+    icon: `<rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="15" r="3.4"/><circle cx="12" cy="7" r="1.4"/>`,
+  },
+  camera: {
+    grad: "bg-green",
+    icon: `<path d="M15 8.5 21 6v12l-6-2.5"/><rect x="2" y="6" width="13" height="12" rx="2"/>`,
+  },
+  thermostat: {
+    grad: "bg-orange",
+    icon: `<path d="M14 4a2 2 0 1 0-4 0v9.5a4 4 0 1 0 4 0Z"/><path d="M12 9v6"/>`,
+  },
+  curtain: {
+    grad: "bg-purple",
+    icon: `<path d="M4 3h16v18"/><path d="M4 3v18M8 3v18M12 3v18M16 3v18M20 3v18" opacity="0.75"/>`,
+  },
 };
 const DEVICE_GRAD_CYCLE = ["bg-blue", "bg-purple", "bg-green", "bg-cyan", "bg-orange", "bg-yellow"];
 
@@ -1162,7 +1187,9 @@ function renderDeviceTile(
 ): string {
   const t = DEVICE_TILE_STYLE[d.id];
   const grad = t?.grad ?? DEVICE_GRAD_CYCLE[index % DEVICE_GRAD_CYCLE.length];
-  const icon = t?.icon ?? `<rect x="2" y="4" width="14" height="10" rx="1.5"/><rect x="16" y="9" width="6" height="11" rx="1.5"/>`;
+  const icon =
+    t?.icon ??
+    `<rect x="2" y="4" width="14" height="10" rx="1.5"/><rect x="16" y="9" width="6" height="11" rx="1.5"/>`;
   const photo = d.imageUrl
     ? `<img class="dev-photo" src="${escapeHtml(d.imageUrl)}" alt="" loading="lazy"/>`
     : "";
@@ -1175,22 +1202,46 @@ function renderDeviceTile(
 /** NEXUS brand monogram — the "N" stroke from the product icon; used wherever
  * our own AI/smart features need a mark (never a generic star/sparkle). */
 
-
 /** Skill/agent feature icons — glossy gradient tiles keyed by the data icon name. */
 const FEATURE_ICON_STYLE: Record<string, { grad: string; icon: string }> = {
   shield: { grad: "bg-blue", icon: `<path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5Z"/>` },
-  leaf: { grad: "bg-green", icon: `<path d="M6 21c0-9 4-15 14-16-1 10-7 14-14 16Z"/><path d="M6 21c2-6 6-10 10-12"/>` },
-  film: { grad: "bg-purple", icon: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h5M2 15h5M17 9h5M17 15h5"/>` },
+  leaf: {
+    grad: "bg-green",
+    icon: `<path d="M6 21c0-9 4-15 14-16-1 10-7 14-14 16Z"/><path d="M6 21c2-6 6-10 10-12"/>`,
+  },
+  film: {
+    grad: "bg-purple",
+    icon: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h5M2 15h5M17 9h5M17 15h5"/>`,
+  },
   zap: { grad: "bg-yellow", icon: `<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>` },
-  thermometer: { grad: "bg-orange", icon: `<path d="M14 4a2 2 0 1 0-4 0v9.5a4 4 0 1 0 4 0Z"/><path d="M12 9v6"/>` },
-  clipboard: { grad: "bg-cyan", icon: `<rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9z"/><path d="M9 12h6M9 16h4"/>` },
-  users: { grad: "bg-green", icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>` },
+  thermometer: {
+    grad: "bg-orange",
+    icon: `<path d="M14 4a2 2 0 1 0-4 0v9.5a4 4 0 1 0 4 0Z"/><path d="M12 9v6"/>`,
+  },
+  clipboard: {
+    grad: "bg-cyan",
+    icon: `<rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9z"/><path d="M9 12h6M9 16h4"/>`,
+  },
+  users: {
+    grad: "bg-green",
+    icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>`,
+  },
   sparkles: { grad: "bg-brand", icon: renderLogo(16) },
-  infinity: { grad: "bg-cyan", icon: `<path d="M12 12c-2-2.7-3.6-4-5.5-4a4 4 0 1 0 0 8c1.9 0 3.5-1.3 5.5-4Zm0 0c2 2.7 3.6 4 5.5 4a4 4 0 1 0 0-8c-1.9 0-3.5 1.3-5.5 4Z"/>` },
-  headset: { grad: "bg-orange", icon: `<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3ZM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/>` },
+  infinity: {
+    grad: "bg-cyan",
+    icon: `<path d="M12 12c-2-2.7-3.6-4-5.5-4a4 4 0 1 0 0 8c1.9 0 3.5-1.3 5.5-4Zm0 0c2 2.7 3.6 4 5.5 4a4 4 0 1 0 0-8c-1.9 0-3.5 1.3-5.5 4Z"/>`,
+  },
+  headset: {
+    grad: "bg-orange",
+    icon: `<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3ZM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/>`,
+  },
 };
 
-function renderFeatureIco(name: string, index: number, cls: "fav-ico" | "menu-ico" = "menu-ico"): string {
+function renderFeatureIco(
+  name: string,
+  index: number,
+  cls: "fav-ico" | "menu-ico" = "menu-ico",
+): string {
   const f = FEATURE_ICON_STYLE[name];
   const grad = f?.grad ?? DEVICE_GRAD_CYCLE[index % DEVICE_GRAD_CYCLE.length];
   const icon = f?.icon ?? renderLogo(16);
@@ -1203,12 +1254,40 @@ function renderFeatureIco(name: string, index: number, cls: "fav-ico" | "menu-ic
 
 /** Themed gradient palettes + icons for the home scene cards (2a), keyed by
  * the demo skill id. Unknown scenes fall back to the "Uyku" night palette. */
-const SCENE_STYLE: Record<string, { grad: readonly [string, string]; icon: string; devices: number; actions: number }> = {
-  k2: { grad: ["#ff9a56", "#ff6a88"], icon: `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>`, devices: 4, actions: 3 },
-  k3: { grad: ["var(--color-danger)", "#fb923c"], icon: `<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>`, devices: 5, actions: 2 },
-  k5: { grad: ["#1e3a8a", "#7c3aed"], icon: `<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>`, devices: 3, actions: 2 },
-  k1: { grad: ["#4c1d95", "#0f172a"], icon: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h5M2 15h5M17 9h5M17 15h5"/>`, devices: 3, actions: 3 },
-  k4: { grad: ["#0ea5e9", "var(--color-accent-cyan)"], icon: `<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>`, devices: 2, actions: 2 },
+const SCENE_STYLE: Record<
+  string,
+  { grad: readonly [string, string]; icon: string; devices: number; actions: number }
+> = {
+  k2: {
+    grad: ["#ff9a56", "#ff6a88"],
+    icon: `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>`,
+    devices: 4,
+    actions: 3,
+  },
+  k3: {
+    grad: ["var(--color-danger)", "#fb923c"],
+    icon: `<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>`,
+    devices: 5,
+    actions: 2,
+  },
+  k5: {
+    grad: ["#1e3a8a", "#7c3aed"],
+    icon: `<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>`,
+    devices: 3,
+    actions: 2,
+  },
+  k1: {
+    grad: ["#4c1d95", "#0f172a"],
+    icon: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h5M2 15h5M17 9h5M17 15h5"/>`,
+    devices: 3,
+    actions: 3,
+  },
+  k4: {
+    grad: ["#0ea5e9", "var(--color-accent-cyan)"],
+    icon: `<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>`,
+    devices: 2,
+    actions: 2,
+  },
 };
 const SCENE_FALLBACK_GRAD: readonly [string, string] = ["#312e81", "#1e1b4b"];
 
@@ -1231,12 +1310,51 @@ const RF_ICON: Record<string, string> = {
 const rfIco = (n: string): string =>
   `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RF_ICON[n] ?? ""}</svg>`;
 type RfStep = { readonly icon: string; readonly text: readonly [string, string] };
-const ROUTINE_FLOW: Record<string, { type: readonly [string, string]; trigger: RfStep; actions: readonly RfStep[] }> = {
-  k2: { type: ["Scheduled", "Zamanlanmış"], trigger: { icon: "clock", text: ["07:00", "07:00"] }, actions: [{ icon: "bulb", text: ["100%", "%100"] }, { icon: "therm", text: ["22°C", "22°C"] }] },
-  k3: { type: ["Manual", "Manuel"], trigger: { icon: "exit", text: ["On exit", "Çıkışta"] }, actions: [{ icon: "lock", text: ["Lock", "Kilitle"] }, { icon: "bulb", text: ["Off", "Kapat"] }] },
-  k5: { type: ["Sensor", "Sensör"], trigger: { icon: "moon", text: ["23:00", "23:00"] }, actions: [{ icon: "cam", text: ["Record", "Kayıt"] }, { icon: "lock", text: ["Lock", "Kilit"] }] },
-  k1: { type: ["Manual", "Manuel"], trigger: { icon: "film", text: ["Movie", "Film"] }, actions: [{ icon: "tv", text: ["On", "Aç"] }, { icon: "bulb", text: ["20%", "%20"] }, { icon: "curtain", text: ["Curtain", "Perde"] }] },
-  k4: { type: ["AI", "AI"], trigger: { icon: "bot", text: ["Focus", "Odak"] }, actions: [{ icon: "bulb", text: ["70%", "%70"] }, { icon: "mute", text: ["Silent", "Sessiz"] }] },
+const ROUTINE_FLOW: Record<
+  string,
+  { type: readonly [string, string]; trigger: RfStep; actions: readonly RfStep[] }
+> = {
+  k2: {
+    type: ["Scheduled", "Zamanlanmış"],
+    trigger: { icon: "clock", text: ["07:00", "07:00"] },
+    actions: [
+      { icon: "bulb", text: ["100%", "%100"] },
+      { icon: "therm", text: ["22°C", "22°C"] },
+    ],
+  },
+  k3: {
+    type: ["Manual", "Manuel"],
+    trigger: { icon: "exit", text: ["On exit", "Çıkışta"] },
+    actions: [
+      { icon: "lock", text: ["Lock", "Kilitle"] },
+      { icon: "bulb", text: ["Off", "Kapat"] },
+    ],
+  },
+  k5: {
+    type: ["Sensor", "Sensör"],
+    trigger: { icon: "moon", text: ["23:00", "23:00"] },
+    actions: [
+      { icon: "cam", text: ["Record", "Kayıt"] },
+      { icon: "lock", text: ["Lock", "Kilit"] },
+    ],
+  },
+  k1: {
+    type: ["Manual", "Manuel"],
+    trigger: { icon: "film", text: ["Movie", "Film"] },
+    actions: [
+      { icon: "tv", text: ["On", "Aç"] },
+      { icon: "bulb", text: ["20%", "%20"] },
+      { icon: "curtain", text: ["Curtain", "Perde"] },
+    ],
+  },
+  k4: {
+    type: ["AI", "AI"],
+    trigger: { icon: "bot", text: ["Focus", "Odak"] },
+    actions: [
+      { icon: "bulb", text: ["70%", "%70"] },
+      { icon: "mute", text: ["Silent", "Sessiz"] },
+    ],
+  },
 };
 
 /** Home ("Ev") — greeting, glossy favourites grid, device cards, AI quick menu. */
@@ -1247,7 +1365,8 @@ function renderHomeSection(screens: DemoScreens): string {
   const onLabel = tt("On", "Açık");
   const offLabel = tt("Off", "Kapalı");
   // Today view-model exposes ready-formatted cards keyed by i18n label.
-  const todayCard = (k: string): string => screens.today.cards.find((c) => c.labelKey === k)?.value ?? "—";
+  const todayCard = (k: string): string =>
+    screens.today.cards.find((c) => c.labelKey === k)?.value ?? "—";
 
   const head =
     `<h2 class="ios-title">${tt("Hello", "Merhaba")}, ${escapeHtml(screens.personalization.userAddress)}` +
@@ -1264,7 +1383,13 @@ function renderHomeSection(screens: DemoScreens): string {
     `</div></div>`;
 
   // Favourites: glossy gradient tiles over real view-model numbers only.
-  const favTile = (grad: string, icon: string, title: string, value: string, sub: boolean): string =>
+  const favTile = (
+    grad: string,
+    icon: string,
+    title: string,
+    value: string,
+    sub: boolean,
+  ): string =>
     `<div class="fav-tile">` +
     `<span class="fav-ico ${grad}" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>` +
     `<div><div class="fav-title">${title}</div>` +
@@ -1272,9 +1397,27 @@ function renderHomeSection(screens: DemoScreens): string {
     `</div></div>`;
   const favourites =
     `<div class="fav-grid">` +
-    favTile("bg-green", `<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>`, escapeHtml(label("today.energy")), escapeHtml(todayCard("today.energy")), false) +
-    favTile("bg-blue", `<path d="M5 12a10 10 0 0 1 14 0M8 15a6 6 0 0 1 8 0M12 19h.01"/>`, escapeHtml(label("today.devicesOnline")), `${online}/${devices.length}`, false) +
-    favTile("bg-purple", `<path d="M17 2v6h-6M7 22v-6h6"/><path d="M3.5 13a8.5 8.5 0 0 0 14 4.5M20.5 11a8.5 8.5 0 0 0-14-4.5"/>`, escapeHtml(label("today.activeRoutines")), escapeHtml(todayCard("today.activeRoutines")), false) +
+    favTile(
+      "bg-green",
+      `<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>`,
+      escapeHtml(label("today.energy")),
+      escapeHtml(todayCard("today.energy")),
+      false,
+    ) +
+    favTile(
+      "bg-blue",
+      `<path d="M5 12a10 10 0 0 1 14 0M8 15a6 6 0 0 1 8 0M12 19h.01"/>`,
+      escapeHtml(label("today.devicesOnline")),
+      `${online}/${devices.length}`,
+      false,
+    ) +
+    favTile(
+      "bg-purple",
+      `<path d="M17 2v6h-6M7 22v-6h6"/><path d="M3.5 13a8.5 8.5 0 0 0 14 4.5M20.5 11a8.5 8.5 0 0 0-14-4.5"/>`,
+      escapeHtml(label("today.activeRoutines")),
+      escapeHtml(todayCard("today.activeRoutines")),
+      false,
+    ) +
     `<a class="fav-tile" href="#smart" data-nav="smart">` +
     `<span class="fav-ico bg-orange" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z"/></svg></span>` +
     `<div><div class="fav-title">${escapeHtml(label("today.suggestions"))}</div>` +
@@ -1344,7 +1487,6 @@ function renderHomeSection(screens: DemoScreens): string {
 
 /** Smart ("Akıllı") — AI command bar over routines, suggestions & discoverables. */
 function renderSmartSection(screens: DemoScreens): string {
-  const runLabel = tt("Run", "Çalıştır");
   const suggestions = screens.suggestions.rows;
 
   // Rainbow-bordered AI command bar — the whole pill opens the assistant.
@@ -1591,7 +1733,12 @@ function renderProfileSection(screens: DemoScreens, displayName: string): string
     agents: "bg-orange",
   };
   const rows = screens.nav
-    .filter((s) => !RECOMPOSED_IDS.includes(s.id) && !MOBILE_HIDDEN_IDS.includes(s.id) && !SUBSCREEN_IDS.includes(s.id))
+    .filter(
+      (s) =>
+        !RECOMPOSED_IDS.includes(s.id) &&
+        !MOBILE_HIDDEN_IDS.includes(s.id) &&
+        !SUBSCREEN_IDS.includes(s.id),
+    )
     .map(
       (s, i) =>
         `<a class="menu-row" href="#${s.id}" data-nav="${s.id}">` +
@@ -1737,13 +1884,23 @@ function renderDeviceControls(d: DemoScreens["devices"]["rows"][number]): string
     const p = CAP_VALUE_LABEL[v];
     return p ? tt(p[0], p[1]) : v;
   };
-  const slider = (name: string, value: number, min: number, max: number, unit: string, extra = ""): string =>
+  const slider = (
+    name: string,
+    value: number,
+    min: number,
+    max: number,
+    unit: string,
+    extra = "",
+  ): string =>
     `<div class="ctl-row"><div class="ctl-head"><span class="field-label">${name}</span><span class="ctl-val">${value}${unit}</span></div>` +
     `<input class="ctl-slider${extra ? ` ${extra}` : ""}" type="range" min="${min}" max="${max}" value="${value}" data-slider data-unit="${unit}" aria-label="${name}"/></div>`;
   const seg = (name: string, value: string, options: readonly string[]): string =>
     `<div class="ctl-row"><div class="ctl-head"><span class="field-label">${name}</span></div><div class="seg">` +
     options
-      .map((o) => `<button class="seg-btn${o === value ? " active" : ""}" type="button" data-set>${escapeHtml(valueLabel(o))}</button>`)
+      .map(
+        (o) =>
+          `<button class="seg-btn${o === value ? " active" : ""}" type="button" data-set>${escapeHtml(valueLabel(o))}</button>`,
+      )
       .join("") +
     `</div></div>`;
   const dial = (name: string, value: number, min: number, max: number): string => {
@@ -1891,7 +2048,10 @@ function renderDeviceDetailSection(
     spec(tt("Manufacturer", "Üretici"), d.manufacturer) +
     spec(tt("Model", "Model"), d.model) +
     spec(tt("Firmware", "Yazılım sürümü"), d.firmwareVersion) +
-    spec(tt("Connection", "Bağlantı"), d.connectionStatus ? connLabels[d.connectionStatus] : undefined) +
+    spec(
+      tt("Connection", "Bağlantı"),
+      d.connectionStatus ? connLabels[d.connectionStatus] : undefined,
+    ) +
     spec(tt("IP address", "IP adresi"), d.ipAddress) +
     spec(tt("MAC address", "MAC adresi"), d.macAddress) +
     spec(tt("Last seen", "Son görülme"), lastSeen) +
@@ -1941,8 +2101,7 @@ function renderBillingSection(screens: DemoScreens): string {
       sub: tt("24/7 live help for your plan", "Planına özel 7/24 canlı destek"),
     },
   ];
-  const checkIcon =
-    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const checkIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
   const featureRows =
     `<div class="section-label">${tt("Plan includes", "Plan içeriği")}<span>${escapeHtml(label(b.planLabelKey))}</span></div>` +
     `<div class="menu-list">` +
@@ -1969,8 +2128,7 @@ function renderBillingSection(screens: DemoScreens): string {
 /** Subscription management — plan comparison, payment method, renewal + invoices (4a). */
 function renderBillingManageSection(screens: DemoScreens): string {
   const m = screens.billingManage;
-  const check =
-    `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:none;" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const check = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:none;" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
 
   // Plan comparison — current plan highlighted, checkmark grid per feature.
   const planCards = m.plans
@@ -2075,11 +2233,10 @@ function renderAddDeviceSection(): string {
     ` data-scanning="${tt("Scanning…", "Aranıyor…")}" data-rescan="${tt("Scan again", "Yeniden tara")}">${tt("Scan for devices", "Cihazları ara")}</button></div>` +
     `<div class="scan-results" data-scan-results hidden>${scanRows}</div></div>`;
 
-  const tip =
-    `<div class="tip-card"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;color:var(--primary);">${RF_ICON.bulb}</svg> ${tt(
-      "Help: hold the button on your device for 5s to enter pairing mode.",
-      "Yardım: Cihazını eşleştirme moduna almak için üzerindeki düğmeye 5 sn basılı tut.",
-    )}</div>`;
+  const tip = `<div class="tip-card"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;color:var(--primary);">${RF_ICON.bulb}</svg> ${tt(
+    "Help: hold the button on your device for 5s to enter pairing mode.",
+    "Yardım: Cihazını eşleştirme moduna almak için üzerindeki düğmeye 5 sn basılı tut.",
+  )}</div>`;
 
   return (
     `<h2 class="ios-title">${escapeHtml(label("screen.addDevice"))}` +
@@ -2100,11 +2257,6 @@ function renderAgentsSection(screens: DemoScreens): string {
     active: tt("Active", "Aktif"),
     learning: tt("Learning", "Öğreniyor"),
     sleeping: tt("Sleeping", "Uykuda"),
-  };
-  const statusDesc: Record<string, string> = {
-    active: tt("Watching over your home right now", "Şu anda evini izliyor"),
-    learning: tt("Learning your daily habits", "Günlük alışkanlıklarını öğreniyor"),
-    sleeping: tt("On standby — wakes when needed", "Beklemede — gerektiğinde uyanır"),
   };
   const active = rows.filter((a) => a.status === "active").length;
   const learning = rows.filter((a) => a.status === "learning").length;
@@ -2238,11 +2390,30 @@ export function renderMobileDocument(options: MobileOptions = {}): string {
   // Authenticated app bar carries a language dropdown + logout; both variants
   // route the avatar to the Profile hub (the secondary account surface).
   const langLabels: Record<string, string> = {
-    en: "EN", tr: "TR", es: "ES", fr: "FR", de: "DE", it: "IT", pt: "PT", nl: "NL", pl: "PL", cs: "CS",
-    ru: "RU", uk: "UK", ar: "AR", he: "HE", hi: "HI", ja: "JA", ko: "KO", "zh-Hans": "中简", "zh-Hant": "中繁", vi: "VI",
+    en: "EN",
+    tr: "TR",
+    es: "ES",
+    fr: "FR",
+    de: "DE",
+    it: "IT",
+    pt: "PT",
+    nl: "NL",
+    pl: "PL",
+    cs: "CS",
+    ru: "RU",
+    uk: "UK",
+    ar: "AR",
+    he: "HE",
+    hi: "HI",
+    ja: "JA",
+    ko: "KO",
+    "zh-Hans": "中简",
+    "zh-Hant": "中繁",
+    vi: "VI",
   };
   const langItems = SUPPORTED_LOCALES.map(
-    (l) => `<a class="ld-item${l === locale ? " active" : ""}" href="?lang=${l}" data-lang="${l}">${langLabels[l] || l.toUpperCase()}</a>`
+    (l) =>
+      `<a class="ld-item${l === locale ? " active" : ""}" href="?lang=${l}" data-lang="${l}">${langLabels[l] || l.toUpperCase()}</a>`,
   ).join("");
   const profileButton =
     `<button class="m-profile" type="button" data-nav="profile" aria-label="${tt("Profile", "Profil")}">` +
@@ -2314,11 +2485,65 @@ ${renderTabBar("home")}
 export const moduleName = "mobile" as const;
 export const implemented = true;
 
-// ─── FAZ 9: Native Bridge Layer Exports ──────────────────────────────────────
-export { type MobileBridge, type MobilePlatform, type BatteryInfo, type NetworkStatus, type GeoPosition, type HapticStyle, type AppInfo, type SharePayload, CapacitorBridge, MockBridge } from "./bridge.js";
-export { PushManager, DEFAULT_CHANNELS, type PushToken, type NotificationPayload, type NotificationChannel, type NotificationHandler } from "./notifications.js";
-export { PermissionsManager, getDefaultPermissions, FEATURE_PERMISSION_MAP, type PermissionName, type PermissionStatus, type PermissionEntry, type FeaturePermissionMap } from "./permissions.js";
-export { MobileVoiceBridge, DEFAULT_VOICE_CONFIG, type VoiceBridgeConfig, type VoiceSession, type VoiceSessionState, type AudioSessionCategory, type VoiceBridgeEvent } from "./voice-bridge.js";
-export { RemoteConnection, DEFAULT_CONNECTION_OPTIONS, type ConnectionMode, type ConnectionState, type ServerEndpoint, type ConnectionOptions, type RemoteRequest, type RemoteResponse } from "./remote-access.js";
-export { DeepLinkRouter, type DeepLinkResult, type DeepLinkAction, type DeepLinkHandler } from "./deep-links.js";
-export { MobileService, type MobileServiceConfig, type AppLifecycleState, type ServiceEvent, type ServiceEventHandler } from "./mobile-service.js";
+// ─── Native Bridge Layer Exports ──────────────────────────────────────
+export {
+  type MobileBridge,
+  type MobilePlatform,
+  type BatteryInfo,
+  type NetworkStatus,
+  type GeoPosition,
+  type HapticStyle,
+  type AppInfo,
+  type SharePayload,
+  NexusNativeBridge,
+  MockBridge,
+} from "./bridge.js";
+export {
+  PushManager,
+  DEFAULT_CHANNELS,
+  type PushToken,
+  type NotificationPayload,
+  type NotificationChannel,
+  type NotificationHandler,
+} from "./notifications.js";
+export {
+  PermissionsManager,
+  getDefaultPermissions,
+  FEATURE_PERMISSION_MAP,
+  type PermissionName,
+  type PermissionStatus,
+  type PermissionEntry,
+  type FeaturePermissionMap,
+} from "./permissions.js";
+export {
+  MobileVoiceBridge,
+  DEFAULT_VOICE_CONFIG,
+  type VoiceBridgeConfig,
+  type VoiceSession,
+  type VoiceSessionState,
+  type AudioSessionCategory,
+  type VoiceBridgeEvent,
+} from "./voice-bridge.js";
+export {
+  RemoteConnection,
+  DEFAULT_CONNECTION_OPTIONS,
+  type ConnectionMode,
+  type ConnectionState,
+  type ServerEndpoint,
+  type ConnectionOptions,
+  type RemoteRequest,
+  type RemoteResponse,
+} from "./remote-access.js";
+export {
+  DeepLinkRouter,
+  type DeepLinkResult,
+  type DeepLinkAction,
+  type DeepLinkHandler,
+} from "./deep-links.js";
+export {
+  MobileService,
+  type MobileServiceConfig,
+  type AppLifecycleState,
+  type ServiceEvent,
+  type ServiceEventHandler,
+} from "./mobile-service.js";

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — AI Adapter & provider abstraction (FAZ 1).",
+  "description": "NEXUS AI — AI Adapter & provider abstraction.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -11,5 +11,7 @@
   },
   "scripts": {
     "test": "vitest run"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

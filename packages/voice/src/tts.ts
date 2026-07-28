@@ -1,12 +1,12 @@
 /**
- * NEXUS AI — Text-to-Speech providers (FAZ 2)
+ * NEXUS AI — Text-to-Speech providers
  *
  * Provider-agnostic TTS interface with implementations:
  *  - OpenAI TTS API (primary, cloud-based, multiple voices)
  *  - Mock provider (deterministic, for tests)
  *
  * Language-aware: reads the user's language preference from Personalization
- * (FAZ 1) and selects appropriate voice/model. Connected to i18n (FAZ 13).
+ *  and selects appropriate voice/model. Connected to i18n .
  */
 
 export type TtsVoice = "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer";

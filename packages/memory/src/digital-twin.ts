@@ -1,10 +1,10 @@
 /**
- * NEXUS AI — Digital Twin (FAZ 6)
+ * NEXUS AI — Digital Twin
  *
  * A live model of the user's environment (rooms, devices and their state) plus
  * lightweight context (time of day, occupancy). The Core queries this when
  * building a plan, so the *same* intent produces a *consistent but different*
- * plan depending on the current world state (FAZ 6 Bitiş Kriteri).
+ * plan depending on the current world state .
  *
  * Deterministic and dependency-free so planning is fully testable.
  */
@@ -41,7 +41,7 @@ export interface HabitRecord {
 
 const DEFAULT_CONTEXT: EnvironmentContext = { timeOfDay: "day", occupied: true };
 
-/** Mutable world model. FAZ 16 will back this with cloud/persistent storage. */
+/** Mutable world model. will back this with cloud/persistent storage. */
 export class DigitalTwin {
   private readonly devices = new Map<string, DeviceState>();
   private readonly habits = new Map<string, HabitRecord>();
@@ -75,37 +75,58 @@ export class DigitalTwin {
 
   /**
    * Record a habit observation. When userId is provided, the habit is scoped
-   * to that user (FAZ 12: per-user personalization). Without userId, habits
-   * are stored globally (backward-compatible with pre-FAZ 12 code).
+   * to that user. Without userId, habits
+   * are stored globally (backward-compatible with pre-code).
    */
-  recordHabit(kind: string, room: string, timeOfDay: TimeOfDay, brightness?: number, userId?: string): void {
-    const key = userId
-      ? `${userId}:${kind}-${room}-${timeOfDay}`
-      : `${kind}-${room}-${timeOfDay}`;
+  recordHabit(
+    kind: string,
+    room: string,
+    timeOfDay: TimeOfDay,
+    brightness?: number,
+    userId?: string,
+  ): void {
+    const key = userId ? `${userId}:${kind}-${room}-${timeOfDay}` : `${kind}-${room}-${timeOfDay}`;
     const existing = this.habits.get(key);
     if (existing) {
       // Rolling average for brightness
       const newFreq = existing.frequency + 1;
-      const avgB = brightness !== undefined && existing.avgBrightness !== undefined
-        ? Math.round((existing.avgBrightness * existing.frequency + brightness) / newFreq)
-        : brightness ?? existing.avgBrightness;
+      const avgB =
+        brightness !== undefined && existing.avgBrightness !== undefined
+          ? Math.round((existing.avgBrightness * existing.frequency + brightness) / newFreq)
+          : (brightness ?? existing.avgBrightness);
       this.habits.set(key, { ...existing, frequency: newFreq, avgBrightness: avgB });
     } else {
-      this.habits.set(key, { id: key, kind, room, timeOfDay, frequency: 1, avgBrightness: brightness });
+      this.habits.set(key, {
+        id: key,
+        kind,
+        room,
+        timeOfDay,
+        frequency: 1,
+        avgBrightness: brightness,
+      });
     }
   }
 
   /**
    * Get the learned brightness preference for a room/time combination.
    * When userId is provided, returns user-specific preference first, then
-   * falls back to the global habit (shared Digital Twin awareness, FAZ 12).
+   * falls back to the global habit (shared Digital Twin awareness, ).
    */
-  getLearnedBrightness(room: string, timeOfDay: TimeOfDay, minFrequency = 3, userId?: string): number | undefined {
+  getLearnedBrightness(
+    room: string,
+    timeOfDay: TimeOfDay,
+    minFrequency = 3,
+    userId?: string,
+  ): number | undefined {
     // User-specific habit takes priority
     if (userId) {
       const userKey = `${userId}:light-${room}-${timeOfDay}`;
       const userHabit = this.habits.get(userKey);
-      if (userHabit && userHabit.frequency >= minFrequency && userHabit.avgBrightness !== undefined) {
+      if (
+        userHabit &&
+        userHabit.frequency >= minFrequency &&
+        userHabit.avgBrightness !== undefined
+      ) {
         return userHabit.avgBrightness;
       }
     }
@@ -164,9 +185,14 @@ export interface TwinPlan {
  *  - habit override → if user consistently uses a specific brightness at this time,
  *    prefer the learned value (experience memory deepening)
  *
- * When userId is provided (FAZ 12), habits are tracked and resolved per-user.
+ * When userId is provided, habits are tracked and resolved per-user.
  */
-export function resolveLightPlan(twin: DigitalTwin, room: string, desiredOn: boolean, userId?: string): TwinPlan {
+export function resolveLightPlan(
+  twin: DigitalTwin,
+  room: string,
+  desiredOn: boolean,
+  userId?: string,
+): TwinPlan {
   const device = twin.findByRoomKind(room, "light");
   const ctx = twin.getContext();
 
@@ -213,10 +239,11 @@ export function resolveLightPlan(twin: DigitalTwin, room: string, desiredOn: boo
         summary: `Turn on ${room} light at ${brightness}%`,
       },
     ],
-    rationale: source === "learned"
-      ? `Based on your habit, the ${room} light comes on at ${brightness}% (you usually prefer this at ${ctx.timeOfDay}).`
-      : dim
-        ? `It's ${ctx.timeOfDay}, so the ${room} light comes on gently at ${brightness}%.`
-        : `It's ${ctx.timeOfDay}, so the ${room} light comes on at full ${brightness}%.`,
+    rationale:
+      source === "learned"
+        ? `Based on your habit, the ${room} light comes on at ${brightness}% (you usually prefer this at ${ctx.timeOfDay}).`
+        : dim
+          ? `It's ${ctx.timeOfDay}, so the ${room} light comes on gently at ${brightness}%.`
+          : `It's ${ctx.timeOfDay}, so the ${room} light comes on at full ${brightness}%.`,
   };
 }

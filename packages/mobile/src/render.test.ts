@@ -218,7 +218,9 @@ describe("@nexus/mobile", () => {
     const html = renderMobileDocument({ theme: "dark" });
     // Verify routine-card does not have btn-run
     expect(html).toContain('<div class="rc-side"><button class="tgl"');
-    expect(html).not.toContain('<div class="rc-side"><button class="tgl" type="button" data-toggle aria-pressed="true" aria-label="Morning"></button><button class="btn-run"');
+    expect(html).not.toContain(
+      '<div class="rc-side"><button class="tgl" type="button" data-toggle aria-pressed="true" aria-label="Morning"></button><button class="btn-run"',
+    );
   });
 
   it("defaults to the iOS shell and supports the Android variant (R6.2)", () => {

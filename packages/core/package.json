@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI core runtime — boots the service, wires config/logging, runs a heartbeat (FAZ 0).",
+  "description": "NEXUS AI core runtime — boots the service, wires config/logging, runs a heartbeat.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -34,5 +34,7 @@
     "@nexus/security": "workspace:*",
     "@nexus/skills": "workspace:*",
     "@nexus/voice": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

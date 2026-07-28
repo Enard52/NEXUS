@@ -1,5 +1,5 @@
 /**
- * Nexus AI — Web demo assembly (FAZ 9/10/18)
+ * Nexus AI — Web demo assembly
  *
  * Wires the renderer to real building blocks: it builds the navigation, Today
  * dashboard and device list from the @nexus/interface view-models, seeds the
@@ -53,8 +53,8 @@ import {
   renderSuggestions,
   renderToday,
   renderTodayPanel,
-  renderPricing,
-  renderTestimonials,
+  renderPricing as _renderPricing,
+  renderTestimonials as _renderTestimonials,
   CURRENT_LOCALE,
 } from "./render.js";
 import { renderHead, type SeoConfig } from "./seo.js";
@@ -71,14 +71,34 @@ export const SITE_URL = "https://nexus-ai.example.com/";
 const deviceManager = new DeviceManager();
 deviceManager.registerConnector(
   new InMemoryConnector("system", [
-    { id: "lamp", name: "Philips Hue Play Gradient Lightstrip", room: "Living room", capabilities: [] },
+    {
+      id: "lamp",
+      name: "Philips Hue Play Gradient Lightstrip",
+      room: "Living room",
+      capabilities: [],
+    },
     { id: "tv", name: 'LG C3 65" 4K OLED Smart TV', room: "Living room", capabilities: [] },
     { id: "ac", name: "Daikin Sensira 18000 BTU Inverter AC", room: "Bedroom", capabilities: [] },
     { id: "lock", name: "August Smart Lock Pro + Connect", room: "Entrance", capabilities: [] },
     { id: "speaker", name: "Sonos Arc Dolby Atmos Soundbar", room: "Studio", capabilities: [] },
-    { id: "camera", name: "Arlo Pro 4 Spotlight Security Camera", room: "Garden", capabilities: [] },
-    { id: "thermostat", name: "Ecobee Smart Thermostat Premium", room: "Hallway", capabilities: [] },
-    { id: "curtain", name: "Somfy Tahoma Motorized Smart Shades", room: "Bedroom", capabilities: [] },
+    {
+      id: "camera",
+      name: "Arlo Pro 4 Spotlight Security Camera",
+      room: "Garden",
+      capabilities: [],
+    },
+    {
+      id: "thermostat",
+      name: "Ecobee Smart Thermostat Premium",
+      room: "Hallway",
+      capabilities: [],
+    },
+    {
+      id: "curtain",
+      name: "Somfy Tahoma Motorized Smart Shades",
+      room: "Bedroom",
+      capabilities: [],
+    },
   ]),
 );
 
@@ -226,7 +246,9 @@ export function buildDemoScreens(): DemoScreens {
   const devices: DeviceRow[] = [
     {
       id: "lamp",
-      nameKey: isTr ? "Philips Hue Play Gradient Aydınlatma" : "Philips Hue Play Gradient Lightstrip",
+      nameKey: isTr
+        ? "Philips Hue Play Gradient Aydınlatma"
+        : "Philips Hue Play Gradient Lightstrip",
       room: isTr ? "Salon" : "Living room",
       online: true,
       manufacturer: "Philips",

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Push Notifications Manager (FAZ 9)
+ * NEXUS AI — Push Notifications Manager
  *
  * Handles push notification registration, token management, and incoming
  * notification dispatch. Maps notification payloads to NEXUS intents
@@ -127,7 +127,7 @@ export class PushManager {
    * Requests permission if not already granted, then obtains the device token.
    */
   async register(): Promise<PushToken> {
-    // In production, this calls PushNotifications.register() via Capacitor.
+    // In production, this calls Nexus native notifications API.
     // Here we model the flow and store state.
     const token: PushToken = {
       value: `${this.bridge.platform}_token_${Date.now()}`,

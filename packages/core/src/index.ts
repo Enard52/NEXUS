@@ -1,8 +1,8 @@
 /**
- * NEXUS AI — Core runtime (FAZ 0)
+ * NEXUS AI — Core runtime
  *
- * FAZ 0 scope: boot the service, wire configuration + logging, run a heartbeat,
- * and shut down gracefully. The intent → agent → plan pipeline arrives in FAZ 1;
+ * scope: boot the service, wire configuration + logging, run a heartbeat,
+ * and shut down gracefully. The intent → agent → plan pipeline arrives in ;
  * this file only proves the process comes up and stays observable.
  */
 
@@ -41,12 +41,12 @@ export function startCore(options: StartOptions = {}): CoreService {
 
   logger.info("NEXUS core starting", {
     version: "0.0.0",
-    phase: "FAZ 0",
+    phase: "",
     heartbeatMs: config.heartbeatMs,
   });
 
   if (!config.ai.openaiApiKey.isSet) {
-    logger.warn("OPENAI_API_KEY is not set — AI Adapter stays inert until FAZ 1 wiring");
+    logger.warn("OPENAI_API_KEY is not set — AI Adapter stays inert until wiring");
   }
 
   let ticks = 0;

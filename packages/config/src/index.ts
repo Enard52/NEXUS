@@ -1,11 +1,11 @@
 /**
- * NEXUS AI — Configuration & secrets (FAZ 0)
+ * NEXUS AI — Configuration & secrets
  *
  * Loads configuration from `.env` (if present) and `process.env`, validates it,
  * and exposes a typed, immutable config object. Secrets are wrapped so they are
  * never accidentally serialized into logs or error output.
  *
- * Zero runtime dependencies on purpose: FAZ 0 must boot with a single install.
+ * Zero runtime dependencies on purpose: must boot with a single install.
  */
 
 import { readFileSync } from "node:fs";

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   contrastRatio,
   darkTheme,
+  detectSystemTheme,
   getTheme,
   implemented,
   lightTheme,
@@ -41,5 +42,46 @@ describe("accessibility contrast (FAZ 10)", () => {
 
   it("verifies the primary button label contrasts with the primary fill", () => {
     expect(meetsAaNormalText(lightTheme.color.onPrimary, lightTheme.color.primary)).toBe(true);
+  });
+});
+
+describe("system theme detection (FAZ 2/6)", () => {
+  it("returns undefined when matchMedia is unavailable", () => {
+    const original = (globalThis as any).matchMedia;
+    delete (globalThis as any).matchMedia;
+    expect(detectSystemTheme()).toBeUndefined();
+    (globalThis as any).matchMedia = original;
+  });
+
+  it("returns 'dark' when the system prefers dark", () => {
+    const original = (globalThis as any).matchMedia;
+    (globalThis as any).matchMedia = (query: string) => ({
+      matches: query.includes("dark"),
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    });
+    expect(detectSystemTheme()).toBe("dark");
+    (globalThis as any).matchMedia = original;
+  });
+
+  it("returns 'light' when the system prefers light", () => {
+    const original = (globalThis as any).matchMedia;
+    (globalThis as any).matchMedia = (query: string) => ({
+      matches: !query.includes("dark"),
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    });
+    expect(detectSystemTheme()).toBe("light");
+    (globalThis as any).matchMedia = original;
   });
 });

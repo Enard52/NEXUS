@@ -8,13 +8,19 @@
 import { describe, expect, it } from "vitest";
 import { MockProvider } from "@nexus/ai";
 import { AccountService, AccountHouseholdBridge, Household } from "@nexus/accounts";
-import { BillingService, SandboxPaymentProvider, PLAN_CATALOG } from "@nexus/billing";
+import { BillingService, SandboxPaymentProvider } from "@nexus/billing";
 import { ConnectorStore, StoreError } from "@nexus/connectors";
 import { DeviceManager, InMemoryConnector, type UniversalDevice } from "@nexus/devices";
 import { InMemoryUserMemory, CloudSyncedUserMemory, InMemoryCloudBackend } from "@nexus/memory";
 import { definePlugin, PluginRegistry } from "@nexus/plugins";
 import { defineScene, RoutineEngine, RoutineSuggestionEngine } from "@nexus/routines";
-import { SecurityEngine, SecurityMiddleware, RiskLevel, RateLimiter, LoginLockout } from "@nexus/security";
+import {
+  SecurityEngine,
+  SecurityMiddleware,
+  RiskLevel,
+  RateLimiter,
+  LoginLockout,
+} from "@nexus/security";
 import { DigitalTwin } from "@nexus/memory";
 import { NexusCore } from "./pipeline.js";
 
@@ -75,13 +81,29 @@ describe("FAZ 17 — End-to-End Integration: Film Gecesi Senaryosu", () => {
     const registry = new PluginRegistry();
     registry.register(
       definePlugin(
-        { id: "ikea", name: "IKEA", vendor: "ikea", version: "1.0.0", protocol: "zigbee", capabilities: ["switch", "brightness"], premium: false },
+        {
+          id: "ikea",
+          name: "IKEA",
+          vendor: "ikea",
+          version: "1.0.0",
+          protocol: "zigbee",
+          capabilities: ["switch", "brightness"],
+          premium: false,
+        },
         [ikeaLamp],
       ),
     );
     registry.register(
       definePlugin(
-        { id: "sonoff", name: "Sonoff", vendor: "sonoff", version: "1.0.0", protocol: "mqtt", capabilities: ["switch"], premium: true },
+        {
+          id: "sonoff",
+          name: "Sonoff",
+          vendor: "sonoff",
+          version: "1.0.0",
+          protocol: "mqtt",
+          capabilities: ["switch"],
+          premium: true,
+        },
         [sonoffPlug],
       ),
     );
@@ -125,11 +147,22 @@ describe("FAZ 17 — End-to-End Integration: Film Gecesi Senaryosu", () => {
       authBridge: bridge,
     });
 
-    return { core, bridge, session, account, billing, store, memory, cloudBackend, household, devices };
+    return {
+      core,
+      bridge,
+      session,
+      account,
+      billing,
+      store,
+      memory,
+      cloudBackend,
+      household,
+      devices,
+    };
   }
 
   it("complete flow: auth → premium → install connector → scene → cloud sync", () => {
-    const { core, bridge, session, account, billing, store, memory, cloudBackend } = buildFullStack();
+    const { bridge, session, account, billing, store, memory, cloudBackend } = buildFullStack();
 
     // Step 1: Validate session
     const ctx = bridge.requireAuth(session.token);
@@ -164,7 +197,9 @@ describe("FAZ 17 — End-to-End Integration: Film Gecesi Senaryosu", () => {
     expect(held.pending.length).toBeGreaterThan(0);
 
     // Confirm execution
-    const run = await core.handleAuthenticated(session.token, "nexus film izleyeceğim", { confirm: true });
+    const run = await core.handleAuthenticated(session.token, "nexus film izleyeceğim", {
+      confirm: true,
+    });
     expect(run.executed.length).toBeGreaterThan(0);
   });
 
@@ -173,7 +208,10 @@ describe("FAZ 17 — End-to-End Integration: Film Gecesi Senaryosu", () => {
 
     // Invite a guest
     const invite = household.invite(account.id, "guest@test.com", "guest");
-    const guestAcct = bridge.accountService.register({ email: "guest@test.com", password: "Guest123!" });
+    const guestAcct = bridge.accountService.register({
+      email: "guest@test.com",
+      password: "Guest123!",
+    });
     household.acceptInvite(invite.token, guestAcct.id);
 
     // Guest tries device control → denied
@@ -213,9 +251,7 @@ describe("FAZ 17 — Load & Stress Test", () => {
     const core = new NexusCore({ memory, provider: new MockProvider() });
 
     const results = await Promise.all(
-      Array.from({ length: 100 }, (_, i) =>
-        core.handle(`user-${i}`, "hello"),
-      ),
+      Array.from({ length: 100 }, (_, i) => core.handle(`user-${i}`, "hello")),
     );
     expect(results).toHaveLength(100);
     expect(results.every((r) => r.text.length > 0)).toBe(true);
@@ -260,7 +296,15 @@ describe("FAZ 17 — Load & Stress Test", () => {
     const registry = new PluginRegistry();
     registry.register(
       definePlugin(
-        { id: "stress", name: "Stress", vendor: "test", version: "1.0.0", protocol: "lan", capabilities: ["switch"], premium: false },
+        {
+          id: "stress",
+          name: "Stress",
+          vendor: "test",
+          version: "1.0.0",
+          protocol: "lan",
+          capabilities: ["switch"],
+          premium: false,
+        },
         [{ id: "s-dev", name: "S", room: "r", capabilities: [{ kind: "switch", value: false }] }],
       ),
     );
@@ -526,7 +570,12 @@ describe("FAZ 17 — Regression Smoke Tests", () => {
 
   it("FAZ 4: device discovery + command lifecycle", () => {
     const devices = new DeviceManager();
-    const dev: UniversalDevice = { id: "d1", name: "L", room: "r", capabilities: [{ kind: "switch", value: false }] };
+    const dev: UniversalDevice = {
+      id: "d1",
+      name: "L",
+      room: "r",
+      capabilities: [{ kind: "switch", value: false }],
+    };
     devices.registerConnector(new InMemoryConnector("c1", [dev]));
     expect(devices.discoverAll()).toHaveLength(1);
     const result = devices.execute({ deviceId: "d1", capability: "switch", value: true });

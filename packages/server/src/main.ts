@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Runnable server entrypoint (FAZ 18)
+ * NEXUS AI — Runnable server entrypoint
  *
  * Boots the sync server on a durable SQLite file so real accounts and per-user
  * data survive restarts. The data directory defaults to `~/.nexus` and can be
@@ -25,17 +25,23 @@ const here = dirname(fileURLToPath(import.meta.url));
 // binaries under public/downloads); fall back to the raw web build output.
 const publicRoot = resolve(here, "../../../public");
 const staticRoot = existsSync(publicRoot) ? publicRoot : resolve(here, "../../web/dist");
+// The built React SPA (packages/client). When present, /app serves it.
+const clientDist = resolve(here, "../../client/dist");
+const clientRoot = existsSync(clientDist) ? clientDist : undefined;
 
 const store = new SqliteKeyValueStore(dbFile);
 const memory = new SqliteUserMemoryStore(memoryDbFile);
-const app = createNexusApp({ store, memory, staticRoot, config });
+const app = createNexusApp({ store, memory, staticRoot, clientRoot, config });
 const port = Number(process.env.PORT ?? 4178);
 
 void startServer(app, port).then(({ port: bound }) => {
   // eslint-disable-next-line no-console
-  console.log(`NEXUS sync server listening on http://localhost:${bound}`);
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+    console.log(`NEXUS sync server listening on http://localhost:${bound}`);
   // eslint-disable-next-line no-console
-  console.log(`  data: ${dbFile}`);
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+    console.log(`  data: ${dbFile}`);
   // eslint-disable-next-line no-console
-  console.log(`  static: ${staticRoot}`);
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+    console.log(`  static: ${staticRoot}`);
 });

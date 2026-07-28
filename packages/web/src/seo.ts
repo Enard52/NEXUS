@@ -1,11 +1,11 @@
 /**
- * NEXUS AI — SEO & discoverability (FAZ 10/18 web front end)
+ * NEXUS AI — SEO & discoverability
  *
  * Search engines and social platforms only see what the HTML `<head>` tells
  * them, so this module renders that contract explicitly and testably:
  *   - primary meta (title, description, keywords, robots, theme-color, canonical),
  *   - Open Graph + Twitter Card tags for rich link previews,
- *   - hreflang alternates for the multilingual site (FAZ 13),
+ *   - hreflang alternates for the multilingual site ,
  *   - JSON-LD structured data (schema.org SoftwareApplication) so the product
  *     is eligible for rich results,
  *   - robots.txt and sitemap.xml generators.

@@ -1,11 +1,11 @@
 /**
- * NEXUS AI — Legal & Compliance Service (FAZ 19)
+ * NEXUS AI — Legal & Compliance Service
  *
  * Provides legal documents (ToS, Privacy Policy, Cookie Policy) in multiple
  * languages, GDPR/KVKK-compliant data subject request handling (download/delete),
  * and a consent manager for voice recording, analytics, and cookies.
  *
- * Tied to FAZ 14 (AccountService) for data ownership and FAZ 15 (Patreon) for
+ * Tied to (AccountService) for data ownership and (Patreon) for
  * PCI-DSS compliance (handled by Patreon — NEXUS never touches card data).
  */
 

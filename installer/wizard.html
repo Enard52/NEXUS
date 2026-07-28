@@ -14,7 +14,7 @@
         --surface-2: #22252b;
         --text: #f2f3f5;
         --muted: #a2a6ad;
-        --primary: #7C5CFF;
+        --primary: #7c5cff;
         --on-primary: #0e0f12;
         --radius: 8px;
         --radius-lg: 16px;
@@ -37,37 +37,82 @@
       }
       /* ── Entrance animations ──────────────────────────────────────── */
       @keyframes wizard-open {
-        from { opacity: 0; transform: scale(0.97) translateY(8px); }
-        to   { opacity: 1; transform: none; }
+        from {
+          opacity: 0;
+          transform: scale(0.97) translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       @keyframes step-slide-in {
-        from { opacity: 0; transform: translateX(22px); }
-        to   { opacity: 1; transform: none; }
+        from {
+          opacity: 0;
+          transform: translateX(22px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       @keyframes tile-in {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: none; }
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       @keyframes ring-pulse {
-        0%,100% { box-shadow: 0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent); }
-        50%      { box-shadow: 0 0 0 8px color-mix(in srgb,var(--primary) 8%,transparent); }
+        0%,
+        100% {
+          box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+        }
+        50% {
+          box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 8%, transparent);
+        }
       }
       @keyframes check-pop {
-        0%   { opacity: 0; transform: scale(0.5); }
-        70%  { transform: scale(1.14); }
-        100% { opacity: 1; transform: scale(1); }
+        0% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        70% {
+          transform: scale(1.14);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
       @keyframes ring-radiate {
-        0%   { opacity: 0.7; transform: scale(1); }
-        100% { opacity: 0;   transform: scale(2.2); }
+        0% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(2.2);
+        }
       }
       @keyframes shimmer-sweep {
-        from { background-position: -300px 0; }
-        to   { background-position: 300px 0; }
+        from {
+          background-position: -300px 0;
+        }
+        to {
+          background-position: 300px 0;
+        }
       }
       @keyframes rail-line-fill {
-        from { height: 0; }
-        to   { height: 100%; }
+        from {
+          height: 0;
+        }
+        to {
+          height: 100%;
+        }
       }
       body {
         font-family: var(--font);
@@ -77,7 +122,7 @@
         user-select: none;
         display: flex;
         flex-direction: column;
-        animation: wizard-open 0.38s cubic-bezier(0.22,1,0.36,1) both;
+        animation: wizard-open 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
       /* ── Custom title bar (draggable) ─────────────────────────────── */
       .titlebar {
@@ -93,10 +138,19 @@
         position: relative;
       }
       .titlebar::after {
-        content: '';
+        content: "";
         position: absolute;
-        bottom: 0; left: 0; right: 0; height: 1px;
-        background: linear-gradient(90deg, transparent, color-mix(in srgb,var(--primary) 55%,transparent) 30%, color-mix(in srgb,var(--primary) 55%,transparent) 70%, transparent);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          color-mix(in srgb, var(--primary) 55%, transparent) 30%,
+          color-mix(in srgb, var(--primary) 55%, transparent) 70%,
+          transparent
+        );
       }
       .titlebar .tb-brand {
         display: flex;
@@ -178,9 +232,11 @@
       }
       /* Vertical connecting line */
       .steps::before {
-        content: '';
+        content: "";
         position: absolute;
-        left: 22px; top: 20px; bottom: 20px;
+        left: 22px;
+        top: 20px;
+        bottom: 20px;
         width: 2px;
         background: var(--border-strong);
         border-radius: 2px;
@@ -188,21 +244,30 @@
       }
       /* Filled portion of the connecting line */
       .steps::after {
-        content: '';
+        content: "";
         position: absolute;
-        left: 22px; top: 20px;
+        left: 22px;
+        top: 20px;
         width: 2px;
         height: 0%;
         background: var(--primary);
         border-radius: 2px;
         z-index: 0;
-        transition: height 0.45s cubic-bezier(0.22,1,0.36,1);
-        box-shadow: 0 0 8px color-mix(in srgb,var(--primary) 50%,transparent);
+        transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 50%, transparent);
       }
-      .steps[data-progress="1"]::after { height: 25%; }
-      .steps[data-progress="2"]::after { height: 50%; }
-      .steps[data-progress="3"]::after { height: 75%; }
-      .steps[data-progress="4"]::after { height: 100%; }
+      .steps[data-progress="1"]::after {
+        height: 25%;
+      }
+      .steps[data-progress="2"]::after {
+        height: 50%;
+      }
+      .steps[data-progress="3"]::after {
+        height: 75%;
+      }
+      .steps[data-progress="4"]::after {
+        height: 100%;
+      }
       .steps li {
         display: flex;
         align-items: center;
@@ -212,7 +277,9 @@
         font-size: 13px;
         font-weight: 500;
         color: var(--muted);
-        transition: background 0.2s, color 0.2s;
+        transition:
+          background 0.2s,
+          color 0.2s;
         position: relative;
         z-index: 1;
       }
@@ -228,7 +295,12 @@
         font-size: 11px;
         font-weight: 800;
         background: var(--bg);
-        transition: background 0.25s, border-color 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
+        transition:
+          background 0.25s,
+          border-color 0.25s,
+          color 0.25s,
+          transform 0.25s,
+          box-shadow 0.25s;
       }
       .steps li.active {
         background: var(--tint);
@@ -247,7 +319,7 @@
         color: var(--on-primary);
         font-size: 0;
         position: relative;
-        animation: check-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+        animation: check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
       }
       .steps li.done .num::after {
         content: "\2713";
@@ -278,7 +350,7 @@
       }
       .step.active {
         display: flex;
-        animation: step-slide-in 0.3s cubic-bezier(0.22,1,0.36,1) both;
+        animation: step-slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
       .step h1 {
         font-size: 25px;
@@ -315,17 +387,27 @@
         gap: 11px;
         align-items: flex-start;
         opacity: 0;
-        animation: tile-in 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        animation: tile-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
       }
       .tile:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
       }
-      .tile:nth-child(1) { animation-delay: 0.06s; }
-      .tile:nth-child(2) { animation-delay: 0.12s; }
-      .tile:nth-child(3) { animation-delay: 0.18s; }
-      .tile:nth-child(4) { animation-delay: 0.24s; }
+      .tile:nth-child(1) {
+        animation-delay: 0.06s;
+      }
+      .tile:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .tile:nth-child(3) {
+        animation-delay: 0.18s;
+      }
+      .tile:nth-child(4) {
+        animation-delay: 0.24s;
+      }
       .tile .ico {
         width: 30px;
         height: 30px;
@@ -427,20 +509,28 @@
         width: 0%;
         border-radius: 999px;
         background: var(--primary);
-        box-shadow: 0 0 10px color-mix(in srgb, var(--primary) 60%, transparent),
-                    4px 0 12px color-mix(in srgb, var(--primary) 80%, transparent);
+        box-shadow:
+          0 0 10px color-mix(in srgb, var(--primary) 60%, transparent),
+          4px 0 12px color-mix(in srgb, var(--primary) 80%, transparent);
         transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        position: relative; overflow: hidden;
+        position: relative;
+        overflow: hidden;
       }
       .progress .fill::after {
-        content: '';
-        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(90deg,
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
           transparent 0%,
-          rgba(255,255,255,0.28) 40%,
-          rgba(255,255,255,0.42) 50%,
-          rgba(255,255,255,0.28) 60%,
-          transparent 100%);
+          rgba(255, 255, 255, 0.28) 40%,
+          rgba(255, 255, 255, 0.42) 50%,
+          rgba(255, 255, 255, 0.28) 60%,
+          transparent 100%
+        );
         background-size: 300px 100%;
         animation: shimmer-sweep 1.5s linear infinite;
       }
@@ -470,13 +560,13 @@
         font-size: 34px;
         color: var(--primary);
         position: relative;
-        animation: check-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+        animation: check-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
       }
       .finish-ring {
         position: absolute;
         inset: 0;
         border-radius: 50%;
-        border: 2px solid color-mix(in srgb,var(--primary) 60%,transparent);
+        border: 2px solid color-mix(in srgb, var(--primary) 60%, transparent);
         animation: ring-radiate 1.2s ease-out 0.3s both;
       }
       /* ── Footer ───────────────────────────────────────────────────── */
@@ -535,25 +625,55 @@
       }
       .btn:active:not(:disabled) {
         transform: scale(0.97);
-        transition: transform 0.08s ease, opacity 0.08s, background 0.08s, box-shadow 0.08s;
+        transition:
+          transform 0.08s ease,
+          opacity 0.08s,
+          background 0.08s,
+          box-shadow 0.08s;
       }
       .win-btn {
-        transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+        transition:
+          background 0.14s ease,
+          color 0.14s ease,
+          box-shadow 0.14s ease;
       }
       .win-btn.close:hover {
-        box-shadow: 0 0 10px rgba(225,29,72,0.4);
+        box-shadow: 0 0 10px rgba(225, 29, 72, 0.4);
       }
       @media (prefers-reduced-motion: reduce) {
-        body { animation: none; }
-        .step.active { animation: none; }
-        .tile { animation: none; opacity: 1; }
-        .steps li .num { animation: none; }
-        .steps::after { transition: none; }
-        .progress .fill { transition: none; }
-        .progress .fill::after { animation: none; }
-        .finish-icon { animation: none; }
-        .finish-ring { animation: none; }
-        .tile, .btn, .win-btn { transition: none; }
+        body {
+          animation: none;
+        }
+        .step.active {
+          animation: none;
+        }
+        .tile {
+          animation: none;
+          opacity: 1;
+        }
+        .steps li .num {
+          animation: none;
+        }
+        .steps::after {
+          transition: none;
+        }
+        .progress .fill {
+          transition: none;
+        }
+        .progress .fill::after {
+          animation: none;
+        }
+        .finish-icon {
+          animation: none;
+        }
+        .finish-ring {
+          animation: none;
+        }
+        .tile,
+        .btn,
+        .win-btn {
+          transition: none;
+        }
       }
     </style>
   </head>
@@ -571,17 +691,50 @@
           role="img"
         >
           <defs>
-            <linearGradient id="nxlogo-tb" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#7C5CFF"/><stop offset="1" stop-color="#8b7bff"/>
+            <linearGradient
+              id="nxlogo-tb"
+              x1="3"
+              y1="2"
+              x2="29"
+              y2="30"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#6f9bff" />
+              <stop offset="0.55" stop-color="#7C5CFF" />
+              <stop offset="1" stop-color="#8b7bff" />
             </linearGradient>
-            <linearGradient id="nxsheen-tb" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            <linearGradient
+              id="nxsheen-tb"
+              x1="16"
+              y1="1"
+              x2="16"
+              y2="17"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#ffffff" stop-opacity="0.30" />
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
             </linearGradient>
           </defs>
-          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-tb)"/>
-          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-tb)"/>
-          <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
-          <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-tb)" />
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-tb)" />
+          <rect
+            x="1.5"
+            y="1.5"
+            width="29"
+            height="29"
+            rx="8.5"
+            fill="none"
+            stroke="#ffffff"
+            stroke-opacity="0.22"
+          />
+          <path
+            d="M10.5 22.5V10.5L21.5 22.5V10.5"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="2.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
         NEXUS KURULUMU
       </span>
@@ -612,23 +765,58 @@
             role="img"
           >
             <defs>
-              <linearGradient id="nxlogo-rail" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#7C5CFF"/><stop offset="1" stop-color="#8b7bff"/>
+              <linearGradient
+                id="nxlogo-rail"
+                x1="3"
+                y1="2"
+                x2="29"
+                y2="30"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#6f9bff" />
+                <stop offset="0.55" stop-color="#7C5CFF" />
+                <stop offset="1" stop-color="#8b7bff" />
               </linearGradient>
-              <linearGradient id="nxsheen-rail" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+              <linearGradient
+                id="nxsheen-rail"
+                x1="16"
+                y1="1"
+                x2="16"
+                y2="17"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#ffffff" stop-opacity="0.30" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
               </linearGradient>
             </defs>
-            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-rail)"/>
-            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-rail)"/>
-            <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
-            <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-rail)" />
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-rail)" />
+            <rect
+              x="1.5"
+              y="1.5"
+              width="29"
+              height="29"
+              rx="8.5"
+              fill="none"
+              stroke="#ffffff"
+              stroke-opacity="0.22"
+            />
+            <path
+              d="M10.5 22.5V10.5L21.5 22.5V10.5"
+              fill="none"
+              stroke="#ffffff"
+              stroke-width="2.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
-        <span class="name">NEXUS</span>
+          <span class="name">NEXUS</span>
         </div>
         <div class="tagline" data-i18n="tagline">Ev için kişisel işletim sistemi · v3.14.2</div>
         <ol class="steps" id="steps">
-          <li data-step="0"><span class="num">1</span><span data-i18n="step1">Hoş Geldiniz</span></li>
+          <li data-step="0">
+            <span class="num">1</span><span data-i18n="step1">Hoş Geldiniz</span>
+          </li>
           <li data-step="1"><span class="num">2</span><span data-i18n="step2">Lisans</span></li>
           <li data-step="2"><span class="num">3</span><span data-i18n="step3">Konum</span></li>
           <li data-step="3"><span class="num">4</span><span data-i18n="step4">Yükleniyor</span></li>
@@ -727,25 +915,49 @@
           <!-- 2. License -->
           <section class="step" data-step="1">
             <h1 data-i18n="l.title">Lisans Sözleşmesi</h1>
-            <p data-i18n="l.lede">Lütfen devam etmeden önce aşağıdaki lisans koşullarını okuyun ve kabul edin.</p>
+            <p data-i18n="l.lede">
+              Lütfen devam etmeden önce aşağıdaki lisans koşullarını okuyun ve kabul edin.
+            </p>
             <div class="license-box" id="license-box">
               <p><strong>NEXUS AI YAZILIM LİSANS SÖZLEŞMESİ</strong></p>
               <p>Telif Hakkı © 2026 NEXUS Technologies Inc. Tüm hakları saklıdır.</p>
               <br />
-              <p>LÜTFEN YAZILIMI YÜKLEMEDEN VEYA KULLANMADAN ÖNCE BU LİSANS SÖZLEŞMESİNİ DİKKATLE OKUYUN.</p>
+              <p>
+                LÜTFEN YAZILIMI YÜKLEMEDEN VEYA KULLANMADAN ÖNCE BU LİSANS SÖZLEŞMESİNİ DİKKATLE
+                OKUYUN.
+              </p>
               <br />
-              <p><strong>1. LİSANS VERİLMESİ.</strong> Bu Sözleşmenin koşullarına tabi olarak NEXUS Technologies, NEXUS AI'yı yalnızca kişisel, ticari olmayan amaçlarınız için yüklemeniz ve kullanmanız amacıyla size münhasır olmayan, devredilemez bir lisans verir.</p>
+              <p>
+                <strong>1. LİSANS VERİLMESİ.</strong> Bu Sözleşmenin koşullarına tabi olarak NEXUS
+                Technologies, NEXUS AI'yı yalnızca kişisel, ticari olmayan amaçlarınız için
+                yüklemeniz ve kullanmanız amacıyla size münhasır olmayan, devredilemez bir lisans
+                verir.
+              </p>
               <br />
-              <p><strong>2. KISITLAMALAR.</strong> Şunları yapamazsınız: (a) Yazılımı kopyalamak, değiştirmek veya dağıtmak; (b) Yazılıma tersine mühendislik uygulamak; (c) Yazılımı alt lisanslamak veya satmak.</p>
+              <p>
+                <strong>2. KISITLAMALAR.</strong> Şunları yapamazsınız: (a) Yazılımı kopyalamak,
+                değiştirmek veya dağıtmak; (b) Yazılıma tersine mühendislik uygulamak; (c) Yazılımı
+                alt lisanslamak veya satmak.
+              </p>
               <br />
-              <p><strong>3. GİZLİLİK.</strong> Yazılım öncelikle cihaz üzerinde çalışır. Tüm bulut özellikleri açık onay gerektirir ve ayrı Gizlilik Politikasına tabidir.</p>
+              <p>
+                <strong>3. GİZLİLİK.</strong> Yazılım öncelikle cihaz üzerinde çalışır. Tüm bulut
+                özellikleri açık onay gerektirir ve ayrı Gizlilik Politikasına tabidir.
+              </p>
               <br />
-              <p><strong>4. FERAGAT.</strong> YAZILIM HERHANGİ BİR GARANTİ OLMAKSIZIN "OLDUĞU GİBİ" SAĞLANIR.</p>
+              <p>
+                <strong>4. FERAGAT.</strong> YAZILIM HERHANGİ BİR GARANTİ OLMAKSIZIN "OLDUĞU GİBİ"
+                SAĞLANIR.
+              </p>
               <br />
-              <p><strong>5. FESHETME.</strong> Bu lisans, buradaki herhangi bir şartın ihlali durumunda otomatik olarak sona erer.</p>
+              <p>
+                <strong>5. FESHETME.</strong> Bu lisans, buradaki herhangi bir şartın ihlali
+                durumunda otomatik olarak sona erer.
+              </p>
             </div>
             <label class="check-row"
-              ><input type="checkbox" id="accept" /> <span data-i18n="l.accept">Sözleşmeyi okudum ve kabul ediyorum</span></label
+              ><input type="checkbox" id="accept" />
+              <span data-i18n="l.accept">Sözleşmeyi okudum ve kabul ediyorum</span></label
             >
           </section>
 
@@ -757,16 +969,15 @@
               konum önerilir.
             </p>
             <div class="field">
-              <input
-                type="text"
-                id="path"
-                value=""
-                aria-label="Kurulum yolu"
-              />
-              <button class="btn-browse" id="browse" type="button" data-i18n="p.browse">Gözat…</button>
+              <input type="text" id="path" value="" aria-label="Kurulum yolu" />
+              <button class="btn-browse" id="browse" type="button" data-i18n="p.browse">
+                Gözat…
+              </button>
             </div>
             <p class="disk" id="disk-line">
-              <span data-i18n="p.required">Gerekli alan</span>: <strong>240 MB</strong> &nbsp;·&nbsp; <span data-i18n="p.available">Kullanılabilir</span>:
+              <span data-i18n="p.required">Gerekli alan</span>:
+              <strong>240 MB</strong> &nbsp;·&nbsp;
+              <span data-i18n="p.available">Kullanılabilir</span>:
               <strong id="disk-free">…</strong>
             </p>
           </section>
@@ -791,18 +1002,27 @@
               NEXUS AI başarıyla kuruldu. Kurulum sihirbazından çıkmak için <strong>Bitir</strong>'e
               tıklayın.
             </p>
-            <p class="disk" id="install-summary" style="display:none"></p>
+            <p class="disk" id="install-summary" style="display: none"></p>
             <label class="check-row"
-              ><input type="checkbox" id="launch" checked /> <span data-i18n="f.launch">NEXUS'u şimdi başlat</span></label
+              ><input type="checkbox" id="launch" checked />
+              <span data-i18n="f.launch">NEXUS'u şimdi başlat</span></label
             >
           </section>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-          <button class="btn btn-ghost" id="cancel" type="button" data-i18n="btn.cancel">İptal</button>
+          <button class="btn btn-ghost" id="cancel" type="button" data-i18n="btn.cancel">
+            İptal
+          </button>
           <div class="right">
-            <button class="btn btn-ghost" id="back" type="button" style="visibility: hidden" data-i18n="btn.back">
+            <button
+              class="btn btn-ghost"
+              id="back"
+              type="button"
+              style="visibility: hidden"
+              data-i18n="btn.back"
+            >
               Geri
             </button>
             <button class="btn btn-primary" id="next" type="button">Devam Et</button>
@@ -831,39 +1051,77 @@
         var lang = "tr";
         var STR = {
           tr: {
-            next: "Devam Et", install: "Yükle", finishBtn: "Bitir",
-            preparing: "Hazırlanıyor…", cancelQ: "Kurulumu iptal etmek istiyor musunuz?",
-            installedTo: "Kurulum konumu", failed: "Kurulum başarısız oldu: ",
-            stages: { core: "Çekirdek servisler yükleniyor…", voice: "Ses motoru yapılandırılıyor…", devices: "Cihaz konnektörleri kuruluyor…", privacy: "Yerel gizlilik kalkanı etkinleştiriliyor…", finalize: "Son rötuşlar yapılıyor…", done: "Kurulum tamamlandı." }
+            next: "Devam Et",
+            install: "Yükle",
+            finishBtn: "Bitir",
+            preparing: "Hazırlanıyor…",
+            cancelQ: "Kurulumu iptal etmek istiyor musunuz?",
+            installedTo: "Kurulum konumu",
+            failed: "Kurulum başarısız oldu: ",
+            stages: {
+              core: "Çekirdek servisler yükleniyor…",
+              voice: "Ses motoru yapılandırılıyor…",
+              devices: "Cihaz konnektörleri kuruluyor…",
+              privacy: "Yerel gizlilik kalkanı etkinleştiriliyor…",
+              finalize: "Son rötuşlar yapılıyor…",
+              done: "Kurulum tamamlandı.",
+            },
           },
           en: {
-            next: "Continue", install: "Install", finishBtn: "Finish",
-            preparing: "Preparing…", cancelQ: "Do you want to cancel the installation?",
-            installedTo: "Installed to", failed: "Installation failed: ",
-            stages: { core: "Installing core services…", voice: "Configuring the voice engine…", devices: "Setting up device connectors…", privacy: "Enabling the local privacy shield…", finalize: "Applying finishing touches…", done: "Installation complete." },
+            next: "Continue",
+            install: "Install",
+            finishBtn: "Finish",
+            preparing: "Preparing…",
+            cancelQ: "Do you want to cancel the installation?",
+            installedTo: "Installed to",
+            failed: "Installation failed: ",
+            stages: {
+              core: "Installing core services…",
+              voice: "Configuring the voice engine…",
+              devices: "Setting up device connectors…",
+              privacy: "Enabling the local privacy shield…",
+              finalize: "Applying finishing touches…",
+              done: "Installation complete.",
+            },
             ui: {
-              "tagline": "The personal operating system for your home · v3.14.2",
-              "step1": "Welcome", "step2": "License", "step3": "Location", "step4": "Installing", "step5": "Finished",
+              tagline: "The personal operating system for your home · v3.14.2",
+              step1: "Welcome",
+              step2: "License",
+              step3: "Location",
+              step4: "Installing",
+              step5: "Finished",
               "w.title": "Welcome to the NEXUS AI Setup",
-              "w.lede": "This wizard will guide you through installing <strong>NEXUS AI</strong>, your personal operating system for the home. Click <strong>Continue</strong> to begin.",
-              "w.t1": "Lightweight service", "w.d1": "Runs under 50 MB RAM when idle",
-              "w.t2": "100% local", "w.d2": "Your data never leaves your device",
-              "w.t3": "2,000+ devices", "w.d3": "Compatible out of the box",
-              "w.t4": "Minutes to set up", "w.d4": "Fast and smooth installation",
+              "w.lede":
+                "This wizard will guide you through installing <strong>NEXUS AI</strong>, your personal operating system for the home. Click <strong>Continue</strong> to begin.",
+              "w.t1": "Lightweight service",
+              "w.d1": "Runs under 50 MB RAM when idle",
+              "w.t2": "100% local",
+              "w.d2": "Your data never leaves your device",
+              "w.t3": "2,000+ devices",
+              "w.d3": "Compatible out of the box",
+              "w.t4": "Minutes to set up",
+              "w.d4": "Fast and smooth installation",
               "l.title": "License Agreement",
               "l.lede": "Please read and accept the license terms below before continuing.",
               "l.accept": "I have read and accept the agreement",
               "p.title": "Installation Location",
-              "p.lede": "Choose where NEXUS AI will be installed. The default location is recommended for most users.",
-              "p.browse": "Browse…", "p.required": "Space required", "p.available": "Available",
-              "i.title": "Installing NEXUS AI", "i.lede": "Please wait while NEXUS is installed on your computer.",
+              "p.lede":
+                "Choose where NEXUS AI will be installed. The default location is recommended for most users.",
+              "p.browse": "Browse…",
+              "p.required": "Space required",
+              "p.available": "Available",
+              "i.title": "Installing NEXUS AI",
+              "i.lede": "Please wait while NEXUS is installed on your computer.",
               "f.title": "NEXUS Is Ready",
-              "f.lede": "NEXUS AI has been installed successfully. Click <strong>Finish</strong> to exit the setup wizard.",
+              "f.lede":
+                "NEXUS AI has been installed successfully. Click <strong>Finish</strong> to exit the setup wizard.",
               "f.launch": "Launch NEXUS now",
-              "btn.cancel": "Cancel", "btn.back": "Back"
+              "btn.cancel": "Cancel",
+              "btn.back": "Back",
             },
-            license: '<p><strong>NEXUS AI SOFTWARE LICENSE AGREEMENT</strong></p><p>Copyright © 2026 NEXUS Technologies Inc. All rights reserved.</p><br /><p>PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING THE SOFTWARE.</p><br /><p><strong>1. GRANT OF LICENSE.</strong> Subject to the terms of this Agreement, NEXUS Technologies grants you a non-exclusive, non-transferable license to install and use NEXUS AI solely for your personal, non-commercial purposes.</p><br /><p><strong>2. RESTRICTIONS.</strong> You may not: (a) copy, modify or distribute the Software; (b) reverse engineer the Software; (c) sublicense or sell the Software.</p><br /><p><strong>3. PRIVACY.</strong> The Software runs primarily on-device. All cloud features require explicit consent and are governed by the separate Privacy Policy.</p><br /><p><strong>4. DISCLAIMER.</strong> THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.</p><br /><p><strong>5. TERMINATION.</strong> This license terminates automatically upon breach of any term herein.</p>'
-          }
+            license:
+              '<p><strong>NEXUS AI SOFTWARE LICENSE AGREEMENT</strong></p><p>Copyright © 2026 NEXUS Technologies Inc. All rights reserved.</p><br /><p>PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING THE SOFTWARE.</p><br /><p><strong>1. GRANT OF LICENSE.</strong> Subject to the terms of this Agreement, NEXUS Technologies grants you a non-exclusive, non-transferable license to install and use NEXUS AI solely for your personal, non-commercial purposes.</p><br /><p><strong>2. RESTRICTIONS.</strong> You may not: (a) copy, modify or distribute the Software; (b) reverse engineer the Software; (c) sublicense or sell the Software.</p><br /><p><strong>3. PRIVACY.</strong> The Software runs primarily on-device. All cloud features require explicit consent and are governed by the separate Privacy Policy.</p><br /><p><strong>4. DISCLAIMER.</strong> THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.</p><br /><p><strong>5. TERMINATION.</strong> This license terminates automatically upon breach of any term herein.</p>',
+          },
         };
 
         function applyLanguage() {
@@ -875,10 +1133,13 @@
             var k = el.getAttribute("data-i18n");
             if (ui[k]) el.textContent = ui[k];
           });
-          Array.prototype.forEach.call(document.querySelectorAll("[data-i18n-html]"), function (el) {
-            var k = el.getAttribute("data-i18n-html");
-            if (ui[k]) el.innerHTML = ui[k];
-          });
+          Array.prototype.forEach.call(
+            document.querySelectorAll("[data-i18n-html]"),
+            function (el) {
+              var k = el.getAttribute("data-i18n-html");
+              if (ui[k]) el.innerHTML = ui[k];
+            },
+          );
           var tb = document.querySelector(".tb-brand");
           if (tb) tb.lastChild.textContent = "NEXUS SETUP";
           var lic = document.getElementById("license-box");
@@ -890,7 +1151,10 @@
           if (n == null) return "—";
           var units = ["B", "KB", "MB", "GB", "TB"];
           var i = 0;
-          while (n >= 1024 && i < units.length - 1) { n /= 1024; i++; }
+          while (n >= 1024 && i < units.length - 1) {
+            n /= 1024;
+            i++;
+          }
           return n.toFixed(n >= 100 || i === 0 ? 0 : 1) + " " + units[i];
         }
 
@@ -924,10 +1188,13 @@
           });
           // Drive the vertical rail fill line
           var stepsEl = document.getElementById("steps");
-          if (stepsEl) { stepsEl.setAttribute("data-progress", String(current)); }
+          if (stepsEl) {
+            stepsEl.setAttribute("data-progress", String(current));
+          }
           elNext.textContent = labelFor(current);
           elNext.disabled = (current === 1 && !elAccept.checked) || (current === 3 && installing);
-          elBack.style.visibility = current === 0 || current === 3 || current === 4 ? "hidden" : "visible";
+          elBack.style.visibility =
+            current === 0 || current === 3 || current === 4 ? "hidden" : "visible";
           if (current === 3) startInstall();
         }
 
@@ -938,7 +1205,8 @@
 
         function setProgress(percent, text) {
           document.getElementById("fill").style.width = percent + "%";
-          document.getElementById("pct").textContent = lang === "tr" ? "%" + percent : percent + "%";
+          document.getElementById("pct").textContent =
+            lang === "tr" ? "%" + percent : percent + "%";
           if (text) document.getElementById("status").textContent = text;
         }
 
@@ -953,7 +1221,10 @@
 
           var shown = 0;
           var reported = { percent: 8, key: "core" };
-          if (native.onProgress) native.onProgress(function (p) { reported = p; });
+          if (native.onProgress)
+            native.onProgress(function (p) {
+              reported = p;
+            });
 
           var easeTimer = setInterval(function () {
             if (shown < reported.percent) {
@@ -972,7 +1243,9 @@
                 var sum = document.getElementById("install-summary");
                 sum.textContent = STR[lang].installedTo + ": " + res.installDir;
                 sum.style.display = "block";
-                setTimeout(function () { go(4); }, 650);
+                setTimeout(function () {
+                  go(4);
+                }, 650);
               } else {
                 setProgress(shown, STR[lang].failed + ((res && res.error) || "unknown"));
                 elBack.style.visibility = "visible";
@@ -981,7 +1254,10 @@
             };
             // Let the ease animation catch up before concluding.
             var wait = setInterval(function () {
-              if (!res || !res.ok || shown >= 100) { clearInterval(wait); finish(); }
+              if (!res || !res.ok || shown >= 100) {
+                clearInterval(wait);
+                finish();
+              }
             }, 120);
           }
 

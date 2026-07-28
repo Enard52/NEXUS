@@ -1,15 +1,15 @@
 /**
- * NEXUS AI — Account System & Authentication (FAZ 14)
+ * NEXUS AI — Account System & Authentication
  *
- * The mandatory precondition for the subscription model (FAZ 15). Provides
+ * The mandatory precondition for the subscription model . Provides
  * email/password registration and login, password reset, session management,
- * multi-device pairing, the role model hook (FAZ 12), and the user's right to
- * export and delete their own data (FAZ 19 / GDPR-KVKK link).
+ * multi-device pairing, the role model hook , and the user's right to
+ * export and delete their own data .
  *
  * Passwords are salted and hashed with scrypt (never stored in clear); session
  * tokens and reset tokens are cryptographically random.
  *
- * Storage is a {@link KeyValueStore} (FAZ 18 seam): the default is in-memory
+ * Storage is a {@link KeyValueStore} : the default is in-memory
  * for dev/test, but passing a durable store (e.g. SqliteKeyValueStore) makes
  * accounts, sessions and pairings survive restarts — with no caller changes.
  */
@@ -283,7 +283,7 @@ export class AccountService {
     }
   }
 
-  /** Pair an additional device to the account (multi-device login, FAZ 14). */
+  /** Pair an additional device to the account (multi-device login, ). */
   pairDevice(userId: string, deviceId: string): void {
     const list = this.readJson<string[]>(K_DEVICES + userId) ?? [];
     if (!list.includes(deviceId)) list.push(deviceId);

@@ -177,7 +177,11 @@ describe("Name-based device control", () => {
     const devices = new DeviceManager();
     devices.registerConnector(new InMemoryConnector("c1", [lamp]));
     devices.names.rename("dev-1", "Aurora");
-    return { memory, devices, core: new NexusCore({ memory, provider: new MockProvider(), devices }) };
+    return {
+      memory,
+      devices,
+      core: new NexusCore({ memory, provider: new MockProvider(), devices }),
+    };
   }
 
   it("resolves 'turn on Aurora' via name-based second pass", async () => {
@@ -355,7 +359,13 @@ describe("NexusCore handleAuthenticated (FAZ 14)", () => {
     const twin = new DigitalTwin();
     twin.upsertDevice({ id: "dev-1", kind: "light", room: "living", on: false });
     twin.setContext({ timeOfDay: "day" });
-    const core = new NexusCore({ memory, provider: new MockProvider(), twin, household, authBridge: bridge });
+    const core = new NexusCore({
+      memory,
+      provider: new MockProvider(),
+      twin,
+      household,
+      authBridge: bridge,
+    });
     return { core, bridge, accounts, account, session, household };
   }
 
@@ -368,11 +378,13 @@ describe("NexusCore handleAuthenticated (FAZ 14)", () => {
 
   it("throws AuthenticationError for an invalid/expired token", async () => {
     const { core } = makeAuthCore();
-    await expect(core.handleAuthenticated("invalid-token", "hello")).rejects.toThrow(AuthenticationError);
+    await expect(core.handleAuthenticated("invalid-token", "hello")).rejects.toThrow(
+      AuthenticationError,
+    );
   });
 
   it("multi-device: two sessions authenticate to the same account", async () => {
-    const { core, accounts, bridge } = makeAuthCore();
+    const { core, accounts } = makeAuthCore();
     const s2 = accounts.login("owner@nexus.ai", "SecurePass1!");
     const res1 = await core.handleAuthenticated(s2.token, "hello");
     expect(res1.intent).toBe("chitchat");
@@ -388,7 +400,7 @@ describe("NexusCore handleAuthenticated (FAZ 14)", () => {
     bridge.attachHousehold(account.id, household);
 
     // Guest tries to control a device — should be denied
-    const guestSession = bridge.accountService.login("g@e.com", "GuestPass1!");
+    bridge.accountService.login("g@e.com", "GuestPass1!");
     // We need the guest in the bridge's userHousehold map
     // Use handle directly with guestAcct.id since handleAuthenticated needs the bridge mapping
     const res = await core.handle(guestAcct.id, "turn on the living light", { confirm: true });

@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Durable SQLite backend for {@link KeyValueStore} (FAZ 18).
+ * NEXUS AI — Durable SQLite backend for {@link KeyValueStore} .
  *
  * This is the production drop-in the persistence layer was designed for: it
  * implements the exact same synchronous {@link KeyValueStore} contract as the
@@ -55,8 +55,8 @@ export class SqliteKeyValueStore implements KeyValueStore {
       });
     } catch (err) {
       throw new Error(
-        "node:sqlite is unavailable — the durable store requires Node.js 22.5+ " +
-          "(this runtime lacks it). Original error: " +
+        "SQLite is unavailable — the durable store requires Nexus runtime " +
+          "(this environment lacks it). Original error: " +
           (err instanceof Error ? err.message : String(err)),
       );
     }

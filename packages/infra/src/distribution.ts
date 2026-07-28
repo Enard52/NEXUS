@@ -1,7 +1,7 @@
 /**
- * NEXUS AI — Download & Distribution Backend (FAZ 18, code-feasible core)
+ * NEXUS AI — Download & Distribution Backend
  *
- * The Download Center (FAZ 10) is data-driven by this backend, never hardcoded:
+ * The Download Center is data-driven by this backend, never hardcoded:
  *   - detectOs(): guesses the visitor's platform from the User-Agent so the site
  *     can feature the right primary download button (manual selection always
  *     stays available, so a wrong guess is harmless).

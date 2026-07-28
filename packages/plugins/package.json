@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Plugin runtime for connector store (FAZ 16).",
+  "description": "NEXUS AI — Plugin runtime for connector store.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -14,5 +14,7 @@
   },
   "dependencies": {
     "@nexus/devices": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

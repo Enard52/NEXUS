@@ -2,20 +2,22 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderSetupDocument } from "./index.js";
-import { renderDesktopPremiumDocument } from "./premium.js";
 
 const { setLocale } = await import("@nexus/web");
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, "..", "dist");
-// Clear stale build output (e.g. orphan root index.html from older layouts) so only current pages ship.
+// Clear stale build output (e.g. removed static preview shells) so only the
+// real, functional setup wizard pages ship with the Electron app.
 rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
 
+// Only the first-run setup wizard is a static page: Electron loads it before
+// the local core is provisioned (see desktop-app/main.cjs SETUP_BASE lookup).
+// The application UI itself is the React SPA served at /app — no static
+// preview shells are generated anymore.
 const pages: ReadonlyArray<{ file: string; theme: "dark" | "light" }> = [
-  { file: "index.html", theme: "dark" },
   { file: "setup.html", theme: "dark" },
-  { file: "light.html", theme: "light" },
   { file: "setup-light.html", theme: "light" },
 ];
 
@@ -25,11 +27,7 @@ for (const loc of ["en", "tr"] as const) {
     const locDir = join(outDir, loc === "en" ? os : `${loc}/${os}`);
     mkdirSync(locDir, { recursive: true });
     for (const page of pages) {
-      // Every OS ships the same approved premium main shell (only the OS
-      // mentions differ); setup pages keep the dedicated wizard renderer.
-      const html = page.file.startsWith("setup")
-        ? renderSetupDocument({ theme: page.theme, os })
-        : renderDesktopPremiumDocument({ theme: page.theme, locale: loc, os });
+      const html = renderSetupDocument({ theme: page.theme, os });
       writeFileSync(join(locDir, page.file), html, "utf8");
       // eslint-disable-next-line no-console
       console.log(

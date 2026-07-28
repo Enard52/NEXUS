@@ -31,7 +31,11 @@ function defaultInstallDir() {
   const home = os.homedir();
   switch (process.platform) {
     case "win32":
-      return path.join(process.env.LOCALAPPDATA || path.join(home, "AppData", "Local"), "Programs", "NEXUS");
+      return path.join(
+        process.env.LOCALAPPDATA || path.join(home, "AppData", "Local"),
+        "Programs",
+        "NEXUS",
+      );
     case "darwin":
       return path.join(home, "Applications", "NEXUS");
     default:
@@ -104,7 +108,10 @@ function createShortcuts(launchTarget, installDir) {
     const desktopLnk = path.join(app.getPath("desktop"), "NEXUS.lnk");
     const startMenuDir = path.join(
       process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming"),
-      "Microsoft", "Windows", "Start Menu", "Programs",
+      "Microsoft",
+      "Windows",
+      "Start Menu",
+      "Programs",
     );
     const cmds = [mkLnk(desktopLnk), mkLnk(path.join(startMenuDir, "NEXUS.lnk"))];
     for (const cmd of cmds) {
@@ -160,7 +167,8 @@ async function performInstall(targetDir) {
     fs.cpSync(payload.src, targetDir, { recursive: true });
     // Locate the executable inside the copied payload (portable builds are
     // named NEXUS-<version>.exe; unpacked builds ship NEXUS.exe / nexus).
-    const names = process.platform === "win32" ? ["NEXUS.exe", `NEXUS-${APP_VERSION}.exe`] : ["nexus", "NEXUS"];
+    const names =
+      process.platform === "win32" ? ["NEXUS.exe", `NEXUS-${APP_VERSION}.exe`] : ["nexus", "NEXUS"];
     for (const name of names) {
       const cand = path.join(targetDir, name);
       if (fs.existsSync(cand)) {
@@ -282,7 +290,8 @@ ipcMain.handle("nx:browse", async () => {
 
 // Real install: copies the payload, writes the manifest, creates shortcuts.
 ipcMain.handle("nx:install", async (_evt, targetDir) => {
-  const dir = typeof targetDir === "string" && targetDir.trim() ? targetDir.trim() : defaultInstallDir();
+  const dir =
+    typeof targetDir === "string" && targetDir.trim() ? targetDir.trim() : defaultInstallDir();
   try {
     return await performInstall(dir);
   } catch (err) {

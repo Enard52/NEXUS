@@ -1,12 +1,12 @@
 /**
- * NEXUS AI — Core pipeline (FAZ 1)
+ * NEXUS AI — Core pipeline
  *
- * Implements the FAZ 1 loop with mock agents:
+ * Implements the loop with mock agents:
  *   utterance → intent extraction → agent selection → plan → result tracking
  *
  * Personalization (assistant name, how the user is addressed, tone, language)
  * is read from User Memory on *every* request, so a preference change is
- * reflected immediately in the next response (FAZ 1 Bitiş Kriteri). Risky plan
+ * reflected immediately in the next response . Risky plan
  * steps are evaluated by the Security Engine v0 and require confirmation.
  */
 
@@ -18,8 +18,13 @@ import { RiskLevel, SecurityMiddleware, type SecurityAction } from "@nexus/secur
 import { DeviceManager } from "@nexus/devices";
 import { VoiceEngine, type VoiceInteractionResult, type SpeakResult } from "@nexus/voice";
 import { PcAgent, createPcAgent, type PcIntent } from "@nexus/platform";
-import { Household, type DeviceAction as HouseholdAction, AccountHouseholdBridge, AuthenticationError } from "@nexus/accounts";
-import { resolveLocale, translate, type Locale } from "@nexus/i18n";
+import {
+  Household,
+  type DeviceAction as HouseholdAction,
+  AccountHouseholdBridge,
+} from "@nexus/accounts";
+import { translate } from "@nexus/i18n";
+
 import {
   SkillStore,
   SkillLearningEngine,
@@ -56,13 +61,13 @@ export interface NexusResponse {
   readonly executed: readonly PlanStep[];
   /** Steps awaiting user confirmation (risk >= confirm threshold). */
   readonly pending: readonly PlanStep[];
-  /** Steps denied due to household access control (FAZ 12). */
+  /** Steps denied due to household access control. */
   readonly denied?: readonly PlanStep[];
-  /** Approval tokens for pending steps — use with approveAction/rejectAction (FAZ 11). */
+  /** Approval tokens for pending steps — use with approveAction/rejectAction. */
   readonly approvalTokens?: readonly string[];
-  /** Skills that were auto-applied to this request (FAZ 5). */
+  /** Skills that were auto-applied to this request. */
   readonly appliedSkills?: readonly SkillDefinition[];
-  /** Skill proposals generated from this interaction (FAZ 5). */
+  /** Skill proposals generated from this interaction. */
   readonly proposedSkill?: SkillDefinition;
 }
 
@@ -86,9 +91,15 @@ interface Agent {
   plan(intent: Intent, ctx: AgentContext): Promise<{ steps: PlanStep[]; text: string }>;
 }
 
-// ── Localizer: uses @nexus/i18n catalog (FAZ 13) with personalization-aware templates ──
+// ── Localizer: uses @nexus/i18n catalog with personalization-aware templates ──
 type TemplateKey =
-  "greeting" | "nameSet" | "addressSet" | "languageSet" | "confirmNeeded" | "sceneActivated" | "deviceRenamed";
+  | "greeting"
+  | "nameSet"
+  | "addressSet"
+  | "languageSet"
+  | "confirmNeeded"
+  | "sceneActivated"
+  | "deviceRenamed";
 
 const TEMPLATES: Record<string, Record<TemplateKey, (p: Personalization) => string>> = {
   en: {
@@ -113,7 +124,7 @@ const TEMPLATES: Record<string, Record<TemplateKey, (p: Personalization) => stri
 
 /**
  * Map a routine/scene action to a Security risk level so every routine step is
- * gated by the same middleware as everything else (FAZ 11). Conservative: any
+ * gated by the same middleware as everything else. Conservative: any
  * destructive or access-control action escalates; ordinary device toggles are
  * Medium.
  */
@@ -140,7 +151,7 @@ function t(lang: string, key: TemplateKey, p: Personalization): string {
   return (TEMPLATES[base] ?? TEMPLATES.en!)[key](p);
 }
 
-// ── Intent extraction (rule-based mock for FAZ 1) ──
+// ── Intent extraction (rule-based mock for ) ──
 export function extractIntent(utterance: string): Intent {
   const u = utterance.trim();
   const lower = u.toLowerCase();
@@ -200,7 +211,9 @@ export function extractIntent(utterance: string): Intent {
   if ((m = u.match(/rename\s+(.+?)\s+to\s+(\S+)/i))) {
     return { name: "home.rename", slots: { deviceRef: m[1]!, newName: m[2]! } };
   }
-  if ((m = u.match(/(.+?)'(?:in|ın|nin|nın)\s+ad(?:ı|ın)(?:ı|nı)?\s+([\p{L}\d]+)\s+(?:koy|yap)/iu))) {
+  if (
+    (m = u.match(/(.+?)'(?:in|ın|nin|nın)\s+ad(?:ı|ın)(?:ı|nı)?\s+([\p{L}\d]+)\s+(?:koy|yap)/iu))
+  ) {
     return { name: "home.rename", slots: { deviceRef: m[1]!, newName: m[2]! } };
   }
   if ((m = u.match(/(.+?)'(?:a|e|ya|ye)\s+([\p{L}\d]+)\s+de/iu))) {
@@ -238,7 +251,11 @@ class PersonalizationAgent implements Agent {
 class HomeAgent implements Agent {
   readonly name = "home";
   canHandle(intent: Intent): boolean {
-    return intent.name === "home.control" || intent.name === "home.controlByName" || intent.name === "home.rename";
+    return (
+      intent.name === "home.control" ||
+      intent.name === "home.controlByName" ||
+      intent.name === "home.rename"
+    );
   }
   async plan(intent: Intent, ctx: AgentContext) {
     // Handle device rename
@@ -247,10 +264,11 @@ class HomeAgent implements Agent {
       const newName = intent.slots.newName!;
       if (ctx.devices) {
         // Try to find the device by existing alias first, then by original name scan
-        const device = ctx.devices.findByName(deviceRef)
-          ?? ctx.devices.discoverAll().find(
-            (d) => d.name.toLowerCase() === deviceRef.toLowerCase() || d.id === deviceRef,
-          );
+        const device =
+          ctx.devices.findByName(deviceRef) ??
+          ctx.devices
+            .discoverAll()
+            .find((d) => d.name.toLowerCase() === deviceRef.toLowerCase() || d.id === deviceRef);
         if (device) {
           ctx.devices.names.rename(device.id, newName);
           // Keep old name as alias
@@ -278,7 +296,11 @@ class HomeAgent implements Agent {
         const twinPlan = resolveLightPlan(ctx.twin, device.room, desiredOn, ctx.userId);
         const steps: PlanStep[] = twinPlan.steps.map((s) => ({
           summary: s.summary,
-          action: { kind: "device.light.set", risk: RiskLevel.Medium, description: `${s.summary} id=${s.params.id}` },
+          action: {
+            kind: "device.light.set",
+            risk: RiskLevel.Medium,
+            description: `${s.summary} id=${s.params.id}`,
+          },
         }));
         return { steps, text: twinPlan.rationale };
       }
@@ -298,13 +320,17 @@ class HomeAgent implements Agent {
     const desiredOn = (intent.slots.state ?? "on") === "on";
     const room = intent.slots.room ?? "living";
 
-    // Query the Digital Twin (FAZ 6): the same intent yields a context-aware
+    // Query the Digital Twin: the same intent yields a context-aware
     // plan (dim at night, no-op if already in the desired state, etc.).
     if (ctx.twin) {
       const twinPlan = resolveLightPlan(ctx.twin, room, desiredOn, ctx.userId);
       const steps: PlanStep[] = twinPlan.steps.map((s) => ({
         summary: s.summary,
-        action: { kind: "device.light.set", risk: RiskLevel.Medium, description: `${s.summary} id=${s.params.id}` },
+        action: {
+          kind: "device.light.set",
+          risk: RiskLevel.Medium,
+          description: `${s.summary} id=${s.params.id}`,
+        },
       }));
       return { steps, text: twinPlan.rationale };
     }
@@ -349,17 +375,26 @@ class PcCommandAgent implements Agent {
         .filter((r) => r.requiresConfirmation)
         .map((r) => ({
           summary: r.intent.description ?? r.intent.category,
-          action: { kind: `pc.${r.intent.category}`, risk: RiskLevel.High, description: r.intent.description ?? "" },
+          action: {
+            kind: `pc.${r.intent.category}`,
+            risk: RiskLevel.High,
+            description: r.intent.description ?? "",
+          },
         }));
       const executedSteps = result.results
         .filter((r) => r.executed)
         .map((r) => ({
           summary: r.intent.description ?? r.intent.category,
-          action: { kind: `pc.${r.intent.category}`, risk: RiskLevel.Low, description: r.intent.description ?? "" },
+          action: {
+            kind: `pc.${r.intent.category}`,
+            risk: RiskLevel.Low,
+            description: r.intent.description ?? "",
+          },
         }));
-      const text = result.stepsPending > 0
-        ? `Work mode activated. ${result.stepsExecuted} steps executed, ${result.stepsPending} awaiting confirmation.`
-        : `Work mode fully activated. ${result.stepsExecuted} steps executed.`;
+      const text =
+        result.stepsPending > 0
+          ? `Work mode activated. ${result.stepsExecuted} steps executed, ${result.stepsPending} awaiting confirmation.`
+          : `Work mode fully activated. ${result.stepsExecuted} steps executed.`;
       return { steps: [...executedSteps, ...pendingSteps], text };
     }
 
@@ -384,7 +419,11 @@ class PcCommandAgent implements Agent {
     if (result.requiresConfirmation) {
       const step: PlanStep = {
         summary: pcIntent.description ?? category,
-        action: { kind: `pc.${category}`, risk: RiskLevel.High, description: pcIntent.description ?? "" },
+        action: {
+          kind: `pc.${category}`,
+          risk: RiskLevel.High,
+          description: pcIntent.description ?? "",
+        },
       };
       return {
         steps: [step],
@@ -452,15 +491,15 @@ export interface NexusCoreDeps {
   readonly devices?: DeviceManager;
   /** Voice engine configuration. Omit for text-only mode. */
   readonly voice?: VoiceConfig;
-  /** PC Agent / platform configuration (FAZ 3). */
+  /** PC Agent / platform configuration. */
   readonly platform?: PlatformConfig;
-  /** Skill system configuration (FAZ 5). */
+  /** Skill system configuration. */
   readonly skills?: SkillsConfig;
-  /** Multi-agent router configuration (FAZ 7). */
+  /** Multi-agent router configuration. */
   readonly agentRouter?: AgentRouter;
-  /** Household access control (FAZ 12). When set, device actions are gated. */
+  /** Household access control. When set, device actions are gated. */
   readonly household?: Household;
-  /** Account ↔ Household bridge (FAZ 14). Enables session-based authentication. */
+  /** Account ↔ Household bridge. Enables session-based authentication. */
   readonly authBridge?: AccountHouseholdBridge;
 }
 
@@ -501,7 +540,7 @@ export class NexusCore {
       adapter: deps.platform?.adapter,
       workModeConfig: deps.platform?.workMode,
     });
-    // Skill system (FAZ 5)
+    // Skill system
     this.skillStore = new SkillStore();
     this.skillLearning = new SkillLearningEngine(this.skillStore, {
       threshold: deps.skills?.threshold,
@@ -509,10 +548,15 @@ export class NexusCore {
     });
     this.skillExecutor = new SkillExecutor(this.skillStore);
     this.skillConsent = new SkillConsentManager(this.skillStore);
-    // Multi-agent router (FAZ 7)
+    // Multi-agent router
     this.agentRouter = deps.agentRouter ?? this.createDefaultRouter();
     // Order matters: specific agents first, chitchat is the fallback.
-    this.agents = [new PersonalizationAgent(), new PcCommandAgent(this.pc), new HomeAgent(), new ChitchatAgent()];
+    this.agents = [
+      new PersonalizationAgent(),
+      new PcCommandAgent(this.pc),
+      new HomeAgent(),
+      new ChitchatAgent(),
+    ];
   }
 
   /** Create a default AgentRouter with all specialized agents registered. */
@@ -528,7 +572,7 @@ export class NexusCore {
 
   /**
    * Authenticated handle: validates a session token before processing.
-   * Throws AuthenticationError if the token is invalid or expired (FAZ 14).
+   * Throws AuthenticationError if the token is invalid or expired.
    */
   async handleAuthenticated(
     sessionToken: string,
@@ -577,7 +621,7 @@ export class NexusCore {
     const denied: PlanStep[] = [];
     const approvalTokens: string[] = [];
     for (const step of steps) {
-      // FAZ 12: Household access control gate — device actions require "control" permission
+      // Household access control gate — device actions require "control" permission
       if (this.household && this.isDeviceAction(step.action.kind)) {
         const deviceId = this.extractDeviceId(step);
         const requiredAction = this.mapToHouseholdAction(step.action.kind);
@@ -590,7 +634,9 @@ export class NexusCore {
       if (result.status === "denied") continue;
       if (result.status === "pending") {
         if (options.confirm) {
-          this.security.approve(result.approval!.token, () => {/* auto-confirmed */});
+          this.security.approve(result.approval!.token, () => {
+            /* auto-confirmed */
+          });
           executed.push(step);
         } else {
           approvalTokens.push(result.approval!.token);
@@ -612,7 +658,7 @@ export class NexusCore {
     this.voice.setLanguage(finalP.language);
     this.voice.setTone(finalP.tone);
 
-    // FAZ 5: Auto-apply matching skills to this intent
+    // Auto-apply matching skills to this intent
     const skillResult = this.skillExecutor.execute(intent.name, intent.slots);
 
     return {
@@ -634,7 +680,11 @@ export class NexusCore {
   async handleVoice(
     audio: ArrayBuffer,
     options: HandleOptions = {},
-  ): Promise<{ response: NexusResponse; voiceInput: VoiceInteractionResult; voiceOutput?: SpeakResult }> {
+  ): Promise<{
+    response: NexusResponse;
+    voiceInput: VoiceInteractionResult;
+    voiceOutput?: SpeakResult;
+  }> {
     const voiceInput = await this.voice.listen(audio);
 
     if (!voiceInput.wakeDetected) {
@@ -646,9 +696,7 @@ export class NexusCore {
     }
 
     // Use identified speaker's userId, or fall back to "default"
-    const userId = voiceInput.speaker.identified
-      ? voiceInput.speaker.userId!
-      : "default";
+    const userId = voiceInput.speaker.identified ? voiceInput.speaker.userId! : "default";
 
     // Process the command (portion after wake word)
     const command = voiceInput.command ?? voiceInput.transcript;
@@ -661,7 +709,7 @@ export class NexusCore {
   }
 
   /**
-   * FAZ 5: Observe a follow-up action after a completed request.
+   * Observe a follow-up action after a completed request.
    * When the user adjusts something after a command (e.g. dimming lights
    * after "movie mode"), this records the pattern. After enough repetitions,
    * the system proposes a Skill.
@@ -678,7 +726,7 @@ export class NexusCore {
     });
   }
 
-  // ── FAZ 11: SecurityMiddleware public API ─────────────────────────────────
+  // ────────────────────────────────────
 
   /** Read-only view of the hash-chained, tamper-evident audit trail. */
   auditLog() {
@@ -705,7 +753,7 @@ export class NexusCore {
     return this.security.pendingCount();
   }
 
-  // ── FAZ 12: Household access helpers ──────────────────────────────────────
+  // ─────────────────────────────────────────
 
   /** Determine if a step's action kind targets a device. */
   private isDeviceAction(kind: string): boolean {
@@ -714,8 +762,7 @@ export class NexusCore {
 
   /** Extract device ID from a plan step's params (encoded in summary or action). */
   private extractDeviceId(step: PlanStep): string | undefined {
-    const idMatch = step.summary.match(/id=(\S+)/)
-      ?? step.action.description?.match(/id=(\S+)/);
+    const idMatch = step.summary.match(/id=(\S+)/) ?? step.action.description?.match(/id=(\S+)/);
     if (idMatch) return idMatch[1];
     // Fallback: look for device id pattern in summary
     const devMatch = step.summary.match(/\b(dev-\w+|[a-z]\d+)\b/);

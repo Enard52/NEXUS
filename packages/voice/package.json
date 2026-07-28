@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Wake-word, STT, TTS and speaker identification engine (FAZ 2).",
+  "description": "NEXUS AI — Wake-word, STT, TTS and speaker identification engine.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -14,5 +14,7 @@
   },
   "dependencies": {
     "@nexus/memory": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

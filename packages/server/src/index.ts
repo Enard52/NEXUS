@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Local sync server (FAZ 18)
+ * NEXUS AI — Local sync server
  *
  * Public surface: a testable factory that wires the durable AccountService and
  * UserDataStore to the HTTP request handler, plus a `startServer` helper that
@@ -16,7 +16,7 @@ import { buildOAuthRegistry } from "./oauth.js";
 import { NexusCore } from "@nexus/core";
 import { InMemoryUserMemory } from "@nexus/memory";
 import { selectProvider } from "@nexus/ai";
-import { SecurityEngine, RateLimiter, LoginLockout } from "@nexus/security";
+import { SecurityMiddleware, RateLimiter, LoginLockout } from "@nexus/security";
 import { RoutineEngine } from "@nexus/routines";
 import { ConnectorStore } from "@nexus/connectors";
 import { PluginRegistry, createHuePlugin, createTuyaPlugin } from "@nexus/plugins";
@@ -46,6 +46,8 @@ export interface NexusAppOptions {
   readonly memory?: import("@nexus/memory").UserMemoryStore;
   /** Absolute path to built web assets for static hosting + downloads. */
   readonly staticRoot?: string;
+  /** Absolute path to the built client SPA (packages/client/dist). */
+  readonly clientRoot?: string;
   readonly config?: AppConfig;
   readonly support?: SupportService;
   readonly platform?: PlatformService;
@@ -67,7 +69,7 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
         openaiApiKey: opts.config.ai.openaiApiKey.reveal(),
       })
     : selectProvider({ provider: "mock" as any });
-  const security = new SecurityEngine(undefined, store);
+  const security = new SecurityMiddleware();
   const routines = new RoutineEngine();
   const core = new NexusCore({ memory, provider, security, routines });
 
@@ -84,6 +86,7 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
     accounts,
     userData,
     staticRoot: opts.staticRoot,
+    clientRoot: opts.clientRoot,
     oauth,
     core,
     connectors,
@@ -97,25 +100,29 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
   const timer = setInterval(() => {
     const now = new Date();
     const timeString = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-    
+
     try {
       const dueRoutines = routines.due(timeString);
       for (const routine of dueRoutines) {
         // eslint-disable-next-line no-console
-        console.log(`[RoutineRunner] Executing scheduled routine: ${routine.name} at ${timeString}`);
+        if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+          console.log(
+            `[RoutineRunner] Executing scheduled routine: ${routine.name} at ${timeString}`,
+          );
         // In a real system we would dispatch these via core or device manager.
         // For now, we mock the execution log to verify it fires.
         const actions = routines.plan(routine);
         for (const action of actions) {
           // eslint-disable-next-line no-console
-          console.log(`[RoutineRunner] -> Action: ${action.kind}`, action.params);
+          if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+            console.log(`[RoutineRunner] -> Action: ${action.kind}`, action.params);
         }
       }
     } catch (e) {
       // Ignore errors if time string is somehow invalid
     }
   }, 60000);
-  
+
   // Allow node to exit even if this interval is running (important for tests)
   timer.unref();
 
@@ -127,6 +134,7 @@ export function createNexusApp(opts: NexusAppOptions = {}): NexusApp {
     accounts,
     userData,
     staticRoot: opts.staticRoot,
+    clientRoot: opts.clientRoot,
     oauth,
     core,
     connectors,

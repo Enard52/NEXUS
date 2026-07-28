@@ -1,11 +1,11 @@
 /**
- * NEXUS AI — Structured logging (FAZ 0)
+ * NEXUS AI — Structured logging
  *
  * A dependency-free structured logger. It emits machine-readable JSON in
  * production and a compact human-readable line in development, and it redacts
  * known-sensitive fields so secrets never reach the logs.
  *
- * Later phases can swap the sink (e.g. to a hosted log pipeline in FAZ 18)
+ * Later phases can swap the sink (e.g. to a hosted log pipeline)
  * without changing call sites, because everything goes through `Logger`.
  */
 
@@ -82,7 +82,7 @@ function defaultSink(level: LogLevel, line: string): void {
   } else if (level === "warn") {
     console.warn(line);
   } else {
-    console.log(line);
+    if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") console.log(line);
   }
 }
 

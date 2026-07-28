@@ -4,7 +4,7 @@
  * Rejects registration attempts from well-known throwaway / temp-mail
  * domains. The list is conservative — false positives (real addresses
  * blocked) are worse than false negatives (a bot slipping through).
- * FAZ 18: extend with a real-time lookup service.
+ * : extend with a real-time lookup service.
  */
 
 /** Known throwaway / disposable email domains. Keep sorted for readability. */

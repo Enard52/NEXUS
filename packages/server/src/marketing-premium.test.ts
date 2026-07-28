@@ -5,7 +5,8 @@ import { renderPremiumBody, type PremiumDynamicParts } from "./marketing-premium
 
 const dyn: PremiumDynamicParts = {
   langCode: "EN",
-  langMenu: '<div class="language-menu" role="menu"><a class="active" href="?lang=en">English</a></div>',
+  langMenu:
+    '<div class="language-menu" role="menu"><a class="active" href="?lang=en">English</a></div>',
   winVersion: "Version 3.14.2 · x64",
   macVersion: "Version 3.14.1 · Universal",
   linuxVersion: "Version 3.13.8 · AppImage",

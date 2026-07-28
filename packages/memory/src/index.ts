@@ -1,14 +1,13 @@
 /**
- * NEXUS AI — Memory (FAZ 1)
+ * NEXUS AI — Memory
  *
- * Two concerns in FAZ 1:
- *  1. User Memory — durable personalization: what the user wants to be called,
+ * Two concerns in *  1. User Memory — durable personalization: what the user wants to be called,
  *     how the system should address them, tone and language. This is the single
  *     source of truth that every response reads from (Bitiş Kriteri: a change
  *     here is reflected immediately, everywhere).
  *  2. Short-term memory — a bounded, in-process ring buffer of recent turns.
  *
- * FAZ 6 deepens this (Digital Twin); FAZ 16 moves it to the cloud. The store is
+ * deepens this (Digital Twin); moves it to the cloud. The store is
  * an interface so those phases can swap the backend without touching callers.
  */
 
@@ -21,7 +20,7 @@ export interface Personalization {
   /** How the system addresses the user, e.g. "Ensar" or "Captain". */
   readonly userAddress: string;
   readonly tone: Tone;
-  /** BCP-47 language tag, e.g. "tr", "en-US". Drives i18n (FAZ 13) + TTS (FAZ 2). */
+  /** BCP-47 language tag, e.g. "tr", "en-US". Drives i18n + TTS. */
   readonly language: string;
 }
 
@@ -54,7 +53,7 @@ export interface UserMemoryStore {
 }
 
 /**
- * In-memory implementation for FAZ 1 dev mode. Deterministic and dependency-free.
+ * In-memory implementation for dev mode. Deterministic and dependency-free.
  * Short-term memory is a per-user ring buffer of `windowSize` turns.
  */
 export class InMemoryUserMemory implements UserMemoryStore {

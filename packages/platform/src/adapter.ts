@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Platform Abstraction Layer (FAZ 3)
+ * NEXUS AI — Platform Abstraction Layer
  *
  * Defines the abstract interface that every OS adapter must implement.
  * The PlatformAdapter is the boundary between NEXUS's intent system and

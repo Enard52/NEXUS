@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Cross-Platform Sync (FAZ 22)
+ * NEXUS AI — Cross-Platform Sync
  *
  * Under one account, a user's preferences, learned skills and memory follow them
  * across devices (desktop, mobile, TV…). Each device holds a local copy; the
@@ -8,7 +8,7 @@
  * on another and a preference change never silently loses to a stale copy.
  *
  * The backend is an interface (a real one is an authenticated cloud endpoint,
- * built on FAZ 16 cloud memory); the bundled one is in-memory and deterministic.
+ * built on cloud memory); the bundled one is in-memory and deterministic.
  * Dependency-free; the logical clock is injected for testability.
  */
 

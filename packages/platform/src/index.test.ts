@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Platform Module Tests (FAZ 3)
+ * NEXUS AI — Platform Module Tests
  *
  * Comprehensive tests for the Platform Abstraction Layer, PcAgent,
  * risk classification, work mode orchestration, and security integration.
@@ -8,12 +8,7 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { RiskLevel, SecurityMiddleware } from "@nexus/security";
 import { platformInfo, moduleName } from "./index.js";
-import {
-  PC_ACTION_RISKS,
-  pcAction,
-  planWorkMode,
-  type WorkModeConfig,
-} from "./adapter.js";
+import { PC_ACTION_RISKS, pcAction, planWorkMode, type WorkModeConfig } from "./adapter.js";
 import { MockPlatformAdapter } from "./mock-adapter.js";
 import { PcAgent, createPcAgent } from "./pc-agent.js";
 

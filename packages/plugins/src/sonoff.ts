@@ -152,7 +152,11 @@ export class SonoffConnector implements AuthorizableConnector {
 
   execute(command: CapabilityCommand): CommandResult {
     if (!this._authorized) {
-      return { ok: false, device: this.devices[0]!, message: "Not authorized — connect eWeLink account first" };
+      return {
+        ok: false,
+        device: this.devices[0]!,
+        message: "Not authorized — connect eWeLink account first",
+      };
     }
     const d = this.devices.find((x) => x.id === command.deviceId);
     if (!d) throw new Error(`Device not found: ${command.deviceId}`);

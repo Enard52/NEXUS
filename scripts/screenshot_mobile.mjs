@@ -1,1 +1,15 @@
-import { chromium } from 'playwright'; import path from 'path'; import { fileURLToPath } from 'url'; (async () => { const browser = await chromium.launch(); const page = await browser.newPage(); await page.setViewportSize({ width: 390, height: 844 }); await page.goto('file:///' + process.cwd().replace(/\\/g, '/') + '/packages/mobile/dist/index.html'); await page.waitForTimeout(1000); await page.screenshot({ path: 'mobile_preview.png', fullPage: true }); await browser.close(); console.log('Screenshot taken!'); })();
+import { chromium } from "playwright";
+import path from "path";
+import { fileURLToPath } from "url";
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(
+    "file:///" + process.cwd().replace(/\\/g, "/") + "/packages/mobile/dist/index.html",
+  );
+  await page.waitForTimeout(1000);
+  await page.screenshot({ path: "mobile_preview.png", fullPage: true });
+  await browser.close();
+  console.log("Screenshot taken!");
+})();

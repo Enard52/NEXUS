@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Platform Abstraction Layer + PC Agent (FAZ 3, 8).",
+  "description": "NEXUS AI — Platform Abstraction Layer + PC Agent.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -15,5 +15,7 @@
   "dependencies": {
     "@nexus/security": "workspace:*",
     "@nexus/infra": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

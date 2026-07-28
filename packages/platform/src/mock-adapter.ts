@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Mock Platform Adapter (FAZ 3)
+ * NEXUS AI — Mock Platform Adapter
  *
  * Deterministic in-memory adapter used for testing and development.
  * Records all calls and returns predictable results without touching the OS.
@@ -86,9 +86,7 @@ export class MockPlatformAdapter implements PlatformAdapter {
 
   async closeApp(appName: string): Promise<PlatformResult> {
     this.record("closeApp", [appName]);
-    const idx = this.runningApps.findIndex(
-      (a) => a.name.toLowerCase() === appName.toLowerCase(),
-    );
+    const idx = this.runningApps.findIndex((a) => a.name.toLowerCase() === appName.toLowerCase());
     if (idx === -1) {
       return { success: false, error: `App "${appName}" not running` };
     }
@@ -127,7 +125,10 @@ export class MockPlatformAdapter implements PlatformAdapter {
       modifiedAt: now,
       createdAt: now,
     });
-    return { success: true, command: isDirectory ? `mkdir -p "${filePath}"` : `touch "${filePath}"` };
+    return {
+      success: true,
+      command: isDirectory ? `mkdir -p "${filePath}"` : `touch "${filePath}"`,
+    };
   }
 
   async deleteFile(filePath: string): Promise<PlatformResult> {

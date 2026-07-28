@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Security Engine risk levels & middleware (FAZ 1, 11).",
+  "description": "NEXUS AI — Security Engine risk levels & middleware.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -14,5 +14,7 @@
   },
   "dependencies": {
     "@nexus/database": "workspace:*"
-  }
+  },
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED"
 }

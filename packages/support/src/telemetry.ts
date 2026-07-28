@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Telemetry & Analytics (FAZ 20 / FAZ 15)
+ * NEXUS AI — Telemetry & Analytics
  *
  * Opt-in product analytics and crash reporting. Designed to be completely
  * privacy-preserving (no PII, no specific device data sent unless opted in).
@@ -28,7 +28,12 @@ export class TelemetryService {
 
   constructor(options: TelemetryOptions) {
     this.optIn = options.optIn;
-    this.sink = options.sink ?? ((e) => console.log("[Telemetry]", e));
+    this.sink =
+      options.sink ??
+      ((e) => {
+        if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+          console.log("[Telemetry]", e);
+      });
   }
 
   setOptIn(enabled: boolean) {

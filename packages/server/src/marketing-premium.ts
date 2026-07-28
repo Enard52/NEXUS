@@ -20,10 +20,26 @@ import { marketingPremiumCss } from "./marketing-premium-css.js";
 import { renderPremiumBody, type PremiumDynamicParts } from "./marketing-premium-body.js";
 
 const LANG_LABELS: Record<string, string> = {
-  en: "English", tr: "Türkçe", es: "Español", fr: "Français", de: "Deutsch",
-  it: "Italiano", pt: "Português", nl: "Nederlands", pl: "Polski", cs: "Čeština",
-  ru: "Русский", uk: "Українська", ar: "العربية", he: "עברית", hi: "हिन्दी",
-  ja: "日本語", ko: "한국어", "zh-Hans": "简体中文", "zh-Hant": "繁體中文", vi: "Tiếng Việt",
+  en: "English",
+  tr: "Türkçe",
+  es: "Español",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  pt: "Português",
+  nl: "Nederlands",
+  pl: "Polski",
+  cs: "Čeština",
+  ru: "Русский",
+  uk: "Українська",
+  ar: "العربية",
+  he: "עברית",
+  hi: "हिन्दी",
+  ja: "日本語",
+  ko: "한국어",
+  "zh-Hans": "简体中文",
+  "zh-Hant": "繁體中文",
+  vi: "Tiếng Việt",
 };
 
 /** Text-node needles resolved through existing mkt.* catalog keys (all locales). */
@@ -66,7 +82,10 @@ export const TR_RAW: ReadonlyArray<readonly [string, string]> = [
   ["“Make downstairs comfortable.”", "“Alt katı rahatlat.”"],
   ["“Lock up and switch everything off.”", "“Kilitle ve her şeyi kapat.”"],
   ["“Start my focus routine.”", "“Odak rutinimi başlat.”"],
-  ["“Lock the doors, dim the lights, and start Focus.”", "“Kapıları kilitle, ışıkları kıs ve Odak'ı başlat.”"],
+  [
+    "“Lock the doors, dim the lights, and start Focus.”",
+    "“Kapıları kilitle, ışıkları kıs ve Odak'ı başlat.”",
+  ],
   ['aria-label="Toggle color theme"', 'aria-label="Tema rengini değiştir"'],
   ['aria-label="Open menu"', 'aria-label="Menüyü aç"'],
   ['aria-label="Primary navigation"', 'aria-label="Birincil gezinme"'],
@@ -220,7 +239,10 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
     "NEXUS AI, bir bulut asistanı daha bağlanamadan yerel donanımında yorumlar, karar verir ve harekete geçer.",
   ],
   ["Instant by design", "Tasarım gereği anında"],
-  ["No cloud round trip. No waiting for a remote model.", "Bulut gidiş-dönüşü yok. Uzak model bekleme yok."],
+  [
+    "No cloud round trip. No waiting for a remote model.",
+    "Bulut gidiş-dönüşü yok. Uzak model bekleme yok.",
+  ],
   ["Intent", "Niyet"],
   ["Reasoning", "Akıl yürütme"],
   ["Action", "Eylem"],
@@ -266,7 +288,10 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["Premium audio", "Premium ses"],
   ["Smart devices", "Akıllı cihazlar"],
   // Pricing
-  ["Start free. Expand only when you need to.", "Ücretsiz başla. Sadece ihtiyacın olduğunda genişlet."],
+  [
+    "Start free. Expand only when you need to.",
+    "Ücretsiz başla. Sadece ihtiyacın olduğunda genişlet.",
+  ],
   [
     "Core local control stays free. Premium plans add advanced intelligence, remote access, and household tools.",
     "Temel yerel kontrol ücretsiz kalır. Premium planlar gelişmiş zekâ, uzaktan erişim ve ev araçları ekler.",
@@ -359,7 +384,10 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["Scan for Android", "Android için tara"],
   // Community
   ["Community", "Topluluk"],
-  ["Real homes. Different routines. One private system.", "Gerçek evler. Farklı rutinler. Tek özel sistem."],
+  [
+    "Real homes. Different routines. One private system.",
+    "Gerçek evler. Farklı rutinler. Tek özel sistem.",
+  ],
   [
     "A continuously moving wall of community stories shows how NEXUS fits into everyday homes, technical setups, and everything between them.",
     "Sürekli akan topluluk hikâyeleri duvarı, NEXUS'un gündelik evlere, teknik kurulumlara ve ikisi arasındaki her şeye nasıl uyduğunu gösterir.",
@@ -416,7 +444,10 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
     "Uzaktan onaylar tam ihtiyacım olan şeydi. NEXUS evde yerel kalıyor ama uzaktayken aileye yine de yardım edebiliyorum.",
   ],
   ["Household admin · Netherlands", "Ev yöneticisi · Hollanda"],
-  ["Hover or focus the review wall to pause", "Duraklatmak için değerlendirme duvarına gel veya odaklan"],
+  [
+    "Hover or focus the review wall to pause",
+    "Duraklatmak için değerlendirme duvarına gel veya odaklan",
+  ],
   // FAQ
   ["The important questions, answered.", "Önemli sorular, yanıtlandı."],
   [
@@ -468,13 +499,19 @@ export function textNodePattern(needle: string): RegExp {
 }
 
 function replaceTextNode(body: string, en: string, replacement: string): string {
-  return body.replace(textNodePattern(en), (_m, a: string, b: string) => `>${a}${replacement}${b}<`);
+  return body.replace(
+    textNodePattern(en),
+    (_m, a: string, b: string) => `>${a}${replacement}${b}<`,
+  );
 }
 
 /** User-visible CSS `content:` strings that must follow the locale (tr only). */
 const TR_CSS: ReadonlyArray<readonly [string, string]> = [
   ['content: "Recommended";', 'content: "\u00d6nerilen";'],
-  ['content: "Select to reveal answer";', 'content: "Yan\u0131t\u0131 g\u00f6rmek i\u00e7in se\u00e7";'],
+  [
+    'content: "Select to reveal answer";',
+    'content: "Yan\u0131t\u0131 g\u00f6rmek i\u00e7in se\u00e7";',
+  ],
 ];
 
 /** Localizes the user-visible CSS-generated labels for Turkish pages. */

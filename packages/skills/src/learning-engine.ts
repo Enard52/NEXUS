@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Skill Learning Engine (FAZ 5)
+ * NEXUS AI — Skill Learning Engine
  *
  * The learning engine observes user interactions and detects repetitive
  * fine-tuning patterns. When a pattern recurs enough times (threshold),
@@ -18,11 +18,7 @@
  *  - Respects user consent: never creates a Skill silently
  */
 
-import {
-  type CreateSkillInput,
-  type SkillDefinition,
-  type SkillStore,
-} from "./skill-store.js";
+import { type CreateSkillInput, type SkillDefinition, type SkillStore } from "./skill-store.js";
 
 // ── Observation Types ─────────────────────────────────────────────────────────
 
@@ -159,8 +155,8 @@ export class SkillLearningEngine {
       .map((k) => `${k}=${JSON.stringify(interaction.slots[k])}`)
       .join(",");
 
-    const actionPart = interaction.followUpActions!
-      .map((a) => {
+    const actionPart = interaction
+      .followUpActions!.map((a) => {
         const params = Object.keys(a.params)
           .sort()
           .map((k) => `${k}=${JSON.stringify(a.params[k])}`)

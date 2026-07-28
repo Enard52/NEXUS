@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Fake Broker (FAZ 4)
+ * NEXUS AI — Fake Broker
  *
  * A lightweight in-memory pub/sub message broker that simulates IoT protocols
  * (MQTT, Zigbee gateway messages, etc.) for testing and development. Real
@@ -31,7 +31,8 @@ export interface BrokerDevice {
   readonly authorized: boolean;
 }
 
-export type ProtocolType = "mqtt" | "zigbee" | "zwave" | "thread" | "matter" | "bluetooth" | "wifi" | "lan";
+export type ProtocolType =
+  "mqtt" | "zigbee" | "zwave" | "thread" | "matter" | "bluetooth" | "wifi" | "lan";
 
 export type MessageHandler = (message: BrokerMessage) => void;
 

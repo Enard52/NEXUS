@@ -1,9 +1,9 @@
 /**
- * NEXUS AI — Wake Word Detection (FAZ 2)
+ * NEXUS AI — Wake Word Detection
  *
  * On-device wake word detection using phonetic matching. Instead of training a
  * specific model for each wake name (which would not support instant renaming
- * from FAZ 1), we use a two-stage approach:
+ * from ), we use a two-stage approach:
  *
  *  1. Phonetic encoding (Double Metaphone variant) — reduces the transcript and
  *     wake phrase to pronunciation codes, tolerating spelling differences.

@@ -11,30 +11,15 @@
  * - MobileService (orchestrator)
  */
 import { describe, expect, it, beforeEach } from "vitest";
-import {
-  MockBridge,
-  CapacitorBridge,
-  type MobileBridge,
-} from "./bridge.js";
-import {
-  PushManager,
-  DEFAULT_CHANNELS,
-  type NotificationPayload,
-} from "./notifications.js";
+import { MockBridge, NexusNativeBridge } from "./bridge.js";
+import { PushManager, DEFAULT_CHANNELS, type NotificationPayload } from "./notifications.js";
 import {
   PermissionsManager,
   getDefaultPermissions,
   FEATURE_PERMISSION_MAP,
 } from "./permissions.js";
-import {
-  MobileVoiceBridge,
-  DEFAULT_VOICE_CONFIG,
-  type VoiceBridgeEvent,
-} from "./voice-bridge.js";
-import {
-  RemoteConnection,
-  DEFAULT_CONNECTION_OPTIONS,
-} from "./remote-access.js";
+import { MobileVoiceBridge, DEFAULT_VOICE_CONFIG, type VoiceBridgeEvent } from "./voice-bridge.js";
+import { RemoteConnection, DEFAULT_CONNECTION_OPTIONS } from "./remote-access.js";
 import { DeepLinkRouter } from "./deep-links.js";
 import { MobileService } from "./mobile-service.js";
 
@@ -83,8 +68,12 @@ describe("MobileBridge", () => {
     const bridge = new MockBridge();
     let resumed = false;
     let paused = false;
-    bridge.onResume(() => { resumed = true; });
-    bridge.onPause(() => { paused = true; });
+    bridge.onResume(() => {
+      resumed = true;
+    });
+    bridge.onPause(() => {
+      paused = true;
+    });
     bridge.emitResume();
     expect(resumed).toBe(true);
     bridge.emitPause();
@@ -99,8 +88,8 @@ describe("MobileBridge", () => {
     expect(await bridge.authenticateWithBiometric("Confirm")).toBe(false);
   });
 
-  it("CapacitorBridge targets correct platform", async () => {
-    const bridge = new CapacitorBridge("ios");
+  it("Nexus native bridge targets correct platform", async () => {
+    const bridge = new NexusNativeBridge("ios");
     expect(bridge.platform).toBe("ios");
     const info = await bridge.getAppInfo();
     expect(info.platform).toBe("ios");
@@ -180,12 +169,21 @@ describe("PushManager", () => {
 
   it("maps notification data to NEXUS intents", () => {
     expect(push.mapToIntent({ id: "1", title: "", body: "", timestamp: 0 })).toBeNull();
-    expect(push.mapToIntent({ id: "2", title: "", body: "", data: { intent: "turn off lights" }, timestamp: 0 }))
-      .toBe("turn off lights");
-    expect(push.mapToIntent({ id: "3", title: "", body: "", data: { device: "lamp-1" }, timestamp: 0 }))
-      .toBe("control device lamp-1");
-    expect(push.mapToIntent({ id: "4", title: "", body: "", data: { scene: "Relax" }, timestamp: 0 }))
-      .toBe("activate scene Relax");
+    expect(
+      push.mapToIntent({
+        id: "2",
+        title: "",
+        body: "",
+        data: { intent: "turn off lights" },
+        timestamp: 0,
+      }),
+    ).toBe("turn off lights");
+    expect(
+      push.mapToIntent({ id: "3", title: "", body: "", data: { device: "lamp-1" }, timestamp: 0 }),
+    ).toBe("control device lamp-1");
+    expect(
+      push.mapToIntent({ id: "4", title: "", body: "", data: { scene: "Relax" }, timestamp: 0 }),
+    ).toBe("activate scene Relax");
   });
 
   it("has default notification channels", () => {
@@ -227,7 +225,6 @@ describe("PermissionsManager", () => {
 
   it("initializes with default permissions for Android", () => {
     const mgr = new PermissionsManager("android");
-    const entries = mgr.getAllEntries();
     // Android doesn't have local_network or motion
     expect(mgr.getEntry("local_network")).toBeUndefined();
     expect(mgr.getEntry("motion")).toBeUndefined();
@@ -418,14 +415,22 @@ describe("RemoteConnection", () => {
   });
 
   it("fails to connect without auth token", async () => {
-    remote.configure({ localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" });
+    remote.configure({
+      localAddress: "192.168.1.100:8443",
+      relayAddress: "relay.nexus.ai",
+      serverId: "srv-1",
+    });
     const result = await remote.connect();
     expect(result).toBe(false);
     expect(remote.state).toBe("error");
   });
 
   it("connects locally on Wi-Fi with auth token", async () => {
-    remote.configure({ localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" });
+    remote.configure({
+      localAddress: "192.168.1.100:8443",
+      relayAddress: "relay.nexus.ai",
+      serverId: "srv-1",
+    });
     await bridge.secureSet("nexus_auth_token", "valid_token");
 
     const events: string[] = [];
@@ -440,7 +445,11 @@ describe("RemoteConnection", () => {
 
   it("falls back to remote when not on Wi-Fi", async () => {
     bridge.networkStatus = { connected: true, type: "cellular" };
-    remote.configure({ localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" });
+    remote.configure({
+      localAddress: "192.168.1.100:8443",
+      relayAddress: "relay.nexus.ai",
+      serverId: "srv-1",
+    });
     remote.setAuthToken("token_abc");
 
     const result = await remote.connect();
@@ -450,7 +459,11 @@ describe("RemoteConnection", () => {
 
   it("sends requests when connected", async () => {
     bridge.networkStatus = { connected: true, type: "wifi" };
-    remote.configure({ localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" });
+    remote.configure({
+      localAddress: "192.168.1.100:8443",
+      relayAddress: "relay.nexus.ai",
+      serverId: "srv-1",
+    });
     remote.setAuthToken("token");
     await remote.connect();
 
@@ -461,7 +474,11 @@ describe("RemoteConnection", () => {
   });
 
   it("heartbeat works when connected", async () => {
-    remote.configure({ localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" });
+    remote.configure({
+      localAddress: "192.168.1.100:8443",
+      relayAddress: "relay.nexus.ai",
+      serverId: "srv-1",
+    });
     remote.setAuthToken("token");
     await remote.connect();
 
@@ -471,7 +488,11 @@ describe("RemoteConnection", () => {
   });
 
   it("disconnects cleanly", async () => {
-    remote.configure({ localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" });
+    remote.configure({
+      localAddress: "192.168.1.100:8443",
+      relayAddress: "relay.nexus.ai",
+      serverId: "srv-1",
+    });
     remote.setAuthToken("token");
     await remote.connect();
     await remote.disconnect();
@@ -576,16 +597,21 @@ describe("DeepLinkRouter", () => {
   });
 
   it("generateUrl creates correct URLs", () => {
-    expect(DeepLinkRouter.generateUrl("intent", { text: "hello world" }))
-      .toBe("nexus://intent/hello%20world");
-    expect(DeepLinkRouter.generateUrl("device-command", { deviceId: "tv-1", command: "off" }))
-      .toBe("nexus://device/tv-1/off");
-    expect(DeepLinkRouter.generateUrl("scene", { name: "Movie Night" }))
-      .toBe("nexus://scene/Movie%20Night");
-    expect(DeepLinkRouter.generateUrl("screen", { screenId: "today" }))
-      .toBe("nexus://screen/today");
-    expect(DeepLinkRouter.generateUrl("routine", { routineId: "bedtime" }))
-      .toBe("nexus://routine/bedtime/run");
+    expect(DeepLinkRouter.generateUrl("intent", { text: "hello world" })).toBe(
+      "nexus://intent/hello%20world",
+    );
+    expect(DeepLinkRouter.generateUrl("device-command", { deviceId: "tv-1", command: "off" })).toBe(
+      "nexus://device/tv-1/off",
+    );
+    expect(DeepLinkRouter.generateUrl("scene", { name: "Movie Night" })).toBe(
+      "nexus://scene/Movie%20Night",
+    );
+    expect(DeepLinkRouter.generateUrl("screen", { screenId: "today" })).toBe(
+      "nexus://screen/today",
+    );
+    expect(DeepLinkRouter.generateUrl("routine", { routineId: "bedtime" })).toBe(
+      "nexus://routine/bedtime/run",
+    );
   });
 
   it("clearHistory resets", () => {
@@ -605,7 +631,11 @@ describe("MobileService", () => {
   beforeEach(() => {
     bridge = new MockBridge("ios");
     service = new MobileService(bridge, {
-      server: { localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" },
+      server: {
+        localAddress: "192.168.1.100:8443",
+        relayAddress: "relay.nexus.ai",
+        serverId: "srv-1",
+      },
       autoRegisterPush: true,
       initialPermissions: ["notifications", "microphone"],
     });
@@ -636,7 +666,9 @@ describe("MobileService", () => {
     await service.init();
 
     const events: string[] = [];
-    service.on((e) => { if (e.type === "intent") events.push(e.text); });
+    service.on((e) => {
+      if (e.type === "intent") events.push(e.text);
+    });
 
     await service.processIntent("turn on lights", "voice");
     expect(events).toEqual(["turn on lights"]);
@@ -648,7 +680,9 @@ describe("MobileService", () => {
     await service.init();
 
     const intents: string[] = [];
-    service.on((e) => { if (e.type === "intent") intents.push(e.text); });
+    service.on((e) => {
+      if (e.type === "intent") intents.push(e.text);
+    });
 
     const result = service.handleDeepLink("nexus://scene/Relax");
     expect(result.valid).toBe(true);
@@ -664,7 +698,9 @@ describe("MobileService", () => {
     await service.init();
 
     const intents: string[] = [];
-    service.on((e) => { if (e.type === "intent") intents.push(e.text); });
+    service.on((e) => {
+      if (e.type === "intent") intents.push(e.text);
+    });
 
     service.handleNotification({
       id: "n1",
@@ -684,7 +720,9 @@ describe("MobileService", () => {
     await service.init();
 
     const states: string[] = [];
-    service.on((e) => { if (e.type === "lifecycle") states.push(e.state); });
+    service.on((e) => {
+      if (e.type === "lifecycle") states.push(e.state);
+    });
 
     bridge.emitResume();
     expect(service.state).toBe("active");
@@ -725,7 +763,7 @@ describe("FAZ 9 — Bitiş Kriteri", () => {
     const mod = await import("./index.js");
     // All FAZ 9 classes exist
     expect(mod.MockBridge).toBeDefined();
-    expect(mod.CapacitorBridge).toBeDefined();
+    expect(mod.NexusNativeBridge).toBeDefined(); // Nexus native bridge class
     expect(mod.PushManager).toBeDefined();
     expect(mod.PermissionsManager).toBeDefined();
     expect(mod.MobileVoiceBridge).toBeDefined();
@@ -751,7 +789,11 @@ describe("FAZ 9 — Bitiş Kriteri", () => {
     await bridge.secureSet("nexus_auth_token", "token");
 
     const service = new MobileService(bridge, {
-      server: { localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" },
+      server: {
+        localAddress: "192.168.1.100:8443",
+        relayAddress: "relay.nexus.ai",
+        serverId: "srv-1",
+      },
     });
     await service.init();
 
@@ -773,12 +815,18 @@ describe("FAZ 9 — Bitiş Kriteri", () => {
     await bridge.secureSet("nexus_auth_token", "token");
 
     const service = new MobileService(bridge, {
-      server: { localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" },
+      server: {
+        localAddress: "192.168.1.100:8443",
+        relayAddress: "relay.nexus.ai",
+        serverId: "srv-1",
+      },
     });
     await service.init();
 
     const intents: string[] = [];
-    service.on((e) => { if (e.type === "intent") intents.push(e.text); });
+    service.on((e) => {
+      if (e.type === "intent") intents.push(e.text);
+    });
 
     service.handleDeepLink("nexus://device/thermostat-1/set-temp-22");
     await new Promise((r) => setTimeout(r, 10));
@@ -792,12 +840,18 @@ describe("FAZ 9 — Bitiş Kriteri", () => {
     await bridge.secureSet("nexus_auth_token", "token");
 
     const service = new MobileService(bridge, {
-      server: { localAddress: "192.168.1.100:8443", relayAddress: "relay.nexus.ai", serverId: "srv-1" },
+      server: {
+        localAddress: "192.168.1.100:8443",
+        relayAddress: "relay.nexus.ai",
+        serverId: "srv-1",
+      },
     });
     await service.init();
 
     const intents: string[] = [];
-    service.on((e) => { if (e.type === "intent") intents.push(e.text); });
+    service.on((e) => {
+      if (e.type === "intent") intents.push(e.text);
+    });
 
     service.handleNotification({
       id: "alert-1",

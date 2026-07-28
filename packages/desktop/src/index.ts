@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Desktop front end (FAZ 9/10)
+ * NEXUS AI — Desktop front end
  *
  * The desktop surface: a native-style application window (title bar with window
  * controls + a persistent left sidebar) that renders the *same* screen bodies as
@@ -14,10 +14,10 @@
  * native packaging is an external boundary; the *design* lives here.
  *
  * This package (packages/desktop/src) is the single source of truth for ALL
- * desktop shell HTML: the runtime authenticated shell below, the setup wizard
- * (setup.ts) and the generated static premium shell (premium*.ts, emitted by
- * build.ts). public/desktop/** and public/desktop-home.html are downstream
- * build mirrors — never hand-edit them (see scripts/copy-static.mjs).
+ * desktop shell HTML: the runtime authenticated shell below and the first-run
+ * setup wizard (setup.ts, emitted by build.ts into packages/desktop/dist and
+ * packaged into the Electron app). The desktop application UI itself is the
+ * shared React SPA loaded from /app — no static preview shells exist.
  */
 
 import { getTheme, type DesignTokens, type ThemeName } from "@nexus/design-system";

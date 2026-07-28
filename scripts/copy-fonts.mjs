@@ -21,21 +21,32 @@ function fontsourceFiles(family) {
   const candidates = [
     join(root, "packages", "web", "node_modules", "@fontsource", family, "files"),
     join(root, "node_modules", "@fontsource", family, "files"),
-    join(root, "node_modules", ".pnpm", `@fontsource+${family}@*`, "node_modules", "@fontsource", family, "files"),
+    join(
+      root,
+      "node_modules",
+      ".pnpm",
+      `@fontsource+${family}@*`,
+      "node_modules",
+      "@fontsource",
+      family,
+      "files",
+    ),
   ];
   for (const c of candidates) {
     if (existsSync(c)) return c;
   }
-  throw new Error(`@fontsource/${family} not found. Run: pnpm add --filter @nexus/web @fontsource/${family}`);
+  throw new Error(
+    `@fontsource/${family} not found. Run: pnpm add --filter @nexus/web @fontsource/${family}`,
+  );
 }
 
 const FONTS = [
   // Space Grotesk: 300–700, subsets latin + latin-ext
-  { family: "space-grotesk",  weights: [300, 400, 500, 600, 700], subsets: ["latin", "latin-ext"] },
+  { family: "space-grotesk", weights: [300, 400, 500, 600, 700], subsets: ["latin", "latin-ext"] },
   // Inter: 400–800, subsets latin + latin-ext
-  { family: "inter",          weights: [400, 500, 600, 700, 800], subsets: ["latin", "latin-ext"] },
+  { family: "inter", weights: [400, 500, 600, 700, 800], subsets: ["latin", "latin-ext"] },
   // JetBrains Mono: 400–700, subsets latin + latin-ext
-  { family: "jetbrains-mono", weights: [400, 500, 600, 700],      subsets: ["latin", "latin-ext"] },
+  { family: "jetbrains-mono", weights: [400, 500, 600, 700], subsets: ["latin", "latin-ext"] },
 ];
 
 let copied = 0;

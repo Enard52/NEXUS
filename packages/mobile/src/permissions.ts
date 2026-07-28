@@ -1,5 +1,5 @@
 /**
- * NEXUS AI — Native Permissions Manager (FAZ 9)
+ * NEXUS AI — Native Permissions Manager
  *
  * Declarative permission system that:
  * 1. Defines all permissions NEXUS can request.
@@ -76,7 +76,8 @@ export function getDefaultPermissions(platform: MobilePlatform): PermissionEntry
     {
       name: "location",
       status: "prompt",
-      rationale: "NEXUS uses your location for geofencing automations (e.g. turn on lights when you arrive home).",
+      rationale:
+        "NEXUS uses your location for geofencing automations (e.g. turn on lights when you arrive home).",
       requiredBy: ["geofencing", "routines"],
       critical: false,
     },
@@ -114,7 +115,8 @@ export function getDefaultPermissions(platform: MobilePlatform): PermissionEntry
     base.push({
       name: "local_network",
       status: "prompt",
-      rationale: "Local network access is required to communicate with smart home devices on your Wi-Fi.",
+      rationale:
+        "Local network access is required to communicate with smart home devices on your Wi-Fi.",
       requiredBy: ["device-control", "discovery"],
       critical: true,
     });
@@ -218,9 +220,7 @@ export class PermissionsManager {
   isFeatureReady(feature: string): boolean {
     const map = FEATURE_PERMISSION_MAP.find((f) => f.feature === feature);
     if (!map) return true;
-    return map.permissions
-      .filter((p) => this.entries.has(p))
-      .every((p) => this.isGranted(p));
+    return map.permissions.filter((p) => this.entries.has(p)).every((p) => this.isGranted(p));
   }
 
   /** Get missing permissions for a feature. */

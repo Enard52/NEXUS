@@ -1,6 +1,6 @@
 import { type DesignTokens, getTheme } from "@nexus/design-system";
 import { type VersionInfoService } from "@nexus/infra";
-import { CATALOGS, type Locale, SUPPORTED_LOCALES } from "@nexus/i18n";
+import { CATALOGS, type Locale } from "@nexus/i18n";
 import {
   type BillingModel,
   type BillingManageModel,
@@ -264,17 +264,27 @@ export function renderDevices(model: DeviceListModel): string {
           : deviceDetails[d.id].en
         : "";
       const roomStr = d.room ? `${escapeHtml(d.room)} · ` : "";
-      const statusText = d.online ? (isTr ? "Çevrimiçi" : "Online") : isTr ? "Çevrimdışı" : "Offline";
-      
+      const statusText = d.online
+        ? isTr
+          ? "Çevrimiçi"
+          : "Online"
+        : isTr
+          ? "Çevrimdışı"
+          : "Offline";
+
       const devIcons: Record<string, string> = {
         lamp: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
         tv: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>',
         ac: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 22l6-6"/><path d="M19 25l6-6"/></svg>',
         lock: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-        speaker: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
-        camera: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-        thermostat: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
-        curtain: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>'
+        speaker:
+          '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+        camera:
+          '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+        thermostat:
+          '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+        curtain:
+          '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>',
       };
 
       const devIconSvg = devIcons[d.id] || renderStatIcon("devices");
@@ -287,25 +297,42 @@ export function renderDevices(model: DeviceListModel): string {
 
       let advHtml = "";
       if (d.manufacturer || d.ipAddress || d.analytics) {
-         const ip = d.ipAddress ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>IP:</strong> ${escapeHtml(d.ipAddress)}</div>` : "";
-         const mac = d.macAddress ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>MAC:</strong> ${escapeHtml(d.macAddress)}</div>` : "";
-         const fw = d.firmwareVersion ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>Firmware:</strong> ${escapeHtml(d.firmwareVersion)} ${d.updateAvailable ? '<span style="color:#f59e0b;font-weight:700;">(Update)</span>' : ''}</div>` : "";
-         const last = d.lastSeen ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>Seen:</strong> ${new Date(d.lastSeen).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>` : "";
-         
-         let chartHtml = "";
-         if (d.analytics?.dailyUsageWh && d.analytics.dailyUsageWh.length > 1) {
-           const pts = d.analytics.dailyUsageWh;
-           const min = Math.min(...pts) * 0.8;
-           const max = Math.max(...pts, min + 1);
-           const range = max - min;
-           const path = pts.map((v: number, i: number) => `${(i / (pts.length-1)) * 140} ${28 - ((v - min) / range)*24}`).join(" L ");
-           const total = d.analytics.weeklyUsageWh ? d.analytics.weeklyUsageWh.reduce((a:number,b:number)=>a+b,0) : pts.reduce((a:number,b:number)=>a+b,0);
-           chartHtml = `<div style="margin-top:12px;font-size:11px;color:var(--muted);"><div style="margin-bottom:4px;display:flex;justify-content:space-between;"><span>${isTr ? "Haftalık Tüketim (Wh)" : "Weekly Usage (Wh)"}</span><span style="color:var(--text);font-weight:700;">${total}</span></div><svg width="100%" height="28" viewBox="0 0 140 28" fill="none" preserveAspectRatio="none"><path d="M0 28 L ${path} L 140 28 Z" fill="color-mix(in srgb, var(--primary) 15%, transparent)"/><path d="M ${path}" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
-         }
-         
-         const anomaly = d.analytics?.anomalyDetected ? `<div style="margin-top:8px;padding:6px 8px;background:color-mix(in srgb, #ef4444 15%, transparent);color:#ef4444;border-radius:6px;font-size:10px;font-weight:600;display:flex;align-items:center;gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${isTr ? "Anormal tüketim tespit edildi!" : "Anomaly detected in usage!"}</div>` : "";
+        const ip = d.ipAddress
+          ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>IP:</strong> ${escapeHtml(d.ipAddress)}</div>`
+          : "";
+        const mac = d.macAddress
+          ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>MAC:</strong> ${escapeHtml(d.macAddress)}</div>`
+          : "";
+        const fw = d.firmwareVersion
+          ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>Firmware:</strong> ${escapeHtml(d.firmwareVersion)} ${d.updateAvailable ? '<span style="color:#f59e0b;font-weight:700;">(Update)</span>' : ""}</div>`
+          : "";
+        const last = d.lastSeen
+          ? `<div style="overflow:hidden;text-overflow:ellipsis;"><strong>Seen:</strong> ${new Date(d.lastSeen).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>`
+          : "";
 
-         advHtml = `<details style="margin-top:8px;"><summary style="font-size:11px;color:var(--primary);cursor:pointer;font-weight:600;outline:none;">${isTr ? "Cihaz Detayları" : "Device Details"}</summary><div style="margin-top:12px;padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);display:grid;grid-template-columns:1fr 1fr;gap:8px;white-space:nowrap;">${ip}${mac}${fw}${last}</div>${anomaly}${chartHtml}</div></details>`;
+        let chartHtml = "";
+        if (d.analytics?.dailyUsageWh && d.analytics.dailyUsageWh.length > 1) {
+          const pts = d.analytics.dailyUsageWh;
+          const min = Math.min(...pts) * 0.8;
+          const max = Math.max(...pts, min + 1);
+          const range = max - min;
+          const path = pts
+            .map(
+              (v: number, i: number) =>
+                `${(i / (pts.length - 1)) * 140} ${28 - ((v - min) / range) * 24}`,
+            )
+            .join(" L ");
+          const total = d.analytics.weeklyUsageWh
+            ? d.analytics.weeklyUsageWh.reduce((a: number, b: number) => a + b, 0)
+            : pts.reduce((a: number, b: number) => a + b, 0);
+          chartHtml = `<div style="margin-top:12px;font-size:11px;color:var(--muted);"><div style="margin-bottom:4px;display:flex;justify-content:space-between;"><span>${isTr ? "Haftalık Tüketim (Wh)" : "Weekly Usage (Wh)"}</span><span style="color:var(--text);font-weight:700;">${total}</span></div><svg width="100%" height="28" viewBox="0 0 140 28" fill="none" preserveAspectRatio="none"><path d="M0 28 L ${path} L 140 28 Z" fill="color-mix(in srgb, var(--primary) 15%, transparent)"/><path d="M ${path}" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+        }
+
+        const anomaly = d.analytics?.anomalyDetected
+          ? `<div style="margin-top:8px;padding:6px 8px;background:color-mix(in srgb, #ef4444 15%, transparent);color:#ef4444;border-radius:6px;font-size:10px;font-weight:600;display:flex;align-items:center;gap:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${isTr ? "Anormal tüketim tespit edildi!" : "Anomaly detected in usage!"}</div>`
+          : "";
+
+        advHtml = `<details style="margin-top:8px;"><summary style="font-size:11px;color:var(--primary);cursor:pointer;font-weight:600;outline:none;">${isTr ? "Cihaz Detayları" : "Device Details"}</summary><div style="margin-top:12px;padding:12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);display:grid;grid-template-columns:1fr 1fr;gap:8px;white-space:nowrap;">${ip}${mac}${fw}${last}</div>${anomaly}${chartHtml}</div></details>`;
       }
 
       return `<div class="device-pill" style="flex-direction:column;align-items:stretch;padding:12px;gap:8px;"><div style="display:flex;align-items:center;gap:12px;width:100%;">${iconHtml}<div class="dev-info" style="flex:1;"><div class="dev-name" style="font-size:13px;font-weight:600;color:var(--text);">${escapeHtml(d.nameKey)}</div><div class="dev-room" style="font-size:11px;color:var(--muted);margin-top:3px;">${roomStr}${statusText}${detail ? ` · <span style="color:var(--muted);">${escapeHtml(detail)}</span>` : ""}</div></div><span class="dot ${d.online ? "on" : "off"}" title="${statusText}" style="margin:auto 0 auto auto;"></span></div>${advHtml}</div>`;
@@ -323,7 +350,7 @@ export function renderSuggestions(model: SuggestionsModel): string {
   const cards = model.rows
     .map(
       (s) =>
-        `<div class="suggest-card" data-suggestion-id="${escapeHtml(s.id)}" style="transition: all 0.4s ease;"><div class="value" style="font-size:14px;font-weight:600;">${escapeHtml(s.textKey)}</div><div class="meta">${s.at}</div><div class="actions"><button class="btn primary" data-action="accept-suggestion" data-id="${escapeHtml(s.id)}" onclick="const card = this.closest('.suggest-card'); this.innerText='${isTr ? 'Kabul Edildi' : 'Accepted'}'; this.classList.remove('primary'); this.style.backgroundColor='rgba(16,185,129,0.15)'; this.style.color='#10b981'; this.disabled=true; this.nextElementSibling.style.display='none'; setTimeout(() => { card.style.opacity='0'; card.style.transform='scale(0.9)'; setTimeout(() => card.style.display='none', 400); }, 800);">${isTr ? "Kabul Et" : "Accept"}</button><button class="btn" data-action="dismiss-suggestion" data-id="${escapeHtml(s.id)}" onclick="const card = this.closest('.suggest-card'); card.style.opacity='0'; card.style.transform='scale(0.9)'; setTimeout(() => card.style.display='none', 400);">${isTr ? "Reddet" : "Dismiss"}</button></div></div>`,
+        `<div class="suggest-card" data-suggestion-id="${escapeHtml(s.id)}" style="transition: all 0.4s ease;"><div class="value" style="font-size:14px;font-weight:600;">${escapeHtml(s.textKey)}</div><div class="meta">${s.at}</div><div class="actions"><button class="btn primary" data-action="accept-suggestion" data-id="${escapeHtml(s.id)}" onclick="const card = this.closest('.suggest-card'); this.innerText='${isTr ? "Kabul Edildi" : "Accepted"}'; this.classList.remove('primary'); this.style.backgroundColor='rgba(16,185,129,0.15)'; this.style.color='#10b981'; this.disabled=true; this.nextElementSibling.style.display='none'; setTimeout(() => { card.style.opacity='0'; card.style.transform='scale(0.9)'; setTimeout(() => card.style.display='none', 400); }, 800);">${isTr ? "Kabul Et" : "Accept"}</button><button class="btn" data-action="dismiss-suggestion" data-id="${escapeHtml(s.id)}" onclick="const card = this.closest('.suggest-card'); card.style.opacity='0'; card.style.transform='scale(0.9)'; setTimeout(() => card.style.display='none', 400);">${isTr ? "Reddet" : "Dismiss"}</button></div></div>`,
     )
     .join("");
   return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid">${cards}</div>`;
@@ -359,7 +386,7 @@ export function renderSkills(model: SkillsModel): string {
           <div style="font-weight:700;font-size:16px;">${escapeHtml(d.nameKey)}</div>
         </div>
         <div style="font-size:13px;color:var(--muted);flex:1;">${escapeHtml(d.descriptionKey)}</div>
-        <button class="btn primary" style="align-self:flex-start; transition: all 0.2s;" onclick="this.innerText='${isTr ? 'Yüklendi' : 'Installed'}'; this.classList.remove('primary'); this.style.backgroundColor='rgba(16,185,129,0.15)'; this.style.color='#10b981'; this.disabled=true;">${isTr ? "Ekle" : "Add"}</button>
+        <button class="btn primary" style="align-self:flex-start; transition: all 0.2s;" onclick="this.innerText='${isTr ? "Yüklendi" : "Installed"}'; this.classList.remove('primary'); this.style.backgroundColor='rgba(16,185,129,0.15)'; this.style.color='#10b981'; this.disabled=true;">${isTr ? "Ekle" : "Add"}</button>
       </div>`;
       })
       .join("");
@@ -375,9 +402,12 @@ export function renderAgents(model: import("@nexus/interface").AgentsModel): str
   }
   const icons: Record<string, string> = {
     zap: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14H4z"/></svg>',
-    shield: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-    thermometer: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
-    clipboard: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>'
+    shield:
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    thermometer:
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+    clipboard:
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>',
   };
 
   const cards = model.rows
@@ -414,7 +444,10 @@ export function renderBilling(model: BillingModel): string {
     isTr ? "✓ Çapraz Oda Senaryoları" : "✓ Multi-room Routines",
     isTr ? "✓ Şifrelenmiş Bulut Yedeği Senkronizasyonu" : "✓ Encrypted Cloud Backup Sync",
   ]
-    .map((item) => `<div style="font-size:12px;color:var(--text);display:flex;align-items:center;gap:6px;">${item}</div>`)
+    .map(
+      (item) =>
+        `<div style="font-size:12px;color:var(--text);display:flex;align-items:center;gap:6px;">${item}</div>`,
+    )
     .join("");
 
   const activePlanCard =
@@ -558,20 +591,76 @@ export interface AddDeviceBrand {
   readonly slug: string;
   readonly protocol: string;
   readonly installed: boolean;
-  /** Premium connector (FAZ 16 gating) — badge only; demo plan is paid. */
+  /** Premium connector — badge only; demo plan is paid. */
   readonly premium: boolean;
 }
 
 /** Deterministic connector catalog mirroring the @nexus/plugins manifests. */
 export const ADD_DEVICE_BRANDS: readonly AddDeviceBrand[] = [
-  { id: "hue", name: "Philips Hue", slug: "philipshue", protocol: "Zigbee", installed: true, premium: true },
-  { id: "tuya", name: "Tuya Smart", slug: "tuya", protocol: "Wi-Fi", installed: true, premium: true },
-  { id: "ikea", name: "IKEA DIRIGERA", slug: "ikea", protocol: "Zigbee", installed: false, premium: false },
-  { id: "xiaomi", name: "Xiaomi Mi Home", slug: "xiaomi", protocol: "Wi-Fi", installed: false, premium: false },
-  { id: "sonoff", name: "Sonoff eWeLink", slug: "sonoff", protocol: "MQTT", installed: false, premium: false },
-  { id: "smartthings", name: "SmartThings", slug: "samsungsmartthings", protocol: "Matter", installed: false, premium: true },
-  { id: "aqara", name: "Aqara", slug: "aqara", protocol: "Zigbee", installed: false, premium: true },
-  { id: "shelly", name: "Shelly", slug: "shelly", protocol: "Wi-Fi", installed: false, premium: false },
+  {
+    id: "hue",
+    name: "Philips Hue",
+    slug: "philipshue",
+    protocol: "Zigbee",
+    installed: true,
+    premium: true,
+  },
+  {
+    id: "tuya",
+    name: "Tuya Smart",
+    slug: "tuya",
+    protocol: "Wi-Fi",
+    installed: true,
+    premium: true,
+  },
+  {
+    id: "ikea",
+    name: "IKEA DIRIGERA",
+    slug: "ikea",
+    protocol: "Zigbee",
+    installed: false,
+    premium: false,
+  },
+  {
+    id: "xiaomi",
+    name: "Xiaomi Mi Home",
+    slug: "xiaomi",
+    protocol: "Wi-Fi",
+    installed: false,
+    premium: false,
+  },
+  {
+    id: "sonoff",
+    name: "Sonoff eWeLink",
+    slug: "sonoff",
+    protocol: "MQTT",
+    installed: false,
+    premium: false,
+  },
+  {
+    id: "smartthings",
+    name: "SmartThings",
+    slug: "samsungsmartthings",
+    protocol: "Matter",
+    installed: false,
+    premium: true,
+  },
+  {
+    id: "aqara",
+    name: "Aqara",
+    slug: "aqara",
+    protocol: "Zigbee",
+    installed: false,
+    premium: true,
+  },
+  {
+    id: "shelly",
+    name: "Shelly",
+    slug: "shelly",
+    protocol: "Wi-Fi",
+    installed: false,
+    premium: false,
+  },
 ];
 
 /** Mock LAN-scan results (LocalNetworkConnector idiom — deterministic demo). */
@@ -635,21 +724,24 @@ export function renderAddDevice(): string {
 export function renderPersonalization(model: PersonalizationModel): string {
   const isTr = CURRENT_LOCALE === "tr";
   const lang = model.language === "tr" ? "Türkçe (TR)" : "English (EN)";
-  
-  const rowStyle = `display: flex; justify-content: space-between; padding: 14px 10px; border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); cursor: pointer; transition: background 0.2s; border-radius: 6px;`
+
+  const rowStyle = `display: flex; justify-content: space-between; padding: 14px 10px; border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent); cursor: pointer; transition: background 0.2s; border-radius: 6px;`;
   const hoverScript = `onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'"`;
-  const clickScript = (key: string, current: string) => `onclick="const res = prompt('${isTr ? "Yeni değer girin:" : "Enter new value:"}', '${current}'); if (res) this.querySelector('.value').innerText = res;"`;
-  
-  return `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide">` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('assistantName', escapeHtml(model.assistantName))}><span class="label">${isTr ? "Asistan Adı" : "Assistant Name"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(model.assistantName)}</span></div>` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('userAddress', escapeHtml(model.userAddress))}><span class="label">${isTr ? "Size Hitap Şekli" : "Addresses You As"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(model.userAddress)}</span></div>` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('wakeWord', 'Hey Nexus')}><span class="label">${isTr ? "Tetikleme Kelimesi" : "Wake Word"}</span><span class="value" style="font-weight:600; color:var(--text);">Hey Nexus</span></div>` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('voiceType', isTr ? 'Sakin ve Profesyonel' : 'Calm & Professional')}><span class="label">${isTr ? "Ses Tonu (TTS)" : "Voice Personality"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Sakin ve Profesyonel" : "Calm & Professional"}</span></div>` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('language', escapeHtml(lang))}><span class="label">${isTr ? "Dil" : "Language"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(lang)}</span></div>` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('theme', isTr ? 'Koyu' : 'Dark')}><span class="label">${isTr ? "Tema" : "Theme"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Koyu" : "Dark"}</span></div>` +
-    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript('location', isTr ? 'İstanbul' : 'Istanbul')}><span class="label">${isTr ? "Konum" : "Location"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "İstanbul, TR" : "Istanbul, TR"}</span></div>` +
-    `<div class="field-row" style="${rowStyle} border-bottom: none;" ${hoverScript} ${clickScript('privacy', isTr ? 'Maksimum' : 'Maximum')}><span class="label">${isTr ? "Güvenlik Hassasiyeti" : "Security Sensitivity"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Maksimum (Sadece Yerel)" : "Maximum (Local Only)"}</span></div>` +
-    `</div>`;
+  const clickScript = (_key: string, current: string) =>
+    `onclick="const res = prompt('${isTr ? "Yeni değer girin:" : "Enter new value:"}', '${current}'); if (res) this.querySelector('.value').innerText = res;"`;
+
+  return (
+    `<h2>${escapeHtml(label(model.titleKey))}</h2><div class="bento-grid wide">` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("assistantName", escapeHtml(model.assistantName))}><span class="label">${isTr ? "Asistan Adı" : "Assistant Name"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(model.assistantName)}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("userAddress", escapeHtml(model.userAddress))}><span class="label">${isTr ? "Size Hitap Şekli" : "Addresses You As"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(model.userAddress)}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("wakeWord", "Hey Nexus")}><span class="label">${isTr ? "Tetikleme Kelimesi" : "Wake Word"}</span><span class="value" style="font-weight:600; color:var(--text);">Hey Nexus</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("voiceType", isTr ? "Sakin ve Profesyonel" : "Calm & Professional")}><span class="label">${isTr ? "Ses Tonu (TTS)" : "Voice Personality"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Sakin ve Profesyonel" : "Calm & Professional"}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("language", escapeHtml(lang))}><span class="label">${isTr ? "Dil" : "Language"}</span><span class="value" style="font-weight:600; color:var(--text);">${escapeHtml(lang)}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("theme", isTr ? "Koyu" : "Dark")}><span class="label">${isTr ? "Tema" : "Theme"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Koyu" : "Dark"}</span></div>` +
+    `<div class="field-row" style="${rowStyle}" ${hoverScript} ${clickScript("location", isTr ? "İstanbul" : "Istanbul")}><span class="label">${isTr ? "Konum" : "Location"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "İstanbul, TR" : "Istanbul, TR"}</span></div>` +
+    `<div class="field-row" style="${rowStyle} border-bottom: none;" ${hoverScript} ${clickScript("privacy", isTr ? "Maksimum" : "Maximum")}><span class="label">${isTr ? "Güvenlik Hassasiyeti" : "Security Sensitivity"}</span><span class="value" style="font-weight:600; color:var(--text);">${isTr ? "Maksimum (Sadece Yerel)" : "Maximum (Local Only)"}</span></div>` +
+    `</div>`
+  );
 }
 
 export function renderPlatform(model: any): string {
@@ -705,7 +797,7 @@ export function renderDownloadCenter(
   return `<div class="download-container">${featureHtml}${changelog}<table><thead><tr><th>Platform</th><th>Version</th><th>Minimum OS</th><th>SHA-256 Checksum</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-export function renderLogo(_primaryColor?: string): string {
+export function renderLogo(_size?: string | number): string {
   return `<svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img">
     <defs>
       <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
@@ -792,8 +884,18 @@ export function renderFeatures(): string {
     { title: label("mkt.feat.2.title"), desc: label("mkt.feat.2.desc") },
     { title: label("mkt.feat.3.title"), desc: label("mkt.feat.3.desc") },
     { title: label("mkt.feat.4.title"), desc: label("mkt.feat.4.desc") },
-    { title: isTr ? "Yerel İşlem Motoru" : "100% Local Engine", desc: isTr ? "Verileriniz tamamen yerel ağınızda işlenir, buluta bağımlılık yok." : "Zero cloud dependency for instant responsiveness and total privacy." },
-    { title: isTr ? "Evrensel Ekosistem" : "Unified Standards", desc: isTr ? "Matter, HomeKit, Zigbee ve Philips Hue cihazlarını tek yerde yönetin." : "Connect Matter, HomeKit, Zigbee, and Philips Hue seamlessly." },
+    {
+      title: isTr ? "Yerel İşlem Motoru" : "100% Local Engine",
+      desc: isTr
+        ? "Verileriniz tamamen yerel ağınızda işlenir, buluta bağımlılık yok."
+        : "Zero cloud dependency for instant responsiveness and total privacy.",
+    },
+    {
+      title: isTr ? "Evrensel Ekosistem" : "Unified Standards",
+      desc: isTr
+        ? "Matter, HomeKit, Zigbee ve Philips Hue cihazlarını tek yerde yönetin."
+        : "Connect Matter, HomeKit, Zigbee, and Philips Hue seamlessly.",
+    },
   ];
   const items = features
     .map(
@@ -813,7 +915,7 @@ export function renderFaq(): string {
   ];
   const items = faqs
     .map(
-      (f, i) =>
+      (f, _i) =>
         `<div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>${escapeHtml(f.q)}</span><svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div><div class="faq-a-wrapper"><div class="faq-a">${escapeHtml(f.a)}</div></div></div>`,
     )
     .join("");
@@ -944,11 +1046,12 @@ export function renderPricing(): string {
 }
 
 export function renderTestimonials(): string {
-  const renderStars = () => `<div class="stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>').join('')}</div>`;
+  const renderStars = () =>
+    `<div class="stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>').join("")}</div>`;
   const author1 = label("mkt.testimonials.author1");
   const author2 = label("mkt.testimonials.author2");
   const author3 = label("mkt.testimonials.author3");
-  
+
   return `<section class="mkt-testimonials">
 <div class="mkt-heading"><h2>${label("mkt.testimonials.title")}</h2></div>
 <div class="testimonials-grid">
@@ -1043,6 +1146,20 @@ ${renderVars(lightTheme)}
 
 [data-theme="dark"] {
 ${renderVars(darkTheme)}
+}
+
+/* OS theme auto-detection: follow the system preference only when the user
+   has not explicitly picked a theme via [data-theme]. This keeps an explicit
+   choice authoritative while letting the app match the OS out of the box. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+${renderVars(lightTheme)}
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+${renderVars(darkTheme)}
+  }
 }
 
 * {
