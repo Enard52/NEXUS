@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Keşfet</title>
+<!-- Include Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons for consistent navigation icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-gradients">
+    /* Background brand-tinted gradient */
+    .bg-light-blue-gradient {
+      background: linear-gradient(180deg, #E4E0FB 0%, #F2F0FF 100%);
+    }
+    /* AI button NEXUS gradient */
+    .ai-button-gradient {
+      background: linear-gradient(135deg, #0ea5e9 0%, #22D3EE 100%);
+    }
+  </style>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-light-blue-gradient min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="flex items-center justify-between px-6 pt-12 pb-4">
+<!-- Profile Avatar -->
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img alt="Profil" class="w-full h-full object-cover" src="https://randomuser.me/api/portraits/men/75.jpg"/>
+</div>
+<div class="flex items-center space-x-4">
+<!-- AI Button -->
+<a href="stitch-chat.html" class="ai-button-gradient w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-md text-sm" style="background: linear-gradient(135deg, #0ea5e9 0%, #22D3EE 100%);">
+        AI
+      </a>
+<!-- Settings Icon -->
+<a href="stitch-settings.html" class="text-gray-800">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.592c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.127c-.332.183-.582.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Main Features List -->
+<main class="flex-1 px-4 space-y-4 pb-24 overflow-y-auto">
+<!-- Energy Savings Card (AI Enerji Tasarrufu mini uygulamasına gider) -->
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-energy.html">
+<div class="w-14 h-14 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">AI Enerji Tasarrufu</h2>
+<p class="text-sm leading-tight text-gray-400">Cihazlarınıza dair içgörüler edinin ve enerji ipuçları alın.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<!-- SMS Notifications Card -->
+<div class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm">
+<div class="w-14 h-14 bg-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">SMS ve Çağrı Bildirimleri</h2>
+<p class="text-sm leading-tight text-gray-400">SMS bildirim hizmetini açın, cihaz uyarılarını ve senaryo mesajlarını zamanında alın.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Store Card -->
+<div class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm">
+<div class="w-14 h-14 flex items-center justify-center flex-shrink-0 mr-4">
+<div class="bg-orange-400 w-full h-full rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, #fb923c 0%, #ef4444 100%);"><svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"></path></svg></div>
+</div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">Mağaza</h2>
+<p class="text-sm leading-tight text-gray-400">Ürünleri ve markaları hızlıca bulun ve daha fazlasını keşfedin.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Lighting Master Card -->
+<div class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm">
+<div class="w-14 h-14 flex items-center justify-center flex-shrink-0 mr-4"><div class="relative w-10 h-10"><div class="absolute inset-0 rounded-t-full" style="background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);"></div><div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-indigo-500"></div></div></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">AI Aydınlatma Ustası</h2>
+<p class="text-sm leading-tight text-gray-400">Hızla kişiselleştirilmiş aydınlatma efekt kombinasyonları oluşturun.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- AI Lens Card -->
+<div class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm">
+<div class="w-14 h-14 bg-blue-400 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">AI Lens</h2>
+<p class="text-sm leading-tight text-gray-400">Gördüğünüz her şeyi tanımlayın.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- AI Calories Card -->
+<div class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm">
+<div class="w-14 h-14 flex items-center justify-center flex-shrink-0 mr-4"><div class="relative w-10 h-10 bg-green-100 rounded-full flex items-center justify-center border-2 border-green-600"><div class="w-4 h-4 bg-orange-700 rounded-full"></div><div class="absolute -top-1 -right-1 text-green-600 font-bold text-lg">+</div></div></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">AI Kalori</h2>
+<p class="text-sm leading-tight text-gray-400">Fotoğrafla yemek kalorisini anında ölçün.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</main>
+<!-- END: Main Features List -->
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
+<!-- Ev -->
+<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
+<span class="text-xs font-medium">Ev</span>
+</a>
+<!-- Akıllı -->
+<a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
+<span class="text-xs font-medium">Akıllı</span>
+</a>
+<!-- Keşfet (Active) -->
+<a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-[#0ea5e9] relative">
+<span class="absolute top-0 right-1 w-2.5 h-2.5 bg-[#FF3B5C] border-2 border-white rounded-full"></span>
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
+<span class="text-xs font-bold">Keşfet</span>
+</a>
+<!-- Profil -->
+<a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
+<span class="text-xs font-medium">Profil</span>
+</a>
+</nav>
+<!-- END: Bottom Navigation -->
+<script>lucide.createIcons();</script>
+</body></html>

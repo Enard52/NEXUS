@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Üçüncü Taraf Cihaz ve Hizmetler</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gradient-custom text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">Üçüncü Taraf Hizmetler</h1>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pt-4 pb-10">
+<p class="text-sm text-slate-500 mb-5">NEXUS'u diğer platformlara bağlayarak cihazlarını her yerden kontrol et.</p>
+<section class="space-y-3" data-purpose="services-list">
+<!-- Sesli Asistanlar -->
+<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
+<i class="w-6 h-6" data-lucide="mic"></i>
+</div>
+<div class="min-w-0">
+<h2 class="font-bold leading-tight">Sesli Asistan</h2>
+<p class="text-xs text-slate-400 mt-0.5">Sesli komutlarla kontrol</p>
+</div>
+</div>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#0ea5e9] text-white" onclick="toggleConnect(this)">Bağla</button>
+</article>
+<!-- Akıllı TV -->
+<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
+<i class="w-6 h-6" data-lucide="tv"></i>
+</div>
+<div class="min-w-0">
+<h2 class="font-bold leading-tight">Akıllı TV</h2>
+<p class="text-xs text-slate-400 mt-0.5">Ekranda bildirim ve kontrol</p>
+</div>
+</div>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#0ea5e9] text-white" onclick="toggleConnect(this)">Bağla</button>
+</article>
+<!-- Akıllı Saat -->
+<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
+<i class="w-6 h-6" data-lucide="watch"></i>
+</div>
+<div class="min-w-0">
+<h2 class="font-bold leading-tight">Akıllı Saat</h2>
+<p class="text-xs text-slate-400 mt-0.5">Bileğinden hızlı kontrol</p>
+</div>
+</div>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#0ea5e9] text-white" onclick="toggleConnect(this)">Bağla</button>
+</article>
+<!-- Müzik Servisi -->
+<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
+<i class="w-6 h-6" data-lucide="music"></i>
+</div>
+<div class="min-w-0">
+<h2 class="font-bold leading-tight">Müzik Servisi</h2>
+<p class="text-xs text-slate-400 mt-0.5">Hoparlörlerde müzik çal</p>
+</div>
+</div>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#0ea5e9] text-white" onclick="toggleConnect(this)">Bağla</button>
+</article>
+</section>
+<!-- Feedback shortcut -->
+<a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6" data-purpose="feedback-link" href="stitch-feedback.html">
+<i class="w-4 h-4" data-lucide="message-circle"></i>Bağlantıda sorun mu var? Geri bildirim gönder
+</a>
+</main>
+<!-- END: MainContent -->
+<script data-purpose="service-interactions">
+    lucide.createIcons();
+    // Toggle a service between connected / not connected
+    function toggleConnect(btn) {
+      var connected = btn.textContent === 'Bağlı';
+      btn.textContent = connected ? 'Bağla' : 'Bağlı';
+      btn.className = connected
+        ? 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#0ea5e9] text-white'
+        : 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-slate-100 text-slate-500';
+    }
+  </script>
+</body></html>

@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Cihaz Eşleştirme</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nexus-purple': '#0ea5e9',
+            'nexus-cyan': '#22D3EE',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+<style data-purpose="radar-animation">
+    /* Subtle pulsing for the radar rings */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.6; }
+      50% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(0.95); opacity: 0.6; }
+    }
+    .radar-ring {
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+    /* Rotating radar sweep */
+    @keyframes sweep-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .radar-sweep {
+      background: conic-gradient(from 0deg, transparent, rgba(124, 92, 255, 0.28) 40%, transparent 41%);
+      animation: sweep-spin 3s linear infinite;
+    }
+    /* Discovered device reveal */
+    .device-card {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .device-card.found {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gradient-custom text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="stitch-home.html">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-lg font-bold absolute left-1/2 -translate-x-1/2">Cihaz Ekle</h1>
+<!-- Alternatif eşleştirme: QR tarama akışı -->
+<a aria-label="QR ile tara" class="p-1 text-nexus-purple" href="stitch-scan.html">
+<i class="w-6 h-6" data-lucide="scan-line"></i>
+</a>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow pb-10">
+<!-- BEGIN: ScanningArea -->
+<section class="flex flex-col items-center justify-center py-8" data-purpose="device-discovery-radar">
+<div class="relative w-72 h-72 flex items-center justify-center">
+<!-- Concentric Circles Background -->
+<div class="absolute inset-0 rounded-full bg-white/30 border border-white/60 radar-ring"></div>
+<div class="absolute inset-4 rounded-full bg-white/40 border border-white/60 radar-ring" style="animation-delay: 0.5s;"></div>
+<div class="absolute inset-8 rounded-full bg-white/50 border border-white/60 radar-ring" style="animation-delay: 1s;"></div>
+<div class="absolute inset-12 rounded-full bg-white/60 border border-white/70 radar-ring" style="animation-delay: 1.5s;"></div>
+<!-- Radar Sweep Gradient Overlay -->
+<div class="absolute inset-0 rounded-full radar-sweep" id="radar-sweep"></div>
+<!-- Central Logo: NEXUS N monogram (marka gradyanı) -->
+<div class="z-10 flex flex-col items-center">
+<svg class="w-14 h-14 mb-1" fill="none" viewBox="0 0 100 100">
+<defs>
+<linearGradient id="n-grad" x1="0" x2="100" y1="0" y2="100" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0ea5e9"></stop>
+<stop offset="1" stop-color="#22D3EE"></stop>
+</linearGradient>
+</defs>
+<path d="M25 80 V20 L75 80 V20" stroke="url(#n-grad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
+</svg>
+<span class="text-slate-900 dark:text-slate-100 text-2xl font-extrabold tracking-wider">NEXUS</span>
+</div>
+</div>
+<div class="mt-8">
+<h2 class="text-slate-700 text-xl font-medium" id="scan-status">Cihaz aranıyor...</h2>
+</div>
+</section>
+<!-- END: ScanningArea -->
+<!-- BEGIN: DeviceList -->
+<section class="px-6 space-y-4 max-w-xl mx-auto w-full" data-purpose="detected-devices-list">
+<!-- Device Item: Salon Işığı -->
+<div class="device-card bg-white rounded-3xl p-4 flex items-center justify-between gap-3 card-shadow border border-white/50" data-icon="lightbulb" data-name="Salon Işığı" data-purpose="device-card">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-16 h-16 bg-nexus-purple/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+<i class="w-8 h-8 text-nexus-purple" data-lucide="lightbulb"></i>
+</div>
+<span class="text-lg font-semibold truncate">Salon Işığı</span>
+</div>
+<button class="pair-btn flex-shrink-0 bg-nexus-purple text-white px-6 py-2 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-transform" onclick="pairDevice(this)">Ekle</button>
+</div>
+<!-- Device Item: Giriş Kamerası -->
+<div class="device-card bg-white rounded-3xl p-4 flex items-center justify-between gap-3 card-shadow border border-white/50" data-icon="video" data-name="Giriş Kamerası" data-purpose="device-card">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-16 h-16 bg-nexus-cyan/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+<i class="w-8 h-8 text-[#0EA5C4]" data-lucide="video"></i>
+</div>
+<span class="text-lg font-semibold truncate">Giriş Kamerası</span>
+</div>
+<button class="pair-btn flex-shrink-0 bg-nexus-purple text-white px-6 py-2 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-transform" onclick="pairDevice(this)">Ekle</button>
+</div>
+<!-- Device Item: Akıllı Priz -->
+<div class="device-card bg-white rounded-3xl p-4 flex items-center justify-between gap-3 card-shadow border border-white/50" data-icon="plug" data-name="Akıllı Priz" data-purpose="device-card">
+<div class="flex items-center gap-4 min-w-0">
+<div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+<i class="w-8 h-8 text-emerald-600" data-lucide="plug"></i>
+</div>
+<span class="text-lg font-semibold truncate">Akıllı Priz</span>
+</div>
+<button class="pair-btn flex-shrink-0 bg-nexus-purple text-white px-6 py-2 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-transform" onclick="pairDevice(this)">Ekle</button>
+</div>
+<!-- QR fallback -->
+<a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 pt-2" data-purpose="qr-fallback" href="stitch-scan.html">
+<i class="w-4 h-4" data-lucide="scan-line"></i>Cihazın görünmüyor mu? QR koduyla ekle
+</a>
+</section>
+<!-- END: DeviceList -->
+</main>
+<!-- END: MainContent -->
+<script data-purpose="pair-interactions">
+    lucide.createIcons();
+
+    // --- Eşleştirilen cihazlar localStorage'da tutulur (nexusPairedDevices) ---
+    function getPaired() {
+      try { return JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]'); } catch (e) { return []; }
+    }
+    function savePaired(list) {
+      localStorage.setItem('nexusPairedDevices', JSON.stringify(list));
+    }
+
+    // Buton "Eklendi" durumuna geçer
+    function markPaired(btn) {
+      btn.disabled = true;
+      btn.textContent = 'Eklendi';
+      btn.className = 'pair-btn flex-shrink-0 bg-emerald-500/10 text-emerald-600 px-6 py-2 rounded-full text-sm font-bold';
+    }
+
+    // Ekle: kısa eşleştirme animasyonu, sonra kalıcı kayıt
+    function pairDevice(btn) {
+      var card = btn.closest('.device-card');
+      btn.disabled = true;
+      btn.textContent = 'Ekleniyor...';
+      setTimeout(function () {
+        markPaired(btn);
+        var list = getPaired();
+        var exists = list.some(function (d) { return d.name === card.dataset.name; });
+        if (!exists) list.push({ name: card.dataset.name, icon: card.dataset.icon });
+        savePaired(list);
+      }, 1200);
+    }
+
+    // Radar keşfi: cihazlar sırayla bulunur, durum metni güncellenir
+    (function () {
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.device-card'));
+      var paired = getPaired();
+      var found = 0;
+      cards.forEach(function (card, i) {
+        setTimeout(function () {
+          card.classList.add('found');
+          found++;
+          if (found === cards.length) {
+            document.getElementById('scan-status').textContent = found + ' cihaz bulundu';
+            document.getElementById('radar-sweep').style.display = 'none';
+          }
+          // Daha önce eşleştirilmişse doğrudan "Eklendi" görünür
+          var isPaired = paired.some(function (d) { return d.name === card.dataset.name; });
+          if (isPaired) markPaired(card.querySelector('.pair-btn'));
+        }, 900 * (i + 1));
+      });
+    })();
+  </script>
+</body></html>

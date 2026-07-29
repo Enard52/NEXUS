@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Asistan</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Custom Tailwind Configuration (NEXUS brand palette) -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nexus-purple': '#0ea5e9',
+            'nexus-cyan': '#22D3EE',
+            'nexus-bg-light': '#F1F7FF',
+            'nexus-plus-bg': '#0ea5e9',
+          },
+          backgroundImage: {
+            'nexus-gradient': 'linear-gradient(180deg, #ECE9FD 0%, #F5F7FF 50%, #E4F7FB 100%)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-fonts">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="layout-utilities">
+    /* Hide scrollbar for the horizontal features list */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-white text-gray-900 overflow-hidden h-screen flex flex-col">
+<!-- BEGIN: MainHeader -->
+<header class="flex items-center justify-between px-4 pt-12 pb-3 bg-white" data-purpose="app-header">
+<!-- Back Button -->
+<a href="stitch-home.html" aria-label="Geri" class="p-2">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<!-- Logo and Title -->
+<div class="flex items-center gap-2" data-purpose="logo-container"><div class="w-8 h-8 flex items-center justify-center text-white font-bold text-xl rounded-lg" style="background: linear-gradient(135deg, #0ea5e9, #22D3EE);">N</div>
+<span class="font-semibold text-xl tracking-tight">Nexus AI</span></div>
+<!-- Actions -->
+<div class="flex items-center gap-3">
+<a href="stitch-plus.html" class="bg-nexus-plus-bg text-white text-xs font-medium px-3 py-1 rounded-full">Plus</a>
+<a href="stitch-menu.html" aria-label="Menü" class="p-1">
+<svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow flex flex-col relative bg-nexus-gradient" data-purpose="main-chat-area">
+<!-- Central Greeting -->
+<div class="flex-grow flex flex-col items-center justify-center px-8 text-center pb-10" data-purpose="hero-text">
+<h1 class="text-3xl text-nexus-purple leading-tight opacity-80" style="font-weight: 400;">
+        Tekrar görüşmek güzel!<br/>Nasıl yardımcı olabilirim?
+      </h1>
+</div>
+<!-- Features Scrolling Pills -->
+<div class="pb-4" data-purpose="feature-suggestions">
+<div class="flex overflow-x-auto gap-3 px-4 no-scrollbar">
+<!-- Brain Icon Pill -->
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-10 rounded-2xl bg-white/60 border border-purple-100 shadow-sm">
+<svg class="h-6 w-6 text-nexus-purple" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+<!-- Smart Control Pill -->
+<button class="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-white/60 border border-purple-100 rounded-2xl shadow-sm text-sm font-medium text-gray-700 whitespace-nowrap">
+<svg class="h-4 w-4 text-nexus-purple" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          Akıllı Kontrol
+        </button>
+<!-- AI Energy Saving Pill (mini uygulamaya gider) -->
+<a class="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-white/60 border border-purple-100 rounded-2xl shadow-sm text-sm font-medium text-gray-700 whitespace-nowrap" href="stitch-energy.html">
+<svg class="h-4 w-4 text-nexus-purple" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          AI Enerji Tasarrufu
+        </a>
+<!-- AI Protection Pill -->
+<button class="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-white/60 border border-purple-100 rounded-2xl shadow-sm text-sm font-medium text-gray-700 whitespace-nowrap">
+<svg class="h-4 w-4 text-nexus-purple" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          AI Koruma
+        </button>
+</div>
+</div>
+<!-- Input Bar -->
+<div class="px-4 pb-10" data-purpose="chat-input-container">
+<div class="flex items-center gap-2 bg-white rounded-[2rem] p-2 shadow-lg shadow-gray-200/50 border border-gray-100">
+<!-- Add Button -->
+<button aria-label="Ek ekle" class="bg-gray-100 p-3 rounded-2xl ml-1 transition-colors hover:bg-gray-200">
+<svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<!-- Input Field Emulation -->
+<div class="flex-grow flex items-center gap-3 px-2">
+<!-- Small NEXUS N monogram -->
+<div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#22D3EE] flex items-center justify-center text-white font-bold text-xs shrink-0">N</div>
+<input class="w-full border-none focus:ring-0 text-gray-500 text-lg bg-transparent placeholder-gray-400" placeholder="Nasıl yardımcı olabilirim?" type="text"/>
+</div>
+</div>
+</div>
+</main>
+<!-- END: MainContent -->
+</body></html>
