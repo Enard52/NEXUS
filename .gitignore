@@ -45,3 +45,6 @@ Thumbs.db
 
 # Generated static assets (build mirrors)
 packages/server/data/
+
+nul
+
