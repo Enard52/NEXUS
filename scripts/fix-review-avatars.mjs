@@ -7,16 +7,16 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PEOPLE = [
-  { name: "Sarah Jenkins", initials: "SJ", photo: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "David Chen", initials: "DC", photo: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Emma Thompson", initials: "ET", photo: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Mateo Alvarez", initials: "MA", photo: "https://randomuser.me/api/portraits/men/41.jpg" },
-  { name: "Aisha Rahman", initials: "AR", photo: "https://randomuser.me/api/portraits/women/68.jpg" },
-  { name: "Noah Williams", initials: "NW", photo: "https://randomuser.me/api/portraits/men/22.jpg" },
-  { name: "Sofia Martins", initials: "SM", photo: "https://randomuser.me/api/portraits/women/26.jpg" },
-  { name: "Kenji Sato", initials: "KS", photo: "https://randomuser.me/api/portraits/men/86.jpg" },
-  { name: "Olivia Brooks", initials: "OB", photo: "https://randomuser.me/api/portraits/women/12.jpg" },
-  { name: "Lucas Meyer", initials: "LM", photo: "https://randomuser.me/api/portraits/men/58.jpg" },
+  { name: "Sarah Jenkins", initials: "SJ", photo: "/images/avatars/sarah-jenkins.jpg" },
+  { name: "David Chen", initials: "DC", photo: "/images/avatars/david-chen.jpg" },
+  { name: "Emma Thompson", initials: "ET", photo: "/images/avatars/emma-thompson.jpg" },
+  { name: "Mateo Alvarez", initials: "MA", photo: "/images/avatars/mateo-alvarez.jpg" },
+  { name: "Aisha Rahman", initials: "AR", photo: "/images/avatars/aisha-rahman.jpg" },
+  { name: "Noah Williams", initials: "NW", photo: "/images/avatars/noah-williams.jpg" },
+  { name: "Sofia Martins", initials: "SM", photo: "/images/avatars/sofia-martins.jpg" },
+  { name: "Kenji Sato", initials: "KS", photo: "/images/avatars/kenji-sato.jpg" },
+  { name: "Olivia Brooks", initials: "OB", photo: "/images/avatars/olivia-brooks.jpg" },
+  { name: "Lucas Meyer", initials: "LM", photo: "/images/avatars/lucas-meyer.jpg" },
 ];
 
 const FILES = [
