@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
@@ -1123,7 +1123,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     errorBox.classList.remove("show");
     guest.disabled = true;
     fetch("/api/guest", { method: "POST" }).then(function (r) {
-      if (r.ok) { location.href = "/app"; return; }
+      if (r.ok) { location.href = "/index.html"; return; }
       guest.disabled = false;
       errorBox.textContent = "Something went wrong. Please try again.";
       errorBox.classList.add("show");
@@ -1143,7 +1143,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     }).then(function (r) {
       return r.json().then(function (data) { return { ok: r.ok, data: data }; });
     }).then(function (res) {
-      if (res.ok) { location.href = "/app"; return; }
+      if (res.ok) { location.href = "/index.html"; return; }
       errorBox.textContent = (res.data && res.data.error) || "Something went wrong. Please try again.";
       errorBox.classList.add("show");
       submit.disabled = false;
