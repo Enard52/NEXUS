@@ -14,6 +14,9 @@ importers:
       '@fontsource/outfit':
         specifier: ^5.3.0
         version: 5.3.0
+      esbuild:
+        specifier: ^0.24.2
+        version: 0.24.2
     devDependencies:
       '@types/node':
         specifier: ^24.0.0

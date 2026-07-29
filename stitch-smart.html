@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Akıllı</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons for consistent navigation icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="global-styles">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .custom-gradient-border {
+      position: relative;
+      background: white;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+      border-radius: 9999px;
+    }
+    .custom-gradient-border::before {
+      content: '';
+      position: absolute;
+      top: -2px; bottom: -2px;
+      left: -2px; right: -2px;
+      background: linear-gradient(to right, #7C5CFF, #22D3EE, #7C5CFF);
+      z-index: -1;
+      border-radius: 9999px;
+    }
+    .tab-active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: #7C5CFF;
+      border-radius: 2px 2px 0 0;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-white min-h-screen flex flex-col text-slate-900">
+<!-- BEGIN: App Header -->
+<section class="px-5 pt-12 pb-2 flex justify-between items-center" data-purpose="main-header">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<!-- Profile Avatar -->
+<img alt="Profil" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/40x40?text=NX'" src="https://randomuser.me/api/portraits/men/75.jpg"/>
+</div>
+<div class="flex items-center space-x-2">
+<!-- NEXUS N monogram -->
+<div class="h-7 w-7 rounded-lg bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white font-bold text-sm">N</div>
+<span class="text-xl font-bold text-gray-900 tracking-tight">NEXUS</span>
+</div>
+<button class="bg-[#7C5CFF] text-white rounded-full p-1.5">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</button>
+</section>
+<!-- END: App Header -->
+<!-- BEGIN: Search Bar Area -->
+<section class="px-5 py-4" data-purpose="search-container">
+<a href="stitch-chat.html" class="block">
+<div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm">
+<!-- NEXUS N leading mark -->
+<div class="h-8 w-8 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white font-bold text-sm shrink-0 mr-3">N</div>
+<input class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text"/>
+<div class="flex items-center space-x-4 pr-1">
+<!-- Mic Icon -->
+<svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<!-- Settings/Filter Icon -->
+<svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</a>
+</section>
+<!-- END: Search Bar Area -->
+<!-- BEGIN: Tabs Navigation -->
+<nav class="flex border-b border-gray-200" data-purpose="tabs">
+<button class="flex-1 py-3 text-sm font-bold text-gray-900 relative tab-active">
+        Akıllı Uygulama
+      </button>
+<button class="flex-1 py-3 text-sm font-semibold text-gray-500">
+        Tıkla ve Çalıştır
+      </button>
+<button class="flex-1 py-3 text-sm font-semibold text-gray-500">
+        Otomasyon
+      </button>
+</nav>
+<!-- END: Tabs Navigation -->
+<!-- BEGIN: Main Content / Empty State -->
+<main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">
+<div class="bg-white rounded-3xl p-10 flex flex-col items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-50 mb-8" data-purpose="empty-state-card">
+<div class="mb-6 relative">
+<!-- Empty state cloud illustration -->
+<svg class="w-28 h-auto text-[#C7BEEE]" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 18a4 4 0 010-8 5 5 0 019.58-1.6A3.5 3.5 0 0117 18H7z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 11v3m-1.5-1.5h3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<h2 class="text-xl font-bold text-gray-900 mb-1">Uygulama Yok</h2>
+<p class="text-gray-500 font-medium mb-8">Akıllı Uygulamanı Özelleştir</p>
+<button class="bg-[#7C5CFF] text-white px-10 py-3 rounded-full font-bold text-sm">
+          Oluştur
+        </button>
+</div>
+<!-- BEGIN: Recommendations Section -->
+<section data-purpose="recommendations">
+<h3 class="text-xl font-bold text-gray-900 mb-4">Önerilen</h3>
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4">
+<div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+<!-- Living Room Image -->
+<img alt="Oturma Odası" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/128x80?text=Oda'" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&amp;fit=crop&amp;w=256&amp;q=80"/>
+</div>
+<div>
+<h4 class="font-bold text-gray-900 leading-tight">Tüm Ev Aydınlatma Kontrolü</h4>
+<p class="text-xs text-gray-500 mt-1 leading-snug">Evindeki tüm aydınlatma cihazlarını kontrol et</p>
+</div>
+</div>
+</section>
+<!-- END: Recommendations Section -->
+</main>
+<!-- END: Main Content -->
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
+<!-- Ev -->
+<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
+<span class="text-xs font-medium">Ev</span>
+</a>
+<!-- Akıllı (Active) -->
+<a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-[#7C5CFF]">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
+<span class="text-xs font-bold">Akıllı</span>
+</a>
+<!-- Keşfet -->
+<a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
+<span class="absolute top-0 right-1 w-2.5 h-2.5 bg-[#FF3B5C] border-2 border-white rounded-full"></span>
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
+<span class="text-xs font-medium">Keşfet</span>
+</a>
+<!-- Profil -->
+<a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
+<span class="text-xs font-medium">Profil</span>
+</a>
+</nav>
+<!-- END: Bottom Navigation -->
+<script>lucide.createIcons();</script>
+</body></html>

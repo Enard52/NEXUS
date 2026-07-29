@@ -171,9 +171,10 @@ a {
 }
 
 .nav-item[aria-current="page"] {
-  background: color-mix(in srgb, var(--primary) 16%, transparent);
-  color: var(--text);
+  background: var(--primary);
+  color: var(--on-primary);
   font-weight: 600;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
 .tabbar {
@@ -426,4 +427,46 @@ dialog.modal {
 
 dialog.modal::backdrop {
   background: rgba(0, 0, 0, 0.5);
+}
+
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.nav-profile .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+.nav-profile-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.nav-profile-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-profile-email {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

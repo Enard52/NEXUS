@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="tr" data-theme="light">
 <head>
+  <script>
+    if (!localStorage.getItem("nexus_session_token")) {
+      window.location.replace("/login.html");
+    }
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NEXUS — Kişisel işletim sistemini indir</title>
@@ -527,6 +532,7 @@
       align-items: center;
       gap: 10px;
       min-width: 132px;
+      max-width: 220px;
       padding: 11px 13px;
       border: 1px solid var(--border-strong);
       border-radius: 16px;
@@ -534,6 +540,7 @@
       box-shadow: var(--shadow-md), inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
       backdrop-filter: blur(18px);
       transition: transform .24s var(--ease), border-color .24s ease;
+      z-index: 5;
     }
     .node:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 48%, var(--border-strong)); }
     .node-icon {
@@ -558,6 +565,10 @@
       margin-top: 3px;
       color: var(--muted);
       font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
     }
     .node::after {
       content: "";
@@ -572,7 +583,7 @@
     .node-lights::after { right: -4px; bottom: 18px; }
     .node-climate { right: 4%; top: 17%; }
     .node-climate::after { left: -4px; bottom: 18px; }
-    .node-security { left: 3%; bottom: 24%; }
+    .node-security { left: 1%; bottom: 24%; }
     .node-security::after { right: -4px; top: 18px; }
     .node-audio { right: 4%; bottom: 22%; }
     .node-audio::after { left: -4px; top: 18px; }
@@ -832,21 +843,38 @@
     .metric-device-cloud {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-wrap: wrap;
       height: auto;
+      bottom: 10px;
+    }
+    @keyframes cloudFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
     }
     .metric-device-cloud b {
-      padding: 5px 8px;
-      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 6px;
+      border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
       border-radius: 999px;
-      color: color-mix(in srgb, var(--text) 66%, transparent);
-      background: color-mix(in srgb, var(--surface) 72%, transparent);
+      color: color-mix(in srgb, var(--text) 80%, var(--primary));
+      background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 12%, transparent);
       font-family: var(--font-mono);
-      font-size: 7px;
+      font-size: 7.5px;
       font-weight: 700;
-      letter-spacing: .05em;
+      letter-spacing: .02em;
+      animation: cloudFloat 4s ease-in-out infinite;
     }
+    .metric-device-cloud b svg {
+      width: 10px;
+      height: 10px;
+    }
+    .metric-device-cloud b:nth-child(2) { animation-delay: 1s; border-color: color-mix(in srgb, var(--accent) 30%, transparent); color: color-mix(in srgb, var(--text) 80%, var(--accent)); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 12%, transparent); }
+    .metric-device-cloud b:nth-child(3) { animation-delay: 2s; border-color: color-mix(in srgb, #10b981 30%, transparent); color: color-mix(in srgb, var(--text) 80%, #10b981); background: color-mix(in srgb, #10b981 8%, var(--surface)); box-shadow: 0 4px 12px color-mix(in srgb, #10b981 12%, transparent); }
+    .metric-device-cloud b:nth-child(4) { animation-delay: 3s; border-color: color-mix(in srgb, #f59e0b 30%, transparent); color: color-mix(in srgb, var(--text) 80%, #f59e0b); background: color-mix(in srgb, #f59e0b 8%, var(--surface)); box-shadow: 0 4px 12px color-mix(in srgb, #f59e0b 12%, transparent); }
     .metric-privacy-rail {
       height: 7px;
       border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
@@ -1465,25 +1493,24 @@
       display: grid;
       grid-template-columns: .8fr 1.2fr;
       gap: clamp(52px, 9vw, 120px);
-      align-items: start;
+      align-items: center;
     }
     .faq-list {
-      display: grid;
-      grid-auto-rows: 148px;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
     }
-    .faq-list details {
+    .faq-card {
       position: relative;
       isolation: isolate;
-      height: 148px;
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 1px solid color-mix(in srgb, var(--primary) 44%, var(--border));
       border-radius: 18px;
       background:
-        linear-gradient(135deg, color-mix(in srgb, var(--surface) 76%, transparent), color-mix(in srgb, var(--surface) 56%, transparent));
-      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+        linear-gradient(135deg, color-mix(in srgb, var(--surface) 88%, transparent), color-mix(in srgb, var(--primary) 6%, var(--surface)));
+      box-shadow: 0 16px 42px color-mix(in srgb, var(--primary) 5%, transparent);
     }
-    .faq-list details::before {
+    .faq-card::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -1494,77 +1521,23 @@
         linear-gradient(90deg, color-mix(in srgb, var(--primary) 4%, transparent), transparent 42%);
       opacity: .65;
     }
-    .faq-list details:not([open])::after {
-      content: "Yanıtı görmek için seç";
-      position: absolute;
-      left: 21px;
-      bottom: 18px;
-      color: color-mix(in srgb, var(--muted) 68%, transparent);
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      pointer-events: none;
-    }
-    .faq-list details[open] {
-      border-color: color-mix(in srgb, var(--primary) 44%, var(--border));
-      background:
-        linear-gradient(135deg, color-mix(in srgb, var(--surface) 88%, transparent), color-mix(in srgb, var(--primary) 6%, var(--surface)));
-      box-shadow: 0 16px 42px color-mix(in srgb, var(--primary) 9%, transparent);
-    }
-    .faq-list summary {
+    .faq-question {
       position: relative;
       z-index: 2;
-      min-height: 68px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 19px 21px;
-      cursor: pointer;
-      list-style: none;
+      padding: 21px 21px 12px;
       font-family: var(--font);
       font-size: 14px;
       font-weight: 600;
-    }
-    .faq-list summary::-webkit-details-marker { display: none; }
-    .faq-list summary::after {
-      content: "+";
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      flex: none;
-      border-radius: 50%;
-      color: var(--primary);
-      background: var(--tint);
-      transition: transform .2s ease, background .2s ease;
-    }
-    .faq-list details[open] summary::after {
-      transform: rotate(45deg);
-      background: color-mix(in srgb, var(--primary) 18%, transparent);
+      color: var(--text);
     }
     .faq-list .faq-answer {
-      position: absolute;
-      inset: 68px 0 0;
-      padding: 15px 21px 18px;
-      overflow: auto;
-      border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+      position: relative;
+      padding: 0 21px 21px;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.62;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(7px);
-      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
-      scrollbar-width: none;
-    }
-    .faq-list .faq-answer::-webkit-scrollbar { display: none; }
-    .faq-list details[open] .faq-answer {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
     }
 
     .cta {
@@ -1681,6 +1654,10 @@
         grid-template-columns: 1fr;
         text-align: center;
       }
+      .eyebrow { margin-inline: auto; }
+      .hero h1 { margin-inline: auto; text-align: center; }
+      .hero-gradient-line { margin-inline: auto; text-align: center; }
+      .hero-gradient-line .hero-word { margin-inline: auto; text-align: center; }
       .hero-copy { margin-inline: auto; }
       .hero-actions, .hero-proof { justify-content: center; }
       .constellation { width: min(720px, 100%); margin-inline: auto; }
@@ -1690,8 +1667,6 @@
       .feature-card.third { grid-column: span 4; }
       .mobile-companion { grid-template-columns: 1fr; }
       .faq-layout { grid-template-columns: 1fr; gap: 44px; }
-      .faq-list { grid-auto-rows: 168px; }
-      .faq-list details { height: 168px; }
     }
 
     @media (max-width: 800px) {
@@ -2006,6 +1981,13 @@
     }
     .integration-logo { width: 25px; height: 25px; object-fit: contain; }
     img[hidden], .integration-logo[hidden], .os-logo-img[hidden], .store-logo[hidden] { display: none !important; }
+    /* Dark temada siyah logolar beyaz görünsün, light temada siyah kalsın */
+    [data-theme="dark"] .integration-logo[data-dark-invert],
+    :root:not([data-theme="light"]) .integration-logo[data-dark-invert] { filter: invert(1); }
+    [data-theme="light"] .integration-logo[data-dark-invert] { filter: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]):not([data-theme="dark"]) .integration-logo[data-dark-invert] { filter: invert(1); }
+    }
     .brand-fallback {
       color: var(--primary);
       font-family: var(--font);
@@ -2459,6 +2441,13 @@
         0 10px 24px color-mix(in srgb, var(--brand) 8%, transparent);
     }
     .integration-logo { width: 28px; height: 28px; filter: drop-shadow(0 5px 9px color-mix(in srgb, var(--brand) 20%, transparent)); }
+    /* Dark temada siyah logolar beyaz görünsün */
+    [data-theme="dark"] .integration-logo[data-dark-invert],
+    :root:not([data-theme="light"]) .integration-logo[data-dark-invert] { filter: invert(1) drop-shadow(0 5px 9px color-mix(in srgb, var(--brand) 20%, transparent)); }
+    [data-theme="light"] .integration-logo[data-dark-invert] { filter: drop-shadow(0 5px 9px color-mix(in srgb, var(--brand) 20%, transparent)); }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]):not([data-theme="dark"]) .integration-logo[data-dark-invert] { filter: invert(1) drop-shadow(0 5px 9px color-mix(in srgb, var(--brand) 20%, transparent)); }
+    }
     .brand-fallback {
       max-width: 42px;
       overflow: hidden;
@@ -2680,9 +2669,9 @@
     }
     .brand-glyph::before { inset: 9%; }
     .brand-glyph::after { inset: 24%; border-style: dashed; }
-    .brand-glyph-a { right: -15%; top: 18%; }
-    .brand-glyph-b { left: -19%; top: 47%; transform: rotate(-16deg) scale(.82); opacity: .72; }
-    .brand-glyph-c { right: -20%; top: 76%; transform: rotate(26deg) scale(.7); opacity: .56; }
+    .brand-glyph-a { right: -15%; top: 18%; opacity: 0.12; }
+    .brand-glyph-b { left: -19%; top: 47%; transform: rotate(-16deg) scale(.82); opacity: 0.09; }
+    .brand-glyph-c { right: -20%; top: 76%; transform: rotate(26deg) scale(.7); opacity: 0.06; }
     .brand-signal {
       position: absolute;
       width: 44vw;
@@ -3383,8 +3372,8 @@
       box-shadow: 0 14px 30px rgba(0,0,0,.18);
     }
     .mini-platform svg { width: 23px; height: 23px; }
-    .mini-windows { left: 18px; transform: rotate(-7deg); }
-    .mini-apple { left: 50%; transform: translateX(-50%) translateY(-10px); }
+    .mini-apple { left: 18px; transform: rotate(-7deg); }
+    .mini-windows { left: 50%; transform: translateX(-50%) translateY(-10px); }
     .mini-linux { right: 18px; transform: rotate(7deg); }
     .flow-packet { position: absolute; left: 50%; bottom: 20px; display: flex; gap: 5px; transform: translateX(-50%); }
     .flow-packet span { width: 18px; height: 4px; border-radius: 99px; background: var(--primary); animation: waveform 1s ease-in-out infinite alternate; }
@@ -3484,9 +3473,9 @@
       .mobile-qr-pair { grid-column: auto; }
     }
     @media (max-width: 580px) {
-      .hero h1 { padding-right: .14em; line-height: 1.03; }
-      .hero-gradient-line { width: 100%; padding-right: .14em; }
-      .hero-gradient-line .hero-word { display: block; width: max-content; max-width: 100%; }
+      .hero h1 { padding-right: 0; line-height: 1.03; text-align: center; margin-inline: auto; }
+      .hero-gradient-line { width: 100%; padding-right: 0; margin-inline: auto; text-align: center; }
+      .hero-gradient-line .hero-word { display: block; width: max-content; max-width: 100%; margin-inline: auto; text-align: center; }
       .flow-shell-v4 { padding: 10px; border-radius: 24px; }
       .flow-step-v4 { padding: 20px; }
       .flow-visual { height: 156px; }
@@ -3595,17 +3584,16 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 6px 8px;
-      border: 1px solid rgba(34,197,94,.22);
-      border-radius: 999px;
       color: #7ee2a8;
-      background: rgba(34,197,94,.07);
       font-family: var(--font-mono);
       font-size: 7px;
       font-weight: 800;
       letter-spacing: .06em;
       text-transform: uppercase;
       white-space: nowrap;
+    }
+    [data-theme="light"] .protocol-live {
+      color: #16a34a;
     }
     .protocol-live i,
     .protocol-console-foot span i {
@@ -3657,6 +3645,9 @@
       color: var(--protocol-color);
       background: color-mix(in srgb, var(--protocol-color) 7%, var(--bg));
       box-shadow: 0 6px 16px color-mix(in srgb, var(--protocol-color) 8%, transparent);
+    }
+    [data-theme="light"] .protocol-mark {
+      color: color-mix(in srgb, var(--protocol-color) 45%, var(--text));
     }
     .protocol-mark svg {
       width: 19px;
@@ -4297,7 +4288,7 @@
         0 20px 45px rgba(0,0,0,.18);
     }
 
-    .nexus-ai-console { min-height: 238px; padding: 16px; }
+    .nexus-ai-console { min-height: 175px; padding: 16px; }
     .nexus-ai-head,
     .automation-head,
     .response-head {
@@ -4571,6 +4562,38 @@
       .response-path { stroke-dashoffset: 0; }
     }
 
+    /* NEXUS SVG Brand Override: Remove duplicate backgrounds and shadow boxes 
+       from containers where the new full-SVG logo is injected */
+    .protocol-core,
+    .radar-core,
+    .live-core,
+    .mobile-brand-orbit,
+    .flow-brand-mark,
+    .nexus-ai-avatar,
+    .logic-node.logic-ai i,
+    .route-ai i,
+    .brand-glyph {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      color: transparent !important;
+    }
+
+    /* Ensure injected SVG fills its parent properly */
+    .protocol-core > svg.brand-logo,
+    .radar-core > svg.brand-logo,
+    .live-core > svg.brand-logo,
+    .mobile-brand-orbit > svg.brand-logo,
+    .flow-brand-mark > svg.brand-logo,
+    .nexus-ai-avatar > svg.brand-logo,
+    .logic-node.logic-ai i > svg.brand-logo,
+    .route-ai i > svg.brand-logo,
+    .brand-glyph > svg.brand-logo {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain;
+      display: block;
+    }
 </style>
   <script type="application/ld+json">
   {
@@ -4592,9 +4615,48 @@
 <body>
   <a class="skip-link" href="#main">İçeriğe atla</a>
   <div class="brand-atmosphere" aria-hidden="true">
-    <span class="brand-glyph brand-glyph-a">N</span>
-    <span class="brand-glyph brand-glyph-b">N</span>
-    <span class="brand-glyph brand-glyph-c">N</span>
+    <span class="brand-glyph brand-glyph-a"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-ga" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-ga" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-ga)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-ga)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-glyph brand-glyph-b"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-gb" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-gb" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-gb)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-gb)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-glyph brand-glyph-c"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-gc" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-gc" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-gc)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-gc)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
     <span class="brand-signal brand-signal-a"></span>
     <span class="brand-signal brand-signal-b"></span>
   </div>
@@ -4819,7 +4881,7 @@
             <strong data-count="2000" data-suffix="+">2,000+</strong>
             <span class="metric-title">Desteklenen cihaz</span>
             <p class="metric-copy">Önde gelen standartlar ve ekosistemler genelinde tek zekâ katmanı.</p>
-            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b>Matter</b><b>HomeKit</b><b>Thread</b><b>Zigbee</b></span>
+            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.2 5.6a3.2 3.2 0 1 1 3.1 4h3.4a3.2 3.2 0 1 1 3.1-4 3.2 3.2 0 0 1-1.1 3.6l-2 3.5a3.2 3.2 0 1 1-3.4 0l-2-3.5a3.2 3.2 0 0 1-1.1-3.6Z"/></svg>Matter</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>HomeKit</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.8 8.1 10.9 15M16.2 8.1 13.1 15M8 7h8"/></svg>Thread</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h11l-8 10h11M7 4c4 1 7 1 10 0M7 20c4-1 7-1 10 0"/></svg>Zigbee</b></span>
           </article>
 
           <article class="metric metric-private">
@@ -4909,7 +4971,20 @@
             <p>Özel sesli asistanın niyeti anlar, cihazları koordine eder ve sesini buluta göndermeden çok adımlı istekleri tamamlar.</p>
             <div class="nexus-ai-console" aria-label="NEXUS AI voice assistant preview">
               <div class="nexus-ai-head">
-                <span class="nexus-ai-avatar" aria-hidden="true">N</span>
+                <span class="nexus-ai-avatar" aria-hidden="true"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-aiav" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-aiav" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-aiav)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-aiav)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
                 <span class="nexus-ai-identity"><strong>NEXUS AI</strong><small><i></i> Yerelde dinliyor</small></span>
                 <span class="nexus-ai-mode">PRIVATE CORE</span>
               </div>
@@ -4918,11 +4993,7 @@
                 <div><small>YOU SAID</small><strong>“Kapıları kilitle, ışıkları kıs ve Odak'ı başlat.”</strong></div>
               </div>
               <div class="nexus-ai-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-              <div class="nexus-ai-results">
-                <span><b>04</b><small>cihaz</small></span>
-                <span><b>01</b><small>rutin</small></span>
-                <span><b>42 ms</b><small>yerel yanıt</small></span>
-              </div>
+
             </div>
           </article>
 
@@ -4956,7 +5027,20 @@
             <p>Zaten sahip olduğun ekosistemleri bağla.</p>
             <div class="protocol-console" aria-label="Supported smart-home standards">
               <div class="protocol-console-head">
-                <div class="protocol-core" aria-hidden="true"><span>N</span></div>
+                <div class="protocol-core" aria-hidden="true"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-pcore" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-pcore" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-pcore)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-pcore)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></div>
                 <div class="protocol-console-title">
                   <strong>Evrensel cihaz dokusu</strong>
                   <small>Otomatik keşif · şifreli · yerel</small>
@@ -5038,7 +5122,20 @@
               <div class="automation-logic">
                 <div class="logic-node"><i>01</i><span><small>TRIGGER</small><strong>Varlık doğrulandı</strong></span></div>
                 <span class="logic-link"><i></i></span>
-                <div class="logic-node logic-ai"><i>N</i><span><small>NEXUS AI</small><strong>Bağlam çözümlendi</strong></span></div>
+                <div class="logic-node logic-ai"><i><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-ctx" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-ctx" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-ctx)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-ctx)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></i><span><small>NEXUS AI</small><strong>Bağlam çözümlendi</strong></span></div>
                 <span class="logic-link"><i></i></span>
                 <div class="logic-node"><i>03</i><span><small>ACTION</small><strong>Sahne etkinleştirildi</strong></span></div>
               </div>
@@ -5065,7 +5162,20 @@
               </div>
               <div class="response-route">
                 <span><i>01</i><small>VOICE</small></span><b>→</b>
-                <span class="route-ai"><i>N</i><small>NEXUS AI</small></span><b>→</b>
+                <span class="route-ai"><i><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-route" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-route" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-route)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-route)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></i><small>NEXUS AI</small></span><b>→</b>
                 <span><i>03</i><small>DEVICES</small></span>
               </div>
               <div class="response-metrics">
@@ -5091,7 +5201,20 @@
           <p class="section-copy">NEXUS ortamını keşfeder, kurulumu yerelde tutar ve teknik sürtünme olmadan her bağlantıda sana yol gösterir.</p>
         </div>
         <div class="flow-shell flow-shell-v4 reveal">
-          <div class="flow-brand-mark" aria-hidden="true">N</div>
+          <div class="flow-brand-mark" aria-hidden="true"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-fbm" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-fbm" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-fbm)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-fbm)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></div>
           <div class="flow-rail" aria-hidden="true"><span></span><span></span><span></span></div>
           <div class="flow">
             <article class="flow-step flow-step-v4">
@@ -5110,7 +5233,20 @@
               <div class="flow-visual flow-visual-radar" aria-hidden="true">
                 <span class="radar-ring radar-ring-a"></span><span class="radar-ring radar-ring-b"></span><span class="radar-ring radar-ring-c"></span>
                 <span class="radar-sweep"></span>
-                <span class="radar-core"><span class="brand-logo brand-logo-mini"><span>N</span></span></span>
+                <span class="radar-core"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-rcore" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-rcore" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-rcore)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-rcore)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
                 <i class="radar-dot dot-one"></i><i class="radar-dot dot-two"></i><i class="radar-dot dot-three"></i>
               </div>
               <div class="flow-copy-v4"><h3>Bulut olmadan keşfet</h3><p>NEXUS uyumlu cihazları yerel ağında haritalar ve her bağlantıdan önce izin ister.</p></div>
@@ -5119,7 +5255,20 @@
             <article class="flow-step flow-step-v4">
               <div class="flow-topline"><span class="flow-number">03</span><span class="flow-label">Birleşik zekâ</span></div>
               <div class="flow-visual flow-visual-live" aria-hidden="true">
-                <div class="live-core"><span>N</span></div>
+                <div class="live-core"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-lcore" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-lcore" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-lcore)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-lcore)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></div>
                 <span class="live-node live-node-a"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.5-1.5 2.5h-4c0-1-.6-1.9-1.5-2.5Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
                 <span class="live-node live-node-b"><svg viewBox="0 0 24 24"><path d="M12 3v9m0 0a5 5 0 1 0 4 2M12 12a5 5 0 0 1 4 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="live-node live-node-c"><svg viewBox="0 0 24 24"><path d="m12 3 8 4v5c0 5-3.4 8.4-8 9-4.6-.6-8-4-8-9V7l8-4Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
@@ -5146,7 +5295,7 @@
         <div class="integrations-track" aria-label="Supported integrations">
           <div class="integration-pill" style="--brand:#F5F5F7">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EApple%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.152%206.896c-.948%200-2.415-1.078-3.96-1.04-2.04.027-3.91%201.183-4.961%203.014-2.117%203.675-.546%209.103%201.519%2012.09%201.013%201.454%202.208%203.09%203.792%203.039%201.52-.065%202.09-.987%203.935-.987%201.831%200%202.35.987%203.96.948%201.637-.026%202.676-1.48%203.676-2.948%201.156-1.688%201.636-3.325%201.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04%202.48-4.494%202.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675%201.09-4.61%201.09zM15.53%203.83c.843-1.012%201.4-2.427%201.245-3.83-1.207.052-2.662.805-3.532%201.818-.78.896-1.454%202.338-1.273%203.714%201.338.104%202.715-.688%203.559-1.701%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="APPLE" />
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EApple%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.152%206.896c-.948%200-2.415-1.078-3.96-1.04-2.04.027-3.91%201.183-4.961%203.014-2.117%203.675-.546%209.103%201.519%2012.09%201.013%201.454%202.208%203.09%203.792%203.039%201.52-.065%202.09-.987%203.935-.987%201.831%200%202.35.987%203.96.948%201.637-.026%202.676-1.48%203.676-2.948%201.156-1.688%201.636-3.325%201.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04%202.48-4.494%202.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675%201.09-4.61%201.09zM15.53%203.83c.843-1.012%201.4-2.427%201.245-3.83-1.207.052-2.662.805-3.532%201.818-.78.896-1.454%202.338-1.273%203.714%201.338.104%202.715-.688%203.559-1.701%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="APPLE" data-dark-invert="1" />
               <span class="brand-fallback" hidden>APPLE</span>
             </span>
             <span class="integration-name"><strong>Apple Home</strong><small>Yerel köprü</small></span>
@@ -5186,7 +5335,7 @@
           </div>
           <div class="integration-pill" style="--brand:#F5F5F5">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESonos%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.988%2012.36l-2.813-2.634v4.429h.837V11.7l2.813%202.633V9.905h-.837zM6.464%209.665A2.3%202.3%200%200%200%204.13%2012c0%201.257%201.077%202.334%202.334%202.334A2.3%202.3%200%200%200%208.798%2012a2.3%202.3%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%204.968%2012c0-.838.658-1.496%201.496-1.496S7.96%2011.162%207.96%2012s-.658%201.496-1.496%201.496M2.694%2012c-.24-.18-.54-.3-.958-.419-.838-.24-.838-.479-.838-.598%200-.24.299-.48.718-.48.36%200%20.658.18.778.24l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.419%200-.838.12-1.137.359-.3.24-.479.598-.479.958s.18.718.479.957c.24.18.538.3.957.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.359%200-.658-.18-.778-.239l-.06-.06-.658.479.06.06s.538.598%201.436.598c.42%200%20.838-.12%201.137-.359.3-.24.48-.598.48-.957%200-.36-.18-.659-.48-.958m14.843-2.334A2.3%202.3%200%200%200%2015.202%2012a2.337%202.337%200%200%200%202.334%202.334A2.3%202.3%200%200%200%2019.87%2012a2.337%202.337%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%2016.04%2012c0-.838.658-1.496%201.496-1.496s1.496.658%201.496%201.496-.718%201.496-1.496%201.496m3.77-1.556c.24.18.54.3.958.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.36%200-.658-.18-.778-.239h-.06l-.658.479.06.06s.538.598%201.436.598c.419%200%20.838-.12%201.137-.359s.479-.598.479-.958-.18-.718-.479-.957c-.24-.18-.538-.3-.957-.42-.838-.239-.838-.478-.838-.598%200-.239.299-.478.718-.478.359%200%20.658.18.778.239l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.42%200-.838.12-1.137.359-.3.24-.48.598-.48.957-.059.36.12.659.48.898%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SONOS" />
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESonos%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.988%2012.36l-2.813-2.634v4.429h.837V11.7l2.813%202.633V9.905h-.837zM6.464%209.665A2.3%202.3%200%200%200%204.13%2012c0%201.257%201.077%202.334%202.334%202.334A2.3%202.3%200%200%200%208.798%2012a2.3%202.3%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%204.968%2012c0-.838.658-1.496%201.496-1.496S7.96%2011.162%207.96%2012s-.658%201.496-1.496%201.496M2.694%2012c-.24-.18-.54-.3-.958-.419-.838-.24-.838-.479-.838-.598%200-.24.299-.48.718-.48.36%200%20.658.18.778.24l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.419%200-.838.12-1.137.359-.3.24-.479.598-.479.958s.18.718.479.957c.24.18.538.3.957.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.359%200-.658-.18-.778-.239l-.06-.06-.658.479.06.06s.538.598%201.436.598c.42%200%20.838-.12%201.137-.359.3-.24.48-.598.48-.957%200-.36-.18-.659-.48-.958m14.843-2.334A2.3%202.3%200%200%200%2015.202%2012a2.337%202.337%200%200%200%202.334%202.334A2.3%202.3%200%200%200%2019.87%2012a2.337%202.337%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%2016.04%2012c0-.838.658-1.496%201.496-1.496s1.496.658%201.496%201.496-.718%201.496-1.496%201.496m3.77-1.556c.24.18.54.3.958.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.36%200-.658-.18-.778-.239h-.06l-.658.479.06.06s.538.598%201.436.598c.419%200%20.838-.12%201.137-.359s.479-.598.479-.958-.18-.718-.479-.957c-.24-.18-.538-.3-.957-.42-.838-.239-.838-.478-.838-.598%200-.239.299-.478.718-.478.359%200%20.658.18.778.239l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.42%200-.838.12-1.137.359-.3.24-.48.598-.48.957-.059.36.12.659.48.898%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SONOS" data-dark-invert="1" />
               <span class="brand-fallback" hidden>SONOS</span>
             </span>
             <span class="integration-name"><strong>Sonos</strong><small>Tüm ev ses sistemi</small></span>
@@ -5226,7 +5375,7 @@
           </div>
           <div class="integration-pill" style="--brand:#F5F5F7">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EApple%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.152%206.896c-.948%200-2.415-1.078-3.96-1.04-2.04.027-3.91%201.183-4.961%203.014-2.117%203.675-.546%209.103%201.519%2012.09%201.013%201.454%202.208%203.09%203.792%203.039%201.52-.065%202.09-.987%203.935-.987%201.831%200%202.35.987%203.96.948%201.637-.026%202.676-1.48%203.676-2.948%201.156-1.688%201.636-3.325%201.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04%202.48-4.494%202.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675%201.09-4.61%201.09zM15.53%203.83c.843-1.012%201.4-2.427%201.245-3.83-1.207.052-2.662.805-3.532%201.818-.78.896-1.454%202.338-1.273%203.714%201.338.104%202.715-.688%203.559-1.701%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="APPLE" />
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EApple%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.152%206.896c-.948%200-2.415-1.078-3.96-1.04-2.04.027-3.91%201.183-4.961%203.014-2.117%203.675-.546%209.103%201.519%2012.09%201.013%201.454%202.208%203.09%203.792%203.039%201.52-.065%202.09-.987%203.935-.987%201.831%200%202.35.987%203.96.948%201.637-.026%202.676-1.48%203.676-2.948%201.156-1.688%201.636-3.325%201.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04%202.48-4.494%202.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675%201.09-4.61%201.09zM15.53%203.83c.843-1.012%201.4-2.427%201.245-3.83-1.207.052-2.662.805-3.532%201.818-.78.896-1.454%202.338-1.273%203.714%201.338.104%202.715-.688%203.559-1.701%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="APPLE" data-dark-invert="1" />
               <span class="brand-fallback" hidden>APPLE</span>
             </span>
             <span class="integration-name"><strong>Apple Home</strong><small>Yerel köprü</small></span>
@@ -5266,7 +5415,7 @@
           </div>
           <div class="integration-pill" style="--brand:#F5F5F5">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESonos%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.988%2012.36l-2.813-2.634v4.429h.837V11.7l2.813%202.633V9.905h-.837zM6.464%209.665A2.3%202.3%200%200%200%204.13%2012c0%201.257%201.077%202.334%202.334%202.334A2.3%202.3%200%200%200%208.798%2012a2.3%202.3%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%204.968%2012c0-.838.658-1.496%201.496-1.496S7.96%2011.162%207.96%2012s-.658%201.496-1.496%201.496M2.694%2012c-.24-.18-.54-.3-.958-.419-.838-.24-.838-.479-.838-.598%200-.24.299-.48.718-.48.36%200%20.658.18.778.24l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.419%200-.838.12-1.137.359-.3.24-.479.598-.479.958s.18.718.479.957c.24.18.538.3.957.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.359%200-.658-.18-.778-.239l-.06-.06-.658.479.06.06s.538.598%201.436.598c.42%200%20.838-.12%201.137-.359.3-.24.48-.598.48-.957%200-.36-.18-.659-.48-.958m14.843-2.334A2.3%202.3%200%200%200%2015.202%2012a2.337%202.337%200%200%200%202.334%202.334A2.3%202.3%200%200%200%2019.87%2012a2.337%202.337%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%2016.04%2012c0-.838.658-1.496%201.496-1.496s1.496.658%201.496%201.496-.718%201.496-1.496%201.496m3.77-1.556c.24.18.54.3.958.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.36%200-.658-.18-.778-.239h-.06l-.658.479.06.06s.538.598%201.436.598c.419%200%20.838-.12%201.137-.359s.479-.598.479-.958-.18-.718-.479-.957c-.24-.18-.538-.3-.957-.42-.838-.239-.838-.478-.838-.598%200-.239.299-.478.718-.478.359%200%20.658.18.778.239l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.42%200-.838.12-1.137.359-.3.24-.48.598-.48.957-.059.36.12.659.48.898%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SONOS" />
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESonos%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.988%2012.36l-2.813-2.634v4.429h.837V11.7l2.813%202.633V9.905h-.837zM6.464%209.665A2.3%202.3%200%200%200%204.13%2012c0%201.257%201.077%202.334%202.334%202.334A2.3%202.3%200%200%200%208.798%2012a2.3%202.3%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%204.968%2012c0-.838.658-1.496%201.496-1.496S7.96%2011.162%207.96%2012s-.658%201.496-1.496%201.496M2.694%2012c-.24-.18-.54-.3-.958-.419-.838-.24-.838-.479-.838-.598%200-.24.299-.48.718-.48.36%200%20.658.18.778.24l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.419%200-.838.12-1.137.359-.3.24-.479.598-.479.958s.18.718.479.957c.24.18.538.3.957.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.359%200-.658-.18-.778-.239l-.06-.06-.658.479.06.06s.538.598%201.436.598c.42%200%20.838-.12%201.137-.359.3-.24.48-.598.48-.957%200-.36-.18-.659-.48-.958m14.843-2.334A2.3%202.3%200%200%200%2015.202%2012a2.337%202.337%200%200%200%202.334%202.334A2.3%202.3%200%200%200%2019.87%2012a2.337%202.337%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%2016.04%2012c0-.838.658-1.496%201.496-1.496s1.496.658%201.496%201.496-.718%201.496-1.496%201.496m3.77-1.556c.24.18.54.3.958.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.36%200-.658-.18-.778-.239h-.06l-.658.479.06.06s.538.598%201.436.598c.419%200%20.838-.12%201.137-.359s.479-.598.479-.958-.18-.718-.479-.957c-.24-.18-.538-.3-.957-.42-.838-.239-.838-.478-.838-.598%200-.239.299-.478.718-.478.359%200%20.658.18.778.239l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.42%200-.838.12-1.137.359-.3.24-.48.598-.48.957-.059.36.12.659.48.898%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SONOS" data-dark-invert="1" />
               <span class="brand-fallback" hidden>SONOS</span>
             </span>
             <span class="integration-name"><strong>Sonos</strong><small>Tüm ev ses sistemi</small></span>
@@ -5427,22 +5576,6 @@
         </div>
 
         <div class="downloads-grid">
-          <article class="download-card download-windows reveal" data-platform="windows">
-            <div class="download-card-grid" aria-hidden="true"></div>
-            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo" viewBox="0 0 24 24"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 .6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg></div>
-            <div class="platform-top">
-              <div class="platform-icon platform-icon-windows">
-                <svg class="os-logo" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 0.6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg>
-              </div>
-              <span class="platform-kicker">Masaüstü · x64</span>
-            </div>
-            <h3>Windows</h3>
-            <p>Windows 10 ve 11 için sorunsuz arka plan çalışmasıyla optimize edildi.</p>
-            <span class="version">Sürüm 3.14.2 · x64</span>
-            <div class="platform-specs"><span>Windows 10+</span><span>Otomatik güncelleme</span><span>Yerel servis</span></div>
-            <a class="button button-secondary download-button" href="/downloads/NEXUS-Setup-3.14.2.exe">Windows için indir</a>
-          </article>
-
           <article class="download-card download-macos reveal" data-platform="macos">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
@@ -5456,7 +5589,23 @@
             <p>Apple Silicon ve Intel işlemciler için özel olarak derlendi.</p>
             <span class="version">Sürüm 3.14.1 · Universal</span>
             <div class="platform-specs"><span>Apple Silicon</span><span>Intel</span><span>Yerel menü çubuğu</span></div>
-            <a class="button button-secondary download-button" href="/downloads/NEXUS-3.14.1.dmg">macOS için indir</a>
+            <a class="button button-secondary download-button" href="/downloads/NEXUS-3.14.1-v2.dmg">macOS için indir</a>
+          </article>
+
+          <article class="download-card download-windows reveal" data-platform="windows">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo" viewBox="0 0 24 24"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 .6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-windows">
+                <svg class="os-logo" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 0.6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg>
+              </div>
+              <span class="platform-kicker">Masaüstü · x64</span>
+            </div>
+            <h3>Windows</h3>
+            <p>Windows 10 ve 11 için sorunsuz arka plan çalışmasıyla optimize edildi.</p>
+            <span class="version">Sürüm 3.14.2 · x64</span>
+            <div class="platform-specs"><span>Windows 10+</span><span>Otomatik güncelleme</span><span>Yerel servis</span></div>
+            <a class="button button-secondary download-button" href="/downloads/NEXUS-Setup-3.14.2-v2.exe">Windows için indir</a>
           </article>
 
           <article class="download-card download-linux reveal" data-platform="linux">
@@ -5486,7 +5635,7 @@
             <p>Tüm popüler dağıtımlarla uyumlu, hafif ve hızlı.</p>
             <span class="version">Sürüm 3.13.8 · AppImage</span>
             <div class="platform-specs"><span>AppImage</span><span>Debian</span><span>Fedora</span></div>
-            <a class="button button-secondary download-button" href="/downloads/NEXUS-3.13.8.AppImage">Linux için indir</a>
+            <a class="button button-secondary download-button" href="/downloads/NEXUS-3.13.8-v2.AppImage">Linux için indir</a>
           </article>
         </div>
 
@@ -5517,7 +5666,6 @@
               <svg viewBox="0 0 29 29" role="img"><rect width="29" height="29" rx="2" fill="#fff"/><g fill="#09090b"><path d="M2 2h7v7H2V2Zm2 2v3h3V4H4ZM20 2h7v7h-7V2Zm2 2v3h3V4h-3ZM2 20h7v7H2v-7Zm2 2v3h3v-3H4Z" fill-rule="evenodd"/><path d="M11 2h3v2h-3zM16 3h2v4h-2zM10 6h4v3h-4zM18 7h4v2h-4zM24 10h3v3h-3zM2 11h4v2H2zM7 10h2v5H7zM10 11h3v2h-3zM14 10h2v4h-2zM17 12h5v2h-5zM3 15h3v3H3zM9 16h4v2H9zM15 15h3v3h-3zM20 16h2v4h-2zM23 15h4v2h-4zM10 20h2v4h-2zM13 19h4v2h-4zM18 21h4v2h-4zM24 19h3v4h-3zM11 25h4v2h-4zM17 24h2v3h-2zM21 25h6v2h-6z"/></g></svg>
             </div><span>Android için tara</span></div>
           </div>
-          <div class="mobile-brand-orbit" aria-hidden="true"><span>N</span><i></i><i></i><i></i></div>
         </div>
       </div>
     </section>
@@ -5539,10 +5687,10 @@
             <small>Masaüstü ve mobil NEXUS deneyimleri genelinde</small>
           </div>
           <div class="review-avatar-stack" aria-hidden="true">
-            <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22SJ%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23818cf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ESJ%3C%2Ftext%3E%3C%2Fsvg%3E" alt="">
-            <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22DC%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2338bdf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23818cf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EDC%3C%2Ftext%3E%3C%2Fsvg%3E" alt="">
-            <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22ET%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23a78bfa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EET%3C%2Ftext%3E%3C%2Fsvg%3E" alt="">
-            <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22MA%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2360a5fa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EMA%3C%2Ftext%3E%3C%2Fsvg%3E" alt="">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy" decoding="async">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy" decoding="async">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy" decoding="async">
+            <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy" decoding="async">
             <span>+12K</span>
           </div>
         </div>
@@ -5555,7 +5703,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
       <blockquote>NEXUS bir akşamda dört ayrı ev uygulamasının yerini aldı. Ses kontrolü anında hissettiriyor ve internet gitse bile her rutin çalışmaya devam ediyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22SJ%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23818cf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ESJ%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Sarah Jenkins" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Portrait of Sarah Jenkins" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Sarah Jenkins</strong><span>Erken kullanıcı · Birleşik Krallık</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5564,7 +5712,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
       <blockquote>Farkı yaratan yerel yanıt süresi. Işıklar, sahneler ve kilitler elimi mikrofondan indirmeden tepki veriyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22DC%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2338bdf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23818cf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EDC%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of David Chen" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Portrait of David Chen" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>David Chen</strong><span>Yazılım mühendisi · Kanada</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5573,7 +5721,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
       <blockquote>Matter ve Zigbee genelinde bir sabah rutinini hiç yapılandırma dosyasına dokunmadan kurdum. Teknik hissettirmeden güçlü.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22ET%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23a78bfa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EET%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Emma Thompson" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Portrait of Emma Thompson" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Emma Thompson</strong><span>Akıllı ev meraklısı · Avustralya</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5582,7 +5730,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
       <blockquote>Arayüz karmaşık bir evi sonunda sakin hissettiriyor. Her cihazın bağlamı var ve etkinlik geçmişi gerçekten işe yarıyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22MA%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2360a5fa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EMA%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Mateo Alvarez" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Portrait of Mateo Alvarez" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Mateo Alvarez</strong><span>Ürün tasarımcısı · İspanya</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5591,7 +5739,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
       <blockquote>NEXUS&#39;u denememin sebebi yerel öncelikli olmasıydı. Kullandığım en hızlı kontrolcü olması ise sürpriz oldu.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22AR%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%238b7bff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EAR%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Aisha Rahman" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Portrait of Aisha Rahman" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Aisha Rahman</strong><span>Gizlilik savunucusu · BAE</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5600,7 +5748,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
       <blockquote>NEXUS bir akşamda dört ayrı ev uygulamasının yerini aldı. Ses kontrolü anında hissettiriyor ve internet gitse bile her rutin çalışmaya devam ediyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22SJ%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23818cf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ESJ%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Sarah Jenkins</strong><span>Erken kullanıcı · Birleşik Krallık</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5609,7 +5757,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
       <blockquote>Farkı yaratan yerel yanıt süresi. Işıklar, sahneler ve kilitler elimi mikrofondan indirmeden tepki veriyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22DC%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2338bdf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23818cf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EDC%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>David Chen</strong><span>Yazılım mühendisi · Kanada</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5618,7 +5766,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
       <blockquote>Matter ve Zigbee genelinde bir sabah rutinini hiç yapılandırma dosyasına dokunmadan kurdum. Teknik hissettirmeden güçlü.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22ET%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23a78bfa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EET%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Emma Thompson</strong><span>Akıllı ev meraklısı · Avustralya</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5627,7 +5775,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
       <blockquote>Arayüz karmaşık bir evi sonunda sakin hissettiriyor. Her cihazın bağlamı var ve etkinlik geçmişi gerçekten işe yarıyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22MA%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2360a5fa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EMA%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Mateo Alvarez</strong><span>Ürün tasarımcısı · İspanya</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5636,7 +5784,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
       <blockquote>NEXUS&#39;u denememin sebebi yerel öncelikli olmasıydı. Kullandığım en hızlı kontrolcü olması ise sürpriz oldu.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22AR%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%238b7bff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338bdf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EAR%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Aisha Rahman</strong><span>Gizlilik savunucusu · BAE</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5648,7 +5796,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
       <blockquote>Yedek bir mini PC akıllı evimin en güvenilir parçası oldu. Kurulum temizdi, keşif isabetliydi ve kurtarma zahmetsiz.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22NW%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23818cf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ENW%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Noah Williams" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Portrait of Noah Williams" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Noah Williams</strong><span>Ev otomasyonu kurucusu · ABD</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5657,7 +5805,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
       <blockquote>Ailem gerçekten kullanıyor çünkü ses katmanı basit. Gelişmiş kontroller bende, diğer herkes sadece doğal konuşuyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22SM%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2338bdf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238b7bff%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ESM%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Sofia Martins" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Portrait of Sofia Martins" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Sofia Martins</strong><span>Kreatif direktör · Portekiz</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5666,7 +5814,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
       <blockquote>Cihaz keşfi ilk taramada neredeyse her şeyi buldu. Kalan entegrasyonlar saatler değil dakikalar içinde bağlandı.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22KS%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23a78bfa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23818cf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EKS%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Kenji Sato" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/86.jpg" alt="Portrait of Kenji Sato" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Kenji Sato</strong><span>Sistem mimarı · Japonya</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5675,7 +5823,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
       <blockquote>Denetim izi otomasyonu anlaşılır kılıyor. Neyin çalıştığını, neden çalıştığını ve hangi cihazın yanıt verdiğini veri dışarı gitmeden görebiliyorum.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22OB%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2360a5fa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238b7bff%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EOB%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Olivia Brooks" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Portrait of Olivia Brooks" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Olivia Brooks</strong><span>Araştırmacı · Almanya</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5684,7 +5832,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
       <blockquote>Uzaktan onaylar tam ihtiyacım olan şeydi. NEXUS evde yerel kalıyor ama uzaktayken aileye yine de yardım edebiliyorum.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22LM%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%238b7bff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ELM%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Portrait of Lucas Meyer" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/58.jpg" alt="Portrait of Lucas Meyer" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Lucas Meyer</strong><span>Ev yöneticisi · Hollanda</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5693,7 +5841,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
       <blockquote>Yedek bir mini PC akıllı evimin en güvenilir parçası oldu. Kurulum temizdi, keşif isabetliydi ve kurtarma zahmetsiz.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22NW%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23818cf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ENW%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Noah Williams</strong><span>Ev otomasyonu kurucusu · ABD</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5702,7 +5850,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
       <blockquote>Ailem gerçekten kullanıyor çünkü ses katmanı basit. Gelişmiş kontroller bende, diğer herkes sadece doğal konuşuyor.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22SM%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2338bdf8%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238b7bff%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ESM%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/26.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Sofia Martins</strong><span>Kreatif direktör · Portekiz</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5711,7 +5859,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
       <blockquote>Cihaz keşfi ilk taramada neredeyse her şeyi buldu. Kalan entegrasyonlar saatler değil dakikalar içinde bağlandı.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22KS%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23a78bfa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23818cf8%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EKS%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/86.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Kenji Sato</strong><span>Sistem mimarı · Japonya</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5720,7 +5868,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
       <blockquote>Denetim izi otomasyonu anlaşılır kılıyor. Neyin çalıştığını, neden çalıştığını ve hangi cihazın yanıt verdiğini veri dışarı gitmeden görebiliyorum.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22OB%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%2360a5fa%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238b7bff%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3EOB%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Olivia Brooks</strong><span>Araştırmacı · Almanya</span></span>
         <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5729,7 +5877,7 @@
       <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
       <blockquote>Uzaktan onaylar tam ihtiyacım olan şeydi. NEXUS evde yerel kalıyor ama uzaktayken aileye yine de yardım edebiliyorum.</blockquote>
       <div class="review-author">
-        <span class="review-author-photo"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20role%3D%22img%22%20aria-label%3D%22LM%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2212%22%20y1%3D%2210%22%20x2%3D%2284%22%20y2%3D%2286%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%238b7bff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2360a5fa%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22glow%22%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221%22%20gradientUnits%3D%22userSpaceOnUse%22%20gradientTransform%3D%22translate(30%2024)%20rotate(72)%20scale(64)%22%3E%3Cstop%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.38%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20width%3D%2296%22%20height%3D%2296%22%20rx%3D%2232%22%20fill%3D%22url(%23glow)%22%2F%3E%3Cpath%20d%3D%22M26%2067c5-12%2016-18%2022-18s17%206%2022%2018%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%225.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2239%22%20r%3D%2215%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.18%22%2F%3E%3Ctext%20x%3D%2248%22%20y%3D%2253%22%20text-anchor%3D%22middle%22%20font-family%3D%22Space%20Grotesk%2C%20Inter%2C%20Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.04em%22%20fill%3D%22%23fff%22%3ELM%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async"></span>
+        <span class="review-author-photo"><img src="https://randomuser.me/api/portraits/men/58.jpg" alt="" loading="lazy" decoding="async"></span>
         <span class="review-author-copy"><strong>Lucas Meyer</strong><span>Ev yöneticisi · Hollanda</span></span>
         <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
       </div>
@@ -5749,22 +5897,22 @@
           <p class="section-copy">NEXUS; fiyatlandırma, gizlilik, uyumluluk ve evinin nasıl çalıştığı konusunda şeffaf kalmak üzere tasarlandı.</p>
         </div>
         <div class="faq-list reveal">
-          <details>
-            <summary>NEXUS tamamen ücretsiz mi?</summary>
+          <div class="faq-card">
+            <div class="faq-question">NEXUS tamamen ücretsiz mi?</div>
             <div class="faq-answer">Evet. Çekirdek işletim sistemi ve yerel kontrol özellikleri tamamen ücretsizdir. Premium planlar gelişmiş yapay zekâ, güvenli uzaktan erişim ve ev yönetimi araçları ekler.</div>
-          </details>
-          <details>
-            <summary>Hangi cihazları destekliyor?</summary>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">Hangi cihazları destekliyor?</div>
             <div class="faq-answer">NEXUS; Matter, Zigbee, Z-Wave, Wi-Fi cihazlarını ve 500&#39;den fazla API tabanlı ekosistemi destekler.</div>
-          </details>
-          <details>
-            <summary>Bulut bağlantısı olmadan çalışır mı?</summary>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">Bulut bağlantısı olmadan çalışır mı?</div>
             <div class="faq-answer">Evet. NEXUS cihazlarla yerel ağın üzerinden iletişim kurar; internet kesildiğinde temel kontroller ve otomasyonlar çalışmaya devam eder.</div>
-          </details>
-          <details>
-            <summary>Uzaktan erişim nasıl sağlanıyor?</summary>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">Uzaktan erişim nasıl sağlanıyor?</div>
             <div class="faq-answer">Premium kullanıcılar güvenli uçtan uca şifreli bir tünel üzerinden bağlanabilir. Kendi VPN yapılandırmanı da kullanabilirsin.</div>
-          </details>
+          </div>
         </div>
       </div>
     </section>

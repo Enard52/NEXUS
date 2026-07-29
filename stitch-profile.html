@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Profil</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter for a clean sans-serif look -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons for high-quality stroke icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    /* Fixed height for the main content area to allow scrolling if needed, minus bottom nav */
+    .content-area {
+      min-height: calc(100vh - 80px);
+      padding-bottom: 20px;
+    }
+    /* Custom shadow for the white container */
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gradient-custom text-slate-900">
+<!-- BEGIN: MainContent -->
+<main class="content-area px-6 pt-12">
+<!-- BEGIN: HeaderSection (Kullanıcı Bilgileri sayfasına gider) -->
+<a class="flex items-center justify-between mb-8" data-purpose="user-header" href="stitch-user-info.html">
+<div class="flex items-center gap-4">
+<!-- Profile Picture Container -->
+<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img alt="Profile Picture" class="w-full h-full object-cover" id="profile-avatar" src="https://randomuser.me/api/portraits/men/75.jpg"/>
+</div>
+<!-- User Name -->
+<h1 class="text-2xl font-bold tracking-tight" id="profile-name" style="font-size: 28px; font-weight: 800;">Deniz Yılmaz</h1>
+</div>
+<!-- Chevron Right -->
+<i class="w-6 h-6 text-slate-400" data-lucide="chevron-right"></i>
+</a>
+<!-- END: HeaderSection -->
+<!-- BEGIN: MenuList -->
+<section class="bg-white rounded-[32px] menu-container-shadow p-5" data-purpose="menu-options">
+<ul class="divide-y divide-slate-50">
+<!-- Ev Yönetimi -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-household.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
+<span class="text-lg font-medium">Ev Yönetimi</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+<!-- Mesaj Merkezi -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-messages.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="message-square"></i>
+<span class="text-lg font-medium">Mesaj Merkezi</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+<!-- SSS & Geribildirim -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-feedback.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="help-circle"></i>
+<span class="text-lg font-medium">SSS &amp; Geribildirim</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+<!-- Üçüncü Taraf Cihaz ve Hizmetler -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-services.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="share-2"></i>
+<span class="text-lg font-medium">Üçüncü Taraf Cihaz ve Hizmetler</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+<!-- CarPlay -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-carplay.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="car-front"></i>
+<span class="text-lg font-medium">CarPlay</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+<!-- HomeKit Bilgileri -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-homekit.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="router"></i>
+<span class="text-lg font-medium">HomeKit Bilgileri</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+<!-- NEXUS AI Web Sürümü -->
+<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="stitch-web.html">
+<div class="flex items-center gap-4">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="bot"></i>
+<span class="text-lg font-medium">NEXUS AI Web Sürümü</span>
+</div>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a></li>
+</ul>
+</section>
+<!-- END: MenuList -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: BottomNavigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
+<!-- Nav Item: Ev -->
+<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
+<span class="text-xs font-medium">Ev</span>
+</a>
+<!-- Nav Item: Akıllı -->
+<a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-slate-400">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
+<span class="text-xs font-medium">Akıllı</span>
+</a>
+<!-- Nav Item: Keşfet -->
+<a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
+<span class="absolute top-0 right-1 w-2.5 h-2.5 bg-[#FF3B5C] border-2 border-white rounded-full"></span>
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
+<span class="text-xs font-medium">Keşfet</span>
+</a>
+<!-- Nav Item: Profil (Active) -->
+<a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-[#7C5CFF]">
+<i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
+<span class="text-xs font-bold">Profil</span>
+</a>
+</nav>
+<!-- END: BottomNavigation -->
+<!-- BEGIN: IconInitialization -->
+<script data-purpose="icon-renderer">
+    // Initialize Lucide icons
+    lucide.createIcons();
+    // Kullanıcı Bilgileri sayfasında yapılan ad/fotoğraf değişiklikleriyle senkron
+    (function () {
+      var name = localStorage.getItem('nexusUserName');
+      if (name) document.getElementById('profile-name').textContent = name;
+      var avatar = localStorage.getItem('nexusAvatar');
+      if (avatar) document.getElementById('profile-avatar').src = avatar;
+    })();
+  </script>
+<!-- END: IconInitialization -->
+</body></html>

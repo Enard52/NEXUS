@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Menü</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts for modern sans-serif look -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f9f9fb;
+    }
+  </style>
+<style data-purpose="custom-colors-gradients">
+    /* NEXUS brand gradients (purple -> cyan) */
+    .gradient-progress {
+      background: linear-gradient(90deg, #7C5CFF 0%, #22D3EE 100%);
+    }
+    .gradient-button {
+      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+    }
+    .soft-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'text-primary': '#111827',
+            'text-secondary': '#6b7280',
+            'bg-main': '#f9f9fb',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-bg-main min-h-screen">
+<!-- BEGIN: MainContainer -->
+<main class="max-w-md mx-auto px-6 flex flex-col gap-8 pt-12 pb-8">
+<!-- BEGIN: TopNavigation -->
+<nav class="flex items-center mb-2">
+<a href="stitch-chat.html" aria-label="Geri" class="p-2 -ml-2" id="back-button">
+<svg class="h-8 w-8 text-black" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</nav>
+<!-- END: TopNavigation -->
+<!-- BEGIN: BenefitPointsCard -->
+<section class="bg-white rounded-[2rem] p-6 soft-shadow border border-gray-50" data-purpose="nexus-points-card">
+<div class="flex justify-between items-center gap-3 mb-6">
+<div class="min-w-0">
+<h1 class="text-xl text-text-primary mb-1 font-extrabold leading-tight">NEXUS AI Puanları</h1>
+<p class="text-text-secondary font-medium">Günlük sıfırlama 30/30</p>
+</div>
+<a href="stitch-plus.html" class="gradient-button text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-md active:scale-95 transition-transform flex-shrink-0 whitespace-nowrap">
+          Daha fazla al
+        </a>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-gray-100 rounded-full overflow-hidden h-4">
+<div class="gradient-progress h-full w-full rounded-full"></div>
+</div>
+</section>
+<!-- END: BenefitPointsCard -->
+<!-- BEGIN: ChatHistorySection -->
+<section data-purpose="chat-history">
+<h2 class="text-xl text-text-primary mb-4 px-1 font-extrabold mt-4">Sohbet Geçmişi</h2>
+<div class="flex flex-col gap-3">
+<!-- Chat Item 1 -->
+<a href="stitch-chat.html" class="block bg-white p-5 rounded-2xl soft-shadow border border-gray-50 active:bg-gray-50 transition-colors">
+<p class="text-lg font-medium text-text-primary">Cihazım görünmüyor</p>
+</a>
+<!-- Chat Item 2 -->
+<a href="stitch-chat.html" class="block bg-white p-5 rounded-2xl soft-shadow border border-gray-50 active:bg-gray-50 transition-colors">
+<p class="text-lg font-medium text-text-primary">Merhaba</p>
+</a>
+</div>
+</section>
+<!-- END: ChatHistorySection -->
+<!-- BEGIN: OtherSettingsSection -->
+<section data-purpose="other-settings">
+<h2 class="text-xl text-text-primary mb-4 px-1 font-extrabold mt-4">Diğer Ayarlar</h2>
+<div class="flex flex-col gap-3">
+<!-- Setting Item 1 -->
+<a href="stitch-settings.html" class="bg-white p-5 rounded-2xl soft-shadow border border-gray-50 flex justify-between items-center cursor-pointer active:bg-gray-50 transition-colors">
+<span class="text-lg font-medium text-text-primary">NEXUS AI Görünüm Modu</span>
+<svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<!-- Setting Item 2 -->
+<a class="bg-white p-5 rounded-2xl soft-shadow border border-gray-50 flex justify-between items-center cursor-pointer active:bg-gray-50 transition-colors" href="stitch-feedback.html">
+<span class="text-lg font-medium text-text-primary">Geri Bildirim ve Öneriler</span>
+<svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</section>
+<!-- END: OtherSettingsSection -->
+</main>
+<!-- END: MainContainer -->
+</body></html>

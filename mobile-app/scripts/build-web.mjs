@@ -1,46 +1,75 @@
 /**
  * NEXUS Mobile App — web bundle builder.
  *
- * Capacitor serves the contents of `www/` from a `https://localhost` origin
- * inside the native WebView. The real application is the shared React SPA in
- * `packages/client`; its mobile build (`vite build --mode mobile`, relative
- * base, bearer-token transport) is fully self-contained and talks to the
- * user's NEXUS core over HTTP.
+ * Capacitor, `www/` klasörünün içeriğini native WebView içinde
+ * `https://localhost` originiyle sunar. Uygulamanın mobil arayüzü artık
+ * repo kökündeki yeni NEXUS tasarım sistemi sayfalarıdır (stitch-*.html):
+ * Tailwind CDN + Lucide + Inter ile çalışan, birbirine bağlı, tamamen
+ * Türkçe statik sayfalar. Aralarındaki durum paylaşımı localStorage ile
+ * yapılır (nexusUserName, nexusHomeLocation, nexusDndState, ...).
  *
- * This script builds that bundle and copies it into `www/` so `cap sync`
- * ships the exact same code that the desktop shell and web /app run.
+ * Bu script:
+ *   1. www/ klasörünü temizler,
+ *   2. tüm stitch-*.html sayfalarını kopyalar,
+ *   3. Kullanım Koşulları / Gizlilik gibi bağlanan hukuk sayfalarını kopyalar,
+ *   4. Capacitor'ın giriş noktası olan index.html'i (stitch-home yönlendirmesi)
+ *      üretir.
  *
- * Source (single source of truth for the app):
- *   <repo>/packages/client/dist-mobile/   (built by @nexus/client build:mobile)
- *
- * Output:
- *   <mobile-app>/www/*
+ * Sonrasında `npx cap sync` bu paketi android/ ve ios/ shell'lerine taşır.
  */
-import { execSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = join(__dirname, "..");
 const REPO_ROOT = join(APP_ROOT, "..");
-const CLIENT_DIR = join(REPO_ROOT, "packages", "client");
-const SRC_BUNDLE = join(CLIENT_DIR, "dist-mobile");
 const OUT_DIR = join(APP_ROOT, "www");
 
-// 1. Build the shared React client in mobile mode (relative base, bearer auth).
-console.log("building @nexus/client (mobile mode)…");
-execSync("pnpm --filter @nexus/client build:mobile", { cwd: REPO_ROOT, stdio: "inherit" });
-
-if (!existsSync(join(SRC_BUNDLE, "index.html"))) {
-  throw new Error(`Client build did not produce ${SRC_BUNDLE}/index.html`);
-}
-
-// 2. Start from a clean www/ so stale files never leak into the bundle.
+// 1. Temiz www/ ile başla — eski React bundle'ından kalıntı sızmasın.
 rmSync(OUT_DIR, { recursive: true, force: true });
 mkdirSync(OUT_DIR, { recursive: true });
-cpSync(SRC_BUNDLE, OUT_DIR, { recursive: true });
+
+// 2. Tüm NEXUS tasarım sayfalarını kopyala.
+const pages = readdirSync(REPO_ROOT).filter(
+  (f) => f.startsWith("stitch-") && f.endsWith(".html"),
+);
+if (pages.length === 0) {
+  throw new Error(`Repo kökünde stitch-*.html sayfası bulunamadı: ${REPO_ROOT}`);
+}
+for (const page of pages) {
+  copyFileSync(join(REPO_ROOT, page), join(OUT_DIR, page));
+}
+
+// 3. Sayfalardan bağlanan statik hukuk sayfaları (stitch-plus -> public/terms.html).
+const LEGAL_FILES = ["terms.html", "privacy.html"];
+const PUBLIC_SRC = join(REPO_ROOT, "public");
+const PUBLIC_OUT = join(OUT_DIR, "public");
+mkdirSync(PUBLIC_OUT, { recursive: true });
+for (const file of LEGAL_FILES) {
+  const src = join(PUBLIC_SRC, file);
+  if (existsSync(src)) copyFileSync(src, join(PUBLIC_OUT, file));
+}
+
+// 4. Capacitor giriş noktası: index.html -> stitch-home.html yönlendirmesi.
+writeFileSync(
+  join(OUT_DIR, "index.html"),
+  `<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>NEXUS</title>
+<meta http-equiv="refresh" content="0; url=stitch-home.html"/>
+<style>body{margin:0;background:#F2F4F9;}</style>
+</head>
+<body>
+<script>location.replace("stitch-home.html");</script>
+</body>
+</html>
+`,
+);
 
 const entries = readdirSync(OUT_DIR);
-console.log(`copied ${entries.length} entries -> www/ (${entries.join(", ")})`);
+console.log(`copied ${pages.length} pages + index.html -> www/ (${entries.length} entries)`);
 console.log("\nBundle ready in mobile-app/www/. Run `npx cap sync` next.");

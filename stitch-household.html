@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Ev Yönetimi</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">Ev Yönetimi</h1>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pt-4 pb-10">
+<!-- Homes List -->
+<section class="space-y-4" data-purpose="homes-list" id="homes-list">
+<!-- Home card: Evim -->
+<article class="bg-white rounded-3xl menu-container-shadow overflow-hidden">
+<button class="w-full flex items-center justify-between p-5 active:bg-slate-50" onclick="toggleHome(this)">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white">
+<i class="w-6 h-6" data-lucide="home"></i>
+</div>
+<div class="text-left">
+<h2 class="text-lg font-bold leading-tight">Evim</h2>
+<p class="text-sm text-slate-400 font-medium">2 oda · 1 üye</p>
+</div>
+</div>
+<i class="w-5 h-5 text-slate-300 transition-transform" data-lucide="chevron-down"></i>
+</button>
+<!-- Expandable details -->
+<div class="hidden border-t border-slate-50 px-5 py-4 space-y-3" data-purpose="home-details">
+<div class="flex items-center justify-between">
+<span class="text-slate-500 font-medium">Odalar</span>
+<span class="font-semibold">Oturma Odası, Yatak Odası</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-slate-500 font-medium">Üyeler</span>
+<span class="font-semibold">Deniz Yılmaz <span class="text-[#7C5CFF] text-sm">(Sahip)</span></span>
+</div>
+</div>
+</article>
+</section>
+<!-- Actions -->
+<section class="mt-8 space-y-3" data-purpose="home-actions">
+<button class="w-full bg-[#7C5CFF] text-white rounded-2xl py-4 font-bold text-lg shadow-md active:scale-[0.98] transition-transform" onclick="openSheet('Yeni Ev Oluştur')">Yeni Ev Oluştur</button>
+<button class="w-full bg-white text-slate-800 border border-slate-200 rounded-2xl py-4 font-bold text-lg active:scale-[0.98] transition-transform" onclick="openSheet('Bir Eve Katıl')">Bir Eve Katıl</button>
+</section>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: BottomSheet -->
+<div class="hidden fixed inset-0 bg-black/50 z-50 flex items-end" id="home-sheet" onclick="closeSheet()">
+<div class="bg-white w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
+<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
+<h2 class="font-bold text-lg mb-1" id="sheet-title">Yeni Ev Oluştur</h2>
+<p class="text-slate-500 text-sm mb-4" id="sheet-desc">Evine bir isim ver.</p>
+<input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="sheet-input" placeholder="Örn. Yazlık" type="text"/>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="confirmSheet()">Onayla</button>
+</div>
+</div>
+<!-- END: BottomSheet -->
+<script data-purpose="household-interactions">
+    lucide.createIcons();
+    // Expand/collapse home details
+    function toggleHome(btn) {
+      var details = btn.parentElement.querySelector('[data-purpose="home-details"]');
+      details.classList.toggle('hidden');
+      btn.querySelector('.lucide-chevron-down').classList.toggle('rotate-180');
+    }
+    // Bottom sheet: create or join a home
+    var sheetMode = '';
+    function openSheet(mode) {
+      sheetMode = mode;
+      document.getElementById('sheet-title').textContent = mode;
+      document.getElementById('sheet-desc').textContent =
+        mode === 'Bir Eve Katıl' ? 'Sana gönderilen davet kodunu gir.' : 'Evine bir isim ver.';
+      document.getElementById('sheet-input').placeholder =
+        mode === 'Bir Eve Katıl' ? 'Örn. NX-48213' : 'Örn. Yazlık';
+      document.getElementById('sheet-input').value = '';
+      document.getElementById('home-sheet').classList.remove('hidden');
+    }
+    function closeSheet() {
+      document.getElementById('home-sheet').classList.add('hidden');
+    }
+    // Add the new/joined home as a real card in the list
+    function confirmSheet() {
+      var val = document.getElementById('sheet-input').value.trim();
+      if (!val) return;
+      var name = sheetMode === 'Bir Eve Katıl' ? 'Ortak Ev' : val;
+      var sub = sheetMode === 'Bir Eve Katıl' ? 'Davet kodu: ' + val : '0 oda · 1 üye';
+      var card = document.createElement('article');
+      card.className = 'bg-white rounded-3xl menu-container-shadow overflow-hidden';
+      card.innerHTML =
+        '<div class="w-full flex items-center justify-between p-5">' +
+        '<div class="flex items-center gap-4">' +
+        '<div class="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-[#7C5CFF]">' +
+        '<i class="w-6 h-6" data-lucide="home"></i></div>' +
+        '<div class="text-left"><h2 class="text-lg font-bold leading-tight"></h2>' +
+        '<p class="text-sm text-slate-400 font-medium"></p></div></div></div>';
+      card.querySelector('h2').textContent = name;
+      card.querySelector('p').textContent = sub;
+      document.getElementById('homes-list').appendChild(card);
+      lucide.createIcons();
+      closeSheet();
+    }
+  </script>
+</body></html>

@@ -375,6 +375,7 @@ export function createRequestHandler(
       const body = await readJsonBody(req);
       const email = String(body.email ?? "");
       const password = String(body.password ?? "");
+      const fullName = body.fullName ? String(body.fullName).trim() : undefined;
       const locale = localeFrom(cookies, req);
 
       const rl = rateLimiter.check(email);
@@ -387,12 +388,13 @@ export function createRequestHandler(
         const created = accounts.register({ email, password, role: "admin" });
         const session = accounts.login(email, password);
         setCookie(res, SESSION_COOKIE, session.token, 60 * 60 * 24);
-        userData.ensure(created.id, created.email, locale);
+        userData.ensure(created.id, created.email, locale, fullName);
         return sendJson(res, 201, { user: publicUser(created), token: session.token });
       } catch (err) {
         return sendJson(res, 400, { error: authMessage(err) });
       }
     }
+
 
     if (path === "/api/login" && method === "POST") {
       const body = await readJsonBody(req);

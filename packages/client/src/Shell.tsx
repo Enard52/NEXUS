@@ -10,6 +10,7 @@ import { buildNavigation, type NavContext } from "@nexus/interface";
 import { useI18n } from "./i18n";
 import { useUserData, useAppState } from "./state";
 import { CLIENT_SCREENS, STORE_SCREEN, findScreen } from "./screens/registry";
+import { BrandLogo } from "./components/BrandLogo";
 
 declare global {
   interface Window {
@@ -63,7 +64,10 @@ export function Shell() {
       </a>
       {isDesktopShell && (
         <header className="titlebar">
-          <span className="brand">NEXUS</span>
+          <span className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <BrandLogo size={22} />
+            <span>NEXUS</span>
+          </span>
           <div className="wctl">
             <button
               className="wctl-btn"
@@ -91,6 +95,10 @@ export function Shell() {
       )}
       <div className="app-main">
         <nav className="sidenav" aria-label={t("nav.primary")}>
+          <div className="nav-brand" style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 16px 12px", borderBottom: "1px solid var(--border)" }}>
+            <BrandLogo size={28} />
+            <span style={{ fontWeight: 800, fontSize: 16, letterSpacing: "-0.02em" }}>NEXUS</span>
+          </div>
           {items.map((item) => (
             <button
               key={item.id}
@@ -103,6 +111,15 @@ export function Shell() {
             </button>
           ))}
           <div style={{ flex: 1 }} />
+          <div className="nav-profile">
+            <div className="avatar">
+              {((user as any).displayName || user.email || "?")[0].toUpperCase()}
+            </div>
+            <div className="nav-profile-info">
+              <span className="nav-profile-name">{(user as any).displayName || "User"}</span>
+              <span className="nav-profile-email">{user.email}</span>
+            </div>
+          </div>
           <button className="nav-item" onClick={() => void signOut()}>
             <span aria-hidden="true">↩</span>
             {t("auth.logout")}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Konum Seç</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Leaflet (etkileşimli harita, OSM embed yerine) -->
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Confirm bar slides in after a location change */
+    .confirm-bar { transition: transform 0.25s ease; transform: translateY(140%); }
+    .confirm-bar.show { transform: translateY(0); }
+    /* Harita en altta kalsın, üst katmanlar (header/pin/butonlar) üstte */
+    #map { z-index: 0; }
+    .leaflet-control-attribution { font-size: 10px; background: rgba(255,255,255,0.7); color: #64748B; }
+    .leaflet-control-attribution a { color: #64748B; text-decoration: none; pointer-events: none; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-slate-100 min-h-screen relative overflow-hidden">
+<!-- BEGIN: Map (Leaflet + OSM karo, tam etkileşimli konum seçici) -->
+<div class="absolute inset-0 w-full h-full" data-purpose="location-map" id="map"></div>
+<!-- END: Map -->
+<!-- BEGIN: TopOverlay -->
+<header class="absolute top-0 inset-x-0 z-10 pt-12 pb-6 px-5 bg-gradient-to-b from-white via-white/85 to-transparent" data-purpose="map-header">
+<div class="flex items-center justify-between mb-4">
+<a class="text-slate-700 text-lg font-medium" href="stitch-home.html" id="cancel-link">İptal</a>
+<h1 class="text-slate-900 font-bold" id="map-title">Hava Durumu Konumu</h1>
+<a class="text-[#7C5CFF] text-lg font-bold" href="stitch-home.html" id="save-link">Kaydet</a>
+</div>
+<!-- Search / address bar (Enter ile gerçek adres araması yapar) -->
+<div class="bg-white rounded-2xl shadow-md flex items-center px-4 py-3 gap-3" data-purpose="address-search">
+<svg class="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35" stroke-linecap="round"></path></svg>
+<input class="flex-grow border-none focus:ring-0 p-0 text-slate-800 font-medium bg-transparent min-w-0" enterkeyhint="search" id="address-input" placeholder="Adres veya semt ara" type="text" value="Bağdat Cd. 42"/>
+<button aria-label="Temizle" class="w-6 h-6 bg-slate-200 rounded-full text-slate-500 flex items-center justify-center flex-shrink-0" onclick="document.getElementById('address-input').value=''; document.getElementById('address-input').focus()">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"></path></svg>
+</button>
+</div>
+<!-- Search status (arama sırasında / hata durumunda görünür) -->
+<p class="hidden text-xs font-medium text-slate-500 mt-2 px-1" id="search-status"></p>
+</header>
+<!-- END: TopOverlay -->
+<!-- BEGIN: CenterPin -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full z-10 pointer-events-none flex flex-col items-center" data-purpose="selected-pin">
+<div class="bg-white rounded-xl shadow-md px-4 py-2 text-sm font-bold text-slate-800 mb-2 whitespace-nowrap max-w-[80vw] overflow-hidden text-ellipsis" id="pin-label">Bağdat Cd. 42</div>
+<svg class="w-10 h-10 drop-shadow-lg" fill="#7C5CFF" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z"></path><circle cx="12" cy="9" fill="white" r="2.5"></circle></svg>
+</div>
+<!-- END: CenterPin -->
+<!-- BEGIN: LocateButton -->
+<button aria-label="Konumumu bul" class="absolute bottom-12 right-5 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#7C5CFF] active:scale-95 transition-transform" data-purpose="locate-me" onclick="locateMe()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"></path></svg>
+</button>
+<!-- END: LocateButton -->
+<!-- BEGIN: ConfirmBar (konum seçilince Kaydet/İptal sorusu) -->
+<div class="confirm-bar absolute bottom-0 inset-x-0 z-20 p-4 pb-8" data-purpose="confirm-bar" id="confirm-bar">
+<div class="bg-white rounded-3xl shadow-xl p-5 max-w-xl mx-auto">
+<p class="text-sm font-semibold text-slate-500 mb-1">Konum seçildi</p>
+<p class="font-bold text-slate-900 mb-4 truncate" id="confirm-address">Bağdat Cd. 42</p>
+<div class="flex gap-3">
+<button class="flex-1 bg-white border border-slate-200 rounded-2xl py-3.5 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="discardLocation()">İptal Et</button>
+<button class="flex-1 bg-[#7C5CFF] text-white rounded-2xl py-3.5 font-bold active:scale-[0.98] transition-transform" onclick="saveLocation()">Ayarları Kaydet</button>
+</div>
+</div>
+</div>
+<!-- END: ConfirmBar -->
+<script data-purpose="map-interactions">
+    /* ---------- Leaflet haritası (tam etkileşimli) ---------- */
+    var map = L.map('map', { zoomControl: false, attributionControl: true })
+      .setView([41.015, 28.985], 15);
+    map.attributionControl.setPrefix(false); // "Leaflet" yazısını kaldır
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    /* ---------- Mod: varsayılan hava durumu / enerji mini uygulaması ---------- */
+    var energyMode = new URLSearchParams(location.search).get('return') === 'energy';
+    var returnPage = energyMode ? 'stitch-energy-strategy.html' : 'stitch-home.html';
+    var storageKey = energyMode ? 'nexusHomeLocation' : 'nexusWeatherLocation';
+    var cancelLink = document.getElementById('cancel-link');
+    var saveLink = document.getElementById('save-link');
+    cancelLink.href = returnPage;
+    saveLink.href = returnPage;
+    if (energyMode) document.getElementById('map-title').textContent = 'Ev Konumu';
+
+    /* ---------- Kayıtlı konumu yükle ---------- */
+    var pending = null; // henüz kaydedilmemiş seçim
+    (function () {
+      var saved = localStorage.getItem(storageKey);
+      if (saved) {
+        document.getElementById('address-input').value = saved;
+        document.getElementById('pin-label').textContent = saved;
+      }
+    })();
+
+    /* ---------- Gerçek adres arama (OpenStreetMap Nominatim) ---------- */
+    var addressInput = document.getElementById('address-input');
+    addressInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); searchAddress(); }
+    });
+    function setStatus(msg) {
+      var el = document.getElementById('search-status');
+      el.textContent = msg || '';
+      el.classList.toggle('hidden', !msg);
+    }
+    function searchAddress() {
+      var q = addressInput.value.trim();
+      if (!q) { addressInput.focus(); return; }
+      setStatus('Aranıyor…');
+      fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=tr&q=' + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (results) {
+          if (!results.length) { setStatus('Sonuç bulunamadı, adresi kontrol et.'); return; }
+          setStatus('');
+          var r = results[0];
+          moveMap(parseFloat(r.lat), parseFloat(r.lon));
+          selectLocation(shortName(r.display_name));
+        })
+        .catch(function () {
+          // Çevrimdışı: yazılan adres yine de seçim olarak kullanılabilir
+          setStatus('Arama servisine ulaşılamadı, yazdığın adres kullanılacak.');
+          selectLocation(q);
+        });
+    }
+    function shortName(displayName) {
+      // "Cadde, Mahalle, İlçe, İl, ..." -> ilk 2 parça yeterli
+      return displayName.split(',').slice(0, 2).join(',').trim();
+    }
+    function moveMap(lat, lon) {
+      programmaticMove = true;
+      map.setView([lat, lon], 16);
+    }
+
+    /* ---------- Manuel seçim: haritayı sürükle, pin ortada kalır, bırakınca seçilir ---------- */
+    var programmaticMove = false;
+    var dragTimer = null;
+    map.on('movestart', function () {
+      if (!programmaticMove) document.getElementById('confirm-bar').classList.remove('show');
+    });
+    map.on('moveend', function () {
+      if (programmaticMove) { programmaticMove = false; return; }
+      // Kısa bekleme: art arda sürüklemelerde gereksiz istek atma
+      clearTimeout(dragTimer);
+      dragTimer = setTimeout(function () {
+        var c = map.getCenter();
+        setStatus('Konum alınıyor…');
+        fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=tr&lat=' + c.lat + '&lon=' + c.lng)
+          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            setStatus('');
+            var name = r.display_name ? shortName(r.display_name) : (c.lat.toFixed(4) + ', ' + c.lng.toFixed(4));
+            addressInput.value = name;
+            selectLocation(name);
+          })
+          .catch(function () {
+            setStatus('');
+            var name = c.lat.toFixed(4) + ', ' + c.lng.toFixed(4);
+            addressInput.value = name;
+            selectLocation(name);
+          });
+      }, 500);
+    });
+    /* Tıklanan noktayı da seç: harita tıklanan yere kayar, pin oraya oturur */
+    map.on('click', function (e) {
+      map.panTo(e.latlng); // moveend tetiklenir, seçim otomatik yapılır
+    });
+
+    /* ---------- Konumumu bul: gerçek geolocation + ters geokodlama ---------- */
+    function locateMe() {
+      if (!navigator.geolocation) { setStatus('Cihazın konum servisini desteklemiyor.'); return; }
+      setStatus('Konumun bulunuyor…');
+      navigator.geolocation.getCurrentPosition(function (p) {
+        var lat = p.coords.latitude, lon = p.coords.longitude;
+        moveMap(lat, lon);
+        fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=tr&lat=' + lat + '&lon=' + lon)
+          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            setStatus('');
+            var name = r.display_name ? shortName(r.display_name) : 'Mevcut Konum';
+            addressInput.value = name;
+            selectLocation(name);
+          })
+          .catch(function () { setStatus(''); addressInput.value = 'Mevcut Konum'; selectLocation('Mevcut Konum'); });
+      }, function () {
+        setStatus('Konum izni verilmedi.');
+      });
+    }
+
+    /* ---------- Seçim + Kaydet/İptal onayı ---------- */
+    function selectLocation(name) {
+      pending = name;
+      document.getElementById('pin-label').textContent = name;
+      document.getElementById('confirm-address').textContent = name;
+      document.getElementById('confirm-bar').classList.add('show');
+    }
+    function discardLocation() {
+      pending = null;
+      document.getElementById('confirm-bar').classList.remove('show');
+      var saved = localStorage.getItem(storageKey);
+      document.getElementById('pin-label').textContent = saved || 'Bağdat Cd. 42';
+      addressInput.value = saved || 'Bağdat Cd. 42';
+    }
+    function saveLocation() {
+      if (pending) localStorage.setItem(storageKey, pending);
+      location.href = returnPage;
+    }
+    // Üstteki Kaydet de aynı davranır: bekleyen seçim varsa kalıcı olur
+    saveLink.addEventListener('click', function () {
+      var value = pending || addressInput.value.trim();
+      if (value) localStorage.setItem(storageKey, value);
+    });
+  </script>
+</body></html>

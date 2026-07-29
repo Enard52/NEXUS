@@ -162,11 +162,12 @@ export const api = {
     }
   },
 
-  async register(email: string, password: string): Promise<PublicUser> {
-    const out = await post<AuthResponse>("/api/register", { email, password });
+  async register(email: string, password: string, fullName?: string): Promise<PublicUser> {
+    const out = await post<AuthResponse>("/api/register", { email, password, fullName });
     setToken(out.token);
     return out.user;
   },
+
 
   async login(email: string, password: string): Promise<PublicUser> {
     const out = await post<AuthResponse>("/api/login", { email, password });

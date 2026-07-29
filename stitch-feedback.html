@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — SSS ve Geri Bildirim</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">SSS ve Geri Bildirim</h1>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pt-4 pb-10">
+<!-- FAQ Section -->
+<h2 class="text-lg font-bold mb-3">Sık Sorulan Sorular</h2>
+<section class="bg-white rounded-3xl menu-container-shadow divide-y divide-slate-50 overflow-hidden mb-8" data-purpose="faq-list">
+<div>
+<button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50" onclick="toggleFaq(this)">
+<span class="font-semibold pr-3">Cihazım neden çevrimdışı görünüyor?</span>
+<i class="w-5 h-5 text-slate-300 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
+</button>
+<p class="hidden px-5 pb-5 text-sm text-slate-500">Cihazın Wi-Fi bağlantısını ve modeminizi kontrol edin. Sorun sürerse cihazı NEXUS uygulamasından kaldırıp yeniden ekleyin.</p>
+</div>
+<div>
+<button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50" onclick="toggleFaq(this)">
+<span class="font-semibold pr-3">Yeni cihaz nasıl eklerim?</span>
+<i class="w-5 h-5 text-slate-300 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
+</button>
+<p class="hidden px-5 pb-5 text-sm text-slate-500">Ana ekranın sağ üstündeki + butonuna dokunun ve "Tara" ile cihazın QR kodunu okutun ya da kurulum kodunu elle girin.</p>
+</div>
+<div>
+<button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50" onclick="toggleFaq(this)">
+<span class="font-semibold pr-3">NEXUS AI puanları nedir?</span>
+<i class="w-5 h-5 text-slate-300 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
+</button>
+<p class="hidden px-5 pb-5 text-sm text-slate-500">NEXUS AI ile yaptığınız her görüşme puan kullanır. Puanlar her gün yenilenir; Plus aboneliğiyle daha yüksek limit alırsınız.</p>
+</div>
+<div>
+<button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50" onclick="toggleFaq(this)">
+<span class="font-semibold pr-3">Verilerim güvende mi?</span>
+<i class="w-5 h-5 text-slate-300 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
+</button>
+<p class="hidden px-5 pb-5 text-sm text-slate-500">Evet. NEXUS gizlilik öncelikli çalışır; cihaz verileriniz uçtan uca şifrelenir ve üçüncü taraflarla paylaşılmaz.</p>
+</div>
+</section>
+<!-- Support Assistant (AI özelliği: NEXUS AI adlandırması doğru) -->
+<h2 class="text-lg font-bold mb-3">Cevabını bulamadın mı?</h2>
+<section class="bg-white rounded-3xl menu-container-shadow p-5 mb-8" data-purpose="support-assistant">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white font-extrabold text-xl flex-shrink-0">N</div>
+<div>
+<h3 class="font-bold leading-tight">NEXUS AI Destek Asistanı</h3>
+<p class="text-xs text-emerald-500 font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Çevrimiçi</p>
+</div>
+</div>
+<!-- Chat log -->
+<div class="space-y-2 mb-3 max-h-64 overflow-y-auto" id="assist-log">
+<div class="bg-slate-50 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-slate-600 max-w-[85%]">Merhaba! Sorununu kısaca yaz, çözüm bulmana yardımcı olayım.</div>
+</div>
+<!-- Input -->
+<div class="flex items-center gap-2">
+<input class="flex-grow border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="assist-input" onkeydown="if(event.key==='Enter')askAssistant()" placeholder="Sorununu yaz..." type="text"/>
+<button aria-label="Gönder" class="w-11 h-11 rounded-xl bg-[#7C5CFF] text-white flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform" onclick="askAssistant()">
+<i class="w-5 h-5" data-lucide="send"></i>
+</button>
+</div>
+<a class="flex items-center justify-center gap-1 text-sm font-semibold text-[#7C5CFF] mt-4" href="stitch-chat.html">Tam sohbeti aç<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+</section>
+<!-- Feedback Form -->
+<h2 class="text-lg font-bold mb-3">Geri Bildirim ve Öneriler</h2>
+<section class="bg-white rounded-3xl menu-container-shadow p-5" data-purpose="feedback-form" id="feedback-form">
+<label class="block text-sm font-semibold text-slate-500 mb-2" for="feedback-topic">Konu</label>
+<select class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="feedback-topic">
+<option>Öneri</option>
+<option>Hata Bildirimi</option>
+<option>Cihaz Sorunu</option>
+<option>Diğer</option>
+</select>
+<label class="block text-sm font-semibold text-slate-500 mb-2" for="feedback-text">Mesajın</label>
+<textarea class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="feedback-text" placeholder="Bize düşünceni yaz..." rows="4"></textarea>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="sendFeedback()">Gönder</button>
+</section>
+<!-- Success state (shown after submit) -->
+<section class="hidden bg-white rounded-3xl menu-container-shadow p-8 flex-col items-center text-center" data-purpose="feedback-success" id="feedback-success">
+<div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white mb-4">
+<i class="w-7 h-7" data-lucide="check"></i>
+</div>
+<h3 class="font-bold text-lg mb-1">Teşekkürler!</h3>
+<p class="text-sm text-slate-500">Geri bildirimin bize ulaştı. NEXUS'u birlikte daha iyi yapıyoruz.</p>
+</section>
+</main>
+<!-- END: MainContent -->
+<script data-purpose="faq-interactions">
+    lucide.createIcons();
+    // Expand/collapse FAQ answers
+    function toggleFaq(btn) {
+      btn.parentElement.querySelector('p').classList.toggle('hidden');
+      btn.querySelector('.lucide-chevron-down').classList.toggle('rotate-180');
+    }
+    // Swap the form for the thank-you card
+    function sendFeedback() {
+      if (!document.getElementById('feedback-text').value.trim()) return;
+      document.getElementById('feedback-form').classList.add('hidden');
+      var ok = document.getElementById('feedback-success');
+      ok.classList.remove('hidden');
+      ok.classList.add('flex');
+    }
+    // Support assistant: keyword-matched quick answers, escalates to feedback form
+    function askAssistant() {
+      var input = document.getElementById('assist-input');
+      var text = input.value.trim();
+      if (!text) return;
+      var log = document.getElementById('assist-log');
+      log.insertAdjacentHTML('beforeend', '<div class="bg-[#7C5CFF] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm max-w-[85%] ml-auto"></div>');
+      log.lastElementChild.textContent = text;
+      input.value = '';
+      var t = text.toLowerCase();
+      var reply;
+      if (t.indexOf('çevrimdışı') !== -1 || t.indexOf('bağlan') !== -1 || t.indexOf('wifi') !== -1 || t.indexOf('wi-fi') !== -1) {
+        reply = 'Cihazın Wi-Fi bağlantısını ve modemini kontrol et. Sorun sürerse cihazı kaldırıp yeniden ekle. Adımlar: Cihazlar > cihazı seç > Kaldır.';
+      } else if (t.indexOf('cihaz ekle') !== -1 || t.indexOf('yeni cihaz') !== -1 || t.indexOf('qr') !== -1) {
+        reply = 'Ana ekranın sağ üstündeki + butonuna dokun, "Tara" ile QR kodu okut ya da kurulum kodunu elle gir.';
+      } else if (t.indexOf('puan') !== -1 || t.indexOf('limit') !== -1 || t.indexOf('abonelik') !== -1) {
+        reply = 'NEXUS AI puanların her gün yenilenir. Daha yüksek limit için Profil > Abonelik bölümünden Plus\'a geçebilirsin.';
+      } else if (t.indexOf('güvenli') !== -1 || t.indexOf('veri') !== -1 || t.indexOf('gizlilik') !== -1) {
+        reply = 'Verilerin uçtan uca şifrelenir ve üçüncü taraflarla paylaşılmaz. Detaylar Ayarlar > Gizlilik bölümünde.';
+      } else if (t.indexOf('teşekk') !== -1 || t.indexOf('tamam') !== -1 || t.indexOf('oldu') !== -1) {
+        reply = 'Rica ederim! Başka bir sorun olursa buradayım.';
+      } else {
+        reply = 'Bunu tam çözemedim. Aşağıdaki formdan ekibimize geri bildirim gönderirsen en kısa sürede dönüş yapalım; ya da "Tam sohbeti aç" ile devam edebilirsin.';
+      }
+      setTimeout(function () {
+        log.insertAdjacentHTML('beforeend', '<div class="bg-slate-50 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-slate-600 max-w-[85%]"></div>');
+        log.lastElementChild.textContent = reply;
+        log.scrollTop = log.scrollHeight;
+      }, 500);
+      log.scrollTop = log.scrollHeight;
+    }
+  </script>
+</body></html>

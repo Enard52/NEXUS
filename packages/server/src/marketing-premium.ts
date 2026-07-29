@@ -599,6 +599,11 @@ export function renderMarketingPremiumDocument(
   return `<!doctype html>
 <html lang="${locale}" data-theme="${theme}"${dir}>
 <head>
+  <script>
+    if (!localStorage.getItem("nexus_session_token")) {
+      window.location.replace("/login.html");
+    }
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${title}</title>
@@ -651,4 +656,31 @@ ${hreflangs}
 <body>${body}</body>
 </html>
 `;
+}
+
+/**
+ * Extracts the premium header, footer, and CSS so that auxiliary pages
+ * (legal, about, 404) can wrap their own content in the premium shell.
+ */
+export function getPremiumShell(locale: Locale): { header: string; footer: string; css: string } {
+  const langItems = SUPPORTED_LOCALES.map(
+    (l) => `<a${l === locale ? ' class="active"' : ""} href="?lang=${l}">${LANG_LABELS[l] ?? l.toUpperCase()}</a>`,
+  ).join("\n              ");
+
+  const dyn: PremiumDynamicParts = {
+    langCode: locale.slice(0, 2).toUpperCase(),
+    langMenu: `<div class="language-menu" role="menu">\n              ${langItems}\n            </div>`,
+    winVersion: "", macVersion: "", linuxVersion: "",
+    winHref: "", macHref: "", linuxHref: ""
+  };
+
+  const body = localizePremiumBody(renderPremiumBody(dyn), locale);
+  const mainStart = body.indexOf('<main class="main-content">');
+  const mainEnd = body.indexOf('</main>') + 7;
+
+  return {
+    header: body.substring(0, mainStart),
+    footer: body.substring(mainEnd),
+    css: localizePremiumCss(marketingPremiumCss(), locale)
+  };
 }

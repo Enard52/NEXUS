@@ -17,6 +17,8 @@ import {
   renderMarketingDocument,
   renderLegalPage,
   renderNotFoundPage,
+  renderLoginDocument,
+  renderAboutPage,
 } from "../../server/src/pages.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -63,12 +65,24 @@ for (const loc of ["en", "tr"] as const) {
       console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, legalPage + ".html")}`);
   }
 
+  // Login page
+  const loginHtml = renderLoginDocument(loc, "dark");
+  writeFileSync(join(locDir, "login.html"), loginHtml, "utf8");
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "login.html")}`);
+
   // 404 page
   const notFound = renderNotFoundPage(loc, "dark");
   writeFileSync(join(locDir, "404.html"), notFound, "utf8");
   // eslint-disable-next-line no-console
   if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
     console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "404.html")}`);
+
+  // About page
+  const aboutHtml = renderAboutPage(loc, "dark");
+  writeFileSync(join(locDir, "about.html"), aboutHtml, "utf8");
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+    console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "about.html")}`);
 }
 
 // SEO discovery files, generated from the same canonical origin as the pages.

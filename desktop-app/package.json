@@ -15,7 +15,9 @@
   },
   "devDependencies": {
     "electron": "^33.2.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^3.0.2",
+    "sharp": "^0.35.3"
   },
   "dependencies": {
     "electron-updater": "^6.3.9"
@@ -23,9 +25,7 @@
   "build": {
     "appId": "ai.nexus.desktop",
     "productName": "NEXUS",
-    "directories": {
-      "output": "dist"
-    },
+    "directories": { "output": "dist", "buildResources": "assets" },
     "files": [
       "main.cjs",
       "preload.cjs",
@@ -71,13 +71,7 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "artifactName": "NEXUS-${version}-${arch}.${ext}",
-      "signtoolOptions": {
-        "certificateSubjectName": "${env.WIN_CSC_SUBJECT}",
-        "signingHashAlgorithms": [
-          "sha256"
-        ]
-      }
+      "artifactName": "NEXUS-${version}-${arch}.${ext}"
     },
     "portable": {
       "artifactName": "NEXUS-${version}-portable.${ext}"
@@ -89,7 +83,7 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "NEXUS",
-      "artifactName": "NEXUS-${version}-setup.${ext}"
+      "artifactName": "NEXUS-${version}-setup.${ext}", "installerIcon": "assets/icon.ico", "uninstallerIcon": "assets/icon.ico", "installerHeaderIcon": "assets/icon.ico"
     },
     "mac": {
       "target": [
@@ -151,7 +145,8 @@
         "libnotify4",
         "libappindicator3-1 | libappindicator1"
       ]
-    },
-    "afterSign": "scripts/notarize.cjs"
+    }
   }
 }
+
+

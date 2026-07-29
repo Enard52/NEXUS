@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "scaffold:modules": "node scripts/scaffold-modules.mjs",
-    "build:static": "pnpm --filter @nexus/web build:site && pnpm --filter @nexus/desktop build:setup && node scripts/copy-static.mjs",
+    "build:static": "pnpm --filter @nexus/web build:site && pnpm --filter @nexus/desktop build:setup && node scripts/fix-review-avatars.mjs && node scripts/copy-static.mjs",
     "build:client": "pnpm --filter @nexus/client build",
     "build:server": "pnpm --filter @nexus/server build",
     "build": "pnpm build:static && pnpm build:client && pnpm build:server && node scripts/copy-desktop-resources.mjs",
@@ -35,7 +35,8 @@
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
-    "@fontsource/outfit": "^5.3.0"
+    "@fontsource/outfit": "^5.3.0",
+    "esbuild": "^0.24.2"
   },
   "author": "NEXUS Technologies Inc.",
   "license": "UNLICENSED"

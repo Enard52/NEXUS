@@ -3,7 +3,7 @@
  *
  * Boots the sync server on a durable SQLite file so real accounts and per-user
  * data survive restarts. The data directory defaults to `~/.nexus` and can be
- * overridden with NEXUS_DATA_DIR; the port defaults to 4178 (override with PORT).
+ * overridden with NEXUS_DATA_DIR; the port defaults to 4181 (override with PORT).
  * Static assets and the installer download are served from the built web app.
  */
 
@@ -32,7 +32,7 @@ const clientRoot = existsSync(clientDist) ? clientDist : undefined;
 const store = new SqliteKeyValueStore(dbFile);
 const memory = new SqliteUserMemoryStore(memoryDbFile);
 const app = createNexusApp({ store, memory, staticRoot, clientRoot, config });
-const port = Number(process.env.PORT ?? 4178);
+const port = Number(process.env.PORT ?? 4181);
 
 void startServer(app, port).then(({ port: bound }) => {
   // eslint-disable-next-line no-console

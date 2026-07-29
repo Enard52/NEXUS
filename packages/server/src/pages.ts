@@ -45,7 +45,7 @@ import { renderMobileDocument } from "@nexus/mobile";
 import { renderDesktopDocument } from "@nexus/desktop";
 import { SkillDiscoveryService } from "@nexus/skills";
 import { isRtl, resolveLocale, SUPPORTED_LOCALES, type Locale } from "@nexus/i18n";
-import { renderMarketingPremiumDocument } from "./marketing-premium.js";
+import { renderMarketingPremiumDocument, getPremiumShell } from "./marketing-premium.js";
 import type { OAuthProviderMeta } from "./oauth.js";
 import type { UserData } from "./userdata.js";
 
@@ -585,19 +585,16 @@ export function renderLegalPage(
 <title>${escapeHtml(title)} — NEXUS</title>
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <meta name="theme-color" content="${t.color.bg}" />
-<style>${renderStyles(t)}${legalPageCss()}</style>
+<style>${renderStyles(t)}${getPremiumShell(locale as Locale).css}${legalPageCss()}</style>
 </head>
 <body>
-<div class="navbar" id="navbar"><div class="nav-container">
-<a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
-<div class="nav-actions"><a class="btn primary nav-cta" href="/">${lang === "tr" ? "Ana Sayfa" : "Home"}</a></div>
-</div></div>
-<main class="legal-content">
+${getPremiumShell(locale as Locale).header}
+<main class="legal-content main-content">
 <h1>${escapeHtml(title)}</h1>
 <p class="legal-updated">${lang === "tr" ? "Son güncelleme: Temmuz 2026" : "Last updated: July 2026"}</p>
 ${content}
 </main>
-${renderRichFooter(t.color.primary)}
+${getPremiumShell(locale as Locale).footer}
 </body>
 </html>`;
 }
@@ -617,19 +614,16 @@ export function renderNotFoundPage(locale: string, theme: ThemeName = "dark"): s
 <title>404 — NEXUS</title>
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <meta name="theme-color" content="${t.color.bg}" />
-<style>${renderStyles(t)}${legalPageCss()}</style>
+<style>${renderStyles(t)}${getPremiumShell(locale as Locale).css}${legalPageCss()}</style>
 </head>
 <body>
-<div class="navbar" id="navbar"><div class="nav-container">
-<a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
-<div class="nav-actions"><a class="btn primary nav-cta" href="/">${locale === "tr" ? "Ana Sayfa" : "Home"}</a></div>
-</div></div>
-<main class="legal-content" style="text-align:center;padding-top:120px;">
+${getPremiumShell(locale as Locale).header}
+<main class="legal-content main-content" style="text-align:center;padding-top:120px;">
 <h1 style="font-size:72px;margin:0;">404</h1>
 <p style="font-size:18px;color:var(--muted);margin:16px 0 32px;">${locale === "tr" ? "Sayfa bulunamad\u0131" : "Page not found"}</p>
 <a class="btn primary" href="/">${locale === "tr" ? "Ana Sayfaya D\u00f6n" : "Back to Home"}</a>
 </main>
-${renderRichFooter(t.color.primary)}
+${getPremiumShell(locale as Locale).footer}
 </body>
 </html>`;
 }
@@ -665,14 +659,11 @@ export function renderAboutPage(locale: string, theme: ThemeName = "dark"): stri
 <title>${escapeHtml(title)} — NEXUS</title>
 <link rel="icon" href="${faviconDataUri(t.color.primary)}" />
 <meta name="theme-color" content="${t.color.bg}" />
-<style>${renderStyles(t)}${legalPageCss()}</style>
+<style>${renderStyles(t)}${getPremiumShell(locale as Locale).css}${legalPageCss()}</style>
 </head>
 <body>
-<div class="navbar" id="navbar"><div class="nav-container">
-<a href="/" class="nav-brand">${renderLogo()}<span class="brand-title">NEXUS</span></a>
-<div class="nav-actions"><a class="btn primary nav-cta" href="/">${isTr ? "Ana Sayfa" : "Home"}</a></div>
-</div></div>
-<main class="legal-content">
+${getPremiumShell(locale as Locale).header}
+<main class="legal-content main-content">
 <h1>${escapeHtml(title)}</h1>
 <p class="legal-updated">${isTr ? "Kişisel Akıllı Ev İşletim Sistemi" : "The Personal Operating System for Your Smart Home"}</p>
 
@@ -691,7 +682,7 @@ export function renderAboutPage(locale: string, theme: ThemeName = "dark"): stri
 <h2>${isTr ? "Ekibimiz" : "Our Team"}</h2>
 <p>${isTr ? "NEXUS, dünyanın dört bir yanından gelen teknoloji meraklıları, mühendisler ve tasarımcıların ortak bir tutkuyla bir araya geldiği bir ekiptir. Uzaktan çalışan dağıtık bir yapıya sahibiz ve gücümüzü topluluğumuzdan alıyoruz. Siz de bu devrimin bir parçası olmak istiyorsanız, bize katılın!" : "NEXUS is a team of technology enthusiasts, engineers, and designers from around the world brought together by a shared passion. We have a distributed, remote structure and draw our strength from our community. If you want to be part of this revolution, join us!"}</p>
 </main>
-${renderRichFooter(t.color.primary)}
+${getPremiumShell(locale as Locale).footer}
 </body>
 </html>`;
 }

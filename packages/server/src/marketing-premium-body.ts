@@ -19,6 +19,23 @@ function svgDataUri(svg: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
+function renderLogoSvg(gradId = "nxlogo-sub", sheenId = "nxsheen-sub"): string {
+  return `<svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="${gradId}" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="${sheenId}" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#${gradId})"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#${sheenId})"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
 const BRAND_LOGOS = {
   apple: svgDataUri(LOCAL_LOGOS.apple),
   googlehome: svgDataUri(LOCAL_LOGOS.googleassistant),
@@ -38,8 +55,12 @@ const BRAND_LOGOS = {
   ),
 } as const;
 
+/** Siyah fill kullanan logolar — dark temada beyaz görünmeleri için CSS invert uygulanır */
+const DARK_INVERT_BRANDS = new Set<keyof typeof BRAND_LOGOS>(["apple", "sonos"]);
+
 function integrationLogo(key: keyof typeof BRAND_LOGOS, label: string): string {
-  return `<img class="integration-logo" src="${BRAND_LOGOS[key]}" alt="" loading="lazy" decoding="async" data-brand="${label}" />`;
+  const invertAttr = DARK_INVERT_BRANDS.has(key) ? ' data-dark-invert="1"' : '';
+  return `<img class="integration-logo" src="${BRAND_LOGOS[key]}" alt="" loading="lazy" decoding="async" data-brand="${label}"${invertAttr} />`;
 }
 
 function avatarData(initials: string, start: string, end: string): string {
@@ -76,9 +97,9 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
   return `
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="brand-atmosphere" aria-hidden="true">
-    <span class="brand-glyph brand-glyph-a">N</span>
-    <span class="brand-glyph brand-glyph-b">N</span>
-    <span class="brand-glyph brand-glyph-c">N</span>
+    <span class="brand-glyph brand-glyph-a">${renderLogoSvg("nxlogo-ga", "nxsheen-ga")}</span>
+    <span class="brand-glyph brand-glyph-b">${renderLogoSvg("nxlogo-gb", "nxsheen-gb")}</span>
+    <span class="brand-glyph brand-glyph-c">${renderLogoSvg("nxlogo-gc", "nxsheen-gc")}</span>
     <span class="brand-signal brand-signal-a"></span>
     <span class="brand-signal brand-signal-b"></span>
   </div>
@@ -282,7 +303,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <strong data-count="2000" data-suffix="+">2,000+</strong>
             <span class="metric-title">Supported devices</span>
             <p class="metric-copy">One intelligence layer across leading standards and ecosystems.</p>
-            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b>Matter</b><b>HomeKit</b><b>Thread</b><b>Zigbee</b></span>
+            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.2 5.6a3.2 3.2 0 1 1 3.1 4h3.4a3.2 3.2 0 1 1 3.1-4 3.2 3.2 0 0 1-1.1 3.6l-2 3.5a3.2 3.2 0 1 1-3.4 0l-2-3.5a3.2 3.2 0 0 1-1.1-3.6Z"/></svg>Matter</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>HomeKit</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.8 8.1 10.9 15M16.2 8.1 13.1 15M8 7h8"/></svg>Thread</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h11l-8 10h11M7 4c4 1 7 1 10 0M7 20c4-1 7-1 10 0"/></svg>Zigbee</b></span>
           </article>
 
           <article class="metric metric-private">
@@ -372,7 +393,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <p>Your private voice assistant understands intent, coordinates devices, and completes multi-step requests without sending your voice to the cloud.</p>
             <div class="nexus-ai-console" aria-label="NEXUS AI voice assistant preview">
               <div class="nexus-ai-head">
-                <span class="nexus-ai-avatar" aria-hidden="true">N</span>
+                <span class="nexus-ai-avatar" aria-hidden="true">${renderLogoSvg("nxlogo-aiav", "nxsheen-aiav")}</span>
                 <span class="nexus-ai-identity"><strong>NEXUS AI</strong><small><i></i> Listening locally</small></span>
                 <span class="nexus-ai-mode">PRIVATE CORE</span>
               </div>
@@ -381,11 +402,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
                 <div><small>YOU SAID</small><strong>“Lock the doors, dim the lights, and start Focus.”</strong></div>
               </div>
               <div class="nexus-ai-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-              <div class="nexus-ai-results">
-                <span><b>04</b><small>devices</small></span>
-                <span><b>01</b><small>routine</small></span>
-                <span><b>42 ms</b><small>local response</small></span>
-              </div>
+
             </div>
           </article>
 
@@ -419,7 +436,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <p>Connect the ecosystems you already own.</p>
             <div class="protocol-console" aria-label="Supported smart-home standards">
               <div class="protocol-console-head">
-                <div class="protocol-core" aria-hidden="true"><span>N</span></div>
+                <div class="protocol-core" aria-hidden="true">${renderLogoSvg("nxlogo-pcore", "nxsheen-pcore")}</div>
                 <div class="protocol-console-title">
                   <strong>Universal device fabric</strong>
                   <small>Auto-discovered · encrypted · local</small>
@@ -501,7 +518,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <div class="automation-logic">
                 <div class="logic-node"><i>01</i><span><small>TRIGGER</small><strong>Presence verified</strong></span></div>
                 <span class="logic-link"><i></i></span>
-                <div class="logic-node logic-ai"><i>N</i><span><small>NEXUS AI</small><strong>Context resolved</strong></span></div>
+                <div class="logic-node logic-ai"><i>${renderLogoSvg("nxlogo-ctx", "nxsheen-ctx")}</i><span><small>NEXUS AI</small><strong>Context resolved</strong></span></div>
                 <span class="logic-link"><i></i></span>
                 <div class="logic-node"><i>03</i><span><small>ACTION</small><strong>Scene activated</strong></span></div>
               </div>
@@ -528,7 +545,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               </div>
               <div class="response-route">
                 <span><i>01</i><small>VOICE</small></span><b>→</b>
-                <span class="route-ai"><i>N</i><small>NEXUS AI</small></span><b>→</b>
+                <span class="route-ai"><i>${renderLogoSvg("nxlogo-route", "nxsheen-route")}</i><small>NEXUS AI</small></span><b>→</b>
                 <span><i>03</i><small>DEVICES</small></span>
               </div>
               <div class="response-metrics">
@@ -554,7 +571,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           <p class="section-copy">NEXUS discovers your environment, keeps setup local, and guides you through each connection without technical friction.</p>
         </div>
         <div class="flow-shell flow-shell-v4 reveal">
-          <div class="flow-brand-mark" aria-hidden="true">N</div>
+          <div class="flow-brand-mark" aria-hidden="true">${renderLogoSvg("nxlogo-fbm", "nxsheen-fbm")}</div>
           <div class="flow-rail" aria-hidden="true"><span></span><span></span><span></span></div>
           <div class="flow">
             <article class="flow-step flow-step-v4">
@@ -573,7 +590,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <div class="flow-visual flow-visual-radar" aria-hidden="true">
                 <span class="radar-ring radar-ring-a"></span><span class="radar-ring radar-ring-b"></span><span class="radar-ring radar-ring-c"></span>
                 <span class="radar-sweep"></span>
-                <span class="radar-core"><span class="brand-logo brand-logo-mini"><span>N</span></span></span>
+                <span class="radar-core">${renderLogoSvg("nxlogo-rcore", "nxsheen-rcore")}</span>
                 <i class="radar-dot dot-one"></i><i class="radar-dot dot-two"></i><i class="radar-dot dot-three"></i>
               </div>
               <div class="flow-copy-v4"><h3>Discover without the cloud</h3><p>NEXUS maps compatible devices over your local network and asks before every connection.</p></div>
@@ -582,7 +599,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <article class="flow-step flow-step-v4">
               <div class="flow-topline"><span class="flow-number">03</span><span class="flow-label">Unified intelligence</span></div>
               <div class="flow-visual flow-visual-live" aria-hidden="true">
-                <div class="live-core"><span>N</span></div>
+                <div class="live-core">${renderLogoSvg("nxlogo-lcore", "nxsheen-lcore")}</div>
                 <span class="live-node live-node-a"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.5-1.5 2.5h-4c0-1-.6-1.9-1.5-2.5Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
                 <span class="live-node live-node-b"><svg viewBox="0 0 24 24"><path d="M12 3v9m0 0a5 5 0 1 0 4 2M12 12a5 5 0 0 1 4 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
                 <span class="live-node live-node-c"><svg viewBox="0 0 24 24"><path d="m12 3 8 4v5c0 5-3.4 8.4-8 9-4.6-.6-8-4-8-9V7l8-4Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
@@ -890,22 +907,6 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         </div>
 
         <div class="downloads-grid">
-          <article class="download-card download-windows reveal" data-platform="windows">
-            <div class="download-card-grid" aria-hidden="true"></div>
-            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo" viewBox="0 0 24 24"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 .6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg></div>
-            <div class="platform-top">
-              <div class="platform-icon platform-icon-windows">
-                <svg class="os-logo" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 0.6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg>
-              </div>
-              <span class="platform-kicker">Desktop · x64</span>
-            </div>
-            <h3>Windows</h3>
-            <p>Optimized for Windows 10 and 11 with seamless background operation.</p>
-            <span class="version">${dyn.winVersion}</span>
-            <div class="platform-specs"><span>Windows 10+</span><span>Auto updates</span><span>Local service</span></div>
-            <a class="button button-secondary download-button" href="${dyn.winHref}">Download for Windows</a>
-          </article>
-
           <article class="download-card download-macos reveal" data-platform="macos">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
@@ -920,6 +921,22 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <span class="version">${dyn.macVersion}</span>
             <div class="platform-specs"><span>Apple Silicon</span><span>Intel</span><span>Native menu bar</span></div>
             <a class="button button-secondary download-button" href="${dyn.macHref}">Download for macOS</a>
+          </article>
+
+          <article class="download-card download-windows reveal" data-platform="windows">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo" viewBox="0 0 24 24"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 .6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-windows">
+                <svg class="os-logo" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 0.6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg>
+              </div>
+              <span class="platform-kicker">Desktop · x64</span>
+            </div>
+            <h3>Windows</h3>
+            <p>Optimized for Windows 10 and 11 with seamless background operation.</p>
+            <span class="version">${dyn.winVersion}</span>
+            <div class="platform-specs"><span>Windows 10+</span><span>Auto updates</span><span>Local service</span></div>
+            <a class="button button-secondary download-button" href="${dyn.winHref}">Download for Windows</a>
           </article>
 
           <article class="download-card download-linux reveal" data-platform="linux">
@@ -980,7 +997,6 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <svg viewBox="0 0 29 29" role="img"><rect width="29" height="29" rx="2" fill="#fff"/><g fill="#09090b"><path d="M2 2h7v7H2V2Zm2 2v3h3V4H4ZM20 2h7v7h-7V2Zm2 2v3h3V4h-3ZM2 20h7v7H2v-7Zm2 2v3h3v-3H4Z" fill-rule="evenodd"/><path d="M11 2h3v2h-3zM16 3h2v4h-2zM10 6h4v3h-4zM18 7h4v2h-4zM24 10h3v3h-3zM2 11h4v2H2zM7 10h2v5H7zM10 11h3v2h-3zM14 10h2v4h-2zM17 12h5v2h-5zM3 15h3v3H3zM9 16h4v2H9zM15 15h3v3h-3zM20 16h2v4h-2zM23 15h4v2h-4zM10 20h2v4h-2zM13 19h4v2h-4zM18 21h4v2h-4zM24 19h3v4h-3zM11 25h4v2h-4zM17 24h2v3h-2zM21 25h6v2h-6z"/></g></svg>
             </div><span>Scan for Android</span></div>
           </div>
-          <div class="mobile-brand-orbit" aria-hidden="true"><span>N</span><i></i><i></i><i></i></div>
         </div>
       </div>
     </section>
@@ -1212,22 +1228,22 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           <p class="section-copy">NEXUS is built to stay transparent — about pricing, privacy, compatibility, and how your home runs.</p>
         </div>
         <div class="faq-list reveal">
-          <details>
-            <summary>Is NEXUS completely free?</summary>
+          <div class="faq-card">
+            <div class="faq-question">Is NEXUS completely free?</div>
             <div class="faq-answer">Yes. The core operating system and local control features are entirely free. Premium plans add advanced AI, secure remote access, and household management tools.</div>
-          </details>
-          <details>
-            <summary>Which devices are supported?</summary>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">Which devices are supported?</div>
             <div class="faq-answer">NEXUS supports Matter, Zigbee, Z-Wave, Wi-Fi devices, and more than 500 API-based ecosystems.</div>
-          </details>
-          <details>
-            <summary>Does it work without a cloud connection?</summary>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">Does it work without a cloud connection?</div>
             <div class="faq-answer">Yes. NEXUS communicates with devices over your local network, so core controls and automations continue working when the internet goes down.</div>
-          </details>
-          <details>
-            <summary>How is remote access provided?</summary>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">How is remote access provided?</div>
             <div class="faq-answer">Premium users can connect through a secure end-to-end encrypted tunnel. You can also use your own VPN configuration.</div>
-          </details>
+          </div>
         </div>
       </div>
     </section>

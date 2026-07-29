@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Tasarruf Stratejisi</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Mini-app gradient header (brand purple instead of source blue) */
+    .bg-miniapp-gradient {
+      background: linear-gradient(to bottom, #C9BEFE 0%, #E4DFFC 30%, #F2F4F9 60%, #F2F4F9 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    /* iOS style toggle */
+    .toggle-input:checked + .toggle-track {
+      background-color: #7C5CFF;
+    }
+    .toggle-input:checked + .toggle-track .toggle-thumb {
+      transform: translateX(20px);
+    }
+    /* Bottom sheet transition */
+    .sheet { transition: transform 0.25s ease; transform: translateY(100%); }
+    .sheet.open { transform: translateY(0); }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: MiniApp Header -->
+<header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="stitch-energy.html">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<!-- MiniApp capsule: more menu + close -->
+<div class="flex items-center bg-white/70 backdrop-blur rounded-full border border-white/60 shadow-sm" data-purpose="miniapp-capsule">
+<button aria-label="Mini uygulama menüsü" class="px-4 py-2" onclick="openSheet('menu')">
+<i class="w-5 h-5 text-slate-700" data-lucide="ellipsis"></i>
+</button>
+<span class="w-px h-5 bg-slate-300/70"></span>
+<a aria-label="Mini uygulamayı kapat" class="px-4 py-2" href="stitch-home.html">
+<i class="w-5 h-5 text-slate-700" data-lucide="x"></i>
+</a>
+</div>
+</header>
+<!-- END: MiniApp Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pb-10">
+<!-- Strategy title & description (listeden localStorage ile senkronize gelir) -->
+<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapat</h1>
+<p class="text-slate-500 text-[15px] leading-relaxed mb-5" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın.</p>
+<!-- Enable toggle (cihaz + ev konumu olmadan açılamaz: gerçek geofencing koşulu) -->
+<label class="inline-flex items-center gap-3 mb-3 cursor-pointer" data-purpose="strategy-toggle">
+<input class="toggle-input hidden" id="strategy-enabled" type="checkbox"/>
+<span class="toggle-track block w-12 h-7 bg-slate-300/70 rounded-full p-1 transition-colors">
+<span class="toggle-thumb block w-5 h-5 bg-white rounded-full shadow transition-transform"></span>
+</span>
+<span class="text-sm font-semibold text-slate-600">Stratejiyi etkinleştir</span>
+</label>
+<!-- Eksik koşul uyarısı (etkinleştirme denenince görünür) -->
+<p class="hidden bg-amber-50 text-amber-700 text-sm font-medium rounded-2xl px-4 py-3 mb-5" id="enable-note"></p>
+<div class="mb-5"></div>
+<!-- Device card -->
+<section class="bg-white rounded-3xl card-shadow p-5 mb-4" data-purpose="device-card">
+<a class="flex items-center justify-between mb-4" href="stitch-energy-devices.html">
+<h2 class="text-lg font-bold">Cihaz</h2>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</a>
+<div class="bg-slate-50 rounded-2xl p-4 flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+<i class="w-6 h-6 text-[#7C5CFF]" data-lucide="lightbulb"></i>
+</div>
+<div class="min-w-0 flex-grow">
+<h3 class="font-bold" id="device-name">Aydınlatma</h3>
+<span class="inline-block text-xs font-semibold text-amber-600 bg-amber-100 rounded-md px-2 py-0.5 mt-1">Zorunlu</span>
+</div>
+<!-- Cihaz ekleme QR akışına gider -->
+<a class="flex-shrink-0 bg-[#7C5CFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-scan.html">Ekle</a>
+</div>
+<a class="block text-center text-[#7C5CFF] font-semibold pt-4" href="stitch-energy-devices.html">Düzenle</a>
+</section>
+<!-- Settings card -->
+<section class="bg-white rounded-3xl card-shadow p-5" data-purpose="settings-card">
+<button class="w-full flex items-center justify-between mb-4" onclick="openSheet('settings')">
+<h2 class="text-lg font-bold">Ayarlar</h2>
+<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+</button>
+<div class="bg-slate-50 rounded-2xl p-4 flex items-center justify-between gap-4">
+<span class="font-medium text-slate-600 truncate" id="settings-status">Ayarlanmadı</span>
+<button class="flex-shrink-0 bg-[#7C5CFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" onclick="openSheet('settings')">Ayarlar</button>
+</div>
+</section>
+</main>
+<!-- END: MainContent -->
+<!-- Bottom note (cihaz yoksa görünür) -->
+<footer class="bg-white rounded-t-3xl px-8 py-6 text-center" data-purpose="no-device-note" id="no-device-note">
+<p class="text-slate-400 text-sm leading-relaxed">Henüz enerji tasarrufu destekleyen bir cihazın yok, lütfen öncelikle ekle.</p>
+</footer>
+<!-- BEGIN: Sheet backdrop -->
+<div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
+<!-- BEGIN: Settings Sheet (Ayarlar) -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-slate-50 rounded-t-3xl z-50 flex flex-col" data-purpose="settings-sheet" id="sheet-settings" style="height: 85dvh;">
+<div class="flex items-center justify-between px-6 pt-6 pb-4">
+<h3 class="text-lg font-bold truncate pr-3" id="sheet-title">Evden çıktıktan sonra ışığı otom...</h3>
+<button aria-label="Kapat" class="flex-shrink-0 text-slate-400" onclick="closeSheets()">
+<i class="w-6 h-6" data-lucide="x"></i>
+</button>
+</div>
+<div class="flex-grow px-4 overflow-y-auto">
+<!-- Ev Konumu: mevcut harita seçicisine gider, dönüşte senkronize olur -->
+<a class="bg-white rounded-2xl card-shadow px-5 py-4 flex items-center justify-between active:bg-slate-100 transition-colors" href="stitch-map.html?return=energy">
+<div class="min-w-0">
+<span class="text-[17px] font-medium block">Ev Konumu</span>
+<span class="hidden text-sm text-slate-400 mt-0.5 block truncate" id="home-location-value"></span>
+</div>
+<i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
+</a>
+</div>
+<div class="flex gap-3 px-4 pb-10 pt-4">
+<button class="flex-1 bg-white border border-slate-200 rounded-2xl py-4 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">İptal</button>
+<button class="flex-1 bg-slate-300 text-white rounded-2xl py-4 font-bold transition-colors" disabled id="save-settings-btn" onclick="saveSettings()">Ayarları Kaydet</button>
+</div>
+</div>
+<!-- END: Settings Sheet -->
+<!-- BEGIN: MiniApp Menu Sheet (••• menüsü) -->
+<div class="sheet fixed bottom-0 inset-x-0 z-50" data-purpose="miniapp-menu" id="sheet-menu">
+<div class="bg-white rounded-t-3xl p-6">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<i class="w-5 h-5" data-lucide="zap"></i>
+</div>
+<h3 class="text-lg font-bold">AI Enerji Tasarrufu</h3>
+</div>
+<p class="text-sm text-slate-400 mb-6">Bu mini uygulama resmî sağlayıcı tarafından sunulur.</p>
+<div class="grid grid-cols-4 gap-3 text-center" data-purpose="miniapp-actions">
+<button class="flex flex-col items-center gap-2" onclick="closeSheets(); openSheet('settings')">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="settings"></i></span>
+<span class="text-xs font-medium text-slate-600">Ayarlar</span>
+</button>
+<button class="flex flex-col items-center gap-2" onclick="location.reload()">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="rotate-cw"></i></span>
+<span class="text-xs font-medium text-slate-600">Tekrar Yükle</span>
+</button>
+<a class="flex flex-col items-center gap-2" href="stitch-feedback.html">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="triangle-alert"></i></span>
+<span class="text-xs font-medium text-slate-600">Yardım ve Geri Bildirim</span>
+</a>
+<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus.app">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="mail"></i></span>
+<span class="text-xs font-medium text-slate-600">İletişim E-postası</span>
+</a>
+</div>
+</div>
+<button class="w-full bg-white border-t border-slate-100 py-4 text-center font-bold text-slate-700 pb-8" onclick="closeSheets()">İptal</button>
+</div>
+<!-- END: MiniApp Menu Sheet -->
+<script data-purpose="strategy-interactions">
+    lucide.createIcons();
+
+    /* ---------- Load the strategy picked on the list page ---------- */
+    (function () {
+      var raw = localStorage.getItem('nexusEnergyStrategy');
+      if (!raw) return;
+      try {
+        var s = JSON.parse(raw);
+        document.getElementById('strategy-title').textContent = s.title;
+        document.getElementById('strategy-desc').textContent = s.desc;
+        document.getElementById('device-name').textContent = s.device;
+        // Sheet başlığı: uzunsa kısalt (kaynak tasarımdaki gibi)
+        document.getElementById('sheet-title').textContent = s.title.length > 32 ? s.title.slice(0, 32) + '...' : s.title;
+      } catch (e) { /* bozuk kayıt varsa varsayılan içerik kalır */ }
+    })();
+
+    /* ---------- Home location synced back from the map picker ---------- */
+    (function () {
+      var loc = localStorage.getItem('nexusHomeLocation');
+      if (!loc) return;
+      var val = document.getElementById('home-location-value');
+      val.textContent = loc;
+      val.classList.remove('hidden');
+      document.getElementById('settings-status').textContent = 'Ev Konumu: ' + loc;
+      enableSave();
+    })();
+    function enableSave() {
+      var btn = document.getElementById('save-settings-btn');
+      btn.disabled = false;
+      btn.classList.remove('bg-slate-300');
+      btn.classList.add('bg-[#7C5CFF]', 'active:scale-[0.98]');
+    }
+    function saveSettings() {
+      closeSheets();
+    }
+
+    /* ---------- Etkinleştirme kilidi: cihaz + ev konumu şartı ---------- */
+    // Konum tabanlı stratejiler geofencing ile çalışır; ev konumu ve eşleşmiş
+    // cihaz olmadan açılamaz. Durum, strateji başlığına göre kalıcı saklanır.
+    var toggle = document.getElementById('strategy-enabled');
+    var currentTitle = document.getElementById('strategy-title').textContent;
+    var enabledMap = {};
+    try { enabledMap = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { enabledMap = {}; }
+    toggle.checked = !!enabledMap[currentTitle];
+    toggle.addEventListener('change', function () {
+      if (toggle.checked) {
+        var hasDevice = parseInt(localStorage.getItem('nexusEnergyDeviceCount') || '0', 10) > 0;
+        var hasLocation = !!localStorage.getItem('nexusHomeLocation');
+        if (!hasDevice || !hasLocation) {
+          toggle.checked = false;
+          var missing = [];
+          if (!hasDevice) missing.push('uyumlu bir cihaz ekle');
+          if (!hasLocation) missing.push('Ayarlar bölümünden Ev Konumu seç');
+          var note = document.getElementById('enable-note');
+          note.textContent = 'Etkinleştirmek için önce ' + missing.join(' ve ') + '. Ev konumu, cihazlarının doğru eşleşmesi ve konum tabanlı otomasyon için gerekli.';
+          note.classList.remove('hidden');
+          return;
+        }
+      }
+      document.getElementById('enable-note').classList.add('hidden');
+      enabledMap[currentTitle] = toggle.checked;
+      localStorage.setItem('nexusEnergyEnabledMap', JSON.stringify(enabledMap));
+    });
+
+    /* ---------- Bottom sheets ---------- */
+    function openSheet(name) {
+      document.getElementById('sheet-backdrop').classList.remove('hidden');
+      document.getElementById('sheet-' + name).classList.add('open');
+    }
+    function closeSheets() {
+      document.getElementById('sheet-backdrop').classList.add('hidden');
+      document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
+    }
+
+    /* ---------- Device count synced from the device select page ---------- */
+    (function () {
+      var count = parseInt(localStorage.getItem('nexusEnergyDeviceCount') || '0', 10);
+      if (count > 0) {
+        document.getElementById('no-device-note').classList.add('hidden');
+      }
+    })();
+  </script>
+</body></html>

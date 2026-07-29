@@ -72,11 +72,11 @@ export function displayNameFromEmail(email: string): string {
 }
 
 /** The honest starting point for a new account: a real, empty home. */
-export function defaultUserData(email: string, language: string): UserData {
+export function defaultUserData(email: string, language: string, displayName?: string): UserData {
   return {
     plan: "free",
     assistantName: "NEXUS",
-    displayName: displayNameFromEmail(email),
+    displayName: displayName?.trim() || displayNameFromEmail(email),
     language,
     energyWhToday: 0,
     devices: [],
@@ -85,6 +85,7 @@ export function defaultUserData(email: string, language: string): UserData {
     family: [],
   };
 }
+
 
 /**
  * Durable per-user data, layered over the shared {@link KeyValueStore}. No
@@ -101,13 +102,14 @@ export class UserDataStore {
   }
 
   /** Read a user's data, creating and persisting the empty default on first access. */
-  ensure(userId: string, email: string, language: string): UserData {
+  ensure(userId: string, email: string, language: string, displayName?: string): UserData {
     const existing = this.get(userId);
     if (existing) return existing;
-    const seeded = defaultUserData(email, language);
+    const seeded = defaultUserData(email, language, displayName);
     this.set(userId, seeded);
     return seeded;
   }
+
 
   set(userId: string, data: UserData): void {
     this.store.set(K_USERDATA + userId, JSON.stringify(data));
