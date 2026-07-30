@@ -1,8 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — CarPlay</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -26,7 +30,7 @@
     }
     /* iOS style toggle */
     .toggle-input:checked + .toggle-track {
-      background-color: #0ea5e9;
+      background-color: #7C5CFF;
     }
     .toggle-input:checked + .toggle-track .toggle-thumb {
       transform: translateX(20px);
@@ -34,24 +38,27 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
-<body class="bg-gradient-custom text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">CarPlay</h1>
+<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">CarPlay</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pt-4 pb-10">
 <!-- Hero -->
 <section class="flex flex-col items-center text-center mb-8" data-purpose="carplay-hero">
-<div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#0ea5e9] to-[#22D3EE] flex items-center justify-center text-white shadow-lg mb-4">
+<div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white shadow-lg mb-4">
 <i class="w-10 h-10" data-lucide="car-front"></i>
 </div>
 <h2 class="text-xl font-bold">Arabanda NEXUS</h2>
@@ -74,15 +81,15 @@
 <h3 class="text-lg font-bold mb-3">Nasıl Kurulur?</h3>
 <section class="bg-white rounded-3xl menu-container-shadow p-5 space-y-5" data-purpose="setup-steps">
 <div class="flex gap-4">
-<span class="w-7 h-7 rounded-full bg-[#0ea5e9]/10 text-[#0ea5e9] font-bold text-sm flex items-center justify-center flex-shrink-0">1</span>
+<span class="w-7 h-7 rounded-full bg-[#7C5CFF]/10 text-[#7C5CFF] font-bold text-sm flex items-center justify-center flex-shrink-0">1</span>
 <p class="text-sm text-slate-600 font-medium">Telefonunu USB veya kablosuz olarak aracına bağla.</p>
 </div>
 <div class="flex gap-4">
-<span class="w-7 h-7 rounded-full bg-[#0ea5e9]/10 text-[#0ea5e9] font-bold text-sm flex items-center justify-center flex-shrink-0">2</span>
+<span class="w-7 h-7 rounded-full bg-[#7C5CFF]/10 text-[#7C5CFF] font-bold text-sm flex items-center justify-center flex-shrink-0">2</span>
 <p class="text-sm text-slate-600 font-medium">Yukarıdaki "CarPlay'de NEXUS" anahtarını aç.</p>
 </div>
 <div class="flex gap-4">
-<span class="w-7 h-7 rounded-full bg-[#0ea5e9]/10 text-[#0ea5e9] font-bold text-sm flex items-center justify-center flex-shrink-0">3</span>
+<span class="w-7 h-7 rounded-full bg-[#7C5CFF]/10 text-[#7C5CFF] font-bold text-sm flex items-center justify-center flex-shrink-0">3</span>
 <p class="text-sm text-slate-600 font-medium">Araç ekranında NEXUS simgesine dokun; favori kartların otomatik gelir.</p>
 </div>
 </section>

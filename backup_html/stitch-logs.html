@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS ” Günlükler</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #FAFAFA;
+      min-height: max(884px, 100dvh);
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+<script src="theme.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="text-slate-900">
+  <!-- Header -->
+  <header class="bg-white px-4 pt-12 pb-4 flex items-center justify-between sticky top-0 z-10 border-b border-gray-100">
+    <!-- Back Button -->
+    <a href="javascript:history.back()" aria-label="Geri" class="p-2 -ml-2 text-slate-900 active:bg-slate-100 rounded-full transition-colors">
+      <i class="w-6 h-6" data-lucide="chevron-left"></i>
+    </a>
+    <h1 class="text-[17px] font-semibold absolute left-1/2 -translate-x-1/2">Günlükler</h1>
+    <div class="w-10"></div> <!-- Spacer -->
+  </header>
+
+  <!-- Empty State Content -->
+  <main class="flex-grow flex flex-col items-center justify-center px-6 pb-20">
+    <div class="flex flex-col items-center relative mb-4 mt-[-100px]">
+      
+      <!-- Floating decorative icons (lightbulb & plug) -->
+      <div class="absolute -top-4 -left-6 text-slate-200">
+        <i class="w-5 h-5" data-lucide="lightbulb"></i>
+      </div>
+      <div class="absolute -top-6 -right-4 text-slate-200">
+        <i class="w-5 h-5" data-lucide="plug"></i>
+      </div>
+
+      <!-- Main Box Icon Container with subtle background glow/shadow -->
+      <div class="relative w-32 h-24 flex items-end justify-center mb-6">
+        <div class="absolute bottom-0 w-32 h-10 bg-slate-200/50 rounded-[100%] blur-md"></div>
+        <i class="w-20 h-20 text-slate-300 drop-shadow-sm relative z-10 stroke-[1.5]" data-lucide="package-open"></i>
+      </div>
+      
+      <!-- Text -->
+      <p class="text-[15px] font-medium text-slate-400">Günlük Yok</p>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

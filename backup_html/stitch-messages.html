@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Mesaj Merkezi</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <script src="ai-fab.js"></script>
+<script src="theme.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
+<button aria-label="Tümünü okundu işaretle" class="p-1 text-[#7C5CFF]" onclick="markAllRead()">
+<i class="w-6 h-6" data-lucide="check-check"></i>
+</button>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Tabs -->
+<div class="px-5 pt-2 pb-4" data-purpose="message-tabs">
+<div class="bg-white/70 rounded-full p-1 flex" id="tabs">
+<button class="flex-1 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white" onclick="switchTab(this, 'tab-alerts')">Uyarılar</button>
+<button class="flex-1 py-2 rounded-full text-sm font-semibold text-slate-500" onclick="switchTab(this, 'tab-family')">Aile</button>
+<button class="flex-1 py-2 rounded-full text-sm font-semibold text-slate-500" onclick="switchTab(this, 'tab-notices')">Duyurular</button>
+</div>
+</div>
+<!-- END: Tabs -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pb-10">
+<!-- Tab: Uyarılar -->
+<section class="space-y-3" id="tab-alerts">
+<!-- Dinamik olarak JS ile doldurulur -->
+</section>
+<!-- Tab: Aile -->
+<section class="hidden" id="tab-family">
+<div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">
+<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-4 menu-container-shadow">
+<i class="w-8 h-8" data-lucide="users"></i>
+</div>
+<p class="text-slate-400 font-medium">Aile mesajı yok</p>
+</div>
+</section>
+<!-- Tab: Duyurular -->
+<section class="hidden space-y-3" id="tab-notices">
+<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">
+<span class="unread-dot w-2.5 h-2.5 bg-[#FF3B5C] rounded-full mt-2 flex-shrink-0"></span>
+<div class="min-w-0">
+<h2 class="font-bold leading-tight">NEXUS güncellemesi hazır</h2>
+<p class="text-sm text-slate-500 mt-1">Yeni sürümde enerji raporları geliştirildi.</p>
+<p class="text-xs text-slate-400 mt-2">2 gün önce</p>
+</div>
+</article>
+</section>
+</main>
+<!-- END: MainContent -->
+<script data-purpose="message-interactions">
+    lucide.createIcons();
+    // Switch between message tabs
+    function switchTab(btn, id) {
+      document.querySelectorAll('#tabs button').forEach(function (b) {
+        b.className = 'flex-1 py-2 rounded-full text-sm font-semibold text-slate-500';
+      });
+      btn.className = 'flex-1 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white';
+      ['tab-alerts', 'tab-family', 'tab-notices'].forEach(function (t) {
+        document.getElementById(t).classList.toggle('hidden', t !== id);
+      });
+    }
+    // Tab geçişi
+    function switchTab(btn, id) {
+      document.querySelectorAll('#tabs button').forEach(function(b){
+        b.className = 'flex-1 py-2 rounded-full text-sm font-semibold text-slate-500';
+      });
+      btn.className = 'flex-1 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white';
+      ['tab-alerts', 'tab-family', 'tab-notices'].forEach(function (t) {
+        document.getElementById(t).classList.toggle('hidden', t !== id);
+      });
+    }
+
+    // Bildirimleri cihaz listesinden oluştur
+    (function buildNotifications() {
+      const readKey = 'nexusReadNotifs';
+      let readSet = new Set();
+      try { readSet = new Set(JSON.parse(localStorage.getItem(readKey) || '[]')); } catch(e){}
+
+      const alertsSection = document.getElementById('tab-alerts');
+      const cards = JSON.parse(localStorage.getItem('nexusDashboardCards') || '[]');
+      const devices = cards.filter(c => c.id && c.id.startsWith('device-') && c.visible);
+
+      // Statik + dinamik bildirimler
+      const staticNotifs = [
+        { id: 'n1', title: 'NEXUS Güncellemesi', body: 'Uygulama v2.4.1 sürümüne güncellendi.', time: 'Bugün 10:15', color: 'bg-[#7C5CFF]' },
+        { id: 'n2', title: 'Enerji Raporu Hazır', body: 'Bu haftanın tüketim raporu görüntülemeye hazır.', time: 'Dün 20:00', color: 'bg-[#7C5CFF]' },
+      ];
+
+      // Cihazlardan dinamik bildirim üret
+      const deviceNotifs = devices.map((d, i) => ({
+        id: 'dev-notif-' + i,
+        title: d.title + ' bağlı',
+        body: d.title + ' başarıyla eşleştirildi ve izleniyor.',
+        time: 'Az önce',
+        color: 'bg-emerald-500'
+      }));
+
+      const allNotifs = [...deviceNotifs, ...staticNotifs];
+
+      alertsSection.innerHTML = '';
+      if(allNotifs.length === 0) {
+        alertsSection.innerHTML = '<p class="text-center text-slate-400 pt-20">Henüz bildirim yok</p>';
+        return;
+      }
+
+      allNotifs.forEach(n => {
+        const isRead = readSet.has(n.id);
+        const article = document.createElement('article');
+        article.className = 'bg-white dark:bg-slate-900 rounded-2xl menu-container-shadow p-4 flex gap-4 cursor-pointer active:scale-[0.99] transition-transform';
+        article.innerHTML = `
+          <span class="unread-dot w-2.5 h-2.5 ${isRead ? 'bg-slate-200' : n.color} rounded-full mt-2 flex-shrink-0 transition-colors duration-300"></span>
+          <div class="min-w-0">
+            <h2 class="font-bold leading-tight dark:text-slate-100">${n.title}</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${n.body}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">${n.time}</p>
+          </div>
+        `;
+        article.addEventListener('click', () => {
+          // Okundu olarak işaretle ve kaydet
+          readSet.add(n.id);
+          localStorage.setItem(readKey, JSON.stringify([...readSet]));
+          article.querySelector('.unread-dot').className = 'unread-dot w-2.5 h-2.5 bg-slate-200 rounded-full mt-2 flex-shrink-0 transition-colors duration-300';
+        });
+        alertsSection.appendChild(article);
+      });
+    })();
+
+    // Tümünü okundu işaretle
+    function markAllRead() {
+      const readKey = 'nexusReadNotifs';
+      const allIds = [];
+      document.querySelectorAll('.unread-dot').forEach(function (d) {
+        d.classList.remove('bg-[#FF3B5C]', 'bg-[#7C5CFF]', 'bg-emerald-500');
+        d.classList.add('bg-slate-200');
+      });
+      // Tüm bildirim id'lerini kaydet
+      try {
+        const cards = JSON.parse(localStorage.getItem('nexusDashboardCards') || '[]');
+        const devices = cards.filter(c => c.id && c.id.startsWith('device-'));
+        devices.forEach((d, i) => allIds.push('dev-notif-' + i));
+        allIds.push('n1', 'n2');
+        localStorage.setItem(readKey, JSON.stringify(allIds));
+      } catch(e){}
+    }
+  </script>
+</body></html>
+
+

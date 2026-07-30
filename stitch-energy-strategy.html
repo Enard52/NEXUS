@@ -2,7 +2,11 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — Tasarruf Stratejisi</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -38,14 +42,17 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
 <body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
 <header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="stitch-energy.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <!-- MiniApp capsule: more menu + close -->
@@ -62,9 +69,9 @@
 <!-- END: MiniApp Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pb-10">
-<!-- Strategy title & description (listeden localStorage ile senkronize gelir) -->
-<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapat</h1>
-<p class="text-slate-500 text-[15px] leading-relaxed mb-5" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın.</p>
+<!-- Strategy title & description (listeden localStorage ile senkronize gelir; sayfa üstü başlık ortalanmış) -->
+<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3 text-center" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapat</h1>
+<p class="text-slate-500 text-[15px] leading-relaxed mb-5 text-center" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın.</p>
 <!-- Enable toggle (cihaz + ev konumu olmadan açılamaz: gerçek geofencing koşulu) -->
 <label class="inline-flex items-center gap-3 mb-3 cursor-pointer" data-purpose="strategy-toggle">
 <input class="toggle-input hidden" id="strategy-enabled" type="checkbox"/>
@@ -204,6 +211,13 @@
       btn.classList.add('bg-[#7C5CFF]', 'active:scale-[0.98]');
     }
     function saveSettings() {
+      // Ayarları strateji bazında kalıcı yaz (ev konumu bu stratejiye bağlanır)
+      var loc = localStorage.getItem('nexusHomeLocation') || '';
+      var map = {};
+      try { map = JSON.parse(localStorage.getItem('nexusEnergySettingsMap') || '{}'); } catch (e) { map = {}; }
+      map[currentTitle] = { homeLocation: loc, savedAt: Date.now() };
+      localStorage.setItem('nexusEnergySettingsMap', JSON.stringify(map));
+      document.getElementById('settings-status').textContent = loc ? 'Ev Konumu: ' + loc : 'Ayarlanmadı';
       closeSheets();
     }
 
@@ -233,6 +247,15 @@
       document.getElementById('enable-note').classList.add('hidden');
       enabledMap[currentTitle] = toggle.checked;
       localStorage.setItem('nexusEnergyEnabledMap', JSON.stringify(enabledMap));
+      // Strateji açıldığında gerçek olay akışına kaydet (bildirim + günlük)
+      if (toggle.checked) {
+        try {
+          var evs = JSON.parse(localStorage.getItem('nexusEvents') || '[]');
+          if (!Array.isArray(evs)) evs = [];
+          evs.push({ id: 'e' + Date.now(), type: 'energy', title: 'Enerji stratejisi etkinleştirildi', detail: currentTitle, ts: Date.now() });
+          localStorage.setItem('nexusEvents', JSON.stringify(evs));
+        } catch (e) {}
+      }
     });
 
     /* ---------- Bottom sheets ---------- */

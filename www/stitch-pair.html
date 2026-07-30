@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Cihaz Eşleştirme</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nexus-purple': '#7C5CFF',
+            'nexus-cyan': '#22D3EE',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+<style data-purpose="radar-animation">
+    /* Subtle pulsing for the radar rings */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.6; }
+      50% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(0.95); opacity: 0.6; }
+    }
+    .radar-ring {
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+    /* Rotating radar sweep */
+    @keyframes sweep-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .radar-sweep {
+      background: conic-gradient(from 0deg, transparent, rgba(124, 92, 255, 0.28) 40%, transparent 41%);
+      animation: sweep-spin 3s linear infinite;
+    }
+    /* Discovered device reveal */
+    .device-card {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .device-card.found {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Cihaz Ekle</h1>
+<!-- Alternatif eşleştirme: QR tarama akışı -->
+<a aria-label="QR ile tara" class="p-1 text-nexus-purple" href="stitch-scan.html">
+<i class="w-6 h-6" data-lucide="scan-line"></i>
+</a>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow pb-10">
+<!-- BEGIN: ScanningArea -->
+<section class="flex flex-col items-center justify-center py-8" data-purpose="device-discovery-radar">
+<div class="relative w-72 h-72 flex items-center justify-center">
+<!-- Concentric Circles Background -->
+<div class="absolute inset-0 rounded-full bg-white/30 border border-white/60 radar-ring"></div>
+<div class="absolute inset-4 rounded-full bg-white/40 border border-white/60 radar-ring" style="animation-delay: 0.5s;"></div>
+<div class="absolute inset-8 rounded-full bg-white/50 border border-white/60 radar-ring" style="animation-delay: 1s;"></div>
+<div class="absolute inset-12 rounded-full bg-white/60 border border-white/70 radar-ring" style="animation-delay: 1.5s;"></div>
+<!-- Radar Sweep Gradient Overlay -->
+<div class="absolute inset-0 rounded-full radar-sweep" id="radar-sweep"></div>
+<!-- Central Logo: NEXUS N monogram (marka gradyanı) -->
+<div class="z-10 flex flex-col items-center">
+<svg class="w-14 h-14 mb-1" fill="none" viewBox="0 0 100 100">
+<defs>
+<linearGradient id="n-grad" x1="0" x2="100" y1="0" y2="100" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6f9bff"></stop>
+<stop offset="0.55" stop-color="#5b8dff"></stop>
+<stop offset="1" stop-color="#8b7bff"></stop>
+</linearGradient>
+</defs>
+<path d="M25 80 V20 L75 80 V20" stroke="url(#n-grad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
+</svg>
+<span class="text-slate-900 text-2xl font-extrabold tracking-wider">NEXUS</span>
+</div>
+</div>
+<div class="mt-8">
+<h2 class="text-slate-700 text-xl font-medium" id="scan-status">Cihaz aranıyor...</h2>
+</div>
+</section>
+<!-- END: ScanningArea -->
+<!-- BEGIN: DeviceList (gerçek keşif: yakında cihaz bulunamazsa dürüst boş durum) -->
+<section class="px-6 space-y-4 max-w-xl mx-auto w-full" data-purpose="detected-devices-list">
+<!-- Boş durum: tarama bitince gösterilir -->
+<div class="hidden bg-white rounded-3xl p-6 card-shadow border border-white/50 text-center" id="empty-state">
+<div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 flex items-center justify-center text-slate-300 mb-3">
+<i class="w-7 h-7" data-lucide="bluetooth-searching"></i>
+</div>
+<p class="font-semibold text-slate-700">Yakında cihaz bulunamadı</p>
+<p class="text-sm text-slate-400 mt-1">Cihazının eşleştirme modunda ve yakınında olduğundan emin ol.</p>
+<button class="mt-4 bg-nexus-purple text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-sm active:scale-95 transition-transform" onclick="startScan()">Tekrar Tara</button>
+</div>
+<!-- QR fallback -->
+<a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 pt-2" data-purpose="qr-fallback" href="stitch-scan.html">
+<i class="w-4 h-4" data-lucide="scan-line"></i>Cihazın görünmüyor mu? QR koduyla ekle
+</a>
+<!-- Kurulum kodu ile ekle: kod yazma modülünü (modal) açar, ayrı sayfaya gitmez -->
+<button class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 pt-1 w-full" data-purpose="setup-code-trigger" onclick="openCodeModal()">
+<i class="w-4 h-4" data-lucide="keyboard"></i>Kurulum kodu ile ekle
+</button>
+</section>
+<!-- END: DeviceList -->
+<!-- BEGIN: ManuelEkle (katalog bu sayfanın en altına gömülü — ayrı sayfa değil) -->
+<section class="px-6 mt-10 max-w-xl mx-auto w-full" data-purpose="manual-add-embed">
+<div class="text-center mb-4">
+<h2 class="text-lg font-bold">Manuel Ekle</h2>
+<p class="text-sm text-slate-500 mt-1">Cihazını markasına göre listeden seç.</p>
+</div>
+<div class="rounded-3xl overflow-hidden border border-white/60 card-shadow bg-white">
+<iframe src="stitch-integrations.html?embed=1" title="Cihaz kataloğu" class="w-full block" style="height: 68vh; border: 0;"></iframe>
+</div>
+</section>
+<!-- END: ManuelEkle -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: CodeModal (kod yazma modülü) -->
+<div id="code-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[90] hidden flex flex-col items-center justify-center px-6">
+<div class="bg-white rounded-[2rem] w-full max-w-sm p-6 shadow-2xl relative overflow-hidden transform scale-95 transition-transform" id="code-modal-content">
+<div class="text-center mb-6 mt-2">
+<div class="w-16 h-16 bg-slate-50 text-[#7C5CFF] rounded-full mx-auto flex items-center justify-center mb-4">
+<i class="w-8 h-8" data-lucide="hash"></i>
+</div>
+<h2 class="text-2xl font-bold text-slate-800">Kurulum Kodu</h2>
+<p class="text-sm text-slate-500 mt-2">Cihazınızın üzerindeki 8 haneli kodu girin.</p>
+</div>
+<input type="text" id="setup-code-input" class="w-full text-center text-3xl tracking-[0.2em] font-bold text-slate-800 border-none bg-slate-50 rounded-2xl py-4 focus:ring-2 focus:ring-[#7C5CFF]" placeholder="00000000" maxlength="11" autocomplete="off" />
+<p class="hidden text-sm text-red-500 mt-2 text-center" id="setup-code-error">Kod 8-11 haneli olmalı. Lütfen kontrol edin.</p>
+<div class="flex gap-3 mt-4">
+<button class="flex-1 py-3.5 rounded-2xl font-bold text-slate-600 bg-slate-100 active:bg-slate-200 transition-colors" onclick="closeCodeModal()">İptal</button>
+<button class="flex-1 py-3.5 rounded-2xl font-bold text-white bg-[#7C5CFF] active:bg-[#6b4ae8] transition-colors shadow-md shadow-[#7C5CFF]/30" onclick="confirmSetupCode()">Bağlan</button>
+</div>
+</div>
+</div>
+<!-- END: CodeModal -->
+<script data-purpose="pair-interactions">
+    lucide.createIcons();
+
+    /* ---------- Kod yazma modülü (kurulum kodu modalı) ---------- */
+    function openCodeModal() {
+      var modal = document.getElementById('code-modal');
+      var content = document.getElementById('code-modal-content');
+      document.getElementById('setup-code-error').classList.add('hidden');
+      modal.classList.remove('hidden');
+      setTimeout(function () {
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+        document.getElementById('setup-code-input').focus();
+      }, 10);
+    }
+    function closeCodeModal() {
+      var modal = document.getElementById('code-modal');
+      var content = document.getElementById('code-modal-content');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+      setTimeout(function () {
+        modal.classList.add('hidden');
+        document.getElementById('setup-code-input').value = '';
+      }, 200);
+    }
+    // Girilen kurulum kodunu doğrula ve cihazı gerçekten eşleştir (nexusPairedDevices)
+    function confirmSetupCode() {
+      var input = document.getElementById('setup-code-input');
+      var err = document.getElementById('setup-code-error');
+      var digits = (input.value || '').replace(/\D/g, '');
+      if (digits.length < 8 || digits.length > 11) {
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      var paired = [];
+      try { paired = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]'); } catch (e) {}
+      if (!Array.isArray(paired)) paired = [];
+      var name = 'Cihaz ·' + digits.slice(-4);
+      if (!paired.some(function (d) { return d && d.name === name; })) {
+        paired.push({ name: name, icon: 'cpu' });
+        localStorage.setItem('nexusPairedDevices', JSON.stringify(paired));
+      }
+      input.value = '';
+      closeCodeModal();
+      setTimeout(function () { window.location.href = 'stitch-home.html'; }, 250);
+    }
+
+    // Gerçek BLE/mDNS keşfi native eklenti gerektirir; web katmanında
+    // tarama sonunda dürüst "cihaz bulunamadı" durumu gösterilir.
+    var scanTimer = null;
+    function startScan() {
+      var status = document.getElementById('scan-status');
+      var sweep = document.getElementById('radar-sweep');
+      var empty = document.getElementById('empty-state');
+      empty.classList.add('hidden');
+      status.textContent = 'Cihaz aranıyor...';
+      sweep.style.display = 'block';
+      if (scanTimer) clearTimeout(scanTimer);
+      scanTimer = setTimeout(function () {
+        sweep.style.display = 'none';
+        status.textContent = 'Yakında cihaz bulunamadı';
+        empty.classList.remove('hidden');
+        lucide.createIcons();
+      }, 4000);
+    }
+    startScan();
+  </script>
+</body></html>

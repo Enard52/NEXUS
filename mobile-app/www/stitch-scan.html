@@ -1,8 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — Tara</title>
 <!-- Tailwind CSS CDN with plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -31,14 +35,17 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
 <body class="bg-black text-white min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-12 pb-2 px-4" data-purpose="scan-header">
-<a aria-label="Geri" class="inline-flex w-10 h-10 items-center justify-center" href="stitch-home.html">
+<a aria-label="Geri" class="inline-flex w-10 h-10 items-center justify-center" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </a>
 </header>
@@ -64,21 +71,16 @@
 </p>
 <!-- Yardım balonu: alert() yerine tasarım sistemine uygun ipucu kutusu -->
 <p class="hidden bg-white/15 text-white/90 text-sm font-medium rounded-2xl px-4 py-3 max-w-xs mx-auto" id="scan-help">Cihazın kutusundaki veya gövdesindeki QR kodu çerçeveye hizalayın. Kod okunmazsa kurulum kodunu elle girebilirsiniz.</p>
-<!-- Manuel ekleme: radar keşif sayfasına gider -->
-<a class="mx-auto flex items-center gap-1 text-white/70 font-medium" href="stitch-pair.html">
-    QR kod bulunamadı, manuel ekleyin
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-</a>
 </section>
 <!-- END: Hints -->
 <!-- BEGIN: BottomActions -->
 <footer class="pb-12 pt-2 px-4 grid grid-cols-3 gap-2 items-start" data-purpose="scan-actions">
-<!-- Setup code -->
-<button class="flex flex-col items-center gap-2.5 text-white/90" onclick="toggleCodeSheet()">
-<span class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
-<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="12" rx="2" width="20" x="2" y="6"></rect><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" stroke-linecap="round"></path></svg>
+<!-- Kurulum kodu: kod yazma modülünü (alt sayfa) açar -->
+<button type="button" class="flex flex-col items-center gap-2.5 text-white/90" onclick="toggleCodeSheet()">
+<span class="w-14 h-14 rounded-2xl bg-[#7C5CFF]/80 flex items-center justify-center shadow-lg shadow-[#7C5CFF]/30">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </span>
-<span class="text-sm leading-tight text-center">Kurulum<br/>Kodunu Girin</span>
+<span class="text-sm font-semibold leading-tight text-center">Kurulum<br/>Kodu</span>
 </button>
 <!-- Torch toggle -->
 <button class="flex flex-col items-center gap-2.5 text-white/90" data-purpose="torch-toggle" onclick="toggleTorch(this)">
@@ -99,12 +101,13 @@
 <!-- END: BottomActions -->
 <!-- BEGIN: SetupCodeSheet -->
 <div class="hidden fixed inset-0 bg-black/60 z-50 flex items-end" id="code-sheet" onclick="toggleCodeSheet()">
-<div class="bg-white text-slate-900 dark:text-slate-100 w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
+<div class="bg-white text-slate-900 w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
 <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
 <h2 class="font-bold text-lg mb-1">Kurulum Kodunu Girin</h2>
 <p class="text-slate-500 text-sm mb-4">Cihazın üzerindeki 8-11 haneli kurulum kodunu yazın.</p>
-<input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#0ea5e9] focus:ring-[#0ea5e9]" placeholder="Örn. 123-45-678" type="text"/>
-<button class="w-full bg-[#0ea5e9] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="toggleCodeSheet()">Onayla</button>
+<input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-2 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="setup-code-input" placeholder="Örn. 123-45-678" type="text"/>
+<p class="hidden text-sm text-red-500 mb-2" id="setup-code-error">Kod 8-11 haneli olmalı. Lütfen kontrol edin.</p>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform mt-2" onclick="confirmSetupCode()">Onayla</button>
 </div>
 </div>
 <!-- END: SetupCodeSheet -->
@@ -116,14 +119,87 @@
     // Bottom sheet for manual setup code entry
     function toggleCodeSheet() {
       document.getElementById('code-sheet').classList.toggle('hidden');
+      document.getElementById('setup-code-error').classList.add('hidden');
     }
+    // Girilen kurulum kodunu doğrula ve cihazı gerçekten eşleştir (nexusPairedDevices)
+    function confirmSetupCode() {
+      var input = document.getElementById('setup-code-input');
+      var err = document.getElementById('setup-code-error');
+      var digits = (input.value || '').replace(/\D/g, '');
+      if (digits.length < 8 || digits.length > 11) {
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      var paired = [];
+      try { paired = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]'); } catch (e) {}
+      if (!Array.isArray(paired)) paired = [];
+      var name = 'Cihaz ·' + digits.slice(-4);
+      if (!paired.some(function (d) { return d && d.name === name; })) {
+        paired.push({ name: name, icon: 'cpu' });
+        localStorage.setItem('nexusPairedDevices', JSON.stringify(paired));
+      }
+      input.value = '';
+      toggleCodeSheet();
+      // Cihaz listesinin göründüğü ana ekrana dön
+      window.location.href = 'stitch-home.html';
+    }
+    
+    let mediaStream = null;
+    let videoTrack = null;
+
+    // Request camera access and get the track on load if possible, 
+    // or we can do it when the user clicks the torch.
+    async function initCamera() {
+      if (videoTrack) return;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" }
+        });
+        mediaStream = stream;
+        videoTrack = stream.getVideoTracks()[0];
+      } catch (err) {
+        console.warn("Kamera erişimi sağlanamadı veya cihazda kamera yok.", err);
+      }
+    }
+
     // Torch on/off visual state
-    function toggleTorch(btn) {
+    async function toggleTorch(btn) {
       var label = document.getElementById('torch-label');
       var isOn = label.innerHTML.indexOf('Açık') !== -1;
-      label.innerHTML = isOn ? 'El Feneri<br/>Kapalı' : 'El Feneri<br/>Açık';
-      btn.classList.toggle('text-[#22D3EE]', !isOn);
-      btn.classList.toggle('text-white/90', isOn);
+      
+      if (!videoTrack) {
+        await initCamera();
+      }
+
+      if (videoTrack) {
+        try {
+          const capabilities = videoTrack.getCapabilities();
+          if (capabilities.torch) {
+            await videoTrack.applyConstraints({
+              advanced: [{ torch: !isOn }]
+            });
+          } else {
+            console.warn("Cihazın kamerası el feneri (torch) özelliğini desteklemiyor.");
+          }
+        } catch (err) {
+          console.warn("Fener açılırken hata oluştu.", err);
+        }
+      }
+
+      // Update UI
+      label.innerHTML = !isOn ? 'El Feneri<br/>Açık' : 'El Feneri<br/>Kapalı';
+      btn.classList.toggle('text-[#22D3EE]', isOn); // Turn off cyan if it was on (wait, !isOn means turning it on)
+      btn.classList.toggle('text-white/90', !isOn);
+      
+      if (!isOn) {
+        btn.classList.add('text-[#22D3EE]');
+        btn.classList.remove('text-white/90');
+      } else {
+        btn.classList.remove('text-[#22D3EE]');
+        btn.classList.add('text-white/90');
+      }
     }
+
   </script>
 </body></html>

@@ -41,6 +41,13 @@ for (const page of pages) {
   copyFileSync(join(REPO_ROOT, page), join(OUT_DIR, page));
 }
 
+// 2b. Sayfaların ortak script'leri (tema, gerçek veri akışı, AI FAB + rozet).
+const SHARED_SCRIPTS = ["theme.js", "data.js", "ai-fab.js"];
+for (const file of SHARED_SCRIPTS) {
+  const src = join(REPO_ROOT, file);
+  if (existsSync(src)) copyFileSync(src, join(OUT_DIR, file));
+}
+
 // 3. Sayfalardan bağlanan statik hukuk sayfaları (stitch-plus -> public/terms.html).
 const LEGAL_FILES = ["terms.html", "privacy.html"];
 const PUBLIC_SRC = join(REPO_ROOT, "public");

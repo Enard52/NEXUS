@@ -103,8 +103,8 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["One", "Tek"],
   ["intelligence.", "zekâ."],
   [
-    "NEXUS is a voice-first personal operating system that connects every device, learns your routines, and keeps every decision inside your home.",
-    "NEXUS; her cihazı birbirine bağlayan, rutinlerini öğrenen ve her kararı evinin içinde tutan ses öncelikli kişisel bir işletim sistemidir.",
+    "NEXUS is a smart home assistant that helps you manage your smart home devices.",
+    "NEXUS, akıllı ev cihazlarınızı yönetmenize yardımcı olan bir akıllı ev asistanıdır.",
   ],
   ["Try NEXUS free", "NEXUS'u ücretsiz dene"],
   ["Download desktop app", "Masaüstü uygulamasını indir"],
@@ -599,6 +599,7 @@ export function renderMarketingPremiumDocument(
   return `<!doctype html>
 <html lang="${locale}" data-theme="${theme}"${dir}>
 <head>
+
   <script>
     if (!localStorage.getItem("nexus_session_token")) {
       window.location.replace("/login.html");
@@ -675,7 +676,7 @@ export function getPremiumShell(locale: Locale): { header: string; footer: strin
   };
 
   const body = localizePremiumBody(renderPremiumBody(dyn), locale);
-  const mainStart = body.indexOf('<main class="main-content">');
+  const mainStart = body.indexOf('<main id="main">');
   const mainEnd = body.indexOf('</main>') + 7;
 
   return {

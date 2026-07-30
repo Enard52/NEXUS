@@ -2,7 +2,11 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — Ev Yönetimi</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -27,111 +31,496 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">Ev Yönetimi</h1>
+<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">Ev Yönetimi</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pt-4 pb-10">
-<!-- Homes List -->
-<section class="space-y-4" data-purpose="homes-list" id="homes-list">
-<!-- Home card: Evim -->
-<article class="bg-white rounded-3xl menu-container-shadow overflow-hidden">
-<button class="w-full flex items-center justify-between p-5 active:bg-slate-50" onclick="toggleHome(this)">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white">
-<i class="w-6 h-6" data-lucide="home"></i>
-</div>
-<div class="text-left">
-<h2 class="text-lg font-bold leading-tight">Evim</h2>
-<p class="text-sm text-slate-400 font-medium">2 oda · 1 üye</p>
-</div>
-</div>
-<i class="w-5 h-5 text-slate-300 transition-transform" data-lucide="chevron-down"></i>
-</button>
-<!-- Expandable details -->
-<div class="hidden border-t border-slate-50 px-5 py-4 space-y-3" data-purpose="home-details">
-<div class="flex items-center justify-between">
-<span class="text-slate-500 font-medium">Odalar</span>
-<span class="font-semibold">Oturma Odası, Yatak Odası</span>
-</div>
-<div class="flex items-center justify-between">
-<span class="text-slate-500 font-medium">Üyeler</span>
-<span class="font-semibold">Deniz Yılmaz <span class="text-[#7C5CFF] text-sm">(Sahip)</span></span>
-</div>
-</div>
-</article>
-</section>
+<!-- Homes List (gerçek veri: nexusHousehold) -->
+<section class="space-y-4" data-purpose="homes-list" id="homes-list"></section>
 <!-- Actions -->
 <section class="mt-8 space-y-3" data-purpose="home-actions">
-<button class="w-full bg-[#7C5CFF] text-white rounded-2xl py-4 font-bold text-lg shadow-md active:scale-[0.98] transition-transform" onclick="openSheet('Yeni Ev Oluştur')">Yeni Ev Oluştur</button>
-<button class="w-full bg-white text-slate-800 border border-slate-200 rounded-2xl py-4 font-bold text-lg active:scale-[0.98] transition-transform" onclick="openSheet('Bir Eve Katıl')">Bir Eve Katıl</button>
+<button class="w-full bg-[#7C5CFF] text-white rounded-2xl py-4 font-bold text-lg shadow-md active:scale-[0.98] transition-transform" onclick="openInputSheet('create')">Yeni Ev Oluştur</button>
+<button class="w-full bg-white text-slate-800 border border-slate-200 rounded-2xl py-4 font-bold text-lg active:scale-[0.98] transition-transform" onclick="openInputSheet('join')">Bir Eve Katıl</button>
 </section>
 </main>
 <!-- END: MainContent -->
-<!-- BEGIN: BottomSheet -->
-<div class="hidden fixed inset-0 bg-black/50 z-50 flex items-end" id="home-sheet" onclick="closeSheet()">
+
+<!-- BEGIN: HomeDetail (tam sayfa Ev Ayarı) -->
+<div class="hidden fixed inset-0 z-40 bg-gradient-custom flex-col" id="home-detail">
+<header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="detail-header">
+<button aria-label="Geri" class="p-1" onclick="closeHomeDetail()">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</button>
+<h1 class="whitespace-nowrap text-xl font-bold absolute left-1/2 -translate-x-1/2">Ev Ayarı</h1>
+</header>
+<main class="flex-grow px-5 pt-2 pb-12 overflow-y-auto" id="home-detail-body"></main>
+</div>
+<!-- END: HomeDetail -->
+
+<!-- BEGIN: InputSheet (tek girişli: ev oluştur / katıl / isim / konum) -->
+<div class="hidden fixed inset-0 bg-black/50 z-[60] flex items-end" id="input-sheet" onclick="closeInputSheet()">
 <div class="bg-white w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
 <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
 <h2 class="font-bold text-lg mb-1" id="sheet-title">Yeni Ev Oluştur</h2>
 <p class="text-slate-500 text-sm mb-4" id="sheet-desc">Evine bir isim ver.</p>
 <input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="sheet-input" placeholder="Örn. Yazlık" type="text"/>
-<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="confirmSheet()">Onayla</button>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="confirmInputSheet()">Onayla</button>
 </div>
 </div>
-<!-- END: BottomSheet -->
+<!-- END: InputSheet -->
+
+<!-- BEGIN: MemberSheet (üye ekle / düzenle) -->
+<div class="hidden fixed inset-0 bg-black/50 z-[60] flex items-end" id="member-sheet" onclick="closeMemberSheet()">
+<div class="bg-white w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
+<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
+<h2 class="font-bold text-lg mb-1" id="member-sheet-title">Üye Ekle</h2>
+<p class="text-slate-500 text-sm mb-4">Aile üyesinin bilgilerini gir.</p>
+<label class="block text-sm font-semibold text-slate-600 mb-1">Ad Soyad</label>
+<input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-3 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="member-name" placeholder="Örn. Ayşe Yılmaz" type="text"/>
+<label class="block text-sm font-semibold text-slate-600 mb-1">E-posta</label>
+<input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-3 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="member-email" placeholder="ornek@eposta.com" type="email"/>
+<label class="block text-sm font-semibold text-slate-600 mb-1">Rol</label>
+<select class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="member-role">
+<option value="Üye">Üye</option>
+<option value="Misafir">Misafir</option>
+<option value="Ev Sahibi">Ev Sahibi</option>
+</select>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="confirmMember()">Kaydet</button>
+<button class="hidden w-full text-red-500 font-semibold py-3.5 mt-2" id="member-remove-btn" onclick="removeMember()">Üyeyi Çıkar</button>
+</div>
+</div>
+<!-- END: MemberSheet -->
+
+<!-- BEGIN: RoomsModal (oda yönetimi) -->
+<div class="hidden fixed inset-0 bg-black/50 z-[60] flex items-end" id="rooms-modal" onclick="closeRooms()">
+<div class="bg-white w-full rounded-t-3xl p-6 pb-10 max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
+<h2 class="font-bold text-lg mb-1">Oda Yönetimi</h2>
+<p class="text-slate-500 text-sm mb-4">Evindeki odaları ekle veya kaldır.</p>
+<div class="flex-1 overflow-y-auto -mx-1 px-1 mb-4" id="rooms-list"></div>
+<div class="flex gap-2">
+<input class="flex-1 border border-slate-200 rounded-xl px-4 py-3 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="room-input" placeholder="Örn. Oturma Odası" type="text"/>
+<button class="bg-[#7C5CFF] text-white font-bold px-5 rounded-xl active:scale-[0.98] transition-transform" onclick="addRoom()">Ekle</button>
+</div>
+</div>
+</div>
+<!-- END: RoomsModal -->
+
+<!-- BEGIN: PermModal (izinleri yönet) -->
+<div class="hidden fixed inset-0 bg-black/50 z-[60] flex items-end" id="perm-modal" onclick="closePerms()">
+<div class="bg-white w-full rounded-t-3xl p-6 pb-10 max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
+<h2 class="font-bold text-lg mb-1">İzinleri Yönet</h2>
+<p class="text-slate-500 text-sm mb-4">Her üyenin yetkilerini ayarla. Ev sahibinin tüm yetkileri vardır.</p>
+<div class="flex-1 overflow-y-auto -mx-1 px-1" id="perm-list"></div>
+</div>
+</div>
+<!-- END: PermModal -->
+
+<!-- BEGIN: ConfirmModal (evi sil) -->
+<div class="hidden fixed inset-0 bg-black/50 z-[60] flex items-center justify-center px-6" id="confirm-modal" onclick="closeConfirm()">
+<div class="bg-white w-full max-w-sm rounded-3xl p-6" onclick="event.stopPropagation()">
+<div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-4">
+<i class="w-7 h-7" data-lucide="trash-2"></i>
+</div>
+<h2 class="font-bold text-lg text-center mb-1">Evi Sil</h2>
+<p class="text-slate-500 text-sm text-center mb-5" id="confirm-desc">Bu evi ve tüm ayarlarını kalıcı olarak silmek istediğine emin misin?</p>
+<div class="flex gap-3">
+<button class="flex-1 py-3.5 rounded-xl font-bold text-slate-600 bg-slate-100 active:bg-slate-200 transition-colors" onclick="closeConfirm()">Vazgeç</button>
+<button class="flex-1 py-3.5 rounded-xl font-bold text-white bg-red-500 active:bg-red-600 transition-colors" onclick="confirmDeleteHome()">Sil</button>
+</div>
+</div>
+</div>
+<!-- END: ConfirmModal -->
+
 <script data-purpose="household-interactions">
     lucide.createIcons();
-    // Expand/collapse home details
-    function toggleHome(btn) {
-      var details = btn.parentElement.querySelector('[data-purpose="home-details"]');
-      details.classList.toggle('hidden');
-      btn.querySelector('.lucide-chevron-down').classList.toggle('rotate-180');
+
+    /* ---------- Gerçek kullanıcı verisi ---------- */
+    var HOUSE_KEY = 'nexusHousehold';
+    function ownerName() { return localStorage.getItem('nexusUserName') || 'Misafir'; }
+    function ownerEmail() { return localStorage.getItem('nexusUserEmail') || ''; }
+    function ownerAvatar() { return localStorage.getItem('nexusAvatar') || ''; }
+
+    function defaultPerms(role) {
+      var owner = (role === 'Ev Sahibi');
+      return { control: true, invite: owner, settings: owner };
     }
-    // Bottom sheet: create or join a home
+    function defaultHome() {
+      return {
+        name: 'Evim',
+        location: localStorage.getItem('nexusHomeLocation') || '',
+        rooms: [],
+        members: [{ name: ownerName(), email: ownerEmail(), avatar: ownerAvatar(), role: 'Ev Sahibi', perms: defaultPerms('Ev Sahibi') }]
+      };
+    }
+
+    function loadHomes() {
+      var homes = null;
+      try { homes = JSON.parse(localStorage.getItem(HOUSE_KEY) || 'null'); } catch (e) {}
+      if (!Array.isArray(homes) || !homes.length) {
+        homes = [defaultHome()];
+        saveHomes(homes);
+        return homes;
+      }
+      // Eski kayıtları yeni şemaya taşı (konum, e-posta, avatar, izinler)
+      var changed = false;
+      homes.forEach(function (h) {
+        if (typeof h.location === 'undefined') { h.location = localStorage.getItem('nexusHomeLocation') || ''; changed = true; }
+        if (!Array.isArray(h.rooms)) { h.rooms = []; changed = true; }
+        if (!Array.isArray(h.members)) { h.members = []; changed = true; }
+        h.members.forEach(function (m) {
+          if (m.role === 'Sahip') { m.role = 'Ev Sahibi'; changed = true; }
+          if (typeof m.email === 'undefined') { m.email = ''; changed = true; }
+          if (typeof m.avatar === 'undefined') { m.avatar = ''; changed = true; }
+          if (typeof m.perms === 'undefined') { m.perms = defaultPerms(m.role); changed = true; }
+        });
+        // Ev sahibinin profil verisini doldur
+        var owner = null;
+        h.members.forEach(function (m) { if (!owner && m.role === 'Ev Sahibi') owner = m; });
+        if (owner) {
+          if (!owner.email && ownerEmail()) { owner.email = ownerEmail(); changed = true; }
+          if (!owner.avatar && ownerAvatar()) { owner.avatar = ownerAvatar(); changed = true; }
+        }
+      });
+      if (changed) saveHomes(homes);
+      return homes;
+    }
+    function saveHomes(homes) {
+      try { localStorage.setItem(HOUSE_KEY, JSON.stringify(homes)); } catch (e) {}
+    }
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* ---------- Ev listesi ---------- */
+    function renderHomes() {
+      var homes = loadHomes();
+      var box = document.getElementById('homes-list');
+      box.innerHTML = homes.map(function (h, i) {
+        return '<article class="bg-white rounded-3xl menu-container-shadow overflow-hidden">' +
+          '<button class="w-full flex items-center justify-between p-5 active:bg-slate-50" onclick="openHomeDetail(' + i + ')">' +
+          '<div class="flex items-center gap-4">' +
+          '<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white">' +
+          '<i class="w-6 h-6" data-lucide="home"></i></div>' +
+          '<div class="text-left">' +
+          '<h2 class="text-lg font-bold leading-tight">' + esc(h.name) + '</h2>' +
+          '<p class="text-sm text-slate-400 font-medium">' + h.rooms.length + ' oda · ' + h.members.length + ' üye</p>' +
+          '</div></div>' +
+          '<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>' +
+          '</button></article>';
+      }).join('');
+      lucide.createIcons();
+    }
+
+    /* ---------- Ev Ayarı (tam sayfa detay) ---------- */
+    var detailIndex = -1;
+
+    function settingRow(label, value, onclickAttr) {
+      var right = value == null
+        ? '<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>'
+        : '<span class="text-slate-400 font-medium max-w-[42vw] truncate">' + esc(value) + '</span>' +
+          '<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>';
+      return '<button class="w-full flex items-center justify-between px-5 py-4 active:bg-slate-50" onclick="' + onclickAttr + '">' +
+        '<span class="font-bold text-base">' + esc(label) + '</span>' +
+        '<span class="flex items-center gap-2">' + right + '</span>' +
+        '</button>';
+    }
+
+    function memberAvatar(m) {
+      if (m.avatar) {
+        return '<img src="' + esc(m.avatar) + '" alt="" class="w-11 h-11 rounded-full object-cover shrink-0"/>';
+      }
+      return '<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white font-bold shrink-0">' +
+        esc((m.name || '?').charAt(0).toUpperCase()) + '</div>';
+    }
+
+    function renderHomeDetail() {
+      var homes = loadHomes();
+      var h = homes[detailIndex];
+      if (!h) { closeHomeDetail(); return; }
+
+      var divider = '<div class="border-t border-slate-100 mx-5"></div>';
+
+      var settingsCard = '<section class="bg-white rounded-3xl menu-container-shadow overflow-hidden mb-6">' +
+        settingRow('Ev İsmi', h.name, 'openEditName()') + divider +
+        settingRow('Oda yönetimi', h.rooms.length + ' Odalar', 'openRooms()') + divider +
+        settingRow('Ev Konumu', h.location || 'Belirtilmedi', 'openEditLocation()') + divider +
+        settingRow('İzinleri Yönet', null, 'openPermissions()') +
+        '</section>';
+
+      var membersRows = h.members.map(function (m, mi) {
+        return '<button class="w-full flex items-center gap-3 px-5 py-4 active:bg-slate-50 text-left" onclick="openMember(' + mi + ')">' +
+          memberAvatar(m) +
+          '<div class="flex-1 min-w-0">' +
+          '<p class="font-bold leading-tight truncate">' + esc(m.name) + '</p>' +
+          '<p class="text-sm text-slate-400 truncate">' + esc(m.email || 'E-posta eklenmedi') + '</p>' +
+          '</div>' +
+          '<span class="text-slate-400 text-sm font-medium shrink-0">' + esc(m.role) + '</span>' +
+          '<i class="w-5 h-5 text-slate-300 shrink-0" data-lucide="chevron-right"></i>' +
+          '</button>';
+      }).join(divider);
+
+      var membersCard = '<p class="text-sm text-slate-500 font-medium mb-2 px-1">Ev Üyeleri</p>' +
+        '<section class="bg-white rounded-3xl menu-container-shadow overflow-hidden mb-6">' +
+        membersRows + divider +
+        '<button class="w-full flex items-center gap-2 px-5 py-4 text-[#7C5CFF] font-semibold active:bg-slate-50" onclick="openAddMember()">' +
+        '<i class="w-5 h-5" data-lucide="plus"></i>Üye ekle</button>' +
+        '</section>';
+
+      var deleteBtn = '<button class="w-full bg-white rounded-3xl menu-container-shadow py-4 text-red-500 font-bold active:scale-[0.98] transition-transform" onclick="openDeleteConfirm()">Evi Sil</button>';
+
+      document.getElementById('home-detail-body').innerHTML = settingsCard + membersCard + deleteBtn;
+      lucide.createIcons();
+    }
+
+    function openHomeDetail(index) {
+      detailIndex = index;
+      renderHomeDetail();
+      var panel = document.getElementById('home-detail');
+      panel.classList.remove('hidden');
+      panel.classList.add('flex');
+    }
+    function closeHomeDetail() {
+      var panel = document.getElementById('home-detail');
+      panel.classList.add('hidden');
+      panel.classList.remove('flex');
+      detailIndex = -1;
+    }
+
+    /* ---------- Tek girişli sheet: ev oluştur / katıl / isim / konum ---------- */
     var sheetMode = '';
-    function openSheet(mode) {
+    function openInputSheet(mode) {
       sheetMode = mode;
-      document.getElementById('sheet-title').textContent = mode;
-      document.getElementById('sheet-desc').textContent =
-        mode === 'Bir Eve Katıl' ? 'Sana gönderilen davet kodunu gir.' : 'Evine bir isim ver.';
-      document.getElementById('sheet-input').placeholder =
-        mode === 'Bir Eve Katıl' ? 'Örn. NX-48213' : 'Örn. Yazlık';
-      document.getElementById('sheet-input').value = '';
-      document.getElementById('home-sheet').classList.remove('hidden');
+      var cfg = {
+        create: { title: 'Yeni Ev Oluştur', desc: 'Evine bir isim ver.', ph: 'Örn. Yazlık', val: '' },
+        join: { title: 'Bir Eve Katıl', desc: 'Sana gönderilen davet kodunu gir.', ph: 'Örn. NX-48213', val: '' },
+        name: { title: 'Ev İsmi', desc: 'Evinin adını düzenle.', ph: 'Örn. Evim', val: currentHome() ? currentHome().name : '' },
+        location: { title: 'Ev Konumu', desc: 'Evinin bulunduğu yeri gir.', ph: 'Örn. Esenyurt', val: currentHome() ? currentHome().location : '' }
+      }[mode] || { title: '', desc: '', ph: '', val: '' };
+      document.getElementById('sheet-title').textContent = cfg.title;
+      document.getElementById('sheet-desc').textContent = cfg.desc;
+      var input = document.getElementById('sheet-input');
+      input.placeholder = cfg.ph;
+      input.value = cfg.val || '';
+      document.getElementById('input-sheet').classList.remove('hidden');
+      setTimeout(function () { input.focus(); }, 50);
     }
-    function closeSheet() {
-      document.getElementById('home-sheet').classList.add('hidden');
+    function closeInputSheet() { document.getElementById('input-sheet').classList.add('hidden'); }
+    function currentHome() {
+      if (detailIndex < 0) return null;
+      var homes = loadHomes();
+      return homes[detailIndex] || null;
     }
-    // Add the new/joined home as a real card in the list
-    function confirmSheet() {
+    function confirmInputSheet() {
       var val = document.getElementById('sheet-input').value.trim();
       if (!val) return;
-      var name = sheetMode === 'Bir Eve Katıl' ? 'Ortak Ev' : val;
-      var sub = sheetMode === 'Bir Eve Katıl' ? 'Davet kodu: ' + val : '0 oda · 1 üye';
-      var card = document.createElement('article');
-      card.className = 'bg-white rounded-3xl menu-container-shadow overflow-hidden';
-      card.innerHTML =
-        '<div class="w-full flex items-center justify-between p-5">' +
-        '<div class="flex items-center gap-4">' +
-        '<div class="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-[#7C5CFF]">' +
-        '<i class="w-6 h-6" data-lucide="home"></i></div>' +
-        '<div class="text-left"><h2 class="text-lg font-bold leading-tight"></h2>' +
-        '<p class="text-sm text-slate-400 font-medium"></p></div></div></div>';
-      card.querySelector('h2').textContent = name;
-      card.querySelector('p').textContent = sub;
-      document.getElementById('homes-list').appendChild(card);
-      lucide.createIcons();
-      closeSheet();
+      var homes = loadHomes();
+      if (sheetMode === 'create') {
+        homes.push({ name: val, location: '', rooms: [], members: [{ name: ownerName(), email: ownerEmail(), avatar: ownerAvatar(), role: 'Ev Sahibi', perms: defaultPerms('Ev Sahibi') }] });
+      } else if (sheetMode === 'join') {
+        homes.push({ name: val, location: '', rooms: [], members: [{ name: ownerName(), email: ownerEmail(), avatar: ownerAvatar(), role: 'Üye', perms: defaultPerms('Üye') }] });
+      } else if (sheetMode === 'name' && homes[detailIndex]) {
+        homes[detailIndex].name = val;
+      } else if (sheetMode === 'location' && homes[detailIndex]) {
+        homes[detailIndex].location = val;
+        try { localStorage.setItem('nexusHomeLocation', val); } catch (e) {}
+      }
+      saveHomes(homes);
+      renderHomes();
+      if (detailIndex >= 0) renderHomeDetail();
+      closeInputSheet();
     }
+    function openEditName() { openInputSheet('name'); }
+    function openEditLocation() { openInputSheet('location'); }
+
+    /* ---------- Üye ekle / düzenle ---------- */
+    var memberIndex = -1; // -1 => yeni üye
+    function openAddMember() {
+      memberIndex = -1;
+      document.getElementById('member-sheet-title').textContent = 'Üye Ekle';
+      document.getElementById('member-name').value = '';
+      document.getElementById('member-email').value = '';
+      document.getElementById('member-role').value = 'Üye';
+      document.getElementById('member-remove-btn').classList.add('hidden');
+      document.getElementById('member-sheet').classList.remove('hidden');
+      setTimeout(function () { document.getElementById('member-name').focus(); }, 50);
+    }
+    function openMember(mi) {
+      var h = currentHome();
+      if (!h || !h.members[mi]) return;
+      memberIndex = mi;
+      var m = h.members[mi];
+      document.getElementById('member-sheet-title').textContent = 'Üyeyi Düzenle';
+      document.getElementById('member-name').value = m.name || '';
+      document.getElementById('member-email').value = m.email || '';
+      document.getElementById('member-role').value = m.role || 'Üye';
+      // Ev sahibi tek üye ise çıkarılamaz
+      var ownerCount = 0;
+      h.members.forEach(function (x) { if (x.role === 'Ev Sahibi') ownerCount++; });
+      var canRemove = !(m.role === 'Ev Sahibi' && ownerCount <= 1);
+      document.getElementById('member-remove-btn').classList.toggle('hidden', !canRemove);
+      document.getElementById('member-sheet').classList.remove('hidden');
+    }
+    function closeMemberSheet() { document.getElementById('member-sheet').classList.add('hidden'); }
+    function confirmMember() {
+      var name = document.getElementById('member-name').value.trim();
+      var email = document.getElementById('member-email').value.trim();
+      var role = document.getElementById('member-role').value;
+      if (!name) return;
+      var homes = loadHomes();
+      var h = homes[detailIndex];
+      if (!h) return;
+      if (memberIndex < 0) {
+        h.members.push({ name: name, email: email, avatar: '', role: role, perms: defaultPerms(role) });
+      } else if (h.members[memberIndex]) {
+        var m = h.members[memberIndex];
+        m.name = name; m.email = email;
+        if (m.role !== role) { m.role = role; m.perms = defaultPerms(role); }
+      }
+      saveHomes(homes);
+      renderHomes();
+      renderHomeDetail();
+      closeMemberSheet();
+    }
+    function removeMember() {
+      var homes = loadHomes();
+      var h = homes[detailIndex];
+      if (!h || memberIndex < 0 || !h.members[memberIndex]) return;
+      h.members.splice(memberIndex, 1);
+      saveHomes(homes);
+      renderHomes();
+      renderHomeDetail();
+      closeMemberSheet();
+    }
+
+    /* ---------- Oda yönetimi ---------- */
+    function openRooms() {
+      renderRoomsModal();
+      document.getElementById('room-input').value = '';
+      document.getElementById('rooms-modal').classList.remove('hidden');
+    }
+    function closeRooms() { document.getElementById('rooms-modal').classList.add('hidden'); }
+    function renderRoomsModal() {
+      var h = currentHome();
+      if (!h) return;
+      var list = document.getElementById('rooms-list');
+      list.innerHTML = h.rooms.length
+        ? h.rooms.map(function (r, ri) {
+            return '<div class="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">' +
+              '<div class="flex items-center gap-3 min-w-0">' +
+              '<div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 shrink-0"><i class="w-5 h-5" data-lucide="door-open"></i></div>' +
+              '<span class="font-semibold truncate">' + esc(r) + '</span></div>' +
+              '<button class="p-2 text-red-400 active:text-red-600" onclick="removeRoom(' + ri + ')"><i class="w-5 h-5" data-lucide="trash-2"></i></button>' +
+              '</div>';
+          }).join('')
+        : '<p class="text-slate-400 font-medium py-6 text-center">Henüz oda eklenmedi</p>';
+      lucide.createIcons();
+    }
+    function addRoom() {
+      var val = document.getElementById('room-input').value.trim();
+      if (!val) return;
+      var homes = loadHomes();
+      var h = homes[detailIndex];
+      if (!h) return;
+      h.rooms.push(val);
+      saveHomes(homes);
+      document.getElementById('room-input').value = '';
+      renderRoomsModal();
+      renderHomeDetail();
+      renderHomes();
+    }
+    function removeRoom(ri) {
+      var homes = loadHomes();
+      var h = homes[detailIndex];
+      if (!h || !h.rooms[ri]) return;
+      h.rooms.splice(ri, 1);
+      saveHomes(homes);
+      renderRoomsModal();
+      renderHomeDetail();
+      renderHomes();
+    }
+
+    /* ---------- İzinleri Yönet ---------- */
+    var PERM_DEFS = [
+      { key: 'control', label: 'Cihazları kontrol et' },
+      { key: 'invite', label: 'Üye davet et' },
+      { key: 'settings', label: 'Ev ayarlarını değiştir' }
+    ];
+    function openPermissions() {
+      renderPerms();
+      document.getElementById('perm-modal').classList.remove('hidden');
+    }
+    function closePerms() { document.getElementById('perm-modal').classList.add('hidden'); }
+    function renderPerms() {
+      var h = currentHome();
+      if (!h) return;
+      var box = document.getElementById('perm-list');
+      box.innerHTML = h.members.map(function (m, mi) {
+        var locked = (m.role === 'Ev Sahibi');
+        var toggles = PERM_DEFS.map(function (p) {
+          var on = locked ? true : !!(m.perms && m.perms[p.key]);
+          return '<label class="flex items-center justify-between py-2">' +
+            '<span class="text-sm font-medium text-slate-600">' + esc(p.label) + '</span>' +
+            '<input type="checkbox" class="w-5 h-5 rounded text-[#7C5CFF] focus:ring-[#7C5CFF]"' +
+            (on ? ' checked' : '') + (locked ? ' disabled' : '') +
+            ' onchange="togglePerm(' + mi + ',\'' + p.key + '\',this.checked)"/>' +
+            '</label>';
+        }).join('');
+        return '<div class="bg-slate-50 rounded-2xl p-4 mb-3">' +
+          '<div class="flex items-center gap-3 mb-2">' +
+          memberAvatar(m) +
+          '<div class="min-w-0"><p class="font-bold leading-tight truncate">' + esc(m.name) + '</p>' +
+          '<p class="text-xs text-slate-400">' + esc(m.role) + (locked ? ' · tüm yetkiler' : '') + '</p></div>' +
+          '</div>' + toggles + '</div>';
+      }).join('');
+      lucide.createIcons();
+    }
+    function togglePerm(mi, key, val) {
+      var homes = loadHomes();
+      var h = homes[detailIndex];
+      if (!h || !h.members[mi]) return;
+      if (!h.members[mi].perms) h.members[mi].perms = defaultPerms(h.members[mi].role);
+      h.members[mi].perms[key] = !!val;
+      saveHomes(homes);
+    }
+
+    /* ---------- Evi Sil ---------- */
+    function openDeleteConfirm() {
+      var h = currentHome();
+      var homes = loadHomes();
+      var desc = homes.length <= 1
+        ? 'Bu tek evin. Silersen boş bir "Evim" yeniden oluşturulur. Devam edilsin mi?'
+        : ('"' + (h ? h.name : 'Bu ev') + '" ve tüm ayarları kalıcı olarak silinecek. Emin misin?');
+      document.getElementById('confirm-desc').textContent = desc;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    }
+    function closeConfirm() { document.getElementById('confirm-modal').classList.add('hidden'); }
+    function confirmDeleteHome() {
+      var homes = loadHomes();
+      if (detailIndex >= 0 && homes[detailIndex]) {
+        homes.splice(detailIndex, 1);
+        saveHomes(homes);
+      }
+      closeConfirm();
+      closeHomeDetail();
+      renderHomes();
+    }
+
+    renderHomes();
   </script>
 </body></html>

@@ -69,16 +69,16 @@ function avatarData(initials: string, start: string, end: string): string {
   );
 }
 
-const AVATAR_SJ = avatarData("SJ", "#818cf8", "#38bdf8");
-const AVATAR_DC = avatarData("DC", "#38bdf8", "#818cf8");
-const AVATAR_ET = avatarData("ET", "#a78bfa", "#60a5fa");
-const AVATAR_MA = avatarData("MA", "#60a5fa", "#38bdf8");
-const AVATAR_AR = avatarData("AR", "#8b7bff", "#38bdf8");
-const AVATAR_NW = avatarData("NW", "#818cf8", "#60a5fa");
-const AVATAR_SM = avatarData("SM", "#38bdf8", "#8b7bff");
-const AVATAR_KS = avatarData("KS", "#a78bfa", "#818cf8");
-const AVATAR_OB = avatarData("OB", "#60a5fa", "#8b7bff");
-const AVATAR_LM = avatarData("LM", "#8b7bff", "#60a5fa");
+const AVATAR_SJ = "/images/avatars/sarah-jenkins.jpg";
+const AVATAR_DC = "/images/avatars/david-chen.jpg";
+const AVATAR_ET = "/images/avatars/emma-thompson.jpg";
+const AVATAR_MA = "/images/avatars/mateo-alvarez.jpg";
+const AVATAR_AR = "/images/avatars/aisha-rahman.jpg";
+const AVATAR_NW = "/images/avatars/noah-williams.jpg";
+const AVATAR_SM = "/images/avatars/sofia-martins.jpg";
+const AVATAR_KS = "/images/avatars/kenji-sato.jpg";
+const AVATAR_OB = "/images/avatars/olivia-brooks.jpg";
+const AVATAR_LM = "/images/avatars/lucas-meyer.jpg";
 
 export interface PremiumDynamicParts {
   /** Uppercase short code shown in the language button, e.g. "EN". */
@@ -130,10 +130,10 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           <a class="nav-link" href="#how">How it works</a>
           <a class="nav-link" href="#integrations">Integrations</a>
           <a class="nav-link" href="#pricing">Pricing</a>
-          <a class="nav-link" href="#desktop">Download</a>
+          <a class="nav-link" href="#downloads">Download</a>
           <div class="mobile-nav-actions">
-            <a class="mobile-nav-cta mobile-nav-login" href="/login">Open account</a>
-            <a class="mobile-nav-cta mobile-nav-download" href="#desktop">Download NEXUS</a>
+            <a class="mobile-nav-cta mobile-nav-login" href="#downloads">Open account</a>
+            <a class="mobile-nav-cta mobile-nav-download" href="#downloads">Download NEXUS</a>
           </div>
         </nav>
 
@@ -151,7 +151,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
             <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
-          <a class="button button-primary button-small" href="/login">Try NEXUS</a>
+          <a class="button button-primary button-small" href="#downloads">Try NEXUS</a>
           <button class="menu-button" id="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
           </button>
@@ -166,13 +166,13 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         <div class="hero-content reveal">
           <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · macOS · Linux · iOS · Android</div>
           <h1>Your home.<span class="hero-gradient-line"><span class="hero-word">One</span> <span class="hero-word">intelligence.</span></span></h1>
-          <p class="hero-copy">NEXUS is a voice-first personal operating system that connects every device, learns your routines, and keeps every decision inside your home.</p>
+          <p class="hero-copy">NEXUS is a smart home assistant that helps you manage your smart home devices.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="/login">
+            <a class="button button-primary" href="#downloads">
               Try NEXUS free
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a class="button button-secondary" href="#desktop">
+            <a class="button button-secondary" href="#downloads">
               Download desktop app
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
             </a>
@@ -303,7 +303,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <strong data-count="2000" data-suffix="+">2,000+</strong>
             <span class="metric-title">Supported devices</span>
             <p class="metric-copy">One intelligence layer across leading standards and ecosystems.</p>
-            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.2 5.6a3.2 3.2 0 1 1 3.1 4h3.4a3.2 3.2 0 1 1 3.1-4 3.2 3.2 0 0 1-1.1 3.6l-2 3.5a3.2 3.2 0 1 1-3.4 0l-2-3.5a3.2 3.2 0 0 1-1.1-3.6Z"/></svg>Matter</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>HomeKit</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.8 8.1 10.9 15M16.2 8.1 13.1 15M8 7h8"/></svg>Thread</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h11l-8 10h11M7 4c4 1 7 1 10 0M7 20c4-1 7-1 10 0"/></svg>Zigbee</b></span>
+            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.996 22.5c-2.478 0-4.63-.846-6.195-2.435L9.67 16.19c.642.593 1.455.908 2.326.908.87 0 1.684-.315 2.326-.908l3.869 3.875c-1.565 1.589-3.717 2.435-6.195 2.435zm6.544-3.151-3.873-3.878c.846-1.077 1.258-2.316 1.139-3.52l5.441-1.096c.21 2.923-.923 5.76-2.707 8.494zm-13.088 0c-1.784-2.734-2.917-5.571-2.707-8.494l5.441 1.096c-.12 1.204.293 2.443 1.139 3.52l-3.873 3.878zM5.539 7.64c2.257-2.617 5.485-3.865 8.784-3.324l-1.019 5.448c-1.127-.145-2.22.185-3.078.9l-4.687-3.024zm12.922 0-4.687 3.024c-.858-.715-1.951-1.045-3.078-.9l-1.019-5.448c3.299-.541 6.527.707 8.784 3.324z"/></svg>Matter</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>HomeKit</b><b><svg viewBox="0 0 165 165"><path fill="currentColor" d="M82.498,0C37.008,0,0,37.008,0,82.496c0,45.181,36.51,81.977,81.573,82.476V82.569l-27.002-0.002c-8.023,0-14.554,6.53-14.554,14.561c0,8.023,6.531,14.551,14.554,14.551v17.98c-17.939,0-32.534-14.595-32.534-32.531c0-17.944,14.595-32.543,32.534-32.543l27.002,0.004v-9.096c0-14.932,12.146-27.08,27.075-27.08c14.932,0,27.082,12.148,27.082,27.08c0,14.931-12.15,27.08-27.082,27.08l-9.097-0.001v80.641C136.889,155.333,165,122.14,165,82.496C165,37.008,127.99,0,82.498,0z"/><path fill="currentColor" d="M117.748,55.493c0-5.016-4.082-9.098-9.1-9.098c-5.015,0-9.097,4.082-9.097,9.098v9.097l9.097,0.001C113.666,64.591,117.748,60.51,117.748,55.493z"/></svg>Thread</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.988 0a11.85 11.85 0 00-8.617 3.696c7.02-.875 11.401-.583 13.289-.34 3.752.583 3.558 3.404 3.558 3.404L8.237 19.112c2.299.22 6.897.366 13.796-.631a11.86 11.86 0 001.912-6.469C23.945 5.374 18.595 0 11.988 0zm.232 4.31c-2.451-.014-5.772.146-9.963.723C.854 7.003.055 9.41.055 12.012.055 18.626 5.38 24 11.988 24c3.63 0 6.85-1.63 9.053-4.182-7.286.948-11.813.631-13.75.388-3.775-.56-3.557-3.404-3.557-3.404L15.691 4.474a38.635 38.635 0 00-3.471-.163Z"/></svg>Zigbee</b></span>
           </article>
 
           <article class="metric metric-private">
@@ -447,7 +447,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <div class="protocol-grid">
                 <div class="protocol-tile" style="--protocol-color:#f5f7ff">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M7.2 5.6a3.2 3.2 0 1 1 3.1 4h3.4a3.2 3.2 0 1 1 3.1-4 3.2 3.2 0 0 1-1.1 3.6l-2 3.5a3.2 3.2 0 1 1-3.4 0l-2-3.5a3.2 3.2 0 0 1-1.1-3.6Z"/></svg>
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.996 22.5c-2.478 0-4.63-.846-6.195-2.435L9.67 16.19c.642.593 1.455.908 2.326.908.87 0 1.684-.315 2.326-.908l3.869 3.875c-1.565 1.589-3.717 2.435-6.195 2.435zm6.544-3.151-3.873-3.878c.846-1.077 1.258-2.316 1.139-3.52l5.441-1.096c.21 2.923-.923 5.76-2.707 8.494zm-13.088 0c-1.784-2.734-2.917-5.571-2.707-8.494l5.441 1.096c-.12 1.204.293 2.443 1.139 3.52l-3.873 3.878zM5.539 7.64c2.257-2.617 5.485-3.865 8.784-3.324l-1.019 5.448c-1.127-.145-2.22.185-3.078.9l-4.687-3.024zm12.922 0-4.687 3.024c-.858-.715-1.951-1.045-3.078-.9l-1.019-5.448c3.299-.541 6.527.707 8.784 3.324z"/></svg>
                   </span>
                   <span class="protocol-name"><strong>Matter</strong><small>Universal layer</small></span>
                   <span class="protocol-state"></span>
@@ -463,15 +463,15 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
 
                 <div class="protocol-tile" style="--protocol-color:#ff7a3d">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.8 8.1 10.9 15M16.2 8.1 13.1 15M8 7h8"/></svg>
+                    <svg viewBox="0 0 165 165"><path fill="currentColor" d="M82.498,0C37.008,0,0,37.008,0,82.496c0,45.181,36.51,81.977,81.573,82.476V82.569l-27.002-0.002c-8.023,0-14.554,6.53-14.554,14.561c0,8.023,6.531,14.551,14.554,14.551v17.98c-17.939,0-32.534-14.595-32.534-32.531c0-17.944,14.595-32.543,32.534-32.543l27.002,0.004v-9.096c0-14.932,12.146-27.08,27.075-27.08c14.932,0,27.082,12.148,27.082,27.08c0,14.931-12.15,27.08-27.082,27.08l-9.097-0.001v80.641C136.889,155.333,165,122.14,165,82.496C165,37.008,127.99,0,82.498,0z"/><path fill="currentColor" d="M117.748,55.493c0-5.016-4.082-9.098-9.1-9.098c-5.015,0-9.097,4.082-9.097,9.097v9.097l9.097,0.001C113.666,64.591,117.748,60.51,117.748,55.493z"/></svg>
                   </span>
-                  <span class="protocol-name"><strong>Thread</strong><small>Low-power mesh</small></span>
-                  <span class="protocol-state"></span>
+                  <span class="protocol-name"><strong>Thread</strong><small>Mesh network</small></span>
+                  <span class="protocol-state protocol-live"><i></i>Live</span>
                 </div>
 
-                <div class="protocol-tile" style="--protocol-color:#ef5b5b">
+                <div class="protocol-tile" style="--protocol-color:#fb923c">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M5 7h11l-8 10h11M7 4c4 1 7 1 10 0M7 20c4-1 7-1 10 0"/></svg>
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.988 0a11.85 11.85 0 00-8.617 3.696c7.02-.875 11.401-.583 13.289-.34 3.752.583 3.558 3.404 3.558 3.404L8.237 19.112c2.299.22 6.897.366 13.796-.631a11.86 11.86 0 001.912-6.469C23.945 5.374 18.595 0 11.988 0zm.232 4.31c-2.451-.014-5.772.146-9.963.723C.854 7.003.055 9.41.055 12.012.055 18.626 5.38 24 11.988 24c3.63 0 6.85-1.63 9.053-4.182-7.286.948-11.813.631-13.75.388-3.775-.56-3.557-3.404-3.557-3.404L15.691 4.474a38.635 38.635 0 00-3.471-.163Z"/></svg>
                   </span>
                   <span class="protocol-name"><strong>Zigbee</strong><small>Device mesh</small></span>
                   <span class="protocol-state"></span>
@@ -802,7 +802,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <span class="plan-code">NX / CORE-01</span>
             <div class="plan-head">
               <span class="plan-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5.5 6.5c2.7-2.1 6.4-2.1 9.1 0s3.7 5.7 2.3 8.7c-1.4 3-4.8 4.6-8 3.8-3.2-.8-5.5-3.8-5.4-7.1"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
               </span>
               <div><span class="plan-overline">Local essentials</span><h3>Free</h3></div>
               <span class="plan-badge">Forever</span>
@@ -825,7 +825,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>100% local processing</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Community support</li>
             </ul>
-            <a class="button button-secondary" href="/login">Start for free</a>
+            <a class="button button-secondary" href="#downloads">Start for free</a>
             <div class="plan-foot"><span class="status-dot"></span>Runs fully on your hardware</div>
           </article>
 
@@ -835,7 +835,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <div class="premium-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="plan-head">
               <span class="plan-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 1.7 5.1L19 9l-5.3 1.9L12 16l-1.7-5.1L5 9l5.3-1.9L12 2Z"/><path d="m19 15 .9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15Z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>
               </span>
               <div><span class="plan-overline">Adaptive intelligence</span><h3>Premium</h3></div>
               <span class="plan-badge popular">Most popular</span>
@@ -859,7 +859,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Priority 24/7 support</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Secure remote access</li>
             </ul>
-            <a class="button button-primary" href="/login">Start for free</a>
+            <a class="button button-primary" href="#downloads">Start for free</a>
             <div class="plan-foot"><span class="status-dot"></span>Best balance of power and privacy</div>
           </article>
 
@@ -868,7 +868,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <span class="plan-code">NX / HOUSE-03</span>
             <div class="plan-head">
               <span class="plan-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
               </span>
               <div><span class="plan-overline">Shared household</span><h3>Family</h3></div>
               <span class="plan-badge">6 profiles</span>
@@ -891,22 +891,22 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Granular parental controls</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Dedicated family dashboard</li>
             </ul>
-            <a class="button button-secondary" href="/login">Start for free</a>
+            <a class="button button-secondary" href="#downloads">Start for free</a>
             <div class="plan-foot"><span class="status-dot"></span>Private profiles, one local core</div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="desktop">
+    <section class="section">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-kicker">Desktop apps</span>
-          <h2 class="section-heading">Native on every desktop.</h2>
-          <p class="section-copy">One NEXUS experience, tuned for the platform you use. Your operating system will be detected automatically.</p>
+          <span class="section-kicker">Apps</span>
+          <h2 class="section-heading">Tüm cihazlarınızda yerel.</h2>
+          <p class="section-copy">İster masaüstünde ister mobilde, NEXUS deneyimi kullandığınız platforma özel olarak uyarlandı. Uygulamalar cihazınızla tam uyumlu çalışır.</p>
         </div>
 
-        <div class="downloads-grid">
+        <div class="downloads-grid" id="downloads">
           <article class="download-card download-macos reveal" data-platform="macos">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
@@ -1255,7 +1255,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             <span class="section-kicker">Your home, your rules</span>
             <h2>One system.<br><span class="gradient-text">Entirely yours.</span></h2>
             <p>Download NEXUS and replace fragmented controls with one fast, private intelligence layer.</p>
-            <a class="button button-primary" href="#desktop">
+            <a class="button button-primary" href="#downloads">
               Download NEXUS free
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
             </a>
@@ -1290,9 +1290,9 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         </div>
         <div class="footer-column">
           <h3>Platforms</h3>
-          <a href="#desktop">Windows</a>
-          <a href="#desktop">macOS</a>
-          <a href="#desktop">Linux</a>
+          <a href="#downloads">Windows</a>
+          <a href="#downloads">macOS</a>
+          <a href="#downloads">Linux</a>
         </div>
         <div class="footer-column">
           <h3>Company & legal</h3>

@@ -48,56 +48,137 @@
       min-height: max(884px, 100dvh);
     }
   </style>
+  <script src="theme.js"></script>
   </head>
 <body class="bg-white min-h-screen flex flex-col text-slate-900">
 <!-- BEGIN: App Header -->
-<section class="px-5 pt-12 pb-2 flex justify-between items-center" data-purpose="main-header">
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
-<!-- Profile Avatar -->
-<img alt="Profil" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/40x40?text=NX'" src="https://randomuser.me/api/portraits/men/75.jpg"/>
-</div>
-<div class="flex items-center space-x-2">
-<!-- NEXUS N monogram -->
-<div class="h-7 w-7 rounded-lg bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white font-bold text-sm">N</div>
-<span class="text-xl font-bold text-gray-900 tracking-tight">NEXUS</span>
-</div>
-<button class="bg-[#7C5CFF] text-white rounded-full p-1.5">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+<header class="pt-12 pb-4 flex items-center justify-between px-5" data-purpose="main-header">
+<div class="flex items-center">
+<!-- Home Selector -->
+<button onclick="toggleHomeSelector()" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">
+  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#6344E6] flex items-center justify-center text-white shadow-inner flex-shrink-0">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+  </div>
+  <div class="flex flex-col justify-center">
+    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-0.5">Mevcut Ev</span>
+    <span class="text-sm font-bold text-slate-800 leading-none" data-bind="householdName">Benim Evim</span>
+  </div>
+  <svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
 </button>
-</section>
+</div>
+<div class="flex items-center gap-4">
+<!-- Plus Action Button -->
+<button aria-label="Günlükler" class="text-slate-600 p-1 hover:text-slate-900 active:scale-95 transition-transform" onclick="window.location.href='stitch-logs.html'">
+            <i class="w-7 h-7" data-lucide="file-text"></i>
+         </button>
+<!-- Plus Icon (opens quick add menu) -->
+<button aria-label="Hızlı ekle" class="text-[#7C5CFF]" onclick="toggleQuickAdd()">
+<svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</header>
 <!-- END: App Header -->
-<!-- BEGIN: Search Bar Area -->
-<section class="px-5 py-4" data-purpose="search-container">
+
+<!-- BEGIN: QuickAddMenu (buzlu cam alt sayfa) -->
+<div class="fixed inset-0 z-40 hidden bg-black/20" id="quick-add-backdrop" onclick="toggleQuickAdd()" style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);"></div>
+<div class="qa-sheet fixed inset-x-0 bottom-0 z-50 rounded-t-[3rem] pt-6 pb-12 px-6 flex flex-col items-center translate-y-full transition-transform duration-300" data-purpose="quick-add-menu" id="quick-add-menu" style="background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(240,236,255,0.88) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -10px 40px rgba(0,0,0,0.1);">
+  <!-- Kapat butonu -->
+  <div class="w-full flex justify-end mb-2">
+    <button aria-label="Kapat" class="bg-slate-200/60 p-2 rounded-full text-slate-500 active:bg-slate-300 transition-colors" onclick="toggleQuickAdd()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+      </svg>
+    </button>
+  </div>
+  <!-- NEXUS N monogram (marka gradyanı) -->
+  <div class="mb-4">
+    <svg class="w-20 h-20" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="n-grad-smart" x1="0%" x2="100%" y1="0%" y2="100%">
+          <stop offset="0%" stop-color="#7C5CFF"></stop>
+          <stop offset="100%" stop-color="#22D3EE"></stop>
+        </linearGradient>
+        <filter id="n-glow-smart">
+          <feGaussianBlur result="coloredBlur" stdDeviation="4"></feGaussianBlur>
+          <feMerge>
+            <feMergeNode in="coloredBlur"></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+      </defs>
+      <path d="M25 80 V20 L75 80 V20" fill="none" filter="url(#n-glow-smart)" stroke="url(#n-grad-smart)" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
+    </svg>
+  </div>
+  <h2 class="text-[26px] font-extrabold text-black mb-8 tracking-tight">Hızlı Aksiyonlar</h2>
+  
+  <!-- Aksiyon listesi -->
+  <div class="w-full max-w-xl bg-white rounded-[2rem] p-4 space-y-1 shadow-sm">
+    <a class="flex items-center space-x-4 p-3 rounded-2xl active:bg-slate-50 transition-colors" href="stitch-pair.html">
+      <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+        <i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="smartphone"></i>
+      </div>
+      <span class="text-xl font-semibold text-slate-800">Cihaz Ekle</span>
+    </a>
+    <a class="flex items-center space-x-4 p-3 rounded-2xl active:bg-slate-50 transition-colors" href="stitch-smart.html">
+      <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+        <i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="list-plus"></i>
+      </div>
+      <span class="text-xl font-semibold text-slate-800">Senaryo Oluştur</span>
+    </a>
+    <a class="flex items-center space-x-4 p-3 rounded-2xl active:bg-slate-50 transition-colors" href="stitch-scan.html">
+      <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+        <i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="scan-line"></i>
+      </div>
+      <span class="text-xl font-semibold text-slate-800">Tara</span>
+    </a>
+  </div>
+</div>
+<!-- END: QuickAddMenu -->
+
+<!-- BEGIN: NEXUS AI Input (shared with Akıllı page) -->
+<section class="px-5 pb-2" data-purpose="ai-search-container">
 <a href="stitch-chat.html" class="block">
 <div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm">
 <!-- NEXUS N leading mark -->
-<div class="h-8 w-8 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white font-bold text-sm shrink-0 mr-3">N</div>
+<div class="h-8 w-8 flex shrink-0 mr-3"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
+  <defs>
+    <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+    </linearGradient>
+    <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+  <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+  <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+  <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
 <input class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text"/>
 <div class="flex items-center space-x-4 pr-1">
 <!-- Mic Icon -->
 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
-<!-- Settings/Filter Icon -->
+<!-- Filter Icon -->
 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </div>
 </div>
 </a>
 </section>
-<!-- END: Search Bar Area -->
+<!-- END: NEXUS AI Input -->
 <!-- BEGIN: Tabs Navigation -->
 <nav class="flex border-b border-gray-200" data-purpose="tabs">
-<button class="flex-1 py-3 text-sm font-bold text-gray-900 relative tab-active">
+      <button onclick="switchTab('tab-smart', this)" class="flex-1 py-3 text-sm font-bold text-gray-900 relative tab-active" id="btn-tab-smart">
         Akıllı Uygulama
       </button>
-<button class="flex-1 py-3 text-sm font-semibold text-gray-500">
-        Tıkla ve Çalıştır
-      </button>
-<button class="flex-1 py-3 text-sm font-semibold text-gray-500">
-        Otomasyon
-      </button>
-</nav>
+      <button onclick="switchTab('tab-clickrun', this)" class="flex-1 py-3 text-center text-sm font-semibold text-gray-500 block transition-colors" id="btn-tab-clickrun">Tıkla ve çalıştır</button>
+      <button onclick="switchTab('tab-automation', this)" class="flex-1 py-3 text-center text-sm font-semibold text-gray-500 block transition-colors" id="btn-tab-automation">Otomasyon</button>
+    </nav>
 <!-- END: Tabs Navigation -->
 <!-- BEGIN: Main Content / Empty State -->
 <main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">
+      <div id="tab-smart" class="block">
 <div class="bg-white rounded-3xl p-10 flex flex-col items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-50 mb-8" data-purpose="empty-state-card">
 <div class="mb-6 relative">
 <!-- Empty state cloud illustration -->
@@ -112,18 +193,87 @@
 <!-- BEGIN: Recommendations Section -->
 <section data-purpose="recommendations">
 <h3 class="text-xl font-bold text-gray-900 mb-4">Önerilen</h3>
-<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4">
-<div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-<!-- Living Room Image -->
-<img alt="Oturma Odası" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/128x80?text=Oda'" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&amp;fit=crop&amp;w=256&amp;q=80"/>
-</div>
-<div>
-<h4 class="font-bold text-gray-900 leading-tight">Tüm Ev Aydınlatma Kontrolü</h4>
-<p class="text-xs text-gray-500 mt-1 leading-snug">Evindeki tüm aydınlatma cihazlarını kontrol et</p>
-</div>
+<div class="space-y-4">
+  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform">
+    <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
+      <img alt="Oturma Odası" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=256&q=80"/>
+      <div class="absolute inset-0 bg-black/10"></div>
+    </div>
+    <div>
+      <h4 class="font-bold text-gray-900 leading-tight">Tüm Ev Aydınlatma Kontrolü</h4>
+      <p class="text-xs text-gray-500 mt-1 leading-snug">Evindeki tüm aydınlatma cihazlarını kontrol et</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform">
+    <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
+      <img alt="Güvenlik Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=256&q=80"/>
+      <div class="absolute inset-0 bg-black/10"></div>
+    </div>
+    <div>
+      <h4 class="font-bold text-gray-900 leading-tight">Tatil Güvenlik Modu</h4>
+      <p class="text-xs text-gray-500 mt-1 leading-snug">Uzaktayken evi korumak için kameraları etkinleştir</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform">
+    <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
+      <img alt="Sinema Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=256&q=80"/>
+      <div class="absolute inset-0 bg-black/10"></div>
+    </div>
+    <div>
+      <h4 class="font-bold text-gray-900 leading-tight">Sinema Modu</h4>
+      <p class="text-xs text-gray-500 mt-1 leading-snug">Film izlerken perdeleri kapat, ışıkları kıs</p>
+    </div>
+  </div>
 </div>
 </section>
 <!-- END: Recommendations Section -->
+</div>
+      <!-- BEGIN: Tıkla ve çalıştır Tab -->
+      <div id="tab-clickrun" class="hidden">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Senaryolarım</h3>
+        <div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">
+          <!-- Dinamik Tıkla ve Çalıştır kartları buraya eklenecek -->
+        </div>
+        <div id="empty-clickrun" class="text-center py-10">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          </div>
+          <h4 class="text-gray-500 font-medium">Henüz senaryo eklenmedi</h4>
+          <p class="text-xs text-gray-400 mt-1">Aşağıdaki butondan yeni bir tane oluşturun.</p>
+        </div>
+        <a href="stitch-skills.html?type=clickrun" class="mt-6 w-full flex items-center justify-center gap-2 bg-white border border-dashed border-gray-300 text-gray-600 py-3 rounded-2xl font-semibold active:bg-gray-50 transition-colors" block text-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Yeni Senaryo Ekle
+        </a>
+      </div>
+      <!-- END: Tıkla ve çalıştır Tab -->
+
+      <!-- BEGIN: Otomasyon Tab -->
+      <!-- BEGIN: Otomasyon Tab -->
+      <div id="tab-automation" class="hidden">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Otomasyonlar</h3>
+          <span id="automation-active-count" class="hidden bg-[#7C5CFF]/10 text-[#7C5CFF] text-xs font-bold px-2 py-1 rounded-lg"></span>
+        </div>
+        <div class="space-y-4" id="custom-automations-container">
+          <!-- Dinamik Otomasyon kartları buraya eklenecek -->
+        </div>
+        <div id="empty-automation" class="text-center py-10">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h4 class="text-gray-500 font-medium">Henüz otomasyon eklenmedi</h4>
+          <p class="text-xs text-gray-400 mt-1">Aşağıdaki butondan yeni bir tane oluşturun.</p>
+        </div>
+        <a href="stitch-skills.html?type=automation" class="mt-6 w-full flex items-center justify-center gap-2 bg-white border border-dashed border-gray-300 text-gray-600 py-3 rounded-2xl font-semibold active:bg-gray-50 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Yeni Otomasyon
+        </a>
+      </div>
+      <!-- END: Otomasyon Tab -->
+
 </main>
 <!-- END: Main Content -->
 <!-- BEGIN: Bottom Navigation -->
@@ -140,7 +290,6 @@
 </a>
 <!-- Keşfet -->
 <a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
-<span class="absolute top-0 right-1 w-2.5 h-2.5 bg-[#FF3B5C] border-2 border-white rounded-full"></span>
 <i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
 <span class="text-xs font-medium">Keşfet</span>
 </a>
@@ -151,5 +300,235 @@
 </a>
 </nav>
 <!-- END: Bottom Navigation -->
+<!-- Home Selector Modal (stitch-home ile aynı desen) -->
+<div id="home-selector-backdrop" class="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="toggleHomeSelector()"></div>
+<div id="home-selector-modal" class="fixed inset-x-0 top-0 z-[70] bg-white rounded-b-[2rem] shadow-2xl border-b border-slate-100 flex flex-col transform transition-transform duration-300 -translate-y-full">
+  <div class="px-5 pt-12 pb-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ev Seçimi</h3>
+    <button onclick="toggleHomeSelector()" class="p-2 -mr-2 text-slate-400 hover:text-slate-600 rounded-full">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+  </div>
+  <div class="p-4 flex flex-col gap-2">
+    <!-- Active Home -->
+    <button onclick="toggleHomeSelector()" class="flex items-center gap-3 p-4 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] text-left w-full transition-transform active:scale-[0.98]">
+      <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      <span class="font-bold text-base flex-grow" data-bind="householdName">Benim Evim</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+    </button>
+  </div>
+  <div class="p-4 pt-2 border-t border-slate-100 bg-slate-50 rounded-b-[2rem]">
+    <a href="stitch-household.html" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white text-slate-700 font-bold text-sm transition-transform active:scale-[0.98] border border-slate-200 shadow-sm">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      Ev Yönetimi
+    </a>
+  </div>
+</div>
+<script>
+function toggleHomeSelector() {
+  const modal = document.getElementById('home-selector-modal');
+  const backdrop = document.getElementById('home-selector-backdrop');
+  if (modal.classList.contains('-translate-y-full')) {
+    modal.classList.remove('-translate-y-full');
+    modal.classList.add('translate-y-0');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    backdrop.classList.add('opacity-100', 'pointer-events-auto');
+  } else {
+    modal.classList.remove('translate-y-0');
+    modal.classList.add('-translate-y-full');
+    backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+  }
+}
+// Ev adını gerçek veriden (nexusHousehold) senkronize et
+(function () {
+  var name = 'Evim';
+  try {
+    var homes = JSON.parse(localStorage.getItem('nexusHousehold') || 'null');
+    if (Array.isArray(homes) && homes.length && homes[0].name) name = homes[0].name;
+  } catch (e) {}
+  document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = name; });
+})();
+</script>
 <script>lucide.createIcons();</script>
-</body></html>
+
+<script>
+  function switchTab(tabId, btnElement) {
+    // Hide all tabs
+    document.getElementById('tab-smart').classList.add('hidden');
+    document.getElementById('tab-smart').classList.remove('block');
+    document.getElementById('tab-clickrun').classList.add('hidden');
+    document.getElementById('tab-clickrun').classList.remove('block');
+    document.getElementById('tab-automation').classList.add('hidden');
+    document.getElementById('tab-automation').classList.remove('block');
+    
+    // Show active tab
+    document.getElementById(tabId).classList.remove('hidden');
+    document.getElementById(tabId).classList.add('block');
+    
+    // Update button styles
+    const buttons = [document.getElementById('btn-tab-smart'), document.getElementById('btn-tab-clickrun'), document.getElementById('btn-tab-automation')];
+    buttons.forEach(btn => {
+      btn.classList.remove('font-bold', 'text-gray-900', 'tab-active');
+      btn.classList.add('font-semibold', 'text-gray-500');
+    });
+    
+    btnElement.classList.remove('font-semibold', 'text-gray-500');
+    btnElement.classList.add('font-bold', 'text-gray-900', 'tab-active');
+  }
+</script>
+
+<script>
+  // Senaryo ve Otomasyon Toggle state sync
+  (function() {
+    document.querySelectorAll('#tab-automation input[type="checkbox"]').forEach((checkbox, index) => {
+      const key = 'nexusAutoToggle_' + index;
+      const saved = localStorage.getItem(key);
+      if (saved !== null) {
+        checkbox.checked = saved === 'true';
+      }
+      checkbox.addEventListener('change', function() {
+        localStorage.setItem(key, this.checked);
+      });
+    });
+  })();
+</script>
+
+<script>
+
+    function toggleQuickAdd() {
+      const menu = document.getElementById('quick-add-menu');
+      const backdrop = document.getElementById('quick-add-backdrop');
+      if (!menu || !backdrop) return;
+      
+      if (menu.classList.contains('translate-y-full')) {
+        menu.classList.remove('translate-y-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        menu.classList.add('translate-y-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+</script>
+
+  <script>
+    function renderCustomAutomations() {
+        // Automations
+        const autoContainer = document.getElementById('custom-automations-container');
+        const activeBadge = document.getElementById('automation-active-count');
+        
+        if (autoContainer) {
+          autoContainer.innerHTML = ''; // Clear previous items to prevent duplicates
+          
+          let autos = [];
+          try { autos = JSON.parse(localStorage.getItem('nexusCustomAutomations') || '[]'); } catch (e) {}
+          
+          // Update active count badge
+          if (activeBadge) {
+            if (autos.length > 0) {
+              activeBadge.textContent = autos.length + ' Aktif';
+              activeBadge.classList.remove('hidden');
+            } else {
+              activeBadge.classList.add('hidden');
+            }
+          }
+
+          autos.forEach((auto) => {
+            const div = document.createElement('div');
+            div.className = "bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 flex items-center justify-between mt-4";
+            div.innerHTML = `
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-2xl ${auto.bgClass} ${auto.colorClass} flex items-center justify-center shrink-0">
+                    <i class="w-6 h-6" data-lucide="${auto.icon}"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-800 text-sm">${auto.title}</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">${auto.desc}</p>
+                  </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#7C5CFF]"></div>
+                </label>
+            `;
+            autoContainer.appendChild(div);
+          });
+          
+          const emptyState = document.getElementById('empty-automation');
+          if (emptyState) {
+             if (autos.length > 0) {
+                 emptyState.classList.add('hidden');
+             } else {
+                 emptyState.classList.remove('hidden');
+             }
+          }
+        }
+
+        // Click and Run
+        const clickContainer = document.getElementById('custom-clickrun-container');
+      if (clickContainer) {
+        let clickruns = [];
+        try { clickruns = JSON.parse(localStorage.getItem('nexusCustomClickRun') || '[]'); } catch (e) {}
+        clickruns.forEach((run) => {
+          const btn = document.createElement('button');
+          btn.className = "bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform";
+          btn.innerHTML = `
+            <div class="w-10 h-10 rounded-full ${autoBgToLight(run.bgClass)} ${run.colorClass} flex items-center justify-center mb-3">
+              <i class="w-5 h-5" data-lucide="${run.icon}"></i>
+            </div>
+            <h4 class="font-bold text-slate-800">${run.title}</h4>
+            <p class="text-xs text-slate-500 mt-1">${run.desc}</p>
+          `;
+          clickContainer.appendChild(btn);
+        });
+      }
+      
+      
+      // Show/hide empty states
+      const emptyAuto = document.getElementById('empty-automation');
+      if (emptyAuto) emptyAuto.style.display = (autos.length > 0) ? 'none' : 'block';
+      
+      const emptyClick = document.getElementById('empty-clickrun');
+      if (emptyClick) emptyClick.style.display = (clickruns.length > 0) ? 'none' : 'block';
+
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
+
+    function autoBgToLight(bgClass) {
+       // Convert bg-red-500/10 to bg-red-100 for the button style, just a simple fallback
+       if(bgClass.includes('emerald')) return 'bg-emerald-100';
+       if(bgClass.includes('blue')) return 'bg-blue-100';
+       if(bgClass.includes('amber')) return 'bg-orange-100';
+       if(bgClass.includes('cyan')) return 'bg-cyan-100';
+       if(bgClass.includes('red')) return 'bg-red-100';
+       if(bgClass.includes('7C5CFF')) return 'bg-purple-100';
+       return 'bg-gray-100';
+    }
+    
+    // Switch to tab if URL has ?tab=...
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tab = urlParams.get('tab');
+      if (tab === 'tab-automation') {
+        const btn = document.getElementById('btn-tab-automation');
+        if (btn) switchTab('tab-automation', btn);
+      } else if (tab === 'tab-clickrun') {
+        const btn = document.getElementById('btn-tab-clickrun');
+        if (btn) switchTab('tab-clickrun', btn);
+      }
+      renderCustomAutomations();
+      });
+
+      window.addEventListener('pageshow', function(e) {
+        if (e.persisted || true) {
+          renderCustomAutomations();
+          lucide.createIcons();
+        }
+      });
+    </script>
+</body>
+
+</html>

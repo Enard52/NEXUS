@@ -12,7 +12,7 @@ const publicDir = join(root, "public");
 // scripts/copy-desktop-resources.mjs) and mobile Capacitor bundles the same
 // SPA via mobile-app/scripts/build-web.mjs — so no desktop/mobile HTML is
 // mirrored into public/ at all.
-const PRESERVE = new Set(["downloads"]);
+const PRESERVE = new Set(["downloads", "images"]);
 
 if (existsSync(publicDir)) {
   for (const entry of readdirSync(publicDir)) {

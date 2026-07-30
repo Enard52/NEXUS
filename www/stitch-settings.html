@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Ayarlar</title>
+<!-- Tailwind CSS v3 CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-switches">
+    /* Custom styles for the toggle switches to match the UI precisely */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 32px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb; /* Gray for OFF state */
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input:checked + .slider {
+      background-color: #7C5CFF; /* NEXUS purple for ON state */
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  </style>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-[#F3F2F9] min-h-screen flex flex-col">
+<!-- BEGIN: MainHeader -->
+<header class="bg-white border-b border-gray-100 px-4 pt-12 pb-4 flex items-center justify-between sticky top-0 z-10">
+<a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1">
+<svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<h1 class="whitespace-nowrap text-2xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Ayarlar</h1>
+<div class="w-8"></div> <!-- Spacer for centering -->
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: ContentArea -->
+<main class="flex-grow px-4 pt-6 pb-8 space-y-4 overflow-y-auto">
+<!-- BEGIN: AccountSection -->
+<section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
+<!-- Item: Kişisel Bilgiler -->
+<div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="window.location.href='stitch-user-info.html'">
+<span class="text-xl text-gray-800 font-medium">Kişisel Bilgiler</span>
+<svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<hr class="mx-5 border-gray-100"/>
+<!-- Item: Hesap ve Güvenlik -->
+<div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+<span class="text-xl text-gray-800 font-medium">Hesap ve Güvenlik</span>
+<svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<hr class="mx-5 border-gray-100"/>
+<!-- Item: Cihaz Güncellemesi -->
+<div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+<span class="text-xl text-gray-800 font-medium">Cihaz Güncellemesi</span>
+<svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</section>
+<!-- END: AccountSection -->
+<!-- BEGIN: PreferencesSection -->
+<section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
+<!-- Item: Ses (Toggle ON) -->
+<div class="flex items-center justify-between px-5 py-5">
+<span class="text-xl text-gray-800 font-medium">Ses</span>
+<label class="switch">
+<input checked="" type="checkbox" id="toggle-sound"/>
+<span class="slider"></span>
+</label>
+</div>
+<hr class="mx-5 border-gray-100"/>
+<!-- Item: Erişilebilirlik Modu (Toggle OFF) -->
+<div class="flex items-center justify-between px-5 py-5">
+<span class="text-xl text-gray-800 font-medium">Erişilebilirlik Modu</span>
+<label class="switch">
+<input type="checkbox" id="toggle-accessibility"/>
+<span class="slider"></span>
+</label>
+</div>
+<hr class="mx-5 border-gray-100"/>
+<!-- Item: Anlık Bildirimler -->
+<div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+<span class="text-xl text-gray-800 font-medium">Anlık Bildirimler</span>
+<svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</section>
+<!-- END: PreferencesSection -->
+<!-- BEGIN: DisplaySettingsSection -->
+<section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
+<!-- Item: Karanlık Mod -->
+<div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="toggleDarkMode()">
+<span class="text-xl text-gray-800 font-medium">Karanlık Mod</span>
+<div class="flex items-center space-x-2">
+<span class="text-xl text-gray-400" id="dark-mode-label">Kapalı</span>
+<svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<hr class="mx-5 border-gray-100"/>
+<!-- Item: Sıcaklık Birimi -->
+<div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="toggleTempUnit()">
+<span class="text-xl text-gray-800 font-medium">Sıcaklık Birimi</span>
+<div class="flex items-center space-x-2">
+<span class="text-xl text-gray-400" id="temp-unit-label">°C</span>
+<svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- END: DisplaySettingsSection -->
+<!-- BEGIN: ActionArea -->
+<div class="pt-10 pb-4">
+<button class="w-full bg-[#e3322d] text-white py-5 rounded-[40px] text-2xl shadow-lg active:scale-[0.98] transition-transform font-bold" onclick="logout()">
+        Çıkış Yap
+      </button>
+</div>
+<!-- END: ActionArea -->
+</main>
+<!-- END: ContentArea -->
+<script data-purpose="settings-interactions">
+    // --- Ses / Erişilebilirlik: localStorage ile kalıcı ---
+    (function () {
+      var sound = document.getElementById('toggle-sound');
+      var acc = document.getElementById('toggle-accessibility');
+      sound.checked = localStorage.getItem('nexusSoundEnabled') !== 'false';
+      acc.checked = localStorage.getItem('nexusAccessibilityMode') === 'true';
+      sound.addEventListener('change', function () {
+        localStorage.setItem('nexusSoundEnabled', sound.checked ? 'true' : 'false');
+      });
+      acc.addEventListener('change', function () {
+        localStorage.setItem('nexusAccessibilityMode', acc.checked ? 'true' : 'false');
+      });
+    })();
+    // --- Karanlık Mod: theme.js (nexusDarkMode) ile senkron ---
+    function refreshDarkLabel() {
+      var on = localStorage.getItem('nexusDarkMode') === 'true';
+      document.getElementById('dark-mode-label').textContent = on ? 'Açık' : 'Kapalı';
+    }
+    function toggleDarkMode() {
+      var on = localStorage.getItem('nexusDarkMode') === 'true';
+      localStorage.setItem('nexusDarkMode', on ? 'false' : 'true');
+      window.dispatchEvent(new Event('themeChanged'));
+      refreshDarkLabel();
+    }
+    refreshDarkLabel();
+    // --- Sıcaklık Birimi: °C / °F kalıcı seçim ---
+    function refreshTempLabel() {
+      document.getElementById('temp-unit-label').textContent =
+        localStorage.getItem('nexusTempUnit') === 'F' ? '°F' : '°C';
+    }
+    function toggleTempUnit() {
+      var f = localStorage.getItem('nexusTempUnit') === 'F';
+      localStorage.setItem('nexusTempUnit', f ? 'C' : 'F');
+      refreshTempLabel();
+    }
+    refreshTempLabel();
+    // --- Çıkış Yap: giriş ekranına döner (yerel veriler cihazda kalır) ---
+    function logout() {
+      window.location.href = 'stitch-login.html';
+    }
+  </script>
+</body></html>

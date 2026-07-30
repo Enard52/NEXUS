@@ -2,7 +2,11 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — Mesaj Merkezi</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -27,17 +31,20 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
+<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
 <button aria-label="Tümünü okundu işaretle" class="p-1 text-[#7C5CFF]" onclick="markAllRead()">
 <i class="w-6 h-6" data-lucide="check-check"></i>
 </button>
@@ -54,25 +61,8 @@
 <!-- END: Tabs -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pb-10">
-<!-- Tab: Uyarılar -->
-<section class="space-y-3" id="tab-alerts">
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">
-<span class="unread-dot w-2.5 h-2.5 bg-[#FF3B5C] rounded-full mt-2 flex-shrink-0"></span>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">Cihaz çevrimdışı</h2>
-<p class="text-sm text-slate-500 mt-1">Oturma Odası lambası bağlantısı kesildi.</p>
-<p class="text-xs text-slate-400 mt-2">Bugün 09:42</p>
-</div>
-</article>
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">
-<span class="unread-dot w-2.5 h-2.5 bg-[#FF3B5C] rounded-full mt-2 flex-shrink-0"></span>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">Düşük pil</h2>
-<p class="text-sm text-slate-500 mt-1">Kapı sensörünün pili %15 seviyesinde.</p>
-<p class="text-xs text-slate-400 mt-2">Dün 21:10</p>
-</div>
-</article>
-</section>
+<!-- Tab: Uyarılar (gerçek veri: nexusEvents) -->
+<section class="space-y-3" id="tab-alerts"></section>
 <!-- Tab: Aile -->
 <section class="hidden" id="tab-family">
 <div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">
@@ -82,21 +72,85 @@
 <p class="text-slate-400 font-medium">Aile mesajı yok</p>
 </div>
 </section>
-<!-- Tab: Duyurular -->
-<section class="hidden space-y-3" id="tab-notices">
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">
-<span class="unread-dot w-2.5 h-2.5 bg-[#FF3B5C] rounded-full mt-2 flex-shrink-0"></span>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">NEXUS güncellemesi hazır</h2>
-<p class="text-sm text-slate-500 mt-1">Yeni sürümde enerji raporları geliştirildi.</p>
-<p class="text-xs text-slate-400 mt-2">2 gün önce</p>
+<!-- Tab: Duyurular (gerçek veri yok: dürüst boş durum) -->
+<section class="hidden" id="tab-notices">
+<div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">
+<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-4 menu-container-shadow">
+<i class="w-8 h-8" data-lucide="megaphone"></i>
 </div>
-</article>
+<p class="text-slate-400 font-medium">Duyuru yok</p>
+</div>
 </section>
 </main>
 <!-- END: MainContent -->
 <script data-purpose="message-interactions">
     lucide.createIcons();
+
+    /* ---------- Gerçek bildirim akışı: nexusEvents + nexusReadNotifs ---------- */
+    var EVENTS_KEY = 'nexusEvents';
+    var READ_KEY = 'nexusReadNotifs';
+    function loadEvents() {
+      try { var e = JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]'); return Array.isArray(e) ? e : []; } catch (err) { return []; }
+    }
+    function loadRead() {
+      try { var r = JSON.parse(localStorage.getItem(READ_KEY) || '[]'); return Array.isArray(r) ? r : []; } catch (err) { return []; }
+    }
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function formatTs(ts) {
+      var d = new Date(ts);
+      if (isNaN(d.getTime())) return '';
+      var now = new Date();
+      var time = d.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+      var sameDay = d.toDateString() === now.toDateString();
+      var yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+      if (sameDay) return 'Bugün ' + time;
+      if (d.toDateString() === yesterday.toDateString()) return 'Dün ' + time;
+      return d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ' ' + time;
+    }
+    function renderAlerts() {
+      var events = loadEvents().slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+      var read = loadRead();
+      var box = document.getElementById('tab-alerts');
+      if (!events.length) {
+        box.innerHTML =
+          '<div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">' +
+          '<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-4 menu-container-shadow">' +
+          '<i class="w-8 h-8" data-lucide="bell-off"></i></div>' +
+          '<p class="text-slate-400 font-medium">Bildirim yok</p></div>';
+      } else {
+        box.innerHTML = events.map(function (ev) {
+          var unread = read.indexOf(ev.id) === -1;
+          var dot = unread ? 'bg-[#FF3B5C]' : 'bg-slate-200';
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">' +
+            '<span class="unread-dot w-2.5 h-2.5 ' + dot + ' rounded-full mt-2 flex-shrink-0"></span>' +
+            '<div class="min-w-0">' +
+            '<h2 class="font-bold leading-tight">' + esc(ev.title || '') + '</h2>' +
+            (ev.detail ? '<p class="text-sm text-slate-500 mt-1">' + esc(ev.detail) + '</p>' : '') +
+            '<p class="text-xs text-slate-400 mt-2">' + formatTs(ev.ts) + '</p>' +
+            '</div></article>';
+        }).join('');
+      }
+      lucide.createIcons();
+    }
+
+    // Kullanıcı bildirimlere BAKTIĞINDA okundu sayılır (gerçek davranış):
+    // Bu görüntülemede okunmamış noktalar görünür kalır, ama arkada okundu
+    // olarak kaydedilir; böylece diğer sayfalardaki kırmızı rozet kalkar.
+    function markViewedAsRead() {
+      var events = loadEvents();
+      if (!events.length) return;
+      var read = loadRead();
+      var changed = false;
+      events.forEach(function (ev) {
+        if (read.indexOf(ev.id) === -1) { read.push(ev.id); changed = true; }
+      });
+      if (!changed) return;
+      try { localStorage.setItem(READ_KEY, JSON.stringify(read)); } catch (err) {}
+      if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
+    }
+
     // Switch between message tabs
     function switchTab(btn, id) {
       document.querySelectorAll('#tabs button').forEach(function (b) {
@@ -107,12 +161,16 @@
         document.getElementById(t).classList.toggle('hidden', t !== id);
       });
     }
-    // Clear all unread dots
+    // Mark all events as read (persistent)
     function markAllRead() {
-      document.querySelectorAll('.unread-dot').forEach(function (d) {
-        d.classList.remove('bg-[#FF3B5C]');
-        d.classList.add('bg-slate-200');
-      });
+      var ids = loadEvents().map(function (ev) { return ev.id; });
+      try { localStorage.setItem(READ_KEY, JSON.stringify(ids)); } catch (err) {}
+      renderAlerts();
+      if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
     }
+
+    renderAlerts();
+    // Kısa bir gecikmeyle okundu işaretle: kullanıcı yeni bildirimleri gördü sayılır
+    setTimeout(markViewedAsRead, 1200);
   </script>
 </body></html>

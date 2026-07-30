@@ -28,6 +28,7 @@ const FILES = [
   "packages/web/dist/light.html",
   "packages/web/dist/tr/index.html",
   "packages/web/dist/tr/light.html",
+  "packages/server/src/marketing-premium-body.ts"
 ];
 
 for (const rel of FILES) {

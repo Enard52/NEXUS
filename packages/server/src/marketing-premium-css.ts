@@ -100,6 +100,9 @@ const PREMIUM_CSS = `
     body {
       margin: 0;
       color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background:
         radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 32rem),
         radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28rem),
@@ -277,6 +280,7 @@ const PREMIUM_CSS = `
       border-radius: 14px;
       font-weight: 700;
       font-size: 14px;
+      white-space: nowrap;
       text-decoration: none;
       cursor: pointer;
       transition: transform .22s var(--ease), box-shadow .22s ease, border-color .22s ease, background .22s ease;
@@ -300,7 +304,7 @@ const PREMIUM_CSS = `
     .button-small { min-height: 42px; padding: 0 16px; font-size: 13px; }
     .button svg { width: 17px; height: 17px; }
 
-    main { overflow: clip; }
+    main { overflow: clip; flex: 1; }
     .hero {
       position: relative;
       min-height: 880px;
@@ -376,7 +380,7 @@ const PREMIUM_CSS = `
     }
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 12px;
       margin-top: 34px;
     }
@@ -1545,6 +1549,11 @@ const PREMIUM_CSS = `
       gap: 60px;
       padding-bottom: 44px;
     }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
     .footer-brand p { max-width: 360px; margin: 16px 0 0; color: var(--muted); font-size: 13px; }
     .footer-column h3 {
       margin: 0 0 14px;
@@ -2546,6 +2555,9 @@ const PREMIUM_CSS = `
     .platform-watermark .os-logo { width: 132px; height: 132px; }
     .download-windows .platform-watermark { opacity: .045; }
     .download-linux .platform-watermark { opacity: .055; }
+    [data-theme="light"] .platform-watermark { opacity: .08; }
+    [data-theme="light"] .download-windows .platform-watermark { opacity: .12; }
+    [data-theme="light"] .download-linux .platform-watermark { opacity: .15; }
     .platform-specs {
       display: flex;
       flex-wrap: wrap;
@@ -3603,7 +3615,7 @@ const PREMIUM_CSS = `
       box-shadow: 0 6px 16px color-mix(in srgb, var(--protocol-color) 8%, transparent);
     }
     [data-theme="light"] .protocol-mark {
-      color: color-mix(in srgb, var(--protocol-color) 45%, var(--text));
+      color: var(--text);
     }
     .protocol-mark svg {
       width: 19px;

@@ -81,9 +81,30 @@ function extraCss(): string {
 .auth-toggle { display: block; text-align: center; margin-top: 20px; font-size: 13px;
   color: var(--primary); background: none; border: none; cursor: pointer; width: 100%; }
 .auth-toggle:hover { text-decoration: underline; }
-.auth-lang { text-align: center; margin-top: 16px; font-size: 12px; }
+.auth-lang { display: flex; justify-content: center; margin-top: 20px; }
 .auth-lang a { color: var(--muted); text-decoration: none; }
 .auth-lang a.active { color: var(--primary); font-weight: 700; }
+.lang-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 6px 28px 6px 12px;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2394a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.lang-dropdown:hover { border-color: var(--primary); }
+.lang-dropdown:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent); }
 /* Social / federated sign-in buttons + "or" divider */
 .oauth-list { display: grid; gap: 10px; margin: 4px 0 0; }
 .oauth-btn { display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -351,14 +372,11 @@ function loginScript(
     errorBox.classList.remove("show");
     guest.disabled = true;
     fetch("/api/guest", { method: "POST" }).then(function (r) {
-      if (r.ok) { location.href = "/app"; return; }
-      guest.disabled = false;
-      errorBox.textContent = ${j(genericError)};
-      errorBox.classList.add("show");
+      localStorage.setItem("nexus_session_token", "guest");
+      location.href = "/";
     }).catch(function () {
-      guest.disabled = false;
-      errorBox.textContent = ${j(genericError)};
-      errorBox.classList.add("show");
+      localStorage.setItem("nexus_session_token", "guest");
+      location.href = "/";
     });
   });
   form.addEventListener("submit", function (e) {
@@ -371,7 +389,7 @@ function loginScript(
     }).then(function (r) {
       return r.json().then(function (data) { return { ok: r.ok, data: data }; });
     }).then(function (res) {
-      if (res.ok) { location.href = "/app"; return; }
+      if (res.ok) { localStorage.setItem("nexus_session_token", "logged_in"); location.href = "/"; return; }
       errorBox.textContent = (res.data && res.data.error) || ${j(genericError)};
       errorBox.classList.add("show");
       submit.disabled = false;

@@ -1,8 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — Ana Ekran</title>
 <!-- Tailwind CSS CDN with plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -17,8 +21,8 @@
   </style>
 <style data-purpose="layout-and-colors">
     /* Custom gradient background matching the screenshot */
-    .bg-slate-50 dark:bg-slate-900 {
-      
+    .bg-dashboard-gradient {
+      background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
     }
     
     /* Custom shadow for the cards */
@@ -32,7 +36,7 @@
       background-color: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
     }
-    /* Nexus AI input gradient border (shared with Akıllı page) */
+    /* NEXUS AI input gradient border (shared with Akıllı page) */
     .custom-gradient-border {
       position: relative;
       background: white;
@@ -45,36 +49,46 @@
       position: absolute;
       top: -2px; bottom: -2px;
       left: -2px; right: -2px;
-      background: linear-gradient(to right, #0ea5e9, #22D3EE, #0ea5e9);
+      background: linear-gradient(to right, #7C5CFF, #22D3EE, #7C5CFF);
       z-index: -1;
       border-radius: 9999px;
     }
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
     /* Quick actions bottom sheet slide-up */
     .qa-sheet { transition: transform 0.28s ease; transform: translateY(105%); }
     .qa-sheet.open { transform: translateY(0); }
   </style>
-  </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col text-slate-900 dark:text-slate-100">
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-dashboard-gradient min-h-screen flex flex-col text-slate-900">
 <!-- BEGIN: Header -->
 <header class="pt-12 pb-4 flex items-center justify-between px-5" data-purpose="main-header">
 <div class="flex items-center">
-<!-- Profile Picture (profil sayfasına gider, fotoğraf senkronize) -->
-<a href="stitch-profile.html">
-<img alt="Profil" class="w-12 h-12 rounded-full border-2 border-white shadow-sm object-cover" id="home-avatar" src="https://randomuser.me/api/portraits/men/75.jpg"/>
-</a>
+<!-- Home Selector -->
+<button onclick="toggleHomeSelector()" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">
+  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#6344E6] flex items-center justify-center text-white shadow-inner flex-shrink-0">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+  </div>
+  <div class="flex flex-col justify-center">
+    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-0.5">Mevcut Ev</span>
+    <span class="text-sm font-bold text-slate-800 leading-none" data-bind="householdName">Benim Evim</span>
+  </div>
+  <svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+</button>
 </div>
 <div class="flex items-center gap-4">
 <!-- Plus Action Button -->
-<a href="stitch-plus.html" class="bg-[#0ea5e9] text-white px-5 py-1.5 rounded-full font-medium text-sm flex items-center shadow-sm">
+<a href="stitch-plus.html" class="bg-[#7C5CFF] text-white px-5 py-1.5 rounded-full font-medium text-sm flex items-center shadow-sm">
         Plus
       </a>
 <!-- Plus Icon (opens quick add menu) -->
-<button aria-label="Hızlı ekle" class="text-[#0ea5e9]" onclick="toggleQuickAdd()">
+<button aria-label="Hızlı ekle" class="text-[#7C5CFF]" onclick="toggleQuickAdd()">
 <svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
@@ -95,20 +109,7 @@
 </div>
 <!-- NEXUS N monogram (marka gradyanı) -->
 <div class="mb-4">
-<svg class="w-20 h-20" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="nxlogo-mob" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
-    </linearGradient>
-    <linearGradient id="nxsheen-mob" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
-  <circle cx="16" cy="16" r="15" fill="url(#nxlogo-mob)"/>
-  <circle cx="16" cy="16" r="15" fill="url(#nxsheen-mob)"/>
-  <circle cx="16" cy="16" r="14.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
-  <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg class="w-20 h-20" fill="none" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="n-grad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#7C5CFF"></stop><stop offset="100%" stop-color="#22D3EE"></stop></lineargradient><filter id="n-glow"><fegaussianblur result="coloredBlur" stddeviation="4"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs><path d="M25 80 V20 L75 80 V20" fill="none" filter="url(#n-glow)" stroke="url(#n-grad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path></svg>
 </div>
 <!-- Başlık (AI özelliği değil: sade NEXUS markalaması) -->
 <h2 class="text-[26px] font-extrabold text-black mb-8 tracking-tight">Hızlı Aksiyonlar</h2>
@@ -139,15 +140,29 @@
 </div>
 <span class="text-xl font-semibold text-slate-800">Tara</span>
 </a>
+
 </div>
 </div>
 <!-- END: QuickAddMenu -->
-<!-- BEGIN: Nexus AI Input (shared with Akıllı page) -->
+<!-- BEGIN: NEXUS AI Input (shared with Akıllı page) -->
 <section class="px-5 pb-2" data-purpose="ai-search-container">
 <a href="stitch-chat.html" class="block">
 <div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm">
 <!-- NEXUS N leading mark -->
-<div class="h-8 w-8 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#22D3EE] flex items-center justify-center text-white font-bold text-sm shrink-0 mr-3">N</div>
+<div class="h-8 w-8 flex shrink-0 mr-3"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
+  <defs>
+    <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+    </linearGradient>
+    <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+  <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+  <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+  <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
 <input class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text"/>
 <div class="flex items-center space-x-4 pr-1">
 <!-- Mic Icon -->
@@ -158,7 +173,7 @@
 </div>
 </a>
 </section>
-<!-- END: Nexus AI Input -->
+<!-- END: NEXUS AI Input -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow pt-4 pb-32 px-5">
 <!-- Favorites Section Header -->
@@ -173,7 +188,7 @@
 <!-- Cards Grid -->
 <div class="grid grid-cols-2 gap-4" data-purpose="favorites-grid" id="favorites-grid">
 <!-- Card 1: Weather (opens location picker for weather) -->
-<a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-map.html">
+<a id="card-weather" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-map.html">
 <div>
 <svg class="mb-2 w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3 class="font-bold text-base leading-tight">Hava Durumu</h3>
@@ -181,7 +196,7 @@
 <p class="text-slate-400 text-sm font-medium truncate" id="weather-location">Veri Yok</p>
 </a>
 <!-- Card 2: DND (opens Rahatsız Etme page) -->
-<a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-dnd.html">
+<a id="card-dnd" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-dnd.html">
 <div>
 <svg class="mb-2 w-8 h-8 text-[#FF3B5C]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.73 21a2 2 0 0 1-3.46 0M18.63 13A17.89 17.89 0 0 1 18 8M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14M18 8a6 6 0 0 0-9.33-5M1 1l22 22" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3 class="font-bold text-base leading-tight">Rahatsız Etme</h3>
@@ -189,16 +204,18 @@
 <p class="text-slate-400 text-sm font-medium truncate" id="dnd-state">Kapalı</p>
 </a>
 <!-- Card 3: Energy Today (AI Enerji Tasarrufu mini uygulamasına gider) -->
-<a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-energy.html">
+<a id="card-energy" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-energy.html">
 <div>
-<svg class="mb-2 w-8 h-8 text-[#0ea5e9]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3 class="font-bold text-base leading-tight">Bugünkü Enerji</h3>
 </div>
-<p class="text-slate-400 text-sm font-medium">0.00 kWh</p>
+<p class="text-slate-400 text-sm font-medium" id="energy-today">Veri yok</p>
 </a>
 </div>
+<!-- Cihazlar -->
+<div class="grid grid-cols-2 gap-4 mt-4" id="dynamic-devices-grid" data-purpose="devices-grid"></div>
 <!-- Edit/Düzenle Button (opens card edit page) -->
-<div class="mt-10 flex justify-center">
+<div class="mt-4 flex justify-center">
 <a class="border-[1.5px] border-slate-300 text-slate-500 rounded-full px-10 py-3.5 text-lg font-medium bg-white/20 backdrop-blur-sm" href="stitch-cards.html">
         Düzenle
       </a>
@@ -208,7 +225,7 @@
 <!-- BEGIN: BottomNavigation -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
 <!-- Ev (Active) -->
-<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-[#0ea5e9]">
+<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-[#7C5CFF]">
 <i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
 <span class="text-xs font-bold">Ev</span>
 </a>
@@ -219,7 +236,6 @@
 </a>
 <!-- Keşfet -->
 <a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
-<span class="absolute top-0 right-1 w-2.5 h-2.5 bg-[#FF3B5C] border-2 border-white rounded-full"></span>
 <i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
 <span class="text-xs font-medium">Keşfet</span>
 </a>
@@ -231,31 +247,249 @@
 </nav>
 <!-- END: BottomNavigation -->
 <script>
-    lucide.createIcons();
-    // Harita sayfasında kaydedilen hava durumu konumuyla senkron
-    (function () {
+            lucide.createIcons();
+
+    
+    function syncCards() {
+      // Hide static cards if they are in nexusHiddenCards
+      var hidden = [];
+      try {
+        hidden = JSON.parse(localStorage.getItem('nexusHiddenCards') || '[]');
+      } catch(e) {}
+      
+      ['weather', 'dnd', 'energy'].forEach(function(id) {
+        var el = document.getElementById('card-' + id);
+        if (el) {
+          if (hidden.indexOf(id) !== -1) {
+            el.style.display = 'none';
+          } else {
+            el.style.display = 'flex';
+          }
+        }
+      });
+
+      // Harita sayfasında kaydedilen hava durumu konumuyla senkron
       var loc = localStorage.getItem('nexusWeatherLocation');
-      if (loc) document.getElementById('weather-location').textContent = loc;
-    })();
-    // Rahatsız Etme sayfasındaki seçimle senkron
-    (function () {
-      var state = localStorage.getItem('nexusDndState');
-      if (state && state !== 'Kapalı') {
-        var el = document.getElementById('dnd-state');
-        el.textContent = state;
-        el.classList.remove('text-slate-400');
-        el.classList.add('text-[#0ea5e9]', 'font-semibold');
+      var weatherEl = document.getElementById('weather-location');
+      if (loc && weatherEl) {
+        weatherEl.textContent = "Yükleniyor...";
+        fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(loc) + '&count=1&language=tr&format=json')
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            if (data.results && data.results.length > 0) {
+              var result = data.results[0];
+              var lat = result.latitude;
+              var lon = result.longitude;
+              
+              return fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current_weather=true')
+                .then(function(res2) { return res2.json(); })
+                .then(function(data2) {
+                  if (data2.current_weather) {
+                    var temp = Math.round(data2.current_weather.temperature);
+                    var code = data2.current_weather.weathercode;
+                    var desc = 'Açık';
+                    if (code >= 1 && code <= 3) desc = 'Bulutlu';
+                    if (code >= 45 && code <= 48) desc = 'Sisli';
+                    if (code >= 51 && code <= 67) desc = 'Yağmurlu';
+                    if (code >= 71 && code <= 77) desc = 'Karlı';
+                    if (code >= 80 && code <= 82) desc = 'Sağanak Yağışlı';
+                    if (code >= 95) desc = 'Fırtınalı';
+                    
+                    weatherEl.textContent = temp + "°C " + desc;
+                  }
+                });
+            } else {
+              weatherEl.textContent = "Konum Bulunamadı";
+            }
+          })
+          .catch(function(err) {
+            weatherEl.textContent = "Bağlantı Hatası";
+          });
       }
-    })();
-    // Kullanıcı Bilgileri sayfasında değiştirilen fotoğrafla senkron
-    (function () {
+
+      // Günlük düzenli enerji hesaplama (güne özel sabit değer)
+      var energyEl = document.getElementById('energy-today');
+      if (energyEl) {
+        var d = new Date();
+        var seed = d.getFullYear() * 100 + d.getMonth() * 10 + d.getDate();
+        var energyValue = (2.5 + (seed % 40) / 10).toFixed(1);
+        energyEl.textContent = energyValue + ' kWh harcandı';
+      }
+
+      // Rahatsız Etme (DND) Senkronizasyonu
+      var dndEl = document.getElementById('dnd-state');
+      function renderDndCard() {
+        if (!dndEl) return;
+        var state = localStorage.getItem('nexusDndState');
+        var scheduleRaw = localStorage.getItem('nexusDndSchedule');
+        var endTime = parseInt(localStorage.getItem('nexusDndEndTime') || '0', 10);
+        var displayText = 'Kapalı';
+        var isActive = false;
+
+        if (state && state !== 'Kapalı') {
+          if (endTime) {
+            var remainMs = endTime - Date.now();
+            if (remainMs <= 0) {
+              // Süre doldu: durumu gerçekten kapat
+              localStorage.setItem('nexusDndState', 'Kapalı');
+              localStorage.removeItem('nexusDndEndTime');
+            } else {
+              // Kalan süre geri sayımı: "3 saatlik" yerine örn. 23:45 kaldı
+              var totalMin = Math.ceil(remainMs / 60000);
+              var h = Math.floor(totalMin / 60);
+              var m = totalMin % 60;
+              displayText = h + ':' + String(m).padStart(2, '0') + ' kaldı';
+              isActive = true;
+            }
+          } else {
+            // Eski kayıt (bitiş zamanı yok): etiketi olduğu gibi göster
+            displayText = state;
+            isActive = true;
+          }
+        }
+
+        if (!isActive && scheduleRaw) {
+          try {
+            var s = JSON.parse(scheduleRaw);
+            if (s.start && s.end) {
+              displayText = s.start + ' - ' + s.end + ' Planlı';
+              isActive = true;
+            }
+          } catch(e){}
+        }
+
+        dndEl.textContent = displayText;
+        if (isActive) {
+          dndEl.classList.remove('text-slate-400');
+          dndEl.classList.add('text-[#FF3B5C]', 'font-semibold');
+        } else {
+          dndEl.classList.remove('text-[#FF3B5C]', 'font-semibold');
+          dndEl.classList.add('text-slate-400');
+        }
+      }
+      renderDndCard();
+      // Geri sayımı güncel tut (dakika hassasiyeti yeterli)
+      setInterval(renderDndCard, 30000);
+
+      // Gerçek hane adıyla senkron (nexusHousehold)
+      var name = 'Evim';
+      try {
+        var homes = JSON.parse(localStorage.getItem('nexusHousehold') || 'null');
+        if (Array.isArray(homes) && homes.length && homes[0].name) name = homes[0].name;
+      } catch (e) {}
+      document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = name; });
+
+      // Bugünkü Enerji Senkronizasyonu
+      var count = 0;
+      try {
+        var cards = JSON.parse(localStorage.getItem('nexusDashboardCards') || '[]');
+        if (Array.isArray(cards)) count += cards.filter(function (c) { return c && c.visible !== false; }).length;
+        var paired = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]');
+        if (Array.isArray(paired)) count += paired.length;
+      } catch (e) {}
+      
+      var map = {};
+      try { map = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch(e){}
+      var activeStrategies = Object.keys(map).filter(k => map[k]).length;
+      
+      var energyEl = document.getElementById('energy-today');
+      if (energyEl) {
+        if (activeStrategies > 0) {
+          energyEl.textContent = activeStrategies + ' Tasarruf Aktif';
+          energyEl.classList.remove('text-slate-400', 'text-slate-900', 'font-bold');
+          energyEl.classList.add('text-[#7C5CFF]', 'font-semibold');
+        } else if (count === 0) {
+          energyEl.textContent = 'Veri yok';
+          energyEl.classList.remove('text-[#7C5CFF]', 'font-semibold', 'text-slate-900', 'font-bold');
+          energyEl.classList.add('text-slate-400');
+        } else {
+          energyEl.textContent = '0.00 kWh';
+          energyEl.classList.remove('text-slate-400', 'text-[#7C5CFF]', 'font-semibold');
+          energyEl.classList.add('text-slate-900', 'font-bold');
+        }
+      }
+
+      // Kullanıcı Bilgileri sayfasında değiştirilen fotoğrafla senkron
       var avatar = localStorage.getItem('nexusAvatar');
-      if (avatar) document.getElementById('home-avatar').src = avatar;
-    })();
+      if (avatar) {
+        var avatarEl = document.getElementById('home-avatar');
+        if (avatarEl) avatarEl.src = avatar;
+      }
+    }
+
+    // Call on load
+    syncCards();
+
+    // Call when page is restored from bfcache
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        syncCards();
+      }
+    });
+
+    // Also call on visibilitychange just to be absolutely sure for mobile web views
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        syncCards();
+      }
+    });
+
     // Quick add menu open/close
     function toggleQuickAdd() {
       document.getElementById('quick-add-menu').classList.toggle('open');
       document.getElementById('quick-add-backdrop').classList.toggle('hidden');
     }
   </script>
+
+
+<!-- Home Selector Modal -->
+<div id="home-selector-backdrop" class="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="toggleHomeSelector()"></div>
+<div id="home-selector-modal" class="fixed inset-x-0 top-0 z-[70] bg-white rounded-b-[2rem] shadow-2xl border-b border-slate-100 flex flex-col transform transition-transform duration-300 -translate-y-full">
+  <div class="px-5 pt-12 pb-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ev Seçimi</h3>
+    <button onclick="toggleHomeSelector()" class="p-2 -mr-2 text-slate-400 hover:text-slate-600 rounded-full">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+  </div>
+  <div class="p-4 flex flex-col gap-2">
+    <!-- Active Home -->
+    <button onclick="toggleHomeSelector()" class="flex items-center gap-3 p-4 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] text-left w-full transition-transform active:scale-[0.98]">
+      <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      <span class="font-bold text-base flex-grow" data-bind="householdName">Benim Evim</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+    </button>
+  </div>
+  <div class="p-4 pt-2 border-t border-slate-100 bg-slate-50 rounded-b-[2rem]">
+    <a href="stitch-household.html" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white text-slate-700 font-bold text-sm transition-transform active:scale-[0.98] border border-slate-200 shadow-sm">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      Ev Yönetimi
+    </a>
+  </div>
+</div>
+
+<script>
+function toggleHomeSelector() {
+  const modal = document.getElementById('home-selector-modal');
+  const backdrop = document.getElementById('home-selector-backdrop');
+  
+  // If it's currently hidden (-translate-y-full)
+  if (modal.classList.contains('-translate-y-full')) {
+    // Show it
+    modal.classList.remove('-translate-y-full');
+    modal.classList.add('translate-y-0');
+    
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    backdrop.classList.add('opacity-100', 'pointer-events-auto');
+  } else {
+    // Hide it
+    modal.classList.remove('translate-y-0');
+    modal.classList.add('-translate-y-full');
+    
+    backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+  }
+}
+</script>
+
+
 </body></html>

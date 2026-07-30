@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Kart Ekle</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="theme.js"></script>
+<script src="ai-fab.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      min-height: max(884px, 100dvh);
+    }
+
+    /* Gradient arka plan */
+    .nexus-bg {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 30%, #ffffff 100%);
+    }
+    html.dark .nexus-bg {
+      background: linear-gradient(to bottom, #1e1b4b 0%, #0f172a 100%);
+    }
+
+    /* Checkbox özelleştirme */
+    .nexus-check {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #d1d5db;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+      position: relative;
+    }
+    .nexus-check:checked {
+      background: #7C5CFF;
+      border-color: #7C5CFF;
+    }
+    .nexus-check:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%) rotate(45deg);
+      width: 6px;
+      height: 10px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+    }
+    html.dark .nexus-check {
+      background: #1e293b;
+      border-color: #475569;
+    }
+
+    /* Tab active underline */
+    .tab-btn {
+      position: relative;
+      padding-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .tab-btn.active {
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      height: 2.5px;
+      background: #7C5CFF;
+      border-radius: 9999px;
+    }
+    html.dark .tab-btn.active { color: white; }
+
+    /* Row hover */
+    .feature-row {
+      transition: background 0.15s;
+    }
+    .feature-row:active {
+      background: rgba(124,92,255,0.05);
+    }
+
+    /* Boş durum */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+      color: #94a3b8;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="nexus-bg text-slate-900 dark:text-slate-100 flex flex-col">
+
+  <!-- HEADER -->
+  <header class="pt-14 pb-0 px-5 bg-transparent">
+    <div class="flex items-center justify-between mb-4">
+      <button onclick="window.history.back()" class="text-base font-medium text-slate-500 dark:text-slate-400">İptal</button>
+      <h1 class="text-base font-bold">Kart Ekle</h1>
+      <button id="btn-add" onclick="saveAndGoBack()" class="text-base font-bold text-[#7C5CFF]">Ekle</button>
+    </div>
+
+    <!-- TAB BAR -->
+    <div class="flex items-end gap-6 border-b border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
+      <button class="tab-btn active text-sm whitespace-nowrap" onclick="switchTab('smart-home', this)">Smart Home</button>
+      <button class="tab-btn text-sm text-slate-400 whitespace-nowrap" onclick="switchTab('devices', this)">Cihazlar</button>
+      <button class="tab-btn text-sm text-slate-400 whitespace-nowrap" onclick="switchTab('tap-to-run', this)">Hızlı Aksiyonlar</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 overflow-y-auto px-4 py-4 pb-28">
+
+    <!-- === SMART HOME TAB === -->
+    <div id="tab-smart-home">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-50 dark:border-slate-800">
+        <ul id="smart-home-list" class="divide-y divide-slate-50 dark:divide-slate-800">
+          <!-- Dinamik olarak JS ile doldurulur -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- === CİHAZLAR TAB === -->
+    <div id="tab-devices" class="hidden">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <button onclick="toggleDeviceFilter()" class="flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+          <span>Cihazları Filtrele</span>
+          <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </button>
+        <span id="devices-count" class="text-sm text-slate-400 font-medium">(0)</span>
+      </div>
+      <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-50 dark:border-slate-800">
+        <ul id="devices-list" class="divide-y divide-slate-50 dark:divide-slate-800">
+          <!-- Dinamik olarak JS ile doldurulur -->
+        </ul>
+      </div>
+      <div id="devices-empty" class="hidden empty-state">
+        <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+          <i data-lucide="bluetooth-off" class="w-8 h-8 text-slate-300"></i>
+        </div>
+        <p class="text-slate-400 font-medium">Henüz eşleştirilmiş cihaz yok</p>
+        <p class="text-sm text-slate-300 mt-1">Cihaz eklemek için Cihazlar sayfasını ziyaret et</p>
+      </div>
+    </div>
+
+    <!-- === HIZLI AKSİYONLAR TAB === -->
+    <div id="tab-tap-to-run" class="hidden">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <button class="flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+          <span>Filtrele</span>
+          <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </button>
+        <span class="text-sm text-slate-400 font-medium">(0)</span>
+      </div>
+      <div id="tap-run-empty" class="empty-state">
+        <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+          <i data-lucide="zap-off" class="w-8 h-8 text-slate-300"></i>
+        </div>
+        <p class="text-slate-400 font-medium">Hızlı aksiyon senaryosu yok</p>
+        <p class="text-sm text-slate-300 mt-1">Akıllı senaryolar oluşturmak için Otomasyon sekmesini kullan</p>
+        <button onclick="window.location.href='stitch-skills.html'" class="mt-4 px-5 py-2.5 bg-[#7C5CFF] text-white text-sm font-bold rounded-2xl">Senaryo Oluştur</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM SAFE AREA -->
+  <div class="fixed bottom-0 left-0 right-0 h-6 bg-transparent pointer-events-none"></div>
+
+  <script>
+    lucide.createIcons();
+
+    // =============================================
+    // 1. NEXUS ÖZELLİKLERİ (Smart Home listesi)
+    // =============================================
+    const NEXUS_FEATURES = [
+      {
+        id: 'weather',
+        title: 'Hava Durumu',
+        subtitle: 'Güncel hava bilgisi ve tahminler',
+        emoji: '???',
+        url: 'stitch-map.html',
+        defaultVal: 'Veri Yok',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      },
+      {
+        id: 'energy',
+        title: 'AI Enerji Tasarrufu',
+        subtitle: 'Günlük tüketim tahmini ve tasarruf ipuçları',
+        emoji: '?',
+        url: 'stitch-energy.html',
+        defaultVal: '0,00 kWh',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      },
+      {
+        id: 'dnd',
+        title: 'Rahatsız Etme',
+        subtitle: 'Bildirimlerini ve sesini yönet',
+        emoji: '??',
+        url: 'stitch-dnd.html',
+        defaultVal: 'Kapalı',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#FF3B5C]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.73 21a2 2 0 0 1-3.46 0M18.63 13A17.89 17.89 0 0 1 18 8M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14M18 8a6 6 0 0 0-9.33-5M1 1l22 22" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      },
+      {
+        id: 'ai-protect',
+        title: 'AI Protect',
+        subtitle: 'Ev güvenliği ve akıllı alarm sistemi',
+        emoji: '???',
+        url: 'stitch-scan.html',
+        defaultVal: 'Aktif Değil',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      },
+      {
+        id: 'ai-chat',
+        title: 'AI Asistan',
+        subtitle: 'NEXUS yapay zeka sohbet asistanı',
+        emoji: '??',
+        url: 'stitch-chat.html',
+        defaultVal: 'Hazır',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      },
+      {
+        id: 'program',
+        title: 'Ev Programı',
+        subtitle: 'Zamanlama ve rutin yönetimi',
+        emoji: '??',
+        url: 'stitch-program.html',
+        defaultVal: 'Yok',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"></rect><line x1="16" y1="2" x2="16" y2="6" stroke-linecap="round"></line><line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round"></line><line x1="3" y1="10" x2="21" y2="10" stroke-linecap="round"></line></svg>'
+      },
+      {
+        id: 'discover',
+        title: 'Keşfet',
+        subtitle: 'Yeni özellikler ve mini uygulamalar',
+        emoji: '??',
+        url: 'stitch-discover.html',
+        defaultVal: 'Yenilikler',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" stroke-linecap="round" stroke-linejoin="round"></polygon></svg>'
+      },
+      {
+        id: 'household',
+        title: 'Ev Yönetimi',
+        subtitle: 'Ev üyeleri ve oda yönetimi',
+        emoji: '??',
+        url: 'stitch-household.html',
+        defaultVal: '1 Üye',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"></path><polyline points="9 22 9 12 15 12 15 22" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>'
+      },
+      {
+        id: 'smart',
+        title: 'Akıllı Senaryolar',
+        subtitle: 'Otomasyon ve tıkla-çalıştır sahneleri',
+        emoji: '??',
+        url: 'stitch-smart.html',
+        defaultVal: 'Hazır',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      },
+      {
+        id: 'map',
+        title: 'Konum & Harita',
+        subtitle: 'Ev konumu ve hava durumu haritası',
+        emoji: '??',
+        url: 'stitch-map.html',
+        defaultVal: 'Konum Yok',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"></circle></svg>'
+      },
+      {
+        id: 'plus',
+        title: 'NEXUS+',
+        subtitle: 'Premium özellikler ve içerikler',
+        emoji: '?',
+        url: 'stitch-plus.html',
+        defaultVal: 'Keşfet',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-linecap="round" stroke-linejoin="round"></polygon></svg>'
+      },
+      {
+        id: 'messages',
+        title: 'Mesaj Merkezi',
+        subtitle: 'Sistem bildirimleri ve uyarılar',
+        emoji: '??',
+        url: 'stitch-messages.html',
+        defaultVal: 'Yeni Yok',
+        wattage: 0,
+        size: 1,
+        iconSvg: '<svg class="mb-2 w-8 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      }
+    ];
+
+    // =============================================
+    // 2. MEVCUT KARTI OKU
+    // =============================================
+    let currentCards = [];
+    try {
+      currentCards = JSON.parse(localStorage.getItem('nexusDashboardCards')) || [];
+    } catch(e) {}
+
+    // Aktif kart ID'lerini bir Set'e al (kolay kontrol için)
+    const activeIds = new Set(currentCards.filter(c => c.visible).map(c => c.id));
+
+    // =============================================
+    // 3. SMART HOME LİSTESİNİ DOLDUR
+    // =============================================
+    function renderSmartHomeList() {
+      const ul = document.getElementById('smart-home-list');
+      ul.innerHTML = '';
+
+      NEXUS_FEATURES.forEach(feature => {
+        const isChecked = activeIds.has(feature.id);
+        const li = document.createElement('li');
+        li.className = 'feature-row flex items-center gap-4 px-5 py-4 cursor-pointer select-none';
+        li.innerHTML = `
+          <input type="checkbox" class="nexus-check" id="feat-${feature.id}" ${isChecked ? 'checked' : ''} data-id="${feature.id}"/>
+          <span class="text-2xl flex-shrink-0" aria-hidden="true">${feature.emoji}</span>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-[15px] leading-tight">${feature.title}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 leading-snug">${feature.subtitle}</p>
+          </div>
+        `;
+        // Satıra tıklandığında checkbox durumu değişsin
+        li.addEventListener('click', (e) => {
+          if (e.target.tagName !== 'INPUT') {
+            const cb = li.querySelector('input[type="checkbox"]');
+            cb.checked = !cb.checked;
+            if (cb.checked) activeIds.add(feature.id);
+            else activeIds.delete(feature.id);
+          }
+        });
+        li.querySelector('input').addEventListener('change', (e) => {
+          if (e.target.checked) activeIds.add(feature.id);
+          else activeIds.delete(feature.id);
+        });
+        ul.appendChild(li);
+      });
+    }
+
+    // =============================================
+    // 4. CİHAZLAR LİSTESİNİ DOLDUR
+    // =============================================
+    function renderDevicesList() {
+      const ul = document.getElementById('devices-list');
+      const emptyEl = document.getElementById('devices-empty');
+      const countEl = document.getElementById('devices-count');
+      ul.innerHTML = '';
+
+      // Cihazlar: nexusDashboardCards'dan device olanları çek
+      // Cihazları radar/pair sayfasından eklenenler id'leri 'device-' ile başlar
+      const devices = currentCards.filter(c => c.id && c.id.startsWith('device-'));
+      
+      countEl.textContent = `(${devices.length})`;
+
+      if (devices.length === 0) {
+        ul.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      ul.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+
+      devices.forEach(device => {
+        const isChecked = activeIds.has(device.id);
+        const li = document.createElement('li');
+        li.className = 'feature-row flex items-center gap-4 px-5 py-4 cursor-pointer select-none';
+        li.innerHTML = `
+          <input type="checkbox" class="nexus-check" id="dev-${device.id}" ${isChecked ? 'checked' : ''} data-id="${device.id}"/>
+          ${device.img
+            ? `<img src="${device.img}" alt="${device.title}" class="w-10 h-10 rounded-xl object-contain bg-slate-100 flex-shrink-0 p-1"/>`
+            : `<div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </div>`
+          }
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-[15px] leading-tight">${device.title}</p>
+            ${device.wattage ? `<p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">${device.wattage}W · Tahmini enerji takibi aktif</p>` : ''}
+          </div>
+        `;
+        li.addEventListener('click', (e) => {
+          if (e.target.tagName !== 'INPUT') {
+            const cb = li.querySelector('input[type="checkbox"]');
+            cb.checked = !cb.checked;
+            if (cb.checked) activeIds.add(device.id);
+            else activeIds.delete(device.id);
+          }
+        });
+        li.querySelector('input').addEventListener('change', (e) => {
+          if (e.target.checked) activeIds.add(device.id);
+          else activeIds.delete(device.id);
+        });
+        ul.appendChild(li);
+      });
+    }
+
+    // =============================================
+    // 5. TAB GEÇİŞİ
+    // =============================================
+    function switchTab(tabId, btn) {
+      // Tüm tab içeriklerini gizle
+      ['smart-home', 'devices', 'tap-to-run'].forEach(id => {
+        document.getElementById('tab-' + id).classList.add('hidden');
+      });
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      // Tab butonlarını sıfırla
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.classList.add('text-slate-400');
+      });
+      btn.classList.add('active');
+      btn.classList.remove('text-slate-400');
+
+      // İkonları yenile
+      lucide.createIcons();
+    }
+
+    // =============================================
+    // 6. KAYDET VE GERİ DÖN
+    // =============================================
+    window.saveAndGoBack = function() {
+      // Mevcut kart listesinden görünürlükleri güncelle
+      const updatedCards = [...currentCards];
+
+      // Yeni eklenenler: activeIds içinde olup currentCards'da olmayanlar
+      activeIds.forEach(id => {
+        const exists = updatedCards.find(c => c.id === id);
+        if (!exists) {
+          // Smart Home özelliği mi?
+          const feature = NEXUS_FEATURES.find(f => f.id === id);
+          if (feature) {
+            updatedCards.push({
+              id: feature.id,
+              title: feature.title,
+              url: feature.url,
+              iconSvg: feature.iconSvg,
+              valId: '',
+              valDefault: feature.defaultVal,
+              wattage: feature.wattage,
+              size: 1,
+              visible: true
+            });
+          }
+        } else {
+          exists.visible = true;
+        }
+      });
+
+      // Tikini kaldırdıklarını gizle
+      updatedCards.forEach(c => {
+        if (!activeIds.has(c.id)) {
+          c.visible = false;
+        }
+      });
+
+      localStorage.setItem('nexusDashboardCards', JSON.stringify(updatedCards));
+      window.location.href = 'stitch-home.html';
+    };
+
+    // =============================================
+    // 7. BAŞLAT
+    // =============================================
+    renderSmartHomeList();
+    renderDevicesList();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

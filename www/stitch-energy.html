@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — AI Enerji Tasarrufu</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Mini-app gradient header (brand purple instead of source blue) */
+    .bg-miniapp-gradient {
+      background: linear-gradient(to bottom, #D8D0FE 0%, #ECE9FD 35%, #F6F5FB 65%, #F6F5FB 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    /* Bottom sheet transition */
+    .sheet { transition: transform 0.25s ease; transform: translateY(100%); }
+    .sheet.open { transform: translateY(0); }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: MiniApp Header -->
+<header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<!-- MiniApp capsule: more menu + close -->
+<div class="flex items-center bg-white/70 backdrop-blur rounded-full border border-white/60 shadow-sm" data-purpose="miniapp-capsule">
+<button aria-label="Mini uygulama menüsü" class="px-4 py-2" onclick="openSheet('menu')">
+<i class="w-5 h-5 text-slate-700" data-lucide="ellipsis"></i>
+</button>
+<span class="w-px h-5 bg-slate-300/70"></span>
+<a aria-label="Mini uygulamayı kapat" class="px-4 py-2" href="stitch-home.html">
+<i class="w-5 h-5 text-slate-700" data-lucide="x"></i>
+</a>
+</div>
+</header>
+<!-- END: MiniApp Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pb-10">
+<!-- Title (AI feature: NEXUS AI naming allowed) -->
+<h1 class="text-[28px] font-bold leading-tight tracking-tight mb-1">AI Enerji Tasarrufu</h1>
+<p class="text-slate-500 text-sm mb-6">Cihazlarına dair içgörüler edin, stratejilerle otomatik tasarruf et.</p>
+<!-- Savings summary -->
+<section class="bg-white rounded-3xl card-shadow p-5 mb-6 flex items-center justify-between" data-purpose="savings-summary">
+<div>
+<p class="text-sm font-semibold text-slate-500">Bu ayki tasarruf</p>
+<p class="text-3xl font-extrabold mt-1">0,00 <span class="text-base font-bold text-slate-400">kWh</span></p>
+<p class="text-xs text-slate-400 mt-1">Cihaz ekledikçe tasarrufun burada görünür.</p>
+</div>
+<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<i class="w-7 h-7" data-lucide="zap"></i>
+</div>
+</section>
+<!-- Strategy list -->
+<h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
+<section class="space-y-3" data-purpose="strategy-list">
+<!-- Her strateji, seçimini localStorage'a yazıp detay sayfasını açar -->
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapat">
+<div class="w-12 h-12 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] flex items-center justify-center flex-shrink-0">
+<i class="w-6 h-6" data-lucide="lightbulb-off"></i>
+</div>
+<div class="min-w-0 flex-grow">
+<h3 class="font-bold leading-snug">Evden çıktıktan sonra ışığı otomatik olarak kapat</h3>
+<p class="text-xs text-slate-400 mt-1">Konum tabanlı · Aydınlatma<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
+</div>
+<i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
+</a>
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evde kimse yokken klimayı otomatik olarak kapatın, gereksiz tüketimi önleyin." data-device="Klima" data-title="Kimse yokken klimayı kapat">
+<div class="w-12 h-12 rounded-2xl bg-[#22D3EE]/10 text-[#0EA5C4] flex items-center justify-center flex-shrink-0">
+<i class="w-6 h-6" data-lucide="air-vent"></i>
+</div>
+<div class="min-w-0 flex-grow">
+<h3 class="font-bold leading-snug">Kimse yokken klimayı kapat</h3>
+<p class="text-xs text-slate-400 mt-1">Konum tabanlı · Klima<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
+</div>
+<i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
+</a>
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Gece belirlediğin saatte bekleme modundaki cihazların gücünü otomatik olarak kesin." data-device="Akıllı Priz" data-title="Gece bekleme tüketimini kes">
+<div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
+<i class="w-6 h-6" data-lucide="plug-zap"></i>
+</div>
+<div class="min-w-0 flex-grow">
+<h3 class="font-bold leading-snug">Gece bekleme tüketimini kes</h3>
+<p class="text-xs text-slate-400 mt-1">Zamanlama tabanlı · Akıllı Priz<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
+</div>
+<i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
+</a>
+</section>
+<!-- Feedback shortcut -->
+<a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-8" data-purpose="feedback-link" href="stitch-feedback.html">
+<i class="w-4 h-4" data-lucide="message-circle"></i>Bir sorun mu var? Geri bildirim gönder
+</a>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: Sheet backdrop -->
+<div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
+<!-- BEGIN: MiniApp Menu Sheet (••• menüsü) -->
+<div class="sheet fixed bottom-0 inset-x-0 z-50" data-purpose="miniapp-menu" id="sheet-menu">
+<div class="bg-white rounded-t-3xl p-6">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<i class="w-5 h-5" data-lucide="zap"></i>
+</div>
+<h3 class="text-lg font-bold">AI Enerji Tasarrufu</h3>
+</div>
+<p class="text-sm text-slate-400 mb-6">Bu mini uygulama resmî sağlayıcı tarafından sunulur.</p>
+<div class="grid grid-cols-4 gap-3 text-center" data-purpose="miniapp-actions">
+<button class="flex flex-col items-center gap-2" onclick="closeSheets(); location.href='stitch-energy-strategy.html'">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="settings"></i></span>
+<span class="text-xs font-medium text-slate-600">Ayarlar</span>
+</button>
+<button class="flex flex-col items-center gap-2" onclick="location.reload()">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="rotate-cw"></i></span>
+<span class="text-xs font-medium text-slate-600">Tekrar Yükle</span>
+</button>
+<a class="flex flex-col items-center gap-2" href="stitch-feedback.html">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="triangle-alert"></i></span>
+<span class="text-xs font-medium text-slate-600">Yardım ve Geri Bildirim</span>
+</a>
+<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus.app">
+<span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="mail"></i></span>
+<span class="text-xs font-medium text-slate-600">İletişim E-postası</span>
+</a>
+</div>
+</div>
+<button class="w-full bg-white border-t border-slate-100 py-4 text-center font-bold text-slate-700 pb-8" onclick="closeSheets()">İptal</button>
+</div>
+<!-- END: MiniApp Menu Sheet -->
+<script data-purpose="energy-interactions">
+    lucide.createIcons();
+    // Store the tapped strategy so the detail page shows the right content
+    function pickStrategy(card) {
+      localStorage.setItem('nexusEnergyStrategy', JSON.stringify({
+        title: card.dataset.title,
+        desc: card.dataset.desc,
+        device: card.dataset.device
+      }));
+    }
+    // Detay sayfasında etkinleştirilen stratejileri rozetle göster
+    (function () {
+      var map = {};
+      try { map = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { map = {}; }
+      document.querySelectorAll('[data-title]').forEach(function (card) {
+        if (map[card.dataset.title]) {
+          var badge = card.querySelector('.strategy-state');
+          if (badge) badge.classList.remove('hidden');
+        }
+      });
+    })();
+    // Bottom sheet helpers
+    function openSheet(name) {
+      document.getElementById('sheet-backdrop').classList.remove('hidden');
+      document.getElementById('sheet-' + name).classList.add('open');
+    }
+    function closeSheets() {
+      document.getElementById('sheet-backdrop').classList.add('hidden');
+      document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
+    }
+  </script>
+</body></html>

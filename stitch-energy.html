@@ -2,7 +2,11 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — AI Enerji Tasarrufu</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -31,14 +35,17 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
 <body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
 <header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="stitch-discover.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <!-- MiniApp capsule: more menu + close -->
@@ -55,9 +62,9 @@
 <!-- END: MiniApp Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pb-10">
-<!-- Title (AI feature: NEXUS AI naming allowed) -->
-<h1 class="text-[28px] font-bold leading-tight tracking-tight mb-1">AI Enerji Tasarrufu</h1>
-<p class="text-slate-500 text-sm mb-6">Cihazlarına dair içgörüler edin, stratejilerle otomatik tasarruf et.</p>
+<!-- Title (AI feature: NEXUS AI naming allowed; sayfa üstü başlık ortalanmış) -->
+<h1 class="text-[28px] font-bold leading-tight tracking-tight mb-1 text-center">AI Enerji Tasarrufu</h1>
+<p class="text-slate-500 text-sm mb-6 text-center">Cihazlarına dair içgörüler edin, stratejilerle otomatik tasarruf et.</p>
 <!-- Savings summary -->
 <section class="bg-white rounded-3xl card-shadow p-5 mb-6 flex items-center justify-between" data-purpose="savings-summary">
 <div>

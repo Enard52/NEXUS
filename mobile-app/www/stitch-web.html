@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>NEXUS — Nexus AI Web Sürümü</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — NEXUS AI Web Sürümü</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts: Inter (NEXUS body font) -->
@@ -27,32 +31,35 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
-<body class="bg-gradient-custom text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">Nexus AI Web Sürümü</h1>
+<h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">NEXUS AI Web Sürümü</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pt-4 pb-10">
 <!-- Hero -->
 <section class="flex flex-col items-center text-center mb-8" data-purpose="web-hero">
-<div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#0ea5e9] to-[#22D3EE] flex items-center justify-center text-white font-extrabold text-4xl shadow-lg mb-4">N</div>
-<h2 class="text-xl font-bold">Nexus AI, tarayıcında</h2>
+<div class="w-20 h-20 drop-shadow-lg mb-4"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full"><defs><linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<h2 class="text-xl font-bold">NEXUS AI, tarayıcında</h2>
 <p class="text-sm text-slate-500 mt-2 max-w-xs">Bilgisayarından da sohbet et; konuşmaların tüm cihazlarında senkronize kalır.</p>
 </section>
 <!-- Web address card -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="web-address">
 <p class="text-sm font-semibold text-slate-500 mb-2">Web adresi</p>
 <div class="flex items-center justify-between gap-3 bg-slate-50 rounded-xl px-4 py-3">
-<span class="font-bold text-[#0ea5e9] truncate" id="web-url">ai.nexus.app</span>
+<span class="font-bold text-[#7C5CFF] truncate" id="web-url">ai.nexus.app</span>
 <button aria-label="Bağlantıyı kopyala" class="text-slate-400 flex-shrink-0" id="copy-icon" onclick="copyUrl()">
 <i class="w-5 h-5" data-lucide="copy"></i>
 </button>
@@ -60,19 +67,19 @@
 <p class="hidden text-xs text-emerald-500 font-semibold mt-2" id="copied-note">Bağlantı kopyalandı</p>
 </section>
 <!-- Try it now (opens the chat mockup as the web experience) -->
-<a class="block w-full bg-[#0ea5e9] text-white text-center font-bold py-4 rounded-2xl shadow-md active:scale-[0.98] transition-transform mb-8" href="stitch-chat.html">Sohbeti Şimdi Dene</a>
+<a class="block w-full bg-[#7C5CFF] text-white text-center font-bold py-4 rounded-2xl shadow-md active:scale-[0.98] transition-transform mb-8" href="stitch-chat.html">Sohbeti Şimdi Dene</a>
 <!-- Feature list -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 space-y-4" data-purpose="web-features">
 <div class="flex items-center gap-4">
-<i class="w-6 h-6 text-[#0ea5e9] stroke-[1.5]" data-lucide="refresh-cw"></i>
+<i class="w-6 h-6 text-[#7C5CFF] stroke-[1.5]" data-lucide="refresh-cw"></i>
 <p class="text-sm font-medium text-slate-600">Sohbet geçmişin telefon ve web arasında senkronize</p>
 </div>
 <div class="flex items-center gap-4">
-<i class="w-6 h-6 text-[#0ea5e9] stroke-[1.5]" data-lucide="keyboard"></i>
+<i class="w-6 h-6 text-[#7C5CFF] stroke-[1.5]" data-lucide="keyboard"></i>
 <p class="text-sm font-medium text-slate-600">Uzun komutlar için klavyeyle rahat yazım</p>
 </div>
 <div class="flex items-center gap-4">
-<i class="w-6 h-6 text-[#0ea5e9] stroke-[1.5]" data-lucide="shield-check"></i>
+<i class="w-6 h-6 text-[#7C5CFF] stroke-[1.5]" data-lucide="shield-check"></i>
 <p class="text-sm font-medium text-slate-600">Aynı hesap, aynı gizlilik korumaları</p>
 </div>
 </section>

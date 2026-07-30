@@ -6,7 +6,7 @@
  * Pure output of {@link renderDemoDocument}; no server or bundler required.
  */
 
-import { cpSync, mkdirSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SITE_URL } from "./index.js";
@@ -20,6 +20,7 @@ import {
   renderLoginDocument,
   renderAboutPage,
 } from "../../server/src/pages.js";
+import { OAUTH_PROVIDERS } from "../../server/src/oauth.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, "..", "dist");
@@ -29,9 +30,16 @@ mkdirSync(outDir, { recursive: true });
 const fontsSource = join(here, "..", "..", "..", "public", "fonts");
 const fontsDest = join(outDir, "fonts");
 cpSync(fontsSource, fontsDest, { recursive: true });
+const imagesSource = join(here, "..", "..", "..", "public", "images");
+if (existsSync(imagesSource)) {
+  const imagesDest = join(outDir, "images");
+  cpSync(imagesSource, imagesDest, { recursive: true });
+}
 // eslint-disable-next-line no-console
-if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
+if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
   console.log("copied public/fonts → dist/fonts");
+  if (existsSync(imagesSource)) console.log("copied public/images → dist/images");
+}
 
 const { setLocale } = await import("./render.js");
 const pages: ReadonlyArray<{ file: string; theme: "dark" | "light" }> = [
@@ -66,7 +74,7 @@ for (const loc of ["en", "tr"] as const) {
   }
 
   // Login page
-  const loginHtml = renderLoginDocument(loc, "dark");
+  const loginHtml = renderLoginDocument(loc, { theme: "dark", providers: OAUTH_PROVIDERS });
   writeFileSync(join(locDir, "login.html"), loginHtml, "utf8");
   if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production")
     console.log(`wrote ${join(loc === "en" ? "dist" : "dist/" + loc, "login.html")}`);

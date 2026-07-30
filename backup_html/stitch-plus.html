@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Plus</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Custom Configuration for Tailwind (NEXUS brand palette) -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nexus-purple': '#7C5CFF',
+            'nexus-cyan': '#22D3EE',
+            'nexus-brand': '#6D28D9',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="background-gradient">
+    body {
+      /* Soft brand-tinted gradient background: light cyan to lavender */
+      background: linear-gradient(180deg, #E4F7FB 0%, #F5F3FF 50%, #ECE9FD 100%);
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+<style data-purpose="typography">
+    .text-strikethrough {
+      text-decoration: line-through;
+    }
+    /* NEXUS primary CTA gradient */
+    .nexus-cta {
+      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+    }
+  </style>
+<!-- END: Custom Styles -->
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <script src="ai-fab.js"></script>
+<script src="theme.js"></script>
+</head>
+<body class="flex flex-col items-center p-6 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
+<!-- BEGIN: Navigation Bar -->
+<header class="w-full flex justify-between items-center mb-8 pt-10" data-purpose="top-navigation">
+<!-- Back Arrow Icon -->
+<button onclick="window.history.back()" aria-label="Geri" class="p-2">
+<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Abonelik durumu badge -->
+<span id="plan-badge" class="hidden text-xs font-bold px-3 py-1.5 rounded-full text-white" style="background:#7C5CFF">Aktif</span>
+</header>
+<!-- END: Navigation Bar -->
+<!-- BEGIN: Header Content -->
+<section class="text-center mb-8" data-purpose="header-content">
+<h1 class="text-5xl font-extrabold text-black dark:text-white mb-2">NEXUS AI Plus</h1>
+<p class="text-gray-600 dark:text-gray-300 font-medium text-lg mb-2">7 gün ücretsiz deneyin</p>
+<p class="text-3xl font-extrabold text-nexus-brand">Ayda 2000 kredi kazanın</p>
+</section>
+<!-- END: Header Content -->
+<!-- BEGIN: Feature List Card -->
+<section class="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-md mb-8" data-purpose="features-card">
+<ul class="space-y-5">
+<!-- Feature Item 1 -->
+<li class="flex items-center gap-3">
+<div class="bg-nexus-purple rounded-full p-1">
+<svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-gray-800 dark:text-white text-lg font-medium">NEXUS AI akıllı ev kontrolü</span>
+</li>
+<!-- Feature Item 2 -->
+<li class="flex items-center gap-3">
+<div class="bg-nexus-purple rounded-full p-1">
+<svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-gray-800 dark:text-white text-lg font-medium">NEXUS AI ile her şeyi oluşturun</span>
+</li>
+<!-- Feature Item 3 -->
+<li class="flex items-center gap-3">
+<div class="bg-nexus-purple rounded-full p-1">
+<svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-gray-800 dark:text-white text-lg font-medium">Gelişmiş NEXUS AI modelleri</span>
+</li>
+<!-- Feature Item 4 -->
+<li class="flex items-center gap-3">
+<div class="bg-nexus-purple rounded-full p-1">
+<svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-gray-800 dark:text-white text-lg font-medium">Her ay 2000 kredi</span>
+</li>
+<!-- Feature Item 5 -->
+<li class="flex items-center gap-3">
+<div class="bg-nexus-purple rounded-full p-1">
+<svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-gray-800 dark:text-white text-lg font-medium">Tüm NEXUS cihazlarında çalışır</span>
+</li>
+</ul>
+</section>
+<!-- END: Feature List Card -->
+<!-- BEGIN: Pricing Plans -->
+<section class="w-full max-w-md grid grid-cols-2 gap-4 mb-8" data-purpose="subscription-plans">
+<!-- Annual Plan (Highlighted) -->
+<div id="plan-annual" onclick="selectPlan('Yıllık')" class="bg-white dark:bg-slate-800 border-2 border-nexus-purple rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm relative cursor-pointer ring-2 ring-nexus-purple transition-all" data-plan="Yıllık">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7C5CFF] text-white text-xs font-bold px-3 py-1 rounded-full">Popüler</div>
+<h3 class="text-xl font-bold text-black dark:text-white">Yıllık</h3>
+<p class="text-gray-600 dark:text-gray-300 text-sm mb-2">7 gün ücretsiz deneme</p>
+<div class="text-2xl font-bold text-black dark:text-white">?3999.99</div>
+<div class="text-gray-400 text-sm">?333.33/ay</div>
+</div>
+<!-- Monthly Plan -->
+<div id="plan-monthly" onclick="selectPlan('Aylık')" class="bg-white dark:bg-slate-800 border-2 border-gray-100 rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm cursor-pointer transition-all" data-plan="Aylık">
+<h3 class="text-xl font-bold text-black dark:text-white">Aylık</h3>
+<p class="text-gray-600 dark:text-gray-300 text-sm mb-2">3 gün ücretsiz deneme</p>
+<div class="text-2xl font-bold text-black dark:text-white">?499.99</div>
+<div class="text-gray-400 text-sm">/ay</div>
+</div>
+</section>
+<!-- END: Pricing Plans -->
+<!-- BEGIN: Footer Actions -->
+<footer class="w-full max-w-md flex flex-col items-center gap-4 mt-auto mb-6" data-purpose="footer-navigation">
+<!-- Main Call to Action -->
+<button id="cta-btn" onclick="activatePlan()" class="nexus-cta w-full text-white font-bold py-6 rounded-2xl text-xl shadow-xl active:scale-95 transition-transform">
+      Ücretsiz Dene
+    </button>
+<script>
+  let selectedPlan = 'Yıllık';
+  
+  function selectPlan(plan) {
+    selectedPlan = plan;
+    document.getElementById('plan-annual').classList.toggle('border-nexus-purple', plan==='Yıllık');
+    document.getElementById('plan-annual').classList.toggle('ring-2', plan==='Yıllık');
+    document.getElementById('plan-annual').classList.toggle('ring-nexus-purple', plan==='Yıllık');
+    document.getElementById('plan-annual').classList.toggle('border-gray-100', plan!=='Yıllık');
+    document.getElementById('plan-monthly').classList.toggle('border-nexus-purple', plan==='Aylık');
+    document.getElementById('plan-monthly').classList.toggle('ring-2', plan==='Aylık');
+    document.getElementById('plan-monthly').classList.toggle('ring-nexus-purple', plan==='Aylık');
+    document.getElementById('plan-monthly').classList.toggle('border-gray-100', plan!=='Aylık');
+    const trialDays = plan === 'Yıllık' ? '7' : '3';
+    document.getElementById('cta-btn').textContent = trialDays + ' Gün Ücretsiz Dene';
+  }
+  
+  function activatePlan() {
+    localStorage.setItem('nexusPlusPlan', selectedPlan);
+    const btn = document.getElementById('cta-btn');
+    btn.textContent = '? NEXUS+ ' + selectedPlan + ' Aktif!';
+    btn.style.background = 'linear-gradient(135deg,#22D3EE,#7C5CFF)';
+    document.getElementById('plan-badge').textContent = 'NEXUS+ ' + selectedPlan;
+    document.getElementById('plan-badge').classList.remove('hidden');
+    setTimeout(() => window.history.back(), 1500);
+  }
+  
+  // Sayfa açılışında aktif plan varsa göster
+  const existing = localStorage.getItem('nexusPlusPlan');
+  if(existing) {
+    document.getElementById('cta-btn').textContent = '? ' + existing + ' Plan Aktif';
+    document.getElementById('plan-badge').textContent = 'NEXUS+ ' + existing;
+    document.getElementById('plan-badge').classList.remove('hidden');
+  }
+</script>
+<!-- Footer Legal Text -->
+<div class="text-center space-y-1 text-gray-500 dark:text-gray-300">
+<p class="text-gray-600 dark:text-gray-300 text-xs font-medium">
+        7 gün ücretsiz, sonra yılda yalnızca ?3999.99. İstediğiniz zaman iptal edin.
+      </p>
+<a class="text-gray-600 dark:text-gray-300 text-xs font-bold block" href="public/terms.html">Kullanım Koşulları</a>
+</div>
+</footer>
+<!-- END: Footer Actions -->
+</body></html>
+
+

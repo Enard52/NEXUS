@@ -2,7 +2,11 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — Kullanıcı Bilgileri</title>
 <!-- Tailwind CSS v3 CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -38,19 +42,22 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
 <body class="bg-white min-h-screen flex flex-col">
 <!-- BEGIN: Navigation Header -->
 <header class="bg-white px-4 py-4 flex items-center justify-between border-b border-gray-50 relative" data-purpose="main-header">
-<a aria-label="Geri" class="p-2 -ml-2" href="stitch-profile.html">
+<a aria-label="Geri" class="p-2 -ml-2" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.75 19.5L8.25 12l7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
-<h1 class="text-xl font-semibold text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
+<h1 class="whitespace-nowrap text-xl font-semibold text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
 <!-- Empty div for flex balance -->
 <div class="w-10"></div>
 </header>
@@ -63,8 +70,9 @@
 <button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="document.getElementById('avatar-input').click()">
 <span class="text-[17px] font-medium text-gray-800">Profil Fotoğrafı</span>
 <div class="flex items-center gap-3">
-<div class="w-14 h-14 rounded-full overflow-hidden border border-gray-200 flex-shrink-0">
-<img alt="Profil fotoğrafı" class="w-full h-full object-cover" id="avatar-img" src="https://randomuser.me/api/portraits/men/75.jpg"/>
+<div class="w-14 h-14 rounded-full overflow-hidden border border-gray-200 flex-shrink-0 bg-gray-100 flex items-center justify-center">
+<svg class="w-7 h-7 text-gray-300" fill="currentColor" id="avatar-placeholder" viewBox="0 0 24 24" aria-label="Profil fotoğrafı yok" role="img"><path d="M12 12c2.49 0 4.5-2.01 4.5-4.5S14.49 3 12 3 7.5 5.01 7.5 7.5 9.51 12 12 12zm0 2.25c-3 0-9 1.51-9 4.5V21h18v-2.25c0-2.99-6-4.5-9-4.5z"/></svg>
+<img alt="Profil fotoğrafı" class="w-full h-full object-cover hidden" id="avatar-img" src=""/>
 </div>
 <svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -76,7 +84,7 @@
 <button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('name')">
 <span class="text-[17px] font-medium text-gray-800 flex-shrink-0">Kullanıcı Adı</span>
 <div class="flex items-center gap-3 min-w-0">
-<span class="text-[17px] text-gray-400 truncate" id="username-value">Deniz Yılmaz</span>
+<span class="text-[17px] text-gray-400 truncate" id="username-value">Misafir</span>
 <svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -104,7 +112,7 @@
 <h3 class="text-lg font-bold">Kullanıcı Adını Düzenle</h3>
 <button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
 </div>
-<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#7C5CFF] mb-2" id="name-input" maxlength="30" type="text" value="Deniz Yılmaz"/>
+<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#7C5CFF] mb-2" id="name-input" maxlength="30" placeholder="Adını gir" type="text" value=""/>
 <p class="text-xs text-slate-400 mb-5"><span id="name-count">0</span>/30 karakter</p>
 <div class="flex gap-3">
 <button class="flex-1 bg-white border border-slate-200 rounded-2xl py-4 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">İptal</button>
@@ -138,7 +146,11 @@
       if (!file) return;
       var reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById('avatar-img').src = e.target.result;
+        var img = document.getElementById('avatar-img');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        var ph = document.getElementById('avatar-placeholder');
+        if (ph) ph.classList.add('hidden');
         // Profil sayfası da aynı anahtardan okur
         try { localStorage.setItem('nexusAvatar', e.target.result); }
         catch (err) { /* çok büyük görselde kota aşılırsa yalnızca bu oturumda görünür */ }
@@ -275,14 +287,20 @@
       document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
     }
 
-    /* Ülke verileri hazır olduktan sonra kayıtlı verileri yükle (profil sayfasıyla senkron) */
+    /* Ülke verileri hazır olduktan sonra kayıtlı verileri yükle (profil sayfasıyla senkron) — gerçek veri yoksa dürüst varsayılanlar */
     (function () {
-      var name = localStorage.getItem('nexusUserName') || 'Deniz Yılmaz';
-      document.getElementById('username-value').textContent = name;
-      nameInput.value = name;
+      var name = localStorage.getItem('nexusUserName');
+      document.getElementById('username-value').textContent = name || 'Misafir';
+      nameInput.value = name || '';
       updateNameCount();
       var avatar = localStorage.getItem('nexusAvatar');
-      if (avatar) document.getElementById('avatar-img').src = avatar;
+      if (avatar) {
+        var img = document.getElementById('avatar-img');
+        img.src = avatar;
+        img.classList.remove('hidden');
+        var ph = document.getElementById('avatar-placeholder');
+        if (ph) ph.classList.add('hidden');
+      }
       renderTimezone();
     })();
   </script>

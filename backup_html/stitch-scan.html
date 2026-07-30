@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Tara</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+<style data-purpose="scanner-animation">
+    /* Cyan scan line sweeping inside the frame (NEXUS accent) */
+    .scan-line {
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #22D3EE, transparent);
+      box-shadow: 0 0 14px #22D3EE;
+      animation: scan 2.8s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0%, 100% { top: 6%; }
+      50% { top: 94%; }
+    }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-12 pb-2 px-4" data-purpose="scan-header">
+<a aria-label="Geri" class="inline-flex w-10 h-10 items-center justify-center" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: ScannerViewport -->
+<main class="flex-grow relative" data-purpose="scanner-viewport">
+<div class="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-64 h-64" data-purpose="scan-frame">
+<!-- Corner brackets -->
+<span class="absolute top-0 left-0 w-9 h-9 border-t-[3px] border-l-[3px] border-white/80 rounded-tl-2xl"></span>
+<span class="absolute top-0 right-0 w-9 h-9 border-t-[3px] border-r-[3px] border-white/80 rounded-tr-2xl"></span>
+<span class="absolute bottom-0 left-0 w-9 h-9 border-b-[3px] border-l-[3px] border-white/80 rounded-bl-2xl"></span>
+<span class="absolute bottom-0 right-0 w-9 h-9 border-b-[3px] border-r-[3px] border-white/80 rounded-br-2xl"></span>
+<!-- Animated scan line -->
+<span class="scan-line"></span>
+</div>
+</main>
+<!-- END: ScannerViewport -->
+<!-- BEGIN: Hints -->
+<section class="px-8 pb-6 text-center space-y-5" data-purpose="scan-hints">
+<p class="text-white/90 font-medium flex items-center justify-center gap-2">
+    Tanımlama için QR kodunu/barkodu hizalayın.
+    <button aria-label="Yardım" class="w-5 h-5 rounded-full bg-white/25 text-[11px] font-bold flex items-center justify-center" onclick="toggleScanHelp()">?</button>
+</p>
+<!-- Yardım balonu: alert() yerine tasarım sistemine uygun ipucu kutusu -->
+<p class="hidden bg-white/15 text-white/90 text-sm font-medium rounded-2xl px-4 py-3 max-w-xs mx-auto" id="scan-help">Cihazın kutusundaki veya gövdesindeki QR kodu çerçeveye hizalayın. Kod okunmazsa kurulum kodunu elle girebilirsiniz.</p>
+<!-- Manuel ekleme: radar keşif sayfasına gider -->
+<a class="mx-auto flex items-center justify-center gap-2 bg-[#7C5CFF]/20 text-[#7C5CFF] hover:bg-[#7C5CFF]/30 transition-colors font-semibold px-6 py-3 rounded-xl w-full max-w-[280px] border border-[#7C5CFF]/30" href="stitch-integrations.html">
+    Manuel Cihaz Ekle
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</section>
+<!-- END: Hints -->
+<!-- BEGIN: BottomActions -->
+<footer class="pb-12 pt-2 px-4 grid grid-cols-3 gap-2 items-start" data-purpose="scan-actions">
+<!-- Setup code -->
+<a class="flex flex-col items-center gap-2.5 text-white/90" href="stitch-integrations.html">
+<span class="w-14 h-14 rounded-2xl bg-[#7C5CFF]/80 flex items-center justify-center shadow-lg shadow-[#7C5CFF]/30">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</span>
+<span class="text-sm font-semibold leading-tight text-center">Manuel<br/>Ekle</span>
+</a>
+<!-- Torch toggle -->
+<button class="flex flex-col items-center gap-2.5 text-white/90" data-purpose="torch-toggle" onclick="toggleTorch(this)">
+<span class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M18 6c0 2-2 2-2 4v10a2 2 0 01-2 2h-4a2 2 0 01-2-2V10c0-2-2-2-2-4V2h12v4zM6 6h12M12 13v1" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</span>
+<span class="text-sm leading-tight text-center" id="torch-label">El Feneri<br/>Kapalı</span>
+</button>
+<!-- Album (real file picker) -->
+<label class="flex flex-col items-center gap-2.5 text-white/90 cursor-pointer">
+<input accept="image/*" class="hidden" type="file"/>
+<span class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><rect height="18" rx="3" width="18" x="3" y="3"></rect><circle cx="9" cy="9" r="2"></circle><path d="M21 15l-3.1-3.1a2 2 0 00-2.8 0L6 21" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</span>
+<span class="text-sm leading-tight text-center">Albüm</span>
+</label>
+</footer>
+<!-- END: BottomActions -->
+<!-- BEGIN: SetupCodeSheet -->
+<div class="hidden fixed inset-0 bg-black/60 z-50 flex items-end" id="code-sheet" onclick="toggleCodeSheet()">
+<div class="bg-white text-slate-900 w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
+<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
+<h2 class="font-bold text-lg mb-1">Kurulum Kodunu Girin</h2>
+<p class="text-slate-500 text-sm mb-4">Cihazın üzerindeki 8-11 haneli kurulum kodunu yazın.</p>
+<input class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-2 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="setup-code-input" placeholder="Örn. 123-45-678" type="text"/>
+<p class="hidden text-sm text-red-500 mb-2" id="setup-code-error">Kod 8-11 haneli olmalı. Lütfen kontrol edin.</p>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform mt-2" onclick="confirmSetupCode()">Onayla</button>
+</div>
+</div>
+<!-- END: SetupCodeSheet -->
+<script data-purpose="scan-interactions">
+    // Yardım balonunu aç/kapat
+    function toggleScanHelp() {
+      document.getElementById('scan-help').classList.toggle('hidden');
+    }
+    // Bottom sheet for manual setup code entry
+    function toggleCodeSheet() {
+      document.getElementById('code-sheet').classList.toggle('hidden');
+      document.getElementById('setup-code-error').classList.add('hidden');
+    }
+    // Girilen kurulum kodunu doğrula ve cihazı gerçekten eşleştir (nexusPairedDevices)
+    function confirmSetupCode() {
+      var input = document.getElementById('setup-code-input');
+      var err = document.getElementById('setup-code-error');
+      var digits = (input.value || '').replace(/\D/g, '');
+      if (digits.length < 8 || digits.length > 11) {
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      var paired = [];
+      try { paired = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]'); } catch (e) {}
+      if (!Array.isArray(paired)) paired = [];
+      var name = 'Cihaz ·' + digits.slice(-4);
+      if (!paired.some(function (d) { return d && d.name === name; })) {
+        paired.push({ name: name, icon: 'cpu' });
+        localStorage.setItem('nexusPairedDevices', JSON.stringify(paired));
+      }
+      input.value = '';
+      toggleCodeSheet();
+      // Cihaz listesinin göründüğü ana ekrana dön
+      window.location.href = 'stitch-home.html';
+    }
+    
+    let mediaStream = null;
+    let videoTrack = null;
+
+    // Request camera access and get the track on load if possible, 
+    // or we can do it when the user clicks the torch.
+    async function initCamera() {
+      if (videoTrack) return;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" }
+        });
+        mediaStream = stream;
+        videoTrack = stream.getVideoTracks()[0];
+      } catch (err) {
+        console.warn("Kamera erişimi sağlanamadı veya cihazda kamera yok.", err);
+      }
+    }
+
+    // Torch on/off visual state
+    async function toggleTorch(btn) {
+      var label = document.getElementById('torch-label');
+      var isOn = label.innerHTML.indexOf('Açık') !== -1;
+      
+      if (!videoTrack) {
+        await initCamera();
+      }
+
+      if (videoTrack) {
+        try {
+          const capabilities = videoTrack.getCapabilities();
+          if (capabilities.torch) {
+            await videoTrack.applyConstraints({
+              advanced: [{ torch: !isOn }]
+            });
+          } else {
+            console.warn("Cihazın kamerası el feneri (torch) özelliğini desteklemiyor.");
+          }
+        } catch (err) {
+          console.warn("Fener açılırken hata oluştu.", err);
+        }
+      }
+
+      // Update UI
+      label.innerHTML = !isOn ? 'El Feneri<br/>Açık' : 'El Feneri<br/>Kapalı';
+      btn.classList.toggle('text-[#22D3EE]', isOn); // Turn off cyan if it was on (wait, !isOn means turning it on)
+      btn.classList.toggle('text-white/90', !isOn);
+      
+      if (!isOn) {
+        btn.classList.add('text-[#22D3EE]');
+        btn.classList.remove('text-white/90');
+      } else {
+        btn.classList.remove('text-[#22D3EE]');
+        btn.classList.add('text-white/90');
+      }
+    }
+
+  </script>
+</body></html>

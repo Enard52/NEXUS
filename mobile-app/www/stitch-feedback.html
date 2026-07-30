@@ -2,7 +2,11 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <title>NEXUS — SSS ve Geri Bildirim</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -27,17 +31,20 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
-<body class="bg-gradient-custom text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">SSS ve Geri Bildirim</h1>
+<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">SSS ve Geri Bildirim</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
@@ -61,10 +68,10 @@
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50" onclick="toggleFaq(this)">
-<span class="font-semibold pr-3">Nexus AI puanları nedir?</span>
+<span class="font-semibold pr-3">NEXUS AI puanları nedir?</span>
 <i class="w-5 h-5 text-slate-300 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500">Nexus AI ile yaptığınız her görüşme puan kullanır. Puanlar her gün yenilenir; Plus aboneliğiyle daha yüksek limit alırsınız.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500">NEXUS AI ile yaptığınız her görüşme puan kullanır. Puanlar her gün yenilenir; Plus aboneliğiyle daha yüksek limit alırsınız.</p>
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50" onclick="toggleFaq(this)">
@@ -74,13 +81,13 @@
 <p class="hidden px-5 pb-5 text-sm text-slate-500">Evet. NEXUS gizlilik öncelikli çalışır; cihaz verileriniz uçtan uca şifrelenir ve üçüncü taraflarla paylaşılmaz.</p>
 </div>
 </section>
-<!-- Support Assistant (AI özelliği: Nexus AI adlandırması doğru) -->
+<!-- Support Assistant (AI özelliği: NEXUS AI adlandırması doğru) -->
 <h2 class="text-lg font-bold mb-3">Cevabını bulamadın mı?</h2>
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-8" data-purpose="support-assistant">
 <div class="flex items-center gap-3 mb-4">
-<div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#0ea5e9] to-[#22D3EE] flex items-center justify-center text-white font-extrabold text-xl flex-shrink-0">N</div>
+<div class="w-11 h-11 flex-shrink-0"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full"><defs><linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 <div>
-<h3 class="font-bold leading-tight">Nexus AI Destek Asistanı</h3>
+<h3 class="font-bold leading-tight">NEXUS AI Destek Asistanı</h3>
 <p class="text-xs text-emerald-500 font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Çevrimiçi</p>
 </div>
 </div>
@@ -90,34 +97,34 @@
 </div>
 <!-- Input -->
 <div class="flex items-center gap-2">
-<input class="flex-grow border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-[#0ea5e9] focus:ring-[#0ea5e9]" id="assist-input" onkeydown="if(event.key==='Enter')askAssistant()" placeholder="Sorununu yaz..." type="text"/>
-<button aria-label="Gönder" class="w-11 h-11 rounded-xl bg-[#0ea5e9] text-white flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform" onclick="askAssistant()">
+<input class="flex-grow border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="assist-input" onkeydown="if(event.key==='Enter')askAssistant()" placeholder="Sorununu yaz..." type="text"/>
+<button aria-label="Gönder" class="w-11 h-11 rounded-xl bg-[#7C5CFF] text-white flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform" onclick="askAssistant()">
 <i class="w-5 h-5" data-lucide="send"></i>
 </button>
 </div>
-<a class="flex items-center justify-center gap-1 text-sm font-semibold text-[#0ea5e9] mt-4" href="stitch-chat.html">Tam sohbeti aç<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+<a class="flex items-center justify-center gap-1 text-sm font-semibold text-[#7C5CFF] mt-4" href="stitch-chat.html">Tam sohbeti aç<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
 </section>
 <!-- Feedback Form -->
 <h2 class="text-lg font-bold mb-3">Geri Bildirim ve Öneriler</h2>
 <section class="bg-white rounded-3xl menu-container-shadow p-5" data-purpose="feedback-form" id="feedback-form">
 <label class="block text-sm font-semibold text-slate-500 mb-2" for="feedback-topic">Konu</label>
-<select class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#0ea5e9] focus:ring-[#0ea5e9]" id="feedback-topic">
+<select class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="feedback-topic">
 <option>Öneri</option>
 <option>Hata Bildirimi</option>
 <option>Cihaz Sorunu</option>
 <option>Diğer</option>
 </select>
 <label class="block text-sm font-semibold text-slate-500 mb-2" for="feedback-text">Mesajın</label>
-<textarea class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#0ea5e9] focus:ring-[#0ea5e9]" id="feedback-text" placeholder="Bize düşünceni yaz..." rows="4"></textarea>
-<button class="w-full bg-[#0ea5e9] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="sendFeedback()">Gönder</button>
+<textarea class="w-full border border-slate-200 rounded-xl px-4 py-3 mb-4 font-medium focus:border-[#7C5CFF] focus:ring-[#7C5CFF]" id="feedback-text" placeholder="Bize düşünceni yaz..." rows="4"></textarea>
+<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="sendFeedback()">Gönder</button>
 </section>
 <!-- Success state (shown after submit) -->
 <section class="hidden bg-white rounded-3xl menu-container-shadow p-8 flex-col items-center text-center" data-purpose="feedback-success" id="feedback-success">
-<div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#22D3EE] flex items-center justify-center text-white mb-4">
+<div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white mb-4">
 <i class="w-7 h-7" data-lucide="check"></i>
 </div>
 <h3 class="font-bold text-lg mb-1">Teşekkürler!</h3>
-<p class="text-sm text-slate-500">Geri bildirimin bize ulaştı. NEXUS'u birlikte daha iyi yapıyoruz.</p>
+<p class="text-sm text-slate-500">Geri bildirimin cihazına kaydedildi. NEXUS'u birlikte daha iyi yapıyoruz.</p>
 </section>
 </main>
 <!-- END: MainContent -->
@@ -128,9 +135,16 @@
       btn.parentElement.querySelector('p').classList.toggle('hidden');
       btn.querySelector('.lucide-chevron-down').classList.toggle('rotate-180');
     }
-    // Swap the form for the thank-you card
+    // Swap the form for the thank-you card (gerçek kayıt: nexusFeedback)
     function sendFeedback() {
-      if (!document.getElementById('feedback-text').value.trim()) return;
+      var text = document.getElementById('feedback-text').value.trim();
+      if (!text) return;
+      try {
+        var list = JSON.parse(localStorage.getItem('nexusFeedback') || '[]');
+        if (!Array.isArray(list)) list = [];
+        list.push({ text: text, ts: Date.now() });
+        localStorage.setItem('nexusFeedback', JSON.stringify(list));
+      } catch (e) {}
       document.getElementById('feedback-form').classList.add('hidden');
       var ok = document.getElementById('feedback-success');
       ok.classList.remove('hidden');
@@ -142,7 +156,7 @@
       var text = input.value.trim();
       if (!text) return;
       var log = document.getElementById('assist-log');
-      log.insertAdjacentHTML('beforeend', '<div class="bg-[#0ea5e9] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm max-w-[85%] ml-auto"></div>');
+      log.insertAdjacentHTML('beforeend', '<div class="bg-[#7C5CFF] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm max-w-[85%] ml-auto"></div>');
       log.lastElementChild.textContent = text;
       input.value = '';
       var t = text.toLowerCase();
@@ -152,7 +166,7 @@
       } else if (t.indexOf('cihaz ekle') !== -1 || t.indexOf('yeni cihaz') !== -1 || t.indexOf('qr') !== -1) {
         reply = 'Ana ekranın sağ üstündeki + butonuna dokun, "Tara" ile QR kodu okut ya da kurulum kodunu elle gir.';
       } else if (t.indexOf('puan') !== -1 || t.indexOf('limit') !== -1 || t.indexOf('abonelik') !== -1) {
-        reply = 'Nexus AI puanların her gün yenilenir. Daha yüksek limit için Profil > Abonelik bölümünden Plus\'a geçebilirsin.';
+        reply = 'NEXUS AI puanların her gün yenilenir. Daha yüksek limit için Profil > Abonelik bölümünden Plus\'a geçebilirsin.';
       } else if (t.indexOf('güvenli') !== -1 || t.indexOf('veri') !== -1 || t.indexOf('gizlilik') !== -1) {
         reply = 'Verilerin uçtan uca şifrelenir ve üçüncü taraflarla paylaşılmaz. Detaylar Ayarlar > Gizlilik bölümünde.';
       } else if (t.indexOf('teşekk') !== -1 || t.indexOf('tamam') !== -1 || t.indexOf('oldu') !== -1) {
