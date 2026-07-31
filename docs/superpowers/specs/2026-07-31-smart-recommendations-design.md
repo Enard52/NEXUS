@@ -33,6 +33,27 @@ Bu fazda yapilmayacaklar:
 - Gercek cihaz protokol entegrasyonlari
 - Lovable ile tasarlanacak buyuk kapsamli premium sayfalar
 
+## Hedeflenen Son Durum
+
+Bu spec ve devamindaki implementasyonlar, md belgeleri uzerinden Lovable ile yapilacak tasarim isleriyle birlikte dusunulmelidir.
+
+Amac, tasarim turu tamamlandiginda uygulamanin urun ve UI tarafindaki buyuk aciklarini olabildigince kapatmis olmak. Bu noktadan sonra kalan ana yuk, yeni bir tasarim dili aramak veya eksik ekran kurgulamak degil; agirlikli olarak gercek sistem davranislarini baglamak olmalidir.
+
+Yani hedeflenen proje durumu sunudur:
+
+- eksik veya zayif gorunen ekranlar tasarlanmis olacak
+- akillar, oneriler, kartlar, detaylar ve bos durumlar urunlesmis gorunecek
+- kullaniciyi tasarimsiz veya gecici hissi veren ana akislar minimuma inmis olacak
+
+Boylece sonraki fazlarda odak su alanlara kayacaktir:
+
+- dis servisler ve API entegrasyonlari
+- gercek cihaz kontrol mantigi ve detay kontrol sayfalari
+- otomasyonlarin gercek komut ve durum sistemlerine baglanmasi
+- production sertlestirmesi, test ve hata senaryolari
+
+Bu nedenle bu fazdaki tasarim ve yonlendirme kararlarinin hepsi, ileride geriye esas olarak entegrasyon ve kontrol sistemi agirlikli bir is listesi birakacak sekilde alinmalidir.
+
 ## Urun Davranisi
 ## 1. Akilli Uygulama Onerileri
 
@@ -290,14 +311,8 @@ Detay sayfasi dili:
 
 ## Tavsiye
 
-Bu fazda hedef:
+Bu fazda hedef, kullanicinin akilli cihaz ekledikce daha canli bir `Akilli` sayfasi gormesi, AI uygulama fikrinin soyut degil elle tutulur hale gelmesi ve tam cihaz kontrol UI'lari gelmeden once bile urun hissinin belirgin sekilde artmasidir.
 
-- kullanicinin akilli cihaz ekledikce daha canli bir `Akilli` sayfasi gormesi
-- AI uygulama fikrinin soyut degil, elle tutulur hale gelmesi
-- tam cihaz kontrol UI'lari gelmeden once bile urun hissinin belirgin sekilde artmasi
+Bu nedenle en dogru yaklasim, detay ekranlarini `ilham + AI gecis` mantiginda kurmak, `Tikla ve Calistir` onerilerini `hafif ve aninda` tutmak ve tam kontrol sistemlerini sonraki faza birakmaktir.
 
-Bu nedenle en dogru yaklasim:
-
-- detay ekranlari `ilham + AI gecis`
-- `Tikla ve Calistir` onerileri `hafif ve aninda`
-- tam kontrol sistemleri ise sonraki faz
+Boylece tasarimlar tamamlandiktan sonra proje yukunun dogal merkezi, gorsel eksiklerden cok gercek entegrasyonlar ve cihaz kontrol davranislarina kayar.
