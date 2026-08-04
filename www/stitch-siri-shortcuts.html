@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>NEXUS — Siri Kısayolları</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="data.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100dvh;
+      background: #F9FAFB;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+  <script>
+    if (typeof nexusGetItem !== 'function') {
+      window.nexusGetItem = function(key) { return localStorage.getItem(key); };
+    }
+    if (typeof nexusSetItem !== 'function') {
+      window.nexusSetItem = function(key, value) { localStorage.setItem(key, value); };
+    }
+  </script>
+</head>
+<body class="text-slate-900 flex flex-col">
+  <!-- Premium Header -->
+  <header class="pt-12 pb-4 px-5 flex items-center justify-between sticky top-0 z-50 bg-[#F9FAFB]">
+    <button onclick="window.history.back()" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform">
+      <i class="w-7 h-7" data-lucide="chevron-left"></i>
+    </button>
+    <h1 class="text-[17px] font-bold text-slate-900 absolute left-1/2 -translate-x-1/2 tracking-tight">Siri Kısayolları</h1>
+    <div class="w-7"></div>
+  </header>
+
+  <main class="flex-grow px-5 pt-8 pb-24">
+    <!-- Hero Section -->
+    <div class="text-center mb-10 mt-4">
+      <div class="w-20 h-20 mx-auto flex items-center justify-center mb-2">
+        <img src="siri-logo.png" class="w-16 h-16 object-contain drop-shadow-md transform scale-125" alt="Siri" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;w-16 h-16 rounded-full bg-gradient-to-br from-[#4C7DFF] via-[#22D3EE] to-[#FF4FD8] flex items-center justify-center text-white font-extrabold text-2xl shadow-lg&quot;>S</div>';">
+      </div>
+      <h2 class="text-[22px] font-extrabold text-slate-900 tracking-tight">Siri'ye Ekle</h2>
+      <p class="text-[14px] text-slate-500 mt-2 max-w-[260px] mx-auto leading-relaxed">NEXUS senaryolarınızı Siri komutlarıyla saniyeler içinde sesle çalıştırın.</p>
+    </div>
+
+    <!-- Senaryo Listesi -->
+
+    <div id="scenario-list" class="space-y-3">
+      <!-- Senaryolar buraya dinamik olarak eklenecek -->
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const clickruns = readAndNormalizeItems('nexusCustomClickRun', 'clickrun');
+      const scenarioList = document.getElementById('scenario-list');
+
+      if (!clickruns || clickruns.length === 0) {
+        scenarioList.innerHTML = `
+          <div class="bg-white rounded-[1.5rem] p-6 text-center shadow-sm">
+            <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400">
+              <i class="w-6 h-6" data-lucide="zap-off"></i>
+            </div>
+            <h4 class="text-[15px] font-bold text-slate-800 mb-1">Senaryo Bulunamadı</h4>
+            <p class="text-[13px] text-slate-500 leading-relaxed px-2">Siri'ye ekleyebilmek için önce uygulamanızda yeni bir "Tıkla ve Çalıştır" senaryosu oluşturmalısınız.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      clickruns.forEach((scenario) => {
+        const scenarioElement = document.createElement('div');
+        scenarioElement.className = "bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex items-center justify-between cursor-pointer active:scale-[0.98] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] group";
+        scenarioElement.onclick = () => addToSiri(scenario.title);
+
+        // Use data.js helper functions
+        const accent = window.getCardAccentClasses ? window.getCardAccentClasses(scenario.icon) : {wrap: 'bg-slate-100 text-slate-600'};
+        let svg = '';
+        if (window.getCardIconSvg) {
+          svg = window.getCardIconSvg(scenario.icon);
+        }
+
+        // Fallback for svg if it doesn't return proper string
+        if (!svg || !svg.includes('<svg')) {
+          svg = '<i data-lucide="'+scenario.icon+'" class="w-6 h-6"></i>';
+        }
+
+        scenarioElement.innerHTML = `
+          <div class="flex items-center gap-4 w-full overflow-hidden">
+            <div class="w-14 h-14 rounded-2xl ${accent.wrap} flex items-center justify-center shrink-0">
+              ${svg}
+            </div>
+            <div class="min-w-0 flex-1">
+              <h3 class="font-bold text-slate-900 text-[16px] group-active:text-blue-600 transition-colors truncate">${scenario.title}</h3>
+              <p class="text-[13px] text-slate-500 mt-0.5 truncate">${scenario.desc}</p>
+            </div>
+          </div>
+          <div class="w-10 h-10 ml-3 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0 group-active:bg-blue-50 group-active:text-blue-600 transition-colors">
+            <i class="w-5 h-5" data-lucide="plus"></i>
+          </div>
+        `;
+
+        scenarioList.appendChild(scenarioElement);
+      });
+
+      lucide.createIcons();
+    });
+
+    function addToSiri(scenarioTitle) {
+      alert(`"${scenarioTitle}" senaryosu başarıyla Siri'ye eklendi. Artık "Hey Siri, ${scenarioTitle}" diyerek çalıştırabilirsiniz.`);
+    }
+  </script>
+</body>
+</html>

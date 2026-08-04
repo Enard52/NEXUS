@@ -34,6 +34,7 @@
       min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
@@ -41,7 +42,7 @@
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">NEXUS AI Web Sürümü</h1>
@@ -59,7 +60,7 @@
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="web-address">
 <p class="text-sm font-semibold text-slate-500 mb-2">Web adresi</p>
 <div class="flex items-center justify-between gap-3 bg-slate-50 rounded-xl px-4 py-3">
-<span class="font-bold text-[#7C5CFF] truncate" id="web-url">ai.nexus.app</span>
+<span class="font-bold text-[#4C7DFF] truncate" id="web-url">ai.nexus.app</span>
 <button aria-label="Bağlantıyı kopyala" class="text-slate-400 flex-shrink-0" id="copy-icon" onclick="copyUrl()">
 <i class="w-5 h-5" data-lucide="copy"></i>
 </button>
@@ -67,19 +68,19 @@
 <p class="hidden text-xs text-emerald-500 font-semibold mt-2" id="copied-note">Bağlantı kopyalandı</p>
 </section>
 <!-- Try it now (opens the chat mockup as the web experience) -->
-<a class="block w-full bg-[#7C5CFF] text-white text-center font-bold py-4 rounded-2xl shadow-md active:scale-[0.98] transition-transform mb-8" href="stitch-chat.html">Sohbeti Şimdi Dene</a>
+<a class="block w-full bg-[#4C7DFF] text-white text-center font-bold py-4 rounded-2xl shadow-md active:scale-[0.98] transition-transform mb-8" href="stitch-chat.html">Sohbeti Şimdi Dene</a>
 <!-- Feature list -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 space-y-4" data-purpose="web-features">
 <div class="flex items-center gap-4">
-<i class="w-6 h-6 text-[#7C5CFF] stroke-[1.5]" data-lucide="refresh-cw"></i>
+<i class="w-6 h-6 text-[#4C7DFF] stroke-[1.5]" data-lucide="refresh-cw"></i>
 <p class="text-sm font-medium text-slate-600">Sohbet geçmişin telefon ve web arasında senkronize</p>
 </div>
 <div class="flex items-center gap-4">
-<i class="w-6 h-6 text-[#7C5CFF] stroke-[1.5]" data-lucide="keyboard"></i>
+<i class="w-6 h-6 text-[#4C7DFF] stroke-[1.5]" data-lucide="keyboard"></i>
 <p class="text-sm font-medium text-slate-600">Uzun komutlar için klavyeyle rahat yazım</p>
 </div>
 <div class="flex items-center gap-4">
-<i class="w-6 h-6 text-[#7C5CFF] stroke-[1.5]" data-lucide="shield-check"></i>
+<i class="w-6 h-6 text-[#4C7DFF] stroke-[1.5]" data-lucide="shield-check"></i>
 <p class="text-sm font-medium text-slate-600">Aynı hesap, aynı gizlilik korumaları</p>
 </div>
 </section>

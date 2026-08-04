@@ -7,13 +7,82 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz Ekle</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+    // Arka planı beyaz olan resimleri şeffaf yapan akıllı fonksiyon
+    function makeImagesTransparent() {
+      const images = document.querySelectorAll('.product-tile img');
+      images.forEach(img => {
+        if (img.complete) {
+          processImage(img);
+        } else {
+          img.addEventListener('load', () => processImage(img), { once: true });
+        }
+      });
+    }
+
+    function processImage(img) {
+      if (img.dataset.processed) return;
+      img.dataset.processed = 'true';
+      
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+      
+      if (canvas.width === 0 || canvas.height === 0) return;
+      
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      try {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        // Beyaz ve beyaza çok yakın renkleri şeffaf yap
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          
+          if (r > 240 && g > 240 && b > 240) {
+            data[i + 3] = 0; // Alpha kanalını 0 yap (tam şeffaf)
+          } else if (r > 230 && g > 230 && b > 230) {
+            // Yumuşak geçiş için yarı şeffaf (Anti-aliasing kenarları)
+            data[i + 3] = 100;
+          }
+        }
+        
+        ctx.putImageData(imageData, 0, 0);
+        img.src = canvas.toDataURL('image/png');
+      } catch (e) {
+        console.warn('CORS or canvas error on image:', e);
+      }
+    }
+
+    // Katalog render edildikten sonra çalıştır
+    const originalRenderCatalogContent = renderCatalogContent;
+    renderCatalogContent = function() {
+      originalRenderCatalogContent();
+      setTimeout(makeImagesTransparent, 100);
+    };
+    
+    // Sayfa yüklendiğinde mevcut resimler için de çalıştır
+    window.addEventListener('load', () => {
+      setTimeout(makeImagesTransparent, 200);
+    });
+
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
     ::-webkit-scrollbar { width: 0px; background: transparent; }
     #loading-overlay { display: none; }
+    .manual-shell-divider { border-top: 1px solid rgba(226, 232, 240, 0.95); }
+    .catalog-search-pill {
+      background: #f8fafc;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
     
     .cat-btn {
       position: relative;
@@ -22,644 +91,177 @@
     /* Text Only Category Button States */
     .cat-btn {
       position: relative;
-      border-left-width: 4px;
+      border-left-width: 3px;
       border-left-color: transparent;
       transition: all 0.2s ease;
     }
     .cat-active {
-      background-color: rgba(124, 92, 255, 0.08);
-      border-left-color: #7C5CFF;
+      background-color: transparent;
+      border-left-color: #111827;
     }
     .cat-active .cat-text {
-      color: #7C5CFF;
+      color: #111827;
       font-weight: 800;
     }
     .cat-inactive .cat-text {
-      color: #64748b;
-      font-weight: 600;
+      color: #8b929f;
+      font-weight: 500;
+    }
+    .cat-text {
+      word-break: keep-all;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
     }
     html.dark .cat-inactive .cat-text {
       color: #94a3b8;
     }
+    .catalog-subtitle {
+      margin-top: 0.2rem;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: #94a3b8;
+    }
+    .catalog-kicker {
+      margin-bottom: 1.1rem;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: #8b929f;
+      letter-spacing: -0.01em;
+    }
+    .product-tile img {
+      filter: drop-shadow(0 8px 14px rgba(15, 23, 42, 0.08));
+    }
+    .catalog-group-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin: 0.35rem 0 1rem;
+      letter-spacing: -0.01em;
+    }
+    html.dark .catalog-group-title { color: #94a3b8; }
+    .product-tile p {
+      white-space: normal;
+      text-wrap: balance;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .cat-chip {
+      flex: 0 0 auto;
+      padding: 0.5rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #64748b;
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .cat-chip.active {
+      color: #ffffff;
+      background: #111827;
+    }
+    html.dark .cat-chip { background: #1e293b; color: #94a3b8; }
+    html.dark .cat-chip.active { background: #f8fafc; color: #0f172a; }
+    #catalog-empty p { color: #64748b; }
+    html.dark body {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    html.dark #int-header,
+    html.dark .catalog-toolbar,
+    html.dark #main-content,
+    html.dark #sidebar-categories {
+      background: #0f172a !important;
+    }
+    html.dark .manual-shell-divider {
+      border-top-color: rgba(51, 65, 85, 0.95);
+    }
+    html.dark .catalog-search-pill {
+      background: #111827;
+      border-color: rgba(51, 65, 85, 0.95);
+      box-shadow: none;
+    }
+    html.dark .cat-active {
+      border-left-color: #f8fafc;
+    }
+    html.dark .cat-active .cat-text,
+    html.dark .catalog-title,
+    html.dark .catalog-heading {
+      color: #f8fafc;
+    }
+    html.dark .catalog-kicker,
+    html.dark .catalog-subtitle {
+      color: #94a3b8;
+    }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 </head>
 <body class="bg-white text-slate-900 h-screen flex flex-col overflow-hidden">
 
   <!-- Header -->
-  <header class="pt-14 pb-3 px-4 flex items-center justify-between bg-white z-50 shadow-sm relative">
+  <header id="int-header" class="pt-14 pb-4 px-4 flex items-center justify-between bg-white z-50 relative">
     <div class="flex items-center gap-3">
-      <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 active:bg-slate-100 rounded-full transition-colors" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+      <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform" href="#" onclick="event.preventDefault(); window.history.back();">
         <i class="w-7 h-7" data-lucide="chevron-left"></i>
       </a>
-      <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Cihaz Ekle</h1>
+      <h1 class="catalog-title text-[2rem] leading-none font-semibold tracking-[-0.03em] text-slate-900">Cihaz Ekle</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <a aria-label="QR ile ekle" class="p-1 text-slate-500 active:scale-95 transition-transform" href="stitch-scan.html">
+        <i class="w-6 h-6" data-lucide="scan-search"></i>
+      </a>
+      <button aria-label="Aramaya odaklan" class="p-1 text-slate-500 active:scale-95 transition-transform" onclick="focusCatalogSearch()">
+        <i class="w-6 h-6" data-lucide="search"></i>
+      </button>
     </div>
   </header>
 
-  <!-- Search Bar -->
-  <div class="px-4 py-3 bg-white border-b border-slate-100 z-40 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] relative">
-    <div class="relative">
-      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <i class="w-5 h-5 text-slate-400" data-lucide="search"></i>
+  <div class="manual-shell-divider mx-4"></div>
+
+  <div class="catalog-toolbar px-4 pt-5 pb-4 bg-white z-40 relative">
+    <div class="flex items-center gap-3">
+      <div class="min-w-0 flex-1">
+        <h2 class="text-lg leading-none font-semibold tracking-[-0.02em] text-slate-900 whitespace-nowrap">Manuel Olarak Ekle</h2>
+
       </div>
-      <input type="text" class="w-full bg-slate-50 border-none rounded-2xl py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-[#7C5CFF] transition-shadow" placeholder="Marka veya cihaz ara..." />
+      <div class="relative w-[52%] max-w-[15rem]">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <i class="w-5 h-5 text-slate-400" data-lucide="search"></i>
+        </div>
+        <input id="catalog-search" type="text" class="catalog-search-pill w-full rounded-full py-3 pl-11 pr-4 text-sm font-medium text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-[#4C7DFF] transition-shadow" placeholder="Cihaz ara" />
+      </div>
     </div>
   </div>
 
   <!-- Split Content Area -->
-  <main class="flex-grow flex overflow-hidden">
-    
-    <!-- Left Sidebar (Categories with elegant icons) -->
-    <aside class="w-[22%] bg-slate-50 border-r border-slate-100 overflow-y-auto flex flex-col pb-10 shadow-[inset_-2px_0_10px_rgba(0,0,0,0.02)] pt-2" id="sidebar-categories">
-      <button onclick="filterCategory('all', this)" class="cat-btn cat-active w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Tümü</span>
-      </button>
-      <button onclick="filterCategory('lighting', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Aydınlatma</span>
-      </button>
-      <button onclick="filterCategory('plugs', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Prizler</span>
-      </button>
-      <button onclick="filterCategory('security', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Güvenlik</span>
-      </button>
-      <button onclick="filterCategory('climate', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">İklim</span>
-      </button>
-      <button onclick="filterCategory('sensors', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Sensörler</span>
-      </button>
-      <button onclick="filterCategory('entertainment', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Eğlence</span>
-      </button>
-      <button onclick="filterCategory('appliances', this)" class="cat-btn cat-inactive w-full text-left py-4 px-3 border-b border-slate-100/50">
-        <span class="cat-text text-[11px] uppercase tracking-wider block break-words">Beyaz Eşya</span>
-      </button>
-    </aside>
-
-    <!-- Right Content (Catalogs & Products) -->
-    <div class="w-[78%] overflow-y-auto px-5 pt-6 pb-12 bg-white" id="main-content">
-      
-      <!-- Action Card for Manual Setup Code -->
-      <article class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-[1.5rem] p-5 flex items-center justify-between gap-3 active:scale-[0.98] transition-transform mb-10 shadow-lg" onclick="openCodeModal()">
-        <div class="flex items-center gap-4 min-w-0">
-          <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-white border border-white/10">
-            <i class="w-6 h-6" data-lucide="scan-line"></i>
-          </div>
-          <div class="min-w-0">
-            <h2 class="font-extrabold text-sm text-white leading-tight">Kurulum Kodu</h2>
-            <p class="text-[11px] text-slate-300 mt-1 truncate font-medium">Matter / HomeKit Bağla</p>
-          </div>
-        </div>
-        <i class="w-5 h-5 text-white/50" data-lucide="chevron-right"></i>
-      </article>
-
-      
-      <div class="mb-10 catalog-section" data-category="lighting">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-yellow-500 bg-yellow-50">
-            <i class="w-5 h-5" data-lucide="lightbulb"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Philips Hue</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Color Ambiance')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_bulb.jpg" alt="Color Ambiance" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Color Ambiance</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Hue Bridge')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/router.jpg" alt="Hue Bridge" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Hue Bridge</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Lightstrip')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_bulb.jpg" alt="Lightstrip" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Lightstrip</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Hue Go')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_bulb.jpg" alt="Hue Go" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Hue Go</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Play Bar')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_bulb.jpg" alt="Play Bar" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Play Bar</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Dimmer Switch')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Dimmer Switch" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Dimmer Switch</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="sensors security plugs climate">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-orange-500 bg-orange-50">
-            <i class="w-5 h-5" data-lucide="smartphone"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Xiaomi Mi</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Robot Vacuum')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/robot_vacuum.jpg" alt="Robot Vacuum" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Robot Vacuum</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Smart Plug')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_plug.jpg" alt="Smart Plug" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Smart Plug</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, '360° Camera')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/security_camera.jpg" alt="360° Camera" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">360° Camera</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Air Purifier')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/air_purifier.jpg" alt="Air Purifier" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Air Purifier</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Temp Sensor')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Temp Sensor" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Temp Sensor</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Mi Router')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/router.jpg" alt="Mi Router" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Mi Router</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="entertainment climate">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-rose-600 bg-rose-50">
-            <i class="w-5 h-5" data-lucide="monitor"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">LG ThinQ</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'OLED TV')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_tv.jpg" alt="OLED TV" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">OLED TV</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'WashTower')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/washing_machine.jpg" alt="WashTower" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">WashTower</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'InstaView')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/refrigerator.jpg" alt="InstaView" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">InstaView</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Dual Inverter')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/air_purifier.jpg" alt="Dual Inverter" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Dual Inverter</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Soundbar')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/soundbar.jpg" alt="Soundbar" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Soundbar</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="entertainment security">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-slate-800 bg-slate-100">
-            <i class="w-5 h-5" data-lucide="apple"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Apple Home</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'HomePod mini')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_speaker.jpg" alt="HomePod mini" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">HomePod mini</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Apple TV 4K')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_tv.jpg" alt="Apple TV 4K" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Apple TV 4K</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'HomePod')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_speaker.jpg" alt="HomePod" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">HomePod</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Secure Lock')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/door_lock.jpg" alt="Secure Lock" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Secure Lock</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="entertainment climate sensors">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-blue-600 bg-blue-50">
-            <i class="w-5 h-5" data-lucide="cpu"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">SmartThings</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Hub v3')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/router.jpg" alt="Hub v3" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Hub v3</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Neo QLED')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_tv.jpg" alt="Neo QLED" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Neo QLED</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Bespoke Fridge')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/refrigerator.jpg" alt="Bespoke Fridge" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Bespoke Fridge</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Wash Machine')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/washing_machine.jpg" alt="Wash Machine" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Wash Machine</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Multi Sensor')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Multi Sensor" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Multi Sensor</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="plugs security lighting">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-cyan-500 bg-cyan-50">
-            <i class="w-5 h-5" data-lucide="wifi"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">TP-Link Tapo</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'P100 Plug')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_plug.jpg" alt="P100 Plug" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">P100 Plug</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'C200 Camera')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/security_camera.jpg" alt="C200 Camera" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">C200 Camera</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'L530 Bulb')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_bulb.jpg" alt="L530 Bulb" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">L530 Bulb</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Light Strip')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_bulb.jpg" alt="Light Strip" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Light Strip</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="climate">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-slate-700 bg-slate-100">
-            <i class="w-5 h-5" data-lucide="wind"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Dyson</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Purifier Cool')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/air_purifier.jpg" alt="Purifier Cool" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Purifier Cool</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'V15 Detect')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/robot_vacuum.jpg" alt="V15 Detect" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">V15 Detect</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Hot+Cool')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/air_purifier.jpg" alt="Hot+Cool" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Hot+Cool</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="entertainment">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-slate-900 bg-slate-100">
-            <i class="w-5 h-5" data-lucide="speaker"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Sonos</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Sonos Arc')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/soundbar.jpg" alt="Sonos Arc" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Sonos Arc</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Sonos One')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_speaker.jpg" alt="Sonos One" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Sonos One</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Sonos Beam')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/soundbar.jpg" alt="Sonos Beam" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Sonos Beam</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Sonos Move')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_speaker.jpg" alt="Sonos Move" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Sonos Move</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="security">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-sky-500 bg-sky-50">
-            <i class="w-5 h-5" data-lucide="bell"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Ring</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Video Doorbell')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/security_camera.jpg" alt="Video Doorbell" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Video Doorbell</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Stick Up Cam')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/security_camera.jpg" alt="Stick Up Cam" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Stick Up Cam</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Alarm System')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/router.jpg" alt="Alarm System" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Alarm System</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="climate security">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-emerald-500 bg-emerald-50">
-            <i class="w-5 h-5" data-lucide="home"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Google Nest</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Learning Thermostat')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Learning Thermostat" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Learning Thermostat</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Nest Cam')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/security_camera.jpg" alt="Nest Cam" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Nest Cam</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Nest Hub')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_tv.jpg" alt="Nest Hub" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Nest Hub</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Protect')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Protect" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Protect</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="security">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-yellow-600 bg-yellow-50">
-            <i class="w-5 h-5" data-lucide="lock"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Yale</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Linus Smart Lock')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/door_lock.jpg" alt="Linus Smart Lock" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Linus Smart Lock</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Assure Lock')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/door_lock.jpg" alt="Assure Lock" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Assure Lock</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Smart Cabinet')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/door_lock.jpg" alt="Smart Cabinet" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Smart Cabinet</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="climate">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-red-600 bg-red-50">
-            <i class="w-5 h-5" data-lucide="box"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Bosch</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Smart Fridge')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/refrigerator.jpg" alt="Smart Fridge" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Smart Fridge</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Smart Washer')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/washing_machine.jpg" alt="Smart Washer" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Smart Washer</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Home Connect AC')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/air_purifier.jpg" alt="Home Connect AC" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Home Connect AC</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="climate">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-green-600 bg-green-50">
-            <i class="w-5 h-5" data-lucide="disc"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">iRobot</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Roomba j7+')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/robot_vacuum.jpg" alt="Roomba j7+" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Roomba j7+</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Braava jet')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/robot_vacuum.jpg" alt="Braava jet" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Braava jet</p>
-          </div>
-        </div>
-      </div>
-      <div class="mb-10 catalog-section" data-category="plugs">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-lime-600 bg-lime-50">
-            <i class="w-5 h-5" data-lucide="toggle-right"></i>
-          </div>
-          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Wemo</h3>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Smart Plug')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/smart_plug.jpg" alt="Smart Plug" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Smart Plug</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Light Switch')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Light Switch" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Light Switch</p>
-          </div>
-          <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, 'Dimmer')">
-            <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
-              <img src="assets/products/thermostat.jpg" alt="Dimmer" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
-            </div>
-            <p class="text-xs font-bold text-slate-800 leading-tight truncate w-full px-1">Dimmer</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
+  <main class="flex-grow flex overflow-hidden" id="catalog-main">
+    <aside class="w-[30%] max-w-[132px] overflow-y-auto no-scrollbar flex flex-col pb-10 pt-1 pr-1 bg-white dark:bg-slate-900" id="catalog-rail"></aside>
+    <div class="flex-1 overflow-y-auto px-3 pt-2 pb-16 bg-white dark:bg-slate-900" id="catalog-content"></div>
   </main>
 
   <!-- Code Entry Modal -->
   <div id="code-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[90] hidden flex flex-col items-center justify-center px-6">
     <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 shadow-2xl relative overflow-hidden transform scale-95 transition-transform" id="code-modal-content">
       <div class="text-center mb-6 mt-2">
-        <div class="w-16 h-16 bg-slate-50 text-[#7C5CFF] rounded-full mx-auto flex items-center justify-center mb-4">
+        <div class="w-16 h-16 bg-slate-50 text-[#4C7DFF] rounded-full mx-auto flex items-center justify-center mb-4">
           <i class="w-8 h-8" data-lucide="hash"></i>
         </div>
         <h2 class="text-2xl font-bold text-slate-800">Kurulum Kodu</h2>
         <p class="text-sm text-slate-500 mt-2">Cihazınızın üzerindeki 8 haneli kodu girin.</p>
       </div>
       <div class="mb-6">
-        <input type="text" id="setup-code-input" class="w-full text-center text-3xl tracking-[0.2em] font-bold text-slate-800 border-none bg-slate-50 rounded-2xl py-4 focus:ring-2 focus:ring-[#7C5CFF]" placeholder="00000000" maxlength="8" autocomplete="off" />
+        <input type="text" id="setup-code-input" class="w-full text-center text-3xl tracking-[0.2em] font-bold text-slate-800 border-none bg-slate-50 rounded-2xl py-4 focus:ring-2 focus:ring-[#4C7DFF]" placeholder="00000000" maxlength="8" autocomplete="off" />
       </div>
       <div class="flex gap-3">
         <button class="flex-1 py-3.5 rounded-2xl font-bold text-slate-600 bg-slate-100 active:bg-slate-200 transition-colors" onclick="closeCodeModal()">İptal</button>
-        <button class="flex-1 py-3.5 rounded-2xl font-bold text-white bg-[#7C5CFF] active:bg-[#6b4ae8] transition-colors shadow-md shadow-[#7C5CFF]/30" onclick="submitCode()">Bağlan</button>
+        <button class="flex-1 py-3.5 rounded-2xl font-bold text-white bg-[#4C7DFF] active:bg-[#3F6FFF] transition-colors shadow-md shadow-[#4C7DFF]/30" onclick="submitCode()">Bağlan</button>
       </div>
     </div>
   </div>
@@ -667,7 +269,7 @@
   <!-- Loading Overlay -->
   <div id="loading-overlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[100] flex-col items-center justify-center">
     <div id="loading-spinner" class="flex flex-col items-center">
-      <div class="w-16 h-16 rounded-full border-4 border-slate-100 border-t-[#7C5CFF] animate-spin mb-4"></div>
+      <div class="w-16 h-16 rounded-full border-4 border-slate-100 border-t-[#4C7DFF] animate-spin mb-4"></div>
       <p class="text-slate-800 font-bold text-lg">Cihaz Aranıyor...</p>
       <p class="text-slate-500 text-sm mt-1 text-center px-6">Lütfen cihazın eşleştirme modunda olduğundan emin olun.</p>
     </div>
@@ -677,7 +279,7 @@
       </div>
       <p class="text-slate-800 font-bold text-lg">Cihaz Bulunamadı</p>
       <p class="text-slate-500 text-sm mt-1 mb-5 text-center">Çevrede eşleştirilmeye hazır cihaz bulunamadı.</p>
-      <button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="hideOverlay(); openCodeModal();">Kurulum koduyla ekle</button>
+      <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="hideOverlay(); window.location.href='stitch-setup-code.html';">Kurulum koduyla ekle</button>
       <button class="w-full text-slate-500 font-medium py-3 mt-1" onclick="hideOverlay()">Vazgeç</button>
     </div>
   </div>
@@ -685,37 +287,2061 @@
   <script>
     lucide.createIcons();
 
-    function filterCategory(catName, btnElement) {
-      const allBtns = document.querySelectorAll('.cat-btn');
-      allBtns.forEach(btn => {
-        btn.classList.remove('cat-active');
-        btn.classList.add('cat-inactive');
-      });
-      btnElement.classList.remove('cat-inactive');
-      btnElement.classList.add('cat-active');
-
-      const sections = document.querySelectorAll('.catalog-section');
-      sections.forEach(sec => {
-        const cats = sec.getAttribute('data-category');
-        if (catName === 'all' || cats.includes(catName)) {
-          sec.style.display = 'block';
-        } else {
-          sec.style.display = 'none';
-        }
-      });
-      
-      document.getElementById('main-content').scrollTop = 0;
+    function focusCatalogSearch() {
+      const input = document.getElementById('catalog-search');
+      if (!input) return;
+      input.focus();
+      input.select();
     }
-    
+
+    // Gömülü mod: pair.html içinde iframe olarak gösterilince kendi başlığını gizle
+    if (new URLSearchParams(location.search).has('embed')) {
+      var _ih = document.getElementById('int-header');
+      if (_ih) _ih.style.display = 'none';
+    }
+
+                        // ---- Tam 1:1 NEXUS Katalog Verisi (Tuya Referanslı) ----
+    var CATALOG = [
+  {
+    "key": "elektrik-ustas-",
+    "label": "Elektrik Ustası",
+    "groups": [
+      {
+        "title": "Soket",
+        "items": [
+          {
+            "n": "Akıllı Priz",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (Bluetooth)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (ZigBee)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (Ağ Geçidi)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (NB-IoT)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Çoklu Priz",
+            "img": "power-strip.jpg"
+          },
+          {
+            "n": "Çoklu Priz (Bluetooth)",
+            "img": "power-strip.jpg"
+          },
+          {
+            "n": "Çoklu Priz (Zigbee)",
+            "img": "power-strip.jpg"
+          },
+          {
+            "n": "Akıllı Çiftli Priz (BLE+Wi-Fi)",
+            "img": "smart_plug.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Anahtar",
+        "items": [
+          {
+            "n": "Anahtar",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Anahtar (Bluetooth)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Anahtar (ZigBee)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (6 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Perde Anahtarı",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dimmer Anahtar",
+            "img": "dimmer.jpg"
+          },
+          {
+            "n": "Dimmer Anahtar (Zigbee)",
+            "img": "dimmer.jpg"
+          },
+          {
+            "n": "Uyandırma Anahtarı",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Buton",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Senaryo Anahtarı",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Thermostat Switch",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Işık ve Fan Anahtarı",
+            "img": "light-switch.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Garaj Kapısı Kumandası (Wi-Fi)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Garaj Kapısı Kumandası (BLE)",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "ayd-nlatma",
+    "label": "Aydınlatma",
+    "groups": [
+      {
+        "title": "Işık Kaynağı",
+        "items": [
+          {
+            "n": "Akıllı Lamba",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Akıllı Lamba (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Akıllı Lamba (ZigBee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Işık Kaynağı (BLE+Wi-Fi)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Retro Lamba",
+            "img": "light.png"
+          },
+          {
+            "n": "Retro Lamba (Bluetooth)",
+            "img": "light.png"
+          },
+          {
+            "n": "Retro Lamba (ZigBee)",
+            "img": "light.png"
+          },
+          {
+            "n": "Mum Lamba",
+            "img": "light.png"
+          },
+          {
+            "n": "Mum Lamba (Bluetooth)",
+            "img": "light.png"
+          },
+          {
+            "n": "Mum Lamba (ZigBee)",
+            "img": "light.png"
+          },
+          {
+            "n": "Spot Lamba",
+            "img": "light.png"
+          },
+          {
+            "n": "Spot Lamba (Bluetooth)",
+            "img": "light.png"
+          },
+          {
+            "n": "Spot Lamba (ZigBee)",
+            "img": "light.png"
+          }
+        ]
+      },
+      {
+        "title": "Oda Işıkları",
+        "items": [
+          {
+            "n": "Tavan Lambası",
+            "img": "light.png"
+          },
+          {
+            "n": "Tavan Lambası (Bluetooth)",
+            "img": "light.png"
+          },
+          {
+            "n": "Tavan Lambası (ZigBee)",
+            "img": "light.png"
+          },
+          {
+            "n": "Tavan Lambası (BLE+Wi-Fi)",
+            "img": "light.png"
+          },
+          {
+            "n": "Tavan Vantilatörü Lambası",
+            "img": "fan.jpg"
+          },
+          {
+            "n": "Masa Lambası",
+            "img": "light.png"
+          },
+          {
+            "n": "Masa Lambası (Bluetooth)",
+            "img": "light.png"
+          },
+          {
+            "n": "Masa Lambası (ZigBee)",
+            "img": "light.png"
+          }
+        ]
+      },
+      {
+        "title": "Ambiyans Aydınlatması",
+        "items": [
+          {
+            "n": "Şerit Lamba",
+            "img": "led-strip.jpg"
+          },
+          {
+            "n": "Şerit Lamba (Bluetooth)",
+            "img": "led-strip.jpg"
+          },
+          {
+            "n": "Şerit Lamba (Zigbee)",
+            "img": "led-strip.jpg"
+          },
+          {
+            "n": "Şerit Lamba (BLE+Wi-Fi)",
+            "img": "led-strip.jpg"
+          },
+          {
+            "n": "Ambiyans Lambası",
+            "img": "light.png"
+          },
+          {
+            "n": "Ambiyans Lambası (Bluetooth)",
+            "img": "light.png"
+          },
+          {
+            "n": "Ambiyans Lambası (Zigbee)",
+            "img": "light.png"
+          },
+          {
+            "n": "Ambiyans Lambası (BLE+Wi-Fi)",
+            "img": "light.png"
+          },
+          {
+            "n": "TV Ortam Işığı",
+            "img": "smart-tv.jpg"
+          },
+          {
+            "n": "Projektör",
+            "img": "projector.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Dış Mekan Aydınlatması",
+        "items": [
+          {
+            "n": "Dış Mekan Aydınlatması",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Dış Mekan Aydınlatması (BLE)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Dış Mekan Aydınlatması (Zigbee)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Güneş Enerjili Avlu Işığı",
+            "img": "solar-panel.jpg"
+          },
+          {
+            "n": "Bahçe Işığı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Çim Işığı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "String Light",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Control Accessories",
+        "items": [
+          {
+            "n": "Uzaktan Kumanda",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "sens-r",
+    "label": "Sensör",
+    "groups": [
+      {
+        "title": "Sensör",
+        "items": [
+          {
+            "n": "Çok Fonksiyonlu Sensör",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Sıcaklık ve Nem Sensörü",
+            "img": "temp-humidity.jpg"
+          },
+          {
+            "n": "Sıcaklık ve Nem Sensörü (BLE)",
+            "img": "temp-humidity.jpg"
+          },
+          {
+            "n": "Sıcaklık ve Nem Sensörü (Zigbee)",
+            "img": "temp-humidity.jpg"
+          },
+          {
+            "n": "Aydınlatma Sensörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Aydınlatma Sensörü (BLE)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Aydınlatma Sensörü (Zigbee)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Kapı ve Pencere Sensörü",
+            "img": "door-sensor.jpg"
+          },
+          {
+            "n": "Kapı ve Pencere Sensörü (Bluetooth)",
+            "img": "door-sensor.jpg"
+          },
+          {
+            "n": "Kapı ve Pencere Sensörü (ZigBee)",
+            "img": "door-sensor.jpg"
+          },
+          {
+            "n": "İnsan Vücudu Sensörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "İnsan Vücudu Sensörü (Bluetooth)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "İnsan Vücudu Sensörü (ZigBee)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "İnsan Varlığı Sensörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "İnsan Varlığı Sensörü (Bluetooth)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Su Basman Sensörü",
+            "img": "water-leak.jpg"
+          },
+          {
+            "n": "Su Basman Sensörü (Bluetooth)",
+            "img": "water-leak.jpg"
+          },
+          {
+            "n": "Su Basman Sensörü (ZigBee)",
+            "img": "water-leak.jpg"
+          },
+          {
+            "n": "Duman Dedektörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Duman Dedektörü (Bluetooth)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Duman Dedektörü (ZigBee)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Gaz Dedektörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Gaz Dedektörü (Bluetooth)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Gaz Dedektörü (ZigBee)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "CO Dedektörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Titreşim Sensörü",
+            "img": "motion-sensor.jpg"
+          },
+          {
+            "n": "Titreşim Sensörü (Bluetooth)",
+            "img": "motion-sensor.jpg"
+          },
+          {
+            "n": "Titreşim Sensörü (ZigBee)",
+            "img": "motion-sensor.jpg"
+          },
+          {
+            "n": "Acil Durum Düğmesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Acil Durum Düğmesi (Bluetooth)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Acil Durum Düğmesi (Zigbee)",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Çevresel Sensörler",
+        "items": [
+          {
+            "n": "Hava Kalitesi Sensörü",
+            "img": "air-quality.jpg"
+          },
+          {
+            "n": "PM2.5",
+            "img": "air-quality.jpg"
+          },
+          {
+            "n": "Toprak Sensörü",
+            "img": "motion-detector.png"
+          }
+        ]
+      },
+      {
+        "title": "basınç sensörü",
+        "items": [
+          {
+            "n": "Basınç Sensörü",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Basınç Sensörü (NB-IoT)",
+            "img": "motion-detector.png"
+          },
+          {
+            "n": "Basınç Sensörü (Gateway)",
+            "img": "smart-hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "VOC",
+        "items": [
+          {
+            "n": "Uçucu Organik Bileşik (VOC) Alarmı (Gateway)",
+            "img": "air-quality.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Termal alarm",
+        "items": [
+          {
+            "n": "Termal Alarm",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Termal Alarm (Gateway)",
+            "img": "smart-hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "b-y-k-ev-aletleri",
+    "label": "Büyük Ev Aletleri",
+    "groups": [
+      {
+        "title": "Klima",
+        "items": [
+          {
+            "n": "Taşınabilir Klima",
+            "img": "air-conditioner.jpg"
+          },
+          {
+            "n": "Taşınabilir Klima (Bluetooth)",
+            "img": "air-conditioner.jpg"
+          },
+          {
+            "n": "Klima",
+            "img": "air-conditioner.jpg"
+          },
+          {
+            "n": "Duvar Tipi Klima",
+            "img": "air-conditioner.jpg"
+          },
+          {
+            "n": "Ayaklı Klima",
+            "img": "air-conditioner.jpg"
+          },
+          {
+            "n": "Pencere Tipi Klima",
+            "img": "air-conditioner.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Su Isıtıcıları",
+        "items": [
+          {
+            "n": "Su Isıtıcısı",
+            "img": "kettle.jpg"
+          },
+          {
+            "n": "Hava Kaynaklı Su Isıtıcısı",
+            "img": "kettle.jpg"
+          },
+          {
+            "n": "Elektrikli Su Isıtıcısı",
+            "img": "kettle.jpg"
+          },
+          {
+            "n": "Su Isıtıcısı (Kazan Tipi)",
+            "img": "kettle.jpg"
+          },
+          {
+            "n": "Hot Water Crculation Pump",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Kombiler",
+        "items": [
+          {
+            "n": "Kombi",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Isı Pompaları",
+        "items": [
+          {
+            "n": "Akıllı Isı Pompası",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Çamaşır Makineleri",
+        "items": [
+          {
+            "n": "Çamaşır Makinesi",
+            "img": "washing_machine.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Çamaşır Kurutma",
+        "items": [
+          {
+            "n": "Çamaşır Kurutucu",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "k---k-ev-aleti",
+    "label": "Küçük Ev Aleti",
+    "groups": [
+      {
+        "title": "Mevsimlik Neutron Ürünler",
+        "items": [
+          {
+            "n": "Elektirikli Soba",
+            "img": "heater.jpg"
+          },
+          {
+            "n": "Elektirikli Soba (Gateway)",
+            "img": "heater.jpg"
+          },
+          {
+            "n": "Kalorifer Peteği",
+            "img": "heater.jpg"
+          },
+          {
+            "n": "Elektrikli Battaniye",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Elektrikli Şömine",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Süpürgelik Tipi Elektirikli Soba",
+            "img": "heater.jpg"
+          },
+          {
+            "n": "Alttan Isıtmalı Masa",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Fan",
+            "img": "fan.jpg"
+          },
+          {
+            "n": "Klima Fanı",
+            "img": "air-conditioner.jpg"
+          }
+        ]
+      },
+      {
+        "title": "çevre",
+        "items": [
+          {
+            "n": "Hava Temizleyici",
+            "img": "air_purifier.jpg"
+          },
+          {
+            "n": "Nemlendirici",
+            "img": "humidifier.jpg"
+          },
+          {
+            "n": "Hava Nemlendirici",
+            "img": "humidifier.jpg"
+          },
+          {
+            "n": "Sterilizatör",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Nem Alma Cihazı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Hava Kutusu",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Temizlik Ürünleri",
+        "items": [
+          {
+            "n": "Akıllı Robot Süpürge",
+            "img": "robot_vacuum.jpg"
+          },
+          {
+            "n": "Akıllı Robot Süpürge (2.4GHz&5GHz)",
+            "img": "robot_vacuum.jpg"
+          },
+          {
+            "n": "Akıllı Robot Süpürge (Kamera)",
+            "img": "robot_vacuum.jpg"
+          },
+          {
+            "n": "Cam Temizlik Robotu",
+            "img": "window-robot.jpg"
+          },
+          {
+            "n": "Çim Biçme Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Elektrikli Süpürge",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Robot pool cleaner",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "İklimlendirme",
+        "items": [
+          {
+            "n": "Termostat",
+            "img": "thermostat.jpg"
+          },
+          {
+            "n": "Termostat (Gateway)",
+            "img": "thermostat.jpg"
+          },
+          {
+            "n": "Havalandırma Sistemi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Havalandırma Sistemi (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Termostatik Radyatör Vanası (TRV) (Gateway)",
+            "img": "thermostat.jpg"
+          },
+          {
+            "n": "Isıtma",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Havalandırma ve İklimlendirme (HVAC)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Termostatik Radyatör Vanası (TRV)",
+            "img": "thermostat.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Motor",
+        "items": [
+          {
+            "n": "Perde",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Perde (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Perde Zincir Motoru",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Perde Motoru (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Çamaşır Kurutma Askısı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Çamaşır Kurutma Askısı (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Akıllı Kapı Pencere Sensörü",
+            "img": "door-sensor.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Genel / Diğer",
+        "items": [
+          {
+            "n": "Evcil Hayvan Tasması",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akvaryum",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Balık Besleyici",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akvaryum Isıtıcı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Aquarium Pump",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Mikrodalga Fırın",
+            "img": "microwave.jpg"
+          },
+          {
+            "n": "Akıllı Bitki Büyütme Işığı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Ayakkabı Sterilizatör Dolabı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Ayakkabı Kutusu",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Giysi Bakım Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Elektrikli Sinek Öldürücü",
+            "img": "mosquito.jpg"
+          },
+          {
+            "n": "Meteoroloji Saati",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Bebek Ürünleri",
+        "items": [
+          {
+            "n": "Göğüs Pompası",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Süt Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Biberon Isıtıcı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Süt Isıtıcısı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Mama Hazırlayıcı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Sterilizatör Çelik Tencere",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Sallanan Bebek Sandalyesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Beşik",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Evcil Hayvan Ürünleri",
+        "items": [
+          {
+            "n": "Akıllı Evcil Hayvan Besleme",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Pet Feeder (2.4GHz&5GHz)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Pet Feeder With Camera (2.4GHz&5GHz)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Evcil Hayvan Besleme (Kameralı)",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Gıda Kovası",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Evcil Hayvan Su Sebili",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Kedi Kumu Kutusu",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Evcil Hayvan Koku Giderici",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Evcil Hayvan Kurutma Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Evcil Hayvan Topu",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Evcil Hayvan Evi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akvaryum Çoklu Prizi",
+            "img": "power-strip.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Çantası",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "mutfak-aletleri",
+    "label": "Mutfak Aletleri",
+    "groups": [
+      {
+        "title": "Kitchen Electric",
+        "items": [
+          {
+            "n": "Oven",
+            "img": "oven.jpg"
+          },
+          {
+            "n": "Entegre Mutfak",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Fırın",
+            "img": "oven.jpg"
+          },
+          {
+            "n": "Gazlı Soba",
+            "img": "heater.jpg"
+          },
+          {
+            "n": "Sterilizatör Kabini",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Bulaşık Makinesi",
+            "img": "https://images.unsplash.com/photo-1583947581924-860bda6a45df?auto=format&fit=crop&w=300&q=80"
+          },
+          {
+            "n": "Davlumbaz&Aspiratör",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Buharlı Fırın",
+            "img": "oven.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kitchen Small Electric",
+        "items": [
+          {
+            "n": "Meyve Kurutma Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Buz Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Sıcak Hava Fritözü",
+            "img": "https://images.unsplash.com/photo-1621644788177-3363f8222998?auto=format&fit=crop&w=300&q=80"
+          },
+          {
+            "n": "Dondurma Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Yemek Pişirme Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Elektrikli Ocak",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Pilav Pişirme Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Soya Sütü Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Mutfak Robotu",
+            "img": "blender.jpg"
+          },
+          {
+            "n": "Ekmek Yapma Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Vakumlu Pişirme Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Katı Meyve Presi ve Blender",
+            "img": "blender.jpg"
+          },
+          {
+            "n": "Meyve Sıkacağı",
+            "img": "blender.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Pişirme Ekipmanları",
+        "items": [
+          {
+            "n": "Su Arıtma Cihazı",
+            "img": "water_purifier.jpg"
+          },
+          {
+            "n": "Su Arıtma Cihazı (Gateway)",
+            "img": "water_purifier.jpg"
+          },
+          {
+            "n": "Çay Demleme Tezgahı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Smart Kettle",
+            "img": "kettle.jpg"
+          },
+          {
+            "n": "Kahve Makinesi",
+            "img": "coffee_maker.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Gıda Termometresi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Sebze Yıkama Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Şarap Dolabı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Çöp Öğütücü",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Çöp Tenekesi",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "egzersiz-ve-sa-l-k",
+    "label": "Egzersiz ve Sağlık",
+    "groups": [
+      {
+        "title": "Spor Ekipmanları",
+        "items": [
+          {
+            "n": "Hassas Mutfak Terazisi",
+            "img": "kitchen_scale.jpg"
+          },
+          {
+            "n": "Elektronik Akıllı Tartı",
+            "img": "smart_scale.jpg"
+          },
+          {
+            "n": "Akıllı İp Atlama",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Halter",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Badminton Raketi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Egzersiz Tekerleği",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Tenis Raketi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Hula Hoop Çember",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Direnç Bandı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Bilek Güçlendirme Topu",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Koşu Bandı",
+            "img": "treadmill.jpg"
+          },
+          {
+            "n": "Kürek Çekme Aleti",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Dikey Kondisyon Bisikleti",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Spor Test Ürünleri",
+        "items": [
+          {
+            "n": "Saat/Bileklik",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Temassız Ateş Ölçer",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Tansiyon Aleti",
+            "img": "blood_pressure.jpg"
+          },
+          {
+            "n": "Oksimetre",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Sleep",
+        "items": [
+          {
+            "n": "Uyku Butonu",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Çalar Saat",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Beyaz Dinlenme Işığı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Uyku İzleme Bandı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Yastık",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Yatak",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Yatak (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Akıllı Bebek Bakım Monitörü",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Kişisel Bakım",
+        "items": [
+          {
+            "n": "Diş Fırçası",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Kulak Kiri Çıkarma Otoskopu (Kameralı)",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Akıllı Yüz Temizleyici",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Yüz Buhar Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Saç kurutma makinesi",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Masaj Koltuğu",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Ayak Küveti",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Kanepe",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Egzersiz Aynası",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Fizyoterapi Cihazı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Bardak",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "kamera-ve-kilit",
+    "label": "Kamera ve Kilit",
+    "groups": [
+      {
+        "title": "Kamera",
+        "items": [
+          {
+            "n": "Akıllı Kamera (Wi-Fi)",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Akıllı Kamera (2.4GHz&5GHz)",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Akıllı Kamera (Bluetooth)",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Indoor PTZ Camera",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "PTZ Camera",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "4G Kamera",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Kameralı Kapı Zili",
+            "img": "doorbell.jpg"
+          },
+          {
+            "n": "Akıllı Kapı Zili",
+            "img": "doorbell.jpg"
+          },
+          {
+            "n": "Akıllı Kapı Zili (2.4GHz&5GHz)",
+            "img": "doorbell.jpg"
+          },
+          {
+            "n": "Kamera Lambası",
+            "img": "security_camera.jpg"
+          },
+          {
+            "n": "Video Baz istasyonu (2.4GHz&5GHz)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Ağ Video Kaydedici (NVR)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Dijital Kayıt Cihazı (DVR)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Bird Feeder",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Mobile Camera",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Kapı kilidi",
+        "items": [
+          {
+            "n": "Kapı Kilidi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Kapı Kilidi (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Kapı Kilidi (NB-IoT)",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Kameralı Kilitler",
+        "items": [
+          {
+            "n": "Video Kilidi",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Kilit ve Aksesuarlar",
+        "items": [
+          {
+            "n": "Dolap Kilidi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Asma Kilit",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "U Tipi Kilit",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "Anahtar Kutusu",
+            "img": "light-switch.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Akıllı kutu",
+        "items": [
+          {
+            "n": "Kasa",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Giriş Kontrol Ürünleri",
+        "items": [
+          {
+            "n": "Akıllı Turnike",
+            "img": "door_lock.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Smart Gating",
+        "items": [
+          {
+            "n": "Smart Door",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Smart Gating (Wi-Fi)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Smart Gating (Bluetooth)",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "a--ge-idi-kontrol-paneli",
+    "label": "Ağ Geçidi Kontrol Paneli",
+    "groups": [
+      {
+        "title": "Ağ Geçidi",
+        "items": [
+          {
+            "n": "Kablosuz Ağ Geçidi",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Kablolu Ağ Geçidi",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Çoklu Ağ Geçidi",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Çok Fonksiyonlu Ağ Geçidi",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Kablolu&Kablosuz Ağ Geçidi",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Ağ Geçidi Prizi",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Çok Modlu Ağ Geçidi (BLE+ZigBee)",
+            "img": "zigbee-bridge.jpg"
+          },
+          {
+            "n": "Çok Modlu Mühendislik Ağ Geçidi (BLE+ZigBee)",
+            "img": "zigbee-bridge.jpg"
+          },
+          {
+            "n": "Akıllı ZigBee Ağ Geçidi Pro",
+            "img": "zigbee-bridge.jpg"
+          },
+          {
+            "n": "4G çok modlu geçit (BLE+ZigBee)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Birleşik Ağ Geçidi",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Kablolu&Kablosuz Ağ Geçidi (ZigBee+PLC)",
+            "img": "zigbee-bridge.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Routerlar",
+        "items": [
+          {
+            "n": "Yönlendirici",
+            "img": "wifi-router.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Yoğunlaştırıcı (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Menzil Arttırıcı",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "do-a-sporlar-",
+    "label": "Doğa Sporları",
+    "groups": [
+      {
+        "title": "Takip Cihazları",
+        "items": [
+          {
+            "n": "GPS Vehicle Tracker (LTE Cat.1)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Hırsız Alarmı (Bluetooth)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Hırsız Alarmı (GPRS)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "İzleyici (NB-IoT)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "İzleyici (GPRS)",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Car-carried-devices",
+        "items": [
+          {
+            "n": "Araç İçi Kamera (ekranlı) (Wi-Fi)",
+            "img": "security_camera.jpg"
+          }
+        ]
+      },
+      {
+        "title": "4G Camera",
+        "items": [
+          {
+            "n": "4G Camera",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Travel",
+        "items": [
+          {
+            "n": "Scooter",
+            "img": "scooter.jpg"
+          },
+          {
+            "n": "Elektrikli Kaykay (Hoverboard)",
+            "img": "scooter.jpg"
+          },
+          {
+            "n": "Akıllı Elektrikli Araç (Bluetooth)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Elektrikli Araç (Bluetooth Tarama Kodu)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akıllı Elektrikli Araç (GPRS)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Elektrikli Bisiklet (Bluetooth)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Electric Bicycle (Cat.1)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Akülü Tekerlekli Sandalye",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Helmet",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Hava Kompresörü",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "enerji-tasarrufu",
+    "label": "Enerji Tasarrufu",
+    "groups": [
+      {
+        "title": "Breaker",
+        "items": [
+          {
+            "n": "Devre kesici",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "devre kesici (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Devre kesici (4G)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Devre kesici (NB-IoT)",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Elektrik Sayaçları",
+        "items": [
+          {
+            "n": "Akıllı Elektrik Sayacı (NB-IoT)",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Elektrik Sayacı",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Elektrik Sayacı (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Akıllı Elektrik Sayacı (4G)",
+            "img": "energy-meter.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Energy Mate",
+        "items": [
+          {
+            "n": "Energy Mate",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Portable power supply",
+        "items": [
+          {
+            "n": "Taşınabilir Güç İstasyonu",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Su Sayaçları",
+        "items": [
+          {
+            "n": "Akıllı Su Sayacı",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (NB-IoT)",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (4G)",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (GPRS)",
+            "img": "energy-meter.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Bisiklet Şarj Üniteleri",
+        "items": [
+          {
+            "n": "İki Tekerlekli Araç Şarj İstasyonu (4G)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "İki Tekerlekli Araç Şarj İstasyonu",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "EV charger",
+        "items": [
+          {
+            "n": "Elektrikli Araç Şarj İstasyonu (4G)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Elektrikli Araç Şarj İstasyonu",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Akıllı Gaz Sayaçları",
+        "items": [
+          {
+            "n": "Akıllı Gaz Sayacı",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Gaz Sayacı (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Akıllı Gaz Sayacı (4G)",
+            "img": "energy-meter.jpg"
+          },
+          {
+            "n": "Akıllı Gaz Sayacı (NB-IoT)",
+            "img": "energy-meter.jpg"
+          }
+        ]
+      },
+      {
+        "title": "İnvertörler",
+        "items": [
+          {
+            "n": "İnvertör",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Transformatörler",
+        "items": [
+          {
+            "n": "Güç Transformatörleri",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "e-lence",
+    "label": "Eğlence",
+    "groups": [
+      {
+        "title": "Genel",
+        "items": [
+          {
+            "n": "Televizyon",
+            "img": "smart-tv.jpg"
+          },
+          {
+            "n": "Bulut Fotoğraf Çerçevesi",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Printer",
+        "items": [
+          {
+            "n": "Grafik yazıcı",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "3D yazıcı",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Audio",
+        "items": [
+          {
+            "n": "Earphone",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Dot Matrix Screen",
+        "items": [
+          {
+            "n": "12x48",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "5x36",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Hikaye Makinesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Kitap Okuyucu",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "amplifier",
+        "items": [
+          {
+            "n": "Amplifier",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "sanayi-ve-tar-m",
+    "label": "Sanayi ve Tarım",
+    "groups": [
+      {
+        "title": "çevre",
+        "items": [
+          {
+            "n": "Bitki İzleyici",
+            "img": "home-automation.png"
+          }
+        ]
+      },
+      {
+        "title": "Vana Kontrol Ekipmanları",
+        "items": [
+          {
+            "n": "Su Vanası Kumandası",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Su Vanası Kumandası (Gateway)",
+            "img": "smart-hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "sulama",
+        "items": [
+          {
+            "n": "Sulama Fiskiyesi",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Sulama Fiskiyesi (Gateway)",
+            "img": "smart-hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "di-er",
+    "label": "Diğer",
+    "groups": [
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Konnektör",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Evrensel Kumanda",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Diğer",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Diğer (NB-IoT)",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Diğer Cihazlar (Gateway)",
+            "img": "smart-hub.jpg"
+          },
+          {
+            "n": "Akıllı Hoparlör",
+            "img": "smart_speaker.jpg"
+          },
+          {
+            "n": "Mini Lift",
+            "img": "home-automation.png"
+          },
+          {
+            "n": "Konferans Rezervasyon Ekranı",
+            "img": "home-automation.png"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+    // pair.html gibi eski baglantilardan gelen ?category anahtarlarini eslestir
+    var CATALOG_ALIAS = {
+      lighting: 'aydinlatma', plugs: 'elektrik-ustasi', security: 'kamera-ve-kilit', locks: 'kamera-ve-kilit',
+      climate: 'buyuk-ev-aletleri', sensors: 'sensor', entertainment: 'eglence', appliances: 'buyuk-ev-aletleri',
+      hubs: 'ag-gecidi-kontrol-paneli', cleaning: 'kucuk-ev-aleti', energy: 'enerji-tasarrufu'
+    };
+
+    var activeCatalogCategory = CATALOG[0].key;
+
+    function escapeCatalogHtml(value) {
+      return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function totalCatalogProducts() {
+      var t = 0;
+      CATALOG.forEach(function (c) { c.groups.forEach(function (g) { t += g.items.length; }); });
+      return t;
+    }
+
+    function updateCatalogCount() {
+      var el = document.getElementById('catalog-count');
+      if (!el) return;
+      el.textContent = totalCatalogProducts() + ' ürün • ' + CATALOG.length + ' kategori';
+    }
+
+    function catalogTileHtml(item) {
+      var safe = escapeCatalogHtml(item.n);
+      return '<div class="product-tile text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, \'' + safe + '\')">' +
+        '<div class="w-full aspect-square overflow-hidden mb-2 relative flex items-center justify-center bg-transparent">' +
+        '<img src="assets/products/' + item.img + '" alt="' + safe + '" class="w-[86%] h-[86%] object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" />' +
+        '</div>' +
+        '<p class="text-[0.72rem] font-medium text-slate-700 leading-tight w-full px-0.5 dark:text-slate-200">' + safe + '</p>' +
+        '</div>';
+    }
+
+    function catalogGroupHtml(title, items) {
+      return '<div class="mb-9">' +
+        '<p class="catalog-group-title">' + escapeCatalogHtml(title) + '</p>' +
+        '<div class="grid grid-cols-3 gap-x-3 gap-y-6">' + items.map(catalogTileHtml).join('') + '</div>' +
+        '</div>';
+    }
+
+    function renderCatalogRail() {
+      var rail = document.getElementById('catalog-rail');
+      if (!rail) return;
+      rail.innerHTML = CATALOG.map(function (c) {
+        var cls = c.key === activeCatalogCategory ? 'cat-btn cat-active' : 'cat-btn cat-inactive';
+        return '<button type="button" onclick="selectCatalogCategory(\'' + c.key + '\')" class="' + cls + ' w-full text-left py-3.5 px-3">' +
+          '<span class="cat-text text-[13px] block">' + escapeCatalogHtml(c.label) + '</span></button>';
+      }).join('');
+    }
+
+    function renderCatalogContent() {
+      var content = document.getElementById('catalog-content');
+      if (!content) return;
+      var query = ((document.getElementById('catalog-search') || {}).value || '').trim().toLowerCase();
+
+      if (query) {
+        var matches = [];
+        CATALOG.forEach(function (c) {
+          c.groups.forEach(function (g) {
+            g.items.forEach(function (it) {
+              if (it.n.toLowerCase().indexOf(query) !== -1) matches.push(it);
+            });
+          });
+        });
+        content.innerHTML = matches.length
+          ? catalogGroupHtml('Arama Sonuçları', matches)
+          : '<div class="px-6 py-16 text-center"><p class="text-sm font-medium text-slate-500 dark:text-slate-300">Aramanla eşleşen cihaz bulunamadı.</p></div>';
+        content.scrollTop = 0;
+        return;
+      }
+
+      var cat = CATALOG.filter(function (c) { return c.key === activeCatalogCategory; })[0] || CATALOG[0];
+      content.innerHTML = cat.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('');
+      content.scrollTop = 0;
+    }
+
+    function selectCatalogCategory(key) {
+      activeCatalogCategory = key;
+      var searchEl = document.getElementById('catalog-search');
+      if (searchEl) searchEl.value = '';
+      renderCatalogRail();
+      renderCatalogContent();
+    }
+
     function openCodeModal() {
-      const modal = document.getElementById('code-modal');
-      const content = document.getElementById('code-modal-content');
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        content.classList.remove('scale-95');
-        content.classList.add('scale-100');
-        document.getElementById('setup-code-input').focus();
-      }, 10);
+      window.location.href = 'stitch-setup-code.html';
     }
     
     function closeCodeModal() {
@@ -737,8 +2363,8 @@
       }
       closeCodeModal();
       setTimeout(() => {
-        simulateConnection(null, input);
-      }, 300);
+        window.location.href = 'stitch-setup-code.html';
+      }, 150);
     }
 
     function simulateConnection(el, deviceName) {
@@ -750,17 +2376,51 @@
 
       clearTimeout(simulateConnection._t);
       simulateConnection._t = setTimeout(() => {
-        document.getElementById('loading-spinner').classList.add('hidden');
-        const nf = document.getElementById('loading-notfound');
-        nf.classList.remove('hidden');
-        nf.classList.add('flex');
-      }, 2500);
+        const paired = getPairedDevices();
+        const safeName = (deviceName || 'Yeni cihaz').trim();
+        if (!paired.some((device) => device && device.name === safeName)) {
+          paired.push({ name: safeName, icon: 'cpu', room: 'Ana sayfaya bağlı' });
+          nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
+        }
+        navigateAfterPair();
+      }, 900);
     }
 
     function hideOverlay() {
       clearTimeout(simulateConnection._t);
       document.getElementById('loading-overlay').style.display = 'none';
     }
+
+    function getPairedDevices() {
+      let devices = [];
+      try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (error) {}
+      return Array.isArray(devices) ? devices : [];
+    }
+
+    function navigateAfterPair() {
+      const target = 'stitch-home.html';
+      if (window.top && window.top !== window) {
+        window.top.location.href = target;
+        return;
+      }
+      window.location.href = target;
+    }
+
+    var _catalogSearchEl = document.getElementById('catalog-search');
+    if (_catalogSearchEl) {
+      _catalogSearchEl.addEventListener('input', renderCatalogContent);
+    }
+
+    (function initManualCatalog() {
+      var params = new URLSearchParams(window.location.search);
+      var requested = params.get('category');
+      var mapped = requested ? (CATALOG_ALIAS[requested] || requested) : null;
+      var valid = CATALOG.some(function (c) { return c.key === mapped; });
+      activeCatalogCategory = valid ? mapped : CATALOG[0].key;
+      updateCatalogCount();
+      renderCatalogRail();
+      renderCatalogContent();
+    })();
   </script>
 </body>
 </html>

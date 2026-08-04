@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>NEXUS ” Üçüncü Taraf Cihaz ve Hizmetler</title>
+<title>NEXUS — Üçüncü Taraf Cihaz ve Hizmetler</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts: Inter (NEXUS body font) -->
@@ -31,16 +31,18 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="data.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">Üçüncü Taraf Hizmetler</h1>
@@ -61,7 +63,7 @@
 <p class="text-xs text-slate-400 mt-0.5">Sesli komutlarla kontrol</p>
 </div>
 </div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white" onclick="toggleConnect(this)">Bağla</button>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
 </article>
 <!-- Akıllı TV -->
 <article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
@@ -74,7 +76,7 @@
 <p class="text-xs text-slate-400 mt-0.5">Ekranda bildirim ve kontrol</p>
 </div>
 </div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white" onclick="toggleConnect(this)">Bağla</button>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
 </article>
 <!-- Akıllı Saat -->
 <article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
@@ -87,7 +89,7 @@
 <p class="text-xs text-slate-400 mt-0.5">Bileğinden hızlı kontrol</p>
 </div>
 </div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white" onclick="toggleConnect(this)">Bağla</button>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
 </article>
 <!-- Müzik Servisi -->
 <article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
@@ -100,7 +102,7 @@
 <p class="text-xs text-slate-400 mt-0.5">Hoparlörlerde müzik çal</p>
 </div>
 </div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white" onclick="toggleConnect(this)">Bağla</button>
+<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
 </article>
 </section>
 <!-- Feedback shortcut -->
@@ -111,13 +113,40 @@
 <!-- END: MainContent -->
 <script data-purpose="service-interactions">
     lucide.createIcons();
-    // Toggle a service between connected / not connected
-    function toggleConnect(btn) {
-      var connected = btn.textContent === 'Bağlı';
-      btn.textContent = connected ? 'Bağla' : 'Bağlı';
-      btn.className = connected
-        ? 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white'
-        : 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-slate-100 text-slate-500';
+    // Toggle a service between connected / not connected (localStorage ile kalıcı)
+    var SVC_KEY = 'nexusConnectedServices';
+    function readConnected() {
+      try {
+        var list = JSON.parse(nexusGetItem(SVC_KEY) || '[]');
+        return Array.isArray(list) ? list : [];
+      } catch (e) { return []; }
     }
+    function applyState(btn, connected) {
+      btn.textContent = connected ? 'Bağlı' : 'Bağla';
+      btn.className = connected
+        ? 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-slate-100 text-slate-500'
+        : 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white';
+    }
+    function serviceName(btn) {
+      var h = btn.closest('article').querySelector('h2');
+      return h ? h.textContent.trim() : '';
+    }
+    function toggleConnect(btn) {
+      var name = serviceName(btn);
+      var list = readConnected();
+      var idx = list.indexOf(name);
+      var connected = idx === -1;
+      if (connected) list.push(name); else list.splice(idx, 1);
+      nexusSetItem(SVC_KEY, JSON.stringify(list));
+      applyState(btn, connected);
+    }
+    // Kayıtlı durumu geri yükle
+    (function () {
+      var list = readConnected();
+      document.querySelectorAll('.connect-btn').forEach(function (btn) {
+        applyState(btn, list.indexOf(serviceName(btn)) !== -1);
+      });
+    })();
   </script>
 </body></html>
+

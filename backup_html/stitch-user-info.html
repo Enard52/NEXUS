@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>NEXUS ” Kullanıcı Bilgileri</title>
+<title>NEXUS — Kullanıcı Bilgileri</title>
 <!-- Tailwind CSS v3 CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts: Inter (NEXUS body font) -->
@@ -42,21 +42,23 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="data.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-white min-h-screen flex flex-col">
 <!-- BEGIN: Navigation Header -->
 <header class="bg-white px-4 py-4 flex items-center justify-between border-b border-gray-50 relative" data-purpose="main-header">
-<a aria-label="Geri" class="p-2 -ml-2" href="stitch-profile.html">
-<svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.75 19.5L8.25 12l7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
+<svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
-<h1 class="text-xl font-semibold text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
+<h1 class="whitespace-nowrap text-xl font-semibold text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
 <!-- Empty div for flex balance -->
 <div class="w-10"></div>
 </header>
@@ -65,26 +67,25 @@
 <main class="flex-1 bg-nexus-tint p-6" data-purpose="settings-container">
 <!-- BEGIN: Settings Card (genişlik sınırı ile geniş ekranlarda da düzgün) -->
 <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden w-full max-w-xl mx-auto" data-purpose="info-card">
-<!-- Row 1: Profile Photo (kamera veya galeri seçimi) -->
-<button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openPhotoSheet()">
+<!-- Row 1: Profile Photo (gerçek dosya seçici açar) -->
+<button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="document.getElementById('avatar-input').click()">
 <span class="text-[17px] font-medium text-gray-800">Profil Fotoğrafı</span>
 <div class="flex items-center gap-3">
-<div class="w-14 h-14 rounded-full overflow-hidden border border-gray-200 flex-shrink-0">
-<img alt="Profil fotoğrafı" class="w-full h-full object-cover" id="avatar-img" src="https://randomuser.me/api/portraits/men/75.jpg"/>
+<div class="w-14 h-14 rounded-full overflow-hidden border border-gray-200 flex-shrink-0 bg-gray-100 flex items-center justify-center">
+<svg class="w-7 h-7 text-gray-300" fill="currentColor" id="avatar-placeholder" viewBox="0 0 24 24" aria-label="Profil fotoğrafı yok" role="img"><path d="M12 12c2.49 0 4.5-2.01 4.5-4.5S14.49 3 12 3 7.5 5.01 7.5 7.5 9.51 12 12 12zm0 2.25c-3 0-9 1.51-9 4.5V21h18v-2.25c0-2.99-6-4.5-9-4.5z"/></svg>
+<img alt="Profil fotoğrafı" class="w-full h-full object-cover hidden" id="avatar-img" src=""/>
 </div>
 <svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </div>
 </button>
-<!-- Gizli dosya inputları -->
-<input accept="image/*" class="hidden" id="avatar-gallery-input" onchange="changeAvatar(this)" type="file"/>
-<input accept="image/*" capture="user" class="hidden" id="avatar-camera-input" onchange="changeAvatar(this)" type="file"/>
+<input accept="image/*" class="hidden" id="avatar-input" onchange="changeAvatar(this)" type="file"/>
 <!-- Row 2: Username (düzenleme sheet'i açar) -->
 <button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('name')">
 <span class="text-[17px] font-medium text-gray-800 flex-shrink-0">Kullanıcı Adı</span>
 <div class="flex items-center gap-3 min-w-0">
-<span class="text-[17px] text-gray-400 truncate" id="username-value">Deniz Yılmaz</span>
+<span class="text-[17px] text-gray-400 truncate" id="username-value">Misafir</span>
 <svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -112,11 +113,11 @@
 <h3 class="text-lg font-bold">Kullanıcı Adını Düzenle</h3>
 <button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
 </div>
-<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#7C5CFF] mb-2" id="name-input" maxlength="30" type="text" value="Deniz Yılmaz"/>
+<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#4C7DFF] mb-2" id="name-input" maxlength="30" placeholder="Adını gir" type="text" value=""/>
 <p class="text-xs text-slate-400 mb-5"><span id="name-count">0</span>/30 karakter</p>
 <div class="flex gap-3">
 <button class="flex-1 bg-white border border-slate-200 rounded-2xl py-4 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">İptal</button>
-<button class="flex-1 bg-[#7C5CFF] text-white rounded-2xl py-4 font-bold active:scale-[0.98] transition-transform" onclick="saveName()">Kaydet</button>
+<button class="flex-1 bg-[#4C7DFF] text-white rounded-2xl py-4 font-bold active:scale-[0.98] transition-transform" onclick="saveName()">Kaydet</button>
 </div>
 </div>
 <!-- END: Username Edit Sheet -->
@@ -137,85 +138,23 @@
 <p class="hidden text-sm text-slate-400 text-center py-6" id="tz-empty">Eşleşen ülke bulunamadı.</p>
 </div>
 <!-- END: Timezone Sheet -->
-<!-- BEGIN: Photo Action Sheet -->
-<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10 w-full max-w-xl mx-auto" id="sheet-photo">
-  <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
-  <h3 class="text-lg font-bold mb-1 text-center">Profil Fotoğrafı</h3>
-  <p class="text-sm text-slate-400 text-center mb-6">Fotoğrafına eriştirmek için izin gereklidir.</p>
-  <!-- Kamera -->
-  <button onclick="pickWithCamera()" class="w-full flex items-center gap-4 py-4 px-5 bg-slate-50 rounded-2xl mb-3 active:bg-slate-100 transition-colors">
-    <div class="w-12 h-12 rounded-2xl bg-[#7C5CFF]/10 flex items-center justify-center flex-shrink-0">
-      <svg class="w-6 h-6 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="text-left">
-      <p class="font-semibold text-slate-800">Fotoğraf Çek</p>
-      <p class="text-xs text-slate-400 mt-0.5">Kamera izni gereklidir</p>
-    </div>
-  </button>
-  <!-- Galeri -->
-  <button onclick="pickFromGallery()" class="w-full flex items-center gap-4 py-4 px-5 bg-slate-50 rounded-2xl mb-5 active:bg-slate-100 transition-colors">
-    <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
-      <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.5" stroke-linecap="round"/><polyline points="21 15 16 10 5 21" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="text-left">
-      <p class="font-semibold text-slate-800">Galeriden Seç</p>
-      <p class="text-xs text-slate-400 mt-0.5">Fotoğraf erişim izni gereklidir</p>
-    </div>
-  </button>
-  <!-- İptal -->
-  <button onclick="closeSheets()" class="w-full py-4 rounded-2xl border border-slate-200 font-bold text-slate-600 active:scale-[0.98] transition-transform">İptal</button>
-</div>
-<!-- END: Photo Action Sheet -->
 <script data-purpose="user-info-interactions">
     lucide.createIcons();
 
-    /* ---------- Profil fotoğrafı: kamera veya galeri ---------- */
-    function openPhotoSheet() {
-      document.getElementById('sheet-backdrop').classList.remove('hidden');
-      document.getElementById('sheet-photo').classList.add('open');
-    }
-
-    function pickWithCamera() {
-      closeSheets();
-      // Kamera izni iste
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(function(stream) {
-            // Kameraya erişim verildi ” capture:user modunda dosya seçiciyi aç
-            stream.getTracks().forEach(function(t){ t.stop(); });
-            document.getElementById('avatar-camera-input').click();
-          })
-          .catch(function(err) {
-            showPermissionError('Kamera erişimi reddedildi. Lütfen tarayıcı ayarlarından kamera iznini verin.');
-          });
-      } else {
-        // getUserMedia yoksa doğrudan capture:user'a dene (mobil Safari)
-        document.getElementById('avatar-camera-input').click();
-      }
-    }
-
-    function pickFromGallery() {
-      closeSheets();
-      document.getElementById('avatar-gallery-input').click();
-    }
-
-    function showPermissionError(msg) {
-      var el = document.createElement('div');
-      el.className = 'fixed top-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-xl z-[100] max-w-xs text-center';
-      el.textContent = msg;
-      document.body.appendChild(el);
-      setTimeout(function(){ el.remove(); }, 3500);
-    }
-
+    /* ---------- Profil fotoğrafı: gerçek dosya seçimi ---------- */
     function changeAvatar(input) {
       var file = input.files && input.files[0];
       if (!file) return;
       var reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById('avatar-img').src = e.target.result;
+        var img = document.getElementById('avatar-img');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        var ph = document.getElementById('avatar-placeholder');
+        if (ph) ph.classList.add('hidden');
         // Profil sayfası da aynı anahtardan okur
-        try { localStorage.setItem('nexusAvatar', e.target.result); }
-        catch (err) { showPermissionError('Fotoğraf çok büyük. Daha küçük bir görsel seçin.'); }
+        try { nexusSetItem('nexusAvatar', e.target.result); }
+        catch (err) { /* çok büyük görselde kota aşılırsa yalnızca bu oturumda görünür */ }
       };
       reader.readAsDataURL(file);
     }
@@ -230,7 +169,7 @@
     function saveName() {
       var v = nameInput.value.trim();
       if (!v) { nameInput.focus(); return; }
-      localStorage.setItem('nexusUserName', v);
+      nexusSetItem('nexusUserName', v);
       document.getElementById('username-value').textContent = v;
       closeSheets();
     }
@@ -278,7 +217,7 @@
       catch (e) { return 'Europe/Istanbul'; }
     }
     function cityLabel(tz) {
-      var CITY_TR = { Istanbul: 'İstanbul', London: 'Londra', Vienna: 'Viyana', Rome: 'Roma', Athens: 'Atina', Cairo: 'Kahire', Moscow: 'Moskova', Brussels: 'Brüksel', Zurich: 'Zürih', Warsaw: 'Varşova', Lisbon: 'Lizbon', Copenhagen: 'Kopenhag', Stockholm: 'Stokholm', Kyiv: 'Kiev', Jerusalem: 'Kudüs', Riyadh: 'Riyad', Baghdad: 'Bağdat', Tehran: 'Tahran', Damascus: 'Åam', Tripoli: 'Trablus', Tunis: 'Tunus', Algiers: 'Cezayir', Beirut: 'Beyrut', Nicosia: 'Lefkoşa', Tokyo: 'Tokyo', Seoul: 'Seul' };
+      var CITY_TR = { Istanbul: 'İstanbul', London: 'Londra', Vienna: 'Viyana', Rome: 'Roma', Athens: 'Atina', Cairo: 'Kahire', Moscow: 'Moskova', Brussels: 'Brüksel', Zurich: 'Zürih', Warsaw: 'Varşova', Lisbon: 'Lizbon', Copenhagen: 'Kopenhag', Stockholm: 'Stokholm', Kyiv: 'Kiev', Jerusalem: 'Kudüs', Riyadh: 'Riyad', Baghdad: 'Bağdat', Tehran: 'Tahran', Damascus: 'Şam', Tripoli: 'Trablus', Tunis: 'Tunus', Algiers: 'Cezayir', Beirut: 'Beyrut', Nicosia: 'Lefkoşa', Tokyo: 'Tokyo', Seoul: 'Seul' };
       var city = tz.split('/').pop();
       return CITY_TR[city] || city.replace(/_/g, ' ');
     }
@@ -292,9 +231,9 @@
     }
     /* Seçili ülke: kayıt yoksa cihaz diliminden eşleşen ülke bulunur */
     function selectedCountry() {
-      var code = localStorage.getItem('nexusTimezoneCountry');
+      var code = nexusGetItem('nexusTimezoneCountry');
       if (code && COUNTRY_TZ[code]) return code;
-      var saved = localStorage.getItem('nexusTimezone');
+      var saved = nexusGetItem('nexusTimezone');
       var tz = (saved && saved !== 'auto') ? saved : deviceTimezone();
       var hit = COUNTRIES.filter(function (c) { return c.tz === tz; })[0];
       return hit ? hit.code : 'TR';
@@ -306,7 +245,7 @@
       try {
         now = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date());
       } catch (e) { /* bilinmeyen dilimde yalnızca ad gösterilir */ }
-      document.getElementById('timezone-value').textContent = countryName(code) + (now ? ' Â· ' + now : '');
+      document.getElementById('timezone-value').textContent = countryName(code) + (now ? ' · ' + now : '');
       renderTzList(document.getElementById('tz-search').value);
     }
     function renderTzList(filter) {
@@ -322,9 +261,9 @@
         btn.className = 'w-full flex items-center justify-between gap-3 rounded-2xl px-4 py-3 active:bg-slate-50 transition-colors text-left';
         btn.innerHTML =
           '<span class="min-w-0"><span class="block text-[16px] font-medium truncate">' + c.name + '</span>' +
-          '<span class="block text-xs text-slate-400 mt-0.5">' + cityLabel(c.tz) + ' Â· ' + gmtOffset(c.tz) + '</span></span>' +
+          '<span class="block text-xs text-slate-400 mt-0.5">' + cityLabel(c.tz) + ' · ' + gmtOffset(c.tz) + '</span></span>' +
           (c.code === sel
-            ? '<svg class="w-5 h-5 text-[#7C5CFF] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            ? '<svg class="w-5 h-5 text-[#4C7DFF] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
             : '');
         btn.onclick = function () { pickCountry(c.code); };
         list.appendChild(btn);
@@ -332,8 +271,8 @@
       document.getElementById('tz-empty').classList.toggle('hidden', shown > 0);
     }
     function pickCountry(code) {
-      localStorage.setItem('nexusTimezoneCountry', code);
-      localStorage.setItem('nexusTimezone', COUNTRY_TZ[code]);
+      nexusSetItem('nexusTimezoneCountry', code);
+      nexusSetItem('nexusTimezone', COUNTRY_TZ[code]);
       renderTimezone();
       closeSheets();
     }
@@ -343,22 +282,28 @@
       document.getElementById('sheet-backdrop').classList.remove('hidden');
       document.getElementById('sheet-' + name).classList.add('open');
       if (name === 'name') setTimeout(function () { nameInput.focus(); }, 260);
-      if (name === 'photo') {} // Handled by openPhotoSheet()
     }
     function closeSheets() {
       document.getElementById('sheet-backdrop').classList.add('hidden');
       document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
     }
 
-    /* Ülke verileri hazır olduktan sonra kayıtlı verileri yükle (profil sayfasıyla senkron) */
+    /* Ülke verileri hazır olduktan sonra kayıtlı verileri yükle (profil sayfasıyla senkron) — gerçek veri yoksa dürüst varsayılanlar */
     (function () {
-      var name = localStorage.getItem('nexusUserName') || 'Deniz Yılmaz';
-      document.getElementById('username-value').textContent = name;
-      nameInput.value = name;
+      var name = nexusGetItem('nexusUserName');
+      document.getElementById('username-value').textContent = name || 'Misafir';
+      nameInput.value = name || '';
       updateNameCount();
-      var avatar = localStorage.getItem('nexusAvatar');
-      if (avatar) document.getElementById('avatar-img').src = avatar;
+      var avatar = nexusGetItem('nexusAvatar');
+      if (avatar) {
+        var img = document.getElementById('avatar-img');
+        img.src = avatar;
+        img.classList.remove('hidden');
+        var ph = document.getElementById('avatar-placeholder');
+        if (ph) ph.classList.add('hidden');
+      }
       renderTimezone();
     })();
   </script>
 </body></html>
+

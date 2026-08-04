@@ -24,7 +24,7 @@
     .bg-dashboard-gradient {
       background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
     }
-    
+
     /* Custom shadow for the cards */
     .card-shadow {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -49,7 +49,7 @@
       position: absolute;
       top: -2px; bottom: -2px;
       left: -2px; right: -2px;
-      background: linear-gradient(to right, #7C5CFF, #22D3EE, #7C5CFF);
+      background: linear-gradient(to right, #4C7DFF, #22D3EE, #4C7DFF);
       z-index: -1;
       border-radius: 9999px;
     }
@@ -62,33 +62,29 @@
     .qa-sheet { transition: transform 0.28s ease; transform: translateY(105%); }
     .qa-sheet.open { transform: translateY(0); }
   </style>
+<script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
+<script src="sheet-gestures.js"></script>
 </head>
 <body class="bg-dashboard-gradient min-h-screen flex flex-col text-slate-900">
 <!-- BEGIN: Header -->
 <header class="pt-12 pb-4 flex items-center justify-between px-5" data-purpose="main-header">
 <div class="flex items-center">
 <!-- Home Selector -->
-<button onclick="toggleHomeSelector()" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">
-  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#6344E6] flex items-center justify-center text-white shadow-inner flex-shrink-0">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-  </div>
-  <div class="flex flex-col justify-center">
-    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-0.5">Mevcut Ev</span>
-    <span class="text-sm font-bold text-slate-800 leading-none" data-bind="householdName">Benim Evim</span>
-  </div>
-  <svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+<button onclick="toggleHomeSelector()" class="flex items-center gap-2 py-1 pr-2 text-[#4C7DFF] active:scale-95 transition-transform" data-purpose="home-selector">
+  <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+  <span class="max-w-[8rem] truncate text-sm font-bold leading-none" data-bind="householdName">Evim</span>
 </button>
 </div>
 <div class="flex items-center gap-4">
 <!-- Plus Action Button -->
-<a href="stitch-plus.html" class="bg-[#7C5CFF] text-white px-5 py-1.5 rounded-full font-medium text-sm flex items-center shadow-sm">
+<a href="stitch-plus.html" class="bg-[#4C7DFF] text-white px-5 py-1.5 rounded-full font-medium text-sm flex items-center shadow-sm">
         Plus
       </a>
 <!-- Plus Icon (opens quick add menu) -->
-<button aria-label="Hızlı ekle" class="text-[#7C5CFF]" onclick="toggleQuickAdd()">
+<button aria-label="Hızlı ekle" class="text-[#4C7DFF]" onclick="toggleQuickAdd()">
 <svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
@@ -99,6 +95,7 @@
 <!-- BEGIN: QuickAddMenu (buzlu cam alt sayfa) -->
 <div class="fixed inset-0 z-40 hidden bg-black/20" id="quick-add-backdrop" onclick="toggleQuickAdd()" style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);"></div>
 <div class="qa-sheet fixed inset-x-0 bottom-0 z-50 rounded-t-[3rem] pt-6 pb-12 px-6 flex flex-col items-center" data-purpose="quick-add-menu" id="quick-add-menu" style="background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(240,236,255,0.88) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -10px 40px rgba(0,0,0,0.1);">
+<div id="quick-add-handle" class="w-14 h-1.5 rounded-full bg-slate-300/80 mb-4"></div>
 <!-- Kapat butonu -->
 <div class="w-full flex justify-end mb-2">
 <button aria-label="Kapat" class="bg-slate-200/60 p-2 rounded-full text-slate-500 active:bg-slate-300 transition-colors" onclick="toggleQuickAdd()">
@@ -108,8 +105,8 @@
 </button>
 </div>
 <!-- NEXUS N monogram (marka gradyanı) -->
-<div class="mb-4">
-<svg class="w-20 h-20" fill="none" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="n-grad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#7C5CFF"></stop><stop offset="100%" stop-color="#22D3EE"></stop></lineargradient><filter id="n-glow"><fegaussianblur result="coloredBlur" stddeviation="4"></fegaussianblur><femerge><femergenode in="coloredBlur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs><path d="M25 80 V20 L75 80 V20" fill="none" filter="url(#n-glow)" stroke="url(#n-grad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path></svg>
+<div class="w-20 h-20 drop-shadow-md mb-4">
+  <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full"><defs><linearGradient id="nxlogo-home" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen-home" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-home)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-home)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
 <!-- Başlık (AI özelliği değil: sade NEXUS markalaması) -->
 <h2 class="text-[26px] font-extrabold text-black mb-8 tracking-tight">Hızlı Aksiyonlar</h2>
@@ -168,7 +165,9 @@
 <!-- Mic Icon -->
 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 <!-- Filter Icon -->
-<svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<button type="button" data-ai-helper-action onclick="event.preventDefault(); event.stopPropagation(); window.location.href='stitch-chat.html?helper=ready'" class="text-gray-600 hover:text-gray-800 transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
 </div>
 </div>
 </a>
@@ -193,7 +192,7 @@
 <svg class="mb-2 w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3 class="font-bold text-base leading-tight">Hava Durumu</h3>
 </div>
-<p class="text-slate-400 text-sm font-medium truncate" id="weather-location">Veri Yok</p>
+<p class="text-slate-500 text-sm font-medium leading-5 min-h-[2.5rem]" id="weather-location">Veri Yok</p>
 </a>
 <!-- Card 2: DND (opens Rahatsız Etme page) -->
 <a id="card-dnd" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-dnd.html">
@@ -201,17 +200,24 @@
 <svg class="mb-2 w-8 h-8 text-[#FF3B5C]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.73 21a2 2 0 0 1-3.46 0M18.63 13A17.89 17.89 0 0 1 18 8M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14M18 8a6 6 0 0 0-9.33-5M1 1l22 22" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3 class="font-bold text-base leading-tight">Rahatsız Etme</h3>
 </div>
-<p class="text-slate-400 text-sm font-medium truncate" id="dnd-state">Kapalı</p>
+<p class="text-slate-500 text-sm font-medium leading-5 min-h-[2.5rem]" id="dnd-state">Kapalı</p>
 </a>
 <!-- Card 3: Energy Today (AI Enerji Tasarrufu mini uygulamasına gider) -->
 <a id="card-energy" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-energy.html">
 <div>
-<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<svg class="mb-2 w-8 h-8 text-[#4C7DFF]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <h3 class="font-bold text-base leading-tight">Bugünkü Enerji</h3>
 </div>
 <p class="text-slate-400 text-sm font-medium" id="energy-today">Veri yok</p>
 </a>
 </div>
+<div class="grid grid-cols-2 gap-4 mt-4 hidden" id="extra-smart-home-grid"></div>
+<section class="mt-6 hidden" id="tap-to-run-section">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold tracking-tight">Dokun Çalıştır</h2>
+</div>
+<div class="grid grid-cols-1 gap-3" id="tap-to-run-grid"></div>
+</section>
 <!-- Cihazlar -->
 <div class="grid grid-cols-2 gap-4 mt-4" id="dynamic-devices-grid" data-purpose="devices-grid"></div>
 <!-- Edit/Düzenle Button (opens card edit page) -->
@@ -223,106 +229,120 @@
 </main>
 <!-- END: MainContent -->
 <!-- BEGIN: BottomNavigation -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
-<!-- Ev (Active) -->
-<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-[#7C5CFF]">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
-<span class="text-xs font-bold">Ev</span>
-</a>
-<!-- Akıllı -->
-<a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-slate-400">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
-<span class="text-xs font-medium">Akıllı</span>
-</a>
-<!-- Keşfet -->
-<a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
-<span class="text-xs font-medium">Keşfet</span>
-</a>
-<!-- Profil -->
-<a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-slate-400">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
-<span class="text-xs font-medium">Profil</span>
-</a>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); height: calc(4.5rem + env(safe-area-inset-bottom));" data-purpose="bottom-nav">
+  <a href="stitch-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #4C7DFF;" aria-current="page">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
+    <span class="text-[10px] font-semibold leading-none">Ev</span>
+  </a>
+  <a href="stitch-smart.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="layout-grid"></i>
+    <span class="text-[10px] font-semibold leading-none">Ak&#305;ll&#305;</span>
+  </a>
+  <a href="stitch-discover.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="compass"></i>
+    <span class="text-[10px] font-semibold leading-none">Ke&#351;fet</span>
+  </a>
+  <a href="stitch-profile.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="user"></i>
+    <span class="text-[10px] font-semibold leading-none">Profil</span>
+  </a>
 </nav>
 <!-- END: BottomNavigation -->
 <script>
             lucide.createIcons();
 
-    
+
     function syncCards() {
-      // Hide static cards if they are in nexusHiddenCards
-      var hidden = [];
+      var selectedSmartHome = null;
       try {
-        hidden = JSON.parse(localStorage.getItem('nexusHiddenCards') || '[]');
+        selectedSmartHome = JSON.parse(nexusGetItem('nexusSelectedSmartHomeCards') || 'null');
       } catch(e) {}
-      
+      var selectedIds = Array.isArray(selectedSmartHome) ? selectedSmartHome : ['weather', 'energy', 'dnd'];
+
       ['weather', 'dnd', 'energy'].forEach(function(id) {
         var el = document.getElementById('card-' + id);
         if (el) {
-          if (hidden.indexOf(id) !== -1) {
-            el.style.display = 'none';
-          } else {
-            el.style.display = 'flex';
-          }
+          el.style.display = selectedIds.indexOf(id) !== -1 ? 'flex' : 'none';
         }
       });
 
-      // Harita sayfasında kaydedilen hava durumu konumuyla senkron
-      var loc = localStorage.getItem('nexusWeatherLocation');
+      // Harita sayfasında kaydedilen hava durumu konumuyla senkron.
+      // Öncelik: kayıtlı koordinatlar (nexusWeatherCoords) — sokak/mahalle adları
+      // şehir geokodlamasında bulunamayabilir; koordinat her zaman çalışır.
+      var loc = nexusGetItem('nexusWeatherLocation');
       var weatherEl = document.getElementById('weather-location');
-      if (loc && weatherEl) {
-        weatherEl.textContent = "Yükleniyor...";
-        fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(loc) + '&count=1&language=tr&format=json')
-          .then(function(res) { return res.json(); })
-          .then(function(data) {
-            if (data.results && data.results.length > 0) {
-              var result = data.results[0];
-              var lat = result.latitude;
-              var lon = result.longitude;
-              
-              return fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current_weather=true')
-                .then(function(res2) { return res2.json(); })
-                .then(function(data2) {
-                  if (data2.current_weather) {
-                    var temp = Math.round(data2.current_weather.temperature);
-                    var code = data2.current_weather.weathercode;
-                    var desc = 'Açık';
-                    if (code >= 1 && code <= 3) desc = 'Bulutlu';
-                    if (code >= 45 && code <= 48) desc = 'Sisli';
-                    if (code >= 51 && code <= 67) desc = 'Yağmurlu';
-                    if (code >= 71 && code <= 77) desc = 'Karlı';
-                    if (code >= 80 && code <= 82) desc = 'Sağanak Yağışlı';
-                    if (code >= 95) desc = 'Fırtınalı';
-                    
-                    weatherEl.textContent = temp + "°C " + desc;
-                  }
-                });
+      function describeWeather(code) {
+        var desc = 'Açık';
+        if (code >= 1 && code <= 3) desc = 'Bulutlu';
+        if (code >= 45 && code <= 48) desc = 'Sisli';
+        if (code >= 51 && code <= 67) desc = 'Yağmurlu';
+        if (code >= 71 && code <= 77) desc = 'Karlı';
+        if (code >= 80 && code <= 82) desc = 'Sağanak Yağışlı';
+        if (code >= 95) desc = 'Fırtınalı';
+        return desc;
+      }
+      function showForecast(lat, lon) {
+        return fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current_weather=true')
+          .then(function(res2) { return res2.json(); })
+          .then(function(data2) {
+            if (data2.current_weather) {
+              var temp = Math.round(data2.current_weather.temperature);
+              var desc = describeWeather(data2.current_weather.weathercode);
+              // Seçilen konumun adını da göster (kısaltılmış)
+              var shortLoc = (loc || '').split(',')[0].trim();
+              weatherEl.textContent = temp + '°C ' + desc + (shortLoc ? ' · ' + shortLoc : '');
             } else {
-              weatherEl.textContent = "Konum Bulunamadı";
+              weatherEl.textContent = 'Veri alınamadı';
             }
-          })
-          .catch(function(err) {
-            weatherEl.textContent = "Bağlantı Hatası";
           });
       }
+      if (loc && weatherEl) {
+        weatherEl.textContent = "Yükleniyor...";
+        var coords = null;
+        try { coords = JSON.parse(nexusGetItem('nexusWeatherCoords') || 'null'); } catch(e) {}
+        if (coords && isFinite(coords.lat) && isFinite(coords.lon)) {
+          showForecast(coords.lat, coords.lon)
+            .catch(function(err) { weatherEl.textContent = "Bağlantı Hatası"; });
+        } else {
+          fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(loc) + '&count=1&language=tr&format=json')
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+              if (data.results && data.results.length > 0) {
+                return showForecast(data.results[0].latitude, data.results[0].longitude);
+              }
+              weatherEl.textContent = "Konum Bulunamadı";
+            })
+            .catch(function(err) {
+              weatherEl.textContent = "Bağlantı Hatası";
+            });
+        }
+      }
 
-      // Günlük düzenli enerji hesaplama (güne özel sabit değer)
+      // Enerji kartı: gerçek durum. Tüketim sayacı entegrasyonu olmadığı için
+      // uydurma kWh değeri GÖSTERİLMEZ. Bunun yerine etkin tasarruf
+      // stratejisi sayısı (nexusEnergyEnabledMap) gösterilir; yoksa dürüst boş durum.
       var energyEl = document.getElementById('energy-today');
       if (energyEl) {
-        var d = new Date();
-        var seed = d.getFullYear() * 100 + d.getMonth() * 10 + d.getDate();
-        var energyValue = (2.5 + (seed % 40) / 10).toFixed(1);
-        energyEl.textContent = energyValue + ' kWh harcandı';
+        var enabledMap = {};
+        try { enabledMap = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch(e) { enabledMap = {}; }
+        var activeCount = 0;
+        if (enabledMap && typeof enabledMap === 'object') {
+          Object.keys(enabledMap).forEach(function(k) { if (enabledMap[k]) activeCount++; });
+        }
+        if (activeCount > 0) {
+          energyEl.textContent = activeCount + ' strateji etkin';
+        } else {
+          energyEl.textContent = 'Strateji yok';
+        }
       }
 
       // Rahatsız Etme (DND) Senkronizasyonu
       var dndEl = document.getElementById('dnd-state');
       function renderDndCard() {
         if (!dndEl) return;
-        var state = localStorage.getItem('nexusDndState');
-        var scheduleRaw = localStorage.getItem('nexusDndSchedule');
-        var endTime = parseInt(localStorage.getItem('nexusDndEndTime') || '0', 10);
+        var state = nexusGetItem('nexusDndState');
+        var scheduleRaw = nexusGetItem('nexusDndSchedule');
+        var endTime = parseInt(nexusGetItem('nexusDndEndTime') || '0', 10);
         var displayText = 'Kapalı';
         var isActive = false;
 
@@ -330,9 +350,9 @@
           if (endTime) {
             var remainMs = endTime - Date.now();
             if (remainMs <= 0) {
-              // Süre doldu: durumu gerçekten kapat
-              localStorage.setItem('nexusDndState', 'Kapalı');
-              localStorage.removeItem('nexusDndEndTime');
+              // Süre doldu: durumu gerçekten kapıat
+              nexusSetItem('nexusDndState', 'Kapalı');
+              nexusRemoveItem('nexusDndEndTime');
             } else {
               // Kalan süre geri sayımı: "3 saatlik" yerine örn. 23:45 kaldı
               var totalMin = Math.ceil(remainMs / 60000);
@@ -372,48 +392,21 @@
       setInterval(renderDndCard, 30000);
 
       // Gerçek hane adıyla senkron (nexusHousehold)
-      var name = 'Evim';
-      try {
-        var homes = JSON.parse(localStorage.getItem('nexusHousehold') || 'null');
-        if (Array.isArray(homes) && homes.length && homes[0].name) name = homes[0].name;
-      } catch (e) {}
+      var name = typeof window.getPrimaryHouseholdName === 'function' ? window.getPrimaryHouseholdName() : 'Evim';
       document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = name; });
 
-      // Bugünkü Enerji Senkronizasyonu
-      var count = 0;
-      try {
-        var cards = JSON.parse(localStorage.getItem('nexusDashboardCards') || '[]');
-        if (Array.isArray(cards)) count += cards.filter(function (c) { return c && c.visible !== false; }).length;
-        var paired = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]');
-        if (Array.isArray(paired)) count += paired.length;
-      } catch (e) {}
-      
-      var map = {};
-      try { map = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch(e){}
-      var activeStrategies = Object.keys(map).filter(k => map[k]).length;
-      
-      var energyEl = document.getElementById('energy-today');
-      if (energyEl) {
-        if (activeStrategies > 0) {
-          energyEl.textContent = activeStrategies + ' Tasarruf Aktif';
-          energyEl.classList.remove('text-slate-400', 'text-slate-900', 'font-bold');
-          energyEl.classList.add('text-[#7C5CFF]', 'font-semibold');
-        } else if (count === 0) {
-          energyEl.textContent = 'Veri yok';
-          energyEl.classList.remove('text-[#7C5CFF]', 'font-semibold', 'text-slate-900', 'font-bold');
-          energyEl.classList.add('text-slate-400');
-        } else {
-          energyEl.textContent = '0.00 kWh';
-          energyEl.classList.remove('text-slate-400', 'text-[#7C5CFF]', 'font-semibold');
-          energyEl.classList.add('text-slate-900', 'font-bold');
-        }
-      }
-
       // Kullanıcı Bilgileri sayfasında değiştirilen fotoğrafla senkron
-      var avatar = localStorage.getItem('nexusAvatar');
+      var avatar = nexusGetItem('nexusAvatar');
       if (avatar) {
         var avatarEl = document.getElementById('home-avatar');
         if (avatarEl) avatarEl.src = avatar;
+      }
+
+      if (typeof window.refreshDashboardSupplements === 'function') {
+        window.refreshDashboardSupplements();
+      }
+      if (typeof window.renderNexusDevices === 'function') {
+        window.renderNexusDevices();
       }
     }
 
@@ -446,6 +439,7 @@
 <div id="home-selector-backdrop" class="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="toggleHomeSelector()"></div>
 <div id="home-selector-modal" class="fixed inset-x-0 top-0 z-[70] bg-white rounded-b-[2rem] shadow-2xl border-b border-slate-100 flex flex-col transform transition-transform duration-300 -translate-y-full">
   <div class="px-5 pt-12 pb-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+    <div id="home-selector-handle" class="absolute left-1/2 top-3 h-1.5 w-14 -translate-x-1/2 rounded-full bg-slate-200"></div>
     <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ev Seçimi</h3>
     <button onclick="toggleHomeSelector()" class="p-2 -mr-2 text-slate-400 hover:text-slate-600 rounded-full">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -453,9 +447,9 @@
   </div>
   <div class="p-4 flex flex-col gap-2">
     <!-- Active Home -->
-    <button onclick="toggleHomeSelector()" class="flex items-center gap-3 p-4 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] text-left w-full transition-transform active:scale-[0.98]">
+    <button onclick="toggleHomeSelector()" class="flex items-center gap-3 p-4 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] text-left w-full transition-transform active:scale-[0.98]">
       <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-      <span class="font-bold text-base flex-grow" data-bind="householdName">Benim Evim</span>
+      <span class="font-bold text-base flex-grow" data-bind="householdName">Evim</span>
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
     </button>
   </div>
@@ -471,23 +465,41 @@
 function toggleHomeSelector() {
   const modal = document.getElementById('home-selector-modal');
   const backdrop = document.getElementById('home-selector-backdrop');
-  
+
   // If it's currently hidden (-translate-y-full)
   if (modal.classList.contains('-translate-y-full')) {
     // Show it
     modal.classList.remove('-translate-y-full');
     modal.classList.add('translate-y-0');
-    
+
     backdrop.classList.remove('opacity-0', 'pointer-events-none');
     backdrop.classList.add('opacity-100', 'pointer-events-auto');
   } else {
     // Hide it
     modal.classList.remove('translate-y-0');
     modal.classList.add('-translate-y-full');
-    
+
     backdrop.classList.remove('opacity-100', 'pointer-events-auto');
     backdrop.classList.add('opacity-0', 'pointer-events-none');
   }
+}
+
+if (window.NexusSheetGestures) {
+  window.NexusSheetGestures.bindBottomSheet({
+    sheetId: 'quick-add-menu',
+    handleId: 'quick-add-handle',
+    backdropId: 'quick-add-backdrop',
+    isOpen: function () { return document.getElementById('quick-add-menu').classList.contains('open'); },
+    close: toggleQuickAdd
+  });
+
+  window.NexusSheetGestures.bindTopSheet({
+    sheetId: 'home-selector-modal',
+    handleId: 'home-selector-handle',
+    backdropId: 'home-selector-backdrop',
+    isOpen: function () { return document.getElementById('home-selector-modal').classList.contains('translate-y-0'); },
+    close: toggleHomeSelector
+  });
 }
 </script>
 

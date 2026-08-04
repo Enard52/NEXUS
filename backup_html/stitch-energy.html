@@ -14,9 +14,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@latest"></script>
-<!-- NEXUS Global Theme Manager -->
-<script src="theme.js"></script>
-<script src="ai-fab.js"></script>
 <style data-purpose="custom-typography">
     body {
       font-family: 'Inter', sans-serif;
@@ -29,9 +26,6 @@
     .bg-miniapp-gradient {
       background: linear-gradient(to bottom, #D8D0FE 0%, #ECE9FD 35%, #F6F5FB 65%, #F6F5FB 100%);
     }
-    html.dark .bg-miniapp-gradient {
-      background: linear-gradient(to bottom, #2e1065 0%, #1e1b4b 35%, #020617 65%, #020617 100%);
-    }
     .card-shadow {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     }
@@ -41,57 +35,52 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  </head>
-<body class="bg-miniapp-gradient text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
 <header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="stitch-discover.html">
-<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
-</a>
+<div class="w-7"></div>
 <!-- MiniApp capsule: more menu + close -->
 <div class="flex items-center bg-white/70 backdrop-blur rounded-full border border-white/60 shadow-sm" data-purpose="miniapp-capsule">
-<div class="flex items-center bg-white/70 dark:bg-slate-800/70 backdrop-blur rounded-full border border-white/60 dark:border-slate-700/50 shadow-sm" data-purpose="miniapp-capsule">
 <button aria-label="Mini uygulama menüsü" class="px-4 py-2" onclick="openSheet('menu')">
-<i class="w-5 h-5 text-slate-700 dark:text-slate-300" data-lucide="ellipsis"></i>
+<i class="w-5 h-5 text-slate-700" data-lucide="ellipsis"></i>
 </button>
-<span class="w-px h-5 bg-slate-300/70 dark:bg-slate-600/70"></span>
+<span class="w-px h-5 bg-slate-300/70"></span>
 <a aria-label="Mini uygulamayı kapat" class="px-4 py-2" href="stitch-home.html">
-<i class="w-5 h-5 text-slate-700 dark:text-slate-300" data-lucide="x"></i>
+<i class="w-5 h-5 text-slate-700" data-lucide="x"></i>
 </a>
 </div>
 </header>
 <!-- END: MiniApp Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pb-10">
-<!-- Title (AI feature: NEXUS AI naming allowed) -->
-<h1 class="text-[28px] font-bold leading-tight tracking-tight mb-1">AI Enerji Tasarrufu</h1>
-<p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Cihazlarına dair içgörüler edin, stratejilerle otomatik tasarruf et.</p>
-<!-- Summary Section -->
-<section class="flex gap-4 mb-6" data-purpose="energy-summary">
-<div class="flex-1 bg-white dark:bg-slate-900 rounded-3xl p-5 card-shadow flex flex-col justify-between transition-colors duration-300">
-<span class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-2">Bugünkü Enerji</span>
-<div class="flex items-baseline gap-1">
-<span class="text-3xl font-black text-[#7C5CFF]" id="energy-today-display">--</span>
-<span class="text-slate-500 dark:text-slate-400 text-sm font-semibold">kWh</span>
+<!-- Title (AI feature: NEXUS AI naming allowed; sayfa üstü başlık ortalanmış) -->
+<h1 class="text-[28px] font-bold leading-tight tracking-tight mb-1 text-center">AI Enerji Tasarrufu</h1>
+<p class="text-slate-500 text-sm mb-6 text-center">Cihazlarına dair içgörüler edin, stratejilerle otomatik tasarruf et.</p>
+<!-- Savings summary -->
+<section class="bg-white rounded-3xl card-shadow p-5 mb-6 flex items-center justify-between" data-purpose="savings-summary">
+<div>
+<p class="text-sm font-semibold text-slate-500">Bu ayki tasarruf</p>
+<p class="text-3xl font-extrabold mt-1">0,00 <span class="text-base font-bold text-slate-400">kWh</span></p>
+<p class="text-xs text-slate-400 mt-1">Cihaz ekledikçe tasarrufun burada görünür.</p>
 </div>
-</div>
-<div class="flex-1 bg-white dark:bg-slate-900 rounded-3xl p-5 card-shadow flex flex-col justify-between transition-colors duration-300">
-<span class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-2">30 Günlük Tahmin</span>
-<div class="flex items-baseline gap-1">
-<span class="text-3xl font-black text-slate-800 dark:text-slate-100" id="energy-month-display">--</span>
-<span class="text-slate-500 dark:text-slate-400 text-sm font-semibold">kWh</span>
-</div>
+<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<i class="w-7 h-7" data-lucide="zap"></i>
 </div>
 </section>
-<!-- Sub Menu Links -->
+<!-- Strategy list -->
 <h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
 <section class="space-y-3" data-purpose="strategy-list">
 <!-- Her strateji, seçimini localStorage'a yazıp detay sayfasını açar -->
-<a class="block bg-white dark:bg-slate-900 rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapat">
-<div class="w-12 h-12 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] flex items-center justify-center flex-shrink-0">
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapat">
+<div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center flex-shrink-0">
 <i class="w-6 h-6" data-lucide="lightbulb-off"></i>
 </div>
 <div class="min-w-0 flex-grow">
@@ -133,7 +122,7 @@
 <div class="sheet fixed bottom-0 inset-x-0 z-50" data-purpose="miniapp-menu" id="sheet-menu">
 <div class="bg-white rounded-t-3xl p-6">
 <div class="flex items-center gap-3 mb-2">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
 <i class="w-5 h-5" data-lucide="zap"></i>
 </div>
 <h3 class="text-lg font-bold">AI Enerji Tasarrufu</h3>
@@ -165,7 +154,7 @@
     lucide.createIcons();
     // Store the tapped strategy so the detail page shows the right content
     function pickStrategy(card) {
-      localStorage.setItem('nexusEnergyStrategy', JSON.stringify({
+      nexusSetItem('nexusEnergyStrategy', JSON.stringify({
         title: card.dataset.title,
         desc: card.dataset.desc,
         device: card.dataset.device
@@ -174,7 +163,7 @@
     // Detay sayfasında etkinleştirilen stratejileri rozetle göster
     (function () {
       var map = {};
-      try { map = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { map = {}; }
+      try { map = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { map = {}; }
       document.querySelectorAll('[data-title]').forEach(function (card) {
         if (map[card.dataset.title]) {
           var badge = card.querySelector('.strategy-state');
@@ -191,38 +180,6 @@
       document.getElementById('sheet-backdrop').classList.add('hidden');
       document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
     }
-
-    // Sanal Enerji Tahmini (Virtual Energy Estimation)
-    (function() {
-      var currentCards = [];
-      try { currentCards = JSON.parse(localStorage.getItem('nexusDashboardCards')); } catch(e){}
-      
-      if (currentCards && currentCards.length > 0) {
-        var totalWattage = 0;
-        var deviceCount = 0;
-        
-        // Sadece enerji harcayabilecek (wattage değeri olan) cihazları topla
-        currentCards.forEach(function(card) {
-          if (card.wattage && card.visible) {
-            totalWattage += card.wattage;
-            deviceCount++;
-          }
-        });
-
-        if (deviceCount > 0) {
-          // Günlük ortalama 4 saat çalışıyormuş gibi sanal hesaplama (Watt * 4 Saat)
-          var totalWh = totalWattage * 4; 
-          var totalKWh = totalWh / 1000;
-          
-          var todayEl = document.getElementById('energy-today-display');
-          var monthEl = document.getElementById('energy-month-display');
-          
-          if (todayEl) todayEl.textContent = totalKWh.toFixed(2).replace('.', ',');
-          if (monthEl) monthEl.textContent = (totalKWh * 30).toFixed(1).replace('.', ',');
-        }
-      }
-    })();
   </script>
 </body></html>
-
 

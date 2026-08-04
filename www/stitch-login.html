@@ -27,10 +27,10 @@
     .soft-shadow {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    
+
     .btn-primary {
-      background-color: #7C5CFF;
-      box-shadow: 0 4px 12px rgba(124, 92, 255, 0.3);
+      background-color: #4C7DFF;
+      box-shadow: 0 4px 12px rgba(76, 125, 255, 0.28);
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
     .btn-primary:active {
@@ -53,6 +53,7 @@
       padding-bottom: 8px; /* Safe area in mobile */
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
   </head>
 <body class="flex flex-col items-center px-6 text-slate-900">
@@ -69,12 +70,12 @@
 <div class="w-full space-y-5" data-purpose="login-inputs">
   <!-- Email Input -->
   <div class="relative">
-    <input class="w-full h-14 px-6 rounded-2xl border-none bg-white/80 text-slate-900 placeholder-slate-400 text-lg soft-shadow focus:ring-2 focus:ring-[#7C5CFF] transition-all" id="login-email" placeholder="E-posta" type="email"/>
+    <input class="w-full h-14 px-6 rounded-2xl border-none bg-white/80 text-slate-900 placeholder-slate-400 text-lg soft-shadow focus:ring-2 focus:ring-[#4C7DFF] transition-all" id="login-email" placeholder="E-posta" type="email"/>
   </div>
-  
+
   <!-- Password Input -->
   <div class="relative">
-    <input class="w-full h-14 px-6 pr-14 rounded-2xl border-none bg-white/80 text-slate-900 placeholder-slate-400 text-lg soft-shadow focus:ring-2 focus:ring-[#7C5CFF] transition-all" id="login-password" placeholder="Şifre" type="password"/>
+    <input class="w-full h-14 px-6 pr-14 rounded-2xl border-none bg-white/80 text-slate-900 placeholder-slate-400 text-lg soft-shadow focus:ring-2 focus:ring-[#4C7DFF] transition-all" id="login-password" placeholder="Şifre" type="password"/>
     <!-- Password Toggle Icon -->
     <button aria-label="Şifreyi göster/gizle" class="absolute inset-y-0 right-5 flex items-center text-slate-400 cursor-pointer hover:text-slate-600" id="pw-eye" onclick="togglePassword()" type="button">
       <i class="w-5 h-5" data-lucide="eye-off"></i>
@@ -83,7 +84,7 @@
 
   <!-- Error Message -->
   <p class="hidden text-sm text-red-500 font-medium px-2" id="login-error"></p>
-  
+
   <!-- Login Button -->
   <div class="pt-6">
     <button class="btn-primary w-full h-14 text-white font-bold rounded-2xl text-lg flex items-center justify-center" data-purpose="submit-button" onclick="doLogin()">
@@ -95,34 +96,13 @@
 
 <!-- BEGIN: LinksSection -->
 <div class="mt-8 flex flex-col items-center space-y-4" data-purpose="secondary-actions">
-  <a class="text-slate-500 font-medium text-sm hover:text-[#7C5CFF] transition-colors" href="stitch-onboarding.html">Hesabın yok mu? Yeni Hesap Oluştur</a>
-  <a class="text-slate-400 font-medium text-sm hover:text-slate-600 transition-colors" href="#">Şifremi Unuttum</a>
+  <a class="text-slate-500 font-medium text-sm hover:text-[#4C7DFF] transition-colors" href="stitch-register.html">Hesabın yok mu? Yeni Hesap Oluştur</a>
+  <a class="text-slate-400 font-medium text-sm hover:text-slate-600 transition-colors" href="stitch-forgot-password.html">Şifremi Unuttum</a>
 </div>
 <!-- END: LinksSection -->
 </main>
 <!-- END: MainContent -->
 
-<!-- BEGIN: BottomNavigation -->
-<nav class="bottom-nav flex justify-around items-center px-2" data-purpose="footer-navigation">
-  <a class="flex flex-col items-center gap-1 text-slate-400" href="stitch-home.html">
-    <i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
-    <span class="text-[10px] font-medium">Ev</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-slate-400" href="stitch-smart.html">
-    <i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
-    <span class="text-[10px] font-medium">Akıllı</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-slate-400 relative" href="stitch-discover.html">
-    
-    <i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
-    <span class="text-[10px] font-medium">Keşfet</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-slate-400" href="stitch-profile.html">
-    <i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
-    <span class="text-[10px] font-medium">Profil</span>
-  </a>
-</nav>
-<!-- END: BottomNavigation -->
 
 <script data-purpose="icon-initialization">
   lucide.createIcons();
@@ -142,6 +122,8 @@
     var email = (document.getElementById('login-email').value || '').trim();
     var pass = document.getElementById('login-password').value || '';
     var err = document.getElementById('login-error');
+    // Şifreyi girilen e-posta adresine göre doğrudan localStorage'dan oku
+    var storedPassword = localStorage.getItem(email + '_nexusUserPassword');
     if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
       err.textContent = 'Lütfen geçerli bir e-posta adresi girin.';
       err.classList.remove('hidden');
@@ -152,8 +134,23 @@
       err.classList.remove('hidden');
       return;
     }
+    if (storedPassword && pass !== storedPassword) {
+      err.textContent = 'Şifre yanlış.';
+      err.classList.remove('hidden');
+      return;
+    }
     err.classList.add('hidden');
-    try { localStorage.setItem('nexusUserEmail', email); } catch (e) {}
+
+    // Eğer bu e-posta ile ilk defa giriş yapılıyorsa şifresini kaydet (Kayıt ol mantığı)
+    if (!storedPassword) {
+      localStorage.setItem(email + '_nexusUserPassword', pass);
+    }
+
+    try {
+      // NEXUS Auth Session'ı başlat
+      localStorage.setItem('nexusCurrentUser', email);
+      nexusSetItem('nexusUserEmail', email);
+    } catch (e) {}
     window.location.href = 'stitch-home.html';
   }
 </script>

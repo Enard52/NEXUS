@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NEXUS - Evden Uzakta</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    .nexus-card-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .active-scale:active { transform: scale(0.96); }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body>
+  <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
+    <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
+      <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
+        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+      </a>
+      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Evden Uzakta</h1>
+            <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
+        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+      </a>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8">
+      <section class="bg-white rounded-[2rem] p-6 nexus-card-shadow relative overflow-hidden flex flex-col items-center justify-center text-center mt-4">
+        <div class="relative w-24 h-24 rounded-full bg-[#ECE9FD] flex items-center justify-center mb-4">
+            <iconify-icon icon="lucide:plane" class="text-5xl text-[#4C7DFF]"></iconify-icon>
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900 relative">Evden Uzakta Senaryosu</h2>
+        <p class="text-sm font-medium text-slate-500 mt-2 relative">Bu senaryo aktifleştiğinde ilgili cihazlar otomatik olarak ayarlanır.</p>
+      </section>
+
+      <section class="space-y-3 mt-4">
+        <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+             <div class="w-10 h-10 rounded-xl bg-[#4C7DFF]/10 flex items-center justify-center text-[#4C7DFF]">
+              <iconify-icon icon="lucide:power" class="text-xl"></iconify-icon>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-900">Senaryoyu Çalıştır</p>
+              <p class="text-[11px] font-medium text-slate-500">Hemen devreye girsin</p>
+            </div>
+          </div>
+          <button class="bg-[#4C7DFF] text-white px-4 py-2 rounded-xl text-xs font-bold active-scale" onclick="alert('Senaryo başarıyla çalıştırıldı.')">Çalıştır</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<!-- DYNAMIC JS -->
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('button');
+    if(btn) {
+        btn.onclick = () => {
+            const state = JSON.parse(localStorage.getItem('nexusSceneStates') || '{}');
+            state['away-home'] = !state['away-home']; // toggle
+            localStorage.setItem('nexusSceneStates', JSON.stringify(state));
+            alert(state['away-home'] ? 'Senaryo başarıyla çalıştırıldı.' : 'Senaryo durduruldu.');
+            location.reload();
+        };
+    }
+});
+
+</script>
+</body>
+</html>

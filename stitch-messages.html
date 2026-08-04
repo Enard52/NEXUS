@@ -34,6 +34,7 @@
       min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
@@ -41,11 +42,11 @@
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
-<button aria-label="Tümünü okundu işaretle" class="p-1 text-[#7C5CFF]" onclick="markAllRead()">
+<button aria-label="Tümünü okundu işaretle" class="p-1 text-[#4C7DFF]" onclick="markAllRead()">
 <i class="w-6 h-6" data-lucide="check-check"></i>
 </button>
 </header>
@@ -53,7 +54,7 @@
 <!-- BEGIN: Tabs -->
 <div class="px-5 pt-2 pb-4" data-purpose="message-tabs">
 <div class="bg-white/70 rounded-full p-1 flex" id="tabs">
-<button class="flex-1 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white" onclick="switchTab(this, 'tab-alerts')">Uyarılar</button>
+<button class="flex-1 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="switchTab(this, 'tab-alerts')">Uyarılar</button>
 <button class="flex-1 py-2 rounded-full text-sm font-semibold text-slate-500" onclick="switchTab(this, 'tab-family')">Aile</button>
 <button class="flex-1 py-2 rounded-full text-sm font-semibold text-slate-500" onclick="switchTab(this, 'tab-notices')">Duyurular</button>
 </div>
@@ -90,10 +91,10 @@
     var EVENTS_KEY = 'nexusEvents';
     var READ_KEY = 'nexusReadNotifs';
     function loadEvents() {
-      try { var e = JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]'); return Array.isArray(e) ? e : []; } catch (err) { return []; }
+      try { var e = JSON.parse(nexusGetItem(EVENTS_KEY) || '[]'); return Array.isArray(e) ? e : []; } catch (err) { return []; }
     }
     function loadRead() {
-      try { var r = JSON.parse(localStorage.getItem(READ_KEY) || '[]'); return Array.isArray(r) ? r : []; } catch (err) { return []; }
+      try { var r = JSON.parse(nexusGetItem(READ_KEY) || '[]'); return Array.isArray(r) ? r : []; } catch (err) { return []; }
     }
     function esc(s) {
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -147,7 +148,7 @@
         if (read.indexOf(ev.id) === -1) { read.push(ev.id); changed = true; }
       });
       if (!changed) return;
-      try { localStorage.setItem(READ_KEY, JSON.stringify(read)); } catch (err) {}
+      try { nexusSetItem(READ_KEY, JSON.stringify(read)); } catch (err) {}
       if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
     }
 
@@ -156,7 +157,7 @@
       document.querySelectorAll('#tabs button').forEach(function (b) {
         b.className = 'flex-1 py-2 rounded-full text-sm font-semibold text-slate-500';
       });
-      btn.className = 'flex-1 py-2 rounded-full text-sm font-bold bg-[#7C5CFF] text-white';
+      btn.className = 'flex-1 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white';
       ['tab-alerts', 'tab-family', 'tab-notices'].forEach(function (t) {
         document.getElementById(t).classList.toggle('hidden', t !== id);
       });
@@ -164,7 +165,7 @@
     // Mark all events as read (persistent)
     function markAllRead() {
       var ids = loadEvents().map(function (ev) { return ev.id; });
-      try { localStorage.setItem(READ_KEY, JSON.stringify(ids)); } catch (err) {}
+      try { nexusSetItem(READ_KEY, JSON.stringify(ids)); } catch (err) {}
       renderAlerts();
       if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
     }

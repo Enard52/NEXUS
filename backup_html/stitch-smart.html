@@ -49,22 +49,35 @@
     }
   </style>
   <script src="theme.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // Eğer nexusGetItem/nexusSetItem tanımlı değilse, localStorage kullan
+    if (typeof nexusGetItem !== 'function') {
+      window.nexusGetItem = function(key) {
+        return localStorage.getItem(key);
+      };
+    }
+    if (typeof nexusSetItem !== 'function') {
+      window.nexusSetItem = function(key, value) {
+        localStorage.setItem(key, value);
+      };
+    }
+  </script>
   </head>
 <body class="bg-white min-h-screen flex flex-col text-slate-900">
 <!-- BEGIN: App Header -->
 <header class="pt-12 pb-4 flex items-center justify-between px-5" data-purpose="main-header">
 <div class="flex items-center">
 <!-- Home Selector -->
-<button onclick="toggleHomeSelector()" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">
-  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#7C5CFF] to-[#6344E6] flex items-center justify-center text-white shadow-inner flex-shrink-0">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-  </div>
-  <div class="flex flex-col justify-center">
-    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-0.5">Mevcut Ev</span>
-    <span class="text-sm font-bold text-slate-800 leading-none" data-bind="householdName">Benim Evim</span>
-  </div>
-  <svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
-</button>
+  <button onclick="toggleHomeSelector()" class="flex items-center gap-2 pl-2 pr-4 py-1.5 active:scale-95 transition-transform" data-purpose="home-selector">
+    <div class="flex items-center justify-center text-white flex-shrink-0">
+      <svg class="w-5 h-5 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+    </div>
+    <div class="flex flex-col justify-center">
+      <span class="text-xs font-bold text-slate-800 leading-none" data-bind="householdName">Benim Evim</span>
+    </div>
+    <svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+  </button>
 </div>
 <div class="flex items-center gap-4">
 <!-- Plus Action Button -->
@@ -72,11 +85,11 @@
             <i class="w-7 h-7" data-lucide="file-text"></i>
          </button>
 <!-- Plus Icon (opens quick add menu) -->
-<button aria-label="Hızlı ekle" class="text-[#7C5CFF]" onclick="toggleQuickAdd()">
-<svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-</svg>
-</button>
+  <button aria-label="Hızlı ekle" class="text-[#4C7DFF]" onclick="toggleQuickAdd()">
+    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+    </svg>
+  </button>
 </div>
 </header>
 <!-- END: App Header -->
@@ -132,12 +145,6 @@
         <i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="scan-line"></i>
       </div>
       <span class="text-xl font-semibold text-slate-800">Tara</span>
-    </a>
-    <a class="flex items-center space-x-4 p-3 rounded-2xl active:bg-slate-50 transition-colors" href="stitch-integrations.html">
-      <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
-        <i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="keyboard"></i>
-      </div>
-      <span class="text-xl font-semibold text-slate-800">Manuel Ekle</span>
     </a>
   </div>
 </div>
@@ -200,7 +207,7 @@
 <section data-purpose="recommendations">
 <h3 class="text-xl font-bold text-gray-900 mb-4">Önerilen</h3>
 <div class="space-y-4">
-  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform">
+  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-smart-app-detail.html?id=whole-home-light-control'">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
       <img alt="Oturma Odası" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=256&q=80"/>
       <div class="absolute inset-0 bg-black/10"></div>
@@ -211,7 +218,7 @@
     </div>
   </div>
 
-  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform">
+  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-smart-app-detail.html?id=home-security-center'">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
       <img alt="Güvenlik Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=256&q=80"/>
       <div class="absolute inset-0 bg-black/10"></div>
@@ -222,7 +229,7 @@
     </div>
   </div>
 
-  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform">
+  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-smart-app-detail.html?id=cinema-media-mode'">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
       <img alt="Sinema Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=256&q=80"/>
       <div class="absolute inset-0 bg-black/10"></div>
@@ -238,7 +245,12 @@
 </div>
       <!-- BEGIN: Tıkla ve çalıştır Tab -->
       <div id="tab-clickrun" class="hidden">
-        <h3 class="text-xl font-bold text-gray-900 mb-4">Senaryolarım</h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Senaryolarım</h3>
+          <button id="siri-badge" onclick="window.location.href='stitch-siri-shortcuts.html'" class="bg-[#7C5CFF] text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm hover:bg-[#6344E6] active:scale-95 transition-all">
+            Siri'ye Ekle
+          </button>
+        </div>
         <div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">
           <!-- Dinamik Tıkla ve Çalıştır kartları buraya eklenecek -->
         </div>
@@ -284,26 +296,26 @@
 <!-- END: Main Content -->
 <!-- BEGIN: Bottom Navigation -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
-<!-- Ev -->
-<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-slate-400">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
-<span class="text-xs font-medium">Ev</span>
-</a>
-<!-- Akıllı (Active) -->
-<a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-[#7C5CFF]">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
-<span class="text-xs font-bold">Akıllı</span>
-</a>
-<!-- Keşfet -->
-<a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
-<span class="text-xs font-medium">Keşfet</span>
-</a>
-<!-- Profil -->
-<a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-slate-400">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
-<span class="text-xs font-medium">Profil</span>
-</a>
+  <!-- Ev -->
+  <a href="stitch-home.html" class="flex flex-col items-center gap-1 text-[#4C7DFF]">
+    <i class="w-6 h-6 stroke-[2]" data-lucide="home"></i>
+    <span class="text-[10px] font-bold">Ev</span>
+  </a>
+  <!-- Akıllı -->
+  <a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-slate-400">
+    <i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
+    <span class="text-[10px] font-medium">Akıllı</span>
+  </a>
+  <!-- Keşfet -->
+  <a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400">
+    <i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
+    <span class="text-[10px] font-medium">Keşfet</span>
+  </a>
+  <!-- Profil -->
+  <a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-slate-400">
+    <i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
+    <span class="text-[10px] font-medium">Profil</span>
+  </a>
 </nav>
 <!-- END: Bottom Navigation -->
 <!-- Home Selector Modal (stitch-home ile aynı desen) -->
@@ -359,29 +371,37 @@ function toggleHomeSelector() {
 <script>lucide.createIcons();</script>
 
 <script>
-  function switchTab(tabId, btnElement) {
-    // Hide all tabs
-    document.getElementById('tab-smart').classList.add('hidden');
-    document.getElementById('tab-smart').classList.remove('block');
-    document.getElementById('tab-clickrun').classList.add('hidden');
-    document.getElementById('tab-clickrun').classList.remove('block');
-    document.getElementById('tab-automation').classList.add('hidden');
-    document.getElementById('tab-automation').classList.remove('block');
-    
-    // Show active tab
-    document.getElementById(tabId).classList.remove('hidden');
-    document.getElementById(tabId).classList.add('block');
-    
-    // Update button styles
-    const buttons = [document.getElementById('btn-tab-smart'), document.getElementById('btn-tab-clickrun'), document.getElementById('btn-tab-automation')];
-    buttons.forEach(btn => {
-      btn.classList.remove('font-bold', 'text-gray-900', 'tab-active');
-      btn.classList.add('font-semibold', 'text-gray-500');
-    });
-    
-    btnElement.classList.remove('font-semibold', 'text-gray-500');
-    btnElement.classList.add('font-bold', 'text-gray-900', 'tab-active');
-  }
+    function switchTab(tabId, btnElement) {
+      // Hide all tabs
+      document.getElementById('tab-smart').classList.add('hidden');
+      document.getElementById('tab-smart').classList.remove('block');
+      document.getElementById('tab-clickrun').classList.add('hidden');
+      document.getElementById('tab-clickrun').classList.remove('block');
+      document.getElementById('tab-automation').classList.add('hidden');
+      document.getElementById('tab-automation').classList.remove('block');
+      
+      // Show active tab
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById(tabId).classList.add('block');
+      
+      // Update button styles
+      const buttons = [document.getElementById('btn-tab-smart'), document.getElementById('btn-tab-clickrun'), document.getElementById('btn-tab-automation')];
+      buttons.forEach(btn => {
+        btn.classList.remove('font-bold', 'text-gray-900', 'tab-active');
+        btn.classList.add('font-semibold', 'text-gray-500');
+      });
+      
+      btnElement.classList.remove('font-semibold', 'text-gray-500');
+      btnElement.classList.add('font-bold', 'text-gray-900', 'tab-active');
+      
+      // Siri butonunu sadece Tıkla ve Çalıştır sekmesinde göster
+      const siriBadge = document.getElementById('siri-badge');
+      if (tabId === 'tab-clickrun') {
+          siriBadge.style.display = 'block';
+      } else {
+          siriBadge.style.display = 'none';
+      }
+    }
 </script>
 
 <script>
@@ -424,11 +444,15 @@ function toggleHomeSelector() {
         const autoContainer = document.getElementById('custom-automations-container');
         const activeBadge = document.getElementById('automation-active-count');
         
+        // Click and Run
+        const clickContainer = document.getElementById('custom-clickrun-container');
+        
+        // Verileri yükle ve normalize et
+        const autos = readAndNormalizeItems('nexusCustomAutomations', 'automation');
+        const clickruns = readAndNormalizeItems('nexusCustomClickRun', 'clickrun');
+        
         if (autoContainer) {
           autoContainer.innerHTML = ''; // Clear previous items to prevent duplicates
-          
-          let autos = [];
-          try { autos = JSON.parse(localStorage.getItem('nexusCustomAutomations') || '[]'); } catch (e) {}
           
           // Update active count badge
           if (activeBadge) {
@@ -442,7 +466,10 @@ function toggleHomeSelector() {
 
           autos.forEach((auto) => {
             const div = document.createElement('div');
-            div.className = "bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 flex items-center justify-between mt-4";
+            div.className = "bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 flex items-center justify-between mt-4 cursor-pointer";
+            div.onclick = () => {
+              window.location.href = `stitch-scenario-settings.html?id=${auto.id}&title=${encodeURIComponent(auto.title)}&desc=${encodeURIComponent(auto.desc)}&icon=${auto.icon}`;
+            };
             div.innerHTML = `
                 <div class="flex items-center gap-4">
                   <div class="w-12 h-12 rounded-2xl ${auto.bgClass} ${auto.colorClass} flex items-center justify-center shrink-0">
@@ -463,7 +490,7 @@ function toggleHomeSelector() {
           
           const emptyState = document.getElementById('empty-automation');
           if (emptyState) {
-             if (autos.length > 0) {
+             if (autos && autos.length > 0) {
                  emptyState.classList.add('hidden');
              } else {
                  emptyState.classList.remove('hidden');
@@ -471,14 +498,14 @@ function toggleHomeSelector() {
           }
         }
 
-        // Click and Run
-        const clickContainer = document.getElementById('custom-clickrun-container');
       if (clickContainer) {
-        let clickruns = [];
-        try { clickruns = JSON.parse(localStorage.getItem('nexusCustomClickRun') || '[]'); } catch (e) {}
+        clickContainer.innerHTML = ''; // Clear previous items
         clickruns.forEach((run) => {
           const btn = document.createElement('button');
-          btn.className = "bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform";
+          btn.className = "bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform cursor-pointer";
+          btn.onclick = () => {
+            window.location.href = `stitch-scenario-settings.html?id=${run.id}&title=${encodeURIComponent(run.title)}&desc=${encodeURIComponent(run.desc)}&icon=${run.icon}`;
+          };
           btn.innerHTML = `
             <div class="w-10 h-10 rounded-full ${autoBgToLight(run.bgClass)} ${run.colorClass} flex items-center justify-center mb-3">
               <i class="w-5 h-5" data-lucide="${run.icon}"></i>
@@ -490,13 +517,25 @@ function toggleHomeSelector() {
         });
       }
       
-      
       // Show/hide empty states
       const emptyAuto = document.getElementById('empty-automation');
-      if (emptyAuto) emptyAuto.style.display = (autos.length > 0) ? 'none' : 'block';
+      if (emptyAuto) {
+        emptyAuto.style.display = (autos && autos.length > 0) ? 'none' : 'block';
+      }
       
       const emptyClick = document.getElementById('empty-clickrun');
-      if (emptyClick) emptyClick.style.display = (clickruns.length > 0) ? 'none' : 'block';
+      if (emptyClick) {
+        if (clickruns && clickruns.length > 0) {
+          emptyClick.style.display = 'none';
+        } else {
+          emptyClick.style.display = 'block';
+        }
+      }
+      
+      // Lucide ikonlarını güncelle
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
 
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();

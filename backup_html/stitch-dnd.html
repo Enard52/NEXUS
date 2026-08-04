@@ -18,7 +18,7 @@
       theme: {
         extend: {
           colors: {
-            'nexus-purple': '#7C5CFF',
+            'nexus-purple': '#4C7DFF',
             'nexus-cyan': '#22D3EE',
             'nexus-bg': '#F8F7FC',
             'nexus-border': '#F1F1F4',
@@ -44,22 +44,24 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  <script src="ai-fab.js"></script>
-<script src="theme.js"></script>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
 </head>
 <body class="flex flex-col min-h-screen text-slate-900">
 <!-- BEGIN: Header Section -->
 <header class="w-full px-6 pt-14 pb-6 flex flex-col items-center relative" data-purpose="main-header">
 <!-- Back Button -->
-<a aria-label="Geri" class="absolute top-14 left-4 w-10 h-10 flex items-center justify-center text-slate-700" href="stitch-home.html">
-<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<a aria-label="Geri" class="absolute top-14 left-4 p-1 text-slate-700" href="#" onclick="event.preventDefault(); window.history.back();">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </a>
 <!-- Brand Logo: NEXUS N monogram -->
 <div class="mt-2" data-purpose="brand-logo">
-<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-nexus-purple to-nexus-cyan flex items-center justify-center text-white font-extrabold text-3xl shadow-lg">N</div>
+<div class="w-16 h-16 drop-shadow-lg"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full"><defs><linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 </div>
 <!-- Page Title (non-AI feature: plain NEXUS branding) -->
 <h1 class="text-2xl font-semibold tracking-tight text-center mt-4">Rahatsız Etme</h1>
@@ -112,7 +114,7 @@
 <span class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </span>
-<span class="text-[17px] font-medium">Geçici Rahatsız Etme'yi Kapat</span>
+<span class="text-[17px] font-medium">Rahatsız Etme'yi Kapat</span>
 </div>
 <svg class="dnd-check w-5 h-5 text-nexus-purple flex-shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </li>
@@ -140,13 +142,25 @@
         c.classList.add('hidden');
       });
       item.querySelector('.dnd-check').classList.remove('hidden');
-      // Ana sayfadaki Rahatsız Etme kartı bu durumla senkronize olur
+      
       var label = item.querySelector('span.text-\\[17px\\]').textContent;
-      localStorage.setItem('nexusDndState', label.indexOf('Kapat') !== -1 ? 'Kapalı' : label.replace(' Rahatsız Etme', ''));
+      var stateLabel = label.indexOf('Kapat') !== -1 ? 'Kapalı' : label.replace(' Rahatsız Etme', '');
+      nexusSetItem('nexusDndState', stateLabel);
+
+      if (stateLabel === 'Kapalı') {
+        nexusRemoveItem('nexusDndEndTime');
+      } else {
+        var hoursMatch = stateLabel.match(/(\d+)/);
+        if (hoursMatch) {
+          var hours = parseInt(hoursMatch[1]);
+          var endTime = Date.now() + (hours * 60 * 60 * 1000);
+          nexusSetItem('nexusDndEndTime', endTime);
+        }
+      }
     }
     // Restore the previously saved selection
     (function () {
-      var state = localStorage.getItem('nexusDndState');
+      var state = nexusGetItem('nexusDndState');
       if (!state || state === 'Kapalı') return;
       document.querySelectorAll('#dnd-options li').forEach(function (li) {
         var label = li.querySelector('span.text-\\[17px\\]').textContent;
@@ -156,7 +170,7 @@
     })();
     // Show the saved schedule from the Program Ekle page (synced via localStorage)
     (function () {
-      var raw = localStorage.getItem('nexusDndSchedule');
+      var raw = nexusGetItem('nexusDndSchedule');
       if (!raw) return;
       try {
         var s = JSON.parse(raw);
@@ -167,5 +181,4 @@
     })();
   </script>
 </body></html>
-
 

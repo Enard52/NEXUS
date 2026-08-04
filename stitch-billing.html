@@ -13,7 +13,8 @@
 <!-- Google Fonts: Inter -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <!-- NEXUS Global Theme Manager -->
-<script src="theme.js"></script>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
 <script src="data.js"></script>
 <!-- AI Asistan Yüzen Buton -->
 <script src="ai-fab.js"></script>
@@ -23,7 +24,7 @@
     }
     /* Gradient for the main subscription card */
     .bg-nexus-gradient {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
     }
   </style>
 <style>
@@ -35,9 +36,9 @@
 <body class="bg-[#F3F2F9] dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300">
 <!-- BEGIN: NavigationHeader -->
 <header class="sticky top-0 z-50 bg-[#F3F2F9]/80 dark:bg-slate-950/80 backdrop-blur-md px-4 py-4 pt-12 flex items-center transition-colors duration-300">
-<button onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="flex items-center text-slate-800 dark:text-white font-semibold text-lg active:opacity-70 transition-opacity">
+<button onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1 flex items-center text-slate-800 dark:text-white active:opacity-70 transition-opacity">
 <!-- Chevron Left Icon -->
-<svg class="h-8 w-8 -ml-1 mr-1" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </button>
@@ -79,7 +80,7 @@
 <!-- Abonelik Yönetimi -->
 <button class="w-full flex items-center justify-between bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-plus.html'">
 <div class="flex items-center space-x-4">
-<div class="text-[#7C5CFF] bg-[#7C5CFF]/10 p-3.5 rounded-2xl">
+<div class="text-[#4C7DFF] bg-[#4C7DFF]/10 p-3.5 rounded-2xl">
 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
 <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -109,8 +110,8 @@
 
 <!-- BEGIN: InfoFooter -->
 <footer class="pt-6" data-purpose="payment-notice">
-<div class="bg-white dark:bg-slate-900 rounded-3xl py-4 px-4 text-center shadow-sm border-2 border-[#7C5CFF]/20">
-<p class="text-[#7C5CFF] font-medium text-[15px]">
+<div class="bg-white dark:bg-slate-900 rounded-3xl py-4 px-4 text-center shadow-sm border-2 border-[#4C7DFF]/20">
+<p class="text-[#4C7DFF] font-medium text-[15px]">
     Sonraki ödeme <span class="font-bold" id="sub-price">₺0,00</span> tutarında <span class="font-bold" id="sub-date-footer">-</span> tarihinde alınacak.
 </p>
 </div>
@@ -132,7 +133,7 @@
 <script>
   // Dinamik Abonelik Yönetimi (gerçek veri: nexusPlusPlan + nexusPlusSince)
   document.addEventListener("DOMContentLoaded", () => {
-    const plan = localStorage.getItem("nexusPlusPlan"); // 'Yıllık' veya 'Aylık'
+    const plan = nexusGetItem("nexusPlusPlan"); // 'Yıllık' veya 'Aylık'
     const title = document.getElementById("sub-title");
     const renewal = document.getElementById("sub-renewal");
     const price = document.getElementById("sub-price");
@@ -140,15 +141,15 @@
     const since = document.getElementById("sub-since");
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    // Gerçek satın alma tarihi (stitch-plus.html yazar); kayıt yoksa satır gizli kalır
-    const sinceIso = localStorage.getItem("nexusPlusSince");
+    // Gerçek satın Çalışma tarihi (stitch-plus.html yazar); kayıt yoksa satır gizli kalır
+    const sinceIso = nexusGetItem("nexusPlusSince");
     const sinceDate = sinceIso ? new Date(sinceIso) : null;
     if (plan && sinceDate && !isNaN(sinceDate.getTime())) {
       since.textContent = sinceDate.toLocaleDateString('tr-TR', options) + " tarihinden beri aktif";
       since.classList.remove("hidden");
     }
 
-    // Yenileme tarihi satın alma tarihinden hesaplanır (yoksa bugünden)
+    // Yenileme tarihi satın Çalışma tarihinden hesaplanır (yoksa bugünden)
     const base = (sinceDate && !isNaN(sinceDate.getTime())) ? new Date(sinceDate) : new Date();
     const futureDate = new Date(base);
 
@@ -189,19 +190,18 @@
     document.getElementById("cancel-sheet").classList.add("hidden");
   }
   function cancelSubscription() {
-    const plan = localStorage.getItem("nexusPlusPlan");
-    localStorage.removeItem("nexusPlusPlan");
-    localStorage.removeItem("nexusPlusSince");
+    const plan = nexusGetItem("nexusPlusPlan");
+    nexusRemoveItem("nexusPlusPlan");
+    nexusRemoveItem("nexusPlusSince");
     // Olay akışına kaydet (bildirim + günlük)
     try {
-      var evs = JSON.parse(localStorage.getItem("nexusEvents") || "[]");
+      var evs = JSON.parse(nexusGetItem("nexusEvents") || "[]");
       if (!Array.isArray(evs)) evs = [];
       evs.push({ id: "e" + Date.now(), type: "plan", title: "NEXUS+ aboneliği iptal edildi", detail: (plan || "") + " plan sonlandırıldı.", ts: Date.now() });
-      localStorage.setItem("nexusEvents", JSON.stringify(evs));
+      nexusSetItem("nexusEvents", JSON.stringify(evs));
     } catch (e) {}
     location.reload();
   }
 </script>
 </body>
 </html>
-

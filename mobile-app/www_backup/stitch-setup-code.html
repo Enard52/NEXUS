@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0b1a" media="(prefers-color-scheme: dark)">
+<title>NEXUS - Cihaz Kurulumu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class'
+  }
+</script>
+<style>
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html, body{
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  }
+
+  body {
+    transition: background 0.3s ease;
+  }
+
+  /* Light Theme Background */
+  html:not(.dark) body {
+    background: #F3F2F9;
+  }
+  
+  /* Dark Theme Background - preserving the 3D aesthetic */
+  html.dark body {
+    background:
+      radial-gradient(120% 60% at 50% 0%, #4a3d85 0%, transparent 55%),
+      linear-gradient(165deg, #3a2f6e 0%, #38397f 38%, #3d55ab 70%, #4f6fd6 100%);
+  }
+
+  .phone {
+    position:relative;
+    width:100%;
+    min-height: 100%;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    padding: 44px 28px 40px;
+  }
+
+  /* subtle ambient glow blobs for depth - dark mode only */
+  html.dark .phone::before {
+    content:"";
+    position:absolute;
+    top:-80px; left:-60px;
+    width:260px; height:260px;
+    background: radial-gradient(circle, rgba(139,63,240,0.35), transparent 70%);
+    filter: blur(10px);
+    pointer-events:none;
+  }
+  html.dark .phone::after {
+    content:"";
+    position:absolute;
+    bottom:-100px; right:-80px;
+    width:300px; height:300px;
+    background: radial-gradient(circle, rgba(79,111,214,0.35), transparent 70%);
+    filter: blur(10px);
+    pointer-events:none;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    height:44px;
+    margin-bottom: 24px;
+    z-index: 10;
+  }
+
+  .back-btn{
+    position:absolute;
+    left:-10px;
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    padding: 10px;
+  }
+  .back-btn svg { width:24px; height:24px; }
+  
+  html:not(.dark) .back-btn { color: #334155; }
+  html.dark .back-btn { color: #fff; }
+
+  .title{
+    font-size:18px;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  html:not(.dark) .title { color: #0f172a; }
+  html.dark .title { color: #fff; }
+
+  /* ---------- Icon ---------- */
+  .icon-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top: 12px;
+    z-index:1;
+  }
+
+  .icon-shadow{
+    width:100px;
+    height:18px;
+    margin-top:16px;
+    border-radius:50%;
+  }
+  html:not(.dark) .icon-shadow {
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 70%);
+  }
+  html.dark .icon-shadow {
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 70%);
+  }
+
+  /* ---------- Instruction text ---------- */
+  .instruction{
+    margin-top:30px;
+    text-align:center;
+    font-size:15px;
+    line-height:1.55;
+    padding:0 6px;
+    z-index: 10;
+  }
+  html:not(.dark) .instruction { color: #475569; }
+  html.dark .instruction { color: rgba(255,255,255,0.72); }
+
+  /* ---------- Code inputs ---------- */
+  .code-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 34px;
+    z-index: 10;
+  }
+
+  .code-row{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    pointer-events: none;
+  }
+
+  .digit{
+    width:34px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:600;
+    transition: all 0.2s ease;
+  }
+  
+  html:not(.dark) .digit {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  html:not(.dark) .digit.active {
+    border-color: #4C7DFF;
+    box-shadow: 0 0 0 3px rgba(76, 125, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  html.dark .digit {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.15);
+  }
+  html.dark .digit.active {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 12px rgba(255,255,255,0.2), inset 0 1px 2px rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  .code-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 20;
+    font-size: 24px;
+    color: transparent;
+    background: transparent;
+    border: none;
+    outline: none;
+    caret-color: transparent;
+  }
+
+  /* ---------- Button Area ---------- */
+  .button-area {
+    margin-top: 40px; /* Moved directly below the code input */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+  }
+
+  /* ---------- Verify button ---------- */
+  .verify-btn{
+    width:100%;
+    padding:16px 0;
+    border:none;
+    border-radius:27px;
+    background: linear-gradient(90deg, #7b3fe0 0%, #9b4de8 45%, #c151e0 100%);
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    box-shadow:
+      0 14px 26px rgba(139, 63, 232, 0.45),
+      inset 0 1px 1px rgba(255,255,255,0.4);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .verify-btn:active{ transform: translateY(1px); }
+  
+  html:not(.dark) .verify-btn {
+    background: #4C7DFF; /* Use solid blue for light mode */
+    box-shadow: 0 8px 20px rgba(76, 125, 255, 0.3);
+  }
+
+  /* ---------- QR link ---------- */
+  .qr-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:14px;
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .qr-link span{
+    text-decoration: underline;
+    text-underline-offset:3px;
+  }
+  .qr-link svg{ width:17px; height:17px; }
+  
+  html:not(.dark) .qr-link { color: #64748b; }
+  html.dark .qr-link { color: rgba(255,255,255,0.85); }
+
+</style>
+<script src="auth.js"></script>
+<script src="theme.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+
+  <div class="phone">
+
+    <div class="topbar">
+      <button class="back-btn" aria-label="Geri" onclick="event.preventDefault(); window.history.back();">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <div class="title">Cihaz Kurulumu</div>
+    </div>
+
+    <!-- NEXUS Logo -->
+    <div class="icon-wrap">
+      <div class="w-32 h-32 drop-shadow-xl relative">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
+          <defs>
+            <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+            </linearGradient>
+            <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+          <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+          <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="icon-shadow"></div>
+    </div>
+
+    <p class="instruction">
+      Lütfen cihazınızın üzerindeki 8 haneli<br>
+      kurulum kodunu girin
+    </p>
+    
+    <div class="mt-2 text-center h-4 z-10 relative">
+      <span id="error-message" class="text-rose-500 dark:text-rose-400 text-sm font-semibold opacity-0 transition-opacity">Kod 8 haneli olmalıdır.</span>
+    </div>
+
+    <div class="code-container">
+      <div class="code-row" id="digit-boxes">
+        <div class="digit active"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+        <div class="digit"></div>
+      </div>
+      <input type="text" class="code-input" id="setup-code-input" inputmode="numeric" maxlength="8" autocomplete="one-time-code" spellcheck="false" autocorrect="off">
+    </div>
+
+    <!-- Buttons moved up here -->
+    <div class="button-area">
+      <button class="verify-btn" id="verify-btn" onclick="confirmSetupCode()">Cihazı Doğrula</button>
+
+      <a class="qr-link" href="stitch-scan.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+        <span>Veya QR Kodunu Tara</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    function appendPairedDeviceFromSetupCode(rawValue) {
+      var digits = String(rawValue || '').replace(/\D/g, '');
+      if (digits.length !== 8) return false;
+      var paired = [];
+      try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (e) {}
+      if (!Array.isArray(paired)) paired = [];
+      var name = 'Cihaz ·' + digits.slice(-4);
+      if (!paired.some(function (device) { return device && device.name === name; })) {
+        paired.push({ name: name, icon: 'cpu' });
+        nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
+      }
+      return true;
+    }
+
+    function confirmSetupCode() {
+      var input = document.getElementById('setup-code-input');
+      var error = document.getElementById('error-message');
+      var digits = (input.value || '').replace(/\D/g, '');
+
+      if (digits.length !== 8) {
+        error.style.opacity = '1';
+        setTimeout(() => error.style.opacity = '0', 2500);
+        return;
+      }
+
+      var btn = document.getElementById('verify-btn');
+      var originalText = btn.textContent;
+      btn.innerHTML = '<svg class="animate-spin w-5 h-5 mx-auto text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>';
+      
+      setTimeout(() => {
+        appendPairedDeviceFromSetupCode(digits);
+        input.value = '';
+        updateDigitBoxes('');
+        window.location.href = 'stitch-home.html';
+      }, 600);
+    }
+
+    function updateDigitBoxes(value) {
+      var boxes = document.querySelectorAll('.digit');
+      for (var i = 0; i < boxes.length; i++) {
+        boxes[i].textContent = value[i] || '';
+        
+        // Active state for the current box to type in
+        if (i === value.length || (value.length === 8 && i === 7)) {
+          boxes[i].classList.add('active');
+        } else {
+          boxes[i].classList.remove('active');
+        }
+      }
+    }
+
+    document.getElementById('setup-code-input').addEventListener('input', function (event) {
+      var digits = event.target.value.replace(/\D/g, '').slice(0, 8);
+      event.target.value = digits;
+      updateDigitBoxes(digits);
+      
+      if (digits.length === 8) {
+        document.getElementById('error-message').style.opacity = '0';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var input = document.getElementById('setup-code-input');
+      if (!input) return;
+      
+      updateDigitBoxes('');
+      
+      // Auto focus slightly after load for UX
+      setTimeout(function () { input.focus(); }, 400);
+      
+      // Submit on enter
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') confirmSetupCode();
+      });
+      
+      // Re-focus when clicking anywhere in the container
+      document.querySelector('.code-container').addEventListener('click', function() {
+        input.focus();
+      });
+    });
+  </script>
+</body>
+</html>

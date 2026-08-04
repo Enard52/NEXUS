@@ -1,507 +1,405 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
-  
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#ffffff">
-<title>NEXUS ” Cihaz Kataloğu</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
+  <title>NEXUS - Cihaz Ekleme Merkezi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="data.js"></script>
+  <script src="ai-fab.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            nexusPurple: "#4C7DFF",
+            nexusCyan: "#22D3EE"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"]
+          },
+          backgroundImage: {
+            "nexus-gradient": "linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%)"
+          }
+        }
+      }
+    };
+  </script>
   <style>
+    @keyframes radar-pulse {
+      0% { transform: scale(0.6); opacity: 0; }
+      50% { opacity: 0.5; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .radar-ring {
+      animation: radar-pulse 3s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite;
+    }
+    .nexus-shadow {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .nexus-glow {
+      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.28);
+    }
     body {
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      background-color: #F8F9FA;
-      margin: 0;
-      padding: 0;
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      font-family: "Inter", sans-serif;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+      color: #111827;
+      -webkit-tap-highlight-color: transparent;
     }
-
-    .text-brand { color: #7C5CFF; }
-    .bg-brand { background-color: #7C5CFF; }
-    
-    .cat-active {
-      background-color: white;
-      color: #7C5CFF;
-      font-weight: 700;
-      border-left: 4px solid #7C5CFF;
+    html.dark body {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 55%, #020617 100%);
+      color: #f8fafc;
     }
-    .cat-inactive {
-      color: #64748B;
-      font-weight: 500;
-      border-left: 4px solid transparent;
+    html.dark .glass-card {
+      background: rgba(15, 23, 42, 0.82);
+      border-color: rgba(148, 163, 184, 0.18);
     }
-
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    html.dark .plain-card {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(148, 163, 184, 0.16);
+    }
   </style>
-<script src="theme.js"></script>
-<script src="ai-fab.js"></script>
 </head>
-<body class="text-slate-900">
-
-  <!-- TOP HEADER & SEARCH -->
-  <header class="bg-white px-4 pt-12 pb-3 shadow-sm z-20 flex-shrink-0">
-    <div class="flex items-center justify-between mb-4">
-      <a aria-label="Geri" class="p-1 -ml-1 text-slate-800" href="stitch-home.html">
-        <i class="w-6 h-6" data-lucide="chevron-left"></i>
+<body>
+  <div class="w-full min-h-screen flex flex-col overflow-x-hidden">
+    <header class="shrink-0 pt-14 pb-4 px-5 flex items-center justify-between">
+      <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
+        <iconify-icon icon="lucide:chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></iconify-icon>
       </a>
-      <h1 class="text-[17px] font-bold">Cihaz Ekle</h1>
-      <a href="stitch-scan.html" class="p-1 text-slate-600">
-        <i class="w-5 h-5" data-lucide="scan"></i>
-      </a>
-    </div>
-    
-    <div class="relative bg-slate-100 rounded-2xl flex items-center px-4 h-11">
-      <i class="w-5 h-5 text-slate-400 mr-2" data-lucide="search"></i>
-      <input type="text" id="search-input" class="bg-transparent border-none focus:ring-0 text-sm font-medium w-full text-slate-800 placeholder-slate-400" placeholder="Cihaz veya model ara..." oninput="filterProducts(this.value)" />
-    </div>
-  </header>
+      <h1 class="text-lg font-bold tracking-tight">Cihaz Ekle</h1>
+      <button type="button" onclick="openHelp()" class="p-1 -mr-1 flex items-center justify-center transition-transform active:scale-90">
+        <iconify-icon icon="lucide:info" class="text-xl text-nexusPurple"></iconify-icon>
+      </button>
+    </header>
 
-  <!-- BLUETOOTH WARNING BANNER -->
-  <div id="bt-warning" class="bg-[#FFF1F2] border-b border-[#FECDD3] px-4 py-3 flex items-center justify-between z-10 flex-shrink-0 cursor-pointer" onclick="enableBluetooth()">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-full bg-[#FFE4E6] flex items-center justify-center text-[#E11D48] flex-shrink-0">
-        <i class="w-4 h-4" data-lucide="bluetooth-off"></i>
-      </div>
-      <div class="flex flex-col">
-        <span class="text-[13px] font-bold text-slate-800">Bluetooth Kapalı</span>
-        <span class="text-[11px] font-medium text-slate-500">Cihaz eşleştirmek için açın.</span>
-      </div>
-    </div>
-    <button class="bg-[#E11D48] text-white text-[11px] font-bold px-3 py-1.5 rounded-full">Aç</button>
-  </div>
+    <main class="flex-1 px-5 pb-[34px] space-y-6">
+      <section class="relative flex flex-col items-center py-4">
+        <div class="relative w-64 h-64 flex items-center justify-center">
+          <div class="absolute w-full h-full rounded-full border border-nexusPurple/30 radar-ring"></div>
+          <div class="absolute w-full h-full rounded-full border border-nexusPurple/30 radar-ring" style="animation-delay: 1s;"></div>
+          <div class="absolute w-full h-full rounded-full border border-nexusPurple/30 radar-ring" style="animation-delay: 2s;"></div>
 
-  <!-- MAIN TWO-COLUMN LAYOUT -->
-  <main class="flex-grow flex overflow-hidden">
-    
-    <!-- LEFT COLUMN: Categories -->
-    <aside class="w-[35%] max-w-[140px] bg-slate-50 overflow-y-auto hide-scrollbar flex-shrink-0 pb-20 border-r border-slate-100" id="category-list">
-      <!-- Categories injected via JS -->
-    </aside>
+          <div class="relative z-10 w-24 h-24 bg-white rounded-full shadow-xl flex items-center justify-center border border-white dark:bg-slate-900 dark:border-slate-700">
+            <div class="w-16 h-16 drop-shadow-md">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
+                <defs>
+                  <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#6f9bff"/>
+                    <stop offset="0.55" stop-color="#5b8dff"/>
+                    <stop offset="1" stop-color="#8b7bff"/>
+                  </linearGradient>
+                  <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ffffff" stop-opacity="0.30"/>
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+                <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+                <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+                <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
 
-    <!-- RIGHT COLUMN: Product Catalog -->
-    <section class="w-[65%] flex-grow bg-white overflow-y-auto hide-scrollbar px-4 pt-4 pb-24" id="product-list">
-      <!-- Products injected via JS -->
-    </section>
-  </main>
+          <div class="absolute top-4 left-8 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full border border-slate-200/60 flex items-center gap-2 dark:bg-slate-900/90 dark:border-slate-700/60">
+            <div class="w-2 h-2 rounded-full bg-nexusCyan shadow-[0_0_8px_#22D3EE]"></div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-300">NEXUS Hazır</span>
+          </div>
+        </div>
 
-  <!-- BLUETOOTH ALERT MODAL -->
-  <div id="bt-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
-    <div class="bg-white rounded-3xl p-6 w-72 text-center shadow-xl transform scale-95 transition-transform duration-200" id="bt-modal-content">
-      <div class="w-16 h-16 bg-[#FFE4E6] text-[#E11D48] rounded-full flex items-center justify-center mx-auto mb-4">
-        <i class="w-8 h-8" data-lucide="bluetooth-off"></i>
+        <div class="text-center mt-4">
+          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Cihaz ekleme merkezi</h2>
+          <p class="text-sm font-medium text-slate-500 mt-1 max-w-[280px] mx-auto dark:text-slate-300">QR tarama, kurulum kodu ve manuel katalog ile cihazlarını gerçek akış üzerinden ekleyebilirsin.</p>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-2 gap-3">
+        <a href="stitch-scan.html" class="glass-card bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-white/60 flex flex-col gap-4 nexus-shadow active:scale-95 transition-transform">
+          <div class="w-12 h-12 bg-nexusPurple/10 rounded-2xl flex items-center justify-center text-nexusPurple">
+            <iconify-icon icon="lucide:scan-qr-code" class="text-2xl"></iconify-icon>
+          </div>
+          <div>
+            <span class="block text-sm font-bold">QR Kod</span>
+            <span class="text-[11px] text-slate-500 font-medium dark:text-slate-300">Kamera ile devam et</span>
+          </div>
+        </a>
+        <a href="stitch-setup-code.html" class="glass-card bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-white/60 flex flex-col gap-4 nexus-shadow active:scale-95 transition-transform">
+          <div class="w-12 h-12 bg-nexusCyan/10 rounded-2xl flex items-center justify-center text-nexusCyan">
+            <iconify-icon icon="lucide:keyboard" class="text-2xl"></iconify-icon>
+          </div>
+          <div>
+            <span class="block text-sm font-bold">Kurulum Kodu</span>
+            <span class="text-[11px] text-slate-500 font-medium dark:text-slate-300">Kodu elle gir</span>
+          </div>
+        </a>
+      </section>
+
+      <section id="paired-devices-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden p-5">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Eklenmiş Cihazlar</h3>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Hesabına bağlı gerçek kayıtlar</p>
+          </div>
+          <span id="paired-device-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-200">0 cihaz</span>
+        </div>
+        <div id="paired-devices-list" class="space-y-3"></div>
+      </section>
+
+      <section id="manual-catalog-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-5">
+            <div>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Manuel Katalog</h3>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Kategoriye Göre Cihaz Ekle</p>
+            </div>
+            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 dark:bg-slate-800 dark:text-slate-300">
+              <iconify-icon icon="lucide:layers" class="text-xl"></iconify-icon>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-2.5">
+            <button type="button" onclick="openCatalogCategory('ayd-nlatma')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center text-yellow-500 dark:bg-yellow-500/10 dark:text-yellow-300">
+                  <iconify-icon icon="lucide:lamp-ceiling" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Aydınlatma</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Ampul, şerit, lamba ve anahtar ürünleri</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('kamera-ve-kilit')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 dark:bg-red-500/10 dark:text-red-300">
+                  <iconify-icon icon="lucide:shield-check" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Güvenlik ve Kamera</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Kamera, alarm, zil ve sensör grupları</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('enerji-tasarrufu')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500 dark:bg-blue-500/10 dark:text-blue-300">
+                  <iconify-icon icon="lucide:thermometer-snowflake" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">İklimlendirme</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Klima, termostat ve hava cihazları</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('elektrik-ustas-')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-lime-50 rounded-xl flex items-center justify-center text-lime-500 dark:bg-lime-500/10 dark:text-lime-300">
+                  <iconify-icon icon="lucide:plug-zap" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Priz ve Enerji</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Akıllı priz, anahtar ve enerji ürünleri</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('e-lence')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 dark:bg-rose-500/10 dark:text-rose-300">
+                  <iconify-icon icon="lucide:tv" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Medya ve Ses</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">TV, hoparlör ve eğlence cihazları</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('kamera-ve-kilit')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 dark:bg-amber-500/10 dark:text-amber-300">
+                  <iconify-icon icon="lucide:lock-keyhole" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Kapı ve Erişim</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Kilit, kapı zili ve giriş çözümleri</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('k---k-ev-aleti')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-300">
+                  <iconify-icon icon="lucide:bot" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Temizlik Robotları</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Süpürge ve zemin bakım cihazları</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+
+            <button type="button" onclick="openCatalogCategory('b-y-k-ev-aletleri')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 dark:bg-sky-500/10 dark:text-sky-300">
+                  <iconify-icon icon="lucide:refrigerator" class="text-xl"></iconify-icon>
+                </div>
+                <div>
+                  <span class="block text-sm font-bold">Ev Aletleri</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Beyaz eşya ve büyük ev cihazları</span>
+                </div>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+            </button>
+          </div>
+
+          <button type="button" onclick="openCatalogCategory('all')" class="w-full mt-5 py-3.5 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40">
+            <iconify-icon icon="lucide:search-check"></iconify-icon>
+            Tüm Kataloğu Gör
+          </button>
+        </div>
+
+        <div class="px-6 pb-6">
+          <div class="rounded-[2rem] border border-dashed border-slate-200 bg-white/70 px-5 py-5 text-center dark:border-slate-700 dark:bg-slate-950/30">
+            <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Ürün kataloğu</p>
+            <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Marka ve ürün listesinden cihazını seçerek ekleyebilirsin.</p>
+            <button type="button" onclick="openCatalogCategory('all')" class="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">
+              <iconify-icon icon="lucide:arrow-up-right" class="text-base"></iconify-icon>
+              Kataloğu Aç
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="bg-nexusPurple/5 border border-nexusPurple/10 p-5 rounded-3xl flex gap-4 dark:bg-nexusPurple/10 dark:border-nexusPurple/20">
+        <div class="w-10 h-10 shrink-0 bg-nexusPurple rounded-xl flex items-center justify-center text-white">
+          <iconify-icon icon="lucide:help-circle" class="text-xl"></iconify-icon>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-slate-900 dark:text-white">Sorun mu yaşıyorsun?</p>
+          <p class="text-xs font-medium text-slate-500 mt-1 leading-relaxed dark:text-slate-300">Cihazın görünmüyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve yönlendirme için yardım sayfasını açabilirsin.</p>
+          <button type="button" onclick="window.location.href='stitch-feedback.html'" class="inline-block mt-2 text-xs font-bold text-nexusPurple underline decoration-nexusPurple/30 underline-offset-4">Yardımı aç</button>
+        </div>
       </div>
-      <h3 class="text-lg font-bold text-slate-900 mb-2">Bluetooth Kapalı</h3>
-      <p class="text-[13px] text-slate-500 mb-6 font-medium leading-relaxed">
-        Cihaz aramak ve eşleştirmek için cihazınızın Bluetooth bağlantısını açmanız gerekmektedir.
-      </p>
-      <div class="flex gap-3">
-        <button class="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl text-sm" onclick="closeBtModal()">İptal</button>
-        <button class="flex-1 bg-[#7C5CFF] text-white font-bold py-3 rounded-xl text-sm" onclick="enableBluetooth()">Aç</button>
-      </div>
-    </div>
+    </main>
+
+    <footer class="shrink-0 px-5 pb-[34px] pt-2">
+      <button id="pair-nearby-btn" onclick="window.location.href='stitch-scan.html'" class="w-full bg-slate-900 text-white py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-xl dark:bg-slate-100 dark:text-slate-900">
+        <iconify-icon icon="lucide:scan-search" class="text-lg"></iconify-icon>
+        Tarama Merkezini Aç
+      </button>
+    </footer>
   </div>
 
   <script>
-    // --- COMPREHENSIVE PRODUCT DATABASE ---
-    const catalogData = {
-      "Elektrik Ustası": {
-        "Anahtarlar": [
-          { name: "Akıllı Anahtar 1'li", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Anahtar 2'li", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Anahtar 3'lü", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Anahtar 4'lü", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Dimmer Anahtar", img: "https://images.unsplash.com/photo-1626202476596-f947702f2316?w=300&q=80&auto=format&fit=crop" },
-          { name: "Dokunmatik Anahtar", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kinetik Anahtar", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Senaryo Anahtarı", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Prizler": [
-          { name: "Akıllı Duvar Prizi", img: "https://images.unsplash.com/photo-1558442074-3c19857bc1dc?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Sıva Altı Priz", img: "https://images.unsplash.com/photo-1558442074-3c19857bc1dc?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Çoklu Priz", img: "https://images.unsplash.com/photo-1558442074-3c19857bc1dc?w=300&q=80&auto=format&fit=crop" },
-          { name: "Dış Mekan Prizi", img: "https://images.unsplash.com/photo-1558442074-3c19857bc1dc?w=300&q=80&auto=format&fit=crop" },
-          { name: "USB'li Akıllı Priz", img: "https://images.unsplash.com/photo-1558442074-3c19857bc1dc?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Devre Kesiciler": [
-          { name: "Akıllı Röle (1 Kanal)", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Röle (2 Kanal)", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Röle (4 Kanal)", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Sigorta", img: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=300&q=80&auto=format&fit=crop" },
-          { name: "Ray Tipi Enerji Ölçer", img: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Aydınlatma": {
-        "Ampuller": [
-          { name: "Akıllı LED Ampul (RGBW)", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" },
-          { name: "Beyaz/Sarı LED Ampul", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" },
-          { name: "Filament Retro Ampul", img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=300&q=80&auto=format&fit=crop" },
-          { name: "Mum Tipi (E14) Ampul", img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=300&q=80&auto=format&fit=crop" },
-          { name: "Spot (GU10) Ampul", img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Armatürler": [
-          { name: "Akıllı Tavan Lambası", img: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=300&q=80&auto=format&fit=crop" },
-          { name: "Sarkıt Lamba", img: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=300&q=80&auto=format&fit=crop" },
-          { name: "Masa Lambası Pro", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&q=80&auto=format&fit=crop" },
-          { name: "Gece Lambası", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&q=80&auto=format&fit=crop" },
-          { name: "Duvar Apliği", img: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Åerit LED'ler": [
-          { name: "RGB Åerit LED (5m)", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" },
-          { name: "RGB Åerit LED (10m)", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" },
-          { name: "Neon LED Hortum", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" },
-          { name: "TV Arkası Ambilight LED", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" },
-          { name: "Dış Mekan LED Åerit", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Sensör": {
-        "Güvenlik": [
-          { name: "PIR Hareket Sensörü", img: "https://images.unsplash.com/photo-1555626906-f31f09ceb812?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kapı/Pencere Sensörü", img: "https://images.unsplash.com/photo-1555626906-f31f09ceb812?w=300&q=80&auto=format&fit=crop" },
-          { name: "İnsan Varlığı Sensörü", img: "https://images.unsplash.com/photo-1555626906-f31f09ceb812?w=300&q=80&auto=format&fit=crop" },
-          { name: "Titreşim Sensörü", img: "https://images.unsplash.com/photo-1555626906-f31f09ceb812?w=300&q=80&auto=format&fit=crop" },
-          { name: "Cam Kırılma Sensörü", img: "https://images.unsplash.com/photo-1555626906-f31f09ceb812?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Çevre": [
-          { name: "Sıcaklık ve Nem Sensörü", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=300&q=80&auto=format&fit=crop" },
-          { name: "Su Baskını Sensörü", img: "https://images.unsplash.com/photo-1527018601619-a508a2be00cd?w=300&q=80&auto=format&fit=crop" },
-          { name: "Duman Dedektörü", img: "https://images.unsplash.com/photo-1585435422731-1e7a5b3a628c?w=300&q=80&auto=format&fit=crop" },
-          { name: "Karbonmonoksit Dedektörü", img: "https://images.unsplash.com/photo-1585435422731-1e7a5b3a628c?w=300&q=80&auto=format&fit=crop" },
-          { name: "Gaz Dedektörü", img: "https://images.unsplash.com/photo-1585435422731-1e7a5b3a628c?w=300&q=80&auto=format&fit=crop" },
-          { name: "Işık (Lux) Sensörü", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=300&q=80&auto=format&fit=crop" },
-          { name: "Hava Kalitesi Sensörü", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Büyük Ev Aletleri": {
-        "İklimlendirme": [
-          { name: "Akıllı Klima", img: "https://images.unsplash.com/photo-1527351652156-b52b311317d7?w=300&q=80&auto=format&fit=crop" },
-          { name: "Portatif Klima", img: "https://images.unsplash.com/photo-1527351652156-b52b311317d7?w=300&q=80&auto=format&fit=crop" },
-          { name: "Nem Alma Cihazı", img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=300&q=80&auto=format&fit=crop" },
-          { name: "Hava Temizleyici", img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=300&q=80&auto=format&fit=crop" },
-          { name: "Vantilatör", img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Beyaz Eşya": [
-          { name: "Akıllı Buzdolabı", img: "https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=300&q=80&auto=format&fit=crop" },
-          { name: "Çamaşır Makinesi", img: "https://images.unsplash.com/photo-1626806787426-5910811b6325?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kurutma Makinesi", img: "https://images.unsplash.com/photo-1626806787426-5910811b6325?w=300&q=80&auto=format&fit=crop" },
-          { name: "Bulaşık Makinesi", img: "https://images.unsplash.com/photo-1583947581924-860bda6a45df?w=300&q=80&auto=format&fit=crop" },
-          { name: "Fırın", img: "https://images.unsplash.com/photo-1583947581924-860bda6a45df?w=300&q=80&auto=format&fit=crop" },
-          { name: "Davlumbaz", img: "https://images.unsplash.com/photo-1583947581924-860bda6a45df?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Küçük Ev Aleti": {
-        "Mevsimlik Ürünler": [
-          { name: "Elektrikli Soba", img: "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kalorifer Peteği", img: "https://images.unsplash.com/photo-1615529182904-14819c35db37?w=300&q=80&auto=format&fit=crop" },
-          { name: "Radyatör Vanası", img: "https://images.unsplash.com/photo-1615529182904-14819c35db37?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Termostat", img: "https://images.unsplash.com/photo-1615529182904-14819c35db37?w=300&q=80&auto=format&fit=crop" },
-          { name: "Elektrikli Battaniye", img: "https://images.unsplash.com/photo-1580211100522-835fc0ea7dd5?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Temizlik": [
-          { name: "Robot Süpürge", img: "https://images.unsplash.com/photo-1589923188900-85dae523342b?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Dikey Süpürge", img: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=300&q=80&auto=format&fit=crop" },
-          { name: "Cam Silme Robotu", img: "https://images.unsplash.com/photo-1589923188900-85dae523342b?w=300&q=80&auto=format&fit=crop" },
-          { name: "Hava Nemlendirici", img: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Mutfak Aleti": {
-        "Pişirme": [
-          { name: "Akıllı Airfryer", img: "https://images.unsplash.com/photo-1621644788177-3363f8222998?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Tencere", img: "https://images.unsplash.com/photo-1621644788177-3363f8222998?w=300&q=80&auto=format&fit=crop" },
-          { name: "Ekmek Makinesi", img: "https://images.unsplash.com/photo-1621644788177-3363f8222998?w=300&q=80&auto=format&fit=crop" },
-          { name: "Tost Makinesi", img: "https://images.unsplash.com/photo-1621644788177-3363f8222998?w=300&q=80&auto=format&fit=crop" },
-          { name: "Izgara", img: "https://images.unsplash.com/photo-1621644788177-3363f8222998?w=300&q=80&auto=format&fit=crop" },
-          { name: "Mikrodalga Fırın", img: "https://images.unsplash.com/photo-1585659722983-38ca99b703e3?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "İçecek Hazırlama": [
-          { name: "Kahve Makinesi", img: "https://images.unsplash.com/photo-1517256064527-09c73fc73e56?w=300&q=80&auto=format&fit=crop" },
-          { name: "Espresso Makinesi", img: "https://images.unsplash.com/photo-1517256064527-09c73fc73e56?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Kettle", img: "https://images.unsplash.com/photo-1595351298022-c32fec349db4?w=300&q=80&auto=format&fit=crop" },
-          { name: "Su Arıtma Cihazı", img: "https://images.unsplash.com/photo-1595351298022-c32fec349db4?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Diğer": [
-          { name: "Akıllı Mutfak Tartısı", img: "https://images.unsplash.com/photo-1612192770519-75f14e21544a?w=300&q=80&auto=format&fit=crop" },
-          { name: "Blender", img: "https://images.unsplash.com/photo-1612192770519-75f14e21544a?w=300&q=80&auto=format&fit=crop" },
-          { name: "Gıda Kurutucu", img: "https://images.unsplash.com/photo-1612192770519-75f14e21544a?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Egzersiz ve Sağlık": {
-        "Ölçüm": [
-          { name: "Akıllı Vücut Analiz Tartısı", img: "https://images.unsplash.com/photo-1612192770519-75f14e21544a?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Tansiyon Aleti", img: "https://images.unsplash.com/photo-1631550244799-a68257008ff3?w=300&q=80&auto=format&fit=crop" },
-          { name: "Ateş Ölçer", img: "https://images.unsplash.com/photo-1631550244799-a68257008ff3?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kan Åekeri Ölçer", img: "https://images.unsplash.com/photo-1631550244799-a68257008ff3?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Fitness": [
-          { name: "Koşu Bandı", img: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kondisyon Bisikleti", img: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Atlama İpi", img: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b0?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Dambıl", img: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b0?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Saat/Bileklik", img: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b0?w=300&q=80&auto=format&fit=crop" },
-          { name: "Uyku Takip Pedi", img: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b0?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Kamera ve Kilit": {
-        "Kamera": [
-          { name: "İç Mekan PTZ Kamera", img: "https://images.unsplash.com/photo-1557805975-1b2c454e66d0?w=300&q=80&auto=format&fit=crop" },
-          { name: "Dış Mekan Bullet Kamera", img: "https://images.unsplash.com/photo-1558562805-4bf1e2a724eb?w=300&q=80&auto=format&fit=crop" },
-          { name: "Bataryalı Dış Kamera", img: "https://images.unsplash.com/photo-1558562805-4bf1e2a724eb?w=300&q=80&auto=format&fit=crop" },
-          { name: "Bebek Monitörü", img: "https://images.unsplash.com/photo-1557805975-1b2c454e66d0?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Erişim": [
-          { name: "Akıllı Kapı Kilidi", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Parmak İzi Asma Kilit", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Görüntülü Kapı Zili", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Garaj Kapısı Kontrolcüsü", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Kasa Kilidi", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Ağ Geçidi ve Kontrol": {
-        "Merkezler": [
-          { name: "Zigbee Ağ Geçidi", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Bluetooth Mesh Gateway", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Çoklu Mod Gateway", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Kumandalar": [
-          { name: "Evrensel Kızılötesi Kumanda", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Ekran", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Duvar Kontrol Paneli", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" },
-          { name: "Mini Buton", img: "https://images.unsplash.com/photo-1558002038-1055907df827?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Doğa Sporları": {
-        "Araçlar": [
-          { name: "Elektrikli Bisiklet", img: "https://images.unsplash.com/photo-1511994298241-608e28f14fde?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Scooter", img: "https://images.unsplash.com/photo-1511994298241-608e28f14fde?w=300&q=80&auto=format&fit=crop" },
-          { name: "Bisiklet Kilidi", img: "https://images.unsplash.com/photo-1511994298241-608e28f14fde?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Kamp & Dış Mekan": [
-          { name: "Taşınabilir Güç İstasyonu", img: "https://images.unsplash.com/photo-1584824388147-79883526a570?w=300&q=80&auto=format&fit=crop" },
-          { name: "Çadır Aydınlatması", img: "https://images.unsplash.com/photo-1584824388147-79883526a570?w=300&q=80&auto=format&fit=crop" },
-          { name: "Soğutucu Çanta", img: "https://images.unsplash.com/photo-1584824388147-79883526a570?w=300&q=80&auto=format&fit=crop" },
-          { name: "Taşınabilir Güneş Paneli", img: "https://images.unsplash.com/photo-1584824388147-79883526a570?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Enerji Tasarrufu": {
-        "Yönetim": [
-          { name: "Ev Enerji İzleme", img: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Sigorta Kutusu", img: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=300&q=80&auto=format&fit=crop" },
-          { name: "Enerji Ölçer Priz", img: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=300&q=80&auto=format&fit=crop" },
-          { name: "Güneş Paneli İnvertörü", img: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Su": [
-          { name: "Akıllı Su Vanası", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" },
-          { name: "Su Sayacı", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" },
-          { name: "Isı Pompası Kontrolü", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Sanayi ve Tarım": {
-        "Otomasyon": [
-          { name: "Akıllı Sulama Vanası", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" },
-          { name: "Toprak Nem Sensörü", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=300&q=80&auto=format&fit=crop" },
-          { name: "Sera Kontrolcüsü", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" },
-          { name: "Meteoroloji İstasyonu", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" },
-          { name: "Endüstriyel Sensör", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" },
-          { name: "Motor Kontrol Rölesi", img: "https://images.unsplash.com/photo-1518534062635-4340df88da76?w=300&q=80&auto=format&fit=crop" }
-        ]
-      },
-      "Diğer": {
-        "Evcil Hayvan": [
-          { name: "Akıllı Evcil Hayvan Besleyici", img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Su Pınarı", img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Kedi Tuvaleti", img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&q=80&auto=format&fit=crop" },
-          { name: "Takip Tasması", img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&q=80&auto=format&fit=crop" },
-          { name: "Evcil Hayvan Oyuncağı", img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&q=80&auto=format&fit=crop" }
-        ],
-        "Mobilya & Aksesuar": [
-          { name: "Akıllı Perde Motoru (Stor)", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Perde Motoru (Kumaş)", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Panjur", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Yatak", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Ayna", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&q=80&auto=format&fit=crop" },
-          { name: "Akıllı Çöp Kutusu", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&q=80&auto=format&fit=crop" }
-        ]
-      }
-    };
+    lucide.createIcons();
 
-    let activeCategory = "Küçük Ev Aleti"; // Default
-    const categoryListEl = document.getElementById('category-list');
-    const productListEl = document.getElementById('product-list');
+    var pendingCatalogCategory = "all";
 
-    function renderCategories() {
-      categoryListEl.innerHTML = '<ul class="flex flex-col py-2"></ul>';
-      const ul = categoryListEl.querySelector('ul');
-      
-      Object.keys(catalogData).forEach(cat => {
-        const li = document.createElement('li');
-        li.textContent = cat;
-        li.className = `px-3 py-4 text-[13px] cursor-pointer shadow-sm relative z-10 transition-colors ${cat === activeCategory ? 'cat-active' : 'cat-inactive'}`;
-        li.onclick = () => {
-          activeCategory = cat;
-          renderCategories(); // Update active styling
-          renderProducts(cat);
-        };
-        ul.appendChild(li);
-      });
+    function openHelp() {
+      window.location.href = "stitch-feedback.html";
     }
 
-    function renderProducts(category, searchQuery = '') {
-      productListEl.innerHTML = '';
-      const subCategories = catalogData[category];
-      if (!subCategories) return;
-
-      let hasAnyProduct = false;
-
-      Object.entries(subCategories).forEach(([subCatName, products]) => {
-        // Filter products if search is active
-        const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
-        
-        if (filteredProducts.length > 0) {
-          hasAnyProduct = true;
-          
-          const sectionDiv = document.createElement('div');
-          sectionDiv.className = 'mb-8 animate-[fadeIn_0.3s_ease-out]';
-          
-          sectionDiv.innerHTML = `
-            <h3 class="text-[13px] font-bold text-slate-800 mb-4 tracking-wide uppercase">${subCatName}</h3>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-              ${filteredProducts.map(p => `
-                <a href="#" class="flex flex-col items-center group" onclick="checkBtAndNavigate(event, '${p.name}', '${p.img}')">
-                  <div class="w-full aspect-square bg-slate-50 rounded-2xl flex items-center justify-center mb-2 overflow-hidden border border-slate-100 shadow-sm active:scale-95 transition-transform">
-                    <img src="${p.img}" alt="${p.name}" class="w-[85%] h-[85%] object-cover rounded-xl" loading="lazy" />
-                  </div>
-                  <span class="text-[11px] font-semibold text-slate-700 text-center leading-tight px-1">${p.name}</span>
-                </a>
-              `).join('')}
-            </div>
-          `;
-          productListEl.appendChild(sectionDiv);
-        }
-      });
-
-      if (!hasAnyProduct) {
-        productListEl.innerHTML = `
-          <div class="flex flex-col items-center justify-center h-40 opacity-50">
-            <i class="w-8 h-8 text-slate-400 mb-2" data-lucide="search-x"></i>
-            <span class="text-sm font-medium">Cihaz bulunamadı</span>
-          </div>
-        `;
-        lucide.createIcons();
+    function scrollToManualCatalog() {
+      var section = document.getElementById("manual-catalog-section");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
 
-    function filterProducts(query) {
-      // If there's a global search, we can iterate through all categories and show results
-      // For now, it searches within the ACTIVE category to keep UI clean, 
-      // or we can overwrite and show global results. Let's do global search if query length > 1
-      if(query.length > 1) {
-        // Global search mode
-        categoryListEl.style.opacity = '0.3';
-        categoryListEl.style.pointerEvents = 'none';
-        
-        productListEl.innerHTML = '';
-        let foundGlobal = false;
-        
-        Object.entries(catalogData).forEach(([catName, subCats]) => {
-          Object.entries(subCats).forEach(([subCatName, products]) => {
-            const matches = products.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
-            if(matches.length > 0) {
-              foundGlobal = true;
-              const sectionDiv = document.createElement('div');
-              sectionDiv.className = 'mb-6';
-              sectionDiv.innerHTML = `
-                <h3 class="text-[11px] font-bold text-[#7C5CFF] mb-3 uppercase tracking-wider">${catName} > ${subCatName}</h3>
-                <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-                  ${matches.map(p => `
-                    <a href="#" class="flex flex-col items-center group" onclick="checkBtAndNavigate(event, '${p.name}', '${p.img}')">
-                      <div class="w-full aspect-square bg-slate-50 rounded-2xl flex items-center justify-center mb-2 overflow-hidden border border-slate-100 shadow-sm active:scale-95 transition-transform">
-                        <img src="${p.img}" alt="${p.name}" class="w-[85%] h-[85%] object-cover rounded-xl" loading="lazy" />
-                      </div>
-                      <span class="text-[11px] font-semibold text-slate-700 text-center leading-tight px-1">${p.name}</span>
-                    </a>
-                  `).join('')}
-                </div>
-              `;
-              productListEl.appendChild(sectionDiv);
-            }
-          });
-        });
-        
-        if(!foundGlobal) {
-          productListEl.innerHTML = `
-            <div class="flex flex-col items-center justify-center h-40 opacity-50 mt-10">
-              <i class="w-8 h-8 text-slate-400 mb-2" data-lucide="search-x"></i>
-              <span class="text-sm font-medium">Aramanızla eşleşen cihaz yok</span>
-            </div>
-          `;
-          lucide.createIcons();
-        }
-      } else {
-        // Reset to normal category view
-        categoryListEl.style.opacity = '1';
-        categoryListEl.style.pointerEvents = 'auto';
-        renderProducts(activeCategory);
+    function getPairedDevices() {
+      var devices = [];
+      try {
+        devices = JSON.parse(nexusGetItem("nexusPairedDevices") || "[]");
+      } catch (error) {
+        devices = [];
+      }
+      return Array.isArray(devices) ? devices : [];
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function renderPairedDevices() {
+      var devices = getPairedDevices();
+      var countEl = document.getElementById("paired-device-count");
+      var listEl = document.getElementById("paired-devices-list");
+      countEl.textContent = devices.length + " cihaz";
+
+      if (!devices.length) {
+        listEl.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-4 py-5 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950/40 dark:text-slate-300">Henüz eklenmiş cihaz yok. QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.</div>';
+        return;
+      }
+
+      listEl.innerHTML = devices.map(function (device, index) {
+        var name = device && device.name ? device.name : "Adsız cihaz";
+        var room = device && device.room ? device.room : "Ana sayfaya bağlı";
+        return '<div class="plain-card flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-4 dark:border-slate-800">' +
+          '<div class="flex min-w-0 items-center gap-3">' +
+          '<div class="w-11 h-11 rounded-2xl bg-slate-100 text-nexusPurple flex items-center justify-center shrink-0 dark:bg-slate-800">' +
+          '<iconify-icon icon="lucide:cpu" class="text-xl"></iconify-icon></div>' +
+          '<div class="min-w-0"><p class="font-semibold truncate">' + escapeHtml(name) + '</p>' +
+          '<p class="text-xs text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(room) + '</p></div></div>' +
+          '<button type="button" onclick="removePairedDevice(' + index + ')" class="rounded-full bg-white border border-slate-200 px-3 py-2 text-xs font-bold text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300">Kaldır</button>' +
+          '</div>';
+      }).join("");
+    }
+
+    function removePairedDevice(index) {
+      var devices = getPairedDevices();
+      devices.splice(index, 1);
+      nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
+      renderPairedDevices();
+      if (typeof window.refreshDashboardSupplements === "function") {
+        window.refreshDashboardSupplements();
       }
     }
 
-    // --- BLUETOOTH LOGIC ---
-    let isBluetoothOn = false;
-    let pendingDevice = null;
-    let pendingDeviceImg = null;
+    function buildCatalogUrl(category) {
+      var target = "stitch-integrations.html";
+      if (!category || category === "all") return target;
+      return target + "?category=" + encodeURIComponent(category);
+    }
 
-    function enableBluetooth() {
-      isBluetoothOn = true;
-      document.getElementById('bt-warning').style.display = 'none';
-      closeBtModal();
-      
-      if(pendingDevice) {
-        setTimeout(() => {
-          window.location.href = `stitch-radar.html?device=${encodeURIComponent(pendingDevice)}&img=${encodeURIComponent(pendingDeviceImg)}`;
-        }, 300);
+    function openCatalogCategory(category) {
+      pendingCatalogCategory = category;
+      window.location.href = buildCatalogUrl(category);
+    }
+
+    renderPairedDevices();
+    window.addEventListener("pageshow", renderPairedDevices);
+    window.addEventListener("DOMContentLoaded", function () {
+      if (window.location.hash === "#manual-catalog-section") {
+        setTimeout(scrollToManualCatalog, 120);
       }
-    }
-
-    function checkBtAndNavigate(e, deviceName, deviceImg) {
-      e.preventDefault();
-      if(!isBluetoothOn) {
-        pendingDevice = deviceName;
-        pendingDeviceImg = deviceImg;
-        const modal = document.getElementById('bt-modal');
-        const modalContent = document.getElementById('bt-modal-content');
-        modal.classList.remove('hidden');
-        requestAnimationFrame(() => {
-          modal.classList.remove('opacity-0');
-          modalContent.classList.remove('scale-95');
-        });
-      } else {
-        window.location.href = `stitch-radar.html?device=${encodeURIComponent(deviceName)}&img=${encodeURIComponent(deviceImg)}`;
-      }
-    }
-
-    function closeBtModal() {
-      const modal = document.getElementById('bt-modal');
-      const modalContent = document.getElementById('bt-modal-content');
-      modal.classList.add('opacity-0');
-      modalContent.classList.add('scale-95');
-      setTimeout(() => { modal.classList.add('hidden'); }, 200);
-      pendingDevice = null;
-    }
-
-    // Init
-    window.onload = () => {
-      renderCategories();
-      renderProducts(activeCategory);
-      lucide.createIcons();
-    };
+    });
   </script>
 </body>
 </html>

@@ -17,7 +17,7 @@
  *
  * Sonrasında `npx cap sync` bu paketi android/ ve ios/ shell'lerine taşır.
  */
-import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,11 +41,34 @@ for (const page of pages) {
   copyFileSync(join(REPO_ROOT, page), join(OUT_DIR, page));
 }
 
-// 2b. Sayfaların ortak script'leri (tema, gerçek veri akışı, AI FAB + rozet).
-const SHARED_SCRIPTS = ["theme.js", "data.js", "ai-fab.js"];
+// 2b. Sayfaların ortak script'leri.
+// Bazi stitch ekranlari bu dosyalari dogrudan kullaniyor; eksik kalirlarsa
+// mobil paketleme sonrasi sessiz kirik referanslar olusuyor.
+const SHARED_SCRIPTS = [
+  "auth.js",
+  "theme.js",
+  "data.js",
+  "ai-fab.js",
+  "sheet-gestures.js",
+  "smart-scene-page.js",
+  "smart-card-detail-state.js",
+];
 for (const file of SHARED_SCRIPTS) {
   const src = join(REPO_ROOT, file);
   if (existsSync(src)) copyFileSync(src, join(OUT_DIR, file));
+}
+
+const SHARED_ASSETS = ["siri-logo.png"];
+for (const file of SHARED_ASSETS) {
+  const src = join(REPO_ROOT, file);
+  if (existsSync(src)) copyFileSync(src, join(OUT_DIR, file));
+}
+
+const PRODUCT_ASSETS_SRC = join(REPO_ROOT, "assets", "products");
+const PRODUCT_ASSETS_OUT = join(OUT_DIR, "assets", "products");
+if (existsSync(PRODUCT_ASSETS_SRC)) {
+  mkdirSync(join(OUT_DIR, "assets"), { recursive: true });
+  cpSync(PRODUCT_ASSETS_SRC, PRODUCT_ASSETS_OUT, { recursive: true });
 }
 
 // 3. Sayfalardan bağlanan statik hukuk sayfaları (stitch-plus -> public/terms.html).

@@ -29,19 +29,21 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  <script src="ai-fab.js"></script>
-<script src="theme.js"></script>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
 </head>
 <body class="text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="stitch-energy-strategy.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-lg font-bold absolute left-1/2 -translate-x-1/2">Cihazı Seç</h1>
+<h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Cihazı Seç</h1>
 <button class="text-slate-500 font-medium text-[17px]" onclick="resetSelection()">Sıfırla</button>
 </header>
 <!-- END: Header -->
@@ -49,24 +51,24 @@
 <main class="flex-grow px-4 pt-2 pb-10">
 <!-- Category pill -->
 <div class="mb-5" data-purpose="category-pill">
-<button class="inline-flex items-center gap-2 bg-[#7C5CFF] text-white font-semibold text-sm pl-1.5 pr-4 py-1.5 rounded-2xl">
+<div class="inline-flex items-center gap-2 bg-[#4C7DFF] text-white font-semibold text-sm pl-1.5 pr-4 py-1.5 rounded-2xl">
 <span class="w-8 h-8 rounded-xl bg-white flex items-center justify-center">
-<i class="w-4 h-4 text-[#7C5CFF]" data-lucide="lightbulb"></i>
+<i class="w-4 h-4 text-[#4C7DFF]" data-lucide="lightbulb"></i>
 </span>
 <span id="category-label">Aydınlatma <span id="device-count">0</span></span>
-</button>
+</div>
 </div>
 <!-- Empty device card (yalnızca hiç cihaz eşleştirilmemişse görünür) -->
 <section class="bg-white rounded-3xl card-shadow p-5 flex items-center gap-4" data-purpose="empty-device-card" id="empty-device-card">
-<div class="w-14 h-14 rounded-xl bg-[#7C5CFF]/10 flex items-center justify-center flex-shrink-0">
-<i class="w-7 h-7 text-[#7C5CFF]" data-lucide="package-open"></i>
+<div class="w-14 h-14 rounded-xl bg-[#4C7DFF]/10 flex items-center justify-center flex-shrink-0">
+<i class="w-7 h-7 text-[#4C7DFF]" data-lucide="package-open"></i>
 </div>
 <div class="min-w-0 flex-grow">
 <h2 class="font-bold">Cihaz yok</h2>
 <span class="inline-block text-xs font-semibold text-amber-600 bg-amber-100 rounded-md px-2 py-0.5 mt-1">Zorunlu</span>
 </div>
 <!-- Cihaz eşleştirme (radar) akışına gider -->
-<a class="flex-shrink-0 bg-[#7C5CFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-pair.html">Ekle</a>
+<a class="flex-shrink-0 bg-[#4C7DFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-pair.html">Ekle</a>
 </section>
 <!-- Paired device list (eşleştirilmiş cihazlar buraya gerçek veriden gelir) -->
 <section class="hidden space-y-3" data-purpose="paired-device-list" id="device-list"></section>
@@ -80,7 +82,7 @@
     lucide.createIcons();
     // Kategori adı, seçilen stratejinin cihaz tipiyle senkronize gelir
     (function () {
-      var raw = localStorage.getItem('nexusEnergyStrategy');
+      var raw = nexusGetItem('nexusEnergyStrategy');
       if (raw) {
         try {
           var s = JSON.parse(raw);
@@ -91,17 +93,17 @@
 
     // --- Eşleştirilmiş cihazlar (stitch-pair.html kaydeder) ---
     var paired = [];
-    try { paired = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]'); } catch (e) {}
+    try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (e) {}
     var selected = [];
-    try { selected = JSON.parse(localStorage.getItem('nexusEnergySelectedDevices') || '[]'); } catch (e) {}
+    try { selected = JSON.parse(nexusGetItem('nexusEnergySelectedDevices') || '[]'); } catch (e) {}
     // Kayıtlı seçimlerden artık mevcut olmayan cihazları ayıkla
     selected = selected.filter(function (n) {
       return paired.some(function (d) { return d.name === n; });
     });
 
     function persist() {
-      localStorage.setItem('nexusEnergySelectedDevices', JSON.stringify(selected));
-      localStorage.setItem('nexusEnergyDeviceCount', String(selected.length));
+      nexusSetItem('nexusEnergySelectedDevices', JSON.stringify(selected));
+      nexusSetItem('nexusEnergyDeviceCount', String(selected.length));
       document.getElementById('device-count').textContent = String(selected.length);
     }
 
@@ -128,10 +130,10 @@
       listEl.innerHTML = paired.map(function (d) {
         var isSel = selected.indexOf(d.name) !== -1;
         return '<button class="w-full bg-white rounded-3xl card-shadow p-4 flex items-center gap-4 text-left active:scale-[0.99] transition-transform" data-name="' + d.name + '" onclick="toggleDevice(this)">' +
-          '<span class="w-12 h-12 rounded-xl bg-[#7C5CFF]/10 flex items-center justify-center flex-shrink-0"><i class="w-6 h-6 text-[#7C5CFF]" data-lucide="' + d.icon + '"></i></span>' +
+          '<span class="w-12 h-12 rounded-xl bg-[#4C7DFF]/10 flex items-center justify-center flex-shrink-0"><i class="w-6 h-6 text-[#4C7DFF]" data-lucide="' + d.icon + '"></i></span>' +
           '<span class="min-w-0 flex-grow"><span class="block font-bold truncate">' + d.name + '</span><span class="block text-xs font-medium text-emerald-600 mt-0.5">Çevrimiçi</span></span>' +
           (isSel
-            ? '<span class="w-7 h-7 rounded-full bg-[#7C5CFF] flex items-center justify-center flex-shrink-0"><i class="w-4 h-4 text-white" data-lucide="check"></i></span>'
+            ? '<span class="w-7 h-7 rounded-full bg-[#4C7DFF] flex items-center justify-center flex-shrink-0"><i class="w-4 h-4 text-white" data-lucide="check"></i></span>'
             : '<span class="w-7 h-7 rounded-full border-2 border-slate-200 flex-shrink-0"></span>') +
           '</button>';
       }).join('');
@@ -149,5 +151,4 @@
     renderList();
   </script>
 </body></html>
-
 

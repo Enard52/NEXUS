@@ -38,6 +38,7 @@
       min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
@@ -45,16 +46,14 @@
 <body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
 <header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
-<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
-</a>
+<div class="w-7"></div>
 <!-- MiniApp capsule: more menu + close -->
 <div class="flex items-center bg-white/70 backdrop-blur rounded-full border border-white/60 shadow-sm" data-purpose="miniapp-capsule">
 <button aria-label="Mini uygulama menüsü" class="px-4 py-2" onclick="openSheet('menu')">
 <i class="w-5 h-5 text-slate-700" data-lucide="ellipsis"></i>
 </button>
 <span class="w-px h-5 bg-slate-300/70"></span>
-<a aria-label="Mini uygulamayı kapat" class="px-4 py-2" href="stitch-home.html">
+<a aria-label="Mini uygulamayı kapıat" class="px-4 py-2" href="stitch-home.html">
 <i class="w-5 h-5 text-slate-700" data-lucide="x"></i>
 </a>
 </div>
@@ -72,7 +71,7 @@
 <p class="text-3xl font-extrabold mt-1">0,00 <span class="text-base font-bold text-slate-400">kWh</span></p>
 <p class="text-xs text-slate-400 mt-1">Cihaz ekledikçe tasarrufun burada görünür.</p>
 </div>
-<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
 <i class="w-7 h-7" data-lucide="zap"></i>
 </div>
 </section>
@@ -80,22 +79,22 @@
 <h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
 <section class="space-y-3" data-purpose="strategy-list">
 <!-- Her strateji, seçimini localStorage'a yazıp detay sayfasını açar -->
-<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapat">
-<div class="w-12 h-12 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] flex items-center justify-center flex-shrink-0">
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapıatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapıat">
+<div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center flex-shrink-0">
 <i class="w-6 h-6" data-lucide="lightbulb-off"></i>
 </div>
 <div class="min-w-0 flex-grow">
-<h3 class="font-bold leading-snug">Evden çıktıktan sonra ışığı otomatik olarak kapat</h3>
+<h3 class="font-bold leading-snug">Evden çıktıktan sonra ışığı otomatik olarak kapıat</h3>
 <p class="text-xs text-slate-400 mt-1">Konum tabanlı · Aydınlatma<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
 </div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
 </a>
-<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evde kimse yokken klimayı otomatik olarak kapatın, gereksiz tüketimi önleyin." data-device="Klima" data-title="Kimse yokken klimayı kapat">
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evde kimse yokken klimayı otomatik olarak kapıatın, gereksiz tüketimi önleyin." data-device="Klima" data-title="Kimse yokken klimayı kapıat">
 <div class="w-12 h-12 rounded-2xl bg-[#22D3EE]/10 text-[#0EA5C4] flex items-center justify-center flex-shrink-0">
 <i class="w-6 h-6" data-lucide="air-vent"></i>
 </div>
 <div class="min-w-0 flex-grow">
-<h3 class="font-bold leading-snug">Kimse yokken klimayı kapat</h3>
+<h3 class="font-bold leading-snug">Kimse yokken klimayı kapıat</h3>
 <p class="text-xs text-slate-400 mt-1">Konum tabanlı · Klima<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
 </div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
@@ -106,7 +105,7 @@
 </div>
 <div class="min-w-0 flex-grow">
 <h3 class="font-bold leading-snug">Gece bekleme tüketimini kes</h3>
-<p class="text-xs text-slate-400 mt-1">Zamanlama tabanlı · Akıllı Priz<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
+<p class="text-xs text-slate-400 mt-1">Zamanılama tabanlı · Akıllı Priz<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
 </div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
 </a>
@@ -123,7 +122,7 @@
 <div class="sheet fixed bottom-0 inset-x-0 z-50" data-purpose="miniapp-menu" id="sheet-menu">
 <div class="bg-white rounded-t-3xl p-6">
 <div class="flex items-center gap-3 mb-2">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
 <i class="w-5 h-5" data-lucide="zap"></i>
 </div>
 <h3 class="text-lg font-bold">AI Enerji Tasarrufu</h3>
@@ -155,7 +154,7 @@
     lucide.createIcons();
     // Store the tapped strategy so the detail page shows the right content
     function pickStrategy(card) {
-      localStorage.setItem('nexusEnergyStrategy', JSON.stringify({
+      nexusSetItem('nexusEnergyStrategy', JSON.stringify({
         title: card.dataset.title,
         desc: card.dataset.desc,
         device: card.dataset.device
@@ -164,7 +163,7 @@
     // Detay sayfasında etkinleştirilen stratejileri rozetle göster
     (function () {
       var map = {};
-      try { map = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { map = {}; }
+      try { map = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { map = {}; }
       document.querySelectorAll('[data-title]').forEach(function (card) {
         if (map[card.dataset.title]) {
           var badge = card.querySelector('.strategy-state');

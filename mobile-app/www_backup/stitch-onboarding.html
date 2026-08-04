@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
+  <title>Nexus AI: Karşılama</title>
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  
+  <style data-purpose="custom-layouts">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+    
+    .btn-primary {
+      background-color: #4C7DFF;
+      box-shadow: 0 4px 12px rgba(76, 125, 255, 0.28);
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s;
+    }
+    .btn-primary:active {
+      transform: scale(0.98);
+      background-color: #6A4BE6;
+    }
+
+    .card-shadow {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+  </style>
+  
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body class="flex flex-col text-slate-900 relative h-[100dvh]">
+
+  <!-- Skip Button (Top Right) -->
+  <button id="skip-btn" class="absolute top-12 right-4 z-50 p-4 text-[#4C7DFF] font-bold tracking-wide active:scale-95 transition-transform cursor-pointer" onclick="goToLogin()">
+    Geç
+  </button>
+
+  <div id="slide-container" class="flex flex-col h-full items-center justify-start px-6 pt-12 pb-8 w-full max-w-md mx-auto">
+    <!-- Header -->
+    <header class="w-full text-center mt-6 flex flex-col items-center shrink-0">
+      <div class="w-16 h-16 mb-4 drop-shadow-sm">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo">
+          <defs>
+            <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+            </linearGradient>
+            <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+          <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+          <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-extrabold tracking-tight">NEXUS AI</h1>
+      <h2 id="slide-subtitle" class="text-lg font-semibold text-[#4C7DFF] mt-1 transition-opacity duration-300">Geleceğin Evi</h2>
+    </header>
+
+    <!-- Main Content (Image + Text) -->
+    <main class="flex flex-col items-center justify-start w-full mt-8" id="slide-content">
+      <div class="w-full mb-6 rounded-[2rem] overflow-hidden glass-panel border border-white/50 card-shadow p-3 relative h-56 shrink-0">
+        <img id="slide-image" alt="Onboarding Image" class="w-full h-full object-cover rounded-2xl transition-opacity duration-300" src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80"/>
+      </div>
+      
+      <!-- Indicators -->
+      <div class="flex gap-2 mb-6" id="indicators"></div>
+
+      <!-- Description -->
+      <div class="text-center px-2 min-h-[5rem] flex items-start justify-center mb-8">
+        <p id="slide-desc" class="text-base text-slate-700 leading-relaxed font-medium transition-opacity duration-300">Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın.</p>
+      </div>
+
+      <!-- Button exactly below description -->
+      <div class="w-full max-w-[280px]">
+        <button id="next-btn" class="btn-primary w-full py-4 rounded-full text-white text-lg font-bold focus:outline-none" onclick="nextSlide()">
+          İleri
+        </button>
+      </div>
+    </main>
+  </div>
+
+<script>
+  const slides = [
+    {
+      subtitle: "Geleceğin Evi",
+      image: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80",
+      desc: "Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın."
+    },
+    {
+      subtitle: "Akıllı Kontrol",
+      image: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&w=800&q=80",
+      desc: "Tüm cihazlarınızı tek bir merkezden, sesinizle veya otomatik senaryolarla yönetin."
+    },
+    {
+      subtitle: "Kişisel Asistan",
+      image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+      desc: "NEXUS AI alışkanlıklarınızı öğrenir ve evinizi size özel mükemmel bir yaşam alanına dönüştürür."
+    }
+  ];
+
+  let currentIndex = 0;
+
+  const subtitleEl = document.getElementById('slide-subtitle');
+  const imageEl = document.getElementById('slide-image');
+  const descEl = document.getElementById('slide-desc');
+  const indicatorsEl = document.getElementById('indicators');
+  const nextBtn = document.getElementById('next-btn');
+  const skipBtn = document.getElementById('skip-btn');
+
+  function renderSlide(index) {
+    // Fade out
+    subtitleEl.style.opacity = "0";
+    imageEl.style.opacity = "0";
+    descEl.style.opacity = "0";
+
+    setTimeout(function() {
+      const slide = slides[index];
+      subtitleEl.textContent = slide.subtitle;
+      imageEl.src = slide.image;
+      descEl.textContent = slide.desc;
+
+      // Update indicators
+      let indHtml = "";
+      for (let i = 0; i < slides.length; i++) {
+        if (i === index) {
+          indHtml += '<div class="h-2 rounded-full transition-all duration-300 w-6 bg-[#4C7DFF]"></div>';
+        } else {
+          indHtml += '<div class="h-2 rounded-full transition-all duration-300 w-2 bg-slate-300"></div>';
+        }
+      }
+      indicatorsEl.innerHTML = indHtml;
+
+      // Update buttons
+      if (index === slides.length - 1) {
+        nextBtn.textContent = "Hemen Başla";
+        skipBtn.classList.add("hidden");
+      } else {
+        nextBtn.textContent = "İleri";
+        skipBtn.classList.remove("hidden");
+      }
+
+      // Fade in
+      subtitleEl.style.opacity = "1";
+      imageEl.style.opacity = "1";
+      descEl.style.opacity = "1";
+    }, 200); // reduced timeout for snappier feeling
+  }
+
+  function nextSlide() {
+    if (currentIndex < slides.length - 1) {
+      currentIndex++;
+      renderSlide(currentIndex);
+    } else {
+      goToLogin();
+    }
+  }
+
+  function goToLogin() {
+    window.location.replace('stitch-login.html');
+  }
+
+  // Preload images for smooth transition
+  slides.forEach(function(s) {
+    const img = new Image();
+    img.src = s.image;
+  });
+
+  // Init
+  renderSlide(0);
+</script>
+</body>
+</html>

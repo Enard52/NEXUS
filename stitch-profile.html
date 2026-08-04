@@ -41,6 +41,7 @@
       min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
@@ -64,7 +65,7 @@
 <i class="w-6 h-6 text-slate-400 flex-shrink-0" data-lucide="chevron-right"></i>
 </a>
 <!-- Ayarlar -->
-<a href="stitch-settings.html" aria-label="Ayarlar" class="w-11 h-11 ml-3 rounded-full bg-white/70 backdrop-blur-md border border-slate-200/60 shadow-sm flex items-center justify-center text-slate-700 active:scale-95 transition-transform flex-shrink-0" data-purpose="settings-link">
+<a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 ml-3 flex items-center justify-center text-slate-700 active:scale-95 transition-transform flex-shrink-0" data-purpose="settings-link">
 <i class="w-6 h-6 stroke-[1.5]" data-lucide="settings"></i>
 </a>
 </div>
@@ -127,27 +128,23 @@
 </main>
 <!-- END: MainContent -->
 <!-- BEGIN: BottomNavigation -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2 pb-2 z-50" data-purpose="bottom-nav">
-<!-- Nav Item: Ev -->
-<a href="stitch-home.html" class="flex flex-col items-center gap-1 text-slate-400">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
-<span class="text-xs font-medium">Ev</span>
-</a>
-<!-- Nav Item: Akıllı -->
-<a href="stitch-smart.html" class="flex flex-col items-center gap-1 text-slate-400">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="layout-grid"></i>
-<span class="text-xs font-medium">Akıllı</span>
-</a>
-<!-- Nav Item: Keşfet -->
-<a href="stitch-discover.html" class="flex flex-col items-center gap-1 text-slate-400 relative">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="compass"></i>
-<span class="text-xs font-medium">Keşfet</span>
-</a>
-<!-- Nav Item: Profil (Active) -->
-<a href="stitch-profile.html" class="flex flex-col items-center gap-1 text-[#7C5CFF]">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="user"></i>
-<span class="text-xs font-bold">Profil</span>
-</a>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); height: calc(4.5rem + env(safe-area-inset-bottom));" data-purpose="bottom-nav">
+  <a href="stitch-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
+    <span class="text-[10px] font-semibold leading-none">Ev</span>
+  </a>
+  <a href="stitch-smart.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="layout-grid"></i>
+    <span class="text-[10px] font-semibold leading-none">Ak&#305;ll&#305;</span>
+  </a>
+  <a href="stitch-discover.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="compass"></i>
+    <span class="text-[10px] font-semibold leading-none">Ke&#351;fet</span>
+  </a>
+  <a href="stitch-profile.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #4C7DFF;" aria-current="page">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="user"></i>
+    <span class="text-[10px] font-semibold leading-none">Profil</span>
+  </a>
 </nav>
 <!-- END: BottomNavigation -->
 <!-- BEGIN: IconInitialization -->
@@ -156,9 +153,9 @@
     lucide.createIcons();
     // Kullanıcı Bilgileri sayfasında yapılan ad/fotoğraf değişiklikleriyle senkron — gerçek veri yoksa nötr yer tutucu kalır
     (function () {
-      var name = localStorage.getItem('nexusUserName');
+      var name = nexusGetItem('nexusUserName');
       if (name) document.getElementById('profile-name').textContent = name;
-      var avatar = localStorage.getItem('nexusAvatar');
+      var avatar = nexusGetItem('nexusAvatar');
       if (avatar) {
         var img = document.getElementById('profile-avatar');
         img.src = avatar;

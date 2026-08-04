@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Akıllı Senaryolar</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  
+
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -26,30 +26,31 @@
       background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
       min-height: 100dvh;
     }
-    
+
     .card-shadow {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     }
-    
+
     .nexus-gradient {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
     }
-    
+
     .nexus-text-gradient {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
   </style>
 <script src="ai-fab.js"></script>
-<script src="theme.js"></script>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
 <script src="data.js"></script>
 </head>
 <body class="text-slate-900 flex flex-col relative">
 
   <!-- Header -->
   <header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
-    <a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+    <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
       <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
     </a>
     <h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Akıllı Senaryolar</h1>
@@ -60,7 +61,7 @@
 
   <!-- Main Content -->
   <main class="flex-grow px-5 pt-4 pb-32 space-y-5">
-    
+
     <!-- Title (sayfa üstü başlık + alt metin: ortalanmış) -->
     <div class="text-center">
       <h2 class="text-2xl font-bold leading-tight tracking-tight mb-1">Yeni Bir Tetikleyici Seç</h2>
@@ -68,62 +69,62 @@
     </div>
 
     <!-- Quick Start / Featured Card -->
-    <section class="bg-white rounded-3xl card-shadow p-5 flex items-start space-x-4 border border-slate-50 active:scale-[0.99] transition-transform">
+    <section onclick="openConfigureSheet('Duruma Göre Başlat', 'Cihaz durumu değiştiğinde senaryoları tetikle', 'activity', 'text-emerald-600', 'bg-emerald-500/10')" class="bg-white rounded-3xl card-shadow p-5 flex items-start space-x-4 border border-slate-50 active:scale-[0.99] transition-transform cursor-pointer">
       <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
         <i class="w-7 h-7" data-lucide="activity"></i>
       </div>
-      <div class="flex-1 mt-1 text-center">
+      <div class="flex-1 mt-1 text-left">
         <h3 class="text-[17px] font-bold">Duruma Göre Başlat</h3>
         <p class="text-sm text-slate-500 mt-1 leading-snug">Cihazların durumu değiştiğinde diğer senaryoları otomatik olarak tetikleyin.</p>
       </div>
     </section>
 
-    
+
     <!-- Trigger List Card -->
     <section class="bg-white rounded-3xl card-shadow overflow-hidden border border-slate-50" data-purpose="trigger-list">
-      
+
       <!-- Item 1 -->
-      <div onclick="addAutomation('Cihaz Durumu', 'Bir cihaz açıldığında veya kapandığında', 'lightbulb', 'text-[#7C5CFF]', 'bg-[#7C5CFF]/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
-        <div class="w-12 h-12 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] flex items-center justify-center flex-shrink-0">
+      <div onclick="openConfigureSheet('Cihaz Durumu', 'Bir cihaz açıldığında veya kapandığında', 'lightbulb', 'text-[#4C7DFF]', 'bg-[#4C7DFF]/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+        <div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="lightbulb"></i>
         </div>
-        <div class="flex-1 ml-4 text-center">
+        <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Cihaz Durumu</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Bir cihaz açıldığında veya kapandığında</p>
         </div>
         <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
       </div>
-      
+
       <!-- Item 2 -->
-      <div onclick="addAutomation('Zamanlayıcı', 'Belirli bir saatte veya günde', 'clock', 'text-blue-500', 'bg-blue-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <div onclick="openConfigureSheet('Zamanlayıcı', 'Belirli bir saatte veya günde', 'clock', 'text-blue-500', 'bg-blue-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="clock"></i>
         </div>
-        <div class="flex-1 ml-4 text-center">
+        <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Zamanlayıcı</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Belirli bir saatte veya günde</p>
         </div>
         <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
       </div>
-      
+
       <!-- Item 3 -->
-      <div onclick="addAutomation('Hava Durumu', 'Sıcaklık, nem veya rüzgar değiştiğinde', 'sun', 'text-amber-500', 'bg-amber-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <div onclick="openConfigureSheet('Hava Durumu', 'Sıcaklık, nem veya rüzgar değiştiğinde', 'sun', 'text-amber-500', 'bg-amber-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="sun"></i>
         </div>
-        <div class="flex-1 ml-4 text-center">
+        <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Hava Durumu</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Sıcaklık, nem veya rüzgar değiştiğinde</p>
         </div>
         <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
       </div>
-      
+
       <!-- Item 4 -->
-      <div onclick="addAutomation('Konum', 'Eve vardığında veya evden ayrıldığında', 'map-pin', 'text-emerald-500', 'bg-emerald-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <div onclick="openConfigureSheet('Konum', 'Eve vardığında veya evden ayrıldığında', 'map-pin', 'text-emerald-500', 'bg-emerald-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="map-pin"></i>
         </div>
-        <div class="flex-1 ml-4 text-center">
+        <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Konum</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Eve vardığında veya evden ayrıldığında</p>
         </div>
@@ -131,11 +132,11 @@
       </div>
 
       <!-- Item 5 -->
-      <div onclick="addAutomation('Güvenlik Modu', 'Alarm sistemi durumu değiştiğinde', 'shield-check', 'text-cyan-500', 'bg-cyan-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <div onclick="openConfigureSheet('Güvenlik Modu', 'Alarm sistemi durumu değiştiğinde', 'shield-check', 'text-cyan-500', 'bg-cyan-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="shield-check"></i>
         </div>
-        <div class="flex-1 ml-4 text-center">
+        <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Güvenlik Modu</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Alarm sistemi durumu değiştiğinde</p>
         </div>
@@ -143,11 +144,11 @@
       </div>
 
       <!-- Item 6 -->
-      <div onclick="addAutomation('Alarm Tetiklendiğinde', 'Sensörler bir tehlike algıladığında', 'bell-ring', 'text-red-500', 'bg-red-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <div onclick="openConfigureSheet('Alarm Tetiklendiğinde', 'Sensörler bir tehlike algıladığında', 'bell-ring', 'text-red-500', 'bg-red-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="bell-ring"></i>
         </div>
-        <div class="flex-1 ml-4 text-center">
+        <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Alarm Tetiklendiğinde</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Sensörler bir tehlike algıladığında</p>
         </div>
@@ -156,48 +157,141 @@
     </section>
 
 
-  
-    <!-- Quick Create Button -->
-    <button onclick="toggleQuickCreate()" class="mt-8 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#7C5CFF] to-[#22D3EE] text-white py-4 rounded-2xl font-bold active:opacity-90 transition-opacity shadow-lg shadow-[#7C5CFF]/30">
-      <i class="w-5 h-5" data-lucide="zap"></i>
-      Hızlı Oluştur
-    </button>
+
+    <!-- Quick Create Button -->    <!-- Quick Create Button -->
+    <button onclick="toggleQuickCreate()" class="mt-3 w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-600 py-4 rounded-2xl font-bold active:bg-slate-50 transition-colors">
+      <i class="w-5 h-5" data-lucide="plus"></i>
+      Hızlı Oluştur</button>
   </main>
 
 
-  
+
 
   <script>
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 
   <script>
+    let pendingAutomation = null;
+
+    function openConfigureSheet(title, desc, icon, colorClass, bgClass) {
+      pendingAutomation = { title, desc, icon, colorClass, bgClass };
+
+      document.getElementById('config-sheet-title').innerText = title;
+      document.getElementById('config-sheet-desc').innerText = desc;
+      renderConfigOptions(title);
+
+      const iconWrap = document.getElementById('config-sheet-icon-wrap');
+      iconWrap.className = 'w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mx-auto mb-4 ' + bgClass + ' ' + colorClass;
+
+      const iconEl = document.getElementById('config-sheet-icon');
+      iconEl.className = 'w-6 h-6';
+      iconEl.setAttribute('data-lucide', icon);
+      if(typeof lucide !== 'undefined') { lucide.createIcons(); }
+
+      const sheet = document.getElementById('configure-sheet');
+      const backdrop = document.getElementById('configure-backdrop');
+
+      backdrop.classList.remove('hidden');
+      setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+      sheet.classList.remove('translate-y-full');
+    }
+
+
+    function renderConfigOptions(title) {
+      const target = document.getElementById('config-options');
+      if (!target) return;
+      const key = String(title || '').toLowerCase();
+      let rows;
+      if (key.includes('cihaz')) {
+        rows = [['Tetikleyici cihaz', 'Secilen cihaz'], ['Durum degisimi', 'Acildi / Kapandi']];
+      } else if (key.includes('zaman')) {
+        rows = [['Calisma saati', 'Saat sec'], ['Tekrar', 'Gunluk / Haftalik']];
+      } else if (key.includes('hava')) {
+        rows = [['Kosul', 'Sicaklik / Nem / Ruzgar'], ['Esik degeri', 'Deger sec']];
+      } else if (key.includes('konum')) {
+        rows = [['Bolge', 'Ev / Disarisi'], ['Mesafe', 'Yaklasinca / Ayrilinca']];
+      } else if (key.includes('venlik') || key.includes('guven')) {
+        rows = [['Mod', 'Evde / Disarida / Gece'], ['Aksiyon', 'Alarm / Kamera / Kilit']];
+      } else if (key.includes('alarm')) {
+        rows = [['Sensor', 'Kapi / Hareket / Duman'], ['Tepki', 'Bildirim + Siren']];
+      } else if (key.includes('duruma')) {
+        rows = [['Kaynak', 'Cihaz veya sensor'], ['Kural', 'Durum degisince']];
+      } else {
+        rows = [['Etkilenecek cihazlar', 'Uyumlu cihazlar'], ['Calisma zamani', 'Her zaman']];
+      }
+      target.innerHTML = rows.map(function(row) {
+        return '<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center gap-4"><span class="text-sm font-semibold text-slate-700">' + row[0] + '</span><span class="text-sm text-[#4C7DFF] font-bold text-right">' + row[1] + '</span></div>';
+      }).join('');
+    }
+
+    function closeConfigureSheet() {
+      const sheet = document.getElementById('configure-sheet');
+      const backdrop = document.getElementById('configure-backdrop');
+
+      sheet.classList.add('translate-y-full');
+      backdrop.classList.add('opacity-0');
+      setTimeout(() => backdrop.classList.add('hidden'), 300);
+      pendingAutomation = null;
+    }
+
+    function confirmAddAutomation() {
+      if(!pendingAutomation) return;
+      addAutomation(pendingAutomation.title, pendingAutomation.desc, pendingAutomation.icon, pendingAutomation.colorClass, pendingAutomation.bgClass);
+    }
+
     function addAutomation(title, desc, icon, colorClass, bgClass) {
       const urlParams = new URLSearchParams(window.location.search);
       const type = urlParams.get('type') || 'automation'; // default to automation
-      
+
       const storageKey = type === 'clickrun' ? 'nexusCustomClickRun' : 'nexusCustomAutomations';
       const targetTab = type === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
-      
+
       let autos = [];
       try {
-        autos = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        autos = readAndNormalizeItems(storageKey, type);
       } catch (e) {}
-      autos.push({ title: title, desc: desc, icon: icon, colorClass: colorClass, bgClass: bgClass });
-      localStorage.setItem(storageKey, JSON.stringify(autos));
-      
+      autos.push({ id: 'custom-' + Date.now(), title: title, desc: desc, icon: icon, colorClass: colorClass, bgClass: bgClass, room: 'Tüm Ev' });
+      writeNormalizedItems(storageKey, autos, type);
+
       // Navigate back to smart with a query param to open correct tab
       window.location.href = 'stitch-smart.html?tab=' + targetTab;
     }
   </script>
 
-  <!-- BEGIN: Quick Create Bottom Sheet -->
+  <!-- BEGIN: Configure Sheet -->
+    <div id="configure-backdrop" onclick="closeConfigureSheet()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity opacity-0 duration-300"></div>
+    <div id="configure-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-10 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+      <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
+
+      <div id="config-sheet-icon-wrap" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mx-auto mb-4">
+        <i id="config-sheet-icon" class="w-6 h-6"></i>
+      </div>
+      <h3 id="config-sheet-title" class="text-2xl font-bold text-slate-800 mb-2 text-center">Senaryo</h3>
+      <p id="config-sheet-desc" class="text-sm text-slate-500 mb-8 text-center">Açıklama</p>
+
+      <div id="config-options" class="space-y-4 mb-8">
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+            <span class="text-sm font-semibold text-slate-700">Etkilenecek Cihazlar</span>
+            <span class="text-sm text-nexusPurple font-bold">Tüm Uyumlu Cihazlar</span>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+            <span class="text-sm font-semibold text-slate-700">Çalışma Zamanı</span>
+            <span class="text-sm text-slate-500" id="automation-time-display">Her Zaman</span>
+        </div>
+      </div>
+
+      <button onclick="confirmAddAutomation()" class="w-full py-4 rounded-2xl bg-slate-900 text-white font-bold text-base active:scale-95 transition-transform">Senaryoyu Kaydet</button>
+    </div>
+    <!-- END: Configure Sheet -->
+
+    <!-- BEGIN: Quick Create Bottom Sheet -->
   <div id="quick-create-backdrop" onclick="toggleQuickCreate()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity opacity-0 duration-300"></div>
   <div id="quick-create-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-12 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col max-h-[80vh]">
     <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
     <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Hızlı Öneriler</h3>
     <p class="text-sm text-slate-500 mb-6 text-center">Mevcut cihazlarınıza göre size özel senaryo önerileri.</p>
-    
+
     <div id="quick-create-list" class="space-y-3 overflow-y-auto">
       <!-- Generated suggestions go here -->
     </div>
@@ -207,13 +301,13 @@
     function toggleQuickCreate() {
       const sheet = document.getElementById('quick-create-sheet');
       const backdrop = document.getElementById('quick-create-backdrop');
-      
+
       if (sheet.classList.contains('translate-y-full')) {
         // Open
         backdrop.classList.remove('hidden');
         setTimeout(function() { backdrop.classList.remove('opacity-0'); }, 10);
         sheet.classList.remove('translate-y-full');
-        
+
         populateQuickCreate();
       } else {
         // Close
@@ -226,15 +320,14 @@
     function populateQuickCreate() {
       const container = document.getElementById('quick-create-list');
       container.innerHTML = '';
-      
+
       let devices = [];
       try {
-        devices = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]');
+        devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
       } catch (e) {}
 
       if (devices.length === 0) {
-        container.innerHTML = '<div class="text-center p-6 text-slate-400 bg-slate-50 rounded-2xl">Öneri oluşturulacak cihaz bulunamadı. Önce bir cihaz ekleyin.</div>';
-        return;
+        container.innerHTML = '<div class="rounded-3xl border border-slate-100 bg-white p-6 text-center shadow-sm"><div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-7 h-7" data-lucide="sparkles"></i></div><h4 class="text-base font-extrabold text-slate-900">Oneri hazir degil</h4><p class="mt-2 text-sm text-slate-500">Cihaz eklenince hizli olusturma onerileri burada gorunecek.</p></div>'; if (typeof lucide !== 'undefined') lucide.createIcons(); return;
       }
 
       // Generate suggestions based on devices
@@ -242,38 +335,38 @@
         let suggestionTitle = "";
         let suggestionDesc = "";
         let icon = "zap";
-        let color = "text-[#7C5CFF]";
-        let bg = "bg-[#7C5CFF]/10";
-        
+        let color = "text-[#4C7DFF]";
+        let bg = "bg-[#4C7DFF]/10";
+
         const dName = (device.name || '').toLowerCase();
-        
+
         if (dName.indexOf('lamba') !== -1 || device.icon === 'lightbulb') {
           suggestionTitle = "Akşam Aydınlatması (" + device.name + ")";
-          suggestionDesc = "Gün batımında ışığı otomatik aç";
+          suggestionDesc = "Gün batımında ışığı otomatik açç";
           icon = "lightbulb";
           color = "text-amber-500";
           bg = "bg-amber-500/10";
         } else if (dName.indexOf('klima') !== -1 || device.icon === 'thermometer' || dName.indexOf('ısıt') !== -1) {
           suggestionTitle = "Sıcaklık Kontrolü (" + device.name + ")";
-          suggestionDesc = "Oda sıcaklığı 25°C üstüne çıkarsa çalıştır";
+          suggestionDesc = "Oda sıcaklığı 25°C üstüne çıçıkarsa çalıştır";
           icon = "thermometer";
           color = "text-blue-500";
           bg = "bg-blue-500/10";
         } else if (dName.indexOf('priz') !== -1 || device.icon === 'plug') {
           suggestionTitle = "Tasarruf Modu (" + device.name + ")";
-          suggestionDesc = "Evden çıkıldığında prizi kapat";
+          suggestionDesc = "Evden çıkıldığında prizi kapıat";
           icon = "plug";
           color = "text-emerald-500";
           bg = "bg-emerald-500/10";
-        } else if (dName.indexOf('kapı') !== -1 || device.icon === 'door-open' || dName.indexOf('kilit') !== -1) {
+        } else if (dName.indexOf('kapıı') !== -1 || device.icon === 'door-open' || dName.indexOf('kilit') !== -1) {
           suggestionTitle = "Güvenlik Uyarısı (" + device.name + ")";
-          suggestionDesc = "Gece kapı açılırsa bildirim gönder";
+          suggestionDesc = "Gece kapıı açılırsa bildirim gönder";
           icon = "shield-alert";
           color = "text-red-500";
           bg = "bg-red-500/10";
         } else {
           suggestionTitle = device.name + " Otomasyonu";
-          suggestionDesc = device.name + " cihazı için akıllı kural";
+          suggestionDesc = device.name + " cihazıı için akıllı kural";
           icon = device.icon || "cpu";
           color = "text-indigo-500";
           bg = "bg-indigo-500/10";
@@ -281,7 +374,7 @@
 
         const btn = document.createElement('div');
         btn.onclick = function() {
-          addAutomation(suggestionTitle, suggestionDesc, icon, color, bg);
+          openConfigureSheet(suggestionTitle, suggestionDesc, icon, color, bg);
         };
         btn.className = "flex items-center p-4 bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-2xl cursor-pointer transition-colors";
         btn.innerHTML = `
@@ -298,7 +391,7 @@
         `;
         container.appendChild(btn);
       });
-      
+
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
   </script>
@@ -307,5 +400,3 @@
 
 
 </html>
-
-

@@ -1,508 +1,255 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#ffffff">
-<title>NEXUS — Kart Ekle</title>
-
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <script src="https://unpkg.com/lucide@latest"></script>
+<meta name="theme-color" content="#f4f5fb">
+<title>NEXUS - Kart Ekle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100dvh;
+    background: linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+    color: #111827;
+  }
+  .picker-shell {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .picker-card {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(18px);
+  }
+  .picker-tab.active {
+    color: #111827;
+    font-weight: 700;
+  }
+  .picker-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    height: 2px;
+    border-radius: 999px;
+    background: #2563eb;
+  }
+  .picker-row + .picker-row {
+    border-top: 1px solid rgba(226, 232, 240, 0.9);
+  }
+  .check-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1.5px solid #d1d5db;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 160ms ease;
+  }
+  .check-circle.selected {
+    border-color: #3b82f6;
+    background: #3b82f6;
+    color: #fff;
+  }
+  .icon-wrap {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+</style>
+<script src="auth.js"></script>
   <script src="theme.js"></script>
-<script src="ai-fab.js"></script>
-
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: transparent;
-      min-height: max(884px, 100dvh);
-    }
-
-    /* Gradient arka plan */
-    .nexus-bg {
-      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 30%, #ffffff 100%);
-    }
-    html.dark .nexus-bg {
-      background: linear-gradient(to bottom, #1e1b4b 0%, #0f172a 100%);
-    }
-
-    /* Checkbox özelleştirme */
-    .nexus-check {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      border: 2px solid #d1d5db;
-      flex-shrink: 0;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: white;
-      position: relative;
-    }
-    .nexus-check:checked {
-      background: #7C5CFF;
-      border-color: #7C5CFF;
-    }
-    .nexus-check:checked::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -55%) rotate(45deg);
-      width: 6px;
-      height: 10px;
-      border: 2px solid white;
-      border-top: none;
-      border-left: none;
-    }
-    html.dark .nexus-check {
-      background: #1e293b;
-      border-color: #475569;
-    }
-
-    /* Tab active underline */
-    .tab-btn {
-      position: relative;
-      padding-bottom: 10px;
-      transition: color 0.2s;
-    }
-    .tab-btn.active {
-      color: #0f172a;
-      font-weight: 700;
-    }
-    .tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      height: 2.5px;
-      background: #7C5CFF;
-      border-radius: 9999px;
-    }
-    html.dark .tab-btn.active { color: white; }
-
-    /* Row hover */
-    .feature-row {
-      transition: background 0.15s;
-    }
-    .feature-row:active {
-      background: rgba(124,92,255,0.05);
-    }
-
-    /* Boş durum */
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 80px 40px;
-      color: #94a3b8;
-    }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  </style>
+<script src="data.js"></script>
 </head>
-<body class="nexus-bg text-slate-900 dark:text-slate-100 flex flex-col">
+<body>
+  <div class="picker-shell px-4 pt-12 pb-6">
+    <header class="flex items-center justify-between text-[15px] font-medium mb-5">
+      <button class="text-slate-900" type="button" onclick="cancelPicker()">Iptal</button>
+      <h1 class="text-[17px] font-semibold tracking-tight">Kart Ekle</h1>
+      <button class="text-blue-600 font-semibold" type="button" onclick="commitSelection()">Ekle</button>
+    </header>
 
-  <!-- HEADER -->
-  <header class="pt-14 pb-0 px-5 bg-transparent">
-    <div class="flex items-center justify-between mb-4">
-      <button onclick="window.history.back()" class="text-base font-medium text-slate-500 dark:text-slate-400">İptal</button>
-      <h1 class="text-base font-bold">Kart Ekle</h1>
-      <button id="btn-add" onclick="saveAndGoBack()" class="text-base font-bold text-[#7C5CFF]">Ekle</button>
-    </div>
+    <nav class="flex items-center justify-center gap-6 text-[15px] text-slate-500 mb-5">
+      <button class="picker-tab relative pb-2 active" data-tab="smartHome" type="button">Akıllı Ev</button>
+      <button class="picker-tab relative pb-2" data-tab="devices" type="button">Cihazlar</button>
+      <button class="picker-tab relative pb-2" data-tab="tapToRun" type="button">Dokun Çalıştır</button>
+    </nav>
 
-    <!-- TAB BAR -->
-    <div class="flex items-end gap-6 border-b border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
-      <button class="tab-btn active text-sm whitespace-nowrap" onclick="switchTab('smart-home', this)">Smart Home</button>
-      <button class="tab-btn text-sm text-slate-400 whitespace-nowrap" onclick="switchTab('devices', this)">Cihazlar</button>
-      <button class="tab-btn text-sm text-slate-400 whitespace-nowrap" onclick="switchTab('tap-to-run', this)">Hızlı Aksiyonlar</button>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto px-4 py-4 pb-28">
-
-    <!-- === SMART HOME TAB === -->
-    <div id="tab-smart-home">
-      <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-50 dark:border-slate-800">
-        <ul id="smart-home-list" class="divide-y divide-slate-50 dark:divide-slate-800">
-          <!-- Dinamik olarak JS ile doldurulur -->
-        </ul>
-      </div>
-    </div>
-
-    <!-- === CİHAZLAR TAB === -->
-    <div id="tab-devices" class="hidden">
-      <div class="flex items-center justify-between mb-3 px-1">
-        <button onclick="toggleDeviceFilter()" class="flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-          <span>Cihazları Filtrele</span>
-          <i data-lucide="chevron-down" class="w-4 h-4"></i>
-        </button>
-        <span id="devices-count" class="text-sm text-slate-400 font-medium">(0)</span>
-      </div>
-      <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-50 dark:border-slate-800">
-        <ul id="devices-list" class="divide-y divide-slate-50 dark:divide-slate-800">
-          <!-- Dinamik olarak JS ile doldurulur -->
-        </ul>
-      </div>
-      <div id="devices-empty" class="hidden empty-state">
-        <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-          <i data-lucide="bluetooth-off" class="w-8 h-8 text-slate-300"></i>
-        </div>
-        <p class="text-slate-400 font-medium">Henüz eşleştirilmiş cihaz yok</p>
-        <p class="text-sm text-slate-300 mt-1">Cihaz eklemek için Cihazlar sayfasını ziyaret et</p>
-      </div>
-    </div>
-
-    <!-- === HIZLI AKSİYONLAR TAB === -->
-    <div id="tab-tap-to-run" class="hidden">
-      <div class="flex items-center justify-between mb-3 px-1">
-        <button class="flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-          <span>Filtrele</span>
-          <i data-lucide="chevron-down" class="w-4 h-4"></i>
-        </button>
-        <span class="text-sm text-slate-400 font-medium">(0)</span>
-      </div>
-      <div id="tap-run-empty" class="empty-state">
-        <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-          <i data-lucide="zap-off" class="w-8 h-8 text-slate-300"></i>
-        </div>
-        <p class="text-slate-400 font-medium">Hızlı aksiyon senaryosu yok</p>
-        <p class="text-sm text-slate-300 mt-1">Akıllı senaryolar oluşturmak için Otomasyon sekmesini kullan</p>
-        <button onclick="window.location.href='stitch-skills.html'" class="mt-4 px-5 py-2.5 bg-[#7C5CFF] text-white text-sm font-bold rounded-2xl">Senaryo Oluştur</button>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- BOTTOM SAFE AREA -->
-  <div class="fixed bottom-0 left-0 right-0 h-6 bg-transparent pointer-events-none"></div>
+    <main class="picker-card rounded-[28px] px-4 py-3 flex-1 overflow-hidden">
+      <div class="max-h-[72dvh] overflow-y-auto" id="picker-list"></div>
+    </main>
+  </div>
 
   <script>
-    lucide.createIcons();
+    const pickerState = {
+      activeTab: 'smartHome',
+      smartHome: new Set((window.getSelectedSmartHomeCards ? window.getSelectedSmartHomeCards() : []).map(card => card.id)),
+      tapToRun: new Set((window.getTapToRunCards ? window.getTapToRunCards() : []).map(card => card.id)),
+      devices: new Set()
+    };
 
-    // =============================================
-    // 1. NEXUS ÖZELLİKLERİ (Smart Home listesi)
-    // =============================================
-    const NEXUS_FEATURES = [
-      {
-        id: 'weather',
-        title: 'Hava Durumu',
-        subtitle: 'Güncel hava bilgisi ve tahminler',
-        emoji: '???',
-        url: 'stitch-map.html',
-        defaultVal: 'Veri Yok',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      },
-      {
-        id: 'energy',
-        title: 'AI Enerji Tasarrufu',
-        subtitle: 'Günlük tüketim tahmini ve tasarruf ipuçları',
-        emoji: '?',
-        url: 'stitch-energy.html',
-        defaultVal: '0,00 kWh',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      },
-      {
-        id: 'dnd',
-        title: 'Rahatsız Etme',
-        subtitle: 'Bildirimlerini ve sesini yönet',
-        emoji: '??',
-        url: 'stitch-dnd.html',
-        defaultVal: 'Kapalı',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#FF3B5C]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13.73 21a2 2 0 0 1-3.46 0M18.63 13A17.89 17.89 0 0 1 18 8M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14M18 8a6 6 0 0 0-9.33-5M1 1l22 22" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      },
-      {
-        id: 'ai-protect',
-        title: 'AI Protect',
-        subtitle: 'Ev güvenliği ve akıllı alarm sistemi',
-        emoji: '???',
-        url: 'stitch-scan.html',
-        defaultVal: 'Aktif Değil',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      },
-      {
-        id: 'ai-chat',
-        title: 'AI Asistan',
-        subtitle: 'NEXUS yapay zeka sohbet asistanı',
-        emoji: '??',
-        url: 'stitch-chat.html',
-        defaultVal: 'Hazır',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      },
-      {
-        id: 'program',
-        title: 'Ev Programı',
-        subtitle: 'Zamanlama ve rutin yönetimi',
-        emoji: '??',
-        url: 'stitch-program.html',
-        defaultVal: 'Yok',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"></rect><line x1="16" y1="2" x2="16" y2="6" stroke-linecap="round"></line><line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round"></line><line x1="3" y1="10" x2="21" y2="10" stroke-linecap="round"></line></svg>'
-      },
-      {
-        id: 'discover',
-        title: 'Keşfet',
-        subtitle: 'Yeni özellikler ve mini uygulamalar',
-        emoji: '??',
-        url: 'stitch-discover.html',
-        defaultVal: 'Yenilikler',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" stroke-linecap="round" stroke-linejoin="round"></polygon></svg>'
-      },
-      {
-        id: 'household',
-        title: 'Ev Yönetimi',
-        subtitle: 'Ev üyeleri ve oda yönetimi',
-        emoji: '??',
-        url: 'stitch-household.html',
-        defaultVal: '1 Üye',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"></path><polyline points="9 22 9 12 15 12 15 22" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>'
-      },
-      {
-        id: 'smart',
-        title: 'Akıllı Senaryolar',
-        subtitle: 'Otomasyon ve tıkla-çalıştır sahneleri',
-        emoji: '??',
-        url: 'stitch-smart.html',
-        defaultVal: 'Hazır',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      },
-      {
-        id: 'map',
-        title: 'Konum & Harita',
-        subtitle: 'Ev konumu ve hava durumu haritası',
-        emoji: '??',
-        url: 'stitch-map.html',
-        defaultVal: 'Konum Yok',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"></circle></svg>'
-      },
-      {
-        id: 'plus',
-        title: 'NEXUS+',
-        subtitle: 'Premium özellikler ve içerikler',
-        emoji: '?',
-        url: 'stitch-plus.html',
-        defaultVal: 'Keşfet',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-[#7C5CFF]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-linecap="round" stroke-linejoin="round"></polygon></svg>'
-      },
-      {
-        id: 'messages',
-        title: 'Mesaj Merkezi',
-        subtitle: 'Sistem bildirimleri ve uyarılar',
-        emoji: '??',
-        url: 'stitch-messages.html',
-        defaultVal: 'Yeni Yok',
-        wattage: 0,
-        size: 1,
-        iconSvg: '<svg class="mb-2 w-8 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
-      }
-    ];
+    function getDeviceSource() {
+      if (window.NEXUS_DATA && Array.isArray(window.NEXUS_DATA.devices)) return window.NEXUS_DATA.devices;
+      return typeof window.getNexusLocalDevices === 'function' ? window.getNexusLocalDevices() : [];
+    }
 
-    // =============================================
-    // 2. MEVCUT KARTI OKU
-    // =============================================
-    let currentCards = [];
-    try {
-      currentCards = JSON.parse(localStorage.getItem('nexusDashboardCards')) || [];
-    } catch(e) {}
-
-    // Aktif kart ID'lerini bir Set'e al (kolay kontrol için)
-    const activeIds = new Set(currentCards.filter(c => c.visible).map(c => c.id));
-
-    // =============================================
-    // 3. SMART HOME LİSTESİNİ DOLDUR
-    // =============================================
-    function renderSmartHomeList() {
-      const ul = document.getElementById('smart-home-list');
-      ul.innerHTML = '';
-
-      NEXUS_FEATURES.forEach(feature => {
-        const isChecked = activeIds.has(feature.id);
-        const li = document.createElement('li');
-        li.className = 'feature-row flex items-center gap-4 px-5 py-4 cursor-pointer select-none';
-        li.innerHTML = `
-          <input type="checkbox" class="nexus-check" id="feat-${feature.id}" ${isChecked ? 'checked' : ''} data-id="${feature.id}"/>
-          <span class="text-2xl flex-shrink-0" aria-hidden="true">${feature.emoji}</span>
-          <div class="flex-1 min-w-0">
-            <p class="font-semibold text-[15px] leading-tight">${feature.title}</p>
-            <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 leading-snug">${feature.subtitle}</p>
-          </div>
-        `;
-        // Satıra tıklandığında checkbox durumu değişsin
-        li.addEventListener('click', (e) => {
-          if (e.target.tagName !== 'INPUT') {
-            const cb = li.querySelector('input[type="checkbox"]');
-            cb.checked = !cb.checked;
-            if (cb.checked) activeIds.add(feature.id);
-            else activeIds.delete(feature.id);
-          }
-        });
-        li.querySelector('input').addEventListener('change', (e) => {
-          if (e.target.checked) activeIds.add(feature.id);
-          else activeIds.delete(feature.id);
-        });
-        ul.appendChild(li);
+    function hydrateDeviceSelection() {
+      pickerState.devices = new Set();
+      getDeviceSource().forEach(device => {
+        if (window.isDeviceCardSelected && window.isDeviceCardSelected(device.id)) {
+          pickerState.devices.add(device.id);
+        }
       });
     }
 
-    // =============================================
-    // 4. CİHAZLAR LİSTESİNİ DOLDUR
-    // =============================================
-    function renderDevicesList() {
-      const ul = document.getElementById('devices-list');
-      const emptyEl = document.getElementById('devices-empty');
-      const countEl = document.getElementById('devices-count');
-      ul.innerHTML = '';
+    function iconForCatalog(card) {
+      if (!card) return '';
+      const iconMap = {
+        sun: '<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        shield: '<svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        bolt: '<svg class="w-5 h-5 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 12-14h-7l1-6z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        folder: '<svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 7h5l2 2h11v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        note: '<svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 4h10a2 2 0 0 1 2 2v9l-5 5H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14 20v-5h5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        checklist: '<svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 6h10M9 12h10M9 18h10M4 6h.01M4 12h.01M4 18h.01" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        spark: '<svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3zM5 18l.9 2 .9-2 2-.9-2-.9-.9-2-.9 2-2 .9 2 .9z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        leaf: '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 21c6 0 12-6 12-12-6 0-12 6-12 12z"></path><path d="M9 15c2 0 6-2 10-8 0 8-4 12-10 12-2.5 0-4.5-1-6-3" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        'bell-off': '<svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10.73 5.08A6 6 0 0 1 18 11c0 3 1 5 2 6H8m5 4a2 2 0 0 1-4 0M3 3l18 18" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        calendar: '<svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 5h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        lock: '<svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        video: '<svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"></rect><path d="M16 10l5-3v10l-5-3z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        'home-shield': '<svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"></path><path d="M5 10v9h5v-5h4v5h5v-9"></path><path d="M12 8l4 1.7v3.3c0 2.2-1.4 3.9-4 5-2.6-1.1-4-2.8-4-5V9.7L12 8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        chart: '<svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19h16"></path><path d="M7 16V9M12 16V5M17 16v-3" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        play: '<svg class="w-5 h-5 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 6l10 6-10 6V6z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        rocket: '<svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 19c2-4 5-7 9-9 2-5 5-6 5-6s1 3-1 5c-2 4-5 7-9 9l-4 1 0-4z" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        moon: '<svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      };
+      return iconMap[card.icon] || iconMap.chart;
+    }
 
-      // Cihazlar: nexusDashboardCards'dan device olanları çek
-      // Cihazları radar/pair sayfasından eklenenler id'leri 'device-' ile başlar
-      const devices = currentCards.filter(c => c.id && c.id.startsWith('device-'));
-      
-      countEl.textContent = `(${devices.length})`;
+    function checkCircle(selected) {
+      return `<span class="check-circle${selected ? ' selected' : ''}">${selected ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12.5l4 4 10-10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"></path></svg>' : ''}</span>`;
+    }
 
-      if (devices.length === 0) {
-        ul.classList.add('hidden');
-        emptyEl.classList.remove('hidden');
+    function renderRow({ id, title, iconSvg, selected, subtitle }) {
+      return `
+        <button class="picker-row w-full flex items-center gap-3 py-4 text-left active:bg-slate-50/80" type="button" onclick="toggleItem('${id}')">
+          ${checkCircle(selected)}
+          <span class="icon-wrap">${iconSvg}</span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-[16px] font-semibold text-slate-900">${title}</span>
+            ${subtitle ? `<span class="block text-[12px] text-slate-500 mt-1">${subtitle}</span>` : ''}
+          </span>
+        </button>
+      `;
+    }
+
+    function renderPicker() {
+      const list = document.getElementById('picker-list');
+      const tabs = document.querySelectorAll('.picker-tab');
+      tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tab === pickerState.activeTab));
+
+      if (pickerState.activeTab === 'smartHome') {
+        list.innerHTML = window.NEXUS_CARD_CATALOG.smartHome.map(card => renderRow({
+          id: card.id,
+          title: card.title,
+          iconSvg: iconForCatalog(card),
+          selected: pickerState.smartHome.has(card.id)
+        })).join('');
         return;
       }
 
-      ul.classList.remove('hidden');
-      emptyEl.classList.add('hidden');
+      if (pickerState.activeTab === 'devices') {
+        const devices = getDeviceSource();
+        if (devices.length === 0) {
+          list.innerHTML = `<div class="py-12 text-center text-sm text-slate-500">Henüz eşleşmiş akıllı cihaz bulunmuyor.</div>`;
+          return;
+        }
+        list.innerHTML = devices.map(device => renderRow({
+          id: device.id,
+          title: device.name || 'Cihaz',
+          subtitle: device.room || device.state || 'Akıllı cihaz',
+          iconSvg: '<svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 7h10v10H7z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M4 10h3M17 10h3M10 4v3M10 17v3" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+          selected: pickerState.devices.has(device.id)
+        })).join('');
+        return;
+      }
 
-      devices.forEach(device => {
-        const isChecked = activeIds.has(device.id);
-        const li = document.createElement('li');
-        li.className = 'feature-row flex items-center gap-4 px-5 py-4 cursor-pointer select-none';
-        li.innerHTML = `
-          <input type="checkbox" class="nexus-check" id="dev-${device.id}" ${isChecked ? 'checked' : ''} data-id="${device.id}"/>
-          ${device.img
-            ? `<img src="${device.img}" alt="${device.title}" class="w-10 h-10 rounded-xl object-contain bg-slate-100 flex-shrink-0 p-1"/>`
-            : `<div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              </div>`
-          }
-          <div class="flex-1 min-w-0">
-            <p class="font-semibold text-[15px] leading-tight">${device.title}</p>
-            ${device.wattage ? `<p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">${device.wattage}W · Tahmini enerji takibi aktif</p>` : ''}
-          </div>
-        `;
-        li.addEventListener('click', (e) => {
-          if (e.target.tagName !== 'INPUT') {
-            const cb = li.querySelector('input[type="checkbox"]');
-            cb.checked = !cb.checked;
-            if (cb.checked) activeIds.add(device.id);
-            else activeIds.delete(device.id);
-          }
-        });
-        li.querySelector('input').addEventListener('change', (e) => {
-          if (e.target.checked) activeIds.add(device.id);
-          else activeIds.delete(device.id);
-        });
-        ul.appendChild(li);
-      });
+      list.innerHTML = window.NEXUS_CARD_CATALOG.tapToRun.map(card => renderRow({
+        id: card.id,
+        title: card.title,
+        subtitle: 'Hızlı senaryo kısayolu',
+        iconSvg: iconForCatalog(card),
+        selected: pickerState.tapToRun.has(card.id)
+      })).join('');
     }
 
-    // =============================================
-    // 5. TAB GEÇİŞİ
-    // =============================================
-    function switchTab(tabId, btn) {
-      // Tüm tab içeriklerini gizle
-      ['smart-home', 'devices', 'tap-to-run'].forEach(id => {
-        document.getElementById('tab-' + id).classList.add('hidden');
-      });
-      document.getElementById('tab-' + tabId).classList.remove('hidden');
-
-      // Tab butonlarını sıfırla
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.remove('active');
-        b.classList.add('text-slate-400');
-      });
-      btn.classList.add('active');
-      btn.classList.remove('text-slate-400');
-
-      // İkonları yenile
-      lucide.createIcons();
+    function toggleItem(id) {
+      const active = pickerState.activeTab;
+      const target = pickerState[active];
+      if (target.has(id)) target.delete(id);
+      else target.add(id);
+      renderPicker();
     }
 
-    // =============================================
-    // 6. KAYDET VE GERİ DÖN
-    // =============================================
-    window.saveAndGoBack = function() {
-      // Mevcut kart listesinden görünürlükleri güncelle
-      const updatedCards = [...currentCards];
+    function commitSelection() {
+      if (typeof window.setSmartHomeCardSelected === 'function') {
+        window.NEXUS_CARD_CATALOG.smartHome.forEach(card => {
+          window.setSmartHomeCardSelected(card.id, pickerState.smartHome.has(card.id));
+        });
+      }
 
-      // Yeni eklenenler: activeIds içinde olup currentCards'da olmayanlar
-      activeIds.forEach(id => {
-        const exists = updatedCards.find(c => c.id === id);
-        if (!exists) {
-          // Smart Home özelliği mi?
-          const feature = NEXUS_FEATURES.find(f => f.id === id);
-          if (feature) {
-            updatedCards.push({
-              id: feature.id,
-              title: feature.title,
-              url: feature.url,
-              iconSvg: feature.iconSvg,
-              valId: '',
-              valDefault: feature.defaultVal,
-              wattage: feature.wattage,
-              size: 1,
-              visible: true
-            });
-          }
-        } else {
-          exists.visible = true;
-        }
+      if (typeof window.setTapToRunCardSelected === 'function') {
+        window.NEXUS_CARD_CATALOG.tapToRun.forEach(card => {
+          window.setTapToRunCardSelected(card.id, pickerState.tapToRun.has(card.id));
+        });
+      }
+
+      if (typeof window.setDeviceCardSelected === 'function') {
+        getDeviceSource().forEach(device => {
+          window.setDeviceCardSelected(device.id, pickerState.devices.has(device.id));
+        });
+      }
+
+      location.href = 'stitch-home.html';
+    }
+
+    function cancelPicker() {
+      location.href = 'stitch-home.html';
+    }
+
+    document.querySelectorAll('.picker-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        pickerState.activeTab = tab.dataset.tab;
+        renderPicker();
       });
+    });
 
-      // Tikini kaldırdıklarını gizle
-      updatedCards.forEach(c => {
-        if (!activeIds.has(c.id)) {
-          c.visible = false;
-        }
-      });
-
-      localStorage.setItem('nexusDashboardCards', JSON.stringify(updatedCards));
-      window.location.href = 'stitch-home.html';
-    };
-
-    // =============================================
-    // 7. BAŞLAT
-    // =============================================
-    renderSmartHomeList();
-    renderDevicesList();
-    lucide.createIcons();
+    hydrateDeviceSelection();
+    document.addEventListener('nexusDataReady', () => {
+      hydrateDeviceSelection();
+      renderPicker();
+    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderPicker);
+    } else {
+      renderPicker();
+    }
+    window.commitSelection = commitSelection;
+    window.cancelPicker = cancelPicker;
+    window.toggleItem = toggleItem;
   </script>
 </body>
 </html>
-
 

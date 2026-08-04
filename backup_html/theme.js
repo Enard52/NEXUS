@@ -21,7 +21,7 @@ window.addEventListener('error', function(e) {
 (function() {
   // 1. Dark Mode Logic
   function applyTheme() {
-    const isDark = localStorage.getItem('nexusDarkMode') === 'true';
+    const isDark = (typeof nexusGetItem === 'function' ? nexusGetItem('nexusDarkMode') : localStorage.getItem('nexusDarkMode')) === 'true';
     if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
@@ -51,7 +51,7 @@ window.addEventListener('error', function(e) {
     cfg.theme = cfg.theme || {};
     cfg.theme.extend = cfg.theme.extend || {};
     cfg.theme.extend.colors = Object.assign({}, cfg.theme.extend.colors, {
-      nexusPurple: '#7C5CFF',
+      nexusPurple: '#4C7DFF',
       nexusCyan: '#22D3EE'
     });
     tailwind.config = cfg;
@@ -65,7 +65,9 @@ window.addEventListener('error', function(e) {
     /* background-image: none => sayfa içi body{background: açık-gradyan} tanımlarını da söndürür (plus/radar/skills) */
     'html.dark body { background-color: #0f172a !important; background-image: none !important; color: #e2e8f0 !important; }',
     'html.dark body.bg-dashboard-gradient, html.dark body.bg-gradient-custom, html.dark body.bg-miniapp-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
-    'html.dark body.bg-smart-gradient { background: linear-gradient(180deg, #022c22 0%, #064e3b 100%) !important; }',
+    /* Tam sayfa paneller (ör. Ev Yönetimi detay paneli #home-detail) bg-gradient-custom'u body'de değil div'de kullanır; koyu temada da koyulaştır */
+    'html.dark .bg-gradient-custom { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
+    'html.dark body.bg-smart-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
     
     /* General Backgrounds */
     'html.dark .bg-white { background-color: #1e293b !important; border-color: rgba(255,255,255,0.05) !important; }',
@@ -74,6 +76,8 @@ window.addEventListener('error', function(e) {
     'html.dark .bg-slate-200, html.dark .bg-slate-300 { background-color: #475569 !important; }',
     /* Yarı saydam açık zeminler (örn. bg-slate-50/50 üst başlıklar) */
     'html.dark [class*="bg-slate-50/"], html.dark [class*="bg-gray-50/"], html.dark [class*="bg-slate-100/"] { background-color: rgba(30,41,59,0.7) !important; }',
+    /* Yarı saydam koyu-gri zeminler (ör. hızlı aksiyon kapat butonu bg-slate-200/60) — koyu temada görünür olsun */
+    'html.dark [class*="bg-slate-200/"], html.dark [class*="bg-slate-300/"] { background-color: #475569 !important; }',
     /* Keyfî açık hex zeminler (sayfa içi bg-[#...] sınıfları) */
     'html.dark [class*="bg-[#F3F2F9]"], html.dark [class*="bg-[#F1F7FF]"], html.dark [class*="bg-[#f8fafc]"] { background-color: #1e293b !important; }',
     /* Sayfa özel renk tokenları (tailwind.config içinden gelen açık zeminler) */
@@ -88,6 +92,7 @@ window.addEventListener('error', function(e) {
     'html.dark .bottom-nav { background-color: rgba(15,23,42,0.92) !important; border-top-color: rgba(255,255,255,0.08) !important; }',
     /* Harita: Leaflet zemini ve beyaz üst başlık gradyanı */
     'html.dark .leaflet-container { background: #0f172a !important; }',
+    'html.dark .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9); }',
     'html.dark .leaflet-control-attribution { background: rgba(15,23,42,0.7) !important; color: #94a3b8 !important; }',
     'html.dark .bg-gradient-to-b.from-white { background-image: linear-gradient(to bottom, rgba(15,23,42,0.95), rgba(15,23,42,0.75), transparent) !important; }',
     
@@ -103,7 +108,7 @@ window.addEventListener('error', function(e) {
     'html.dark .text-text-secondary { color: #94a3b8 !important; }',
 
     /* Borders */
-    'html.dark .border-slate-100, html.dark .border-slate-200, html.dark .border-gray-100, html.dark .border-gray-200, html.dark .border-nexus-border { border-color: #334155 !important; }',
+    'html.dark .border-slate-50, html.dark .border-slate-100, html.dark .border-slate-200, html.dark .border-gray-50, html.dark .border-gray-100, html.dark .border-gray-200, html.dark .border-nexus-border { border-color: #334155 !important; }',
     'html.dark .divide-slate-100 > *, html.dark .divide-gray-100 > * { border-color: #334155 !important; }',
     
     /* Form Elements */
@@ -112,7 +117,7 @@ window.addEventListener('error', function(e) {
     
     /* Settings Switches in Dark Mode */
     'html.dark .switch .slider { background-color: #475569 !important; }',
-    'html.dark input:checked + .slider { background-color: #7C5CFF !important; }',
+    'html.dark input:checked + .slider { background-color: #4C7DFF !important; }',
     'html.dark .switch .slider:before { background-color: #cbd5e1 !important; }',
     
     /* Shadows */
@@ -131,14 +136,99 @@ window.addEventListener('error', function(e) {
   darkStyle.textContent = darkCss;
   document.head.appendChild(darkStyle);
 
+  // Temel düzen kuralları (tema bağımsız):
+  // scrollbar-gutter, kaydırma çubuğu belirip kaybolurken sayfa genişliğinin
+  // sekme geçişlerinde oynamasını engeller (masaüstü/geniş ekran).
+  var baseStyle = document.createElement('style');
+  baseStyle.id = 'nexus-base-layout';
+  baseStyle.textContent = [
+    'html { scrollbar-gutter: stable; }',
+    /* Alt gezinme sekmeleri: geçiş/animasyon yok; yalnızca dokununca (aktifken) mor renk */
+    'nav[data-purpose="bottom-nav"] a { transition: none !important; }',
+    'nav[data-purpose="bottom-nav"] a:active, nav[data-purpose="bottom-nav"] a:active i, nav[data-purpose="bottom-nav"] a:active span { color: #4C7DFF !important; }'
+  ].join('\n');
+  document.head.appendChild(baseStyle);
+
+  // 1.5 Gerçek Bildirim Rozeti — Mesaj Merkezi'ne giden her bağlantıda (zil, liste satırı vb.)
+  // okunmamış bildirim varsa kırmızı nokta gösterir. Veri tamamen gerçek:
+  // nexusEvents (olay akışı) + nexusReadNotifs (okunan bildirim id'leri).
+  var badgeStyle = document.createElement('style');
+  badgeStyle.id = 'nexus-badge-style';
+  badgeStyle.textContent = [
+    '.nexus-badge-host { position: relative; display: inline-flex; }',
+    '.nav-badge {',
+    '  position: absolute; top: -2px; right: -2px;',
+    '  width: 10px; height: 10px; border-radius: 9999px;',
+    '  background: #FF3B5C; border: 2px solid #ffffff;',
+    '  z-index: 10; transform: scale(0); animation: nexusBadgePop 0.3s forwards;',
+    '}',
+    'html.dark .nav-badge { border-color: #0f172a; }',
+    '@keyframes nexusBadgePop { to { transform: scale(1); } }'
+  ].join('\n');
+  document.head.appendChild(badgeStyle);
+
+  function updateNavBadge() {
+    var links = document.querySelectorAll('a[href="stitch-messages.html"]');
+    if (!links.length) return;
+
+    var readSet = [];
+    try { readSet = JSON.parse(nexusGetItem('nexusReadNotifs') || '[]'); } catch (e) {}
+    if (!Array.isArray(readSet)) readSet = [];
+
+    var events = [];
+    try { events = JSON.parse(nexusGetItem('nexusEvents') || '[]'); } catch (e) {}
+    if (!Array.isArray(events)) events = [];
+    var hasUnread = events.some(function (ev) { return readSet.indexOf(ev.id) === -1; });
+
+    Array.prototype.forEach.call(links, function (link) {
+      var badge = link.querySelector('.nav-badge');
+      if (hasUnread) {
+        if (badge) return;
+        // Rozeti bağlantının ikonuna sabitle (ikon yoksa bağlantının kendisine)
+        var host = link.querySelector('.nexus-badge-host');
+        if (!host) {
+          var icon = link.querySelector('svg, i[data-lucide]');
+          host = document.createElement('span');
+          host.className = 'nexus-badge-host';
+          if (icon && icon.parentNode) {
+            icon.parentNode.insertBefore(host, icon);
+            host.appendChild(icon);
+          } else {
+            link.appendChild(host);
+          }
+        }
+        host.insertAdjacentHTML('beforeend', '<span class="nav-badge"></span>');
+      } else if (badge) {
+        badge.remove();
+      }
+    });
+  }
+  // Sayfa içi güncelleme için dışarı aç (örn. mesajlar sayfası okundu işaretleyince)
+  window.nexusUpdateNavBadge = updateNavBadge;
+
+  function startBadgeWatch() {
+    updateNavBadge();
+    // Aynı sekmede yeni olay eklenirse yakalamak için hafif polling
+    setInterval(updateNavBadge, 2000);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startBadgeWatch);
+  } else {
+    startBadgeWatch();
+  }
+  // Başka sekmede okundu/eklendi ise anında yansıt
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'nexusEvents' || e.key === 'nexusReadNotifs') updateNavBadge();
+  });
+
   // 2. Profile Data Loader — gerçek kullanıcı verisi (nexusUserName/nexusAvatar)
   window.addEventListener('DOMContentLoaded', () => {
     const userNameElement = document.getElementById('nexus-user-name');
     const userAvatarElement = document.getElementById('nexus-user-avatar');
 
     if (userNameElement || userAvatarElement) {
-      const storedName = localStorage.getItem('nexusUserName') || 'Misafir';
-      const storedAvatar = localStorage.getItem('nexusAvatar');
+      const storedName = nexusGetItem('nexusUserName') || 'Misafir';
+      const storedAvatar = nexusGetItem('nexusAvatar');
 
       if (userNameElement) {
         if (userNameElement.tagName === 'INPUT') {
@@ -154,3 +244,4 @@ window.addEventListener('error', function(e) {
     }
   });
 })();
+

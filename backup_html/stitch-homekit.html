@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>NEXUS ” HomeKit Bilgileri</title>
+<title>NEXUS — HomeKit Bilgileri</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts: Inter (NEXUS body font) -->
@@ -31,19 +31,21 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="data.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">HomeKit Bilgileri</h1>
+<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">HomeKit Bilgileri</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
@@ -51,7 +53,7 @@
 <!-- Bridge status -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="bridge-status">
 <div class="flex items-center gap-4 mb-5">
-<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white">
+<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white">
 <i class="w-6 h-6" data-lucide="router"></i>
 </div>
 <div>
@@ -81,7 +83,7 @@
 <section class="bg-white rounded-3xl menu-container-shadow p-5 text-center" data-purpose="pairing-code">
 <p class="text-sm text-slate-500 mb-3">Apple Ev uygulamasında bu kodu girerek NEXUS cihazlarını HomeKit'e ekle.</p>
 <p class="text-3xl font-extrabold tracking-[0.2em] text-slate-900 mb-4" id="pairing-code">481-22-746</p>
-<button class="w-full bg-[#7C5CFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" id="copy-btn" onclick="copyCode()">Kodu Kopyala</button>
+<button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" id="copy-btn" onclick="copyCode()">Kodu Kopyala</button>
 </section>
 <!-- Info note -->
 <p class="text-xs text-slate-400 mt-5 px-2 leading-relaxed">HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Aktarılan cihazlar hem NEXUS hem Apple Ev uygulamasından kontrol edilebilir.</p>
@@ -104,3 +106,4 @@
     }
   </script>
 </body></html>
+

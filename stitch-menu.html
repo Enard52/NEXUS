@@ -23,10 +23,10 @@
 <style data-purpose="custom-colors-gradients">
     /* NEXUS brand gradients (purple -> cyan) */
     .gradient-progress {
-      background: linear-gradient(90deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(90deg, #4C7DFF 0%, #22D3EE 100%);
     }
     .gradient-button {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
     }
     .soft-shadow {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -50,6 +50,7 @@
       min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
@@ -59,9 +60,9 @@
 <main class="max-w-md mx-auto px-6 flex flex-col gap-8 pt-12 pb-8">
 <!-- BEGIN: TopNavigation -->
 <nav class="flex items-center mb-2">
-<a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-2 -ml-2" id="back-button">
-<svg class="h-8 w-8 text-black" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"></path>
+<a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1" id="back-button">
+<svg class="h-7 w-7 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
 </nav>
@@ -107,6 +108,13 @@
 <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
+<!-- Setting Item 3 -->
+<a class="hidden bg-white p-5 rounded-2xl soft-shadow border border-gray-50 flex justify-between items-center cursor-pointer active:bg-gray-50 transition-colors" href="stitch-web.html">
+<span class="text-lg font-medium text-text-primary">NEXUS Web Sürümü</span>
+<svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
 </div>
 </section>
 <!-- END: OtherSettingsSection -->
@@ -117,7 +125,7 @@
   (function () {
     var LIMIT = 30;
     var raw = null;
-    try { raw = JSON.parse(localStorage.getItem('nexusAiPoints') || 'null'); } catch (e) {}
+    try { raw = JSON.parse(nexusGetItem('nexusAiPoints') || 'null'); } catch (e) {}
     var today = new Date().toISOString().slice(0, 10);
     var used = (raw && raw.date === today) ? raw.used : 0;
     var left = Math.max(0, LIMIT - used);
@@ -128,7 +136,7 @@
   // Gerçek sohbet geçmişi: nexusChatHistory (son güncellenen üstte)
   (function () {
     var list = [];
-    try { list = JSON.parse(localStorage.getItem('nexusChatHistory') || '[]') || []; } catch (e) {}
+    try { list = JSON.parse(nexusGetItem('nexusChatHistory') || '[]') || []; } catch (e) {}
     list = list.filter(function (c) { return c && c.messages && c.messages.length; });
     list.sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
     var box = document.getElementById('chat-history-list');
@@ -148,6 +156,14 @@
         '<p class="text-lg font-medium text-text-primary truncate">' + esc(c.title || 'Sohbet') + '</p>' +
         '</a>';
     }).join('');
+  })();
+</script>
+<script>
+  (function () {
+    var webLink = document.querySelector('a[href="stitch-web.html"]');
+    if (webLink) {
+      webLink.remove();
+    }
   })();
 </script>
 </body></html>

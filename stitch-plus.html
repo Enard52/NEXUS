@@ -16,7 +16,7 @@
       theme: {
         extend: {
           colors: {
-            'nexus-purple': '#7C5CFF',
+            'nexus-purple': '#4C7DFF',
             'nexus-cyan': '#22D3EE',
             'nexus-brand': '#6D28D9',
           }
@@ -41,7 +41,7 @@
     }
     /* NEXUS primary CTA gradient */
     .nexus-cta {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
     }
   </style>
 <!-- END: Custom Styles -->
@@ -51,20 +51,21 @@
     }
   </style>
   <script src="ai-fab.js"></script>
-<script src="theme.js"></script>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
 <script src="data.js"></script>
 </head>
 <body class="flex flex-col items-center p-6 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 <!-- BEGIN: Navigation Bar -->
 <header class="w-full flex justify-between items-center mb-8 pt-10" data-purpose="top-navigation">
 <!-- Back Arrow Icon -->
-<button onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-2">
-<svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<button onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
+<svg class="h-7 w-7 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </button>
 <!-- Abonelik durumu badge -->
-<span id="plan-badge" class="hidden text-xs font-bold px-3 py-1.5 rounded-full text-white" style="background:#7C5CFF">Aktif</span>
+<span id="plan-badge" class="hidden text-xs font-bold px-3 py-1.5 rounded-full text-white" style="background:#4C7DFF">Aktif</span>
 <!-- Document Icon -->
 <button onclick="window.location.href='stitch-billing.html'" aria-label="Ödemeler ve Abonelik" class="p-2">
 <svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +100,7 @@
 <ul class="space-y-5">
 <!-- Feature Item 1 -->
 <li class="flex items-center gap-3">
-<div class="bg-[#7C5CFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
+<div class="bg-[#4C7DFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
 <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -108,7 +109,7 @@
 </li>
 <!-- Feature Item 2 -->
 <li class="flex items-center gap-3">
-<div class="bg-[#7C5CFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
+<div class="bg-[#4C7DFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
 <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -117,7 +118,7 @@
 </li>
 <!-- Feature Item 3 -->
 <li class="flex items-center gap-3">
-<div class="bg-[#7C5CFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
+<div class="bg-[#4C7DFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
 <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -126,7 +127,7 @@
 </li>
 <!-- Feature Item 4 -->
 <li class="flex items-center gap-3">
-<div class="bg-[#7C5CFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
+<div class="bg-[#4C7DFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
 <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -135,7 +136,7 @@
 </li>
 <!-- Feature Item 5 -->
 <li class="flex items-center gap-3">
-<div class="bg-[#7C5CFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
+<div class="bg-[#4C7DFF] rounded-full w-6 h-6 flex items-center justify-center shrink-0">
 <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
@@ -149,7 +150,7 @@
 <section class="w-full max-w-md grid grid-cols-2 gap-4 mb-8" data-purpose="subscription-plans">
 <!-- Annual Plan (Highlighted) -->
 <div id="plan-annual" onclick="selectPlan('Yıllık')" class="bg-white dark:bg-slate-800 dark:bg-slate-800 border-2 border-nexus-purple rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm relative cursor-pointer ring-2 ring-nexus-purple transition-all" data-plan="Yıllık">
-<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7C5CFF] text-white text-xs font-bold px-3 py-1 rounded-full">Popüler</div>
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4C7DFF] text-white text-xs font-bold px-3 py-1 rounded-full">Popüler</div>
 <h3 class="text-xl font-bold text-black dark:text-white dark:text-white">Yıllık</h3>
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-sm mb-2">7 gün ücretsiz deneme</p>
 <div class="text-2xl font-bold text-black dark:text-white dark:text-white">₺3999.99</div>
@@ -200,7 +201,7 @@
     document.getElementById('plan-monthly').classList.toggle('ring-2', plan==='Aylık');
     document.getElementById('plan-monthly').classList.toggle('ring-nexus-purple', plan==='Aylık');
     document.getElementById('plan-monthly').classList.toggle('border-gray-100', plan!=='Aylık');
-    if (!localStorage.getItem('nexusPlusPlan')) {
+    if (!nexusGetItem('nexusPlusPlan')) {
       const trialDays = plan === 'Yıllık' ? '7' : '3';
       document.getElementById('cta-btn').textContent = trialDays + ' Gün Ücretsiz Dene';
     }
@@ -208,7 +209,7 @@
 
   // CTA: abonelik yoksa onay ekranını açar, varsa yönetime götürür
   function ctaAction() {
-    if (localStorage.getItem('nexusPlusPlan')) {
+    if (nexusGetItem('nexusPlusPlan')) {
       window.location.href = 'stitch-billing.html';
       return;
     }
@@ -232,13 +233,13 @@
 
   // Abonelik yalnızca onay adımından sonra başlar
   function confirmCheckout() {
-    localStorage.setItem('nexusPlusPlan', selectedPlan);
-    localStorage.setItem('nexusPlusSince', new Date().toISOString());
+    nexusSetItem('nexusPlusPlan', selectedPlan);
+    nexusSetItem('nexusPlusSince', new Date().toISOString());
     try {
-      var evs = JSON.parse(localStorage.getItem('nexusEvents') || '[]');
+      var evs = JSON.parse(nexusGetItem('nexusEvents') || '[]');
       if (!Array.isArray(evs)) evs = [];
       evs.push({ id: 'e' + Date.now(), type: 'plan', title: 'NEXUS+ aboneliği başlatıldı', detail: selectedPlan + ' plan, ücretsiz deneme ile başladı.', ts: Date.now() });
-      localStorage.setItem('nexusEvents', JSON.stringify(evs));
+      nexusSetItem('nexusEvents', JSON.stringify(evs));
     } catch (e) {}
     closeCheckout();
     applyActiveState();
@@ -247,7 +248,7 @@
 
   // Aktif abonelik görünümü (sayfa açılışı + onay sonrası ortak)
   function applyActiveState() {
-    const plan = localStorage.getItem('nexusPlusPlan');
+    const plan = nexusGetItem('nexusPlusPlan');
     if (!plan) return;
     document.getElementById('cta-btn').textContent = 'Aboneliği Yönet';
     document.getElementById('plan-badge').textContent = 'NEXUS+ ' + plan;
@@ -265,5 +266,3 @@
 </footer>
 <!-- END: Footer Actions -->
 </body></html>
-
-

@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>NEXUS ” CarPlay</title>
+<title>NEXUS — CarPlay</title>
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts: Inter (NEXUS body font) -->
@@ -30,7 +30,7 @@
     }
     /* iOS style toggle */
     .toggle-input:checked + .toggle-track {
-      background-color: #7C5CFF;
+      background-color: #4C7DFF;
     }
     .toggle-input:checked + .toggle-track .toggle-thumb {
       transform: translateX(20px);
@@ -38,26 +38,28 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="data.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1" href="stitch-profile.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-2xl font-bold absolute left-1/2 -translate-x-1/2">CarPlay</h1>
+<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">CarPlay</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pt-4 pb-10">
 <!-- Hero -->
 <section class="flex flex-col items-center text-center mb-8" data-purpose="carplay-hero">
-<div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white shadow-lg mb-4">
+<div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white shadow-lg mb-4">
 <i class="w-10 h-10" data-lucide="car-front"></i>
 </div>
 <h2 class="text-xl font-bold">Arabanda NEXUS</h2>
@@ -80,15 +82,15 @@
 <h3 class="text-lg font-bold mb-3">Nasıl Kurulur?</h3>
 <section class="bg-white rounded-3xl menu-container-shadow p-5 space-y-5" data-purpose="setup-steps">
 <div class="flex gap-4">
-<span class="w-7 h-7 rounded-full bg-[#7C5CFF]/10 text-[#7C5CFF] font-bold text-sm flex items-center justify-center flex-shrink-0">1</span>
+<span class="w-7 h-7 rounded-full bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm flex items-center justify-center flex-shrink-0">1</span>
 <p class="text-sm text-slate-600 font-medium">Telefonunu USB veya kablosuz olarak aracına bağla.</p>
 </div>
 <div class="flex gap-4">
-<span class="w-7 h-7 rounded-full bg-[#7C5CFF]/10 text-[#7C5CFF] font-bold text-sm flex items-center justify-center flex-shrink-0">2</span>
+<span class="w-7 h-7 rounded-full bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm flex items-center justify-center flex-shrink-0">2</span>
 <p class="text-sm text-slate-600 font-medium">Yukarıdaki "CarPlay'de NEXUS" anahtarını aç.</p>
 </div>
 <div class="flex gap-4">
-<span class="w-7 h-7 rounded-full bg-[#7C5CFF]/10 text-[#7C5CFF] font-bold text-sm flex items-center justify-center flex-shrink-0">3</span>
+<span class="w-7 h-7 rounded-full bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm flex items-center justify-center flex-shrink-0">3</span>
 <p class="text-sm text-slate-600 font-medium">Araç ekranında NEXUS simgesine dokun; favori kartların otomatik gelir.</p>
 </div>
 </section>
@@ -103,10 +105,11 @@
     // CarPlay anahtarı kalıcıdır; sayfa yenilense de durum korunur
     (function () {
       var toggle = document.getElementById('carplay-toggle');
-      toggle.checked = localStorage.getItem('nexusCarplayEnabled') === '1';
+      toggle.checked = nexusGetItem('nexusCarplayEnabled') === '1';
       toggle.addEventListener('change', function () {
-        localStorage.setItem('nexusCarplayEnabled', toggle.checked ? '1' : '0');
+        nexusSetItem('nexusCarplayEnabled', toggle.checked ? '1' : '0');
       });
     })();
   </script>
 </body></html>
+

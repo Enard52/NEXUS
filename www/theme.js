@@ -16,12 +16,44 @@ window.addEventListener('error', function(e) {
 }, true);
 
 // theme.js
-// NEXUS Global Theme & Profile Manager
+// NEXUS Global Theme, Profile & Experience Manager
 
 (function() {
+  // Global Haptic Feedback (Vibration) & Click Sound fallback
+  function triggerHaptic() {
+    if (navigator.vibrate) {
+      navigator.vibrate(15); // Hafif ve premium titreşim
+    }
+  }
+
+  window.addEventListener('click', function(e) {
+    var isInteractive = e.target.closest('button, a, input[type="range"], .cat-btn, .product-tile');
+    if (isInteractive) {
+      triggerHaptic();
+    }
+  }, { capture: true, passive: true });
+
+  // Global Offline Indicator
+  function updateOnlineStatus() {
+    var existing = document.getElementById('nexus-offline-badge');
+    if (!navigator.onLine) {
+      if (!existing) {
+        var badge = document.createElement('div');
+        badge.id = 'nexus-offline-badge';
+        badge.className = 'fixed top-2 left-1/2 -translate-x-1/2 z-[999] bg-red-500/90 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg backdrop-blur flex items-center gap-1';
+        badge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg> Çevrimdışı (Yerel Mod)';
+        document.body.appendChild(badge);
+      }
+    } else if (existing) {
+      existing.remove();
+    }
+  }
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  window.addEventListener('load', updateOnlineStatus);
   // 1. Dark Mode Logic
   function applyTheme() {
-    const isDark = localStorage.getItem('nexusDarkMode') === 'true';
+    const isDark = (typeof nexusGetItem === 'function' ? nexusGetItem('nexusDarkMode') : localStorage.getItem('nexusDarkMode')) === 'true';
     if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
@@ -51,7 +83,7 @@ window.addEventListener('error', function(e) {
     cfg.theme = cfg.theme || {};
     cfg.theme.extend = cfg.theme.extend || {};
     cfg.theme.extend.colors = Object.assign({}, cfg.theme.extend.colors, {
-      nexusPurple: '#7C5CFF',
+      nexusPurple: '#4C7DFF',
       nexusCyan: '#22D3EE'
     });
     tailwind.config = cfg;
@@ -67,7 +99,7 @@ window.addEventListener('error', function(e) {
     'html.dark body.bg-dashboard-gradient, html.dark body.bg-gradient-custom, html.dark body.bg-miniapp-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
     /* Tam sayfa paneller (ör. Ev Yönetimi detay paneli #home-detail) bg-gradient-custom'u body'de değil div'de kullanır; koyu temada da koyulaştır */
     'html.dark .bg-gradient-custom { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
-    'html.dark body.bg-smart-gradient { background: linear-gradient(180deg, #022c22 0%, #064e3b 100%) !important; }',
+    'html.dark body.bg-smart-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
     
     /* General Backgrounds */
     'html.dark .bg-white { background-color: #1e293b !important; border-color: rgba(255,255,255,0.05) !important; }',
@@ -76,7 +108,7 @@ window.addEventListener('error', function(e) {
     'html.dark .bg-slate-200, html.dark .bg-slate-300 { background-color: #475569 !important; }',
     /* Yarı saydam açık zeminler (örn. bg-slate-50/50 üst başlıklar) */
     'html.dark [class*="bg-slate-50/"], html.dark [class*="bg-gray-50/"], html.dark [class*="bg-slate-100/"] { background-color: rgba(30,41,59,0.7) !important; }',
-    /* Yarı saydam koyu-gri zeminler (ör. hızlı aksiyon kapat butonu bg-slate-200/60) — koyu temada görünür olsun */
+    /* Yarı saydam koyu-gri zeminler (ör. hızlı aksiyon kapıat butonu bg-slate-200/60) — koyu temada görünür olsun */
     'html.dark [class*="bg-slate-200/"], html.dark [class*="bg-slate-300/"] { background-color: #475569 !important; }',
     /* Keyfî açık hex zeminler (sayfa içi bg-[#...] sınıfları) */
     'html.dark [class*="bg-[#F3F2F9]"], html.dark [class*="bg-[#F1F7FF]"], html.dark [class*="bg-[#f8fafc]"] { background-color: #1e293b !important; }',
@@ -117,7 +149,7 @@ window.addEventListener('error', function(e) {
     
     /* Settings Switches in Dark Mode */
     'html.dark .switch .slider { background-color: #475569 !important; }',
-    'html.dark input:checked + .slider { background-color: #7C5CFF !important; }',
+    'html.dark input:checked + .slider { background-color: #4C7DFF !important; }',
     'html.dark .switch .slider:before { background-color: #cbd5e1 !important; }',
     
     /* Shadows */
@@ -145,7 +177,10 @@ window.addEventListener('error', function(e) {
     'html { scrollbar-gutter: stable; }',
     /* Alt gezinme sekmeleri: geçiş/animasyon yok; yalnızca dokununca (aktifken) mor renk */
     'nav[data-purpose="bottom-nav"] a { transition: none !important; }',
-    'nav[data-purpose="bottom-nav"] a:active, nav[data-purpose="bottom-nav"] a:active i, nav[data-purpose="bottom-nav"] a:active span { color: #7C5CFF !important; }'
+    'nav[data-purpose="bottom-nav"] a:active, nav[data-purpose="bottom-nav"] a:active i, nav[data-purpose="bottom-nav"] a:active span { color: #4C7DFF !important; }',
+    /* Tarayıcıların varsayılan şifre gösterme göz ikonunu gizle (Çift göz çıkmasını engeller) */
+    'input[type="password"]::-ms-reveal, input[type="password"]::-ms-clear { display: none !important; }',
+    'input[type="password"]::-webkit-contacts-auto-fill-button, input[type="password"]::-webkit-credentials-auto-fill-button { visibility: hidden !important; display: none !important; pointer-events: none !important; }'
   ].join('\n');
   document.head.appendChild(baseStyle);
 
@@ -172,11 +207,11 @@ window.addEventListener('error', function(e) {
     if (!links.length) return;
 
     var readSet = [];
-    try { readSet = JSON.parse(localStorage.getItem('nexusReadNotifs') || '[]'); } catch (e) {}
+    try { readSet = JSON.parse(nexusGetItem('nexusReadNotifs') || '[]'); } catch (e) {}
     if (!Array.isArray(readSet)) readSet = [];
 
     var events = [];
-    try { events = JSON.parse(localStorage.getItem('nexusEvents') || '[]'); } catch (e) {}
+    try { events = JSON.parse(nexusGetItem('nexusEvents') || '[]'); } catch (e) {}
     if (!Array.isArray(events)) events = [];
     var hasUnread = events.some(function (ev) { return readSet.indexOf(ev.id) === -1; });
 
@@ -227,8 +262,8 @@ window.addEventListener('error', function(e) {
     const userAvatarElement = document.getElementById('nexus-user-avatar');
 
     if (userNameElement || userAvatarElement) {
-      const storedName = localStorage.getItem('nexusUserName') || 'Misafir';
-      const storedAvatar = localStorage.getItem('nexusAvatar');
+      const storedName = nexusGetItem('nexusUserName') || 'Misafir';
+      const storedAvatar = nexusGetItem('nexusAvatar');
 
       if (userNameElement) {
         if (userNameElement.tagName === 'INPUT') {
@@ -244,3 +279,4 @@ window.addEventListener('error', function(e) {
     }
   });
 })();
+

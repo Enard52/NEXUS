@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NEXUS - Ev Planı</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    .nexus-card-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .active-scale:active { transform: scale(0.96); }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body>
+  <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
+    <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
+      <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
+        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+      </a>
+      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Ev Planı</h1>
+      <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
+        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+      </a>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8">
+
+      <section class="space-y-4 mt-2">
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Bugünkü Program</h3>
+
+        <!-- Routine 1 -->
+        <div class="bg-white rounded-3xl p-5 nexus-card-shadow relative overflow-hidden flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500">
+              <iconify-icon icon="lucide:sunrise" class="text-2xl"></iconify-icon>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-slate-900">Günaydın</h4>
+                <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">07:00</span>
+              </div>
+              <p class="text-[11px] font-medium text-slate-500 mt-1">Işıklar %100, Kahve Makinesi, Perdeler</p>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+          </label>
+        </div>
+
+        <!-- Routine 2 -->
+        <div class="bg-white rounded-3xl p-5 nexus-card-shadow relative overflow-hidden flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-500">
+              <iconify-icon icon="lucide:moon-star" class="text-2xl"></iconify-icon>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-slate-900">Uyku Modu</h4>
+                <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">23:30</span>
+              </div>
+              <p class="text-[11px] font-medium text-slate-500 mt-1">Kapılar kilitlenir, Isı 20°C, Işıklar kapanır</p>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+          </label>
+        </div>
+
+      </section>
+
+      <section class="space-y-4">
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Yaklaşan Otomasyonlar</h3>
+
+        <div class="bg-white/80 backdrop-blur-md rounded-3xl p-4 border border-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-500">
+                <iconify-icon icon="lucide:thermometer" class="text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-bold text-sm text-slate-900">Klima Otomatik Kapanma</p>
+                <p class="text-[11px] font-medium text-slate-500">Evden çıkıldığında</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded-lg">Konum Bazlı</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+<!-- DYNAMIC JS -->
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toggles = document.querySelectorAll('input[type="checkbox"]');
+    const state = JSON.parse(localStorage.getItem('nexusHomeScheduleData') || '{"time":"23:30","name":"Uyku Modu","active":true}');
+    if(toggles.length > 0) {
+        toggles[0].checked = state.active;
+        toggles[0].addEventListener('change', (e) => {
+            state.active = e.target.checked;
+            localStorage.setItem('nexusHomeScheduleData', JSON.stringify(state));
+        });
+    }
+});
+
+</script>
+<script src="smart-card-detail-state.js"></script></body>
+</html>

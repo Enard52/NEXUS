@@ -31,7 +31,7 @@
     }
     /* iOS style toggle */
     .toggle-input:checked + .toggle-track {
-      background-color: #7C5CFF;
+      background-color: #4C7DFF;
     }
     .toggle-input:checked + .toggle-track .toggle-thumb {
       transform: translateX(20px);
@@ -42,16 +42,18 @@
   </style>
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
     }
   </style>
-  <script src="ai-fab.js"></script>
-<script src="theme.js"></script>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
 </head>
 <body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
 <header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="stitch-energy.html">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <!-- MiniApp capsule: more menu + close -->
@@ -68,9 +70,9 @@
 <!-- END: MiniApp Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pb-10">
-<!-- Strategy title & description (listeden localStorage ile senkronize gelir) -->
-<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapat</h1>
-<p class="text-slate-500 text-[15px] leading-relaxed mb-5" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın.</p>
+<!-- Strategy title & description (listeden localStorage ile senkronize gelir; sayfa üstü başlık ortalanmış) -->
+<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3 text-center" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapat</h1>
+<p class="text-slate-500 text-[15px] leading-relaxed mb-5 text-center" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın.</p>
 <!-- Enable toggle (cihaz + ev konumu olmadan açılamaz: gerçek geofencing koşulu) -->
 <label class="inline-flex items-center gap-3 mb-3 cursor-pointer" data-purpose="strategy-toggle">
 <input class="toggle-input hidden" id="strategy-enabled" type="checkbox"/>
@@ -90,16 +92,16 @@
 </a>
 <div class="bg-slate-50 rounded-2xl p-4 flex items-center gap-4">
 <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
-<i class="w-6 h-6 text-[#7C5CFF]" data-lucide="lightbulb"></i>
+<i class="w-6 h-6 text-[#4C7DFF]" data-lucide="lightbulb"></i>
 </div>
 <div class="min-w-0 flex-grow">
 <h3 class="font-bold" id="device-name">Aydınlatma</h3>
 <span class="inline-block text-xs font-semibold text-amber-600 bg-amber-100 rounded-md px-2 py-0.5 mt-1">Zorunlu</span>
 </div>
 <!-- Cihaz ekleme QR akışına gider -->
-<a class="flex-shrink-0 bg-[#7C5CFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-scan.html">Ekle</a>
+<a class="flex-shrink-0 bg-[#4C7DFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-scan.html">Ekle</a>
 </div>
-<a class="block text-center text-[#7C5CFF] font-semibold pt-4" href="stitch-energy-devices.html">Düzenle</a>
+<a class="block text-center text-[#4C7DFF] font-semibold pt-4" href="stitch-energy-devices.html">Düzenle</a>
 </section>
 <!-- Settings card -->
 <section class="bg-white rounded-3xl card-shadow p-5" data-purpose="settings-card">
@@ -109,7 +111,7 @@
 </button>
 <div class="bg-slate-50 rounded-2xl p-4 flex items-center justify-between gap-4">
 <span class="font-medium text-slate-600 truncate" id="settings-status">Ayarlanmadı</span>
-<button class="flex-shrink-0 bg-[#7C5CFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" onclick="openSheet('settings')">Ayarlar</button>
+<button class="flex-shrink-0 bg-[#4C7DFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" onclick="openSheet('settings')">Ayarlar</button>
 </div>
 </section>
 </main>
@@ -148,7 +150,7 @@
 <div class="sheet fixed bottom-0 inset-x-0 z-50" data-purpose="miniapp-menu" id="sheet-menu">
 <div class="bg-white rounded-t-3xl p-6">
 <div class="flex items-center gap-3 mb-2">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C5CFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
 <i class="w-5 h-5" data-lucide="zap"></i>
 </div>
 <h3 class="text-lg font-bold">AI Enerji Tasarrufu</h3>
@@ -181,7 +183,7 @@
 
     /* ---------- Load the strategy picked on the list page ---------- */
     (function () {
-      var raw = localStorage.getItem('nexusEnergyStrategy');
+      var raw = nexusGetItem('nexusEnergyStrategy');
       if (!raw) return;
       try {
         var s = JSON.parse(raw);
@@ -195,7 +197,7 @@
 
     /* ---------- Home location synced back from the map picker ---------- */
     (function () {
-      var loc = localStorage.getItem('nexusHomeLocation');
+      var loc = nexusGetItem('nexusHomeLocation');
       if (!loc) return;
       var val = document.getElementById('home-location-value');
       val.textContent = loc;
@@ -207,9 +209,16 @@
       var btn = document.getElementById('save-settings-btn');
       btn.disabled = false;
       btn.classList.remove('bg-slate-300');
-      btn.classList.add('bg-[#7C5CFF]', 'active:scale-[0.98]');
+      btn.classList.add('bg-[#4C7DFF]', 'active:scale-[0.98]');
     }
     function saveSettings() {
+      // Ayarları strateji bazında kalıcı yaz (ev konumu bu stratejiye bağlanır)
+      var loc = nexusGetItem('nexusHomeLocation') || '';
+      var map = {};
+      try { map = JSON.parse(nexusGetItem('nexusEnergySettingsMap') || '{}'); } catch (e) { map = {}; }
+      map[currentTitle] = { homeLocation: loc, savedAt: Date.now() };
+      nexusSetItem('nexusEnergySettingsMap', JSON.stringify(map));
+      document.getElementById('settings-status').textContent = loc ? 'Ev Konumu: ' + loc : 'Ayarlanmadı';
       closeSheets();
     }
 
@@ -219,12 +228,12 @@
     var toggle = document.getElementById('strategy-enabled');
     var currentTitle = document.getElementById('strategy-title').textContent;
     var enabledMap = {};
-    try { enabledMap = JSON.parse(localStorage.getItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { enabledMap = {}; }
+    try { enabledMap = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { enabledMap = {}; }
     toggle.checked = !!enabledMap[currentTitle];
     toggle.addEventListener('change', function () {
       if (toggle.checked) {
-        var hasDevice = parseInt(localStorage.getItem('nexusEnergyDeviceCount') || '0', 10) > 0;
-        var hasLocation = !!localStorage.getItem('nexusHomeLocation');
+        var hasDevice = parseInt(nexusGetItem('nexusEnergyDeviceCount') || '0', 10) > 0;
+        var hasLocation = !!nexusGetItem('nexusHomeLocation');
         if (!hasDevice || !hasLocation) {
           toggle.checked = false;
           var missing = [];
@@ -238,7 +247,16 @@
       }
       document.getElementById('enable-note').classList.add('hidden');
       enabledMap[currentTitle] = toggle.checked;
-      localStorage.setItem('nexusEnergyEnabledMap', JSON.stringify(enabledMap));
+      nexusSetItem('nexusEnergyEnabledMap', JSON.stringify(enabledMap));
+      // Strateji açıldığında gerçek olay akışına kaydet (bildirim + günlük)
+      if (toggle.checked) {
+        try {
+          var evs = JSON.parse(nexusGetItem('nexusEvents') || '[]');
+          if (!Array.isArray(evs)) evs = [];
+          evs.push({ id: 'e' + Date.now(), type: 'energy', title: 'Enerji stratejisi etkinleştirildi', detail: currentTitle, ts: Date.now() });
+          nexusSetItem('nexusEvents', JSON.stringify(evs));
+        } catch (e) {}
+      }
     });
 
     /* ---------- Bottom sheets ---------- */
@@ -253,12 +271,11 @@
 
     /* ---------- Device count synced from the device select page ---------- */
     (function () {
-      var count = parseInt(localStorage.getItem('nexusEnergyDeviceCount') || '0', 10);
+      var count = parseInt(nexusGetItem('nexusEnergyDeviceCount') || '0', 10);
       if (count > 0) {
         document.getElementById('no-device-note').classList.add('hidden');
       }
     })();
   </script>
 </body></html>
-
 

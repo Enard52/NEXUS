@@ -18,7 +18,7 @@
       theme: {
         extend: {
           colors: {
-            'nexus-purple': '#7C5CFF',
+            'nexus-purple': '#4C7DFF',
             'nexus-cyan': '#22D3EE',
             'nexus-bg': '#F8F7FC',
             'nexus-border': '#F1F1F4',
@@ -47,6 +47,7 @@
       min-height: 100dvh;
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
@@ -55,8 +56,8 @@
 <!-- BEGIN: Header Section -->
 <header class="w-full px-6 pt-14 pb-6 flex flex-col items-center relative" data-purpose="main-header">
 <!-- Back Button -->
-<a aria-label="Geri" class="absolute top-14 left-4 w-10 h-10 flex items-center justify-center text-slate-700" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
-<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<a aria-label="Geri" class="absolute top-14 left-4 p-1 text-slate-700" href="#" onclick="event.preventDefault(); window.history.back();">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </a>
 <!-- Brand Logo: NEXUS N monogram -->
 <div class="mt-2" data-purpose="brand-logo">
@@ -141,13 +142,25 @@
         c.classList.add('hidden');
       });
       item.querySelector('.dnd-check').classList.remove('hidden');
-      // Ana sayfadaki Rahatsız Etme kartı bu durumla senkronize olur
+
       var label = item.querySelector('span.text-\\[17px\\]').textContent;
-      localStorage.setItem('nexusDndState', label.indexOf('Kapat') !== -1 ? 'Kapalı' : label.replace(' Rahatsız Etme', ''));
+      var stateLabel = label.indexOf('Kapat') !== -1 ? 'Kapalı' : label.replace(' Rahatsız Etme', '');
+      nexusSetItem('nexusDndState', stateLabel);
+
+      if (stateLabel === 'Kapalı') {
+        nexusRemoveItem('nexusDndEndTime');
+      } else {
+        var hoursMatch = stateLabel.match(/(\d+)/);
+        if (hoursMatch) {
+          var hours = parseInt(hoursMatch[1]);
+          var endTime = Date.now() + (hours * 60 * 60 * 1000);
+          nexusSetItem('nexusDndEndTime', endTime);
+        }
+      }
     }
     // Restore the previously saved selection
     (function () {
-      var state = localStorage.getItem('nexusDndState');
+      var state = nexusGetItem('nexusDndState');
       if (!state || state === 'Kapalı') return;
       document.querySelectorAll('#dnd-options li').forEach(function (li) {
         var label = li.querySelector('span.text-\\[17px\\]').textContent;
@@ -157,7 +170,7 @@
     })();
     // Show the saved schedule from the Program Ekle page (synced via localStorage)
     (function () {
-      var raw = localStorage.getItem('nexusDndSchedule');
+      var raw = nexusGetItem('nexusDndSchedule');
       if (!raw) return;
       try {
         var s = JSON.parse(raw);

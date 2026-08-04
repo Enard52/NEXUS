@@ -32,24 +32,25 @@
     }
     
     .nexus-gradient {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
     }
     
     .nexus-text-gradient {
-      background: linear-gradient(135deg, #7C5CFF 0%, #22D3EE 100%);
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
   </style>
 <script src="ai-fab.js"></script>
-<script src="theme.js"></script>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
 <script src="data.js"></script>
 </head>
 <body class="text-slate-900 flex flex-col relative">
 
   <!-- Header -->
   <header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
-    <a aria-label="Geri" class="p-1 -ml-1" href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'">
+    <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
       <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
     </a>
     <h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Akıllı Senaryolar</h1>
@@ -61,18 +62,18 @@
   <!-- Main Content -->
   <main class="flex-grow px-5 pt-4 pb-32 space-y-5">
     
-    <!-- Title -->
-    <div>
+    <!-- Title (sayfa üstü başlık + alt metin: ortalanmış) -->
+    <div class="text-center">
       <h2 class="text-2xl font-bold leading-tight tracking-tight mb-1">Yeni Bir Tetikleyici Seç</h2>
       <p class="text-slate-500 text-sm">Evinizin kontrolünü otomatikleştirmek için bir senaryo başlatıcısı seçin.</p>
     </div>
 
     <!-- Quick Start / Featured Card -->
-    <section class="bg-white rounded-3xl card-shadow p-5 flex items-start space-x-4 border border-slate-50 active:scale-[0.99] transition-transform">
+    <section onclick="addAutomation('Duruma Göre Başlat', 'Cihaz durumu değiştiğinde senaryoları tetikle', 'activity', 'text-emerald-600', 'bg-emerald-500/10')" class="bg-white rounded-3xl card-shadow p-5 flex items-start space-x-4 border border-slate-50 active:scale-[0.99] transition-transform cursor-pointer">
       <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
         <i class="w-7 h-7" data-lucide="activity"></i>
       </div>
-      <div class="flex-1 mt-1">
+      <div class="flex-1 mt-1 text-center">
         <h3 class="text-[17px] font-bold">Duruma Göre Başlat</h3>
         <p class="text-sm text-slate-500 mt-1 leading-snug">Cihazların durumu değiştiğinde diğer senaryoları otomatik olarak tetikleyin.</p>
       </div>
@@ -83,11 +84,11 @@
     <section class="bg-white rounded-3xl card-shadow overflow-hidden border border-slate-50" data-purpose="trigger-list">
       
       <!-- Item 1 -->
-      <div onclick="addAutomation('Cihaz Durumu', 'Bir cihaz açıldığında veya kapandığında', 'lightbulb', 'text-[#7C5CFF]', 'bg-[#7C5CFF]/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
-        <div class="w-12 h-12 rounded-2xl bg-[#7C5CFF]/10 text-[#7C5CFF] flex items-center justify-center flex-shrink-0">
+      <div onclick="addAutomation('Cihaz Durumu', 'Bir cihaz açıldığında veya kapandığında', 'lightbulb', 'text-[#4C7DFF]', 'bg-[#4C7DFF]/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+        <div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="lightbulb"></i>
         </div>
-        <div class="flex-1 ml-4">
+        <div class="flex-1 ml-4 text-center">
           <h3 class="font-bold text-base text-slate-800">Cihaz Durumu</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Bir cihaz açıldığında veya kapandığında</p>
         </div>
@@ -99,7 +100,7 @@
         <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="clock"></i>
         </div>
-        <div class="flex-1 ml-4">
+        <div class="flex-1 ml-4 text-center">
           <h3 class="font-bold text-base text-slate-800">Zamanlayıcı</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Belirli bir saatte veya günde</p>
         </div>
@@ -111,7 +112,7 @@
         <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="sun"></i>
         </div>
-        <div class="flex-1 ml-4">
+        <div class="flex-1 ml-4 text-center">
           <h3 class="font-bold text-base text-slate-800">Hava Durumu</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Sıcaklık, nem veya rüzgar değiştiğinde</p>
         </div>
@@ -119,12 +120,12 @@
       </div>
       
       <!-- Item 4 -->
-      <div onclick="addAutomation('Konum (Geofencing)', 'Eve vardığında veya evden ayrıldığında', 'map-pin', 'text-emerald-500', 'bg-emerald-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <div onclick="addAutomation('Konum', 'Eve vardığında veya evden ayrıldığında', 'map-pin', 'text-emerald-500', 'bg-emerald-500/10')" class="flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="map-pin"></i>
         </div>
-        <div class="flex-1 ml-4">
-          <h3 class="font-bold text-base text-slate-800">Konum (Geofencing)</h3>
+        <div class="flex-1 ml-4 text-center">
+          <h3 class="font-bold text-base text-slate-800">Konum</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Eve vardığında veya evden ayrıldığında</p>
         </div>
         <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
@@ -135,7 +136,7 @@
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="shield-check"></i>
         </div>
-        <div class="flex-1 ml-4">
+        <div class="flex-1 ml-4 text-center">
           <h3 class="font-bold text-base text-slate-800">Güvenlik Modu</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Alarm sistemi durumu değiştiğinde</p>
         </div>
@@ -147,7 +148,7 @@
         <div class="w-12 h-12 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="bell-ring"></i>
         </div>
-        <div class="flex-1 ml-4">
+        <div class="flex-1 ml-4 text-center">
           <h3 class="font-bold text-base text-slate-800">Alarm Tetiklendiğinde</h3>
           <p class="text-[13px] text-slate-400 mt-0.5">Sensörler bir tehlike algıladığında</p>
         </div>
@@ -158,7 +159,7 @@
 
   
     <!-- Quick Create Button -->
-    <button onclick="toggleQuickCreate()" class="mt-8 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#7C5CFF] to-[#22D3EE] text-white py-4 rounded-2xl font-bold active:opacity-90 transition-opacity shadow-lg shadow-[#7C5CFF]/30">
+    <button onclick="toggleQuickCreate()" class="mt-8 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#4C7DFF] to-[#22D3EE] text-white py-4 rounded-2xl font-bold active:opacity-90 transition-opacity shadow-lg shadow-[#4C7DFF]/30">
       <i class="w-5 h-5" data-lucide="zap"></i>
       Hızlı Oluştur
     </button>
@@ -181,22 +182,48 @@
       
       let autos = [];
       try {
-        autos = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        autos = readAndNormalizeItems(storageKey, type);
       } catch (e) {}
       autos.push({ title: title, desc: desc, icon: icon, colorClass: colorClass, bgClass: bgClass });
-      localStorage.setItem(storageKey, JSON.stringify(autos));
+      writeNormalizedItems(storageKey, autos, type);
       
       // Navigate back to smart with a query param to open correct tab
       window.location.href = 'stitch-smart.html?tab=' + targetTab;
     }
   </script>
 
-  <!-- BEGIN: Quick Create Bottom Sheet -->
+  <!-- BEGIN: Configure Sheet -->
+    <div id="configure-backdrop" onclick="closeConfigureSheet()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity opacity-0 duration-300"></div>
+    <div id="configure-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-10 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
+      <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
+      
+      <div id="config-sheet-icon-wrap" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mx-auto mb-4">
+        <i id="config-sheet-icon" class="w-6 h-6"></i>
+      </div>
+      <h3 id="config-sheet-title" class="text-2xl font-bold text-slate-800 mb-2 text-center">Senaryo</h3>
+      <p id="config-sheet-desc" class="text-sm text-slate-500 mb-8 text-center">A��klama</p>
+      
+      <div class="space-y-4 mb-8">
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+            <span class="text-sm font-semibold text-slate-700">Etkilenecek Cihazlar</span>
+            <span class="text-sm text-nexusPurple font-bold">T�m Uyumlu Cihazlar</span>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+            <span class="text-sm font-semibold text-slate-700">�al��ma Zaman�</span>
+            <span class="text-sm text-slate-500" id="automation-time-display">Her Zaman</span>
+        </div>
+      </div>
+      
+      <button onclick="confirmAddAutomation()" class="w-full py-4 rounded-2xl bg-slate-900 text-white font-bold text-base active:scale-95 transition-transform">Senaryoyu Kaydet</button>
+    </div>
+    <!-- END: Configure Sheet -->
+    
+    <!-- BEGIN: Quick Create Bottom Sheet -->
   <div id="quick-create-backdrop" onclick="toggleQuickCreate()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity opacity-0 duration-300"></div>
   <div id="quick-create-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-12 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col max-h-[80vh]">
     <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
-    <h3 class="text-2xl font-bold text-slate-800 mb-2">Hızlı Öneriler</h3>
-    <p class="text-sm text-slate-500 mb-6">Mevcut cihazlarınıza göre size özel senaryo önerileri.</p>
+    <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Hızlı Öneriler</h3>
+    <p class="text-sm text-slate-500 mb-6 text-center">Mevcut cihazlarınıza göre size özel senaryo önerileri.</p>
     
     <div id="quick-create-list" class="space-y-3 overflow-y-auto">
       <!-- Generated suggestions go here -->
@@ -229,7 +256,7 @@
       
       let devices = [];
       try {
-        devices = JSON.parse(localStorage.getItem('nexusPairedDevices') || '[]');
+        devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
       } catch (e) {}
 
       if (devices.length === 0) {
@@ -242,8 +269,8 @@
         let suggestionTitle = "";
         let suggestionDesc = "";
         let icon = "zap";
-        let color = "text-[#7C5CFF]";
-        let bg = "bg-[#7C5CFF]/10";
+        let color = "text-[#4C7DFF]";
+        let bg = "bg-[#4C7DFF]/10";
         
         const dName = (device.name || '').toLowerCase();
         
@@ -307,5 +334,7 @@
 
 
 </html>
+
+
 
 
