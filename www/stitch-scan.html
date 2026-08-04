@@ -205,10 +205,11 @@
     }
 
     function openSetupCodeEntry() {
-      window.location.href = 'stitch-pair.html#manual-catalog-section';
+      window.location.href = 'stitch-setup-code.html';
     }
 
     function appendPairedDeviceFromSetupCode(rawValue) {
+      if (typeof nexusGetItem !== 'function' || typeof nexusSetItem !== 'function') return false;
       const digits = String(rawValue || '').replace(/\D/g, '');
       if (digits.length < 8) return false;
       let paired = [];

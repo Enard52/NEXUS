@@ -161,7 +161,9 @@ window.addEventListener('error', function(e) {
     /* Hover / Active States — imleçle üzerine gelince beyazlaşmayı önler */
     'html.dark .hover\\:bg-gray-50:hover, html.dark .hover\\:bg-slate-50:hover, html.dark .hover\\:bg-slate-100:hover { background-color: #334155 !important; }',
     'html.dark .active\\:bg-gray-50:active, html.dark .active\\:bg-slate-50:active, html.dark .active\\:bg-slate-100:active { background-color: #334155 !important; }',
-    'html.dark .active\\:bg-slate-200:active, html.dark .active\\:bg-slate-300:active { background-color: #475569 !important; }'
+    'html.dark .active\:bg-slate-200:active, html.dark .active\:bg-slate-300:active { background-color: #475569 !important; }',
+    'html.dark .bg-dashboard-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
+    'html.dark .divide-slate-50 > * + * { border-color: #334155 !important; }'
   ].join('\n');
   var darkStyle = document.createElement('style');
   darkStyle.id = 'nexus-dark-overrides';

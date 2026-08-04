@@ -161,27 +161,8 @@
 <div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
 <!-- BEGIN: Devices Sheet -->
 <div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10" data-purpose="devices-sheet" id="sheet-devices">
-<h3 class="text-lg font-bold mb-4">Hangi cihazılar sessize alınsın?</h3>
-<label class="flex items-center justify-between py-3 border-b border-slate-100">
-<span class="font-semibold">Tüm Cihazlar</span>
-<input checked class="rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" id="dev-all" onchange="toggleAllDevices(this)" type="checkbox"/>
-</label>
-<label class="flex items-center justify-between py-3 border-b border-slate-100">
-<span class="font-medium text-slate-600">Akıllı Hoparlör</span>
-<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Akıllı Hoparlör" onchange="syncAllCheckbox()" type="checkbox"/>
-</label>
-<label class="flex items-center justify-between py-3 border-b border-slate-100">
-<span class="font-medium text-slate-600">Kapı Zili</span>
-<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Kapı Zili" onchange="syncAllCheckbox()" type="checkbox"/>
-</label>
-<label class="flex items-center justify-between py-3 border-b border-slate-100">
-<span class="font-medium text-slate-600">Televizyon</span>
-<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Televizyon" onchange="syncAllCheckbox()" type="checkbox"/>
-</label>
-<label class="flex items-center justify-between py-3">
-<span class="font-medium text-slate-600">Robot Süpürge</span>
-<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Robot Süpürge" onchange="syncAllCheckbox()" type="checkbox"/>
-</label>
+<h3 class="text-lg font-bold mb-4">Hangi cihazlar sessize alınsın?</h3>
+<div id="program-devices-list"></div>
 <button class="w-full bg-nexus-purple text-white font-bold py-3.5 rounded-xl mt-5 active:scale-[0.98] transition-transform" onclick="confirmDevices()">Tamam</button>
 </div>
 <!-- END: Devices Sheet -->
@@ -241,10 +222,32 @@
     buildWheel(document.getElementById('wheel-eh'), 24, 1);
     buildWheel(document.getElementById('wheel-em'), 60, 5);
 
+    /* ---------- Device list from storage ---------- */
+    function populateProgramDevices() {
+      var container = document.getElementById('program-devices-list');
+      if (!container) return;
+
+      var devices = [];
+      try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch(e) {}
+
+      if (!devices.length) {
+        container.innerHTML = '<div class="py-4 text-center text-sm text-slate-400 font-medium">Henüz eşleştirilmiş cihaz yok.</div>';
+        return;
+      }
+
+      container.innerHTML = devices.map(function(d, i) {
+        return '<label class="flex items-center gap-3 py-3 border-b border-slate-100 last:border-0 cursor-pointer">' +
+          '<input type="checkbox" class="rounded dev-item" data-device-index="' + i + '">' +
+          '<span class="font-medium text-slate-900">' + (d.name || 'Cihaz ' + (i + 1)) + '</span>' +
+          '</label>';
+      }).join('');
+    }
+
     /* ---------- Bottom sheets ---------- */
     function openSheet(name) {
       document.getElementById('sheet-backdrop').classList.remove('hidden');
       document.getElementById('sheet-' + name).classList.add('open');
+      if (name === 'devices') populateProgramDevices();
     }
     function closeSheets() {
       document.getElementById('sheet-backdrop').classList.add('hidden');
@@ -252,17 +255,10 @@
     }
 
     /* ---------- Devices selection ---------- */
-    function toggleAllDevices(master) {
-      document.querySelectorAll('.dev-item').forEach(function (c) { c.checked = master.checked; });
-    }
-    function syncAllCheckbox() {
-      var items = document.querySelectorAll('.dev-item');
-      var checked = document.querySelectorAll('.dev-item:checked');
-      document.getElementById('dev-all').checked = items.length === checked.length;
-    }
     function devicesLabel() {
       var checked = document.querySelectorAll('.dev-item:checked');
       var all = document.querySelectorAll('.dev-item');
+      if (all.length === 0) return 'Tüm Cihazlar';
       if (checked.length === all.length) return 'Tüm Cihazlar';
       if (checked.length === 0) return 'Cihaz yok';
       return checked.length + ' Cihaz';
@@ -307,6 +303,7 @@
 
     /* ---------- Save: sync the schedule to the DND page via localStorage ---------- */
     function saveSchedule() {
+      if (typeof nexusSetItem !== 'function') return;
       var schedule = {
         start: String(wheelValue(document.getElementById('wheel-sh'))).padStart(2, '0') + ':' + String(wheelValue(document.getElementById('wheel-sm'))).padStart(2, '0'),
         end: String(wheelValue(document.getElementById('wheel-eh'))).padStart(2, '0') + ':' + String(wheelValue(document.getElementById('wheel-em'))).padStart(2, '0'),

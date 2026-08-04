@@ -123,7 +123,7 @@
     var pass = document.getElementById('login-password').value || '';
     var err = document.getElementById('login-error');
     // Şifreyi girilen e-posta adresine göre doğrudan localStorage'dan oku
-    var storedPassword = localStorage.getItem(email + '_nexusUserPassword');
+    var storedPassword = localStorage.getItem('nexus_mock_pw_' + email);
     if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
       err.textContent = 'Lütfen geçerli bir e-posta adresi girin.';
       err.classList.remove('hidden');
@@ -143,13 +143,15 @@
 
     // Eğer bu e-posta ile ilk defa giriş yapılıyorsa şifresini kaydet (Kayıt ol mantığı)
     if (!storedPassword) {
-      localStorage.setItem(email + '_nexusUserPassword', pass);
+      localStorage.setItem('nexus_mock_pw_' + email, pass);
     }
 
     try {
-      // NEXUS Auth Session'ı başlat
       localStorage.setItem('nexusCurrentUser', email);
       nexusSetItem('nexusUserEmail', email);
+      // Kullanıcı adını normalize edilmiş key'e de yaz (register ile uyumlu)
+      var storedName = localStorage.getItem(email + '_userName');
+      if (storedName) nexusSetItem('nexusUserName', storedName);
     } catch (e) {}
     window.location.href = 'stitch-home.html';
   }

@@ -132,7 +132,7 @@
 
 <!-- BEGIN: NEXUS AI Input (shared with Akıllı page) -->
 <section class="px-5 pb-2" data-purpose="ai-search-container">
-<div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm" data-ai-smart-input>
+<div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm cursor-pointer" data-ai-smart-input onclick="window.openSmartAiChat && window.openSmartAiChat('')">
 <!-- NEXUS N leading mark -->
 <div class="h-8 w-8 flex shrink-0 mr-3"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
   <defs>
@@ -148,12 +148,12 @@
   <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
   <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg></div>
-<input id="smart-ai-input" class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Senaryonu yaz, hemen olusturayim" type="text"/>
+<input id="smart-ai-input" class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500 cursor-pointer" placeholder="Nasıl yardımcı olabilirim?" type="text" readonly/>
 <div class="flex items-center space-x-4 pr-1">
 <!-- Mic Icon -->
 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 <!-- Create Icon -->
-<button type="button" aria-label="Senaryo olustur" onclick="window.createSmartScenarioFromInput && window.createSmartScenarioFromInput(document.getElementById('smart-ai-input').value)" class="text-gray-600 active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button type="button" aria-label="Yapay zeka ile olustur" onclick="event.stopPropagation(); window.openSmartAiChat && window.openSmartAiChat(document.getElementById('smart-ai-input').value)" class="text-[#4C7DFF] active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
 </div>
 </div>
 </section>
@@ -177,8 +177,7 @@
 </div>
 <h2 class="text-xl font-bold text-gray-900 mb-1">Uygulama Yok</h2>
 <p class="text-gray-500 font-medium mb-8">Akıllı Uygulamanı Özelleştir</p>
-        <button onclick="window.location.href='stitch-chat.html?promptText=Yapay%20zeka%20ile%20yeni%20bir%20akilli%20uygulama%20olusturmak%20istiyorum.'" class="bg-[#4C7DFF] text-white px-8 py-3 rounded-full font-bold text-sm active:scale-95 hover:bg-[#3F6FFF] transition-all shadow-md shadow-[#4C7DFF]/20 flex items-center justify-center gap-2">
-          <i class="w-4 h-4" data-lucide="sparkles"></i>
+        <button onclick="window.location.href='stitch-chat.html?promptText=Yapay%20zeka%20ile%20yeni%20bir%20akilli%20uygulama%20olusturmak%20istiyorum.'" class="bg-[#4C7DFF] text-white px-8 py-3 rounded-full font-bold text-sm active:scale-95 hover:bg-[#3F6FFF] transition-all shadow-md shadow-[#4C7DFF]/20 flex items-center justify-center">
           Oluştur
         </button>
 </div>
@@ -242,7 +241,7 @@
           <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Ustteki alana ne yapmak istedigini yaz ya da manuel olarak bir senaryo sec.</p>
           <a href="stitch-skills.html?type=clickrun" class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-2xl font-bold active:bg-slate-50 transition-colors">
             <i class="w-5 h-5" data-lucide="plus"></i>
-            Manuel Olustur
+            Hızlı Oluştur
           </a>
         </div>
       </div>
@@ -344,7 +343,7 @@ function toggleHomeSelector() {
   document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = name; });
 })();
 </script>
-<script>lucide.createIcons();</script>
+<script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
 
 <script>
     function switchTab(tabId, btnElement) {
@@ -383,21 +382,7 @@ function toggleHomeSelector() {
     }
 </script>
 
-<script>
-  // Senaryo ve Otomasyon Toggle state sync
-  (function() {
-    document.querySelectorAll('#tab-automation input[type="checkbox"]').forEach((checkbox, index) => {
-      const key = 'nexusAutoToggle_' + index;
-      const saved = localStorage.getItem(key);
-      if (saved !== null) {
-        checkbox.checked = saved === 'true';
-      }
-      checkbox.addEventListener('change', function() {
-        localStorage.setItem(key, this.checked);
-      });
-    });
-  })();
-</script>
+
 
 <script>
 
@@ -418,6 +403,22 @@ function toggleHomeSelector() {
 </script>
 
   <script>
+    function deleteStoredScenario(id, type) {
+        if (!id) return;
+        const isAutomation = type === 'automation';
+        const storageKey = isAutomation ? 'nexusCustomAutomations' : 'nexusCustomClickRun';
+        const listType = isAutomation ? 'automation' : 'clickrun';
+        const next = readAndNormalizeItems(storageKey, listType).filter((item) => item.id !== id);
+        writeNormalizedItems(storageKey, next, listType);
+        if (!isAutomation) {
+          try {
+            const selected = JSON.parse(nexusGetItem('nexusSelectedTapToRunCards') || '[]') || [];
+            nexusSetItem('nexusSelectedTapToRunCards', JSON.stringify(selected.filter((itemId) => itemId !== id)));
+          } catch (e) {}
+        }
+        renderCustomAutomations();
+    }
+
     function renderCustomAutomations() {
         // Automations
         const autoContainer = document.getElementById('custom-automations-container');
@@ -445,26 +446,42 @@ function toggleHomeSelector() {
 
           autos.forEach((auto) => {
             const div = document.createElement('div');
-            div.className = "bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 flex items-center justify-between mt-4 cursor-pointer";
+            div.className = "bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 flex items-center justify-between gap-3 mt-4 cursor-pointer";
             div.onclick = () => {
               window.location.href = `stitch-scenario-settings.html?id=${auto.id}&title=${encodeURIComponent(auto.title)}&desc=${encodeURIComponent(auto.desc)}&icon=${auto.icon}`;
             };
             div.innerHTML = `
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 min-w-0">
                   <div class="w-12 h-12 rounded-2xl ${auto.bgClass} ${auto.colorClass} flex items-center justify-center shrink-0">
                     <i class="w-6 h-6" data-lucide="${auto.icon}"></i>
                   </div>
-                  <div>
-                    <h4 class="font-bold text-slate-800 text-sm">${auto.title}</h4>
-                    <p class="text-xs text-slate-500 mt-0.5">${auto.desc}</p>
+                  <div class="min-w-0">
+                    <h4 class="font-bold text-slate-800 text-sm truncate">${auto.title}</h4>
+                    <p class="text-xs text-slate-500 mt-0.5 line-clamp-2">${auto.desc}</p>
                   </div>
                 </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" checked class="sr-only peer">
+                <div class="flex items-center gap-3 shrink-0">
+                <button type="button" aria-label="Otomasyonu sil" onclick="event.stopPropagation(); deleteStoredScenario('${auto.id}', 'automation')" class="w-9 h-9 rounded-full bg-red-50 text-red-500 flex items-center justify-center active:scale-95 transition-transform">
+                  <i class="w-4 h-4" data-lucide="trash-2"></i>
+                </button>
+                <label class="relative inline-flex items-center cursor-pointer" onclick="event.stopPropagation()">
+                  <input type="checkbox" ${auto.enabled !== false ? 'checked' : ''} class="sr-only peer auto-toggle" data-id="${auto.id}" onclick="event.stopPropagation()">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
                 </label>
+                </div>
             `;
             autoContainer.appendChild(div);
+            // Toggle change → enabled durumunu storage'a yaz
+            var toggleEl = div.querySelector('.auto-toggle');
+            if (toggleEl) {
+              toggleEl.addEventListener('change', (function(itemId) {
+                return function() {
+                  if (typeof updateItemById === 'function') {
+                    updateItemById('nexusCustomAutomations', itemId, { enabled: this.checked });
+                  }
+                };
+              })(auto.id));
+            }
           });
 
           const emptyState = document.getElementById('empty-automation');
@@ -480,16 +497,24 @@ function toggleHomeSelector() {
       if (clickContainer) {
         clickContainer.innerHTML = ''; // Clear previous items
         clickruns.forEach((run) => {
-          const btn = document.createElement('button');
-          btn.className = "bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform cursor-pointer";
+          const btn = document.createElement('div');
+          btn.className = "relative bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform cursor-pointer";
+          btn.setAttribute('role', 'button');
+          btn.setAttribute('tabindex', '0');
           btn.onclick = () => {
             window.location.href = `stitch-scenario-settings.html?id=${run.id}&title=${encodeURIComponent(run.title)}&desc=${encodeURIComponent(run.desc)}&icon=${run.icon}`;
           };
+          btn.onkeydown = (event) => {
+            if (event.key === 'Enter' || event.key === ' ') btn.click();
+          };
           btn.innerHTML = `
+            <button type="button" aria-label="Senaryoyu sil" onclick="event.stopPropagation(); deleteStoredScenario('${run.id}', 'clickrun')" class="absolute right-3 top-3 w-8 h-8 rounded-full bg-white text-red-500 border border-red-100 shadow-sm flex items-center justify-center active:scale-95 transition-transform">
+              <i class="w-4 h-4" data-lucide="trash-2"></i>
+            </button>
             <div class="w-10 h-10 rounded-full ${autoBgToLight(run.bgClass)} ${run.colorClass} flex items-center justify-center mb-3">
               <i class="w-5 h-5" data-lucide="${run.icon}"></i>
             </div>
-            <h4 class="font-bold text-slate-800">${run.title}</h4>
+            <h4 class="font-bold text-slate-800 pr-8">${run.title}</h4>
             <p class="text-xs text-slate-500 mt-1">${run.desc}</p>
           `;
           clickContainer.appendChild(btn);
@@ -549,44 +574,37 @@ function toggleHomeSelector() {
       window.addEventListener('pageshow', function(e) {
         if (e.persisted || true) {
           renderCustomAutomations();
-          lucide.createIcons();
+          if (typeof lucide !== 'undefined') lucide.createIcons();
         }
       });
     </script>
 
 <script>
 (function () {
-  function safeRead(key, type) { try { return readAndNormalizeItems(key, type); } catch (e) { return []; } }
-  function inferIcon(text) {
-    text = (text || '').toLowerCase();
-    if (text.includes('isik') || text.includes('ayd')) return 'lightbulb';
-    if (text.includes('klima') || text.includes('sicak')) return 'thermometer';
-    if (text.includes('guven') || text.includes('kilit') || text.includes('alarm')) return 'shield-check';
-    if (text.includes('temiz') || text.includes('robot')) return 'leaf';
-    if (text.includes('gece') || text.includes('uyku')) return 'moon';
-    return 'zap';
+  function activeSmartType() {
+    var automationTab = document.getElementById('tab-automation');
+    return automationTab && automationTab.classList.contains('block') ? 'automation' : 'clickrun';
   }
-  window.createSmartScenarioFromInput = createFromText;
-  function createFromText(raw) {
+  window.openSmartAiChat = function (raw) {
     var text = (raw || '').trim();
-    if (!text) return;
-    var isAuto = document.getElementById('tab-automation').classList.contains('block');
-    var type = isAuto ? 'automation' : 'clickrun';
-    var storageKey = isAuto ? 'nexusCustomAutomations' : 'nexusCustomClickRun';
-    var list = safeRead(storageKey, type);
-    list.push({ id: 'ai-' + Date.now(), title: text.length > 34 ? text.slice(0, 31).trim() + '...' : text, desc: (isAuto ? 'Offline otomasyon: ' : 'Offline hizli senaryo: ') + text, icon: inferIcon(text), colorClass: 'text-[#4C7DFF]', bgClass: 'bg-[#4C7DFF]/10', source: 'ai-offline' });
-    writeNormalizedItems(storageKey, list, type);
-    var input = document.getElementById('smart-ai-input');
-    if (input) input.value = '';
-    renderCustomAutomations();
-    var btn = document.getElementById(isAuto ? 'btn-tab-automation' : 'btn-tab-clickrun');
-    if (btn) switchTab(isAuto ? 'tab-automation' : 'tab-clickrun', btn);
+    var type = activeSmartType();
+    var fallback = type === 'automation'
+      ? 'Yeni bir otomasyon olusturmak istiyorum.'
+      : 'Yeni bir tikla ve calistir senaryosu olusturmak istiyorum.';
+    var prompt = text || fallback;
+    var target = type === 'automation' ? 'otomasyon' : 'tikla ve calistir';
+    window.location.href = 'stitch-chat.html?type=' + encodeURIComponent(type) +
+      '&promptText=' + encodeURIComponent(target + ' icin yapay zeka ile olustur: ' + prompt);
   }
   document.addEventListener('DOMContentLoaded', function () {
     var input = document.getElementById('smart-ai-input');
     if (!input) return;
-    input.addEventListener('keydown', function (event) { if (event.key === 'Enter') createFromText(input.value); });
-    input.addEventListener('blur', function () { if (input.value.trim()) createFromText(input.value); });
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        window.openSmartAiChat(input.value);
+      }
+    });
   });
 })();
 </script>

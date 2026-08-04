@@ -208,9 +208,10 @@ function writeStoredJson(key, value) {
 // Normalize a single automation/clickrun item to ensure it has all required fields
 function normalizeItem(item, type) {
     if (!item) return null;
+    const resolvedType = type || item.type || 'automation';
     return {
         id: item.id || `auto-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
-        type: type || item.type || 'automation',
+        type: resolvedType,
         title: item.title || 'Yeni Senaryo',
         desc: item.desc || 'Akıllı ev senaryonuzu özelleştirin',
         icon: item.icon || 'zap',
@@ -219,7 +220,21 @@ function normalizeItem(item, type) {
         source: item.source || 'user',
         category: item.category || 'general',
         recommended: item.recommended || false,
-        createdAt: item.createdAt || Date.now()
+        createdAt: item.createdAt || Date.now(),
+        // Aktif/pasif durumu (toggle)
+        enabled: item.enabled !== undefined ? Boolean(item.enabled) : true,
+        // Ana sayfada ve odada gösterim tercihleri
+        showOnHome: item.showOnHome !== undefined ? Boolean(item.showOnHome) : true,
+        showInRoom: item.showInRoom !== undefined ? Boolean(item.showInRoom) : false,
+        // Tetikleyici tanımı: { type: 'time'|'device'|'location'|'condition'|'manual', value, repeat, deviceId }
+        trigger: item.trigger && typeof item.trigger === 'object'
+            ? item.trigger
+            : (resolvedType === 'clickrun'
+                ? { type: 'manual' }
+                : { type: 'time', value: '', repeat: 'always' }),
+        // Aksiyon listesi: [{ device, action, value }]
+        actions: Array.isArray(item.actions) ? item.actions : [],
+        room: item.room || 'Tüm Ev'
     };
 }
 
@@ -246,7 +261,7 @@ function updateItemById(key, id, updates) {
     const items = readAndNormalizeItems(key);
     const index = items.findIndex(item => item.id === id);
     if (index >= 0) {
-        items[index] = normalizeItem({ ...items[index], ...updates });
+        items[index] = normalizeItem(Object.assign({}, items[index], updates), items[index].type);
         writeNormalizedItems(key, items);
         return items[index];
     }

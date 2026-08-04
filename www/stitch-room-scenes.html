@@ -13,6 +13,14 @@
     .nexus-card-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
     .active-scale:active { transform: scale(0.96); }
   </style>
+  <script>
+  if (typeof nexusGetItem !== 'function') {
+    window.nexusGetItem = function(key) { return localStorage.getItem(key); };
+  }
+  if (typeof nexusSetItem !== 'function') {
+    window.nexusSetItem = function(key, value) { localStorage.setItem(key, value); };
+  }
+  </script>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
 </head>
@@ -40,19 +48,19 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <button class="bg-[#4C7DFF] text-white rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
+          <button data-room="salon" data-scene="Sinema" class="bg-[#4C7DFF] text-white rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
             <iconify-icon icon="lucide:clapperboard" class="text-2xl"></iconify-icon>
             <div>
               <div class="font-bold text-sm leading-tight">Sinema</div>
-              <div class="text-[10px] opacity-80">Aktif</div>
+              <div class="text-[10px] opacity-80" data-status>Aktif</div>
             </div>
           </button>
 
-          <button class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
+          <button data-room="salon" data-scene="Gündüz" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
             <iconify-icon icon="lucide:sun" class="text-2xl text-amber-500"></iconify-icon>
             <div>
               <div class="font-bold text-sm leading-tight">Gündüz</div>
-              <div class="text-[10px] text-slate-400">Pasif</div>
+              <div class="text-[10px] text-slate-400" data-status>Pasif</div>
             </div>
           </button>
         </div>
@@ -68,19 +76,19 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <button class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
+          <button data-room="yatak" data-scene="Uyku" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
             <iconify-icon icon="lucide:moon" class="text-2xl text-indigo-500"></iconify-icon>
             <div>
               <div class="font-bold text-sm leading-tight">Uyku</div>
-              <div class="text-[10px] text-slate-400">Pasif</div>
+              <div class="text-[10px] text-slate-400" data-status>Pasif</div>
             </div>
           </button>
 
-          <button class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
+          <button data-room="yatak" data-scene="Okuma" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
             <iconify-icon icon="lucide:book-open" class="text-2xl text-sky-500"></iconify-icon>
             <div>
               <div class="font-bold text-sm leading-tight">Okuma</div>
-              <div class="text-[10px] text-slate-400">Pasif</div>
+              <div class="text-[10px] text-slate-400" data-status>Pasif</div>
             </div>
           </button>
         </div>
@@ -91,25 +99,71 @@
 
 <!-- DYNAMIC JS -->
 <script>
+// Toast bildirimi
+function showSceneToast(msg) {
+  var existing = document.getElementById('scene-toast');
+  if (!existing) {
+    existing = document.createElement('div');
+    existing.id = 'scene-toast';
+    existing.style.cssText = 'position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;opacity:0;transition:opacity 0.25s,transform 0.25s;pointer-events:none;white-space:nowrap;';
+    document.body.appendChild(existing);
+  }
+  existing.textContent = msg;
+  existing.style.opacity = '1';
+  existing.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(existing._t);
+  existing._t = setTimeout(function() {
+    existing.style.opacity = '0';
+    existing.style.transform = 'translateX(-50%) translateY(20px)';
+  }, 2000);
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('main button');
-    const state = JSON.parse(localStorage.getItem('nexusRoomScenesActive') || '{"salon":"Sinema","mutfak":""}');
+document.addEventListener('DOMContentLoaded', function() {
+  var state = {};
+  try {
+    state = JSON.parse(nexusGetItem('nexusRoomScenesActive') || '{}') || {};
+  } catch(e) { state = {}; }
 
-    // Salon: Sinema (0), Gündüz (1)
-    // Yatak Odası: Uyku (2), Okuma (3)
-    buttons.forEach((btn, idx) => {
-        btn.addEventListener('click', () => {
-            if (idx === 0) state.salon = 'Sinema';
-            if (idx === 1) state.salon = 'Gündüz';
-            if (idx === 2) state.yatak = 'Uyku';
-            if (idx === 3) state.yatak = 'Okuma';
-            localStorage.setItem('nexusRoomScenesActive', JSON.stringify(state));
-            alert('Sahne aktif edildi.');
-        });
+  var buttons = document.querySelectorAll('main button[data-room]');
+
+  function syncUI() {
+    buttons.forEach(function(btn) {
+      var room  = btn.getAttribute('data-room');
+      var scene = btn.getAttribute('data-scene');
+      var isActive = state[room] === scene;
+      if (isActive) {
+        btn.classList.add('bg-[#4C7DFF]', 'text-white');
+        btn.classList.remove('bg-slate-50', 'text-slate-700', 'border', 'border-slate-100');
+        var statusEl = btn.querySelector('[data-status]');
+        if (statusEl) { statusEl.textContent = 'Aktif'; statusEl.classList.remove('text-slate-400'); statusEl.classList.add('opacity-80'); }
+      } else {
+        btn.classList.remove('bg-[#4C7DFF]', 'text-white');
+        btn.classList.add('bg-slate-50', 'text-slate-700', 'border', 'border-slate-100');
+        var statusEl = btn.querySelector('[data-status]');
+        if (statusEl) { statusEl.textContent = 'Pasif'; statusEl.classList.add('text-slate-400'); statusEl.classList.remove('opacity-80'); }
+      }
     });
-});
+  }
 
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var room  = btn.getAttribute('data-room');
+      var scene = btn.getAttribute('data-scene');
+      // Aynı sahneye tekrar basınca deaktif et (toggle)
+      if (state[room] === scene) {
+        delete state[room];
+      } else {
+        state[room] = scene;
+      }
+      nexusSetItem('nexusRoomScenesActive', JSON.stringify(state));
+      syncUI();
+      var label = state[room] ? (scene + ' sahnesi aktif edildi') : (scene + ' deaktif edildi');
+      showSceneToast(label);
+    });
+  });
+
+  syncUI();
+});
 </script>
 <script src="smart-card-detail-state.js"></script></body>
 </html>

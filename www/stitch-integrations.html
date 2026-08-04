@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -7,7 +7,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz Ekle</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
     // Arka planı beyaz olan resimleri şeffaf yapan akıllı fonksiyon
     function makeImagesTransparent() {
       const images = document.querySelectorAll('.product-tile img');
@@ -58,17 +59,7 @@
       }
     }
 
-    // Katalog render edildikten sonra çalıştır
-    const originalRenderCatalogContent = renderCatalogContent;
-    renderCatalogContent = function() {
-      originalRenderCatalogContent();
-      setTimeout(makeImagesTransparent, 100);
-    };
-
-    // Sayfa yüklendiğinde mevcut resimler için de çalıştır
-    window.addEventListener('load', () => {
-      setTimeout(makeImagesTransparent, 200);
-    });
+    // Katalog render edildikten sonra çalıştır; override uygulanması renderCatalogContent tanımlandıktan sonra yapılacak.
 
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -132,12 +123,10 @@
       letter-spacing: -0.01em;
     }
     .product-tile img {
-      filter: drop-shadow(0 8px 14px rgba(15, 23, 42, 0.08));
-      mix-blend-mode: multiply;
+      filter: drop-shadow(0 10px 14px rgba(15, 23, 42, 0.10));
     }
     html.dark .product-tile img {
       filter: none;
-      mix-blend-mode: normal;
       background: #ffffff;
       border-radius: 12px;
       padding: 4px;
@@ -155,6 +144,67 @@
     .product-tile p {
       white-space: normal;
       text-wrap: balance;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 0.75rem;
+      row-gap: 1.45rem;
+    }
+    @media (min-width: 390px) {
+      .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 760px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      }
+    }
+    .product-card {
+      min-height: 112px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .product-image-stage {
+      height: 64px;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .product-name {
+      display: block;
+      min-height: 34px;
+      overflow: visible;
+      text-align: center;
+      font-size: clamp(9.5px, 2.7vw, 10.5px);
+      line-height: 1.14;
+      font-weight: 650;
+      letter-spacing: 0;
+      color: #0f172a;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      hyphens: auto;
+    }
+    .product-category-pill {
+      display: none;
+    }
+    html.dark .product-card {
+      background: transparent;
+      border-color: transparent;
+    }
+    html.dark .product-image-stage {
+      background: transparent;
+    }
+    html.dark .product-name {
+      color: #f8fafc;
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -238,7 +288,6 @@
     <div class="flex items-center gap-3">
       <div class="min-w-0 flex-1">
         <h2 class="text-lg leading-none font-semibold tracking-[-0.02em] text-slate-900 whitespace-nowrap">Manuel Olarak Ekle</h2>
-
       </div>
       <div class="relative w-[52%] max-w-[15rem]">
         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -312,7 +361,7 @@
                         // ---- Tam 1:1 NEXUS Katalog Verisi (Tuya Referanslı) ----
     var CATALOG = [
   {
-    "key": "elektrik-ustas-",
+    "key": "elektrik-ustasi",
     "label": "Elektrik Ustası",
     "groups": [
       {
@@ -493,7 +542,7 @@
     ]
   },
   {
-    "key": "ayd-nlatma",
+    "key": "aydinlatma",
     "label": "Aydınlatma",
     "groups": [
       {
@@ -594,19 +643,19 @@
         "title": "Ambiyans Aydınlatması",
         "items": [
           {
-            "n": "Şerit Lamba",
+            "n": "Åerit Lamba",
             "img": "smart_bulb.jpg"
           },
           {
-            "n": "Şerit Lamba (Bluetooth)",
+            "n": "Åerit Lamba (Bluetooth)",
             "img": "smart_bulb.jpg"
           },
           {
-            "n": "Şerit Lamba (Zigbee)",
+            "n": "Åerit Lamba (Zigbee)",
             "img": "smart_bulb.jpg"
           },
           {
-            "n": "Şerit Lamba (BLE+Wi-Fi)",
+            "n": "Åerit Lamba (BLE+Wi-Fi)",
             "img": "smart_bulb.jpg"
           },
           {
@@ -680,7 +729,7 @@
     ]
   },
   {
-    "key": "sens-r",
+    "key": "sensor",
     "label": "Sensör",
     "groups": [
       {
@@ -871,7 +920,7 @@
     ]
   },
   {
-    "key": "b-y-k-ev-aletleri",
+    "key": "buyuk-ev-aletleri",
     "label": "Büyük Ev Aletleri",
     "groups": [
       {
@@ -967,7 +1016,7 @@
     ]
   },
   {
-    "key": "k---k-ev-aleti",
+    "key": "kucuk-ev-aleti",
     "label": "Küçük Ev Aleti",
     "groups": [
       {
@@ -990,7 +1039,7 @@
             "img": "smart_hub.jpg"
           },
           {
-            "n": "Elektrikli Şömine",
+            "n": "Elektrikli Åömine",
             "img": "smart_hub.jpg"
           },
           {
@@ -1427,7 +1476,7 @@
             "img": "smart_hub.jpg"
           },
           {
-            "n": "Şarap Dolabı",
+            "n": "Åarap Dolabı",
             "img": "smart_hub.jpg"
           },
           {
@@ -1443,7 +1492,7 @@
     ]
   },
   {
-    "key": "egzersiz-ve-sa-l-k",
+    "key": "egzersiz-ve-saglik",
     "label": "Egzersiz ve Sağlık",
     "groups": [
       {
@@ -1771,7 +1820,7 @@
     ]
   },
   {
-    "key": "a--ge-idi-kontrol-paneli",
+    "key": "ag-gecidi-kontrol-paneli",
     "label": "Ağ Geçidi Kontrol Paneli",
     "groups": [
       {
@@ -1852,7 +1901,7 @@
     ]
   },
   {
-    "key": "do-a-sporlar-",
+    "key": "doga-sporlari",
     "label": "Doğa Sporları",
     "groups": [
       {
@@ -2035,14 +2084,14 @@
         ]
       },
       {
-        "title": "Bisiklet Şarj Üniteleri",
+        "title": "Bisiklet Åarj Üniteleri",
         "items": [
           {
-            "n": "İki Tekerlekli Araç Şarj İstasyonu (4G)",
+            "n": "İki Tekerlekli Araç Åarj İstasyonu (4G)",
             "img": "smart_hub.jpg"
           },
           {
-            "n": "İki Tekerlekli Araç Şarj İstasyonu",
+            "n": "İki Tekerlekli Araç Åarj İstasyonu",
             "img": "smart_hub.jpg"
           }
         ]
@@ -2051,11 +2100,11 @@
         "title": "EV charger",
         "items": [
           {
-            "n": "Elektrikli Araç Şarj İstasyonu (4G)",
+            "n": "Elektrikli Araç Åarj İstasyonu (4G)",
             "img": "smart_hub.jpg"
           },
           {
-            "n": "Elektrikli Araç Şarj İstasyonu",
+            "n": "Elektrikli Araç Åarj İstasyonu",
             "img": "smart_hub.jpg"
           }
         ]
@@ -2102,7 +2151,7 @@
     ]
   },
   {
-    "key": "e-lence",
+    "key": "eglence",
     "label": "Eğlence",
     "groups": [
       {
@@ -2178,7 +2227,7 @@
     ]
   },
   {
-    "key": "sanayi-ve-tar-m",
+    "key": "sanayi-ve-tarim",
     "label": "Sanayi ve Tarım",
     "groups": [
       {
@@ -2219,7 +2268,7 @@
     ]
   },
   {
-    "key": "di-er",
+    "key": "diger",
     "label": "Diğer",
     "groups": [
       {
@@ -2267,41 +2316,313 @@
     var CATALOG_ALIAS = {
       lighting: 'aydinlatma', plugs: 'elektrik-ustasi', security: 'kamera-ve-kilit', locks: 'kamera-ve-kilit',
       climate: 'buyuk-ev-aletleri', sensors: 'sensor', entertainment: 'eglence', appliances: 'buyuk-ev-aletleri',
-      hubs: 'ag-gecidi-kontrol-paneli', cleaning: 'kucuk-ev-aleti', energy: 'enerji-tasarrufu'
+      hubs: 'ag-gecidi-kontrol-paneli', cleaning: 'kucuk-ev-aleti', energy: 'enerji-tasarrufu',
+      'ayd-nlatma': 'aydinlatma', 'elektrik-ustas-': 'elektrik-ustasi', 'e-lence': 'eglence',
+      'k---k-ev-aleti': 'kucuk-ev-aleti', 'b-y-k-ev-aletleri': 'buyuk-ev-aletleri',
+      'sens-r': 'sensor', 'a--ge-idi-kontrol-paneli': 'ag-gecidi-kontrol-paneli'
     };
 
     var activeCatalogCategory = CATALOG[0].key;
 
     function escapeCatalogHtml(value) {
-      return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      return repairCatalogText(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function totalCatalogProducts() {
-      var t = 0;
-      CATALOG.forEach(function (c) { c.groups.forEach(function (g) { t += g.items.length; }); });
-      return t;
+    function repairCatalogText(value) {
+      return String(value || '')
+        .replace(/İ/g, 'İ').replace(/ı/g, 'ı').replace(/ğ/g, 'ğ').replace(/Ğ/g, 'Ğ')
+        .replace(/ü/g, 'ü').replace(/Ü/g, 'Ü').replace(/ş/g, 'ş').replace(/Å/g, 'Ş')
+        .replace(/ö/g, 'ö').replace(/Ö/g, 'Ö').replace(/ç/g, 'ç').replace(/Ç/g, 'Ç')
+        .replace(/â€™/g, "'").replace(/â€“/g, '-');
     }
 
-    function updateCatalogCount() {
-      var el = document.getElementById('catalog-count');
-      if (!el) return;
-      el.textContent = totalCatalogProducts() + ' ürün • ' + CATALOG.length + ' kategori';
+    function normalizeCatalogText(value) {
+      return repairCatalogText(value)
+        .toLowerCase()
+        .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
-    function catalogTileHtml(item) {
+    function catalogDisplayName(value) {
+      var name = repairCatalogText(value)
+        .replace(/\s*\((Bluetooth|ZigBee|Zigbee|Wi-Fi|BLE|BLE\+Wi-Fi|NB-IoT|Gateway|Ağ Geçidi|2\.4GHz&5GHz|2\.4GHz|4G|GPRS|LTE Cat\.1|Cat\.1)\)/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      var switchTypeMatch = name.match(/^(.*?Anahtar(?:ı)?)\s*\(([1-6])\s*Çıkışlı\)$/i);
+      if (switchTypeMatch) {
+        var counts = { '1': 'Tekli', '2': 'İkili', '3': 'Üçlü', '4': 'Dörtlü', '5': 'Beşli', '6': 'Altılı' };
+        return counts[switchTypeMatch[2]] + ' ' + switchTypeMatch[1];
+      }
+      return name;
+    }
+
+    function pickCatalogImage(text, candidates) {
+      var hash = 0;
+      for (var i = 0; i < text.length; i += 1) hash = (hash + text.charCodeAt(i) * (i + 3)) % 9973;
+      return candidates[hash % candidates.length];
+    }
+
+    function pickVariantCatalogImage(text, candidates) {
+      var variants = ['bluetooth', 'zigbee', 'gateway', 'ag gecidi', 'nb-iot', 'ble+wi-fi', '2.4ghz', '4g'];
+      for (var i = 0; i < variants.length; i += 1) {
+        if (text.indexOf(variants[i]) !== -1) return candidates[(i + 1) % candidates.length];
+      }
+      return pickCatalogImage(text, candidates);
+    }
+
+    function inferCatalogImage(item, groupTitle) {
+      var itemText = normalizeCatalogText(item && item.n ? item.n : '');
+      var groupText = normalizeCatalogText(groupTitle || '');
+      var text = normalizeCatalogText((item && item.n ? item.n : '') + ' ' + (groupTitle || ''));
+      if (/garaj/.test(itemText)) return 'control-garage-remote.png';
+      if (/acil durum dugmesi|emergency button/.test(itemText)) return 'control-emergency-button.png';
+      if (/hirsiz alarm|hırsız alarm/.test(itemText)) return 'security-siren.png';
+      if (/proje?ks?iyon|projektor/.test(itemText)) return 'generic-projector.png';
+      if (/su aritma|water purifier/.test(itemText)) return 'generic-water-purifier-system.png';
+      if (/hot water.*pump|circulation pump|crculation pump|sirkulasyon pompasi|sirkülasyon pompası/.test(itemText)) return 'generic-circulation-pump.png';
+      if (/cay demleme|çay demleme/.test(itemText)) return 'generic-tea-brewer.png';
+      if (/hava kaynakli su isiticisi|hava kaynaklı su ısıtıcısı/.test(itemText)) return 'generic-heat-pump.png';
+      if (/kazan tipi/.test(itemText)) return 'generic-combi-boiler.png';
+      if (/su isiticilari|su ısıtıcıları/.test(groupText)) return 'generic-water-heater.png';
+      if (/smart kettle|kettle/.test(itemText)) return 'generic-kettle.png';
+      if (/tasinabilir klima|taşınabilir klima/.test(itemText)) return 'generic-portable-ac.png';
+      if (/duvar tipi klima/.test(itemText)) return 'generic-air-conditioner.png';
+      if (/ayakli klima|ayaklı klima/.test(itemText)) return 'generic-floor-ac.png';
+      if (/pencere tipi klima/.test(itemText)) return 'generic-window-ac.png';
+      if (/kahve|coffee/.test(itemText)) return 'generic-espresso-machine.png';
+      if (/meyve kurutma/.test(itemText)) return 'generic-food-dehydrator.png';
+      if (/sicak hava fritoz|sıcak hava fritöz/.test(itemText)) return 'generic-air-fryer.png';
+      if (/pilav pisirme|pilav pişirme/.test(itemText)) return 'generic-rice-cooker.png';
+      if (/vakumlu pisirme|vakumlu pişirme|sous vide/.test(itemText)) return 'generic-sous-vide.png';
+      if (/sebze yikama|sebze yıkama/.test(itemText)) return 'generic-vegetable-washer.png';
+      if (/sterilizator celik tencere|sterilizatör çelik tencere|biberon steril/.test(itemText)) return 'misc-baby-sterilizer.png';
+      if (/sterilizator kabini|sterilizatör kabini/.test(itemText)) return 'generic-sterilizer-cabinet.png';
+      if (/su isiticisi|su ısıtıcısı|water heater/.test(itemText)) return 'generic-water-heater.png';
+      if (/isi pompasi|ısı pompası|heat pump/.test(itemText)) return 'generic-heat-pump.png';
+      if (/kombi/.test(itemText)) return 'generic-combi-boiler.png';
+      if (/kalorifer petegi|kalorifer peteği/.test(itemText)) return 'generic-radiator.png';
+      if (/gazli soba|gazlı soba|gas cooktop/.test(itemText)) return 'generic-gas-cooktop.png';
+      if (/elektrikli battaniye/.test(itemText)) return 'generic-electric-blanket.png';
+      if (/somine|şömine|fireplace/.test(itemText)) return 'generic-electric-fireplace.png';
+      if (/masaj koltugu|masaj koltuğu/.test(itemText)) return 'health-massage-chair.png';
+      if (/kondisyon bisikleti|exercise bike/.test(itemText)) return 'sport-exercise-bike.png';
+      if (/akulu tekerlekli sandalye|akülü tekerlekli sandalye|wheelchair/.test(itemText)) return 'outdoor-electric-wheelchair.png';
+      if (/kulak kiri|otoskop|otoscope/.test(itemText)) return 'health-otoscope.png';
+      if (/at[eə]s olcer|ateş ölçer|forehead thermometer/.test(itemText)) return 'health-forehead-thermometer.png';
+      if (/oksimetre|oximeter/.test(itemText)) return 'health-pulse-oximeter.png';
+      if (/basinc sensor|basınç sensör|pressure sensor/.test(itemText)) return 'generic-pressure-sensor.png';
+      if (/yuz temizleyici|yüz temizleyici/.test(itemText)) return 'health-face-cleanser.png';
+      if (/video baz istasyonu|video base/.test(itemText)) return 'security-video-base-station.png';
+      if (/video kilidi|video lock/.test(itemText)) return 'security-video-door-lock.png';
+      if (/menzil arttirici|menzil artırıcı|range extender/.test(itemText)) return 'generic-range-extender.png';
+      if (/iki tekerlekli.*sarj|iki tekerlekli.*şarj/.test(itemText)) return 'energy-two-wheel-charger-station.png';
+      if (/elektrikli bisiklet|electric bicycle/.test(itemText)) return 'outdoor-electric-bike.png';
+      if (/bitki izleyici|toprak sensor|toprak sensör|plant monitor/.test(itemText)) return 'agri-plant-monitor-pot.png';
+      if (/su vanasi kumandasi|su vanası kumandası/.test(itemText)) return 'agri-water-valve-controller.png';
+      if (/supurgelik.*soba|baseboard heater/.test(text)) return 'generic-baseboard-heater.png';
+      if (/cim bicme|cim biçme|lawn mower/.test(text)) return 'outdoor-lawn-mower.png';
+      if (/davlumbaz|aspirator|aspiratör|range hood/.test(text)) return 'generic-range-hood.png';
+      if (/alttan isit.*masa|heated table/.test(text)) return 'misc-heated-table.png';
+      if (/camasir kurutucu|çamaşır kurutucu|clothes dryer/.test(text)) return 'generic-clothes-dryer.png';
+      if (/havalandirma|havalandırma|ventilation|hvac/.test(text)) return 'generic-ventilation.png';
+      if (/isitma|ısıtma/.test(text)) return 'generic-heater.png';
+      if (/robot.*supurge|akilli robot|vacuum|supurge/.test(text)) return 'generic-robot-vacuum.png';
+      if (/robot pool cleaner|pool cleaner/.test(text)) return 'generic-robot-vacuum.png';
+      if (/mop|zemin|cam temizlik|window/.test(text)) return 'generic-robot-vacuum.png';
+      if (/aquarium pump|akvaryum pompasi|akvaryum pompa/.test(text)) return 'misc-aquarium-pump.png';
+      if (/pet feeder|evcil hayvan besleme|gida kovasi|gida kovası|balik besleyici|balık besleyici/.test(text)) return 'misc-pet-feeder.png';
+      if (/evcil hayvan su sebili|pet water/.test(text)) return 'misc-pet-fountain.png';
+      if (/evcil hayvan tasmasi|evcil hayvan tasmasi|pet collar/.test(text)) return 'misc-pet-collar.png';
+      if (/akvaryum coklu prizi|akvaryum çoklu prizi/.test(text)) return 'generic-power-strip.png';
+      if (/akvaryum/.test(text)) return 'misc-aquarium.png';
+      if (/kedi kumu/.test(text)) return 'misc-litter-box.png';
+      if (/evcil hayvan koku/.test(text)) return 'misc-pet-odor-purifier.png';
+      if (/evcil hayvan kurutma/.test(text)) return 'misc-pet-dryer.png';
+      if (/evcil hayvan topu/.test(text)) return 'misc-pet-ball.png';
+      if (/evcil hayvan cantasi|evcil hayvan çantasi|evcil hayvan çantası/.test(text)) return 'misc-pet-carrier.png';
+      if (/evcil hayvan evi/.test(text)) return 'misc-litter-box.png';
+      if (/gogus pompasi|göğüs pompasi|göğüs pompası/.test(text)) return 'misc-breast-pump.png';
+      if (/sut makinesi|süt makinesi/.test(text)) return 'misc-milk-maker.png';
+      if (/biberon|sut isitic|süt isitic|süt isıtıcı|sut isitici/.test(text)) return 'misc-bottle-warmer.png';
+      if (/mama hazirlayici|mama hazırlayıcı/.test(text)) return 'misc-formula-maker.png';
+      if (/besik|beşik|bebek sandalyesi/.test(text)) return 'misc-baby-cradle.png';
+      if (/bebek bakim monitor|bebek bakım monitör/.test(text)) return 'misc-baby-monitor.png';
+      if (/bird feeder/.test(text)) return 'security-bird-feeder.png';
+      if (/kapi zili|doorbell|zil/.test(text)) return 'security-video-doorbell.png';
+      if (/nvr|dvr|kaydedici|recorder/.test(text)) return 'security-nvr.png';
+      if (/kamera|camera|video/.test(text)) {
+        if (/(^|[^0-9.])4g\b|mobile|arac/.test(text)) return 'security-4g-camera.png';
+        if (/dis|outdoor/.test(text)) return 'security-outdoor-camera.png';
+        if (/ptz/.test(text)) return 'security-ptz-camera.png';
+        if (/lamba|flood/.test(text)) return 'security-floodlight-camera.png';
+        return 'security-indoor-camera.png';
+      }
+      if (/kapi ve pencere|pencere sensor|door.*sensor/.test(text)) return 'security-door-sensor.png';
+      if (/turnike/.test(text)) return 'security-turnstile.png';
+      if (/kasa/.test(text)) return 'security-safe-box.png';
+      if (/anahtar kutusu/.test(text)) return 'security-key-safe.png';
+      if (/dolap kilidi/.test(text)) return 'security-cabinet-lock.png';
+      if (/asma kilit/.test(text)) return 'security-padlock.png';
+      if (/u tipi kilit/.test(text)) return 'security-u-lock.png';
+      if (/parmak|fingerprint/.test(text)) return 'security-fingerprint-lock.png';
+      if (/kapi|kilit|lock/.test(text)) return 'security-keypad-lock.png';
+      if (/gaz dedektor|gaz alarm/.test(text)) return 'security-gas-detector.png';
+      if (/duman|co dedektor|termal alarm|alarm/.test(text)) return 'security-smoke-detector.png';
+      if (/su basman|su sizinti|leak/.test(text)) return 'security-water-leak.png';
+      if (/sicaklik ve nem|nem sensor|temperature humidity/.test(text)) return 'generic-temp-humidity.png';
+      if (/hava kalitesi|pm2\.5|voc|toprak|basinc/.test(text)) return 'generic-air-quality.png';
+      if (/sensor|dedektor|hareket|motion|varlik|vucudu|titreşim|titresim|acil/.test(text)) return 'generic-motion-sensor.png';
+      if (/coklu priz|uzatma|power strip/.test(text)) return 'generic-power-strip.png';
+      if (/priz|soket|plug/.test(text)) return 'generic-smart-plug.png';
+      if (/acil durum dugmesi|emergency button/.test(text)) return 'control-emergency-button.png';
+      if (/senaryo anahtar|uyandirma anahtar/.test(text)) return 'control-scenario-switch.png';
+      if (/akilli buton|smart button/.test(text)) return 'control-smart-button.png';
+      if (/kablosuz anahtar/.test(text)) return 'control-wireless-button.png';
+      if (/dimmer/.test(text)) return 'control-dimmer-knob.png';
+      if (/perde anahtar|curtain switch/.test(text)) return 'control-curtain-switch.png';
+      if (/perde|curtain|motor/.test(text)) return 'control-curtain-motor.png';
+      if (/garaj/.test(text)) return 'control-garage-controller.png';
+      if (/evrensel kumanda|uzaktan kumanda|remote|kumanda/.test(text)) return 'control-remote-control.png';
+      if (/ir blaster|(^|[^a-z])ir([^a-z]|$)/.test(text)) return 'control-ir-blaster.png';
+      if (/thermostat switch/.test(text)) return 'control-thermostat-switch.png';
+      if (/4 cikis|4 çıkış|dort|dört/.test(text) && /anahtar|switch/.test(text)) return 'control-four-gang-switch.png';
+      if (/3 cikis|3 çıkış|uclu|üçlü/.test(text) && /anahtar|switch/.test(text)) return 'control-triple-wall-switch.png';
+      if (/2 cikis|2 çıkış|cift|çift|ikili/.test(text) && /anahtar|switch/.test(text)) return 'control-double-wall-switch.png';
+      if (/dokunmatik anahtar|touch switch/.test(text)) return 'control-touch-switch.png';
+      if (/anahtar|switch/.test(text)) return 'control-single-wall-switch.png';
+      if (/serit|strip|ambiyans|tv ortam/.test(text)) return 'generic-led-strip.png';
+      if (/tavan|ceiling|oda isik/.test(text)) return 'generic-ceiling-light.png';
+      if (/masa|mum|retro/.test(text)) return 'generic-table-lamp.png';
+      if (/dis mekan|bahce|cim|avlu|string light|spot/.test(text)) return 'generic-outdoor-light.png';
+      if (/bitki buyutme isigi|bitki buyutme ışığı|grow light/.test(text)) return 'agri-grow-light.png';
+      if (/lamba|ampul|isik|led|aydinlatma/.test(text)) return 'generic-led-bulb.png';
+      if (/meteoroloji saati|weather/.test(text)) return 'misc-weather-clock.png';
+      if (/ayakkabi steril|ayakkabı steril/.test(text)) return 'misc-shoe-sterilizer.png';
+      if (/ayakkabi kutusu|ayakkabı kutusu/.test(text)) return 'misc-shoe-box.png';
+      if (/giysi bakim|giysi bakım/.test(text)) return 'misc-garment-care.png';
+      if (/sinek|mosquito/.test(text)) return 'misc-mosquito-lamp.png';
+      if (/buz makinesi/.test(text)) return 'misc-ice-maker.png';
+      if (/dondurma/.test(text)) return 'misc-ice-cream-maker.png';
+      if (/ekmek/.test(text)) return 'misc-bread-maker.png';
+      if (/cop|çöp/.test(text)) return 'misc-trash-can.png';
+      if (/termostat|thermostat|trv|hvac/.test(text)) return 'generic-thermostat.png';
+      if (/klima|air conditioner/.test(text)) return 'generic-air-conditioner.png';
+      if (/hava temiz|purifier|sterilizator|nem alma|hava kutusu/.test(text)) return 'generic-air-purifier.png';
+      if (/nemlendirici|humidifier/.test(text)) return 'generic-humidifier.png';
+      if (/fan|vantilator/.test(text)) return 'generic-fan.png';
+      if (/isik pompa|isi pompa|soba|isitic|kalorifer|battaniye|somine|heater|kombi/.test(text)) return 'generic-heater.png';
+      if (/buzdolabi|refrigerator|fridge|sarap dolabi/.test(text)) return 'generic-refrigerator.png';
+      if (/camasir makinesi|washing/.test(text)) return 'generic-washing-machine.png';
+      if (/bulasik|dishwasher/.test(text)) return 'generic-dishwasher.png';
+      if (/mikrodalga|microwave/.test(text)) return 'generic-microwave.png';
+      if (/firin|oven|fritoz|ocak|pisirme|davlumbaz|entegre mutfak/.test(text)) return 'generic-oven.png';
+      if (/kahve|coffee/.test(text)) return 'generic-coffee-maker.png';
+      if (/kettle|cay|su isitic/.test(text)) return 'generic-kettle.png';
+      if (/soya sutu|soya sütü/.test(text)) return 'misc-milk-maker.png';
+      if (/blender|robotu|sikacagi|presi|meyve|sebze yikama|sebze yıkama/.test(text)) return 'generic-blender.png';
+      if (/mutfak terazisi|hassas/.test(text)) return 'generic-kitchen-scale.png';
+      if (/gida termometresi|food thermometer/.test(text)) return 'misc-food-thermometer.png';
+      if (/su aritma|water purifier/.test(text)) return 'generic-water-purifier.png';
+      if (/grafik yazici|grafik yazıcı|photo printer/.test(text)) return 'ent-photo-printer.png';
+      if (/3d yazici|3d yazıcı/.test(text)) return 'ent-3d-printer.png';
+      if (/earphone|kulaklik|kulaklık/.test(text)) return 'ent-earbuds.png';
+      if (/dot matrix|12x48|5x36/.test(text)) return 'ent-dot-matrix-display.png';
+      if (/hikaye makinesi|story/.test(text)) return 'ent-story-speaker.png';
+      if (/kitap okuyucu|reader/.test(text)) return 'ent-ereader.png';
+      if (/amplifier/.test(text)) return 'ent-amplifier.png';
+      if (/bulut fotograf|fotoğraf çerçevesi|photo frame|cerceve/.test(text)) return 'ent-photo-frame.png';
+      if (/tv|televizyon|ekran|cerceve/.test(text)) return 'generic-smart-tv.png';
+      if (/hoparlor|speaker|soundbar|audio|earphone|amplifier|ses/.test(text)) return 'generic-smart-speaker.png';
+      if (/projeksiyon|projektor/.test(text)) return 'generic-projector.png';
+      if (/router|yonlendirici|menzil/.test(text)) return 'generic-router.png';
+      if (/energy mate/.test(text)) return 'energy-mate-display.png';
+      if (/inverter|invertor/.test(text)) return 'energy-inverter.png';
+      if (/transformator|transformatör/.test(text)) return 'energy-transformer.png';
+      if (/devre kesici|breaker/.test(text)) return 'energy-circuit-breaker.png';
+      if (/iki tekerlekli.*sarj|iki tekerlekli.*şarj/.test(text)) return 'energy-two-wheel-charger.png';
+      if (/ev sarj|ev charger|sarj istasyonu|şarj istasyonu/.test(text)) return 'generic-ev-charger.png';
+      if (/guc istasyonu|portable power/.test(text)) return 'generic-power-station.png';
+      if (/su sayac/.test(text)) return 'generic-water-meter.png';
+      if (/gaz sayac|gaz sayaç/.test(text)) return 'energy-gas-meter.png';
+      if (/saya|meter|enerji|devre kesici|breaker|inverter|transformator/.test(text)) return 'generic-energy-meter.png';
+      if (/solar|gunes/.test(text)) return 'generic-solar-panel.png';
+      if (/gps vehicle tracker|izleyici|tracker|hirsiz|hırsız/.test(text)) return 'outdoor-gps-tracker.png';
+      if (/arac ici kamera|araç içi kamera/.test(text)) return 'outdoor-dash-camera.png';
+      if (/electric bicycle|elektrikli bisiklet/.test(text)) return 'outdoor-electric-bike.png';
+      if (/helmet/.test(text)) return 'outdoor-helmet.png';
+      if (/hava kompresoru|hava kompresörü/.test(text)) return 'outdoor-air-compressor.png';
+      if (/scooter|kaykay|hoverboard|akilli elektrikli arac|akıllı elektrikli araç|tekerlekli/.test(text)) return 'generic-scooter.png';
+      if (/kosu|treadmill|kondisyon/.test(text)) return 'generic-treadmill.png';
+      if (/kan basinci|tansiyon|blood|oksimetre|ates/.test(text)) return 'generic-blood-pressure.png';
+      if (/tarti|scale|baskul/.test(text)) return 'generic-smart-scale.png';
+      if (/ip atlama/.test(text)) return 'sport-jump-rope.png';
+      if (/halter/.test(text)) return 'sport-dumbbell.png';
+      if (/badminton|tenis raketi/.test(text)) return 'sport-badminton-racket.png';
+      if (/hula hoop|cember|çember/.test(text)) return 'sport-hula-hoop.png';
+      if (/direnc bandi|direnç bandı|resistance band/.test(text)) return 'sport-resistance-band.png';
+      if (/bilek guclendirme|bilek güçlendirme|wrist/.test(text)) return 'sport-wrist-ball.png';
+      if (/egzersiz tekerlegi|egzersiz tekerleği/.test(text)) return 'sport-exercise-wheel.png';
+      if (/kurek cekme|kürek çekme/.test(text)) return 'sport-rowing-machine.png';
+      if (/saat\/bileklik|bileklik|uyku izleme band/.test(text)) return 'health-smart-band.png';
+      if (/uyku butonu/.test(text)) return 'health-sleep-button.png';
+      if (/calar saat|çalar saat/.test(text)) return 'health-alarm-clock.png';
+      if (/beyaz dinlenme/.test(text)) return 'health-sleep-light.png';
+      if (/akilli yastik|akıllı yastık/.test(text)) return 'health-smart-pillow.png';
+      if (/akilli yatak|akıllı yatak/.test(text)) return 'health-smart-bed.png';
+      if (/ayak kuveti|ayak küveti|foot spa/.test(text)) return 'health-foot-spa.png';
+      if (/akilli kanepe|akıllı kanepe|smart sofa/.test(text)) return 'health-smart-sofa.png';
+      if (/egzersiz aynasi|egzersiz aynası|fitness mirror/.test(text)) return 'health-fitness-mirror.png';
+      if (/fizyoterapi|physio/.test(text)) return 'health-physio-device.png';
+      if (/akilli bardak|akıllı bardak|smart cup/.test(text)) return 'misc-smart-cup.png';
+      if (/yuz temizleyici|yüz temizleyici/.test(text)) return 'health-face-cleanser.png';
+      if (/yuz buhar|yüz buhar/.test(text)) return 'health-facial-steamer.png';
+      if (/sac kurutma|saç kurutma/.test(text)) return 'health-hair-dryer.png';
+      if (/dis fircasi|diş fırçası|toothbrush/.test(text)) return 'health-toothbrush.png';
+      if (/bitki izleyici/.test(text)) return 'agri-plant-monitor.png';
+      if (/sulama fiskiye|sulama fiskiyesi/.test(text)) return 'agri-irrigation-sprinkler.png';
+      if (/su vanasi|su vanası/.test(text)) return 'agri-water-valve.png';
+      if (/smart door|smart gating/.test(text)) return 'security-gate-opener.png';
+      if (/mini lift/.test(text)) return 'misc-mini-lift.png';
+      if (/konnektor|connector/.test(text)) return 'generic-power-strip.png';
+      if (/ag gecidi|gateway|zigbee|hub|kopru|kontrol paneli/.test(text)) return 'generic-smart-hub.png';
+      return 'generic-smart-hub.png';
+    }
+
+
+    function catalogTileHtml(item, groupTitle) {
       var safe = escapeCatalogHtml(item.n);
-      return '<div class="product-tile text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, \'' + safe + '\')">' +
-        '<div class="w-full aspect-square overflow-hidden mb-2 relative flex items-center justify-center bg-transparent">' +
-        '<img src="assets/products/' + item.img + '" alt="' + safe + '" class="w-[86%] h-[86%] object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" />' +
+      var display = escapeCatalogHtml(catalogDisplayName(item.n));
+      var safeGroup = escapeCatalogHtml(groupTitle || 'Genel');
+      var image = inferCatalogImage(item, groupTitle);
+      var imageVersion = '20260801-products-4';
+      return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="simulateConnection(this, \'' + safe + '\')">' +
+        '<div class="product-image-stage">' +
+        '<img src="assets/products/' + image + '?v=' + imageVersion + '" alt="' + safe + '" class="max-w-[84%] max-h-[62px] object-contain transition-transform duration-300 group-active:scale-95" loading="lazy" onerror="this.onerror=null;this.src=&quot;assets/products/generic-smart-hub.png?v=' + imageVersion + '&quot;;" />' +
         '</div>' +
-        '<p class="text-[0.72rem] font-medium text-slate-700 leading-tight w-full px-0.5 dark:text-slate-200">' + safe + '</p>' +
-        '</div>';
+        '<div class="px-1 pt-1 flex min-h-[30px] flex-col items-center justify-start">' +
+        '<span class="product-name">' + display + '</span>' +
+        '<span class="product-category-pill">' + safeGroup + '</span>' +
+        '</div>' +
+        '</button>';
+    }
+
+    function dedupeCatalogItems(items) {
+      var seen = {};
+      return (items || []).filter(function (item) {
+        var key = normalizeCatalogText(catalogDisplayName(item.n || ''));
+        if (!key) return false;
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      });
     }
 
     function catalogGroupHtml(title, items) {
+      var uniqueItems = dedupeCatalogItems(items);
+      if (!uniqueItems.length) return '';
       return '<div class="mb-9">' +
         '<p class="catalog-group-title">' + escapeCatalogHtml(title) + '</p>' +
-        '<div class="grid grid-cols-3 gap-x-3 gap-y-6">' + items.map(catalogTileHtml).join('') + '</div>' +
+        '<div class="product-grid">' + uniqueItems.map(function (item) { return catalogTileHtml(item, title); }).join('') + '</div>' +
         '</div>';
     }
 
@@ -2318,20 +2639,32 @@
     function renderCatalogContent() {
       var content = document.getElementById('catalog-content');
       if (!content) return;
-      var query = ((document.getElementById('catalog-search') || {}).value || '').trim().toLowerCase();
+      var query = normalizeCatalogText(((document.getElementById('catalog-search') || {}).value || '').trim());
 
       if (query) {
         var matches = [];
         CATALOG.forEach(function (c) {
           c.groups.forEach(function (g) {
             g.items.forEach(function (it) {
-              if (it.n.toLowerCase().indexOf(query) !== -1) matches.push(it);
+              if (normalizeCatalogText(it.n).indexOf(query) !== -1) matches.push(it);
             });
           });
         });
+        matches = dedupeCatalogItems(matches);
         content.innerHTML = matches.length
           ? catalogGroupHtml('Arama Sonuçları', matches)
           : '<div class="px-6 py-16 text-center"><p class="text-sm font-medium text-slate-500 dark:text-slate-300">Aramanla eşleşen cihazı bulunamadı.</p></div>';
+        content.scrollTop = 0;
+        return;
+      }
+
+      if (activeCatalogCategory === 'all') {
+        content.innerHTML = CATALOG.map(function (c) {
+          return '<section class="mb-10">' +
+            '<h2 class="catalog-heading mb-4 text-lg font-black text-slate-900">' + escapeCatalogHtml(c.label) + '</h2>' +
+            c.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('') +
+            '</section>';
+        }).join('');
         content.scrollTop = 0;
         return;
       }
@@ -2353,6 +2686,16 @@
       window.location.href = 'stitch-setup-code.html';
     }
 
+    function enhanceCatalogRender() {
+      var originalRenderCatalogContent = renderCatalogContent;
+      renderCatalogContent = function () {
+        originalRenderCatalogContent();
+        setTimeout(makeImagesTransparent, 100);
+      };
+    }
+
+    enhanceCatalogRender();
+
     function closeCodeModal() {
       const modal = document.getElementById('code-modal');
       const content = document.getElementById('code-modal-content');
@@ -2367,7 +2710,7 @@
     function submitCode() {
       const input = document.getElementById('setup-code-input').value;
       if (input.length < 4) {
-        alert('Lütfen geçerli bir kod girin.');
+        showIntegrationsToast('Lütfen geçerli bir kod girin.');
         return;
       }
       closeCodeModal();
@@ -2425,11 +2768,19 @@
       var requested = params.get('category');
       var mapped = requested ? (CATALOG_ALIAS[requested] || requested) : null;
       var valid = CATALOG.some(function (c) { return c.key === mapped; });
-      activeCatalogCategory = valid ? mapped : CATALOG[0].key;
-      updateCatalogCount();
+      activeCatalogCategory = mapped === 'all' || valid ? mapped : CATALOG[0].key;
       renderCatalogRail();
       renderCatalogContent();
     })();
   </script>
+<script>
+function showIntegrationsToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
 </body>
 </html>

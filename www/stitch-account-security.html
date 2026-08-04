@@ -217,6 +217,7 @@
       if (next.length < 4) {
         error.textContent = 'Yeni şifre en az 4 karakter olmalı.';
         error.classList.remove('hidden');
+        showSecurityToast('Şifre en az 4 karakter olmalı', true);
         return;
       }
       if (next !== confirm) {
@@ -231,13 +232,13 @@
       document.getElementById('new-password').value = '';
       document.getElementById('confirm-password').value = '';
       syncSecurityState();
-      alert('Şifre güncellendi.');
+      showSecurityToast('Şifre güncellendi ✓');
     }
 
     function saveRecoveryMethods() {
       nexusSetItem('nexusRecoveryEmail', document.getElementById('recovery-email').value.trim());
       nexusSetItem('nexusRecoveryPhone', document.getElementById('recovery-phone').value.trim());
-      alert('Kurtarma bilgileri kaydedildi.');
+      showSecurityToast('Kurtarma bilgileri kaydedildi ✓');
     }
 
     function renderSessions() {
@@ -277,7 +278,7 @@
       const current = getSessions().find(item => item.current);
       nexusSetItem(SESSION_KEY, JSON.stringify(current ? [current] : []));
       renderSessions();
-      alert('Diğer oturumlar kapıatıldı.');
+      showSecurityToast('Diğer oturumlar kapatıldı ✓');
     }
 
     function escapeHtml(value) {
@@ -301,5 +302,14 @@
     renderSessions();
     lucide.createIcons();
   </script>
-<script src="smart-card-detail-state.js"></script></body>
+<script>
+function showSecurityToast(msg, isError) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-size:14px;font-weight:600;color:#fff;white-space:nowrap;max-width:90vw;text-align:center;background:' + (isError ? '#dc2626' : '#1e293b') + ';';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
+</body>
 </html>

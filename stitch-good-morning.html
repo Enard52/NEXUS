@@ -15,7 +15,7 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
 </head>
-<body>
+<body data-scene-page="good-morning" data-scene-title="Günaydın Rutini" data-complete-href="stitch-home.html">
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
@@ -36,7 +36,7 @@
         <p class="text-sm font-medium text-slate-500 mt-2 relative">Bu senaryo aktifleştiğinde ilgili cihazlar otomatik olarak ayarlanır.</p>
       </section>
 
-      <section class="space-y-3 mt-4">
+      <footer class="space-y-3 mt-4 px-0">
         <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
              <div class="w-10 h-10 rounded-xl bg-[#4C7DFF]/10 flex items-center justify-center text-[#4C7DFF]">
@@ -47,28 +47,12 @@
               <p class="text-[11px] font-medium text-slate-500">Hemen devreye girsin</p>
             </div>
           </div>
-          <button class="bg-[#4C7DFF] text-white px-4 py-2 rounded-xl text-xs font-bold active-scale" onclick="alert('Senaryo başarıyla çalıştırıldı.')">Çalıştır</button>
+          <button class="bg-[#4C7DFF] text-white px-4 py-2 rounded-xl text-xs font-bold active-scale">Çalıştır</button>
         </div>
-      </section>
+      </footer>
     </main>
   </div>
 
-<!-- DYNAMIC JS -->
-<script>
-
-document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('button');
-    if(btn) {
-        btn.onclick = () => {
-            const state = JSON.parse(localStorage.getItem('nexusSceneStates') || '{}');
-            state['good-morning'] = !state['good-morning']; // toggle
-            localStorage.setItem('nexusSceneStates', JSON.stringify(state));
-            alert(state['good-morning'] ? 'Senaryo başarıyla çalıştırıldı.' : 'Senaryo durduruldu.');
-            location.reload();
-        };
-    }
-});
-
-</script>
+<script src="smart-scene-page.js"></script>
 </body>
 </html>

@@ -42,7 +42,7 @@
 <div class="flex items-center justify-between mb-4">
 <a class="text-slate-700 text-lg font-medium" href="stitch-home.html" id="cancel-link">İptal</a>
 <h1 class="text-slate-900 font-bold" id="map-title">Hava Durumu Konumu</h1>
-<a class="text-[#4C7DFF] text-lg font-bold" href="stitch-home.html" id="save-link">Kaydet</a>
+<a class="text-[#4C7DFF] text-lg font-bold" href="#" id="save-link">Kaydet</a>
 </div>
 <!-- Search / address bar (Enter ile gerçek adres araması yapar) -->
 <div class="bg-white rounded-2xl shadow-md flex items-center px-4 py-3 gap-3" data-purpose="address-search">
@@ -99,7 +99,6 @@
     var cancelLink = document.getElementById('cancel-link');
     var saveLink = document.getElementById('save-link');
     cancelLink.href = returnPage;
-    saveLink.href = returnPage;
     if (energyMode) document.getElementById('map-title').textContent = 'Ev Konumu';
 
     /* ---------- Kayıtlı konumu yükle ---------- */
@@ -272,9 +271,11 @@
       location.href = returnPage;
     }
     // Üstteki Kaydet de aynı davranır: bekleyen seçim varsa kalıcı olur
-    saveLink.addEventListener('click', function () {
+    saveLink.addEventListener('click', function (e) {
+      e.preventDefault();
       var value = pending || addressInput.value.trim();
       if (value) { nexusSetItem(storageKey, value); saveCoords(); }
+      location.href = returnPage;
     });
 
     // Otomatik konum bulma (sayfa yüklendiğinde)

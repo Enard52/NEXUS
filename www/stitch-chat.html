@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -159,7 +159,7 @@
             <svg class="h-4 w-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             Müzik Başlat
           </button>
-          <button onclick="sendQuickMessage('Tüm ışıkları kapıat')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-amber-200/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+          <button onclick="sendQuickMessage('Tüm ışıkları kapat')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-amber-200/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
             <svg class="h-4 w-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Tasarruf Modu
           </button>
@@ -323,18 +323,72 @@
     messages.appendChild(aiResponse);
   }
 
+  function normalizeIntentText(text) {
+    return (text || '')
+      .toLowerCase()
+      .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c')
+      .replace(/İ/g, 'i').replace(/Ä/g, 'g').replace(/Ü/g, 'u').replace(/Å/g, 's').replace(/Ö/g, 'o').replace(/Ç/g, 'c')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function currentAiCreateType() {
+    if (window.__nexusAiCreateType === 'automation') return 'automation';
+    try {
+      return new URLSearchParams(window.location.search).get('type') === 'automation' ? 'automation' : 'clickrun';
+    } catch (e) {
+      return 'clickrun';
+    }
+  }
+
+  function inferScenarioMeta(text) {
+    var clean = normalizeIntentText(text);
+    var meta = {
+      title: 'Akilli Ev Rutini',
+      desc: 'Istedigin kosullara gore hazirlanan uygulanabilir ev rutini.',
+      icon: 'zap',
+      bgClass: 'bg-[#4C7DFF]/10',
+      colorClass: 'text-[#4C7DFF]'
+    };
+    if (/sabah|gunaydin|uyan/.test(clean)) {
+      return { title: 'Sabah Rutini', desc: 'Gune baslarken secili cihazlari sirayla hazirlar.', icon: 'sun', bgClass: 'bg-amber-500/10', colorClass: 'text-amber-500' };
+    }
+    if (/film|sinema|tv|dizi/.test(clean)) {
+      return { title: 'Sinema Modu', desc: 'Izleme ortamı icin isik, perde ve medya adimlarini hazirlar.', icon: 'film', bgClass: 'bg-rose-500/10', colorClass: 'text-rose-500' };
+    }
+    if (/gece|uyku|iyi geceler/.test(clean)) {
+      return { title: 'Iyi Geceler', desc: 'Gece icin isiklari, bildirimleri ve guvenlik adimlarini duzenler.', icon: 'moon', bgClass: 'bg-indigo-500/10', colorClass: 'text-indigo-500' };
+    }
+    if (/kahve|mutfak/.test(clean)) {
+      return { title: 'Kahve Saati', desc: 'Mutfak rutini icin uygun cihazlari tek dokunusla hazirlar.', icon: 'coffee', bgClass: 'bg-orange-500/10', colorClass: 'text-orange-500' };
+    }
+    if (/disari|cikis|evden cik|tatil/.test(clean)) {
+      return { title: 'Evden Cikis', desc: 'Evden ayrilirken enerji ve guvenlik kontrollerini toparlar.', icon: 'door-open', bgClass: 'bg-sky-500/10', colorClass: 'text-sky-500' };
+    }
+    if (/guven|kilit|alarm|kamera/.test(clean)) {
+      return { title: 'Guvenlik Kontrolu', desc: 'Kilit, alarm ve kamera durumlarini birlikte kontrol eder.', icon: 'shield-check', bgClass: 'bg-red-500/10', colorClass: 'text-red-500' };
+    }
+    if (/enerji|tasarruf|priz/.test(clean)) {
+      return { title: 'Enerji Tasarrufu', desc: 'Gereksiz tuketimi azaltmak icin enerji adimlarini calistirir.', icon: 'bolt', bgClass: 'bg-lime-500/10', colorClass: 'text-lime-600' };
+    }
+    if (/temiz|robot|supurge/.test(clean)) {
+      return { title: 'Temizlik Baslat', desc: 'Temizlik cihazlarini uygun sira ve modla baslatir.', icon: 'leaf', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500' };
+    }
+    return meta;
+  }
+
   /* Yerel kural-tabanlı asistan - yalnızca gerçek veriye dayalı iddialar */
   function buildReply(text) {
     var ltext = text.toLowerCase();
+    var intentText = normalizeIntentText(text);
     var devices = realDeviceCount();
     var fn = userFirstName();
     var hitap = fn ? (' ' + fn) : '';
     var reply = 'Merhaba' + hitap + ', şu an çevrimdışı asistan modundayım; eşleşmiş cihazların ve uygulama içi işlemler konusunda yardımcı olabilirim.';
     var widgetHtml = '';
 
-    if (ltext.includes('ışık') || ltext.includes('kapıat') || ltext.includes('enerji')) {
+    if (ltext.includes('ışık') || ltext.includes('kapat') || ltext.includes('enerji')) {
       if (devices > 0) {
-        reply = 'Eşleşmiş cihazlarına kapıatma komutu gönderildi. Enerji tasarrufu modu devrede.';
+        reply = 'Eşleşmiş cihazlarına kapatma komutu gönderildi. Enerji tasarrufu modu devrede.';
         widgetHtml = '<div class="mt-3 bg-[#F1F7FF] border border-purple-100 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div><div><p class="text-sm font-semibold text-gray-800">Kapatma Komutu Gönderildi</p><p class="text-xs text-gray-500">' + devices + ' Cihaz</p></div></div>';
       } else {
         reply = 'Kontrol edilecek eşleşmiş cihazı bulunamadı. Önce Cihazlar bölümünden bir cihazı eşleştirmen gerekiyor.';
@@ -343,7 +397,7 @@
       reply = 'Hemen karanlık temayı aktif ediyorum, gözlerin artık daha rahat edecek. [ACTION: ENABLE_DARK_MODE]';
     } else if (ltext.includes('açık tema') || ltext.includes('gündüz modu')) {
       reply = 'Açık temaya geçiş yaptım. [ACTION: ENABLE_LIGHT_MODE]';
-    } else if (ltext.includes('rahatsız etme') || ltext.includes('bildirimleri kapıat')) {
+    } else if (ltext.includes('rahatsız etme') || ltext.includes('bildirimleri kapat')) {
       reply = 'İyi dinlenmeler' + hitap + '! Rahatsız etme modunu açtım, hiçbir bildirim seni rahatsız etmeyecek. [ACTION: ENABLE_DND]';
     } else if (ltext.includes('klima') || ltext.includes('sıcaklık') || ltext.includes('soğut')) {
       if (devices > 0) {
@@ -352,9 +406,12 @@
       } else {
         reply = 'Sıcaklık ayarı için eşleşmiş bir klima bulunamadı. Önce Cihazlar bölümünden cihazıını eşleştir.';
       }
-    } else if (ltext === 'yapay zeka ile yeni bir akıllı uygulama oluşturmak istiyorum.' || ltext === 'yapay zeka ile yeni bir akıllı ev senaryosu oluşturmak istiyorum.') {
+    } else if ((intentText.includes('yapay zeka') || intentText.includes('ai')) && (intentText.includes('olustur') || intentText.includes('senaryo') || intentText.includes('uygulama') || intentText.includes('otomasyon'))) {
       reply = 'Tabii ki! Senin için harika bir akıllı senaryo kurgulayabilirim. Bana biraz detay verir misin? Örneğin: "Sabah uyandığımda kahve makinesi çalışsın" veya "Film izlerken ışıklar tamamen kısılsın" gibi bir istekte bulunabilirsin.';
-    } else if (ltext.includes('oluştur') || ltext.includes('senaryo') || ltext.includes('uygulama') || ltext.includes('sabah') || ltext.includes('film') || ltext.includes('gece') || ltext.includes('rutin')) {
+      if (intentText.includes(':') || /sabah|film|sinema|gece|uyku|kahve|disari|cikis|guven|kilit|alarm|kamera|enerji|tasarruf|temiz|robot|supurge/.test(intentText)) {
+        reply = 'Harika bir fikir! İstediğin detaylara göre uygulanabilir bir akıllı senaryo kurguladım ve ilgili listeye ekledim. Aşağıdan hemen göz atabilirsin! [ACTION: CREATE_SCENARIO]';
+      }
+    } else if (intentText.includes('olustur') || intentText.includes('senaryo') || intentText.includes('uygulama') || intentText.includes('otomasyon') || intentText.includes('sabah') || intentText.includes('film') || intentText.includes('gece') || intentText.includes('rutin')) {
       reply = 'Harika bir fikir! İstediğin detaylara göre yeni bir akıllı senaryo kurguladım ve hemen "Tıkla ve Çalıştır" sekmesine ekledim. Aşağıdan hemen göz atabilirsin! [ACTION: CREATE_SCENARIO]';
     }
     return { reply: reply, widgetHtml: widgetHtml };
@@ -418,31 +475,37 @@
               nexusSetItem('nexusDndState', 'Açık');
               additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white dark:bg-slate-800 rounded-lg text-[#FF3B5C]"><i data-lucide="bell-off" class="w-5 h-5"></i></div><div><p class="text-sm font-semibold text-gray-800 dark:text-white">Sistem Ayarı</p><p class="text-xs text-gray-500 dark:text-slate-400">Rahatsız etme modu açıldı</p></div></div>';
           } else if (action === 'CREATE_SCENARIO') {
-              var clickruns = [];
-              try { clickruns = JSON.parse(nexusGetItem('nexusCustomClickRun') || '[]'); } catch(e){}
+              var targetType = currentAiCreateType();
+              var targetKey = targetType === 'automation' ? 'nexusCustomAutomations' : 'nexusCustomClickRun';
+              var targetTab = targetType === 'automation' ? 'tab-automation' : 'tab-clickrun';
+              var targetLabel = targetType === 'automation' ? 'Otomasyonlar' : 'Tıkla ve Çalıştır';
+              var items = [];
+              try {
+                items = typeof readAndNormalizeItems === 'function'
+                  ? readAndNormalizeItems(targetKey, targetType)
+                  : (JSON.parse(nexusGetItem(targetKey) || '[]') || []);
+              } catch(e) {}
               var newId = 'ai-scene-' + Date.now();
-              var title = 'Yapay Zeka Senaryosu';
-              var icon = 'sparkles';
+              var meta = inferScenarioMeta(text);
 
-              var lowerText = text.toLowerCase();
-              if (lowerText.includes('sabah')) { title = 'Yapay Zeka: Sabah Rutini'; icon = 'sun'; }
-              else if (lowerText.includes('film') || lowerText.includes('sinema')) { title = 'Yapay Zeka: Sinema Modu'; icon = 'film'; }
-              else if (lowerText.includes('gece') || lowerText.includes('uyku')) { title = 'Yapay Zeka: İyi Geceler'; icon = 'moon'; }
-              else if (lowerText.includes('kahve')) { title = 'Yapay Zeka: Kahve Saati'; icon = 'coffee'; }
-              else if (lowerText.includes('dışarı') || lowerText.includes('evden çıkış')) { title = 'Yapay Zeka: Evden Çıkış'; icon = 'door-open'; }
-
-              clickruns.push({
+              items.push({
                 id: newId,
-                title: title,
-                desc: 'NEXUS AI tarafından senin için özel olarak oluşturuldu.',
-                icon: icon,
-                bgClass: 'bg-purple-100',
-                colorClass: 'text-purple-600',
-                room: 'Tüm Ev'
+                title: meta.title,
+                desc: meta.desc,
+                icon: meta.icon,
+                bgClass: meta.bgClass,
+                colorClass: meta.colorClass,
+                room: 'Tüm Ev',
+                enabled: true,
+                source: 'ai-offline'
               });
-              nexusSetItem('nexusCustomClickRun', JSON.stringify(clickruns));
+              if (typeof writeNormalizedItems === 'function') {
+                writeNormalizedItems(targetKey, items, targetType);
+              } else {
+                nexusSetItem(targetKey, JSON.stringify(items));
+              }
 
-              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-purple-200 dark:border-purple-500/30 rounded-xl p-3 flex items-center justify-between"><div class="flex items-center gap-3"><div class="p-2 bg-purple-100 dark:bg-purple-900/40 rounded-lg text-purple-600 dark:text-purple-400"><i data-lucide="' + icon + '" class="w-5 h-5"></i></div><div><p class="text-sm font-semibold text-gray-800 dark:text-white">Senaryo Oluşturuldu</p><p class="text-xs text-gray-500 dark:text-slate-400">Tıkla ve Çalıştır\'a eklendi</p></div></div><a href="stitch-smart.html" class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-purple-100 dark:border-slate-600 shadow-sm active:scale-95 transition-all">Görüntüle</a></div>';
+              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-blue-200 dark:border-blue-500/30 rounded-xl p-3 flex items-center justify-between gap-3"><div class="flex items-center gap-3 min-w-0"><div class="p-2 ' + meta.bgClass + ' rounded-lg ' + meta.colorClass + '"><i data-lucide="' + meta.icon + '" class="w-5 h-5"></i></div><div class="min-w-0"><p class="text-sm font-semibold text-gray-800 dark:text-white truncate">' + escapeHtml(meta.title) + '</p><p class="text-xs text-gray-500 dark:text-slate-400">' + targetLabel + ' listesine eklendi</p></div></div><a href="stitch-smart.html?tab=' + targetTab + '" class="shrink-0 text-xs font-bold text-[#4C7DFF] bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-blue-100 dark:border-slate-600 shadow-sm active:scale-95 transition-all">Görüntüle</a></div>';
           }
       });
 
@@ -452,7 +515,7 @@
       persistMessage('ai', cleanText); // Save clean text to history
       scrollToBottom();
 
-      if (additionalWidget) {
+      if (additionalWidget && typeof lucide !== 'undefined') {
           lucide.createIcons(); // re-init icons for the new widgets
       }
     }, 1500);
@@ -547,6 +610,7 @@
         : 'Tekrar görüşmek güzel!<br/>Nasıl yardımcı olabilirim?';
     }
     var params = new URLSearchParams(window.location.search);
+    window.__nexusAiCreateType = params.get('type') === 'automation' ? 'automation' : 'clickrun';
     var requested = params.get('chat');
     if (requested) {
       var list = loadChats();
@@ -566,10 +630,15 @@
     } else {
       currentChatId = 'c' + Date.now() + Math.random().toString(36).slice(2, 7);
     }
-    document.addEventListener('DOMContentLoaded', function () {
+    function run() {
       updateInputLock();
       autoSendIncomingPrompt();
-    });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
   })();
 </script>
 <!-- END: MainContent -->

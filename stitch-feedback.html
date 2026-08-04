@@ -136,9 +136,10 @@
     // Support assistant: keyword-matched quick answers, escalates to feedback form
     function askAssistant() {
       var input = document.getElementById('assist-input');
+      var log = document.getElementById('assist-log');
+      if (!input || !log) return; // DOM elementleri yoksa erken çık
       var text = input.value.trim();
       if (!text) return;
-      var log = document.getElementById('assist-log');
       log.insertAdjacentHTML('beforeend', '<div class="bg-[#4C7DFF] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm max-w-[85%] ml-auto"></div>');
       log.lastElementChild.textContent = text;
       input.value = '';

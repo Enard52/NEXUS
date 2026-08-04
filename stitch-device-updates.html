@@ -86,10 +86,14 @@
     const UPDATE_HISTORY_KEY = 'nexusUpdateHistory';
 
     function getRealDevices() {
+      // Önce data.js'in fonksiyonunu dene, yoksa nexusPairedDevices'a bak
       if (typeof window.getNexusLocalDevices === 'function') {
         return window.getNexusLocalDevices();
       }
-      return [];
+      try {
+        var paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
+        return Array.isArray(paired) ? paired : [];
+      } catch(e) { return []; }
     }
 
     function readHistory() {
@@ -118,7 +122,7 @@
     function runCheck(deviceName) {
       logCheck(deviceName, 'Güncelleme servisi bağlantısı bekleniyor');
       renderHistory();
-      alert(deviceName + ' için kontrol isteği kaydedildi. Sonuçlar harici güncelleme servisi bağlandığında gösterilecek.');
+      showUpdatesToast(deviceName + ' için kontrol isteği kaydedildi');
     }
 
     function renderDevices() {
@@ -180,12 +184,12 @@
     document.getElementById('check-all-btn').addEventListener('click', function () {
       const devices = getRealDevices();
       if (!devices.length) {
-        alert('Önce en az bir cihazı eklemelisin.');
+        showUpdatesToast('Önce en az bir cihaz eklemelisin');
         return;
       }
       devices.forEach((device) => logCheck(device.name || 'Cihaz', 'Toplu kontrol isteği kaydedildi'));
       renderHistory();
-      alert('Tüm kayıtlı cihazılar için kontrol isteği kaydedildi.');
+      showUpdatesToast('Tüm kayıtlı cihazlar için kontrol isteği kaydedildi');
     });
 
     document.getElementById('refresh-updates').addEventListener('click', function () {
@@ -209,5 +213,14 @@
     renderHistory();
     lucide.createIcons();
   </script>
+<script>
+function showUpdatesToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;white-space:nowrap;max-width:90vw;text-align:center;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
 </body>
 </html>

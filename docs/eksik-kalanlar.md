@@ -1,43 +1,132 @@
-# NEXUS Mobil - Eksik Kalanlar
+# NEXUS Mobil - Eksik Kalanlar ve API Olmadan Yapılabilecekler
 
-Bu belge, akış olarak çalışan ama görsel kalite, bütünlük veya ürün hissi açısından hala tamamlanması gereken alanları listeler. Bunlar yeni işlev üretmekten çok mevcut çalışan yüzeyleri daha güçlü hale getirme işidir.
+Bu belge, akış olarak çalışan ama görsel kalite, bütünlük veya ürün hissi açısından hala tamamlanması gereken alanları listeler. API entegrasyonu olmadan da yapılabilecek düzeltmeler ve iyileştirmeler bu bölümde öne çıkmaktadır.
 
-## Tarama ve Manuel Ekleme
+---
 
-- Tarama ekranı alt aksiyon alanı: Kurulum kodu, fener ve albüm aksiyonları işlevsel olsa da görsel olarak daha premium bir seviyeye çıkarılmalı.
-- Manuel ekleme CTA satırı: `QR bulunamadıysa manuel ekleyin` alanı çalışıyor fakat görsel hiyerarşi zayıf.
-- Kurulum kodu giriş noktası: `Kurulum Kodu Girin` yüzeyi ikonografi, boşluk ve vurgu açısından rafine edilmeli.
-- Kurulum kodu tam ekranı: Akış doğru, fakat giriş alanı, üst boşluklar ve başlık dengesi daha iyi tasarlanmalı.
-- Cihaz ekleme merkezi (`stitch-pair.html`): Akış bağlı, ama radar hero, manuel katalog kabuğu ve alt CTA alanı aynı tasarım ailesinde daha güçlü görünmeli.
-- Manuel katalog kabuğu: Katalog çalışıyor, fakat kapsayıcı yüzey, geçiş hissi ve içerik derinliği yükseltilmeli.
+## ✅ Tamamlanan Düzeltmeler (Bu Oturum)
 
-## Kart Ekle
+### 1. Temizlik ve Gereksiz Dosya Kaldırma
+- ✅ `stitch-radar.html` - Sadece `stitch-pair.html`'e yönlendiren gereksiz dosya silindi
+- ✅ Tüm referanslar temizlendi
 
-- Smart Home listesi: Seçim mantığı çalışıyor, fakat kart satırları hala fazla düz görünüyor.
-- Devices sekmesi: Gerçek cihaz verisi gösteriliyor, ama secondary metadata ve seçili durum görselliği güçlendirilmeli.
-- Tap-to-Run sekmesi: Kısayollar çalışıyor, fakat ürün hissi ve senaryo kimliği zayıf.
+### 2. UI/UX Düzeltmeleri
+- ✅ `stitch-messages.html` - Aile ve Duyurular sekmelerine "Yakında geliyor" placeholder eklendi
+- ✅ `stitch-program.html` - Day-pill'lara initial CSS state eklendi (`quickRepeat()` başlangıçta çağrılıyor)
+- ✅ `stitch-plus.html` - Plan seçimi sayfa yüklenirken `nexusGetItem('nexusSelectedPlan')` ile persist ediliyor
+- ✅ `stitch-home.html` - Çatışan `refreshDashboardSupplements` fonksiyon tanımı kaldırıldı (data.js'deki kullanılıyor)
 
-## Anasayfa Polish
+### 3. Katalog Görsel Düzeltmeleri
+- ✅ `stitch-integrations.html` - `inferCatalogImage()` fonksiyonunda dokunmatik switch tanımı multi-gang switch'lerden önceye taşındı
+- ✅ Switch kategorileri için `item.img` kontrolü eklendi
 
-- Sonradan eklenen kartlar: Veri modeliyle görünüyorlar, ama bazı kartların görsel seviyesi hala temel.
-- Tap-to-Run bölümü: Çalışıyor, fakat bölüm hiyerarşisi ve dokunma hissi geliştirilmeli.
-- Yarım açılan modüller: Sürükleyerek kapatma davranışı var, ama handle ve motion hissi daha rafine olabilir.
-- Koyu tema son polish: Yeni ve mevcut sayfalar light/dark birlikte kontrol edilerek son kontrast ayarı geçirilmeli.
+---
 
-## Superdesign Draft Durumu
+## 📋 API Olmadan Yapılabilecek Diğer İşler
 
-- `NEXUS Device Add Center` draftı hazır: `61fca7ae-76d8-467d-bbfb-9030fc892318`
-  Hedef: `stitch-pair.html` içindeki cihaz ekleme merkezi, radar hero, manuel ekleme CTA alanı ve katalog kabuğunu aynı tasarım ailesinde yenilemek.
-- `NEXUS Premium Discover Screen` draftı hazır: `d9e03b23-132d-49b5-b253-9f9a7a7e3454`
-  Hedef: `stitch-discover.html` içindeki önerilen kartların daha premium gösterimi ve ilgili tam sayfa akışlara görsel devamlılık sağlamak.
-- `NEXUS Add Card Flow` draftı hazır: `1541bb72-cefb-4d5b-a85b-f77524400536`
-  Hedef: `stitch-cards.html` içindeki `Smart Home`, `Devices` ve `Tap-to-Run` sekmelerini mevcut gerçek seçim mantığını bozmadan daha ürün seviyesi bir seçme deneyimine taşımak.
+### Yüksek Öncelikli
 
-## Uygulama Planı
+#### CDN → Local Geçiş (En Kritik)
+- ❌ **Tailwind CSS** - CDN yerine local build kullanılmalı
+- ❌ **Google Fonts (Inter)** - Font dosyaları `www/` klasörüne kopyalanmalı
+- ❌ **Lucide Icons** - Icon dosyaları local'e çekilmeli
+- ❌ **Iconify** - Icon setleri local'e indirilmeli
+- **Durum**: Offline çalışma için mutlaka gerekli. Capacitor uygulaması çevrimdışı çalışırken CDN'ler yüklenemez → uygulama tamamen bozuk görünür
 
-- Önce ilgili Superdesign draft HTML çıktıları alınacak.
-- Her draft yalnızca mevcut davranışı görsele taşıyacak; seçim mantığına ve gerçek veri akışına dokunulmayacak.
-- `stitch-pair.html` içinde radar bölgesi, manuel katalog kabuğu ve kategori gezinmesi yeni tasarımla güncellenecek.
-- `stitch-discover.html` içinde kart sunumu ve ilgili detay sayfalarına geçiş hissi iyileştirilecek.
-- `stitch-cards.html` içinde kart görünümü, seçili durumlar ve sekme hiyerarşisi yenilenecek.
-- Tüm bağlama işlemleri light ve dark tema birlikte kontrol edilerek tamamlanacak.
+#### Build Süreci Netleştirme
+- ❌ `www/` klasörü build süreci otomatize edilmeli
+- ❌ Manuel senkronizasyon yerine otomatik kopyalama scripti
+- **Durum**: Şu an elle senkronize ediliyor
+
+### Orta Öncelikli
+
+#### Tasarım ve Görsel Tutarlılık
+- ⚠️ Manuel cihaz ekleme ekranındaki cihaz resimleri ile isimleri tam uyumlu hale getirilmeli
+- ⚠️ Cihaz katalogunda eşleştirmelerin yanlış görünmemesi için görsel validasyon
+- ⚠️ Tüm sayfalarda NEXUS tasarım sistemine (renk, font, kart stili) uyum kontrolü
+
+#### Kullanıcı Deneyimi
+- ⚠️ Boş durum (empty state) mesajları standardize edilmeli
+- ⚠️ Loading durumları için tutarlı spinner/placeholder kullanımı
+- ⚠️ Hata mesajları daha kullanıcı dostu hale getirilmeli
+
+---
+
+## 🎯 Yayına Çıkmadan Önce Mutlaka Yapılması Gerekenler
+
+### Kritik (❌ = Yapılmadı)
+
+1. **❌ CDN → Local Dönüşümü Tamamlamak**
+   - Tailwind CLI build ile local CSS oluşturmak
+   - Font dosyalarını (Inter) www/ font klasörüne kopyalamak
+   - Icon setlerini (Lucide, Iconify) local'e çekmek
+   - Tüm HTML dosyalarında CDN referanslarını local path'lere çevirmek
+
+2. **❌ www/ Build Sürecini Otomatize Etmek**
+   - Geliştirme ortamında değişiklik yapıldığında otomatik senkronizasyon
+   - Production build scripti oluşturmak
+   - Version kontrolü ve cache busting mekanizması
+
+### Tamamlananlar (✅)
+
+3. ✅ Tüm `alert()` kullanımları kaldırıldı
+4. ✅ Auth key uyumsuzluğu düzeltildi
+5. ✅ 314 ürün görseli www/'ye taşındı
+
+---
+
+## 📝 Sayfa Bazlı Durum Analizi
+
+### ✅ Çalışan ve Tamamlanan Sayfalar
+- `stitch-home.html` - Ana ekran, kart gösterimi, favoriler
+- `stitch-pair.html` - Cihaz ekleme merkezi
+- `stitch-smart.html` - Akıllı cihazlar listesi
+- `stitch-cards.html` - Kart ekleme ve yönetim
+- `stitch-dnd.html` - Rahatsız Etme modu
+- `stitch-energy.html` - Enerji tasarrufu
+- `stitch-chat.html` - AI sohbet arayüzü
+- `stitch-program.html` - Program ekleme (time picker)
+- `stitch-plus.html` - Plus abonelik sayfası
+- `stitch-messages.html` - Mesaj merkezi (Uyarılar çalışıyor)
+
+### ⚠️ Kısmen Çalışan Sayfalar
+- `stitch-integrations.html` - Entegrasyon katalogu (katalog görselleri çalışıyor)
+- `stitch-discover.html` - Keşfet sayfası
+- `stitch-settings.html` - Ayarlar
+- `stitch-profile.html` - Profil yönetimi
+
+### ❌ API Bağımlı Sayfalar (Offline Çalışmıyor)
+- Tüm CDN bağımlılıklarını içeren sayfalar
+- Gerçek zamanlı veri gerektiren sayfalar (hava durumu API, vb.)
+
+---
+
+## 🔧 Teknik Altyapı
+
+### Mevcut Durum
+- **Framework**: Vanilla JS + Tailwind CSS (CDN)
+- **Storage**: localStorage tabanlı nexus* key'leri
+- **State Management**: Basit localStorage usage
+- **Routing**: Doğrudan HTML sayfaları arasında gezinme
+
+### Geliştirme Önerileri
+1. **State Persistence**: localStorage yerine IndexedDB'a geçiş
+2. **Routing**: Hash-based routing veya History API
+3. **Modularity**: Ortak fonksiyonları ayrı dosyalara bölebilme
+4. **Error Handling**: Tutarlı hata yönetim sistemi
+
+---
+
+## 📊 Önceliklendirme Matrisi
+
+| Öncelik | Alan | Durum | Tahmini Süre |
+|---------|------|-------|--------------|
+| 🔴 Kritik | CDN → Local | ❌ Yapılmadı | 4-6 saat |
+| 🔴 Kritik | Build Süreci | ❌ Yapılmadı | 2-3 saat |
+| 🟡 Orta | Manuel Cihaz Görselleri | ⚠️ Kısmen | 2-4 saat |
+| 🟡 Orta | Empty State Standartizasyon | ⚠️ Kısmen | 1-2 saat |
+| 🟢 Düşük | Tasarım Polish | ✅ Tamam | Devam eden |
+
+---
+
+*Son Güncelleme: 04 Ağustos 2026*

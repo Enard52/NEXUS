@@ -168,7 +168,7 @@
 
 
   <script>
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 
   <script>
@@ -179,6 +179,7 @@
 
       document.getElementById('config-sheet-title').innerText = title;
       document.getElementById('config-sheet-desc').innerText = desc;
+      window._pendingTrigger = { type: 'always' };
       renderConfigOptions(title);
 
       const iconWrap = document.getElementById('config-sheet-icon-wrap');
@@ -201,28 +202,52 @@
     function renderConfigOptions(title) {
       const target = document.getElementById('config-options');
       if (!target) return;
-      const key = String(title || '').toLowerCase();
-      let rows;
-      if (key.includes('cihaz')) {
-        rows = [['Tetikleyici cihaz', 'Secilen cihaz'], ['Durum degisimi', 'Acildi / Kapandi']];
-      } else if (key.includes('zaman')) {
-        rows = [['Calisma saati', 'Saat sec'], ['Tekrar', 'Gunluk / Haftalik']];
-      } else if (key.includes('hava')) {
-        rows = [['Kosul', 'Sicaklik / Nem / Ruzgar'], ['Esik degeri', 'Deger sec']];
-      } else if (key.includes('konum')) {
-        rows = [['Bolge', 'Ev / Disarisi'], ['Mesafe', 'Yaklasinca / Ayrilinca']];
-      } else if (key.includes('venlik') || key.includes('guven')) {
-        rows = [['Mod', 'Evde / Disarida / Gece'], ['Aksiyon', 'Alarm / Kamera / Kilit']];
-      } else if (key.includes('alarm')) {
-        rows = [['Sensor', 'Kapi / Hareket / Duman'], ['Tepki', 'Bildirim + Siren']];
-      } else if (key.includes('duruma')) {
-        rows = [['Kaynak', 'Cihaz veya sensor'], ['Kural', 'Durum degisince']];
-      } else {
-        rows = [['Etkilenecek cihazlar', 'Uyumlu cihazlar'], ['Calisma zamani', 'Her zaman']];
-      }
-      target.innerHTML = rows.map(function(row) {
-        return '<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center gap-4"><span class="text-sm font-semibold text-slate-700">' + row[0] + '</span><span class="text-sm text-[#4C7DFF] font-bold text-right">' + row[1] + '</span></div>';
-      }).join('');
+
+      // Cihaz listesini storage'dan oku
+      let devices = [];
+      try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch(e) {}
+      const deviceLabel = devices.length > 0
+        ? devices.map(function(d) { return d.name || 'Cihaz'; }).slice(0, 3).join(', ') + (devices.length > 3 ? ' +' + (devices.length - 3) : '')
+        : 'Tüm uyumlu cihazlar';
+
+      // Çalışma zamanı seçenekleri
+      const timeOptions = [
+        { id: 'always',   label: 'Her zaman'  },
+        { id: 'morning',  label: 'Sabah 07:00' },
+        { id: 'evening',  label: 'Akşam 19:00' },
+        { id: 'night',    label: 'Gece 23:00'  },
+        { id: 'sunset',   label: 'Gün batımı'  }
+      ];
+
+      // Seçili zaman (pendingAutomation'a kaydet)
+      if (!window._pendingTrigger) window._pendingTrigger = { type: 'always', deviceLabel: deviceLabel };
+
+      target.innerHTML = `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-semibold text-slate-700">Etkilenecek Cihazlar</span>
+          </div>
+          <p class="text-sm text-[#4C7DFF] font-bold">${deviceLabel}</p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-3">Çalışma Zamanı</span>
+          <div class="flex flex-wrap gap-2" id="time-option-list">
+            ${timeOptions.map(function(opt) {
+              const isSelected = window._pendingTrigger.type === opt.id;
+              return '<button type="button" data-time="' + opt.id + '" onclick="selectTime(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (isSelected ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + opt.label + '</button>';
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectTime(btn) {
+      document.querySelectorAll('#time-option-list button').forEach(function(b) {
+        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+      });
+      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      window._pendingTrigger = window._pendingTrigger || {};
+      window._pendingTrigger.type = btn.getAttribute('data-time');
     }
 
     function closeConfigureSheet() {
@@ -242,19 +267,45 @@
 
     function addAutomation(title, desc, icon, colorClass, bgClass) {
       const urlParams = new URLSearchParams(window.location.search);
-      const type = urlParams.get('type') || 'automation'; // default to automation
+      const type = urlParams.get('type') || 'automation';
 
       const storageKey = type === 'clickrun' ? 'nexusCustomClickRun' : 'nexusCustomAutomations';
-      const targetTab = type === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
+      const targetTab  = type === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
+
+      // Tetikleyici bilgisini al
+      const triggerType = (window._pendingTrigger && window._pendingTrigger.type) || 'always';
+      const triggerValueMap = {
+        morning:  '07:00',
+        evening:  '19:00',
+        night:    '23:00',
+        sunset:   'sunset',
+        always:   ''
+      };
+      const trigger = type === 'clickrun'
+        ? { type: 'manual' }
+        : { type: triggerType === 'always' ? 'time' : 'time', value: triggerValueMap[triggerType] || '', repeat: triggerType === 'always' ? 'always' : 'daily' };
 
       let autos = [];
-      try {
-        autos = readAndNormalizeItems(storageKey, type);
-      } catch (e) {}
-      autos.push({ id: 'custom-' + Date.now(), title: title, desc: desc, icon: icon, colorClass: colorClass, bgClass: bgClass, room: 'Tüm Ev' });
+      try { autos = readAndNormalizeItems(storageKey, type); } catch (e) {}
+      autos.push({
+        id: 'custom-' + Date.now(),
+        title: title,
+        desc: desc,
+        icon: icon,
+        colorClass: colorClass,
+        bgClass: bgClass,
+        room: 'Tüm Ev',
+        enabled: true,
+        showOnHome: true,
+        showInRoom: false,
+        trigger: trigger,
+        actions: []
+      });
       writeNormalizedItems(storageKey, autos, type);
 
-      // Navigate back to smart with a query param to open correct tab
+      // Temizle
+      window._pendingTrigger = null;
+
       window.location.href = 'stitch-smart.html?tab=' + targetTab;
     }
   </script>

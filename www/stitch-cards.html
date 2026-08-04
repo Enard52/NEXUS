@@ -142,6 +142,31 @@
       return `<span class="check-circle${selected ? ' selected' : ''}">${selected ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12.5l4 4 10-10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"></path></svg>' : ''}</span>`;
     }
 
+    function smartHomeAccent(card) {
+      const byId = {
+        weather: 'bg-amber-50 text-amber-500',
+        'ai-protect': 'bg-red-50 text-red-500',
+        energy: 'bg-lime-50 text-lime-600',
+        dnd: 'bg-rose-50 text-rose-500',
+        'home-schedule': 'bg-sky-50 text-sky-500',
+        'privacy-mode': 'bg-violet-50 text-violet-500',
+        'multi-video': 'bg-blue-50 text-blue-500',
+        'away-home': 'bg-orange-50 text-orange-500',
+        'data-dashboard': 'bg-cyan-50 text-cyan-500',
+        'air-quality': 'bg-emerald-50 text-emerald-500',
+        'device-health': 'bg-teal-50 text-teal-500',
+        'security-summary': 'bg-red-50 text-red-500',
+        'room-scenes': 'bg-yellow-50 text-yellow-500',
+        'cleaning-routine': 'bg-green-50 text-green-500',
+        'guest-mode': 'bg-indigo-50 text-indigo-500',
+        'leave-home-summary': 'bg-orange-50 text-orange-500',
+        'sleep-prep': 'bg-indigo-50 text-indigo-500',
+        'comfort-room': 'bg-pink-50 text-pink-500',
+        'home-health': 'bg-cyan-50 text-cyan-500'
+      };
+      return { wrap: byId[card.id] || 'bg-blue-50 text-blue-500' };
+    }
+
     function renderRow({ id, title, iconHtml, selected, subtitle, onEdit }) {
       return `
         <button class="picker-row w-full flex items-center gap-3 py-4 text-left active:bg-slate-50/80" type="button" onclick="toggleItem('${id}')">
@@ -157,13 +182,17 @@
     }
 
     function renderPicker() {
+      if (!window.NEXUS_CARD_CATALOG) {
+        console.error('NEXUS_CARD_CATALOG tanımlı değil. data.js yüklendi mi?');
+        return;
+      }
       const list = document.getElementById('picker-list');
       const tabs = document.querySelectorAll('.picker-tab');
       tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tab === pickerState.activeTab));
 
       if (pickerState.activeTab === 'smartHome') {
         list.innerHTML = window.NEXUS_CARD_CATALOG.smartHome.map(card => {
-          const accent = window.getCardAccentClasses ? window.getCardAccentClasses(card.icon) : {wrap: 'bg-slate-100 text-slate-600'};
+          const accent = smartHomeAccent(card);
           const svg = window.getCardIconSvg ? window.getCardIconSvg(card.icon) : iconForCatalog(card);
           return renderRow({
             id: card.id,
@@ -216,13 +245,12 @@
       }).join('');
     }
 
+    function showRenameModal(id, currentName) {
+      // TODO: rename modal eklenecek
+    }
+
     window.renameDevicePrompt = function(id, currentName) {
-      const newName = prompt('Cihaz için yeni bir isim girin:', currentName);
-      if (newName && newName.trim() !== '') {
-        if (window.renameNexusDevice && window.renameNexusDevice(id, newName.trim())) {
-          renderPicker();
-        }
-      }
+      showRenameModal(id, currentName);
     };
 
     function toggleItem(id) {
@@ -234,6 +262,10 @@
     }
 
     function commitSelection() {
+      if (!window.NEXUS_CARD_CATALOG) {
+        console.error('NEXUS_CARD_CATALOG tanımlı değil. data.js yüklendi mi?');
+        return;
+      }
       if (typeof window.setSmartHomeCardSelected === 'function') {
         window.NEXUS_CARD_CATALOG.smartHome.forEach(card => {
           window.setSmartHomeCardSelected(card.id, pickerState.smartHome.has(card.id));

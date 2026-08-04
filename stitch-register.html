@@ -163,12 +163,18 @@
     // Başarılı Kayıt
     localStorage.setItem('nexus_mock_pw_' + email, pw);
 
-    // Otomatik giriş
-    window.nexusSetItem = window.nexusSetItem || function(){}; // dummy if auth.js not ready
+    // Otomatik giriş — önce currentUser'ı set et, sonra nexusSetItem çalışır
     localStorage.setItem('nexusCurrentUser', email);
 
-    // İsim kaydet
-    localStorage.setItem(email + '_userName', name);
+    // Auth prefix sistemiyle uyumlu şekilde kullanıcı bilgilerini kaydet
+    try {
+      nexusSetItem('nexusUserName', name);
+      nexusSetItem('nexusUserEmail', email);
+      // Fallback: eski key şemasına da yaz (login sayfası okuyor)
+      localStorage.setItem(email + '_userName', name);
+    } catch (e) {
+      localStorage.setItem(email + '_userName', name);
+    }
 
     window.location.replace('stitch-home.html');
   }

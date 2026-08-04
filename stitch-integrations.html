@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -2493,12 +2493,12 @@
       if (/garaj/.test(text)) return 'control-garage-controller.png';
       if (/evrensel kumanda|uzaktan kumanda|remote|kumanda/.test(text)) return 'control-remote-control.png';
       if (/ir blaster|(^|[^a-z])ir([^a-z]|$)/.test(text)) return 'control-ir-blaster.png';
-      if (/thermostat switch/.test(text)) return 'control-thermostat-switch.png';
-      if (/4 cikis|4 çıkış|dort|dört/.test(text) && /anahtar|switch/.test(text)) return 'control-four-gang-switch.png';
-      if (/3 cikis|3 çıkış|uclu|üçlü/.test(text) && /anahtar|switch/.test(text)) return 'control-triple-wall-switch.png';
-      if (/2 cikis|2 çıkış|cift|çift|ikili/.test(text) && /anahtar|switch/.test(text)) return 'control-double-wall-switch.png';
-      if (/dokunmatik anahtar|touch switch/.test(text)) return 'control-touch-switch.png';
-      if (/anahtar|switch/.test(text)) return 'control-single-wall-switch.png';
+      if (/thermostat switch/.test(text)) return item.img || 'control-thermostat-switch.png';
+      if (/dokunmatik anahtar|touch switch/.test(text)) return item.img || 'control-touch-switch.png';
+      if (/4 cikis|4 çıkış|dort|dört/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-four-gang-switch.png';
+      if (/3 cikis|3 çıkış|uclu|üçlü/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-triple-wall-switch.png';
+      if (/2 cikis|2 çıkış|cift|çift|ikili/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-double-wall-switch.png';
+      if (/anahtar|switch/.test(text)) return item.img || 'control-single-wall-switch.png';
       if (/serit|strip|ambiyans|tv ortam/.test(text)) return 'generic-led-strip.png';
       if (/tavan|ceiling|oda isik/.test(text)) return 'generic-ceiling-light.png';
       if (/masa|mum|retro/.test(text)) return 'generic-table-lamp.png';
@@ -2602,7 +2602,11 @@
       var safe = escapeCatalogHtml(item.n);
       var display = escapeCatalogHtml(catalogDisplayName(item.n));
       var safeGroup = escapeCatalogHtml(groupTitle || 'Genel');
-      var image = inferCatalogImage(item, groupTitle);
+      // item.img spesifik bir dosya adı içeriyorsa onu kullan, aksi halde inferCatalogImage ile belirle
+      var _genericImgs = ['smart_plug.jpg','switch.jpg','camera.jpg','bridge.png','smart_hub.jpg','smart_bulb.jpg','smart_speaker.jpg','smart_tv.jpg','smart_appliance.jpg'];
+      var image = (item.img && _genericImgs.indexOf(item.img) === -1 && /\.(png|jpg|webp)$/i.test(item.img))
+        ? item.img
+        : inferCatalogImage(item, groupTitle);
       var imageVersion = '20260801-products-4';
       return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="simulateConnection(this, \'' + safe + '\')">' +
         '<div class="product-image-stage">' +
@@ -2709,7 +2713,7 @@
     function submitCode() {
       const input = document.getElementById('setup-code-input').value;
       if (input.length < 4) {
-        alert('Lütfen geçerli bir kod girin.');
+        showIntegrationsToast('Lütfen geçerli bir kod girin.');
         return;
       }
       closeCodeModal();
@@ -2772,5 +2776,14 @@
       renderCatalogContent();
     })();
   </script>
+<script>
+function showIntegrationsToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
 </body>
 </html>

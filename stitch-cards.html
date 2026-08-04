@@ -182,6 +182,10 @@
     }
 
     function renderPicker() {
+      if (!window.NEXUS_CARD_CATALOG) {
+        console.error('NEXUS_CARD_CATALOG tanımlı değil. data.js yüklendi mi?');
+        return;
+      }
       const list = document.getElementById('picker-list');
       const tabs = document.querySelectorAll('.picker-tab');
       tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tab === pickerState.activeTab));
@@ -241,13 +245,12 @@
       }).join('');
     }
 
+    function showRenameModal(id, currentName) {
+      // TODO: rename modal eklenecek
+    }
+
     window.renameDevicePrompt = function(id, currentName) {
-      const newName = prompt('Cihaz için yeni bir isim girin:', currentName);
-      if (newName && newName.trim() !== '') {
-        if (window.renameNexusDevice && window.renameNexusDevice(id, newName.trim())) {
-          renderPicker();
-        }
-      }
+      showRenameModal(id, currentName);
     };
 
     function toggleItem(id) {
@@ -259,6 +262,10 @@
     }
 
     function commitSelection() {
+      if (!window.NEXUS_CARD_CATALOG) {
+        console.error('NEXUS_CARD_CATALOG tanımlı değil. data.js yüklendi mi?');
+        return;
+      }
       if (typeof window.setSmartHomeCardSelected === 'function') {
         window.NEXUS_CARD_CATALOG.smartHome.forEach(card => {
           window.setSmartHomeCardSelected(card.id, pickerState.smartHome.has(card.id));

@@ -14,6 +14,7 @@
     .active-scale:active { transform: scale(0.96); }
   </style>
   <script src="auth.js"></script>
+  <script src="data.js"></script>
   <script src="theme.js"></script>
 </head>
 <body>
@@ -106,16 +107,16 @@ function renderAirQualityState(state, hasState) {
 }
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.querySelector('input[type="checkbox"]');
-    const state = JSON.parse(localStorage.getItem('nexusAirQualityData') || '{"purifier":false}');
+    const state = JSON.parse(nexusGetItem('nexusAirQualityData') || '{"purifier":false}');
     if(toggle) {
         toggle.checked = !!state.purifier;
         toggle.addEventListener('change', (e) => {
             state.purifier = e.target.checked;
-            localStorage.setItem('nexusAirQualityData', JSON.stringify(state));
+            nexusSetItem('nexusAirQualityData', JSON.stringify(state));
             renderAirQualityState(state, true);
         });
     }
-    renderAirQualityState(state, localStorage.getItem('nexusAirQualityData') !== null);
+    renderAirQualityState(state, nexusGetItem('nexusAirQualityData') !== null);
 });
 
 </script>

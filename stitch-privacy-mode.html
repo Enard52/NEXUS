@@ -15,6 +15,7 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="data.js"></script>
 </head>
 <body>
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
@@ -33,10 +34,11 @@
       <section class="bg-slate-900 rounded-[2rem] p-6 nexus-card-shadow relative overflow-hidden flex flex-col items-center justify-center text-center mt-4">
         <div class="relative w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center mb-4">
             <iconify-icon icon="lucide:eye-off" class="text-5xl text-white"></iconify-icon>
-            <span class="absolute top-2 right-2 w-4 h-4 bg-rose-500 border-2 border-slate-900 rounded-full animate-pulse"></span>
+            <span id="privacy-hero-dot" class="absolute top-2 right-2 w-4 h-4 bg-rose-500 border-2 border-slate-900 rounded-full animate-pulse"></span>
         </div>
-        <h2 class="text-2xl font-extrabold text-white relative">Gizlilik Aktif</h2>
-        <p class="text-sm font-medium text-slate-400 mt-2 relative">Kameralar ve mikrofonlar kapalı.</p>
+        <h2 id="privacy-hero-title" class="text-2xl font-extrabold text-white relative">Gizlilik Aktif</h2>
+        <span id="privacy-hero-badge" class="mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-slate-700 text-slate-300">Aktif</span>
+        <p id="privacy-hero-desc" class="text-sm font-medium text-slate-400 mt-2 relative">Kameralar ve mikrofonlar kapalı.</p>
       </section>
 
       <section class="space-y-3">
@@ -53,7 +55,7 @@
             </div>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" checked class="sr-only peer">
+            <input type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
           </label>
         </div>
@@ -69,7 +71,7 @@
             </div>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" checked class="sr-only peer">
+            <input type="checkbox" class="sr-only peer">
             <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
           </label>
         </div>
@@ -81,19 +83,48 @@
 <!-- DYNAMIC JS -->
 <script>
 
+function syncPrivacyHeroCard(state) {
+  var heroTitle = document.getElementById('privacy-hero-title');
+  var heroBadge = document.getElementById('privacy-hero-badge');
+  var heroDot = document.getElementById('privacy-hero-dot');
+  var heroDesc = document.getElementById('privacy-hero-desc');
+
+  var anyActive = state.cameras || state.microphone || state.location;
+
+  if (heroTitle) heroTitle.textContent = anyActive ? 'Gizlilik Aktif' : 'Gizlilik Kapalı';
+  if (heroBadge) heroBadge.textContent = anyActive ? 'Aktif' : 'Pasif';
+  if (heroDot) {
+    heroDot.style.backgroundColor = anyActive ? '#ef4444' : '#94a3b8';
+  }
+  if (heroDesc) {
+    if (!state.cameras && !state.microphone && !state.location) {
+      heroDesc.textContent = 'Tüm gizlilik korumaları kapalı.';
+    } else {
+      var parts = [];
+      if (state.cameras) parts.push('Kameralar');
+      if (state.microphone) parts.push('Mikrofon');
+      if (state.location) parts.push('Konum');
+      heroDesc.textContent = parts.join(', ') + ' koruması aktif.';
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const toggles = document.querySelectorAll('input[type="checkbox"]');
-    const state = JSON.parse(localStorage.getItem('nexusPrivacyMode') || '{"cameras":false,"mics":false}');
+    const state = JSON.parse(nexusGetItem('nexusPrivacyMode') || '{"cameras":false,"microphone":false,"location":false}');
     if(toggles.length >= 2) {
         toggles[0].checked = state.cameras;
-        toggles[1].checked = state.mics;
+        toggles[1].checked = state.microphone;
+        syncPrivacyHeroCard(state);
         toggles[0].addEventListener('change', (e) => {
             state.cameras = e.target.checked;
-            localStorage.setItem('nexusPrivacyMode', JSON.stringify(state));
+            nexusSetItem('nexusPrivacyMode', JSON.stringify(state));
+            syncPrivacyHeroCard(state);
         });
         toggles[1].addEventListener('change', (e) => {
-            state.mics = e.target.checked;
-            localStorage.setItem('nexusPrivacyMode', JSON.stringify(state));
+            state.microphone = e.target.checked;
+            nexusSetItem('nexusPrivacyMode', JSON.stringify(state));
+            syncPrivacyHeroCard(state);
         });
     }
 });
