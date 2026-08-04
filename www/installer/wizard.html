@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="tr" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'"
+    />
+    <title>NEXUS Kurulumu</title>
+    <style>
+      :root {
+        --bg: #0e0f12;
+        --surface: #1a1c21;
+        --surface-2: #22252b;
+        --text: #f2f3f5;
+        --muted: #a2a6ad;
+        --primary: #7c5cff;
+        --on-primary: #0e0f12;
+        --radius: 8px;
+        --radius-lg: 16px;
+        --border: color-mix(in srgb, var(--text) 10%, transparent);
+        --border-strong: color-mix(in srgb, var(--text) 16%, transparent);
+        --tint: color-mix(in srgb, var(--primary) 16%, transparent);
+        --tint-soft: color-mix(in srgb, var(--primary) 9%, var(--surface));
+        --elev: 0 1px 2px rgba(0, 0, 0, 0.3), 0 20px 48px rgba(0, 0, 0, 0.4);
+        --ring: 0 0 0 3px color-mix(in srgb, var(--primary) 32%, transparent);
+        --font: "Segoe UI", Inter, system-ui, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      /* ── Entrance animations ──────────────────────────────────────── */
+      @keyframes wizard-open {
+        from {
+          opacity: 0;
+          transform: scale(0.97) translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes step-slide-in {
+        from {
+          opacity: 0;
+          transform: translateX(22px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes tile-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes ring-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+        }
+        50% {
+          box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 8%, transparent);
+        }
+      }
+      @keyframes check-pop {
+        0% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        70% {
+          transform: scale(1.14);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes ring-radiate {
+        0% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(2.2);
+        }
+      }
+      @keyframes shimmer-sweep {
+        from {
+          background-position: -300px 0;
+        }
+        to {
+          background-position: 300px 0;
+        }
+      }
+      @keyframes rail-line-fill {
+        from {
+          height: 0;
+        }
+        to {
+          height: 100%;
+        }
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        overflow: hidden;
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        animation: wizard-open 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      /* ── Custom title bar (draggable) ─────────────────────────────── */
+      .titlebar {
+        -webkit-app-region: drag;
+        height: 44px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 8px 0 16px;
+        background: linear-gradient(180deg, var(--surface-2), var(--surface));
+        border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+      .titlebar::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          color-mix(in srgb, var(--primary) 55%, transparent) 30%,
+          color-mix(in srgb, var(--primary) 55%, transparent) 70%,
+          transparent
+        );
+      }
+      .titlebar .tb-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+      }
+      .titlebar .tb-brand svg {
+        display: block;
+      }
+      .titlebar .spacer {
+        flex: 1;
+      }
+      .win-btn {
+        -webkit-app-region: no-drag;
+        width: 40px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        border-radius: 7px;
+        cursor: pointer;
+        transition:
+          background 0.14s,
+          color 0.14s;
+      }
+      .win-btn:hover {
+        background: var(--surface-2);
+        color: var(--text);
+      }
+      .win-btn.close:hover {
+        background: #e11d48;
+        color: #fff;
+      }
+      /* ── Body: rail + content ─────────────────────────────────────── */
+      .shell {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+      }
+      .rail {
+        width: 208px;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        padding: 26px 18px;
+        background: linear-gradient(180deg, var(--tint-soft) 0%, var(--surface) 78%);
+        border-right: 1px solid var(--border);
+      }
+      .rail .logo-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .rail .logo-row .name {
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+      }
+      .rail .tagline {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-top: -18px;
+      }
+      .steps {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+      }
+      /* Vertical connecting line */
+      .steps::before {
+        content: "";
+        position: absolute;
+        left: 22px;
+        top: 20px;
+        bottom: 20px;
+        width: 2px;
+        background: var(--border-strong);
+        border-radius: 2px;
+        z-index: 0;
+      }
+      /* Filled portion of the connecting line */
+      .steps::after {
+        content: "";
+        position: absolute;
+        left: 22px;
+        top: 20px;
+        width: 2px;
+        height: 0%;
+        background: var(--primary);
+        border-radius: 2px;
+        z-index: 0;
+        transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 50%, transparent);
+      }
+      .steps[data-progress="1"]::after {
+        height: 25%;
+      }
+      .steps[data-progress="2"]::after {
+        height: 50%;
+      }
+      .steps[data-progress="3"]::after {
+        height: 75%;
+      }
+      .steps[data-progress="4"]::after {
+        height: 100%;
+      }
+      .steps li {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 11px;
+        border-radius: var(--radius);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+        transition:
+          background 0.2s,
+          color 0.2s;
+        position: relative;
+        z-index: 1;
+      }
+      .steps li .num {
+        width: 24px;
+        height: 24px;
+        flex: none;
+        border-radius: 50%;
+        border: 1.5px solid var(--border-strong);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 800;
+        background: var(--bg);
+        transition:
+          background 0.25s,
+          border-color 0.25s,
+          color 0.25s,
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+      .steps li.active {
+        background: var(--tint);
+        color: var(--text);
+      }
+      .steps li.active .num {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--on-primary);
+        transform: scale(1.1);
+        animation: ring-pulse 2.4s ease infinite;
+      }
+      .steps li.done .num {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--on-primary);
+        font-size: 0;
+        position: relative;
+        animation: check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      .steps li.done .num::after {
+        content: "\2713";
+        font-size: 13px;
+      }
+      .rail .foot {
+        margin-top: auto;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+      /* ── Content ──────────────────────────────────────────────────── */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 34px 36px;
+      }
+      .step {
+        display: none;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .step.active {
+        display: flex;
+        animation: step-slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .step h1 {
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .step p {
+        color: var(--muted);
+        line-height: 1.65;
+        font-size: 14px;
+      }
+      .step strong {
+        color: var(--text);
+      }
+      .hero-accent {
+        position: relative;
+        padding: 20px;
+        border-radius: var(--radius-lg);
+        background:
+          radial-gradient(120% 120% at 0% 0%, var(--tint) 0%, transparent 60%), var(--surface);
+        border: 1px solid var(--border);
+      }
+      .tiles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .tile {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px;
+        display: flex;
+        gap: 11px;
+        align-items: flex-start;
+        opacity: 0;
+        animation: tile-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .tile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      }
+      .tile:nth-child(1) {
+        animation-delay: 0.06s;
+      }
+      .tile:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .tile:nth-child(3) {
+        animation-delay: 0.18s;
+      }
+      .tile:nth-child(4) {
+        animation-delay: 0.24s;
+      }
+      .tile .ico {
+        width: 30px;
+        height: 30px;
+        flex: none;
+        border-radius: 8px;
+        background: var(--tint);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tile .t {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .tile .d {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+        line-height: 1.45;
+      }
+      .license-box {
+        max-height: 208px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--bg);
+        padding: 16px;
+        font-size: 12.5px;
+        line-height: 1.7;
+        color: var(--muted);
+        white-space: pre-wrap;
+      }
+      .check-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .check-row input {
+        accent-color: var(--primary);
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+      }
+      .field {
+        display: flex;
+        gap: 10px;
+      }
+      .field input {
+        flex: 1;
+        background: var(--bg);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius);
+        padding: 11px 14px;
+        font-size: 14px;
+        color: var(--text);
+        font-family: inherit;
+        outline: none;
+        user-select: text;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      .field input:focus {
+        border-color: var(--primary);
+        box-shadow: var(--ring);
+      }
+      .btn-browse {
+        background: var(--surface-2);
+        border: 1px solid var(--border-strong);
+        color: var(--text);
+        border-radius: var(--radius);
+        padding: 11px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        font-family: inherit;
+        transition: background 0.15s;
+      }
+      .btn-browse:hover {
+        background: var(--tint);
+      }
+      .disk {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .progress {
+        height: 9px;
+        border-radius: 999px;
+        background: var(--border);
+        overflow: hidden;
+        position: relative;
+      }
+      .progress .fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 999px;
+        background: var(--primary);
+        box-shadow:
+          0 0 10px color-mix(in srgb, var(--primary) 60%, transparent),
+          4px 0 12px color-mix(in srgb, var(--primary) 80%, transparent);
+        transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .progress .fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.28) 40%,
+          rgba(255, 255, 255, 0.42) 50%,
+          rgba(255, 255, 255, 0.28) 60%,
+          transparent 100%
+        );
+        background-size: 300px 100%;
+        animation: shimmer-sweep 1.5s linear infinite;
+      }
+      .pct {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .status {
+        font-size: 13px;
+        color: var(--muted);
+        min-height: 18px;
+      }
+      .finish-icon-wrap {
+        position: relative;
+        width: 66px;
+        height: 66px;
+      }
+      .finish-icon {
+        width: 66px;
+        height: 66px;
+        border-radius: 50%;
+        background: var(--tint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        color: var(--primary);
+        position: relative;
+        animation: check-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      .finish-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 2px solid color-mix(in srgb, var(--primary) 60%, transparent);
+        animation: ring-radiate 1.2s ease-out 0.3s both;
+      }
+      /* ── Footer ───────────────────────────────────────────────────── */
+      .footer {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        background: linear-gradient(0deg, var(--surface-2), var(--surface));
+      }
+      .footer .right {
+        display: flex;
+        gap: 10px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 22px;
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        text-decoration: none;
+        transition:
+          opacity 0.15s,
+          background 0.15s,
+          box-shadow 0.15s;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+      .btn-ghost:hover {
+        background: var(--surface-2);
+        color: var(--text);
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+        box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 40%, transparent);
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+      .btn-primary:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .btn:active:not(:disabled) {
+        transform: scale(0.97);
+        transition:
+          transform 0.08s ease,
+          opacity 0.08s,
+          background 0.08s,
+          box-shadow 0.08s;
+      }
+      .win-btn {
+        transition:
+          background 0.14s ease,
+          color 0.14s ease,
+          box-shadow 0.14s ease;
+      }
+      .win-btn.close:hover {
+        box-shadow: 0 0 10px rgba(225, 29, 72, 0.4);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body {
+          animation: none;
+        }
+        .step.active {
+          animation: none;
+        }
+        .tile {
+          animation: none;
+          opacity: 1;
+        }
+        .steps li .num {
+          animation: none;
+        }
+        .steps::after {
+          transition: none;
+        }
+        .progress .fill {
+          transition: none;
+        }
+        .progress .fill::after {
+          animation: none;
+        }
+        .finish-icon {
+          animation: none;
+        }
+        .finish-ring {
+          animation: none;
+        }
+        .tile,
+        .btn,
+        .win-btn {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Title bar -->
+    <div class="titlebar">
+      <span class="tb-brand">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="NEXUS logo"
+          role="img"
+        >
+          <defs>
+            <linearGradient
+              id="nxlogo-tb"
+              x1="3"
+              y1="2"
+              x2="29"
+              y2="30"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#6f9bff" />
+              <stop offset="0.55" stop-color="#7C5CFF" />
+              <stop offset="1" stop-color="#8b7bff" />
+            </linearGradient>
+            <linearGradient
+              id="nxsheen-tb"
+              x1="16"
+              y1="1"
+              x2="16"
+              y2="17"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#ffffff" stop-opacity="0.30" />
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-tb)" />
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-tb)" />
+          <rect
+            x="1.5"
+            y="1.5"
+            width="29"
+            height="29"
+            rx="8.5"
+            fill="none"
+            stroke="#ffffff"
+            stroke-opacity="0.22"
+          />
+          <path
+            d="M10.5 22.5V10.5L21.5 22.5V10.5"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="2.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        NEXUS KURULUMU
+      </span>
+      <span class="spacer"></span>
+      <button class="win-btn" id="win-min" title="Simge durumuna küçült" aria-label="Küçült">
+        <svg width="12" height="12" viewBox="0 0 12 12">
+          <rect x="1" y="5.5" width="10" height="1.2" fill="currentColor" />
+        </svg>
+      </button>
+      <button class="win-btn close" id="win-close" title="Kapat" aria-label="Kapat">
+        <svg width="12" height="12" viewBox="0 0 12 12">
+          <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="shell">
+      <!-- Left rail -->
+      <aside class="rail">
+        <div class="logo-row">
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="NEXUS logo"
+            role="img"
+          >
+            <defs>
+              <linearGradient
+                id="nxlogo-rail"
+                x1="3"
+                y1="2"
+                x2="29"
+                y2="30"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#6f9bff" />
+                <stop offset="0.55" stop-color="#7C5CFF" />
+                <stop offset="1" stop-color="#8b7bff" />
+              </linearGradient>
+              <linearGradient
+                id="nxsheen-rail"
+                x1="16"
+                y1="1"
+                x2="16"
+                y2="17"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#ffffff" stop-opacity="0.30" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-rail)" />
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-rail)" />
+            <rect
+              x="1.5"
+              y="1.5"
+              width="29"
+              height="29"
+              rx="8.5"
+              fill="none"
+              stroke="#ffffff"
+              stroke-opacity="0.22"
+            />
+            <path
+              d="M10.5 22.5V10.5L21.5 22.5V10.5"
+              fill="none"
+              stroke="#ffffff"
+              stroke-width="2.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="name">NEXUS</span>
+        </div>
+        <div class="tagline" data-i18n="tagline">Ev için kişisel işletim sistemi · v3.14.2</div>
+        <ol class="steps" id="steps">
+          <li data-step="0">
+            <span class="num">1</span><span data-i18n="step1">Hoş Geldiniz</span>
+          </li>
+          <li data-step="1"><span class="num">2</span><span data-i18n="step2">Lisans</span></li>
+          <li data-step="2"><span class="num">3</span><span data-i18n="step3">Konum</span></li>
+          <li data-step="3"><span class="num">4</span><span data-i18n="step4">Yükleniyor</span></li>
+          <li data-step="4"><span class="num">5</span><span data-i18n="step5">Tamamlandı</span></li>
+        </ol>
+        <div class="foot">© 2026 NEXUS Technologies Inc.</div>
+      </aside>
+
+      <!-- Content -->
+      <div class="main">
+        <div class="content">
+          <!-- 1. Welcome -->
+          <section class="step active" data-step="0">
+            <h1 data-i18n="w.title">NEXUS AI Kurulumuna Hoş Geldiniz</h1>
+            <div class="hero-accent">
+              <p data-i18n-html="w.lede">
+                Bu sihirbaz, eviniz için kişisel işletim sisteminiz olan
+                <strong>NEXUS AI</strong> kurulumunda size rehberlik edecektir. Kuruluma başlamak
+                için <strong>Devam Et</strong>'e tıklayın.
+              </p>
+            </div>
+            <div class="tiles">
+              <div class="tile">
+                <span class="ico"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" /></svg
+                ></span>
+                <div>
+                  <div class="t" data-i18n="w.t1">Hafif servis</div>
+                  <div class="d" data-i18n="w.d1">Boşta 50 MB RAM altında çalışır</div>
+                </div>
+              </div>
+              <div class="tile">
+                <span class="ico"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z" /></svg
+                ></span>
+                <div>
+                  <div class="t" data-i18n="w.t2">%100 yerel</div>
+                  <div class="d" data-i18n="w.d2">Verileriniz cihazınızdan ayrılmaz</div>
+                </div>
+              </div>
+              <div class="tile">
+                <span class="ico"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="4" width="18" height="14" rx="2" />
+                    <path d="M8 20h8" /></svg
+                ></span>
+                <div>
+                  <div class="t" data-i18n="w.t3">2.000+ cihaz</div>
+                  <div class="d" data-i18n="w.d3">Kutudan çıktığı gibi uyumlu</div>
+                </div>
+              </div>
+              <div class="tile">
+                <span class="ico"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3 3" /></svg
+                ></span>
+                <div>
+                  <div class="t" data-i18n="w.t4">Dakikalar içinde</div>
+                  <div class="d" data-i18n="w.d4">Hızlı ve sorunsuz kurulum</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. License -->
+          <section class="step" data-step="1">
+            <h1 data-i18n="l.title">Lisans Sözleşmesi</h1>
+            <p data-i18n="l.lede">
+              Lütfen devam etmeden önce aşağıdaki lisans koşullarını okuyun ve kabul edin.
+            </p>
+            <div class="license-box" id="license-box">
+              <p><strong>NEXUS AI YAZILIM LİSANS SÖZLEŞMESİ</strong></p>
+              <p>Telif Hakkı © 2026 NEXUS Technologies Inc. Tüm hakları saklıdır.</p>
+              <br />
+              <p>
+                LÜTFEN YAZILIMI YÜKLEMEDEN VEYA KULLANMADAN ÖNCE BU LİSANS SÖZLEŞMESİNİ DİKKATLE
+                OKUYUN.
+              </p>
+              <br />
+              <p>
+                <strong>1. LİSANS VERİLMESİ.</strong> Bu Sözleşmenin koşullarına tabi olarak NEXUS
+                Technologies, NEXUS AI'yı yalnızca kişisel, ticari olmayan amaçlarınız için
+                yüklemeniz ve kullanmanız amacıyla size münhasır olmayan, devredilemez bir lisans
+                verir.
+              </p>
+              <br />
+              <p>
+                <strong>2. KISITLAMALAR.</strong> Şunları yapamazsınız: (a) Yazılımı kopyalamak,
+                değiştirmek veya dağıtmak; (b) Yazılıma tersine mühendislik uygulamak; (c) Yazılımı
+                alt lisanslamak veya satmak.
+              </p>
+              <br />
+              <p>
+                <strong>3. GİZLİLİK.</strong> Yazılım öncelikle cihaz üzerinde çalışır. Tüm bulut
+                özellikleri açık onay gerektirir ve ayrı Gizlilik Politikasına tabidir.
+              </p>
+              <br />
+              <p>
+                <strong>4. FERAGAT.</strong> YAZILIM HERHANGİ BİR GARANTİ OLMAKSIZIN "OLDUĞU GİBİ"
+                SAĞLANIR.
+              </p>
+              <br />
+              <p>
+                <strong>5. FESHETME.</strong> Bu lisans, buradaki herhangi bir şartın ihlali
+                durumunda otomatik olarak sona erer.
+              </p>
+            </div>
+            <label class="check-row"
+              ><input type="checkbox" id="accept" />
+              <span data-i18n="l.accept">Sözleşmeyi okudum ve kabul ediyorum</span></label
+            >
+          </section>
+
+          <!-- 3. Location -->
+          <section class="step" data-step="2">
+            <h1 data-i18n="p.title">Kurulum Konumu</h1>
+            <p data-i18n="p.lede">
+              NEXUS AI uygulamasının nereye yükleneceğini seçin. Çoğu kullanıcı için varsayılan
+              konum önerilir.
+            </p>
+            <div class="field">
+              <input type="text" id="path" value="" aria-label="Kurulum yolu" />
+              <button class="btn-browse" id="browse" type="button" data-i18n="p.browse">
+                Gözat…
+              </button>
+            </div>
+            <p class="disk" id="disk-line">
+              <span data-i18n="p.required">Gerekli alan</span>:
+              <strong>240 MB</strong> &nbsp;·&nbsp;
+              <span data-i18n="p.available">Kullanılabilir</span>:
+              <strong id="disk-free">…</strong>
+            </p>
+          </section>
+
+          <!-- 4. Installing -->
+          <section class="step" data-step="3">
+            <h1 data-i18n="i.title">NEXUS AI Yükleniyor</h1>
+            <p data-i18n="i.lede">NEXUS bilgisayarınıza yüklenirken lütfen bekleyin.</p>
+            <div class="pct" id="pct">%0</div>
+            <div class="progress"><div class="fill" id="fill"></div></div>
+            <p class="status" id="status">Hazırlanıyor…</p>
+          </section>
+
+          <!-- 5. Finish -->
+          <section class="step" data-step="4">
+            <div class="finish-icon-wrap">
+              <div class="finish-icon">✓</div>
+              <div class="finish-ring"></div>
+            </div>
+            <h1 data-i18n="f.title">NEXUS Hazır</h1>
+            <p data-i18n-html="f.lede">
+              NEXUS AI başarıyla kuruldu. Kurulum sihirbazından çıkmak için <strong>Bitir</strong>'e
+              tıklayın.
+            </p>
+            <p class="disk" id="install-summary" style="display: none"></p>
+            <label class="check-row"
+              ><input type="checkbox" id="launch" checked />
+              <span data-i18n="f.launch">NEXUS'u şimdi başlat</span></label
+            >
+          </section>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+          <button class="btn btn-ghost" id="cancel" type="button" data-i18n="btn.cancel">
+            İptal
+          </button>
+          <div class="right">
+            <button
+              class="btn btn-ghost"
+              id="back"
+              type="button"
+              style="visibility: hidden"
+              data-i18n="btn.back"
+            >
+              Geri
+            </button>
+            <button class="btn btn-primary" id="next" type="button">Devam Et</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var native = window.nx || {};
+        var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+        var lis = Array.prototype.slice.call(document.querySelectorAll("#steps li"));
+        var current = 0;
+        var installing = false;
+        var installDone = false;
+        var setupInfo = null; // { platform, locale, version, defaultPath, freeBytes, requiredBytes }
+
+        var elNext = document.getElementById("next");
+        var elBack = document.getElementById("back");
+        var elCancel = document.getElementById("cancel");
+        var elAccept = document.getElementById("accept");
+
+        // ── i18n: Turkish is the default markup; English strings swap in when the
+        //    OS locale is not Turkish. Progress-stage texts are keyed separately.
+        var lang = "tr";
+        var STR = {
+          tr: {
+            next: "Devam Et",
+            install: "Yükle",
+            finishBtn: "Bitir",
+            preparing: "Hazırlanıyor…",
+            cancelQ: "Kurulumu iptal etmek istiyor musunuz?",
+            installedTo: "Kurulum konumu",
+            failed: "Kurulum başarısız oldu: ",
+            stages: {
+              core: "Çekirdek servisler yükleniyor…",
+              voice: "Ses motoru yapılandırılıyor…",
+              devices: "Cihaz konnektörleri kuruluyor…",
+              privacy: "Yerel gizlilik kalkanı etkinleştiriliyor…",
+              finalize: "Son rötuşlar yapılıyor…",
+              done: "Kurulum tamamlandı.",
+            },
+          },
+          en: {
+            next: "Continue",
+            install: "Install",
+            finishBtn: "Finish",
+            preparing: "Preparing…",
+            cancelQ: "Do you want to cancel the installation?",
+            installedTo: "Installed to",
+            failed: "Installation failed: ",
+            stages: {
+              core: "Installing core services…",
+              voice: "Configuring the voice engine…",
+              devices: "Setting up device connectors…",
+              privacy: "Enabling the local privacy shield…",
+              finalize: "Applying finishing touches…",
+              done: "Installation complete.",
+            },
+            ui: {
+              tagline: "The personal operating system for your home · v3.14.2",
+              step1: "Welcome",
+              step2: "License",
+              step3: "Location",
+              step4: "Installing",
+              step5: "Finished",
+              "w.title": "Welcome to the NEXUS AI Setup",
+              "w.lede":
+                "This wizard will guide you through installing <strong>NEXUS AI</strong>, your personal operating system for the home. Click <strong>Continue</strong> to begin.",
+              "w.t1": "Lightweight service",
+              "w.d1": "Runs under 50 MB RAM when idle",
+              "w.t2": "100% local",
+              "w.d2": "Your data never leaves your device",
+              "w.t3": "2,000+ devices",
+              "w.d3": "Compatible out of the box",
+              "w.t4": "Minutes to set up",
+              "w.d4": "Fast and smooth installation",
+              "l.title": "License Agreement",
+              "l.lede": "Please read and accept the license terms below before continuing.",
+              "l.accept": "I have read and accept the agreement",
+              "p.title": "Installation Location",
+              "p.lede":
+                "Choose where NEXUS AI will be installed. The default location is recommended for most users.",
+              "p.browse": "Browse…",
+              "p.required": "Space required",
+              "p.available": "Available",
+              "i.title": "Installing NEXUS AI",
+              "i.lede": "Please wait while NEXUS is installed on your computer.",
+              "f.title": "NEXUS Is Ready",
+              "f.lede":
+                "NEXUS AI has been installed successfully. Click <strong>Finish</strong> to exit the setup wizard.",
+              "f.launch": "Launch NEXUS now",
+              "btn.cancel": "Cancel",
+              "btn.back": "Back",
+            },
+            license:
+              '<p><strong>NEXUS AI SOFTWARE LICENSE AGREEMENT</strong></p><p>Copyright © 2026 NEXUS Technologies Inc. All rights reserved.</p><br /><p>PLEASE READ THIS LICENSE AGREEMENT CAREFULLY BEFORE INSTALLING OR USING THE SOFTWARE.</p><br /><p><strong>1. GRANT OF LICENSE.</strong> Subject to the terms of this Agreement, NEXUS Technologies grants you a non-exclusive, non-transferable license to install and use NEXUS AI solely for your personal, non-commercial purposes.</p><br /><p><strong>2. RESTRICTIONS.</strong> You may not: (a) copy, modify or distribute the Software; (b) reverse engineer the Software; (c) sublicense or sell the Software.</p><br /><p><strong>3. PRIVACY.</strong> The Software runs primarily on-device. All cloud features require explicit consent and are governed by the separate Privacy Policy.</p><br /><p><strong>4. DISCLAIMER.</strong> THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.</p><br /><p><strong>5. TERMINATION.</strong> This license terminates automatically upon breach of any term herein.</p>',
+          },
+        };
+
+        function applyLanguage() {
+          if (lang !== "en") return;
+          document.documentElement.lang = "en";
+          document.title = "NEXUS Setup";
+          var ui = STR.en.ui;
+          Array.prototype.forEach.call(document.querySelectorAll("[data-i18n]"), function (el) {
+            var k = el.getAttribute("data-i18n");
+            if (ui[k]) el.textContent = ui[k];
+          });
+          Array.prototype.forEach.call(
+            document.querySelectorAll("[data-i18n-html]"),
+            function (el) {
+              var k = el.getAttribute("data-i18n-html");
+              if (ui[k]) el.innerHTML = ui[k];
+            },
+          );
+          var tb = document.querySelector(".tb-brand");
+          if (tb) tb.lastChild.textContent = "NEXUS SETUP";
+          var lic = document.getElementById("license-box");
+          if (lic) lic.innerHTML = STR.en.license;
+          document.getElementById("status").textContent = STR.en.preparing;
+        }
+
+        function fmtBytes(n) {
+          if (n == null) return "—";
+          var units = ["B", "KB", "MB", "GB", "TB"];
+          var i = 0;
+          while (n >= 1024 && i < units.length - 1) {
+            n /= 1024;
+            i++;
+          }
+          return n.toFixed(n >= 100 || i === 0 ? 0 : 1) + " " + units[i];
+        }
+
+        // Pull real OS facts (platform, locale, default path, free disk space).
+        function loadInfo() {
+          if (!native.info) return Promise.resolve();
+          return native.info().then(function (info) {
+            setupInfo = info;
+            if (info.locale && String(info.locale).toLowerCase().indexOf("tr") !== 0) lang = "en";
+            applyLanguage();
+            document.getElementById("path").value = info.defaultPath || "";
+            document.getElementById("disk-free").textContent = fmtBytes(info.freeBytes);
+            render();
+          });
+        }
+
+        function labelFor(i) {
+          var s = STR[lang];
+          if (i === 2) return s.install;
+          if (i === 4) return s.finishBtn;
+          return s.next;
+        }
+
+        function render() {
+          steps.forEach(function (s, i) {
+            s.classList.toggle("active", i === current);
+          });
+          lis.forEach(function (li, i) {
+            li.classList.toggle("active", i === current);
+            li.classList.toggle("done", i < current);
+          });
+          // Drive the vertical rail fill line
+          var stepsEl = document.getElementById("steps");
+          if (stepsEl) {
+            stepsEl.setAttribute("data-progress", String(current));
+          }
+          elNext.textContent = labelFor(current);
+          elNext.disabled = (current === 1 && !elAccept.checked) || (current === 3 && installing);
+          elBack.style.visibility =
+            current === 0 || current === 3 || current === 4 ? "hidden" : "visible";
+          if (current === 3) startInstall();
+        }
+
+        function go(i) {
+          current = Math.max(0, Math.min(steps.length - 1, i));
+          render();
+        }
+
+        function setProgress(percent, text) {
+          document.getElementById("fill").style.width = percent + "%";
+          document.getElementById("pct").textContent =
+            lang === "tr" ? "%" + percent : percent + "%";
+          if (text) document.getElementById("status").textContent = text;
+        }
+
+        // Real installation driven by the main process. Progress events map to
+        // localized stage texts; the UI eases between the reported checkpoints.
+        function startInstall() {
+          if (installing || installDone) return;
+          installing = true;
+          elNext.disabled = true;
+          elBack.style.visibility = "hidden";
+          var target = document.getElementById("path").value;
+
+          var shown = 0;
+          var reported = { percent: 8, key: "core" };
+          if (native.onProgress)
+            native.onProgress(function (p) {
+              reported = p;
+            });
+
+          var easeTimer = setInterval(function () {
+            if (shown < reported.percent) {
+              shown = Math.min(reported.percent, shown + 2);
+              setProgress(shown, STR[lang].stages[reported.key] || "");
+            }
+          }, 90);
+
+          function conclude(res) {
+            var finish = function () {
+              clearInterval(easeTimer);
+              installing = false;
+              if (res && res.ok) {
+                installDone = true;
+                setProgress(100, STR[lang].stages.done);
+                var sum = document.getElementById("install-summary");
+                sum.textContent = STR[lang].installedTo + ": " + res.installDir;
+                sum.style.display = "block";
+                setTimeout(function () {
+                  go(4);
+                }, 650);
+              } else {
+                setProgress(shown, STR[lang].failed + ((res && res.error) || "unknown"));
+                elBack.style.visibility = "visible";
+                elNext.disabled = false;
+              }
+            };
+            // Let the ease animation catch up before concluding.
+            var wait = setInterval(function () {
+              if (!res || !res.ok || shown >= 100) {
+                clearInterval(wait);
+                finish();
+              }
+            }, 120);
+          }
+
+          if (native.install) {
+            native.install(target).then(conclude, function (err) {
+              conclude({ ok: false, error: String(err) });
+            });
+          } else {
+            // Browser preview (no native bridge): simulate the checkpoints.
+            var demo = ["core", "voice", "devices", "privacy", "finalize", "done"];
+            var pcts = [12, 34, 58, 79, 94, 100];
+            var i = 0;
+            var t = setInterval(function () {
+              reported = { percent: pcts[i], key: demo[i] };
+              if (++i >= demo.length) {
+                clearInterval(t);
+                conclude({ ok: true, installDir: target });
+              }
+            }, 720);
+          }
+        }
+
+        elNext.addEventListener("click", function () {
+          if (current === steps.length - 1) {
+            var launch = document.getElementById("launch").checked;
+            if (native.finish) native.finish(launch);
+            else window.close();
+            return;
+          }
+          go(current + 1);
+        });
+        elBack.addEventListener("click", function () {
+          if (current > 0) go(current - 1);
+        });
+        elCancel.addEventListener("click", function () {
+          if (confirm(STR[lang].cancelQ)) {
+            if (native.close) native.close();
+            else window.close();
+          }
+        });
+        elAccept.addEventListener("change", function () {
+          if (current === 1) elNext.disabled = !elAccept.checked;
+        });
+
+        document.getElementById("browse").addEventListener("click", async function () {
+          if (!native.browse) return;
+          var picked = await native.browse();
+          if (picked) document.getElementById("path").value = picked;
+        });
+
+        document.getElementById("win-min").addEventListener("click", function () {
+          if (native.minimize) native.minimize();
+        });
+        document.getElementById("win-close").addEventListener("click", function () {
+          if (native.close) native.close();
+        });
+
+        render();
+        loadInfo();
+      })();
+    </script>
+  </body>
+</html>

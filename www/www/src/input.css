@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NEXUS Custom Styles */
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom gradient backgrounds */
+.bg-dashboard-gradient {
+  background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+}
+
+.bg-gradient-custom {
+  background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+}
+
+/* Custom shadows */
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.menu-container-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* NEXUS AI input gradient border */
+.custom-gradient-border {
+  position: relative;
+  background: white;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+}
+
+.custom-gradient-border::before {
+  content: '';
+  position: absolute;
+  top: -2px; bottom: -2px;
+  left: -2px; right: -2px;
+  background: linear-gradient(to right, #4C7DFF, #22D3EE, #4C7DFF);
+  z-index: -1;
+  border-radius: 9999px;
+}
+
+/* NEXUS CTA gradient */
+.nexus-cta {
+  background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
+}
+
+/* Wheel picker styles */
+.wheel {
+  height: 200px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+
+.wheel::-webkit-scrollbar { display: none; }
+
+.wheel-item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #C7C5D1;
+  transition: color 0.15s, transform 0.15s;
+}
+
+.wheel-item.selected {
+  color: #4C7DFF;
+  transform: scale(1.15);
+}
+
+/* Bottom sheet */
+.sheet { 
+  transition: transform 0.25s ease; 
+  transform: translateY(100%); 
+}
+.sheet.open { 
+  transform: translateY(0); 
+}
+
+/* Quick actions sheet */
+.qa-sheet { 
+  transition: transform 0.28s ease; 
+  transform: translateY(105%); 
+}
+.qa-sheet.open { 
+  transform: translateY(0); 
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}

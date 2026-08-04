@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "allowImportingTsExtensions": false
+  },
+  "include": ["packages/*/src/**/*.ts", "packages/*/*.config.ts", "vitest.config.ts"],
+  // The client is a DOM/JSX Vite app with its own tsconfig; typecheck it via
+  // `pnpm --filter @nexus/client typecheck` instead of the node-lib root pass.
+  "exclude": ["packages/client"]
+}

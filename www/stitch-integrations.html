@@ -7,8 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz Ekle</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
     // Arka planı beyaz olan resimleri şeffaf yapan akıllı fonksiyon
     function makeImagesTransparent() {
       const images = document.querySelectorAll('.product-tile img');
@@ -59,11 +58,21 @@
       }
     }
 
-    // Katalog render edildikten sonra çalıştır; override uygulanması renderCatalogContent tanımlandıktan sonra yapılacak.
+    // Katalog render edildikten sonra çalıştır
+    const originalRenderCatalogContent = renderCatalogContent;
+    renderCatalogContent = function() {
+      originalRenderCatalogContent();
+      setTimeout(makeImagesTransparent, 100);
+    };
+
+    // Sayfa yüklendiğinde mevcut resimler için de çalıştır
+    window.addEventListener('load', () => {
+      setTimeout(makeImagesTransparent, 200);
+    });
 
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/lucide.js"></script>
   <style>
     body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
     ::-webkit-scrollbar { width: 0px; background: transparent; }
@@ -2484,12 +2493,12 @@
       if (/garaj/.test(text)) return 'control-garage-controller.png';
       if (/evrensel kumanda|uzaktan kumanda|remote|kumanda/.test(text)) return 'control-remote-control.png';
       if (/ir blaster|(^|[^a-z])ir([^a-z]|$)/.test(text)) return 'control-ir-blaster.png';
-      if (/thermostat switch/.test(text)) return 'control-thermostat-switch.png';
-      if (/4 cikis|4 çıkış|dort|dört/.test(text) && /anahtar|switch/.test(text)) return 'control-four-gang-switch.png';
-      if (/3 cikis|3 çıkış|uclu|üçlü/.test(text) && /anahtar|switch/.test(text)) return 'control-triple-wall-switch.png';
-      if (/2 cikis|2 çıkış|cift|çift|ikili/.test(text) && /anahtar|switch/.test(text)) return 'control-double-wall-switch.png';
-      if (/dokunmatik anahtar|touch switch/.test(text)) return 'control-touch-switch.png';
-      if (/anahtar|switch/.test(text)) return 'control-single-wall-switch.png';
+      if (/thermostat switch/.test(text)) return item.img || 'control-thermostat-switch.png';
+      if (/dokunmatik anahtar|touch switch/.test(text)) return item.img || 'control-touch-switch.png';
+      if (/4 cikis|4 çıkış|dort|dört/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-four-gang-switch.png';
+      if (/3 cikis|3 çıkış|uclu|üçlü/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-triple-wall-switch.png';
+      if (/2 cikis|2 çıkış|cift|çift|ikili/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-double-wall-switch.png';
+      if (/anahtar|switch/.test(text)) return item.img || 'control-single-wall-switch.png';
       if (/serit|strip|ambiyans|tv ortam/.test(text)) return 'generic-led-strip.png';
       if (/tavan|ceiling|oda isik/.test(text)) return 'generic-ceiling-light.png';
       if (/masa|mum|retro/.test(text)) return 'generic-table-lamp.png';
@@ -2588,12 +2597,15 @@
       return 'generic-smart-hub.png';
     }
 
-
     function catalogTileHtml(item, groupTitle) {
       var safe = escapeCatalogHtml(item.n);
       var display = escapeCatalogHtml(catalogDisplayName(item.n));
       var safeGroup = escapeCatalogHtml(groupTitle || 'Genel');
-      var image = inferCatalogImage(item, groupTitle);
+      // item.img spesifik bir dosya adı içeriyorsa onu kullan, aksi halde inferCatalogImage ile belirle
+      var _genericImgs = ['smart_plug.jpg','switch.jpg','camera.jpg','bridge.png','smart_hub.jpg','smart_bulb.jpg','smart_speaker.jpg','smart_tv.jpg','smart_appliance.jpg'];
+      var image = (item.img && _genericImgs.indexOf(item.img) === -1 && /\.(png|jpg|webp)$/i.test(item.img))
+        ? item.img
+        : inferCatalogImage(item, groupTitle);
       var imageVersion = '20260801-products-4';
       return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="simulateConnection(this, \'' + safe + '\')">' +
         '<div class="product-image-stage">' +
@@ -2686,16 +2698,6 @@
       window.location.href = 'stitch-setup-code.html';
     }
 
-    function enhanceCatalogRender() {
-      var originalRenderCatalogContent = renderCatalogContent;
-      renderCatalogContent = function () {
-        originalRenderCatalogContent();
-        setTimeout(makeImagesTransparent, 100);
-      };
-    }
-
-    enhanceCatalogRender();
-
     function closeCodeModal() {
       const modal = document.getElementById('code-modal');
       const content = document.getElementById('code-modal-content');
@@ -2784,3 +2786,5 @@ function showIntegrationsToast(msg) {
 </script>
 </body>
 </html>
+
+

@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NEXUS - Hava Kalitesi</title>
+  <link href="css/tailwind.css" rel="stylesheet"/>
+  
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    .nexus-gradient-text { background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nexus-card-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .active-scale:active { transform: scale(0.96); }
+  </style>
+  <script src="auth.js"></script>
+  <script src="data.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body>
+  <div class="w-full h-screen flex flex-col bg-[#EEF4FF] transition-colors duration-300">
+    <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
+      <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
+        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+      </a>
+      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Hava Kalitesi</h1>
+            <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
+        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+      </a>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8">
+
+      <section class="bg-white rounded-[2rem] p-6 nexus-card-shadow relative overflow-hidden flex flex-col items-center justify-center text-center mt-4">
+        <div id="air-quality-glow" class="absolute w-40 h-40 bg-slate-100 rounded-full blur-3xl opacity-60"></div>
+
+        <div class="relative mb-2">
+          <h2 id="air-quality-aqi" class="text-6xl font-extrabold text-slate-900 tracking-tighter">--</h2>
+          <span class="absolute -right-6 top-1 text-sm font-bold text-slate-400">AQI</span>
+        </div>
+        <div id="air-quality-badge" class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-full mb-6">
+            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+            <span class="text-xs font-bold text-slate-500">Olcum Yok</span>
+        </div>
+
+        <div class="w-full flex items-center gap-4 text-left">
+            <div class="flex-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <iconify-icon icon="lucide:thermometer" class="text-rose-500 text-lg mb-1"></iconify-icon>
+                <div class="text-[10px] font-bold text-slate-400">SICAKLIK</div>
+                <div id="air-quality-temp" class="text-lg font-bold text-slate-900">-- C</div>
+            </div>
+            <div class="flex-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <iconify-icon icon="lucide:droplets" class="text-sky-500 text-lg mb-1"></iconify-icon>
+                <div class="text-[10px] font-bold text-slate-400">NEM</div>
+                <div id="air-quality-humidity" class="text-lg font-bold text-slate-900">--</div>
+            </div>
+        </div>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Aritma Cihazlari</h3>
+
+        <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+              <iconify-icon icon="lucide:fan" class="text-xl"></iconify-icon>
+            </div>
+            <div>
+              <p id="air-purifier-title" class="text-sm font-bold text-slate-900">Aritici bagli degil</p>
+              <p id="air-purifier-status" class="text-[11px] font-medium text-slate-500">Cihaz eklenince kontrol gorunur.</p>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+          </label>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<!-- DYNAMIC JS -->
+<script>
+
+function renderAirQualityState(state, hasState) {
+    const aqi = document.getElementById('air-quality-aqi');
+    const badge = document.getElementById('air-quality-badge');
+    const temp = document.getElementById('air-quality-temp');
+    const humidity = document.getElementById('air-quality-humidity');
+    const purifierTitle = document.getElementById('air-purifier-title');
+    const purifierStatus = document.getElementById('air-purifier-status');
+    const hasAqi = hasState && typeof state.aqi === 'number';
+    if (aqi) aqi.textContent = hasAqi ? state.aqi : '--';
+    if (temp) temp.textContent = hasState && typeof state.temp !== 'undefined' ? state.temp + ' C' : '-- C';
+    if (humidity) humidity.textContent = hasState && typeof state.humidity !== 'undefined' ? '%' + state.humidity : '--';
+    if (badge) {
+        let label = 'Olcum Yok', color = 'slate';
+        if (hasAqi) {
+            label = state.aqi >= 100 ? 'Kotu Seviye' : state.aqi >= 50 ? 'Orta Seviye' : 'Iyi Seviye';
+            color = state.aqi >= 100 ? 'rose' : state.aqi >= 50 ? 'amber' : 'emerald';
+        }
+        badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 bg-' + color + '-50 rounded-full mb-6';
+        badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-' + color + '-500"></span><span class="text-xs font-bold text-' + color + '-600">' + label + '</span>';
+    }
+    if (purifierTitle) purifierTitle.textContent = hasState ? 'Aritici kontrolu' : 'Aritici bagli degil';
+    if (purifierStatus) purifierStatus.textContent = hasState ? (state.purifier ? 'Acik' : 'Kapali') : 'Cihaz eklenince kontrol gorunur.';
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('input[type="checkbox"]');
+    const state = JSON.parse(nexusGetItem('nexusAirQualityData') || '{"purifier":false}');
+    if(toggle) {
+        toggle.checked = !!state.purifier;
+        toggle.addEventListener('change', (e) => {
+            state.purifier = e.target.checked;
+            nexusSetItem('nexusAirQualityData', JSON.stringify(state));
+            renderAirQualityState(state, true);
+        });
+    }
+    renderAirQualityState(state, nexusGetItem('nexusAirQualityData') !== null);
+});
+
+</script>
+</body>
+</html>
+
+

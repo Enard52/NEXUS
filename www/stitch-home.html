@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -8,12 +8,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Ana Ekran</title>
-<!-- Tailwind CSS CDN with plugins -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Google Fonts: Inter is close to the system font used in iOS -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons for consistent navigation icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Tailwind CSS Local -->
+<link href="css/tailwind.css" rel="stylesheet"/>
+<!-- Google Fonts: Inter - Local -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+<!-- Lucide Icons Local -->
+<script src="js/lucide.js"></script>
 <style data-purpose="typography">
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -251,7 +251,6 @@
 <script>
             lucide.createIcons();
 
-
     function syncCards() {
       var selectedSmartHome = null;
       try {
@@ -404,9 +403,10 @@
         if (avatarEl) avatarEl.src = avatar;
       }
 
-      if (typeof window.refreshDashboardSupplements === 'function') {
-        window.refreshDashboardSupplements();
-      }
+      // Extra smart home kartları ve tap-to-run bölümünü doldur
+      if (typeof window.renderExtraSmartHomeCards === 'function') window.renderExtraSmartHomeCards();
+      if (typeof window.renderTapToRunCards === 'function') window.renderTapToRunCards();
+      if (typeof window.renderDevices === 'function') window.renderDevices();
       if (typeof window.renderNexusDevices === 'function') {
         window.renderNexusDevices();
       }
@@ -450,7 +450,6 @@
       document.getElementById('quick-add-backdrop').classList.toggle('hidden');
     }
   </script>
-
 
 <!-- Home Selector Modal -->
 <div id="home-selector-backdrop" class="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="toggleHomeSelector()"></div>
@@ -520,5 +519,5 @@ if (window.NexusSheetGestures) {
 }
 </script>
 
-
 </body></html>
+

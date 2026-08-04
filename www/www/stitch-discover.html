@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEXUS — Keşfet</title>
+<!-- Include Tailwind CSS v3 -->
+<link href="css/tailwind.css" rel="stylesheet"/>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons for consistent navigation icons -->
+<script src="js/lucide.js"></script>
+<style data-purpose="custom-gradients">
+    /* Background brand-tinted gradient */
+    .bg-light-blue-gradient {
+      background: linear-gradient(180deg, #E4E0FB 0%, #F2F0FF 100%);
+    }
+    /* AI button NEXUS gradient */
+    .ai-button-gradient {
+      background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
+    }
+  </style>
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="sheet-gestures.js"></script>
+  </head>
+<body class="bg-light-blue-gradient min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="flex items-center justify-between px-5 pt-12 pb-4">
+<!-- Home Selector -->
+<button onclick="toggleHomeSelector()" class="flex items-center gap-2 py-1 pr-2 text-[#4C7DFF] active:scale-95 transition-transform" data-purpose="home-selector">
+  <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+  <span class="max-w-[8rem] truncate text-sm font-bold leading-none" data-bind="householdName">Evim</span>
+</button>
+<div class="flex items-center space-x-4">
+<!-- AI Button removed -->
+<!-- Mesaj Merkezi (Bildirimler) -->
+<a href="stitch-messages.html" aria-label="Mesaj Merkezi" class="text-gray-800">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Main Features List -->
+<main class="flex-1 px-5 space-y-4 pb-24 overflow-y-auto">
+<!-- Energy Savings Card (AI Enerji Tasarrufu mini uygulamasına gider) -->
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-energy.html">
+<div class="w-14 h-14 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">AI Enerji Tasarrufu</h2>
+<p class="text-sm leading-tight text-gray-400">Cihazlarınıza dair içgörüler edinin ve enerji ipuçları alın.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-messages.html">
+<div class="w-14 h-14 bg-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-base whitespace-nowrap">SMS ve Çağrı Bildirimleri</h2>
+<p class="text-sm leading-tight text-gray-400">Cihaz uyarılarını, çağrı kayıtlarını ve önemli durum mesajlarını tek merkezden takip edin.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-lighting-master.html">
+<div class="w-14 h-14 flex items-center justify-center flex-shrink-0 mr-4"><div class="relative w-10 h-10"><div class="absolute inset-0 rounded-t-full" style="background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);"></div><div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-indigo-500"></div></div></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">AI Aydınlatma Ustası</h2>
+<p class="text-sm leading-tight text-gray-400">Işıkları oda bazlı yönetmek ve hızlı sahneler kurmak için hazır akıllı uygulama önerisini açın.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-leave-home-summary.html">
+<div class="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="none" stroke="white" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 12h16M14 6l6 6-6 6M10 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">Evden Çıkış Kontrolü</h2>
+<p class="text-sm leading-tight text-gray-400">Evden çıkarken açık cihazları, kilitleri ve enerji durumunu tek akışta kontrol edin.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-guest-mode.html">
+<div class="w-14 h-14 bg-emerald-400 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="none" stroke="white" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9.5 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10.5 14v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">Misafir Modu</h2>
+<p class="text-sm leading-tight text-gray-400">Aydınlatma, giriş ve ortak alan cihazlarını misafir karşılama akışına göre hazırla.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-sleep-prep.html">
+<div class="w-14 h-14 bg-indigo-500 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="none" stroke="white" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">Uykuya Hazırlık</h2>
+<p class="text-sm leading-tight text-gray-400">Gece ışık, sessiz mod, kilit ve iklim ayarlarını tek merkezde topla.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<a class="bg-white rounded-[2rem] p-5 flex items-center shadow-sm active:bg-slate-50 transition-colors" href="stitch-room-comfort.html">
+<div class="w-14 h-14 bg-cyan-400 rounded-2xl flex items-center justify-center flex-shrink-0 mr-4"><svg class="w-8 h-8" fill="none" stroke="white" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v18M5.64 5.64l12.72 12.72M3 12h18M5.64 18.36 18.36 5.64" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div class="flex-1">
+<h2 class="text-gray-800 font-bold text-lg">Oda Konforu</h2>
+<p class="text-sm leading-tight text-gray-400">Klima, hava ve ortam cihazlarını tek konfor paneli içinde bir araya getir.</p>
+</div>
+<svg class="w-5 h-5 text-gray-300 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="m8.25 4.5 7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</main>
+<!-- END: Main Features List -->
+<!-- BEGIN: Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); height: calc(4.5rem + env(safe-area-inset-bottom));" data-purpose="bottom-nav">
+  <a href="stitch-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
+    <span class="text-[10px] font-semibold leading-none">Ev</span>
+  </a>
+  <a href="stitch-smart.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="layout-grid"></i>
+    <span class="text-[10px] font-semibold leading-none">Ak&#305;ll&#305;</span>
+  </a>
+  <a href="stitch-discover.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #4C7DFF;" aria-current="page">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="compass"></i>
+    <span class="text-[10px] font-semibold leading-none">Ke&#351;fet</span>
+  </a>
+  <a href="stitch-profile.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+    <i class="w-6 h-6 stroke-[1.75]" data-lucide="user"></i>
+    <span class="text-[10px] font-semibold leading-none">Profil</span>
+  </a>
+</nav>
+<!-- END: Bottom Navigation -->
+<script>
+lucide.createIcons();
+// Ev adını gerçek veriden (nexusHousehold) senkronize et
+(function () {
+  var name = typeof window.getPrimaryHouseholdName === 'function' ? window.getPrimaryHouseholdName() : 'Evim';
+  document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = name; });
+})();
+</script>
+<!-- Home Selector Modal -->
+<div id="home-selector-backdrop" class="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="toggleHomeSelector()"></div>
+<div id="home-selector-modal" class="fixed inset-x-0 top-0 z-[70] bg-white rounded-b-[2rem] shadow-2xl border-b border-slate-100 flex flex-col transform transition-transform duration-300 -translate-y-full">
+  <div class="px-5 pt-12 pb-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+    <div id="home-selector-handle" class="absolute left-1/2 top-3 h-1.5 w-14 -translate-x-1/2 rounded-full bg-slate-200"></div>
+    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ev Seçimi</h3>
+    <button onclick="toggleHomeSelector()" class="p-2 -mr-2 text-slate-400 hover:text-slate-600 rounded-full">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+  </div>
+  <div class="p-4 flex flex-col gap-2">
+    <!-- Active Home -->
+    <button onclick="toggleHomeSelector()" class="flex items-center gap-3 p-4 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] text-left w-full transition-transform active:scale-[0.98]">
+      <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+      <span class="font-bold text-base flex-grow" data-bind="householdName">Evim</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+    </button>
+  </div>
+  <div class="p-4 pt-2 border-t border-slate-100 bg-slate-50 rounded-b-[2rem]">
+    <a href="stitch-household.html" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white text-slate-700 font-bold text-sm transition-transform active:scale-[0.98] border border-slate-200 shadow-sm">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      Ev Yönetimi
+    </a>
+  </div>
+</div>
+
+<script>
+function toggleHomeSelector() {
+  const modal = document.getElementById('home-selector-modal');
+  const backdrop = document.getElementById('home-selector-backdrop');
+
+  // If it's currently hidden (-translate-y-full)
+  if (modal.classList.contains('-translate-y-full')) {
+    // Show it
+    modal.classList.remove('-translate-y-full');
+    modal.classList.add('translate-y-0');
+
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    backdrop.classList.add('opacity-100', 'pointer-events-auto');
+  } else {
+    // Hide it
+    modal.classList.remove('translate-y-0');
+    modal.classList.add('-translate-y-full');
+
+    backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+  }
+}
+
+if (window.NexusSheetGestures) {
+  window.NexusSheetGestures.bindTopSheet({
+    sheetId: 'home-selector-modal',
+    handleId: 'home-selector-handle',
+    backdropId: 'home-selector-backdrop',
+    isOpen: function () { return document.getElementById('home-selector-modal').classList.contains('translate-y-0'); },
+    close: toggleHomeSelector
+  });
+}
+</script>
+</body></html>
+

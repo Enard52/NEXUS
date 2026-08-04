@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Plus</title>
 <!-- Tailwind CSS v3 CDN -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="css/tailwind.css" rel="stylesheet"/>
 <!-- Custom Configuration for Tailwind (NEXUS brand palette) -->
 <script>
     tailwind.config = {
@@ -189,10 +189,14 @@
 </div>
 <!-- END: Checkout Confirmation Sheet -->
 <script>
-  let selectedPlan = 'Yıllık';
+  let selectedPlan = nexusGetItem('nexusSelectedPlan') || 'Yıllık';
+
+  // Initialize selected plan on page load
+  selectPlan(selectedPlan);
 
   function selectPlan(plan) {
     selectedPlan = plan;
+    nexusSetItem('nexusSelectedPlan', selectedPlan);
     document.getElementById('plan-annual').classList.toggle('border-nexus-purple', plan==='Yıllık');
     document.getElementById('plan-annual').classList.toggle('ring-2', plan==='Yıllık');
     document.getElementById('plan-annual').classList.toggle('ring-nexus-purple', plan==='Yıllık');
@@ -266,3 +270,4 @@
 </footer>
 <!-- END: Footer Actions -->
 </body></html>
+

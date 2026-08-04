@@ -1,0 +1,2790 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
+  <title>NEXUS - Cihaz Ekle</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+    // Arka planı beyaz olan resimleri şeffaf yapan akıllı fonksiyon
+    function makeImagesTransparent() {
+      const images = document.querySelectorAll('.product-tile img');
+      images.forEach(img => {
+        if (img.complete) {
+          processImage(img);
+        } else {
+          img.addEventListener('load', () => processImage(img), { once: true });
+        }
+      });
+    }
+
+    function processImage(img) {
+      if (img.dataset.processed) return;
+      img.dataset.processed = 'true';
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+
+      if (canvas.width === 0 || canvas.height === 0) return;
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      try {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        // Beyaz ve beyaza çok yakın renkleri şeffaf yap
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+
+          if (r > 240 && g > 240 && b > 240) {
+            data[i + 3] = 0; // Alpha kanalını 0 yap (tam şeffaf)
+          } else if (r > 230 && g > 230 && b > 230) {
+            // Yumuşak geçiş için yarı şeffaf (Anti-aliasing kenarları)
+            data[i + 3] = 100;
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        img.src = canvas.toDataURL('image/png');
+      } catch (e) {
+        console.warn('CORS or canvas error on image:', e);
+      }
+    }
+
+    // Katalog render edildikten sonra çalıştır
+    const originalRenderCatalogContent = renderCatalogContent;
+    renderCatalogContent = function() {
+      originalRenderCatalogContent();
+      setTimeout(makeImagesTransparent, 100);
+    };
+
+    // Sayfa yüklendiğinde mevcut resimler için de çalıştır
+    window.addEventListener('load', () => {
+      setTimeout(makeImagesTransparent, 200);
+    });
+
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    #loading-overlay { display: none; }
+    .manual-shell-divider { border-top: 1px solid rgba(226, 232, 240, 0.95); }
+    .catalog-search-pill {
+      background: #f8fafc;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .cat-btn {
+      position: relative;
+    }
+
+    /* Text Only Category Button States */
+    .cat-btn {
+      position: relative;
+      border-left-width: 3px;
+      border-left-color: transparent;
+      transition: all 0.2s ease;
+    }
+    .cat-active {
+      background-color: transparent;
+      border-left-color: #111827;
+    }
+    .cat-active .cat-text {
+      color: #111827;
+      font-weight: 800;
+    }
+    .cat-inactive .cat-text {
+      color: #8b929f;
+      font-weight: 500;
+    }
+    .cat-text {
+      word-break: keep-all;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    html.dark .cat-inactive .cat-text {
+      color: #94a3b8;
+    }
+    .catalog-subtitle {
+      margin-top: 0.2rem;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: #94a3b8;
+    }
+    .catalog-kicker {
+      margin-bottom: 1.1rem;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: #8b929f;
+      letter-spacing: -0.01em;
+    }
+    .product-tile img {
+      filter: drop-shadow(0 10px 14px rgba(15, 23, 42, 0.10));
+    }
+    html.dark .product-tile img {
+      filter: none;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .catalog-group-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin: 0.35rem 0 1rem;
+      letter-spacing: -0.01em;
+    }
+    html.dark .catalog-group-title { color: #94a3b8; }
+    .product-tile p {
+      white-space: normal;
+      text-wrap: balance;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 0.75rem;
+      row-gap: 1.45rem;
+    }
+    @media (min-width: 390px) {
+      .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 760px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      }
+    }
+    .product-card {
+      min-height: 112px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .product-image-stage {
+      height: 64px;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .product-name {
+      display: block;
+      min-height: 34px;
+      overflow: visible;
+      text-align: center;
+      font-size: clamp(9.5px, 2.7vw, 10.5px);
+      line-height: 1.14;
+      font-weight: 650;
+      letter-spacing: 0;
+      color: #0f172a;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      hyphens: auto;
+    }
+    .product-category-pill {
+      display: none;
+    }
+    html.dark .product-card {
+      background: transparent;
+      border-color: transparent;
+    }
+    html.dark .product-image-stage {
+      background: transparent;
+    }
+    html.dark .product-name {
+      color: #f8fafc;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .cat-chip {
+      flex: 0 0 auto;
+      padding: 0.5rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #64748b;
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .cat-chip.active {
+      color: #ffffff;
+      background: #111827;
+    }
+    html.dark .cat-chip { background: #1e293b; color: #94a3b8; }
+    html.dark .cat-chip.active { background: #f8fafc; color: #0f172a; }
+    #catalog-empty p { color: #64748b; }
+    html.dark body {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    html.dark #int-header,
+    html.dark .catalog-toolbar,
+    html.dark #main-content,
+    html.dark #sidebar-categories {
+      background: #0f172a !important;
+    }
+    html.dark .manual-shell-divider {
+      border-top-color: rgba(51, 65, 85, 0.95);
+    }
+    html.dark .catalog-search-pill {
+      background: #111827;
+      border-color: rgba(51, 65, 85, 0.95);
+      box-shadow: none;
+    }
+    html.dark .cat-active {
+      border-left-color: #f8fafc;
+    }
+    html.dark .cat-active .cat-text,
+    html.dark .catalog-title,
+    html.dark .catalog-heading {
+      color: #f8fafc;
+    }
+    html.dark .catalog-kicker,
+    html.dark .catalog-subtitle {
+      color: #94a3b8;
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body class="bg-white text-slate-900 h-screen flex flex-col overflow-hidden">
+
+  <!-- Header -->
+  <header id="int-header" class="pt-14 pb-4 px-4 flex items-center justify-between bg-white z-50 relative">
+    <div class="flex items-center gap-3">
+      <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform" href="#" onclick="event.preventDefault(); window.history.back();">
+        <i class="w-7 h-7" data-lucide="chevron-left"></i>
+      </a>
+      <h1 class="catalog-title text-[2rem] leading-none font-semibold tracking-[-0.03em] text-slate-900">Cihaz Ekle</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <a aria-label="QR ile ekle" class="p-1 text-slate-500 active:scale-95 transition-transform" href="stitch-scan.html">
+        <i class="w-6 h-6" data-lucide="scan-search"></i>
+      </a>
+      <button aria-label="Aramaya odaklan" class="p-1 text-slate-500 active:scale-95 transition-transform" onclick="focusCatalogSearch()">
+        <i class="w-6 h-6" data-lucide="search"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="manual-shell-divider mx-4"></div>
+
+  <div class="catalog-toolbar px-4 pt-5 pb-4 bg-white z-40 relative">
+    <div class="flex items-center gap-3">
+      <div class="min-w-0 flex-1">
+        <h2 class="text-lg leading-none font-semibold tracking-[-0.02em] text-slate-900 whitespace-nowrap">Manuel Olarak Ekle</h2>
+      </div>
+      <div class="relative w-[52%] max-w-[15rem]">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <i class="w-5 h-5 text-slate-400" data-lucide="search"></i>
+        </div>
+        <input id="catalog-search" type="text" class="catalog-search-pill w-full rounded-full py-3 pl-11 pr-4 text-sm font-medium text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-[#4C7DFF] transition-shadow" placeholder="Cihaz ara" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Split Content Area -->
+  <main class="flex-grow flex overflow-hidden" id="catalog-main">
+    <aside class="w-[30%] max-w-[132px] overflow-y-auto no-scrollbar flex flex-col pb-10 pt-1 pr-1 bg-white dark:bg-slate-900" id="catalog-rail"></aside>
+    <div class="flex-1 overflow-y-auto px-3 pt-2 pb-16 bg-white dark:bg-slate-900" id="catalog-content"></div>
+  </main>
+
+  <!-- Code Entry Modal -->
+  <div id="code-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[90] hidden flex flex-col items-center justify-center px-6">
+    <div class="bg-white rounded-[2rem] w-full max-w-sm p-6 shadow-2xl relative overflow-hidden transform scale-95 transition-transform" id="code-modal-content">
+      <div class="text-center mb-6 mt-2">
+        <div class="w-16 h-16 bg-slate-50 text-[#4C7DFF] rounded-full mx-auto flex items-center justify-center mb-4">
+          <i class="w-8 h-8" data-lucide="hash"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-800">Kurulum Kodu</h2>
+        <p class="text-sm text-slate-500 mt-2">Cihazınızın üzerindeki 8 haneli kodu girin.</p>
+      </div>
+      <div class="mb-6">
+        <input type="text" id="setup-code-input" class="w-full text-center text-3xl tracking-[0.2em] font-bold text-slate-800 border-none bg-slate-50 rounded-2xl py-4 focus:ring-2 focus:ring-[#4C7DFF]" placeholder="00000000" maxlength="8" autocomplete="off" />
+      </div>
+      <div class="flex gap-3">
+        <button class="flex-1 py-3.5 rounded-2xl font-bold text-slate-600 bg-slate-100 active:bg-slate-200 transition-colors" onclick="closeCodeModal()">İptal</button>
+        <button class="flex-1 py-3.5 rounded-2xl font-bold text-white bg-[#4C7DFF] active:bg-[#3F6FFF] transition-colors shadow-md shadow-[#4C7DFF]/30" onclick="submitCode()">Bağlan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[100] flex-col items-center justify-center">
+    <div id="loading-spinner" class="flex flex-col items-center">
+      <div class="w-16 h-16 rounded-full border-4 border-slate-100 border-t-[#4C7DFF] animate-spin mb-4"></div>
+      <p class="text-slate-800 font-bold text-lg">Cihaz Aranıyor...</p>
+      <p class="text-slate-500 text-sm mt-1 text-center px-6">Lütfen cihazıın eşleştirme modunda olduğundan emin olun.</p>
+    </div>
+    <div id="loading-notfound" class="hidden flex-col items-center px-8 w-full max-w-sm">
+      <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center mb-3">
+        <i class="w-7 h-7" data-lucide="alert-triangle"></i>
+      </div>
+      <p class="text-slate-800 font-bold text-lg">Cihaz Bulunamadı</p>
+      <p class="text-slate-500 text-sm mt-1 mb-5 text-center">Çevrede eşleştirilmeye hazır cihazı bulunamadı.</p>
+      <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="hideOverlay(); window.location.href='stitch-setup-code.html';">Kurulum koduyla ekle</button>
+      <button class="w-full text-slate-500 font-medium py-3 mt-1" onclick="hideOverlay()">Vazgeç</button>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function focusCatalogSearch() {
+      const input = document.getElementById('catalog-search');
+      if (!input) return;
+      input.focus();
+      input.select();
+    }
+
+    // Gömülü mod: pair.html içinde iframe olarak gösterilince kendi başlığını gizle
+    if (new URLSearchParams(location.search).has('embed')) {
+      var _ih = document.getElementById('int-header');
+      if (_ih) _ih.style.display = 'none';
+    }
+
+                        // ---- Tam 1:1 NEXUS Katalog Verisi (Tuya Referanslı) ----
+    var CATALOG = [
+  {
+    "key": "elektrik-ustasi",
+    "label": "Elektrik Ustası",
+    "groups": [
+      {
+        "title": "Soket",
+        "items": [
+          {
+            "n": "Akıllı Priz",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (Bluetooth)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (ZigBee)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (Ağ Geçidi)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Priz (NB-IoT)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Çoklu Priz",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Çoklu Priz (Bluetooth)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Çoklu Priz (Zigbee)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Çiftli Priz (BLE+Wi-Fi)",
+            "img": "smart_plug.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Anahtar",
+        "items": [
+          {
+            "n": "Anahtar",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Anahtar (Bluetooth)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Anahtar (ZigBee)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dokunmatik Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Nötrsüz Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (1 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (2 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (3 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (4 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Kablosuz Anahtar (6 Çıkışlı)",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Perde Anahtarı",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Dimmer Anahtar",
+            "img": "dimmer.jpg"
+          },
+          {
+            "n": "Dimmer Anahtar (Zigbee)",
+            "img": "dimmer.jpg"
+          },
+          {
+            "n": "Uyandırma Anahtarı",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Akıllı Buton",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Senaryo Anahtarı",
+            "img": "light-switch.jpg"
+          },
+          {
+            "n": "Thermostat Switch",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Işık ve Fan Anahtarı",
+            "img": "light-switch.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Garaj Kapısı Kumandası (Wi-Fi)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Garaj Kapısı Kumandası (BLE)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "aydinlatma",
+    "label": "Aydınlatma",
+    "groups": [
+      {
+        "title": "Işık Kaynağı",
+        "items": [
+          {
+            "n": "Akıllı Lamba",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Akıllı Lamba (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Akıllı Lamba (ZigBee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Işık Kaynağı (BLE+Wi-Fi)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Retro Lamba",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Retro Lamba (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Retro Lamba (ZigBee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Mum Lamba",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Mum Lamba (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Mum Lamba (ZigBee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Spot Lamba",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Spot Lamba (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Spot Lamba (ZigBee)",
+            "img": "smart_bulb.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Oda Işıkları",
+        "items": [
+          {
+            "n": "Tavan Lambası",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Tavan Lambası (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Tavan Lambası (ZigBee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Tavan Lambası (BLE+Wi-Fi)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Tavan Vantilatörü Lambası",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Masa Lambası",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Masa Lambası (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Masa Lambası (ZigBee)",
+            "img": "smart_bulb.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Ambiyans Aydınlatması",
+        "items": [
+          {
+            "n": "Åerit Lamba",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Åerit Lamba (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Åerit Lamba (Zigbee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Åerit Lamba (BLE+Wi-Fi)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Ambiyans Lambası",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Ambiyans Lambası (Bluetooth)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Ambiyans Lambası (Zigbee)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "Ambiyans Lambası (BLE+Wi-Fi)",
+            "img": "smart_bulb.jpg"
+          },
+          {
+            "n": "TV Ortam Işığı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Projektör",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Dış Mekan Aydınlatması",
+        "items": [
+          {
+            "n": "Dış Mekan Aydınlatması",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Dış Mekan Aydınlatması (BLE)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Dış Mekan Aydınlatması (Zigbee)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Güneş Enerjili Avlu Işığı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Bahçe Işığı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çim Işığı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "String Light",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Control Accessories",
+        "items": [
+          {
+            "n": "Uzaktan Kumanda",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "sensor",
+    "label": "Sensör",
+    "groups": [
+      {
+        "title": "Sensör",
+        "items": [
+          {
+            "n": "Çok Fonksiyonlu Sensör",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Sıcaklık ve Nem Sensörü",
+            "img": "temp-humidity.jpg"
+          },
+          {
+            "n": "Sıcaklık ve Nem Sensörü (BLE)",
+            "img": "temp-humidity.jpg"
+          },
+          {
+            "n": "Sıcaklık ve Nem Sensörü (Zigbee)",
+            "img": "temp-humidity.jpg"
+          },
+          {
+            "n": "Aydınlatma Sensörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Aydınlatma Sensörü (BLE)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Aydınlatma Sensörü (Zigbee)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Kapı ve Pencere Sensörü",
+            "img": "door-sensor.jpg"
+          },
+          {
+            "n": "Kapı ve Pencere Sensörü (Bluetooth)",
+            "img": "door-sensor.jpg"
+          },
+          {
+            "n": "Kapı ve Pencere Sensörü (ZigBee)",
+            "img": "door-sensor.jpg"
+          },
+          {
+            "n": "İnsan Vücudu Sensörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "İnsan Vücudu Sensörü (Bluetooth)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "İnsan Vücudu Sensörü (ZigBee)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "İnsan Varlığı Sensörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "İnsan Varlığı Sensörü (Bluetooth)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Su Basman Sensörü",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Su Basman Sensörü (Bluetooth)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Su Basman Sensörü (ZigBee)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Duman Dedektörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Duman Dedektörü (Bluetooth)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Duman Dedektörü (ZigBee)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Gaz Dedektörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Gaz Dedektörü (Bluetooth)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Gaz Dedektörü (ZigBee)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "CO Dedektörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Titreşim Sensörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Titreşim Sensörü (Bluetooth)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Titreşim Sensörü (ZigBee)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Acil Durum Düğmesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Acil Durum Düğmesi (Bluetooth)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Acil Durum Düğmesi (Zigbee)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Çevresel Sensörler",
+        "items": [
+          {
+            "n": "Hava Kalitesi Sensörü",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "PM2.5",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Toprak Sensörü",
+            "img": "motion-detector.jpg"
+          }
+        ]
+      },
+      {
+        "title": "basınç sensörü",
+        "items": [
+          {
+            "n": "Basınç Sensörü",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Basınç Sensörü (NB-IoT)",
+            "img": "motion-detector.jpg"
+          },
+          {
+            "n": "Basınç Sensörü (Gateway)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "VOC",
+        "items": [
+          {
+            "n": "Uçucu Organik Bileşik (VOC) Alarmı (Gateway)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Termal alarm",
+        "items": [
+          {
+            "n": "Termal Alarm",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Termal Alarm (Gateway)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "buyuk-ev-aletleri",
+    "label": "Büyük Ev Aletleri",
+    "groups": [
+      {
+        "title": "Klima",
+        "items": [
+          {
+            "n": "Taşınabilir Klima",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Taşınabilir Klima (Bluetooth)",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Klima",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Duvar Tipi Klima",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Ayaklı Klima",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Pencere Tipi Klima",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Su Isıtıcıları",
+        "items": [
+          {
+            "n": "Su Isıtıcısı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Hava Kaynaklı Su Isıtıcısı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Elektrikli Su Isıtıcısı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Su Isıtıcısı (Kazan Tipi)",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Hot Water Crculation Pump",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kombiler",
+        "items": [
+          {
+            "n": "Kombi",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Isı Pompaları",
+        "items": [
+          {
+            "n": "Akıllı Isı Pompası",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Çamaşır Makineleri",
+        "items": [
+          {
+            "n": "Çamaşır Makinesi",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Çamaşır Kurutma",
+        "items": [
+          {
+            "n": "Çamaşır Kurutucu",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "kucuk-ev-aleti",
+    "label": "Küçük Ev Aleti",
+    "groups": [
+      {
+        "title": "Mevsimlik Neutron Ürünler",
+        "items": [
+          {
+            "n": "Elektirikli Soba",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Elektirikli Soba (Gateway)",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Kalorifer Peteği",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Elektrikli Battaniye",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Elektrikli Åömine",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Süpürgelik Tipi Elektirikli Soba",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Alttan Isıtmalı Masa",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Fan",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Klima Fanı",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "çevre",
+        "items": [
+          {
+            "n": "Hava Temizleyici",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Nemlendirici",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Hava Nemlendirici",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Sterilizatör",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Nem Alma Cihazı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Hava Kutusu",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Temizlik Ürünleri",
+        "items": [
+          {
+            "n": "Akıllı Robot Süpürge",
+            "img": "vacuum.jpg"
+          },
+          {
+            "n": "Akıllı Robot Süpürge (2.4GHz&5GHz)",
+            "img": "vacuum.jpg"
+          },
+          {
+            "n": "Akıllı Robot Süpürge (Kamera)",
+            "img": "vacuum.jpg"
+          },
+          {
+            "n": "Cam Temizlik Robotu",
+            "img": "vacuum.jpg"
+          },
+          {
+            "n": "Çim Biçme Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Elektrikli Süpürge",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Robot pool cleaner",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "İklimlendirme",
+        "items": [
+          {
+            "n": "Termostat",
+            "img": "thermostat.jpg"
+          },
+          {
+            "n": "Termostat (Gateway)",
+            "img": "thermostat.jpg"
+          },
+          {
+            "n": "Havalandırma Sistemi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Havalandırma Sistemi (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Termostatik Radyatör Vanası (TRV) (Gateway)",
+            "img": "thermostat.jpg"
+          },
+          {
+            "n": "Isıtma",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Havalandırma ve İklimlendirme (HVAC)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Termostatik Radyatör Vanası (TRV)",
+            "img": "thermostat.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Motor",
+        "items": [
+          {
+            "n": "Perde",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Perde (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Perde Zincir Motoru",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Perde Motoru (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çamaşır Kurutma Askısı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çamaşır Kurutma Askısı (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Kapı Pencere Sensörü",
+            "img": "door-sensor.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Genel / Diğer",
+        "items": [
+          {
+            "n": "Evcil Hayvan Tasması",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akvaryum",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Balık Besleyici",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akvaryum Isıtıcı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Aquarium Pump",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Mikrodalga Fırın",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Akıllı Bitki Büyütme Işığı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Ayakkabı Sterilizatör Dolabı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Ayakkabı Kutusu",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Giysi Bakım Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Elektrikli Sinek Öldürücü",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Meteoroloji Saati",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Bebek Ürünleri",
+        "items": [
+          {
+            "n": "Göğüs Pompası",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Süt Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Biberon Isıtıcı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Süt Isıtıcısı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Mama Hazırlayıcı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Sterilizatör Çelik Tencere",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Sallanan Bebek Sandalyesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Beşik",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Evcil Hayvan Ürünleri",
+        "items": [
+          {
+            "n": "Akıllı Evcil Hayvan Besleme",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Pet Feeder (2.4GHz&5GHz)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Pet Feeder With Camera (2.4GHz&5GHz)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Evcil Hayvan Besleme (Kameralı)",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Gıda Kovası",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Su Sebili",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kedi Kumu Kutusu",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Koku Giderici",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Kurutma Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Topu",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Evi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akvaryum Çoklu Prizi",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Evcil Hayvan Çantası",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "mutfak-aletleri",
+    "label": "Mutfak Aletleri",
+    "groups": [
+      {
+        "title": "Kitchen Electric",
+        "items": [
+          {
+            "n": "Oven",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Entegre Mutfak",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Fırın",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Gazlı Soba",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Sterilizatör Kabini",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Bulaşık Makinesi",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Davlumbaz&Aspiratör",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Buharlı Fırın",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kitchen Small Electric",
+        "items": [
+          {
+            "n": "Meyve Kurutma Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Buz Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Sıcak Hava Fritözü",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Dondurma Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Yemek Pişirme Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Elektrikli Ocak",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Pilav Pişirme Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Soya Sütü Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Mutfak Robotu",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Ekmek Yapma Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Vakumlu Pişirme Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Katı Meyve Presi ve Blender",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Meyve Sıkacağı",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Pişirme Ekipmanları",
+        "items": [
+          {
+            "n": "Su Arıtma Cihazı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Su Arıtma Cihazı (Gateway)",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Çay Demleme Tezgahı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Smart Kettle",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Kahve Makinesi",
+            "img": "smart_appliance.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Gıda Termometresi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Sebze Yıkama Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Åarap Dolabı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çöp Öğütücü",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Çöp Tenekesi",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "egzersiz-ve-saglik",
+    "label": "Egzersiz ve Sağlık",
+    "groups": [
+      {
+        "title": "Spor Ekipmanları",
+        "items": [
+          {
+            "n": "Hassas Mutfak Terazisi",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Elektronik Akıllı Tartı",
+            "img": "smart_scale.jpg"
+          },
+          {
+            "n": "Akıllı İp Atlama",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Halter",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Badminton Raketi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Egzersiz Tekerleği",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Tenis Raketi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Hula Hoop Çember",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Direnç Bandı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Bilek Güçlendirme Topu",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Koşu Bandı",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Kürek Çekme Aleti",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Dikey Kondisyon Bisikleti",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Spor Test Ürünleri",
+        "items": [
+          {
+            "n": "Saat/Bileklik",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Temassız Ateş Ölçer",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Tansiyon Aleti",
+            "img": "smart_scale.jpg"
+          },
+          {
+            "n": "Oksimetre",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Sleep",
+        "items": [
+          {
+            "n": "Uyku Butonu",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Çalar Saat",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Beyaz Dinlenme Işığı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Uyku İzleme Bandı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Yastık",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Yatak",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Yatak (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Bebek Bakım Monitörü",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kişisel Bakım",
+        "items": [
+          {
+            "n": "Diş Fırçası",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kulak Kiri Çıkarma Otoskopu (Kameralı)",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Akıllı Yüz Temizleyici",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Yüz Buhar Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Saç kurutma makinesi",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Masaj Koltuğu",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Ayak Küveti",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Kanepe",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Egzersiz Aynası",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Fizyoterapi Cihazı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Bardak",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "kamera-ve-kilit",
+    "label": "Kamera ve Kilit",
+    "groups": [
+      {
+        "title": "Kamera",
+        "items": [
+          {
+            "n": "Akıllı Kamera (Wi-Fi)",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Akıllı Kamera (2.4GHz&5GHz)",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Akıllı Kamera (Bluetooth)",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Indoor PTZ Camera",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "PTZ Camera",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "4G Kamera",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Kameralı Kapı Zili",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "Akıllı Kapı Zili",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "Akıllı Kapı Zili (2.4GHz&5GHz)",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "Kamera Lambası",
+            "img": "camera.jpg"
+          },
+          {
+            "n": "Video Baz istasyonu (2.4GHz&5GHz)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Ağ Video Kaydedici (NVR)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Dijital Kayıt Cihazı (DVR)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Bird Feeder",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Mobile Camera",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kapı kilidi",
+        "items": [
+          {
+            "n": "Kapı Kilidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kapı Kilidi (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kapı Kilidi (NB-IoT)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kameralı Kilitler",
+        "items": [
+          {
+            "n": "Video Kilidi",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Kilit ve Aksesuarlar",
+        "items": [
+          {
+            "n": "Dolap Kilidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Asma Kilit",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "U Tipi Kilit",
+            "img": "door_lock.jpg"
+          },
+          {
+            "n": "Anahtar Kutusu",
+            "img": "light-switch.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Akıllı kutu",
+        "items": [
+          {
+            "n": "Kasa",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Giriş Kontrol Ürünleri",
+        "items": [
+          {
+            "n": "Akıllı Turnike",
+            "img": "door_lock.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Smart Gating",
+        "items": [
+          {
+            "n": "Smart Door",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Smart Gating (Wi-Fi)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Smart Gating (Bluetooth)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "ag-gecidi-kontrol-paneli",
+    "label": "Ağ Geçidi Kontrol Paneli",
+    "groups": [
+      {
+        "title": "Ağ Geçidi",
+        "items": [
+          {
+            "n": "Kablosuz Ağ Geçidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kablolu Ağ Geçidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çoklu Ağ Geçidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çok Fonksiyonlu Ağ Geçidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kablolu&Kablosuz Ağ Geçidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Ağ Geçidi Prizi",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Çok Modlu Ağ Geçidi (BLE+ZigBee)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Çok Modlu Mühendislik Ağ Geçidi (BLE+ZigBee)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı ZigBee Ağ Geçidi Pro",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "4G çok modlu geçit (BLE+ZigBee)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Birleşik Ağ Geçidi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kablolu&Kablosuz Ağ Geçidi (ZigBee+PLC)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Routerlar",
+        "items": [
+          {
+            "n": "Yönlendirici",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Yoğunlaştırıcı (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Menzil Arttırıcı",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "doga-sporlari",
+    "label": "Doğa Sporları",
+    "groups": [
+      {
+        "title": "Takip Cihazları",
+        "items": [
+          {
+            "n": "GPS Vehicle Tracker (LTE Cat.1)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Hırsız Alarmı (Bluetooth)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Hırsız Alarmı (GPRS)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "İzleyici (NB-IoT)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "İzleyici (GPRS)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Car-carried-devices",
+        "items": [
+          {
+            "n": "Araç İçi Kamera (ekranlı) (Wi-Fi)",
+            "img": "camera.jpg"
+          }
+        ]
+      },
+      {
+        "title": "4G Camera",
+        "items": [
+          {
+            "n": "4G Camera",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Travel",
+        "items": [
+          {
+            "n": "Scooter",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Elektrikli Kaykay (Hoverboard)",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Akıllı Elektrikli Araç (Bluetooth)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Elektrikli Araç (Bluetooth Tarama Kodu)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Elektrikli Araç (GPRS)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Elektrikli Bisiklet (Bluetooth)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Electric Bicycle (Cat.1)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akülü Tekerlekli Sandalye",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Helmet",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Hava Kompresörü",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "enerji-tasarrufu",
+    "label": "Enerji Tasarrufu",
+    "groups": [
+      {
+        "title": "Breaker",
+        "items": [
+          {
+            "n": "Devre kesici",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "devre kesici (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Devre kesici (4G)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Devre kesici (NB-IoT)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Elektrik Sayaçları",
+        "items": [
+          {
+            "n": "Akıllı Elektrik Sayacı (NB-IoT)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Elektrik Sayacı",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Elektrik Sayacı (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Elektrik Sayacı (4G)",
+            "img": "smart_plug.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Energy Mate",
+        "items": [
+          {
+            "n": "Energy Mate",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Portable power supply",
+        "items": [
+          {
+            "n": "Taşınabilir Güç İstasyonu",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Su Sayaçları",
+        "items": [
+          {
+            "n": "Akıllı Su Sayacı",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (NB-IoT)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (4G)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Su Sayacı (GPRS)",
+            "img": "smart_plug.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Bisiklet Åarj Üniteleri",
+        "items": [
+          {
+            "n": "İki Tekerlekli Araç Åarj İstasyonu (4G)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "İki Tekerlekli Araç Åarj İstasyonu",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "EV charger",
+        "items": [
+          {
+            "n": "Elektrikli Araç Åarj İstasyonu (4G)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Elektrikli Araç Åarj İstasyonu",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Akıllı Gaz Sayaçları",
+        "items": [
+          {
+            "n": "Akıllı Gaz Sayacı",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Gaz Sayacı (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Gaz Sayacı (4G)",
+            "img": "smart_plug.jpg"
+          },
+          {
+            "n": "Akıllı Gaz Sayacı (NB-IoT)",
+            "img": "smart_plug.jpg"
+          }
+        ]
+      },
+      {
+        "title": "İnvertörler",
+        "items": [
+          {
+            "n": "İnvertör",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Transformatörler",
+        "items": [
+          {
+            "n": "Güç Transformatörleri",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "eglence",
+    "label": "Eğlence",
+    "groups": [
+      {
+        "title": "Genel",
+        "items": [
+          {
+            "n": "Televizyon",
+            "img": "smart_appliance.jpg"
+          },
+          {
+            "n": "Bulut Fotoğraf Çerçevesi",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Printer",
+        "items": [
+          {
+            "n": "Grafik yazıcı",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "3D yazıcı",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Audio",
+        "items": [
+          {
+            "n": "Earphone",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Dot Matrix Screen",
+        "items": [
+          {
+            "n": "12x48",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "5x36",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Hikaye Makinesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Kitap Okuyucu",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "amplifier",
+        "items": [
+          {
+            "n": "Amplifier",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "sanayi-ve-tarim",
+    "label": "Sanayi ve Tarım",
+    "groups": [
+      {
+        "title": "çevre",
+        "items": [
+          {
+            "n": "Bitki İzleyici",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "Vana Kontrol Ekipmanları",
+        "items": [
+          {
+            "n": "Su Vanası Kumandası",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Su Vanası Kumandası (Gateway)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      },
+      {
+        "title": "sulama",
+        "items": [
+          {
+            "n": "Sulama Fiskiyesi",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Sulama Fiskiyesi (Gateway)",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "diger",
+    "label": "Diğer",
+    "groups": [
+      {
+        "title": "Diğer",
+        "items": [
+          {
+            "n": "Konnektör",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Evrensel Kumanda",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Diğer",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Diğer (NB-IoT)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Diğer Cihazlar (Gateway)",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Akıllı Hoparlör",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Mini Lift",
+            "img": "smart_hub.jpg"
+          },
+          {
+            "n": "Konferans Rezervasyon Ekranı",
+            "img": "smart_hub.jpg"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+    // pair.html gibi eski baglantilardan gelen ?category anahtarlarini eslestir
+    var CATALOG_ALIAS = {
+      lighting: 'aydinlatma', plugs: 'elektrik-ustasi', security: 'kamera-ve-kilit', locks: 'kamera-ve-kilit',
+      climate: 'buyuk-ev-aletleri', sensors: 'sensor', entertainment: 'eglence', appliances: 'buyuk-ev-aletleri',
+      hubs: 'ag-gecidi-kontrol-paneli', cleaning: 'kucuk-ev-aleti', energy: 'enerji-tasarrufu',
+      'ayd-nlatma': 'aydinlatma', 'elektrik-ustas-': 'elektrik-ustasi', 'e-lence': 'eglence',
+      'k---k-ev-aleti': 'kucuk-ev-aleti', 'b-y-k-ev-aletleri': 'buyuk-ev-aletleri',
+      'sens-r': 'sensor', 'a--ge-idi-kontrol-paneli': 'ag-gecidi-kontrol-paneli'
+    };
+
+    var activeCatalogCategory = CATALOG[0].key;
+
+    function escapeCatalogHtml(value) {
+      return repairCatalogText(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function repairCatalogText(value) {
+      return String(value || '')
+        .replace(/İ/g, 'İ').replace(/ı/g, 'ı').replace(/ğ/g, 'ğ').replace(/Ğ/g, 'Ğ')
+        .replace(/ü/g, 'ü').replace(/Ü/g, 'Ü').replace(/ş/g, 'ş').replace(/Å/g, 'Ş')
+        .replace(/ö/g, 'ö').replace(/Ö/g, 'Ö').replace(/ç/g, 'ç').replace(/Ç/g, 'Ç')
+        .replace(/â€™/g, "'").replace(/â€“/g, '-');
+    }
+
+    function normalizeCatalogText(value) {
+      return repairCatalogText(value)
+        .toLowerCase()
+        .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function catalogDisplayName(value) {
+      var name = repairCatalogText(value)
+        .replace(/\s*\((Bluetooth|ZigBee|Zigbee|Wi-Fi|BLE|BLE\+Wi-Fi|NB-IoT|Gateway|Ağ Geçidi|2\.4GHz&5GHz|2\.4GHz|4G|GPRS|LTE Cat\.1|Cat\.1)\)/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      var switchTypeMatch = name.match(/^(.*?Anahtar(?:ı)?)\s*\(([1-6])\s*Çıkışlı\)$/i);
+      if (switchTypeMatch) {
+        var counts = { '1': 'Tekli', '2': 'İkili', '3': 'Üçlü', '4': 'Dörtlü', '5': 'Beşli', '6': 'Altılı' };
+        return counts[switchTypeMatch[2]] + ' ' + switchTypeMatch[1];
+      }
+      return name;
+    }
+
+    function pickCatalogImage(text, candidates) {
+      var hash = 0;
+      for (var i = 0; i < text.length; i += 1) hash = (hash + text.charCodeAt(i) * (i + 3)) % 9973;
+      return candidates[hash % candidates.length];
+    }
+
+    function pickVariantCatalogImage(text, candidates) {
+      var variants = ['bluetooth', 'zigbee', 'gateway', 'ag gecidi', 'nb-iot', 'ble+wi-fi', '2.4ghz', '4g'];
+      for (var i = 0; i < variants.length; i += 1) {
+        if (text.indexOf(variants[i]) !== -1) return candidates[(i + 1) % candidates.length];
+      }
+      return pickCatalogImage(text, candidates);
+    }
+
+    function inferCatalogImage(item, groupTitle) {
+      var itemText = normalizeCatalogText(item && item.n ? item.n : '');
+      var groupText = normalizeCatalogText(groupTitle || '');
+      var text = normalizeCatalogText((item && item.n ? item.n : '') + ' ' + (groupTitle || ''));
+      if (/garaj/.test(itemText)) return 'control-garage-remote.png';
+      if (/acil durum dugmesi|emergency button/.test(itemText)) return 'control-emergency-button.png';
+      if (/hirsiz alarm|hırsız alarm/.test(itemText)) return 'security-siren.png';
+      if (/proje?ks?iyon|projektor/.test(itemText)) return 'generic-projector.png';
+      if (/su aritma|water purifier/.test(itemText)) return 'generic-water-purifier-system.png';
+      if (/hot water.*pump|circulation pump|crculation pump|sirkulasyon pompasi|sirkülasyon pompası/.test(itemText)) return 'generic-circulation-pump.png';
+      if (/cay demleme|çay demleme/.test(itemText)) return 'generic-tea-brewer.png';
+      if (/hava kaynakli su isiticisi|hava kaynaklı su ısıtıcısı/.test(itemText)) return 'generic-heat-pump.png';
+      if (/kazan tipi/.test(itemText)) return 'generic-combi-boiler.png';
+      if (/su isiticilari|su ısıtıcıları/.test(groupText)) return 'generic-water-heater.png';
+      if (/smart kettle|kettle/.test(itemText)) return 'generic-kettle.png';
+      if (/tasinabilir klima|taşınabilir klima/.test(itemText)) return 'generic-portable-ac.png';
+      if (/duvar tipi klima/.test(itemText)) return 'generic-air-conditioner.png';
+      if (/ayakli klima|ayaklı klima/.test(itemText)) return 'generic-floor-ac.png';
+      if (/pencere tipi klima/.test(itemText)) return 'generic-window-ac.png';
+      if (/kahve|coffee/.test(itemText)) return 'generic-espresso-machine.png';
+      if (/meyve kurutma/.test(itemText)) return 'generic-food-dehydrator.png';
+      if (/sicak hava fritoz|sıcak hava fritöz/.test(itemText)) return 'generic-air-fryer.png';
+      if (/pilav pisirme|pilav pişirme/.test(itemText)) return 'generic-rice-cooker.png';
+      if (/vakumlu pisirme|vakumlu pişirme|sous vide/.test(itemText)) return 'generic-sous-vide.png';
+      if (/sebze yikama|sebze yıkama/.test(itemText)) return 'generic-vegetable-washer.png';
+      if (/sterilizator celik tencere|sterilizatör çelik tencere|biberon steril/.test(itemText)) return 'misc-baby-sterilizer.png';
+      if (/sterilizator kabini|sterilizatör kabini/.test(itemText)) return 'generic-sterilizer-cabinet.png';
+      if (/su isiticisi|su ısıtıcısı|water heater/.test(itemText)) return 'generic-water-heater.png';
+      if (/isi pompasi|ısı pompası|heat pump/.test(itemText)) return 'generic-heat-pump.png';
+      if (/kombi/.test(itemText)) return 'generic-combi-boiler.png';
+      if (/kalorifer petegi|kalorifer peteği/.test(itemText)) return 'generic-radiator.png';
+      if (/gazli soba|gazlı soba|gas cooktop/.test(itemText)) return 'generic-gas-cooktop.png';
+      if (/elektrikli battaniye/.test(itemText)) return 'generic-electric-blanket.png';
+      if (/somine|şömine|fireplace/.test(itemText)) return 'generic-electric-fireplace.png';
+      if (/masaj koltugu|masaj koltuğu/.test(itemText)) return 'health-massage-chair.png';
+      if (/kondisyon bisikleti|exercise bike/.test(itemText)) return 'sport-exercise-bike.png';
+      if (/akulu tekerlekli sandalye|akülü tekerlekli sandalye|wheelchair/.test(itemText)) return 'outdoor-electric-wheelchair.png';
+      if (/kulak kiri|otoskop|otoscope/.test(itemText)) return 'health-otoscope.png';
+      if (/at[eə]s olcer|ateş ölçer|forehead thermometer/.test(itemText)) return 'health-forehead-thermometer.png';
+      if (/oksimetre|oximeter/.test(itemText)) return 'health-pulse-oximeter.png';
+      if (/basinc sensor|basınç sensör|pressure sensor/.test(itemText)) return 'generic-pressure-sensor.png';
+      if (/yuz temizleyici|yüz temizleyici/.test(itemText)) return 'health-face-cleanser.png';
+      if (/video baz istasyonu|video base/.test(itemText)) return 'security-video-base-station.png';
+      if (/video kilidi|video lock/.test(itemText)) return 'security-video-door-lock.png';
+      if (/menzil arttirici|menzil artırıcı|range extender/.test(itemText)) return 'generic-range-extender.png';
+      if (/iki tekerlekli.*sarj|iki tekerlekli.*şarj/.test(itemText)) return 'energy-two-wheel-charger-station.png';
+      if (/elektrikli bisiklet|electric bicycle/.test(itemText)) return 'outdoor-electric-bike.png';
+      if (/bitki izleyici|toprak sensor|toprak sensör|plant monitor/.test(itemText)) return 'agri-plant-monitor-pot.png';
+      if (/su vanasi kumandasi|su vanası kumandası/.test(itemText)) return 'agri-water-valve-controller.png';
+      if (/supurgelik.*soba|baseboard heater/.test(text)) return 'generic-baseboard-heater.png';
+      if (/cim bicme|cim biçme|lawn mower/.test(text)) return 'outdoor-lawn-mower.png';
+      if (/davlumbaz|aspirator|aspiratör|range hood/.test(text)) return 'generic-range-hood.png';
+      if (/alttan isit.*masa|heated table/.test(text)) return 'misc-heated-table.png';
+      if (/camasir kurutucu|çamaşır kurutucu|clothes dryer/.test(text)) return 'generic-clothes-dryer.png';
+      if (/havalandirma|havalandırma|ventilation|hvac/.test(text)) return 'generic-ventilation.png';
+      if (/isitma|ısıtma/.test(text)) return 'generic-heater.png';
+      if (/robot.*supurge|akilli robot|vacuum|supurge/.test(text)) return 'generic-robot-vacuum.png';
+      if (/robot pool cleaner|pool cleaner/.test(text)) return 'generic-robot-vacuum.png';
+      if (/mop|zemin|cam temizlik|window/.test(text)) return 'generic-robot-vacuum.png';
+      if (/aquarium pump|akvaryum pompasi|akvaryum pompa/.test(text)) return 'misc-aquarium-pump.png';
+      if (/pet feeder|evcil hayvan besleme|gida kovasi|gida kovası|balik besleyici|balık besleyici/.test(text)) return 'misc-pet-feeder.png';
+      if (/evcil hayvan su sebili|pet water/.test(text)) return 'misc-pet-fountain.png';
+      if (/evcil hayvan tasmasi|evcil hayvan tasmasi|pet collar/.test(text)) return 'misc-pet-collar.png';
+      if (/akvaryum coklu prizi|akvaryum çoklu prizi/.test(text)) return 'generic-power-strip.png';
+      if (/akvaryum/.test(text)) return 'misc-aquarium.png';
+      if (/kedi kumu/.test(text)) return 'misc-litter-box.png';
+      if (/evcil hayvan koku/.test(text)) return 'misc-pet-odor-purifier.png';
+      if (/evcil hayvan kurutma/.test(text)) return 'misc-pet-dryer.png';
+      if (/evcil hayvan topu/.test(text)) return 'misc-pet-ball.png';
+      if (/evcil hayvan cantasi|evcil hayvan çantasi|evcil hayvan çantası/.test(text)) return 'misc-pet-carrier.png';
+      if (/evcil hayvan evi/.test(text)) return 'misc-litter-box.png';
+      if (/gogus pompasi|göğüs pompasi|göğüs pompası/.test(text)) return 'misc-breast-pump.png';
+      if (/sut makinesi|süt makinesi/.test(text)) return 'misc-milk-maker.png';
+      if (/biberon|sut isitic|süt isitic|süt isıtıcı|sut isitici/.test(text)) return 'misc-bottle-warmer.png';
+      if (/mama hazirlayici|mama hazırlayıcı/.test(text)) return 'misc-formula-maker.png';
+      if (/besik|beşik|bebek sandalyesi/.test(text)) return 'misc-baby-cradle.png';
+      if (/bebek bakim monitor|bebek bakım monitör/.test(text)) return 'misc-baby-monitor.png';
+      if (/bird feeder/.test(text)) return 'security-bird-feeder.png';
+      if (/kapi zili|doorbell|zil/.test(text)) return 'security-video-doorbell.png';
+      if (/nvr|dvr|kaydedici|recorder/.test(text)) return 'security-nvr.png';
+      if (/kamera|camera|video/.test(text)) {
+        if (/(^|[^0-9.])4g\b|mobile|arac/.test(text)) return 'security-4g-camera.png';
+        if (/dis|outdoor/.test(text)) return 'security-outdoor-camera.png';
+        if (/ptz/.test(text)) return 'security-ptz-camera.png';
+        if (/lamba|flood/.test(text)) return 'security-floodlight-camera.png';
+        return 'security-indoor-camera.png';
+      }
+      if (/kapi ve pencere|pencere sensor|door.*sensor/.test(text)) return 'security-door-sensor.png';
+      if (/turnike/.test(text)) return 'security-turnstile.png';
+      if (/kasa/.test(text)) return 'security-safe-box.png';
+      if (/anahtar kutusu/.test(text)) return 'security-key-safe.png';
+      if (/dolap kilidi/.test(text)) return 'security-cabinet-lock.png';
+      if (/asma kilit/.test(text)) return 'security-padlock.png';
+      if (/u tipi kilit/.test(text)) return 'security-u-lock.png';
+      if (/parmak|fingerprint/.test(text)) return 'security-fingerprint-lock.png';
+      if (/kapi|kilit|lock/.test(text)) return 'security-keypad-lock.png';
+      if (/gaz dedektor|gaz alarm/.test(text)) return 'security-gas-detector.png';
+      if (/duman|co dedektor|termal alarm|alarm/.test(text)) return 'security-smoke-detector.png';
+      if (/su basman|su sizinti|leak/.test(text)) return 'security-water-leak.png';
+      if (/sicaklik ve nem|nem sensor|temperature humidity/.test(text)) return 'generic-temp-humidity.png';
+      if (/hava kalitesi|pm2\.5|voc|toprak|basinc/.test(text)) return 'generic-air-quality.png';
+      if (/sensor|dedektor|hareket|motion|varlik|vucudu|titreşim|titresim|acil/.test(text)) return 'generic-motion-sensor.png';
+      if (/coklu priz|uzatma|power strip/.test(text)) return 'generic-power-strip.png';
+      if (/priz|soket|plug/.test(text)) return 'generic-smart-plug.png';
+      if (/acil durum dugmesi|emergency button/.test(text)) return 'control-emergency-button.png';
+      if (/senaryo anahtar|uyandirma anahtar/.test(text)) return 'control-scenario-switch.png';
+      if (/akilli buton|smart button/.test(text)) return 'control-smart-button.png';
+      if (/kablosuz anahtar/.test(text)) return 'control-wireless-button.png';
+      if (/dimmer/.test(text)) return 'control-dimmer-knob.png';
+      if (/perde anahtar|curtain switch/.test(text)) return 'control-curtain-switch.png';
+      if (/perde|curtain|motor/.test(text)) return 'control-curtain-motor.png';
+      if (/garaj/.test(text)) return 'control-garage-controller.png';
+      if (/evrensel kumanda|uzaktan kumanda|remote|kumanda/.test(text)) return 'control-remote-control.png';
+      if (/ir blaster|(^|[^a-z])ir([^a-z]|$)/.test(text)) return 'control-ir-blaster.png';
+      if (/thermostat switch/.test(text)) return item.img || 'control-thermostat-switch.png';
+      if (/dokunmatik anahtar|touch switch/.test(text)) return item.img || 'control-touch-switch.png';
+      if (/4 cikis|4 çıkış|dort|dört/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-four-gang-switch.png';
+      if (/3 cikis|3 çıkış|uclu|üçlü/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-triple-wall-switch.png';
+      if (/2 cikis|2 çıkış|cift|çift|ikili/.test(text) && /anahtar|switch/.test(text)) return item.img || 'control-double-wall-switch.png';
+      if (/anahtar|switch/.test(text)) return item.img || 'control-single-wall-switch.png';
+      if (/serit|strip|ambiyans|tv ortam/.test(text)) return 'generic-led-strip.png';
+      if (/tavan|ceiling|oda isik/.test(text)) return 'generic-ceiling-light.png';
+      if (/masa|mum|retro/.test(text)) return 'generic-table-lamp.png';
+      if (/dis mekan|bahce|cim|avlu|string light|spot/.test(text)) return 'generic-outdoor-light.png';
+      if (/bitki buyutme isigi|bitki buyutme ışığı|grow light/.test(text)) return 'agri-grow-light.png';
+      if (/lamba|ampul|isik|led|aydinlatma/.test(text)) return 'generic-led-bulb.png';
+      if (/meteoroloji saati|weather/.test(text)) return 'misc-weather-clock.png';
+      if (/ayakkabi steril|ayakkabı steril/.test(text)) return 'misc-shoe-sterilizer.png';
+      if (/ayakkabi kutusu|ayakkabı kutusu/.test(text)) return 'misc-shoe-box.png';
+      if (/giysi bakim|giysi bakım/.test(text)) return 'misc-garment-care.png';
+      if (/sinek|mosquito/.test(text)) return 'misc-mosquito-lamp.png';
+      if (/buz makinesi/.test(text)) return 'misc-ice-maker.png';
+      if (/dondurma/.test(text)) return 'misc-ice-cream-maker.png';
+      if (/ekmek/.test(text)) return 'misc-bread-maker.png';
+      if (/cop|çöp/.test(text)) return 'misc-trash-can.png';
+      if (/termostat|thermostat|trv|hvac/.test(text)) return 'generic-thermostat.png';
+      if (/klima|air conditioner/.test(text)) return 'generic-air-conditioner.png';
+      if (/hava temiz|purifier|sterilizator|nem alma|hava kutusu/.test(text)) return 'generic-air-purifier.png';
+      if (/nemlendirici|humidifier/.test(text)) return 'generic-humidifier.png';
+      if (/fan|vantilator/.test(text)) return 'generic-fan.png';
+      if (/isik pompa|isi pompa|soba|isitic|kalorifer|battaniye|somine|heater|kombi/.test(text)) return 'generic-heater.png';
+      if (/buzdolabi|refrigerator|fridge|sarap dolabi/.test(text)) return 'generic-refrigerator.png';
+      if (/camasir makinesi|washing/.test(text)) return 'generic-washing-machine.png';
+      if (/bulasik|dishwasher/.test(text)) return 'generic-dishwasher.png';
+      if (/mikrodalga|microwave/.test(text)) return 'generic-microwave.png';
+      if (/firin|oven|fritoz|ocak|pisirme|davlumbaz|entegre mutfak/.test(text)) return 'generic-oven.png';
+      if (/kahve|coffee/.test(text)) return 'generic-coffee-maker.png';
+      if (/kettle|cay|su isitic/.test(text)) return 'generic-kettle.png';
+      if (/soya sutu|soya sütü/.test(text)) return 'misc-milk-maker.png';
+      if (/blender|robotu|sikacagi|presi|meyve|sebze yikama|sebze yıkama/.test(text)) return 'generic-blender.png';
+      if (/mutfak terazisi|hassas/.test(text)) return 'generic-kitchen-scale.png';
+      if (/gida termometresi|food thermometer/.test(text)) return 'misc-food-thermometer.png';
+      if (/su aritma|water purifier/.test(text)) return 'generic-water-purifier.png';
+      if (/grafik yazici|grafik yazıcı|photo printer/.test(text)) return 'ent-photo-printer.png';
+      if (/3d yazici|3d yazıcı/.test(text)) return 'ent-3d-printer.png';
+      if (/earphone|kulaklik|kulaklık/.test(text)) return 'ent-earbuds.png';
+      if (/dot matrix|12x48|5x36/.test(text)) return 'ent-dot-matrix-display.png';
+      if (/hikaye makinesi|story/.test(text)) return 'ent-story-speaker.png';
+      if (/kitap okuyucu|reader/.test(text)) return 'ent-ereader.png';
+      if (/amplifier/.test(text)) return 'ent-amplifier.png';
+      if (/bulut fotograf|fotoğraf çerçevesi|photo frame|cerceve/.test(text)) return 'ent-photo-frame.png';
+      if (/tv|televizyon|ekran|cerceve/.test(text)) return 'generic-smart-tv.png';
+      if (/hoparlor|speaker|soundbar|audio|earphone|amplifier|ses/.test(text)) return 'generic-smart-speaker.png';
+      if (/projeksiyon|projektor/.test(text)) return 'generic-projector.png';
+      if (/router|yonlendirici|menzil/.test(text)) return 'generic-router.png';
+      if (/energy mate/.test(text)) return 'energy-mate-display.png';
+      if (/inverter|invertor/.test(text)) return 'energy-inverter.png';
+      if (/transformator|transformatör/.test(text)) return 'energy-transformer.png';
+      if (/devre kesici|breaker/.test(text)) return 'energy-circuit-breaker.png';
+      if (/iki tekerlekli.*sarj|iki tekerlekli.*şarj/.test(text)) return 'energy-two-wheel-charger.png';
+      if (/ev sarj|ev charger|sarj istasyonu|şarj istasyonu/.test(text)) return 'generic-ev-charger.png';
+      if (/guc istasyonu|portable power/.test(text)) return 'generic-power-station.png';
+      if (/su sayac/.test(text)) return 'generic-water-meter.png';
+      if (/gaz sayac|gaz sayaç/.test(text)) return 'energy-gas-meter.png';
+      if (/saya|meter|enerji|devre kesici|breaker|inverter|transformator/.test(text)) return 'generic-energy-meter.png';
+      if (/solar|gunes/.test(text)) return 'generic-solar-panel.png';
+      if (/gps vehicle tracker|izleyici|tracker|hirsiz|hırsız/.test(text)) return 'outdoor-gps-tracker.png';
+      if (/arac ici kamera|araç içi kamera/.test(text)) return 'outdoor-dash-camera.png';
+      if (/electric bicycle|elektrikli bisiklet/.test(text)) return 'outdoor-electric-bike.png';
+      if (/helmet/.test(text)) return 'outdoor-helmet.png';
+      if (/hava kompresoru|hava kompresörü/.test(text)) return 'outdoor-air-compressor.png';
+      if (/scooter|kaykay|hoverboard|akilli elektrikli arac|akıllı elektrikli araç|tekerlekli/.test(text)) return 'generic-scooter.png';
+      if (/kosu|treadmill|kondisyon/.test(text)) return 'generic-treadmill.png';
+      if (/kan basinci|tansiyon|blood|oksimetre|ates/.test(text)) return 'generic-blood-pressure.png';
+      if (/tarti|scale|baskul/.test(text)) return 'generic-smart-scale.png';
+      if (/ip atlama/.test(text)) return 'sport-jump-rope.png';
+      if (/halter/.test(text)) return 'sport-dumbbell.png';
+      if (/badminton|tenis raketi/.test(text)) return 'sport-badminton-racket.png';
+      if (/hula hoop|cember|çember/.test(text)) return 'sport-hula-hoop.png';
+      if (/direnc bandi|direnç bandı|resistance band/.test(text)) return 'sport-resistance-band.png';
+      if (/bilek guclendirme|bilek güçlendirme|wrist/.test(text)) return 'sport-wrist-ball.png';
+      if (/egzersiz tekerlegi|egzersiz tekerleği/.test(text)) return 'sport-exercise-wheel.png';
+      if (/kurek cekme|kürek çekme/.test(text)) return 'sport-rowing-machine.png';
+      if (/saat\/bileklik|bileklik|uyku izleme band/.test(text)) return 'health-smart-band.png';
+      if (/uyku butonu/.test(text)) return 'health-sleep-button.png';
+      if (/calar saat|çalar saat/.test(text)) return 'health-alarm-clock.png';
+      if (/beyaz dinlenme/.test(text)) return 'health-sleep-light.png';
+      if (/akilli yastik|akıllı yastık/.test(text)) return 'health-smart-pillow.png';
+      if (/akilli yatak|akıllı yatak/.test(text)) return 'health-smart-bed.png';
+      if (/ayak kuveti|ayak küveti|foot spa/.test(text)) return 'health-foot-spa.png';
+      if (/akilli kanepe|akıllı kanepe|smart sofa/.test(text)) return 'health-smart-sofa.png';
+      if (/egzersiz aynasi|egzersiz aynası|fitness mirror/.test(text)) return 'health-fitness-mirror.png';
+      if (/fizyoterapi|physio/.test(text)) return 'health-physio-device.png';
+      if (/akilli bardak|akıllı bardak|smart cup/.test(text)) return 'misc-smart-cup.png';
+      if (/yuz temizleyici|yüz temizleyici/.test(text)) return 'health-face-cleanser.png';
+      if (/yuz buhar|yüz buhar/.test(text)) return 'health-facial-steamer.png';
+      if (/sac kurutma|saç kurutma/.test(text)) return 'health-hair-dryer.png';
+      if (/dis fircasi|diş fırçası|toothbrush/.test(text)) return 'health-toothbrush.png';
+      if (/bitki izleyici/.test(text)) return 'agri-plant-monitor.png';
+      if (/sulama fiskiye|sulama fiskiyesi/.test(text)) return 'agri-irrigation-sprinkler.png';
+      if (/su vanasi|su vanası/.test(text)) return 'agri-water-valve.png';
+      if (/smart door|smart gating/.test(text)) return 'security-gate-opener.png';
+      if (/mini lift/.test(text)) return 'misc-mini-lift.png';
+      if (/konnektor|connector/.test(text)) return 'generic-power-strip.png';
+      if (/ag gecidi|gateway|zigbee|hub|kopru|kontrol paneli/.test(text)) return 'generic-smart-hub.png';
+      return 'generic-smart-hub.png';
+    }
+
+    function catalogTileHtml(item, groupTitle) {
+      var safe = escapeCatalogHtml(item.n);
+      var display = escapeCatalogHtml(catalogDisplayName(item.n));
+      var safeGroup = escapeCatalogHtml(groupTitle || 'Genel');
+      // item.img spesifik bir dosya adı içeriyorsa onu kullan, aksi halde inferCatalogImage ile belirle
+      var _genericImgs = ['smart_plug.jpg','switch.jpg','camera.jpg','bridge.png','smart_hub.jpg','smart_bulb.jpg','smart_speaker.jpg','smart_tv.jpg','smart_appliance.jpg'];
+      var image = (item.img && _genericImgs.indexOf(item.img) === -1 && /\.(png|jpg|webp)$/i.test(item.img))
+        ? item.img
+        : inferCatalogImage(item, groupTitle);
+      var imageVersion = '20260801-products-4';
+      return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="simulateConnection(this, \'' + safe + '\')">' +
+        '<div class="product-image-stage">' +
+        '<img src="assets/products/' + image + '?v=' + imageVersion + '" alt="' + safe + '" class="max-w-[84%] max-h-[62px] object-contain transition-transform duration-300 group-active:scale-95" loading="lazy" onerror="this.onerror=null;this.src=&quot;assets/products/generic-smart-hub.png?v=' + imageVersion + '&quot;;" />' +
+        '</div>' +
+        '<div class="px-1 pt-1 flex min-h-[30px] flex-col items-center justify-start">' +
+        '<span class="product-name">' + display + '</span>' +
+        '<span class="product-category-pill">' + safeGroup + '</span>' +
+        '</div>' +
+        '</button>';
+    }
+
+    function dedupeCatalogItems(items) {
+      var seen = {};
+      return (items || []).filter(function (item) {
+        var key = normalizeCatalogText(catalogDisplayName(item.n || ''));
+        if (!key) return false;
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      });
+    }
+
+    function catalogGroupHtml(title, items) {
+      var uniqueItems = dedupeCatalogItems(items);
+      if (!uniqueItems.length) return '';
+      return '<div class="mb-9">' +
+        '<p class="catalog-group-title">' + escapeCatalogHtml(title) + '</p>' +
+        '<div class="product-grid">' + uniqueItems.map(function (item) { return catalogTileHtml(item, title); }).join('') + '</div>' +
+        '</div>';
+    }
+
+    function renderCatalogRail() {
+      var rail = document.getElementById('catalog-rail');
+      if (!rail) return;
+      rail.innerHTML = CATALOG.map(function (c) {
+        var cls = c.key === activeCatalogCategory ? 'cat-btn cat-active' : 'cat-btn cat-inactive';
+        return '<button type="button" onclick="selectCatalogCategory(\'' + c.key + '\')" class="' + cls + ' w-full text-left py-3.5 px-3">' +
+          '<span class="cat-text text-[13px] block">' + escapeCatalogHtml(c.label) + '</span></button>';
+      }).join('');
+    }
+
+    function renderCatalogContent() {
+      var content = document.getElementById('catalog-content');
+      if (!content) return;
+      var query = normalizeCatalogText(((document.getElementById('catalog-search') || {}).value || '').trim());
+
+      if (query) {
+        var matches = [];
+        CATALOG.forEach(function (c) {
+          c.groups.forEach(function (g) {
+            g.items.forEach(function (it) {
+              if (normalizeCatalogText(it.n).indexOf(query) !== -1) matches.push(it);
+            });
+          });
+        });
+        matches = dedupeCatalogItems(matches);
+        content.innerHTML = matches.length
+          ? catalogGroupHtml('Arama Sonuçları', matches)
+          : '<div class="px-6 py-16 text-center"><p class="text-sm font-medium text-slate-500 dark:text-slate-300">Aramanla eşleşen cihazı bulunamadı.</p></div>';
+        content.scrollTop = 0;
+        return;
+      }
+
+      if (activeCatalogCategory === 'all') {
+        content.innerHTML = CATALOG.map(function (c) {
+          return '<section class="mb-10">' +
+            '<h2 class="catalog-heading mb-4 text-lg font-black text-slate-900">' + escapeCatalogHtml(c.label) + '</h2>' +
+            c.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('') +
+            '</section>';
+        }).join('');
+        content.scrollTop = 0;
+        return;
+      }
+
+      var cat = CATALOG.filter(function (c) { return c.key === activeCatalogCategory; })[0] || CATALOG[0];
+      content.innerHTML = cat.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('');
+      content.scrollTop = 0;
+    }
+
+    function selectCatalogCategory(key) {
+      activeCatalogCategory = key;
+      var searchEl = document.getElementById('catalog-search');
+      if (searchEl) searchEl.value = '';
+      renderCatalogRail();
+      renderCatalogContent();
+    }
+
+    function openCodeModal() {
+      window.location.href = 'stitch-setup-code.html';
+    }
+
+    function closeCodeModal() {
+      const modal = document.getElementById('code-modal');
+      const content = document.getElementById('code-modal-content');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.getElementById('setup-code-input').value = '';
+      }, 200);
+    }
+
+    function submitCode() {
+      const input = document.getElementById('setup-code-input').value;
+      if (input.length < 4) {
+        showIntegrationsToast('Lütfen geçerli bir kod girin.');
+        return;
+      }
+      closeCodeModal();
+      setTimeout(() => {
+        window.location.href = 'stitch-setup-code.html';
+      }, 150);
+    }
+
+    function simulateConnection(el, deviceName) {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.style.display = 'flex';
+      document.getElementById('loading-spinner').classList.remove('hidden');
+      document.getElementById('loading-notfound').classList.add('hidden');
+      document.getElementById('loading-notfound').classList.remove('flex');
+
+      clearTimeout(simulateConnection._t);
+      simulateConnection._t = setTimeout(() => {
+        const paired = getPairedDevices();
+        const safeName = (deviceName || 'Yeni cihazı').trim();
+        if (!paired.some((device) => device && device.name === safeName)) {
+          paired.push({ name: safeName, icon: 'cpu', room: 'Ana sayfaya bağlı' });
+          nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
+        }
+        navigateAfterPair();
+      }, 900);
+    }
+
+    function hideOverlay() {
+      clearTimeout(simulateConnection._t);
+      document.getElementById('loading-overlay').style.display = 'none';
+    }
+
+    function getPairedDevices() {
+      let devices = [];
+      try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (error) {}
+      return Array.isArray(devices) ? devices : [];
+    }
+
+    function navigateAfterPair() {
+      const target = 'stitch-home.html';
+      if (window.top && window.top !== window) {
+        window.top.location.href = target;
+        return;
+      }
+      window.location.href = target;
+    }
+
+    var _catalogSearchEl = document.getElementById('catalog-search');
+    if (_catalogSearchEl) {
+      _catalogSearchEl.addEventListener('input', renderCatalogContent);
+    }
+
+    (function initManualCatalog() {
+      var params = new URLSearchParams(window.location.search);
+      var requested = params.get('category');
+      var mapped = requested ? (CATALOG_ALIAS[requested] || requested) : null;
+      var valid = CATALOG.some(function (c) { return c.key === mapped; });
+      activeCatalogCategory = mapped === 'all' || valid ? mapped : CATALOG[0].key;
+      renderCatalogRail();
+      renderCatalogContent();
+    })();
+  </script>
+<script>
+function showIntegrationsToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
+</body>
+</html>
+
+

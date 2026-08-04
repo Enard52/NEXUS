@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -10,13 +10,13 @@
 <title>NEXUS — Akıllı Senaryolar</title>
 
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="css/tailwind.css" rel="stylesheet"/>
 
   <!-- Google Fonts: Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/lucide.js"></script>
 
   <style>
     body {
@@ -78,7 +78,6 @@
         <p class="text-sm text-slate-500 mt-1 leading-snug">Cihazların durumu değiştiğinde diğer senaryoları otomatik olarak tetikleyin.</p>
       </div>
     </section>
-
 
     <!-- Trigger List Card -->
     <section class="bg-white rounded-3xl card-shadow overflow-hidden border border-slate-50" data-purpose="trigger-list">
@@ -156,16 +155,11 @@
       </div>
     </section>
 
-
-
     <!-- Quick Create Button -->    <!-- Quick Create Button -->
     <button onclick="toggleQuickCreate()" class="mt-3 w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-600 py-4 rounded-2xl font-bold active:bg-slate-50 transition-colors">
       <i class="w-5 h-5" data-lucide="plus"></i>
       Hızlı Oluştur</button>
   </main>
-
-
-
 
   <script>
     if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -197,7 +191,6 @@
       setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
       sheet.classList.remove('translate-y-full');
     }
-
 
     function renderConfigOptions(title) {
       const target = document.getElementById('config-options');
@@ -448,6 +441,6 @@
   </script>
 </body>
 
-
-
 </html>
+
+

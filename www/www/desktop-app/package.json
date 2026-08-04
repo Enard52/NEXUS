@@ -1,0 +1,152 @@
+{
+  "name": "nexus-desktop-app",
+  "version": "3.14.2",
+  "description": "NEXUS AI — real desktop application: tray + background, loads the synced app.",
+  "main": "main.cjs",
+  "author": "NEXUS Technologies Inc.",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "gen:icon": "node gen-tray-icon.cjs",
+    "start": "electron .",
+    "build:win": "electron-builder --win nsis portable",
+    "build:mac": "electron-builder --mac dmg",
+    "build:linux": "electron-builder --linux AppImage deb"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^3.0.2",
+    "sharp": "^0.35.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "build": {
+    "appId": "ai.nexus.desktop",
+    "productName": "NEXUS",
+    "directories": { "output": "dist", "buildResources": "assets" },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "updater.cjs",
+      "offline.html",
+      "assets/**",
+      "server/**",
+      "desktop-html/**",
+      "!desktop-html/**/*.map"
+    ],
+    "extraResources": [
+      {
+        "from": "server",
+        "to": "server",
+        "filter": [
+          "main.cjs"
+        ]
+      },
+      {
+        "from": "desktop-html",
+        "to": "desktop-html"
+      }
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "Enard52",
+      "repo": "NEXUS-main",
+      "releaseType": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "artifactName": "NEXUS-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "NEXUS-${version}-portable.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "NEXUS",
+      "artifactName": "NEXUS-${version}-setup.${ext}", "installerIcon": "assets/icon.ico", "uninstallerIcon": "assets/icon.ico", "installerHeaderIcon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "artifactName": "NEXUS-${version}-${arch}.${ext}",
+      "notarize": {
+        "teamId": "${env.APPLE_TEAM_ID}"
+      }
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "category": "Utility",
+      "maintainer": "NEXUS Technologies Inc.",
+      "artifactName": "NEXUS-${version}-${arch}.${ext}"
+    },
+    "deb": {
+      "depends": [
+        "libnotify4",
+        "libappindicator3-1 | libappindicator1"
+      ]
+    }
+  }
+}
+
+

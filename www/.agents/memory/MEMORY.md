@@ -1,0 +1,1 @@
+- [Monorepo setup after import](monorepo-setup.md) — run `pnpm install --no-frozen-lockfile` and select Node 22 so workspace links and `node:sqlite` resolve.

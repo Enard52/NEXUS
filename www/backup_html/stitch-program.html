@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Program Ekle</title>
+<!-- Tailwind CSS CDN -->
+<link href="css/tailwind.css" rel="stylesheet"/>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="js/lucide.js"></script>
+<!-- Custom Tailwind Configuration (NEXUS brand colors, same as DND page) -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nexus-purple': '#4C7DFF',
+            'nexus-cyan': '#22D3EE',
+            'nexus-bg': '#F8F7FC',
+            'nexus-border': '#F1F1F4',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+<!-- NOTE: Yeni özellik/sayfa eklerken bu dosyadaki NEXUS tasarım sistemine (renk, font, kart stili) uyulmalı -->
+<style data-purpose="custom-styling">
+    body {
+      -webkit-tap-highlight-color: transparent;
+      background-color: #F8F7FC;
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Scroll-snap time wheel */
+    .wheel {
+      height: 200px; /* 5 items x 40px */
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none;
+    }
+    .wheel::-webkit-scrollbar { display: none; }
+    .wheel-item {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      color: #C7C5D1;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .wheel-item.selected {
+      color: #4C7DFF;
+      transform: scale(1.15);
+    }
+    /* Fade edges of the picker so it feels like a wheel */
+    .wheel-mask {
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+    }
+    /* Bottom sheet transitions */
+    .sheet { transition: transform 0.25s ease; transform: translateY(100%); }
+    .sheet.open { transform: translateY(0); }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="flex flex-col min-h-screen text-slate-900">
+<!-- BEGIN: Header (İptal / Kaydet) -->
+<header class="flex justify-between items-center px-5 pt-14 pb-3" data-purpose="header-nav">
+<a class="text-slate-500 text-[17px] font-medium" href="javascript:void(0)" onclick="cancelSchedule()">İptal</a>
+<h1 class="font-bold text-[17px]">Program Ekle</h1>
+<button class="text-nexus-purple font-bold text-[17px]" onclick="saveSchedule()">Kaydet</button>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Page Title (non-AI feature: plain NEXUS branding) -->
+<div class="px-5 pb-4 text-center">
+<h2 class="text-[26px] font-bold leading-tight tracking-tight">Rahatsız Etme Programı</h2>
+<p class="text-sm text-slate-500 mt-1">Seçtiğin saat aralığında bildirimler otomatik sessize alınır.</p>
+</div>
+<!-- END: Page Title -->
+<!-- BEGIN: Main Content -->
+<main class="px-4 space-y-3 flex-grow pb-10">
+<!-- BEGIN: Time Selection Card (functional scroll wheels) -->
+<section class="bg-white rounded-2xl p-5 shadow-sm" data-purpose="time-picker-card">
+<div class="flex justify-around mb-1">
+<span class="font-semibold text-slate-700">Başlangıç</span>
+<span class="font-semibold text-slate-700">Bitiş</span>
+</div>
+<div class="relative">
+<!-- Center selection band -->
+<div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-10 border-y border-nexus-border pointer-events-none"></div>
+<div class="flex items-center wheel-mask">
+<!-- Start time wheels -->
+<div class="flex-1 flex justify-center gap-1">
+<div class="wheel w-14" data-default="7" data-purpose="start-hour" id="wheel-sh"></div>
+<div class="wheel-item !text-slate-400" style="height:200px">:</div>
+<div class="wheel w-14" data-default="30" data-purpose="start-minute" id="wheel-sm"></div>
+</div>
+<!-- Separator dash -->
+<div class="px-2 flex items-center justify-center">
+<div class="w-5 h-[2px] bg-slate-300 rounded-full"></div>
+</div>
+<!-- End time wheels -->
+<div class="flex-1 flex justify-center gap-1">
+<div class="wheel w-14" data-default="18" data-purpose="end-hour" id="wheel-eh"></div>
+<div class="wheel-item !text-slate-400" style="height:200px">:</div>
+<div class="wheel w-14" data-default="45" data-purpose="end-minute" id="wheel-em"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Time Selection Card -->
+<!-- BEGIN: Settings Card -->
+<section class="bg-white rounded-2xl overflow-hidden shadow-sm" data-purpose="settings-card">
+<!-- Cihazlar Row -->
+<button class="w-full flex items-center px-4 py-4 active:bg-slate-50 transition-colors text-left" onclick="openSheet('devices')">
+<div class="w-10 flex justify-center">
+<i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="lightbulb"></i>
+</div>
+<span class="flex-grow text-[17px] ml-2">Cihazlar</span>
+<span class="text-[16px] text-slate-500" id="devices-value">Tüm Cihazlar</span>
+<i class="w-5 h-5 text-slate-300 ml-1" data-lucide="chevron-right"></i>
+</button>
+<div class="ml-14 border-t border-slate-100"></div>
+<!-- Tekrarla Row -->
+<button class="w-full flex items-center px-4 py-4 active:bg-slate-50 transition-colors text-left" onclick="openSheet('repeat')">
+<div class="w-10 flex justify-center">
+<i class="w-6 h-6 text-slate-800 stroke-[1.5]" data-lucide="repeat"></i>
+</div>
+<span class="flex-grow text-[17px] ml-2">Tekrarla</span>
+<span class="text-[16px] text-slate-500" id="repeat-value">Hafta içi</span>
+<i class="w-5 h-5 text-slate-300 ml-1" data-lucide="chevron-right"></i>
+</button>
+</section>
+<!-- END: Settings Card -->
+<!-- Feedback shortcut -->
+<a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 pt-4" data-purpose="feedback-link" href="stitch-feedback.html">
+<i class="w-4 h-4" data-lucide="message-circle"></i>Sorun mu yaşıyorsun? Geri bildirim gönder
+</a>
+</main>
+<!-- END: Main Content -->
+<!-- BEGIN: Sheet backdrop -->
+<div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
+<!-- BEGIN: Devices Sheet -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10" data-purpose="devices-sheet" id="sheet-devices">
+<h3 class="text-lg font-bold mb-4">Hangi cihazlar sessize alınsın?</h3>
+<label class="flex items-center justify-between py-3 border-b border-slate-100">
+<span class="font-semibold">Tüm Cihazlar</span>
+<input checked class="rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" id="dev-all" onchange="toggleAllDevices(this)" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between py-3 border-b border-slate-100">
+<span class="font-medium text-slate-600">Akıllı Hoparlör</span>
+<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Akıllı Hoparlör" onchange="syncAllCheckbox()" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between py-3 border-b border-slate-100">
+<span class="font-medium text-slate-600">Kapı Zili</span>
+<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Kapı Zili" onchange="syncAllCheckbox()" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between py-3 border-b border-slate-100">
+<span class="font-medium text-slate-600">Televizyon</span>
+<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Televizyon" onchange="syncAllCheckbox()" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between py-3">
+<span class="font-medium text-slate-600">Robot Süpürge</span>
+<input checked class="dev-item rounded text-nexus-purple focus:ring-nexus-purple w-5 h-5" data-name="Robot Süpürge" onchange="syncAllCheckbox()" type="checkbox"/>
+</label>
+<button class="w-full bg-nexus-purple text-white font-bold py-3.5 rounded-xl mt-5 active:scale-[0.98] transition-transform" onclick="confirmDevices()">Tamam</button>
+</div>
+<!-- END: Devices Sheet -->
+<!-- BEGIN: Repeat Sheet -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10" data-purpose="repeat-sheet" id="sheet-repeat">
+<h3 class="text-lg font-bold mb-4">Hangi günler tekrarlansın?</h3>
+<!-- Quick options -->
+<div class="flex gap-2 mb-5" data-purpose="quick-repeat">
+<button class="quick-btn flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600" onclick="quickRepeat([0,1,2,3,4,5,6])">Her Gün</button>
+<button class="quick-btn flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600" onclick="quickRepeat([0,1,2,3,4])">Hafta içi</button>
+<button class="quick-btn flex-1 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600" onclick="quickRepeat([5,6])">Hafta sonu</button>
+</div>
+<!-- Day pills -->
+<div class="flex justify-between mb-5" id="day-pills">
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Pt</button>
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Sa</button>
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Ça</button>
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Pe</button>
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Cu</button>
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Ct</button>
+<button class="day-pill w-10 h-10 rounded-full text-sm font-bold" onclick="toggleDay(this)">Pz</button>
+</div>
+<button class="w-full bg-nexus-purple text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="confirmRepeat()">Tamam</button>
+</div>
+<!-- END: Repeat Sheet -->
+<script data-purpose="schedule-interactions">
+    lucide.createIcons();
+
+    /* ---------- Functional scroll-snap time wheels ---------- */
+    function buildWheel(el, max, step) {
+      // 2 empty slots at each end so first/last values can reach center
+      var html = '<div class="wheel-item"></div><div class="wheel-item"></div>';
+      for (var v = 0; v < max; v += step) {
+        html += '<div class="wheel-item" data-value="' + v + '">' + String(v).padStart(2, '0') + '</div>';
+      }
+      html += '<div class="wheel-item"></div><div class="wheel-item"></div>';
+      el.innerHTML = html;
+      // Highlight whichever item sits in the center band while scrolling
+      el.addEventListener('scroll', function () { highlight(el); });
+      // Jump to the default value
+      var def = parseInt(el.dataset.default, 10);
+      el.scrollTop = (def / step) * 40;
+      highlight(el);
+    }
+    function highlight(el) {
+      var idx = Math.round(el.scrollTop / 40) + 2; // +2 for leading empty slots
+      el.querySelectorAll('.wheel-item').forEach(function (it, i) {
+        it.classList.toggle('selected', i === idx);
+      });
+    }
+    function wheelValue(el) {
+      var sel = el.querySelector('.wheel-item.selected');
+      return sel ? sel.dataset.value : el.dataset.default;
+    }
+    buildWheel(document.getElementById('wheel-sh'), 24, 1);
+    buildWheel(document.getElementById('wheel-sm'), 60, 5);
+    buildWheel(document.getElementById('wheel-eh'), 24, 1);
+    buildWheel(document.getElementById('wheel-em'), 60, 5);
+
+    /* ---------- Bottom sheets ---------- */
+    function openSheet(name) {
+      document.getElementById('sheet-backdrop').classList.remove('hidden');
+      document.getElementById('sheet-' + name).classList.add('open');
+    }
+    function closeSheets() {
+      document.getElementById('sheet-backdrop').classList.add('hidden');
+      document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
+    }
+
+    /* ---------- Devices selection ---------- */
+    function toggleAllDevices(master) {
+      document.querySelectorAll('.dev-item').forEach(function (c) { c.checked = master.checked; });
+    }
+    function syncAllCheckbox() {
+      var items = document.querySelectorAll('.dev-item');
+      var checked = document.querySelectorAll('.dev-item:checked');
+      document.getElementById('dev-all').checked = items.length === checked.length;
+    }
+    function devicesLabel() {
+      var checked = document.querySelectorAll('.dev-item:checked');
+      var all = document.querySelectorAll('.dev-item');
+      if (checked.length === all.length) return 'Tüm Cihazlar';
+      if (checked.length === 0) return 'Cihaz yok';
+      return checked.length + ' Cihaz';
+    }
+    function confirmDevices() {
+      document.getElementById('devices-value').textContent = devicesLabel();
+      closeSheets();
+    }
+
+    /* ---------- Repeat selection ---------- */
+    var dayNames = ['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pz'];
+    function pills() { return document.querySelectorAll('#day-pills .day-pill'); }
+    function paintPills() {
+      pills().forEach(function (p) {
+        var on = p.classList.contains('on');
+        p.classList.toggle('bg-nexus-purple', on);
+        p.classList.toggle('text-white', on);
+        p.classList.toggle('bg-slate-100', !on);
+        p.classList.toggle('text-slate-500', !on);
+      });
+    }
+    function toggleDay(pill) { pill.classList.toggle('on'); paintPills(); }
+    function quickRepeat(indexes) {
+      pills().forEach(function (p, i) { p.classList.toggle('on', indexes.indexOf(i) !== -1); });
+      paintPills();
+    }
+    function repeatLabel() {
+      var on = [];
+      pills().forEach(function (p, i) { if (p.classList.contains('on')) on.push(i); });
+      if (on.length === 7) return 'Her Gün';
+      if (on.join() === '0,1,2,3,4') return 'Hafta içi';
+      if (on.join() === '5,6') return 'Hafta sonu';
+      if (on.length === 0) return 'Bir kez';
+      return on.map(function (i) { return dayNames[i]; }).join(', ');
+    }
+    function confirmRepeat() {
+      document.getElementById('repeat-value').textContent = repeatLabel();
+      closeSheets();
+    }
+    // Default selection: weekdays (matches the "Hafta içi" label)
+    quickRepeat([0, 1, 2, 3, 4]);
+
+    /* ---------- Save: sync the schedule to the DND page via localStorage ---------- */
+    function saveSchedule() {
+      var schedule = {
+        start: String(wheelValue(document.getElementById('wheel-sh'))).padStart(2, '0') + ':' + String(wheelValue(document.getElementById('wheel-sm'))).padStart(2, '0'),
+        end: String(wheelValue(document.getElementById('wheel-eh'))).padStart(2, '0') + ':' + String(wheelValue(document.getElementById('wheel-em'))).padStart(2, '0'),
+        devices: devicesLabel(),
+        repeat: repeatLabel()
+      };
+      nexusSetItem('nexusDndSchedule', JSON.stringify(schedule));
+      // replace: bu sayfa geçmişte kalmasın, DND'deki geri oku döngüye girmesin
+      location.replace('stitch-dnd.html');
+    }
+
+    /* ---------- Cancel: kayıt yapmadan geldiğin sayfaya dön ---------- */
+    function cancelSchedule() {
+      if (window.history.length > 1) {
+        history.back();
+      } else {
+        location.replace('stitch-dnd.html');
+      }
+    }
+  </script>
+</body></html>
+
+

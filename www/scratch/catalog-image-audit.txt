@@ -1,0 +1,350 @@
+
+## Elektrik Ustası [elektrik-ustasi]
+
+# Soket
+generic-smart-plug.png: Akıllı Priz | Akıllı Çiftli Priz
+generic-power-strip.png: Çoklu Priz
+
+# Anahtar
+control-single-wall-switch.png: Anahtar | Tekli Akıllı Anahtar | Tekli Nötrsüz Anahtar | Işık ve Fan Anahtarı
+control-double-wall-switch.png: İkili Akıllı Anahtar | İkili Dokunmatik Anahtar | İkili Nötrsüz Anahtar
+control-triple-wall-switch.png: Üçlü Akıllı Anahtar | Üçlü Dokunmatik Anahtar | Üçlü Nötrsüz Anahtar
+control-four-gang-switch.png: Dörtlü Akıllı Anahtar | Dörtlü Dokunmatik Anahtar | Dörtlü Nötrsüz Anahtar
+control-touch-switch.png: Tekli Dokunmatik Anahtar
+control-wireless-button.png: Kablosuz Anahtar | Tekli Kablosuz Anahtar | İkili Kablosuz Anahtar | Üçlü Kablosuz Anahtar | Dörtlü Kablosuz Anahtar | Altılı Kablosuz Anahtar
+control-curtain-switch.png: Perde Anahtarı
+control-dimmer-knob.png: Dimmer Anahtar
+control-scenario-switch.png: Uyandırma Anahtarı | Senaryo Anahtarı
+control-smart-button.png: Akıllı Buton
+control-thermostat-switch.png: Thermostat Switch
+
+# Diğer
+security-keypad-lock.png: Garaj Kapısı Kumandası
+
+## Aydınlatma [aydinlatma]
+
+# Işık Kaynağı
+generic-led-bulb.png: Akıllı Lamba | Işık Kaynağı
+generic-table-lamp.png: Retro Lamba | Mum Lamba
+generic-outdoor-light.png: Spot Lamba
+
+# Oda Işıkları
+generic-ceiling-light.png: Tavan Lambası | Tavan Vantilatörü Lambası | Masa Lambası
+
+# Ambiyans Aydınlatması
+generic-led-strip.png: Şerit Lamba | Ambiyans Lambası | TV Ortam Işığı | Projektör
+
+# Dış Mekan Aydınlatması
+generic-outdoor-light.png: Dış Mekan Aydınlatması | Güneş Enerjili Avlu Işığı | Bahçe Işığı | Çim Işığı | String Light
+
+# Control Accessories
+control-remote-control.png: Uzaktan Kumanda
+
+## Sensör [sensor]
+
+# Sensör
+generic-motion-sensor.png: Çok Fonksiyonlu Sensör | Aydınlatma Sensörü | İnsan Vücudu Sensörü | İnsan Varlığı Sensörü | Titreşim Sensörü | Acil Durum Düğmesi
+generic-temp-humidity.png: Sıcaklık ve Nem Sensörü
+security-door-sensor.png: Kapı ve Pencere Sensörü
+security-water-leak.png: Su Basman Sensörü
+security-smoke-detector.png: Duman Dedektörü | CO Dedektörü
+security-gas-detector.png: Gaz Dedektörü
+
+# Çevresel Sensörler
+generic-air-quality.png: Hava Kalitesi Sensörü | PM2.5 | Toprak Sensörü
+
+# basınç sensörü
+generic-air-quality.png: Basınç Sensörü
+
+# VOC
+security-smoke-detector.png: Uçucu Organik Bileşik (VOC) Alarmı
+
+# Termal alarm
+security-smoke-detector.png: Termal Alarm
+
+## Büyük Ev Aletleri [buyuk-ev-aletleri]
+
+# Klima
+generic-air-conditioner.png: Taşınabilir Klima | Klima | Duvar Tipi Klima | Ayaklı Klima | Pencere Tipi Klima
+
+# Su Isıtıcıları
+generic-heater.png: Su Isıtıcısı | Hava Kaynaklı Su Isıtıcısı | Elektrikli Su Isıtıcısı | Su Isıtıcısı (Kazan Tipi) | Hot Water Crculation Pump
+
+# Kombiler
+generic-heater.png: Kombi
+
+# Isı Pompaları
+generic-heater.png: Akıllı Isı Pompası
+
+# Çamaşır Makineleri
+generic-washing-machine.png: Çamaşır Makinesi
+
+# Çamaşır Kurutma
+generic-clothes-dryer.png: Çamaşır Kurutucu
+
+## Küçük Ev Aleti [kucuk-ev-aleti]
+
+# Mevsimlik Neutron Ürünler
+generic-heater.png: Elektirikli Soba | Kalorifer Peteği | Elektrikli Battaniye | Elektrikli Şömine
+generic-baseboard-heater.png: Süpürgelik Tipi Elektirikli Soba
+misc-heated-table.png: Alttan Isıtmalı Masa
+generic-fan.png: Fan
+generic-air-conditioner.png: Klima Fanı
+
+# çevre
+generic-air-purifier.png: Hava Temizleyici | Sterilizatör | Nem Alma Cihazı | Hava Kutusu
+generic-humidifier.png: Nemlendirici | Hava Nemlendirici
+
+# Temizlik Ürünleri
+generic-robot-vacuum.png: Akıllı Robot Süpürge | Akıllı Robot Süpürge (Kamera) | Cam Temizlik Robotu | Elektrikli Süpürge | Robot pool cleaner
+outdoor-lawn-mower.png: Çim Biçme Makinesi
+
+# İklimlendirme
+generic-thermostat.png: Termostat | Termostatik Radyatör Vanası (TRV)
+generic-ventilation.png: Havalandırma Sistemi | Havalandırma ve İklimlendirme (HVAC)
+generic-heater.png: Isıtma
+
+# Motor
+control-curtain-motor.png: Perde | Perde Zincir Motoru | Perde Motoru | Çamaşır Kurutma Askısı
+security-door-sensor.png: Akıllı Kapı Pencere Sensörü
+
+# Genel / Diğer
+misc-pet-collar.png: Evcil Hayvan Tasması
+misc-aquarium.png: Akvaryum | Akvaryum Isıtıcı
+misc-pet-feeder.png: Balık Besleyici
+misc-aquarium-pump.png: Aquarium Pump
+generic-microwave.png: Mikrodalga Fırın
+agri-grow-light.png: Akıllı Bitki Büyütme Işığı
+misc-shoe-sterilizer.png: Ayakkabı Sterilizatör Dolabı
+misc-shoe-box.png: Ayakkabı Kutusu
+misc-garment-care.png: Giysi Bakım Makinesi
+misc-mosquito-lamp.png: Elektrikli Sinek Öldürücü
+misc-weather-clock.png: Meteoroloji Saati
+
+# Bebek Ürünleri
+misc-breast-pump.png: Göğüs Pompası
+misc-milk-maker.png: Süt Makinesi
+misc-bottle-warmer.png: Biberon Isıtıcı | Akıllı Süt Isıtıcısı
+misc-formula-maker.png: Mama Hazırlayıcı
+generic-air-purifier.png: Sterilizatör Çelik Tencere
+misc-baby-cradle.png: Sallanan Bebek Sandalyesi | Beşik
+
+# Evcil Hayvan Ürünleri
+misc-pet-feeder.png: Akıllı Evcil Hayvan Besleme | Pet Feeder | Pet Feeder With Camera | Akıllı Evcil Hayvan Besleme (Kameralı) | Evcil Hayvan Gıda Kovası
+misc-pet-fountain.png: Evcil Hayvan Su Sebili
+misc-litter-box.png: Kedi Kumu Kutusu | Evcil Hayvan Evi
+misc-pet-odor-purifier.png: Evcil Hayvan Koku Giderici
+misc-pet-dryer.png: Evcil Hayvan Kurutma Makinesi
+misc-pet-ball.png: Evcil Hayvan Topu
+generic-power-strip.png: Akvaryum Çoklu Prizi
+misc-pet-carrier.png: Evcil Hayvan Çantası
+
+## Mutfak Aletleri [mutfak-aletleri]
+
+# Kitchen Electric
+generic-oven.png: Oven | Entegre Mutfak | Fırın | Buharlı Fırın
+generic-heater.png: Gazlı Soba
+generic-air-purifier.png: Sterilizatör Kabini
+generic-dishwasher.png: Bulaşık Makinesi
+generic-range-hood.png: Davlumbaz&Aspiratör
+
+# Kitchen Small Electric
+generic-blender.png: Meyve Kurutma Makinesi | Mutfak Robotu | Katı Meyve Presi ve Blender | Meyve Sıkacağı
+misc-ice-maker.png: Buz Makinesi
+generic-oven.png: Sıcak Hava Fritözü | Yemek Pişirme Makinesi | Elektrikli Ocak | Pilav Pişirme Makinesi | Vakumlu Pişirme Makinesi
+misc-ice-cream-maker.png: Dondurma Makinesi
+misc-milk-maker.png: Soya Sütü Makinesi
+misc-bread-maker.png: Ekmek Yapma Makinesi
+
+# Pişirme Ekipmanları
+generic-oven.png: Su Arıtma Cihazı | Çay Demleme Tezgahı | Smart Kettle | Kahve Makinesi
+
+# Diğer
+misc-food-thermometer.png: Gıda Termometresi
+generic-blender.png: Sebze Yıkama Makinesi
+generic-refrigerator.png: Şarap Dolabı
+misc-trash-can.png: Çöp Öğütücü | Akıllı Çöp Tenekesi
+
+## Egzersiz ve Sağlık [egzersiz-ve-saglik]
+
+# Spor Ekipmanları
+generic-kitchen-scale.png: Hassas Mutfak Terazisi
+generic-smart-scale.png: Elektronik Akıllı Tartı
+sport-jump-rope.png: Akıllı İp Atlama
+sport-dumbbell.png: Akıllı Halter
+sport-badminton-racket.png: Akıllı Badminton Raketi | Tenis Raketi
+sport-exercise-wheel.png: Egzersiz Tekerleği
+sport-hula-hoop.png: Hula Hoop Çember
+sport-resistance-band.png: Direnç Bandı
+sport-wrist-ball.png: Akıllı Bilek Güçlendirme Topu
+generic-treadmill.png: Koşu Bandı
+sport-rowing-machine.png: Kürek Çekme Aleti
+generic-led-bulb.png: Dikey Kondisyon Bisikleti
+
+# Spor Test Ürünleri
+health-smart-band.png: Saat/Bileklik
+generic-blood-pressure.png: Temassız Ateş Ölçer | Tansiyon Aleti | Oksimetre
+
+# Sleep
+health-sleep-button.png: Uyku Butonu
+health-alarm-clock.png: Akıllı Çalar Saat
+health-sleep-light.png: Beyaz Dinlenme Işığı
+health-smart-band.png: Uyku İzleme Bandı
+health-smart-pillow.png: Akıllı Yastık
+health-smart-bed.png: Akıllı Yatak
+misc-baby-monitor.png: Akıllı Bebek Bakım Monitörü
+
+# Kişisel Bakım
+health-toothbrush.png: Diş Fırçası
+security-indoor-camera.png: Kulak Kiri Çıkarma Otoskopu (Kameralı)
+outdoor-gps-tracker.png: Akıllı Yüz Temizleyici
+health-facial-steamer.png: Yüz Buhar Makinesi
+health-hair-dryer.png: Saç kurutma makinesi
+
+# Diğer
+generic-table-lamp.png: Masaj Koltuğu
+health-foot-spa.png: Ayak Küveti
+health-smart-sofa.png: Akıllı Kanepe
+health-fitness-mirror.png: Akıllı Egzersiz Aynası
+health-physio-device.png: Fizyoterapi Cihazı
+misc-smart-cup.png: Akıllı Bardak
+
+## Kamera ve Kilit [kamera-ve-kilit]
+
+# Kamera
+security-indoor-camera.png: Akıllı Kamera | Video Baz istasyonu
+security-ptz-camera.png: Indoor PTZ Camera | PTZ Camera
+security-4g-camera.png: 4G Kamera | Mobile Camera
+security-video-doorbell.png: Kameralı Kapı Zili | Akıllı Kapı Zili
+security-floodlight-camera.png: Kamera Lambası
+security-nvr.png: Ağ Video Kaydedici (NVR) | Dijital Kayıt Cihazı (DVR)
+security-bird-feeder.png: Bird Feeder
+
+# Kapı kilidi
+security-keypad-lock.png: Kapı Kilidi
+
+# Kameralı Kilitler
+security-indoor-camera.png: Video Kilidi
+
+# Kilit ve Aksesuarlar
+security-cabinet-lock.png: Dolap Kilidi
+security-padlock.png: Asma Kilit
+security-u-lock.png: U Tipi Kilit
+security-key-safe.png: Anahtar Kutusu
+
+# Akıllı kutu
+security-safe-box.png: Kasa
+
+# Giriş Kontrol Ürünleri
+security-turnstile.png: Akıllı Turnike
+
+# Smart Gating
+security-gate-opener.png: Smart Door | Smart Gating
+
+## Ağ Geçidi Kontrol Paneli [ag-gecidi-kontrol-paneli]
+
+# Ağ Geçidi
+generic-smart-hub.png: Kablosuz Ağ Geçidi | Kablolu Ağ Geçidi | Çoklu Ağ Geçidi | Çok Fonksiyonlu Ağ Geçidi | Kablolu&Kablosuz Ağ Geçidi | Çok Modlu Ağ Geçidi (BLE+ZigBee) | Çok Modlu Mühendislik Ağ Geçidi (BLE+ZigBee) | Akıllı ZigBee Ağ Geçidi Pro | 4G çok modlu geçit (BLE+ZigBee) | Birleşik Ağ Geçidi | Kablolu&Kablosuz Ağ Geçidi (ZigBee+PLC)
+generic-smart-plug.png: Ağ Geçidi Prizi
+
+# Routerlar
+generic-router.png: Yönlendirici
+
+# Diğer
+generic-smart-hub.png: Yoğunlaştırıcı
+security-video-doorbell.png: Menzil Arttırıcı
+
+## Doğa Sporları [doga-sporlari]
+
+# Takip Cihazları
+outdoor-gps-tracker.png: GPS Vehicle Tracker | İzleyici
+security-smoke-detector.png: Hırsız Alarmı
+
+# Car-carried-devices
+security-4g-camera.png: Araç İçi Kamera (ekranlı)
+
+# 4G Camera
+security-4g-camera.png: 4G Camera
+
+# Travel
+generic-scooter.png: Scooter | Elektrikli Kaykay (Hoverboard) | Akıllı Elektrikli Araç | Akıllı Elektrikli Araç (Bluetooth Tarama Kodu) | Akülü Tekerlekli Sandalye
+generic-led-bulb.png: Elektrikli Bisiklet
+outdoor-electric-bike.png: Electric Bicycle
+outdoor-helmet.png: Helmet
+outdoor-air-compressor.png: Hava Kompresörü
+
+## Enerji Tasarrufu [enerji-tasarrufu]
+
+# Breaker
+energy-circuit-breaker.png: Devre kesici
+
+# Elektrik Sayaçları
+generic-energy-meter.png: Akıllı Elektrik Sayacı
+
+# Energy Mate
+energy-mate-display.png: Energy Mate
+
+# Portable power supply
+generic-power-station.png: Taşınabilir Güç İstasyonu
+
+# Su Sayaçları
+generic-water-meter.png: Akıllı Su Sayacı
+
+# Bisiklet Şarj Üniteleri
+generic-led-bulb.png: İki Tekerlekli Araç Şarj İstasyonu
+
+# EV charger
+generic-ev-charger.png: Elektrikli Araç Şarj İstasyonu
+
+# Akıllı Gaz Sayaçları
+energy-gas-meter.png: Akıllı Gaz Sayacı
+
+# İnvertörler
+energy-inverter.png: İnvertör
+
+# Transformatörler
+energy-transformer.png: Güç Transformatörleri
+
+## Eğlence [eglence]
+
+# Genel
+generic-smart-tv.png: Televizyon
+ent-photo-frame.png: Bulut Fotoğraf Çerçevesi
+
+# Printer
+ent-photo-printer.png: Grafik yazıcı
+ent-3d-printer.png: 3D yazıcı
+
+# Audio
+ent-earbuds.png: Earphone
+
+# Dot Matrix Screen
+ent-dot-matrix-display.png: 12x48 | 5x36
+
+# Diğer
+ent-story-speaker.png: Hikaye Makinesi
+ent-ereader.png: Kitap Okuyucu
+
+# amplifier
+ent-amplifier.png: Amplifier
+
+## Sanayi ve Tarım [sanayi-ve-tarim]
+
+# çevre
+outdoor-gps-tracker.png: Bitki İzleyici
+
+# Vana Kontrol Ekipmanları
+control-remote-control.png: Su Vanası Kumandası
+
+# sulama
+agri-irrigation-sprinkler.png: Sulama Fiskiyesi
+
+## Diğer [diger]
+
+# Diğer
+generic-power-strip.png: Konnektör
+control-remote-control.png: Evrensel Kumanda
+generic-smart-hub.png: Diğer | Diğer Cihazlar
+generic-smart-speaker.png: Akıllı Hoparlör
+misc-mini-lift.png: Mini Lift
+generic-smart-tv.png: Konferans Rezervasyon Ekranı

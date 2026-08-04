@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>NEXUS — Senaryo Ayarları</title>
+  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
+  <script src="data.js"></script>
+  <script>
+    // Eğer nexusGetItem/nexusSetItem tanımlı değilse, localStorage kullan
+    if (typeof nexusGetItem !== 'function') {
+      window.nexusGetItem = function(key) {
+        return localStorage.getItem(key);
+      };
+    }
+    if (typeof nexusSetItem !== 'function') {
+      window.nexusSetItem = function(key, value) {
+        localStorage.setItem(key, value);
+      };
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100dvh;
+      background: #F9FAFB;
+    }
+  </style>
+</head>
+<body class="text-slate-900">
+  <header class="pt-4 pb-4 px-5 flex items-center justify-between relative bg-white shadow-sm">
+    <button onclick="window.history.back()" class="p-1 -ml-1">
+      <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+    </button>
+    <h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Senaryo Ayarları</h1>
+    <div class="w-7"></div>
+  </header>
+
+  <main class="flex-grow px-5 pt-6 pb-20">
+    <!-- Senaryo Başlığı -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm mb-6">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center" id="scenario-icon">
+          <i class="w-6 h-6 text-blue-500" data-lucide="lightbulb"></i>
+        </div>
+        <div>
+          <h2 class="font-bold text-xl" id="scenario-title">One-click feeding</h2>
+          <p class="text-sm text-slate-500" id="scenario-desc">Akıllı ev senaryonuzu özelleştirin</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cihaz Seçimi -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm mb-6">
+      <h3 class="font-bold mb-4">Bunu gerçekleştir:</h3>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+              <i class="w-4 h-4 text-blue-500" data-lucide="zap"></i>
+            </div>
+            <div>
+              <span class="text-sm font-semibold" id="device-name">Quick Feed</span>
+              <p class="text-xs text-slate-500">Automatic Pet Feeder | <span id="device-status">Çevrimiçi</span></p>
+            </div>
+          </div>
+          <i class="w-5 h-5 text-slate-400" data-lucide="chevron-right"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ana Sayfada Göster -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm mb-6">
+      <div class="flex items-center justify-between">
+        <span class="font-semibold">Show on Homepage</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked class="sr-only peer">
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Odada Göster -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm mb-6">
+      <div class="flex items-center justify-between">
+        <span class="font-semibold">Show in Room</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer">
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Kaydet Butonu -->
+    <button class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold mt-8 active:scale-95 transition-transform">Kaydet</button>
+  </main>
+
+  <script>
+    // URL'den senaryo bilgilerini al
+    const urlParams = new URLSearchParams(window.location.search);
+    const scenarioId = urlParams.get('id');
+    
+    // Sayfadaki öğeleri güncelle
+    let scenarioTitle = 'Senaryo';
+    let scenarioDesc = 'Akıllı ev senaryonuzu özelleştirin';
+    let scenarioIcon = 'lightbulb';
+    let scenarioColor = 'text-blue-500';
+    let scenarioBg = 'bg-blue-100';
+    
+    // Eğer id varsa, ilgili kartı storage'dan yükle
+    if (scenarioId) {
+        const item = findItemById('nexusCustomAutomations', scenarioId) || findItemById('nexusCustomClickRun', scenarioId);
+        if (item) {
+            scenarioTitle = item.title;
+            scenarioDesc = item.desc;
+            scenarioIcon = item.icon;
+            scenarioColor = item.colorClass || 'text-blue-500';
+            scenarioBg = item.bgClass ? item.bgClass.replace(/\/10$/, '/20') : 'bg-blue-100';
+        }
+    }
+    
+    // Fallback: URL'den direkt parametreler
+    scenarioTitle = decodeURIComponent(urlParams.get('title') || scenarioTitle);
+    scenarioDesc = decodeURIComponent(urlParams.get('desc') || scenarioDesc);
+    scenarioIcon = urlParams.get('icon') || scenarioIcon;
+    
+    document.getElementById('scenario-title').textContent = scenarioTitle;
+    document.getElementById('scenario-desc').textContent = scenarioDesc;
+    
+    // İkonu güncelle
+    const iconElement = document.getElementById('scenario-icon');
+    iconElement.className = `w-12 h-12 rounded-2xl ${scenarioBg} flex items-center justify-center`;
+    iconElement.innerHTML = `<i class="w-6 h-6 ${scenarioColor}" data-lucide="${scenarioIcon}"></i>`;
+    lucide.createIcons();
+  </script>
+</body>
+</html>

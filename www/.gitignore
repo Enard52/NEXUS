@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+dist-mobile/
+build/
+*.tsbuildinfo
+
+# Generated release manifest (rebuilt by `pnpm release:manifest`)
+sbom.json
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+# Yerel dev oturum cerezleri (curl tarafindan uretilir) — repoya girmemeli
+cookies.txt
+
+# Logs
+logs/
+*.log
+
+# Coverage & test artifacts
+coverage/
+test_out.txt
+vitest.config.ts.timestamp-*.mjs
+
+# One-off analysis scratch files & ad-hoc audit screenshots
+scripts/tmp-*
+.audit-*.png
+
+# Legacy recovery/scratch folders — must never come back
+.history/
+.recovery-ref/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Temporary headless-browser profiles used for screenshotting demos
+.shot*/
+
+# Generated static assets (build mirrors)
+packages/server/data/
+
+nul
+
+.superdesign/tmp

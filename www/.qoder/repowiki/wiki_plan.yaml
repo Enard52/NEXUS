@@ -1,0 +1,156 @@
+version: 1
+
+scope:
+  include:
+    - "packages/**"
+    - "desktop-app/**"
+    - "mobile-app/**"
+    - "installer/**"
+    - "scripts/**"
+    - "public/**"
+  exclude:
+    - "node_modules/**"
+    - "dist/**"
+    - ".history/**"
+    - ".recovery-ref/**"
+    - ".agents/**"
+    - "**/*.woff2"
+    - "**/*.png"
+    - "**/*.ico"
+    - "**/*.exe"
+
+repowiki:
+  template: architecture
+  notes:
+    - text: "NEXUS AI, yerel öncelikli (local-first) bir kişisel işletim sistemidir (POS). Monorepo yapısındadır ve pnpm workspace ile yönetilir. 28 paket içerir: core, ai, voice, memory, agents, devices, connectors, skills, security, database, interface, platform, i18n, design-system, billing, accounts, infra, legal, support, plugins, config, logger, desktop, mobile, web, server, routines."
+      author: "project-owner"
+
+    - text: "Marketing web sitesi YALNIZCA tanıtım + indirme sayfası olarak hizmet verir. Uygulama işlevselliği, oturum açma, FAQ, mobil bölüm gibi öğeler bilinçli olarak kaldırılmıştır. Bu kısıtlama kesindir."
+      author: "project-owner"
+
+    - text: "Marka renkleri: Primary mor #7C5CFF (dark) / #6C4FE8 (light), Accent cyan #22D3EE (dark) / #0EA5C9 (light). Tüm CTA butonları purple→cyan gradient kullanır."
+      author: "project-owner"
+
+    - text: "Font stack: Space Grotesk (display/headings), Inter (body), JetBrains Mono (code). Tümü self-hosted woff2 olarak /fonts/ altından sunulur, font-display: swap ile."
+      author: "project-owner"
+
+    - text: "Design token'lar tek kaynaktan gelir: @nexus/design-system. Tüm platformlar (web, desktop, mobile, installer) aynı token'ları tüketir. CSS değişkenleri renderStyles() ile enjekte edilir."
+      author: "project-owner"
+
+    - text: "GitHub repo: https://github.com/Enard52/NEXUS — branch: main. Proje sahibi: Enard52."
+      author: "project-owner"
+
+    - text: "Doğrulama akışı: pnpm test (vitest, 764 test, 51 dosya), npx tsc --noEmit (typecheck), pnpm --filter @nexus/web build:demo (static build). Tümü sıfır hata ile geçmeli. Yeni özellik eklerken mevcut testlerin hiçbiri kırılmamalı."
+      author: "project-owner"
+
+    - text: "Ödeme altyapısı: YALNIZCA Patreon. Stripe Türkiye'de kullanılamaz, LemonSqueezy hesabı reddedildi. Patreon API v2 + webhook ile abonelik yaşam döngüsü yönetilir. Kendi custom checkout UI'mız var. Bu karar kesindir, değiştirilmemeli."
+      author: "project-owner"
+
+    - text: "Cross-platform sync: @nexus/infra içindeki SyncEngine last-write-wins (logical clock) kullanır. Üç domain: preferences, skills, memory. Merge semantiği DEĞİŞTİRİLMEMELİ — tüm cihazlar aynı algoritmayla converge eder. Yeni domain eklenecekse SyncDomain union type genişletilmeli."
+      author: "project-owner"
+
+    - text: "Güvenlik katmanı: Tüm riskli aksiyonlar SecurityEngine middleware'inden geçer, onaysız çalışmaz. Rate limiting aktif (IP + endpoint bazlı). Email blocklist mevcuttur. Yeni endpoint eklerken mutlaka rate limit ve security middleware eklenmelidir."
+      author: "project-owner"
+
+    - text: "GDPR/KVKK: Ses kaydı/işleme yapabilmek için LegalService üzerinden voice_recording kategorisinde açık rıza (consent) gerekir. canProcessVoice() fonksiyonu ile kontrol edilir. Yeni kişisel veri işleme eklenecekse önce consent kategorisi tanımlanmalı."
+      author: "project-owner"
+
+    - text: "Onboarding state machine sırası: account_created → language_set → address_set → first_device_connected → first_skill_suggested → completed. Adım atlanamaz. Yeni adım eklenecekse mutlaka mevcut sıranın arasına veya sonuna eklenmeli, sıra bozulmamalı."
+      author: "project-owner"
+
+    - text: "BillingService constructor imzası: new BillingService(paymentProvider, config). PaymentProvider interface'i implement eden SandboxPaymentProvider (test) veya PatreonPaymentProvider (prod) verilir. Direkt config ile oluşturulamaz."
+      author: "project-owner"
+
+    - text: "Tüm paketler arası bağımlılıklar package.json'da 'workspace:*' olarak tanımlanmalı. Import çalışması için hedef paketin package.json'unda dependency olarak belirtilmiş olması zorunludur."
+      author: "project-owner"
+
+    - text: "Animasyonlar cubic-bezier(0.34, 1.56, 0.64, 1) springy easing kullanır. prefers-reduced-motion: reduce durumunda tüm animasyonlar devre dışı bırakılır."
+      author: "project-owner"
+
+    - text: "SSR-to-static yaklaşım kullanılır — React/Next.js gibi framework YOK. renderMarketingDocument() fonksiyonu tam HTML üretir, build.ts bunu dosyaya yazar. Sıfır JS framework overhead."
+      author: "project-owner"
+
+    - text: "i18n: EN ve TR dilleri desteklenir. Tüm çeviriler @nexus/i18n paketindeki CATALOGS objesinde tutulur. label() fonksiyonu ile erişilir."
+      author: "project-owner"
+
+  documents:
+    - title: "Proje Genel Bakış"
+      goal: "NEXUS AI'nin ne olduğu, monorepo yapısı, paket listesi ve sorumlulukları"
+      parent: ""
+
+    - title: "Mimari ve Paket Yapısı"
+      goal: "27 paketin sorumluluk alanları, bağımlılık ilişkileri ve veri akışı"
+      parent: ""
+
+    - title: "Design System"
+      goal: "Renk token'ları, tipografi, spacing scale, radius, gradient ve bunların CSS'e nasıl aktığı"
+      parent: "Mimari ve Paket Yapısı"
+
+    - title: "Marketing Site Mimarisi"
+      goal: "renderMarketingDocument() yapısı, sayfa bölümleri, CSS organizasyonu, build pipeline"
+      parent: "Mimari ve Paket Yapısı"
+
+    - title: "Sunucu ve Yönlendirme"
+      goal: "app.ts request handler, static serving, OAuth, session yönetimi, güvenlik başlıkları"
+      parent: "Mimari ve Paket Yapısı"
+
+    - title: "Tasarım Kararları"
+      goal: "Neden framework yok, neden inline CSS, neden sadece tanıtım+indirme, neden bu renkler"
+      parent: ""
+
+    - title: "Kaldırılan Bölümler ve Gerekçeleri"
+      goal: "FAQ, mobil bölüm, iframe preview, sign-in butonu — neden kaldırıldı, geri ekleme koşulları"
+      parent: "Tasarım Kararları"
+
+    - title: "Eklenen Özellikler"
+      goal: "Cookie banner, legal sayfalar, 404 sayfası, How It Works, sosyal linkler, analytics placeholder"
+      parent: "Tasarım Kararları"
+
+    - title: "Build ve Deploy"
+      goal: "build.ts pipeline'ı, pnpm komutları, statik çıktı yapısı, font kopyalama, sitemap üretimi"
+      parent: ""
+
+    - title: "Erişilebilirlik ve Performans"
+      goal: "WCAG AA uyumu, focus-visible, role attribute'ları, font-display swap, preload stratejisi"
+      parent: ""
+
+knowledgecard:
+  notes:
+    - text: "packages/server/src/pages.ts ana düzenleme hedefidir — marketing sayfasının tüm HTML ve CSS üretimi burada. renderMarketingDocument(), renderLegalPage(), renderNotFoundPage() fonksiyonlarını içerir."
+      author: "project-owner"
+
+    - text: "packages/web/src/render.ts paylaşılan render fonksiyonlarını ve global CSS'i (renderStyles) içerir. renderScreenBody() fonksiyonu masaüstü/mobil shell'ler tarafından kullanılır — KESİNLİKLE bozulmamalı."
+      author: "project-owner"
+
+    - text: "packages/web/src/build.ts statik site üretir: EN/TR × dark/light HTML + legal + 404 + sitemap + fonts + manifest. Tek komut: pnpm --filter @nexus/web build:demo"
+      author: "project-owner"
+
+    - text: "Marketing sayfasının body yapısı sırasıyla: navbar → hero → integrationStrip → stats → features → how-it-works → desktopSection → ctaBand → footer → cookieBanner"
+      author: "project-owner"
+
+    - text: "ColorScale interface'ine accent field'ı eklendi. Tüm platformlarda --accent ve --gradient CSS değişkenleri mevcut. .btn.primary sınıfı global olarak gradient kullanır."
+      author: "project-owner"
+
+    - text: "packages/infra/src/index.ts: SyncEngine, InMemorySyncBackend, mergeState, SyncDomain, SyncRecord — cross-platform sync'in kalbidir. Bu modülün API'si değiştirilirse TÜM platformlardaki sync kırılır. Yeni domain eklemek için SyncDomain type genişletilmeli ve emptyState() güncellenmeli."
+      author: "project-owner"
+
+    - text: "packages/infra/src/ops.ts: HealthMonitor (uptime/alerting), BackupScheduler (lastBackupAt=-Infinity ile ilk backup garanti), OtaUpdateChecker (semver karşılaştırma, major=mandatory), DeepLinkManager (AASA + assetlinks). BackupScheduler'da lastBackupAt değeri -Infinity olmalı, 0 yapılırsa ilk backup tetiklenmez."
+      author: "project-owner"
+
+    - text: "packages/billing/src/index.ts: BillingService, PaymentProvider (interface), SandboxPaymentProvider, PatreonPaymentProvider. subscribe() otomatik charge yapar, ayrı charge() çağrısı yok. addPromoCode(code, discountPercent, validDays, maxUses) imzası kesindir."
+      author: "project-owner"
+
+    - text: "packages/platform/src/launch.ts: BetaManager (cohort/feedback/feature-flags), LaunchChecklist (11 madde, tüm ROADMAP bitiş kriterleri), StoreSubmissionTracker (app_store/google_play lifecycle). LaunchChecklist.isReady() ancak TÜM maddeler pass olduğunda true döner."
+      author: "project-owner"
+
+    - text: "packages/memory/src/cloud.ts: CloudSyncedUserMemory — InMemoryUserMemory'yi wrap eder ve her updatePersonalization() çağrısında otomatik syncUp() yapar. syncDown() ile remote veriyi çeker. sync() ikisini birden yapar. CloudMemoryBackend interface'i implement edilmeli."
+      author: "project-owner"
+
+    - text: "packages/legal/src/service.ts: LegalService — documents (EN+TR, ToS/Privacy/Cookies), ConsentManager (grant/revoke per category), DataSubjectRequest (export/delete). canProcessVoice(userId) ses işleme öncesi çağrılmalı. requestDataDeletion() tüm consent'leri temizler."
+      author: "project-owner"
+
+    - text: "packages/accounts/src/bridge.ts: AccountBridge — multi-device login, session management. Household sistemi canAccess(userId, deviceId, action) ile yetki kontrol eder, can() metodu YOK. revoke() cihaz bazlı yetki kaldırır."
+      author: "project-owner"
+
+    - text: "packages/core/src/pipeline.ts: IntentPipeline — niyet çıkarma → ajan seçimi → plan üretimi → yürütme. DigitalTwin ile context alınır (getDevice()/getContext()), worldState() metodu YOKTUR. Pipeline middleware olarak SecurityEngine kullanır."
+      author: "project-owner"

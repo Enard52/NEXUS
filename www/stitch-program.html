@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -9,11 +9,11 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Program Ekle</title>
 <!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="css/tailwind.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="js/lucide.js"></script>
 <!-- Custom Tailwind Configuration (NEXUS brand colors, same as DND page) -->
 <script>
     tailwind.config = {
@@ -222,6 +222,9 @@
     buildWheel(document.getElementById('wheel-eh'), 24, 1);
     buildWheel(document.getElementById('wheel-em'), 60, 5);
 
+    // Initialize day pills styling
+    quickRepeat([0, 1, 2, 3, 4]);
+
     /* ---------- Device list from storage ---------- */
     function populateProgramDevices() {
       var container = document.getElementById('program-devices-list');
@@ -325,3 +328,4 @@
     }
   </script>
 </body></html>
+

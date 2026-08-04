@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="tr"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NEXUS - Eve Geldim</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .bg-welcome-gradient {
+      background: linear-gradient(180deg, #ECE9FD 0%, #FFFFFF 25%, #F8FBFF 100%);
+    }
+    .dark .bg-welcome-gradient {
+      background: linear-gradient(180deg, #0F172A 0%, #020617 100%);
+    }
+    .surface-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    .dark .surface-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+    }
+    .tap-scale:active {
+      transform: scale(0.96);
+    }
+    .nexus-glow {
+      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.28);
+    }
+  </style>
+</head>
+<body>
+  <div class="w-full h-screen flex flex-col bg-welcome-gradient text-slate-900 transition-colors duration-500" data-sd-id="1">
+    
+    <!-- Header -->
+    <header class="shrink-0 pt-14 px-5 pb-4 flex items-center justify-between" data-sd-id="2">
+      <a href="stitch-smart.html" id="back-link" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/60 dark:bg-slate-800/60 shadow-sm tap-scale transition-all" data-sd-id="3">
+        <iconify-icon icon="lucide:chevron-left" class="text-2xl text-slate-800 dark:text-slate-100"></iconify-icon>
+      </a>
+      <h1 class="text-base font-bold text-slate-800 dark:text-slate-100" data-sd-id="4">Senaryo Hazırlığı</h1>
+      <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/60 dark:bg-slate-800/60 shadow-sm tap-scale" data-sd-id="5">
+        <iconify-icon icon="lucide:more-horizontal" class="text-xl text-slate-800 dark:text-slate-100"></iconify-icon>
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto px-5 pb-10" data-sd-id="6">
+      
+      <!-- Visual Hero Section -->
+      <section class="relative mt-2 mb-8" data-sd-id="7">
+        <div class="w-full aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl relative" data-sd-id="8">
+          <img src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Home Interior" class="w-full h-full object-cover" data-sd-id="9">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" data-sd-id="10"></div>
+          <div class="absolute bottom-6 left-6 right-6" data-sd-id="11">
+            <div class="flex items-center gap-2 mb-1" data-sd-id="12">
+              <span class="px-2 py-0.5 rounded-full bg-nexusCyan/20 text-nexusCyan text-[10px] font-bold uppercase tracking-wider backdrop-blur-md border border-nexusCyan/30" data-sd-id="13">ÖÖnerilen</span>
+            </div>
+            <h2 class="text-3xl font-extrabold text-white leading-tight tracking-tight" data-sd-id="14">Eve Geldim</h2>
+            <p class="text-white/80 text-sm font-medium" data-sd-id="15">Hoş geldiniz. Eviniz sizi bekliyor.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Summary Grid -->
+      <section class="space-y-6" data-sd-id="16">
+        <div class="flex items-center justify-between" data-sd-id="17">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white" data-sd-id="18">Aksiyon Özeti</h3>
+          <span class="text-xs font-bold text-nexusPurple" data-sd-id="19">Tümünü Düzenle</span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4" data-sd-id="20">
+          
+          <!-- Action Item: Lighting -->
+          <div class="surface-card p-4 rounded-[1.6rem] flex items-center gap-4" data-sd-id="21">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center" data-sd-id="22">
+              <iconify-icon icon="lucide:sun" class="text-2xl text-amber-500"></iconify-icon>
+            </div>
+            <div class="flex-1" data-sd-id="23">
+              <h4 class="text-[15px] font-bold text-slate-800 dark:text-white" data-sd-id="24">Giriş Aydınlatması</h4>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400" data-sd-id="25">Antre ve Salon %40 Sıcak Beyaz</p>
+            </div>
+            <iconify-icon icon="lucide:check-circle" class="text-xl text-nexusPurple"></iconify-icon>
+          </div>
+
+          <!-- Action Item: Climate -->
+          <div class="surface-card p-4 rounded-[1.6rem] flex items-center gap-4" data-sd-id="26">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center" data-sd-id="27">
+              <iconify-icon icon="lucide:thermometer-snowflake" class="text-2xl text-nexusCyan"></iconify-icon>
+            </div>
+            <div class="flex-1" data-sd-id="28">
+              <h4 class="text-[15px] font-bold text-slate-800 dark:text-white" data-sd-id="29">Konfor Aktivasyonu</h4>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400" data-sd-id="30">İklimlendirme 22°C Konfor Modu</p>
+            </div>
+            <iconify-icon icon="lucide:check-circle" class="text-xl text-nexusPurple"></iconify-icon>
+          </div>
+
+          <!-- Action Item: Media -->
+          <div class="surface-card p-4 rounded-[1.6rem] flex items-center gap-4" data-sd-id="31">
+            <div class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center" data-sd-id="32">
+              <iconify-icon icon="lucide:music-2" class="text-2xl text-nexusPurple"></iconify-icon>
+            </div>
+            <div class="flex-1" data-sd-id="33">
+              <h4 class="text-[15px] font-bold text-slate-800 dark:text-white" data-sd-id="34">Medya Aktarımı</h4>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400" data-sd-id="35">iPhone'daki müziği HomePod'a taşı</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer" data-sd-id="36">
+              <input type="checkbox" checked="" class="sr-only peer" data-sd-id="37">
+              <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-nexusPurple" data-sd-id="38"></div>
+            </label>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Detailed Device List for Preview -->
+      <section class="mt-8" data-sd-id="39">
+        <h3 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4" data-sd-id="40">Etkilenecek Cihazlar</h3>
+        <div class="flex overflow-x-auto gap-3 pb-4 no-scrollbar" data-sd-id="41">
+          <div class="shrink-0 w-32 surface-card p-3 rounded-2xl flex flex-col items-center text-center" data-sd-id="42">
+            <iconify-icon icon="lucide:lightbulb" class="text-2xl text-amber-500 mb-2"></iconify-icon>
+            <span class="text-xs font-bold dark:text-white" data-sd-id="43">Giriş Lambası</span>
+          </div>
+          <div class="shrink-0 w-32 surface-card p-3 rounded-2xl flex flex-col items-center text-center" data-sd-id="44">
+            <iconify-icon icon="lucide:fan" class="text-2xl text-cyan-500 mb-2"></iconify-icon>
+            <span class="text-xs font-bold dark:text-white" data-sd-id="45">Klima (Salon)</span>
+          </div>
+          <div class="shrink-0 w-32 surface-card p-3 rounded-2xl flex flex-col items-center text-center" data-sd-id="46">
+            <iconify-icon icon="lucide:speaker" class="text-2xl text-purple-500 mb-2"></iconify-icon>
+            <span class="text-xs font-bold dark:text-white" data-sd-id="47">HomePod</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Persistent Bottom CTA -->
+    <footer class="shrink-0 pb-[34px] px-5 pt-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800" data-sd-id="48">
+      <button id="run-action-btn" class="w-full h-16 bg-nexusPurple text-white rounded-[1.6rem] font-bold text-lg flex items-center justify-center gap-3 tap-scale nexus-glow transition-all active:shadow-none" data-sd-id="49">
+        <iconify-icon icon="lucide:play" class="text-2xl"></iconify-icon>
+        Senaryoyu Başlat
+      </button>
+      <p class="text-center mt-3 text-[11px] font-bold text-slate-400 uppercase tracking-widest" data-sd-id="50">Bir kez dokunmanız yeterli</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Logic for button press effect and simulating the run state
+    const runBtn = document.getElementById('run-action-btn');
+    runBtn.addEventListener('click', () => {
+      runBtn.classList.add('bg-nexusCyan', 'scale-95');
+      runBtn.innerHTML = '<iconify-icon icon="lucide:loader-2" class="text-2xl animate-spin"></iconify-icon> Çalıştırılıyor...';
+      
+      setTimeout(() => {
+        runBtn.classList.remove('animate-pulse', 'scale-95');
+        runBtn.innerHTML = '<iconify-icon icon="lucide:check" class="text-2xl"></iconify-icon> Tamamlandı';
+        setTimeout(() => {
+            window.location.href = 'stitch-home.html';
+        }, 1000);
+      }, 1500);
+    });
+  </script>
+
+</body></html>

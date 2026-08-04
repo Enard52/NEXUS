@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS - Hesap ve Güvenlik</title>
+<link href="css/tailwind.css" rel="stylesheet"/>
+<script src="js/lucide.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
+  .nexus-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+  .switch { position: relative; display: inline-block; width: 52px; height: 32px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; inset: 0; cursor: pointer; background: #e5e7eb; border-radius: 34px; transition: .3s; }
+  .slider:before { position: absolute; content: ""; width: 26px; height: 26px; left: 3px; bottom: 3px; border-radius: 9999px; background: white; transition: .3s; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  input:checked + .slider { background: #4C7DFF; }
+  input:checked + .slider:before { transform: translateX(20px); }
+</style>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+</head>
+<body class="text-slate-900 dark:text-slate-100">
+  <div class="min-h-screen flex flex-col">
+    <header class="shrink-0 pt-14 pb-4 px-5 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between sticky top-0 z-40">
+      <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-settings.html'" class="p-1 -ml-1 active:scale-95 transition-transform" aria-label="Geri">
+        <i data-lucide="chevron-left" class="w-7 h-7 text-slate-700"></i>
+      </a>
+      <h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">Hesap ve Güvenlik</h1>
+      <div class="w-8"></div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto pt-6 px-4 space-y-6 pb-10">
+      <section class="space-y-3">
+        <h3 class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Giriş Yöntemleri</h3>
+        <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden nexus-shadow border border-transparent dark:border-slate-800">
+          <button type="button" onclick="toggleSection('password-section')" class="w-full flex items-center justify-between px-5 py-5 active:bg-gray-50 border-b border-gray-50 text-left">
+            <div class="flex items-center gap-3">
+              <i data-lucide="lock" class="w-6 h-6 text-slate-400"></i>
+              <div>
+                <span class="block text-base font-semibold">Şifreyi Değiştir</span>
+                <span class="block text-xs text-slate-500 mt-0.5" id="password-meta">Henüz güncellenmedi</span>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-300" id="password-section-icon"></i>
+          </button>
+          <div id="password-section" class="hidden px-5 pb-5">
+            <div class="space-y-3 pt-4">
+              <input id="current-password" type="password" placeholder="Mevcut şifre" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-[#4C7DFF] focus:ring-0">
+              <input id="new-password" type="password" placeholder="Yeni şifre" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-[#4C7DFF] focus:ring-0">
+              <input id="confirm-password" type="password" placeholder="Yeni şifre tekrar" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-[#4C7DFF] focus:ring-0">
+              <p id="password-error" class="hidden text-xs text-rose-500"></p>
+              <button type="button" onclick="savePassword()" class="w-full rounded-2xl bg-slate-900 text-white py-3 text-sm font-bold">Şifreyi Güncelle</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between px-5 py-5">
+            <div class="flex items-center gap-3">
+              <i data-lucide="fingerprint" class="w-6 h-6 text-slate-400"></i>
+              <div>
+                <span class="block text-base font-semibold">Biyometrik Kilit</span>
+                <span class="block text-xs text-slate-500 mt-0.5">Bu cihazı için yerel koruma</span>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="biometric-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Ekstra Güvenlik</h3>
+        <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden nexus-shadow border border-transparent dark:border-slate-800">
+          <div class="flex items-center justify-between px-5 py-5 border-b border-gray-50">
+            <div class="flex items-center gap-3">
+              <i data-lucide="shield-check" class="w-6 h-6 text-[#4C7DFF]"></i>
+              <div>
+                <p class="text-base font-semibold">İki Adımlı Doğrulama</p>
+                <p class="text-xs font-medium" id="two-factor-status">Aktif</p>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="two-factor-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <button type="button" onclick="toggleSection('recovery-section')" class="w-full flex items-center justify-between px-5 py-5 active:bg-gray-50 text-left">
+            <div class="flex items-center gap-3">
+              <i data-lucide="key-round" class="w-6 h-6 text-slate-400"></i>
+              <div>
+                <span class="block text-base font-semibold">Kurtarma Yöntemleri</span>
+                <span class="block text-xs text-slate-500 mt-0.5" id="recovery-meta">E-posta ve telefon bilgilerini yönet</span>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-300" id="recovery-section-icon"></i>
+          </button>
+          <div id="recovery-section" class="hidden px-5 pb-5">
+            <div class="space-y-3 pt-4">
+              <input id="recovery-email" type="email" placeholder="E-posta adresi" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-[#4C7DFF] focus:ring-0">
+              <input id="recovery-phone" type="tel" placeholder="+90 5XX XXX XX XX" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-[#4C7DFF] focus:ring-0">
+              <button type="button" onclick="saveRecoveryMethods()" class="w-full rounded-2xl bg-slate-900 text-white py-3 text-sm font-bold">Kurtarma Bilgilerini Kaydet</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Cihaz ve Oturumlar</h3>
+        <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden nexus-shadow border border-transparent dark:border-slate-800">
+          <div class="px-5 py-5 border-b border-gray-50">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center shrink-0">
+                <i data-lucide="smartphone" class="w-6 h-6 text-[#4C7DFF]"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-sm font-bold truncate" id="current-session-title">Bu Cihaz</p>
+                  <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">AKTİF</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5" id="current-session-meta">Yerel oturum açık</p>
+              </div>
+            </div>
+          </div>
+          <button type="button" onclick="toggleSection('trusted-section')" class="w-full flex items-center justify-between px-5 py-4 bg-slate-50/50 active:bg-slate-100 text-left">
+            <span class="text-xs font-bold text-slate-500" id="trusted-count-label">Güvenilir Cihazlar</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400" id="trusted-section-icon"></i>
+          </button>
+          <div id="trusted-section" class="hidden px-5 pb-5">
+            <div id="trusted-devices-list" class="space-y-3 pt-4"></div>
+          </div>
+        </div>
+      </section>
+
+      <button type="button" onclick="signOutOtherSessions()" class="w-full flex items-center justify-center gap-2 py-4 text-red-500 font-bold text-sm active:scale-95 transition-transform">
+        <i data-lucide="log-out" class="w-5 h-5"></i>
+        Diğer Oturumları Kapat
+      </button>
+    </main>
+  </div>
+  <script>
+    const SESSION_KEY = 'nexusTrustedSessions';
+
+    function getCurrentDeviceLabel() {
+      const ua = navigator.userAgent || '';
+      if (/iPhone/i.test(ua)) return 'iPhone';
+      if (/iPad/i.test(ua)) return 'iPad';
+      if (/Android/i.test(ua)) return 'Android';
+      if (/Mac/i.test(ua)) return 'Mac';
+      if (/Windows/i.test(ua)) return 'Windows';
+      return 'Bu Cihaz';
+    }
+
+    function ensureCurrentSession() {
+      const current = {
+        id: 'current-device',
+        name: getCurrentDeviceLabel(),
+        meta: (navigator.platform || 'Web') + ' • Yerel oturum',
+        current: true
+      };
+      let sessions = [];
+      try { sessions = JSON.parse(nexusGetItem(SESSION_KEY) || '[]'); } catch (e) {}
+      if (!Array.isArray(sessions)) sessions = [];
+      const others = sessions.filter(item => item && item.id !== current.id);
+      nexusSetItem(SESSION_KEY, JSON.stringify([current].concat(others)));
+    }
+
+    function getSessions() {
+      ensureCurrentSession();
+      try {
+        const sessions = JSON.parse(nexusGetItem(SESSION_KEY) || '[]');
+        return Array.isArray(sessions) ? sessions : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      if (!section) return;
+      section.classList.toggle('hidden');
+      const icon = document.getElementById(id + '-icon');
+      if (icon) icon.classList.toggle('rotate-180');
+    }
+
+    function syncSecurityState() {
+      const biometric = nexusGetItem('nexusBiometricLock') !== 'false';
+      const twoFactor = nexusGetItem('nexusTwoFactorEnabled') !== 'false';
+      document.getElementById('biometric-toggle').checked = biometric;
+      document.getElementById('two-factor-toggle').checked = twoFactor;
+      const status = document.getElementById('two-factor-status');
+      status.textContent = twoFactor ? 'Aktif' : 'Kapalı';
+      status.className = twoFactor ? 'text-xs text-green-600 font-medium' : 'text-xs text-slate-400 font-medium';
+
+      const updatedAt = nexusGetItem('nexusPasswordUpdatedAt');
+      document.getElementById('password-meta').textContent = updatedAt ? ('Son güncelleme ' + updatedAt) : 'Henüz güncellenmedi';
+      document.getElementById('recovery-email').value = nexusGetItem('nexusRecoveryEmail') || nexusGetItem('nexusUserEmail') || '';
+      document.getElementById('recovery-phone').value = nexusGetItem('nexusRecoveryPhone') || '';
+    }
+
+    function savePassword() {
+      const current = document.getElementById('current-password').value;
+      const next = document.getElementById('new-password').value;
+      const confirm = document.getElementById('confirm-password').value;
+      const error = document.getElementById('password-error');
+      const existing = nexusGetItem('nexusUserPassword');
+
+      if (existing && current !== existing) {
+        error.textContent = 'Mevcut şifre eşleşmiyor.';
+        error.classList.remove('hidden');
+        return;
+      }
+      if (next.length < 4) {
+        error.textContent = 'Yeni şifre en az 4 karakter olmalı.';
+        error.classList.remove('hidden');
+        showSecurityToast('Şifre en az 4 karakter olmalı', true);
+        return;
+      }
+      if (next !== confirm) {
+        error.textContent = 'Yeni şifre tekrar alanı eşleşmiyor.';
+        error.classList.remove('hidden');
+        return;
+      }
+      nexusSetItem('nexusUserPassword', next);
+      nexusSetItem('nexusPasswordUpdatedAt', new Date().toLocaleDateString('tr-TR'));
+      error.classList.add('hidden');
+      document.getElementById('current-password').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+      syncSecurityState();
+      showSecurityToast('Şifre güncellendi ✓');
+    }
+
+    function saveRecoveryMethods() {
+      nexusSetItem('nexusRecoveryEmail', document.getElementById('recovery-email').value.trim());
+      nexusSetItem('nexusRecoveryPhone', document.getElementById('recovery-phone').value.trim());
+      showSecurityToast('Kurtarma bilgileri kaydedildi ✓');
+    }
+
+    function renderSessions() {
+      const sessions = getSessions();
+      const current = sessions.find(item => item.current) || sessions[0];
+      document.getElementById('current-session-title').textContent = current ? current.name : 'Bu Cihaz';
+      document.getElementById('current-session-meta').textContent = current ? current.meta : 'Yerel oturum açık';
+
+      const others = sessions.filter(item => !item.current);
+      document.getElementById('trusted-count-label').textContent = 'Güvenilir Cihazlar (' + sessions.length + ')';
+      const list = document.getElementById('trusted-devices-list');
+      if (!others.length) {
+        list.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 px-4 py-4 text-sm text-slate-500">Başka kayıtlı oturum veya güvenilir cihazı yok.</div>';
+        return;
+      }
+      list.innerHTML = others.map((session, index) => (
+        '<div class="rounded-2xl bg-slate-50 px-4 py-4 flex items-center justify-between gap-3">' +
+          '<div class="min-w-0">' +
+            '<p class="text-sm font-semibold truncate">' + escapeHtml(session.name || 'Cihaz') + '</p>' +
+            '<p class="text-xs text-slate-500 truncate mt-1">' + escapeHtml(session.meta || 'Kayıtlı cihazı') + '</p>' +
+          '</div>' +
+          '<button type="button" onclick="removeSession(' + index + ')" class="text-xs font-bold text-red-500">Kaldır</button>' +
+        '</div>'
+      )).join('');
+    }
+
+    function removeSession(index) {
+      const sessions = getSessions();
+      const others = sessions.filter(item => !item.current);
+      others.splice(index, 1);
+      const current = sessions.find(item => item.current);
+      nexusSetItem(SESSION_KEY, JSON.stringify([current].concat(others)));
+      renderSessions();
+    }
+
+    function signOutOtherSessions() {
+      const current = getSessions().find(item => item.current);
+      nexusSetItem(SESSION_KEY, JSON.stringify(current ? [current] : []));
+      renderSessions();
+      showSecurityToast('Diğer oturumlar kapatıldı ✓');
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    document.getElementById('biometric-toggle').addEventListener('change', function () {
+      nexusSetItem('nexusBiometricLock', this.checked.toString());
+    });
+    document.getElementById('two-factor-toggle').addEventListener('change', function () {
+      nexusSetItem('nexusTwoFactorEnabled', this.checked.toString());
+      syncSecurityState();
+    });
+
+    syncSecurityState();
+    renderSessions();
+    lucide.createIcons();
+  </script>
+<script>
+function showSecurityToast(msg, isError) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-size:14px;font-weight:600;color:#fff;white-space:nowrap;max-width:90vw;text-align:center;background:' + (isError ? '#dc2626' : '#1e293b') + ';';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
+</body>
+</html>
+
