@@ -2734,8 +2734,9 @@ function showIntegrationsToast(msg) {
 }
 </script>
 <script data-purpose="product-image-transparency">
-  // Beyaz arka planlı ürün görsellerini şeffaflaştırır. Eskiden <script src="…CDN…">
-  // etiketinin İÇİNDE duruyordu; src'li script gövdesi çalışmadığı için hiç çalışmıyordu.
+  // Beyaz arka planlı ürün görsellerini şeffaflaştırır. Eskiden bu kod, src niteliği
+  // olan bir script etiketinin İÇİNDE duruyordu; tarayıcı src'li script gövdesini
+  // çalıştırmadığı için hiç çalışmıyordu.
   function makeImagesTransparent() {
     document.querySelectorAll('.product-tile img').forEach(function (img) {
       if (img.complete) processProductImage(img);

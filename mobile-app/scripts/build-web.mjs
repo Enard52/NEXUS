@@ -81,6 +81,7 @@ const SHARED_DIRS = [
   { from: join(REPO_ROOT, "www", "css"), to: join(OUT_DIR, "css") },
   { from: join(REPO_ROOT, "www", "js"), to: join(OUT_DIR, "js") },
   { from: join(REPO_ROOT, "www", "fonts"), to: join(OUT_DIR, "fonts") },
+  { from: join(REPO_ROOT, "www", "leaflet"), to: join(OUT_DIR, "leaflet") },
 ];
 for (const dir of SHARED_DIRS) {
   if (!existsSync(dir.from)) {

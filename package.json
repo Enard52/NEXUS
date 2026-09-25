@@ -27,8 +27,9 @@
     "build:tailwind:watch": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify --watch",
     "copy:fonts": "xcopy /Y node_modules\\@fontsource\\inter\\files\\inter-latin-*.woff2 www\\fonts\\inter\\ 2>nul",
     "copy:lucide": "xcopy /Y node_modules\\lucide\\dist\\umd\\lucide.js www\\js\\lucide.js 2>nul",
+    "copy:leaflet": "node scripts/copy-leaflet.mjs",
+    "build:assets": "npm run build:tailwind && npm run copy:fonts && npm run copy:lucide && npm run copy:leaflet",
     "sync:www": "robocopy . www /MIR /XD .git node_modules mobile-app /NP /NDL /NJH /NJS 2>nul",
-    "build:assets": "npm run build:tailwind && npm run copy:fonts && npm run copy:lucide",
     "build:full": "npm run build:assets && npm run sync:www"
   },
   "devDependencies": {
@@ -36,6 +37,7 @@
     "@capacitor/cli": "^8.4.2",
     "@types/node": "^24.0.0",
     "autoprefixer": "^10.4.20",
+    "leaflet": "1.9.4",
     "playwright": "^1.61.1",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
