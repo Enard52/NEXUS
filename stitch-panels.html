@@ -12,6 +12,7 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
   <script>
     window.tailwind = window.tailwind || {};
     tailwind.config = {
@@ -262,6 +263,7 @@
           '<p class="text-[11px] text-slate-500 truncate dark:text-slate-300">' + escapeHtml(device.room || "") + "</p>" +
           "</div>" + (hasSwitch ? switchControlHtml(device, entry.index) : "") + "</div>" +
           (hasBrightness ? brightnessControlHtml(device, entry.index) : "") +
+          (LAN_ERRORS[entry.index] ? '<p class="mt-2 text-[11px] font-semibold text-rose-500">' + escapeHtml(LAN_ERRORS[entry.index]) + "</p>" : "") +
           (passive ? '<p class="mt-2 text-[11px] text-slate-400 dark:text-slate-300">Bu cihaz durum bildirir; kumandası cihazdan gelir.</p>' : "") +
           "</div>";
       }).join("");
@@ -293,12 +295,17 @@
       if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
+    var LAN_ERRORS = {}; // oturum bazlı: hangi cihaza komut gidemedi
+
     function mutateDevice(index, updater) {
       var devices = readPairedDevices();
       if (!devices[index]) return;
       devices[index] = updater(devices[index]);
       writePairedDevices(devices);
       renderPanels();
+      var state = devices[index].state || {};
+      if ("switch" in state) sendCommand(devices[index], "switch", state.switch, index);
+      if ("brightness" in state) sendCommand(devices[index], "brightness", state.brightness, index);
     }
 
     function toggleDeviceSwitch(index) {
@@ -307,6 +314,17 @@
         state.switch = state.switch !== true;
         device.state = state;
         return device;
+      });
+    }
+
+    // Gerçek LAN komutu: sadece host+protocol ile eklenmiş cihazlara gider.
+    // Katalogdan simüle eklenen cihazlarda sessiz kalır (yanlış bir "başarılı" göstermez).
+    function sendCommand(device, capability, value, index) {
+      if (!device || !device.host || !device.protocol) return;
+      if (typeof window.nexusLan === "undefined") return;
+      window.nexusLan.write(device, capability, value).catch(function () {
+        LAN_ERRORS[index] = "Komut cihazına ulaşamadı — aynı Wi-Fi ağında olduğunu doğrula.";
+        renderPanels();
       });
     }
 
@@ -319,6 +337,7 @@
       writePairedDevices(devices);
       var label = document.getElementById("bright-value-" + index);
       if (label) label.textContent = Math.round(state.brightness) + "%";
+      sendCommand(devices[index], "brightness", state.brightness, index);
     }
 
     function setGroupPower(capsKey, on) {
@@ -334,6 +353,12 @@
       });
       writePairedDevices(changed);
       renderPanels();
+      changed.forEach(function (device, index) {
+        var caps = deviceCaps(device).slice().sort().join("+");
+        if (caps === capsKey && caps.indexOf("switch") !== -1) {
+          sendCommand(device, "switch", on, index);
+        }
+      });
     }
 
     renderPanels();

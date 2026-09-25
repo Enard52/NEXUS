@@ -49,6 +49,7 @@ const SHARED_SCRIPTS = [
   "theme.js",
   "data.js",
   "supported-devices.js",
+  "lan-connectors.js",
   "ai-fab.js",
   "sheet-gestures.js",
   "smart-scene-page.js",
