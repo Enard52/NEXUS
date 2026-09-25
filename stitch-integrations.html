@@ -207,6 +207,7 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="supported-devices.js"></script>
 </head>
 <body class="bg-white text-slate-900 h-screen flex flex-col overflow-hidden">
 
@@ -2671,7 +2672,17 @@
         const paired = getPairedDevices();
         const safeName = (deviceName || 'Yeni cihazı').trim();
         if (!paired.some((device) => device && device.name === safeName)) {
-          paired.push({ name: safeName, icon: 'cpu', room: 'Ana sayfaya bağlı' });
+          const groupTitle = (el && el.querySelector('.product-category-pill') || {}).textContent || '';
+          const entry = { name: safeName, icon: 'cpu', room: 'Ana sayfaya bağlı' };
+          // Protokol + işlev küyesi kontrol panellerinin gruplanmasında kullanılır.
+          if (typeof nexusResolveDevice === 'function') {
+            const resolved = nexusResolveDevice(safeName, groupTitle);
+            entry.protocol = resolved.protocol;
+            entry.brand = resolved.brand;
+            entry.caps = resolved.caps;
+            entry.img = resolved.img;
+          }
+          paired.push(entry);
           nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
         }
         navigateAfterPair();

@@ -94,4 +94,44 @@
   window.nexusCapabilityKey = function (caps) {
     return (caps || []).slice().sort().join("+");
   };
+
+  // Eşleştirme sırasında cihazın protokol/işlev/görsel bilgisini çözür.
+  // 1) Desteklenen matriste ada göre birebir eşleşme, 2) katalog kategori başlığından
+  // sezgileme, 3) bilinmeyen → tek anahtarlı "other" (panelde "Diğer" grubuna düşer).
+  var CAP_HINTS = [
+    { test: /şerit|strip|rgb/i, caps: ["switch", "brightness", "color"], img: "generic-led-strip.png" },
+    { test: /ampul|bulb|lamba|lamp/i, caps: ["switch", "brightness"], img: "generic-led-bulb.png" },
+    { test: /tavan|avize|ceiling|armatür/i, caps: ["switch", "brightness"], img: "generic-ceiling-light.png" },
+    { test: /priz|plug|anahtar şerit|power strip/i, caps: ["switch", "energy"], img: "generic-smart-plug.png" },
+    { test: /anahtar|switch|dimmer/i, caps: ["switch"], img: "generic-wall-switch.png" },
+    { test: /kamera|camera|gözetim/i, caps: ["camera"], img: "generic-indoor-camera.png" },
+    { test: /termostat|klima|kombi|ısıtıcı|heater/i, caps: ["temperature"], img: "generic-thermostat.png" },
+    { test: /hareket|motion|varlık/i, caps: ["motion"], img: "generic-motion-sensor.png" },
+    { test: /kapı|pencere|door|window|sensör|sensor/i, caps: ["contact"], img: "generic-door-sensor.png" },
+    { test: /hava kalite|air quality/i, caps: ["airQuality"], img: "generic-air-quality.png" },
+    { test: /robot|süpürge|vacuum/i, caps: ["vacuum"], img: "generic-smart-hub.png" },
+  ];
+
+  window.nexusResolveDevice = function (name, groupTitle) {
+    var label = String(name || "") + " " + String(groupTitle || "");
+    for (var i = 0; i < NEXUS_SUPPORTED_DEVICES.length; i++) {
+      var group = NEXUS_SUPPORTED_DEVICES[i];
+      for (var j = 0; j < group.models.length; j++) {
+        if (group.models[j].name === name) {
+          return {
+            brand: group.brand,
+            protocol: group.protocol,
+            caps: group.models[j].caps.slice(),
+            img: group.models[j].img,
+          };
+        }
+      }
+    }
+    for (var k = 0; k < CAP_HINTS.length; k++) {
+      if (CAP_HINTS[k].test.test(label)) {
+        return { brand: "", protocol: "unknown", caps: CAP_HINTS[k].caps.slice(), img: CAP_HINTS[k].img };
+      }
+    }
+    return { brand: "", protocol: "unknown", caps: ["other"], img: "generic-smart-hub.png" };
+  };
 })();
