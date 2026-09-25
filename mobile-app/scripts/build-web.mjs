@@ -71,6 +71,24 @@ if (existsSync(PRODUCT_ASSETS_SRC)) {
   cpSync(PRODUCT_ASSETS_SRC, PRODUCT_ASSETS_OUT, { recursive: true });
 }
 
+// 2c. Yerel stiller, ikon kütüphanesi ve fontlar. Sayfa başlıkları bunları
+// relative yolda (css/, js/, fonts/) bekliyor; kopyalanmazsa bundle'daki
+// ekranlar stilsiz ve iconsuz açılır. Varlıklar repo kökünde build ile üretilir:
+// `pnpm build:tailwind && pnpm copy:fonts && pnpm copy:lucide`.
+const SHARED_DIRS = [
+  { from: join(REPO_ROOT, "www", "css"), to: join(OUT_DIR, "css") },
+  { from: join(REPO_ROOT, "www", "js"), to: join(OUT_DIR, "js") },
+  { from: join(REPO_ROOT, "www", "fonts"), to: join(OUT_DIR, "fonts") },
+];
+for (const dir of SHARED_DIRS) {
+  if (!existsSync(dir.from)) {
+    throw new Error(
+      `Bundle varlığı eksik: ${dir.from} — önce 'pnpm build:tailwind && pnpm copy:fonts && pnpm copy:lucide' çalıştırın.`,
+    );
+  }
+  cpSync(dir.from, dir.to, { recursive: true });
+}
+
 // 3. Sayfalardan bağlanan statik hukuk sayfaları (stitch-plus -> public/terms.html).
 const LEGAL_FILES = ["terms.html", "privacy.html"];
 const PUBLIC_SRC = join(REPO_ROOT, "public");

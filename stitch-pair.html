@@ -15,6 +15,7 @@
   <script src="data.js"></script>
   <script src="ai-fab.js"></script>
   <script>
+    window.tailwind = window.tailwind || {};
     tailwind.config = {
       darkMode: "class",
       theme: {
@@ -73,11 +74,11 @@
   <div class="w-full min-h-screen flex flex-col overflow-x-hidden">
     <header class="shrink-0 pt-14 pb-4 px-5 flex items-center justify-between">
       <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></i>
       </a>
       <h1 class="text-lg font-bold tracking-tight">Cihaz Ekle</h1>
       <button type="button" onclick="openHelp()" class="p-1 -mr-1 flex items-center justify-center transition-transform active:scale-90">
-        <iconify-icon icon="lucide:info" class="text-xl text-nexusPurple"></iconify-icon>
+        <i data-lucide="info" class="text-xl text-nexusPurple"></i>
       </button>
     </header>
 
@@ -125,7 +126,7 @@
       <section class="grid grid-cols-2 gap-3">
         <a href="stitch-scan.html" class="glass-card bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-white/60 flex flex-col gap-4 nexus-shadow active:scale-95 transition-transform">
           <div class="w-12 h-12 bg-nexusPurple/10 rounded-2xl flex items-center justify-center text-nexusPurple">
-            <iconify-icon icon="lucide:scan-qr-code" class="text-2xl"></iconify-icon>
+            <i data-lucide="scan-qr-code" class="text-2xl"></i>
           </div>
           <div>
             <span class="block text-sm font-bold">QR Kod</span>
@@ -134,7 +135,7 @@
         </a>
         <a href="stitch-setup-code.html" class="glass-card bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-white/60 flex flex-col gap-4 nexus-shadow active:scale-95 transition-transform">
           <div class="w-12 h-12 bg-nexusCyan/10 rounded-2xl flex items-center justify-center text-nexusCyan">
-            <iconify-icon icon="lucide:keyboard" class="text-2xl"></iconify-icon>
+            <i data-lucide="keyboard" class="text-2xl"></i>
           </div>
           <div>
             <span class="block text-sm font-bold">Kurulum Kodu</span>
@@ -162,7 +163,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Kategoriye Göre Cihaz Ekle</p>
             </div>
             <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 dark:bg-slate-800 dark:text-slate-300">
-              <iconify-icon icon="lucide:layers" class="text-xl"></iconify-icon>
+              <i data-lucide="layers" class="text-xl"></i>
             </div>
           </div>
 
@@ -170,110 +171,110 @@
             <button type="button" onclick="openCatalogCategory('aydinlatma')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center text-yellow-500 dark:bg-yellow-500/10 dark:text-yellow-300">
-                  <iconify-icon icon="lucide:lamp-ceiling" class="text-xl"></iconify-icon>
+                  <i data-lucide="lamp-ceiling" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Aydınlatma</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Ampul, şerit, lamba ve anahtar ürünleri</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('kamera-ve-kilit')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 dark:bg-red-500/10 dark:text-red-300">
-                  <iconify-icon icon="lucide:shield-check" class="text-xl"></iconify-icon>
+                  <i data-lucide="shield-check" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Güvenlik ve Kamera</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Kamera, alarm, zil ve sensör grupları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('enerji-tasarrufu')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500 dark:bg-blue-500/10 dark:text-blue-300">
-                  <iconify-icon icon="lucide:thermometer-snowflake" class="text-xl"></iconify-icon>
+                  <i data-lucide="thermometer-snowflake" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">İklimlendirme</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Klima, termostat ve hava cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('elektrik-ustasi')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-lime-50 rounded-xl flex items-center justify-center text-lime-500 dark:bg-lime-500/10 dark:text-lime-300">
-                  <iconify-icon icon="lucide:plug-zap" class="text-xl"></iconify-icon>
+                  <i data-lucide="plug-zap" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Priz ve Enerji</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Akıllı priz, anahtar ve enerji ürünleri</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('eglence')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 dark:bg-rose-500/10 dark:text-rose-300">
-                  <iconify-icon icon="lucide:tv" class="text-xl"></iconify-icon>
+                  <i data-lucide="tv" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Medya ve Ses</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">TV, hoparlör ve eğlence cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('kapi-ve-erisim')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 dark:bg-amber-500/10 dark:text-amber-300">
-                  <iconify-icon icon="lucide:lock-keyhole" class="text-xl"></iconify-icon>
+                  <i data-lucide="lock-keyhole" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Kapı ve Erişim</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Kilit, kapı zili ve giriş çözümleri</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('kucuk-ev-aleti')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-300">
-                  <iconify-icon icon="lucide:bot" class="text-xl"></iconify-icon>
+                  <i data-lucide="bot" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Temizlik Robotları</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Süpürge ve zemin bakım cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('buyuk-ev-aletleri')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 dark:bg-sky-500/10 dark:text-sky-300">
-                  <iconify-icon icon="lucide:refrigerator" class="text-xl"></iconify-icon>
+                  <i data-lucide="refrigerator" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Ev Aletleri</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Beyaz eşya ve büyük ev cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
           </div>
 
           <button type="button" onclick="openCatalogCategory('all')" class="w-full mt-5 py-3.5 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40">
-            <iconify-icon icon="lucide:search-check"></iconify-icon>
+            <i data-lucide="search-check"></i>
             Tüm Kataloğu Gör
           </button>
         </div>
@@ -283,7 +284,7 @@
             <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Ürün kataloğu</p>
             <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Marka ve ürün listesinden cihazıını seçerek ekleyebilirsin.</p>
             <button type="button" onclick="openCatalogCategory('all')" class="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">
-              <iconify-icon icon="lucide:arrow-up-right" class="text-base"></iconify-icon>
+              <i data-lucide="arrow-up-right" class="text-base"></i>
               Kataloğu Aç
             </button>
           </div>
@@ -292,7 +293,7 @@
 
       <div class="bg-nexusPurple/5 border border-nexusPurple/10 p-5 rounded-3xl flex gap-4 dark:bg-nexusPurple/10 dark:border-nexusPurple/20">
         <div class="w-10 h-10 shrink-0 bg-nexusPurple rounded-xl flex items-center justify-center text-white">
-          <iconify-icon icon="lucide:help-circle" class="text-xl"></iconify-icon>
+          <i data-lucide="help-circle" class="text-xl"></i>
         </div>
         <div>
           <p class="text-sm font-bold text-slate-900 dark:text-white">Sorun mu yaşıyorsun?</p>
@@ -304,7 +305,7 @@
 
     <footer class="shrink-0 px-5 pb-[34px] pt-2">
       <button id="pair-nearby-btn" onclick="window.location.href='stitch-scan.html'" class="w-full bg-slate-900 text-white py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-xl dark:bg-slate-100 dark:text-slate-900">
-        <iconify-icon icon="lucide:scan-search" class="text-lg"></iconify-icon>
+        <i data-lucide="scan-search" class="text-lg"></i>
         Tarama Merkezini Aç
       </button>
     </footer>
@@ -362,7 +363,7 @@
         return '<div class="plain-card flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-4 dark:border-slate-800">' +
           '<div class="flex min-w-0 items-center gap-3">' +
           '<div class="w-11 h-11 rounded-2xl bg-slate-100 text-nexusPurple flex items-center justify-center shrink-0 dark:bg-slate-800">' +
-          '<iconify-icon icon="lucide:cpu" class="text-xl"></iconify-icon></div>' +
+          '<i data-lucide="cpu" class="text-xl"></i></div>' +
           '<div class="min-w-0"><p class="font-semibold truncate">' + escapeHtml(name) + '</p>' +
           '<p class="text-xs text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(room) + '</p></div></div>' +
           '<button type="button" onclick="removePairedDevice(' + index + ')" class="rounded-full bg-white border border-slate-200 px-3 py-2 text-xs font-bold text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300">Kaldır</button>' +

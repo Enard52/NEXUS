@@ -21,11 +21,11 @@
   <div class="w-full h-screen flex flex-col bg-[#EEF4FF] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold text-slate-900 tracking-tight">Hava Kalitesi</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -45,12 +45,12 @@
 
         <div class="w-full flex items-center gap-4 text-left">
             <div class="flex-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                <iconify-icon icon="lucide:thermometer" class="text-rose-500 text-lg mb-1"></iconify-icon>
+                <i data-lucide="thermometer" class="text-rose-500 text-lg mb-1"></i>
                 <div class="text-[10px] font-bold text-slate-400">SICAKLIK</div>
                 <div id="air-quality-temp" class="text-lg font-bold text-slate-900">-- C</div>
             </div>
             <div class="flex-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                <iconify-icon icon="lucide:droplets" class="text-sky-500 text-lg mb-1"></iconify-icon>
+                <i data-lucide="droplets" class="text-sky-500 text-lg mb-1"></i>
                 <div class="text-[10px] font-bold text-slate-400">NEM</div>
                 <div id="air-quality-humidity" class="text-lg font-bold text-slate-900">--</div>
             </div>
@@ -63,7 +63,7 @@
         <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <iconify-icon icon="lucide:fan" class="text-xl"></iconify-icon>
+              <i data-lucide="fan" class="text-xl"></i>
             </div>
             <div>
               <p id="air-purifier-title" class="text-sm font-bold text-slate-900">Aritici bagli degil</p>
@@ -120,6 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
 </body>
 </html>
 

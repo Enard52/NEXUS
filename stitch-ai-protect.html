@@ -21,11 +21,11 @@
   <div class="w-full h-screen flex flex-col bg-[#EEF4FF] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold text-slate-900 tracking-tight">AI Koruma</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -33,7 +33,7 @@
       <section class="bg-white rounded-[2rem] p-6 nexus-card-shadow relative overflow-hidden flex flex-col items-center justify-center text-center mt-4">
         <div class="absolute w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
         <div class="relative w-24 h-24 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
-            <iconify-icon icon="lucide:shield-check" class="text-5xl text-emerald-500"></iconify-icon>
+            <i data-lucide="shield-check" class="text-5xl text-emerald-500"></i>
             <span class="absolute top-2 right-2 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
         </div>
         <h2 id="ai-protect-title" class="text-2xl font-extrabold text-slate-900 relative">Koruma Kurulmadi</h2>
@@ -43,7 +43,7 @@
       <section class="space-y-3">
         <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Koruma Kayitlari</h3>
         <div id="ai-protect-events" class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-5 text-center">
-          <iconify-icon icon="lucide:shield" class="text-2xl text-slate-300"></iconify-icon>
+          <i data-lucide="shield" class="text-2xl text-slate-300"></i>
           <p class="text-sm font-bold text-slate-900 mt-2">Kayitli olay yok</p>
           <p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama calisinca gercek sonuclar burada listelenir.</p>
         </div>
@@ -54,7 +54,7 @@
         <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <iconify-icon icon="lucide:fingerprint" class="text-xl"></iconify-icon>
+              <i data-lucide="fingerprint" class="text-xl"></i>
             </div>
             <div>
               <p class="text-sm font-bold text-slate-900">Biyometrik Kilit</p>
@@ -71,7 +71,7 @@
 
     <footer class="shrink-0 pb-[34px] px-6 pt-4 bg-white/40 backdrop-blur-md border-t border-white/40">
       <button class="w-full h-16 bg-[#4C7DFF] text-white rounded-3xl flex items-center justify-center gap-3 active-scale nexus-glow transition-all" onclick="alert('Derin tarama başlatılıyor...')">
-        <iconify-icon icon="lucide:scan-line" class="text-2xl"></iconify-icon>
+        <i data-lucide="scan-line" class="text-2xl"></i>
         <span class="text-base font-extrabold tracking-tight">Derin Tarama Başlat</span>
       </button>
     </footer>
@@ -104,7 +104,7 @@ function renderAiProtectState(state, hasState) {
     if (events) {
         const items = Array.isArray(state.events) ? state.events : [];
         if (!items.length) {
-            events.innerHTML = '<iconify-icon icon="lucide:shield" class="text-2xl text-slate-300"></iconify-icon><p class="text-sm font-bold text-slate-900 mt-2">Kayitli olay yok</p><p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama calisinca gercek sonuclar burada listelenir.</p>';
+            events.innerHTML = '<i data-lucide="shield" class="text-2xl text-slate-300"></i><p class="text-sm font-bold text-slate-900 mt-2">Kayitli olay yok</p><p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama calisinca gercek sonuclar burada listelenir.</p>';
         } else {
             events.innerHTML = items.slice(-5).reverse().map(item => '<div class="flex items-center justify-between text-left"><div><p class="text-sm font-bold text-slate-900">' + (item.title || 'Koruma olayi') + '</p><p class="text-[11px] font-medium text-slate-500">' + (item.time || '') + '</p></div><span class="text-[11px] font-bold text-[#4C7DFF] bg-[#4C7DFF]/10 px-2 py-1 rounded-lg">Kaydedildi</span></div>').join('');
         }
@@ -126,6 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
 document.querySelector('footer button').onclick = startScan;
 
 </script>
+
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
 </body>
 </html>
 

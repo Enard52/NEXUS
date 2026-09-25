@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>NEXUS - Aydınlatma Ustası</title>
   <link href="css/tailwind.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -55,11 +54,11 @@
   <div class="flex min-h-screen flex-col">
     <header class="shrink-0 px-6 pb-4 pt-14 flex items-center justify-between">
       <button onclick="history.length > 1 ? history.back() : window.location.href='stitch-discover.html'" class="p-1 -ml-1 text-slate-900 active:scale-95 transition-transform dark:text-slate-100" aria-label="Geri">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </button>
       <h1 class="text-lg font-bold">Aydınlatma Ustası</h1>
       <button id="info-btn" class="glass-surface flex h-10 w-10 items-center justify-center rounded-full text-slate-900 active:scale-95 transition-transform dark:text-slate-100">
-        <iconify-icon icon="lucide:info" class="text-xl"></iconify-icon>
+        <i data-lucide="info" class="text-xl"></i>
       </button>
     </header>
 
@@ -88,7 +87,7 @@
 
       <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
         <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-          <iconify-icon icon="lucide:lightbulb-off" class="text-4xl text-slate-400"></iconify-icon>
+          <i data-lucide="lightbulb-off" class="text-4xl text-slate-400"></i>
         </div>
         <h2 class="text-xl font-bold text-slate-900 dark:text-white">Aydınlatma Cihazı Yok</h2>
         <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-[250px] mx-auto">Sistemde ekli hiçbir aydınlatma cihazıı bulunamadı. Lütfen cihazı ekleyip tekrar deneyin.</p>
@@ -105,7 +104,7 @@
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 text-slate-900 dark:text-white">
-              <iconify-icon icon="lucide:sun" class="text-xl"></iconify-icon>
+              <i data-lucide="sun" class="text-xl"></i>
               <span class="font-bold">Parlaklık</span>
             </div>
             <span id="brightness-value" class="text-sm font-bold text-[#4C7DFF]">%80</span>
@@ -116,7 +115,7 @@
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 text-slate-900 dark:text-white">
-              <iconify-icon icon="lucide:thermometer" class="text-xl"></iconify-icon>
+              <i data-lucide="thermometer" class="text-xl"></i>
               <span class="font-bold">Renk Sıcaklığı</span>
             </div>
             <span id="warmth-label" class="text-sm font-bold text-slate-500 dark:text-slate-300">Sıcak</span>
@@ -144,7 +143,7 @@
 
     <footer class="glass-surface shrink-0 px-6 pb-[34px] pt-4">
       <button id="save-scene-btn" class="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 text-white font-bold shadow-lg active:scale-[0.98] transition-transform dark:bg-slate-100 dark:text-slate-900">
-        <iconify-icon icon="lucide:save" class="text-xl"></iconify-icon>
+        <i data-lucide="save" class="text-xl"></i>
         Sahneyi Kaydet ve Uygula
       </button>
     </footer>
@@ -218,7 +217,7 @@
       document.getElementById("accent-colors").innerHTML = ACCENT_COLORS.map(function (color) {
         var selected = color === selectedColor;
         return '<button class="h-10 w-10 rounded-full ring-4 ring-offset-2 transition ' + (selected ? 'ring-[#4C7DFF]/30' : 'ring-transparent') + '" style="background:' + color + '" onclick="selectColor(\'' + color + '\')"></button>';
-      }).join("") + '<button aria-label="Renk ekle" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800 active:scale-95 transition-transform" onclick="addCustomColor()"><iconify-icon icon="lucide:plus" class="text-lg"></iconify-icon></button>';
+      }).join("") + '<button aria-label="Renk ekle" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800 active:scale-95 transition-transform" onclick="addCustomColor()"><i data-lucide="plus" class="text-lg"></i></button>';
     }
     function addCustomColor() {
       // Gercek renk secici ac; secilen rengi paletine ekle ve kaydet
@@ -250,7 +249,7 @@
     function renderScenes() {
       document.getElementById("scene-grid").innerHTML = LIGHTING_SCENES.map(function (scene) {
         return '<button class="custom-shadow flex flex-col items-start gap-3 rounded-3xl border border-slate-100 bg-white p-4 text-left active:scale-95 transition-transform dark:border-slate-800 dark:bg-slate-900" onclick="openScenePrompt(\'' + scene.id + '\')">' +
-          '<div class="flex h-10 w-10 items-center justify-center rounded-2xl ' + scene.iconWrap + '"><iconify-icon icon="' + scene.icon + '" class="text-xl"></iconify-icon></div>' +
+          '<div class="flex h-10 w-10 items-center justify-center rounded-2xl ' + scene.iconWrap + '"><i data-lucide="' + scene.icon.replace("lucide:", "") + '" class="text-xl"></i></div>' +
           '<div><p class="text-sm font-bold text-slate-900 dark:text-white">' + scene.title + '</p><p class="text-[11px] text-slate-400">' + scene.subtitle + '</p></div></button>';
       }).join("");
     }
@@ -310,6 +309,10 @@
       renderScenes();
       updateControls();
     }
+  </script>
+
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 </body>
 </html>

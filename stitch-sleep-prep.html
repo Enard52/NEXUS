@@ -4,7 +4,7 @@
   <title>NEXUS - Gece Hazırlığı</title>
   <link href="css/tailwind.css" rel="stylesheet"/>
   
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -33,11 +33,11 @@
     <!-- Header -->
     <header class="shrink-0 pt-14 px-5 pb-4 flex items-center justify-between" data-sd-id="2">
       <a href="#" id="nav-back-link" aria-label="Geri" class="p-1 -ml-1 text-slate-800 active-scale" data-sd-id="3" onclick="event.preventDefault(); window.history.back();">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold text-slate-900" data-sd-id="4">Gece Hazırlığı</h1>
       <button id="header-info-btn" class="p-1 -mr-1 flex items-center justify-center active-scale" data-sd-id="5">
-        <iconify-icon icon="lucide:settings-2" class="text-slate-800 text-xl"></iconify-icon>
+        <i data-lucide="settings-2" class="text-slate-800 text-xl"></i>
       </button>
     </header>
 
@@ -48,7 +48,7 @@
         <div class="bg-white/90 rounded-[2rem] p-6 border border-white/60 shadow-sm" data-sd-id="8">
           <div class="flex items-center gap-4 mb-4" data-sd-id="9">
             <div class="w-14 h-14 bg-[#4C7DFF]/10 rounded-2xl flex items-center justify-center text-[#4C7DFF]" data-sd-id="10">
-              <iconify-icon icon="lucide:moon" class="text-3xl"></iconify-icon>
+              <i data-lucide="moon" class="text-3xl"></i>
             </div>
             <div data-sd-id="11">
               <h2 class="text-xl font-extrabold text-slate-900" data-sd-id="12">Uyku Modu Hazır</h2>
@@ -67,7 +67,7 @@
         <div class="bg-white rounded-[2rem] p-5 card-shadow border border-slate-50" data-sd-id="16">
           <div class="flex items-center justify-between mb-4" data-sd-id="17">
             <div class="flex items-center gap-3" data-sd-id="18">
-              <iconify-icon icon="lucide:lightbulb" class="text-amber-500 text-xl"></iconify-icon>
+              <i data-lucide="lightbulb" class="text-amber-500 text-xl"></i>
               <span class="font-bold text-slate-800" data-sd-id="19">Aydınlatma</span>
             </div>
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-sd-id="20">%20 Karartma</span>
@@ -91,18 +91,18 @@
         <div class="bg-white rounded-[2rem] p-5 card-shadow border border-slate-50" data-sd-id="30">
           <div class="flex items-center justify-between mb-4" data-sd-id="31">
             <div class="flex items-center gap-3" data-sd-id="32">
-              <iconify-icon icon="lucide:shield-check" class="text-emerald-500 text-xl"></iconify-icon>
+              <i data-lucide="shield-check" class="text-emerald-500 text-xl"></i>
               <span class="font-bold text-slate-800" data-sd-id="33">Güvenlik</span>
             </div>
-            <iconify-icon icon="lucide:check-circle" class="text-emerald-500"></iconify-icon>
+            <i data-lucide="check-circle" class="text-emerald-500"></i>
           </div>
           <div class="space-y-2" data-sd-id="34">
             <div class="flex items-center gap-3 p-3" data-sd-id="35">
-              <iconify-icon icon="lucide:lock" class="text-slate-400"></iconify-icon>
+              <i data-lucide="lock" class="text-slate-400"></i>
               <span class="text-sm font-medium text-slate-600" data-sd-id="36">Dış Kapı Kilitli</span>
             </div>
             <div class="flex items-center gap-3 p-3" data-sd-id="37">
-              <iconify-icon icon="lucide:lock" class="text-slate-400"></iconify-icon>
+              <i data-lucide="lock" class="text-slate-400"></i>
               <span class="text-sm font-medium text-slate-600" data-sd-id="38">Garaj Kapısı Kapalı</span>
             </div>
           </div>
@@ -112,7 +112,7 @@
         <div class="bg-white rounded-[2rem] p-5 card-shadow border border-slate-50" data-sd-id="39">
           <div class="flex items-center justify-between mb-4" data-sd-id="40">
             <div class="flex items-center gap-3" data-sd-id="41">
-              <iconify-icon icon="lucide:thermometer" class="text-[#22D3EE] text-xl"></iconify-icon>
+              <i data-lucide="thermometer" class="text-[#22D3EE] text-xl"></i>
               <span class="font-bold text-slate-800" data-sd-id="42">Gece Sıcaklığı</span>
             </div>
             <span class="text-sm font-bold text-slate-900" data-sd-id="43">22.5°C</span>
@@ -126,7 +126,7 @@
         <!-- Sessiz Mod -->
         <div class="bg-white rounded-[2rem] p-5 card-shadow border border-slate-50 flex items-center justify-between" data-sd-id="47">
           <div class="flex items-center gap-3" data-sd-id="48">
-            <iconify-icon icon="lucide:bell-off" class="text-slate-400 text-xl"></iconify-icon>
+            <i data-lucide="bell-off" class="text-slate-400 text-xl"></i>
             <span class="font-bold text-slate-800" data-sd-id="49">Rahatsız Etme</span>
           </div>
           <div class="relative inline-flex items-center cursor-pointer" data-sd-id="50">
@@ -165,6 +165,10 @@
     </footer>
   </div>
 
-<script src="smart-card-detail-state.js"></script></body></html>
+<script src="smart-card-detail-state.js"></script>
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
+</body></html>
 
 

@@ -20,11 +20,11 @@
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold text-slate-900 tracking-tight">Kameralar</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -46,7 +46,7 @@
             <span class="text-white text-[10px] font-bold tracking-wider">SALON</span>
           </div>
           <div class="absolute bottom-3 right-3 bg-black/50 backdrop-blur-md p-2 rounded-full flex items-center justify-center text-white active-scale">
-            <iconify-icon icon="lucide:mic" class="text-sm"></iconify-icon>
+            <i data-lucide="mic" class="text-sm"></i>
           </div>
         </div>
       </section>
@@ -60,7 +60,7 @@
             <span class="text-white text-[10px] font-bold tracking-wider">MUTFAK</span>
           </div>
           <div class="absolute bottom-3 right-3 bg-black/50 backdrop-blur-md p-2 rounded-full flex items-center justify-center text-white/50 active-scale">
-            <iconify-icon icon="lucide:mic-off" class="text-sm"></iconify-icon>
+            <i data-lucide="mic-off" class="text-sm"></i>
           </div>
         </div>
       </section>
@@ -75,7 +75,11 @@
 // Live cameras are always live in this view
 
 </script>
-<script src="smart-card-detail-state.js"></script></body>
+<script src="smart-card-detail-state.js"></script>
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
+</body>
 </html>
 
 

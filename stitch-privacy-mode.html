@@ -21,11 +21,11 @@
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold text-slate-900 tracking-tight">Gizlilik</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -33,7 +33,7 @@
 
       <section class="bg-slate-900 rounded-[2rem] p-6 nexus-card-shadow relative overflow-hidden flex flex-col items-center justify-center text-center mt-4">
         <div class="relative w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center mb-4">
-            <iconify-icon icon="lucide:eye-off" class="text-5xl text-white"></iconify-icon>
+            <i data-lucide="eye-off" class="text-5xl text-white"></i>
             <span id="privacy-hero-dot" class="absolute top-2 right-2 w-4 h-4 bg-rose-500 border-2 border-slate-900 rounded-full animate-pulse"></span>
         </div>
         <h2 id="privacy-hero-title" class="text-2xl font-extrabold text-white relative">Gizlilik Aktif</h2>
@@ -47,7 +47,7 @@
         <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <iconify-icon icon="lucide:video-off" class="text-xl"></iconify-icon>
+              <i data-lucide="video-off" class="text-xl"></i>
             </div>
             <div>
               <p class="text-sm font-bold text-slate-900">Tüm Kameralar</p>
@@ -63,7 +63,7 @@
         <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <iconify-icon icon="lucide:mic-off" class="text-xl"></iconify-icon>
+              <i data-lucide="mic-off" class="text-xl"></i>
             </div>
             <div>
               <p class="text-sm font-bold text-slate-900">Tüm Mikrofonlar</p>
@@ -130,6 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
 </body>
 </html>
 
