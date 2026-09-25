@@ -34,6 +34,28 @@ her protokol ayrı plugin olur:
   o durumda iOS'ta manuel IP ekleme).
 - Keşif başarısızsa her protokol için **manuel IP ile ekleme** fallback'i zorunludur.
 
+#### Taşıma katmanı kısıtı (2026-09-26 Plan 3 sonrası tespit — Plan 4'ü etkiler)
+
+Mobil uygulama `packages/*` TypeScript kodunu **kullanmıyor**; kök `stitch-*.html`
+sayfaları doğrudan WebView'de çalışıyor. Yani connector'lar telefonda gerçekten
+çalışabilmek için sayfalardan yüklenen bir JS modülü olarak yazılmalı. İkinci engel:
+`capacitor.config.json` içinde `androidScheme: "https"` ve `allowMixedContent: false`
+olduğundan, WebView'dan `http://192.168.x.x` cihazlarına yapılan `fetch` çağrıları
+**mixed-content olarak tarayıcı tarafından engellenir**. Çözüm seçenekleri:
+
+1. Native HTTP plugin'i (`@capacitor/community-http` gibi) — istek cihaz ağ yığınından
+   çıkar, kısıt kalkar. **Önerilen.**
+2. `androidScheme: "http"` — kolay ama tüm WebView güvenliğini düşürür.
+3. Uygulama içi küçük bir yerel proxy — fazladan karmaşa.
+
+Bu yüzden Plan 4 connector'ları tek bir **transport arayüzü** üzerinden çalışmalı:
+`nexusLanTransport.request({url, method, body})` → native HTTP adaptörü (telefonda) veya
+`fetch` adaptörü (masaüstü tarayıcıda geliştirme/test için). Aynı arayüz keşif plugin'i
+için de geçerli: JS tarafı `nexusLanDiscovery.start()/stop()` sözleşmesini kullanır,
+native implementasyon sonradan takılır. Bu ayrım olmadan yazılan connector'lar
+telefonda sessizce çalışmaz.
+
+
 ### 2.2 Hesap düzlemi (Supabase ücretsiz katman)
 
 - Auth: e-posta/parola + Google + **Sign in with Apple** (App Store zorunluluğu —
