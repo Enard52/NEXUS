@@ -79,12 +79,11 @@ export interface PremiumDynamicParts {
   langCode: string;
   /** Full `<div class="language-menu" ...>` block with the active entry marked. */
   langMenu: string;
-  winVersion: string;
-  macVersion: string;
-  linuxVersion: string;
-  winHref: string;
-  macHref: string;
-  linuxHref: string;
+  androidVersion: string;
+  iosVersion: string;
+  playHref: string;
+  appStoreHref: string;
+  apkHref: string;
 }
 
 export function renderPremiumBody(dyn: PremiumDynamicParts): string {
@@ -158,7 +157,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · macOS · Linux · iOS · Android</div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Android · iOS · local network</div>
           <h1>Your home.<span class="hero-gradient-line"><span class="hero-word">One</span> <span class="hero-word">intelligence.</span></span></h1>
           <p class="hero-copy">NEXUS is a smart home assistant that helps you manage your smart home devices.</p>
           <div class="hero-actions">
@@ -167,7 +166,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
             <a class="button button-secondary" href="#downloads">
-              Download desktop app
+              Get the mobile app
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
             </a>
           </div>
@@ -901,66 +900,37 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         </div>
 
         <div class="downloads-grid" id="downloads">
-          <article class="download-card download-macos reveal" data-platform="macos">
+          <article class="download-card download-android reveal recommended" data-platform="android">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-android" viewBox="0 0 24 24"><path fill="currentColor" d="M6.2 9.1h11.6v6.7a1.9 1.9 0 0 1-1.9 1.9H8.1a1.9 1.9 0 0 1-1.9-1.9V9.1Zm-2.8.1a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2Zm14.4 0a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2ZM7.5 8.1C8 6.2 9.8 4.8 12 4.8s4 1.4 4.5 3.3l1.5-1.9a.4.4 0 1 0-.6-.5l-1.7 2.1A6.6 6.6 0 0 0 12.4 7V5.7a.4.4 0 1 0-.8 0V7c-1.1.1-2.1.4-3 .9L6.6 5.8a.4.4 0 1 0-.6.5l1.5 1.8Z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-android">
+                <svg class="os-logo os-logo-android" viewBox="0 0 24 24" aria-label="Android logo" role="img"><path fill="currentColor" d="M6.2 9.1h11.6v6.7a1.9 1.9 0 0 1-1.9 1.9H8.1a1.9 1.9 0 0 1-1.9-1.9V9.1Zm-2.8.1a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2Zm14.4 0a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2ZM7.5 8.1C8 6.2 9.8 4.8 12 4.8s4 1.4 4.5 3.3l1.5-1.9a.4.4 0 1 0-.6-.5l-1.7 2.1A6.6 6.6 0 0 0 12.4 7V5.7a.4.4 0 1 0-.8 0V7c-1.1.1-2.1.4-3 .9L6.6 5.8a.4.4 0 1 0-.6.5l1.5 1.8Z"/></svg>
+              </div>
+              <span class="platform-kicker">Android phone and tablet</span>
+            </div>
+            <h3>Android</h3>
+            <p>Install from Google Play, or download the APK directly and verify its checksum.</p>
+            <span class="version">${dyn.androidVersion}</span>
+            <div class="platform-specs"><span>Local control</span><span>Works offline</span><span>No hub required</span></div>
+            <a class="button button-primary download-button" href="${dyn.playHref}" rel="noopener">Get it on Google Play</a>
+            <a class="apk-link" href="${dyn.apkHref}" download>Download APK</a>
+          </article>
+
+          <article class="download-card download-ios reveal" data-platform="ios">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
             <div class="platform-top">
               <div class="platform-icon platform-icon-macos">
                 <svg class="os-logo os-logo-apple" viewBox="0 0 384 512" aria-label="Apple logo" role="img"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg>
               </div>
-              <span class="platform-kicker">Universal build</span>
+              <span class="platform-kicker">iPhone and iPad</span>
             </div>
-            <h3>macOS</h3>
-            <p>Built for Apple Silicon and Intel with deep system integration.</p>
-            <span class="version">${dyn.macVersion}</span>
-            <div class="platform-specs"><span>Apple Silicon</span><span>Intel</span><span>Native menu bar</span></div>
-            <a class="button button-secondary download-button" href="${dyn.macHref}">Download for macOS</a>
-          </article>
-
-          <article class="download-card download-windows reveal" data-platform="windows">
-            <div class="download-card-grid" aria-hidden="true"></div>
-            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo" viewBox="0 0 24 24"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 .6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg></div>
-            <div class="platform-top">
-              <div class="platform-icon platform-icon-windows">
-                <svg class="os-logo" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 0.6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg>
-              </div>
-              <span class="platform-kicker">Desktop · x64</span>
-            </div>
-            <h3>Windows</h3>
-            <p>Optimized for Windows 10 and 11 with seamless background operation.</p>
-            <span class="version">${dyn.winVersion}</span>
-            <div class="platform-specs"><span>Windows 10+</span><span>Auto updates</span><span>Local service</span></div>
-            <a class="button button-secondary download-button" href="${dyn.winHref}">Download for Windows</a>
-          </article>
-
-          <article class="download-card download-linux reveal" data-platform="linux">
-            <div class="download-card-grid" aria-hidden="true"></div>
-            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-linux" viewBox="0 0 64 64">
-                  <ellipse cx="32" cy="34" rx="17" ry="24" fill="#111318"/>
-                  <ellipse cx="32" cy="39" rx="11.5" ry="17" fill="#F4F7FA"/>
-                  <ellipse cx="26.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/><ellipse cx="37.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/>
-                  <circle cx="28" cy="23" r="1.8" fill="#111318"/><circle cx="36" cy="23" r="1.8" fill="#111318"/>
-                  <path d="M25 28.5 32 33l7-4.5-7-2.5-7 2.5Z" fill="#F5B82E"/>
-                  <path d="M20 53c-5 1-8 4-9 7 6 1 11 0 15-3l-6-4Zm24 0c5 1 8 4 9 7-6 1-11 0-15-3l6-4Z" fill="#F5B82E"/>
-                </svg></div>
-            <div class="platform-top">
-              <div class="platform-icon platform-icon-linux">
-                <svg class="os-logo os-logo-linux" viewBox="0 0 64 64" aria-label="Linux Tux logo" role="img">
-                  <ellipse cx="32" cy="34" rx="17" ry="24" fill="#111318"/>
-                  <ellipse cx="32" cy="39" rx="11.5" ry="17" fill="#F4F7FA"/>
-                  <ellipse cx="26.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/><ellipse cx="37.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/>
-                  <circle cx="28" cy="23" r="1.8" fill="#111318"/><circle cx="36" cy="23" r="1.8" fill="#111318"/>
-                  <path d="M25 28.5 32 33l7-4.5-7-2.5-7 2.5Z" fill="#F5B82E"/>
-                  <path d="M20 53c-5 1-8 4-9 7 6 1 11 0 15-3l-6-4Zm24 0c5 1 8 4 9 7-6 1-11 0-15-3l6-4Z" fill="#F5B82E"/>
-                </svg>
-              </div>
-              <span class="platform-kicker">Portable AppImage</span>
-            </div>
-            <h3>Linux</h3>
-            <p>Lightweight, fast, and compatible with all major distributions.</p>
-            <span class="version">${dyn.linuxVersion}</span>
-            <div class="platform-specs"><span>AppImage</span><span>Debian</span><span>Fedora</span></div>
-            <a class="button button-secondary download-button" href="${dyn.linuxHref}">Download for Linux</a>
+            <h3>iOS</h3>
+            <p>The same local-first home, on iPhone and iPad, published on the App Store.</p>
+            <span class="version">${dyn.iosVersion}</span>
+            <div class="platform-specs"><span>Face ID</span><span>Widgets</span><span>Shortcuts</span></div>
+            <a class="button button-secondary download-button" href="${dyn.appStoreHref}" rel="noopener">Download on the App Store</a>
           </article>
         </div>
 

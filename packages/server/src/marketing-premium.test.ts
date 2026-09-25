@@ -7,12 +7,11 @@ const dyn: PremiumDynamicParts = {
   langCode: "EN",
   langMenu:
     '<div class="language-menu" role="menu"><a class="active" href="?lang=en">English</a></div>',
-  winVersion: "Version 3.14.2 · x64",
-  macVersion: "Version 3.14.1 · Universal",
-  linuxVersion: "Version 3.13.8 · AppImage",
-  winHref: "/downloads/NEXUS-Setup-3.14.2.exe",
-  macHref: "/downloads/NEXUS-3.14.1.dmg",
-  linuxHref: "/downloads/NEXUS-3.13.8.AppImage",
+  androidVersion: "Version 3.14.2 · Android 12+",
+  iosVersion: "Version 3.14.2 · iOS 17+",
+  playHref: "https://play.google.com/store/apps/details?id=ai.nexus.app",
+  appStoreHref: "https://apps.apple.com/app/id0000000000",
+  apkHref: "/downloads/NEXUS-3.14.2.apk",
 };
 
 describe("premium marketing body (generated)", () => {
@@ -33,9 +32,9 @@ describe("premium marketing body (generated)", () => {
   });
 
   it("injects the dynamic download parts", () => {
-    expect(body).toContain("Version 3.14.2 · x64");
-    expect(body).toContain('href="/downloads/NEXUS-3.14.1.dmg"');
-    expect(body).toContain('href="/downloads/NEXUS-3.13.8.AppImage"');
+    expect(body).toContain("Version 3.14.2 · Android 12+");
+    expect(body).toContain('href="/downloads/NEXUS-3.14.2.apk"');
+    expect(body).toContain('href="https://apps.apple.com/app/id0000000000"');
   });
 
   it("does not depend on remote logo or avatar CDNs", () => {
@@ -51,7 +50,8 @@ describe("renderMarketingPremiumDocument", () => {
     expect(html).toContain('hreflang="tr" href="/?lang=tr"');
     expect(html).toContain('hreflang="vi" href="/?lang=vi"');
     expect(html).toContain('"@type": "SoftwareApplication"');
-    expect(html).toContain("Download for Windows");
+    expect(html).toContain("Get it on Google Play");
+    expect(html).not.toContain("NEXUS-Setup");
     expect(html).not.toContain("https://cdn.simpleicons.org");
     expect(html).not.toContain("https://images.unsplash.com");
   });
@@ -68,7 +68,7 @@ describe("renderMarketingPremiumDocument", () => {
   it("marks RTL locales and keeps EN fallback copy", () => {
     const html = renderMarketingPremiumDocument("ar");
     expect(html).toContain('<html lang="ar" data-theme="dark" dir="rtl">');
-    expect(html).toContain("Download desktop app");
+    expect(html).toContain("Get the mobile app");
   });
 
   it("honors the light theme attribute", () => {

@@ -2159,6 +2159,7 @@ const PREMIUM_CSS = `
     .download-windows::after { background: radial-gradient(circle, rgba(0,164,239,.18), transparent 68%); }
     .download-macos::after { background: radial-gradient(circle, color-mix(in srgb, var(--text) 11%, transparent), transparent 68%); }
     .download-linux::after { background: radial-gradient(circle, color-mix(in srgb, var(--primary) 15%, transparent), transparent 68%); }
+    .download-android::after { background: radial-gradient(circle, rgba(61,220,132,.16), transparent 68%); }
     .download-card-grid {
       position: absolute;
       inset: 0;
@@ -2182,6 +2183,10 @@ const PREMIUM_CSS = `
     .platform-icon-windows { border-color: rgba(0,164,239,.24); background: rgba(0,164,239,.09); }
     .platform-icon-macos { background: color-mix(in srgb, var(--text) 6%, var(--surface)); }
     .platform-icon-linux { background: color-mix(in srgb, var(--primary) 7%, var(--surface)); }
+    .platform-icon-android { border-color: rgba(61,220,132,.26); background: rgba(61,220,132,.10); }
+    .os-logo-android { color: #3DDC84; width: 26px; height: 26px; }
+    .apk-link { display: block; margin-top: .55rem; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .apk-link:hover { color: var(--text); }
     .os-logo, .os-logo-img { width: 27px; height: 27px; object-fit: contain; }
     .os-fallback { font-size: 20px; }
     .platform-kicker {

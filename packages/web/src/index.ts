@@ -106,25 +106,18 @@ deviceManager.registerConnector(
 export function demoReleases(): VersionInfoService {
   const svc = new VersionInfoService();
   svc.publish({
-    platform: "windows",
+    platform: "android",
     version: "3.14.2",
-    minOs: "Windows 10 and later",
+    minOs: "Android 12 and later",
     checksumSha256: "642c097c01c7a7597e8725bb494cbcb0e43be7e63c7c8d20ac1c829b9ea10287",
-    downloadUrl: "/downloads/NEXUS-Setup-3.14.2-v2.exe",
+    downloadUrl: "/downloads/NEXUS-3.14.2.apk",
   });
   svc.publish({
-    platform: "macos",
-    version: "3.14.1",
-    minOs: "macOS 12 and later",
-    checksumSha256: computeChecksum("nexus-3.14.1-macos"),
-    downloadUrl: "/downloads/NEXUS-3.14.1-v2.dmg",
-  });
-  svc.publish({
-    platform: "linux",
-    version: "3.13.8",
-    minOs: "Ubuntu 22.04 and later",
-    checksumSha256: computeChecksum("nexus-3.13.8-linux"),
-    downloadUrl: "/downloads/NEXUS-3.13.8-v2.AppImage",
+    platform: "ios",
+    version: "3.14.2",
+    minOs: "iOS 17 and later",
+    checksumSha256: computeChecksum("nexus-3.14.2-ios"),
+    downloadUrl: "https://apps.apple.com/app/id0000000000",
   });
   return svc;
 }

@@ -182,13 +182,13 @@ describe("@nexus/web renderer", () => {
 
   it("features the visitor's platform and lists verifiable checksums", () => {
     const svc = demoReleases();
-    const win = renderDownloadCenter(svc, "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
-    expect(win).toContain("Download for Windows");
+    const droid = renderDownloadCenter(svc, "Mozilla/5.0 (Linux; Android 13; Pixel 7)");
+    expect(droid).toContain("Download for Android");
     // The real SHA-256 checksum is present, never blank/hardcoded.
-    expect(win).toContain(svc.get("windows")!.checksumSha256);
+    expect(droid).toContain(svc.get("android")!.checksumSha256);
 
-    const mac = renderDownloadCenter(svc, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15)");
-    expect(mac).toContain("Download for macOS");
+    const ios = renderDownloadCenter(svc, "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)");
+    expect(ios).toContain("Download for iOS");
   });
 
   it("falls back to manual choice for an unknown platform", () => {

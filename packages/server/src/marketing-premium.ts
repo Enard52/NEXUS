@@ -107,7 +107,7 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
     "NEXUS, akıllı ev cihazlarınızı yönetmenize yardımcı olan bir akıllı ev asistanıdır.",
   ],
   ["Try NEXUS free", "NEXUS'u ücretsiz dene"],
-  ["Download desktop app", "Masaüstü uygulamasını indir"],
+  ["Get the mobile app", "Mobil uygulamayı indir"],
   ["100% local processing", "%100 yerel işleme"],
   ["No cloud dependency", "Bulut bağımlılığı yok"],
   ["Free to start", "Başlamak ücretsiz"],
@@ -350,26 +350,23 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["Granular parental controls", "Ayrıntılı ebeveyn denetimleri"],
   ["Dedicated family dashboard", "Aileye özel panel"],
   ["Private profiles, one local core", "Özel profiller, tek yerel çekirdek"],
-  // Desktop downloads
-  ["Desktop apps", "Masaüstü uygulamaları"],
-  ["Native on every desktop.", "Her masaüstünde yerel."],
+  // Mobile downloads
+  ["Android phone and tablet", "Android telefon ve tablet"],
+  ["iPhone and iPad", "iPhone ve iPad"],
   [
-    "One NEXUS experience, tuned for the platform you use. Your operating system will be detected automatically.",
-    "Kullandığın platforma göre ayarlanmış tek NEXUS deneyimi. İşletim sistemin otomatik algılanır.",
+    "Install from Google Play, or download the APK directly and verify its checksum.",
+    "Google Play'den kur ya da APK'yı doğrudan indirip sağlama toplamını doğrula.",
   ],
-  ["Desktop · x64", "Masaüstü · x64"],
   [
-    "Optimized for Windows 10 and 11 with seamless background operation.",
-    "Windows 10 ve 11 için sorunsuz arka plan çalışmasıyla optimize edildi.",
+    "The same local-first home, on iPhone and iPad, published on the App Store.",
+    "Aynı yerel öncelikli ev deneyimi, App Store'da yayında olan iPhone ve iPad uygulamasıyla.",
   ],
-  ["Auto updates", "Otomatik güncelleme"],
-  ["Local service", "Yerel servis"],
-  ["Download for Windows", "Windows için indir"],
-  ["Universal build", "Evrensel derleme"],
-  ["Native menu bar", "Yerel menü çubuğu"],
-  ["Download for macOS", "macOS için indir"],
-  ["Portable AppImage", "Taşınabilir AppImage"],
-  ["Download for Linux", "Linux için indir"],
+  ["Local control", "Yerel kontrol"],
+  ["Works offline", "Çevrimdışı çalışır"],
+  ["No hub required", "Hub gerekmez"],
+  ["Get it on Google Play", "Google Play'den al"],
+  ["Download APK", "APK indir"],
+  ["Download on the App Store", "App Store'dan indir"],
   // Mobile companion
   ["Available now", "Şimdi kullanılabilir"],
   ["NEXUS, now in your pocket.", "NEXUS artık cebinde."],
@@ -539,7 +536,7 @@ function localizePremiumBody(body: string, locale: Locale): string {
   return body;
 }
 
-function requireRelease(platform: "windows" | "macos" | "linux") {
+function requireRelease(platform: "android" | "ios") {
   const release = demoReleases().get(platform);
   if (!release) throw new Error(`missing release info for ${platform}`);
   return release;
@@ -551,9 +548,9 @@ const PREMIUM_FAVICON =
 /** Marketing description matching the premium page (mobile apps are live). */
 function premiumSeoDescription(locale: Locale): string {
   if (locale === "tr") {
-    return "NEXUS'u Windows, macOS ve Linux için indir. iOS ve Android uygulamaları da hazır.";
+    return "NEXUS'u Android ve iOS için indir. Cihazlarınla yerel ağda, bulut ücreti olmadan konuşur.";
   }
-  return "Download NEXUS for Windows, macOS, Linux, iOS and Android.";
+  return "Download NEXUS for Android and iOS. It talks to your devices on the local network, with no cloud fee.";
 }
 
 /**
@@ -566,9 +563,8 @@ export function renderMarketingPremiumDocument(
 ): string {
   setLocale(locale);
 
-  const win = requireRelease("windows");
-  const mac = requireRelease("macos");
-  const linux = requireRelease("linux");
+  const android = requireRelease("android");
+  const ios = requireRelease("ios");
   const versionWord = locale === "tr" ? "Sürüm" : "Version";
 
   const langItems = SUPPORTED_LOCALES.map(
@@ -578,12 +574,11 @@ export function renderMarketingPremiumDocument(
   const dyn: PremiumDynamicParts = {
     langCode: locale.slice(0, 2).toUpperCase(),
     langMenu: `<div class="language-menu" role="menu">\n              ${langItems}\n            </div>`,
-    winVersion: `${versionWord} ${win.version} · x64`,
-    macVersion: `${versionWord} ${mac.version} · Universal`,
-    linuxVersion: `${versionWord} ${linux.version} · AppImage`,
-    winHref: win.downloadUrl,
-    macHref: mac.downloadUrl,
-    linuxHref: linux.downloadUrl,
+    androidVersion: `${versionWord} ${android.version} · Android 12+`,
+    iosVersion: `${versionWord} ${ios.version} · iOS 17+`,
+    playHref: "https://play.google.com/store/apps/details?id=ai.nexus.app",
+    appStoreHref: ios.downloadUrl,
+    apkHref: android.downloadUrl,
   };
 
   const body = localizePremiumBody(renderPremiumBody(dyn), locale);
@@ -645,7 +640,7 @@ ${hreflangs}
     "description": "A voice-first, privacy-focused personal operating system for smart homes.",
     "url": "${SITE_URL}",
     "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Windows, macOS, Linux, iOS, Android",
+    "operatingSystem": "Android, iOS",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -671,8 +666,7 @@ export function getPremiumShell(locale: Locale): { header: string; footer: strin
   const dyn: PremiumDynamicParts = {
     langCode: locale.slice(0, 2).toUpperCase(),
     langMenu: `<div class="language-menu" role="menu">\n              ${langItems}\n            </div>`,
-    winVersion: "", macVersion: "", linuxVersion: "",
-    winHref: "", macHref: "", linuxHref: ""
+    androidVersion: "", iosVersion: "", playHref: "", appStoreHref: "", apkHref: ""
   };
 
   const body = localizePremiumBody(renderPremiumBody(dyn), locale);

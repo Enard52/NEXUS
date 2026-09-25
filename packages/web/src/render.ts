@@ -778,7 +778,11 @@ export function renderDownloadCenter(
               ? "macOS"
               : featured.platform === "linux"
                 ? "Linux"
-                : featured.platform.toUpperCase(),
+                : featured.platform === "ios"
+                  ? "iOS"
+                  : featured.platform === "android"
+                    ? "Android"
+                    : String(featured.platform),
         )
         .replace("{version}", escapeHtml(featured.version))}</a>`
     : `<p>Choose your platform</p>`;
@@ -786,7 +790,7 @@ export function renderDownloadCenter(
   const rows = all
     .map(
       (r) =>
-        `<tr><td>${escapeHtml(r.platform === "windows" ? "Windows" : r.platform === "macos" ? "macOS" : r.platform === "linux" ? "Linux" : r.platform.toUpperCase())}</td><td>${escapeHtml(r.version)}</td><td>${escapeHtml(r.minOs)}</td><td><code class="sha-code" title="SHA-256 Checksum" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" onclick="navigator.clipboard.writeText('${escapeHtml(r.checksumSha256)}')">${escapeHtml(r.checksumSha256.substring(0, 12))}... <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></code></td></tr>`,
+        `<tr><td>${escapeHtml(r.platform === "windows" ? "Windows" : r.platform === "macos" ? "macOS" : r.platform === "linux" ? "Linux" : r.platform === "ios" ? "iOS" : r.platform === "android" ? "Android" : String(r.platform))}</td><td>${escapeHtml(r.version)}</td><td>${escapeHtml(r.minOs)}</td><td><code class="sha-code" title="SHA-256 Checksum" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" onclick="navigator.clipboard.writeText('${escapeHtml(r.checksumSha256)}')">${escapeHtml(r.checksumSha256.substring(0, 12))}... <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></code></td></tr>`,
     )
     .join("");
 
