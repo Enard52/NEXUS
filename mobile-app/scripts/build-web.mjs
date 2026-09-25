@@ -48,6 +48,7 @@ const SHARED_SCRIPTS = [
   "auth.js",
   "theme.js",
   "data.js",
+  "supported-devices.js",
   "ai-fab.js",
   "sheet-gestures.js",
   "smart-scene-page.js",
