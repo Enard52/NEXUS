@@ -42,7 +42,6 @@ import {
 } from "@nexus/web";
 import type { Account } from "@nexus/accounts";
 import { renderMobileDocument } from "@nexus/mobile";
-import { renderDesktopDocument } from "@nexus/desktop";
 import { SkillDiscoveryService } from "@nexus/skills";
 import { isRtl, resolveLocale, SUPPORTED_LOCALES, type Locale } from "@nexus/i18n";
 import { renderMarketingPremiumDocument, getPremiumShell } from "./marketing-premium.js";
@@ -466,27 +465,6 @@ export function renderMobileAppDocument(
   setLocale(data.language);
   const { screens } = buildUserScreens(account, data);
   return renderMobileDocument({
-    theme,
-    screens,
-    displayName: data.displayName,
-    locale: data.language,
-    authenticated: true,
-  });
-}
-
-/**
- * The signed-in desktop app: the same real user data as {@link renderAppDocument},
- * drawn through the authentic windowed shell (title bar + persistent sidebar) with
- * authenticated chrome (language switch + letter avatar + logout) and PWA wiring.
- */
-export function renderDesktopAppDocument(
-  account: Account,
-  data: UserData,
-  theme: ThemeName = "dark",
-): string {
-  setLocale(data.language);
-  const { screens } = buildUserScreens(account, data);
-  return renderDesktopDocument({
     theme,
     screens,
     displayName: data.displayName,

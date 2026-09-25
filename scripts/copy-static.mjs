@@ -6,12 +6,10 @@ const publicDir = join(root, "public");
 
 // Keep installer artifacts (public/downloads) stable across builds. Everything
 // else in public/ is a build mirror of packages/web/dist (the marketing site)
-// and is regenerated from scratch on every run. The desktop and mobile
-// applications are NOT static HTML anymore: desktop Electron loads the React
-// SPA at /app (setup wizard pages ship inside the app bundle, see
-// scripts/copy-desktop-resources.mjs) and mobile Capacitor bundles the same
-// SPA via mobile-app/scripts/build-web.mjs — so no desktop/mobile HTML is
-// mirrored into public/ at all.
+// and is regenerated from scratch on every run. The mobile application bundles
+// the root stitch-*.html pages via mobile-app/scripts/build-web.mjs — so no
+// app HTML is mirrored into public/ at all. (The Electron desktop app was
+// removed on 2026-09-26; see docs/superpowers/specs/2026-09-26-mobil-oncelikli-yayin-design.md.)
 const PRESERVE = new Set(["downloads", "images"]);
 
 if (existsSync(publicDir)) {

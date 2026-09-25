@@ -2,6 +2,13 @@
 
 > Bu doküman, "NEXUS AI Personal Operating System" spesifikasyonunun uçtan uca, sıralı ve test edilebilir fazlara bölünmüş halidir. Bir coding agent'a (Claude Code vb.) bu dosyayı verip fazları sırayla tamamlatacaksın.
 
+> **⚠️ 2026-09-26 KARAR (Yol A — mobil-öncelikli yayın):** Electron masaüstü uygulaması
+> projeden kaldırıldı. Bu dokümandaki masaüstü referansları (FAZ 8 "Cross-Platform Masaüstü
+> Desteği", FAZ 9 "masaüstü paritesi", FAZ 18 CDN/Authenticode maddeleri) **Faz 2** kapsamına
+> alındı: masaüstü, onaylı mobil tasarım uyarlanarak sıfırdan üretilecek (birebir kopya değil).
+> Cihaz kontrolü local-first (LAN) + Supabase ücretsiz hesap üzerinden yayınlanacak.
+> Ayrıntı: `docs/superpowers/specs/2026-09-26-mobil-oncelikli-yayin-design.md`
+
 ## v3'te Neler Eklendi / Düzeltildi (Tam Denetim Notu)
 
 Önceki versiyonda ürün _özellikleri_ iyi kapsanmıştı ama gerçek bir "bitmiş, satılabilir ürün" için zorunlu olan şu aşamalar eksikti veya yüzeyseldi. Bu sürümde eklendi:

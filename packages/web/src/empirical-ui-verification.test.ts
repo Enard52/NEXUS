@@ -2,11 +2,6 @@ import { describe, expect, it } from "vitest";
 import { darkTheme } from "@nexus/design-system";
 import { buildBillingModel, buildTodayModel } from "@nexus/interface";
 import {
-  renderWindowControls,
-  renderDesktopDocument,
-  renderDesktopStyles,
-} from "../../desktop/src/index.js";
-import {
   renderStatusBar,
   renderTabIcon,
   renderMobileDocument,
@@ -15,58 +10,6 @@ import {
 import { renderBilling, renderTodayPanel, renderStyles, setLocale } from "./index.js";
 
 describe("Empirical Challenger — UI Components & Cross-Platform Layout Verification", () => {
-  describe("1. GNOME Linux Window Controls", () => {
-    it("renders GNOME Linux circular window controls with .wctl-gnome and .gnome-btn", () => {
-      const linuxControls = renderWindowControls("linux");
-      expect(linuxControls).toContain('class="wctl wctl-gnome"');
-      expect(linuxControls).toContain("gnome-btn min");
-      expect(linuxControls).toContain("gnome-btn max");
-      expect(linuxControls).toContain("gnome-btn close");
-      expect(linuxControls).toContain('<path d="M2 6h8"/>'); // min icon
-      expect(linuxControls).toContain('<rect x="2" y="2" width="8" height="8" rx="1.5"/>'); // max icon
-      expect(linuxControls).toContain('<path d="M3 3l6 6M9 3l-6 6"/>'); // close icon
-    });
-
-    it("handles macOS and Windows controls correctly", () => {
-      const macControls = renderWindowControls("mac");
-      expect(macControls).toContain('fill="#ff5f56"');
-      expect(macControls).toContain('fill="#ffbd2e"');
-      expect(macControls).toContain('fill="#27c93f"');
-
-      const winControls = renderWindowControls("windows");
-      expect(winControls).toContain('<div class="wctl"');
-      expect(winControls).not.toContain("wctl-gnome");
-
-      // Default fallback
-      const defaultControls = renderWindowControls();
-      expect(defaultControls).toBe(winControls);
-
-      // Unknown OS fallback
-      const fallbackControls = renderWindowControls("unknown" as any);
-      expect(fallbackControls).toContain('<div class="wctl"');
-      expect(fallbackControls).not.toContain("wctl-gnome");
-    });
-
-    it("integrates Linux controls into Desktop document rendering", () => {
-      const linuxDoc = renderDesktopDocument({ theme: "dark", os: "linux" });
-      expect(linuxDoc).toContain("wctl-gnome");
-      expect(linuxDoc).toContain("gnome-btn");
-
-      const macDoc = renderDesktopDocument({ theme: "dark", os: "mac" });
-      expect(macDoc).toContain('fill="#ff5f56"');
-
-      const winDoc = renderDesktopDocument({ theme: "dark", os: "windows" });
-      expect(winDoc).not.toContain("wctl-gnome");
-    });
-
-    it("includes Linux control CSS styles in renderDesktopStyles", () => {
-      const css = renderDesktopStyles(darkTheme);
-      expect(css).toContain(".wctl-btn");
-      expect(css).toContain(".gnome-btn");
-      expect(css).toContain("border-radius: 50%");
-    });
-  });
-
   describe("2. Android Status Bar Variant", () => {
     it("renders Android status bar layout with punch-hole camera, 10:00 time, and 5G badge", () => {
       const androidBar = renderStatusBar("android");
@@ -289,18 +232,15 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
   });
 
   describe("6. Responsive CSS, Glassmorphism Filters & CSS Mockup Animations", () => {
-    it("verifies glassmorphism backdrop-filters across Web, Mobile, and Desktop styles", () => {
+    it("verifies glassmorphism backdrop-filters across Web and Mobile styles", () => {
       const webCss = renderStyles(darkTheme);
       expect(webCss).toContain("backdrop-filter: blur(");
 
       const mobileCss = renderMobileStyles(darkTheme);
       expect(mobileCss).toContain("backdrop-filter: blur(20px) saturate(180%)");
-
-      const desktopCss = renderDesktopStyles(darkTheme);
-      expect(desktopCss).toContain("backdrop-filter: blur(20px)");
     });
 
-    it("verifies CSS mockup animations keyframes across Web, Mobile, and Desktop", () => {
+    it("verifies CSS mockup animations keyframes across Web and Mobile", () => {
       const webCss = renderStyles(darkTheme);
       expect(webCss).toContain("@keyframes wavePulse");
       expect(webCss).toContain("@keyframes nxAurora");
@@ -311,11 +251,6 @@ describe("Empirical Challenger — UI Components & Cross-Platform Layout Verific
       expect(mobileCss).toContain("@keyframes more-row-in");
       expect(mobileCss).toContain("@keyframes status-pulse");
       expect(mobileCss).toContain("@keyframes mic-pulse");
-
-      const desktopCss = renderDesktopStyles(darkTheme);
-      expect(desktopCss).toContain("@keyframes win-open");
-      expect(desktopCss).toContain("@keyframes sidebar-pulse");
-      expect(desktopCss).toContain("@keyframes content-slide");
     });
 
     it("verifies responsive media queries for mobile, tablet, desktop, and accessibility", () => {

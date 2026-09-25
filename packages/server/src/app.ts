@@ -33,7 +33,6 @@ import {
   renderLoginDocument,
   renderMarketingDocument,
   renderMobileAppDocument,
-  renderDesktopAppDocument,
   renderLegalPage,
   renderAboutPage,
 } from "./pages.js";
@@ -265,11 +264,6 @@ function isMobileUserAgent(ua: string): boolean {
   return /Android|iPhone|iPod|iPad|Mobile|Windows Phone|webOS|BlackBerry|Opera Mini|IEMobile/i.test(
     ua,
   );
-}
-
-/** The native desktop shell identifies itself in the User-Agent. */
-function isDesktopUserAgent(ua: string): boolean {
-  return /NexusDesktop/i.test(ua);
 }
 
 /**
@@ -803,11 +797,9 @@ export function createRequestHandler(
       }
       const ua = String(req.headers["user-agent"] ?? "");
       // Same login, same real data, same design system — device-appropriate chrome.
-      const html = isDesktopUserAgent(ua)
-        ? renderDesktopAppDocument(account, data)
-        : isMobileUserAgent(ua)
-          ? renderMobileAppDocument(account, data)
-          : renderAppDocument(account, data, ua);
+      const html = isMobileUserAgent(ua)
+        ? renderMobileAppDocument(account, data)
+        : renderAppDocument(account, data, ua);
       return sendHtml(res, 200, html);
     }
 

@@ -28,7 +28,6 @@
     "@nexus/core": "workspace:*",
     "@nexus/database": "workspace:*",
     "@nexus/design-system": "workspace:*",
-    "@nexus/desktop": "workspace:*",
     "@nexus/devices": "workspace:*",
     "@nexus/i18n": "workspace:*",
     "@nexus/interface": "workspace:*",

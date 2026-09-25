@@ -12,11 +12,19 @@
 - **Yapılacak:** `SandboxPaymentProvider` yerine gerçek Stripe adapter'ı bağlama;
   deneme→ücret→iptal→fatura akışını gerçek sandbox'ta doğrulama.
 
-## Kod İmzalama & Dağıtım — FAZ 18
+## Kod İmzalama & Dağıtım — FAZ 18 (GÜNCELLENDİ 2026-09-26)
 
-- **Gereken:** Windows **Authenticode** sertifikası, Apple **notarization** hesabı, CDN.
-- **Hazır olan kod:** OS algılama, sürüm bilgisi API'si, SHA-256 checksum, mağaza linki doğrulama, indirme bağlantıları (demoReleases mock).
-- **Yapılacak:** Paketleri gerçekten imzalama, CDN'e yükleme, Universal Links/App Links kurulumu. Gerçek kurulum dosyalarını (örn. `NEXUS-Setup-3.14.2.exe`) derleme sonrası `packages/web/dist/downloads/` altına kopyalama veya CDN linklerine yönlendirme (şu anda 404 hatası veriyor).
+- **Karar:** Electron masaüstü uygulaması projeden kaldırıldı (Yol A: mobil-öncelikli
+  yayın — bkz. `docs/superpowers/specs/2026-09-26-mobil-oncelikli-yayin-design.md`).
+  Masaüstü, Faz 2'de mobil tasarım uyarlanarak sıfırdan üretilecek.
+- **Gereken (mobil):** Google Play Console hesabı ($25 tek seferlik). iOS için Apple
+  Developer ($99/yıl) — yayın kararı kullanıcıda.
+- **Hazır olan kod:** OS algılama, sürüm bilgisi API'si, SHA-256 checksum, mağaza link
+  doğrulama, site indirme altyapısı.
+- **Yapılacak:** Release APK üretimi + SHA-256; site indirme bölümünün masaüstü
+  kartlarından mobil kartlara geçilmesi (Plan 6). Authenticode/notarization maddeleri
+  Faz 2'ye ertelendi. `public/downloads/` içindeki eski masaüstü kurulumu dosyaları
+  (~486 MB) Faz 2 kararına kadar bekletiliyor.
 
 ## Mobil Uygulamalar — FAZ 9
 

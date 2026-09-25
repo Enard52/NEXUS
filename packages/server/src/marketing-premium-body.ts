@@ -63,12 +63,6 @@ function integrationLogo(key: keyof typeof BRAND_LOGOS, label: string): string {
   return `<img class="integration-logo" src="${BRAND_LOGOS[key]}" alt="" loading="lazy" decoding="async" data-brand="${label}"${invertAttr} />`;
 }
 
-function avatarData(initials: string, start: string, end: string): string {
-  return svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="${initials}"><defs><linearGradient id="g" x1="12" y1="10" x2="84" y2="86" gradientUnits="userSpaceOnUse"><stop stop-color="${start}"/><stop offset="1" stop-color="${end}"/></linearGradient><radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(30 24) rotate(72) scale(64)"><stop stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="96" height="96" rx="32" fill="url(#g)"/><rect width="96" height="96" rx="32" fill="url(#glow)"/><path d="M26 67c5-12 16-18 22-18s17 6 22 18" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="5.5" stroke-linecap="round"/><circle cx="48" cy="39" r="15" fill="#fff" fill-opacity=".18"/><text x="48" y="53" text-anchor="middle" font-family="Space Grotesk, Inter, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing=".04em" fill="#fff">${initials}</text></svg>`,
-  );
-}
-
 const AVATAR_SJ = "/images/avatars/sarah-jenkins.jpg";
 const AVATAR_DC = "/images/avatars/david-chen.jpg";
 const AVATAR_ET = "/images/avatars/emma-thompson.jpg";
