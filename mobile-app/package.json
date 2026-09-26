@@ -12,6 +12,7 @@
     "run:android": "npm run build:web && cap sync android && cap run android"
   },
   "dependencies": {
+    "@capacitor-community/http": "^1.4.1",
     "@capacitor/android": "^6.2.0",
     "@capacitor/core": "^6.2.0",
     "@capacitor/geolocation": "^6.1.1",

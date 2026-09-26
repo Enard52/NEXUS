@@ -231,6 +231,19 @@
         </div>
         <p id="lan-scan-status" role="status" aria-live="polite" class="mt-3 text-xs font-medium text-slate-500 dark:text-slate-300">Hazır. Aynı Wi-Fi ağında olman yeterli.</p>
         <div id="lan-scan-result" class="mt-3"></div>
+
+        <div class="mt-4 rounded-[1.75rem] border border-dashed border-slate-200 bg-white/70 p-4 dark:border-slate-700 dark:bg-slate-950/30">
+          <div class="flex items-center gap-2">
+            <input id="lan-scan-subnet" type="text" inputmode="decimal" value="192.168.1" aria-label="Alt ağ ön eki"
+              class="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold outline-none focus:border-nexusPurple dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+            <button type="button" id="lan-subnet-btn" onclick="scanSubnetNow()"
+              class="shrink-0 rounded-2xl border-2 border-nexusPurple px-3.5 py-2 text-sm font-bold text-nexusPurple active:scale-[0.98]">Ağını tara</button>
+          </div>
+          <p class="mt-2 text-[11px] leading-4 text-slate-500 dark:text-slate-300">
+            Adres biliyorsan tek tek yaz, bilmiyorsan modem ağının ön ekini bırak (192.168.1 gibi) — NEXUS 254 adresi birlikte yoklar.
+          </p>
+          <div id="lan-subnet-results" class="mt-3 space-y-2"></div>
+        </div>
       </section>
 
       <section id="supported-devices-section" data-purpose="supported-devices-panel" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">
@@ -539,18 +552,17 @@
       });
     }
 
-    function addScannedDevice() {
-      var found = window.__nexusScannedDevice;
-      if (!found) return;
+    function storeFoundDevice(found) {
       var devices = getPairedDevices();
-      if (!devices.some(function (d) { return d && d.host === found.host; })) {
+      var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
+      if (!devices.some(function (d) { return d && d.host === normalizedHost; })) {
         var profile = KIND_PROFILE[found.kind] || KIND_PROFILE.switch;
         devices.push({
-          id: "lan-" + found.host.replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
+          id: "lan-" + normalizedHost.replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
           name: found.name,
           room: "Yerel ağ",
           icon: "cpu",
-          host: found.host,
+          host: normalizedHost,
           protocol: found.protocol,
           kind: found.kind,
           model: found.model,
@@ -560,13 +572,81 @@
         });
         nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
         if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
+        renderPairedDevices();
+        return true;
       }
-      setScanStatus("Eklendi. Kontrol panellerinden yönetebilirsin.", "ok");
-      document.getElementById("lan-scan-result").innerHTML =
-        '<a href="stitch-panels.html" class="mt-1 inline-flex items-center gap-2 rounded-full bg-nexusPurple px-4 py-2 text-xs font-bold text-white active:scale-[0.98]">' +
+      return false;
+    }
+
+    function panelsLinkHtml() {
+      return '<a href="stitch-panels.html" class="mt-1 inline-flex items-center gap-2 rounded-full bg-nexusPurple px-4 py-2 text-xs font-bold text-white active:scale-[0.98]">' +
         '<i data-lucide="layout-grid" class="text-sm"></i> Panelleri aç</a>';
+    }
+
+    function addScannedDevice() {
+      var found = window.__nexusScannedDevice;
+      if (!found) return;
+      storeFoundDevice(found);
+      setScanStatus("Eklendi. Kontrol panellerinden yönetebilirsin.", "ok");
+      document.getElementById("lan-scan-result").innerHTML = panelsLinkHtml();
       if (typeof lucide !== "undefined") lucide.createIcons();
-      renderPairedDevices();
+    }
+
+    var subnetFindings = [];
+
+    function renderSubnetFindings() {
+      var host = document.getElementById("lan-subnet-results");
+      var devices = getPairedDevices();
+      host.innerHTML = subnetFindings.map(function (found, index) {
+        var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
+        var already = devices.some(function (d) { return d && d.host === normalizedHost; });
+        return '<div class="plain-card flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-3.5 py-3 dark:border-slate-800">' +
+          '<div class="min-w-0"><p class="text-sm font-bold truncate">' + escapeHtml(found.name) + "</p>" +
+          '<p class="text-[11px] text-slate-500 truncate dark:text-slate-300">' + escapeHtml(found.protocol) +
+          " · " + escapeHtml(found.host) + "</p></div>" +
+          (already
+            ? '<span class="shrink-0 text-[11px] font-bold text-emerald-600">ekli</span>'
+            : '<button type="button" class="shrink-0 rounded-full bg-slate-900 px-3 py-1.5 text-[11px] font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900" onclick="addSubnetFinding(' + index + ')">Ekle</button>') +
+          "</div>";
+      }).join("");
+    }
+
+    function addSubnetFinding(index) {
+      var found = subnetFindings[index];
+      if (!found) return;
+      storeFoundDevice(found);
+      renderSubnetFindings();
+    }
+
+    function scanSubnetNow() {
+      var base = document.getElementById("lan-scan-subnet").value;
+      var prefix = window.nexusLan.normalizeSubnetBase(base);
+      var btn = document.getElementById("lan-subnet-btn");
+      if (!prefix) {
+        setScanStatus("Alt ağ öneki gecersiz. Ornek: 192.168.1", "error");
+        return;
+      }
+      subnetFindings = [];
+      document.getElementById("lan-subnet-results").innerHTML = "";
+      btn.disabled = true;
+      setScanStatus(prefix + ".1 - " + prefix + ".254 taranıyor…", "");
+      window.nexusLan.scanSubnet(prefix, {
+        onFound: function (info, count) {
+          subnetFindings.push(info);
+          setScanStatus(count + " cihaz bulundu · tarama suruyor", "ok");
+          renderSubnetFindings();
+        },
+      })
+        .then(function (all) {
+          setScanStatus(all.length ? all.length + " cihaz bulundu. Ekle'den panellere taşıyabilirsin." : "Bu ağda desteklenen bir cihaz bulunamadı.", all.length ? "ok" : "error");
+          renderSubnetFindings();
+        })
+        .catch(function () {
+          setScanStatus("Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.", "error");
+        })
+        .then(function () {
+          btn.disabled = false;
+        });
     }
 
     function renderSupportedDevices() {

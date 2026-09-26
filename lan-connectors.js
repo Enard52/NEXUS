@@ -22,8 +22,35 @@
     transport = typeof fn === "function" ? fn : null;
   }
 
+  // Telefonda WebView'dan http://192.168.x.x isteği mixed-content sayılıp kesilir
+  // (androidScheme "https" + allowMixedContent false). Cihazın kendi yığınından
+  // çıkan @capacitor-community/http eklentisi bunu aşar; tarayıcıda fetch kalır.
+  function nativeHttpPlugin() {
+    var capi = window.Capacitor;
+    if (!capi || typeof capi.isNativePlatform !== "function" || !capi.isNativePlatform()) return null;
+    var plugin = capi.Plugins && capi.Plugins.Http;
+    return plugin && typeof plugin.request === "function" ? plugin : null;
+  }
+
   function request(opts) {
     if (transport) return transport(opts);
+    var plugin = nativeHttpPlugin();
+    if (plugin) {
+      return plugin
+        .request({
+          method: opts.method || "GET",
+          url: opts.url,
+          headers: opts.headers || {},
+          data: opts.body,
+          connectTimeout: opts.timeoutMs || DEFAULT_TIMEOUT_MS,
+          readTimeout: opts.timeoutMs || DEFAULT_TIMEOUT_MS,
+          responseType: "body",
+        })
+        .then(function (res) {
+          var text = typeof res.data === "string" ? res.data : JSON.stringify(res.data);
+          return { status: res.status, text: text };
+        });
+    }
     var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
     var timer = controller
       ? setTimeout(function () { controller.abort(); }, opts.timeoutMs || DEFAULT_TIMEOUT_MS)
@@ -197,12 +224,68 @@
     return null;
   }
 
+  // mDNS native eklentisi olmadan da "kendiliğinden bulma" için alt ağ taraması:
+  // 1-254 adresleri sınırlı eşzamanlılıkla yoklanır. base "192.168.1" gibi gelir.
+  function normalizeSubnetBase(input) {
+    var value = String(input || "").trim().replace(/\.+$/, "");
+    if (!/^\d{1,3}(\.\d{1,3}){2,3}$/.test(value)) return null;
+    var parts = value.split(".");
+    if (parts.length === 4) parts.pop();
+    if (parts.length !== 3) return null;
+    var ok = parts.every(function (p) { return Number(p) >= 0 && Number(p) <= 255; });
+    return ok ? parts.join(".") : null;
+  }
+
+  function scanSubnet(base, options) {
+    var opts = options || {};
+    var prefix = normalizeSubnetBase(base);
+    if (!prefix) return Promise.reject(new Error("gecersiz alt ag"));
+    var concurrency = opts.concurrency || 24;
+    var found = [];
+    var nextHost = 1;
+    var active = 0;
+
+    return new Promise(function (resolvePromise) {
+      function finishIfDone() {
+        if (nextHost > 254 && active === 0) resolvePromise(found);
+      }
+      function pump() {
+        while (active < concurrency && nextHost <= 254) {
+          (function (host) {
+            active += 1;
+            identify(host)
+              .then(function (info) {
+                found.push(info);
+                if (opts.onFound) opts.onFound(info, found.length);
+              })
+              .catch(function () {
+                /* cevap vermeyen adres normal: tarama devam eder */
+              })
+              .then(function () {
+                active -= 1;
+                finishIfDone();
+                pump();
+              });
+          })(prefix + "." + nextHost);
+          nextHost += 1;
+        }
+      }
+      pump();
+      finishIfDone();
+    });
+  }
+
   window.nexusLan = {
     setTransport: setTransport,
     request: request,
+    usingNativeTransport: function () {
+      return !!transport || !!nativeHttpPlugin();
+    },
     protocols: protocols,
     protocolFor: protocolFor,
     identify: identify,
+    scanSubnet: scanSubnet,
+    normalizeSubnetBase: normalizeSubnetBase,
     read: function (device) {
       var p = protocolFor(device.protocol);
       return p ? p.read(device) : Promise.reject(new Error("bilinmeyen protokol"));
