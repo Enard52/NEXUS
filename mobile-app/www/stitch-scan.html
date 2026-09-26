@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#000000">
 <title>NEXUS - Tara</title>
 <link href="css/tailwind.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <script src="js/jsQR.js"></script>
 <style>
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -205,10 +205,11 @@
     }
 
     function openSetupCodeEntry() {
-      window.location.href = 'stitch-pair.html#manual-catalog-section';
+      window.location.href = 'stitch-setup-code.html';
     }
 
     function appendPairedDeviceFromSetupCode(rawValue) {
+      if (typeof nexusGetItem !== 'function' || typeof nexusSetItem !== 'function') return false;
       const digits = String(rawValue || '').replace(/\D/g, '');
       if (digits.length < 8) return false;
       let paired = [];

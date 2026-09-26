@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="utf-8"/>
@@ -8,7 +8,8 @@
 <meta name="theme-color" content="#f4f5fb">
 <title>NEXUS - Kart Ekle</title>
 <link href="css/tailwind.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+<script src="js/lucide.js"></script>
 <style>
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -182,6 +183,10 @@
     }
 
     function renderPicker() {
+      if (!window.NEXUS_CARD_CATALOG) {
+        console.error('NEXUS_CARD_CATALOG tanımlı değil. data.js yüklendi mi?');
+        return;
+      }
       const list = document.getElementById('picker-list');
       const tabs = document.querySelectorAll('.picker-tab');
       tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tab === pickerState.activeTab));
@@ -241,13 +246,12 @@
       }).join('');
     }
 
+    function showRenameModal(id, currentName) {
+      // TODO: rename modal eklenecek
+    }
+
     window.renameDevicePrompt = function(id, currentName) {
-      const newName = prompt('Cihaz için yeni bir isim girin:', currentName);
-      if (newName && newName.trim() !== '') {
-        if (window.renameNexusDevice && window.renameNexusDevice(id, newName.trim())) {
-          renderPicker();
-        }
-      }
+      showRenameModal(id, currentName);
     };
 
     function toggleItem(id) {
@@ -259,6 +263,10 @@
     }
 
     function commitSelection() {
+      if (!window.NEXUS_CARD_CATALOG) {
+        console.error('NEXUS_CARD_CATALOG tanımlı değil. data.js yüklendi mi?');
+        return;
+      }
       if (typeof window.setSmartHomeCardSelected === 'function') {
         window.NEXUS_CARD_CATALOG.smartHome.forEach(card => {
           window.setSmartHomeCardSelected(card.id, pickerState.smartHome.has(card.id));
@@ -308,4 +316,3 @@
   </script>
 </body>
 </html>
-

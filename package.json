@@ -22,6 +22,7 @@
     "build:server": "pnpm --filter @nexus/server build",
     "build": "pnpm build:static && pnpm build:client && pnpm build:server",
     "release:manifest": "node scripts/release-manifest.mjs",
+    "release:mobile": "node scripts/publish-mobile-artifact.mjs",
     "changelog": "echo See CHANGELOG.md",
     "build:tailwind": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify",
     "build:tailwind:watch": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify --watch",

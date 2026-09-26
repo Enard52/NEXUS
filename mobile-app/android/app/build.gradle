@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+// Surum tek kaynaktan: mobile-app/package.json. Magaza kaydi, sitede gorunen surum
+// ve APK'nin kendi surumu boylece birbirinden savamaz.
+def nexusAppVersion = new groovy.json.JsonSlurper().parse(rootProject.file('../package.json')).version
+
 android {
     namespace "ai.nexus.app"
     compileSdk rootProject.ext.compileSdkVersion
@@ -7,8 +11,8 @@ android {
         applicationId "ai.nexus.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode nexusAppVersion.replace('.', '').toInteger()
+        versionName nexusAppVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

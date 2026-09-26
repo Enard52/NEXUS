@@ -8,11 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Ana Ekran</title>
-<!-- Tailwind CSS CDN with plugins -->
+<!-- Tailwind CSS Local -->
 <link href="css/tailwind.css" rel="stylesheet"/>
-<!-- Google Fonts: Inter is close to the system font used in iOS -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons for consistent navigation icons -->
+<!-- Google Fonts: Inter - Local -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+<!-- Lucide Icons Local -->
 <script src="js/lucide.js"></script>
 <style data-purpose="typography">
     body {
@@ -178,7 +178,7 @@
 <!-- Favorites Section Header -->
 <div class="flex items-center justify-between mb-6" data-purpose="section-title">
 <h2 class="text-2xl font-bold tracking-tight">Favoriler</h2>
-<button aria-label="Favorileri daralt" class="transition-transform" onclick="document.getElementById('favorites-grid').classList.toggle('hidden'); this.classList.toggle('-rotate-90')">
+<button aria-label="Favorileri daralt" class="transition-transform" id="favorites-toggle-btn" onclick="document.getElementById('favorites-grid').classList.toggle('hidden'); this.classList.toggle('-rotate-90'); nexusSetItem('nexusFavoritesCollapsed', document.getElementById('favorites-grid').classList.contains('hidden') ? 'true' : 'false')">
 <svg class="h-6 w-6 text-slate-800" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
 </svg>
@@ -250,7 +250,6 @@
 <!-- END: BottomNavigation -->
 <script>
             lucide.createIcons();
-
 
     function syncCards() {
       var selectedSmartHome = null;
@@ -392,8 +391,10 @@
       setInterval(renderDndCard, 30000);
 
       // Gerçek hane adıyla senkron (nexusHousehold)
-      var name = typeof window.getPrimaryHouseholdName === 'function' ? window.getPrimaryHouseholdName() : 'Evim';
-      document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = name; });
+      var householdName = typeof window.getPrimaryHouseholdName === 'function'
+        ? window.getPrimaryHouseholdName()
+        : (nexusGetItem('nexusHouseholdName') || 'Evim');
+      document.querySelectorAll('[data-bind="householdName"]').forEach(function (el) { el.textContent = householdName; });
 
       // Kullanıcı Bilgileri sayfasında değiştirilen fotoğrafla senkron
       var avatar = nexusGetItem('nexusAvatar');
@@ -402,9 +403,10 @@
         if (avatarEl) avatarEl.src = avatar;
       }
 
-      if (typeof window.refreshDashboardSupplements === 'function') {
-        window.refreshDashboardSupplements();
-      }
+      // Extra smart home kartları ve tap-to-run bölümünü doldur
+      if (typeof window.renderExtraSmartHomeCards === 'function') window.renderExtraSmartHomeCards();
+      if (typeof window.renderTapToRunCards === 'function') window.renderTapToRunCards();
+      if (typeof window.renderDevices === 'function') window.renderDevices();
       if (typeof window.renderNexusDevices === 'function') {
         window.renderNexusDevices();
       }
@@ -412,6 +414,16 @@
 
     // Call on load
     syncCards();
+
+    // Favoriler collapse durumunu restore et
+    (function() {
+      var grid = document.getElementById('favorites-grid');
+      var toggleBtn = document.getElementById('favorites-toggle-btn');
+      if (grid && nexusGetItem('nexusFavoritesCollapsed') === 'true') {
+        grid.classList.add('hidden');
+        if (toggleBtn) toggleBtn.classList.add('-rotate-90');
+      }
+    })();
 
     // Call when page is restored from bfcache
     window.addEventListener('pageshow', function(event) {
@@ -427,13 +439,17 @@
       }
     });
 
+    // renderNexusDevices alias — data.js'teki renderDevices ile aynı
+    if (typeof window.renderDevices === 'function' && typeof window.renderNexusDevices === 'undefined') {
+      window.renderNexusDevices = window.renderDevices;
+    }
+
     // Quick add menu open/close
     function toggleQuickAdd() {
       document.getElementById('quick-add-menu').classList.toggle('open');
       document.getElementById('quick-add-backdrop').classList.toggle('hidden');
     }
   </script>
-
 
 <!-- Home Selector Modal -->
 <div id="home-selector-backdrop" class="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="toggleHomeSelector()"></div>
@@ -502,7 +518,6 @@ if (window.NexusSheetGestures) {
   });
 }
 </script>
-
 
 </body></html>
 

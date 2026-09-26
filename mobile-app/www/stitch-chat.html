@@ -12,6 +12,7 @@
 <link href="css/tailwind.css" rel="stylesheet"/>
 <!-- Custom Tailwind Configuration (NEXUS brand palette) -->
 <script>
+    window.tailwind = window.tailwind || {};
     tailwind.config = {
       theme: {
         extend: {
@@ -29,8 +30,8 @@
     }
   </script>
 <!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<style data-purpose="custom-fonts">
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style data-purpose="custom-fonts">
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -159,7 +160,7 @@
             <svg class="h-4 w-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             Müzik Başlat
           </button>
-          <button onclick="sendQuickMessage('Tüm ışıkları kapıat')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-amber-200/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+          <button onclick="sendQuickMessage('Tüm ışıkları kapat')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-amber-200/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
             <svg class="h-4 w-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Tasarruf Modu
           </button>
@@ -386,9 +387,9 @@
     var reply = 'Merhaba' + hitap + ', şu an çevrimdışı asistan modundayım; eşleşmiş cihazların ve uygulama içi işlemler konusunda yardımcı olabilirim.';
     var widgetHtml = '';
 
-    if (ltext.includes('ışık') || ltext.includes('kapıat') || ltext.includes('enerji')) {
+    if (ltext.includes('ışık') || ltext.includes('kapat') || ltext.includes('enerji')) {
       if (devices > 0) {
-        reply = 'Eşleşmiş cihazlarına kapıatma komutu gönderildi. Enerji tasarrufu modu devrede.';
+        reply = 'Eşleşmiş cihazlarına kapatma komutu gönderildi. Enerji tasarrufu modu devrede.';
         widgetHtml = '<div class="mt-3 bg-[#F1F7FF] border border-purple-100 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div><div><p class="text-sm font-semibold text-gray-800">Kapatma Komutu Gönderildi</p><p class="text-xs text-gray-500">' + devices + ' Cihaz</p></div></div>';
       } else {
         reply = 'Kontrol edilecek eşleşmiş cihazı bulunamadı. Önce Cihazlar bölümünden bir cihazı eşleştirmen gerekiyor.';
@@ -397,7 +398,7 @@
       reply = 'Hemen karanlık temayı aktif ediyorum, gözlerin artık daha rahat edecek. [ACTION: ENABLE_DARK_MODE]';
     } else if (ltext.includes('açık tema') || ltext.includes('gündüz modu')) {
       reply = 'Açık temaya geçiş yaptım. [ACTION: ENABLE_LIGHT_MODE]';
-    } else if (ltext.includes('rahatsız etme') || ltext.includes('bildirimleri kapıat')) {
+    } else if (ltext.includes('rahatsız etme') || ltext.includes('bildirimleri kapat')) {
       reply = 'İyi dinlenmeler' + hitap + '! Rahatsız etme modunu açtım, hiçbir bildirim seni rahatsız etmeyecek. [ACTION: ENABLE_DND]';
     } else if (ltext.includes('klima') || ltext.includes('sıcaklık') || ltext.includes('soğut')) {
       if (devices > 0) {
@@ -630,10 +631,15 @@
     } else {
       currentChatId = 'c' + Date.now() + Math.random().toString(36).slice(2, 7);
     }
-    document.addEventListener('DOMContentLoaded', function () {
+    function run() {
       updateInputLock();
       autoSendIncomingPrompt();
-    });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
   })();
 </script>
 <!-- END: MainContent -->

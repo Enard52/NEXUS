@@ -4,11 +4,11 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>NEXUS — Akıllı</title>
-<!-- Tailwind CSS CDN with plugins -->
+<!-- Tailwind CSS Local -->
 <link href="css/tailwind.css" rel="stylesheet"/>
-<!-- Google Fonts: Inter -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons for consistent navigation icons -->
+<!-- Google Fonts: Inter - Local -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+<!-- Lucide Icons Local -->
 <script src="js/lucide.js"></script>
 <style data-purpose="global-styles">
     body {
@@ -383,22 +383,6 @@ function toggleHomeSelector() {
 </script>
 
 <script>
-  // Senaryo ve Otomasyon Toggle state sync
-  (function() {
-    document.querySelectorAll('#tab-automation input[type="checkbox"]').forEach((checkbox, index) => {
-      const key = 'nexusAutoToggle_' + index;
-      const saved = localStorage.getItem(key);
-      if (saved !== null) {
-        checkbox.checked = saved === 'true';
-      }
-      checkbox.addEventListener('change', function() {
-        localStorage.setItem(key, this.checked);
-      });
-    });
-  })();
-</script>
-
-<script>
 
     function toggleQuickAdd() {
       const menu = document.getElementById('quick-add-menu');
@@ -479,12 +463,23 @@ function toggleHomeSelector() {
                   <i class="w-4 h-4" data-lucide="trash-2"></i>
                 </button>
                 <label class="relative inline-flex items-center cursor-pointer" onclick="event.stopPropagation()">
-                  <input type="checkbox" checked class="sr-only peer" onclick="event.stopPropagation()">
+                  <input type="checkbox" ${auto.enabled !== false ? 'checked' : ''} class="sr-only peer auto-toggle" data-id="${auto.id}" onclick="event.stopPropagation()">
                   <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
                 </label>
                 </div>
             `;
             autoContainer.appendChild(div);
+            // Toggle change → enabled durumunu storage'a yaz
+            var toggleEl = div.querySelector('.auto-toggle');
+            if (toggleEl) {
+              toggleEl.addEventListener('change', (function(itemId) {
+                return function() {
+                  if (typeof updateItemById === 'function') {
+                    updateItemById('nexusCustomAutomations', itemId, { enabled: this.checked });
+                  }
+                };
+              })(auto.id));
+            }
           });
 
           const emptyState = document.getElementById('empty-automation');

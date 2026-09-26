@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#ffffff"/>
   <title>NEXUS - Ev Yönetimi</title>
   <link href="css/tailwind.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
@@ -54,7 +54,7 @@
   <div id="home-detail" class="fixed inset-0 z-40 hidden flex-col">
     <div class="absolute inset-0 bg-white dark:bg-slate-950"></div>
     <header class="relative pt-14 pb-4 px-5 flex items-center">
-      <button aria-label="Geri" class="p-1 -ml-1 text-slate-700 dark:text-slate-200"  onclick="event.preventDefault(); window.history.back();">
+      <button aria-label="Geri" class="p-1 -ml-1 text-slate-700 dark:text-slate-200" onclick="event.preventDefault(); closeHomeDetail();">
         <i class="w-7 h-7" data-lucide="chevron-left"></i>
       </button>
       <h2 class="absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-xl font-bold">Ev Ayarı</h2>
@@ -137,6 +137,15 @@
     var detailIndex = -1;
     var sheetMode = "";
     var memberIndex = -1;
+
+    function showHouseholdToast(msg, type) {
+      var t = document.createElement('div');
+      var bg = type === 'error' ? '#dc2626' : '#1e293b';
+      t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:' + bg + ';color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;white-space:nowrap;max-width:90vw;text-align:center;';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function() { if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+    }
 
     function ownerName() { return nexusGetItem("nexusUserName") || "Misafir"; }
     function ownerEmail() { return nexusGetItem("nexusUserEmail") || ""; }
@@ -366,18 +375,18 @@
     }
     function detectHomeLocation() {
       if (!navigator.geolocation) {
-        alert("Bu cihazıda otomatik konum desteği yok.");
+        showHouseholdToast("Bu cihazda otomatik konum desteği yok.", "error");
         return;
       }
       var button = document.getElementById("sheet-auto-location");
       button.textContent = "Konum alınıyor...";
       navigator.geolocation.getCurrentPosition(function (position) {
-        var coords = position.coords.latitude.toFixed(4) + ", " + position.coords.longitude.toFixed(4) + " (otomatik açlgılandı)";
+        var coords = position.coords.latitude.toFixed(4) + ", " + position.coords.longitude.toFixed(4) + " (otomatik algılandı)";
         document.getElementById("sheet-input").value = coords;
         button.textContent = "Konumu Otomatik Algıla";
       }, function () {
         button.textContent = "Konumu Otomatik Algıla";
-        alert("Konum izni verilmediği için otomatik açlgılama yapılamadı.");
+        showHouseholdToast("Konum izni verilmedi.", "error");
       }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
     }
     function confirmInputSheet() {
@@ -391,7 +400,7 @@
         if (!code) return;
         var targetHome = homes.find(function (home) { return String(home.inviteCode || "").toUpperCase() === code; });
         if (!targetHome) {
-          alert("Bu davet kodu bulunamadı.");
+          showHouseholdToast("Bu davet kodu bulunamadı.", "error");
           return;
         }
         var exists = targetHome.members.some(function (member) {
@@ -597,10 +606,16 @@
     function copyInviteCode() {
       var home = currentHome();
       if (!home) return;
+      var code = home.inviteCode;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(home.inviteCode);
+        navigator.clipboard.writeText(code).then(function() {
+          showHouseholdToast("Davet kodu kopyalandı: " + code);
+        }).catch(function() {
+          showHouseholdToast("Kod: " + code);
+        });
+      } else {
+        showHouseholdToast("Davet Kodunuz: " + code);
       }
-      alert("Davet kodu kopyalandı: " + home.inviteCode);
     }
     function resendInvite(inviteId) {
       var home = currentHome();

@@ -11,9 +11,10 @@
 <!-- Tailwind CSS CDN -->
 <link href="css/tailwind.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<!-- Custom Tailwind Configuration (NEXUS brand colors) -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Custom Tailwind Configuration (NEXUS brand colors) -->
 <script>
+    window.tailwind = window.tailwind || {};
     tailwind.config = {
       theme: {
         extend: {
@@ -136,6 +137,17 @@
 </footer>
 <!-- END: Footer Navigation Card -->
 <script data-purpose="dnd-interactions">
+    // Süresi dolmuş DnD seçimini temizle
+    (function() {
+      try {
+        var endTime = nexusGetItem('nexusDndEndTime');
+        if (endTime && Date.now() > parseInt(endTime, 10)) {
+          nexusRemoveItem('nexusDndEndTime');
+          nexusRemoveItem('nexusDndActive');
+          nexusRemoveItem('nexusDndSelection');
+        }
+      } catch(e) {}
+    })();
     // Move the checkmark to the tapped DND option and persist the choice
     function selectDnd(item) {
       document.querySelectorAll('#dnd-options .dnd-check').forEach(function (c) {

@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Ayarlar</title>
 <link href="css/tailwind.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<style>
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height: 100dvh;
@@ -130,11 +130,11 @@
   </section>
 
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
-    <div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="toggleDarkMode()">
-      <span class="text-xl text-gray-800 font-medium">Karanlık Mod</span>
-      <div class="flex items-center space-x-2">
-        <span class="text-xl text-gray-400" id="dark-mode-label">Kapalı</span>
-        <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div class="flex items-center justify-between px-5 py-5" onclick="toggleDarkMode()">
+      <span class="text-xl text-gray-800 font-medium dark:text-white">Karanlık Mod</span>
+      <div class="relative">
+        <div id="dark-mode-switch-track" class="w-12 h-7 rounded-full transition-colors bg-gray-200"></div>
+        <div id="dark-mode-switch-thumb" class="absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
       </div>
     </div>
     <hr class="mx-5 border-gray-100"/>
@@ -181,8 +181,11 @@
   })();
 
   function refreshDarkLabel() {
-    var on = nexusGetItem('nexusDarkMode') === 'true';
-    document.getElementById('dark-mode-label').textContent = on ? 'Açık' : 'Kapalı';
+    var isDark = nexusGetItem('nexusDarkMode') === 'true';
+    var track = document.getElementById('dark-mode-switch-track');
+    var thumb = document.getElementById('dark-mode-switch-thumb');
+    if (track) track.className = 'w-12 h-7 rounded-full transition-colors ' + (isDark ? 'bg-[#4C7DFF]' : 'bg-gray-200');
+    if (thumb) thumb.style.transform = isDark ? 'translateX(20px)' : 'translateX(0)';
   }
 
   function toggleDarkMode() {

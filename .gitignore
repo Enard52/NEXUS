@@ -51,3 +51,8 @@ packages/server/data/
 nul
 
 .superdesign/tmp
+
+# Türetilmiş mobil/derleme çıktıları — repoda durmaz, release hattı üretir
+public/downloads/*.apk
+public/downloads/*.aab
+public/downloads/SHA256SUMS.txt
