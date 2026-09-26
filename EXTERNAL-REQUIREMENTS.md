@@ -12,6 +12,25 @@
 - **Yapılacak:** `SandboxPaymentProvider` yerine gerçek Stripe adapter'ı bağlama;
   deneme→ücret→iptal→fatura akışını gerçek sandbox'ta doğrulama.
 
+## Bulut Hesap ve Cihaz Senkronu — Supabase (EKLENDİ 2026-09-26)
+
+- **Gereken (senin yapacağın):**
+  1. Supabase'de ücretsiz proje aç (eu-region önerilir).
+  2. `supabase/migrations/0001_nexus_devices.sql` dosyasını SQL editor'de çalıştır
+     (tablo + RLS politikaları hazır).
+  3. Repoda `cp cloud-config.example.js cloud-config.js` yap ve `url` + `anonKey`
+     değerlerini gir. Bu dosya `.gitignore`'dadır; anahtarlar repoya girmez.
+  4. İsteğe bağlı: e-posta doğrulamayı kapat (hızlı test) veya SMTP hesabı bağla.
+- **Hazır olan kod:** `cloud-sync.js` — Supabase GoTrue REST ile kayıt/giriş/oturum
+  yenileme/çıkış, PostgREST ile cihazupsert'i (RLS: kullanıcı yalnız kendi satırları),
+  çevrimdışı kuyruk + `flushQueue`, yerel-liste ile birleştirme (yeni kayıt kazanır).
+  Giriş/kayıt ekranları bulut yapılandırılınca otomatik Supabase'e geçer;
+  yapılandırma yoksa mevcut yerel davranış birebir sürer.
+- **Test:** `pnpm test` içinde `packages/web/src/cloud-sync.test.ts` — sahte `fetch`
+  ile 11 senaryo (yanlış endpoint/otorizasyon başlığı/503 kuyruk/akış birleştirme).
+  Gerçek anahtar olmadan doğrulanmış sayılmaz: anahtarları girince ilk giriş denemesi
+  `stitch-login.html` üzerinden elle test edilmeli.
+
 ## Kod İmzalama & Dağıtım — FAZ 18 (GÜNCELLENDİ 2026-09-26)
 
 - **Karar:** Electron masaüstü uygulaması projeden kaldırıldı (Yol A: mobil-öncelikli

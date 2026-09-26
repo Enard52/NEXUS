@@ -56,3 +56,7 @@ nul
 public/downloads/*.apk
 public/downloads/*.aab
 public/downloads/SHA256SUMS.txt
+
+# Supabase anahtarlari repoya girmez — cloud-config.example.js dan kopyala
+cloud-config.js
+mobile-app/www/cloud-config.js

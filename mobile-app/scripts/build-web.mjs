@@ -50,6 +50,10 @@ const SHARED_SCRIPTS = [
   "data.js",
   "supported-devices.js",
   "lan-connectors.js",
+  "cloud-sync.js",
+  // Bulut yapilandirmasi gizlidir (gitignore) — varsa tasinir, yoksa uygulama
+  // yerel modda devam eder.
+  "cloud-config.js",
   "ai-fab.js",
   "sheet-gestures.js",
   "smart-scene-page.js",
@@ -58,6 +62,21 @@ const SHARED_SCRIPTS = [
 for (const file of SHARED_SCRIPTS) {
   const src = join(REPO_ROOT, file);
   if (existsSync(src)) copyFileSync(src, join(OUT_DIR, file));
+}
+
+// cloud-config.js gizlidir; yoksa kopyalanacak bir şey olmaz. Sayfalar bu dosyayı
+// <script> ile yüklediği için eksikse 404 düşer — boş bir varsayılan üretilir ve
+// uygulama yerel modda kalmaya devam eder.
+const CLOUD_CONFIG_OUT = join(OUT_DIR, "cloud-config.js");
+if (!existsSync(CLOUD_CONFIG_OUT)) {
+  writeFileSync(
+    CLOUD_CONFIG_OUT,
+    "// Bulut yapilandirmasi yok — NEXUS tamamen yerel calisir.\n" +
+      "// Supabase icin repo kokunde cloud-config.example.js dosyasini cloud-config.js\n" +
+      "// olarak kopyala ve anahtarlari gir. Bu dosya gizlidir, repoya girmez.\n" +
+      "window.NEXUS_CLOUD = window.NEXUS_CLOUD || { url: \"\", anonKey: \"\" };\n",
+    "utf8",
+  );
 }
 
 const SHARED_ASSETS = ["siri-logo.png"];

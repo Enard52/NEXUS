@@ -55,6 +55,8 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="cloud-sync.js"></script>
   </head>
 <body class="flex flex-col items-center px-6 text-slate-900">
 <!-- BEGIN: MainContent -->
@@ -117,6 +119,26 @@
     lucide.createIcons();
   }
   // Basit doğrulama ile giriş: e-posta + şifre kontrolü, sonra ana sayfa
+  // Bulut yapılandırılmışsa (cloud-config.js) kimlik doğrulama Supabase üzerinden
+  // yapılır; yapılandırma yoksa davranış eskisi gibi tamamen yereldir.
+  function rememberLocalUser(email) {
+    try {
+      localStorage.setItem('nexusCurrentUser', email);
+      nexusSetItem('nexusUserEmail', email);
+      // Kullanıcı adını normalize edilmiş key'e de yaz (register ile uyumlu)
+      var storedName = localStorage.getItem(email + '_userName');
+      if (storedName) nexusSetItem('nexusUserName', storedName);
+    } catch (e) {}
+  }
+
+  function cloudSignInMessage(error) {
+    var text = String((error && error.message) || '');
+    if (/invalid login credentials/i.test(text)) return 'E-posta veya şifre hatalı.';
+    if (/not confirmed|verify|email/i.test(text) && /confirm/i.test(text)) return 'E-posta adresini onaylaman gerekiyor.';
+    if (/NetworkError|Failed to fetch/i.test(text)) return 'Bulut hesabına ulaşılamadı. İnternet bağlantını kontrol et.';
+    return text || 'Giriş yapılamadı.';
+  }
+
   function doLogin() {
     var email = (document.getElementById('login-email').value || '').trim();
     var pass = document.getElementById('login-password').value || '';
@@ -133,25 +155,39 @@
       err.classList.remove('hidden');
       return;
     }
+    err.classList.add('hidden');
+
+    if (window.nexusCloud && window.nexusCloud.enabled()) {
+      var button = document.getElementById('login-submit') || document.querySelector('button[onclick="doLogin()"]');
+      if (button) button.disabled = true;
+      window.nexusCloud.signIn(email, pass).then(function (session) {
+        if (!session) throw new Error('E-posta veya şifre hatalı.');
+        rememberLocalUser(session.email || email);
+        return window.nexusCloud.flushQueue().catch(function () {});
+      }).then(function () {
+        return window.nexusCloud.syncNow().catch(function () {});
+      }).then(function () {
+        window.location.href = 'stitch-home.html';
+      }).catch(function (error) {
+        if (button) button.disabled = false;
+        err.textContent = cloudSignInMessage(error);
+        err.classList.remove('hidden');
+      });
+      return;
+    }
+
     if (storedPassword && pass !== storedPassword) {
       err.textContent = 'Şifre yanlış.';
       err.classList.remove('hidden');
       return;
     }
-    err.classList.add('hidden');
 
     // Eğer bu e-posta ile ilk defa giriş yapılıyorsa şifresini kaydet (Kayıt ol mantığı)
     if (!storedPassword) {
       localStorage.setItem('nexus_mock_pw_' + email, pass);
     }
 
-    try {
-      localStorage.setItem('nexusCurrentUser', email);
-      nexusSetItem('nexusUserEmail', email);
-      // Kullanıcı adını normalize edilmiş key'e de yaz (register ile uyumlu)
-      var storedName = localStorage.getItem(email + '_userName');
-      if (storedName) nexusSetItem('nexusUserName', storedName);
-    } catch (e) {}
+    rememberLocalUser(email);
     window.location.href = 'stitch-home.html';
   }
 </script>

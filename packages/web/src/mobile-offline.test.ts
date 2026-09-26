@@ -46,7 +46,15 @@ function resolvesLocally(ref: string): boolean {
   const clean = decodeURIComponent(ref.split(/[?#]/)[0]).replace(/^\.?\//, "");
   // Bundle'daki sayfa, kökteki kaynak sayfayla aynı relative dili kullanır:
   // dosya ya kökte ya da üretilmiş ayna klasörde (www/) bulunmalı.
-  return existsSync(join(REPO_ROOT, clean)) || existsSync(join(REPO_ROOT, "www", clean));
+  if (existsSync(join(REPO_ROOT, clean)) || existsSync(join(REPO_ROOT, "www", clean))) return true;
+  // Bilerek repoda tutulmayan, paketleme adiminda uretilen dosyalar: gizli
+  // yapilandirma gibi. Bunlar icin kural, paketleyicinin gercekten uretiyor olmasi.
+  const generatedAtBundleTime = new Set(["cloud-config.js"]);
+  if (generatedAtBundleTime.has(clean)) {
+    const builder = readFileSync(join(REPO_ROOT, "mobile-app", "scripts", "build-web.mjs"), "utf8");
+    return builder.includes(clean);
+  }
+  return false;
 }
 
 describe("mobil ekranlar — offline yüklenme Sözleşmesi", () => {

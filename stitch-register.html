@@ -46,6 +46,8 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="cloud-sync.js"></script>
 </head>
 <body class="flex flex-col items-center justify-center px-6 py-12 text-slate-900 min-h-[100dvh]">
 
@@ -154,29 +156,59 @@
     }
 
     var existingPw = localStorage.getItem('nexus_mock_pw_' + email);
-    if (existingPw) {
+    if (existingPw && !(window.nexusCloud && window.nexusCloud.enabled())) {
       errorBox.textContent = 'Bu e-posta ile zaten bir hesap var. Lütfen giriş yapın.';
       errorBox.classList.remove('hidden');
       return;
     }
 
-    // Başarılı Kayıt
-    localStorage.setItem('nexus_mock_pw_' + email, pw);
+    function completeRegistration() {
+      // Başarılı Kayıt
+      localStorage.setItem('nexus_mock_pw_' + email, pw);
 
-    // Otomatik giriş — önce currentUser'ı set et, sonra nexusSetItem çalışır
-    localStorage.setItem('nexusCurrentUser', email);
+      // Otomatik giriş — önce currentUser'ı set et, sonra nexusSetItem çalışır
+      localStorage.setItem('nexusCurrentUser', email);
 
-    // Auth prefix sistemiyle uyumlu şekilde kullanıcı bilgilerini kaydet
-    try {
-      nexusSetItem('nexusUserName', name);
-      nexusSetItem('nexusUserEmail', email);
-      // Fallback: eski key şemasına da yaz (login sayfası okuyor)
-      localStorage.setItem(email + '_userName', name);
-    } catch (e) {
-      localStorage.setItem(email + '_userName', name);
+      // Auth prefix sistemiyle uyumlu şekilde kullanıcı bilgilerini kaydet
+      try {
+        nexusSetItem('nexusUserName', name);
+        nexusSetItem('nexusUserEmail', email);
+        // Fallback: eski key şemasına da yaz (login sayfası okuyor)
+        localStorage.setItem(email + '_userName', name);
+      } catch (e) {
+        localStorage.setItem(email + '_userName', name);
+      }
+
+      window.location.replace('stitch-home.html');
     }
 
-    window.location.replace('stitch-home.html');
+    // Bulut yapılandırılmışsa hesap Supabase'te açılır; cihaz listesi sonraki
+    // senkronlarda bu hesabın altına yazılır. Yapılandırma yoksa yerel akış aynen sürer.
+    if (window.nexusCloud && window.nexusCloud.enabled()) {
+      var submit = document.querySelector('button[onclick="doRegister()"]');
+      if (submit) submit.disabled = true;
+      window.nexusCloud.signUp(email, pw).then(function (session) {
+        if (session) return window.nexusCloud.syncNow().catch(function () {});
+        // session yoksa e-posta doğrulaması gerekebilir: kullanıcı girişe yönlendirilir.
+        errorBox.textContent = 'Hesabın oluşturuldu. E-postanı onayladıktan sonra giriş yap.';
+        errorBox.classList.remove('hidden');
+        window.location.replace('stitch-login.html');
+        return null;
+      }).then(function () {
+        completeRegistration();
+      }).catch(function (error) {
+        if (submit) submit.disabled = false;
+        var text = String((error && error.message) || '');
+        if (/already registered|already exists/i.test(text)) text = 'Bu e-posta ile zaten bir hesap var. Lütfen giriş yapın.';
+        else if (/Password should be/i.test(text)) text = 'Şifre en az 6 karakter olmalı.';
+        else if (/NetworkError|Failed to fetch/i.test(text)) text = 'Buluta ulaşılamadı. İnternet bağlantını kontrol et.';
+        errorBox.textContent = text || 'Hesap oluşturulamadı.';
+        errorBox.classList.remove('hidden');
+      });
+      return;
+    }
+
+    completeRegistration();
   }
 </script>
 </body></html>

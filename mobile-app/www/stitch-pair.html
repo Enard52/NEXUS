@@ -12,6 +12,8 @@
   <script src="js/lucide.js"></script>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="cloud-sync.js"></script>
   <script src="data.js"></script>
   <script src="supported-devices.js"></script>
   <script src="lan-connectors.js"></script>
@@ -467,6 +469,7 @@
       var devices = getPairedDevices();
       devices.splice(index, 1);
       nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
+      if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
       renderPairedDevices();
       if (typeof window.refreshDashboardSupplements === "function") {
         window.refreshDashboardSupplements();
@@ -543,6 +546,7 @@
       if (!devices.some(function (d) { return d && d.host === found.host; })) {
         var profile = KIND_PROFILE[found.kind] || KIND_PROFILE.switch;
         devices.push({
+          id: "lan-" + found.host.replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
           name: found.name,
           room: "Yerel ağ",
           icon: "cpu",
@@ -555,6 +559,7 @@
           endpointId: 0,
         });
         nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
+        if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
       }
       setScanStatus("Eklendi. Kontrol panellerinden yönetebilirsin.", "ok");
       document.getElementById("lan-scan-result").innerHTML =

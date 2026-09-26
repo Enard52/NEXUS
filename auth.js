@@ -59,6 +59,10 @@
   };
 
   window.nexusLogout = function() {
+    // Bulut oturumu varsa önce onu kapat; yerel temizlik her durumda yapılır.
+    if (window.nexusCloud && window.nexusCloud.enabled) {
+      try { window.nexusCloud.signOut(); } catch (e) {}
+    }
     localStorage.removeItem(CURRENT_USER_KEY);
     window.location.replace('index.html');
   };
