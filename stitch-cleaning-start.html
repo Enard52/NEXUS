@@ -2,7 +2,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Temizlik Rutini</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -19,7 +20,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     .nexus-glow {
-      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.28);
+      box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28);
     }
     .active-scale:active {
       transform: scale(0.96);
@@ -27,14 +28,14 @@
   </style>
 <script src="auth.js"></script>
   <script src="theme.js"></script><script src="smart-scene-page.js"></script></head>
-<body data-scene-page="clean-start" data-scene-title="Temizligi Baslat" data-back-href="stitch-home.html" data-complete-href="stitch-home.html">
+<body data-scene-page="clean-start" data-scene-title="Temizliği Başlat" data-back-href="stitch-home.html" data-complete-href="stitch-home.html">
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300" data-sd-id="1">
     <!-- Header Section -->
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between" data-sd-id="2">
       <a href="#" id="nav-back-link" aria-label="Geri" class="p-1 -ml-1 text-slate-900 active-scale transition-transform" data-sd-id="3" onclick="event.preventDefault(); window.history.back();">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-lg font-bold text-slate-900 tracking-tight" data-sd-id="4">Temizlik Rutini</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900" data-sd-id="4">Temizlik Rutini</h1>
       <button id="header-settings-btn" class="p-1 -mr-1 flex items-center justify-center text-slate-900 active-scale" data-sd-id="5">
         <i data-lucide="settings-2" class="text-xl"></i>
       </button>
@@ -70,7 +71,7 @@
             </div>
             <div data-sd-id="21">
               <p class="text-sm font-bold text-slate-900" data-sd-id="22">Oda Müsaitliği</p>
-              <p class="text-[11px] font-medium text-slate-500" data-sd-id="23">Tüm kapıılar açık</p>
+              <p class="text-[11px] font-medium text-slate-500" data-sd-id="23">Tüm kapılar açık</p>
             </div>
           </div>
           <i data-lucide="check-circle-2" class="text-xl text-emerald-500"></i>
@@ -130,7 +131,7 @@
         <div class="flex items-start gap-3" data-sd-id="50">
           <i data-lucide="info" class="text-lg text-slate-400 mt-0.5"></i>
           <p class="text-xs text-slate-500 leading-relaxed font-medium" data-sd-id="51">
-            Temizlik başladığında NEXUS AI, yerdeki engelleri algılayacak ve ses seviyesini odadaki doluluk durumuna göre otomatik açyarlayacaktır.
+            Temizlik başladığında NEXUS AI, yerdeki engelleri algılayacak ve ses seviyesini odadaki doluluk durumuna göre otomatik ayarlayacaktır.
           </p>
         </div>
       </div>

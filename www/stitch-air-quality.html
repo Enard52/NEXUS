@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Hava Kalitesi</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -21,11 +22,11 @@
   <div class="w-full h-screen flex flex-col bg-[#EEF4FF] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Hava Kalitesi</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">Hava Kalitesi</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -40,17 +41,17 @@
         </div>
         <div id="air-quality-badge" class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-full mb-6">
             <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-            <span class="text-xs font-bold text-slate-500">Olcum Yok</span>
+            <span class="text-xs font-bold text-slate-500">Ölçüm Yok</span>
         </div>
 
         <div class="w-full flex items-center gap-4 text-left">
             <div class="flex-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                <iconify-icon icon="lucide:thermometer" class="text-rose-500 text-lg mb-1"></iconify-icon>
+                <i data-lucide="thermometer" class="text-rose-500 text-lg mb-1"></i>
                 <div class="text-[10px] font-bold text-slate-400">SICAKLIK</div>
                 <div id="air-quality-temp" class="text-lg font-bold text-slate-900">-- C</div>
             </div>
             <div class="flex-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                <iconify-icon icon="lucide:droplets" class="text-sky-500 text-lg mb-1"></iconify-icon>
+                <i data-lucide="droplets" class="text-sky-500 text-lg mb-1"></i>
                 <div class="text-[10px] font-bold text-slate-400">NEM</div>
                 <div id="air-quality-humidity" class="text-lg font-bold text-slate-900">--</div>
             </div>
@@ -58,16 +59,16 @@
       </section>
 
       <section class="space-y-3">
-        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Aritma Cihazlari</h3>
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Arıtma Cihazları</h3>
 
         <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
-              <iconify-icon icon="lucide:fan" class="text-xl"></iconify-icon>
+              <i data-lucide="fan" class="text-xl"></i>
             </div>
             <div>
-              <p id="air-purifier-title" class="text-sm font-bold text-slate-900">Aritici bagli degil</p>
-              <p id="air-purifier-status" class="text-[11px] font-medium text-slate-500">Cihaz eklenince kontrol gorunur.</p>
+              <p id="air-purifier-title" class="text-sm font-bold text-slate-900">Arıtıcı bağlı değil</p>
+              <p id="air-purifier-status" class="text-[11px] font-medium text-slate-500">Cihaz eklenince kontrol görünür.</p>
             </div>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
@@ -94,7 +95,7 @@ function renderAirQualityState(state, hasState) {
     if (temp) temp.textContent = hasState && typeof state.temp !== 'undefined' ? state.temp + ' C' : '-- C';
     if (humidity) humidity.textContent = hasState && typeof state.humidity !== 'undefined' ? '%' + state.humidity : '--';
     if (badge) {
-        let label = 'Olcum Yok', color = 'slate';
+        let label = 'Ölçüm Yok', color = 'slate';
         if (hasAqi) {
             label = state.aqi >= 100 ? 'Kotu Seviye' : state.aqi >= 50 ? 'Orta Seviye' : 'Iyi Seviye';
             color = state.aqi >= 100 ? 'rose' : state.aqi >= 50 ? 'amber' : 'emerald';
@@ -102,8 +103,8 @@ function renderAirQualityState(state, hasState) {
         badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 bg-' + color + '-50 rounded-full mb-6';
         badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-' + color + '-500"></span><span class="text-xs font-bold text-' + color + '-600">' + label + '</span>';
     }
-    if (purifierTitle) purifierTitle.textContent = hasState ? 'Aritici kontrolu' : 'Aritici bagli degil';
-    if (purifierStatus) purifierStatus.textContent = hasState ? (state.purifier ? 'Acik' : 'Kapali') : 'Cihaz eklenince kontrol gorunur.';
+    if (purifierTitle) purifierTitle.textContent = hasState ? 'Arıtıcı kontrolü' : 'Arıtıcı bağlı değil';
+    if (purifierStatus) purifierStatus.textContent = hasState ? (state.purifier ? 'Açık' : 'Kapalı') : 'Cihaz eklenince kontrol görünür.';
 }
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.querySelector('input[type="checkbox"]');
@@ -120,6 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
 </body>
 </html>
 

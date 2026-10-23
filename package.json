@@ -30,7 +30,7 @@
     "copy:lucide": "xcopy /Y node_modules\\lucide\\dist\\umd\\lucide.js www\\js\\lucide.js 2>nul",
     "copy:leaflet": "node scripts/copy-leaflet.mjs",
     "build:assets": "npm run build:tailwind && npm run copy:fonts && npm run copy:lucide && npm run copy:leaflet",
-    "sync:www": "robocopy . www /MIR /XD .git node_modules mobile-app /NP /NDL /NJH /NJS 2>nul",
+    "sync:www": "node scripts/sync-www.mjs",
     "build:full": "npm run build:assets && npm run sync:www"
   },
   "devDependencies": {

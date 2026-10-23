@@ -7,8 +7,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <meta name="theme-color" content="#ffffff"/>
   <title>NEXUS - Ev Yönetimi</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
@@ -40,7 +40,7 @@
     <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 dark:text-slate-200" href="#" onclick="event.preventDefault(); window.history.back();">
       <i class="w-7 h-7" data-lucide="chevron-left"></i>
     </a>
-    <h1 class="absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-2xl font-bold">Ev Yönetimi</h1>
+    <h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">Ev Yönetimi</h1>
   </header>
 
   <main class="px-5 pt-4 pb-10">
@@ -81,7 +81,7 @@
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">Ad Soyad</label>
       <input id="member-name" type="text" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Ayşe Yılmaz"/>
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">E-posta</label>
-      <input id="member-email" type="email" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="ornek@eposta.com"/>
+      <input id="member-email" type="email" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="örnek@eposta.com"/>
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">Rol</label>
       <select id="member-role" class="mb-4 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50">
         <option value="Üye">Üye</option>
@@ -110,7 +110,7 @@
     <div class="surface flex max-h-[85vh] w-full flex-col rounded-t-3xl border border-transparent bg-white p-6 pb-10 dark:bg-slate-900" onclick="event.stopPropagation()">
       <div class="mx-auto mb-5 h-1 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
       <h2 class="mb-1 text-lg font-bold">İzinleri Yönet</h2>
-      <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Her üyenin yetkilerini ayrı ayrı açıp kapıatabilirsin.</p>
+      <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Her üyenin yetkilerini ayrı ayrı açıp kapatabilirsin.</p>
       <div id="perm-list" class="-mx-1 flex-1 overflow-y-auto px-1"></div>
     </div>
   </div>

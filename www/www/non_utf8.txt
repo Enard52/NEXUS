@@ -1,3 +1,0 @@
-C:/Users/ensar/Desktop/NEXUS-main\mobile-app\android\app\src\main\assets\public\stitch-skills.html
-C:/Users/ensar/Desktop/NEXUS-main\mobile-app\ios\App\App\public\stitch-skills.html
-C:/Users/ensar/Desktop/NEXUS-main\www\stitch-skills.html

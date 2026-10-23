@@ -94,98 +94,98 @@ window.NEXUS_CARD_CATALOG = NEXUS_CARD_CATALOG;
 const NEXUS_SMART_APP_TEMPLATES = [
     {
         id: 'whole-home-light-control',
-        title: 'Tum Ev Aydinlatma Kontrolu',
-        subtitle: 'Isiklari oda bazli yonet, hizli parlaklik sahneleri kur.',
+        title: 'Tüm Ev Aydınlatma Kontrolü',
+        subtitle: 'Işıkları oda bazlı yönet, hızlı parlaklık sahneleri kur.',
         category: 'lighting',
         deviceTypes: ['lighting'],
         heroImage: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Evdeki aydinlatma cihazılarini oda bazli tek bir akis icinde yonet. Ac kapıa, parlaklik, renk sicakligi ve hizli sahne kisayollari ayni uygulamada toplansin.',
-        features: ['Isik Ac/Kapat', 'Renk Sicakligi', 'Parlaklik Kontrolu', 'Hizli Yuzdeler', 'Oda Bazli Gecis'],
-        prompt: 'Tum evi oda bazli kontrol eden bir akilli isik paneli olustur. Her oda icin ac/kapıat, parlaklik ve renk sicakligi kontrolleri olsun. Hemen kullanilabilecek hizli yuzdeler ve tumunu ac/tumunu kapıat aksiyonlari ekle.',
+        introduction: 'Evdeki aydınlatma cihazlarını oda bazlı tek bir akış içinde yönet. Aç kapa, parlaklık, renk sıcaklığı ve hızlı sahne kısayolları aynı uygulamada toplansın.',
+        features: ['Işık Aç/Kapat', 'Renk Sıcaklığı', 'Parlaklık Kontrolü', 'Hızlı Yüzdeler', 'Oda Bazlı Geçiş'],
+        prompt: 'Tüm evi oda bazlı kontrol eden bir akıllı ışık paneli oluştur. Her oda için ac/kapat, parlaklık ve renk sıcaklığı kontrolleri olsun. Hemen kullanılabilecek hızlı yuzdeler ve tumunu ac/tumunu kapat aksiyonları ekle.',
         quickRunLabel: 'Aksam Ortami'
     },
     {
         id: 'climate-comfort-panel',
         title: 'Iklim Konfor Paneli',
-        subtitle: 'Klima ve termostatlar icin sicaklik, mod ve konfor kisayollari.',
+        subtitle: 'Klima ve termostatlar için sıcaklık, mod ve konfor kısayolları.',
         category: 'climate',
         deviceTypes: ['climate'],
         heroImage: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Klima ve termostatlari tek panelden yonet, odalara gore konfor profilleri olustur ve gunluk kullanim icin hazir modlar kullan.',
-        features: ['Sicaklik Ayari', 'Eko Modu', 'Oda Bazli Kontrol', 'Hizli Modlar', 'Konfor Profilleri'],
-        prompt: 'Evdeki klima ve termostatlari tek panelde yoneten bir iklim konfor uygulamasi olustur. Sicaklik ayari, hizli mod secenekleri, eko modu ve oda bazli kontrol aksiyonlari olsun.',
+        introduction: 'Klima ve termostatları tek panelden yönet, odalara göre konfor profilleri oluştur ve günlük kullanım için hazır modlar kullan.',
+        features: ['Sıcaklık Ayarı', 'Eko Modu', 'Oda Bazlı Kontrol', 'Hızlı Modlar', 'Konfor Profilleri'],
+        prompt: 'Evdeki klima ve termostatları tek panelde yöneten bir iklim konfor uygulaması oluştur. Sıcaklık ayarı, hızlı mod seçenekleri, eko modu ve oda bazlı kontrol aksiyonları olsun.',
         quickRunLabel: 'Konfor Modu'
     },
     {
         id: 'home-security-center',
         title: 'Güvenlik Merkezi',
-        subtitle: 'Kamera, kilit ve sensor durumlarini tek yerden takip et.',
+        subtitle: 'Kamera, kilit ve sensör durumlarını tek yerden takip et.',
         category: 'security',
         deviceTypes: ['security'],
         heroImage: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Kamera, kilit ve sensorleri ayni ekranda gor. Evdeyim ve disardayim modlari, kritik durum ozetleri ve hizli guvenlik aksiyonlari tek yerde toplansin.',
-        features: ['Kamera Durumu', 'Kilit Kontrolu', 'Disardayim Modu', 'Hizli Guvenlik', 'Durum Ozeti'],
-        prompt: 'Kamera, kilit ve sensorleri tek ekranda gosteren bir ev guvenlik merkezi olustur. Evdeyim ve disardayim modlari, hizli kontrol butonlari ve kritik durum ozetleri ekle.',
-        quickRunLabel: 'Guvenlik Kontrolu'
+        introduction: 'Kamera, kilit ve sensörleri aynı ekranda gör. Evdeyim ve dışarıdayım modları, kritik durum özetleri ve hızlı güvenlik aksiyonları tek yerde toplansın.',
+        features: ['Kamera Durumu', 'Kilit Kontrolü', 'Dışarıdayım Modu', 'Hızlı Güvenlik', 'Durum Özeti'],
+        prompt: 'Kamera, kilit ve sensörleri tek ekranda gösteren bir ev güvenlik merkezi oluştur. Evdeyim ve dışarıdayım modları, hızlı kontrol butonları ve kritik durum özetleri ekle.',
+        quickRunLabel: 'Güvenlik Kontrolü'
     },
     {
         id: 'cinema-media-mode',
         title: 'Sinema Modu',
-        subtitle: 'TV ve medya cihazılari icin tek dokunuslu eglence paneli.',
+        subtitle: 'TV ve medya cihazları için tek dokunuşlu eğlence paneli.',
         category: 'media',
         deviceTypes: ['media'],
         heroImage: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=256&q=80',
-        introduction: 'TV, medya kutusu ve ortam isiklarini tek aksiyonda birlestir. Film baslat, gece modu ve dikkat dagitmayan eglence sahneleri kolayca kurulabilsin.',
-        features: ['Film Baslat', 'Ortam Isiklari', 'Ses Seviyesi', 'Gece Modu', 'Eglence Sahnesi'],
-        prompt: 'TV ve medya cihazılari icin bir sinema modu uygulamasi olustur. Film baslat, ses seviyesi, ortam isiklari ve dikkat dagitmayan gece eglence kisayollari olsun.',
-        quickRunLabel: 'Film Baslat'
+        introduction: 'TV, medya kutusu ve ortam ışıklarını tek aksiyonda birleştir. Film başlat, gece modu ve dikkat dağıtmayan eğlence sahneleri kolayca kurulabilsin.',
+        features: ['Film Başlat', 'Ortam Işıkları', 'Ses Seviyesi', 'Gece Modu', 'Eğlence Sahnesi'],
+        prompt: 'TV ve medya cihazları için bir sinema modu uygulaması oluştur. Film başlat, ses seviyesi, ortam ışıkları ve dikkat dağıtmayan gece eğlence kısayolları olsun.',
+        quickRunLabel: 'Film Başlat'
     },
     {
         id: 'energy-saver-hub',
         title: 'Enerji Tasarruf Merkezi',
-        subtitle: 'Akilli prizler ve enerji odakli cihazılar icin hizli tasarruf akislari.',
+        subtitle: 'Akıllı prizler ve enerji odaklı cihazlar için hızlı tasarruf akışları.',
         category: 'energy',
         deviceTypes: ['energy'],
         heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Akilli prizler ve enerji tuketen cihazılari tek merkezde topla. Hemen uygulanabilen tasarruf profilleri ve zamanli eko aksiyonlari olustur.',
-        features: ['Hizli Kapatma', 'Eko Profilleri', 'Zamanıli Tasarruf', 'Tuketim Ozeti', 'Priz Gruplari'],
-        prompt: 'Akilli prizleri ve enerji tuketen cihazılari yoneten bir enerji tasarruf paneli olustur. Hizli kapıatma, eko profiller, zamanlanmis tasarruf ve tuketim ozetleri ekle.',
-        quickRunLabel: 'Tasarruf Baslat'
+        introduction: 'Akıllı prizler ve enerji tüketen cihazları tek merkezde topla. Hemen uygulanabilen tasarruf profilleri ve zamanlı eko aksiyonları oluştur.',
+        features: ['Hızlı Kapatma', 'Eko Profilleri', 'Zamanlı Tasarruf', 'Tüketim Özeti', 'Priz Grupları'],
+        prompt: 'Akıllı prizleri ve enerji tüketen cihazları yöneten bir enerji tasarruf paneli oluştur. Hızlı kapatma, eko profiller, zamanlanmış tasarruf ve tüketim özetleri ekle.',
+        quickRunLabel: 'Tasarruf Başlat'
     },
     {
         id: 'guest-mode-prep',
         title: 'Misafir Modu Hazirlayici',
-        subtitle: 'Misafir geldigi anda kullanilacak isik, erisim ve ortam ayarlari.',
+        subtitle: 'Misafir geldiği anda kullanılacak ışık, erişim ve ortam ayarları.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'media'],
         heroImage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Misafir gelmeden once giris, aydinlatma, ortak alan ve eglence cihazılarini tek panelde hazirla. Ev icinde rahat ama guvenli bir karşılama akisi olustur.',
-        features: ['Karsilama Isigi', 'Ortak Alan Hazirlik', 'Misafir Erişimi', 'Sessiz Bildirim', 'Tek Dokunus Hazirlik'],
-        prompt: 'Misafir geldigi anda giris, aydinlatma ve ortak alan cihazılarini hazirlayan bir misafir modu uygulamasi olustur. Karsilama isigi, sessiz bildirim ve misafir erisim adimlari olsun.',
+        introduction: 'Misafir gelmeden önce giriş, aydınlatma, ortak alan ve eğlence cihazlarını tek panelde hazırla. Ev içinde rahat ama güvenli bir karşılama akışı oluştur.',
+        features: ['Karşılama Işığı', 'Ortak Alan Hazırlık', 'Misafir Erişimi', 'Sessiz Bildirim', 'Tek Dokunuş Hazırlık'],
+        prompt: 'Misafir geldiği anda giriş, aydınlatma ve ortak alan cihazlarını hazırlayan bir misafir modu uygulaması oluştur. Karşılama ışığı, sessiz bildirim ve misafir erişim adımları olsun.',
         quickRunLabel: 'Misafir Modu'
     },
     {
         id: 'sleep-prep-center',
-        title: 'Uykuya Hazirlik Merkezi',
-        subtitle: 'Gece ışık, sessiz mod, kilit ve iklim ayarlarini tek akista topla.',
+        title: 'Uykuya Hazırlık Merkezi',
+        subtitle: 'Gece ışık, sessiz mod, kilit ve iklim ayarlarını tek akışta topla.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'climate'],
         heroImage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Yatmadan once gerekli tum ev kontrollerini tek merkezde topla. Isik azaltma, rahatsiz etme, kilit kontrolu ve gece iklim ayarlari tek ekranda yonetilsin.',
-        features: ['Isik Azaltma', 'Rahatsiz Etme', 'Kilit Kontrolu', 'Gece Sicakligi', 'Son Kontrol Ozeti'],
-        prompt: 'Yatmadan once isik, sessiz mod, kilit ve iklim ayarlarini yoneten bir uykuya hazirlik merkezi olustur. Son kontrol ozeti ve tek dokunus gece modu ekle.',
+        introduction: 'Yatmadan önce gerekli tüm ev kontrollerini tek merkezde topla. Işık azaltma, rahatsız etme, kilit kontrolü ve gece iklim ayarları tek ekranda yönetilsin.',
+        features: ['Işık Azaltma', 'Rahatsız Etme', 'Kilit Kontrolü', 'Gece Sıcaklığı', 'Son Kontrol Özeti'],
+        prompt: 'Yatmadan önce ışık, sessiz mod, kilit ve iklim ayarlarını yöneten bir uykuya hazırlık merkezi oluştur. Son kontrol özeti ve tek dokunuş gece modu ekle.',
         quickRunLabel: 'Uykuya Gec'
     },
     {
         id: 'leave-home-control',
-        title: 'Evden Cikis Kontrolu',
-        subtitle: 'Evden cikarken acik cihazılari, kilitleri ve enerji durumunu tek ekranda goster.',
+        title: 'Evden Çıkış Kontrolü',
+        subtitle: 'Evden çıkarken açık cihazları, kilitleri ve enerji durumunu tek ekranda göster.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'energy'],
         heroImage: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=256&q=80',
-        introduction: 'Evden cikmadan once acik kalan isik, priz, klima ve guvenlik ayarlarini tek panelde gor. Hizli kapıatma ve guvenlik aktif etme adimlarini tek akisa topla.',
-        features: ['Acik Cihaz Ozeti', 'Hizli Kapatma', 'Kilit Durumu', 'Enerji Kontrolu', 'Cikis Hazirligi'],
-        prompt: 'Evden cikarken acik cihazılari, kilit durumunu ve enerji ayarlarini tek ekranda gosteren bir cikis kontrolu uygulamasi olustur. Hizli kapıatma ve guvenlik aktif etme butonlari ekle.',
+        introduction: 'Evden çıkmadan önce açık kalan ışık, priz, klima ve güvenlik ayarlarını tek panelde gör. Hızlı kapatma ve güvenlik aktif etme adımlarını tek akışa topla.',
+        features: ['Açık Cihaz Özeti', 'Hızlı Kapatma', 'Kilit Durumu', 'Enerji Kontrolü', 'Çıkış Hazırlığı'],
+        prompt: 'Evden çıkarken açık cihazları, kilit durumunu ve enerji ayarlarını tek ekranda gösteren bir çıkış kontrolü uygulaması oluştur. Hızlı kapatma ve güvenlik aktif etme butonları ekle.',
         quickRunLabel: 'Evden Cikiyorum'
     }
 ];
@@ -450,7 +450,7 @@ async function fetchNexusData() {
 async function initNexusData() {
     const data = await fetchNexusData();
     if (!data) {
-        // Backend yok (mobil): kullanıcının gerçek yerel cihazılarıyla render et
+        // Backend yok (mobil): kullanıcının gerçek yerel cihazlarıyla render et
         renderDevices();
         window.refreshDashboardSupplements();
         document.dispatchEvent(new CustomEvent('nexusDataReady', { detail: null }));
@@ -530,7 +530,7 @@ window.deleteDynamicCard = function(id) {
     if (el) el.remove();
 };
 
-// Backend yokken tek gerçek kaynak: kullanıcının yerel eşleştirdiği cihazılar
+// Backend yokken tek gerçek kaynak: kullanıcının yerel eşleştirdiği cihazlar
 // (nexusDashboardCards + nexusPairedDevices aynı akışta birleşir)
 function getLocalDevices() {
     const list = [];
@@ -669,33 +669,33 @@ window.getRecommendedQuickRuns = function(limit = 4) {
 
     if (profile.counts.lighting > 0) {
         actions.push(
-            { id: 'lights-on', title: 'Tum Isiklari Ac', desc: 'Aydinlatma cihazılarini acik moda al.', icon: 'sun', bgClass: 'bg-amber-500/10', colorClass: 'text-amber-500', category: 'lighting', recommended: true, source: 'system' },
-            { id: 'lights-evening', title: 'Aksam Ortami', desc: 'Daha sakin bir aydinlatma sahnesi baslat.', icon: 'moon', bgClass: 'bg-blue-500/10', colorClass: 'text-blue-500', category: 'lighting', recommended: true, source: 'system' },
-            { id: 'all-lights-off', title: 'Tum Isiklari Kapat', desc: 'Evde acik kalan tum aydinlatma gruplarini kapıat.', icon: 'moon', bgClass: 'bg-slate-500/10', colorClass: 'text-slate-500', category: 'lighting', recommended: true, source: 'system' }
+            { id: 'lights-on', title: 'Tüm Işıkları Aç', desc: 'Aydınlatma cihazlarını açık moda al.', icon: 'sun', bgClass: 'bg-amber-500/10', colorClass: 'text-amber-500', category: 'lighting', recommended: true, source: 'system' },
+            { id: 'lights-evening', title: 'Aksam Ortami', desc: 'Daha sakin bir aydınlatma sahnesi başlat.', icon: 'moon', bgClass: 'bg-blue-500/10', colorClass: 'text-blue-500', category: 'lighting', recommended: true, source: 'system' },
+            { id: 'all-lights-off', title: 'Tüm Işıkları Kapat', desc: 'Evde açık kalan tüm aydınlatma gruplarını kapat.', icon: 'moon', bgClass: 'bg-slate-500/10', colorClass: 'text-slate-500', category: 'lighting', recommended: true, source: 'system' }
         );
     }
     if (profile.counts.climate > 0) {
         actions.push(
-            { id: 'comfort-mode', title: 'Konfor Modu', desc: 'Sicaklik cihazılarini dengeli profile cek.', icon: 'spark', bgClass: 'bg-blue-500/10', colorClass: 'text-blue-500', category: 'climate', recommended: true, source: 'system' },
-            { id: 'sleep-climate', title: 'Gece Sicakligi', desc: 'Uyku icin daha dengeli bir gece iklim profili uygula.', icon: 'moon', bgClass: 'bg-indigo-500/10', colorClass: 'text-indigo-500', category: 'climate', recommended: true, source: 'system' }
+            { id: 'comfort-mode', title: 'Konfor Modu', desc: 'Sıcaklık cihazlarını dengeli profile çek.', icon: 'spark', bgClass: 'bg-blue-500/10', colorClass: 'text-blue-500', category: 'climate', recommended: true, source: 'system' },
+            { id: 'sleep-climate', title: 'Gece Sıcaklığı', desc: 'Uyku için daha dengeli bir gece iklim profili uygula.', icon: 'moon', bgClass: 'bg-indigo-500/10', colorClass: 'text-indigo-500', category: 'climate', recommended: true, source: 'system' }
         );
     }
     if (profile.counts.security > 0) {
         actions.push(
-            { id: 'security-check', title: 'Guvenlik Kontrolu', desc: 'Guvenlik cihazılari icin hizli durum kontrolu baslat.', icon: 'shield', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500', category: 'security', recommended: true, source: 'system' },
-            { id: 'secure-home', title: 'Guvenligi Aktif Et', desc: 'Kilit ve sensor odakli ev guvenligini hizla devreye al.', icon: 'shield', bgClass: 'bg-sky-500/10', colorClass: 'text-sky-500', category: 'security', recommended: true, source: 'system' }
+            { id: 'security-check', title: 'Güvenlik Kontrolü', desc: 'Güvenlik cihazları için hızlı durum kontrolü başlat.', icon: 'shield', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500', category: 'security', recommended: true, source: 'system' },
+            { id: 'secure-home', title: 'Guvenligi Aktif Et', desc: 'Kilit ve sensör odaklı ev güvenliğini hızla devreye al.', icon: 'shield', bgClass: 'bg-sky-500/10', colorClass: 'text-sky-500', category: 'security', recommended: true, source: 'system' }
         );
     }
     if (profile.counts.media > 0) {
         actions.push(
-            { id: 'movie-mode', title: 'Film Baslat', desc: 'Medya odakli eglence profilini tetikle.', icon: 'play', bgClass: 'bg-rose-500/10', colorClass: 'text-rose-500', category: 'media', recommended: true, source: 'system' },
-            { id: 'welcome-scene', title: 'Eve Geldim', desc: 'Medya ve ortam cihazılariyla karsilama sahnesi calistir.', icon: 'sun', bgClass: 'bg-orange-500/10', colorClass: 'text-orange-500', category: 'media', recommended: true, source: 'system' }
+            { id: 'movie-mode', title: 'Film Başlat', desc: 'Medya odaklı eğlence profilini tetikle.', icon: 'play', bgClass: 'bg-rose-500/10', colorClass: 'text-rose-500', category: 'media', recommended: true, source: 'system' },
+            { id: 'welcome-scene', title: 'Eve Geldim', desc: 'Medya ve ortam cihazlarıyla karşılama sahnesi çalıştır.', icon: 'sun', bgClass: 'bg-orange-500/10', colorClass: 'text-orange-500', category: 'media', recommended: true, source: 'system' }
         );
     }
     if (profile.counts.energy > 0) {
         actions.push(
-            { id: 'energy-save', title: 'Tasarruf Baslat', desc: 'Enerji tuketen cihazılar icin eko aksiyonunu calistir.', icon: 'bolt', bgClass: 'bg-cyan-500/10', colorClass: 'text-cyan-500', category: 'energy', recommended: true, source: 'system' },
-            { id: 'cleaning-start', title: 'Temizligi Baslat', desc: 'Temizlik cihazılarini ve destekleyici ev ayarlarini calistir.', icon: 'leaf', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500', category: 'energy', recommended: true, source: 'system' }
+            { id: 'energy-save', title: 'Tasarruf Başlat', desc: 'Enerji tüketen cihazlar için eko aksiyonunu çalıştır.', icon: 'bolt', bgClass: 'bg-cyan-500/10', colorClass: 'text-cyan-500', category: 'energy', recommended: true, source: 'system' },
+            { id: 'cleaning-start', title: 'Temizliği Başlat', desc: 'Temizlik cihazlarını ve destekleyici ev ayarlarını çalıştır.', icon: 'leaf', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500', category: 'energy', recommended: true, source: 'system' }
         );
     }
 
@@ -1209,7 +1209,7 @@ window.refreshDashboardSupplements = function() {
 
 function renderDevices() {
     const data = window.NEXUS_DATA;
-    // Backend cihazıları ile kullanıcının yerel eşleştirdiği cihazıları birleştir.
+    // Backend cihazları ile kullanıcının yerel eşleştirdiği cihazları birleştir.
     const devices = getMergedDevices(data && Array.isArray(data.devices) ? data.devices : []);
     
     const grids = document.querySelectorAll('[data-purpose="devices-grid"]');
@@ -1218,11 +1218,17 @@ function renderDevices() {
     let html = '';
     
     if (devices.length === 0) {
-        html = `<div class="col-span-2 text-center pt-8 pb-2 opacity-70">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 mb-3 text-slate-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        // Ortak boş durum bileşeni (css/nexus-ui.css → .nx-empty): ikon + başlık + tek birincil aksiyon
+        html = `<div class="col-span-2 nx-empty">
+            <div class="nx-empty__icon" aria-hidden="true">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"></path></svg>
             </div>
-            <p class="text-sm font-medium text-slate-500">Henüz bu eve bir cihazı eklemediniz.</p>
+            <p class="nx-empty__title">Henüz cihaz yok</p>
+            <p class="nx-empty__text">Bu eve eklediğin cihazlar burada listelenir ve favori kartlarına bağlanır.</p>
+            <a href="stitch-pair.html" class="nx-empty__cta">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"></path></svg>
+                Cihaz ekle
+            </a>
         </div>`;
     } else {
         const hidden = getHiddenDeviceIds();
@@ -1249,8 +1255,12 @@ function renderDevices() {
                 bg = 'bg-blue-50';
             }
             
+            // Eklenen cihazlar kendi panelinin ortak kontrol ekranını açar
+            const pairedIndex = /^paired-(\d+)$/.test(String(device.id)) ? String(device.id).slice(7) : null;
+            const tag = pairedIndex !== null ? 'a' : 'article';
+            const link = pairedIndex !== null ? ` href="stitch-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')} kontrol ekranı"` : '';
             html += `
-            <article class="relative bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" id="dyn-card-${device.id}">
+            <${tag}${link} class="relative bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" id="dyn-card-${device.id}">
                 <div>
                     <div class="w-10 h-10 rounded-full ${bg} ${color} flex items-center justify-center mb-3">
                         ${iconSvg}
@@ -1258,7 +1268,7 @@ function renderDevices() {
                     <h3 class="font-bold text-base leading-tight truncate">${device.name || 'Cihaz'}</h3>
                 </div>
                 <p class="text-slate-500 text-sm font-medium leading-5">${device.state || 'Kapalı'}</p>
-            </article>
+            </${tag}>
             `;
         });
     }

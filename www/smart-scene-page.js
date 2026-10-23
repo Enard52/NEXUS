@@ -74,27 +74,29 @@
     saveState();
   }
 
-  function logSceneEvent() {
+  function logSceneEvent(detailText) {
     var events = safeParse(nexusGetItem('nexusEvents'), []);
     if (!Array.isArray(events)) events = [];
     events.push({
       id: 'scene-' + Date.now(),
       type: 'scene',
       title: sceneTitle,
-      detail: sceneTitle + ' akisi calistirildi.',
+      detail: detailText || (sceneTitle + ' çalıştırıldı.'),
       ts: Date.now()
     });
     nexusSetItem('nexusEvents', JSON.stringify(events));
   }
 
-  function showToast(message) {
+  function showToast(message, ms) {
     var toast = document.createElement('div');
-    toast.className = 'fixed left-1/2 top-6 z-[120] -translate-x-1/2 rounded-full bg-slate-950/88 px-4 py-2 text-sm font-semibold text-white shadow-lg';
+    toast.className = 'fixed left-1/2 top-6 z-[120] -translate-x-1/2 rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center';
+    toast.style.maxWidth = 'min(92vw, 420px)';
+    toast.setAttribute('role', 'status');
     toast.textContent = message;
     document.body.appendChild(toast);
     setTimeout(function () {
       toast.remove();
-    }, 1400);
+    }, ms || 1600);
   }
 
   function checkRequiredDevices() {
@@ -102,28 +104,80 @@
     return Array.isArray(devices) && devices.length > 0;
   }
 
+  // Senaryo motoru (device-controls.js) bu sayfada yoksa yüklenir
+  function ensureEngine(cb) {
+    if (window.NX && window.NX.runScene) return cb();
+    var files = ['supported-devices.js', 'lan-connectors.js', 'device-controls.js'].filter(function (f) {
+      return !document.querySelector('script[src="' + f + '"]');
+    });
+    (function next() {
+      if (!files.length) return cb();
+      var el = document.createElement('script');
+      el.src = files.shift();
+      el.onload = next;
+      el.onerror = next;
+      document.head.appendChild(el);
+    })();
+  }
+
+  // Ev sağlığı: yerel ağ cihazlarına gerçekten ulaşılıp ulaşılamadığını kontrol eder
+  function runHealthCheck(done) {
+    var devices = safeParse(nexusGetItem('nexusPairedDevices'), []);
+    var lanIdx = [];
+    devices.forEach(function (d, i) { if (window.NX && NX.isLan(d)) lanIdx.push(i); });
+    if (!lanIdx.length) return done(devices.length + ' cihaz kayıtlı · yerel ağ cihazı yok, çevrimiçi kontrolü yapılamadı.');
+    Promise.all(lanIdx.map(function (i) { return NX.refreshFromDevice(i); })).then(function (res) {
+      var ok = res.filter(Boolean).length;
+      done(lanIdx.length + ' yerel ağ cihazı kontrol edildi · ' + ok + ' çevrimiçi' + (ok < lanIdx.length ? ', ' + (lanIdx.length - ok) + ' ulaşılamıyor' : '') + '.');
+    });
+  }
+
+  var running = false;
+  function runThisScene(navigateAfter, button) {
+    if (running) return;
+    if (!checkRequiredDevices()) {
+      showToast('Bu senaryoyu kullanmak için uyumlu cihaz eklemelisin.');
+      setTimeout(function () { window.location.href = 'stitch-pair.html'; }, 1500);
+      return;
+    }
+    running = true;
+    if (button) button.disabled = true;
+    ensureEngine(function () {
+      var finish = function (message) {
+        logSceneEvent(message);
+        saveState();
+        showToast(message, 2600);
+        running = false;
+        if (button) button.disabled = false;
+        if (navigateAfter) setTimeout(function () { window.location.href = completeHref; }, 1600);
+      };
+      if (pageId === 'home-health') return runHealthCheck(finish);
+      if (!window.NX || !NX.runScene) return finish(sceneTitle + ' kaydedildi.');
+      finish(NX.sceneSummary(NX.runScene(pageId)));
+    });
+  }
+
+  function primaryFooterButton(footer) {
+    return footer.querySelector('#footer-done-btn') ||
+      footer.querySelector('button[class*="bg-[#4C7DFF]"]') ||
+      Array.prototype.slice.call(footer.querySelectorAll('button')).pop();
+  }
+
   function bindPrimaryCta() {
     var footer = document.querySelector('footer');
     if (!footer) return;
-    var cta = footer.querySelector('button');
-    if (!cta) return;
-
-    cta.addEventListener('click', function () {
-      if (!checkRequiredDevices()) {
-        showToast('Bu senaryoyu kullanmak için uyumlu cihazı eklemelisin.');
-        setTimeout(function() {
-          window.location.href = 'stitch-pair.html';
-        }, 1500);
-        return;
-      }
-      cta.disabled = true;
-      logSceneEvent();
-      saveState();
-      showToast(sceneTitle + ' hazir.');
-      setTimeout(function () {
-        window.location.href = completeHref;
-      }, 420);
+    var cta = primaryFooterButton(footer);
+    if (!cta || cta.getAttribute('onclick')) return;
+    cta.setAttribute('data-scene-bound', '1');
+    cta.addEventListener('click', function (event) {
+      event.preventDefault();
+      runThisScene(true, cta);
     });
+    var cancel = footer.querySelector('#footer-cancel-btn');
+    if (cancel) {
+      cancel.setAttribute('data-scene-bound', '1');
+      cancel.addEventListener('click', function (event) { event.preventDefault(); window.history.back(); });
+    }
   }
 
   function bindDeviceCount() {
@@ -141,7 +195,7 @@
       id: 'action-' + Date.now(),
       type: 'scene',
       title: sceneTitle,
-      detail: (label || 'Aksiyon') + ' uygulandi.',
+      detail: (label || 'Aksiyon') + ' uygulandı.',
       ts: Date.now()
     });
     nexusSetItem('nexusEvents', JSON.stringify(events));
@@ -164,7 +218,8 @@
 
       btn.addEventListener('click', function (event) {
         event.preventDefault();
-        var label = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+        // İlk satır = düğmenin başlığı (alt yazı eklenmesin)
+        var label = ((btn.innerText || btn.textContent || '').split('\n')[0] || '').replace(/\s+/g, ' ').trim();
         if (isSegmented) {
           // Segmentli secim: secili durumu gercek olarak isaretle (tasarim sinifina dokunmadan)
           siblingButtons.forEach(function (sib) {
@@ -174,8 +229,12 @@
           state.values[groupKey] = label;
           saveState();
         }
+        if (/^(çalıştır|senaryoyu (başlat|çalıştır)|evet, uygula|run|run scenario|start scenario|yes, apply)$/i.test(label)) {
+          runThisScene(false, btn);
+          return;
+        }
         logAction(label);
-        showToast(label ? (label + ' uygulandi.') : 'Aksiyon uygulandi.');
+        if (isSegmented) showToast(label + ' seçildi.');
       });
     });
   }

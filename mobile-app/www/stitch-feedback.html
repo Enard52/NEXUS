@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>NEXUS — SSS ve Geri Bildirim</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
@@ -40,7 +40,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="stitch-profile.html" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700 dark:text-white" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">SSS ve Geri Bildirim</h1>
+<h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">SSS ve Geri Bildirim</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
@@ -53,14 +53,14 @@
 <span class="font-semibold pr-3">Cihazım neden çevrimdışı görünüyor?</span>
 <i class="w-5 h-5 text-slate-300 dark:text-slate-500 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Cihazın Wi-Fi bağlantısını ve modeminizi kontrol edin. Sorun sürerse cihazıı NEXUS uygulamasından kaldırıp yeniden ekleyin.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Cihazın Wi-Fi bağlantısını ve modeminizi kontrol edin. Sorun sürerse cihazı NEXUS uygulamasından kaldırıp yeniden ekleyin.</p>
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50 dark:bg-slate-700/50 dark:active:bg-slate-700/50" onclick="toggleFaq(this)">
 <span class="font-semibold pr-3">Yeni cihazı nasıl eklerim?</span>
 <i class="w-5 h-5 text-slate-300 dark:text-slate-500 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Ana ekranın sağ üstündeki + butonuna dokunun ve "Tara" ile cihazıın QR kodunu okutun ya da kurulum kodunu elle girin.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Ana ekranın sağ üstündeki + butonuna dokunun ve "Tara" ile cihazın QR kodunu okutun ya da kurulum kodunu elle girin.</p>
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50 dark:bg-slate-700/50 dark:active:bg-slate-700/50" onclick="toggleFaq(this)">
@@ -146,7 +146,7 @@
       var t = text.toLowerCase();
       var reply;
       if (t.indexOf('çevrimdışı') !== -1 || t.indexOf('bağlan') !== -1 || t.indexOf('wifi') !== -1 || t.indexOf('wi-fi') !== -1) {
-        reply = 'Cihazın Wi-Fi bağlantısını ve modemini kontrol et. Sorun sürerse cihazıı kaldırıp yeniden ekle. Adımlar: Cihazlar > cihazıı seç > Kaldır.';
+        reply = 'Cihazın Wi-Fi bağlantısını ve modemini kontrol et. Sorun sürerse cihazı kaldırıp yeniden ekle. Adımlar: Cihazlar > cihazı seç > Kaldır.';
       } else if (t.indexOf('cihazı ekle') !== -1 || t.indexOf('yeni cihazı') !== -1 || t.indexOf('qr') !== -1) {
         reply = 'Ana ekranın sağ üstündeki + butonuna dokun, "Tara" ile QR kodu okut ya da kurulum kodunu elle gir.';
       } else if (t.indexOf('puan') !== -1 || t.indexOf('limit') !== -1 || t.indexOf('abonelik') !== -1) {

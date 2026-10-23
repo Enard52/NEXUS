@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>Nexus AI: Kayıt Ol</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
 <script src="js/lucide.js"></script>
@@ -29,7 +29,7 @@
     }
     .btn-primary:active {
       transform: scale(0.98);
-      background-color: #6A4BE6;
+      background-color: #3F6FFF;
     }
 
     /* NEXUS Beyaz Kart Gölgesi */
@@ -155,16 +155,15 @@
       return;
     }
 
-    var existingPw = localStorage.getItem('nexus_mock_pw_' + email);
-    if (existingPw && !(window.nexusCloud && window.nexusCloud.enabled())) {
+    if (window.nexusLocalPassword.exists(email) && !(window.nexusCloud && window.nexusCloud.enabled())) {
       errorBox.textContent = 'Bu e-posta ile zaten bir hesap var. Lütfen giriş yapın.';
       errorBox.classList.remove('hidden');
       return;
     }
 
     function completeRegistration() {
-      // Başarılı Kayıt
-      localStorage.setItem('nexus_mock_pw_' + email, pw);
+      // Başarılı kayıt: şifrenin yalnızca tuzlu özeti saklanır
+      var saved = window.nexusLocalPassword.set(email, pw).catch(function () {});
 
       // Otomatik giriş — önce currentUser'ı set et, sonra nexusSetItem çalışır
       localStorage.setItem('nexusCurrentUser', email);
@@ -179,7 +178,7 @@
         localStorage.setItem(email + '_userName', name);
       }
 
-      window.location.replace('stitch-home.html');
+      saved.then(function () { window.location.replace('stitch-home.html'); });
     }
 
     // Bulut yapılandırılmışsa hesap Supabase'te açılır; cihaz listesi sonraki

@@ -29,14 +29,14 @@ describe("locale resolution (FAZ 13)", () => {
   it("narrows BCP-47 tags to a supported locale with a safe fallback", () => {
     expect(resolveLocale("tr-TR")).toBe("tr");
     expect(resolveLocale("en-US")).toBe("en");
-    expect(resolveLocale("fr")).toBe("fr");
+    expect(resolveLocale("fr")).toBe("en"); // yalnızca EN/TR sunuluyor
     expect(resolveLocale("xx")).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");
   });
 
   it("picks the highest-quality supported language from Accept-Language", () => {
-    expect(resolveFromAcceptLanguage("fr-FR,tr;q=0.9,en;q=0.5")).toBe("fr");
-    expect(resolveFromAcceptLanguage("de-DE,de;q=0.8")).toBe("de");
+    expect(resolveFromAcceptLanguage("fr-FR,tr;q=0.9,en;q=0.5")).toBe("tr");
+    expect(resolveFromAcceptLanguage("de-DE,de;q=0.8")).toBe("en");
     expect(resolveFromAcceptLanguage(null)).toBe("en");
   });
 });

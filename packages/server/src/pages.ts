@@ -521,7 +521,7 @@ export function renderLegalPage(
 <h3>Changes to Privacy Policy</h3>
 <p>We may update this Privacy Policy periodically to reflect changes in our practices or relevant laws. We will notify you of any significant updates via the NEXUS application interface.</p>
 <h3>Contact Us</h3>
-<p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our privacy team at <a href="mailto:privacy@nexus-ai.example.com">privacy@nexus-ai.example.com</a>.</p>`,
+<p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our privacy team at <a href="mailto:privacy@nexus-ai.app">privacy@nexus-ai.app</a>.</p>`,
       tr: `<h2>Gizliliğiniz Önemli</h2>
 <p>NEXUS'a hoş geldiniz. Gizliliğinizi ve güvenliğinizi korumaya derinden bağlıyız. Temel prensibimiz, verilerinizin size ait olmasıdır. Bu Gizlilik Politikası, yazılımımızı, uygulamalarımızı ve hizmetlerimizi kullanırken sağladığınız bilgileri nasıl işlediğimizi detaylandırmaktadır.</p>
 <h3>Veri Toplama</h3>
@@ -533,7 +533,7 @@ export function renderLegalPage(
 <h3>Güvenlik Önlemleri</h3>
 <p>Hub ve kontrol uygulamalarınız arasındaki tüm yerel iletişimler için güçlü şifreleme yöntemleri kullanıyoruz. Verileriniz evinizde kaldığı için, bulut sağlayıcılarını etkileyen büyük ölçekli veri ihlallerine karşı savunmasız değildir.</p>
 <h3>Bize Ulaşın</h3>
-<p>Gizlilik uygulamalarımızla ilgili herhangi bir sorunuz varsa veya daha fazla bilgiye ihtiyaç duyarsanız, lütfen <a href="mailto:privacy@nexus-ai.example.com">privacy@nexus-ai.example.com</a> adresinden gizlilik sorumlumuza ulaşın.</p>`,
+<p>Gizlilik uygulamalarımızla ilgili herhangi bir sorunuz varsa veya daha fazla bilgiye ihtiyaç duyarsanız, lütfen <a href="mailto:privacy@nexus-ai.app">privacy@nexus-ai.app</a> adresinden gizlilik sorumlumuza ulaşın.</p>`,
     },
     terms: {
       en: `<h2>Terms of Service</h2>
@@ -670,7 +670,7 @@ ${getPremiumShell(locale as Locale).header}
 <p>${isTr ? "NEXUS, akıllı ev otomasyonunu tamamen yerel, güvenli ve gizlilik odaklı bir deneyime dönüştürmek için tasarlanmıştır. Amacımız, teknolojiyi görünmez ama her zaman yanınızda olan güvenilir bir yardımcıya dönüştürmektir. Verilerinizin, ailenizin ve evinizin kontrolü %100 sizdedir." : "NEXUS is designed to transform smart home automation into a completely local, secure, and privacy-first experience. Our goal is to make technology an invisible yet reliable assistant that is always there for you. You retain 100% control over your data, your family, and your home."}</p>
 
 <h2>${isTr ? "Neden Biz?" : "Why Us?"}</h2>
-<p>${isTr ? "Çünkü biz de sizin gibi kullanıcıyız. Pazardaki çoğu çözüm, sizi kendi ekosistemlerine kilitlemek ve verileriniz üzerinden gelir elde etmek üzerine kuruluyken, biz size tam bir özgürlük sunuyoruz. Açık standartları (Matter, Zigbee, Z-Wave vb.) destekliyor, cihazlarınızı bir platforma bağlamak zorunda kalmadan kendi ağınızda yerel olarak yönetmenizi sağlıyoruz." : "Because we are users just like you. While most market solutions are built to lock you into their ecosystems and monetize your data, we offer you complete freedom. We support open standards (Matter, Zigbee, Z-Wave, etc.) and allow you to manage your devices locally on your own network without being forced to tether them to an external platform."}</p>
+<p>${isTr ? "Çünkü biz de sizin gibi kullanıcıyız. Pazardaki çoğu çözüm, sizi kendi ekosistemlerine kilitlemek ve verileriniz üzerinden gelir elde etmek üzerine kuruluyken, biz size tam bir özgürlük sunuyoruz. Philips Hue, Shelly, Tasmota, WLED ve ESPHome gibi cihazları kendi yerel API'leriyle destekliyor; cihazlarınızı bir platforma bağlamak zorunda kalmadan kendi ağınızda yerel olarak yönetmenizi sağlıyoruz." : "Because we are users just like you. While most market solutions are built to lock you into their ecosystems and monetize your data, we offer you complete freedom. We support devices such as Philips Hue, Shelly, Tasmota, WLED and ESPHome through their own local APIs and allow you to manage your devices locally on your own network without being forced to tether them to an external platform."}</p>
 
 <h2>${isTr ? "Gelecek Vizyonumuz" : "Our Future Vision"}</h2>
 <p>${isTr ? "Yapay zeka modellerinin doğrudan kendi sunucunuzda (Edge AI) çalıştırılarak evinizi tam anlamıyla tanıdığı, alışkanlıklarınıza göre proaktif olarak hareket eden ancak hiçbir veriyi dışarı sızdırmayan otonom evler inşa etmek istiyoruz. Her geçen gün platformumuza yeni entegrasyonlar, açık kaynaklı eklentiler ve gelişmiş otomasyon rutinleri eklemeye devam ediyoruz." : "We want to build autonomous homes where AI models run directly on your own server (Edge AI), truly understanding your home and proactively acting on your habits without leaking any data. Every day, we continue to add new integrations, open-source plugins, and advanced automation routines to our platform."}</p>

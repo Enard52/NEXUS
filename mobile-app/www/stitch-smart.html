@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>NEXUS — Akıllı</title>
 <!-- Tailwind CSS Local -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter - Local -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
 <!-- Lucide Icons Local -->
@@ -48,6 +48,7 @@
       min-height: max(884px, 100dvh);
     }
   </style>
+  <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="data.js"></script>
   <script>
@@ -132,7 +133,7 @@
 
 <!-- BEGIN: NEXUS AI Input (shared with Akıllı page) -->
 <section class="px-5 pb-2" data-purpose="ai-search-container">
-<div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm cursor-pointer" data-ai-smart-input onclick="window.openSmartAiChat && window.openSmartAiChat('')">
+<div role="button" tabindex="0" class="custom-gradient-border px-4 py-3 flex items-center shadow-sm cursor-pointer" data-ai-smart-input aria-label="NEXUS AI ile sohbet et" onclick="window.openSmartAiChat && window.openSmartAiChat('')">
 <!-- NEXUS N leading mark -->
 <div class="h-8 w-8 flex shrink-0 mr-3"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
   <defs>
@@ -153,7 +154,7 @@
 <!-- Mic Icon -->
 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 <!-- Create Icon -->
-<button type="button" aria-label="Yapay zeka ile olustur" onclick="event.stopPropagation(); window.openSmartAiChat && window.openSmartAiChat(document.getElementById('smart-ai-input').value)" class="text-[#4C7DFF] active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button type="button" aria-label="Yapay zeka ile oluştur" onclick="event.stopPropagation(); window.openSmartAiChat && window.openSmartAiChat(document.getElementById('smart-ai-input').value)" class="text-[#4C7DFF] active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
 </div>
 </div>
 </section>
@@ -185,7 +186,7 @@
 <section data-purpose="recommendations">
 <h3 class="text-xl font-bold text-gray-900 mb-4">Önerilen</h3>
 <div class="space-y-4">
-  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-smart-app-detail.html?id=whole-home-light-control'">
+  <a href="stitch-smart-app-detail.html?id=whole-home-light-control" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
       <img alt="Oturma Odası" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=256&q=80"/>
       <div class="absolute inset-0 bg-black/10"></div>
@@ -194,9 +195,9 @@
       <h4 class="font-bold text-gray-900 leading-tight">Tüm Ev Aydınlatma Kontrolü</h4>
       <p class="text-xs text-gray-500 mt-1 leading-snug">Evindeki tüm aydınlatma cihazlarını kontrol et</p>
     </div>
-  </div>
+  </a>
 
-  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-smart-app-detail.html?id=home-security-center'">
+  <a href="stitch-smart-app-detail.html?id=home-security-center" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
       <img alt="Güvenlik Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=256&q=80"/>
       <div class="absolute inset-0 bg-black/10"></div>
@@ -205,18 +206,18 @@
       <h4 class="font-bold text-gray-900 leading-tight">Tatil Güvenlik Modu</h4>
       <p class="text-xs text-gray-500 mt-1 leading-snug">Uzaktayken evi korumak için kameraları etkinleştir</p>
     </div>
-  </div>
+  </a>
 
-  <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="window.location.href='stitch-smart-app-detail.html?id=cinema-media-mode'">
+  <a href="stitch-smart-app-detail.html?id=cinema-media-mode" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
       <img alt="Sinema Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=256&q=80"/>
       <div class="absolute inset-0 bg-black/10"></div>
     </div>
     <div>
       <h4 class="font-bold text-gray-900 leading-tight">Sinema Modu</h4>
-      <p class="text-xs text-gray-500 mt-1 leading-snug">Film izlerken perdeleri kapıat, ışıkları kıs</p>
+      <p class="text-xs text-gray-500 mt-1 leading-snug">Film izlerken perdeleri kapat, ışıkları kıs</p>
     </div>
-  </div>
+  </a>
 </div>
 </section>
 <!-- END: Recommendations Section -->
@@ -237,8 +238,8 @@
           <div class="w-16 h-16 bg-[#4C7DFF]/10 text-[#4C7DFF] rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           </div>
-          <h4 class="text-slate-900 font-extrabold text-lg">Senaryo hazir degil</h4>
-          <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Ustteki alana ne yapmak istedigini yaz ya da manuel olarak bir senaryo sec.</p>
+          <h4 class="text-slate-900 font-extrabold text-lg">Senaryo hazır değil</h4>
+          <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Üstteki alana ne yapmak istediğini yaz ya da manuel olarak bir senaryo seç.</p>
           <a href="stitch-skills.html?type=clickrun" class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-2xl font-bold active:bg-slate-50 transition-colors">
             <i class="w-5 h-5" data-lucide="plus"></i>
             Hızlı Oluştur
@@ -261,8 +262,8 @@
           <div class="w-16 h-16 bg-[#4C7DFF]/10 text-[#4C7DFF] rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           </div>
-          <h4 class="text-slate-900 font-extrabold text-lg">Otomasyon hazir degil</h4>
-          <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Ustteki alana otomasyonu yaz veya tetikleyici secerek olustur.</p>
+          <h4 class="text-slate-900 font-extrabold text-lg">Otomasyon hazır değil</h4>
+          <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Üstteki alana otomasyonu yaz veya tetikleyici seçerek oluştur.</p>
           <a href="stitch-skills.html?type=automation" class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-2xl font-bold active:bg-slate-50 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Yeni Otomasyon
@@ -275,7 +276,7 @@
 <!-- END: Main Content -->
 <!-- BEGIN: Bottom Navigation -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); height: calc(4.5rem + env(safe-area-inset-bottom));" data-purpose="bottom-nav">
-  <a href="stitch-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+  <a href="stitch-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #64748B;" aria-current="false">
     <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
     <span class="text-[10px] font-semibold leading-none">Ev</span>
   </a>
@@ -283,11 +284,11 @@
     <i class="w-6 h-6 stroke-[1.75]" data-lucide="layout-grid"></i>
     <span class="text-[10px] font-semibold leading-none">Ak&#305;ll&#305;</span>
   </a>
-  <a href="stitch-discover.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+  <a href="stitch-discover.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #64748B;" aria-current="false">
     <i class="w-6 h-6 stroke-[1.75]" data-lucide="compass"></i>
     <span class="text-[10px] font-semibold leading-none">Ke&#351;fet</span>
   </a>
-  <a href="stitch-profile.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #94a3b8;" aria-current="false">
+  <a href="stitch-profile.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #64748B;" aria-current="false">
     <i class="w-6 h-6 stroke-[1.75]" data-lucide="user"></i>
     <span class="text-[10px] font-semibold leading-none">Profil</span>
   </a>
@@ -587,12 +588,12 @@ function toggleHomeSelector() {
     var text = (raw || '').trim();
     var type = activeSmartType();
     var fallback = type === 'automation'
-      ? 'Yeni bir otomasyon olusturmak istiyorum.'
-      : 'Yeni bir tikla ve calistir senaryosu olusturmak istiyorum.';
+      ? 'Yeni bir otomasyon oluşturmak istiyorum.'
+      : 'Yeni bir tıkla ve çalıştır senaryosu oluşturmak istiyorum.';
     var prompt = text || fallback;
-    var target = type === 'automation' ? 'otomasyon' : 'tikla ve calistir';
+    var target = type === 'automation' ? 'otomasyon' : 'tıkla ve çalıştır';
     window.location.href = 'stitch-chat.html?type=' + encodeURIComponent(type) +
-      '&promptText=' + encodeURIComponent(target + ' icin yapay zeka ile olustur: ' + prompt);
+      '&promptText=' + encodeURIComponent(target + ' için yapay zeka ile oluştur: ' + prompt);
   }
   document.addEventListener('DOMContentLoaded', function () {
     var input = document.getElementById('smart-ai-input');

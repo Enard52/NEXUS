@@ -32,27 +32,16 @@ export type Locale =
   | "zh-Hans"
   | "zh-Hant"
   | "vi";
-export const SUPPORTED_LOCALES: readonly Locale[] = [
-  "en",
-  "tr",
-  "es",
-  "fr",
-  "de",
-  "it",
-  "pt",
-  "nl",
-  "pl",
-  "cs",
-  "ru",
-  "uk",
-  "ar",
-  "he",
-  "hi",
-  "ja",
-  "ko",
-  "zh-Hans",
-  "zh-Hant",
-  "vi",
+/**
+ * Sunulan diller: şimdilik yalnızca İngilizce ve Türkçe. Diğer dillerin kataloğu aşağıda
+ * hazır duruyor; yeni bir dil açmak için kodunu bu listeye eklemek yeterli.
+ */
+export const SUPPORTED_LOCALES: readonly Locale[] = ["en", "tr"];
+
+/** Kataloğu bulunan (ileride açılabilecek) tüm diller. */
+export const AVAILABLE_LOCALES: readonly Locale[] = [
+  "en", "tr", "es", "fr", "de", "it", "pt", "nl", "pl", "cs",
+  "ru", "uk", "ar", "he", "hi", "ja", "ko", "zh-Hans", "zh-Hant", "vi",
 ];
 export const DEFAULT_LOCALE: Locale = "en";
 

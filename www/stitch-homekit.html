@@ -9,10 +9,10 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — HomeKit Bilgileri</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
 <script src="js/lucide.js"></script>
 <style data-purpose="custom-typography">
     body {
@@ -45,7 +45,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">HomeKit Bilgileri</h1>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">HomeKit Bilgileri</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
@@ -86,7 +86,7 @@
 <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" id="copy-btn" onclick="copyCode()">Kodu Kopyala</button>
 </section>
 <!-- Info note -->
-<p class="text-xs text-slate-400 mt-5 px-2 leading-relaxed">HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Aktarılan cihazılar hem NEXUS hem Apple Ev uygulamasından kontrol edilebilir.</p>
+<p class="text-xs text-slate-400 mt-5 px-2 leading-relaxed">HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Aktarılan cihazlar hem NEXUS hem Apple Ev uygulamasından kontrol edilebilir.</p>
 <!-- Feedback shortcut -->
 <a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6" data-purpose="feedback-link" href="stitch-feedback.html">
 <i class="w-4 h-4" data-lucide="message-circle"></i>Eşleştirme sorunu mu yaşıyorsun? Geri bildirim gönder
@@ -99,9 +99,9 @@
     function copyCode() {
       var code = document.getElementById('pairing-code').textContent;
       var btn = document.getElementById('copy-btn');
-      navigator.clipboard.writeText(code).then(function () {
-        btn.textContent = 'Kopyalandı';
-        setTimeout(function () { btn.textContent = 'Kodu Kopyala'; }, 1500);
+      nexusCopy(code).then(function (ok) {
+        btn.textContent = ok ? 'Kopyalandı' : 'Kopyalanamadı — kodu elle seç';
+        setTimeout(function () { btn.textContent = 'Kodu Kopyala'; }, 1800);
       });
     }
   </script>

@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f4f5fb">
 <title>NEXUS - Kart Ekle</title>
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
 <script src="js/lucide.js"></script>
 <style>
@@ -40,7 +40,7 @@
     bottom: -10px;
     height: 2px;
     border-radius: 999px;
-    background: #2563eb;
+    background: #4C7DFF;
   }
   .picker-row + .picker-row {
     border-top: 1px solid rgba(226, 232, 240, 0.9);
@@ -77,9 +77,9 @@
 <body>
   <div class="picker-shell px-4 pt-12 pb-6">
     <header class="flex items-center justify-between text-[15px] font-medium mb-5">
-      <button class="text-slate-900" type="button" onclick="cancelPicker()">Iptal</button>
-      <h1 class="text-[17px] font-semibold tracking-tight">Kart Ekle</h1>
-      <button class="text-blue-600 font-semibold" type="button" onclick="commitSelection()">Ekle</button>
+      <button class="text-slate-900 min-h-[44px] px-1" type="button" onclick="cancelPicker()">İptal</button>
+      <h1 class="text-lg font-bold tracking-tight">Kart Ekle</h1>
+      <button class="text-[#4C7DFF] font-semibold min-h-[44px] px-1" type="button" onclick="commitSelection()">Ekle</button>
     </header>
 
     <nav class="flex items-center justify-center gap-6 text-[15px] text-slate-500 mb-5">

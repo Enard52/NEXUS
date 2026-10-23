@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="tr" data-theme="dark">
 <head>
+<script>(function(){try{var L=location,p=L.pathname,tr=/^\/tr(\/|$)/.test(p);
+var q=new URLSearchParams(L.search).get("lang"),s=null;try{s=localStorage.getItem("nx-lang")}catch(e){}
+if(q==="tr"||q==="en"){s=q;try{localStorage.setItem("nx-lang",q)}catch(e){}}
+function d(){var a=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]).filter(Boolean);
+for(var i=0;i<a.length;i++){var x=String(a[i]).replace("_","-").split("-");if(i===0&&/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/i.test(x[0]))return"tr";
+for(var j=1;j<x.length;j++)if(/^(TR|AZ|KZ|UZ|KG|TM)$/i.test(x[j]))return"tr"}
+var z="";try{z=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+if(/^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/.test(z))return"tr";
+for(var k=1;k<a.length;k++)if(/^tr$/i.test(String(a[k]).split(/[-_]/)[0]))return"tr";return"en"}
+if(!s&&tr)return;var w=s||d();var f=p.replace(/^\/tr(\/|$)/,"/").replace(/^\/+/,"");if(f==="index.html")f="";
+var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash)}catch(e){}})();</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>NEXUS Hakkında — NEXUS</title>
@@ -1076,6 +1087,9 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     body {
       margin: 0;
       color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background:
         radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 32rem),
         radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28rem),
@@ -1253,6 +1267,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       border-radius: 14px;
       font-weight: 700;
       font-size: 14px;
+      white-space: nowrap;
       text-decoration: none;
       cursor: pointer;
       transition: transform .22s var(--ease), box-shadow .22s ease, border-color .22s ease, background .22s ease;
@@ -1276,7 +1291,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .button-small { min-height: 42px; padding: 0 16px; font-size: 13px; }
     .button svg { width: 17px; height: 17px; }
 
-    main { overflow: clip; }
+    main { overflow: clip; flex: 1; }
     .hero {
       position: relative;
       min-height: 880px;
@@ -1352,7 +1367,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     }
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 12px;
       margin-top: 34px;
     }
@@ -2293,7 +2308,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     }
     .download-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
     .download-card.recommended::before {
-      content: "ÖÖnerilen";
+      content: "Önerilen";
       position: absolute;
       right: 18px;
       top: 18px;
@@ -2520,6 +2535,11 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       grid-template-columns: 1.3fr .7fr .7fr;
       gap: 60px;
       padding-bottom: 44px;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .footer-brand p { max-width: 360px; margin: 16px 0 0; color: var(--muted); font-size: 13px; }
     .footer-column h3 {
@@ -3126,6 +3146,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .download-windows::after { background: radial-gradient(circle, rgba(0,164,239,.18), transparent 68%); }
     .download-macos::after { background: radial-gradient(circle, color-mix(in srgb, var(--text) 11%, transparent), transparent 68%); }
     .download-linux::after { background: radial-gradient(circle, color-mix(in srgb, var(--primary) 15%, transparent), transparent 68%); }
+    .download-android::after { background: radial-gradient(circle, rgba(61,220,132,.16), transparent 68%); }
     .download-card-grid {
       position: absolute;
       inset: 0;
@@ -3149,6 +3170,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .platform-icon-windows { border-color: rgba(0,164,239,.24); background: rgba(0,164,239,.09); }
     .platform-icon-macos { background: color-mix(in srgb, var(--text) 6%, var(--surface)); }
     .platform-icon-linux { background: color-mix(in srgb, var(--primary) 7%, var(--surface)); }
+    .platform-icon-android { border-color: rgba(61,220,132,.26); background: rgba(61,220,132,.10); }
+    .os-logo-android { color: #3DDC84; width: 26px; height: 26px; }
+    .apk-link { display: block; margin-top: .55rem; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .apk-link:hover { color: var(--text); }
     .os-logo, .os-logo-img { width: 27px; height: 27px; object-fit: contain; }
     .os-fallback { font-size: 20px; }
     .platform-kicker {
@@ -3390,7 +3415,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       word-break: break-word;
     }
 
-    /* Pricing is presented as three hardware-like intelligence modules rather than geÖneric SaaS cards. */
+    /* Pricing is presented as three hardware-like intelligence modules rather than generic SaaS cards. */
     .pricing-grid {
       grid-template-columns: .94fr 1.12fr .94fr;
       gap: 18px;
@@ -3522,6 +3547,9 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .platform-watermark .os-logo { width: 132px; height: 132px; }
     .download-windows .platform-watermark { opacity: .045; }
     .download-linux .platform-watermark { opacity: .055; }
+    [data-theme="light"] .platform-watermark { opacity: .08; }
+    [data-theme="light"] .download-windows .platform-watermark { opacity: .12; }
+    [data-theme="light"] .download-linux .platform-watermark { opacity: .15; }
     .platform-specs {
       display: flex;
       flex-wrap: wrap;
@@ -4579,7 +4607,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       box-shadow: 0 6px 16px color-mix(in srgb, var(--protocol-color) 8%, transparent);
     }
     [data-theme="light"] .protocol-mark {
-      color: color-mix(in srgb, var(--protocol-color) 45%, var(--text));
+      color: var(--text);
     }
     .protocol-mark svg {
       width: 19px;
@@ -5181,7 +5209,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 
 
 
-    /* ── V8 capability density pass: Nexus AI, automation, response diagnostics ── */
+    /* ── V8 capability density pass: NEXUS AI, automation, response diagnostics ── */
     .nexus-ai-card,
     .automation-card,
     .response-card { overflow: hidden; }
@@ -5526,6 +5554,23 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       object-fit: contain;
       display: block;
     }
+
+    /* ── Downloads: desktop now, mobile coming soon ── */
+    .downloads-grid.downloads-mobile { grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+    .download-card.is-soon { opacity: .82; }
+    .download-card.is-soon:hover { transform: none; }
+    .download-card .is-disabled,
+    .download-card .is-disabled:hover { opacity: .6; cursor: not-allowed; pointer-events: none; transform: none; box-shadow: none; }
+    .download-note { display: block; margin-top: .6rem; font-size: 11.5px; line-height: 1.45; color: var(--muted); text-align: center; }
+    .downloads-meta { margin: 18px 0 0; text-align: center; font-size: 13px; }
+    .downloads-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .downloads-meta a:hover { color: var(--text); }
+    .early-access-actions { margin: 26px 0 0; display: flex; justify-content: center; }
+    @media (max-width: 800px) {
+      .downloads-grid.downloads-mobile { grid-template-columns: 1fr; }
+    }
+    .price.price-soon { font-size: 34px; letter-spacing: -.02em; }
+    .price-card .is-disabled { opacity: .6; cursor: not-allowed; pointer-events: none; }
 .legal-content { max-width: 720px; margin: 0 auto; padding: 100px 24px 60px; }
 .legal-content h1 { font-size: 36px; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--text); }
 .legal-content h2 { font-size: 24px; margin: 40px 0 12px; color: var(--text); }
@@ -5536,18 +5581,126 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 </head>
 <body>
 
+  <a class="skip-link" href="#main">İçeriğe atla</a>
+  <div class="brand-atmosphere" aria-hidden="true">
+    <span class="brand-glyph brand-glyph-a"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-ga" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-ga" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-ga)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-ga)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-glyph brand-glyph-b"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-gb" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-gb" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-gb)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-gb)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-glyph brand-glyph-c"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-gc" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-gc" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-gc)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-gc)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-signal brand-signal-a"></span>
+    <span class="brand-signal brand-signal-b"></span>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-shell" id="nav-shell">
+        <a class="brand" href="/" aria-label="NEXUS ana sayfa">
+          <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img">
+            <defs>
+              <linearGradient id="nxlogo-header" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+              </linearGradient>
+              <linearGradient id="nxsheen-header" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-header)"/>
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-header)"/>
+            <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+            <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>NEXUS</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Birincil gezinme">
+          <a class="nav-link" href="#features">Özellikler</a>
+          <a class="nav-link" href="#how">Nasıl çalışır</a>
+          <a class="nav-link" href="#integrations">Entegrasyonlar</a>
+          <a class="nav-link" href="#pricing">Fiyatlandırma</a>
+          <a class="nav-link" href="#downloads">İndir</a>
+          <div class="mobile-nav-actions">
+            <a class="mobile-nav-cta mobile-nav-login" href="#downloads">Hesap aç</a>
+            <a class="mobile-nav-cta mobile-nav-download" href="#downloads">NEXUS&#39;u indir</a>
+          </div>
+        </nav>
+
+        <div class="nav-actions">
+          <div class="language" id="language">
+            <button class="language-button" id="language-button" type="button" aria-expanded="false" aria-haspopup="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>TR</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="language-menu" role="menu">
+              <a href="?lang=en">English</a>
+              <a class="active" href="?lang=tr">Türkçe</a>
+            </div>
+          </div>
+
+          <button class="icon-button" id="theme-toggle" type="button" aria-label="Tema rengini değiştir">
+            <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+            <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a class="button button-primary button-small" href="#downloads">NEXUS&#39;u dene</a>
+          <button class="menu-button" id="menu-button" type="button" aria-label="Menüyü aç" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
 <main class="legal-content main-content">
 <h1>NEXUS Hakkında</h1>
 <p class="legal-updated">Kişisel Akıllı Ev İşletim Sistemi</p>
 
 <h2>Hikayemiz</h2>
-<p>NEXUS, akıllı ev teknolojilerinin karmaşıklığına, bulut bağımlılığına ve gizlilik endişelerine bir tepki olarak doğdu. Bulut sunucuları çöktüğünde ışıklarınızı bile kapıatamadığınız günleri geride bırakmak istedik. Sadece sizin kontrolünüzde olan, yerel donanımınızın gücünü kullanan ve verilerinizi dış dünyayla paylaşmayan bir sistem hayal ettik ve NEXUS'u inşa ettik.</p>
+<p>NEXUS, akıllı ev teknolojilerinin karmaşıklığına, bulut bağımlılığına ve gizlilik endişelerine bir tepki olarak doğdu. Bulut sunucuları çöktüğünde ışıklarınızı bile kapatamadığınız günleri geride bırakmak istedik. Sadece sizin kontrolünüzde olan, yerel donanımınızın gücünü kullanan ve verilerinizi dış dünyayla paylaşmayan bir sistem hayal ettik ve NEXUS'u inşa ettik.</p>
 
 <h2>Misyonumuz</h2>
 <p>NEXUS, akıllı ev otomasyonunu tamamen yerel, güvenli ve gizlilik odaklı bir deneyime dönüştürmek için tasarlanmıştır. Amacımız, teknolojiyi görünmez ama her zaman yanınızda olan güvenilir bir yardımcıya dönüştürmektir. Verilerinizin, ailenizin ve evinizin kontrolü %100 sizdedir.</p>
 
 <h2>Neden Biz?</h2>
-<p>Çünkü biz de sizin gibi kullanıcıyız. Pazardaki çoğu çözüm, sizi kendi ekosistemlerine kilitlemek ve verileriniz üzerinden gelir elde etmek üzerine kuruluyken, biz size tam bir özgürlük sunuyoruz. Açık standartları (Matter, Zigbee, Z-Wave vb.) destekliyor, cihazılarınızı bir platforma bağlamak zorunda kÇalışmadan kendi ağınızda yerel olarak yönetmenizi sağlıyoruz.</p>
+<p>Çünkü biz de sizin gibi kullanıcıyız. Pazardaki çoğu çözüm, sizi kendi ekosistemlerine kilitlemek ve verileriniz üzerinden gelir elde etmek üzerine kuruluyken, biz size tam bir özgürlük sunuyoruz. Philips Hue, Shelly, Tasmota, WLED ve ESPHome gibi cihazları kendi yerel API'leriyle destekliyor; cihazlarınızı bir platforma bağlamak zorunda kalmadan kendi ağınızda yerel olarak yönetmenizi sağlıyoruz.</p>
 
 <h2>Gelecek Vizyonumuz</h2>
 <p>Yapay zeka modellerinin doğrudan kendi sunucunuzda (Edge AI) çalıştırılarak evinizi tam anlamıyla tanıdığı, alışkanlıklarınıza göre proaktif olarak hareket eden ancak hiçbir veriyi dışarı sızdırmayan otonom evler inşa etmek istiyoruz. Her geçen gün platformumuza yeni entegrasyonlar, açık kaynaklı eklentiler ve gelişmiş otomasyon rutinleri eklemeye devam ediyoruz.</p>
@@ -5582,9 +5735,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
         </div>
         <div class="footer-column">
           <h3>Platformlar</h3>
-          <a href="#desktop">Windows</a>
-          <a href="#desktop">macOS</a>
-          <a href="#desktop">Linux</a>
+          <a href="#downloads">Windows</a>
+          <a href="#downloads">macOS</a>
+          <a href="#downloads">Linux</a>
+          <a href="#mobile-apps">Android ve iOS (yakında)</a>
         </div>
         <div class="footer-column">
           <h3>Şirket ve yasal</h3>
@@ -5647,10 +5801,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       }
 
       var commands = [
-        ""Evi film gecesine hazırla."",
-        ""Alt katı rahatlat."",
-        ""Kilitle ve her şeyi kapıat."",
-        ""Odak rutinimi başlat.""
+        "“Evi film gecesine hazırla.”",
+        "“Alt katı rahatlat.”",
+        "“Kilitle ve her şeyi kapat.”",
+        "“Odak rutinimi başlat.”"
       ];
       var commandIndex = 0;
       if (commandText && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

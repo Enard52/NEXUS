@@ -66,7 +66,7 @@ export * from "./render.js";
 export * from "./seo.js";
 
 /** Canonical origin for the marketing/app site (SEO canonical + sitemap base). */
-export const SITE_URL = "https://nexus-ai.example.com/";
+export const SITE_URL = "https://nexus-ai.app/";
 
 const deviceManager = new DeviceManager();
 deviceManager.registerConnector(

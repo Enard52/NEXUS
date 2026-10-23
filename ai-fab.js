@@ -4,7 +4,9 @@
  * Chat, login, onboarding ve tarama sayfalarinda gosterilmez.
  */
 (function () {
-  var EXCLUDE_PAGES = ['stitch-chat.html', 'stitch-login.html', 'stitch-onboarding.html', 'stitch-scan.html', 'stitch-map.html'];
+  // Ana sayfa ve Akıllı sekmesinde üstte zaten "Nasıl yardımcı olabilirim?" giriş çubuğu var;
+  // ikinci bir AI giriş noktası (yüzen N) kafa karıştırıyor ve içerikle çakışıyordu.
+  var EXCLUDE_PAGES = ['stitch-chat.html', 'stitch-login.html', 'stitch-onboarding.html', 'stitch-scan.html', 'stitch-map.html', 'stitch-home.html', 'stitch-smart.html', 'stitch-register.html', 'stitch-forgot-password.html', 'stitch-device.html'];
   if (EXCLUDE_PAGES.some(function (page) { return location.href.includes(page); })) return;
 
   var style = document.createElement('style');
@@ -141,9 +143,34 @@
     if (event.target !== fab && !fab.contains(event.target)) undock();
   }, { passive: true });
 
+  // Sayfanın altında sabit duran bir aksiyon butonu/alt bar varsa FAB onun üstüne çıkar;
+  // listelerin son satırı da FAB'ın altında kalmasın diye içeriğin sonuna boşluk bırakılır.
+  function avoidOverlap() {
+    var maxH = 0;
+    Array.prototype.forEach.call(document.body.querySelectorAll('footer, div, section, nav'), function (el) {
+      if (el === fab || fab.contains(el)) return;
+      var cs = window.getComputedStyle(el);
+      if (cs.position !== 'fixed' || cs.display === 'none' || cs.visibility === 'hidden') return;
+      var r = el.getBoundingClientRect();
+      if (r.height <= 0 || r.height > window.innerHeight * 0.5) return;
+      if (Math.abs(window.innerHeight - r.bottom) > 2) return; // yalnızca alta yapışık öğeler
+      if (r.width < window.innerWidth * 0.6) return;
+      maxH = Math.max(maxH, r.height);
+    });
+    if (maxH > 0) fab.style.bottom = Math.round(maxH + 16) + 'px';
+    var main = document.querySelector('main');
+    if (main) {
+      var pb = parseFloat(window.getComputedStyle(main).paddingBottom) || 0;
+      var need = (maxH > 0 ? maxH : 0) + 64;
+      if (pb < need) main.style.paddingBottom = need + 'px';
+    }
+  }
+
   function addToPage() {
     document.body.appendChild(fab);
     checkNav();
+    avoidOverlap();
+    setTimeout(avoidOverlap, 600);
 
     var pulsed = false;
     try {

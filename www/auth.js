@@ -49,6 +49,54 @@
     localStorage.setItem(`${user}_${key}`, value);
   };
   
+  // Yerel (bulutsuz) hesap şifresi: düz metin değil, tuzlu SHA-256 özeti saklanır.
+  // Eski sürümün düz metin kaydı (nexus_mock_pw_) ilk doğru girişte özete çevrilip silinir.
+  var PW_PREFIX = 'nexus_pw_';
+  var LEGACY_PREFIX = 'nexus_mock_pw_';
+  function hex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); }
+  function sha256(text) {
+    if (window.crypto && crypto.subtle && window.TextEncoder) {
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(hex);
+    }
+    return Promise.reject(new Error('Bu ortamda güvenli şifreleme yok'));
+  }
+  function randomSalt() {
+    var a = new Uint8Array(16);
+    (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach(function (_, i) { a[i] = Math.floor(Math.random() * 256); });
+    return hex(a.buffer);
+  }
+  window.nexusLocalPassword = {
+    exists: function (email) {
+      email = String(email || '');
+      return !!(localStorage.getItem(PW_PREFIX + email.trim().toLowerCase()) || localStorage.getItem(LEGACY_PREFIX + email.trim()) || localStorage.getItem(LEGACY_PREFIX + email.trim().toLowerCase()));
+    },
+    set: function (email, password) {
+      email = String(email || '').trim().toLowerCase();
+      var salt = randomSalt();
+      return sha256(salt + ':' + password).then(function (h) {
+        localStorage.setItem(PW_PREFIX + email, salt + ':' + h);
+        localStorage.removeItem(LEGACY_PREFIX + email);
+        return true;
+      });
+    },
+    // true: doğru, false: yanlış, null: bu e-postayla yerel hesap yok
+    verify: function (email, password) {
+      var raw = String(email || '').trim();
+      email = raw.toLowerCase();
+      var stored = localStorage.getItem(PW_PREFIX + email);
+      if (stored) {
+        var parts = stored.split(':');
+        return sha256(parts[0] + ':' + password).then(function (h) { return h === parts[1]; });
+      }
+      var legacy = localStorage.getItem(LEGACY_PREFIX + raw);
+      if (legacy == null) legacy = localStorage.getItem(LEGACY_PREFIX + email);
+      if (legacy == null) return Promise.resolve(null);
+      if (legacy !== password) return Promise.resolve(false);
+      localStorage.removeItem(LEGACY_PREFIX + raw);
+      return window.nexusLocalPassword.set(email, password).then(function () { return true; });
+    }
+  };
+
   window.nexusRemoveItem = function(key) {
     if (key === CURRENT_USER_KEY) {
       localStorage.removeItem(key);
@@ -59,6 +107,10 @@
   };
 
   window.nexusLogout = function() {
+    // Bulut oturumu varsa önce onu kapat; yerel temizlik her durumda yapılır.
+    if (window.nexusCloud && window.nexusCloud.enabled) {
+      try { window.nexusCloud.signOut(); } catch (e) {}
+    }
     localStorage.removeItem(CURRENT_USER_KEY);
     window.location.replace('index.html');
   };

@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - AI Koruma</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -16,6 +17,9 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+  <script src="device-controls.js"></script>
 </head>
 <body>
   <div class="w-full h-screen flex flex-col bg-[#EEF4FF] transition-colors duration-300">
@@ -23,7 +27,7 @@
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-lg font-bold text-slate-900 tracking-tight">AI Koruma</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">AI Koruma</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
         <i data-lucide="settings" class="text-[24px]"></i>
       </a>
@@ -36,16 +40,16 @@
             <i data-lucide="shield-check" class="text-5xl text-emerald-500"></i>
             <span class="absolute top-2 right-2 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
         </div>
-        <h2 id="ai-protect-title" class="text-2xl font-extrabold text-slate-900 relative">Koruma Kurulmadi</h2>
-        <p id="ai-protect-subtitle" class="text-sm font-medium text-slate-500 mt-2 relative">Koruma baslatilinca durum burada gorunur.</p>
+        <h2 id="ai-protect-title" class="text-2xl font-extrabold text-slate-900 relative">Koruma Kurulmadı</h2>
+        <p id="ai-protect-subtitle" class="text-sm font-medium text-slate-500 mt-2 relative">Koruma başlatılınca durum burada görünür.</p>
       </section>
 
       <section class="space-y-3">
-        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Koruma Kayitlari</h3>
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Koruma Kayıtları</h3>
         <div id="ai-protect-events" class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-5 text-center">
           <i data-lucide="shield" class="text-2xl text-slate-300"></i>
-          <p class="text-sm font-bold text-slate-900 mt-2">Kayitli olay yok</p>
-          <p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama calisinca gercek sonuclar burada listelenir.</p>
+          <p class="text-sm font-bold text-slate-900 mt-2">Kayıtlı olay yok</p>
+          <p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama çalışınca gerçek sonuçlar burada listelenir.</p>
         </div>
       </section>
 
@@ -70,61 +74,96 @@
     </main>
 
     <footer class="shrink-0 pb-[34px] px-6 pt-4 bg-white/40 backdrop-blur-md border-t border-white/40">
-      <button class="w-full h-16 bg-[#4C7DFF] text-white rounded-3xl flex items-center justify-center gap-3 active-scale nexus-glow transition-all" onclick="alert('Derin tarama başlatılıyor...')">
+      <button class="w-full h-16 bg-[#4C7DFF] text-white rounded-3xl flex items-center justify-center gap-3 active-scale nexus-glow transition-all" id="deep-scan-btn">
         <i data-lucide="scan-line" class="text-2xl"></i>
         <span class="text-base font-extrabold tracking-tight">Derin Tarama Başlat</span>
       </button>
     </footer>
   </div>
 
-<!-- DYNAMIC JS -->
 <script>
+// AI Koruma: eklenen cihazların gerçek durumuna göre güvenlik taraması.
+// Açık kilit, gizlilik modundaki kamera, bildirimi kapalı sensör ve yerel ağda ulaşılamayan cihazları bulur.
+var SCAN_KEY = 'nexusAiProtectScan';
+function esc(v) { return NX.escapeHtml(v); }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const toggle = document.querySelector('input[type="checkbox"]');
-    const hasState = localStorage.getItem('nexusAiProtectStatus') !== null;
-    const state = JSON.parse(localStorage.getItem('nexusAiProtectStatus') || '{"enabled":false,"threats":0,"events":[]}');
-    if(toggle) {
-        toggle.checked = state.enabled;
-        toggle.addEventListener('change', (e) => {
-            state.enabled = e.target.checked;
-            localStorage.setItem('nexusAiProtectStatus', JSON.stringify(state));
-            renderAiProtectState(state, true);
-        });
-    }
-});
-function renderAiProtectState(state, hasState) {
-    const title = document.getElementById('ai-protect-title');
-    const subtitle = document.getElementById('ai-protect-subtitle');
-    const events = document.getElementById('ai-protect-events');
-    const statusDot = document.querySelector('.absolute.top-2.right-2');
-    if (title) title.textContent = hasState && state.enabled ? 'Koruma Aktif' : 'Koruma Kurulmadi';
-    if (subtitle) subtitle.textContent = hasState ? (state.enabled ? 'NEXUS AI korumasi acik.' : 'Koruma su anda kapali.') : 'Koruma baslatilinca durum burada gorunur.';
-    if (statusDot) statusDot.className = 'absolute top-2 right-2 w-4 h-4 border-2 border-white rounded-full ' + (hasState && state.enabled ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300');
-    if (events) {
-        const items = Array.isArray(state.events) ? state.events : [];
-        if (!items.length) {
-            events.innerHTML = '<i data-lucide="shield" class="text-2xl text-slate-300"></i><p class="text-sm font-bold text-slate-900 mt-2">Kayitli olay yok</p><p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama calisinca gercek sonuclar burada listelenir.</p>';
-        } else {
-            events.innerHTML = items.slice(-5).reverse().map(item => '<div class="flex items-center justify-between text-left"><div><p class="text-sm font-bold text-slate-900">' + (item.title || 'Koruma olayi') + '</p><p class="text-[11px] font-medium text-slate-500">' + (item.time || '') + '</p></div><span class="text-[11px] font-bold text-[#4C7DFF] bg-[#4C7DFF]/10 px-2 py-1 rounded-lg">Kaydedildi</span></div>').join('');
-        }
-    }
-}
-function startScan() {
-    const state = JSON.parse(localStorage.getItem('nexusAiProtectStatus') || '{"enabled":true,"threats":0,"events":[]}');
-    state.enabled = true;
-    state.threats = Number(state.threats || 0);
-    state.events = Array.isArray(state.events) ? state.events : [];
-    state.lastScan = new Date().toISOString();
-    localStorage.setItem('nexusAiProtectStatus', JSON.stringify(state));
-    renderAiProtectState(state, true);
-}
-document.addEventListener('DOMContentLoaded', () => {
-    const state = JSON.parse(localStorage.getItem('nexusAiProtectStatus') || '{"enabled":false,"threats":0,"events":[]}');
-    renderAiProtectState(state, localStorage.getItem('nexusAiProtectStatus') !== null);
-});
-document.querySelector('footer button').onclick = startScan;
+function readScan() { try { return JSON.parse(nexusGetItem(SCAN_KEY) || 'null'); } catch (e) { return null; } }
 
+function renderScan(scan) {
+  var title = document.getElementById('ai-protect-title');
+  var subtitle = document.getElementById('ai-protect-subtitle');
+  var events = document.getElementById('ai-protect-events');
+  var dot = document.querySelector('.absolute.top-2.right-2');
+  if (!scan) {
+    title.textContent = 'Henüz tarama yapılmadı';
+    subtitle.textContent = 'Derin tarama, eklediğin cihazların güvenlik durumunu kontrol eder.';
+    if (dot) dot.className = 'absolute top-2 right-2 w-4 h-4 border-2 border-white rounded-full bg-slate-300';
+    return;
+  }
+  var issues = scan.findings.filter(function (f) { return f.level !== 'ok'; });
+  title.textContent = issues.length ? issues.length + ' konu dikkat istiyor' : 'Sorun bulunmadı';
+  subtitle.textContent = scan.checked + ' cihaz tarandı · ' + scan.time;
+  if (dot) dot.className = 'absolute top-2 right-2 w-4 h-4 border-2 border-white rounded-full ' + (issues.length ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse');
+  if (!scan.findings.length) {
+    events.innerHTML = '<p class="text-sm font-bold text-slate-900">Güvenlik cihazı yok</p><p class="text-[11px] font-medium text-slate-500 mt-1">Kilit, kamera veya sensör eklediğinde tarama onları da kontrol eder.</p>' +
+      '<a href="stitch-pair.html" class="mt-3 inline-flex min-h-[40px] items-center rounded-full bg-[#4C7DFF] px-4 text-xs font-bold text-white">Cihaz ekle</a>';
+    return;
+  }
+  var tone = { risk: 'text-rose-600 bg-rose-500/10', warn: 'text-amber-700 bg-amber-500/10', ok: 'text-emerald-700 bg-emerald-500/10' };
+  var label = { risk: 'Risk', warn: 'Dikkat', ok: 'Tamam' };
+  events.className = 'bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-2 text-left divide-y divide-slate-100';
+  events.innerHTML = scan.findings.map(function (f) {
+    return '<a href="stitch-device.html?i=' + f.index + '" class="flex items-center justify-between gap-3 p-3 min-h-[52px]">' +
+      '<span class="min-w-0"><span class="block text-sm font-bold text-slate-900 truncate">' + esc(f.name) + '</span>' +
+      '<span class="block text-[12px] font-medium text-slate-500">' + esc(f.text) + '</span></span>' +
+      '<span class="shrink-0 text-[11px] font-bold px-2 py-1 rounded-lg ' + tone[f.level] + '">' + label[f.level] + '</span></a>';
+  }).join('');
+}
+
+function deepScan() {
+  var btn = document.getElementById('deep-scan-btn');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Taranıyor…';
+  var devices = NX.readDevices();
+  var lan = [];
+  devices.forEach(function (d, i) { if (NX.isLan(d)) lan.push(i); });
+  Promise.all(lan.map(function (i) { return NX.refreshFromDevice(i); })).then(function () {
+    var list = NX.readDevices();
+    var findings = [];
+    list.forEach(function (d, i) {
+      var k = NX.kindOf(d), st = NX.stateOf(d);
+      if (NX.isLan(d) && NX.LAN_ONLINE[i] === false) findings.push({ index: i, name: d.name, level: 'warn', text: 'Yerel ağda ulaşılamıyor' });
+      if (k === 'lock') findings.push(st.locked === false ? { index: i, name: d.name, level: 'risk', text: 'Kilit açık' } : { index: i, name: d.name, level: 'ok', text: 'Kilitli' });
+      if (k === 'camera') {
+        if (st.privacy === true) findings.push({ index: i, name: d.name, level: 'warn', text: 'Gizlilik modunda — kayıt yapmıyor' });
+        else if (st.notify === false) findings.push({ index: i, name: d.name, level: 'warn', text: 'Hareket bildirimi kapalı' });
+        else findings.push({ index: i, name: d.name, level: 'ok', text: 'İzlemede' });
+      }
+      if (k === 'motion' || k === 'contact' || k === 'alarm') {
+        findings.push(st.notify === false ? { index: i, name: d.name, level: 'warn', text: 'Bildirimler kapalı' } : { index: i, name: d.name, level: 'ok', text: 'Bildirimler açık' });
+      }
+    });
+    var order = { risk: 0, warn: 1, ok: 2 };
+    findings.sort(function (a, b) { return order[a.level] - order[b.level]; });
+    var scan = { time: new Date().toLocaleString((window.nexusLocale || 'tr-TR'), { dateStyle: 'short', timeStyle: 'short' }), checked: list.length, findings: findings };
+    nexusSetItem(SCAN_KEY, JSON.stringify(scan));
+    renderScan(scan);
+    btn.disabled = false;
+    btn.querySelector('span').textContent = 'Yeniden Tara';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var toggle = document.querySelector('input[type="checkbox"]');
+  if (toggle) {
+    toggle.checked = nexusGetItem('nexusBiometricLock') !== 'false';
+    toggle.addEventListener('change', function (e) { nexusSetItem('nexusBiometricLock', e.target.checked ? 'true' : 'false'); });
+  }
+  var last = readScan();
+  renderScan(last);
+  if (last) document.querySelector('#deep-scan-btn span').textContent = 'Yeniden Tara';
+  document.getElementById('deep-scan-btn').addEventListener('click', deepScan);
+});
 </script>
 
   <script data-purpose="icon-initialization">

@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Plus</title>
 <!-- Tailwind CSS v3 CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Custom Configuration for Tailwind (NEXUS brand palette) -->
 <script>
     window.tailwind = window.tailwind || {};
@@ -19,7 +19,7 @@
           colors: {
             'nexus-purple': '#4C7DFF',
             'nexus-cyan': '#22D3EE',
-            'nexus-brand': '#6D28D9',
+            'nexus-brand': '#4C7DFF',
           }
         }
       }
@@ -93,7 +93,7 @@
 </svg></div>
 <h1 class="text-5xl font-extrabold text-black dark:text-white dark:text-white mb-2">NEXUS AI Plus</h1>
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 font-medium text-lg mb-2">7 gün ücretsiz deneyin</p>
-<p class="text-3xl font-extrabold text-nexus-brand">Ayda 2000 kredi kazanın</p>
+<p class="text-3xl font-extrabold text-[#4C7DFF]">Ayda 2000 kredi kazanın</p>
 </section>
 <!-- END: Header Content -->
 <!-- BEGIN: Feature List Card -->
@@ -150,7 +150,7 @@
 <!-- BEGIN: Pricing Plans -->
 <section class="w-full max-w-md grid grid-cols-2 gap-4 mb-8" data-purpose="subscription-plans">
 <!-- Annual Plan (Highlighted) -->
-<div id="plan-annual" onclick="selectPlan('Yıllık')" class="bg-white dark:bg-slate-800 dark:bg-slate-800 border-2 border-nexus-purple rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm relative cursor-pointer ring-2 ring-nexus-purple transition-all" data-plan="Yıllık">
+<div role="button" tabindex="0" id="plan-annual" onclick="selectPlan('Yıllık')" class="bg-white dark:bg-slate-800 dark:bg-slate-800 border-2 border-nexus-purple rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm relative cursor-pointer ring-2 ring-nexus-purple transition-all" data-plan="Yıllık">
 <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4C7DFF] text-white text-xs font-bold px-3 py-1 rounded-full">Popüler</div>
 <h3 class="text-xl font-bold text-black dark:text-white dark:text-white">Yıllık</h3>
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-sm mb-2">7 gün ücretsiz deneme</p>
@@ -158,7 +158,7 @@
 <div class="text-gray-400 text-sm">₺333.33/ay</div>
 </div>
 <!-- Monthly Plan -->
-<div id="plan-monthly" onclick="selectPlan('Aylık')" class="bg-white dark:bg-slate-800 dark:bg-slate-800 border-2 border-gray-100 rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm cursor-pointer transition-all" data-plan="Aylık">
+<div role="button" tabindex="0" id="plan-monthly" onclick="selectPlan('Aylık')" class="bg-white dark:bg-slate-800 dark:bg-slate-800 border-2 border-gray-100 rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm cursor-pointer transition-all" data-plan="Aylık">
 <h3 class="text-xl font-bold text-black dark:text-white dark:text-white">Aylık</h3>
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-sm mb-2">3 gün ücretsiz deneme</p>
 <div class="text-2xl font-bold text-black dark:text-white dark:text-white">₺499.99</div>
@@ -207,8 +207,8 @@
     document.getElementById('plan-monthly').classList.toggle('ring-nexus-purple', plan==='Aylık');
     document.getElementById('plan-monthly').classList.toggle('border-gray-100', plan!=='Aylık');
     if (!nexusGetItem('nexusPlusPlan')) {
-      const trialDays = plan === 'Yıllık' ? '7' : '3';
-      document.getElementById('cta-btn').textContent = trialDays + ' Gün Ücretsiz Dene';
+      // NEXUS+ henüz satışta değil (mağaza ödemesi bağlanınca açılacak); tüm temel özellikler ücretsiz.
+      document.getElementById('cta-btn').textContent = 'Yakında';
     }
   }
 
@@ -218,7 +218,9 @@
       window.location.href = 'stitch-billing.html';
       return;
     }
-    openCheckout();
+    if (typeof nexusInfo === 'function') {
+      nexusInfo('NEXUS+ yakında', 'NEXUS+ henüz satışta değil. Cihaz ekleme, kontrol panelleri, senaryolar ve NEXUS AI şu an tamamen ücretsiz; abonelik açıldığında buradan haber vereceğiz.');
+    }
   }
 
   function openCheckout() {
@@ -228,7 +230,7 @@
     document.getElementById('co-plan').textContent = 'NEXUS+ ' + selectedPlan;
     document.getElementById('co-trial').textContent = trialDays + ' gün';
     document.getElementById('co-price').textContent = selectedPlan === 'Yıllık' ? '₺3999,99/yıl' : '₺499,99/ay';
-    document.getElementById('co-date').textContent = firstCharge.toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('co-date').textContent = firstCharge.toLocaleDateString((window.nexusLocale || 'tr-TR'), { year: 'numeric', month: 'long', day: 'numeric' });
     document.getElementById('checkout-sheet').classList.remove('hidden');
   }
 

@@ -1,6 +1,0 @@
-packages:
-  - "packages/*"
-
-# esbuild's postinstall writes its platform binary; vite cannot run without it.
-onlyBuiltDependencies:
-  - esbuild

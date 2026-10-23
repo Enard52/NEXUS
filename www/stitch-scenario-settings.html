@@ -4,8 +4,10 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>NEXUS — Senaryo Ayarları</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
   <script src="data.js"></script>
   <script>
@@ -35,7 +37,7 @@
     <button onclick="window.history.back()" class="p-1 -ml-1">
       <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
     </button>
-    <h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Senaryo Ayarları</h1>
+    <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Senaryo Ayarları</h1>
     <div class="w-7"></div>
   </header>
 
@@ -70,7 +72,7 @@
       <h3 class="font-bold text-slate-900 mb-3">Tetikleyici</h3>
       <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
         <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-          <i class="w-4 h-4 text-blue-500" id="trigger-icon" data-lucide="clock"></i>
+          <i class="w-4 h-4 text-[#4C7DFF]" id="trigger-icon" data-lucide="clock"></i>
         </div>
         <div class="flex-1">
           <span class="text-sm font-semibold text-slate-700" id="trigger-label">Zamanlama</span>
@@ -88,7 +90,7 @@
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" id="toggle-show-home" class="sr-only peer">
-          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
         </label>
       </div>
     </section>
@@ -102,7 +104,7 @@
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" id="toggle-show-room" class="sr-only peer">
-          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
         </label>
       </div>
     </section>
@@ -116,14 +118,14 @@
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" id="toggle-enabled" class="sr-only peer" checked>
-          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
         </label>
       </div>
     </section>
 
     <!-- Butonlar -->
     <div class="space-y-3 pt-2">
-      <button onclick="saveScenario()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform shadow-md shadow-blue-200">
+      <button onclick="saveScenario()" class="w-full bg-[#4C7DFF] text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform shadow-md shadow-blue-200">
         Kaydet
       </button>
       <button id="delete-scenario-button" type="button" onclick="deleteScenario()" class="hidden w-full bg-red-50 text-red-600 py-4 rounded-2xl font-bold active:scale-95 transition-transform border border-red-100">
@@ -159,7 +161,7 @@
         desc:  decodeURIComponent(urlParams.get('desc')  || 'Açıklama'),
         icon:  urlParams.get('icon') || 'zap',
         bgClass:    urlParams.get('bgClass')    || 'bg-blue-100',
-        colorClass: urlParams.get('colorClass') || 'text-blue-500',
+        colorClass: urlParams.get('colorClass') || 'text-[#4C7DFF]',
         enabled:    true,
         showOnHome: true,
         showInRoom: false,
@@ -176,7 +178,7 @@
     const iconWrap = document.getElementById('scenario-icon-wrap');
     iconWrap.className = `w-12 h-12 rounded-2xl ${currentItem.bgClass || 'bg-blue-100'} flex items-center justify-center shrink-0`;
     const iconEl = document.getElementById('scenario-icon-el');
-    iconEl.className = `w-6 h-6 ${currentItem.colorClass || 'text-blue-500'}`;
+    iconEl.className = `w-6 h-6 ${currentItem.colorClass || 'text-[#4C7DFF]'}`;
     iconEl.setAttribute('data-lucide', currentItem.icon || 'zap');
 
     // Toggle'lar
@@ -235,8 +237,8 @@
     function saveScenario() {
       if (!scenarioId || !scenarioType) return;
 
-      const newTitle = document.getElementById('scenario-title-edit').textContent.trim() || currentItem.title;
-      const newDesc  = document.getElementById('scenario-desc-edit').textContent.trim()  || currentItem.desc;
+      const newTitle = nexusSrcText(document.getElementById('scenario-title-edit')) || currentItem.title;
+      const newDesc  = nexusSrcText(document.getElementById('scenario-desc-edit'))  || currentItem.desc;
       const showOnHome = document.getElementById('toggle-show-home').checked;
       const showInRoom = document.getElementById('toggle-show-room').checked;
       const enabled    = document.getElementById('toggle-enabled').checked;

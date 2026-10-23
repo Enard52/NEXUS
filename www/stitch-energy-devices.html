@@ -9,11 +9,13 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Cihazı Seç</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
 <script src="js/lucide.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <style data-purpose="custom-typography">
     body {
       font-family: 'Inter', sans-serif;
@@ -43,7 +45,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Cihazı Seç</h1>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Cihazı Seç</h1>
 <button class="text-slate-500 font-medium text-[17px]" onclick="resetSelection()">Sıfırla</button>
 </header>
 <!-- END: Header -->
@@ -70,7 +72,7 @@
 <!-- Cihaz eşleştirme (radar) akışına gider -->
 <a class="flex-shrink-0 bg-[#4C7DFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-pair.html">Ekle</a>
 </section>
-<!-- Paired device list (eşleştirilmiş cihazılar buraya gerçek veriden gelir) -->
+<!-- Paired device list (eşleştirilmiş cihazlar buraya gerçek veriden gelir) -->
 <section class="hidden space-y-3" data-purpose="paired-device-list" id="device-list"></section>
 <!-- Feedback shortcut -->
 <a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-8" data-purpose="feedback-link" href="stitch-feedback.html">
@@ -91,7 +93,7 @@
       }
     })();
 
-    // --- Eşleştirilmiş cihazılar (stitch-pair.html kaydeder) ---
+    // --- Eşleştirilmiş cihazlar (stitch-pair.html kaydeder) ---
     var paired = [];
     try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (e) {}
     var selected = [];
@@ -129,9 +131,14 @@
       listEl.classList.remove('hidden');
       listEl.innerHTML = paired.map(function (d) {
         var isSel = selected.indexOf(d.name) !== -1;
-        return '<button class="w-full bg-white rounded-3xl card-shadow p-4 flex items-center gap-4 text-left active:scale-[0.99] transition-transform" data-name="' + d.name + '" onclick="toggleDevice(this)">' +
-          '<span class="w-12 h-12 rounded-xl bg-[#4C7DFF]/10 flex items-center justify-center flex-shrink-0"><i class="w-6 h-6 text-[#4C7DFF]" data-lucide="' + d.icon + '"></i></span>' +
-          '<span class="min-w-0 flex-grow"><span class="block font-bold truncate">' + d.name + '</span><span class="block text-xs font-medium text-emerald-600 mt-0.5">Çevrimiçi</span></span>' +
+        var esc = window.NX ? NX.escapeHtml : function (v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+        var status = window.NX ? NX.statusOf(d).text : 'Bağlı';
+        var thumb = window.NX
+          ? '<img class="w-12 h-12 object-contain flex-shrink-0" src="' + NX.imageUrl(d) + '" alt="" loading="lazy" decoding="async">'
+          : '<span class="w-12 h-12 rounded-xl bg-[#4C7DFF]/10 flex items-center justify-center flex-shrink-0"><i class="w-6 h-6 text-[#4C7DFF]" data-lucide="plug"></i></span>';
+        return '<button class="w-full bg-white rounded-3xl card-shadow p-4 flex items-center gap-4 text-left active:scale-[0.99] transition-transform" data-name="' + esc(d.name) + '" aria-pressed="' + isSel + '" onclick="toggleDevice(this)">' +
+          thumb +
+          '<span class="min-w-0 flex-grow"><span class="block font-bold truncate">' + esc(d.name) + '</span><span class="block text-xs font-medium text-slate-500 dark:text-slate-300 mt-0.5">' + esc(status) + (d.room ? ' · ' + esc(d.room) : '') + '</span></span>' +
           (isSel
             ? '<span class="w-7 h-7 rounded-full bg-[#4C7DFF] flex items-center justify-center flex-shrink-0"><i class="w-4 h-4 text-white" data-lucide="check"></i></span>'
             : '<span class="w-7 h-7 rounded-full border-2 border-slate-200 flex-shrink-0"></span>') +

@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>NEXUS — SSS ve Geri Bildirim</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
@@ -40,7 +40,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="stitch-profile.html" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700 dark:text-white" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2 whitespace-nowrap">SSS ve Geri Bildirim</h1>
+<h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">SSS ve Geri Bildirim</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
@@ -53,28 +53,28 @@
 <span class="font-semibold pr-3">Cihazım neden çevrimdışı görünüyor?</span>
 <i class="w-5 h-5 text-slate-300 dark:text-slate-500 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Cihazın Wi-Fi bağlantısını ve modeminizi kontrol edin. Sorun sürerse cihazıı NEXUS uygulamasından kaldırıp yeniden ekleyin.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Cihazın Wi-Fi bağlantısını ve modeminizi kontrol edin. Sorun sürerse cihazı NEXUS uygulamasından kaldırıp yeniden ekleyin.</p>
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50 dark:bg-slate-700/50 dark:active:bg-slate-700/50" onclick="toggleFaq(this)">
 <span class="font-semibold pr-3">Yeni cihazı nasıl eklerim?</span>
 <i class="w-5 h-5 text-slate-300 dark:text-slate-500 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Ana ekranın sağ üstündeki + butonuna dokunun ve "Tara" ile cihazıın QR kodunu okutun ya da kurulum kodunu elle girin.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Ana ekranın sağ üstündeki + butonuna dokunun ve "Tara" ile cihazın QR kodunu okutun ya da kurulum kodunu elle girin.</p>
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50 dark:bg-slate-700/50 dark:active:bg-slate-700/50" onclick="toggleFaq(this)">
 <span class="font-semibold pr-3">NEXUS AI puanları nedir?</span>
 <i class="w-5 h-5 text-slate-300 dark:text-slate-500 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">NEXUS AI ile yaptığınız her görüşme puan kullanır. Puanlar her gün yenilenir; Plus aboneliğiyle daha yüksek limit alırsınız.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">NEXUS AI ile yaptığınız her görüşme puan kullanır. Puanlar her gün yenilenir.</p>
 </div>
 <div>
 <button class="w-full flex items-center justify-between p-5 text-left active:bg-slate-50 dark:bg-slate-700/50 dark:active:bg-slate-700/50" onclick="toggleFaq(this)">
 <span class="font-semibold pr-3">Verilerim güvende mi?</span>
 <i class="w-5 h-5 text-slate-300 dark:text-slate-500 transition-transform flex-shrink-0" data-lucide="chevron-down"></i>
 </button>
-<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Evet. NEXUS gizlilik öncelikli çalışır; cihazı verileriniz uçtan uca şifrelenir ve üçüncü taraflarla paylaşılmaz.</p>
+<p class="hidden px-5 pb-5 text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Evet. NEXUS yerel öncelikli çalışır; cihaz verilerin bu cihazda kalır ve üçüncü taraflarla paylaşılmaz.</p>
 </div>
 </section>
 <!-- Support Assistant (AI özelliği: NEXUS AI adlandırması doğru) -->
@@ -114,7 +114,7 @@
 <i class="w-7 h-7" data-lucide="check"></i>
 </div>
 <h3 class="font-bold text-lg mb-1">Teşekkürler!</h3>
-<p class="text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">Geri bildirimin bize ulaştı. NEXUS'u birlikte daha iyi yapıyoruz.</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500">E-posta uygulamanda mesajın hazır; gönderdiğinde bize ulaşır. NEXUS'u birlikte daha iyi yapıyoruz.</p>
 </section>
 </main>
 <!-- END: MainContent -->
@@ -126,8 +126,15 @@
       btn.querySelector('.lucide-chevron-down').classList.toggle('rotate-180');
     }
     // Swap the form for the thank-you card
+    // Geri bildirim gerçekten iletilir: konu ve mesaj doldurulmuş bir e-posta taslağı açılır (ücretsiz, sunucu gerekmez)
     function sendFeedback() {
-      if (!document.getElementById('feedback-text').value.trim()) return;
+      var text = document.getElementById('feedback-text').value.trim();
+      if (!text) return;
+      var topic = document.getElementById('feedback-topic');
+      var subject = 'NEXUS — ' + (topic ? topic.options[topic.selectedIndex].text : nexusT('Geri bildirim', 'Feedback'));
+      var body = text + '\n\n— ' + navigator.userAgent;
+      var to = window.NEXUS_SUPPORT_EMAIL || 'destek@nexus-ai.app';
+      window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       document.getElementById('feedback-form').classList.add('hidden');
       var ok = document.getElementById('feedback-success');
       ok.classList.remove('hidden');
@@ -146,13 +153,13 @@
       var t = text.toLowerCase();
       var reply;
       if (t.indexOf('çevrimdışı') !== -1 || t.indexOf('bağlan') !== -1 || t.indexOf('wifi') !== -1 || t.indexOf('wi-fi') !== -1) {
-        reply = 'Cihazın Wi-Fi bağlantısını ve modemini kontrol et. Sorun sürerse cihazıı kaldırıp yeniden ekle. Adımlar: Cihazlar > cihazıı seç > Kaldır.';
+        reply = 'Cihazın Wi-Fi bağlantısını ve modemini kontrol et. Sorun sürerse cihazı kaldırıp yeniden ekle. Adımlar: Cihazlar > cihazı seç > Kaldır.';
       } else if (t.indexOf('cihazı ekle') !== -1 || t.indexOf('yeni cihazı') !== -1 || t.indexOf('qr') !== -1) {
         reply = 'Ana ekranın sağ üstündeki + butonuna dokun, "Tara" ile QR kodu okut ya da kurulum kodunu elle gir.';
       } else if (t.indexOf('puan') !== -1 || t.indexOf('limit') !== -1 || t.indexOf('abonelik') !== -1) {
-        reply = 'NEXUS AI puanların her gün yenilenir. Daha yüksek limit için Profil > Abonelik bölümünden Plus\'a geçebilirsin.';
+        reply = 'NEXUS AI puanların her gün yenilenir; şu an tüm özellikler ücretsiz.';
       } else if (t.indexOf('güvenli') !== -1 || t.indexOf('veri') !== -1 || t.indexOf('gizlilik') !== -1) {
-        reply = 'Verilerin uçtan uca şifrelenir ve üçüncü taraflarla paylaşılmaz. Detaylar Ayarlar > Gizlilik bölümünde.';
+        reply = 'NEXUS yerel öncelikli çalışır: cihaz verilerin bu cihazda kalır, cihaz komutları doğrudan yerel ağdan gider ve üçüncü taraflarla paylaşılmaz.';
       } else if (t.indexOf('teşekk') !== -1 || t.indexOf('tamam') !== -1 || t.indexOf('oldu') !== -1) {
         reply = 'Rica ederim! Başka bir sorun olursa buradayım.';
       } else {

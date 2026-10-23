@@ -9,10 +9,10 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Kullanıcı Bilgileri</title>
 <!-- Tailwind CSS v3 CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
 <script src="js/lucide.js"></script>
 <style data-purpose="typography">
     body {
@@ -58,7 +58,7 @@
 <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
-<h1 class="whitespace-nowrap text-xl font-semibold text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
 <!-- Empty div for flex balance -->
 <div class="w-10"></div>
 </header>
@@ -91,8 +91,8 @@
 </svg>
 </div>
 </button>
-<!-- Row 3: Device Timezone (cihazıdan otomatik okunur, sheet ile değiştirilebilir) -->
-<button class="settings-row w-full flex items-center justify-between px-6 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('tz')">
+<!-- Row 3: Device Timezone (cihazdan otomatik okunur, sheet ile değiştirilebilir) -->
+<button class="settings-row w-full flex items-center justify-between gap-4 px-6 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('tz')">
 <span class="text-[17px] font-medium text-gray-800 flex-shrink-0">Cihaz Saat Dilimi</span>
 <div class="flex items-center gap-3 min-w-0">
 <span class="text-[17px] text-gray-400 truncate" id="timezone-value">İstanbul</span>
@@ -205,12 +205,12 @@
     };
     /* Ülke adları tarayıcının gerçek Türkçe verisinden gelir */
     var countryName = (function () {
-      try { var dn = new Intl.DisplayNames(['tr'], { type: 'region' }); return function (c) { return dn.of(c) || c; }; }
+      try { var dn = new Intl.DisplayNames([window.nexusLang || 'tr'], { type: 'region' }); return function (c) { return dn.of(c) || c; }; }
       catch (e) { return function (c) { return c; }; }
     })();
     var COUNTRIES = Object.keys(COUNTRY_TZ).map(function (code) {
       return { code: code, tz: COUNTRY_TZ[code], name: countryName(code) };
-    }).sort(function (a, b) { return a.name.localeCompare(b.name, 'tr'); });
+    }).sort(function (a, b) { return a.name.localeCompare(b.name, window.nexusLang || 'tr'); });
 
     function deviceTimezone() {
       try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul'; }
@@ -243,7 +243,7 @@
       var tz = COUNTRY_TZ[code];
       var now = '';
       try {
-        now = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date());
+        now = new Intl.DateTimeFormat((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date());
       } catch (e) { /* bilinmeyen dilimde yalnızca ad gösterilir */ }
       document.getElementById('timezone-value').textContent = countryName(code) + (now ? ' · ' + now : '');
       renderTzList(document.getElementById('tz-search').value);

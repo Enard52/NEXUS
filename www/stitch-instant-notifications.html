@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Anlık Bildirimler</title>
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <script src="js/lucide.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<style>
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
   body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
   .switch { position: relative; display: inline-block; width: 52px; height: 32px; }
   .switch input { opacity: 0; width: 0; height: 0; }
@@ -28,7 +28,7 @@
       <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-settings.html'" class="p-1 -ml-1 active:scale-95 transition-transform" aria-label="Geri">
         <i data-lucide="chevron-left" class="w-7 h-7 text-slate-700"></i>
       </a>
-      <h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">Anlık Bildirimler</h1>
+      <h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2">Anlık Bildirimler</h1>
       <div class="w-10"></div>
     </header>
     <main class="flex-1 overflow-y-auto px-5 py-6 space-y-6 pb-24">
@@ -55,7 +55,7 @@
       <div class="space-y-3">
         <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Sessiz Saatler</h3>
         <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100/50">
-          <div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600"><i data-lucide="moon" class="w-6 h-6"></i></div><p class="font-semibold">Zamanılanmış Sessiz Mod</p></div><label class="switch"><input type="checkbox" id="quiet-toggle"><span class="slider"></span></label></div>
+          <div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600"><i data-lucide="moon" class="w-6 h-6"></i></div><p class="font-semibold">Zamanlanmış Sessiz Mod</p></div><label class="switch"><input type="checkbox" id="quiet-toggle"><span class="slider"></span></label></div>
           <div class="flex gap-3 mt-4 opacity-50" id="quiet-time-controls">
             <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Başlangıç</p><input id="quiet-start" type="time" value="23:00" class="text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
             <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Bitiş</p><input id="quiet-end" type="time" value="07:30" class="text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>

@@ -12,6 +12,7 @@ const dyn: PremiumDynamicParts = {
   playHref: "https://play.google.com/store/apps/details?id=ai.nexus.app",
   appStoreHref: "https://apps.apple.com/app/id0000000000",
   apkHref: "/downloads/NEXUS-3.14.2.apk",
+  desktopVersion: "Version 1.0.0",
 };
 
 describe("premium marketing body (generated)", () => {
@@ -32,9 +33,16 @@ describe("premium marketing body (generated)", () => {
   });
 
   it("injects the dynamic download parts", () => {
-    expect(body).toContain("Version 3.14.2 · Android 12+");
-    expect(body).toContain('href="/downloads/NEXUS-3.14.2.apk"');
-    expect(body).toContain('href="https://apps.apple.com/app/id0000000000"');
+    expect(body).toContain("Version 1.0.0 · x64 + ARM64");
+    expect(body).toContain(
+      'href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe"',
+    );
+    expect(body).toContain("NEXUS-mac.dmg");
+    expect(body).toContain("NEXUS-linux.AppImage");
+    // Mobile apps are not published yet: no live store links.
+    expect(body).not.toContain("apps.apple.com");
+    expect(body).not.toContain("play.google.com");
+    expect(body).toContain("Coming soon to Google Play");
   });
 
   it("does not depend on remote logo or avatar CDNs", () => {
@@ -48,10 +56,11 @@ describe("renderMarketingPremiumDocument", () => {
     const html = renderMarketingPremiumDocument("en");
     expect(html).toContain('<html lang="en" data-theme="dark">');
     expect(html).toContain('hreflang="tr" href="/?lang=tr"');
-    expect(html).toContain('hreflang="vi" href="/?lang=vi"');
+    expect(html).not.toContain('hreflang="vi"');
     expect(html).toContain('"@type": "SoftwareApplication"');
-    expect(html).toContain("Get it on Google Play");
-    expect(html).not.toContain("NEXUS-Setup");
+    expect(html).toContain("Download for Windows");
+    expect(html).toContain('"operatingSystem": "Windows, macOS, Linux"');
+    expect(html).not.toContain("nexus_session_token");
     expect(html).not.toContain("https://cdn.simpleicons.org");
     expect(html).not.toContain("https://images.unsplash.com");
   });
@@ -68,7 +77,7 @@ describe("renderMarketingPremiumDocument", () => {
   it("marks RTL locales and keeps EN fallback copy", () => {
     const html = renderMarketingPremiumDocument("ar");
     expect(html).toContain('<html lang="ar" data-theme="dark" dir="rtl">');
-    expect(html).toContain("Get the mobile app");
+    expect(html).toContain("Native on every desktop.");
   });
 
   it("honors the light theme attribute", () => {

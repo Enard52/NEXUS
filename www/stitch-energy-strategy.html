@@ -9,10 +9,10 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Tasarruf Stratejisi</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<!-- Lucide Icons -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
 <script src="js/lucide.js"></script>
 <style data-purpose="custom-typography">
     body {
@@ -62,7 +62,7 @@
 <i class="w-5 h-5 text-slate-700" data-lucide="ellipsis"></i>
 </button>
 <span class="w-px h-5 bg-slate-300/70"></span>
-<a aria-label="Mini uygulamayı kapıat" class="px-4 py-2" href="stitch-home.html">
+<a aria-label="Mini uygulamayı kapat" class="px-4 py-2" href="stitch-home.html">
 <i class="w-5 h-5 text-slate-700" data-lucide="x"></i>
 </a>
 </div>
@@ -71,8 +71,8 @@
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pb-10">
 <!-- Strategy title & description (listeden localStorage ile senkronize gelir; sayfa üstü başlık ortalanmış) -->
-<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3 text-center" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapıat</h1>
-<p class="text-slate-500 text-[15px] leading-relaxed mb-5 text-center" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapıatın ve eve döndükten sonra açın.</p>
+<h1 class="text-[26px] font-bold leading-tight tracking-tight mb-3 text-center" id="strategy-title">Evden çıktıktan sonra ışığı otomatik olarak kapat</h1>
+<p class="text-slate-500 text-[15px] leading-relaxed mb-5 text-center" id="strategy-desc">Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın.</p>
 <!-- Enable toggle (cihazı + ev konumu olmadan açılamaz: gerçek geofencing koşulu) -->
 <label class="inline-flex items-center gap-3 mb-3 cursor-pointer" data-purpose="strategy-toggle">
 <input class="toggle-input hidden" id="strategy-enabled" type="checkbox"/>
@@ -118,7 +118,7 @@
 <!-- END: MainContent -->
 <!-- Bottom note (cihazı yoksa görünür) -->
 <footer class="bg-white rounded-t-3xl px-8 py-6 text-center" data-purpose="no-device-note" id="no-device-note">
-<p class="text-slate-400 text-sm leading-relaxed">Henüz enerji tasarrufu destekleyen bir cihazıın yok, lütfen öncelikle ekle.</p>
+<p class="text-slate-400 text-sm leading-relaxed">Henüz enerji tasarrufu destekleyen bir cihazın yok, lütfen öncelikle ekle.</p>
 </footer>
 <!-- BEGIN: Sheet backdrop -->
 <div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
@@ -169,7 +169,7 @@
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="triangle-alert"></i></span>
 <span class="text-xs font-medium text-slate-600">Yardım ve Geri Bildirim</span>
 </a>
-<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus.app">
+<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus-ai.app">
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="mail"></i></span>
 <span class="text-xs font-medium text-slate-600">İletişim E-postası</span>
 </a>
@@ -226,7 +226,7 @@
     // Konum tabanlı stratejiler geofencing ile çalışır; ev konumu ve eşleşmiş
     // cihazı olmadan açılamaz. Durum, strateji başlığına göre kalıcı saklanır.
     var toggle = document.getElementById('strategy-enabled');
-    var currentTitle = document.getElementById('strategy-title').textContent;
+    var currentTitle = nexusSrcText(document.getElementById('strategy-title'));
     var enabledMap = {};
     try { enabledMap = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { enabledMap = {}; }
     toggle.checked = !!enabledMap[currentTitle];
@@ -237,7 +237,7 @@
         if (!hasDevice || !hasLocation) {
           toggle.checked = false;
           var missing = [];
-          if (!hasDevice) missing.push('uyumlu bir cihazı ekle');
+          if (!hasDevice) missing.push('uyumlu bir cihaz ekle');
           if (!hasLocation) missing.push('Ayarlar bölümünden Ev Konumu seç');
           var note = document.getElementById('enable-note');
           note.textContent = 'Etkinleştirmek için önce ' + missing.join(' ve ') + '. Ev konumu, cihazlarının doğru eşleşmesi ve konum tabanlı otomasyon için gerekli.';

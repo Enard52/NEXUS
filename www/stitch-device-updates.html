@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Cihaz Güncellemesi</title>
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <script src="js/lucide.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<style>
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
   body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
   .shadow-nexus { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
   .nexus-gradient-bg { background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%); }
@@ -18,6 +18,9 @@
 <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
 </head>
 <body class="text-slate-900 dark:text-slate-100">
   <div class="min-h-screen flex flex-col">
@@ -39,7 +42,7 @@
           </div>
           <div class="min-w-0 flex-1">
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-widest leading-none mb-1">Durum</p>
-            <h2 class="text-lg font-extrabold whitespace-nowrap truncate" id="update-count">Cihazlar kontrol bekliyor</h2>
+            <h2 class="text-lg font-extrabold leading-snug" id="update-count">Cihazlar kontrol bekliyor</h2>
             <p class="text-xs text-slate-500 mt-1" id="update-subtitle">Güncelleme sonuçları harici servis bağlanınca alınacak.</p>
           </div>
         </div>
@@ -85,11 +88,8 @@
   <script>
     const UPDATE_HISTORY_KEY = 'nexusUpdateHistory';
 
+    // Yalnızca gerçekten eklenmiş cihazlar (pano kartları değil)
     function getRealDevices() {
-      // Önce data.js'in fonksiyonunu dene, yoksa nexusPairedDevices'a bak
-      if (typeof window.getNexusLocalDevices === 'function') {
-        return window.getNexusLocalDevices();
-      }
       try {
         var paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
         return Array.isArray(paired) ? paired : [];
@@ -114,15 +114,39 @@
       history.unshift({
         deviceName: deviceName,
         result: resultText,
-        checkedAt: new Date().toLocaleString('tr-TR')
+        checkedAt: new Date().toLocaleString((window.nexusLocale || 'tr-TR'))
       });
       writeHistory(history.slice(0, 12));
     }
 
-    function runCheck(deviceName) {
-      logCheck(deviceName, 'Güncelleme servisi bağlantısı bekleniyor');
-      renderHistory();
-      showUpdatesToast(deviceName + ' için kontrol isteği kaydedildi');
+    // Yerel ağ cihazında yazılım sürümünü cihazın kendisinden okur; katalog cihazında dürüstçe söyler.
+    function checkDevice(device) {
+      var name = device.name || 'Cihaz';
+      var lan = device.host && device.protocol && device.protocol !== 'unknown' && window.nexusLan;
+      if (!lan) return Promise.resolve({ name: name, text: 'Katalogdan eklendi — sürüm bilgisi için cihazın kendi uygulamasını kullan' });
+      return window.nexusLan.firmware(device).then(function (fw) {
+        var cur = fw.current ? 'Sürüm ' + fw.current : 'Sürüm okunamadı';
+        if (fw.hasUpdate === true) return { name: name, text: cur + ' · güncelleme var: ' + fw.latest, update: true };
+        if (fw.hasUpdate === false) return { name: name, text: cur + ' · güncel' };
+        return { name: name, text: cur };
+      }).catch(function (e) {
+        return { name: name, text: /desteklenmeyen|vermiyor/.test(e.message) ? 'Bu cihaz sürüm bilgisi paylaşmıyor' : 'Cihaza ulaşılamadı — aynı Wi-Fi ağında mı?' };
+      });
+    }
+
+    var LAST = {};
+    function runCheck(index) {
+      var device = getRealDevices()[index];
+      if (!device) return;
+      LAST[index] = 'Kontrol ediliyor…';
+      renderDevices();
+      checkDevice(device).then(function (r) {
+        LAST[index] = r.text;
+        logCheck(r.name, r.text);
+        renderDevices();
+        renderHistory();
+        showUpdatesToast(r.name + ': ' + r.text.split(' — ')[0]);
+      });
     }
 
     function renderDevices() {
@@ -131,24 +155,24 @@
       document.getElementById('device-total').textContent = devices.length + ' Cihaz';
 
       if (!devices.length) {
-        list.innerHTML = '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50 text-sm text-slate-500">Henüz kayıtlı cihazı yok. Önce cihazı ekledikten sonra güncelleme kontrolleri burada görünür.</div>';
-        document.getElementById('update-count').textContent = 'Kontrol edilecek cihazı yok';
+        list.innerHTML = '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50 text-sm text-slate-500">Henüz kayıtlı cihaz yok. Önce cihaz ekledikten sonra güncelleme kontrolleri burada görünür.</div>';
+        document.getElementById('update-count').textContent = 'Kontrol edilecek cihaz yok';
         return;
       }
 
-      document.getElementById('update-count').textContent = devices.length + ' cihazı kontrol bekliyor';
+      document.getElementById('update-count').textContent = devices.length + ' cihaz kontrol bekliyor';
       list.innerHTML = devices.map((device, index) => (
         '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50">' +
           '<div class="flex items-center justify-between gap-3">' +
             '<div class="min-w-0">' +
               '<h4 class="font-bold truncate">' + escapeHtml(device.name || ('Cihaz ' + (index + 1))) + '</h4>' +
-              '<p class="text-xs text-slate-400 mt-0.5">' + escapeHtml(device.state || 'Durum bilinmiyor') + '</p>' +
+              '<p class="text-xs text-slate-500 mt-0.5 dark:text-slate-300">' + escapeHtml(device.host && device.protocol ? 'Yerel ağ · ' + device.protocol : 'Katalogdan eklendi') + '</p>' +
             '</div>' +
-            '<button type="button" onclick="runCheck(' + JSON.stringify(device.name || ('Cihaz ' + (index + 1))) + ')" class="shrink-0 px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold">Kontrol Et</button>' +
+            '<button type="button" onclick="runCheck(' + index + ')" class="shrink-0 min-h-[40px] px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold dark:bg-slate-100 dark:text-slate-900">Kontrol Et</button>' +
           '</div>' +
           '<div class="mt-3 pt-3 border-t border-slate-50 flex items-center gap-2 text-[11px] text-slate-400">' +
             '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01" stroke-linecap="round"></path></svg>' +
-            '<span class="truncate">Sonuçlar güncelleme servisi bağlanınca gösterilir.</span>' +
+            '<span class="truncate">' + escapeHtml(LAST[index] || (device.host && device.protocol ? 'Kontrol Et ile sürüm cihazdan okunur' : 'Sürüm bilgisi cihazın kendi uygulamasında')) + '</span>' +
           '</div>' +
         '</div>'
       )).join('');
@@ -158,7 +182,7 @@
       const history = readHistory();
       const wrap = document.getElementById('update-history');
       if (!history.length) {
-        wrap.innerHTML = '<div class="px-5 py-5 text-sm text-slate-500">Henüz hiçbir cihazı için kontrol yapılmadı.</div>';
+        wrap.innerHTML = '<div class="px-5 py-5 text-sm text-slate-500">Henüz hiçbir cihaz için kontrol yapılmadı.</div>';
         return;
       }
       wrap.innerHTML = history.map((item, index) => (
@@ -187,9 +211,8 @@
         showUpdatesToast('Önce en az bir cihaz eklemelisin');
         return;
       }
-      devices.forEach((device) => logCheck(device.name || 'Cihaz', 'Toplu kontrol isteği kaydedildi'));
-      renderHistory();
-      showUpdatesToast('Tüm kayıtlı cihazlar için kontrol isteği kaydedildi');
+      showUpdatesToast(devices.length + ' cihaz kontrol ediliyor…');
+      devices.forEach(function (device, index) { runCheck(index); });
     });
 
     document.getElementById('refresh-updates').addEventListener('click', function () {

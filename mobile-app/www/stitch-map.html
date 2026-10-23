@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>NEXUS — Konum Seç</title>
 <!-- Tailwind CSS CDN with plugins -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Leaflet (etkileşimli harita, OSM embed yerine) -->
@@ -41,7 +41,7 @@
 <header class="absolute top-0 inset-x-0 z-10 pt-12 pb-6 px-5 bg-gradient-to-b from-white via-white/85 to-transparent" data-purpose="map-header">
 <div class="flex items-center justify-between mb-4">
 <a class="text-slate-700 text-lg font-medium" href="stitch-home.html" id="cancel-link">İptal</a>
-<h1 class="text-slate-900 font-bold" id="map-title">Hava Durumu Konumu</h1>
+<h1 class="text-lg font-bold tracking-tight text-slate-900" id="map-title">Hava Durumu Konumu</h1>
 <a class="text-[#4C7DFF] text-lg font-bold" href="#" id="save-link">Kaydet</a>
 </div>
 <!-- Search / address bar (Enter ile gerçek adres araması yapar) -->
@@ -228,13 +228,13 @@
           })
           .catch(function () { setStatus(''); addressInput.value = 'Mevcut Konum'; selectLocation('Mevcut Konum', lat, lon); });
       } catch (e) {
-        // Hataya özel mesaj: izin reddi / GPS kapıalı / zaman aşımı
+        // Hataya özel mesaj: izin reddi / GPS kapalı / zaman aşımı
         var msg = 'Konum alınamadı, tekrar dene.';
         var raw = (e && (e.message || '')) + '';
         if (e && e.code === 1) msg = 'Konum izni verilmedi. Uygulama ayarlarından izin verebilirsin.';
-        else if (e && e.code === 2) msg = 'Konum belirlenemedi. Cihazın konum (GPS) servisi kapıalı olabilir.';
+        else if (e && e.code === 2) msg = 'Konum belirlenemedi. Cihazın konum (GPS) servisi kapalı olabilir.';
         else if (e && e.code === 3) msg = 'Konum araması zaman aşımına uğradı, tekrar dene.';
-        else if (raw.toLowerCase().indexOf('location services') !== -1 || raw.toLowerCase().indexOf('disabled') !== -1) msg = 'Cihazın konum (GPS) servisi kapıalı. Açıp tekrar dene.';
+        else if (raw.toLowerCase().indexOf('location services') !== -1 || raw.toLowerCase().indexOf('disabled') !== -1) msg = 'Cihazın konum (GPS) servisi kapalı. Açıp tekrar dene.';
         setStatus(silent && !(e && e.code === 1) ? '' : msg);
       }
     }

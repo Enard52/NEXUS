@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffffff">
+  <title>NEXUS - Kontrol Panelleri</title>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/><link href="css/nexus-controls.css" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="cloud-sync.js"></script>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+  <script src="device-controls.js"></script>
+  <script>
+    window.tailwind = window.tailwind || {};
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { nexusPurple: "#4C7DFF", nexusCyan: "#22D3EE" },
+          fontFamily: { sans: ["Inter", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+      color: #111827;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html.dark body {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 55%, #020617 100%);
+      color: #f8fafc;
+    }
+    html.dark .glass-card {
+      background: rgba(15, 23, 42, 0.82);
+      border-color: rgba(148, 163, 184, 0.18);
+    }
+    html.dark .plain-card {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(148, 163, 184, 0.16);
+    }
+    .panel-device img.device-thumb {
+      filter: drop-shadow(0 8px 12px rgba(15, 23, 42, 0.10));
+    }
+    html.dark .panel-device img.device-thumb {
+      background: transparent;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+    }
+  </style>
+</head>
+<body>
+  <div class="w-full min-h-screen flex flex-col overflow-x-hidden">
+    <header class="shrink-0 pt-14 pb-4 px-5 flex items-center justify-between">
+      <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
+        <i data-lucide="chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></i>
+      </a>
+      <h1 class="text-lg font-bold tracking-tight">Kontrol Panelleri</h1>
+      <a href="stitch-pair.html" aria-label="Cihaz ekle" class="p-1 -mr-1 flex items-center justify-center active:scale-90">
+        <i data-lucide="plus" class="text-xl text-nexusPurple"></i>
+      </a>
+    </header>
+
+    <main class="flex-1 px-5 pb-[34px] space-y-5">
+      <section class="glass-card bg-white/80 backdrop-blur-md rounded-[2rem] border border-white/60 nexus-shadow p-5" data-purpose="panels-summary">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 bg-nexusPurple/10 rounded-2xl flex items-center justify-center text-nexusPurple shrink-0">
+            <i data-lucide="layout-grid" class="text-xl"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-slate-900 dark:text-white">Aynı işlevi gören cihazlar tek panelde</p>
+            <p id="panels-summary-line" class="text-xs text-slate-500 dark:text-slate-300 mt-0.5">—</p>
+          </div>
+        </div>
+        <p id="panels-note" class="hidden mt-3 text-xs leading-relaxed text-slate-500 dark:text-slate-300">
+          Bir cihaza dokununca panelin kontrol ekranı açılır; ekranda yalnızca o cihazın desteklediği özellikler görünür. Shelly, WLED ve ESPHome cihazlarında aç/kapat ve parlaklık doğrudan cihaza gider.
+        </p>
+      </section>
+
+      <nav id="panels-filter" class="hidden nx-filter flex gap-2 overflow-x-auto no-scrollbar" aria-label="Panel filtresi"></nav>
+
+      <div id="panels-empty" class="hidden glass-card bg-white/80 backdrop-blur-md rounded-[2rem] border border-dashed border-slate-200 p-8 text-center dark:border-slate-700">
+        <p class="text-base font-bold text-slate-900 dark:text-white">Henüz eklenmiş cihaz yok</p>
+        <p class="text-sm text-slate-500 mt-1 dark:text-slate-300">Aynı işi yapan cihazlar (ör. tüm prizler) burada tek panelde toplanır.</p>
+        <a href="stitch-pair.html" class="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#4C7DFF] px-5 text-sm font-bold text-white active:scale-[0.98]">
+          <i data-lucide="scan-search" class="text-base"></i> Cihaz ekle
+        </a>
+      </div>
+
+      <div id="panels-host" class="space-y-5"></div>
+    </main>
+  </div>
+
+  <script data-purpose="control-panels">
+    if (typeof lucide !== "undefined") lucide.createIcons();
+
+    // Aynı işlevi gören cihazlar tek panelde toplanır (supported-devices.js → nexusPanelOf).
+    // Bir cihaza dokununca o panelin ortak kontrol ekranı açılır (stitch-device.html);
+    // ekranda yalnızca o cihazın sahip olduğu özellikler gösterilir.
+    var esc = NX.escapeHtml;
+
+    function groupDevices(devices) {
+      var groups = {};
+      devices.forEach(function (device, index) {
+        var panel = NX.panelOf(device);
+        if (!groups[panel.id]) groups[panel.id] = { key: panel.id, label: panel.label, icon: panel.icon, items: [] };
+        groups[panel.id].items.push({ device: device, index: index });
+      });
+      return Object.keys(groups).map(function (k) { return groups[k]; }).sort(function (a, b) {
+        if (a.key === "other") return 1;
+        if (b.key === "other") return -1;
+        if (b.items.length !== a.items.length) return b.items.length - a.items.length;
+        return a.label.localeCompare(b.label, "tr");
+      });
+    }
+
+    function rowHtml(entry) {
+      var d = entry.device, i = entry.index;
+      var status = NX.statusOf(d, i);
+      var on = NX.stateOf(d).switch === true;
+      var quick = NX.hasPower(d)
+        ? '<button type="button" role="switch" aria-checked="' + on + '" aria-label="' + esc(d.name) + ' aç/kapat" class="nx-switch" onclick="event.stopPropagation(); quickToggle(' + i + ')"><b></b></button>'
+        : "";
+      return '<div class="plain-card panel-device flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 dark:border-slate-800" data-screen="' + NX.screenOf(d) + '">' +
+        '<a href="' + NX.deviceUrl(i) + '" class="flex items-center gap-3 min-w-0 flex-1 min-h-[52px]" aria-label="' + esc(d.name) + ' kontrol ekranı">' +
+        '<img class="device-thumb w-12 h-12 object-contain shrink-0" src="' + NX.imageUrl(d) + '" alt="" loading="lazy" decoding="async" />' +
+        '<span class="min-w-0 flex-1"><span class="nx-name">' + esc(d.name) + "</span>" +
+        '<span class="flex items-center gap-1.5 mt-1 min-w-0"><span class="nx-badge ' + status.badge + '">' + esc(status.text) + "</span>" +
+        (d.room ? '<span class="text-xs text-slate-500 truncate dark:text-slate-300">' + esc(d.room) + "</span>" : "") + "</span></span></a>" +
+        quick +
+        '<a href="' + NX.deviceUrl(i) + '" class="shrink-0 text-slate-400 -mr-1" aria-hidden="true" tabindex="-1"><i data-lucide="chevron-right" class="w-5 h-5"></i></a>' +
+        (NX.LAN_ERRORS[i] ? "" : "") + "</div>" +
+        (NX.LAN_ERRORS[i] ? '<p class="px-2 text-xs font-semibold text-rose-500">' + esc(NX.LAN_ERRORS[i]) + "</p>" : "");
+    }
+
+    function groupActionsHtml(group) {
+      if (group.items.length < 2) return "";
+      var key = esc(group.key);
+      var screen = NX.screenOf(group.items[0].device);
+      var btn = function (label, icon, action, primary) {
+        return '<button type="button" class="nx-btn' + (primary ? " primary" : "") + '" onclick="runGroup(\'' + key + "', '" + action + '\')">' +
+          '<i data-lucide="' + icon + '" class="w-4 h-4"></i>' + label + "</button>";
+      };
+      var two = function (a, b) { return '<div class="grid grid-cols-2 gap-2 mt-4">' + a + b + "</div>"; };
+      if (screen === "cover") return two(btn("Tümünü aç", "chevrons-up", "open", true), btn("Tümünü kapat", "chevrons-down", "close"));
+      if (screen === "lock") return '<div class="grid mt-4">' + btn("Tümünü kilitle", "lock", "lock", true) + "</div>";
+      if (screen === "vacuum") return two(btn("Hepsini başlat", "play", "clean", true), btn("Hepsi üsse", "house", "dock"));
+      if (screen === "camera" || screen === "sensor") return two(btn("Bildirimleri aç", "bell", "notify-on", true), btn("Sessize al", "bell-off", "notify-off"));
+      var switchable = group.items.filter(function (e) { return NX.hasPower(e.device); });
+      if (switchable.length > 1) return two(btn("Tümünü aç", "power", "on", true), btn("Tümünü kapat", "power-off", "off"));
+      return "";
+    }
+
+    function panelHtml(group) {
+      var switchable = group.items.filter(function (e) { return NX.hasPower(e.device); });
+      var onCount = switchable.filter(function (e) { return NX.stateOf(e.device).switch === true; }).length;
+      return '<section class="glass-card bg-white/80 backdrop-blur-md rounded-[2rem] border border-white/60 nexus-shadow p-5" data-purpose="control-panel" data-panel="' + esc(group.key) + '">' +
+        '<div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3 min-w-0">' +
+        '<div class="w-11 h-11 bg-[#4C7DFF]/10 rounded-2xl flex items-center justify-center text-[#4C7DFF] shrink-0"><i data-lucide="' + group.icon + '" class="w-5 h-5"></i></div>' +
+        '<div class="min-w-0"><h2 class="text-base font-bold text-slate-900 truncate dark:text-white">' + esc(group.label) + "</h2>" +
+        '<p class="text-xs text-slate-500 dark:text-slate-300">' + group.items.length + " cihaz" + (switchable.length ? " · " + onCount + " açık" : "") +
+        (group.items.length > 1 ? ' · <span class="font-semibold text-[#4C7DFF]">Ortak panel</span>' : "") + "</p></div></div>" +
+        "</div>" + groupActionsHtml(group) + '<div class="mt-4 space-y-2">' + group.items.map(rowHtml).join("") + "</div></section>";
+    }
+
+    var activeFilter = "all";
+    try { activeFilter = sessionStorage.getItem("nexusPanelFilter") || "all"; } catch (e) {}
+
+    function setFilter(id) {
+      activeFilter = id;
+      try { sessionStorage.setItem("nexusPanelFilter", id); } catch (e) {}
+      renderPanels();
+    }
+
+    function renderPanels() {
+      var devices = NX.readDevices();
+      var groups = groupDevices(devices);
+      var onCount = devices.filter(function (d) { return NX.hasPower(d) && NX.stateOf(d).switch === true; }).length;
+      document.getElementById("panels-summary-line").textContent = devices.length
+        ? devices.length + " cihaz · " + groups.length + " panel · " + onCount + " açık"
+        : "Cihaz ekledikçe paneller burada oluşur";
+      document.getElementById("panels-empty").classList.toggle("hidden", devices.length > 0);
+      document.getElementById("panels-note").classList.toggle("hidden", devices.length === 0);
+
+      if (!groups.some(function (g) { return g.key === activeFilter; })) activeFilter = "all";
+      var filter = document.getElementById("panels-filter");
+      filter.classList.toggle("hidden", groups.length < 2);
+      filter.innerHTML = groups.length < 2 ? "" : [{ key: "all", label: "Tümü", icon: "layout-grid", items: devices }].concat(groups).map(function (g) {
+        return '<button type="button" class="nx-chip" aria-pressed="' + (activeFilter === g.key) + '" onclick="setFilter(\'' + esc(g.key) + '\')">' +
+          '<i data-lucide="' + g.icon + '" class="w-4 h-4"></i>' + esc(g.label) + '<span class="n">' + g.items.length + "</span></button>";
+      }).join("");
+
+      document.getElementById("panels-host").innerHTML = groups
+        .filter(function (g) { return activeFilter === "all" || g.key === activeFilter; })
+        .map(panelHtml).join("");
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    function quickToggle(index) {
+      var d = NX.readDevices()[index];
+      if (!d) return;
+      NX.setField(index, "switch", NX.stateOf(d).switch !== true);
+      renderPanels();
+    }
+
+    function runGroup(panelId, action) {
+      NX.groupAction(panelId, action);
+      renderPanels();
+    }
+
+    NX.onError(renderPanels);
+    renderPanels();
+    // Yerel ağ cihazlarının gerçek durumunu arka planda oku
+    NX.readDevices().forEach(function (d, i) { if (NX.isLan(d)) NX.refreshFromDevice(i); });
+    window.addEventListener("pageshow", renderPanels);
+  </script>
+</body>
+</html>

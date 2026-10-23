@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Ayarlar</title>
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
   body {
@@ -64,26 +64,26 @@
   <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
     <svg class="h-7 w-7 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
   </a>
-  <h1 class="whitespace-nowrap text-2xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Ayarlar</h1>
+  <h1 class="text-lg font-bold tracking-tight whitespace-nowrap text-gray-900 absolute left-1/2 -translate-x-1/2">Ayarlar</h1>
   <div class="w-8"></div>
 </header>
 
 <main class="flex-grow px-4 pt-6 pb-8 space-y-4 overflow-y-auto">
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
-    <div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="window.location.href='stitch-user-info.html'">
+    <a href="stitch-user-info.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
       <span class="text-xl text-gray-800 font-medium">Kişisel Bilgiler</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-    </div>
+    </a>
     <hr class="mx-5 border-gray-100"/>
-    <div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="window.location.href='stitch-account-security.html'">
+    <a href="stitch-account-security.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
       <span class="text-xl text-gray-800 font-medium">Hesap ve Güvenlik</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-    </div>
+    </a>
     <hr class="mx-5 border-gray-100"/>
-    <div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="window.location.href='stitch-device-updates.html'">
+    <a href="stitch-device-updates.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
       <span class="text-xl text-gray-800 font-medium">Cihaz Güncellemesi</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-    </div>
+    </a>
   </section>
 
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
@@ -125,28 +125,28 @@
       </label>
     </div>
     <hr class="mx-5 border-gray-100"/>
-    <div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="window.location.href='stitch-instant-notifications.html'">
+    <a href="stitch-instant-notifications.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
       <span class="text-xl text-gray-800 font-medium">Anlık Bildirimler</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-    </div>
+    </a>
   </section>
 
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
-    <div class="flex items-center justify-between px-5 py-5" onclick="toggleDarkMode()">
+    <button type="button" id="dark-mode-row" role="switch" aria-checked="false" class="nx-reset flex items-center justify-between px-5 py-5" onclick="toggleDarkMode()">
       <span class="text-xl text-gray-800 font-medium dark:text-white">Karanlık Mod</span>
-      <div class="relative">
-        <div id="dark-mode-switch-track" class="w-12 h-7 rounded-full transition-colors bg-gray-200"></div>
-        <div id="dark-mode-switch-thumb" class="absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
-      </div>
-    </div>
+      <span class="relative block" aria-hidden="true">
+        <span id="dark-mode-switch-track" class="block w-12 h-7 rounded-full transition-colors bg-gray-200"></span>
+        <span id="dark-mode-switch-thumb" class="block absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+      </span>
+    </button>
     <hr class="mx-5 border-gray-100"/>
-    <div class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="toggleTempUnit()">
+    <button type="button" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="toggleTempUnit()">
       <span class="text-xl text-gray-800 font-medium">Sıcaklık Birimi</span>
-      <div class="flex items-center space-x-2">
+      <span class="flex items-center space-x-2">
         <span class="text-xl text-gray-400" id="temp-unit-label">°C</span>
         <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      </div>
-    </div>
+      </span>
+    </button>
   </section>
 
   <div class="pt-10 pb-4">
@@ -186,7 +186,9 @@
     var isDark = nexusGetItem('nexusDarkMode') === 'true';
     var track = document.getElementById('dark-mode-switch-track');
     var thumb = document.getElementById('dark-mode-switch-thumb');
-    if (track) track.className = 'w-12 h-7 rounded-full transition-colors ' + (isDark ? 'bg-[#4C7DFF]' : 'bg-gray-200');
+    if (track) track.className = 'block w-12 h-7 rounded-full transition-colors ' + (isDark ? 'bg-[#4C7DFF]' : 'bg-gray-200');
+    var row = document.getElementById('dark-mode-row');
+    if (row) row.setAttribute('aria-checked', isDark ? 'true' : 'false');
     if (thumb) thumb.style.transform = isDark ? 'translateX(20px)' : 'translateX(0)';
   }
 

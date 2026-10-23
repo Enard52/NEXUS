@@ -7,14 +7,20 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz Ekleme Merkezi</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="cloud-sync.js"></script>
   <script src="data.js"></script>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+  <script src="device-controls.js"></script>
   <script src="ai-fab.js"></script>
   <script>
+    window.tailwind = window.tailwind || {};
     tailwind.config = {
       darkMode: "class",
       theme: {
@@ -46,7 +52,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     .nexus-glow {
-      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.28);
+      box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28);
     }
     body {
       font-family: "Inter", sans-serif;
@@ -67,17 +73,63 @@
       background: rgba(15, 23, 42, 0.92);
       border-color: rgba(148, 163, 184, 0.16);
     }
+    /* Ürün kartı stilleri — katalog ekranıyla (stitch-integrations) birebir aynı dil. */
+    .product-tile img {
+      filter: drop-shadow(0 10px 14px rgba(15, 23, 42, 0.10));
+    }
+    html.dark .product-tile img {
+      background: transparent;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+    }
+    .product-card {
+      min-height: 112px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .product-image-stage {
+      height: 78px;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .product-name {
+      display: block;
+      min-height: 34px;
+      overflow: visible;
+      text-align: center;
+      font-size: clamp(11px, 3vw, 12px);
+      line-height: 1.14;
+      font-weight: 650;
+      letter-spacing: 0;
+      color: #0f172a;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      hyphens: auto;
+    }
+    .product-category-pill {
+      display: none;
+    }
+    html.dark .product-name {
+      color: #f8fafc;
+    }
   </style>
 </head>
 <body>
   <div class="w-full min-h-screen flex flex-col overflow-x-hidden">
     <header class="shrink-0 pt-14 pb-4 px-5 flex items-center justify-between">
       <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></i>
       </a>
       <h1 class="text-lg font-bold tracking-tight">Cihaz Ekle</h1>
       <button type="button" onclick="openHelp()" class="p-1 -mr-1 flex items-center justify-center transition-transform active:scale-90">
-        <iconify-icon icon="lucide:info" class="text-xl text-nexusPurple"></iconify-icon>
+        <i data-lucide="info" class="text-xl text-nexusPurple"></i>
       </button>
     </header>
 
@@ -125,7 +177,7 @@
       <section class="grid grid-cols-2 gap-3">
         <a href="stitch-scan.html" class="glass-card bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-white/60 flex flex-col gap-4 nexus-shadow active:scale-95 transition-transform">
           <div class="w-12 h-12 bg-nexusPurple/10 rounded-2xl flex items-center justify-center text-nexusPurple">
-            <iconify-icon icon="lucide:scan-qr-code" class="text-2xl"></iconify-icon>
+            <i data-lucide="scan-qr-code" class="text-2xl"></i>
           </div>
           <div>
             <span class="block text-sm font-bold">QR Kod</span>
@@ -134,7 +186,7 @@
         </a>
         <a href="stitch-setup-code.html" class="glass-card bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-white/60 flex flex-col gap-4 nexus-shadow active:scale-95 transition-transform">
           <div class="w-12 h-12 bg-nexusCyan/10 rounded-2xl flex items-center justify-center text-nexusCyan">
-            <iconify-icon icon="lucide:keyboard" class="text-2xl"></iconify-icon>
+            <i data-lucide="keyboard" class="text-2xl"></i>
           </div>
           <div>
             <span class="block text-sm font-bold">Kurulum Kodu</span>
@@ -149,9 +201,63 @@
             <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Eklenmiş Cihazlar</h3>
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Hesabına bağlı gerçek kayıtlar</p>
           </div>
-          <span id="paired-device-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-200">0 cihazı</span>
+          <div class="flex items-center gap-2 shrink-0">
+            <a href="stitch-panels.html" class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-[11px] font-bold text-slate-600 active:scale-[0.98] dark:border-slate-700 dark:text-slate-300">
+              <i data-lucide="layout-grid" class="text-sm"></i> Paneller
+            </a>
+            <span id="paired-device-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-200">0 cihaz</span>
+          </div>
         </div>
         <div id="paired-devices-list" class="space-y-3"></div>
+      </section>
+
+      <section id="lan-scan-section" data-purpose="lan-scan-panel" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow p-5">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-nexusCyan/10 rounded-2xl flex items-center justify-center text-nexusCyan shrink-0">
+            <i data-lucide="router" class="text-xl"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Yerel ağdaki cihazı bul</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-300">Cihazın IP adresini yaz, NEXUS konuşabildiği protokolü kendisi anlasın.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="lan-scan-host" type="text" inputmode="decimal" placeholder="192.168.1.24"
+            class="flex-1 min-w-0 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-nexusPurple dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+          <button type="button" id="lan-scan-btn" onclick="scanLanHost()"
+            class="shrink-0 rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">Tara</button>
+        </div>
+        <p id="lan-scan-status" role="status" aria-live="polite" class="mt-3 text-xs font-medium text-slate-500 dark:text-slate-300">Hazır. Aynı Wi-Fi ağında olman yeterli.</p>
+        <div id="lan-scan-result" class="mt-3"></div>
+
+        <div class="mt-4 rounded-[1.75rem] border border-dashed border-slate-200 bg-white/70 p-4 dark:border-slate-700 dark:bg-slate-950/30">
+          <div class="flex items-center gap-2">
+            <input id="lan-scan-subnet" type="text" inputmode="decimal" value="192.168.1" aria-label="Alt ağ ön eki"
+              class="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold outline-none focus:border-nexusPurple dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+            <button type="button" id="lan-subnet-btn" onclick="scanSubnetNow()"
+              class="shrink-0 rounded-2xl border-2 border-nexusPurple px-3.5 py-2 text-sm font-bold text-nexusPurple active:scale-[0.98]">Ağını tara</button>
+          </div>
+          <p class="mt-2 text-[11px] leading-4 text-slate-500 dark:text-slate-300">
+            Adres biliyorsan tek tek yaz, bilmiyorsan modem ağının ön ekini bırak (192.168.1 gibi) — NEXUS 254 adresi birlikte yoklar.
+          </p>
+          <div id="lan-subnet-results" class="mt-3 space-y-2"></div>
+        </div>
+      </section>
+
+      <section id="supported-devices-section" data-purpose="supported-devices-panel" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">
+        <div class="p-6 pb-4">
+          <div class="flex items-center justify-between mb-1">
+            <div>
+              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Desteklenen Cihazlar</h3>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Bu markalar yerel ağdan kontrol edilir</p>
+            </div>
+            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 dark:bg-slate-800 dark:text-slate-300">
+              <i data-lucide="badge-check" class="text-xl"></i>
+            </div>
+          </div>
+          <p class="text-xs leading-5 text-slate-500 dark:text-slate-300">Aşağıdaki cihazlar internet bağlantısı olmadan, ev ağında NEXUS'a bağlanır. Eklediğin cihazlar <span id="supported-device-total">—</span> modelden seçilir.</p>
+        </div>
+        <div id="supported-devices-list" data-purpose="supported-devices-list" class="px-6 pb-6"></div>
       </section>
 
       <section id="manual-catalog-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">
@@ -162,7 +268,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Kategoriye Göre Cihaz Ekle</p>
             </div>
             <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 dark:bg-slate-800 dark:text-slate-300">
-              <iconify-icon icon="lucide:layers" class="text-xl"></iconify-icon>
+              <i data-lucide="layers" class="text-xl"></i>
             </div>
           </div>
 
@@ -170,110 +276,110 @@
             <button type="button" onclick="openCatalogCategory('aydinlatma')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center text-yellow-500 dark:bg-yellow-500/10 dark:text-yellow-300">
-                  <iconify-icon icon="lucide:lamp-ceiling" class="text-xl"></iconify-icon>
+                  <i data-lucide="lamp-ceiling" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Aydınlatma</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Ampul, şerit, lamba ve anahtar ürünleri</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('kamera-ve-kilit')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 dark:bg-red-500/10 dark:text-red-300">
-                  <iconify-icon icon="lucide:shield-check" class="text-xl"></iconify-icon>
+                  <i data-lucide="shield-check" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Güvenlik ve Kamera</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Kamera, alarm, zil ve sensör grupları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('enerji-tasarrufu')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500 dark:bg-blue-500/10 dark:text-blue-300">
-                  <iconify-icon icon="lucide:thermometer-snowflake" class="text-xl"></iconify-icon>
+                  <i data-lucide="thermometer-snowflake" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">İklimlendirme</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Klima, termostat ve hava cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('elektrik-ustasi')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-lime-50 rounded-xl flex items-center justify-center text-lime-500 dark:bg-lime-500/10 dark:text-lime-300">
-                  <iconify-icon icon="lucide:plug-zap" class="text-xl"></iconify-icon>
+                  <i data-lucide="plug-zap" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Priz ve Enerji</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Akıllı priz, anahtar ve enerji ürünleri</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('eglence')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 dark:bg-rose-500/10 dark:text-rose-300">
-                  <iconify-icon icon="lucide:tv" class="text-xl"></iconify-icon>
+                  <i data-lucide="tv" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Medya ve Ses</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">TV, hoparlör ve eğlence cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('kapi-ve-erisim')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 dark:bg-amber-500/10 dark:text-amber-300">
-                  <iconify-icon icon="lucide:lock-keyhole" class="text-xl"></iconify-icon>
+                  <i data-lucide="lock-keyhole" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Kapı ve Erişim</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Kilit, kapı zili ve giriş çözümleri</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('kucuk-ev-aleti')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-300">
-                  <iconify-icon icon="lucide:bot" class="text-xl"></iconify-icon>
+                  <i data-lucide="bot" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Temizlik Robotları</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Süpürge ve zemin bakım cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
             <button type="button" onclick="openCatalogCategory('buyuk-ev-aletleri')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 dark:bg-sky-500/10 dark:text-sky-300">
-                  <iconify-icon icon="lucide:refrigerator" class="text-xl"></iconify-icon>
+                  <i data-lucide="refrigerator" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                   <span class="block text-sm font-bold">Ev Aletleri</span>
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Beyaz eşya ve büyük ev cihazları</span>
                 </div>
               </div>
-              <iconify-icon icon="lucide:chevron-right" class="text-slate-300 text-lg"></iconify-icon>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
           </div>
 
           <button type="button" onclick="openCatalogCategory('all')" class="w-full mt-5 py-3.5 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800/40">
-            <iconify-icon icon="lucide:search-check"></iconify-icon>
+            <i data-lucide="search-check"></i>
             Tüm Kataloğu Gör
           </button>
         </div>
@@ -281,9 +387,9 @@
         <div class="px-6 pb-6">
           <div class="rounded-[2rem] border border-dashed border-slate-200 bg-white/70 px-5 py-5 text-center dark:border-slate-700 dark:bg-slate-950/30">
             <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Ürün kataloğu</p>
-            <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Marka ve ürün listesinden cihazıını seçerek ekleyebilirsin.</p>
+            <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Marka ve ürün listesinden cihazını seçerek ekleyebilirsin.</p>
             <button type="button" onclick="openCatalogCategory('all')" class="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">
-              <iconify-icon icon="lucide:arrow-up-right" class="text-base"></iconify-icon>
+              <i data-lucide="arrow-up-right" class="text-base"></i>
               Kataloğu Aç
             </button>
           </div>
@@ -292,7 +398,7 @@
 
       <div class="bg-nexusPurple/5 border border-nexusPurple/10 p-5 rounded-3xl flex gap-4 dark:bg-nexusPurple/10 dark:border-nexusPurple/20">
         <div class="w-10 h-10 shrink-0 bg-nexusPurple rounded-xl flex items-center justify-center text-white">
-          <iconify-icon icon="lucide:help-circle" class="text-xl"></iconify-icon>
+          <i data-lucide="help-circle" class="text-xl"></i>
         </div>
         <div>
           <p class="text-sm font-bold text-slate-900 dark:text-white">Sorun mu yaşıyorsun?</p>
@@ -304,7 +410,7 @@
 
     <footer class="shrink-0 px-5 pb-[34px] pt-2">
       <button id="pair-nearby-btn" onclick="window.location.href='stitch-scan.html'" class="w-full bg-slate-900 text-white py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-xl dark:bg-slate-100 dark:text-slate-900">
-        <iconify-icon icon="lucide:scan-search" class="text-lg"></iconify-icon>
+        <i data-lucide="scan-search" class="text-lg"></i>
         Tarama Merkezini Aç
       </button>
     </footer>
@@ -349,31 +455,33 @@
       var devices = getPairedDevices();
       var countEl = document.getElementById("paired-device-count");
       var listEl = document.getElementById("paired-devices-list");
-      countEl.textContent = devices.length + " cihazı";
+      countEl.textContent = devices.length + " cihaz";
 
       if (!devices.length) {
-        listEl.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-4 py-5 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950/40 dark:text-slate-300">Henüz eklenmiş cihazı yok. QR, kurulum kodu veya manuel katalog ile eklediğin cihazılar burada görünür.</div>';
+        listEl.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-4 py-5 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950/40 dark:text-slate-300">Henüz eklenmiş cihaz yok. QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.</div>';
         return;
       }
 
       listEl.innerHTML = devices.map(function (device, index) {
-        var name = device && device.name ? device.name : "Adsız cihazı";
+        var name = device && device.name ? device.name : "Adsız cihaz";
         var room = device && device.room ? device.room : "Ana sayfaya bağlı";
         return '<div class="plain-card flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-4 dark:border-slate-800">' +
           '<div class="flex min-w-0 items-center gap-3">' +
-          '<div class="w-11 h-11 rounded-2xl bg-slate-100 text-nexusPurple flex items-center justify-center shrink-0 dark:bg-slate-800">' +
-          '<iconify-icon icon="lucide:cpu" class="text-xl"></iconify-icon></div>' +
-          '<div class="min-w-0"><p class="font-semibold truncate">' + escapeHtml(name) + '</p>' +
-          '<p class="text-xs text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(room) + '</p></div></div>' +
+          (window.NX ? '<img class="device-thumb w-11 h-11 object-contain shrink-0" src="' + NX.imageUrl(device) + '" alt="" loading="lazy" decoding="async">'
+            : '<div class="w-11 h-11 rounded-2xl bg-slate-100 text-[#4C7DFF] flex items-center justify-center shrink-0 dark:bg-slate-800"><i data-lucide="cpu" class="w-5 h-5"></i></div>') +
+          '<a href="stitch-device.html?i=' + index + '" class="min-w-0 block"><p class="font-semibold truncate">' + escapeHtml(name) + '</p>' +
+          '<p class="text-xs text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(room) + '</p></a></div>' +
           '<button type="button" onclick="removePairedDevice(' + index + ')" class="rounded-full bg-white border border-slate-200 px-3 py-2 text-xs font-bold text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300">Kaldır</button>' +
           '</div>';
       }).join("");
+      if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
     function removePairedDevice(index) {
       var devices = getPairedDevices();
       devices.splice(index, 1);
       nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
+      if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
       renderPairedDevices();
       if (typeof window.refreshDashboardSupplements === "function") {
         window.refreshDashboardSupplements();
@@ -391,7 +499,353 @@
       window.location.href = buildCatalogUrl(category);
     }
 
+    var SUPPORTED_IMAGE_VERSION = "20261023-products-8";
+
+    // --- Yerel ağ taraması (manuel IP yolu) -------------------------------
+    // mDNS keşfi native eklenti gerektirdiği için ilk yol budur; connector'lar
+    // protokolü kendisi tanır (lan-connectors.js).
+    function normalizeHost(raw) {
+      var value = String(raw || "").trim();
+      if (!value) return null;
+      if (/^https?:\/\//i.test(value)) return value.replace(/\/+$/, "");
+      if (/^\d{1,3}(\.\d{1,3}){3}(:\d{1,5})?$/.test(value)) return "http://" + value;
+      return null;
+    }
+
+    var KIND_PROFILE = {
+      light: { caps: ["switch", "brightness"], img: "generic-led-bulb.png" },
+      plug: { caps: ["switch", "energy"], img: "generic-smart-plug.png" },
+      switch: { caps: ["switch"], img: "control-single-wall-switch.png" },
+    };
+    // Protokolün gerçekten yazabildiği ek yetenekler (renk vb.)
+    var PROTOCOL_EXTRA = { wled: ["color"], tasmota: [], yeelight: ["color"] };
+    var PROTOCOL_IMG = { wled: "generic-led-strip.png" };
+
+    function setScanStatus(message, tone) {
+      var el = document.getElementById("lan-scan-status");
+      el.textContent = message;
+      el.classList.toggle("text-rose-500", tone === "error");
+      el.classList.toggle("text-emerald-600", tone === "ok");
+    }
+
+    function scanLanHost() {
+      var host = normalizeHost(document.getElementById("lan-scan-host").value);
+      var resultHost = document.getElementById("lan-scan-result");
+      resultHost.innerHTML = "";
+      if (!host) {
+        setScanStatus("Geçerli bir IPv4 adresi gir (örn. 192.168.1.24).", "error");
+        return;
+      }
+      var btn = document.getElementById("lan-scan-btn");
+      btn.disabled = true;
+      setScanStatus("Cihaz aranıyor…", "");
+      window.nexusLan.identify(host).then(function (found) {
+        setScanStatus(found.name + " bulundu · " + found.protocol + " · " + found.model, "ok");
+        window.__nexusScannedDevice = found;
+        if (found.protocol === "hue") { renderHuePairing(resultHost, host); return; }
+        if (found.protocol === "homeassistant") { renderHaPairing(resultHost, found.host); return; }
+        resultHost.innerHTML = (found.protocol === "esphome" && !found.entity
+          ? '<label class="block mb-2 text-xs font-semibold text-slate-500 dark:text-slate-300">ESPHome bileşen kimliği (YAML\'daki id, ör. relay)' +
+            '<input id="esphome-entity" class="mt-1 w-full min-h-[44px] rounded-xl border border-slate-200 bg-white px-3 text-sm dark:bg-slate-900 dark:border-slate-700" placeholder="relay"></label>'
+          : '') +
+          '<button type="button" onclick="addScannedDevice()" ' +
+          'class="plain-card w-full rounded-2xl border border-slate-100 bg-white px-4 py-3 text-left active:scale-[0.99] dark:border-slate-800">' +
+          '<span class="block text-sm font-bold">' + escapeHtml(found.name) + "</span>" +
+          '<span class="block text-[11px] text-slate-500 dark:text-slate-300">' + escapeHtml(host) +
+          " · yerel ağda kontrol edilir</span></button>";
+      }).catch(function () {
+        setScanStatus("Bu adreste bilinen bir NEXUS cihazı bulunamadı. Cihazın aynı ağda ve açık olduğundan emin ol.", "error");
+      }).finally(function () {
+        btn.disabled = false;
+      });
+    }
+
+    function storeFoundDevice(found) {
+      var devices = getPairedDevices();
+      var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
+      var key = normalizedHost + "#" + (found.endpointId != null ? found.endpointId : 0);
+      if (!devices.some(function (d) { return d && (d.host + "#" + (d.endpointId != null ? d.endpointId : 0)) === key; })) {
+        var profile = KIND_PROFILE[found.kind] || KIND_PROFILE.switch;
+        var caps = (found.caps || profile.caps).slice();
+        (PROTOCOL_EXTRA[found.protocol] || []).forEach(function (c) { if (found.kind === "light" && caps.indexOf(c) === -1) caps.push(c); });
+        devices.push({
+          id: ("lan-" + normalizedHost + (found.endpointId != null && found.endpointId !== 0 ? "-" + found.endpointId : "")).replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
+          name: found.name,
+          room: "Yerel ağ",
+          icon: "cpu",
+          host: normalizedHost,
+          protocol: found.protocol,
+          kind: found.kind,
+          model: found.model,
+          caps: caps,
+          img: found.img || PROTOCOL_IMG[found.protocol] || profile.img,
+          endpointId: found.endpointId != null ? found.endpointId : 0,
+          entity: found.entity || null,
+          hueUser: found.hueUser || null,
+          haToken: found.haToken || null,
+        });
+        nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
+        if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
+        renderPairedDevices();
+        return true;
+      }
+      return false;
+    }
+
+    function panelsLinkHtml() {
+      return '<a href="stitch-panels.html" class="mt-1 inline-flex items-center gap-2 rounded-full bg-nexusPurple px-4 py-2 text-xs font-bold text-white active:scale-[0.98]">' +
+        '<i data-lucide="layout-grid" class="text-sm"></i> Panelleri aç</a>';
+    }
+
+    function addScannedDevice() {
+      var found = window.__nexusScannedDevice;
+      if (!found) return;
+      var entityInput = document.getElementById("esphome-entity");
+      if (entityInput) {
+        var entity = entityInput.value.trim().toLowerCase().replace(/[^a-z0-9_]/g, "_");
+        if (!entity) { setScanStatus("ESPHome bileşen kimliğini yaz (cihazın YAML dosyasındaki id).", "error"); return; }
+        found.entity = entity;
+      }
+      storeFoundDevice(found);
+      setScanStatus("Eklendi. Kontrol panellerinden yönetebilirsin.", "ok");
+      document.getElementById("lan-scan-result").innerHTML = panelsLinkHtml();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    // Philips Hue: köprü bir kez eşleştirilir, her lamba ayrı cihaz olarak eklenir.
+    function renderHuePairing(target, host) {
+      target.innerHTML = '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
+        '<p class="text-sm font-bold">Hue köprüsü bulundu</p>' +
+        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Köprünün üstündeki yuvarlak düğmeye bas, ardından 30 saniye içinde “Köprüyü bağla”ya dokun.</p>' +
+        '<button type="button" id="hue-pair-btn" onclick="pairHueBridge(\'' + escapeHtml(host) + '\')" class="mt-3 w-full min-h-[44px] rounded-full bg-[#4C7DFF] text-sm font-bold text-white active:scale-[0.98]">Köprüyü bağla</button>' +
+        '<p id="hue-pair-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300"></p></div>';
+    }
+
+    function pairHueBridge(host) {
+      var btn = document.getElementById("hue-pair-btn");
+      var status = document.getElementById("hue-pair-status");
+      btn.disabled = true;
+      status.textContent = "Köprüyle eşleşiliyor…";
+      window.nexusLan.hue.pair(host).then(function (user) {
+        status.textContent = "Bağlandı, lambalar okunuyor…";
+        return window.nexusLan.hue.lights(host, user).then(function (lights) {
+          var added = 0;
+          lights.forEach(function (l) {
+            var ok = storeFoundDevice({
+              host: host, name: l.name, protocol: "hue", kind: "light", model: l.model,
+              caps: l.caps, endpointId: l.id, hueUser: user,
+              img: l.caps.indexOf("color") !== -1 ? "generic-led-bulb.png" : "generic-led-bulb.png",
+            });
+            if (ok) added += 1;
+          });
+          status.textContent = lights.length ? added + " lamba eklendi. Kontrol panellerinden yönetebilirsin." : "Köprüye bağlı lamba bulunamadı.";
+          setScanStatus("Hue köprüsü bağlandı.", "ok");
+        });
+      }).catch(function (e) {
+        status.textContent = e && e.code === "link-button" ? e.message : "Köprüye bağlanılamadı. Aynı ağda olduğundan emin ol ve tekrar dene.";
+      }).then(function () { btn.disabled = false; });
+    }
+
+    // Home Assistant: kullanıcının kendi HA sunucusu. Uzun ömürlü erişim jetonu bir kez girilir,
+    // HA'daki ışık, priz, perde, klima, kilit, süpürge ve medya cihazları tek tek eklenir.
+    var haEntities = [];
+    var haConn = null;
+    function renderHaPairing(target, host) {
+      haConn = { host: host, token: null };
+      target.innerHTML = '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
+        '<p class="text-sm font-bold">Home Assistant bulundu</p>' +
+        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Home Assistant\'ta Profil → Güvenlik → Uzun ömürlü erişim jetonları bölümünden bir jeton oluştur ve buraya yapıştır. Jeton yalnızca bu cihazda saklanır.</p>' +
+        '<input id="ha-token" type="password" autocomplete="off" class="mt-3 w-full min-h-[44px] rounded-xl border border-slate-200 bg-white px-3 text-sm dark:bg-slate-900 dark:border-slate-700" placeholder="Erişim jetonu">' +
+        '<button type="button" id="ha-connect-btn" onclick="connectHomeAssistant()" class="mt-3 w-full min-h-[44px] rounded-full bg-[#4C7DFF] text-sm font-bold text-white active:scale-[0.98]">Bağlan</button>' +
+        '<p id="ha-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300"></p>' +
+        '<div id="ha-list" class="mt-3 space-y-2"></div></div>';
+    }
+
+    function connectHomeAssistant() {
+      var token = (document.getElementById("ha-token").value || "").trim();
+      var status = document.getElementById("ha-status");
+      var btn = document.getElementById("ha-connect-btn");
+      if (!token) { status.textContent = "Erişim jetonunu yapıştır."; return; }
+      btn.disabled = true;
+      status.textContent = "Home Assistant'a bağlanılıyor…";
+      window.nexusLan.homeassistant.entities(haConn.host, token).then(function (list) {
+        haConn.token = token;
+        haEntities = list;
+        status.textContent = list.length ? list.length + " cihaz bulundu. Eklemek istediklerini seç." : "Home Assistant'ta NEXUS'un kontrol edebileceği cihaz bulunamadı.";
+        setScanStatus("Home Assistant bağlandı.", "ok");
+        renderHaEntities();
+      }).catch(function (e) {
+        status.textContent = e && e.code === "auth" ? "Jeton geçersiz. Home Assistant'ta yeni bir jeton oluşturup tekrar dene." : "Home Assistant'a bağlanılamadı. Adresin doğru ve aynı ağda olduğundan emin ol.";
+      }).then(function () { btn.disabled = false; });
+    }
+
+    function haDeviceRecord(item) {
+      var IMG = { light: "generic-led-bulb.png", cover: "control-curtain-motor.png", lock: "security-keypad-lock.png", vacuum: "generic-robot-vacuum.png", ac: "generic-air-conditioner.png", media: "generic-smart-tv.png" };
+      return { host: haConn.host, name: item.name, protocol: "homeassistant", kind: item.kind, model: item.model, caps: item.caps,
+        endpointId: item.entity, entity: item.entity, haToken: haConn.token, img: IMG[item.kind] };
+    }
+
+    function renderHaEntities() {
+      var host = document.getElementById("ha-list");
+      if (!host) return;
+      var devices = getPairedDevices();
+      var addedKeys = {};
+      devices.forEach(function (d) { if (d && d.protocol === "homeassistant") addedKeys[d.entity] = 1; });
+      var rest = haEntities.filter(function (it) { return !addedKeys[it.entity]; }).length;
+      host.innerHTML = (rest > 1 ? '<button type="button" onclick="addAllHaEntities()" class="w-full min-h-[40px] rounded-full bg-slate-900 text-xs font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">Tümünü ekle (' + rest + ')</button>' : '') +
+        haEntities.map(function (it, i) {
+          return '<div class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 px-3 py-2 dark:border-slate-800">' +
+            '<div class="min-w-0"><p class="text-sm font-bold truncate">' + escapeHtml(it.name) + '</p>' +
+            '<p class="text-[11px] text-slate-500 truncate dark:text-slate-300">' + escapeHtml(it.entity) + '</p></div>' +
+            (addedKeys[it.entity]
+              ? '<span class="shrink-0 text-[11px] font-bold text-emerald-600">ekli</span>'
+              : '<button type="button" class="shrink-0 rounded-full bg-[#4C7DFF] px-3 py-1.5 text-[11px] font-bold text-white active:scale-[0.98]" onclick="addHaEntity(' + i + ')">Ekle</button>') +
+            '</div>';
+        }).join("");
+    }
+
+    function addHaEntity(i) {
+      if (!haEntities[i] || !haConn || !haConn.token) return;
+      storeFoundDevice(haDeviceRecord(haEntities[i]));
+      renderHaEntities();
+    }
+
+    function addAllHaEntities() {
+      if (!haConn || !haConn.token) return;
+      var n = 0;
+      haEntities.forEach(function (it) { if (storeFoundDevice(haDeviceRecord(it))) n += 1; });
+      document.getElementById("ha-status").textContent = n + " cihaz eklendi. Kontrol panellerinden yönetebilirsin.";
+      renderHaEntities();
+    }
+
+    var subnetFindings = [];
+
+    function renderSubnetFindings() {
+      var host = document.getElementById("lan-subnet-results");
+      var devices = getPairedDevices();
+      host.innerHTML = subnetFindings.map(function (found, index) {
+        var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
+        var already = devices.some(function (d) { return d && d.host === normalizedHost; });
+        return '<div class="plain-card flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-3.5 py-3 dark:border-slate-800">' +
+          '<div class="min-w-0"><p class="text-sm font-bold truncate">' + escapeHtml(found.name) + "</p>" +
+          '<p class="text-[11px] text-slate-500 truncate dark:text-slate-300">' + escapeHtml(found.protocol) +
+          " · " + escapeHtml(found.host) + "</p></div>" +
+          (already
+            ? '<span class="shrink-0 text-[11px] font-bold text-emerald-600">ekli</span>'
+            : '<button type="button" class="shrink-0 rounded-full bg-slate-900 px-3 py-1.5 text-[11px] font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900" onclick="addSubnetFinding(' + index + ')">Ekle</button>') +
+          "</div>";
+      }).join("");
+    }
+
+    function addSubnetFinding(index) {
+      var found = subnetFindings[index];
+      if (!found) return;
+      if (found.protocol === "hue" || found.protocol === "homeassistant" || (found.protocol === "esphome" && !found.entity)) {
+        document.getElementById("lan-scan-host").value = String(found.host).replace(/^https?:\/\//, "");
+        scanLanHost();
+        document.getElementById("lan-scan-host").scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      storeFoundDevice(found);
+      renderSubnetFindings();
+    }
+
+    function scanSubnetNow() {
+      var base = document.getElementById("lan-scan-subnet").value;
+      var prefix = window.nexusLan.normalizeSubnetBase(base);
+      var btn = document.getElementById("lan-subnet-btn");
+      if (!prefix) {
+        setScanStatus("Alt ağ öneki geçersiz. Örnek: 192.168.1", "error");
+        return;
+      }
+      subnetFindings = [];
+      document.getElementById("lan-subnet-results").innerHTML = "";
+      btn.disabled = true;
+      setScanStatus(prefix + ".1 - " + prefix + ".254 taranıyor…", "");
+      window.nexusLan.scanSubnet(prefix, {
+        onFound: function (info, count) {
+          subnetFindings.push(info);
+          setScanStatus(count + " cihaz bulundu · tarama sürüyor", "ok");
+          renderSubnetFindings();
+        },
+      })
+        .then(function (all) {
+          setScanStatus(all.length ? all.length + " cihaz bulundu. Ekle'den panellere taşıyabilirsin." : "Bu ağda desteklenen bir cihaz bulunamadı.", all.length ? "ok" : "error");
+          renderSubnetFindings();
+        })
+        .catch(function () {
+          setScanStatus("Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.", "error");
+        })
+        .then(function () {
+          btn.disabled = false;
+        });
+    }
+
+    // Marka gerçekten bu ortamda çalışıyor mu? (telefon: HTTP; masaüstü: HTTP + TCP)
+    function availabilityBadge(group) {
+      var desktop = window.nexusLan && window.nexusLan.hasTcp && window.nexusLan.hasTcp();
+      var a = group.availability || "all";
+      var label, cls;
+      if (a === "all" || (a === "desktop" && desktop)) { label = "Ücretsiz · yerel ağda çalışır"; cls = "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"; }
+      else if (a === "desktop") { label = "Masaüstü uygulamasında çalışır"; cls = "bg-[#4C7DFF]/10 text-[#3F6FFF] dark:text-[#93b4ff]"; }
+      else { label = "Yakında"; cls = "bg-slate-500/10 text-slate-600 dark:text-slate-300"; }
+      return '<span class="inline-flex mb-2 rounded-full px-2.5 py-1 text-[11px] font-bold ' + cls + '">' + label + "</span>";
+    }
+
+    function renderSupportedDevices() {
+      var host = document.getElementById("supported-devices-list");
+      var totalEl = document.getElementById("supported-device-total");
+      if (!host || typeof NEXUS_SUPPORTED_DEVICES === "undefined") return;
+
+      var groups = NEXUS_SUPPORTED_DEVICES.filter(function (g) {
+        return g && Array.isArray(g.models) && g.models.length;
+      });
+      var total = groups.reduce(function (sum, g) {
+        return sum + g.models.length;
+      }, 0);
+      if (totalEl) totalEl.textContent = String(total);
+
+      host.innerHTML = groups.map(function (group) {
+        var tiles = group.models.map(function (model) {
+          return '<div class="product-tile product-card text-center" data-protocol="' +
+            escapeHtml(group.protocol) + '" data-caps="' + escapeHtml((model.caps || []).join(",")) + '">' +
+            '<div class="product-image-stage">' +
+            '<img src="assets/products/' + encodeURIComponent(model.img) + "?v=" + SUPPORTED_IMAGE_VERSION +
+            '" alt="' + escapeHtml(model.name) + '" class="max-w-[88%] max-h-[74px] object-contain" loading="lazy" decoding="async" />' +
+            "</div>" +
+            '<div class="px-1 pt-1 flex min-h-[30px] flex-col items-center justify-start">' +
+            '<span class="product-name">' + escapeHtml(model.name) + "</span>" +
+            '<span class="product-category-pill">' + escapeHtml(group.brand) + "</span>" +
+            "</div></div>";
+        }).join("");
+
+        return '<section class="mt-5">' +
+          '<div class="flex items-baseline justify-between gap-2 mb-2">' +
+          '<h4 class="text-sm font-extrabold text-slate-900 dark:text-white">' + escapeHtml(group.brand) + "</h4>" +
+          '<span class="text-[11px] font-medium text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(group.note || "") + "</span>" +
+          "</div>" + availabilityBadge(group) +
+          '<div class="grid grid-cols-3 gap-2.5">' + tiles + "</div>" +
+          "</section>";
+      }).join("");
+    }
+
     renderPairedDevices();
+    renderSupportedDevices();
+    // QR / kurulum kodu ekranından gelen yerel ağ adresi: otomatik doldur ve cihazı tanı
+    (function () {
+      var host = new URLSearchParams(location.search).get("host");
+      if (!host) return;
+      var input = document.getElementById("lan-scan-host");
+      input.value = host;
+      document.getElementById("lan-scan-section").scrollIntoView({ block: "center" });
+      scanLanHost();
+    })();
+    if (window.nexusLan && window.nexusLan.guessSubnet) {
+      window.nexusLan.guessSubnet().then(function (prefix) {
+        var input = document.getElementById("lan-scan-subnet");
+        if (prefix && input) input.value = prefix;
+      });
+    }
     window.addEventListener("pageshow", renderPairedDevices);
     window.addEventListener("DOMContentLoaded", function () {
       if (window.location.hash === "#manual-catalog-section") {

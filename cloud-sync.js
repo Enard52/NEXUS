@@ -50,7 +50,7 @@
 
   function api(path, options) {
     var config = cfg();
-    if (!config) return Promise.reject(new Error("bulut yapilandirmasi yok"));
+    if (!config) return Promise.reject(new Error("bulut yapılandırması yok"));
     return fetch(config.url.replace(/\/+$/, "") + path,
       Object.assign({}, options, {
         headers: Object.assign(

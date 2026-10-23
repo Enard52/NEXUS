@@ -2,7 +2,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Eve Geldim</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -30,7 +31,7 @@
       transform: scale(0.96);
     }
     .nexus-glow {
-      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.28);
+      box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28);
     }
   </style>
 <script src="auth.js"></script>
@@ -43,7 +44,7 @@
       <a href="stitch-smart.html" id="back-link" aria-label="Geri" class="p-1 -ml-1 text-slate-800 dark:text-slate-100 tap-scale transition-all" data-sd-id="3" onclick="event.preventDefault(); window.history.back();">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-base font-bold text-slate-800 dark:text-slate-100" data-sd-id="4">Senaryo Hazırlığı</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-800 dark:text-slate-100" data-sd-id="4">Senaryo Hazırlığı</h1>
       <button id="header-more-btn" class="p-1 -mr-1 flex items-center justify-center tap-scale" data-sd-id="5">
         <i data-lucide="settings-2" class="text-xl text-slate-800 dark:text-slate-100"></i>
       </button>
@@ -150,22 +151,7 @@
 
   </div>
 
-  <script>
-    // Logic for button press effect and simulating the run state
-    const runBtn = document.getElementById('run-action-btn');
-    runBtn.addEventListener('click', () => {
-      runBtn.classList.add('bg-nexusCyan', 'scale-95');
-      runBtn.innerHTML = '<i data-lucide="loader-2" class="text-2xl animate-spin"></i> Çalıştırılıyor...';
-
-      setTimeout(() => {
-        runBtn.classList.remove('animate-pulse', 'scale-95');
-        runBtn.innerHTML = '<i data-lucide="check" class="text-2xl"></i> Tamamlandı';
-        setTimeout(() => {
-            window.location.href = 'stitch-home.html';
-        }, 1000);
-      }, 1500);
-    });
-  </script>
+  <!-- Senaryo çalıştırma smart-scene-page.js tarafından gerçek motorla yapılır -->
 
 
   <script data-purpose="icon-initialization">

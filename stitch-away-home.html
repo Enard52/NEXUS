@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Evden Uzakta</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -13,15 +14,15 @@
     .active-scale:active { transform: scale(0.96); }
   </style>
   <script src="auth.js"></script>
-  <script src="theme.js"></script>
+  <script src="theme.js"></script><script src="smart-scene-page.js"></script>
 </head>
-<body>
+<body data-scene-page="away-home" data-scene-title="Evden Uzakta" data-complete-href="stitch-home.html">
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Evden Uzakta</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">Evden Uzakta</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
         <i data-lucide="settings" class="text-[24px]"></i>
       </a>
@@ -47,29 +48,11 @@
               <p class="text-[11px] font-medium text-slate-500">Hemen devreye girsin</p>
             </div>
           </div>
-          <button class="bg-[#4C7DFF] text-white px-4 py-2 rounded-xl text-xs font-bold active-scale" onclick="alert('Senaryo başarıyla çalıştırıldı.')">Çalıştır</button>
+          <button class="bg-[#4C7DFF] text-white px-4 py-2 rounded-xl text-xs font-bold active-scale">Çalıştır</button>
         </div>
       </section>
     </main>
   </div>
-
-<!-- DYNAMIC JS -->
-<script>
-
-document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('button');
-    if(btn) {
-        btn.onclick = () => {
-            const state = JSON.parse(localStorage.getItem('nexusSceneStates') || '{}');
-            state['away-home'] = !state['away-home']; // toggle
-            localStorage.setItem('nexusSceneStates', JSON.stringify(state));
-            alert(state['away-home'] ? 'Senaryo başarıyla çalıştırıldı.' : 'Senaryo durduruldu.');
-            location.reload();
-        };
-    }
-});
-
-</script>
 
   <script data-purpose="icon-initialization">
     if (typeof lucide !== 'undefined') lucide.createIcons();

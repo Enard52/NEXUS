@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d0b1a" media="(prefers-color-scheme: dark)">
 <title>NEXUS - Cihaz Kurulumu</title>
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <script>
   window.tailwind = window.tailwind || {};
   tailwind.config = {
@@ -35,8 +35,8 @@
   /* Dark Theme Background - preserving the 3D aesthetic */
   html.dark body {
     background:
-      radial-gradient(120% 60% at 50% 0%, #4a3d85 0%, transparent 55%),
-      linear-gradient(165deg, #3a2f6e 0%, #38397f 38%, #3d55ab 70%, #4f6fd6 100%);
+      radial-gradient(120% 60% at 50% 0%, rgba(76,125,255,0.28) 0%, transparent 55%),
+      linear-gradient(180deg, #020617 0%, #0f172a 100%);
   }
 
   .phone {
@@ -55,7 +55,7 @@
     position:absolute;
     top:-80px; left:-60px;
     width:260px; height:260px;
-    background: radial-gradient(circle, rgba(139,63,240,0.35), transparent 70%);
+    background: radial-gradient(circle, rgba(76,125,255,0.30), transparent 70%);
     filter: blur(10px);
     pointer-events:none;
   }
@@ -64,7 +64,7 @@
     position:absolute;
     bottom:-100px; right:-80px;
     width:300px; height:300px;
-    background: radial-gradient(circle, rgba(79,111,214,0.35), transparent 70%);
+    background: radial-gradient(circle, rgba(34,211,238,0.18), transparent 70%);
     filter: blur(10px);
     pointer-events:none;
   }
@@ -225,14 +225,14 @@
     padding:16px 0;
     border:none;
     border-radius:27px;
-    background: linear-gradient(90deg, #7b3fe0 0%, #9b4de8 45%, #c151e0 100%);
+    background: #4C7DFF;
     color:#fff;
     font-size:16px;
     font-weight:700;
     letter-spacing:0.2px;
     cursor:pointer;
     box-shadow:
-      0 14px 26px rgba(139, 63, 232, 0.45),
+      0 14px 26px rgba(76, 125, 255, 0.40),
       inset 0 1px 1px rgba(255,255,255,0.4);
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
@@ -265,6 +265,7 @@
 </style>
 <script src="auth.js"></script>
 <script src="theme.js"></script>
+  <script src="setup-codes.js"></script>
 <script src="data.js"></script>
 </head>
 <body>
@@ -302,7 +303,7 @@
     </div>
 
     <p class="instruction">
-      Lütfen cihazıınızın üzerindeki 8 haneli<br>
+      Lütfen cihazınızın üzerindeki 8 haneli<br>
       kurulum kodunu girin
     </p>
 
@@ -340,20 +341,7 @@
   </div>
 
   <script>
-    function appendPairedDeviceFromSetupCode(rawValue) {
-      var digits = String(rawValue || '').replace(/\D/g, '');
-      if (digits.length !== 8) return false;
-      var paired = [];
-      try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (e) {}
-      if (!Array.isArray(paired)) paired = [];
-      var name = 'Cihaz ·' + digits.slice(-4);
-      if (!paired.some(function (device) { return device && device.name === name; })) {
-        paired.push({ name: name, icon: 'cpu' });
-        nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
-      }
-      return true;
-    }
-
+    // Kurulum kodu gerçek bir cihaz eklemez; ne olduğunu dürüstçe söyler ve yerel ağ yoluna yönlendirir.
     function confirmSetupCode() {
       var input = document.getElementById('setup-code-input');
       var error = document.getElementById('error-message');
@@ -364,17 +352,19 @@
         setTimeout(() => error.style.opacity = '0', 2500);
         return;
       }
-
-      var btn = document.getElementById('verify-btn');
-      var originalText = btn.textContent;
-      btn.innerHTML = '<svg class="animate-spin w-5 h-5 mx-auto text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>';
-
-      setTimeout(() => {
-        appendPairedDeviceFromSetupCode(digits);
-        input.value = '';
-        updateDigitBoxes('');
-        window.location.href = 'stitch-home.html';
-      }, 600);
+      var parsed = window.nexusParseSetupCode ? nexusParseSetupCode(digits) : { type: 'homekit' };
+      var msg = window.nexusSetupCodeMessage ? nexusSetupCodeMessage(parsed.type) : { title: 'Kurulum kodu', text: '' };
+      var box = document.getElementById('setup-code-result');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'setup-code-result';
+        box.setAttribute('role', 'status');
+        box.style.cssText = 'margin-top:18px;padding:16px;border-radius:20px;background:rgba(76,125,255,.08);text-align:left;';
+        document.getElementById('verify-btn').insertAdjacentElement('afterend', box);
+      }
+      box.innerHTML = '<p style="font-weight:700;font-size:15px;margin:0 0 6px">' + msg.title + '</p>' +
+        '<p style="font-size:13px;line-height:1.5;margin:0 0 12px;opacity:.85">' + msg.text + '</p>' +
+        '<button type="button" onclick="nexusOpenLanPairing()" style="min-height:44px;width:100%;border-radius:9999px;background:#4C7DFF;color:#fff;font-weight:700;font-size:14px">Yerel ağdan ekle</button>';
     }
 
     function updateDigitBoxes(value) {

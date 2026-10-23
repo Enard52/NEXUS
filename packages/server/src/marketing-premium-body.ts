@@ -47,6 +47,12 @@ const BRAND_LOGOS = {
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="IKEA"><rect width="24" height="24" rx="7" fill="#0058A3"/><circle cx="12" cy="12" r="8.3" fill="none" stroke="#FFDA1A" stroke-width="2"/><text x="12" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.3" font-weight="900" letter-spacing=".08em" fill="#FFDA1A">IKEA</text></svg>`,
   ),
   zigbee: svgDataUri(LOCAL_LOGOS.zigbee),
+  shelly: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Sh"><rect width="24" height="24" rx="7" fill="#2B7FD3"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Sh</text></svg>`),
+  tasmota: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Ta"><rect width="24" height="24" rx="7" fill="#1FA3EC"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Ta</text></svg>`),
+  wled: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="WLED"><rect width="24" height="24" rx="7" fill="#F59E0B"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#111">WLED</text></svg>`),
+  esphome: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="ESP"><rect width="24" height="24" rx="7" fill="#111827"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">ESP</text></svg>`),
+  kasa: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="kasa"><rect width="24" height="24" rx="7" fill="#00A79D"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">kasa</text></svg>`),
+  yeelight: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Yee"><rect width="24" height="24" rx="7" fill="#2F3A4A"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">Yee</text></svg>`),
   bose: svgDataUri(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Bose"><rect width="24" height="24" rx="7" fill="#111827"/><path d="M5.8 15.2c1.9-2.6 5.6-2.6 7.5 0m-10-4.4c3.5-4.7 9.1-4.7 12.6 0m-14.9-1.7c4.5-6 11.7-6 16.2 0" fill="none" stroke="#F8FAFC" stroke-width="1.4" stroke-linecap="round"/><text x="12" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="800" fill="#F8FAFC">BOSE</text></svg>`,
   ),
@@ -63,16 +69,6 @@ function integrationLogo(key: keyof typeof BRAND_LOGOS, label: string): string {
   return `<img class="integration-logo" src="${BRAND_LOGOS[key]}" alt="" loading="lazy" decoding="async" data-brand="${label}"${invertAttr} />`;
 }
 
-const AVATAR_SJ = "/images/avatars/sarah-jenkins.jpg";
-const AVATAR_DC = "/images/avatars/david-chen.jpg";
-const AVATAR_ET = "/images/avatars/emma-thompson.jpg";
-const AVATAR_MA = "/images/avatars/mateo-alvarez.jpg";
-const AVATAR_AR = "/images/avatars/aisha-rahman.jpg";
-const AVATAR_NW = "/images/avatars/noah-williams.jpg";
-const AVATAR_SM = "/images/avatars/sofia-martins.jpg";
-const AVATAR_KS = "/images/avatars/kenji-sato.jpg";
-const AVATAR_OB = "/images/avatars/olivia-brooks.jpg";
-const AVATAR_LM = "/images/avatars/lucas-meyer.jpg";
 
 export interface PremiumDynamicParts {
   /** Uppercase short code shown in the language button, e.g. "EN". */
@@ -84,7 +80,14 @@ export interface PremiumDynamicParts {
   playHref: string;
   appStoreHref: string;
   apkHref: string;
+  /** e.g. "Version 1.0.0" — shown on the desktop download cards. */
+  desktopVersion?: string;
 }
+
+/** Public, releases-only repository (the source repository is private). */
+export const RELEASES_REPO = "https://github.com/Enard52/nexus-releases";
+const RELEASES = `${RELEASES_REPO}/releases/latest/download/`;
+const RELEASES_PAGE = `${RELEASES_REPO}/releases/latest`;
 
 export function renderPremiumBody(dyn: PremiumDynamicParts): string {
   return `
@@ -157,7 +160,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Android · iOS · local network</div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · macOS · Linux · local network</div>
           <h1>Your home.<span class="hero-gradient-line"><span class="hero-word">One</span> <span class="hero-word">intelligence.</span></span></h1>
           <p class="hero-copy">NEXUS is a smart home assistant that helps you manage your smart home devices.</p>
           <div class="hero-actions">
@@ -165,9 +168,9 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               Try NEXUS free
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a class="button button-secondary" href="#downloads">
-              Get the mobile app
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+            <a class="button button-secondary" href="#integrations">
+              Supported devices
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
           <div class="hero-proof">
@@ -177,7 +180,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             </span>
             <span class="proof-item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
-              No cloud dependency
+              No hub or cloud fee
             </span>
             <span class="proof-item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
@@ -280,23 +283,23 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           <article class="metric metric-users">
             <div class="metric-top">
               <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-              <span class="metric-chip"><i></i>Live network</span>
+              <span class="metric-chip"><i></i>Desktop</span>
             </div>
-            <strong data-count="500" data-suffix="K+">500K+</strong>
-            <span class="metric-title">Active users</span>
-            <p class="metric-copy">Private NEXUS environments running across homes and workspaces.</p>
+            <strong data-count="3" data-suffix="">3</strong>
+            <span class="metric-title">Desktop platforms</span>
+            <p class="metric-copy">Windows, macOS and Linux apps you can download today. Mobile apps are coming soon.</p>
             <span class="metric-visual metric-activity" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </article>
 
           <article class="metric metric-devices">
             <div class="metric-top">
               <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
-              <span class="metric-chip"><i></i>Synced</span>
+              <span class="metric-chip"><i></i>Local API</span>
             </div>
-            <strong data-count="2000" data-suffix="+">2,000+</strong>
-            <span class="metric-title">Supported devices</span>
-            <p class="metric-copy">One intelligence layer across leading standards and ecosystems.</p>
-            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.996 22.5c-2.478 0-4.63-.846-6.195-2.435L9.67 16.19c.642.593 1.455.908 2.326.908.87 0 1.684-.315 2.326-.908l3.869 3.875c-1.565 1.589-3.717 2.435-6.195 2.435zm6.544-3.151-3.873-3.878c.846-1.077 1.258-2.316 1.139-3.52l5.441-1.096c.21 2.923-.923 5.76-2.707 8.494zm-13.088 0c-1.784-2.734-2.917-5.571-2.707-8.494l5.441 1.096c-.12 1.204.293 2.443 1.139 3.52l-3.873 3.878zM5.539 7.64c2.257-2.617 5.485-3.865 8.784-3.324l-1.019 5.448c-1.127-.145-2.22.185-3.078.9l-4.687-3.024zm12.922 0-4.687 3.024c-.858-.715-1.951-1.045-3.078-.9l-1.019-5.448c3.299-.541 6.527.707 8.784 3.324z"/></svg>Matter</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>HomeKit</b><b><svg viewBox="0 0 165 165"><path fill="currentColor" d="M82.498,0C37.008,0,0,37.008,0,82.496c0,45.181,36.51,81.977,81.573,82.476V82.569l-27.002-0.002c-8.023,0-14.554,6.53-14.554,14.561c0,8.023,6.531,14.551,14.554,14.551v17.98c-17.939,0-32.534-14.595-32.534-32.531c0-17.944,14.595-32.543,32.534-32.543l27.002,0.004v-9.096c0-14.932,12.146-27.08,27.075-27.08c14.932,0,27.082,12.148,27.082,27.08c0,14.931-12.15,27.08-27.082,27.08l-9.097-0.001v80.641C136.889,155.333,165,122.14,165,82.496C165,37.008,127.99,0,82.498,0z"/><path fill="currentColor" d="M117.748,55.493c0-5.016-4.082-9.098-9.1-9.098c-5.015,0-9.097,4.082-9.097,9.098v9.097l9.097,0.001C113.666,64.591,117.748,60.51,117.748,55.493z"/></svg>Thread</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.988 0a11.85 11.85 0 00-8.617 3.696c7.02-.875 11.401-.583 13.289-.34 3.752.583 3.558 3.404 3.558 3.404L8.237 19.112c2.299.22 6.897.366 13.796-.631a11.86 11.86 0 001.912-6.469C23.945 5.374 18.595 0 11.988 0zm.232 4.31c-2.451-.014-5.772.146-9.963.723C.854 7.003.055 9.41.055 12.012.055 18.626 5.38 24 11.988 24c3.63 0 6.85-1.63 9.053-4.182-7.286.948-11.813.631-13.75.388-3.775-.56-3.557-3.404-3.557-3.404L15.691 4.474a38.635 38.635 0 00-3.471-.163Z"/></svg>Zigbee</b></span>
+            <strong data-count="7" data-suffix="">7</strong>
+            <span class="metric-title">Device ecosystems</span>
+            <p class="metric-copy">Philips Hue, Shelly, Tasmota, WLED, ESPHome, TP-Link Kasa and Yeelight.</p>
+            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b>Hue</b><b>Shelly</b><b>WLED</b><b>ESPHome</b></span>
           </article>
 
           <article class="metric metric-private">
@@ -306,19 +309,19 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             </div>
             <strong data-count="100" data-suffix="%">100%</strong>
             <span class="metric-title">On-device privacy</span>
-            <p class="metric-copy">Commands, routines, and context stay encrypted on your hardware.</p>
+            <p class="metric-copy">Device commands go straight from the app to your devices. Nothing is routed through our servers.</p>
             <span class="metric-visual metric-privacy-rail" aria-hidden="true"></span>
           </article>
 
           <article class="metric metric-rating-card">
             <div class="metric-top">
               <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2Z"/></svg></span>
-              <span class="metric-chip"><i></i>Verified</span>
+              <span class="metric-chip"><i></i>Free</span>
             </div>
-            <strong data-count="4.9" data-suffix="★">4.9★</strong>
-            <span class="metric-title">Average rating</span>
-            <p class="metric-copy">Consistently rated for speed, calm design, and reliability.</p>
-            <span class="metric-visual metric-rating" aria-hidden="true"><span>★★★★★</span><small>12.8K reviews</small></span>
+            <strong data-count="0" data-suffix="">0</strong>
+            <span class="metric-title">Hub, cloud or account fees</span>
+            <p class="metric-copy">Devices are paired and controlled directly on your own network. No paid bridge or subscription is needed.</p>
+            <span class="metric-visual metric-privacy-rail" aria-hidden="true"></span>
           </article>
         </div>
       </div>
@@ -355,7 +358,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06-2.83 2.83-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21h-4v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06-2.83-2.83.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3v-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06L7.04 4.3l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3h4v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06 2.83 2.83-.06.06A1.65 1.65 0 0 0 19.4 9c.12.36.18.73.18 1H21v4h-1.42c0 .35-.06.69-.18 1z"/></svg>
             </div>
             <h3>One layer, every device.</h3>
-            <p>Matter, Zigbee, Z-Wave, Wi-Fi, HomeKit, and hundreds of APIs work together without locking you into one vendor.</p>
+            <p>Hue, Shelly, Tasmota, WLED and ESPHome work side by side through their own local APIs, so you are never locked into one vendor.</p>
           </article>
           <article class="principle reveal">
             <span class="principle-index">04 / RESILIENT</span>
@@ -426,67 +429,61 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
             </div>
             <h3>Unified standards</h3>
-            <p>Connect the ecosystems you already own.</p>
+            <p>Connect the Wi-Fi devices you already own, without a paid hub.</p>
             <div class="protocol-console" aria-label="Supported smart-home standards">
               <div class="protocol-console-head">
                 <div class="protocol-core" aria-hidden="true">${renderLogoSvg("nxlogo-pcore", "nxsheen-pcore")}</div>
                 <div class="protocol-console-title">
                   <strong>Universal device fabric</strong>
-                  <small>Auto-discovered · encrypted · local</small>
+                  <small>Discovered on your network · local</small>
                 </div>
                 <span class="protocol-live"><i></i> 6 online</span>
               </div>
 
               <div class="protocol-grid">
-                <div class="protocol-tile" style="--protocol-color:#f5f7ff">
+                <div class="protocol-tile" style="--protocol-color:#f5b301">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.996 22.5c-2.478 0-4.63-.846-6.195-2.435L9.67 16.19c.642.593 1.455.908 2.326.908.87 0 1.684-.315 2.326-.908l3.869 3.875c-1.565 1.589-3.717 2.435-6.195 2.435zm6.544-3.151-3.873-3.878c.846-1.077 1.258-2.316 1.139-3.52l5.441-1.096c.21 2.923-.923 5.76-2.707 8.494zm-13.088 0c-1.784-2.734-2.917-5.571-2.707-8.494l5.441 1.096c-.12 1.204.293 2.443 1.139 3.52l-3.873 3.878zM5.539 7.64c2.257-2.617 5.485-3.865 8.784-3.324l-1.019 5.448c-1.127-.145-2.22.185-3.078.9l-4.687-3.024zm12.922 0-4.687 3.024c-.858-.715-1.951-1.045-3.078-.9l-1.019-5.448c3.299-.541 6.527.707 8.784 3.324z"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="800" fill="currentColor">Hue</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Matter</strong><small>Universal layer</small></span>
-                  <span class="protocol-state"></span>
-                </div>
-
-                <div class="protocol-tile" style="--protocol-color:#f5f5f7">
-                  <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>
-                  </span>
-                  <span class="protocol-name"><strong>HomeKit</strong><small>Apple ecosystem</small></span>
-                  <span class="protocol-state"></span>
-                </div>
-
-                <div class="protocol-tile" style="--protocol-color:#ff7a3d">
-                  <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 165 165"><path fill="currentColor" d="M82.498,0C37.008,0,0,37.008,0,82.496c0,45.181,36.51,81.977,81.573,82.476V82.569l-27.002-0.002c-8.023,0-14.554,6.53-14.554,14.561c0,8.023,6.531,14.551,14.554,14.551v17.98c-17.939,0-32.534-14.595-32.534-32.531c0-17.944,14.595-32.543,32.534-32.543l27.002,0.004v-9.096c0-14.932,12.146-27.08,27.075-27.08c14.932,0,27.082,12.148,27.082,27.08c0,14.931-12.15,27.08-27.082,27.08l-9.097-0.001v80.641C136.889,155.333,165,122.14,165,82.496C165,37.008,127.99,0,82.498,0z"/><path fill="currentColor" d="M117.748,55.493c0-5.016-4.082-9.098-9.1-9.098c-5.015,0-9.097,4.082-9.097,9.097v9.097l9.097,0.001C113.666,64.591,117.748,60.51,117.748,55.493z"/></svg>
-                  </span>
-                  <span class="protocol-name"><strong>Thread</strong><small>Mesh network</small></span>
+                  <span class="protocol-name"><strong>Philips Hue</strong><small>Local bridge</small></span>
                   <span class="protocol-state protocol-live"><i></i>Live</span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#fb923c">
+                <div class="protocol-tile" style="--protocol-color:#3b8fe0">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.988 0a11.85 11.85 0 00-8.617 3.696c7.02-.875 11.401-.583 13.289-.34 3.752.583 3.558 3.404 3.558 3.404L8.237 19.112c2.299.22 6.897.366 13.796-.631a11.86 11.86 0 001.912-6.469C23.945 5.374 18.595 0 11.988 0zm.232 4.31c-2.451-.014-5.772.146-9.963.723C.854 7.003.055 9.41.055 12.012.055 18.626 5.38 24 11.988 24c3.63 0 6.85-1.63 9.053-4.182-7.286.948-11.813.631-13.75.388-3.775-.56-3.557-3.404-3.557-3.404L15.691 4.474a38.635 38.635 0 00-3.471-.163Z"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">Sh</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Zigbee</strong><small>Device mesh</small></span>
+                  <span class="protocol-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
                   <span class="protocol-state"></span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#39b9f3">
+                <div class="protocol-tile" style="--protocol-color:#1fa3ec">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12.5a9 9 0 0 1 12 0M9.5 16a4 4 0 0 1 5 0"/><circle cx="12" cy="19" r="1"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">Ta</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Wi-Fi</strong><small>IP devices</small></span>
+                  <span class="protocol-name"><strong>Tasmota</strong><small>Open firmware</small></span>
                   <span class="protocol-state"></span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#6aa7ff">
+                <div class="protocol-tile" style="--protocol-color:#f59e0b">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 13c3.2-5 6.1-5 9 0s5.8 5 9 0M3 8c3.2-5 6.1-5 9 0s5.8 5 9 0"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">W</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Z-Wave</strong><small>Secure sub-GHz</small></span>
+                  <span class="protocol-name"><strong>WLED</strong><small>LED strips</small></span>
+                  <span class="protocol-state"></span>
+                </div>
+                <div class="protocol-tile" style="--protocol-color:#9ca3af">
+                  <span class="protocol-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">E</text></svg>
+                  </span>
+                  <span class="protocol-name"><strong>ESPHome</strong><small>DIY devices</small></span>
+                  <span class="protocol-state"></span>
+                </div>
+                <div class="protocol-tile" style="--protocol-color:#00a79d">
+                  <span class="protocol-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">K</text></svg>
+                  </span>
+                  <span class="protocol-name"><strong>Kasa · Yeelight</strong><small>Desktop app</small></span>
                   <span class="protocol-state"></span>
                 </div>
               </div>
-
               <div class="protocol-console-foot">
                 <span><i></i> NEXUS graph synchronized</span>
                 <svg viewBox="0 0 140 24" preserveAspectRatio="none" aria-hidden="true"><path d="M1 17C17 17 19 8 34 11s19 8 32 1 20-9 33-2 23 6 40-5"/></svg>
@@ -575,8 +572,8 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
                 <span class="mini-platform mini-linux"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c-2.4 0-3.8 2.1-3.8 4.7 0 1.3.4 2.3.1 3.5-.3 1.1-1.6 2.2-2.4 3.5-.9 1.4-1.5 3.1-.8 4.1.5.8 1.6.9 2.6.6.7 1.1 2.2 1.8 4.3 1.8s3.6-.7 4.3-1.8c1 .3 2.1.2 2.6-.6.7-1-.1-2.8-.9-4.1-.8-1.3-2-2.4-2.3-3.5-.3-1.2.1-2.2.1-3.5C15.8 4.1 14.4 2 12 2Zm-1.3 4.3c.5 0 .9.5.9 1.1 0 .6-.4 1.1-.9 1.1s-.9-.5-.9-1.1c0-.6.4-1.1.9-1.1Zm2.6 0c.5 0 .9.5.9 1.1 0 .6-.4 1.1-.9 1.1s-.9-.5-.9-1.1c0-.6.4-1.1.9-1.1ZM12 9c1 0 1.8.5 1.8 1.1 0 .6-.8 1.1-1.8 1.1s-1.8-.5-1.8-1.1C10.2 9.5 11 9 12 9Z"/></svg></span>
                 <div class="flow-packet"><span></span><span></span><span></span></div>
               </div>
-              <div class="flow-copy-v4"><h3>Install your native core</h3><p>Pick the signed build for your desktop. NEXUS configures the private local runtime automatically.</p></div>
-              <div class="flow-meta"><span>≈ 2 minutes</span><span>Signed release</span></div>
+              <div class="flow-copy-v4"><h3>Install your native core</h3><p>Download the installer for Windows, macOS or Linux. Every release lists SHA-256 checksums you can verify.</p></div>
+              <div class="flow-meta"><span>≈ 2 minutes</span><span>Checksums published</span></div>
             </article>
             <article class="flow-step flow-step-v4">
               <div class="flow-topline"><span class="flow-number">02</span><span class="flow-label">Private discovery</span></div>
@@ -611,170 +608,123 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         <div class="section-head center reveal">
           <span class="section-kicker">Integrations</span>
           <h2 class="section-heading">Works with what you already have.</h2>
+          <p class="section-copy">Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.</p>
         </div>
       </div>
       <div class="integrations-wrap reveal">
         <div class="integration-ambient integration-ambient-one" aria-hidden="true"></div>
         <div class="integration-ambient integration-ambient-two" aria-hidden="true"></div>
         <div class="integrations-track" aria-label="Supported integrations">
-          <div class="integration-pill" style="--brand:#F5F5F7">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("apple", "APPLE")}
-              <span class="brand-fallback" hidden>APPLE</span>
-            </span>
-            <span class="integration-name"><strong>Apple Home</strong><small>Native bridge</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#4285F4">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("googlehome", "GOOGLE")}
-              <span class="brand-fallback" hidden>GOOGLE</span>
-            </span>
-            <span class="integration-name"><strong>Google Home</strong><small>Voice & devices</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#15BFFF">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("smartthings", "SMARTTHINGS")}
-              <span class="brand-fallback" hidden>SMARTTHINGS</span>
-            </span>
-            <span class="integration-name"><strong>SmartThings</strong><small>Samsung ecosystem</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#41BDF5">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("homeassistant", "HOME ASSISTANT")}
-              <span class="brand-fallback" hidden>HOME ASSISTANT</span>
-            </span>
-            <span class="integration-name"><strong>Home Assistant</strong><small>Local automation</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#0B78D0">
+          <div class="integration-pill" style="--brand:#F5B301">
             <span class="integration-logo-wrap">
               ${integrationLogo("philipshue", "PHILIPS HUE")}
               <span class="brand-fallback" hidden>PHILIPS HUE</span>
             </span>
-            <span class="integration-name"><strong>Philips Hue</strong><small>Lighting & scenes</small></span>
+            <span class="integration-name"><strong>Philips Hue</strong><small>Bridge · link button</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#2B7FD3">
             <span class="integration-logo-wrap">
-              ${integrationLogo("sonos", "SONOS")}
-              <span class="brand-fallback" hidden>SONOS</span>
+              ${integrationLogo("shelly", "SHELLY")}
+              <span class="brand-fallback" hidden>SHELLY</span>
             </span>
-            <span class="integration-name"><strong>Sonos</strong><small>Whole-home audio</small></span>
+            <span class="integration-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#0058A3">
+          <div class="integration-pill" style="--brand:#1FA3EC">
             <span class="integration-logo-wrap">
-              ${integrationLogo("ikea", "IKEA")}
-              <span class="brand-fallback" hidden>IKEA</span>
+              ${integrationLogo("tasmota", "TASMOTA")}
+              <span class="brand-fallback" hidden>TASMOTA</span>
             </span>
-            <span class="integration-name"><strong>IKEA Home smart</strong><small>Lights & sensors</small></span>
+            <span class="integration-name"><strong>Tasmota</strong><small>Open firmware</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#EB0443">
+          <div class="integration-pill" style="--brand:#F59E0B">
             <span class="integration-logo-wrap">
-              ${integrationLogo("zigbee", "ZIGBEE")}
-              <span class="brand-fallback" hidden>ZIGBEE</span>
+              ${integrationLogo("wled", "WLED")}
+              <span class="brand-fallback" hidden>WLED</span>
             </span>
-            <span class="integration-name"><strong>Zigbee</strong><small>Low-power mesh</small></span>
+            <span class="integration-name"><strong>WLED</strong><small>LED strips</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#9CA3AF">
             <span class="integration-logo-wrap">
-              ${integrationLogo("bose", "BOSE")}
-              <span class="brand-fallback" hidden>BOSE</span>
+              ${integrationLogo("esphome", "ESPHOME")}
+              <span class="brand-fallback" hidden>ESPHOME</span>
             </span>
-            <span class="integration-name"><strong>Bose</strong><small>Premium audio</small></span>
+            <span class="integration-name"><strong>ESPHome</strong><small>DIY devices</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#FF6900">
+          <div class="integration-pill" style="--brand:#00A79D">
             <span class="integration-logo-wrap">
-              ${integrationLogo("xiaomi", "XIAOMI")}
-              <span class="brand-fallback" hidden>XIAOMI</span>
+              ${integrationLogo("kasa", "TP-LINK KASA")}
+              <span class="brand-fallback" hidden>TP-LINK KASA</span>
             </span>
-            <span class="integration-name"><strong>Xiaomi</strong><small>Smart devices</small></span>
+            <span class="integration-name"><strong>TP-Link Kasa</strong><small>Desktop app</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F7">
+          <div class="integration-pill" style="--brand:#8FA3BF">
             <span class="integration-logo-wrap">
-              ${integrationLogo("apple", "APPLE")}
-              <span class="brand-fallback" hidden>APPLE</span>
+              ${integrationLogo("yeelight", "YEELIGHT")}
+              <span class="brand-fallback" hidden>YEELIGHT</span>
             </span>
-            <span class="integration-name"><strong>Apple Home</strong><small>Native bridge</small></span>
+            <span class="integration-name"><strong>Yeelight</strong><small>Desktop app · LAN mode</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#4285F4">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("googlehome", "GOOGLE")}
-              <span class="brand-fallback" hidden>GOOGLE</span>
-            </span>
-            <span class="integration-name"><strong>Google Home</strong><small>Voice & devices</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#15BFFF">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("smartthings", "SMARTTHINGS")}
-              <span class="brand-fallback" hidden>SMARTTHINGS</span>
-            </span>
-            <span class="integration-name"><strong>SmartThings</strong><small>Samsung ecosystem</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#41BDF5">
-            <span class="integration-logo-wrap">
-              ${integrationLogo("homeassistant", "HOME ASSISTANT")}
-              <span class="brand-fallback" hidden>HOME ASSISTANT</span>
-            </span>
-            <span class="integration-name"><strong>Home Assistant</strong><small>Local automation</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#0B78D0">
+          <div class="integration-pill" style="--brand:#F5B301">
             <span class="integration-logo-wrap">
               ${integrationLogo("philipshue", "PHILIPS HUE")}
               <span class="brand-fallback" hidden>PHILIPS HUE</span>
             </span>
-            <span class="integration-name"><strong>Philips Hue</strong><small>Lighting & scenes</small></span>
+            <span class="integration-name"><strong>Philips Hue</strong><small>Bridge · link button</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#2B7FD3">
             <span class="integration-logo-wrap">
-              ${integrationLogo("sonos", "SONOS")}
-              <span class="brand-fallback" hidden>SONOS</span>
+              ${integrationLogo("shelly", "SHELLY")}
+              <span class="brand-fallback" hidden>SHELLY</span>
             </span>
-            <span class="integration-name"><strong>Sonos</strong><small>Whole-home audio</small></span>
+            <span class="integration-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#0058A3">
+          <div class="integration-pill" style="--brand:#1FA3EC">
             <span class="integration-logo-wrap">
-              ${integrationLogo("ikea", "IKEA")}
-              <span class="brand-fallback" hidden>IKEA</span>
+              ${integrationLogo("tasmota", "TASMOTA")}
+              <span class="brand-fallback" hidden>TASMOTA</span>
             </span>
-            <span class="integration-name"><strong>IKEA Home smart</strong><small>Lights & sensors</small></span>
+            <span class="integration-name"><strong>Tasmota</strong><small>Open firmware</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#EB0443">
+          <div class="integration-pill" style="--brand:#F59E0B">
             <span class="integration-logo-wrap">
-              ${integrationLogo("zigbee", "ZIGBEE")}
-              <span class="brand-fallback" hidden>ZIGBEE</span>
+              ${integrationLogo("wled", "WLED")}
+              <span class="brand-fallback" hidden>WLED</span>
             </span>
-            <span class="integration-name"><strong>Zigbee</strong><small>Low-power mesh</small></span>
+            <span class="integration-name"><strong>WLED</strong><small>LED strips</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#9CA3AF">
             <span class="integration-logo-wrap">
-              ${integrationLogo("bose", "BOSE")}
-              <span class="brand-fallback" hidden>BOSE</span>
+              ${integrationLogo("esphome", "ESPHOME")}
+              <span class="brand-fallback" hidden>ESPHOME</span>
             </span>
-            <span class="integration-name"><strong>Bose</strong><small>Premium audio</small></span>
+            <span class="integration-name"><strong>ESPHome</strong><small>DIY devices</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#FF6900">
+          <div class="integration-pill" style="--brand:#00A79D">
             <span class="integration-logo-wrap">
-              ${integrationLogo("xiaomi", "XIAOMI")}
-              <span class="brand-fallback" hidden>XIAOMI</span>
+              ${integrationLogo("kasa", "TP-LINK KASA")}
+              <span class="brand-fallback" hidden>TP-LINK KASA</span>
             </span>
-            <span class="integration-name"><strong>Xiaomi</strong><small>Smart devices</small></span>
+            <span class="integration-name"><strong>TP-Link Kasa</strong><small>Desktop app</small></span>
+            <span class="integration-status" aria-hidden="true"></span>
+          </div>
+          <div class="integration-pill" style="--brand:#8FA3BF">
+            <span class="integration-logo-wrap">
+              ${integrationLogo("yeelight", "YEELIGHT")}
+              <span class="brand-fallback" hidden>YEELIGHT</span>
+            </span>
+            <span class="integration-name"><strong>Yeelight</strong><small>Desktop app · LAN mode</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
         </div>
@@ -785,8 +735,8 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
       <div class="container">
         <div class="section-head center reveal">
           <span class="section-kicker">Pricing</span>
-          <h2 class="section-heading">Start free. Expand only when you need to.</h2>
-          <p class="section-copy">Core local control stays free. Premium plans add advanced intelligence, remote access, and household tools.</p>
+          <h2 class="section-heading">Free today. Premium when it is ready.</h2>
+          <p class="section-copy">Everything NEXUS does today is free, with no device limit and no account fee. Premium and Family plans are on the way.</p>
         </div>
 
         <div class="pricing-grid">
@@ -806,17 +756,17 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <span class="price-note">No card required</span>
             </div>
             <div class="plan-console" aria-label="Free plan capacity">
-              <div class="plan-console-head"><span>Local core capacity</span><strong>05 devices</strong></div>
+              <div class="plan-console-head"><span>Device capacity</span><strong>No limit</strong></div>
               <div class="plan-console-track"><i style="--capacity: 42%"></i><b></b><b></b><b></b><b></b><b></b></div>
-              <div class="plan-console-meta"><span>On-device voice</span><span>Community channel</span></div>
+              <div class="plan-console-meta"><span>Local control</span><span>Scenes and NEXUS AI</span></div>
             </div>
             <div class="plan-divider"><span></span></div>
             <span class="feature-label">Included in Free</span>
             <ul class="feature-list">
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Up to 5 devices connected</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Basic voice commands and routines</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Unlimited connected devices</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Scenes, automations and NEXUS AI chat</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>100% local processing</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Community support</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Windows, macOS and Linux apps</li>
             </ul>
             <a class="button button-secondary" href="#downloads">Start for free</a>
             <div class="plan-foot"><span class="status-dot"></span>Runs fully on your hardware</div>
@@ -831,12 +781,12 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>
               </span>
               <div><span class="plan-overline">Adaptive intelligence</span><h3>Premium</h3></div>
-              <span class="plan-badge popular">Most popular</span>
+              <span class="plan-badge popular">Coming soon</span>
             </div>
             <p class="plan-description">Advanced AI, secure remote access, and automations that continuously adapt to your routines.</p>
             <div class="plan-price-row">
-              <div class="price"><sup>$</sup>5<span>/ month</span></div>
-              <span class="price-note">Cancel anytime</span>
+              <div class="price price-soon">Soon</div>
+              <span class="price-note">Not on sale yet</span>
             </div>
             <div class="plan-console plan-console-premium" aria-label="Premium plan capacity">
               <div class="plan-console-head"><span>Adaptive core capacity</span><strong>Unlimited</strong></div>
@@ -852,7 +802,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Priority 24/7 support</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Secure remote access</li>
             </ul>
-            <a class="button button-primary" href="#downloads">Start for free</a>
+            <span class="button button-primary is-disabled" aria-disabled="true">Coming soon</span>
             <div class="plan-foot"><span class="status-dot"></span>Best balance of power and privacy</div>
           </article>
 
@@ -868,8 +818,8 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             </div>
             <p class="plan-description">A shared intelligence layer with individual access, preferences, safety, and control for everyone.</p>
             <div class="plan-price-row">
-              <div class="price"><sup>$</sup>10<span>/ month</span></div>
-              <span class="price-note">One household</span>
+              <div class="price price-soon">Soon</div>
+              <span class="price-note">Not on sale yet</span>
             </div>
             <div class="plan-console plan-console-family" aria-label="Family plan capacity">
               <div class="plan-console-head"><span>Household identity mesh</span><strong>06 profiles</strong></div>
@@ -884,7 +834,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Granular parental controls</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Dedicated family dashboard</li>
             </ul>
-            <a class="button button-secondary" href="#downloads">Start for free</a>
+            <span class="button button-secondary is-disabled" aria-disabled="true">Coming soon</span>
             <div class="plan-foot"><span class="status-dot"></span>Private profiles, one local core</div>
           </article>
         </div>
@@ -895,12 +845,66 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
       <div class="container">
         <div class="section-head reveal">
           <span class="section-kicker">Apps</span>
-          <h2 class="section-heading">Tüm cihazlarınızda yerel.</h2>
-          <p class="section-copy">İster masaüstünde ister mobilde, NEXUS deneyimi kullandığınız platforma özel olarak uyarlandı. Uygulamalar cihazınızla tam uyumlu çalışır.</p>
+          <h2 class="section-heading">Native on every desktop.</h2>
+          <p class="section-copy">Download NEXUS for Windows, macOS or Linux today. The Android and iOS apps are on their way to the stores.</p>
         </div>
 
         <div class="downloads-grid" id="downloads">
-          <article class="download-card download-android reveal recommended" data-platform="android">
+          <article class="download-card download-windows reveal" data-platform="windows">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.1 10.4 4v7.2H3V5.1Zm8.4-1.2L21 2.5v8.7h-9.6V3.9ZM3 12.8h7.4V20L3 18.9v-6.1Zm8.4 0H21v8.7l-9.6-1.4v-7.3Z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-windows">
+                <svg class="os-logo os-logo-windows" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="currentColor" d="M3 5.1 10.4 4v7.2H3V5.1Zm8.4-1.2L21 2.5v8.7h-9.6V3.9ZM3 12.8h7.4V20L3 18.9v-6.1Zm8.4 0H21v8.7l-9.6-1.4v-7.3Z"/></svg>
+              </div>
+              <span class="platform-kicker">Windows 10 and 11</span>
+            </div>
+            <h3>Windows</h3>
+            <p>One installer for Intel/AMD and ARM PCs. Includes automatic updates.</p>
+            <span class="version">${dyn.desktopVersion} · x64 + ARM64</span>
+            <div class="platform-specs"><span>Local control</span><span>Auto-update</span><span>No hub required</span></div>
+            <a class="button button-secondary download-button" href="${RELEASES}NEXUS-Setup.exe" rel="noopener">Download for Windows</a>
+            <span class="download-note">First launch: if SmartScreen appears, choose “More info” → “Run anyway”.</span>
+          </article>
+
+          <article class="download-card download-macos reveal" data-platform="macos">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-macos">
+                <svg class="os-logo os-logo-apple" viewBox="0 0 384 512" aria-label="Apple logo" role="img"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg>
+              </div>
+              <span class="platform-kicker">Apple silicon and Intel Macs</span>
+            </div>
+            <h3>macOS</h3>
+            <p>A universal app for every Mac on macOS 11 Big Sur or later.</p>
+            <span class="version">${dyn.desktopVersion} · Universal</span>
+            <div class="platform-specs"><span>Local control</span><span>Auto-update</span><span>No hub required</span></div>
+            <a class="button button-secondary download-button" href="${RELEASES}NEXUS-mac.dmg" rel="noopener">Download for macOS</a>
+            <span class="download-note">First launch: right-click NEXUS in Applications and choose “Open”.</span>
+          </article>
+
+          <article class="download-card download-linux reveal" data-platform="linux">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-linux" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Zm3 4 3 2.5-3 2.5m5 .5h5"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-linux">
+                <svg class="os-logo os-logo-linux" viewBox="0 0 24 24" aria-label="Linux" role="img"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Zm3 4 3 2.5-3 2.5m5 .5h5"/></svg>
+              </div>
+              <span class="platform-kicker">Ubuntu, Debian, Fedora and more</span>
+            </div>
+            <h3>Linux</h3>
+            <p>A portable AppImage for any distribution, plus a .deb package.</p>
+            <span class="version">${dyn.desktopVersion} · x64</span>
+            <div class="platform-specs"><span>Local control</span><span>Auto-update</span><span>No hub required</span></div>
+            <a class="button button-secondary download-button" href="${RELEASES}NEXUS-linux.AppImage" rel="noopener">Download AppImage</a>
+            <a class="apk-link" href="${RELEASES}NEXUS-linux.deb" rel="noopener">Download .deb package</a>
+          </article>
+        </div>
+        <p class="downloads-meta reveal"><a href="${RELEASES_PAGE}" rel="noopener">All releases, release notes and SHA-256 checksums</a></p>
+
+        <div class="downloads-grid downloads-mobile" id="mobile-apps">
+          <article class="download-card download-android is-soon reveal" data-platform="android">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-android" viewBox="0 0 24 24"><path fill="currentColor" d="M6.2 9.1h11.6v6.7a1.9 1.9 0 0 1-1.9 1.9H8.1a1.9 1.9 0 0 1-1.9-1.9V9.1Zm-2.8.1a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2Zm14.4 0a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2ZM7.5 8.1C8 6.2 9.8 4.8 12 4.8s4 1.4 4.5 3.3l1.5-1.9a.4.4 0 1 0-.6-.5l-1.7 2.1A6.6 6.6 0 0 0 12.4 7V5.7a.4.4 0 1 0-.8 0V7c-1.1.1-2.1.4-3 .9L6.6 5.8a.4.4 0 1 0-.6.5l1.5 1.8Z"/></svg></div>
             <div class="platform-top">
@@ -910,14 +914,13 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <span class="platform-kicker">Android phone and tablet</span>
             </div>
             <h3>Android</h3>
-            <p>Install from Google Play, or download the APK directly and verify its checksum.</p>
-            <span class="version">${dyn.androidVersion}</span>
+            <p>The same local-first home on Android. It will be published on Google Play.</p>
+            <span class="version">Coming soon · Android 7+</span>
             <div class="platform-specs"><span>Local control</span><span>Works offline</span><span>No hub required</span></div>
-            <a class="button button-primary download-button" href="${dyn.playHref}" rel="noopener">Get it on Google Play</a>
-            <a class="apk-link" href="${dyn.apkHref}" download>Download APK</a>
+            <span class="button button-secondary download-button is-disabled" aria-disabled="true">Coming soon to Google Play</span>
           </article>
 
-          <article class="download-card download-ios reveal" data-platform="ios">
+          <article class="download-card download-ios is-soon reveal" data-platform="ios">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
             <div class="platform-top">
@@ -927,260 +930,24 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
               <span class="platform-kicker">iPhone and iPad</span>
             </div>
             <h3>iOS</h3>
-            <p>The same local-first home, on iPhone and iPad, published on the App Store.</p>
-            <span class="version">${dyn.iosVersion}</span>
-            <div class="platform-specs"><span>Face ID</span><span>Widgets</span><span>Shortcuts</span></div>
-            <a class="button button-secondary download-button" href="${dyn.appStoreHref}" rel="noopener">Download on the App Store</a>
+            <p>The same local-first home on iPhone and iPad. It will be published on the App Store.</p>
+            <span class="version">Coming soon · iOS 15+</span>
+            <div class="platform-specs"><span>Local control</span><span>Face ID</span><span>No hub required</span></div>
+            <span class="button button-secondary download-button is-disabled" aria-disabled="true">Coming soon to the App Store</span>
           </article>
-        </div>
-
-        <div class="mobile-companion mobile-release reveal" id="mobile-apps">
-          <div class="mobile-release-copy">
-            <span class="mobile-live-badge"><i></i> Available now</span>
-            <h3>NEXUS, now in your pocket.</h3>
-            <p>Use the iOS and Android companion apps to talk to your home, approve automations, and check every local action from anywhere.</p>
-            <div class="mobile-release-points"><span>End-to-end encrypted</span><span>Face ID / biometrics</span><span>Live household status</span></div>
-          </div>
-          <div class="mobile-store-stack">
-            <!-- Replace the placeholder store URLs with the real listing URLs after publishing. -->
-            <a class="store-badge store-badge-live" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
-              <svg class="store-logo store-logo-inline" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg>
-              <span><small>Download on the</small><strong>App Store</strong></span><b>iOS 17+</b>
-            </a>
-            <a class="store-badge store-badge-live" href="https://play.google.com/store/apps/details?id=com.nexus.mobile" target="_blank" rel="noopener">
-              <svg class="store-logo store-logo-inline" viewBox="0 0 48 52" aria-hidden="true"><defs><linearGradient id="gp-v4-a" x1="5" y1="4" x2="28" y2="28"><stop stop-color="#00D1FF"/><stop offset="1" stop-color="#00A5FF"/></linearGradient><linearGradient id="gp-v4-b" x1="6" y1="49" x2="29" y2="27"><stop stop-color="#00F076"/><stop offset="1" stop-color="#00C853"/></linearGradient></defs><path fill="url(#gp-v4-a)" d="M5 4.6c-.6.9-1 2.1-1 3.7v35.4c0 1.5.4 2.8 1 3.7L27.1 26 5 4.6Z"/><path fill="#FFD54F" d="m34.5 18.9-6.9 6.6L5 4.6c1.2-1.2 3.1-1.3 5.3 0l24.2 14.3Z"/><path fill="#FF5252" d="M34.5 33.1 10.3 47.4c-2.2 1.3-4.1 1.2-5.3 0l22.6-20.9 6.9 6.6Z"/><path fill="#FFB300" d="M43 24c1.8 1 1.8 3 0 4l-8.5 5.1-6.9-6.6 6.9-6.6L43 24Z"/></svg>
-              <span><small>Get it on</small><strong>Google Play</strong></span><b>Android 12+</b>
-            </a>
-          </div>
-          <div class="mobile-qr-pair">
-            <!-- Placeholder QR graphics: replace each SVG with the real store QR when listings are live. -->
-            <div class="qr-card"><div class="fake-qr" aria-label="Placeholder App Store QR code">
-              <svg viewBox="0 0 29 29" role="img"><rect width="29" height="29" rx="2" fill="#fff"/><g fill="#09090b"><path d="M2 2h7v7H2V2Zm2 2v3h3V4H4ZM20 2h7v7h-7V2Zm2 2v3h3V4h-3ZM2 20h7v7H2v-7Zm2 2v3h3v-3H4Z" fill-rule="evenodd"/><path d="M11 2h2v2h-2zM15 2h3v2h-3zM11 6h4v2h-4zM16 5h2v5h-2zM10 10h3v3h-3zM14 11h2v2h-2zM18 10h3v2h-3zM22 11h5v2h-5zM2 11h2v5H2zM5 12h4v2H5zM6 15h3v3H6zM11 15h2v3h-2zM14 14h5v2h-5zM20 15h2v4h-2zM23 14h4v3h-4zM10 20h3v2h-3zM14 18h2v5h-2zM17 20h3v2h-3zM22 19h5v2h-5zM10 24h4v3h-4zM16 24h2v3h-2zM19 23h3v4h-3zM24 23h3v2h-3z"/></g></svg>
-            </div><span>Scan for iPhone</span></div>
-            <div class="qr-card"><div class="fake-qr" aria-label="Placeholder Google Play QR code">
-              <svg viewBox="0 0 29 29" role="img"><rect width="29" height="29" rx="2" fill="#fff"/><g fill="#09090b"><path d="M2 2h7v7H2V2Zm2 2v3h3V4H4ZM20 2h7v7h-7V2Zm2 2v3h3V4h-3ZM2 20h7v7H2v-7Zm2 2v3h3v-3H4Z" fill-rule="evenodd"/><path d="M11 2h3v2h-3zM16 3h2v4h-2zM10 6h4v3h-4zM18 7h4v2h-4zM24 10h3v3h-3zM2 11h4v2H2zM7 10h2v5H7zM10 11h3v2h-3zM14 10h2v4h-2zM17 12h5v2h-5zM3 15h3v3H3zM9 16h4v2H9zM15 15h3v3h-3zM20 16h2v4h-2zM23 15h4v2h-4zM10 20h2v4h-2zM13 19h4v2h-4zM18 21h4v2h-4zM24 19h3v4h-3zM11 25h4v2h-4zM17 24h2v3h-2zM21 25h6v2h-6z"/></g></svg>
-            </div><span>Scan for Android</span></div>
-          </div>
         </div>
       </div>
     </section>
 
 
-    <section class="section-tight community-section">
+    <section class="section-tight community-section" id="early-access">
       <div class="container">
         <div class="section-head center reveal community-intro">
-          <span class="section-kicker">Community</span>
-          <h2 class="section-heading">Real homes. Different routines. One private system.</h2>
-          <p class="section-copy">A continuously moving wall of community stories shows how NEXUS fits into everyday homes, technical setups, and everything between them.</p>
+          <span class="section-kicker">Early access</span>
+          <h2 class="section-heading">New, honest, and shaped by its first homes.</h2>
+          <p class="section-copy">NEXUS is in early access, so there are no ratings or reviews to show yet — we would rather earn them. Tell us which device you want supported next and we will prioritise it.</p>
+          <p class="early-access-actions"><a class="button button-secondary" href="mailto:destek@nexus-ai.app?subject=NEXUS%20feedback">Send feedback</a></p>
         </div>
-
-        <div class="review-overview reveal" aria-label="Community rating summary">
-          <div class="review-score"><strong>4.9</strong><span>/ 5</span></div>
-          <div class="review-overview-copy">
-            <span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-            <strong>12.8K community ratings</strong>
-            <small>Across desktop and mobile NEXUS experiences</small>
-          </div>
-          <div class="review-avatar-stack" aria-hidden="true">
-            <img src="${AVATAR_SJ}" alt="">
-            <img src="${AVATAR_DC}" alt="">
-            <img src="${AVATAR_ET}" alt="">
-            <img src="${AVATAR_MA}" alt="">
-            <span>+12K</span>
-          </div>
-        </div>
-
-        <!-- DEMO CONTENT: Replace names, portraits, and quotes with customer-approved testimonials before production. -->
-        <div class="review-wall reveal">
-          <div class="review-lane" tabindex="0" aria-label="Animated customer review row 1">
-      <div class="review-track">
-        <div class="review-set"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>NEXUS replaced four separate home apps in one evening. Voice control feels instant, and every routine keeps working even when the internet does not.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_SJ}" alt="Portrait of Sarah Jenkins" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sarah Jenkins</strong><span>Early adopter · United Kingdom</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>The local response time is the difference. Lights, scenes, and locks react before I finish lowering my hand from the microphone.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_DC}" alt="Portrait of David Chen" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>David Chen</strong><span>Software engineer · Canada</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>I built a morning routine across Matter and Zigbee without touching a config file. It is powerful without feeling technical.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_ET}" alt="Portrait of Emma Thompson" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Emma Thompson</strong><span>Smart-home enthusiast · Australia</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>The interface finally makes a complex home feel calm. Every device has context, and the activity history is genuinely useful.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_MA}" alt="Portrait of Mateo Alvarez" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Mateo Alvarez</strong><span>Product designer · Spain</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>Local-first was the reason I tried NEXUS. The fact that it is also the fastest controller I have used was the surprise.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_AR}" alt="Portrait of Aisha Rahman" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Aisha Rahman</strong><span>Privacy advocate · UAE</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-        <div class="review-set" aria-hidden="true"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>NEXUS replaced four separate home apps in one evening. Voice control feels instant, and every routine keeps working even when the internet does not.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_SJ}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sarah Jenkins</strong><span>Early adopter · United Kingdom</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>The local response time is the difference. Lights, scenes, and locks react before I finish lowering my hand from the microphone.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_DC}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>David Chen</strong><span>Software engineer · Canada</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>I built a morning routine across Matter and Zigbee without touching a config file. It is powerful without feeling technical.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_ET}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Emma Thompson</strong><span>Smart-home enthusiast · Australia</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>The interface finally makes a complex home feel calm. Every device has context, and the activity history is genuinely useful.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_MA}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Mateo Alvarez</strong><span>Product designer · Spain</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>Local-first was the reason I tried NEXUS. The fact that it is also the fastest controller I have used was the surprise.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_AR}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Aisha Rahman</strong><span>Privacy advocate · UAE</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-      </div>
-    </div><div class="review-lane is-reverse" tabindex="0" aria-label="Animated customer review row 2">
-      <div class="review-track">
-        <div class="review-set"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>A spare mini PC became the most reliable part of my smart home. Setup was clean, discovery was accurate, and recovery is effortless.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_NW}" alt="Portrait of Noah Williams" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Noah Williams</strong><span>Home automation builder · USA</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>My family actually uses it because the voice layer is simple. I keep the advanced controls, while everyone else just speaks naturally.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_SM}" alt="Portrait of Sofia Martins" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sofia Martins</strong><span>Creative director · Portugal</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>Device discovery found almost everything on the first scan. The remaining integrations were connected in minutes, not hours.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_KS}" alt="Portrait of Kenji Sato" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Kenji Sato</strong><span>Systems architect · Japan</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>The audit trail makes automation understandable. I can see what ran, why it ran, and which device responded without sending data away.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_OB}" alt="Portrait of Olivia Brooks" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Olivia Brooks</strong><span>Researcher · Germany</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>Remote approvals are exactly what I needed. NEXUS stays local at home, but I can still help the family when I am away.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_LM}" alt="Portrait of Lucas Meyer" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Lucas Meyer</strong><span>Household admin · Netherlands</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-        <div class="review-set" aria-hidden="true"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>A spare mini PC became the most reliable part of my smart home. Setup was clean, discovery was accurate, and recovery is effortless.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_NW}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Noah Williams</strong><span>Home automation builder · USA</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>My family actually uses it because the voice layer is simple. I keep the advanced controls, while everyone else just speaks naturally.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_SM}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sofia Martins</strong><span>Creative director · Portugal</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>Device discovery found almost everything on the first scan. The remaining integrations were connected in minutes, not hours.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_KS}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Kenji Sato</strong><span>Systems architect · Japan</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>The audit trail makes automation understandable. I can see what ran, why it ran, and which device responded without sending data away.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_OB}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Olivia Brooks</strong><span>Researcher · Germany</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>Remote approvals are exactly what I needed. NEXUS stays local at home, but I can still help the family when I am away.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="${AVATAR_LM}" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Lucas Meyer</strong><span>Household admin · Netherlands</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-      </div>
-    </div>
-        </div>
-        <div class="review-footnote reveal">Hover or focus the review wall to pause</div>
       </div>
     </section>
 
@@ -1194,19 +961,19 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         <div class="faq-list reveal">
           <div class="faq-card">
             <div class="faq-question">Is NEXUS completely free?</div>
-            <div class="faq-answer">Yes. The core operating system and local control features are entirely free. Premium plans add advanced AI, secure remote access, and household management tools.</div>
+            <div class="faq-answer">Yes. Pairing and controlling devices on your local network, scenes, automations and NEXUS AI are free, with no device limit, hub, cloud account or subscription. Paid Premium and Family plans will come later; nothing you use today will be taken away.</div>
           </div>
           <div class="faq-card">
             <div class="faq-question">Which devices are supported?</div>
-            <div class="faq-answer">NEXUS supports Matter, Zigbee, Z-Wave, Wi-Fi devices, and more than 500 API-based ecosystems.</div>
+            <div class="faq-answer">Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED and ESPHome devices are controlled directly over your local network. TP-Link Kasa and Yeelight work in the desktop app. Matter, Tapo and Tuya are on the roadmap.</div>
           </div>
           <div class="faq-card">
             <div class="faq-question">Does it work without a cloud connection?</div>
             <div class="faq-answer">Yes. NEXUS communicates with devices over your local network, so core controls and automations continue working when the internet goes down.</div>
           </div>
           <div class="faq-card">
-            <div class="faq-question">How is remote access provided?</div>
-            <div class="faq-answer">Premium users can connect through a secure end-to-end encrypted tunnel. You can also use your own VPN configuration.</div>
+            <div class="faq-question">Can I control my home while I am away?</div>
+            <div class="faq-answer">NEXUS talks to your devices on your home network. To control them while away, connect to your home through your own VPN (for example WireGuard on your router). A built-in remote option is planned.</div>
           </div>
         </div>
       </div>
@@ -1257,6 +1024,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           <a href="#downloads">Windows</a>
           <a href="#downloads">macOS</a>
           <a href="#downloads">Linux</a>
+          <a href="#mobile-apps">Android & iOS (soon)</a>
         </div>
         <div class="footer-column">
           <h3>Company & legal</h3>

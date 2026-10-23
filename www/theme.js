@@ -1,3 +1,45 @@
+// Dil (Türkçe / English): önce kullanıcının kendi seçimi; seçim yoksa otomatik tespit.
+// Türk dünyası (Türkiye, KKTC, Azerbaycan, Kazakistan, Özbekistan, Kırgızistan, Türkmenistan)
+// → Türkçe; diğer tüm ülkeler → İngilizce. Tespit: cihaz dilleri, dil etiketindeki ülke ve saat dilimi.
+(function () {
+  var KEY = 'nexusLanguage';
+  var TURKIC_LANGS = /^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/i;
+  var TURKIC_REGIONS = /^(TR|AZ|KZ|UZ|KG|TM)$/i;
+  var TURKIC_ZONES = /^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/;
+  function detect() {
+    var list = [];
+    try { list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]).filter(Boolean); } catch (e) {}
+    for (var i = 0; i < list.length; i++) {
+      var parts = String(list[i]).replace('_', '-').split('-');
+      if (i === 0 && TURKIC_LANGS.test(parts[0])) return 'tr';
+      for (var j = 1; j < parts.length; j++) if (TURKIC_REGIONS.test(parts[j])) return 'tr';
+    }
+    try { if (TURKIC_ZONES.test(Intl.DateTimeFormat().resolvedOptions().timeZone || '')) return 'tr'; } catch (e) {}
+    for (var k = 1; k < list.length; k++) if (/^tr$/i.test(String(list[k]).split(/[-_]/)[0])) return 'tr';
+    return 'en';
+  }
+  window.nexusDetectLanguage = detect;
+  var lang = null;
+  try { lang = localStorage.getItem(KEY); } catch (e) {}
+  if (lang !== 'tr' && lang !== 'en') lang = detect();
+  window.nexusLang = lang;
+  window.nexusLocale = lang === 'en' ? 'en-US' : 'tr-TR';
+  window.nexusT = function (tr, en) { return lang === 'en' ? en : tr; };
+  window.nexusTr = function (s) { return s; }; // İngilizcede i18n.js bunu çeviriciyle değiştirir
+  window.nexusSrcText = function (el) { return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : ''; };
+  window.NEXUS_SUPPORT_EMAIL = 'destek@nexus-ai.app'; // geri bildirim e-postalarının gideceği adres
+  window.nexusSetLanguage = function (next) {
+    if (next !== 'tr' && next !== 'en') return;
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    location.reload();
+  };
+  document.documentElement.setAttribute('lang', lang);
+  try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(lang); } catch (e) {}
+  if (lang === 'en' && document.readyState === 'loading' && !window.__nexusI18n) {
+    document.write('<script src="lang-en.js"><\/script><script src="i18n.js"><\/script>');
+  }
+})();
+
 
 // Global Unbreakable Image Handler
 window.addEventListener('error', function(e) {
@@ -10,7 +52,11 @@ window.addEventListener('error', function(e) {
     if (isAvatar) {
       e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cbd5e1'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
     } else {
-      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' fill='%23f8fafc'%3E%3Crect width='400' height='300' rx='24'/%3E%3Cpath d='M120 220l40-50 50 60 60-80 40 70H120z' fill='%23e2e8f0'/%3E%3Ccircle cx='270' cy='110' r='24' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='24' fill='%2394a3b8'%3EG%C3%B6rsel Y%C3%BCklenemedi%3C/text%3E%3C/svg%3E";
+      // Çevrimdışıyken (yerel öncelikli kullanım) uzak görseller yüklenemezse
+      // gri "Görsel Yüklenemedi" yazısı yerine marka renginde sakin bir yüzey göster.
+      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234C7DFF'/%3E%3Cstop offset='1' stop-color='%2322D3EE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M160 160l40-34 40 34v42h-80z'/%3E%3Cpath d='M190 202v-22h20v22'/%3E%3C/g%3E%3C/svg%3E";
+      e.target.classList.add('nx-img-fallback');
+      e.target.removeAttribute('srcset');
     }
   }
 }, true);
@@ -32,6 +78,40 @@ window.addEventListener('error', function(e) {
       triggerHaptic();
     }
   }, { capture: true, passive: true });
+
+  // Erişilebilirlik: role="button" verilen öğeler klavyeyle (Enter/Boşluk) de çalışsın.
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var el = e.target;
+    if (!el || !el.getAttribute || el.getAttribute('role') !== 'button') return;
+    if (/^(BUTTON|A|INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return;
+    e.preventDefault();
+    el.click();
+  });
+
+  // Erişilebilirlik: yalnızca ikon içeren geri butonlarına/bağlantılarına ekran okuyucu etiketi.
+  function labelIconOnlyControls() {
+    var nodes = document.querySelectorAll('header a, header button, nav a, nav button');
+    Array.prototype.forEach.call(nodes, function(el) {
+      if (el.getAttribute('aria-label') || (el.textContent || '').trim()) return;
+      var icon = el.querySelector('[data-lucide], svg');
+      var name = icon && icon.getAttribute ? (icon.getAttribute('data-lucide') || '') : '';
+      var onclick = el.getAttribute('onclick') || '';
+      var label = /chevron-left|arrow-left/.test(name) || /history\.back/.test(onclick) || el.id === 'back-button' || /back/i.test(el.id) ? 'Geri'
+        : /settings/.test(name) ? 'Ayarlar'
+        : /info/.test(name) ? 'Bilgi'
+        : /x$|close/.test(name) ? 'Kapat'
+        : /plus/.test(name) ? 'Ekle'
+        : /sliders|filter/.test(name) ? 'Seçenekler'
+        : /search/.test(name) ? 'Ara'
+        : /menu/.test(name) ? 'Menü'
+        : /bell/.test(name) ? 'Bildirimler'
+        : '';
+      if (label) el.setAttribute('aria-label', label);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', labelIconOnlyControls);
+  else labelIconOnlyControls();
 
   // Global Offline Indicator
   function updateOnlineStatus() {
@@ -108,7 +188,7 @@ window.addEventListener('error', function(e) {
     'html.dark .bg-slate-200, html.dark .bg-slate-300 { background-color: #475569 !important; }',
     /* Yarı saydam açık zeminler (örn. bg-slate-50/50 üst başlıklar) */
     'html.dark [class*="bg-slate-50/"], html.dark [class*="bg-gray-50/"], html.dark [class*="bg-slate-100/"] { background-color: rgba(30,41,59,0.7) !important; }',
-    /* Yarı saydam koyu-gri zeminler (ör. hızlı aksiyon kapıat butonu bg-slate-200/60) — koyu temada görünür olsun */
+    /* Yarı saydam koyu-gri zeminler (ör. hızlı aksiyon kapat butonu bg-slate-200/60) — koyu temada görünür olsun */
     'html.dark [class*="bg-slate-200/"], html.dark [class*="bg-slate-300/"] { background-color: #475569 !important; }',
     /* Keyfî açık hex zeminler (sayfa içi bg-[#...] sınıfları) */
     'html.dark [class*="bg-[#F3F2F9]"], html.dark [class*="bg-[#F1F7FF]"], html.dark [class*="bg-[#f8fafc]"] { background-color: #1e293b !important; }',
@@ -282,3 +362,97 @@ window.addEventListener('error', function(e) {
   });
 })();
 
+
+// Masaüstü düzeni (≥1024px): ortak stil + sol menü. Telefon görünümünü etkilemez.
+(function () {
+  if (document.getElementById('nexus-desktop-css')) return;
+  if (window.matchMedia && window.matchMedia('(min-width: 1024px)').matches) document.documentElement.classList.add('nx-desk');
+  var link = document.createElement('link');
+  link.id = 'nexus-desktop-css';
+  link.rel = 'stylesheet';
+  link.href = 'css/nexus-desktop.css';
+  document.head.appendChild(link);
+  var s = document.createElement('script');
+  s.src = 'desktop.js';
+  document.head.appendChild(s);
+})();
+
+// Marka uyumlu bilgi paneli (tarayıcının alert() kutusu yerine). Kullanım: nexusInfo(başlık, metin, [düğmeler])
+// düğmeler: [{ label, href?, onClick?, primary? }]
+window.nexusInfo = function (title, text, actions) {
+  var old = document.getElementById('nx-info');
+  if (old) old.remove();
+  var dark = document.documentElement.classList.contains('dark');
+  var wrap = document.createElement('div');
+  wrap.id = 'nx-info';
+  wrap.setAttribute('role', 'dialog');
+  wrap.setAttribute('aria-modal', 'true');
+  wrap.style.cssText = 'position:fixed;inset:0;z-index:10050;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.45);padding:16px;';
+  var card = document.createElement('div');
+  card.style.cssText = 'width:100%;max-width:440px;border-radius:28px;padding:22px 20px 18px;font-family:Inter,sans-serif;box-shadow:0 20px 50px rgba(15,23,42,.25);' +
+    (dark ? 'background:#0f172a;color:#f8fafc;border:1px solid rgba(148,163,184,.18);' : 'background:#fff;color:#0f172a;');
+  var esc = function (v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var btns = (actions && actions.length ? actions : [{ label: 'Tamam', primary: true }]).map(function (a, i) {
+    return '<button type="button" data-i="' + i + '" style="flex:1;min-height:46px;border-radius:9999px;font-weight:700;font-size:14px;' +
+      (a.primary ? 'background:#4C7DFF;color:#fff;' : (dark ? 'background:#1e293b;color:#e2e8f0;' : 'background:#f1f5f9;color:#334155;')) + '">' + esc(a.label) + '</button>';
+  }).join('');
+  card.innerHTML = '<p style="font-size:17px;font-weight:800;margin:0 0 8px">' + esc(title) + '</p>' +
+    '<p style="font-size:14px;line-height:1.55;margin:0 0 18px;opacity:.82">' + esc(text) + '</p>' +
+    '<div style="display:flex;gap:10px">' + btns + '</div>';
+  wrap.appendChild(card);
+  var close = function () { wrap.remove(); };
+  wrap.addEventListener('click', function (e) { if (e.target === wrap) close(); });
+  card.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var a = (actions && actions[+b.getAttribute('data-i')]) || {};
+      close();
+      if (a.onClick) a.onClick();
+      if (a.href) location.href = a.href;
+    });
+  });
+  document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } });
+  document.body.appendChild(wrap);
+  var first = card.querySelector('button[data-i]');
+  if (first) first.focus();
+};
+
+// Panoya kopyalama: izin yoksa eski yönteme düşer; sonucu Promise<boolean> olarak döner.
+window.nexusCopy = function (text) {
+  function legacy() {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0;left:-9999px';
+      document.body.appendChild(ta); ta.select();
+      var ok = document.execCommand('copy'); ta.remove();
+      return ok;
+    } catch (e) { return false; }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacy(); });
+  }
+  return Promise.resolve(legacy());
+};
+
+// Giriş / kayıt / tanıtım ekranlarında dil seçimi (Ayarlar'a ulaşmadan önce gerekir)
+(function () {
+  var page = (location.pathname.split('/').pop() || '').toLowerCase();
+  var AUTH = ['stitch-login.html', 'stitch-register.html', 'stitch-forgot-password.html', 'stitch-onboarding.html'];
+  if (AUTH.indexOf(page) === -1) return;
+  function add() {
+    if (document.getElementById('nx-lang-switch')) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'nx-lang-switch';
+    b.setAttribute('data-no-i18n', '');
+    b.setAttribute('aria-label', window.nexusLang === 'en' ? 'Türkçe\'ye geç' : 'Switch to English');
+    b.innerHTML = '<span' + (window.nexusLang === 'tr' ? ' class="on"' : '') + '>TR</span><span' + (window.nexusLang === 'en' ? ' class="on"' : '') + '>EN</span>';
+    b.addEventListener('click', function () { nexusSetLanguage(window.nexusLang === 'en' ? 'tr' : 'en'); });
+    document.body.appendChild(b);
+  }
+  var css = document.createElement('style');
+  css.textContent = '#nx-lang-switch{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;z-index:60;display:flex;gap:2px;padding:3px;border-radius:999px;border:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:600 12px/1 Inter,system-ui,sans-serif;color:#64748b;cursor:pointer}' +
+    '#nx-lang-switch span{padding:6px 9px;border-radius:999px}#nx-lang-switch span.on{background:#4C7DFF;color:#fff}' +
+    'html.dark #nx-lang-switch{background:rgba(15,23,42,.72);border-color:rgba(148,163,184,.25);color:#94a3b8}';
+  document.head.appendChild(css);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+})();

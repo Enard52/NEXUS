@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz Ekleme Merkezi</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
   <script src="auth.js"></script>
@@ -51,7 +51,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     .nexus-glow {
-      box-shadow: 0 12px 24px rgba(124, 92, 255, 0.28);
+      box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28);
     }
     body {
       font-family: "Inter", sans-serif;
@@ -91,7 +91,7 @@
       overflow: visible;
     }
     .product-image-stage {
-      height: 64px;
+      height: 78px;
       margin: 0;
       padding: 0;
       border-radius: 0;
@@ -106,7 +106,7 @@
       min-height: 34px;
       overflow: visible;
       text-align: center;
-      font-size: clamp(9.5px, 2.7vw, 10.5px);
+      font-size: clamp(11px, 3vw, 12px);
       line-height: 1.14;
       font-weight: 650;
       letter-spacing: 0;
@@ -389,7 +389,7 @@
         <div class="px-6 pb-6">
           <div class="rounded-[2rem] border border-dashed border-slate-200 bg-white/70 px-5 py-5 text-center dark:border-slate-700 dark:bg-slate-950/30">
             <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Ürün kataloğu</p>
-            <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Marka ve ürün listesinden cihazıını seçerek ekleyebilirsin.</p>
+            <p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Marka ve ürün listesinden cihazını seçerek ekleyebilirsin.</p>
             <button type="button" onclick="openCatalogCategory('all')" class="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">
               <i data-lucide="arrow-up-right" class="text-base"></i>
               Kataloğu Aç
@@ -460,7 +460,7 @@
       countEl.textContent = devices.length + " cihazı";
 
       if (!devices.length) {
-        listEl.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-4 py-5 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950/40 dark:text-slate-300">Henüz eklenmiş cihazı yok. QR, kurulum kodu veya manuel katalog ile eklediğin cihazılar burada görünür.</div>';
+        listEl.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-4 py-5 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950/40 dark:text-slate-300">Henüz eklenmiş cihaz yok. QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.</div>';
         return;
       }
 
@@ -500,7 +500,7 @@
       window.location.href = buildCatalogUrl(category);
     }
 
-    var SUPPORTED_IMAGE_VERSION = "20260801-products-4";
+    var SUPPORTED_IMAGE_VERSION = "20261023-products-6";
 
     // --- Yerel ağ taraması (manuel IP yolu) -------------------------------
     // mDNS keşfi native eklenti gerektirdiği için ilk yol budur; connector'lar
@@ -623,7 +623,7 @@
       var prefix = window.nexusLan.normalizeSubnetBase(base);
       var btn = document.getElementById("lan-subnet-btn");
       if (!prefix) {
-        setScanStatus("Alt ağ öneki gecersiz. Ornek: 192.168.1", "error");
+        setScanStatus("Alt ağ öneki geçersiz. Örnek: 192.168.1", "error");
         return;
       }
       subnetFindings = [];
@@ -633,7 +633,7 @@
       window.nexusLan.scanSubnet(prefix, {
         onFound: function (info, count) {
           subnetFindings.push(info);
-          setScanStatus(count + " cihaz bulundu · tarama suruyor", "ok");
+          setScanStatus(count + " cihaz bulundu · tarama sürüyor", "ok");
           renderSubnetFindings();
         },
       })
@@ -668,7 +668,7 @@
             escapeHtml(group.protocol) + '" data-caps="' + escapeHtml((model.caps || []).join(",")) + '">' +
             '<div class="product-image-stage">' +
             '<img src="assets/products/' + encodeURIComponent(model.img) + "?v=" + SUPPORTED_IMAGE_VERSION +
-            '" alt="' + escapeHtml(model.name) + '" class="max-w-[84%] max-h-[62px] object-contain" loading="lazy" decoding="async" />' +
+            '" alt="' + escapeHtml(model.name) + '" class="max-w-[88%] max-h-[74px] object-contain" loading="lazy" decoding="async" />' +
             "</div>" +
             '<div class="px-1 pt-1 flex min-h-[30px] flex-col items-center justify-start">' +
             '<span class="product-name">' + escapeHtml(model.name) + "</span>" +

@@ -1,5 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Uygulama koyu temayı <html class="dark"> ile açıp kapatır (theme.js).
+  // 'media' (varsayılan) kalırsa dark: sınıfları uygulama ayarını değil
+  // işletim sistemi temasını izler ve iki tema birbirine karışır.
+  darkMode: 'class',
   content: [
     "./stitch-*.html",
     "./www/stitch-*.html",
@@ -9,9 +13,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Birincil marka rengi #4C7DFF (mavi). 'purple' adları tarihsel; değerleri değiştirmeyin,
+        // tüm ekranlar bu adlarla yazılmış. Yeni kodda nexus-primary kullanın.
+        'nexus-primary': '#4C7DFF',
+        'nexus-primary-press': '#3F6FFF',
         'nexus-purple': '#4C7DFF',
         'nexus-cyan': '#22D3EE',
-        'nexus-brand': '#6D28D9',
+        'nexus-brand': '#4C7DFF',
         'nexus-bg': '#F8F7FC',
         'nexus-border': '#F1F1F4',
         // stitch ekranlari developerce camelCase token kullaniyor (text-nexusPurple);

@@ -1,51 +1,40 @@
 <!doctype html>
 <html lang="tr" data-theme="light">
 <head>
-  <script>
-    if (!localStorage.getItem("nexus_session_token")) {
-      window.location.replace("/login.html");
-    }
-  </script>
+<script>(function(){try{var L=location,p=L.pathname,tr=/^\/tr(\/|$)/.test(p);
+var q=new URLSearchParams(L.search).get("lang"),s=null;try{s=localStorage.getItem("nx-lang")}catch(e){}
+if(q==="tr"||q==="en"){s=q;try{localStorage.setItem("nx-lang",q)}catch(e){}}
+function d(){var a=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]).filter(Boolean);
+for(var i=0;i<a.length;i++){var x=String(a[i]).replace("_","-").split("-");if(i===0&&/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/i.test(x[0]))return"tr";
+for(var j=1;j<x.length;j++)if(/^(TR|AZ|KZ|UZ|KG|TM)$/i.test(x[j]))return"tr"}
+var z="";try{z=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+if(/^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/.test(z))return"tr";
+for(var k=1;k<a.length;k++)if(/^tr$/i.test(String(a[k]).split(/[-_]/)[0]))return"tr";return"en"}
+if(!s&&tr)return;var w=s||d();var f=p.replace(/^\/tr(\/|$)/,"/").replace(/^\/+/,"");if(f==="index.html")f="";
+var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash)}catch(e){}})();</script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NEXUS — Kişisel işletim sistemini indir</title>
-  <meta name="description" content="NEXUS&#39;u Windows, macOS ve Linux için indir. iOS ve Android uygulamaları da hazır." />
+  <title>NEXUS - Akıllı Evinizin Zekâsı</title>
+  <meta name="description" content="NEXUS&#39;u Windows, macOS ve Linux için ücretsiz indir. Cihazlarınla yerel ağda, hub ya da bulut ücreti olmadan konuşur. Android ve iOS yakında." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://nexus-ai.example.com/" />
+  <link rel="canonical" href="https://nexus-ai.app/" />
   <meta name="keywords" content="personal AI, voice assistant, smart home, privacy, cross-platform, automation, routines" />
   <meta name="theme-color" content="#f6f7fb" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="NEXUS" />
-  <meta property="og:title" content="NEXUS — Kişisel işletim sistemini indir" />
-  <meta property="og:description" content="NEXUS&#39;u Windows, macOS ve Linux için indir. iOS ve Android uygulamaları da hazır." />
-  <meta property="og:url" content="https://nexus-ai.example.com/" />
-  <meta property="og:image" content="https://nexus-ai.example.com/og-cover.png" />
+  <meta property="og:title" content="NEXUS - Akıllı Evinizin Zekâsı" />
+  <meta property="og:description" content="NEXUS&#39;u Windows, macOS ve Linux için ücretsiz indir. Cihazlarınla yerel ağda, hub ya da bulut ücreti olmadan konuşur. Android ve iOS yakında." />
+  <meta property="og:url" content="https://nexus-ai.app/" />
+  <meta property="og:image" content="https://nexus-ai.app/og-cover.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="NEXUS — Kişisel işletim sistemini indir" />
-  <meta name="twitter:description" content="NEXUS&#39;u Windows, macOS ve Linux için indir. iOS ve Android uygulamaları da hazır." />
+  <meta name="twitter:title" content="NEXUS - Akıllı Evinizin Zekâsı" />
+  <meta name="twitter:description" content="NEXUS&#39;u Windows, macOS ve Linux için ücretsiz indir. Cihazlarınla yerel ağda, hub ya da bulut ücreti olmadan konuşur. Android ve iOS yakında." />
   <meta name="twitter:site" content="@nexusai" />
-  <meta name="twitter:image" content="https://nexus-ai.example.com/og-cover.png" />
+  <meta name="twitter:image" content="https://nexus-ai.app/og-cover.png" />
   <link rel="alternate" hreflang="en" href="/?lang=en" />
   <link rel="alternate" hreflang="tr" href="/?lang=tr" />
-  <link rel="alternate" hreflang="es" href="/?lang=es" />
-  <link rel="alternate" hreflang="fr" href="/?lang=fr" />
-  <link rel="alternate" hreflang="de" href="/?lang=de" />
-  <link rel="alternate" hreflang="it" href="/?lang=it" />
-  <link rel="alternate" hreflang="pt" href="/?lang=pt" />
-  <link rel="alternate" hreflang="nl" href="/?lang=nl" />
-  <link rel="alternate" hreflang="pl" href="/?lang=pl" />
-  <link rel="alternate" hreflang="cs" href="/?lang=cs" />
-  <link rel="alternate" hreflang="ru" href="/?lang=ru" />
-  <link rel="alternate" hreflang="uk" href="/?lang=uk" />
-  <link rel="alternate" hreflang="ar" href="/?lang=ar" />
-  <link rel="alternate" hreflang="he" href="/?lang=he" />
-  <link rel="alternate" hreflang="hi" href="/?lang=hi" />
-  <link rel="alternate" hreflang="ja" href="/?lang=ja" />
-  <link rel="alternate" hreflang="ko" href="/?lang=ko" />
-  <link rel="alternate" hreflang="zh-Hans" href="/?lang=zh-Hans" />
-  <link rel="alternate" hreflang="zh-Hant" href="/?lang=zh-Hant" />
-  <link rel="alternate" hreflang="vi" href="/?lang=vi" />
-  <link rel="alternate" hreflang="x-default" href="https://nexus-ai.example.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://nexus-ai.app/" />
   <link rel="preload" href="/fonts/space-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22nxlogo%22%20x1%3D%223%22%20y1%3D%222%22%20x2%3D%2229%22%20y2%3D%2230%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%236f9bff%22%2F%3E%3Cstop%20offset%3D%220.55%22%20stop-color%3D%22%235b8dff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238b7bff%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22nxsheen%22%20x1%3D%2216%22%20y1%3D%221%22%20x2%3D%2216%22%20y2%3D%2217%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220.30%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2230%22%20height%3D%2230%22%20rx%3D%229%22%20fill%3D%22url(%23nxlogo)%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2230%22%20height%3D%2230%22%20rx%3D%229%22%20fill%3D%22url(%23nxsheen)%22%2F%3E%3Crect%20x%3D%221.5%22%20y%3D%221.5%22%20width%3D%2229%22%20height%3D%2229%22%20rx%3D%228.5%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.22%22%2F%3E%3Cpath%20d%3D%22M10.5%2022.5V10.5L21.5%2022.5V10.5%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E" />
@@ -144,6 +133,9 @@
     body {
       margin: 0;
       color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background:
         radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 32rem),
         radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28rem),
@@ -321,6 +313,7 @@
       border-radius: 14px;
       font-weight: 700;
       font-size: 14px;
+      white-space: nowrap;
       text-decoration: none;
       cursor: pointer;
       transition: transform .22s var(--ease), box-shadow .22s ease, border-color .22s ease, background .22s ease;
@@ -344,7 +337,7 @@
     .button-small { min-height: 42px; padding: 0 16px; font-size: 13px; }
     .button svg { width: 17px; height: 17px; }
 
-    main { overflow: clip; }
+    main { overflow: clip; flex: 1; }
     .hero {
       position: relative;
       min-height: 880px;
@@ -420,7 +413,7 @@
     }
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 12px;
       margin-top: 34px;
     }
@@ -1361,7 +1354,7 @@
     }
     .download-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
     .download-card.recommended::before {
-      content: "ÖÖnerilen";
+      content: "Önerilen";
       position: absolute;
       right: 18px;
       top: 18px;
@@ -1588,6 +1581,11 @@
       grid-template-columns: 1.3fr .7fr .7fr;
       gap: 60px;
       padding-bottom: 44px;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .footer-brand p { max-width: 360px; margin: 16px 0 0; color: var(--muted); font-size: 13px; }
     .footer-column h3 {
@@ -2194,6 +2192,7 @@
     .download-windows::after { background: radial-gradient(circle, rgba(0,164,239,.18), transparent 68%); }
     .download-macos::after { background: radial-gradient(circle, color-mix(in srgb, var(--text) 11%, transparent), transparent 68%); }
     .download-linux::after { background: radial-gradient(circle, color-mix(in srgb, var(--primary) 15%, transparent), transparent 68%); }
+    .download-android::after { background: radial-gradient(circle, rgba(61,220,132,.16), transparent 68%); }
     .download-card-grid {
       position: absolute;
       inset: 0;
@@ -2217,6 +2216,10 @@
     .platform-icon-windows { border-color: rgba(0,164,239,.24); background: rgba(0,164,239,.09); }
     .platform-icon-macos { background: color-mix(in srgb, var(--text) 6%, var(--surface)); }
     .platform-icon-linux { background: color-mix(in srgb, var(--primary) 7%, var(--surface)); }
+    .platform-icon-android { border-color: rgba(61,220,132,.26); background: rgba(61,220,132,.10); }
+    .os-logo-android { color: #3DDC84; width: 26px; height: 26px; }
+    .apk-link { display: block; margin-top: .55rem; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .apk-link:hover { color: var(--text); }
     .os-logo, .os-logo-img { width: 27px; height: 27px; object-fit: contain; }
     .os-fallback { font-size: 20px; }
     .platform-kicker {
@@ -2458,7 +2461,7 @@
       word-break: break-word;
     }
 
-    /* Pricing is presented as three hardware-like intelligence modules rather than geÖneric SaaS cards. */
+    /* Pricing is presented as three hardware-like intelligence modules rather than generic SaaS cards. */
     .pricing-grid {
       grid-template-columns: .94fr 1.12fr .94fr;
       gap: 18px;
@@ -2590,6 +2593,9 @@
     .platform-watermark .os-logo { width: 132px; height: 132px; }
     .download-windows .platform-watermark { opacity: .045; }
     .download-linux .platform-watermark { opacity: .055; }
+    [data-theme="light"] .platform-watermark { opacity: .08; }
+    [data-theme="light"] .download-windows .platform-watermark { opacity: .12; }
+    [data-theme="light"] .download-linux .platform-watermark { opacity: .15; }
     .platform-specs {
       display: flex;
       flex-wrap: wrap;
@@ -3647,7 +3653,7 @@
       box-shadow: 0 6px 16px color-mix(in srgb, var(--protocol-color) 8%, transparent);
     }
     [data-theme="light"] .protocol-mark {
-      color: color-mix(in srgb, var(--protocol-color) 45%, var(--text));
+      color: var(--text);
     }
     .protocol-mark svg {
       width: 19px;
@@ -4249,7 +4255,7 @@
 
 
 
-    /* ── V8 capability density pass: Nexus AI, automation, response diagnostics ── */
+    /* ── V8 capability density pass: NEXUS AI, automation, response diagnostics ── */
     .nexus-ai-card,
     .automation-card,
     .response-card { overflow: hidden; }
@@ -4594,6 +4600,23 @@
       object-fit: contain;
       display: block;
     }
+
+    /* ── Downloads: desktop now, mobile coming soon ── */
+    .downloads-grid.downloads-mobile { grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+    .download-card.is-soon { opacity: .82; }
+    .download-card.is-soon:hover { transform: none; }
+    .download-card .is-disabled,
+    .download-card .is-disabled:hover { opacity: .6; cursor: not-allowed; pointer-events: none; transform: none; box-shadow: none; }
+    .download-note { display: block; margin-top: .6rem; font-size: 11.5px; line-height: 1.45; color: var(--muted); text-align: center; }
+    .downloads-meta { margin: 18px 0 0; text-align: center; font-size: 13px; }
+    .downloads-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .downloads-meta a:hover { color: var(--text); }
+    .early-access-actions { margin: 26px 0 0; display: flex; justify-content: center; }
+    @media (max-width: 800px) {
+      .downloads-grid.downloads-mobile { grid-template-columns: 1fr; }
+    }
+    .price.price-soon { font-size: 34px; letter-spacing: -.02em; }
+    .price-card .is-disabled { opacity: .6; cursor: not-allowed; pointer-events: none; }
 </style>
   <script type="application/ld+json">
   {
@@ -4601,9 +4624,10 @@
     "@type": "SoftwareApplication",
     "name": "NEXUS",
     "description": "A voice-first, privacy-focused personal operating system for smart homes.",
-    "url": "https://nexus-ai.example.com/",
+    "url": "https://nexus-ai.app/",
     "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Windows, macOS, Linux, iOS, Android",
+    "operatingSystem": "Windows, macOS, Linux",
+    "downloadUrl": "https://github.com/Enard52/nexus-releases/releases/latest",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -4687,10 +4711,10 @@
           <a class="nav-link" href="#how">Nasıl çalışır</a>
           <a class="nav-link" href="#integrations">Entegrasyonlar</a>
           <a class="nav-link" href="#pricing">Fiyatlandırma</a>
-          <a class="nav-link" href="#desktop">İndir</a>
+          <a class="nav-link" href="#downloads">İndir</a>
           <div class="mobile-nav-actions">
-            <a class="mobile-nav-cta mobile-nav-login" href="/login">Hesap aç</a>
-            <a class="mobile-nav-cta mobile-nav-download" href="#desktop">NEXUS&#39;u indir</a>
+            <a class="mobile-nav-cta mobile-nav-login" href="#downloads">Hesap aç</a>
+            <a class="mobile-nav-cta mobile-nav-download" href="#downloads">NEXUS&#39;u indir</a>
           </div>
         </nav>
 
@@ -4704,24 +4728,6 @@
             <div class="language-menu" role="menu">
               <a href="?lang=en">English</a>
               <a class="active" href="?lang=tr">Türkçe</a>
-              <a href="?lang=es">Español</a>
-              <a href="?lang=fr">Français</a>
-              <a href="?lang=de">Deutsch</a>
-              <a href="?lang=it">Italiano</a>
-              <a href="?lang=pt">Português</a>
-              <a href="?lang=nl">Nederlands</a>
-              <a href="?lang=pl">Polski</a>
-              <a href="?lang=cs">Čeština</a>
-              <a href="?lang=ru">Русский</a>
-              <a href="?lang=uk">Українська</a>
-              <a href="?lang=ar">العربية</a>
-              <a href="?lang=he">עברית</a>
-              <a href="?lang=hi">हिन्दी</a>
-              <a href="?lang=ja">日本語</a>
-              <a href="?lang=ko">한국어</a>
-              <a href="?lang=zh-Hans">简体中文</a>
-              <a href="?lang=zh-Hant">繁體中文</a>
-              <a href="?lang=vi">Tiếng Việt</a>
             </div>
           </div>
 
@@ -4729,7 +4735,7 @@
             <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
             <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
-          <a class="button button-primary button-small" href="/login">NEXUS&#39;u dene</a>
+          <a class="button button-primary button-small" href="#downloads">NEXUS&#39;u dene</a>
           <button class="menu-button" id="menu-button" type="button" aria-label="Menüyü aç" aria-expanded="false">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
           </button>
@@ -4742,17 +4748,17 @@
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · macOS · Linux · iOS · Android</div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · macOS · Linux · yerel ağ</div>
           <h1>Senin evin.<span class="hero-gradient-line"><span class="hero-word">Tek</span> <span class="hero-word">zekâ.</span></span></h1>
-          <p class="hero-copy">NEXUS; her cihazıı birbirine bağlayan, rutinlerini öğrenen ve her kararı evinin içinde tutan ses öncelikli kişisel bir işletim sistemidir.</p>
+          <p class="hero-copy">NEXUS, akıllı ev cihazlarınızı yönetmenize yardımcı olan bir akıllı ev asistanıdır.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="/login">
+            <a class="button button-primary" href="#downloads">
               NEXUS&#39;u ücretsiz dene
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a class="button button-secondary" href="#desktop">
-              Masaüstü uygulamasını indir
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+            <a class="button button-secondary" href="#integrations">
+              Desteklenen cihaz
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
           <div class="hero-proof">
@@ -4762,7 +4768,7 @@
             </span>
             <span class="proof-item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
-              Bulut bağımlılığı yok
+              Hub ya da bulut ücreti yok
             </span>
             <span class="proof-item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
@@ -4844,7 +4850,7 @@
               </div>
               <div class="command-copy">
                 <span class="command-label">NEXUS anladı</span>
-                <span class="command-text" id="command-text">"Evi film gecesine hazırla."</span>
+                <span class="command-text" id="command-text">“Evi film gecesine hazırla.”</span>
               </div>
               <span class="command-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
               <span class="command-status">Yerelde çalışıyor</span>
@@ -4852,7 +4858,7 @@
 
             <div class="privacy-chip">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-              Hiçbir veri bu cihazıdan çıkmaz
+              Hiçbir veri bu cihazdan çıkmaz
             </div>
           </div>
         </div>
@@ -4865,23 +4871,23 @@
           <article class="metric metric-users">
             <div class="metric-top">
               <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-              <span class="metric-chip"><i></i>Canlı ağ</span>
+              <span class="metric-chip"><i></i>Masaüstü</span>
             </div>
-            <strong data-count="500" data-suffix="K+">500K+</strong>
-            <span class="metric-title">Aktif kullanıcı</span>
-            <p class="metric-copy">Evlerde ve çalışma alanlarında çalışan özel NEXUS ortamları.</p>
+            <strong data-count="3" data-suffix="">3</strong>
+            <span class="metric-title">Masaüstü platformu</span>
+            <p class="metric-copy">Windows, macOS ve Linux uygulamaları bugün indirilebilir. Mobil uygulamalar yakında.</p>
             <span class="metric-visual metric-activity" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </article>
 
           <article class="metric metric-devices">
             <div class="metric-top">
               <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
-              <span class="metric-chip"><i></i>Senkron</span>
+              <span class="metric-chip"><i></i>Yerel API</span>
             </div>
-            <strong data-count="2000" data-suffix="+">2,000+</strong>
-            <span class="metric-title">Desteklenen cihazı</span>
-            <p class="metric-copy">Önde gelen standartlar ve ekosistemler genelinde tek zekâ katmanı.</p>
-            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.2 5.6a3.2 3.2 0 1 1 3.1 4h3.4a3.2 3.2 0 1 1 3.1-4 3.2 3.2 0 0 1-1.1 3.6l-2 3.5a3.2 3.2 0 1 1-3.4 0l-2-3.5a3.2 3.2 0 0 1-1.1-3.6Z"/></svg>Matter</b><b><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25°C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>HomeKit</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.8 8.1 10.9 15M16.2 8.1 13.1 15M8 7h8"/></svg>Thread</b><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h11l-8 10h11M7 4c4 1 7 1 10 0M7 20c4-1 7-1 10 0"/></svg>Zigbee</b></span>
+            <strong data-count="7" data-suffix="">7</strong>
+            <span class="metric-title">Cihaz ekosistemi</span>
+            <p class="metric-copy">Philips Hue, Shelly, Tasmota, WLED, ESPHome, TP-Link Kasa ve Yeelight.</p>
+            <span class="metric-visual metric-device-cloud" aria-hidden="true"><b>Hue</b><b>Shelly</b><b>WLED</b><b>ESPHome</b></span>
           </article>
 
           <article class="metric metric-private">
@@ -4891,19 +4897,19 @@
             </div>
             <strong data-count="100" data-suffix="%">100%</strong>
             <span class="metric-title">Cihaz üzerinde gizlilik</span>
-            <p class="metric-copy">Komutlar, rutinler ve bağlam donanımında şifreli kalır.</p>
+            <p class="metric-copy">Cihaz komutları uygulamadan doğrudan cihazlarınıza gider. Hiçbiri sunucularımızdan geçmez.</p>
             <span class="metric-visual metric-privacy-rail" aria-hidden="true"></span>
           </article>
 
           <article class="metric metric-rating-card">
             <div class="metric-top">
               <span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2Z"/></svg></span>
-              <span class="metric-chip"><i></i>Doğrulanmış</span>
+              <span class="metric-chip"><i></i>Ücretsiz</span>
             </div>
-            <strong data-count="4.9" data-suffix="★">4.9★</strong>
-            <span class="metric-title">Ortalama puan</span>
-            <p class="metric-copy">Hız, sakin tasarım ve güvenilirlik için istikrarlı biçimde yüksek puan alıyor.</p>
-            <span class="metric-visual metric-rating" aria-hidden="true"><span>★★★★★</span><small>12.8K değerlendirme</small></span>
+            <strong data-count="0" data-suffix="">0</strong>
+            <span class="metric-title">Hub, bulut ya da hesap ücreti</span>
+            <p class="metric-copy">Cihazlar doğrudan kendi ağınızda eşleştirilir ve kontrol edilir. Ücretli köprü ya da abonelik gerekmez.</p>
+            <span class="metric-visual metric-privacy-rail" aria-hidden="true"></span>
           </article>
         </div>
       </div>
@@ -4932,15 +4938,15 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 0-4 4v6a4 4 0 0 0 8 0V6a4 4 0 0 0-4-4z"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3"/></svg>
             </div>
             <h3>İnsan gibi konuş.</h3>
-            <p>Ayarları değil sonuçları iste. NEXUS bağlamı, odaları, insanları, cihazıları ve evinin işleyişini anlar.</p>
+            <p>Ayarları değil sonuçları iste. NEXUS bağlamı, odaları, insanları, cihazları ve evinin işleyişini anlar.</p>
           </article>
           <article class="principle reveal">
             <span class="principle-index">03 / EVRENSEL</span>
             <div class="principle-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06-2.83 2.83-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21h-4v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06-2.83-2.83.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3v-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06L7.04 4.3l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3h4v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06 2.83 2.83-.06.06A1.65 1.65 0 0 0 19.4 9c.12.36.18.73.18 1H21v4h-1.42c0 .35-.06.69-.18 1z"/></svg>
             </div>
-            <h3>Tek katman, her cihazı.</h3>
-            <p>Matter, Zigbee, Z-Wave, Wi-Fi, HomeKit ve yüzlerce API seni tek bir markaya kilitlemeden birlikte çalışır.</p>
+            <h3>Tek katman, her cihaz.</h3>
+            <p>Hue, Shelly, Tasmota, WLED ve ESPHome kendi yerel API&#39;leriyle yan yana çalışır; tek bir markaya bağlı kalmazsınız.</p>
           </article>
           <article class="principle reveal">
             <span class="principle-index">04 / DAYANIKLI</span>
@@ -4967,9 +4973,9 @@
             <div class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>
             </div>
-            <h3>Nexus AI ile tanış</h3>
-            <p>Özel sesli asistanın niyeti anlar, cihazıları koordine eder ve sesini buluta göndermeden çok adımlı istekleri tamamlar.</p>
-            <div class="nexus-ai-console" aria-label="Nexus AI voice assistant preview">
+            <h3>NEXUS AI ile tanış</h3>
+            <p>Özel sesli asistanın niyeti anlar, cihazları koordine eder ve sesini buluta göndermeden çok adımlı istekleri tamamlar.</p>
+            <div class="nexus-ai-console" aria-label="NEXUS AI voice assistant preview">
               <div class="nexus-ai-head">
                 <span class="nexus-ai-avatar" aria-hidden="true"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
@@ -4985,12 +4991,12 @@
     <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
     <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
   </svg></span>
-                <span class="nexus-ai-identity"><strong>Nexus AI</strong><small><i></i> Yerelde dinliyor</small></span>
+                <span class="nexus-ai-identity"><strong>NEXUS AI</strong><small><i></i> Yerelde dinliyor</small></span>
                 <span class="nexus-ai-mode">PRIVATE CORE</span>
               </div>
               <div class="nexus-ai-query">
                 <span class="nexus-ai-mic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></span>
-                <div><small>YOU SAID</small><strong>"Kapıları kilitle, ışıkları kıs ve Odak'ı başlat."</strong></div>
+                <div><small>YOU SAID</small><strong>“Kapıları kilitle, ışıkları kıs ve Odak'ı başlat.”</strong></div>
               </div>
               <div class="nexus-ai-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
@@ -5006,7 +5012,7 @@
             <div class="privacy-visual">
               <div class="data-row">
                 <div class="mini-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM9 9h6v6H9z"/></svg></div>
-                <div><strong>Nexus AI niyeti</strong><small>42 ms&#39;de yerelde işlendi</small></div><span class="local-badge">LOCAL</span>
+                <div><strong>NEXUS AI niyeti</strong><small>42 ms&#39;de yerelde işlendi</small></div><span class="local-badge">LOCAL</span>
               </div>
               <div class="data-row">
                 <div class="mini-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="9"/></svg></div>
@@ -5024,7 +5030,7 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
             </div>
             <h3>Birleşik standartlar</h3>
-            <p>Zaten sahip olduğun ekosistemleri bağla.</p>
+            <p>Sahip olduğunuz Wi-Fi cihazlarını ücretli bir hub olmadan bağlayın.</p>
             <div class="protocol-console" aria-label="Supported smart-home standards">
               <div class="protocol-console-head">
                 <div class="protocol-core" aria-hidden="true"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -5042,62 +5048,56 @@
     <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
   </svg></div>
                 <div class="protocol-console-title">
-                  <strong>Evrensel cihazı dokusu</strong>
-                  <small>Otomatik keşif · şifreli · yerel</small>
+                  <strong>Evrensel cihaz dokusu</strong>
+                  <small>Ağınızda bulunur · yerel</small>
                 </div>
                 <span class="protocol-live"><i></i> 6 çevrimiçi</span>
               </div>
 
               <div class="protocol-grid">
-                <div class="protocol-tile" style="--protocol-color:#f5f7ff">
+                <div class="protocol-tile" style="--protocol-color:#f5b301">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M7.2 5.6a3.2 3.2 0 1 1 3.1 4h3.4a3.2 3.2 0 1 1 3.1-4 3.2 3.2 0 0 1-1.1 3.6l-2 3.5a3.2 3.2 0 1 1-3.4 0l-2-3.5a3.2 3.2 0 0 1-1.1-3.6Z"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="800" fill="currentColor">Hue</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Matter</strong><small>Evrensel katman</small></span>
+                  <span class="protocol-name"><strong>Philips Hue</strong><small>Yerel köprü</small></span>
+                  <span class="protocol-state protocol-live"><i></i>Live</span>
+                </div>
+                <div class="protocol-tile" style="--protocol-color:#3b8fe0">
+                  <span class="protocol-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">Sh</text></svg>
+                  </span>
+                  <span class="protocol-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
                   <span class="protocol-state"></span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#f5f5f7">
+                <div class="protocol-tile" style="--protocol-color:#1fa3ec">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09ZM12.03 7.25°C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">Ta</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>HomeKit</strong><small>Apple ekosistemi</small></span>
+                  <span class="protocol-name"><strong>Tasmota</strong><small>Açık yazılım</small></span>
                   <span class="protocol-state"></span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#ff7a3d">
+                <div class="protocol-tile" style="--protocol-color:#f59e0b">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7.8 8.1 10.9 15M16.2 8.1 13.1 15M8 7h8"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">W</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Thread</strong><small>Düşük güçlü mesh</small></span>
+                  <span class="protocol-name"><strong>WLED</strong><small>LED şeritler</small></span>
                   <span class="protocol-state"></span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#ef5b5b">
+                <div class="protocol-tile" style="--protocol-color:#9ca3af">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M5 7h11l-8 10h11M7 4c4 1 7 1 10 0M7 20c4-1 7-1 10 0"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">E</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Zigbee</strong><small>Cihaz mesh ağı</small></span>
+                  <span class="protocol-name"><strong>ESPHome</strong><small>Kendin yap cihazlar</small></span>
                   <span class="protocol-state"></span>
                 </div>
-
-                <div class="protocol-tile" style="--protocol-color:#39b9f3">
+                <div class="protocol-tile" style="--protocol-color:#00a79d">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12.5a9 9 0 0 1 12 0M9.5 16a4 4 0 0 1 5 0"/><circle cx="12" cy="19" r="1"/></svg>
+                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">K</text></svg>
                   </span>
-                  <span class="protocol-name"><strong>Wi-Fi</strong><small>IP cihazıları</small></span>
-                  <span class="protocol-state"></span>
-                </div>
-
-                <div class="protocol-tile" style="--protocol-color:#6aa7ff">
-                  <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 13c3.2-5 6.1-5 9 0s5.8 5 9 0M3 8c3.2-5 6.1-5 9 0s5.8 5 9 0"/></svg>
-                  </span>
-                  <span class="protocol-name"><strong>Z-Wave</strong><small>Güvenli sub-GHz</small></span>
+                  <span class="protocol-name"><strong>Kasa · Yeelight</strong><small>Masaüstü uygulaması</small></span>
                   <span class="protocol-state"></span>
                 </div>
               </div>
-
               <div class="protocol-console-foot">
                 <span><i></i> NEXUS grafiği senkronize</span>
                 <svg viewBox="0 0 140 24" preserveAspectRatio="none" aria-hidden="true"><path d="M1 17C17 17 19 8 34 11s19 8 32 1 20-9 33-2 23 6 40-5"/></svg>
@@ -5110,8 +5110,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M3 6h1M14 12h7M3 12h7M10 18h11M3 18h3"/></svg>
             </div>
             <h3>Görünmez otomasyon</h3>
-            <p>Nexus AI; varlık, zaman, cihazı durumu ve niyeti programlanmış değil doğal hissettiren rutinlerde birleştirir.</p>
-            <div class="automation-console" aria-label="Nexus AI automation preview">
+            <p>NEXUS AI; varlık, zaman, cihaz durumu ve niyeti programlanmış değil doğal hissettiren rutinlerde birleştirir.</p>
+            <div class="automation-console" aria-label="NEXUS AI automation preview">
               <div class="automation-head"><span>ROUTINE / ARRIVAL</span><b><i></i> ACTIVE</b></div>
               <div class="automation-trigger">
                 <span class="automation-trigger-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></span>
@@ -5135,7 +5135,7 @@
     <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-ctx)"/>
     <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
     <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg></i><span><small>Nexus AI</small><strong>Bağlam çözümlendi</strong></span></div>
+  </svg></i><span><small>NEXUS AI</small><strong>Bağlam çözümlendi</strong></span></div>
                 <span class="logic-link"><i></i></span>
                 <div class="logic-node"><i>03</i><span><small>ACTION</small><strong>Sahne etkinleştirildi</strong></span></div>
               </div>
@@ -5144,7 +5144,7 @@
                 <span><i></i> İklim <b>22°</b></span>
                 <span><i></i> Salon sesi <b>ON</b></span>
               </div>
-              <div class="automation-foot"><span><i></i> Bu cihazıda çalıştırıldı</span><b>0 bulut çağrısı</b></div>
+              <div class="automation-foot"><span><i></i> Bu cihazda çalıştırıldı</span><b>0 bulut çağrısı</b></div>
             </div>
           </article>
 
@@ -5153,8 +5153,8 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
             </div>
             <h3>Anında yanıt</h3>
-            <p>Nexus AI, bir bulut asistanı daha bağlanamadan yerel donanımında yorumlar, karar verir ve harekete geçer.</p>
-            <div class="response-console" aria-label="Nexus AI local response diagnostics">
+            <p>NEXUS AI, bir bulut asistanı daha bağlanamadan yerel donanımında yorumlar, karar verir ve harekete geçer.</p>
+            <div class="response-console" aria-label="NEXUS AI local response diagnostics">
               <div class="response-head"><span>LOCAL EXECUTION TRACE</span><b><i></i> LIVE</b></div>
               <div class="response-primary">
                 <div class="response-ring"><span><strong>42</strong><small>ms</small></span></div>
@@ -5175,7 +5175,7 @@
     <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-route)"/>
     <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
     <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg></i><small>Nexus AI</small></span><b>→</b>
+  </svg></i><small>NEXUS AI</small></span><b>→</b>
                 <span><i>03</i><small>DEVICES</small></span>
               </div>
               <div class="response-metrics">
@@ -5225,8 +5225,8 @@
                 <span class="mini-platform mini-linux"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c-2.4 0-3.8 2.1-3.8 4.7 0 1.3.4 2.3.1 3.5-.3 1.1-1.6 2.2-2.4 3.5-.9 1.4-1.5 3.1-.8 4.1.5.8 1.6.9 2.6.6.7 1.1 2.2 1.8 4.3 1.8s3.6-.7 4.3-1.8c1 .3 2.1.2 2.6-.6.7-1-.1-2.8-.9-4.1-.8-1.3-2-2.4-2.3-3.5-.3-1.2.1-2.2.1-3.5C15.8 4.1 14.4 2 12 2Zm-1.3 4.3c.5 0 .9.5.9 1.1 0 .6-.4 1.1-.9 1.1s-.9-.5-.9-1.1c0-.6.4-1.1.9-1.1Zm2.6 0c.5 0 .9.5.9 1.1 0 .6-.4 1.1-.9 1.1s-.9-.5-.9-1.1c0-.6.4-1.1.9-1.1ZM12 9c1 0 1.8.5 1.8 1.1 0 .6-.8 1.1-1.8 1.1s-1.8-.5-1.8-1.1C10.2 9.5 11 9 12 9Z"/></svg></span>
                 <div class="flow-packet"><span></span><span></span><span></span></div>
               </div>
-              <div class="flow-copy-v4"><h3>Yerel çekirdeğini kur</h3><p>Masaüstün için imzalı sürümü seç. NEXUS özel yerel çalışma ortamını otomatik yapılandırır.</p></div>
-              <div class="flow-meta"><span>≈ 2 dakika</span><span>İmzalı sürüm</span></div>
+              <div class="flow-copy-v4"><h3>Yerel çekirdeğini kur</h3><p>Windows, macOS veya Linux kurulum dosyasını indirin. Her sürümde doğrulayabileceğiniz SHA-256 özetleri yayınlanır.</p></div>
+              <div class="flow-meta"><span>≈ 2 dakika</span><span>Özetler yayınlanır</span></div>
             </article>
             <article class="flow-step flow-step-v4">
               <div class="flow-topline"><span class="flow-number">02</span><span class="flow-label">Özel keşif</span></div>
@@ -5249,7 +5249,7 @@
   </svg></span>
                 <i class="radar-dot dot-one"></i><i class="radar-dot dot-two"></i><i class="radar-dot dot-three"></i>
               </div>
-              <div class="flow-copy-v4"><h3>Bulut olmadan keşfet</h3><p>NEXUS uyumlu cihazıları yerel ağında haritalar ve her bağlantıdan önce izin ister.</p></div>
+              <div class="flow-copy-v4"><h3>Bulut olmadan keşfet</h3><p>NEXUS uyumlu cihazları yerel ağında haritalar ve her bağlantıdan önce izin ister.</p></div>
               <div class="flow-meta"><span>Yalnızca yerel tarama</span><span>İzin tabanlı</span></div>
             </article>
             <article class="flow-step flow-step-v4">
@@ -5287,170 +5287,123 @@
         <div class="section-head center reveal">
           <span class="section-kicker">Entegrasyonlar</span>
           <h2 class="section-heading">Zaten sahip olduklarınla çalışır.</h2>
+          <p class="section-copy">Doğrudan yerel ağınız üzerinden eşleşir — ücretli hub, bulut hesabı ya da abonelik yok. Matter, Tapo ve Tuya yol haritasında.</p>
         </div>
       </div>
       <div class="integrations-wrap reveal">
         <div class="integration-ambient integration-ambient-one" aria-hidden="true"></div>
         <div class="integration-ambient integration-ambient-two" aria-hidden="true"></div>
         <div class="integrations-track" aria-label="Supported integrations">
-          <div class="integration-pill" style="--brand:#F5F5F7">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EApple%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.152%206.896c-.948%200-2.415-1.078-3.96-1.04-2.04.027-3.91%201.183-4.961%203.014-2.117%203.675-.546%209.103%201.519%2012.09%201.013%201.454%202.208%203.09%203.792%203.039%201.52-.065%202.09-.987%203.935-.987%201.831%200%202.35.987%203.96.948%201.637-.026%202.676-1.48%203.676-2.948%201.156-1.688%201.636-3.325%201.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04%202.48-4.494%202.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675%201.09-4.61%201.09zM15.53%203.83c.843-1.012%201.4-2.427%201.245-3.83-1.207.052-2.662.805-3.532%201.818-.78.896-1.454%202.338-1.273%203.714%201.338.104%202.715-.688%203.559-1.701%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="APPLE" data-dark-invert="1" />
-              <span class="brand-fallback" hidden>APPLE</span>
-            </span>
-            <span class="integration-name"><strong>Apple Home</strong><small>Yerel köprü</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#4285F4">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%234285F4%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EGoogle%20Assistant%3C%2Ftitle%3E%3Cpath%20d%3D%22M22.365%208.729c.9%200%201.635-.735%201.635-1.635s-.735-1.636-1.635-1.636-1.636.735-1.636%201.636.723%201.635%201.636%201.635m-4.907%205.452a3.27%203.27%200%201%200%200-6.542%203.27%203.27%200%200%200%200%206.542m0%208.722c2.105%200%203.816-1.711%203.816-3.829s-1.711-3.816-3.829-3.816a3.82%203.82%200%200%200-3.816%203.816%203.825%203.825%200%200%200%203.829%203.83M6.542%2014.18a6.542%206.542%200%201%200%200-13.084%206.542%206.542%200%201%200%200%2013.084%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="GOOGLE" />
-              <span class="brand-fallback" hidden>GOOGLE</span>
-            </span>
-            <span class="integration-name"><strong>Google Home</strong><small>Ses ve cihazılar</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#15BFFF">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%2315BFFF%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESmartThings%3C%2Ftitle%3E%3Cpath%20d%3D%22M11.51%200C8.338%200%205.034.537%202.694%202.694.5%205.174%200%208.464%200%2011.525v.942c0%203.165.537%206.499%202.694%208.84C5.188%2023.513%208.494%2024%2011.569%2024h.854c3.18%200%206.528-.53%208.883-2.694C23.514%2018.811%2024%2015.5%2024%2012.423v-.853c0-3.18-.53-6.528-2.694-8.876C18.826.494%2015.544%200%2012.482%200zM12%203.505c1.244%200%202.256.99%202.256%202.206%200%201.065-.685%201.976-1.715%202.181v1.59c1.48.214%202.528%201.43%202.528%202.934%200%201.654-1.377%203-3.07%203-1.692%200-3.068-1.346-3.068-3%200-.17.017-.335.045-.497l-1.536-.488a2.258%202.258%200%2001-1.962%201.12c-.237%200-.471-.037-.698-.11-1.183-.375-1.833-1.622-1.449-2.78a2.246%202.246%200%20012.146-1.524c.237%200%20.471.036.698.108a2.23%202.23%200%20011.313%201.098c.204.391.282.823.232%201.249l1.535.488c.44-.86%201.378-1.453%202.384-1.599V7.892c-1.029-.205-1.896-1.116-1.896-2.181%200-1.217%201.012-2.206%202.257-2.206zm0%20.882c-.747%200-1.354.594-1.354%201.324%200%20.73.607%201.324%201.354%201.324.746%200%201.354-.594%201.354-1.324%200-.73-.608-1.324-1.354-1.324zm6.522%203.75c.98%200%201.843.613%202.146%201.525.186.56.138%201.158-.135%201.683-.274.526-.74.915-1.314%201.096-.227.073-.461.11-.698.11a2.258%202.258%200%2001-1.962-1.12l-.634.201-.278-.838.632-.202a2.21%202.21%200%20011.546-2.347c.226-.072.46-.108.697-.108zM5.476%209.02c-.588%200-1.105.368-1.287.915-.23.694.159%201.442.869%201.668.136.043.277.065.419.065.588%200%201.105-.368%201.287-.915a1.29%201.29%200%2000-.081-1.01%201.338%201.338%200%2000-.788-.658%201.377%201.377%200%2000-.42-.065zm13.045%200c-.142%200-.282.021-.419.065a1.32%201.32%200%2000-.869%201.668c.182.547.7.915%201.287.915.142%200%20.283-.022.42-.065.344-.11.623-.343.787-.659.165-.315.193-.673.082-1.009a1.348%201.348%200%2000-1.288-.915zM12%2010.474c-1.095%200-1.986.871-1.986%201.942%200%201.07.89%201.941%201.986%201.941%201.094%200%201.985-.87%201.985-1.94%200-1.072-.89-1.943-1.985-1.943zm-2.706%204.831l.73.519-.39.526c.709.757.801%201.925.16%202.787-.423.57-1.106.91-1.827.91-.478%200-.937-.147-1.325-.422a2.177%202.177%200%2001-.499-3.082%202.28%202.28%200%20012.76-.71zm5.41%200l.392.528a2.285%202.285%200%20012.76.71%202.178%202.178%200%2001-.499%203.082%202.275%202.275%200%2001-1.325.421%202.28%202.28%200%2001-1.827-.91%202.172%202.172%200%2001.16-2.785l-.39-.527zm-6.734%201.21c-.433%200-.843.205-1.097.547-.44.59-.304%201.42.3%201.849a1.37%201.37%200%20001.891-.293c.44-.59.305-1.42-.3-1.85a1.364%201.364%200%2000-.794-.252zm8.059%200c-.287%200-.561.088-.795.254a1.307%201.307%200%2000-.299%201.849%201.371%201.371%200%20001.891.293%201.307%201.307%200%2000.3-1.85%201.37%201.37%200%2000-1.097-.545Z%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SMARTTHINGS" />
-              <span class="brand-fallback" hidden>SMARTTHINGS</span>
-            </span>
-            <span class="integration-name"><strong>SmartThings</strong><small>Samsung ekosistemi</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#41BDF5">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%2318BCF2%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EHome%20Assistant%3C%2Ftitle%3E%3Cpath%20d%3D%22M22.939%2010.627%2013.061.749a1.505%201.505%200%200%200-2.121%200l-9.879%209.878C.478%2011.21%200%2012.363%200%2013.187v9c0%20.826.675%201.5%201.5%201.5h9.227l-4.063-4.062a2.034%202.034%200%200%201-.664.113c-1.13%200-2.05-.92-2.05-2.05s.92-2.05%202.05-2.05%202.05.92%202.05%202.05c0%20.233-.041.456-.113.665l3.163%203.163V9.928a2.05%202.05%200%200%201-1.15-1.84c0-1.13.92-2.05%202.05-2.05s2.05.92%202.05%202.05a2.05%202.05%200%200%201-1.15%201.84v8.127l3.146-3.146A2.051%202.051%200%200%201%2018%2012.239c1.13%200%202.05.92%202.05%202.05s-.92%202.05-2.05%202.05c-.25%200-.488-.047-.709-.13L12.9%2020.602v3.088h9.6c.825%200%201.5-.675%201.5-1.5v-9c0-.825-.477-1.977-1.061-2.561z%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="HOME ASSISTANT" />
-              <span class="brand-fallback" hidden>HOME ASSISTANT</span>
-            </span>
-            <span class="integration-name"><strong>Home Assistant</strong><small>Yerel otomasyon</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#0B78D0">
+          <div class="integration-pill" style="--brand:#F5B301">
             <span class="integration-logo-wrap">
               <img class="integration-logo" src="data:image/svg+xml;charset=utf-8," alt="" loading="lazy" decoding="async" data-brand="PHILIPS HUE" />
               <span class="brand-fallback" hidden>PHILIPS HUE</span>
             </span>
-            <span class="integration-name"><strong>Philips Hue</strong><small>Aydınlatma ve sahneler</small></span>
+            <span class="integration-name"><strong>Philips Hue</strong><small>Köprü · bağlantı düğmesi</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#2B7FD3">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESonos%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.988%2012.36l-2.813-2.634v4.429h.837V11.7l2.813%202.633V9.905h-.837zM6.464%209.665A2.3%202.3%200%200%200%204.13%2012c0%201.257%201.077%202.334%202.334%202.334A2.3%202.3%200%200%200%208.798%2012a2.3%202.3%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%204.968%2012c0-.838.658-1.496%201.496-1.496S7.96%2011.162%207.96%2012s-.658%201.496-1.496%201.496M2.694%2012c-.24-.18-.54-.3-.958-.419-.838-.24-.838-.479-.838-.598%200-.24.299-.48.718-.48.36%200%20.658.18.778.24l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.419%200-.838.12-1.137.359-.3.24-.479.598-.479.958s.18.718.479.957c.24.18.538.3.957.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.359%200-.658-.18-.778-.239l-.06-.06-.658.479.06.06s.538.598%201.436.598c.42%200%20.838-.12%201.137-.359.3-.24.48-.598.48-.957%200-.36-.18-.659-.48-.958m14.843-2.334A2.3%202.3%200%200%200%2015.202%2012a2.337%202.337%200%200%200%202.334%202.334A2.3%202.3%200%200%200%2019.87%2012a2.337%202.337%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%2016.04%2012c0-.838.658-1.496%201.496-1.496s1.496.658%201.496%201.496-.718%201.496-1.496%201.496m3.77-1.556c.24.18.54.3.958.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.36%200-.658-.18-.778-.239h-.06l-.658.479.06.06s.538.598%201.436.598c.419%200%20.838-.12%201.137-.359s.479-.598.479-.958-.18-.718-.479-.957c-.24-.18-.538-.3-.957-.42-.838-.239-.838-.478-.838-.598%200-.239.299-.478.718-.478.359%200%20.658.18.778.239l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.42%200-.838.12-1.137.359-.3.24-.48.598-.48.957-.059.36.12.659.48.898%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SONOS" data-dark-invert="1" />
-              <span class="brand-fallback" hidden>SONOS</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Sh%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%232B7FD3%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%228.6%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3ESh%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SHELLY" />
+              <span class="brand-fallback" hidden>SHELLY</span>
             </span>
-            <span class="integration-name"><strong>Sonos</strong><small>Tüm ev ses sistemi</small></span>
+            <span class="integration-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#0058A3">
+          <div class="integration-pill" style="--brand:#1FA3EC">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22IKEA%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%230058A3%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.3%22%20fill%3D%22none%22%20stroke%3D%22%23FFDA1A%22%20stroke-width%3D%222%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%227.3%22%20font-weight%3D%22900%22%20letter-spacing%3D%22.08em%22%20fill%3D%22%23FFDA1A%22%3EIKEA%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="IKEA" />
-              <span class="brand-fallback" hidden>IKEA</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Ta%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%231FA3EC%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%228.6%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3ETa%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="TASMOTA" />
+              <span class="brand-fallback" hidden>TASMOTA</span>
             </span>
-            <span class="integration-name"><strong>IKEA Home smart</strong><small>Işıklar ve sensörler</small></span>
+            <span class="integration-name"><strong>Tasmota</strong><small>Açık yazılım</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#EB0443">
+          <div class="integration-pill" style="--brand:#F59E0B">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23EB0443%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EZigbee%3C%2Ftitle%3E%3Cpath%20d%3D%22M11.988%200a11.85%2011.85%200%2000-8.617%203.696c7.02-.875%2011.401-.583%2013.289-.34%203.752.583%203.558%203.404%203.558%203.404L8.237%2019.112c2.299.22%206.897.366%2013.796-.631a11.86%2011.86%200%20001.912-6.469C23.945%205.374%2018.595%200%2011.988%200zm.232%204.31c-2.451-.014-5.772.146-9.963.723C.854%207.003.055%209.41.055%2012.012.055%2018.626%205.38%2024%2011.988%2024c3.63%200%206.85-1.63%209.053-4.182-7.286.948-11.813.631-13.75.388-3.775-.56-3.557-3.404-3.557-3.404L15.691%204.474a38.635%2038.635%200%2000-3.471-.163Z%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="ZIGBEE" />
-              <span class="brand-fallback" hidden>ZIGBEE</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22WLED%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23F59E0B%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23111%22%3EWLED%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="WLED" />
+              <span class="brand-fallback" hidden>WLED</span>
             </span>
-            <span class="integration-name"><strong>Zigbee</strong><small>Düşük güçlü mesh</small></span>
+            <span class="integration-name"><strong>WLED</strong><small>LED şeritler</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#9CA3AF">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Bose%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23111827%22%2F%3E%3Cpath%20d%3D%22M5.8%2015.2c1.9-2.6%205.6-2.6%207.5%200m-10-4.4c3.5-4.7%209.1-4.7%2012.6%200m-14.9-1.7c4.5-6%2011.7-6%2016.2%200%22%20fill%3D%22none%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2219%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%227%22%20font-weight%3D%22800%22%20fill%3D%22%23F8FAFC%22%3EBOSE%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="BOSE" />
-              <span class="brand-fallback" hidden>BOSE</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22ESP%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23111827%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3EESP%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="ESPHOME" />
+              <span class="brand-fallback" hidden>ESPHOME</span>
             </span>
-            <span class="integration-name"><strong>Bose</strong><small>Premium ses</small></span>
+            <span class="integration-name"><strong>ESPHome</strong><small>Kendin yap cihazlar</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#FF6900">
+          <div class="integration-pill" style="--brand:#00A79D">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Xiaomi%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23FF6900%22%2F%3E%3Cpath%20d%3D%22M7%208.5h2.5l2.5%203.3%202.5-3.3H17v7h-2.1v-4.1l-2.4%203.2h-.1l-2.4-3.2v4.1H7z%22%20fill%3D%22%23fff%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2220%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%224.6%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.12em%22%20fill%3D%22%23fff%22%3Emi%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="XIAOMI" />
-              <span class="brand-fallback" hidden>XIAOMI</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22kasa%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%2300A79D%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3Ekasa%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="TP-LINK KASA" />
+              <span class="brand-fallback" hidden>TP-LINK KASA</span>
             </span>
-            <span class="integration-name"><strong>Xiaomi</strong><small>Akıllı cihazılar</small></span>
+            <span class="integration-name"><strong>TP-Link Kasa</strong><small>Masaüstü uygulaması</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F7">
+          <div class="integration-pill" style="--brand:#8FA3BF">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EApple%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.152%206.896c-.948%200-2.415-1.078-3.96-1.04-2.04.027-3.91%201.183-4.961%203.014-2.117%203.675-.546%209.103%201.519%2012.09%201.013%201.454%202.208%203.09%203.792%203.039%201.52-.065%202.09-.987%203.935-.987%201.831%200%202.35.987%203.96.948%201.637-.026%202.676-1.48%203.676-2.948%201.156-1.688%201.636-3.325%201.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04%202.48-4.494%202.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675%201.09-4.61%201.09zM15.53%203.83c.843-1.012%201.4-2.427%201.245-3.83-1.207.052-2.662.805-3.532%201.818-.78.896-1.454%202.338-1.273%203.714%201.338.104%202.715-.688%203.559-1.701%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="APPLE" data-dark-invert="1" />
-              <span class="brand-fallback" hidden>APPLE</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Yee%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%232F3A4A%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3EYee%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="YEELIGHT" />
+              <span class="brand-fallback" hidden>YEELIGHT</span>
             </span>
-            <span class="integration-name"><strong>Apple Home</strong><small>Yerel köprü</small></span>
+            <span class="integration-name"><strong>Yeelight</strong><small>Masaüstü uygulaması · LAN modu</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#4285F4">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%234285F4%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EGoogle%20Assistant%3C%2Ftitle%3E%3Cpath%20d%3D%22M22.365%208.729c.9%200%201.635-.735%201.635-1.635s-.735-1.636-1.635-1.636-1.636.735-1.636%201.636.723%201.635%201.636%201.635m-4.907%205.452a3.27%203.27%200%201%200%200-6.542%203.27%203.27%200%200%200%200%206.542m0%208.722c2.105%200%203.816-1.711%203.816-3.829s-1.711-3.816-3.829-3.816a3.82%203.82%200%200%200-3.816%203.816%203.825%203.825%200%200%200%203.829%203.83M6.542%2014.18a6.542%206.542%200%201%200%200-13.084%206.542%206.542%200%201%200%200%2013.084%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="GOOGLE" />
-              <span class="brand-fallback" hidden>GOOGLE</span>
-            </span>
-            <span class="integration-name"><strong>Google Home</strong><small>Ses ve cihazılar</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#15BFFF">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%2315BFFF%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESmartThings%3C%2Ftitle%3E%3Cpath%20d%3D%22M11.51%200C8.338%200%205.034.537%202.694%202.694.5%205.174%200%208.464%200%2011.525v.942c0%203.165.537%206.499%202.694%208.84C5.188%2023.513%208.494%2024%2011.569%2024h.854c3.18%200%206.528-.53%208.883-2.694C23.514%2018.811%2024%2015.5%2024%2012.423v-.853c0-3.18-.53-6.528-2.694-8.876C18.826.494%2015.544%200%2012.482%200zM12%203.505c1.244%200%202.256.99%202.256%202.206%200%201.065-.685%201.976-1.715%202.181v1.59c1.48.214%202.528%201.43%202.528%202.934%200%201.654-1.377%203-3.07%203-1.692%200-3.068-1.346-3.068-3%200-.17.017-.335.045-.497l-1.536-.488a2.258%202.258%200%2001-1.962%201.12c-.237%200-.471-.037-.698-.11-1.183-.375-1.833-1.622-1.449-2.78a2.246%202.246%200%20012.146-1.524c.237%200%20.471.036.698.108a2.23%202.23%200%20011.313%201.098c.204.391.282.823.232%201.249l1.535.488c.44-.86%201.378-1.453%202.384-1.599V7.892c-1.029-.205-1.896-1.116-1.896-2.181%200-1.217%201.012-2.206%202.257-2.206zm0%20.882c-.747%200-1.354.594-1.354%201.324%200%20.73.607%201.324%201.354%201.324.746%200%201.354-.594%201.354-1.324%200-.73-.608-1.324-1.354-1.324zm6.522%203.75c.98%200%201.843.613%202.146%201.525.186.56.138%201.158-.135%201.683-.274.526-.74.915-1.314%201.096-.227.073-.461.11-.698.11a2.258%202.258%200%2001-1.962-1.12l-.634.201-.278-.838.632-.202a2.21%202.21%200%20011.546-2.347c.226-.072.46-.108.697-.108zM5.476%209.02c-.588%200-1.105.368-1.287.915-.23.694.159%201.442.869%201.668.136.043.277.065.419.065.588%200%201.105-.368%201.287-.915a1.29%201.29%200%2000-.081-1.01%201.338%201.338%200%2000-.788-.658%201.377%201.377%200%2000-.42-.065zm13.045%200c-.142%200-.282.021-.419.065a1.32%201.32%200%2000-.869%201.668c.182.547.7.915%201.287.915.142%200%20.283-.022.42-.065.344-.11.623-.343.787-.659.165-.315.193-.673.082-1.009a1.348%201.348%200%2000-1.288-.915zM12%2010.474c-1.095%200-1.986.871-1.986%201.942%200%201.07.89%201.941%201.986%201.941%201.094%200%201.985-.87%201.985-1.94%200-1.072-.89-1.943-1.985-1.943zm-2.706%204.831l.73.519-.39.526c.709.757.801%201.925.16%202.787-.423.57-1.106.91-1.827.91-.478%200-.937-.147-1.325-.422a2.177%202.177%200%2001-.499-3.082%202.28%202.28%200%20012.76-.71zm5.41%200l.392.528a2.285%202.285%200%20012.76.71%202.178%202.178%200%2001-.499%203.082%202.275%202.275%200%2001-1.325.421%202.28%202.28%200%2001-1.827-.91%202.172%202.172%200%2001.16-2.785l-.39-.527zm-6.734%201.21c-.433%200-.843.205-1.097.547-.44.59-.304%201.42.3%201.849a1.37%201.37%200%20001.891-.293c.44-.59.305-1.42-.3-1.85a1.364%201.364%200%2000-.794-.252zm8.059%200c-.287%200-.561.088-.795.254a1.307%201.307%200%2000-.299%201.849%201.371%201.371%200%20001.891.293%201.307%201.307%200%2000.3-1.85%201.37%201.37%200%2000-1.097-.545Z%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SMARTTHINGS" />
-              <span class="brand-fallback" hidden>SMARTTHINGS</span>
-            </span>
-            <span class="integration-name"><strong>SmartThings</strong><small>Samsung ekosistemi</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#41BDF5">
-            <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%2318BCF2%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EHome%20Assistant%3C%2Ftitle%3E%3Cpath%20d%3D%22M22.939%2010.627%2013.061.749a1.505%201.505%200%200%200-2.121%200l-9.879%209.878C.478%2011.21%200%2012.363%200%2013.187v9c0%20.826.675%201.5%201.5%201.5h9.227l-4.063-4.062a2.034%202.034%200%200%201-.664.113c-1.13%200-2.05-.92-2.05-2.05s.92-2.05%202.05-2.05%202.05.92%202.05%202.05c0%20.233-.041.456-.113.665l3.163%203.163V9.928a2.05%202.05%200%200%201-1.15-1.84c0-1.13.92-2.05%202.05-2.05s2.05.92%202.05%202.05a2.05%202.05%200%200%201-1.15%201.84v8.127l3.146-3.146A2.051%202.051%200%200%201%2018%2012.239c1.13%200%202.05.92%202.05%202.05s-.92%202.05-2.05%202.05c-.25%200-.488-.047-.709-.13L12.9%2020.602v3.088h9.6c.825%200%201.5-.675%201.5-1.5v-9c0-.825-.477-1.977-1.061-2.561z%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="HOME ASSISTANT" />
-              <span class="brand-fallback" hidden>HOME ASSISTANT</span>
-            </span>
-            <span class="integration-name"><strong>Home Assistant</strong><small>Yerel otomasyon</small></span>
-            <span class="integration-status" aria-hidden="true"></span>
-          </div>
-          <div class="integration-pill" style="--brand:#0B78D0">
+          <div class="integration-pill" style="--brand:#F5B301">
             <span class="integration-logo-wrap">
               <img class="integration-logo" src="data:image/svg+xml;charset=utf-8," alt="" loading="lazy" decoding="async" data-brand="PHILIPS HUE" />
               <span class="brand-fallback" hidden>PHILIPS HUE</span>
             </span>
-            <span class="integration-name"><strong>Philips Hue</strong><small>Aydınlatma ve sahneler</small></span>
+            <span class="integration-name"><strong>Philips Hue</strong><small>Köprü · bağlantı düğmesi</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#2B7FD3">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23000000%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ESonos%3C%2Ftitle%3E%3Cpath%20d%3D%22M12.988%2012.36l-2.813-2.634v4.429h.837V11.7l2.813%202.633V9.905h-.837zM6.464%209.665A2.3%202.3%200%200%200%204.13%2012c0%201.257%201.077%202.334%202.334%202.334A2.3%202.3%200%200%200%208.798%2012a2.3%202.3%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%204.968%2012c0-.838.658-1.496%201.496-1.496S7.96%2011.162%207.96%2012s-.658%201.496-1.496%201.496M2.694%2012c-.24-.18-.54-.3-.958-.419-.838-.24-.838-.479-.838-.598%200-.24.299-.48.718-.48.36%200%20.658.18.778.24l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.419%200-.838.12-1.137.359-.3.24-.479.598-.479.958s.18.718.479.957c.24.18.538.3.957.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.359%200-.658-.18-.778-.239l-.06-.06-.658.479.06.06s.538.598%201.436.598c.42%200%20.838-.12%201.137-.359.3-.24.48-.598.48-.957%200-.36-.18-.659-.48-.958m14.843-2.334A2.3%202.3%200%200%200%2015.202%2012a2.337%202.337%200%200%200%202.334%202.334A2.3%202.3%200%200%200%2019.87%2012a2.337%202.337%200%200%200-2.334-2.334m0%203.83A1.482%201.482%200%200%201%2016.04%2012c0-.838.658-1.496%201.496-1.496s1.496.658%201.496%201.496-.718%201.496-1.496%201.496m3.77-1.556c.24.18.54.3.958.42.838.239.838.478.838.598%200%20.239-.299.478-.718.478-.36%200-.658-.18-.778-.239h-.06l-.658.479.06.06s.538.598%201.436.598c.419%200%20.838-.12%201.137-.359s.479-.598.479-.958-.18-.718-.479-.957c-.24-.18-.538-.3-.957-.42-.838-.239-.838-.478-.838-.598%200-.239.299-.478.718-.478.359%200%20.658.18.778.239l.06.06.658-.479-.06-.06s-.538-.598-1.436-.598c-.42%200-.838.12-1.137.359-.3.24-.48.598-.48.957-.059.36.12.659.48.898%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SONOS" data-dark-invert="1" />
-              <span class="brand-fallback" hidden>SONOS</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Sh%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%232B7FD3%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%228.6%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3ESh%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="SHELLY" />
+              <span class="brand-fallback" hidden>SHELLY</span>
             </span>
-            <span class="integration-name"><strong>Sonos</strong><small>Tüm ev ses sistemi</small></span>
+            <span class="integration-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#0058A3">
+          <div class="integration-pill" style="--brand:#1FA3EC">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22IKEA%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%230058A3%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%228.3%22%20fill%3D%22none%22%20stroke%3D%22%23FFDA1A%22%20stroke-width%3D%222%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%227.3%22%20font-weight%3D%22900%22%20letter-spacing%3D%22.08em%22%20fill%3D%22%23FFDA1A%22%3EIKEA%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="IKEA" />
-              <span class="brand-fallback" hidden>IKEA</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Ta%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%231FA3EC%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%228.6%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3ETa%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="TASMOTA" />
+              <span class="brand-fallback" hidden>TASMOTA</span>
             </span>
-            <span class="integration-name"><strong>IKEA Home smart</strong><small>Işıklar ve sensörler</small></span>
+            <span class="integration-name"><strong>Tasmota</strong><small>Açık yazılım</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#EB0443">
+          <div class="integration-pill" style="--brand:#F59E0B">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20fill%3D%22%23EB0443%22%20role%3D%22img%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3EZigbee%3C%2Ftitle%3E%3Cpath%20d%3D%22M11.988%200a11.85%2011.85%200%2000-8.617%203.696c7.02-.875%2011.401-.583%2013.289-.34%203.752.583%203.558%203.404%203.558%203.404L8.237%2019.112c2.299.22%206.897.366%2013.796-.631a11.86%2011.86%200%20001.912-6.469C23.945%205.374%2018.595%200%2011.988%200zm.232%204.31c-2.451-.014-5.772.146-9.963.723C.854%207.003.055%209.41.055%2012.012.055%2018.626%205.38%2024%2011.988%2024c3.63%200%206.85-1.63%209.053-4.182-7.286.948-11.813.631-13.75.388-3.775-.56-3.557-3.404-3.557-3.404L15.691%204.474a38.635%2038.635%200%2000-3.471-.163Z%22%2F%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="ZIGBEE" />
-              <span class="brand-fallback" hidden>ZIGBEE</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22WLED%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23F59E0B%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23111%22%3EWLED%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="WLED" />
+              <span class="brand-fallback" hidden>WLED</span>
             </span>
-            <span class="integration-name"><strong>Zigbee</strong><small>Düşük güçlü mesh</small></span>
+            <span class="integration-name"><strong>WLED</strong><small>LED şeritler</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#F5F5F5">
+          <div class="integration-pill" style="--brand:#9CA3AF">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Bose%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23111827%22%2F%3E%3Cpath%20d%3D%22M5.8%2015.2c1.9-2.6%205.6-2.6%207.5%200m-10-4.4c3.5-4.7%209.1-4.7%2012.6%200m-14.9-1.7c4.5-6%2011.7-6%2016.2%200%22%20fill%3D%22none%22%20stroke%3D%22%23F8FAFC%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2219%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%227%22%20font-weight%3D%22800%22%20fill%3D%22%23F8FAFC%22%3EBOSE%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="BOSE" />
-              <span class="brand-fallback" hidden>BOSE</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22ESP%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23111827%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3EESP%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="ESPHOME" />
+              <span class="brand-fallback" hidden>ESPHOME</span>
             </span>
-            <span class="integration-name"><strong>Bose</strong><small>Premium ses</small></span>
+            <span class="integration-name"><strong>ESPHome</strong><small>Kendin yap cihazlar</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
-          <div class="integration-pill" style="--brand:#FF6900">
+          <div class="integration-pill" style="--brand:#00A79D">
             <span class="integration-logo-wrap">
-              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Xiaomi%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%23FF6900%22%2F%3E%3Cpath%20d%3D%22M7%208.5h2.5l2.5%203.3%202.5-3.3H17v7h-2.1v-4.1l-2.4%203.2h-.1l-2.4-3.2v4.1H7z%22%20fill%3D%22%23fff%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2220%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%224.6%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.12em%22%20fill%3D%22%23fff%22%3Emi%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="XIAOMI" />
-              <span class="brand-fallback" hidden>XIAOMI</span>
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22kasa%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%2300A79D%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3Ekasa%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="TP-LINK KASA" />
+              <span class="brand-fallback" hidden>TP-LINK KASA</span>
             </span>
-            <span class="integration-name"><strong>Xiaomi</strong><small>Akıllı cihazılar</small></span>
+            <span class="integration-name"><strong>TP-Link Kasa</strong><small>Masaüstü uygulaması</small></span>
+            <span class="integration-status" aria-hidden="true"></span>
+          </div>
+          <div class="integration-pill" style="--brand:#8FA3BF">
+            <span class="integration-logo-wrap">
+              <img class="integration-logo" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20role%3D%22img%22%20aria-label%3D%22Yee%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20rx%3D%227%22%20fill%3D%22%232F3A4A%22%2F%3E%3Ctext%20x%3D%2212%22%20y%3D%2215.4%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%226.4%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%3EYee%3C%2Ftext%3E%3C%2Fsvg%3E" alt="" loading="lazy" decoding="async" data-brand="YEELIGHT" />
+              <span class="brand-fallback" hidden>YEELIGHT</span>
+            </span>
+            <span class="integration-name"><strong>Yeelight</strong><small>Masaüstü uygulaması · LAN modu</small></span>
             <span class="integration-status" aria-hidden="true"></span>
           </div>
         </div>
@@ -5461,8 +5414,8 @@
       <div class="container">
         <div class="section-head center reveal">
           <span class="section-kicker">Fiyatlandırma</span>
-          <h2 class="section-heading">Ücretsiz başla. Sadece ihtiyacın olduğunda genişlet.</h2>
-          <p class="section-copy">Temel yerel kontrol ücretsiz kalır. Premium planlar gelişmiş zekâ, uzaktan erişim ve ev araçları ekler.</p>
+          <h2 class="section-heading">Bugün ücretsiz. Premium hazır olduğunda.</h2>
+          <p class="section-copy">NEXUS&#39;un bugün yaptığı her şey ücretsiz; cihaz sınırı ve hesap ücreti yok. Premium ve Aile planları yolda.</p>
         </div>
 
         <div class="pricing-grid">
@@ -5471,7 +5424,7 @@
             <span class="plan-code">NX / CORE-01</span>
             <div class="plan-head">
               <span class="plan-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5.5 6.5c2.7-2.1 6.4-2.1 9.1 0s3.7 5.7 2.3 8.7c-1.4 3-4.8 4.6-8 3.8-3.2-.8-5.5-3.8-5.4-7.1"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
               </span>
               <div><span class="plan-overline">Yerel temeller</span><h3>Ücretsiz</h3></div>
               <span class="plan-badge">Sonsuza dek</span>
@@ -5482,19 +5435,19 @@
               <span class="price-note">Kart gerekmez</span>
             </div>
             <div class="plan-console" aria-label="Free plan capacity">
-              <div class="plan-console-head"><span>Yerel çekirdek kapıasitesi</span><strong>05 cihazı</strong></div>
+              <div class="plan-console-head"><span>Cihaz kapasitesi</span><strong>Sınırsız</strong></div>
               <div class="plan-console-track"><i style="--capacity: 42%"></i><b></b><b></b><b></b><b></b><b></b></div>
-              <div class="plan-console-meta"><span>Cihaz üstü ses</span><span>Topluluk kanalı</span></div>
+              <div class="plan-console-meta"><span>Yerel kontrol</span><span>Senaryolar ve NEXUS AI</span></div>
             </div>
             <div class="plan-divider"><span></span></div>
             <span class="feature-label">Ücretsiz plana dahil</span>
             <ul class="feature-list">
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>5 cihazıa kadar bağlantı</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Temel sesli komutlar ve rutinler</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Sınırsız bağlı cihaz</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Senaryolar, otomasyonlar ve NEXUS AI sohbeti</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>%100 yerel işleme</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Topluluk desteği</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Windows, macOS ve Linux uygulamaları</li>
             </ul>
-            <a class="button button-secondary" href="/login">Ücretsiz başla</a>
+            <a class="button button-secondary" href="#downloads">Ücretsiz başla</a>
             <div class="plan-foot"><span class="status-dot"></span>Tamamen senin donanımında çalışır</div>
           </article>
 
@@ -5504,31 +5457,31 @@
             <div class="premium-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="plan-head">
               <span class="plan-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 1.7 5.1L19 9l-5.3 1.9L12 16l-1.7-5.1L5 9l5.3-1.9L12 2Z"/><path d="m19 15 .9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15Z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>
               </span>
               <div><span class="plan-overline">Uyarlanabilir zekâ</span><h3>Premium</h3></div>
-              <span class="plan-badge popular">En popüler</span>
+              <span class="plan-badge popular">Yakında</span>
             </div>
             <p class="plan-description">Gelişmiş yapay zekâ, güvenli uzaktan erişim ve rutinlerine sürekli uyum sağlayan otomasyonlar.</p>
             <div class="plan-price-row">
-              <div class="price"><sup>$</sup>5<span>/ ay</span></div>
-              <span class="price-note">İstediğin zaman iptal et</span>
+              <div class="price price-soon">Yakında</div>
+              <span class="price-note">Henüz satışta değil</span>
             </div>
             <div class="plan-console plan-console-premium" aria-label="Premium plan capacity">
-              <div class="plan-console-head"><span>Uyarlanabilir çekirdek kapıasitesi</span><strong>Sınırsız</strong></div>
+              <div class="plan-console-head"><span>Uyarlanabilir çekirdek kapasitesi</span><strong>Sınırsız</strong></div>
               <div class="plan-console-track"><i style="--capacity: 94%"></i><b></b><b></b><b></b><b></b><b></b></div>
               <div class="plan-console-meta"><span>Uyarlanabilir rutinler</span><span>Öncelikli yanıt</span></div>
             </div>
             <div class="plan-divider"><span></span></div>
             <span class="feature-label">Ücretsiz plandaki her şey, artı</span>
             <ul class="feature-list">
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Sınırsız bağlı cihazı</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Sınırsız bağlı cihaz</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Gelişmiş yapay zekâ rutinleri ve otomasyon</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Çok odalı ses ve sahneler</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Öncelikli 7/24 destek</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Güvenli uzaktan erişim</li>
             </ul>
-            <a class="button button-primary" href="/login">Ücretsiz başla</a>
+            <span class="button button-primary is-disabled" aria-disabled="true">Yakında</span>
             <div class="plan-foot"><span class="status-dot"></span>Güç ve gizliliğin en iyi dengesi</div>
           </article>
 
@@ -5537,15 +5490,15 @@
             <span class="plan-code">NX / HOUSE-03</span>
             <div class="plan-head">
               <span class="plan-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
               </span>
               <div><span class="plan-overline">Paylaşılan ev</span><h3>Aile</h3></div>
               <span class="plan-badge">6 profil</span>
             </div>
             <p class="plan-description">Herkes için bireysel erişim, tercihler, güvenlik ve kontrol sunan paylaşılan zekâ katmanı.</p>
             <div class="plan-price-row">
-              <div class="price"><sup>$</sup>10<span>/ ay</span></div>
-              <span class="price-note">Tek ev</span>
+              <div class="price price-soon">Yakında</div>
+              <span class="price-note">Henüz satışta değil</span>
             </div>
             <div class="plan-console plan-console-family" aria-label="Family plan capacity">
               <div class="plan-console-head"><span>Ev kimlik ağı</span><strong>06 profil</strong></div>
@@ -5560,22 +5513,39 @@
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Ayrıntılı ebeveyn denetimleri</li>
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Aileye özel panel</li>
             </ul>
-            <a class="button button-secondary" href="/login">Ücretsiz başla</a>
+            <span class="button button-secondary is-disabled" aria-disabled="true">Yakında</span>
             <div class="plan-foot"><span class="status-dot"></span>Özel profiller, tek yerel çekirdek</div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="desktop">
+    <section class="section">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-kicker">Masaüstü uygulamaları</span>
+          <span class="section-kicker">Uygulamalar</span>
           <h2 class="section-heading">Her masaüstünde yerel.</h2>
-          <p class="section-copy">Kullandığın platforma göre ayarlanmış tek NEXUS deneyimi. İşletim sistemin otomatik açlgılanır.</p>
+          <p class="section-copy">NEXUS&#39;u bugün Windows, macOS veya Linux için indirin. Android ve iOS uygulamaları mağazalara geliyor.</p>
         </div>
 
-        <div class="downloads-grid">
+        <div class="downloads-grid" id="downloads">
+          <article class="download-card download-windows reveal" data-platform="windows">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.1 10.4 4v7.2H3V5.1Zm8.4-1.2L21 2.5v8.7h-9.6V3.9ZM3 12.8h7.4V20L3 18.9v-6.1Zm8.4 0H21v8.7l-9.6-1.4v-7.3Z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-windows">
+                <svg class="os-logo os-logo-windows" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="currentColor" d="M3 5.1 10.4 4v7.2H3V5.1Zm8.4-1.2L21 2.5v8.7h-9.6V3.9ZM3 12.8h7.4V20L3 18.9v-6.1Zm8.4 0H21v8.7l-9.6-1.4v-7.3Z"/></svg>
+              </div>
+              <span class="platform-kicker">Windows 10 ve 11</span>
+            </div>
+            <h3>Windows</h3>
+            <p>Intel/AMD ve ARM bilgisayarlar için tek kurulum dosyası. Otomatik güncelleme içerir.</p>
+            <span class="version">Sürüm 1.0.0 · x64 + ARM64</span>
+            <div class="platform-specs"><span>Yerel kontrol</span><span>Otomatik güncelleme</span><span>Hub gerekmez</span></div>
+            <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe" rel="noopener">Windows için indir</a>
+            <span class="download-note">İlk açılış: SmartScreen uyarısı çıkarsa “Ek bilgi” → “Yine de çalıştır”ı seçin.</span>
+          </article>
+
           <article class="download-card download-macos reveal" data-platform="macos">
             <div class="download-card-grid" aria-hidden="true"></div>
             <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
@@ -5583,309 +5553,80 @@
               <div class="platform-icon platform-icon-macos">
                 <svg class="os-logo os-logo-apple" viewBox="0 0 384 512" aria-label="Apple logo" role="img"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg>
               </div>
-              <span class="platform-kicker">Evrensel derleme</span>
+              <span class="platform-kicker">Apple silicon ve Intel Mac&#39;ler</span>
             </div>
             <h3>macOS</h3>
-            <p>Apple Silicon ve Intel işlemciler için özel olarak derlendi.</p>
-            <span class="version">Sürüm 3.14.1 · Universal</span>
-            <div class="platform-specs"><span>Apple Silicon</span><span>Intel</span><span>Yerel menü çubuğu</span></div>
-            <a class="button button-secondary download-button" href="/downloads/NEXUS-3.14.1-v2.dmg">macOS için indir</a>
-          </article>
-
-          <article class="download-card download-windows reveal" data-platform="windows">
-            <div class="download-card-grid" aria-hidden="true"></div>
-            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo" viewBox="0 0 24 24"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 .6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg></div>
-            <div class="platform-top">
-              <div class="platform-icon platform-icon-windows">
-                <svg class="os-logo" viewBox="0 0 24 24" aria-label="Windows logo" role="img"><path fill="#00A4EF" d="M2 3.4 10.7 2.2v8.9H2V3.4Zm9.8-1.35L22 0.6v10.5H11.8V2.05ZM2 12.2h8.7v8.9L2 19.9v-7.7Zm9.8 0H22v10.5l-10.2-1.45V12.2Z"/></svg>
-              </div>
-              <span class="platform-kicker">Masaüstü · x64</span>
-            </div>
-            <h3>Windows</h3>
-            <p>Windows 10 ve 11 için sorunsuz arka plan çalışmasıyla optimize edildi.</p>
-            <span class="version">Sürüm 3.14.2 · x64</span>
-            <div class="platform-specs"><span>Windows 10+</span><span>Otomatik güncelleme</span><span>Yerel servis</span></div>
-            <a class="button button-secondary download-button" href="/downloads/NEXUS-Setup-3.14.2-v2.exe">Windows için indir</a>
+            <p>macOS 11 Big Sur ve sonrasındaki her Mac için evrensel uygulama.</p>
+            <span class="version">Sürüm 1.0.0 · Universal</span>
+            <div class="platform-specs"><span>Yerel kontrol</span><span>Otomatik güncelleme</span><span>Hub gerekmez</span></div>
+            <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-mac.dmg" rel="noopener">macOS için indir</a>
+            <span class="download-note">İlk açılış: Uygulamalar klasöründe NEXUS&#39;a sağ tıklayıp “Aç”ı seçin.</span>
           </article>
 
           <article class="download-card download-linux reveal" data-platform="linux">
             <div class="download-card-grid" aria-hidden="true"></div>
-            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-linux" viewBox="0 0 64 64">
-                  <ellipse cx="32" cy="34" rx="17" ry="24" fill="#111318"/>
-                  <ellipse cx="32" cy="39" rx="11.5" ry="17" fill="#F4F7FA"/>
-                  <ellipse cx="26.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/><ellipse cx="37.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/>
-                  <circle cx="28" cy="23" r="1.8" fill="#111318"/><circle cx="36" cy="23" r="1.8" fill="#111318"/>
-                  <path d="M25 28.5 32 33l7-4.5-7-2.5-7 2.5Z" fill="#F5B82E"/>
-                  <path d="M20 53c-5 1-8 4-9 7 6 1 11 0 15-3l-6-4Zm24 0c5 1 8 4 9 7-6 1-11 0-15-3l6-4Z" fill="#F5B82E"/>
-                </svg></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-linux" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Zm3 4 3 2.5-3 2.5m5 .5h5"/></svg></div>
             <div class="platform-top">
               <div class="platform-icon platform-icon-linux">
-                <svg class="os-logo os-logo-linux" viewBox="0 0 64 64" aria-label="Linux Tux logo" role="img">
-                  <ellipse cx="32" cy="34" rx="17" ry="24" fill="#111318"/>
-                  <ellipse cx="32" cy="39" rx="11.5" ry="17" fill="#F4F7FA"/>
-                  <ellipse cx="26.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/><ellipse cx="37.5" cy="22.5" rx="5" ry="6" fill="#F4F7FA"/>
-                  <circle cx="28" cy="23" r="1.8" fill="#111318"/><circle cx="36" cy="23" r="1.8" fill="#111318"/>
-                  <path d="M25 28.5 32 33l7-4.5-7-2.5-7 2.5Z" fill="#F5B82E"/>
-                  <path d="M20 53c-5 1-8 4-9 7 6 1 11 0 15-3l-6-4Zm24 0c5 1 8 4 9 7-6 1-11 0-15-3l6-4Z" fill="#F5B82E"/>
-                </svg>
+                <svg class="os-logo os-logo-linux" viewBox="0 0 24 24" aria-label="Linux" role="img"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Zm3 4 3 2.5-3 2.5m5 .5h5"/></svg>
               </div>
-              <span class="platform-kicker">Taşınabilir AppImage</span>
+              <span class="platform-kicker">Ubuntu, Debian, Fedora ve diğerleri</span>
             </div>
             <h3>Linux</h3>
-            <p>Tüm popüler dağıtımlarla uyumlu, hafif ve hızlı.</p>
-            <span class="version">Sürüm 3.13.8 · AppImage</span>
-            <div class="platform-specs"><span>AppImage</span><span>Debian</span><span>Fedora</span></div>
-            <a class="button button-secondary download-button" href="/downloads/NEXUS-3.13.8-v2.AppImage">Linux için indir</a>
+            <p>Her dağıtım için taşınabilir AppImage ve ayrıca .deb paketi.</p>
+            <span class="version">Sürüm 1.0.0 · x64</span>
+            <div class="platform-specs"><span>Yerel kontrol</span><span>Otomatik güncelleme</span><span>Hub gerekmez</span></div>
+            <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage" rel="noopener">AppImage indir</a>
+            <a class="apk-link" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.deb" rel="noopener">.deb paketini indir</a>
           </article>
         </div>
+        <p class="downloads-meta reveal"><a href="https://github.com/Enard52/nexus-releases/releases/latest" rel="noopener">Tüm sürümler, sürüm notları ve SHA-256 özetleri</a></p>
 
-        <div class="mobile-companion mobile-release reveal" id="mobile-apps">
-          <div class="mobile-release-copy">
-            <span class="mobile-live-badge"><i></i> Şimdi kullanılabilir</span>
-            <h3>NEXUS artık cebinde.</h3>
-            <p>iOS ve Android eşlik uygulamalarıyla evinle konuş, otomasyonları onayla ve her yerel eylemi istediğin yerden denetle.</p>
-            <div class="mobile-release-points"><span>Uçtan uca şifreli</span><span>Face ID / biyometri</span><span>Canlı ev durumu</span></div>
-          </div>
-          <div class="mobile-store-stack">
-            <!-- Replace the placeholder store URLs with the real listing URLs after publishing. -->
-            <a class="store-badge store-badge-live" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
-              <svg class="store-logo store-logo-inline" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg>
-              <span><small>Şuradan indir:</small><strong>App Store</strong></span><b>iOS 17+</b>
-            </a>
-            <a class="store-badge store-badge-live" href="https://play.google.com/store/apps/details?id=com.nexus.mobile" target="_blank" rel="noopener">
-              <svg class="store-logo store-logo-inline" viewBox="0 0 48 52" aria-hidden="true"><defs><linearGradient id="gp-v4-a" x1="5" y1="4" x2="28" y2="28"><stop stop-color="#00D1FF"/><stop offset="1" stop-color="#00A5FF"/></linearGradient><linearGradient id="gp-v4-b" x1="6" y1="49" x2="29" y2="27"><stop stop-color="#00F076"/><stop offset="1" stop-color="#00C853"/></linearGradient></defs><path fill="url(#gp-v4-a)" d="M5 4.6c-.6.9-1 2.1-1 3.7v35.4c0 1.5.4 2.8 1 3.7L27.1 26 5 4.6Z"/><path fill="#FFD54F" d="m34.5 18.9-6.9 6.6L5 4.6c1.2-1.2 3.1-1.3 5.3 0l24.2 14.3Z"/><path fill="#FF5252" d="M34.5 33.1 10.3 47.4c-2.2 1.3-4.1 1.2-5.3 0l22.6-20.9 6.9 6.6Z"/><path fill="#FFB300" d="M43 24c1.8 1 1.8 3 0 4l-8.5 5.1-6.9-6.6 6.9-6.6L43 24Z"/></svg>
-              <span><small>Şuradan indir:</small><strong>Google Play</strong></span><b>Android 12+</b>
-            </a>
-          </div>
-          <div class="mobile-qr-pair">
-            <!-- Placeholder QR graphics: replace each SVG with the real store QR when listings are live. -->
-            <div class="qr-card"><div class="fake-qr" aria-label="Placeholder App Store QR code">
-              <svg viewBox="0 0 29 29" role="img"><rect width="29" height="29" rx="2" fill="#fff"/><g fill="#09090b"><path d="M2 2h7v7H2V2Zm2 2v3h3V4H4ZM20 2h7v7h-7V2Zm2 2v3h3V4h-3ZM2 20h7v7H2v-7Zm2 2v3h3v-3H4Z" fill-rule="evenodd"/><path d="M11 2h2v2h-2zM15 2h3v2h-3zM11 6h4v2h-4zM16 5h2v5h-2zM10 10h3v3h-3zM14 11h2v2h-2zM18 10h3v2h-3zM22 11h5v2h-5zM2 11h2v5H2zM5 12h4v2H5zM6 15h3v3H6zM11 15h2v3h-2zM14 14h5v2h-5zM20 15h2v4h-2zM23 14h4v3h-4zM10 20h3v2h-3zM14 18h2v5h-2zM17 20h3v2h-3zM22 19h5v2h-5zM10 24h4v3h-4zM16 24h2v3h-2zM19 23h3v4h-3zM24 23h3v2h-3z"/></g></svg>
-            </div><span>iPhone için tara</span></div>
-            <div class="qr-card"><div class="fake-qr" aria-label="Placeholder Google Play QR code">
-              <svg viewBox="0 0 29 29" role="img"><rect width="29" height="29" rx="2" fill="#fff"/><g fill="#09090b"><path d="M2 2h7v7H2V2Zm2 2v3h3V4H4ZM20 2h7v7h-7V2Zm2 2v3h3V4h-3ZM2 20h7v7H2v-7Zm2 2v3h3v-3H4Z" fill-rule="evenodd"/><path d="M11 2h3v2h-3zM16 3h2v4h-2zM10 6h4v3h-4zM18 7h4v2h-4zM24 10h3v3h-3zM2 11h4v2H2zM7 10h2v5H7zM10 11h3v2h-3zM14 10h2v4h-2zM17 12h5v2h-5zM3 15h3v3H3zM9 16h4v2H9zM15 15h3v3h-3zM20 16h2v4h-2zM23 15h4v2h-4zM10 20h2v4h-2zM13 19h4v2h-4zM18 21h4v2h-4zM24 19h3v4h-3zM11 25h4v2h-4zM17 24h2v3h-2zM21 25h6v2h-6z"/></g></svg>
-            </div><span>Android için tara</span></div>
-          </div>
+        <div class="downloads-grid downloads-mobile" id="mobile-apps">
+          <article class="download-card download-android is-soon reveal" data-platform="android">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-android" viewBox="0 0 24 24"><path fill="currentColor" d="M6.2 9.1h11.6v6.7a1.9 1.9 0 0 1-1.9 1.9H8.1a1.9 1.9 0 0 1-1.9-1.9V9.1Zm-2.8.1a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2Zm14.4 0a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2ZM7.5 8.1C8 6.2 9.8 4.8 12 4.8s4 1.4 4.5 3.3l1.5-1.9a.4.4 0 1 0-.6-.5l-1.7 2.1A6.6 6.6 0 0 0 12.4 7V5.7a.4.4 0 1 0-.8 0V7c-1.1.1-2.1.4-3 .9L6.6 5.8a.4.4 0 1 0-.6.5l1.5 1.8Z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-android">
+                <svg class="os-logo os-logo-android" viewBox="0 0 24 24" aria-label="Android logo" role="img"><path fill="currentColor" d="M6.2 9.1h11.6v6.7a1.9 1.9 0 0 1-1.9 1.9H8.1a1.9 1.9 0 0 1-1.9-1.9V9.1Zm-2.8.1a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2Zm14.4 0a1.4 1.4 0 0 1 2.8 0v4.2a1.4 1.4 0 0 1-2.8 0V9.2ZM7.5 8.1C8 6.2 9.8 4.8 12 4.8s4 1.4 4.5 3.3l1.5-1.9a.4.4 0 1 0-.6-.5l-1.7 2.1A6.6 6.6 0 0 0 12.4 7V5.7a.4.4 0 1 0-.8 0V7c-1.1.1-2.1.4-3 .9L6.6 5.8a.4.4 0 1 0-.6.5l1.5 1.8Z"/></svg>
+              </div>
+              <span class="platform-kicker">Android telefon ve tablet</span>
+            </div>
+            <h3>Android</h3>
+            <p>Aynı yerel öncelikli ev deneyimi Android&#39;de. Google Play&#39;de yayınlanacak.</p>
+            <span class="version">Yakında · Android 7+</span>
+            <div class="platform-specs"><span>Yerel kontrol</span><span>Çevrimdışı çalışır</span><span>Hub gerekmez</span></div>
+            <span class="button button-secondary download-button is-disabled" aria-disabled="true">Yakında Google Play&#39;de</span>
+          </article>
+
+          <article class="download-card download-ios is-soon reveal" data-platform="ios">
+            <div class="download-card-grid" aria-hidden="true"></div>
+            <div class="platform-watermark" aria-hidden="true"><svg class="os-logo os-logo-apple" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg></div>
+            <div class="platform-top">
+              <div class="platform-icon platform-icon-macos">
+                <svg class="os-logo os-logo-apple" viewBox="0 0 384 512" aria-label="Apple logo" role="img"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-72.5-19.7-30.5.5-58.3 17.8-74 45.8-31.5 54.6-8 135.1 22.6 179.5 15.3 22.2 33.6 47.1 57.6 46.2 23-.9 31.7-14.8 59.5-14.8 27.8 0 35.6 14.8 59.9 14.8 24.7-.4 40.4-22.6 55.7-44.8 17.7-25.8 25-50.8 25.5-52.1-.6-.3-48.9-18.8-49.1-74.2zM260.4 117.1c12.8-15.3 21.6-36.5 19.1-57.6-18.4.7-40.8 12.9-53.7 28.2-11.6 13.4-21.7 34.9-18.8 55.4 20.5 1.6 40.6-10.4 53.4-26z"/></svg>
+              </div>
+              <span class="platform-kicker">iPhone ve iPad</span>
+            </div>
+            <h3>iOS</h3>
+            <p>Aynı yerel öncelikli ev deneyimi iPhone ve iPad&#39;de. App Store&#39;da yayınlanacak.</p>
+            <span class="version">Yakında · iOS 15+</span>
+            <div class="platform-specs"><span>Yerel kontrol</span><span>Face ID</span><span>Hub gerekmez</span></div>
+            <span class="button button-secondary download-button is-disabled" aria-disabled="true">Yakında App Store&#39;da</span>
+          </article>
         </div>
       </div>
     </section>
 
 
-    <section class="section-tight community-section">
+    <section class="section-tight community-section" id="early-access">
       <div class="container">
         <div class="section-head center reveal community-intro">
-          <span class="section-kicker">Topluluk</span>
-          <h2 class="section-heading">Gerçek evler. Farklı rutinler. Tek özel sistem.</h2>
-          <p class="section-copy">Sürekli akan topluluk hikâyeleri duvarı, NEXUS&#39;un gündelik evlere, teknik kurulumlara ve ikisi arasındaki her şeye nasıl uyduğunu gösterir.</p>
+          <span class="section-kicker">Erken erişim</span>
+          <h2 class="section-heading">Yeni, dürüst ve ilk evleriyle şekilleniyor.</h2>
+          <p class="section-copy">NEXUS erken erişimde; bu yüzden henüz gösterecek puan ya da yorum yok — onları kazanmayı tercih ediyoruz. Sırada hangi cihazın desteklenmesini istediğinizi yazın, önceliklendirelim.</p>
+          <p class="early-access-actions"><a class="button button-secondary" href="mailto:destek@nexus-ai.app?subject=NEXUS%20feedback">Geri bildirim gönder</a></p>
         </div>
-
-        <div class="review-overview reveal" aria-label="Community rating summary">
-          <div class="review-score"><strong>4.9</strong><span>/ 5</span></div>
-          <div class="review-overview-copy">
-            <span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-            <strong>12.8K topluluk puanı</strong>
-            <small>Masaüstü ve mobil NEXUS deneyimleri genelinde</small>
-          </div>
-          <div class="review-avatar-stack" aria-hidden="true">
-            <img src="/images/avatars/sarah-jenkins.jpg" alt="" loading="lazy" decoding="async">
-            <img src="/images/avatars/david-chen.jpg" alt="" loading="lazy" decoding="async">
-            <img src="/images/avatars/emma-thompson.jpg" alt="" loading="lazy" decoding="async">
-            <img src="/images/avatars/mateo-alvarez.jpg" alt="" loading="lazy" decoding="async">
-            <span>+12K</span>
-          </div>
-        </div>
-
-        <!-- DEMO CONTENT: Replace names, portraits, and quotes with customer-approved testimonials before production. -->
-        <div class="review-wall reveal">
-          <div class="review-lane" tabindex="0" aria-label="Animated customer review row 1">
-      <div class="review-track">
-        <div class="review-set"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>NEXUS bir akşamda dört ayrı ev uygulamasının yerini aldı. Ses kontrolü anında hissettiriyor ve internet gitse bile her rutin çalışmaya devam ediyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/sarah-jenkins.jpg" alt="Portrait of Sarah Jenkins" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sarah Jenkins</strong><span>Erken kullanıcı · Birleşik Krallık</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>Farkı yaratan yerel yanıt süresi. Işıklar, sahneler ve kilitler elimi mikrofondan indirmeden tepki veriyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/david-chen.jpg" alt="Portrait of David Chen" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>David Chen</strong><span>Yazılım mühendisi · Kanada</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>Matter ve Zigbee genelinde bir sabah rutinini hiç yapılandırma dosyasına dokunmadan kurdum. Teknik hissettirmeden güçlü.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/emma-thompson.jpg" alt="Portrait of Emma Thompson" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Emma Thompson</strong><span>Akıllı ev meraklısı · Avustralya</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>Arayüz karmaşık bir evi sonunda sakin hissettiriyor. Her cihazıın bağlamı var ve etkinlik geçmişi gerçekten işe yarıyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/mateo-alvarez.jpg" alt="Portrait of Mateo Alvarez" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Mateo Alvarez</strong><span>Ürün tasarımcısı · İspanya</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>NEXUS&#39;u denememin sebebi yerel öncelikli olmasıydı. Kullandığım en hızlı kontrolcü olması ise sürpriz oldu.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/aisha-rahman.jpg" alt="Portrait of Aisha Rahman" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Aisha Rahman</strong><span>Gizlilik savunucusu · BAE</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-        <div class="review-set" aria-hidden="true"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>NEXUS bir akşamda dört ayrı ev uygulamasının yerini aldı. Ses kontrolü anında hissettiriyor ve internet gitse bile her rutin çalışmaya devam ediyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/sarah-jenkins.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sarah Jenkins</strong><span>Erken kullanıcı · Birleşik Krallık</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>Farkı yaratan yerel yanıt süresi. Işıklar, sahneler ve kilitler elimi mikrofondan indirmeden tepki veriyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/david-chen.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>David Chen</strong><span>Yazılım mühendisi · Kanada</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>Matter ve Zigbee genelinde bir sabah rutinini hiç yapılandırma dosyasına dokunmadan kurdum. Teknik hissettirmeden güçlü.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/emma-thompson.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Emma Thompson</strong><span>Akıllı ev meraklısı · Avustralya</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>Arayüz karmaşık bir evi sonunda sakin hissettiriyor. Her cihazıın bağlamı var ve etkinlik geçmişi gerçekten işe yarıyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/mateo-alvarez.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Mateo Alvarez</strong><span>Ürün tasarımcısı · İspanya</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>NEXUS&#39;u denememin sebebi yerel öncelikli olmasıydı. Kullandığım en hızlı kontrolcü olması ise sürpriz oldu.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/aisha-rahman.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Aisha Rahman</strong><span>Gizlilik savunucusu · BAE</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-      </div>
-    </div><div class="review-lane is-reverse" tabindex="0" aria-label="Animated customer review row 2">
-      <div class="review-track">
-        <div class="review-set"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>Yedek bir mini PC akıllı evimin en güvenilir parçası oldu. Kurulum temizdi, keşif isabetliydi ve kurtarma zahmetsiz.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/noah-williams.jpg" alt="Portrait of Noah Williams" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Noah Williams</strong><span>Ev otomasyonu kurucusu · ABD</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>Ailem gerçekten kullanıyor çünkü ses katmanı basit. Gelişmiş kontroller bende, diğer herkes sadece doğal konuşuyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/sofia-martins.jpg" alt="Portrait of Sofia Martins" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sofia Martins</strong><span>Kreatif direktör · Portekiz</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>Cihaz keşfi ilk taramada neredeyse her şeyi buldu. Kalan entegrasyonlar saatler değil dakikalar içinde bağlandı.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/kenji-sato.jpg" alt="Portrait of Kenji Sato" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Kenji Sato</strong><span>Sistem mimarı · Japonya</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>Denetim izi otomasyonu anlaşılır kılıyor. Neyin çalıştığını, neden çalıştığını ve hangi cihazıın yanıt verdiğini veri dışarı gitmeden görebiliyorum.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/olivia-brooks.jpg" alt="Portrait of Olivia Brooks" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Olivia Brooks</strong><span>Araştırmacı · Almanya</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>Uzaktan onaylar tam ihtiyacım olan şeydi. NEXUS evde yerel kalıyor ama uzaktayken aileye yine de yardım edebiliyorum.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/lucas-meyer.jpg" alt="Portrait of Lucas Meyer" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Lucas Meyer</strong><span>Ev yöneticisi · Hollanda</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-        <div class="review-set" aria-hidden="true"><article class="review-card" style="--review-accent:#818cf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Linux</span></div>
-      <blockquote>Yedek bir mini PC akıllı evimin en güvenilir parçası oldu. Kurulum temizdi, keşif isabetliydi ve kurtarma zahmetsiz.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/noah-williams.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Noah Williams</strong><span>Ev otomasyonu kurucusu · ABD</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#38bdf8">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>iOS</span></div>
-      <blockquote>Ailem gerçekten kullanıyor çünkü ses katmanı basit. Gelişmiş kontroller bende, diğer herkes sadece doğal konuşuyor.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/sofia-martins.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Sofia Martins</strong><span>Kreatif direktör · Portekiz</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#8b7bff">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Windows</span></div>
-      <blockquote>Cihaz keşfi ilk taramada neredeyse her şeyi buldu. Kalan entegrasyonlar saatler değil dakikalar içinde bağlandı.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/kenji-sato.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Kenji Sato</strong><span>Sistem mimarı · Japonya</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#60a5fa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>macOS</span></div>
-      <blockquote>Denetim izi otomasyonu anlaşılır kılıyor. Neyin çalıştığını, neden çalıştığını ve hangi cihazıın yanıt verdiğini veri dışarı gitmeden görebiliyorum.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/olivia-brooks.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Olivia Brooks</strong><span>Araştırmacı · Almanya</span></span>
-        <span class="review-card-rating">5.0<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article>
-<article class="review-card" style="--review-accent:#a78bfa">
-      <div class="review-card-top"><span class="review-stars"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span><span class="review-platform"><i></i>Android</span></div>
-      <blockquote>Uzaktan onaylar tam ihtiyacım olan şeydi. NEXUS evde yerel kalıyor ama uzaktayken aileye yine de yardım edebiliyorum.</blockquote>
-      <div class="review-author">
-        <span class="review-author-photo"><img src="/images/avatars/lucas-meyer.jpg" alt="" loading="lazy" decoding="async"></span>
-        <span class="review-author-copy"><strong>Lucas Meyer</strong><span>Ev yöneticisi · Hollanda</span></span>
-        <span class="review-card-rating">4.9<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5Z"/></svg></span>
-      </div>
-    </article></div>
-      </div>
-    </div>
-        </div>
-        <div class="review-footnote reveal">Duraklatmak için değerlendirme duvarına gel veya odaklan</div>
       </div>
     </section>
 
@@ -5894,24 +5635,24 @@
         <div class="reveal">
           <span class="section-kicker">SSS</span>
           <h2 class="section-heading">Önemli sorular, yanıtlandı.</h2>
-          <p class="section-copy">NEXUS; fiyatlandırma, gizlilik, uyumluluk ve evinin nasıl çalıştığı konusunda şeffaf kÇalışmak üzere tasarlandı.</p>
+          <p class="section-copy">NEXUS; fiyatlandırma, gizlilik, uyumluluk ve evinin nasıl çalıştığı konusunda şeffaf kalmak üzere tasarlandı.</p>
         </div>
         <div class="faq-list reveal">
           <div class="faq-card">
             <div class="faq-question">NEXUS tamamen ücretsiz mi?</div>
-            <div class="faq-answer">Evet. Çekirdek işletim sistemi ve yerel kontrol özellikleri tamamen ücretsizdir. Premium planlar gelişmiş yapay zekâ, güvenli uzaktan erişim ve ev yönetimi araçları ekler.</div>
+            <div class="faq-answer">Evet. Yerel ağındaki cihazları eşleştirmek ve kontrol etmek, senaryolar, otomasyonlar ve NEXUS AI ücretsizdir; cihaz sınırı, hub, bulut hesabı ya da abonelik yok. Ücretli Premium ve Aile planları daha sonra gelecek; bugün kullandığın hiçbir şey elinden alınmayacak.</div>
           </div>
           <div class="faq-card">
-            <div class="faq-question">Hangi cihazıları destekliyor?</div>
-            <div class="faq-answer">NEXUS; Matter, Zigbee, Z-Wave, Wi-Fi cihazılarını ve 500&#39;den fazla API tabanlı ekosistemi destekler.</div>
+            <div class="faq-question">Hangi cihazları destekliyor?</div>
+            <div class="faq-answer">Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED ve ESPHome cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa ve Yeelight masaüstü uygulamasında çalışır. Matter, Tapo ve Tuya yol haritasında.</div>
           </div>
           <div class="faq-card">
             <div class="faq-question">Bulut bağlantısı olmadan çalışır mı?</div>
-            <div class="faq-answer">Evet. NEXUS cihazılarla yerel ağın üzerinden iletişim kurar; internet kesildiğinde temel kontroller ve otomasyonlar çalışmaya devam eder.</div>
+            <div class="faq-answer">Evet. NEXUS cihazlarla yerel ağın üzerinden iletişim kurar; internet kesildiğinde temel kontroller ve otomasyonlar çalışmaya devam eder.</div>
           </div>
           <div class="faq-card">
-            <div class="faq-question">Uzaktan erişim nasıl sağlanıyor?</div>
-            <div class="faq-answer">Premium kullanıcılar güvenli uçtan uca şifreli bir tünel üzerinden bağlanabilir. Kendi VPN yapılandırmanı da kullanabilirsin.</div>
+            <div class="faq-question">Evden uzaktayken evimi kontrol edebilir miyim?</div>
+            <div class="faq-answer">NEXUS cihazlarınızla ev ağınızda konuşur. Dışarıdayken kontrol etmek için kendi VPN&#39;iniz üzerinden (örneğin modemdeki WireGuard) eve bağlanın. Yerleşik uzaktan erişim planlanıyor.</div>
           </div>
         </div>
       </div>
@@ -5924,7 +5665,7 @@
             <span class="section-kicker">Senin evin, senin kuralların</span>
             <h2>Tek sistem.<br><span class="gradient-text">Tamamen senin.</span></h2>
             <p>NEXUS&#39;u indir; parçalı kontrolleri hızlı ve özel tek zekâ katmanıyla değiştir.</p>
-            <a class="button button-primary" href="#desktop">
+            <a class="button button-primary" href="#downloads">
               NEXUS&#39;u ücretsiz indir
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
             </a>
@@ -5959,9 +5700,10 @@
         </div>
         <div class="footer-column">
           <h3>Platformlar</h3>
-          <a href="#desktop">Windows</a>
-          <a href="#desktop">macOS</a>
-          <a href="#desktop">Linux</a>
+          <a href="#downloads">Windows</a>
+          <a href="#downloads">macOS</a>
+          <a href="#downloads">Linux</a>
+          <a href="#mobile-apps">Android ve iOS (yakında)</a>
         </div>
         <div class="footer-column">
           <h3>Şirket ve yasal</h3>
@@ -6024,10 +5766,10 @@
       }
 
       var commands = [
-        ""Evi film gecesine hazırla."",
-        ""Alt katı rahatlat."",
-        ""Kilitle ve her şeyi kapıat."",
-        ""Odak rutinimi başlat.""
+        "“Evi film gecesine hazırla.”",
+        "“Alt katı rahatlat.”",
+        "“Kilitle ve her şeyi kapat.”",
+        "“Odak rutinimi başlat.”"
       ];
       var commandIndex = 0;
       if (commandText && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

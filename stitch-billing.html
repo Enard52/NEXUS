@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Ödemeler & Abonelik</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- NEXUS Global Theme Manager -->
@@ -43,7 +43,7 @@
 </svg>
 </button>
 <div class="flex-1 pr-8">
-<h1 class="text-xl font-bold text-center text-slate-900 dark:text-white">Faturalandırma</h1>
+<h1 class="text-lg font-bold tracking-tight text-center text-slate-900 dark:text-white">Faturalandırma</h1>
 </div>
 </header>
 <!-- END: NavigationHeader -->
@@ -66,7 +66,7 @@
 
 <!-- TEXT SIDE-BY-SIDE -->
 <div class="relative z-10 flex-1 min-w-0">
-<h2 class="text-[20px] font-bold mb-1 truncate" id="sub-title">NEXUS+</h2>
+<h2 class="text-[20px] font-bold mb-1 leading-tight" id="sub-title">NEXUS+</h2>
 <p class="text-white/85 text-[13px] font-medium truncate hidden" id="sub-since"></p>
 <p class="text-white/85 text-[13px] font-medium truncate mt-0.5" id="sub-renewal"></p>
 </div>
@@ -145,7 +145,8 @@
     const sinceIso = nexusGetItem("nexusPlusSince");
     const sinceDate = sinceIso ? new Date(sinceIso) : null;
     if (plan && sinceDate && !isNaN(sinceDate.getTime())) {
-      since.textContent = sinceDate.toLocaleDateString('tr-TR', options) + " tarihinden beri aktif";
+      var sinceStr = sinceDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options);
+      since.textContent = nexusT(sinceStr + " tarihinden beri aktif", "Active since " + sinceStr);
       since.classList.remove("hidden");
     }
 
@@ -155,7 +156,7 @@
 
     if (plan === "Yıllık") {
       futureDate.setFullYear(base.getFullYear() + 1);
-      const dateStr = futureDate.toLocaleDateString('tr-TR', options);
+      const dateStr = futureDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options);
 
       title.textContent = "NEXUS+ Yıllık";
       price.textContent = "₺3.999,99";
@@ -163,7 +164,7 @@
       dateFooter.textContent = dateStr;
     } else if (plan === "Aylık") {
       futureDate.setMonth(base.getMonth() + 1);
-      const dateStr = futureDate.toLocaleDateString('tr-TR', options);
+      const dateStr = futureDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options);
 
       title.textContent = "NEXUS+ Aylık";
       price.textContent = "₺499,99";
@@ -171,9 +172,9 @@
       dateFooter.textContent = dateStr;
     } else {
       // Aktif abonelik yoksa
-      title.textContent = "NEXUS+ (Aktif Değil)";
+      title.textContent = "NEXUS+";
       price.textContent = "₺0,00";
-      renewal.textContent = "Aboneliğiniz bulunmuyor.";
+      renewal.textContent = "Aboneliğiniz yok — tüm özellikler şu an ücretsiz. NEXUS+ yakında.";
       dateFooter.textContent = "-";
       document.querySelector('[data-purpose="payment-notice"]').style.display = 'none';
     }

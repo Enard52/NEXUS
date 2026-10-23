@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Mesaj Merkezi</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
@@ -45,7 +45,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="whitespace-nowrap text-2xl font-bold absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
 <button aria-label="Tümünü okundu işaretle" class="p-1 text-[#4C7DFF]" onclick="markAllRead()">
 <i class="w-6 h-6" data-lucide="check-check"></i>
 </button>
@@ -105,12 +105,12 @@
       var d = new Date(ts);
       if (isNaN(d.getTime())) return '';
       var now = new Date();
-      var time = d.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+      var time = d.toLocaleTimeString((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit' });
       var sameDay = d.toDateString() === now.toDateString();
       var yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
       if (sameDay) return 'Bugün ' + time;
       if (d.toDateString() === yesterday.toDateString()) return 'Dün ' + time;
-      return d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ' ' + time;
+      return d.toLocaleDateString((window.nexusLocale || 'tr-TR'), { day: 'numeric', month: 'long' }) + ' ' + time;
     }
     function renderAlerts() {
       var events = loadEvents().slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });

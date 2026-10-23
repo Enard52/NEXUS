@@ -1,0 +1,179 @@
+/* NEXUS — masaüstü düzeni (yalnızca html.nx-desk; telefon görünümü etkilenmez) */
+html.nx-desk {
+  --side: 264px;
+  --page-max: 860px;
+  --gutter: 40px;
+}
+html.nx-desk.nx-desk-wide { --page-max: 1180px; }
+
+/* ---------- Sol menü ---------- */
+.nx-side { display: none; }
+html.nx-desk .nx-side {
+  display: flex; flex-direction: column; gap: 6px;
+  position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); z-index: 60;
+  padding: 24px 16px 18px; overflow-y: auto;
+  background: #fbfaff;
+  border-right: 1px solid rgba(148, 163, 184, 0.22);
+  font-family: Inter, sans-serif;
+}
+html.nx-desk.dark .nx-side { background: #0b1222; border-right-color: rgba(148, 163, 184, 0.14); }
+.nx-side-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 14px; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; }
+html.dark .nx-side-brand { color: #f8fafc; }
+.nx-side-logo { width: 34px; height: 34px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #6f9bff, #4C7DFF 55%, #3F6FFF); box-shadow: 0 6px 16px rgba(76, 125, 255, 0.35); }
+.nx-side-logo svg { width: 22px; height: 22px; }
+.nx-side-ai { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px; margin: 0 2px 10px; border-radius: 14px;
+  background: #4C7DFF; color: #ffffff; font-size: 14px; font-weight: 700; box-shadow: 0 8px 20px rgba(76, 125, 255, 0.28); }
+.nx-side-ai:hover { background: #3F6FFF; }
+.nx-side-ai svg { width: 18px; height: 18px; }
+.nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.nx-side-group { margin: 16px 12px 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
+.nx-side-link { display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 0 12px; border-radius: 12px;
+  font-size: 14px; font-weight: 600; color: #475569; transition: background .15s ease, color .15s ease; }
+.nx-side-link svg { width: 19px; height: 19px; flex: none; }
+.nx-side-link:hover { background: rgba(76, 125, 255, 0.08); color: #0f172a; }
+.nx-side-link.is-active { background: rgba(76, 125, 255, 0.12); color: #3F6FFF; }
+html.dark .nx-side-link { color: #cbd5e1; }
+html.dark .nx-side-link:hover { background: rgba(148, 163, 184, 0.10); color: #f8fafc; }
+html.dark .nx-side-link.is-active { background: rgba(76, 125, 255, 0.22); color: #ffffff; }
+.nx-side-foot { display: flex; align-items: center; gap: 8px; padding-top: 12px; border-top: 1px solid rgba(148, 163, 184, 0.2); }
+.nx-side-user { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 6px; border-radius: 12px; }
+.nx-side-user:hover { background: rgba(76, 125, 255, 0.08); }
+.nx-side-user b { display: block; font-size: 13px; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nx-side-user small { display: block; font-size: 11px; color: #64748B; }
+html.dark .nx-side-user b { color: #f8fafc; }
+html.dark .nx-side-user small { color: #94a3b8; }
+.nx-side-avatar { width: 34px; height: 34px; flex: none; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(76, 125, 255, 0.14); color: #3F6FFF; font-size: 12px; font-weight: 800; }
+.nx-side-theme { width: 40px; height: 40px; flex: none; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: #475569; background: transparent; }
+.nx-side-theme:hover { background: rgba(76, 125, 255, 0.08); }
+html.dark .nx-side-theme { color: #cbd5e1; }
+.nx-side-theme svg { width: 19px; height: 19px; }
+
+/* ---------- İçerik sütunu ---------- */
+html.nx-desk:not(.nx-desk-auth) body { padding-left: var(--side) !important; }
+html.nx-desk body > .nx-desk-col {
+  width: 100%; max-width: calc(var(--page-max) + var(--gutter) * 2) !important;
+  margin-left: auto !important; margin-right: auto !important;
+  padding-left: var(--gutter) !important; padding-right: var(--gutter) !important;
+  box-sizing: border-box;
+}
+/* İçerideki sarmalayıcılar telefona göre daraltılmışsa açılır */
+html.nx-desk body > .nx-desk-col .max-w-md,
+html.nx-desk body > .nx-desk-col .max-w-sm { max-width: none; }
+html.nx-desk.nx-desk-auth body > .nx-desk-col .max-w-md,
+html.nx-desk.nx-desk-auth body > .nx-desk-col .max-w-sm { max-width: 28rem; }
+/* İç sarmalayıcıların kendi yatay boşlukları sütun boşluğuyla çakışmasın */
+html.nx-desk body > .nx-desk-col > header,
+html.nx-desk body > .nx-desk-col > main,
+html.nx-desk body > header.nx-desk-col,
+html.nx-desk body > main.nx-desk-col { padding-left: var(--gutter) !important; padding-right: var(--gutter) !important; }
+html.nx-desk body > .nx-desk-col > header,
+html.nx-desk body > .nx-desk-col > main { padding-left: 0 !important; padding-right: 0 !important; }
+
+/* Telefonun durum çubuğu boşluğu masaüstünde gereksiz */
+html.nx-desk header.pt-14, html.nx-desk header.pt-12, html.nx-desk header.pt-10,
+html.nx-desk .nx-desk-col > header:first-child { padding-top: 32px !important; }
+
+/* Alt gezinme masaüstünde sol menüye taşındı; yüzen AI düğmesi de menüde */
+html.nx-desk .nx-desk-hide,
+html.nx-desk:not(.nx-desk-auth) nav[data-purpose="bottom-nav"],
+html.nx-desk .nexus-ai-fab { display: none !important; }
+
+/* Alttaki sabit eylem çubukları içerik sütunuyla hizalanır */
+html.nx-desk:not(.nx-desk-auth) .nx-desk-bottom {
+  left: var(--side) !important; right: 0 !important; width: auto !important;
+  padding-left: max(var(--gutter), calc((100vw - var(--side) - var(--page-max)) / 2)) !important;
+  padding-right: max(var(--gutter), calc((100vw - var(--side) - var(--page-max)) / 2)) !important;
+}
+/* Alttan açılan paneller masaüstünde ortalanmış kart olur */
+html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet {
+  left: calc(var(--side) + max(24px, (100vw - var(--side) - 640px) / 2)) !important;
+  right: auto !important; width: min(640px, calc(100vw - var(--side) - 48px)) !important;
+  border-radius: 28px 28px 0 0 !important;
+}
+html.nx-desk:not(.nx-desk-auth) .nx-desk-top { left: var(--side) !important; }
+html.nx-desk:not(.nx-desk-auth) .nx-desk-overlay { left: 0 !important; }
+
+/* Giriş/kayıt: ortalanmış tek sütun */
+html.nx-desk.nx-desk-auth { --page-max: 460px; }
+html.nx-desk.nx-desk-auth body { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; }
+
+/* Masaüstünde fare imleci ve odak */
+html.nx-desk a, html.nx-desk button, html.nx-desk [role="button"] { cursor: pointer; }
+html.nx-desk ::-webkit-scrollbar { width: 10px; height: 10px; }
+html.nx-desk ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.35); border-radius: 9999px; border: 2px solid transparent; background-clip: padding-box; }
+
+/* Tam ekran sayfalar (ör. QR tarama) menünün sağında kalır */
+html.nx-desk:not(.nx-desk-auth) .nx-desk-page { left: var(--side) !important; }
+
+/* ---------- Sayfaya özel geniş ekran düzenleri ---------- */
+/* Ev: kartlar 3 sütun, çok geniş ekranda 4 */
+html.nx-desk #favorites-grid,
+html.nx-desk #extra-smart-home-grid,
+html.nx-desk #dynamic-devices-grid,
+html.nx-desk #tap-to-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+@media (min-width: 1440px) {
+  html.nx-desk #dynamic-devices-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+/* Keşfet: kartlar iki sütun */
+html.nx-desk[data-nx-page="discover"] main { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
+html.nx-desk[data-nx-page="discover"] main > * { margin: 0 !important; }
+/* Kameralar: önizlemeler iki sütun */
+html.nx-desk[data-nx-page="multi-video"] main { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
+html.nx-desk[data-nx-page="multi-video"] main > * { margin: 0 !important; }
+html.nx-desk[data-nx-page="multi-video"] main > div:first-child { grid-column: 1 / -1; }
+/* Kontrol Panelleri: paneller iki sütunlu akış */
+@media (min-width: 1200px) {
+  html.nx-desk #panels-host { display: block; columns: 2; column-gap: 20px; }
+  html.nx-desk #panels-host > section { break-inside: avoid; margin: 0 0 20px !important; display: inline-block; width: 100%; }
+}
+html.nx-desk #panels-filter { margin: 0; padding: 2px 0; flex-wrap: wrap; overflow: visible; }
+
+/* Arka planı olan üst başlıklar (sabit/yapışkan) tam genişlikte; içerikleri sütunla hizalı */
+html.nx-desk body > header.nx-desk-col {
+  max-width: none !important;
+  padding-left: max(var(--gutter), calc((100vw - var(--side) - var(--page-max)) / 2)) !important;
+  padding-right: max(var(--gutter), calc((100vw - var(--side) - var(--page-max)) / 2)) !important;
+}
+html.nx-desk.nx-desk-auth body > header.nx-desk-col {
+  padding-left: max(var(--gutter), calc((100vw - var(--page-max)) / 2)) !important;
+  padding-right: max(var(--gutter), calc((100vw - var(--page-max)) / 2)) !important;
+}
+
+@media (min-width: 1200px) {
+/* Cihaz kontrol ekranı: solda cihaz + ana eylem (yapışkan), sağda kontroller */
+html.nx-desk[data-nx-page="device"] #device-main {
+  display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  column-gap: 24px; row-gap: 16px; align-items: start; padding-bottom: 48px !important;
+}
+html.nx-desk[data-nx-page="device"] #device-main > * { margin: 0 !important; grid-column: 2; }
+html.nx-desk[data-nx-page="device"] #device-main > .nx-desk-lead {
+  grid-column: 1; grid-row: 1 / span 30; position: sticky; top: 24px;
+}
+html.nx-desk[data-nx-page="device"] .nx-hero { height: 220px; }
+html.nx-desk[data-nx-page="device"] .nx-hero img { width: 200px; height: 200px; padding: 14px; }
+html.nx-desk[data-nx-page="device"] .nx-hero .halo { width: 240px; height: 240px; }
+html.nx-desk[data-nx-page="device"] #device-actionbar { display: none !important; }
+}
+.nx-lead-action { display: none; }
+@media (min-width: 1200px) { html.nx-desk[data-nx-page="device"] .nx-lead-action { display: flex; } }
+html.nx-desk .nx-lead-action { width: 100%; height: 52px; margin-top: 14px; border-radius: 9999px; align-items: center; justify-content: center; gap: 10px;
+  font-size: 15px; font-weight: 700; background: #4C7DFF; color: #fff; box-shadow: 0 10px 22px rgba(76, 125, 255, 0.28); }
+html.nx-desk .nx-lead-action.alt { background: #ffffff; color: #0f172a; border: 1px solid rgba(148, 163, 184, 0.35); box-shadow: none; }
+html.nx-desk.dark .nx-lead-action.alt { background: #1e293b; color: #f8fafc; border-color: #334155; }
+
+/* ---------- Tablet (Android/iOS, her yönde) ve dar masaüstü penceresi: ortalanmış telefon sütunu ---------- */
+html.nx-tab { --tab-max: 720px; }
+html.nx-tab body > .nx-desk-col { max-width: var(--tab-max) !important; margin-left: auto !important; margin-right: auto !important; width: 100%; }
+html.nx-tab .nx-desk-hide,
+html.nx-tab .nx-desk-bottom,
+html.nx-tab .nx-desk-sheet,
+html.nx-tab .nx-desk-top,
+html.nx-tab .nx-desk-page {
+  left: max(0px, calc((100vw - var(--tab-max)) / 2)) !important;
+  right: max(0px, calc((100vw - var(--tab-max)) / 2)) !important;
+  width: auto !important;
+}
+html.nx-tab .nexus-ai-fab { right: max(0px, calc((100vw - var(--tab-max)) / 2)) !important; }
+html.nx-tab .nx-desk-sheet { border-radius: 28px 28px 0 0 !important; }

@@ -60,3 +60,11 @@ public/downloads/SHA256SUMS.txt
 # Supabase anahtarlari repoya girmez — cloud-config.example.js dan kopyala
 cloud-config.js
 mobile-app/www/cloud-config.js
+
+# Desktop app build output
+desktop/node_modules/
+desktop/dist/
+desktop/app/
+
+# Old www backup (contains large installers; not part of the source)
+scripts/archive/www-arsiv/

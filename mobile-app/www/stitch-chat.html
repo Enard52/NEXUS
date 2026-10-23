@@ -9,7 +9,8 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Asistan</title>
 <!-- Tailwind CSS CDN with plugins -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
 <!-- Custom Tailwind Configuration (NEXUS brand palette) -->
 <script>
     window.tailwind = window.tailwind || {};
@@ -145,15 +146,15 @@
 
     <!-- Central Greeting (Hidden when chat starts) -->
     <div id="hero-greeting" class="flex flex-col items-center justify-center text-center mt-10 mb-8 transition-opacity duration-300">
-      <h1 class="text-3xl text-nexus-purple leading-tight opacity-80 mb-6" style="font-weight: 400;">
+      <h1 class="text-3xl text-nexus-purple leading-tight mb-6 nx-greeting" style="font-weight: 500;">
         Tekrar görüşmek güzel!<br/>Nasıl yardımcı olabilirim?
       </h1>
       <!-- Features Scrolling Pills -->
-      <div class="w-full overflow-x-auto no-scrollbar pb-2">
-        <div class="flex items-center gap-3 px-6 w-max mx-auto">
+      <div class="w-full overflow-x-auto no-scrollbar pb-2 nx-fade-x">
+        <div class="flex items-center gap-3 px-6 w-max">
 
           <button onclick="sendQuickMessage('Klimayı 22 dereceye ayarla')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-blue-100/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
-            <svg class="h-4 w-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            <svg class="h-4 w-4 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
             Sıcaklık Ayarı
           </button>
           <button onclick="sendQuickMessage('Rahatlatıcı müzik çal')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-rose-100/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
@@ -196,7 +197,7 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
         </button>
         <!-- Send Button -->
-        <button id="chat-send" onclick="sendMessage()" class="text-[#4C7DFF] hover:text-blue-600 transition-colors disabled:opacity-40">
+        <button id="chat-send" onclick="sendMessage()" class="text-[#4C7DFF] hover:text-[#4C7DFF] transition-colors disabled:opacity-40">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg>
         </button>
       </div>
@@ -344,35 +345,35 @@
   function inferScenarioMeta(text) {
     var clean = normalizeIntentText(text);
     var meta = {
-      title: 'Akilli Ev Rutini',
-      desc: 'Istedigin kosullara gore hazirlanan uygulanabilir ev rutini.',
+      title: 'Akıllı Ev Rutini',
+      desc: 'İstediğin koşullara göre hazırlanan uygulanabilir ev rutini.',
       icon: 'zap',
       bgClass: 'bg-[#4C7DFF]/10',
       colorClass: 'text-[#4C7DFF]'
     };
     if (/sabah|gunaydin|uyan/.test(clean)) {
-      return { title: 'Sabah Rutini', desc: 'Gune baslarken secili cihazlari sirayla hazirlar.', icon: 'sun', bgClass: 'bg-amber-500/10', colorClass: 'text-amber-500' };
+      return { title: 'Sabah Rutini', desc: 'Güne başlarken seçili cihazları sırayla hazırlar.', icon: 'sun', bgClass: 'bg-amber-500/10', colorClass: 'text-amber-500' };
     }
     if (/film|sinema|tv|dizi/.test(clean)) {
-      return { title: 'Sinema Modu', desc: 'Izleme ortamı icin isik, perde ve medya adimlarini hazirlar.', icon: 'film', bgClass: 'bg-rose-500/10', colorClass: 'text-rose-500' };
+      return { title: 'Sinema Modu', desc: 'İzleme ortamı için ışık, perde ve medya adımlarını hazırlar.', icon: 'film', bgClass: 'bg-rose-500/10', colorClass: 'text-rose-500' };
     }
     if (/gece|uyku|iyi geceler/.test(clean)) {
-      return { title: 'Iyi Geceler', desc: 'Gece icin isiklari, bildirimleri ve guvenlik adimlarini duzenler.', icon: 'moon', bgClass: 'bg-indigo-500/10', colorClass: 'text-indigo-500' };
+      return { title: 'Iyi Geceler', desc: 'Gece için ışıkları, bildirimleri ve güvenlik adımlarını düzenler.', icon: 'moon', bgClass: 'bg-indigo-500/10', colorClass: 'text-indigo-500' };
     }
     if (/kahve|mutfak/.test(clean)) {
-      return { title: 'Kahve Saati', desc: 'Mutfak rutini icin uygun cihazlari tek dokunusla hazirlar.', icon: 'coffee', bgClass: 'bg-orange-500/10', colorClass: 'text-orange-500' };
+      return { title: 'Kahve Saati', desc: 'Mutfak rutini için uygun cihazları tek dokunuşla hazırlar.', icon: 'coffee', bgClass: 'bg-orange-500/10', colorClass: 'text-orange-500' };
     }
     if (/disari|cikis|evden cik|tatil/.test(clean)) {
-      return { title: 'Evden Cikis', desc: 'Evden ayrilirken enerji ve guvenlik kontrollerini toparlar.', icon: 'door-open', bgClass: 'bg-sky-500/10', colorClass: 'text-sky-500' };
+      return { title: 'Evden Çıkış', desc: 'Evden ayrılırken enerji ve güvenlik kontrollerini toparlar.', icon: 'door-open', bgClass: 'bg-sky-500/10', colorClass: 'text-sky-500' };
     }
     if (/guven|kilit|alarm|kamera/.test(clean)) {
-      return { title: 'Guvenlik Kontrolu', desc: 'Kilit, alarm ve kamera durumlarini birlikte kontrol eder.', icon: 'shield-check', bgClass: 'bg-red-500/10', colorClass: 'text-red-500' };
+      return { title: 'Güvenlik Kontrolü', desc: 'Kilit, alarm ve kamera durumlarını birlikte kontrol eder.', icon: 'shield-check', bgClass: 'bg-red-500/10', colorClass: 'text-red-500' };
     }
     if (/enerji|tasarruf|priz/.test(clean)) {
-      return { title: 'Enerji Tasarrufu', desc: 'Gereksiz tuketimi azaltmak icin enerji adimlarini calistirir.', icon: 'bolt', bgClass: 'bg-lime-500/10', colorClass: 'text-lime-600' };
+      return { title: 'Enerji Tasarrufu', desc: 'Gereksiz tüketimi azaltmak için enerji adımlarını çalıştırır.', icon: 'bolt', bgClass: 'bg-lime-500/10', colorClass: 'text-lime-600' };
     }
     if (/temiz|robot|supurge/.test(clean)) {
-      return { title: 'Temizlik Baslat', desc: 'Temizlik cihazlarini uygun sira ve modla baslatir.', icon: 'leaf', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500' };
+      return { title: 'Temizlik Başlat', desc: 'Temizlik cihazlarını uygun sıra ve modla başlatır.', icon: 'leaf', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500' };
     }
     return meta;
   }
@@ -390,7 +391,7 @@
     if (ltext.includes('ışık') || ltext.includes('kapat') || ltext.includes('enerji')) {
       if (devices > 0) {
         reply = 'Eşleşmiş cihazlarına kapatma komutu gönderildi. Enerji tasarrufu modu devrede.';
-        widgetHtml = '<div class="mt-3 bg-[#F1F7FF] border border-purple-100 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div><div><p class="text-sm font-semibold text-gray-800">Kapatma Komutu Gönderildi</p><p class="text-xs text-gray-500">' + devices + ' Cihaz</p></div></div>';
+        widgetHtml = '<div class="mt-3 bg-[#F1F7FF] border border-purple-100 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-[#4C7DFF]"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div><div><p class="text-sm font-semibold text-gray-800">Kapatma Komutu Gönderildi</p><p class="text-xs text-gray-500">' + devices + ' Cihaz</p></div></div>';
       } else {
         reply = 'Kontrol edilecek eşleşmiş cihazı bulunamadı. Önce Cihazlar bölümünden bir cihazı eşleştirmen gerekiyor.';
       }
@@ -403,9 +404,9 @@
     } else if (ltext.includes('klima') || ltext.includes('sıcaklık') || ltext.includes('soğut')) {
       if (devices > 0) {
         reply = 'Sıcaklık komutun eşleşmiş cihazlarına iletildi.';
-        widgetHtml = '<div class="mt-3 bg-[#F1F7FF] border border-blue-100 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-blue-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path></svg></div><div><p class="text-sm font-semibold text-gray-800">Sıcaklık Komutu</p><p class="text-xs text-gray-500">' + devices + ' Cihaz</p></div></div>';
+        widgetHtml = '<div class="mt-3 bg-[#F1F7FF] border border-blue-100 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-[#4C7DFF]"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path></svg></div><div><p class="text-sm font-semibold text-gray-800">Sıcaklık Komutu</p><p class="text-xs text-gray-500">' + devices + ' Cihaz</p></div></div>';
       } else {
-        reply = 'Sıcaklık ayarı için eşleşmiş bir klima bulunamadı. Önce Cihazlar bölümünden cihazıını eşleştir.';
+        reply = 'Sıcaklık ayarı için eşleşmiş bir klima bulunamadı. Önce Cihazlar bölümünden cihazını eşleştir.';
       }
     } else if ((intentText.includes('yapay zeka') || intentText.includes('ai')) && (intentText.includes('olustur') || intentText.includes('senaryo') || intentText.includes('uygulama') || intentText.includes('otomasyon'))) {
       reply = 'Tabii ki! Senin için harika bir akıllı senaryo kurgulayabilirim. Bana biraz detay verir misin? Örneğin: "Sabah uyandığımda kahve makinesi çalışsın" veya "Film izlerken ışıklar tamamen kısılsın" gibi bir istekte bulunabilirsin.';
@@ -439,7 +440,7 @@
     // Show processing
     const aiProcessing = document.createElement('div');
     aiProcessing.className = 'flex justify-start mb-4 w-full ai-msg';
-    aiProcessing.innerHTML = '<div class="flex items-end gap-2.5 max-w-[92%]"><div class="w-7 h-7 shrink-0 mb-1 shadow-sm rounded-xl overflow-hidden"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ai-bubble px-5 py-3.5 rounded-3xl rounded-bl-sm text-[14px] flex gap-1 items-center"><span class="w-2 h-2 bg-purple-300 rounded-full animate-bounce"></span><span class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span><span class="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></span></div></div>';
+    aiProcessing.innerHTML = '<div class="flex items-end gap-2.5 max-w-[92%]"><div class="w-7 h-7 shrink-0 mb-1 shadow-sm rounded-xl overflow-hidden"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ai-bubble px-5 py-3.5 rounded-3xl rounded-bl-sm text-[14px] flex gap-1 items-center"><span class="w-2 h-2 bg-purple-300 rounded-full animate-bounce"></span><span class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span><span class="w-2 h-2 bg-[#4C7DFF] rounded-full animate-bounce" style="animation-delay: 0.2s"></span></div></div>';
     messages.appendChild(aiProcessing);
     scrollToBottom();
 
@@ -579,7 +580,7 @@
     var promptId = (params.get('promptId') || '').trim();
     var helper = (params.get('helper') || '').trim();
     if (!promptText && helper === 'ready') {
-      promptText = 'Evdeki cihazılara gore hazir komutlar, hizli otomasyonlar ve akilli uygulama oÖnerileri ver.';
+      promptText = 'Evdeki cihazlara göre hazır komutlar, hızlı otomasyonlar ve akıllı uygulama oÖnerileri ver.';
     }
     if (!promptText && promptId && typeof window.getSmartPromptById === 'function') {
       var promptItem = window.getSmartPromptById(promptId);

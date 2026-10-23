@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — Cihazı Seç</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
@@ -43,7 +43,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="whitespace-nowrap text-lg font-bold absolute left-1/2 -translate-x-1/2">Cihazı Seç</h1>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Cihazı Seç</h1>
 <button class="text-slate-500 font-medium text-[17px]" onclick="resetSelection()">Sıfırla</button>
 </header>
 <!-- END: Header -->
@@ -70,7 +70,7 @@
 <!-- Cihaz eşleştirme (radar) akışına gider -->
 <a class="flex-shrink-0 bg-[#4C7DFF] text-white text-sm font-bold px-5 py-2.5 rounded-full active:scale-95 transition-transform" href="stitch-pair.html">Ekle</a>
 </section>
-<!-- Paired device list (eşleştirilmiş cihazılar buraya gerçek veriden gelir) -->
+<!-- Paired device list (eşleştirilmiş cihazlar buraya gerçek veriden gelir) -->
 <section class="hidden space-y-3" data-purpose="paired-device-list" id="device-list"></section>
 <!-- Feedback shortcut -->
 <a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-8" data-purpose="feedback-link" href="stitch-feedback.html">
@@ -91,7 +91,7 @@
       }
     })();
 
-    // --- Eşleştirilmiş cihazılar (stitch-pair.html kaydeder) ---
+    // --- Eşleştirilmiş cihazlar (stitch-pair.html kaydeder) ---
     var paired = [];
     try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (e) {}
     var selected = [];

@@ -1,100 +1,96 @@
-name: Desktop Release
+name: Masaüstü sürümü
 
+# "v1.0.0" gibi bir etiket gönderildiğinde Windows, macOS ve Linux kurulum dosyaları
+# derlenir ve herkese açık Enard52/nexus-releases deposunun Releases bölümüne yüklenir.
+# (Kaynak depo gizli olduğu için indirmeler ve otomatik güncelleme oradan yapılır.)
+# Gerekli gizli anahtar: RELEASES_TOKEN — nexus-releases deposuna "Contents: Read and write"
+# izni olan bir GitHub erişim anahtarı. Elle de çalıştırılabilir (Actions → Run workflow).
 on:
   push:
     tags:
       - "v*"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  release:
+  build:
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: windows-latest
-            platform: win
-            command: build:win
+            target: --win
           - os: macos-latest
-            platform: mac
-            command: build:mac
+            target: --mac
           - os: ubuntu-latest
-            platform: linux
-            command: build:linux
-
+            target: --linux
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: desktop
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          version: 10
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install workspace dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build static assets + server bundle
-        run: pnpm build
-
-      - name: Install desktop-app dependencies
-        working-directory: desktop-app
-        run: npm install
-
-      - name: Build desktop installer (${{ matrix.platform }})
-        working-directory: desktop-app
-        env:
-          # Code signing secrets (optional — unset = unsigned build).
-          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
-          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
-          WIN_CSC_SUBJECT: ${{ secrets.WIN_CSC_SUBJECT }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
-          # electron-updater publish token.
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run ${{ matrix.command }}
-
-      - name: Generate SHA-256 checksums
+      - name: Yayın anahtarını denetle
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
-        working-directory: desktop-app
+        env:
+          RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: |
-          mkdir -p dist/checksums
-          find dist -type f \( -name "*.exe" -o -name "*.dmg" -o -name "*.AppImage" -o -name "*.deb" \) \
-            -exec sh -c 'sha256sum "$1" > "$1.sha256"' _ {} \;
+          if [ -z "$RELEASES_TOKEN" ]; then
+            echo "::error::RELEASES_TOKEN gizli anahtarı tanımlı değil (Settings → Secrets → Actions)."
+            exit 1
+          fi
 
-      - name: Upload artifacts
+      - name: Bağımlılıklar
+        run: npm ci
+
+      - name: Uygulama dosyalarını hazırla
+        run: node scripts/prepare-app.cjs
+
+      - name: Derle ve yayınla
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          # İmza sertifikası yoksa imzasız derlenir (ücretsiz). İstenirse sonradan eklenir:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+        run: npx electron-builder ${{ matrix.target }} --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
+
+      - name: SHA-256 özetleri
+        shell: bash
+        run: |
+          cd dist
+          for f in *.exe *.dmg *.zip *.AppImage *.deb; do
+            [ -f "$f" ] || continue
+            if command -v sha256sum >/dev/null; then sha256sum "$f"; else shasum -a 256 "$f"; fi
+          done > SHA256SUMS-${{ runner.os }}.txt
+          cat SHA256SUMS-${{ runner.os }}.txt
+
+      - name: Özetleri sürüme ekle
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        run: gh release upload "${GITHUB_REF_NAME}" "dist/SHA256SUMS-${{ runner.os }}.txt" --clobber --repo Enard52/nexus-releases
+
+      - name: Derleme çıktıları (etiketsiz çalıştırmalarda indirilebilir)
         uses: actions/upload-artifact@v4
         with:
-          name: nexus-desktop-${{ matrix.platform }}
-          path: desktop-app/dist/*.{exe,dmg,AppImage,deb,sha256}
+          name: nexus-desktop-${{ runner.os }}
+          path: |
+            desktop/dist/*.exe
+            desktop/dist/*.dmg
+            desktop/dist/*.zip
+            desktop/dist/*.AppImage
+            desktop/dist/*.deb
+            desktop/dist/SHA256SUMS-*.txt
           if-no-files-found: warn
-          retention-days: 30
-
-      - name: Publish to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            desktop-app/dist/*.exe
-            desktop-app/dist/*.dmg
-            desktop-app/dist/*.AppImage
-            desktop-app/dist/*.deb
-            desktop-app/dist/*.sha256
-            desktop-app/dist/latest*.yml
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          retention-days: 14

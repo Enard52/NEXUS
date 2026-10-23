@@ -12,6 +12,7 @@ import {
   CATALOGS,
   RTL_LOCALES,
   SUPPORTED_LOCALES,
+  AVAILABLE_LOCALES,
   isRtl,
   translate,
   type Locale,
@@ -25,11 +26,12 @@ function placeholders(text: string): string[] {
 }
 
 describe("FAZ 1 gate — 20-locale catalog completeness", () => {
-  it("supports exactly 20 locales", () => {
-    expect(SUPPORTED_LOCALES).toHaveLength(20);
+  it("offers English and Turkish, with all 20 catalogs kept ready", () => {
+    expect(SUPPORTED_LOCALES).toEqual(["en", "tr"]);
+    expect(AVAILABLE_LOCALES).toHaveLength(20);
   });
 
-  it.each(SUPPORTED_LOCALES.map((l) => [l] as const))(
+  it.each(AVAILABLE_LOCALES.map((l) => [l] as const))(
     "%s catalog has 100%% key coverage",
     (locale) => {
       const catalog = CATALOGS[locale as Locale];
@@ -40,13 +42,13 @@ describe("FAZ 1 gate — 20-locale catalog completeness", () => {
     },
   );
 
-  it.each(SUPPORTED_LOCALES.map((l) => [l] as const))("%s has no empty translations", (locale) => {
+  it.each(AVAILABLE_LOCALES.map((l) => [l] as const))("%s has no empty translations", (locale) => {
     const catalog = CATALOGS[locale as Locale] as Record<string, string>;
     const empty = EN_KEYS.filter((k) => !catalog[k] || catalog[k].trim() === "");
     expect(empty).toEqual([]);
   });
 
-  it.each(SUPPORTED_LOCALES.map((l) => [l] as const))(
+  it.each(AVAILABLE_LOCALES.map((l) => [l] as const))(
     "%s preserves every {placeholder} from the EN source",
     (locale) => {
       const catalog = CATALOGS[locale as Locale] as Record<string, string>;

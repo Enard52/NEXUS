@@ -4567,4 +4567,21 @@ const PREMIUM_CSS = `
       object-fit: contain;
       display: block;
     }
+
+    /* ── Downloads: desktop now, mobile coming soon ── */
+    .downloads-grid.downloads-mobile { grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+    .download-card.is-soon { opacity: .82; }
+    .download-card.is-soon:hover { transform: none; }
+    .download-card .is-disabled,
+    .download-card .is-disabled:hover { opacity: .6; cursor: not-allowed; pointer-events: none; transform: none; box-shadow: none; }
+    .download-note { display: block; margin-top: .6rem; font-size: 11.5px; line-height: 1.45; color: var(--muted); text-align: center; }
+    .downloads-meta { margin: 18px 0 0; text-align: center; font-size: 13px; }
+    .downloads-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .downloads-meta a:hover { color: var(--text); }
+    .early-access-actions { margin: 26px 0 0; display: flex; justify-content: center; }
+    @media (max-width: 800px) {
+      .downloads-grid.downloads-mobile { grid-template-columns: 1fr; }
+    }
+    .price.price-soon { font-size: 34px; letter-spacing: -.02em; }
+    .price-card .is-disabled { opacity: .6; cursor: not-allowed; pointer-events: none; }
 `;

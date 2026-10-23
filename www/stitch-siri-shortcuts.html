@@ -4,8 +4,10 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>NEXUS — Siri Kısayolları</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
   <script src="data.js"></script>
   <style>
@@ -31,7 +33,7 @@
     <button onclick="window.history.back()" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform">
       <i class="w-7 h-7" data-lucide="chevron-left"></i>
     </button>
-    <h1 class="text-[17px] font-bold text-slate-900 absolute left-1/2 -translate-x-1/2 tracking-tight">Siri Kısayolları</h1>
+    <h1 class="text-lg font-bold tracking-tight text-slate-900 absolute left-1/2 -translate-x-1/2">Siri Kısayolları</h1>
     <div class="w-7"></div>
   </header>
 
@@ -94,11 +96,11 @@
               ${svg}
             </div>
             <div class="min-w-0 flex-1">
-              <h3 class="font-bold text-slate-900 text-[16px] group-active:text-blue-600 transition-colors truncate">${scenario.title}</h3>
-              <p class="text-[13px] text-slate-500 mt-0.5 truncate">${scenario.desc}</p>
+              <h3 class="font-bold text-slate-900 text-[16px] group-active:text-[#4C7DFF] transition-colors truncate">${escSiri(scenario.title)}</h3>
+              <p class="text-[13px] text-slate-500 mt-0.5 truncate">${escSiri(scenario.desc)}</p>
             </div>
           </div>
-          <div class="w-10 h-10 ml-3 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0 group-active:bg-blue-50 group-active:text-blue-600 transition-colors">
+          <div class="w-10 h-10 ml-3 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0 group-active:bg-blue-50 group-active:text-[#4C7DFF] transition-colors">
             <i class="w-5 h-5" data-lucide="plus"></i>
           </div>
         `;
@@ -109,9 +111,13 @@
       lucide.createIcons();
     });
 
+    // Siri'ye ekleme yalnızca yerel iOS uygulamasıyla mümkündür; uygulama yayınlanana kadar dürüstçe söylenir.
     function addToSiri(scenarioTitle) {
-      alert(`"${scenarioTitle}" senaryosu başarıyla Siri'ye eklendi. Artık "Hey Siri, ${scenarioTitle}" diyerek çalıştırabilirsiniz.`);
+      nexusInfo('Siri desteği iOS uygulamasıyla gelecek',
+        '"' + scenarioTitle + '" senaryosunu şimdilik ana ekrandaki Tıkla ve Çalıştır kartından tek dokunuşla çalıştırabilirsin. NEXUS App Store\'da yayınlandığında bu ekrandan doğrudan Siri\'ye ekleyebileceksin.',
+        [{ label: 'Ana ekrana git', href: 'stitch-home.html', primary: true }, { label: 'Kapat' }]);
     }
+    function escSiri(v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   </script>
 </body>
 </html>

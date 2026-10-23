@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>NEXUS " Günlükler</title>
+<title>NEXUS — Günlükler</title>
   <!-- Tailwind CSS CDN -->
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
   <!-- Google Fonts: Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
   <script src="js/lucide.js"></script>
   <style>
@@ -35,7 +35,7 @@
     <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1 text-slate-900 active:scale-95 transition-transform">
       <i class="w-7 h-7" data-lucide="chevron-left"></i>
     </a>
-    <h1 class="whitespace-nowrap text-[17px] font-semibold absolute left-1/2 -translate-x-1/2">Günlükler</h1>
+    <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Günlükler</h1>
     <div class="w-10"></div> <!-- Spacer -->
   </header>
 
@@ -88,8 +88,8 @@
       list.innerHTML = events.map(function (ev) {
         var d = new Date(ev.ts);
         var when = isNaN(d.getTime()) ? '' :
-          d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ' ' +
-          d.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+          d.toLocaleDateString((window.nexusLocale || 'tr-TR'), { day: 'numeric', month: 'long' }) + ' ' +
+          d.toLocaleTimeString((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit' });
         return '<article class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-4 items-start">' +
           '<div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#4C7DFF] flex-shrink-0">' +
           '<i class="w-5 h-5" data-lucide="' + (iconMap[ev.type] || 'activity') + '"></i></div>' +

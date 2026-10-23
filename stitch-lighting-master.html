@@ -4,7 +4,8 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>NEXUS - Aydınlatma Ustası</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
@@ -56,7 +57,7 @@
       <button onclick="history.length > 1 ? history.back() : window.location.href='stitch-discover.html'" class="p-1 -ml-1 text-slate-900 active:scale-95 transition-transform dark:text-slate-100" aria-label="Geri">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </button>
-      <h1 class="text-lg font-bold">Aydınlatma Ustası</h1>
+      <h1 class="text-lg font-bold tracking-tight">Aydınlatma Ustası</h1>
       <button id="info-btn" class="glass-surface flex h-10 w-10 items-center justify-center rounded-full text-slate-900 active:scale-95 transition-transform dark:text-slate-100">
         <i data-lucide="info" class="text-xl"></i>
       </button>
@@ -90,7 +91,7 @@
           <i data-lucide="lightbulb-off" class="text-4xl text-slate-400"></i>
         </div>
         <h2 class="text-xl font-bold text-slate-900 dark:text-white">Aydınlatma Cihazı Yok</h2>
-        <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-[250px] mx-auto">Sistemde ekli hiçbir aydınlatma cihazıı bulunamadı. Lütfen cihazı ekleyip tekrar deneyin.</p>
+        <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-[250px] mx-auto">Sistemde ekli hiçbir aydınlatma cihazı bulunamadı. Lütfen cihaz ekleyip tekrar deneyin.</p>
         <button onclick="window.location.href='stitch-home.html'" class="mt-8 rounded-full bg-[#4C7DFF] px-6 py-3 font-bold text-white shadow-lg active:scale-95 transition-transform">Ana Sayfaya Dön</button>
       </div>
 
@@ -154,7 +155,7 @@
       { id: "good-morning", title: "Günaydın", subtitle: "Yumuşak Başlangıç", icon: "lucide:coffee", iconWrap: "bg-orange-100 text-orange-600", prompt: "Sabah için yumuşak ve sıcak bir aydınlatma sahnesi oluştur." },
       { id: "cinema", title: "Sinema", subtitle: "Kısık Mavi Işık", icon: "lucide:film", iconWrap: "bg-indigo-100 text-indigo-600", prompt: "TV odası için kısık parlaklıkta sinema sahnesi oluştur." },
       { id: "reading", title: "Okuma", subtitle: "Net Beyaz Işık", icon: "lucide:book-open", iconWrap: "bg-green-100 text-green-600", prompt: "Okuma için parlak ve odaklı beyaz ışık sahnesi oluştur." },
-      { id: "party", title: "Parti", subtitle: "Dinamik Renkler", icon: "lucide:sparkles", iconWrap: "bg-blue-100 text-blue-600", prompt: "Eğlence için renkli ve dinamik aydınlatma sahnesi oluştur." }
+      { id: "party", title: "Parti", subtitle: "Dinamik Renkler", icon: "lucide:sparkles", iconWrap: "bg-blue-100 text-[#4C7DFF]", prompt: "Eğlence için renkli ve dinamik aydınlatma sahnesi oluştur." }
     ];
     var ACCENT_COLORS = ["#FFD700", "#FF7F50", "#4C7DFF", "#22D3EE", "#32CD32"];
         // Kullanicinin ekledigi ozel renkler kalici olarak saklanir
@@ -194,8 +195,8 @@
     }
     function lightingSummary() {
       var count = getLightingDevices().length;
-      if (!count) return "Henüz eklenmiş aydınlatma cihazıı yok. Cihaz ekledikçe bu ekran canlı dolacak.";
-      return count + " aydınlatma cihazıı için " + selectedRoomTitle() + " oda görünümü hazır.";
+      if (!count) return "Henüz eklenmiş aydınlatma cihazı yok. Cihaz ekledikçe bu ekran canlı dolacak.";
+      return count + " aydınlatma cihazı için " + selectedRoomTitle() + " oda görünümü hazır.";
     }
     function renderHero() {
       var devices = getLightingDevices();
@@ -294,7 +295,7 @@
       window.location.href = "stitch-smart.html";
     });
     document.getElementById("info-btn").addEventListener("click", function () {
-      alert("Bu ekran, eklediğin aydınlatma cihazları ve ev odalarına göre öneri üretir.");
+      nexusInfo("Aydınlatma Ustası", "Bu ekran, eklediğin aydınlatma cihazlarını odalara göre toplar; sahne kaydettiğinde ışıkların parlaklığı ve tonu birlikte ayarlanır.");
     });
 
     if(getLightingDevices().length === 0) {

@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS — AI Enerji Tasarrufu</title>
 <!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
@@ -53,7 +53,7 @@
 <i class="w-5 h-5 text-slate-700" data-lucide="ellipsis"></i>
 </button>
 <span class="w-px h-5 bg-slate-300/70"></span>
-<a aria-label="Mini uygulamayı kapıat" class="px-4 py-2" href="stitch-home.html">
+<a aria-label="Mini uygulamayı kapat" class="px-4 py-2" href="stitch-home.html">
 <i class="w-5 h-5 text-slate-700" data-lucide="x"></i>
 </a>
 </div>
@@ -79,22 +79,22 @@
 <h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
 <section class="space-y-3" data-purpose="strategy-list">
 <!-- Her strateji, seçimini localStorage'a yazıp detay sayfasını açar -->
-<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapıatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapıat">
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evden çıktıktan sonra ışığı otomatik olarak kapatın ve eve döndükten sonra açın." data-device="Aydınlatma" data-title="Evden çıktıktan sonra ışığı otomatik olarak kapat">
 <div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center flex-shrink-0">
 <i class="w-6 h-6" data-lucide="lightbulb-off"></i>
 </div>
 <div class="min-w-0 flex-grow">
-<h3 class="font-bold leading-snug">Evden çıktıktan sonra ışığı otomatik olarak kapıat</h3>
+<h3 class="font-bold leading-snug">Evden çıktıktan sonra ışığı otomatik olarak kapat</h3>
 <p class="text-xs text-slate-400 mt-1">Konum tabanlı · Aydınlatma<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
 </div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
 </a>
-<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evde kimse yokken klimayı otomatik olarak kapıatın, gereksiz tüketimi önleyin." data-device="Klima" data-title="Kimse yokken klimayı kapıat">
+<a class="block bg-white rounded-3xl card-shadow p-5 flex items-center gap-4 active:scale-[0.99] transition-transform" href="stitch-energy-strategy.html" onclick="pickStrategy(this)" data-desc="Evde kimse yokken klimayı otomatik olarak kapatın, gereksiz tüketimi önleyin." data-device="Klima" data-title="Kimse yokken klimayı kapat">
 <div class="w-12 h-12 rounded-2xl bg-[#22D3EE]/10 text-[#0EA5C4] flex items-center justify-center flex-shrink-0">
 <i class="w-6 h-6" data-lucide="air-vent"></i>
 </div>
 <div class="min-w-0 flex-grow">
-<h3 class="font-bold leading-snug">Kimse yokken klimayı kapıat</h3>
+<h3 class="font-bold leading-snug">Kimse yokken klimayı kapat</h3>
 <p class="text-xs text-slate-400 mt-1">Konum tabanlı · Klima<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
 </div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
@@ -105,7 +105,7 @@
 </div>
 <div class="min-w-0 flex-grow">
 <h3 class="font-bold leading-snug">Gece bekleme tüketimini kes</h3>
-<p class="text-xs text-slate-400 mt-1">Zamanılama tabanlı · Akıllı Priz<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
+<p class="text-xs text-slate-400 mt-1">Zamanlama tabanlı · Akıllı Priz<span class="strategy-state hidden ml-2 text-emerald-600 font-bold">· Etkin</span></p>
 </div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
 </a>
@@ -141,7 +141,7 @@
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="triangle-alert"></i></span>
 <span class="text-xs font-medium text-slate-600">Yardım ve Geri Bildirim</span>
 </a>
-<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus.app">
+<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus-ai.app">
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="mail"></i></span>
 <span class="text-xs font-medium text-slate-600">İletişim E-postası</span>
 </a>

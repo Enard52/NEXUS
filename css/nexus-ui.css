@@ -1,0 +1,309 @@
+/*
+ * NEXUS UI — ortak tasarım katmanı
+ * --------------------------------
+ * Tüm stitch-*.html ekranları bu dosyayı css/tailwind.css'ten SONRA yükler.
+ * Renk, yazı, köşe ve koyu tema kuralları tek yerden gelir; ekranlara
+ * tek tek yama yapmak yerine burası güncellenir.
+ *
+ * Birincil renk: #4C7DFF (mevcut uygulamada kullanılan mavi)
+ * Vurgu:         #22D3EE (camgöbeği, gradyanlarda)
+ */
+
+:root {
+  --nx-primary: #4C7DFF;
+  --nx-primary-press: #3F6FFF;
+  --nx-primary-soft: rgba(76, 125, 255, 0.12);
+  --nx-accent: #22D3EE;
+  --nx-gradient: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
+
+  --nx-page: #ECE9FD;
+  --nx-page-gradient: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+  --nx-surface: #FFFFFF;
+  --nx-surface-2: #F4F5FA;
+  --nx-text: #0F172A;
+  --nx-text-2: #334155;
+  --nx-muted: #64748B;
+  --nx-border: #E6E8F0;
+  --nx-danger: #E5484D;
+
+  --nx-radius-sm: 12px;
+  --nx-radius: 20px;
+  --nx-radius-lg: 28px;
+  --nx-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+html.dark {
+  --nx-primary-soft: rgba(76, 125, 255, 0.18);
+  --nx-page: #0F172A;
+  --nx-page-gradient: linear-gradient(180deg, #020617 0%, #0F172A 100%);
+  --nx-surface: #1E293B;
+  --nx-surface-2: #273449;
+  --nx-text: #F1F5F9;
+  --nx-text-2: #CBD5E1;
+  --nx-muted: #94A3B8;
+  --nx-border: rgba(148, 163, 184, 0.18);
+  --nx-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+/* ---------- Tipografi ---------- */
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Okunabilirlik tabanı: 10px ve altı metin kullanılmaz. */
+.text-\[9px\],
+.text-\[10px\] {
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+
+/* Açık temada açık gri ikincil metinler 4.5:1 kontrastı geçsin. */
+html:not(.dark) .text-slate-400,
+html:not(.dark) .text-gray-400 {
+  color: #64748B;
+}
+html:not(.dark) .placeholder-slate-400::placeholder,
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #7C8799;
+}
+
+/* ---------- Odak / erişilebilirlik ---------- */
+:focus-visible {
+  outline: 2px solid var(--nx-primary);
+  outline-offset: 2px;
+}
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+/* div/span'dan butona çevrilen öğeler eski görünümünü korusun */
+/* (dolgu/kenar boşluğu Tailwind sınıflarından gelir; burada sıfırlanmaz) */
+button.nx-reset {
+  appearance: none; -webkit-appearance: none;
+  font: inherit; color: inherit; text-align: inherit; width: 100%;
+}
+
+/* ---------- Ortak boş durum (EmptyState) ---------- */
+.nx-empty {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 8px; padding: 28px 20px;
+  background: var(--nx-surface); border-radius: var(--nx-radius-lg);
+  box-shadow: var(--nx-shadow);
+}
+.nx-empty__icon {
+  width: 56px; height: 56px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--nx-primary-soft); color: var(--nx-primary);
+  margin-bottom: 4px;
+}
+.nx-empty__title { font-size: 16px; font-weight: 700; color: var(--nx-text); }
+.nx-empty__text { font-size: 13px; line-height: 1.5; color: var(--nx-muted); max-width: 280px; }
+.nx-empty__cta {
+  margin-top: 8px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 0 20px; border-radius: 9999px;
+  background: var(--nx-primary); color: #fff; font-size: 14px; font-weight: 700;
+  box-shadow: 0 8px 20px rgba(76, 125, 255, 0.28);
+  transition: transform .15s ease, background .15s ease;
+}
+.nx-empty__cta:active { transform: scale(0.97); background: var(--nx-primary-press); }
+
+/* ---------- Ortak alt sayfa üst barı (geri + başlık) ---------- */
+.nx-appbar-back {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; margin-left: -10px;
+  color: var(--nx-text); border-radius: 9999px;
+}
+.nx-appbar-back:active { background: var(--nx-primary-soft); }
+
+/* ---------- Görsel yedeği (çevrimdışı / yüklenemeyen görseller) ---------- */
+.nx-img-fallback {
+  background: var(--nx-gradient) !important;
+  object-fit: cover;
+}
+
+/* ---------- Koyu tema: sayfa içi keyfi açık zeminler ---------- */
+/* Sayfa kapları (tam ekran) */
+html.dark .h-screen[class*="bg-[#ECE9FD]"],
+html.dark .min-h-screen[class*="bg-[#ECE9FD]"],
+html.dark .h-screen[class*="bg-[#F9FAFB]"],
+html.dark .min-h-screen[class*="bg-[#F9FAFB]"],
+html.dark [class*="bg-[#DDD8FB]"] {
+  background-color: #0F172A !important;
+  background-image: none !important;
+}
+/* Küçük ikon zeminleri ve yumuşak kartlar */
+html.dark [class*="bg-[#ECE9FD]"],
+html.dark [class*="bg-[#F5F3FF]"],
+html.dark [class*="bg-[#EEF4FF]"],
+html.dark [class*="bg-[#F2F0FF]"],
+html.dark [class*="bg-[#F5F7FF]"],
+html.dark [class*="bg-[#E4F7FB]"],
+html.dark [class*="bg-[#F6F5FB]"],
+html.dark [class*="bg-[#F9F9FB]"],
+html.dark [class*="bg-violet-50"],
+html.dark [class*="bg-indigo-50"],
+html.dark [class*="bg-blue-50"] {
+  background-color: rgba(76, 125, 255, 0.16) !important;
+}
+html.dark [class*="bg-[#F9FAFB]"],
+html.dark [class*="bg-[#F8FAFC]"],
+html.dark [class*="bg-[#f8fafc]"] {
+  background-color: #0F172A !important;
+}
+html.dark .from-white,
+html.dark [class*="from-[#ECE9FD]"],
+html.dark [class*="from-[#F5F3FF]"] {
+  --tw-gradient-from: #0F172A var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(15, 23, 42, 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+html.dark .via-white,
+html.dark [class*="via-[#F5F3FF]"] {
+  --tw-gradient-stops: var(--tw-gradient-from), #0F172A var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+html.dark .to-white,
+html.dark [class*="to-[#DDD8FB]"],
+html.dark [class*="to-[#F5F3FF]"] {
+  --tw-gradient-to: #0F172A var(--tw-gradient-to-position) !important;
+}
+/* Beyaz kenarlıklar koyu zeminde parlamasın */
+html.dark [class*="border-white"] {
+  border-color: rgba(148, 163, 184, 0.14) !important;
+}
+/* Koyu temada beyaz/çok açık ikon kutuları ve kartlar */
+html.dark .bg-slate-50\/80,
+html.dark .bg-white\/60,
+html.dark .bg-white\/70,
+html.dark .bg-white\/80 {
+  background-color: rgba(30, 41, 59, 0.85) !important;
+}
+html.dark .text-slate-900,
+html.dark .text-gray-900 {
+  color: #F8FAFC !important;
+}
+/* Koyu temada sabit/yapışkan açık başlıklar */
+html.dark header[class*="bg-[#F9FAFB]"],
+html.dark header.bg-white,
+html.dark header[class*="bg-white/"] {
+  background-color: rgba(15, 23, 42, 0.92) !important;
+}
+
+/* ---------- Bileşen cilası ---------- */
+/* Birincil butonlarda basma geri bildirimi */
+[class*="bg-[#4C7DFF]"]:is(button, a):active { background-color: var(--nx-primary-press) !important; }
+
+/* Alt menü: koyu temada da etkin sekme net görünsün */
+html.dark nav[data-purpose="bottom-nav"] a[aria-current="page"],
+html.dark nav[data-purpose="bottom-nav"] a.text-\[\#4C7DFF\] {
+  color: #7FA2FF !important;
+}
+
+/* Kaydırılabilir yatay chip listelerinde kenar yumuşatma */
+.nx-fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+}
+
+/* Sohbet karşılaması: koyu temada okunur başlık */
+html.dark .nx-greeting { color: #DCE6FF !important; }
+.nx-greeting .nx-greeting-accent {
+  background: var(--nx-gradient);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* ---------- Derlenmemiş yardımcı sınıflar ----------
+ * Bazı ekranlar camelCase marka sınıflarını (text-nexusPurple vb.) ve birkaç
+ * keyfi değeri kullanıyor; derlenmiş tailwind.css bunları içermediği için
+ * butonlar renksiz kalıyordu. Derleme ortamından bağımsız çalışsın diye burada.
+ * (nexusPurple adı tarihsel; değeri birincil mavi #4C7DFF.) */
+.text-nexusPurple { color: #4C7DFF; }
+.text-nexusCyan { color: #0EA5C4; }
+.bg-nexusPurple { background-color: #4C7DFF; }
+.bg-nexusPurple\/5 { background-color: rgba(76, 125, 255, 0.05); }
+.bg-nexusPurple\/10 { background-color: rgba(76, 125, 255, 0.10); }
+.hover\:bg-nexusPurple\/90:hover { background-color: rgba(76, 125, 255, 0.90); }
+.bg-nexusCyan { background-color: #22D3EE; }
+.bg-nexusCyan\/10 { background-color: rgba(34, 211, 238, 0.10); }
+.bg-nexusCyan\/20 { background-color: rgba(34, 211, 238, 0.20); }
+.border-nexusPurple { border-color: #4C7DFF; }
+.border-nexusPurple\/10 { border-color: rgba(76, 125, 255, 0.10); }
+.border-nexusPurple\/20 { border-color: rgba(76, 125, 255, 0.20); }
+.border-nexusPurple\/30 { border-color: rgba(76, 125, 255, 0.30); }
+.border-nexusCyan\/30 { border-color: rgba(34, 211, 238, 0.30); }
+.focus\:border-nexusPurple:focus { border-color: #4C7DFF; }
+.decoration-nexusPurple\/30 { text-decoration-color: rgba(76, 125, 255, 0.30); }
+.peer:checked ~ .peer-checked\:bg-nexusPurple { background-color: #4C7DFF; }
+html.dark .dark\:bg-nexusPurple\/10 { background-color: rgba(76, 125, 255, 0.10); }
+html.dark .dark\:border-nexusPurple\/20 { border-color: rgba(76, 125, 255, 0.20); }
+html.dark .dark\:bg-dark-gradient { background: linear-gradient(180deg, #0F172A 0%, #020617 100%) !important; }
+html.dark .bg-light-blue-gradient { background: linear-gradient(180deg, #0F172A 0%, #020617 100%) !important; }
+html.dark .dark\:shadow-\[0_14px_36px_rgba\(2\2c 6\2c 23\2c 0\.45\)\] { box-shadow: 0 14px 36px rgba(2, 6, 23, 0.45); }
+.rounded-4xl { border-radius: 32px; }
+.bg-white\/88 { background-color: rgba(255, 255, 255, 0.88); }
+.leading-4 { line-height: 1rem; }
+.px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+.px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+.space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; }
+.shadow-\[0_12px_24px_rgba\(76\2c 125\2c 255\2c 0\.28\)\] { box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28); }
+.shadow-\[0_12px_36px_rgba\(15\2c 23\2c 42\2c 0\.08\)\] { box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08); }
+.shadow-\[0_4px_20px_rgba\(0\2c 0\2c 0\2c 0\.05\)\] { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+.shadow-\[0_8px_28px_rgba\(15\2c 23\2c 42\2c 0\.05\)\] { box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05); }
+.shadow-\[0_-10px_40px_rgba\(0\2c 0\2c 0\2c 0\.1\)\] { box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1); }
+.from-slate-950\/18 { --tw-gradient-from: rgba(2, 6, 23, 0.18) var(--tw-gradient-from-position); --tw-gradient-to: rgba(2, 6, 23, 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-white\/12 { --tw-gradient-to: rgba(255, 255, 255, 0.12) var(--tw-gradient-to-position); }
+.h-\[min\(72vw\2c 19rem\)\] { height: min(72vw, 19rem); }
+.w-\[min\(72vw\2c 19rem\)\] { width: min(72vw, 19rem); }
+html.dark .shadow-\[0_4px_20px_rgba\(0\2c 0\2c 0\2c 0\.05\)\],
+html.dark .shadow-\[0_8px_28px_rgba\(15\2c 23\2c 42\2c 0\.05\)\],
+html.dark .shadow-\[0_12px_36px_rgba\(15\2c 23\2c 42\2c 0\.08\)\] { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45); }
+/* Menü ekranının yerel renk adları (Play CDN kaldırılınca derlenmiyordu) */
+.text-text-primary { color: #111827; }
+.text-text-secondary { color: #6B7280; }
+.bg-bg-main { background-color: #F9F9FB; }
+/* Sohbet ekranının yerel zeminleri */
+.bg-nexus-gradient { background-image: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%); }
+.bg-nexus-plus-bg { background-color: #4C7DFF; }
+
+/* ---------- Koyu tema: sayfa içi yerel yüzey sınıfları ---------- */
+html.dark .glass-surface,
+html.dark .glass-card,
+html.dark .plain-card,
+html.dark .picker-card {
+  background: rgba(30, 41, 59, 0.88) !important;
+  border-color: rgba(148, 163, 184, 0.16) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+html.dark .picker-tab.active { color: #F8FAFC !important; }
+html.dark .picker-row + .picker-row { border-top-color: rgba(148, 163, 184, 0.14) !important; }
+html.dark footer.glass-surface { background: rgba(15, 23, 42, 0.92) !important; }
+html.dark .border-slate-200\/60 { border-color: rgba(148, 163, 184, 0.14) !important; }
+.min-h-\[44px\] { min-height: 44px; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.max-w-\[88\%\] { max-width: 88%; }
+.max-h-\[74px\] { max-height: 74px; }
+
+/* ---------- Alt menü okunabilirliği ---------- */
+nav[data-purpose="bottom-nav"] a span { font-size: 12px !important; line-height: 1 !important; }
+html.dark nav[data-purpose="bottom-nav"] a[aria-current="false"] { color: #94A3B8 !important; }
+html.dark nav[data-purpose="bottom-nav"] a[aria-current="page"] { color: #7FA2FF !important; }
+
+.nexus-shadow { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05); }
+html.dark .nexus-shadow { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); }
+.text-emerald-700 { color: #047857; }
+html.dark .text-emerald-700 { color: #34d399; }
+.min-h-\[40px\] { min-height: 40px; }
+.text-\[\#3F6FFF\] { color: #3F6FFF; }
+html.dark .dark\:text-\[\#93b4ff\] { color: #93b4ff; }
+
+/* Kapalı (ekranın üstüne itilmiş) üst panellerin gölgesi ekrana sızmasın */
+.fixed.-translate-y-full { box-shadow: none !important; }

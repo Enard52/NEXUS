@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Hesap ve Güvenlik</title>
-<link href="css/tailwind.css" rel="stylesheet"/>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <script src="js/lucide.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<style>
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
   body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
   .nexus-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
   .switch { position: relative; display: inline-block; width: 52px; height: 32px; }
@@ -30,7 +30,7 @@
       <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-settings.html'" class="p-1 -ml-1 active:scale-95 transition-transform" aria-label="Geri">
         <i data-lucide="chevron-left" class="w-7 h-7 text-slate-700"></i>
       </a>
-      <h1 class="text-xl font-bold absolute left-1/2 -translate-x-1/2">Hesap ve Güvenlik</h1>
+      <h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2">Hesap ve Güvenlik</h1>
       <div class="w-8"></div>
     </header>
 
@@ -62,7 +62,7 @@
               <i data-lucide="fingerprint" class="w-6 h-6 text-slate-400"></i>
               <div>
                 <span class="block text-base font-semibold">Biyometrik Kilit</span>
-                <span class="block text-xs text-slate-500 mt-0.5">Bu cihazı için yerel koruma</span>
+                <span class="block text-xs text-slate-500 mt-0.5">Bu cihaz için yerel koruma</span>
               </div>
             </div>
             <label class="switch">
@@ -226,7 +226,7 @@
         return;
       }
       nexusSetItem('nexusUserPassword', next);
-      nexusSetItem('nexusPasswordUpdatedAt', new Date().toLocaleDateString('tr-TR'));
+      nexusSetItem('nexusPasswordUpdatedAt', new Date().toLocaleDateString((window.nexusLocale || 'tr-TR')));
       error.classList.add('hidden');
       document.getElementById('current-password').value = '';
       document.getElementById('new-password').value = '';
@@ -251,14 +251,14 @@
       document.getElementById('trusted-count-label').textContent = 'Güvenilir Cihazlar (' + sessions.length + ')';
       const list = document.getElementById('trusted-devices-list');
       if (!others.length) {
-        list.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 px-4 py-4 text-sm text-slate-500">Başka kayıtlı oturum veya güvenilir cihazı yok.</div>';
+        list.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 px-4 py-4 text-sm text-slate-500">Başka kayıtlı oturum veya güvenilir cihaz yok.</div>';
         return;
       }
       list.innerHTML = others.map((session, index) => (
         '<div class="rounded-2xl bg-slate-50 px-4 py-4 flex items-center justify-between gap-3">' +
           '<div class="min-w-0">' +
             '<p class="text-sm font-semibold truncate">' + escapeHtml(session.name || 'Cihaz') + '</p>' +
-            '<p class="text-xs text-slate-500 truncate mt-1">' + escapeHtml(session.meta || 'Kayıtlı cihazı') + '</p>' +
+            '<p class="text-xs text-slate-500 truncate mt-1">' + escapeHtml(session.meta || 'Kayıtlı cihaz') + '</p>' +
           '</div>' +
           '<button type="button" onclick="removeSession(' + index + ')" class="text-xs font-bold text-red-500">Kaldır</button>' +
         '</div>'

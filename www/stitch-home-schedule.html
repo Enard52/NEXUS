@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Ev Planı</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -19,11 +20,11 @@
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Ev Planı</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">Ev Planı</h1>
       <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -36,7 +37,7 @@
         <div class="bg-white rounded-3xl p-5 nexus-card-shadow relative overflow-hidden flex items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500">
-              <iconify-icon icon="lucide:sunrise" class="text-2xl"></iconify-icon>
+              <i data-lucide="sunrise" class="text-2xl"></i>
             </div>
             <div>
               <div class="flex items-center gap-2">
@@ -56,7 +57,7 @@
         <div class="bg-white rounded-3xl p-5 nexus-card-shadow relative overflow-hidden flex items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-500">
-              <iconify-icon icon="lucide:moon-star" class="text-2xl"></iconify-icon>
+              <i data-lucide="moon-star" class="text-2xl"></i>
             </div>
             <div>
               <div class="flex items-center gap-2">
@@ -80,7 +81,7 @@
         <div class="bg-white/80 backdrop-blur-md rounded-3xl p-4 border border-white flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-500">
-                <iconify-icon icon="lucide:thermometer" class="text-xl"></iconify-icon>
+                <i data-lucide="thermometer" class="text-xl"></i>
               </div>
               <div>
                 <p class="font-bold text-sm text-slate-900">Klima Otomatik Kapanma</p>
@@ -99,18 +100,22 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggles = document.querySelectorAll('input[type="checkbox"]');
-    const state = JSON.parse(localStorage.getItem('nexusHomeScheduleData') || '{"time":"23:30","name":"Uyku Modu","active":true}');
+    const state = JSON.parse(nexusGetItem('nexusHomeScheduleData') || '{"time":"23:30","name":"Uyku Modu","active":true}');
     if(toggles.length > 0) {
         toggles[0].checked = state.active;
         toggles[0].addEventListener('change', (e) => {
             state.active = e.target.checked;
-            localStorage.setItem('nexusHomeScheduleData', JSON.stringify(state));
+            nexusSetItem('nexusHomeScheduleData', JSON.stringify(state));
         });
     }
 });
 
 </script>
-<script src="smart-card-detail-state.js"></script></body>
+<script src="smart-card-detail-state.js"></script>
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
+</body>
 </html>
 
 

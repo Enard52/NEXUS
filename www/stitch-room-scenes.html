@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Oda Sahneleri</title>
-  <link href="css/tailwind.css" rel="stylesheet"/>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="js/lucide.js"></script>
   
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
@@ -28,11 +29,11 @@
   <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); window.history.back();" class="p-1 -ml-1 text-slate-900 active-scale">
-        <iconify-icon icon="lucide:chevron-left" class="text-[28px]"></iconify-icon>
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
-      <h1 class="text-lg font-bold text-slate-900 tracking-tight">Oda Sahneleri</h1>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">Oda Sahneleri</h1>
             <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
-        <iconify-icon icon="lucide:settings" class="text-[24px]"></iconify-icon>
+        <i data-lucide="settings" class="text-[24px]"></i>
       </a>
     </header>
 
@@ -42,14 +43,14 @@
       <section class="bg-white rounded-3xl p-5 nexus-card-shadow">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
-            <iconify-icon icon="lucide:sofa" class="text-xl"></iconify-icon>
+            <i data-lucide="sofa" class="text-xl"></i>
           </div>
           <h2 class="text-lg font-bold text-slate-900">Salon</h2>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <button data-room="salon" data-scene="Sinema" class="bg-[#4C7DFF] text-white rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <iconify-icon icon="lucide:clapperboard" class="text-2xl"></iconify-icon>
+            <i data-lucide="clapperboard" class="text-2xl"></i>
             <div>
               <div class="font-bold text-sm leading-tight">Sinema</div>
               <div class="text-[10px] opacity-80" data-status>Aktif</div>
@@ -57,7 +58,7 @@
           </button>
 
           <button data-room="salon" data-scene="Gündüz" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <iconify-icon icon="lucide:sun" class="text-2xl text-amber-500"></iconify-icon>
+            <i data-lucide="sun" class="text-2xl text-amber-500"></i>
             <div>
               <div class="font-bold text-sm leading-tight">Gündüz</div>
               <div class="text-[10px] text-slate-400" data-status>Pasif</div>
@@ -70,14 +71,14 @@
       <section class="bg-white rounded-3xl p-5 nexus-card-shadow">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
-            <iconify-icon icon="lucide:bed-double" class="text-xl"></iconify-icon>
+            <i data-lucide="bed-double" class="text-xl"></i>
           </div>
           <h2 class="text-lg font-bold text-slate-900">Yatak Odası</h2>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <button data-room="yatak" data-scene="Uyku" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <iconify-icon icon="lucide:moon" class="text-2xl text-indigo-500"></iconify-icon>
+            <i data-lucide="moon" class="text-2xl text-indigo-500"></i>
             <div>
               <div class="font-bold text-sm leading-tight">Uyku</div>
               <div class="text-[10px] text-slate-400" data-status>Pasif</div>
@@ -85,7 +86,7 @@
           </button>
 
           <button data-room="yatak" data-scene="Okuma" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <iconify-icon icon="lucide:book-open" class="text-2xl text-sky-500"></iconify-icon>
+            <i data-lucide="book-open" class="text-2xl text-sky-500"></i>
             <div>
               <div class="font-bold text-sm leading-tight">Okuma</div>
               <div class="text-[10px] text-slate-400" data-status>Pasif</div>
@@ -165,7 +166,11 @@ document.addEventListener('DOMContentLoaded', function() {
   syncUI();
 });
 </script>
-<script src="smart-card-detail-state.js"></script></body>
+<script src="smart-card-detail-state.js"></script>
+  <script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
+</body>
 </html>
 
 
