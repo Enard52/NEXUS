@@ -5,7 +5,7 @@
   "type": "module",
   "description": "NEXUS AI — Personal Operating System (monorepo root).",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.5"
   },
   "packageManager": "pnpm@10.26.1",
   "scripts": {
