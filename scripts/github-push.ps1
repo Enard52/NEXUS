@@ -1,4 +1,4 @@
-# NEXUS - commit all project changes and push to GitHub (origin/main).
+# NEXUS - sync with GitHub: pull new commits, then commit all local changes and push (origin/main).
 # Local main and remote main end up identical. Output: scripts\github-push.log
 $ErrorActionPreference = 'Continue'
 $root = Split-Path $PSScriptRoot -Parent
@@ -19,7 +19,11 @@ if (Test-Path 'desktop\github-workflow\desktop-release.yml') {
 git checkout main
 git fetch origin
 $behind = (git rev-list --count HEAD..origin/main)
-if ([int]$behind -gt 0) { "ERROR: origin/main has $behind new commit(s). Nothing was changed."; Stop-Transcript | Out-Null; exit 1 }
+if ([int]$behind -gt 0) {
+  "origin/main has $behind new commit(s) - updating local main first"
+  git pull --ff-only origin main
+  if ($LASTEXITCODE -ne 0) { "ERROR: local main could not be fast-forwarded (diverged). Nothing was committed."; Stop-Transcript | Out-Null; exit 1 }
+}
 
 # 3) Stage everything and run safety checks
 if (-not (git config user.name)) { git config user.name 'Ensar' }
@@ -32,7 +36,8 @@ if ($bad.Count -gt 0) { "ERROR: unwanted files staged, nothing committed:"; $bad
 $big = @($staged | Where-Object { (Test-Path -LiteralPath $_) -and ((Get-Item -LiteralPath $_).Length -gt 50MB) })
 if ($big.Count -gt 0) { "ERROR: files over 50 MB, nothing committed:"; $big; git reset -q; Stop-Transcript | Out-Null; exit 1 }
 if ($staged.Count -eq 0) { "nothing to commit" } else {
-  git commit -q -m "NEXUS: TR/EN with automatic language detection, Home Assistant support, desktop app with branded installer, site updates" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+  $msg = "NEXUS update $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+  git commit -q -m $msg -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 }
 
 # 4) Push
