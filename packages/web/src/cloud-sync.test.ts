@@ -85,7 +85,10 @@ describe("cihaz kayıtlarının tutarlılığı", () => {
     const legacy = [{ name: "Salon Ampulü", room: "Salon" }, { name: "Kapı Sensörü" }];
     const first = cloud.ensureDeviceIds(legacy);
     expect(first.changed).toBe(true);
-    expect(first.devices.map((d: { id: string }) => d.id)).toEqual(["salon-ampulu-0", "kapi-sensoru-1"]);
+    expect(first.devices.map((d: { id: string }) => d.id)).toEqual([
+      "salon-ampulu-0",
+      "kapi-sensoru-1",
+    ]);
     const second = cloud.ensureDeviceIds(first.devices);
     expect(second.changed).toBe(false);
     expect(second.devices).toEqual(first.devices);
@@ -135,7 +138,12 @@ describe("Supabase kimlik doğrulama akışı", () => {
     const { cloud, calls, storage } = load({
       config: CONFIG,
       responders: [
-        () => ({ access_token: "tok-1", refresh_token: "ref-1", expires_in: 3600, user: { id: "u1", email: "a@b.co" } }),
+        () => ({
+          access_token: "tok-1",
+          refresh_token: "ref-1",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        }),
       ],
     });
     const session = await cloud.signIn("a@b.co", "parola");
@@ -151,13 +159,25 @@ describe("Supabase kimlik doğrulama akışı", () => {
     const { cloud, calls } = load({
       config: CONFIG,
       responders: [
-        () => ({ access_token: "tok-1", refresh_token: "ref-1", expires_in: 3600, user: { id: "u1", email: "a@b.co" } }),
-        () => ({ access_token: "tok-2", refresh_token: "ref-2", expires_in: 3600, user: { id: "u1", email: "a@b.co" } }),
+        () => ({
+          access_token: "tok-1",
+          refresh_token: "ref-1",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        }),
+        () => ({
+          access_token: "tok-2",
+          refresh_token: "ref-2",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        }),
       ],
     });
     await cloud.signIn("a@b.co", "parola");
     // Oturumu geçmişe al: yenileme tetiklenmeli.
-    const stored = JSON.parse((globalThis as any).localStorage.getItem("nexusCloudSession") || "{}");
+    const stored = JSON.parse(
+      (globalThis as any).localStorage.getItem("nexusCloudSession") || "{}",
+    );
     stored.expiresAt = Date.now() - 1000;
     (globalThis as any).localStorage.setItem("nexusCloudSession", JSON.stringify(stored));
 
@@ -170,7 +190,12 @@ describe("Supabase kimlik doğrulama akışı", () => {
     const { cloud, storage } = load({
       config: CONFIG,
       responders: [
-        () => ({ access_token: "tok-1", refresh_token: "ref-1", expires_in: 3600, user: { id: "u1" } }),
+        () => ({
+          access_token: "tok-1",
+          refresh_token: "ref-1",
+          expires_in: 3600,
+          user: { id: "u1" },
+        }),
         () => ({}),
       ],
     });
@@ -185,7 +210,12 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
     const { cloud, calls } = load({
       config: CONFIG,
       responders: [
-        () => ({ access_token: "tok-1", refresh_token: "ref-1", expires_in: 3600, user: { id: "u1", email: "a@b.co" } }),
+        () => ({
+          access_token: "tok-1",
+          refresh_token: "ref-1",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        }),
         () => ({}),
       ],
     });
@@ -203,9 +233,14 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
     const { cloud, win, calls } = load({
       config: CONFIG,
       responders: [
-        () => ({ access_token: "tok-1", refresh_token: "ref-1", expires_in: 3600, user: { id: "u1", email: "a@b.co" } }),
+        () => ({
+          access_token: "tok-1",
+          refresh_token: "ref-1",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        }),
         () => ({ status: 503, body: { message: "gecici hata" } }),
-        () => ([]),
+        () => [],
         () => ({}),
       ],
     });
@@ -220,14 +255,21 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
     expect((globalThis as any).localStorage.getItem("nexusCloudPendingOps")).toBe(null);
     // Flush sirasinda once cekme (select) sonra yazma (POST) yapilmali.
     expect(calls.some((c) => c.url.includes("/rest/v1/nexus_devices?select"))).toBe(true);
-    expect(calls.filter((c) => c.url.endsWith("/rest/v1/nexus_devices") && c.method === "POST").length).toBe(2);
+    expect(
+      calls.filter((c) => c.url.endsWith("/rest/v1/nexus_devices") && c.method === "POST").length,
+    ).toBe(2);
   });
 
   it("syncNow yerel listeyi buluttan gelenle birleştirip geri yazar", async () => {
     const { cloud, win, calls } = load({
       config: CONFIG,
       responders: [
-        () => ({ access_token: "tok-1", refresh_token: "ref-1", expires_in: 3600, user: { id: "u1", email: "a@b.co" } }),
+        () => ({
+          access_token: "tok-1",
+          refresh_token: "ref-1",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        }),
         () => [
           {
             device_id: "d1",
@@ -244,7 +286,10 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
         () => ({}),
       ],
     });
-    (win as any).nexusSetItem("nexusPairedDevices", JSON.stringify([{ id: "d2", name: "Yerel Ampul" }]));
+    (win as any).nexusSetItem(
+      "nexusPairedDevices",
+      JSON.stringify([{ id: "d2", name: "Yerel Ampul" }]),
+    );
     await cloud.signIn("a@b.co", "parola");
     const summary = await cloud.syncNow();
     expect(summary.count).toBe(2);

@@ -93,7 +93,9 @@ describe("mobil ekranlar — offline yüklenme Sözleşmesi", () => {
     const users = SCREENS.filter((s) =>
       readFileSync(join(REPO_ROOT, s), "utf8").includes("<iconify-icon"),
     );
-    expect(users, `iconify kullanan ekranlar (lucide'a çevrilmeli): ${users.join(", ")}`).toEqual([]);
+    expect(users, `iconify kullanan ekranlar (lucide'a çevrilmeli): ${users.join(", ")}`).toEqual(
+      [],
+    );
   });
 });
 

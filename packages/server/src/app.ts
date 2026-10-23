@@ -389,7 +389,6 @@ export function createRequestHandler(
       }
     }
 
-
     if (path === "/api/login" && method === "POST") {
       const body = await readJsonBody(req);
       const email = String(body.email ?? "");

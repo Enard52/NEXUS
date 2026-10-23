@@ -72,7 +72,10 @@ export function LoginScreen({ onSignedIn }: { onSignedIn: (user: PublicUser) => 
   return (
     <div className="auth-wrap">
       <form className="auth-card stack" onSubmit={(e) => void submit(e)}>
-        <h1 className="auth-brand" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+        <h1
+          className="auth-brand"
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}
+        >
           <BrandLogo size={36} />
           <span>NEXUS</span>
         </h1>

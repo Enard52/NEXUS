@@ -95,7 +95,16 @@ export function Shell() {
       )}
       <div className="app-main">
         <nav className="sidenav" aria-label={t("nav.primary")}>
-          <div className="nav-brand" style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 16px 12px", borderBottom: "1px solid var(--border)" }}>
+          <div
+            className="nav-brand"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "8px 12px 16px 12px",
+              borderBottom: "1px solid var(--border)",
+            }}
+          >
             <BrandLogo size={28} />
             <span style={{ fontWeight: 800, fontSize: 16, letterSpacing: "-0.02em" }}>NEXUS</span>
           </div>

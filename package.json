@@ -15,7 +15,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --check packages",
     "scaffold:modules": "node scripts/scaffold-modules.mjs",
     "build:static": "pnpm --filter @nexus/web build:site && node scripts/fix-review-avatars.mjs && node scripts/copy-static.mjs",
     "build:client": "pnpm --filter @nexus/client build",

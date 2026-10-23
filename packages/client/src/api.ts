@@ -168,7 +168,6 @@ export const api = {
     return out.user;
   },
 
-
   async login(email: string, password: string): Promise<PublicUser> {
     const out = await post<AuthResponse>("/api/login", { email, password });
     setToken(out.token);

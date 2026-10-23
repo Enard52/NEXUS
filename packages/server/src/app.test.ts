@@ -338,10 +338,7 @@ describe("local sync server", () => {
   });
 
   it("serves self-hosted brand font files with correct MIME type", async () => {
-    const { base } = await bootWithStatic(
-      join(tmp, "fonts.db"),
-      join(process.cwd(), "packages/web/dist"),
-    );
+    const { base } = await bootWithStatic(join(tmp, "fonts.db"), join(process.cwd(), "public"));
     const res = await fetch(`${base}/fonts/inter-latin-400-normal.woff2`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("font/woff2");

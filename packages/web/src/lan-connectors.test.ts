@@ -31,7 +31,8 @@ afterEach(() => {
 describe("protokol sezme", () => {
   it("Shelly ayarlarindan modeli ve turu cikarir", async () => {
     const lan = load((url) => {
-      if (url.endsWith("/settings")) return Promise.resolve(ok({ device: { type: "SHPLG-S", hostname: "salon-priz" } }));
+      if (url.endsWith("/settings"))
+        return Promise.resolve(ok({ device: { type: "SHPLG-S", hostname: "salon-priz" } }));
       return Promise.resolve({ status: 404, text: () => Promise.resolve("") });
     });
     const found = await lan.identify("192.168.1.20");
@@ -42,8 +43,10 @@ describe("protokol sezme", () => {
 
   it("WLED ve ESPHome uclarini ayirt eder", async () => {
     const lan = load((url) => {
-      if (url.includes("/json/info")) return Promise.resolve(ok({ ver: "0.14.2", name: "serit" }));
-      if (url.includes("/settings")) return Promise.resolve({ status: 500, text: () => Promise.resolve("err") });
+      if (url.includes("/json/info"))
+        return Promise.resolve(ok({ ver: "0.14.2", name: "serit", leds: { count: 60 } }));
+      if (url.includes("/settings"))
+        return Promise.resolve({ status: 500, text: () => Promise.resolve("err") });
       return Promise.resolve({ status: 404, text: () => Promise.resolve("") });
     });
     const found = await lan.identify("192.168.1.21");
@@ -78,17 +81,24 @@ describe("alt ağ taraması", () => {
       const host = url.match(/http:\/\/(10\.0\.0\.\d+)/);
       const isDevice = host && ["10.0.0.7", "10.0.0.99"].includes(host[1]);
       return Promise.resolve(
-        isDevice ? ok({ device: { type: "SHSW-1", hostname: "cihaz-" + host[1].split(".").pop() } }) : { status: 404, text: () => Promise.resolve("") },
+        isDevice
+          ? ok({ device: { type: "SHSW-1", hostname: "cihaz-" + host[1].split(".").pop() } })
+          : { status: 404, text: () => Promise.resolve("") },
       ).finally(() => {
         inFlight -= 1;
       });
     });
 
     const onFound: string[] = [];
-    const found = await lan.scanSubnet("10.0.0", { concurrency: 8, onFound: (info: { name: string }) => onFound.push(info.name) });
+    const found = await lan.scanSubnet("10.0.0", {
+      concurrency: 8,
+      onFound: (info: { name: string }) => onFound.push(info.name),
+    });
     // Her protokol ayri istek atar; onemli olcuk: yoklanan benzersiz adres sayisi
     // ve ayni anda beklemedeki istek sayisi.
-    const hosts = new Set(seen.map((url) => (url.match(/http:\/\/(10\.0\.0\.\d+)/) || [])[1]).filter(Boolean));
+    const hosts = new Set(
+      seen.map((url) => (url.match(/http:\/\/(10\.0\.0\.\d+)/) || [])[1]).filter(Boolean),
+    );
     expect(hosts.size).toBe(254);
     expect(peak).toBeLessThanOrEqual(8);
     expect(found.map((f: { host: string }) => f.host).sort()).toEqual(["10.0.0.7", "10.0.0.99"]);
@@ -104,20 +114,20 @@ describe("alt ağ taraması", () => {
 describe("transport seçimi", () => {
   it("yerel ağa erişemeyen WebView yerine native HTTP eklentisi kullanılır", async () => {
     const calls: Array<Record<string, unknown>> = [];
-    const lan = load(
-      () => Promise.reject(new Error("fetch kullanilmamali")),
-      {
-        isNativePlatform: () => true,
-        Plugins: {
-          Http: {
-            request: (options: Record<string, unknown>) => {
-              calls.push(options);
-              return Promise.resolve({ status: 200, data: JSON.stringify({ device: { type: "SHPLG-1", hostname: "priz" } }) });
-            },
+    const lan = load(() => Promise.reject(new Error("fetch kullanilmamali")), {
+      isNativePlatform: () => true,
+      Plugins: {
+        Http: {
+          request: (options: Record<string, unknown>) => {
+            calls.push(options);
+            return Promise.resolve({
+              status: 200,
+              data: JSON.stringify({ device: { type: "SHPLG-1", hostname: "priz" } }),
+            });
           },
         },
       },
-    );
+    });
     expect(lan.usingNativeTransport()).toBe(true);
     const found = await lan.identify("192.168.1.30");
     expect(found.protocol).toBe("shelly");
@@ -130,7 +140,10 @@ describe("transport seçimi", () => {
     const lan = load(() => Promise.reject(new Error("fetch kullanilmamali")));
     lan.setTransport((opts: { url: string }) => {
       used = opts.url;
-      return Promise.resolve({ status: 200, text: JSON.stringify({ ver: "0.14.0", name: "wled" }) });
+      return Promise.resolve({
+        status: 200,
+        text: JSON.stringify({ ver: "0.14.0", name: "wled", leds: { count: 30 } }),
+      });
     });
     const found = await lan.identify("192.168.1.40");
     expect(used).toBe("http://192.168.1.40/json/info");
@@ -142,7 +155,8 @@ describe("komut gövdesi", () => {
   it("WLED parlaklığı 0-100 aralığından 0-255'e çevirir", async () => {
     const bodies: string[] = [];
     const lan = load((url) => {
-      if (url.endsWith("/json/info")) return Promise.resolve(ok({ ver: "0.14.2", name: "serit" }));
+      if (url.endsWith("/json/info"))
+        return Promise.resolve(ok({ ver: "0.14.2", name: "serit", leds: { count: 60 } }));
       bodies.push("post");
       return Promise.resolve({ status: 200, text: () => Promise.resolve("{}") });
     });
@@ -153,6 +167,8 @@ describe("komut gövdesi", () => {
 
   it("bilinmeyen protokole yazma denemesi patlar", async () => {
     const lan = load(() => Promise.resolve({ status: 404, text: () => Promise.resolve("") }));
-    await expect(lan.write({ protocol: "yok-boyle-bir-sey", host: "http://1.2.3.4" }, "switch", true)).rejects.toBeTruthy();
+    await expect(
+      lan.write({ protocol: "yok-boyle-bir-sey", host: "http://1.2.3.4" }, "switch", true),
+    ).rejects.toBeTruthy();
   });
 });

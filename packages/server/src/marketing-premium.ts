@@ -17,7 +17,11 @@
 import { isRtl, SUPPORTED_LOCALES, type Locale } from "@nexus/i18n";
 import { demoReleases, escapeHtml, label, setLocale, SITE_URL } from "@nexus/web";
 import { marketingPremiumCss } from "./marketing-premium-css.js";
-import { renderPremiumBody, RELEASES_REPO, type PremiumDynamicParts } from "./marketing-premium-body.js";
+import {
+  renderPremiumBody,
+  RELEASES_REPO,
+  type PremiumDynamicParts,
+} from "./marketing-premium-body.js";
 
 /** Current desktop release (keep in sync with desktop/package.json). */
 const DESKTOP_VERSION = "1.0.0";
@@ -486,14 +490,29 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["No hub or cloud fee", "Hub ya da bulut ücreti yok"],
   ["Desktop", "Masaüstü"],
   ["Desktop platforms", "Masaüstü platformu"],
-  ["Windows, macOS and Linux apps you can download today. Mobile apps are coming soon.", "Windows, macOS ve Linux uygulamaları bugün indirilebilir. Mobil uygulamalar yakında."],
+  [
+    "Windows, macOS and Linux apps you can download today. Mobile apps are coming soon.",
+    "Windows, macOS ve Linux uygulamaları bugün indirilebilir. Mobil uygulamalar yakında.",
+  ],
   ["Local API", "Yerel API"],
   ["Device ecosystems", "Cihaz ekosistemi"],
-  ["Philips Hue, Shelly, Tasmota, WLED, ESPHome, TP-Link Kasa and Yeelight.", "Philips Hue, Shelly, Tasmota, WLED, ESPHome, TP-Link Kasa ve Yeelight."],
+  [
+    "Philips Hue, Shelly, Tasmota, WLED, ESPHome, TP-Link Kasa and Yeelight.",
+    "Philips Hue, Shelly, Tasmota, WLED, ESPHome, TP-Link Kasa ve Yeelight.",
+  ],
   ["Hub, cloud or account fees", "Hub, bulut ya da hesap ücreti"],
-  ["Devices are paired and controlled directly on your own network. No paid bridge or subscription is needed.", "Cihazlar doğrudan kendi ağınızda eşleştirilir ve kontrol edilir. Ücretli köprü ya da abonelik gerekmez."],
-  ["Device commands go straight from the app to your devices. Nothing is routed through our servers.", "Cihaz komutları uygulamadan doğrudan cihazlarınıza gider. Hiçbiri sunucularımızdan geçmez."],
-  ["Hue, Shelly, Tasmota, WLED and ESPHome work side by side through their own local APIs, so you are never locked into one vendor.", "Hue, Shelly, Tasmota, WLED ve ESPHome kendi yerel API'leriyle yan yana çalışır; tek bir markaya bağlı kalmazsınız."],
+  [
+    "Devices are paired and controlled directly on your own network. No paid bridge or subscription is needed.",
+    "Cihazlar doğrudan kendi ağınızda eşleştirilir ve kontrol edilir. Ücretli köprü ya da abonelik gerekmez.",
+  ],
+  [
+    "Device commands go straight from the app to your devices. Nothing is routed through our servers.",
+    "Cihaz komutları uygulamadan doğrudan cihazlarınıza gider. Hiçbiri sunucularımızdan geçmez.",
+  ],
+  [
+    "Hue, Shelly, Tasmota, WLED and ESPHome work side by side through their own local APIs, so you are never locked into one vendor.",
+    "Hue, Shelly, Tasmota, WLED ve ESPHome kendi yerel API'leriyle yan yana çalışır; tek bir markaya bağlı kalmazsınız.",
+  ],
   ["Local bridge", "Yerel köprü"],
   ["Open firmware", "Açık yazılım"],
   ["LED strips", "LED şeritler"],
@@ -502,44 +521,95 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["Desktop app · LAN mode", "Masaüstü uygulaması · LAN modu"],
   ["Bridge · link button", "Köprü · bağlantı düğmesi"],
   ["Discovered on your network · local", "Ağınızda bulunur · yerel"],
-  ["Connect the Wi-Fi devices you already own, without a paid hub.", "Sahip olduğunuz Wi-Fi cihazlarını ücretli bir hub olmadan bağlayın."],
-  ["Download the installer for Windows, macOS or Linux. Every release lists SHA-256 checksums you can verify.", "Windows, macOS veya Linux kurulum dosyasını indirin. Her sürümde doğrulayabileceğiniz SHA-256 özetleri yayınlanır."],
+  [
+    "Connect the Wi-Fi devices you already own, without a paid hub.",
+    "Sahip olduğunuz Wi-Fi cihazlarını ücretli bir hub olmadan bağlayın.",
+  ],
+  [
+    "Download the installer for Windows, macOS or Linux. Every release lists SHA-256 checksums you can verify.",
+    "Windows, macOS veya Linux kurulum dosyasını indirin. Her sürümde doğrulayabileceğiniz SHA-256 özetleri yayınlanır.",
+  ],
   ["Checksums published", "Özetler yayınlanır"],
-  ["Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.", "Doğrudan yerel ağınız üzerinden eşleşir — ücretli hub, bulut hesabı ya da abonelik yok. Matter, Tapo ve Tuya yol haritasında."],
+  [
+    "Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.",
+    "Doğrudan yerel ağınız üzerinden eşleşir — ücretli hub, bulut hesabı ya da abonelik yok. Matter, Tapo ve Tuya yol haritasında.",
+  ],
   ["Native on every desktop.", "Her masaüstünde yerel."],
-  ["Download NEXUS for Windows, macOS or Linux today. The Android and iOS apps are on their way to the stores.", "NEXUS'u bugün Windows, macOS veya Linux için indirin. Android ve iOS uygulamaları mağazalara geliyor."],
+  [
+    "Download NEXUS for Windows, macOS or Linux today. The Android and iOS apps are on their way to the stores.",
+    "NEXUS'u bugün Windows, macOS veya Linux için indirin. Android ve iOS uygulamaları mağazalara geliyor.",
+  ],
   ["Windows 10 and 11", "Windows 10 ve 11"],
-  ["One installer for Intel/AMD and ARM PCs. Includes automatic updates.", "Intel/AMD ve ARM bilgisayarlar için tek kurulum dosyası. Otomatik güncelleme içerir."],
+  [
+    "One installer for Intel/AMD and ARM PCs. Includes automatic updates.",
+    "Intel/AMD ve ARM bilgisayarlar için tek kurulum dosyası. Otomatik güncelleme içerir.",
+  ],
   ["Auto-update", "Otomatik güncelleme"],
   ["Download for Windows", "Windows için indir"],
-  ["First launch: if SmartScreen appears, choose “More info” → “Run anyway”.", "İlk açılış: SmartScreen uyarısı çıkarsa “Ek bilgi” → “Yine de çalıştır”ı seçin."],
+  [
+    "First launch: if SmartScreen appears, choose “More info” → “Run anyway”.",
+    "İlk açılış: SmartScreen uyarısı çıkarsa “Ek bilgi” → “Yine de çalıştır”ı seçin.",
+  ],
   ["Apple silicon and Intel Macs", "Apple silicon ve Intel Mac'ler"],
-  ["A universal app for every Mac on macOS 11 Big Sur or later.", "macOS 11 Big Sur ve sonrasındaki her Mac için evrensel uygulama."],
+  [
+    "A universal app for every Mac on macOS 11 Big Sur or later.",
+    "macOS 11 Big Sur ve sonrasındaki her Mac için evrensel uygulama.",
+  ],
   ["Download for macOS", "macOS için indir"],
-  ["First launch: right-click NEXUS in Applications and choose “Open”.", "İlk açılış: Uygulamalar klasöründe NEXUS'a sağ tıklayıp “Aç”ı seçin."],
+  [
+    "First launch: right-click NEXUS in Applications and choose “Open”.",
+    "İlk açılış: Uygulamalar klasöründe NEXUS'a sağ tıklayıp “Aç”ı seçin.",
+  ],
   ["Ubuntu, Debian, Fedora and more", "Ubuntu, Debian, Fedora ve diğerleri"],
-  ["A portable AppImage for any distribution, plus a .deb package.", "Her dağıtım için taşınabilir AppImage ve ayrıca .deb paketi."],
+  [
+    "A portable AppImage for any distribution, plus a .deb package.",
+    "Her dağıtım için taşınabilir AppImage ve ayrıca .deb paketi.",
+  ],
   ["Download AppImage", "AppImage indir"],
   ["Download .deb package", ".deb paketini indir"],
-  ["All releases, release notes and SHA-256 checksums", "Tüm sürümler, sürüm notları ve SHA-256 özetleri"],
-  ["The same local-first home on Android. It will be published on Google Play.", "Aynı yerel öncelikli ev deneyimi Android'de. Google Play'de yayınlanacak."],
+  [
+    "All releases, release notes and SHA-256 checksums",
+    "Tüm sürümler, sürüm notları ve SHA-256 özetleri",
+  ],
+  [
+    "The same local-first home on Android. It will be published on Google Play.",
+    "Aynı yerel öncelikli ev deneyimi Android'de. Google Play'de yayınlanacak.",
+  ],
   ["Coming soon to Google Play", "Yakında Google Play'de"],
-  ["The same local-first home on iPhone and iPad. It will be published on the App Store.", "Aynı yerel öncelikli ev deneyimi iPhone ve iPad'de. App Store'da yayınlanacak."],
+  [
+    "The same local-first home on iPhone and iPad. It will be published on the App Store.",
+    "Aynı yerel öncelikli ev deneyimi iPhone ve iPad'de. App Store'da yayınlanacak.",
+  ],
   ["Coming soon to the App Store", "Yakında App Store'da"],
   ["Early access", "Erken erişim"],
   ["New, honest, and shaped by its first homes.", "Yeni, dürüst ve ilk evleriyle şekilleniyor."],
-  ["NEXUS is in early access, so there are no ratings or reviews to show yet — we would rather earn them. Tell us which device you want supported next and we will prioritise it.", "NEXUS erken erişimde; bu yüzden henüz gösterecek puan ya da yorum yok — onları kazanmayı tercih ediyoruz. Sırada hangi cihazın desteklenmesini istediğinizi yazın, önceliklendirelim."],
+  [
+    "NEXUS is in early access, so there are no ratings or reviews to show yet — we would rather earn them. Tell us which device you want supported next and we will prioritise it.",
+    "NEXUS erken erişimde; bu yüzden henüz gösterecek puan ya da yorum yok — onları kazanmayı tercih ediyoruz. Sırada hangi cihazın desteklenmesini istediğinizi yazın, önceliklendirelim.",
+  ],
   ["Send feedback", "Geri bildirim gönder"],
-  ["Yes. Pairing and controlling devices on your local network, scenes and automations are free, with no hub, cloud account or subscription. Premium plans add advanced AI and household management tools.", "Evet. Yerel ağınızdaki cihazları eşleştirmek ve kontrol etmek, senaryolar ve otomasyonlar ücretsizdir; hub, bulut hesabı ya da abonelik gerekmez. Premium planlar gelişmiş yapay zekâ ve hane yönetimi araçları ekler."],
-  ["Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED and ESPHome devices are controlled directly over your local network. TP-Link Kasa and Yeelight work in the desktop app. Matter, Tapo and Tuya are on the roadmap.", "Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED ve ESPHome cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa ve Yeelight masaüstü uygulamasında çalışır. Matter, Tapo ve Tuya yol haritasında."],
+  [
+    "Yes. Pairing and controlling devices on your local network, scenes and automations are free, with no hub, cloud account or subscription. Premium plans add advanced AI and household management tools.",
+    "Evet. Yerel ağınızdaki cihazları eşleştirmek ve kontrol etmek, senaryolar ve otomasyonlar ücretsizdir; hub, bulut hesabı ya da abonelik gerekmez. Premium planlar gelişmiş yapay zekâ ve hane yönetimi araçları ekler.",
+  ],
+  [
+    "Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED and ESPHome devices are controlled directly over your local network. TP-Link Kasa and Yeelight work in the desktop app. Matter, Tapo and Tuya are on the roadmap.",
+    "Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED ve ESPHome cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa ve Yeelight masaüstü uygulamasında çalışır. Matter, Tapo ve Tuya yol haritasında.",
+  ],
   ["Can I control my home while I am away?", "Evden uzaktayken evimi kontrol edebilir miyim?"],
-  ["NEXUS talks to your devices on your home network. To control them while away, connect to your home through your own VPN (for example WireGuard on your router). A built-in remote option is planned.", "NEXUS cihazlarınızla ev ağınızda konuşur. Dışarıdayken kontrol etmek için kendi VPN'iniz üzerinden (örneğin modemdeki WireGuard) eve bağlanın. Yerleşik uzaktan erişim planlanıyor."],
+  [
+    "NEXUS talks to your devices on your home network. To control them while away, connect to your home through your own VPN (for example WireGuard on your router). A built-in remote option is planned.",
+    "NEXUS cihazlarınızla ev ağınızda konuşur. Dışarıdayken kontrol etmek için kendi VPN'iniz üzerinden (örneğin modemdeki WireGuard) eve bağlanın. Yerleşik uzaktan erişim planlanıyor.",
+  ],
   ["Android & iOS (soon)", "Android ve iOS (yakında)"],
   ["Apps", "Uygulamalar"],
   ["Coming soon · Android 7+", "Yakında · Android 7+"],
   ["Coming soon · iOS 15+", "Yakında · iOS 15+"],
   ["Free today. Premium when it is ready.", "Bugün ücretsiz. Premium hazır olduğunda."],
-  ["Everything NEXUS does today is free, with no device limit and no account fee. Premium and Family plans are on the way.", "NEXUS'un bugün yaptığı her şey ücretsiz; cihaz sınırı ve hesap ücreti yok. Premium ve Aile planları yolda."],
+  [
+    "Everything NEXUS does today is free, with no device limit and no account fee. Premium and Family plans are on the way.",
+    "NEXUS'un bugün yaptığı her şey ücretsiz; cihaz sınırı ve hesap ücreti yok. Premium ve Aile planları yolda.",
+  ],
   ["Device capacity", "Cihaz kapasitesi"],
   ["No limit", "Sınırsız"],
   ["Scenes and NEXUS AI", "Senaryolar ve NEXUS AI"],
@@ -548,7 +618,10 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["Soon", "Yakında"],
   ["Not on sale yet", "Henüz satışta değil"],
   ["Coming soon", "Yakında"],
-  ["Yes. Pairing and controlling devices on your local network, scenes, automations and NEXUS AI are free, with no device limit, hub, cloud account or subscription. Paid Premium and Family plans will come later; nothing you use today will be taken away.", "Evet. Yerel ağındaki cihazları eşleştirmek ve kontrol etmek, senaryolar, otomasyonlar ve NEXUS AI ücretsizdir; cihaz sınırı, hub, bulut hesabı ya da abonelik yok. Ücretli Premium ve Aile planları daha sonra gelecek; bugün kullandığın hiçbir şey elinden alınmayacak."],
+  [
+    "Yes. Pairing and controlling devices on your local network, scenes, automations and NEXUS AI are free, with no device limit, hub, cloud account or subscription. Paid Premium and Family plans will come later; nothing you use today will be taken away.",
+    "Evet. Yerel ağındaki cihazları eşleştirmek ve kontrol etmek, senaryolar, otomasyonlar ve NEXUS AI ücretsizdir; cihaz sınırı, hub, bulut hesabı ya da abonelik yok. Ücretli Premium ve Aile planları daha sonra gelecek; bugün kullandığın hiçbir şey elinden alınmayacak.",
+  ],
 ];
 
 function byNeedleLengthDesc(
@@ -728,22 +801,27 @@ ${hreflangs}
  */
 export function getPremiumShell(locale: Locale): { header: string; footer: string; css: string } {
   const langItems = SUPPORTED_LOCALES.map(
-    (l) => `<a${l === locale ? ' class="active"' : ""} href="?lang=${l}">${LANG_LABELS[l] ?? l.toUpperCase()}</a>`,
+    (l) =>
+      `<a${l === locale ? ' class="active"' : ""} href="?lang=${l}">${LANG_LABELS[l] ?? l.toUpperCase()}</a>`,
   ).join("\n              ");
 
   const dyn: PremiumDynamicParts = {
     langCode: locale.slice(0, 2).toUpperCase(),
     langMenu: `<div class="language-menu" role="menu">\n              ${langItems}\n            </div>`,
-    androidVersion: "", iosVersion: "", playHref: "", appStoreHref: "", apkHref: ""
+    androidVersion: "",
+    iosVersion: "",
+    playHref: "",
+    appStoreHref: "",
+    apkHref: "",
   };
 
   const body = localizePremiumBody(renderPremiumBody(dyn), locale);
   const mainStart = body.indexOf('<main id="main">');
-  const mainEnd = body.indexOf('</main>') + 7;
+  const mainEnd = body.indexOf("</main>") + 7;
 
   return {
     header: body.substring(0, mainStart),
     footer: body.substring(mainEnd),
-    css: localizePremiumCss(marketingPremiumCss(), locale)
+    css: localizePremiumCss(marketingPremiumCss(), locale),
   };
 }

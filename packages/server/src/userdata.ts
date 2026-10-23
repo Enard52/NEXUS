@@ -86,7 +86,6 @@ export function defaultUserData(email: string, language: string, displayName?: s
   };
 }
 
-
 /**
  * Durable per-user data, layered over the shared {@link KeyValueStore}. No
  * business rules here beyond persistence — the server composes view-models from
@@ -109,7 +108,6 @@ export class UserDataStore {
     this.set(userId, seeded);
     return seeded;
   }
-
 
   set(userId: string, data: UserData): void {
     this.store.set(K_USERDATA + userId, JSON.stringify(data));

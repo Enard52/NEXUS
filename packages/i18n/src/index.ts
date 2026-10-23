@@ -40,8 +40,26 @@ export const SUPPORTED_LOCALES: readonly Locale[] = ["en", "tr"];
 
 /** Kataloğu bulunan (ileride açılabilecek) tüm diller. */
 export const AVAILABLE_LOCALES: readonly Locale[] = [
-  "en", "tr", "es", "fr", "de", "it", "pt", "nl", "pl", "cs",
-  "ru", "uk", "ar", "he", "hi", "ja", "ko", "zh-Hans", "zh-Hant", "vi",
+  "en",
+  "tr",
+  "es",
+  "fr",
+  "de",
+  "it",
+  "pt",
+  "nl",
+  "pl",
+  "cs",
+  "ru",
+  "uk",
+  "ar",
+  "he",
+  "hi",
+  "ja",
+  "ko",
+  "zh-Hans",
+  "zh-Hant",
+  "vi",
 ];
 export const DEFAULT_LOCALE: Locale = "en";
 

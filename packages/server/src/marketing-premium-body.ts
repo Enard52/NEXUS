@@ -47,12 +47,24 @@ const BRAND_LOGOS = {
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="IKEA"><rect width="24" height="24" rx="7" fill="#0058A3"/><circle cx="12" cy="12" r="8.3" fill="none" stroke="#FFDA1A" stroke-width="2"/><text x="12" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.3" font-weight="900" letter-spacing=".08em" fill="#FFDA1A">IKEA</text></svg>`,
   ),
   zigbee: svgDataUri(LOCAL_LOGOS.zigbee),
-  shelly: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Sh"><rect width="24" height="24" rx="7" fill="#2B7FD3"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Sh</text></svg>`),
-  tasmota: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Ta"><rect width="24" height="24" rx="7" fill="#1FA3EC"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Ta</text></svg>`),
-  wled: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="WLED"><rect width="24" height="24" rx="7" fill="#F59E0B"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#111">WLED</text></svg>`),
-  esphome: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="ESP"><rect width="24" height="24" rx="7" fill="#111827"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">ESP</text></svg>`),
-  kasa: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="kasa"><rect width="24" height="24" rx="7" fill="#00A79D"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">kasa</text></svg>`),
-  yeelight: svgDataUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Yee"><rect width="24" height="24" rx="7" fill="#2F3A4A"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">Yee</text></svg>`),
+  shelly: svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Sh"><rect width="24" height="24" rx="7" fill="#2B7FD3"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Sh</text></svg>`,
+  ),
+  tasmota: svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Ta"><rect width="24" height="24" rx="7" fill="#1FA3EC"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Ta</text></svg>`,
+  ),
+  wled: svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="WLED"><rect width="24" height="24" rx="7" fill="#F59E0B"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#111">WLED</text></svg>`,
+  ),
+  esphome: svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="ESP"><rect width="24" height="24" rx="7" fill="#111827"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">ESP</text></svg>`,
+  ),
+  kasa: svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="kasa"><rect width="24" height="24" rx="7" fill="#00A79D"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">kasa</text></svg>`,
+  ),
+  yeelight: svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Yee"><rect width="24" height="24" rx="7" fill="#2F3A4A"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">Yee</text></svg>`,
+  ),
   bose: svgDataUri(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Bose"><rect width="24" height="24" rx="7" fill="#111827"/><path d="M5.8 15.2c1.9-2.6 5.6-2.6 7.5 0m-10-4.4c3.5-4.7 9.1-4.7 12.6 0m-14.9-1.7c4.5-6 11.7-6 16.2 0" fill="none" stroke="#F8FAFC" stroke-width="1.4" stroke-linecap="round"/><text x="12" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="800" fill="#F8FAFC">BOSE</text></svg>`,
   ),
@@ -65,10 +77,9 @@ const BRAND_LOGOS = {
 const DARK_INVERT_BRANDS = new Set<keyof typeof BRAND_LOGOS>(["apple", "sonos"]);
 
 function integrationLogo(key: keyof typeof BRAND_LOGOS, label: string): string {
-  const invertAttr = DARK_INVERT_BRANDS.has(key) ? ' data-dark-invert="1"' : '';
+  const invertAttr = DARK_INVERT_BRANDS.has(key) ? ' data-dark-invert="1"' : "";
   return `<img class="integration-logo" src="${BRAND_LOGOS[key]}" alt="" loading="lazy" decoding="async" data-brand="${label}"${invertAttr} />`;
 }
-
 
 export interface PremiumDynamicParts {
   /** Uppercase short code shown in the language button, e.g. "EN". */
