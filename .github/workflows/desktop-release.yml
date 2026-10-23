@@ -59,9 +59,9 @@ jobs:
       - name: Derle ve yayınla
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-          # İmza sertifikası yoksa imzasız derlenir (ücretsiz). İstenirse sonradan eklenir:
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          # İmza sertifikası yoksa imzasız derlenir (ücretsiz). CSC_LINK tanımsızken boş
+          # string atanmaması için zaten hiç yansıtılmıyor; identity "-" imzalamayı kapatır.
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder ${{ matrix.target }} --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
 
       - name: SHA-256 özetleri
