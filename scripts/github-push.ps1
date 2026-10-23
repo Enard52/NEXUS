@@ -44,7 +44,7 @@ if ($staged.Count -eq 0) { "nothing to commit" } else {
 git push origin main
 "--- result"
 git status -sb | Select-Object -First 3
-git log --oneline -3
+git --no-pager log --oneline -3
 "local : $(git rev-parse HEAD)"
 "remote: $(git rev-parse origin/main)"
 Stop-Transcript | Out-Null
