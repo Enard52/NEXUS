@@ -976,6 +976,7 @@ window.NEXUS_EN = {
 "Kapılar Kilitli": "Doors Locked",
 "Kapılar kilitlenir, Isı 20°C, Işıklar kapanır": "Doors lock, Heat 20°C, Lights turn off",
 "Karanlık Mod": "Dark Mode",
+"Sistem Temasını Kullan": "Use System Theme",
 "Karanlık tema aktif edildi": "Dark theme turned on",
 "Karlı": "Snowy",
 "Kart Ekle": "Add Card",

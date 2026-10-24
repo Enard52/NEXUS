@@ -336,3 +336,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
 }
 /* AI arama kutusu süslemedir: tıklama üstteki bağlantıya gider, halka çıkmasın */
 .custom-gradient-border input:focus-visible { box-shadow: none; border-color: transparent !important; }
+
+/* .nx-empty display:flex, Tailwind .hidden kuralını ezmesin (liste doluyken boş durum görünmesin) */
+.nx-empty.hidden { display: none !important; }
+.nx-empty--page { max-width: 520px; margin: 32px auto; }

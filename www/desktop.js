@@ -98,7 +98,7 @@
     var html = '<a href="stitch-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
       '<span class="nx-side-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
       "<span>NEXUS</span></a>" +
-      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><i data-lucide="sparkles"></i><span>NEXUS AI\'a sor</span></a>' +
+      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico"><i data-lucide="sparkles"></i></span><span class="nx-side-ai-txt">NEXUS AI\'a sor</span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
       '<nav class="nx-side-nav" aria-label="Ana menü">' +
       NAV.map(function (g) {
         return (g.group ? '<p class="nx-side-group">' + esc(g.group) + "</p>" : "") + g.items.map(function (it) {
@@ -122,7 +122,8 @@
       try { sessionStorage.setItem("nxSideScroll", aside.scrollTop); } catch (e) {}
     }, { passive: true });
     document.getElementById("nx-side-theme").addEventListener("click", function () {
-      var on = get("nexusDarkMode") === "true";
+      var on = document.documentElement.classList.contains("dark");
+      set("nexusThemeSystem", "false");
       set("nexusDarkMode", on ? "false" : "true");
       window.dispatchEvent(new Event("themeChanged"));
       var btn = document.getElementById("nx-side-theme");
@@ -215,5 +216,46 @@
     var btn = document.getElementById("nx-side-theme");
     if (btn) { btn.innerHTML = '<i data-lucide="' + (root.classList.contains("dark") ? "sun" : "moon") + '"></i>'; if (window.lucide) lucide.createIcons(); }
   });
+  // ---- Masaüstüne özel: klavye kısayolları ve fare ipuçları (telefonda çalışmaz) ----
+  function typingTarget(t) { return !!t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)); }
+  function visible(el) {
+    var cs = getComputedStyle(el);
+    return cs.display !== "none" && cs.visibility !== "hidden" && cs.opacity !== "0" && cs.pointerEvents !== "none" && el.getBoundingClientRect().width > 0;
+  }
+  function closeTopSheet() {
+    var bd = document.querySelectorAll('[id$="backdrop"]');
+    for (var i = 0; i < bd.length; i++) {
+      if (bd[i].classList.contains("hidden") || !visible(bd[i])) continue;
+      bd[i].click();
+      return true;
+    }
+    return false;
+  }
+  function addTips() {
+    if (!isDesk()) return;
+    var iconBtns = document.querySelectorAll("a[aria-label], button[aria-label]");
+    for (var i = 0; i < iconBtns.length; i++) if (!iconBtns[i].title) iconBtns[i].title = iconBtns[i].getAttribute("aria-label");
+    var links = document.querySelectorAll(".nx-side-link");
+    for (var j = 0; j < links.length && j < 5; j++) links[j].title = links[j].textContent.trim() + " (Alt+" + (j + 1) + ")";
+  }
+  window.addEventListener("load", function () { setTimeout(addTips, 400); });
+  document.addEventListener("keydown", function (e) {
+    if (!isDesk() || e.defaultPrevented) return;
+    if (e.key === "Escape") { if (closeTopSheet()) e.preventDefault(); return; }
+    if (e.ctrlKey || e.metaKey) return;
+    if (e.altKey && /^[1-5]$/.test(e.key)) {
+      var link = document.querySelectorAll(".nx-side-link")[Number(e.key) - 1];
+      if (link && !link.classList.contains("is-active")) { e.preventDefault(); location.href = link.getAttribute("href"); }
+      return;
+    }
+    if (e.key === "/" && !e.altKey && !typingTarget(e.target)) {
+      var fields = document.querySelectorAll('input[type="text"], input[type="search"], input:not([type]), textarea');
+      for (var k = 0; k < fields.length; k++) {
+        if (!visible(fields[k]) || fields[k].disabled || fields[k].readOnly) continue;
+        e.preventDefault(); fields[k].focus(); return;
+      }
+    }
+  });
+
   window.nexusLayout = { isDesk: isDesk, isTab: isTab, isMobileDevice: MOBILE_DEVICE, refresh: function () { classifyFixed(); transferBackground(); } };
 })();

@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
   "productName": "NEXUS",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "NEXUS â€” akÄ±llÄ± ev asistanÄ± (masaÃ¼stÃ¼)",
   "homepage": "https://nexus-ai-app.pages.dev",
   "main": "main.cjs",

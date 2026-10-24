@@ -98,7 +98,7 @@
     var html = '<a href="stitch-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
       '<span class="nx-side-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
       "<span>NEXUS</span></a>" +
-      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><i data-lucide="sparkles"></i><span>NEXUS AI\'a sor</span></a>' +
+      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico"><i data-lucide="sparkles"></i></span><span class="nx-side-ai-txt">NEXUS AI\'a sor</span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
       '<nav class="nx-side-nav" aria-label="Ana menü">' +
       NAV.map(function (g) {
         return (g.group ? '<p class="nx-side-group">' + esc(g.group) + "</p>" : "") + g.items.map(function (it) {

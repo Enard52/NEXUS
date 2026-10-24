@@ -100,10 +100,17 @@
       }
     }
     @media (min-width: 760px) {
+      /* Sabit genişlikli sütunlar: Soket, Anahtar vb. tüm gruplar aynı sütun çizgilerinde hizalanır
+         (auto-fit az ürünlü grupları geniş aralıkla yayıp hizayı bozuyordu). */
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+        grid-template-columns: repeat(auto-fill, 112px);
+        justify-content: start;
       }
+      .catalog-group-title { text-align: left; padding-left: 0.25rem; }
     }
+    /* Tüm karolar üstten başlar; ad satırı sayısı farklı olsa da görseller ve adlar aynı hizada kalır */
+    .product-tile { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; }
+    .product-name { min-height: 42px; }
     .product-card {
       min-height: 112px;
       border: 0;
@@ -127,12 +134,12 @@
       min-height: 34px;
       overflow: visible;
       text-align: center;
-      font-size: clamp(11px, 3vw, 12px);
+      font-size: clamp(10.5px, 2.9vw, 12px);
       line-height: 1.14;
       font-weight: 650;
       letter-spacing: 0;
       color: #0f172a;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
       word-break: normal;
       hyphens: auto;
     }
@@ -144,7 +151,7 @@
       border-color: transparent;
     }
     html.dark .product-image-stage {
-      background: transparent;
+      background: #e8ecf5; border-radius: 16px;
     }
     html.dark .product-name {
       color: #f8fafc;

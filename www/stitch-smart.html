@@ -188,7 +188,7 @@
 <div class="space-y-4">
   <a href="stitch-smart-app-detail.html?id=whole-home-light-control" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
-      <img alt="Oturma Odası" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=256&q=80"/>
+      <img alt="Oturma Odası" class="w-full h-full object-cover" src="assets/photos/photo-1586023492125-27b2c045efd7.jpg"/>
       <div class="absolute inset-0 bg-black/10"></div>
     </div>
     <div>
@@ -199,7 +199,7 @@
 
   <a href="stitch-smart-app-detail.html?id=home-security-center" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
-      <img alt="Güvenlik Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=256&q=80"/>
+      <img alt="Güvenlik Modu" class="w-full h-full object-cover" src="assets/photos/photo-1558002038-1055907df827.jpg"/>
       <div class="absolute inset-0 bg-black/10"></div>
     </div>
     <div>
@@ -210,7 +210,7 @@
 
   <a href="stitch-smart-app-detail.html?id=cinema-media-mode" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">
     <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">
-      <img alt="Sinema Modu" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=256&q=80"/>
+      <img alt="Sinema Modu" class="w-full h-full object-cover" src="assets/photos/photo-1489599849927-2ee91cede3ba.jpg"/>
       <div class="absolute inset-0 bg-black/10"></div>
     </div>
     <div>
@@ -382,9 +382,11 @@ function toggleHomeSelector() {
 
       if (menu.classList.contains('translate-y-full')) {
         menu.classList.remove('translate-y-full');
+        menu.classList.add('open');
         backdrop.classList.remove('hidden');
       } else {
         menu.classList.add('translate-y-full');
+        menu.classList.remove('open');
         backdrop.classList.add('hidden');
       }
     }
