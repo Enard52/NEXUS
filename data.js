@@ -1193,17 +1193,14 @@ function renderTapToRunCards() {
     grid.innerHTML = selected.map(card => {
         const accent = getCardAccentClasses(card.icon);
         return `
-            <a class="bg-white rounded-2xl px-4 py-4 card-shadow flex items-center justify-between gap-3" href="${getCardHref(card.id)}" id="dyn-card-${card.id}">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full ${accent.wrap} flex items-center justify-center">
-                        ${getCardIconSvg(card.icon)}
-                    </div>
-                    <div>
-                        <div class="font-semibold text-sm leading-tight">${card.title}</div>
-                        <div class="text-xs text-slate-500 mt-1">Dokun Çalıştır</div>
-                    </div>
+            <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" href="${getCardHref(card.id)}" id="dyn-card-${card.id}">
+                <div class="w-10 h-10 rounded-full ${accent.wrap} flex items-center justify-center">
+                    ${getCardIconSvg(card.icon)}
                 </div>
-                <span class="text-xs font-semibold text-[#4C7DFF]">Çalıştır</span>
+                <div>
+                    <div class="font-bold text-base leading-tight">${card.title}</div>
+                    <div class="text-xs text-slate-500 mt-1">Dokun çalıştır</div>
+                </div>
             </a>
         `;
     }).join('');
