@@ -45,6 +45,25 @@ Hızlı giriş, sitede, masaüstünde ve mobilde "Google ile devam et" olarak su
 
 - Gerçek ödeme için İyzico veya Stripe hesabı gerekir. Şu an planlar "yakında" olarak gösteriliyor ve özellik kilidi yok. Bu karar sizin.
 
-## 6. Bildirmeniz gerekenler
+## 6. Arama motorlarına kayıt (SEO)
+
+Site adresi: `https://nexus-smarthome.pages.dev/` — site haritası: `https://nexus-smarthome.pages.dev/sitemap.xml`.
+Site haritası, robots.txt, canonical/hreflang, Open Graph ve JSON-LD hazır. Kalan, sahiplik doğrulaması:
+
+1. **Google Search Console** (search.google.com/search-console) → "Mülk ekle" → **URL öneki** → `https://nexus-smarthome.pages.dev/` yazın.
+   - Doğrulama yöntemi olarak **HTML etiketi**ni seçin. Verilen `<meta name="google-site-verification" content="...">` satırındaki **content değerini** bana yazın; ben iki dildeki ana sayfaya eklerim.
+   - Sonra sol menüde **Site haritaları** → kutuya `sitemap.xml` yazıp gönderin.
+   - İsteğe bağlı: **URL denetimi** → `https://nexus-smarthome.pages.dev/` ve `/tr/` için "Dizine eklenmesini iste".
+2. **Bing Webmaster Tools** (bing.com/webmasters): "Google Search Console'dan içe aktar" seçeneği en kolayı (ek doğrulama gerekmez). Elle eklerseniz `msvalidate.01` meta etiketinin content değerini bana yazın; site haritası olarak `https://nexus-smarthome.pages.dev/sitemap.xml` girin.
+3. İsteğe bağlı: Yandex Webmaster (yandex.com/webmaster) — verdiği `yandex-verification` değerini bana yazın.
+
+Not: `pages.dev` ortak bir alan adıdır; arama sıralaması için kendi alan adınız (yıllık ~10 USD) daha iyi sonuç verir. Alan adı alırsanız bana yazın, tüm adresleri tek seferde değiştiririm.
+
+## 7. Kurumsal e-posta
+
+Sitedeki ve uygulamadaki doğrulanmamış adresler (`destek@` / `privacy@nexus-ai.app`, `@nexusai`) kaldırıldı; gizlilik sayfalarında "iletişim adresi yakında" yazıyor, uygulamadaki geri bildirim formu mesajı cihazda saklıyor.
+Gerçek adresleri oluşturunca bana yazın (ör. destek adresi ve gizlilik adresi); şunlara eklerim: gizlilik sayfaları, ana sayfa geri bildirim düğmesi, uygulama geri bildirim formu, JSON-LD iletişim bilgisi, masaüstü paket bilgisi.
+
+## 8. Bildirmeniz gerekenler
 
 - Yukarıdaki adımları tamamladığınızda, Google girişini uygulamaya bağlamak için bana haber verin. Client ID'yi yazmanız yeterli; secret'ı paylaşmayın.

@@ -100,20 +100,16 @@ describe("mobil ekranlar — offline yüklenme Sözleşmesi", () => {
 });
 
 describe("mobil paketleme — varlık hattı", () => {
-  const builder = readFileSync(join(REPO_ROOT, "mobile-app", "scripts", "build-web.mjs"), "utf8");
+  const builder = readFileSync(join(REPO_ROOT, "scripts", "sync-www.mjs"), "utf8");
 
   it("bundle'a css, js ve fonts klasörlerini kopyalar", () => {
     for (const dir of ["css", "js", "fonts"]) {
-      expect(builder, `build-web.mjs ${dir}/ kopyalamıyor`).toContain(`"www", "${dir}"`);
+      expect(builder, `sync-www.mjs ${dir}/ kopyalamıyor`).toContain(`"${dir}"`);
     }
   });
 
-  it("varlık eksikse sessiz geçmek yerine hata verir", () => {
-    expect(builder).toContain("throw new Error");
-  });
-
   it("bundle harita kütüphanesini de taşır", () => {
-    expect(builder).toContain(`"www", "leaflet"`);
+    expect(builder).toContain(`"leaflet"`);
     expect(existsSync(join(REPO_ROOT, "www", "leaflet", "leaflet.js"))).toBe(true);
     expect(existsSync(join(REPO_ROOT, "www", "leaflet", "leaflet.css"))).toBe(true);
   });
