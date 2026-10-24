@@ -1194,8 +1194,8 @@ function renderTapToRunCards() {
         const accent = getCardAccentClasses(card.icon);
         return `
             <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" href="${getCardHref(card.id)}" id="dyn-card-${card.id}">
-                <div class="w-10 h-10 rounded-full ${accent.wrap} flex items-center justify-center">
-                    ${getCardIconSvg(card.icon)}
+                <div class="mb-2 ${(accent.wrap.match(/text-\S+/) || ['text-slate-500'])[0]}">
+                    ${getCardIconSvg(card.icon, 'w-8 h-8')}
                 </div>
                 <div>
                     <div class="font-bold text-base leading-tight">${card.title}</div>
