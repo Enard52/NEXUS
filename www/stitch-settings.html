@@ -185,7 +185,7 @@
         <span><b>Güncellemeleri otomatik indir</b><small>Yeni sürüm bulununca arka planda hemen indirilsin.</small></span>
         <input type="checkbox" id="auto-download-toggle" aria-label="Güncellemeleri otomatik indir">
       </label>
-      <div id="update-card" class="nx-upd-card mt-4">
+      <div id="update-card" class="nx-upd-card mt-4 hidden">
         <div class="flex items-center justify-between gap-3">
           <p id="update-status" class="text-sm font-medium text-slate-500 min-h-[1.5rem]"></p>
           <span id="update-percent" class="hidden text-sm font-bold text-[#4C7DFF] tabular-nums"></span>
@@ -420,7 +420,7 @@
 
     checkBtn.addEventListener('click', function () {
       statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
-      api.check().then(render);
+      api.check().then(function (st) { render(st); syncCard(); });
     });
     installBtn.addEventListener('click', function () {
       if (installBtn.dataset.mode === 'download') {
@@ -441,7 +441,13 @@
         api.setPrefs({ autoDownload: autoToggle.checked });
       });
     }
-    api.onState(render);
+    // Boş kart görünmesin: yalnızca durum mesajı, ilerleme ya da kurulum düğmesi varken göster
+    var cardEl = document.getElementById('update-card');
+    function syncCard() {
+      var hasContent = !!statusEl.textContent || !progressWrap.classList.contains('hidden') || !installBtn.classList.contains('hidden');
+      cardEl.classList.toggle('hidden', !hasContent);
+    }
+    api.onState(function (st) { render(st); syncCard(); });
   })();
 
   if (window.location.hash === '#ai-settings') {
