@@ -521,7 +521,7 @@ export function renderLegalPage(
 <h3>Changes to Privacy Policy</h3>
 <p>We may update this Privacy Policy periodically to reflect changes in our practices or relevant laws. We will notify you of any significant updates via the NEXUS application interface.</p>
 <h3>Contact Us</h3>
-<p>If you have questions or requests about this Privacy Policy or your data, a contact address will be published here soon.</p>`,
+<p>If you have questions or requests about this Privacy Policy or your data, contact us at <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a>.</p>`,
       tr: `<h2>Gizliliğiniz Önemli</h2>
 <p>NEXUS'a hoş geldiniz. Gizliliğinizi ve güvenliğinizi korumaya derinden bağlıyız. Temel prensibimiz, verilerinizin size ait olmasıdır. Bu Gizlilik Politikası, yazılımımızı, uygulamalarımızı ve hizmetlerimizi kullanırken sağladığınız bilgileri nasıl işlediğimizi detaylandırmaktadır.</p>
 <h3>Veri Toplama</h3>
@@ -533,7 +533,7 @@ export function renderLegalPage(
 <h3>Güvenlik Önlemleri</h3>
 <p>Hub ve kontrol uygulamalarınız arasındaki tüm yerel iletişimler için güçlü şifreleme yöntemleri kullanıyoruz. Verileriniz evinizde kaldığı için, bulut sağlayıcılarını etkileyen büyük ölçekli veri ihlallerine karşı savunmasız değildir.</p>
 <h3>Bize Ulaşın</h3>
-<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için iletişim adresi yakında burada yayımlanacaktır.</p>`,
+<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a> adresinden bize ulaşabilirsiniz.</p>`,
     },
     terms: {
       en: `<h2>Terms of Service</h2>

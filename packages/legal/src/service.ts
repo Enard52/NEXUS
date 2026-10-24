@@ -226,7 +226,7 @@ export class LegalService {
         "5. Third Parties: Patreon (payments); no data sold to advertisers.",
         "6. Retention: Active account data retained; deleted within 30 days of deletion request.",
         "7. Your Rights: Access, rectification, erasure, portability, restriction, objection.",
-        "8. Contact: a contact address will be published soon.",
+        "8. Contact: nexus.smarthome.app@gmail.com",
       ].join("\n"),
     });
 
@@ -280,7 +280,7 @@ export class LegalService {
         "5. Üçüncü Taraflar: Patreon (ödemeler); reklam verenlerine veri satılmaz.",
         "6. Saklama: Aktif hesap verisi saklanır; silme talebinden sonra 30 gün içinde silinir.",
         "7. Haklarınız: Erişim, düzeltme, silme, taşınabilirlik, kısıtlama, itiraz (KVKK m.11).",
-        "8. İletişim: iletişim adresi yakında yayımlanacaktır.",
+        "8. İletişim: nexus.smarthome.app@gmail.com",
       ].join("\n"),
     });
 

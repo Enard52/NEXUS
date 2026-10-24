@@ -4,6 +4,7 @@ const path = require("path");
 const root = process.argv[2];
 const BASE = "https://nexus-smarthome.pages.dev";
 const TODAY = "2026-10-24";
+const SUPPORT_EMAIL = "nexus.smarthome.app@gmail.com";
 
 // file -> { route (en clean path), lang, kind }
 const pages = [
@@ -175,6 +176,8 @@ for (const [file, route, lang, kind] of pages) {
         name: "NEXUS",
         url: BASE + "/",
         logo: BASE + "/icon.svg",
+        email: SUPPORT_EMAIL,
+        contactPoint: { "@type": "ContactPoint", email: SUPPORT_EMAIL, contactType: "customer support", availableLanguage: ["en", "tr"] },
       },
       {
         "@type": "WebSite",
@@ -204,16 +207,18 @@ for (const [file, route, lang, kind] of pages) {
     html = html.replace("</head>", `  <script type="application/ld+json">\n${ld}\n  </script>\n</head>`);
   }
 
-  // --- fake emails / handles ---
-  html = html.replace(/\s*<p class="early-access-actions">[\s\S]*?mailto:[\s\S]*?<\/p>/g, "");
-  html = html.replace(
-    /<p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our privacy team at <a href="mailto:privacy@nexus-ai\.app">privacy@nexus-ai\.app<\/a>\.<\/p>/,
-    "<p>If you have questions or requests about this Privacy Policy or your data, a contact address will be published here soon.</p>"
-  );
-  html = html.replace(
-    /<p>Gizlilik uygulamalarımızla ilgili herhangi bir sorunuz varsa veya daha fazla bilgiye ihtiyaç duyarsanız, lütfen <a href="mailto:privacy@nexus-ai\.app">privacy@nexus-ai\.app<\/a> adresinden gizlilik sorumlumuza ulaşın\.<\/p>/,
-    "<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için iletişim adresi yakında burada yayımlanacaktır.</p>"
-  );
+  // --- iletişim adresi ---
+  const mail = '<a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + "</a>";
+  const enContact = /<p>If you have questions or requests about this Privacy Policy or your data, [^<]*<\/p>/;
+  const trContact = /<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için [^<]*<\/p>/;
+  html = html.replace(enContact, "<p>If you have questions or requests about this Privacy Policy or your data, contact us at " + mail + ".</p>");
+  html = html.replace(trContact, "<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için " + mail + " adresinden bize ulaşabilirsiniz.</p>");
+  // Ana sayfa: erken erişim bölümünde destek düğmesi (yoksa ekle)
+  if (kind === "home" && !html.includes('class="early-access-actions"')) {
+    const label = lang === "tr" ? "Destek / geri bildirim" : "Support / feedback";
+    const btn = '\n          <p class="early-access-actions"><a class="button button-secondary" href="mailto:' + SUPPORT_EMAIL + '?subject=NEXUS">' + label + "</a></p>";
+    html = html.replace(/(<section[^>]*id="early-access"[\s\S]*?<p class="section-copy">[\s\S]*?<\/p>)/, "$1" + btn);
+  }
 
   // --- other stale host refs ---
   html = html.split("https://enard52.github.io").join(BASE);
