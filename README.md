@@ -1,26 +1,21 @@
-# NEXUS AI
+﻿# NEXUS
 
-NEXUS, yerel öncelikli kişisel işletim sisteminizdir.
+Akıllı ev asistanı: cihazlarınızla yerel ağda konuşur, hub veya bulut ücreti gerektirmez.
 
-## Kurulum ve Çalıştırma
+## Platformlar
+- **Masaüstü:** Windows ve Linux (\desktop/\, Electron). Sürümler: https://github.com/Enard52/nexus-releases/releases
+- **Android:** test APK'sı (\ndroid/\, Capacitor). Kaynak web dosyaları kökte (\www/\ derlenmiş kopya).
+- **Web sitesi:** ayrı depo (GitHub Pages).
 
-Projeyi kurmak ve çalıştırmak için aşağıdaki adımları izleyin:
+## Geliştirme
+- Kaynak dosyalar kökte (\*.html\, \*.js\, \css/\). Masaüstü paketi \desktop/scripts/prepare-app.cjs\ ile hazırlanır.
+- Web kopyası: \
+ode scripts/sync-www.mjs\.
+- Masaüstü sürümü: \desktop/package.json\ sürümünü artırıp \<sürüm>\ etiketi göndermek, GitHub Actions üzerinden Windows ve Linux kurulum dosyalarını yayınlar.
+- Bulut ayarları: \cloud-config.js\ (yerelde, Git'te yok; örnek: \cloud-config.example.js\).
 
-1. **Bağımlılıkları Yükleyin:**
+## Yayın ve manuel adımlar
+Bkz. \MANUEL-ADIMLAR.md\.
 
-   ```bash
-   pnpm install
-   ```
-
-2. **Ortam Değişkenlerini Ayarlayın:**
-   Proje kök dizinindeki `.env.example` dosyasını kopyalayarak bir `.env` dosyası oluşturun ve gerekli anahtarları doldurun:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-3. **Sunucuyu Başlatın:**
-   ```bash
-   pnpm start
-   ```
-   (Geliştirme modunda başlatmak için `pnpm dev` kullanabilirsiniz)
+## Lisans
+Tüm haklar saklıdır. Bkz. \LICENSE\.

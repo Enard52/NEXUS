@@ -1,9 +1,9 @@
-{
+﻿{
   "name": "nexus-ai",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS AI — Personal Operating System (monorepo root).",
+  "description": "NEXUS AI â€” Personal Operating System (monorepo root).",
   "engines": {
     "node": ">=22.5"
   },
@@ -23,7 +23,6 @@
     "build": "pnpm build:static && pnpm build:client && pnpm build:server",
     "release:manifest": "node scripts/release-manifest.mjs",
     "release:mobile": "node scripts/publish-mobile-artifact.mjs",
-    "deploy:pages": "pnpm build:static && wrangler pages deploy public --project-name nexus-ai-app",
     "changelog": "echo See CHANGELOG.md",
     "build:tailwind": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify",
     "build:tailwind:watch": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify --watch",
@@ -61,3 +60,4 @@
   "author": "NEXUS Technologies Inc.",
   "license": "UNLICENSED"
 }
+

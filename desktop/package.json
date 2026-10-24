@@ -16,7 +16,6 @@
     "start": "npm run prepare-app && electron .",
     "dist": "npm run prepare-app && electron-builder",
     "dist:win": "npm run prepare-app && electron-builder --win",
-    "dist:mac": "npm run prepare-app && electron-builder --mac",
     "dist:linux": "npm run prepare-app && electron-builder --linux"
   },
   "dependencies": {
