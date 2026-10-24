@@ -8,14 +8,15 @@ Yalnızca **henüz yapılmamış** işler. Son kontrol: 25 Ekim 2026. SMTP ve e-
    - Whop → Nexus-smarthome → Geliştirici → Web kancaları → "NEXUS Supabase" gizli anahtarı (`ws_...`) → kopyalayın.
    - Supabase → Edge Functions → Secrets → `WHOP_WEBHOOK_SECRET` = kopyaladığınız anahtar.
    - Whop'ta aynı webhook için "test olayı" gönderin; Edge Functions → whop-webhook → Logs'ta 200 görünmeli.
-2. **Whop ürün sayfası:** ₺499,99'un üstünde çizili "₺624,99 / %20 tasarruf" görünüyorsa plan ayarlarından kaldırın (gerçek indirim yok).
-3. **Canlı testler** (1'den sonra), `https://nexus-web-jre.pages.dev`:
+2. **Whop yasal belgeleri** (Whop → Ayarlar → **Koşullar** → "PDF Yükle"): Hizmet Şartları, Gizlilik Politikası, **İade politikası** (iptal/iade/deneme şartları), isteğe bağlı EULA. Sonra aynı sayfada "Şartlar ve koşulların kabul edilmesini zorunlu kıl"ı açın. Sitedeki gizlilik ve koşullar sayfalarından PDF alabilirsiniz; iade politikasını bir avukata yazdırmanızı öneririm (cayma hakkı, deneme sonrası iade). İsterseniz taslak hazırlarım.
+3. **Whop ürün sayfasında** ₺499,99'un üstünde çizili "₺624,99 / %20 tasarruf" görünüyor. Plan ayarlarında bunu kapatan bir alan bulamadım; Whop destek sohbetinden sorun veya sayfanın sizde nasıl göründüğünü kontrol edin (gerçek indirim yok, kalmamalı).
+4. **Canlı testler** (1'den sonra), `https://nexus-web-jre.pages.dev`:
    - Kayıt → gelen doğrulama e-postası → bağlantı → otomatik giriş.
    - Şifremi Unuttum → e-posta → yeni şifre → giriş.
    - Google ile giriş (yalnızca web).
    - NEXUS+ → Ücretsiz Dene → hesabınızın e-postasıyla ödeme (3 gün denemede ücret alınmaz, iptal edebilirsiniz) → plan Plus/Faturalandırma'da görünmeli.
    - Masaüstü ve telefon: aynı hesapla giriş, verilerin gelmesi.
-4. **Bing:** Webmaster → Sitemaps → `https://nexus-smarthome.pages.dev/sitemap.xml` tekrar gönderin (ilk deneme sunucu hatası verdi).
+5. **Bing:** Webmaster → Sitemaps → `https://nexus-smarthome.pages.dev/sitemap.xml` tekrar gönderin (ilk deneme sunucu hatası verdi).
 
 ## B. Karar bekleyenler (bana "yap" demeniz yeterli)
 
