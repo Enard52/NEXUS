@@ -159,6 +159,7 @@ for (const [file, route, lang, kind] of pages) {
     lines.push(`<meta name="twitter:description" content="${esc(desc)}" />`);
     lines.push(`<meta name="twitter:image" content="${BASE}/og-cover.png" />`);
   }
+  if (kind === "home") lines.push(`<meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />`);
   lines.push(`<meta name="application-name" content="NEXUS" />`);
   lines.push(`<meta name="apple-mobile-web-app-title" content="NEXUS" />`);
   html = html.replace(/(<title>[\s\S]*?<\/title>)/i, `$1\n  ${lines.join("\n  ")}`);

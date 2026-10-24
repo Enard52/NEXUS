@@ -13,12 +13,10 @@ Web: `https://nexus-web-jre.pages.dev`
 
 Sorun görürseniz ekran görüntüsüyle bana yazın.
 
-## 2. Bing Webmaster Tools
+## 2. Arama motorları (kalan küçük işler)
 
-Google tarafı tamam (sahiplik doğrulandı, site haritası gönderildi). Bing için:
-
-1. `https://www.bing.com/webmasters` → **Sign in** → Google (ya da Microsoft) ile giriş yapıp izni onaylayın.
-2. Bana "Bing'e girdim" yazın; "Google Search Console'dan içe aktar" ile siteyi ben eklerim.
+- **Bing:** site eklendi ve doğrulandı. Site haritası gönderimi Bing tarafında geçici sunucu hatası verdi. Yarın şuraya girip tekrar deneyin: Bing Webmaster → site → **Sitemaps → Submit sitemap** → `https://nexus-smarthome.pages.dev/sitemap.xml`. Hata sürerse sorun değil: `robots.txt` zaten site haritasını gösteriyor, Bing kendi bulur.
+- **Yandex (isteğe bağlı):** Yandex hesabı gerektiriyor. Türkiye'de kullanım payı düşük, atlayabilirsiniz. İsterseniz `webmaster.yandex.com` → Add site → verdiği `yandex-verification` değerini bana yazın.
 
 ## 3. Kurumsal e-posta adresleri
 
