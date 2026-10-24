@@ -1,8 +1,8 @@
 {
   "name": "nexus-desktop",
   "productName": "NEXUS",
-  "version": "1.0.0",
-  "description": "NEXUS — akıllı ev asistanı (masaüstü)",
+  "version": "1.0.1",
+  "description": "NEXUS â€” akÄ±llÄ± ev asistanÄ± (masaÃ¼stÃ¼)",
   "homepage": "https://nexus-ai-app.pages.dev",
   "main": "main.cjs",
   "author": {
@@ -29,7 +29,7 @@
   "build": {
     "appId": "app.nexus.desktop",
     "productName": "NEXUS",
-    "copyright": "© 2026 NEXUS",
+    "copyright": "Â© 2026 NEXUS",
     "directories": {
       "output": "dist",
       "buildResources": "resources"
@@ -144,7 +144,7 @@
       ],
       "icon": "resources/icon.png",
       "category": "Utility",
-      "synopsis": "Akıllı ev asistanı",
+      "synopsis": "AkÄ±llÄ± ev asistanÄ±",
       "maintainer": "NEXUS <destek@nexus-ai.app>",
       "artifactName": "NEXUS-linux.${ext}",
       "syncDesktopName": true
@@ -158,3 +158,4 @@
   },
   "desktopName": "nexus.desktop"
 }
+
