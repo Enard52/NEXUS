@@ -4404,7 +4404,7 @@ const PREMIUM_CSS = `
       background: color-mix(in srgb, var(--surface) 62%, transparent);
       font-size: 7px;
     }
-    .automation-logic { display: grid; grid-template-columns: 1fr 10px 1fr 10px 1fr; align-items: stretch; gap: 3px; }
+    .automation-logic { display: grid; grid-template-columns: 1fr 10px 1fr 10px 1fr; align-items: stretch; gap: 3px; margin-top: 10px; }
     .logic-node {
       min-width: 0;
       display: grid;

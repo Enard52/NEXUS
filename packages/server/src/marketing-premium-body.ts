@@ -515,7 +515,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
                 <span><small>WHEN</small><strong>Home arrival detected</strong></span>
                 <em>18:42</em>
               </div>
-              <div class="automation-context"><span>After sunset</span><span>Home occupied</span><span>Phone nearby</span></div>
+
               <div class="automation-logic">
                 <div class="logic-node"><i>01</i><span><small>TRIGGER</small><strong>Presence verified</strong></span></div>
                 <span class="logic-link"><i></i></span>
