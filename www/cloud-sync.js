@@ -349,7 +349,40 @@
     });
   }
 
+  // Google ile giriş: Supabase yetkilendirme adresine yönlendirir, dönüşte oturum URL'den alınır.
+  function signInWithGoogle() {
+    var c = cfg();
+    if (!c) return;
+    var back = location.href.split("#")[0];
+    location.href = c.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(back);
+  }
+
+  function completeOAuthFromHash() {
+    var h = location.hash || "";
+    if (h.indexOf("access_token=") < 0) return Promise.resolve(null);
+    var p = new URLSearchParams(h.slice(1));
+    var access = p.get("access_token");
+    var refresh = p.get("refresh_token") || "";
+    var expires = parseInt(p.get("expires_in") || "3600", 10);
+    history.replaceState(null, "", location.pathname + location.search);
+    return api("/auth/v1/user", { headers: { Authorization: "Bearer " + access } }).then(function (user) {
+      var s = {
+        accessToken: access,
+        refreshToken: refresh,
+        expiresAt: Date.now() + expires * 1000 - 60 * 1000,
+        userId: user.id,
+        email: user.email || "",
+      };
+      // Oturum, kullanıcının kendi anahtar önekiyle yazılsın diye önce aktif kullanıcı ayarlanır.
+      if (user.email) localStorage.setItem("nexusCurrentUser", user.email);
+      writeSession(s);
+      return s;
+    });
+  }
+
   window.nexusCloud = {
+    signInWithGoogle: signInWithGoogle,
+    completeOAuthFromHash: completeOAuthFromHash,
     enabled: enabled,
     notifyLocalChange: notifyLocalChange,
     signIn: signIn,
