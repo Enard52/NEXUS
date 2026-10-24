@@ -1,0 +1,8 @@
+# Cloudflare Pages Clean URLs & Redirects
+/tr         /tr/        301
+/about      /about.html 200
+/privacy    /privacy.html 200
+/terms      /terms.html 200
+/tr/about   /tr/about.html 200
+/tr/privacy /tr/privacy.html 200
+/tr/terms   /tr/terms.html 200

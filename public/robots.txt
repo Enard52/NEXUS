@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://enard52.github.io/sitemap.xml
+Sitemap: https://nexus-b6p.pages.dev/sitemap.xml

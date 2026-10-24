@@ -23,6 +23,7 @@
     "build": "pnpm build:static && pnpm build:client && pnpm build:server",
     "release:manifest": "node scripts/release-manifest.mjs",
     "release:mobile": "node scripts/publish-mobile-artifact.mjs",
+    "deploy:pages": "pnpm build:static && wrangler pages deploy public --project-name nexus",
     "changelog": "echo See CHANGELOG.md",
     "build:tailwind": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify",
     "build:tailwind:watch": "tailwindcss -i src/input.css -o www/css/tailwind.css --minify --watch",
@@ -45,7 +46,8 @@
     "tailwindcss": "^3.4.14",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
-    "vitest": "^3.0.4"
+    "vitest": "^3.0.4",
+    "wrangler": "^4.152.0"
   },
   "dependencies": {
     "@capacitor/core": "^8.4.2",
