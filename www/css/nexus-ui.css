@@ -54,6 +54,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Sayfa geçişi kayması: kaydırma çubuğu çıkıp kaybolunca içerik yatay kaymasın (tüm sayfalar, mobil + masaüstü) */
+html { scrollbar-gutter: stable; }
+
+/* Sayfa açılışında ilk yerleşim sonrası kısa ve sade bir giriş: içerik zıplamadan belirir */
+@keyframes nxPageIn { from { opacity: 0; } to { opacity: 1; } }
+body { animation: nxPageIn .16s ease-out both; }
+@media (prefers-reduced-motion: reduce) { body { animation: none; } }
+
 /* Okunabilirlik tabanı: 10px ve altı metin kullanılmaz. */
 .text-\[9px\],
 .text-\[10px\] {
