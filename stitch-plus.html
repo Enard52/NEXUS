@@ -115,7 +115,7 @@
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </div>
-<span class="text-gray-800 dark:text-white dark:text-white text-lg font-medium">NEXUS AI ile her şeyi oluşturun</span>
+<span class="text-gray-800 dark:text-white dark:text-white text-lg font-medium">Yeni NEXUS AI özellikleri önce NEXUS+ üyelerinde</span>
 </li>
 <!-- Feature Item 3 -->
 <li class="flex items-center gap-3">
@@ -124,7 +124,7 @@
 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </div>
-<span class="text-gray-800 dark:text-white dark:text-white text-lg font-medium">Gelişmiş NEXUS AI modelleri</span>
+<span class="text-gray-800 dark:text-white dark:text-white text-lg font-medium">Ücretsiz plandan çok daha büyük hak (günde 30 yerine ayda 2.000)</span>
 </li>
 <!-- Feature Item 4 -->
 <li class="flex items-center gap-3">
@@ -154,15 +154,15 @@
 <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4C7DFF] text-white text-xs font-bold px-3 py-1 rounded-full">Popüler</div>
 <h3 class="text-xl font-bold text-black dark:text-white dark:text-white">Yıllık</h3>
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-sm mb-2">7 gün ücretsiz deneme</p>
-<div class="text-2xl font-bold text-black dark:text-white dark:text-white">₺3999.99</div>
-<div class="text-gray-400 text-sm">₺333.33/ay</div>
+<div class="text-2xl font-bold text-black dark:text-white dark:text-white" id="pa-price">₺3999.99</div>
+<div class="text-gray-400 text-sm" id="pa-sub">₺333.33/ay</div>
 </div>
 <!-- Monthly Plan -->
 <div role="button" tabindex="0" id="plan-monthly" onclick="selectPlan('Aylık')" class="bg-white dark:bg-slate-800 dark:bg-slate-800 border-2 border-gray-100 rounded-3xl p-5 text-center flex flex-col justify-center shadow-sm cursor-pointer transition-all" data-plan="Aylık">
 <h3 class="text-xl font-bold text-black dark:text-white dark:text-white">Aylık</h3>
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-sm mb-2">3 gün ücretsiz deneme</p>
-<div class="text-2xl font-bold text-black dark:text-white dark:text-white">₺499.99</div>
-<div class="text-gray-400 text-sm">/ay</div>
+<div class="text-2xl font-bold text-black dark:text-white dark:text-white" id="pm-price">₺499.99</div>
+<div class="text-gray-400 text-sm" id="pm-sub">/ay</div>
 </div>
 </section>
 <!-- END: Pricing Plans -->
@@ -193,7 +193,26 @@
 <script>
   let selectedPlan = nexusGetItem('nexusSelectedPlan') || 'Yıllık';
 
+  // Para birimi: Türkçe arayüz TL, diğer diller USD (Whop'ta ayrı planlar). Fiyat tek kaynaktan gelir (cloud-sync.js).
+  function money() {
+    var c = window.nexusCloud;
+    return c && c.prices ? c.prices() : { 'Yıllık': '₺3.999,99', 'Aylık': '₺499,99', perYear: '/yıl', perMonth: '/ay', perMonthOfYear: '₺333,33' };
+  }
+  function planPriceText(plan) { var m = money(); return plan === 'Yıllık' ? m['Yıllık'] + m.perYear : m['Aylık'] + m.perMonth; }
+  function applyPrices() {
+    var m = money();
+    var tr = (window.nexusLang || 'tr') === 'tr';
+    document.getElementById('pa-price').textContent = m['Yıllık'];
+    document.getElementById('pa-sub').textContent = m.perMonthOfYear + m.perMonth;
+    document.getElementById('pm-price').textContent = m['Aylık'];
+    document.getElementById('pm-sub').textContent = m.perMonth;
+    document.getElementById('legal-line').textContent = tr
+      ? '7 gün ücretsiz, sonra yılda yalnızca ' + m['Yıllık'] + '. İstediğiniz zaman iptal edin.'
+      : '7 days free, then just ' + m['Yıllık'] + ' per year. Cancel anytime.';
+  }
+
   // Initialize selected plan on page load
+  applyPrices();
   selectPlan(selectedPlan);
 
   function selectPlan(plan) {
@@ -244,7 +263,7 @@
       firstCharge.setDate(firstCharge.getDate() + trialDays);
       document.getElementById('co-plan').textContent = 'NEXUS+ ' + selectedPlan;
       document.getElementById('co-trial').textContent = trialDays + ' gün';
-      document.getElementById('co-price').textContent = selectedPlan === 'Yıllık' ? '₺3999,99/yıl' : '₺499,99/ay';
+      document.getElementById('co-price').textContent = planPriceText(selectedPlan);
       document.getElementById('co-date').textContent = firstCharge.toLocaleDateString((window.nexusLocale || 'tr-TR'), { year: 'numeric', month: 'long', day: 'numeric' });
       document.getElementById('co-email').textContent = s.email;
       document.getElementById('checkout-sheet').dataset.email = s.email;
@@ -259,7 +278,7 @@
   // Güvenli ödeme sayfası (Whop) tarayıcıda açılır; kart bilgisi uygulamaya hiç girmez.
   function confirmCheckout() {
     var email = document.getElementById('checkout-sheet').dataset.email || '';
-    var url = window.nexusCloud.checkoutUrl(selectedPlan, email);
+    var url = window.nexusCloud.checkoutUrl(selectedPlan, email, window.nexusCloud.currencyForLang());
     closeCheckout();
     if (!url) { toast('Ödeme bağlantısı bulunamadı.'); return; }
     window.open(url, '_blank', 'noopener');
@@ -289,7 +308,7 @@
 <!-- Footer Legal Text -->
 <div class="text-center space-y-1 text-gray-500 dark:text-gray-300 dark:text-gray-300">
 <p class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-xs font-medium">
-        7 gün ücretsiz, sonra yılda yalnızca ₺3999.99. İstediğiniz zaman iptal edin.
+        <span id="legal-line">7 gün ücretsiz, sonra yılda yalnızca ₺3999.99. İstediğiniz zaman iptal edin.</span>
       </p>
 <a class="text-gray-600 dark:text-gray-300 dark:text-gray-300 text-xs font-bold block" href="public/terms.html">Kullanım Koşulları</a>
 </div>

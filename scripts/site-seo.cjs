@@ -32,14 +32,14 @@ const pages = [
 const meta = {
   en: {
     title: {
-      home: "NEXUS — Local-first smart home app for Windows, Linux and Android",
+      home: "NEXUS — Your smart home, managed on your own network",
       about: "About NEXUS — Local-first smart home control",
       privacy: "Privacy Policy — NEXUS",
       terms: "Terms of Service — NEXUS",
       refund: "Refund and Cancellation Policy — NEXUS",
     },
     desc: {
-      home: "NEXUS controls your smart home on your local network, with no hub or cloud fee. Free for Windows and Linux, test build for Android. iOS coming soon.",
+      home: "NEXUS controls your smart home on your own network with no hub or cloud fee. Free to start, with an optional NEXUS+ plan for a larger NEXUS AI allowance.",
       about: "NEXUS is a local-first smart home assistant. Learn what it is, how it works and what we believe about privacy and ownership of your home data.",
       privacy: "What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data.",
       terms: "The terms for using NEXUS apps and services: licence, accounts, NEXUS+ subscription, safety and liability.",
@@ -50,14 +50,14 @@ const meta = {
   },
   tr: {
     title: {
-      home: "NEXUS — Windows, Linux ve Android için yerel akıllı ev uygulaması",
+      home: "NEXUS — Akıllı evinizi kendi ağınızda yönetin",
       about: "NEXUS Hakkında — Yerel öncelikli akıllı ev kontrolü",
       privacy: "Gizlilik Politikası — NEXUS",
       terms: "Kullanım Şartları — NEXUS",
       refund: "İade ve İptal Politikası — NEXUS",
     },
     desc: {
-      home: "NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan yerel ağınızda yönetir. Windows ve Linux için ücretsiz, Android için test sürümü. iOS yakında.",
+      home: "NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan kendi ağınızda yönetir. Ücretsiz başlayın; daha büyük NEXUS AI hakkı için isteğe bağlı NEXUS+ planı.",
       about: "NEXUS, yerel öncelikli bir akıllı ev asistanıdır. Nasıl çalıştığını, gizlilik ve ev verilerinizin size ait olması konusundaki yaklaşımımızı öğrenin.",
       privacy: "NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması.",
       terms: "NEXUS uygulama ve hizmetlerinin kullanım şartları: lisans, hesaplar, NEXUS+ aboneliği, güvenlik ve sorumluluk.",
@@ -233,6 +233,9 @@ for (const [file, route, lang, kind] of pages) {
   if (!html.includes('href="/refund"')) html = html.replace(/(<a href="\/terms">[^<]*<\/a>)/, (m) => m + '\n          <a href="/refund">' + (lang === "tr" ? "İade Politikası" : "Refund Policy") + "</a>");
   html = html.replace(/\s*<a href="#downloads">macOS<\/a>/g, "");
   html = html.split("© 2026 NEXUS Technologies Inc.").join("© 2026 NEXUS");
+
+  // --- hero etiketi: işletim sistemi adları yok ---
+  html = html.replace(/(<span class="eyebrow-dot"><\/span>)\s*Windows · Linux · (?:local network|yerel ağ)/g, (m, dot) => dot + " " + (lang === "tr" ? "Yerel öncelikli akıllı ev" : "Local-first smart home"));
 
   // --- other stale host refs ---
   html = html.split("https://enard52.github.io").join(BASE);

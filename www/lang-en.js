@@ -893,6 +893,8 @@ window.NEXUS_EN = {
 "Her Gün": "Every Day",
 "Her Zaman": "Always",
 "Her ay 2000 kredi": "2000 credits every month",
+"Yeni NEXUS AI özellikleri önce NEXUS+ üyelerinde": "New NEXUS AI features reach NEXUS+ members first",
+"Ücretsiz plandan çok daha büyük hak (günde 30 yerine ayda 2.000)": "A much larger allowance than Free (2,000 a month instead of 30 a day)",
 "Her zaman": "Always",
 "Her üyenin yetkilerini ayrı ayrı açıp kapatabilirsin.": "You can turn each member's permissions on or off separately.",
 "Hesabın oluşturuldu. E-postanı onayladıktan sonra giriş yap.": "Your account was created. Sign in after confirming your email.",

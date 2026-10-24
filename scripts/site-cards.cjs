@@ -29,6 +29,10 @@ const css = `<style id="nx-brand-downloads">
     background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
     box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
   .download-card.is-soon .download-button { opacity: .65; }
+  .plan-stat { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin: 14px 0; border-radius: 14px; font-size: 13px;
+    border: 1px solid color-mix(in srgb, var(--text) 10%, transparent); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+  .plan-stat span { color: var(--muted); }
+  .plan-stat strong { font-weight: 800; color: var(--text); }
   .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
   .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
     letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);

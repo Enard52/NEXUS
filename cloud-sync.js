@@ -436,6 +436,7 @@
     nexusPlusSince: 1,
     nexusPlusEnd: 1,
     nexusPlusCancel: 1,
+    nexusPlusCurrency: 1,
   };
 
   function currentUserKey() {
@@ -591,13 +592,30 @@
   // Satın alma Whop'ta yapılır; webhook, planı e-postaya bağlı olarak nexus_entitlements'a yazar.
   // Burada yalnızca okunur ve yerel görünüm anahtarlarına yansıtılır.
   var CHECKOUT = {
-    "Yıllık": "https://whop.com/checkout/plan_UEXO1F5mjIgWB",
-    "Aylık": "https://whop.com/checkout/plan_fAMBHwTVE0hR2",
+    TRY: {
+      "Yıllık": "https://whop.com/checkout/plan_UEXO1F5mjIgWB",
+      "Aylık": "https://whop.com/checkout/plan_fAMBHwTVE0hR2",
+    },
+    USD: {
+      "Yıllık": "https://whop.com/checkout/plan_XlA3SacShoiJU",
+      "Aylık": "https://whop.com/checkout/plan_HIySYESquBqlg",
+    },
+  };
+  var PRICES = {
+    TRY: { "Yıllık": "₺3.999,99", "Aylık": "₺499,99", perYear: "/yıl", perMonth: "/ay", perMonthOfYear: "₺333,33" },
+    USD: { "Yıllık": "$89.99", "Aylık": "$11.99", perYear: "/year", perMonth: "/month", perMonthOfYear: "$7.50" },
   };
   var MANAGE_URL = "https://whop.com/@me/settings/memberships/";
 
-  function checkoutUrl(plan, email) {
-    var base = CHECKOUT[plan];
+  // Türkçe arayüz TL, diğer diller USD planını gösterir; ödeme sayfası da aynı para biriminde açılır.
+  function currencyForLang() {
+    var lang = (typeof window !== "undefined" && window.nexusLang) || "tr";
+    return lang === "tr" ? "TRY" : "USD";
+  }
+
+  function checkoutUrl(plan, email, currency) {
+    var group = CHECKOUT[currency || "TRY"] || CHECKOUT.TRY;
+    var base = group[plan];
     if (!base) return "";
     return email ? base + "?email=" + encodeURIComponent(email) : base;
   }
@@ -607,11 +625,12 @@
     var del = function (k) { if (window.nexusRemoveItem) window.nexusRemoveItem(k); else set(k, ""); };
     if (row && row.status === "active" && (row.plan === "Aylık" || row.plan === "Yıllık")) {
       set("nexusPlusPlan", row.plan);
+      set("nexusPlusCurrency", row.currency === "USD" ? "USD" : "TRY");
       if (row.period_end) set("nexusPlusEnd", row.period_end); else del("nexusPlusEnd");
       if (row.cancel_at_period_end) set("nexusPlusCancel", "1"); else del("nexusPlusCancel");
       return { active: true, plan: row.plan, periodEnd: row.period_end || null, cancelAtPeriodEnd: !!row.cancel_at_period_end };
     }
-    del("nexusPlusPlan"); del("nexusPlusEnd"); del("nexusPlusCancel");
+    del("nexusPlusPlan"); del("nexusPlusEnd"); del("nexusPlusCancel"); del("nexusPlusCurrency");
     return { active: false, plan: "none" };
   }
 
@@ -619,7 +638,7 @@
     if (!enabled()) return Promise.resolve({ active: false, plan: "none", skipped: true });
     return session().then(function (current) {
       if (!current) return { active: false, plan: "none", skipped: true };
-      return api("/rest/v1/nexus_entitlements?select=plan,status,cancel_at_period_end,period_end&limit=1", {
+      return api("/rest/v1/nexus_entitlements?select=plan,status,currency,cancel_at_period_end,period_end&limit=1", {
         headers: { Authorization: "Bearer " + current.accessToken },
       }).then(function (rows) { return applyEntitlement(rows && rows[0]); });
     });
@@ -737,6 +756,8 @@
     syncState: syncState,
     pullEntitlement: pullEntitlement,
     checkoutUrl: checkoutUrl,
+    currencyForLang: currencyForLang,
+    prices: function (currency) { return PRICES[currency || currencyForLang()] || PRICES.TRY; },
     manageUrl: function () { return MANAGE_URL; },
     syncNow: syncNow,
     pullDevices: pullDevices,

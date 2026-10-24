@@ -159,7 +159,9 @@
 
     if (plan === "Yıllık" || plan === "Aylık") {
       title.textContent = "NEXUS+ " + plan;
-      price.textContent = plan === "Yıllık" ? "₺3.999,99" : "₺499,99";
+      const cur = nexusGetItem("nexusPlusCurrency") || "TRY";
+      const pm = (window.nexusCloud && window.nexusCloud.prices) ? window.nexusCloud.prices(cur) : null;
+      price.textContent = pm ? pm[plan] : (plan === "Yıllık" ? "₺3.999,99" : "₺499,99");
       renewal.textContent = cancelling
         ? (hasEnd ? "İptal edildi — " + dateStr + " tarihine kadar geçerli" : "İptal edildi — dönem sonuna kadar geçerli")
         : (hasEnd ? "Sonraki Yenileme: " + dateStr : "Aboneliğin aktif");

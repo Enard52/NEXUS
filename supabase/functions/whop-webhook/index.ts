@@ -6,9 +6,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 // Yalnızca bu planlar NEXUS+ sayılır; başka ürün/plan olayları yok sayılır.
-const PLANS: Record<string, "Aylık" | "Yıllık"> = {
-  plan_fAMBHwTVE0hR2: "Aylık",
-  plan_UEXO1F5mjIgWB: "Yıllık",
+const PLANS: Record<string, { plan: "Aylık" | "Yıllık"; currency: "TRY" | "USD" }> = {
+  plan_fAMBHwTVE0hR2: { plan: "Aylık", currency: "TRY" },
+  plan_UEXO1F5mjIgWB: { plan: "Yıllık", currency: "TRY" },
+  plan_HIySYESquBqlg: { plan: "Aylık", currency: "USD" },
+  plan_XlA3SacShoiJU: { plan: "Yıllık", currency: "USD" },
 };
 
 const enc = new TextEncoder();
@@ -91,7 +93,7 @@ Deno.serve(async (req) => {
   try { evt = JSON.parse(body); } catch { return new Response("bad json", { status: 400 }); }
   const type = String(evt.type ?? evt.action ?? "");
   const p = pick(evt.data ?? {});
-  const plan = PLANS[p.planId];
+  const def = PLANS[p.planId];
 
   const activates = /(activated|went_valid|payment[._]succeeded)/.test(type);
   const deactivates = /(deactivated|went_invalid)/.test(type);
@@ -100,11 +102,11 @@ Deno.serve(async (req) => {
   if (!activates && !deactivates && !cancelChange) return Response.json({ ok: true, ignored: type });
 
   if (activates) {
-    if (!plan || !p.email) return Response.json({ ok: true, ignored: "unknown plan or email" });
-    const row = { email: p.email, plan, status: "active", cancel_at_period_end: p.cancel ?? false, whop_membership_id: p.membershipId || null, whop_plan_id: p.planId, period_end: p.periodEnd, updated_at: new Date().toISOString() };
+    if (!def || !p.email) return Response.json({ ok: true, ignored: "unknown plan or email" });
+    const row = { email: p.email, plan: def.plan, currency: def.currency, status: "active", cancel_at_period_end: p.cancel ?? false, whop_membership_id: p.membershipId || null, whop_plan_id: p.planId, period_end: p.periodEnd, updated_at: new Date().toISOString() };
     const res = await rest("nexus_entitlements?on_conflict=email", { method: "POST", headers: { Prefer: "resolution=merge-duplicates" }, body: JSON.stringify(row) });
     if (!res.ok) return new Response("db error", { status: 500 });
-    return Response.json({ ok: true, active: p.email, plan });
+    return Response.json({ ok: true, active: p.email, plan: def.plan, currency: def.currency });
   }
 
   // Kapanış / iptal bilgisi: önce üyelik kimliğiyle, yoksa e-postayla eşleştir.

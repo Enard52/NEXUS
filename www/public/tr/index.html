@@ -21,8 +21,8 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NEXUS — Windows, Linux ve Android için yerel akıllı ev uygulaması</title>
-  <meta name="description" content="NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan yerel ağınızda yönetir. Windows ve Linux için ücretsiz, Android için test sürümü. iOS yakında." />
+  <title>NEXUS — Akıllı evinizi kendi ağınızda yönetin</title>
+  <meta name="description" content="NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan kendi ağınızda yönetir. Ücretsiz başlayın; daha büyük NEXUS AI hakkı için isteğe bağlı NEXUS+ planı." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <link rel="canonical" href="https://nexus-smarthome.pages.dev/tr/" />
   <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/" />
@@ -32,17 +32,23 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta property="og:site_name" content="NEXUS" />
   <meta property="og:locale" content="tr_TR" />
   <meta property="og:locale:alternate" content="en_US" />
-  <meta property="og:title" content="NEXUS — Windows, Linux ve Android için yerel akıllı ev uygulaması" />
-  <meta property="og:description" content="NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan yerel ağınızda yönetir. Windows ve Linux için ücretsiz, Android için test sürümü. iOS yakında." />
+  <meta property="og:title" content="NEXUS — Akıllı evinizi kendi ağınızda yönetin" />
+  <meta property="og:description" content="NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan kendi ağınızda yönetir. Ücretsiz başlayın; daha büyük NEXUS AI hakkı için isteğe bağlı NEXUS+ planı." />
   <meta property="og:url" content="https://nexus-smarthome.pages.dev/tr/" />
   <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="NEXUS akıllı ev uygulaması" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="NEXUS — Windows, Linux ve Android için yerel akıllı ev uygulaması" />
-  <meta name="twitter:description" content="NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan yerel ağınızda yönetir. Windows ve Linux için ücretsiz, Android için test sürümü. iOS yakında." />
+  <meta name="twitter:title" content="NEXUS — Akıllı evinizi kendi ağınızda yönetin" />
+  <meta name="twitter:description" content="NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan kendi ağınızda yönetir. Ücretsiz başlayın; daha büyük NEXUS AI hakkı için isteğe bağlı NEXUS+ planı." />
   <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
+  <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
+  <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
   <meta name="application-name" content="NEXUS" />
   <meta name="apple-mobile-web-app-title" content="NEXUS" />
@@ -4672,41 +4678,6 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   .download-card .download-button:not(.is-disabled):hover { filter: brightness(1.05); }
   .download-card .download-note { font-size: 12px !important; }
 </style>
-
-<style id="nx-brand-downloads">
-  .downloads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  @media (max-width: 800px) { .downloads-grid { grid-template-columns: 1fr !important; } }
-  .download-card { --brand: #4c7dff; --brand-2: #8b7bff; }
-  .download-windows { --brand: #0078d4; --brand-2: #50a6f2; }
-  .download-linux   { --brand: #e8590c; --brand-2: #f7b32b; }
-  .download-android { --brand: #1fa95b; --brand-2: #3ddc84; }
-  .download-ios     { --brand: #7b8494; --brand-2: #aab2c0; }
-  .download-card {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, var(--brand) 10%), var(--surface)) !important;
-    color: var(--text) !important;
-    box-shadow: inset 0 4px 0 0 var(--brand), 0 18px 40px -24px color-mix(in srgb, var(--brand) 40%, rgba(0,0,0,.5)) !important;
-  }
-  .download-card h3 { color: var(--text) !important; }
-  .download-card p, .download-card .download-note { color: var(--muted) !important; }
-  .download-card:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent) !important;
-    box-shadow: inset 0 4px 0 0 var(--brand), 0 28px 56px -24px color-mix(in srgb, var(--brand) 55%, transparent) !important; }
-  .download-card .platform-icon { color: #fff !important; background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
-    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent); }
-  .download-card .platform-icon .os-logo { color: #fff !important; }
-  .download-card .platform-watermark { color: var(--brand) !important; }
-  .download-card .version { color: var(--brand) !important; background: color-mix(in srgb, var(--brand) 14%, transparent) !important; }
-  .download-card .platform-specs span { color: var(--muted) !important; }
-  .download-card .download-button:not(.is-disabled) {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
-    box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
-  .download-card.is-soon .download-button { opacity: .65; }
-  .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
-  .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
-    letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
-    background: color-mix(in srgb, var(--brand) 8%, transparent); color: var(--text); }
-  .nx-chip b { color: var(--brand); font-weight: 800; }
-  .downloads-meta .nx-updated { display: block; margin-top: 6px; font-size: 12.5px; opacity: .75; }
-</style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -4745,7 +4716,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
       "@type": "SoftwareApplication",
       "@id": "https://nexus-smarthome.pages.dev/#app",
       "name": "NEXUS",
-      "description": "NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan yerel ağınızda yönetir. Windows ve Linux için ücretsiz, Android için test sürümü. iOS yakında.",
+      "description": "NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan kendi ağınızda yönetir. Ücretsiz başlayın; daha büyük NEXUS AI hakkı için isteğe bağlı NEXUS+ planı.",
       "url": "https://nexus-smarthome.pages.dev/tr/",
       "image": "https://nexus-smarthome.pages.dev/og-cover.png",
       "applicationCategory": "UtilitiesApplication",
@@ -4802,6 +4773,45 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   ]
 }
   </script>
+
+<style id="nx-brand-downloads">
+  .downloads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  @media (max-width: 800px) { .downloads-grid { grid-template-columns: 1fr !important; } }
+  .download-card { --brand: #4c7dff; --brand-2: #8b7bff; }
+  .download-windows { --brand: #0078d4; --brand-2: #50a6f2; }
+  .download-linux   { --brand: #e8590c; --brand-2: #f7b32b; }
+  .download-android { --brand: #1fa95b; --brand-2: #3ddc84; }
+  .download-ios     { --brand: #7b8494; --brand-2: #aab2c0; }
+  .download-card {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, var(--brand) 10%), var(--surface)) !important;
+    color: var(--text) !important;
+    box-shadow: inset 0 4px 0 0 var(--brand), 0 18px 40px -24px color-mix(in srgb, var(--brand) 40%, rgba(0,0,0,.5)) !important;
+  }
+  .download-card h3 { color: var(--text) !important; }
+  .download-card p, .download-card .download-note { color: var(--muted) !important; }
+  .download-card:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent) !important;
+    box-shadow: inset 0 4px 0 0 var(--brand), 0 28px 56px -24px color-mix(in srgb, var(--brand) 55%, transparent) !important; }
+  .download-card .platform-icon { color: #fff !important; background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
+    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent); }
+  .download-card .platform-icon .os-logo { color: #fff !important; }
+  .download-card .platform-watermark { color: var(--brand) !important; }
+  .download-card .version { color: var(--brand) !important; background: color-mix(in srgb, var(--brand) 14%, transparent) !important; }
+  .download-card .platform-specs span { color: var(--muted) !important; }
+  .download-card .download-button:not(.is-disabled) {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
+    box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
+  .download-card.is-soon .download-button { opacity: .65; }
+  .plan-stat { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin: 14px 0; border-radius: 14px; font-size: 13px;
+    border: 1px solid color-mix(in srgb, var(--text) 10%, transparent); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+  .plan-stat span { color: var(--muted); }
+  .plan-stat strong { font-weight: 800; color: var(--text); }
+  .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
+  .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+    background: color-mix(in srgb, var(--brand) 8%, transparent); color: var(--text); }
+  .nx-chip b { color: var(--brand); font-weight: 800; }
+  .downloads-meta .nx-updated { display: block; margin-top: 6px; font-size: 12.5px; opacity: .75; }
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main">İçeriğe atla</a>
@@ -4921,7 +4931,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · Linux · yerel ağ</div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Yerel öncelikli akıllı ev</div>
           <h1>Senin evin.<span class="hero-gradient-line"><span class="hero-word">Tek</span> <span class="hero-word">zekâ.</span></span></h1>
           <p class="hero-copy">NEXUS, akıllı ev cihazlarınızı yönetmenize yardımcı olan bir akıllı ev asistanıdır.</p>
           <div class="hero-actions">
@@ -5604,7 +5614,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             </div>
             <p class="plan-description">Tek yerel çekirdek etrafında hızlı ve özel bir akıllı ev kurmak için gereken her şey.</p>
             <div class="plan-price-row">
-              <div class="price"><sup>$</sup>0<span>/ ay</span></div>
+              <div class="price"><sup>₺</sup>0<span>/ ay</span></div>
               <span class="price-note">Kart gerekmez</span>
             </div>
             <div class="plan-console" aria-label="Free plan capacity">
@@ -5616,9 +5626,10 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             <span class="feature-label">Ücretsiz plana dahil</span>
             <ul class="feature-list">
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Sınırsız bağlı cihaz</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Senaryolar, otomasyonlar ve NEXUS AI sohbeti</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>%100 yerel işleme</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Windows ve Linux uygulamaları</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Senaryolar, otomasyonlar ve NEXUS AI sohbeti (günde 30 kredi)</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Evler, odalar ve üye başına izinli ev üyeleri</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>%100 yerel cihaz kontrolü</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Windows ve Linux uygulamaları, Android test sürümü</li>
             </ul>
             <a class="button button-secondary" href="#downloads">Ücretsiz başla</a>
             <div class="plan-foot"><span class="status-dot"></span>Tamamen senin donanımında çalışır</div>
@@ -5638,7 +5649,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             <p class="plan-description">Evin için çok daha büyük bir NEXUS AI hakkı: her ay 2.000 kredi ve gelişmiş NEXUS AI modelleri.</p>
             <div class="plan-price-row">
               <div class="price"><sup>₺</sup>499,99<span>/ ay</span></div>
-              <span class="price-note">veya ₺3.999,99/yıl</span>
+              <span class="price-note">veya yıllık ₺3.999,99 (ayda ₺333,33)</span>
             </div>
             <div class="plan-console plan-console-premium" aria-label="Premium plan capacity">
               <div class="plan-console-head"><span>Aylık NEXUS AI hakkı</span><strong>2.000 kredi</strong></div>
@@ -5681,10 +5692,10 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             <div class="plan-divider"><span></span></div>
             <span class="feature-label">NEXUS+&#39;daki her şey, artı</span>
             <ul class="feature-list">
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>NEXUS+&#39;daki her şey</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>6 aile profiline kadar</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Ayrıntılı ebeveyn denetimleri</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Aileye özel panel</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>NEXUS+'taki her şey</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>6 ev üyesine kadar tek abonelik (yakında)</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Ev için ortak NEXUS AI kredisi (yakında)</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Üye başına izinler: uygulamada şimdiden ücretsiz</li>
             </ul>
             <span class="button button-secondary is-disabled" aria-disabled="true">Yakında</span>
             <div class="plan-foot"><span class="status-dot"></span>Özel profiller, tek yerel çekirdek</div>
@@ -5713,7 +5724,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             </div>
             <h3>Windows</h3>
             <p>Intel/AMD ve ARM bilgisayarlar için tek kurulum dosyası. Otomatik güncelleme içerir.</p>
-            <span class="version">Sürüm <span data-nexus-ver>1.0.11</span> · x64 + ARM64</span>
+            <span class="version">Sürüm <span data-nexus-ver>1.0.12</span> · x64 + ARM64</span>
             <div class="platform-specs"><span>Yerel kontrol</span><span>Otomatik güncelleme</span><span>Hub gerekmez</span></div>
             <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe" rel="noopener">Windows için indir</a>
             <span class="download-note">İlk açılış: SmartScreen uyarısı çıkarsa “Ek bilgi” → “Yine de çalıştır”ı seçin.</span>
@@ -5730,7 +5741,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             </div>
             <h3>Linux</h3>
             <p>Her dağıtım için taşınabilir AppImage ve ayrıca .deb paketi.</p>
-            <span class="version">Sürüm <span data-nexus-ver>1.0.11</span> · x64</span>
+            <span class="version">Sürüm <span data-nexus-ver>1.0.12</span> · x64</span>
             <div class="platform-specs"><span>Yerel kontrol</span><span>Otomatik güncelleme</span><span>Hub gerekmez</span></div>
             <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage" rel="noopener">AppImage indir</a>
             <a class="apk-link" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.deb" rel="noopener">.deb paketini indir</a>

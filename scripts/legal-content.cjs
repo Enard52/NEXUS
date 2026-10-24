@@ -102,7 +102,7 @@ const terms = {
       ] },
       { h: "NEXUS AI ve krediler", p: ["Ücretsiz planda günde 30, NEXUS+ aboneliğinde ayda 2.000 NEXUS AI kredisi verilir. Krediler devredilemez, nakde çevrilemez ve dönem sonunda sıfırlanır. NEXUS AI hata yapabilir; sonuçları kontrol etmek sizin sorumluluğunuzdadır."] },
       { h: "NEXUS+ aboneliği", ul: [
-        "Planlar: Aylık ve Yıllık. Güncel fiyatlar ödeme sayfasında gösterilir; vergiler ödeme sayfasında eklenebilir. Yıllık planda 7 gün, aylık planda 3 gün ücretsiz deneme sunulur.",
+        "Planlar: Aylık ve Yıllık. Türkiye için TL, diğer ülkeler için USD fiyatlı planlar sunulur (şu an Aylık ₺499,99 / $11.99, Yıllık ₺3.999,99 / $89.99). Güncel fiyatlar ödeme sayfasında gösterilir; vergiler ödeme sayfasında eklenebilir. Yıllık planda 7 gün, aylık planda 3 gün ücretsiz deneme sunulur.",
         "Ödemeler Whop üzerinden alınır. Abonelik, siz iptal edene kadar her dönem otomatik yenilenir; deneme süresi bitince seçtiğiniz plan ücreti tahsil edilir.",
         "Aboneliğinizi dilediğiniz an Faturalandırma sayfasından veya Whop hesabınızdan iptal edebilirsiniz. İptal, içinde bulunduğunuz dönemin sonunda geçerli olur.",
         "Ödemede NEXUS hesabınızın e-posta adresini kullanmalısınız; abonelik bu e-postayla eşleşir.",
@@ -131,7 +131,7 @@ const terms = {
       ] },
       { h: "NEXUS AI and credits", p: ["The free plan includes 30 NEXUS AI credits per day; a NEXUS+ subscription includes 2,000 per month. Credits are non-transferable, cannot be exchanged for cash and reset at the end of the period. NEXUS AI can make mistakes; checking results is your responsibility."] },
       { h: "NEXUS+ subscription", ul: [
-        "Plans: Monthly and Yearly. Current prices are shown at checkout; taxes may be added at checkout. The yearly plan includes a 7-day free trial and the monthly plan a 3-day free trial.",
+        "Plans: Monthly and Yearly, priced in TRY for Türkiye and in USD elsewhere (currently Monthly ₺499.99 / $11.99, Yearly ₺3,999.99 / $89.99). Current prices are shown at checkout; taxes may be added at checkout. The yearly plan includes a 7-day free trial and the monthly plan a 3-day free trial.",
         "Payments are taken through Whop. The subscription renews automatically each period until you cancel; when the trial ends your chosen plan's price is charged.",
         "You can cancel at any time on the Billing page or in your Whop account. Cancellation takes effect at the end of the current period.",
         "At checkout use your NEXUS account's email address; the subscription is matched to that email.",

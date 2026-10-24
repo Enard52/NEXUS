@@ -606,6 +606,33 @@ describe("NEXUS+ aboneliği (Whop webhook'u → nexus_entitlements)", () => {
     expect(cloud.checkoutUrl("Bilinmeyen", "a@b.co")).toBe("");
   });
 
+  it("USD planları yurt dışı için ayrı Whop bağlantılarına gider ve fiyatlar dile göre gelir", () => {
+    const { cloud } = load({ config: CONFIG });
+    expect(cloud.checkoutUrl("Yıllık", "", "USD")).toBe(
+      "https://whop.com/checkout/plan_XlA3SacShoiJU",
+    );
+    expect(cloud.checkoutUrl("Aylık", "", "USD")).toBe(
+      "https://whop.com/checkout/plan_HIySYESquBqlg",
+    );
+    expect(cloud.prices("USD")["Aylık"]).toBe("$11.99");
+    expect(cloud.prices("TRY")["Yıllık"]).toBe("₺3.999,99");
+  });
+
+  it("webhook işlevi dört planı (TRY + USD) para birimiyle tanır", () => {
+    const src = readFileSync(
+      join(REPO_ROOT, "supabase", "functions", "whop-webhook", "index.ts"),
+      "utf8",
+    );
+    for (const id of [
+      "plan_fAMBHwTVE0hR2",
+      "plan_UEXO1F5mjIgWB",
+      "plan_HIySYESquBqlg",
+      "plan_XlA3SacShoiJU",
+    ]) {
+      expect(src).toContain(id);
+    }
+    expect(src).toContain('currency: "USD"');
+  });
   it("webhook işlevi yalnızca bu iki Whop planını tanır ve imza doğrular", () => {
     const src = readFileSync(
       join(REPO_ROOT, "supabase", "functions", "whop-webhook", "index.ts"),

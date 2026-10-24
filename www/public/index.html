@@ -21,8 +21,8 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NEXUS — Local-first smart home app for Windows, Linux and Android</title>
-  <meta name="description" content="NEXUS controls your smart home on your local network, with no hub or cloud fee. Free for Windows and Linux, test build for Android. iOS coming soon." />
+  <title>NEXUS — Your smart home, managed on your own network</title>
+  <meta name="description" content="NEXUS controls your smart home on your own network with no hub or cloud fee. Free to start, with an optional NEXUS+ plan for a larger NEXUS AI allowance." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <link rel="canonical" href="https://nexus-smarthome.pages.dev/" />
   <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/" />
@@ -32,17 +32,23 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta property="og:site_name" content="NEXUS" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="tr_TR" />
-  <meta property="og:title" content="NEXUS — Local-first smart home app for Windows, Linux and Android" />
-  <meta property="og:description" content="NEXUS controls your smart home on your local network, with no hub or cloud fee. Free for Windows and Linux, test build for Android. iOS coming soon." />
+  <meta property="og:title" content="NEXUS — Your smart home, managed on your own network" />
+  <meta property="og:description" content="NEXUS controls your smart home on your own network with no hub or cloud fee. Free to start, with an optional NEXUS+ plan for a larger NEXUS AI allowance." />
   <meta property="og:url" content="https://nexus-smarthome.pages.dev/" />
   <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="NEXUS smart home app" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="NEXUS — Local-first smart home app for Windows, Linux and Android" />
-  <meta name="twitter:description" content="NEXUS controls your smart home on your local network, with no hub or cloud fee. Free for Windows and Linux, test build for Android. iOS coming soon." />
+  <meta name="twitter:title" content="NEXUS — Your smart home, managed on your own network" />
+  <meta name="twitter:description" content="NEXUS controls your smart home on your own network with no hub or cloud fee. Free to start, with an optional NEXUS+ plan for a larger NEXUS AI allowance." />
   <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
+  <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
+  <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
   <meta name="application-name" content="NEXUS" />
   <meta name="apple-mobile-web-app-title" content="NEXUS" />
@@ -4672,41 +4678,6 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   .download-card .download-button:not(.is-disabled):hover { filter: brightness(1.05); }
   .download-card .download-note { font-size: 12px !important; }
 </style>
-
-<style id="nx-brand-downloads">
-  .downloads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  @media (max-width: 800px) { .downloads-grid { grid-template-columns: 1fr !important; } }
-  .download-card { --brand: #4c7dff; --brand-2: #8b7bff; }
-  .download-windows { --brand: #0078d4; --brand-2: #50a6f2; }
-  .download-linux   { --brand: #e8590c; --brand-2: #f7b32b; }
-  .download-android { --brand: #1fa95b; --brand-2: #3ddc84; }
-  .download-ios     { --brand: #7b8494; --brand-2: #aab2c0; }
-  .download-card {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, var(--brand) 10%), var(--surface)) !important;
-    color: var(--text) !important;
-    box-shadow: inset 0 4px 0 0 var(--brand), 0 18px 40px -24px color-mix(in srgb, var(--brand) 40%, rgba(0,0,0,.5)) !important;
-  }
-  .download-card h3 { color: var(--text) !important; }
-  .download-card p, .download-card .download-note { color: var(--muted) !important; }
-  .download-card:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent) !important;
-    box-shadow: inset 0 4px 0 0 var(--brand), 0 28px 56px -24px color-mix(in srgb, var(--brand) 55%, transparent) !important; }
-  .download-card .platform-icon { color: #fff !important; background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
-    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent); }
-  .download-card .platform-icon .os-logo { color: #fff !important; }
-  .download-card .platform-watermark { color: var(--brand) !important; }
-  .download-card .version { color: var(--brand) !important; background: color-mix(in srgb, var(--brand) 14%, transparent) !important; }
-  .download-card .platform-specs span { color: var(--muted) !important; }
-  .download-card .download-button:not(.is-disabled) {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
-    box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
-  .download-card.is-soon .download-button { opacity: .65; }
-  .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
-  .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
-    letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
-    background: color-mix(in srgb, var(--brand) 8%, transparent); color: var(--text); }
-  .nx-chip b { color: var(--brand); font-weight: 800; }
-  .downloads-meta .nx-updated { display: block; margin-top: 6px; font-size: 12.5px; opacity: .75; }
-</style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -4745,7 +4716,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
       "@type": "SoftwareApplication",
       "@id": "https://nexus-smarthome.pages.dev/#app",
       "name": "NEXUS",
-      "description": "NEXUS controls your smart home on your local network, with no hub or cloud fee. Free for Windows and Linux, test build for Android. iOS coming soon.",
+      "description": "NEXUS controls your smart home on your own network with no hub or cloud fee. Free to start, with an optional NEXUS+ plan for a larger NEXUS AI allowance.",
       "url": "https://nexus-smarthome.pages.dev/",
       "image": "https://nexus-smarthome.pages.dev/og-cover.png",
       "applicationCategory": "UtilitiesApplication",
@@ -4802,6 +4773,45 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   ]
 }
   </script>
+
+<style id="nx-brand-downloads">
+  .downloads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  @media (max-width: 800px) { .downloads-grid { grid-template-columns: 1fr !important; } }
+  .download-card { --brand: #4c7dff; --brand-2: #8b7bff; }
+  .download-windows { --brand: #0078d4; --brand-2: #50a6f2; }
+  .download-linux   { --brand: #e8590c; --brand-2: #f7b32b; }
+  .download-android { --brand: #1fa95b; --brand-2: #3ddc84; }
+  .download-ios     { --brand: #7b8494; --brand-2: #aab2c0; }
+  .download-card {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, var(--brand) 10%), var(--surface)) !important;
+    color: var(--text) !important;
+    box-shadow: inset 0 4px 0 0 var(--brand), 0 18px 40px -24px color-mix(in srgb, var(--brand) 40%, rgba(0,0,0,.5)) !important;
+  }
+  .download-card h3 { color: var(--text) !important; }
+  .download-card p, .download-card .download-note { color: var(--muted) !important; }
+  .download-card:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent) !important;
+    box-shadow: inset 0 4px 0 0 var(--brand), 0 28px 56px -24px color-mix(in srgb, var(--brand) 55%, transparent) !important; }
+  .download-card .platform-icon { color: #fff !important; background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
+    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent); }
+  .download-card .platform-icon .os-logo { color: #fff !important; }
+  .download-card .platform-watermark { color: var(--brand) !important; }
+  .download-card .version { color: var(--brand) !important; background: color-mix(in srgb, var(--brand) 14%, transparent) !important; }
+  .download-card .platform-specs span { color: var(--muted) !important; }
+  .download-card .download-button:not(.is-disabled) {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
+    box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
+  .download-card.is-soon .download-button { opacity: .65; }
+  .plan-stat { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; margin: 14px 0; border-radius: 14px; font-size: 13px;
+    border: 1px solid color-mix(in srgb, var(--text) 10%, transparent); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+  .plan-stat span { color: var(--muted); }
+  .plan-stat strong { font-weight: 800; color: var(--text); }
+  .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
+  .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+    background: color-mix(in srgb, var(--brand) 8%, transparent); color: var(--text); }
+  .nx-chip b { color: var(--brand); font-weight: 800; }
+  .downloads-meta .nx-updated { display: block; margin-top: 6px; font-size: 12.5px; opacity: .75; }
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -4921,7 +4931,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Windows · Linux · local network</div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Local-first smart home</div>
           <h1>Your home.<span class="hero-gradient-line"><span class="hero-word">One</span> <span class="hero-word">intelligence.</span></span></h1>
           <p class="hero-copy">NEXUS is a smart home assistant that helps you manage your smart home devices.</p>
           <div class="hero-actions">
@@ -5616,9 +5626,10 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             <span class="feature-label">Included in Free</span>
             <ul class="feature-list">
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Unlimited connected devices</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Scenes, automations and NEXUS AI chat</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>100% local processing</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Windows and Linux apps</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Scenes, automations and NEXUS AI chat (30 credits a day)</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Homes, rooms and household members with per-member permissions</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>100% local device control</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Windows and Linux apps, Android test build</li>
             </ul>
             <a class="button button-secondary" href="#downloads">Start for free</a>
             <div class="plan-foot"><span class="status-dot"></span>Runs fully on your hardware</div>
@@ -5637,8 +5648,8 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             </div>
             <p class="plan-description">A much larger NEXUS AI allowance for your home: 2,000 credits every month and advanced NEXUS AI models.</p>
             <div class="plan-price-row">
-              <div class="price"><sup>₺</sup>499,99<span>/ month</span></div>
-              <span class="price-note">or ₺3,999.99/yr</span>
+              <div class="price"><sup>$</sup>11.99<span>/ month</span></div>
+              <span class="price-note">or $89.99 / year (about $7.50 a month)</span>
             </div>
             <div class="plan-console plan-console-premium" aria-label="Premium plan capacity">
               <div class="plan-console-head"><span>Monthly NEXUS AI allowance</span><strong>2,000 credits</strong></div>
@@ -5682,9 +5693,9 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             <span class="feature-label">Everything in NEXUS+, plus</span>
             <ul class="feature-list">
               <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Everything in NEXUS+</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Up to 6 family profiles</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Granular parental controls</li>
-              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Dedicated family dashboard</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>One subscription shared by up to 6 household members (coming soon)</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Shared NEXUS AI credits for the household (coming soon)</li>
+              <li><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>Per-member permissions: already free in the app</li>
             </ul>
             <span class="button button-secondary is-disabled" aria-disabled="true">Coming soon</span>
             <div class="plan-foot"><span class="status-dot"></span>Private profiles, one local core</div>
@@ -5713,7 +5724,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             </div>
             <h3>Windows</h3>
             <p>One installer for Intel/AMD and ARM PCs. Includes automatic updates.</p>
-            <span class="version">Version <span data-nexus-ver>1.0.11</span> · x64 + ARM64</span>
+            <span class="version">Version <span data-nexus-ver>1.0.12</span> · x64 + ARM64</span>
             <div class="platform-specs"><span>Local control</span><span>Auto-update</span><span>No hub required</span></div>
             <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe" rel="noopener">Download for Windows</a>
             <span class="download-note">First launch: if SmartScreen appears, choose “More info” → “Run anyway”.</span>
@@ -5730,7 +5741,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
             </div>
             <h3>Linux</h3>
             <p>A portable AppImage for any distribution, plus a .deb package.</p>
-            <span class="version">Version <span data-nexus-ver>1.0.11</span> · x64</span>
+            <span class="version">Version <span data-nexus-ver>1.0.12</span> · x64</span>
             <div class="platform-specs"><span>Local control</span><span>Auto-update</span><span>No hub required</span></div>
             <a class="button button-secondary download-button" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage" rel="noopener">Download AppImage</a>
             <a class="apk-link" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.deb" rel="noopener">Download .deb package</a>
