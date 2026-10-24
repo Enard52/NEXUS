@@ -1,49 +1,36 @@
-# NEXUS — Yapılacaklar (yalnızca sizin işleriniz)
+# NEXUS — Yapılacaklar
 
-Bitmiş her şey bu listeden çıkarıldı. Sırayla yapın: 1 ve 2 satışa çıkmadan önce şart.
+Yalnızca **henüz yapılmamış** işler. Son kontrol: 25 Ekim 2026 (webhook gizli anahtarı girilmemiş, SMTP doğrulanamadı).
 
-## 1. E-posta gönderimi (kayıt doğrulama + şifre sıfırlama gerçek kullanıcılara ulaşsın)
+## A. Sizin yapmanız gerekenler (hesap / gizli anahtar gerektirir)
 
-Hesap hazır: `nexus.smarthome.app@gmail.com`. Kalanlar:
+1. **Gmail → Supabase SMTP** (bu olmadan kayıt doğrulama ve şifre sıfırlama e-postaları kullanıcılara ulaşmaz)
+   - `nexus.smarthome.app@gmail.com` hesabında: 2 adımlı doğrulamayı açın → Güvenlik → **Uygulama şifreleri** → ad "NEXUS" → 16 haneli şifreyi kopyalayın.
+   - Aynı hesapta Kişisel bilgiler → **Ad**: `NEXUS Support`.
+   - Supabase → Authentication → **SMTP Settings** → Custom SMTP: host `smtp.gmail.com`, port `465`, kullanıcı = Gmail adresi, şifre = uygulama şifresi, gönderen e-posta = Gmail adresi, gönderen adı `NEXUS Support` → Save.
+   - Supabase → Authentication → Sign In / Providers → **Confirm email** açık olsun (ben okuyamadım, bakıp teyit edin).
+2. **Whop webhook gizli anahtarı** (bu olmadan ödeme olsa bile plan hesaba işlenmez; işlev şu an "503 secret yok" veriyor)
+   - Whop → Nexus-smarthome → Geliştirici → Web kancaları → "NEXUS Supabase" gizli anahtarı (`ws_...`) → kopyalayın.
+   - Supabase → Edge Functions → Secrets → `WHOP_WEBHOOK_SECRET` = kopyaladığınız anahtar.
+   - Whop'ta aynı webhook için "test olayı" gönderin; Edge Functions → whop-webhook → Logs'ta 200 görünmeli.
+3. **Whop ürün sayfası:** ₺499,99'un üstünde çizili "₺624,99 / %20 tasarruf" görünüyorsa plan ayarlarından kaldırın (gerçek indirim yok).
+4. **Canlı testler** (1 ve 2'den sonra), `https://nexus-web-jre.pages.dev`:
+   - Kayıt → gelen doğrulama e-postası → bağlantı → otomatik giriş.
+   - Şifremi Unuttum → e-posta → yeni şifre → giriş.
+   - Google ile giriş (yalnızca web).
+   - NEXUS+ → Ücretsiz Dene → hesabınızın e-postasıyla ödeme (3 gün denemede ücret alınmaz, iptal edebilirsiniz) → plan Plus/Faturalandırma'da görünmeli.
+   - Masaüstü ve telefon: aynı hesapla giriş, verilerin gelmesi.
+5. **Bing:** Webmaster → Sitemaps → `https://nexus-smarthome.pages.dev/sitemap.xml` tekrar gönderin (ilk deneme sunucu hatası verdi).
 
-1. Bu Gmail hesabında **2 adımlı doğrulamayı** açın (Google Hesabı → Güvenlik).
-2. Aynı yerden **Uygulama şifreleri** → ad "NEXUS" → 16 haneli şifreyi kopyalayın.
-3. Google Hesabı → Kişisel bilgiler → **Ad**: `NEXUS Support` yapın.
-4. Supabase → Authentication → **SMTP Settings** → Custom SMTP açın: host `smtp.gmail.com`, port `465`, kullanıcı adı = Gmail adresi, şifre = uygulama şifresi, gönderen e-posta = Gmail adresi, gönderen adı `NEXUS Support` → Save.
-5. Bana "SMTP girdim" yazın; doğrulama e-postasının geldiğini test ederim.
+## B. Karar bekleyenler (bana "yap" demeniz yeterli)
 
-Şifreyi bana yazmayın.
+- **Bot koruması:** şu an yok. E-posta doğrulaması bot kaydını zorlaştırır; yeterli değilse Cloudflare Turnstile (ücretsiz) eklenir. Telefon doğrulaması SMS servisi (ücretli) gerektirir, önermiyorum.
+- **Google giriş onay ekranını yeni hesaba taşımak:** destek e-postası şu an eski Google Cloud projesinde. Yeni projeyi `nexus.smarthome.app@gmail.com` altında açmak gerekiyor (Client Secret'ı Supabase'e siz girersiniz).
+- **Gerçek yapay zekâ:** "NEXUS AI" şu an çevrimdışı komut eşleştirici. Bulut yapay zekâ (çok sağlayıcılı yedekli, isteğe bağlı) eklenebilir; gizlilik metinleri güncellenmeli, "sınırsız" denmemeli.
 
-## 2. Whop ödeme bağlantısı (webhook gizli anahtarı)
+## C. İleride
 
-NEXUS+ planları Whop'ta hazır (Aylık ₺499,99 / 3 gün deneme, Yıllık ₺3.999,99 / 7 gün deneme). Ödeme olduğunda planın hesaba işlenmesi için webhook gizli anahtarını Supabase'e girmeniz gerekiyor:
-
-1. Whop → işletme **Nexus-smarthome** → **Geliştirici** → aşağıda "Web kancaları" → **NEXUS Supabase** satırındaki gizli anahtarı (`ws_...`) kopyalayın.
-2. Supabase → **Edge Functions** → **Secrets** (Manage secrets) → yeni sır: ad `WHOP_WEBHOOK_SECRET`, değer = kopyaladığınız anahtar → Save.
-3. Whop'ta aynı webhook için **Send test event / Test** gönderin; Supabase → Edge Functions → `whop-webhook` → Logs'ta 200 görünmeli. (Gizli anahtar girilmeden işlev 503 döner.)
-4. Whop → **Ürünler → NEXUS+**: ürün sayfasında ₺499,99'un üstünde çizili bir eski fiyat/"%20 tasarruf" görünüyorsa kaldırın (Plan ayarları'nda karşılaştırma/başlangıç fiyatı alanı). Gerçek indirim olmadığı için kalmamalı.
-5. **Gerçek ödeme testi:** uygulamada (web) hesabınızla girip NEXUS+ → Ücretsiz Dene → ödemeyi tamamlayın (aylık plan 3 gün deneme verir, ücret alınmadan önce iptal edebilirsiniz). Ödemede **hesabınızın e-postasını** kullanın. Birkaç saniye sonra Plus ve Faturalandırma sayfasında plan görünmeli; iptali Faturalandırma → Whop'a Git ile deneyin.
-
-Not: Whop bakiyesi USD gösteriyor; TL ödemeler Whop tarafından dönüştürülür. Komisyon ve ödeme çekme koşullarını Whop panelinde kontrol edin.
-
-## 3. Canlı test (parola/hesap gerektirdiği için sizin elinizle)
-
-Web: `https://nexus-web-jre.pages.dev`
-
-1. **Kayıt:** kendi e-postanızla kayıt olun → gelen doğrulama e-postasındaki bağlantıya tıklayın → otomatik giriş yapılmalı.
-2. **Şifremi Unuttum:** e-postanızı yazın → gelen bağlantıya tıklayın → yeni şifre belirleyin → yeni şifreyle girin.
-3. **Google ile giriş** (yalnızca web adresinde görünür).
-4. **Masaüstü ve telefon:** aynı e-postayla girin; profil, ayar ve cihazlarınızın geldiğini kontrol edin.
-
-Sorun görürseniz ekran görüntüsüyle bana yazın.
-
-## 4. Arama motorları (kalan küçük iş)
-
-- **Bing:** site eklendi ve doğrulandı. Site haritası gönderimi geçici sunucu hatası verdi. Yarın Bing Webmaster → site → **Sitemaps → Submit sitemap** → `https://nexus-smarthome.pages.dev/sitemap.xml`. Hata sürerse sorun değil: `robots.txt` zaten haritayı gösteriyor.
-
-## 5. İleride
-
-- Kendi alan adı (yıllık ~10 USD): arama sıralaması ve marka e-postası için. Alırsanız bana yazın, tüm adresleri ben değiştiririm.
-- Aile planı için ürün/plan tanımı (şimdilik sitede "Yakında").
-- `LICENSE`, gizlilik politikası ve kullanım koşulları için avukat incelemesi (ödeme alınmaya başlandığında iade/iptal şartları da eklenmeli).
-- Supabase Pro plana geçerseniz: Authentication → Passwords → "Leaked password protection".
+- Kendi alan adı (yıllık ~10 USD): arama sıralaması ve `destek@alanadı` için.
+- Aile planı ürünü (sitede "Yakında").
+- Avukat incelemesi: `LICENSE`, gizlilik, kullanım koşulları, iade/iptal şartları (satış başlayınca).
+- Supabase Pro'ya geçerseniz: "Leaked password protection".
