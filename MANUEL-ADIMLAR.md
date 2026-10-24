@@ -17,12 +17,24 @@ Son güncelleme: 24 Ekim 2026. Masaüstü sürümü: 1.0.5 (Windows, macOS, Linu
 3. **Site sürüm yazıları:** Otomatik. Yeni sürüm yayınlandığında elle bir şey yapmanız gerekmez.
 4. **Gizlilik politikası ve kullanım koşulları:** Site sayfalarında taslak var, ancak hukuki onay yok. Ücretsiz seçenek: şimdilik "taslak" ibaresi kalsın, ticari kullanımdan önce bir avukat incelemesi yapın (öğrenci kulüplerinde ücretsiz hukuk danışmanlığı olabilir).
 
-## 2. Bulut hesapları (ücretsiz)
+## 2. Hesaplar ve bulut eşitlemesi (ücretsiz, Supabase)
 
-1. Supabase'de ücretsiz bir proje açın (eu-region).
-2. `supabase/migrations/0001_nexus_devices.sql` dosyasını SQL editöründe çalıştırın.
-3. Projede `cloud-config.example.js` dosyasını `cloud-config.js` olarak kopyalayıp `url` ve `anonKey` değerlerini girin. Bu dosya `.gitignore`'da, anahtarlar repoya girmez.
-4. Giriş ekranından gerçek bir hesapla kayıt olup cihaz eşitlemesini deneyin.
+Bu adımlar olmadan site, uygulama ve program arasında hesap senkronu çalışmaz. Hesaplar cihaza özel kalır.
+
+1. **Supabase projesi:** https://supabase.com üzerinde ücretsiz bir proje açın (eu-region önerilir).
+2. **Tablo:** SQL editöründe `supabase/migrations/0001_nexus_devices.sql` dosyasını çalıştırın (cihaz tablosu ve güvenlik kuralları).
+3. **Anahtarlar:** Proje ayarlarından `Project URL` ve `anon public` anahtarını alın. **Gizli (service_role) anahtarı hiçbir yere yapıştırmayın.**
+4. **Uygulama yapılandırması:** `cloud-config.example.js` dosyasını `cloud-config.js` olarak kopyalayıp değerleri girin. Bu dosya `.gitignore`'da, repoya girmez.
+5. **E-posta doğrulama:** Test için kapatılabilir; canlıda açık kalmalı.
+6. **Gizlilik politikası:** Hesap verisi toplanmaya başlamadan önce site gizlilik politikasını hesap verisini kapsayacak şekilde güncelleyin ve bir avukat incelemesi yapın.
+7. **Plan verisi:** Plan takibi için ayrı bir `subscriptions` tablosu gerekir. Bu, ödeme sağlayıcısı bağlandığında eklenecek. Plan kaydını yalnızca sunucu (webhook) yazmalı; site veya uygulama bunu kendisi değiştirmemeli.
+
+**Senkron testi (sitede, uygulamada, programda aynı hesapla):**
+- Siteye kayıt olun, bir cihaz ekleyin.
+- Uygulamada aynı hesapla giriş yapın, cihazın göründüğünü kontrol edin.
+- Programda da aynı hesapla giriş yapın, listenin aynı olduğunu kontrol edin.
+- Uygulamada bir cihazı silin, sitede ve programda kaybolduğunu doğrulayın.
+- Çevrimdışı iken bir değişiklik yapıp internet gelince eşitlendiğini kontrol edin.
 
 ## 3. Masaüstü kod imzalama (en önemli maliyet kalemi)
 
