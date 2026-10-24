@@ -44,32 +44,32 @@ const BRAND_LOGOS = {
   philipshue: svgDataUri(LOCAL_LOGOS.philips),
   sonos: svgDataUri(LOCAL_LOGOS.sonos),
   ikea: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="IKEA"><rect width="24" height="24" rx="7" fill="#0058A3"/><circle cx="12" cy="12" r="8.3" fill="none" stroke="#FFDA1A" stroke-width="2"/><text x="12" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.3" font-weight="900" letter-spacing=".08em" fill="#FFDA1A">IKEA</text></svg>`,
+    '<svg fill="#0058A3" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>IKEA</title><path d="M0 7.2v9.6h24V7.2H0zm12.002 9.12C5.308 16.32.48 14.36.48 12s4.831-4.32 11.522-4.32c6.69 0 11.518 1.96 11.518 4.32s-4.824 4.32-11.518 4.32zm-.225-6.062h4.176v.964c-.103-.047-.203-.047-.306-.047h-1.758v.46h1.689v.732h-1.689v.457h1.758c.103 0 .203 0 .306-.05v.967h-4.176c.052-.101.052-.198.052-.299V10.56c0-.101 0-.198-.052-.302zm-7.076.302v2.881c0 .101 0 .198.052.299H2.4c.052-.101.052-.198.052-.299V10.56c0-.101 0-.198-.052-.299h2.353c-.052.101-.052.198-.052.299zm6.447 2.881c.076.107.158.208.255.299H8.805c0-.101-.1-.306-.21-.467-.11-.161-.705-1.044-.705-1.044v1.212c0 .101 0 .198.052.299H5.778c.052-.101.052-.198.052-.299V10.56c0-.101 0-.198-.052-.299h2.164c-.052.101-.052.198-.052.299v1.259s.691-.88.85-1.085c.12-.154.268-.373.268-.473h2.257c-.155.101-.327.282-.468.45l-.826.984s1.039 1.548 1.177 1.746zm10.546-3.005a.178.178 0 0 0-.175-.178h-.21v.551h.083v-.195h.12l.11.195h.093l-.12-.212a.184.184 0 0 0 .099-.161zm-.189.101h-.114v-.191h.124c.055 0 .093.047.093.101 0 .053-.048.093-.103.09zm-.021-.457h-.031a.444.444 0 0 0-.437.457c0 .007 0 .017-.003.023a.466.466 0 0 0 .482.447.464.464 0 0 0 .458-.47v-.017a.454.454 0 0 0-.469-.44zm0 .823a.372.372 0 0 1-.375-.366v-.027a.357.357 0 0 1 .375-.339c.206 0 .375.165.375.366s-.168.366-.375.366zm-.877-.339c-.038-.101-.093-.198-.065-.299h-3.017c.014.101-.024.198-.062.299l-1.07 2.881a.852.852 0 0 1-.162.299h1.785c-.014-.101.024-.198.058-.299.034-.101.072-.198.072-.198l.021-.054h1.304l.021.05c.048.118.083.198.083.198.041.101.079.198.069.299h2.263a.837.837 0 0 1-.169-.299 690.277 690.277 0 0 0-1.131-2.877zm-2.167 1.893c.155-.42.289-.772.299-.806.028-.074.048-.151.062-.228.017.077.041.154.069.228l.316.806h-.746z"/></svg>',
   ),
   zigbee: svgDataUri(LOCAL_LOGOS.zigbee),
   shelly: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Sh"><rect width="24" height="24" rx="7" fill="#2B7FD3"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Sh</text></svg>`,
+    '<svg fill="#4495D1" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Shelly</title><path d="M12 0C5.373 0 0 5.373 0 12a12 12 0 0 0 .033.88c1.07-.443 2.495-.679 4.322-.679h5.762c-.167.61-.548 1.087-1.142 1.436-.532.308-1.14.463-1.823.463h-.927c-.89 0-1.663.154-2.32.463-.859.403-1.286 1-1.286 1.789 0 .893.59 1.594 1.774 2.1a7.423 7.423 0 0 0 2.927.581c1.318 0 2.416-.29 3.297-.867 1.024-.664 1.535-1.616 1.535-2.857 0-.854-.325-2.08-.976-3.676-.65-1.597-.975-2.837-.975-3.723 0-2.79 2.305-4.233 6.916-4.324.641-.01 1.337-.005 1.916-.004.593 0 1.144.05 1.66.147A12 12 0 0 0 12 0zm4.758 5.691c-1.206 0-1.809.502-1.809 1.506 0 .514.356 1.665 1.067 3.451.71 1.787 1.064 3.186 1.064 4.198 0 2.166-1.202 3.791-3.607 4.875-1.794.797-3.892 1.197-6.297 1.197-1.268 0-2.442-.114-3.543-.316A12 12 0 0 0 12 24c6.627 0 12-5.373 12-12a12 12 0 0 0-.781-4.256 3.404 3.404 0 0 1-.832.77h-4.371l1.425-2.828a299.94 299.94 0 0 0-2.683.005Z"/></svg>',
   ),
   tasmota: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Ta"><rect width="24" height="24" rx="7" fill="#1FA3EC"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.6" font-weight="700" fill="#fff">Ta</text></svg>`,
+    '<svg fill="#1FA3EC" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Tasmota</title><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>',
   ),
   wled: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="WLED"><rect width="24" height="24" rx="7" fill="#F59E0B"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#111">WLED</text></svg>`,
+    '<svg viewBox="0 0 24 24" fill="#F59E0B" xmlns="http://www.w3.org/2000/svg"><title>WLED</title><path d="M3 5h2.5l3.5 11 3-9.5h2l3 9.5 3.5-11H23l-5 14h-2.2L13 8.8l-2.8 10.2H8L3 5z"/><circle cx="5.5" cy="4" r="1.5" fill="#EF4444"/><circle cx="12" cy="4" r="1.5" fill="#10B981"/><circle cx="18.5" cy="4" r="1.5" fill="#3B82F6"/></svg>',
   ),
   esphome: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="ESP"><rect width="24" height="24" rx="7" fill="#111827"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">ESP</text></svg>`,
+    '<svg fill="#18BCF2" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>ESPHome</title><path d="M11.999.311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>',
   ),
   kasa: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="kasa"><rect width="24" height="24" rx="7" fill="#00A79D"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">kasa</text></svg>`,
+    '<svg fill="#4ACBD6" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>TP-Link Kasa</title><path d="M12 0c-.5 0-1 .25-1.5.75L7.97 3.28l8.83 8.83c1 1 1.5 2 1.5 3V24h3.3c1.6 0 2.4-.8 2.4-2.4v-8.85c0-1-.5-2-1.5-3l-9-9C13 .25 12.5 0 12 0zM6.9 4.34L2.89 8.37 9.6 15.1c1 1 1.5 2 1.5 3V24h5.7v-8.89c-.03-.83-.6-1.46-1.06-1.94L6.91 4.34zm-5.08 5.1l-.32.31c-1 1-1.5 2-1.5 3v8.85C0 23.2.8 24 2.4 24h7.2v-5.9c-.03-.8-.56-1.42-1.06-1.95Z"/></svg>',
   ),
   yeelight: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Yee"><rect width="24" height="24" rx="7" fill="#2F3A4A"/><text x="12" y="15.4" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6.4" font-weight="700" fill="#fff">Yee</text></svg>`,
+    '<svg fill="#E31B23" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Yeelight</title><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.8 6.5l-2.8 4.2v4.8h-2v-4.8L8.2 8.5h2.4l1.4 2.5 1.4-2.5h2.4z"/></svg>',
   ),
   bose: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Bose"><rect width="24" height="24" rx="7" fill="#111827"/><path d="M5.8 15.2c1.9-2.6 5.6-2.6 7.5 0m-10-4.4c3.5-4.7 9.1-4.7 12.6 0m-14.9-1.7c4.5-6 11.7-6 16.2 0" fill="none" stroke="#F8FAFC" stroke-width="1.4" stroke-linecap="round"/><text x="12" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="800" fill="#F8FAFC">BOSE</text></svg>`,
+    '<svg fill="#111827" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Bose</title><path d="M5.8 15.2c1.9-2.6 5.6-2.6 7.5 0m-10-4.4c3.5-4.7 9.1-4.7 12.6 0m-14.9-1.7c4.5-6 11.7-6 16.2 0" fill="none" stroke="#F8FAFC" stroke-width="1.4" stroke-linecap="round"/><path d="M5 19h14v1.8H5z" fill="#F8FAFC"/></svg>',
   ),
   xiaomi: svgDataUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Xiaomi"><rect width="24" height="24" rx="7" fill="#FF6900"/><path d="M7 8.5h2.5l2.5 3.3 2.5-3.3H17v7h-2.1v-4.1l-2.4 3.2h-.1l-2.4-3.2v4.1H7z" fill="#fff"/><text x="12" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="4.6" font-weight="800" letter-spacing=".12em" fill="#fff">mi</text></svg>`,
+    '<svg fill="#FF6900" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Xiaomi</title><rect width="24" height="24" rx="6"/><path d="M7 8.5h2.5l2.5 3.3 2.5-3.3H17v7h-2.1v-4.1l-2.4 3.2h-.1l-2.4-3.2v4.1H7z" fill="#fff"/></svg>',
   ),
 } as const;
 
@@ -448,48 +448,48 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
                   <strong>Universal device fabric</strong>
                   <small>Discovered on your network · local</small>
                 </div>
-                <span class="protocol-live"><i></i> 6 online</span>
+                <span class="protocol-live"><i></i> Live · 6 online</span>
               </div>
 
               <div class="protocol-grid">
                 <div class="protocol-tile" style="--protocol-color:#f5b301">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="800" fill="currentColor">Hue</text></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.672 9.6c-2.043 0-3.505 1.386-3.682 3.416h-.664c-.247 0-.395.144-.395.384 0 .24.148.384.395.384h.661c.152 2.09 1.652 3.423 3.915 3.423.944 0 1.685-.144 2.332-.453.158-.075.337-.217.292-.471a.334.334 0 0 0-.15-.242c-.104-.065-.25-.072-.422-.02a7.93 7.93 0 0 0-.352.12c-.414.146-.771.273-1.599.273-1.75 0-2.908-1.023-2.952-2.605v-.025h5.444c.313 0 .492-.164.505-.463v-.058C23.994 9.865 21.452 9.6 20.672 9.6zm2.376 3.416h-5l.004-.035c.121-1.58 1.161-2.601 2.649-2.601 1.134 0 2.347.685 2.347 2.606zM9.542 10.221c0-.335-.195-.534-.52-.534s-.52.2-.52.534v2.795h1.04zm4.29 3.817c0 1.324-.948 2.361-2.16 2.361-1.433 0-2.13-.763-2.13-2.333v-.282h-1.04v.34c0 2.046.965 3.083 2.868 3.083 1.12 0 1.943-.486 2.443-1.445l.02-.036v.861c0 .334.193.534.519.534.325 0 .52-.2.52-.534v-2.803h-1.04zm.52-4.351c-.326 0-.52.2-.52.534v2.795h1.04v-2.795c0-.335-.195-.534-.52-.534zM3.645 9.6c-1.66 0-2.31 1.072-2.471 1.4l-.135.278V7.355c0-.347-.199-.562-.52-.562-.32 0-.519.215-.519.562v5.661h1.039v-.015c0-1.249.72-2.592 2.304-2.592 1.29 0 2.001.828 2.001 2.332v.275h1.04v-.246c0-2.044-.973-3.17-2.739-3.17zM0 16.558c0 .347.199.563.52.563.32 0 .519-.216.519-.563v-2.774H0zm5.344 0c0 .347.2.563.52.563s.52-.216.52-.563v-2.774h-1.04z"/></svg>
                   </span>
                   <span class="protocol-name"><strong>Philips Hue</strong><small>Local bridge</small></span>
-                  <span class="protocol-state protocol-live"><i></i>Live</span>
+                  <span class="protocol-state"></span>
                 </div>
                 <div class="protocol-tile" style="--protocol-color:#3b8fe0">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">Sh</text></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12a12 12 0 0 0 .033.88c1.07-.443 2.495-.679 4.322-.679h5.762c-.167.61-.548 1.087-1.142 1.436-.532.308-1.14.463-1.823.463h-.927c-.89 0-1.663.154-2.32.463-.859.403-1.286 1-1.286 1.789 0 .893.59 1.594 1.774 2.1a7.423 7.423 0 0 0 2.927.581c1.318 0 2.416-.29 3.297-.867 1.024-.664 1.535-1.616 1.535-2.857 0-.854-.325-2.08-.976-3.676-.65-1.597-.975-2.837-.975-3.723 0-2.79 2.305-4.233 6.916-4.324.641-.01 1.337-.005 1.916-.004.593 0 1.144.05 1.66.147A12 12 0 0 0 12 0zm4.758 5.691c-1.206 0-1.809.502-1.809 1.506 0 .514.356 1.665 1.067 3.451.71 1.787 1.064 3.186 1.064 4.198 0 2.166-1.202 3.791-3.607 4.875-1.794.797-3.892 1.197-6.297 1.197-1.268 0-2.442-.114-3.543-.316A12 12 0 0 0 12 24c6.627 0 12-5.373 12-12a12 12 0 0 0-.781-4.256 3.404 3.404 0 0 1-.832.77h-4.371l1.425-2.828a299.94 299.94 0 0 0-2.683.005Z"/></svg>
                   </span>
                   <span class="protocol-name"><strong>Shelly</strong><small>Gen1 · Plus · Pro</small></span>
                   <span class="protocol-state"></span>
                 </div>
                 <div class="protocol-tile" style="--protocol-color:#1fa3ec">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">Ta</text></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>
                   </span>
                   <span class="protocol-name"><strong>Tasmota</strong><small>Open firmware</small></span>
                   <span class="protocol-state"></span>
                 </div>
                 <div class="protocol-tile" style="--protocol-color:#f59e0b">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">W</text></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2.5l3.5 11 3-9.5h2l3 9.5 3.5-11H23l-5 14h-2.2L13 8.8l-2.8 10.2H8L3 5z"/><circle cx="5.5" cy="4" r="1.5"/><circle cx="12" cy="4" r="1.5"/><circle cx="18.5" cy="4" r="1.5"/></svg>
                   </span>
                   <span class="protocol-name"><strong>WLED</strong><small>LED strips</small></span>
                   <span class="protocol-state"></span>
                 </div>
                 <div class="protocol-tile" style="--protocol-color:#9ca3af">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">E</text></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.999.311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>
                   </span>
                   <span class="protocol-name"><strong>ESPHome</strong><small>DIY devices</small></span>
                   <span class="protocol-state"></span>
                 </div>
                 <div class="protocol-tile" style="--protocol-color:#00a79d">
                   <span class="protocol-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><text x="12" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="currentColor">K</text></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-.5 0-1 .25-1.5.75L7.97 3.28l8.83 8.83c1 1 1.5 2 1.5 3V24h3.3c1.6 0 2.4-.8 2.4-2.4v-8.85c0-1-.5-2-1.5-3l-9-9C13 .25 12.5 0 12 0zM6.9 4.34L2.89 8.37 9.6 15.1c1 1 1.5 2 1.5 3V24h5.7v-8.89c-.03-.83-.6-1.46-1.06-1.94L6.91 4.34zm-5.08 5.1l-.32.31c-1 1-1.5 2-1.5 3v8.85C0 23.2.8 24 2.4 24h7.2v-5.9c-.03-.8-.56-1.42-1.06-1.95Z"/></svg>
                   </span>
                   <span class="protocol-name"><strong>Kasa · Yeelight</strong><small>Desktop app</small></span>
                   <span class="protocol-state"></span>

@@ -3627,10 +3627,7 @@ const PREMIUM_CSS = `
       height: 19px;
       overflow: visible;
       fill: currentColor;
-      stroke: currentColor;
-      stroke-width: 1.7;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      stroke: none;
     }
     .protocol-mark svg path,
     .protocol-mark svg circle { vector-effect: non-scaling-stroke; }

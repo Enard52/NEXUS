@@ -85,6 +85,32 @@ export const LABEL_ALIASES: ReadonlyArray<readonly [string, string]> = [
 
 /** Raw needles (attributes / script strings) translated only for Turkish. */
 export const TR_RAW: ReadonlyArray<readonly [string, string]> = [
+  ["PRIVATE CORE", "ÖZEL ÇEKİRDEK"],
+  ["YOU SAID", "SÖYLEDİĞİNİZ"],
+  [">LOCAL<", ">YEREL<"],
+  [">PRIVATE<", ">ÖZEL<"],
+  ["ROUTINE / ARRIVAL", "RUTİN / EVE VARIŞ"],
+  ["<i></i> ACTIVE</b>", "<i></i> AKTİF</b>"],
+  ["<small>WHEN</small>", "<small>ZAMAN</small>"],
+  ["<small>TRIGGER</small>", "<small>TETİKLEYİCİ</small>"],
+  ["<small>ACTION</small>", "<small>EYLEM</small>"],
+  ["<b>ON</b>", "<b>AÇIK</b>"],
+  ["LOCAL EXECUTION TRACE", "YEREL ÇALIŞTIRMA İZİ"],
+  ["<i></i> LIVE</b>", "<i></i> CANLI</b>"],
+  ["<small>P95 RESPONSE</small>", "<small>P95 YANIT</small>"],
+  ["<small>VOICE</small>", "<small>SES</small>"],
+  ["<small>DEVICES</small>", "<small>CİHAZLAR</small>"],
+  ["LAST 30 REQUESTS", "SON 30 İSTEK"],
+  ["Live · 6 online", "Canlı · 6 çevrimiçi"],
+  ["Discovered on your network · local", "Ağınızda keşfedildi · yerel"],
+  ["Local bridge", "Yerel köprü"],
+  ["Open firmware", "Açık kaynak bellenim"],
+  ["LED strips", "LED şeritler"],
+  ["DIY devices", "Kendin yap cihazlar"],
+  ["Desktop app", "Masaüstü uygulaması"],
+  ["Bridge · link button", "Köprü · bağlantı düğmesi"],
+  ["Connect the Wi-Fi devices you already own, without a paid hub.", "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın."],
+  ["Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.", "Yerel ağınız üzerinden doğrudan eşleşir — ücretli hub, bulut hesabı veya abonelik yok. Matter, Tapo ve Tuya yol haritasında."],
   ["“Set the house for movie night.”", "“Evi film gecesine hazırla.”"],
   ["“Make downstairs comfortable.”", "“Alt katı rahatlat.”"],
   ["“Lock up and switch everything off.”", "“Kilitle ve her şeyi kapat.”"],
@@ -101,6 +127,15 @@ export const TR_RAW: ReadonlyArray<readonly [string, string]> = [
 
 /** Full text-node needles (wrapped in `>` … `<`) translated only for Turkish. */
 export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
+  ["Live · 6 online", "Canlı · 6 çevrimiçi"],
+  ["Discovered on your network · local", "Ağınızda keşfedildi · yerel"],
+  ["Local bridge", "Yerel köprü"],
+  ["Open firmware", "Açık kaynak bellenim"],
+  ["LED strips", "LED şeritler"],
+  ["DIY devices", "Kendin yap cihazlar"],
+  ["Desktop app", "Masaüstü uygulaması"],
+  ["Bridge · link button", "Köprü · bağlantı düğmesi"],
+  ["Connect the Wi-Fi devices you already own, without a paid hub.", "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın."],
   // Header / nav
   ["Open account", "Hesap aç"],
   ["Download NEXUS", "NEXUS'u indir"],
