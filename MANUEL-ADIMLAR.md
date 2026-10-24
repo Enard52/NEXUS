@@ -24,7 +24,6 @@ Yalnızca **henüz yapılmamış** işler. Son kontrol: 25 Ekim 2026 (webhook gi
 
 ## B. Karar bekleyenler (bana "yap" demeniz yeterli)
 
-- **Bot koruması:** şu an yok. E-posta doğrulaması bot kaydını zorlaştırır; yeterli değilse Cloudflare Turnstile (ücretsiz) eklenir. Telefon doğrulaması SMS servisi (ücretli) gerektirir, önermiyorum.
 - **Google giriş onay ekranını yeni hesaba taşımak:** destek e-postası şu an eski Google Cloud projesinde. Yeni projeyi `nexus.smarthome.app@gmail.com` altında açmak gerekiyor (Client Secret'ı Supabase'e siz girersiniz).
 - **Gerçek yapay zekâ:** "NEXUS AI" şu an çevrimdışı komut eşleştirici. Bulut yapay zekâ (çok sağlayıcılı yedekli, isteğe bağlı) eklenebilir; gizlilik metinleri güncellenmeli, "sınırsız" denmemeli.
 
