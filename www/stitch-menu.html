@@ -125,13 +125,10 @@
 <script data-purpose="real-user-data">
   // Gerçek AI puan sayacı: nexusAiPoints {date, used} — gün değişince 30/30'a döner
   (function () {
-    var LIMIT = 30;
-    var raw = null;
-    try { raw = JSON.parse(nexusGetItem('nexusAiPoints') || 'null'); } catch (e) {}
-    var today = new Date().toISOString().slice(0, 10);
-    var used = (raw && raw.date === today) ? raw.used : 0;
-    var left = Math.max(0, LIMIT - used);
-    document.getElementById('points-label').textContent = 'Günlük sıfırlama ' + left + '/' + LIMIT;
+    var P = window.nexusPoints;
+    var LIMIT = P.limit();
+    var left = P.left();
+    document.getElementById('points-label').textContent = P.resetNote() + ' ' + left + '/' + LIMIT;
     document.getElementById('points-bar').style.width = Math.round((left / LIMIT) * 100) + '%';
   })();
 

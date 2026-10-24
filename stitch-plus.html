@@ -182,9 +182,10 @@
 <div class="flex justify-between text-[15px]"><span class="text-slate-500 dark:text-slate-300">Ücretsiz deneme</span><span class="font-bold" id="co-trial">7 gün</span></div>
 <div class="flex justify-between text-[15px]"><span class="text-slate-500 dark:text-slate-300">Deneme sonrası</span><span class="font-bold" id="co-price">₺3999,99/yıl</span></div>
 <div class="flex justify-between text-[15px]"><span class="text-slate-500 dark:text-slate-300">İlk ödeme tarihi</span><span class="font-bold" id="co-date">-</span></div>
+<div class="flex justify-between text-[15px] gap-3"><span class="text-slate-500 dark:text-slate-300">Hesap</span><span class="font-bold truncate" id="co-email">-</span></div>
 </div>
-<p class="text-xs text-slate-400 mb-4">Deneme süresi bitmeden iptal edersen ücret alınmaz. Aboneliğini Faturalandırma sayfasından istediğin an iptal edebilirsin.</p>
-<button class="nexus-cta w-full text-white font-bold py-4 rounded-xl active:scale-[0.98] transition-transform mb-2" onclick="confirmCheckout()">Yakında</button>
+<p class="text-xs text-slate-400 mb-4">Ödeme sayfasında <b>yukarıdaki hesap e-postasını</b> kullan; abonelik bu e-postayla eşleşir. Deneme süresi bitmeden iptal edersen ücret alınmaz. Aboneliğini Faturalandırma sayfasından istediğin an yönetebilirsin.</p>
+<button class="nexus-cta w-full text-white font-bold py-4 rounded-xl active:scale-[0.98] transition-transform mb-2" onclick="confirmCheckout()">Ödemeye Geç</button>
 <button class="w-full py-3 font-semibold text-slate-500 dark:text-slate-300" onclick="closeCheckout()">Vazgeç</button>
 </div>
 </div>
@@ -206,57 +207,84 @@
     document.getElementById('plan-monthly').classList.toggle('ring-2', plan==='Aylık');
     document.getElementById('plan-monthly').classList.toggle('ring-nexus-purple', plan==='Aylık');
     document.getElementById('plan-monthly').classList.toggle('border-gray-100', plan!=='Aylık');
-    if (!nexusGetItem('nexusPlusPlan')) {
-      // NEXUS+ henüz satışta değil (mağaza ödemesi bağlanınca açılacak); tüm temel özellikler ücretsiz.
-      document.getElementById('cta-btn').textContent = 'Yakında';
-    }
+    if (!nexusGetItem('nexusPlusPlan')) document.getElementById('cta-btn').textContent = 'Ücretsiz Dene';
   }
 
-  // CTA: abonelik yoksa onay ekranını açar, varsa yönetime götürür
+  function toast(text) {
+    var box = document.createElement('div');
+    box.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-[120] rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center max-w-[90vw]';
+    box.textContent = text;
+    document.body.appendChild(box);
+    setTimeout(function () { box.remove(); }, 3200);
+  }
+
+  // CTA: abonelik varsa yönetime, yoksa onay ekranına götürür
   function ctaAction() {
     if (nexusGetItem('nexusPlusPlan')) {
       window.location.href = 'stitch-billing.html';
       return;
     }
-    if (typeof nexusInfo === 'function') {
-      nexusInfo('NEXUS+ yakında', 'NEXUS+ henüz satışta değil. Cihaz ekleme, kontrol panelleri, senaryolar ve NEXUS AI şu an tamamen ücretsiz; abonelik açıldığında buradan haber vereceğiz.');
-    }
+    openCheckout();
   }
 
+  // Satın alma, bulut hesabına bağlı olmalı: abonelik hesabın e-postasıyla eşleşir ve her cihazda geçerli olur.
   function openCheckout() {
-    const trialDays = selectedPlan === 'Yıllık' ? 7 : 3;
-    const firstCharge = new Date();
-    firstCharge.setDate(firstCharge.getDate() + trialDays);
-    document.getElementById('co-plan').textContent = 'NEXUS+ ' + selectedPlan;
-    document.getElementById('co-trial').textContent = trialDays + ' gün';
-    document.getElementById('co-price').textContent = selectedPlan === 'Yıllık' ? '₺3999,99/yıl' : '₺499,99/ay';
-    document.getElementById('co-date').textContent = firstCharge.toLocaleDateString((window.nexusLocale || 'tr-TR'), { year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById('checkout-sheet').classList.remove('hidden');
+    var cloud = window.nexusCloud;
+    if (!cloud || !cloud.enabled()) {
+      toast('Abonelik için bulut hesabı gerekir. Bu sürümde bulut kapalı.');
+      return;
+    }
+    cloud.session().then(function (s) {
+      if (!s || !s.email) {
+        toast('Abonelik için önce e-posta hesabınla giriş yapmalısın.');
+        return;
+      }
+      const trialDays = selectedPlan === 'Yıllık' ? 7 : 3;
+      const firstCharge = new Date();
+      firstCharge.setDate(firstCharge.getDate() + trialDays);
+      document.getElementById('co-plan').textContent = 'NEXUS+ ' + selectedPlan;
+      document.getElementById('co-trial').textContent = trialDays + ' gün';
+      document.getElementById('co-price').textContent = selectedPlan === 'Yıllık' ? '₺3999,99/yıl' : '₺499,99/ay';
+      document.getElementById('co-date').textContent = firstCharge.toLocaleDateString((window.nexusLocale || 'tr-TR'), { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('co-email').textContent = s.email;
+      document.getElementById('checkout-sheet').dataset.email = s.email;
+      document.getElementById('checkout-sheet').classList.remove('hidden');
+    });
   }
 
   function closeCheckout() {
     document.getElementById('checkout-sheet').classList.add('hidden');
   }
 
-  // Ödeme sağlayıcısı bağlanana kadar abonelik başlatılmaz: sahte plan kaydı yazılmaz.
+  // Güvenli ödeme sayfası (Whop) tarayıcıda açılır; kart bilgisi uygulamaya hiç girmez.
   function confirmCheckout() {
+    var email = document.getElementById('checkout-sheet').dataset.email || '';
+    var url = window.nexusCloud.checkoutUrl(selectedPlan, email);
     closeCheckout();
-    var box = document.createElement('div');
-    box.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-[120] rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center';
-    box.textContent = 'NEXUS+ abonelikleri yakında açılacak.';
-    document.body.appendChild(box);
-    setTimeout(function () { box.remove(); }, 2400);
+    if (!url) { toast('Ödeme bağlantısı bulunamadı.'); return; }
+    window.open(url, '_blank', 'noopener');
+    toast('Ödemeyi tamamlayınca bu sayfaya dön; aboneliğin otomatik görünür.');
   }
 
-  // Aktif abonelik görünümü (sayfa açılışı + onay sonrası ortak)
+  // Aktif abonelik görünümü (sayfa açılışı + ödeme sonrası ortak)
   function applyActiveState() {
     const plan = nexusGetItem('nexusPlusPlan');
-    if (!plan) return;
+    if (!plan) { document.getElementById('cta-btn').textContent = 'Ücretsiz Dene'; document.getElementById('plan-badge').classList.add('hidden'); return; }
     document.getElementById('cta-btn').textContent = 'Aboneliği Yönet';
     document.getElementById('plan-badge').textContent = 'NEXUS+ ' + plan;
     document.getElementById('plan-badge').classList.remove('hidden');
   }
   applyActiveState();
+
+  // Ödeme başka sekmede/tarayıcıda yapıldığı için sayfaya dönülünce sunucudan durum yenilenir.
+  function refreshPlan() {
+    if (window.nexusCloud && window.nexusCloud.enabled()) {
+      window.nexusCloud.pullEntitlement().then(applyActiveState).catch(function () {});
+    }
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') refreshPlan(); });
+  window.addEventListener('focus', refreshPlan);
+  refreshPlan();
 </script>
 <!-- Footer Legal Text -->
 <div class="text-center space-y-1 text-gray-500 dark:text-gray-300 dark:text-gray-300">

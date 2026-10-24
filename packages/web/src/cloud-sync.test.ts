@@ -534,6 +534,100 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
   });
 });
 
+describe("NEXUS+ aboneliği (Whop webhook'u → nexus_entitlements)", () => {
+  function withEntitlement(rows: unknown[]) {
+    return (call: Call) => {
+      const u = new URL(call.url);
+      if (u.pathname === "/auth/v1/token") {
+        return {
+          access_token: "tok",
+          refresh_token: "ref",
+          expires_in: 3600,
+          user: { id: "u1", email: "a@b.co" },
+        };
+      }
+      if (u.pathname === "/rest/v1/nexus_entitlements") return rows;
+      return {};
+    };
+  }
+
+  it("aktif abonelik yerel plan anahtarlarına yansır (plan, dönem sonu, iptal bilgisi)", async () => {
+    const { cloud, storage } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: withEntitlement([
+        {
+          plan: "Yıllık",
+          status: "active",
+          cancel_at_period_end: true,
+          period_end: "2027-10-31T00:00:00.000Z",
+        },
+      ]),
+    });
+    await cloud.signIn("a@b.co", "parola-123");
+    const r = await cloud.pullEntitlement();
+    expect(r).toMatchObject({ active: true, plan: "Yıllık", cancelAtPeriodEnd: true });
+    expect(storage.getItem("a@b.co_nexusPlusPlan")).toBe("Yıllık");
+    expect(storage.getItem("a@b.co_nexusPlusEnd")).toBe("2027-10-31T00:00:00.000Z");
+    expect(storage.getItem("a@b.co_nexusPlusCancel")).toBe("1");
+  });
+
+  it("abonelik yoksa ya da bittiyse yerel plan anahtarları temizlenir", async () => {
+    const { cloud, storage } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: withEntitlement([]),
+    });
+    storage.setItem("a@b.co_nexusPlusPlan", "Aylık");
+    storage.setItem("a@b.co_nexusPlusEnd", "2027-01-01T00:00:00.000Z");
+    await cloud.signIn("a@b.co", "parola-123");
+    const r = await cloud.pullEntitlement();
+    expect(r.active).toBe(false);
+    expect(storage.getItem("a@b.co_nexusPlusPlan")).toBe(null);
+    expect(storage.getItem("a@b.co_nexusPlusEnd")).toBe(null);
+  });
+
+  it("abonelik anahtarları hesap durumu tablosuna asla gönderilmez (yalnızca sunucu yazar)", async () => {
+    const backend = fakeBackend();
+    const { cloud } = await freshDevice(backend, {
+      nexusPlusPlan: "Yıllık",
+      nexusUserName: "Ayşe",
+    });
+    await cloud.syncState();
+    expect([...backend.db.keys()]).toEqual(["nexusUserName"]);
+  });
+
+  it("ödeme bağlantıları plana göre doğru Whop planına gider ve e-postayı taşır", () => {
+    const { cloud } = load({ config: CONFIG });
+    expect(cloud.checkoutUrl("Yıllık", "a@b.co")).toBe(
+      "https://whop.com/checkout/plan_UEXO1F5mjIgWB?email=a%40b.co",
+    );
+    expect(cloud.checkoutUrl("Aylık", "")).toBe("https://whop.com/checkout/plan_fAMBHwTVE0hR2");
+    expect(cloud.checkoutUrl("Bilinmeyen", "a@b.co")).toBe("");
+  });
+
+  it("webhook işlevi yalnızca bu iki Whop planını tanır ve imza doğrular", () => {
+    const src = readFileSync(
+      join(REPO_ROOT, "supabase", "functions", "whop-webhook", "index.ts"),
+      "utf8",
+    );
+    expect(src).toContain("plan_fAMBHwTVE0hR2");
+    expect(src).toContain("plan_UEXO1F5mjIgWB");
+    expect(src).toContain("invalid signature");
+    expect(src).toContain("WHOP_WEBHOOK_SECRET");
+  });
+
+  it("tablo: RLS açık, istemci için yazma politikası yok (yalnızca select)", () => {
+    const sql = readFileSync(
+      join(REPO_ROOT, "supabase", "migrations", "0003_nexus_entitlements.sql"),
+      "utf8",
+    );
+    expect(sql).toContain("enable row level security");
+    expect(sql).toContain("nexus_entitlements_select_own");
+    expect(sql).not.toMatch(/for (insert|update|delete)/);
+  });
+});
+
 describe("şema dosyası", () => {
   it("hesap durumu tablosu: RLS açık, kendi satırı politikaları ve boyut sınırı var", () => {
     const sql = readFileSync(

@@ -28,6 +28,35 @@
   window.nexusTr = function (s) { return s; }; // İngilizcede i18n.js bunu çeviriciyle değiştirir
   window.nexusSrcText = function (el) { return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : ''; };
   window.NEXUS_SUPPORT_EMAIL = 'nexus.smarthome.app@gmail.com'; // geri bildirim e-postalarının gideceği adres
+  // NEXUS AI puanı: ücretsizde günde 30, NEXUS+ aboneliğinde ayda 2000 (abonelik sunucudan gelir).
+  window.nexusPoints = (function () {
+    var KEY = 'nexusAiPoints';
+    function plus() { try { return !!window.nexusGetItem('nexusPlusPlan'); } catch (e) { return false; } }
+    function limit() { return plus() ? 2000 : 30; }
+    function stamp() {
+      var iso = new Date().toISOString();
+      return plus() ? iso.slice(0, 7) : iso.slice(0, 10); // abonelikte ay, değilse gün
+    }
+    function read() {
+      var raw = null;
+      try { raw = JSON.parse(window.nexusGetItem(KEY) || 'null'); } catch (e) {}
+      if (!raw || raw.date !== stamp()) raw = { date: stamp(), used: 0 };
+      return raw;
+    }
+    return {
+      limit: limit,
+      isPlus: plus,
+      used: function () { return read().used; },
+      left: function () { return Math.max(0, limit() - read().used); },
+      use: function () {
+        var p = read();
+        p.used = Math.min(limit(), p.used + 1);
+        try { window.nexusSetItem(KEY, JSON.stringify(p)); } catch (e) {}
+      },
+      resetNote: function () { return plus() ? window.nexusT('Aylık sıfırlama', 'Monthly reset') : window.nexusT('Günlük sıfırlama', 'Daily reset'); },
+      exhaustedText: function () { return plus() ? window.nexusT('Aylık hakkın doldu, ay başında sıfırlanır', 'Monthly allowance used up; resets next month') : window.nexusT('Günlük hakkın doldu, yarın sıfırlanır', 'Daily allowance used up; resets tomorrow'); },
+    };
+  })();
   window.nexusSetLanguage = function (next) {
     if (next !== 'tr' && next !== 'en') return;
     try { localStorage.setItem(KEY, next); } catch (e) {}

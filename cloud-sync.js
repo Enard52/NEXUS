@@ -431,6 +431,11 @@
     nexusLastRecoveryValue: 1,
     nexusLastRecoveryMethod: 1,
     nexusPairedDevices: 1,
+    // Abonelik durumu yalnızca sunucudan (Whop webhook'u) gelir; istemci durumu hesaba geri yazılmaz.
+    nexusPlusPlan: 1,
+    nexusPlusSince: 1,
+    nexusPlusEnd: 1,
+    nexusPlusCancel: 1,
   };
 
   function currentUserKey() {
@@ -582,11 +587,51 @@
     return stateRunning;
   }
 
-  // Cihaz listesi + hesap durumu birlikte.
+  // --- NEXUS+ abonelik (Whop) --------------------------------------------------
+  // Satın alma Whop'ta yapılır; webhook, planı e-postaya bağlı olarak nexus_entitlements'a yazar.
+  // Burada yalnızca okunur ve yerel görünüm anahtarlarına yansıtılır.
+  var CHECKOUT = {
+    "Yıllık": "https://whop.com/checkout/plan_UEXO1F5mjIgWB",
+    "Aylık": "https://whop.com/checkout/plan_fAMBHwTVE0hR2",
+  };
+  var MANAGE_URL = "https://whop.com/@me/settings/memberships/";
+
+  function checkoutUrl(plan, email) {
+    var base = CHECKOUT[plan];
+    if (!base) return "";
+    return email ? base + "?email=" + encodeURIComponent(email) : base;
+  }
+
+  function applyEntitlement(row) {
+    var set = function (k, v) { if (window.nexusSetItem) window.nexusSetItem(k, v); };
+    var del = function (k) { if (window.nexusRemoveItem) window.nexusRemoveItem(k); else set(k, ""); };
+    if (row && row.status === "active" && (row.plan === "Aylık" || row.plan === "Yıllık")) {
+      set("nexusPlusPlan", row.plan);
+      if (row.period_end) set("nexusPlusEnd", row.period_end); else del("nexusPlusEnd");
+      if (row.cancel_at_period_end) set("nexusPlusCancel", "1"); else del("nexusPlusCancel");
+      return { active: true, plan: row.plan, periodEnd: row.period_end || null, cancelAtPeriodEnd: !!row.cancel_at_period_end };
+    }
+    del("nexusPlusPlan"); del("nexusPlusEnd"); del("nexusPlusCancel");
+    return { active: false, plan: "none" };
+  }
+
+  function pullEntitlement() {
+    if (!enabled()) return Promise.resolve({ active: false, plan: "none", skipped: true });
+    return session().then(function (current) {
+      if (!current) return { active: false, plan: "none", skipped: true };
+      return api("/rest/v1/nexus_entitlements?select=plan,status,cancel_at_period_end,period_end&limit=1", {
+        headers: { Authorization: "Bearer " + current.accessToken },
+      }).then(function (rows) { return applyEntitlement(rows && rows[0]); });
+    });
+  }
+
+  // Cihaz listesi + hesap durumu + abonelik birlikte.
   function syncAll() {
     return syncNow().catch(function () { return { changed: false }; }).then(function (devices) {
       return syncState().then(function (state) {
-        return { devices: devices, state: state, changed: !!(devices && devices.changed) || state.pulled > 0 || state.removed > 0 };
+        return pullEntitlement().catch(function () { return null; }).then(function (plan) {
+          return { devices: devices, state: state, plan: plan, changed: !!(devices && devices.changed) || state.pulled > 0 || state.removed > 0 };
+        });
       });
     });
   }
@@ -690,6 +735,9 @@
     session: session,
     syncAll: syncAll,
     syncState: syncState,
+    pullEntitlement: pullEntitlement,
+    checkoutUrl: checkoutUrl,
+    manageUrl: function () { return MANAGE_URL; },
     syncNow: syncNow,
     pullDevices: pullDevices,
     pushDevices: pushDevices,

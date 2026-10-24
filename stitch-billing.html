@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="utf-8"/>
@@ -99,7 +99,7 @@
 <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </div>
-<span class="text-[17px] font-semibold text-red-500">Aboneliği İptal Et</span>
+<span class="text-[17px] font-semibold text-red-500">Aboneliği Yönet / İptal Et</span>
 </div>
 <svg class="h-6 w-6 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
 <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -121,9 +121,9 @@
 <div class="hidden fixed inset-0 bg-black/60 z-50 flex items-end" id="cancel-sheet" onclick="closeCancelConfirm()">
 <div class="bg-white dark:bg-slate-900 w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
 <div class="w-10 h-1 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-5"></div>
-<h2 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Abonelik iptal edilsin mi?</h2>
-<p class="text-slate-500 dark:text-slate-400 text-sm mb-5" id="cancel-note">Aboneliğin hemen sona erer ve bir sonraki ödeme alınmaz.</p>
-<button class="w-full bg-red-500 text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform mb-2" onclick="cancelSubscription()">Evet, İptal Et</button>
+<h2 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Aboneliği Whop'ta yönet</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-5" id="cancel-note">İptal ve ödeme yöntemi değişikliği güvenli ödeme sayfamız Whop üzerinden yapılır. İptal edersen mevcut dönemin sonuna kadar kullanmaya devam edersin ve bir sonraki ödeme alınmaz.</p>
+<button class="w-full bg-red-500 text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform mb-2" onclick="cancelSubscription()">Whop'a Git</button>
 <button class="w-full py-3 font-semibold text-slate-500 dark:text-slate-400" onclick="closeCancelConfirm()">Vazgeç</button>
 </div>
 </div>
@@ -132,8 +132,8 @@
 
 <script>
   // Dinamik Abonelik Yönetimi (gerçek veri: nexusPlusPlan + nexusPlusSince)
-  document.addEventListener("DOMContentLoaded", () => {
-    const plan = nexusGetItem("nexusPlusPlan"); // 'Yıllık' veya 'Aylık'
+  function renderBilling() {
+    const plan = nexusGetItem("nexusPlusPlan"); // 'Yıllık' veya 'Aylık' (sunucudan: Whop webhook'u)
     const title = document.getElementById("sub-title");
     const renewal = document.getElementById("sub-renewal");
     const price = document.getElementById("sub-price");
@@ -150,58 +150,53 @@
       since.classList.remove("hidden");
     }
 
-    // Yenileme tarihi satın Çalışma tarihinden hesaplanır (yoksa bugünden)
-    const base = (sinceDate && !isNaN(sinceDate.getTime())) ? new Date(sinceDate) : new Date();
-    const futureDate = new Date(base);
+    // Dönem sonu sunucudan gelir (Whop); yoksa plana göre tahmin edilmez, tarih gösterilmez.
+    const endIso = nexusGetItem("nexusPlusEnd");
+    const endDate = endIso ? new Date(endIso) : null;
+    const hasEnd = endDate && !isNaN(endDate.getTime());
+    const dateStr = hasEnd ? endDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options) : "-";
+    const cancelling = nexusGetItem("nexusPlusCancel") === "1";
 
-    if (plan === "Yıllık") {
-      futureDate.setFullYear(base.getFullYear() + 1);
-      const dateStr = futureDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options);
-
-      title.textContent = "NEXUS+ Yıllık";
-      price.textContent = "₺3.999,99";
-      renewal.textContent = "Sonraki Yenileme: " + dateStr;
+    if (plan === "Yıllık" || plan === "Aylık") {
+      title.textContent = "NEXUS+ " + plan;
+      price.textContent = plan === "Yıllık" ? "₺3.999,99" : "₺499,99";
+      renewal.textContent = cancelling
+        ? (hasEnd ? "İptal edildi — " + dateStr + " tarihine kadar geçerli" : "İptal edildi — dönem sonuna kadar geçerli")
+        : (hasEnd ? "Sonraki Yenileme: " + dateStr : "Aboneliğin aktif");
       dateFooter.textContent = dateStr;
-    } else if (plan === "Aylık") {
-      futureDate.setMonth(base.getMonth() + 1);
-      const dateStr = futureDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options);
-
-      title.textContent = "NEXUS+ Aylık";
-      price.textContent = "₺499,99";
-      renewal.textContent = "Sonraki Yenileme: " + dateStr;
-      dateFooter.textContent = dateStr;
+      document.querySelector('[data-purpose="payment-notice"]').style.display = (cancelling || !hasEnd) ? 'none' : '';
     } else {
       // Aktif abonelik yoksa
       title.textContent = "NEXUS+";
       price.textContent = "₺0,00";
-      renewal.textContent = "Aboneliğiniz yok — tüm özellikler şu an ücretsiz. NEXUS+ yakında.";
+      renewal.textContent = "Aboneliğin yok. NEXUS+ için Plus sayfasından ücretsiz deneyebilirsin.";
       dateFooter.textContent = "-";
       document.querySelector('[data-purpose="payment-notice"]').style.display = 'none';
     }
 
-    // İptal butonu yalnızca aktif abonelikte görünür
-    if (plan) document.getElementById("cancel-sub-btn").classList.remove("hidden");
+    // Yönetim butonu yalnızca aktif abonelikte görünür
+    document.getElementById("cancel-sub-btn").classList.toggle("hidden", !plan);
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    renderBilling();
+    // Güncel durumu sunucudan al (başka cihazdan veya Whop'tan yapılan değişiklikler).
+    if (window.nexusCloud && window.nexusCloud.enabled()) {
+      window.nexusCloud.pullEntitlement().then(renderBilling).catch(() => {});
+    }
   });
 
-  /* ---------- Gerçek abonelik iptali ---------- */
+  /* ---------- Abonelik yönetimi / iptal (Whop) ---------- */
   function openCancelConfirm() {
     document.getElementById("cancel-sheet").classList.remove("hidden");
   }
   function closeCancelConfirm() {
     document.getElementById("cancel-sheet").classList.add("hidden");
   }
+  // İptal ve ödeme yöntemi Whop hesabında yapılır; iptal sonrası durum buraya otomatik yansır.
   function cancelSubscription() {
-    const plan = nexusGetItem("nexusPlusPlan");
-    nexusRemoveItem("nexusPlusPlan");
-    nexusRemoveItem("nexusPlusSince");
-    // Olay akışına kaydet (bildirim + günlük)
-    try {
-      var evs = JSON.parse(nexusGetItem("nexusEvents") || "[]");
-      if (!Array.isArray(evs)) evs = [];
-      evs.push({ id: "e" + Date.now(), type: "plan", title: "NEXUS+ aboneliği iptal edildi", detail: (plan || "") + " plan sonlandırıldı.", ts: Date.now() });
-      nexusSetItem("nexusEvents", JSON.stringify(evs));
-    } catch (e) {}
-    location.reload();
+    closeCancelConfirm();
+    const url = (window.nexusCloud && window.nexusCloud.manageUrl && window.nexusCloud.manageUrl()) || "https://whop.com/@me/settings/memberships/";
+    window.open(url, "_blank", "noopener");
   }
 </script>
 </body>

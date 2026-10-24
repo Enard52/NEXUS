@@ -231,7 +231,6 @@
   /* ---------- Gerçek sohbet geçmişi + günlük AI puan sayacı ---------- */
   var CHAT_KEY = 'nexusChatHistory';
   var POINTS_KEY = 'nexusAiPoints';
-  var DAILY_LIMIT = 30;
   var currentChatId = null;
 
   function loadChats() {
@@ -254,20 +253,9 @@
     saveChats(list);
   }
 
-  /* Günlük puan: tarih değişince sıfırlanır */
-  function readPoints() {
-    var raw = null;
-    try { raw = JSON.parse(nexusGetItem(POINTS_KEY) || 'null'); } catch (e) {}
-    var today = new Date().toISOString().slice(0, 10);
-    if (!raw || raw.date !== today) raw = { date: today, used: 0 };
-    return raw;
-  }
-  function pointsLeft() { return Math.max(0, DAILY_LIMIT - readPoints().used); }
-  function usePoint() {
-    var p = readPoints();
-    p.used = Math.min(DAILY_LIMIT, p.used + 1);
-    try { nexusSetItem(POINTS_KEY, JSON.stringify(p)); } catch (e) {}
-  }
+  /* Puan: ücretsizde günlük 30, NEXUS+ aboneliğinde aylık 2000 (theme.js nexusPoints) */
+  function pointsLeft() { return window.nexusPoints.left(); }
+  function usePoint() { window.nexusPoints.use(); }
   function updateInputLock() {
     var input = document.getElementById('chat-input');
     var send = document.getElementById('chat-send');
@@ -275,7 +263,7 @@
     input.disabled = locked;
     send.disabled = locked;
     if (locked) {
-      input.placeholder = 'Günlük hakkın doldu, yarın sıfırlanır';
+      input.placeholder = window.nexusPoints.exhaustedText();
       send.classList.add('opacity-40');
     }
   }
