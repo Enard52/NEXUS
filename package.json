@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "nexus-ai",
   "version": "0.0.0",
   "private": true,
@@ -31,6 +31,7 @@
     "copy:leaflet": "node scripts/copy-leaflet.mjs",
     "build:assets": "npm run build:tailwind && npm run copy:fonts && npm run copy:lucide && npm run copy:leaflet",
     "sync:www": "node scripts/sync-www.mjs",
+    "site:seo": "node scripts/site-seo.cjs www/public && node scripts/site-cards.cjs www/public",
     "build:full": "npm run build:assets && npm run sync:www"
   },
   "devDependencies": {

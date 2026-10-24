@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /tr/login
+Disallow: /light
+Disallow: /tr/light
 
-Sitemap: https://nexus-ai-app.pages.dev/sitemap.xml
+Sitemap: https://nexus-smarthome.pages.dev/sitemap.xml

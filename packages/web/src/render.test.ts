@@ -161,7 +161,7 @@ describe("@nexus/web renderer", () => {
     expect(html).toContain('<link rel="apple-touch-icon" href="icon.svg" />');
     // og:image points at a real, deployable raster asset (not a dangling ref).
     expect(html).toContain(
-      'property="og:image" content="https://nexus-ai-app.pages.dev/og-cover.png"',
+      'property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"',
     );
     // Accessibility: keyboard users can skip straight to the content.
     expect(html).toContain('<a class="skip" href="#main">Skip to content</a>');

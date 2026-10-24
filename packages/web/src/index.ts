@@ -66,7 +66,7 @@ export * from "./render.js";
 export * from "./seo.js";
 
 /** Canonical origin for the marketing/app site (SEO canonical + sitemap base). */
-export const SITE_URL = "https://nexus-ai-app.pages.dev/";
+export const SITE_URL = "https://nexus-smarthome.pages.dev/";
 
 const deviceManager = new DeviceManager();
 deviceManager.registerConnector(
@@ -155,8 +155,7 @@ export function demoSeo(themeColor: string): SeoConfig {
       "routines",
     ],
     themeColor,
-    robots: "index,follow",
-    twitterSite: "@nexusai",
+    robots: "index,follow",
   };
 }
 

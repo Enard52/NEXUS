@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
+<script>
+  /* GitHub Pages adresini Cloudflare'e yonlendirir; Cloudflare'de calismaz. */
+  if (location.hostname === 'enard52.github.io') {
+    location.replace('https://nexus-smarthome.pages.dev' + location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '') + location.search + location.hash);
+  }
+</script>
 <script>(function(){try{var L=location,p=L.pathname,tr=/^\/tr(\/|$)/.test(p);
 var q=new URLSearchParams(L.search).get("lang"),s=null;try{s=localStorage.getItem("nx-lang")}catch(e){}
 if(q==="tr"||q==="en"){s=q;try{localStorage.setItem("nx-lang",q)}catch(e){}}
@@ -15,6 +21,31 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Privacy Policy — NEXUS</title>
+  <meta name="description" content="How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <link rel="canonical" href="https://nexus-smarthome.pages.dev/privacy" />
+  <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/privacy" />
+  <link rel="alternate" hreflang="tr" href="https://nexus-smarthome.pages.dev/tr/privacy" />
+  <link rel="alternate" hreflang="x-default" href="https://nexus-smarthome.pages.dev/privacy" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NEXUS" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="tr_TR" />
+  <meta property="og:title" content="Privacy Policy — NEXUS" />
+  <meta property="og:description" content="How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data." />
+  <meta property="og:url" content="https://nexus-smarthome.pages.dev/privacy" />
+  <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="NEXUS smart home app" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Privacy Policy — NEXUS" />
+  <meta name="twitter:description" content="How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data." />
+  <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22nxlogo%22%20x1%3D%223%22%20y1%3D%222%22%20x2%3D%2229%22%20y2%3D%2230%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%236f9bff%22%2F%3E%3Cstop%20offset%3D%220.55%22%20stop-color%3D%22%235b8dff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%238b7bff%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22nxsheen%22%20x1%3D%2216%22%20y1%3D%221%22%20x2%3D%2216%22%20y2%3D%2217%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220.30%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2230%22%20height%3D%2230%22%20rx%3D%229%22%20fill%3D%22url(%23nxlogo)%22%2F%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2230%22%20height%3D%2230%22%20rx%3D%229%22%20fill%3D%22url(%23nxsheen)%22%2F%3E%3Crect%20x%3D%221.5%22%20y%3D%221.5%22%20width%3D%2229%22%20height%3D%2229%22%20rx%3D%228.5%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.22%22%2F%3E%3Cpath%20d%3D%22M10.5%2022.5V10.5L21.5%2022.5V10.5%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E" />
 <meta name="theme-color" content="#09090b" />
 <style>@font-face { font-family: 'Space Grotesk'; font-style: normal; font-display: swap; font-weight: 300; src: url('/fonts/space-grotesk-latin-ext-300-normal.woff2') format('woff2'); unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB; }
@@ -5630,6 +5661,12 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
   </div>
 
   <header class="site-header">
+<script>
+  /* GitHub Pages adresini Cloudflare'e yonlendirir; Cloudflare'de calismaz. */
+  if (location.hostname === 'enard52.github.io') {
+    location.replace('https://nexus-smarthome.pages.dev' + location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '') + location.search + location.hash);
+  }
+</script>
     <div class="container">
       <div class="nav-shell" id="nav-shell">
         <a class="brand" href="/" aria-label="NEXUS home">
@@ -5705,7 +5742,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 <h3>Changes to Privacy Policy</h3>
 <p>We may update this Privacy Policy periodically to reflect changes in our practices or relevant laws. We will notify you of any significant updates via the NEXUS application interface.</p>
 <h3>Contact Us</h3>
-<p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our privacy team at <a href="mailto:privacy@nexus-ai.app">privacy@nexus-ai.app</a>.</p>
+<p>If you have questions or requests about this Privacy Policy or your data, a contact address will be published here soon.</p>
 </main>
 
 

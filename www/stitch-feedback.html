@@ -133,8 +133,17 @@
       var topic = document.getElementById('feedback-topic');
       var subject = 'NEXUS — ' + (topic ? topic.options[topic.selectedIndex].text : nexusT('Geri bildirim', 'Feedback'));
       var body = text + '\n\n— ' + navigator.userAgent;
-      var to = window.NEXUS_SUPPORT_EMAIL || 'destek@nexus-ai.app';
-      window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      var to = window.NEXUS_SUPPORT_EMAIL || '';
+      if (to) {
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      } else {
+        // Henüz doğrulanmış bir destek adresi yok: mesaj bu cihazda saklanır, adres tanımlanınca iletilebilir
+        try {
+          var box = JSON.parse(localStorage.getItem('nexusFeedbackOutbox') || '[]');
+          box.push({ at: new Date().toISOString(), subject: subject, body: body });
+          localStorage.setItem('nexusFeedbackOutbox', JSON.stringify(box.slice(-20)));
+        } catch (e) {}
+      }
       document.getElementById('feedback-form').classList.add('hidden');
       var ok = document.getElementById('feedback-success');
       ok.classList.remove('hidden');

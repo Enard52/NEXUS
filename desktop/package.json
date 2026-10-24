@@ -1,13 +1,13 @@
 {
   "name": "nexus-desktop",
   "productName": "NEXUS",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "NEXUS â€” akÄ±llÄ± ev asistanÄ± (masaÃ¼stÃ¼)",
-  "homepage": "https://nexus-ai-app.pages.dev",
+  "homepage": "https://nexus-smarthome.pages.dev",
   "main": "main.cjs",
   "author": {
     "name": "NEXUS",
-    "email": "destek@nexus-ai.app"
+    "email": "Enard52@users.noreply.github.com"
   },
   "license": "UNLICENSED",
   "private": true,
@@ -144,7 +144,7 @@
       "icon": "resources/icon.png",
       "category": "Utility",
       "synopsis": "AkÄ±llÄ± ev asistanÄ±",
-      "maintainer": "NEXUS <destek@nexus-ai.app>",
+      "maintainer": "NEXUS <Enard52@users.noreply.github.com>",
       "artifactName": "NEXUS-linux.${ext}",
       "syncDesktopName": true
     },

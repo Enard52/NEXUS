@@ -27,7 +27,7 @@
   window.nexusT = function (tr, en) { return lang === 'en' ? en : tr; };
   window.nexusTr = function (s) { return s; }; // İngilizcede i18n.js bunu çeviriciyle değiştirir
   window.nexusSrcText = function (el) { return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : ''; };
-  window.NEXUS_SUPPORT_EMAIL = 'destek@nexus-ai.app'; // geri bildirim e-postalarının gideceği adres
+  window.NEXUS_SUPPORT_EMAIL = ''; // doğrulanmış destek adresi tanımlanınca buraya yazılır (boşsa geri bildirim cihazda saklanır)
   window.nexusSetLanguage = function (next) {
     if (next !== 'tr' && next !== 'en') return;
     try { localStorage.setItem(KEY, next); } catch (e) {}

@@ -1,7 +1,8 @@
 {
   "name": "NEXUS",
   "short_name": "NEXUS",
-  "description": "Voice-first, privacy-focused personal operating system.",
+  "description": "Local-first smart home control for Windows, Linux and Android.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -12,7 +13,7 @@
       "src": "icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

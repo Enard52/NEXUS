@@ -339,7 +339,7 @@ function buildMenu() {
     { label: L("Düzen", "Edit"), submenu: [{ role: "undo", label: L("Geri Al", "Undo") }, { role: "redo", label: L("Yinele", "Redo") }, { type: "separator" }, { role: "cut", label: L("Kes", "Cut") }, { role: "copy", label: L("Kopyala", "Copy") }, { role: "paste", label: L("Yapıştır", "Paste") }, { role: "selectAll", label: L("Tümünü Seç", "Select All") }] },
     { label: L("Görünüm", "View"), submenu: [{ role: "reload", label: L("Yenile", "Reload") }, { type: "separator" }, { role: "resetZoom", label: L("Gerçek Boyut", "Actual Size") }, { role: "zoomIn", label: L("Yakınlaştır", "Zoom In") }, { role: "zoomOut", label: L("Uzaklaştır", "Zoom Out") }, { type: "separator" }, { role: "togglefullscreen", label: L("Tam Ekran", "Full Screen") }] },
     { label: L("Yardım", "Help"), submenu: [
-      { label: "NEXUS Sitesi", click: () => shell.openExternal("https://nexus-ai-app.pages.dev") },
+      { label: "NEXUS Sitesi", click: () => shell.openExternal("https://nexus-smarthome.pages.dev") },
       { label: L("Sürüm ", "Version ") + app.getVersion(), enabled: false },
     ] },
   ];
