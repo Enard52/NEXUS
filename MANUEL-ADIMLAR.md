@@ -23,6 +23,7 @@ Hızlı giriş, sitede, masaüstünde ve mobilde "Google ile devam et" olarak su
 
 ## 2. Hesap ve veritabanı güvenliği
 
+- **ÖNEMLİ — Bot koruması (CAPTCHA):** Supabase → **Authentication → Attack Protection** sayfasında "Enable Captcha protection" (hCaptcha) şu an **açık**. Uygulama hCaptcha göstermediği için e-posta ile giriş, kayıt ve şifre sıfırlama bu ayar açıkken çalışmaz ("captcha protection: request disallowed"). Anahtarı **kapatın** (e-posta doğrulaması ve Supabase hız sınırları koruma sağlamaya devam eder) ya da hCaptcha'yı uygulamaya eklememi isteyin. Google ile giriş bu ayardan etkilenmez.
 - Supabase → **Authentication → Passwords** → "Leaked password protection" seçeneğini açın.
 - Supabase → **Authentication → Email** → e-posta doğrulamayı canlı ortamda açık tutun.
 
