@@ -37,15 +37,14 @@
       ["panels", "Kontrol Panelleri", "stitch-panels.html", "sliders-horizontal"]
     ] },
     { group: "Ev", items: [
-      ["pair", "Cihaz ekle", "stitch-pair.html", "circle-plus"],
-      ["energy", "Enerji", "stitch-energy.html", "zap"],
-      ["household", "Hane", "stitch-household.html", "users"],
-      ["messages", "Mesajlar", "stitch-messages.html", "bell"]
+      ["pair", "Cihaz Ekle", "stitch-pair.html", "circle-plus"],
+      ["energy", "AI Enerji Tasarrufu", "stitch-energy.html", "zap"],
+      ["household", "Aile", "stitch-household.html", "users"],
+      ["messages", "Mesaj Merkezi", "stitch-messages.html", "bell"]
     ] },
     { group: "Hesap", items: [
       ["profile", "Profil", "stitch-profile.html", "user"],
-      ["settings", "Ayarlar", "stitch-settings.html", "settings"],
-      ["plus", "NEXUS+", "stitch-plus.html", "sparkles"]
+      ["settings", "Ayarlar", "stitch-settings.html", "settings"]
     ] }
   ];
 
@@ -57,7 +56,7 @@
     "stitch-cards.html": "home", "stitch-map.html": "home", "stitch-lighting-master.html": "discover", "stitch-cleaning-start.html": "discover",
     "stitch-air-quality.html": "discover", "stitch-room-comfort.html": "discover", "stitch-movie-mode.html": "discover", "stitch-multi-video.html": "discover",
     "stitch-night-security.html": "discover", "stitch-ai-protect.html": "discover", "stitch-home-health.html": "discover",
-    "stitch-user-info.html": "profile", "stitch-account-security.html": "profile", "stitch-menu.html": "profile", "stitch-billing.html": "plus",
+    "stitch-user-info.html": "profile", "stitch-account-security.html": "profile", "stitch-menu.html": "profile",
     "stitch-feedback.html": "settings", "stitch-privacy-mode.html": "settings", "stitch-instant-notifications.html": "settings",
     "stitch-device-updates.html": "settings", "stitch-dnd.html": "settings", "stitch-logs.html": "settings", "stitch-services.html": "settings",
     "stitch-homekit.html": "settings", "stitch-siri-shortcuts.html": "settings", "stitch-carplay.html": "settings", "stitch-web.html": "settings",
@@ -117,6 +116,11 @@
     aside.className = "nx-side";
     aside.innerHTML = html;
     document.body.insertBefore(aside, document.body.firstChild);
+    // Menü sabit bir yüzeydir: sayfa değişse de kaydırma konumu korunur.
+    try { aside.scrollTop = +sessionStorage.getItem("nxSideScroll") || 0; } catch (e) {}
+    aside.addEventListener("scroll", function () {
+      try { sessionStorage.setItem("nxSideScroll", aside.scrollTop); } catch (e) {}
+    }, { passive: true });
     document.getElementById("nx-side-theme").addEventListener("click", function () {
       var on = get("nexusDarkMode") === "true";
       set("nexusDarkMode", on ? "false" : "true");

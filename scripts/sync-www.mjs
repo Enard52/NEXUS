@@ -9,7 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WWW = path.join(ROOT, "www");
 
 export const APP_JS = ["ai-fab.js", "auth.js", "cloud-sync.js", "cloud-config.js", "data.js", "desktop.js", "device-controls.js",
-  "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js", "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js"];
+  "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js", "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js", "command-palette.js", "event-bridge.js"];
 export const APP_FILES = ["index.html", "logos.json", "logo.png", "siri-logo.png", "favicon.ico"];
 export const APP_DIRS = ["css", "fonts", "js", "assets", "icons", "leaflet"];
 

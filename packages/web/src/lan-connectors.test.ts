@@ -72,20 +72,24 @@ describe("alt ağ taraması", () => {
 
   it("254 adresi sınırlı eşzamanlılıkla yoklar ve bulunanları döndürür", async () => {
     const seen: string[] = [];
-    let inFlight = 0;
+    // Tarama bir adresin protokollerini aynı anda yoklar; sınırlanan şey aynı anda yoklanan ADRES sayısıdır.
+    const inFlightByHost = new Map<string, number>();
     let peak = 0;
     const lan = load((url) => {
       seen.push(url);
-      inFlight += 1;
-      peak = Math.max(peak, inFlight);
       const host = url.match(/http:\/\/(10\.0\.0\.\d+)/);
+      const key = host ? host[1] : url;
+      inFlightByHost.set(key, (inFlightByHost.get(key) || 0) + 1);
+      peak = Math.max(peak, inFlightByHost.size);
       const isDevice = host && ["10.0.0.7", "10.0.0.99"].includes(host[1]);
       return Promise.resolve(
         isDevice
           ? ok({ device: { type: "SHSW-1", hostname: "cihaz-" + host[1].split(".").pop() } })
           : { status: 404, text: () => Promise.resolve("") },
       ).finally(() => {
-        inFlight -= 1;
+        const left = (inFlightByHost.get(key) || 1) - 1;
+        if (left <= 0) inFlightByHost.delete(key);
+        else inFlightByHost.set(key, left);
       });
     });
 

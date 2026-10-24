@@ -9,4 +9,20 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   subnets: () => ipcRenderer.invoke("lan:subnets"),
   info: () => ipcRenderer.invoke("app:info"),
   setLanguage: (lang) => ipcRenderer.send("app:language", lang),
+  notifyEvent: (ev) => ipcRenderer.send("event:notify", ev),
+  updateStatus: (st) => ipcRenderer.send("tray:status", st),
+  onPaletteOpen: (cb) => {
+    const handler = () => cb();
+    ipcRenderer.on("palette:open", handler);
+    return () => ipcRenderer.removeListener("palette:open", handler);
+  },
+  updates: {
+    check: () => ipcRenderer.invoke("updates:check"),
+    install: () => ipcRenderer.invoke("updates:install"),
+    onState: (cb) => {
+      const handler = (_e, state) => cb(state);
+      ipcRenderer.on("updates:state", handler);
+      return () => ipcRenderer.removeListener("updates:state", handler);
+    },
+  },
 });

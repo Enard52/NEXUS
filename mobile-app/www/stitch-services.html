@@ -129,7 +129,7 @@
     }
     function serviceName(btn) {
       var h = btn.closest('article').querySelector('h2');
-      return h ? h.textContent.trim() : '';
+      return h ? nexusSrcText(h) : '';
     }
     function toggleConnect(btn) {
       var name = serviceName(btn);

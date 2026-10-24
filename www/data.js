@@ -548,7 +548,7 @@ function getLocalDevices() {
         paired.forEach((d, i) => {
             if (!d || !d.name) return;
             if (list.some(x => x.name === d.name)) return; // aynı cihazı iki kaynakta sayılmasın
-            list.push({ id: 'paired-' + i, name: d.name, state: 'Bağlı', type: d.icon === 'lightbulb' ? 'light' : '' });
+            list.push({ id: 'paired-' + i, name: d.name, state: d.host ? 'Bağlı' : 'Eşleşme bekliyor', type: d.icon === 'lightbulb' ? 'light' : '', img: d.img || '', linked: !!d.host });
         });
     }
     return list;
@@ -1219,7 +1219,7 @@ function renderDevices() {
     
     if (devices.length === 0) {
         // Ortak boş durum bileşeni (css/nexus-ui.css → .nx-empty): ikon + başlık + tek birincil aksiyon
-        html = `<div class="col-span-2 nx-empty">
+        html = `<div class="col-span-2 nx-empty" style="grid-column: 1 / -1;">
             <div class="nx-empty__icon" aria-hidden="true">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"></path></svg>
             </div>
@@ -1259,12 +1259,18 @@ function renderDevices() {
             const pairedIndex = /^paired-(\d+)$/.test(String(device.id)) ? String(device.id).slice(7) : null;
             const tag = pairedIndex !== null ? 'a' : 'article';
             const link = pairedIndex !== null ? ` href="stitch-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')} kontrol ekranı"` : '';
+            // Cihazın ürün görseli (katalogda seçilen ya da ağda bulunan); görsel yoksa simge gösterilir
+            let imgSrc = '';
+            if (pairedIndex !== null && window.NX && typeof window.NX.imageUrl === 'function') {
+                try { imgSrc = window.NX.imageUrl(device); } catch (e) { imgSrc = ''; }
+            }
+            const visual = imgSrc
+                ? `<div class="mb-2 flex items-center" style="height:56px"><img src="${imgSrc}" alt="" style="height:56px;width:72px;object-fit:contain;object-position:left center" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/products/generic-smart-hub.png'"></div>`
+                : `<div class="w-10 h-10 rounded-full ${bg} ${color} flex items-center justify-center mb-3">${iconSvg}</div>`;
             html += `
             <${tag}${link} class="relative bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" id="dyn-card-${device.id}">
                 <div>
-                    <div class="w-10 h-10 rounded-full ${bg} ${color} flex items-center justify-center mb-3">
-                        ${iconSvg}
-                    </div>
+                    ${visual}
                     <h3 class="font-bold text-base leading-tight truncate">${device.name || 'Cihaz'}</h3>
                 </div>
                 <p class="text-slate-500 text-sm font-medium leading-5">${device.state || 'Kapalı'}</p>

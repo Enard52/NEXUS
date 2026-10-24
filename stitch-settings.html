@@ -140,6 +140,14 @@
       </span>
     </button>
     <hr class="mx-5 border-gray-100"/>
+    <button type="button" id="system-theme-row" role="switch" aria-checked="false" class="nx-reset flex items-center justify-between px-5 py-5" onclick="toggleSystemTheme()">
+      <span class="text-xl text-gray-800 font-medium dark:text-white">Sistem Temasını Kullan</span>
+      <span class="relative block" aria-hidden="true">
+        <span id="system-theme-switch-track" class="block w-12 h-7 rounded-full transition-colors bg-gray-200"></span>
+        <span id="system-theme-switch-thumb" class="block absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+      </span>
+    </button>
+    <hr class="mx-5 border-gray-100"/>
     <button type="button" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="toggleTempUnit()">
       <span class="text-xl text-gray-800 font-medium">Sıcaklık Birimi</span>
       <span class="flex items-center space-x-2">
@@ -156,6 +164,29 @@
       </span>
     </button>
     <script>document.getElementById('language-label').textContent = window.nexusLang === 'en' ? 'English' : 'Türkçe';</script>
+  </section>
+
+  <section id="desktop-app-section" class="bg-white rounded-3xl overflow-hidden shadow-sm hidden" data-purpose="settings-card">
+    <div class="px-5 py-4 border-b border-gray-100">
+      <h2 class="text-base font-bold text-slate-900">Masaüstü Uygulaması</h2>
+      <p class="text-sm text-slate-500 mt-1">Sürümü görüntüle, yeni sürümü buradan kontrol et ve yükle.</p>
+    </div>
+    <div class="px-5 py-5">
+      <div class="flex items-center justify-between">
+        <span class="text-xl text-gray-800 font-medium">Sürüm</span>
+        <span class="text-base text-gray-400 font-semibold" id="app-version">—</span>
+      </div>
+      <button type="button" id="check-update-btn" class="mt-4 w-full min-h-[48px] rounded-full bg-slate-900 text-white text-base font-bold active:scale-[0.98] transition-transform dark:bg-slate-100 dark:text-slate-900">
+        Güncellemeleri Kontrol Et
+      </button>
+      <div id="update-progress-wrap" class="hidden mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-slate-800">
+        <div id="update-progress-bar" class="h-full w-0 rounded-full bg-[#4C7DFF] transition-all duration-200"></div>
+      </div>
+      <p id="update-status" class="mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]"></p>
+      <button type="button" id="install-update-btn" class="hidden mt-2 w-full min-h-[48px] rounded-full bg-[#4C7DFF] text-white text-base font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+        Yeniden Başlat ve Yükle
+      </button>
+    </div>
   </section>
 
   <div class="pt-10 pb-4">
@@ -192,7 +223,7 @@
   })();
 
   function refreshDarkLabel() {
-    var isDark = nexusGetItem('nexusDarkMode') === 'true';
+    var isDark = document.documentElement.classList.contains('dark');
     var track = document.getElementById('dark-mode-switch-track');
     var thumb = document.getElementById('dark-mode-switch-thumb');
     if (track) track.className = 'block w-12 h-7 rounded-full transition-colors ' + (isDark ? 'bg-[#4C7DFF]' : 'bg-gray-200');
@@ -201,11 +232,31 @@
     if (thumb) thumb.style.transform = isDark ? 'translateX(20px)' : 'translateX(0)';
   }
 
+  function refreshSystemTheme() {
+    var on = nexusGetItem('nexusThemeSystem') === 'true';
+    var track = document.getElementById('system-theme-switch-track');
+    var thumb = document.getElementById('system-theme-switch-thumb');
+    var row = document.getElementById('system-theme-row');
+    if (track) track.className = 'block w-12 h-7 rounded-full transition-colors ' + (on ? 'bg-[#4C7DFF]' : 'bg-gray-200');
+    if (thumb) thumb.style.transform = on ? 'translateX(20px)' : 'translateX(0)';
+    if (row) row.setAttribute('aria-checked', on ? 'true' : 'false');
+  }
+
+  function toggleSystemTheme() {
+    var on = nexusGetItem('nexusThemeSystem') === 'true';
+    nexusSetItem('nexusThemeSystem', on ? 'false' : 'true');
+    window.dispatchEvent(new Event('themeChanged'));
+    refreshDarkLabel();
+    refreshSystemTheme();
+  }
+
   function toggleDarkMode() {
-    var on = nexusGetItem('nexusDarkMode') === 'true';
+    var on = document.documentElement.classList.contains('dark');
+    nexusSetItem('nexusThemeSystem', 'false');
     nexusSetItem('nexusDarkMode', on ? 'false' : 'true');
     window.dispatchEvent(new Event('themeChanged'));
     refreshDarkLabel();
+    refreshSystemTheme();
   }
 
   function refreshTempLabel() {
@@ -228,7 +279,72 @@
   }
 
   refreshDarkLabel();
+  refreshSystemTheme();
   refreshTempLabel();
+
+  // Masaüstü uygulaması: uygulama içi güncelleme kontrolü ve yükleme.
+  // Yalnızca Electron köprüsü (window.nexusDesktop.updates) varsa görünür.
+  (function () {
+    var api = window.nexusDesktop && window.nexusDesktop.updates;
+    if (!api) return;
+    var T = window.nexusT || function (tr) { return tr; };
+    document.getElementById('desktop-app-section').classList.remove('hidden');
+
+    var statusEl = document.getElementById('update-status');
+    var progressWrap = document.getElementById('update-progress-wrap');
+    var progressBar = document.getElementById('update-progress-bar');
+    var checkBtn = document.getElementById('check-update-btn');
+    var installBtn = document.getElementById('install-update-btn');
+
+    window.nexusDesktop.info().then(function (info) {
+      document.getElementById('app-version').textContent = info && info.version ? info.version : '—';
+    });
+
+    function render(state) {
+      if (!state) return;
+      var s = state.state;
+      checkBtn.disabled = s === 'checking' || s === 'downloading';
+      checkBtn.style.opacity = checkBtn.disabled ? '0.55' : '1';
+      progressWrap.classList.toggle('hidden', s !== 'downloading');
+      progressBar.style.width = (s === 'downloading' ? Math.max(3, state.progress || 0) : 0) + '%';
+      installBtn.classList.toggle('hidden', s !== 'ready');
+
+      if (s === 'checking') statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
+      else if (s === 'downloading') {
+        statusEl.textContent = T('Yeni sürüm indiriliyor…', 'Downloading new version…') + ' %' + (state.progress || 0);
+        statusEl.className = 'mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]';
+      }
+      else if (s === 'ready') {
+        statusEl.textContent = T('NEXUS ' + (state.availableVersion || '') + ' hazır. Yeniden başlatınca kurulur.', 'NEXUS ' + (state.availableVersion || '') + ' is ready. It installs on restart.');
+        statusEl.className = 'mt-3 text-sm font-semibold text-emerald-600 min-h-[1.5rem]';
+      }
+      else if (s === 'latest') {
+        statusEl.textContent = T('Uygulama güncel.', 'The app is up to date.');
+        statusEl.className = 'mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]';
+      }
+      else if (s === 'error') {
+        statusEl.textContent = T('Güncelleme kontrol edilemedi. İnternet bağlantını kontrol edip tekrar dene.', 'Could not check for updates. Check your connection and try again.');
+        statusEl.className = 'mt-3 text-sm font-medium text-rose-500 min-h-[1.5rem]';
+      }
+      else if (s === 'unsupported') {
+        statusEl.textContent = T('Bu ortamda sürüm kontrolü yapılmaz (geliştirme sürümü).', 'Version check is unavailable here (development build).');
+        statusEl.className = 'mt-3 text-sm font-medium text-slate-400 min-h-[1.5rem]';
+        checkBtn.disabled = true;
+        checkBtn.style.opacity = '0.55';
+      }
+    }
+
+    checkBtn.addEventListener('click', function () {
+      statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
+      api.check().then(render);
+    });
+    installBtn.addEventListener('click', function () {
+      installBtn.disabled = true;
+      installBtn.textContent = T('Yeniden başlatılıyor…', 'Restarting…');
+      api.install();
+    });
+    api.onState(render);
+  })();
 
   if (window.location.hash === '#ai-settings') {
     setTimeout(function () {

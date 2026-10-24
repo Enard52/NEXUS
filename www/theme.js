@@ -364,17 +364,24 @@ window.addEventListener('error', function(e) {
 
 
 // Masaüstü düzeni (≥1024px): ortak stil + sol menü. Telefon görünümünü etkilemez.
+// Stil ve betik head ayrıştırılırken (document.write) eklenir: çözülmeleri boyamayı
+// engeller. Geç yüklenen dinamik eklemede masaüstü düzeni ilk boyamadan sonra
+// uygulanıp içeriği bir kez daha kaydırıyordu; sayfalar arası geçişler sabit kalsın.
 (function () {
   if (document.getElementById('nexus-desktop-css')) return;
   if (window.matchMedia && window.matchMedia('(min-width: 1024px)').matches) document.documentElement.classList.add('nx-desk');
-  var link = document.createElement('link');
-  link.id = 'nexus-desktop-css';
-  link.rel = 'stylesheet';
-  link.href = 'css/nexus-desktop.css';
-  document.head.appendChild(link);
-  var s = document.createElement('script');
-  s.src = 'desktop.js';
-  document.head.appendChild(s);
+  if (document.readyState === 'loading') {
+    document.write('<link id="nexus-desktop-css" rel="stylesheet" href="css/nexus-desktop.css"><script src="desktop.js"><\/script>');
+  } else {
+    var link = document.createElement('link');
+    link.id = 'nexus-desktop-css';
+    link.rel = 'stylesheet';
+    link.href = 'css/nexus-desktop.css';
+    document.head.appendChild(link);
+    var s = document.createElement('script');
+    s.src = 'desktop.js';
+    document.head.appendChild(s);
+  }
 })();
 
 // Marka uyumlu bilgi paneli (tarayıcının alert() kutusu yerine). Kullanım: nexusInfo(başlık, metin, [düğmeler])

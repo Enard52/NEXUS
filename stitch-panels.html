@@ -87,12 +87,11 @@
 
       <nav id="panels-filter" class="hidden nx-filter flex gap-2 overflow-x-auto no-scrollbar" aria-label="Panel filtresi"></nav>
 
-      <div id="panels-empty" class="hidden glass-card bg-white/80 backdrop-blur-md rounded-[2rem] border border-dashed border-slate-200 p-8 text-center dark:border-slate-700">
-        <p class="text-base font-bold text-slate-900 dark:text-white">Henüz eklenmiş cihaz yok</p>
-        <p class="text-sm text-slate-500 mt-1 dark:text-slate-300">Aynı işi yapan cihazlar (ör. tüm prizler) burada tek panelde toplanır.</p>
-        <a href="stitch-pair.html" class="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#4C7DFF] px-5 text-sm font-bold text-white active:scale-[0.98]">
-          <i data-lucide="scan-search" class="text-base"></i> Cihaz ekle
-        </a>
+      <div id="panels-empty" class="nx-empty hidden">
+        <div class="nx-empty__icon" aria-hidden="true"><i data-lucide="layout-grid"></i></div>
+        <p class="nx-empty__title">Henüz eklenmiş cihaz yok</p>
+        <p class="nx-empty__text">Aynı işi yapan cihazlar (ör. tüm prizler) burada tek panelde toplanır.</p>
+        <a href="stitch-pair.html" class="nx-empty__cta"><i data-lucide="scan-search" class="w-4 h-4"></i> Cihaz ekle</a>
       </div>
 
       <div id="panels-host" class="space-y-5"></div>

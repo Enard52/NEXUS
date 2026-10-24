@@ -147,6 +147,38 @@
         <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </span>
     </button>
+    <hr class="mx-5 border-gray-100"/>
+    <button type="button" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="nexusSetLanguage(window.nexusLang === 'en' ? 'tr' : 'en')" aria-label="Dil / Language">
+      <span class="text-xl text-gray-800 font-medium">Dil</span>
+      <span class="flex items-center space-x-2">
+        <span class="text-xl text-gray-400" id="language-label" data-no-i18n>Türkçe</span>
+        <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </span>
+    </button>
+    <script>document.getElementById('language-label').textContent = window.nexusLang === 'en' ? 'English' : 'Türkçe';</script>
+  </section>
+
+  <section id="desktop-app-section" class="bg-white rounded-3xl overflow-hidden shadow-sm hidden" data-purpose="settings-card">
+    <div class="px-5 py-4 border-b border-gray-100">
+      <h2 class="text-base font-bold text-slate-900">Masaüstü Uygulaması</h2>
+      <p class="text-sm text-slate-500 mt-1">Sürümü görüntüle, yeni sürümü buradan kontrol et ve yükle.</p>
+    </div>
+    <div class="px-5 py-5">
+      <div class="flex items-center justify-between">
+        <span class="text-xl text-gray-800 font-medium">Sürüm</span>
+        <span class="text-base text-gray-400 font-semibold" id="app-version">—</span>
+      </div>
+      <button type="button" id="check-update-btn" class="mt-4 w-full min-h-[48px] rounded-full bg-slate-900 text-white text-base font-bold active:scale-[0.98] transition-transform dark:bg-slate-100 dark:text-slate-900">
+        Güncellemeleri Kontrol Et
+      </button>
+      <div id="update-progress-wrap" class="hidden mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-slate-800">
+        <div id="update-progress-bar" class="h-full w-0 rounded-full bg-[#4C7DFF] transition-all duration-200"></div>
+      </div>
+      <p id="update-status" class="mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]"></p>
+      <button type="button" id="install-update-btn" class="hidden mt-2 w-full min-h-[48px] rounded-full bg-[#4C7DFF] text-white text-base font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+        Yeniden Başlat ve Yükle
+      </button>
+    </div>
   </section>
 
   <div class="pt-10 pb-4">
@@ -220,6 +252,70 @@
 
   refreshDarkLabel();
   refreshTempLabel();
+
+  // Masaüstü uygulaması: uygulama içi güncelleme kontrolü ve yükleme.
+  // Yalnızca Electron köprüsü (window.nexusDesktop.updates) varsa görünür.
+  (function () {
+    var api = window.nexusDesktop && window.nexusDesktop.updates;
+    if (!api) return;
+    var T = window.nexusT || function (tr) { return tr; };
+    document.getElementById('desktop-app-section').classList.remove('hidden');
+
+    var statusEl = document.getElementById('update-status');
+    var progressWrap = document.getElementById('update-progress-wrap');
+    var progressBar = document.getElementById('update-progress-bar');
+    var checkBtn = document.getElementById('check-update-btn');
+    var installBtn = document.getElementById('install-update-btn');
+
+    window.nexusDesktop.info().then(function (info) {
+      document.getElementById('app-version').textContent = info && info.version ? info.version : '—';
+    });
+
+    function render(state) {
+      if (!state) return;
+      var s = state.state;
+      checkBtn.disabled = s === 'checking' || s === 'downloading';
+      checkBtn.style.opacity = checkBtn.disabled ? '0.55' : '1';
+      progressWrap.classList.toggle('hidden', s !== 'downloading');
+      progressBar.style.width = (s === 'downloading' ? Math.max(3, state.progress || 0) : 0) + '%';
+      installBtn.classList.toggle('hidden', s !== 'ready');
+
+      if (s === 'checking') statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
+      else if (s === 'downloading') {
+        statusEl.textContent = T('Yeni sürüm indiriliyor…', 'Downloading new version…') + ' %' + (state.progress || 0);
+        statusEl.className = 'mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]';
+      }
+      else if (s === 'ready') {
+        statusEl.textContent = T('NEXUS ' + (state.availableVersion || '') + ' hazır. Yeniden başlatınca kurulur.', 'NEXUS ' + (state.availableVersion || '') + ' is ready. It installs on restart.');
+        statusEl.className = 'mt-3 text-sm font-semibold text-emerald-600 min-h-[1.5rem]';
+      }
+      else if (s === 'latest') {
+        statusEl.textContent = T('Uygulama güncel.', 'The app is up to date.');
+        statusEl.className = 'mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]';
+      }
+      else if (s === 'error') {
+        statusEl.textContent = T('Güncelleme kontrol edilemedi. İnternet bağlantını kontrol edip tekrar dene.', 'Could not check for updates. Check your connection and try again.');
+        statusEl.className = 'mt-3 text-sm font-medium text-rose-500 min-h-[1.5rem]';
+      }
+      else if (s === 'unsupported') {
+        statusEl.textContent = T('Bu ortamda sürüm kontrolü yapılmaz (geliştirme sürümü).', 'Version check is unavailable here (development build).');
+        statusEl.className = 'mt-3 text-sm font-medium text-slate-400 min-h-[1.5rem]';
+        checkBtn.disabled = true;
+        checkBtn.style.opacity = '0.55';
+      }
+    }
+
+    checkBtn.addEventListener('click', function () {
+      statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
+      api.check().then(render);
+    });
+    installBtn.addEventListener('click', function () {
+      installBtn.disabled = true;
+      installBtn.textContent = T('Yeniden başlatılıyor…', 'Restarting…');
+      api.install();
+    });
+    api.onState(render);
+  })();
 
   if (window.location.hash === '#ai-settings') {
     setTimeout(function () {

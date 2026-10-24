@@ -169,7 +169,7 @@
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="triangle-alert"></i></span>
 <span class="text-xs font-medium text-slate-600">Yardım ve Geri Bildirim</span>
 </a>
-<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus.app">
+<a class="flex flex-col items-center gap-2" href="mailto:destek@nexus-ai.app">
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="mail"></i></span>
 <span class="text-xs font-medium text-slate-600">İletişim E-postası</span>
 </a>
@@ -226,7 +226,7 @@
     // Konum tabanlı stratejiler geofencing ile çalışır; ev konumu ve eşleşmiş
     // cihazı olmadan açılamaz. Durum, strateji başlığına göre kalıcı saklanır.
     var toggle = document.getElementById('strategy-enabled');
-    var currentTitle = document.getElementById('strategy-title').textContent;
+    var currentTitle = nexusSrcText(document.getElementById('strategy-title'));
     var enabledMap = {};
     try { enabledMap = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { enabledMap = {}; }
     toggle.checked = !!enabledMap[currentTitle];

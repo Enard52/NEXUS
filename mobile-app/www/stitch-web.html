@@ -54,26 +54,26 @@
 <section class="flex flex-col items-center text-center mb-8" data-purpose="web-hero">
 <div class="w-20 h-20 drop-shadow-lg mb-4"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full"><defs><linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 <h2 class="text-xl font-bold">NEXUS AI, tarayıcında</h2>
-<p class="text-sm text-slate-500 mt-2 max-w-xs">Bilgisayarından da sohbet et; konuşmaların tüm cihazlarında senkronize kalır.</p>
+<p class="text-sm text-slate-500 mt-2 max-w-xs">Bilgisayarında NEXUS masaüstü uygulamasını kullan; aynı asistan ve kontroller orada da çalışır.</p>
 </section>
 <!-- Web address card -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="web-address">
 <p class="text-sm font-semibold text-slate-500 mb-2">Web adresi</p>
 <div class="flex items-center justify-between gap-3 bg-slate-50 rounded-xl px-4 py-3">
-<span class="font-bold text-[#4C7DFF] truncate" id="web-url">ai.nexus.app</span>
+<span class="font-bold text-[#4C7DFF] truncate" id="web-url">nexus-ai.app</span>
 <button aria-label="Bağlantıyı kopyala" class="text-slate-400 flex-shrink-0" id="copy-icon" onclick="copyUrl()">
 <i class="w-5 h-5" data-lucide="copy"></i>
 </button>
 </div>
 <p class="hidden text-xs text-emerald-500 font-semibold mt-2" id="copied-note">Bağlantı kopyalandı</p>
 </section>
-<!-- Try it now (opens the chat mockup as the web experience) -->
+<!-- Try it now: opens the real assistant -->
 <a class="block w-full bg-[#4C7DFF] text-white text-center font-bold py-4 rounded-2xl shadow-md active:scale-[0.98] transition-transform mb-8" href="stitch-chat.html">Sohbeti Şimdi Dene</a>
 <!-- Feature list -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 space-y-4" data-purpose="web-features">
 <div class="flex items-center gap-4">
 <i class="w-6 h-6 text-[#4C7DFF] stroke-[1.5]" data-lucide="refresh-cw"></i>
-<p class="text-sm font-medium text-slate-600">Sohbet geçmişin telefon ve web arasında senkronize</p>
+<p class="text-sm font-medium text-slate-600">Windows, macOS ve Linux için ücretsiz masaüstü uygulaması</p>
 </div>
 <div class="flex items-center gap-4">
 <i class="w-6 h-6 text-[#4C7DFF] stroke-[1.5]" data-lucide="keyboard"></i>
@@ -81,7 +81,7 @@
 </div>
 <div class="flex items-center gap-4">
 <i class="w-6 h-6 text-[#4C7DFF] stroke-[1.5]" data-lucide="shield-check"></i>
-<p class="text-sm font-medium text-slate-600">Aynı hesap, aynı gizlilik korumaları</p>
+<p class="text-sm font-medium text-slate-600">Veriler cihazında kalır, aynı gizlilik korumaları</p>
 </div>
 </section>
 </main>
@@ -90,10 +90,11 @@
     lucide.createIcons();
     // Copy the web address to clipboard with confirmation
     function copyUrl() {
-      navigator.clipboard.writeText(document.getElementById('web-url').textContent).then(function () {
+      nexusCopy(document.getElementById('web-url').textContent).then(function (ok) {
         var note = document.getElementById('copied-note');
+        note.textContent = ok ? 'Bağlantı kopyalandı' : 'Kopyalanamadı — adresi elle seç';
         note.classList.remove('hidden');
-        setTimeout(function () { note.classList.add('hidden'); }, 1500);
+        setTimeout(function () { note.classList.add('hidden'); }, 1800);
       });
     }
   </script>

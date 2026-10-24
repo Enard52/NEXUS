@@ -7,8 +7,12 @@
 //   - Bilgisayarın yerel alt ağını bulma                  → otomatik cihaz taraması
 // Güvenlik: köprü yalnızca özel ağ adreslerine (192.168.x, 10.x, 172.16-31.x, link-local,
 // localhost) izin verir; uygulama içeriği izole bağlamda, Node erişimi olmadan çalışır.
+//
+// Arka planda çalışma: pencere kapatılınca uygulama tepsi simgesine gizlenir ve çalışmaya
+// devam eder (akıllı ev asistanı). Tepsi menüsünden: gösterme, "kapatınca arka planda
+// çalış" seçeneği, bilgisayarla başlatma (Windows/macOS), yeniden başlatma ve tam çıkış.
 
-const { app, BrowserWindow, Menu, shell, ipcMain, protocol, net, nativeTheme, dialog } = require("electron");
+const { app, BrowserWindow, Menu, shell, ipcMain, protocol, net, nativeTheme, dialog, Tray, Notification, screen, globalShortcut } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
 const os = require("node:os");
@@ -18,7 +22,14 @@ const { pathToFileURL } = require("node:url");
 
 const APP_DIR = path.join(__dirname, "app");
 const SCHEME = "nexus";
-const START_URL = `${SCHEME}://app/index.html`;
+const PAGES = { home: "stitch-home.html", pair: "stitch-pair.html", messages: "stitch-messages.html", settings: "stitch-settings.html", chat: "stitch-chat.html" };
+function pageFromArgv(argv) {
+  const a = (argv || []).find((x) => typeof x === "string" && x.startsWith("--go="));
+  const key = a ? a.slice(5) : "";
+  return Object.prototype.hasOwnProperty.call(PAGES, key) ? PAGES[key] : null;
+}
+const launchPage = pageFromArgv(process.argv);
+const START_URL = `${SCHEME}://app/${launchPage || "index.html"}`;
 
 app.setName("NEXUS");
 if (process.platform === "win32") app.setAppUserModelId("app.nexus.desktop");
@@ -45,6 +56,109 @@ function saveBounds() {
     const b = win.getNormalBounds();
     fs.writeFileSync(stateFile(), JSON.stringify({ ...b, maximized: win.isMaximized() }));
   } catch { /* yazılamazsa sorun değil */ }
+}
+
+// ---------- Arka planda çalışma / tepsi ayarları ----------
+// Akıllı ev asistanı olduğu için uygulama pencere kapatılsa da çalışmaya devam eder
+// (tepsi simgesine gizlenir). Davranış tepsi menüsünden ve menü çubuğundan yönetilir.
+const desktopSettingsFile = () => path.join(app.getPath("userData"), "desktop-settings.json");
+function loadDesktopSettings() {
+  try { return JSON.parse(fs.readFileSync(desktopSettingsFile(), "utf8")); } catch { return {}; }
+}
+function persistDesktopSettings(patch) {
+  try { fs.writeFileSync(desktopSettingsFile(), JSON.stringify({ ...loadDesktopSettings(), ...patch })); } catch { /* kota */ }
+}
+let backgroundRun = loadDesktopSettings().backgroundRun !== false; // varsayılan: açık
+let tray = null;
+let trayBalloonShown = false;
+
+function showMainWindow() {
+  if (!win || win.isDestroyed()) return;
+  if (win.isMinimized()) win.restore();
+  win.show();
+  win.focus();
+}
+
+function quitApp() {
+  app.isQuitting = true;
+  app.quit();
+}
+
+function restartApp() {
+  app.isQuitting = true;
+  app.relaunch();
+  app.quit();
+}
+
+// Bilgisayarla başlarken pencere açılmaz: uygulama doğrudan tepsiye iner (--hidden).
+const LOGIN_ARGS = ["--hidden"];
+function setOpenAtLogin(on) {
+  try { app.setLoginItemSettings({ openAtLogin: !!on, openAsHidden: true, args: LOGIN_ARGS }); } catch { /* platform desteklemiyorsa */ }
+}
+function getOpenAtLogin() {
+  try { return !!app.getLoginItemSettings({ args: LOGIN_ARGS }).openAtLogin; } catch { return false; }
+}
+const startHidden = process.argv.includes("--hidden") || (process.platform === "darwin" && app.getLoginItemSettings().wasOpenedAsHidden);
+
+function trayTemplate() {
+  const items = [
+    { label: L("NEXUS'u Göster", "Show NEXUS"), click: showMainWindow },
+    { type: "separator" },
+    { label: L("Kapatınca arka planda çalış", "Keep running in background when closed"),
+      type: "checkbox", checked: backgroundRun,
+      click: (item) => { backgroundRun = item.checked; persistDesktopSettings({ backgroundRun }); } },
+  ];
+  // Otomatik başlangıç Windows/macOS'ta anlamlı ve Electron destekli; Linux'ta yok.
+  if (app.isPackaged && process.platform !== "linux") {
+    items.push({
+      label: L("Bilgisayar açılınca başlat", "Start with computer"),
+      type: "checkbox", checked: getOpenAtLogin(),
+      click: (item) => setOpenAtLogin(item.checked),
+    });
+  }
+  items.push(
+    { type: "separator" },
+    { label: L("Yeniden Başlat", "Restart"), click: restartApp },
+    { label: L("Tamamen Çıkış", "Quit Completely"), click: quitApp },
+  );
+  return items;
+}
+
+function updateTrayMenu() {
+  if (tray) tray.setContextMenu(Menu.buildFromTemplate(trayTemplate()));
+}
+
+function hideToTray() {
+  if (win && !win.isDestroyed()) win.hide();
+  if (trayBalloonShown) return;
+  trayBalloonShown = true;
+  const title = "NEXUS";
+  const body = L(
+    "NEXUS arka planda çalışmaya devam ediyor. Geri açmak için tepsi simgesine tıkla; tamamen kapatmak için sağ tık → Tamamen Çıkış.",
+    "NEXUS keeps running in the background. Click the tray icon to reopen; right-click → Quit Completely to close it."
+  );
+  try {
+    if (process.platform === "win32" && tray && tray.displayBalloon) tray.displayBalloon({ iconType: "info", title, content: body });
+    else if (Notification.isSupported()) new Notification({ title, body }).show();
+  } catch { /* bildirim gösterilemezse sorun değil */ }
+}
+
+function createTray() {
+  // macOS'ta dock zaten uygulamayı canlı tutar; tepsi Windows/Linux davranışıdır.
+  if (process.platform === "darwin") return;
+  try {
+    const icon = path.join(__dirname, "resources", process.platform === "win32" ? "icon.ico" : "icon.png");
+    tray = new Tray(icon);
+    tray.setToolTip("NEXUS");
+    updateTrayMenu();
+    tray.on("click", () => {
+      if (win && !win.isDestroyed() && win.isVisible() && win.isFocused()) hideToTray();
+      else showMainWindow();
+    });
+  } catch (e) {
+    // Tepsi oluşturulamazsa (ortam desteklemiyorsa) uygulama klasik davranışa döner.
+    tray = null;
+  }
 }
 
 // ---------- Özel ağ adresi denetimi ----------
@@ -134,8 +248,22 @@ function serveApp() {
 
 function isAppUrl(u) { return typeof u === "string" && u.startsWith(`${SCHEME}://app/`); }
 
+// Kayıtlı pencere konumu artık hiçbir ekranda değilse (monitör çıkarıldı, çözünürlük değişti)
+// konumu bırak: pencere ana ekranda ortalanır.
+function onScreen(b) {
+  if (!b || typeof b.x !== "number" || typeof b.y !== "number") return false;
+  const w = b.width || 400, h = b.height || 300;
+  return screen.getAllDisplays().some(({ workArea: a }) =>
+    b.x + w > a.x + 80 && b.x < a.x + a.width - 80 && b.y + 40 > a.y && b.y < a.y + a.height - 80);
+}
+function rescueWindow() {
+  if (!win || win.isDestroyed() || win.isMaximized() || win.isFullScreen()) return;
+  if (!onScreen(win.getBounds())) win.center();
+}
+
 function createWindow() {
   const saved = loadBounds();
+  if (saved && !onScreen(saved)) { delete saved.x; delete saved.y; }
   win = new BrowserWindow({
     width: saved?.width || 1360,
     height: saved?.height || 860,
@@ -157,8 +285,16 @@ function createWindow() {
     },
   });
   if (saved?.maximized) win.maximize();
-  win.once("ready-to-show", () => win.show());
-  win.on("close", saveBounds);
+  // Sessiz başlangıç: tepsi varsa pencere açılmadan arka planda başlar; yoksa normal açılır.
+  win.once("ready-to-show", () => { if (!(startHidden && tray && backgroundRun)) win.show(); });
+  // Pencere kapatılınca: arka planda çalışma açıksa ve tepsi varsa uygulamayı
+  // tepsiye gizle (akıllı ev asistanı çalışmaya devam eder); değilse normal çık.
+  win.on("close", (event) => {
+    saveBounds();
+    if (app.isQuitting || !backgroundRun || !tray) return;
+    event.preventDefault();
+    hideToTray();
+  });
 
   // Dış bağlantılar varsayılan tarayıcıda açılır; uygulama dışına gezinme engellenir
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -194,7 +330,12 @@ function buildMenu() {
   const isMac = process.platform === "darwin";
   const template = [
     ...(isMac ? [{ label: "NEXUS", submenu: [{ role: "about", label: L("NEXUS Hakkında", "About NEXUS") }, { type: "separator" }, { role: "hide", label: L("Gizle", "Hide") }, { role: "hideOthers", label: L("Diğerlerini Gizle", "Hide Others") }, { type: "separator" }, { role: "quit", label: L("Çıkış", "Quit") }] }] : []),
-    { label: L("Dosya", "File"), submenu: [isMac ? { role: "close", label: L("Pencereyi Kapat", "Close Window") } : { role: "quit", label: L("Çıkış", "Exit") }] },
+    { label: L("Dosya", "File"), submenu: [
+      { label: L("Arka Plana Gizle", "Hide to Background"), accelerator: "CommandOrControl+Shift+H", click: () => hideToTray() },
+      { type: "separator" },
+      { label: L("Yeniden Başlat", "Restart"), click: restartApp },
+      isMac ? { role: "close", label: L("Pencereyi Kapat", "Close Window") } : { label: L("Tamamen Çıkış", "Quit Completely"), click: quitApp },
+    ] },
     { label: L("Düzen", "Edit"), submenu: [{ role: "undo", label: L("Geri Al", "Undo") }, { role: "redo", label: L("Yinele", "Redo") }, { type: "separator" }, { role: "cut", label: L("Kes", "Cut") }, { role: "copy", label: L("Kopyala", "Copy") }, { role: "paste", label: L("Yapıştır", "Paste") }, { role: "selectAll", label: L("Tümünü Seç", "Select All") }] },
     { label: L("Görünüm", "View"), submenu: [{ role: "reload", label: L("Yenile", "Reload") }, { type: "separator" }, { role: "resetZoom", label: L("Gerçek Boyut", "Actual Size") }, { role: "zoomIn", label: L("Yakınlaştır", "Zoom In") }, { role: "zoomOut", label: L("Uzaklaştır", "Zoom Out") }, { type: "separator" }, { role: "togglefullscreen", label: L("Tam Ekran", "Full Screen") }] },
     { label: L("Yardım", "Help"), submenu: [
@@ -206,40 +347,165 @@ function buildMenu() {
 }
 
 ipcMain.on("app:language", (_e, lang) => {
-  if ((lang === "tr" || lang === "en") && lang !== uiLang) { uiLang = lang; buildMenu(); }
+  if ((lang === "tr" || lang === "en") && lang !== uiLang) { uiLang = lang; buildMenu(); updateTrayMenu(); setupJumpList(); }
 });
 
-// ---------- Otomatik güncelleme (GitHub Releases) ----------
-function setupUpdates() {
-  if (!app.isPackaged || process.env.NEXUS_NO_UPDATE) return;
-  let autoUpdater;
-  try { ({ autoUpdater } = require("electron-updater")); } catch { return; }
-  autoUpdater.autoDownload = true;
-  autoUpdater.on("update-downloaded", (info) => {
-    dialog.showMessageBox(win, {
-      type: "info",
-      buttons: [L("Şimdi yeniden başlat", "Restart now"), L("Sonra", "Later")],
-      defaultId: 0,
-      title: L("NEXUS güncellemesi hazır", "NEXUS update ready"),
-      message: L(`NEXUS ${info.version} indirildi.`, `NEXUS ${info.version} has been downloaded.`),
-      detail: L("Uygulamayı yeniden başlattığında yeni sürüm açılır.", "The new version opens when you restart the app."),
-    }).then(({ response }) => { if (response === 0) autoUpdater.quitAndInstall(); });
-  });
-  autoUpdater.on("error", () => { /* çevrimdışıyken sessiz kal */ });
-  autoUpdater.checkForUpdates().catch(() => {});
+// ---------- Otomatik güncelleme (GitHub Releases) + uygulama içi güncelleme arayüzü ----------
+// Durum akışı: idle → checking → downloading(%) → ready → (quitAndInstall).
+// Ayarlar sayfası updates:check / updates:install çağırır; her değişimde
+// "updates:state" olayu olarak render'a gönderilir. Geliştirme sürümünde
+// ("unsupported") arayüz kontrolü sessizce geçersizleşir.
+let updatesWired = false;
+let updateState = { state: "idle", currentVersion: app.getVersion(), availableVersion: null, progress: 0, error: null };
+
+function getAutoUpdater() {
+  try { return require("electron-updater").autoUpdater; } catch { return null; }
 }
 
-app.on("second-instance", () => {
-  if (win) { if (win.isMinimized()) win.restore(); win.focus(); }
+function sendUpdateState(patch) {
+  updateState = { ...updateState, ...patch };
+  if (win && !win.isDestroyed()) win.webContents.send("updates:state", updateState);
+}
+
+function wireUpdater(autoUpdater) {
+  if (updatesWired) return;
+  updatesWired = true;
+  autoUpdater.autoDownload = true;
+  autoUpdater.on("checking-for-update", () => sendUpdateState({ state: "checking", error: null }));
+  autoUpdater.on("update-available", (info) => sendUpdateState({ state: "downloading", availableVersion: info && info.version || null, progress: 0, error: null }));
+  autoUpdater.on("update-not-available", () => sendUpdateState({ state: "latest", availableVersion: null, error: null }));
+  autoUpdater.on("download-progress", (p) => sendUpdateState({ state: "downloading", progress: Math.round(p.percent || 0) }));
+  autoUpdater.on("error", (e) => sendUpdateState({ state: "error", error: (e && e.message) || L("bilinmeyen hata", "unknown error") }));
+  autoUpdater.on("update-downloaded", (info) => {
+    sendUpdateState({ state: "ready", availableVersion: info && info.version || updateState.availableVersion, progress: 100 });
+    // Pencere açıksa klasik diyalog; tepside gizliyse balonla haber ver (arayüz de hazır gösterir).
+    const apply = () => autoUpdater.quitAndInstall();
+    if (win && !win.isDestroyed() && win.isVisible()) {
+      dialog.showMessageBox(win, {
+        type: "info",
+        buttons: [L("Şimdi yeniden başlat", "Restart now"), L("Sonra", "Later")],
+        defaultId: 0,
+        title: L("NEXUS güncellemesi hazır", "NEXUS update ready"),
+        message: L(`NEXUS ${info.version} indirildi.`, `NEXUS ${info.version} has been downloaded.`),
+        detail: L("Uygulamayı yeniden başlattığında yeni sürüm açılır.", "The new version opens when you restart the app."),
+      }).then(({ response }) => { if (response === 0) apply(); });
+    } else {
+      try {
+        if (process.platform === "win32" && tray && tray.displayBalloon) {
+          tray.displayBalloon({ iconType: "info", title: "NEXUS", content: L("Yeni sürüm indirildi. Uygulamayı açıp Ayarlar → Masaüstü Uygulaması'ndan kurabilirsin.", "A new version was downloaded. Open the app and install it from Settings → Desktop App.") });
+        }
+      } catch { /* balon gösterilemezse sorun değil */ }
+    }
+  });
+}
+
+ipcMain.handle("updates:check", async () => {
+  if (!app.isPackaged || process.env.NEXUS_NO_UPDATE) return { ...updateState, state: "unsupported" };
+  const autoUpdater = getAutoUpdater();
+  if (!autoUpdater) return { ...updateState, state: "unsupported" };
+  wireUpdater(autoUpdater);
+  sendUpdateState({ state: "checking", error: null });
+  try { await autoUpdater.checkForUpdates(); } catch (e) {
+    sendUpdateState({ state: "error", error: (e && e.message) || L("güncelleme sunucusuna ulaşılamadı", "could not reach the update server") });
+  }
+  return updateState;
 });
+
+ipcMain.handle("updates:install", () => {
+  const autoUpdater = getAutoUpdater();
+  if (!autoUpdater || updateState.state !== "ready") return false;
+  app.isQuitting = true; // close işleyicisi pencereyi tekrar tepsiye gizlemesin
+  autoUpdater.quitAndInstall();
+  return true;
+});
+
+function setupUpdates() {
+  if (!app.isPackaged || process.env.NEXUS_NO_UPDATE) return;
+  const autoUpdater = getAutoUpdater();
+  if (!autoUpdater) return;
+  wireUpdater(autoUpdater);
+  autoUpdater.checkForUpdates().catch(() => { /* çevrimdışıyken sessiz kal; durum arayüze gider */ });
+}
+
+app.on("second-instance", (_e, argv) => {
+  // Uygulama zaten açıksa (tepside gizli bile olsa) pencereyi öne getir.
+  showMainWindow();
+  const page = pageFromArgv(argv); // görev çubuğu hızlı görevleri (--go=sayfa)
+  if (page && win && !win.isDestroyed()) win.loadURL(`${SCHEME}://app/${page}`);
+});
+
+// ---------- Yerel bildirimler ve tepsi ipucu (event-bridge.js) ----------
+// Arayüz yeni olayı bildirir; pencere öndeyken bildirim gösterilmez (zaten ekranda).
+const notifyStamps = [];
+const clip = (v, n) => String(v == null ? "" : v).slice(0, n);
+ipcMain.on("event:notify", (_e, ev) => {
+  try {
+    if (!ev || typeof ev !== "object" || !Notification.isSupported()) return;
+    if (win && !win.isDestroyed() && win.isVisible() && win.isFocused()) return;
+    const now = Date.now();
+    while (notifyStamps.length && now - notifyStamps[0] > 10000) notifyStamps.shift();
+    if (notifyStamps.length >= 4) return; // sel olmasın: 10 sn'de en fazla 4
+    notifyStamps.push(now);
+    const n = new Notification({ title: clip(ev.title, 80) || "NEXUS", body: clip(ev.detail, 200), silent: false });
+    n.on("click", showMainWindow);
+    n.show();
+  } catch { /* bildirim gösterilemezse sorun değil */ }
+});
+
+ipcMain.on("tray:status", (_e, st) => {
+  if (!tray || !st || typeof st !== "object") return;
+  const num = (v) => Math.max(0, Math.min(9999, Math.floor(Number(v) || 0)));
+  const d = num(st.devices), on = num(st.on), un = num(st.unread);
+  const text = L(
+    `NEXUS — ${d} cihaz · ${on} açık` + (un ? ` · ${un} okunmamış bildirim` : ""),
+    `NEXUS — ${d} device${d === 1 ? "" : "s"} · ${on} on` + (un ? ` · ${un} unread` : "")
+  );
+  try { tray.setToolTip(text); } catch { /* tepsi kapanmış olabilir */ }
+});
+
+// ---------- Windows görev çubuğu hızlı görevleri (JumpList) ----------
+function setupJumpList() {
+  if (process.platform !== "win32" || !app.isPackaged) return;
+  const task = (key, title, description) => ({
+    program: process.execPath, arguments: `--go=${key}`, iconPath: process.execPath, iconIndex: 0, title, description,
+  });
+  try {
+    app.setUserTasks([
+      task("home", L("Ev", "Home"), L("Ana ekranı aç", "Open the home screen")),
+      task("pair", L("Cihaz Ekle", "Add device"), L("Yeni cihaz ekle", "Add a new device")),
+      task("messages", L("Mesaj Merkezi", "Message Center"), L("Bildirimleri aç", "Open notifications")),
+      task("settings", L("Ayarlar", "Settings"), L("Ayarları aç", "Open settings")),
+    ]);
+  } catch { /* JumpList desteklenmiyorsa sorun değil */ }
+}
+
+// ---------- Ctrl+Alt+N: uygulamayı (tepsideyken bile) komut paletiyle aç ----------
+function registerPaletteShortcut() {
+  try {
+    globalShortcut.register("CommandOrControl+Alt+N", () => {
+      showMainWindow();
+      if (win && !win.isDestroyed()) win.webContents.send("palette:open");
+    });
+  } catch { /* kısayol başka uygulamada kullanılıyorsa sessiz geç */ }
+}
+app.on("will-quit", () => { try { globalShortcut.unregisterAll(); } catch { /* yok */ } });
+
+// Güncelleyici (quitAndInstall) ve diğer çıkış yolları gerçek kapanmaya işaret etmeli;
+// aksi halde close işleyicisi pencereyi tekrar tepsiye gizler.
+app.on("before-quit", () => { app.isQuitting = true; });
 
 app.whenReady().then(() => {
   uiLang = detectLang();
   serveApp();
   buildMenu();
   createWindow();
+  createTray();
+  setupJumpList();
+  registerPaletteShortcut();
+  screen.on("display-removed", rescueWindow);
+  screen.on("display-metrics-changed", rescueWindow);
   setupUpdates();
-  app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
+  app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); else showMainWindow(); });
 });
 
 app.on("window-all-closed", () => {

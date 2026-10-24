@@ -170,7 +170,7 @@
 
     function renderRow({ id, title, iconHtml, selected, subtitle, onEdit }) {
       return `
-        <button class="picker-row w-full flex items-center gap-3 py-4 text-left active:bg-slate-50/80" type="button" onclick="toggleItem('${id}')">
+        <button class="picker-row w-full flex items-center gap-3 py-4 px-3 text-left active:bg-slate-50/80" type="button" onclick="toggleItem('${id}')">
           ${checkCircle(selected)}
           ${iconHtml}
           <span class="min-w-0 flex-1">
@@ -208,7 +208,8 @@
       if (pickerState.activeTab === 'devices') {
         const devices = getDeviceSource();
         if (devices.length === 0) {
-          list.innerHTML = `<div class="py-12 text-center text-sm text-slate-500">Henüz eşleşmiş akıllı cihazı bulunmuyor.</div>`;
+          list.innerHTML = `<div class="nx-empty"><div class="nx-empty__icon" aria-hidden="true"><i data-lucide="cpu"></i></div><p class="nx-empty__title">Henüz eşleşmiş akıllı cihazı bulunmuyor</p><p class="nx-empty__text">Cihaz ekleyince kart olarak anasayfaya koyabilirsin.</p></div>`;
+          if (typeof lucide !== 'undefined') lucide.createIcons();
           return;
         }
         list.innerHTML = devices.map(device => {
@@ -229,7 +230,8 @@
 
       const customCards = window.getCustomClickRunCards ? window.getCustomClickRunCards() : window.NEXUS_CARD_CATALOG.tapToRun;
       if (customCards.length === 0) {
-        list.innerHTML = `<div class="py-12 text-center text-sm text-slate-500">Henüz eklenmiş bir senaryo bulunmuyor.<br>Önce 'Akıllı' sekmesinden bir senaryo oluşturun.</div>`;
+        list.innerHTML = `<div class="nx-empty"><div class="nx-empty__icon" aria-hidden="true"><i data-lucide="zap"></i></div><p class="nx-empty__title">Henüz eklenmiş bir senaryo bulunmuyor</p><p class="nx-empty__text">Önce 'Akıllı' sekmesinden bir senaryo oluşturun.</p></div>`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         return;
       }
 

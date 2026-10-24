@@ -207,8 +207,8 @@
     document.getElementById('plan-monthly').classList.toggle('ring-nexus-purple', plan==='Aylık');
     document.getElementById('plan-monthly').classList.toggle('border-gray-100', plan!=='Aylık');
     if (!nexusGetItem('nexusPlusPlan')) {
-      const trialDays = plan === 'Yıllık' ? '7' : '3';
-      document.getElementById('cta-btn').textContent = trialDays + ' Gün Ücretsiz Dene';
+      // NEXUS+ henüz satışta değil (mağaza ödemesi bağlanınca açılacak); tüm temel özellikler ücretsiz.
+      document.getElementById('cta-btn').textContent = 'Yakında';
     }
   }
 
@@ -218,7 +218,9 @@
       window.location.href = 'stitch-billing.html';
       return;
     }
-    openCheckout();
+    if (typeof nexusInfo === 'function') {
+      nexusInfo('NEXUS+ yakında', 'NEXUS+ henüz satışta değil. Cihaz ekleme, kontrol panelleri, senaryolar ve NEXUS AI şu an tamamen ücretsiz; abonelik açıldığında buradan haber vereceğiz.');
+    }
   }
 
   function openCheckout() {
@@ -228,7 +230,7 @@
     document.getElementById('co-plan').textContent = 'NEXUS+ ' + selectedPlan;
     document.getElementById('co-trial').textContent = trialDays + ' gün';
     document.getElementById('co-price').textContent = selectedPlan === 'Yıllık' ? '₺3999,99/yıl' : '₺499,99/ay';
-    document.getElementById('co-date').textContent = firstCharge.toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('co-date').textContent = firstCharge.toLocaleDateString((window.nexusLocale || 'tr-TR'), { year: 'numeric', month: 'long', day: 'numeric' });
     document.getElementById('checkout-sheet').classList.remove('hidden');
   }
 

@@ -57,6 +57,7 @@
 </style>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="setup-codes.js"></script>
 <script src="data.js"></script>
 </head>
 <body>
@@ -154,7 +155,7 @@
             </div>
             <div>
               <h3 class="text-sm font-semibold text-white/90">Otomatik Algılama</h3>
-              <p class="text-[13px] leading-relaxed text-white/60 mt-1">NEXUS, çerçeve içindeki kodu otomatik açlgılar ve eşleşmeyi başlatır.</p>
+              <p class="text-[13px] leading-relaxed text-white/60 mt-1">NEXUS, çerçeve içindeki kodu otomatik algılar ve eşleşmeyi başlatır.</p>
             </div>
           </div>
           <div class="flex gap-4">
@@ -163,7 +164,7 @@
             </div>
             <div>
               <h3 class="text-sm font-semibold text-white/90">Işık ve Odak</h3>
-              <p class="text-[13px] leading-relaxed text-white/60 mt-1">Işık yetersizse feÖneri açın. Kod bulanıksa cihazı sabit tutarak yeniden hizalayın.</p>
+              <p class="text-[13px] leading-relaxed text-white/60 mt-1">Işık yetersizse feneri açın. Kod bulanıksa cihazı sabit tutarak yeniden hizalayın.</p>
             </div>
           </div>
           <div class="flex gap-4">
@@ -208,28 +209,26 @@
       window.location.href = 'stitch-setup-code.html';
     }
 
-    function appendPairedDeviceFromSetupCode(rawValue) {
-      if (typeof nexusGetItem !== 'function' || typeof nexusSetItem !== 'function') return false;
-      const digits = String(rawValue || '').replace(/\D/g, '');
-      if (digits.length < 8) return false;
-      let paired = [];
-      try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch (e) {}
-      if (!Array.isArray(paired)) paired = [];
-      const name = 'Cihaz ·' + digits.slice(-4);
-      if (!paired.some(device => device && device.name === name)) {
-        paired.push({ name, icon: 'cpu' });
-        nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
-      }
-      return true;
-    }
-
+    // Okunan QR içeriği: yerel ağ adresiyse eşleştirme ekranında cihaz gerçekten tanınır;
+    // Matter/HomeKit/Wi-Fi kodlarında sahte cihaz eklenmez, açıklama gösterilir.
     function handleDetectedCode(rawValue) {
-      if (scanLocked) return;
-      if (!appendPairedDeviceFromSetupCode(rawValue)) return;
+      if (scanLocked || !rawValue) return;
+      var parsed = window.nexusParseSetupCode ? nexusParseSetupCode(rawValue) : { type: 'unknown' };
       scanLocked = true;
-      setScanStatus('Kurulum kodu algılandı. Cihaz ekleniyor...');
       stopCamera();
-      window.location.href = 'stitch-home.html';
+      if (parsed.type === 'lan') {
+        setScanStatus('Yerel ağ adresi bulundu: ' + parsed.host + '. Cihaz tanınıyor…');
+        nexusOpenLanPairing(parsed.host);
+        return;
+      }
+      var msg = nexusSetupCodeMessage(parsed.type);
+      setScanStatus(msg.title + ' — ' + msg.text);
+      var host = document.getElementById('scan-status');
+      if (host && !document.getElementById('scan-lan-btn')) {
+        host.insertAdjacentHTML('afterend', '<div style="display:flex;gap:8px;justify-content:center;margin-top:12px">' +
+          '<button id="scan-lan-btn" type="button" onclick="nexusOpenLanPairing()" style="min-height:44px;padding:0 18px;border-radius:9999px;background:#4C7DFF;color:#fff;font-weight:700;font-size:14px">Yerel ağdan ekle</button>' +
+          '<button type="button" onclick="location.reload()" style="min-height:44px;padding:0 18px;border-radius:9999px;background:rgba(255,255,255,.15);color:#fff;font-weight:700;font-size:14px">Tekrar tara</button></div>');
+      }
     }
 
     async function initCameraPreview() {
@@ -292,7 +291,7 @@
       try {
         const capabilities = videoTrack.getCapabilities ? videoTrack.getCapabilities() : {};
         if (!capabilities.torch) {
-          setScanStatus('Bu cihazı veya bağlantı torch desteği sunmuyor.');
+          setScanStatus('Bu cihaz veya bağlantı fener desteği sunmuyor.');
           disableTorch('Fener Desteklenmiyor');
           return;
         }

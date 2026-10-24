@@ -307,3 +307,32 @@ html.dark .dark\:text-\[\#93b4ff\] { color: #93b4ff; }
 
 /* Kapalı (ekranın üstüne itilmiş) üst panellerin gölgesi ekrana sızmasın */
 .fixed.-translate-y-full { box-shadow: none !important; }
+
+/* ---------- Ekran geçişlerinde sabit üst başlık ritmi ----------
+   Ana sekmeler pt-12 (48px) ile başlıyor, bazı sayfalar pt-14 (56px) idi;
+   sekme değişince tüm içerik 8px aşağı/yukarı zıplıyordu. Tüm başlıklar
+   telefonda aynı 48px üst boşluğa iner. Masaüstünde nexus-desktop.css
+   bu değeri 32px'e sabitler (oradaki kural !important ve daha güçlü). */
+header.pt-14 { padding-top: 3rem; padding-bottom: 1rem; }
+
+/* ---------- Tutarlı odak göstergesi ----------
+   Tarayıcının varsayılan keskin odak çizgileri yerine tüm form alanlarında
+   aynı ince marka halkası gösterilir (klavye erişilebilirliği korunur).
+   Dekoratif (tıklanınca sayfaya götüren) AI arama alanında halka gösterilmez. */
+input:focus, textarea:focus, select:focus { outline: none; }
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 125, 255, 0.30);
+  border-color: rgba(76, 125, 255, 0.65) !important;
+}
+html.dark input:focus-visible, html.dark textarea:focus-visible, html.dark select:focus-visible {
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35);
+  border-color: rgba(96, 165, 250, 0.65) !important;
+}
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
+  outline: 2px solid rgba(76, 125, 255, 0.70);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+/* AI arama kutusu süslemedir: tıklama üstteki bağlantıya gider, halka çıkmasın */
+.custom-gradient-border input:focus-visible { box-shadow: none; border-color: transparent !important; }

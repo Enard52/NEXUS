@@ -234,16 +234,11 @@
         <div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">
           <!-- Dinamik Tıkla ve Çalıştır kartları buraya eklenecek -->
         </div>
-        <div id="empty-clickrun" class="rounded-[2rem] bg-white border border-slate-100 shadow-[0_8px_28px_rgba(15,23,42,0.05)] p-6 text-center">
-          <div class="w-16 h-16 bg-[#4C7DFF]/10 text-[#4C7DFF] rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          </div>
-          <h4 class="text-slate-900 font-extrabold text-lg">Senaryo hazır değil</h4>
-          <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Üstteki alana ne yapmak istediğini yaz ya da manuel olarak bir senaryo seç.</p>
-          <a href="stitch-skills.html?type=clickrun" class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-2xl font-bold active:bg-slate-50 transition-colors">
-            <i class="w-5 h-5" data-lucide="plus"></i>
-            Hızlı Oluştur
-          </a>
+        <div id="empty-clickrun" class="nx-empty">
+          <div class="nx-empty__icon" aria-hidden="true"><i data-lucide="zap"></i></div>
+          <p class="nx-empty__title">Senaryo hazır değil</p>
+          <p class="nx-empty__text">Üstteki alana ne yapmak istediğini yaz ya da manuel olarak bir senaryo seç.</p>
+          <a href="stitch-skills.html?type=clickrun" class="nx-empty__cta"><i data-lucide="plus" class="w-4 h-4"></i> Hızlı Oluştur</a>
         </div>
       </div>
       <!-- END: Tıkla ve çalıştır Tab -->
@@ -258,16 +253,11 @@
         <div class="space-y-4" id="custom-automations-container">
           <!-- Dinamik Otomasyon kartları buraya eklenecek -->
         </div>
-        <div id="empty-automation" class="rounded-[2rem] bg-white border border-slate-100 shadow-[0_8px_28px_rgba(15,23,42,0.05)] p-6 text-center">
-          <div class="w-16 h-16 bg-[#4C7DFF]/10 text-[#4C7DFF] rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          </div>
-          <h4 class="text-slate-900 font-extrabold text-lg">Otomasyon hazır değil</h4>
-          <p class="text-sm text-slate-500 mt-2 mb-5 leading-relaxed">Üstteki alana otomasyonu yaz veya tetikleyici seçerek oluştur.</p>
-          <a href="stitch-skills.html?type=automation" class="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-2xl font-bold active:bg-slate-50 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            Yeni Otomasyon
-          </a>
+        <div id="empty-automation" class="nx-empty">
+          <div class="nx-empty__icon" aria-hidden="true"><i data-lucide="calendar-clock"></i></div>
+          <p class="nx-empty__title">Otomasyon hazır değil</p>
+          <p class="nx-empty__text">Üstteki alana otomasyonu yaz veya tetikleyici seçerek oluştur.</p>
+          <a href="stitch-skills.html?type=automation" class="nx-empty__cta"><i data-lucide="plus" class="w-4 h-4"></i> Yeni Otomasyon</a>
         </div>
       </div>
       <!-- END: Otomasyon Tab -->

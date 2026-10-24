@@ -37,15 +37,14 @@
       ["panels", "Kontrol Panelleri", "stitch-panels.html", "sliders-horizontal"]
     ] },
     { group: "Ev", items: [
-      ["pair", "Cihaz ekle", "stitch-pair.html", "circle-plus"],
-      ["energy", "Enerji", "stitch-energy.html", "zap"],
-      ["household", "Hane", "stitch-household.html", "users"],
-      ["messages", "Mesajlar", "stitch-messages.html", "bell"]
+      ["pair", "Cihaz Ekle", "stitch-pair.html", "circle-plus"],
+      ["energy", "AI Enerji Tasarrufu", "stitch-energy.html", "zap"],
+      ["household", "Aile", "stitch-household.html", "users"],
+      ["messages", "Mesaj Merkezi", "stitch-messages.html", "bell"]
     ] },
     { group: "Hesap", items: [
       ["profile", "Profil", "stitch-profile.html", "user"],
-      ["settings", "Ayarlar", "stitch-settings.html", "settings"],
-      ["plus", "NEXUS+", "stitch-plus.html", "sparkles"]
+      ["settings", "Ayarlar", "stitch-settings.html", "settings"]
     ] }
   ];
 
@@ -57,7 +56,7 @@
     "stitch-cards.html": "home", "stitch-map.html": "home", "stitch-lighting-master.html": "discover", "stitch-cleaning-start.html": "discover",
     "stitch-air-quality.html": "discover", "stitch-room-comfort.html": "discover", "stitch-movie-mode.html": "discover", "stitch-multi-video.html": "discover",
     "stitch-night-security.html": "discover", "stitch-ai-protect.html": "discover", "stitch-home-health.html": "discover",
-    "stitch-user-info.html": "profile", "stitch-account-security.html": "profile", "stitch-menu.html": "profile", "stitch-billing.html": "plus",
+    "stitch-user-info.html": "profile", "stitch-account-security.html": "profile", "stitch-menu.html": "profile",
     "stitch-feedback.html": "settings", "stitch-privacy-mode.html": "settings", "stitch-instant-notifications.html": "settings",
     "stitch-device-updates.html": "settings", "stitch-dnd.html": "settings", "stitch-logs.html": "settings", "stitch-services.html": "settings",
     "stitch-homekit.html": "settings", "stitch-siri-shortcuts.html": "settings", "stitch-carplay.html": "settings", "stitch-web.html": "settings",
@@ -117,8 +116,14 @@
     aside.className = "nx-side";
     aside.innerHTML = html;
     document.body.insertBefore(aside, document.body.firstChild);
+    // Menü sabit bir yüzeydir: sayfa değişse de kaydırma konumu korunur.
+    try { aside.scrollTop = +sessionStorage.getItem("nxSideScroll") || 0; } catch (e) {}
+    aside.addEventListener("scroll", function () {
+      try { sessionStorage.setItem("nxSideScroll", aside.scrollTop); } catch (e) {}
+    }, { passive: true });
     document.getElementById("nx-side-theme").addEventListener("click", function () {
-      var on = get("nexusDarkMode") === "true";
+      var on = document.documentElement.classList.contains("dark");
+      set("nexusThemeSystem", "false");
       set("nexusDarkMode", on ? "false" : "true");
       window.dispatchEvent(new Event("themeChanged"));
       var btn = document.getElementById("nx-side-theme");
@@ -211,5 +216,46 @@
     var btn = document.getElementById("nx-side-theme");
     if (btn) { btn.innerHTML = '<i data-lucide="' + (root.classList.contains("dark") ? "sun" : "moon") + '"></i>'; if (window.lucide) lucide.createIcons(); }
   });
+  // ---- Masaüstüne özel: klavye kısayolları ve fare ipuçları (telefonda çalışmaz) ----
+  function typingTarget(t) { return !!t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)); }
+  function visible(el) {
+    var cs = getComputedStyle(el);
+    return cs.display !== "none" && cs.visibility !== "hidden" && cs.opacity !== "0" && cs.pointerEvents !== "none" && el.getBoundingClientRect().width > 0;
+  }
+  function closeTopSheet() {
+    var bd = document.querySelectorAll('[id$="backdrop"]');
+    for (var i = 0; i < bd.length; i++) {
+      if (bd[i].classList.contains("hidden") || !visible(bd[i])) continue;
+      bd[i].click();
+      return true;
+    }
+    return false;
+  }
+  function addTips() {
+    if (!isDesk()) return;
+    var iconBtns = document.querySelectorAll("a[aria-label], button[aria-label]");
+    for (var i = 0; i < iconBtns.length; i++) if (!iconBtns[i].title) iconBtns[i].title = iconBtns[i].getAttribute("aria-label");
+    var links = document.querySelectorAll(".nx-side-link");
+    for (var j = 0; j < links.length && j < 5; j++) links[j].title = links[j].textContent.trim() + " (Alt+" + (j + 1) + ")";
+  }
+  window.addEventListener("load", function () { setTimeout(addTips, 400); });
+  document.addEventListener("keydown", function (e) {
+    if (!isDesk() || e.defaultPrevented) return;
+    if (e.key === "Escape") { if (closeTopSheet()) e.preventDefault(); return; }
+    if (e.ctrlKey || e.metaKey) return;
+    if (e.altKey && /^[1-5]$/.test(e.key)) {
+      var link = document.querySelectorAll(".nx-side-link")[Number(e.key) - 1];
+      if (link && !link.classList.contains("is-active")) { e.preventDefault(); location.href = link.getAttribute("href"); }
+      return;
+    }
+    if (e.key === "/" && !e.altKey && !typingTarget(e.target)) {
+      var fields = document.querySelectorAll('input[type="text"], input[type="search"], input:not([type]), textarea');
+      for (var k = 0; k < fields.length; k++) {
+        if (!visible(fields[k]) || fields[k].disabled || fields[k].readOnly) continue;
+        e.preventDefault(); fields[k].focus(); return;
+      }
+    }
+  });
+
   window.nexusLayout = { isDesk: isDesk, isTab: isTab, isMobileDevice: MOBILE_DEVICE, refresh: function () { classifyFixed(); transferBackground(); } };
 })();

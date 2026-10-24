@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
+<script>(function(){try{var L=location,p=L.pathname,tr=/^\/tr(\/|$)/.test(p);
+var q=new URLSearchParams(L.search).get("lang"),s=null;try{s=localStorage.getItem("nx-lang")}catch(e){}
+if(q==="tr"||q==="en"){s=q;try{localStorage.setItem("nx-lang",q)}catch(e){}}
+function d(){var a=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]).filter(Boolean);
+for(var i=0;i<a.length;i++){var x=String(a[i]).replace("_","-").split("-");if(i===0&&/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/i.test(x[0]))return"tr";
+for(var j=1;j<x.length;j++)if(/^(TR|AZ|KZ|UZ|KG|TM)$/i.test(x[j]))return"tr"}
+var z="";try{z=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+if(/^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/.test(z))return"tr";
+for(var k=1;k<a.length;k++)if(/^tr$/i.test(String(a[k]).split(/[-_]/)[0]))return"tr";return"en"}
+if(!s&&tr)return;var w=s||d();var f=p.replace(/^\/tr(\/|$)/,"/").replace(/^\/+/,"");if(f==="index.html")f="";
+var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash)}catch(e){}})();</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Privacy Policy — NEXUS</title>
@@ -1076,6 +1087,9 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     body {
       margin: 0;
       color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background:
         radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 32rem),
         radial-gradient(circle at 90% 12%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28rem),
@@ -1253,6 +1267,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       border-radius: 14px;
       font-weight: 700;
       font-size: 14px;
+      white-space: nowrap;
       text-decoration: none;
       cursor: pointer;
       transition: transform .22s var(--ease), box-shadow .22s ease, border-color .22s ease, background .22s ease;
@@ -1276,7 +1291,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .button-small { min-height: 42px; padding: 0 16px; font-size: 13px; }
     .button svg { width: 17px; height: 17px; }
 
-    main { overflow: clip; }
+    main { overflow: clip; flex: 1; }
     .hero {
       position: relative;
       min-height: 880px;
@@ -1352,7 +1367,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     }
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 12px;
       margin-top: 34px;
     }
@@ -1464,13 +1479,12 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       align-items: center;
       gap: 10px;
       min-width: 132px;
-      max-width: 220px;
+      max-width: 260px;
       padding: 11px 13px;
       border: 1px solid var(--border-strong);
       border-radius: 16px;
-      background: color-mix(in srgb, var(--surface) 78%, transparent);
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
       box-shadow: var(--shadow-md), inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
-      backdrop-filter: blur(18px);
       transition: transform .24s var(--ease), border-color .24s ease;
       z-index: 5;
     }
@@ -1500,7 +1514,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 140px;
+      max-width: 190px;
     }
     .node::after {
       content: "";
@@ -1843,8 +1857,15 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       position: relative;
       padding: 140px 0;
       scroll-margin-top: 112px;
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 700px;
     }
-    .section-tight { padding: 105px 0; }
+    .section-tight {
+      position: relative;
+      padding: 105px 0;
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 700px;
+    }
     .section-kicker {
       display: inline-flex;
       align-items: center;
@@ -2521,6 +2542,11 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       gap: 60px;
       padding-bottom: 44px;
     }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
     .footer-brand p { max-width: 360px; margin: 16px 0 0; color: var(--muted); font-size: 13px; }
     .footer-column h3 {
       margin: 0 0 14px;
@@ -2596,7 +2622,8 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       .manifesto-grid { grid-template-columns: 1fr; gap: 48px; }
       .manifesto-sticky { position: static; }
       .feature-card.large, .feature-card.tall { grid-column: span 6; }
-      .feature-card.third { grid-column: span 4; }
+      .feature-card.third { grid-column: span 6; }
+      .feature-card.third:last-child { grid-column: 1 / -1; }
       .mobile-companion { grid-template-columns: 1fr; }
       .faq-layout { grid-template-columns: 1fr; gap: 44px; }
     }
@@ -2869,7 +2896,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     }
     .integration-ambient-one { left: 8%; background: var(--accent); transform: translateY(-50%); }
     .integration-ambient-two { right: 8%; background: var(--primary); transform: translateY(-50%); }
-    .integrations-track { gap: 16px; animation-duration: 36s; }
+    .integrations-track { gap: 16px; animation-duration: 36s; transform: translateZ(0); will-change: transform; }
     .integration-pill {
       position: relative;
       min-width: 230px;
@@ -2881,9 +2908,8 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       border-color: color-mix(in srgb, var(--border-strong) 72%, transparent);
       border-radius: 22px;
       background:
-        linear-gradient(145deg, color-mix(in srgb, var(--surface) 86%, transparent), color-mix(in srgb, var(--surface) 58%, transparent));
+        linear-gradient(145deg, color-mix(in srgb, var(--surface) 94%, transparent), color-mix(in srgb, var(--surface) 86%, transparent));
       box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent), 0 12px 35px rgba(0,0,0,.12);
-      backdrop-filter: blur(20px);
       transition: transform .25s var(--ease), border-color .25s ease, box-shadow .25s ease;
     }
     .integration-pill::before {
@@ -3126,6 +3152,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .download-windows::after { background: radial-gradient(circle, rgba(0,164,239,.18), transparent 68%); }
     .download-macos::after { background: radial-gradient(circle, color-mix(in srgb, var(--text) 11%, transparent), transparent 68%); }
     .download-linux::after { background: radial-gradient(circle, color-mix(in srgb, var(--primary) 15%, transparent), transparent 68%); }
+    .download-android::after { background: radial-gradient(circle, rgba(61,220,132,.16), transparent 68%); }
     .download-card-grid {
       position: absolute;
       inset: 0;
@@ -3149,6 +3176,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .platform-icon-windows { border-color: rgba(0,164,239,.24); background: rgba(0,164,239,.09); }
     .platform-icon-macos { background: color-mix(in srgb, var(--text) 6%, var(--surface)); }
     .platform-icon-linux { background: color-mix(in srgb, var(--primary) 7%, var(--surface)); }
+    .platform-icon-android { border-color: rgba(61,220,132,.26); background: rgba(61,220,132,.10); }
+    .os-logo-android { color: #3DDC84; width: 26px; height: 26px; }
+    .apk-link { display: block; margin-top: .55rem; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .apk-link:hover { color: var(--text); }
     .os-logo, .os-logo-img { width: 27px; height: 27px; object-fit: contain; }
     .os-fallback { font-size: 20px; }
     .platform-kicker {
@@ -3390,7 +3421,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       word-break: break-word;
     }
 
-    /* Pricing is presented as three hardware-like intelligence modules rather than geÖneric SaaS cards. */
+    /* Pricing is presented as three hardware-like intelligence modules rather than generic SaaS cards. */
     .pricing-grid {
       grid-template-columns: .94fr 1.12fr .94fr;
       gap: 18px;
@@ -3522,6 +3553,9 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .platform-watermark .os-logo { width: 132px; height: 132px; }
     .download-windows .platform-watermark { opacity: .045; }
     .download-linux .platform-watermark { opacity: .055; }
+    [data-theme="light"] .platform-watermark { opacity: .08; }
+    [data-theme="light"] .download-windows .platform-watermark { opacity: .12; }
+    [data-theme="light"] .download-linux .platform-watermark { opacity: .15; }
     .platform-specs {
       display: flex;
       flex-wrap: wrap;
@@ -4541,17 +4575,17 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       z-index: 1;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+      gap: 6px;
       margin-top: 11px;
     }
     .protocol-tile {
       min-width: 0;
-      min-height: 58px;
+      min-height: 52px;
       display: grid;
-      grid-template-columns: 34px minmax(0, 1fr) auto;
+      grid-template-columns: 28px minmax(0, 1fr) auto;
       align-items: center;
-      gap: 9px;
-      padding: 9px;
+      gap: 7px;
+      padding: 6px 8px;
       border: 1px solid color-mix(in srgb, var(--protocol-color) 17%, var(--border));
       border-radius: 14px;
       background:
@@ -4568,28 +4602,26 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
         color-mix(in srgb, var(--surface) 88%, transparent);
     }
     .protocol-mark {
-      width: 34px;
-      height: 34px;
+      width: 28px;
+      height: 28px;
       display: grid;
       place-items: center;
       border: 1px solid color-mix(in srgb, var(--protocol-color) 24%, var(--border));
-      border-radius: 10px;
+      border-radius: 9px;
       color: var(--protocol-color);
       background: color-mix(in srgb, var(--protocol-color) 7%, var(--bg));
       box-shadow: 0 6px 16px color-mix(in srgb, var(--protocol-color) 8%, transparent);
+      flex-shrink: 0;
     }
     [data-theme="light"] .protocol-mark {
-      color: color-mix(in srgb, var(--protocol-color) 45%, var(--text));
+      color: var(--text);
     }
     .protocol-mark svg {
-      width: 19px;
-      height: 19px;
+      width: 17px;
+      height: 17px;
       overflow: visible;
       fill: currentColor;
-      stroke: currentColor;
-      stroke-width: 1.7;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      stroke: none;
     }
     .protocol-mark svg path,
     .protocol-mark svg circle { vector-effect: non-scaling-stroke; }
@@ -4599,7 +4631,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       overflow: hidden;
       color: color-mix(in srgb, var(--text) 92%, transparent);
       font-family: var(--font);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
       line-height: 1.15;
       text-overflow: ellipsis;
@@ -4607,15 +4639,15 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     }
     .protocol-name small {
       display: block;
-      margin-top: 3px;
-      overflow: hidden;
+      margin-top: 2px;
+      overflow: visible;
       color: var(--muted);
       font-family: var(--font-mono);
       font-size: 6.5px;
-      line-height: 1.2;
+      line-height: 1.25;
       letter-spacing: .02em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      white-space: normal;
+      word-break: break-word;
     }
     .protocol-state {
       width: 7px;
@@ -4988,11 +5020,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       background:
         linear-gradient(145deg, color-mix(in srgb, white 4.5%, transparent), transparent 34%),
         radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--review-accent, var(--primary)) 14%, transparent), transparent 38%),
-        color-mix(in srgb, var(--surface) 80%, transparent);
+        color-mix(in srgb, var(--surface) 92%, transparent);
       box-shadow: 0 20px 55px rgba(0,0,0,.17), inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
       transform: translateZ(0);
       transition: transform .32s var(--ease, ease), border-color .32s ease, box-shadow .32s ease;
-      backdrop-filter: blur(18px);
     }
     .review-card::before {
       content: "N";
@@ -5181,7 +5212,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 
 
 
-    /* ── V8 capability density pass: Nexus AI, automation, response diagnostics ── */
+    /* ── V8 capability density pass: NEXUS AI, automation, response diagnostics ── */
     .nexus-ai-card,
     .automation-card,
     .response-card { overflow: hidden; }
@@ -5360,15 +5391,15 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       background: color-mix(in srgb, var(--surface) 62%, transparent);
       font-size: 7px;
     }
-    .automation-logic { display: grid; grid-template-columns: 1fr 14px 1fr 14px 1fr; align-items: stretch; gap: 3px; }
+    .automation-logic { display: grid; grid-template-columns: 1fr 10px 1fr 10px 1fr; align-items: stretch; gap: 3px; margin-top: 10px; }
     .logic-node {
       min-width: 0;
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: 18px minmax(0, 1fr);
       align-items: center;
-      gap: 7px;
-      min-height: 54px;
-      padding: 8px;
+      gap: 5px;
+      min-height: 60px;
+      padding: 5px;
       border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
       border-radius: 12px;
       background: color-mix(in srgb, var(--surface) 70%, transparent);
@@ -5376,20 +5407,39 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .logic-node > i {
       display: grid;
       place-items: center;
-      width: 23px;
-      height: 23px;
-      border-radius: 8px;
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
       color: var(--primary);
       background: color-mix(in srgb, var(--primary) 11%, transparent);
       font-family: var(--font-mono);
-      font-size: 7px;
+      font-size: 6.5px;
       font-style: normal;
       font-weight: 800;
+      flex-shrink: 0;
     }
+    .logic-node > i svg { width: 12px; height: 12px; }
     .logic-ai { border-color: color-mix(in srgb, var(--primary) 36%, var(--border)); box-shadow: inset 0 0 22px color-mix(in srgb, var(--primary) 5%, transparent); }
     .logic-ai > i { color: white; background: var(--gradient); }
-    .logic-node span { min-width: 0; display: grid; gap: 2px; }
-    .logic-node strong { overflow: hidden; color: color-mix(in srgb, var(--text) 82%, transparent); font-size: 8px; line-height: 1.25; }
+    .logic-node span { min-width: 0; display: grid; gap: 1px; }
+    .logic-node small {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 6px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      overflow: visible;
+      word-break: break-word;
+    }
+    .logic-node strong {
+      overflow: visible;
+      word-break: break-word;
+      color: color-mix(in srgb, var(--text) 82%, transparent);
+      font-size: 7.5px;
+      line-height: 1.2;
+    }
     .logic-link { position: relative; display: grid; place-items: center; }
     .logic-link::before { content: ""; width: 100%; height: 1px; background: color-mix(in srgb, var(--primary) 40%, transparent); }
     .logic-link i { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: logic-travel 1.9s linear infinite; }
@@ -5435,26 +5485,28 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
     .response-summary > small { color: var(--primary); font-family: var(--font-mono); font-size: 7px; font-weight: 800; letter-spacing: .12em; }
     .response-summary strong { font-size: 13px; }
     .response-summary p { margin: 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
-    .response-route { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 5px; margin: 10px 0; }
+    .response-route { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 4px; margin: 10px 0; }
     .response-route > span {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
       min-height: 31px;
+      padding: 0 4px;
+      min-width: 0;
       border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
       border-radius: 10px;
       background: color-mix(in srgb, var(--surface) 64%, transparent);
     }
-    .response-route > span i { display: grid; place-items: center; width: 17px; height: 17px; border-radius: 6px; color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); font-family: var(--font-mono); font-size: 6px; font-style: normal; font-weight: 800; }
+    .response-route > span i { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 5px; color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); font-family: var(--font-mono); font-size: 6px; font-style: normal; font-weight: 800; flex-shrink: 0; }
     .response-route .route-ai { border-color: color-mix(in srgb, var(--primary) 38%, var(--border)); }
     .response-route .route-ai i { color: white; background: var(--gradient); }
-    .response-route small { color: var(--muted); font-family: var(--font-mono); font-size: 6px; font-weight: 800; letter-spacing: .06em; }
-    .response-route > b { color: var(--primary); font-size: 10px; }
-    .response-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-    .response-metrics span { display: grid; gap: 2px; padding: 7px; border: 1px solid color-mix(in srgb, var(--border) 82%, transparent); border-radius: 10px; background: color-mix(in srgb, var(--surface) 58%, transparent); }
-    .response-metrics small { color: var(--muted); font-size: 7px; }
-    .response-metrics strong { color: var(--text); font-size: 9px; }
+    .response-route small { color: var(--muted); font-family: var(--font-mono); font-size: 6px; font-weight: 800; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .response-route > b { color: var(--primary); font-size: 10px; flex-shrink: 0; }
+    .response-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
+    .response-metrics span { display: grid; gap: 2px; padding: 6px; border: 1px solid color-mix(in srgb, var(--border) 82%, transparent); border-radius: 10px; background: color-mix(in srgb, var(--surface) 58%, transparent); min-width: 0; }
+    .response-metrics small { color: var(--muted); font-size: 7px; word-break: break-word; }
+    .response-metrics strong { color: var(--text); font-size: 9px; white-space: nowrap; }
     .response-chart { position: relative; margin-top: 9px; padding-top: 17px; border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent); }
     .response-chart > span,
     .response-chart > b { position: absolute; top: 5px; font-family: var(--font-mono); font-size: 6px; letter-spacing: .07em; }
@@ -5526,6 +5578,23 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       object-fit: contain;
       display: block;
     }
+
+    /* ── Downloads: desktop now, mobile coming soon ── */
+    .downloads-grid.downloads-mobile { grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+    .download-card.is-soon { opacity: .82; }
+    .download-card.is-soon:hover { transform: none; }
+    .download-card .is-disabled,
+    .download-card .is-disabled:hover { opacity: .6; cursor: not-allowed; pointer-events: none; transform: none; box-shadow: none; }
+    .download-note { display: block; margin-top: .6rem; font-size: 11.5px; line-height: 1.45; color: var(--muted); text-align: center; }
+    .downloads-meta { margin: 18px 0 0; text-align: center; font-size: 13px; }
+    .downloads-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .downloads-meta a:hover { color: var(--text); }
+    .early-access-actions { margin: 26px 0 0; display: flex; justify-content: center; }
+    @media (max-width: 800px) {
+      .downloads-grid.downloads-mobile { grid-template-columns: 1fr; }
+    }
+    .price.price-soon { font-size: 34px; letter-spacing: -.02em; }
+    .price-card .is-disabled { opacity: .6; cursor: not-allowed; pointer-events: none; }
 .legal-content { max-width: 720px; margin: 0 auto; padding: 100px 24px 60px; }
 .legal-content h1 { font-size: 36px; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--text); }
 .legal-content h2 { font-size: 24px; margin: 40px 0 12px; color: var(--text); }
@@ -5536,6 +5605,114 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 </head>
 <body>
 
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="brand-atmosphere" aria-hidden="true">
+    <span class="brand-glyph brand-glyph-a"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-ga" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-ga" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-ga)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-ga)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-glyph brand-glyph-b"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-gb" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-gb" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-gb)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-gb)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-glyph brand-glyph-c"><svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="nxlogo-gc" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+      </linearGradient>
+      <linearGradient id="nxsheen-gc" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-gc)"/>
+    <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-gc)"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+    <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></span>
+    <span class="brand-signal brand-signal-a"></span>
+    <span class="brand-signal brand-signal-b"></span>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-shell" id="nav-shell">
+        <a class="brand" href="/" aria-label="NEXUS home">
+          <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img">
+            <defs>
+              <linearGradient id="nxlogo-header" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+              </linearGradient>
+              <linearGradient id="nxsheen-header" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo-header)"/>
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen-header)"/>
+            <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+            <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>NEXUS</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a class="nav-link" href="#features">Features</a>
+          <a class="nav-link" href="#how">How it works</a>
+          <a class="nav-link" href="#integrations">Integrations</a>
+          <a class="nav-link" href="#pricing">Pricing</a>
+          <a class="nav-link" href="#downloads">Download</a>
+          <div class="mobile-nav-actions">
+            <a class="mobile-nav-cta mobile-nav-login" href="#downloads">Open account</a>
+            <a class="mobile-nav-cta mobile-nav-download" href="#downloads">Download NEXUS</a>
+          </div>
+        </nav>
+
+        <div class="nav-actions">
+          <div class="language" id="language">
+            <button class="language-button" id="language-button" type="button" aria-expanded="false" aria-haspopup="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>EN</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="language-menu" role="menu">
+              <a class="active" href="?lang=en">English</a>
+              <a href="?lang=tr">Türkçe</a>
+            </div>
+          </div>
+
+          <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle color theme">
+            <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+            <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a class="button button-primary button-small" href="#downloads">Try NEXUS</a>
+          <button class="menu-button" id="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
 <main class="legal-content main-content">
 <h1>Privacy Policy</h1>
 <p class="legal-updated">Last updated: July 2026</p>
@@ -5548,11 +5725,11 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 <h3>Third-Party Integrations</h3>
 <p>When you choose to connect third-party smart home devices (e.g., Philips Hue, Sonos, Zigbee devices), NEXUS acts as a local hub. We do not share your NEXUS data with these manufacturers. However, these third-party devices may still communicate with their respective manufacturers' servers according to their own privacy policies. We encourage you to review the privacy practices of the devices you connect.</p>
 <h3>Analytics and Telemetry</h3>
-<p>To improve our services, we use privacy-respecting, cookie-free analytics on our website. These tools collect only aggregate page view counts and non-identifiable system metadata (such as geÖneric OS version metrics). No personal identifiers, IP addresses, or device-specific fingerprints are tracked or stored.</p>
+<p>To improve our services, we use privacy-respecting, cookie-free analytics on our website. These tools collect only aggregate page view counts and non-identifiable system metadata (such as generic OS version metrics). No personal identifiers, IP addresses, or device-specific fingerprints are tracked or stored.</p>
 <h3>Changes to Privacy Policy</h3>
 <p>We may update this Privacy Policy periodically to reflect changes in our practices or relevant laws. We will notify you of any significant updates via the NEXUS application interface.</p>
 <h3>Contact Us</h3>
-<p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our privacy team at <a href="mailto:privacy@nexus-ai.example.com">privacy@nexus-ai.example.com</a>.</p>
+<p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our privacy team at <a href="mailto:privacy@nexus-ai.app">privacy@nexus-ai.app</a>.</p>
 </main>
 
 
@@ -5581,9 +5758,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
         </div>
         <div class="footer-column">
           <h3>Platforms</h3>
-          <a href="#desktop">Windows</a>
-          <a href="#desktop">macOS</a>
-          <a href="#desktop">Linux</a>
+          <a href="#downloads">Windows</a>
+          <a href="#downloads">macOS</a>
+          <a href="#downloads">Linux</a>
+          <a href="#mobile-apps">Android & iOS (soon)</a>
         </div>
         <div class="footer-column">
           <h3>Company & legal</h3>
@@ -5646,10 +5824,10 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
       }
 
       var commands = [
-        ""Set the house for movie night."",
-        ""Make downstairs comfortable."",
-        ""Lock up and switch everything off."",
-        ""Start my focus routine.""
+        "“Set the house for movie night.”",
+        "“Make downstairs comfortable.”",
+        "“Lock up and switch everything off.”",
+        "“Start my focus routine.”"
       ];
       var commandIndex = 0;
       if (commandText && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

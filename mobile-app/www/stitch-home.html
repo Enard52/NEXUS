@@ -64,6 +64,8 @@
   </style>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
 <script src="sheet-gestures.js"></script>
@@ -285,11 +287,12 @@
           .then(function(res2) { return res2.json(); })
           .then(function(data2) {
             if (data2.current_weather) {
-              var temp = Math.round(data2.current_weather.temperature);
+              var tF = (typeof nexusGetItem === 'function' && nexusGetItem('nexusTempUnit') === 'F');
+              var temp = Math.round(tF ? data2.current_weather.temperature * 9 / 5 + 32 : data2.current_weather.temperature);
               var desc = describeWeather(data2.current_weather.weathercode);
               // Seçilen konumun adını da göster (kısaltılmış)
               var shortLoc = (loc || '').split(',')[0].trim();
-              weatherEl.textContent = temp + '°C ' + desc + (shortLoc ? ' · ' + shortLoc : '');
+              weatherEl.textContent = temp + (tF ? '°F ' : '°C ') + desc + (shortLoc ? ' · ' + shortLoc : '');
             } else {
               weatherEl.textContent = 'Veri alınamadı';
             }

@@ -14,6 +14,8 @@
   "use strict";
 
   var DEFAULT_TIMEOUT_MS = 2500;
+  // Ağ taraması sırasında cevap vermeyen adresler hızlı elensin diye kısaltılır (tarama bitince sıfırlanır).
+  var scanTimeoutMs = 0;
   var transport = null;
 
   function setTransport(fn) {
@@ -39,7 +41,7 @@
 
   function request(opts) {
     if (transport) return transport(opts);
-    var timeout = opts.timeoutMs || DEFAULT_TIMEOUT_MS;
+    var timeout = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
     var headers = opts.headers || (opts.body ? { "Content-Type": "application/json" } : {});
     var desk = desktopBridge();
     if (desk) {
@@ -525,7 +527,7 @@
       if (!tcp) return Promise.reject(new Error("kasa: TCP yalnızca masaüstü uygulamasında"));
       var payload = kasaEncrypt(JSON.stringify(obj));
       var framed = [(payload.length >>> 24) & 255, (payload.length >>> 16) & 255, (payload.length >>> 8) & 255, payload.length & 255].concat(payload);
-      return tcp({ host: hostOnly(device), port: 9999, bytes: framed, timeoutMs: DEFAULT_TIMEOUT_MS, lengthPrefixed: true }).then(function (resp) {
+      return tcp({ host: hostOnly(device), port: 9999, bytes: framed, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, lengthPrefixed: true }).then(function (resp) {
         return JSON.parse(kasaDecrypt(resp.slice(4)));
       });
     },
@@ -571,7 +573,7 @@
       var tcp = tcpBridge();
       if (!tcp) return Promise.reject(new Error("yeelight: TCP yalnızca masaüstü uygulamasında"));
       var line = JSON.stringify({ id: 1, method: method, params: params }) + "\r\n";
-      return tcp({ host: hostOnly(device), port: 55443, text: line, timeoutMs: DEFAULT_TIMEOUT_MS, untilNewline: true }).then(function (resp) {
+      return tcp({ host: hostOnly(device), port: 55443, text: line, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, untilNewline: true }).then(function (resp) {
         var first = String(resp).split(/\r?\n/).filter(Boolean)[0] || "{}";
         var r = JSON.parse(first);
         if (r.error) throw new Error("yeelight: " + r.error.message);
@@ -651,22 +653,44 @@
     return Promise.resolve(null);
   }
 
+  // Tarama için hızlı tanıma: tüm protokoller aynı anda yoklanır, sıradaki ilk başarılı olan seçilir.
+  function identifyFast(host) {
+    var device = { host: host };
+    return Promise.all(protocols.filter(available).map(function (protocol) {
+      return protocol.probe(device).then(function (info) {
+        var out = { host: host };
+        Object.keys(info).forEach(function (k) { out[k] = info[k]; });
+        return out;
+      }).catch(function () { return null; });
+    })).then(function (all) {
+      for (var i = 0; i < all.length; i++) if (all[i]) return all[i];
+      throw new Error("bilinen protokol bulunamadı");
+    });
+  }
+
   // mDNS native eklentisi olmadan "kendiliğinden bulma" için alt ağ taraması (1-254).
+  // options: onFound(info,count), onProgress(host), shouldStop() → true olursa tarama durur, concurrency.
   function scanSubnet(base, options) {
     var opts = options || {};
     var prefix = normalizeSubnetBase(base);
     if (!prefix) return Promise.reject(new Error("geçersiz alt ağ"));
-    var concurrency = opts.concurrency || 24;
+    var concurrency = opts.concurrency || 16;
     var found = [];
     var nextHost = 1;
     var active = 0;
+    scanTimeoutMs = opts.timeoutMs || 900;
     return new Promise(function (resolvePromise) {
-      function finishIfDone() { if (nextHost > 254 && active === 0) resolvePromise(found); }
+      var settled = false;
+      function finishIfDone() {
+        if (settled) return;
+        if (nextHost > 254 && active === 0) { settled = true; scanTimeoutMs = 0; resolvePromise(found); }
+      }
       function pump() {
         while (active < concurrency && nextHost <= 254) {
+          if (opts.shouldStop && opts.shouldStop()) { nextHost = 255; break; }
           (function (host) {
             active += 1;
-            identify(host)
+            identifyFast(host)
               .then(function (info) { found.push(info); if (opts.onFound) opts.onFound(info, found.length); })
               .catch(function () { /* cevap vermeyen adres normal */ })
               .then(function () { active -= 1; if (opts.onProgress) opts.onProgress(host); finishIfDone(); pump(); });
@@ -676,6 +700,52 @@
       }
       pump();
       finishIfDone();
+    });
+  }
+
+  // Tarayıcının kendi yerel IP'sinden alt ağı tahmin eder (WebRTC); bilinmiyorsa null.
+  function rtcPrefix() {
+    return new Promise(function (resolve) {
+      try {
+        if (typeof RTCPeerConnection === "undefined") return resolve(null);
+        var pc = new RTCPeerConnection({ iceServers: [] });
+        var done = false;
+        var finish = function (v) { if (done) return; done = true; try { pc.close(); } catch (e) {} resolve(v); };
+        pc.createDataChannel("nx");
+        pc.onicecandidate = function (e) {
+          if (!e || !e.candidate) return finish(null);
+          var m = /(\b(?:192\.168|10\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01]))\.\d{1,3})\.\d{1,3}\b/.exec(e.candidate.candidate);
+          if (m) finish(normalizeSubnetBase(m[1] + ".0"));
+        };
+        pc.createOffer().then(function (o) { return pc.setLocalDescription(o); }).catch(function () { finish(null); });
+        setTimeout(function () { finish(null); }, 1500);
+      } catch (e) { resolve(null); }
+    });
+  }
+
+  var COMMON_PREFIXES = ["192.168.1", "192.168.0", "192.168.2", "192.168.10", "192.168.100", "192.168.178", "10.0.0", "10.0.1", "10.1.1", "172.16.0"];
+
+  // Kullanıcıdan hiçbir şey istemeden ağı tarar: önce cihazın kendi alt ağı (masaüstü / WebRTC),
+  // sonra yaygın modem aralıkları. İlk cihaz bulunan alt ağda durur.
+  // options: onPrefix(prefix,index,total), onFound, shouldStop, prefixes (ek öncelikli ön ekler)
+  function autoScan(options) {
+    var opts = options || {};
+    return Promise.all([guessSubnet().catch(function () { return null; }), rtcPrefix()]).then(function (known) {
+      var list = [];
+      function add(p) { p = p && normalizeSubnetBase(p); if (p && list.indexOf(p) === -1) list.push(p); }
+      (opts.prefixes || []).forEach(add);
+      known.forEach(add);
+      COMMON_PREFIXES.forEach(add);
+      var all = [];
+      var i = 0;
+      function next() {
+        if (i >= list.length || (opts.shouldStop && opts.shouldStop())) return Promise.resolve(all);
+        var prefix = list[i++];
+        if (opts.onPrefix) opts.onPrefix(prefix, i, list.length);
+        return scanSubnet(prefix, { onFound: function (info, n) { all.push(info); if (opts.onFound) opts.onFound(info, all.length); }, shouldStop: opts.shouldStop, onProgress: opts.onProgress })
+          .then(function () { return all.length ? all : next(); });
+      }
+      return next();
     });
   }
 
@@ -689,6 +759,7 @@
     supports: supports,
     identify: identify,
     scanSubnet: scanSubnet,
+    autoScan: autoScan,
     guessSubnet: guessSubnet,
     normalizeSubnetBase: normalizeSubnetBase,
     hue: { pair: hue.pair, lights: hue.lights },

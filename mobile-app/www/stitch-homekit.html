@@ -99,9 +99,9 @@
     function copyCode() {
       var code = document.getElementById('pairing-code').textContent;
       var btn = document.getElementById('copy-btn');
-      navigator.clipboard.writeText(code).then(function () {
-        btn.textContent = 'Kopyalandı';
-        setTimeout(function () { btn.textContent = 'Kodu Kopyala'; }, 1500);
+      nexusCopy(code).then(function (ok) {
+        btn.textContent = ok ? 'Kopyalandı' : 'Kopyalanamadı — kodu elle seç';
+        setTimeout(function () { btn.textContent = 'Kodu Kopyala'; }, 1800);
       });
     }
   </script>

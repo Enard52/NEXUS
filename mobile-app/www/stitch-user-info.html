@@ -205,12 +205,12 @@
     };
     /* Ülke adları tarayıcının gerçek Türkçe verisinden gelir */
     var countryName = (function () {
-      try { var dn = new Intl.DisplayNames(['tr'], { type: 'region' }); return function (c) { return dn.of(c) || c; }; }
+      try { var dn = new Intl.DisplayNames([window.nexusLang || 'tr'], { type: 'region' }); return function (c) { return dn.of(c) || c; }; }
       catch (e) { return function (c) { return c; }; }
     })();
     var COUNTRIES = Object.keys(COUNTRY_TZ).map(function (code) {
       return { code: code, tz: COUNTRY_TZ[code], name: countryName(code) };
-    }).sort(function (a, b) { return a.name.localeCompare(b.name, 'tr'); });
+    }).sort(function (a, b) { return a.name.localeCompare(b.name, window.nexusLang || 'tr'); });
 
     function deviceTimezone() {
       try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul'; }
@@ -243,7 +243,7 @@
       var tz = COUNTRY_TZ[code];
       var now = '';
       try {
-        now = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date());
+        now = new Intl.DateTimeFormat((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date());
       } catch (e) { /* bilinmeyen dilimde yalnızca ad gösterilir */ }
       document.getElementById('timezone-value').textContent = countryName(code) + (now ? ' · ' + now : '');
       renderTzList(document.getElementById('tz-search').value);

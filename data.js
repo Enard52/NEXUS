@@ -98,7 +98,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Işıkları oda bazlı yönet, hızlı parlaklık sahneleri kur.',
         category: 'lighting',
         deviceTypes: ['lighting'],
-        heroImage: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1586023492125-27b2c045efd7.jpg',
         introduction: 'Evdeki aydınlatma cihazlarını oda bazlı tek bir akış içinde yönet. Aç kapa, parlaklık, renk sıcaklığı ve hızlı sahne kısayolları aynı uygulamada toplansın.',
         features: ['Işık Aç/Kapat', 'Renk Sıcaklığı', 'Parlaklık Kontrolü', 'Hızlı Yüzdeler', 'Oda Bazlı Geçiş'],
         prompt: 'Tüm evi oda bazlı kontrol eden bir akıllı ışık paneli oluştur. Her oda için ac/kapat, parlaklık ve renk sıcaklığı kontrolleri olsun. Hemen kullanılabilecek hızlı yuzdeler ve tumunu ac/tumunu kapat aksiyonları ekle.',
@@ -110,7 +110,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Klima ve termostatlar için sıcaklık, mod ve konfor kısayolları.',
         category: 'climate',
         deviceTypes: ['climate'],
-        heroImage: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1524758631624-e2822e304c36.jpg',
         introduction: 'Klima ve termostatları tek panelden yönet, odalara göre konfor profilleri oluştur ve günlük kullanım için hazır modlar kullan.',
         features: ['Sıcaklık Ayarı', 'Eko Modu', 'Oda Bazlı Kontrol', 'Hızlı Modlar', 'Konfor Profilleri'],
         prompt: 'Evdeki klima ve termostatları tek panelde yöneten bir iklim konfor uygulaması oluştur. Sıcaklık ayarı, hızlı mod seçenekleri, eko modu ve oda bazlı kontrol aksiyonları olsun.',
@@ -122,7 +122,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Kamera, kilit ve sensör durumlarını tek yerden takip et.',
         category: 'security',
         deviceTypes: ['security'],
-        heroImage: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1558002038-1055907df827.jpg',
         introduction: 'Kamera, kilit ve sensörleri aynı ekranda gör. Evdeyim ve dışarıdayım modları, kritik durum özetleri ve hızlı güvenlik aksiyonları tek yerde toplansın.',
         features: ['Kamera Durumu', 'Kilit Kontrolü', 'Dışarıdayım Modu', 'Hızlı Güvenlik', 'Durum Özeti'],
         prompt: 'Kamera, kilit ve sensörleri tek ekranda gösteren bir ev güvenlik merkezi oluştur. Evdeyim ve dışarıdayım modları, hızlı kontrol butonları ve kritik durum özetleri ekle.',
@@ -134,7 +134,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'TV ve medya cihazları için tek dokunuşlu eğlence paneli.',
         category: 'media',
         deviceTypes: ['media'],
-        heroImage: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1489599849927-2ee91cede3ba.jpg',
         introduction: 'TV, medya kutusu ve ortam ışıklarını tek aksiyonda birleştir. Film başlat, gece modu ve dikkat dağıtmayan eğlence sahneleri kolayca kurulabilsin.',
         features: ['Film Başlat', 'Ortam Işıkları', 'Ses Seviyesi', 'Gece Modu', 'Eğlence Sahnesi'],
         prompt: 'TV ve medya cihazları için bir sinema modu uygulaması oluştur. Film başlat, ses seviyesi, ortam ışıkları ve dikkat dağıtmayan gece eğlence kısayolları olsun.',
@@ -146,7 +146,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Akıllı prizler ve enerji odaklı cihazlar için hızlı tasarruf akışları.',
         category: 'energy',
         deviceTypes: ['energy'],
-        heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1518770660439-4636190af475.jpg',
         introduction: 'Akıllı prizler ve enerji tüketen cihazları tek merkezde topla. Hemen uygulanabilen tasarruf profilleri ve zamanlı eko aksiyonları oluştur.',
         features: ['Hızlı Kapatma', 'Eko Profilleri', 'Zamanlı Tasarruf', 'Tüketim Özeti', 'Priz Grupları'],
         prompt: 'Akıllı prizleri ve enerji tüketen cihazları yöneten bir enerji tasarruf paneli oluştur. Hızlı kapatma, eko profiller, zamanlanmış tasarruf ve tüketim özetleri ekle.',
@@ -158,7 +158,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Misafir geldiği anda kullanılacak ışık, erişim ve ortam ayarları.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'media'],
-        heroImage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1505693416388-ac5ce068fe85.jpg',
         introduction: 'Misafir gelmeden önce giriş, aydınlatma, ortak alan ve eğlence cihazlarını tek panelde hazırla. Ev içinde rahat ama güvenli bir karşılama akışı oluştur.',
         features: ['Karşılama Işığı', 'Ortak Alan Hazırlık', 'Misafir Erişimi', 'Sessiz Bildirim', 'Tek Dokunuş Hazırlık'],
         prompt: 'Misafir geldiği anda giriş, aydınlatma ve ortak alan cihazlarını hazırlayan bir misafir modu uygulaması oluştur. Karşılama ışığı, sessiz bildirim ve misafir erişim adımları olsun.',
@@ -170,7 +170,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Gece ışık, sessiz mod, kilit ve iklim ayarlarını tek akışta topla.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'climate'],
-        heroImage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1505693416388-ac5ce068fe85.jpg',
         introduction: 'Yatmadan önce gerekli tüm ev kontrollerini tek merkezde topla. Işık azaltma, rahatsız etme, kilit kontrolü ve gece iklim ayarları tek ekranda yönetilsin.',
         features: ['Işık Azaltma', 'Rahatsız Etme', 'Kilit Kontrolü', 'Gece Sıcaklığı', 'Son Kontrol Özeti'],
         prompt: 'Yatmadan önce ışık, sessiz mod, kilit ve iklim ayarlarını yöneten bir uykuya hazırlık merkezi oluştur. Son kontrol özeti ve tek dokunuş gece modu ekle.',
@@ -182,7 +182,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Evden çıkarken açık cihazları, kilitleri ve enerji durumunu tek ekranda göster.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'energy'],
-        heroImage: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=256&q=80',
+        heroImage: 'assets/photos/photo-1513694203232-719a280e022f.jpg',
         introduction: 'Evden çıkmadan önce açık kalan ışık, priz, klima ve güvenlik ayarlarını tek panelde gör. Hızlı kapatma ve güvenlik aktif etme adımlarını tek akışa topla.',
         features: ['Açık Cihaz Özeti', 'Hızlı Kapatma', 'Kilit Durumu', 'Enerji Kontrolü', 'Çıkış Hazırlığı'],
         prompt: 'Evden çıkarken açık cihazları, kilit durumunu ve enerji ayarlarını tek ekranda gösteren bir çıkış kontrolü uygulaması oluştur. Hızlı kapatma ve güvenlik aktif etme butonları ekle.',
@@ -548,7 +548,7 @@ function getLocalDevices() {
         paired.forEach((d, i) => {
             if (!d || !d.name) return;
             if (list.some(x => x.name === d.name)) return; // aynı cihazı iki kaynakta sayılmasın
-            list.push({ id: 'paired-' + i, name: d.name, state: 'Bağlı', type: d.icon === 'lightbulb' ? 'light' : '' });
+            list.push({ id: 'paired-' + i, name: d.name, state: d.host ? 'Bağlı' : 'Eşleşme bekliyor', type: d.icon === 'lightbulb' ? 'light' : '', img: d.img || '', linked: !!d.host });
         });
     }
     return list;
@@ -1219,7 +1219,7 @@ function renderDevices() {
     
     if (devices.length === 0) {
         // Ortak boş durum bileşeni (css/nexus-ui.css → .nx-empty): ikon + başlık + tek birincil aksiyon
-        html = `<div class="col-span-2 nx-empty">
+        html = `<div class="col-span-2 nx-empty" style="grid-column: 1 / -1;">
             <div class="nx-empty__icon" aria-hidden="true">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"></path></svg>
             </div>
@@ -1259,12 +1259,18 @@ function renderDevices() {
             const pairedIndex = /^paired-(\d+)$/.test(String(device.id)) ? String(device.id).slice(7) : null;
             const tag = pairedIndex !== null ? 'a' : 'article';
             const link = pairedIndex !== null ? ` href="stitch-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')} kontrol ekranı"` : '';
+            // Cihazın ürün görseli (katalogda seçilen ya da ağda bulunan); görsel yoksa simge gösterilir
+            let imgSrc = '';
+            if (pairedIndex !== null && window.NX && typeof window.NX.imageUrl === 'function') {
+                try { imgSrc = window.NX.imageUrl(device); } catch (e) { imgSrc = ''; }
+            }
+            const visual = imgSrc
+                ? `<div class="mb-2 flex items-center" style="height:56px"><img src="${imgSrc}" alt="" style="height:56px;width:72px;object-fit:contain;object-position:left center" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/products/generic-smart-hub.png'"></div>`
+                : `<div class="w-10 h-10 rounded-full ${bg} ${color} flex items-center justify-center mb-3">${iconSvg}</div>`;
             html += `
             <${tag}${link} class="relative bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" id="dyn-card-${device.id}">
                 <div>
-                    <div class="w-10 h-10 rounded-full ${bg} ${color} flex items-center justify-center mb-3">
-                        ${iconSvg}
-                    </div>
+                    ${visual}
                     <h3 class="font-bold text-base leading-tight truncate">${device.name || 'Cihaz'}</h3>
                 </div>
                 <p class="text-slate-500 text-sm font-medium leading-5">${device.state || 'Kapalı'}</p>

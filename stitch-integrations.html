@@ -100,10 +100,17 @@
       }
     }
     @media (min-width: 760px) {
+      /* Sabit genişlikli sütunlar: Soket, Anahtar vb. tüm gruplar aynı sütun çizgilerinde hizalanır
+         (auto-fit az ürünlü grupları geniş aralıkla yayıp hizayı bozuyordu). */
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+        grid-template-columns: repeat(auto-fill, 112px);
+        justify-content: start;
       }
+      .catalog-group-title { text-align: left; padding-left: 0.25rem; }
     }
+    /* Tüm karolar üstten başlar; ad satırı sayısı farklı olsa da görseller ve adlar aynı hizada kalır */
+    .product-tile { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; }
+    .product-name { min-height: 42px; }
     .product-card {
       min-height: 112px;
       border: 0;
@@ -127,12 +134,12 @@
       min-height: 34px;
       overflow: visible;
       text-align: center;
-      font-size: clamp(11px, 3vw, 12px);
+      font-size: clamp(10.5px, 2.9vw, 12px);
       line-height: 1.14;
       font-weight: 650;
       letter-spacing: 0;
       color: #0f172a;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
       word-break: normal;
       hyphens: auto;
     }
@@ -144,7 +151,7 @@
       border-color: transparent;
     }
     html.dark .product-image-stage {
-      background: transparent;
+      background: #e8ecf5; border-radius: 16px;
     }
     html.dark .product-name {
       color: #f8fafc;
@@ -207,6 +214,7 @@
   <script src="cloud-config.js"></script>
   <script src="cloud-sync.js"></script>
   <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
 </head>
 <body class="bg-white text-slate-900 h-screen flex flex-col overflow-hidden">
 
@@ -274,16 +282,18 @@
   <div id="loading-overlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[100] flex-col items-center justify-center">
     <div id="loading-spinner" class="flex flex-col items-center">
       <div class="w-16 h-16 rounded-full border-4 border-slate-100 border-t-[#4C7DFF] animate-spin mb-4"></div>
-      <p class="text-slate-800 font-bold text-lg">Cihaz Aranıyor...</p>
-      <p class="text-slate-500 text-sm mt-1 text-center px-6">Lütfen cihazın eşleştirme modunda olduğundan emin olun.</p>
+      <p id="loading-title" class="text-slate-800 font-bold text-lg text-center px-6">Cihaz Aranıyor...</p>
+      <p id="loading-sub" class="text-slate-500 text-sm mt-1 text-center px-6">Lütfen cihazın açık ve aynı Wi-Fi ağında olduğundan emin olun.</p>
+      <button type="button" class="mt-5 text-slate-500 font-medium py-2 px-4" onclick="cancelDeviceSearch()">Vazgeç</button>
     </div>
     <div id="loading-notfound" class="hidden flex-col items-center px-8 w-full max-w-sm">
       <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center mb-3">
         <i class="w-7 h-7" data-lucide="alert-triangle"></i>
       </div>
       <p class="text-slate-800 font-bold text-lg">Cihaz Bulunamadı</p>
-      <p class="text-slate-500 text-sm mt-1 mb-5 text-center">Çevrede eşleştirilmeye hazır cihaz bulunamadı.</p>
-      <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="hideOverlay(); window.location.href='stitch-setup-code.html';">Kurulum koduyla ekle</button>
+      <p class="text-slate-500 text-sm mt-1 mb-5 text-center">Ağda bu cihaz bulunamadı. Yine de ekleyebilirsin; cihaz ağa bağlanınca kontrol edilir.</p>
+      <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="addSearchedDeviceAnyway()">Yine de ekle</button>
+      <button class="w-full text-[#4C7DFF] font-semibold py-3 mt-1" onclick="hideOverlay(); window.location.href='stitch-setup-code.html';">Kurulum koduyla ekle</button>
       <button class="w-full text-slate-500 font-medium py-3 mt-1" onclick="hideOverlay()">Vazgeç</button>
     </div>
   </div>
@@ -2551,10 +2561,10 @@
       var image = (item.img && /^(generic|control|security|energy|ent|health|misc|outdoor|sport|agri)-[a-z0-9-]+\.png$/i.test(item.img))
         ? item.img
         : inferCatalogImage(item, groupTitle);
-      var imageVersion = '20261023-products-8';
+      var imageVersion = '20261024-products-9';
       return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="simulateConnection(this, \'' + safe + '\')">' +
         '<div class="product-image-stage">' +
-        '<img src="assets/products/' + image + '?v=' + imageVersion + '" alt="' + safe + '" class="max-w-[88%] max-h-[74px] object-contain transition-transform duration-300 group-active:scale-95" loading="lazy" onerror="this.onerror=null;this.src=&quot;assets/products/generic-smart-hub.png?v=' + imageVersion + '&quot;;" />' +
+        '<img src="assets/products/' + image + '?v=' + imageVersion + '" data-file="' + image + '" alt="' + safe + '" class="max-w-[88%] max-h-[74px] object-contain transition-transform duration-300 group-active:scale-95" loading="lazy" onerror="this.onerror=null;this.src=&quot;assets/products/generic-smart-hub.png?v=' + imageVersion + '&quot;;" />' +
         '</div>' +
         '<div class="px-1 pt-1 flex min-h-[30px] flex-col items-center justify-start">' +
         '<span class="product-name">' + display + '</span>' +
@@ -2666,42 +2676,125 @@
       }, 150);
     }
 
+    // Cihaza özel tarama: seçilen ürünü ağda arar (aynı protokol / aynı tür), bulursa gerçek adresiyle ekler.
+    // Bulamazsa kullanıcı onaylarsa cihaz yine de ürün görseliyle eklenir.
+    var _search = null;
+
+    function catalogKindOf(caps) {
+      caps = caps || [];
+      if (caps.indexOf('brightness') !== -1 || caps.indexOf('color') !== -1) return 'light';
+      if (caps.indexOf('energy') !== -1) return 'plug';
+      if (caps.indexOf('switch') !== -1) return 'switch';
+      return '';
+    }
+
+    function catalogMatches(info, resolved, name) {
+      if (!info) return false;
+      if (info.kind === 'bridge') return !!resolved.protocol && resolved.protocol === info.protocol;
+      if (resolved.protocol && resolved.protocol !== 'unknown') return resolved.protocol === info.protocol;
+      var want = catalogKindOf(resolved.caps);
+      var label = String(info.name || '').toLocaleLowerCase('tr-TR') + ' ' + String(info.model || '').toLocaleLowerCase('tr-TR');
+      var tokens = String(name || '').toLocaleLowerCase('tr-TR').split(/\s+/).filter(function (t) { return t.length > 3; });
+      if (tokens.some(function (t) { return label.indexOf(t) !== -1; })) return true;
+      return !!want && info.kind === want;
+    }
+
+    function makePairedEntry(s, found) {
+      const entry = { id: 'catalog-' + encodeURIComponent(s.safeName), name: s.safeName, icon: 'cpu', room: 'Ana sayfaya bağlı' };
+      entry.protocol = s.resolved.protocol;
+      entry.brand = s.resolved.brand;
+      entry.caps = s.resolved.caps;
+      entry.img = s.resolved.img;
+      if (s.tileFile) entry.img = s.tileFile;
+      if (found) {
+        const host = /^https?:\/\//.test(found.host) ? found.host : 'http://' + found.host;
+        entry.id = ('lan-' + host).replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+        entry.host = host;
+        entry.protocol = found.protocol;
+        entry.kind = found.kind;
+        entry.model = found.model;
+        entry.endpointId = found.endpointId != null ? found.endpointId : 0;
+        entry.entity = found.entity || null;
+        if (found.caps) entry.caps = found.caps;
+        entry.room = 'Yerel ağ';
+      }
+      return entry;
+    }
+
+    function savePairedEntry(entry) {
+      const paired = getPairedDevices();
+      if (!paired.some((d) => d && (d.name === entry.name || (entry.host && d.host === entry.host && d.name === entry.name)))) {
+        paired.push(entry);
+        nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
+        if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
+      }
+    }
+
     function simulateConnection(el, deviceName) {
+      const safeName = (deviceName || 'Yeni cihaz').trim();
+      const groupTitle = nexusSrcText(el && el.querySelector('.product-category-pill'));
+      const resolved = typeof nexusResolveDevice === 'function'
+        ? nexusResolveDevice(safeName, groupTitle)
+        : { protocol: 'unknown', brand: '', caps: ['other'], img: 'generic-smart-hub.png' };
+      const tileImg = el && el.querySelector('img');
+      const tileFile = tileImg ? (tileImg.getAttribute('data-file') || '') : '';
+      const s = { safeName: safeName, resolved: resolved, tileFile: tileFile, stop: false, found: null, done: false };
+      if (_search) _search.stop = true;
+      _search = s;
+
       const overlay = document.getElementById('loading-overlay');
       overlay.style.display = 'flex';
       document.getElementById('loading-spinner').classList.remove('hidden');
       document.getElementById('loading-notfound').classList.add('hidden');
       document.getElementById('loading-notfound').classList.remove('flex');
+      document.getElementById('loading-title').textContent = safeName + ' aranıyor…';
+      document.getElementById('loading-sub').textContent = 'Wi-Fi ağındaki cihazlar taranıyor. Cihazın açık olduğundan emin ol.';
 
-      clearTimeout(simulateConnection._t);
-      simulateConnection._t = setTimeout(() => {
-        const paired = getPairedDevices();
-        const safeName = (deviceName || 'Yeni cihaz').trim();
-        if (!paired.some((device) => device && device.name === safeName)) {
-          const groupTitle = nexusSrcText(el && el.querySelector('.product-category-pill'));
-          const entry = { id: "catalog-" + encodeURIComponent(safeName), name: safeName, icon: "cpu", room: "Ana sayfaya bağlı" };
-          // Protokol + işlev küyesi kontrol panellerinin gruplanmasında kullanılır.
-          if (typeof nexusResolveDevice === 'function') {
-            const resolved = nexusResolveDevice(safeName, groupTitle);
-            entry.protocol = resolved.protocol;
-            entry.brand = resolved.brand;
-            entry.caps = resolved.caps;
-            entry.img = resolved.img;
-          }
-          // Panelde, kullanıcının katalogda gördüğü ürün fotoğrafının aynısı görünsün.
-          const tileImg = el && el.querySelector('img');
-          const tileFile = tileImg ? decodeURIComponent((tileImg.getAttribute('src') || '').split('/').pop().split('?')[0]) : '';
-          if (tileFile) entry.img = tileFile;
-          paired.push(entry);
-          nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
-          if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
+      const finishSearch = function () {
+        if (s.done || _search !== s) return;
+        s.done = true;
+        if (s.found) {
+          // Köprüler (Hue, Home Assistant) kullanıcı onayı gerektirir: eşleştirme ekranı devralır.
+          if (s.found.kind === 'bridge') { window.location.href = 'stitch-pair.html?host=' + encodeURIComponent(String(s.found.host).replace(/^https?:\/\//, '')); return; }
+          savePairedEntry(makePairedEntry(s, s.found));
+          navigateAfterPair();
+          return;
         }
-        navigateAfterPair();
-      }, 900);
+        if (s.cancelled) return;
+        document.getElementById('loading-spinner').classList.add('hidden');
+        const nf = document.getElementById('loading-notfound');
+        nf.classList.remove('hidden');
+        nf.classList.add('flex');
+        if (window.lucide) lucide.createIcons();
+      };
+
+      if (!window.nexusLan || !window.nexusLan.autoScan) { setTimeout(finishSearch, 600); return; }
+      const taken = {};
+      getPairedDevices().forEach(function (d) { if (d && d.host) taken[d.host] = 1; });
+      const limit = setTimeout(function () { s.stop = true; }, 25000);
+      window.nexusLan.autoScan({
+        shouldStop: function () { return s.stop; },
+        onFound: function (info) {
+          const host = /^https?:\/\//.test(info.host) ? info.host : 'http://' + info.host;
+          if (!s.found && !taken[host] && catalogMatches(info, resolved, safeName)) { s.found = info; s.stop = true; }
+        },
+      }).catch(function () {}).then(function () { clearTimeout(limit); finishSearch(); });
+    }
+
+    function addSearchedDeviceAnyway() {
+      const s = _search;
+      if (!s) { hideOverlay(); return; }
+      savePairedEntry(makePairedEntry(s, null));
+      navigateAfterPair();
+    }
+
+    function cancelDeviceSearch() {
+      if (_search) { _search.stop = true; _search.cancelled = true; _search.done = true; }
+      hideOverlay();
     }
 
     function hideOverlay() {
-      clearTimeout(simulateConnection._t);
+      if (_search) _search.stop = true;
       document.getElementById('loading-overlay').style.display = 'none';
     }
 

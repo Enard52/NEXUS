@@ -1,17 +1,19 @@
 /* NEXUS — masaüstü düzeni (yalnızca html.nx-desk; telefon görünümü etkilenmez) */
 html.nx-desk {
   --side: 264px;
-  --page-max: 860px;
+  --page-max: 1080px;
   --gutter: 40px;
 }
-html.nx-desk.nx-desk-wide { --page-max: 1180px; }
+/* İçerik sütunu TÜM sayfalarda aynı genişliktedir. Eskiden "geniş" sayfalarda
+   1180px, diğerlerinde 860px idi; ekran değiştikçe sütun daralıp genişliyor,
+   içerik yana kayıyordu. Tek genişlik = geçişlerde sabit sütun. */
 
 /* ---------- Sol menü ---------- */
 .nx-side { display: none; }
 html.nx-desk .nx-side {
   display: flex; flex-direction: column; gap: 6px;
   position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); z-index: 60;
-  padding: 24px 16px 18px; overflow-y: auto;
+  padding: 20px 16px 14px; overflow: hidden;
   background: #fbfaff;
   border-right: 1px solid rgba(148, 163, 184, 0.22);
   font-family: Inter, sans-serif;
@@ -22,13 +24,16 @@ html.dark .nx-side-brand { color: #f8fafc; }
 .nx-side-logo { width: 34px; height: 34px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #6f9bff, #4C7DFF 55%, #3F6FFF); box-shadow: 0 6px 16px rgba(76, 125, 255, 0.35); }
 .nx-side-logo svg { width: 22px; height: 22px; }
-.nx-side-ai { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px; margin: 0 2px 10px; border-radius: 14px;
-  background: #4C7DFF; color: #ffffff; font-size: 14px; font-weight: 700; box-shadow: 0 8px 20px rgba(76, 125, 255, 0.28); }
-.nx-side-ai:hover { background: #3F6FFF; }
+.nx-side-ai { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 14px; margin: 0 2px 12px; border-radius: 14px;
+  background: linear-gradient(135deg, #6f9bff 0%, #4C7DFF 55%, #8b7bff 100%); color: #ffffff; font-size: 14.5px; font-weight: 800; letter-spacing: -0.01em;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 26px rgba(76, 125, 255, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.30); }
+.nx-side-ai:hover { filter: brightness(1.06); background: linear-gradient(135deg, #6f9bff 0%, #4C7DFF 55%, #8b7bff 100%); }
+.nx-side-ai.is-active { outline: 2px solid rgba(76, 125, 255, 0.45); outline-offset: 2px; }
 .nx-side-ai svg { width: 18px; height: 18px; }
-.nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.nx-side-group { margin: 16px 12px 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
-.nx-side-link { display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 0 12px; border-radius: 12px;
+.nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; justify-content: flex-start; }
+.nx-side-group { margin: 12px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
+.nx-side-link { display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 0 12px; border-radius: 12px;
   font-size: 14px; font-weight: 600; color: #475569; transition: background .15s ease, color .15s ease; }
 .nx-side-link svg { width: 19px; height: 19px; flex: none; }
 .nx-side-link:hover { background: rgba(76, 125, 255, 0.08); color: #0f172a; }
@@ -49,6 +54,20 @@ html.dark .nx-side-user small { color: #94a3b8; }
 .nx-side-theme:hover { background: rgba(76, 125, 255, 0.08); }
 html.dark .nx-side-theme { color: #cbd5e1; }
 .nx-side-theme svg { width: 19px; height: 19px; }
+
+/* Alçak pencerelerde menü kaydırma çubuğu çıkarmasın: boşluklar kendiliğinden daralır */
+@media (max-height: 820px) {
+  html.nx-desk .nx-side { padding: 14px 14px 10px; gap: 4px; }
+  .nx-side-brand { padding: 2px 10px 8px; }
+  .nx-side-ai { min-height: 40px; margin-bottom: 4px; }
+  .nx-side-group { margin: 8px 12px 3px; }
+  .nx-side-link { min-height: 36px; font-size: 13.5px; }
+}
+@media (max-height: 700px) {
+  .nx-side-group { margin: 5px 12px 2px; font-size: 10px; }
+  .nx-side-link { min-height: 32px; }
+  .nx-side-foot { padding-top: 8px; }
+}
 
 /* ---------- İçerik sütunu ---------- */
 html.nx-desk:not(.nx-desk-auth) body { padding-left: var(--side) !important; }
@@ -71,8 +90,10 @@ html.nx-desk body > main.nx-desk-col { padding-left: var(--gutter) !important; p
 html.nx-desk body > .nx-desk-col > header,
 html.nx-desk body > .nx-desk-col > main { padding-left: 0 !important; padding-right: 0 !important; }
 
-/* Telefonun durum çubuğu boşluğu masaüstünde gereksiz */
+/* Telefonun durum çubuğu boşluğu masaüstünde gereksiz; başlıksız sayfaların
+   (profil, menü) main.pt-* üstü de aynı ritme iner ki geçişte içerik kaymasın */
 html.nx-desk header.pt-14, html.nx-desk header.pt-12, html.nx-desk header.pt-10,
+html.nx-desk main.pt-14, html.nx-desk main.pt-12, html.nx-desk main.pt-10,
 html.nx-desk .nx-desk-col > header:first-child { padding-top: 32px !important; }
 
 /* Alt gezinme masaüstünde sol menüye taşındı; yüzen AI düğmesi de menüde */
@@ -92,6 +113,20 @@ html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet {
   right: auto !important; width: min(640px, calc(100vw - var(--side) - 48px)) !important;
   border-radius: 28px 28px 0 0 !important;
 }
+/* Hızlı Aksiyonlar (qa-sheet) ve hidden ile açılan alt sayfalar masaüstünde
+   tam ortada diyalog kartı gibi açılır (telefondaki alt sayfa davranışı korunur) */
+html.nx-desk .qa-sheet {
+  top: 50% !important; bottom: auto !important;
+  border-radius: 28px !important;
+  transform: translateY(calc(-50% + 42px)); opacity: 0; pointer-events: none;
+  transition: transform .26s ease, opacity .2s ease;
+}
+html.nx-desk .qa-sheet.open { transform: translateY(-50%); opacity: 1; pointer-events: auto; }
+html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet:not(.qa-sheet):not(.hidden) {
+  top: 50% !important; bottom: auto !important;
+  transform: translateY(-50%) !important;
+  border-radius: 28px !important;
+}
 html.nx-desk:not(.nx-desk-auth) .nx-desk-top { left: var(--side) !important; }
 html.nx-desk:not(.nx-desk-auth) .nx-desk-overlay { left: 0 !important; }
 
@@ -101,11 +136,25 @@ html.nx-desk.nx-desk-auth body { display: flex; flex-direction: column; justify-
 
 /* Masaüstünde fare imleci ve odak */
 html.nx-desk a, html.nx-desk button, html.nx-desk [role="button"] { cursor: pointer; }
-html.nx-desk ::-webkit-scrollbar { width: 10px; height: 10px; }
-html.nx-desk ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.35); border-radius: 9999px; border: 2px solid transparent; background-clip: padding-box; }
+/* Kaydırma çubuğu ince ve sessiz: yalnızca kaydırılan yerde belirir, arayüzü bastırmaz */
+html.nx-desk ::-webkit-scrollbar { width: 8px; height: 8px; }
+html.nx-desk ::-webkit-scrollbar-track { background: transparent; }
+html.nx-desk ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.28); border-radius: 9999px; border: 2px solid transparent; background-clip: padding-box; }
+html.nx-desk ::-webkit-scrollbar-thumb:hover { background-color: rgba(100, 116, 139, 0.48); }
+html.nx-desk ::-webkit-scrollbar-corner { background: transparent; }
 
 /* Tam ekran sayfalar (ör. QR tarama) menünün sağında kalır */
 html.nx-desk:not(.nx-desk-auth) .nx-desk-page { left: var(--side) !important; }
+
+/* Aile / Ev Ayarı: tam ekran alt sayfa menünün sağında, ortalanmış sütunda açılır */
+html.nx-desk #home-detail { left: var(--side) !important; }
+html.nx-desk #home-detail > header,
+html.nx-desk #home-detail > main {
+  width: 100%; max-width: calc(var(--page-max) + var(--gutter) * 2);
+  margin-left: auto; margin-right: auto; box-sizing: border-box;
+  padding-left: var(--gutter) !important; padding-right: var(--gutter) !important;
+}
+html.nx-desk #home-detail > header { padding-top: 32px !important; }
 
 /* ---------- Sayfaya özel geniş ekran düzenleri ---------- */
 /* Ev: kartlar 3 sütun, çok geniş ekranda 4 */
@@ -116,6 +165,16 @@ html.nx-desk #tap-to-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr))
 @media (min-width: 1440px) {
   html.nx-desk #dynamic-devices-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
 }
+/* Boş durum ("Henüz cihaz yok") tam genişlikte */
+html.nx-desk #dynamic-devices-grid > .nx-empty,
+html.nx-desk #favorites-grid > .nx-empty,
+html.nx-desk #extra-smart-home-grid > .nx-empty { grid-column: 1 / -1 !important; width: 100%; max-width: none; }
+/* Cihaz Ekle: üstteki radar masaüstünde küçülür, otomatik tarama kartı ekranda görünür kalır */
+html.nx-desk[data-nx-page="pair"] main > section:first-child { padding-top: 0; padding-bottom: 0; }
+html.nx-desk[data-nx-page="pair"] main > section:first-child > .relative.w-64 { width: 168px; height: 168px; }
+html.nx-desk[data-nx-page="pair"] main > section:first-child .w-24 { width: 72px; height: 72px; }
+html.nx-desk[data-nx-page="pair"] main > section:first-child .w-16 { width: 48px; height: 48px; }
+html.nx-desk[data-nx-page="pair"] main > section:first-child .absolute.top-4 { top: 0; }
 /* Keşfet: kartlar iki sütun */
 html.nx-desk[data-nx-page="discover"] main { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
 html.nx-desk[data-nx-page="discover"] main > * { margin: 0 !important; }
@@ -130,6 +189,10 @@ html.nx-desk[data-nx-page="multi-video"] main > div:first-child { grid-column: 1
 }
 html.nx-desk #panels-filter { margin: 0; padding: 2px 0; flex-wrap: wrap; overflow: visible; }
 
+/* Kart Ekle seçici: telefon genişliğinde ortalanmış sütun (geniş ızgara satırları
+   masaüstünde kötü görünüyordu) */
+html.nx-desk[data-nx-page="cards"] body > .nx-desk-col { max-width: 640px !important; }
+
 /* Arka planı olan üst başlıklar (sabit/yapışkan) tam genişlikte; içerikleri sütunla hizalı */
 html.nx-desk body > header.nx-desk-col {
   max-width: none !important;
@@ -142,18 +205,20 @@ html.nx-desk.nx-desk-auth body > header.nx-desk-col {
 }
 
 @media (min-width: 1200px) {
-/* Cihaz kontrol ekranı: solda cihaz + ana eylem (yapışkan), sağda kontroller */
+/* Cihaz kontrol ekranı: üstte ortalanmış ürün kutusu, altında kontroller
+   kullanılabilir genişliği dolduran ızgarada — boşluk bırakmadan */
 html.nx-desk[data-nx-page="device"] #device-main {
-  display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
-  column-gap: 24px; row-gap: 16px; align-items: start; padding-bottom: 48px !important;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 16px; align-items: stretch; padding-bottom: 48px !important;
 }
-html.nx-desk[data-nx-page="device"] #device-main > * { margin: 0 !important; grid-column: 2; }
+html.nx-desk[data-nx-page="device"] #device-main > * { margin: 0 !important; }
 html.nx-desk[data-nx-page="device"] #device-main > .nx-desk-lead {
-  grid-column: 1; grid-row: 1 / span 30; position: sticky; top: 24px;
+  grid-column: 1 / -1; width: 100%; max-width: 640px;
+  margin-left: auto !important; margin-right: auto !important;
 }
-html.nx-desk[data-nx-page="device"] .nx-hero { height: 220px; }
-html.nx-desk[data-nx-page="device"] .nx-hero img { width: 200px; height: 200px; padding: 14px; }
-html.nx-desk[data-nx-page="device"] .nx-hero .halo { width: 240px; height: 240px; }
+html.nx-desk[data-nx-page="device"] .nx-hero { height: 250px; }
+html.nx-desk[data-nx-page="device"] .nx-hero img { width: 212px; height: 212px; padding: 12px; }
+html.nx-desk[data-nx-page="device"] .nx-hero .halo { width: 258px; height: 258px; }
 html.nx-desk[data-nx-page="device"] #device-actionbar { display: none !important; }
 }
 .nx-lead-action { display: none; }

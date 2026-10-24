@@ -134,7 +134,7 @@
     </header>
 
     <main class="flex-1 px-5 pb-[34px] space-y-6">
-      <section class="relative flex flex-col items-center py-4">
+      <section class="relative flex flex-col items-center py-4" id="lan-scan-section" data-purpose="lan-scan-panel">
         <div class="relative w-64 h-64 flex items-center justify-center">
           <div class="absolute w-full h-full rounded-full border border-nexusPurple/30 radar-ring"></div>
           <div class="absolute w-full h-full rounded-full border border-nexusPurple/30 radar-ring" style="animation-delay: 1s;"></div>
@@ -164,13 +164,31 @@
 
           <div class="absolute top-4 left-8 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full border border-slate-200/60 flex items-center gap-2 dark:bg-slate-900/90 dark:border-slate-700/60">
             <div class="w-2 h-2 rounded-full bg-nexusCyan shadow-[0_0_8px_#22D3EE]"></div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-300">NEXUS Hazır</span>
+            <span id="radar-badge" class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-300">NEXUS Hazır</span>
           </div>
         </div>
 
         <div class="text-center mt-4">
           <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Cihaz ekleme merkezi</h2>
-          <p class="text-sm font-medium text-slate-500 mt-1 max-w-[280px] mx-auto dark:text-slate-300">QR tarama, kurulum kodu ve manuel katalog ile cihazlarını gerçek akış üzerinden ekleyebilirsin.</p>
+          <p class="text-sm font-medium text-slate-500 mt-1 max-w-[280px] mx-auto dark:text-slate-300">Cihazlarını otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.</p>
+        </div>
+
+        <!-- Yakınındaki Cihazları Bul: radar sayfaya girince kendiliğinden tarar, bulunanlar burada listelenir -->
+        <div class="w-full max-w-xl mt-6">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 min-w-0">
+              <i data-lucide="radar" class="w-4 h-4 text-nexusCyan shrink-0"></i>
+              <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Yakınındaki Cihazları Bul</h3>
+            </div>
+            <button type="button" id="lan-auto-btn" onclick="startAutoScan()" class="shrink-0 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-bold text-slate-600 active:scale-[0.98] dark:border-slate-700 dark:text-slate-300">Yeniden Tara</button>
+          </div>
+          <div class="mt-3 h-1 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800" aria-hidden="true">
+            <div id="lan-auto-bar" class="h-full w-0 rounded-full bg-nexusPurple transition-all duration-300"></div>
+          </div>
+          <p id="lan-scan-status" role="status" aria-live="polite" class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-300">Ağ taranıyor…</p>
+          <input id="lan-scan-host" type="hidden" value="" />
+          <div id="lan-subnet-results" class="mt-3 space-y-2"></div>
+          <div id="lan-scan-result" class="mt-3"></div>
         </div>
       </section>
 
@@ -209,55 +227,6 @@
           </div>
         </div>
         <div id="paired-devices-list" class="space-y-3"></div>
-      </section>
-
-      <section id="lan-scan-section" data-purpose="lan-scan-panel" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow p-5">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 bg-nexusCyan/10 rounded-2xl flex items-center justify-center text-nexusCyan shrink-0">
-            <i data-lucide="router" class="text-xl"></i>
-          </div>
-          <div class="min-w-0">
-            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Yerel ağdaki cihazı bul</h3>
-            <p class="text-[11px] text-slate-500 dark:text-slate-300">Cihazın IP adresini yaz, NEXUS konuşabildiği protokolü kendisi anlasın.</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <input id="lan-scan-host" type="text" inputmode="decimal" placeholder="192.168.1.24"
-            class="flex-1 min-w-0 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-nexusPurple dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-          <button type="button" id="lan-scan-btn" onclick="scanLanHost()"
-            class="shrink-0 rounded-2xl bg-slate-900 px-4 py-3 text-sm font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900">Tara</button>
-        </div>
-        <p id="lan-scan-status" role="status" aria-live="polite" class="mt-3 text-xs font-medium text-slate-500 dark:text-slate-300">Hazır. Aynı Wi-Fi ağında olman yeterli.</p>
-        <div id="lan-scan-result" class="mt-3"></div>
-
-        <div class="mt-4 rounded-[1.75rem] border border-dashed border-slate-200 bg-white/70 p-4 dark:border-slate-700 dark:bg-slate-950/30">
-          <div class="flex items-center gap-2">
-            <input id="lan-scan-subnet" type="text" inputmode="decimal" value="192.168.1" aria-label="Alt ağ ön eki"
-              class="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold outline-none focus:border-nexusPurple dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-            <button type="button" id="lan-subnet-btn" onclick="scanSubnetNow()"
-              class="shrink-0 rounded-2xl border-2 border-nexusPurple px-3.5 py-2 text-sm font-bold text-nexusPurple active:scale-[0.98]">Ağını tara</button>
-          </div>
-          <p class="mt-2 text-[11px] leading-4 text-slate-500 dark:text-slate-300">
-            Adres biliyorsan tek tek yaz, bilmiyorsan modem ağının ön ekini bırak (192.168.1 gibi) — NEXUS 254 adresi birlikte yoklar.
-          </p>
-          <div id="lan-subnet-results" class="mt-3 space-y-2"></div>
-        </div>
-      </section>
-
-      <section id="supported-devices-section" data-purpose="supported-devices-panel" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">
-        <div class="p-6 pb-4">
-          <div class="flex items-center justify-between mb-1">
-            <div>
-              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Desteklenen Cihazlar</h3>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Bu markalar yerel ağdan kontrol edilir</p>
-            </div>
-            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 dark:bg-slate-800 dark:text-slate-300">
-              <i data-lucide="badge-check" class="text-xl"></i>
-            </div>
-          </div>
-          <p class="text-xs leading-5 text-slate-500 dark:text-slate-300">Aşağıdaki cihazlar internet bağlantısı olmadan, ev ağında NEXUS'a bağlanır. Eklediğin cihazlar <span id="supported-device-total">—</span> modelden seçilir.</p>
-        </div>
-        <div id="supported-devices-list" data-purpose="supported-devices-list" class="px-6 pb-6"></div>
       </section>
 
       <section id="manual-catalog-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">
@@ -458,7 +427,11 @@
       countEl.textContent = devices.length + " cihaz";
 
       if (!devices.length) {
-        listEl.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-4 py-5 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950/40 dark:text-slate-300">Henüz eklenmiş cihaz yok. QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.</div>';
+        listEl.innerHTML = '<div class="nx-empty">' +
+          '<div class="nx-empty__icon" aria-hidden="true"><i data-lucide="cpu"></i></div>' +
+          '<p class="nx-empty__title">Henüz eklenmiş cihaz yok</p>' +
+          '<p class="nx-empty__text">QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.</p></div>';
+        if (typeof lucide !== "undefined") lucide.createIcons();
         return;
       }
 
@@ -499,7 +472,6 @@
       window.location.href = buildCatalogUrl(category);
     }
 
-    var SUPPORTED_IMAGE_VERSION = "20261023-products-8";
 
     // --- Yerel ağ taraması (manuel IP yolu) -------------------------------
     // mDNS keşfi native eklenti gerektirdiği için ilk yol budur; connector'lar
@@ -533,12 +505,12 @@
       var resultHost = document.getElementById("lan-scan-result");
       resultHost.innerHTML = "";
       if (!host) {
-        setScanStatus("Geçerli bir IPv4 adresi gir (örn. 192.168.1.24).", "error");
+        setScanStatus("Cihaz adresi geçersiz. Taramayı yeniden başlat.", "error");
         return;
       }
-      var btn = document.getElementById("lan-scan-btn");
+      var btn = document.getElementById("lan-auto-btn");
       btn.disabled = true;
-      setScanStatus("Cihaz aranıyor…", "");
+      setScanStatus("Cihaz tanınıyor…", "");
       window.nexusLan.identify(host).then(function (found) {
         setScanStatus(found.name + " bulundu · " + found.protocol + " · " + found.model, "ok");
         window.__nexusScannedDevice = found;
@@ -750,19 +722,43 @@
       renderSubnetFindings();
     }
 
-    function scanSubnetNow() {
-      var base = document.getElementById("lan-scan-subnet").value;
-      var prefix = window.nexusLan.normalizeSubnetBase(base);
-      var btn = document.getElementById("lan-subnet-btn");
-      if (!prefix) {
-        setScanStatus("Alt ağ öneki geçersiz. Örnek: 192.168.1", "error");
+    var autoScanning = false;
+    var autoScanStop = false;
+
+    function setRadarBadge(text, scanning) {
+      var badge = document.getElementById("radar-badge");
+      if (!badge) return;
+      badge.textContent = text;
+      badge.parentElement.classList.toggle("animate-pulse", !!scanning);
+    }
+
+    // startAutoScan(true) → sayfaya girilirken kendiliğinden başlar (sessiz hata);
+    // butonla çağrıldığında durum her zaman bildirilir. Tarama bitince buton
+    // "Yeniden Tara" olur; istenirse durdurulup tekrar başlatılabilir.
+    function startAutoScan(auto) {
+      var btn = document.getElementById("lan-auto-btn");
+      var bar = document.getElementById("lan-auto-bar");
+      if (autoScanning) { autoScanStop = true; return; }
+      if (!window.nexusLan || !window.nexusLan.autoScan) {
+        setScanStatus(auto
+          ? "Otomatik tarama bu ortamda yok. QR, kurulum kodu veya katalogla devam edebilirsin."
+          : "Bu ortamda ağ taraması kullanılamıyor.", "");
         return;
       }
+      autoScanning = true;
+      autoScanStop = false;
       subnetFindings = [];
       document.getElementById("lan-subnet-results").innerHTML = "";
-      btn.disabled = true;
-      setScanStatus(prefix + ".1 - " + prefix + ".254 taranıyor…", "");
-      window.nexusLan.scanSubnet(prefix, {
+      document.getElementById("lan-scan-result").innerHTML = "";
+      btn.textContent = "Durdur";
+      bar.style.width = "4%";
+      setRadarBadge("Ağ taranıyor…", true);
+      setScanStatus("Ağ taranıyor…", "");
+      var done = 0;
+      window.nexusLan.autoScan({
+        shouldStop: function () { return autoScanStop; },
+        onPrefix: function (prefix) { done = 0; setScanStatus(prefix + ".x ağı taranıyor…", ""); },
+        onProgress: function () { done += 1; bar.style.width = Math.min(96, 4 + Math.round(done / 254 * 92)) + "%"; },
         onFound: function (info, count) {
           subnetFindings.push(info);
           setScanStatus(count + " cihaz bulundu · tarama sürüyor", "ok");
@@ -770,67 +766,22 @@
         },
       })
         .then(function (all) {
-          setScanStatus(all.length ? all.length + " cihaz bulundu. Ekle'den panellere taşıyabilirsin." : "Bu ağda desteklenen bir cihaz bulunamadı.", all.length ? "ok" : "error");
+          if (all.length) setScanStatus(all.length + " cihaz bulundu. Ekle'ye dokunarak panellere taşıyabilirsin.", "ok");
+          else setScanStatus(autoScanStop ? "Tarama durduruldu." : "Bu ağda desteklenen bir cihaz bulunamadı. Cihazın açık ve aynı Wi-Fi'da olduğundan emin ol; olmazsa aşağıdan kataloğu ya da QR / kurulum kodunu kullan.", autoScanStop ? "" : "error");
           renderSubnetFindings();
         })
         .catch(function () {
           setScanStatus("Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.", "error");
         })
         .then(function () {
-          btn.disabled = false;
+          autoScanning = false;
+          btn.textContent = "Yeniden Tara";
+          bar.style.width = subnetFindings.length ? "100%" : "0%";
+          setRadarBadge("NEXUS Hazır", false);
         });
     }
 
-    // Marka gerçekten bu ortamda çalışıyor mu? (telefon: HTTP; masaüstü: HTTP + TCP)
-    function availabilityBadge(group) {
-      var desktop = window.nexusLan && window.nexusLan.hasTcp && window.nexusLan.hasTcp();
-      var a = group.availability || "all";
-      var label, cls;
-      if (a === "all" || (a === "desktop" && desktop)) { label = "Ücretsiz · yerel ağda çalışır"; cls = "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"; }
-      else if (a === "desktop") { label = "Masaüstü uygulamasında çalışır"; cls = "bg-[#4C7DFF]/10 text-[#3F6FFF] dark:text-[#93b4ff]"; }
-      else { label = "Yakında"; cls = "bg-slate-500/10 text-slate-600 dark:text-slate-300"; }
-      return '<span class="inline-flex mb-2 rounded-full px-2.5 py-1 text-[11px] font-bold ' + cls + '">' + label + "</span>";
-    }
-
-    function renderSupportedDevices() {
-      var host = document.getElementById("supported-devices-list");
-      var totalEl = document.getElementById("supported-device-total");
-      if (!host || typeof NEXUS_SUPPORTED_DEVICES === "undefined") return;
-
-      var groups = NEXUS_SUPPORTED_DEVICES.filter(function (g) {
-        return g && Array.isArray(g.models) && g.models.length;
-      });
-      var total = groups.reduce(function (sum, g) {
-        return sum + g.models.length;
-      }, 0);
-      if (totalEl) totalEl.textContent = String(total);
-
-      host.innerHTML = groups.map(function (group) {
-        var tiles = group.models.map(function (model) {
-          return '<div class="product-tile product-card text-center" data-protocol="' +
-            escapeHtml(group.protocol) + '" data-caps="' + escapeHtml((model.caps || []).join(",")) + '">' +
-            '<div class="product-image-stage">' +
-            '<img src="assets/products/' + encodeURIComponent(model.img) + "?v=" + SUPPORTED_IMAGE_VERSION +
-            '" alt="' + escapeHtml(model.name) + '" class="max-w-[88%] max-h-[74px] object-contain" loading="lazy" decoding="async" />' +
-            "</div>" +
-            '<div class="px-1 pt-1 flex min-h-[30px] flex-col items-center justify-start">' +
-            '<span class="product-name">' + escapeHtml(model.name) + "</span>" +
-            '<span class="product-category-pill">' + escapeHtml(group.brand) + "</span>" +
-            "</div></div>";
-        }).join("");
-
-        return '<section class="mt-5">' +
-          '<div class="flex items-baseline justify-between gap-2 mb-2">' +
-          '<h4 class="text-sm font-extrabold text-slate-900 dark:text-white">' + escapeHtml(group.brand) + "</h4>" +
-          '<span class="text-[11px] font-medium text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(group.note || "") + "</span>" +
-          "</div>" + availabilityBadge(group) +
-          '<div class="grid grid-cols-3 gap-2.5">' + tiles + "</div>" +
-          "</section>";
-      }).join("");
-    }
-
     renderPairedDevices();
-    renderSupportedDevices();
     // QR / kurulum kodu ekranından gelen yerel ağ adresi: otomatik doldur ve cihazı tanı
     (function () {
       var host = new URLSearchParams(location.search).get("host");
@@ -840,12 +791,8 @@
       document.getElementById("lan-scan-section").scrollIntoView({ block: "center" });
       scanLanHost();
     })();
-    if (window.nexusLan && window.nexusLan.guessSubnet) {
-      window.nexusLan.guessSubnet().then(function (prefix) {
-        var input = document.getElementById("lan-scan-subnet");
-        if (prefix && input) input.value = prefix;
-      });
-    }
+    // Sayfa açılınca tarama kendiliğinden başlar (QR / kurulum kodundan adresle gelindiyse o cihaz tanınır).
+    if (!new URLSearchParams(location.search).get("host")) setTimeout(function () { startAutoScan(true); }, 400);
     window.addEventListener("pageshow", renderPairedDevices);
     window.addEventListener("DOMContentLoaded", function () {
       if (window.location.hash === "#manual-catalog-section") {

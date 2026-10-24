@@ -143,8 +143,6 @@
     var email = (document.getElementById('login-email').value || '').trim();
     var pass = document.getElementById('login-password').value || '';
     var err = document.getElementById('login-error');
-    // Şifreyi girilen e-posta adresine göre doğrudan localStorage'dan oku
-    var storedPassword = localStorage.getItem('nexus_mock_pw_' + email);
     if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
       err.textContent = 'Lütfen geçerli bir e-posta adresi girin.';
       err.classList.remove('hidden');
@@ -176,19 +174,22 @@
       return;
     }
 
-    if (storedPassword && pass !== storedPassword) {
-      err.textContent = 'Şifre yanlış.';
+    // Yerel hesap: şifre özeti doğrulanır (düz metin saklanmaz)
+    window.nexusLocalPassword.verify(email, pass).then(function (result) {
+      if (result === false) {
+        err.textContent = 'Şifre yanlış.';
+        err.classList.remove('hidden');
+        return;
+      }
+      // Bu e-postayla ilk kez giriş yapılıyorsa yerel hesap oluşturulur
+      return (result === null ? window.nexusLocalPassword.set(email, pass) : Promise.resolve()).then(function () {
+        rememberLocalUser(email);
+        window.location.href = 'stitch-home.html';
+      });
+    }).catch(function () {
+      err.textContent = 'Giriş yapılamadı. Lütfen tekrar dene.';
       err.classList.remove('hidden');
-      return;
-    }
-
-    // Eğer bu e-posta ile ilk defa giriş yapılıyorsa şifresini kaydet (Kayıt ol mantığı)
-    if (!storedPassword) {
-      localStorage.setItem('nexus_mock_pw_' + email, pass);
-    }
-
-    rememberLocalUser(email);
-    window.location.href = 'stitch-home.html';
+    });
   }
 </script>
 </body></html>

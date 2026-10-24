@@ -44,6 +44,13 @@
 // Global Unbreakable Image Handler
 window.addEventListener('error', function(e) {
   if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+    // Yerel fotoğraf (assets/photos) yoksa önce internetteki aynı fotoğrafı dene, o da olmazsa yedek yüzeye düş
+    var localPhoto = e.target.src && e.target.src.match(/assets\/photos\/(photo-[\w-]+)\.jpg/);
+    if (localPhoto && !e.target.dataset.remoteTried) {
+      e.target.dataset.remoteTried = 'true';
+      e.target.src = 'https://images.unsplash.com/' + localPhoto[1] + '?auto=format&fit=crop&w=800&q=80';
+      return;
+    }
     if (e.target.dataset.fallbackApplied) return;
     e.target.dataset.fallbackApplied = 'true';
     
@@ -54,7 +61,7 @@ window.addEventListener('error', function(e) {
     } else {
       // Çevrimdışıyken (yerel öncelikli kullanım) uzak görseller yüklenemezse
       // gri "Görsel Yüklenemedi" yazısı yerine marka renginde sakin bir yüzey göster.
-      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234C7DFF'/%3E%3Cstop offset='1' stop-color='%2322D3EE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M160 160l40-34 40 34v42h-80z'/%3E%3Cpath d='M190 202v-22h20v22'/%3E%3C/g%3E%3C/svg%3E";
+      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234C7DFF'/%3E%3Cstop offset='1' stop-color='%2322D3EE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g)'/%3E%3Ccircle cx='330' cy='55' r='95' fill='%23ffffff' fill-opacity='0.14'/%3E%3Ccircle cx='55' cy='260' r='120' fill='%23ffffff' fill-opacity='0.10'/%3E%3C/svg%3E";
       e.target.classList.add('nx-img-fallback');
       e.target.removeAttribute('srcset');
     }
@@ -133,7 +140,9 @@ window.addEventListener('error', function(e) {
   window.addEventListener('load', updateOnlineStatus);
   // 1. Dark Mode Logic
   function applyTheme() {
-    const isDark = (typeof nexusGetItem === 'function' ? nexusGetItem('nexusDarkMode') : localStorage.getItem('nexusDarkMode')) === 'true';
+    const get = function (k) { return typeof nexusGetItem === 'function' ? nexusGetItem(k) : localStorage.getItem(k); };
+    const useSystem = get('nexusThemeSystem') === 'true' && window.matchMedia;
+    const isDark = useSystem ? window.matchMedia('(prefers-color-scheme: dark)').matches : get('nexusDarkMode') === 'true';
     if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
@@ -153,6 +162,11 @@ window.addEventListener('error', function(e) {
   
   // Custom event listener for same-page updates
   window.addEventListener('themeChanged', applyTheme);
+  // Sistem temasıyla eşleştirme açıkken işletim sistemi teması değişince hemen uygula
+  if (window.matchMedia) {
+    var nxMq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (nxMq.addEventListener) nxMq.addEventListener('change', applyTheme);
+  }
 
   // Configure Tailwind for dark mode class.
   // ÖNEMLİ: Sayfanın kendi tailwind.config'ini EZME — birleştir.
@@ -364,17 +378,24 @@ window.addEventListener('error', function(e) {
 
 
 // Masaüstü düzeni (≥1024px): ortak stil + sol menü. Telefon görünümünü etkilemez.
+// Stil ve betik head ayrıştırılırken (document.write) eklenir: çözülmeleri boyamayı
+// engeller. Geç yüklenen dinamik eklemede masaüstü düzeni ilk boyamadan sonra
+// uygulanıp içeriği bir kez daha kaydırıyordu; sayfalar arası geçişler sabit kalsın.
 (function () {
   if (document.getElementById('nexus-desktop-css')) return;
   if (window.matchMedia && window.matchMedia('(min-width: 1024px)').matches) document.documentElement.classList.add('nx-desk');
-  var link = document.createElement('link');
-  link.id = 'nexus-desktop-css';
-  link.rel = 'stylesheet';
-  link.href = 'css/nexus-desktop.css';
-  document.head.appendChild(link);
-  var s = document.createElement('script');
-  s.src = 'desktop.js';
-  document.head.appendChild(s);
+  if (document.readyState === 'loading') {
+    document.write('<link id="nexus-desktop-css" rel="stylesheet" href="css/nexus-desktop.css"><script src="desktop.js"><\/script>');
+  } else {
+    var link = document.createElement('link');
+    link.id = 'nexus-desktop-css';
+    link.rel = 'stylesheet';
+    link.href = 'css/nexus-desktop.css';
+    document.head.appendChild(link);
+    var s = document.createElement('script');
+    s.src = 'desktop.js';
+    document.head.appendChild(s);
+  }
 })();
 
 // Marka uyumlu bilgi paneli (tarayıcının alert() kutusu yerine). Kullanım: nexusInfo(başlık, metin, [düğmeler])
@@ -455,4 +476,13 @@ window.nexusCopy = function (text) {
     'html.dark #nx-lang-switch{background:rgba(15,23,42,.72);border-color:rgba(148,163,184,.25);color:#94a3b8}';
   document.head.appendChild(css);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+})();
+
+// Masaüstü uygulamasında Ctrl+K komut paleti (yalnızca Electron + geniş ekran)
+(function () {
+  if (!window.nexusDesktop || !window.matchMedia || !window.matchMedia('(min-width: 1024px)').matches) return;
+  var s = document.createElement('script');
+  s.src = 'command-palette.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
 })();
