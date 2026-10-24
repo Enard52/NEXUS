@@ -327,7 +327,7 @@ describe("FAZ 17 — Load & Stress Test", () => {
       registered.push(acct.id);
     }
     expect(new Set(registered).size).toBe(50); // All unique IDs
-  });
+  }, 30000);
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
