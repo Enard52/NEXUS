@@ -21,7 +21,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Privacy Policy — NEXUS</title>
-  <meta name="description" content="How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data." />
+  <meta name="description" content="What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <link rel="canonical" href="https://nexus-smarthome.pages.dev/privacy" />
   <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/privacy" />
@@ -32,7 +32,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="tr_TR" />
   <meta property="og:title" content="Privacy Policy — NEXUS" />
-  <meta property="og:description" content="How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data." />
+  <meta property="og:description" content="What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data." />
   <meta property="og:url" content="https://nexus-smarthome.pages.dev/privacy" />
   <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
   <meta property="og:image:width" content="1200" />
@@ -40,8 +40,10 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta property="og:image:alt" content="NEXUS smart home app" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Privacy Policy — NEXUS" />
-  <meta name="twitter:description" content="How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data." />
+  <meta name="twitter:description" content="What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data." />
   <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="application-name" content="NEXUS" />
   <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="application-name" content="NEXUS" />
@@ -5736,21 +5738,56 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
   
 <main class="legal-content main-content">
 <h1>Privacy Policy</h1>
-<p class="legal-updated">Last updated: July 2026</p>
-<h2>Your Privacy Matters</h2>
-<p>Welcome to NEXUS. We are deeply committed to protecting your privacy and security. Our fundamental principle is that your data belongs to you. This Privacy Policy details how we handle the information you provide when using our software, applications, and services.</p>
-<h3>Data Collection</h3>
-<p>We operate on a local-first architecture. This means we do not collect, store, or transmit any personal data, voice recordings, home layouts, or usage patterns to our servers. All voice commands, routines, connected device configurations, and telemetry data remain strictly within your local network or on your personal devices. The only data we process on our servers relates strictly to account authentication and billing, which is managed via industry-standard secure payment processors.</p>
-<h3>Local Processing & AI</h3>
-<p>NEXUS utilizes advanced on-device artificial intelligence. All machine learning inferences, including natural language processing (NLP), voice recognition, and predictive routine automation, occur entirely on the hardware you own. At no point are your voice samples sent to the cloud for transcription or analysis. No cloud dependency is required for core functionality, ensuring that your home remains operational and private even without internet connectivity.</p>
-<h3>Third-Party Integrations</h3>
-<p>When you choose to connect third-party smart home devices (e.g., Philips Hue, Sonos, Zigbee devices), NEXUS acts as a local hub. We do not share your NEXUS data with these manufacturers. However, these third-party devices may still communicate with their respective manufacturers' servers according to their own privacy policies. We encourage you to review the privacy practices of the devices you connect.</p>
-<h3>Analytics and Telemetry</h3>
-<p>To improve our services, we use privacy-respecting, cookie-free analytics on our website. These tools collect only aggregate page view counts and non-identifiable system metadata (such as generic OS version metrics). No personal identifiers, IP addresses, or device-specific fingerprints are tracked or stored.</p>
-<h3>Changes to Privacy Policy</h3>
-<p>We may update this Privacy Policy periodically to reflect changes in our practices or relevant laws. We will notify you of any significant updates via the NEXUS application interface.</p>
-<h3>Contact Us</h3>
-<p>If you have questions or requests about this Privacy Policy or your data, contact us at <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a>.</p>
+<p class="legal-updated">Last updated: 25 October 2026</p>
+<p>NEXUS manages your smart home primarily on your own local network. This policy explains clearly what data we process, why and where when you create an account.</p>
+<h3>In short</h3>
+<ul>
+<li>You do not need an account to control your devices; without one your data stays on your own device.</li>
+<li>If you create an account, your settings, device list and chat history are stored in the cloud so they match on every device.</li>
+<li>We do not sell your data, use it for advertising or profile you.</li>
+<li>We never use the microphone or record audio. The camera opens only to scan QR codes and the image never leaves your device.</li>
+</ul>
+<h3>Data controller</h3>
+<p>The data controller is NEXUS (operator: Ensar Harmancı). Contact: <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a></p>
+<h3>What data we process</h3>
+<ul>
+<li>Account: your email address and (if provided) your name. With Google sign-in, the email and profile name Google provides. Your password is stored only as a one-way hash in Supabase Auth; we cannot see it.</li>
+<li>Synced app data (only when signed in): profile name and photo, theme/language/unit settings, household members, scenes and automations, favourite cards, NEXUS AI chat history and usage counter, event log, home location/weather preference and the list of devices you added (name, room, protocol, local network address, last state).</li>
+<li>Subscription (if you bought NEXUS+): email, plan, status, period end and Whop membership ID. Your card details are processed only by Whop and never reach us.</li>
+<li>Support messages: your email and message when you write to us.</li>
+<li>Technical logs: sign-in and error logs (including IP address) kept briefly by our hosting and authentication providers.</li>
+</ul>
+<h3>Purposes and legal bases</h3>
+<p>To manage your account, sync your data across devices, provide your subscription and give support (performance of a contract); to keep the service secure and prevent abuse (legitimate interest); and for transfers abroad, your explicit consent (see below).</p>
+<h3>NEXUS AI</h3>
+<p>NEXUS AI is currently an on-device command assistant; what you type is not sent to AI services. If you are signed in, your chat history syncs with your account like your other settings. If we add a cloud-based AI in future we will update this policy, tell you in advance and make it optional.</p>
+<h3>Service providers and transfers</h3>
+<p>These providers' servers may be outside Türkiye. By creating an account and/or paying you give explicit consent to your data being transferred to them and abroad; you can withdraw consent by having your account deleted.</p>
+<ul>
+<li>Supabase: authentication, database and system emails.</li>
+<li>Cloudflare: hosting of the website and web app.</li>
+<li>Whop: subscription payments and invoicing.</li>
+<li>Google: Google sign-in and (via Gmail) verification / password-reset emails.</li>
+<li>GitHub: distribution of installers.</li>
+<li>Open-Meteo: city / approximate coordinates for weather.</li>
+<li>OpenStreetMap / Nominatim: maps and place search; Unsplash: some fallback images.</li>
+</ul>
+<h3>Cookies and tracking</h3>
+<p>Our website uses no cookies and contains no analytics or advertising trackers. The app keeps your settings in your device's local storage (localStorage).</p>
+<h3>Retention and deletion</h3>
+<p>We keep your data while your account is open. To delete your account and data, write to <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a>; we will complete the request within 30 days (except subscription records we must keep by law). The app does not yet have a delete-account button.</p>
+<h3>Your rights</h3>
+<p>Under Turkish Law No. 6698 (KVKK) art. 11 and, where applicable, the GDPR, you may ask whether your data is processed, access it, correct it, have it deleted, object to processing and request portability. Write to <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a>. You may also complain to the Turkish Personal Data Protection Authority.</p>
+<h3>Security</h3>
+<p>Connections are encrypted with TLS. The database enforces row-level access control: each user can read and write only their own data. No system is perfectly secure; we recommend a strong password and keeping your devices up to date.</p>
+<h3>Third-party devices</h3>
+<p>Smart devices you connect (e.g. Shelly, WLED, ESPHome) may talk to their manufacturers' servers under their own privacy policies. NEXUS does not share your data with those manufacturers.</p>
+<h3>Children</h3>
+<p>NEXUS is not directed to children under 13 and we do not knowingly collect their data.</p>
+<h3>Changes</h3>
+<p>We may update this policy; we will announce significant changes in the app or on the website.</p>
+<h3>Contact</h3>
+<p>Questions: <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a></p>
 </main>
 
 
@@ -5788,6 +5825,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
           <a href="/about">About Us</a>
           <a href="/privacy">Privacy Policy</a>
           <a href="/terms">Terms of Service</a>
+          <a href="/refund">Refund Policy</a>
           <a href="mailto:nexus.smarthome.app@gmail.com">Support</a>
         </div>
       </div>

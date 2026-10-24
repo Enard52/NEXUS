@@ -21,7 +21,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Gizlilik Politikası — NEXUS</title>
-  <meta name="description" content="NEXUS verilerinizi nasıl işler: varsayılan olarak yerel işleme, kendi hesabınızla isteğe bağlı bulut senkronu ve kişisel verilerin satılmaması." />
+  <meta name="description" content="NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <link rel="canonical" href="https://nexus-smarthome.pages.dev/tr/privacy" />
   <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/privacy" />
@@ -32,7 +32,7 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta property="og:locale" content="tr_TR" />
   <meta property="og:locale:alternate" content="en_US" />
   <meta property="og:title" content="Gizlilik Politikası — NEXUS" />
-  <meta property="og:description" content="NEXUS verilerinizi nasıl işler: varsayılan olarak yerel işleme, kendi hesabınızla isteğe bağlı bulut senkronu ve kişisel verilerin satılmaması." />
+  <meta property="og:description" content="NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması." />
   <meta property="og:url" content="https://nexus-smarthome.pages.dev/tr/privacy" />
   <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
   <meta property="og:image:width" content="1200" />
@@ -40,8 +40,10 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta property="og:image:alt" content="NEXUS akıllı ev uygulaması" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Gizlilik Politikası — NEXUS" />
-  <meta name="twitter:description" content="NEXUS verilerinizi nasıl işler: varsayılan olarak yerel işleme, kendi hesabınızla isteğe bağlı bulut senkronu ve kişisel verilerin satılmaması." />
+  <meta name="twitter:description" content="NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması." />
   <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="application-name" content="NEXUS" />
   <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="application-name" content="NEXUS" />
@@ -5736,19 +5738,56 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
   
 <main class="legal-content main-content">
 <h1>Gizlilik Politikası</h1>
-<p class="legal-updated">Son güncelleme: Temmuz 2026</p>
-<h2>Gizliliğiniz Önemli</h2>
-<p>NEXUS'a hoş geldiniz. Gizliliğinizi ve güvenliğinizi korumaya derinden bağlıyız. Temel prensibimiz, verilerinizin size ait olmasıdır. Bu Gizlilik Politikası, yazılımımızı, uygulamalarımızı ve hizmetlerimizi kullanırken sağladığınız bilgileri nasıl işlediğimizi detaylandırmaktadır.</p>
-<h3>Veri Toplama</h3>
-<p>Öncelikle yerel (local-first) bir mimariyle çalışıyoruz. Bu, kişisel verileri, ses kayıtlarını, ev yerleşimlerini veya kullanım alışkanlıklarını sunucularımızda toplamadığımız, saklamadığımız veya iletmediğimiz anlamına gelir. Tüm sesli komutlar, rutinler, bağlı cihaz yapılandırmaları ve telemetri verileri kesinlikle yerel ağınızda veya kişisel cihazlarınızda kalır. Sunucularımızda işlediğimiz tek veri, endüstri standardı güvenli ödeme işlemcileri aracılığıyla yönetilen hesap kimlik doğrulaması ve faturalandırma ile ilgilidir.</p>
-<h3>Yerel İşleme ve Yapay Zeka</h3>
-<p>NEXUS gelişmiş cihaz içi (on-device) yapay zeka kullanır. Doğal dil işleme (NLP), ses tanıma ve tahmine dayalı rutin otomasyonu da dahil olmak üzere tüm makine öğrenimi çıkarımları tamamen sahip olduğunuz donanım üzerinde gerçekleşir. Ses örnekleriniz hiçbir zaman yazıya dökülmek veya analiz edilmek üzere buluta gönderilmez. Temel işlevsellik için hiçbir bulut bağımlılığı gerekmez, bu da evinizin internet bağlantısı olmasa bile çalışır durumda ve gizli kalmasını sağlar.</p>
-<h3>Üçüncü Taraf Entegrasyonları</h3>
-<p>Üçüncü taraf cihazları (ör. akıllı ampuller, termostatlar) bağlarken NEXUS bir köprü görevi görür. Özel hub verilerinizi bu üçüncü taraf üreticilerle paylaşmasak da, lütfen bu cihazların kendi gizlilik politikalarına göre kendi sunucularıyla iletişim kurabileceğini unutmayın. Kullanıcılarımızı, bağlı tüm donanımların gizlilik ayarlarını doğrulamaya teşvik ediyoruz.</p>
-<h3>Güvenlik Önlemleri</h3>
-<p>Hub ve kontrol uygulamalarınız arasındaki tüm yerel iletişimler için güçlü şifreleme yöntemleri kullanıyoruz. Verileriniz evinizde kaldığı için, bulut sağlayıcılarını etkileyen büyük ölçekli veri ihlallerine karşı savunmasız değildir.</p>
-<h3>Bize Ulaşın</h3>
-<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a> adresinden bize ulaşabilirsiniz.</p>
+<p class="legal-updated">Son güncelleme: 25 Ekim 2026</p>
+<p>NEXUS, akıllı evinizi öncelikle kendi yerel ağınızda yöneten bir uygulamadır. Bu politika, hesap açtığınızda hangi verileri, neden ve nerede işlediğimizi açıkça anlatır.</p>
+<h3>Kısaca</h3>
+<ul>
+<li>Cihazlarınızı kontrol etmek için hesap gerekmez; hesap açmazsanız verileriniz yalnızca kendi cihazınızda kalır.</li>
+<li>Hesap açarsanız ayarlarınız, cihaz listeniz ve sohbet geçmişiniz her cihazda aynı olsun diye bulutta saklanır.</li>
+<li>Verilerinizi satmayız, reklam için kullanmayız, sizi profillemeyiz.</li>
+<li>Mikrofonu kullanmayız, ses kaydı almayız. Kamera yalnızca QR kod taramak için açılır ve görüntü cihazınızdan çıkmaz.</li>
+</ul>
+<h3>Veri sorumlusu</h3>
+<p>Veri sorumlusu NEXUS (işletmeci: Ensar Harmancı). İletişim: <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a></p>
+<h3>Hangi verileri işliyoruz</h3>
+<ul>
+<li>Hesap: e-posta adresiniz ve (varsa) adınız. Google ile girişte Google'ın verdiği e-posta ve profil adı. Şifreniz tek yönlü karma (hash) olarak Supabase Auth'ta tutulur; bize düz metin olarak görünmez.</li>
+<li>Senkronize uygulama verisi (yalnızca hesapla giriş yaptığınızda): profil adı ve fotoğrafı, tema/dil/birim ayarları, aile üyeleri, sahneler ve otomasyonlar, favori kartlar, NEXUS AI sohbet geçmişi ve kullanım sayacı, olay günlüğü, ev konumu/hava durumu tercihi ve eklediğiniz cihazların listesi (ad, oda, protokol, yerel ağ adresi, son durum).</li>
+<li>Abonelik (NEXUS+ satın aldıysanız): e-posta, plan, durum, dönem sonu ve Whop üyelik kimliği. Kart bilgileriniz yalnızca Whop'ta işlenir, bize ulaşmaz.</li>
+<li>Destek yazışmaları: bize yazdığınızda e-postanız ve mesajınız.</li>
+<li>Teknik kayıtlar: giriş ve hata günlükleri (IP adresi dahil) barındırma ve kimlik doğrulama sağlayıcılarımızda kısa süre tutulur.</li>
+</ul>
+<h3>Hangi amaçla ve hukuki dayanak</h3>
+<p>Hesabınızı yönetmek, verilerinizi cihazlarınız arasında eşitlemek, aboneliğinizi sunmak ve size destek vermek için (sözleşmenin ifası); güvenliği sağlamak ve kötüye kullanımı önlemek için (meşru menfaat); yurt dışına aktarım için açık rızanız (aşağıya bakın).</p>
+<h3>NEXUS AI</h3>
+<p>NEXUS AI şu an cihaz üzerinde çalışan bir komut asistanıdır; yazdıklarınız yapay zekâ servislerine gönderilmez. Sohbet geçmişiniz, hesapla giriş yaptıysanız diğer ayarlarınız gibi hesabınızla eşitlenir. İleride bulut tabanlı bir yapay zekâ eklenirse bu politikayı güncelleyip önceden bilgi vereceğiz ve isteğe bağlı sunacağız.</p>
+<h3>Hizmet sağlayıcılar ve aktarımlar</h3>
+<p>Bu sağlayıcıların sunucuları Türkiye dışında olabilir. Hesap açarak ve/veya ödeme yaparak verilerinizin bu sağlayıcılara ve yurt dışına aktarılmasına açık rıza vermiş olursunuz; rızanızı hesabınızı sildirerek geri alabilirsiniz.</p>
+<ul>
+<li>Supabase: kimlik doğrulama, veritabanı ve sistem e-postaları.</li>
+<li>Cloudflare: web sitesi ve web uygulamasının barındırılması.</li>
+<li>Whop: abonelik ödemeleri ve fatura.</li>
+<li>Google: Google ile giriş ve (Gmail üzerinden) doğrulama/şifre sıfırlama e-postaları.</li>
+<li>GitHub: kurulum dosyalarının dağıtımı.</li>
+<li>Open-Meteo: hava durumu için şehir/yaklaşık koordinat bilgisi.</li>
+<li>OpenStreetMap / Nominatim: harita ve konum araması; Unsplash: bazı yedek görseller.</li>
+</ul>
+<h3>Çerezler ve izleme</h3>
+<p>Web sitemiz çerez kullanmaz ve analitik/reklam izleyicisi içermez. Uygulama, ayarlarınızı cihazınızın yerel depolamasında (localStorage) tutar.</p>
+<h3>Saklama ve silme</h3>
+<p>Verilerinizi hesabınız açık olduğu sürece saklarız. Hesabınızın ve verilerinizin silinmesi için <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a> adresine yazın; talebinizi en geç 30 gün içinde yerine getiririz (yasal saklama yükümlülüğü olan abonelik kayıtları hariç). Uygulamada hesap silme düğmesi henüz yoktur.</p>
+<h3>Haklarınız</h3>
+<p>6698 sayılı KVKK m.11 ve (uygulanıyorsa) GDPR kapsamında: verilerinizin işlenip işlenmediğini öğrenme, erişim, düzeltme, silme, işlemeye itiraz ve taşınabilirlik haklarına sahipsiniz. Başvuru için <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a> adresine yazın. Kişisel Verileri Koruma Kurulu'na şikâyet hakkınız saklıdır.</p>
+<h3>Güvenlik</h3>
+<p>Bağlantılar TLS ile şifrelenir. Veritabanında satır bazlı erişim denetimi vardır: her kullanıcı yalnızca kendi verisini okuyabilir ve yazabilir. Hiçbir sistem tamamen güvenli değildir; güçlü bir şifre kullanmanızı ve cihazlarınızı güncel tutmanızı öneririz.</p>
+<h3>Üçüncü taraf cihazlar</h3>
+<p>Bağladığınız akıllı cihazlar (ör. Shelly, WLED, ESPHome) kendi üreticilerinin sunucularıyla kendi gizlilik politikalarına göre haberleşebilir. NEXUS verilerinizi bu üreticilerle paylaşmaz.</p>
+<h3>Çocuklar</h3>
+<p>NEXUS 13 yaşın altındaki çocuklara yönelik değildir ve onlardan bilerek veri toplamayız.</p>
+<h3>Değişiklikler</h3>
+<p>Bu politikayı güncelleyebiliriz; önemli değişiklikleri uygulama veya site üzerinden duyururuz.</p>
+<h3>İletişim</h3>
+<p>Sorularınız için: <a href="mailto:nexus.smarthome.app@gmail.com">nexus.smarthome.app@gmail.com</a></p>
 </main>
 
 
@@ -5786,6 +5825,7 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
           <a href="/about">Hakkımızda</a>
           <a href="/privacy">Gizlilik Politikası</a>
           <a href="/terms">Kullanım Şartları</a>
+          <a href="/refund">İade Politikası</a>
           <a href="mailto:nexus.smarthome.app@gmail.com">Destek</a>
         </div>
       </div>

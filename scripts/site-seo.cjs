@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];
 const BASE = "https://nexus-smarthome.pages.dev";
-const TODAY = "2026-10-24";
+const TODAY = "2026-10-25";
 const SUPPORT_EMAIL = "nexus.smarthome.app@gmail.com";
 
 // file -> { route (en clean path), lang, kind }
@@ -19,6 +19,8 @@ const pages = [
   ["terms.html", "/terms", "en", "terms"],
   ["terms/index.html", "/terms", "en", "terms"],
   ["tr/terms.html", "/terms", "tr", "terms"],
+  ["refund.html", "/refund", "en", "refund"],
+  ["tr/refund.html", "/refund", "tr", "refund"],
   ["light.html", "/", "en", "light"],
   ["tr/light.html", "/", "tr", "light"],
   ["login.html", "/login", "en", "login"],
@@ -34,12 +36,14 @@ const meta = {
       about: "About NEXUS — Local-first smart home control",
       privacy: "Privacy Policy — NEXUS",
       terms: "Terms of Service — NEXUS",
+      refund: "Refund and Cancellation Policy — NEXUS",
     },
     desc: {
       home: "NEXUS controls your smart home on your local network, with no hub or cloud fee. Free for Windows and Linux, test build for Android. iOS coming soon.",
       about: "NEXUS is a local-first smart home assistant. Learn what it is, how it works and what we believe about privacy and ownership of your home data.",
-      privacy: "How NEXUS handles your data: local processing by default, optional cloud sync with your own account, and no selling of personal data.",
-      terms: "The terms for using NEXUS apps and services: licence, acceptable use, accounts, updates and liability.",
+      privacy: "What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data.",
+      terms: "The terms for using NEXUS apps and services: licence, accounts, NEXUS+ subscription, safety and liability.",
+      refund: "Free trial, cancellation and refund terms for the NEXUS+ subscription.",
     },
     locale: "en_US",
     other: "tr_TR",
@@ -49,13 +53,15 @@ const meta = {
       home: "NEXUS — Windows, Linux ve Android için yerel akıllı ev uygulaması",
       about: "NEXUS Hakkında — Yerel öncelikli akıllı ev kontrolü",
       privacy: "Gizlilik Politikası — NEXUS",
-      terms: "Kullanım Koşulları — NEXUS",
+      terms: "Kullanım Şartları — NEXUS",
+      refund: "İade ve İptal Politikası — NEXUS",
     },
     desc: {
       home: "NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan yerel ağınızda yönetir. Windows ve Linux için ücretsiz, Android için test sürümü. iOS yakında.",
       about: "NEXUS, yerel öncelikli bir akıllı ev asistanıdır. Nasıl çalıştığını, gizlilik ve ev verilerinizin size ait olması konusundaki yaklaşımımızı öğrenin.",
-      privacy: "NEXUS verilerinizi nasıl işler: varsayılan olarak yerel işleme, kendi hesabınızla isteğe bağlı bulut senkronu ve kişisel verilerin satılmaması.",
-      terms: "NEXUS uygulama ve hizmetlerinin kullanım koşulları: lisans, kabul edilebilir kullanım, hesaplar, güncellemeler ve sorumluluk.",
+      privacy: "NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması.",
+      terms: "NEXUS uygulama ve hizmetlerinin kullanım şartları: lisans, hesaplar, NEXUS+ aboneliği, güvenlik ve sorumluluk.",
+      refund: "NEXUS+ aboneliği için ücretsiz deneme, iptal ve iade koşulları.",
     },
     locale: "tr_TR",
     other: "en_US",
@@ -102,7 +108,7 @@ for (const [file, route, lang, kind] of pages) {
   }
   let html = fs.readFileSync(p, "utf8");
   const m = meta[lang];
-  const indexable = ["home", "about", "privacy", "terms"].includes(kind);
+  const indexable = ["home", "about", "privacy", "terms", "refund"].includes(kind);
   const canonicalTarget = abs(route, lang);
 
   // --- strip old SEO tags ---
@@ -224,6 +230,7 @@ for (const [file, route, lang, kind] of pages) {
   html = html.replace(/(<h3>(?:Company &amp; legal|Company & legal|Şirket ve yasal)<\/h3>[\s\S]*?)(<\/div>)/, (m, a, b) =>
     a.includes("mailto:") ? m : a + '  <a href="mailto:' + SUPPORT_EMAIL + '">' + (lang === "tr" ? "Destek" : "Support") + "</a>\n        " + b
   );
+  if (!html.includes('href="/refund"')) html = html.replace(/(<a href="\/terms">[^<]*<\/a>)/, (m) => m + '\n          <a href="/refund">' + (lang === "tr" ? "İade Politikası" : "Refund Policy") + "</a>");
   html = html.replace(/\s*<a href="#downloads">macOS<\/a>/g, "");
   html = html.split("© 2026 NEXUS Technologies Inc.").join("© 2026 NEXUS");
 
@@ -250,6 +257,7 @@ const routes = [
   ["/about", 0.5, "monthly"],
   ["/privacy", 0.3, "monthly"],
   ["/terms", 0.3, "monthly"],
+  ["/refund", 0.3, "monthly"],
 ];
 let sm = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
 for (const [route, pr, cf] of routes) {
