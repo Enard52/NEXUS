@@ -210,9 +210,10 @@
     // Sekme çubuğu: başlıktan sonra gelen ilk sabit olmayan NAV (alt gezinme sabit olduğu için atlanır)
     var tabs = null;
     for (var s = header.nextElementSibling; s; s = s.nextElementSibling) {
-      if (s.tagName === "NAV" && getComputedStyle(s).position !== "fixed") { tabs = s; break; }
+      var isTabBar = s.tagName === "NAV" || s.getAttribute("data-purpose") === "message-tabs" || !!s.querySelector("#tabs");
+      if (isTabBar && getComputedStyle(s).position !== "fixed") { tabs = s; break; }
     }
-    if (tabs && tabs.classList.contains("nx-desk-col")) {
+    if (tabs) {
       tabs.style.position = "sticky";
       tabs.style.top = header.offsetHeight + "px";
       tabs.style.zIndex = "29";
