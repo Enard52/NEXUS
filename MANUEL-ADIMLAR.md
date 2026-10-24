@@ -16,7 +16,6 @@ Sorun görürseniz ekran görüntüsüyle bana yazın.
 ## 2. Arama motorları (kalan küçük işler)
 
 - **Bing:** site eklendi ve doğrulandı. Site haritası gönderimi Bing tarafında geçici sunucu hatası verdi. Yarın şuraya girip tekrar deneyin: Bing Webmaster → site → **Sitemaps → Submit sitemap** → `https://nexus-smarthome.pages.dev/sitemap.xml`. Hata sürerse sorun değil: `robots.txt` zaten site haritasını gösteriyor, Bing kendi bulur.
-- **Yandex (isteğe bağlı):** Yandex hesabı gerektiriyor. Türkiye'de kullanım payı düşük, atlayabilirsiniz. İsterseniz `webmaster.yandex.com` → Add site → verdiği `yandex-verification` değerini bana yazın.
 
 ## 3. Kurumsal e-posta adresleri
 
