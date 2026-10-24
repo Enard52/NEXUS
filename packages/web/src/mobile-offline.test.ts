@@ -83,6 +83,8 @@ describe("mobil ekranlar — offline yüklenme Sözleşmesi", () => {
       const html = readFileSync(join(REPO_ROOT, screen), "utf8");
       for (const { ref } of resourceRefsOf(html)) {
         if (EXTERNAL_OK.test(ref) || ref.startsWith("data:") || ref.startsWith("#")) continue;
+        // cloud-config.js gizli yapılandırmadır: git'e girmez, derleme/CI sırasında yazılır.
+        if (ref === "cloud-config.js") continue;
         if (!resolvesLocally(ref)) missing.push(`${screen} -> ${ref}`);
       }
     }
