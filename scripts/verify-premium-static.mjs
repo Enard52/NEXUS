@@ -33,6 +33,8 @@ check(
 );
 check("packages/web/dist/404.html", []);
 check("packages/web/dist/privacy.html", []);
+check("packages/web/dist/terms.html", []);
+check("packages/web/dist/about.html", []);
 
 if (process.exitCode) process.exit(1);
 
@@ -42,6 +44,7 @@ const entries = [
   "light.html",
   "privacy.html",
   "terms.html",
+  "about.html",
   "404.html",
   "sitemap.xml",
   "robots.txt",

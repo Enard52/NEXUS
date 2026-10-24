@@ -86,6 +86,14 @@ export const LABEL_ALIASES: ReadonlyArray<readonly [string, string]> = [
 /** Raw needles (attributes / script strings) translated only for Turkish. */
 export const TR_RAW: ReadonlyArray<readonly [string, string]> = [
   ["PRIVATE CORE", "ÖZEL ÇEKİRDEK"],
+  ['href="/about"', 'href="/tr/about"'],
+  ['href="/privacy"', 'href="/tr/privacy"'],
+  ['href="/terms"', 'href="/tr/terms"'],
+  ["<h3>Company & legal</h3>", "<h3>Şirket ve yasal</h3>"],
+  ["<h3>Platforms</h3>", "<h3>Platformlar</h3>"],
+  [">About us<", ">Hakkımızda<"],
+  [">Privacy policy<", ">Gizlilik politikası<"],
+  [">Terms of service<", ">Kullanım şartları<"],
   ["YOU SAID", "SÖYLEDİĞİNİZ"],
   [">LOCAL<", ">YEREL<"],
   [">PRIVATE<", ">ÖZEL<"],
