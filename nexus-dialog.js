@@ -17,7 +17,8 @@
       '.nx-dlg{width:min(92vw,380px);border-radius:24px;padding:24px 22px 18px;background:#fff;color:#0f172a;' +
       'box-shadow:0 24px 60px -20px rgba(15,23,42,.45);animation:nxDlgPop .22s cubic-bezier(.2,.9,.3,1.2)}' +
       'html.dark .nx-dlg,html[data-theme="dark"] .nx-dlg{background:#1e293b;color:#f1f5f9}' +
-      '.nx-dlg-ico{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;' +
+      '.nx-dlg{text-align:center}' +
+      '.nx-dlg-ico{margin-left:auto;margin-right:auto;width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;' +
       'background:linear-gradient(135deg,#6f9bff,#4C7DFF 60%,#8b7bff);color:#fff;box-shadow:0 10px 22px -10px rgba(76,125,255,.9);margin-bottom:14px}' +
       '.nx-dlg-ico svg{width:24px;height:24px}' +
       '.nx-dlg-title{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px}' +
