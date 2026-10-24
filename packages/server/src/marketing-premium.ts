@@ -117,8 +117,14 @@ export const TR_RAW: ReadonlyArray<readonly [string, string]> = [
   ["DIY devices", "Kendin yap cihazlar"],
   ["Desktop app", "Masaüstü uygulaması"],
   ["Bridge · link button", "Köprü · bağlantı düğmesi"],
-  ["Connect the Wi-Fi devices you already own, without a paid hub.", "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın."],
-  ["Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.", "Yerel ağınız üzerinden doğrudan eşleşir — ücretli hub, bulut hesabı veya abonelik yok. Matter, Tapo ve Tuya yol haritasında."],
+  [
+    "Connect the Wi-Fi devices you already own, without a paid hub.",
+    "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın.",
+  ],
+  [
+    "Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.",
+    "Yerel ağınız üzerinden doğrudan eşleşir — ücretli hub, bulut hesabı veya abonelik yok. Matter, Tapo ve Tuya yol haritasında.",
+  ],
   ["“Set the house for movie night.”", "“Evi film gecesine hazırla.”"],
   ["“Make downstairs comfortable.”", "“Alt katı rahatlat.”"],
   ["“Lock up and switch everything off.”", "“Kilitle ve her şeyi kapat.”"],
@@ -143,7 +149,10 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ["DIY devices", "Kendin yap cihazlar"],
   ["Desktop app", "Masaüstü uygulaması"],
   ["Bridge · link button", "Köprü · bağlantı düğmesi"],
-  ["Connect the Wi-Fi devices you already own, without a paid hub.", "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın."],
+  [
+    "Connect the Wi-Fi devices you already own, without a paid hub.",
+    "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın.",
+  ],
   // Header / nav
   ["Open account", "Hesap aç"],
   ["Download NEXUS", "NEXUS'u indir"],
