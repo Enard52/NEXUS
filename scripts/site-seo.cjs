@@ -220,6 +220,13 @@ for (const [file, route, lang, kind] of pages) {
     html = html.replace(/(<section[^>]*id="early-access"[\s\S]*?<p class="section-copy">[\s\S]*?<\/p>)/, "$1" + btn);
   }
 
+  // --- alt bilgi: destek adresi her sayfada, kaldırılan macOS bağlantısı ve doğrulanmamış şirket unvanı yok ---
+  html = html.replace(/(<h3>(?:Company &amp; legal|Company & legal|Şirket ve yasal)<\/h3>[\s\S]*?)(<\/div>)/, (m, a, b) =>
+    a.includes("mailto:") ? m : a + '  <a href="mailto:' + SUPPORT_EMAIL + '">' + (lang === "tr" ? "Destek" : "Support") + "</a>\n        " + b
+  );
+  html = html.replace(/\s*<a href="#downloads">macOS<\/a>/g, "");
+  html = html.split("© 2026 NEXUS Technologies Inc.").join("© 2026 NEXUS");
+
   // --- other stale host refs ---
   html = html.split("https://enard52.github.io").join(BASE);
 

@@ -52,6 +52,9 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
   <meta name="application-name" content="NEXUS" />
   <meta name="apple-mobile-web-app-title" content="NEXUS" />
+  <meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />
+  <meta name="application-name" content="NEXUS" />
+  <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="application-name" content="NEXUS" />
   <meta name="apple-mobile-web-app-title" content="NEXUS" />
   <meta name="application-name" content="NEXUS" />
@@ -4666,6 +4669,41 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   .download-card .download-button:not(.is-disabled):hover { filter: brightness(1.05); }
   .download-card .download-note { font-size: 12px !important; }
 </style>
+
+<style id="nx-brand-downloads">
+  .downloads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  @media (max-width: 800px) { .downloads-grid { grid-template-columns: 1fr !important; } }
+  .download-card { --brand: #4c7dff; --brand-2: #8b7bff; }
+  .download-windows { --brand: #0078d4; --brand-2: #50a6f2; }
+  .download-linux   { --brand: #e8590c; --brand-2: #f7b32b; }
+  .download-android { --brand: #1fa95b; --brand-2: #3ddc84; }
+  .download-ios     { --brand: #7b8494; --brand-2: #aab2c0; }
+  .download-card {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, var(--brand) 10%), var(--surface)) !important;
+    color: var(--text) !important;
+    box-shadow: inset 0 4px 0 0 var(--brand), 0 18px 40px -24px color-mix(in srgb, var(--brand) 40%, rgba(0,0,0,.5)) !important;
+  }
+  .download-card h3 { color: var(--text) !important; }
+  .download-card p, .download-card .download-note { color: var(--muted) !important; }
+  .download-card:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent) !important;
+    box-shadow: inset 0 4px 0 0 var(--brand), 0 28px 56px -24px color-mix(in srgb, var(--brand) 55%, transparent) !important; }
+  .download-card .platform-icon { color: #fff !important; background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
+    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent); }
+  .download-card .platform-icon .os-logo { color: #fff !important; }
+  .download-card .platform-watermark { color: var(--brand) !important; }
+  .download-card .version { color: var(--brand) !important; background: color-mix(in srgb, var(--brand) 14%, transparent) !important; }
+  .download-card .platform-specs span { color: var(--muted) !important; }
+  .download-card .download-button:not(.is-disabled) {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
+    box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
+  .download-card.is-soon .download-button { opacity: .65; }
+  .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
+  .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+    background: color-mix(in srgb, var(--brand) 8%, transparent); color: var(--text); }
+  .nx-chip b { color: var(--brand); font-weight: 800; }
+  .downloads-meta .nx-updated { display: block; margin-top: 6px; font-size: 12.5px; opacity: .75; }
+</style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -4761,41 +4799,6 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
   ]
 }
   </script>
-
-<style id="nx-brand-downloads">
-  .downloads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  @media (max-width: 800px) { .downloads-grid { grid-template-columns: 1fr !important; } }
-  .download-card { --brand: #4c7dff; --brand-2: #8b7bff; }
-  .download-windows { --brand: #0078d4; --brand-2: #50a6f2; }
-  .download-linux   { --brand: #e8590c; --brand-2: #f7b32b; }
-  .download-android { --brand: #1fa95b; --brand-2: #3ddc84; }
-  .download-ios     { --brand: #7b8494; --brand-2: #aab2c0; }
-  .download-card {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, var(--brand) 10%), var(--surface)) !important;
-    color: var(--text) !important;
-    box-shadow: inset 0 4px 0 0 var(--brand), 0 18px 40px -24px color-mix(in srgb, var(--brand) 40%, rgba(0,0,0,.5)) !important;
-  }
-  .download-card h3 { color: var(--text) !important; }
-  .download-card p, .download-card .download-note { color: var(--muted) !important; }
-  .download-card:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent) !important;
-    box-shadow: inset 0 4px 0 0 var(--brand), 0 28px 56px -24px color-mix(in srgb, var(--brand) 55%, transparent) !important; }
-  .download-card .platform-icon { color: #fff !important; background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
-    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--brand) 80%, transparent); }
-  .download-card .platform-icon .os-logo { color: #fff !important; }
-  .download-card .platform-watermark { color: var(--brand) !important; }
-  .download-card .version { color: var(--brand) !important; background: color-mix(in srgb, var(--brand) 14%, transparent) !important; }
-  .download-card .platform-specs span { color: var(--muted) !important; }
-  .download-card .download-button:not(.is-disabled) {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%) !important; color: #fff !important;
-    box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--brand) 85%, transparent) !important; }
-  .download-card.is-soon .download-button { opacity: .65; }
-  .nx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
-  .nx-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 700;
-    letter-spacing: .01em; border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
-    background: color-mix(in srgb, var(--brand) 8%, transparent); color: var(--text); }
-  .nx-chip b { color: var(--brand); font-weight: 800; }
-  .downloads-meta .nx-updated { display: block; margin-top: 6px; font-size: 12.5px; opacity: .75; }
-</style>
 </head>
 <body>
   <a class="skip-link" href="#main">İçeriğe atla</a>
@@ -5857,10 +5860,11 @@ var t=(w==="tr"?"/tr/":"/")+f;if(t!==p&&!(t+"index.html"===p))L.replace(t+L.hash
           <a href="/about">Hakkımızda</a>
           <a href="/privacy">Gizlilik Politikası</a>
           <a href="/terms">Kullanım Şartları</a>
+          <a href="mailto:nexus.smarthome.app@gmail.com">Destek</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 NEXUS Technologies Inc.</span>
+        <span>© 2026 NEXUS</span>
         <span class="footer-status">Tüm sistemler çalışıyor · Sıfır çerez</span>
       </div>
     </div>
