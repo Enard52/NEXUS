@@ -12,6 +12,9 @@
 (function () {
   "use strict";
 
+  // theme.js bu dosyayı her sayfaya ekler; sayfa ayrıca eklediyse ikinci çalışma yok sayılır.
+  if (window.nexusCloud) return;
+
   var SESSION_KEY = "nexusCloudSession";
   var QUEUE_KEY = "nexusCloudPendingOps";
   var DEVICE_KEY = "nexusPairedDevices";
@@ -36,11 +39,15 @@
     }
   }
 
+  // Oturum, sahibinin e-postasıyla anahtarlanır. Giriş sırasında aktif kullanıcı henüz ayarlanmamış olabilir;
+  // eskiden bu yüzden oturum "guest_" altına düşüp senkron hiç çalışmıyordu.
   function writeSession(session) {
-    var value = session ? JSON.stringify(session) : "";
-    if (window.nexusSetItem) window.nexusSetItem(SESSION_KEY, value);
-    else if (session) localStorage.setItem(SESSION_KEY, value);
-    else localStorage.removeItem(SESSION_KEY);
+    var owner = (session && session.email) || localStorage.getItem("nexusCurrentUser") || "guest";
+    var key = owner + "_" + SESSION_KEY;
+    try {
+      if (session) localStorage.setItem(key, JSON.stringify(session));
+      else localStorage.removeItem(key);
+    } catch (e) { /* kota dolu / özel mod */ }
   }
 
   function expiryFrom(data) {
@@ -71,18 +78,46 @@
     });
   }
 
+  // Web adresi: e-posta bağlantıları (doğrulama, şifre sıfırlama) ve Google girişi buraya döner.
+  // Masaüstü (nexus://) ve Android (https://localhost) kendi adreslerine dönemez; web uygulamasını kullanır.
+  var WEB_URL = "https://nexus-web-jre.pages.dev";
+
+  function isWebOrigin() {
+    if (typeof location === "undefined") return false;
+    return /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  }
+
+  function webBase() {
+    var c = cfg();
+    return isWebOrigin() ? location.origin : ((c && c.webUrl) || WEB_URL).replace(/\/+$/, "");
+  }
+
+  // Google ile giriş yalnızca web adresinde güvenle geri dönebilir.
+  function googleAvailable() {
+    return enabled() && isWebOrigin();
+  }
+
+  function sessionFrom(data, fallbackEmail) {
+    var user = data.user || {};
+    var meta = user.user_metadata || {};
+    return {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      expiresAt: expiryFrom(data),
+      userId: user.id || null,
+      email: user.email || fallbackEmail || "",
+      name: meta.full_name || meta.name || "",
+    };
+  }
+
   function grant(idToken, refresh) {
     return api("/auth/v1/token?grant_type=" + (refresh ? "refresh_token" : "password"), {
       method: "POST",
       body: JSON.stringify(refresh ? { refresh_token: idToken } : { email: idToken.email, password: idToken.password }),
     }).then(function (data) {
-      var session = {
-        accessToken: data.access_token,
-        refreshToken: data.refresh_token,
-        expiresAt: expiryFrom(data),
-        userId: data.user ? data.user.id : null,
-        email: data.user ? data.user.email : (idToken && idToken.email) || "",
-      };
+      var previous = refresh ? readSession() : null;
+      var session = sessionFrom(data, (idToken && idToken.email) || (previous && previous.email) || "");
+      if (!session.name && previous && previous.name) session.name = previous.name;
       writeSession(session);
       return session;
     });
@@ -92,17 +127,46 @@
     return grant({ email: email, password: password });
   }
 
-  function signUp(email, password) {
-    return api("/auth/v1/signup", { method: "POST", body: JSON.stringify({ email: email, password: password }) }).then(
-      function (created) {
-        // E-posta doğrulama kapalıysa signup doğrudan oturum döndürür; açıksa
-        // kullanıcı doğrulamadan oturum açamaz — iki durumda da yeri kontrol edilir.
-        if (created && created.access_token) return grant({ email: email, password: password }).catch(function () {
-          return null;
-        });
-        return null;
-      },
-    );
+  // Dönüş: { session, needsConfirmation }. E-posta doğrulaması açıksa oturum gelmez;
+  // kullanıcı e-postadaki bağlantıya tıklayınca web girişine döner ve oturum oradan alınır.
+  function signUp(email, password, name) {
+    var back = encodeURIComponent(webBase() + "/stitch-login.html");
+    return api("/auth/v1/signup?redirect_to=" + back, {
+      method: "POST",
+      body: JSON.stringify({ email: email, password: password, data: name ? { name: name } : {} }),
+    }).then(function (created) {
+      if (created && created.access_token) {
+        return grant({ email: email, password: password }).then(
+          function (session) { return { session: session, needsConfirmation: false }; },
+          function () { return { session: null, needsConfirmation: true }; },
+        );
+      }
+      return { session: null, needsConfirmation: true };
+    });
+  }
+
+  // Şifre sıfırlama e-postası gönderir (Supabase gönderir; bağlantı web uygulamasına döner).
+  function recover(email) {
+    var back = encodeURIComponent(webBase() + "/stitch-forgot-password.html");
+    return api("/auth/v1/recover?redirect_to=" + back, { method: "POST", body: JSON.stringify({ email: email }) });
+  }
+
+  // Sıfırlama bağlantısından gelen geçici belirteçle yeni şifre belirler.
+  function setPasswordWithToken(accessToken, password) {
+    return api("/auth/v1/user", {
+      method: "PUT",
+      headers: { Authorization: "Bearer " + accessToken },
+      body: JSON.stringify({ password: password }),
+    });
+  }
+
+  // Oturum açıkken şifre değiştirir: önce mevcut şifre doğrulanır.
+  function changePassword(currentPassword, nextPassword) {
+    var current = readSession();
+    if (!current || !current.email) return Promise.reject(new Error("oturum yok"));
+    return grant({ email: current.email, password: currentPassword }).then(function (fresh) {
+      return setPasswordWithToken(fresh.accessToken, nextPassword);
+    });
   }
 
   function session() {
@@ -265,7 +329,7 @@
       if (!current) return;
       return authHeader().then(function (headers) {
         var list = ids.map(function (id) { return encodeURIComponent(id); }).join(",");
-        return api("/rest/v1/nexus_devices?user_id=eq." + encodeURIComponent(current.userId) + "&id=in.(" + list + ")", {
+        return api("/rest/v1/nexus_devices?user_id=eq." + encodeURIComponent(current.userId) + "&device_id=in.(" + list + ")", {
           method: "DELETE",
           headers: headers,
         });
@@ -291,11 +355,12 @@
       var staleIds = remote.filter(isUnconnected).map(function (d) { return d.id; });
       var remoteConnected = remote.filter(function (d) { return !isUnconnected(d); });
       var merged = mergeDevices(localConnected, remoteConnected);
+      var changed = JSON.stringify(merged) !== JSON.stringify(localConnected);
       if (window.nexusSetItem) window.nexusSetItem(DEVICE_KEY, JSON.stringify(merged));
       return removeRemoteDevices(staleIds).then(function () {
         return pushDevices(merged);
       }).then(function (result) {
-        return { count: merged.length, pushed: result.pushed, remoteCount: remote.length };
+        return { count: merged.length, pushed: result.pushed, remoteCount: remote.length, changed: changed };
       });
     });
   }
@@ -339,7 +404,7 @@
       if (syncTimer) clearTimeout(syncTimer);
       syncTimer = setTimeout(function () {
         syncTimer = null;
-        syncNow().then(function (result) {
+        syncAll().then(function (result) {
           resolvePromise(result);
         }).catch(function () {
           enqueue({ kind: "sync", at: Date.now() });
@@ -349,29 +414,257 @@
     });
   }
 
+  // --- hesap durumu (profil, ayarlar, sahneler, aile ...) --------------------
+  //
+  // Yerel depoda "<e-posta>_<anahtar>" olarak duran her kayıt, gizli olanlar hariç, hesabın
+  // altında satır olarak saklanır. Böylece uygulamayı silip yeniden kuran ya da başka cihazda
+  // giren kullanıcı kaldığı yerden devam eder. Çakışmada: yerelde değişen ve uzakta değişmeyen
+  // yazılır; ikisi de değiştiyse yeni olan kazanır; bu cihazda ilk senkronda hesap kazanır.
+
+  var META_PREFIX = "nexusCloudMeta:";
+  var MAX_VALUE = 600000;
+  // Cihaz listesi ayrı tabloda; oturum/şifre/kurtarma bilgileri buluta HİÇ gitmez.
+  var STATE_EXCLUDE = {
+    nexusCloudSession: 1,
+    nexusCloudMeta: 1,
+    nexusUserPassword: 1,
+    nexusLastRecoveryValue: 1,
+    nexusLastRecoveryMethod: 1,
+    nexusPairedDevices: 1,
+  };
+
+  function currentUserKey() {
+    var u = "";
+    try { u = localStorage.getItem("nexusCurrentUser") || ""; } catch (e) { u = ""; }
+    return u && u !== "guest" ? u : "";
+  }
+
+  function hashOf(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0).toString(36) + ":" + s.length;
+  }
+
+  function loadMeta(userId) {
+    try { return JSON.parse(localStorage.getItem(META_PREFIX + userId) || "{}") || {}; } catch (e) { return {}; }
+  }
+
+  function saveMeta(userId, meta) {
+    try { localStorage.setItem(META_PREFIX + userId, JSON.stringify(meta)); } catch (e) { /* kota dolu: sonraki turda yeniden hesaplanır */ }
+  }
+
+  function snapshotState(user) {
+    var prefix = user + "_";
+    var out = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var full = localStorage.key(i);
+      if (!full || full.indexOf(prefix) !== 0) continue;
+      var key = full.slice(prefix.length);
+      if (!key || STATE_EXCLUDE[key] || key.length > 120) continue;
+      var value = localStorage.getItem(full);
+      if (value == null || value.length > MAX_VALUE) continue;
+      out[key] = value;
+    }
+    return out;
+  }
+
+  function chunk(list, size) {
+    var parts = [];
+    for (var i = 0; i < list.length; i += size) parts.push(list.slice(i, i + size));
+    return parts;
+  }
+
+  var stateRunning = null;
+
+  function syncState() {
+    if (!enabled()) return Promise.resolve({ pulled: 0, pushed: 0, removed: 0 });
+    if (stateRunning) return stateRunning;
+    var user = currentUserKey();
+    if (!user) return Promise.resolve({ pulled: 0, pushed: 0, removed: 0 });
+    stateRunning = session().then(function (current) {
+      if (!current) return { pulled: 0, pushed: 0, removed: 0 };
+      var headers = { Authorization: "Bearer " + current.accessToken };
+      return api("/rest/v1/nexus_user_state?select=key,value,updated_at&user_id=eq." + encodeURIComponent(current.userId) + "&limit=5000", { headers: headers }).then(function (rows) {
+        var prefix = user + "_";
+        var local = snapshotState(user);
+        var meta = loadMeta(current.userId);
+        var remote = {};
+        (rows || []).forEach(function (r) { if (!STATE_EXCLUDE[r.key]) remote[r.key] = r; });
+        var nowIso = new Date().toISOString();
+        var upserts = [];
+        var deletes = [];
+        var pulledKeys = [];
+        var removedKeys = [];
+
+        Object.keys(remote).forEach(function (key) {
+          var r = remote[key];
+          var m = meta[key];
+          var lv = local[key];
+          if (lv === undefined) {
+            if (m) { deletes.push(key); return; } // daha önce senkrondu, yerelde silindi
+            localStorage.setItem(prefix + key, r.value); // yeni cihaz / geri yükleme
+            meta[key] = { h: hashOf(r.value), t: r.updated_at };
+            pulledKeys.push(key);
+            return;
+          }
+          if (lv === r.value) { meta[key] = { h: hashOf(lv), t: r.updated_at }; return; }
+          var localChanged = !!m && hashOf(lv) !== m.h;
+          var remoteChanged = !m || m.t !== r.updated_at;
+          var takeRemote;
+          if (!m) takeRemote = true; // bu cihazda ilk senkron: hesaptaki veri kazanır
+          else if (localChanged && remoteChanged) takeRemote = Date.parse(r.updated_at) > Date.parse((m && m.c) || nowIso);
+          else takeRemote = remoteChanged && !localChanged;
+          if (takeRemote) {
+            localStorage.setItem(prefix + key, r.value);
+            meta[key] = { h: hashOf(r.value), t: r.updated_at };
+            pulledKeys.push(key);
+          } else {
+            upserts.push(key);
+          }
+        });
+
+        Object.keys(local).forEach(function (key) {
+          if (remote[key]) return;
+          var m = meta[key];
+          if (m && hashOf(local[key]) === m.h) {
+            // uzaktan silinmiş ve yerelde değişmemiş: bu cihazdan da kaldır
+            localStorage.removeItem(prefix + key);
+            delete meta[key];
+            removedKeys.push(key);
+            return;
+          }
+          upserts.push(key);
+        });
+
+        var work = Promise.resolve();
+        if (deletes.length) {
+          chunk(deletes, 50).forEach(function (part) {
+            var list = part.map(function (k) { return '"' + k.replace(/"/g, "") + '"'; }).join(",");
+            work = work.then(function () {
+              return api("/rest/v1/nexus_user_state?user_id=eq." + encodeURIComponent(current.userId) + "&key=in.(" + encodeURIComponent(list) + ")", { method: "DELETE", headers: headers });
+            });
+          });
+          work = work.then(function () { deletes.forEach(function (k) { delete meta[k]; }); });
+        }
+        if (upserts.length) {
+          chunk(upserts, 40).forEach(function (part) {
+            var body = part.map(function (k) {
+              return { user_id: current.userId, key: k, value: local[k], updated_at: nowIso };
+            });
+            work = work.then(function () {
+              return api("/rest/v1/nexus_user_state", {
+                method: "POST",
+                headers: Object.assign({}, headers, { Prefer: "resolution=merge-duplicates" }),
+                body: JSON.stringify(body),
+              });
+            }).then(function () {
+              part.forEach(function (k) { meta[k] = { h: hashOf(local[k]), t: nowIso }; });
+            });
+          });
+        }
+        return work.then(function () {
+          // Yerelde değişip henüz gönderilemeyenlerin değişim zamanını ilk görüldüğü an olarak tut.
+          Object.keys(local).forEach(function (k) {
+            if (meta[k] && hashOf(local[k]) !== meta[k].h && !meta[k].c) meta[k].c = nowIso;
+          });
+          saveMeta(current.userId, meta);
+          var result = { pulled: pulledKeys.length, pushed: upserts.length, removed: removedKeys.length + deletes.length, keys: pulledKeys };
+          if (pulledKeys.length || removedKeys.length) {
+            try { window.dispatchEvent(new CustomEvent("nexusCloudStatePulled", { detail: result })); } catch (e) { /* eski WebView */ }
+          }
+          return result;
+        });
+      });
+    }).then(function (r) { stateRunning = null; return r; }, function (e) { stateRunning = null; throw e; });
+    return stateRunning;
+  }
+
+  // Cihaz listesi + hesap durumu birlikte.
+  function syncAll() {
+    return syncNow().catch(function () { return { changed: false }; }).then(function (devices) {
+      return syncState().then(function (state) {
+        return { devices: devices, state: state, changed: !!(devices && devices.changed) || state.pulled > 0 || state.removed > 0 };
+      });
+    });
+  }
+
+  // Giriş yapılmış oturumda arka planda eşitler: açılışta, düzenli aralıkla, görünür olunca, çevrimiçi olunca.
+  function startAutoSync() {
+    if (typeof document === "undefined" || !enabled() || !currentUserKey()) return;
+    var busy = false;
+    function run(initial) {
+      if (busy) return;
+      busy = true;
+      syncAll().then(function (r) {
+        if (!r || !r.changed) return;
+        // Başka cihazdan gelen veri sayfada görünsün: yazarken bölme, art arda yenileme yapma.
+        var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+        var last = 0;
+        try { last = parseInt(sessionStorage.getItem("nexusCloudReloadAt") || "0", 10) || 0; } catch (e) { last = 0; }
+        if (!typing && Date.now() - last > 20000) {
+          try { sessionStorage.setItem("nexusCloudReloadAt", String(Date.now())); } catch (e) { /* özel mod */ }
+          location.reload();
+        }
+      }).catch(function () { /* çevrimdışı: bir sonraki turda yeniden denenir */ }).then(function () { busy = false; });
+    }
+    setTimeout(function () { run(true); }, 1200);
+    setInterval(run, 45000);
+    document.addEventListener("visibilitychange", function () { run(false); });
+    window.addEventListener("online", function () { run(false); });
+    window.addEventListener("pagehide", function () { try { syncState(); } catch (e) { /* kapanırken en iyi çaba */ } });
+  }
+
   // Google ile giriş: Supabase yetkilendirme adresine yönlendirir, dönüşte oturum URL'den alınır.
   function signInWithGoogle() {
     var c = cfg();
-    if (!c) return;
+    if (!c || !isWebOrigin()) return;
     var back = location.href.split("#")[0];
     location.href = c.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(back);
   }
 
-  function completeOAuthFromHash() {
+  function hashParams() {
     var h = location.hash || "";
-    if (h.indexOf("access_token=") < 0) return Promise.resolve(null);
-    var p = new URLSearchParams(h.slice(1));
+    return h.length > 1 ? new URLSearchParams(h.slice(1)) : null;
+  }
+
+  // Bağlantıdaki hata (süresi dolmuş şifre sıfırlama bağlantısı gibi); varsa metin döner.
+  function hashError() {
+    var p = hashParams();
+    if (!p || !p.get("error")) return "";
+    var text = p.get("error_description") || p.get("error") || "";
+    history.replaceState(null, "", location.pathname + location.search);
+    return text.replace(/\+/g, " ");
+  }
+
+  // Şifre sıfırlama bağlantısından dönüldüyse geçici belirteci verir (oturum AÇMAZ).
+  function recoveryTokenFromHash() {
+    var p = hashParams();
+    if (!p || p.get("type") !== "recovery" || !p.get("access_token")) return null;
+    var token = p.get("access_token");
+    history.replaceState(null, "", location.pathname + location.search);
+    return token;
+  }
+
+  // Google / e-posta doğrulama bağlantısı dönüşü: belirteçlerden oturum kurar.
+  function completeOAuthFromHash() {
+    var p = hashParams();
+    if (!p || !p.get("access_token") || p.get("type") === "recovery") return Promise.resolve(null);
     var access = p.get("access_token");
     var refresh = p.get("refresh_token") || "";
     var expires = parseInt(p.get("expires_in") || "3600", 10);
     history.replaceState(null, "", location.pathname + location.search);
     return api("/auth/v1/user", { headers: { Authorization: "Bearer " + access } }).then(function (user) {
+      var meta = user.user_metadata || {};
       var s = {
         accessToken: access,
         refreshToken: refresh,
         expiresAt: Date.now() + expires * 1000 - 60 * 1000,
         userId: user.id,
         email: user.email || "",
+        name: meta.full_name || meta.name || "",
       };
       // Oturum, kullanıcının kendi anahtar önekiyle yazılsın diye önce aktif kullanıcı ayarlanır.
       if (user.email) localStorage.setItem("nexusCurrentUser", user.email);
@@ -382,13 +675,21 @@
 
   window.nexusCloud = {
     signInWithGoogle: signInWithGoogle,
+    googleAvailable: googleAvailable,
     completeOAuthFromHash: completeOAuthFromHash,
+    recoveryTokenFromHash: recoveryTokenFromHash,
+    hashError: hashError,
+    recover: recover,
+    setPasswordWithToken: setPasswordWithToken,
+    changePassword: changePassword,
     enabled: enabled,
     notifyLocalChange: notifyLocalChange,
     signIn: signIn,
     signUp: signUp,
     signOut: signOut,
     session: session,
+    syncAll: syncAll,
+    syncState: syncState,
     syncNow: syncNow,
     pullDevices: pullDevices,
     pushDevices: pushDevices,
@@ -396,6 +697,8 @@
     mergeDevices: mergeDevices,
     flushQueue: flushQueue,
     // test penetrasyonu: saf yardimcilara erisim
-    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor },
+    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
   };
+
+  startAutoSync();
 })();

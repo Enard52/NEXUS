@@ -97,16 +97,36 @@
       Google ile devam et
     </button>
   </div>
+  <p class="hidden text-xs text-slate-500 font-medium px-2 pt-3 leading-relaxed" id="google-hint">Google ile hesap açtıysan bu cihazda “Şifremi Unuttum” ile bir şifre belirleyip e-postanla giriş yapabilirsin.</p>
   <script>
     function googleLogin() {
-      if (window.nexusCloud && window.nexusCloud.enabled()) window.nexusCloud.signInWithGoogle();
+      if (window.nexusCloud && window.nexusCloud.googleAvailable()) window.nexusCloud.signInWithGoogle();
     }
     (function () {
-      if (!window.nexusCloud || !window.nexusCloud.enabled()) return;
-      window.nexusCloud.completeOAuthFromHash().then(function (session) {
+      var cloud = window.nexusCloud;
+      var gbtn = document.getElementById('google-login-btn');
+      var cloudOn = !!(cloud && cloud.enabled());
+      // Google yalnızca web adresinde güvenle geri dönebilir; masaüstü ve telefonda gizlenir.
+      if (!cloudOn || !cloud.googleAvailable()) {
+        if (gbtn) gbtn.style.display = 'none';
+        var hint = document.getElementById('google-hint');
+        if (cloudOn && hint) hint.classList.remove('hidden');
+      }
+      if (!cloudOn) return;
+      var linkError = cloud.hashError();
+      if (linkError) {
+        var box = document.getElementById('login-error');
+        box.textContent = /expired|invalid/i.test(linkError) ? 'Bağlantının süresi dolmuş ya da geçersiz. Lütfen yeniden dene.' : linkError;
+        box.classList.remove('hidden');
+      }
+      // Google ya da e-posta doğrulama bağlantısından dönüş: oturum kurulur, hesap verisi geri yüklenir.
+      cloud.completeOAuthFromHash().then(function (session) {
         if (!session) return;
         rememberLocalUser(session.email || '');
-        window.location.href = 'stitch-home.html';
+        return cloud.syncAll().catch(function () {}).then(function () {
+          if (session.name && !nexusGetItem('nexusUserName')) nexusSetItem('nexusUserName', session.name);
+          window.location.href = 'stitch-home.html';
+        });
       }).catch(function () {});
     })();
   </script>
@@ -178,9 +198,10 @@
       window.nexusCloud.signIn(email, pass).then(function (session) {
         if (!session) throw new Error('E-posta veya şifre hatalı.');
         rememberLocalUser(session.email || email);
-        return window.nexusCloud.flushQueue().catch(function () {});
-      }).then(function () {
-        return window.nexusCloud.syncNow().catch(function () {});
+        // Hesaptaki profil, ayarlar, sahneler ve cihazlar bu cihaza geri yüklenir (kaldığın yerden devam).
+        return window.nexusCloud.syncAll().catch(function () {}).then(function () {
+          if (session.name && !nexusGetItem('nexusUserName')) nexusSetItem('nexusUserName', session.name);
+        });
       }).then(function () {
         window.location.href = 'stitch-home.html';
       }).catch(function (error) {

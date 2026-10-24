@@ -462,12 +462,48 @@ ipcMain.handle("updates:install", () => {
   return true;
 });
 
+// Arka plan denetimi: kullanıcı "Güncellemeleri Kontrol Et"e basmadan menüde güncelleme görünür.
+// Açılışta ağ henüz hazır olmayabilir; bu yüzden başarısızlıkta kısa aralıkla yeniden dener,
+// sonra düzenli aralıklarla ve pencereye dönüldüğünde (30 dk geçtiyse) tekrar bakar.
+const BG_CHECK_EVERY = 3 * 60 * 60 * 1000;
+const BG_CHECK_MIN_GAP = 30 * 60 * 1000;
+let lastBgCheck = 0;
+let bgRetries = 0;
+let bgAnnounced = null;
+
+async function backgroundCheck() {
+  const autoUpdater = getAutoUpdater();
+  if (!autoUpdater) return;
+  // Zaten bulunmuş/iniyor/hazır bir sürüm varsa durumu bozma.
+  if (["available", "downloading", "ready", "checking"].includes(updateState.state)) return;
+  lastBgCheck = Date.now();
+  try {
+    await autoUpdater.checkForUpdates();
+    bgRetries = 0;
+  } catch {
+    if (bgRetries < 5) { bgRetries++; setTimeout(backgroundCheck, 60 * 1000); }
+  }
+  // Yeni sürüm bulunduysa tepsiden bir kez haber ver (pencere kapalı/gizliyse de fark edilsin).
+  if (updateState.state === "available" && bgAnnounced !== updateState.availableVersion) {
+    bgAnnounced = updateState.availableVersion;
+    try {
+      if (process.platform === "win32" && tray && tray.displayBalloon && !(win && win.isVisible() && win.isFocused())) {
+        tray.displayBalloon({ iconType: "info", title: "NEXUS", content: L(`Yeni sürüm ${updateState.availableVersion} hazır. Menüdeki yeşil düğmeyle indirebilirsin.`, `Version ${updateState.availableVersion} is available. Use the green button in the menu to download it.`) });
+      }
+    } catch { /* balon gösterilemezse sorun değil */ }
+  }
+}
+
 function setupUpdates() {
   if (!app.isPackaged || process.env.NEXUS_NO_UPDATE) return;
   const autoUpdater = getAutoUpdater();
   if (!autoUpdater) return;
   wireUpdater(autoUpdater);
-  autoUpdater.checkForUpdates().catch(() => { /* çevrimdışıyken sessiz kal; durum arayüze gider */ });
+  setTimeout(backgroundCheck, 8 * 1000);
+  setInterval(backgroundCheck, BG_CHECK_EVERY).unref();
+  app.on("browser-window-focus", () => {
+    if (Date.now() - lastBgCheck > BG_CHECK_MIN_GAP) backgroundCheck();
+  });
 }
 
 app.on("second-instance", (_e, argv) => {

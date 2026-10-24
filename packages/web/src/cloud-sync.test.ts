@@ -20,6 +20,11 @@ function makeStorage() {
     getItem: (k: string) => (map.has(k) ? (map.get(k) as string) : null),
     setItem: (k: string, v: string) => void map.set(k, String(v)),
     removeItem: (k: string) => void map.delete(k),
+    // Gerçek localStorage gibi indekslenebilir: hesap durumu senkronu anahtarları tarar.
+    get length() {
+      return map.size;
+    },
+    key: (i: number) => [...map.keys()][i] ?? null,
     _map: map,
   };
 }
@@ -27,14 +32,23 @@ function makeStorage() {
 function load(options: {
   config?: { url: string; anonKey: string } | null;
   responders?: Array<(call: Call) => unknown>;
+  /** Aktif kullanıcı (auth.js'in nexusCurrentUser'ı); verilmezse "guest" öneki kullanılır. */
+  user?: string;
+  /** Sahte sunucu: verilirse sırayla değil bu işlev her isteği yanıtlar. */
+  handler?: (call: Call) => unknown;
 }) {
   const calls: Call[] = [];
   const storage = makeStorage();
+  if (options.user) storage.setItem("nexusCurrentUser", options.user);
   const win: Record<string, unknown> = { localStorage: storage };
-  win.nexusGetItem = (key: string) => storage.getItem(key);
+  // auth.js ile aynı davranış: anahtarlar aktif kullanıcının önekiyle saklanır.
+  const owner = () => storage.getItem("nexusCurrentUser") || "guest";
+  win.nexusGetItem = (key: string) =>
+    key === "nexusCurrentUser" ? storage.getItem(key) : storage.getItem(`${owner()}_${key}`);
   win.nexusSetItem = (key: string, value: string) => {
-    if (value === "") storage.removeItem(key);
-    else storage.setItem(key, value);
+    const full = key === "nexusCurrentUser" ? key : `${owner()}_${key}`;
+    if (value === "") storage.removeItem(full);
+    else storage.setItem(full, value);
   };
   if (options.config) win.NEXUS_CLOUD = options.config;
 
@@ -46,7 +60,9 @@ function load(options: {
       body: (init && init.body) ?? null,
     };
     calls.push(call);
-    const responder = (options.responders || []).shift();
+    const responder = options.handler
+      ? () => options.handler!(call)
+      : (options.responders || []).shift();
     const payload = responder ? responder(call) : {};
     const result = payload as { status?: number; body?: unknown };
     const status = result.status ?? 200;
@@ -137,6 +153,7 @@ describe("Supabase kimlik doğrulama akışı", () => {
   it("giriş: parola grant'ı doğru uca gider, oturum saklanır", async () => {
     const { cloud, calls, storage } = load({
       config: CONFIG,
+      user: "a@b.co",
       responders: [
         () => ({
           access_token: "tok-1",
@@ -152,12 +169,15 @@ describe("Supabase kimlik doğrulama akışı", () => {
     expect(JSON.parse(String(calls[0].body))).toEqual({ email: "a@b.co", password: "parola" });
     expect(calls[0].headers.apikey).toBe("anon-key-123");
     expect(session.userId).toBe("u1");
-    expect(JSON.parse(storage.getItem("nexusCloudSession") || "{}").accessToken).toBe("tok-1");
+    expect(JSON.parse(storage.getItem("a@b.co_nexusCloudSession") || "{}").accessToken).toBe(
+      "tok-1",
+    );
   });
 
   it("süresi dolmuş oturum refresh_token ile yenilenir", async () => {
     const { cloud, calls } = load({
       config: CONFIG,
+      user: "a@b.co",
       responders: [
         () => ({
           access_token: "tok-1",
@@ -176,10 +196,10 @@ describe("Supabase kimlik doğrulama akışı", () => {
     await cloud.signIn("a@b.co", "parola");
     // Oturumu geçmişe al: yenileme tetiklenmeli.
     const stored = JSON.parse(
-      (globalThis as any).localStorage.getItem("nexusCloudSession") || "{}",
+      (globalThis as any).localStorage.getItem("a@b.co_nexusCloudSession") || "{}",
     );
     stored.expiresAt = Date.now() - 1000;
-    (globalThis as any).localStorage.setItem("nexusCloudSession", JSON.stringify(stored));
+    (globalThis as any).localStorage.setItem("a@b.co_nexusCloudSession", JSON.stringify(stored));
 
     const refreshed = await cloud.session();
     expect(refreshed.accessToken).toBe("tok-2");
@@ -189,6 +209,7 @@ describe("Supabase kimlik doğrulama akışı", () => {
   it("çıkış oturumu siler ve sunucuya bildirir", async () => {
     const { cloud, storage } = load({
       config: CONFIG,
+      user: "a@b.co",
       responders: [
         () => ({
           access_token: "tok-1",
@@ -201,7 +222,7 @@ describe("Supabase kimlik doğrulama akışı", () => {
     });
     await cloud.signIn("a@b.co", "parola");
     await cloud.signOut();
-    expect(storage.getItem("nexusCloudSession")).toBe(null);
+    expect(storage.getItem("a@b.co_nexusCloudSession")).toBe(null);
   });
 });
 
@@ -209,6 +230,7 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
   it("push: diziyi merge-duplicates tercihiyle ve Authorization başlığıyla gönderir", async () => {
     const { cloud, calls } = load({
       config: CONFIG,
+      user: "a@b.co",
       responders: [
         () => ({
           access_token: "tok-1",
@@ -232,6 +254,7 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
   it("ağ hatasında kuyruğa yazar, flushQueue yeniden dener", async () => {
     const { cloud, win, calls } = load({
       config: CONFIG,
+      user: "a@b.co",
       responders: [
         () => ({
           access_token: "tok-1",
@@ -263,6 +286,7 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
   it("syncNow yerel listeyi buluttan gelenle birleştirip geri yazar", async () => {
     const { cloud, win, calls } = load({
       config: CONFIG,
+      user: "a@b.co",
       responders: [
         () => ({
           access_token: "tok-1",
@@ -299,7 +323,232 @@ describe("cihaz senkronu ve çevrimdışı dayanıklılık", () => {
   });
 });
 
+/** Bellekte çalışan sahte Supabase: auth + nexus_devices + nexus_user_state. */
+function fakeBackend() {
+  const db = new Map<string, { value: string; updated_at: string }>();
+  const log: Call[] = [];
+  const handler = (call: Call) => {
+    log.push(call);
+    const u = new URL(call.url);
+    if (u.pathname === "/auth/v1/token") {
+      return {
+        access_token: "tok-" + log.length,
+        refresh_token: "ref",
+        expires_in: 3600,
+        user: { id: "u1", email: "a@b.co", user_metadata: { name: "Ayşe" } },
+      };
+    }
+    if (u.pathname === "/auth/v1/user") return { id: "u1" };
+    if (u.pathname === "/rest/v1/nexus_devices") return call.method === "GET" ? [] : {};
+    if (u.pathname === "/rest/v1/nexus_user_state") {
+      if (call.method === "GET") return [...db].map(([key, row]) => ({ key, ...row }));
+      if (call.method === "POST") {
+        for (const row of JSON.parse(String(call.body)))
+          db.set(row.key, { value: row.value, updated_at: row.updated_at });
+        return {};
+      }
+      if (call.method === "DELETE") {
+        const keys = [...(u.searchParams.get("key") || "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+        keys.forEach((k) => db.delete(k));
+        return {};
+      }
+    }
+    return {};
+  };
+  const stateCalls = (method: string) =>
+    log.filter((c) => c.url.includes("/rest/v1/nexus_user_state") && c.method === method);
+  return { db, log, handler, stateCalls };
+}
+
+async function freshDevice(
+  backend: ReturnType<typeof fakeBackend>,
+  prefill: Record<string, string> = {},
+) {
+  const env = load({ config: CONFIG, user: "a@b.co", handler: backend.handler });
+  for (const [k, v] of Object.entries(prefill)) env.storage.setItem("a@b.co_" + k, v);
+  await env.cloud.signIn("a@b.co", "parola-123");
+  return env;
+}
+
+describe("hesap durumu senkronu (profil, ayarlar, sahneler ...)", () => {
+  it("yeni cihazda hesaptaki veriler geri yüklenir (kaldığı yerden devam)", async () => {
+    const backend = fakeBackend();
+    const iso = "2026-10-20T10:00:00.000Z";
+    backend.db.set("nexusUserName", { value: "Ayşe", updated_at: iso });
+    backend.db.set("nexusDarkMode", { value: "true", updated_at: iso });
+    backend.db.set("nexusHousehold", { value: JSON.stringify([{ n: "Mehmet" }]), updated_at: iso });
+    const { cloud, storage } = await freshDevice(backend);
+    const result = await cloud.syncState();
+    expect(result.pulled).toBe(3);
+    expect(storage.getItem("a@b.co_nexusUserName")).toBe("Ayşe");
+    expect(storage.getItem("a@b.co_nexusDarkMode")).toBe("true");
+    expect(JSON.parse(storage.getItem("a@b.co_nexusHousehold") || "[]")[0].n).toBe("Mehmet");
+  });
+
+  it("oturum, şifre ve kurtarma bilgileri ile cihaz listesi bu tabloya HİÇ gönderilmez", async () => {
+    const backend = fakeBackend();
+    const { cloud } = await freshDevice(backend, {
+      nexusUserName: "Ayşe",
+      nexusUserPassword: "SIR",
+      nexusLastRecoveryValue: "a@b.co",
+      nexusLastRecoveryMethod: "email",
+      nexusPairedDevices: "[]",
+    });
+    await cloud.syncState();
+    expect([...backend.db.keys()]).toEqual(["nexusUserName"]);
+    const sent = JSON.stringify(backend.stateCalls("POST").map((c) => c.body));
+    expect(sent).not.toContain("SIR");
+    expect(sent).not.toContain("tok-");
+  });
+
+  it("değişmeyen veri tekrar gönderilmez; yalnızca değişen anahtar gider", async () => {
+    const backend = fakeBackend();
+    const { cloud, storage } = await freshDevice(backend, {
+      nexusTempUnit: "C",
+      nexusDarkMode: "false",
+    });
+    await cloud.syncState();
+    expect(backend.stateCalls("POST").length).toBe(1);
+    await cloud.syncState();
+    expect(backend.stateCalls("POST").length).toBe(1); // ikinci turda yeni yazma yok
+    storage.setItem("a@b.co_nexusTempUnit", "F");
+    const result = await cloud.syncState();
+    expect(result.pushed).toBe(1);
+    expect(backend.db.get("nexusTempUnit")!.value).toBe("F");
+    expect(backend.db.get("nexusDarkMode")!.value).toBe("false");
+  });
+
+  it("bu cihazda ilk senkronda çakışma olursa hesaptaki veri kazanır", async () => {
+    const backend = fakeBackend();
+    backend.db.set("nexusDarkMode", { value: "true", updated_at: "2026-10-20T10:00:00.000Z" });
+    const { cloud, storage } = await freshDevice(backend, { nexusDarkMode: "false" });
+    await cloud.syncState();
+    expect(storage.getItem("a@b.co_nexusDarkMode")).toBe("true");
+  });
+
+  it("başka cihazdaki değişiklik çekilir", async () => {
+    const backend = fakeBackend();
+    const { cloud, storage } = await freshDevice(backend, { nexusTempUnit: "C" });
+    await cloud.syncState();
+    backend.db.set("nexusTempUnit", { value: "F", updated_at: "2099-01-01T00:00:00.000Z" });
+    const result = await cloud.syncState();
+    expect(result.pulled).toBe(1);
+    expect(storage.getItem("a@b.co_nexusTempUnit")).toBe("F");
+  });
+
+  it("yerelde silinen kayıt hesaptan da silinir; uzaktan silinen yerelden de kalkar", async () => {
+    const backend = fakeBackend();
+    const { cloud, storage } = await freshDevice(backend, { nexusA: "1", nexusB: "2" });
+    await cloud.syncState();
+    storage.removeItem("a@b.co_nexusA");
+    await cloud.syncState();
+    expect(backend.db.has("nexusA")).toBe(false);
+    expect(backend.stateCalls("DELETE").length).toBe(1);
+    backend.db.delete("nexusB");
+    const result = await cloud.syncState();
+    expect(result.removed).toBe(1);
+    expect(storage.getItem("a@b.co_nexusB")).toBe(null);
+  });
+
+  it("tam döngü: A cihazı yazar, B cihazı (temiz kurulum) giriş yapınca aynısını görür", async () => {
+    const backend = fakeBackend();
+    const a = await freshDevice(backend, {
+      nexusUserName: "Ayşe",
+      nexusSelectedTapToRunCards: JSON.stringify(["x", "y"]),
+      nexusHouseholdName: "Yılmaz Ailesi",
+    });
+    await a.cloud.syncAll();
+    const b = await freshDevice(backend);
+    const result = await b.cloud.syncState();
+    expect(result.pulled).toBe(3);
+    expect(b.storage.getItem("a@b.co_nexusHouseholdName")).toBe("Yılmaz Ailesi");
+    expect(JSON.parse(b.storage.getItem("a@b.co_nexusSelectedTapToRunCards") || "[]")).toEqual([
+      "x",
+      "y",
+    ]);
+  });
+
+  it("bulut kapalıyken ağ çağrısı yapmaz", async () => {
+    const { cloud, calls } = load({ config: null, user: "a@b.co" });
+    const result = await cloud.syncState();
+    expect(result.pulled).toBe(0);
+    expect(calls).toEqual([]);
+  });
+});
+
+describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", () => {
+  it("oturum, aktif kullanıcı henüz ayarlanmamış olsa da sahibinin e-postasıyla saklanır", async () => {
+    const backend = fakeBackend();
+    const { cloud, storage } = load({ config: CONFIG, handler: backend.handler });
+    await cloud.signIn("a@b.co", "parola-123");
+    expect(storage.getItem("a@b.co_nexusCloudSession")).toBeTruthy();
+    expect(storage.getItem("guest_nexusCloudSession")).toBe(null);
+  });
+
+  it("kayıt: e-posta doğrulaması açıksa oturum açılmaz, doğrulama web adresine döner", async () => {
+    const { cloud, calls } = load({
+      config: CONFIG,
+      handler: () => ({ id: "u2", email: "yeni@b.co" }),
+    });
+    const result = await cloud.signUp("yeni@b.co", "parola-123", "Ayşe");
+    expect(result.needsConfirmation).toBe(true);
+    expect(result.session).toBe(null);
+    expect(calls[0].url).toContain("/auth/v1/signup?redirect_to=");
+    expect(decodeURIComponent(calls[0].url)).toContain("/stitch-login.html");
+    expect(JSON.parse(String(calls[0].body)).data.name).toBe("Ayşe");
+  });
+
+  it("şifre sıfırlama gerçekten Supabase'e istek gönderir ve web adresine döner", async () => {
+    const { cloud, calls } = load({ config: CONFIG, handler: () => ({}) });
+    await cloud.recover("a@b.co");
+    expect(calls[0].url).toContain("/auth/v1/recover?redirect_to=");
+    expect(decodeURIComponent(calls[0].url)).toContain("/stitch-forgot-password.html");
+    expect(JSON.parse(String(calls[0].body))).toEqual({ email: "a@b.co" });
+  });
+
+  it("sıfırlama bağlantısındaki belirteçle yeni şifre PUT /auth/v1/user ile yazılır", async () => {
+    const { cloud, calls } = load({ config: CONFIG, handler: () => ({}) });
+    await cloud.setPasswordWithToken("recovery-token", "yeni-sifre-1");
+    expect(calls[0].method).toBe("PUT");
+    expect(calls[0].url).toContain("/auth/v1/user");
+    expect(calls[0].headers.Authorization).toBe("Bearer recovery-token");
+    expect(JSON.parse(String(calls[0].body))).toEqual({ password: "yeni-sifre-1" });
+  });
+
+  it("şifre değiştirme: önce mevcut şifre doğrulanır, sonra yenisi yazılır", async () => {
+    const backend = fakeBackend();
+    const { cloud, calls } = await freshDevice(backend);
+    const before = calls.length;
+    await cloud.changePassword("parola-123", "yeni-sifre-9");
+    const sent = calls.slice(before);
+    expect(sent[0].url).toContain("grant_type=password");
+    expect(JSON.parse(String(sent[0].body)).password).toBe("parola-123");
+    expect(sent[1].method).toBe("PUT");
+    expect(JSON.parse(String(sent[1].body)).password).toBe("yeni-sifre-9");
+    expect(sent[1].headers.Authorization).toMatch(/^Bearer tok-/);
+  });
+
+  it("Google girişi yalnızca web adresinde sunulur (test ortamında kapalı)", () => {
+    const { cloud } = load({ config: CONFIG });
+    expect(cloud.googleAvailable()).toBe(false);
+  });
+});
+
 describe("şema dosyası", () => {
+  it("hesap durumu tablosu: RLS açık, kendi satırı politikaları ve boyut sınırı var", () => {
+    const sql = readFileSync(
+      join(REPO_ROOT, "supabase", "migrations", "0002_nexus_user_state.sql"),
+      "utf8",
+    );
+    expect(sql).toContain("enable row level security");
+    expect(sql).toContain("primary key (user_id, key)");
+    expect(sql).toContain("references auth.users");
+    expect(sql).toContain("char_length(value) <= 600000");
+    for (const verb of ["select", "insert", "update", "delete"]) {
+      expect(sql).toContain(`nexus_user_state_${verb}_own`);
+    }
+  });
+
   it("RLS açık, birleşik anahtar ve kendi-kaydı politikaları tanımlı", () => {
     const path = join(REPO_ROOT, "supabase", "migrations", "0001_nexus_devices.sql");
     expect(existsSync(path)).toBe(true);

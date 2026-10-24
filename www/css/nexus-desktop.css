@@ -48,17 +48,20 @@ html.dark .nx-side-brand { color: #f8fafc; }
 .nx-side-ai:hover .nx-side-ai-arrow { transform: translateX(3px); }
 .nx-side-ai:active { transform: scale(0.98); }
 .nx-side-ai.is-active { outline: 2px solid rgba(76, 125, 255, 0.55); outline-offset: 2px; }
-.nx-side-upd { display: flex; align-items: center; gap: 10px; width: calc(100% - 4px); min-height: 44px; padding: 0 14px; margin: -4px 2px 14px; border-radius: 14px; cursor: pointer;
-  border: 1px solid rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12); color: #047857; font-size: 14px; font-weight: 800; letter-spacing: -0.01em; text-align: left;
+/* Güncelleme: temayla aynı boyutta (40x40), yalnızca ikonlu yeşil kare; alt şeritte temanın yanında durur */
+.nx-side-upd { position: relative; width: 40px; height: 40px; flex: none; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  border: 0; background: #10b981; color: #fff; box-shadow: 0 6px 14px -6px rgba(16, 185, 129, 0.7);
   transition: background 0.2s ease, transform 0.15s ease; }
 .nx-side-upd[hidden] { display: none; }
-.nx-side-upd:hover:not(:disabled) { background: rgba(16, 185, 129, 0.2); }
-.nx-side-upd:active:not(:disabled) { transform: scale(0.98); }
-.nx-side-upd:disabled { cursor: progress; opacity: 0.85; }
-.nx-side-upd-ico { width: 28px; height: 28px; flex: none; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; background: rgba(16, 185, 129, 0.2); }
-.nx-side-upd-ico svg { width: 16px; height: 16px; }
-.nx-side-upd-txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-html.dark .nx-side-upd { color: #6ee7b7; }
+.nx-side-upd:hover:not(:disabled) { background: #059669; }
+.nx-side-upd:active:not(:disabled) { transform: scale(0.94); }
+.nx-side-upd:disabled { cursor: progress; }
+.nx-side-upd svg { width: 19px; height: 19px; }
+.nx-side-upd-pct { font-size: 11px; font-weight: 800; letter-spacing: -0.02em; }
+.nx-side-upd.is-available::after { content: ""; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 9999px; background: #34d399; border: 2px solid #fff; animation: nxUpdPulse 1.8s ease-in-out infinite; }
+html.dark .nx-side-upd.is-available::after { border-color: #0f172a; }
+@keyframes nxUpdPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: 0.6; } }
+@media (prefers-reduced-motion: reduce) { .nx-side-upd.is-available::after { animation: none; } }
 .nx-side-ai.is-active { outline: 2px solid rgba(76, 125, 255, 0.45); outline-offset: 2px; }
 .nx-side-ai svg { width: 18px; height: 18px; }
 .nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; justify-content: flex-start; }

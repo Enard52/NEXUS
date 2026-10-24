@@ -15,7 +15,10 @@
       'stitch-login', 'stitch-onboarding', 'stitch-forgot-password', 'stitch-register'
     ].includes(page);
     const user = localStorage.getItem(CURRENT_USER_KEY);
-    
+    // E-posta bağlantısından (doğrulama / şifre sıfırlama / Google) dönülürken belirteçler adres çubuğundadır;
+    // oturum açık olsa bile sayfa bunları işleyebilsin diye eve yönlendirilmez.
+    if (user && isPublicPage && /[#&]access_token=/.test(window.location.hash || '')) return;
+
     if (!user) {
       if (!isPublicPage) {
         // Giriş yapmamışsa her zaman onboarding sayfasına yönlendir (index.html dahil)
@@ -107,11 +110,20 @@
   };
 
   window.nexusLogout = function() {
-    // Bulut oturumu varsa önce onu kapat; yerel temizlik her durumda yapılır.
-    if (window.nexusCloud && window.nexusCloud.enabled) {
-      try { window.nexusCloud.signOut(); } catch (e) {}
+    function finish() {
+      localStorage.removeItem(CURRENT_USER_KEY);
+      window.location.replace('index.html');
     }
-    localStorage.removeItem(CURRENT_USER_KEY);
-    window.location.replace('index.html');
+    var cloud = window.nexusCloud;
+    if (!cloud || !cloud.enabled || !cloud.enabled()) { finish(); return; }
+    // Çıkıştan önce son değişiklikleri hesaba yaz (en çok 3 sn bekler), sonra oturumu kapat.
+    var done = false;
+    function closeSession() {
+      if (done) return;
+      done = true;
+      Promise.resolve().then(function () { return cloud.signOut(); }).catch(function () {}).then(finish);
+    }
+    setTimeout(closeSession, 3000);
+    Promise.resolve().then(function () { return cloud.syncAll(); }).catch(function () {}).then(closeSession);
   };
 })();

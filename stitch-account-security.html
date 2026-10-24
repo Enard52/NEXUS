@@ -207,32 +207,42 @@
       const next = document.getElementById('new-password').value;
       const confirm = document.getElementById('confirm-password').value;
       const error = document.getElementById('password-error');
-      const existing = nexusGetItem('nexusUserPassword');
-
-      if (existing && current !== existing) {
-        error.textContent = 'Mevcut şifre eşleşmiyor.';
+      const cloud = window.nexusCloud && window.nexusCloud.enabled();
+      const minLen = cloud ? 6 : 4;
+      function fail(text) {
+        error.textContent = text;
         error.classList.remove('hidden');
+        showSecurityToast(text, true);
+      }
+      if (!current) return fail('Mevcut şifreni gir.');
+      if (next.length < minLen) return fail('Yeni şifre en az ' + minLen + ' karakter olmalı.');
+      if (next !== confirm) return fail('Yeni şifre tekrar alanı eşleşmiyor.');
+      function done() {
+        nexusSetItem('nexusPasswordUpdatedAt', new Date().toLocaleDateString((window.nexusLocale || 'tr-TR')));
+        error.classList.add('hidden');
+        document.getElementById('current-password').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+        syncSecurityState();
+        showSecurityToast('Şifre güncellendi ✓');
+      }
+      // Bulut hesabı: şifre Supabase'te değişir (mevcut şifre sunucuda doğrulanır). Şifre hiçbir yerde düz metin saklanmaz.
+      if (cloud) {
+        window.nexusCloud.changePassword(current, next).then(done).catch(function (e) {
+          const text = String((e && e.message) || '');
+          if (/invalid login credentials/i.test(text)) fail('Mevcut şifre yanlış.');
+          else if (/same|different/i.test(text)) fail('Yeni şifre eskisinden farklı olmalı.');
+          else if (/oturum yok/i.test(text)) fail('Oturum bulunamadı. Çıkış yapıp tekrar giriş yap.');
+          else fail(text || 'Şifre güncellenemedi.');
+        });
         return;
       }
-      if (next.length < 4) {
-        error.textContent = 'Yeni şifre en az 4 karakter olmalı.';
-        error.classList.remove('hidden');
-        showSecurityToast('Şifre en az 4 karakter olmalı', true);
-        return;
-      }
-      if (next !== confirm) {
-        error.textContent = 'Yeni şifre tekrar alanı eşleşmiyor.';
-        error.classList.remove('hidden');
-        return;
-      }
-      nexusSetItem('nexusUserPassword', next);
-      nexusSetItem('nexusPasswordUpdatedAt', new Date().toLocaleDateString((window.nexusLocale || 'tr-TR')));
-      error.classList.add('hidden');
-      document.getElementById('current-password').value = '';
-      document.getElementById('new-password').value = '';
-      document.getElementById('confirm-password').value = '';
-      syncSecurityState();
-      showSecurityToast('Şifre güncellendi ✓');
+      // Yerel hesap: tuzlu özet olarak saklanır.
+      const email = localStorage.getItem('nexusCurrentUser') || '';
+      window.nexusLocalPassword.verify(email, current).then(function (ok) {
+        if (ok === false) return fail('Mevcut şifre yanlış.');
+        return window.nexusLocalPassword.set(email, next).then(done);
+      }).catch(function () { fail('Şifre güncellenemedi.'); });
     }
 
     function saveRecoveryMethods() {

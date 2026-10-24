@@ -141,8 +141,9 @@
       return;
     }
 
-    if (pw.length < 4) {
-      errorBox.textContent = 'Şifre en az 4 karakter olmalıdır.';
+    var minLen = (window.nexusCloud && window.nexusCloud.enabled()) ? 6 : 4;
+    if (pw.length < minLen) {
+      errorBox.textContent = 'Şifre en az ' + minLen + ' karakter olmalıdır.';
       errorBox.classList.remove('hidden');
       return;
     }
@@ -186,17 +187,26 @@
     if (window.nexusCloud && window.nexusCloud.enabled()) {
       var submit = document.querySelector('button[onclick="doRegister()"]');
       if (submit) submit.disabled = true;
-      window.nexusCloud.signUp(email, pw).then(function (session) {
-        if (session) return window.nexusCloud.syncNow().catch(function () {});
-        // session yoksa e-posta doğrulaması gerekebilir: kullanıcı girişe yönlendirilir.
-        errorBox.textContent = 'Hesabın oluşturuldu. E-postanı onayladıktan sonra giriş yap.';
-        errorBox.classList.remove('hidden');
-        window.location.replace('stitch-login.html');
-        return null;
-      }).then(function () {
-        completeRegistration();
+      window.nexusCloud.signUp(email, pw, name).then(function (result) {
+        if (!result.session) {
+          // E-posta doğrulaması açık: hesap, bağlantıya tıklanınca web girişinde açılır.
+          // Doğrulanmamış hesapla uygulamaya girilmez.
+          errorBox.className = 'mb-4 p-4 rounded-xl bg-green-100 text-green-700 text-sm font-semibold text-center shadow-sm';
+          errorBox.textContent = 'Doğrulama bağlantısını ' + email + ' adresine gönderdik. Bağlantıya tıkladıktan sonra giriş yapabilirsin.';
+          errorBox.classList.remove('hidden');
+          if (submit) submit.disabled = false;
+          return;
+        }
+        // Oturum açıldı: profil yazılır, hesaba gönderilir, sonra ana sayfa.
+        localStorage.setItem('nexusCurrentUser', result.session.email || email);
+        nexusSetItem('nexusUserName', name);
+        nexusSetItem('nexusUserEmail', result.session.email || email);
+        return window.nexusCloud.syncAll().catch(function () {}).then(function () {
+          window.location.replace('stitch-home.html');
+        });
       }).catch(function (error) {
         if (submit) submit.disabled = false;
+        errorBox.className = 'mb-4 p-4 rounded-xl bg-red-100 text-red-600 text-sm font-semibold text-center shadow-sm';
         var text = String((error && error.message) || '');
         if (/already registered|already exists/i.test(text)) text = 'Bu e-posta ile zaten bir hesap var. Lütfen giriş yapın.';
         else if (/Password should be/i.test(text)) text = 'Şifre en az 6 karakter olmalı.';

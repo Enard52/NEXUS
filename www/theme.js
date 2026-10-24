@@ -38,6 +38,11 @@
   if (lang === 'en' && document.readyState === 'loading' && !window.__nexusI18n) {
     document.write('<script src="lang-en.js"><\/script><script src="i18n.js"><\/script>');
   }
+  // Hesap senkronu her sayfada çalışsın (giriş yapılmışsa): cloud-sync.js kendini iki kez kurmaz.
+  if (document.readyState === 'loading' && !window.nexusCloud && !window.__nexusCloudLoading) {
+    window.__nexusCloudLoading = true;
+    document.write('<script src="cloud-config.js"><\/script><script src="cloud-sync.js"><\/script>');
+  }
 })();
 
 
