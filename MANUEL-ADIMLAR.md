@@ -1,70 +1,41 @@
-# NEXUS — Manuel Adımlar
+# NEXUS — Yapılacaklar (yalnızca sizin işleriniz)
 
-Bu dosya yalnızca **sizin yapmanız gereken** işleri listeler. Tamamlanmış işler buradan çıkarıldı.
-Tamamlanan kısımlar: masaüstü (Windows, Linux), Android test APK'sı, Supabase projesi ve veritabanı, site.
+Bitmiş her şey bu listeden çıkarıldı. Aşağıdakiler sırayla yapılacak.
 
-## Desteklenen platformlar (düşük maliyet)
+## 1. Supabase'te bot korumasını kapatın (ilk iş)
 
-- **Windows** — ücretsiz, imzasız (SmartScreen'de "Ek bilgi → Yine de çalıştır").
-- **Linux** — ücretsiz, AppImage ve .deb.
-- **Android** — şimdilik test APK'sı (ayarlardan "bilinmeyen kaynaklardan kurulum" izni).
-- **macOS ve iOS** — kapsam dışı (Apple geliştirici hesabı yıllık 99 USD gerektirir).
+Supabase → **Authentication → Attack Protection** → "Enable Captcha protection" anahtarını **kapatın**.
+Açıkken e-posta ile giriş, kayıt ve şifre sıfırlama hata verir ("captcha protection: request disallowed").
+E-posta doğrulaması ve Supabase hız sınırları koruma sağlamaya devam eder.
+Kapatmak istemezseniz bana "hCaptcha'yı ekle" yazın.
 
-## 1. Google ile hızlı giriş (ücretsiz)
+## 2. Supabase güvenlik ayarları
 
-Hızlı giriş, sitede, masaüstünde ve mobilde "Google ile devam et" olarak sunulacak. Bunun için:
+- **Authentication → Passwords** → "Leaked password protection" seçeneğini açın.
+- **Authentication → Email** → e-posta doğrulamasını açık tutun.
 
-1. **Google Cloud Console** (console.cloud.google.com) → yeni proje → "APIs & Services → OAuth consent screen": uygulama adı "NEXUS", destek e-postası, gizlilik politikası ve kullanım koşulları bağlantıları.
-2. **Credentials → Create credentials → OAuth client ID** (Web application). **Authorized redirect URI**: Supabase'in verdiği adres (Supabase → Authentication → Providers → Google sayfasında yazar, `https://flbctyolowzcizwwzbke.supabase.co/auth/v1/callback`).
-3. Oluşan **Client ID** ve **Client Secret** değerlerini Supabase → Authentication → Providers → Google bölümüne girin ve etkinleştirin.
-4. Client Secret'ı bana değil, yalnızca Supabase paneline girin.
+## 3. Canlı test (1. adımdan sonra)
 
-İsteğe bağlı: GitHub ile giriş de aynı şekilde eklenebilir (GitHub → Settings → Developer settings → OAuth App).
+- Web (`https://nexus-web-jre.pages.dev`): e-postayla kayıt → doğrulama e-postası → giriş; Google ile giriş; "Şifremi Unuttum".
+- Masaüstü ve telefon: aynı e-postayla giriş; profil, ayar ve cihazların geri geldiğini kontrol edin.
+- Bir cihazda ayar değiştirin, diğerinde birkaç dakika içinde göründüğünü doğrulayın.
 
-## 2. Hesap ve veritabanı güvenliği
+## 4. Arama motorlarına kayıt
 
-- **ÖNEMLİ — Bot koruması (CAPTCHA):** Supabase → **Authentication → Attack Protection** sayfasında "Enable Captcha protection" (hCaptcha) şu an **açık**. Uygulama hCaptcha göstermediği için e-posta ile giriş, kayıt ve şifre sıfırlama bu ayar açıkken çalışmaz ("captcha protection: request disallowed"). Anahtarı **kapatın** (e-posta doğrulaması ve Supabase hız sınırları koruma sağlamaya devam eder) ya da hCaptcha'yı uygulamaya eklememi isteyin. Google ile giriş bu ayardan etkilenmez.
-- Supabase → **Authentication → Passwords** → "Leaked password protection" seçeneğini açın.
-- Supabase → **Authentication → Email** → e-posta doğrulamayı canlı ortamda açık tutun.
+Site: `https://nexus-smarthome.pages.dev/` — site haritası: `https://nexus-smarthome.pages.dev/sitemap.xml`
 
-## 3. Yayın ve test
+1. **Google Search Console** (search.google.com/search-console) → "Mülk ekle" → **URL öneki** → site adresini yazın.
+   - Doğrulama: **HTML etiketi**. Verilen `<meta name="google-site-verification" content="...">` içindeki **content değerini bana yazın**, ben sayfalara eklerim.
+   - Sonra **Site haritaları** → `sitemap.xml` yazıp gönderin.
+2. **Bing Webmaster Tools** (bing.com/webmasters) → "Google Search Console'dan içe aktar" (ek kod gerekmez).
+3. İsteğe bağlı: Yandex Webmaster — verdiği `yandex-verification` değerini bana yazın.
 
-- **Masaüstü 1.0.7 (Windows, Linux):** Yayında. Kurulu uygulamanızda "Güncellemeleri Kontrol Et" ile güncelleyin.
-- **Android APK:** 1.0.7 sürümünde. Telefonda kurup bulut senkronunu deneyin.
-- **Canlı test listesi:**
-  - Site: giriş/kayıt, plan sayfası, indirme kartları (Windows, Linux, Android).
-  - Masaüstü: giriş, cihaz ekleme, senkron, güncelleme.
-  - Telefon: giriş, cihaz ekleme, senkron, tablet görünümü.
-  - Aynı hesapla üç taraftan birden senkron kontrolü.
+## 5. Kurumsal e-posta adresleri
 
-## 4. Lisans ve hukuk
+Sitedeki sahte adresler kaldırıldı. Gerçek **destek** ve **gizlilik** adreslerini oluşturunca bana yazın; gizlilik sayfalarına, geri bildirim düğmesine ve uygulamaya eklerim.
 
-- Kökteki `LICENSE` dosyası taslak. Yayından önce bir avukat incelemesi yapın.
-- Gizlilik politikası, hesap verisi ve kullanım koşulları güncel olmalı.
+## 6. İleride
 
-## 5. Ödeme (ileride)
-
-- Gerçek ödeme için İyzico veya Stripe hesabı gerekir. Şu an planlar "yakında" olarak gösteriliyor ve özellik kilidi yok. Bu karar sizin.
-
-## 6. Arama motorlarına kayıt (SEO)
-
-Site adresi: `https://nexus-smarthome.pages.dev/` — site haritası: `https://nexus-smarthome.pages.dev/sitemap.xml`.
-Site haritası, robots.txt, canonical/hreflang, Open Graph ve JSON-LD hazır. Kalan, sahiplik doğrulaması:
-
-1. **Google Search Console** (search.google.com/search-console) → "Mülk ekle" → **URL öneki** → `https://nexus-smarthome.pages.dev/` yazın.
-   - Doğrulama yöntemi olarak **HTML etiketi**ni seçin. Verilen `<meta name="google-site-verification" content="...">` satırındaki **content değerini** bana yazın; ben iki dildeki ana sayfaya eklerim.
-   - Sonra sol menüde **Site haritaları** → kutuya `sitemap.xml` yazıp gönderin.
-   - İsteğe bağlı: **URL denetimi** → `https://nexus-smarthome.pages.dev/` ve `/tr/` için "Dizine eklenmesini iste".
-2. **Bing Webmaster Tools** (bing.com/webmasters): "Google Search Console'dan içe aktar" seçeneği en kolayı (ek doğrulama gerekmez). Elle eklerseniz `msvalidate.01` meta etiketinin content değerini bana yazın; site haritası olarak `https://nexus-smarthome.pages.dev/sitemap.xml` girin.
-3. İsteğe bağlı: Yandex Webmaster (yandex.com/webmaster) — verdiği `yandex-verification` değerini bana yazın.
-
-Not: `pages.dev` ortak bir alan adıdır; arama sıralaması için kendi alan adınız (yıllık ~10 USD) daha iyi sonuç verir. Alan adı alırsanız bana yazın, tüm adresleri tek seferde değiştiririm.
-
-## 7. Kurumsal e-posta
-
-Sitedeki ve uygulamadaki doğrulanmamış adresler (`destek@` / `privacy@nexus-ai.app`, `@nexusai`) kaldırıldı; gizlilik sayfalarında "iletişim adresi yakında" yazıyor, uygulamadaki geri bildirim formu mesajı cihazda saklıyor.
-Gerçek adresleri oluşturunca bana yazın (ör. destek adresi ve gizlilik adresi); şunlara eklerim: gizlilik sayfaları, ana sayfa geri bildirim düğmesi, uygulama geri bildirim formu, JSON-LD iletişim bilgisi, masaüstü paket bilgisi.
-
-## 8. Bildirmeniz gerekenler
-
-- Yukarıdaki adımları tamamladığınızda, Google girişini uygulamaya bağlamak için bana haber verin. Client ID'yi yazmanız yeterli; secret'ı paylaşmayın.
+- Kendi alan adı (yıllık ~10 USD): arama sıralaması için daha iyi. Alırsanız bana yazın, tüm adresleri ben değiştiririm.
+- `LICENSE`, gizlilik politikası ve kullanım koşulları için avukat incelemesi.
+- Gerçek ödeme (İyzico veya Stripe hesabı) — şimdilik planlar "yakında" gösteriliyor.
