@@ -53,6 +53,18 @@ jobs:
       - name: Bağımlılıklar
         run: npm ci
 
+      - name: Bulut yapılandırmasını yaz (depo değişkenlerinden)
+        shell: bash
+        env:
+          SUPABASE_URL: ${{ vars.NEXUS_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.NEXUS_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Bulut değişkenleri tanımlı değil; bulut özellikleri kapalı derlenecek."
+            exit 0
+          fi
+          printf 'window.NEXUS_CLOUD = {\n  url: "%s",\n  anonKey: "%s"\n};\n' "$SUPABASE_URL" "$SUPABASE_ANON_KEY" > ../cloud-config.js
+
       - name: Uygulama dosyalarını hazırla
         run: node scripts/prepare-app.cjs
 
