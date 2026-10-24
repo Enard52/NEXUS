@@ -41,15 +41,15 @@ Kod tarafındaki 860 testin tamamı yeşildir. Bu aşama kullanıcının elindek
 
 - [x] 👤 **3.1 Altyapı kararı:** Cloudflare Pages seçildi.
 - [x] 🤖 **3.2 Cloudflare Pages Yayını:**
-  - **Canlı Adres (Cloudflare):** https://nexus-b6p.pages.dev/
-  - **Türkçe Sayfa (Cloudflare):** https://nexus-b6p.pages.dev/tr/
+  - **Canlı Adres (Cloudflare):** https://nexus-ai-app.pages.dev/
+  - **Türkçe Sayfa (Cloudflare):** https://nexus-ai-app.pages.dev/tr/
   - **Güvenlik ve Yönlendirme:** `public/_headers` (HSTS, CSP, Permissions, Cache) ve `public/_redirects` Cloudflare Pages üzerinde aktif.
   - **Tek Komutla Dağıtım:** `pnpm deploy:pages` komutu eklendi.
-- [x] 🤖 **3.3 Bağlantılar ve SEO güncellendi:** Site URL'leri, og:url, og:image, sitemap.xml ve robots.txt `https://nexus-b6p.pages.dev/` adresine güncellendi.
+- [x] 🤖 **3.3 Bağlantılar ve SEO güncellendi:** Site URL'leri, og:url, og:image, sitemap.xml ve robots.txt `https://nexus-ai-app.pages.dev/` adresine güncellendi.
 - [x] 👤 **3.4 Canlı doğrulama:**
-  - Ana sayfa: `curl -I https://nexus-b6p.pages.dev` -> HTTP 200 OK (Server: cloudflare)
-  - Türkçe sayfa: `curl -I https://nexus-b6p.pages.dev/tr/` -> HTTP 200 OK (Server: cloudflare)
-  - İndirme butonları: `https://nexus-b6p.pages.dev/` üzerinden tıklandığında doğrudan GitHub Releases'tan son sürümü indiriyor.
+  - Ana sayfa: `curl -I https://nexus-ai-app.pages.dev/` -> HTTP 200 OK (Server: cloudflare)
+  - Türkçe sayfa: `curl -I https://nexus-ai-app.pages.dev/tr/` -> HTTP 200 OK (Server: cloudflare)
+  - İndirme butonları: `https://nexus-ai-app.pages.dev/` üzerinden tıklandığında doğrudan GitHub Releases'tan son sürümü indiriyor.
 
 ---
 
@@ -70,7 +70,7 @@ Kod tarafındaki 860 testin tamamı yeşildir. Bu aşama kullanıcının elindek
 
 ## Durum Özeti
 
-- **Canlı Cloudflare Web Sitesi:** https://nexus-b6p.pages.dev/
+- **Canlı Cloudflare Web Sitesi:** https://nexus-ai-app.pages.dev/
 - **İndirme Deposu:** https://github.com/Enard52/nexus-releases/releases/latest
 - **Testler:** 860/860 test başarıyla geçiyor (CI yeşil).
 - **TypeScript & Build:** Hata yok, `build:static`, `build:client`, `build:server` sorunsuz tamamlanıyor.
