@@ -26,7 +26,8 @@ Bu adımlar olmadan site, uygulama ve program arasında hesap senkronu çalışm
 3. **Anahtarlar:** Proje ayarlarından `Project URL` ve `anon public` anahtarını alın. **Gizli (service_role) anahtarı hiçbir yere yapıştırmayın.**
 4. **Uygulama yapılandırması:** `cloud-config.example.js` dosyasını `cloud-config.js` olarak kopyalayıp değerleri girin. Bu dosya `.gitignore`'da, repoya girmez.
 5. **E-posta doğrulama:** Test için kapatılabilir; canlıda açık kalmalı.
-6. **Gizlilik politikası:** Hesap verisi toplanmaya başlamadan önce site gizlilik politikasını hesap verisini kapsayacak şekilde güncelleyin ve bir avukat incelemesi yapın.
+6. **Lisans metni:** Kökteki `LICENSE` dosyası taslak olarak hazır. Bir avukatın incelemesinden geçirin; yayından önce kesin metin olsun.
+7. **Gizlilik politikası:** Hesap verisi toplanmaya başlamadan önce site gizlilik politikasını hesap verisini kapsayacak şekilde güncelleyin ve bir avukat incelemesi yapın.
 7. **Plan verisi:** Plan takibi için ayrı bir `subscriptions` tablosu gerekir. Bu, ödeme sağlayıcısı bağlandığında eklenecek. Plan kaydını yalnızca sunucu (webhook) yazmalı; site veya uygulama bunu kendisi değiştirmemeli.
 
 **Senkron testi (sitede, uygulamada, programda aynı hesapla):**
