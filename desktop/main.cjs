@@ -367,12 +367,33 @@ function sendUpdateState(patch) {
   if (win && !win.isDestroyed()) win.webContents.send("updates:state", updateState);
 }
 
+// Güncelleme tercihleri (otomatik indirme). Kullanıcı verisi klasöründe saklanır.
+const updatePrefsPath = () => path.join(app.getPath("userData"), "update-prefs.json");
+function readUpdatePrefs() {
+  try { return { autoDownload: false, ...JSON.parse(fs.readFileSync(updatePrefsPath(), "utf8")) }; }
+  catch { return { autoDownload: false }; }
+}
+function writeUpdatePrefs(patch) {
+  const next = { ...readUpdatePrefs(), ...patch };
+  try { fs.writeFileSync(updatePrefsPath(), JSON.stringify(next)); } catch { /* kaydedilemezse varsayılan kalır */ }
+  return next;
+}
+
 function wireUpdater(autoUpdater) {
   if (updatesWired) return;
   updatesWired = true;
-  autoUpdater.autoDownload = true;
+  // Varsayılan: kullanıcı indirmeyi kendisi başlatır; "otomatik indir" açıksa hemen iner.
+  autoUpdater.autoDownload = false;
   autoUpdater.on("checking-for-update", () => sendUpdateState({ state: "checking", error: null }));
-  autoUpdater.on("update-available", (info) => sendUpdateState({ state: "downloading", availableVersion: info && info.version || null, progress: 0, error: null }));
+  autoUpdater.on("update-available", (info) => {
+    const version = info && info.version || null;
+    if (readUpdatePrefs().autoDownload) {
+      sendUpdateState({ state: "downloading", availableVersion: version, progress: 0, error: null });
+      autoUpdater.downloadUpdate().catch((e) => sendUpdateState({ state: "error", error: (e && e.message) || L("indirme başarısız", "download failed") }));
+    } else {
+      sendUpdateState({ state: "available", availableVersion: version, progress: 0, error: null });
+    }
+  });
   autoUpdater.on("update-not-available", () => sendUpdateState({ state: "latest", availableVersion: null, error: null }));
   autoUpdater.on("download-progress", (p) => sendUpdateState({ state: "downloading", progress: Math.round(p.percent || 0) }));
   autoUpdater.on("error", (e) => sendUpdateState({ state: "error", error: (e && e.message) || L("bilinmeyen hata", "unknown error") }));
@@ -410,6 +431,28 @@ ipcMain.handle("updates:check", async () => {
   }
   return updateState;
 });
+
+ipcMain.handle("updates:get-state", () => updateState);
+ipcMain.handle("updates:prefs:get", () => readUpdatePrefs());
+ipcMain.handle("updates:prefs:set", (_e, patch) => {
+  const next = writeUpdatePrefs({ autoDownload: !!(patch && patch.autoDownload) });
+  // Otomatik indirme açıldıysa ve bir sürüm zaten bulunmuşsa hemen indir.
+  if (next.autoDownload && updateState.state === "available") startDownload();
+  return next;
+});
+
+async function startDownload() {
+  const autoUpdater = getAutoUpdater();
+  if (!autoUpdater || updateState.state !== "available") return false;
+  sendUpdateState({ state: "downloading", progress: 0, error: null });
+  try { await autoUpdater.downloadUpdate(); } catch (e) {
+    sendUpdateState({ state: "error", error: (e && e.message) || L("indirme başarısız", "download failed") });
+    return false;
+  }
+  return true;
+}
+
+ipcMain.handle("updates:download", () => startDownload());
 
 ipcMain.handle("updates:install", () => {
   const autoUpdater = getAutoUpdater();

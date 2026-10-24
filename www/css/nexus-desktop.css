@@ -24,23 +24,41 @@ html.dark .nx-side-brand { color: #f8fafc; }
 .nx-side-logo { width: 34px; height: 34px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #6f9bff, #4C7DFF 55%, #3F6FFF); box-shadow: 0 6px 16px rgba(76, 125, 255, 0.35); }
 .nx-side-logo svg { width: 22px; height: 22px; }
-.nx-side-ai { position: relative; overflow: hidden; display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 14px 0 10px; margin: 0 2px 14px; border-radius: 16px; text-decoration: none;
-  background: linear-gradient(135deg, #6f9bff 0%, #4C7DFF 50%, #8b7bff 100%); color: #ffffff; font-size: 15px; font-weight: 800; letter-spacing: -0.01em;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 14px 30px -10px rgba(76, 125, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.25s ease; }
+/* NEXUS AI — marka kartı: koyu lacivert zemin, logo rozeti, canlı durum noktası */
+.nx-side-ai { position: relative; overflow: hidden; display: flex; align-items: center; gap: 12px; min-height: 66px; padding: 12px 14px 12px 12px; margin: 0 2px 14px; border-radius: 18px; text-decoration: none; color: #ffffff;
+  background: radial-gradient(120% 140% at 0% 0%, #4C7DFF 0%, rgba(76, 125, 255, 0) 55%), linear-gradient(160deg, #1b2a63 0%, #14204d 100%);
+  border: 1px solid rgba(139, 123, 255, 0.35);
+  box-shadow: 0 18px 36px -16px rgba(31, 53, 140, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
 .nx-side-ai::before { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.30) 50%, transparent 70%);
-  transform: translateX(-120%); animation: nx-side-ai-shine 3.8s ease-in-out infinite; }
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.16) 50%, transparent 70%);
+  transform: translateX(-120%); animation: nx-side-ai-shine 4.2s ease-in-out infinite; }
 @keyframes nx-side-ai-shine { 0%, 55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
-.nx-side-ai-ico { width: 34px; height: 34px; flex: none; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center;
-  background: rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4); }
-.nx-side-ai-txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nx-side-ai-arrow { width: 16px; height: 16px; flex: none; opacity: 0.85; transition: transform 0.2s ease; }
-.nx-side-ai:hover { transform: translateY(-1px); filter: none; background: linear-gradient(135deg, #6f9bff 0%, #4C7DFF 50%, #8b7bff 100%);
-  box-shadow: 0 18px 36px -10px rgba(76, 125, 255, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.nx-side-ai-ico { width: 38px; height: 38px; flex: none; border-radius: 13px; display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(145deg, #ffffff 0%, #dbe6ff 100%); box-shadow: 0 6px 16px -6px rgba(76, 125, 255, 0.9), inset 0 -2px 0 rgba(76, 125, 255, 0.18); }
+.nx-side-ai-ico svg { width: 24px; height: 24px; }
+.nx-side-ai-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.nx-side-ai-txt b { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nx-side-ai-txt small { font-size: 11.5px; font-weight: 500; color: rgba(255, 255, 255, 0.68); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nx-side-ai-dot { position: absolute; left: 42px; top: 10px; width: 9px; height: 9px; border-radius: 9999px; border: 2px solid #14204d; background: #34d399; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); animation: nx-side-ai-pulse 2.4s ease-out infinite; }
+@keyframes nx-side-ai-pulse { 0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } }
+.nx-side-ai-arrow { width: 16px; height: 16px; flex: none; opacity: 0.8; transition: transform 0.2s ease; }
+.nx-side-ai:hover { transform: translateY(-1px); border-color: rgba(139, 123, 255, 0.6);
+  box-shadow: 0 22px 40px -16px rgba(76, 125, 255, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.18); }
 .nx-side-ai:hover .nx-side-ai-arrow { transform: translateX(3px); }
 .nx-side-ai:active { transform: scale(0.98); }
+.nx-side-ai.is-active { outline: 2px solid rgba(76, 125, 255, 0.55); outline-offset: 2px; }
+.nx-side-upd { display: flex; align-items: center; gap: 10px; width: calc(100% - 4px); min-height: 44px; padding: 0 14px; margin: -4px 2px 14px; border-radius: 14px; cursor: pointer;
+  border: 1px solid rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12); color: #047857; font-size: 14px; font-weight: 800; letter-spacing: -0.01em; text-align: left;
+  transition: background 0.2s ease, transform 0.15s ease; }
+.nx-side-upd[hidden] { display: none; }
+.nx-side-upd:hover:not(:disabled) { background: rgba(16, 185, 129, 0.2); }
+.nx-side-upd:active:not(:disabled) { transform: scale(0.98); }
+.nx-side-upd:disabled { cursor: progress; opacity: 0.85; }
+.nx-side-upd-ico { width: 28px; height: 28px; flex: none; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; background: rgba(16, 185, 129, 0.2); }
+.nx-side-upd-ico svg { width: 16px; height: 16px; }
+.nx-side-upd-txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.dark .nx-side-upd { color: #6ee7b7; }
 .nx-side-ai.is-active { outline: 2px solid rgba(76, 125, 255, 0.45); outline-offset: 2px; }
 .nx-side-ai svg { width: 18px; height: 18px; }
 .nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; justify-content: flex-start; }
@@ -127,23 +145,30 @@ html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet {
 }
 /* Hızlı Aksiyonlar (qa-sheet) ve hidden ile açılan alt sayfalar masaüstünde
    tam ortada diyalog kartı gibi açılır (telefondaki alt sayfa davranışı korunur) */
-html.nx-desk .qa-sheet {
-  top: 50% !important; bottom: auto !important;
+/* Ortalama düzeni: sheet, sidebar'dan sonraki içerik alanının tam ortasında.
+   Yüzde tabanlı translate yerine top/bottom 0 + auto margin ile dikey ortalanır (her sayfada aynı). */
+html.nx-desk .qa-sheet,
+html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet:not(.qa-sheet):not(.hidden) {
+  top: 0 !important; bottom: 0 !important;
+  left: var(--side) !important; right: 0 !important;
+  margin: auto !important;
+  height: fit-content !important; max-height: calc(100vh - 48px) !important; overflow-y: auto;
+  width: min(640px, calc(100vw - var(--side) - 48px)) !important;
   border-radius: 28px !important;
-  transform: translateY(calc(-50% + 42px)); opacity: 0; pointer-events: none;
+}
+html.nx-desk .qa-sheet {
+  transform: translateY(16px) !important; opacity: 0; pointer-events: none;
   transition: transform .26s ease, opacity .2s ease;
 }
-html.nx-desk .qa-sheet.open { transform: translateY(-50%); opacity: 1; pointer-events: auto; }
+html.nx-desk .qa-sheet.open { transform: none !important; opacity: 1; pointer-events: auto; }
 html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet:not(.qa-sheet):not(.hidden) {
-  top: 50% !important; bottom: auto !important;
-  transform: translateY(-50%) !important;
-  border-radius: 28px !important;
+  transform: none !important;
   transition: transform .26s ease, opacity .2s ease, visibility 0s;
 }
 /* Kapalıyken (.sheet açık değil / translate-y-full) masaüstünde de gizli kalır */
 html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet.sheet:not(.open):not(.qa-sheet),
 html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet.translate-y-full:not(.qa-sheet) {
-  transform: translateY(calc(-50% + 42px)) !important;
+  transform: translateY(16px) !important;
   opacity: 0; visibility: hidden; pointer-events: none;
   transition: transform .26s ease, opacity .2s ease, visibility 0s linear .26s;
 }

@@ -28,7 +28,6 @@
     return [
       { icon: "home", label: T("Ev", "Home"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-home.html"; } },
       { icon: "layout-grid", label: T("Akıllı", "Smart"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-smart.html"; } },
-      { icon: "sliders-horizontal", label: T("Kontrol Panelleri", "Control Panels"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-panels.html"; } },
       { icon: "circle-plus", label: T("Cihaz Ekle", "Add device"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-pair.html"; } },
       { icon: "bell", label: T("Mesaj Merkezi", "Message Center"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-messages.html"; } },
       { icon: "settings", label: T("Ayarlar", "Settings"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-settings.html"; } },

@@ -18,6 +18,10 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   },
   updates: {
     check: () => ipcRenderer.invoke("updates:check"),
+    download: () => ipcRenderer.invoke("updates:download"),
+    getState: () => ipcRenderer.invoke("updates:get-state"),
+    getPrefs: () => ipcRenderer.invoke("updates:prefs:get"),
+    setPrefs: (patch) => ipcRenderer.invoke("updates:prefs:set", patch),
     install: () => ipcRenderer.invoke("updates:install"),
     onState: (cb) => {
       const handler = (_e, state) => cb(state);

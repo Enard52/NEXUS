@@ -34,7 +34,7 @@
   </div>
 
   <header class="pt-12 pb-4 px-5 flex items-center justify-between relative bg-white shadow-sm">
-    <button onclick="window.history.back()" class="p-1 -ml-1">
+    <button onclick="history.length > 1 ? history.back() : (window.location.href = 'stitch-smart.html')" class="p-1 -ml-1">
       <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
     </button>
     <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Senaryo Ayarları</h1>

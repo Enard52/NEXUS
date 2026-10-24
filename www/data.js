@@ -545,10 +545,18 @@ function getLocalDevices() {
     let paired = [];
     try { paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch(e){}
     if (Array.isArray(paired)) {
+        // Bağlanmamış katalog cihazları (host yok) eklenmiş cihaz sayılmaz; kayıtlardan temizlenir.
+        const cleaned = paired.filter(d => !(d && !d.host && /^catalog-/.test(String(d.id || ''))));
+        if (cleaned.length !== paired.length) {
+            paired = cleaned;
+            try { nexusSetItem('nexusPairedDevices', JSON.stringify(cleaned)); } catch (e) {}
+        }
+    }
+    if (Array.isArray(paired)) {
         paired.forEach((d, i) => {
-            if (!d || !d.name) return;
+            if (!d || !d.name || !d.host) return; // bağlanmamış cihaz hiçbir listede eklenmiş görünmez
             if (list.some(x => x.name === d.name)) return; // aynı cihazı iki kaynakta sayılmasın
-            list.push({ id: 'paired-' + i, name: d.name, state: d.host ? 'Bağlı' : 'Eşleşme bekliyor', type: d.icon === 'lightbulb' ? 'light' : '', img: d.img || '', linked: !!d.host });
+            list.push({ id: 'paired-' + i, name: d.name, state: d.host ? 'Bağlı' : 'Eşleşme bekleniyor', type: d.icon === 'lightbulb' ? 'light' : '', img: d.img || '', linked: !!d.host });
         });
     }
     return list;

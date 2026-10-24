@@ -75,10 +75,8 @@
       var params = new URLSearchParams(window.location.search);
       var id = (params.get('id') || '').trim();
       var template = typeof window.getSmartPromptById === 'function' ? window.getSmartPromptById(id) : null;
-      if (!template && Array.isArray(window.NEXUS_SMART_APP_TEMPLATES) && window.NEXUS_SMART_APP_TEMPLATES.length) {
-        template = window.NEXUS_SMART_APP_TEMPLATES[0];
-      }
-      if (!template) return;
+      // Tanınmayan kimlikte yanlış bir uygulamayı göstermek yerine akıllı uygulamalar listesine dön.
+      if (!template) { window.location.replace('stitch-smart.html'); return; }
 
       document.getElementById('smart-detail-title').textContent = template.title;
       document.getElementById('smart-detail-heading').textContent = template.title;

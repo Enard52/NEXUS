@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -221,7 +221,7 @@
   <!-- Header -->
   <header id="int-header" class="pt-14 pb-4 px-4 flex items-center justify-between bg-white z-50 relative">
     <div class="flex items-center gap-3">
-      <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform" href="#" onclick="event.preventDefault(); window.history.back();">
+      <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
         <i class="w-7 h-7" data-lucide="chevron-left"></i>
       </a>
       <h1 class="catalog-title text-[2rem] leading-none font-semibold tracking-[-0.03em] text-slate-900">Cihaz Ekle</h1>
@@ -291,8 +291,8 @@
         <i class="w-7 h-7" data-lucide="alert-triangle"></i>
       </div>
       <p class="text-slate-800 font-bold text-lg">Cihaz Bulunamadı</p>
-      <p class="text-slate-500 text-sm mt-1 mb-5 text-center">Ağda bu cihaz bulunamadı. Yine de ekleyebilirsin; cihaz ağa bağlanınca kontrol edilir.</p>
-      <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="addSearchedDeviceAnyway()">Yine de ekle</button>
+      <p class="text-slate-500 text-sm mt-1 mb-5 text-center">Ağda bu cihaz bulunamadı. Cihazı Wi-Fi'a bağlayıp tekrar dene; bağlanmadan ana sayfaya eklenmez.</p>
+      <button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="hideOverlay()">Tamam</button>
       <button class="w-full text-[#4C7DFF] font-semibold py-3 mt-1" onclick="hideOverlay(); window.location.href='stitch-setup-code.html';">Kurulum koduyla ekle</button>
       <button class="w-full text-slate-500 font-medium py-3 mt-1" onclick="hideOverlay()">Vazgeç</button>
     </div>
@@ -325,39 +325,39 @@
         "items": [
           {
             "n": "Akıllı Priz",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Priz (Bluetooth)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Priz (ZigBee)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Priz (Ağ Geçidi)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Priz (NB-IoT)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Çoklu Priz",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Çoklu Priz (Bluetooth)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Çoklu Priz (Zigbee)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Çiftli Priz (BLE+Wi-Fi)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           }
         ]
       },
@@ -366,119 +366,119 @@
         "items": [
           {
             "n": "Anahtar",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Anahtar (Bluetooth)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Anahtar (ZigBee)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Akıllı Anahtar (1 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Akıllı Anahtar (2 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Akıllı Anahtar (3 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Akıllı Anahtar (4 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Dokunmatik Anahtar (1 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Dokunmatik Anahtar (2 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Dokunmatik Anahtar (3 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Dokunmatik Anahtar (4 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Nötrsüz Anahtar (1 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Nötrsüz Anahtar (2 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Nötrsüz Anahtar (3 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Nötrsüz Anahtar (4 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Kablosuz Anahtar",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Kablosuz Anahtar (1 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Kablosuz Anahtar (2 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Kablosuz Anahtar (3 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Kablosuz Anahtar (4 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Kablosuz Anahtar (6 Çıkışlı)",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Perde Anahtarı",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Dimmer Anahtar",
-            "img": "dimmer.jpg"
+            "img": "control-dimmer-knob.png"
           },
           {
             "n": "Dimmer Anahtar (Zigbee)",
-            "img": "dimmer.jpg"
+            "img": "control-dimmer-knob.png"
           },
           {
             "n": "Uyandırma Anahtarı",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Akıllı Buton",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Senaryo Anahtarı",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           },
           {
             "n": "Thermostat Switch",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Işık ve Fan Anahtarı",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           }
         ]
       },
@@ -487,11 +487,11 @@
         "items": [
           {
             "n": "Garaj Kapısı Kumandası (Wi-Fi)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Garaj Kapısı Kumandası (BLE)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -506,55 +506,55 @@
         "items": [
           {
             "n": "Akıllı Lamba",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Akıllı Lamba (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Akıllı Lamba (ZigBee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Işık Kaynağı (BLE+Wi-Fi)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Retro Lamba",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Retro Lamba (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Retro Lamba (ZigBee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Mum Lamba",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Mum Lamba (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Mum Lamba (ZigBee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Spot Lamba",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Spot Lamba (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Spot Lamba (ZigBee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           }
         ]
       },
@@ -563,35 +563,35 @@
         "items": [
           {
             "n": "Tavan Lambası",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Tavan Lambası (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Tavan Lambası (ZigBee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Tavan Lambası (BLE+Wi-Fi)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Tavan Vantilatörü Lambası",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Masa Lambası",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Masa Lambası (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Masa Lambası (ZigBee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           }
         ]
       },
@@ -600,43 +600,43 @@
         "items": [
           {
             "n": "Şerit Lamba",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Şerit Lamba (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Şerit Lamba (Zigbee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Şerit Lamba (BLE+Wi-Fi)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Ambiyans Lambası",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Ambiyans Lambası (Bluetooth)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Ambiyans Lambası (Zigbee)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "Ambiyans Lambası (BLE+Wi-Fi)",
-            "img": "smart_bulb.jpg"
+            "img": "generic-led-bulb.png"
           },
           {
             "n": "TV Ortam Işığı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Projektör",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -645,31 +645,31 @@
         "items": [
           {
             "n": "Dış Mekan Aydınlatması",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Dış Mekan Aydınlatması (BLE)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Dış Mekan Aydınlatması (Zigbee)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Güneş Enerjili Avlu Işığı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Bahçe Işığı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çim Işığı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "String Light",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -678,7 +678,7 @@
         "items": [
           {
             "n": "Uzaktan Kumanda",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -693,127 +693,127 @@
         "items": [
           {
             "n": "Çok Fonksiyonlu Sensör",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Sıcaklık ve Nem Sensörü",
-            "img": "temp-humidity.jpg"
+            "img": "generic-temp-humidity.png"
           },
           {
             "n": "Sıcaklık ve Nem Sensörü (BLE)",
-            "img": "temp-humidity.jpg"
+            "img": "generic-temp-humidity.png"
           },
           {
             "n": "Sıcaklık ve Nem Sensörü (Zigbee)",
-            "img": "temp-humidity.jpg"
+            "img": "generic-temp-humidity.png"
           },
           {
             "n": "Aydınlatma Sensörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Aydınlatma Sensörü (BLE)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Aydınlatma Sensörü (Zigbee)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Kapı ve Pencere Sensörü",
-            "img": "door-sensor.jpg"
+            "img": "security-door-sensor.png"
           },
           {
             "n": "Kapı ve Pencere Sensörü (Bluetooth)",
-            "img": "door-sensor.jpg"
+            "img": "security-door-sensor.png"
           },
           {
             "n": "Kapı ve Pencere Sensörü (ZigBee)",
-            "img": "door-sensor.jpg"
+            "img": "security-door-sensor.png"
           },
           {
             "n": "İnsan Vücudu Sensörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "İnsan Vücudu Sensörü (Bluetooth)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "İnsan Vücudu Sensörü (ZigBee)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "İnsan Varlığı Sensörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "İnsan Varlığı Sensörü (Bluetooth)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Su Basman Sensörü",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Su Basman Sensörü (Bluetooth)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Su Basman Sensörü (ZigBee)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Duman Dedektörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Duman Dedektörü (Bluetooth)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Duman Dedektörü (ZigBee)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Gaz Dedektörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Gaz Dedektörü (Bluetooth)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Gaz Dedektörü (ZigBee)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "CO Dedektörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Titreşim Sensörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Titreşim Sensörü (Bluetooth)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Titreşim Sensörü (ZigBee)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Acil Durum Düğmesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Acil Durum Düğmesi (Bluetooth)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Acil Durum Düğmesi (Zigbee)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -822,15 +822,15 @@
         "items": [
           {
             "n": "Hava Kalitesi Sensörü",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "PM2.5",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Toprak Sensörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           }
         ]
       },
@@ -839,15 +839,15 @@
         "items": [
           {
             "n": "Basınç Sensörü",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Basınç Sensörü (NB-IoT)",
-            "img": "motion-detector.jpg"
+            "img": "security-motion-sensor.png"
           },
           {
             "n": "Basınç Sensörü (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -856,7 +856,7 @@
         "items": [
           {
             "n": "Uçucu Organik Bileşik (VOC) Alarmı (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -865,11 +865,11 @@
         "items": [
           {
             "n": "Termal Alarm",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Termal Alarm (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -884,27 +884,27 @@
         "items": [
           {
             "n": "Taşınabilir Klima",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Taşınabilir Klima (Bluetooth)",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Klima",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Duvar Tipi Klima",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ayaklı Klima",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Pencere Tipi Klima",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -913,23 +913,23 @@
         "items": [
           {
             "n": "Su Isıtıcısı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hava Kaynaklı Su Isıtıcısı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Su Isıtıcısı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Su Isıtıcısı (Kazan Tipi)",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hot Water Circulation Pump",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -938,7 +938,7 @@
         "items": [
           {
             "n": "Kombi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -947,7 +947,7 @@
         "items": [
           {
             "n": "Akıllı Isı Pompası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -956,7 +956,7 @@
         "items": [
           {
             "n": "Çamaşır Makinesi",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -965,7 +965,7 @@
         "items": [
           {
             "n": "Çamaşır Kurutucu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -980,39 +980,39 @@
         "items": [
           {
             "n": "Elektirikli Soba",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektirikli Soba (Gateway)",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kalorifer Peteği",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Battaniye",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Şömine",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Süpürgelik Tipi Elektirikli Soba",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Alttan Isıtmalı Masa",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Fan",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Klima Fanı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1021,27 +1021,27 @@
         "items": [
           {
             "n": "Hava Temizleyici",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Nemlendirici",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hava Nemlendirici",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sterilizatör",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Nem Alma Cihazı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hava Kutusu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1050,31 +1050,31 @@
         "items": [
           {
             "n": "Akıllı Robot Süpürge",
-            "img": "vacuum.jpg"
+            "img": "generic-robot-vacuum.png"
           },
           {
             "n": "Akıllı Robot Süpürge (2.4GHz&5GHz)",
-            "img": "vacuum.jpg"
+            "img": "generic-robot-vacuum.png"
           },
           {
             "n": "Akıllı Robot Süpürge (Kamera)",
-            "img": "vacuum.jpg"
+            "img": "generic-robot-vacuum.png"
           },
           {
             "n": "Cam Temizlik Robotu",
-            "img": "vacuum.jpg"
+            "img": "generic-robot-vacuum.png"
           },
           {
             "n": "Çim Biçme Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Süpürge",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Robot pool cleaner",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1083,35 +1083,35 @@
         "items": [
           {
             "n": "Termostat",
-            "img": "thermostat.jpg"
+            "img": "generic-thermostat-c.png"
           },
           {
             "n": "Termostat (Gateway)",
-            "img": "thermostat.jpg"
+            "img": "generic-thermostat-c.png"
           },
           {
             "n": "Havalandırma Sistemi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Havalandırma Sistemi (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Termostatik Radyatör Vanası (TRV) (Gateway)",
-            "img": "thermostat.jpg"
+            "img": "generic-thermostat-c.png"
           },
           {
             "n": "Isıtma",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Havalandırma ve İklimlendirme (HVAC)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Termostatik Radyatör Vanası (TRV)",
-            "img": "thermostat.jpg"
+            "img": "generic-thermostat-c.png"
           }
         ]
       },
@@ -1120,31 +1120,31 @@
         "items": [
           {
             "n": "Perde",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Perde (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Perde Zincir Motoru",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Perde Motoru (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çamaşır Kurutma Askısı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çamaşır Kurutma Askısı (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Kapı Pencere Sensörü",
-            "img": "door-sensor.jpg"
+            "img": "security-door-sensor.png"
           }
         ]
       },
@@ -1153,51 +1153,51 @@
         "items": [
           {
             "n": "Evcil Hayvan Tasması",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akvaryum",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Balık Besleyici",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akvaryum Isıtıcı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Aquarium Pump",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Mikrodalga Fırın",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Bitki Büyütme Işığı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ayakkabı Sterilizatör Dolabı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ayakkabı Kutusu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Giysi Bakım Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Sinek Öldürücü",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Meteoroloji Saati",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1206,35 +1206,35 @@
         "items": [
           {
             "n": "Göğüs Pompası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Süt Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Biberon Isıtıcı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Süt Isıtıcısı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Mama Hazırlayıcı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sterilizatör Çelik Tencere",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sallanan Bebek Sandalyesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Beşik",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1243,55 +1243,55 @@
         "items": [
           {
             "n": "Akıllı Evcil Hayvan Besleme",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Pet Feeder (2.4GHz&5GHz)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Pet Feeder With Camera (2.4GHz&5GHz)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Evcil Hayvan Besleme (Kameralı)",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Evcil Hayvan Gıda Kovası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Evcil Hayvan Su Sebili",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kedi Kumu Kutusu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Evcil Hayvan Koku Giderici",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Evcil Hayvan Kurutma Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Evcil Hayvan Topu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Evcil Hayvan Evi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akvaryum Çoklu Prizi",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Evcil Hayvan Çantası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -1306,35 +1306,35 @@
         "items": [
           {
             "n": "Oven",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Entegre Mutfak",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Fırın",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Gazlı Soba",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sterilizatör Kabini",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Bulaşık Makinesi",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Davlumbaz&Aspiratör",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Buharlı Fırın",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1343,55 +1343,55 @@
         "items": [
           {
             "n": "Meyve Kurutma Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Buz Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sıcak Hava Fritözü",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Dondurma Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Yemek Pişirme Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Ocak",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Pilav Pişirme Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Soya Sütü Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Mutfak Robotu",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ekmek Yapma Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Vakumlu Pişirme Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Katı Meyve Presi ve Blender",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Meyve Sıkacağı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1400,23 +1400,23 @@
         "items": [
           {
             "n": "Su Arıtma Cihazı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Su Arıtma Cihazı (Gateway)",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çay Demleme Tezgahı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Smart Kettle",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kahve Makinesi",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1425,23 +1425,23 @@
         "items": [
           {
             "n": "Gıda Termometresi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sebze Yıkama Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Şarap Dolabı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çöp Öğütücü",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Çöp Tenekesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -1456,55 +1456,55 @@
         "items": [
           {
             "n": "Hassas Mutfak Terazisi",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektronik Akıllı Tartı",
-            "img": "smart_scale.jpg"
+            "img": "generic-smart-scale.png"
           },
           {
             "n": "Akıllı İp Atlama",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Halter",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Badminton Raketi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Egzersiz Tekerleği",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Tenis Raketi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hula Hoop Çember",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Direnç Bandı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Bilek Güçlendirme Topu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Koşu Bandı",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kürek Çekme Aleti",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Dikey Kondisyon Bisikleti",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1513,19 +1513,19 @@
         "items": [
           {
             "n": "Saat/Bileklik",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Temassız Ateş Ölçer",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Tansiyon Aleti",
-            "img": "smart_scale.jpg"
+            "img": "generic-smart-scale.png"
           },
           {
             "n": "Oksimetre",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1534,35 +1534,35 @@
         "items": [
           {
             "n": "Uyku Butonu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Çalar Saat",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Beyaz Dinlenme Işığı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Uyku İzleme Bandı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Yastık",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Yatak",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Yatak (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Bebek Bakım Monitörü",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1571,23 +1571,23 @@
         "items": [
           {
             "n": "Diş Fırçası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kulak Kiri Çıkarma Otoskopu (Kameralı)",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Akıllı Yüz Temizleyici",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Yüz Buhar Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Saç kurutma makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1596,27 +1596,27 @@
         "items": [
           {
             "n": "Masaj Koltuğu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ayak Küveti",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Kanepe",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Egzersiz Aynası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Fizyoterapi Cihazı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Bardak",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -1631,63 +1631,63 @@
         "items": [
           {
             "n": "Akıllı Kamera (Wi-Fi)",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Akıllı Kamera (2.4GHz&5GHz)",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Akıllı Kamera (Bluetooth)",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Indoor PTZ Camera",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "PTZ Camera",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "4G Kamera",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Kameralı Kapı Zili",
-            "img": "door_lock.jpg"
+            "img": "security-keypad-lock.png"
           },
           {
             "n": "Akıllı Kapı Zili",
-            "img": "door_lock.jpg"
+            "img": "security-keypad-lock.png"
           },
           {
             "n": "Akıllı Kapı Zili (2.4GHz&5GHz)",
-            "img": "door_lock.jpg"
+            "img": "security-keypad-lock.png"
           },
           {
             "n": "Kamera Lambası",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           },
           {
             "n": "Video Baz istasyonu (2.4GHz&5GHz)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ağ Video Kaydedici (NVR)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Dijital Kayıt Cihazı (DVR)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Bird Feeder",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Mobile Camera",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1696,15 +1696,15 @@
         "items": [
           {
             "n": "Kapı Kilidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kapı Kilidi (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kapı Kilidi (NB-IoT)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1713,7 +1713,7 @@
         "items": [
           {
             "n": "Video Kilidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1722,19 +1722,19 @@
         "items": [
           {
             "n": "Dolap Kilidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Asma Kilit",
-            "img": "door_lock.jpg"
+            "img": "security-keypad-lock.png"
           },
           {
             "n": "U Tipi Kilit",
-            "img": "door_lock.jpg"
+            "img": "security-keypad-lock.png"
           },
           {
             "n": "Anahtar Kutusu",
-            "img": "light-switch.jpg"
+            "img": "control-single-wall-switch.png"
           }
         ]
       },
@@ -1743,7 +1743,7 @@
         "items": [
           {
             "n": "Kasa",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1752,7 +1752,7 @@
         "items": [
           {
             "n": "Akıllı Turnike",
-            "img": "door_lock.jpg"
+            "img": "security-keypad-lock.png"
           }
         ]
       },
@@ -1761,15 +1761,15 @@
         "items": [
           {
             "n": "Smart Door",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Smart Gating (Wi-Fi)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Smart Gating (Bluetooth)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -1784,51 +1784,51 @@
         "items": [
           {
             "n": "Kablosuz Ağ Geçidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kablolu Ağ Geçidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çoklu Ağ Geçidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çok Fonksiyonlu Ağ Geçidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kablolu&Kablosuz Ağ Geçidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Ağ Geçidi Prizi",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Çok Modlu Ağ Geçidi (BLE+ZigBee)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Çok Modlu Mühendislik Ağ Geçidi (BLE+ZigBee)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı ZigBee Ağ Geçidi Pro",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "4G çok modlu geçit (BLE+ZigBee)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Birleşik Ağ Geçidi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kablolu&Kablosuz Ağ Geçidi (ZigBee+PLC)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1837,7 +1837,7 @@
         "items": [
           {
             "n": "Yönlendirici",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1846,11 +1846,11 @@
         "items": [
           {
             "n": "Yoğunlaştırıcı (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Menzil Arttırıcı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -1865,23 +1865,23 @@
         "items": [
           {
             "n": "GPS Vehicle Tracker (LTE Cat.1)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hırsız Alarmı (Bluetooth)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hırsız Alarmı (GPRS)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "İzleyici (NB-IoT)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "İzleyici (GPRS)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1890,7 +1890,7 @@
         "items": [
           {
             "n": "Araç İçi Kamera (ekranlı) (Wi-Fi)",
-            "img": "camera.jpg"
+            "img": "security-indoor-camera.png"
           }
         ]
       },
@@ -1899,7 +1899,7 @@
         "items": [
           {
             "n": "4G Camera",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1908,43 +1908,43 @@
         "items": [
           {
             "n": "Scooter",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Kaykay (Hoverboard)",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Elektrikli Araç (Bluetooth)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Elektrikli Araç (Bluetooth Tarama Kodu)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Elektrikli Araç (GPRS)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Bisiklet (Bluetooth)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Electric Bicycle (Cat.1)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akülü Tekerlekli Sandalye",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Helmet",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Hava Kompresörü",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -1959,19 +1959,19 @@
         "items": [
           {
             "n": "Devre kesici",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "devre kesici (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Devre kesici (4G)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Devre kesici (NB-IoT)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -1980,19 +1980,19 @@
         "items": [
           {
             "n": "Akıllı Elektrik Sayacı (NB-IoT)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Elektrik Sayacı",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Elektrik Sayacı (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Elektrik Sayacı (4G)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           }
         ]
       },
@@ -2001,7 +2001,7 @@
         "items": [
           {
             "n": "Energy Mate",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2010,7 +2010,7 @@
         "items": [
           {
             "n": "Taşınabilir Güç İstasyonu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2019,23 +2019,23 @@
         "items": [
           {
             "n": "Akıllı Su Sayacı",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Su Sayacı (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Su Sayacı (NB-IoT)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Su Sayacı (4G)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Su Sayacı (GPRS)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           }
         ]
       },
@@ -2044,11 +2044,11 @@
         "items": [
           {
             "n": "İki Tekerlekli Araç Şarj İstasyonu (4G)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "İki Tekerlekli Araç Şarj İstasyonu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2057,11 +2057,11 @@
         "items": [
           {
             "n": "Elektrikli Araç Şarj İstasyonu (4G)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Elektrikli Araç Şarj İstasyonu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2070,19 +2070,19 @@
         "items": [
           {
             "n": "Akıllı Gaz Sayacı",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Gaz Sayacı (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Gaz Sayacı (4G)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           },
           {
             "n": "Akıllı Gaz Sayacı (NB-IoT)",
-            "img": "smart_plug.jpg"
+            "img": "generic-smart-plug.png"
           }
         ]
       },
@@ -2091,7 +2091,7 @@
         "items": [
           {
             "n": "İnvertör",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2100,7 +2100,7 @@
         "items": [
           {
             "n": "Güç Transformatörleri",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -2115,11 +2115,11 @@
         "items": [
           {
             "n": "Televizyon",
-            "img": "smart_appliance.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Bulut Fotoğraf Çerçevesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2128,11 +2128,11 @@
         "items": [
           {
             "n": "Grafik yazıcı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "3D yazıcı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2141,7 +2141,7 @@
         "items": [
           {
             "n": "Earphone",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2150,11 +2150,11 @@
         "items": [
           {
             "n": "12x48",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "5x36",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2163,11 +2163,11 @@
         "items": [
           {
             "n": "Hikaye Makinesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Kitap Okuyucu",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2176,7 +2176,7 @@
         "items": [
           {
             "n": "Amplifier",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -2191,7 +2191,7 @@
         "items": [
           {
             "n": "Bitki İzleyici",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2200,11 +2200,11 @@
         "items": [
           {
             "n": "Su Vanası Kumandası",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Su Vanası Kumandası (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       },
@@ -2213,11 +2213,11 @@
         "items": [
           {
             "n": "Sulama Fiskiyesi",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Sulama Fiskiyesi (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -2232,35 +2232,35 @@
         "items": [
           {
             "n": "Konnektör",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Evrensel Kumanda",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Diğer",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Diğer (NB-IoT)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Diğer Cihazlar (Gateway)",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Akıllı Hoparlör",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Mini Lift",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           },
           {
             "n": "Konferans Rezervasyon Ekranı",
-            "img": "smart_hub.jpg"
+            "img": "generic-smart-hub.png"
           }
         ]
       }
@@ -2700,7 +2700,8 @@
     }
 
     function makePairedEntry(s, found) {
-      const entry = { id: 'catalog-' + encodeURIComponent(s.safeName), name: s.safeName, icon: 'cpu', room: 'Ana sayfaya bağlı' };
+      // Katalogdan eklenen cihaz henüz gerçekten bağlanmadı; bağlantı (host) yoksa "bağlı" denmez.
+      const entry = { id: 'catalog-' + encodeURIComponent(s.safeName), name: s.safeName, icon: 'cpu', room: 'Katalog · bağlı değil' };
       entry.protocol = s.resolved.protocol;
       entry.brand = s.resolved.brand;
       entry.caps = s.resolved.caps;
@@ -2779,13 +2780,6 @@
           if (!s.found && !taken[host] && catalogMatches(info, resolved, safeName)) { s.found = info; s.stop = true; }
         },
       }).catch(function () {}).then(function () { clearTimeout(limit); finishSearch(); });
-    }
-
-    function addSearchedDeviceAnyway() {
-      const s = _search;
-      if (!s) { hideOverlay(); return; }
-      savePairedEntry(makePairedEntry(s, null));
-      navigateAfterPair();
     }
 
     function cancelDeviceSearch() {

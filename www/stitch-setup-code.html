@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -273,7 +273,7 @@
   <div class="phone">
 
     <div class="topbar">
-      <button class="back-btn" aria-label="Geri" onclick="event.preventDefault(); window.history.back();">
+      <button class="back-btn" aria-label="Geri" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M15 18l-6-6 6-6"/>
         </svg>

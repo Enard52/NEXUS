@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -42,7 +42,7 @@
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
@@ -65,25 +65,10 @@
 <!-- Tab: Uyarılar (gerçek veri: nexusEvents) -->
 <section class="space-y-3" id="tab-alerts"></section>
 <!-- Tab: Aile -->
-<section class="hidden" id="tab-family">
-<div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">
-<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-4 menu-container-shadow">
-<i class="w-8 h-8" data-lucide="users"></i>
-</div>
-<p class="text-slate-400 font-medium">Yakında geliyor</p>
-<p class="text-xs text-slate-300 mt-2">Aile mesajlaşma özelliği</p>
-</div>
-</section>
-<!-- Tab: Duyurular (gerçek veri yok: dürüst boş durum) -->
-<section class="hidden" id="tab-notices">
-<div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">
-<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-4 menu-container-shadow">
-<i class="w-8 h-8" data-lucide="megaphone"></i>
-</div>
-<p class="text-slate-400 font-medium">Yakında geliyor</p>
-<p class="text-xs text-slate-300 mt-2">Sistem duyuruları</p>
-</div>
-</section>
+<!-- Aile: evdeki üyeler (yerel ev verisi). Üyeler arası mesajlaşma sunucu gerektirdiğinden burada yok. -->
+<section class="hidden" id="tab-family"></section>
+<!-- Duyurular: gerçek sistem bilgisi (kurulu sürüm, güncelleme durumu). -->
+<section class="hidden" id="tab-notices"></section>
 </main>
 <!-- END: MainContent -->
 <script data-purpose="message-interactions">
@@ -172,7 +157,55 @@
       if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
     }
 
+    /* ---------- Aile: evdeki üyeler (yerel nexusHousehold) ---------- */
+    function renderFamily() {
+      var box = document.getElementById('tab-family');
+      var homes = null;
+      try { homes = JSON.parse(nexusGetItem('nexusHousehold') || 'null'); } catch (err) { homes = null; }
+      var home = Array.isArray(homes) && homes.length ? homes[0] : null;
+      var members = home && Array.isArray(home.members) ? home.members : [];
+      var head = '<a href="stitch-household.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
+        '<span class="font-bold text-slate-800">Aile ve evi yönet</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+      if (!members.length) {
+        box.innerHTML = head + '<p class="text-sm text-slate-500 text-center pt-10">Henüz aile üyesi eklenmedi.</p>';
+      } else {
+        box.innerHTML = head + members.map(function (m) {
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 mb-3">' +
+            '<h2 class="font-bold text-slate-800">' + esc(m.name || 'Üye') + '</h2>' +
+            '<p class="text-sm text-slate-500 mt-1">' + esc(m.role || '') + (m.email ? ' · ' + esc(m.email) : '') + '</p></article>';
+        }).join('') +
+          '<p class="text-xs text-slate-400 text-center pt-4">Üyeler arası mesajlaşma henüz yok; üyeleri ve izinlerini Aile ekranından yönetebilirsin.</p>';
+      }
+    }
+
+    /* ---------- Duyurular: gerçek sistem bilgisi ---------- */
+    function renderNotices() {
+      var box = document.getElementById('tab-notices');
+      var desk = window.nexusDesktop;
+      var infoP = desk && desk.info ? desk.info() : Promise.resolve(null);
+      var stateP = desk && desk.updates && desk.updates.getState ? desk.updates.getState() : Promise.resolve(null);
+      Promise.all([infoP, stateP]).then(function (r) {
+        var info = r[0], st = r[1], items = [];
+        if (st && st.state === 'available') items.push({ t: 'Yeni sürüm bulundu: NEXUS ' + (st.availableVersion || ''), d: 'Ayarlar → Masaüstü Uygulaması bölümünden indirebilirsin.' });
+        if (st && st.state === 'downloading') items.push({ t: 'Yeni sürüm indiriliyor', d: 'İndirme %' + (st.progress || 0) + ' tamamlandı.' });
+        if (st && st.state === 'ready') items.push({ t: 'Güncelleme hazır: NEXUS ' + (st.availableVersion || ''), d: 'Yeniden başlatınca kurulur.' });
+        if (info && info.version) items.push({ t: 'Kurulu sürüm: NEXUS ' + info.version, d: 'Masaüstü uygulaması' });
+        if (!items.length) {
+          box.innerHTML = '<div class="flex flex-col items-center justify-center pt-20 text-center"><p class="text-slate-400 font-medium">Şu an duyuru yok</p></div>';
+          return;
+        }
+        box.innerHTML = items.map(function (it) {
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 mb-3"><h2 class="font-bold text-slate-800">' + esc(it.t) + '</h2>' +
+            '<p class="text-sm text-slate-500 mt-1">' + esc(it.d) + '</p></article>';
+        }).join('');
+      }).catch(function () {
+        box.innerHTML = '<div class="flex flex-col items-center justify-center pt-20 text-center"><p class="text-slate-400 font-medium">Şu an duyuru yok</p></div>';
+      });
+    }
+
     renderAlerts();
+    renderFamily();
+    renderNotices();
     // Kısa bir gecikmeyle okundu işaretle: kullanıcı yeni bildirimleri gördü sayılır
     setTimeout(markViewedAsRead, 1200);
   </script>

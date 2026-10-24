@@ -21,6 +21,7 @@
 <script src="supported-devices.js"></script>
 <script src="lan-connectors.js"></script>
 <script src="device-controls.js"></script>
+<script src="nexus-dialog.js"></script>
 </head>
 <body class="text-slate-900 dark:text-slate-100">
   <div class="min-h-screen flex flex-col">
@@ -208,7 +209,12 @@
     document.getElementById('check-all-btn').addEventListener('click', function () {
       const devices = getRealDevices();
       if (!devices.length) {
-        showUpdatesToast('Önce en az bir cihaz eklemelisin');
+        window.nexusDialog({
+          title: 'Cihaz gerekli',
+          message: 'Güncellemeleri kontrol etmek için önce bir cihaz eklemelisin.',
+          primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'stitch-pair.html'; } },
+          secondary: { label: 'Vazgeç' }
+        });
         return;
       }
       showUpdatesToast(devices.length + ' cihaz kontrol ediliyor…');

@@ -54,8 +54,9 @@
     var renaming = false;
 
     function goBack() {
-      if (document.referrer && document.referrer.indexOf(location.host) !== -1 && history.length > 1) history.back();
-      else location.href = "stitch-panels.html";
+      // Önceki sayfaya dön (masaüstü uygulamasında referrer boş olduğundan referrer'a bakmıyoruz); geçmiş yoksa ana sayfa.
+      if (history.length > 1) history.back();
+      else location.href = "stitch-home.html";
     }
 
     function current() {

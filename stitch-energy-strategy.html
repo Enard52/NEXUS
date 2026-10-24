@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -53,7 +53,7 @@
 <body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
 <header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); window.history.back();">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
 <!-- MiniApp capsule: more menu + close -->

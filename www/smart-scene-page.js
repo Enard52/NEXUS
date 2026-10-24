@@ -28,7 +28,9 @@
       if (!el) return;
       el.addEventListener('click', function (event) {
         event.preventDefault();
-        window.history.back();
+        // Önceki sayfaya dön; geçmiş yoksa (doğrudan açılmış sayfa) ekranın ana sayfasına git.
+        if (window.history.length > 1) window.history.back();
+        else window.location.href = backHref;
       });
     });
   }
@@ -136,8 +138,15 @@
   function runThisScene(navigateAfter, button) {
     if (running) return;
     if (!checkRequiredDevices()) {
-      showToast('Bu senaryoyu kullanmak için uyumlu cihaz eklemelisin.');
-      setTimeout(function () { window.location.href = 'stitch-pair.html'; }, 1500);
+      // Cihaz yoksa kullanıcıya seçim bırak: cihaz ekle ya da vazgeç (kendiliğinden yönlendirme yok).
+      var dialogOpts = {
+        title: 'Cihaz gerekli',
+        message: 'Bu senaryoyu kullanmak için uyumlu bir cihaz eklemelisin.',
+        primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'stitch-pair.html'; } },
+        secondary: { label: 'Vazgeç' }
+      };
+      if (window.nexusDialog) window.nexusDialog(dialogOpts);
+      else showToast(dialogOpts.message);
       return;
     }
     running = true;

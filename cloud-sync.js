@@ -253,6 +253,26 @@
       });
   }
 
+  // Bağlanmamış katalog cihazı (ağda bağlanmadı, host yok) eklenmiş cihaz sayılmaz; senkronize edilmez.
+  function isUnconnected(d) {
+    return !!d && !d.host && /^catalog-/.test(String(d.id || ""));
+  }
+
+  // Upsert yalnızca yazar; bu yüzden bulutta kalmış bağlanmamış kayıtları ayrıca siler.
+  function removeRemoteDevices(ids) {
+    if (!ids.length || !enabled()) return Promise.resolve();
+    return session().then(function (current) {
+      if (!current) return;
+      return authHeader().then(function (headers) {
+        var list = ids.map(function (id) { return encodeURIComponent(id); }).join(",");
+        return api("/rest/v1/nexus_devices?user_id=eq." + encodeURIComponent(current.userId) + "&id=in.(" + list + ")", {
+          method: "DELETE",
+          headers: headers,
+        });
+      });
+    });
+  }
+
   function syncNow() {
     var store = window.nexusGetItem ? window.nexusGetItem(DEVICE_KEY) : localStorage.getItem(DEVICE_KEY);
     var local = [];
@@ -262,12 +282,19 @@
       local = [];
     }
     var ensured = ensureDeviceIds(local);
-    if (ensured.changed && window.nexusSetItem) window.nexusSetItem(DEVICE_KEY, JSON.stringify(ensured.devices));
+    var localConnected = ensured.devices.filter(function (d) { return !isUnconnected(d); });
+    if ((ensured.changed || localConnected.length !== ensured.devices.length) && window.nexusSetItem) {
+      window.nexusSetItem(DEVICE_KEY, JSON.stringify(localConnected));
+    }
 
     return pullDevices().then(function (remote) {
-      var merged = mergeDevices(ensured.devices, remote);
+      var staleIds = remote.filter(isUnconnected).map(function (d) { return d.id; });
+      var remoteConnected = remote.filter(function (d) { return !isUnconnected(d); });
+      var merged = mergeDevices(localConnected, remoteConnected);
       if (window.nexusSetItem) window.nexusSetItem(DEVICE_KEY, JSON.stringify(merged));
-      return pushDevices(merged).then(function (result) {
+      return removeRemoteDevices(staleIds).then(function () {
+        return pushDevices(merged);
+      }).then(function (result) {
         return { count: merged.length, pushed: result.pushed, remoteCount: remote.length };
       });
     });

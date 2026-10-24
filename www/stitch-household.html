@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -37,7 +37,7 @@
 </head>
 <body class="text-slate-900 dark:text-slate-50">
   <header class="pt-14 pb-4 px-5 flex items-center relative">
-    <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 dark:text-slate-200" href="#" onclick="event.preventDefault(); window.history.back();">
+    <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 dark:text-slate-200" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
       <i class="w-7 h-7" data-lucide="chevron-left"></i>
     </a>
     <h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">Ev Yönetimi</h1>

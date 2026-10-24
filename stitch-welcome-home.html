@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="tr"><head>
+<!DOCTYPE html><html lang="tr"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NEXUS - Eve Geldim</title>
@@ -35,13 +35,13 @@
     }
   </style>
 <script src="auth.js"></script>
-  <script src="theme.js"></script><script src="smart-scene-page.js"></script></head>
+  <script src="theme.js"></script><script src="nexus-dialog.js"></script><script src="smart-scene-page.js"></script></head>
 <body data-scene-page="welcome-home" data-scene-title="Eve Geldim" data-back-href="stitch-home.html" data-complete-href="stitch-home.html">
   <div class="w-full h-screen flex flex-col bg-welcome-gradient text-slate-900 transition-colors duration-500" data-sd-id="1">
 
     <!-- Header -->
     <header class="shrink-0 pt-14 px-5 pb-4 flex items-center justify-between" data-sd-id="2">
-      <a href="stitch-smart.html" id="back-link" aria-label="Geri" class="p-1 -ml-1 text-slate-800 dark:text-slate-100 tap-scale transition-all" data-sd-id="3" onclick="event.preventDefault(); window.history.back();">
+      <a href="stitch-smart.html" id="back-link" aria-label="Geri" class="p-1 -ml-1 text-slate-800 dark:text-slate-100 tap-scale transition-all" data-sd-id="3" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold tracking-tight text-slate-800 dark:text-slate-100" data-sd-id="4">Senaryo Hazırlığı</h1>

@@ -33,8 +33,7 @@
     { group: "", items: [
       ["home", "Ev", "stitch-home.html", "home"],
       ["smart", "Akıllı", "stitch-smart.html", "layout-grid"],
-      ["discover", "Keşfet", "stitch-discover.html", "compass"],
-      ["panels", "Kontrol Panelleri", "stitch-panels.html", "sliders-horizontal"]
+      ["discover", "Keşfet", "stitch-discover.html", "compass"]
     ] },
     { group: "Ev", items: [
       ["pair", "Cihaz Ekle", "stitch-pair.html", "circle-plus"],
@@ -98,7 +97,7 @@
     var html = '<a href="stitch-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
       '<span class="nx-side-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
       "<span>NEXUS</span></a>" +
-      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico"><i data-lucide="sparkles"></i></span><span class="nx-side-ai-txt">NEXUS AI\'a sor</span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
+      '<button type="button" id="nx-side-upd" class="nx-side-upd" hidden><span class="nx-side-upd-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span><span class="nx-side-upd-txt"></span></button>' +
       '<nav class="nx-side-nav" aria-label="Ana menü">' +
       NAV.map(function (g) {
         return (g.group ? '<p class="nx-side-group">' + esc(g.group) + "</p>" : "") + g.items.map(function (it) {
@@ -107,6 +106,7 @@
             '<i data-lucide="' + it[3] + '"></i><span>' + esc(it[1]) + "</span></a>";
         }).join("");
       }).join("") + "</nav>" +
+      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#3F6FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nx-side-ai-txt"><b>NEXUS AI\'a sor</b><small>Sor · kontrol et</small></span><span class="nx-side-ai-dot" aria-hidden="true"></span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
       '<div class="nx-side-foot">' +
       '<a href="stitch-profile.html" class="nx-side-user"><span class="nx-side-avatar">' + esc(initials || "M") + '</span><span class="min-w-0"><b>' + esc(name) + '</b><small>Profili görüntüle</small></span></a>' +
       '<button type="button" class="nx-side-theme" id="nx-side-theme" aria-label="Temayı değiştir" title="Temayı değiştir"><i data-lucide="' + (dark ? "sun" : "moon") + '"></i></button>' +
@@ -131,6 +131,34 @@
       if (window.lucide) lucide.createIcons();
     });
     if (window.lucide) lucide.createIcons();
+    wireSideUpdate();
+  }
+
+  // Güncelleme bulununca menüde hızlı indirme/kurma butonu. Yalnızca masaüstü uygulamasında çalışır.
+  function wireSideUpdate() {
+    var api = window.nexusDesktop && window.nexusDesktop.updates;
+    var btn = document.getElementById("nx-side-upd");
+    if (!api || !btn) return;
+    var T = window.nexusT || function (tr) { return tr; };
+    var label = btn.querySelector(".nx-side-upd-txt");
+    var current = null;
+    function render(st) {
+      if (!st) return;
+      current = st;
+      var v = st.availableVersion ? " " + st.availableVersion : "";
+      btn.hidden = !(st.state === "available" || st.state === "downloading" || st.state === "ready");
+      btn.disabled = st.state === "downloading";
+      if (st.state === "available") label.textContent = T("Güncelleme indir" + v, "Download update" + v);
+      else if (st.state === "downloading") label.textContent = T("İndiriliyor %" + (st.progress || 0), "Downloading " + (st.progress || 0) + "%");
+      else if (st.state === "ready") label.textContent = T("Kur ve yeniden başlat", "Install and restart");
+    }
+    btn.addEventListener("click", function () {
+      if (!current) return;
+      if (current.state === "available") api.download();
+      else if (current.state === "ready") api.install();
+    });
+    api.onState(render);
+    if (api.getState) api.getState().then(render);
   }
 
   // Sabit konumlu öğeleri masaüstü düzenine göre sınıflandır
@@ -164,6 +192,32 @@
       if (getComputedStyle(el).position === "fixed") return;
       el.classList.add("nx-desk-col");
     });
+    stickyHeader();
+  }
+
+  // Masaüstünde üst başlık ve hemen altındaki sekme çubuğu kaydırmada yerinde kalır (sticky).
+  // Sekme çubuğu, başlığın yüksekliği kadar aşağıdan yapışır.
+  function stickyHeader() {
+    var header = document.querySelector("body > header.nx-desk-col");
+    if (!header) return;
+    if (!isDesk()) return;
+    var pageBg = getComputedStyle(document.body).backgroundColor;
+    if (pageBg === "rgba(0, 0, 0, 0)") pageBg = document.documentElement.classList.contains("dark") ? "#0f172a" : "#F3F2F9";
+    header.style.position = "sticky";
+    header.style.top = "0";
+    header.style.zIndex = "30";
+    if (getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)") header.style.background = pageBg;
+    // Sekme çubuğu: başlıktan sonra gelen ilk sabit olmayan NAV (alt gezinme sabit olduğu için atlanır)
+    var tabs = null;
+    for (var s = header.nextElementSibling; s; s = s.nextElementSibling) {
+      if (s.tagName === "NAV" && getComputedStyle(s).position !== "fixed") { tabs = s; break; }
+    }
+    if (tabs && tabs.classList.contains("nx-desk-col")) {
+      tabs.style.position = "sticky";
+      tabs.style.top = header.offsetHeight + "px";
+      tabs.style.zIndex = "29";
+      tabs.style.background = pageBg;
+    }
   }
 
   // Telefon tasarımında arka plan çoğu sayfada en dıştaki sarmalayıcıdadır; masaüstünde

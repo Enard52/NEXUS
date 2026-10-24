@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -30,7 +30,7 @@
 <body class="text-slate-900 flex flex-col">
   <!-- Premium Header -->
   <header class="pt-12 pb-4 px-5 flex items-center justify-between sticky top-0 z-50 bg-[#F9FAFB]">
-    <button onclick="window.history.back()" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform">
+    <button onclick="history.length > 1 ? history.back() : (location.href = 'stitch-home.html')" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform">
       <i class="w-7 h-7" data-lucide="chevron-left"></i>
     </button>
     <h1 class="text-lg font-bold tracking-tight text-slate-900 absolute left-1/2 -translate-x-1/2">Siri Kısayolları</h1>

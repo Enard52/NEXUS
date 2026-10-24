@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -37,7 +37,7 @@
 <body class="bg-gradient-custom dark:bg-slate-900 text-slate-900 dark:text-white dark:text-white min-h-screen flex flex-col">
 <!-- BEGIN: Header -->
 <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="stitch-profile.html" onclick="event.preventDefault(); window.history.back();">
+<a aria-label="Geri" class="p-1 -ml-1" href="stitch-profile.html" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
 <i class="w-7 h-7 text-slate-700 dark:text-white" data-lucide="chevron-left"></i>
 </a>
 <h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">SSS ve Geri Bildirim</h1>

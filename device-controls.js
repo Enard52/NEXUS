@@ -8,6 +8,21 @@
   var IMAGE_VERSION = "20261023-products-8";
 
   var IMAGE_RENAMES = {
+    // Eski katalog JPG'leri (düz mavi arka planlı) şeffaf PNG ürün görselleriyle değiştirildi; kayıtlı cihazlar da düzelsin.
+    "camera.jpg": "security-indoor-camera.png",
+    "dimmer.jpg": "control-dimmer-knob.png",
+    "door_lock.jpg": "security-keypad-lock.png",
+    "door-sensor.jpg": "security-door-sensor.png",
+    "light-switch.jpg": "control-single-wall-switch.png",
+    "motion-detector.jpg": "security-motion-sensor.png",
+    "smart_appliance.jpg": "generic-smart-hub.png",
+    "smart_bulb.jpg": "generic-led-bulb.png",
+    "smart_hub.jpg": "generic-smart-hub.png",
+    "smart_plug.jpg": "generic-smart-plug.png",
+    "smart_scale.jpg": "generic-smart-scale.png",
+    "temp-humidity.jpg": "generic-temp-humidity.png",
+    "thermostat.jpg": "generic-thermostat-c.png",
+    "vacuum.jpg": "generic-robot-vacuum.png",
     "generic-thermostat.png": "generic-thermostat-c.png",
     "health-toothbrush.png": "health-toothbrush-v2.png",
     "sport-wrist-ball.png": "sport-wrist-ball-v3.png",
@@ -218,6 +233,8 @@
   // Kısa durum metni + rozet tonu
   function statusOf(device, index) {
     if (index != null && LAN_ONLINE[index] === false) return { text: "Ulaşılamıyor", badge: "warn" };
+    // Katalogdan eklenmiş ama ağda bağlanmamış cihaz: "Bağlı" yazmak yanlış bilgi olur.
+    if (device && !device.host && /^(catalog-|paired-)/.test(String(device.id || ""))) return { text: "Eşleşme bekleniyor", badge: "warn" };
     var kind = kindOf(device);
     var st = stateOf(device);
     var on = st.switch === true;
