@@ -956,7 +956,8 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         <div class="section-head center reveal community-intro">
           <span class="section-kicker">Early access</span>
           <h2 class="section-heading">New, honest, and shaped by its first homes.</h2>
-          <p class="section-copy">NEXUS is in early access, so there are no ratings or reviews to show yet — we would rather earn them. Tell us which device you want supported next and we will prioritise it.</p>
+          <p class="section-copy">NEXUS is in early access, so there are no ratings or reviews to show yet — we would rather earn them. Tell us which device you want supported next and we will prioritise it.</p>
+
         </div>
       </div>
     </section>

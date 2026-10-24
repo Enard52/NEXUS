@@ -155,7 +155,7 @@ export function demoSeo(themeColor: string): SeoConfig {
       "routines",
     ],
     themeColor,
-    robots: "index,follow",
+    robots: "index,follow",
   };
 }
 
