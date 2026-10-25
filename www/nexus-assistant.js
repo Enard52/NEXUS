@@ -1,4 +1,4 @@
-/**
+﻿/**
  * NEXUS AI — çevrimdışı komut asistanı (Türkçe + İngilizce).
  * Yalnızca gerçekten yapabildiğini söyler: komutlar device-controls.js (NX) üzerinden
  * eşleşmiş cihazlara uygulanır; yerel ağ cihazlarına gerçek komut gider.
@@ -278,8 +278,26 @@
       return { reply: msg + lanNote(rs), widget: widget(turnOn ? "power" : "power-off", turnOn ? T("Açıldı", "Turned on") : T("Kapatıldı", "Turned off"), T(rs.changed.length + " cihaz", rs.changed.length + " device" + (rs.changed.length > 1 ? "s" : ""))) };
     }
 
-    return { reply: T("Bunu tam anlayamadım. ", "I didn't quite get that. ") + help() };
+    return { reply: T("Bunu tam anlayamadım. ", "I didn't quite get that. ") + help(), unknown: true };
   }
 
-  window.nexusAssistant = { reply: reply, help: help, fold: fold };
+    var AI_URL = "https://nexus-ai.ensarharmanci52.workers.dev";
+  var hist = [];
+  // Komut eşleşmediğinde gerçek yapay zekâya sor (cihaz adı/türü/odası bağlam olarak gider). Hata olursa null döner.
+  function ask(raw) {
+    var lang = (window.nexusLang === "tr" || (!window.nexusLang && /^tr/i.test(navigator.language || ""))) ? "tr" : "en";
+    var devs = [];
+    try { devs = devices().map(function (d) { return { name: String(d.name || ""), type: String(d.type || d.kind || ""), room: String(d.room || "") }; }); } catch (e) {}
+    hist.push({ role: "user", content: String(raw).slice(0, 600) });
+    hist = hist.slice(-8);
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
+    return fetch(AI_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ lang: lang, messages: hist, devices: devs }), signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { clearTimeout(timer); var t = j && j.reply ? String(j.reply).trim() : ""; if (t) { hist.push({ role: "assistant", content: t }); hist = hist.slice(-8); return t; } return null; })
+      .catch(function () { clearTimeout(timer); return null; });
+  }
+
+  window.nexusAssistant = { reply: reply, help: help, fold: fold, ask: ask };
 })();
+

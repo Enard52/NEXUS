@@ -422,9 +422,8 @@
     messages.appendChild(aiProcessing);
     scrollToBottom();
 
-    setTimeout(() => {
-      messages.removeChild(aiProcessing);
-      var r = buildReply(text);
+    function finishReply(r) {
+      if (aiProcessing.parentNode) aiProcessing.parentNode.removeChild(aiProcessing);
       var aiText = r.reply;
 
       // Parse Action Tags
@@ -501,7 +500,13 @@
       if (additionalWidget && typeof lucide !== 'undefined') {
           lucide.createIcons(); // re-init icons for the new widgets
       }
-    }, 1500);
+    }
+    setTimeout(function () {
+      var r = buildReply(text);
+      if (r.unknown && window.nexusAssistant && window.nexusAssistant.ask) {
+        window.nexusAssistant.ask(text).then(function (ai) { if (ai) r.reply = ai; finishReply(r); });
+      } else { finishReply(r); }
+    }, 700);
   }
 
   function toggleAttachMenu(forceState) {
@@ -655,4 +660,5 @@
   </script>
 </body>
 </html>
+
 
