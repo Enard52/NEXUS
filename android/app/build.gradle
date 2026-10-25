@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+// Release imzası: anahtar dosyası depoda tutulmaz. Varsayılan konum ~/NEXUS-signing/keystore.properties
+// (ya da NEXUS_KEYSTORE_PROPS ortam değişkeni). Dosya yoksa release derlemesi imzasız kalır.
+def nexusKsFile = file(System.getenv("NEXUS_KEYSTORE_PROPS") ?: "${System.getProperty('user.home')}/NEXUS-signing/keystore.properties")
+def nexusKs = new Properties()
+if (nexusKsFile.exists()) { nexusKsFile.withInputStream { nexusKs.load(it) } }
+
 android {
     namespace = "com.nexus.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -16,8 +22,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (nexusKsFile.exists()) {
+                storeFile file(nexusKs['storeFile'])
+                storePassword nexusKs['storePassword']
+                keyAlias nexusKs['keyAlias']
+                keyPassword nexusKs['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
+            if (nexusKsFile.exists()) { signingConfig signingConfigs.release }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

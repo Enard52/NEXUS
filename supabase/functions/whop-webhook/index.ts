@@ -1,4 +1,4 @@
-// Whop ödeme webhook'u -> nexus_entitlements (NEXUS+ abonelik durumu).
+﻿// Whop ödeme webhook'u -> nexus_entitlements (NEXUS+ abonelik durumu).
 // Kimlik doğrulama JWT ile değil, Whop'un imzasıyla yapılır (Standard Webhooks: HMAC-SHA256).
 // Gerekli sır: WHOP_WEBHOOK_SECRET (Supabase > Edge Functions > Secrets). SUPABASE_URL ve
 // SUPABASE_SERVICE_ROLE_KEY platform tarafından otomatik sağlanır.
@@ -82,6 +82,18 @@ async function rest(path: string, init: RequestInit): Promise<Response> {
   });
 }
 
+// Discord bildirimi (isteğe bağlı): adres yalnızca DISCORD_WEBHOOK_URL ortam değişkeninden okunur; e-posta maskelenir.
+function mask(email: string): string {
+  const [u, d] = email.split("@");
+  if (!u || !d) return "?";
+  return `${u.slice(0, 2)}***@${d}`;
+}
+async function notify(text: string): Promise<void> {
+  const hook = Deno.env.get("DISCORD_WEBHOOK_URL");
+  if (!hook) return;
+  try { await fetch(hook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: "NEXUS", content: text }) }); } catch { /* bildirim başarısızsa ödeme işlenmesini etkilemesin */ }
+}
+
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("method not allowed", { status: 405 });
   const secret = Deno.env.get("WHOP_WEBHOOK_SECRET");
@@ -106,6 +118,7 @@ Deno.serve(async (req) => {
     const row = { email: p.email, plan: def.plan, currency: def.currency, status: "active", cancel_at_period_end: p.cancel ?? false, whop_membership_id: p.membershipId || null, whop_plan_id: p.planId, period_end: p.periodEnd, updated_at: new Date().toISOString() };
     const res = await rest("nexus_entitlements?on_conflict=email", { method: "POST", headers: { Prefer: "resolution=merge-duplicates" }, body: JSON.stringify(row) });
     if (!res.ok) return new Response("db error", { status: 500 });
+    await notify(`💳 NEXUS+ ${type.includes("payment") ? "ödeme alındı" : "üyelik başladı"}: ${def.plan} · ${def.currency} · ${mask(p.email)}`);
     return Response.json({ ok: true, active: p.email, plan: def.plan, currency: def.currency });
   }
 
@@ -117,5 +130,7 @@ Deno.serve(async (req) => {
     : { cancel_at_period_end: p.cancel ?? true, updated_at: new Date().toISOString() };
   const res = await rest(`nexus_entitlements?${filter}`, { method: "PATCH", body: JSON.stringify(patch) });
   if (!res.ok) return new Response("db error", { status: 500 });
+  await notify(deactivates ? `⚠️ NEXUS+ üyelik sona erdi: ${p.email ? mask(p.email) : p.membershipId}` : `ℹ️ NEXUS+ iptal talebi (dönem sonunda biter): ${p.email ? mask(p.email) : p.membershipId}`);
   return Response.json({ ok: true, updated: type });
 });
+

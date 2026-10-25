@@ -1,4 +1,4 @@
-// Fiyat bölümünü gerçek NEXUS+ planına (Whop) göre günceller. Idempotent.
+﻿// Fiyat bölümünü gerçek NEXUS+ planına (Whop) göre günceller. Idempotent.
 // Kullanım: node scripts/site-pricing.cjs <index.html, tr/index.html, light.html, tr/light.html içeren klasör>
 const fs = require("fs");
 const path = require("path");
@@ -138,23 +138,23 @@ const T = {
 
 const FREE_FAMILY = {
   en: {
-    free: ["Unlimited connected devices", "Scenes, automations and NEXUS AI chat (30 credits a day)", "Homes, rooms and household members with per-member permissions", "100% local device control", "Windows and Linux apps, Android test build"],
+    free: ["Unlimited connected devices", "Scenes, automations and NEXUS AI chat (30 credits a day)", "Homes, rooms and household members with per-member permissions", "100% local device control", "Windows, Linux and Android apps"],
     family: ["Everything in NEXUS+", "One subscription shared by up to 6 household members (coming soon)", "Shared NEXUS AI credits for the household (coming soon)", "Per-member permissions: already free in the app"],
   },
   tr: {
-    free: ["Sınırsız bağlı cihaz", "Senaryolar, otomasyonlar ve NEXUS AI sohbeti (günde 30 kredi)", "Evler, odalar ve üye başına izinli ev üyeleri", "%100 yerel cihaz kontrolü", "Windows ve Linux uygulamaları, Android test sürümü"],
+    free: ["Sınırsız bağlı cihaz", "Senaryolar, otomasyonlar ve NEXUS AI sohbeti (günde 30 kredi)", "Evler, odalar ve üye başına izinli ev üyeleri", "%100 yerel cihaz kontrolü", "Windows, Linux ve Android uygulamaları"],
     family: ["NEXUS+'taki her şey", "6 ev üyesine kadar tek abonelik (yakında)", "Ev için ortak NEXUS AI kredisi (yakında)", "Üye başına izinler: uygulamada şimdiden ücretsiz"],
   },
 };
 
 const PLANS_V2 = {
   en: {
-    free: { stat: ["NEXUS AI credits", "30 / day"], items: ["Unlimited connected devices, controlled on your own network", "Scenes, schedules and automations", "NEXUS AI assistant for device commands", "Homes, rooms, household members and per-member permissions", "Energy overview and device dashboards", "Optional free account to sync settings across devices", "Windows and Linux apps, Android test build"] },
+    free: { stat: ["NEXUS AI credits", "30 / day"], items: ["Unlimited connected devices, controlled on your own network", "Scenes, schedules and automations", "NEXUS AI assistant for device commands", "Homes, rooms, household members and per-member permissions", "Energy overview and device dashboards", "Optional free account to sync settings across devices", "Windows, Linux and Android apps"] },
     premium: { stat: ["NEXUS AI credits", "2,000 / month"], desc: "A much larger monthly NEXUS AI allowance for your home, and first access to new NEXUS AI features.", items: ["2,000 NEXUS AI credits every month (Free: 30 per day)", "New NEXUS AI features reach NEXUS+ members first", "One subscription, valid on all your devices", "Free trial included, cancel anytime"] },
     family: { stat: ["Household members", "Up to 6 · coming soon"], items: ["Everything in NEXUS+", "One subscription shared by up to 6 household members (coming soon)", "Shared NEXUS AI credits for the household (coming soon)", "Per-member permissions: already free in the app"] },
   },
   tr: {
-    free: { stat: ["NEXUS AI kredisi", "günde 30"], items: ["Kendi ağında kontrol edilen sınırsız bağlı cihaz", "Senaryolar, programlar ve otomasyonlar", "Cihaz komutları için NEXUS AI asistanı", "Evler, odalar, ev üyeleri ve üye başına izinler", "Enerji özeti ve cihaz panelleri", "Ayarları cihazlar arasında eşitleyen isteğe bağlı ücretsiz hesap", "Windows ve Linux uygulamaları, Android test sürümü"] },
+    free: { stat: ["NEXUS AI kredisi", "günde 30"], items: ["Kendi ağında kontrol edilen sınırsız bağlı cihaz", "Senaryolar, programlar ve otomasyonlar", "Cihaz komutları için NEXUS AI asistanı", "Evler, odalar, ev üyeleri ve üye başına izinler", "Enerji özeti ve cihaz panelleri", "Ayarları cihazlar arasında eşitleyen isteğe bağlı ücretsiz hesap", "Windows, Linux ve Android uygulamaları"] },
     premium: { stat: ["NEXUS AI kredisi", "ayda 2.000"], desc: "Evin için çok daha büyük bir aylık NEXUS AI hakkı ve yeni NEXUS AI özelliklerine ilk erişim.", items: ["Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)", "Yeni NEXUS AI özellikleri önce NEXUS+ üyelerine açılır", "Tek abonelik, tüm cihazlarında geçerli", "Ücretsiz deneme dahil, istediğin zaman iptal"] },
     family: { stat: ["Ev üyeleri", "6'ya kadar · yakında"], items: ["NEXUS+'taki her şey", "6 ev üyesine kadar tek abonelik (yakında)", "Ev için ortak NEXUS AI kredisi (yakında)", "Üye başına izinler: uygulamada şimdiden ücretsiz"] },
   },
@@ -223,3 +223,4 @@ for (const f of ["index.html", "tr/index.html", "light.html", "tr/light.html"]) 
   console.log("ok", f);
 }
 console.log("pricing updated:", n);
+
