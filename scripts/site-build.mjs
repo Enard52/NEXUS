@@ -1704,7 +1704,7 @@ function renderHero(c, hasShots) {
           ${shots.map((s, i) => `<button role="tab" class="phone-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0 ? 'true' : 'false'}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
         </div>
         <span class="phone-tap-hint" id="phoneTapHint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
-        <span class="phone-tap-hint" id="phonePreviewNote" hidden>${icon('sparkles')}${isTr ? 'Bu gerçek uygulamadır — veriler cihazında kalır, hesap gerekmez' : 'This is the real app — data stays on your device, no account needed'}</span>
+        <span class="phone-tap-hint" id="phonePreviewNote" hidden>${icon('sparkles')}${isTr ? 'Bu gerçek uygulama — bu tarayıcıda giriş yaptıysan kendi verilerin görünür' : 'This is the real app — sign in here and your own data shows up'}</span>
       </div>
     </div>`
         : ''

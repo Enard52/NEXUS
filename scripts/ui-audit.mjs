@@ -270,19 +270,84 @@ const MEASURE = () => {
   out.svgCount = document.querySelectorAll("svg").length;
 
   // 6) Küçük dokunma hedefi (mobil/tablet)
+  //    Ölçülen PARMAĞIN GERÇEK İSABET ALANI, görünen kutu değil. nexus-ui.css'teki
+  //    .nx-tap / .nx-tap-t sınıfları tasarımı bozmadan ::after ile dokunma kutusunu
+  //    büyütüyor; getBoundingClientRect() bunu görmez, bu yüzden etrafındaki öğeleri
+  //    yutmadığı sürece hedef yeterlidir. Doğrulama: merkezden dışa nokta atışı yapıp
+  //    o noktada taramanın (elementFromPoint) hâlâ BU öğede kaldığını kontrol ederiz.
+  //    Üstüne başka bir öğe biniyorsa taşma sayılmaz — denetim gerçek davranışı ölçür.
+  //    Ayrıca hedef, eylemi KENDİSİ yapmayan bir öğe olabilir (ör. tetikleyici readonly
+  //    alan, üstünde onclick olan hap kutunun içindedir): parmak hapın herhangi bir
+  //    yerine bastığında eylemi ata yürütür. Bu yüzden eylemsiz öğede en yakın
+  //    eylemli atayı ölçeriz — kullanıcı için dokunma bölgesi odur.
+  //    İki sınır: 24px = WCAG 2.2 AA (SC 2.5.8) ZORUNLU, 32px = parmak için rahat sınır.
   out.tinyTargets = [];
   if (window.matchMedia("(pointer: coarse)").matches) {
+    const DIRS = { sol: [-1, 0], sag: [1, 0], ust: [0, -1], alt: [0, 1] };
+    // 1px adımla ve 0.5px içeriden bakılır: piksel sınırında isabet testi tanımsızdır,
+    // yoksa tam 24px/32px olan hedef 23px/30px ölçülüp yanlış alarm üretir.
+    const ownsAt = (el, x, y) => {
+      const hit = document.elementFromPoint(x, y);
+      return !!hit && (hit === el || el.contains(hit));
+    };
+    const hitBox = (el, r) => {
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      // Merkez görünür alanda değilse isabet ölçülemez: görünen kutu raporlanır.
+      if (cx < 1 || cy < 1 || cx > vw - 1 || cy > vh - 1) return { w: r.width, h: r.height };
+      const half = { sol: r.width / 2, sag: r.width / 2, ust: r.height / 2, alt: r.height / 2 };
+      for (const [k, [dx, dy]] of Object.entries(DIRS)) {
+        let d = half[k];
+        while (d + 1 <= 40 && ownsAt(el, cx + dx * (d + 0.5), cy + dy * (d + 0.5))) d += 1;
+        half[k] = d;
+      }
+      return { w: half.sol + half.sag, h: half.ust + half.alt };
+    };
+    // Kendi dokunuşuna tepki veren öğe mi? (readonly alan yazı yazdırmaz, eylemsizdir)
+    const selfAction = (el) => {
+      if (el.onclick || el.getAttribute("onclick")) return true;
+      if (el.getAttribute("role") === "button") return true;
+      const t = el.tagName;
+      if (t === "BUTTON" || t === "SELECT" || t === "TEXTAREA" || t === "PROGRESS") return !el.disabled;
+      if (t === "A") return !!el.getAttribute("href");
+      if (t === "INPUT") return !el.readOnly && !el.disabled && el.type !== "hidden";
+      return false;
+    };
+    const actionAncestor = (el) => {
+      let p = el.parentElement;
+      while (p) {
+        if (p.onclick || p.getAttribute("onclick") || p.getAttribute("role") === "button") return p;
+        p = p.parentElement;
+      }
+      return null;
+    };
+    const seen = new Set();
     for (const el of document.querySelectorAll("a, button, input, select, textarea, [role='button'], [onclick]")) {
       if (!visible(el)) continue;
-      const r = rect(el);
       const s = cs(el);
       if (s.pointerEvents === "none") continue;
-      if (r.top > vh || r.bottom < 0) continue;              // ekran dışı (kaydırınca gelir)
-      if (r.width <= 2 && r.height <= 2) continue;           // görsel olarak gizli switch/radio girişi (görünür hedef etikettir)
-      if (r.height < 32 || r.width < 32) {
-        out.tinyTargets.push({ ...desc(el), w: Math.round(r.width), h: Math.round(r.height) });
-        if (out.tinyTargets.length >= 12) break;
-      }
+      const r0 = rect(el);
+      if (r0.top > vh || r0.bottom < 0) continue;            // ekran dışı (kaydırınca gelir)
+      if (r0.width <= 2 && r0.height <= 2) continue;         // görsel olarak gizli switch/radio girişi (görünür hedef etikettir)
+      const ctl = selfAction(el) ? el : actionAncestor(el);
+      if (!ctl) continue;                                     // dokunulsa hiçbir şey olmayan öğe: hedef büyüklüğü anlamı yok
+      if (seen.has(ctl)) continue;                            // aynı kabın birçok çocuğu: tek ölçüm
+      seen.add(ctl);
+      const r = rect(ctl);
+      if (r.width <= 2 || r.height <= 2) continue;            // display:contents gibi ölçülemez kapsayıcı
+      if (r.width >= 32 && r.height >= 32) continue;          // görünen kutu zaten yeterli: ek ölçüm gerekmez
+      const hit = hitBox(ctl, r);
+      if (hit.h >= 32 && hit.w >= 32) continue;               // ::after/ataya taşan kutu yeterli
+      out.tinyTargets.push({
+        ...desc(ctl),
+        w: Math.round(hit.w),
+        h: Math.round(hit.h),
+        visW: Math.round(r.width),
+        visH: Math.round(r.height),
+        level: hit.w < 24 || hit.h < 24 ? "aa" : "konfor",
+        via: ctl === el ? "" : `${el.tagName.toLowerCase()}${el.id ? "#" + el.id : ""} adına ölçüldü`,
+      });
+      if (out.tinyTargets.length >= 12) break;
     }
   }
 

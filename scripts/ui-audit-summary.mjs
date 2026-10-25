@@ -57,7 +57,8 @@ for (const r of R) {
   if ((m.clipped || []).length) buckets.clipped.push(`${tag}: kesik metin → ${(m.clipped || []).map((c) => `"${c.txt}" ${c.kind} +${Math.round(c.over)}px${c.ellipsis ? " (ellipsis)" : ""}`).slice(0, 4).join(" | ")}`);
   if ((m.brokenImg || []).length) buckets.brokenAsset.push(`${tag}: kırık görsel → ${(m.brokenImg || []).map((b) => b.src).slice(0, 4).join(", ")}`);
   if (m.unresolvedIcons > 0) buckets.icons.push(`${tag}: ${m.unresolvedIcons} lucide ikonu çözümlenmemiş (ham <i data-lucide>)`);
-  if ((m.tinyTargets || []).length) buckets.tinyTarget.push(`${tag}: küçük dokunma hedefi → ${(m.tinyTargets || []).map((t) => `${t.tag}${t.id ? "#" + t.id : ""} "${t.txt}" ${t.w}×${t.h}`).slice(0, 4).join(" | ")}`);
+  const tt = (m.tinyTargets || []).map((t) => `${t.tag}${t.id ? "#" + t.id : ""} "${t.txt}" isabet ${t.w}×${t.h}${t.visW !== t.w || t.visH !== t.h ? ` (görünen ${t.visW}×${t.visH})` : ""}${t.level === "aa" ? " [AA ALTINDA]" : ""}`);
+  if (tt.length) buckets.tinyTarget.push(`${tag}: küçük dokunma hedefi → ${tt.slice(0, 4).join(" | ")}`);
   if ((m.tinyFont || []).length) buckets.tinyFont.push(`${tag}: çok küçük yazı → ${(m.tinyFont || []).map((t) => `"${t.txt}" ${t.fs}px`).slice(0, 4).join(" | ")}`);
   if ((m.overlap || []).length) buckets.overlap.push(`${tag}: üst üste binen metin → ${(m.overlap || []).map((o) => `"${o.a.txt}" × "${o.b.txt}" %${o.pct}`).slice(0, 3).join(" | ")}`);
   if (m.bodyTextLen !== undefined && m.bodyTextLen < 25) buckets.empty.push(`${tag}: sayfa neredeyse boş (${m.bodyTextLen} karakter metin)`);
@@ -83,7 +84,7 @@ const TITLES = {
   brokenAsset: "I) KIRIK GÖRSEL",
   icons: "J) ÇÖZÜMLENMEMİŞ İKON",
   netFail: "K) BAŞARISIZ İSTEK (yerel dosya 404 vb.)",
-  tinyTarget: "L) KÜÇÜK DOKUNMA HEDEFİ (<32px)",
+  tinyTarget: "L) KÜÇÜK DOKUNMA HEDEFİ (gerçek isabet alanı <32px; AA sınırı 24px)",
   tinyFont: "M) ÇOK KÜÇÜK YAZI (<10.5px)",
   empty: "N) BOŞ EKRAN",
   cls: "O) YÜKSEK CLS",
@@ -105,6 +106,22 @@ for (const k of Object.keys(TITLES)) {
   lines.push("");
 }
 lines.push(`TOPLAM BULGU KAYDI: ${total}`);
+
+/* KALICI KAPI — WCAG 2.2 AA (SC 2.5.8): 24px altında GERÇEK dokunma hedefi bırakılamaz.
+   Ölçüm isabet alanıdır (::after taşması ve eylemi yürüten ata kapsayıcı dahil), bu
+   yüzden "görünen kutu küçük" tek başına ihlal sayılmaz; 24–31px arası konfor uyarısıdır.
+   AA altı kayıt varsa betik 1 ile çıkar → pnpm audit:all durur, düzeltme unutulamaz. */
+const aaTargets = [];
+for (const r of R) {
+  for (const t of (r.metrics || {}).tinyTargets || []) {
+    if (t.level !== "aa") continue;
+    aaTargets.push(`${r.page} · ${PLABEL[r.profile]} · ${SLABEL[r.state]}: ${t.tag}${t.id ? "#" + t.id : ""} "${t.txt}" isabet ${t.w}×${t.h} (görünen ${t.visW}×${t.visH})`);
+  }
+}
+const uniq = [...new Set(aaTargets.map((x) => x.split(": ")[1]))];
+lines.push("");
+lines.push(`AA ALTINDA DOKUNMA HEDEFİ: ${uniq.length} kontrol${uniq.length ? " → " + uniq.join(" | ") : " (yok)"}`);
+if (uniq.length) process.exitCode = 1;
 const out = lines.join("\n");
 console.log(out);
 await (await import("node:fs/promises")).writeFile(join(ROOT, DIR, "summary.txt"), out);

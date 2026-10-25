@@ -135,7 +135,7 @@
         '<span class="flex items-center gap-1.5 mt-1 min-w-0"><span class="nx-badge ' + status.badge + '">' + esc(status.text) + "</span>" +
         (d.room ? '<span class="text-xs text-slate-500 truncate dark:text-slate-300">' + esc(d.room) + "</span>" : "") + "</span></span></a>" +
         quick +
-        '<a href="' + NX.deviceUrl(i) + '" class="shrink-0 text-slate-400 -mr-1" aria-hidden="true" tabindex="-1"><i data-lucide="chevron-right" class="w-5 h-5"></i></a>' +
+        '<a href="' + NX.deviceUrl(i) + '" class="shrink-0 text-slate-400 -mr-1 nx-tap" aria-hidden="true" tabindex="-1"><i data-lucide="chevron-right" class="w-5 h-5"></i></a>' +
         (NX.LAN_ERRORS[i] ? "" : "") + "</div>" +
         (NX.LAN_ERRORS[i] ? '<p class="px-2 text-xs font-semibold text-rose-500">' + esc(NX.LAN_ERRORS[i]) + "</p>" : "");
     }

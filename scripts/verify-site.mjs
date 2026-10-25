@@ -262,7 +262,7 @@ for (const [file, cur, saveText] of [
     if (!existsSync(dir)) continue;
     const known = new Set(srcPages.map((p) => p.name));
     const orphan = readdirSync(dir).filter((f) => f.endsWith(".png") && !known.has(f.replace(/\.png$/, "")));
-    check(`${dir.endsWith("en") ? "EN" : "TR"} shots: bayat görsil yok`, orphan.length === 0, orphan.join(","));
+    check(`${dir.endsWith("en") ? "EN" : "TR"} shots: bayat görsel yok`, orphan.length === 0, orphan.join(","));
   }
 
   // 3) Önizleme işareti: tembel iframe + mod düğmeleri + ölçekleme fonksiyonu.
@@ -283,6 +283,20 @@ for (const [file, cur, saveText] of [
     check(`${label}: "kendi dene" mod düğmesi kapalı başlıyor`, /id="phoneModeLive"[^>]*aria-pressed="false"/.test(html));
     check(`${label}: tam ekran bağlantısı APP_URL'e gidiyor`, /id="phoneModeOpen"[^>]*href="[^"]*"/.test(html) && html.includes(`href="${APP_URL}/"`));
     check(`${label}: önizleme CSS'i üretildi`, /.phone-preview\.on\{display:block\}/.test(html));
+    /* Önizleme notu ÖLÇÜLMÜŞ davranışı anlatmak zorunda. Kanıt: uygulamayı doğrudan
+       açan sekmede yazılan localStorage anahtarı, sitedeki çerçeveden okunabiliyor —
+       pages.dev kamuya açık etki alanı (public suffix) listesinde olmadığı için
+       nexus-web-jre.pages.dev ile nexus-smarthome.pages.dev AYNI site sayılır ve
+       Chrome depolamayı bölümlenmiş (partitioned) tutmuyor. Yani çerçeve, o tarayıcıda
+       giriş yapmış ziyaretçinin kendi verisini gösterir. "hesap gerekmez / veriler
+       cihazında kalır" bu yüzden YANLIŞTIR ve kapı bunu yasaklar. */
+    const note = /id="phonePreviewNote"[^>]*>([\s\S]{0,400}?)<\/span>/.exec(html);
+    check(`${label}: önizleme notu var`, !!note, "phonePreviewNote bulunamadı");
+    if (note) {
+      const txt = note[1].replace(/<[^>]*>/g, "");
+      check(`${label}: önizleme notu giriş yapınca kendi verisinin göründüğünü söylüyor`, /giriş yaptıysan|sign in here/i.test(txt), txt.slice(0, 90));
+      check(`${label}: önizleme notu ölçülmeyen gizlilik iddiası taşımıyor`, !/hesap gerekmez|veriler cihazında|no account needed|stays on your device/i.test(txt), txt.slice(0, 90));
+    }
   }
   if (existsSync(join(PUB, "assets", "site.js"))) {
     const js = readFileSync(join(PUB, "assets", "site.js"), "utf8");
@@ -850,6 +864,25 @@ for (const [label, url, lang, price, saveText] of [
     const renders = /NEXUS|Hoş geldin|Kayıt|Giriş|Ev\b/i.test(frameText);
     if (LIVE) {
       check("canlı: çerçevede gerçek uygulama arayüzü görünüyor", renders, frameText.slice(0, 60).replace(/\n/g, " · ") || "boş çerçeve");
+      /* Önizleme notunun dayanağı burada ÖLÇÜLÜR: çerçevede yazılan anahtar, aynı
+         tarayıcı bağlamında uygulamanın kendi sekmesinden okunabiliyorsa depolama
+         PAYLAŞILIYOR → giriş yapmış ziyaretçinin kendi verisi çerçevede görünür.
+         Chrome depolamayı bölümlerse (partition) kapı patlar ve metin değişmeli.
+         Taze Playwright profili kullanılıyor: gerçek bir kullanıcının verisine dokunulmaz. */
+      if (frame) {
+        let shared = false;
+        try {
+          await frame.evaluate(() => localStorage.setItem("nxVerifyShared", "from-frame"));
+          const probe = await ctx.newPage();
+          await probe.goto(`${APP_URL}/`, { waitUntil: "domcontentloaded" });
+          shared = (await probe.evaluate(() => localStorage.getItem("nxVerifyShared"))) === "from-frame";
+          await probe.evaluate(() => localStorage.removeItem("nxVerifyShared"));
+          await probe.close();
+        } catch (e) {
+          info("önizleme: depolama paylaşımı ölçülemedi — " + String(e && e.message).slice(0, 70));
+        }
+        check("canlı: çerçeve uygulamanın deposunu paylaşıyor (notun iddiası doğrulanıyor)", shared);
+      }
     } else {
       // CSP ihlali konsol mesajı yanıt olayından biraz sonra düşebiliyor: kısa yoklama.
       let blocked = false;
