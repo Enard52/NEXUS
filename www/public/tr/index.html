@@ -110,7 +110,7 @@ h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;background-cl
 .shot-tab[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff}
 
 /* bölümler */
-section{padding:72px 0}
+section{padding:72px 0}/*MOBILE-SECTION-SPACING*/@media(max-width:700px){section{padding:48px 0}}
 .sec-head{max-width:640px;margin-bottom:36px}
 h2{font-size:clamp(24px,4vw,36px);letter-spacing:-.02em;line-height:1.15;margin:0 0 12px;font-weight:800}
 .sec-head p{color:var(--text-2);margin:0}
@@ -226,7 +226,7 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
       <a href="#downloads">İndir</a>
       <a href="#faq">SSS</a>
     </nav>
-    <a class="btn btn-primary hd-cta" href="https://nexus-web-jre.pages.dev" style="min-height:40px;padding:0 18px;font-size:13.5px">Web uygulamasını aç</a>
+    
     <button class="theme-t" onclick="nxToggleTheme()" aria-label="Tema değiştir"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
     <a class="lang-t" href="/" hreflang="en">English</a>
   </div>
@@ -240,7 +240,7 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
       <p class="lead">Işıkların, iklimin, perdelerin ve sensörlerin tek uygulamada — cihazlarınla doğrudan, kendi ağın üzerinden konuşarak. Gerçekten çalışan otomasyonlar, gerçekten ölçülen enerji rakamları ve ev verin sende kalır, gizlilik varsayılan olarak gelir.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#downloads">NEXUS'u indir</a>
-        <a class="btn btn-ghost" href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Tarayıcıda aç</a>
+        
       </div>
       <p class="ver-chip"><span class="dot"></span>Güncel sürüm: <b data-nexus-ver>…</b></p>
       <div class="trust">
@@ -351,12 +351,8 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
         <div class="dl-meta"><span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><b data-nexus-ver>…</b></span></div>
         <span class="btn btn-primary">İndir</span>
       </a>
-      <div class="dl-web rv">
-        <div><h3>Web ve iOS (PWA)</h3><p>Kurulum yok — ya da tarayıcıdan ana ekrana ekleyerek uygulama deneyimi yaşa.</p></div>
-        <a class="btn btn-ghost" href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Web uygulamasını aç</a>
-      </div>
     </div>
-    <p class="dl-note">Windows imzasız kurulumlar için uyarı verebilir (“bilinmeyen yayıncı”). Dosya güvenlidir — sağlama değerlerine bak.</p>
+      <p class="dl-note">Windows imzasız kurulumlar için uyarı verebilir (“bilinmeyen yayıncı”). Dosya güvenlidir — sağlama değerlerine bak.</p>
   </div>
 </section>
 <section id="faq">
@@ -381,7 +377,7 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
         <p>Yerel-öncelikli akıllı ev, dürüstçe yapıldı.</p>
       </div>
       <div><h4>Ürün</h4><a href="#features">Özellikler</a><a href="#pricing">Fiyatlar</a><a href="#downloads">İndir</a><a href="#faq">SSS</a><a href="/about.html">Hakkında</a></div>
-      <div><h4>Hesap</h4><a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Web uygulamasını aç</a><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Aboneliği yönet</a></div>
+      <div><h4>Hesap</h4><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Aboneliği yönet</a></div>
       <div><h4>Yasal</h4><a href="/privacy.html">Gizlilik</a><a href="/terms.html">Şartlar</a><a href="/refund.html">İade</a></div>
       <div><h4>Proje</h4><a href="https://github.com/Enard52/NEXUS/issues" target="_blank" rel="noopener">Issue takibi</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Sürümler ve sağlama</a></div>
     </div>

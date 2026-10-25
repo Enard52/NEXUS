@@ -108,7 +108,7 @@ h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;background-cl
 .shot-tab[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff}
 
 /* bölümler */
-section{padding:72px 0}
+section{padding:72px 0}/*MOBILE-SECTION-SPACING*/@media(max-width:700px){section{padding:48px 0}}
 .sec-head{max-width:640px;margin-bottom:36px}
 h2{font-size:clamp(24px,4vw,36px);letter-spacing:-.02em;line-height:1.15;margin:0 0 12px;font-weight:800}
 .sec-head p{color:var(--text-2);margin:0}
@@ -224,7 +224,7 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
       <a href="#downloads">Download</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-primary hd-cta" href="https://nexus-web-jre.pages.dev" style="min-height:40px;padding:0 18px;font-size:13.5px">Open web app</a>
+    
     <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
     <a class="lang-t" href="/tr/" hreflang="tr">Türkçe</a>
   </div>
@@ -256,7 +256,7 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
         <p>Local-first smart home, honestly built.</p>
       </div>
       <div><h4>Product</h4><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#downloads">Download</a><a href="#faq">FAQ</a><a href="/about.html">About</a></div>
-      <div><h4>Account</h4><a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Open web app</a><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Manage subscription</a></div>
+      <div><h4>Account</h4><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Manage subscription</a></div>
       <div><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
       <div><h4>Project</h4><a href="https://github.com/Enard52/NEXUS/issues" target="_blank" rel="noopener">Issue tracker</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Releases &amp; checksums</a></div>
     </div>
