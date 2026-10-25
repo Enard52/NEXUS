@@ -5,7 +5,7 @@
 
 const EMAIL = "nexus.smarthome.app@gmail.com";
 const UPDATED = { tr: "Son güncelleme: 25 Ekim 2026", en: "Last updated: 25 October 2026" };
-const OPERATOR = { tr: "NEXUS (işletmeci: Ensar Harmancı)", en: "NEXUS (operator: Ensar Harmancı)" };
+const OPERATOR = { tr: "NEXUS", en: "NEXUS" };
 
 const privacy = {
   tr: {
