@@ -206,7 +206,8 @@
     document.getElementById('pa-sub').textContent = m.perMonthOfYear + m.perMonth;
     document.getElementById('pm-price').textContent = m['Aylık'];
     document.getElementById('pm-sub').textContent = m.perMonth;
-    document.getElementById('legal-line').textContent = tr
+    var legalEl = document.getElementById('legal-line');
+    if (legalEl) legalEl.textContent = tr
       ? '7 gün ücretsiz, sonra yılda yalnızca ' + m['Yıllık'] + '. İstediğiniz zaman iptal edin.'
       : '7 days free, then just ' + m['Yıllık'] + ' per year. Cancel anytime.';
   }
@@ -214,6 +215,11 @@
   // Initialize selected plan on page load
   applyPrices();
   selectPlan(selectedPlan);
+  // #legal-line footer'ı bu inline script'ten SONRA parse edilir. Guard sayesinde yüklemeyi
+  // patlatmıyoruz; DOMContentLoaded'da bir kez daha çağırıp yasal satırı doğru fiyatla dolduruyoruz.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyPrices);
+  }
 
   function selectPlan(plan) {
     selectedPlan = plan;

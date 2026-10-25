@@ -22,8 +22,10 @@ export const PRICES = {
 
 export const APP_URL = "https://nexus-web-jre.pages.dev";
 export const RELEASES_URL = "https://github.com/Enard52/nexus-releases";
-export const ISSUES_URL = "https://github.com/Enard52/NEXUS/issues";
 export const MANAGE_URL = "https://whop.com/@me/settings/memberships/";
+export const BILLING_URL = "https://whop.com/@me/settings/billing/";
+export const SUPPORT_EMAIL = "mailto:nexus.smarthome.app@gmail.com";
+export const CONNECTOR_REQUEST_URL = "mailto:nexus.smarthome.app@gmail.com?subject=NEXUS%20Device%20Connector%20Request";
 
 const brand = {
   logoSvg: `<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -137,7 +139,7 @@ export const content = {
         ["TCP / UDP — desktop app", ["TP-Link Kasa", "Yeelight", "WiZ", "LIFX", "Govee LAN"]],
       ],
       more: "Something missing? Request a connector",
-      moreHref: ISSUES_URL,
+      moreHref: CONNECTOR_REQUEST_URL,
     },
     pricing: {
       heading: "Free to use. NEXUS+ when you want more.",
@@ -166,7 +168,7 @@ export const content = {
           features: [
             "Everything in Free tier included",
             "2,000 monthly NEXUS AI responses & automation creation",
-            "Priority Cloudflare Workers AI model access & low latency",
+            "Dedicated high-speed cloud AI engine & lowest latency",
             "Early access to new AI features & beta connectors",
             "Direct support for independent, ad-free development",
             "Priority VIP customer support & 3-day free trial",
@@ -267,11 +269,10 @@ export const content = {
       ],
       account: "Customer & Account",
       accountLinks: [
-        ["Manage Subscriptions & Billing", MANAGE_URL],
-        ["License Keys", MANAGE_URL],
-        ["Order & Invoice History", MANAGE_URL],
-        ["Customer & License Support", "https://github.com/Enard52/NEXUS/issues"],
-        ["Community & Discussions", "https://github.com/Enard52/NEXUS/discussions"],
+        ["Manage Subscriptions", MANAGE_URL],
+        ["Invoices & Billing History", BILLING_URL],
+        ["Customer & Technical Support", SUPPORT_EMAIL],
+        ["Release Notes & Community", RELEASES_URL],
       ],
       legal: "Legal",
       legalLinks: [
@@ -392,7 +393,7 @@ export const content = {
         ["TCP / UDP — masaüstü", ["TP-Link Kasa", "Yeelight", "WiZ", "LIFX", "Govee LAN"]],
       ],
       more: "Eksik bir şey mi var? Bağlayıcı iste",
-      moreHref: ISSUES_URL,
+      moreHref: CONNECTOR_REQUEST_URL,
     },
     pricing: {
       heading: "Ücretsiz kullan. Daha fazlasını istersen NEXUS+.",
@@ -421,7 +422,7 @@ export const content = {
           features: [
             "Ücretsiz plandaki tüm özellikler dahil",
             "Ayda 2.000 NEXUS AI yanıtı (Doğal dille senaryo ve kural üretimi)",
-            "Öncelikli Cloudflare Workers AI model erişimi ve düşük gecikme",
+            "Öncelikli gelişmiş bulut AI altyapısı ve en düşük gecikme",
             "Yeni AI yeteneklerine ve beta entegrasyonlara erken erişim",
             "Bağımsız, reklamsız ve açık standartlı gelişime doğrudan destek",
             "Öncelikli VIP e-posta destek hattı",
@@ -523,11 +524,10 @@ export const content = {
       ],
       account: "Müşteri & Hesap",
       accountLinks: [
-        ["Abonelik ve Fatura Yönetimi", MANAGE_URL],
-        ["Lisans Anahtarlarım", MANAGE_URL],
-        ["Satın Alma ve Fatura Geçmişi", MANAGE_URL],
-        ["Müşteri ve Lisans Desteği", "https://github.com/Enard52/NEXUS/issues"],
-        ["Topluluk ve Yardımlaşma", "https://github.com/Enard52/NEXUS/discussions"],
+        ["Abonelik Yönetimi", MANAGE_URL],
+        ["Fatura ve Ödeme Geçmişi", BILLING_URL],
+        ["Müşteri ve Teknik Destek", SUPPORT_EMAIL],
+        ["Sürüm Notları ve Topluluk", RELEASES_URL],
       ],
       legal: "Yasal",
       legalLinks: [

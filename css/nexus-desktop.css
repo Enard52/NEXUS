@@ -297,7 +297,14 @@ html.nx-desk [class*="aspect-[4/3]"] { aspect-ratio: auto !important; height: cl
 /* Boş durum kartları: sütunun ortasında, içeriği kadar yüksek */
 html.nx-desk[data-nx-page] main > .nx-empty--page { margin: 32px auto !important; grid-column: 1 / -1; }
 html.nx-desk[data-nx-page="multi-video"] main > *:only-child,
-html.nx-desk[data-nx-page="multi-video"] main > .nx-empty { grid-column: 1 / -1; }
+html.nx-desk[data-nx-page="multi-video"] main > .nx-empty,
+html.nx-desk[data-nx-page="multi-video"] main > p { grid-column: 1 / -1; }
+/* 231. satır main>* margin'ini sıfırladığı için kartın kendi "margin:auto" ortalaması
+   kayboluyordu → kart 1. sütuna sıkışıp sola yaslanıyordu. Burada geri veriyoruz. */
+html.nx-desk[data-nx-page="multi-video"] main > .nx-empty {
+  width: 100%; max-width: 420px; height: auto; align-self: start;
+  justify-self: center; margin: 24px auto !important;
+}
 html.nx-desk[data-nx-page="device"] #device-main > .nx-empty { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 32px auto !important; height: auto; align-self: start; }
 /* Alt eylem çubukları: şeritli düz zemin yerine buzlu cam */
 html.nx-desk:not(.nx-desk-auth) .nx-desk-bottom {
