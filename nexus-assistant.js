@@ -11,6 +11,8 @@
 (function () {
   var EN = window.nexusLang === "en";
   function T(tr, en) { return EN ? en : tr; }
+  // V: birden fazla doğal söyleyişten birini seçer (tekrar eden robot cümlesi olmasın).
+  function V(trs, ens) { var a = EN ? ens : trs; return a[Math.floor(Math.random() * a.length)]; }
 
   function fold(s) {
     return String(s || "").toLocaleLowerCase("tr-TR")
@@ -120,8 +122,8 @@
 
   function help() {
     return T(
-      "Şunları yapabilirim: ışıkları, prizleri, klimayı ya da belirli bir cihazı açıp kapatmak (\"salon ışıklarını kapat\"), parlaklık ayarlamak (\"ışıkları %40 yap\"), sıcaklık ayarlamak (\"klimayı 22 derece yap\"), perdeleri açıp kapatmak, kapıyı kilitlemek, senaryo çalıştırmak (\"günaydın\", \"film modu\", \"iyi geceler\", \"evden çıkıyorum\") ve neyin açık olduğunu söylemek (\"durum\").",
-      "Here's what I can do: turn lights, plugs, the AC or a specific device on and off (\"turn off the living room lights\"), set brightness (\"set the lights to 40%\"), set the temperature (\"set the AC to 22 degrees\"), open or close curtains, lock the door, run scenes (\"good morning\", \"movie mode\", \"good night\", \"I'm leaving\") and tell you what's on (\"status\").");
+      "Evini benimle yönetebilirsin: ışıkları, prizleri, klimayı ya da belirli bir cihazı açıp kapatırım (\"salon ışıklarını kapat\"), parlaklığı (\"ışıkları %40 yap\") ve sıcaklığı (\"klimayı 22 derece yap\") ayarlarım, perdeleri açıp kapatır, kapıyı kilitlerim. \"Günaydın\", \"film modu\", \"iyi geceler\" ya da \"evden çıkıyorum\" dersen senaryoyu çalıştırırım, \"durum\" yazarsan neyin açık olduğunu söylerim. İstersen sadece sohbet edebilir ya da NEXUS hakkında soru sorabilirsin.",
+      "You can run your home through me: I turn lights, plugs, the AC or a specific device on and off (\"turn off the living room lights\"), set brightness (\"set the lights to 40%\") and temperature (\"set the AC to 22 degrees\"), open and close curtains and lock the door. Say \"good morning\", \"movie mode\", \"good night\" or \"I'm leaving\" and I will run the scene, or write \"status\" to hear what is on. You can also just chat or ask me anything about NEXUS.");
   }
 
   function status(all) {
@@ -133,15 +135,15 @@
       if (st.badge === "on") on.push(d.name);
       if (st.badge === "warn") warn.push(d.name + " (" + (window.nexusTr ? nexusTr(st.text) : st.text) + ")");
     });
-    var parts = [T(all.length + " cihaz eşleşmiş.", all.length + " devices paired.")];
-    parts.push(on.length ? T("Açık olanlar: " + on.slice(0, 6).join(", ") + (on.length > 6 ? "…" : "") + ".", "On right now: " + on.slice(0, 6).join(", ") + (on.length > 6 ? "…" : "") + ".") : T("Şu an açık cihaz yok.", "Nothing is on right now."));
-    if (warn.length) parts.push(T("Dikkat: " + warn.slice(0, 4).join(", ") + ".", "Needs attention: " + warn.slice(0, 4).join(", ") + "."));
+    var parts = [T("Evinde " + all.length + " cihaz var.", "You have " + all.length + " device" + (all.length > 1 ? "s" : "") + " at home.")];
+    parts.push(on.length ? T("Şu an açık olanlar: " + on.slice(0, 6).join(", ") + (on.length > 6 ? " ve diğerleri" : "") + ".", "Right now these are on: " + on.slice(0, 6).join(", ") + (on.length > 6 ? " and a few more" : "") + ".") : T("Şu an hiçbiri açık değil, ev sakin.", "Nothing is on right now, the house is quiet."));
+    if (warn.length) parts.push(T("Dikkat etmen gerekenler: " + warn.slice(0, 4).join(", ") + ".", "These need your attention: " + warn.slice(0, 4).join(", ") + "."));
     return { reply: parts.join(" ") };
   }
 
   function noDevices() {
-    return T("Henüz eşleşmiş cihazın yok. Önce Cihaz Ekle ekranından yerel ağındaki bir cihazı ekle; sonra komutlarını buradan verebilirsin.",
-      "You don't have any paired devices yet. Add a device on your local network from the Add Device screen first, then you can control it from here.");
+    return T("Henüz bir cihazın yok gibi görünüyor. Cihaz Ekle ekranından yerel ağındaki bir cihazı eklersen, hemen buradan yönetebiliriz.",
+      "It looks like you do not have any devices yet. Add one from your local network on the Add Device screen and we can control it from here right away.");
   }
 
   // İngilizce oda adları → uygulamadaki (Türkçe) oda adları
@@ -158,19 +160,19 @@
     if (/\b(yardim|ne yapabilirsin|neler yapabilirsin|komutlar|help|what can you do|commands)\b/.test(text)) return { reply: help() };
 
     // Tema
-    if (/\b(karanlik tema|koyu tema|karanlik mod|koyu mod|dark mode|dark theme)\b/.test(text)) return { reply: T("Koyu temaya geçtim.", "Switched to the dark theme."), action: "dark" };
-    if (/\b(acik tema|aydinlik tema|acik mod|light mode|light theme)\b/.test(text)) return { reply: T("Açık temaya geçtim.", "Switched to the light theme."), action: "light" };
+    if (/\b(karanlik tema|koyu tema|karanlik mod|koyu mod|dark mode|dark theme)\b/.test(text)) return { reply: V(["Tamamdır, koyu temaya geçtim.", "Koyu tema açıldı, gözlerin rahat etsin.", "Oldu, koyu tema devrede."], ["Done, dark theme is on.", "Switched to dark mode, easier on the eyes.", "Dark theme is on."]), action: "dark" };
+    if (/\b(acik tema|aydinlik tema|acik mod|light mode|light theme)\b/.test(text)) return { reply: V(["Tamamdır, açık temaya geçtim.", "Açık tema devrede.", "Oldu, ortalık aydınlandı."], ["Done, light theme is on.", "Switched back to light mode.", "Light theme is on."]), action: "light" };
     // Rahatsız etme
     if (/\b(rahatsiz etme|do not disturb|dnd)\b/.test(text)) {
-      if (OFF.test(text) && !/bildirimleri kapat/.test(text)) return { reply: T("Rahatsız etme modunu kapattım.", "Do not disturb is off."), action: "dnd-off" };
-      return { reply: T("Rahatsız etme modunu açtım; bildirimler sessize alındı.", "Do not disturb is on; notifications are silenced."), action: "dnd-on" };
+      if (OFF.test(text) && !/bildirimleri kapat/.test(text)) return { reply: V(["Rahatsız etme modunu kapattım, bildirimler yeniden gelecek.", "Tamam, bildirimler tekrar açık."], ["Do not disturb is off, notifications are back.", "Okay, notifications are on again."]), action: "dnd-off" };
+      return { reply: V(["Rahatsız etme modunu açtım, bildirimleri sessize aldım.", "Tamam, seni rahatsız etmeyeceğim; bildirimler sessizde."], ["Do not disturb is on, I silenced your notifications.", "Okay, I will keep quiet; notifications are silenced."]), action: "dnd-on" };
     }
     // Durum
     if (/\b(durum|durumu|ne acik|neler acik|hangi cihazlar acik|akilli kontrol|status|what'?s on|whats on|which devices are on|smart control)\b/.test(text)) return status(all);
 
     // Senaryo oluşturma (mevcut akış korunur)
     var wantsCreate = /\b(olustur|kur|ekle|create|make|build|add)\b/.test(text) && /\b(senaryo|otomasyon|rutin|scenario|automation|routine)\b/.test(text);
-    if (wantsCreate) return { reply: T("İsteğine göre yeni bir senaryo hazırladım ve listene ekledim.", "I've prepared a new scenario based on your request and added it to your list."), action: "create" };
+    if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
 
     if (!N) return { reply: help() };
 
@@ -181,9 +183,9 @@
         var id = SCENE_WORDS[s][0];
         var r = N.runScene(id);
         var nm = SCENE_NAMES[id][EN ? 1 : 0];
-        if (!r.changed) return { reply: T(nm + " senaryosundan etkilenecek uygun cihaz bulunamadı.", "None of your devices are affected by the " + nm + " scene.") };
+        if (!r.changed) return { reply: V([nm + " için ayarlanabilecek bir cihaz bulamadım.", nm + " senaryosu şu an hiçbir cihazını etkilemiyor."], ["I could not find a device to adjust for " + nm + ".", "The " + nm + " scene does not affect any of your devices right now."]) };
         return {
-          reply: T(nm + " senaryosunu çalıştırdım: " + r.changed + " cihaz ayarlandı.", "Ran the " + nm + " scene: " + r.changed + " device" + (r.changed > 1 ? "s" : "") + " adjusted.") + lanNote(r),
+          reply: V(["Tamamdır, " + nm + " devrede; " + r.changed + " cihazı ayarladım.", nm + " senaryosunu çalıştırdım, " + r.changed + " cihaz hazır."], ["Done, " + nm + " is on; I adjusted " + r.changed + " device" + (r.changed > 1 ? "s" : "") + ".", "Ran " + nm + ", " + r.changed + " device" + (r.changed > 1 ? "s are" : " is") + " set."]) + lanNote(r),
           widget: widget("sparkles", nm, T(r.changed + " cihaz", r.changed + " device" + (r.changed > 1 ? "s" : "")))
         };
       }
@@ -197,61 +199,61 @@
 
     // Kilit: yalnızca kilitleme
     if (/\b(kilidi ac|kilidini ac|unlock)\b/.test(text)) {
-      return { reply: T("Güvenlik için kilidi sohbetten açmıyorum; kilidin kontrol ekranından açabilirsin.", "For safety I don't unlock doors from chat; you can unlock from the lock's control screen.") };
+      return { reply: V(["Güvenliğin için kilidi buradan açmıyorum; kilidin kontrol ekranından açabilirsin.", "Kapı kilitlerini sohbetten açmam, güvenlik için. Kilidin kendi ekranından açabilirsin."], ["For your safety I do not unlock doors from chat; you can do it from the lock's own screen.", "I will not unlock doors from chat, it is a safety thing. Use the lock's control screen instead."]) };
     }
     if (/\b(kilitle|kapiyi kilitle|lock)\b/.test(text) && !/\bunlock\b/.test(text)) {
       var locks = all.map(function (d, i) { return { device: d, index: i }; }).filter(function (x) { return N.kindOf(x.device) === "lock"; });
-      if (!locks.length) return { reply: T("Eşleşmiş akıllı kilit bulunamadı.", "No paired smart lock was found.") };
+      if (!locks.length) return { reply: V(["Henüz eşleştirdiğin bir akıllı kilit yok.", "Eşleşmiş bir akıllı kilit göremiyorum."], ["You have not paired a smart lock yet.", "I cannot see a paired smart lock."]) };
       var rl = apply(locks, "locked", true);
-      return { reply: T(rl.changed.length + " kilit kilitlendi: " + names(rl.changed) + ".", "Locked " + rl.changed.length + " lock" + (rl.changed.length > 1 ? "s" : "") + ": " + names(rl.changed) + ".") + lanNote(rl), widget: widget("lock", T("Kilitlendi", "Locked"), names(rl.changed)) };
+      return { reply: V([names(rl.changed) + " kilitlendi, içerisi güvende.", "Kilitledim: " + names(rl.changed) + "."], [names(rl.changed) + " locked, all secure.", "Locked: " + names(rl.changed) + "."]) + lanNote(rl), widget: widget("lock", T("Kilitlendi", "Locked"), names(rl.changed)) };
     }
 
     // Perde / panjur
     if (tg.cat === "cover" || (tg.by === "name" && tg.list.every(function (x) { return x.kind === "cover"; }))) {
       var covers = tg.list.filter(function (x) { return x.kind === "cover"; });
-      if (!covers.length) return { reply: T("Eşleşmiş perde ya da panjur bulunamadı.", "No paired curtains or blinds were found.") };
+      if (!covers.length) return { reply: V(["Eşleşmiş bir perde ya da panjur göremiyorum.", "Henüz eşleştirdiğin perde ya da panjur yok."], ["I cannot see any paired curtains or blinds.", "You have not paired any curtains or blinds yet."]) };
       var open = /\b(ac|open|raise|up)\b/.test(text) && !OFF.test(text);
       if (pct) {
         var p = Math.max(0, Math.min(100, +(pct[1] || pct[2])));
         var rp = apply(covers, "position", p);
-        return { reply: T(names(rp.changed) + " %" + p + " konumuna ayarlandı.", names(rp.changed) + " set to " + p + "%.") + lanNote(rp) };
+        return { reply: V([names(rp.changed) + " %" + p + " açıklığa getirildi.", "Tamam, " + names(rp.changed) + " %" + p + " konumunda."], [names(rp.changed) + " moved to " + p + "%.", "Okay, " + names(rp.changed) + " now at " + p + "%."]) + lanNote(rp) };
       }
       var rc = apply(covers, "coverAction", open ? "open" : "close");
-      return { reply: T(names(rc.changed) + (open ? " açıldı." : " kapatıldı."), names(rc.changed) + (open ? " opened." : " closed.")) + lanNote(rc) };
+      return { reply: V([names(rc.changed) + (open ? " açılıyor." : " kapanıyor."), "Tamam, " + names(rc.changed) + (open ? " açıldı." : " kapandı.")], [names(rc.changed) + (open ? " opening." : " closing."), "Okay, " + names(rc.changed) + (open ? " opened." : " closed.")]) + lanNote(rc) };
     }
 
     // Süpürge
     if (tg.cat === "vacuum" || (tg.by === "name" && tg.list.every(function (x) { return x.kind === "vacuum"; }))) {
       var vac = tg.list.filter(function (x) { return x.kind === "vacuum"; });
-      if (!vac.length) return { reply: T("Eşleşmiş robot süpürge bulunamadı.", "No paired robot vacuum was found.") };
+      if (!vac.length) return { reply: V(["Eşleşmiş bir robot süpürge göremiyorum.", "Henüz robot süpürge eşleştirmemişsin."], ["I cannot see a paired robot vacuum.", "You have not paired a robot vacuum yet."]) };
       var dock = /\b(sarj|istasyon|eve don|dock|return|stop|durdur)\b/.test(text);
       var rv = apply(vac, "mode", dock ? "docked" : "cleaning");
-      return { reply: T(names(rv.changed) + (dock ? " şarj istasyonuna gönderildi." : " temizliğe başladı."), names(rv.changed) + (dock ? " is returning to its dock." : " started cleaning.")) };
+      return { reply: V([names(rv.changed) + (dock ? " şarj istasyonuna dönüyor." : " temizliğe başladı, merak etme."), (dock ? "Tamam, " : "Hemen, ") + names(rv.changed) + (dock ? " şarja gidiyor." : " işe koyuldu.")], [names(rv.changed) + (dock ? " is heading back to its dock." : " started cleaning, no worries."), (dock ? "Okay, " : "On it, ") + names(rv.changed) + (dock ? " is going to charge." : " is getting to work.")]) };
     }
 
     // Sıcaklık
     if (deg || (tg.cat === "climate" && /\b(sicaklik|derece|temperature|degrees)\b/.test(text))) {
       var cl = (tg.list.length ? tg.list : all.map(function (d, i) { return { device: d, index: i, kind: N.kindOf(d) }; }))
         .filter(function (x) { return (x.kind === "ac" || x.kind === "thermostat") && N.hasFeature(x.device, "target"); });
-      if (!cl.length) return { reply: T("Sıcaklığı ayarlanabilen eşleşmiş bir klima ya da termostat bulunamadı.", "No paired AC or thermostat with temperature control was found.") };
-      if (!deg) return { reply: T("Kaç dereceye ayarlayayım? Örneğin \"klimayı 22 derece yap\".", "What temperature should I set? For example \"set the AC to 22 degrees\".") };
+      if (!cl.length) return { reply: V(["Sıcaklığını ayarlayabileceğim bir klima ya da termostat bulamadım.", "Eşleşmiş bir klima ya da termostat göremiyorum."], ["I could not find an AC or thermostat I can set the temperature on.", "I cannot see a paired AC or thermostat."]) };
+      if (!deg) return { reply: V(["Kaç dereceye ayarlayayım? Mesela \"klimayı 22 derece yap\" diyebilirsin.", "Hangi sıcaklığı istersin? Örneğin \"klimayı 22 derece yap\"."], ["What temperature would you like? For example \"set the AC to 22 degrees\".", "How warm should it be? Try \"set the AC to 22 degrees\"."]) };
       var t = parseFloat(String(deg[1]).replace(",", "."));
       if (/f/.test(deg[2]) || (N.tempUnit && N.tempUnit() === "F" && t > 40)) t = Math.round((t - 32) * 5 / 9 * 2) / 2; // °F → °C
       t = Math.max(5, Math.min(30, t));
       var rt = apply(cl, "target", t);
       cl.forEach(function (x) { if (x.kind === "ac" && N.hasCap(x.device, "switch")) N.setField(x.index, "switch", true); });
       var shown = N.fmtTemp ? N.fmtTemp(t) : t + "°";
-      return { reply: T(names(rt.changed) + " " + shown + " olarak ayarlandı.", names(rt.changed) + " set to " + shown + ".") + lanNote(rt), widget: widget("thermometer", T("Hedef sıcaklık", "Target temperature"), shown) };
+      return { reply: V([names(rt.changed) + " artık " + shown + ".", "Tamam, " + names(rt.changed) + " " + shown + " olarak ayarlandı."], [names(rt.changed) + " is now at " + shown + ".", "Okay, " + names(rt.changed) + " set to " + shown + "."]) + lanNote(rt), widget: widget("thermometer", T("Hedef sıcaklık", "Target temperature"), shown) };
     }
 
     // Parlaklık
     if (pct && (tg.cat === "light" || tg.by === "name" || tg.by === "room" || /\b(parlaklik|brightness|dim)\b/.test(text))) {
       var lights = (tg.list.length ? tg.list : all.map(function (d, i) { return { device: d, index: i, kind: N.kindOf(d) }; }).filter(function (x) { return x.kind === "light"; }))
         .filter(function (x) { return N.hasCap(x.device, "brightness"); });
-      if (!lights.length) return { reply: T("Parlaklığı ayarlanabilen eşleşmiş bir ışık bulunamadı.", "No paired light with brightness control was found.") };
+      if (!lights.length) return { reply: V(["Parlaklığını ayarlayabileceğim bir ışık bulamadım.", "Parlaklık ayarı olan eşleşmiş bir ışık göremiyorum."], ["I could not find a light with brightness control.", "I cannot see a paired light that supports dimming."]) };
       var b = Math.max(1, Math.min(100, +(pct[1] || pct[2])));
       var rb = apply(lights, "brightness", b);
-      return { reply: T(names(rb.changed) + " parlaklığı %" + b + " yapıldı.", "Set " + names(rb.changed) + " to " + b + "% brightness.") + lanNote(rb), widget: widget("sun", T("Parlaklık", "Brightness"), "%" + b) };
+      return { reply: V([names(rb.changed) + " parlaklığını %" + b + " yaptım.", "Tamam, " + names(rb.changed) + " şimdi %" + b + " parlaklıkta."], ["I set " + names(rb.changed) + " to " + b + "% brightness.", "Okay, " + names(rb.changed) + " is now at " + b + "%."]) + lanNote(rb), widget: widget("sun", T("Parlaklık", "Brightness"), "%" + b) };
     }
 
     // Aç / kapat
@@ -273,12 +275,12 @@
       }
       var already = pool.filter(function (x) { return N.stateOf(x.device).switch === turnOn; });
       var rs = apply(pool, "switch", turnOn);
-      var msg = T(names(rs.changed) + (turnOn ? " açıldı." : " kapatıldı."), names(rs.changed) + (turnOn ? " turned on." : " turned off."));
-      if (already.length === pool.length) msg = T(names(rs.changed) + " zaten " + (turnOn ? "açıktı" : "kapalıydı") + "; komut yine de gönderildi.", names(rs.changed) + " " + (pool.length > 1 ? "were" : "was") + " already " + (turnOn ? "on" : "off") + "; the command was sent anyway.");
+      var msg = V([names(rs.changed) + (turnOn ? " açıldı." : " kapatıldı."), "Tamam, " + names(rs.changed) + (turnOn ? " açık." : " kapalı."), (turnOn ? "Açtım: " : "Kapattım: ") + names(rs.changed) + "."], [names(rs.changed) + (turnOn ? " is on." : " is off."), "Okay, " + names(rs.changed) + (turnOn ? " is on now." : " is off now."), (turnOn ? "Turned on: " : "Turned off: ") + names(rs.changed) + "."]);
+      if (already.length === pool.length) msg = V([names(rs.changed) + " zaten " + (turnOn ? "açıktı" : "kapalıydı") + ", yine de komutu gönderdim.", "Bu zaten " + (turnOn ? "açıktı" : "kapalıydı") + " (" + names(rs.changed) + "); komutu yine de iletmiş oldum."], [names(rs.changed) + " " + (pool.length > 1 ? "were" : "was") + " already " + (turnOn ? "on" : "off") + ", I sent the command anyway.", "That was already " + (turnOn ? "on" : "off") + " (" + names(rs.changed) + "); I sent it again just in case."]);
       return { reply: msg + lanNote(rs), widget: widget(turnOn ? "power" : "power-off", turnOn ? T("Açıldı", "Turned on") : T("Kapatıldı", "Turned off"), T(rs.changed.length + " cihaz", rs.changed.length + " device" + (rs.changed.length > 1 ? "s" : ""))) };
     }
 
-    return { reply: T("Bunu tam anlayamadım. ", "I didn't quite get that. ") + help(), unknown: true };
+    return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]) + help(), unknown: true };
   }
 
     var AI_URL = "https://nexus-ai.ensarharmanci52.workers.dev";
