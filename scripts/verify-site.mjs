@@ -141,6 +141,7 @@ await audit(
   );
   // SSS akordeonu
   await pg.click("details.faq:nth-of-type(2) summary");
+  await pg.waitForTimeout(250); // toggle olayı asenkron ateşlenir
   const open = await pg.evaluate(() => document.querySelectorAll("details.faq[open]").length);
   check("SSS tek-açıklık", open === 1, "açık: " + open);
   // hero ekran görüntüsü sekmeleri
