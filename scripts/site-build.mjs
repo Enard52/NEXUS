@@ -17,7 +17,7 @@ const esc = (s) =>
 const BRAND_LOGOS = {
   windows: `<svg viewBox="0 0 88 88" class="brand-svg" aria-hidden="true"><path fill="#0078D4" d="M0 12.402l35.688-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.016 45.728zm4.326-39.025L87.914 0v41.527l-47.918.375zm47.918 43.465L40.014 88V46.527l47.904-.342z"/></svg>`,
   linux: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#2B2B2B" d="M12.5 0.5C8.8 0.5 7.8 4.2 7.7 6.3c-.1 1.5-.4 2.4-1.2 3.6-.9 1.3-2.2 3-2.7 4.9-.5 1.7-.3 3.3.4 4.5.3.5.7.9 1.1 1.2.5.4 1.1.7 1.8.8.8.1 1.8 0 2.6-.5.8.7 1.8 1.1 2.8 1.1 1.2 0 2.2-.4 3-1.1.8.5 1.8.6 2.6.5.7-.1 1.3-.4 1.8-.8.4-.3.8-.7 1.1-1.2.7-1.2.9-2.8.4-4.5-.5-1.9-1.8-3.6-2.7-4.9-.8-1.2-1.1-2.1-1.2-3.6-.1-2.1-1.1-5.8-4.8-5.8z"/><ellipse cx="12.5" cy="14" rx="4.2" ry="5.5" fill="#FFFFFF"/><ellipse cx="10.8" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><ellipse cx="14.2" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><circle cx="11" cy="5.2" r="0.45" fill="#000000"/><circle cx="14" cy="5.2" r="0.45" fill="#000000"/><path fill="#FFB525" d="M12.5 6.5c-1.5 0-2 1.2-2 1.2s.8.5 2 .5 2-.5 2-.5-.5-1.2-2-1.2z"/><path fill="#F57900" d="M7 20c-1.5 0-2.5.8-2.5 1.8 0 .8.8 1.4 2 1.4 1.5 0 2.5-.8 3-1.8-.8-.9-1.7-1.4-2.5-1.4zm11 0c-.8 0-1.7.5-2.5 1.4.5 1 1.5 1.8 3 1.8 1.2 0 2-.6 2-1.4 0-1-1-1.8-2.5-1.8z"/></svg>`,
-  android: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#3DDC84" d="M6.2 8.3L4.7 5.7c-.2-.3-.1-.7.2-.9.3-.2.7-.1.9.2l1.5 2.7c1.4-.6 3-.9 4.7-.9s3.3.3 4.7.9l1.5-2.7c.2-.3.6-.4.9-.2.3.2.4.6.2.9L17.8 8.3C20.4 9.9 22 12.7 22 16H2c0-3.3 1.6-6.1 4.2-7.7zM7.5 12.5c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1zm9 0c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1z"/></svg>`,
+  android: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#3DDC84" d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 2.23 12.95 2 12 2c-.96 0-1.86.23-2.66.63L7.85 1.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 4.26 6 5.92 6 7.8h12c0-1.88-.97-3.54-2.47-4.64zM9 5.5c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75zm6 0c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75z"/></svg>`,
   shelly: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>`,
   tasmota: `<svg viewBox="0 0 24 24" fill="#1FA3EC" class="brand-svg" aria-hidden="true"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>`,
   esphome: `<svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>`,
@@ -154,23 +154,23 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn.disabled{opacity:.55;pointer-events:none}
 
 /* Hero */
-.hero{padding:36px 0 24px;position:relative}
-.hero .wrap{display:grid;gap:32px;align-items:center}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:16px}}
+.hero{padding:28px 0 20px;position:relative}
+.hero .wrap{display:grid;gap:24px;align-items:center}
+@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:12px;gap:32px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
-  padding:6px 14px;border-radius:999px;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
-h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin:0 0 16px;font-weight:800}
+  padding:5px 12px;border-radius:999px;margin-bottom:12px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
+h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin:0 0 14px;font-weight:800}
 .grad{background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{font-size:clamp(15px,1.8vw,17.5px);color:var(--text-2);margin:0 0 24px;max-width:52ch;line-height:1.55}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
-.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);background:var(--surface);
-  border:1px solid var(--border);padding:4px 12px;border-radius:999px;box-shadow:var(--shadow)}
+.lead{font-size:clamp(14.5px,1.6vw,17px);color:var(--text-2);margin:0 0 20px;max-width:52ch;line-height:1.55}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);background:var(--surface);
+  border:1px solid var(--border);padding:3px 11px;border-radius:999px;box-shadow:var(--shadow)}
 .dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.trust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-size:13px;color:var(--muted)}
+.trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-size:12.5px;color:var(--muted)}
 .trust span{display:inline-flex;align-items:center;gap:6px}
-.trust .icon{color:#10B981;width:16px;height:16px}
+.trust .icon{color:#10B981;width:15px;height:15px}
 
 /* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
 .phone-wrapper{position:relative;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -180,28 +180,28 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 
 .phone-case{
   position:relative;z-index:2;
-  width:clamp(230px,25vw,265px);
+  width:clamp(215px,21vw,245px);
   max-width:85vw;
   background:#14161C;
   border:1.5px solid rgba(255,255,255,.14);
-  border-radius:42px;
-  padding:7px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 48px -10px rgba(0,0,0,.5), 0 0 40px rgba(76,125,255,.2);
+  border-radius:38px;
+  padding:6px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 44px -10px rgba(0,0,0,.5), 0 0 36px rgba(76,125,255,.2);
   user-select:none;
   cursor:grab;
   transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
   animation:phoneFloat 6s ease-in-out infinite;
 }
 .phone-case:active{cursor:grabbing}
-@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 @media(max-height:800px), (max-width:600px){
-  .phone-case{width:clamp(205px,62vw,230px);border-radius:38px;padding:6px}
-  .phone-inner-screen{border-radius:32px}
+  .phone-case{width:clamp(195px,58vw,225px);border-radius:36px;padding:5px}
+  .phone-inner-screen{border-radius:30px}
 }
 @media(max-width:380px){
-  .phone-case{width:clamp(190px,65vw,205px);border-radius:34px;padding:5px}
-  .phone-inner-screen{border-radius:28px}
+  .phone-case{width:clamp(180px,62vw,198px);border-radius:32px;padding:4px}
+  .phone-inner-screen{border-radius:26px}
 }
 
 .phone-inner-screen{
@@ -248,34 +248,34 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
 .phone-bottom-bar{
-  margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:6px;
 }
 .phone-caption-pill{
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:6px;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
+  padding:4px 12px;box-shadow:var(--shadow);font-size:12px;font-weight:700;color:var(--text);
   transition:all .2s ease;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:5px;
+  display:flex;align-items:center;gap:4px;
 }
 .phone-dot{
-  width:6px;height:6px;border-radius:999px;background:var(--border);border:0;padding:0;
+  width:5px;height:5px;border-radius:999px;background:var(--border);border:0;padding:0;
   cursor:pointer;transition:all .25s ease;
 }
 .phone-dot.active{
-  width:18px;background:var(--brand);box-shadow:0 0 8px rgba(76,125,255,.4);
+  width:16px;background:var(--brand);box-shadow:0 0 6px rgba(76,125,255,.4);
 }
 
 .phone-tabs{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:320px;margin:2px 0 4px;
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:310px;margin:1px 0 2px;
 }
 .phone-tab{
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--text-2);
+  padding:3px 9px;font-size:11px;font-weight:600;color:var(--text-2);
   cursor:pointer;transition:all .18s ease;
 }
 .phone-tab:hover{
@@ -283,13 +283,13 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 }
 .phone-tab.active{
   background:var(--brand-grad);color:#fff;border-color:transparent;
-  box-shadow:0 2px 8px rgba(76,125,255,.3);
+  box-shadow:0 2px 6px rgba(76,125,255,.3);
 }
 
 .phone-tap-hint{
-  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);
+  display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);
 }
-.phone-tap-hint svg{width:13px;height:13px;color:var(--brand)}
+.phone-tap-hint svg{width:12px;height:12px;color:var(--brand)}
 
 /* Bölümler */
 section{padding:72px 0}
@@ -623,12 +623,6 @@ function renderHeader(c, currentPath = '') {
       ${c.nav.map(([href, label]) => `<a href="${href}">${esc(label)}</a>`).join('\n      ')}
     </nav>
     <div class="nav-controls">
-      <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
-        ${isTr
-          ? `<span class="lang-btn active">TR</span><a href="${enHref}" class="lang-btn" onclick="nxSetLang('en')" title="English">EN</a>`
-          : `<a href="${trHref}" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>`
-        }
-      </div>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="${isTr ? 'Tema değiştir' : 'Toggle theme'}" title="${isTr ? 'Karanlık/Aydınlık Tema' : 'Toggle theme'}">
         <span class="ic-sun">${icon('sun')}</span>
         <span class="ic-moon">${icon('moon')}</span>

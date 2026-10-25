@@ -8,7 +8,7 @@ Cihazlarınla yerel ağda konuşan tek uygulama; hub veya bulut ücreti gerektir
 
 ```
 depo kökü (tek kaynak)               üretilen kopyalar — elle düzenlenmez
-├─ stitch-*.html   62 ekran    →  www/  (sync-www.mjs)        → web uygulaması (Cloudflare Pages: nexus-web)
+├─ stitch-*.html   62 ekran    →  www/  (sync-www.mjs)        → web uygulaması (Cloudflare Pages: nexus-web-jre)
 ├─ *.js (theme, data, device-    →  desktop/app (prepare-app)  → Electron (nexus:// protokolü)
 │  controls, lan-connectors,     →  android assets (cap sync)  → Capacitor APK (imzalı)
 │  automation-engine.js)

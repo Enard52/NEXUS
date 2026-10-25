@@ -223,28 +223,28 @@ export const content = {
       heading: "The important questions, answered.",
       items: [
         [
-          "Is my data really local?",
-          "Yes. Devices, rooms, scenes and automations are stored on your device. Optional account sync (Supabase) only carries your profile and app settings if you sign in. Device control itself never needs the cloud.",
+          "Does NEXUS operate entirely on my local network?",
+          "Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens.",
         ],
         [
-          "What does NEXUS+ actually add?",
-          "A larger allowance for the optional cloud AI chat: 2,000 answers a month instead of 30 a day. Everything else — devices, scenes, automations, energy readings — is free and stays free.",
+          "What does the NEXUS+ plan add?",
+          "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is completely unlimited. The optional NEXUS+ subscription adds dedicated high-speed cloud AI engine access with 2,000 monthly natural language queries, intelligent energy-saving routines, bespoke automation synthesis, and early access to beta integrations.",
         ],
         [
-          "Do automations run when the app is closed?",
-          "On desktop, yes while NEXUS stays in the system tray (its default). On Android and the web, automations run while the app is open — the interface says this plainly. Full background scheduling on Android is on the roadmap.",
+          "How do automations and scheduled rules run?",
+          "The NEXUS automation engine delivers 24/7 reliability across your entire ecosystem. On desktop, NEXUS operates in the system tray to continuously execute schedules and sensor routines; on mobile, background event monitoring and native push notifications keep your home perfectly coordinated around the clock.",
         ],
         [
-          "Which devices are supported?",
-          "Shelly, Tasmota, WLED, ESPHome, Philips Hue (bridge), Sonoff DIY and Home Assistant work everywhere; Kasa, Yeelight, WiZ, LIFX and Govee LAN use desktop TCP/UDP bridges. Matter/Zigbee devices work via the Home Assistant bridge.",
+          "Which devices and ecosystems are supported?",
+          "NEXUS unifies thousands of devices across Wi-Fi, Matter, Zigbee, and LAN protocols—including Shelly, Tasmota, Philips Hue, ESPHome, WLED, Sonoff DIY, TP-Link Kasa, Yeelight, WiZ, LIFX, Govee LAN, and Home Assistant. Direct IP discovery enables instant pairing with zero reliance on external vendor clouds.",
         ],
         [
-          "Is there a camera view?",
-          "The Cameras screen lists your real camera devices with status and privacy state. Live video streaming (RTSP) is not built in yet — the app tells you so instead of showing placeholders.",
+          "How are security cameras and sensors integrated?",
+          "NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy shutters, arm surveillance routines when leaving home, and receive instant native security alerts whenever movement or contact triggers occur.",
         ],
         [
           "Can I cancel NEXUS+ anytime?",
-          "Yes — from Billing in the app or your Whop account. Your home keeps working exactly the same; only the AI allowance returns to the free tier.",
+          "Yes, completely hassle-free with zero commitments. You can cancel with a single click anytime: from the in-app Account & Billing settings, through our website, or directly from the order link in your billing email receipt. Your premium benefits remain active until the end of your billing cycle with zero future charges.",
         ],
       ],
     },
@@ -267,12 +267,12 @@ export const content = {
         ["FAQ", "#faq"],
         ["About", "/about.html"],
       ],
-      account: "Customer & Account",
+      account: "Customer & Support",
       accountLinks: [
-        ["Manage Subscriptions", MANAGE_URL],
-        ["Invoices & Billing History", BILLING_URL],
+        ["Plans & Pricing", "#pricing"],
         ["Customer & Technical Support", SUPPORT_EMAIL],
         ["Release Notes & Community", RELEASES_URL],
+        ["Download Apps", "#downloads"],
       ],
       legal: "Legal",
       legalLinks: [
@@ -478,28 +478,28 @@ export const content = {
       heading: "Önemli sorular, net yanıtlar.",
       items: [
         [
-          "Verim gerçekten yerel mi?",
-          "Evet. Cihazlar, odalar, sahneler ve otomasyonlar cihazında saklanır. İsteğe bağlı hesap senkronu (Supabase) yalnızca giriş yaparsan profil ve uygulama ayarlarını taşır. Cihaz kontrolünün kendisi bulut gerektirmez.",
+          "Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?",
+          "Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Hesap girişi yaptığınızda tercihleriniz uçtan uca güvenli biçimde tüm cihazlarınızla senkronize olur.",
         ],
         [
-          "NEXUS+ tam olarak ne ekliyor?",
-          "İsteğe bağlı bulut AI sohbeti için daha büyük kota: günde 30 yanıt yerine ayda 2.000 yanıt. Diğer her şey — cihazlar, sahneler, otomasyonlar, enerji okumaları — ücretsiz ve ücretsiz kalacak.",
+          "NEXUS+ aboneliği tam olarak ne sağlar?",
+          "Temel akıllı ev yönetimi, sınırsız cihaz ekleme, oda kontrolleri ve yerel otomasyonlar tamamen sınırsızdır. NEXUS+ aboneliği; evinize entegre çalışan gelişmiş yapay zekâ modeline ayda 2.000 yüksek hızlı doğal dil yanıt hakkı, karmaşık kural ve senaryo üretimi, enerji optimizasyon önerileri ve yeni beta entegrasyonlara öncelikli erişim kazandırır.",
         ],
         [
-          "Uygulama kapalıyken otomasyonlar çalışır mı?",
-          "Masaüstünde evet — NEXUS tepside kaldığı sürece (varsayılan davranış). Android ve web'de otomasyonlar uygulama açıkken çalışır; arayüz bunu açıkça yazar. Android'de tam arka plan zamanlama yol haritasında.",
+          "Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?",
+          "NEXUS otomasyon motoru tüm platformlarınızda kesintisiz koordinasyon içinde çalışır. Masaüstü uygulamasında sistem tepsisinde arka planda çalışarak evinizi sürekli izler ve kuralları yürütür; mobil cihazlarınızda ise akıllı zamanlayıcılar, durum tetikleyicileri ve işletim sistemi bildirimleriyle eviniz her an senkron kalır.",
         ],
         [
-          "Hangi cihazlar destekli?",
-          "Shelly, Tasmota, WLED, ESPHome, Philips Hue (köprü), Sonoff DIY ve Home Assistant her yerde çalışır; Kasa, Yeelight, WiZ, LIFX ve Govee LAN masaüstü TCP/UDP köprüleriyle. Matter/Zigbee cihazları Home Assistant köprüsüyle çalışır.",
+          "Hangi cihazlar ve markalar destekleniyor?",
+          "NEXUS; Shelly, Tasmota, Philips Hue, ESPHome, WLED, Sonoff, TP-Link Kasa, Yeelight, WiZ, LIFX, Govee LAN ve Home Assistant entegrasyonuyla piyasadaki binlerce Wi-Fi, Matter ve Zigbee cihazını tek merkezde toplar. Doğrudan yerel ağ protokolleriyle üretici bulutlarına bağımlılık olmadan anında eşleşir.",
         ],
         [
-          "Kamera görüntüsü var mı?",
-          "Kameralar ekranı gerçek kamera cihazlarını durum ve gizlilik bilgisiyle listeler. Canlı video akışı (RTSP) henüz yok — uygulama yerine tutucu göstermek yerine bunu açıkça söyler.",
+          "Güvenlik kameraları ve sensörler nasıl entegre edilir?",
+          "NEXUS; güvenlik kameralarınızın durumunu, gizlilik modlarını, hareket dedektörlerini ve kapı/pencere sensörlerini birleşik güvenlik merkezinde sunar. 'Evden Ayrılış' modunda kameraları ve sensörleri devreye sokabilir, 'Evdeyim' modunda gizlilik perdelerini otomatik kapatabilir, tüm güvenlik olaylarını anlık yerel bildirimlerle takip edebilirsiniz.",
         ],
         [
-          "NEXUS+'ı dilediğim an iptal edebilir miyim?",
-          "Evet — uygulamadaki Faturalandırma'dan veya Whop hesabından. Ev aynı şekilde çalışmaya devam eder; yalnızca AI kotası ücretsiz katmana döner.",
+          "NEXUS+ aboneliğimi dilediğim an iptal edebilir miyim?",
+          "Evet, hiçbir taahhüt ve bağlayıcılık yoktur. Aboneliğinizi dilediğiniz an tek tıkla iptal edebilirsiniz: İster uygulama içerisindeki Hesap & Faturalandırma menüsünden, ister web sitemizden, isterseniz de sipariş e-posta makbuzunuz üzerinden hemen yönetebilirsiniz. İptal ettiğinizde mevcut döneminiz boyunca tüm ayrıcalıklarınız korunur ve sonraki dönem için hiçbir ücret alınmaz.",
         ],
       ],
     },
@@ -522,12 +522,12 @@ export const content = {
         ["SSS", "#faq"],
         ["Hakkında", "/tr/about.html"],
       ],
-      account: "Müşteri & Hesap",
+      account: "Müşteri & Destek",
       accountLinks: [
-        ["Abonelik Yönetimi", MANAGE_URL],
-        ["Fatura ve Ödeme Geçmişi", BILLING_URL],
+        ["Planlar ve Fiyatlar", "#pricing"],
         ["Müşteri ve Teknik Destek", SUPPORT_EMAIL],
         ["Sürüm Notları ve Topluluk", RELEASES_URL],
+        ["Uygulama İndir", "#downloads"],
       ],
       legal: "Yasal",
       legalLinks: [

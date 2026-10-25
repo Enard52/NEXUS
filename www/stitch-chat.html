@@ -692,15 +692,9 @@
 </script>
 <!-- END: MainContent -->
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const scrollContainer = document.querySelector('.overflow-x-auto.no-scrollbar');
-      if (scrollContainer) {
-        // Center the scroll container initially
-        scrollContainer.scrollLeft = (scrollContainer.scrollWidth - scrollContainer.clientWidth) / 2;
-      }
-    });
-  </script>
+  <!-- Önceden burada chip satırı scrollLeft ile ortalanıyordu; bu, ilk öneri çiplerini
+       ekranın soluna taşıp erişilemez kılıyordu (telefon/tablette "Film Modu" kesik görünüyordu).
+       Satır artık doğal başlangıcında (scrollLeft 0) duruyor; sağdaki kesik kenarı nx-fade-x yumuşatıyor. -->
 </body>
 </html>
 

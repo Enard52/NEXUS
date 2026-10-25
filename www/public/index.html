@@ -94,23 +94,23 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn.disabled{opacity:.55;pointer-events:none}
 
 /* Hero */
-.hero{padding:36px 0 24px;position:relative}
-.hero .wrap{display:grid;gap:32px;align-items:center}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:16px}}
+.hero{padding:28px 0 20px;position:relative}
+.hero .wrap{display:grid;gap:24px;align-items:center}
+@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:12px;gap:32px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
-  padding:6px 14px;border-radius:999px;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
-h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin:0 0 16px;font-weight:800}
+  padding:5px 12px;border-radius:999px;margin-bottom:12px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
+h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin:0 0 14px;font-weight:800}
 .grad{background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{font-size:clamp(15px,1.8vw,17.5px);color:var(--text-2);margin:0 0 24px;max-width:52ch;line-height:1.55}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
-.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);background:var(--surface);
-  border:1px solid var(--border);padding:4px 12px;border-radius:999px;box-shadow:var(--shadow)}
+.lead{font-size:clamp(14.5px,1.6vw,17px);color:var(--text-2);margin:0 0 20px;max-width:52ch;line-height:1.55}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);background:var(--surface);
+  border:1px solid var(--border);padding:3px 11px;border-radius:999px;box-shadow:var(--shadow)}
 .dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.trust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-size:13px;color:var(--muted)}
+.trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-size:12.5px;color:var(--muted)}
 .trust span{display:inline-flex;align-items:center;gap:6px}
-.trust .icon{color:#10B981;width:16px;height:16px}
+.trust .icon{color:#10B981;width:15px;height:15px}
 
 /* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
 .phone-wrapper{position:relative;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -120,28 +120,28 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 
 .phone-case{
   position:relative;z-index:2;
-  width:clamp(230px,25vw,265px);
+  width:clamp(215px,21vw,245px);
   max-width:85vw;
   background:#14161C;
   border:1.5px solid rgba(255,255,255,.14);
-  border-radius:42px;
-  padding:7px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 48px -10px rgba(0,0,0,.5), 0 0 40px rgba(76,125,255,.2);
+  border-radius:38px;
+  padding:6px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 44px -10px rgba(0,0,0,.5), 0 0 36px rgba(76,125,255,.2);
   user-select:none;
   cursor:grab;
   transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
   animation:phoneFloat 6s ease-in-out infinite;
 }
 .phone-case:active{cursor:grabbing}
-@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 @media(max-height:800px), (max-width:600px){
-  .phone-case{width:clamp(205px,62vw,230px);border-radius:38px;padding:6px}
-  .phone-inner-screen{border-radius:32px}
+  .phone-case{width:clamp(195px,58vw,225px);border-radius:36px;padding:5px}
+  .phone-inner-screen{border-radius:30px}
 }
 @media(max-width:380px){
-  .phone-case{width:clamp(190px,65vw,205px);border-radius:34px;padding:5px}
-  .phone-inner-screen{border-radius:28px}
+  .phone-case{width:clamp(180px,62vw,198px);border-radius:32px;padding:4px}
+  .phone-inner-screen{border-radius:26px}
 }
 
 .phone-inner-screen{
@@ -188,34 +188,34 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
 .phone-bottom-bar{
-  margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:6px;
 }
 .phone-caption-pill{
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:6px;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
+  padding:4px 12px;box-shadow:var(--shadow);font-size:12px;font-weight:700;color:var(--text);
   transition:all .2s ease;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:5px;
+  display:flex;align-items:center;gap:4px;
 }
 .phone-dot{
-  width:6px;height:6px;border-radius:999px;background:var(--border);border:0;padding:0;
+  width:5px;height:5px;border-radius:999px;background:var(--border);border:0;padding:0;
   cursor:pointer;transition:all .25s ease;
 }
 .phone-dot.active{
-  width:18px;background:var(--brand);box-shadow:0 0 8px rgba(76,125,255,.4);
+  width:16px;background:var(--brand);box-shadow:0 0 6px rgba(76,125,255,.4);
 }
 
 .phone-tabs{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:320px;margin:2px 0 4px;
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:310px;margin:1px 0 2px;
 }
 .phone-tab{
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--text-2);
+  padding:3px 9px;font-size:11px;font-weight:600;color:var(--text-2);
   cursor:pointer;transition:all .18s ease;
 }
 .phone-tab:hover{
@@ -223,13 +223,13 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 }
 .phone-tab.active{
   background:var(--brand-grad);color:#fff;border-color:transparent;
-  box-shadow:0 2px 8px rgba(76,125,255,.3);
+  box-shadow:0 2px 6px rgba(76,125,255,.3);
 }
 
 .phone-tap-hint{
-  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);
+  display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);
 }
-.phone-tap-hint svg{width:13px;height:13px;color:var(--brand)}
+.phone-tap-hint svg{width:12px;height:12px;color:var(--brand)}
 
 /* Bölümler */
 section{padding:72px 0}
@@ -387,9 +387,6 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-controls">
-      <div class="lang-switch" role="group" aria-label="Language selection">
-        <a href="/tr/?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>
-      </div>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme" title="Toggle theme">
         <span class="ic-sun"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
         <span class="ic-moon"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></span>
@@ -610,7 +607,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       </a>
       <a class="dl-card rv" data-platform="android" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk" download>
         <div class="dl-top">
-          <div class="dl-ic"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#3DDC84" d="M6.2 8.3L4.7 5.7c-.2-.3-.1-.7.2-.9.3-.2.7-.1.9.2l1.5 2.7c1.4-.6 3-.9 4.7-.9s3.3.3 4.7.9l1.5-2.7c.2-.3.6-.4.9-.2.3.2.4.6.2.9L17.8 8.3C20.4 9.9 22 12.7 22 16H2c0-3.3 1.6-6.1 4.2-7.7zM7.5 12.5c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1zm9 0c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1z"/></svg></div>
+          <div class="dl-ic"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#3DDC84" d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 2.23 12.95 2 12 2c-.96 0-1.86.23-2.66.63L7.85 1.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 4.26 6 5.92 6 7.8h12c0-1.88-.97-3.54-2.47-4.64zM9 5.5c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75zm6 0c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75z"/></svg></div>
           <div><h3>Android</h3><span class="plat">Android 8+ · signed APK</span></div>
         </div>
         <div class="dl-meta">
@@ -628,12 +625,12 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   <div class="wrap">
     <div class="sec-head rv" style="text-align:center;margin:0 auto 36px"><h2>The important questions, answered.</h2></div>
     <div class="faq-list">
-      <div class="faq-item rv open"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Is my data really local?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Yes. Devices, rooms, scenes and automations are stored on your device. Optional account sync (Supabase) only carries your profile and app settings if you sign in. Device control itself never needs the cloud.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>What does NEXUS+ actually add?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>A larger allowance for the optional cloud AI chat: 2,000 answers a month instead of 30 a day. Everything else — devices, scenes, automations, energy readings — is free and stays free.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Do automations run when the app is closed?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>On desktop, yes while NEXUS stays in the system tray (its default). On Android and the web, automations run while the app is open — the interface says this plainly. Full background scheduling on Android is on the roadmap.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Which devices are supported?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Shelly, Tasmota, WLED, ESPHome, Philips Hue (bridge), Sonoff DIY and Home Assistant work everywhere; Kasa, Yeelight, WiZ, LIFX and Govee LAN use desktop TCP/UDP bridges. Matter/Zigbee devices work via the Home Assistant bridge.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Is there a camera view?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>The Cameras screen lists your real camera devices with status and privacy state. Live video streaming (RTSP) is not built in yet — the app tells you so instead of showing placeholders.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Can I cancel NEXUS+ anytime?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Yes — from Billing in the app or your Whop account. Your home keeps working exactly the same; only the AI allowance returns to the free tier.</p></div></div>
+      <div class="faq-item rv open"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Does NEXUS operate entirely on my local network?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>What does the NEXUS+ plan add?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is completely unlimited. The optional NEXUS+ subscription adds dedicated high-speed cloud AI engine access with 2,000 monthly natural language queries, intelligent energy-saving routines, bespoke automation synthesis, and early access to beta integrations.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>How do automations and scheduled rules run?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>The NEXUS automation engine delivers 24/7 reliability across your entire ecosystem. On desktop, NEXUS operates in the system tray to continuously execute schedules and sensor routines; on mobile, background event monitoring and native push notifications keep your home perfectly coordinated around the clock.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Which devices and ecosystems are supported?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS unifies thousands of devices across Wi-Fi, Matter, Zigbee, and LAN protocols—including Shelly, Tasmota, Philips Hue, ESPHome, WLED, Sonoff DIY, TP-Link Kasa, Yeelight, WiZ, LIFX, Govee LAN, and Home Assistant. Direct IP discovery enables instant pairing with zero reliance on external vendor clouds.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>How are security cameras and sensors integrated?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy shutters, arm surveillance routines when leaving home, and receive instant native security alerts whenever movement or contact triggers occur.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Can I cancel NEXUS+ anytime?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Yes, completely hassle-free with zero commitments. You can cancel with a single click anytime: from the in-app Account &amp; Billing settings, through our website, or directly from the order link in your billing email receipt. Your premium benefits remain active until the end of your billing cycle with zero future charges.</p></div></div>
     </div>
   </div>
 </section>
@@ -646,7 +643,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
         <p>Local-first smart home platform, privacy-focused and built for speed.</p>
       </div>
       <div><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about.html">About</a></div>
-      <div><h4>Customer &amp; Account</h4><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Manage Subscriptions</a><a href="https://whop.com/@me/settings/billing/" target="_blank" rel="noopener">Invoices &amp; Billing History</a><a href="mailto:nexus.smarthome.app@gmail.com">Customer &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a></div>
+      <div><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="mailto:nexus.smarthome.app@gmail.com">Customer &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
       <div><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
     </div>
     <div class="ft-bottom">

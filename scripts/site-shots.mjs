@@ -41,9 +41,13 @@ mkdirSync(OUT, { recursive: true });
 // Hava durumu kartı ağ isteğini beklemesin: açık-meteo'ya kısa süre tanınır.
 const PAGES = [
   { name: "home", path: "stitch-home.html", wait: 1400 },
-  { name: "energy", path: "stitch-energy.html", wait: 700 },
-  { name: "smart", path: "stitch-smart.html", wait: 700 },
+  { name: "devices", path: "stitch-device.html", wait: 800 },
+  { name: "energy", path: "stitch-energy.html", wait: 800 },
+  { name: "smart", path: "stitch-smart.html", wait: 800 },
   { name: "chat", path: "stitch-chat.html", wait: 900 },
+  { name: "lighting", path: "stitch-lighting-master.html", wait: 800 },
+  { name: "scenes", path: "stitch-movie-mode.html", wait: 800 },
+  { name: "settings", path: "stitch-settings.html", wait: 800 },
 ];
 
 const browser = await chromium.launch();

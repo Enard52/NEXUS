@@ -94,23 +94,23 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn.disabled{opacity:.55;pointer-events:none}
 
 /* Hero */
-.hero{padding:36px 0 24px;position:relative}
-.hero .wrap{display:grid;gap:32px;align-items:center}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:16px}}
+.hero{padding:28px 0 20px;position:relative}
+.hero .wrap{display:grid;gap:24px;align-items:center}
+@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:12px;gap:32px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
-  padding:6px 14px;border-radius:999px;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
-h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin:0 0 16px;font-weight:800}
+  padding:5px 12px;border-radius:999px;margin-bottom:12px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
+h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin:0 0 14px;font-weight:800}
 .grad{background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{font-size:clamp(15px,1.8vw,17.5px);color:var(--text-2);margin:0 0 24px;max-width:52ch;line-height:1.55}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
-.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);background:var(--surface);
-  border:1px solid var(--border);padding:4px 12px;border-radius:999px;box-shadow:var(--shadow)}
+.lead{font-size:clamp(14.5px,1.6vw,17px);color:var(--text-2);margin:0 0 20px;max-width:52ch;line-height:1.55}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);background:var(--surface);
+  border:1px solid var(--border);padding:3px 11px;border-radius:999px;box-shadow:var(--shadow)}
 .dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.trust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-size:13px;color:var(--muted)}
+.trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-size:12.5px;color:var(--muted)}
 .trust span{display:inline-flex;align-items:center;gap:6px}
-.trust .icon{color:#10B981;width:16px;height:16px}
+.trust .icon{color:#10B981;width:15px;height:15px}
 
 /* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
 .phone-wrapper{position:relative;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -120,28 +120,28 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 
 .phone-case{
   position:relative;z-index:2;
-  width:clamp(230px,25vw,265px);
+  width:clamp(215px,21vw,245px);
   max-width:85vw;
   background:#14161C;
   border:1.5px solid rgba(255,255,255,.14);
-  border-radius:42px;
-  padding:7px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 48px -10px rgba(0,0,0,.5), 0 0 40px rgba(76,125,255,.2);
+  border-radius:38px;
+  padding:6px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 44px -10px rgba(0,0,0,.5), 0 0 36px rgba(76,125,255,.2);
   user-select:none;
   cursor:grab;
   transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
   animation:phoneFloat 6s ease-in-out infinite;
 }
 .phone-case:active{cursor:grabbing}
-@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 @media(max-height:800px), (max-width:600px){
-  .phone-case{width:clamp(205px,62vw,230px);border-radius:38px;padding:6px}
-  .phone-inner-screen{border-radius:32px}
+  .phone-case{width:clamp(195px,58vw,225px);border-radius:36px;padding:5px}
+  .phone-inner-screen{border-radius:30px}
 }
 @media(max-width:380px){
-  .phone-case{width:clamp(190px,65vw,205px);border-radius:34px;padding:5px}
-  .phone-inner-screen{border-radius:28px}
+  .phone-case{width:clamp(180px,62vw,198px);border-radius:32px;padding:4px}
+  .phone-inner-screen{border-radius:26px}
 }
 
 .phone-inner-screen{
@@ -188,34 +188,34 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
 .phone-bottom-bar{
-  margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:6px;
 }
 .phone-caption-pill{
-  display:inline-flex;align-items:center;gap:8px;
+  display:inline-flex;align-items:center;gap:6px;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
+  padding:4px 12px;box-shadow:var(--shadow);font-size:12px;font-weight:700;color:var(--text);
   transition:all .2s ease;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:5px;
+  display:flex;align-items:center;gap:4px;
 }
 .phone-dot{
-  width:6px;height:6px;border-radius:999px;background:var(--border);border:0;padding:0;
+  width:5px;height:5px;border-radius:999px;background:var(--border);border:0;padding:0;
   cursor:pointer;transition:all .25s ease;
 }
 .phone-dot.active{
-  width:18px;background:var(--brand);box-shadow:0 0 8px rgba(76,125,255,.4);
+  width:16px;background:var(--brand);box-shadow:0 0 6px rgba(76,125,255,.4);
 }
 
 .phone-tabs{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:320px;margin:2px 0 4px;
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:310px;margin:1px 0 2px;
 }
 .phone-tab{
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--text-2);
+  padding:3px 9px;font-size:11px;font-weight:600;color:var(--text-2);
   cursor:pointer;transition:all .18s ease;
 }
 .phone-tab:hover{
@@ -223,13 +223,13 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
 }
 .phone-tab.active{
   background:var(--brand-grad);color:#fff;border-color:transparent;
-  box-shadow:0 2px 8px rgba(76,125,255,.3);
+  box-shadow:0 2px 6px rgba(76,125,255,.3);
 }
 
 .phone-tap-hint{
-  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);
+  display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);
 }
-.phone-tap-hint svg{width:13px;height:13px;color:var(--brand)}
+.phone-tap-hint svg{width:12px;height:12px;color:var(--brand)}
 
 /* Bölümler */
 section{padding:72px 0}
@@ -387,9 +387,6 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-controls">
-      <div class="lang-switch" role="group" aria-label="Language selection">
-        <a href="/tr/privacy.html?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>
-      </div>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme" title="Toggle theme">
         <span class="ic-sun"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
         <span class="ic-moon"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></span>
@@ -463,7 +460,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
         <p>Local-first smart home platform, privacy-focused and built for speed.</p>
       </div>
       <div><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about.html">About</a></div>
-      <div><h4>Customer &amp; Account</h4><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Manage Subscriptions</a><a href="https://whop.com/@me/settings/billing/" target="_blank" rel="noopener">Invoices &amp; Billing History</a><a href="mailto:nexus.smarthome.app@gmail.com">Customer &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a></div>
+      <div><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="mailto:nexus.smarthome.app@gmail.com">Customer &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
       <div><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
     </div>
     <div class="ft-bottom">

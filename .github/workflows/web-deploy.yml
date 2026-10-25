@@ -1,6 +1,6 @@
 ﻿name: Web ve site yayını
 
-# main'e push edilince web uygulamasını (Cloudflare Pages: nexus-web) ve tanıtım sitesini (Enard52.github.io -> nexus-smarthome)
+# main'e push edilince web uygulamasını (Cloudflare Pages: nexus-web-jre) ve tanıtım sitesini (Enard52.github.io -> nexus-smarthome)
 # kendiliğinden yayınlar. Gizli anahtarlar yoksa ilgili adım atlanır (hata vermez).
 # Gerekli: CLOUDFLARE_API_TOKEN (Pages düzenleme izni), SITE_REPO_TOKEN (site deposuna yazma izni). scripts/setup-automation.ps1 kurar.
 on:
@@ -37,7 +37,9 @@ jobs:
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then echo "::notice::CLOUDFLARE_API_TOKEN yok; web yayını atlandı."; exit 0; fi
           mkdir -p _stage && rsync -a --exclude public www/ _stage/
-          npx --yes wrangler@4 pages deploy _stage --project-name nexus-web --branch main --commit-dirty=true
+          # Proje adı "nexus-web-jre" (nexus-web-jre.pages.dev). "nexus-web" BU HESABIN DEĞİL;
+          # o ada başka bir proje sahip, bu yüzden deploy 403 ile düşüyordu.
+          npx --yes wrangler@4 pages deploy _stage --project-name nexus-web-jre --branch main --commit-dirty=true
   site:
     runs-on: ubuntu-latest
     env:
