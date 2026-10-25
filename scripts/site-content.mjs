@@ -280,7 +280,8 @@ export const content = {
       linksTitle: "Practical links",
     },
     footer: {
-      tagline: "Local-first smart home platform, privacy-focused and built for speed.",
+      tagline:
+        "Next-generation smart home management built to run entirely on your local network. Zero cloud reliance, ultra-low latency automations, and privacy by design for all your connected devices.",
       product: "Product",
       productLinks: [
         ["Features", "#features"],
@@ -557,7 +558,8 @@ export const content = {
       linksTitle: "Pratik bağlantılar",
     },
     footer: {
-      tagline: "Yerel-öncelikli akıllı ev platformu, gizlilik odaklı ve hızlı.",
+      tagline:
+        "Tüm akıllı ev cihazlarınızı bulut bağımlılığı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Verileriniz evinizde kalır, senaryolarınız internet kesilse dahi kesintisiz çalışır.",
       product: "Ürün",
       productLinks: [
         ["Özellikler", "#features"],

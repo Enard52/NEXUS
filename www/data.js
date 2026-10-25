@@ -1274,11 +1274,14 @@ function renderDevices() {
             const visual = imgSrc
                 ? `<div class="mb-2 flex items-center" style="height:56px"><img src="${imgSrc}" alt="" style="height:56px;width:72px;object-fit:contain;object-position:left center" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/products/generic-smart-hub.png'"></div>`
                 : `<div class="w-10 h-10 rounded-full ${bg} ${color} flex items-center justify-center mb-3">${iconSvg}</div>`;
+            // Ad kutuya sığmazsa tek satırda kesmek telefon kartında cihazı tanınmaz kılıyordu
+            // ("Oturma Odası Lambası" → "Oturma Odası La…"). Tasarım sistemindeki .nx-name gibi
+            // iki satıra kadar sarar; kartı sabit yüksekliği h-40 içinde taşmaz (ölçüldü).
             html += `
             <${tag}${link} class="relative bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" id="dyn-card-${device.id}">
                 <div>
                     ${visual}
-                    <h3 class="font-bold text-base leading-tight truncate">${device.name || 'Cihaz'}</h3>
+                    <h3 class="font-bold text-base leading-tight line-clamp-2">${device.name || 'Cihaz'}</h3>
                 </div>
                 <p class="text-slate-500 text-sm font-medium leading-5">${device.state || 'Kapalı'}</p>
             </${tag}>

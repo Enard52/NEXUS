@@ -246,6 +246,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 30%,transparent)}
 .f-ic{width:48px;height:48px;border-radius:14px;background:color-mix(in srgb,var(--brand) 12%,transparent);
   color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.f-ic svg{width:24px;height:24px}
 .card h3{margin:0 0 8px;font-size:17px;font-weight:700;letter-spacing:-.01em}
 .card p{margin:0;color:var(--muted);font-size:14px}
 
@@ -266,7 +267,8 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text-2);box-shadow:0 2px 6px rgba(15,23,42,.03);
   transition:all .18s ease}
 .chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 40%,transparent);box-shadow:var(--shadow)}
-.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font-weight:700;font-size:14px}
+.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:0;cursor:pointer;transition:color .18s ease}
+.int-more:hover{color:var(--brand-press);text-decoration:underline}
 
 /* Fiyatlar */
 .billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 32px}
@@ -339,7 +341,10 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .ft a.logo{display:inline-flex !important;align-items:center !important;gap:10px !important;font-size:20px !important;
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
-.ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 0;max-width:34ch}
+.ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
+.ft-pills{display:flex;flex-wrap:wrap;gap:8px}
+.ft-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
+.ft-pill svg{width:13px;height:13px;color:var(--brand)}
 .ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
@@ -451,11 +456,49 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-auth-btn .icon{width:15px;height:15px;flex-shrink:0}
 .dot-online{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981}
 
-/* Auth Modal & Profile */
-.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:14px;line-height:1.4}
-.nx-auth-toggle{margin-top:16px;text-align:center;font-size:13px;color:var(--muted)}
-.nx-link-btn{background:none;border:0;color:var(--brand);cursor:pointer;font:inherit;padding:0 4px;text-decoration:underline;text-underline-offset:2px}
-.nx-link-btn:hover{color:var(--brand-dark)}
+/* Auth Modal & Profile - Mobil & Masaüstü Uygulama ile 1:1 Uyumlu */
+.nx-auth-brand-badge{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:18px}
+.nx-app-logo{width:58px;height:58px;margin-bottom:10px;filter:drop-shadow(0 6px 14px rgba(76,125,255,.25))}
+.nx-app-logo svg{width:100%;height:100%}
+.nx-auth-brand-badge h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 5px;color:var(--text)}
+.nx-auth-brand-badge p{font-size:13px;color:var(--muted);margin:0;max-width:32ch;line-height:1.45}
+
+.nx-auth-field-wrap{margin-bottom:11px;position:relative}
+.nx-app-input{
+  width:100%;height:44px;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:14px;padding:0 16px;font:500 14px Inter,sans-serif;color:var(--text);outline:none;
+  transition:all .2s ease;
+}
+.nx-app-input:focus{
+  border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent);
+}
+.nx-pw-toggle{
+  position:absolute;top:50%;right:12px;transform:translateY(-50%);background:none;border:none;color:var(--muted);
+  cursor:pointer;padding:6px;display:flex;align-items:center;justify-content:center;transition:color .18s;
+}
+.nx-pw-toggle:hover{color:var(--text)}
+.nx-pw-toggle svg{width:18px;height:18px}
+
+.nx-app-submit{
+  height:44px;border-radius:14px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border:0;transition:all .2s ease;margin-top:6px;
+}
+.nx-google-btn{
+  width:100%;height:44px;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  font:700 13.5px Inter,sans-serif;color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:10px;margin-top:9px;box-shadow:0 2px 6px rgba(0,0,0,.04);transition:all .2s ease;
+}
+.nx-google-btn:hover{background:var(--surface-2);border-color:var(--brand);color:var(--text);transform:translateY(-1px)}
+.nx-auth-links{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px;text-align:center}
+.nx-auth-link{
+  background:none;border:none;font:600 13px Inter,sans-serif;color:var(--brand);cursor:pointer;padding:3px;
+  transition:all .18s;text-decoration:none;
+}
+.nx-auth-link:hover{text-decoration:underline;color:var(--brand-press)}
+.nx-auth-link.muted{color:var(--muted);font-weight:500;font-size:12.5px}
+.nx-auth-link.muted:hover{color:var(--text-2)}
+
+.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:12px;line-height:1.4}
 .nx-profile-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)}
 .nx-avatar-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981}
 .nx-profile-details{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;display:grid;gap:12px}
@@ -547,7 +590,12 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     <div class="ft-grid">
       <div class="ft-brand">
         <a class="logo" href="/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
-        <p>Local-first smart home platform, privacy-focused and built for speed.</p>
+        <p>Next-generation smart home management built to run entirely on your local network. Zero cloud reliance, ultra-low latency automations, and privacy by design for all your connected devices.</p>
+        <div class="ft-pills">
+          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Local-First LAN</span>
+          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Zero Cloud Lag</span>
+          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Privacy-First</span>
+        </div>
       </div>
       <div><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about.html">About</a></div>
       <div><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="javascript:nxOpenContactModal('Technical Support')">Contact &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
@@ -608,27 +656,37 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     
     <!-- Giriş / Kayıt Görünümü -->
     <div id="nxAuthFormView">
-      <div class="nx-modal-header">
-        <h3 id="nxAuthTitle">NEXUS Account</h3>
-        <p id="nxAuthSubtitle">Sign in to synchronize your setup and manage your NEXUS+ subscription.</p>
+      <div class="nx-auth-brand-badge">
+        <div class="nx-app-logo"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 id="nxAuthTitle">Welcome Back</h3>
+        <p id="nxAuthSubtitle">Sign in to manage your smart home.</p>
       </div>
       <form id="nxAuthForm" onsubmit="nxSubmitAuth(event)">
         <div id="nxAuthAlert" class="nx-auth-alert" style="display:none"></div>
-        <div class="nx-form-group">
-          <label for="nxAuthEmail">Email Address</label>
-          <input type="email" id="nxAuthEmail" class="nx-form-input" required placeholder="name@example.com" autocomplete="email">
+        <div class="nx-auth-field-wrap">
+          <input type="email" id="nxAuthEmail" class="nx-app-input" required placeholder="Email" autocomplete="email">
         </div>
-        <div class="nx-form-group">
-          <label for="nxAuthPassword">Password</label>
-          <input type="password" id="nxAuthPassword" class="nx-form-input" required placeholder="••••••••" autocomplete="current-password">
+        <div class="nx-auth-field-wrap" style="position:relative">
+          <input type="password" id="nxAuthPassword" class="nx-app-input" required placeholder="Password" autocomplete="current-password" style="padding-right:44px">
+          <button type="button" class="nx-pw-toggle" onclick="nxTogglePwVisible()" aria-label="Show password">
+            <span id="nxPwEyeIcon"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"/></svg></span>
+          </button>
         </div>
-        <button type="submit" id="nxAuthSubmitBtn" class="nx-form-submit">
+        <button type="submit" id="nxAuthSubmitBtn" class="btn btn-primary w-full nx-app-submit">
           <span>Sign In</span>
         </button>
+        <button type="button" class="nx-google-btn" onclick="nxGoogleLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+          <span>Continue with Google</span>
+        </button>
       </form>
-      <div class="nx-auth-toggle">
-        <span id="nxAuthSwitchPrompt">Don't have an account?</span>
-        <button type="button" class="nx-link-btn" onclick="nxToggleAuthMode()"><b id="nxAuthSwitchBtn">Sign Up</b></button>
+      <div class="nx-auth-links">
+        <button type="button" class="nx-auth-link" onclick="nxToggleAuthMode()">
+          <span id="nxAuthSwitchPrompt">Don't have an account? Sign up</span>
+        </button>
+        <button type="button" class="nx-auth-link muted" onclick="nxForgotPassword()">
+          <span>Forgot Password?</span>
+        </button>
       </div>
     </div>
 

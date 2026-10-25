@@ -164,8 +164,7 @@ function nxToggleAuthMode(){
   var title=document.getElementById('nxAuthTitle');
   var sub=document.getElementById('nxAuthSubtitle');
   var submitBtn=document.getElementById('nxAuthSubmitBtn');
-  var prompt=document.getElementById('nxAuthSwitchPrompt');
-  var switchBtn=document.getElementById('nxAuthSwitchBtn');
+  var switchPrompt=document.getElementById('nxAuthSwitchPrompt');
   var alertEl=document.getElementById('nxAuthAlert');
   if(alertEl)alertEl.style.display='none';
 
@@ -174,16 +173,65 @@ function nxToggleAuthMode(){
     if(title)title.textContent=isTr?'Yeni Hesap Oluştur':'Create Account';
     if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':'Sign up free to control your home with zero lock-in.';
     if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':'Sign Up')+'</span>';
-    if(prompt)prompt.textContent=isTr?'Zaten hesabınız var mı?':'Already have an account?';
-    if(switchBtn)switchBtn.textContent=isTr?'Giriş Yap':'Sign In';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Zaten hesabınız var mı? Giriş Yap':'Already have an account? Sign In';
   }else{
     nxAuthMode='login';
-    if(title)title.textContent=isTr?'NEXUS Hesabım':'NEXUS Account';
-    if(sub)sub.textContent=isTr?'Cihaz senkronizasyonu ve NEXUS+ aboneliğinizi yönetmek için giriş yapın.':'Sign in to synchronize your setup and manage your NEXUS+ subscription.';
+    if(title)title.textContent=isTr?'Tekrar Hoş Geldin':'Welcome Back';
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için giriş yap.':'Sign in to manage your smart home.';
     if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':'Sign In')+'</span>';
-    if(prompt)prompt.textContent=isTr?'Hesabınız yok mu?':"Don't have an account?";
-    if(switchBtn)switchBtn.textContent=isTr?'Hemen Kayıt Ol':'Sign Up';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Hesabın yok mu? Yeni Hesap Oluştur':"Don't have an account? Sign up";
   }
+}
+
+function nxTogglePwVisible(){
+  var input=document.getElementById('nxAuthPassword');
+  var iconEl=document.getElementById('nxPwEyeIcon');
+  if(!input||!iconEl)return;
+  if(input.type==='password'){
+    input.type='text';
+    iconEl.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  }else{
+    input.type='password';
+    iconEl.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"/></svg>';
+  }
+}
+
+function nxGoogleLogin(){
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var redir=window.location.origin + window.location.pathname;
+  window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(redir);
+}
+
+function nxForgotPassword(){
+  var isTr=document.documentElement.lang==='tr';
+  var email=(document.getElementById('nxAuthEmail').value||'').trim();
+  var promptMsg=isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : 'Enter your email address to receive a password reset link:';
+  var inputEmail=prompt(promptMsg, email);
+  if(!inputEmail)return;
+  inputEmail=inputEmail.trim();
+  var alertEl=document.getElementById('nxAuthAlert');
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  fetch(SUPABASE_URL+'/auth/v1/recover',{
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:inputEmail})
+  })
+  .then(function(){
+    if(alertEl){
+      alertEl.style.background='rgba(16,185,129,.12)';
+      alertEl.style.borderColor='rgba(16,185,129,.3)';
+      alertEl.style.color='#10B981';
+      alertEl.textContent=isTr?'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.':'Password reset link sent to your email.';
+      alertEl.style.display='block';
+    }
+  })
+  .catch(function(){
+    if(alertEl){
+      alertEl.textContent=isTr?'Sıfırlama e-postası gönderilemedi. Lütfen tekrar deneyin.':'Could not send reset email. Please try again.';
+      alertEl.style.display='block';
+    }
+  });
 }
 
 function nxSubmitAuth(e){
@@ -383,6 +431,26 @@ document.addEventListener('DOMContentLoaded',function(){
       else if(diff<-40) nxNextShot();
       nxResetShotTimer();
     },{passive:true});
+  }
+
+  // OAuth / Google Giriş Dönüşü Kontrolü
+  if(window.location.hash && window.location.hash.indexOf('access_token=')!==-1){
+    try{
+      var hashParams=new URLSearchParams(window.location.hash.substring(1));
+      var token=hashParams.get('access_token');
+      if(token){
+        var payload=JSON.parse(atob(token.split('.')[1]));
+        var userEmail=payload.email||'kullanici@nexus';
+        localStorage.setItem('nexusCurrentUser',userEmail);
+        localStorage.setItem('nexus_cloud_session',JSON.stringify({
+          accessToken:token,
+          refreshToken:hashParams.get('refresh_token'),
+          userId:payload.sub,
+          email:userEmail
+        }));
+        history.replaceState(null,null,window.location.pathname+window.location.search);
+      }
+    }catch(e){}
   }
 
   // Giriş Durumu Güncelleme

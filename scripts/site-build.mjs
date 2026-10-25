@@ -74,6 +74,12 @@ function icon(name, cls = 'icon') {
     moon: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>`,
     lock: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
     plug: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 2v6m7 0H5a2 2 0 0 0-2 2v2a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5v-2a2 2 0 0 0-2-2zM9 22v-4m6 4v-4"/></svg>`,
+    zap: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    gauge: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 14 4-4"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>`,
+    wifi: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>`,
+    layers: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 12.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 12.5"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 17.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 17.5"/></svg>`,
+    eye: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
+    eyeOff: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"/></svg>`,
   };
   return I[name] || '';
 }
@@ -306,6 +312,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 30%,transparent)}
 .f-ic{width:48px;height:48px;border-radius:14px;background:color-mix(in srgb,var(--brand) 12%,transparent);
   color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.f-ic svg{width:24px;height:24px}
 .card h3{margin:0 0 8px;font-size:17px;font-weight:700;letter-spacing:-.01em}
 .card p{margin:0;color:var(--muted);font-size:14px}
 
@@ -326,7 +333,8 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text-2);box-shadow:0 2px 6px rgba(15,23,42,.03);
   transition:all .18s ease}
 .chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 40%,transparent);box-shadow:var(--shadow)}
-.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font-weight:700;font-size:14px}
+.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:0;cursor:pointer;transition:color .18s ease}
+.int-more:hover{color:var(--brand-press);text-decoration:underline}
 
 /* Fiyatlar */
 .billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 32px}
@@ -399,7 +407,10 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .ft a.logo{display:inline-flex !important;align-items:center !important;gap:10px !important;font-size:20px !important;
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
-.ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 0;max-width:34ch}
+.ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
+.ft-pills{display:flex;flex-wrap:wrap;gap:8px}
+.ft-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
+.ft-pill svg{width:13px;height:13px;color:var(--brand)}
 .ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
@@ -511,11 +522,49 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-auth-btn .icon{width:15px;height:15px;flex-shrink:0}
 .dot-online{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981}
 
-/* Auth Modal & Profile */
-.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:14px;line-height:1.4}
-.nx-auth-toggle{margin-top:16px;text-align:center;font-size:13px;color:var(--muted)}
-.nx-link-btn{background:none;border:0;color:var(--brand);cursor:pointer;font:inherit;padding:0 4px;text-decoration:underline;text-underline-offset:2px}
-.nx-link-btn:hover{color:var(--brand-dark)}
+/* Auth Modal & Profile - Mobil & Masaüstü Uygulama ile 1:1 Uyumlu */
+.nx-auth-brand-badge{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:18px}
+.nx-app-logo{width:58px;height:58px;margin-bottom:10px;filter:drop-shadow(0 6px 14px rgba(76,125,255,.25))}
+.nx-app-logo svg{width:100%;height:100%}
+.nx-auth-brand-badge h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 5px;color:var(--text)}
+.nx-auth-brand-badge p{font-size:13px;color:var(--muted);margin:0;max-width:32ch;line-height:1.45}
+
+.nx-auth-field-wrap{margin-bottom:11px;position:relative}
+.nx-app-input{
+  width:100%;height:44px;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:14px;padding:0 16px;font:500 14px Inter,sans-serif;color:var(--text);outline:none;
+  transition:all .2s ease;
+}
+.nx-app-input:focus{
+  border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent);
+}
+.nx-pw-toggle{
+  position:absolute;top:50%;right:12px;transform:translateY(-50%);background:none;border:none;color:var(--muted);
+  cursor:pointer;padding:6px;display:flex;align-items:center;justify-content:center;transition:color .18s;
+}
+.nx-pw-toggle:hover{color:var(--text)}
+.nx-pw-toggle svg{width:18px;height:18px}
+
+.nx-app-submit{
+  height:44px;border-radius:14px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border:0;transition:all .2s ease;margin-top:6px;
+}
+.nx-google-btn{
+  width:100%;height:44px;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  font:700 13.5px Inter,sans-serif;color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:10px;margin-top:9px;box-shadow:0 2px 6px rgba(0,0,0,.04);transition:all .2s ease;
+}
+.nx-google-btn:hover{background:var(--surface-2);border-color:var(--brand);color:var(--text);transform:translateY(-1px)}
+.nx-auth-links{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px;text-align:center}
+.nx-auth-link{
+  background:none;border:none;font:600 13px Inter,sans-serif;color:var(--brand);cursor:pointer;padding:3px;
+  transition:all .18s;text-decoration:none;
+}
+.nx-auth-link:hover{text-decoration:underline;color:var(--brand-press)}
+.nx-auth-link.muted{color:var(--muted);font-weight:500;font-size:12.5px}
+.nx-auth-link.muted:hover{color:var(--text-2)}
+
+.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:12px;line-height:1.4}
 .nx-profile-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)}
 .nx-avatar-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981}
 .nx-profile-details{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;display:grid;gap:12px}
@@ -698,8 +747,7 @@ function nxToggleAuthMode(){
   var title=document.getElementById('nxAuthTitle');
   var sub=document.getElementById('nxAuthSubtitle');
   var submitBtn=document.getElementById('nxAuthSubmitBtn');
-  var prompt=document.getElementById('nxAuthSwitchPrompt');
-  var switchBtn=document.getElementById('nxAuthSwitchBtn');
+  var switchPrompt=document.getElementById('nxAuthSwitchPrompt');
   var alertEl=document.getElementById('nxAuthAlert');
   if(alertEl)alertEl.style.display='none';
 
@@ -708,16 +756,65 @@ function nxToggleAuthMode(){
     if(title)title.textContent=isTr?'Yeni Hesap Oluştur':'Create Account';
     if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':'Sign up free to control your home with zero lock-in.';
     if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':'Sign Up')+'</span>';
-    if(prompt)prompt.textContent=isTr?'Zaten hesabınız var mı?':'Already have an account?';
-    if(switchBtn)switchBtn.textContent=isTr?'Giriş Yap':'Sign In';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Zaten hesabınız var mı? Giriş Yap':'Already have an account? Sign In';
   }else{
     nxAuthMode='login';
-    if(title)title.textContent=isTr?'NEXUS Hesabım':'NEXUS Account';
-    if(sub)sub.textContent=isTr?'Cihaz senkronizasyonu ve NEXUS+ aboneliğinizi yönetmek için giriş yapın.':'Sign in to synchronize your setup and manage your NEXUS+ subscription.';
+    if(title)title.textContent=isTr?'Tekrar Hoş Geldin':'Welcome Back';
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için giriş yap.':'Sign in to manage your smart home.';
     if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':'Sign In')+'</span>';
-    if(prompt)prompt.textContent=isTr?'Hesabınız yok mu?':"Don't have an account?";
-    if(switchBtn)switchBtn.textContent=isTr?'Hemen Kayıt Ol':'Sign Up';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Hesabın yok mu? Yeni Hesap Oluştur':"Don't have an account? Sign up";
   }
+}
+
+function nxTogglePwVisible(){
+  var input=document.getElementById('nxAuthPassword');
+  var iconEl=document.getElementById('nxPwEyeIcon');
+  if(!input||!iconEl)return;
+  if(input.type==='password'){
+    input.type='text';
+    iconEl.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  }else{
+    input.type='password';
+    iconEl.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"/></svg>';
+  }
+}
+
+function nxGoogleLogin(){
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var redir=window.location.origin + window.location.pathname;
+  window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(redir);
+}
+
+function nxForgotPassword(){
+  var isTr=document.documentElement.lang==='tr';
+  var email=(document.getElementById('nxAuthEmail').value||'').trim();
+  var promptMsg=isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : 'Enter your email address to receive a password reset link:';
+  var inputEmail=prompt(promptMsg, email);
+  if(!inputEmail)return;
+  inputEmail=inputEmail.trim();
+  var alertEl=document.getElementById('nxAuthAlert');
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  fetch(SUPABASE_URL+'/auth/v1/recover',{
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:inputEmail})
+  })
+  .then(function(){
+    if(alertEl){
+      alertEl.style.background='rgba(16,185,129,.12)';
+      alertEl.style.borderColor='rgba(16,185,129,.3)';
+      alertEl.style.color='#10B981';
+      alertEl.textContent=isTr?'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.':'Password reset link sent to your email.';
+      alertEl.style.display='block';
+    }
+  })
+  .catch(function(){
+    if(alertEl){
+      alertEl.textContent=isTr?'Sıfırlama e-postası gönderilemedi. Lütfen tekrar deneyin.':'Could not send reset email. Please try again.';
+      alertEl.style.display='block';
+    }
+  });
 }
 
 function nxSubmitAuth(e){
@@ -919,6 +1016,26 @@ document.addEventListener('DOMContentLoaded',function(){
     },{passive:true});
   }
 
+  // OAuth / Google Giriş Dönüşü Kontrolü
+  if(window.location.hash && window.location.hash.indexOf('access_token=')!==-1){
+    try{
+      var hashParams=new URLSearchParams(window.location.hash.substring(1));
+      var token=hashParams.get('access_token');
+      if(token){
+        var payload=JSON.parse(atob(token.split('.')[1]));
+        var userEmail=payload.email||'kullanici@nexus';
+        localStorage.setItem('nexusCurrentUser',userEmail);
+        localStorage.setItem('nexus_cloud_session',JSON.stringify({
+          accessToken:token,
+          refreshToken:hashParams.get('refresh_token'),
+          userId:payload.sub,
+          email:userEmail
+        }));
+        history.replaceState(null,null,window.location.pathname+window.location.search);
+      }
+    }catch(e){}
+  }
+
   // Giriş Durumu Güncelleme
   nxUpdateNavAuth();
 
@@ -1077,13 +1194,14 @@ function renderHow(c) {
 }
 
 function renderIntegrations(c) {
+  const isTr = c.lang === 'tr';
   return `<section id="integrations">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.integrations.heading)}</h2><p>${esc(c.integrations.lead)}</p></div>
     <div class="int-groups">
       ${c.integrations.groups.map(([g, items]) => `<div class="card rv"><h3>${esc(g)}</h3><div class="chips">${items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div></div>`).join('\n      ')}
     </div>
-    <a class="int-more" href="${c.integrations.moreHref}" target="_blank" rel="noopener">${esc(c.integrations.more)} ${icon('arrow')}</a>
+    <button type="button" class="int-more" onclick="nxOpenContactModal('${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}')">${esc(c.integrations.more)} ${icon('arrow')}</button>
   </div>
 </section>`;
 }
@@ -1217,6 +1335,11 @@ function renderFooter(c) {
       <div class="ft-brand">
         <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
         <p>${esc(c.footer.tagline)}</p>
+        <div class="ft-pills">
+          <span class="ft-pill">${icon('lock')} ${c.lang === 'tr' ? 'Yerel Ağ Güvenliği' : 'Local-First LAN'}</span>
+          <span class="ft-pill">${icon('zap')} ${c.lang === 'tr' ? 'Sıfır Bulut Bağımlılığı' : 'Zero Cloud Lag'}</span>
+          <span class="ft-pill">${icon('sparkles')} ${c.lang === 'tr' ? 'Gizlilik Odaklı' : 'Privacy-First'}</span>
+        </div>
       </div>
       ${col(c.footer.product, c.footer.productLinks)}
       ${col(c.footer.account, c.footer.accountLinks)}
@@ -1285,27 +1408,37 @@ function renderAuthModal(c) {
     
     <!-- Giriş / Kayıt Görünümü -->
     <div id="nxAuthFormView">
-      <div class="nx-modal-header">
-        <h3 id="nxAuthTitle">${isTr ? 'NEXUS Hesabım' : 'NEXUS Account'}</h3>
-        <p id="nxAuthSubtitle">${isTr ? 'Cihaz senkronizasyonu ve NEXUS+ aboneliğinizi yönetmek için giriş yapın.' : 'Sign in to synchronize your setup and manage your NEXUS+ subscription.'}</p>
+      <div class="nx-auth-brand-badge">
+        <div class="nx-app-logo">${brand.logoSvg}</div>
+        <h3 id="nxAuthTitle">${isTr ? 'Tekrar Hoş Geldin' : 'Welcome Back'}</h3>
+        <p id="nxAuthSubtitle">${isTr ? 'Evini tek merkezden yönetmek için giriş yap.' : 'Sign in to manage your smart home.'}</p>
       </div>
       <form id="nxAuthForm" onsubmit="nxSubmitAuth(event)">
         <div id="nxAuthAlert" class="nx-auth-alert" style="display:none"></div>
-        <div class="nx-form-group">
-          <label for="nxAuthEmail">${isTr ? 'E-posta Adresi' : 'Email Address'}</label>
-          <input type="email" id="nxAuthEmail" class="nx-form-input" required placeholder="name@example.com" autocomplete="email">
+        <div class="nx-auth-field-wrap">
+          <input type="email" id="nxAuthEmail" class="nx-app-input" required placeholder="${isTr ? 'E-posta' : 'Email'}" autocomplete="email">
         </div>
-        <div class="nx-form-group">
-          <label for="nxAuthPassword">${isTr ? 'Şifre' : 'Password'}</label>
-          <input type="password" id="nxAuthPassword" class="nx-form-input" required placeholder="••••••••" autocomplete="current-password">
+        <div class="nx-auth-field-wrap" style="position:relative">
+          <input type="password" id="nxAuthPassword" class="nx-app-input" required placeholder="${isTr ? 'Şifre' : 'Password'}" autocomplete="current-password" style="padding-right:44px">
+          <button type="button" class="nx-pw-toggle" onclick="nxTogglePwVisible()" aria-label="${isTr ? 'Şifreyi Göster' : 'Show password'}">
+            <span id="nxPwEyeIcon">${icon('eyeOff')}</span>
+          </button>
         </div>
-        <button type="submit" id="nxAuthSubmitBtn" class="nx-form-submit">
+        <button type="submit" id="nxAuthSubmitBtn" class="btn btn-primary w-full nx-app-submit">
           <span>${isTr ? 'Giriş Yap' : 'Sign In'}</span>
         </button>
+        <button type="button" class="nx-google-btn" onclick="nxGoogleLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+          <span>${isTr ? 'Google ile devam et' : 'Continue with Google'}</span>
+        </button>
       </form>
-      <div class="nx-auth-toggle">
-        <span id="nxAuthSwitchPrompt">${isTr ? 'Hesabınız yok mu?' : "Don't have an account?"}</span>
-        <button type="button" class="nx-link-btn" onclick="nxToggleAuthMode()"><b id="nxAuthSwitchBtn">${isTr ? 'Hemen Kayıt Ol' : 'Sign Up'}</b></button>
+      <div class="nx-auth-links">
+        <button type="button" class="nx-auth-link" onclick="nxToggleAuthMode()">
+          <span id="nxAuthSwitchPrompt">${isTr ? 'Hesabın yok mu? Yeni Hesap Oluştur' : "Don't have an account? Sign up"}</span>
+        </button>
+        <button type="button" class="nx-auth-link muted" onclick="nxForgotPassword()">
+          <span>${isTr ? 'Şifremi Unuttum' : 'Forgot Password?'}</span>
+        </button>
       </div>
     </div>
 
