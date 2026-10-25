@@ -1,8 +1,10 @@
 // Tema: sistem tercihi + kullanıcı seçimi
 (function(){
-  var t;
+  var d='light';
+  var t=null;
   try{t=localStorage.getItem('nx-site-theme')}catch(e){}
-  var d=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  if(t==='dark'||t==='light') d=t;
+  else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches) d='dark';
   document.documentElement.setAttribute('data-theme',d);
 })();
 
@@ -16,14 +18,16 @@ function nxToggleTheme(){
 function nxSetLang(lang){
   try{localStorage.setItem('nx-lang',lang)}catch(e){}
   var p=location.pathname;
-  var isTr=/^\\/tr(\\/|$)/.test(p);
+  var isTr=(p==='/tr/'||p.indexOf('/tr/')===0);
   if(lang==='tr'){
     if(isTr)return;
-    var sub=p.replace(/^\\/+/,'');
+    var sub=p;
+    while(sub.charAt(0)==='/')sub=sub.slice(1);
     location.href='/tr/'+sub+location.search+location.hash;
   }else{
     if(!isTr)return;
-    var sub=p.replace(/^\\/tr(\\/|$)/,'');
+    var sub=p.slice(3);
+    while(sub.charAt(0)==='/')sub=sub.slice(1);
     location.href='/'+sub+location.search+location.hash;
   }
 }
@@ -33,70 +37,125 @@ function nxSetBilling(period){
   var isYearly=period==='yearly';
   var btnM=document.getElementById('billingMonthly');
   var btnY=document.getElementById('billingYearly');
-  if(btnM&&btnY){
-    btnM.classList.toggle('active',!isYearly);
-    btnY.classList.toggle('active',isYearly);
+  if(btnM)btnM.classList.toggle('active',!isYearly);
+  if(btnY)btnY.classList.toggle('active',isYearly);
+
+  var planCard=document.getElementById('nexusPlusPlan');
+  if(!planCard)return;
+  var priceEl=planCard.querySelector('.price');
+  var periodEl=planCard.querySelector('.price small');
+  var noteEl=planCard.querySelector('.price-note');
+  var ctaEl=planCard.querySelector('.plan-cta');
+
+  var isTr=document.documentElement.lang==='tr';
+  if(isYearly){
+    if(priceEl&&periodEl)priceEl.innerHTML=(isTr?'59 ₺':'$2.69')+' <small>'+(isTr?'/ay, yıllık':'/mo, billed yearly')+'</small>';
+    if(noteEl)noteEl.textContent=isTr?'Yıllık 708 ₺ olarak faturalandırılır (%33 tasarruf)':'Billed as $32.28/yr (Save 33%)';
+    if(ctaEl&&ctaEl.dataset.yearlyHref)ctaEl.href=ctaEl.dataset.yearlyHref;
+  }else{
+    if(priceEl&&periodEl)priceEl.innerHTML=(isTr?'89 ₺':'$3.99')+' <small>'+(isTr?'/ay':'/mo')+'</small>';
+    if(noteEl)noteEl.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
+    if(ctaEl&&ctaEl.dataset.monthlyHref)ctaEl.href=ctaEl.dataset.monthlyHref;
   }
-  document.querySelectorAll('[data-price-monthly]').forEach(function(el){
-    el.innerHTML=isYearly?el.getAttribute('data-price-yearly'):el.getAttribute('data-price-monthly');
-  });
-  document.querySelectorAll('[data-period-monthly]').forEach(function(el){
-    el.textContent=isYearly?el.getAttribute('data-period-yearly'):el.getAttribute('data-period-monthly');
-  });
-  document.querySelectorAll('[data-cta-monthly]').forEach(function(el){
-    var href=isYearly?el.getAttribute('data-cta-yearly'):el.getAttribute('data-cta-monthly');
-    if(href)el.setAttribute('href',href);
-  });
 }
 
-// Kaydırma giriş animasyonu
-(function(){
-  var els=document.querySelectorAll('.rv');
-  if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){
-    els.forEach(function(e){e.classList.add('in')});
-    return;
-  }
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(en){
-      if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}
-    });
-  },{threshold:.12});
-  els.forEach(function(e){io.observe(e)});
-})();
-
 // SSS tek-açıklık davranışı
-document.querySelectorAll('details.faq').forEach(function(d){
-  d.addEventListener('toggle',function(){
-    if(d.open)document.querySelectorAll('details.faq[open]').forEach(function(o){if(o!==d)o.open=false});
-  });
-});
+function nxToggleFaq(btn){
+  var item=btn.closest('.faq-item');
+  var isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(el){el.classList.remove('open')});
+  if(!isOpen)item.classList.add('open');
+}
 
-// Telefon önizleme kontrolleri
-var currentShotIdx = 0;
-function nxUpdateShot(idx){
-  var slides = document.querySelectorAll('.shot-slide');
-  var dots = document.querySelectorAll('.phone-nav-dot');
-  if(!slides.length) return;
-  currentShotIdx = (idx + slides.length) % slides.length;
-  slides.forEach(function(s, i){
-    s.classList.toggle('active', i === currentShotIdx);
+// Gerçekçi Akıllı Telefon Ön İzleme Kontrolleri
+var nxCurrentShot=0;
+var nxShotTimer=null;
+var nxShotsData=[];
+
+function nxShowShot(idx){
+  var slides=document.querySelectorAll('.shot-slide');
+  var dots=document.querySelectorAll('.phone-dot');
+  if(!slides.length)return;
+  if(idx<0)idx=slides.length-1;
+  if(idx>=slides.length)idx=0;
+  nxCurrentShot=idx;
+
+  slides.forEach(function(s,i){
+    s.classList.toggle('active',i===idx);
   });
-  dots.forEach(function(d, i){
-    d.classList.toggle('active', i === currentShotIdx);
-    d.setAttribute('aria-selected', i === currentShotIdx ? 'true' : 'false');
+  dots.forEach(function(d,i){
+    d.classList.toggle('active',i===idx);
   });
+
+  var titleEl=document.getElementById('phoneSlideTitle');
+  var numEl=document.getElementById('phoneSlideNum');
+  if(nxShotsData[idx]){
+    if(titleEl)titleEl.textContent=nxShotsData[idx].label;
+    if(numEl)numEl.textContent=(idx+1)+'/'+slides.length;
+  }
 }
 
 function nxNextShot(){
-  nxUpdateShot(currentShotIdx + 1);
+  nxShowShot(nxCurrentShot+1);
+  nxResetShotTimer();
 }
 
-function nxGoToShot(name){
-  var slides = document.querySelectorAll('.shot-slide');
-  for(var i=0; i<slides.length; i++){
-    if(slides[i].getAttribute('data-shot') === name){
-      nxUpdateShot(i);
-      break;
-    }
-  }
+function nxPrevShot(){
+  nxShowShot(nxCurrentShot-1);
+  nxResetShotTimer();
 }
+
+function nxResetShotTimer(){
+  if(nxShotTimer)clearInterval(nxShotTimer);
+  nxShotTimer=setInterval(function(){
+    nxShowShot(nxCurrentShot+1);
+  },4500);
+}
+
+// Telefon dokunma, sürükleme ve tıklama yönetimi
+document.addEventListener('DOMContentLoaded',function(){
+  var mockup=document.getElementById('phoneMockup');
+  if(mockup){
+    nxResetShotTimer();
+
+    mockup.addEventListener('mouseenter',function(){if(nxShotTimer)clearInterval(nxShotTimer);});
+    mockup.addEventListener('mouseleave',function(){nxResetShotTimer();});
+
+    mockup.addEventListener('click',function(e){
+      var rect=mockup.getBoundingClientRect();
+      var x=e.clientX-rect.left;
+      if(x<rect.width*0.35){
+        nxPrevShot();
+      }else{
+        nxNextShot();
+      }
+    });
+
+    var touchStartX=0;
+    var touchEndX=0;
+    mockup.addEventListener('touchstart',function(e){
+      touchStartX=e.changedTouches[0].screenX;
+      if(nxShotTimer)clearInterval(nxShotTimer);
+    },{passive:true});
+    mockup.addEventListener('touchend',function(e){
+      touchEndX=e.changedTouches[0].screenX;
+      var diff=touchEndX-touchStartX;
+      if(diff>40) nxPrevShot();
+      else if(diff<-40) nxNextShot();
+      nxResetShotTimer();
+    },{passive:true});
+  }
+
+  // GitHub Sürüm Etiketi Çekimi
+  fetch('https://api.github.com/repos/Enard52/NEXUS/releases/latest')
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){
+      if(!d||!d.tag_name)return;
+      var tag=String(d.tag_name);
+      var v=tag.indexOf('v')===0?tag.slice(1):tag;
+      document.querySelectorAll('[data-nexus-ver]').forEach(function(el){
+        el.textContent='v'+v;
+      });
+    })
+    .catch(function(){});
+});
