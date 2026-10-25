@@ -142,6 +142,75 @@ for (const [file, cur, saveText] of [
   check(`${label}: yedek sürüm rozeti güncel (${baked})`, baked === pkgVer, `beklenen ${pkgVer}`);
 }
 
+/* --- site ↔ uygulama/program uyumu: iddialar uygulamanın kendi kodundan türüyor --- */
+{
+  // Android alt sınırı: sitede yazan sürüm, gradle'daki minSdkVersion'un karşısı olmalı.
+  const API_TO_ANDROID = {
+    21: "5.0", 22: "5.1", 23: "6.0", 24: "7.0", 26: "8.0", 27: "8.1", 28: "9", 29: "10",
+    30: "11", 31: "12", 32: "12L", 33: "13", 34: "14", 35: "15",
+  };
+  const gradle = existsSync(join(ROOT, "android", "variables.gradle"))
+    ? readFileSync(join(ROOT, "android", "variables.gradle"), "utf8")
+    : "";
+  const minSdk = parseInt((gradle.match(/minSdkVersion\s*=\s*(\d+)/) || [])[1] || "0", 10);
+  const androidFloor = API_TO_ANDROID[minSdk] || "";
+  check(`depo: android minSdk okunuyor (${minSdk})`, minSdk > 0 && !!androidFloor, String(minSdk));
+
+  // Ev halkası ekranı: rol listesi ve yetki anahtarları sitenin aile kartıyla birebir aynı olmalı.
+  const hh = existsSync(join(ROOT, "stitch-household.html"))
+    ? readFileSync(join(ROOT, "stitch-household.html"), "utf8")
+    : "";
+  const roles = [...hh.matchAll(/<option value="([^"]+)">/g)].map((m) => m[1]);
+  check("depo: hane rolleri bulunuyor", roles.length >= 2, roles.join(","));
+  const permsBlock = (hh.match(/function defaultPerms[\s\S]{0,220}?return \{([^}]+)\}/) || [])[1] || "";
+  const permKeys = [...permsBlock.matchAll(/([a-zA-Z]+)\s*:/g)].map((m) => m[1]);
+  check("depo: yetki anahtarları bulunuyor", permKeys.length >= 2, permKeys.join(","));
+
+  const PERM_TR = { control: "kontrol", invite: "davet", settings: "ayar" };
+  for (const [file, lang] of [
+    ["index.html", "en"],
+    ["tr/index.html", "tr"],
+  ]) {
+    if (!existsSync(join(PUB, file)) || !hh || !androidFloor) continue;
+    const text = stripNoise(readFileSync(join(PUB, file), "utf8")).toLowerCase();
+    const label = lang === "tr" ? "TR ana" : "EN ana";
+
+    // 1) Android sürüm alt sınırı doğru mu (uygulama API 24 = Android 7.0).
+    check(`${label}: Android alt sınırı minSdk ile aynı (Android ${androidFloor}+)`, text.includes(`android ${androidFloor}+`), `minSdk ${minSdk}`);
+
+    // 2) Uydurma kısıt/özellik kalmasın: uygulamanın zorlamadığı sayısal sınır ve
+    //    uygulamada olmayan yetki taneliliği (yetkiler üye başına, oda/cihaz bazlı değil).
+    const invented = [
+      "6 üyeye kadar", "up to 6 members", "for up to 6",
+      "oda ve cihaz bazlı", "per-room and per-device",
+      "paylaşılan aile sahneleri", "shared family automations",
+    ];
+    const hit = invented.filter((b) => text.includes(b.toLowerCase()));
+    check(`${label}: uygulamada olmayan kısıt vaat edilmiyor`, hit.length === 0, hit.join(" | "));
+
+    // 3) Roller ve yetki adları uygulamanın ekranından gelmeli.
+    if (lang === "tr") {
+      const missingRoles = roles.filter((r) => !text.includes(r.toLowerCase()));
+      check(`${label}: hane rolleri uygulamayla aynı`, missingRoles.length === 0, `eksik: ${missingRoles.join(",")}`);
+      const missingPerms = permKeys.filter((k) => PERM_TR[k] && !text.includes(PERM_TR[k]));
+      check(`${label}: yetki adları uygulamayla aynı`, missingPerms.length === 0, `eksik: ${missingPerms.join(",")}`);
+    }
+
+    // 4) İndirme kartındaki SHA-256 rozeti gerçek bir bağlantı olmalı (dekoratif metin değil).
+    const html = readFileSync(join(PUB, file), "utf8");
+    const sums = [...html.matchAll(/class="dl-sums"[^>]+href="(https:\/\/github\.com\/[^"]+)"/g)].map((m) => m[1]);
+    check(`${label}: üç indirme kartının sağlama bağlantısı var`, sums.length === 3, `${sums.length}`);
+    check(
+      `${label}: sağlama bağlantıları platforma göre doğru dosyada`,
+      sums.some((u) => /SHA256SUMS-Windows/.test(u)) &&
+        sums.some((u) => /SHA256SUMS-Linux/.test(u)) &&
+        sums.some((u) => /sha256\.txt/.test(u)),
+      sums.join(" ")
+    );
+    check(`${label}: dekoratif "SHA-256" metni kalmadı`, !/<span>SHA-256<\/span>/.test(html));
+  }
+}
+
 /* --- meta / SEO --- */
 for (const [label, file, canonical] of [
   ["EN", "index.html", `${SITE_ORIGIN}/`],
@@ -771,6 +840,29 @@ if (LIVE) {
   check("canlı: .html adresi temiz URL'e yönleniyor", [301, 302, 307, 308].includes(htmlUrl.status) && htmlUrl.loc.includes("/about"), `${htmlUrl.status} → ${htmlUrl.loc}`);
   const login = await head("/login");
   check("canlı: /login web uygulamasına yönlendiriyor", login.status === 200 && login.txt.includes(APP_URL), String(login.status));
+  // Sitenin vaat ettiği kurulum dosyaları ve sağlama değerleri release'de duruyor mu.
+  const DL = "https://github.com/Enard52/nexus-releases/releases/latest/download/";
+  const dlLinks = [
+    ...new Set(
+      [...home.txt.matchAll(/href="(https:\/\/github\.com\/[^"]*nexus-releases\/releases\/latest\/download\/[^"]+)"/g)].map(
+        (m) => m[1]
+      )
+    ),
+  ];
+  check(
+    "canlı: indirme/sağlama bağlantıları sayfada var",
+    dlLinks.length >= 6 && dlLinks.every((u) => u.startsWith(DL)),
+    `${dlLinks.length}`
+  );
+  for (const u of dlLinks) {
+    let st = 0;
+    try {
+      st = (await fetch(u, { method: "HEAD", redirect: "follow" })).status;
+    } catch {
+      st = 0;
+    }
+    check(`canlı: ${u.slice(DL.length)} → 200`, st === 200, String(st));
+  }
 }
 
 await browser.close();

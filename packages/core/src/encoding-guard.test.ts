@@ -7,9 +7,11 @@ import { join } from "node:path";
    Gerçek olay: Windows PowerShell 5.1 `Set-Content -Encoding UTF8` kullanınca dosyanın
    başına BOM (U+FEFF) yazıyor; bu BOM .github/workflows/*.yml dosyalarına sıçradığında
    GitHub işi hiç başlatamıyor (her push "startup_failure", 0 iş, 0 log) ve aynı anda
-   Türkçe metinler bir kez daha kodlanıp "MasaÃ¼stÃ¼" gibi mojibake oluyor.
-   Betiklerin yazım tarafı BOM'suz UTF-8'e çevrildi; bu test ayni bozulmanin depoya
-   geri girmesini engelliyor. */
+   Türkçe metinler bir kez daha kodlanıp okunamaz hale geliyor (tek harf üç karakterlik
+   bozuk dizilime dönüşüyor). Bu dosya o bozuk dizilimi örnek olarak bile BARINDIRMAZ:
+   aşağıdaki dedektör düz metin aradığı için, örnek yazsaydık dedektör kendi kaynak
+   dosyasını yakalardı. Betiklerin yazım tarafı BOM'suz UTF-8'e çevrildi; bu test aynı
+   bozulmanın depoya geri girmesini engelliyor. */
 
 // cp1252: 0x80–0xFF aralığının Latin-1'den farklı olan karakterleri.
 const CP1252_HIGH: Record<string, number> = {

@@ -461,8 +461,12 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .dl-top h3{margin:0 0 2px;font-size:18px;font-weight:800}
 .plat{color:var(--muted);font-size:13px;font-weight:500}
 .dl-meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
-.dl-meta span{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;
+.dl-meta span,.dl-sums{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;
   font-size:12px;font-weight:600;color:var(--text-2);box-shadow:0 1px 3px rgba(0,0,0,.02)}
+/* Parmak hedefi: sağlama rozeti tıklanabilir, bu yüzden yüksekliği 28px'e çekiliyor. */
+.dl-sums{display:inline-flex;align-items:center;padding:7px 11px;min-height:28px;text-decoration:none;
+  transition:border-color .2s ease,color .2s ease}
+.dl-sums:hover{border-color:var(--brand);color:var(--brand)}
 .dl-card .btn{width:100%}
 .dl-note{font-size:13px;color:var(--muted);margin-top:20px;text-align:center}
 
@@ -1756,13 +1760,21 @@ function renderPricing(c) {
 
 function renderDownloads(c) {
   const DL_BASE = 'https://github.com/Enard52/nexus-releases/releases/latest/download';
+  // Saglama degerleri release varliklarinda yayinda (olculdu: uc dosya da 200 + gerçek hash).
+  // Rozet dekoraif metin olmasin: kullanici hash'i gorebilsin diye dogrudan dosyaya baglaniyor.
+  const SUMS = {
+    windows: 'SHA256SUMS-Windows.txt',
+    linux: 'SHA256SUMS-Linux.txt',
+    android: 'NEXUS-Android.apk.sha256.txt',
+  };
+  const sumsLabel = c.lang === 'tr' ? 'Sağlama değerini gör' : 'View the published checksum';
   return `<section id="downloads">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.downloads.heading)}</h2><p>${esc(c.downloads.lead)}</p></div>
     <div class="dl-grid">
       ${c.downloads.cards
         .map(
-          ([plat, ic, name, sub, file, ext]) => `<a class="dl-card rv" data-platform="${plat}" href="${DL_BASE}/${file}" download>
+          ([plat, ic, name, sub, file, ext]) => `<div class="dl-card rv" data-platform="${plat}">
         <div class="dl-top">
           <div class="dl-ic">${getPlatformLogo(plat)}</div>
           <div><h3>${esc(name)}</h3><span class="plat">${esc(sub)}</span></div>
@@ -1770,10 +1782,10 @@ function renderDownloads(c) {
         <div class="dl-meta">
           <span><b data-nexus-ver>${APP_VERSION}</b></span>
           <span>${plat === 'windows' ? '64-bit .exe' : plat === 'android' ? 'APK' : 'AppImage / .deb'}</span>
-          <span>SHA-256</span>
+          <a class="dl-sums" href="${DL_BASE}/${SUMS[plat]}" target="_blank" rel="noopener" title="${sumsLabel}">SHA-256</a>
         </div>
-        <span class="btn btn-primary">${icon('download')}${c.lang === 'tr' ? 'İndir' : 'Download'}</span>
-      </a>`
+        <a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : 'Download'}</a>
+      </div>`
         )
         .join('\n      ')}
     </div>

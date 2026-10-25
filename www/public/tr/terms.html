@@ -346,8 +346,12 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .dl-top h3{margin:0 0 2px;font-size:18px;font-weight:800}
 .plat{color:var(--muted);font-size:13px;font-weight:500}
 .dl-meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
-.dl-meta span{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;
+.dl-meta span,.dl-sums{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;
   font-size:12px;font-weight:600;color:var(--text-2);box-shadow:0 1px 3px rgba(0,0,0,.02)}
+/* Parmak hedefi: sağlama rozeti tıklanabilir, bu yüzden yüksekliği 28px'e çekiliyor. */
+.dl-sums{display:inline-flex;align-items:center;padding:7px 11px;min-height:28px;text-decoration:none;
+  transition:border-color .2s ease,color .2s ease}
+.dl-sums:hover{border-color:var(--brand);color:var(--brand)}
 .dl-card .btn{width:100%}
 .dl-note{font-size:13px;color:var(--muted);margin-top:20px;text-align:center}
 
