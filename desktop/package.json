@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
   "productName": "NEXUS",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "NEXUS â€” akÄ±llÄ± ev asistanÄ± (masaÃ¼stÃ¼)",
   "homepage": "https://nexus-smarthome.pages.dev",
   "main": "main.cjs",
