@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>NEXUS — Your smart home, managed on your own network</title>
-<meta name="description" content="NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Real device control over your own network, automations that actually run, and honest energy readings. Free; optional NEXUS+ AI plan."/>
+<meta name="description" content="NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
 <link rel="canonical" href="https://nexus-smarthome.pages.dev/"/>
 <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/"/>
 <link rel="alternate" hreflang="tr" href="https://nexus-smarthome.pages.dev/tr/"/>
@@ -15,12 +15,12 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="NEXUS"/>
 <meta property="og:title" content="NEXUS — Your smart home, managed on your own network"/>
-<meta property="og:description" content="NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Real device control over your own network, automations that actually run, and honest energy readings. Free; optional NEXUS+ AI plan."/>
+<meta property="og:description" content="NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
 <meta property="og:url" content="https://nexus-smarthome.pages.dev/"/>
 <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <link href="/fonts/inter/inter.css" rel="stylesheet"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"NEXUS","applicationCategory":"SmartHomeApplication","operatingSystem":"Windows, Linux, Android, Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Real device control over your own network, automations that actually run, and honest energy readings. Free; optional NEXUS+ AI plan.","url":"https://nexus-smarthome.pages.dev"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"NEXUS","applicationCategory":"SmartHomeApplication","operatingSystem":"Windows, Linux, Android, Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.","url":"https://nexus-smarthome.pages.dev"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my data really local?","acceptedAnswer":{"@type":"Answer","text":"Yes. Devices, rooms, scenes and automations are stored on your device. Optional account sync (Supabase) only carries your profile and app settings if you sign in. Device control itself never needs the cloud."}},{"@type":"Question","name":"What does NEXUS+ actually add?","acceptedAnswer":{"@type":"Answer","text":"A larger allowance for the optional cloud AI chat: 2,000 answers a month instead of 30 a day. Everything else — devices, scenes, automations, energy readings — is free and stays free."}},{"@type":"Question","name":"Do automations run when the app is closed?","acceptedAnswer":{"@type":"Answer","text":"On desktop, yes while NEXUS stays in the system tray (its default). On Android and the web, automations run while the app is open — the interface says this plainly. Full background scheduling on Android is on the roadmap."}},{"@type":"Question","name":"Which devices are supported?","acceptedAnswer":{"@type":"Answer","text":"Shelly, Tasmota, WLED, ESPHome, Philips Hue (bridge), Sonoff DIY and Home Assistant work everywhere; Kasa, Yeelight, WiZ, LIFX and Govee LAN use desktop TCP/UDP bridges. Matter/Zigbee devices work via the Home Assistant bridge."}},{"@type":"Question","name":"Is there a camera view?","acceptedAnswer":{"@type":"Answer","text":"The Cameras screen lists your real camera devices with status and privacy state. Live video streaming (RTSP) is not built in yet — the app tells you so instead of showing placeholders."}},{"@type":"Question","name":"Can I cancel NEXUS+ anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes — from Billing in the app or your Whop account. Your home keeps working exactly the same; only the AI allowance returns to the free tier."}}]}</script>
 <style>
 :root{
@@ -28,16 +28,16 @@
   --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);
   --page:#ECE9FD; --page-grad:linear-gradient(180deg,#ECE9FD 0%,#DDD8FB 100%);
   --surface:#FFFFFF; --surface-2:#F4F5FA; --text:#0F172A; --text-2:#334155;
-  --muted:#64748B; --border:#E6E8F0; --danger:#E5484D;
-  --radius:20px; --radius-lg:28px;
-  --shadow:0 4px 16px rgba(15,23,42,.06); --shadow-lg:0 18px 50px rgba(15,23,42,.10);
-  --header-h:64px; --max:1080px;
+  --muted:#64748B; --border:#E2E8F0; --danger:#E5484D;
+  --radius:18px; --radius-lg:26px;
+  --shadow:0 4px 16px rgba(15,23,42,.06); --shadow-lg:0 20px 48px rgba(15,23,42,.12);
+  --header-h:68px; --max:1100px;
 }
 html[data-theme=dark]{
-  --page:#0F172A; --page-grad:linear-gradient(180deg,#020617 0%,#0F172A 100%);
-  --surface:#1E293B; --surface-2:#273449; --text:#F1F5F9; --text-2:#CBD5E1;
-  --muted:#94A3B8; --border:rgba(148,163,184,.18);
-  --shadow:0 4px 16px rgba(0,0,0,.45); --shadow-lg:0 18px 50px rgba(0,0,0,.5);
+  --page:#0B1120; --page-grad:linear-gradient(180deg,#050814 0%,#0B1120 100%);
+  --surface:#151F32; --surface-2:#1D2A44; --text:#F8FAFC; --text-2:#CBD5E1;
+  --muted:#94A3B8; --border:rgba(148,163,184,.16);
+  --shadow:0 4px 18px rgba(0,0,0,.45); --shadow-lg:0 22px 55px rgba(0,0,0,.55);
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -47,47 +47,63 @@ body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Robo
   background:var(--page-grad) fixed;color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
-.icon{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+.icon{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.brand-svg{width:20px;height:20px;flex:none;display:inline-block;vertical-align:middle}
 
-/* başlık */
+/* Başlık / Navbar */
 .hd{position:sticky;top:0;z-index:50;height:var(--header-h);display:flex;align-items:center;
-  background:color-mix(in srgb,var(--surface) 82%,transparent);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border)}
-.hd .wrap{display:flex;align-items:center;gap:14px;width:100%}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.02em}
-.logo svg{width:30px;height:30px}
+  background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);transition:all .2s ease}
+.hd .wrap{display:flex;align-items:center;gap:16px;width:100%}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.logo svg{width:32px;height:32px}
 .nav{display:none;gap:4px;margin-left:auto}
-.nav a{padding:8px 12px;border-radius:999px;font-size:14px;font-weight:600;color:var(--text-2)}
+.nav a{padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--text-2);transition:all .15s ease}
 .nav a:hover{background:var(--surface);color:var(--text)}
-.hd-cta{display:none;margin-left:8px}
-.theme-t,.lang-t{border:1px solid var(--border);background:var(--surface);color:var(--text-2);
-  border-radius:999px;padding:8px;line-height:0;cursor:pointer}
-.theme-t:hover,.lang-t:hover{color:var(--text)}
-.lang-t{font-size:12px;font-weight:700;padding:8px 12px;line-height:1.2}
-@media(min-width:960px){.nav{display:flex}.hd-cta{display:inline-flex}}
-@media(max-width:959px){.lang-t{margin-left:auto}}
-@media(max-width:460px){.lang-t{margin-left:auto;padding:8px 9px;font-size:11px}.hd .wrap{gap:10px}}
 
-/* butonlar */
+.nav-controls{display:flex;align-items:center;gap:10px;margin-left:auto}
+@media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:8px}}
+
+/* Dil Değiştirici */
+.lang-switch{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:3px;box-shadow:var(--shadow)}
+.lang-btn{border:0;background:transparent;color:var(--muted);font:700 12px/1 Inter,sans-serif;
+  padding:6px 11px;border-radius:999px;cursor:pointer;transition:all .15s ease}
+.lang-btn:hover{color:var(--text)}
+.lang-btn.active{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(76,125,255,.32)}
+
+/* Tema Değiştirici */
+.theme-t{border:1px solid var(--border);background:var(--surface);color:var(--text-2);
+  border-radius:999px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:var(--shadow);transition:transform .2s ease,color .15s ease,border-color .15s ease}
+.theme-t:hover{transform:rotate(15deg);color:var(--text);border-color:var(--brand)}
+.theme-t .ic-moon{display:none}
+html[data-theme=dark] .theme-t .ic-sun{display:none}
+html[data-theme=dark] .theme-t .ic-moon{display:block}
+.hd-cta{display:none}
+@media(min-width:960px){.hd-cta{display:inline-flex}}
+
+/* Butonlar */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;
-  border-radius:999px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:transform .15s ease,box-shadow .15s ease,background .15s}
+  border-radius:999px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:var(--brand);color:#fff;box-shadow:0 8px 24px rgba(76,125,255,.30)}
-.btn-primary:hover{background:var(--brand-press)}
+.btn-primary{background:var(--brand-grad);color:#fff;box-shadow:0 8px 24px rgba(76,125,255,.32)}
+.btn-primary:hover{opacity:.94;box-shadow:0 10px 28px rgba(76,125,255,.42)}
 .btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow)}
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
+.btn.disabled{opacity:.55;pointer-events:none}
 
-/* hero */
-.hero{padding:56px 0 32px;position:relative;overflow:hidden}
-.hero .wrap{display:grid;gap:36px;align-items:center}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.05fr .95fr;padding-top:32px}}
+/* Hero */
+.hero{padding:60px 0 36px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;gap:40px;align-items:center}
+@media(min-width:960px){.hero .wrap{grid-template-columns:1.05fr .95fr;padding-top:24px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
   padding:6px 14px;border-radius:999px}
-h1{font-size:clamp(34px,6vw,58px);line-height:1.06;letter-spacing:-.03em;margin:18px 0 0;font-weight:800}
+h1{font-size:clamp(34px,5.8vw,56px);line-height:1.08;letter-spacing:-.03em;margin:18px 0 0;font-weight:800}
 h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{font-size:clamp(15px,2vw,18px);color:var(--text-2);max-width:54ch;margin:18px 0 26px}
+.lead{font-size:clamp(15px,1.9vw,17.5px);color:var(--text-2);max-width:54ch;margin:18px 0 26px}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
 .ver-chip{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:13px;color:var(--muted)}
 .ver-chip b{color:var(--text)}
@@ -97,117 +113,168 @@ h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;background-cl
   background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 14px}
 .trust .icon{width:15px;height:15px;color:var(--brand)}
 
-/* telefon çerçevesi (gerçek ekran görüntüsüyle) */
-.shot{position:relative;margin:0 auto;max-width:320px}
-.shot-frame{border-radius:44px;border:10px solid #0b1020;box-shadow:var(--shadow-lg);overflow:hidden;background:#0b1020}
-.shot-frame img[hidden]{display:none!important}
-@media(max-width:959px){.hd-cta{display:none!important}}
-.shot-frame img{width:100%;height:auto;display:block}
-.shot-glow{position:absolute;inset:-12% -8%;background:var(--brand-grad);filter:blur(70px);opacity:.20;border-radius:50%;z-index:-1}
-.shot-tabs{display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap}
-.shot-tab{border:1px solid var(--border);background:var(--surface);color:var(--muted);font:600 12px/1 Inter,sans-serif;
-  border-radius:999px;padding:8px 13px;cursor:pointer}
-.shot-tab[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+/* Gerçekçi Akıllı Telefon Çerçevesi (Hero Mockup) */
+.phone-wrapper{position:relative;margin:0 auto;max-width:320px;text-align:center}
+.phone-glow{position:absolute;inset:-10% -6%;background:var(--brand-grad);filter:blur(65px);opacity:.22;border-radius:50%;z-index:-1;animation:heroGlow 6s ease-in-out infinite alternate}
+@keyframes heroGlow{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(8px,-6px)}}
 
-/* bölümler */
-section{padding:72px 0}/*MOBILE-SECTION-SPACING*/@media(max-width:700px){section{padding:48px 0}}
+.phone-case{
+  position:relative;width:100%;aspect-ratio:390/810;max-height:620px;margin:0 auto;
+  border-radius:46px;background:#080C16;padding:11px;
+  box-shadow:0 0 0 2px rgba(255,255,255,.14), 0 24px 60px rgba(15,23,42,.35);
+  overflow:hidden;cursor:pointer;user-select:none;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+}
+.phone-case:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 0 0 2px rgba(76,125,255,.4), 0 32px 70px rgba(76,125,255,.25)}
+.phone-island{
+  position:absolute;top:17px;left:50%;transform:translateX(-50%);
+  width:90px;height:24px;background:#000;border-radius:18px;z-index:25;
+  display:flex;align-items:center;justify-content:flex-end;padding-right:9px;gap:5px;
+}
+.island-camera{width:9px;height:9px;border-radius:50%;background:#111b33;border:1px solid #1e293b}
+.island-sensor{width:4px;height:4px;border-radius:50%;background:#090d16}
+.phone-screen{
+  position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:#000;
+}
+.shot-slide{
+  position:absolute;inset:0;opacity:0;visibility:hidden;
+  transition:opacity .35s ease, transform .35s ease;
+  transform:scale(.97);
+}
+.shot-slide.active{
+  opacity:1;visibility:visible;transform:scale(1);z-index:2;
+}
+.shot-slide img{width:100%;height:100%;object-fit:cover;object-position:top}
+.phone-chin{
+  position:absolute;bottom:13px;left:50%;transform:translateX(-50%);width:105px;height:4px;
+  background:rgba(255,255,255,.4);border-radius:99px;z-index:25;pointer-events:none;
+}
+.phone-glass-shine{
+  position:absolute;inset:0;border-radius:46px;pointer-events:none;z-index:22;
+  background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 35%,transparent 100%);
+}
+.phone-nav{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:16px;flex-wrap:wrap}
+.phone-nav-dot{
+  display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--muted);font:600 12px/1 Inter,sans-serif;
+  border-radius:999px;padding:7px 13px;cursor:pointer;transition:all .2s ease;
+}
+.phone-nav-dot .dot-indicator{width:6px;height:6px;border-radius:50%;background:var(--muted);transition:all .2s ease}
+.phone-nav-dot.active{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 3px 12px rgba(76,125,255,.32)}
+.phone-nav-dot.active .dot-indicator{background:#fff;transform:scale(1.2)}
+.phone-tap-hint{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12px;color:var(--muted)}
+.phone-tap-hint svg{width:14px;height:14px;color:var(--brand)}
+
+/* Bölümler */
+section{padding:72px 0}
 .sec-head{max-width:640px;margin-bottom:36px}
-h2{font-size:clamp(24px,4vw,36px);letter-spacing:-.02em;line-height:1.15;margin:0 0 12px;font-weight:800}
+h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margin:0 0 12px;font-weight:800}
 .sec-head p{color:var(--text-2);margin:0}
-.grid{display:grid;gap:16px}
+.grid{display:grid;gap:18px}
 @media(min-width:700px){.grid.c3{grid-template-columns:repeat(3,1fr)}.grid.c2{grid-template-columns:repeat(2,1fr)}}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:24px;box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}
-.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-.f-ic{width:48px;height:48px;border-radius:14px;background:color-mix(in srgb,var(--brand) 11%,transparent);
+  padding:24px;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 30%,transparent)}
+.f-ic{width:48px;height:48px;border-radius:14px;background:color-mix(in srgb,var(--brand) 12%,transparent);
   color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.f-ic .icon{width:24px;height:24px}
 .card h3{margin:0 0 8px;font-size:17px;font-weight:700;letter-spacing:-.01em}
 .card p{margin:0;color:var(--muted);font-size:14px}
 
-/* nasıl çalışır */
-.steps{display:grid;gap:16px;counter-reset:st}
+/* Nasıl Çalışır */
+.steps{display:grid;gap:18px;counter-reset:st}
 @media(min-width:800px){.steps{grid-template-columns:repeat(3,1fr)}}
 .step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px 24px 24px;box-shadow:var(--shadow)}
 .step-n{position:absolute;top:-16px;left:22px;width:34px;height:34px;border-radius:12px;background:var(--brand-grad);
   color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.35)}
-.step h3{margin:8px 0 8px;font-size:16px;font-weight:700}
+.step h3{margin:8px 0 8px;font-size:16.5px;font-weight:700}
 .step p{margin:0;color:var(--muted);font-size:14px}
 
-/* entegrasyonlar */
-.int-groups{display:grid;gap:16px}
+/* Entegrasyonlar */
+.int-groups{display:grid;gap:18px}
 @media(min-width:800px){.int-groups{grid-template-columns:repeat(2,1fr)}}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
-  border-radius:999px;padding:9px 15px;font-size:13.5px;font-weight:600;color:var(--text-2)}
-.chip .icon{width:14px;height:14px;color:var(--brand)}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text-2);box-shadow:0 2px 6px rgba(15,23,42,.03);
+  transition:all .18s ease}
+.chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 30%,transparent);box-shadow:var(--shadow)}
 .int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font-weight:700;font-size:14px}
 
-/* fiyatlar */
-.plans{display:grid;gap:16px}
+/* Fiyatlar */
+.billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 32px}
+.billing-toggle{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:4px;box-shadow:var(--shadow)}
+.billing-btn{border:0;background:transparent;color:var(--muted);font:700 13px/1 Inter,sans-serif;
+  padding:9px 18px;border-radius:999px;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;gap:6px}
+.billing-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 4px 14px rgba(76,125,255,.35)}
+.save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:99px}
+.billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
+
+.plans{display:grid;gap:20px}
 @media(min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.plan.hot{border-color:var(--brand);box-shadow:0 18px 50px rgba(76,125,255,.16)}
+  padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease}
+.plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
 .plan-badge{position:absolute;top:-13px;left:24px;background:var(--brand-grad);color:#fff;font-size:11px;font-weight:800;
-  letter-spacing:.06em;text-transform:uppercase;padding:6px 13px;border-radius:999px}
-.plan h3{margin:0 0 14px;font-size:16px;font-weight:700}
+  letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35)}
+.plan h3{margin:0 0 12px;font-size:18px;font-weight:800}
 .price{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1}
 .price small{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:0}
-.price-note{color:var(--muted);font-size:13px;margin-top:6px}
-.plan ul{list-style:none;margin:20px 0 24px;padding:0;display:grid;gap:11px;flex:1}
-.plan li{display:flex;gap:10px;font-size:14px;color:var(--text-2)}
-.plan li .icon{width:17px;height:17px;color:#10B981;margin-top:2px}
+.price-note{color:var(--muted);font-size:13px;margin:8px 0 0}
+.plan ul{list-style:none;margin:22px 0 26px;padding:0;display:grid;gap:12px;flex:1}
+.plan li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-2);line-height:1.4}
+.plan li .icon{width:17px;height:17px;color:#10B981;margin-top:2px;flex-shrink:0}
 .plan .btn{width:100%}
-.plan .btn[aria-disabled=true]{opacity:.55;pointer-events:none}
-.cur-note{font-size:12.5px;color:var(--muted);margin-top:18px}
+.cur-note{font-size:12.5px;color:var(--muted);margin-top:18px;text-align:center}
 
-/* indirmeler */
-.dl-grid{display:grid;gap:16px}
+/* İndirmeler */
+.dl-grid{display:grid;gap:18px}
 @media(min-width:800px){.dl-grid{grid-template-columns:repeat(3,1fr)}}
 .dl-card{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;color:inherit}
-.dl-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--brand)}
-.dl-top{display:flex;align-items:center;gap:13px;margin-bottom:6px}
-.dl-ic{width:46px;height:46px;border-radius:14px;background:color-mix(in srgb,var(--brand) 11%,transparent);color:var(--brand);
+  border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;color:inherit}
+.dl-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--brand)}
+.dl-top{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.dl-ic{width:48px;height:48px;border-radius:15px;background:var(--surface-2);border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center}
-.dl-card h3{margin:0;font-size:16.5px}
+.dl-card h3{margin:0;font-size:17px;font-weight:800}
 .dl-card .plat{color:var(--muted);font-size:13px}
-.dl-meta{display:flex;gap:8px;margin:10px 0 16px;flex-wrap:wrap}
-.dl-meta span{font-size:12px;font-weight:700;color:var(--text-2);background:var(--surface-2);border-radius:8px;padding:5px 10px}
+.dl-meta{display:flex;gap:6px;margin:12px 0 18px;flex-wrap:wrap}
+.dl-meta span{font-size:12px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:4px 9px}
 .dl-card .btn{margin-top:auto}
 .dl-note{color:var(--muted);font-size:13px;margin-top:20px;max-width:72ch}
 .dl-web{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:space-between;
-  background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius-lg);padding:22px 26px}
-.dl-web h3{margin:0 0 4px;font-size:16px}
+  background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius-lg);padding:24px 28px}
+.dl-web h3{margin:0 0 4px;font-size:17px;font-weight:700}
 .dl-web p{margin:0;color:var(--muted);font-size:14px}
 
-/* sss */
-details.faq{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+/* SSS */
+details.faq{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden;transition:all .2s ease}
 details.faq summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:19px 22px;font-weight:700;font-size:15.5px}
+  padding:20px 22px;font-weight:700;font-size:15.5px}
 details.faq summary::-webkit-details-marker{display:none}
 details.faq summary .icon{transition:transform .2s;color:var(--muted)}
 details.faq[open] summary .icon{transform:rotate(180deg)}
 details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
 
-/* footer */
-.ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 55%,transparent);padding:44px 0 32px;margin-top:24px}
+/* Footer */
+.ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
 .ft-grid{display:grid;gap:28px}
-@media(min-width:800px){.ft-grid{grid-template-columns:1.4fr repeat(4,1fr)}}
-.ft h4{margin:0 0 12px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0}
-.ft a:hover{color:var(--brand)}.ft a.logo{display:flex;align-items:center;padding:0}
+@media(min-width:800px){.ft-grid{grid-template-columns:1.5fr repeat(3,1fr)}}
+.ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
+.ft a:hover{color:var(--brand)}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 0;max-width:34ch}
-.ft-bottom{margin-top:34px;padding-top:18px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:12px;
-  justify-content:space-between;color:var(--muted);font-size:13px}
+.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
+  justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
+.ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0}
 
-/* giriş animasyonu — hafif, reduced-motion kapalı */
-.rv{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+/* Animasyonlar */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 
-/* about sayfası */
+/* About Sayfası */
 .about-hero{padding:64px 0 8px}
 .about-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
   padding:28px;margin:26px 0;display:grid;gap:14px}
@@ -226,9 +293,17 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
       <a href="#downloads">Download</a>
       <a href="#faq">FAQ</a>
     </nav>
-    
-    <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
-    <a class="lang-t" href="/tr/" hreflang="tr">Türkçe</a>
+    <div class="nav-controls">
+      <div class="lang-switch" role="group" aria-label="Language selection">
+        <button class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</button>
+        <button class="lang-btn active" onclick="nxSetLang('en')" title="English">EN</button>
+      </div>
+      <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+        <span class="ic-sun"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
+        <span class="ic-moon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></span>
+      </button>
+      <a class="btn btn-primary hd-cta" href="https://nexus-web-jre.pages.dev" style="min-height:40px;padding:0 18px;font-size:13.5px">Open web app</a>
+    </div>
   </div>
 </header>
 <main>
@@ -237,12 +312,12 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
     <div>
       <span class="eyebrow"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Local-first smart home</span>
       <h1>Your home.<br><span class="grad">Quietly in your control.</span></h1>
-      <p class="lead">One app for your lights, climate, covers and sensors — talking straight to your devices over your own network. Automations that genuinely run, energy numbers that are genuinely measured, and a privacy model where your home data stays yours.</p>
+      <p class="lead">One unified app for your lights, climate, covers and sensors — communicating directly with devices on your local network. Responsive automations, live power metering, and a privacy architecture where your data never leaves your devices.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#downloads">Download NEXUS</a>
-        
+        <a class="btn btn-ghost" href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Open in browser</a>
       </div>
-      <p class="ver-chip"><span class="dot"></span>Latest version: <b data-nexus-ver>…</b></p>
+      <p class="ver-chip"><span class="dot"></span>Latest version: <b data-nexus-ver>v0.8.0</b></p>
       <div class="trust">
         <span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Free, unlimited devices</span>
         <span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>No cloud required for control</span>
@@ -250,33 +325,42 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
       </div>
     </div>
     
-    <div class="shot rv">
-      <div class="shot-glow" aria-hidden="true"></div>
-      <div class="shot-frame">
-        <img src="/images/shots/home.png" alt="NEXUS home screen on a phone — Home" width="390" height="844" loading="eager" decoding="async" data-shot="home">
-        <img src="/images/shots/energy.png" alt="NEXUS home screen on a phone — Energy" width="390" height="844" loading="eager" decoding="async" hidden data-shot="energy">
-        <img src="/images/shots/smart.png" alt="NEXUS home screen on a phone — Smart" width="390" height="844" loading="eager" decoding="async" hidden data-shot="smart">
-        <img src="/images/shots/chat.png" alt="NEXUS home screen on a phone — NEXUS AI" width="390" height="844" loading="eager" decoding="async" hidden data-shot="chat">
+    <div class="phone-wrapper rv">
+      <div class="phone-glow" aria-hidden="true"></div>
+      <div class="phone-case" id="phoneMockup" onclick="nxNextShot()" title="Tap to see next screen">
+        <div class="phone-island">
+          <span class="island-camera"></span>
+          <span class="island-sensor"></span>
+        </div>
+        <div class="phone-screen">
+          <div class="shot-slide active" data-shot="home"><img src="/images/shots/home.png" alt="NEXUS home screen on a phone — Home" width="390" height="844" loading="eager" decoding="async"></div>
+          <div class="shot-slide" data-shot="energy"><img src="/images/shots/energy.png" alt="NEXUS home screen on a phone — Energy" width="390" height="844" loading="lazy" decoding="async"></div>
+          <div class="shot-slide" data-shot="smart"><img src="/images/shots/smart.png" alt="NEXUS home screen on a phone — Smart" width="390" height="844" loading="lazy" decoding="async"></div>
+          <div class="shot-slide" data-shot="chat"><img src="/images/shots/chat.png" alt="NEXUS home screen on a phone — NEXUS AI" width="390" height="844" loading="lazy" decoding="async"></div>
+        </div>
+        <div class="phone-chin"></div>
+        <div class="phone-glass-shine"></div>
       </div>
-      <div class="shot-tabs" role="tablist" aria-label="Screenshots">
-        <button class="shot-tab" role="tab" aria-selected="true" data-shot-btn="home">Home</button>
-        <button class="shot-tab" role="tab" aria-selected="false" data-shot-btn="energy">Energy</button>
-        <button class="shot-tab" role="tab" aria-selected="false" data-shot-btn="smart">Smart</button>
-        <button class="shot-tab" role="tab" aria-selected="false" data-shot-btn="chat">NEXUS AI</button>
+      <div class="phone-nav" role="tablist" aria-label="Screenshots">
+        <button class="phone-nav-dot active" role="tab" aria-selected="true" data-shot-btn="home" onclick="nxGoToShot('home')"><span class="dot-indicator"></span><span class="dot-label">Home</span></button>
+        <button class="phone-nav-dot" role="tab" aria-selected="false" data-shot-btn="energy" onclick="nxGoToShot('energy')"><span class="dot-indicator"></span><span class="dot-label">Energy</span></button>
+        <button class="phone-nav-dot" role="tab" aria-selected="false" data-shot-btn="smart" onclick="nxGoToShot('smart')"><span class="dot-indicator"></span><span class="dot-label">Smart</span></button>
+        <button class="phone-nav-dot" role="tab" aria-selected="false" data-shot-btn="chat" onclick="nxGoToShot('chat')"><span class="dot-indicator"></span><span class="dot-label">NEXUS AI</span></button>
       </div>
+      <span class="phone-tap-hint"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Tap phone to preview screens</span>
     </div>
   </div>
 </section>
 <section id="features">
   <div class="wrap">
-    <div class="sec-head rv"><h2>Powerful underneath. Honest on the surface.</h2><p>Everything you see in NEXUS reflects what your devices actually report. If something isn't supported yet, the app says so.</p></div>
+    <div class="sec-head rv"><h2>Powerful infrastructure. Effortless control.</h2><p>Every device state, power metric, and automated scene runs directly across your local network without external cloud dependencies.</p></div>
     <div class="grid c3">
-      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Automations that really run</h3><p>Time- and sunset-triggered scenarios execute on your devices — on desktop they keep running from the system tray. Missed triggers while offline are logged honestly, never faked.</p></article>
-      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div><h3>Real energy readings</h3><p>If your plug or switch meters power (like Shelly PM devices), the Energy screen shows live watts read from your own network. No meter? No made-up numbers.</p></article>
-      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg></div><h3>Local-network control</h3><p>Shelly, Tasmota, WLED, ESPHome, Hue, Home Assistant and more — spoken to directly over HTTP, TCP and UDP. Desktop apps add TCP/UDP bridges for Kasa, Yeelight, WiZ, LIFX and Govee.</p></article>
-      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Private by design</h3><p>Your home layout and device states live on your machine. Cloud sync is opt-in, end-to-end scoped, and never required to control your home.</p></article>
-      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div><h3>NEXUS AI, where you want it</h3><p>Local commands are free forever. Optional cloud chat (Workers AI) answers in Turkish and English; free tier includes 30 answers a day.</p></article>
-      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div><h3>Turkish &amp; English</h3><p>The whole app, both languages, switched in one tap — prices and payment currency follow your language.</p></article>
+      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Responsive Automations</h3><p>Time- and sunset-triggered scenarios execute directly on your local hardware — continuing reliably in the background on desktop.</p></article>
+      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div><h3>Live Energy Readings</h3><p>Read real-time wattage and power consumption directly from supported smart plugs and switches on your local network.</p></article>
+      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg></div><h3>Local-Network Speed</h3><p>Direct LAN communication with Shelly, Tasmota, WLED, ESPHome, Philips Hue and Home Assistant via HTTP, TCP and UDP. Zero cloud lag.</p></article>
+      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Privacy By Design</h3><p>Your home configuration and device telemetry stay strictly on your local hardware. Optional sync is end-to-end scoped and never required for control.</p></article>
+      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div><h3>NEXUS AI Intelligence</h3><p>Local smart home commands are instant and free forever. Optional cloud AI assistant provides intelligent suggestions whenever you need guidance.</p></article>
+      <article class="card rv"><div class="f-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></div><h3>Matter, Zigbee &amp; Ecosystem Ready</h3><p>Shelly, Home Assistant, WLED, MQTT and Matter bridges unite under one intuitive interface — giving you complete hardware freedom.</p></article>
     </div>
   </div>
 </section>
@@ -294,39 +378,54 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
   <div class="wrap">
     <div class="sec-head rv"><h2>Works with what you already have.</h2><p>Free, local protocols first. Anything without a direct connector still works through the Home Assistant bridge.</p></div>
     <div class="int-groups">
-      <div class="card rv"><h3>HTTP — everywhere</h3><div class="chips"><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Shelly Gen1 &amp; Gen2+</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Tasmota</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>WLED</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>ESPHome</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Philips Hue bridge</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Home Assistant</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Sonoff DIY</span></div></div>
-      <div class="card rv"><h3>TCP / UDP — desktop app</h3><div class="chips"><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>TP-Link Kasa</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Yeelight</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>WiZ</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>LIFX</span><span class="chip"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg>Govee LAN</span></div></div>
+      <div class="card rv"><h3>HTTP — everywhere</h3><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" fill="#4495D1" class="brand-svg" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12a12 12 0 0 0 .033.88c1.07-.443 2.495-.679 4.322-.679h5.762c-.167.61-.548 1.087-1.142 1.436-.532.308-1.14.463-1.823.463h-.927c-.89 0-1.663.154-2.32.463-.859.403-1.286 1-1.286 1.789 0 .893.59 1.594 1.774 2.1a7.423 7.423 0 0 0 2.927.581c1.318 0 2.416-.29 3.297-.867 1.024-.664 1.535-1.616 1.535-2.857 0-.854-.325-2.08-.976-3.676-.65-1.597-.975-2.837-.975-3.723 0-2.79 2.305-4.233 6.916-4.324.641-.01 1.337-.005 1.916-.004.593 0 1.144.05 1.66.147A12 12 0 0 0 12 0zm4.758 5.691c-1.206 0-1.809.502-1.809 1.506 0 .514.356 1.665 1.067 3.451.71 1.787 1.064 3.186 1.064 4.198 0 2.166-1.202 3.791-3.607 4.875-1.794.797-3.892 1.197-6.297 1.197-1.268 0-2.442-.114-3.543-.316A12 12 0 0 0 12 24c6.627 0 12-5.373 12-12a12 12 0 0 0-.781-4.256 3.404 3.404 0 0 1-.832.77h-4.371l1.425-2.828a299.94 299.94 0 0 0-2.683.005Z"/></svg>Shelly Gen1 &amp; Gen2+</span><span class="chip"><svg viewBox="0 0 24 24" fill="#1FA3EC" class="brand-svg" aria-hidden="true"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>Tasmota</span><span class="chip"><svg viewBox="0 0 24 24" fill="#E040FB" class="brand-svg" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>WLED</span><span class="chip"><svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M11.999.311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>ESPHome</span><span class="chip"><svg viewBox="0 0 24 24" fill="#0065D3" class="brand-svg" aria-hidden="true"><path d="M20.672 9.6c-2.043 0-3.505 1.386-3.682 3.416h-.664c-.247 0-.395.144-.395.384 0 .24.148.384.395.384h.661c.152 2.09 1.652 3.423 3.915 3.423.944 0 1.685-.144 2.332-.453.158-.075.337-.217.292-.471a.334.334 0 0 0-.15-.242c-.104-.065-.25-.072-.422-.02a7.93 7.93 0 0 0-.352.12c-.414.146-.771.273-1.599.273-1.75 0-2.908-1.023-2.952-2.605v-.025h5.444c.313 0 .492-.164.505-.463v-.058C23.994 9.865 21.452 9.6 20.672 9.6zm2.376 3.416h-5l.004-.035c.121-1.58 1.161-2.601 2.649-2.601 1.134 0 2.347.685 2.347 2.606zM9.542 10.221c0-.335-.195-.534-.52-.534s-.52.2-.52.534v2.795h1.04zm4.29 3.817c0 1.324-.948 2.361-2.16 2.361-1.433 0-2.13-.763-2.13-2.333v-.282h-1.04v.34c0 2.046.965 3.083 2.868 3.083 1.12 0 1.943-.486 2.443-1.445l.02-.036v.861c0 .334.193.534.519.534.325 0 .52-.2.52-.534v-2.803h-1.04zm.52-4.351c-.326 0-.52.2-.52.534v2.795h1.04v-2.795c0-.335-.195-.534-.52-.534zM3.645 9.6c-1.66 0-2.31 1.072-2.471 1.4l-.135.278V7.355c0-.347-.199-.562-.52-.562-.32 0-.519.215-.519.562v5.661h1.039v-.015c0-1.249.72-2.592 2.304-2.592 1.29 0 2.001.828 2.001 2.332v.275h1.04v-.246c0-2.044-.973-3.17-2.739-3.17zM0 16.558c0 .347.199.563.52.563.32 0 .519-.216.519-.563v-2.774H0zm5.344 0c0 .347.2.563.52.563s.52-.216.52-.563v-2.774h-1.04z"/></svg>Philips Hue bridge</span><span class="chip"><svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M22.939 10.627 13.061.749a1.505 1.505 0 0 0-2.121 0l-9.879 9.878C.478 11.21 0 12.363 0 13.187v9c0 .826.675 1.5 1.5 1.5h9.227l-4.063-4.062a2.034 2.034 0 0 1-.664.113c-1.13 0-2.05-.92-2.05-2.05s.92-2.05 2.05-2.05 2.05.92 2.05 2.05c0 .233-.041.456-.113.665l3.163 3.163V9.928a2.05 2.05 0 0 1-1.15-1.84c0-1.13.92-2.05 2.05-2.05s2.05.92 2.05 2.05a2.05 2.05 0 0 1-1.15 1.84v8.127l3.146-3.146A2.051 2.051 0 0 1 18 12.239c1.13 0 2.05.92 2.05 2.05s-.92 2.05-2.05 2.05c-.25 0-.488-.047-.709-.13L12.9 20.602v3.088h9.6c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.477-1.977-1.061-2.561z"/></svg>Home Assistant</span><span class="chip"><svg viewBox="0 0 24 24" fill="#00B0A0" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#00B0A0"/><path d="M5 12h14M12 5v14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>Sonoff DIY</span></div></div>
+      <div class="card rv"><h3>TCP / UDP — desktop app</h3><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Kasa</span><span class="chip"><svg viewBox="0 0 24 24" fill="#E60012" class="brand-svg" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 8l4 5 4-5M12 13v4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>Yeelight</span><span class="chip"><svg viewBox="0 0 24 24" fill="#00A6D6" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="6"/><circle cx="9" cy="12" r="2.2" fill="#fff"/><circle cx="15" cy="12" r="2.2" fill="#fff"/></svg>WiZ</span><span class="chip"><svg viewBox="0 0 24 24" fill="#E5007D" class="brand-svg" aria-hidden="true"><path d="M3.128 8.2a3.11 3.11 0 0 0-2.212.92A3.148 3.148 0 0 0 0 11.347a3.144 3.144 0 0 0 .916 2.226l.27.266.014-.014a2.729 2.729 0 0 1 1.932-.795 2.739 2.739 0 0 1 1.931.795l.015.014.266-.27a3.157 3.157 0 0 0 .916-2.226c0-.806-.305-1.612-.916-2.226A3.139 3.139 0 0 0 3.128 8.2zm0 .725a2.39 2.39 0 0 1 1.701.707 2.431 2.431 0 0 1 .156 3.252 3.42 3.42 0 0 0-3.72 0 2.45 2.45 0 0 1-.544-1.537c0-.618.234-1.24.706-1.715a2.38 2.38 0 0 1 1.701-.707zm5.316.082v6.025h3.167v-1.487H9.928l.004-4.538zm4.247 0v6.022h1.487V9.007zm2.585 0v6.025h1.487V13.15h1.918v-1.41h-1.918v-1.228h3.047l.863 1.545-1.662 2.975h1.662l.813-1.53.696 1.53h1.779l-1.665-2.975L24 9.007h-1.779l-.735 1.686-.735-1.686z"/></svg>LIFX</span><span class="chip"><svg viewBox="0 0 24 24" fill="#1B6EF3" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="6"/><path d="M16 8h-6a4 4 0 000 8h6v-4h-4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>Govee LAN</span></div></div>
     </div>
     <a class="int-more" href="https://github.com/Enard52/NEXUS/issues" target="_blank" rel="noopener">Something missing? Request a connector <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
   </div>
 </section>
 <section id="pricing">
   <div class="wrap">
-    <div class="sec-head rv"><h2>Free to use. NEXUS+ when you want more.</h2><p>No device limits, no account fees. The optional NEXUS+ plan adds a much larger NEXUS AI allowance.</p></div>
+    <div class="sec-head rv" style="text-align:center;margin:0 auto 28px">
+      <h2>Free to use. NEXUS+ when you want more.</h2>
+      <p>No device limits, no account fees. The optional NEXUS+ plan adds a much larger NEXUS AI allowance.</p>
+    </div>
+
+    <!-- Aylık / Yıllık Seçici -->
+    <div class="billing-toggle-wrap rv">
+      <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle">
+        <button class="billing-btn active" id="billingMonthly" onclick="nxSetBilling('monthly')">Monthly</button>
+        <button class="billing-btn" id="billingYearly" onclick="nxSetBilling('yearly')">
+          Yearly
+          <span class="save-badge">Save 33%</span>
+        </button>
+      </div>
+    </div>
+
     <div class="plans">
       <article class="plan rv">
         
         <h3>Free</h3>
         <div class="price">$0</div>
         <p class="price-note">forever</p>
-        <ul><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Unlimited devices &amp; rooms</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Scenes &amp; scheduled automations</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Real energy readings</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>30 NEXUS AI answers a day</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Local commands, always free</li></ul>
-        <span class="btn btn-ghost" aria-disabled="true">Free for everyone</span>
+        <ul><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Unlimited devices &amp; rooms</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Local scheduled automations</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Live LAN energy readings</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>30 NEXUS AI answers a day</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Local commands, always free</li></ul>
+        <a class="btn btn-ghost" href="https://nexus-web-jre.pages.dev">Get started free</a>
       </article>
       <article class="plan rv hot">
         <span class="plan-badge">Most popular</span>
         <h3>NEXUS+</h3>
-        <div class="price">$11.99<small>/mo</small></div>
-        <p class="price-note">$89.99/yr · per month</p>
+        <div class="price" data-price-monthly="$11.99<small>/mo</small>" data-price-yearly="$7.50<small>/mo</small>">$11.99<small>/mo</small></div>
+        <p class="price-note" data-period-monthly="Billed monthly" data-period-yearly="Billed $89.99/yr (2 months free)">Billed monthly</p>
         <ul><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>2,000 NEXUS AI answers a month</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Everything in Free</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>3-day free trial, cancel anytime</li></ul>
-        <a class="btn btn-primary" href="https://nexus-web-jre.pages.dev/stitch-plus.html">Start free trial</a>
+        <a class="btn btn-primary" href="https://whop.com/checkout/plan_HIySYESquBqlg" data-cta-monthly="https://whop.com/checkout/plan_HIySYESquBqlg" data-cta-yearly="https://whop.com/checkout/plan_XlA3SacShoiJU" target="_blank" rel="noopener">Start 3-day free trial</a>
       </article>
       <article class="plan rv">
-        
+        <span class="plan-badge">Whole home</span>
         <h3>Family</h3>
-        <div class="price">—<small></small></div>
-        <p class="price-note">coming soon</p>
-        <ul><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Home members &amp; permissions — already free in the app</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Shared plan for up to 6 members — in preparation</li></ul>
-        <span class="btn btn-ghost" aria-disabled="true">Coming soon</span>
+        <div class="price">Free</div>
+        <p class="price-note">included with your home</p>
+        <ul><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Household management for up to 6 members</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Admin, member, and guest permission roles</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Per-room and per-device access control</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Shared automations and scenes</li><li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Active and ready across all devices</li></ul>
+        <a class="btn btn-ghost" href="https://nexus-web-jre.pages.dev/stitch-household.html">Manage household</a>
       </article>
     </div>
     <p class="cur-note">Manage or cancel your subscription anytime from Billing in the app.</p>
@@ -337,22 +436,53 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
     <div class="sec-head rv"><h2>Native on every desktop. At home on your phone.</h2><p>Always free. Installers are served from GitHub Releases with published checksums.</p></div>
     <div class="dl-grid">
       <a class="dl-card rv" data-platform="windows" href="downloads/NEXUS-Setup.exe" download>
-        <div class="dl-top"><div class="dl-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></div><div><h3>Windows</h3><span class="plat">Windows 10/11 · 64-bit</span></div></div>
-        <div class="dl-meta"><span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><b data-nexus-ver>…</b></span></div>
-        <span class="btn btn-primary">Download</span>
+        <div class="dl-top">
+          <div class="dl-ic"><svg viewBox="0 0 24 24" fill="#0078D4" class="brand-svg" aria-hidden="true"><rect x="1.5" y="1.5" width="9.8" height="9.8" rx="1.5"/><rect x="12.7" y="1.5" width="9.8" height="9.8" rx="1.5"/><rect x="1.5" y="12.7" width="9.8" height="9.8" rx="1.5"/><rect x="12.7" y="12.7" width="9.8" height="9.8" rx="1.5"/></svg></div>
+          <div><h3>Windows</h3><span class="plat">Windows 10/11 · 64-bit</span></div>
+        </div>
+        <div class="dl-meta">
+          <span><b data-nexus-ver>v0.8.0</b></span>
+          <span>64-bit .exe</span>
+          <span>SHA-256</span>
+        </div>
+        <span class="btn btn-primary"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Download</span>
       </a>
       <a class="dl-card rv" data-platform="linux" href="downloads/NEXUS-linux.AppImage" download>
-        <div class="dl-top"><div class="dl-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg></div><div><h3>Linux</h3><span class="plat">AppImage &amp; .deb</span></div></div>
-        <div class="dl-meta"><span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><b data-nexus-linux-ver>…</b></span></div>
-        <span class="btn btn-primary">Download</span>
+        <div class="dl-top">
+          <div class="dl-ic"><svg viewBox="0 0 24 24" fill="#FCC624" class="brand-svg" aria-hidden="true"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z"/></svg></div>
+          <div><h3>Linux</h3><span class="plat">AppImage &amp; .deb</span></div>
+        </div>
+        <div class="dl-meta">
+          <span><b data-nexus-ver>v0.8.0</b></span>
+          <span>AppImage / .deb</span>
+          <span>SHA-256</span>
+        </div>
+        <span class="btn btn-primary"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Download</span>
       </a>
       <a class="dl-card rv" data-platform="android" href="downloads/NEXUS-Android.apk" download>
-        <div class="dl-top"><div class="dl-ic"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></div><div><h3>Android</h3><span class="plat">Android 8+ · signed APK</span></div></div>
-        <div class="dl-meta"><span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><b data-nexus-ver>…</b></span></div>
-        <span class="btn btn-primary">Download</span>
+        <div class="dl-top">
+          <div class="dl-ic"><svg viewBox="0 0 24 24" fill="#3DDC84" class="brand-svg" aria-hidden="true"><path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></svg></div>
+          <div><h3>Android</h3><span class="plat">Android 8+ · signed APK</span></div>
+        </div>
+        <div class="dl-meta">
+          <span><b data-nexus-ver>v0.8.0</b></span>
+          <span>APK</span>
+          <span>SHA-256</span>
+        </div>
+        <span class="btn btn-primary"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Download</span>
       </a>
+      <div class="dl-web rv">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="brand-svg" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            <h3>Web &amp; iOS (PWA)</h3>
+          </div>
+          <p>Nothing to install — or add it to your home screen from the browser for an app-like experience.</p>
+        </div>
+        <a class="btn btn-ghost" href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Open web app</a>
+      </div>
     </div>
-      <p class="dl-note">Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.</p>
+    <p class="dl-note">Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.</p>
   </div>
 </section>
 <section id="faq">
@@ -374,21 +504,19 @@ details.faq p{margin:0;padding:0 22px 20px;color:var(--text-2);font-size:14.5px}
     <div class="ft-grid">
       <div class="ft-brand">
         <a class="logo" href="/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
-        <p>Local-first smart home, honestly built.</p>
+        <p>Local-first smart home platform, privacy-focused and built for speed.</p>
       </div>
       <div><h4>Product</h4><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#downloads">Download</a><a href="#faq">FAQ</a><a href="/about.html">About</a></div>
-      <div><h4>Account</h4><a href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">Manage subscription</a></div>
+      <div><h4>Account</h4><a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Open web app</a><a href="https://nexus-web-jre.pages.dev/stitch-login.html" target="_blank" rel="noopener">Sign in</a><a href="https://nexus-web-jre.pages.dev/stitch-register.html" target="_blank" rel="noopener">Create account</a><a href="https://nexus-web-jre.pages.dev/stitch-forgot-password.html" target="_blank" rel="noopener">Forgot password</a><a href="https://nexus-web-jre.pages.dev/stitch-plus.html" target="_blank" rel="noopener">NEXUS+ &amp; Billing</a><a href="https://nexus-web-jre.pages.dev/stitch-account-security.html" target="_blank" rel="noopener">Account security</a></div>
       <div><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
-      <div><h4>Project</h4><a href="https://github.com/Enard52/NEXUS/issues" target="_blank" rel="noopener">Issue tracker</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Releases &amp; checksums</a></div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. All rights reserved.</span>
-      <span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your home data stays on your devices.</span>
+      <span class="ft-privacy"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Your home data stays on your devices.</span>
     </div>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
 <script src="/assets/site-downloads.js" defer></script>
-<script src="/assets/site-shots.js" defer></script>
 </body>
 </html>
