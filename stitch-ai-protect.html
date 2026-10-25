@@ -162,7 +162,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var last = readScan();
   renderScan(last);
   if (last) document.querySelector('#deep-scan-btn span').textContent = 'Yeniden Tara';
-  document.getElementById('deep-scan-btn').addEventListener('click', deepScan);
+  // Taranacak cihaz yokken "Başlat" gösterme: dürüst eylem "Önce cihaz ekle".
+  var noDevices = !NX.readDevices().length;
+  if (noDevices) document.querySelector('#deep-scan-btn span').textContent = nexusT('Önce cihaz ekle', 'Add a device first');
+  document.getElementById('deep-scan-btn').addEventListener('click', function () {
+    if (!NX.readDevices().length) { location.href = 'stitch-pair.html'; return; }
+    deepScan();
+  });
 });
 </script>
 
