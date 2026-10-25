@@ -11,6 +11,7 @@ const WWW = path.join(ROOT, "www");
 export const APP_JS = [
   "ai-fab.js",
   "auth.js",
+  "automation-engine.js",
   "cloud-sync.js",
   "cloud-config.js",
   "data.js",
@@ -30,7 +31,7 @@ export const APP_JS = [
   "event-bridge.js",
   "nexus-dialog.js",
 ];
-export const APP_FILES = ["index.html", "logos.json", "logo.png", "siri-logo.png", "favicon.ico"];
+export const APP_FILES = ["index.html", "logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "manifest.webmanifest", "automation-worker.html"];
 export const APP_DIRS = ["css", "fonts", "js", "assets", "icons", "leaflet"];
 
 function copy(src, dst) {

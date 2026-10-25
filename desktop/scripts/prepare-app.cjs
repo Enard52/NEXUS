@@ -28,11 +28,11 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const dir of ["css", "fonts", "js", "leaflet", "icons"]) copy(path.join(WWW, dir), path.join(OUT, dir));
 
 // 2) Güncel uygulama dosyaları (kök her zaman en güncel kaynaktır)
-const APP_JS = new Set(["ai-fab.js", "auth.js", "cloud-sync.js", "data.js", "desktop.js", "device-controls.js", "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js",
+const APP_JS = new Set(["ai-fab.js", "auth.js", "automation-engine.js", "cloud-sync.js", "data.js", "desktop.js", "device-controls.js", "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js",
   "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js", "command-palette.js", "event-bridge.js", "nexus-dialog.js"]);
 for (const f of fs.readdirSync(ROOT)) {
   const isPage = /^stitch-.*\.html$/.test(f) || f === "index.html";
-  const isAsset = ["logos.json", "logo.png", "siri-logo.png", "favicon.ico"].includes(f);
+  const isAsset = ["logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "manifest.webmanifest", "automation-worker.html"].includes(f);
   if (isPage || isAsset || APP_JS.has(f)) copy(path.join(ROOT, f), path.join(OUT, f));
 }
 copy(path.join(ROOT, "css"), path.join(OUT, "css"));
@@ -47,7 +47,7 @@ const cloud = path.join(ROOT, "cloud-config.js");
 copy(fs.existsSync(cloud) ? cloud : path.join(ROOT, "cloud-config.example.js"), path.join(OUT, "cloud-config.js"));
 
 // 4) Zorunlu dosyalar gerçekten var mı?
-const required = ["index.html", "stitch-home.html", "theme.js", "desktop.js", "lan-connectors.js", "css/tailwind.css", "css/nexus-ui.css", "js/lucide.js", "fonts/inter/inter.css"];
+const required = ["index.html", "stitch-home.html", "theme.js", "desktop.js", "lan-connectors.js", "automation-engine.js", "sw.js", "manifest.webmanifest", "automation-worker.html", "css/tailwind.css", "css/nexus-ui.css", "js/lucide.js", "fonts/inter/inter.css"];
 const missing = required.filter((f) => !fs.existsSync(path.join(OUT, f)));
 if (missing.length) {
   console.error("Eksik dosyalar:", missing.join(", "));
