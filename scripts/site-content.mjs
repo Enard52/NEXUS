@@ -104,7 +104,7 @@ export const content = {
         [
           "1",
           "Install & open",
-          "Grab the installer for your platform — or open the web app right now. Create an account only if you want cross-device sync.",
+          "Download the native installer for your platform (Windows, Linux, or Android). Create an account to securely sync your setup across all your screens.",
         ],
         [
           "2",
@@ -359,7 +359,7 @@ export const content = {
         [
           "1",
           "Kur ve aç",
-          "Platformuna uygun kurulumu al — ya da web uygulamasını hemen aç. Hesap yalnızca cihazlar arası senkron istersen gerekir.",
+          "Platformuna uygun kurulum dosyasını indir (Windows, Linux veya Android). Cihazlar arası güvenli senkronizasyon için hesabını oluştur.",
         ],
         [
           "2",

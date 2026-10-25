@@ -125,13 +125,14 @@ a{color:inherit;text-decoration:none}
 .nav-controls{display:flex;align-items:center;gap:10px;margin-left:auto}
 @media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:14px}}
 
-/* Dil Değiştirici */
-.lang-switch{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
-  border-radius:999px;padding:3px;box-shadow:var(--shadow);height:38px}
-.lang-btn{border:0;background:transparent;color:var(--muted);font:700 12px/1 Inter,sans-serif;
-  height:32px;padding:0 12px;border-radius:999px;cursor:pointer;transition:all .18s ease}
-.lang-btn:hover{color:var(--text)}
-.lang-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 2px 10px rgba(76,125,255,.35)}
+/* Dil Değiştirici (Sleek Segmented Pill Control) */
+.lang-switch{display:inline-flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:999px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,.04);height:38px;box-sizing:border-box}
+.lang-btn{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;
+  color:var(--muted);font:700 12px/1 Inter,sans-serif;letter-spacing:.02em;height:30px;padding:0 12px;
+  border-radius:999px;text-decoration:none !important;cursor:pointer;transition:all .18s cubic-bezier(.16,1,.3,1);user-select:none}
+.lang-btn:hover:not(.active){color:var(--text);background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.lang-btn.active{background:var(--brand-grad);color:#fff !important;box-shadow:0 2px 8px rgba(76,125,255,.32);cursor:default}
 
 /* Tema Değiştirici */
 .theme-t{border:1px solid var(--border);background:var(--surface);color:var(--text-2);
@@ -395,6 +396,9 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
 .ft a:hover{color:var(--brand)}
+.ft a.logo{display:inline-flex !important;align-items:center !important;gap:10px !important;font-size:20px !important;
+  font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
+.ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 0;max-width:34ch}
 .ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
@@ -863,7 +867,11 @@ function renderFaq(c) {
 
 function renderFooter(c) {
   const col = (title, links) =>
-    `<div><h4>${esc(title)}</h4>${links.map(([l, h]) => `<a href="${h}"${h.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l)}</a>`).join('')}</div>`;
+    `<div><h4>${esc(title)}</h4>${links.map(([l, h]) => {
+      let href = h;
+      if (href.startsWith('#')) href = c.canonical + href;
+      return `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l)}</a>`;
+    }).join('')}</div>`;
 
   return `<footer class="ft">
   <div class="wrap">
