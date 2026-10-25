@@ -184,9 +184,29 @@
       label.textContent = window.nexusT ? window.nexusT('Önce cihaz ekle', 'Add a device first') : 'Önce cihaz ekle';
       cta.setAttribute('data-no-device', '1');
     }
+    // Cihaz var ama bu senaryo için uygun tür yoksa (ör. süpürge yokken Temizlik) dürüst etiket göster.
+    if (cta.getAttribute('data-no-device') !== '1' && pageId !== 'home-health') {
+      ensureEngine(function () {
+        if (window.NX && NX.sceneAffected && NX.sceneAffected(pageId) === 0) {
+          var lbl = cta.querySelector('span') || cta;
+          lbl.textContent = window.nexusT ? window.nexusT('Uyumlu cihaz yok', 'No compatible device') : 'Uyumlu cihaz yok';
+          cta.setAttribute('data-no-compatible', '1');
+        }
+      });
+    }
     cta.addEventListener('click', function (event) {
       event.preventDefault();
       if (cta.getAttribute('data-no-device') === '1') { window.location.href = 'stitch-pair.html'; return; }
+      if (cta.getAttribute('data-no-compatible') === '1') {
+        var opts = {
+          title: 'Uyumlu cihaz yok',
+          message: 'Bu senaryo mevcut cihazlarını etkilemiyor. Senaryonun çalışması için uygun bir cihaz (ör. ışık, perde, süpürge) eklemelisin.',
+          primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'stitch-pair.html'; } },
+          secondary: { label: 'Vazgeç' }
+        };
+        if (window.nexusDialog) window.nexusDialog(opts); else showToast(opts.message);
+        return;
+      }
       runThisScene(true, cta);
     });
     var cancel = footer.querySelector('#footer-cancel-btn');

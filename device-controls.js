@@ -500,22 +500,34 @@
   }
 
   // Senaryoyu uygular: { changed: kaç cihaz, lan: kaçına gerçek komut gitti, title }
+  // Bir senaryonun bu cihazda gerçekten uygulayacağı alan/değer çiftleri (cihazda olmayan özellikler elenir).
+  function sceneActs(scene, device) {
+    var acts = scene.act(kindOf(device), device) || [];
+    return acts.filter(function (a) {
+      // cihazda olmayan özellikleri uygulama (ör. ışık tonu olmayan ampul)
+      if (a[0] === "tone") return hasFeature(device, "colorTemp");
+      if (a[0] === "brightness") return hasCap(device, "brightness");
+      if (a[0] === "switch") return hasCap(device, "switch");
+      if (a[0] === "privacy") return hasFeature(device, "privacy");
+      if (a[0] === "sleep") return hasFeature(device, "sleep");
+      return true;
+    });
+  }
+
+  // Senaryodan etkilenecek eşleşmiş cihaz sayısı (değişiklik yapmadan); bilinmeyen senaryoda -1.
+  function sceneAffected(id) {
+    var scene = SCENES[id];
+    if (!scene) return -1;
+    return readDevices().filter(function (d) { return sceneActs(scene, d).length > 0; }).length;
+  }
+
   function runScene(id) {
     var scene = SCENES[id];
     if (!scene) return { changed: 0, lan: 0, title: id, unknown: true };
     var devices = readDevices();
     var changed = 0, lan = 0;
     devices.forEach(function (device, index) {
-      var acts = scene.act(kindOf(device), device) || [];
-      acts = acts.filter(function (a) {
-        // cihazda olmayan özellikleri uygulama (ör. ışık tonu olmayan ampul)
-        if (a[0] === "tone") return hasFeature(device, "colorTemp");
-        if (a[0] === "brightness") return hasCap(device, "brightness");
-        if (a[0] === "switch") return hasCap(device, "switch");
-        if (a[0] === "privacy") return hasFeature(device, "privacy");
-        if (a[0] === "sleep") return hasFeature(device, "sleep");
-        return true;
-      });
+      var acts = sceneActs(scene, device);
       if (!acts.length) return;
       acts.forEach(function (a) { setField(index, a[0], a[1]); });
       changed += 1;
@@ -563,6 +575,7 @@
     renameDevice: renameDevice,
     deviceUrl: deviceUrl,
     runScene: runScene,
+    sceneAffected: sceneAffected,
     sceneSummary: sceneSummary,
     SCENES: SCENES,
     onError: onError,
