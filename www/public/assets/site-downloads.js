@@ -6,7 +6,11 @@
     .then(function(d){
       if(!d||!d.tag_name)return;
       var v=String(d.tag_name).replace(/^v/,'');
+      // Linux paketi bu sürümden değilse sürüm notundaki "Linux-build: x.y.z" satırı gerçek sürümü verir.
+      var lm=/Linux-build:\s*([0-9.]+)/.exec(d.body||'');
+      var lv=lm?lm[1]:v;
       document.querySelectorAll('[data-nexus-ver]').forEach(function(e){e.textContent=v});
+      document.querySelectorAll('[data-nexus-linux-ver]').forEach(function(e){e.textContent=lv});
       var sizes={};(d.assets||[]).forEach(function(a){sizes[a.name]=a.size});
       Object.keys(FILES).forEach(function(p){
         var card=document.querySelector('.dl-card[data-platform="'+p+'"]');if(!card)return;
