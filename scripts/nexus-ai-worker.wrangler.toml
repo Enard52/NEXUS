@@ -5,4 +5,10 @@ workers_dev = true
 [ai]
 binding = "AI"
 
+[[ratelimits]]
+name = "RL"
+namespace_id = "1001"
+  [ratelimits.simple]
+  limit = 15
+  period = 60
 

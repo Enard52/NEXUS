@@ -10,6 +10,8 @@ export default {
   const h = { "Access-Control-Allow-Origin": ORIGINS.includes(o) ? (o === "null" ? "*" : o) : ORIGINS[0], "Access-Control-Allow-Headers": "content-type", "Vary": "Origin" };
   if (req.method === "OPTIONS") return new Response(null, { headers: h });
   if (req.method !== "POST" || !ORIGINS.includes(o)) return new Response("forbidden", { status: 403, headers: h });
+  // Kötü niyetli spam koruması: IP başına dakikada 15 istek. Normal sohbet bunun çok altındadır; yerel komutlar zaten Worker'a gelmez.
+  if (env.RL) { const rl = await env.RL.limit({ key: req.headers.get("cf-connecting-ip") || "unknown" }); if (!rl.success) return new Response(JSON.stringify({ reply: "" }), { status: 429, headers: { ...h, "content-type": "application/json" } }); }
   let b; try { b = await req.json(); } catch { return new Response("bad", { status: 400, headers: h }); }
   const lang = b.lang === "tr" ? "tr" : "en";
   const msgs = (Array.isArray(b.messages) ? b.messages : []).slice(-8).map(m => ({ role: m.role === "assistant" ? "assistant" : "user", content: String(m.content || "").slice(0, 600) }));
@@ -23,6 +25,7 @@ export default {
   } catch (e) { return new Response(JSON.stringify({ reply: "" }), { status: 503, headers: { ...h, "content-type": "application/json" } }); }
  }
 };
+
 
 
 
