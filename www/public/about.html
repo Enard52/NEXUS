@@ -93,76 +93,79 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn.disabled{opacity:.55;pointer-events:none}
 
 /* Hero */
-.hero{padding:60px 0 36px;position:relative;overflow:hidden}
-.hero .wrap{display:grid;gap:40px;align-items:center}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.05fr .95fr;padding-top:24px}}
+.hero{padding:36px 0 24px;position:relative}
+.hero .wrap{display:grid;gap:32px;align-items:center}
+@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:16px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
-  padding:6px 14px;border-radius:999px;margin-bottom:18px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
-h1{font-size:clamp(34px,5.2vw,54px);line-height:1.08;letter-spacing:-.03em;margin:0 0 20px;font-weight:800}
+  padding:6px 14px;border-radius:999px;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
+h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin:0 0 16px;font-weight:800}
 .grad{background:var(--brand-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{font-size:clamp(16px,2vw,18.5px);color:var(--text-2);margin:0 0 28px;max-width:54ch;line-height:1.55}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.lead{font-size:clamp(15px,1.8vw,17.5px);color:var(--text-2);margin:0 0 24px;max-width:52ch;line-height:1.55}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
 .ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);background:var(--surface);
   border:1px solid var(--border);padding:4px 12px;border-radius:999px;box-shadow:var(--shadow)}
 .dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.trust{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px;font-size:13.5px;color:var(--muted)}
+.trust{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-size:13px;color:var(--muted)}
 .trust span{display:inline-flex;align-items:center;gap:6px}
-.trust .icon{color:#10B981;width:17px;height:17px}
+.trust .icon{color:#10B981;width:16px;height:16px}
 
-/* Telefon Ön İzleme - Gerçek Akıllı Telefon Mockup */
-.phone-wrapper{position:relative;margin:0 auto;max-width:320px;text-align:center}
-.phone-glow{position:absolute;inset:-12% -8%;background:var(--brand-grad);filter:blur(70px);opacity:.35;
+/* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
+.phone-wrapper{position:relative;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.phone-glow{position:absolute;inset:-8% -8%;background:var(--brand-grad);filter:blur(50px);opacity:.3;
   border-radius:60px;z-index:0;pointer-events:none;animation:glowPulse 4s ease-in-out infinite}
-@keyframes glowPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.5;transform:scale(1.05)}}
+@keyframes glowPulse{0%,100%{opacity:.25;transform:scale(1)}50%{opacity:.45;transform:scale(1.04)}}
 
 .phone-case{
   position:relative;z-index:2;
-  width:310px;height:635px;
-  background:#121316;
-  border-radius:48px;
-  padding:10px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 25px 60px -15px rgba(0,0,0,.5), 0 0 50px rgba(76,125,255,.2);
+  width:clamp(230px,25vw,265px);
+  max-width:85vw;
+  background:#14161C;
+  border:1.5px solid rgba(255,255,255,.14);
+  border-radius:42px;
+  padding:7px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 48px -10px rgba(0,0,0,.5), 0 0 40px rgba(76,125,255,.2);
   user-select:none;
   cursor:grab;
   transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
   animation:phoneFloat 6s ease-in-out infinite;
 }
 .phone-case:active{cursor:grabbing}
-@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+@media(max-height:800px), (max-width:600px){
+  .phone-case{width:clamp(205px,62vw,230px);border-radius:38px;padding:6px}
+  .phone-inner-screen{border-radius:32px}
+}
+@media(max-width:380px){
+  .phone-case{width:clamp(190px,65vw,205px);border-radius:34px;padding:5px}
+  .phone-inner-screen{border-radius:28px}
+}
 
 .phone-inner-screen{
-  position:relative;width:100%;height:100%;
-  border-radius:38px;overflow:hidden;
+  position:relative;width:100%;
+  aspect-ratio:390 / 844;
+  border-radius:35px;overflow:hidden;
   background:#05070A;
 }
 
-/* Telefon Üst Çubuk (Status Bar) */
-.phone-status-bar{
-  position:absolute;top:0;left:0;right:0;height:38px;z-index:35;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;color:#fff;font-size:11.5px;font-weight:700;
-  pointer-events:none;
-}
-.phone-status-icons{display:flex;align-items:center;gap:5px}
-.phone-status-icons svg{width:14px;height:14px;fill:currentColor}
-
 /* Dinamik Ada */
 .phone-island{
-  position:absolute;top:9px;left:50%;transform:translateX(-50%);
-  width:94px;height:24px;background:#000;border-radius:20px;z-index:40;
-  display:flex;align-items:center;justify-content:space-between;padding:0 8px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.05);
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:72px;height:18px;background:#000;border-radius:14px;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;padding:0 7px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06);
+  pointer-events:none;
 }
-.island-camera{width:9px;height:9px;border-radius:50%;background:#090d16;box-shadow:inset 0 0 2px #3b82f6}
-.island-sensor{width:7px;height:7px;border-radius:50%;background:#090d16}
+.island-camera{width:7px;height:7px;border-radius:50%;background:#090d16;box-shadow:inset 0 0 2px #3b82f6}
+.island-sensor{width:5px;height:5px;border-radius:50%;background:#090d16}
 
 /* Ekran Slaytları */
 .shot-slide{
   position:absolute;inset:0;opacity:0;
-  transform:scale(.96);
-  transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);
+  transform:scale(.97);
+  transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);
   pointer-events:none;
 }
 .shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
@@ -170,46 +173,46 @@ h1{font-size:clamp(34px,5.2vw,54px);line-height:1.08;letter-spacing:-.03em;margi
 
 /* Alt Çubuk (Home Indicator) */
 .phone-home-indicator{
-  position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
-  width:115px;height:4px;background:rgba(255,255,255,.8);border-radius:99px;z-index:35;
+  position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:85px;height:3.5px;background:rgba(255,255,255,.75);border-radius:99px;z-index:35;
   pointer-events:none;
 }
 
 /* Telefon Cam Parıltısı */
 .phone-glass-shine{
   position:absolute;top:0;left:-50%;width:200%;height:100%;
-  background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 45%);
-  pointer-events:none;z-index:32;border-radius:38px;
+  background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
+  pointer-events:none;z-index:32;border-radius:35px;
 }
 
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
 .phone-bottom-bar{
-  margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:10px;
+  margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:8px;
 }
 .phone-caption-pill{
   display:inline-flex;align-items:center;gap:8px;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:6px 16px;box-shadow:var(--shadow);font-size:13px;font-weight:700;color:var(--text);
+  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
   transition:all .2s ease;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:11px;padding:2px 8px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:6px;
+  display:flex;align-items:center;gap:5px;
 }
 .phone-dot{
-  width:7px;height:7px;border-radius:999px;background:var(--border);border:0;padding:0;
+  width:6px;height:6px;border-radius:999px;background:var(--border);border:0;padding:0;
   cursor:pointer;transition:all .25s ease;
 }
 .phone-dot.active{
-  width:22px;background:var(--brand);box-shadow:0 0 10px rgba(76,125,255,.4);
+  width:18px;background:var(--brand);box-shadow:0 0 8px rgba(76,125,255,.4);
 }
 
 .phone-tap-hint{
-  display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);
+  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);
 }
-.phone-tap-hint svg{width:14px;height:14px;color:var(--brand)}
+.phone-tap-hint svg{width:13px;height:13px;color:var(--brand)}
 
 /* Bölümler */
 section{padding:72px 0}
