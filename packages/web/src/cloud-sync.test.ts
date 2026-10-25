@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -36,11 +36,14 @@ function load(options: {
   user?: string;
   /** Sahte sunucu: verilirse sırayla değil bu işlev her isteği yanıtlar. */
   handler?: (call: Call) => unknown;
+  /** Sahte WebSocket üreteci (Realtime testleri için). */
+  WebSocket?: unknown;
 }) {
   const calls: Call[] = [];
   const storage = makeStorage();
   if (options.user) storage.setItem("nexusCurrentUser", options.user);
   const win: Record<string, unknown> = { localStorage: storage };
+  if (options.WebSocket) win.WebSocket = options.WebSocket;
   // auth.js ile aynı davranış: anahtarlar aktif kullanıcının önekiyle saklanır.
   const owner = () => storage.getItem("nexusCurrentUser") || "guest";
   win.nexusGetItem = (key: string) =>
@@ -678,5 +681,349 @@ describe("şema dosyası", () => {
     expect(sql).toContain("primary key (user_id, device_id)");
     expect(sql).toContain("auth.uid() = user_id");
     expect(sql).toContain("references auth.users");
+  });
+});
+
+describe("oturum anahtarı: e-posta büyük/küçük harf", () => {
+  /* Kanıtlanan hata: auth.js, nexusCurrentUser'ı kullanıcının yazdığı gibi saklar;
+     Supabase (GoTrue) ise e-postayı küçülterek döndürür. writeSession oturumu
+     session.email ile, readSession ise aktif kullanıcının önekiyle okuyordu →
+     "Ensar@Gmail.com" yazan bir kullanıcının oturumu hiç bulunamıyor, bulut senkronu
+     üç platformda da (web/masaüstü/Android) sessizce duruyordu. */
+  const sessionHandler = (call: Call) => {
+    if (call.url.includes("/auth/v1/token")) {
+      return {
+        access_token: "at-1",
+        refresh_token: "rt-1",
+        expires_in: 3600,
+        user: { id: "u1", email: "ensar@gmail.com" },
+      };
+    }
+    return { body: [] };
+  };
+
+  it("sunucu e-postayı küçülterek döndürse bile oturum okunur", async () => {
+    const { cloud } = load({ config: CONFIG, user: "Ensar@Gmail.com", handler: sessionHandler });
+    await cloud.signIn("Ensar@Gmail.com", "sifre123");
+    const s = await cloud.session();
+    expect(s && s.accessToken).toBe("at-1");
+  });
+
+  it("oturum bulununca cihaz çekme isteğine erişim belirteci eşlik eder", async () => {
+    const { cloud, calls } = load({
+      config: CONFIG,
+      user: "Ensar@Gmail.com",
+      handler: sessionHandler,
+    });
+    await cloud.signIn("Ensar@Gmail.com", "sifre123");
+    await cloud.pullDevices();
+    const pull = calls.find((c) => c.url.includes("/rest/v1/nexus_devices"));
+    expect(pull).toBeTruthy();
+    expect((pull as Call).headers.Authorization).toBe("Bearer at-1");
+  });
+
+  it("çıkış, büyük/küçük harf fark etmeksizin tüm oturum kayıtlarını siler", async () => {
+    const { cloud, storage } = load({
+      config: CONFIG,
+      user: "Ensar@Gmail.com",
+      handler: sessionHandler,
+    });
+    await cloud.signIn("Ensar@Gmail.com", "sifre123");
+    await cloud.signOut();
+    const kalan = [...storage._map.keys()].filter((k) => k.endsWith("nexusCloudSession"));
+    expect(kalan).toEqual([]);
+    expect(storage.getItem("nexusCloudSessionOwner")).toBe(null);
+    expect(await cloud.session()).toBe(null);
+  });
+
+  it("yerel hesabın yazımı bulutla birleşince veriler kanonik anahtarın altına taşınır", async () => {
+    const { cloud, storage, win } = load({
+      config: CONFIG,
+      user: "Ensar@Gmail.com",
+      handler: sessionHandler,
+    });
+    // Bulut yapılandırması yokken (yerel mod) kullanıcının yazdığı gibi saklanmış kayıtlar:
+    // Supabase girişinden sonra bu önek hiç okunmuyor, cihazlar ve ayarlar kaybolmuş gibi
+    // görünüyordu. Artık yalnızca harf farkı varsa tek yazımın altına taşınır.
+    storage.setItem(
+      "Ensar@Gmail.com_nexusPairedDevices",
+      JSON.stringify([{ id: "lamp-1", name: "Lamba" }]),
+    );
+    storage.setItem("Ensar@Gmail.com_nexusTheme", "gece");
+    await cloud.signIn("Ensar@Gmail.com", "sifre123");
+    const get = win.nexusGetItem as (k: string) => string | null;
+    expect(storage.getItem("nexusCurrentUser")).toBe("ensar@gmail.com");
+    expect(JSON.parse(get("nexusPairedDevices") || "[]")[0].id).toBe("lamp-1");
+    expect(get("nexusTheme")).toBe("gece");
+    expect([...storage._map.keys()].filter((k) => k.startsWith("Ensar@"))).toEqual([]);
+  });
+
+  it("farklı bir adresin kayıtları taşınmaz (yalnızca harf farkı ele alınır)", async () => {
+    const { cloud, storage } = load({
+      config: CONFIG,
+      user: "Ensar@Gmail.com",
+      handler: sessionHandler,
+    });
+    storage.setItem("baska@ornek.com_nexusPairedDevices", '[{"id":"x"}]');
+    await cloud.signIn("Ensar@Gmail.com", "sifre123");
+    expect(storage.getItem("baska@ornek.com_nexusPairedDevices")).toBe('[{"id":"x"}]');
+  });
+});
+
+/* Sayfalar oturumu doğrudan depodan okumaya kalkarsa alan adları karışıyordu:
+   cloud-sync nesneyi camelCase yazar (accessToken), GoTrue yanıtı yılan kafesidir
+   (access_token). Hesap silme akışı bu yüzden hiç çalışmıyordu — sınıfın geri
+   gelmesini bu tarama engeller. */
+describe("oturum alan adları: sayfalar camelCase okur", () => {
+  const pages = readdirSync(REPO_ROOT).filter((f) => /^stitch-.*\.html$/.test(f));
+
+  it("hiçbir sayfa depodaki oturumdan yılan kafesi alan okumaz", () => {
+    const offending = pages.filter((f) =>
+      /\.\s*(access_token|refresh_token|expires_in|user_metadata)\b/.test(
+        readFileSync(join(REPO_ROOT, f), "utf8"),
+      ),
+    );
+    expect(offending).toEqual([]);
+  });
+
+  it("hesap silme akışı cloud-sync'in kendi session API'sini kullanır", () => {
+    const src = readFileSync(join(REPO_ROOT, "stitch-account-security.html"), "utf8");
+    expect(src).toContain("nexusCloud.session()");
+    expect(src).toContain("session.accessToken");
+  });
+
+  it("paketlerin hepsi aynı cloud-sync kodunu taşır (üç platform tek kaynak)", () => {
+    const root = readFileSync(join(REPO_ROOT, "cloud-sync.js"), "utf8");
+    for (const copy of ["www", "desktop/app", "android/app/src/main/assets/public"]) {
+      const file = join(REPO_ROOT, copy, "cloud-sync.js");
+      if (!existsSync(file)) continue;
+      expect(readFileSync(file, "utf8")).toBe(root);
+    }
+  });
+
+  it("dağıtılacak paketlerde bulut yapılandırması boş değil (senkron kapalı olmasın)", () => {
+    for (const copy of ["www", "desktop/app", "android/app/src/main/assets/public"]) {
+      const file = join(REPO_ROOT, copy, "cloud-config.js");
+      if (!existsSync(file)) continue; // CI'de üretilir: scripts/ensure-cloud-config.mjs
+      const text = readFileSync(file, "utf8");
+      expect(/url:\s*"https:\/\//.test(text)).toBe(true);
+      expect(/anonKey:\s*".{20,}"/.test(text)).toBe(true);
+    }
+  });
+});
+
+/* Realtime: başka cihazdaki değişiklik 45 saniye beklenmeden uygulanmalı.
+   Testler ham WebSocket çerçevesini (phx_join / postgres_changes / heartbeat) sahte
+   bir soketle doğrular; sunucu tarafında yayın üyeliği gerekir — see
+   supabase/migrations/20261025_realtime_publication.sql. */
+type Phx = {
+  topic: string;
+  event: string;
+  payload: Record<string, any>;
+  ref: string;
+  tenant: string;
+};
+
+class FakeSocket {
+  static OPEN = 1;
+  readyState = 0;
+  sent: Phx[] = [];
+  closed = 0;
+  onopen: (() => void) | null = null;
+  onmessage: ((ev: { data: string }) => void) | null = null;
+  onclose: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  constructor(public url: string) {}
+  open() {
+    this.readyState = FakeSocket.OPEN;
+    if (this.onopen) this.onopen();
+  }
+  send(text: string) {
+    this.sent.push(JSON.parse(text) as Phx);
+  }
+  /** Sunucudan gelen tablo değişikliğini taklit eder. */
+  emit(table: string, data: Record<string, unknown>) {
+    if (!this.onmessage) return;
+    this.onmessage({
+      data: JSON.stringify({
+        topic: "realtime:nexus-hesap",
+        event: "postgres_changes",
+        payload: { data: { table, ...data } },
+      }),
+    });
+  }
+  close() {
+    this.closed++;
+    this.readyState = 3;
+    if (this.onclose) this.onclose();
+  }
+}
+
+const RT_CONFIG = { url: "https://ornek.supabase.co", anonKey: "anon-anahtar" };
+const rtHandler = (call: Call) => {
+  if (call.url.includes("/auth/v1/token")) {
+    return {
+      access_token: "at-rt",
+      refresh_token: "rt-rt",
+      expires_in: 3600,
+      user: { id: "u-rt", email: "ayse@ornek.com" },
+    };
+  }
+  if (call.url.includes("nexus_entitlements")) {
+    return {
+      body: [
+        { plan: "Yıllık", status: "active", currency: "TRY", period_end: "2027-01-01T00:00:00Z" },
+      ],
+    };
+  }
+  return { body: [] };
+};
+
+async function withRealtime(seed?: (storage: ReturnType<typeof makeStorage>) => void) {
+  const sockets: FakeSocket[] = [];
+  const loaded = load({
+    config: RT_CONFIG,
+    user: "ayse@ornek.com",
+    handler: rtHandler,
+    WebSocket: class extends FakeSocket {
+      constructor(url: string) {
+        super(url);
+        sockets.push(this);
+      }
+    },
+  });
+  await loaded.cloud.signIn("ayse@ornek.com", "sifre123");
+  if (seed) seed(loaded.storage);
+  loaded.cloud.startRealtime();
+  await new Promise((r) => setTimeout(r, 0));
+  const sock = sockets[sockets.length - 1];
+  if (sock) sock.open();
+  return { ...loaded, sock, sockets };
+}
+
+describe("anlık senkron (Supabase Realtime, ham WebSocket)", () => {
+  it("oturum varsa doğru kanala ve doğru filtrelerle abone olur", async () => {
+    const { sock } = await withRealtime();
+    expect(sock.url).toBe(
+      "wss://ornek.supabase.co/realtime/v1/websocket?apikey=anon-anahtar&vsn=1.0.0",
+    );
+    const join = sock.sent[0];
+    expect(join.event).toBe("phx_join");
+    expect(join.topic).toBe("realtime:nexus-hesap");
+    expect(join.tenant).toBe("ornek");
+    expect(join.payload.access_token).toBe("at-rt");
+    const tables = join.payload.config.postgres_changes.map((c: Record<string, string>) => c.table);
+    expect(tables).toEqual(["nexus_user_state", "nexus_devices", "nexus_entitlements"]);
+    expect(join.payload.config.postgres_changes[0].filter).toBe("user_id=eq.u-rt");
+    expect(join.payload.config.postgres_changes[2].filter).toBe("email=eq.ayse@ornek.com");
+  });
+
+  it("oturum yoksa soket bile açmaz (yerel modda gereksiz bağlantı yok)", async () => {
+    let constructed = 0;
+    class CountingSocket extends FakeSocket {
+      constructor(url: string) {
+        super(url);
+        constructed++;
+      }
+    }
+    const { cloud } = load({
+      config: RT_CONFIG,
+      user: "ayse@ornek.com",
+      WebSocket: CountingSocket,
+    });
+    cloud.startRealtime();
+    await new Promise((r) => setTimeout(r, 0));
+    expect(constructed).toBe(0);
+    expect(cloud.realtimeActive()).toBe(false);
+  });
+
+  it("hesap durumu değişikliği yerelde geçerli olur", async () => {
+    const { storage, sock } = await withRealtime();
+    sock.emit("nexus_user_state", {
+      record: {
+        user_id: "u-rt",
+        key: "nexusTheme",
+        value: "gece",
+        updated_at: "2026-10-25T10:00:00Z",
+      },
+    });
+    expect(storage.getItem("ayse@ornek.com_nexusTheme")).toBe("gece");
+  });
+
+  it("oturum ve cihaz anahtarı durum tablosundan ASLA üzerine yazılmaz", async () => {
+    const { storage, sock } = await withRealtime();
+    sock.emit("nexus_user_state", {
+      record: { user_id: "u-rt", key: "nexusCloudSession", value: "sahte" },
+    });
+    sock.emit("nexus_user_state", {
+      record: { user_id: "u-rt", key: "nexusPairedDevices", value: "[]" },
+    });
+    // Oturum yerinde ve gerçek değeriyle duruyor; saldırgan/bozuk satır geçersiz.
+    expect(storage.getItem("ayse@ornek.com_nexusCloudSession")).toContain("at-rt");
+    expect(storage.getItem("ayse@ornek.com_nexusPairedDevices")).toBe(null);
+  });
+
+  it("cihaz eklemesi ve silmesi eşlenir", async () => {
+    const { storage, sock } = await withRealtime((s) =>
+      s.setItem(
+        "ayse@ornek.com_nexusPairedDevices",
+        JSON.stringify([{ id: "lamp-1", name: "Lamba", protocol: "shelly", host: "192.168.1.9" }]),
+      ),
+    );
+    sock.emit("nexus_devices", {
+      event_type: "INSERT",
+      record: {
+        user_id: "u-rt",
+        device_id: "plug-2",
+        name: "Priz",
+        protocol: "tapo",
+        host: "192.168.1.20",
+      },
+    });
+    let list = JSON.parse(storage.getItem("ayse@ornek.com_nexusPairedDevices") || "[]");
+    expect(list.map((d: { id: string }) => d.id).sort()).toEqual(["lamp-1", "plug-2"]);
+    sock.emit("nexus_devices", {
+      event_type: "DELETE",
+      old_record: { user_id: "u-rt", device_id: "lamp-1" },
+    });
+    list = JSON.parse(storage.getItem("ayse@ornek.com_nexusPairedDevices") || "[]");
+    expect(list.map((d: { id: string }) => d.id)).toEqual(["plug-2"]);
+  });
+
+  it("abonelik satırı değişince haklar sunucudan yeniden okunur", async () => {
+    const { calls, sock, storage } = await withRealtime();
+    sock.emit("nexus_entitlements", {
+      event_type: "UPDATE",
+      record: { email: "ayse@ornek.com", plan: "Yıllık", status: "active" },
+    });
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(calls.some((c) => c.url.includes("nexus_entitlements"))).toBe(true);
+    expect(storage.getItem("ayse@ornek.com_nexusPlusPlan")).toBe("Yıllık");
+  });
+
+  it("çıkış yapınca soket kapatılır ve yeniden bağlanma planı kalmaz", async () => {
+    const { cloud, sock, sockets } = await withRealtime();
+    await cloud.signOut();
+    expect(sock.closed).toBe(1);
+    expect(cloud.realtimeActive()).toBe(false);
+    expect(sockets.length).toBe(1);
+  });
+
+  it("bilinmeyen tablo ve bozuk mesaj sessizce yutulur (senkron yoklama ile sürer)", async () => {
+    const { sock, storage } = await withRealtime();
+    sock.onmessage!({ data: "bu json değil" });
+    sock.onmessage!({
+      data: JSON.stringify({
+        topic: "realtime:baska-kanal",
+        event: "postgres_changes",
+        payload: {
+          data: { table: "nexus_user_state", record: { key: "nexusTheme", value: "kurcalama" } },
+        },
+      }),
+    });
+    expect(storage.getItem("ayse@ornek.com_nexusTheme")).toBe(null);
+    sock.emit("bilinen_tablo", { record: { key: "nexusTheme", value: "kurcalama" } });
+    expect(storage.getItem("ayse@ornek.com_nexusTheme")).toBe(null);
   });
 });

@@ -29,24 +29,120 @@
   }
 
   // --- oturum ---------------------------------------------------------------
+  //
+  // Sahip yazımı tek kurala bağlı: KÜÇÜK HARF. Supabase e-postayı küçülterek döndürür,
+  // uygulama ise kullanıcının yazdığını ("Ensar@Gmail.com") olduğu gibi saklar. Eskiden
+  // oturum küçük haliyle yazılıyor, nexusGetItem ile "yazıldığı haliyle" okunuyordu;
+  // anahtar bölününce oturum bulunamıyor ve senkron HİÇBİR UYARI VERMEDEN duruyordu
+  // (regresyon testi: packages/web/src/cloud-sync.test.ts).
 
-  function readSession() {
+  var OWNER_POINTER = "nexusCloudSessionOwner";
+
+  function safeGet(key) {
     try {
-      var raw = window.nexusGetItem ? window.nexusGetItem(SESSION_KEY) : localStorage.getItem(SESSION_KEY);
-      return raw ? JSON.parse(raw) : null;
+      return localStorage.getItem(key);
     } catch (e) {
       return null;
     }
   }
 
-  // Oturum, sahibinin e-postasıyla anahtarlanır. Giriş sırasında aktif kullanıcı henüz ayarlanmamış olabilir;
-  // eskiden bu yüzden oturum "guest_" altına düşüp senkron hiç çalışmıyordu.
-  function writeSession(session) {
-    var owner = (session && session.email) || localStorage.getItem("nexusCurrentUser") || "guest";
-    var key = owner + "_" + SESSION_KEY;
+  function activeUser() {
+    var u = String(safeGet("nexusCurrentUser") || "").trim();
+    // currentUserKey() ile aynı kural: "guest" bir hesap değil, oturum Açığı için önektir.
+    return u === "guest" ? "" : u;
+  }
+
+  function canonicalOwner(email) {
+    var raw = String(email || activeUser() || "").trim();
+    return raw ? raw.toLowerCase() : "";
+  }
+
+  // Aktif kullanıcının olası yazımları: yazıldığı hali + kanonik (küçük) hali.
+  function ownerSpellings(canonical) {
+    var names = [];
+    var active = activeUser();
+    if (active && active.toLowerCase() === canonical) names.push(active);
+    if (names.indexOf(canonical) === -1) names.push(canonical);
+    return names;
+  }
+
+  function readSession() {
+    var canonical = canonicalOwner("");
+    var keys = ownerSpellings(canonical).map(function (n) { return n + "_" + SESSION_KEY; });
+    // Girişin hemen sonrasında (aktif kullanıcı henüz güncellenmemiş) ya da tek başına
+    // açılan sayfalarda: en son yazılan oturumun sahibi işaretten bulunur.
+    var pointer = String(safeGet(OWNER_POINTER) || "");
+    if (pointer && (!canonical || pointer.toLowerCase() === canonical)) {
+      var pointed = pointer + "_" + SESSION_KEY;
+      if (keys.indexOf(pointed) === -1) keys.push(pointed);
+    }
+    for (var i = 0; i < keys.length; i++) {
+      var raw = safeGet(keys[i]);
+      if (!raw) continue;
+      try {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.accessToken) return parsed;
+      } catch (e) { /* bozuk kayıt: sonraki yazım denenir */ }
+    }
+    return null;
+  }
+
+  // Aktif kullanıcı yazımı ile kanonik yazım YALNIZCA büyük/küçük harften farklıysa o
+  // önek altındaki kayıtlar kanoniğe taşınır; cihazların ve ayarların görünmez kalması
+  // veri kaybı gibi görünüyordu. Farklı bir adrese taşımaya asla kalkışmaz.
+  function adoptSpelling(canonical) {
+    var active = activeUser();
+    if (!active || active === canonical || active.toLowerCase() !== canonical) return 0;
+    var from = active + "_";
+    var to = canonical + "_";
+    var keys = [];
     try {
-      if (session) localStorage.setItem(key, JSON.stringify(session));
-      else localStorage.removeItem(key);
+      for (var i = 0; i < localStorage.length; i++) {
+        var full = localStorage.key(i);
+        if (full && full.indexOf(from) === 0) keys.push(full);
+      }
+    } catch (e) {
+      return 0;
+    }
+    var moved = 0;
+    keys.forEach(function (full) {
+      var target = to + full.slice(from.length);
+      try {
+        if (safeGet(target) === null) {
+          localStorage.setItem(target, safeGet(full));
+          moved++;
+        }
+        localStorage.removeItem(full);
+      } catch (e) { /* kota dolu: kalan kayıt eski önekinde durur, sonraki girişte yeniden denenir */ }
+    });
+    try {
+      localStorage.setItem("nexusCurrentUser", canonical);
+    } catch (e) { /* özel mod */ }
+    return moved;
+  }
+
+  // Oturum, sahibinin e-postasıyla anahtarlanır. Giriş sırasında aktif kullanıcı henüz
+  // ayarlanmamış olabilir; eskiden bu yüzden oturum "guest_" altına düşüp senkron hiç
+  // çalışmıyordu.
+  function writeSession(session) {
+    var canonical = canonicalOwner(session && session.email ? session.email : activeUser()) || "guest";
+    var canonicalKey = canonical + "_" + SESSION_KEY;
+    try {
+      if (session) {
+        adoptSpelling(canonical);
+        localStorage.setItem(canonicalKey, JSON.stringify(session));
+        localStorage.setItem(OWNER_POINTER, canonical);
+      } else {
+        localStorage.removeItem(canonicalKey);
+        localStorage.removeItem(OWNER_POINTER);
+      }
+      // Aynı sahibin diğer yazımlarında kalmış oturum kayıtları temizlenir: yarım kalan
+      // girişler ikinci bir hesap gibi davranmasın.
+      ownerSpellings(canonical).forEach(function (name) {
+        var key = name + "_" + SESSION_KEY;
+        if (key !== canonicalKey) localStorage.removeItem(key);
+      });
+      localStorage.removeItem(SESSION_KEY); // en eski şema: öneksiz tek kayıt
     } catch (e) { /* kota dolu / özel mod */ }
   }
 
@@ -182,6 +278,7 @@
   function signOut() {
     var current = readSession();
     writeSession(null);
+    rtStop();
     if (!current || !cfg()) return Promise.resolve(null);
     return api("/auth/v1/logout", { method: "POST", headers: { Authorization: "Bearer " + current.accessToken } }).catch(function () {
       return null;
@@ -386,11 +483,19 @@
     return list.length;
   }
 
+  // Başarılı bir senkron turu, bekleyen işaretleri uygular: kuyrukta "yeniden dene"
+  // notundan başka bir şey yok (verinin kendisi zaten yerelde duruyor).
+  function clearQueue() {
+    try {
+      localStorage.removeItem(QUEUE_KEY);
+    } catch (e) { /* özel mod */ }
+  }
+
   function flushQueue() {
     var pending = queue();
     if (!pending.length || !enabled()) return Promise.resolve({ flushed: pending.length });
     return syncNow().then(function () {
-      localStorage.removeItem(QUEUE_KEY);
+      clearQueue();
       return { flushed: pending.length };
     });
   }
@@ -405,6 +510,7 @@
       syncTimer = setTimeout(function () {
         syncTimer = null;
         syncAll().then(function (result) {
+          clearQueue();
           resolvePromise(result);
         }).catch(function () {
           enqueue({ kind: "sync", at: Date.now() });
@@ -437,12 +543,15 @@
     nexusPlusEnd: 1,
     nexusPlusCancel: 1,
     nexusPlusCurrency: 1,
+    // Bildirim kanal kurulumu bu CİHAZA özeldir: Telegram bot anahtarı ve webhook
+    // adresi buluta asla taşınmaz (kullanıcının kendi sırrı).
+    nexusNotifyChannels: 1,
+    nexusNotifySeen: 1,
+    nexusNotifyStats: 1,
   };
 
   function currentUserKey() {
-    var u = "";
-    try { u = localStorage.getItem("nexusCurrentUser") || ""; } catch (e) { u = ""; }
-    return u && u !== "guest" ? u : "";
+    return activeUser();
   }
 
   function hashOf(s) {
@@ -588,6 +697,188 @@
     return stateRunning;
   }
 
+  // --- anlık senkron (Supabase Realtime) ---------------------------------------
+  //
+  // Başka cihazdaki bir değişiklik eskiden yalnızca 45 saniyede bir yoklamada
+  // görülüyordu. Supabase Realtime bir Phoenix kanalıdır ve ham WebSocket ile de
+  // konuşulur: telefona 250 KB'lik SDK sokmak yerine yalnızca phx_join /
+  // postgres_changes / heartbeat çerçevesi kurulur. Bu bir HIZ iyileştirmesidir:
+  // bağlanamazsa (ağ yok, WebView'de WebSocket yok, tablo yayın kapsamında değil)
+  // yoklama olduğu gibi sürer, senkron Realtime'a bağlı değildir.
+  //
+  // GEREK (bir seferlik, sunucu tarafı): supabase/migrations/20261025_realtime_publication.sql
+  // — nexus_user_state, nexus_devices ve nexus_entitlements supabase_realtime
+  // yayınına eklenmezse abone olunur ama hiçbir değişiklik ulaşmaz.
+
+  var rt = { socket: null, topic: "realtime:nexus-hesap", ref: 0, tries: 0, heartbeat: null, reconnect: null };
+
+  function tenantFromUrl() {
+    var c = cfg();
+    var m = c && /https?:\/\/([a-z0-9-]+)\./i.exec(c.url);
+    return m ? m[1] : "supabase";
+  }
+
+  function realtimeUrl() {
+    var c = cfg();
+    if (!c) return "";
+    // https -> wss, http -> ws
+    return c.url.replace(/^http/i, "ws").replace(/\/+$/, "") +
+      "/realtime/v1/websocket?apikey=" + encodeURIComponent(c.anonKey) + "&vsn=1.0.0";
+  }
+
+  function rtSend(event, payload) {
+    var s = rt.socket;
+    if (!s || s.readyState !== 1) return false;
+    rt.ref++;
+    try {
+      s.send(JSON.stringify({ topic: rt.topic, event: event, payload: payload || {}, ref: String(rt.ref), tenant: tenantFromUrl() }));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function rtStop() {
+    if (rt.heartbeat) { clearInterval(rt.heartbeat); rt.heartbeat = null; }
+    if (rt.reconnect) { clearTimeout(rt.reconnect); rt.reconnect = null; }
+    var s = rt.socket;
+    rt.socket = null;
+    if (s) { try { s.onopen = s.onmessage = s.onerror = s.onclose = null; s.close(); } catch (e) { /* zaten kapalı */ } }
+  }
+
+  // Uzakta değişen bir hesap durumu anahtarını yerelde uygular.
+  // Kendi yazmamız geri dönebilir (postgres_changes kendine de gider): değer aynıysa
+  // hiçbir şey yapmayız, böylece kendi yankımız ekranı titretmez.
+  function applyRemoteState(row) {
+    var user = currentUserKey();
+    if (!user || !row || !row.key || STATE_EXCLUDE[row.key]) return false;
+    var full = user + "_" + row.key;
+    if (localStorage.getItem(full) === row.value) return false;
+    try {
+      localStorage.setItem(full, row.value);
+      var uid = row.user_id || "";
+      var meta = loadMeta(uid);
+      meta[row.key] = { h: hashOf(String(row.value || "")), t: row.updated_at || new Date().toISOString() };
+      if (uid) saveMeta(uid, meta);
+    } catch (e) {
+      return false;
+    }
+    announceRemoteChange({ key: row.key, table: "nexus_user_state" });
+    return true;
+  }
+
+  function applyRemoteDevice(row, removed) {
+    var store = window.nexusGetItem ? window.nexusGetItem(DEVICE_KEY) : localStorage.getItem(DEVICE_KEY);
+    var local = [];
+    try { local = JSON.parse(store || "[]"); } catch (e) { local = []; }
+    if (!Array.isArray(local)) local = [];
+    var id = (row && (row.device_id || row.id)) || "";
+    if (!id) return false;
+    var out = local.filter(function (d) { return d && d.id !== id; });
+    if (removed) {
+      if (out.length === local.length) return false;
+    } else {
+      var incoming = fromRows([row])[0];
+      if (!incoming) return false;
+      var same = local.filter(function (d) { return d && d.id === id; })[0];
+      if (same && JSON.stringify(same) === JSON.stringify(incoming)) return false;
+      out.push(incoming);
+    }
+    if (window.nexusSetItem) window.nexusSetItem(DEVICE_KEY, JSON.stringify(out));
+    else localStorage.setItem(DEVICE_KEY, JSON.stringify(out));
+    announceRemoteChange({ key: DEVICE_KEY, table: "nexus_devices" });
+    return true;
+  }
+
+  // Değişiklik sayfaya duyurulur; eski sayfalar yenileme beklediği için korunan
+  // yerinde-yenileme kuralı yine uygulanır (yazarken bölme, art arda yenileme yapma).
+  function announceRemoteChange(detail) {
+    try {
+      window.dispatchEvent(new CustomEvent("nexusCloudRemoteChange", { detail: detail }));
+    } catch (e) { /* eski WebView */ }
+    // theme.js ve event-bridge.js depolama olayını dinliyor (tema, zil rozeti);
+    // sekmeler arası olay aynı sekmede fırlatılmaz — buradan elle veriyoruz, böylece
+    // bu tür değişiklikler SAYFA YENİLEMEDEN yansır.
+    try {
+      if (typeof StorageEvent === "function" && detail && detail.key) {
+        var value = window.nexusGetItem ? window.nexusGetItem(detail.key) : localStorage.getItem(detail.key);
+        window.dispatchEvent(new StorageEvent("storage", { key: detail.key, newValue: value, storageArea: localStorage }));
+      }
+    } catch (e) { /* eski WebView */ }
+    scheduleRemoteRefresh();
+  }
+
+  var refreshTimer = null;
+  function scheduleRemoteRefresh() {
+    if (refreshTimer) return;
+    refreshTimer = setTimeout(function () {
+      refreshTimer = null;
+      if (typeof document === "undefined" || typeof location === "undefined") return;
+      var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+      var last = 0;
+      try { last = parseInt(sessionStorage.getItem("nexusCloudReloadAt") || "0", 10) || 0; } catch (e) { last = 0; }
+      if (!typing && Date.now() - last > 20000) {
+        try { sessionStorage.setItem("nexusCloudReloadAt", String(Date.now())); } catch (e) { /* özel mod */ }
+        location.reload();
+      }
+    }, 400);
+  }
+
+  function handleRealtimeMessage(raw) {
+    var msg;
+    try { msg = JSON.parse(raw); } catch (e) { return; }
+    if (!msg || msg.topic !== rt.topic) return;
+    if (msg.event !== "postgres_changes") return;
+    var data = (msg.payload && msg.payload.data) || {};
+    var table = data.table || "";
+    if (table === "nexus_user_state") { applyRemoteState(data.record || data.old_record); return; }
+    if (table === "nexus_devices") { applyRemoteDevice(data.record || data.old_record, data.event_type === "DELETE"); return; }
+    if (table === "nexus_entitlements") { pullEntitlement().catch(function () {}); return; }
+  }
+
+  function startRealtime() {
+    if (!enabled() || !currentUserKey()) return;
+    var WS = typeof window === "undefined" ? null : window.WebSocket;
+    if (!WS || rt.socket) return;
+    session().then(function (current) {
+      if (!current || rt.socket) return;
+      var socket;
+      try { socket = new WS(realtimeUrl()); } catch (e) { return; }
+      rt.socket = socket;
+      socket.onopen = function () {
+        rt.tries = 0;
+        rtSend("phx_join", {
+          config: {
+            broadcast: { ack: false, self: false },
+            postgres_changes: [
+              { event: "*", schema: "public", table: "nexus_user_state", filter: "user_id=eq." + current.userId },
+              { event: "*", schema: "public", table: "nexus_devices", filter: "user_id=eq." + current.userId },
+              { event: "*", schema: "public", table: "nexus_entitlements", filter: "email=eq." + String(current.email || "").toLowerCase() },
+            ],
+          },
+          access_token: current.accessToken,
+        });
+        if (rt.heartbeat) clearInterval(rt.heartbeat);
+        rt.heartbeat = setInterval(function () {
+          if (!rtSend("heartbeat", { presence: {}, user_profile: {} })) {
+            clearInterval(rt.heartbeat);
+            rt.heartbeat = null;
+          }
+        }, 25000);
+      };
+      socket.onmessage = function (ev) { handleRealtimeMessage(ev && ev.data); };
+      socket.onerror = function () { /* kapanışta yeniden bağlanma planlanır */ };
+      socket.onclose = function () {
+        if (rt.socket === socket) rt.socket = null;
+        if (rt.heartbeat) { clearInterval(rt.heartbeat); rt.heartbeat = null; }
+        var wait = Math.min(30000, 1000 * Math.pow(2, Math.min(rt.tries, 5)));
+        rt.tries++;
+        if (rt.reconnect) clearTimeout(rt.reconnect);
+        rt.reconnect = setTimeout(function () { rt.reconnect = null; startRealtime(); }, wait);
+      };
+    }).catch(function () { /* oturum yoksa Realtime da yok */ });
+  }
+
   // --- NEXUS+ abonelik (Whop) --------------------------------------------------
   // Satın alma Whop'ta yapılır; webhook, planı e-postaya bağlı olarak nexus_entitlements'a yazar.
   // Burada yalnızca okunur ve yerel görünüm anahtarlarına yansıtılır.
@@ -663,6 +954,7 @@
       if (busy) return;
       busy = true;
       syncAll().then(function (r) {
+        clearQueue(); // bu tur başarılı: çevrimdışıyken biriken "yeniden dene" işaretleri uygulandı
         if (!r || !r.changed) return;
         // Başka cihazdan gelen veri sayfada görünsün: yazarken bölme, art arda yenileme yapma.
         var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
@@ -672,12 +964,20 @@
           try { sessionStorage.setItem("nexusCloudReloadAt", String(Date.now())); } catch (e) { /* özel mod */ }
           location.reload();
         }
-      }).catch(function () { /* çevrimdışı: bir sonraki turda yeniden denenir */ }).then(function () { busy = false; });
+      }, function () {
+        // çevrimdışı / erişilemedi: kuyrukta dursun, çevrimiçi olunca yeniden denenir.
+        enqueue({ kind: "sync", at: Date.now() });
+      }).then(function () { busy = false; });
     }
-    setTimeout(function () { run(true); }, 1200);
+    setTimeout(function () { run(true); startRealtime(); }, 1200);
     setInterval(run, 45000);
-    document.addEventListener("visibilitychange", function () { run(false); });
-    window.addEventListener("online", function () { run(false); });
+    document.addEventListener("visibilitychange", function () { run(false); startRealtime(); });
+    window.addEventListener("online", function () {
+      // bağlantıya geçince bekleyen işleri bekleme; hemen dene, sonra tam senkron.
+      if (queue().length) flushQueue().catch(function () { /* sonraki tur dener */ });
+      startRealtime();
+      run(false);
+    });
     window.addEventListener("pagehide", function () { try { syncState(); } catch (e) { /* kapanırken en iyi çaba */ } });
   }
 
@@ -765,6 +1065,9 @@
     ensureDeviceIds: ensureDeviceIds,
     mergeDevices: mergeDevices,
     flushQueue: flushQueue,
+    startRealtime: startRealtime,
+    stopRealtime: rtStop,
+    realtimeActive: function () { return !!rt.socket && rt.socket.readyState === 1; },
     // test penetrasyonu: saf yardimcilara erisim
     _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
   };

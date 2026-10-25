@@ -18,6 +18,10 @@
   .slider:before { position: absolute; content: ""; width: 26px; height: 26px; left: 3px; bottom: 3px; border-radius: 9999px; background: white; transition: .3s; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
   input:checked + .slider { background: #4C7DFF; }
   input:checked + .slider:before { transform: translateX(20px); }
+  /* keyfî Tailwind sınıfları (nx-field) derlenmiş css/tailwind.css'te yok:
+     dokunma hedefleri burada garanti altına alınıyor (WCAG 2.2 AA ≥ 24 px). */
+  .nx-field { min-height: 44px; }
+  .nx-cta { min-height: 48px; }
 </style>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
@@ -60,8 +64,49 @@
             <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Başlangıç</p><input id="quiet-start" type="time" value="23:00" class="text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
             <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Bitiş</p><input id="quiet-end" type="time" value="07:30" class="text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
           </div>
-          <p class="text-[11px] text-slate-400 mt-3 italic">Kritik güvenlik uyarıları sessiz saatlerden etkilenmez.</p>
+          <p class="text-[11px] text-slate-400 mt-3 italic">Sessiz saatlerde dışa dönük kanallar durur; uyarılar uygulama içinde birikmeye devam eder.</p>
         </section>
+      </div>
+      <div class="space-y-3">
+        <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Dışa Dönük Kanallar</h3>
+        <p class="text-xs text-slate-500 leading-relaxed px-1">Olaylar uygulamanın içinde kalır; istersen aynı uyarıyı telefonuna, kendi sunucuna veya Telegram'a da gönder. Hiçbiri zorunlu değil.</p>
+        <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100/50">
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-slate-900 flex items-center justify-center text-white"><i data-lucide="smartphone" class="w-6 h-6"></i></div><div><p class="font-semibold">ntfy Mobil Bildirimi</p><p class="text-xs text-slate-500 font-medium">Hesap yok — sadece bir topic adı yeter</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="ntfy"><span class="slider"></span></label></div>
+            <div class="mt-4" data-fields="ntfy">
+              <label for="ntfy-topic" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Topic adı</label>
+              <input id="ntfy-topic" type="text" data-field="ntfy.topic" autocomplete="off" spellcheck="false" placeholder="ornek: nexus-evim" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30">
+              <p class="text-[11px] text-slate-400 mt-2">ntfy uygulamasında aynı topic adını takibe al.</p>
+            </div>
+          </div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600"><i data-lucide="webhook" class="w-6 h-6"></i></div><div><p class="font-semibold">Webhook</p><p class="text-xs text-slate-500 font-medium">Kendi sunucuna JSON gönderimi</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="webhook"><span class="slider"></span></label></div>
+            <div class="mt-4" data-fields="webhook">
+              <label for="webhook-url" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Uç adresi (HTTPS)</label>
+              <input id="webhook-url" type="url" data-field="webhook.url" autocomplete="off" spellcheck="false" placeholder="https://sunucum/nexus" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30">
+              <p class="text-[11px] text-slate-400 mt-2">Gövde: <span class="font-mono">{"source":"NEXUS","id","title","detail","ts"}</span></p>
+            </div>
+          </div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-sky-50 flex items-center justify-center text-sky-600"><i data-lucide="send" class="w-6 h-6"></i></div><div><p class="font-semibold">Telegram</p><p class="text-xs text-slate-500 font-medium">Bot anahtarı yalnızca bu cihazda kalır</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="telegram"><span class="slider"></span></label></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4" data-fields="telegram">
+              <div><label for="telegram-token" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Bot anahtarı</label><input id="telegram-token" type="password" data-field="telegram.token" autocomplete="off" spellcheck="false" placeholder="123456:ABC..." class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30"></div>
+              <div><label for="telegram-chat" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sohbet ID</label><input id="telegram-chat" type="text" data-field="telegram.chat" autocomplete="off" spellcheck="false" placeholder="123456789" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30"></div>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-2">Anahtar buluta yüklenmez; diğer cihazlarda tekrar girmen gerekir.</p>
+          </div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-violet-50 flex items-center justify-center text-violet-600"><i data-lucide="bell-ring" class="w-6 h-6"></i></div><div><p class="font-semibold">Sistem Bildirimleri</p><p class="text-xs text-slate-500 font-medium">Tarayıcı ve telefonun uyarı merkezi</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="system"><span class="slider"></span></label></div>
+            <button type="button" id="system-permission" class="mt-4 nx-field w-full rounded-2xl bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 active:scale-[.99] transition">Sistem izni iste</button>
+          </div>
+        </section>
+        <div class="flex items-center gap-3">
+          <button type="button" id="notify-test" class="flex-1 nx-cta rounded-2xl bg-[#4C7DFF] text-white text-sm font-bold shadow-sm active:scale-[.99] transition">Test bildirimi gönder</button>
+        </div>
+        <p id="notify-status" class="text-[11px] text-slate-400 leading-relaxed px-1">Değişiklikler otomatik kaydedilir.</p>
       </div>
     </main>
   </div>
@@ -83,7 +128,7 @@
         input.closest('.notification-row').classList.toggle('opacity-50', !enabled);
       });
     }
-    document.getElementById('master-toggle').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'master', this.checked.toString()); syncMaster(); });
+    document.getElementById('master-toggle').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'master', this.checked.toString()); syncMaster(); if (window.nexusNotify) refreshStatus(); });
     document.querySelectorAll('[data-key]').forEach((input) => {
       const key = input.getAttribute('data-key');
       input.checked = nexusGetItem(STORAGE_PREFIX + key) !== 'false';
@@ -95,6 +140,86 @@
     syncQuietMode();
     syncMaster();
     lucide.createIcons();
+
+    /* ---------- Dışa dönük kanallar (notify.js) ----------
+       Ayarlar burada tutulur, dağıtımı notify.js yapar. Telegram anahtarı gibi
+       sırlar BULUTA GİTMEZ (cloud-sync.js STATE_EXCLUDE) ve durum satırına yazılmaz. */
+    const notify = window.nexusNotify || null;
+    const statusLine = document.getElementById('notify-status');
+
+    function channelSummary() {
+      if (!notify) return 'Bildirim motoru bu sürümde yüklenmedi.';
+      const cfg = notify.channels();
+      const on = Object.keys(cfg).filter((k) => cfg[k].enabled);
+      const s = notify.stats();
+      const bits = [];
+      bits.push(on.length ? 'Açık kanal: ' + on.join(', ') : 'Hiçbir kanal açık değil.');
+      if (s.sent) bits.push('Gönderilen ' + s.sent);
+      if (s.failed) bits.push('Hatalı ' + s.failed);
+      if (s.failed && s.lastError) bits.push('Son hata: ' + s.lastError);
+      if (notify.dndActive()) bits.push('Şu an rahatsız etmeyin açık.');
+      else if (notify.quietHoursActive()) bits.push('Şu an sessiz saatler içinde.');
+      if (!masterOn()) bits.push('Üstteki anahtar kapalı: hiçbir bildirim gönderilmez.');
+      return bits.join(' · ');
+    }
+
+    function masterOn() {
+      return nexusGetItem(STORAGE_PREFIX + 'master') !== 'false';
+    }
+
+    function refreshStatus() {
+      statusLine.textContent = channelSummary();
+    }
+
+    if (!notify) {
+      document.querySelectorAll('.channel-row').forEach((row) => {
+        row.classList.add('opacity-50');
+        row.querySelectorAll('input').forEach((el) => { el.disabled = true; });
+      });
+      document.getElementById('notify-test').disabled = true;
+      document.getElementById('system-permission').disabled = true;
+    } else {
+      const cfg = notify.channels();
+      document.querySelectorAll('[data-channel]').forEach((input) => {
+        const name = input.getAttribute('data-channel');
+        input.checked = !!(cfg[name] && cfg[name].enabled);
+        input.addEventListener('change', function () {
+          const patch = {}; patch[name] = { enabled: this.checked };
+          notify.save(patch);
+          const box = document.querySelector('[data-fields="' + name + '"]');
+          if (box) box.classList.toggle('opacity-50', !this.checked);
+          refreshStatus();
+        });
+        const fields = document.querySelector('[data-fields="' + name + '"]');
+        if (fields) fields.classList.toggle('opacity-50', !input.checked);
+      });
+      document.querySelectorAll('[data-field]').forEach((input) => {
+        const [channel, key] = input.getAttribute('data-field').split('.');
+        input.value = (cfg[channel] && cfg[channel][key]) || '';
+        input.addEventListener('change', function () {
+          const patch = {}; patch[channel] = {}; patch[channel][key] = input.value.trim();
+          notify.save(patch);
+          refreshStatus();
+        });
+      });
+      document.getElementById('system-permission').addEventListener('click', async function () {
+        const result = await notify.requestSystemPermission();
+        this.textContent = result === 'granted' ? 'Sistem izni verildi' : 'İzin durumu: ' + result;
+        refreshStatus();
+      });
+      document.getElementById('notify-test').addEventListener('click', async function () {
+        const btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Gönderiliyor…';
+        const out = await notify.test();
+        const ok = out.sent.filter((r) => r.ok).map((r) => r.channel);
+        const bad = out.sent.filter((r) => !r.ok);
+        btn.textContent = ok.length && !bad.length ? 'İletildi' : bad.length ? 'Bazı kanallar hata verdi' : 'Açık kanal yok';
+        refreshStatus();
+        setTimeout(() => { btn.disabled = false; if (btn.textContent !== 'Test bildirimi gönder') btn.textContent = 'Test bildirimi gönder'; }, 2500);
+      });
+    }
+    refreshStatus();
   </script>
 </body>
 </html>

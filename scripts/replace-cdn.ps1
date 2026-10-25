@@ -40,7 +40,11 @@ foreach ($file in $files) {
         
         # Only write if content changed
         if ($content -ne $originalContent) {
-            Set-Content -Path $file.FullName -Value $content -Encoding UTF8
+            # PS 5.1 writes a BOM (U+FEFF) when using `Set-Content -Encoding UTF8`.
+            # That BOM breaks GitHub Actions when it lands in a workflow YAML, and text
+            # read back without an explicit encoding gets double-encoded into mojibake.
+            # BOM-less UTF-8 is written with the .NET API instead:
+            [System.IO.File]::WriteAllText($file.FullName, $content, (New-Object System.Text.UTF8Encoding($false)))
             $modified++
             Write-Host "  Modified: $($file.Name)" -ForegroundColor Green
         }

@@ -39,7 +39,9 @@ foreach ($file in $files) {
         $content = $content -replace "`n`n`n+", "`n`n"
         
         if ($content -ne $originalContent) {
-            Set-Content -Path $file.FullName -Value $content -Encoding UTF8
+            # PS 5.1 writes a BOM (U+FEFF) with `Set-Content -Encoding UTF8`; a BOM in a
+            # workflow YAML makes GitHub fail to start the job. BOM-less UTF-8:
+            [System.IO.File]::WriteAllText($file.FullName, $content, (New-Object System.Text.UTF8Encoding($false)))
             $modified++
             Write-Host "  Modified: $($file.Name)" -ForegroundColor Green
         }

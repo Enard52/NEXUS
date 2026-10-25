@@ -72,6 +72,11 @@
     window.__nexusCloudLoading = true;
     document.write('<script src="cloud-config.js"><\/script><script src="cloud-sync.js"><\/script>');
   }
+  // Dışa dönük bildirim kanalları (ntfy / webhook / Telegram) her sayfada dinlesin.
+  if (document.readyState === 'loading' && !window.nexusNotify && !window.__nexusNotifyLoading) {
+    window.__nexusNotifyLoading = true;
+    document.write('<script src="notify.js"><\/script>');
+  }
 })();
 
 

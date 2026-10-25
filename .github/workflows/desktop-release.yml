@@ -3,7 +3,7 @@ name: Masaüstü sürümü
 # "v1.0.0" gibi bir etiket gönderildiğinde Windows, macOS ve Linux kurulum dosyaları
 # derlenir ve herkese açık Enard52/nexus-releases deposunun Releases bölümüne yüklenir.
 # (Kaynak depo gizli olduğu için indirmeler ve otomatik güncelleme oradan yapılır.)
-# Gerekli gizli anahtar: RELEASES_TOKEN â€” nexus-releases deposuna "Contents: Read and write"
+# Gerekli gizli anahtar: RELEASES_TOKEN — nexus-releases deposuna "Contents: Read and write"
 # izni olan bir GitHub erişim anahtarı. Elle de çalıştırılabilir (Actions → Run workflow).
 on:
   push:

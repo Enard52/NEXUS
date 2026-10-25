@@ -37,6 +37,9 @@ const templ = (s) =>
     .replace(/\s+/g, " ")
     .trim();
 const TR = /[çğıöşüÇĞİÖŞÜ]/;
+// Dil ADLARI çevrilmez: arayüzde her zaman kendi yazımıyla durur ("Türkçe" seçeneği
+// İngilizce arayüzde de "Türkçe"dir). Bunlar kapsama sayılmaz — eksik çeviri değildir.
+const UNTRANSLATABLE = new Set(["Türkçe", "İngilizce"]);
 const only = process.argv[2];
 
 let total = 0,
@@ -53,6 +56,7 @@ for (const f of readdirSync(ROOT)
   for (const [, text] of html.matchAll(/>([^<>]{4,400})</g)) {
     const t = text.replace(/\s+/g, " ").trim();
     if (!t || !TR.test(t)) continue;
+    if (UNTRANSLATABLE.has(t)) continue;
     total++;
     if (DICT_TEXT.has(t) || DICT_TEXT.has(templ(t))) covered++;
     else gaps.push(f + ": " + t.slice(0, 80));

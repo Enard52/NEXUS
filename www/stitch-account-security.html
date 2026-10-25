@@ -326,17 +326,23 @@
       btn.disabled = true;
       btn.textContent = 'Siliniyor…';
       try {
-        var session = null;
-        try { session = JSON.parse(nexusGetItem('nexusCloudSession') || 'null'); } catch (e) {}
+        // Oturum doğrudan depodan OKUNMAZ: kaydedilen nesne camelCase taşır (accessToken)
+        // ve anahtarı büyük/küçük harf farkıyla iki yere düşebiliyor. Eskiden access_token
+        // hiç bulunmadığı için silme isteği gönderilmiyor, bulut kullanıcısına "hesabın yok"
+        // deniyordu (KVKK/GDPR self-servis silme çalışmıyordu). cloud-sync'in kendi API'si
+        // hem anahtar yazımlarını dener hem de süresi dolmuş belirteci tazeler.
+        var session = window.nexusCloud ? await window.nexusCloud.session() : null;
         var cfg = window.NEXUS_CLOUD || null;
-        if (session && session.access_token && cfg && cfg.url) {
+        if (session && session.accessToken && cfg && cfg.url) {
           var res = await fetch(cfg.url.replace(/\/$/, '') + '/functions/v1/delete-account', {
             method: 'POST',
-            headers: { Authorization: 'Bearer ' + session.access_token },
+            headers: { Authorization: 'Bearer ' + session.accessToken },
           });
           if (res.status === 404) throw new Error('function-missing');
           if (!res.ok) throw new Error('server');
           var out = await res.json().catch(function () { return {}; });
+          // Hesap sunucuda silindi: cihazdaki oturum kaydı da bırakılmaz.
+          if (window.nexusCloud) { try { await window.nexusCloud.signOut(); } catch (e) {} }
           if (out.hadSubscription) {
             showSecurityToast('Hesap silindi. Aboneliğini Whop hesabından iptal etmeyi unutma.', false);
           } else {

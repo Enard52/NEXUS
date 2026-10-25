@@ -2,7 +2,7 @@
   "name": "nexus-desktop",
   "productName": "NEXUS",
   "version": "1.0.14",
-  "description": "NEXUS â€” akÄ±llÄ± ev asistanÄ± (masaÃ¼stÃ¼)",
+  "description": "NEXUS — akıllı ev asistanı (masaüstü)",
   "homepage": "https://nexus-smarthome.pages.dev",
   "main": "main.cjs",
   "author": {
@@ -143,7 +143,7 @@
       ],
       "icon": "resources/icon.png",
       "category": "Utility",
-      "synopsis": "AkÄ±llÄ± ev asistanÄ±",
+      "synopsis": "Akıllı ev asistanı",
       "maintainer": "NEXUS <nexus.smarthome.app@gmail.com>",
       "artifactName": "NEXUS-linux.${ext}",
       "syncDesktopName": true
