@@ -360,3 +360,32 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
 /* .nx-empty display:flex, Tailwind .hidden kuralını ezmesin (liste doluyken boş durum görünmesin) */
 .nx-empty.hidden { display: none !important; }
 .nx-empty--page { max-width: 520px; margin: 32px auto; }
+
+/* ---------- Küçük dokunma hedeflerini telafi et ----------
+   WCAG 2.2 AA (SC 2.5.8) dokunma hedefini en az 24×24 CSS px ister; mobilde
+   rahat sınır ~32px sayılır. Simge düğmeleri ve metin bağlantıları tasarımda
+   16–20px kaldığı için parmakla ıskalanıyordu (denetim: tmp-ui-audit L kovası).
+   Çözüm: görünen kutuyu DEĞİŞTİRMEDEN ::after ile dokunma kutusunu büyütmek.
+   .nx-tap   → simge düğmeleri: 32×32. Yalnızca etrafında ≥6px boşluk (flex gap,
+               satır marjı) olan öğelerde kullanılır; komşu hedefe taşmaz.
+   .nx-tap-t → metin bağlantıları: genişliğe dokunmaz (satır içi isabet korunur),
+               yüksekliği 24px AA sınırına doldurur (üst/altta 2px taşma). */
+.nx-tap, .nx-tap-t { position: relative; }
+.nx-tap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 32px);
+  height: max(100%, 32px);
+  transform: translate(-50%, -50%);
+}
+.nx-tap-t::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: max(100%, 24px);
+  transform: translateY(-50%);
+}

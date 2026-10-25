@@ -346,8 +346,8 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
 .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
-.plan-badge{position:absolute;top:-13px;left:24px;background:var(--brand-grad);color:#fff;font-size:11px;font-weight:800;
-  letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35)}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
 .plan-head{min-height:106px;display:flex;flex-direction:column;justify-content:flex-start}
 .plan h3{margin:0 0 10px;font-size:18px;font-weight:800}
 .price{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1}
@@ -440,33 +440,34 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 24px 64px -12px rgba(0,0,0,.5);
-  width:100%;max-width:500px;max-height:92vh;overflow-y:auto;padding:30px;position:relative;
+  width:100%;max-width:480px;padding:24px 26px;position:relative;
   transform:scale(.96);transition:transform .25s cubic-bezier(.16,1,.3,1);box-sizing:border-box;
 }
 .nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
 .nx-modal-close{
-  position:absolute;top:16px;right:16px;background:var(--surface-2);border:1px solid var(--border);
-  color:var(--muted);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .18s ease;font-size:20px;line-height:1;padding:0;
+  position:absolute;top:14px;right:14px;background:var(--surface-2);border:1px solid var(--border);
+  color:var(--muted);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s ease;font-size:18px;line-height:1;padding:0;
 }
 .nx-modal-close:hover{color:var(--text);border-color:var(--text-2);transform:scale(1.05)}
-.nx-modal-header{margin-bottom:20px}
-.nx-modal-header h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;color:var(--text)}
-.nx-modal-header p{margin:0;font-size:13.5px;color:var(--text-2);line-height:1.5}
-.nx-form-group{margin-bottom:14px;display:flex;flex-direction:column;gap:5px}
+.nx-modal-header{margin-bottom:14px}
+.nx-modal-header h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0 0 4px;color:var(--text)}
+.nx-modal-header p{margin:0;font-size:13px;color:var(--text-2);line-height:1.45}
+.nx-form-group{margin-bottom:11px;display:flex;flex-direction:column;gap:4px}
 .nx-form-group label{font-size:12px;font-weight:700;color:var(--text);letter-spacing:.02em}
 .nx-form-input, .nx-form-select, .nx-form-textarea{
   width:100%;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:10px 14px;font:500 13.5px Inter,sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;
+  padding:8px 12px;font:500 13.5px Inter,sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;
 }
+.nx-form-input, .nx-form-select{height:38px}
 .nx-form-input:focus, .nx-form-select:focus, .nx-form-textarea:focus{
   border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 20%,transparent);
 }
-.nx-form-textarea{resize:vertical;min-height:92px}
+.nx-form-textarea{resize:vertical;min-height:76px}
 .nx-form-submit{
   width:100%;background:var(--brand-grad);color:#fff;border:0;border-radius:var(--radius-sm);
-  padding:12px 18px;font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;
-  justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(76,125,255,.35);transition:opacity .2s,transform .15s;margin-top:4px;
+  padding:11px 16px;font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(76,125,255,.35);transition:opacity .2s,transform .15s;margin-top:2px;
 }
 .nx-form-submit:hover{opacity:.92;transform:translateY(-1px)}
 .nx-form-submit:active{transform:translateY(0)}
@@ -479,7 +480,24 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-form-success p{font-size:13.5px;color:var(--text-2);line-height:1.5;margin:0 0 18px}
 .nx-form-success .btn{margin:0 auto}
 @media(max-width:480px){
-  .nx-modal-card{padding:22px 18px}
+  .nx-modal-card{padding:20px 16px}
+}
+
+/* Telefon Ön İzleme Gezinme Okları */
+.phone-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:45;
+  width:34px;height:34px;border-radius:50%;background:rgba(20,22,28,.88);
+  border:1.5px solid rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.45);
+  transition:all .18s ease;padding:0;
+}
+.phone-arrow:hover{background:var(--brand);border-color:var(--brand);transform:translateY(-50%) scale(1.08)}
+.phone-arrow svg{width:18px;height:18px}
+.phone-arrow-left{left:-16px}
+.phone-arrow-right{right:-16px}
+@media(max-width:480px){
+  .phone-arrow-left{left:-10px}
+  .phone-arrow-right{right:-10px}
 }
 
 /* Navbar Giriş / Hesap Butonu */
@@ -823,7 +841,6 @@ function nxToggleFaq(btn){
 // Gerçekçi Akıllı Telefon Ön İzleme Kontrolleri
 var nxCurrentShot=0;
 var nxShotTimer=null;
-var nxShotsData=[];
 
 function nxShowShot(idx){
   var slides=document.querySelectorAll('.shot-slide');
@@ -839,15 +856,13 @@ function nxShowShot(idx){
   dots.forEach(function(d,i){
     d.classList.toggle('active',i===idx);
   });
-  var tabs=document.querySelectorAll('.phone-tab');
-  tabs.forEach(function(t,i){
-    t.classList.toggle('active',i===idx);
-  });
 
   var titleEl=document.getElementById('phoneSlideTitle');
   var numEl=document.getElementById('phoneSlideNum');
-  if(nxShotsData[idx]){
-    if(titleEl)titleEl.textContent=nxShotsData[idx].label;
+  var activeSlide=slides[idx];
+  if(activeSlide){
+    var label=activeSlide.getAttribute('data-label')||activeSlide.getAttribute('data-shot')||'';
+    if(titleEl)titleEl.textContent=label;
     if(numEl)numEl.textContent=(idx+1)+'/'+slides.length;
   }
 }
@@ -879,6 +894,7 @@ document.addEventListener('DOMContentLoaded',function(){
     mockup.addEventListener('mouseleave',function(){nxResetShotTimer();});
 
     mockup.addEventListener('click',function(e){
+      if(e.target.closest('.phone-arrow')) return;
       var rect=mockup.getBoundingClientRect();
       var x=e.clientX-rect.left;
       if(x<rect.width*0.35){
@@ -1009,11 +1025,17 @@ function renderHero(c, hasShots) {
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}"><img src="/images/shots/${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`).join('\n            ')}
+            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
         </div>
+        <button type="button" class="phone-arrow phone-arrow-left" onclick="event.stopPropagation();nxPrevShot()" aria-label="${isTr ? 'Önceki Ekran' : 'Previous Screen'}">
+          <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="phone-arrow phone-arrow-right" onclick="event.stopPropagation();nxNextShot()" aria-label="${isTr ? 'Sonraki Ekran' : 'Next Screen'}">
+          <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg>
+        </button>
       </div>
       <div class="phone-bottom-bar">
         <div class="phone-caption-pill" id="phoneCaptionPill">
@@ -1023,11 +1045,8 @@ function renderHero(c, hasShots) {
         <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
           ${shots.map((s, i) => `<button class="phone-dot${i === 0 ? ' active' : ''}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
         </div>
-        <span class="phone-tap-hint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya kaydırın' : 'Tap or swipe to see next screen'}</span>
+        <span class="phone-tap-hint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
       </div>
-      <script>
-        nxShotsData = ${JSON.stringify(shots)};
-      </script>
     </div>`
         : ''
     }
@@ -1224,7 +1243,7 @@ function renderContactModal(c) {
     <form id="nxContactForm" onsubmit="nxSubmitContact(event)" data-sending="${isTr ? 'Gönderiliyor…' : 'Sending…'}">
       <div class="nx-form-group">
         <label for="nxContactName">${isTr ? 'Adınız Soyadınız' : 'Your Name'}</label>
-        <input type="text" id="nxContactName" class="nx-form-input" required placeholder="${isTr ? 'Örn. Ahmet Yılmaz' : 'e.g. John Doe'}" autocomplete="name">
+        <input type="text" id="nxContactName" class="nx-form-input" required placeholder="${isTr ? 'Örn. Can Demir' : 'e.g. Alex Morgan'}" autocomplete="name">
       </div>
       <div class="nx-form-group">
         <label for="nxContactEmail">${isTr ? 'E-posta Adresiniz (Yanıt bu adrese iletilecektir)' : 'Your Email (We will reply to this address)'}</label>

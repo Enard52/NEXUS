@@ -442,7 +442,7 @@
           '<div class="flex min-w-0 items-center gap-3">' +
           (window.NX ? '<img class="device-thumb w-11 h-11 object-contain shrink-0" src="' + NX.imageUrl(device) + '" alt="" loading="lazy" decoding="async">'
             : '<div class="w-11 h-11 rounded-2xl bg-slate-100 text-[#4C7DFF] flex items-center justify-center shrink-0 dark:bg-slate-800"><i data-lucide="cpu" class="w-5 h-5"></i></div>') +
-          '<a href="stitch-device.html?i=' + index + '" class="min-w-0 block"><p class="font-semibold truncate">' + escapeHtml(name) + '</p>' +
+          '<a href="stitch-device.html?i=' + index + '" class="min-w-0 block"><p class="font-semibold line-clamp-2">' + escapeHtml(name) + '</p>' +
           '<p class="text-xs text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(room) + '</p></a></div>' +
           '<button type="button" onclick="removePairedDevice(' + index + ')" class="rounded-full bg-white border border-slate-200 px-3 py-2 text-xs font-bold text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300">Kaldır</button>' +
           '</div>';

@@ -307,7 +307,6 @@ function nxToggleFaq(btn){
 // Gerçekçi Akıllı Telefon Ön İzleme Kontrolleri
 var nxCurrentShot=0;
 var nxShotTimer=null;
-var nxShotsData=[];
 
 function nxShowShot(idx){
   var slides=document.querySelectorAll('.shot-slide');
@@ -323,15 +322,13 @@ function nxShowShot(idx){
   dots.forEach(function(d,i){
     d.classList.toggle('active',i===idx);
   });
-  var tabs=document.querySelectorAll('.phone-tab');
-  tabs.forEach(function(t,i){
-    t.classList.toggle('active',i===idx);
-  });
 
   var titleEl=document.getElementById('phoneSlideTitle');
   var numEl=document.getElementById('phoneSlideNum');
-  if(nxShotsData[idx]){
-    if(titleEl)titleEl.textContent=nxShotsData[idx].label;
+  var activeSlide=slides[idx];
+  if(activeSlide){
+    var label=activeSlide.getAttribute('data-label')||activeSlide.getAttribute('data-shot')||'';
+    if(titleEl)titleEl.textContent=label;
     if(numEl)numEl.textContent=(idx+1)+'/'+slides.length;
   }
 }
@@ -363,6 +360,7 @@ document.addEventListener('DOMContentLoaded',function(){
     mockup.addEventListener('mouseleave',function(){nxResetShotTimer();});
 
     mockup.addEventListener('click',function(e){
+      if(e.target.closest('.phone-arrow')) return;
       var rect=mockup.getBoundingClientRect();
       var x=e.clientX-rect.left;
       if(x<rect.width*0.35){

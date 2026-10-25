@@ -215,11 +215,11 @@
 
       <div class="flex items-center space-x-4 pr-1">
         <!-- Mic: gerçek sesli giriş (Web Speech API; Chrome/Edge/Android WebView) -->
-        <button id="chat-mic" class="text-gray-600 hover:text-gray-800 transition-colors" aria-label="Sesle yaz" aria-pressed="false" onclick="nxVoiceToggle()">
+        <button id="chat-mic" class="nx-tap text-gray-600 hover:text-gray-800 transition-colors" aria-label="Sesle yaz" aria-pressed="false" onclick="nxVoiceToggle()">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
         </button>
         <!-- Send Button -->
-        <button id="chat-send" onclick="sendMessage()" class="text-[#4C7DFF] hover:text-[#4C7DFF] transition-colors disabled:opacity-40">
+        <button id="chat-send" onclick="sendMessage()" class="nx-tap text-[#4C7DFF] hover:text-[#4C7DFF] transition-colors disabled:opacity-40">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg>
         </button>
       </div>
