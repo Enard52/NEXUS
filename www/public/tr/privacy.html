@@ -5749,12 +5749,12 @@ input:focus-visible, select:focus-visible { outline: none; box-shadow: var(--rin
 <h3>Hangi amaçla ve hukuki dayanak</h3>
 <p>Hesabınızı yönetmek, verilerinizi cihazlarınız arasında eşitlemek, aboneliğinizi sunmak ve size destek vermek için (sözleşmenin ifası); güvenliği sağlamak ve kötüye kullanımı önlemek için (meşru menfaat); yurt dışına aktarım için açık rızanız (aşağıya bakın).</p>
 <h3>NEXUS AI</h3>
-<p>NEXUS AI şu an cihaz üzerinde çalışan bir komut asistanıdır; yazdıklarınız yapay zekâ servislerine gönderilmez. Sohbet geçmişiniz, hesapla giriş yaptıysanız diğer ayarlarınız gibi hesabınızla eşitlenir. İleride bulut tabanlı bir yapay zekâ eklenirse bu politikayı güncelleyip önceden bilgi vereceğiz ve isteğe bağlı sunacağız.</p>
+<p>NEXUS AI iki parçadan oluşur. (1) Cihaz komutları (ışık açma, senaryo çalıştırma, durum sorma gibi) cihazınızda yerel olarak işlenir ve buluta gönderilmez. (2) Komut olmayan sohbet mesajlarınız ve soru-cevap istekleriniz yanıtlanmak üzere Cloudflare Workers AI hizmetine gönderilir; bununla birlikte cihaz adlarınız, türleriniz ve odalarınız bağlam olarak iletilir. Hesap bilgileriniz, e-postanız ve konumunuz iletilmez. Bu içerikleri yapay zekâ modellerini eğitmek için kullanmayız; Cloudflare ise hizmeti sunmak için işler. Gizlilik istiyorsanız sohbette yalnızca cihaz komutları kullanabilirsiniz. Sohbet geçmişiniz, hesapla giriş yaptıysanız diğer ayarlarınız gibi hesabınızla eşitlenir.</p>
 <h3>Hizmet sağlayıcılar ve aktarımlar</h3>
 <p>Bu sağlayıcıların sunucuları Türkiye dışında olabilir. Hesap açarak ve/veya ödeme yaparak verilerinizin bu sağlayıcılara ve yurt dışına aktarılmasına açık rıza vermiş olursunuz; rızanızı hesabınızı sildirerek geri alabilirsiniz.</p>
 <ul>
 <li>Supabase: kimlik doğrulama, veritabanı ve sistem e-postaları.</li>
-<li>Cloudflare: web sitesi ve web uygulamasının barındırılması.</li>
+<li>Cloudflare: web sitesi ve web uygulamasının barındırılması; NEXUS AI sohbet yanıtları için Cloudflare Workers AI.</li>
 <li>Whop: abonelik ödemeleri ve fatura.</li>
 <li>Google: Google ile giriş ve (Gmail üzerinden) doğrulama/şifre sıfırlama e-postaları.</li>
 <li>GitHub: kurulum dosyalarının dağıtımı.</li>

@@ -21,12 +21,12 @@
 <h3>Hangi amaçla ve hukuki dayanak</h3>
 <p>Hesabınızı yönetmek, verilerinizi cihazlarınız arasında eşitlemek, aboneliğinizi sunmak ve size destek vermek için (sözleşmenin ifası); güvenliği sağlamak ve kötüye kullanımı önlemek için (meşru menfaat); yurt dışına aktarım için açık rızanız (aşağıya bakın).</p>
 <h3>NEXUS AI</h3>
-<p>NEXUS AI şu an cihaz üzerinde çalışan bir komut asistanıdır; yazdıklarınız yapay zekâ servislerine gönderilmez. Sohbet geçmişiniz, hesapla giriş yaptıysanız diğer ayarlarınız gibi hesabınızla eşitlenir. İleride bulut tabanlı bir yapay zekâ eklenirse bu politikayı güncelleyip önceden bilgi vereceğiz ve isteğe bağlı sunacağız.</p>
+<p>NEXUS AI iki parçadan oluşur. (1) Cihaz komutları (ışık açma, senaryo çalıştırma, durum sorma gibi) cihazınızda yerel olarak işlenir ve buluta gönderilmez. (2) Komut olmayan sohbet mesajlarınız ve soru-cevap istekleriniz yanıtlanmak üzere Cloudflare Workers AI hizmetine gönderilir; bununla birlikte cihaz adlarınız, türleriniz ve odalarınız bağlam olarak iletilir. Hesap bilgileriniz, e-postanız ve konumunuz iletilmez. Bu içerikleri yapay zekâ modellerini eğitmek için kullanmayız; Cloudflare ise hizmeti sunmak için işler. Gizlilik istiyorsanız sohbette yalnızca cihaz komutları kullanabilirsiniz. Sohbet geçmişiniz, hesapla giriş yaptıysanız diğer ayarlarınız gibi hesabınızla eşitlenir.</p>
 <h3>Hizmet sağlayıcılar ve aktarımlar</h3>
 <p>Bu sağlayıcıların sunucuları Türkiye dışında olabilir. Hesap açarak ve/veya ödeme yaparak verilerinizin bu sağlayıcılara ve yurt dışına aktarılmasına açık rıza vermiş olursunuz; rızanızı hesabınızı sildirerek geri alabilirsiniz.</p>
 <ul>
 <li>Supabase: kimlik doğrulama, veritabanı ve sistem e-postaları.</li>
-<li>Cloudflare: web sitesi ve web uygulamasının barındırılması.</li>
+<li>Cloudflare: web sitesi ve web uygulamasının barındırılması; NEXUS AI sohbet yanıtları için Cloudflare Workers AI.</li>
 <li>Whop: abonelik ödemeleri ve fatura.</li>
 <li>Google: Google ile giriş ve (Gmail üzerinden) doğrulama/şifre sıfırlama e-postaları.</li>
 <li>GitHub: kurulum dosyalarının dağıtımı.</li>
@@ -72,12 +72,12 @@
 <h3>Purposes and legal bases</h3>
 <p>To manage your account, sync your data across devices, provide your subscription and give support (performance of a contract); to keep the service secure and prevent abuse (legitimate interest); and for transfers abroad, your explicit consent (see below).</p>
 <h3>NEXUS AI</h3>
-<p>NEXUS AI is currently an on-device command assistant; what you type is not sent to AI services. If you are signed in, your chat history syncs with your account like your other settings. If we add a cloud-based AI in future we will update this policy, tell you in advance and make it optional.</p>
+<p>NEXUS AI has two parts. (1) Device commands (turn on a light, run a scene, ask for status) are processed locally on your device and are not sent to the cloud. (2) Messages that are not device commands, such as general chat and questions, are sent to Cloudflare Workers AI to be answered; the names, types and rooms of your devices are included as context. Your account details, email and location are not sent. We do not use this content to train AI models; Cloudflare processes it to provide the service. If you prefer, you can use only device commands in the chat. If you are signed in, your chat history syncs with your account like your other settings.</p>
 <h3>Service providers and transfers</h3>
 <p>These providers' servers may be outside Türkiye. By creating an account and/or paying you give explicit consent to your data being transferred to them and abroad; you can withdraw consent by having your account deleted.</p>
 <ul>
 <li>Supabase: authentication, database and system emails.</li>
-<li>Cloudflare: hosting of the website and web app.</li>
+<li>Cloudflare: hosting of the website and web app; Cloudflare Workers AI for NEXUS AI chat answers.</li>
 <li>Whop: subscription payments and invoicing.</li>
 <li>Google: Google sign-in and (via Gmail) verification / password-reset emails.</li>
 <li>GitHub: distribution of installers.</li>

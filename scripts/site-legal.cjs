@@ -1,4 +1,4 @@
-// Yasal sayfaları (gizlilik, koşullar, iade) scripts/legal-content.cjs'den üretir. Idempotent.
+﻿// Yasal sayfaları (gizlilik, koşullar, iade) scripts/legal-content.cjs'den üretir. Idempotent.
 // Kullanım:
 //   node scripts/site-legal.cjs <siteDir> [pdfDir]
 // siteDir: privacy.html, terms.html, tr/privacy.html ... içeren klasör (refund.html yoksa terms.html'den kopyalanır).
@@ -60,10 +60,11 @@ if (pdfDir) {
   for (const key of Object.keys(docs)) {
     const html = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(docs[key].tr.title)}</title><style>${css}</style></head><body>` +
       `<div lang="tr">${body(docs[key], "tr")}</div><div lang="en" class="pb">${body(docs[key], "en")}</div></body></html>`;
-    const htmlPath = path.join(pdfDir, names[key] + ".html");
-    const pdfPath = path.join(pdfDir, names[key] + ".pdf");
+    const htmlPath = path.resolve(pdfDir, names[key] + ".html");
+    const pdfPath = path.resolve(pdfDir, names[key] + ".pdf");
     fs.writeFileSync(htmlPath, html);
-    execFileSync(edge, ["--headless=new", "--disable-gpu", "--no-pdf-header-footer", `--print-to-pdf=${pdfPath}`, "file:///" + htmlPath.replace(/\\/g, "/")], { stdio: "ignore", timeout: 90000 });
+    execFileSync(edge, ["--headless=new", "--disable-gpu", "--user-data-dir=" + path.join(require("os").tmpdir(), "nexus-edge-pdf"), "--no-pdf-header-footer", `--print-to-pdf=${pdfPath}`, "file:///" + htmlPath.replace(/\\/g, "/")], { stdio: "ignore", timeout: 90000 });
     console.log("pdf:", pdfPath, fs.statSync(pdfPath).size, "bytes");
   }
 }
+
