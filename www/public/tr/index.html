@@ -209,6 +209,22 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
   width:18px;background:var(--brand);box-shadow:0 0 8px rgba(76,125,255,.4);
 }
 
+.phone-tabs{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:320px;margin:2px 0 4px;
+}
+.phone-tab{
+  background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--text-2);
+  cursor:pointer;transition:all .18s ease;
+}
+.phone-tab:hover{
+  border-color:var(--brand);color:var(--brand);
+}
+.phone-tab.active{
+  background:var(--brand-grad);color:#fff;border-color:transparent;
+  box-shadow:0 2px 8px rgba(76,125,255,.3);
+}
+
 .phone-tap-hint{
   display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);
 }
@@ -261,22 +277,25 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:99px}
 .billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 
-.plans{display:grid;gap:20px}
-@media(min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
+.plans{display:grid;gap:20px;width:100%;max-width:1100px;margin:0 auto}
+@media(min-width:960px){.plans{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+@media(max-width:959px){.plans{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease}
+  padding:clamp(22px,2.8vw,30px);box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
+  box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
 .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
 .plan-badge{position:absolute;top:-13px;left:24px;background:var(--brand-grad);color:#fff;font-size:11px;font-weight:800;
   letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35)}
-.plan h3{margin:0 0 12px;font-size:18px;font-weight:800}
-.price{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.price small{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:0}
+.plan-head{min-height:106px;display:flex;flex-direction:column;justify-content:flex-start}
+.plan h3{margin:0 0 10px;font-size:18px;font-weight:800}
+.price{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.price small{font-size:13.5px;font-weight:600;color:var(--muted);letter-spacing:0}
 .price-note{color:var(--muted);font-size:13px;margin:8px 0 0}
-.plan ul{list-style:none;margin:22px 0 26px;padding:0;display:grid;gap:12px;flex:1}
-.plan li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-2);line-height:1.4}
-.plan li .icon{width:17px;height:17px;color:#10B981;margin-top:2px;flex-shrink:0}
-.plan .btn{width:100%}
+.plan ul{list-style:none;margin:22px 0 26px;padding:0;display:grid;gap:12px;flex:1;align-content:start}
+.plan li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text-2);line-height:1.45}
+.plan li .icon{width:16px;height:16px;color:#10B981;margin-top:2px;flex-shrink:0}
+.plan .btn{width:100%;margin-top:auto}
 .cur-note{font-size:12.5px;color:var(--muted);margin-top:18px;text-align:center}
 
 /* İndirilenler & Etiketler (Badges) */
@@ -384,7 +403,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <div class="hero-cta">
         <a class="btn btn-primary" href="#downloads">NEXUS'u indir</a>
       </div>
-      <p class="ver-chip"><span class="dot"></span>Güncel sürüm: <b data-nexus-ver>v0.8.0</b></p>
+      <p class="ver-chip"><span class="dot"></span>Güncel sürüm: <b data-nexus-ver>v1.0.14</b></p>
       <div class="trust">
         <span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ücretsiz, sınırsız cihaz</span>
         <span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Kontrol için bulut şart değil</span>
@@ -409,10 +428,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            <div class="shot-slide active" data-shot="home"><img src="/images/shots/home.png" alt="Telefonda NEXUS ana ekranı — Ana Ekran" width="390" height="844" loading="eager" decoding="async"></div>
+            <div class="shot-slide active" data-shot="home"><img src="/images/shots/home.png" alt="Telefonda NEXUS ana ekranı — Ana Kontrol Paneli" width="390" height="844" loading="eager" decoding="async"></div>
+            <div class="shot-slide" data-shot="devices"><img src="/images/shots/devices.png" alt="Telefonda NEXUS ana ekranı — Cihazlar &amp; Odalar" width="390" height="844" loading="lazy" decoding="async"></div>
             <div class="shot-slide" data-shot="energy"><img src="/images/shots/energy.png" alt="Telefonda NEXUS ana ekranı — Canlı Enerji Matrisi" width="390" height="844" loading="lazy" decoding="async"></div>
             <div class="shot-slide" data-shot="smart"><img src="/images/shots/smart.png" alt="Telefonda NEXUS ana ekranı — Akıllı Senaryolar" width="390" height="844" loading="lazy" decoding="async"></div>
             <div class="shot-slide" data-shot="chat"><img src="/images/shots/chat.png" alt="Telefonda NEXUS ana ekranı — NEXUS AI Asistan" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="lighting"><img src="/images/shots/lighting.png" alt="Telefonda NEXUS ana ekranı — Aydınlatma Kontrolü" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="scenes"><img src="/images/shots/scenes.png" alt="Telefonda NEXUS ana ekranı — Film Modu &amp; Ambiyans" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="settings"><img src="/images/shots/settings.png" alt="Telefonda NEXUS ana ekranı — Sistem &amp; Entegrasyonlar" width="390" height="844" loading="lazy" decoding="async"></div>
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
@@ -420,16 +443,19 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       </div>
       <div class="phone-bottom-bar">
         <div class="phone-caption-pill" id="phoneCaptionPill">
-          <span class="badge" id="phoneSlideNum">1/4</span>
-          <span id="phoneSlideTitle">Ana Ekran</span>
+          <span class="badge" id="phoneSlideNum">1/8</span>
+          <span id="phoneSlideTitle">Ana Kontrol Paneli</span>
+        </div>
+        <div class="phone-tabs" role="tablist" aria-label="Ekran sekmeleri">
+          <button class="phone-tab active" onclick="nxShowShot(0);nxResetShotTimer();" data-tab-idx="0">Ana Panel</button><button class="phone-tab" onclick="nxShowShot(1);nxResetShotTimer();" data-tab-idx="1">Cihazlar</button><button class="phone-tab" onclick="nxShowShot(2);nxResetShotTimer();" data-tab-idx="2">Enerji</button><button class="phone-tab" onclick="nxShowShot(3);nxResetShotTimer();" data-tab-idx="3">Senaryolar</button><button class="phone-tab" onclick="nxShowShot(4);nxResetShotTimer();" data-tab-idx="4">AI Sohbet</button><button class="phone-tab" onclick="nxShowShot(5);nxResetShotTimer();" data-tab-idx="5">Aydınlatma</button><button class="phone-tab" onclick="nxShowShot(6);nxResetShotTimer();" data-tab-idx="6">Sinema</button><button class="phone-tab" onclick="nxShowShot(7);nxResetShotTimer();" data-tab-idx="7">Ayarlar</button>
         </div>
         <div class="phone-dots" role="tablist" aria-label="Ekranlar">
-          <button class="phone-dot active" onclick="nxShowShot(0);nxResetShotTimer();" aria-label="Ana Ekran"></button><button class="phone-dot" onclick="nxShowShot(1);nxResetShotTimer();" aria-label="Canlı Enerji Matrisi"></button><button class="phone-dot" onclick="nxShowShot(2);nxResetShotTimer();" aria-label="Akıllı Senaryolar"></button><button class="phone-dot" onclick="nxShowShot(3);nxResetShotTimer();" aria-label="NEXUS AI Asistan"></button>
+          <button class="phone-dot active" onclick="nxShowShot(0);nxResetShotTimer();" aria-label="Ana Kontrol Paneli" title="Ana Kontrol Paneli"></button><button class="phone-dot" onclick="nxShowShot(1);nxResetShotTimer();" aria-label="Cihazlar &amp; Odalar" title="Cihazlar &amp; Odalar"></button><button class="phone-dot" onclick="nxShowShot(2);nxResetShotTimer();" aria-label="Canlı Enerji Matrisi" title="Canlı Enerji Matrisi"></button><button class="phone-dot" onclick="nxShowShot(3);nxResetShotTimer();" aria-label="Akıllı Senaryolar" title="Akıllı Senaryolar"></button><button class="phone-dot" onclick="nxShowShot(4);nxResetShotTimer();" aria-label="NEXUS AI Asistan" title="NEXUS AI Asistan"></button><button class="phone-dot" onclick="nxShowShot(5);nxResetShotTimer();" aria-label="Aydınlatma Kontrolü" title="Aydınlatma Kontrolü"></button><button class="phone-dot" onclick="nxShowShot(6);nxResetShotTimer();" aria-label="Film Modu &amp; Ambiyans" title="Film Modu &amp; Ambiyans"></button><button class="phone-dot" onclick="nxShowShot(7);nxResetShotTimer();" aria-label="Sistem &amp; Entegrasyonlar" title="Sistem &amp; Entegrasyonlar"></button>
         </div>
-        <span class="phone-tap-hint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Geçiş için telefona dokunun veya kaydırın</span>
+        <span class="phone-tap-hint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Telefona dokunun veya yukarıdaki sekmeleri seçin</span>
       </div>
       <script>
-        nxShotsData = [{"file":"home","label":"Ana Ekran"},{"file":"energy","label":"Canlı Enerji Matrisi"},{"file":"smart","label":"Akıllı Senaryolar"},{"file":"chat","label":"NEXUS AI Asistan"}];
+        nxShotsData = [{"file":"home","label":"Ana Kontrol Paneli","short":"Ana Panel"},{"file":"devices","label":"Cihazlar & Odalar","short":"Cihazlar"},{"file":"energy","label":"Canlı Enerji Matrisi","short":"Enerji"},{"file":"smart","label":"Akıllı Senaryolar","short":"Senaryolar"},{"file":"chat","label":"NEXUS AI Asistan","short":"AI Sohbet"},{"file":"lighting","label":"Aydınlatma Kontrolü","short":"Aydınlatma"},{"file":"scenes","label":"Film Modu & Ambiyans","short":"Sinema"},{"file":"settings","label":"Sistem & Entegrasyonlar","short":"Ayarlar"}];
       </script>
     </div>
   </div>
@@ -491,9 +517,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <!-- 1. Ücretsiz Plan -->
       <div class="plan rv">
         <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">Temel Başlangıç</span>
-        <h3>Ücretsiz</h3>
-        <div class="price">₺0 <small>/ sonsuza dek</small></div>
-        <p class="price-note">Cihaz veya oda sınırı yok</p>
+        <div class="plan-head">
+          <h3>Ücretsiz</h3>
+          <div class="price">₺0 <small>/ sonsuza dek</small></div>
+          <p class="price-note">Cihaz veya oda sınırı yok</p>
+        </div>
         <ul>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Sınırsız cihaz ve oda (Shelly, HomeKit, WLED, ESPHome vb.)</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Sıfır bulut bağımlılığı: Kendi yerel ağınızda kesintisiz çalışma</li>
@@ -508,9 +536,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <!-- 2. NEXUS+ Plan (Popüler) -->
       <div class="plan hot rv" id="nexusPlusPlan">
         <span class="plan-badge">En çok tercih edilen</span>
-        <h3>NEXUS+</h3>
-        <div class="price"><span id="planPriceVal">₺499,99</span> <small id="planPeriodVal">/ay</small></div>
-        <p class="price-note" id="planPriceNote">Aylık faturalandırma</p>
+        <div class="plan-head">
+          <h3>NEXUS+</h3>
+          <div class="price"><span id="planPriceVal">₺499,99</span> <small id="planPeriodVal">/ay</small></div>
+          <p class="price-note" id="planPriceNote">Aylık faturalandırma</p>
+        </div>
         <ul>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ücretsiz plandaki tüm özellikler dahil</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ayda 2.000 NEXUS AI yanıtı (Doğal dille senaryo ve kural üretimi)</li>
@@ -528,15 +558,18 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <!-- 3. Aile Planı (Uygulamada Açık & Dahil) -->
       <div class="plan rv">
         <span class="plan-badge" style="background:linear-gradient(135deg,#10B981,#059669)">Tüm ev için</span>
-        <h3>Aile</h3>
-        <div class="price">Dahil <small>/ evinizle birlikte dahil</small></div>
-        <p class="price-note">Tüm aile fertleri için hazır</p>
+        <div class="plan-head">
+          <h3>Aile</h3>
+          <div class="price">Dahil <small>/ evinizle birlikte dahil</small></div>
+          <p class="price-note">Tüm aile fertleri için hazır</p>
+        </div>
         <ul>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>6 üyeye kadar aile ve ev halkı yönetimi</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Yönetici, üye ve misafir yetki rolleri</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Oda ve cihaz bazlı özel erişim izinleri</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ortak otomasyonlar ve sahneler</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Tüm platformlarda ücretsiz ve aktif</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ortak otomasyonlar ve paylaşılan aile sahneleri</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Tüm platformlarda (Android, masaüstü, web) aktif</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Evinizle birlikte tamamen ücretsiz ve sınırsız</li>
         </ul>
         <a class="btn btn-ghost" href="#downloads">Uygulamada Dahil</a>
       </div>

@@ -86,6 +86,10 @@ function nxShowShot(idx){
   dots.forEach(function(d,i){
     d.classList.toggle('active',i===idx);
   });
+  var tabs=document.querySelectorAll('.phone-tab');
+  tabs.forEach(function(t,i){
+    t.classList.toggle('active',i===idx);
+  });
 
   var titleEl=document.getElementById('phoneSlideTitle');
   var numEl=document.getElementById('phoneSlideNum');

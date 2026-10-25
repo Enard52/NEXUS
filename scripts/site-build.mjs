@@ -269,6 +269,22 @@ h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;margin
   width:18px;background:var(--brand);box-shadow:0 0 8px rgba(76,125,255,.4);
 }
 
+.phone-tabs{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:320px;margin:2px 0 4px;
+}
+.phone-tab{
+  background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--text-2);
+  cursor:pointer;transition:all .18s ease;
+}
+.phone-tab:hover{
+  border-color:var(--brand);color:var(--brand);
+}
+.phone-tab.active{
+  background:var(--brand-grad);color:#fff;border-color:transparent;
+  box-shadow:0 2px 8px rgba(76,125,255,.3);
+}
+
 .phone-tap-hint{
   display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);
 }
@@ -321,22 +337,25 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:99px}
 .billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 
-.plans{display:grid;gap:20px}
-@media(min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
+.plans{display:grid;gap:20px;width:100%;max-width:1100px;margin:0 auto}
+@media(min-width:960px){.plans{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+@media(max-width:959px){.plans{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease}
+  padding:clamp(22px,2.8vw,30px);box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
+  box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
 .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
 .plan-badge{position:absolute;top:-13px;left:24px;background:var(--brand-grad);color:#fff;font-size:11px;font-weight:800;
   letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35)}
-.plan h3{margin:0 0 12px;font-size:18px;font-weight:800}
-.price{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.price small{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:0}
+.plan-head{min-height:106px;display:flex;flex-direction:column;justify-content:flex-start}
+.plan h3{margin:0 0 10px;font-size:18px;font-weight:800}
+.price{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.price small{font-size:13.5px;font-weight:600;color:var(--muted);letter-spacing:0}
 .price-note{color:var(--muted);font-size:13px;margin:8px 0 0}
-.plan ul{list-style:none;margin:22px 0 26px;padding:0;display:grid;gap:12px;flex:1}
-.plan li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-2);line-height:1.4}
-.plan li .icon{width:17px;height:17px;color:#10B981;margin-top:2px;flex-shrink:0}
-.plan .btn{width:100%}
+.plan ul{list-style:none;margin:22px 0 26px;padding:0;display:grid;gap:12px;flex:1;align-content:start}
+.plan li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text-2);line-height:1.45}
+.plan li .icon{width:16px;height:16px;color:#10B981;margin-top:2px;flex-shrink:0}
+.plan .btn{width:100%;margin-top:auto}
 .cur-note{font-size:12.5px;color:var(--muted);margin-top:18px;text-align:center}
 
 /* İndirilenler & Etiketler (Badges) */
@@ -501,6 +520,10 @@ function nxShowShot(idx){
   dots.forEach(function(d,i){
     d.classList.toggle('active',i===idx);
   });
+  var tabs=document.querySelectorAll('.phone-tab');
+  tabs.forEach(function(t,i){
+    t.classList.toggle('active',i===idx);
+  });
 
   var titleEl=document.getElementById('phoneSlideTitle');
   var numEl=document.getElementById('phoneSlideNum');
@@ -612,12 +635,17 @@ function renderHeader(c, currentPath = '') {
 }
 
 function renderHero(c, hasShots) {
+  const isTr = c.lang === 'tr';
   const shots = hasShots
     ? [
-        { file: 'home', label: c.lang === 'tr' ? 'Ana Ekran' : 'Home Dashboard' },
-        { file: 'energy', label: c.lang === 'tr' ? 'Canlı Enerji Matrisi' : 'Live Energy Matrix' },
-        { file: 'smart', label: c.lang === 'tr' ? 'Akıllı Senaryolar' : 'Smart Automations' },
-        { file: 'chat', label: 'NEXUS AI Asistan' },
+        { file: 'home', label: isTr ? 'Ana Kontrol Paneli' : 'Home Dashboard', short: isTr ? 'Ana Panel' : 'Home' },
+        { file: 'devices', label: isTr ? 'Cihazlar & Odalar' : 'Devices & Rooms', short: isTr ? 'Cihazlar' : 'Devices' },
+        { file: 'energy', label: isTr ? 'Canlı Enerji Matrisi' : 'Live Energy Grid', short: isTr ? 'Enerji' : 'Energy' },
+        { file: 'smart', label: isTr ? 'Akıllı Senaryolar' : 'Automations', short: isTr ? 'Senaryolar' : 'Automations' },
+        { file: 'chat', label: isTr ? 'NEXUS AI Asistan' : 'AI Assistant', short: isTr ? 'AI Sohbet' : 'AI Chat' },
+        { file: 'lighting', label: isTr ? 'Aydınlatma Kontrolü' : 'Lighting Master', short: isTr ? 'Aydınlatma' : 'Lighting' },
+        { file: 'scenes', label: isTr ? 'Film Modu & Ambiyans' : 'Movie Mode & Scenes', short: isTr ? 'Sinema' : 'Scenes' },
+        { file: 'settings', label: isTr ? 'Sistem & Entegrasyonlar' : 'Settings & Hub', short: isTr ? 'Ayarlar' : 'Settings' },
       ]
     : [];
 
@@ -630,7 +658,7 @@ function renderHero(c, hasShots) {
       <div class="hero-cta">
         <a class="btn btn-primary" href="${c.hero.primary.href}">${esc(c.hero.primary.label)}</a>
       </div>
-      <p class="ver-chip"><span class="dot"></span>${esc(c.hero.versionNote)}: <b data-nexus-ver>v0.8.0</b></p>
+      <p class="ver-chip"><span class="dot"></span>${esc(c.hero.versionNote)}: <b data-nexus-ver>v1.0.14</b></p>
       <div class="trust">
         ${c.hero.trust.map((t) => `<span>${icon('check')}${esc(t)}</span>`).join('\n        ')}
       </div>
@@ -640,7 +668,7 @@ function renderHero(c, hasShots) {
         ? `
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case" id="phoneMockup" title="${c.lang === 'tr' ? 'Sonraki ekran için dokunun veya kaydırın' : 'Tap or swipe to see next screen'}">
+      <div class="phone-case" id="phoneMockup" title="${isTr ? 'Sonraki ekran için dokunun veya kaydırın' : 'Tap or swipe to see next screen'}">
         <div class="phone-inner-screen">
           <div class="phone-status-bar">
             <span>09:41</span>
@@ -666,10 +694,13 @@ function renderHero(c, hasShots) {
           <span class="badge" id="phoneSlideNum">1/${shots.length}</span>
           <span id="phoneSlideTitle">${esc(shots[0].label)}</span>
         </div>
-        <div class="phone-dots" role="tablist" aria-label="${c.lang === 'tr' ? 'Ekranlar' : 'Screens'}">
-          ${shots.map((s, i) => `<button class="phone-dot${i === 0 ? ' active' : ''}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}"></button>`).join('')}
+        <div class="phone-tabs" role="tablist" aria-label="${isTr ? 'Ekran sekmeleri' : 'Screen tabs'}">
+          ${shots.map((s, i) => `<button class="phone-tab${i === 0 ? ' active' : ''}" onclick="nxShowShot(${i});nxResetShotTimer();" data-tab-idx="${i}">${esc(s.short)}</button>`).join('')}
         </div>
-        <span class="phone-tap-hint">${icon('sparkles')}${c.lang === 'tr' ? 'Geçiş için telefona dokunun veya kaydırın' : 'Tap phone or swipe to preview screens'}</span>
+        <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
+          ${shots.map((s, i) => `<button class="phone-dot${i === 0 ? ' active' : ''}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
+        </div>
+        <span class="phone-tap-hint">${icon('sparkles')}${isTr ? 'Telefona dokunun veya yukarıdaki sekmeleri seçin' : 'Tap phone or select a tab above to explore'}</span>
       </div>
       <script>
         nxShotsData = ${JSON.stringify(shots)};
@@ -745,9 +776,11 @@ function renderPricing(c) {
       <!-- 1. Ücretsiz Plan -->
       <div class="plan rv">
         <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">${isTr ? 'Temel Başlangıç' : 'Starter'}</span>
-        <h3>${esc(c.pricing.plans[0].name)}</h3>
-        <div class="price">${c.pricing.plans[0].price} <small>/ ${esc(c.pricing.plans[0].period)}</small></div>
-        <p class="price-note">${isTr ? 'Cihaz veya oda sınırı yok' : 'No device or room limits'}</p>
+        <div class="plan-head">
+          <h3>${esc(c.pricing.plans[0].name)}</h3>
+          <div class="price">${c.pricing.plans[0].price} <small>/ ${esc(c.pricing.plans[0].period)}</small></div>
+          <p class="price-note">${isTr ? 'Cihaz veya oda sınırı yok' : 'No device or room limits'}</p>
+        </div>
         <ul>
           ${c.pricing.plans[0].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
@@ -757,9 +790,11 @@ function renderPricing(c) {
       <!-- 2. NEXUS+ Plan (Popüler) -->
       <div class="plan hot rv" id="nexusPlusPlan">
         <span class="plan-badge">${esc(c.pricing.plans[1].badge)}</span>
-        <h3>${esc(c.pricing.plans[1].name)}</h3>
-        <div class="price"><span id="planPriceVal">${isTr ? '₺499,99' : '$11.99'}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
-        <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
+        <div class="plan-head">
+          <h3>${esc(c.pricing.plans[1].name)}</h3>
+          <div class="price"><span id="planPriceVal">${isTr ? '₺499,99' : '$11.99'}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
+          <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
+        </div>
         <ul>
           ${c.pricing.plans[1].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
@@ -771,9 +806,11 @@ function renderPricing(c) {
       <!-- 3. Aile Planı (Uygulamada Açık & Dahil) -->
       <div class="plan rv">
         <span class="plan-badge" style="background:linear-gradient(135deg,#10B981,#059669)">${esc(c.pricing.plans[2].badge)}</span>
-        <h3>${esc(c.pricing.plans[2].name)}</h3>
-        <div class="price">${isTr ? 'Dahil' : 'Included'} <small>/ ${esc(c.pricing.plans[2].period)}</small></div>
-        <p class="price-note">${isTr ? 'Tüm aile fertleri için hazır' : 'Ready for the whole family'}</p>
+        <div class="plan-head">
+          <h3>${esc(c.pricing.plans[2].name)}</h3>
+          <div class="price">${isTr ? 'Dahil' : 'Included'} <small>/ ${esc(c.pricing.plans[2].period)}</small></div>
+          <p class="price-note">${isTr ? 'Tüm aile fertleri için hazır' : 'Ready for the whole family'}</p>
+        </div>
         <ul>
           ${c.pricing.plans[2].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
