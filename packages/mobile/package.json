@@ -20,6 +20,6 @@
     "@nexus/plugins": "workspace:*",
     "@nexus/web": "workspace:*"
   },
-  "author": "NEXUS Technologies Inc.",
-  "license": "UNLICENSED"
+  "author": "NEXUS",
+  "license": "SEE LICENSE IN LICENSE"
 }

@@ -20,7 +20,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
   await page.waitForTimeout(1500); // Wait for aurora and rise animations
 
   const destDir =
-    "C:\\Users\\ensar\\.gemini\\antigravity\\brain\\cfbdd3ae-ecda-4bf8-9160-f64d151f06d7";
+    process.env.NEXUS_SHOT_DIR || "docs/screenshots";
   await page.screenshot({ path: path.join(destDir, "landing_page.png"), fullPage: true });
 
   // Desktop Setup Wizard

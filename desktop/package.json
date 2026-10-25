@@ -9,7 +9,7 @@
     "name": "NEXUS",
     "email": "nexus.smarthome.app@gmail.com"
   },
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "scripts": {
     "prepare-app": "node scripts/prepare-app.cjs",

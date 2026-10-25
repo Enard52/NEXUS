@@ -2,7 +2,7 @@
 # Usage: .\replace-cdn.ps1
 
 param (
-    [string]$rootPath = "C:\Users\ensar\Desktop\NEXUS-main"
+    [string]$rootPath = (Split-Path -Parent $PSScriptRoot)
 )
 
 # Files to process (all stitch-*.html in root and www)

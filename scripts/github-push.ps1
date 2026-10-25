@@ -26,8 +26,6 @@ if ([int]$behind -gt 0) {
 }
 
 # 3) Stage everything and run safety checks
-if (-not (git config user.name)) { git config user.name 'Ensar' }
-if (-not (git config user.email)) { git config user.email 'ensarharmanci52@gmail.com' }
 git add -A
 $staged = @(git diff --cached --name-only)
 "files to commit: $($staged.Count)"

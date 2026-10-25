@@ -12,6 +12,6 @@
   "scripts": {
     "test": "vitest run"
   },
-  "author": "NEXUS Technologies Inc.",
-  "license": "UNLICENSED"
+  "author": "NEXUS",
+  "license": "SEE LICENSE IN LICENSE"
 }

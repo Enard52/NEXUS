@@ -1,6 +1,6 @@
 # PowerShell Script to Remove Iconify CDN References
 param (
-    [string]$rootPath = "C:\Users\ensar\Desktop\NEXUS-main"
+    [string]$rootPath = (Split-Path -Parent $PSScriptRoot)
 )
 
 $files = Get-ChildItem -Path $rootPath -Filter "stitch-*.html" -File -Recurse | 

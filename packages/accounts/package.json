@@ -16,6 +16,6 @@
     "@nexus/database": "workspace:*",
     "@nexus/security": "workspace:*"
   },
-  "author": "NEXUS Technologies Inc.",
-  "license": "UNLICENSED"
+  "author": "NEXUS",
+  "license": "SEE LICENSE IN LICENSE"
 }
