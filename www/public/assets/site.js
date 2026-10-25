@@ -123,16 +123,27 @@ function nxUpdateNavAuth(){
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   var btn=document.getElementById('nxNavAuthBtn');
   var label=document.getElementById('nxNavAuthLabel');
+  var avatarWrap=document.getElementById('nxNavAuthAvatar');
   if(!btn||!label)return;
   var isTr=document.documentElement.lang==='tr';
   if(user){
     btn.classList.add('logged-in');
-    var short=user.split('@')[0];
-    if(short.length>12)short=short.slice(0,10)+'…';
-    label.textContent=short;
+    var customName=null;
+    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    var displayName = customName || user.split('@')[0];
+    label.textContent = displayName;
+    label.title = displayName + ' (' + user + ')';
+    var initial = (displayName.charAt(0) || 'U').toUpperCase();
+    if(avatarWrap){
+      avatarWrap.innerHTML='<div class="nx-nav-avatar"><span>'+initial+'</span><span class="dot-online"></span></div>';
+    }
   }else{
     btn.classList.remove('logged-in');
-    label.textContent=isTr?'Giriş Yap':'Sign In';
+    label.textContent = isTr ? 'Giriş Yap' : 'Sign In';
+    label.title = '';
+    if(avatarWrap){
+      avatarWrap.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg>';
+    }
   }
 }
 
@@ -143,12 +154,29 @@ function nxOpenAuthModal(){
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   var formView=document.getElementById('nxAuthFormView');
   var profileView=document.getElementById('nxAuthProfileView');
-  var emailEl=document.getElementById('nxProfileEmail');
+  var isTr=document.documentElement.lang==='tr';
 
   if(user){
     if(formView)formView.style.display='none';
     if(profileView)profileView.style.display='block';
-    if(emailEl)emailEl.textContent=user;
+    var customName=null;
+    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    var displayName = customName || user.split('@')[0];
+    var initial = (displayName.charAt(0) || 'U').toUpperCase();
+    
+    var avatarEl=document.getElementById('nxProfileAvatarInitial');
+    var nameEl=document.getElementById('nxProfileNameDisplay');
+    var emailEl=document.getElementById('nxProfileEmail');
+    if(avatarEl)avatarEl.textContent = initial;
+    if(nameEl)nameEl.textContent = displayName;
+    if(emailEl)emailEl.textContent = user;
+    
+    var plusActive = false;
+    try{plusActive = localStorage.getItem('nexusPlusActive')==='true';}catch(e){}
+    var planTag=document.getElementById('nxProfilePlanTag');
+    var planDesc=document.getElementById('nxProfilePlanDesc');
+    if(planTag)planTag.textContent = plusActive ? 'NEXUS+ Pro' : (isTr ? 'Ücretsiz' : 'Free');
+    if(planDesc)planDesc.textContent = plusActive ? (isTr ? 'Aktif NEXUS+ Aboneliği (Sınırsız AI)' : 'Active NEXUS+ Pro (Unlimited AI)') : (isTr ? 'Temel Plan (Cihaz/Oda Sınırı Yok)' : 'Starter Plan (No device limits)');
   }else{
     if(formView)formView.style.display='block';
     if(profileView)profileView.style.display='none';
@@ -159,6 +187,40 @@ function nxOpenAuthModal(){
   m.style.display='flex';
   setTimeout(function(){m.classList.add('open')},10);
   nxLockScroll();
+}
+
+function nxEditProfileName(){
+  var isTr=document.documentElement.lang==='tr';
+  var curName='';
+  try{curName=localStorage.getItem('nexusUserName')||'';}catch(e){}
+  var promptMsg=isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:';
+  var newName=prompt(promptMsg, curName);
+  if(!newName)return;
+  newName=newName.trim();
+  if(!newName)return;
+  try{localStorage.setItem('nexusUserName', newName);}catch(e){}
+  nxUpdateNavAuth();
+  nxOpenAuthModal();
+}
+
+function nxSendPasswordReset(){
+  var isTr=document.documentElement.lang==='tr';
+  var user=null;
+  try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
+  if(!user)return;
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  fetch(SUPABASE_URL+'/auth/v1/recover',{
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:user})
+  })
+  .then(function(){
+    alert(isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : 'Password reset link sent to your email ('+user+').');
+  })
+  .catch(function(){
+    alert(isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : 'Could not send reset email.');
+  });
 }
 
 function nxCloseAuthModal(){

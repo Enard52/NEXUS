@@ -2196,7 +2196,34 @@ window.NEXUS_EN = {
    İngilizce arayüz canlı tarandığında bulundu ve burada tamamlandı. */
 "İptal ve ödeme yöntemi değişikliği güvenli ödeme sayfamız Whop üzerinden yapılır. İptal edersen mevcut dönemin sonuna kadar kullanmaya devam edersin ve bir sonraki ödeme alınmaz.": "Cancelling and changing your payment method happen on our secure checkout page, Whop. If you cancel, you keep using NEXUS+ until the end of the current period and the next payment is never taken.",
 "Aboneliğin yok. NEXUS+ için Plus sayfasından ücretsiz deneyebilirsin.": "You don't have a subscription. Try NEXUS+ free from the Plus page.",
-"QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.": "Devices you add by QR, setup code or the manual catalog show up here."
+"QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.": "Devices you add by QR, setup code or the manual catalog show up here.",
+/* Panel grup başlıkları: supported-devices.js içindeki PANELS etiketleri JavaScript ile
+   üretiliyor, bu yüzden kapsama betiği HTML taramasında onları göremiyordu. İngilizce
+   arayüz canlı taranınca 22 başlığın çevrilsiz kaldığı ölçüldü; bazıları parça parça
+   çevrilip "İklim kontrol panel · temperature, nem, mod" gibi bozuk hibritlere dönüyordu.
+   Tam metin anahtarları eklenince lookup() ilk adımda bunları bulur, parça yoluna düşmez. */
+"Robot süpürge kontrol paneli · başlat, durdur, eve dön": "Robot vacuum control panel · start, stop, return home",
+"Kilit kontrol paneli · kilitle, aç": "Lock control panel · lock, unlock",
+"Alarm kontrol paneli · kur, kapat, sirene": "Alarm control panel · arm, disarm, siren",
+"Perde ve panjur kontrol paneli · aç, kapat, konum": "Curtain and blind control panel · open, close, position",
+"Renkli aydınlatma kontrol paneli · renk, parlaklık": "Color lighting control panel · color, brightness",
+"Aydınlatma kontrol paneli · aç, kapat, parlaklık": "Lighting control panel · on, off, brightness",
+"Hava kalitesi paneli · ölçüm ve uyarılar": "Air quality panel · readings and alerts",
+"Hareket sensörü paneli · algılama ve uyarılar": "Motion sensor panel · detection and alerts",
+"Kapı ve pencere sensörü paneli · açık/kapalı durumu": "Door and window sensor panel · open/closed state",
+"Evcil hayvan kontrol paneli · besleme, takip": "Pet control panel · feeding, tracking",
+"Bebek ürünleri paneli · izleme ve uyarılar": "Baby products panel · monitoring and alerts",
+"Sağlık ve uyku paneli · ölçüm, takip": "Health and sleep panel · readings, tracking",
+"Spor ekipmanları paneli · takip, ölçüm": "Sports equipment panel · tracking, readings",
+"Bahçe ve sulama kontrol paneli · vana, zamanlama": "Garden and irrigation control panel · valve, scheduling",
+"Medya kontrol paneli · aç, kapat, ses, kanal": "Media control panel · on, off, volume, channel",
+"Ev aletleri kontrol paneli · başlat, durdur, program": "Home appliance control panel · start, stop, program",
+"İklim kontrol paneli · sıcaklık, nem, mod": "Climate control panel · temperature, humidity, mode",
+"Ortam sensörü paneli · sıcaklık, ışık, durum": "Ambient sensor panel · temperature, light, status",
+"Priz ve enerji kontrol paneli · aç, kapat, tüketim": "Plug and energy control panel · on, off, consumption",
+"Ulaşım ve takip paneli · konum, şarj": "Transport and tracking panel · location, charge",
+"Ağ geçidi paneli · bağlantı, durum": "Gateway panel · connection, status",
+"Anahtar kontrol paneli · aç, kapat": "Switch control panel · on, off"
 },
 "html": {},
 "slots": {

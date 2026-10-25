@@ -521,16 +521,30 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   .phone-arrow-right{right:-10px}
 }
 
-/* Navbar Giriş / Hesap Butonu */
+/* Navbar Giriş / Hesap Butonu & Avatar */
 .nx-auth-btn{
-  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:6px 14px;
+  display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:5px 14px 5px 8px;
   border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);
   cursor:pointer;transition:all .18s ease;height:38px;box-sizing:border-box;
 }
 .nx-auth-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--surface-2)}
-.nx-auth-btn.logged-in{border-color:var(--brand);color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,transparent)}
-.nx-auth-btn .icon{width:15px;height:15px;flex-shrink:0}
-.dot-online{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981}
+.nx-auth-btn.logged-in{
+  border-color:color-mix(in srgb,var(--brand) 45%,transparent);color:var(--text);
+  background:color-mix(in srgb,var(--brand) 10%,var(--surface));padding:4px 14px 4px 6px;
+}
+.nx-nav-label{
+  max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;
+  vertical-align:middle;line-height:1.2;
+}
+.nx-nav-avatar{
+  width:26px;height:26px;border-radius:50%;background:var(--brand-grad);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
+  flex-shrink:0;box-shadow:0 2px 6px rgba(76,125,255,.35);position:relative;
+}
+.nx-nav-avatar .dot-online{
+  position:absolute;bottom:-1px;right:-1px;width:7px;height:7px;border-radius:50%;background:#10B981;
+  border:1.5px solid var(--surface);box-shadow:0 0 4px #10B981;
+}
 
 /* Auth Modal & Profile - Mobil & Masaüstü Uygulama ile 1:1 Uyumlu */
 .nx-auth-brand-badge{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:18px}
@@ -540,6 +554,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-auth-brand-badge p{font-size:13px;color:var(--muted);margin:0;max-width:32ch;line-height:1.45}
 
 .nx-auth-field-wrap{margin-bottom:11px;position:relative}
+.nx-field-label{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-bottom:3px;display:block}
 .nx-app-input{
   width:100%;height:44px;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);
   border-radius:14px;padding:0 16px;font:500 14px Inter,sans-serif;color:var(--text);outline:none;
@@ -548,6 +563,8 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-app-input:focus{
   border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent);
 }
+.nx-app-select{cursor:pointer;padding-right:28px}
+.nx-app-textarea{height:auto;min-height:72px;padding:10px 14px;resize:vertical}
 .nx-pw-toggle{
   position:absolute;top:50%;right:12px;transform:translateY(-50%);background:none;border:none;color:var(--muted);
   cursor:pointer;padding:6px;display:flex;align-items:center;justify-content:center;transition:color .18s;
@@ -575,14 +592,62 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-auth-link.muted:hover{color:var(--text-2)}
 
 .nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:12px;line-height:1.4}
-.nx-profile-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)}
-.nx-avatar-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981}
-.nx-profile-details{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;display:grid;gap:12px}
-.nx-detail-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
-.nx-detail-row span{color:var(--muted)}
-.nx-profile-actions{display:grid;gap:10px;margin-top:18px}
-.w-full{width:100%}
-.text-emerald{color:#10B981}
+
+/* Profil & Gelişmiş Hesap Ayarları Görünümü */
+.nx-profile-header{
+  display:flex;align-items:center;gap:14px;margin-bottom:16px;background:var(--surface-2);border:1px solid var(--border);
+  padding:14px 16px;border-radius:var(--radius);
+}
+.nx-profile-avatar-large{
+  width:54px;height:54px;border-radius:50%;background:var(--brand-grad);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;
+  flex-shrink:0;box-shadow:0 4px 14px rgba(76,125,255,.35);position:relative;
+}
+.nx-avatar-status-dot{
+  position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:#10B981;
+  border:2px solid var(--surface-2);box-shadow:0 0 6px #10B981;
+}
+.nx-profile-name-wrap{flex:1;min-width:0}
+.nx-profile-name-row{display:flex;align-items:center;gap:8px}
+.nx-profile-name-row h3{margin:0;font-size:17px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nx-edit-name-btn{
+  background:none;border:none;color:var(--muted);cursor:pointer;padding:3px;display:flex;align-items:center;
+  border-radius:6px;transition:all .15s ease;
+}
+.nx-edit-name-btn:hover{color:var(--brand);background:var(--surface)}
+.nx-edit-name-btn svg{width:14px;height:14px}
+.nx-profile-email-chip{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:2px}
+
+.nx-profile-grid{display:grid;gap:10px;margin-bottom:16px}
+.nx-profile-card{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;
+}
+.nx-profile-card-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.nx-plan-tag{
+  background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:99px;
+}
+.nx-profile-card-sub{margin:0 0 10px;font-size:13.5px;font-weight:700;color:var(--text)}
+.nx-profile-card-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-xs{padding:6px 12px;font-size:12px;font-weight:700;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.nx-status-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.nx-status-pill.online{background:rgba(16,185,129,.12);color:#10B981;border:1px solid rgba(16,185,129,.3)}
+.nx-profile-kv{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-top:6px}
+.nx-profile-kv small{color:var(--muted)}
+.nx-profile-kv b{color:var(--text);font-weight:600}
+
+.nx-profile-footer-actions{display:grid;gap:8px}
+.nx-profile-link-btn{
+  background:none;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-2);
+  font:600 12.5px Inter,sans-serif;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:6px;transition:all .18s ease;
+}
+.nx-profile-link-btn:hover{background:var(--surface-2);border-color:var(--brand);color:var(--brand)}
+.nx-profile-link-btn svg{width:15px;height:15px}
+.nx-contact-security-note{
+  font-size:11.5px;color:var(--muted);margin:10px 0 0;text-align:center;display:flex;align-items:center;
+  justify-content:center;gap:5px;
+}
+.nx-contact-security-note svg{width:13px;height:13px;color:var(--brand);flex-shrink:0}
 
 /* Hakkında Sayfası Kartları */
 .about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px}
@@ -716,16 +781,27 @@ function nxUpdateNavAuth(){
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   var btn=document.getElementById('nxNavAuthBtn');
   var label=document.getElementById('nxNavAuthLabel');
+  var avatarWrap=document.getElementById('nxNavAuthAvatar');
   if(!btn||!label)return;
   var isTr=document.documentElement.lang==='tr';
   if(user){
     btn.classList.add('logged-in');
-    var short=user.split('@')[0];
-    if(short.length>12)short=short.slice(0,10)+'…';
-    label.textContent=short;
+    var customName=null;
+    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    var displayName = customName || user.split('@')[0];
+    label.textContent = displayName;
+    label.title = displayName + ' (' + user + ')';
+    var initial = (displayName.charAt(0) || 'U').toUpperCase();
+    if(avatarWrap){
+      avatarWrap.innerHTML='<div class="nx-nav-avatar"><span>'+initial+'</span><span class="dot-online"></span></div>';
+    }
   }else{
     btn.classList.remove('logged-in');
-    label.textContent=isTr?'Giriş Yap':'Sign In';
+    label.textContent = isTr ? 'Giriş Yap' : 'Sign In';
+    label.title = '';
+    if(avatarWrap){
+      avatarWrap.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg>';
+    }
   }
 }
 
@@ -736,12 +812,29 @@ function nxOpenAuthModal(){
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   var formView=document.getElementById('nxAuthFormView');
   var profileView=document.getElementById('nxAuthProfileView');
-  var emailEl=document.getElementById('nxProfileEmail');
+  var isTr=document.documentElement.lang==='tr';
 
   if(user){
     if(formView)formView.style.display='none';
     if(profileView)profileView.style.display='block';
-    if(emailEl)emailEl.textContent=user;
+    var customName=null;
+    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    var displayName = customName || user.split('@')[0];
+    var initial = (displayName.charAt(0) || 'U').toUpperCase();
+    
+    var avatarEl=document.getElementById('nxProfileAvatarInitial');
+    var nameEl=document.getElementById('nxProfileNameDisplay');
+    var emailEl=document.getElementById('nxProfileEmail');
+    if(avatarEl)avatarEl.textContent = initial;
+    if(nameEl)nameEl.textContent = displayName;
+    if(emailEl)emailEl.textContent = user;
+    
+    var plusActive = false;
+    try{plusActive = localStorage.getItem('nexusPlusActive')==='true';}catch(e){}
+    var planTag=document.getElementById('nxProfilePlanTag');
+    var planDesc=document.getElementById('nxProfilePlanDesc');
+    if(planTag)planTag.textContent = plusActive ? 'NEXUS+ Pro' : (isTr ? 'Ücretsiz' : 'Free');
+    if(planDesc)planDesc.textContent = plusActive ? (isTr ? 'Aktif NEXUS+ Aboneliği (Sınırsız AI)' : 'Active NEXUS+ Pro (Unlimited AI)') : (isTr ? 'Temel Plan (Cihaz/Oda Sınırı Yok)' : 'Starter Plan (No device limits)');
   }else{
     if(formView)formView.style.display='block';
     if(profileView)profileView.style.display='none';
@@ -752,6 +845,40 @@ function nxOpenAuthModal(){
   m.style.display='flex';
   setTimeout(function(){m.classList.add('open')},10);
   nxLockScroll();
+}
+
+function nxEditProfileName(){
+  var isTr=document.documentElement.lang==='tr';
+  var curName='';
+  try{curName=localStorage.getItem('nexusUserName')||'';}catch(e){}
+  var promptMsg=isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:';
+  var newName=prompt(promptMsg, curName);
+  if(!newName)return;
+  newName=newName.trim();
+  if(!newName)return;
+  try{localStorage.setItem('nexusUserName', newName);}catch(e){}
+  nxUpdateNavAuth();
+  nxOpenAuthModal();
+}
+
+function nxSendPasswordReset(){
+  var isTr=document.documentElement.lang==='tr';
+  var user=null;
+  try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
+  if(!user)return;
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  fetch(SUPABASE_URL+'/auth/v1/recover',{
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:user})
+  })
+  .then(function(){
+    alert(isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : 'Password reset link sent to your email ('+user+').');
+  })
+  .catch(function(){
+    alert(isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : 'Could not send reset email.');
+  });
 }
 
 function nxCloseAuthModal(){
@@ -1111,8 +1238,8 @@ function renderHeader(c, currentPath = '') {
         }
       </div>
       <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="${isTr ? 'Giriş Yap veya Hesap' : 'Sign In or Account'}">
-        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg>
-        <span id="nxNavAuthLabel">${isTr ? 'Giriş Yap' : 'Sign In'}</span>
+        <span id="nxNavAuthAvatar"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg></span>
+        <span id="nxNavAuthLabel" class="nx-nav-label">${isTr ? 'Giriş Yap' : 'Sign In'}</span>
       </button>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="${isTr ? 'Tema değiştir' : 'Toggle theme'}" title="${isTr ? 'Karanlık/Aydınlık Tema' : 'Toggle theme'}">
         <span class="ic-sun">${icon('sun')}</span>
@@ -1389,35 +1516,43 @@ function renderContactModal(c) {
 <div id="nxContactModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseContactModal()" role="dialog" aria-modal="true" aria-labelledby="nxContactTitle">
   <div class="nx-modal-card">
     <button class="nx-modal-close" onclick="nxCloseContactModal()" aria-label="${isTr ? 'Kapat' : 'Close'}">&times;</button>
-    <div class="nx-modal-header">
-      <h3 id="nxContactTitle">${isTr ? 'NEXUS İletişim & Destek' : 'NEXUS Contact & Support'}</h3>
-      <p>${isTr ? 'Sorularınız, teknik destek talepleriniz veya yeni cihaz entegrasyonu önerileriniz için formu doldurun. Mesajınız doğrudan geliştirici ekibimize iletilir.' : 'Have a question, technical inquiry, or device connector request? Fill out the form below to reach our team directly.'}</p>
+    
+    <!-- Marka Rozeti & Başlık (Giriş Modülü ile Birebir Marka Kimliği) -->
+    <div class="nx-auth-brand-badge">
+      <div class="nx-app-logo">${brand.logoSvg}</div>
+      <h3 id="nxContactTitle">${isTr ? 'NEXUS Destek & İletişim' : 'NEXUS Support & Inquiries'}</h3>
+      <p id="nxContactSubtitle">${isTr ? 'Teknik destek, cihaz entegrasyonu ve tüm sorularınız için doğrudan ekibimize yazın.' : 'Reach out for technical inquiries, device connectors, and questions.'}</p>
     </div>
+
     <form id="nxContactForm" onsubmit="nxSubmitContact(event)" data-sending="${isTr ? 'Gönderiliyor…' : 'Sending…'}">
-      <div class="nx-form-group">
-        <label for="nxContactName">${isTr ? 'Adınız Soyadınız' : 'Your Name'}</label>
-        <input type="text" id="nxContactName" class="nx-form-input" required placeholder="${isTr ? 'Örn. Can Demir' : 'e.g. Alex Morgan'}" autocomplete="name">
+      <div class="nx-auth-field-wrap">
+        <label for="nxContactName" class="nx-field-label">${isTr ? 'Adınız Soyadınız' : 'Your Name'}</label>
+        <input type="text" id="nxContactName" class="nx-app-input" required placeholder="${isTr ? 'Örn. Can Demir' : 'e.g. Alex Morgan'}" autocomplete="name">
       </div>
-      <div class="nx-form-group">
-        <label for="nxContactEmail">${isTr ? 'E-posta Adresiniz (Yanıt bu adrese iletilecektir)' : 'Your Email (We will reply to this address)'}</label>
-        <input type="email" id="nxContactEmail" class="nx-form-input" required placeholder="${isTr ? 'ornek@eposta.com' : 'name@example.com'}" autocomplete="email">
+      <div class="nx-auth-field-wrap">
+        <label for="nxContactEmail" class="nx-field-label">${isTr ? 'E-posta Adresiniz (Yanıt bu adrese iletilecektir)' : 'Your Email (We will reply here)'}</label>
+        <input type="email" id="nxContactEmail" class="nx-app-input" required placeholder="${isTr ? 'ornek@eposta.com' : 'name@example.com'}" autocomplete="email">
       </div>
-      <div class="nx-form-group">
-        <label for="nxContactCategory">${isTr ? 'Konu / Talep Türü' : 'Subject / Topic'}</label>
-        <select id="nxContactCategory" class="nx-form-select">
+      <div class="nx-auth-field-wrap">
+        <label for="nxContactCategory" class="nx-field-label">${isTr ? 'Konu / Talep Türü' : 'Subject / Topic'}</label>
+        <select id="nxContactCategory" class="nx-app-input nx-app-select">
           <option value="${isTr ? 'Teknik Destek' : 'Technical Support'}">${isTr ? 'Teknik Destek ve Kurulum' : 'Technical Support & Setup'}</option>
           <option value="${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}">${isTr ? 'Yeni Cihaz & Bağlayıcı İsteği' : 'New Device / Connector Request'}</option>
           <option value="${isTr ? 'NEXUS+ ve Abonelik' : 'NEXUS+ & Billing'}">${isTr ? 'NEXUS+ ve Fatura / Abonelik' : 'NEXUS+ & Billing Questions'}</option>
           <option value="${isTr ? 'Geri Bildirim & Öneri' : 'Feedback & Suggestion'}">${isTr ? 'Geri Bildirim veya Öneri' : 'General Feedback or Suggestion'}</option>
         </select>
       </div>
-      <div class="nx-form-group">
-        <label for="nxContactMsg">${isTr ? 'Mesajınız' : 'Your Message'}</label>
-        <textarea id="nxContactMsg" class="nx-form-textarea" required rows="4" placeholder="${isTr ? 'Nasıl yardımcı olabiliriz? Lütfen detayları paylaşın…' : 'How can we help? Please describe your request in detail…'}"></textarea>
+      <div class="nx-auth-field-wrap">
+        <label for="nxContactMsg" class="nx-field-label">${isTr ? 'Mesajınız' : 'Your Message'}</label>
+        <textarea id="nxContactMsg" class="nx-app-input nx-app-textarea" required rows="3" placeholder="${isTr ? 'Nasıl yardımcı olabiliriz? Lütfen detayları paylaşın…' : 'How can we help? Please describe your request in detail…'}"></textarea>
       </div>
-      <button type="submit" id="nxContactSubmitBtn" class="nx-form-submit">
+      <button type="submit" id="nxContactSubmitBtn" class="btn btn-primary w-full nx-app-submit">
+        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 2-7 20-4-9-9-4Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13"/></svg>
         <span>${isTr ? 'Mesajı Gönder' : 'Send Message'}</span>
       </button>
+      <p class="nx-contact-security-note">
+        ${icon('lock')} ${isTr ? 'Talebiniz geliştirici ekibimize doğrudan iletilir. En geç 24 saat içinde dönüş yapılır.' : 'Your message is sent directly to developers. Replies within 24h.'}
+      </p>
     </form>
     <div id="nxContactSuccess" class="nx-form-success">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -1472,29 +1607,64 @@ function renderAuthModal(c) {
       </div>
     </div>
 
-    <!-- Profil Görünümü (Giriş Yapılmışsa) -->
+    <!-- Profil & Gelişmiş Hesap Ayarları Görünümü (Giriş Yapılmışsa) -->
     <div id="nxAuthProfileView" style="display:none">
-      <div class="nx-modal-header">
-        <div class="nx-profile-badge">
-          <span class="nx-avatar-dot"></span>
-          <span id="nxProfileEmail">kullanici@eposta.com</span>
+      <div class="nx-profile-header">
+        <div class="nx-profile-avatar-large">
+          <span id="nxProfileAvatarInitial">U</span>
+          <span class="nx-avatar-status-dot"></span>
         </div>
-        <h3>${isTr ? 'Hesap & Senkronizasyon' : 'Account & Sync'}</h3>
-        <p>${isTr ? 'Hesabınız aktif. Tüm cihazlarınızda ve programda ev ayarlarınız otomatik senkronize edilir.' : 'Your account is active. Your home settings synchronize automatically across all devices.'}</p>
-      </div>
-      <div class="nx-profile-details">
-        <div class="nx-detail-row">
-          <span>${isTr ? 'Bulut Senkronu' : 'Cloud Sync'}</span>
-          <b class="text-emerald">${isTr ? 'Aktif (Supabase)' : 'Active (Supabase)'}</b>
-        </div>
-        <div class="nx-detail-row">
-          <span>${isTr ? 'Abonelik Durumu' : 'Plan Status'}</span>
-          <b id="nxProfilePlan">${isTr ? 'NEXUS Standart (Ücretsiz)' : 'NEXUS Standard (Free)'}</b>
+        <div class="nx-profile-name-wrap">
+          <div class="nx-profile-name-row">
+            <h3 id="nxProfileNameDisplay">Kullanıcı</h3>
+            <button type="button" class="nx-edit-name-btn" onclick="nxEditProfileName()" title="${isTr ? 'İsmi Düzenle' : 'Edit Name'}">
+              <svg viewBox="0 0 24 24" class="icon"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            </button>
+          </div>
+          <span id="nxProfileEmail" class="nx-profile-email-chip">kullanici@eposta.com</span>
         </div>
       </div>
-      <div class="nx-profile-actions">
-        <a href="${c.canonical}#pricing" class="btn btn-primary w-full" onclick="nxCloseAuthModal()">${isTr ? 'NEXUS+ Planlarını Gör' : 'View NEXUS+ Plans'}</a>
-        <button type="button" class="btn btn-outline w-full" onclick="nxSignOut()">${isTr ? 'Oturumu Kapat' : 'Sign Out'}</button>
+
+      <!-- Detay Kartları -->
+      <div class="nx-profile-grid">
+        <div class="nx-profile-card">
+          <div class="nx-profile-card-head">
+            <span>${isTr ? 'Abonelik & Plan' : 'Subscription & Tier'}</span>
+            <span class="nx-plan-tag" id="nxProfilePlanTag">Free</span>
+          </div>
+          <p id="nxProfilePlanDesc" class="nx-profile-card-sub">${isTr ? 'Temel Başlangıç Planı' : 'Starter Free Plan'}</p>
+          <div class="nx-profile-card-actions">
+            <a href="${c.canonical}#pricing" class="btn-xs btn-primary" onclick="nxCloseAuthModal()">${isTr ? 'NEXUS+ Yükselt (%33 İndirim)' : 'Upgrade to NEXUS+ (Save 33%)'}</a>
+            <a href="https://whop.com/hub/" target="_blank" rel="noopener" class="btn-xs btn-ghost">${isTr ? 'Faturalar & Whop' : 'Billing & Whop'}</a>
+          </div>
+        </div>
+
+        <div class="nx-profile-card">
+          <div class="nx-profile-card-head">
+            <span>${isTr ? 'Bulut & Eşitleme' : 'Cloud & Sync'}</span>
+            <span class="nx-status-pill online">${isTr ? 'Bağlı' : 'Connected'}</span>
+          </div>
+          <div class="nx-profile-kv">
+            <small>${isTr ? 'Altyapı' : 'Engine'}</small>
+            <b>Supabase Cloud & Auth</b>
+          </div>
+          <div class="nx-profile-kv">
+            <small>${isTr ? 'Eşitleme' : 'Sync Status'}</small>
+            <b class="text-emerald">${isTr ? 'Tüm cihazlarla senkron' : 'In sync across devices'}</b>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hesap İşlemleri -->
+      <div class="nx-profile-footer-actions">
+        <button type="button" class="nx-profile-link-btn" onclick="nxSendPasswordReset()">
+          <svg viewBox="0 0 24 24" class="icon"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <span>${isTr ? 'Şifre Sıfırlama Bağlantısı Gönder' : 'Send Password Reset Email'}</span>
+        </button>
+        <button type="button" class="btn btn-outline w-full" onclick="nxSignOut()">
+          <svg viewBox="0 0 24 24" class="icon"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          <span>${isTr ? 'Oturumu Kapat' : 'Sign Out'}</span>
+        </button>
       </div>
     </div>
 
