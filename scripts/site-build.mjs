@@ -96,6 +96,16 @@ const CSS = `
   --shadow:0 4px 16px rgba(15,23,42,.06); --shadow-lg:0 20px 48px rgba(15,23,42,.12);
   --header-h:68px; --max:1100px;
 }
+html{
+  scrollbar-gutter: stable;
+}
+@supports not (scrollbar-gutter: stable){
+  html{overflow-y:scroll}
+}
+html.nx-modal-open,
+html.nx-modal-open body{
+  overflow:hidden !important;
+}
 html[data-theme=dark]{
   --page:#0B0F19; --page-grad:linear-gradient(180deg,#0B0F19 0%,#111827 100%);
   --surface:#151B28; --surface-2:#1D2436; --text:#F8FAFC; --text-2:#CBD5E1;
@@ -615,6 +625,18 @@ function nxSetLang(lang){
   }
 }
 
+// Modal Açıldığında Sayfanın Sağa/Sola Kaymasını Önleyen Kilit
+function nxLockScroll(){
+  document.documentElement.classList.add('nx-modal-open');
+}
+
+function nxUnlockScroll(){
+  var anyOpen = document.querySelectorAll('.nx-modal-backdrop.open').length > 0;
+  if(!anyOpen){
+    document.documentElement.classList.remove('nx-modal-open');
+  }
+}
+
 // İletişim & Destek Modülü Kontrolleri
 function nxOpenContactModal(category){
   var m=document.getElementById('nxContactModal');
@@ -625,7 +647,7 @@ function nxOpenContactModal(category){
   }
   m.style.display='flex';
   setTimeout(function(){m.classList.add('open')},10);
-  document.body.style.overflow='hidden';
+  nxLockScroll();
 }
 
 function nxCloseContactModal(){
@@ -634,7 +656,7 @@ function nxCloseContactModal(){
   m.classList.remove('open');
   setTimeout(function(){
     m.style.display='none';
-    document.body.style.overflow='';
+    nxUnlockScroll();
   },250);
 }
 
@@ -729,7 +751,7 @@ function nxOpenAuthModal(){
 
   m.style.display='flex';
   setTimeout(function(){m.classList.add('open')},10);
-  document.body.style.overflow='hidden';
+  nxLockScroll();
 }
 
 function nxCloseAuthModal(){
@@ -738,7 +760,7 @@ function nxCloseAuthModal(){
   m.classList.remove('open');
   setTimeout(function(){
     m.style.display='none';
-    document.body.style.overflow='';
+    nxUnlockScroll();
   },250);
 }
 
@@ -1051,6 +1073,14 @@ document.addEventListener('DOMContentLoaded',function(){
       });
     })
     .catch(function(){});
+
+  // ESC Tuşu ile Modal Kapatma
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+      nxCloseContactModal();
+      nxCloseAuthModal();
+    }
+  });
 });
 `.trim();
 }

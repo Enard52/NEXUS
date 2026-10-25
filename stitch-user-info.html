@@ -92,9 +92,11 @@
 </div>
 </button>
 <!-- Row 3: Device Timezone (cihazdan otomatik okunur, sheet ile değiştirilebilir) -->
-<button class="settings-row w-full flex items-center justify-between gap-4 px-6 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('tz')">
+<button class="settings-row w-full flex items-center justify-between gap-3 px-6 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('tz')">
 <span class="text-[17px] font-medium text-gray-800 flex-shrink-0">Cihaz Saat Dilimi</span>
-<div class="flex items-center gap-3 min-w-0">
+<!-- gap-4→gap-3 ve gap-3→gap-2: "Türkiye · 19:40" telefon genişliğinde 6px taşıyordu;
+   8px nefes boşluğundan geri verildi (ölçüm: tmp-ui-audit H kovası). -->
+<div class="flex items-center gap-2 min-w-0">
 <span class="text-[17px] text-gray-400 truncate" id="timezone-value">İstanbul</span>
 <svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>

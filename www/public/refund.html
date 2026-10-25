@@ -30,6 +30,16 @@
   --shadow:0 4px 16px rgba(15,23,42,.06); --shadow-lg:0 20px 48px rgba(15,23,42,.12);
   --header-h:68px; --max:1100px;
 }
+html{
+  scrollbar-gutter: stable;
+}
+@supports not (scrollbar-gutter: stable){
+  html{overflow-y:scroll}
+}
+html.nx-modal-open,
+html.nx-modal-open body{
+  overflow:hidden !important;
+}
 html[data-theme=dark]{
   --page:#0B0F19; --page-grad:linear-gradient(180deg,#0B0F19 0%,#111827 100%);
   --surface:#151B28; --surface-2:#1D2436; --text:#F8FAFC; --text-2:#CBD5E1;

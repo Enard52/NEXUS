@@ -211,7 +211,9 @@
 
       <input id="chat-file" type="file" accept="image/*" class="hidden" onchange="handleAttachment(event)"/>
       <input id="chat-camera" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleAttachment(event)"/>
-      <input id="chat-input" class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text" onkeypress="handleKeyPress(event)"/>
+      <!-- self-stretch: satır yüksekliğini (32px) doldurur → yazı alanının dokunma kutu 20px'ten
+           32px'e çıkar; metin/yer tutucu dikeyde ortalanmış kalır, görsel değişmez. -->
+      <input id="chat-input" class="flex-grow self-stretch border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text" onkeypress="handleKeyPress(event)"/>
 
       <div class="flex items-center space-x-4 pr-1">
         <!-- Mic: gerçek sesli giriş (Web Speech API; Chrome/Edge/Android WebView) -->
