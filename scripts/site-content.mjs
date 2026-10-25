@@ -141,7 +141,7 @@ export const content = {
     },
     pricing: {
       heading: "Free to use. NEXUS+ when you want more.",
-      lead: "No device limits, no account fees. The optional NEXUS+ plan adds a much larger NEXUS AI allowance.",
+      lead: "No device or room limits — core control is always free. Upgrade to NEXUS+ for deep AI intelligence, dynamic energy optimization, and encrypted cloud backup.",
       currencyNote: "Prices in USD",
       plans: [
         {
@@ -163,9 +163,13 @@ export const content = {
           period: "per month",
           badge: "Most popular",
           features: [
-            "2,000 NEXUS AI answers a month",
-            "Everything in Free",
-            "3-day free trial, cancel anytime",
+            "Everything in Free included",
+            "2,000 Advanced NEXUS AI responses / month (Natural language automations)",
+            "Dynamic Energy & Tariff Optimizer (Up to 30% electricity savings)",
+            "End-to-End Encrypted Cloud Backup & Seamless Multi-Device Sync",
+            "AI Home Guard & Anomaly Detection (Instant alerts for unexpected draw)",
+            "Priority VIP Support & Early Access to Upcoming Integrations",
+            "3-day free trial, cancel anytime with one click",
           ],
           cta: { label: "Start 3-day free trial", href: "https://whop.com/checkout/plan_HIySYESquBqlg", yearlyHref: "https://whop.com/checkout/plan_XlA3SacShoiJU" },
         },
@@ -391,7 +395,7 @@ export const content = {
     },
     pricing: {
       heading: "Ücretsiz kullan. Daha fazlasını istersen NEXUS+.",
-      lead: "Cihaz sınırı yok, hesap ücreti yok. İsteğe bağlı NEXUS+ planı çok daha büyük bir NEXUS AI kotası ekler.",
+      lead: "Cihaz veya oda sınırı yok, temel kullanım hep ücretsiz. İsteğe bağlı NEXUS+ ile gelişmiş AI zekâsı, tarife optimizasyonu ve bulut yedekleme gücünü evinize katın.",
       currencyNote: "Fiyatlar TL cinsinden",
       plans: [
         {
@@ -413,8 +417,12 @@ export const content = {
           period: "aylık",
           badge: "En çok tercih edilen",
           features: [
-            "Ayda 2.000 NEXUS AI yanıtı",
-            "Ücretsiz plandaki tüm özellikler",
+            "Ücretsiz plandaki tüm özellikler dahil",
+            "Ayda 2.000 gelişmiş NEXUS AI yanıtı (Doğal dil senaryo üretimi)",
+            "Dinamik Enerji & Tarife Optimizatörü (Faturada %30 tasarruf)",
+            "Uçtan Uca Şifreli Otomatik Bulut Yedekleme (Cihaz & sahne senkronu)",
+            "AI Ev Koruma ve Anomali Tespiti (Beklenmedik tüketim ve hareket uyarıları)",
+            "VIP Öncelikli Destek & Yeni Entegrasyonlara Erken Erişim",
             "3 günlük ücretsiz deneme, dilediğin an iptal",
           ],
           cta: { label: "3 gün ücretsiz dene", href: "https://whop.com/checkout/plan_fAMBHwTVE0hR2", yearlyHref: "https://whop.com/checkout/plan_UEXO1F5mjIgWB" },

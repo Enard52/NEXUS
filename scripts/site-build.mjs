@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, cpSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { content, brand, priceFor, CHECKOUT_URLS } from './site-content.mjs';
@@ -30,6 +30,8 @@ const BRAND_LOGOS = {
   govee: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#1B6EF3"/><path d="M16 8h-5a4 4 0 0 0 0 8h5v-4h-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`,
   matter: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#4B5562"/><path d="M12 6v6m0 0l-5 3m5-3l5 3" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>`,
   zigbee: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#EB0443"/><path d="M7 8h10l-10 8h10" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`,
+  wled: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E040FB"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5 5 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>`,
+  apple: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#FF9500"/><path fill="#fff" d="M12 4l-8 7h2.5v7.5h11V11H20z"/></svg>`,
   mqtt: `<svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#660066"/><path d="M7 16a5 5 0 0 1 5-5m-5 5a8 8 0 0 1 8-8m-8 8h.01" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>`,
 };
 
@@ -418,12 +420,12 @@ function nxSetLang(lang){
     if(isTr)return;
     var sub=p;
     while(sub.charAt(0)==='/')sub=sub.slice(1);
-    location.href='/tr/'+sub+location.search+location.hash;
+    location.href='/tr/'+sub+(sub?'':'?lang=tr')+location.hash;
   }else{
     if(!isTr)return;
     var sub=p.slice(3);
     while(sub.charAt(0)==='/')sub=sub.slice(1);
-    location.href='/'+sub+location.search+location.hash;
+    location.href='/'+sub+(sub?'':'?lang=en')+location.hash;
   }
 }
 
@@ -435,22 +437,22 @@ function nxSetBilling(period){
   if(btnM)btnM.classList.toggle('active',!isYearly);
   if(btnY)btnY.classList.toggle('active',isYearly);
 
-  var planCard=document.getElementById('nexusPlusPlan');
-  if(!planCard)return;
-  var priceEl=planCard.querySelector('.price');
-  var periodEl=planCard.querySelector('.price small');
-  var noteEl=planCard.querySelector('.price-note');
-  var ctaEl=planCard.querySelector('.plan-cta');
-
   var isTr=document.documentElement.lang==='tr';
+  var priceVal=document.getElementById('planPriceVal');
+  var periodVal=document.getElementById('planPeriodVal');
+  var priceNote=document.getElementById('planPriceNote');
+  var cta=document.getElementById('nexusPlusCta');
+
   if(isYearly){
-    if(priceEl&&periodEl)priceEl.innerHTML=(isTr?'59 ₺':'$2.69')+' <small>'+(isTr?'/ay, yıllık':'/mo, billed yearly')+'</small>';
-    if(noteEl)noteEl.textContent=isTr?'Yıllık 708 ₺ olarak faturalandırılır (%33 tasarruf)':'Billed as $32.28/yr (Save 33%)';
-    if(ctaEl&&ctaEl.dataset.yearlyHref)ctaEl.href=ctaEl.dataset.yearlyHref;
+    if(priceVal)priceVal.textContent=isTr?'₺333,33':'$7.50';
+    if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':'/mo, billed yearly';
+    if(priceNote)priceNote.textContent=isTr?'Yıllık ₺3.999,99 olarak faturalandırılır (%33 tasarruf)':'Billed as $89.99/yr (Save 33%)';
+    if(cta&&cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
   }else{
-    if(priceEl&&periodEl)priceEl.innerHTML=(isTr?'89 ₺':'$3.99')+' <small>'+(isTr?'/ay':'/mo')+'</small>';
-    if(noteEl)noteEl.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
-    if(ctaEl&&ctaEl.dataset.monthlyHref)ctaEl.href=ctaEl.dataset.monthlyHref;
+    if(priceVal)priceVal.textContent=isTr?'₺499,99':'$11.99';
+    if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
+    if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
+    if(cta&&cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
   }
 }
 
@@ -559,18 +561,21 @@ document.addEventListener('DOMContentLoaded',function(){
 
 // ---------- HTML Üretim Fonksiyonları ----------
 function renderHeader(c) {
+  const isTr = c.lang === 'tr';
   return `<header class="hd">
   <div class="wrap">
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
-    <nav class="nav" aria-label="${c.lang === 'tr' ? 'Ana menü' : 'Main menu'}">
+    <nav class="nav" aria-label="${isTr ? 'Ana menü' : 'Main menu'}">
       ${c.nav.map(([href, label]) => `<a href="${href}">${esc(label)}</a>`).join('\n      ')}
     </nav>
     <div class="nav-controls">
-      <div class="lang-switch" role="group" aria-label="${c.lang === 'tr' ? 'Dil seçimi' : 'Language selection'}">
-        <button class="lang-btn${c.lang === 'tr' ? ' active' : ''}" onclick="nxSetLang('tr')" title="Türkçe">TR</button>
-        <button class="lang-btn${c.lang === 'en' ? ' active' : ''}" onclick="nxSetLang('en')" title="English">EN</button>
+      <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
+        ${isTr
+          ? `<span class="lang-btn active">TR</span><a href="/?lang=en" class="lang-btn" onclick="nxSetLang('en')" title="English">EN</a>`
+          : `<a href="/tr/?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>`
+        }
       </div>
-      <button class="theme-t" onclick="nxToggleTheme()" aria-label="${c.lang === 'tr' ? 'Tema değiştir' : 'Toggle theme'}" title="${c.lang === 'tr' ? 'Karanlık/Aydınlık Tema' : 'Toggle theme'}">
+      <button class="theme-t" onclick="nxToggleTheme()" aria-label="${isTr ? 'Tema değiştir' : 'Toggle theme'}" title="${isTr ? 'Karanlık/Aydınlık Tema' : 'Toggle theme'}">
         <span class="ic-sun">${icon('sun')}</span>
         <span class="ic-moon">${icon('moon')}</span>
       </button>
@@ -726,12 +731,12 @@ function renderPricing(c) {
       <div class="plan hot rv" id="nexusPlusPlan">
         <span class="plan-badge">${esc(c.pricing.plans[1].badge)}</span>
         <h3>${esc(c.pricing.plans[1].name)}</h3>
-        <div class="price">${p.amountFormatted} <small>${esc(p.period)}</small></div>
-        <p class="price-note">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
+        <div class="price"><span id="planPriceVal">${isTr ? '₺499,99' : '$11.99'}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
+        <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
         <ul>
           ${c.pricing.plans[1].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
-        <a class="btn btn-primary plan-cta" href="${monthlyCheckout}" data-monthly-href="${monthlyCheckout}" data-yearly-href="${yearlyCheckout}" target="_blank" rel="noopener">
+        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${monthlyCheckout}" data-monthly-href="${monthlyCheckout}" data-yearly-href="${yearlyCheckout}" target="_blank" rel="noopener">
           ${esc(c.pricing.plans[1].cta.label)}
         </a>
       </div>
@@ -945,6 +950,11 @@ function build() {
 
   mkdirSync(join(PUB, 'assets'), { recursive: true });
   mkdirSync(join(PUB, 'tr'), { recursive: true });
+  mkdirSync(join(PUB, 'fonts', 'inter'), { recursive: true });
+
+  if (existsSync(join(ROOT, 'fonts', 'inter', 'inter.css'))) {
+    cpSync(join(ROOT, 'fonts', 'inter'), join(PUB, 'fonts', 'inter'), { recursive: true });
+  }
 
   writeFileSync(join(PUB, 'assets', 'site.js'), pageJs(), 'utf8');
   writeFileSync(join(PUB, 'assets', 'site-boot.js'), bootJs(), 'utf8');

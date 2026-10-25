@@ -23,12 +23,12 @@ function nxSetLang(lang){
     if(isTr)return;
     var sub=p;
     while(sub.charAt(0)==='/')sub=sub.slice(1);
-    location.href='/tr/'+sub+location.search+location.hash;
+    location.href='/tr/'+sub+(sub?'':'?lang=tr')+location.hash;
   }else{
     if(!isTr)return;
     var sub=p.slice(3);
     while(sub.charAt(0)==='/')sub=sub.slice(1);
-    location.href='/'+sub+location.search+location.hash;
+    location.href='/'+sub+(sub?'':'?lang=en')+location.hash;
   }
 }
 
@@ -40,22 +40,22 @@ function nxSetBilling(period){
   if(btnM)btnM.classList.toggle('active',!isYearly);
   if(btnY)btnY.classList.toggle('active',isYearly);
 
-  var planCard=document.getElementById('nexusPlusPlan');
-  if(!planCard)return;
-  var priceEl=planCard.querySelector('.price');
-  var periodEl=planCard.querySelector('.price small');
-  var noteEl=planCard.querySelector('.price-note');
-  var ctaEl=planCard.querySelector('.plan-cta');
-
   var isTr=document.documentElement.lang==='tr';
+  var priceVal=document.getElementById('planPriceVal');
+  var periodVal=document.getElementById('planPeriodVal');
+  var priceNote=document.getElementById('planPriceNote');
+  var cta=document.getElementById('nexusPlusCta');
+
   if(isYearly){
-    if(priceEl&&periodEl)priceEl.innerHTML=(isTr?'59 ₺':'$2.69')+' <small>'+(isTr?'/ay, yıllık':'/mo, billed yearly')+'</small>';
-    if(noteEl)noteEl.textContent=isTr?'Yıllık 708 ₺ olarak faturalandırılır (%33 tasarruf)':'Billed as $32.28/yr (Save 33%)';
-    if(ctaEl&&ctaEl.dataset.yearlyHref)ctaEl.href=ctaEl.dataset.yearlyHref;
+    if(priceVal)priceVal.textContent=isTr?'₺333,33':'$7.50';
+    if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':'/mo, billed yearly';
+    if(priceNote)priceNote.textContent=isTr?'Yıllık ₺3.999,99 olarak faturalandırılır (%33 tasarruf)':'Billed as $89.99/yr (Save 33%)';
+    if(cta&&cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
   }else{
-    if(priceEl&&periodEl)priceEl.innerHTML=(isTr?'89 ₺':'$3.99')+' <small>'+(isTr?'/ay':'/mo')+'</small>';
-    if(noteEl)noteEl.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
-    if(ctaEl&&ctaEl.dataset.monthlyHref)ctaEl.href=ctaEl.dataset.monthlyHref;
+    if(priceVal)priceVal.textContent=isTr?'₺499,99':'$11.99';
+    if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
+    if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
+    if(cta&&cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
   }
 }
 
