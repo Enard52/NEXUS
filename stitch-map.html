@@ -22,7 +22,10 @@
     .confirm-bar.show { transform: translateY(0); }
     /* Harita en altta kalsın, üst katmanlar (header/pin/butonlar) üstte */
     #map { z-index: 0; }
-    .leaflet-control-attribution { font-size: 10px; background: rgba(255,255,255,0.7); color: #64748B; }
+    /* Künye 10px'teydi: telefonda okunamayacak kadar küçüktü ve OSM kaynak gösterme
+       zorunluluğu metnin okunabilir olmasını da kapsar. 11px hâlâ haritayı bastırmıyor,
+       ama telefon ekranında seçilebiliyor (ölçüldü). */
+    .leaflet-control-attribution { font-size: 11px; background: rgba(255,255,255,0.75); color: #64748B; }
     .leaflet-control-attribution a { color: #64748B; text-decoration: none; pointer-events: none; }
   </style>
 <style>

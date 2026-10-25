@@ -457,12 +457,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .nx-modal-backdrop{
   position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .25s ease;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 24px 64px -12px rgba(0,0,0,.5);
   width:100%;max-width:480px;padding:24px 26px;position:relative;
   transform:scale(.96);transition:transform .25s cubic-bezier(.16,1,.3,1);box-sizing:border-box;
+  max-height:calc(100dvh - 32px);overflow-y:auto;margin:auto;
 }
 .nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
 .nx-modal-close{
@@ -1581,13 +1583,17 @@ function renderAuthModal(c) {
       <form id="nxAuthForm" onsubmit="nxSubmitAuth(event)">
         <div id="nxAuthAlert" class="nx-auth-alert" style="display:none"></div>
         <div class="nx-auth-field-wrap">
-          <input type="email" id="nxAuthEmail" class="nx-app-input" required placeholder="${isTr ? 'E-posta' : 'Email'}" autocomplete="email">
+          <label for="nxAuthEmail" class="nx-field-label">${isTr ? 'E-posta Adresi' : 'Email Address'}</label>
+          <input type="email" id="nxAuthEmail" class="nx-app-input" required placeholder="${isTr ? 'ornek@eposta.com' : 'name@example.com'}" autocomplete="email">
         </div>
-        <div class="nx-auth-field-wrap" style="position:relative">
-          <input type="password" id="nxAuthPassword" class="nx-app-input" required placeholder="${isTr ? 'Şifre' : 'Password'}" autocomplete="current-password" style="padding-right:44px">
-          <button type="button" class="nx-pw-toggle" onclick="nxTogglePwVisible()" aria-label="${isTr ? 'Şifreyi Göster' : 'Show password'}">
-            <span id="nxPwEyeIcon">${icon('eyeOff')}</span>
-          </button>
+        <div class="nx-auth-field-wrap">
+          <label for="nxAuthPassword" class="nx-field-label">${isTr ? 'Şifre' : 'Password'}</label>
+          <div style="position:relative">
+            <input type="password" id="nxAuthPassword" class="nx-app-input" required placeholder="${isTr ? '••••••••' : '••••••••'}" autocomplete="current-password" style="padding-right:44px">
+            <button type="button" class="nx-pw-toggle" onclick="nxTogglePwVisible()" aria-label="${isTr ? 'Şifreyi Göster' : 'Show password'}">
+              <span id="nxPwEyeIcon">${icon('eyeOff')}</span>
+            </button>
+          </div>
         </div>
         <button type="submit" id="nxAuthSubmitBtn" class="btn btn-primary w-full nx-app-submit">
           <span>${isTr ? 'Giriş Yap' : 'Sign In'}</span>
