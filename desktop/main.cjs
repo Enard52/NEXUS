@@ -18,6 +18,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const http = require("node:http");
 const tcp = require("node:net");
+const dgram = require("node:dgram");
 const { pathToFileURL } = require("node:url");
 
 const APP_DIR = path.join(__dirname, "app");
@@ -219,6 +220,54 @@ ipcMain.handle("lan:tcp", (_e, opts) => new Promise((resolve, reject) => {
   sock.on("error", (err) => finish(reject, new Error(err.message)));
 }));
 
+// ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003; Govee yanıtları 4002'ye gelir) ----------
+const UDP_PORTS = new Set([38899, 56700, 4001, 4003]);
+const UDP_REPLY_PORTS = new Set([4002]);
+const replyWaiters = new Map(); // port -> { sock, waiters: Map<host, (msg)=>void> }
+function replyChannel(port) {
+  return new Promise((resolve, reject) => {
+    const existing = replyWaiters.get(port);
+    if (existing) return resolve(existing);
+    const sock = dgram.createSocket({ type: "udp4", reuseAddr: true });
+    const ch = { sock, waiters: new Map() };
+    sock.on("message", (msg, rinfo) => { const w = ch.waiters.get(rinfo.address); if (w) { ch.waiters.delete(rinfo.address); w(msg); } });
+    sock.once("error", (err) => { replyWaiters.delete(port); reject(new Error(err.message)); });
+    sock.bind(port, () => { replyWaiters.set(port, ch); resolve(ch); });
+  });
+}
+ipcMain.handle("lan:udp", async (_e, opts) => {
+  const port = Number(opts.port);
+  const replyPort = opts.replyPort ? Number(opts.replyPort) : 0;
+  if (!isPrivateHost(opts.host) || !UDP_PORTS.has(port) || (replyPort && !UDP_REPLY_PORTS.has(replyPort))) throw new Error("izin verilmeyen hedef");
+  const payload = opts.hex ? Buffer.from(String(opts.hex), "hex") : Buffer.from(String(opts.text || ""), "utf8");
+  if (payload.length > 1024) throw new Error("paket çok büyük");
+  const timeout = Math.min(Number(opts.timeoutMs) || 2500, 15000);
+  const answer = (msg) => ({ text: msg.toString("utf8"), hex: msg.toString("hex") });
+  if (opts.noReply) {
+    // Yanıt vermeyen komutlar (Govee turn/brightness/colorwc): paketi gönderir, yazma hatasını bildirir.
+    return await new Promise((resolve, reject) => {
+      const sock = dgram.createSocket("udp4");
+      sock.send(payload, port, opts.host, (err) => { try { sock.close(); } catch { /* kapalı */ } if (err) reject(new Error(err.message)); else resolve({ sent: true }); });
+    });
+  }
+  if (replyPort) {
+    const ch = await replyChannel(replyPort);
+    return await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => { ch.waiters.delete(opts.host); reject(new Error("zaman aşımı")); }, timeout);
+      ch.waiters.set(opts.host, (msg) => { clearTimeout(timer); resolve(answer(msg)); });
+      ch.sock.send(payload, port, opts.host, (err) => { if (err) { clearTimeout(timer); ch.waiters.delete(opts.host); reject(new Error(err.message)); } });
+    });
+  }
+  return await new Promise((resolve, reject) => {
+    const sock = dgram.createSocket("udp4");
+    let done = false;
+    const finish = (fn, v) => { if (done) return; done = true; clearTimeout(timer); try { sock.close(); } catch { /* kapalı */ } fn(v); };
+    const timer = setTimeout(() => finish(reject, new Error("zaman aşımı")), timeout);
+    sock.on("message", (msg, rinfo) => { if (rinfo.address === opts.host) finish(resolve, answer(msg)); });
+    sock.on("error", (err) => finish(reject, new Error(err.message)));
+    sock.send(payload, port, opts.host, (err) => { if (err) finish(reject, new Error(err.message)); });
+  });
+});
 // ---------- Köprü: yerel alt ağlar ----------
 ipcMain.handle("lan:subnets", () => {
   const out = [];

@@ -7,7 +7,7 @@
 //      kısıtına takılmaz. (Android'de yerel http için network_security_config gerekir.)
 //   3. Tarayıcı: fetch (yalnızca CORS izni veren cihazlarda çalışır; geliştirme içindir).
 //
-// TCP isteyen protokoller (Kasa, Yeelight) yalnızca TCP köprüsü olan ortamda (masaüstü
+// UDP isteyen protokoller (WiZ, LIFX, Govee) ve TCP isteyenler (Kasa, Yeelight) yalnızca köprüsü olan ortamda (masaüstü
 // uygulaması) etkinleşir; olmayan ortamda "desteklenmiyor" der, asla sahte başarı göstermez.
 
 (function () {
@@ -599,9 +599,167 @@
     },
   };
 
-  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, yeelight];
+  // --- UDP köprüsü (yalnızca masaüstü uygulaması) — WiZ, LIFX, Govee --------------
+  function udpBridge() {
+    var d = desktopBridge();
+    return d && typeof d.udp === "function" ? d.udp : null;
+  }
+  function udpSend(opts) {
+    var udp = udpBridge();
+    if (!udp) return Promise.reject(new Error("UDP yalnızca masaüstü uygulamasında"));
+    opts.timeoutMs = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
+    return Promise.resolve().then(function () { return udp(opts); });
+  }
 
-  function available(p) { return !p.needsTcp || !!tcpBridge(); }
+  // --- WiZ (UDP 38899, JSON) ----------------------------------------------------
+  var wiz = {
+    id: "wiz",
+    label: "WiZ",
+    caps: ["switch", "brightness", "color"],
+    needsUdp: true,
+    call: function (device, method, params) {
+      return udpSend({ host: hostOnly(device), port: 38899, text: JSON.stringify({ id: 1, method: method, params: params || {} }) }).then(function (r) {
+        var j = JSON.parse(r.text);
+        if (j.error) throw new Error("wiz: " + (j.error.message || j.error.code));
+        return j.result || {};
+      });
+    },
+    probe: function (device) {
+      return wiz.call(device, "getSystemConfig").then(function (r) {
+        if (!r.mac && !r.moduleName) throw new Error("wiz: kimlik yok");
+        return { protocol: "wiz", model: "WiZ " + (r.moduleName || ""), name: "WiZ " + String(r.mac || "").slice(-4).toUpperCase(), kind: "light" };
+      });
+    },
+    read: function (device) {
+      return wiz.call(device, "getPilot").then(function (r) {
+        return { switch: typeof r.state === "boolean" ? r.state : null, brightness: typeof r.dimming === "number" ? r.dimming : null };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return wiz.call(device, "setPilot", { state: !!value });
+      if (capability === "brightness") return wiz.call(device, "setPilot", { state: true, dimming: Math.max(10, Math.min(100, Math.round(value))) });
+      if (capability === "color") { var c = hexToRgb(value); return wiz.call(device, "setPilot", { state: true, r: c[0], g: c[1], b: c[2] }); }
+      return unsupported("wiz", capability);
+    },
+  };
+
+  // --- LIFX (UDP 56700, ikili LAN protokolü) ----------------------------------------
+  function lifxPacket(type, payload) {
+    var size = 36 + payload.length;
+    var b = new Array(size).fill(0);
+    b[0] = size & 255; b[1] = (size >> 8) & 255;
+    b[2] = 0x00; b[3] = 0x14;                 // protokol 1024 + addressable
+    b[4] = 0x4e; b[5] = 0x58; b[6] = 0; b[7] = 0;   // kaynak kimliği ("NX"), sıfırdan farklı olmalı
+    b[22] = 0x01;                             // res_required
+    b[32] = type & 255; b[33] = (type >> 8) & 255;
+    for (var i = 0; i < payload.length; i++) b[36 + i] = payload[i];
+    return b.map(function (x) { return (x < 16 ? "0" : "") + x.toString(16); }).join("");
+  }
+  function u16(n) { n = Math.max(0, Math.min(65535, Math.round(n))); return [n & 255, (n >> 8) & 255]; }
+  function u32(n) { return [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >>> 24) & 255]; }
+  function hexBytes(h) { var o = []; for (var i = 0; i + 1 < h.length; i += 2) o.push(parseInt(h.substr(i, 2), 16)); return o; }
+  function rgbToHsb(rgb) {
+    var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn, h = 0;
+    if (d) { if (mx === r) h = ((g - b) / d) % 6; else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
+    return { h: h / 360, s: mx ? d / mx : 0, v: mx };
+  }
+  var lifx = {
+    id: "lifx",
+    label: "LIFX",
+    caps: ["switch", "brightness", "color"],
+    needsUdp: true,
+    call: function (device, type, payload) {
+      return udpSend({ host: hostOnly(device), port: 56700, hex: lifxPacket(type, payload || []) }).then(function (r) { return hexBytes(r.hex); });
+    },
+    state: function (device) {
+      return lifx.call(device, 101).then(function (b) {
+        var t = b[32] | (b[33] << 8);
+        if (t !== 107 || b.length < 36 + 52) throw new Error("lifx: beklenmeyen yanıt");
+        var p = 36, w = function (o) { return b[p + o] | (b[p + o + 1] << 8); };
+        var label = ""; for (var i = 0; i < 32 && b[p + 12 + i]; i++) label += String.fromCharCode(b[p + 12 + i]);
+        return { hue: w(0), sat: w(2), bright: w(4), kelvin: w(6), power: w(10), label: label };
+      });
+    },
+    probe: function (device) {
+      return lifx.state(device).then(function (s) { return { protocol: "lifx", model: "LIFX", name: s.label || "LIFX", kind: "light" }; });
+    },
+    read: function (device) {
+      return lifx.state(device).then(function (s) { return { switch: s.power > 0, brightness: Math.round(s.bright / 65535 * 100) }; });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return lifx.call(device, 117, u16(value ? 65535 : 0).concat(u32(0)));
+      return lifx.state(device).then(function (s) {
+        var h = s.hue, sat = s.sat, br = s.bright;
+        if (capability === "brightness") br = Math.max(1, Math.min(100, value)) / 100 * 65535;
+        else if (capability === "color") { var c = rgbToHsb(hexToRgb(value)); h = c.h * 65535; sat = c.s * 65535; br = Math.max(c.v, 0.05) * 65535; }
+        else return unsupported("lifx", capability);
+        return lifx.call(device, 102, [0].concat(u16(h), u16(sat), u16(br), u16(s.kelvin || 3500), u32(250)));
+      });
+    },
+  };
+
+  // --- Govee (UDP, "LAN Control" uygulamadan açık olmalı; yanıtlar 4002'ye gelir) ---
+  var govee = {
+    id: "govee",
+    label: "Govee",
+    caps: ["switch", "brightness", "color"],
+    needsUdp: true,
+    ask: function (device, port, cmd, data) {
+      return udpSend({ host: hostOnly(device), port: port, replyPort: 4002, text: JSON.stringify({ msg: { cmd: cmd, data: data || {} } }) }).then(function (r) {
+        var j = JSON.parse(r.text);
+        return (j.msg && j.msg.data) || {};
+      });
+    },
+    tell: function (device, cmd, data) {
+      return udpSend({ host: hostOnly(device), port: 4003, noReply: true, text: JSON.stringify({ msg: { cmd: cmd, data: data } }) });
+    },
+    probe: function (device) {
+      return govee.ask(device, 4001, "scan", { account_topic: "reserve" }).then(function (d) {
+        if (!d.sku && !d.device) throw new Error("govee: kimlik yok");
+        return { protocol: "govee", model: "Govee " + (d.sku || ""), name: "Govee " + (d.sku || String(d.device || "").slice(-5)), kind: /^H508/i.test(d.sku || "") ? "plug" : "light" };
+      });
+    },
+    read: function (device) {
+      return govee.ask(device, 4003, "devStatus").then(function (d) {
+        return { switch: d.onOff == null ? null : d.onOff === 1, brightness: typeof d.brightness === "number" ? d.brightness : null };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return govee.tell(device, "turn", { value: value ? 1 : 0 });
+      if (capability === "brightness") return govee.tell(device, "brightness", { value: Math.max(1, Math.min(100, Math.round(value))) });
+      if (capability === "color") { var c = hexToRgb(value); return govee.tell(device, "colorwc", { color: { r: c[0], g: c[1], b: c[2] }, colorTemInKelvin: 0 }); }
+      return unsupported("govee", capability);
+    },
+  };
+
+  // --- Sonoff DIY modu (HTTP 8081, eWeLink DIY arayüzü) ----------------------------
+  var sonoff = {
+    id: "sonoff",
+    label: "Sonoff (DIY)",
+    caps: ["switch"],
+    call: function (device, path, data) {
+      return sendJson("http://" + hostOnly(device) + ":8081/zeroconf/" + path, "POST", { deviceid: "", data: data || {} }).then(function (j) {
+        if (!j || j.error !== 0) throw new Error("sonoff: hata " + (j && j.error));
+        return j.data || {};
+      });
+    },
+    probe: function (device) {
+      return sonoff.call(device, "info").then(function (d) {
+        if (!d.switch && !(d.switches && d.switches.length)) throw new Error("sonoff: kimlik yok");
+        return { protocol: "sonoff", model: "Sonoff DIY", name: "Sonoff " + String(d.deviceid || "").slice(-4), kind: "switch" };
+      });
+    },
+    read: function (device) {
+      return sonoff.call(device, "info").then(function (d) { return { switch: d.switch ? d.switch === "on" : null }; });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return sonoff.call(device, "switch", { switch: value ? "on" : "off" });
+      return unsupported("sonoff", capability);
+    },
+  };
+  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, yeelight, sonoff, wiz, lifx, govee];
+
+  function available(p) { return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()); }
 
   // Manuel IP ile ekleme: cihazın hangi protokolü konuştuğunu sırayla dener.
   function identify(host) {
@@ -754,6 +912,7 @@
     request: request,
     usingNativeTransport: function () { return !!transport || !!desktopBridge() || !!nativeHttpPlugin(); },
     hasTcp: function () { return !!tcpBridge(); },
+    hasUdp: function () { return !!udpBridge(); },
     protocols: protocols,
     protocolFor: protocolFor,
     supports: supports,

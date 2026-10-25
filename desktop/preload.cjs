@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   platform: process.platform,
   http: (opts) => ipcRenderer.invoke("lan:http", opts),
   tcp: (opts) => ipcRenderer.invoke("lan:tcp", opts),
+  udp: (opts) => ipcRenderer.invoke("lan:udp", opts),
   subnets: () => ipcRenderer.invoke("lan:subnets"),
   info: () => ipcRenderer.invoke("app:info"),
   setLanguage: (lang) => ipcRenderer.send("app:language", lang),
