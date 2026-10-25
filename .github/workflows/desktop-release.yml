@@ -1,4 +1,4 @@
-﻿name: MasaÃ¼stÃ¼ sÃ¼rÃ¼mÃ¼
+name: MasaÃ¼stÃ¼ sÃ¼rÃ¼mÃ¼
 
 # "v1.0.0" gibi bir etiket gÃ¶nderildiÄŸinde Windows, macOS ve Linux kurulum dosyalarÄ±
 # derlenir ve herkese aÃ§Ä±k Enard52/nexus-releases deposunun Releases bÃ¶lÃ¼mÃ¼ne yÃ¼klenir.
@@ -90,6 +90,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: gh release upload "${GITHUB_REF_NAME}" "dist/SHA256SUMS-${{ runner.os }}.txt" --clobber --repo Enard52/nexus-releases
+
+      - name: Yerel derleme işaretini kaldır
+        if: startsWith(github.ref, 'refs/tags/v') && matrix.os == 'ubuntu-latest'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        run: gh release delete-asset "${GITHUB_REF_NAME}" LOCAL-BUILD.txt --yes --repo Enard52/nexus-releases || true
 
       - name: Derleme Ã§Ä±ktÄ±larÄ± (etiketsiz Ã§alÄ±ÅŸtÄ±rmalarda indirilebilir)
         uses: actions/upload-artifact@v4
