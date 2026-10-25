@@ -191,6 +191,26 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
 .shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
 .shot-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 
+/* Canli onizleme (telefonun icinde gercek uygulama).
+   Uygulama ekranlari 390x844 tasarlanir; serceve kutusu ise ~215-245px. Bu yuzden
+   iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
+   JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
+   190px'e sikisirir ve okunmaz). */
+.phone-preview{position:absolute;inset:0;z-index:22;display:none;background:#05070A}
+.phone-preview.on{display:block}
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
+.phone-case.previewing .phone-arrow{display:none}
+.phone-case.previewing{cursor:default}
+.phone-modes{display:flex;align-items:center;gap:6px}
+.phone-mode-btn{background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:6px 14px;min-height:32px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
+  cursor:pointer;transition:all .2s ease}
+.phone-mode-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.phone-mode-open{font-size:12px;font-weight:700;color:var(--brand);text-decoration:none;
+  padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
+.phone-mode-open:hover{text-decoration:underline}
+
 /* Alt Çubuk (Home Indicator) */
 .phone-home-indicator{
   position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
@@ -700,14 +720,21 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            <div class="shot-slide active" data-shot="home" data-label="Home Dashboard"><img src="/images/shots/en/home.png" alt="NEXUS home screen on a phone — Home Dashboard" width="390" height="844" loading="eager" decoding="async"></div>
-            <div class="shot-slide" data-shot="devices" data-label="Devices &amp; Rooms"><img src="/images/shots/en/devices.png" alt="NEXUS home screen on a phone — Devices &amp; Rooms" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="energy" data-label="Live Energy Grid"><img src="/images/shots/en/energy.png" alt="NEXUS home screen on a phone — Live Energy Grid" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="smart" data-label="Automations"><img src="/images/shots/en/smart.png" alt="NEXUS home screen on a phone — Automations" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="chat" data-label="AI Assistant"><img src="/images/shots/en/chat.png" alt="NEXUS home screen on a phone — AI Assistant" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="lighting" data-label="Lighting Master"><img src="/images/shots/en/lighting.png" alt="NEXUS home screen on a phone — Lighting Master" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="scenes" data-label="Movie Mode &amp; Scenes"><img src="/images/shots/en/scenes.png" alt="NEXUS home screen on a phone — Movie Mode &amp; Scenes" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="settings" data-label="Settings &amp; Hub"><img src="/images/shots/en/settings.png" alt="NEXUS home screen on a phone — Settings &amp; Hub" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide active" data-shot="home" data-label="Home Screen"><img src="/images/shots/en/home.png" alt="NEXUS app screen — Home Screen" width="390" height="844" loading="eager" decoding="async"></div>
+            <div class="shot-slide" data-shot="pair" data-label="Add-Device Hub"><img src="/images/shots/en/pair.png" alt="NEXUS app screen — Add-Device Hub" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="energy" data-label="AI Energy Saving"><img src="/images/shots/en/energy.png" alt="NEXUS app screen — AI Energy Saving" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="smart" data-label="Smart Automations"><img src="/images/shots/en/smart.png" alt="NEXUS app screen — Smart Automations" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="chat" data-label="NEXUS AI Assistant"><img src="/images/shots/en/chat.png" alt="NEXUS app screen — NEXUS AI Assistant" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="lighting" data-label="Lighting Master"><img src="/images/shots/en/lighting.png" alt="NEXUS app screen — Lighting Master" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="scenes" data-label="Movie Mode"><img src="/images/shots/en/scenes.png" alt="NEXUS app screen — Movie Mode" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="settings" data-label="Settings"><img src="/images/shots/en/settings.png" alt="NEXUS app screen — Settings" width="390" height="844" loading="lazy" decoding="async"></div>
+          </div>
+          <!-- Uygulamanın KENDİ sayfası çerçevenin içinde: ziyaretçi gezinebilsin.
+               data-src: ilk "Kendin dene" tıkında atanır (ana sayfa iframe yüzünden
+               ağırlaşmasın). Adres APP_URL + "/" — Cloudflare Pages /index.html'i
+               308 ile /'ye yönlendiriyor (ölçüldü), fazladan sıçrama gereksiz. -->
+          <div class="phone-preview" id="phonePreview" aria-hidden="true">
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="Live preview of the NEXUS mobile app" data-src="https://nexus-web-jre.pages.dev/" loading="lazy" referrerpolicy="no-referrer"></iframe>
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
@@ -720,14 +747,20 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
         </button>
       </div>
       <div class="phone-bottom-bar">
+        <div class="phone-modes" role="group" aria-label="Phone preview mode">
+          <button type="button" class="phone-mode-btn active" id="phoneModeShots" aria-pressed="true" onclick="nxSetPhoneMode('shots')">Screens</button>
+          <button type="button" class="phone-mode-btn" id="phoneModeLive" aria-pressed="false" onclick="nxSetPhoneMode('live')">Try it live</button>
+          <a class="phone-mode-open" id="phoneModeOpen" href="https://nexus-web-jre.pages.dev/" target="_blank" rel="noopener" hidden>Open full screen</a>
+        </div>
         <div class="phone-caption-pill" id="phoneCaptionPill">
           <span class="badge" id="phoneSlideNum">1/8</span>
-          <span id="phoneSlideTitle">Home Dashboard</span>
+          <span id="phoneSlideTitle">Home Screen</span>
         </div>
         <div class="phone-dots" role="tablist" aria-label="Screens">
-          <button role="tab" class="phone-dot active" aria-selected="true" onclick="nxShowShot(0);nxResetShotTimer();" aria-label="Home Dashboard" title="Home Dashboard"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(1);nxResetShotTimer();" aria-label="Devices &amp; Rooms" title="Devices &amp; Rooms"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(2);nxResetShotTimer();" aria-label="Live Energy Grid" title="Live Energy Grid"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(3);nxResetShotTimer();" aria-label="Automations" title="Automations"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(4);nxResetShotTimer();" aria-label="AI Assistant" title="AI Assistant"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(5);nxResetShotTimer();" aria-label="Lighting Master" title="Lighting Master"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(6);nxResetShotTimer();" aria-label="Movie Mode &amp; Scenes" title="Movie Mode &amp; Scenes"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(7);nxResetShotTimer();" aria-label="Settings &amp; Hub" title="Settings &amp; Hub"></button>
+          <button role="tab" class="phone-dot active" aria-selected="true" onclick="nxShowShot(0);nxResetShotTimer();" aria-label="Home Screen" title="Home Screen"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(1);nxResetShotTimer();" aria-label="Add-Device Hub" title="Add-Device Hub"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(2);nxResetShotTimer();" aria-label="AI Energy Saving" title="AI Energy Saving"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(3);nxResetShotTimer();" aria-label="Smart Automations" title="Smart Automations"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(4);nxResetShotTimer();" aria-label="NEXUS AI Assistant" title="NEXUS AI Assistant"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(5);nxResetShotTimer();" aria-label="Lighting Master" title="Lighting Master"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(6);nxResetShotTimer();" aria-label="Movie Mode" title="Movie Mode"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(7);nxResetShotTimer();" aria-label="Settings" title="Settings"></button>
         </div>
-        <span class="phone-tap-hint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Tap phone or use arrows to explore</span>
+        <span class="phone-tap-hint" id="phoneTapHint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Tap phone or use arrows to explore</span>
+        <span class="phone-tap-hint" id="phonePreviewNote" hidden><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>This is the real app — data stays on your device, no account needed</span>
       </div>
     </div>
   </div>

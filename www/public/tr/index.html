@@ -191,6 +191,26 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
 .shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
 .shot-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 
+/* Canli onizleme (telefonun icinde gercek uygulama).
+   Uygulama ekranlari 390x844 tasarlanir; serceve kutusu ise ~215-245px. Bu yuzden
+   iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
+   JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
+   190px'e sikisirir ve okunmaz). */
+.phone-preview{position:absolute;inset:0;z-index:22;display:none;background:#05070A}
+.phone-preview.on{display:block}
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
+.phone-case.previewing .phone-arrow{display:none}
+.phone-case.previewing{cursor:default}
+.phone-modes{display:flex;align-items:center;gap:6px}
+.phone-mode-btn{background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:6px 14px;min-height:32px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
+  cursor:pointer;transition:all .2s ease}
+.phone-mode-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.phone-mode-open{font-size:12px;font-weight:700;color:var(--brand);text-decoration:none;
+  padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
+.phone-mode-open:hover{text-decoration:underline}
+
 /* Alt Çubuk (Home Indicator) */
 .phone-home-indicator{
   position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
@@ -700,14 +720,21 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            <div class="shot-slide active" data-shot="home" data-label="Ana Kontrol Paneli"><img src="/images/shots/home.png" alt="Telefonda NEXUS ana ekranı — Ana Kontrol Paneli" width="390" height="844" loading="eager" decoding="async"></div>
-            <div class="shot-slide" data-shot="devices" data-label="Cihazlar &amp; Odalar"><img src="/images/shots/devices.png" alt="Telefonda NEXUS ana ekranı — Cihazlar &amp; Odalar" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="energy" data-label="Canlı Enerji Matrisi"><img src="/images/shots/energy.png" alt="Telefonda NEXUS ana ekranı — Canlı Enerji Matrisi" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="smart" data-label="Akıllı Senaryolar"><img src="/images/shots/smart.png" alt="Telefonda NEXUS ana ekranı — Akıllı Senaryolar" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="chat" data-label="NEXUS AI Asistan"><img src="/images/shots/chat.png" alt="Telefonda NEXUS ana ekranı — NEXUS AI Asistan" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="lighting" data-label="Aydınlatma Kontrolü"><img src="/images/shots/lighting.png" alt="Telefonda NEXUS ana ekranı — Aydınlatma Kontrolü" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="scenes" data-label="Film Modu &amp; Ambiyans"><img src="/images/shots/scenes.png" alt="Telefonda NEXUS ana ekranı — Film Modu &amp; Ambiyans" width="390" height="844" loading="lazy" decoding="async"></div>
-            <div class="shot-slide" data-shot="settings" data-label="Sistem &amp; Entegrasyonlar"><img src="/images/shots/settings.png" alt="Telefonda NEXUS ana ekranı — Sistem &amp; Entegrasyonlar" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide active" data-shot="home" data-label="Ana Ekran"><img src="/images/shots/home.png" alt="NEXUS uygulama ekranı — Ana Ekran" width="390" height="844" loading="eager" decoding="async"></div>
+            <div class="shot-slide" data-shot="pair" data-label="Cihaz Ekleme Merkezi"><img src="/images/shots/pair.png" alt="NEXUS uygulama ekranı — Cihaz Ekleme Merkezi" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="energy" data-label="AI Enerji Tasarrufu"><img src="/images/shots/energy.png" alt="NEXUS uygulama ekranı — AI Enerji Tasarrufu" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="smart" data-label="Akıllı Senaryolar"><img src="/images/shots/smart.png" alt="NEXUS uygulama ekranı — Akıllı Senaryolar" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="chat" data-label="NEXUS AI Asistan"><img src="/images/shots/chat.png" alt="NEXUS uygulama ekranı — NEXUS AI Asistan" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="lighting" data-label="Aydınlatma Ustası"><img src="/images/shots/lighting.png" alt="NEXUS uygulama ekranı — Aydınlatma Ustası" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="scenes" data-label="Film Modu"><img src="/images/shots/scenes.png" alt="NEXUS uygulama ekranı — Film Modu" width="390" height="844" loading="lazy" decoding="async"></div>
+            <div class="shot-slide" data-shot="settings" data-label="Ayarlar"><img src="/images/shots/settings.png" alt="NEXUS uygulama ekranı — Ayarlar" width="390" height="844" loading="lazy" decoding="async"></div>
+          </div>
+          <!-- Uygulamanın KENDİ sayfası çerçevenin içinde: ziyaretçi gezinebilsin.
+               data-src: ilk "Kendin dene" tıkında atanır (ana sayfa iframe yüzünden
+               ağırlaşmasın). Adres APP_URL + "/" — Cloudflare Pages /index.html'i
+               308 ile /'ye yönlendiriyor (ölçüldü), fazladan sıçrama gereksiz. -->
+          <div class="phone-preview" id="phonePreview" aria-hidden="true">
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="NEXUS mobil uygulamasının canlı önizlemesi" data-src="https://nexus-web-jre.pages.dev/" loading="lazy" referrerpolicy="no-referrer"></iframe>
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
@@ -720,14 +747,20 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
         </button>
       </div>
       <div class="phone-bottom-bar">
+        <div class="phone-modes" role="group" aria-label="Telefon ön izleme modu">
+          <button type="button" class="phone-mode-btn active" id="phoneModeShots" aria-pressed="true" onclick="nxSetPhoneMode('shots')">Ekranlar</button>
+          <button type="button" class="phone-mode-btn" id="phoneModeLive" aria-pressed="false" onclick="nxSetPhoneMode('live')">Kendin dene</button>
+          <a class="phone-mode-open" id="phoneModeOpen" href="https://nexus-web-jre.pages.dev/" target="_blank" rel="noopener" hidden>Tam ekran aç</a>
+        </div>
         <div class="phone-caption-pill" id="phoneCaptionPill">
           <span class="badge" id="phoneSlideNum">1/8</span>
-          <span id="phoneSlideTitle">Ana Kontrol Paneli</span>
+          <span id="phoneSlideTitle">Ana Ekran</span>
         </div>
         <div class="phone-dots" role="tablist" aria-label="Ekranlar">
-          <button role="tab" class="phone-dot active" aria-selected="true" onclick="nxShowShot(0);nxResetShotTimer();" aria-label="Ana Kontrol Paneli" title="Ana Kontrol Paneli"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(1);nxResetShotTimer();" aria-label="Cihazlar &amp; Odalar" title="Cihazlar &amp; Odalar"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(2);nxResetShotTimer();" aria-label="Canlı Enerji Matrisi" title="Canlı Enerji Matrisi"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(3);nxResetShotTimer();" aria-label="Akıllı Senaryolar" title="Akıllı Senaryolar"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(4);nxResetShotTimer();" aria-label="NEXUS AI Asistan" title="NEXUS AI Asistan"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(5);nxResetShotTimer();" aria-label="Aydınlatma Kontrolü" title="Aydınlatma Kontrolü"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(6);nxResetShotTimer();" aria-label="Film Modu &amp; Ambiyans" title="Film Modu &amp; Ambiyans"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(7);nxResetShotTimer();" aria-label="Sistem &amp; Entegrasyonlar" title="Sistem &amp; Entegrasyonlar"></button>
+          <button role="tab" class="phone-dot active" aria-selected="true" onclick="nxShowShot(0);nxResetShotTimer();" aria-label="Ana Ekran" title="Ana Ekran"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(1);nxResetShotTimer();" aria-label="Cihaz Ekleme Merkezi" title="Cihaz Ekleme Merkezi"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(2);nxResetShotTimer();" aria-label="AI Enerji Tasarrufu" title="AI Enerji Tasarrufu"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(3);nxResetShotTimer();" aria-label="Akıllı Senaryolar" title="Akıllı Senaryolar"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(4);nxResetShotTimer();" aria-label="NEXUS AI Asistan" title="NEXUS AI Asistan"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(5);nxResetShotTimer();" aria-label="Aydınlatma Ustası" title="Aydınlatma Ustası"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(6);nxResetShotTimer();" aria-label="Film Modu" title="Film Modu"></button><button role="tab" class="phone-dot" aria-selected="false" onclick="nxShowShot(7);nxResetShotTimer();" aria-label="Ayarlar" title="Ayarlar"></button>
         </div>
-        <span class="phone-tap-hint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Sonraki ekran için dokunun veya oklara basın</span>
+        <span class="phone-tap-hint" id="phoneTapHint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Sonraki ekran için dokunun veya oklara basın</span>
+        <span class="phone-tap-hint" id="phonePreviewNote" hidden><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Bu gerçek uygulamadır — veriler cihazında kalır, hesap gerekmez</span>
       </div>
     </div>
   </div>

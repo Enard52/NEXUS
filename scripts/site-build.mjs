@@ -306,6 +306,26 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
 .shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
 .shot-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 
+/* Canli onizleme (telefonun icinde gercek uygulama).
+   Uygulama ekranlari 390x844 tasarlanir; serceve kutusu ise ~215-245px. Bu yuzden
+   iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
+   JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
+   190px'e sikisirir ve okunmaz). */
+.phone-preview{position:absolute;inset:0;z-index:22;display:none;background:#05070A}
+.phone-preview.on{display:block}
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
+.phone-case.previewing .phone-arrow{display:none}
+.phone-case.previewing{cursor:default}
+.phone-modes{display:flex;align-items:center;gap:6px}
+.phone-mode-btn{background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:6px 14px;min-height:32px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
+  cursor:pointer;transition:all .2s ease}
+.phone-mode-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.phone-mode-open{font-size:12px;font-weight:700;color:var(--brand);text-decoration:none;
+  padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
+.phone-mode-open:hover{text-decoration:underline}
+
 /* Alt Çubuk (Home Indicator) */
 .phone-home-indicator{
   position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
@@ -1419,16 +1439,64 @@ function nxResetShotTimer(){
   },4500);
 }
 
+// Telefonun icinde canli uygulama onizlemesi: statik ekranlar <-> gercek uygulama.
+// iframe yalnizca ilk kez "Kendin dene"e basilinca yuklenir (anisayfa agirliklanmasin).
+var nxPreviewOn=false;
+
+function nxScalePreview(){
+  var box=document.querySelector('.phone-inner-screen');
+  if(!box)return;
+  var w=box.clientWidth||390;
+  box.style.setProperty('--nx-preview-scale',(w/390).toFixed(4));
+}
+
+function nxSetPhoneMode(mode){
+  var prev=document.getElementById('phonePreview');
+  var shots=document.querySelector('.phone-screen-content');
+  var caseEl=document.querySelector('.phone-case');
+  var frame=document.getElementById('phonePreviewFrame');
+  if(!prev||!shots||!frame)return;
+  nxPreviewOn=(mode==='live');
+  prev.classList.toggle('on',nxPreviewOn);
+  prev.setAttribute('aria-hidden',nxPreviewOn?'false':'true');
+  shots.style.visibility=nxPreviewOn?'hidden':'visible';
+  if(caseEl)caseEl.classList.toggle('previewing',nxPreviewOn);
+  var bShots=document.getElementById('phoneModeShots');
+  var bLive=document.getElementById('phoneModeLive');
+  if(bShots){bShots.classList.toggle('active',!nxPreviewOn);bShots.setAttribute('aria-pressed',nxPreviewOn?'false':'true');}
+  if(bLive){bLive.classList.toggle('active',nxPreviewOn);bLive.setAttribute('aria-pressed',nxPreviewOn?'true':'false');}
+  var open=document.getElementById('phoneModeOpen');
+  if(open)open.hidden=!nxPreviewOn;
+  var hint=document.getElementById('phoneTapHint');
+  if(hint)hint.hidden=nxPreviewOn;
+  var note=document.getElementById('phonePreviewNote');
+  if(note)note.hidden=!nxPreviewOn;
+  var pill=document.getElementById('phoneCaptionPill');
+  if(pill)pill.style.display=nxPreviewOn?'none':'';
+  var dots=document.querySelector('.phone-dots');
+  if(dots)dots.style.display=nxPreviewOn?'none':'';
+  if(nxPreviewOn){
+    if(!frame.getAttribute('src'))frame.setAttribute('src',frame.getAttribute('data-src'));
+    nxScalePreview();
+    if(nxShotTimer)clearInterval(nxShotTimer);
+  }else{
+    nxResetShotTimer();
+  }
+}
+
+window.addEventListener('resize',function(){if(nxPreviewOn)nxScalePreview();});
+
 // Telefon dokunma, sürükleme ve tıklama yönetimi
 document.addEventListener('DOMContentLoaded',function(){
   var mockup=document.getElementById('phoneMockup');
   if(mockup){
     nxResetShotTimer();
 
-    mockup.addEventListener('mouseenter',function(){if(nxShotTimer)clearInterval(nxShotTimer);});
-    mockup.addEventListener('mouseleave',function(){nxResetShotTimer();});
+    mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;if(nxShotTimer)clearInterval(nxShotTimer);});
+    mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxResetShotTimer();});
 
     mockup.addEventListener('click',function(e){
+      if(nxPreviewOn)return;
       if(e.target.closest('.phone-arrow')) return;
       var rect=mockup.getBoundingClientRect();
       var x=e.clientX-rect.left;
@@ -1442,10 +1510,12 @@ document.addEventListener('DOMContentLoaded',function(){
     var touchStartX=0;
     var touchEndX=0;
     mockup.addEventListener('touchstart',function(e){
+      if(nxPreviewOn)return;
       touchStartX=e.changedTouches[0].screenX;
       if(nxShotTimer)clearInterval(nxShotTimer);
     },{passive:true});
     mockup.addEventListener('touchend',function(e){
+      if(nxPreviewOn)return;
       touchEndX=e.changedTouches[0].screenX;
       var diff=touchEndX-touchStartX;
       if(diff>40) nxPrevShot();
@@ -1550,16 +1620,20 @@ function renderHeader(c, currentPath = '') {
 
 function renderHero(c, hasShots) {
   const isTr = c.lang === 'tr';
+  // Etiketler uygulamadaki gercek ekran basliklarindan yaziilir (verify-site bunu
+  // site-shots.mjs'in kaynak listesiyle karsilastiriyor). Eskiden ikinci sekme
+  // "Cihazlar & Odalar" idi ama kaynagi cihaz DETAY sayfasiydi: cihaz secilmeden
+  // acildigi icin hero'da "Cihaz bulunamadi" hata karti gorunuyordu (olculdu).
   const shots = hasShots
     ? [
-        { file: 'home', label: isTr ? 'Ana Kontrol Paneli' : 'Home Dashboard', short: isTr ? 'Ana Panel' : 'Home' },
-        { file: 'devices', label: isTr ? 'Cihazlar & Odalar' : 'Devices & Rooms', short: isTr ? 'Cihazlar' : 'Devices' },
-        { file: 'energy', label: isTr ? 'Canlı Enerji Matrisi' : 'Live Energy Grid', short: isTr ? 'Enerji' : 'Energy' },
-        { file: 'smart', label: isTr ? 'Akıllı Senaryolar' : 'Automations', short: isTr ? 'Senaryolar' : 'Automations' },
-        { file: 'chat', label: isTr ? 'NEXUS AI Asistan' : 'AI Assistant', short: isTr ? 'AI Sohbet' : 'AI Chat' },
-        { file: 'lighting', label: isTr ? 'Aydınlatma Kontrolü' : 'Lighting Master', short: isTr ? 'Aydınlatma' : 'Lighting' },
-        { file: 'scenes', label: isTr ? 'Film Modu & Ambiyans' : 'Movie Mode & Scenes', short: isTr ? 'Sinema' : 'Scenes' },
-        { file: 'settings', label: isTr ? 'Sistem & Entegrasyonlar' : 'Settings & Hub', short: isTr ? 'Ayarlar' : 'Settings' },
+        { file: 'home', label: isTr ? 'Ana Ekran' : 'Home Screen', short: isTr ? 'Ana Ekran' : 'Home' },
+        { file: 'pair', label: isTr ? 'Cihaz Ekleme Merkezi' : 'Add-Device Hub', short: isTr ? 'Cihaz Ekle' : 'Add' },
+        { file: 'energy', label: isTr ? 'AI Enerji Tasarrufu' : 'AI Energy Saving', short: isTr ? 'Enerji' : 'Energy' },
+        { file: 'smart', label: isTr ? 'Akıllı Senaryolar' : 'Smart Automations', short: isTr ? 'Senaryolar' : 'Automations' },
+        { file: 'chat', label: isTr ? 'NEXUS AI Asistan' : 'NEXUS AI Assistant', short: isTr ? 'AI Sohbet' : 'AI Chat' },
+        { file: 'lighting', label: isTr ? 'Aydınlatma Ustası' : 'Lighting Master', short: isTr ? 'Aydınlatma' : 'Lighting' },
+        { file: 'scenes', label: isTr ? 'Film Modu' : 'Movie Mode', short: isTr ? 'Sinema' : 'Scenes' },
+        { file: 'settings', label: isTr ? 'Ayarlar' : 'Settings', short: isTr ? 'Ayarlar' : 'Settings' },
       ]
     : [];
 
@@ -1599,6 +1673,13 @@ function renderHero(c, hasShots) {
           <div class="phone-screen-content">
             ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`).join('\n            ')}
           </div>
+          <!-- Uygulamanın KENDİ sayfası çerçevenin içinde: ziyaretçi gezinebilsin.
+               data-src: ilk "Kendin dene" tıkında atanır (ana sayfa iframe yüzünden
+               ağırlaşmasın). Adres APP_URL + "/" — Cloudflare Pages /index.html'i
+               308 ile /'ye yönlendiriyor (ölçüldü), fazladan sıçrama gereksiz. -->
+          <div class="phone-preview" id="phonePreview" aria-hidden="true">
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="${isTr ? 'NEXUS mobil uygulamasının canlı önizlemesi' : 'Live preview of the NEXUS mobile app'}" data-src="${APP_URL}/" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
         </div>
@@ -1610,6 +1691,11 @@ function renderHero(c, hasShots) {
         </button>
       </div>
       <div class="phone-bottom-bar">
+        <div class="phone-modes" role="group" aria-label="${isTr ? 'Telefon ön izleme modu' : 'Phone preview mode'}">
+          <button type="button" class="phone-mode-btn active" id="phoneModeShots" aria-pressed="true" onclick="nxSetPhoneMode('shots')">${isTr ? 'Ekranlar' : 'Screens'}</button>
+          <button type="button" class="phone-mode-btn" id="phoneModeLive" aria-pressed="false" onclick="nxSetPhoneMode('live')">${isTr ? 'Kendin dene' : 'Try it live'}</button>
+          <a class="phone-mode-open" id="phoneModeOpen" href="${APP_URL}/" target="_blank" rel="noopener" hidden>${isTr ? 'Tam ekran aç' : 'Open full screen'}</a>
+        </div>
         <div class="phone-caption-pill" id="phoneCaptionPill">
           <span class="badge" id="phoneSlideNum">1/${shots.length}</span>
           <span id="phoneSlideTitle">${esc(shots[0].label)}</span>
@@ -1617,7 +1703,8 @@ function renderHero(c, hasShots) {
         <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
           ${shots.map((s, i) => `<button role="tab" class="phone-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0 ? 'true' : 'false'}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
         </div>
-        <span class="phone-tap-hint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
+        <span class="phone-tap-hint" id="phoneTapHint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
+        <span class="phone-tap-hint" id="phonePreviewNote" hidden>${icon('sparkles')}${isTr ? 'Bu gerçek uygulamadır — veriler cihazında kalır, hesap gerekmez' : 'This is the real app — data stays on your device, no account needed'}</span>
       </div>
     </div>`
         : ''
@@ -2481,6 +2568,49 @@ function renderManifest() {
 }
 
 // ---------- Build Yürütme ----------
+/* HTTP başlıkları da üretilir: telefon çerçevesindeki canlı önizleme, uygulamanın
+   origin'ini frame-src olarak ister. Elle tutulan _headers bu bağı takipte bayat
+   kalıyordu; artık APP_URL'den türüyor (verify-site yayınlanan başlığı da denetliyor). */
+function renderHeaders() {
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: https:",
+    "font-src 'self'",
+    `frame-src 'self' ${APP_URL}`,
+    'connect-src \'self\' https://api.github.com https://formsubmit.co https://*.supabase.co',
+    "object-src 'none'",
+    "base-uri 'self'",
+    "frame-ancestors 'self'",
+    "form-action 'self'",
+  ].join('; ');
+  return `# scripts/site-build.mjs → renderHeaders() üretir; elle düzenlemeyin.
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: ${csp}
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+  Cache-Control: public, max-age=86400
+
+/images/*
+  Cache-Control: public, max-age=604800
+
+/*.svg
+  Cache-Control: public, max-age=86400
+
+/*.png
+  Cache-Control: public, max-age=86400
+`;
+}
+
 function build() {
   const hasShots = existsSync(join(PUB, 'images', 'shots', 'home.png'));
   const today = new Date().toISOString().slice(0, 10);
@@ -2536,6 +2666,7 @@ window.NEXUS_CLOUD = {
   writeFileSync(join(PUB, 'robots.txt'), renderRobots(), 'utf8');
   writeFileSync(join(PUB, 'sitemap.xml'), renderSitemap(today), 'utf8');
   writeFileSync(join(PUB, 'manifest.webmanifest'), renderManifest(), 'utf8');
+  writeFileSync(join(PUB, '_headers'), renderHeaders(), 'utf8');
 
   console.log('✓ index.html');
   console.log('✓ tr/index.html');
@@ -2548,6 +2679,7 @@ window.NEXUS_CLOUD = {
   console.log('✓ refund.html & tr/refund.html');
   console.log('✓ assets/site.js');
   console.log('✓ assets/site-boot.js');
+  console.log('✓ robots.txt & sitemap.xml & manifest.webmanifest & _headers');
   console.log('Ekran görüntüleri:', hasShots ? 'VAR (images/shots/)' : 'YOK');
 }
 

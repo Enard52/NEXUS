@@ -191,6 +191,26 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
 .shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
 .shot-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 
+/* Canli onizleme (telefonun icinde gercek uygulama).
+   Uygulama ekranlari 390x844 tasarlanir; serceve kutusu ise ~215-245px. Bu yuzden
+   iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
+   JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
+   190px'e sikisirir ve okunmaz). */
+.phone-preview{position:absolute;inset:0;z-index:22;display:none;background:#05070A}
+.phone-preview.on{display:block}
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
+.phone-case.previewing .phone-arrow{display:none}
+.phone-case.previewing{cursor:default}
+.phone-modes{display:flex;align-items:center;gap:6px}
+.phone-mode-btn{background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:6px 14px;min-height:32px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
+  cursor:pointer;transition:all .2s ease}
+.phone-mode-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.phone-mode-open{font-size:12px;font-weight:700;color:var(--brand);text-decoration:none;
+  padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
+.phone-mode-open:hover{text-decoration:underline}
+
 /* Alt Çubuk (Home Indicator) */
 .phone-home-indicator{
   position:absolute;bottom:4px;left:50%;transform:translateX(-50%);

@@ -58,7 +58,9 @@ export const content = {
       primary: { label: "Download NEXUS", href: "#downloads" },
       secondary: null,
       versionNote: "Latest version",
-      shotAlt: "NEXUS home screen on a phone",
+      // Etiket her ekranla birlikte "— <ekran adı>" olarak tamamlanır; bu yüzden
+      // "home screen" gibi tek ekrana sabitlenmiş bir metin kullanılmaz.
+      shotAlt: "NEXUS app screen",
       trust: [
         "Free, unlimited devices",
         "No cloud required for control",
@@ -341,7 +343,7 @@ export const content = {
       primary: { label: "NEXUS'u indir", href: "#downloads" },
       secondary: null,
       versionNote: "Güncel sürüm",
-      shotAlt: "Telefonda NEXUS ana ekranı",
+      shotAlt: "NEXUS uygulama ekranı",
       trust: [
         "Ücretsiz, sınırsız cihaz",
         "Kontrol için bulut şart değil",

@@ -660,16 +660,64 @@ function nxResetShotTimer(){
   },4500);
 }
 
+// Telefonun icinde canli uygulama onizlemesi: statik ekranlar <-> gercek uygulama.
+// iframe yalnizca ilk kez "Kendin dene"e basilinca yuklenir (anisayfa agirliklanmasin).
+var nxPreviewOn=false;
+
+function nxScalePreview(){
+  var box=document.querySelector('.phone-inner-screen');
+  if(!box)return;
+  var w=box.clientWidth||390;
+  box.style.setProperty('--nx-preview-scale',(w/390).toFixed(4));
+}
+
+function nxSetPhoneMode(mode){
+  var prev=document.getElementById('phonePreview');
+  var shots=document.querySelector('.phone-screen-content');
+  var caseEl=document.querySelector('.phone-case');
+  var frame=document.getElementById('phonePreviewFrame');
+  if(!prev||!shots||!frame)return;
+  nxPreviewOn=(mode==='live');
+  prev.classList.toggle('on',nxPreviewOn);
+  prev.setAttribute('aria-hidden',nxPreviewOn?'false':'true');
+  shots.style.visibility=nxPreviewOn?'hidden':'visible';
+  if(caseEl)caseEl.classList.toggle('previewing',nxPreviewOn);
+  var bShots=document.getElementById('phoneModeShots');
+  var bLive=document.getElementById('phoneModeLive');
+  if(bShots){bShots.classList.toggle('active',!nxPreviewOn);bShots.setAttribute('aria-pressed',nxPreviewOn?'false':'true');}
+  if(bLive){bLive.classList.toggle('active',nxPreviewOn);bLive.setAttribute('aria-pressed',nxPreviewOn?'true':'false');}
+  var open=document.getElementById('phoneModeOpen');
+  if(open)open.hidden=!nxPreviewOn;
+  var hint=document.getElementById('phoneTapHint');
+  if(hint)hint.hidden=nxPreviewOn;
+  var note=document.getElementById('phonePreviewNote');
+  if(note)note.hidden=!nxPreviewOn;
+  var pill=document.getElementById('phoneCaptionPill');
+  if(pill)pill.style.display=nxPreviewOn?'none':'';
+  var dots=document.querySelector('.phone-dots');
+  if(dots)dots.style.display=nxPreviewOn?'none':'';
+  if(nxPreviewOn){
+    if(!frame.getAttribute('src'))frame.setAttribute('src',frame.getAttribute('data-src'));
+    nxScalePreview();
+    if(nxShotTimer)clearInterval(nxShotTimer);
+  }else{
+    nxResetShotTimer();
+  }
+}
+
+window.addEventListener('resize',function(){if(nxPreviewOn)nxScalePreview();});
+
 // Telefon dokunma, sürükleme ve tıklama yönetimi
 document.addEventListener('DOMContentLoaded',function(){
   var mockup=document.getElementById('phoneMockup');
   if(mockup){
     nxResetShotTimer();
 
-    mockup.addEventListener('mouseenter',function(){if(nxShotTimer)clearInterval(nxShotTimer);});
-    mockup.addEventListener('mouseleave',function(){nxResetShotTimer();});
+    mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;if(nxShotTimer)clearInterval(nxShotTimer);});
+    mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxResetShotTimer();});
 
     mockup.addEventListener('click',function(e){
+      if(nxPreviewOn)return;
       if(e.target.closest('.phone-arrow')) return;
       var rect=mockup.getBoundingClientRect();
       var x=e.clientX-rect.left;
@@ -683,10 +731,12 @@ document.addEventListener('DOMContentLoaded',function(){
     var touchStartX=0;
     var touchEndX=0;
     mockup.addEventListener('touchstart',function(e){
+      if(nxPreviewOn)return;
       touchStartX=e.changedTouches[0].screenX;
       if(nxShotTimer)clearInterval(nxShotTimer);
     },{passive:true});
     mockup.addEventListener('touchend',function(e){
+      if(nxPreviewOn)return;
       touchEndX=e.changedTouches[0].screenX;
       var diff=touchEndX-touchStartX;
       if(diff>40) nxPrevShot();
