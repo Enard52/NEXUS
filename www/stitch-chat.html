@@ -109,7 +109,7 @@
 </head>
 <body class="bg-white text-gray-900 overflow-hidden h-[100dvh] flex flex-col">
 <!-- BEGIN: MainHeader -->
-<header class="flex items-center justify-between px-4 pt-12 pb-3 bg-white" data-purpose="app-header">
+<header class="flex items-center justify-between px-4 pt-12 pb-4 bg-white" data-purpose="app-header">
 <!-- Back Button -->
 <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1">
 <svg class="h-7 w-7 text-slate-700" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -214,8 +214,8 @@
       <input id="chat-input" class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text" onkeypress="handleKeyPress(event)"/>
 
       <div class="flex items-center space-x-4 pr-1">
-        <!-- Mic Icon -->
-        <button class="text-gray-600 hover:text-gray-800 transition-colors" data-ai-helper-action onclick="openAiSettings()">
+        <!-- Mic: gerçek sesli giriş (Web Speech API; Chrome/Edge/Android WebView) -->
+        <button id="chat-mic" class="text-gray-600 hover:text-gray-800 transition-colors" aria-label="Sesle yaz" aria-pressed="false" onclick="nxVoiceToggle()">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
         </button>
         <!-- Send Button -->
@@ -228,6 +228,57 @@
 </main>
 
 <script>
+  /* ---------- Sesli giriş (Web Speech API — ücretsiz, tarayıcı tabanlı) ----------
+     Chrome/Edge/Android WebView destekler; Firefox desteklemez (dürüst bildirim).
+     Metin gönderilmez: tanınan metin giriş alanına yazılır, kullanıcı gözden geçirip gönderir. */
+  var nxVoiceRec = null;
+  function nxVoiceSupported() {
+    return 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+  }
+  function nxVoiceToggle() {
+    if (nxVoiceRec) { nxVoiceRec.stop(); return; }
+    if (!nxVoiceSupported()) {
+      nxVoiceToast('Sesli giriş bu tarayıcıda desteklenmiyor (Chrome veya Edge kullan).');
+      return;
+    }
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var rec = new SR();
+    nxVoiceRec = rec;
+    var input = document.getElementById('chat-input');
+    var btn = document.getElementById('chat-mic');
+    var startText = input.value;
+    rec.lang = (document.documentElement.lang || 'tr').slice(0, 2) === 'tr' ? 'tr-TR' : 'en-US';
+    rec.interimResults = true;
+    rec.continuous = false;
+    btn.classList.add('text-[#FF3B5C]', 'animate-pulse');
+    btn.setAttribute('aria-pressed', 'true');
+    rec.onresult = function (e) {
+      var text = '';
+      for (var i = e.resultIndex; i < e.results.length; i++) text += e.results[i][0].transcript;
+      input.value = (startText ? startText + ' ' : '') + text.trim();
+      input.focus();
+    };
+    rec.onerror = function (e) {
+      if (e.error === 'not-allowed') nxVoiceToast('Mikrofon izni verilmedi.');
+      else if (e.error !== 'aborted') nxVoiceToast('Ses tanınamadı, tekrar dene.');
+    };
+    rec.onend = function () {
+      btn.classList.remove('text-[#FF3B5C]', 'animate-pulse');
+      btn.setAttribute('aria-pressed', 'false');
+      nxVoiceRec = null;
+    };
+    try { rec.start(); } catch (e) { rec.onend(); }
+  }
+  function nxVoiceToast(msg) {
+    var t = document.createElement('div');
+    t.className = 'fixed left-1/2 top-6 z-[120] -translate-x-1/2 rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center';
+    t.style.maxWidth = 'min(92vw, 420px)';
+    t.setAttribute('role', 'status');
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2200);
+  }
+
   /* ---------- Gerçek sohbet geçmişi + günlük AI puan sayacı ---------- */
   var CHAT_KEY = 'nexusChatHistory';
   var POINTS_KEY = 'nexusAiPoints';

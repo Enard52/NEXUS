@@ -64,7 +64,10 @@ const T = {
         "Best balance of power and privacy",
         "Free trial (7 days yearly, 3 monthly) · cancel anytime",
       ],
-      [/<div class="plan-price-row">\s*<div class="price"><sup>[^<]*<\/sup>[^<]*<span>[^<]*<\/span><\/div>\s*<span class="price-note">[^<]*<\/span>\s*<\/div>/, '<div class="plan-price-row">\n              <div class="price"><sup>$</sup>11.99<span>/ month</span></div>\n              <span class="price-note">or $89.99 / year (about $7.50 a month)</span>\n            </div>'],
+      [
+        /<div class="plan-price-row">\s*<div class="price"><sup>[^<]*<\/sup>[^<]*<span>[^<]*<\/span><\/div>\s*<span class="price-note">[^<]*<\/span>\s*<\/div>/,
+        '<div class="plan-price-row">\n              <div class="price"><sup>$</sup>11.99<span>/ month</span></div>\n              <span class="price-note">or $89.99 / year (about $7.50 a month)</span>\n            </div>',
+      ],
     ],
     family: [
       ["Everything in Premium, plus", "Everything in NEXUS+, plus"],
@@ -127,7 +130,10 @@ const T = {
         "Güç ve gizliliğin en iyi dengesi",
         "Ücretsiz deneme (yıllık 7, aylık 3 gün) · istediğin zaman iptal",
       ],
-      [/<div class="plan-price-row">\s*<div class="price"><sup>[^<]*<\/sup>[^<]*<span>[^<]*<\/span><\/div>\s*<span class="price-note">[^<]*<\/span>\s*<\/div>/, '<div class="plan-price-row">\n              <div class="price"><sup>₺</sup>499,99<span>/ ay</span></div>\n              <span class="price-note">veya yıllık ₺3.999,99 (ayda ₺333,33)</span>\n            </div>'],
+      [
+        /<div class="plan-price-row">\s*<div class="price"><sup>[^<]*<\/sup>[^<]*<span>[^<]*<\/span><\/div>\s*<span class="price-note">[^<]*<\/span>\s*<\/div>/,
+        '<div class="plan-price-row">\n              <div class="price"><sup>₺</sup>499,99<span>/ ay</span></div>\n              <span class="price-note">veya yıllık ₺3.999,99 (ayda ₺333,33)</span>\n            </div>',
+      ],
     ],
     family: [
       ["Premium&#39;daki her şey, artı", "NEXUS+&#39;daki her şey, artı"],
@@ -138,30 +144,112 @@ const T = {
 
 const FREE_FAMILY = {
   en: {
-    free: ["Unlimited connected devices", "Scenes, automations and NEXUS AI chat (30 credits a day)", "Homes, rooms and household members with per-member permissions", "100% local device control", "Windows, Linux and Android apps"],
-    family: ["Everything in NEXUS+", "One subscription shared by up to 6 household members (coming soon)", "Shared NEXUS AI credits for the household (coming soon)", "Per-member permissions: already free in the app"],
+    free: [
+      "Unlimited connected devices",
+      "Scenes, automations and NEXUS AI chat (30 credits a day)",
+      "Homes, rooms and household members with per-member permissions",
+      "100% local device control",
+      "Windows, Linux and Android apps",
+    ],
+    family: [
+      "Everything in NEXUS+",
+      "One subscription shared by up to 6 household members (coming soon)",
+      "Shared NEXUS AI credits for the household (coming soon)",
+      "Per-member permissions: already free in the app",
+    ],
   },
   tr: {
-    free: ["Sınırsız bağlı cihaz", "Senaryolar, otomasyonlar ve NEXUS AI sohbeti (günde 30 kredi)", "Evler, odalar ve üye başına izinli ev üyeleri", "%100 yerel cihaz kontrolü", "Windows, Linux ve Android uygulamaları"],
-    family: ["NEXUS+'taki her şey", "6 ev üyesine kadar tek abonelik (yakında)", "Ev için ortak NEXUS AI kredisi (yakında)", "Üye başına izinler: uygulamada şimdiden ücretsiz"],
+    free: [
+      "Sınırsız bağlı cihaz",
+      "Senaryolar, otomasyonlar ve NEXUS AI sohbeti (günde 30 kredi)",
+      "Evler, odalar ve üye başına izinli ev üyeleri",
+      "%100 yerel cihaz kontrolü",
+      "Windows, Linux ve Android uygulamaları",
+    ],
+    family: [
+      "NEXUS+'taki her şey",
+      "6 ev üyesine kadar tek abonelik (yakında)",
+      "Ev için ortak NEXUS AI kredisi (yakında)",
+      "Üye başına izinler: uygulamada şimdiden ücretsiz",
+    ],
   },
 };
 
 const PLANS_V2 = {
   en: {
-    free: { stat: ["NEXUS AI credits", "30 / day"], items: ["Unlimited connected devices, controlled on your own network", "Scenes, schedules and automations", "NEXUS AI assistant for device commands", "Homes, rooms, household members and per-member permissions", "Energy overview and device dashboards", "Optional free account to sync settings across devices", "Windows, Linux and Android apps"] },
-    premium: { stat: ["NEXUS AI credits", "2,000 / month"], desc: "A much larger monthly NEXUS AI allowance for your home, and first access to new NEXUS AI features.", items: ["2,000 NEXUS AI credits every month (Free: 30 per day)", "New NEXUS AI features reach NEXUS+ members first", "One subscription, valid on all your devices", "Free trial included, cancel anytime"] },
-    family: { stat: ["Household members", "Up to 6 · coming soon"], items: ["Everything in NEXUS+", "One subscription shared by up to 6 household members (coming soon)", "Shared NEXUS AI credits for the household (coming soon)", "Per-member permissions: already free in the app"] },
+    free: {
+      stat: ["NEXUS AI credits", "30 / day"],
+      items: [
+        "Unlimited connected devices, controlled on your own network",
+        "Scenes, schedules and automations",
+        "NEXUS AI assistant for device commands",
+        "Homes, rooms, household members and per-member permissions",
+        "Energy overview and device dashboards",
+        "Optional free account to sync settings across devices",
+        "Windows, Linux and Android apps",
+      ],
+    },
+    premium: {
+      stat: ["NEXUS AI credits", "2,000 / month"],
+      desc: "A much larger monthly NEXUS AI allowance for your home, and first access to new NEXUS AI features.",
+      items: [
+        "2,000 NEXUS AI credits every month (Free: 30 per day)",
+        "New NEXUS AI features reach NEXUS+ members first",
+        "One subscription, valid on all your devices",
+        "Free trial included, cancel anytime",
+      ],
+    },
+    family: {
+      stat: ["Household members", "Up to 6 · coming soon"],
+      items: [
+        "Everything in NEXUS+",
+        "One subscription shared by up to 6 household members (coming soon)",
+        "Shared NEXUS AI credits for the household (coming soon)",
+        "Per-member permissions: already free in the app",
+      ],
+    },
   },
   tr: {
-    free: { stat: ["NEXUS AI kredisi", "günde 30"], items: ["Kendi ağında kontrol edilen sınırsız bağlı cihaz", "Senaryolar, programlar ve otomasyonlar", "Cihaz komutları için NEXUS AI asistanı", "Evler, odalar, ev üyeleri ve üye başına izinler", "Enerji özeti ve cihaz panelleri", "Ayarları cihazlar arasında eşitleyen isteğe bağlı ücretsiz hesap", "Windows, Linux ve Android uygulamaları"] },
-    premium: { stat: ["NEXUS AI kredisi", "ayda 2.000"], desc: "Evin için çok daha büyük bir aylık NEXUS AI hakkı ve yeni NEXUS AI özelliklerine ilk erişim.", items: ["Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)", "Yeni NEXUS AI özellikleri önce NEXUS+ üyelerine açılır", "Tek abonelik, tüm cihazlarında geçerli", "Ücretsiz deneme dahil, istediğin zaman iptal"] },
-    family: { stat: ["Ev üyeleri", "6'ya kadar · yakında"], items: ["NEXUS+'taki her şey", "6 ev üyesine kadar tek abonelik (yakında)", "Ev için ortak NEXUS AI kredisi (yakında)", "Üye başına izinler: uygulamada şimdiden ücretsiz"] },
+    free: {
+      stat: ["NEXUS AI kredisi", "günde 30"],
+      items: [
+        "Kendi ağında kontrol edilen sınırsız bağlı cihaz",
+        "Senaryolar, programlar ve otomasyonlar",
+        "Cihaz komutları için NEXUS AI asistanı",
+        "Evler, odalar, ev üyeleri ve üye başına izinler",
+        "Enerji özeti ve cihaz panelleri",
+        "Ayarları cihazlar arasında eşitleyen isteğe bağlı ücretsiz hesap",
+        "Windows, Linux ve Android uygulamaları",
+      ],
+    },
+    premium: {
+      stat: ["NEXUS AI kredisi", "ayda 2.000"],
+      desc: "Evin için çok daha büyük bir aylık NEXUS AI hakkı ve yeni NEXUS AI özelliklerine ilk erişim.",
+      items: [
+        "Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)",
+        "Yeni NEXUS AI özellikleri önce NEXUS+ üyelerine açılır",
+        "Tek abonelik, tüm cihazlarında geçerli",
+        "Ücretsiz deneme dahil, istediğin zaman iptal",
+      ],
+    },
+    family: {
+      stat: ["Ev üyeleri", "6'ya kadar · yakında"],
+      items: [
+        "NEXUS+'taki her şey",
+        "6 ev üyesine kadar tek abonelik (yakında)",
+        "Ev için ortak NEXUS AI kredisi (yakında)",
+        "Üye başına izinler: uygulamada şimdiden ücretsiz",
+      ],
+    },
   },
 };
 const OLD_PREMIUM_DESC = {
-  en: ["A much larger NEXUS AI allowance for your home: 2,000 credits every month and advanced NEXUS AI models."],
-  tr: ["Evin için çok daha büyük bir NEXUS AI hakkı: her ay 2.000 kredi ve gelişmiş NEXUS AI modelleri."],
+  en: [
+    "A much larger NEXUS AI allowance for your home: 2,000 credits every month and advanced NEXUS AI models.",
+  ],
+  tr: [
+    "Evin için çok daha büyük bir NEXUS AI hakkı: her ay 2.000 kredi ve gelişmiş NEXUS AI modelleri.",
+  ],
 };
 
 function simplifyCard(html, cls, stat) {
@@ -171,7 +259,10 @@ function simplifyCard(html, cls, stat) {
   let card = html.slice(idx, end);
   card = card.replace(/\s*<span class="plan-code">[^<]*<\/span>/, "");
   card = card.replace(/\s*<div class="premium-orbit"[^>]*>[\s\S]*?<\/div>/, "");
-  card = card.replace(/<div class="plan-console[^"]*"[^>]*>\s*<div class="plan-console-head">[\s\S]*?<\/div>\s*<div class="plan-console-track">[\s\S]*?<\/div>\s*<div class="plan-console-meta">[\s\S]*?<\/div>\s*<\/div>/, '<div class="plan-stat"><span>' + stat[0] + "</span><strong>" + stat[1] + "</strong></div>");
+  card = card.replace(
+    /<div class="plan-console[^"]*"[^>]*>\s*<div class="plan-console-head">[\s\S]*?<\/div>\s*<div class="plan-console-track">[\s\S]*?<\/div>\s*<div class="plan-console-meta">[\s\S]*?<\/div>\s*<\/div>/,
+    '<div class="plan-stat"><span>' + stat[0] + "</span><strong>" + stat[1] + "</strong></div>",
+  );
   return html.slice(0, idx) + card + html.slice(end);
 }
 
@@ -198,7 +289,8 @@ for (const f of ["index.html", "tr/index.html", "light.html", "tr/light.html"]) 
   const t = T[lang];
   let h = fs.readFileSync(p, "utf8");
   h = apply(h, [t.heading, t.copy, t.faq]);
-  if (lang === "tr") h = h.split('<sup>$</sup>0<span>/ ay</span>').join('<sup>₺</sup>0<span>/ ay</span>');
+  if (lang === "tr")
+    h = h.split("<sup>$</sup>0<span>/ ay</span>").join("<sup>₺</sup>0<span>/ ay</span>");
   const a = h.indexOf('<article class="price-card price-card-premium');
   const b = h.indexOf('<article class="price-card price-card-family');
   const end = h.indexOf("</article>", b);
@@ -223,4 +315,3 @@ for (const f of ["index.html", "tr/index.html", "light.html", "tr/light.html"]) 
   console.log("ok", f);
 }
 console.log("pricing updated:", n);
-

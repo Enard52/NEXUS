@@ -1,7 +1,7 @@
-const fs = require('fs');
+const fs = require("fs");
 
 // --- 1. Modify stitch-skills.html ---
-let skillsHtml = fs.readFileSync('stitch-skills.html', 'utf8');
+let skillsHtml = fs.readFileSync("stitch-skills.html", "utf8");
 
 // Replace the addAutomation script
 const newScriptAddAutomation = `
@@ -27,28 +27,31 @@ const newScriptAddAutomation = `
 </body>
 `;
 
-skillsHtml = skillsHtml.replace(/<script>\s*function addAutomation[\s\S]*?<\/body>/i, newScriptAddAutomation.trim() + '\n');
-fs.writeFileSync('stitch-skills.html', skillsHtml, 'utf8');
-console.log('Updated stitch-skills.html');
+skillsHtml = skillsHtml.replace(
+  /<script>\s*function addAutomation[\s\S]*?<\/body>/i,
+  newScriptAddAutomation.trim() + "\n",
+);
+fs.writeFileSync("stitch-skills.html", skillsHtml, "utf8");
+console.log("Updated stitch-skills.html");
 
 // --- 2. Modify stitch-smart.html ---
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 // Update links
 smartHtml = smartHtml.replace(
   /<a href="stitch-skills\.html"([^>]*)>\s*<svg([^>]*)>([\s\S]*?)<\/svg>\s*Yeni Otomasyon\s*<\/a>/,
-  '<a href="stitch-skills.html?type=automation"$1>\n          <svg$2>$3</svg>\n          Yeni Otomasyon\n        </a>'
+  '<a href="stitch-skills.html?type=automation"$1>\n          <svg$2>$3</svg>\n          Yeni Otomasyon\n        </a>',
 );
 
 smartHtml = smartHtml.replace(
   /<button class="mt-6 w-full([^>]*)>\s*<svg([^>]*)>([\s\S]*?)<\/svg>\s*Yeni Senaryo Ekle\s*<\/button>/,
-  '<a href="stitch-skills.html?type=clickrun" class="mt-6 w-full$1 block text-center">\n          <svg$2>$3</svg>\n          Yeni Senaryo Ekle\n        </a>'
+  '<a href="stitch-skills.html?type=clickrun" class="mt-6 w-full$1 block text-center">\n          <svg$2>$3</svg>\n          Yeni Senaryo Ekle\n        </a>',
 );
 
 // Add an ID to the clickrun grid if not present
 smartHtml = smartHtml.replace(
   /<div class="grid grid-cols-2 gap-4">/,
-  '<div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">'
+  '<div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">',
 );
 
 // Update render script
@@ -134,6 +137,9 @@ const renderScript = `
 </body>
 `;
 
-smartHtml = smartHtml.replace(/<script>\s*function renderCustomAutomations[\s\S]*?<\/body>/i, renderScript.trim() + '\n');
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Updated stitch-smart.html');
+smartHtml = smartHtml.replace(
+  /<script>\s*function renderCustomAutomations[\s\S]*?<\/body>/i,
+  renderScript.trim() + "\n",
+);
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Updated stitch-smart.html");

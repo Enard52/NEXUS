@@ -1,83 +1,111 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const validImages = {
-  lighting: '1550989460-0adf9ea622e2',
-  speaker: '1543512214-318c7553f230',
-  tv: '1593784991095-a205069470b6',
-  appliance: '1584622650111-993a426fbf0a',
-  security: '1558002038-1055907df827'
+  lighting: "1550989460-0adf9ea622e2",
+  speaker: "1543512214-318c7553f230",
+  tv: "1593784991095-a205069470b6",
+  appliance: "1584622650111-993a426fbf0a",
+  security: "1558002038-1055907df827",
 };
 
 const products = [
   // Philips Hue
-  { brand: 'Philips Hue', cat: 'lighting', items: [
-    { name: 'Color Ambiance E27', img: validImages.lighting },
-    { name: 'Hue Bridge', img: validImages.security },
-    { name: 'Lightstrip Plus', img: validImages.lighting },
-    { name: 'Hue Play Bar', img: validImages.lighting },
-    { name: 'Hue Go', img: validImages.lighting },
-    { name: 'Dimmer Switch', img: validImages.security }
-  ]},
+  {
+    brand: "Philips Hue",
+    cat: "lighting",
+    items: [
+      { name: "Color Ambiance E27", img: validImages.lighting },
+      { name: "Hue Bridge", img: validImages.security },
+      { name: "Lightstrip Plus", img: validImages.lighting },
+      { name: "Hue Play Bar", img: validImages.lighting },
+      { name: "Hue Go", img: validImages.lighting },
+      { name: "Dimmer Switch", img: validImages.security },
+    ],
+  },
   // Xiaomi
-  { brand: 'Xiaomi Mi', cat: 'sensors security plugs climate', items: [
-    { name: 'Robot Vacuum', img: validImages.appliance },
-    { name: 'Mi Smart Plug', img: validImages.security },
-    { name: '360° Camera', img: validImages.security },
-    { name: 'Temp Sensor', img: validImages.security },
-    { name: 'Air Purifier', img: validImages.appliance },
-    { name: 'Yeelight Bulb', img: validImages.lighting },
-    { name: 'Door Sensor', img: validImages.security },
-    { name: 'Smart Fan', img: validImages.appliance }
-  ]},
+  {
+    brand: "Xiaomi Mi",
+    cat: "sensors security plugs climate",
+    items: [
+      { name: "Robot Vacuum", img: validImages.appliance },
+      { name: "Mi Smart Plug", img: validImages.security },
+      { name: "360° Camera", img: validImages.security },
+      { name: "Temp Sensor", img: validImages.security },
+      { name: "Air Purifier", img: validImages.appliance },
+      { name: "Yeelight Bulb", img: validImages.lighting },
+      { name: "Door Sensor", img: validImages.security },
+      { name: "Smart Fan", img: validImages.appliance },
+    ],
+  },
   // LG ThinQ
-  { brand: 'LG ThinQ', cat: 'entertainment climate', items: [
-    { name: 'OLED Smart TV', img: validImages.tv },
-    { name: 'Dual Inverter AC', img: validImages.appliance },
-    { name: 'WashTower', img: validImages.appliance },
-    { name: 'InstaView Fridge', img: validImages.appliance },
-    { name: 'LG Soundbar', img: validImages.speaker }
-  ]},
+  {
+    brand: "LG ThinQ",
+    cat: "entertainment climate",
+    items: [
+      { name: "OLED Smart TV", img: validImages.tv },
+      { name: "Dual Inverter AC", img: validImages.appliance },
+      { name: "WashTower", img: validImages.appliance },
+      { name: "InstaView Fridge", img: validImages.appliance },
+      { name: "LG Soundbar", img: validImages.speaker },
+    ],
+  },
   // Apple Home
-  { brand: 'Apple Home', cat: 'entertainment', items: [
-    { name: 'HomePod mini', img: validImages.speaker },
-    { name: 'Apple TV 4K', img: validImages.tv },
-    { name: 'HomePod (2. Nesil)', img: validImages.speaker }
-  ]},
+  {
+    brand: "Apple Home",
+    cat: "entertainment",
+    items: [
+      { name: "HomePod mini", img: validImages.speaker },
+      { name: "Apple TV 4K", img: validImages.tv },
+      { name: "HomePod (2. Nesil)", img: validImages.speaker },
+    ],
+  },
   // Samsung SmartThings
-  { brand: 'SmartThings', cat: 'entertainment climate sensors', items: [
-    { name: 'SmartThings Hub', img: validImages.security },
-    { name: 'Neo QLED TV', img: validImages.tv },
-    { name: 'Bespoke Fridge', img: validImages.appliance },
-    { name: 'Multipurpose Sensor', img: validImages.security }
-  ]},
+  {
+    brand: "SmartThings",
+    cat: "entertainment climate sensors",
+    items: [
+      { name: "SmartThings Hub", img: validImages.security },
+      { name: "Neo QLED TV", img: validImages.tv },
+      { name: "Bespoke Fridge", img: validImages.appliance },
+      { name: "Multipurpose Sensor", img: validImages.security },
+    ],
+  },
   // TP-Link Tapo
-  { brand: 'TP-Link Tapo', cat: 'plugs security lighting', items: [
-    { name: 'P100 Smart Plug', img: validImages.security },
-    { name: 'C200 Camera', img: validImages.security },
-    { name: 'L530 Bulb', img: validImages.lighting },
-    { name: 'Light Strip', img: validImages.lighting }
-  ]},
+  {
+    brand: "TP-Link Tapo",
+    cat: "plugs security lighting",
+    items: [
+      { name: "P100 Smart Plug", img: validImages.security },
+      { name: "C200 Camera", img: validImages.security },
+      { name: "L530 Bulb", img: validImages.lighting },
+      { name: "Light Strip", img: validImages.lighting },
+    ],
+  },
   // Dyson
-  { brand: 'Dyson', cat: 'climate', items: [
-    { name: 'Purifier Cool', img: validImages.appliance },
-    { name: 'V15 Detect', img: validImages.appliance },
-    { name: 'Humidify+Cool', img: validImages.appliance }
-  ]}
+  {
+    brand: "Dyson",
+    cat: "climate",
+    items: [
+      { name: "Purifier Cool", img: validImages.appliance },
+      { name: "V15 Detect", img: validImages.appliance },
+      { name: "Humidify+Cool", img: validImages.appliance },
+    ],
+  },
 ];
 
-let rightContent = '';
-products.forEach(brand => {
+let rightContent = "";
+products.forEach((brand) => {
   rightContent += `
       <div class="mb-8 catalog-section" data-category="${brand.cat}">
         <div class="flex items-center gap-2 mb-4">
           <h3 class="font-bold text-sm text-slate-800 uppercase tracking-wide">${brand.brand}</h3>
         </div>
         <div class="grid grid-cols-2 gap-x-4 gap-y-5">`;
-  
-  brand.items.forEach(item => {
+
+  brand.items.forEach((item) => {
     // Generate an image URL from the verified Unsplash ID
     const imgUrl = `https://images.unsplash.com/photo-${item.img}?auto=format&fit=crop&w=128&q=80`;
-    
+
     // Kutusuz (boxless) design: No border, just the image taking the shape
     rightContent += `
           <div class="text-center active:scale-[0.97] transition-transform cursor-pointer flex flex-col items-center" onclick="simulateConnection(this, '${item.name}')">
@@ -92,7 +120,6 @@ products.forEach(brand => {
         </div>
       </div>`;
 });
-
 
 const html = `<!DOCTYPE html>
 <html lang="tr">
@@ -328,5 +355,5 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-fs.writeFileSync('stitch-integrations.html', html, 'utf8');
-console.log('Updated stitch-integrations.html with verified images and boxless modern design');
+fs.writeFileSync("stitch-integrations.html", html, "utf8");
+console.log("Updated stitch-integrations.html with verified images and boxless modern design");

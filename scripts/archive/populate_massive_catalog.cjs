@@ -1,123 +1,207 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const localAssets = {
-  bulb: 'assets/products/smart_bulb.jpg',
-  tv: 'assets/products/smart_tv.jpg',
-  speaker: 'assets/products/smart_speaker.jpg',
-  vacuum: 'assets/products/robot_vacuum.jpg',
-  plug: 'assets/products/smart_plug.jpg',
-  camera: 'assets/products/security_camera.jpg',
-  appliance: 'assets/products/air_purifier.jpg',
-  thermostat: 'assets/products/thermostat.jpg',
-  door_lock: 'assets/products/door_lock.jpg',
-  fridge: 'assets/products/refrigerator.jpg',
-  washing: 'assets/products/washing_machine.jpg',
-  router: 'assets/products/router.jpg',
-  soundbar: 'assets/products/soundbar.jpg'
+  bulb: "assets/products/smart_bulb.jpg",
+  tv: "assets/products/smart_tv.jpg",
+  speaker: "assets/products/smart_speaker.jpg",
+  vacuum: "assets/products/robot_vacuum.jpg",
+  plug: "assets/products/smart_plug.jpg",
+  camera: "assets/products/security_camera.jpg",
+  appliance: "assets/products/air_purifier.jpg",
+  thermostat: "assets/products/thermostat.jpg",
+  door_lock: "assets/products/door_lock.jpg",
+  fridge: "assets/products/refrigerator.jpg",
+  washing: "assets/products/washing_machine.jpg",
+  router: "assets/products/router.jpg",
+  soundbar: "assets/products/soundbar.jpg",
 };
 
 const products = [
   // Philips Hue
-  { brand: 'Philips Hue', icon: 'lightbulb', color: 'text-yellow-500 bg-yellow-50', cat: 'lighting', items: [
-    { name: 'Color Ambiance', img: localAssets.bulb },
-    { name: 'Hue Bridge', img: localAssets.router },
-    { name: 'Lightstrip', img: localAssets.bulb },
-    { name: 'Hue Go', img: localAssets.bulb },
-    { name: 'Play Bar', img: localAssets.bulb },
-    { name: 'Dimmer Switch', img: localAssets.thermostat }
-  ]},
+  {
+    brand: "Philips Hue",
+    icon: "lightbulb",
+    color: "text-yellow-500 bg-yellow-50",
+    cat: "lighting",
+    items: [
+      { name: "Color Ambiance", img: localAssets.bulb },
+      { name: "Hue Bridge", img: localAssets.router },
+      { name: "Lightstrip", img: localAssets.bulb },
+      { name: "Hue Go", img: localAssets.bulb },
+      { name: "Play Bar", img: localAssets.bulb },
+      { name: "Dimmer Switch", img: localAssets.thermostat },
+    ],
+  },
   // Xiaomi
-  { brand: 'Xiaomi Mi', icon: 'smartphone', color: 'text-orange-500 bg-orange-50', cat: 'sensors security plugs climate', items: [
-    { name: 'Robot Vacuum', img: localAssets.vacuum },
-    { name: 'Smart Plug', img: localAssets.plug },
-    { name: '360° Camera', img: localAssets.camera },
-    { name: 'Air Purifier', img: localAssets.appliance },
-    { name: 'Temp Sensor', img: localAssets.thermostat },
-    { name: 'Mi Router', img: localAssets.router }
-  ]},
+  {
+    brand: "Xiaomi Mi",
+    icon: "smartphone",
+    color: "text-orange-500 bg-orange-50",
+    cat: "sensors security plugs climate",
+    items: [
+      { name: "Robot Vacuum", img: localAssets.vacuum },
+      { name: "Smart Plug", img: localAssets.plug },
+      { name: "360° Camera", img: localAssets.camera },
+      { name: "Air Purifier", img: localAssets.appliance },
+      { name: "Temp Sensor", img: localAssets.thermostat },
+      { name: "Mi Router", img: localAssets.router },
+    ],
+  },
   // LG ThinQ
-  { brand: 'LG ThinQ', icon: 'monitor', color: 'text-rose-600 bg-rose-50', cat: 'entertainment climate', items: [
-    { name: 'OLED TV', img: localAssets.tv },
-    { name: 'WashTower', img: localAssets.washing },
-    { name: 'InstaView', img: localAssets.fridge },
-    { name: 'Dual Inverter', img: localAssets.appliance },
-    { name: 'Soundbar', img: localAssets.soundbar }
-  ]},
+  {
+    brand: "LG ThinQ",
+    icon: "monitor",
+    color: "text-rose-600 bg-rose-50",
+    cat: "entertainment climate",
+    items: [
+      { name: "OLED TV", img: localAssets.tv },
+      { name: "WashTower", img: localAssets.washing },
+      { name: "InstaView", img: localAssets.fridge },
+      { name: "Dual Inverter", img: localAssets.appliance },
+      { name: "Soundbar", img: localAssets.soundbar },
+    ],
+  },
   // Apple Home
-  { brand: 'Apple Home', icon: 'apple', color: 'text-slate-800 bg-slate-100', cat: 'entertainment security', items: [
-    { name: 'HomePod mini', img: localAssets.speaker },
-    { name: 'Apple TV 4K', img: localAssets.tv },
-    { name: 'HomePod', img: localAssets.speaker },
-    { name: 'Secure Lock', img: localAssets.door_lock }
-  ]},
+  {
+    brand: "Apple Home",
+    icon: "apple",
+    color: "text-slate-800 bg-slate-100",
+    cat: "entertainment security",
+    items: [
+      { name: "HomePod mini", img: localAssets.speaker },
+      { name: "Apple TV 4K", img: localAssets.tv },
+      { name: "HomePod", img: localAssets.speaker },
+      { name: "Secure Lock", img: localAssets.door_lock },
+    ],
+  },
   // Samsung SmartThings
-  { brand: 'SmartThings', icon: 'cpu', color: 'text-blue-600 bg-blue-50', cat: 'entertainment climate sensors', items: [
-    { name: 'Hub v3', img: localAssets.router },
-    { name: 'Neo QLED', img: localAssets.tv },
-    { name: 'Bespoke Fridge', img: localAssets.fridge },
-    { name: 'Wash Machine', img: localAssets.washing },
-    { name: 'Multi Sensor', img: localAssets.thermostat }
-  ]},
+  {
+    brand: "SmartThings",
+    icon: "cpu",
+    color: "text-blue-600 bg-blue-50",
+    cat: "entertainment climate sensors",
+    items: [
+      { name: "Hub v3", img: localAssets.router },
+      { name: "Neo QLED", img: localAssets.tv },
+      { name: "Bespoke Fridge", img: localAssets.fridge },
+      { name: "Wash Machine", img: localAssets.washing },
+      { name: "Multi Sensor", img: localAssets.thermostat },
+    ],
+  },
   // TP-Link Tapo
-  { brand: 'TP-Link Tapo', icon: 'wifi', color: 'text-cyan-500 bg-cyan-50', cat: 'plugs security lighting', items: [
-    { name: 'P100 Plug', img: localAssets.plug },
-    { name: 'C200 Camera', img: localAssets.camera },
-    { name: 'L530 Bulb', img: localAssets.bulb },
-    { name: 'Light Strip', img: localAssets.bulb }
-  ]},
+  {
+    brand: "TP-Link Tapo",
+    icon: "wifi",
+    color: "text-cyan-500 bg-cyan-50",
+    cat: "plugs security lighting",
+    items: [
+      { name: "P100 Plug", img: localAssets.plug },
+      { name: "C200 Camera", img: localAssets.camera },
+      { name: "L530 Bulb", img: localAssets.bulb },
+      { name: "Light Strip", img: localAssets.bulb },
+    ],
+  },
   // Dyson
-  { brand: 'Dyson', icon: 'wind', color: 'text-slate-700 bg-slate-100', cat: 'climate', items: [
-    { name: 'Purifier Cool', img: localAssets.appliance },
-    { name: 'V15 Detect', img: localAssets.vacuum },
-    { name: 'Hot+Cool', img: localAssets.appliance }
-  ]},
+  {
+    brand: "Dyson",
+    icon: "wind",
+    color: "text-slate-700 bg-slate-100",
+    cat: "climate",
+    items: [
+      { name: "Purifier Cool", img: localAssets.appliance },
+      { name: "V15 Detect", img: localAssets.vacuum },
+      { name: "Hot+Cool", img: localAssets.appliance },
+    ],
+  },
   // Sonos
-  { brand: 'Sonos', icon: 'speaker', color: 'text-slate-900 bg-slate-100', cat: 'entertainment', items: [
-    { name: 'Sonos Arc', img: localAssets.soundbar },
-    { name: 'Sonos One', img: localAssets.speaker },
-    { name: 'Sonos Beam', img: localAssets.soundbar },
-    { name: 'Sonos Move', img: localAssets.speaker }
-  ]},
+  {
+    brand: "Sonos",
+    icon: "speaker",
+    color: "text-slate-900 bg-slate-100",
+    cat: "entertainment",
+    items: [
+      { name: "Sonos Arc", img: localAssets.soundbar },
+      { name: "Sonos One", img: localAssets.speaker },
+      { name: "Sonos Beam", img: localAssets.soundbar },
+      { name: "Sonos Move", img: localAssets.speaker },
+    ],
+  },
   // Ring
-  { brand: 'Ring', icon: 'bell', color: 'text-sky-500 bg-sky-50', cat: 'security', items: [
-    { name: 'Video Doorbell', img: localAssets.camera },
-    { name: 'Stick Up Cam', img: localAssets.camera },
-    { name: 'Alarm System', img: localAssets.router }
-  ]},
+  {
+    brand: "Ring",
+    icon: "bell",
+    color: "text-sky-500 bg-sky-50",
+    cat: "security",
+    items: [
+      { name: "Video Doorbell", img: localAssets.camera },
+      { name: "Stick Up Cam", img: localAssets.camera },
+      { name: "Alarm System", img: localAssets.router },
+    ],
+  },
   // Nest
-  { brand: 'Google Nest', icon: 'home', color: 'text-emerald-500 bg-emerald-50', cat: 'climate security', items: [
-    { name: 'Learning Thermostat', img: localAssets.thermostat },
-    { name: 'Nest Cam', img: localAssets.camera },
-    { name: 'Nest Hub', img: localAssets.tv },
-    { name: 'Protect', img: localAssets.thermostat }
-  ]},
+  {
+    brand: "Google Nest",
+    icon: "home",
+    color: "text-emerald-500 bg-emerald-50",
+    cat: "climate security",
+    items: [
+      { name: "Learning Thermostat", img: localAssets.thermostat },
+      { name: "Nest Cam", img: localAssets.camera },
+      { name: "Nest Hub", img: localAssets.tv },
+      { name: "Protect", img: localAssets.thermostat },
+    ],
+  },
   // Yale
-  { brand: 'Yale', icon: 'lock', color: 'text-yellow-600 bg-yellow-50', cat: 'security', items: [
-    { name: 'Linus Smart Lock', img: localAssets.door_lock },
-    { name: 'Assure Lock', img: localAssets.door_lock },
-    { name: 'Smart Cabinet', img: localAssets.door_lock }
-  ]},
+  {
+    brand: "Yale",
+    icon: "lock",
+    color: "text-yellow-600 bg-yellow-50",
+    cat: "security",
+    items: [
+      { name: "Linus Smart Lock", img: localAssets.door_lock },
+      { name: "Assure Lock", img: localAssets.door_lock },
+      { name: "Smart Cabinet", img: localAssets.door_lock },
+    ],
+  },
   // Bosch
-  { brand: 'Bosch', icon: 'box', color: 'text-red-600 bg-red-50', cat: 'climate', items: [
-    { name: 'Smart Fridge', img: localAssets.fridge },
-    { name: 'Smart Washer', img: localAssets.washing },
-    { name: 'Home Connect AC', img: localAssets.appliance }
-  ]},
+  {
+    brand: "Bosch",
+    icon: "box",
+    color: "text-red-600 bg-red-50",
+    cat: "climate",
+    items: [
+      { name: "Smart Fridge", img: localAssets.fridge },
+      { name: "Smart Washer", img: localAssets.washing },
+      { name: "Home Connect AC", img: localAssets.appliance },
+    ],
+  },
   // iRobot
-  { brand: 'iRobot', icon: 'disc', color: 'text-green-600 bg-green-50', cat: 'climate', items: [
-    { name: 'Roomba j7+', img: localAssets.vacuum },
-    { name: 'Braava jet', img: localAssets.vacuum }
-  ]},
+  {
+    brand: "iRobot",
+    icon: "disc",
+    color: "text-green-600 bg-green-50",
+    cat: "climate",
+    items: [
+      { name: "Roomba j7+", img: localAssets.vacuum },
+      { name: "Braava jet", img: localAssets.vacuum },
+    ],
+  },
   // Belkin Wemo
-  { brand: 'Wemo', icon: 'toggle-right', color: 'text-lime-600 bg-lime-50', cat: 'plugs', items: [
-    { name: 'Smart Plug', img: localAssets.plug },
-    { name: 'Light Switch', img: localAssets.thermostat },
-    { name: 'Dimmer', img: localAssets.thermostat }
-  ]}
+  {
+    brand: "Wemo",
+    icon: "toggle-right",
+    color: "text-lime-600 bg-lime-50",
+    cat: "plugs",
+    items: [
+      { name: "Smart Plug", img: localAssets.plug },
+      { name: "Light Switch", img: localAssets.thermostat },
+      { name: "Dimmer", img: localAssets.thermostat },
+    ],
+  },
 ];
 
-let rightContent = '';
-products.forEach(brand => {
+let rightContent = "";
+products.forEach((brand) => {
   rightContent += `
       <div class="mb-10 catalog-section" data-category="${brand.cat}">
         <div class="flex items-center gap-3 mb-5">
@@ -127,8 +211,8 @@ products.forEach(brand => {
           <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">${brand.brand}</h3>
         </div>
         <div class="grid grid-cols-2 gap-x-4 gap-y-6">`;
-  
-  brand.items.forEach(item => {
+
+  brand.items.forEach((item) => {
     rightContent += `
           <div class="text-center active:scale-95 transition-transform cursor-pointer flex flex-col items-center group" onclick="simulateConnection(this, '${item.name}')">
             <div class="w-full aspect-square rounded-3xl overflow-hidden mb-3 shadow-sm bg-slate-50 border border-slate-100/50 relative">
@@ -143,7 +227,6 @@ products.forEach(brand => {
         </div>
       </div>`;
 });
-
 
 const html = `<!DOCTYPE html>
 <html lang="tr">
@@ -411,5 +494,5 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-fs.writeFileSync('stitch-integrations.html', html, 'utf8');
-console.log('Updated stitch-integrations.html with massive catalog, elegant icons, and rich UI.');
+fs.writeFileSync("stitch-integrations.html", html, "utf8");
+console.log("Updated stitch-integrations.html with massive catalog, elegant icons, and rich UI.");

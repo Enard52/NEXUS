@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const file = path.join(__dirname, 'stitch-integrations.html');
-let html = fs.readFileSync(file, 'utf8');
+const file = path.join(__dirname, "stitch-integrations.html");
+let html = fs.readFileSync(file, "utf8");
 
 const transparentScript = `
     // Arka planı beyaz olan resimleri şeffaf yapan akıllı fonksiyon
@@ -69,14 +69,14 @@ const transparentScript = `
 `;
 
 // Insert the script right before closing </script> tag
-if (!html.includes('makeImagesTransparent')) {
-  html = html.replace('</script>', transparentScript + '\n  </script>');
-  
+if (!html.includes("makeImagesTransparent")) {
+  html = html.replace("</script>", transparentScript + "\n  </script>");
+
   // Ayrıca HTML'deki bg-white sınıfını kaldırıp şeffaf yapalım
-  html = html.replace(/bg-white rounded-2xl/g, 'bg-transparent');
-  
-  fs.writeFileSync(file, html, 'utf8');
-  console.log('Successfully added transparency script to stitch-integrations.html');
+  html = html.replace(/bg-white rounded-2xl/g, "bg-transparent");
+
+  fs.writeFileSync(file, html, "utf8");
+  console.log("Successfully added transparency script to stitch-integrations.html");
 } else {
-  console.log('Script already exists.');
+  console.log("Script already exists.");
 }

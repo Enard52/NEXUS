@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const servicesContent = fs.readFileSync('stitch-services.html', 'utf8');
+const servicesContent = fs.readFileSync("stitch-services.html", "utf8");
 
 const integrationsHtml = `<!DOCTYPE html>
 <html lang="tr">
@@ -176,5 +176,5 @@ const integrationsHtml = `<!DOCTYPE html>
 </body>
 </html>
 `;
-fs.writeFileSync('stitch-integrations.html', integrationsHtml, 'utf8');
-console.log('Created stitch-integrations.html');
+fs.writeFileSync("stitch-integrations.html", integrationsHtml, "utf8");
+console.log("Created stitch-integrations.html");

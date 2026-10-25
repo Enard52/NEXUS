@@ -6,7 +6,7 @@
   <title>NEXUS - Ev Planı</title>
   <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
   <script src="js/lucide.js"></script>
-  
+
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
     body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
@@ -15,9 +15,10 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+  <script src="data.js"></script>
 </head>
 <body>
-  <div class="w-full h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
+  <div class="w-full min-h-screen flex flex-col bg-[#ECE9FD] transition-colors duration-300">
     <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
       <a href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';" class="p-1 -ml-1 text-slate-900 active-scale">
         <i data-lucide="chevron-left" class="text-[28px]"></i>
@@ -30,92 +31,97 @@
 
     <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8">
 
-      <section class="space-y-4 mt-2">
+      <!-- Gerçek zamanlanmış otomasyonlar (nexusCustomAutomations, time tetikleyicili) -->
+      <section class="space-y-4 mt-2" id="schedule-list-wrap">
         <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Bugünkü Program</h3>
-
-        <!-- Routine 1 -->
-        <div class="bg-white rounded-3xl p-5 nexus-card-shadow relative overflow-hidden flex items-center justify-between">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500">
-              <i data-lucide="sunrise" class="text-2xl"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h4 class="font-bold text-slate-900">Günaydın</h4>
-                <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">07:00</span>
-              </div>
-              <p class="text-[11px] font-medium text-slate-500 mt-1">Işıklar %100, Kahve Makinesi, Perdeler</p>
-            </div>
-          </div>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" checked class="sr-only peer">
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
-          </label>
-        </div>
-
-        <!-- Routine 2 -->
-        <div class="bg-white rounded-3xl p-5 nexus-card-shadow relative overflow-hidden flex items-center justify-between">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-500">
-              <i data-lucide="moon-star" class="text-2xl"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h4 class="font-bold text-slate-900">Uyku Modu</h4>
-                <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">23:30</span>
-              </div>
-              <p class="text-[11px] font-medium text-slate-500 mt-1">Kapılar kilitlenir, Isı 20°C, Işıklar kapanır</p>
-            </div>
-          </div>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" checked class="sr-only peer">
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
-          </label>
-        </div>
-
-      </section>
-
-      <section class="space-y-4">
-        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Yaklaşan Otomasyonlar</h3>
-
-        <div class="bg-white/80 backdrop-blur-md rounded-3xl p-4 border border-white flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-500">
-                <i data-lucide="thermometer" class="text-xl"></i>
-              </div>
-              <div>
-                <p class="font-bold text-sm text-slate-900">Klima Otomatik Kapanma</p>
-                <p class="text-[11px] font-medium text-slate-500">Evden çıkıldığında</p>
-              </div>
-            </div>
-            <span class="text-[10px] font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded-lg">Konum Bazlı</span>
+        <div id="schedule-list" class="space-y-4"></div>
+        <!-- Otomasyon yoksa dürüst boş durum -->
+        <div id="schedule-empty" class="nx-empty hidden" style="margin: 8px auto; max-width: 420px;">
+          <div class="nx-empty__icon"><i class="w-7 h-7" data-lucide="calendar-clock"></i></div>
+          <h3 class="nx-empty__title">Zamanlanmış otomasyon yok</h3>
+          <p class="nx-empty__text">Saat belirleyen bir otomasyon ekleyince bugünün planı burada listelenir.</p>
+          <a class="nx-empty__cta" href="stitch-smart.html?tab=tab-automation"><i class="w-4 h-4" data-lucide="plus"></i>Otomasyon Ekle</a>
         </div>
       </section>
 
+      <!-- Etkin enerji stratejileri (nexusEnergyEnabledMap; zamanlama tabanlı olanlar) -->
+      <section class="space-y-4" id="strategy-wrap" style="display:none;">
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Enerji Stratejileri</h3>
+        <div id="strategy-list" class="space-y-4"></div>
+      </section>
+
+      <p class="text-center text-xs text-slate-400 leading-relaxed px-4">
+        Otomasyonlar uygulama açıkken çalışır; masaüstü uygulaması tepsideyken de zamanlamalar devam eder.
+      </p>
     </main>
   </div>
 
-<!-- DYNAMIC JS -->
+<!-- DYNAMIC JS: gerçek otomasyon ve strateji verisinden çiz -->
 <script>
-
 document.addEventListener('DOMContentLoaded', () => {
-    const toggles = document.querySelectorAll('input[type="checkbox"]');
-    const state = JSON.parse(nexusGetItem('nexusHomeScheduleData') || '{"time":"23:30","name":"Uyku Modu","active":true}');
-    if(toggles.length > 0) {
-        toggles[0].checked = state.active;
-        toggles[0].addEventListener('change', (e) => {
-            state.active = e.target.checked;
-            nexusSetItem('nexusHomeScheduleData', JSON.stringify(state));
+    var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+    var safe = function (k, f) { try { return JSON.parse(nexusGetItem(k) || 'null') || f; } catch (e) { return f; } };
+
+    // 1) Zaman tetikleyicili otomasyonlar
+    var autos = typeof readAndNormalizeItems === 'function'
+      ? readAndNormalizeItems('nexusCustomAutomations', 'automation')
+      : safe('nexusCustomAutomations', []);
+    var timed = autos.filter(function (a) { return a && a.trigger && a.trigger.type === 'time' && a.trigger.value; });
+
+    var list = document.getElementById('schedule-list');
+    var empty = document.getElementById('schedule-empty');
+    if (!timed.length) {
+        empty.classList.remove('hidden');
+    } else {
+        // saate göre sırala
+        timed.sort(function (a, b) { return String(a.trigger.value).localeCompare(String(b.trigger.value)); });
+        timed.forEach(function (a) {
+            var enabled = a.enabled !== false;
+            var el = document.createElement('a');
+            el.href = 'stitch-scenario-settings.html?id=' + encodeURIComponent(a.id) + '&type=automation';
+            el.className = 'bg-white rounded-3xl p-5 nexus-card-shadow flex items-center justify-between active-scale transition-transform block';
+            el.innerHTML =
+              '<div class="flex items-center gap-4">' +
+              '<div class="w-12 h-12 rounded-2xl ' + esc(a.bgClass || 'bg-blue-100') + ' ' + esc(a.colorClass || 'text-[#4C7DFF]') + ' flex items-center justify-center">' +
+              '<i data-lucide="' + esc(a.icon || 'clock') + '" class="text-2xl"></i></div>' +
+              '<div><div class="flex items-center gap-2">' +
+              '<h4 class="font-bold text-slate-900">' + esc(a.title) + '</h4>' +
+              '<span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">' + esc(a.trigger.value) + '</span>' +
+              '</div><p class="text-[11px] font-medium text-slate-500 mt-1">' + esc(a.desc || '') + '</p></div></div>' +
+              (enabled
+                ? '<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">Etkin</span>'
+                : '<span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">Kapalı</span>');
+            list.appendChild(el);
         });
     }
-});
 
+    // 2) Etkin enerji stratejileri
+    var enabledMap = safe('nexusEnergyEnabledMap', {});
+    var titles = Object.keys(enabledMap).filter(function (t) { return enabledMap[t]; });
+    var sWrap = document.getElementById('strategy-wrap');
+    var sList = document.getElementById('strategy-list');
+    if (titles.length) {
+        sWrap.style.display = '';
+        titles.forEach(function (t) {
+            var el = document.createElement('a');
+            el.href = 'stitch-energy.html';
+            el.className = 'bg-white/80 backdrop-blur-md rounded-3xl p-4 border border-white flex items-center justify-between active-scale transition-transform block';
+            el.innerHTML =
+              '<div class="flex items-center gap-3">' +
+              '<div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500">' +
+              '<i data-lucide="leaf" class="text-xl"></i></div>' +
+              '<div><p class="font-bold text-sm text-slate-900">' + esc(t) + '</p>' +
+              '<p class="text-[11px] font-medium text-slate-500">Enerji tasarruf stratejisi</p></div></div>' +
+              '<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">Etkin</span>';
+            sList.appendChild(el);
+        });
+    }
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+});
 </script>
-<script src="smart-card-detail-state.js"></script>
   <script data-purpose="icon-initialization">
     if (typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 </body>
 </html>
-
-

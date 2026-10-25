@@ -43,6 +43,8 @@
 <script src="ai-fab.js"></script>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="data.js"></script>
 </head>
 <body class="text-slate-900 flex flex-col relative">
@@ -167,12 +169,27 @@
   <script>
     let pendingAutomation = null;
 
+    // Kart başlığından tetikleyici türü (dürüstlük notu için): motor şu an
+    // yalnız zaman tetikleyicilerini çalıştırır; diğer türler kayıtta
+    // zamanlamaya dönüşür ve bu kullanıcıya açıkça söylenir.
+    const TRIGGER_KINDS = {
+      'Duruma Göre Başlat': 'device',
+      'Cihaz Durumu': 'device',
+      'Zamanlayıcı': 'time',
+      'Hava Durumu': 'weather',
+      'Konum': 'location',
+      'Güvenlik Modu': 'security',
+      'Alarm Tetiklendiğinde': 'security'
+    };
+
     function openConfigureSheet(title, desc, icon, colorClass, bgClass) {
       pendingAutomation = { title, desc, icon, colorClass, bgClass };
 
       document.getElementById('config-sheet-title').innerText = title;
       document.getElementById('config-sheet-desc').innerText = desc;
       window._pendingTrigger = { type: 'always' };
+      window._pendingTriggerKind = TRIGGER_KINDS[title] || 'time';
+      window._pendingSceneId = null;
       renderConfigOptions(title);
 
       const iconWrap = document.getElementById('config-sheet-icon-wrap');
@@ -214,7 +231,31 @@
       // Seçili zaman (pendingAutomation'a kaydet)
       if (!window._pendingTrigger) window._pendingTrigger = { type: 'always', deviceLabel: deviceLabel };
 
+      // Dürüstlük notu: seçilen tetikleyici türü motor tarafından henüz
+      // çalıştırılmıyorsa kullanıcıya açıkça söylenir (zamanlamaya düşer).
+      const kind = window._pendingTriggerKind || 'time';
+      const kindNote = kind === 'time' ? '' : `
+        <p class="p-3 bg-amber-50 text-amber-700 text-xs font-medium rounded-xl border border-amber-100 leading-relaxed">
+          Bu tetikleyici türü henüz otomatik çalışmıyor; kaydettiğinde aşağıda seçtiğin saatte (zamanlamayla) çalışır.
+        </p>`;
+
+      // Çalıştırılacak senaryo: motorun gerçekten yürüteceği eylem.
+      // SCENES cihaz türüne göre gerçek komut üretir (device-controls.js).
+      const scenes = (window.NX && NX.SCENES) ? NX.SCENES : {};
+      const sceneIds = Object.keys(scenes);
+      const sceneRow = sceneIds.length ? `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-3">Tetiklenince Çalışacak Senaryo</span>
+          <div class="flex flex-wrap gap-2" id="scene-option-list">
+            ${sceneIds.map(function(id) {
+              return '<button type="button" data-scene="' + id + '" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">' + scenes[id].title + '</button>';
+            }).join('')}
+            <button type="button" data-scene="" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">Yalnızca bildirim</button>
+          </div>
+        </div>` : '';
+
       target.innerHTML = `
+        ${kindNote}
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <div class="flex justify-between items-center mb-2">
             <span class="text-sm font-semibold text-slate-700">Etkilenecek Cihazlar</span>
@@ -230,7 +271,16 @@
             }).join('')}
           </div>
         </div>
+        ${sceneRow}
       `;
+    }
+
+    function selectScene(btn) {
+      document.querySelectorAll('#scene-option-list button').forEach(function(b) {
+        b.className = 'scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+      });
+      btn.className = 'scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      window._pendingSceneId = btn.getAttribute('data-scene') || null;
     }
 
     function selectTime(btn) {
@@ -291,12 +341,14 @@
         showOnHome: true,
         showInRoom: false,
         trigger: trigger,
+        sceneId: (type !== 'clickrun' && window._pendingSceneId) ? window._pendingSceneId : undefined,
         actions: []
       });
       writeNormalizedItems(storageKey, autos, type);
 
       // Temizle
       window._pendingTrigger = null;
+      window._pendingSceneId = null;
 
       window.location.href = 'stitch-smart.html?tab=' + targetTab;
     }

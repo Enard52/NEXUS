@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const html = `<!DOCTYPE html>
 <html lang="tr">
@@ -355,5 +355,5 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-fs.writeFileSync('stitch-integrations.html', html, 'utf8');
-console.log('Successfully redesigned stitch-integrations.html');
+fs.writeFileSync("stitch-integrations.html", html, "utf8");
+console.log("Successfully redesigned stitch-integrations.html");

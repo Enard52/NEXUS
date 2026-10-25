@@ -92,7 +92,8 @@
     <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
       <i class="w-5 h-5 text-slate-400 group-focus-within:text-[#4C7DFF] transition-colors" data-lucide="lock"></i>
     </div>
-    <input class="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/60 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 transition-all outline-none card-shadow" id="register-password" placeholder="Şifre Belirleyin" type="password"/>
+    <input class="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/60 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 transition-all outline-none card-shadow" id="register-password" placeholder="Şifre Belirleyin" type="password" minlength="8" autocomplete="new-password" oninput="pwStrength(this.value)"/>
+    <p class="mt-1.5 ml-1 text-[11px] font-semibold text-slate-400" id="pw-strength" aria-live="polite">En az 8 karakter; harf + rakam kullan.</p>
   </div>
 
   <!-- Confirm Password Input -->
@@ -120,6 +121,27 @@
 
 <script data-purpose="icon-initialization">
   lucide.createIcons();
+</script>
+<script data-purpose="password-strength">
+  // Basit dürüst güç göstergesi (uzunluk + çeşitlilik; zxcvbn gibi ağır bağımlılık yok)
+  function pwStrength(v) {
+    var el = document.getElementById('pw-strength');
+    if (!el) return;
+    var score = 0;
+    if (v.length >= 8) score++;
+    if (/[a-zçğıöşü]/.test(v) && /[A-ZÇĞİÖŞÜ]/.test(v)) score++;
+    if (/\d/.test(v)) score++;
+    if (/[^A-Za-z0-9çğıöşüÇĞİÖŞÜ]/.test(v)) score++;
+    var map = [
+      ['Çok zayıf — en az 8 karakter kullan.', 'text-slate-400'],
+      ['Zayıf — harf + rakam ekle.', 'text-red-500'],
+      ['Orta — büyük harf veya simge ekle.', 'text-amber-500'],
+      ['İyi.', 'text-emerald-600'],
+      ['Güçlü şifre.', 'text-emerald-600']
+    ];
+    el.textContent = map[score][0];
+    el.className = 'mt-1.5 ml-1 text-[11px] font-semibold ' + map[score][1];
+  }
 </script>
 <script data-purpose="register-interactions">
   function doRegister() {

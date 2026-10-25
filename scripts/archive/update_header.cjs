@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const homeSelectorHtml = `<!-- Home Selector -->
 <a href="stitch-household.html" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">
@@ -13,18 +13,24 @@ const homeSelectorHtml = `<!-- Home Selector -->
 </a>`;
 
 // stitch-home.html
-let home = fs.readFileSync('stitch-home.html', 'utf8');
+let home = fs.readFileSync("stitch-home.html", "utf8");
 home = home.replace(/<!-- Profile Picture[\s\S]*?<\/a>/, homeSelectorHtml);
-fs.writeFileSync('stitch-home.html', home, 'utf8');
+fs.writeFileSync("stitch-home.html", home, "utf8");
 
 // stitch-discover.html
-let discover = fs.readFileSync('stitch-discover.html', 'utf8');
-discover = discover.replace(/<a href="stitch-profile\.html" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">[\s\S]*?<\/a>/, homeSelectorHtml);
-fs.writeFileSync('stitch-discover.html', discover, 'utf8');
+let discover = fs.readFileSync("stitch-discover.html", "utf8");
+discover = discover.replace(
+  /<a href="stitch-profile\.html" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">[\s\S]*?<\/a>/,
+  homeSelectorHtml,
+);
+fs.writeFileSync("stitch-discover.html", discover, "utf8");
 
 // stitch-smart.html
-let smart = fs.readFileSync('stitch-smart.html', 'utf8');
-smart = smart.replace(/<!-- Profil -->[\s\S]*?<a href="stitch-profile\.html" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">[\s\S]*?<\/a>/, homeSelectorHtml);
-fs.writeFileSync('stitch-smart.html', smart, 'utf8');
+let smart = fs.readFileSync("stitch-smart.html", "utf8");
+smart = smart.replace(
+  /<!-- Profil -->[\s\S]*?<a href="stitch-profile\.html" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">[\s\S]*?<\/a>/,
+  homeSelectorHtml,
+);
+fs.writeFileSync("stitch-smart.html", smart, "utf8");
 
 console.log("Done");

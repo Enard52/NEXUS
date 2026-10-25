@@ -1,11 +1,11 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 // Find the space-y-4 container in tab-automation and give it an ID if it doesn't have one
 smartHtml = smartHtml.replace(
   /<div class="space-y-4">([\s\S]*?)<a href="stitch-skills\.html"/,
-  '<div class="space-y-4" id="custom-automations-container">$1</div>\n        <a href="stitch-skills.html"'
+  '<div class="space-y-4" id="custom-automations-container">$1</div>\n        <a href="stitch-skills.html"',
 );
 
 // Inject a script at the bottom of stitch-smart.html to render custom automations
@@ -63,5 +63,5 @@ const scriptHtml = `
 
 smartHtml = smartHtml.replace(/<\/body>/i, scriptHtml);
 
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Modified stitch-smart.html to load and render custom automations');
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Modified stitch-smart.html to load and render custom automations");

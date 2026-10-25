@@ -1,9 +1,10 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const file = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-scan.html';
-let content = fs.readFileSync(file, 'utf8');
+const file = "c:/Users/ensar/Desktop/NEXUS-main/stitch-scan.html";
+let content = fs.readFileSync(file, "utf8");
 
-const targetRegex = /<button class="flex flex-col items-center gap-2\.5 text-white\/90" onclick="toggleCodeSheet\(\)">[\s\S]*?<span class="text-sm leading-tight text-center">Kurulum<br\/>Kodunu Girin<\/span>[\s\S]*?<\/button>/;
+const targetRegex =
+  /<button class="flex flex-col items-center gap-2\.5 text-white\/90" onclick="toggleCodeSheet\(\)">[\s\S]*?<span class="text-sm leading-tight text-center">Kurulum<br\/>Kodunu Girin<\/span>[\s\S]*?<\/button>/;
 
 const replacement = `<a class="flex flex-col items-center gap-2.5 text-white/90" href="stitch-integrations.html">
 <span class="w-14 h-14 rounded-2xl bg-[#7C5CFF]/80 flex items-center justify-center shadow-lg shadow-[#7C5CFF]/30">
@@ -15,7 +16,7 @@ const replacement = `<a class="flex flex-col items-center gap-2.5 text-white/90"
 if (targetRegex.test(content)) {
   content = content.replace(targetRegex, replacement);
   fs.writeFileSync(file, content);
-  console.log('Replaced successfully');
+  console.log("Replaced successfully");
 } else {
-  console.log('Target not found');
+  console.log("Target not found");
 }

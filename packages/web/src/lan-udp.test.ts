@@ -12,7 +12,9 @@ const SOURCE = readFileSync(resolve(REPO_ROOT, "lan-connectors.js"), "utf8");
 
 type Udp = (o: any) => Promise<any>;
 function load(udp: Udp | null, http?: (o: any) => Promise<any>) {
-  const desktop: Record<string, unknown> = { http: http ?? (() => Promise.reject(new Error("http yok"))) };
+  const desktop: Record<string, unknown> = {
+    http: http ?? (() => Promise.reject(new Error("http yok"))),
+  };
   if (udp) desktop.udp = udp;
   const win: Record<string, unknown> = { nexusDesktop: desktop };
   new Function("window", "fetch", SOURCE)(win, () => Promise.reject(new Error("fetch yok")));
@@ -37,8 +39,15 @@ describe("WiZ", () => {
       if (o.port !== 38899) return Promise.reject(new Error("zaman asimi"));
       const req = JSON.parse(o.text);
       sent.push(req);
-      if (req.method === "getSystemConfig") return Promise.resolve({ text: JSON.stringify({ method: "getSystemConfig", result: { mac: "a8bb50112233", moduleName: "ESP01_SHRGB_03" } }) });
-      if (req.method === "getPilot") return Promise.resolve({ text: JSON.stringify({ result: { state: true, dimming: 40 } }) });
+      if (req.method === "getSystemConfig")
+        return Promise.resolve({
+          text: JSON.stringify({
+            method: "getSystemConfig",
+            result: { mac: "a8bb50112233", moduleName: "ESP01_SHRGB_03" },
+          }),
+        });
+      if (req.method === "getPilot")
+        return Promise.resolve({ text: JSON.stringify({ result: { state: true, dimming: 40 } }) });
       return Promise.resolve({ text: JSON.stringify({ result: { success: true } }) });
     });
     const found = await lan.identify("192.168.1.30");
@@ -59,8 +68,15 @@ describe("LIFX", () => {
     const b = new Array(36 + 52).fill(0);
     b[32] = 107;
     const p = 36;
-    const put = (o: number, n: number) => { b[p + o] = n & 255; b[p + o + 1] = (n >> 8) & 255; };
-    put(0, 1000); put(2, 40000); put(4, bright); put(6, 3500); put(10, power);
+    const put = (o: number, n: number) => {
+      b[p + o] = n & 255;
+      b[p + o + 1] = (n >> 8) & 255;
+    };
+    put(0, 1000);
+    put(2, 40000);
+    put(4, bright);
+    put(6, 3500);
+    put(10, power);
     for (let i = 0; i < label.length; i++) b[p + 12 + i] = label.charCodeAt(i);
     return hex(b);
   }
@@ -72,7 +88,8 @@ describe("LIFX", () => {
       const b = bytes(o.hex);
       sent.push(b);
       expect(b[0] | (b[1] << 8)).toBe(b.length); // boyut alani
-      expect(b[2]).toBe(0x00); expect(b[3]).toBe(0x14); // protokol 1024 + addressable
+      expect(b[2]).toBe(0x00);
+      expect(b[3]).toBe(0x14); // protokol 1024 + addressable
       expect(b[22] & 1).toBe(1); // res_required
       const type = b[32] | (b[33] << 8);
       if (type === 101) return Promise.resolve({ hex: lightState(65535, 32768, "Salon") });
@@ -104,8 +121,18 @@ describe("Govee", () => {
       calls.push(o);
       if (o.noReply) return Promise.resolve({ sent: true });
       const msg = JSON.parse(o.text).msg;
-      if (msg.cmd === "scan") return Promise.resolve({ text: JSON.stringify({ msg: { cmd: "scan", data: { ip: "192.168.1.50", device: "AA:BB:CC:DD:EE:FF:11:22", sku: "H6008" } } }) });
-      return Promise.resolve({ text: JSON.stringify({ msg: { cmd: "devStatus", data: { onOff: 1, brightness: 70 } } }) });
+      if (msg.cmd === "scan")
+        return Promise.resolve({
+          text: JSON.stringify({
+            msg: {
+              cmd: "scan",
+              data: { ip: "192.168.1.50", device: "AA:BB:CC:DD:EE:FF:11:22", sku: "H6008" },
+            },
+          }),
+        });
+      return Promise.resolve({
+        text: JSON.stringify({ msg: { cmd: "devStatus", data: { onOff: 1, brightness: 70 } } }),
+      });
     });
     const found = await lan.identify("192.168.1.50");
     expect(found.protocol).toBe("govee");
@@ -122,11 +149,18 @@ describe("Govee", () => {
 describe("Sonoff DIY", () => {
   it("zeroconf/info ile taninir ve switch yazar", async () => {
     const reqs: any[] = [];
-    const lan = load(() => Promise.reject(new Error("udp yok")), (o) => {
-      reqs.push(o);
-      if (o.url.endsWith("/zeroconf/info")) return Promise.resolve({ status: 200, text: JSON.stringify({ error: 0, data: { switch: "off", deviceid: "10001abcd" } }) });
-      return Promise.resolve({ status: 200, text: JSON.stringify({ error: 0, data: {} }) });
-    });
+    const lan = load(
+      () => Promise.reject(new Error("udp yok")),
+      (o) => {
+        reqs.push(o);
+        if (o.url.endsWith("/zeroconf/info"))
+          return Promise.resolve({
+            status: 200,
+            text: JSON.stringify({ error: 0, data: { switch: "off", deviceid: "10001abcd" } }),
+          });
+        return Promise.resolve({ status: 200, text: JSON.stringify({ error: 0, data: {} }) });
+      },
+    );
     const dev = { host: "192.168.1.60", protocol: "sonoff" };
     const found = await lan.identify("192.168.1.60");
     expect(found.protocol).toBe("sonoff");
@@ -136,4 +170,3 @@ describe("Sonoff DIY", () => {
     expect(JSON.parse(reqs.at(-1).body).data).toEqual({ switch: "on" });
   });
 });
-

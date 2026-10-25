@@ -520,3 +520,61 @@ window.nexusCopy = function (text) {
   s.defer = true;
   (document.head || document.documentElement).appendChild(s);
 })();
+
+// Otomasyon motoru (issue #24): zaman tetikleyicilerini değerlendirir.
+// Tüm sayfalara eklenir; sahiplik kalp atışı ile tek pencerede toplanır.
+// Giriş yapmamış (auth) sayfalarda çalışmasına gerek yok.
+(function () {
+  if (document.querySelector('script[src="automation-engine.js"]')) return;
+  var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+  var AUTH = ['index', 'stitch-login', 'stitch-register', 'stitch-forgot-password', 'stitch-onboarding'];
+  if (AUTH.indexOf(page) !== -1) return;
+  var s = document.createElement('script');
+  s.src = 'automation-engine.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
+
+// PWA (issue #17): kurulum (ana ekrana/masaüstüne ekle) + temel çevrimdışı
+// kabuk. Manifest head'e statik eklenmez (sayfalar çok); runtime eklenir.
+// Service worker yalnızca gerçek http(s) üzerinde kayıtlı olur (file:// hariç).
+(function () {
+  if (!document.querySelector('link[rel="manifest"]')) {
+    var m = document.createElement('link');
+    m.rel = 'manifest';
+    m.href = 'manifest.webmanifest';
+    document.head.appendChild(m);
+  }
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* kurulum başarısızsa uygulama normal çalışır */ });
+    });
+  }
+})();
+
+// Anonim hata raporlama (issue #15): window.onerror → client-error Edge
+// Function. Kişisel veri yok (sayfa, sürüm, platform, mesaj). Ayarlardan
+// kapatılabilir: nexusSetItem('nexusErrorReporting', 'off').
+(function () {
+  if (window.__nexusErrorHook) return;
+  window.__nexusErrorHook = true;
+  var sent = 0;
+  window.addEventListener('error', function (e) {
+    try {
+      if (nexusGetItem('nexusErrorReporting') === 'off') return;
+      if (!window.NEXUS_CLOUD || !NEXUS_CLOUD.url || sent >= 5) return; // oturum başına en fazla 5
+      sent++;
+      fetch(NEXUS_CLOUD.url.replace(/\/$/, '') + '/functions/v1/client-error', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page: location.pathname.split('/').pop(),
+          version: window.NEXUS_APP_VERSION || '',
+          platform: document.documentElement.classList.contains('nx-desk') ? 'desktop'
+            : (window.Capacitor && Capacitor.isNativePlatform ? 'android' : 'web'),
+          message: String(e.message || '').slice(0, 400) + ' @' + String((e.filename || '')).split('/').pop() + ':' + (e.lineno || 0)
+        })
+      }).catch(function () { /* sessiz: raporlama hatası kullanıcıyı rahatsız etmez */ });
+    } catch (err2) { /* asla ikincil hata üretme */ }
+  });
+})();

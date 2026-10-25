@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let skillsHtml = fs.readFileSync('stitch-skills.html', 'utf8');
+let skillsHtml = fs.readFileSync("stitch-skills.html", "utf8");
 
 // 1. Replace sparkles with zap in Duruma Göre Başlat card
 // This is exactly the one inside bg-emerald-500/10
@@ -8,7 +8,7 @@ skillsHtml = skillsHtml.replace(
   /<div class="w-14 h-14 rounded-2xl bg-emerald-500\/10 text-emerald-600 flex items-center justify-center flex-shrink-0">\s*<i class="w-7 h-7" data-lucide="sparkles"><\/i>\s*<\/div>/,
   `<div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
         <i class="w-7 h-7" data-lucide="zap"></i>
-      </div>`
+      </div>`,
 );
 
 // 2. Append Quick Create Button at the bottom of <main>
@@ -139,5 +139,5 @@ const bottomSheetCode = `
 `;
 
 skillsHtml = skillsHtml.replace(/<\/body>/i, bottomSheetCode);
-fs.writeFileSync('stitch-skills.html', skillsHtml, 'utf8');
-console.log('Added quick create feature and changed sparkle to zap');
+fs.writeFileSync("stitch-skills.html", skillsHtml, "utf8");
+console.log("Added quick create feature and changed sparkle to zap");

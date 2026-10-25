@@ -56,18 +56,9 @@
   }
 
   var configs = {
-    'stitch-home-schedule.html': {
-      title: 'Ev planı bekliyor',
-      text: 'Bir plan oluşturduğunda saat ve aksiyonlar burada gerçek verilerle görünecek.',
-      icon: 'lucide:calendar-clock',
-      keys: ['nexusHomeScheduleData']
-    },
-    'stitch-multi-video.html': {
-      title: 'Kamera yok',
-      text: 'Canlı görüntü göstermek için önce kamera eşleştir.',
-      icon: 'lucide:video',
-      deviceKeywords: ['camera', 'kamera']
-    },
+    // Not: stitch-multi-video ve stitch-home-schedule kendi gerçek-veri
+    // render'larını (kamera listesi / otomasyon programı) içerir; bu katman
+    // o iki sayfada devre dışıdır.
     'stitch-room-scenes.html': {
       title: 'Oda sahnesi seçilmedi',
       text: 'Salon veya mutfak için sahne kaydedince bu sayfa dolacak.',

@@ -1,5 +1,5 @@
-const fs = require('fs');
-let html = fs.readFileSync('stitch-map.html', 'utf8');
+const fs = require("fs");
+let html = fs.readFileSync("stitch-map.html", "utf8");
 
 const newFunction = `async function locateMe() {
       setStatus('Konumun bulunuyor...');
@@ -36,6 +36,9 @@ const newFunction = `async function locateMe() {
       }
     }`;
 
-html = html.replace(/function locateMe\(\) \{[\s\S]*?setStatus\('Konum izni verilmedi\.'\);\s*\}\);\s*\}/, newFunction);
+html = html.replace(
+  /function locateMe\(\) \{[\s\S]*?setStatus\('Konum izni verilmedi\.'\);\s*\}\);\s*\}/,
+  newFunction,
+);
 
-fs.writeFileSync('stitch-map.html', html, 'utf8');
+fs.writeFileSync("stitch-map.html", html, "utf8");

@@ -1,14 +1,14 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const homeFile = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-home.html';
-const smartFile = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-smart.html';
-const scanFile = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-scan.html';
-const chatFile = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-chat.html';
+const homeFile = "c:/Users/ensar/Desktop/NEXUS-main/stitch-home.html";
+const smartFile = "c:/Users/ensar/Desktop/NEXUS-main/stitch-smart.html";
+const scanFile = "c:/Users/ensar/Desktop/NEXUS-main/stitch-scan.html";
+const chatFile = "c:/Users/ensar/Desktop/NEXUS-main/stitch-chat.html";
 
-let homeContent = fs.readFileSync(homeFile, 'utf8');
-let smartContent = fs.readFileSync(smartFile, 'utf8');
-let scanContent = fs.readFileSync(scanFile, 'utf8');
-let chatContent = fs.readFileSync(chatFile, 'utf8');
+let homeContent = fs.readFileSync(homeFile, "utf8");
+let smartContent = fs.readFileSync(smartFile, "utf8");
+let scanContent = fs.readFileSync(scanFile, "utf8");
+let chatContent = fs.readFileSync(chatFile, "utf8");
 
 // 1. Remove 'Manuel Ekle'
 const manualStr = `<a class="flex items-center space-x-4 p-3 rounded-2xl active:bg-slate-50 transition-colors" data-purpose="action-item" href="stitch-integrations.html">
@@ -18,12 +18,12 @@ const manualStr = `<a class="flex items-center space-x-4 p-3 rounded-2xl active:
 <span class="text-xl font-semibold text-slate-800">Manuel Ekle</span>
 </a>`;
 
-homeContent = homeContent.replace(manualStr, '');
-smartContent = smartContent.replace(manualStr, '');
+homeContent = homeContent.replace(manualStr, "");
+smartContent = smartContent.replace(manualStr, "");
 
 fs.writeFileSync(homeFile, homeContent);
 fs.writeFileSync(smartFile, smartContent);
-console.log('Removed manual ekle from home and smart.');
+console.log("Removed manual ekle from home and smart.");
 
 // 2. Scan file button
 const scanLinkStr = `<a class="mx-auto flex items-center gap-1 text-white/70 font-medium" href="stitch-integrations.html">
@@ -38,7 +38,7 @@ const newScanBtn = `<a class="mx-auto flex items-center justify-center gap-2 bg-
 
 scanContent = scanContent.replace(scanLinkStr, newScanBtn);
 fs.writeFileSync(scanFile, scanContent);
-console.log('Updated scan file button.');
+console.log("Updated scan file button.");
 
 // 3. Update chat input
 const oldChatInputStr = `<div class="px-4 pb-6 pt-2 shrink-0 bg-white/80 backdrop-blur-md" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));" data-purpose="chat-input-container">
@@ -94,8 +94,8 @@ const newChatInputStr = `<div class="px-4 pb-6 pt-2 shrink-0 bg-white/80 backdro
   </div>`;
 
 // Add custom-gradient-border CSS if not present
-if (!chatContent.includes('.custom-gradient-border')) {
-    const cssStyle = `
+if (!chatContent.includes(".custom-gradient-border")) {
+  const cssStyle = `
   <style data-purpose="custom-gradient-border">
     .custom-gradient-border {
       position: relative;
@@ -118,9 +118,9 @@ if (!chatContent.includes('.custom-gradient-border')) {
     }
   </style>
 </head>`;
-    chatContent = chatContent.replace('</head>', cssStyle);
+  chatContent = chatContent.replace("</head>", cssStyle);
 }
 
 chatContent = chatContent.replace(oldChatInputStr, newChatInputStr);
 fs.writeFileSync(chatFile, chatContent);
-console.log('Updated chat input.');
+console.log("Updated chat input.");

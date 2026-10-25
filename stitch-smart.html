@@ -244,12 +244,15 @@
       <!-- END: Tıkla ve çalıştır Tab -->
 
       <!-- BEGIN: Otomasyon Tab -->
-      <!-- BEGIN: Otomasyon Tab -->
       <div id="tab-automation" class="hidden">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-between mb-2">
           <h3 class="text-xl font-bold text-gray-900">Otomasyonlar</h3>
           <span id="automation-active-count" class="hidden bg-[#4C7DFF]/10 text-[#4C7DFF] text-xs font-bold px-2 py-1 rounded-lg"></span>
         </div>
+        <!-- Dürüst çalışma bilgisi: motor açık uygulama/tepsi ile sınırlı -->
+        <p class="text-xs text-slate-400 font-medium mb-4 leading-relaxed" data-purpose="automation-engine-note">
+          Zamanlamalı otomasyonlar uygulama açıkken çalışır; masaüstü uygulaması tepsideyken de zamanlamalar devam eder.
+        </p>
         <div class="space-y-4" id="custom-automations-container">
           <!-- Dinamik Otomasyon kartları buraya eklenecek -->
         </div>
@@ -425,17 +428,34 @@ function toggleHomeSelector() {
         if (autoContainer) {
           autoContainer.innerHTML = ''; // Clear previous items to prevent duplicates
 
-          // Update active count badge
+          // Update active count badge (yalnız gerçekten etkin olanlar)
+          const enabledAutos = autos.filter((a) => a.enabled !== false);
           if (activeBadge) {
-            if (autos.length > 0) {
-              activeBadge.textContent = autos.length + ' Aktif';
+            if (enabledAutos.length > 0) {
+              activeBadge.textContent = enabledAutos.length + ' Aktif';
               activeBadge.classList.remove('hidden');
             } else {
               activeBadge.classList.add('hidden');
             }
           }
 
+          // Son çalıştırma bilgisi (otomasyon motorunun gerçek günlüğü)
+          let runs = {};
+          try { runs = JSON.parse(nexusGetItem('nexusAutomationRuns') || '{}') || {}; } catch (e) {}
+
           autos.forEach((auto) => {
+            const run = runs[auto.id];
+            const triggerText = auto.trigger && auto.trigger.type === 'time' && auto.trigger.value
+              ? (auto.trigger.value === 'sunset' ? 'Gün batımı' : auto.trigger.value)
+              : null;
+            let meta = '';
+            if (triggerText && run) {
+              meta = triggerText + ' · Son: ' + new Date(run.ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + (run.missed ? ' (kaçırıldı)' : '');
+            } else if (triggerText) {
+              meta = triggerText + ' · Henüz çalışmadı';
+            } else if (run) {
+              meta = 'Son: ' + new Date(run.ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            }
             const div = document.createElement('div');
             div.className = "bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-50 flex items-center justify-between gap-3 mt-4 cursor-pointer";
             div.onclick = () => {
@@ -449,6 +469,7 @@ function toggleHomeSelector() {
                   <div class="min-w-0">
                     <h4 class="font-bold text-slate-800 text-sm truncate">${auto.title}</h4>
                     <p class="text-xs text-slate-500 mt-0.5 line-clamp-2">${auto.desc}</p>
+                    ${meta ? `<p class="text-[10px] font-semibold text-slate-400 mt-1">${meta}</p>` : ''}
                   </div>
                 </div>
                 <div class="flex items-center gap-3 shrink-0">

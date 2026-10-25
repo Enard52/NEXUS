@@ -40,9 +40,12 @@ const meta = {
     },
     desc: {
       home: "NEXUS controls your smart home on your own network with no hub or cloud fee. Free to start, with an optional NEXUS+ plan for a larger NEXUS AI allowance.",
-      about: "NEXUS is a local-first smart home assistant. Learn what it is, how it works and what we believe about privacy and ownership of your home data.",
-      privacy: "What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data.",
-      terms: "The terms for using NEXUS apps and services: licence, accounts, NEXUS+ subscription, safety and liability.",
+      about:
+        "NEXUS is a local-first smart home assistant. Learn what it is, how it works and what we believe about privacy and ownership of your home data.",
+      privacy:
+        "What data NEXUS processes, where and why: local control by default, account sync stored with Supabase, payments by Whop, and no selling of personal data.",
+      terms:
+        "The terms for using NEXUS apps and services: licence, accounts, NEXUS+ subscription, safety and liability.",
       refund: "Free trial, cancellation and refund terms for the NEXUS+ subscription.",
     },
     locale: "en_US",
@@ -58,9 +61,12 @@ const meta = {
     },
     desc: {
       home: "NEXUS, akıllı evinizi hub ya da bulut ücreti olmadan kendi ağınızda yönetir. Ücretsiz başlayın; daha büyük NEXUS AI hakkı için isteğe bağlı NEXUS+ planı.",
-      about: "NEXUS, yerel öncelikli bir akıllı ev asistanıdır. Nasıl çalıştığını, gizlilik ve ev verilerinizin size ait olması konusundaki yaklaşımımızı öğrenin.",
-      privacy: "NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması.",
-      terms: "NEXUS uygulama ve hizmetlerinin kullanım şartları: lisans, hesaplar, NEXUS+ aboneliği, güvenlik ve sorumluluk.",
+      about:
+        "NEXUS, yerel öncelikli bir akıllı ev asistanıdır. Nasıl çalıştığını, gizlilik ve ev verilerinizin size ait olması konusundaki yaklaşımımızı öğrenin.",
+      privacy:
+        "NEXUS hangi verileri, nerede ve neden işler: varsayılan yerel kontrol, Supabase'te hesap senkronu, Whop ile ödeme ve kişisel verilerin satılmaması.",
+      terms:
+        "NEXUS uygulama ve hizmetlerinin kullanım şartları: lisans, hesaplar, NEXUS+ aboneliği, güvenlik ve sorumluluk.",
       refund: "NEXUS+ aboneliği için ücretsiz deneme, iptal ve iade koşulları.",
     },
     locale: "tr_TR",
@@ -87,7 +93,8 @@ function stripTags(s) {
 
 function faqFrom(html) {
   const out = [];
-  const re = /<div class="faq-question">([\s\S]*?)<\/div>\s*<div class="faq-answer">([\s\S]*?)<\/div>/g;
+  const re =
+    /<div class="faq-question">([\s\S]*?)<\/div>\s*<div class="faq-answer">([\s\S]*?)<\/div>/g;
   let m;
   while ((m = re.exec(html))) {
     out.push({
@@ -137,7 +144,7 @@ for (const [file, route, lang, kind] of pages) {
     lines.push(`<meta name="robots" content="noindex,follow" />`);
   } else {
     lines.push(
-      `<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />`
+      `<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />`,
     );
   }
   const canonical = kind === "light" ? abs("/", lang) : indexable ? canonicalTarget : null;
@@ -159,14 +166,15 @@ for (const [file, route, lang, kind] of pages) {
     lines.push(`<meta property="og:image:width" content="1200" />`);
     lines.push(`<meta property="og:image:height" content="630" />`);
     lines.push(
-      `<meta property="og:image:alt" content="${lang === "tr" ? "NEXUS akıllı ev uygulaması" : "NEXUS smart home app"}" />`
+      `<meta property="og:image:alt" content="${lang === "tr" ? "NEXUS akıllı ev uygulaması" : "NEXUS smart home app"}" />`,
     );
     lines.push(`<meta name="twitter:card" content="summary_large_image" />`);
     lines.push(`<meta name="twitter:title" content="${esc(title)}" />`);
     lines.push(`<meta name="twitter:description" content="${esc(desc)}" />`);
     lines.push(`<meta name="twitter:image" content="${BASE}/og-cover.png" />`);
   }
-  if (kind === "home") lines.push(`<meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />`);
+  if (kind === "home")
+    lines.push(`<meta name="msvalidate.01" content="00B49BF0F151CA4A717AADE975BB3380" />`);
   lines.push(`<meta name="application-name" content="NEXUS" />`);
   lines.push(`<meta name="apple-mobile-web-app-title" content="NEXUS" />`);
   html = html.replace(/(<title>[\s\S]*?<\/title>)/i, `$1\n  ${lines.join("\n  ")}`);
@@ -183,7 +191,12 @@ for (const [file, route, lang, kind] of pages) {
         url: BASE + "/",
         logo: BASE + "/icon.svg",
         email: SUPPORT_EMAIL,
-        contactPoint: { "@type": "ContactPoint", email: SUPPORT_EMAIL, contactType: "customer support", availableLanguage: ["en", "tr"] },
+        contactPoint: {
+          "@type": "ContactPoint",
+          email: SUPPORT_EMAIL,
+          contactType: "customer support",
+          availableLanguage: ["en", "tr"],
+        },
       },
       {
         "@type": "WebSite",
@@ -208,34 +221,80 @@ for (const [file, route, lang, kind] of pages) {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       },
     ];
-    if (faq.length) graph.push({ "@type": "FAQPage", "@id": canonicalTarget + "#faq", mainEntity: faq });
+    if (faq.length)
+      graph.push({ "@type": "FAQPage", "@id": canonicalTarget + "#faq", mainEntity: faq });
     const ld = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
-    html = html.replace("</head>", `  <script type="application/ld+json">\n${ld}\n  </script>\n</head>`);
+    html = html.replace(
+      "</head>",
+      `  <script type="application/ld+json">\n${ld}\n  </script>\n</head>`,
+    );
   }
 
   // --- iletişim adresi ---
   const mail = '<a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + "</a>";
-  const enContact = /<p>If you have questions or requests about this Privacy Policy or your data, [^<]*<\/p>/;
-  const trContact = /<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için [^<]*<\/p>/;
-  html = html.replace(enContact, "<p>If you have questions or requests about this Privacy Policy or your data, contact us at " + mail + ".</p>");
-  html = html.replace(trContact, "<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için " + mail + " adresinden bize ulaşabilirsiniz.</p>");
+  const enContact =
+    /<p>If you have questions or requests about this Privacy Policy or your data, [^<]*<\/p>/;
+  const trContact =
+    /<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için [^<]*<\/p>/;
+  html = html.replace(
+    enContact,
+    "<p>If you have questions or requests about this Privacy Policy or your data, contact us at " +
+      mail +
+      ".</p>",
+  );
+  html = html.replace(
+    trContact,
+    "<p>Bu Gizlilik Politikası veya verilerinizle ilgili sorularınız için " +
+      mail +
+      " adresinden bize ulaşabilirsiniz.</p>",
+  );
   // Ana sayfa: erken erişim bölümünde destek düğmesi (yoksa ekle)
   if (kind === "home" && !html.includes('class="early-access-actions"')) {
     const label = lang === "tr" ? "Destek / geri bildirim" : "Support / feedback";
-    const btn = '\n          <p class="early-access-actions"><a class="button button-secondary" href="mailto:' + SUPPORT_EMAIL + '?subject=NEXUS">' + label + "</a></p>";
-    html = html.replace(/(<section[^>]*id="early-access"[\s\S]*?<p class="section-copy">[\s\S]*?<\/p>)/, "$1" + btn);
+    const btn =
+      '\n          <p class="early-access-actions"><a class="button button-secondary" href="mailto:' +
+      SUPPORT_EMAIL +
+      '?subject=NEXUS">' +
+      label +
+      "</a></p>";
+    html = html.replace(
+      /(<section[^>]*id="early-access"[\s\S]*?<p class="section-copy">[\s\S]*?<\/p>)/,
+      "$1" + btn,
+    );
   }
 
   // --- alt bilgi: destek adresi her sayfada, kaldırılan macOS bağlantısı ve doğrulanmamış şirket unvanı yok ---
-  html = html.replace(/(<h3>(?:Company &amp; legal|Company & legal|Şirket ve yasal)<\/h3>[\s\S]*?)(<\/div>)/, (m, a, b) =>
-    a.includes("mailto:") ? m : a + '  <a href="mailto:' + SUPPORT_EMAIL + '">' + (lang === "tr" ? "Destek" : "Support") + "</a>\n        " + b
+  html = html.replace(
+    /(<h3>(?:Company &amp; legal|Company & legal|Şirket ve yasal)<\/h3>[\s\S]*?)(<\/div>)/,
+    (m, a, b) =>
+      a.includes("mailto:")
+        ? m
+        : a +
+          '  <a href="mailto:' +
+          SUPPORT_EMAIL +
+          '">' +
+          (lang === "tr" ? "Destek" : "Support") +
+          "</a>\n        " +
+          b,
   );
-  if (!html.includes('href="/refund"')) html = html.replace(/(<a href="\/terms">[^<]*<\/a>)/, (m) => m + '\n          <a href="/refund">' + (lang === "tr" ? "İade Politikası" : "Refund Policy") + "</a>");
+  if (!html.includes('href="/refund"'))
+    html = html.replace(
+      /(<a href="\/terms">[^<]*<\/a>)/,
+      (m) =>
+        m +
+        '\n          <a href="/refund">' +
+        (lang === "tr" ? "İade Politikası" : "Refund Policy") +
+        "</a>",
+    );
   html = html.replace(/\s*<a href="#downloads">macOS<\/a>/g, "");
   html = html.split("© 2026 NEXUS Technologies Inc.").join("© 2026 NEXUS");
 
   // --- hero etiketi: işletim sistemi adları yok ---
-  html = html.replace(/(<span class="eyebrow-dot"><\/span>)\s*Windows · Linux · (?:local network|yerel ağ)/g, (m, dot) => dot + " " + (lang === "tr" ? "Yerel öncelikli akıllı ev" : "Local-first smart home"));
+  html = html.replace(
+    /(<span class="eyebrow-dot"><\/span>)\s*Windows · Linux · (?:local network|yerel ağ)/g,
+    (m, dot) =>
+      dot + " " + (lang === "tr" ? "Yerel öncelikli akıllı ev" : "Local-first smart home"),
+  );
 
   // --- other stale host refs ---
   html = html.split("https://enard52.github.io").join(BASE);
@@ -251,7 +310,7 @@ for (const [file, route, lang, kind] of pages) {
 // --- robots.txt ---
 fs.writeFileSync(
   path.join(root, "robots.txt"),
-  `User-agent: *\nAllow: /\nDisallow: /login\nDisallow: /tr/login\nDisallow: /light\nDisallow: /tr/light\n\nSitemap: ${BASE}/sitemap.xml\n`
+  `User-agent: *\nAllow: /\nDisallow: /login\nDisallow: /tr/login\nDisallow: /light\nDisallow: /tr/light\n\nSitemap: ${BASE}/sitemap.xml\n`,
 );
 
 // --- sitemap.xml with hreflang alternates ---

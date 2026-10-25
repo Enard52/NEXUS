@@ -1,7 +1,7 @@
-const fs = require('fs');
+const fs = require("fs");
 
 // --- Modify stitch-dnd.html ---
-let dndHtml = fs.readFileSync('stitch-dnd.html', 'utf8');
+let dndHtml = fs.readFileSync("stitch-dnd.html", "utf8");
 
 const newSelectDnd = `
     function selectDnd(item) {
@@ -28,16 +28,15 @@ const newSelectDnd = `
 `;
 
 dndHtml = dndHtml.replace(
-    /function selectDnd\(item\) \{[\s\S]*?localStorage\.setItem\('nexusDndState'.*?\);\s*\}/,
-    newSelectDnd.trim()
+  /function selectDnd\(item\) \{[\s\S]*?localStorage\.setItem\('nexusDndState'.*?\);\s*\}/,
+  newSelectDnd.trim(),
 );
 
-fs.writeFileSync('stitch-dnd.html', dndHtml, 'utf8');
-console.log('Updated stitch-dnd.html to save nexusDndEndTime');
-
+fs.writeFileSync("stitch-dnd.html", dndHtml, "utf8");
+console.log("Updated stitch-dnd.html to save nexusDndEndTime");
 
 // --- Modify stitch-home.html ---
-let homeHtml = fs.readFileSync('stitch-home.html', 'utf8');
+let homeHtml = fs.readFileSync("stitch-home.html", "utf8");
 
 // The original syncCards has:
 // var state = localStorage.getItem('nexusDndState');
@@ -93,10 +92,9 @@ const newDndSyncLogic = `
 `;
 
 homeHtml = homeHtml.replace(
-    /\/\/ Rahatsız Etme \(DND\) Senkronizasyonu[\s\S]*?if \(dndEl\) \{[\s\S]*?\}\s*\} else \{[\s\S]*?\}\s*\}/,
-    newDndSyncLogic.trim()
+  /\/\/ Rahatsız Etme \(DND\) Senkronizasyonu[\s\S]*?if \(dndEl\) \{[\s\S]*?\}\s*\} else \{[\s\S]*?\}\s*\}/,
+  newDndSyncLogic.trim(),
 );
 
-fs.writeFileSync('stitch-home.html', homeHtml, 'utf8');
-console.log('Updated stitch-home.html to display live countdown for DND');
-
+fs.writeFileSync("stitch-home.html", homeHtml, "utf8");
+console.log("Updated stitch-home.html to display live countdown for DND");

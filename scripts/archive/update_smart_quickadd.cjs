@@ -1,11 +1,11 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 // 1. Replace onclick on the Hızlı ekle button
 smartHtml = smartHtml.replace(
   /onclick="window\.location\.href='stitch-plus\.html'"/g,
-  'onclick="toggleQuickAdd()"'
+  'onclick="toggleQuickAdd()"',
 );
 
 // 2. The Quick Add menu HTML to inject
@@ -87,10 +87,10 @@ const toggleScript = `
     }
 `;
 
-if (!smartHtml.includes('function toggleQuickAdd')) {
+if (!smartHtml.includes("function toggleQuickAdd")) {
   // Inject before </body>
   smartHtml = smartHtml.replace(/(<\/body>)/i, `<script>\n${toggleScript}\n</script>\n$1`);
 }
 
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Updated stitch-smart.html Quick Add Menu');
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Updated stitch-smart.html Quick Add Menu");

@@ -81,13 +81,11 @@
               <i data-lucide="shield-check" class="w-6 h-6 text-[#4C7DFF]"></i>
               <div>
                 <p class="text-base font-semibold">İki Adımlı Doğrulama</p>
-                <p class="text-xs font-medium" id="two-factor-status">Aktif</p>
+                <p class="text-xs text-medium text-slate-500" id="two-factor-status">Yakında (TOTP uygulama kodu)</p>
               </div>
             </div>
-            <label class="switch">
-              <input type="checkbox" id="two-factor-toggle">
-              <span class="slider"></span>
-            </label>
+            <!-- Dürüstlük: TOTP henüz yok; sahte "Aktif" durumu gösterilmez -->
+            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">Yakında</span>
           </div>
           <button type="button" onclick="toggleSection('recovery-section')" class="w-full flex items-center justify-between px-5 py-5 active:bg-gray-50 text-left">
             <div class="flex items-center gap-3">
@@ -136,8 +134,22 @@
         </div>
       </section>
 
-      <button type="button" onclick="signOutOtherSessions()" class="w-full flex items-center justify-center gap-2 py-4 text-red-500 font-bold text-sm active:scale-95 transition-transform">
-        <i data-lucide="log-out" class="w-5 h-5"></i>
+      <!-- Hesabımı Sil (issue #11): bulut hesabı + veriler; iki adımlı onay -->
+      <section class="space-y-3">
+        <h3 class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Hesabım</h3>
+        <div class="bg-white dark:bg-slate-900 rounded-3xl nexus-shadow border border-transparent dark:border-slate-800 px-5 py-5">
+          <div class="flex items-start gap-3">
+            <i data-lucide="trash-2" class="w-6 h-6 text-red-400 mt-0.5"></i>
+            <div class="min-w-0">
+              <p class="text-base font-semibold">Hesabımı Sil</p>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Hesabın, profilin ve senkronize verilerin kalıcı olarak silinir. Aktif NEXUS+ aboneliğin varsa önce Faturalandırma'dan iptal et. Bu işlem geri alınamaz.</p>
+              <button type="button" id="delete-account-btn" data-stage="" onclick="requestAccountDeletion()" class="mt-4 w-full rounded-2xl border border-red-200 bg-red-50 text-red-600 py-3 text-sm font-bold active:scale-95 transition-transform">Hesabımı Sil</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <button type="button" onclick="signOutOtherSessions()" class="w-full flex items-center justify-center gap-2 py-4 text-red-500 font-bold text-sm active:scale-95 transition-transform">        <i data-lucide="log-out" class="w-5 h-5"></i>
         Diğer Oturumları Kapat
       </button>
     </main>
@@ -189,12 +201,8 @@
 
     function syncSecurityState() {
       const biometric = nexusGetItem('nexusBiometricLock') !== 'false';
-      const twoFactor = nexusGetItem('nexusTwoFactorEnabled') !== 'false';
       document.getElementById('biometric-toggle').checked = biometric;
-      document.getElementById('two-factor-toggle').checked = twoFactor;
-      const status = document.getElementById('two-factor-status');
-      status.textContent = twoFactor ? 'Aktif' : 'Kapalı';
-      status.className = twoFactor ? 'text-xs text-green-600 font-medium' : 'text-xs text-slate-400 font-medium';
+      // 2FA henüz yok (TOTP yol haritasında): statik dürüst etiket gösterilir.
 
       const updatedAt = nexusGetItem('nexusPasswordUpdatedAt');
       document.getElementById('password-meta').textContent = updatedAt ? ('Son güncelleme ' + updatedAt) : 'Henüz güncellenmedi';
@@ -303,10 +311,53 @@
     document.getElementById('biometric-toggle').addEventListener('change', function () {
       nexusSetItem('nexusBiometricLock', this.checked.toString());
     });
-    document.getElementById('two-factor-toggle').addEventListener('change', function () {
-      nexusSetItem('nexusTwoFactorEnabled', this.checked.toString());
-      syncSecurityState();
-    });
+
+    // ---- Hesabımı Sil (issue #11, KVKK/GDPR self-servis) ----
+    // Bulut oturumu varsa Edge Function gerçek silmeyi yapar; yoksa yerel veri
+    // temizlenir ve dürüstçe söylenir. Aktif abonelik varsa önce iptal yönlendirmesi.
+    window.requestAccountDeletion = async function () {
+      var btn = document.getElementById('delete-account-btn');
+      if (btn.dataset.stage !== 'confirm') {
+        btn.dataset.stage = 'confirm';
+        btn.textContent = 'Emin misin? Tekrar dokunarak sil';
+        setTimeout(function () { btn.dataset.stage = ''; btn.textContent = 'Hesabımı Sil'; }, 4000);
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Siliniyor…';
+      try {
+        var session = null;
+        try { session = JSON.parse(nexusGetItem('nexusCloudSession') || 'null'); } catch (e) {}
+        var cfg = window.NEXUS_CLOUD || null;
+        if (session && session.access_token && cfg && cfg.url) {
+          var res = await fetch(cfg.url.replace(/\/$/, '') + '/functions/v1/delete-account', {
+            method: 'POST',
+            headers: { Authorization: 'Bearer ' + session.access_token },
+          });
+          if (res.status === 404) throw new Error('function-missing');
+          if (!res.ok) throw new Error('server');
+          var out = await res.json().catch(function () { return {}; });
+          if (out.hadSubscription) {
+            showSecurityToast('Hesap silindi. Aboneliğini Whop hesabından iptal etmeyi unutma.', false);
+          } else {
+            showSecurityToast('Hesabın ve verilerin silindi.', false);
+          }
+          setTimeout(function () { location.href = 'index.html'; }, 1600);
+          return;
+        }
+        throw new Error('no-session');
+      } catch (err) {
+        // Dürüst geri dönüş: sunucu fonksiyonu dağıtılmamışsa sahte başarı gösterilmez
+        btn.disabled = false;
+        btn.dataset.stage = '';
+        btn.textContent = 'Hesabımı Sil';
+        if (String(err.message) === 'no-session') {
+          showSecurityToast('Bu cihazdaki NEXUS verilerini silmek için Ayarlar → Çıkış Yap yeterli; bulut hesabı yok.', false);
+        } else {
+          showSecurityToast('Sunucu silme fonksiyonu henüz dağıtılmamış (MANUEL-ADIMLAR). Şimdilik çıkış yapabilirsin.', true);
+        }
+      }
+    };
 
     syncSecurityState();
     renderSessions();

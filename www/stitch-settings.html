@@ -239,9 +239,19 @@
     <button class="w-full bg-[#e3322d] text-white py-5 rounded-[40px] text-2xl shadow-lg active:scale-[0.98] transition-transform font-bold" onclick="logout()">
       Çıkış Yap
     </button>
+    <!-- Sürüm tek kaynağı: scripts/bump-version.mjs bu sabiti, desktop/package.json
+         ve android versionName'i birlikte günceller (packages/core version testi denetler). -->
+    <p id="nx-app-version" class="mt-6 text-center text-sm font-medium text-slate-400">NEXUS</p>
   </div>
 </main>
 
+<script>
+  window.NEXUS_APP_VERSION = "1.0.13";
+  (function () {
+    var el = document.getElementById('nx-app-version');
+    if (el && window.NEXUS_APP_VERSION) el.textContent = 'NEXUS v' + window.NEXUS_APP_VERSION;
+  })();
+</script>
 <script>
   (function () {
     var sound = document.getElementById('toggle-sound');

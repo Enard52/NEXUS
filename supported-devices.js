@@ -183,7 +183,7 @@
   // Panel, cihazın yetenek kümesinden (caps) baskın işleve göre seçilir.
   var PANELS = [
     // Etiket: panelin ne kontrol ettiğini söyler ("… kontrol paneli" + kontrol edilebilen şeyler).
-    { id: "camera", label: "Kamera kontrol paneli · canlı izleme, kayıt", icon: "camera", when: ["camera"] },
+    { id: "camera", label: "Kamera kontrol paneli · durum ve gizlilik", icon: "camera", when: ["camera"] },
     { id: "vacuum", label: "Robot süpürge kontrol paneli · başlat, durdur, eve dön", icon: "bot", when: ["vacuum"] },
     { id: "lock", label: "Kilit kontrol paneli · kilitle, aç", icon: "lock", when: ["lock"] },
     { id: "alarm", label: "Alarm kontrol paneli · kur, kapat, sirene", icon: "siren", when: ["alarm"] },

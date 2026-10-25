@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const modalHtml = `
 <!-- Home Selector Modal -->
@@ -43,25 +43,31 @@ function toggleHomeSelector() {
 </script>
 `;
 
-const files = ['stitch-home.html', 'stitch-discover.html', 'stitch-smart.html'];
+const files = ["stitch-home.html", "stitch-discover.html", "stitch-smart.html"];
 
 for (const file of files) {
-  let content = fs.readFileSync(file, 'utf8');
-  
+  let content = fs.readFileSync(file, "utf8");
+
   // 1. Change the <a href="stitch-household.html" ...> to <button onclick="toggleHomeSelector()" ...>
-  content = content.replace('<a href="stitch-household.html" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">', '<button onclick="toggleHomeSelector()" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">');
-  
+  content = content.replace(
+    '<a href="stitch-household.html" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">',
+    '<button onclick="toggleHomeSelector()" class="flex items-center gap-2.5 bg-white/60 backdrop-blur-md border border-slate-200/60 pl-2 pr-4 py-1.5 rounded-full shadow-sm active:scale-95 transition-transform" data-purpose="home-selector">',
+  );
+
   // Close the button correctly (need to replace the exact closing tag of this specific block)
   // Since we know the SVG inside it, we can replace the closing </a> after the SVG.
   // We can do this with a precise replace:
-  content = content.replace('<svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>\n</a>', '<svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>\n</button>');
-  
+  content = content.replace(
+    '<svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>\n</a>',
+    '<svg class="w-4 h-4 text-slate-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>\n</button>',
+  );
+
   // 2. Inject modalHtml right before </body>
-  if (!content.includes('home-selector-modal')) {
-    content = content.replace('</body>', modalHtml + '\n</body>');
+  if (!content.includes("home-selector-modal")) {
+    content = content.replace("</body>", modalHtml + "\n</body>");
   }
-  
-  fs.writeFileSync(file, content, 'utf8');
+
+  fs.writeFileSync(file, content, "utf8");
 }
 
 console.log("Modals injected.");

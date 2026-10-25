@@ -1,7 +1,7 @@
-const fs = require('fs');
+const fs = require("fs");
 
 // --- 1. Modify stitch-cards.html ---
-let cardsHtml = fs.readFileSync('stitch-cards.html', 'utf8');
+let cardsHtml = fs.readFileSync("stitch-cards.html", "utf8");
 
 const staticEditCards = `
 <!-- Favoriler -->
@@ -50,7 +50,7 @@ const staticEditCards = `
 // Inject before Cihaz Kartları
 cardsHtml = cardsHtml.replace(
   /<div class="flex items-center justify-between mb-6" data-purpose="section-title">\s*<h2 class="text-xl font-medium text-slate-500">Cihaz Kartları<\/h2>/,
-  `${staticEditCards}\n<div class="flex items-center justify-between mb-6" data-purpose="section-title">\n<h2 class="text-xl font-medium text-slate-500">Cihaz Kartları</h2>`
+  `${staticEditCards}\n<div class="flex items-center justify-between mb-6" data-purpose="section-title">\n<h2 class="text-xl font-medium text-slate-500">Cihaz Kartları</h2>`,
 );
 
 // Add script to hide them if they are in nexusHiddenCards
@@ -67,28 +67,28 @@ const scriptToHideStaticCards = `
   });
 </script>
 `;
-cardsHtml = cardsHtml.replace(/<\/body>/i, scriptToHideStaticCards + '\n</body>');
+cardsHtml = cardsHtml.replace(/<\/body>/i, scriptToHideStaticCards + "\n</body>");
 
-fs.writeFileSync('stitch-cards.html', cardsHtml, 'utf8');
-console.log('Modified stitch-cards.html to include static cards in edit view');
+fs.writeFileSync("stitch-cards.html", cardsHtml, "utf8");
+console.log("Modified stitch-cards.html to include static cards in edit view");
 
 // --- 2. Modify stitch-home.html ---
-let homeHtml = fs.readFileSync('stitch-home.html', 'utf8');
+let homeHtml = fs.readFileSync("stitch-home.html", "utf8");
 
 // The cards in stitch-home.html don't have IDs like 'card-weather', so we need to add IDs to them so they can be hidden.
 homeHtml = homeHtml.replace(
   /<!-- Card 1: Weather[\s\S]*?<a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-map.html">/,
-  '<!-- Card 1: Weather (opens location picker for weather) -->\n<a id="card-weather" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-map.html">'
+  '<!-- Card 1: Weather (opens location picker for weather) -->\n<a id="card-weather" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-map.html">',
 );
 
 homeHtml = homeHtml.replace(
   /<!-- Card 2: DND[\s\S]*?<a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-dnd.html">/,
-  '<!-- Card 2: DND (opens Rahatsız Etme page) -->\n<a id="card-dnd" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-dnd.html">'
+  '<!-- Card 2: DND (opens Rahatsız Etme page) -->\n<a id="card-dnd" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-dnd.html">',
 );
 
 homeHtml = homeHtml.replace(
   /<!-- Card 3: Energy Today[\s\S]*?<a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-energy.html">/,
-  '<!-- Card 3: Energy Today (AI Enerji Tasarrufu mini uygulamasına gider) -->\n<a id="card-energy" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-energy.html">'
+  '<!-- Card 3: Energy Today (AI Enerji Tasarrufu mini uygulamasına gider) -->\n<a id="card-energy" class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40" href="stitch-energy.html">',
 );
 
 // We need a script in stitch-home.html to hide them. Oh wait, data.js ALREADY does this!
@@ -101,5 +101,7 @@ homeHtml = homeHtml.replace(
 //    });
 // }
 // Since we added ID 'card-weather', 'card-dnd', and 'card-energy', data.js will automatically hide them if their id is in nexusHiddenCards!
-fs.writeFileSync('stitch-home.html', homeHtml, 'utf8');
-console.log('Modified stitch-home.html to assign IDs to static cards so data.js hides them correctly');
+fs.writeFileSync("stitch-home.html", homeHtml, "utf8");
+console.log(
+  "Modified stitch-home.html to assign IDs to static cards so data.js hides them correctly",
+);

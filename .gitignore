@@ -68,3 +68,9 @@ desktop/app/
 
 # Old www backup (contains large installers; not part of the source)
 scripts/archive/www-arsiv/
+
+# tool artifacts (not project files)
+.video_agent/
+.zcode/
+.replit
+console.log(*

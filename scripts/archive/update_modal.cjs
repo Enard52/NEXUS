@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const modalHtml = `
 <!-- Home Selector Modal -->
@@ -51,16 +51,16 @@ function toggleHomeSelector() {
 </script>
 `;
 
-const files = ['stitch-home.html', 'stitch-discover.html', 'stitch-smart.html'];
+const files = ["stitch-home.html", "stitch-discover.html", "stitch-smart.html"];
 
 for (const file of files) {
-  let content = fs.readFileSync(file, 'utf8');
-  
+  let content = fs.readFileSync(file, "utf8");
+
   // Replace old modal
   const regex = /<!-- Home Selector Modal -->[\s\S]*?<\/script>/;
   if (regex.test(content)) {
-      content = content.replace(regex, modalHtml);
-      fs.writeFileSync(file, content, 'utf8');
+    content = content.replace(regex, modalHtml);
+    fs.writeFileSync(file, content, "utf8");
   }
 }
 

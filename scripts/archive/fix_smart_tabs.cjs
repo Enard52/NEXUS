@@ -1,9 +1,10 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-smart.html', 'utf8');
+let html = fs.readFileSync("stitch-smart.html", "utf8");
 
 // 1. Update Tabs Navigation
-const oldTabsRegex = /<nav class="flex border-b border-gray-200" data-purpose="tabs">[\s\S]*?<\/nav>/;
+const oldTabsRegex =
+  /<nav class="flex border-b border-gray-200" data-purpose="tabs">[\s\S]*?<\/nav>/;
 const newTabs = `<nav class="flex border-b border-gray-200" data-purpose="tabs">
       <button onclick="switchTab('tab-smart', this)" class="flex-1 py-3 text-sm font-bold text-gray-900 relative tab-active" id="btn-tab-smart">
         Akıllı Uygulama
@@ -16,7 +17,10 @@ html = html.replace(oldTabsRegex, newTabs);
 
 // 2. Wrap existing main content into tab-smart
 // Find <main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">
-html = html.replace('<main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">', '<main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">\n      <div id="tab-smart" class="block">');
+html = html.replace(
+  '<main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">',
+  '<main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">\n      <div id="tab-smart" class="block">',
+);
 
 // We need to find where the main content ends to close the div and add new tabs
 // The main content ends right before <!-- Bottom Navigation -->
@@ -151,7 +155,7 @@ const jsCode = `
 </script>
 </body>`;
 
-html = html.replace('</body>', jsCode);
+html = html.replace("</body>", jsCode);
 
-fs.writeFileSync('stitch-smart.html', html, 'utf8');
-console.log('Fixed tabs in stitch-smart.html');
+fs.writeFileSync("stitch-smart.html", html, "utf8");
+console.log("Fixed tabs in stitch-smart.html");

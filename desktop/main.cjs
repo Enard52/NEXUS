@@ -72,6 +72,30 @@ function persistDesktopSettings(patch) {
 let backgroundRun = loadDesktopSettings().backgroundRun !== false; // varsayılan: açık
 let tray = null;
 let trayBalloonShown = false;
+let automationWorker = null;
+
+// Otomasyon arka plan çalışanı (issue #24): gizli pencerede automation-worker.html
+// çalışır. Kullanıcı pencereyi kapatsa da uygulama tepside olduğu sürece zaman
+// tetikleyicili otomasyonlar değerlendirilmeye devam eder. Görünür pencere ile
+// sahiplik, sayfanın localStorage kalp atışı ile paylaşılır; ikisi aynı anda
+// çalıştırmaz. Sekme kısıtlaması (arka planda zamanlayıcı yavaşlatma) kapatılır.
+function createAutomationWorker() {
+  try {
+    automationWorker = new BrowserWindow({
+      show: false,
+      skipTaskbar: true,
+      webPreferences: {
+        contextIsolation: true,
+        nodeIntegration: false,
+        sandbox: true,
+        backgroundThrottling: false,
+        spellcheck: false,
+      },
+    });
+    automationWorker.loadURL(`${SCHEME}://app/automation-worker.html`);
+    automationWorker.on("closed", () => { automationWorker = null; });
+  } catch { /* protokol/pencere hazır değilse sessiz geç */ }
+}
 
 function showMainWindow() {
   if (!win || win.isDestroyed()) return;
@@ -628,12 +652,13 @@ app.whenReady().then(() => {
   buildMenu();
   createWindow();
   createTray();
+  createAutomationWorker();
   setupJumpList();
   registerPaletteShortcut();
   screen.on("display-removed", rescueWindow);
   screen.on("display-metrics-changed", rescueWindow);
   setupUpdates();
-  app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); else showMainWindow(); });
+  app.on("activate", () => { if (!win || win.isDestroyed()) createWindow(); else showMainWindow(); });
 });
 
 app.on("window-all-closed", () => {

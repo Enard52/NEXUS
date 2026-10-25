@@ -50,60 +50,47 @@
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pt-4 pb-10">
-<!-- Bridge status -->
+<!-- Dürüst durum: NEXUS'ta yerleşik HomeKit köprüsü yok -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="bridge-status">
-<div class="flex items-center gap-4 mb-5">
-<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center">
 <i class="w-6 h-6" data-lucide="router"></i>
 </div>
 <div>
 <h2 class="font-bold leading-tight">NEXUS HomeKit Köprüsü</h2>
-<p class="text-sm font-medium text-emerald-500 flex items-center gap-1.5 mt-0.5">
-<span class="w-2 h-2 bg-emerald-500 rounded-full"></span>Bağlı
+<p class="text-sm font-medium text-slate-500 flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 bg-slate-400 rounded-full"></span>Yerleşik köprü yok
 </p>
 </div>
 </div>
-<ul class="divide-y divide-slate-50 text-sm">
-<li class="flex items-center justify-between py-3">
-<span class="text-slate-500 font-medium">Aktarılan Cihaz</span>
-<span class="font-semibold">0 / 0</span>
-</li>
-<li class="flex items-center justify-between py-3">
-<span class="text-slate-500 font-medium">Köprü Sürümü</span>
-<span class="font-semibold">2.4.1</span>
-</li>
-<li class="flex items-center justify-between py-3">
-<span class="text-slate-500 font-medium">Bağlı Ev</span>
-<span class="font-semibold">Evim</span>
-</li>
-</ul>
+<p class="text-sm text-slate-600 leading-relaxed">
+NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; HomeKit köprüsü içermez.
+Apple Ev (HomeKit) ile kullanmak istersen en pratik yol <strong>Home Assistant köprüsüdür</strong>:
+cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.
+</p>
+<a class="mt-4 flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform" href="stitch-integrations.html">
+<i class="w-4 h-4" data-lucide="plug"></i>Home Assistant Köprüsünü Aç
+</a>
 </section>
-<!-- Pairing code -->
-<h3 class="text-lg font-bold mb-3">Eşleştirme Kodu</h3>
-<section class="bg-white rounded-3xl menu-container-shadow p-5 text-center" data-purpose="pairing-code">
-<p class="text-sm text-slate-500 mb-3">Apple Ev uygulamasında bu kodu girerek NEXUS cihazlarını HomeKit'e ekle.</p>
-<p class="text-3xl font-extrabold tracking-[0.2em] text-slate-900 mb-4" id="pairing-code">481-22-746</p>
-<button class="w-full bg-[#4C7DFF] text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" id="copy-btn" onclick="copyCode()">Kodu Kopyala</button>
+<!-- Nasıl çalışır (gerçek adımlar) -->
+<h3 class="text-lg font-bold mb-3">HomeKit ile Kullanma</h3>
+<section class="bg-white rounded-3xl menu-container-shadow p-5" data-purpose="ha-steps">
+<ol class="space-y-4 text-sm text-slate-600 leading-relaxed list-decimal list-inside">
+<li>NEXUS'ta <strong>Entegrasyonlar</strong> üzerinden Home Assistant'ı bağla.</li>
+<li>Cihazlarını Home Assistant'ta NEXUS hesabınla eşleştir.</li>
+<li>Home Assistant ayarlarından <strong>HomeKit Bridge</strong> entegrasyonunu ekle; paylaşmak istediğin cihazları seç.</li>
+<li>Apple Ev uygulamasında "Aksesuar Ekle" ile HA'nın verdiği kodu gir.</li>
+</ol>
+<p class="text-xs text-slate-400 mt-5 leading-relaxed">HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Cihaz kontrolü Home Assistant üzerinden iletilir; NEXUS doğrudan HomeKit aksesuarı yayınlamaz.</p>
 </section>
-<!-- Info note -->
-<p class="text-xs text-slate-400 mt-5 px-2 leading-relaxed">HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Aktarılan cihazlar hem NEXUS hem Apple Ev uygulamasından kontrol edilebilir.</p>
 <!-- Feedback shortcut -->
 <a class="flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6" data-purpose="feedback-link" href="stitch-feedback.html">
-<i class="w-4 h-4" data-lucide="message-circle"></i>Eşleştirme sorunu mu yaşıyorsun? Geri bildirim gönder
+<i class="w-4 h-4" data-lucide="message-circle"></i>Sorun mu yaşıyorsun? Geri bildirim gönder
 </a>
 </main>
 <!-- END: MainContent -->
 <script data-purpose="homekit-interactions">
     lucide.createIcons();
-    // Copy the pairing code to clipboard with visual confirmation
-    function copyCode() {
-      var code = document.getElementById('pairing-code').textContent;
-      var btn = document.getElementById('copy-btn');
-      nexusCopy(code).then(function (ok) {
-        btn.textContent = ok ? 'Kopyalandı' : 'Kopyalanamadı — kodu elle seç';
-        setTimeout(function () { btn.textContent = 'Kodu Kopyala'; }, 1800);
-      });
-    }
   </script>
 </body></html>
 

@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let themeJs = fs.readFileSync('theme.js', 'utf8');
+let themeJs = fs.readFileSync("theme.js", "utf8");
 
 const newDarkCss = `
   var darkCss = [
@@ -48,5 +48,5 @@ const newDarkCss = `
 // Replace the old darkCss block
 themeJs = themeJs.replace(/var darkCss = \[\s*[\s\S]*?\]\.join\('\\n'\);/, newDarkCss.trim());
 
-fs.writeFileSync('theme.js', themeJs, 'utf8');
-console.log('Updated theme.js to fix dark mode logic');
+fs.writeFileSync("theme.js", themeJs, "utf8");
+console.log("Updated theme.js to fix dark mode logic");

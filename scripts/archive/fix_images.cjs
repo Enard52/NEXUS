@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 // Global unbreakable image handler
 const globalHandler = `
@@ -19,14 +19,17 @@ window.addEventListener('error', function(e) {
 }, true);
 `;
 
-let theme = fs.readFileSync('theme.js', 'utf8');
-if (!theme.includes('Global Unbreakable Image Handler')) {
-    fs.writeFileSync('theme.js', globalHandler + '\n' + theme, 'utf8');
+let theme = fs.readFileSync("theme.js", "utf8");
+if (!theme.includes("Global Unbreakable Image Handler")) {
+  fs.writeFileSync("theme.js", globalHandler + "\n" + theme, "utf8");
 }
 
 // Fix stitch-onboarding.html explicit broken google link
-let onboarding = fs.readFileSync('stitch-onboarding.html', 'utf8');
-onboarding = onboarding.replace(/https:\/\/lh3\.googleusercontent\.com[^"]+/, 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80');
-fs.writeFileSync('stitch-onboarding.html', onboarding, 'utf8');
+let onboarding = fs.readFileSync("stitch-onboarding.html", "utf8");
+onboarding = onboarding.replace(
+  /https:\/\/lh3\.googleusercontent\.com[^"]+/,
+  "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80",
+);
+fs.writeFileSync("stitch-onboarding.html", onboarding, "utf8");
 
 console.log("Images fixed.");

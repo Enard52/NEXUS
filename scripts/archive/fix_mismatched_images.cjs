@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const file = path.join(__dirname, 'stitch-integrations.html');
-let html = fs.readFileSync(file, 'utf8');
+const file = path.join(__dirname, "stitch-integrations.html");
+let html = fs.readFileSync(file, "utf8");
 
 // Bulaşık makinesi, çamaşır makinesi vb. gerçek fotoğraf olanları vektörel (.png) olanlarla değiştir.
 html = html.replace(/'dishwasher\.jpg'/g, "'dishwasher.png'");
@@ -25,5 +25,7 @@ html = html.replace(/, \{ n: 'Kondisyon Bisikleti', img: 'treadmill\.jpg' \}/g, 
 html = html.replace(/\{ n: 'Akıllı Çöp Kutusu', img: 'air_purifier\.jpg' \}/g, "");
 html = html.replace(/, \{ n: 'Akıllı Çöp Kutusu', img: 'air_purifier\.jpg' \}/g, "");
 
-fs.writeFileSync(file, html, 'utf8');
-console.log('Fixed mismatched images and replaced messy photos with transparent PNGs in stitch-integrations.html');
+fs.writeFileSync(file, html, "utf8");
+console.log(
+  "Fixed mismatched images and replaced messy photos with transparent PNGs in stitch-integrations.html",
+);

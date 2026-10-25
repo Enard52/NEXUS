@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const htmlContent = `<!DOCTYPE html>
 <html lang="tr">
@@ -249,5 +249,5 @@ const htmlContent = `<!DOCTYPE html>
 </body>
 </html>
 `;
-fs.writeFileSync('stitch-integrations.html', htmlContent, 'utf8');
-console.log('Rebuilt stitch-integrations.html with Kategoriler and Kataloglar tabs');
+fs.writeFileSync("stitch-integrations.html", htmlContent, "utf8");
+console.log("Rebuilt stitch-integrations.html with Kategoriler and Kataloglar tabs");

@@ -30,6 +30,12 @@
   --nx-radius: 20px;
   --nx-radius-lg: 28px;
   --nx-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+
+  /* Kabuk metrikleri (issue #1): tüm standart ekranlarda başlık ve alt menü
+     bu yüksekliklerde; içerik sütunu mobilde tam genişlik, masaüstünde
+     nexus-desktop.css --page-max (1080px) ile sınırlı. */
+  --nx-header-h: 104px; /* pt 48 + satır ≤40 + pb 16 */
+  --nx-nav-h: 72px;     /* sabit alt menü (safe-area hariç) */
 }
 
 html.dark {
@@ -320,8 +326,14 @@ html.dark .dark\:text-\[\#93b4ff\] { color: #93b4ff; }
    Ana sekmeler pt-12 (48px) ile başlıyor, bazı sayfalar pt-14 (56px) idi;
    sekme değişince tüm içerik 8px aşağı/yukarı zıplıyordu. Tüm başlıklar
    telefonda aynı 48px üst boşluğa iner. Masaüstünde nexus-desktop.css
-   bu değeri 32px'e sabitler (oradaki kural !important ve daha güçlü). */
+   bu değeri 32px'e sabitler (oradaki kural !important ve daha güçlü).
+   Kabuk standardı (issue #1): başlık toplam yüksekliği 104px —
+   pt 48 + satır ≤40 + pb 16. Daha kısa satırlı başlıklar min-height ile
+   aynı hizada toplanır (satır dikeyde ortalanır, tasarım değişmez).
+   Muaf: hero başlıklı sayfalar (ör. Rahatsız Etme), gövde dolgulu hub
+   sayfaları (Plus pt-6) ve auth akışları doğal yüksekliğinde kalır. */
 header.pt-14 { padding-top: 3rem; padding-bottom: 1rem; }
+header.pt-12, header.pt-14 { min-height: var(--nx-header-h, 104px); }
 
 /* ---------- Tutarlı odak göstergesi ----------
    Tarayıcının varsayılan keskin odak çizgileri yerine tüm form alanlarında

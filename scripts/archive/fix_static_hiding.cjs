@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let homeHtml = fs.readFileSync('stitch-home.html', 'utf8');
+let homeHtml = fs.readFileSync("stitch-home.html", "utf8");
 
 const hideStaticCardsScript = `
       // Harita sayfasında kaydedilen hava durumu konumuyla senkron
@@ -31,8 +31,8 @@ const newSyncCardsBegin = `
 
 homeHtml = homeHtml.replace(
   /function syncCards\(\) \{\s*\/\/ Harita sayfasında kaydedilen hava durumu konumuyla senkron/,
-  newSyncCardsBegin
+  newSyncCardsBegin,
 );
 
-fs.writeFileSync('stitch-home.html', homeHtml, 'utf8');
-console.log('Fixed static card hiding logic in stitch-home.html syncCards()');
+fs.writeFileSync("stitch-home.html", homeHtml, "utf8");
+console.log("Fixed static card hiding logic in stitch-home.html syncCards()");

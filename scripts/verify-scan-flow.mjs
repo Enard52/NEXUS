@@ -14,7 +14,10 @@ try {
 
   const scanHtml = await page.content();
   assert(scanHtml.includes('id="camera-preview"'), "scan page missing #camera-preview");
-  assert(scanHtml.includes("stitch-setup-code.html"), "scan page missing full-screen setup code link");
+  assert(
+    scanHtml.includes("stitch-setup-code.html"),
+    "scan page missing full-screen setup code link",
+  );
   assert(!scanHtml.includes('id="code-sheet"'), "scan page still contains bottom sheet setup UI");
   assert(scanHtml.includes("QR bulunamadıysa"), "scan page missing manual-add CTA copy");
   assert(scanHtml.includes("navigator.mediaDevices.getUserMedia"), "scan page missing camera init");

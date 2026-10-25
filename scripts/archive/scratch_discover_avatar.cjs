@@ -1,6 +1,6 @@
-const fs = require('fs');
-const file = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-discover.html';
-let html = fs.readFileSync(file, 'utf8');
+const fs = require("fs");
+const file = "c:/Users/ensar/Desktop/NEXUS-main/stitch-discover.html";
+let html = fs.readFileSync(file, "utf8");
 
 const targetStr = `<!-- Profile Avatar -->
 <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
@@ -21,8 +21,8 @@ const newStr = `<!-- Home Selector -->
 
 if (html.includes(targetStr)) {
   html = html.replace(targetStr, newStr);
-  fs.writeFileSync(file, html, 'utf8');
-  console.log('Successfully replaced Avatar with Home Selector in stitch-discover.html.');
+  fs.writeFileSync(file, html, "utf8");
+  console.log("Successfully replaced Avatar with Home Selector in stitch-discover.html.");
 } else {
-  console.log('Target Avatar not found.');
+  console.log("Target Avatar not found.");
 }

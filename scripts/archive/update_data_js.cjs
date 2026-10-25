@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let dataJs = fs.readFileSync('data.js', 'utf8');
+let dataJs = fs.readFileSync("data.js", "utf8");
 
 const dynamicRenderLogic = `
 window.deleteDynamicCard = function(id) {
@@ -91,14 +91,17 @@ function renderDevices() {
 }
 `;
 
-if (!dataJs.includes('function renderDevices(')) {
-    // Append the function definition
-    dataJs += '\n' + dynamicRenderLogic;
-    
-    // Call renderDevices() inside initNexusData, right after dispatching event or before
-    dataJs = dataJs.replace("document.dispatchEvent(new CustomEvent('nexusDataReady', { detail: data }));", "renderDevices();\n    document.dispatchEvent(new CustomEvent('nexusDataReady', { detail: data }));");
-    
-    fs.writeFileSync('data.js', dataJs, 'utf8');
+if (!dataJs.includes("function renderDevices(")) {
+  // Append the function definition
+  dataJs += "\n" + dynamicRenderLogic;
+
+  // Call renderDevices() inside initNexusData, right after dispatching event or before
+  dataJs = dataJs.replace(
+    "document.dispatchEvent(new CustomEvent('nexusDataReady', { detail: data }));",
+    "renderDevices();\n    document.dispatchEvent(new CustomEvent('nexusDataReady', { detail: data }));",
+  );
+
+  fs.writeFileSync("data.js", dataJs, "utf8");
 }
 
 console.log("data.js updated with renderDevices.");

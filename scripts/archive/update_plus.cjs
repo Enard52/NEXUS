@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smart = fs.readFileSync('stitch-smart.html', 'utf8');
+let smart = fs.readFileSync("stitch-smart.html", "utf8");
 
 const target = `<button class="bg-[#7C5CFF] text-white rounded-full p-1.5">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
@@ -16,13 +16,13 @@ const replacement = `<button aria-label="Hızlı ekle" class="text-[#7C5CFF] p-1
 // e.g. stitch-cards.html uses some icons but they are delete/expand buttons.
 
 if (smart.includes(target)) {
-    smart = smart.replace(target, replacement);
-    fs.writeFileSync('stitch-smart.html', smart, 'utf8');
+  smart = smart.replace(target, replacement);
+  fs.writeFileSync("stitch-smart.html", smart, "utf8");
 } else {
-    // Maybe line endings are different
-    const regex = /<button class="bg-\[#7C5CFF\] text-white rounded-full p-1\.5">[\s\S]*?<\/button>/g;
-    smart = smart.replace(regex, replacement);
-    fs.writeFileSync('stitch-smart.html', smart, 'utf8');
+  // Maybe line endings are different
+  const regex = /<button class="bg-\[#7C5CFF\] text-white rounded-full p-1\.5">[\s\S]*?<\/button>/g;
+  smart = smart.replace(regex, replacement);
+  fs.writeFileSync("stitch-smart.html", smart, "utf8");
 }
 
 console.log("Replaced plus icon in stitch-smart.html");

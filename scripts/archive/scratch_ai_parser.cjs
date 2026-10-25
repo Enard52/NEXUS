@@ -1,6 +1,6 @@
-const fs = require('fs');
-const file = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-chat.html';
-let html = fs.readFileSync(file, 'utf8');
+const fs = require("fs");
+const file = "c:/Users/ensar/Desktop/NEXUS-main/stitch-chat.html";
+let html = fs.readFileSync(file, "utf8");
 
 // Replace the buildReply and sendMessage logic with the AI tag parsing logic
 const targetLogic = `    setTimeout(() => {
@@ -69,5 +69,5 @@ const buildReplyNew = `    } else if (ltext.includes('karanlık') || ltext.inclu
 
 html = html.replace(buildReplyTarget, buildReplyNew);
 
-fs.writeFileSync(file, html, 'utf8');
-console.log('Parser code added to stitch-chat.html');
+fs.writeFileSync(file, html, "utf8");
+console.log("Parser code added to stitch-chat.html");

@@ -28,7 +28,7 @@ const FILES = [
   "packages/web/dist/light.html",
   "packages/web/dist/tr/index.html",
   "packages/web/dist/tr/light.html",
-  "packages/server/src/marketing-premium-body.ts"
+  "packages/server/src/marketing-premium-body.ts",
 ];
 
 for (const rel of FILES) {
@@ -49,7 +49,9 @@ for (const rel of FILES) {
 
     // 2) Üstteki avatar yığını ve aria-hidden kopya setler (URI içindeki aria-label baş harfleriyle eşleşir, alt boş)
     const stackRe = new RegExp(
-      '<img src="data:image/svg\\+xml;charset=utf-8,[^"]*aria-label%3D%22' + p.initials + '%22[^"]*" alt=""( loading="lazy" decoding="async")?>',
+      '<img src="data:image/svg\\+xml;charset=utf-8,[^"]*aria-label%3D%22' +
+        p.initials +
+        '%22[^"]*" alt=""( loading="lazy" decoding="async")?>',
       "g",
     );
     html = html.replace(stackRe, () => {
@@ -69,5 +71,7 @@ for (const rel of FILES) {
   const stackLeft = /review-avatar-stack[\s\S]{0,3000}?<img src="data:image/.test(
     html.slice(html.indexOf("review-avatar-stack")),
   );
-  console.log(rel + " kalan kart placeholder: " + leftovers + ", stack placeholder kaldi mi: " + stackLeft);
+  console.log(
+    rel + " kalan kart placeholder: " + leftovers + ", stack placeholder kaldi mi: " + stackLeft,
+  );
 }

@@ -40,12 +40,14 @@
   </style>
   <script src="auth.js"></script>
   <script src="theme.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-miniapp-gradient text-slate-900 min-h-screen flex flex-col">
 <!-- BEGIN: MiniApp Header -->
-<header class="pt-14 pb-2 px-5 flex items-center justify-between" data-purpose="miniapp-header">
+<header class="pt-14 pb-4 px-5 flex items-center justify-between" data-purpose="miniapp-header">
 <div class="w-7"></div>
 <!-- MiniApp capsule: more menu + close -->
 <div class="flex items-center bg-white/70 backdrop-blur rounded-full border border-white/60 shadow-sm" data-purpose="miniapp-capsule">
@@ -64,12 +66,13 @@
 <!-- Title (AI feature: NEXUS AI naming allowed; sayfa üstü başlık ortalanmış) -->
 <h1 class="text-[28px] font-bold leading-tight tracking-tight mb-1 text-center">AI Enerji Tasarrufu</h1>
 <p class="text-slate-500 text-sm mb-6 text-center">Cihazlarına dair içgörüler edin, stratejilerle otomatik tasarruf et.</p>
-<!-- Savings summary -->
+<!-- Anlık tüketim özeti: gerçek ölçüm; güç ölçen cihaz yoksa dürüst boş durum.
+     Aylık kWh tasarrufu uydurulmaz (ölçüm sayaç entegrasyonu yok). -->
 <section class="bg-white rounded-3xl card-shadow p-5 mb-6 flex items-center justify-between" data-purpose="savings-summary">
 <div>
-<p class="text-sm font-semibold text-slate-500">Bu ayki tasarruf</p>
-<p class="text-3xl font-extrabold mt-1">0,00 <span class="text-base font-bold text-slate-400">kWh</span></p>
-<p class="text-xs text-slate-400 mt-1">Cihaz ekledikçe tasarrufun burada görünür.</p>
+<p class="text-sm font-semibold text-slate-500">Anlık Tüketim</p>
+<p class="text-3xl font-extrabold mt-1"><span id="live-power">—</span> <span class="text-base font-bold text-slate-400">W</span></p>
+<p class="text-xs text-slate-400 mt-1" id="live-power-note">Güç ölçen cihaz ekleyince gerçek değer burada görünür.</p>
 </div>
 <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
 <i class="w-7 h-7" data-lucide="zap"></i>
@@ -146,8 +149,53 @@
 <button class="w-full bg-white border-t border-slate-100 py-4 text-center font-bold text-slate-700 pb-8" onclick="closeSheets()">İptal</button>
 </div>
 <!-- END: MiniApp Menu Sheet -->
-<script data-purpose="energy-interactions">
+  <script data-purpose="energy-interactions">
     lucide.createIcons();
+
+    // Anlık tüketim: yalnızca gerçek güç ölçümü yapan cihazlardan (ör. Shelly
+    // metreleri) okunur; ölçüm yoksa "—" kalır, uydurma kWh gösterilmez.
+    (function () {
+      var out = document.getElementById('live-power');
+      var note = document.getElementById('live-power-note');
+      if (!out || !window.NX) return;
+      var devices = [];
+      try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]') || []; } catch (e) {}
+      var meterIdx = [];
+      devices.forEach(function (d, i) { if (NX.hasPower(d)) meterIdx.push(i); });
+
+      function render(totalW, count) {
+        if (count > 0 && totalW !== null) {
+          out.textContent = String(Math.round(totalW));
+          note.textContent = count + ' güç ölçümlü cihazdan gerçek okuma.';
+        } else if (count > 0) {
+          note.textContent = 'Cihazlardan ölçüm alınamadı (çevrimdışı olabilir).';
+        } else {
+          note.textContent = 'Güç ölçen cihaz ekleyince gerçek değer burada görünür.';
+        }
+      }
+
+      if (!meterIdx.length) { render(null, 0); return; }
+      // Önce bilinen son değerle çiz, sonra yerel ağdan tazele
+      var lastSum = 0, haveAny = false;
+      meterIdx.forEach(function (i) {
+        var p = devices[i] && devices[i].fields && devices[i].fields.power;
+        if (typeof p === 'number') { lastSum += p; haveAny = true; }
+      });
+      render(haveAny ? lastSum : null, meterIdx.length);
+      Promise.all(meterIdx.map(function (i) { return NX.refreshFromDevice(i); }))
+        .then(function () {
+          var devices2 = [];
+          try { devices2 = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]') || []; } catch (e) {}
+          var sum = 0, ok = 0;
+          meterIdx.forEach(function (i) {
+            var p = devices2[i] && devices2[i].fields && devices2[i].fields.power;
+            if (typeof p === 'number') { sum += p; ok++; }
+          });
+          render(ok ? sum : null, meterIdx.length);
+        })
+        .catch(function () { /* tazeleme başarısızsa son bilinen değer kalır */ });
+    })();
+
     // Store the tapped strategy so the detail page shows the right content
     function pickStrategy(card) {
       nexusSetItem('nexusEnergyStrategy', JSON.stringify({
@@ -156,14 +204,20 @@
         device: card.dataset.device
       }));
     }
-    // Detay sayfasında etkinleştirilen stratejileri rozetle göster
+    // Detay sayfasında etkinleştirilen stratejileri rozetle göster.
+    // Konum tabanlı stratejiler henüz otomatik çalışmadığı için rozet de
+    // bunu açıkça söyler (zamanlama tabanlı olan motorla gerçekten çalışır).
     (function () {
       var map = {};
       try { map = JSON.parse(nexusGetItem('nexusEnergyEnabledMap') || '{}'); } catch (e) { map = {}; }
       document.querySelectorAll('[data-title]').forEach(function (card) {
         if (map[card.dataset.title]) {
           var badge = card.querySelector('.strategy-state');
-          if (badge) badge.classList.remove('hidden');
+          if (badge) {
+            var isNight = card.dataset.title.indexOf('Gece bekleme') !== -1;
+            badge.textContent = isNight ? '· Etkin (her gece 23:00)' : '· Etkin (konum tetiklemesi yakında)';
+            badge.classList.remove('hidden');
+          }
         }
       });
     })();

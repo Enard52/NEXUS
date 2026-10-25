@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 const oldOtomasyonHtml = `
       <!-- BEGIN: Otomasyon Tab -->
@@ -56,8 +56,8 @@ const oldOtomasyonHtml = `
 
 smartHtml = smartHtml.replace(
   /<div id="tab-automation" class="hidden">[\s\S]*?<!-- END: Otomasyon Tab -->/,
-  oldOtomasyonHtml.trim()
+  oldOtomasyonHtml.trim(),
 );
 
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Restored old Otomasyon tab with button in stitch-smart.html');
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Restored old Otomasyon tab with button in stitch-smart.html");

@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 // The toggle switches have class "sr-only peer". Let's add an ID or a class to bind them, and some JS at the end.
 // First, we add an ID to the switches and save logic.
@@ -23,7 +23,7 @@ const jsToAppend = `
 `;
 
 // Insert the JS right before the closing body tag (or just append it)
-smartHtml = smartHtml.replace(/<\/body>/, jsToAppend + '\n</body>');
+smartHtml = smartHtml.replace(/<\/body>/, jsToAppend + "\n</body>");
 
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Updated stitch-smart.html toggle sync logic');
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Updated stitch-smart.html toggle sync logic");

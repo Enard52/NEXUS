@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let homeHtml = fs.readFileSync('stitch-home.html', 'utf8');
+let homeHtml = fs.readFileSync("stitch-home.html", "utf8");
 
 // Update DND sync logic in stitch-home.html
 const oldDndLogic = `    // Rahatsız Etme sayfasındaki seçimle senkron
@@ -117,5 +117,5 @@ const newEnergyLogic = `    // Bugünkü Enerji Senkronizasyonu (Tasarruf ve Kul
 
 homeHtml = homeHtml.replace(oldEnergyLogic, newEnergyLogic);
 
-fs.writeFileSync('stitch-home.html', homeHtml, 'utf8');
-console.log('Updated stitch-home.html sync logic');
+fs.writeFileSync("stitch-home.html", homeHtml, "utf8");
+console.log("Updated stitch-home.html sync logic");

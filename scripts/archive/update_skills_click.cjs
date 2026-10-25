@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let skillsHtml = fs.readFileSync('stitch-skills.html', 'utf8');
+let skillsHtml = fs.readFileSync("stitch-skills.html", "utf8");
 
 // Replace the static items with a script that handles clicking
 const replacementScript = `
@@ -103,5 +103,5 @@ const scriptAddAutomation = `
 
 skillsHtml = skillsHtml.replace(/<\/body>/i, scriptAddAutomation);
 
-fs.writeFileSync('stitch-skills.html', skillsHtml, 'utf8');
-console.log('Modified stitch-skills.html to save selected automations to localStorage');
+fs.writeFileSync("stitch-skills.html", skillsHtml, "utf8");
+console.log("Modified stitch-skills.html to save selected automations to localStorage");

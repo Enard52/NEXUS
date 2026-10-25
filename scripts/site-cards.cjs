@@ -79,7 +79,8 @@ const script = `<script>(function(){
     }).catch(function(){});
 })();</script>`;
 
-const OLD_SCRIPT = /<script>\(function\(\)\{(?:\s*var TR=|fetch\("https:\/\/api\.github\.com\/repos\/Enard52\/nexus-releases\/releases\/latest")[\s\S]*?<\/script>/;
+const OLD_SCRIPT =
+  /<script>\(function\(\)\{(?:\s*var TR=|fetch\("https:\/\/api\.github\.com\/repos\/Enard52\/nexus-releases\/releases\/latest")[\s\S]*?<\/script>/;
 let n = 0;
 for (const f of ["index.html", "tr/index.html", "light.html", "tr/light.html"]) {
   const p = path.join(root, f);

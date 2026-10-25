@@ -1,29 +1,29 @@
-const fs = require('fs');
+const fs = require("fs");
 
 // 1. Remove FAB from stitch-chat.html
-let chatHtml = fs.readFileSync('stitch-chat.html', 'utf8');
-chatHtml = chatHtml.replace(/<script src="ai-fab\.js"><\/script>\r?\n?/g, '');
-fs.writeFileSync('stitch-chat.html', chatHtml, 'utf8');
-console.log('Removed FAB from stitch-chat.html');
+let chatHtml = fs.readFileSync("stitch-chat.html", "utf8");
+chatHtml = chatHtml.replace(/<script src="ai-fab\.js"><\/script>\r?\n?/g, "");
+fs.writeFileSync("stitch-chat.html", chatHtml, "utf8");
+console.log("Removed FAB from stitch-chat.html");
 
 // 2. Replace Otomasyon tab in stitch-smart.html with stitch-skills.html content
-let skillsHtml = fs.readFileSync('stitch-skills.html', 'utf8');
+let skillsHtml = fs.readFileSync("stitch-skills.html", "utf8");
 const mainMatch = skillsHtml.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
 if (mainMatch) {
   let innerMain = mainMatch[1];
-  let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
-  
+  let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
+
   // Need to replace everything from <div id="tab-automation" class="hidden"> up to <!-- END: Otomasyon Tab -->
   smartHtml = smartHtml.replace(
     /<div id="tab-automation" class="hidden">[\s\S]*?<!-- END: Otomasyon Tab -->/,
-    `<div id="tab-automation" class="hidden">\n${innerMain}\n      </div>\n      <!-- END: Otomasyon Tab -->`
+    `<div id="tab-automation" class="hidden">\n${innerMain}\n      </div>\n      <!-- END: Otomasyon Tab -->`,
   );
-  fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-  console.log('Replaced Otomasyon tab in stitch-smart.html');
+  fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+  console.log("Replaced Otomasyon tab in stitch-smart.html");
 }
 
 // 3. Add Weather API fetch to stitch-home.html
-let homeHtml = fs.readFileSync('stitch-home.html', 'utf8');
+let homeHtml = fs.readFileSync("stitch-home.html", "utf8");
 
 const weatherScript = `
       // Harita sayfasında kaydedilen hava durumu konumuyla senkron
@@ -74,8 +74,8 @@ const weatherScript = `
 // Find where weather sync starts and replace it
 homeHtml = homeHtml.replace(
   /\/\/ Harita sayfasında kaydedilen hava durumu konumuyla senkron[\s\S]*?var loc = localStorage\.getItem\('nexusWeatherLocation'\);[\s\S]*?if \(loc\) \{[\s\S]*?var el = document\.getElementById\('weather-location'\);[\s\S]*?if \(el\) el\.textContent = loc;[\s\S]*?\}/,
-  weatherScript.trim()
+  weatherScript.trim(),
 );
 
-fs.writeFileSync('stitch-home.html', homeHtml, 'utf8');
-console.log('Added real weather API to stitch-home.html');
+fs.writeFileSync("stitch-home.html", homeHtml, "utf8");
+console.log("Added real weather API to stitch-home.html");

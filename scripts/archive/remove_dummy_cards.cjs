@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 // 1. Remove dummy cards from tab-clickrun
 smartHtml = smartHtml.replace(
@@ -15,7 +15,7 @@ smartHtml = smartHtml.replace(
           <h4 class="text-gray-500 font-medium">Henüz senaryo eklenmedi</h4>
           <p class="text-xs text-gray-400 mt-1">Aşağıdaki butondan yeni bir tane oluşturun.</p>
         </div>
-        <a href="stitch-skills.html?type=clickrun"`
+        <a href="stitch-skills.html?type=clickrun"`,
 );
 
 // 2. Remove dummy cards from tab-automation
@@ -31,7 +31,7 @@ smartHtml = smartHtml.replace(
           <h4 class="text-gray-500 font-medium">Henüz otomasyon eklenmedi</h4>
           <p class="text-xs text-gray-400 mt-1">Aşağıdaki butondan yeni bir tane oluşturun.</p>
         </div>
-        <a href="stitch-skills.html?type=automation"`
+        <a href="stitch-skills.html?type=automation"`,
 );
 
 // 3. Update renderCustomAutomations to hide/show empty states
@@ -46,8 +46,8 @@ const renderScriptUpdate = `
 
 smartHtml = smartHtml.replace(
   /if \(typeof lucide !== 'undefined'\) \{/,
-  renderScriptUpdate + '\n      if (typeof lucide !== \'undefined\') {'
+  renderScriptUpdate + "\n      if (typeof lucide !== 'undefined') {",
 );
 
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Removed hardcoded cards and added empty states to stitch-smart.html');
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Removed hardcoded cards and added empty states to stitch-smart.html");

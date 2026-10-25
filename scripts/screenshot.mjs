@@ -19,8 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
   await page.goto(url, { waitUntil: "networkidle" });
   await page.waitForTimeout(1500); // Wait for aurora and rise animations
 
-  const destDir =
-    process.env.NEXUS_SHOT_DIR || "docs/screenshots";
+  const destDir = process.env.NEXUS_SHOT_DIR || "docs/screenshots";
   await page.screenshot({ path: path.join(destDir, "landing_page.png"), fullPage: true });
 
   // Desktop Setup Wizard

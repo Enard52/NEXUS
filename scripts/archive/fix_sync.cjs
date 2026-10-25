@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-home.html', 'utf8');
+let html = fs.readFileSync("stitch-home.html", "utf8");
 
 const replacementScript = `    lucide.createIcons();
 
@@ -108,7 +108,10 @@ const replacementScript = `    lucide.createIcons();
 
     // Quick add menu open/close`;
 
-html = html.replace(/lucide\.createIcons\(\);[\s\S]*?\/\/ Quick add menu open\/close/, replacementScript);
+html = html.replace(
+  /lucide\.createIcons\(\);[\s\S]*?\/\/ Quick add menu open\/close/,
+  replacementScript,
+);
 
-fs.writeFileSync('stitch-home.html', html, 'utf8');
-console.log('Fixed instant sync in stitch-home.html');
+fs.writeFileSync("stitch-home.html", html, "utf8");
+console.log("Fixed instant sync in stitch-home.html");

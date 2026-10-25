@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-scan.html', 'utf8');
+let html = fs.readFileSync("stitch-scan.html", "utf8");
 
 const replacementScript = `
     let mediaStream = null;
@@ -60,7 +60,10 @@ const replacementScript = `
     }
 `;
 
-html = html.replace(/\/\/ Torch on\/off visual state[\s\S]*?function toggleTorch\(btn\) \{[\s\S]*?\}/, replacementScript);
+html = html.replace(
+  /\/\/ Torch on\/off visual state[\s\S]*?function toggleTorch\(btn\) \{[\s\S]*?\}/,
+  replacementScript,
+);
 
-fs.writeFileSync('stitch-scan.html', html, 'utf8');
-console.log('Added real flashlight logic to stitch-scan.html');
+fs.writeFileSync("stitch-scan.html", html, "utf8");
+console.log("Added real flashlight logic to stitch-scan.html");

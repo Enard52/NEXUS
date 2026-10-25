@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const file = path.join(__dirname, 'stitch-integrations.html');
-let html = fs.readFileSync(file, 'utf8');
+const file = path.join(__dirname, "stitch-integrations.html");
+let html = fs.readFileSync(file, "utf8");
 
 const newCatalogJS = `    // ---- Genişletilmiş NEXUS Katalog Verisi ----
     var CATALOG = [
@@ -79,12 +79,13 @@ const newCatalogJS = `    // ---- Genişletilmiş NEXUS Katalog Verisi ----
       hubs: 'gateway', cleaning: 'kucuk-ev', energy: 'enerji'
     };`;
 
-const regex = /\/\/\s*----\s*Genişletilmiş NEXUS Katalog Verisi.*?var\s+CATALOG_ALIAS\s*=\s*\{.*?\};/s;
+const regex =
+  /\/\/\s*----\s*Genişletilmiş NEXUS Katalog Verisi.*?var\s+CATALOG_ALIAS\s*=\s*\{.*?\};/s;
 
 if (regex.test(html)) {
   html = html.replace(regex, newCatalogJS);
-  fs.writeFileSync(file, html, 'utf8');
-  console.log('Successfully updated CATALOG images in stitch-integrations.html');
+  fs.writeFileSync(file, html, "utf8");
+  console.log("Successfully updated CATALOG images in stitch-integrations.html");
 } else {
-  console.log('Could not find CATALOG array to replace.');
+  console.log("Could not find CATALOG array to replace.");
 }

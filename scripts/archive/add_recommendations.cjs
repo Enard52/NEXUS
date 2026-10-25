@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let smartHtml = fs.readFileSync('stitch-smart.html', 'utf8');
+let smartHtml = fs.readFileSync("stitch-smart.html", "utf8");
 
 const oldRecommendations = `<div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4">
 <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
@@ -54,8 +54,8 @@ smartHtml = smartHtml.replace(
   `<section data-purpose="recommendations">
 <h3 class="text-xl font-bold text-gray-900 mb-4">Önerilen</h3>
 ${newRecommendations}
-</section>`
+</section>`,
 );
 
-fs.writeFileSync('stitch-smart.html', smartHtml, 'utf8');
-console.log('Added more recommendation cards to stitch-smart.html');
+fs.writeFileSync("stitch-smart.html", smartHtml, "utf8");
+console.log("Added more recommendation cards to stitch-smart.html");

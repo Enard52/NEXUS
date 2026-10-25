@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-smart.html', 'utf8');
+let html = fs.readFileSync("stitch-smart.html", "utf8");
 
 // Insert the missing tab contents right before </main>
 const missingTabs = `
@@ -103,11 +103,11 @@ const missingTabs = `
 // I will just replace the whole main element to make it clean.
 // First, extract the old tab-smart content.
 const mainStart = '<main class="flex-grow px-5 pt-6 pb-28" data-purpose="main-content">';
-const mainEnd = '</main>';
+const mainEnd = "</main>";
 
 const beforeMainEndRegex = /<\/main>/;
 
-html = html.replace(beforeMainEndRegex, '</div>' + missingTabs + '\n</main>');
+html = html.replace(beforeMainEndRegex, "</div>" + missingTabs + "\n</main>");
 
-fs.writeFileSync('stitch-smart.html', html, 'utf8');
-console.log('Fixed missing tabs in stitch-smart.html');
+fs.writeFileSync("stitch-smart.html", html, "utf8");
+console.log("Fixed missing tabs in stitch-smart.html");

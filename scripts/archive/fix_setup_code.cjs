@@ -1,11 +1,11 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-integrations.html', 'utf8');
+let html = fs.readFileSync("stitch-integrations.html", "utf8");
 
 // Replace the onclick for the "Kurulum Kodu Gir" button
 html = html.replace(
   /<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3 border border-slate-50 active:bg-slate-50 transition-colors" onclick="simulateConnection\(this\)">\s*<div class="flex items-center gap-4 min-w-0">\s*<div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-600">\s*<i class="w-6 h-6" data-lucide="hash"><\/i>\s*<\/div>\s*<div class="min-w-0">\s*<h2 class="font-bold leading-tight text-slate-800">Kurulum Kodu Gir<\/h2>/,
-  '<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3 border border-slate-50 active:bg-slate-50 transition-colors" onclick="openCodeModal()">\n          <div class="flex items-center gap-4 min-w-0">\n            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-600">\n              <i class="w-6 h-6" data-lucide="hash"></i>\n            </div>\n            <div class="min-w-0">\n              <h2 class="font-bold leading-tight text-slate-800">Kurulum Kodu Gir</h2>'
+  '<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3 border border-slate-50 active:bg-slate-50 transition-colors" onclick="openCodeModal()">\n          <div class="flex items-center gap-4 min-w-0">\n            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-600">\n              <i class="w-6 h-6" data-lucide="hash"></i>\n            </div>\n            <div class="min-w-0">\n              <h2 class="font-bold leading-tight text-slate-800">Kurulum Kodu Gir</h2>',
 );
 
 // Add the Modal HTML just above the Loading Overlay
@@ -31,7 +31,7 @@ const modalHtml = `
   </div>
 `;
 
-html = html.replace('<!-- Loading Overlay -->', modalHtml + '\n  <!-- Loading Overlay -->');
+html = html.replace("<!-- Loading Overlay -->", modalHtml + "\n  <!-- Loading Overlay -->");
 
 // Add the JS logic
 const scriptLogic = `
@@ -71,7 +71,10 @@ const scriptLogic = `
     }
 `;
 
-html = html.replace('function simulateConnection(el) {', scriptLogic + '\n    function simulateConnection(el, code) {');
+html = html.replace(
+  "function simulateConnection(el) {",
+  scriptLogic + "\n    function simulateConnection(el, code) {",
+);
 
-fs.writeFileSync('stitch-integrations.html', html, 'utf8');
-console.log('Fixed stitch-integrations.html to show a setup code modal');
+fs.writeFileSync("stitch-integrations.html", html, "utf8");
+console.log("Fixed stitch-integrations.html to show a setup code modal");

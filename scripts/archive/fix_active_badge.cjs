@@ -1,11 +1,11 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-smart.html', 'utf8');
+let html = fs.readFileSync("stitch-smart.html", "utf8");
 
 // 1. Replace the hardcoded "2 Aktif" span with an empty span with an ID
 html = html.replace(
   /<span class="bg-\[#7C5CFF\]\/10 text-\[#7C5CFF\] text-xs font-bold px-2 py-1 rounded-lg">2 Aktif<\/span>/,
-  '<span id="automation-active-count" class="hidden bg-[#7C5CFF]/10 text-[#7C5CFF] text-xs font-bold px-2 py-1 rounded-lg"></span>'
+  '<span id="automation-active-count" class="hidden bg-[#7C5CFF]/10 text-[#7C5CFF] text-xs font-bold px-2 py-1 rounded-lg"></span>',
 );
 
 // 2. Update renderCustomAutomations logic
@@ -65,7 +65,8 @@ const newRenderLogic = `
 
 html = html.replace(
   /function renderCustomAutomations\(\) \{[\s\S]*?const clickContainer = document.getElementById\('custom-clickrun-container'\);/,
-  newRenderLogic.trim() + '\n\n        // Click and Run\n        const clickContainer = document.getElementById(\'custom-clickrun-container\');'
+  newRenderLogic.trim() +
+    "\n\n        // Click and Run\n        const clickContainer = document.getElementById('custom-clickrun-container');",
 );
 
 // We should also run renderCustomAutomations on pageshow so it updates when coming back from stitch-skills.html
@@ -77,7 +78,12 @@ const pageShowScript = `
         }
       });
 `;
-html = html.replace(/renderCustomAutomations\(\);\s*\}\);\s*<\/script>/, 'renderCustomAutomations();\n      });\n' + pageShowScript + '    </script>');
+html = html.replace(
+  /renderCustomAutomations\(\);\s*\}\);\s*<\/script>/,
+  "renderCustomAutomations();\n      });\n" + pageShowScript + "    </script>",
+);
 
-fs.writeFileSync('stitch-smart.html', html, 'utf8');
-console.log('Fixed hardcoded active badge and added page refresh logic for automations in stitch-smart.html');
+fs.writeFileSync("stitch-smart.html", html, "utf8");
+console.log(
+  "Fixed hardcoded active badge and added page refresh logic for automations in stitch-smart.html",
+);

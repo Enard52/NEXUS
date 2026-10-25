@@ -178,8 +178,15 @@
     var cta = primaryFooterButton(footer);
     if (!cta || cta.getAttribute('onclick')) return;
     cta.setAttribute('data-scene-bound', '1');
+    // Cihaz yokken "Başlat" gibi yanıltıcı bir düğme gösterme: dürüst eylem "Önce cihaz ekle".
+    if (!checkRequiredDevices()) {
+      var label = cta.querySelector('span') || cta;
+      label.textContent = window.nexusT ? window.nexusT('Önce cihaz ekle', 'Add a device first') : 'Önce cihaz ekle';
+      cta.setAttribute('data-no-device', '1');
+    }
     cta.addEventListener('click', function (event) {
       event.preventDefault();
+      if (cta.getAttribute('data-no-device') === '1') { window.location.href = 'stitch-pair.html'; return; }
       runThisScene(true, cta);
     });
     var cancel = footer.querySelector('#footer-cancel-btn');

@@ -1,6 +1,6 @@
-const fs = require('fs');
+const fs = require("fs");
 
-let html = fs.readFileSync('stitch-home.html', 'utf8');
+let html = fs.readFileSync("stitch-home.html", "utf8");
 
 // The multi_replace tool deleted everything after lucide.createIcons(); up to toggleQuickAdd.
 // Let's restore the whole script block.
@@ -106,5 +106,5 @@ const newScript = `    lucide.createIcons();
 
 html = html.replace(/lucide\.createIcons\(\);\s*\/\/\s*Quick add menu open\/close/, newScript);
 
-fs.writeFileSync('stitch-home.html', html, 'utf8');
-console.log('Restored and updated stitch-home.html');
+fs.writeFileSync("stitch-home.html", html, "utf8");
+console.log("Restored and updated stitch-home.html");

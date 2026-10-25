@@ -1,21 +1,22 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const file = 'c:/Users/ensar/Desktop/NEXUS-main/stitch-feedback.html';
-let content = fs.readFileSync(file, 'utf8');
+const file = "c:/Users/ensar/Desktop/NEXUS-main/stitch-feedback.html";
+let content = fs.readFileSync(file, "utf8");
 
 // Find the start of the section
-const startStr = '<section class="bg-white rounded-3xl menu-container-shadow p-5 mb-8" data-purpose="support-assistant">';
+const startStr =
+  '<section class="bg-white rounded-3xl menu-container-shadow p-5 mb-8" data-purpose="support-assistant">';
 const startIdx = content.indexOf(startStr);
 if (startIdx === -1) {
-  console.log('Start string not found');
+  console.log("Start string not found");
   process.exit(1);
 }
 
 // Find the end of the section (the first </section> after startIdx)
-const endStr = '</section>';
+const endStr = "</section>";
 const endIdx = content.indexOf(endStr, startIdx);
 if (endIdx === -1) {
-  console.log('End string not found');
+  console.log("End string not found");
   process.exit(1);
 }
 
@@ -35,6 +36,7 @@ const replacement = `<a href="stitch-chat.html" class="block bg-white rounded-3x
 <p class="text-sm text-slate-500 mt-4 font-medium leading-relaxed">Sorularını doğrudan NEXUS AI asistanına sorabilir, cihazların hakkında anında yardım alabilirsin.</p>
 </a>`;
 
-const newContent = content.substring(0, startIdx) + replacement + content.substring(endIdx + endStr.length);
-fs.writeFileSync(file, newContent, 'utf8');
-console.log('Successfully replaced the support assistant section.');
+const newContent =
+  content.substring(0, startIdx) + replacement + content.substring(endIdx + endStr.length);
+fs.writeFileSync(file, newContent, "utf8");
+console.log("Successfully replaced the support assistant section.");

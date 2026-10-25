@@ -232,6 +232,8 @@ function normalizeItem(item, type) {
             : (resolvedType === 'clickrun'
                 ? { type: 'manual' }
                 : { type: 'time', value: '', repeat: 'always' }),
+        // Tetiklenince çalışacak hazır sahne (otomasyon motoru yürütür; bkz. automation-engine.js)
+        sceneId: item.sceneId || undefined,
         // Aksiyon listesi: [{ device, action, value }]
         actions: Array.isArray(item.actions) ? item.actions : [],
         room: item.room || 'Tüm Ev'

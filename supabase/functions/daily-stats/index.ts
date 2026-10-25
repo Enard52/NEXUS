@@ -67,6 +67,13 @@ Deno.serve(async (req) => {
   if (!r.ok) return new Response("stats error", { status: 500 });
   const s = await r.json();
   const h = await health();
+  // Ücretsiz plan sınırları (issue #12): DB boyutu 500 MB, MAU 50.000; %70'te uyarı.
+  let dbSize = "bilinmiyor";
+  try {
+    const sz = await fetch(`${Deno.env.get("SUPABASE_URL")!}/rest/v1/rpc/nexus_db_size`, { method: "POST", headers: { apikey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!}`, "Content-Type": "application/json" }, body: "{}" });
+    if (sz.ok) dbSize = String(await sz.text()).replace(/"/g, "");
+  } catch { /* RPC yoksa sessiz geç */ }
+  const limitWarn = dbSize !== "bilinmiyor" && parseFloat(dbSize) > 350 ? " ⚠️ %70+" : "";
   const plusTry = (s.plus_try_monthly ?? 0) + (s.plus_try_yearly ?? 0);
   const plusUsd = (s.plus_usd_monthly ?? 0) + (s.plus_usd_yearly ?? 0);
   const embed = {
@@ -77,6 +84,7 @@ Deno.serve(async (req) => {
       { name: "Aktif kullanıcı", value: `24 saat: ${s.active_24h}\n7 gün: ${s.active_7d}`, inline: true },
       { name: "NEXUS+ üye", value: `TRY: ${plusTry} (aylık ${s.plus_try_monthly}, yıllık ${s.plus_try_yearly})\nUSD: ${plusUsd} (aylık ${s.plus_usd_monthly}, yıllık ${s.plus_usd_yearly})\nİptal edecek: ${s.plus_cancelling}`, inline: false },
       { name: "Eşitlenen veri", value: `Hesap: ${s.synced_accounts}  ·  Cihaz kaydı: ${s.devices_synced}`, inline: false },
+      { name: "Ücretsiz plan", value: `DB boyutu: ${dbSize} MB / 500${limitWarn}  ·  Aktif kullanıcı (7g): ${s.active_7d ?? 0} / 50.000`, inline: false },
       { name: "Sistem sağlığı", value: h.failed.length ? `⚠️ ${h.failed.join(", ")}` : `✅ ${h.total}/${h.total} servis çalışıyor`, inline: false },
     ],
   };

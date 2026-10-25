@@ -32,7 +32,7 @@
 </head>
 <body>
   <div class="w-full min-h-screen flex flex-col overflow-x-hidden">
-    <header class="shrink-0 pt-14 pb-3 px-5 flex items-center justify-between gap-3">
+    <header class="shrink-0 pt-14 pb-4 px-5 flex items-center justify-between gap-3">
       <a href="javascript:void(0)" onclick="goBack()" aria-label="Geri" class="p-1 -ml-1 shrink-0">
         <i data-lucide="chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></i>
       </a>
@@ -436,10 +436,33 @@
         ? '<div class="nx-row"><p class="t">Cihaz kaldırılsın mı?</p><div class="flex gap-2"><button type="button" class="nx-btn" onclick="cancelRemove()">Vazgeç</button>' +
           '<button type="button" class="nx-btn primary" style="background:#e11d48;border-color:#e11d48" onclick="doRemove()">Kaldır</button></div></div>'
         : '<button type="button" class="nx-row" onclick="askRemove()"><p class="t nx-danger">Cihazı kaldır</p>' + icon("trash-2", "w-4 h-4 nx-danger") + "</button>";
+      // Fabrika sıfırlama adımları: marka bazlı gerçek yönergeler (uydurma yok;
+      // cihazın kendi uygulamasındaki adımın kısa hatırlatıcısı).
+      var RESET_HINTS = {
+        shelly: "Shelly: cihaz üzerindeki düğmeyi ~10 sn basılı tut (LED hızlı yanıp söner).",
+        tasmota: "Tasmota: ayarlar → Reset → Reset device. Veya düğmeyi 40 sn basılı tut.",
+        wled: "WLED: ayarlar → Security & Updates → Factory reset.",
+        esphome: "ESPHome: cihaz donanımına göre düğmeyle veya config'ten 'factory_reset' eylemi.",
+        hue: "Hue: ampulü kapat-aç sırasıyla (4 kez) fabrika moduna alır; köprü sıfırlamaları Hue uygulamasından.",
+        kasa: "Kasa: cihazı 5 sn prize tak-çıkar; tekrar eşleştirme gerekir.",
+        yeelight: "Yeelight: duvar düğmesini 5 kez aç-kapa (reset modu).",
+        wiz: "WiZ: duvar düğmesini hızlıca 5 kez aç-kapa.",
+        lifx: "LIFX: düğmeyi basılı tutun (LED beyaz döner) sonra bırakın.",
+        govee: "Govee LAN: cihazın kendi düğmesiyle veya Govee uygulamasından.",
+        sonoff: "Sonoff DIY: düğmeyi 5+ sn basılı tut.",
+        tapo: "Tapo: uygulamasından ayarlar → cihazı kaldır/sıfırla; kamera ise SETUP düğmesi 5 sn."
+      };
+      function resetHint(d) {
+        var brand = String((d && d.brand) || (d && d.protocol) || "").toLowerCase();
+        for (var key in RESET_HINTS) if (brand.indexOf(key) !== -1) return RESET_HINTS[key];
+        return "Cihazı sıfırlamak için üreticinin uygulamasındaki Fabrika Sıfırlama adımını kullan.";
+      }
+
       return '<section id="device-info" class="nx-card scroll-mt-4"><h2 class="nx-h mb-1">Cihaz bilgileri</h2>' + nameRow +
         '<div class="nx-row"><div><p class="d">Oda</p><p class="t">' + esc(d.room || "Seçilmedi") + "</p></div></div>" +
         '<div class="nx-row"><div><p class="d">Kontrol paneli</p><p class="t">' + esc(panel.label) + "</p></div></div>" +
-        '<div class="nx-row"><div class="min-w-0"><p class="d">Bağlantı</p><p class="t truncate">' + esc(conn) + "</p></div></div>" +
+        '<div class="nx-row"><div><p class="d">Bağlantı</p><p class="t truncate">' + esc(conn) + "</p></div></div>" +
+        '<div class="nx-row"><div class="min-w-0"><p class="d">Fabrika sıfırlama</p><p class="t">' + esc(resetHint(d)) + "</p></div></div>" +
         remove + "</section>";
     }
 

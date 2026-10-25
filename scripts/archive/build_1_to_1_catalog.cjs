@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const markdownData = `
 ### 1. Elektrik Ustası
@@ -104,87 +104,112 @@ const markdownData = `
 // Helper to assign a logical image to an item
 function getImageFor(itemName) {
   let lower = itemName.toLowerCase();
-  
-  if (lower.includes('priz') || lower.includes('soket') || lower.includes('fiş')) return 'power-strip.png';
-  if (lower.includes('anahtar') || lower.includes('düğme') || lower.includes('button')) return 'switch.png';
-  if (lower.includes('perde')) return 'home-automation.png';
-  
-  if (lower.includes('lamba') || lower.includes('ampul') || lower.includes('ışık') || lower.includes('light')) return 'light.png';
-  
-  if (lower.includes('sensör') || lower.includes('dedektör') || lower.includes('detector') || lower.includes('alarm')) {
-    if (lower.includes('kapı') || lower.includes('pencere')) return 'door-sensor.png';
-    if (lower.includes('su') || lower.includes('basman')) return 'water.png';
-    if (lower.includes('sıcaklık') || lower.includes('nem')) return 'temperature.png';
-    if (lower.includes('hava') || lower.includes('gaz')) return 'air-quality.png';
-    return 'motion-detector.png';
+
+  if (lower.includes("priz") || lower.includes("soket") || lower.includes("fiş"))
+    return "power-strip.png";
+  if (lower.includes("anahtar") || lower.includes("düğme") || lower.includes("button"))
+    return "switch.png";
+  if (lower.includes("perde")) return "home-automation.png";
+
+  if (
+    lower.includes("lamba") ||
+    lower.includes("ampul") ||
+    lower.includes("ışık") ||
+    lower.includes("light")
+  )
+    return "light.png";
+
+  if (
+    lower.includes("sensör") ||
+    lower.includes("dedektör") ||
+    lower.includes("detector") ||
+    lower.includes("alarm")
+  ) {
+    if (lower.includes("kapı") || lower.includes("pencere")) return "door-sensor.png";
+    if (lower.includes("su") || lower.includes("basman")) return "water.png";
+    if (lower.includes("sıcaklık") || lower.includes("nem")) return "temperature.png";
+    if (lower.includes("hava") || lower.includes("gaz")) return "air-quality.png";
+    return "motion-detector.png";
   }
-  
-  if (lower.includes('klima') || lower.includes('termostat') || lower.includes('hvac')) return 'air-conditioner.png';
-  if (lower.includes('çamaşır')) return 'washing-machine.png';
-  if (lower.includes('komb') || lower.includes('ısıtıcı')) return 'temperature-inside.png';
-  
-  if (lower.includes('süpürge') || lower.includes('paspas')) return 'vacuum-cleaner.png';
-  if (lower.includes('temizlik') || lower.includes('robot')) return 'robot.png';
-  
-  if (lower.includes('fırın') || lower.includes('oven')) return 'oven.jpg';
-  if (lower.includes('mikrodalga')) return 'microwave.jpg';
-  if (lower.includes('kahve')) return 'coffee_maker.jpg';
-  if (lower.includes('kettle')) return 'kettle.jpg';
-  if (lower.includes('bulaşık')) return 'dishwasher.png';
-  if (lower.includes('su arıtma')) return 'water_purifier.jpg';
-  if (lower.includes('blender')) return 'blender.jpg';
-  if (lower.includes('mutfak') || lower.includes('yemek')) return 'home-automation.png';
-  
-  if (lower.includes('tartı') || lower.includes('terazi') || lower.includes('baskül')) {
-      if(lower.includes('mutfak')) return 'kitchen_scale.jpg';
-      return 'smart_scale.jpg';
+
+  if (lower.includes("klima") || lower.includes("termostat") || lower.includes("hvac"))
+    return "air-conditioner.png";
+  if (lower.includes("çamaşır")) return "washing-machine.png";
+  if (lower.includes("komb") || lower.includes("ısıtıcı")) return "temperature-inside.png";
+
+  if (lower.includes("süpürge") || lower.includes("paspas")) return "vacuum-cleaner.png";
+  if (lower.includes("temizlik") || lower.includes("robot")) return "robot.png";
+
+  if (lower.includes("fırın") || lower.includes("oven")) return "oven.jpg";
+  if (lower.includes("mikrodalga")) return "microwave.jpg";
+  if (lower.includes("kahve")) return "coffee_maker.jpg";
+  if (lower.includes("kettle")) return "kettle.jpg";
+  if (lower.includes("bulaşık")) return "dishwasher.png";
+  if (lower.includes("su arıtma")) return "water_purifier.jpg";
+  if (lower.includes("blender")) return "blender.jpg";
+  if (lower.includes("mutfak") || lower.includes("yemek")) return "home-automation.png";
+
+  if (lower.includes("tartı") || lower.includes("terazi") || lower.includes("baskül")) {
+    if (lower.includes("mutfak")) return "kitchen_scale.jpg";
+    return "smart_scale.jpg";
   }
-  if (lower.includes('tansiyon')) return 'blood_pressure.jpg';
-  if (lower.includes('saat')) return 'dashboard.png';
-  if (lower.includes('koşu') || lower.includes('bisiklet')) return 'treadmill.jpg';
-  
-  if (lower.includes('kamera') || lower.includes('camera') || lower.includes('ptz')) return 'camera.png';
-  if (lower.includes('kilit') || lower.includes('kasa') || lower.includes('turnike')) return 'door-lock.png';
-  if (lower.includes('zil') || lower.includes('doorbell')) return 'doorbell.jpg';
-  
-  if (lower.includes('ağ geçidi') || lower.includes('gateway') || lower.includes('hub')) return 'hub.png';
-  if (lower.includes('yönlendirici') || lower.includes('router')) return 'wifi-router.png';
-  
-  if (lower.includes('scooter') || lower.includes('kaykay') || lower.includes('tekerlek')) return 'scooter.jpg';
-  if (lower.includes('takip') || lower.includes('tracker') || lower.includes('izleyici')) return 'panorama.png';
-  
-  if (lower.includes('sayacı') || lower.includes('meter') || lower.includes('ölçüm')) return 'energy-meter.png';
-  if (lower.includes('güneş') || lower.includes('solar')) return 'solar-panel.png';
-  
-  if (lower.includes('televizyon') || lower.includes('tv')) return 'tv.png';
-  if (lower.includes('hoparlör') || lower.includes('ses') || lower.includes('audio')) return 'speaker.png';
-  if (lower.includes('projeksiyon')) return 'projector.jpg';
-  
-  if (lower.includes('vana') || lower.includes('valve') || lower.includes('sulama')) return 'water.png';
-  
-  return 'home-automation.png'; // default fallback
+  if (lower.includes("tansiyon")) return "blood_pressure.jpg";
+  if (lower.includes("saat")) return "dashboard.png";
+  if (lower.includes("koşu") || lower.includes("bisiklet")) return "treadmill.jpg";
+
+  if (lower.includes("kamera") || lower.includes("camera") || lower.includes("ptz"))
+    return "camera.png";
+  if (lower.includes("kilit") || lower.includes("kasa") || lower.includes("turnike"))
+    return "door-lock.png";
+  if (lower.includes("zil") || lower.includes("doorbell")) return "doorbell.jpg";
+
+  if (lower.includes("ağ geçidi") || lower.includes("gateway") || lower.includes("hub"))
+    return "hub.png";
+  if (lower.includes("yönlendirici") || lower.includes("router")) return "wifi-router.png";
+
+  if (lower.includes("scooter") || lower.includes("kaykay") || lower.includes("tekerlek"))
+    return "scooter.jpg";
+  if (lower.includes("takip") || lower.includes("tracker") || lower.includes("izleyici"))
+    return "panorama.png";
+
+  if (lower.includes("sayacı") || lower.includes("meter") || lower.includes("ölçüm"))
+    return "energy-meter.png";
+  if (lower.includes("güneş") || lower.includes("solar")) return "solar-panel.png";
+
+  if (lower.includes("televizyon") || lower.includes("tv")) return "tv.png";
+  if (lower.includes("hoparlör") || lower.includes("ses") || lower.includes("audio"))
+    return "speaker.png";
+  if (lower.includes("projeksiyon")) return "projector.jpg";
+
+  if (lower.includes("vana") || lower.includes("valve") || lower.includes("sulama"))
+    return "water.png";
+
+  return "home-automation.png"; // default fallback
 }
 
 let categories = [];
 let currentCategory = null;
 
-const lines = markdownData.split('\n');
+const lines = markdownData.split("\n");
 for (const line of lines) {
-  if (line.startsWith('### ')) {
-    const titleText = line.replace('### ', '').trim();
+  if (line.startsWith("### ")) {
+    const titleText = line.replace("### ", "").trim();
     // format: 1. Elektrik Ustası
-    const label = titleText.replace(/^\d+\.\s*/, '');
-    const key = label.toLowerCase().replace(/[^a-z0-9]/gi, '-');
+    const label = titleText.replace(/^\d+\.\s*/, "");
+    const key = label.toLowerCase().replace(/[^a-z0-9]/gi, "-");
     currentCategory = { key, label, groups: [] };
     categories.push(currentCategory);
-  } else if (line.startsWith('*   **')) {
+  } else if (line.startsWith("*   **")) {
     if (!currentCategory) continue;
     // format: *   **Soket:** Akıllı Priz, ...
     const match = line.match(/\*\s+\*\*(.*?):\*\*\s*(.*)/);
     if (match) {
       const groupTitle = match[1].trim();
-      const itemsRaw = match[2].split(',').map(s => s.trim()).filter(s => s);
-      const items = itemsRaw.map(itemName => {
+      const itemsRaw = match[2]
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s);
+      const items = itemsRaw.map((itemName) => {
         return { n: itemName, img: getImageFor(itemName) };
       });
       currentCategory.groups.push({ title: groupTitle, items });
@@ -204,15 +229,16 @@ const newCatalogCode = `    // ---- Tam 1:1 NEXUS Katalog Verisi (Tuya Referansl
       hubs: 'ag-gecidi-kontrol-paneli', cleaning: 'kucuk-ev-aleti', energy: 'enerji-tasarrufu'
     };`;
 
-const filepath = path.join(__dirname, 'stitch-integrations.html');
-let html = fs.readFileSync(filepath, 'utf8');
+const filepath = path.join(__dirname, "stitch-integrations.html");
+let html = fs.readFileSync(filepath, "utf8");
 
-const regex = /\/\/\s*----\s*(?:Genişletilmiş|Manuel).*?Katalog Verisi.*?var\s+CATALOG_ALIAS\s*=\s*\{.*?\};/s;
+const regex =
+  /\/\/\s*----\s*(?:Genişletilmiş|Manuel).*?Katalog Verisi.*?var\s+CATALOG_ALIAS\s*=\s*\{.*?\};/s;
 
 if (regex.test(html)) {
   html = html.replace(regex, newCatalogCode);
-  fs.writeFileSync(filepath, html, 'utf8');
-  console.log('Successfully updated 1:1 CATALOG in stitch-integrations.html');
+  fs.writeFileSync(filepath, html, "utf8");
+  console.log("Successfully updated 1:1 CATALOG in stitch-integrations.html");
 } else {
-  console.log('Regex failed, could not update.');
+  console.log("Regex failed, could not update.");
 }
