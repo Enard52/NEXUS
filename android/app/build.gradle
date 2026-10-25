@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
-// Release imzasÄ±: anahtar dosyasÄ± depoda tutulmaz. VarsayÄ±lan konum ~/NEXUS-signing/keystore.properties
-// (ya da NEXUS_KEYSTORE_PROPS ortam deÄŸiÅŸkeni). Dosya yoksa release derlemesi imzasÄ±z kalÄ±r.
+// Release imzasi: anahtar dosyasi depoda tutulmaz. Varsayilan konum ~/NEXUS-signing/keystore.properties
+// (ya da NEXUS_KEYSTORE_PROPS ortam degiskeni). Dosya yoksa release derlemesi imzasiz kalir.
 def nexusKsFile = file(System.getenv("NEXUS_KEYSTORE_PROPS") ?: "${System.getProperty('user.home')}/NEXUS-signing/keystore.properties")
 def nexusKs = new Properties()
 if (nexusKsFile.exists()) { nexusKsFile.withInputStream { nexusKs.load(it) } }
