@@ -1,0 +1,61 @@
+﻿name: Android yayını
+
+# v* etiketinde imzalı Android APK'sını derler ve nexus-releases sürümüne yükler.
+# Gerekli gizli anahtarlar (scripts/setup-automation.ps1 kurar): ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASSWORD,
+# ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD ve zaten var olan RELEASES_TOKEN. Eksikse adım atlanır.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+      KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KS_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Anahtarlar tamam mı?
+        id: gate
+        run: |
+          if [ -z "$KS_B64" ] || [ -z "$KS_PASS" ] || [ -z "$GH_TOKEN" ]; then echo "::notice::Android imza anahtarları tanımlı değil; APK derlemesi atlandı."; echo "run=false" >> "$GITHUB_OUTPUT"; else echo "run=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: pnpm/action-setup@v4
+        if: steps.gate.outputs.run == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run == 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        if: steps.gate.outputs.run == 'true'
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Bağımlılıklar ve www
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          node scripts/sync-www.mjs
+          pnpm exec cap sync android
+      - name: İmzalı APK derle
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/nexus-release.jks"
+          printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' "$RUNNER_TEMP/nexus-release.jks" "$KS_PASS" "${KS_ALIAS:-nexus}" "${KEY_PASS:-$KS_PASS}" > "$RUNNER_TEMP/keystore.properties"
+          cd android && NEXUS_KEYSTORE_PROPS="$RUNNER_TEMP/keystore.properties" ./gradlew assembleRelease --no-daemon
+      - name: Sürüme yükle
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          cp android/app/build/outputs/apk/release/app-release.apk NEXUS-Android.apk
+          sha256sum NEXUS-Android.apk | sed 's/NEXUS-Android.apk/NEXUS-Android.apk/' > NEXUS-Android.apk.sha256.txt
+          gh release view "$TAG" --repo Enard52/nexus-releases >/dev/null 2>&1 || gh release create "$TAG" --repo Enard52/nexus-releases --title "NEXUS ${TAG#v}" --notes "NEXUS ${TAG#v}"
+          gh release upload "$TAG" NEXUS-Android.apk NEXUS-Android.apk.sha256.txt --clobber --repo Enard52/nexus-releases

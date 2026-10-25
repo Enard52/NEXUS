@@ -1,0 +1,56 @@
+﻿name: Web ve site yayını
+
+# main'e push edilince web uygulamasını (Cloudflare Pages: nexus-web) ve tanıtım sitesini (Enard52.github.io -> nexus-smarthome)
+# kendiliğinden yayınlar. Gizli anahtarlar yoksa ilgili adım atlanır (hata vermez).
+# Gerekli: CLOUDFLARE_API_TOKEN (Pages düzenleme izni), SITE_REPO_TOKEN (site deposuna yazma izni). scripts/setup-automation.ps1 kurar.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "www/**"
+      - "lan-connectors.js"
+      - "stitch-*.html"
+      - "*.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-deploy
+  cancel-in-progress: true
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: 24c5d9c4db354c0a3173febb9b7af3bd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: www klasörünü kaynaklardan eşitle
+        run: node scripts/sync-www.mjs
+      - name: Web uygulamasını yayınla
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then echo "::notice::CLOUDFLARE_API_TOKEN yok; web yayını atlandı."; exit 0; fi
+          mkdir -p _stage && rsync -a --exclude public www/ _stage/
+          npx --yes wrangler@4 pages deploy _stage --project-name nexus-web --branch main --commit-dirty=true
+  site:
+    runs-on: ubuntu-latest
+    env:
+      SITE_REPO_TOKEN: ${{ secrets.SITE_REPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tanıtım sitesini site deposuna gönder
+        run: |
+          if [ -z "$SITE_REPO_TOKEN" ]; then echo "::notice::SITE_REPO_TOKEN yok; site yayını atlandı."; exit 0; fi
+          git clone --depth 1 "https://x-access-token:${SITE_REPO_TOKEN}@github.com/Enard52/Enard52.github.io.git" _site
+          rsync -a --delete --exclude .git --exclude .nojekyll www/public/ _site/
+          cd _site
+          if [ -z "$(git status --porcelain)" ]; then echo "Site değişmedi."; exit 0; fi
+          git config user.name "nexus-ci"; git config user.email "ci@nexus.invalid"
+          git add -A && git commit -m "site: main ${GITHUB_SHA::7} ile eşitlendi" && git push
+
