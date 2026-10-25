@@ -146,8 +146,8 @@ document.addEventListener('DOMContentLoaded',function(){
     },{passive:true});
   }
 
-  // GitHub Sürüm Etiketi Çekimi
-  fetch('https://api.github.com/repos/Enard52/NEXUS/releases/latest')
+  // GitHub Sürüm Etiketi Çekimi (nexus-releases deposu)
+  fetch('https://api.github.com/repos/Enard52/nexus-releases/releases/latest')
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){
       if(!d||!d.tag_name)return;

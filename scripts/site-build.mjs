@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync, existsSync, cpSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { content, brand, priceFor, CHECKOUT_URLS } from './site-content.mjs';
+import { LEGAL_DOCS } from './site-legal-content.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = join(ROOT, 'www', 'public');
@@ -385,11 +386,28 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* İçerikler varsayılan olarak görünür (opacity 1) */
 .rv{opacity:1;transform:none}
 
-/* About Sayfası */
+/* About & Yasal Belge Sayfaları */
 .about-hero{padding:64px 0 8px}
 .about-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
   padding:28px;margin:26px 0;display:grid;gap:14px}
 .about-body p{margin:0;color:var(--text-2);font-size:15px}
+
+.doc-hero{padding:56px 0 16px}
+.doc-hero h1{font-size:clamp(28px,4vw,38px);margin:0 0 10px;font-weight:800;letter-spacing:-.02em}
+.doc-hero .lead{color:var(--muted);font-size:14px;margin:0}
+.doc-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
+  padding:36px;margin:24px 0 60px;line-height:1.75}
+.doc-body h3{font-size:18px;font-weight:700;color:var(--text);margin:24px 0 8px}
+.doc-body h3:first-child{margin-top:0}
+.doc-body p{margin:0 0 14px;color:var(--text-2);font-size:15px}
+.doc-body ul{margin:4px 0 16px 20px;padding:0;color:var(--text-2);font-size:15px}
+.doc-body li{margin-bottom:8px}
+.doc-body a{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
+.doc-body a:hover{color:var(--brand-dark)}
+.doc-body .legal-updated{font-size:13px;color:var(--muted);margin-bottom:18px;font-style:italic}
+@media(max-width:640px){
+  .doc-body{padding:22px 18px}
+}
 `;
 
 // ---------- Sayfa Davranış Betiği (site.js) ----------
@@ -543,8 +561,8 @@ document.addEventListener('DOMContentLoaded',function(){
     },{passive:true});
   }
 
-  // GitHub Sürüm Etiketi Çekimi
-  fetch('https://api.github.com/repos/Enard52/NEXUS/releases/latest')
+  // GitHub Sürüm Etiketi Çekimi (nexus-releases deposu)
+  fetch('https://api.github.com/repos/Enard52/nexus-releases/releases/latest')
     .then(function(r){return r.ok?r.json():null;})
     .then(function(d){
       if(!d||!d.tag_name)return;
@@ -560,8 +578,17 @@ document.addEventListener('DOMContentLoaded',function(){
 }
 
 // ---------- HTML Üretim Fonksiyonları ----------
-function renderHeader(c) {
+function renderHeader(c, currentPath = '') {
   const isTr = c.lang === 'tr';
+  let enHref = '/?lang=en';
+  let trHref = '/tr/?lang=tr';
+  if (currentPath) {
+    const clean = currentPath.replace(/^\/?(tr\/)?/, '').replace(/\.html$/, '');
+    if (clean && clean !== 'index') {
+      enHref = `/${clean}.html?lang=en`;
+      trHref = `/tr/${clean}.html?lang=tr`;
+    }
+  }
   return `<header class="hd">
   <div class="wrap">
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
@@ -571,8 +598,8 @@ function renderHeader(c) {
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
         ${isTr
-          ? `<span class="lang-btn active">TR</span><a href="/?lang=en" class="lang-btn" onclick="nxSetLang('en')" title="English">EN</a>`
-          : `<a href="/tr/?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>`
+          ? `<span class="lang-btn active">TR</span><a href="${enHref}" class="lang-btn" onclick="nxSetLang('en')" title="English">EN</a>`
+          : `<a href="${trHref}" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>`
         }
       </div>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="${isTr ? 'Tema değiştir' : 'Toggle theme'}" title="${isTr ? 'Karanlık/Aydınlık Tema' : 'Toggle theme'}">
@@ -759,19 +786,20 @@ function renderPricing(c) {
 }
 
 function renderDownloads(c) {
+  const DL_BASE = 'https://github.com/Enard52/nexus-releases/releases/latest/download';
   return `<section id="downloads">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.downloads.heading)}</h2><p>${esc(c.downloads.lead)}</p></div>
     <div class="dl-grid">
       ${c.downloads.cards
         .map(
-          ([plat, ic, name, sub, file, ext]) => `<a class="dl-card rv" data-platform="${plat}" href="${file === 'NEXUS-Setup.exe' ? 'downloads/NEXUS-Setup.exe' : 'downloads/' + file}" download>
+          ([plat, ic, name, sub, file, ext]) => `<a class="dl-card rv" data-platform="${plat}" href="${DL_BASE}/${file}" download>
         <div class="dl-top">
           <div class="dl-ic">${getPlatformLogo(plat)}</div>
           <div><h3>${esc(name)}</h3><span class="plat">${esc(sub)}</span></div>
         </div>
         <div class="dl-meta">
-          <span><b data-nexus-ver>v0.8.0</b></span>
+          <span><b data-nexus-ver>v1.0.14</b></span>
           <span>${plat === 'windows' ? '64-bit .exe' : plat === 'android' ? 'APK' : 'AppImage / .deb'}</span>
           <span>SHA-256</span>
         </div>
@@ -922,7 +950,7 @@ ${baseHead(c, path)}
 <script src="/assets/site-boot.js"></script>
 </head>
 <body>
-${renderHeader(c)}
+${renderHeader(c, path)}
 <main class="wrap" style="padding-bottom:60px">
   <div class="about-hero rv">
     <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
@@ -931,6 +959,54 @@ ${renderHeader(c)}
   </div>
   <div class="about-body rv">
     ${body.map((t) => `<p>${esc(t)}</p>`).join('\n    ')}
+  </div>
+</main>
+${renderFooter(c)}
+<script src="/assets/site.js"></script>
+</body>
+</html>`;
+}
+
+function renderLegalDoc(c, slug, doc) {
+  const isTr = c.lang === 'tr';
+  const path = isTr ? `/tr/${slug}.html` : `/${slug}.html`;
+  const canonicalUrl = `https://nexus-smarthome.pages.dev${isTr ? '/tr/' + slug : '/' + slug}`;
+  const enUrl = `https://nexus-smarthome.pages.dev/${slug}`;
+  const trUrl = `https://nexus-smarthome.pages.dev/tr/${slug}`;
+
+  return `<!DOCTYPE html>
+<html lang="${c.htmlLang}" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>${esc(doc.title)} — NEXUS</title>
+<meta name="description" content="${esc(doc.title)} — NEXUS smart home"/>
+<link rel="canonical" href="${canonicalUrl}"/>
+<link rel="alternate" hreflang="en" href="${enUrl}"/>
+<link rel="alternate" hreflang="tr" href="${trUrl}"/>
+<link rel="alternate" hreflang="x-default" href="${enUrl}"/>
+<link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="NEXUS"/>
+<meta property="og:title" content="${esc(doc.title)} — NEXUS"/>
+<meta property="og:description" content="${esc(doc.title)} — NEXUS smart home"/>
+<meta property="og:url" content="${canonicalUrl}"/>
+<meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link href="/fonts/inter/inter.css" rel="stylesheet"/>
+<style>${CSS}</style>
+<script src="/assets/site-boot.js"></script>
+</head>
+<body>
+${renderHeader(c, path)}
+<main class="wrap">
+  <div class="doc-hero rv">
+    <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
+    <h1>${esc(doc.title)}</h1>
+  </div>
+  <div class="doc-body rv">
+    ${doc.body}
   </div>
 </main>
 ${renderFooter(c)}
@@ -963,6 +1039,15 @@ function build() {
   writeFileSync(join(PUB, 'tr', 'index.html'), renderLanding(content.tr, hasShots), 'utf8');
   writeFileSync(join(PUB, 'about.html'), renderAbout(content.en), 'utf8');
   writeFileSync(join(PUB, 'tr', 'about.html'), renderAbout(content.tr), 'utf8');
+
+  // Yasal Sayfalar (Yeni Tasarım & Tipografi)
+  writeFileSync(join(PUB, 'privacy.html'), renderLegalDoc(content.en, 'privacy', LEGAL_DOCS.privacyEn), 'utf8');
+  writeFileSync(join(PUB, 'tr', 'privacy.html'), renderLegalDoc(content.tr, 'privacy', LEGAL_DOCS.privacyTr), 'utf8');
+  writeFileSync(join(PUB, 'terms.html'), renderLegalDoc(content.en, 'terms', LEGAL_DOCS.termsEn), 'utf8');
+  writeFileSync(join(PUB, 'tr', 'terms.html'), renderLegalDoc(content.tr, 'terms', LEGAL_DOCS.termsTr), 'utf8');
+  writeFileSync(join(PUB, 'refund.html'), renderLegalDoc(content.en, 'refund', LEGAL_DOCS.refundEn), 'utf8');
+  writeFileSync(join(PUB, 'tr', 'refund.html'), renderLegalDoc(content.tr, 'refund', LEGAL_DOCS.refundTr), 'utf8');
+
   writeFileSync(join(PUB, 'light.html'), renderLightRedirect(false), 'utf8');
   writeFileSync(join(PUB, 'tr', 'light.html'), renderLightRedirect(true), 'utf8');
 
@@ -970,6 +1055,9 @@ function build() {
   console.log('✓ tr/index.html');
   console.log('✓ about.html');
   console.log('✓ tr/about.html');
+  console.log('✓ privacy.html & tr/privacy.html');
+  console.log('✓ terms.html & tr/terms.html');
+  console.log('✓ refund.html & tr/refund.html');
   console.log('✓ assets/site.js');
   console.log('✓ assets/site-boot.js');
   console.log('Ekran görüntüleri:', hasShots ? 'VAR (images/shots/)' : 'YOK');

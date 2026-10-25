@@ -326,11 +326,28 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* İçerikler varsayılan olarak görünür (opacity 1) */
 .rv{opacity:1;transform:none}
 
-/* About Sayfası */
+/* About & Yasal Belge Sayfaları */
 .about-hero{padding:64px 0 8px}
 .about-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
   padding:28px;margin:26px 0;display:grid;gap:14px}
 .about-body p{margin:0;color:var(--text-2);font-size:15px}
+
+.doc-hero{padding:56px 0 16px}
+.doc-hero h1{font-size:clamp(28px,4vw,38px);margin:0 0 10px;font-weight:800;letter-spacing:-.02em}
+.doc-hero .lead{color:var(--muted);font-size:14px;margin:0}
+.doc-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
+  padding:36px;margin:24px 0 60px;line-height:1.75}
+.doc-body h3{font-size:18px;font-weight:700;color:var(--text);margin:24px 0 8px}
+.doc-body h3:first-child{margin-top:0}
+.doc-body p{margin:0 0 14px;color:var(--text-2);font-size:15px}
+.doc-body ul{margin:4px 0 16px 20px;padding:0;color:var(--text-2);font-size:15px}
+.doc-body li{margin-bottom:8px}
+.doc-body a{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
+.doc-body a:hover{color:var(--brand-dark)}
+.doc-body .legal-updated{font-size:13px;color:var(--muted);margin-bottom:18px;font-style:italic}
+@media(max-width:640px){
+  .doc-body{padding:22px 18px}
+}
 </style>
 <script src="/assets/site-boot.js"></script>
 </head>
@@ -348,7 +365,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     </nav>
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="Language selection">
-        <a href="/tr/?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>
+        <a href="/tr/about.html?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>
       </div>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme" title="Toggle theme">
         <span class="ic-sun"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
