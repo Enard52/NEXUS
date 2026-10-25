@@ -250,11 +250,33 @@ export const content = {
     },
     about: {
       title: "About NEXUS",
-      lead: "NEXUS is an independent, local-first smart home platform designed for speed, privacy, and true device ownership. By communicating directly with your hardware over the local network, NEXUS delivers instant responsiveness with zero cloud dependencies.",
-      body: [
-        "The platform puts privacy and sustainability first: your devices and routines remain strictly on your own hardware, without telemetry tracking, data harvesting, or mandatory subscription fees.",
-        "The optional NEXUS+ subscription powers cloud-assisted AI features, keeping the core smart home infrastructure free, robust, and accessible for everyone.",
+      lead: "An independent, local-first smart home platform designed for speed, absolute privacy, and true hardware ownership. By speaking directly to your devices over your own home network, NEXUS eliminates cloud lock-in forever.",
+      manifesto: {
+        heading: "Why We Built NEXUS",
+        text: "The modern smart home industry took a wrong turn. Proprietary ecosystems forced homeowners into mandatory subscriptions, cloud-dependent lag, and invasive telemetry tracking. When your internet connection goes down, your living room switch shouldn't stop working. We built NEXUS because we believe your home is your sanctuary: your floor plan, your camera states, and your daily family routines belong strictly on your own hardware.",
+      },
+      pillars: [
+        {
+          title: "Local-First Speed",
+          desc: "Every automation and command executes over your local LAN in milliseconds. No roundtrips to remote cloud servers, zero latency.",
+        },
+        {
+          title: "Uncompromising Privacy",
+          desc: "No analytics telemetry, no behavioral profiling, and no selling of your private routines. Your home data stays on your devices.",
+        },
+        {
+          title: "No Vendor Lock-In",
+          desc: "Unify Shelly, Philips Hue, ESPHome, Tasmota, Sonoff, Matter, Zigbee, and LAN devices under a single open control interface.",
+        },
+        {
+          title: "Honest, Sustainable SaaS",
+          desc: "Core smart home management is completely free and unlimited forever. NEXUS+ exists solely to cover high-speed cloud AI inference costs.",
+        },
       ],
+      architecture: {
+        heading: "Engineered for Reliability",
+        lead: "NEXUS pairs a 24/7 lightweight desktop engine with native mobile companion apps, keeping your automations humming quietly in the background without burning battery.",
+      },
       linksTitle: "Practical links",
     },
     footer: {
@@ -505,11 +527,33 @@ export const content = {
     },
     about: {
       title: "NEXUS Hakkında",
-      lead: "NEXUS; hız, gizlilik ve gerçek cihaz sahipliği odaklı, bağımsız ve yerel-öncelikli bir akıllı ev platformudur. Cihazlarınızla doğrudan yerel ağınız üzerinden haberleşerek bulut bağımlılığını ortadan kaldırır.",
-      body: [
-        "Gizlilik ve sürdürülebilirlik ilk önceliğimizdir: ev düzeniniz ve verileriniz yalnızca sizin donanımınızda saklanır; veri ticareti ya da zorunlu abonelikler yer almaz.",
-        "İsteğe bağlı NEXUS+ aboneliği bulut yapay zekâ özelliklerini karşılarken, temel akıllı ev altyapısı herkes için ücretsiz, bağımsız ve açık kalır.",
+      lead: "Akıllı evinizin kontrolü yalnızca sizin elinizde olmalıdır. Hız, sıfır bulut bağımlılığı ve tavizsiz gizlilik için inşa edilen yeni nesil yerel akıllı ev platformu.",
+      manifesto: {
+        heading: "Neden NEXUS Doğdu?",
+        text: "Modern akıllı ev pazarı ne yazık ki kullanıcıları üretici bulutlarına, zorunlu abonelik duvarlarına ve gecikmeli sunucu yanıtlarına hapsetti. İnternetiniz koptuğunda evinizdeki ışığın yanmaması veya salonunuzdaki kameranın yabancı sunuculara veri aktarması kabul edilemez. NEXUS; evinize ait tüm kontrolün, senaryoların ve sensör verilerinin sadece sizin yerel ağınızda (LAN) ve donanımlarınızda kalması gerektiği inancıyla bağımsız olarak geliştirildi.",
+      },
+      pillars: [
+        {
+          title: "Tavizsiz Yerel Hız",
+          desc: "Tüm komutlar ve otomasyonlar milisaniyeler içinde doğrudan cihazın yerel IP adresine iletilir. Sıfır bulut gecikmesi, internetten bağımsız kesintisiz çalışma.",
+        },
+        {
+          title: "Gerçek Veri Mahremiyeti",
+          desc: "Evinizin kat planı, oda isimleri, cihaz kullanım alışkanlıklarınız ve kamera durumlarınız hiçbir şirketin sunucusuna yüklenmez, profillenmez ve satılmaz.",
+        },
+        {
+          title: "Sıfır Marka Kilidi",
+          desc: "Shelly, Hue, ESPHome, Tasmota, Sonoff, Kasa, Yeelight, Matter ve Zigbee gibi tüm açık ve popüler ekosistemler tek bir merkezi panodan yönetilir.",
+        },
+        {
+          title: "Dürüst ve Şeffaf Model",
+          desc: "Temel akıllı ev kontrolü, sınırsız oda ve cihaz ekleme herkes için ücretsizdir. İsteğe bağlı NEXUS+ aboneliğimiz, yalnızca bulut yapay zekâ altyapısının işlem maliyetini karşılamak için şeffaf bir şekilde sunulur.",
+        },
       ],
+      architecture: {
+        heading: "Güvenilirlik Odaklı Mühendislik",
+        lead: "NEXUS; masaüstünde sistem tepsisinde 7/24 arka planda nöbet tutan ultra hafif çekirdeği ve mobilde optimize edilmiş yerel köprüleriyle evinizi her an senkronize tutar.",
+      },
       linksTitle: "Pratik bağlantılar",
     },
     footer: {

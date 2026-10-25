@@ -421,6 +421,34 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 @media(max-width:480px){
   .nx-modal-card{padding:22px 18px}
 }
+
+/* Navbar Giriş / Hesap Butonu */
+.nx-auth-btn{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:6px 14px;
+  border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);
+  cursor:pointer;transition:all .18s ease;height:38px;box-sizing:border-box;
+}
+.nx-auth-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--surface-2)}
+.nx-auth-btn.logged-in{border-color:var(--brand);color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.nx-auth-btn .icon{width:15px;height:15px;flex-shrink:0}
+.dot-online{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981}
+
+/* Auth Modal & Profile */
+.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:14px;line-height:1.4}
+.nx-auth-toggle{margin-top:16px;text-align:center;font-size:13px;color:var(--muted)}
+.nx-link-btn{background:none;border:0;color:var(--brand);cursor:pointer;font:inherit;padding:0 4px;text-decoration:underline;text-underline-offset:2px}
+.nx-link-btn:hover{color:var(--brand-dark)}
+.nx-profile-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)}
+.nx-avatar-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981}
+.nx-profile-details{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;display:grid;gap:12px}
+.nx-detail-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
+.nx-detail-row span{color:var(--muted)}
+.nx-profile-actions{display:grid;gap:10px;margin-top:18px}
+.w-full{width:100%}
+.text-emerald{color:#10B981}
+
+/* Hakkında Sayfası Kartları */
+.about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px}
 </style>
 <script src="/assets/site-boot.js"></script>
 </head>
@@ -437,6 +465,13 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-controls">
+      <div class="lang-switch" role="group" aria-label="Language selection">
+        <a href="/tr/about.html?lang=tr" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>
+      </div>
+      <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="Sign In or Account">
+        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg>
+        <span id="nxNavAuthLabel">Sign In</span>
+      </button>
       <button class="theme-t" onclick="nxToggleTheme()" aria-label="Toggle theme" title="Toggle theme">
         <span class="ic-sun"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
         <span class="ic-moon"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></span>
@@ -448,11 +483,53 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   <div class="about-hero rv">
     <a class="int-more" href="/" style="margin-bottom:12px"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg> Back to home</a>
     <h1>About NEXUS</h1>
-    <p class="lead">NEXUS is an independent, local-first smart home platform designed for speed, privacy, and true device ownership. By communicating directly with your hardware over the local network, NEXUS delivers instant responsiveness with zero cloud dependencies.</p>
+    <p class="lead">An independent, local-first smart home platform designed for speed, absolute privacy, and true hardware ownership. By speaking directly to your devices over your own home network, NEXUS eliminates cloud lock-in forever.</p>
   </div>
-  <div class="about-body rv">
-    <p>The platform puts privacy and sustainability first: your devices and routines remain strictly on your own hardware, without telemetry tracking, data harvesting, or mandatory subscription fees.</p>
-    <p>The optional NEXUS+ subscription powers cloud-assisted AI features, keeping the core smart home infrastructure free, robust, and accessible for everyone.</p>
+
+  <div class="about-card rv" style="margin:24px 0 32px">
+    <h2 style="font-size:22px;margin:0 0 12px;font-weight:800;letter-spacing:-.02em">Why We Built NEXUS</h2>
+    <p style="font-size:15px;line-height:1.75;color:var(--text-2);margin:0">The modern smart home industry took a wrong turn. Proprietary ecosystems forced homeowners into mandatory subscriptions, cloud-dependent lag, and invasive telemetry tracking. When your internet connection goes down, your living room switch shouldn't stop working. We built NEXUS because we believe your home is your sanctuary: your floor plan, your camera states, and your daily family routines belong strictly on your own hardware.</p>
+  </div>
+
+  <div style="margin:32px 0 16px">
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 8px">Our Four Core Pillars</h2>
+    <p style="color:var(--muted);font-size:14.5px;margin:0 0 20px">The uncompromising engineering principles behind NEXUS.</p>
+    <div class="grid c2" style="gap:16px">
+      
+        <div class="card rv" style="padding:24px">
+          <div class="f-ic"></div>
+          <h3 style="font-size:17px;font-weight:700;margin:0 0 8px">Local-First Speed</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--text-2);margin:0">Every automation and command executes over your local LAN in milliseconds. No roundtrips to remote cloud servers, zero latency.</p>
+        </div>
+      
+        <div class="card rv" style="padding:24px">
+          <div class="f-ic"></div>
+          <h3 style="font-size:17px;font-weight:700;margin:0 0 8px">Uncompromising Privacy</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--text-2);margin:0">No analytics telemetry, no behavioral profiling, and no selling of your private routines. Your home data stays on your devices.</p>
+        </div>
+      
+        <div class="card rv" style="padding:24px">
+          <div class="f-ic"></div>
+          <h3 style="font-size:17px;font-weight:700;margin:0 0 8px">No Vendor Lock-In</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--text-2);margin:0">Unify Shelly, Philips Hue, ESPHome, Tasmota, Sonoff, Matter, Zigbee, and LAN devices under a single open control interface.</p>
+        </div>
+      
+        <div class="card rv" style="padding:24px">
+          <div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div>
+          <h3 style="font-size:17px;font-weight:700;margin:0 0 8px">Honest, Sustainable SaaS</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--text-2);margin:0">Core smart home management is completely free and unlimited forever. NEXUS+ exists solely to cover high-speed cloud AI inference costs.</p>
+        </div>
+      
+    </div>
+  </div>
+
+  <div class="about-card rv" style="margin:32px 0;background:color-mix(in srgb,var(--brand) 6%,var(--surface))">
+    <h2 style="font-size:20px;margin:0 0 10px;font-weight:800">Engineered for Reliability</h2>
+    <p style="font-size:14.5px;line-height:1.65;color:var(--text-2);margin:0 0 18px">NEXUS pairs a 24/7 lightweight desktop engine with native mobile companion apps, keeping your automations humming quietly in the background without burning battery.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="/#downloads" class="btn btn-primary btn-sm">Download Apps</a>
+      <a href="/#features" class="btn btn-outline btn-sm">Explore Features</a>
+    </div>
   </div>
 </main>
 <footer class="ft">
@@ -512,6 +589,65 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <p>Thank you for reaching out. Our team will review your message and reply to your email address shortly.</p>
       <button type="button" class="btn btn-outline" onclick="nxCloseContactModal()">Close</button>
     </div>
+  </div>
+</div>
+
+<div id="nxAuthModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseAuthModal()" role="dialog" aria-modal="true" aria-labelledby="nxAuthTitle">
+  <div class="nx-modal-card">
+    <button class="nx-modal-close" onclick="nxCloseAuthModal()" aria-label="Close">&times;</button>
+    
+    <!-- Giriş / Kayıt Görünümü -->
+    <div id="nxAuthFormView">
+      <div class="nx-modal-header">
+        <h3 id="nxAuthTitle">NEXUS Account</h3>
+        <p id="nxAuthSubtitle">Sign in to synchronize your setup and manage your NEXUS+ subscription.</p>
+      </div>
+      <form id="nxAuthForm" onsubmit="nxSubmitAuth(event)">
+        <div id="nxAuthAlert" class="nx-auth-alert" style="display:none"></div>
+        <div class="nx-form-group">
+          <label for="nxAuthEmail">Email Address</label>
+          <input type="email" id="nxAuthEmail" class="nx-form-input" required placeholder="name@example.com" autocomplete="email">
+        </div>
+        <div class="nx-form-group">
+          <label for="nxAuthPassword">Password</label>
+          <input type="password" id="nxAuthPassword" class="nx-form-input" required placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button type="submit" id="nxAuthSubmitBtn" class="nx-form-submit">
+          <span>Sign In</span>
+        </button>
+      </form>
+      <div class="nx-auth-toggle">
+        <span id="nxAuthSwitchPrompt">Don't have an account?</span>
+        <button type="button" class="nx-link-btn" onclick="nxToggleAuthMode()"><b id="nxAuthSwitchBtn">Sign Up</b></button>
+      </div>
+    </div>
+
+    <!-- Profil Görünümü (Giriş Yapılmışsa) -->
+    <div id="nxAuthProfileView" style="display:none">
+      <div class="nx-modal-header">
+        <div class="nx-profile-badge">
+          <span class="nx-avatar-dot"></span>
+          <span id="nxProfileEmail">kullanici@eposta.com</span>
+        </div>
+        <h3>Account & Sync</h3>
+        <p>Your account is active. Your home settings synchronize automatically across all devices.</p>
+      </div>
+      <div class="nx-profile-details">
+        <div class="nx-detail-row">
+          <span>Cloud Sync</span>
+          <b class="text-emerald">Active (Supabase)</b>
+        </div>
+        <div class="nx-detail-row">
+          <span>Plan Status</span>
+          <b id="nxProfilePlan">NEXUS Standard (Free)</b>
+        </div>
+      </div>
+      <div class="nx-profile-actions">
+        <a href="/#pricing" class="btn btn-primary w-full" onclick="nxCloseAuthModal()">View NEXUS+ Plans</a>
+        <button type="button" class="btn btn-outline w-full" onclick="nxSignOut()">Sign Out</button>
+      </div>
+    </div>
+
   </div>
 </div>
 <script src="/assets/site.js"></script>

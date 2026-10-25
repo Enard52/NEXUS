@@ -103,6 +103,172 @@ function nxSubmitContact(e){
   });
 }
 
+// Auth & Giriş Kontrolleri
+var nxAuthMode='login';
+
+function nxUpdateNavAuth(){
+  var user=null;
+  try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
+  var btn=document.getElementById('nxNavAuthBtn');
+  var label=document.getElementById('nxNavAuthLabel');
+  if(!btn||!label)return;
+  var isTr=document.documentElement.lang==='tr';
+  if(user){
+    btn.classList.add('logged-in');
+    var short=user.split('@')[0];
+    if(short.length>12)short=short.slice(0,10)+'…';
+    label.textContent=short;
+  }else{
+    btn.classList.remove('logged-in');
+    label.textContent=isTr?'Giriş Yap':'Sign In';
+  }
+}
+
+function nxOpenAuthModal(){
+  var m=document.getElementById('nxAuthModal');
+  if(!m)return;
+  var user=null;
+  try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
+  var formView=document.getElementById('nxAuthFormView');
+  var profileView=document.getElementById('nxAuthProfileView');
+  var emailEl=document.getElementById('nxProfileEmail');
+
+  if(user){
+    if(formView)formView.style.display='none';
+    if(profileView)profileView.style.display='block';
+    if(emailEl)emailEl.textContent=user;
+  }else{
+    if(formView)formView.style.display='block';
+    if(profileView)profileView.style.display='none';
+    var alertEl=document.getElementById('nxAuthAlert');
+    if(alertEl)alertEl.style.display='none';
+  }
+
+  m.style.display='flex';
+  setTimeout(function(){m.classList.add('open')},10);
+  document.body.style.overflow='hidden';
+}
+
+function nxCloseAuthModal(){
+  var m=document.getElementById('nxAuthModal');
+  if(!m)return;
+  m.classList.remove('open');
+  setTimeout(function(){
+    m.style.display='none';
+    document.body.style.overflow='';
+  },250);
+}
+
+function nxToggleAuthMode(){
+  var isTr=document.documentElement.lang==='tr';
+  var title=document.getElementById('nxAuthTitle');
+  var sub=document.getElementById('nxAuthSubtitle');
+  var submitBtn=document.getElementById('nxAuthSubmitBtn');
+  var prompt=document.getElementById('nxAuthSwitchPrompt');
+  var switchBtn=document.getElementById('nxAuthSwitchBtn');
+  var alertEl=document.getElementById('nxAuthAlert');
+  if(alertEl)alertEl.style.display='none';
+
+  if(nxAuthMode==='login'){
+    nxAuthMode='signup';
+    if(title)title.textContent=isTr?'Yeni Hesap Oluştur':'Create Account';
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':'Sign up free to control your home with zero lock-in.';
+    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':'Sign Up')+'</span>';
+    if(prompt)prompt.textContent=isTr?'Zaten hesabınız var mı?':'Already have an account?';
+    if(switchBtn)switchBtn.textContent=isTr?'Giriş Yap':'Sign In';
+  }else{
+    nxAuthMode='login';
+    if(title)title.textContent=isTr?'NEXUS Hesabım':'NEXUS Account';
+    if(sub)sub.textContent=isTr?'Cihaz senkronizasyonu ve NEXUS+ aboneliğinizi yönetmek için giriş yapın.':'Sign in to synchronize your setup and manage your NEXUS+ subscription.';
+    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':'Sign In')+'</span>';
+    if(prompt)prompt.textContent=isTr?'Hesabınız yok mu?':"Don't have an account?";
+    if(switchBtn)switchBtn.textContent=isTr?'Hemen Kayıt Ol':'Sign Up';
+  }
+}
+
+function nxSubmitAuth(e){
+  e.preventDefault();
+  var isTr=document.documentElement.lang==='tr';
+  var email=(document.getElementById('nxAuthEmail').value||'').trim();
+  var pass=document.getElementById('nxAuthPassword').value||'';
+  var btn=document.getElementById('nxAuthSubmitBtn');
+  var alertEl=document.getElementById('nxAuthAlert');
+
+  if(!email||!pass)return;
+
+  btn.disabled=true;
+  var origText=btn.innerHTML;
+  btn.innerHTML=isTr?'İşleniyor…':'Processing…';
+  if(alertEl)alertEl.style.display='none';
+
+  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+
+  var endpoint=nxAuthMode==='signup'
+    ? SUPABASE_URL+'/auth/v1/signup'
+    : SUPABASE_URL+'/auth/v1/token?grant_type=password';
+
+  fetch(endpoint,{
+    method:'POST',
+    headers:{
+      'apikey':SUPABASE_KEY,
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({email:email,password:pass})
+  })
+  .then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){
+        throw new Error(data.error_description||data.msg||data.message||'İşlem başarısız');
+      }
+      return data;
+    });
+  })
+  .then(function(data){
+    btn.disabled=false;
+    btn.innerHTML=origText;
+    var userEmail=(data.user&&data.user.email)||email;
+    try{
+      localStorage.setItem('nexusCurrentUser',userEmail);
+      if(data.access_token){
+        localStorage.setItem('nexus_cloud_session',JSON.stringify({
+          accessToken:data.access_token,
+          refreshToken:data.refresh_token,
+          userId:data.user?data.user.id:null,
+          email:userEmail
+        }));
+      }
+    }catch(e){}
+    nxUpdateNavAuth();
+    nxOpenAuthModal();
+  })
+  .catch(function(err){
+    btn.disabled=false;
+    btn.innerHTML=origText;
+    if(alertEl){
+      var msg=err.message||'';
+      if(/invalid login credentials/i.test(msg)){
+        msg=isTr?'E-posta adresi veya şifre hatalı.':'Invalid email or password.';
+      }else if(/already registered/i.test(msg)){
+        msg=isTr?'Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.':'This email is already registered. Please sign in.';
+      }else if(/Password should be at least/i.test(msg)){
+        msg=isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.';
+      }
+      alertEl.textContent=msg;
+      alertEl.style.display='block';
+    }
+  });
+}
+
+function nxSignOut(){
+  try{
+    localStorage.removeItem('nexusCurrentUser');
+    localStorage.removeItem('nexus_cloud_session');
+  }catch(e){}
+  nxUpdateNavAuth();
+  nxCloseAuthModal();
+}
+
 // Fiyatlandırma: Aylık / Yıllık geçişi
 function nxSetBilling(period){
   var isYearly=period==='yearly';
@@ -220,6 +386,9 @@ document.addEventListener('DOMContentLoaded',function(){
       nxResetShotTimer();
     },{passive:true});
   }
+
+  // Giriş Durumu Güncelleme
+  nxUpdateNavAuth();
 
   // GitHub Sürüm Etiketi Çekimi (nexus-releases deposu)
   fetch('https://api.github.com/repos/Enard52/nexus-releases/releases/latest')
