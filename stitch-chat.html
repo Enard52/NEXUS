@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -259,13 +259,12 @@
   function updateInputLock() {
     var input = document.getElementById('chat-input');
     var send = document.getElementById('chat-send');
-    var locked = pointsLeft() === 0;
-    input.disabled = locked;
-    send.disabled = locked;
-    if (locked) {
-      input.placeholder = window.nexusPoints.exhaustedText();
-      send.classList.add('opacity-40');
-    }
+    // Yerel komutlar (cihaz kontrolü, senaryo, durum) krediden etkilenmez; kredi yalnızca yapay zekâ sohbet yanıtlarını sınırlar.
+    var out = pointsLeft() === 0;
+    input.disabled = false;
+    send.disabled = false;
+    send.classList.remove('opacity-40');
+    if (out) input.placeholder = window.nexusPoints.exhaustedText() + ' · ' + nexusT('Cihaz komutları yine çalışır', 'Device commands still work');
   }
 
   /* Kullanıcının gerçekten eşleştirdiği cihazı sayısı */
@@ -401,17 +400,12 @@
     const input = document.getElementById('chat-input');
     const text = input.value.trim();
     if (!text) return;
-    if (pointsLeft() === 0) { updateInputLock(); return; }
-
     hideGreeting();
 
     const messages = document.getElementById('chat-messages');
 
     appendUserBubble(text);
     persistMessage('user', text);
-    usePoint();
-    updateInputLock();
-
     input.value = '';
     scrollToBottom();
 
@@ -504,7 +498,8 @@
     setTimeout(function () {
       var r = buildReply(text);
       if (r.unknown && window.nexusAssistant && window.nexusAssistant.ask) {
-        window.nexusAssistant.ask(text).then(function (ai) { if (ai) r.reply = ai; finishReply(r); });
+        if (pointsLeft() === 0) { r.reply = window.nexusPoints.exhaustedText() + '. ' + r.reply; finishReply(r); return; }
+        window.nexusAssistant.ask(text).then(function (ai) { if (ai) { r.reply = ai; usePoint(); updateInputLock(); } finishReply(r); });
       } else { finishReply(r); }
     }, 700);
   }
@@ -543,17 +538,14 @@
     var file = e.target.files && e.target.files[0];
     if (!file) return;
     if (!/^image\//.test(file.type)) { e.target.value = ''; return; }
-    if (pointsLeft() === 0) { updateInputLock(); e.target.value = ''; return; }
     hideGreeting();
     var reader = new FileReader();
     reader.onload = function (ev) {
       appendUserImage(ev.target.result, file.name);
       persistMessage('user', '[Görsel: ' + file.name + ']');
-      usePoint();
-      updateInputLock();
       scrollToBottom();
       setTimeout(function () {
-        var reply = 'Görselini aldım. Çevrimdışı asistan modunda görsel analizi yapamıyorum; ancak eşleşmiş cihazların ve uygulama içi işlemler konusunda yardımcı olabilirim.';
+        var reply = nexusT('Görselini aldım ama şu an görselleri analiz edemiyorum. Cihazların ve uygulama hakkında yazarak yardım isteyebilirsin.', 'I received your image but I can not analyse images yet. You can ask me about your devices and the app in text.');
         appendAiBubble(reply, '');
         persistMessage('ai', reply);
         scrollToBottom();
