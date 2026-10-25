@@ -343,8 +343,10 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 /* Footer */
 .ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
-.ft-grid{display:grid;gap:28px}
-@media(min-width:800px){.ft-grid{grid-template-columns:1.5fr repeat(3,1fr)}}
+.ft-grid{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px}
+.ft-brand{max-width:390px;flex:1 1 300px}
+.ft-links-group{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.ft-col{min-width:145px}
 .ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
 .ft a:hover{color:var(--brand)}
@@ -359,7 +361,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:0}
-@media(max-width:640px){.ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}}
+@media(max-width:768px){
+  .ft-grid{flex-direction:column;gap:32px}
+  .ft-links-group{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;width:100%}
+}
+@media(max-width:480px){
+  .ft-links-group{grid-template-columns:1fr;gap:22px}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}
+}
 
 /* İçerikler varsayılan olarak görünür (opacity 1) */
 .rv{opacity:1;transform:none}
@@ -703,7 +712,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     <div class="steps">
       <div class="step rv"><span class="step-n">1</span><h3>Kur ve aç</h3><p>Platformuna uygun kurulum dosyasını indir (Windows, Linux veya Android). Cihazlar arası güvenli senkronizasyon için hesabını oluştur.</p></div>
       <div class="step rv"><span class="step-n">2</span><h3>Cihazlarını ekle</h3><p>Markanı seç, yerel ağı tara veya IP gir. NEXUS cihazın kendi protokolüyle konuşur; üretici köprüsü gerekmez.</p></div>
-      <div class="step rv"><span class="step-n">3</span><h3>Evinin tadını çıkar</h3><p>Kontrol panelleri, sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundan, masaüstünden veya tarayıcından.</p></div>
+      <div class="step rv"><span class="step-n">3</span><h3>Evinin tadını çıkar</h3><p>Kontrol panelleri, sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundaki mobil uygulamadan veya bilgisayarındaki masaüstü programından.</p></div>
     </div>
   </div>
 </section>
@@ -850,6 +859,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     <div class="sec-head rv" style="text-align:center;margin:0 auto 36px"><h2>Önemli sorular, net yanıtlar.</h2></div>
     <div class="faq-list">
       <div class="faq-item rv open"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Hesap girişi yaptığınızda tercihleriniz uçtan uca güvenli biçimde tüm cihazlarınızla senkronize olur.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS, akıllı ev cihazlarınızla doğrudan kendi yerel ağınız (LAN) üzerinden, mikrosaniye düzeyinde gecikmeyle ve bulutsuz haberleşir. Web tarayıcıları güvenlik kum havuzu (sandbox) nedeniyle yerel TCP/UDP donanım soketlerine doğrudan erişemediğinden, ev kontrolü ve otomasyonlar yalnızca masaüstü programı (Windows, Linux) ve mobil uygulama (Android) üzerinden çalışır; web tarayıcısından çalışmaz. Web sitemiz yalnızca hesap yönetimi, indirme ve faturalandırma işlemleri içindir.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>NEXUS+ aboneliği tam olarak ne sağlar?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Temel akıllı ev yönetimi, sınırsız cihaz ekleme, oda kontrolleri ve yerel otomasyonlar tamamen sınırsızdır. NEXUS+ aboneliği; evinize entegre çalışan gelişmiş yapay zekâ modeline ayda 2.000 yüksek hızlı doğal dil yanıt hakkı, karmaşık kural ve senaryo üretimi, enerji optimizasyon önerileri ve yeni beta entegrasyonlara öncelikli erişim kazandırır.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS otomasyon motoru tüm platformlarınızda kesintisiz koordinasyon içinde çalışır. Masaüstü uygulamasında sistem tepsisinde arka planda çalışarak evinizi sürekli izler ve kuralları yürütür; mobil cihazlarınızda ise akıllı zamanlayıcılar, durum tetikleyicileri ve işletim sistemi bildirimleriyle eviniz her an senkron kalır.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" onclick="nxToggleFaq(this)"><span>Hangi cihazlar ve markalar destekleniyor?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS; Shelly, Tasmota, Philips Hue, ESPHome, WLED, Sonoff, TP-Link Kasa, Yeelight, WiZ, LIFX, Govee LAN ve Home Assistant entegrasyonuyla piyasadaki binlerce Wi-Fi, Matter ve Zigbee cihazını tek merkezde toplar. Doğrudan yerel ağ protokolleriyle üretici bulutlarına bağımlılık olmadan anında eşleşir.</p></div></div>
@@ -871,9 +881,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
           <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Gizlilik Odaklı</span>
         </div>
       </div>
-      <div><h4>Ürün</h4><a href="/tr/#features">Özellikler</a><a href="/tr/#pricing">Fiyatlar</a><a href="/tr/#downloads">İndir</a><a href="/tr/#faq">SSS</a><a href="/tr/about.html">Hakkında</a></div>
-      <div><h4>Müşteri &amp; Destek</h4><a href="/tr/#pricing">Planlar ve Fiyatlar</a><a href="javascript:nxOpenContactModal('Teknik Destek')">İletişim ve Teknik Destek</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Sürüm Notları ve Topluluk</a><a href="/tr/#downloads">Uygulama İndir</a></div>
-      <div><h4>Yasal</h4><a href="/tr/privacy.html">Gizlilik</a><a href="/tr/terms.html">Şartlar</a><a href="/tr/refund.html">İade</a></div>
+      <div class="ft-links-group">
+        <div class="ft-col"><h4>Ürün</h4><a href="/tr/#features">Özellikler</a><a href="/tr/#pricing">Fiyatlar</a><a href="/tr/#downloads">İndir</a><a href="/tr/#faq">SSS</a><a href="/tr/about.html">Hakkında</a></div>
+        <div class="ft-col"><h4>Müşteri &amp; Destek</h4><a href="/tr/#pricing">Planlar ve Fiyatlar</a><a href="javascript:nxOpenContactModal('Teknik Destek')">İletişim ve Teknik Destek</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Sürüm Notları ve Topluluk</a><a href="/tr/#downloads">Uygulama İndir</a></div>
+        <div class="ft-col"><h4>Yasal</h4><a href="/tr/privacy.html">Gizlilik</a><a href="/tr/terms.html">Şartlar</a><a href="/tr/refund.html">İade</a></div>
+      </div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. Tüm hakları saklıdır.</span>

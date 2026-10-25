@@ -343,8 +343,10 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 /* Footer */
 .ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
-.ft-grid{display:grid;gap:28px}
-@media(min-width:800px){.ft-grid{grid-template-columns:1.5fr repeat(3,1fr)}}
+.ft-grid{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px}
+.ft-brand{max-width:390px;flex:1 1 300px}
+.ft-links-group{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.ft-col{min-width:145px}
 .ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
 .ft a:hover{color:var(--brand)}
@@ -359,7 +361,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:0}
-@media(max-width:640px){.ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}}
+@media(max-width:768px){
+  .ft-grid{flex-direction:column;gap:32px}
+  .ft-links-group{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;width:100%}
+}
+@media(max-width:480px){
+  .ft-links-group{grid-template-columns:1fr;gap:22px}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}
+}
 
 /* İçerikler varsayılan olarak görünür (opacity 1) */
 .rv{opacity:1;transform:none}
@@ -687,9 +696,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
           <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Privacy-First</span>
         </div>
       </div>
-      <div><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about.html">About</a></div>
-      <div><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="javascript:nxOpenContactModal('Technical Support')">Contact &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
-      <div><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
+      <div class="ft-links-group">
+        <div class="ft-col"><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about.html">About</a></div>
+        <div class="ft-col"><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="javascript:nxOpenContactModal('Technical Support')">Contact &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
+        <div class="ft-col"><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
+      </div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. All rights reserved.</span>

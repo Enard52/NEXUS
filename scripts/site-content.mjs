@@ -116,7 +116,7 @@ export const content = {
         [
           "3",
           "Live your home",
-          "Control panels, scenes, scheduled automations and real energy readings — from your pocket, your desktop or your browser.",
+          "Control panels, scenes, scheduled automations and real energy readings — from your mobile companion app or your native desktop program.",
         ],
       ],
     },
@@ -212,9 +212,9 @@ export const content = {
       versionLabel: "Version",
       sizeLabel: "Size",
       webCard: {
-        title: "Web & iOS (PWA)",
-        desc: "Nothing to install — or add it to your home screen from the browser for an app-like experience.",
-        cta: { label: "Open web app", href: APP_URL },
+        title: "Cross-Platform Ecosystem",
+        desc: "Native desktop applications for Windows and Linux, and companion app for Android. True local hardware control without browser limitations.",
+        cta: { label: "Explore downloads", href: "#downloads" },
       },
       smartScreenNote:
         "Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.",
@@ -225,6 +225,10 @@ export const content = {
         [
           "Does NEXUS operate entirely on my local network?",
           "Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens.",
+        ],
+        [
+          "Can I control my home from a web browser, or do I need the native apps?",
+          "NEXUS communicates directly with your devices over your private local area network (LAN) with microsecond latency and zero cloud dependency. Because web browsers run in isolated sandboxes that cannot directly interface with raw local UDP/TCP/LAN hardware protocols, smart home management operates strictly through the native desktop program (Windows, Linux) and the mobile companion app (Android)—not through a web browser. The website is solely for account settings, downloads, and billing.",
         ],
         [
           "What does the NEXUS+ plan add?",
@@ -393,7 +397,7 @@ export const content = {
         [
           "3",
           "Evinin tadını çıkar",
-          "Kontrol panelleri, sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundan, masaüstünden veya tarayıcından.",
+          "Kontrol panelleri, sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundaki mobil uygulamadan veya bilgisayarındaki masaüstü programından.",
         ],
       ],
     },
@@ -490,9 +494,9 @@ export const content = {
       versionLabel: "Sürüm",
       sizeLabel: "Boyut",
       webCard: {
-        title: "Web ve iOS (PWA)",
-        desc: "Kurulum yok — ya da tarayıcıdan ana ekrana ekleyerek uygulama deneyimi yaşa.",
-        cta: { label: "Web uygulamasını aç", href: APP_URL },
+        title: "Çoklu Platform Ekosistemi",
+        desc: "Windows ve Linux için yerel masaüstü programı, Android için mobil uygulama. Tarayıcı kısıtlaması olmadan gerçek yerel donanım kontrolü.",
+        cta: { label: "İndirmeleri incele", href: "#downloads" },
       },
       smartScreenNote:
         "Windows imzasız kurulumlar için uyarı verebilir (“bilinmeyen yayıncı”). Dosya güvenlidir — sağlama değerlerine bak.",
@@ -503,6 +507,10 @@ export const content = {
         [
           "Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?",
           "Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Hesap girişi yaptığınızda tercihleriniz uçtan uca güvenli biçimde tüm cihazlarınızla senkronize olur.",
+        ],
+        [
+          "NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?",
+          "NEXUS, akıllı ev cihazlarınızla doğrudan kendi yerel ağınız (LAN) üzerinden, mikrosaniye düzeyinde gecikmeyle ve bulutsuz haberleşir. Web tarayıcıları güvenlik kum havuzu (sandbox) nedeniyle yerel TCP/UDP donanım soketlerine doğrudan erişemediğinden, ev kontrolü ve otomasyonlar yalnızca masaüstü programı (Windows, Linux) ve mobil uygulama (Android) üzerinden çalışır; web tarayıcısından çalışmaz. Web sitemiz yalnızca hesap yönetimi, indirme ve faturalandırma işlemleri içindir.",
         ],
         [
           "NEXUS+ aboneliği tam olarak ne sağlar?",

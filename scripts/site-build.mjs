@@ -409,8 +409,10 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 /* Footer */
 .ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
-.ft-grid{display:grid;gap:28px}
-@media(min-width:800px){.ft-grid{grid-template-columns:1.5fr repeat(3,1fr)}}
+.ft-grid{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px}
+.ft-brand{max-width:390px;flex:1 1 300px}
+.ft-links-group{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.ft-col{min-width:145px}
 .ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
 .ft a:hover{color:var(--brand)}
@@ -425,7 +427,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:0}
-@media(max-width:640px){.ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}}
+@media(max-width:768px){
+  .ft-grid{flex-direction:column;gap:32px}
+  .ft-links-group{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;width:100%}
+}
+@media(max-width:480px){
+  .ft-links-group{grid-template-columns:1fr;gap:22px}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}
+}
 
 /* İçerikler varsayılan olarak görünür (opacity 1) */
 .rv{opacity:1;transform:none}
@@ -1301,7 +1310,7 @@ function renderHero(c, hasShots) {
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`).join('\n            ')}
+            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
@@ -1482,7 +1491,7 @@ function renderFaq(c) {
 
 function renderFooter(c) {
   const col = (title, links) =>
-    `<div><h4>${esc(title)}</h4>${links.map(([l, h]) => {
+    `<div class="ft-col"><h4>${esc(title)}</h4>${links.map(([l, h]) => {
       let href = h;
       if (href.startsWith('#')) href = c.canonical + href;
       return `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l)}</a>`;
@@ -1500,9 +1509,11 @@ function renderFooter(c) {
           <span class="ft-pill">${icon('sparkles')} ${c.lang === 'tr' ? 'Gizlilik Odaklı' : 'Privacy-First'}</span>
         </div>
       </div>
-      ${col(c.footer.product, c.footer.productLinks)}
-      ${col(c.footer.account, c.footer.accountLinks)}
-      ${col(c.footer.legal, c.footer.legalLinks)}
+      <div class="ft-links-group">
+        ${col(c.footer.product, c.footer.productLinks)}
+        ${col(c.footer.account, c.footer.accountLinks)}
+        ${col(c.footer.legal, c.footer.legalLinks)}
+      </div>
     </div>
     <div class="ft-bottom">
       <span>© ${new Date().getFullYear()} NEXUS. ${esc(c.footer.rights)}</span>

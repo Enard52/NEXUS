@@ -10,7 +10,8 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "www", "public", "images", "shots");
+const OUT_TR = join(ROOT, "www", "public", "images", "shots");
+const OUT_EN = join(ROOT, "www", "public", "images", "shots", "en");
 const PORT = 4833;
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -36,7 +37,8 @@ const server = http.createServer(async (req, res) => {
   }
 });
 await new Promise((r) => server.listen(PORT, "127.0.0.1", r));
-mkdirSync(OUT, { recursive: true });
+mkdirSync(OUT_TR, { recursive: true });
+mkdirSync(OUT_EN, { recursive: true });
 
 // Hava durumu kartı ağ isteğini beklemesin: açık-meteo'ya kısa süre tanınır.
 const PAGES = [
@@ -51,27 +53,57 @@ const PAGES = [
 ];
 
 const browser = await chromium.launch();
-const ctx = await browser.newContext({
+
+// 1. Türkçe Ekran Görüntüleri
+const ctxTr = await browser.newContext({
   viewport: { width: 390, height: 844 },
-  deviceScaleFactor: 2, // net metin
+  deviceScaleFactor: 2,
   isMobile: true,
   hasTouch: true,
   locale: "tr-TR",
 });
-// Boş ev durumu yerine dürüst varsayılanlar yeterli; sahte cihaz eklemiyoruz.
-await ctx.addInitScript(() => {
+await ctxTr.addInitScript(() => {
+  localStorage.setItem("nexusLanguage", "tr");
   localStorage.setItem("nexusCurrentUser", "shots@nexus.local");
   localStorage.setItem("shots@nexus.local_nexusOnboarded", "true");
 });
 
+console.log("→ Türkçe ekran görüntüleri yakalanıyor…");
 for (const p of PAGES) {
-  const pg = await ctx.newPage();
+  const pg = await ctxTr.newPage();
   await pg.goto(`http://127.0.0.1:${PORT}/${p.path}`, { waitUntil: "networkidle", timeout: 20000 });
   await pg.waitForTimeout(p.wait);
-  await pg.screenshot({ path: join(OUT, `${p.name}.png`) });
-  console.log("✓", p.name + ".png");
+  await pg.screenshot({ path: join(OUT_TR, `${p.name}.png`) });
+  console.log("✓ TR:", p.name + ".png");
   await pg.close();
 }
+await ctxTr.close();
+
+// 2. İngilizce Ekran Görüntüleri
+const ctxEn = await browser.newContext({
+  viewport: { width: 390, height: 844 },
+  deviceScaleFactor: 2,
+  isMobile: true,
+  hasTouch: true,
+  locale: "en-US",
+});
+await ctxEn.addInitScript(() => {
+  localStorage.setItem("nexusLanguage", "en");
+  localStorage.setItem("nexusCurrentUser", "shots@nexus.local");
+  localStorage.setItem("shots@nexus.local_nexusOnboarded", "true");
+});
+
+console.log("→ İngilizce ekran görüntüleri yakalanıyor…");
+for (const p of PAGES) {
+  const pg = await ctxEn.newPage();
+  await pg.goto(`http://127.0.0.1:${PORT}/${p.path}`, { waitUntil: "networkidle", timeout: 20000 });
+  await pg.waitForTimeout(p.wait);
+  await pg.screenshot({ path: join(OUT_EN, `${p.name}.png`) });
+  console.log("✓ EN:", p.name + ".png");
+  await pg.close();
+}
+await ctxEn.close();
+
 await browser.close();
 server.close();
-console.log("Ekran görüntüleri hazır:", OUT);
+console.log("Tüm ekran görüntüleri (TR & EN) hazır:", OUT_TR);
