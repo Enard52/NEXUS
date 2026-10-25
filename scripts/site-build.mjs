@@ -1,11 +1,69 @@
-import { mkdirSync, writeFileSync, existsSync, cpSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, cpSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { content, brand, priceFor, CHECKOUT_URLS } from './site-content.mjs';
+import { content, brand, priceFor, PRICES, CHECKOUT_URLS, APP_URL } from './site-content.mjs';
 import { LEGAL_DOCS } from './site-legal-content.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = join(ROOT, 'www', 'public');
+
+/* --- Yıllık indirim oranı ---
+   Eskiden her yerde elle "%33" yazıyordu; USD planında gerçek oran %37. Artık
+   tek kaynak PRICES (cloud-sync.js ile birebir; packages/core/site-pricing.test.ts
+   denetliyor) ve oran oradan hesaplanıyor. */
+const priceNum = (v) => {
+  const s = String(v).replace(/[^\d.,]/g, '');
+  return s.includes(',') ? parseFloat(s.replace(/\./g, '').replace(',', '.')) : parseFloat(s);
+};
+const savePct = (cur) =>
+  Math.round((1 - priceNum(PRICES[cur].yearly) / (priceNum(PRICES[cur].monthly) * 12)) * 100);
+const SAVE = { TRY: savePct('TRY'), USD: savePct('USD') };
+
+/* --- Sürüm rozetinin yedek değeri ---
+   Kartlardaki sürüm canlıda api.github.com'dan geliyor; ziyaretçi IP'si hız sınırına
+   takılırsa (60 istek/saat — ölçüldü) istek düşüyor ve HTML'deki değer görünüyor.
+   Eskiden "v1.0.14" elle yazılıydı ve bayatlıyordu; artık masaüstü paketinin
+   sürümünden (desktop/package.json) üretiliyor. */
+const APP_VERSION = (() => {
+  try {
+    return 'v' + JSON.parse(readFileSync(join(ROOT, 'desktop', 'package.json'), 'utf8')).version;
+  } catch {
+    return 'v1.0.0';
+  }
+})();
+
+/* --- Bulut yapılandırması: cloud-config.js gitignore'da, değerler depoya girmemeli ---
+   Projemin URL'i ve anonim anahtarı eskiden üretilen site.js içine üç kez GÖMÜLÜYORDU ve
+   www/public takipte olduğu için anahtar deponun kendisine girmişti. Artık build, anahtarı
+   ayrı ve TAKİP EDİLMEYEN bir dosyaya (www/public/assets/cloud-config.js) yazıyor; site.js
+   onu yalnızca çalışma zamanında window.NEXUS_CLOUD üzerinden okuyor. CI'da değerler
+   ortamdan gelir (NEXUS_SUPABASE_URL / NEXUS_SUPABASE_ANON_KEY); dosya yoksa giriş
+   modalları ağa gitmek yerine dürüstçe "kullanımda değil" diyor. */
+const CLOUD = (() => {
+  const env = { url: (process.env.NEXUS_SUPABASE_URL || '').trim(), anonKey: (process.env.NEXUS_SUPABASE_ANON_KEY || '').trim() };
+  try {
+    const src = readFileSync(join(ROOT, 'cloud-config.js'), 'utf8');
+    const url = (src.match(/url:\s*"(https:\/\/[^"]+)"/) || [])[1] || '';
+    const anonKey = (src.match(/anonKey:\s*"([^"]+)"/) || [])[1] || '';
+    if (url && anonKey) return { url, anonKey };
+  } catch {
+    /* yerel dosya yok: CI'da ortam değişkenleri kullanılır */
+  }
+  return env;
+})();
+
+/* --- Cihaz matrisi: sitedeki "çalışır" listesi uygulamayla aynı kaynaktan ---
+   Elle yazılan marka listesi zamanla uygulamadan saptı (HomeKit, Sonoff, WiZ, LIFX,
+   Govee, Matter, Zigbee hiç yokken vaat ediliyordu). Artık supported-devices.js üretir. */
+const DEVICE_MATRIX = (() => {
+  try {
+    const win = {};
+    new Function('window', readFileSync(join(ROOT, 'supported-devices.js'), 'utf8'))(win);
+    return win.NEXUS_SUPPORTED_DEVICES || [];
+  } catch {
+    return [];
+  }
+})();
 
 const esc = (s) =>
   String(s ?? '').replace(
@@ -255,9 +313,10 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
   pointer-events:none;
 }
 
-/* Telefon Cam Parıltısı */
+/* Telefon Cam Parıltısı — taşmayı engellemek için kadrajın içinde kalır (ölçüldü:
+   left:-50%/width:200% olan sürüm 390px'te belgeyi yatay kaydırıyordu). */
 .phone-glass-shine{
-  position:absolute;top:0;left:-50%;width:200%;height:100%;
+  position:absolute;top:0;left:0;width:100%;height:100%;
   background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
   pointer-events:none;z-index:32;border-radius:35px;
 }
@@ -276,13 +335,20 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
   background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:4px;
+  display:flex;align-items:center;gap:2px;
 }
+/* Dokunma alanı GERÇEKTEN 28px: noktanın kendisi 6px çizilir (::before), düğmenin
+   kutusu 28px. Eskiden 6px kutuya ::after ile 30px sahte alan eklenmişti; komşu
+   noktaların alanları üst üste bindiği için parmak yanlış ekrana basıyordu (ölçüldü). */
 .phone-dot{
-  width:5px;height:5px;border-radius:999px;background:var(--border);border:0;padding:0;
-  cursor:pointer;transition:all .25s ease;
+  width:28px;height:28px;border-radius:999px;background:transparent;border:0;padding:0;
+  display:grid;place-items:center;cursor:pointer;
 }
-.phone-dot.active{
+.phone-dot::before{
+  content:'';display:block;width:6px;height:6px;border-radius:999px;background:var(--border);
+  transition:all .25s ease;
+}
+.phone-dot.active::before{
   width:16px;background:var(--brand);box-shadow:0 0 6px rgba(76,125,255,.4);
 }
 
@@ -343,8 +409,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text-2);box-shadow:0 2px 6px rgba(15,23,42,.03);
   transition:all .18s ease}
 .chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 40%,transparent);box-shadow:var(--shadow)}
-.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:0;cursor:pointer;transition:color .18s ease}
+.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:10px 4px;cursor:pointer;transition:color .18s ease}
 .int-more:hover{color:var(--brand-press);text-decoration:underline}
+/* Entegrasyon uyarısı: doğrudan bağlayıcısı olmayan markaların gerçek koşulunu söyler. */
+.int-note{margin:22px 0 0;padding:16px 18px;border-radius:var(--radius-lg);border:1px dashed color-mix(in srgb,var(--brand) 35%,var(--border));
+  background:color-mix(in srgb,var(--brand) 5%,var(--surface));color:var(--muted);font-size:13.5px;line-height:1.6}
 
 /* Fiyatlar */
 #pricing{scroll-margin-top:80px;padding:48px 0 54px}
@@ -914,7 +983,11 @@ function nxGetAvatarHtml(isLarge){
   var avatarUrl = null;
   try{ avatarUrl = localStorage.getItem('nexusUserAvatar'); }catch(e){}
   if(avatarUrl){
-    return '<img src="' + avatarUrl + '" alt="Avatar" class="nx-avatar-photo" onerror="this.outerHTML=\'' + nxUserSvgIcon.replace(/"/g, '&quot;') + '\';">';
+    /* DIKKAT: bu satirlar pageJs() icindeki sabit metin (template literal) icinde
+       yaziliyor; tek tirnak kacisi iki kere kacislanmali (\\'). Tek kere yazilinca
+       uretilen site.js'te syntax hatasi olusuyor ve sitedeki TUM JavaScript oliyordu
+       (olculdu: canli nexus-smarthome.pages.dev/assets/site.js "Unexpected string"). */
+    return '<img src="' + avatarUrl + '" alt="Avatar" class="nx-avatar-photo" onerror="this.outerHTML=\\'' + nxUserSvgIcon.replace(/"/g, '&quot;') + '\\';">';
   }
   return nxUserSvgIcon;
 }
@@ -1007,13 +1080,30 @@ function nxEditProfileName(){
   );
 }
 
+// cloud-config.js CI'da üretilir; değer yoksa ağa gitmek yerine nedeni söylenir.
+/* Bulut adresi + anonim anahtar build çıktısına gömülmez; sayfa /assets/cloud-config.js
+   üzerinden gelir (gitignore'dur, CI/site yayınıda üretilir). Yoksa auth 'unavailable' der. */
+function nxCloudConfig(){
+  var c = (typeof window !== 'undefined' && window.NEXUS_CLOUD) || {};
+  return { url: c.url || '', anonKey: c.anonKey || '' };
+}
+function nxAuthUnavailableMsg(){
+  var isTr=document.documentElement.lang==='tr';
+  return isTr?'Hesap işlemleri bu sürümde kapalı (bulut yapılandırması yok). Uygulamayı indirip oradan giriş yapabilirsin.':'Account actions are off in this build (no cloud config). Download the app and sign in there.';
+}
+function nxAuthUnavailable(){
+  var isTr=document.documentElement.lang==='tr';
+  nxShowAlert(nxAuthUnavailableMsg(),isTr?'Kullanımda değil':'Not available','warning');
+}
+
 function nxSendPasswordReset(){
   var isTr=document.documentElement.lang==='tr';
   var user=null;
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   if(!user)return;
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  var SUPABASE_URL=nxCloudConfig().url;
+  var SUPABASE_KEY=nxCloudConfig().anonKey;
+  if(!SUPABASE_URL||!SUPABASE_KEY){nxAuthUnavailable();return;}
   fetch(SUPABASE_URL+'/auth/v1/recover',{
     method:'POST',
     headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
@@ -1083,7 +1173,8 @@ function nxTogglePwVisible(){
 }
 
 function nxGoogleLogin(){
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_URL=nxCloudConfig().url;
+  if(!SUPABASE_URL){nxAuthUnavailable();return;}
   var redir=window.location.origin + window.location.pathname;
   window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(redir);
 }
@@ -1098,8 +1189,9 @@ function nxForgotPassword(){
     function(inputEmail){
       if(!inputEmail)return;
       var alertEl=document.getElementById('nxAuthAlert');
-      var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-      var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+      var SUPABASE_URL=nxCloudConfig().url;
+      var SUPABASE_KEY=nxCloudConfig().anonKey;
+      if(!SUPABASE_URL||!SUPABASE_KEY){if(alertEl){alertEl.textContent=nxAuthUnavailableMsg();alertEl.style.display='block';}return;}
       fetch(SUPABASE_URL+'/auth/v1/recover',{
         method:'POST',
         headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
@@ -1122,8 +1214,6 @@ function nxForgotPassword(){
     }
   );
 }
-  });
-}
 
 function nxSubmitAuth(e){
   e.preventDefault();
@@ -1140,8 +1230,13 @@ function nxSubmitAuth(e){
   btn.innerHTML=isTr?'İşleniyor…':'Processing…';
   if(alertEl)alertEl.style.display='none';
 
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  var SUPABASE_URL=nxCloudConfig().url;
+  var SUPABASE_KEY=nxCloudConfig().anonKey;
+  if(!SUPABASE_URL||!SUPABASE_KEY){
+    btn.disabled=false;btn.innerHTML=origText;
+    if(alertEl){alertEl.textContent=nxAuthUnavailableMsg();alertEl.style.display='block';}
+    return;
+  }
 
   var endpoint=nxAuthMode==='signup'
     ? SUPABASE_URL+'/auth/v1/signup'
@@ -1219,6 +1314,13 @@ function nxSignOut(){
 }
 
 // Fiyatlandırma: Aylık / Yıllık geçişi
+// Rakamlar ve indirim oranı build'de PRICES'tan enjekte edilir (tek kaynak cloud-sync.js);
+// elle yazılan fiyatlar zam geldiğinde yalan söylüyordu. site.js tek dosya olduğu için
+// para birimi sayfanın dilinden seçilir (TR → TL, diğerleri → USD; cloud-sync.js de öyle yapıyor).
+var NX_BILLING = ${JSON.stringify({
+  tr: { price: PRICES.TRY, save: SAVE.TRY },
+  en: { price: PRICES.USD, save: SAVE.USD },
+})};
 function nxSetBilling(period){
   var isYearly=period==='yearly';
   var btnM=document.getElementById('billingMonthly');
@@ -1227,21 +1329,30 @@ function nxSetBilling(period){
   if(btnY)btnY.classList.toggle('active',isYearly);
 
   var isTr=document.documentElement.lang==='tr';
+  var bundle=NX_BILLING[isTr?'tr':'en'];
   var priceVal=document.getElementById('planPriceVal');
   var periodVal=document.getElementById('planPeriodVal');
   var priceNote=document.getElementById('planPriceNote');
   var cta=document.getElementById('nexusPlusCta');
 
   if(isYearly){
-    if(priceVal)priceVal.textContent=isTr?'₺333,33':'$7.50';
+    if(priceVal)priceVal.textContent=bundle.price.perMonthOfYear;
     if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':'/mo, billed yearly';
-    if(priceNote)priceNote.textContent=isTr?'Yıllık ₺3.999,99 olarak faturalandırılır (%33 tasarruf)':'Billed as $89.99/yr (Save 33%)';
-    if(cta&&cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
+    if(priceNote)priceNote.textContent=isTr
+      ? ('Yıllık ' + bundle.price.yearly + ' olarak faturalandırılır (%' + bundle.save + ' tasarruf)')
+      : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
+    if(cta){
+      if(cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
+      if(cta.dataset.yearlyLabel)cta.textContent=cta.dataset.yearlyLabel;
+    }
   }else{
-    if(priceVal)priceVal.textContent=isTr?'₺499,99':'$11.99';
+    if(priceVal)priceVal.textContent=bundle.price.monthly;
     if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
     if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
-    if(cta&&cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
+    if(cta){
+      if(cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
+      if(cta.dataset.monthlyLabel)cta.textContent=cta.dataset.monthlyLabel;
+    }
   }
 }
 
@@ -1249,8 +1360,12 @@ function nxSetBilling(period){
 function nxToggleFaq(btn){
   var item=btn.closest('.faq-item');
   var isOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(function(el){el.classList.remove('open')});
-  if(!isOpen)item.classList.add('open');
+  document.querySelectorAll('.faq-item').forEach(function(el){
+    el.classList.remove('open');
+    var b=el.querySelector('.faq-q');
+    if(b)b.setAttribute('aria-expanded','false');
+  });
+  if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true');}
 }
 
 // Gerçekçi Akıllı Telefon Ön İzleme Kontrolleri
@@ -1270,6 +1385,7 @@ function nxShowShot(idx){
   });
   dots.forEach(function(d,i){
     d.classList.toggle('active',i===idx);
+    d.setAttribute('aria-selected',i===idx?'true':'false');
   });
 
   var titleEl=document.getElementById('phoneSlideTitle');
@@ -1406,6 +1522,7 @@ function renderHeader(c, currentPath = '') {
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
     <nav class="nav" aria-label="${isTr ? 'Ana menü' : 'Main menu'}">
       ${c.nav.map(([href, label]) => `<a href="${href}">${esc(label)}</a>`).join('\n      ')}
+      ${APP_URL ? `<a href="${APP_URL}" target="_blank" rel="noopener">${isTr ? 'Web uygulaması' : 'Web app'}</a>` : ''}
     </nav>
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
@@ -1451,7 +1568,7 @@ function renderHero(c, hasShots) {
       <div class="hero-cta">
         <a class="btn btn-primary" href="${c.hero.primary.href}">${esc(c.hero.primary.label)}</a>
       </div>
-      <p class="ver-chip"><span class="dot"></span>${esc(c.hero.versionNote)}: <b data-nexus-ver>v1.0.14</b></p>
+      <p class="ver-chip"><span class="dot"></span>${esc(c.hero.versionNote)}: <b data-nexus-ver>${APP_VERSION}</b></p>
       <div class="trust">
         ${c.hero.trust.map((t) => `<span>${icon('check')}${esc(t)}</span>`).join('\n        ')}
       </div>
@@ -1494,7 +1611,7 @@ function renderHero(c, hasShots) {
           <span id="phoneSlideTitle">${esc(shots[0].label)}</span>
         </div>
         <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
-          ${shots.map((s, i) => `<button class="phone-dot${i === 0 ? ' active' : ''}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
+          ${shots.map((s, i) => `<button role="tab" class="phone-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0 ? 'true' : 'false'}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
         </div>
         <span class="phone-tap-hint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
       </div>
@@ -1527,14 +1644,34 @@ function renderHow(c) {
 </section>`;
 }
 
+/* Entegrasyon listesi artık supported-devices.js'ten geliyor. Elle yazıldığı dönemde
+   site, uygulamanın hiç bağlayıcısı olmayan markaları (HomeKit, Sonoff DIY, WiZ, LIFX,
+   Govee LAN) ve Matter/Zigbee'yi doğrudan destek gibi gösteriyordu. */
+function integrationGroups(c) {
+  const isTr = c.lang === 'tr';
+  if (!DEVICE_MATRIX.length) return c.integrations.groups;
+  // supported-devices.js'teki marka adlarında Türkçe parantezli notlar var
+  // ("Tuya (yerel mod)"); ikisinde de yalnızca marka görünür.
+  const label = (b) => String(b).replace(/\s*\([^)]*\)\s*/g, '').trim();
+  const brands = (av) => DEVICE_MATRIX.filter((d) => d.availability === av).map((d) => label(d.brand));
+  const groups = [];
+  if (brands('all').length) groups.push([isTr ? 'Yerel HTTP — her platformda' : 'Local HTTP — on every platform', brands('all')]);
+  if (brands('desktop').length) groups.push([isTr ? 'Yerel TCP — masaüstü uygulamasında' : 'Local TCP — desktop app', brands('desktop')]);
+  if (brands('soon').length) groups.push([isTr ? 'Doğrudan bağlayıcı yakında' : 'Direct connector coming soon', brands('soon')]);
+  return groups;
+}
+
 function renderIntegrations(c) {
   const isTr = c.lang === 'tr';
   return `<section id="integrations">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.integrations.heading)}</h2><p>${esc(c.integrations.lead)}</p></div>
     <div class="int-groups">
-      ${c.integrations.groups.map(([g, items]) => `<div class="card rv"><h3>${esc(g)}</h3><div class="chips">${items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div></div>`).join('\n      ')}
+      ${integrationGroups(c).map(([g, items]) => `<div class="card rv"><h3>${esc(g)}</h3><div class="chips">${items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div></div>`).join('\n      ')}
     </div>
+    <p class="int-note rv">${isTr
+      ? 'Matter, Zigbee, Tuya, Sonoff ve Xiaomi gibi protokoller kendi Home Assistant sunucun üzerinden eklenir; NEXUS\u2019un bu markalar için doğrudan bağlayıcısı yoktur.'
+      : 'Matter, Zigbee, Tuya, Sonoff and Xiaomi come in through your own Home Assistant server; NEXUS has no direct connector for those brands.'}</p>
     <button type="button" class="int-more" onclick="nxOpenContactModal('${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}')">${esc(c.integrations.more)} ${icon('arrow')}</button>
   </div>
 </section>`;
@@ -1545,6 +1682,7 @@ function renderPricing(c) {
   const isTr = c.lang === 'tr';
   const monthlyCheckout = isTr ? CHECKOUT_URLS.TRY.monthly : CHECKOUT_URLS.USD.monthly;
   const yearlyCheckout = isTr ? CHECKOUT_URLS.TRY.yearly : CHECKOUT_URLS.USD.yearly;
+  const save = isTr ? SAVE.TRY : SAVE.USD;
 
   return `<section id="pricing">
   <div class="wrap">
@@ -1561,7 +1699,7 @@ function renderPricing(c) {
         </button>
         <button id="billingYearly" class="billing-btn" onclick="nxSetBilling('yearly')">
           ${isTr ? 'Yıllık' : 'Yearly'}
-          <span class="save-badge">${isTr ? '%33 Tasarruf' : 'Save 33%'}</span>
+          <span class="save-badge">${isTr ? `%${save} Tasarruf` : `Save ${save}%`}</span>
         </button>
       </div>
     </div>
@@ -1586,13 +1724,13 @@ function renderPricing(c) {
         <span class="plan-badge">${esc(c.pricing.plans[1].badge)}</span>
         <div class="plan-head">
           <h3>${esc(c.pricing.plans[1].name)}</h3>
-          <div class="price"><span id="planPriceVal">${isTr ? '₺499,99' : '$11.99'}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
+          <div class="price"><span id="planPriceVal">${p.monthly}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
           <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
         </div>
         <ul>
           ${c.pricing.plans[1].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
-        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${monthlyCheckout}" data-monthly-href="${monthlyCheckout}" data-yearly-href="${yearlyCheckout}" target="_blank" rel="noopener">
+        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${monthlyCheckout}" data-monthly-href="${monthlyCheckout}" data-yearly-href="${yearlyCheckout}" data-monthly-label="${esc(c.pricing.plans[1].cta.monthlyLabel || c.pricing.plans[1].cta.label)}" data-yearly-label="${esc(c.pricing.plans[1].cta.yearlyLabel || c.pricing.plans[1].cta.label)}" target="_blank" rel="noopener">
           ${esc(c.pricing.plans[1].cta.label)}
         </a>
       </div>
@@ -1630,7 +1768,7 @@ function renderDownloads(c) {
           <div><h3>${esc(name)}</h3><span class="plat">${esc(sub)}</span></div>
         </div>
         <div class="dl-meta">
-          <span><b data-nexus-ver>v1.0.14</b></span>
+          <span><b data-nexus-ver>${APP_VERSION}</b></span>
           <span>${plat === 'windows' ? '64-bit .exe' : plat === 'android' ? 'APK' : 'AppImage / .deb'}</span>
           <span>SHA-256</span>
         </div>
@@ -1649,7 +1787,7 @@ function renderFaq(c) {
   <div class="wrap">
     <div class="sec-head rv" style="text-align:center;margin:0 auto 36px"><h2>${esc(c.faq.heading)}</h2></div>
     <div class="faq-list">
-      ${c.faq.items.map(([q, a], i) => `<div class="faq-item rv${i === 0 ? ' open' : ''}"><button class="faq-q" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><p>${esc(a)}</p></div></div>`).join('\n      ')}
+      ${c.faq.items.map(([q, a], i) => `<div class="faq-item rv${i === 0 ? ' open' : ''}"><button class="faq-q" aria-expanded="${i === 0 ? 'true' : 'false'}" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><p>${esc(a)}</p></div></div>`).join('\n      ')}
     </div>
   </div>
 </section>`;
@@ -1671,7 +1809,7 @@ function renderFooter(c) {
         <p>${esc(c.footer.tagline)}</p>
         <div class="ft-pills">
           <span class="ft-pill">${icon('lock')} ${c.lang === 'tr' ? 'Yerel Ağ Güvenliği' : 'Local-First LAN'}</span>
-          <span class="ft-pill">${icon('zap')} ${c.lang === 'tr' ? 'Sıfır Bulut Bağımlılığı' : 'Zero Cloud Lag'}</span>
+          <span class="ft-pill">${icon('zap')} ${c.lang === 'tr' ? 'Kontrol için bulut şart değil' : 'Control without the cloud'}</span>
           <span class="ft-pill">${icon('sparkles')} ${c.lang === 'tr' ? 'Gizlilik Odaklı' : 'Privacy-First'}</span>
         </div>
       </div>
@@ -1683,7 +1821,7 @@ function renderFooter(c) {
     </div>
     <div class="ft-bottom">
       <span>© ${new Date().getFullYear()} NEXUS. ${esc(c.footer.rights)}</span>
-      <span class="ft-privacy">${icon('lock')} ${c.lang === 'tr' ? 'Ev verisi cihazınızda kalır.' : 'Your home data stays on your devices.'}</span>
+      <span class="ft-privacy">${icon('lock')} ${c.lang === 'tr' ? 'Yerel kontrol hesap gerektirmez.' : 'Local control needs no account.'}</span>
     </div>
   </div>
 </footer>`;
@@ -1823,7 +1961,7 @@ function renderAuthModal(c) {
           </div>
           <p id="nxProfilePlanDesc" class="nx-profile-card-sub">${isTr ? 'Temel Başlangıç Planı' : 'Starter Free Plan'}</p>
           <div class="nx-profile-card-actions">
-            <a href="${c.canonical}#pricing" class="btn-xs btn-primary" onclick="nxCloseAuthModal()">${isTr ? 'NEXUS+ Yükselt (%33 İndirim)' : 'Upgrade to NEXUS+ (Save 33%)'}</a>
+            <a href="${c.canonical}#pricing" class="btn-xs btn-primary" onclick="nxCloseAuthModal()">${isTr ? `NEXUS+ Yükselt (%${SAVE.TRY} İndirim)` : `Upgrade to NEXUS+ (Save ${SAVE.USD}%)`}</a>
             <a href="https://whop.com/hub/" target="_blank" rel="noopener" class="btn-xs btn-ghost">${isTr ? 'Faturalar & Whop' : 'Billing & Whop'}</a>
           </div>
         </div>
@@ -1880,27 +2018,105 @@ function renderCustomDialog(c) {
 </div>`;
 }
 
-function baseHead(c, path) {
-  const SITE = 'https://nexus-smarthome.pages.dev';
-  const url = SITE + (path === '/' ? '/' : path);
+const SITE_ORIGIN = 'https://nexus-smarthome.pages.dev';
+
+/* Cloudflare Pages, about.html isteğini 308 ile /about'a yönendirir. Kanonik adres
+   .html'li bırakılıyordu: arama motoru iki kopya görüyor, og:url da yanlış çıkıyordu.
+   Aynı hata hreflang'da da vardı: her sayfa EN/TR karşılığı olarak ana sayfayı gösteriyordu. */
+function cleanPath(path) {
+  let p = String(path || '/').replace(/index\.html$/i, '').replace(/\.html$/i, '');
+  if (p === '/tr' || p === '/tr/') return '/tr/';
+  p = p.replace(/\/+$/, '');
+  return p === '' ? '/' : p;
+}
+
+function routePair(path) {
+  const clean = cleanPath(path);
+  const slug = clean.startsWith('/tr') ? clean.slice(3) || '/' : clean;
+  return {
+    clean,
+    en: slug === '/' ? '/' : slug,
+    tr: slug === '/' ? '/tr/' : '/tr' + slug,
+  };
+}
+
+function baseHead(c, path, opts = {}) {
+  const route = routePair(path);
+  const url = SITE_ORIGIN + route.clean;
+  const ogImage = SITE_ORIGIN + '/og-cover.png';
+  const jsonLd = opts.schema
+    ? `\n<script type="application/ld+json">${JSON.stringify(opts.schema).replace(/</g, '\\u003c')}</script>`
+    : '';
   return `<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>${esc(c.title)}</title>
-<meta name="description" content="${esc(c.description)}"/>
+<title>${esc(opts.title || c.title)}</title>
+<meta name="description" content="${esc(opts.description || c.description)}"/>
 <link rel="canonical" href="${url}"/>
-<link rel="alternate" hreflang="en" href="${SITE}/"/>
-<link rel="alternate" hreflang="tr" href="${SITE}/tr/"/>
-<link rel="alternate" hreflang="x-default" href="${SITE}/"/>
+<link rel="alternate" hreflang="en" href="${SITE_ORIGIN}${route.en}"/>
+<link rel="alternate" hreflang="tr" href="${SITE_ORIGIN}${route.tr}"/>
+<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${route.en}"/>
 <link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="manifest" href="/manifest.webmanifest"/>
-<meta property="og:type" content="website"/>
+<meta property="og:type" content="${opts.ogType || 'website'}"/>
 <meta property="og:site_name" content="NEXUS"/>
-<meta property="og:title" content="${esc(c.title)}"/>
-<meta property="og:description" content="${esc(c.description)}"/>
+<meta property="og:locale" content="${c.lang === 'tr' ? 'tr_TR' : 'en_US'}"/>
+<meta property="og:title" content="${esc(opts.title || c.title)}"/>
+<meta property="og:description" content="${esc(opts.description || c.description)}"/>
 <meta property="og:url" content="${url}"/>
-<meta property="og:image" content="${SITE}/og-cover.png"/>
+<meta property="og:image" content="${ogImage}"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="${esc(c.ogImageAlt)}"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<link href="/fonts/inter/inter.css" rel="stylesheet"/>`;
+<meta name="twitter:title" content="${esc(opts.title || c.title)}"/>
+<meta name="twitter:description" content="${esc(opts.description || c.description)}"/>
+<meta name="twitter:image" content="${ogImage}"/>
+<link href="/fonts/inter/inter.css" rel="stylesheet"/>${jsonLd}`;
+}
+
+/* Yapılandırılmış veri: arama sonuçlarında yazılım + SSS olarak çıkması için.
+   Yalnızca gerçekten var olan alanlar doldurulur (indirme bağlantıları, gerçek SSS). */
+function landingSchema(c) {
+  const isTr = c.lang === 'tr';
+  const dl = (file) => `https://github.com/Enard52/nexus-releases/releases/latest/download/${file}`;
+  const apps = (c.downloads.cards || [])
+    .filter(([, , , , file]) => !!file)
+    .map(([plat, , name, , file]) => ({
+      '@type': 'SoftwareApplication',
+      name: 'NEXUS' + (isTr ? ' — ' + name : ' — ' + name),
+      applicationCategory: 'HomeApplication',
+      operatingSystem: plat === 'windows' ? 'Windows' : plat === 'android' ? 'Android' : 'Linux',
+      url: dl(file),
+      offers: { '@type': 'Offer', price: '0', priceCurrency: isTr ? 'TRY' : 'USD' },
+    }));
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        name: 'NEXUS',
+        url: SITE_ORIGIN + (isTr ? '/tr/' : '/'),
+        logo: SITE_ORIGIN + '/icon.svg',
+        email: 'nexus.smarthome.app@gmail.com',
+      },
+      {
+        '@type': 'WebSite',
+        name: 'NEXUS',
+        url: SITE_ORIGIN + (isTr ? '/tr/' : '/'),
+        inLanguage: isTr ? 'tr' : 'en',
+      },
+      ...apps,
+      {
+        '@type': 'FAQPage',
+        mainEntity: ((c.faq && c.faq.items) || []).map(([q, a]) => ({
+          '@type': 'Question',
+          name: q,
+          acceptedAnswer: { '@type': 'Answer', text: String(a).replace(/<[^>]+>/g, '') },
+        })),
+      },
+    ],
+  };
 }
 
 function bootJs() {
@@ -1950,7 +2166,7 @@ function renderLanding(c, hasShots) {
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}" data-theme="light">
 <head>
-${baseHead(c, c.lang === 'tr' ? '/tr/' : '/')}
+${baseHead(c, c.lang === 'tr' ? '/tr/' : '/', { schema: landingSchema(c) })}
 <style>${CSS}</style>
 <script src="/assets/site-boot.js"></script>
 </head>
@@ -1969,6 +2185,7 @@ ${renderFooter(c)}
 ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
+<script src="/assets/cloud-config.js"></script>
 <script src="/assets/site.js"></script>
 </body>
 </html>`;
@@ -1981,7 +2198,21 @@ function renderAbout(c) {
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}" data-theme="light">
 <head>
-${baseHead(c, path)}
+${baseHead(c, path, {
+    schema: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebPage', name: c.about.title, url: SITE_ORIGIN + cleanPath(path), inLanguage: c.htmlLang },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: isTr ? 'Ana sayfa' : 'Home', item: SITE_ORIGIN + (isTr ? '/tr/' : '/') },
+            { '@type': 'ListItem', position: 2, name: c.about.title, item: SITE_ORIGIN + cleanPath(path) },
+          ],
+        },
+      ],
+    },
+  })}
 <style>${CSS}</style>
 <script src="/assets/site-boot.js"></script>
 </head>
@@ -2026,6 +2257,7 @@ ${renderFooter(c)}
 ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
+<script src="/assets/cloud-config.js"></script>
 <script src="/assets/site.js"></script>
 </body>
 </html>`;
@@ -2041,24 +2273,18 @@ function renderLegalDoc(c, slug, doc) {
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}" data-theme="light">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>${esc(doc.title)} — NEXUS</title>
-<meta name="description" content="${esc(doc.title)} — NEXUS smart home"/>
-<link rel="canonical" href="${canonicalUrl}"/>
-<link rel="alternate" hreflang="en" href="${enUrl}"/>
-<link rel="alternate" hreflang="tr" href="${trUrl}"/>
-<link rel="alternate" hreflang="x-default" href="${enUrl}"/>
-<link rel="icon" href="/icon.svg" type="image/svg+xml"/>
-<link rel="manifest" href="/manifest.webmanifest"/>
-<meta property="og:type" content="website"/>
-<meta property="og:site_name" content="NEXUS"/>
-<meta property="og:title" content="${esc(doc.title)} — NEXUS"/>
-<meta property="og:description" content="${esc(doc.title)} — NEXUS smart home"/>
-<meta property="og:url" content="${canonicalUrl}"/>
-<meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<link href="/fonts/inter/inter.css" rel="stylesheet"/>
+${baseHead(c, path, {
+    title: doc.title + ' — NEXUS',
+    description: (doc.intro || doc.title) + ' — NEXUS',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: doc.title,
+      url: canonicalUrl,
+      inLanguage: c.htmlLang,
+      isPartOf: { '@type': 'WebSite', url: SITE_ORIGIN + (isTr ? '/tr/' : '/') },
+    },
+  })}
 <style>${CSS}</style>
 <script src="/assets/site-boot.js"></script>
 </head>
@@ -2077,19 +2303,175 @@ ${renderFooter(c)}
 ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
+<script src="/assets/cloud-config.js"></script>
 <script src="/assets/site.js"></script>
+</body>
+</html>`;
+}
+
+/* 404 sayfası üretimin parçasıydı ama uzun süre elle kalmış bayat bir kopyaydı:
+   253 KB, içinde var olmayan #bölüm bağlantıları, yayınlanmayan "iOS (yakında)"
+   iddiası ve çalışmayan tema/dil düğmeleri vardı. Artık üretiliyor: JS yok, dolayısıyla
+   ölü düğme yok; iki dilde karşılıklı bağlantı ve gerçek hedeflere giden iki bağlantı. */
+function renderNotFound(c) {
+  const isTr = c.lang === 'tr';
+  const other = isTr ? content.en : content.tr;
+  const home = isTr ? '/tr/' : '/';
+  return `<!DOCTYPE html>
+<html lang="${c.htmlLang}" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>${isTr ? 'Sayfa bulunamadı — NEXUS' : 'Page not found — NEXUS'}</title>
+<meta name="robots" content="noindex"/>
+<link rel="canonical" href="${SITE_ORIGIN}${home}"/>
+<link rel="alternate" hreflang="en" href="${SITE_ORIGIN}${isTr ? '/' : '/tr/'}"/>
+<link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link href="/fonts/inter/inter.css" rel="stylesheet"/>
+<style>
+  :root { color-scheme: light dark; --bg:#fafafc; --fg:#0b1020; --fg2:#5a6172; --bd:#e6e8f0; --brand:#4C7DFF; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b0d14; --fg:#eef1f8; --fg2:#9aa3b5; --bd:#232838; } }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100dvh; display:grid; place-items:center; background:var(--bg); color:var(--fg);
+         font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; -webkit-font-smoothing:antialiased; padding:24px; }
+  .box { max-width:520px; text-align:center; }
+  .mark { width:56px; height:56px; margin:0 auto 18px; display:block; }
+  .code { font-size:13px; font-weight:800; letter-spacing:.14em; color:var(--brand); margin:0 0 10px; }
+  h1 { font-size:26px; font-weight:800; letter-spacing:-.02em; margin:0 0 10px; }
+  p { font-size:15px; line-height:1.65; color:var(--fg2); margin:0 0 26px; }
+  .row { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  a.btn { display:inline-flex; align-items:center; min-height:44px; padding:0 20px; border-radius:12px;
+          font-size:14.5px; font-weight:700; text-decoration:none; border:1px solid var(--bd); color:var(--fg); background:transparent; }
+  a.btn.primary { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .lang { margin-top:26px; font-size:13px; color:var(--fg2); }
+  .lang a { color:var(--brand); font-weight:700; text-decoration:none; }
+</style>
+</head>
+<body>
+  <main class="box">
+    <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <p class="code">404</p>
+    <h1>${isTr ? 'Bu adres NEXUS’ta yok' : 'This page isn’t part of NEXUS'}</h1>
+    <p>${isTr
+      ? 'Bağlantı taşınmış ya da yanlış yazılmış olabilir. Uygulama indirme ve fiyatlandırma ana sayfada.'
+      : 'The link may have moved or been mistyped. Downloads and pricing live on the home page.'}</p>
+    <div class="row">
+      <a class="btn primary" href="${home}">${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
+      <a class="btn" href="${home}#downloads">${isTr ? 'Uygulamaları indir' : 'Download the apps'}</a>
+    </div>
+    <p class="lang">${isTr
+      ? `Bu sayfayı İngilizce okumak istersen: <a href="/404.html">English</a>`
+      : `Read this page in Turkish: <a href="/tr/404.html">Türkçe</a>`}</p>
+  </main>
 </body>
 </html>`;
 }
 
 function renderLightRedirect(tr) {
   const target = tr ? '/tr/' : '/';
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta http-equiv="refresh" content="0;url=${target}"/><script>location.replace('${target}');</script></head><body></body></html>`;
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex"/><meta http-equiv="refresh" content="0;url=${target}"/><script>location.replace('${target}');</script></head><body></body></html>`;
+}
+
+/* Giriş/kayıt için kısa yol: eskiden elle yazılmıştı ve web uygulamasının adresi
+   kopyalanmıştı; artık APP_URL tek kaynaktan üretilir (site.js ile aynı değer). */
+function renderSignInRedirect(tr) {
+  const t = tr
+    ? { lang: 'tr', title: 'NEXUS\u2019a giriş yap', h1: 'NEXUS\u2019a giriş', p: 'Web uygulamasına yönlendiriliyorsun\u2026', link: 'Web uygulamasını aç' }
+    : { lang: 'en', title: 'Sign in to NEXUS', h1: 'Sign in to NEXUS', p: 'Taking you to the web app\u2026', link: 'Open the web app' };
+  return `<!DOCTYPE html><html lang="${t.lang}" data-theme="dark"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${t.title}</title><meta name="robots" content="noindex"/>
+<meta http-equiv="refresh" content="0;url=${APP_URL}"/>
+<style>:root{color-scheme:dark light}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#09090b;color:#e5e7eb;font:16px Inter,system-ui,sans-serif;text-align:center}main{padding:24px}h1{font-size:20px;margin:0 0 8px}p{margin:0;color:#9ca3af;font-size:14px}a{display:inline-block;margin-top:16px;min-height:44px;padding:12px 20px;border-radius:12px;background:#818cf8;color:#09090b;font-weight:700;text-decoration:none}</style>
+</head><body><main><h1>${t.h1}</h1><p>${t.p}</p><p><a href="${APP_URL}">${t.link}</a></p></main>
+<script>location.replace(${JSON.stringify(APP_URL)});</script></body></html>`;
+}
+
+/* Eskiden robots/sitemap/manifest'i scripts/site-seo.cjs sayfa çıktısının üstünde
+   dolaşıp yazıyordu; artık tek üretici bu dosya. Böylece elle sürüm kopyası,
+   bayat enard52.github.io adresi ve sayfa listesi ile gerçek arasındaki fark kalmıyor.
+   Adres biçimi canonical'lerle birebir aynı: / , /tr/ , /about , /tr/about. */
+const SEO_ROUTES = [
+  ['/', 1.0, 'weekly'],
+  ['/about', 0.5, 'monthly'],
+  ['/privacy', 0.3, 'monthly'],
+  ['/terms', 0.3, 'monthly'],
+  ['/refund', 0.3, 'monthly'],
+];
+const urlFor = (route, lang) => (lang === 'tr' ? (route === '/' ? '/tr/' : '/tr' + route) : route);
+
+function renderRobots() {
+  return `User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /tr/login
+Disallow: /light
+Disallow: /tr/light
+
+Sitemap: ${SITE_ORIGIN}/sitemap.xml
+`;
+}
+
+function renderSitemap(today) {
+  const rows = [];
+  for (const [route, pr, cf] of SEO_ROUTES) {
+    for (const lang of ['en', 'tr']) {
+      const en = SITE_ORIGIN + urlFor(route, 'en');
+      const tr = SITE_ORIGIN + urlFor(route, 'tr');
+      const loc = lang === 'tr' ? tr : en;
+      const prio = lang === 'tr' ? Math.max(pr - 0.1, 0.2).toFixed(1) : pr.toFixed(1);
+      rows.push(
+        `  <url>\n` +
+          `    <loc>${loc}</loc>\n` +
+          `    <xhtml:link rel="alternate" hreflang="en" href="${en}" />\n` +
+          `    <xhtml:link rel="alternate" hreflang="tr" href="${tr}" />\n` +
+          `    <xhtml:link rel="alternate" hreflang="x-default" href="${en}" />\n` +
+          `    <lastmod>${today}</lastmod>\n` +
+          `    <changefreq>${cf}</changefreq>\n` +
+          `    <priority>${prio}</priority>\n` +
+          `  </url>`
+      );
+    }
+  }
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
+    rows.join('\n') +
+    `\n</urlset>\n`
+  );
+}
+
+function renderManifest() {
+  return (
+    JSON.stringify(
+      {
+        name: 'NEXUS',
+        short_name: 'NEXUS',
+        // Dürüst tanım: macOS sürümü yok (Windows/Linux masaüstü + Android).
+        description: 'Local-first smart home control for Windows, Linux and Android.',
+        id: '/',
+        start_url: '/',
+        scope: '/',
+        display: 'standalone',
+        theme_color: '#8b7bff',
+        background_color: '#09090b',
+        // PNG'ler scripts/site-icons.mjs ile icon.svg'den üretilir (apple-touch-icon
+        // ve Android kurulum ikonu SVG'yi kullanamaz; /icons/*.png 404 olmasın).
+        icons: [
+          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+        ],
+      },
+      null,
+      2
+    ) + '\n'
+  );
 }
 
 // ---------- Build Yürütme ----------
 function build() {
   const hasShots = existsSync(join(PUB, 'images', 'shots', 'home.png'));
+  const today = new Date().toISOString().slice(0, 10);
 
   mkdirSync(join(PUB, 'assets'), { recursive: true });
   mkdirSync(join(PUB, 'tr'), { recursive: true });
@@ -2101,6 +2483,18 @@ function build() {
 
   writeFileSync(join(PUB, 'assets', 'site.js'), pageJs(), 'utf8');
   writeFileSync(join(PUB, 'assets', 'site-boot.js'), bootJs(), 'utf8');
+  // Anahtar takipteki derleme çıktısına geri dönmesin: bu dosya .gitignore'da.
+  writeFileSync(
+    join(PUB, 'assets', 'cloud-config.js'),
+    `// NEXUS site bulut yapilandirmasi — scripts/site-build.mjs tarafindan uretildi.
+// Depoya girmez (.gitignore); site yayininda cloud-config.js veya NEXUS_SUPABASE_* saglanir.
+window.NEXUS_CLOUD = {
+  url: ${JSON.stringify(CLOUD.url)},
+  anonKey: ${JSON.stringify(CLOUD.anonKey)},
+};
+`,
+    'utf8'
+  );
 
   writeFileSync(join(PUB, 'index.html'), renderLanding(content.en, hasShots), 'utf8');
   writeFileSync(join(PUB, 'tr', 'index.html'), renderLanding(content.tr, hasShots), 'utf8');
@@ -2118,8 +2512,23 @@ function build() {
   writeFileSync(join(PUB, 'light.html'), renderLightRedirect(false), 'utf8');
   writeFileSync(join(PUB, 'tr', 'light.html'), renderLightRedirect(true), 'utf8');
 
+  // login.html de artık üretiliyor: elle kopyalanan sürüm APP_URL'den kopabiliyordu.
+  writeFileSync(join(PUB, 'login.html'), renderSignInRedirect(false), 'utf8');
+  writeFileSync(join(PUB, 'tr', 'login.html'), renderSignInRedirect(true), 'utf8');
+
+  // 404 artık üretimin parçası: bayat elle kopya (253 KB, ölü bağlantılar) siliniyor.
+  writeFileSync(join(PUB, '404.html'), renderNotFound(content.en), 'utf8');
+  writeFileSync(join(PUB, 'tr', '404.html'), renderNotFound(content.tr), 'utf8');
+
+  // Keşif dosyaları da üretime dahil (index.html <link rel="manifest"> bunlara işaret ediyor).
+  writeFileSync(join(PUB, 'robots.txt'), renderRobots(), 'utf8');
+  writeFileSync(join(PUB, 'sitemap.xml'), renderSitemap(today), 'utf8');
+  writeFileSync(join(PUB, 'manifest.webmanifest'), renderManifest(), 'utf8');
+
   console.log('✓ index.html');
   console.log('✓ tr/index.html');
+  console.log('✓ 404.html & tr/404.html');
+  console.log('✓ login.html & tr/login.html');
   console.log('✓ about.html');
   console.log('✓ tr/about.html');
   console.log('✓ privacy.html & tr/privacy.html');

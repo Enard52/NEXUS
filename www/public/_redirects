@@ -8,3 +8,9 @@
 /tr/privacy/ /tr/privacy 301
 /tr/terms/   /tr/terms   301
 /tr/refund/  /tr/refund  301
+
+# Tarayicinin varsayilan istegi /favicon.ico 404 donduruyordu (yalnizca /icon.svg vardi).
+/favicon.ico /icon.svg 200
+# Eski/tilde'li baglantilar: /en/ diye bir sayfa yok, Ingilizce kok dizindir.
+/en / 301
+/en/ / 301

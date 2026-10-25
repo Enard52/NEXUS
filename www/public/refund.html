@@ -4,21 +4,30 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Refund and Cancellation Policy — NEXUS</title>
-<meta name="description" content="Refund and Cancellation Policy — NEXUS smart home"/>
+<meta name="description" content="Refund and Cancellation Policy — NEXUS"/>
 <link rel="canonical" href="https://nexus-smarthome.pages.dev/refund"/>
 <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/refund"/>
 <link rel="alternate" hreflang="tr" href="https://nexus-smarthome.pages.dev/tr/refund"/>
 <link rel="alternate" hreflang="x-default" href="https://nexus-smarthome.pages.dev/refund"/>
 <link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="manifest" href="/manifest.webmanifest"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="NEXUS"/>
+<meta property="og:locale" content="en_US"/>
 <meta property="og:title" content="Refund and Cancellation Policy — NEXUS"/>
-<meta property="og:description" content="Refund and Cancellation Policy — NEXUS smart home"/>
+<meta property="og:description" content="Refund and Cancellation Policy — NEXUS"/>
 <meta property="og:url" content="https://nexus-smarthome.pages.dev/refund"/>
 <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="NEXUS smart home app on phone, tablet and desktop"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Refund and Cancellation Policy — NEXUS"/>
+<meta name="twitter:description" content="Refund and Cancellation Policy — NEXUS"/>
+<meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <link href="/fonts/inter/inter.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Refund and Cancellation Policy","url":"https://nexus-smarthome.pages.dev/refund","inLanguage":"en","isPartOf":{"@type":"WebSite","url":"https://nexus-smarthome.pages.dev/"}}</script>
 <style>
 :root{
   --brand:#4C7DFF; --brand-press:#3F6FFF; --accent:#22D3EE;
@@ -189,9 +198,10 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
   pointer-events:none;
 }
 
-/* Telefon Cam Parıltısı */
+/* Telefon Cam Parıltısı — taşmayı engellemek için kadrajın içinde kalır (ölçüldü:
+   left:-50%/width:200% olan sürüm 390px'te belgeyi yatay kaydırıyordu). */
 .phone-glass-shine{
-  position:absolute;top:0;left:-50%;width:200%;height:100%;
+  position:absolute;top:0;left:0;width:100%;height:100%;
   background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
   pointer-events:none;z-index:32;border-radius:35px;
 }
@@ -210,13 +220,20 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
   background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:4px;
+  display:flex;align-items:center;gap:2px;
 }
+/* Dokunma alanı GERÇEKTEN 28px: noktanın kendisi 6px çizilir (::before), düğmenin
+   kutusu 28px. Eskiden 6px kutuya ::after ile 30px sahte alan eklenmişti; komşu
+   noktaların alanları üst üste bindiği için parmak yanlış ekrana basıyordu (ölçüldü). */
 .phone-dot{
-  width:5px;height:5px;border-radius:999px;background:var(--border);border:0;padding:0;
-  cursor:pointer;transition:all .25s ease;
+  width:28px;height:28px;border-radius:999px;background:transparent;border:0;padding:0;
+  display:grid;place-items:center;cursor:pointer;
 }
-.phone-dot.active{
+.phone-dot::before{
+  content:'';display:block;width:6px;height:6px;border-radius:999px;background:var(--border);
+  transition:all .25s ease;
+}
+.phone-dot.active::before{
   width:16px;background:var(--brand);box-shadow:0 0 6px rgba(76,125,255,.4);
 }
 
@@ -277,8 +294,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text-2);box-shadow:0 2px 6px rgba(15,23,42,.03);
   transition:all .18s ease}
 .chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 40%,transparent);box-shadow:var(--shadow)}
-.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:0;cursor:pointer;transition:color .18s ease}
+.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:10px 4px;cursor:pointer;transition:color .18s ease}
 .int-more:hover{color:var(--brand-press);text-decoration:underline}
+/* Entegrasyon uyarısı: doğrudan bağlayıcısı olmayan markaların gerçek koşulunu söyler. */
+.int-note{margin:22px 0 0;padding:16px 18px;border-radius:var(--radius-lg);border:1px dashed color-mix(in srgb,var(--brand) 35%,var(--border));
+  background:color-mix(in srgb,var(--brand) 5%,var(--surface));color:var(--muted);font-size:13.5px;line-height:1.6}
 
 /* Fiyatlar */
 #pricing{scroll-margin-top:80px;padding:48px 0 54px}
@@ -624,6 +644,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <a href="#pricing">Pricing</a>
       <a href="#downloads">Download</a>
       <a href="#faq">FAQ</a>
+      <a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Web app</a>
     </nav>
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="Language selection">
@@ -676,22 +697,22 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     <div class="ft-grid">
       <div class="ft-brand">
         <a class="logo" href="/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
-        <p>Next-generation smart home management built to run entirely on your local network. Zero cloud reliance, ultra-low latency automations, and privacy by design for all your connected devices.</p>
+        <p>Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down, and signing in is only ever optional.</p>
         <div class="ft-pills">
           <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Local-First LAN</span>
-          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Zero Cloud Lag</span>
+          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Control without the cloud</span>
           <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Privacy-First</span>
         </div>
       </div>
       <div class="ft-links-group">
-        <div class="ft-col"><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about.html">About</a></div>
+        <div class="ft-col"><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about">About</a></div>
         <div class="ft-col"><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="javascript:nxOpenContactModal('Technical Support')">Contact &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
-        <div class="ft-col"><h4>Legal</h4><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/refund.html">Refunds</a></div>
+        <div class="ft-col"><h4>Legal</h4><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/refund">Refunds</a></div>
       </div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. All rights reserved.</span>
-      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your home data stays on your devices.</span>
+      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Local control needs no account.</span>
     </div>
   </div>
 </footer>
@@ -823,7 +844,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
           </div>
           <p id="nxProfilePlanDesc" class="nx-profile-card-sub">Starter Free Plan</p>
           <div class="nx-profile-card-actions">
-            <a href="/#pricing" class="btn-xs btn-primary" onclick="nxCloseAuthModal()">Upgrade to NEXUS+ (Save 33%)</a>
+            <a href="/#pricing" class="btn-xs btn-primary" onclick="nxCloseAuthModal()">Upgrade to NEXUS+ (Save 37%)</a>
             <a href="https://whop.com/hub/" target="_blank" rel="noopener" class="btn-xs btn-ghost">Billing & Whop</a>
           </div>
         </div>
@@ -874,6 +895,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     </div>
   </div>
 </div>
+<script src="/assets/cloud-config.js"></script>
 <script src="/assets/site.js"></script>
 </body>
 </html>

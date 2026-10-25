@@ -38,6 +38,7 @@ export const content = {
     canonical: "/",
     alternate: { en: "/", tr: "/tr/" },
     title: "NEXUS — Your smart home, managed on your own network",
+    ogImageAlt: "NEXUS smart home app on phone, tablet and desktop",
     description:
       "NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.",
     nav: [
@@ -53,7 +54,7 @@ export const content = {
       eyebrow: "Local-first smart home",
       h1a: "Your home.",
       h1b: "Quietly in your control.",
-      lead: "One unified app for your lights, climate, covers and sensors — communicating directly with devices on your local network. Responsive automations, live power metering, and a privacy architecture where your data never leaves your devices.",
+      lead: "One unified app for your lights, climate, covers and sensors — talking directly to the devices on your own local network. Responsive automations, live power metering, and control that keeps working when the internet goes down.",
       primary: { label: "Download NEXUS", href: "#downloads" },
       secondary: null,
       versionNote: "Latest version",
@@ -86,7 +87,7 @@ export const content = {
         [
           "lock",
           "Privacy By Design",
-          "Your home configuration and device telemetry stay strictly on your local hardware. Optional sync is end-to-end scoped and never required for control.",
+          "Your home configuration and device telemetry stay on your local hardware. Signing in is optional: it syncs your setup to your own account under row-level access control, and control never depends on it.",
         ],
         [
           "sparkles",
@@ -95,8 +96,8 @@ export const content = {
         ],
         [
           "layers",
-          "Matter, Zigbee & Ecosystem Ready",
-          "Shelly, Home Assistant, WLED, MQTT and Matter bridges unite under one intuitive interface — giving you complete hardware freedom.",
+          "Open Local Protocols",
+          "Shelly, Tasmota, WLED, ESPHome, Philips Hue and your own Home Assistant server answer NEXUS directly across your LAN. Matter and Zigbee devices join through that Home Assistant bridge.",
         ],
       ],
     },
@@ -133,10 +134,10 @@ export const content = {
             "ESPHome",
             "Philips Hue bridge",
             "Home Assistant",
-            "Sonoff DIY",
           ],
         ],
-        ["TCP / UDP — desktop app", ["TP-Link Kasa", "Yeelight", "WiZ", "LIFX", "Govee LAN"]],
+        ["TCP / UDP — desktop app", ["TP-Link Kasa", "Yeelight"]],
+        ["Connector coming soon", ["TP-Link Tapo", "Tuya"]],
       ],
       more: "Something missing? Request a connector",
       moreHref: "javascript:nxOpenContactModal('Connector Request')",
@@ -151,7 +152,7 @@ export const content = {
           price: "$0",
           period: "forever",
           features: [
-            "Unlimited devices & rooms (Shelly, HomeKit, WLED, etc.)",
+            "Unlimited devices & rooms (Shelly, Tasmota, WLED, ESPHome, Hue)",
             "Zero cloud dependence: runs locally on your own LAN",
             "30 daily NEXUS AI commands & device actions",
             "Scheduled local automations & custom scenes",
@@ -171,9 +172,10 @@ export const content = {
             "Dedicated high-speed cloud AI engine & lowest latency",
             "Early access to new AI features & beta connectors",
             "Direct support for independent, ad-free development",
-            "Priority VIP customer support & 3-day free trial",
+            "Priority VIP email support",
+            "Free trial — 3 days on monthly, 7 days on yearly",
           ],
-          cta: { label: "Start 3-day free trial", href: "https://whop.com/checkout/plan_HIySYESquBqlg", yearlyHref: "https://whop.com/checkout/plan_XlA3SacShoiJU" },
+          cta: { label: "Start your free trial", monthlyLabel: "Start 3-day free trial", yearlyLabel: "Start 7-day free trial", href: "https://whop.com/checkout/plan_HIySYESquBqlg", yearlyHref: "https://whop.com/checkout/plan_XlA3SacShoiJU" },
         },
         {
           name: "Family",
@@ -212,9 +214,9 @@ export const content = {
       versionLabel: "Version",
       sizeLabel: "Size",
       webCard: {
-        title: "Cross-Platform Ecosystem",
-        desc: "Native desktop applications for Windows and Linux, and companion app for Android. True local hardware control without browser limitations.",
-        cta: { label: "Explore downloads", href: "#downloads" },
+        title: "One account, four surfaces",
+        desc: "Native desktop programs for Windows and Linux, a mobile app for Android, and the full web app in your browser. Signed in, your rooms, devices, scenes and automations match on every one of them.",
+        cta: { label: "Open the web app", href: APP_URL },
       },
       smartScreenNote:
         "Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.",
@@ -228,7 +230,7 @@ export const content = {
         ],
         [
           "Can I control my home from a web browser, or do I need the native apps?",
-          "NEXUS communicates directly with your devices over your private local area network (LAN) with microsecond latency and zero cloud dependency. Because web browsers run in isolated sandboxes that cannot directly interface with raw local UDP/TCP/LAN hardware protocols, smart home management operates strictly through the native desktop program (Windows, Linux) and the mobile companion app (Android)—not through a web browser. The website is solely for account settings, downloads, and billing.",
+          "NEXUS runs its full interface in your browser too: use the web app for your account, devices, dashboards, scenes and NEXUS AI. Device commands, however, go straight across your own local network (LAN), and a browser sandbox can only reach devices that accept browser requests (CORS) — local HTTP APIs like Shelly, Philips Hue and ESPHome do. Protocols that need raw TCP/UDP (TP-Link Kasa, Yeelight) work only in the desktop app. For whole-home control on every surface we recommend the native desktop program (Windows, Linux) and the mobile app (Android); this marketing site itself is for account, downloads, and billing.",
         ],
         [
           "What does the NEXUS+ plan add?",
@@ -236,15 +238,15 @@ export const content = {
         ],
         [
           "How do automations and scheduled rules run?",
-          "The NEXUS automation engine delivers 24/7 reliability across your entire ecosystem. On desktop, NEXUS operates in the system tray to continuously execute schedules and sensor routines; on mobile, background event monitoring and native push notifications keep your home perfectly coordinated around the clock.",
+          "The NEXUS automation engine evaluates your schedules and sensor rules on the device you keep running — the desktop app stays in the system tray and executes around the clock, so lighting, energy and security routines never wait for a cloud. Scenes and timers triggered from your phone apply instantly over your LAN. New events fan out to the notification channels you enable on the Instant Notifications page: the in-app strip, system notifications, ntfy, Telegram, or your own HTTPS webhook.",
         ],
         [
           "Which devices and ecosystems are supported?",
-          "NEXUS unifies thousands of devices across Wi-Fi, Matter, Zigbee, and LAN protocols—including Shelly, Tasmota, Philips Hue, ESPHome, WLED, Sonoff DIY, TP-Link Kasa, Yeelight, WiZ, LIFX, Govee LAN, and Home Assistant. Direct IP discovery enables instant pairing with zero reliance on external vendor clouds.",
+          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome and Philips Hue over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. TP-Link Tapo and Tuya connectors are on the way. Everything else — Sonoff, Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
         ],
         [
           "How are security cameras and sensors integrated?",
-          "NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy shutters, arm surveillance routines when leaving home, and receive instant native security alerts whenever movement or contact triggers occur.",
+          "NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy modes, arm surveillance routines when leaving home, and see every movement or contact event in the app — plus on the notification channels you enable (system notifications, ntfy, Telegram, or your own webhook).",
         ],
         [
           "Can I cancel NEXUS+ anytime?",
@@ -266,11 +268,11 @@ export const content = {
         },
         {
           title: "Uncompromising Privacy",
-          desc: "No analytics telemetry, no behavioral profiling, and no selling of your private routines. Your home data stays on your devices.",
+          desc: "No analytics telemetry, no behavioral profiling, and no selling of your private routines. Local control needs no account; when you sign in, your setup is stored in your own row-level-protected account row.",
         },
         {
           title: "No Vendor Lock-In",
-          desc: "Unify Shelly, Philips Hue, ESPHome, Tasmota, Sonoff, Matter, Zigbee, and LAN devices under a single open control interface.",
+          desc: "Open local protocols first: Shelly, Philips Hue, ESPHome, Tasmota and WLED answer NEXUS directly, and anything else joins through your own Home Assistant server instead of a vendor cloud.",
         },
         {
           title: "Honest, Sustainable SaaS",
@@ -279,20 +281,20 @@ export const content = {
       ],
       architecture: {
         heading: "Engineered for Reliability",
-        lead: "NEXUS pairs a 24/7 lightweight desktop engine with native mobile companion apps, keeping your automations humming quietly in the background without burning battery.",
+        lead: "NEXUS keeps a lightweight desktop engine in your system tray so schedules and sensor rules keep evaluating while your computer is on, and the mobile app opens straight onto the same local network.",
       },
       linksTitle: "Practical links",
     },
     footer: {
       tagline:
-        "Next-generation smart home management built to run entirely on your local network. Zero cloud reliance, ultra-low latency automations, and privacy by design for all your connected devices.",
+        "Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down, and signing in is only ever optional.",
       product: "Product",
       productLinks: [
         ["Features", "#features"],
         ["Pricing", "#pricing"],
         ["Download", "#downloads"],
         ["FAQ", "#faq"],
-        ["About", "/about.html"],
+        ["About", "/about"],
       ],
       account: "Customer & Support",
       accountLinks: [
@@ -303,9 +305,9 @@ export const content = {
       ],
       legal: "Legal",
       legalLinks: [
-        ["Privacy", "/privacy.html"],
-        ["Terms", "/terms.html"],
-        ["Refunds", "/refund.html"],
+        ["Privacy", "/privacy"],
+        ["Terms", "/terms"],
+        ["Refunds", "/refund"],
       ],
       rights: "All rights reserved.",
       langSwitchLabel: "Türkçe",
@@ -319,6 +321,7 @@ export const content = {
     canonical: "/tr/",
     alternate: { en: "/", tr: "/tr/" },
     title: "NEXUS — Akıllı evin, kendi ağında, senin kontrolünde",
+    ogImageAlt: "Telefon, tablet ve bilgisayarda NEXUS akıllı ev uygulaması",
     description:
       "NEXUS; Windows, Linux ve Android için yerel-öncelikli akıllı ev uygulaması. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı.",
     nav: [
@@ -334,7 +337,7 @@ export const content = {
       eyebrow: "Yerel-öncelikli akıllı ev",
       h1a: "Evini.",
       h1b: "Sessizce kontrol et.",
-      lead: "Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek uygulamada — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir. Kesintisiz otomasyonlar, canlı enerji ölçümleri ve ev verinizin yalnızca sizde kaldığı güvenli mimari.",
+      lead: "Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek uygulamada — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir. Kesintisiz otomasyonlar, canlı enerji ölçümleri ve internet kesilse de durmayan bir kontrol mimarisi.",
       primary: { label: "NEXUS'u indir", href: "#downloads" },
       secondary: null,
       versionNote: "Güncel sürüm",
@@ -367,7 +370,7 @@ export const content = {
         [
           "lock",
           "Tasarımdan Gelen Gizlilik",
-          "Ev düzeniniz ve cihaz verileriniz cihazınızda saklanır. İsteğe bağlı hesap senkronizasyonu uçtan uca güvenlidir ve kontrol için asla zorunlu değildir.",
+          "Ev düzenin ve cihaz verilerin yerel cihazında işlenir. Giriş yapmak isteğe bağlıdır; senkron, kurulumunu satır bazlı erişim denetimi (RLS) korumalı kendi hesap veritabanına taşır ve kontrol için asla zorunlu değildir.",
         ],
         [
           "sparkles",
@@ -376,8 +379,8 @@ export const content = {
         ],
         [
           "layers",
-          "Matter, Zigbee ve Köprü Uyumu",
-          "Shelly, Home Assistant, WLED, MQTT ve Matter köprüleri tek bir sezgisel arayüzde birleşir; dilediğiniz donanımı özgürce seçin.",
+          "Açık Yerel Protokoller",
+          "Shelly, Tasmota, WLED, ESPHome, Philips Hue ve kendi Home Assistant sunucun NEXUS'a doğrudan yerel ağndan cevap verir. Matter ve Zigbee cihazları bu Home Assistant köprüsüyle katılır.",
         ],
       ],
     },
@@ -414,10 +417,10 @@ export const content = {
             "ESPHome",
             "Philips Hue köprüsü",
             "Home Assistant",
-            "Sonoff DIY",
           ],
         ],
-        ["TCP / UDP — masaüstü", ["TP-Link Kasa", "Yeelight", "WiZ", "LIFX", "Govee LAN"]],
+        ["TCP / UDP — masaüstü", ["TP-Link Kasa", "Yeelight"]],
+        ["Bağlayıcı yakında", ["TP-Link Tapo", "Tuya"]],
       ],
       more: "Eksik bir şey mi var? Bağlayıcı iste",
       moreHref: "javascript:nxOpenContactModal('Cihaz & Bağlayıcı İsteği')",
@@ -432,7 +435,7 @@ export const content = {
           price: "₺0",
           period: "sonsuza dek",
           features: [
-            "Sınırsız cihaz ve oda (Shelly, HomeKit, WLED, ESPHome vb.)",
+            "Sınırsız cihaz ve oda (Shelly, Tasmota, WLED, ESPHome, Hue)",
             "Sıfır bulut bağımlılığı: Kendi yerel ağınızda kesintisiz çalışma",
             "Günde 30 NEXUS AI komutu ve yerel cihaz kontrolü",
             "Zamanlanmış yerel otomasyonlar ve özel sahneler",
@@ -455,7 +458,7 @@ export const content = {
             "Öncelikli VIP e-posta destek hattı",
             "3 günlük ücretsiz deneme (Aylık) / 7 gün (Yıllık), dilediğin an iptal",
           ],
-          cta: { label: "3 gün ücretsiz dene", href: "https://whop.com/checkout/plan_fAMBHwTVE0hR2", yearlyHref: "https://whop.com/checkout/plan_UEXO1F5mjIgWB" },
+          cta: { label: "Ücretsiz denemeyi başlat", monthlyLabel: "3 gün ücretsiz dene", yearlyLabel: "7 gün ücretsiz dene", href: "https://whop.com/checkout/plan_fAMBHwTVE0hR2", yearlyHref: "https://whop.com/checkout/plan_UEXO1F5mjIgWB" },
         },
         {
           name: "Aile",
@@ -494,9 +497,9 @@ export const content = {
       versionLabel: "Sürüm",
       sizeLabel: "Boyut",
       webCard: {
-        title: "Çoklu Platform Ekosistemi",
-        desc: "Windows ve Linux için yerel masaüstü programı, Android için mobil uygulama. Tarayıcı kısıtlaması olmadan gerçek yerel donanım kontrolü.",
-        cta: { label: "İndirmeleri incele", href: "#downloads" },
+        title: "Tek hesap, dört yüzey",
+        desc: "Windows ve Linux için yerel masaüstü programı, Android için mobil uygulama, tarayıcıda ise tam web uygulaması. Giriş yaptığında odaların, cihazların, sahnelerin ve otomasyonların hepsinde aynı kalır.",
+        cta: { label: "Web uygulamasını aç", href: APP_URL },
       },
       smartScreenNote:
         "Windows imzasız kurulumlar için uyarı verebilir (“bilinmeyen yayıncı”). Dosya güvenlidir — sağlama değerlerine bak.",
@@ -506,11 +509,11 @@ export const content = {
       items: [
         [
           "Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?",
-          "Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Hesap girişi yaptığınızda tercihleriniz uçtan uca güvenli biçimde tüm cihazlarınızla senkronize olur.",
+          "Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Giriş yaptığında ise kurulumun TLS ve satır bazlı erişim denetimi (RLS) altındaki kendi hesabına senkronize olur; kontrol için bu senkron zorunlu değildir.",
         ],
         [
           "NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?",
-          "NEXUS, akıllı ev cihazlarınızla doğrudan kendi yerel ağınız (LAN) üzerinden, mikrosaniye düzeyinde gecikmeyle ve bulutsuz haberleşir. Web tarayıcıları güvenlik kum havuzu (sandbox) nedeniyle yerel TCP/UDP donanım soketlerine doğrudan erişemediğinden, ev kontrolü ve otomasyonlar yalnızca masaüstü programı (Windows, Linux) ve mobil uygulama (Android) üzerinden çalışır; web tarayıcısından çalışmaz. Web sitemiz yalnızca hesap yönetimi, indirme ve faturalandırma işlemleri içindir.",
+          "NEXUS'un tam arayüzü tarayıcıda da çalışır: hesap, eşyalar, panolar, sahneler ve NEXUS AI için web uygulamasını kullanabilirsin. Cihaz komutları ise kendi yerel ağndan (LAN) doğrudan gider; tarayıcı güvenlik kum havuzu (sandbox) yüzünden yalnızca tarayıcı isteklerine izin veren (CORS) cihazlara ulaşabilir — Shelly, Philips Hue, ESPHome gibi yerel HTTP API'ler buna örnektir. Ham TCP/UDP isteyen protokoller (TP-Link Kasa, Yeelight) yalnızca masaüstü uygulamasında çalışır. Evin tamamını her ortamda kontrol etmek için masaüstü programı (Windows, Linux) ve mobil uygulama (Android) kurulumunu öneriyoruz; tanıtım sitemiz ise hesap, indirme ve faturalandırma içindir.",
         ],
         [
           "NEXUS+ aboneliği tam olarak ne sağlar?",
@@ -518,11 +521,11 @@ export const content = {
         ],
         [
           "Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?",
-          "NEXUS otomasyon motoru tüm platformlarınızda kesintisiz koordinasyon içinde çalışır. Masaüstü uygulamasında sistem tepsisinde arka planda çalışarak evinizi sürekli izler ve kuralları yürütür; mobil cihazlarınızda ise akıllı zamanlayıcılar, durum tetikleyicileri ve işletim sistemi bildirimleriyle eviniz her an senkron kalır.",
+          "NEXUS otomasyon motoru kurallarını ve zamanlayıcılarını NEXUS'u çalıştırdığın cihazda yürütür: masaüstü programı sistem tepsisinde arka planda kalarak gün boyu izler ve uygular, böylece aydınlatma, enerji ve güvenlik rutinleri bulutu beklemez. Telefondan tetiklediğin sahneler ve zamanlayıcılar yerel ağndan anında uygulanır. Yeni olaylar, Anlık Bildirimler sayfasında açtığın kanallara dağıtılır: uygulama içi bildirim şeridi, sistem bildirimi, ntfy, Telegram veya kendi HTTPS webhook'un.",
         ],
         [
           "Hangi cihazlar ve markalar destekleniyor?",
-          "NEXUS; Shelly, Tasmota, Philips Hue, ESPHome, WLED, Sonoff, TP-Link Kasa, Yeelight, WiZ, LIFX, Govee LAN ve Home Assistant entegrasyonuyla piyasadaki binlerce Wi-Fi, Matter ve Zigbee cihazını tek merkezde toplar. Doğrudan yerel ağ protokolleriyle üretici bulutlarına bağımlılık olmadan anında eşleşir.",
+          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, WLED, ESPHome ve Philips Hue'yu her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. TP-Link Tapo ve Tuya bağlayıcıları yolda. Sonoff, Matter veya Zigbee cihazları gibi doğrudan bağlayıcısı olmayan her şey, kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
         ],
         [
           "Güvenlik kameraları ve sensörler nasıl entegre edilir?",
@@ -548,11 +551,11 @@ export const content = {
         },
         {
           title: "Gerçek Veri Mahremiyeti",
-          desc: "Evinizin kat planı, oda isimleri, cihaz kullanım alışkanlıklarınız ve kamera durumlarınız hiçbir şirketin sunucusuna yüklenmez, profillenmez ve satılmaz.",
+          desc: "Evinizin kat planı, oda isimleri ve kullanım alışkanlıklarınız satılır, profillenmez ve reklam hedeflemesi için kullanılmaz. Yerel kontrol hesap gerektirmez; giriş yaparsan yalnızca senkron listesindeki tanımlar kendi hesabına taşınır.",
         },
         {
           title: "Sıfır Marka Kilidi",
-          desc: "Shelly, Hue, ESPHome, Tasmota, Sonoff, Kasa, Yeelight, Matter ve Zigbee gibi tüm açık ve popüler ekosistemler tek bir merkezi panodan yönetilir.",
+          desc: "Shelly, Hue, ESPHome, Tasmota ve WLED doğrudan yerel protokolleriyle tek panodan yönetilir; Sonoff, Matter ve Zigbee cihazları ise kendi Home Assistant sunucun üzerinden katılır.",
         },
         {
           title: "Dürüst ve Şeffaf Model",
@@ -567,14 +570,14 @@ export const content = {
     },
     footer: {
       tagline:
-        "Tüm akıllı ev cihazlarınızı bulut bağımlılığı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Verileriniz evinizde kalır, senaryolarınız internet kesilse dahi kesintisiz çalışır.",
+        "Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Kontrol için hesap ve internet gerekmez; giriş yaparsan kurulumun yalnızca kendi hesabına senkronize olur.",
       product: "Ürün",
       productLinks: [
         ["Özellikler", "#features"],
         ["Fiyatlar", "#pricing"],
         ["İndir", "#downloads"],
         ["SSS", "#faq"],
-        ["Hakkında", "/tr/about.html"],
+        ["Hakkında", "/tr/about"],
       ],
       account: "Müşteri & Destek",
       accountLinks: [
@@ -585,9 +588,9 @@ export const content = {
       ],
       legal: "Yasal",
       legalLinks: [
-        ["Gizlilik", "/tr/privacy.html"],
-        ["Şartlar", "/tr/terms.html"],
-        ["İade", "/tr/refund.html"],
+        ["Gizlilik", "/tr/privacy"],
+        ["Şartlar", "/tr/terms"],
+        ["İade", "/tr/refund"],
       ],
       rights: "Tüm hakları saklıdır.",
       langSwitchLabel: "English",

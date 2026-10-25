@@ -11,7 +11,7 @@
  * Kullanım:  node scripts/publish-site-local.mjs
  */
 import { execSync } from "node:child_process";
-import { cpSync, existsSync, rmSync, readdirSync } from "node:fs";
+import { cpSync, existsSync, readFileSync, rmSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -27,6 +27,30 @@ function sh(cmd, opts = {}) {
 // 1) ön koşul kontrolü
 if (!existsSync(SRC)) { console.error("www/public yok — önce node scripts/sync-www.mjs çalıştırın."); process.exit(1); }
 try { sh("gh auth status"); } catch { console.error("`gh auth login` gerekli (kart kilidi döneminde yerel yayının tek yolu)."); process.exit(1); }
+
+// 1b) ÇIKTI ASLA BAYAT OLMASIN: site üreteci (scripts/site-build.mjs) tek kaynak.
+// Eskiden bu betik yalnızca www/public kopyasını gönderiyordu; üreteç değiştiyse
+// canlıya bayat kopya çıkıyordu (ölçüldü: bozuk site.js canlıya yayınlanmıştı).
+console.log("→ site üretiliyor (scripts/site-build.mjs)…");
+sh("node scripts/site-build.mjs");
+console.log("→ yapısal denetim (verify-site --smoke)…");
+sh("node scripts/verify-site.mjs --smoke");
+
+// 1c) Site girişi (kayıt / şifre sıfırlama) assets/cloud-config.js olmadan çalışmaz.
+const ccFile = join(SRC, "assets", "cloud-config.js");
+const cc = existsSync(ccFile) ? readFileSync(ccFile, "utf8") : "";
+const ccUrl = (cc.match(/url:\s*"([^"]*)"/) || [])[1] || "";
+const ccKey = (cc.match(/anonKey:\s*"([^"]*)"/) || [])[1] || "";
+if (!ccUrl || !ccKey) {
+  console.warn("!! cloud-config.js boş: giriş/kayıt 'kullanımda değil' mesajı verir (uygulama yine çalışır).");
+  console.warn("   Bulmak için: NEXUS_SUPABASE_URL / NEXUS_SUPABASE_ANON_KEY tanımla ve yeniden çalıştır.");
+} else {
+  let role = "?";
+  try { role = JSON.parse(Buffer.from(ccKey.split(".")[1], "base64").toString("utf8")).role; } catch {}
+  // service_role asla istemciye gitmez; bu yayın hattı yalnız kamu (anon) anahtarını taşır.
+  if (role !== "anon") { console.error(`!! cloud-config.js anahtarı anon değil (rol: ${role}) — yayın reddedildi.`); process.exit(1); }
+  console.log("✓ cloud-config hazır (rol: anon)");
+}
 
 // 2) site deposunu tazele
 rmSync(TMP, { recursive: true, force: true });

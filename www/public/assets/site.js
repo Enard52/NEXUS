@@ -231,7 +231,11 @@ function nxGetAvatarHtml(isLarge){
   var avatarUrl = null;
   try{ avatarUrl = localStorage.getItem('nexusUserAvatar'); }catch(e){}
   if(avatarUrl){
-    return '<img src="' + avatarUrl + '" alt="Avatar" class="nx-avatar-photo" onerror="this.outerHTML='' + nxUserSvgIcon.replace(/"/g, '&quot;') + '';">';
+    /* DIKKAT: bu satirlar pageJs() icindeki sabit metin (template literal) icinde
+       yaziliyor; tek tirnak kacisi iki kere kacislanmali (\'). Tek kere yazilinca
+       uretilen site.js'te syntax hatasi olusuyor ve sitedeki TUM JavaScript oliyordu
+       (olculdu: canli nexus-smarthome.pages.dev/assets/site.js "Unexpected string"). */
+    return '<img src="' + avatarUrl + '" alt="Avatar" class="nx-avatar-photo" onerror="this.outerHTML=\'' + nxUserSvgIcon.replace(/"/g, '&quot;') + '\';">';
   }
   return nxUserSvgIcon;
 }
@@ -324,13 +328,30 @@ function nxEditProfileName(){
   );
 }
 
+// cloud-config.js CI'da üretilir; değer yoksa ağa gitmek yerine nedeni söylenir.
+/* Bulut adresi + anonim anahtar build çıktısına gömülmez; sayfa /assets/cloud-config.js
+   üzerinden gelir (gitignore'dur, CI/site yayınıda üretilir). Yoksa auth 'unavailable' der. */
+function nxCloudConfig(){
+  var c = (typeof window !== 'undefined' && window.NEXUS_CLOUD) || {};
+  return { url: c.url || '', anonKey: c.anonKey || '' };
+}
+function nxAuthUnavailableMsg(){
+  var isTr=document.documentElement.lang==='tr';
+  return isTr?'Hesap işlemleri bu sürümde kapalı (bulut yapılandırması yok). Uygulamayı indirip oradan giriş yapabilirsin.':'Account actions are off in this build (no cloud config). Download the app and sign in there.';
+}
+function nxAuthUnavailable(){
+  var isTr=document.documentElement.lang==='tr';
+  nxShowAlert(nxAuthUnavailableMsg(),isTr?'Kullanımda değil':'Not available','warning');
+}
+
 function nxSendPasswordReset(){
   var isTr=document.documentElement.lang==='tr';
   var user=null;
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   if(!user)return;
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  var SUPABASE_URL=nxCloudConfig().url;
+  var SUPABASE_KEY=nxCloudConfig().anonKey;
+  if(!SUPABASE_URL||!SUPABASE_KEY){nxAuthUnavailable();return;}
   fetch(SUPABASE_URL+'/auth/v1/recover',{
     method:'POST',
     headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
@@ -400,7 +421,8 @@ function nxTogglePwVisible(){
 }
 
 function nxGoogleLogin(){
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+  var SUPABASE_URL=nxCloudConfig().url;
+  if(!SUPABASE_URL){nxAuthUnavailable();return;}
   var redir=window.location.origin + window.location.pathname;
   window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(redir);
 }
@@ -415,8 +437,9 @@ function nxForgotPassword(){
     function(inputEmail){
       if(!inputEmail)return;
       var alertEl=document.getElementById('nxAuthAlert');
-      var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-      var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+      var SUPABASE_URL=nxCloudConfig().url;
+      var SUPABASE_KEY=nxCloudConfig().anonKey;
+      if(!SUPABASE_URL||!SUPABASE_KEY){if(alertEl){alertEl.textContent=nxAuthUnavailableMsg();alertEl.style.display='block';}return;}
       fetch(SUPABASE_URL+'/auth/v1/recover',{
         method:'POST',
         headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
@@ -439,8 +462,6 @@ function nxForgotPassword(){
     }
   );
 }
-  });
-}
 
 function nxSubmitAuth(e){
   e.preventDefault();
@@ -457,8 +478,13 @@ function nxSubmitAuth(e){
   btn.innerHTML=isTr?'İşleniyor…':'Processing…';
   if(alertEl)alertEl.style.display='none';
 
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+  var SUPABASE_URL=nxCloudConfig().url;
+  var SUPABASE_KEY=nxCloudConfig().anonKey;
+  if(!SUPABASE_URL||!SUPABASE_KEY){
+    btn.disabled=false;btn.innerHTML=origText;
+    if(alertEl){alertEl.textContent=nxAuthUnavailableMsg();alertEl.style.display='block';}
+    return;
+  }
 
   var endpoint=nxAuthMode==='signup'
     ? SUPABASE_URL+'/auth/v1/signup'
@@ -536,6 +562,10 @@ function nxSignOut(){
 }
 
 // Fiyatlandırma: Aylık / Yıllık geçişi
+// Rakamlar ve indirim oranı build'de PRICES'tan enjekte edilir (tek kaynak cloud-sync.js);
+// elle yazılan fiyatlar zam geldiğinde yalan söylüyordu. site.js tek dosya olduğu için
+// para birimi sayfanın dilinden seçilir (TR → TL, diğerleri → USD; cloud-sync.js de öyle yapıyor).
+var NX_BILLING = {"tr":{"price":{"monthly":"₺499,99","yearly":"₺3.999,99","perMonthOfYear":"₺333,33"},"save":33},"en":{"price":{"monthly":"$11.99","yearly":"$89.99","perMonthOfYear":"$7.50"},"save":37}};
 function nxSetBilling(period){
   var isYearly=period==='yearly';
   var btnM=document.getElementById('billingMonthly');
@@ -544,21 +574,30 @@ function nxSetBilling(period){
   if(btnY)btnY.classList.toggle('active',isYearly);
 
   var isTr=document.documentElement.lang==='tr';
+  var bundle=NX_BILLING[isTr?'tr':'en'];
   var priceVal=document.getElementById('planPriceVal');
   var periodVal=document.getElementById('planPeriodVal');
   var priceNote=document.getElementById('planPriceNote');
   var cta=document.getElementById('nexusPlusCta');
 
   if(isYearly){
-    if(priceVal)priceVal.textContent=isTr?'₺333,33':'$7.50';
+    if(priceVal)priceVal.textContent=bundle.price.perMonthOfYear;
     if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':'/mo, billed yearly';
-    if(priceNote)priceNote.textContent=isTr?'Yıllık ₺3.999,99 olarak faturalandırılır (%33 tasarruf)':'Billed as $89.99/yr (Save 33%)';
-    if(cta&&cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
+    if(priceNote)priceNote.textContent=isTr
+      ? ('Yıllık ' + bundle.price.yearly + ' olarak faturalandırılır (%' + bundle.save + ' tasarruf)')
+      : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
+    if(cta){
+      if(cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
+      if(cta.dataset.yearlyLabel)cta.textContent=cta.dataset.yearlyLabel;
+    }
   }else{
-    if(priceVal)priceVal.textContent=isTr?'₺499,99':'$11.99';
+    if(priceVal)priceVal.textContent=bundle.price.monthly;
     if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
     if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
-    if(cta&&cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
+    if(cta){
+      if(cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
+      if(cta.dataset.monthlyLabel)cta.textContent=cta.dataset.monthlyLabel;
+    }
   }
 }
 
@@ -566,8 +605,12 @@ function nxSetBilling(period){
 function nxToggleFaq(btn){
   var item=btn.closest('.faq-item');
   var isOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(function(el){el.classList.remove('open')});
-  if(!isOpen)item.classList.add('open');
+  document.querySelectorAll('.faq-item').forEach(function(el){
+    el.classList.remove('open');
+    var b=el.querySelector('.faq-q');
+    if(b)b.setAttribute('aria-expanded','false');
+  });
+  if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true');}
 }
 
 // Gerçekçi Akıllı Telefon Ön İzleme Kontrolleri
@@ -587,6 +630,7 @@ function nxShowShot(idx){
   });
   dots.forEach(function(d,i){
     d.classList.toggle('active',i===idx);
+    d.setAttribute('aria-selected',i===idx?'true':'false');
   });
 
   var titleEl=document.getElementById('phoneSlideTitle');

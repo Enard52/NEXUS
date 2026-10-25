@@ -1,5 +1,12 @@
 // Adds brand-specific download card styling + live release data to the marketing home pages.
 // Idempotent. Usage: node scripts/site-cards.cjs <dir containing index.html, tr/index.html, light.html, tr/light.html>
+//
+// ARTIK CALISTIRILMIYOR (npm run site:seo kaldırıldı) — 2026-10-25.
+// Hedeflediği sınıflar (.download-card/.downloads-grid/.platform-specs) üretimin
+// kendi işaretleme yapısında yok: indir kartlari scripts/site-build.mjs icinde .dl-card /
+// .dl-grid olarak üretiliyor ve canlı sürüm bilgisi zaten pageJs() içinde
+// [data-nexus-ver] ile API'den aliniyor. Bu betiği çalıştırmak yalnızca ölü CSS
+// gömer; o yüzden depoda tarihçe referansı olarak duruyor.
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];

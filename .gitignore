@@ -28,6 +28,7 @@ test_out.txt
 vitest.config.ts.timestamp-*.mjs
 
 # One-off analysis scratch files & ad-hoc audit screenshots
+# Yerel yayin sahne klasorleri (wrangler/site push) — gecerli veri degil, cikti
 scripts/tmp-*
 .audit-*.png
 
@@ -74,3 +75,4 @@ scripts/archive/www-arsiv/
 .zcode/
 .replit
 console.log(*
+_web-publish/

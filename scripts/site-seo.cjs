@@ -1,4 +1,11 @@
 // NEXUS site SEO + sync script. Usage: node nexus-seo-apply.cjs <siteRepoDir>
+//
+// ARTIK CALISTIRILMIYOR (npm run site:seo kaldırıldı) — 2026-10-25.
+// Yaptığı her şey scripts/site-build.mjs içinde tek kaynaktan üretiliyor:
+// canonical/hreflang/og/JSON-LD meta, robots.txt, sitemap.xml, manifest.webmanifest.
+// Bu betiği tekrar çalıştırmak üretilen sayfaların üstünü elle kopyalanmış değerlerle
+// boyar (ör. sab sürüm "1.0.7", enard52.github.io adresi) — bu yüzden depoda yalnızca
+// tarihçe referansı olarak duruyor. Referans: scripts/site-build.mjs (renderMeta/renderRobots).
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];

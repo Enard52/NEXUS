@@ -4,21 +4,30 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Kullanım Şartları — NEXUS</title>
-<meta name="description" content="Kullanım Şartları — NEXUS smart home"/>
+<meta name="description" content="Kullanım Şartları — NEXUS"/>
 <link rel="canonical" href="https://nexus-smarthome.pages.dev/tr/terms"/>
 <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/terms"/>
 <link rel="alternate" hreflang="tr" href="https://nexus-smarthome.pages.dev/tr/terms"/>
 <link rel="alternate" hreflang="x-default" href="https://nexus-smarthome.pages.dev/terms"/>
 <link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="manifest" href="/manifest.webmanifest"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="NEXUS"/>
+<meta property="og:locale" content="tr_TR"/>
 <meta property="og:title" content="Kullanım Şartları — NEXUS"/>
-<meta property="og:description" content="Kullanım Şartları — NEXUS smart home"/>
+<meta property="og:description" content="Kullanım Şartları — NEXUS"/>
 <meta property="og:url" content="https://nexus-smarthome.pages.dev/tr/terms"/>
 <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Telefon, tablet ve bilgisayarda NEXUS akıllı ev uygulaması"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Kullanım Şartları — NEXUS"/>
+<meta name="twitter:description" content="Kullanım Şartları — NEXUS"/>
+<meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <link href="/fonts/inter/inter.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Kullanım Şartları","url":"https://nexus-smarthome.pages.dev/tr/terms","inLanguage":"tr","isPartOf":{"@type":"WebSite","url":"https://nexus-smarthome.pages.dev/tr/"}}</script>
 <style>
 :root{
   --brand:#4C7DFF; --brand-press:#3F6FFF; --accent:#22D3EE;
@@ -189,9 +198,10 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
   pointer-events:none;
 }
 
-/* Telefon Cam Parıltısı */
+/* Telefon Cam Parıltısı — taşmayı engellemek için kadrajın içinde kalır (ölçüldü:
+   left:-50%/width:200% olan sürüm 390px'te belgeyi yatay kaydırıyordu). */
 .phone-glass-shine{
-  position:absolute;top:0;left:-50%;width:200%;height:100%;
+  position:absolute;top:0;left:0;width:100%;height:100%;
   background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
   pointer-events:none;z-index:32;border-radius:35px;
 }
@@ -210,13 +220,20 @@ h1{font-size:clamp(28px,4.2vw,46px);line-height:1.1;letter-spacing:-.03em;margin
   background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
 }
 .phone-dots{
-  display:flex;align-items:center;gap:4px;
+  display:flex;align-items:center;gap:2px;
 }
+/* Dokunma alanı GERÇEKTEN 28px: noktanın kendisi 6px çizilir (::before), düğmenin
+   kutusu 28px. Eskiden 6px kutuya ::after ile 30px sahte alan eklenmişti; komşu
+   noktaların alanları üst üste bindiği için parmak yanlış ekrana basıyordu (ölçüldü). */
 .phone-dot{
-  width:5px;height:5px;border-radius:999px;background:var(--border);border:0;padding:0;
-  cursor:pointer;transition:all .25s ease;
+  width:28px;height:28px;border-radius:999px;background:transparent;border:0;padding:0;
+  display:grid;place-items:center;cursor:pointer;
 }
-.phone-dot.active{
+.phone-dot::before{
+  content:'';display:block;width:6px;height:6px;border-radius:999px;background:var(--border);
+  transition:all .25s ease;
+}
+.phone-dot.active::before{
   width:16px;background:var(--brand);box-shadow:0 0 6px rgba(76,125,255,.4);
 }
 
@@ -277,8 +294,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--text-2);box-shadow:0 2px 6px rgba(15,23,42,.03);
   transition:all .18s ease}
 .chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--brand) 40%,transparent);box-shadow:var(--shadow)}
-.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:0;cursor:pointer;transition:color .18s ease}
+.int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:10px 4px;cursor:pointer;transition:color .18s ease}
 .int-more:hover{color:var(--brand-press);text-decoration:underline}
+/* Entegrasyon uyarısı: doğrudan bağlayıcısı olmayan markaların gerçek koşulunu söyler. */
+.int-note{margin:22px 0 0;padding:16px 18px;border-radius:var(--radius-lg);border:1px dashed color-mix(in srgb,var(--brand) 35%,var(--border));
+  background:color-mix(in srgb,var(--brand) 5%,var(--surface));color:var(--muted);font-size:13.5px;line-height:1.6}
 
 /* Fiyatlar */
 #pricing{scroll-margin-top:80px;padding:48px 0 54px}
@@ -624,6 +644,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <a href="#pricing">Fiyatlar</a>
       <a href="#downloads">İndir</a>
       <a href="#faq">SSS</a>
+      <a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Web uygulaması</a>
     </nav>
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="Dil seçimi">
@@ -690,22 +711,22 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     <div class="ft-grid">
       <div class="ft-brand">
         <a class="logo" href="/tr/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
-        <p>Tüm akıllı ev cihazlarınızı bulut bağımlılığı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Verileriniz evinizde kalır, senaryolarınız internet kesilse dahi kesintisiz çalışır.</p>
+        <p>Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Kontrol için hesap ve internet gerekmez; giriş yaparsan kurulumun yalnızca kendi hesabına senkronize olur.</p>
         <div class="ft-pills">
           <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Yerel Ağ Güvenliği</span>
-          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Sıfır Bulut Bağımlılığı</span>
+          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Kontrol için bulut şart değil</span>
           <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Gizlilik Odaklı</span>
         </div>
       </div>
       <div class="ft-links-group">
-        <div class="ft-col"><h4>Ürün</h4><a href="/tr/#features">Özellikler</a><a href="/tr/#pricing">Fiyatlar</a><a href="/tr/#downloads">İndir</a><a href="/tr/#faq">SSS</a><a href="/tr/about.html">Hakkında</a></div>
+        <div class="ft-col"><h4>Ürün</h4><a href="/tr/#features">Özellikler</a><a href="/tr/#pricing">Fiyatlar</a><a href="/tr/#downloads">İndir</a><a href="/tr/#faq">SSS</a><a href="/tr/about">Hakkında</a></div>
         <div class="ft-col"><h4>Müşteri &amp; Destek</h4><a href="/tr/#pricing">Planlar ve Fiyatlar</a><a href="javascript:nxOpenContactModal('Teknik Destek')">İletişim ve Teknik Destek</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Sürüm Notları ve Topluluk</a><a href="/tr/#downloads">Uygulama İndir</a></div>
-        <div class="ft-col"><h4>Yasal</h4><a href="/tr/privacy.html">Gizlilik</a><a href="/tr/terms.html">Şartlar</a><a href="/tr/refund.html">İade</a></div>
+        <div class="ft-col"><h4>Yasal</h4><a href="/tr/privacy">Gizlilik</a><a href="/tr/terms">Şartlar</a><a href="/tr/refund">İade</a></div>
       </div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. Tüm hakları saklıdır.</span>
-      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Ev verisi cihazınızda kalır.</span>
+      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Yerel kontrol hesap gerektirmez.</span>
     </div>
   </div>
 </footer>
@@ -888,6 +909,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
     </div>
   </div>
 </div>
+<script src="/assets/cloud-config.js"></script>
 <script src="/assets/site.js"></script>
 </body>
 </html>
