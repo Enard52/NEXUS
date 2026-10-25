@@ -1,0 +1,33 @@
+# Satır sonu sözleşmesi
+# ---------------------------------------------------------------------------
+# Global core.autocrlf=true olduğu için depo LF saklıyor ama çalışma kopyasına
+# CRLF yazıyordu: üreteçler (scripts/site-build.mjs, sync-www.mjs) LF çıktısı
+# üretince her yayında "LF will be replaced by CRLF" uyarısı ve gereksiz diff
+# çıkıyordu. Bu dosya, üretilen/izlenen metni her iki tarafta da LF'e sabitler;
+# BOM/mojibake düzeltmeleriyle (packages/core/src/encoding-guard.test.ts) aynı
+# ailenin kalıcı çözümü. Windows betikleri çalıştırmada CRLF istediği için
+# .ps1/.bat ayrık tutuldu.
+* text=auto eol=lf
+
+# Windows'ta çift tıklayla çalıştırılanlar CRLF kalsın (PowerShell 5.1 + cmd).
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# İkili varlıklar: asla dokunulmaz (boyut/imalat farkı yaratır).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.jar binary
+*.apk binary
+*.aab binary
+*.exe binary
+*.AppImage binary
+*.zip binary
