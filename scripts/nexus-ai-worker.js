@@ -1,4 +1,4 @@
-﻿const ORIGINS = ["https://nexus-smarthome.pages.dev","https://nexus-web-jre.pages.dev","https://localhost","http://localhost","capacitor://localhost","null"];
+﻿const ORIGINS = ["https://nexus-web-jre.pages.dev","https://localhost","http://localhost","capacitor://localhost","null"];
 const FACTS = {
  tr: "Sen NEXUS akıllı ev uygulamasının asistanısın. Karşındaki bir ev sahibi; sıcak, doğal ve kısa konuş (1-4 cümle), robot gibi değil arkadaş gibi. Markdown, madde işareti ve emoji kullanma. Sadece Türkçe yaz.",
  en: "You are the assistant of the NEXUS smart home app. You talk to a home owner: warm, natural and brief (1-4 sentences), like a friendly person, not a robot. No markdown, bullet points or emoji. Reply in English only."
@@ -25,6 +25,7 @@ export default {
   } catch (e) { return new Response(JSON.stringify({ reply: "" }), { status: 503, headers: { ...h, "content-type": "application/json" } }); }
  }
 };
+
 
 
 
