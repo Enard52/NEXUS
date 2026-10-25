@@ -10,3 +10,5 @@
 5. Yayın: `main`'e push → site/web otomatik (`web-deploy.yml`); `v*` etiketi → masaüstü + Android (`desktop-release.yml`, `android-release.yml`);
    `release-catchup.yml` eksik kalan sürümleri tamamlar. Elle yayın gerekirse `MANUEL-ADIMLAR.md` ve `LOCAL-BUILD.txt` kuralına bakın.
 6. Android imzası: `~/NEXUS-signing/` (yedek: özel depo `nexus-signing-backup`). Depoya anahtar dosyası eklenmez.
+
+7. **Her ekran 3 durumda denenir:** (a) yeni kullanıcı: hesap/cihaz YOK, (b) 1 cihaz eşleşmiş, (c) çevrimdışı/hata. Cihaz, yetenek ya da veri olmadan bir eylem düğmesi (Başlat, Çalıştır, Kaydet...) gösterilmez; yerine boş durum ve dürüst bir sonraki adım (örn. 'Önce cihaz ekle') gösterilir. Test hesabı hep dolu veriyle denenmemeli.
