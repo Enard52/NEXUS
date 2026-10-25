@@ -13,7 +13,23 @@ const dict = readFileSync(join(ROOT, "lang-en.js"), "utf8");
 const DICT_TEXT = new Set();
 {
   const m = dict.match(/"text":\s*\{([\s\S]*?)\n\s*\},/);
-  if (m) for (const [, k] of m[1].matchAll(/"((?:[^"\\]|\\.)*)":\s*"/g)) DICT_TEXT.add(k);
+  // Yakalanan anahtar ham metindir: "A \"B\" C" içindeki ters bölüler AYNI KALIR.
+  // Çözümlemeden karşılaştırırsak tırnak içeren her anahtar yanlışça "eksik çeviri" sayılır.
+  const unesc = (k) => { try { return JSON.parse('"' + k + '"'); } catch { return k; } };
+  if (m) for (const [, k] of m[1].matchAll(/"((?:[^"\\]|\\.)*)":\s*"/g)) { DICT_TEXT.add(k); DICT_TEXT.add(unesc(k)); }
+}
+{
+  // "slots" anahtarları satır içi vurgulu (<strong>/<b>) cümlelerdir. Çalışma zamanı cümleyi
+  // {0} yer tutucusundan böler; bu yüzden parçaların kendisi de "çevrilmiş" sayılmalı,
+  // aksi halde kapsama raporu doğru anahtarları eksik gösterir.
+  const m = dict.match(/"slots":\s*\{([\s\S]*?)\n\},/);
+  const unesc = (k) => { try { return JSON.parse('"' + k + '"'); } catch { return k; } };
+  if (m)
+    for (const [, k] of m[1].matchAll(/"((?:[^"\\]|\\.)*)":\s*"/g))
+      for (const frag of unesc(k).split(/\{\d+\}/)) {
+        const t = frag.replace(/\s+/g, " ").trim();
+        if (t) DICT_TEXT.add(t);
+      }
 }
 const templ = (s) =>
   s
@@ -33,7 +49,8 @@ for (const f of readdirSync(ROOT)
   const html = readFileSync(join(ROOT, f), "utf8")
     .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "");
-  for (const [, text] of html.matchAll(/>([^<>]{4,120})</g)) {
+  // {4,120} idi: 120 karakteri aşan paragraflar hiç taranmıyordu ve eksik çeviriler görünmez kalıyordu.
+  for (const [, text] of html.matchAll(/>([^<>]{4,400})</g)) {
     const t = text.replace(/\s+/g, " ").trim();
     if (!t || !TR.test(t)) continue;
     total++;

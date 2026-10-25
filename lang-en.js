@@ -2176,12 +2176,37 @@ window.NEXUS_EN = {
 "Şu an bekleyen davet yok.": "No pending invites right now.",
 "₺333.33/ay": "₺333.33/mo",
 "₺3999,99/yıl": "₺3999.99/yr",
-"₺{0}/ay": "₺{0}/mo"
+"₺{0}/ay": "₺{0}/mo",
+/* --- 2026-10-25 tam ekran taramasında bulunan eksik çeviriler --- */
+"Aboneliği Yönet / İptal Et": "Manage / Cancel Subscription",
+"Aboneliği Whop'ta yönet": "Manage your subscription on Whop",
+"Galeriden fotoğraf": "Photo from Gallery",
+"Fotoğraf çek": "Take a Photo",
+"Cihazlarıma sor": "Ask my devices",
+"Bağlantı doğrulandı. Hesabın için yeni bir şifre belirle.": "Link verified. Set a new password for your account.",
+"Şifreyi Kaydet": "Save Password",
+"Google ile hesap açtıysan bu cihazda “Şifremi Unuttum” ile bir şifre belirleyip e-postanla giriş yapabilirsin.": "If you signed up with Google, use “Forgot Password” on this device to set a password, then sign in with your email.",
+"Ödemeye Geç": "Pay Now",
+"Zaten hesabın var mı? Giriş Yap": "Already have an account? Sign In",
+"Yeni sürüm bulununca arka planda hemen indirilsin.": "Download new versions in the background as soon as they're found.",
+"Home Assistant köprüsüdür": "the Home Assistant bridge",
+"Entegrasyonlar": "Integrations",
+"yukarıdaki hesap e-postasını": "the account email above",
+/* 120 karakteri aşan uzun metinler kapsama betiğinin tarama sınırına takılmıyordu;
+   İngilizce arayüz canlı tarandığında bulundu ve burada tamamlandı. */
+"İptal ve ödeme yöntemi değişikliği güvenli ödeme sayfamız Whop üzerinden yapılır. İptal edersen mevcut dönemin sonuna kadar kullanmaya devam edersin ve bir sonraki ödeme alınmaz.": "Cancelling and changing your payment method happen on our secure checkout page, Whop. If you cancel, you keep using NEXUS+ until the end of the current period and the next payment is never taken.",
+"Aboneliğin yok. NEXUS+ için Plus sayfasından ücretsiz deneyebilirsin.": "You don't have a subscription. Try NEXUS+ free from the Plus page.",
+"QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.": "Devices you add by QR, setup code or the manual catalog show up here."
 },
 "html": {},
 "slots": {
 "Sonraki ödeme {0} tutarında {1} tarihinde alınacak.": "Next payment of {0} will be charged on {1}.",
-"Aşağıdaki cihazlar internet bağlantısı olmadan, ev ağında NEXUS'a bağlanır. Eklediğin cihazlar {0} modelden seçilir.": "The devices below connect to NEXUS on your home network, without an internet connection. Choose from {0} models."
+"Aşağıdaki cihazlar internet bağlantısı olmadan, ev ağında NEXUS'a bağlanır. Eklediğin cihazlar {0} modelden seçilir.": "The devices below connect to NEXUS on your home network, without an internet connection. Choose from {0} models.",
+/* Satır içi vurgu (<strong>/<b>) içeren cümleler: {0} vurgunun kendisidir, yerinde kalır. */
+"NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; HomeKit köprüsü içermez. Apple Ev (HomeKit) ile kullanmak istersen en pratik yol {0}: cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.": "NEXUS reaches your devices directly from its own app; it has no built-in HomeKit bridge. To use them with Apple Home (HomeKit), the practical path is {0}: add your devices to Home Assistant, then enable HA's HomeKit integration.",
+"NEXUS'ta {0} üzerinden Home Assistant'ı bağla.": "Connect Home Assistant through {0} in NEXUS.",
+"Home Assistant ayarlarından {0} entegrasyonunu ekle; paylaşmak istediğin cihazları seç.": "In Home Assistant settings, add the {0} integration and pick the devices you want to share.",
+"Ödeme sayfasında {0} kullan; abonelik bu e-postayla eşleşir. Deneme süresi bitmeden iptal edersen ücret alınmaz. Aboneliğini Faturalandırma sayfasından istediğin an yönetebilirsin.": "Use {0} on the payment page; your subscription is matched to this email. Cancel before the trial ends and you're never charged. Manage your subscription any time from the Billing page."
 },
 "patterns": [
 [

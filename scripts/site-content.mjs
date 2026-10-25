@@ -139,7 +139,7 @@ export const content = {
         ["TCP / UDP — desktop app", ["TP-Link Kasa", "Yeelight", "WiZ", "LIFX", "Govee LAN"]],
       ],
       more: "Something missing? Request a connector",
-      moreHref: CONNECTOR_REQUEST_URL,
+      moreHref: "javascript:nxOpenContactModal('Connector Request')",
     },
     pricing: {
       heading: "Free to use. NEXUS+ when you want more.",
@@ -270,7 +270,7 @@ export const content = {
       account: "Customer & Support",
       accountLinks: [
         ["Plans & Pricing", "#pricing"],
-        ["Customer & Technical Support", SUPPORT_EMAIL],
+        ["Contact & Technical Support", "javascript:nxOpenContactModal('Technical Support')"],
         ["Release Notes & Community", RELEASES_URL],
         ["Download Apps", "#downloads"],
       ],
@@ -393,7 +393,7 @@ export const content = {
         ["TCP / UDP — masaüstü", ["TP-Link Kasa", "Yeelight", "WiZ", "LIFX", "Govee LAN"]],
       ],
       more: "Eksik bir şey mi var? Bağlayıcı iste",
-      moreHref: CONNECTOR_REQUEST_URL,
+      moreHref: "javascript:nxOpenContactModal('Cihaz & Bağlayıcı İsteği')",
     },
     pricing: {
       heading: "Ücretsiz kullan. Daha fazlasını istersen NEXUS+.",
@@ -525,7 +525,7 @@ export const content = {
       account: "Müşteri & Destek",
       accountLinks: [
         ["Planlar ve Fiyatlar", "#pricing"],
-        ["Müşteri ve Teknik Destek", SUPPORT_EMAIL],
+        ["İletişim ve Teknik Destek", "javascript:nxOpenContactModal('Teknik Destek')"],
         ["Sürüm Notları ve Topluluk", RELEASES_URL],
         ["Uygulama İndir", "#downloads"],
       ],

@@ -431,6 +431,56 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 @media(max-width:640px){
   .doc-body{padding:22px 18px}
 }
+
+/* İletişim & Destek Modülü (Contact Modal) */
+.nx-modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .25s ease;
+}
+.nx-modal-backdrop.open{display:flex;opacity:1}
+.nx-modal-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 24px 64px -12px rgba(0,0,0,.5);
+  width:100%;max-width:500px;max-height:92vh;overflow-y:auto;padding:30px;position:relative;
+  transform:scale(.96);transition:transform .25s cubic-bezier(.16,1,.3,1);box-sizing:border-box;
+}
+.nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
+.nx-modal-close{
+  position:absolute;top:16px;right:16px;background:var(--surface-2);border:1px solid var(--border);
+  color:var(--muted);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s ease;font-size:20px;line-height:1;padding:0;
+}
+.nx-modal-close:hover{color:var(--text);border-color:var(--text-2);transform:scale(1.05)}
+.nx-modal-header{margin-bottom:20px}
+.nx-modal-header h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;color:var(--text)}
+.nx-modal-header p{margin:0;font-size:13.5px;color:var(--text-2);line-height:1.5}
+.nx-form-group{margin-bottom:14px;display:flex;flex-direction:column;gap:5px}
+.nx-form-group label{font-size:12px;font-weight:700;color:var(--text);letter-spacing:.02em}
+.nx-form-input, .nx-form-select, .nx-form-textarea{
+  width:100%;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 14px;font:500 13.5px Inter,sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.nx-form-input:focus, .nx-form-select:focus, .nx-form-textarea:focus{
+  border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 20%,transparent);
+}
+.nx-form-textarea{resize:vertical;min-height:92px}
+.nx-form-submit{
+  width:100%;background:var(--brand-grad);color:#fff;border:0;border-radius:var(--radius-sm);
+  padding:12px 18px;font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(76,125,255,.35);transition:opacity .2s,transform .15s;margin-top:4px;
+}
+.nx-form-submit:hover{opacity:.92;transform:translateY(-1px)}
+.nx-form-submit:active{transform:translateY(0)}
+.nx-form-submit:disabled{opacity:.6;cursor:not-allowed}
+.nx-form-success{
+  display:none;text-align:center;padding:20px 8px;
+}
+.nx-form-success svg{width:52px;height:52px;color:#10B981;margin:0 auto 12px;display:block}
+.nx-form-success h4{font-size:19px;font-weight:800;margin:0 0 8px;color:var(--text)}
+.nx-form-success p{font-size:13.5px;color:var(--text-2);line-height:1.5;margin:0 0 18px}
+.nx-form-success .btn{margin:0 auto}
+@media(max-width:480px){
+  .nx-modal-card{padding:22px 18px}
+}
 `;
 
 // ---------- Sayfa Davranış Betiği (site.js) ----------
@@ -468,6 +518,77 @@ function nxSetLang(lang){
     while(sub.charAt(0)==='/')sub=sub.slice(1);
     location.href='/'+sub+(sub?'':'?lang=en')+location.hash;
   }
+}
+
+// İletişim & Destek Modülü Kontrolleri
+function nxOpenContactModal(category){
+  var m=document.getElementById('nxContactModal');
+  if(!m)return;
+  if(category){
+    var sel=document.getElementById('nxContactCategory');
+    if(sel)sel.value=category;
+  }
+  m.style.display='flex';
+  setTimeout(function(){m.classList.add('open')},10);
+  document.body.style.overflow='hidden';
+}
+
+function nxCloseContactModal(){
+  var m=document.getElementById('nxContactModal');
+  if(!m)return;
+  m.classList.remove('open');
+  setTimeout(function(){
+    m.style.display='none';
+    document.body.style.overflow='';
+  },250);
+}
+
+function nxSubmitContact(e){
+  e.preventDefault();
+  var form=document.getElementById('nxContactForm');
+  var btn=document.getElementById('nxContactSubmitBtn');
+  var successEl=document.getElementById('nxContactSuccess');
+  if(!form||!btn)return;
+
+  var name=(document.getElementById('nxContactName').value||'').trim();
+  var email=(document.getElementById('nxContactEmail').value||'').trim();
+  var cat=document.getElementById('nxContactCategory').value;
+  var msg=(document.getElementById('nxContactMsg').value||'').trim();
+
+  if(!name||!email||!msg)return;
+
+  btn.disabled=true;
+  var origText=btn.innerHTML;
+  btn.innerHTML=form.getAttribute('data-sending')||'Gönderiliyor…';
+
+  fetch('https://formsubmit.co/ajax/nexus.smarthome.app@gmail.com',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      name:name,
+      email:email,
+      _replyto:email,
+      _subject:'[NEXUS Destek] '+cat+' — '+name,
+      category:cat,
+      message:msg,
+      _template:'box'
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    btn.disabled=false;
+    btn.innerHTML=origText;
+    form.style.display='none';
+    if(successEl)successEl.style.display='block';
+  })
+  .catch(function(err){
+    btn.disabled=false;
+    btn.innerHTML=origText;
+    var mailto='mailto:nexus.smarthome.app@gmail.com?subject='+encodeURIComponent('[NEXUS Destek] '+cat+' — '+name)+'&body='+encodeURIComponent('İsim: '+name+'\\nE-posta: '+email+'\\n\\nMesaj:\\n'+msg);
+    location.href=mailto;
+    form.style.display='none';
+    if(successEl)successEl.style.display='block';
+  });
 }
 
 // Fiyatlandırma: Aylık / Yıllık geçişi
@@ -886,6 +1007,52 @@ function renderFooter(c) {
 </footer>`;
 }
 
+function renderContactModal(c) {
+  const isTr = c.lang === 'tr';
+  return `
+<div id="nxContactModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseContactModal()" role="dialog" aria-modal="true" aria-labelledby="nxContactTitle">
+  <div class="nx-modal-card">
+    <button class="nx-modal-close" onclick="nxCloseContactModal()" aria-label="${isTr ? 'Kapat' : 'Close'}">&times;</button>
+    <div class="nx-modal-header">
+      <h3 id="nxContactTitle">${isTr ? 'NEXUS İletişim & Destek' : 'NEXUS Contact & Support'}</h3>
+      <p>${isTr ? 'Sorularınız, teknik destek talepleriniz veya yeni cihaz entegrasyonu önerileriniz için formu doldurun. Mesajınız doğrudan geliştirici ekibimize iletilir.' : 'Have a question, technical inquiry, or device connector request? Fill out the form below to reach our team directly.'}</p>
+    </div>
+    <form id="nxContactForm" onsubmit="nxSubmitContact(event)" data-sending="${isTr ? 'Gönderiliyor…' : 'Sending…'}">
+      <div class="nx-form-group">
+        <label for="nxContactName">${isTr ? 'Adınız Soyadınız' : 'Your Name'}</label>
+        <input type="text" id="nxContactName" class="nx-form-input" required placeholder="${isTr ? 'Örn. Ahmet Yılmaz' : 'e.g. John Doe'}" autocomplete="name">
+      </div>
+      <div class="nx-form-group">
+        <label for="nxContactEmail">${isTr ? 'E-posta Adresiniz (Yanıt bu adrese iletilecektir)' : 'Your Email (We will reply to this address)'}</label>
+        <input type="email" id="nxContactEmail" class="nx-form-input" required placeholder="${isTr ? 'ornek@eposta.com' : 'name@example.com'}" autocomplete="email">
+      </div>
+      <div class="nx-form-group">
+        <label for="nxContactCategory">${isTr ? 'Konu / Talep Türü' : 'Subject / Topic'}</label>
+        <select id="nxContactCategory" class="nx-form-select">
+          <option value="${isTr ? 'Teknik Destek' : 'Technical Support'}">${isTr ? 'Teknik Destek ve Kurulum' : 'Technical Support & Setup'}</option>
+          <option value="${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}">${isTr ? 'Yeni Cihaz & Bağlayıcı İsteği' : 'New Device / Connector Request'}</option>
+          <option value="${isTr ? 'NEXUS+ ve Abonelik' : 'NEXUS+ & Billing'}">${isTr ? 'NEXUS+ ve Fatura / Abonelik' : 'NEXUS+ & Billing Questions'}</option>
+          <option value="${isTr ? 'Geri Bildirim & Öneri' : 'Feedback & Suggestion'}">${isTr ? 'Geri Bildirim veya Öneri' : 'General Feedback or Suggestion'}</option>
+        </select>
+      </div>
+      <div class="nx-form-group">
+        <label for="nxContactMsg">${isTr ? 'Mesajınız' : 'Your Message'}</label>
+        <textarea id="nxContactMsg" class="nx-form-textarea" required rows="4" placeholder="${isTr ? 'Nasıl yardımcı olabiliriz? Lütfen detayları paylaşın…' : 'How can we help? Please describe your request in detail…'}"></textarea>
+      </div>
+      <button type="submit" id="nxContactSubmitBtn" class="nx-form-submit">
+        <span>${isTr ? 'Mesajı Gönder' : 'Send Message'}</span>
+      </button>
+    </form>
+    <div id="nxContactSuccess" class="nx-form-success">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      <h4>${isTr ? 'Mesajınız Başarıyla İletildi!' : 'Message Received!'}</h4>
+      <p>${isTr ? 'Talebiniz ekibimize ulaştı. Belirttiğiniz e-posta adresi üzerinden en kısa sürede sizinle iletişime geçeceğiz.' : 'Thank you for reaching out. Our team will review your message and reply to your email address shortly.'}</p>
+      <button type="button" class="btn btn-outline" onclick="nxCloseContactModal()">${isTr ? 'Kapat' : 'Close'}</button>
+    </div>
+  </div>
+</div>`;
+}
+
 function baseHead(c, path) {
   const SITE = 'https://nexus-smarthome.pages.dev';
   const url = SITE + (path === '/' ? '/' : path);
@@ -972,6 +1139,7 @@ ${renderDownloads(c)}
 ${renderFaq(c)}
 </main>
 ${renderFooter(c)}
+${renderContactModal(c)}
 <script src="/assets/site.js"></script>
 </body>
 </html>`;
@@ -1001,6 +1169,7 @@ ${renderHeader(c, path)}
   </div>
 </main>
 ${renderFooter(c)}
+${renderContactModal(c)}
 <script src="/assets/site.js"></script>
 </body>
 </html>`;
@@ -1049,6 +1218,7 @@ ${renderHeader(c, path)}
   </div>
 </main>
 ${renderFooter(c)}
+${renderContactModal(c)}
 <script src="/assets/site.js"></script>
 </body>
 </html>`;

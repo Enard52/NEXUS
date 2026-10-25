@@ -32,6 +32,77 @@ function nxSetLang(lang){
   }
 }
 
+// İletişim & Destek Modülü Kontrolleri
+function nxOpenContactModal(category){
+  var m=document.getElementById('nxContactModal');
+  if(!m)return;
+  if(category){
+    var sel=document.getElementById('nxContactCategory');
+    if(sel)sel.value=category;
+  }
+  m.style.display='flex';
+  setTimeout(function(){m.classList.add('open')},10);
+  document.body.style.overflow='hidden';
+}
+
+function nxCloseContactModal(){
+  var m=document.getElementById('nxContactModal');
+  if(!m)return;
+  m.classList.remove('open');
+  setTimeout(function(){
+    m.style.display='none';
+    document.body.style.overflow='';
+  },250);
+}
+
+function nxSubmitContact(e){
+  e.preventDefault();
+  var form=document.getElementById('nxContactForm');
+  var btn=document.getElementById('nxContactSubmitBtn');
+  var successEl=document.getElementById('nxContactSuccess');
+  if(!form||!btn)return;
+
+  var name=(document.getElementById('nxContactName').value||'').trim();
+  var email=(document.getElementById('nxContactEmail').value||'').trim();
+  var cat=document.getElementById('nxContactCategory').value;
+  var msg=(document.getElementById('nxContactMsg').value||'').trim();
+
+  if(!name||!email||!msg)return;
+
+  btn.disabled=true;
+  var origText=btn.innerHTML;
+  btn.innerHTML=form.getAttribute('data-sending')||'Gönderiliyor…';
+
+  fetch('https://formsubmit.co/ajax/nexus.smarthome.app@gmail.com',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      name:name,
+      email:email,
+      _replyto:email,
+      _subject:'[NEXUS Destek] '+cat+' — '+name,
+      category:cat,
+      message:msg,
+      _template:'box'
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    btn.disabled=false;
+    btn.innerHTML=origText;
+    form.style.display='none';
+    if(successEl)successEl.style.display='block';
+  })
+  .catch(function(err){
+    btn.disabled=false;
+    btn.innerHTML=origText;
+    var mailto='mailto:nexus.smarthome.app@gmail.com?subject='+encodeURIComponent('[NEXUS Destek] '+cat+' — '+name)+'&body='+encodeURIComponent('İsim: '+name+'\nE-posta: '+email+'\n\nMesaj:\n'+msg);
+    location.href=mailto;
+    form.style.display='none';
+    if(successEl)successEl.style.display='block';
+  });
+}
+
 // Fiyatlandırma: Aylık / Yıllık geçişi
 function nxSetBilling(period){
   var isYearly=period==='yearly';
