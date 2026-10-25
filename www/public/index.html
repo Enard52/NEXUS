@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>NEXUS — Your smart home, managed on your own network</title>
-<meta name="description" content="NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
+<meta name="description" content="NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
 <link rel="canonical" href="https://nexus-smarthome.pages.dev/"/>
 <link rel="alternate" hreflang="en" href="https://nexus-smarthome.pages.dev/"/>
 <link rel="alternate" hreflang="tr" href="https://nexus-smarthome.pages.dev/tr/"/>
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="NEXUS"/>
 <meta property="og:title" content="NEXUS — Your smart home, managed on your own network"/>
-<meta property="og:description" content="NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
+<meta property="og:description" content="NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
 <meta property="og:url" content="https://nexus-smarthome.pages.dev/"/>
 <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
@@ -281,35 +281,36 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .int-more:hover{color:var(--brand-press);text-decoration:underline}
 
 /* Fiyatlar */
-.billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 32px}
+#pricing{scroll-margin-top:80px;padding:48px 0 54px}
+.billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 24px}
 .billing-toggle{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
   border-radius:999px;padding:4px;box-shadow:var(--shadow)}
 .billing-btn{border:0;background:transparent;color:var(--muted);font:700 13px/1 Inter,sans-serif;
-  padding:9px 18px;border-radius:999px;cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px}
+  padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px}
 .billing-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 4px 14px rgba(76,125,255,.35)}
 .save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:99px}
 .billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 
-.plans{display:grid;gap:20px;width:100%;max-width:1100px;margin:0 auto}
+.plans{display:grid;gap:18px;width:100%;max-width:1100px;margin:22px auto 0}
 @media(min-width:960px){.plans{grid-template-columns:repeat(3,1fr);align-items:stretch}}
-@media(max-width:959px){.plans{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
+@media(max-width:959px){.plans{grid-template-columns:1fr;max-width:440px;margin:22px auto 0}}
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:clamp(22px,2.8vw,30px);box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
+  padding:24px 20px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
 .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
-.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:11px;font-weight:800;
-  letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
-.plan-head{min-height:106px;display:flex;flex-direction:column;justify-content:flex-start}
-.plan h3{margin:0 0 10px;font-size:18px;font-weight:800}
-.price{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.price small{font-size:13.5px;font-weight:600;color:var(--muted);letter-spacing:0}
-.price-note{color:var(--muted);font-size:13px;margin:8px 0 0}
-.plan ul{list-style:none;margin:22px 0 26px;padding:0;display:grid;gap:12px;flex:1;align-content:start}
-.plan li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--text-2);line-height:1.45}
-.plan li .icon{width:16px;height:16px;color:#10B981;margin-top:2px;flex-shrink:0}
-.plan .btn{width:100%;margin-top:auto}
-.cur-note{font-size:12.5px;color:var(--muted);margin-top:18px;text-align:center}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
+.plan-head{min-height:auto;margin-bottom:6px;display:flex;flex-direction:column;justify-content:flex-start}
+.plan h3{margin:0 0 6px;font-size:17.5px;font-weight:800}
+.price{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.price small{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0}
+.price-note{color:var(--muted);font-size:12px;margin:4px 0 0}
+.plan ul{list-style:none;margin:14px 0 16px;padding:0;display:grid;gap:7px;flex:1;align-content:start}
+.plan li{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text-2);line-height:1.35}
+.plan li .icon{width:15px;height:15px;color:#10B981;margin-top:2px;flex-shrink:0}
+.plan .btn{width:100%;margin-top:auto;min-height:42px;height:42px;font-size:13.5px;border-radius:12px}
+.cur-note{font-size:12px;color:var(--muted);margin-top:14px;text-align:center}
 
 /* İndirilenler & Etiketler (Badges) */
 .dl-grid{display:grid;gap:18px}
@@ -398,56 +399,27 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 /* İletişim & Destek Modülü (Contact Modal) */
 .nx-modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .25s ease;
+  position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
   overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 24px 64px -12px rgba(0,0,0,.5);
-  width:100%;max-width:480px;padding:24px 26px;position:relative;
-  transform:scale(.96);transition:transform .25s cubic-bezier(.16,1,.3,1);box-sizing:border-box;
-  max-height:calc(100dvh - 32px);overflow-y:auto;margin:auto;
+  background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px -12px rgba(0,0,0,.55);
+  width:100%;max-width:440px;padding:22px 24px 20px;position:relative;
+  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
 }
 .nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
 .nx-modal-close{
   position:absolute;top:14px;right:14px;background:var(--surface-2);border:1px solid var(--border);
   color:var(--muted);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .18s ease;font-size:18px;line-height:1;padding:0;
+  cursor:pointer;transition:all .18s ease;font-size:18px;line-height:1;padding:0;z-index:10;
 }
 .nx-modal-close:hover{color:var(--text);border-color:var(--text-2);transform:scale(1.05)}
-.nx-modal-header{margin-bottom:14px}
-.nx-modal-header h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0 0 4px;color:var(--text)}
-.nx-modal-header p{margin:0;font-size:13px;color:var(--text-2);line-height:1.45}
-.nx-form-group{margin-bottom:11px;display:flex;flex-direction:column;gap:4px}
-.nx-form-group label{font-size:12px;font-weight:700;color:var(--text);letter-spacing:.02em}
-.nx-form-input, .nx-form-select, .nx-form-textarea{
-  width:100%;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:8px 12px;font:500 13.5px Inter,sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;
-}
-.nx-form-input, .nx-form-select{height:38px}
-.nx-form-input:focus, .nx-form-select:focus, .nx-form-textarea:focus{
-  border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 20%,transparent);
-}
-.nx-form-textarea{resize:vertical;min-height:76px}
-.nx-form-submit{
-  width:100%;background:var(--brand-grad);color:#fff;border:0;border-radius:var(--radius-sm);
-  padding:11px 16px;font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;
-  justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(76,125,255,.35);transition:opacity .2s,transform .15s;margin-top:2px;
-}
-.nx-form-submit:hover{opacity:.92;transform:translateY(-1px)}
-.nx-form-submit:active{transform:translateY(0)}
-.nx-form-submit:disabled{opacity:.6;cursor:not-allowed}
-.nx-form-success{
-  display:none;text-align:center;padding:20px 8px;
-}
-.nx-form-success svg{width:52px;height:52px;color:#10B981;margin:0 auto 12px;display:block}
-.nx-form-success h4{font-size:19px;font-weight:800;margin:0 0 8px;color:var(--text)}
-.nx-form-success p{font-size:13.5px;color:var(--text-2);line-height:1.5;margin:0 0 18px}
-.nx-form-success .btn{margin:0 auto}
-@media(max-width:480px){
-  .nx-modal-card{padding:20px 16px}
-}
+
+/* Modal İçi Yardımcılar */
+.w-full{width:100% !important;box-sizing:border-box !important}
+.text-emerald{color:#10B981}
 
 /* Telefon Ön İzleme Gezinme Okları */
 .phone-arrow{
@@ -483,116 +455,158 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 }
 .nx-nav-avatar{
   width:26px;height:26px;border-radius:50%;background:var(--brand-grad);color:#fff;
-  display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
-  flex-shrink:0;box-shadow:0 2px 6px rgba(76,125,255,.35);position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 2px 6px rgba(76,125,255,.35);position:relative;overflow:visible;
+}
+.nx-nav-avatar .nx-avatar-photo{
+  width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;
+}
+.nx-nav-avatar .nx-user-icon{
+  width:15px;height:15px;color:#fff;display:block;
 }
 .nx-nav-avatar .dot-online{
   position:absolute;bottom:-1px;right:-1px;width:7px;height:7px;border-radius:50%;background:#10B981;
-  border:1.5px solid var(--surface);box-shadow:0 0 4px #10B981;
+  border:1.5px solid var(--surface);box-shadow:0 0 4px #10B981;z-index:2;
 }
 
 /* Auth Modal & Profile - Mobil & Masaüstü Uygulama ile 1:1 Uyumlu */
-.nx-auth-brand-badge{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:18px}
-.nx-app-logo{width:58px;height:58px;margin-bottom:10px;filter:drop-shadow(0 6px 14px rgba(76,125,255,.25))}
+.nx-auth-brand-badge{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:12px}
+.nx-app-logo{width:40px;height:40px;margin-bottom:6px;filter:drop-shadow(0 4px 12px rgba(76,125,255,.3))}
 .nx-app-logo svg{width:100%;height:100%}
-.nx-auth-brand-badge h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 5px;color:var(--text)}
-.nx-auth-brand-badge p{font-size:13px;color:var(--muted);margin:0;max-width:32ch;line-height:1.45}
+.nx-auth-brand-badge h3{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0 0 3px;color:var(--text)}
+.nx-auth-brand-badge p{font-size:12.5px;color:var(--muted);margin:0;max-width:32ch;line-height:1.4}
 
-.nx-auth-field-wrap{margin-bottom:11px;position:relative}
-.nx-field-label{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-bottom:3px;display:block}
+.nx-auth-field-wrap{margin-bottom:8px;position:relative}
+.nx-field-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-bottom:2px;display:block}
 .nx-app-input{
-  width:100%;height:44px;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);
-  border-radius:14px;padding:0 16px;font:500 14px Inter,sans-serif;color:var(--text);outline:none;
+  width:100% !important;height:40px;box-sizing:border-box;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:12px;padding:0 14px;font:500 13.5px Inter,sans-serif;color:var(--text);outline:none;
   transition:all .2s ease;
 }
 .nx-app-input:focus{
   border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent);
 }
 .nx-app-select{cursor:pointer;padding-right:28px}
-.nx-app-textarea{height:auto;min-height:72px;padding:10px 14px;resize:vertical}
+.nx-app-textarea{height:auto;min-height:56px;padding:8px 12px;resize:vertical}
 .nx-pw-toggle{
-  position:absolute;top:50%;right:12px;transform:translateY(-50%);background:none;border:none;color:var(--muted);
+  position:absolute;top:50%;right:10px;transform:translateY(-50%);background:none;border:none;color:var(--muted);
   cursor:pointer;padding:6px;display:flex;align-items:center;justify-content:center;transition:color .18s;
 }
 .nx-pw-toggle:hover{color:var(--text)}
-.nx-pw-toggle svg{width:18px;height:18px}
+.nx-pw-toggle svg{width:16px;height:16px}
 
 .nx-app-submit{
-  height:44px;border-radius:14px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;border:0;transition:all .2s ease;margin-top:6px;
+  width:100% !important;box-sizing:border-box !important;height:42px;border-radius:12px;font-size:14px;font-weight:700;
+  display:flex !important;align-items:center;justify-content:center;cursor:pointer;border:0;transition:all .2s ease;
+  margin-top:6px;gap:8px;box-shadow:0 4px 14px rgba(76,125,255,.35);background:var(--brand-grad);color:#fff;
 }
+.nx-app-submit:hover{opacity:.92;transform:translateY(-1px)}
+.nx-app-submit:active{transform:translateY(0)}
+.nx-app-submit:disabled{opacity:.6;cursor:not-allowed}
+
 .nx-google-btn{
-  width:100%;height:44px;background:var(--surface);border:1px solid var(--border);border-radius:14px;
-  font:700 13.5px Inter,sans-serif;color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;
-  justify-content:center;gap:10px;margin-top:9px;box-shadow:0 2px 6px rgba(0,0,0,.04);transition:all .2s ease;
+  width:100% !important;box-sizing:border-box !important;height:40px;background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  font:700 13px Inter,sans-serif;color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:8px;margin-top:7px;box-shadow:0 2px 6px rgba(0,0,0,.04);transition:all .2s ease;
 }
 .nx-google-btn:hover{background:var(--surface-2);border-color:var(--brand);color:var(--text);transform:translateY(-1px)}
-.nx-auth-links{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px;text-align:center}
+.nx-auth-links{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:12px;text-align:center}
 .nx-auth-link{
-  background:none;border:none;font:600 13px Inter,sans-serif;color:var(--brand);cursor:pointer;padding:3px;
+  background:none;border:none;font:600 12.5px Inter,sans-serif;color:var(--brand);cursor:pointer;padding:2px;
   transition:all .18s;text-decoration:none;
 }
 .nx-auth-link:hover{text-decoration:underline;color:var(--brand-press)}
-.nx-auth-link.muted{color:var(--muted);font-weight:500;font-size:12.5px}
+.nx-auth-link.muted{color:var(--muted);font-weight:500;font-size:12px}
 .nx-auth-link.muted:hover{color:var(--text-2)}
 
-.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12.5px;padding:9px 12px;border-radius:var(--radius-sm);margin-bottom:12px;line-height:1.4}
+.nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12px;padding:8px 12px;border-radius:10px;margin-bottom:10px;line-height:1.4}
 
 /* Profil & Gelişmiş Hesap Ayarları Görünümü */
 .nx-profile-header{
-  display:flex;align-items:center;gap:14px;margin-bottom:16px;background:var(--surface-2);border:1px solid var(--border);
-  padding:14px 16px;border-radius:var(--radius);
+  display:flex;align-items:center;gap:12px;margin-bottom:12px;background:var(--surface-2);border:1px solid var(--border);
+  padding:12px 14px;border-radius:16px;
 }
 .nx-profile-avatar-large{
-  width:54px;height:54px;border-radius:50%;background:var(--brand-grad);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;
-  flex-shrink:0;box-shadow:0 4px 14px rgba(76,125,255,.35);position:relative;
+  width:52px;height:52px;border-radius:50%;background:var(--brand-grad);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 4px 14px rgba(76,125,255,.35);position:relative;overflow:visible;
+}
+.nx-profile-avatar-large .nx-avatar-photo{
+  width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;
+}
+.nx-profile-avatar-large .nx-user-icon{
+  width:30px;height:30px;color:#fff;display:block;
 }
 .nx-avatar-status-dot{
-  position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:#10B981;
-  border:2px solid var(--surface-2);box-shadow:0 0 6px #10B981;
+  position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#10B981;
+  border:2px solid var(--surface-2);box-shadow:0 0 6px #10B981;z-index:2;
 }
 .nx-profile-name-wrap{flex:1;min-width:0}
-.nx-profile-name-row{display:flex;align-items:center;gap:8px}
-.nx-profile-name-row h3{margin:0;font-size:17px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nx-profile-name-row{display:flex;align-items:center;gap:6px}
+.nx-profile-name-row h3{margin:0;font-size:16px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nx-edit-name-btn{
   background:none;border:none;color:var(--muted);cursor:pointer;padding:3px;display:flex;align-items:center;
   border-radius:6px;transition:all .15s ease;
 }
 .nx-edit-name-btn:hover{color:var(--brand);background:var(--surface)}
-.nx-edit-name-btn svg{width:14px;height:14px}
-.nx-profile-email-chip{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:2px}
+.nx-edit-name-btn svg{width:13px;height:13px}
+.nx-profile-email-chip{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:1px}
 
-.nx-profile-grid{display:grid;gap:10px;margin-bottom:16px}
+.nx-profile-grid{display:grid;gap:8px;margin-bottom:12px}
 .nx-profile-card{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;
 }
-.nx-profile-card-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.nx-profile-card-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
 .nx-plan-tag{
-  background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;
 }
-.nx-profile-card-sub{margin:0 0 10px;font-size:13.5px;font-weight:700;color:var(--text)}
-.nx-profile-card-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn-xs{padding:6px 12px;font-size:12px;font-weight:700;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
-.nx-status-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.nx-profile-card-sub{margin:0 0 8px;font-size:12.5px;font-weight:700;color:var(--text)}
+.nx-profile-card-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn-xs{padding:5px 11px;font-size:11.5px;font-weight:700;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.nx-status-pill{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:99px}
 .nx-status-pill.online{background:rgba(16,185,129,.12);color:#10B981;border:1px solid rgba(16,185,129,.3)}
-.nx-profile-kv{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-top:6px}
+.nx-profile-kv{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:4px}
 .nx-profile-kv small{color:var(--muted)}
 .nx-profile-kv b{color:var(--text);font-weight:600}
 
-.nx-profile-footer-actions{display:grid;gap:8px}
+.nx-profile-footer-actions{display:grid;gap:6px}
 .nx-profile-link-btn{
-  background:none;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-2);
-  font:600 12.5px Inter,sans-serif;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;
+  background:none;border:1px solid var(--border);border-radius:12px;color:var(--text-2);
+  font:600 12px Inter,sans-serif;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;
   justify-content:center;gap:6px;transition:all .18s ease;
 }
 .nx-profile-link-btn:hover{background:var(--surface-2);border-color:var(--brand);color:var(--brand)}
-.nx-profile-link-btn svg{width:15px;height:15px}
+.nx-profile-link-btn svg{width:14px;height:14px}
 .nx-contact-security-note{
-  font-size:11.5px;color:var(--muted);margin:10px 0 0;text-align:center;display:flex;align-items:center;
+  font-size:11px;color:var(--muted);margin:8px 0 0;text-align:center;display:flex;align-items:center;
   justify-content:center;gap:5px;
 }
-.nx-contact-security-note svg{width:13px;height:13px;color:var(--brand);flex-shrink:0}
+.nx-contact-security-note svg{width:12px;height:12px;color:var(--brand);flex-shrink:0}
+
+/* Özel NEXUS Dialog (Alert / Prompt) */
+.nx-dialog-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:10050;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .2s ease;
+}
+.nx-dialog-backdrop.open{display:flex;opacity:1}
+.nx-dialog-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 24px 20px;
+  width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
+  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+}
+.nx-dialog-backdrop.open .nx-dialog-card{transform:scale(1)}
+.nx-dialog-icon{
+  width:46px;height:46px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--brand);
+}
+.nx-dialog-icon.success{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:#10B981}
+.nx-dialog-icon.warning{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3);color:#F59E0B}
+.nx-dialog-icon.edit{background:color-mix(in srgb,var(--brand) 12%,transparent);border-color:color-mix(in srgb,var(--brand) 30%,transparent);color:var(--brand)}
+.nx-dialog-icon svg{width:22px;height:22px}
+.nx-dialog-card h3{margin:0 0 6px;font-size:17px;font-weight:800;color:var(--text)}
+.nx-dialog-card p{margin:0;font-size:13px;color:var(--text-2);line-height:1.45}
+.nx-dialog-actions{display:flex;gap:10px;margin-top:16px}
+.nx-dialog-actions .btn{flex:1;min-height:38px;height:38px;font-size:13px;border-radius:10px}
 
 /* Hakkında Sayfası Kartları */
 .about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px}
@@ -800,7 +814,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Admin, member, and guest permission roles</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Per-room and per-device custom access control</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Shared family automations &amp; synchronized scenes</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Active across mobile, desktop, and web apps</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Active across Android mobile and desktop apps (Windows, Linux)</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Completely included and free with your home</li>
         </ul>
         <a class="btn btn-ghost" href="#downloads">Included in NEXUS</a>
@@ -989,9 +1003,15 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
     <!-- Profil & Gelişmiş Hesap Ayarları Görünümü (Giriş Yapılmışsa) -->
     <div id="nxAuthProfileView" style="display:none">
+      <div class="nx-auth-brand-badge" style="margin-bottom:12px">
+        <div class="nx-app-logo" style="width:36px;height:36px;margin-bottom:4px"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-size:18px">NEXUS Account Hub</h3>
+        <p style="font-size:12px">Your devices and home automations synchronize with this account.</p>
+      </div>
+
       <div class="nx-profile-header">
-        <div class="nx-profile-avatar-large">
-          <span id="nxProfileAvatarInitial">U</span>
+        <div class="nx-profile-avatar-large" id="nxProfileAvatarWrap">
+          <svg viewBox="0 0 24 24" class="nx-user-icon" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
           <span class="nx-avatar-status-dot"></span>
         </div>
         <div class="nx-profile-name-wrap">
@@ -1048,6 +1068,21 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       </div>
     </div>
 
+  </div>
+</div>
+
+<div id="nxCustomDialog" class="nx-dialog-backdrop" onclick="if(event.target===this)nxCloseDialog()" role="dialog" aria-modal="true" aria-labelledby="nxDialogTitle" style="display:none">
+  <div class="nx-dialog-card">
+    <div class="nx-dialog-icon" id="nxDialogIcon"></div>
+    <h3 id="nxDialogTitle"></h3>
+    <p id="nxDialogMsg"></p>
+    <div id="nxDialogInputWrap" style="display:none;margin:12px 0 6px">
+      <input type="text" id="nxDialogInput" class="nx-app-input" autocomplete="off">
+    </div>
+    <div class="nx-dialog-actions">
+      <button type="button" class="btn btn-outline" id="nxDialogCancelBtn" onclick="nxCloseDialog()">Cancel</button>
+      <button type="button" class="btn btn-primary" id="nxDialogConfirmBtn">OK</button>
+    </div>
   </div>
 </div>
 <script src="/assets/site.js"></script>

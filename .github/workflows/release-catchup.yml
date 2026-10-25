@@ -1,4 +1,4 @@
-﻿name: Yayın yakalama
+name: Yayın yakalama
 
 # GitHub Actions bir süre çalışmadığında sürümler elle (yerel derlemeyle) yüklenir ve sürümde LOCAL-BUILD.txt bulunur.
 # Actions yeniden çalışınca bu iş her 6 saatte bir kontrol eder: dosyalar eksikse ya da LOCAL-BUILD.txt varsa

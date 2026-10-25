@@ -1,4 +1,4 @@
-﻿name: Android yayını
+name: Android yayını
 
 # v* etiketinde imzalı Android APK'sını derler ve nexus-releases sürümüne yükler.
 # Gerekli gizli anahtarlar (scripts/setup-automation.ps1 kurar): ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASSWORD,

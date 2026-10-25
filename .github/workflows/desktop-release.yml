@@ -1,10 +1,10 @@
-name: MasaÃ¼stÃ¼ sÃ¼rÃ¼mÃ¼
+name: Masaüstü sürümü
 
-# "v1.0.0" gibi bir etiket gÃ¶nderildiÄŸinde Windows, macOS ve Linux kurulum dosyalarÄ±
-# derlenir ve herkese aÃ§Ä±k Enard52/nexus-releases deposunun Releases bÃ¶lÃ¼mÃ¼ne yÃ¼klenir.
-# (Kaynak depo gizli olduÄŸu iÃ§in indirmeler ve otomatik gÃ¼ncelleme oradan yapÄ±lÄ±r.)
+# "v1.0.0" gibi bir etiket gönderildiğinde Windows, macOS ve Linux kurulum dosyaları
+# derlenir ve herkese açık Enard52/nexus-releases deposunun Releases bölümüne yüklenir.
+# (Kaynak depo gizli olduğu için indirmeler ve otomatik güncelleme oradan yapılır.)
 # Gerekli gizli anahtar: RELEASES_TOKEN â€” nexus-releases deposuna "Contents: Read and write"
-# izni olan bir GitHub eriÅŸim anahtarÄ±. Elle de Ã§alÄ±ÅŸtÄ±rÄ±labilir (Actions â†’ Run workflow).
+# izni olan bir GitHub erişim anahtarı. Elle de çalıştırılabilir (Actions → Run workflow).
 on:
   push:
     tags:
@@ -37,44 +37,44 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package-lock.json
 
-      - name: YayÄ±n anahtarÄ±nÄ± denetle
+      - name: Yayın anahtarını denetle
         if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         env:
           RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: |
           if [ -z "$RELEASES_TOKEN" ]; then
-            echo "::error::RELEASES_TOKEN gizli anahtarÄ± tanÄ±mlÄ± deÄŸil (Settings â†’ Secrets â†’ Actions)."
+            echo "::error::RELEASES_TOKEN gizli anahtarı tanımlı değil (Settings → Secrets → Actions)."
             exit 1
           fi
 
-      - name: BaÄŸÄ±mlÄ±lÄ±klar
+      - name: Bağımlılıklar
         run: npm ci
 
-      - name: Bulut yapÄ±landÄ±rmasÄ±nÄ± yaz (depo deÄŸiÅŸkenlerinden)
+      - name: Bulut yapılandırmasını yaz (depo değişkenlerinden)
         shell: bash
         env:
           SUPABASE_URL: ${{ vars.NEXUS_SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ vars.NEXUS_SUPABASE_ANON_KEY }}
         run: |
           if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
-            echo "Bulut deÄŸiÅŸkenleri tanÄ±mlÄ± deÄŸil; bulut Ã¶zellikleri kapalÄ± derlenecek."
+            echo "Bulut değişkenleri tanımlı değil; bulut özellikleri kapalı derlenecek."
             exit 0
           fi
           printf 'window.NEXUS_CLOUD = {\n  url: "%s",\n  anonKey: "%s"\n};\n' "$SUPABASE_URL" "$SUPABASE_ANON_KEY" > ../cloud-config.js
 
-      - name: Uygulama dosyalarÄ±nÄ± hazÄ±rla
+      - name: Uygulama dosyalarını hazırla
         run: node scripts/prepare-app.cjs
 
-      - name: Derle ve yayÄ±nla
+      - name: Derle ve yayınla
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-          # Ä°mza sertifikasÄ± yoksa imzasÄ±z derlenir (Ã¼cretsiz). CSC_LINK tanÄ±msÄ±zken boÅŸ
-          # string atanmamasÄ± iÃ§in zaten hiÃ§ yansÄ±tÄ±lmÄ±yor; identity "-" imzalamayÄ± kapatÄ±r.
+          # İmza sertifikası yoksa imzasız derlenir (ücretsiz). CSC_LINK tanımsızken boş
+          # string atanmaması için zaten hiç yansıtılmıyor; identity "-" imzalamayı kapatır.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder ${{ matrix.target }} --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
 
-      - name: SHA-256 Ã¶zetleri
+      - name: SHA-256 özetleri
         shell: bash
         run: |
           cd dist
@@ -84,7 +84,7 @@ jobs:
           done > SHA256SUMS-${{ runner.os }}.txt
           cat SHA256SUMS-${{ runner.os }}.txt
 
-      - name: Ã–zetleri sÃ¼rÃ¼me ekle
+      - name: Özetleri sürüme ekle
         if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         env:
@@ -98,7 +98,7 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: gh release delete-asset "${GITHUB_REF_NAME}" LOCAL-BUILD.txt --yes --repo Enard52/nexus-releases || true
 
-      - name: Derleme Ã§Ä±ktÄ±larÄ± (etiketsiz Ã§alÄ±ÅŸtÄ±rmalarda indirilebilir)
+      - name: Derleme çıktıları (etiketsiz çalıştırmalarda indirilebilir)
         uses: actions/upload-artifact@v4
         with:
           name: nexus-desktop-${{ runner.os }}

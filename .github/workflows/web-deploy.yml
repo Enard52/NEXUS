@@ -1,4 +1,4 @@
-﻿name: Web ve site yayını
+name: Web ve site yayını
 
 # main'e push edilince web uygulamasını (Cloudflare Pages: nexus-web-jre) ve tanıtım sitesini (Enard52.github.io -> nexus-smarthome)
 # kendiliğinden yayınlar. Gizli anahtarlar yoksa ilgili adım atlanır (hata vermez).

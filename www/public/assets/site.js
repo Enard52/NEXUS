@@ -117,6 +117,124 @@ function nxSubmitContact(e){
 
 // Auth & Giriş Kontrolleri
 var nxAuthMode='login';
+var nxDialogCallback=null;
+
+// Özel NEXUS Dialog (Alert & Prompt) Fonksiyonları
+function nxShowAlert(msg, title, type, onOk){
+  var isTr=document.documentElement.lang==='tr';
+  var dlg=document.getElementById('nxCustomDialog');
+  if(!dlg)return;
+  var iconEl=document.getElementById('nxDialogIcon');
+  var titleEl=document.getElementById('nxDialogTitle');
+  var msgEl=document.getElementById('nxDialogMsg');
+  var inputWrap=document.getElementById('nxDialogInputWrap');
+  var cancelBtn=document.getElementById('nxDialogCancelBtn');
+  var confirmBtn=document.getElementById('nxDialogConfirmBtn');
+
+  if(inputWrap)inputWrap.style.display='none';
+  if(cancelBtn)cancelBtn.style.display='none';
+  if(confirmBtn){
+    confirmBtn.textContent = isTr ? 'Anladım' : 'Got it';
+    confirmBtn.className = 'btn btn-primary w-full';
+  }
+
+  type = type || 'info';
+  if(iconEl){
+    iconEl.className = 'nx-dialog-icon ' + type;
+    if(type==='success'){
+      iconEl.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+    }else if(type==='warning'){
+      iconEl.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>';
+    }else{
+      iconEl.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>';
+    }
+  }
+
+  if(titleEl)titleEl.textContent = title || (isTr ? 'Bilgilendirme' : 'Notice');
+  if(msgEl)msgEl.textContent = msg || '';
+
+  nxDialogCallback = onOk || null;
+  if(confirmBtn){
+    confirmBtn.onclick = function(){
+      nxCloseDialog();
+      if(nxDialogCallback) nxDialogCallback();
+    };
+  }
+
+  dlg.style.display='flex';
+  setTimeout(function(){dlg.classList.add('open')},10);
+  nxLockScroll();
+}
+
+function nxShowPrompt(title, msg, defaultValue, onConfirm){
+  var isTr=document.documentElement.lang==='tr';
+  var dlg=document.getElementById('nxCustomDialog');
+  if(!dlg)return;
+  var iconEl=document.getElementById('nxDialogIcon');
+  var titleEl=document.getElementById('nxDialogTitle');
+  var msgEl=document.getElementById('nxDialogMsg');
+  var inputWrap=document.getElementById('nxDialogInputWrap');
+  var input=document.getElementById('nxDialogInput');
+  var cancelBtn=document.getElementById('nxDialogCancelBtn');
+  var confirmBtn=document.getElementById('nxDialogConfirmBtn');
+
+  if(inputWrap)inputWrap.style.display='block';
+  if(input){
+    input.value = defaultValue || '';
+    setTimeout(function(){ input.focus(); input.select(); }, 100);
+  }
+  if(cancelBtn){
+    cancelBtn.style.display='inline-flex';
+    cancelBtn.textContent = isTr ? 'İptal' : 'Cancel';
+  }
+  if(confirmBtn){
+    confirmBtn.textContent = isTr ? 'Kaydet' : 'Save';
+    confirmBtn.className = 'btn btn-primary';
+  }
+
+  if(iconEl){
+    iconEl.className = 'nx-dialog-icon edit';
+    iconEl.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>';
+  }
+
+  if(titleEl)titleEl.textContent = title || '';
+  if(msgEl)msgEl.textContent = msg || '';
+
+  nxDialogCallback = onConfirm || null;
+  if(confirmBtn){
+    confirmBtn.onclick = function(){
+      var val = input ? input.value.trim() : '';
+      nxCloseDialog();
+      if(nxDialogCallback) nxDialogCallback(val);
+    };
+  }
+
+  dlg.style.display='flex';
+  setTimeout(function(){dlg.classList.add('open')},10);
+  nxLockScroll();
+}
+
+function nxCloseDialog(){
+  var dlg=document.getElementById('nxCustomDialog');
+  if(!dlg)return;
+  dlg.classList.remove('open');
+  setTimeout(function(){
+    dlg.style.display='none';
+    nxUnlockScroll();
+  },200);
+}
+
+// Avatar ve Kullanıcı Rozeti Yardımcısı (Fotoğraf Varsa Fotoğraf, Yoksa Modern Standart İkon)
+var nxUserSvgIcon = '<svg viewBox="0 0 24 24" class="nx-user-icon" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>';
+
+function nxGetAvatarHtml(isLarge){
+  var avatarUrl = null;
+  try{ avatarUrl = localStorage.getItem('nexusUserAvatar'); }catch(e){}
+  if(avatarUrl){
+    return '<img src="' + avatarUrl + '" alt="Avatar" class="nx-avatar-photo" onerror="this.outerHTML='' + nxUserSvgIcon.replace(/"/g, '&quot;') + '';">';
+  }
+  return nxUserSvgIcon;
+}
 
 function nxUpdateNavAuth(){
   var user=null;
@@ -133,9 +251,8 @@ function nxUpdateNavAuth(){
     var displayName = customName || user.split('@')[0];
     label.textContent = displayName;
     label.title = displayName + ' (' + user + ')';
-    var initial = (displayName.charAt(0) || 'U').toUpperCase();
     if(avatarWrap){
-      avatarWrap.innerHTML='<div class="nx-nav-avatar"><span>'+initial+'</span><span class="dot-online"></span></div>';
+      avatarWrap.innerHTML='<div class="nx-nav-avatar">' + nxGetAvatarHtml(false) + '<span class="dot-online"></span></div>';
     }
   }else{
     btn.classList.remove('logged-in');
@@ -162,12 +279,13 @@ function nxOpenAuthModal(){
     var customName=null;
     try{customName=localStorage.getItem('nexusUserName');}catch(e){}
     var displayName = customName || user.split('@')[0];
-    var initial = (displayName.charAt(0) || 'U').toUpperCase();
     
-    var avatarEl=document.getElementById('nxProfileAvatarInitial');
+    var avatarWrap=document.getElementById('nxProfileAvatarWrap');
     var nameEl=document.getElementById('nxProfileNameDisplay');
     var emailEl=document.getElementById('nxProfileEmail');
-    if(avatarEl)avatarEl.textContent = initial;
+    if(avatarWrap){
+      avatarWrap.innerHTML = nxGetAvatarHtml(true) + '<span class="nx-avatar-status-dot"></span>';
+    }
     if(nameEl)nameEl.textContent = displayName;
     if(emailEl)emailEl.textContent = user;
     
@@ -193,14 +311,17 @@ function nxEditProfileName(){
   var isTr=document.documentElement.lang==='tr';
   var curName='';
   try{curName=localStorage.getItem('nexusUserName')||'';}catch(e){}
-  var promptMsg=isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:';
-  var newName=prompt(promptMsg, curName);
-  if(!newName)return;
-  newName=newName.trim();
-  if(!newName)return;
-  try{localStorage.setItem('nexusUserName', newName);}catch(e){}
-  nxUpdateNavAuth();
-  nxOpenAuthModal();
+  nxShowPrompt(
+    isTr ? 'İsmi Düzenle' : 'Edit Display Name',
+    isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:',
+    curName,
+    function(newName){
+      if(!newName)return;
+      try{localStorage.setItem('nexusUserName', newName);}catch(e){}
+      nxUpdateNavAuth();
+      nxOpenAuthModal();
+    }
+  );
 }
 
 function nxSendPasswordReset(){
@@ -216,10 +337,18 @@ function nxSendPasswordReset(){
     body:JSON.stringify({email:user})
   })
   .then(function(){
-    alert(isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : 'Password reset link sent to your email ('+user+').');
+    nxShowAlert(
+      isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : 'Password reset link sent to your email ('+user+').',
+      isTr ? 'Bağlantı Gönderildi' : 'Reset Link Sent',
+      'success'
+    );
   })
   .catch(function(){
-    alert(isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : 'Could not send reset email.');
+    nxShowAlert(
+      isTr ? 'Şifre sıfırlama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' : 'Could not send reset email. Please try again later.',
+      isTr ? 'Hata' : 'Error',
+      'warning'
+    );
   });
 }
 
@@ -279,32 +408,37 @@ function nxGoogleLogin(){
 function nxForgotPassword(){
   var isTr=document.documentElement.lang==='tr';
   var email=(document.getElementById('nxAuthEmail').value||'').trim();
-  var promptMsg=isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : 'Enter your email address to receive a password reset link:';
-  var inputEmail=prompt(promptMsg, email);
-  if(!inputEmail)return;
-  inputEmail=inputEmail.trim();
-  var alertEl=document.getElementById('nxAuthAlert');
-  var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
-  var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
-  fetch(SUPABASE_URL+'/auth/v1/recover',{
-    method:'POST',
-    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
-    body:JSON.stringify({email:inputEmail})
-  })
-  .then(function(){
-    if(alertEl){
-      alertEl.style.background='rgba(16,185,129,.12)';
-      alertEl.style.borderColor='rgba(16,185,129,.3)';
-      alertEl.style.color='#10B981';
-      alertEl.textContent=isTr?'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.':'Password reset link sent to your email.';
-      alertEl.style.display='block';
+  nxShowPrompt(
+    isTr ? 'Şifremi Unuttum' : 'Forgot Password',
+    isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : 'Enter your email address to receive a password reset link:',
+    email,
+    function(inputEmail){
+      if(!inputEmail)return;
+      var alertEl=document.getElementById('nxAuthAlert');
+      var SUPABASE_URL='https://flbctyolowzcizwwzbke.supabase.co';
+      var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsYmN0eW9sb3d6Y2l6d3d6YmtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNDc5MjMsImV4cCI6MjA5MjcyMzkyM30.iucht087oRSDQgpAGJ09-ruLImZDUCizeMsir1oIltg';
+      fetch(SUPABASE_URL+'/auth/v1/recover',{
+        method:'POST',
+        headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({email:inputEmail})
+      })
+      .then(function(){
+        nxShowAlert(
+          isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+inputEmail+').' : 'Password reset link sent to your email ('+inputEmail+').',
+          isTr ? 'Bağlantı Gönderildi' : 'Reset Link Sent',
+          'success'
+        );
+      })
+      .catch(function(){
+        nxShowAlert(
+          isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : 'Could not send reset email.',
+          isTr ? 'Hata' : 'Error',
+          'warning'
+        );
+      });
     }
-  })
-  .catch(function(){
-    if(alertEl){
-      alertEl.textContent=isTr?'Sıfırlama e-postası gönderilemedi. Lütfen tekrar deneyin.':'Could not send reset email. Please try again.';
-      alertEl.style.display='block';
-    }
+  );
+}
   });
 }
 
@@ -352,6 +486,14 @@ function nxSubmitAuth(e){
     var userEmail=(data.user&&data.user.email)||email;
     try{
       localStorage.setItem('nexusCurrentUser',userEmail);
+      if(data.user && data.user.user_metadata){
+        if(data.user.user_metadata.avatar_url || data.user.user_metadata.picture){
+          localStorage.setItem('nexusUserAvatar', data.user.user_metadata.avatar_url || data.user.user_metadata.picture);
+        }
+        if(data.user.user_metadata.full_name || data.user.user_metadata.name){
+          localStorage.setItem('nexusUserName', data.user.user_metadata.full_name || data.user.user_metadata.name);
+        }
+      }
       if(data.access_token){
         localStorage.setItem('nexus_cloud_session',JSON.stringify({
           accessToken:data.access_token,
@@ -385,6 +527,8 @@ function nxSubmitAuth(e){
 function nxSignOut(){
   try{
     localStorage.removeItem('nexusCurrentUser');
+    localStorage.removeItem('nexusUserName');
+    localStorage.removeItem('nexusUserAvatar');
     localStorage.removeItem('nexus_cloud_session');
   }catch(e){}
   nxUpdateNavAuth();
@@ -516,6 +660,14 @@ document.addEventListener('DOMContentLoaded',function(){
         var payload=JSON.parse(atob(token.split('.')[1]));
         var userEmail=payload.email||'kullanici@nexus';
         localStorage.setItem('nexusCurrentUser',userEmail);
+        if(payload.user_metadata){
+          if(payload.user_metadata.avatar_url || payload.user_metadata.picture){
+            localStorage.setItem('nexusUserAvatar', payload.user_metadata.avatar_url || payload.user_metadata.picture);
+          }
+          if(payload.user_metadata.full_name || payload.user_metadata.name){
+            localStorage.setItem('nexusUserName', payload.user_metadata.full_name || payload.user_metadata.name);
+          }
+        }
         localStorage.setItem('nexus_cloud_session',JSON.stringify({
           accessToken:token,
           refreshToken:hashParams.get('refresh_token'),

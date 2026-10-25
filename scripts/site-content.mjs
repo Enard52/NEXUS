@@ -39,7 +39,7 @@ export const content = {
     alternate: { en: "/", tr: "/tr/" },
     title: "NEXUS — Your smart home, managed on your own network",
     description:
-      "NEXUS is a local-first smart home app for Windows, Linux, Android and the web. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.",
+      "NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.",
     nav: [
       ["#features", "Features"],
       ["#how", "How it works"],
@@ -185,7 +185,7 @@ export const content = {
             "Admin, member, and guest permission roles",
             "Per-room and per-device custom access control",
             "Shared family automations & synchronized scenes",
-            "Active across mobile, desktop, and web apps",
+            "Active across Android mobile and desktop apps (Windows, Linux)",
             "Completely included and free with your home",
           ],
           cta: { label: "Included in NEXUS", href: "#downloads" },
@@ -320,7 +320,7 @@ export const content = {
     alternate: { en: "/", tr: "/tr/" },
     title: "NEXUS — Akıllı evin, kendi ağında, senin kontrolünde",
     description:
-      "NEXUS; Windows, Linux, Android ve web için yerel-öncelikli akıllı ev uygulaması. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı.",
+      "NEXUS; Windows, Linux ve Android için yerel-öncelikli akıllı ev uygulaması. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı.",
     nav: [
       ["#features", "Özellikler"],
       ["#how", "Nasıl çalışır"],
@@ -467,7 +467,7 @@ export const content = {
             "Yönetici, üye ve misafir yetki rolleri",
             "Oda ve cihaz bazlı özel erişim izinleri",
             "Ortak otomasyonlar ve paylaşılan aile sahneleri",
-            "Tüm platformlarda (Android, masaüstü, web) aktif",
+            "Tüm platformlarda (Android mobil, Windows ve Linux masaüstü) aktif",
             "Evinizle birlikte tamamen ücretsiz ve sınırsız",
           ],
           cta: { label: "Uygulamada Dahil", href: "#downloads" },
