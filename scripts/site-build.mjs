@@ -261,13 +261,13 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 
 .phone-case{
   position:relative;z-index:2;
-  width:clamp(225px,22.5vw,258px);
-  max-width:85vw;
-  background:#14161C;
-  border:1.5px solid rgba(255,255,255,.16);
-  border-radius:38px;
-  padding:6px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 25px 50px -10px rgba(0,0,0,.55), 0 0 40px rgba(76,125,255,.22);
+  width:clamp(290px,28vw,340px);
+  max-width:86vw;
+  background:linear-gradient(145deg, #252834 0%, #13151b 50%, #0a0b0e 100%);
+  border:2.5px solid rgba(255,255,255,.18);
+  border-radius:48px;
+  padding:8px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 30px 60px -12px rgba(0,0,0,.65), 0 0 50px rgba(76,125,255,.18);
   user-select:none;
   cursor:grab;
   transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
@@ -277,18 +277,18 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 @keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 @media(max-height:800px), (max-width:600px){
-  .phone-case{width:clamp(195px,58vw,225px);border-radius:36px;padding:5px}
-  .phone-inner-screen{border-radius:30px}
+  .phone-case{width:clamp(240px,68vw,280px);border-radius:42px;padding:7px}
+  .phone-inner-screen{border-radius:35px}
 }
 @media(max-width:380px){
-  .phone-case{width:clamp(180px,62vw,198px);border-radius:32px;padding:4px}
-  .phone-inner-screen{border-radius:26px}
+  .phone-case{width:clamp(200px,75vw,240px);border-radius:36px;padding:5px}
+  .phone-inner-screen{border-radius:30px}
 }
 
 .phone-inner-screen{
   position:relative;width:100%;
   aspect-ratio:390 / 844;
-  border-radius:35px;overflow:hidden;
+  border-radius:40px;overflow:hidden;
   background:#05070A;
 }
 
@@ -324,13 +324,13 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
 .phone-case.previewing .phone-arrow{display:none}
 .phone-case.previewing{cursor:default}
-.phone-modes{display:flex;align-items:center;gap:6px}
-.phone-mode-btn{background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:6px 14px;min-height:32px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
+.phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
+.phone-mode-btn{background:transparent;border:0;border-radius:999px;
+  padding:5px 14px;min-height:30px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
   cursor:pointer;transition:all .2s ease}
-.phone-mode-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.phone-mode-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 2px 8px rgba(76,125,255,.35)}
 .phone-mode-open{font-size:12px;font-weight:700;color:var(--brand);text-decoration:none;
-  padding:6px 10px;min-height:32px;display:inline-flex;align-items:center}
+  padding:5px 10px;min-height:30px;display:inline-flex;align-items:center}
 .phone-mode-open:hover{text-decoration:underline}
 
 /* Alt Çubuk (Home Indicator) */
@@ -345,21 +345,24 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 .phone-glass-shine{
   position:absolute;top:0;left:0;width:100%;height:100%;
   background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
-  pointer-events:none;z-index:32;border-radius:35px;
+  pointer-events:none;z-index:32;border-radius:40px;
 }
 
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
 .phone-bottom-bar{
-  margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.phone-nav-row{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
 }
 .phone-caption-pill{
-  display:inline-flex;align-items:center;gap:6px;
+  display:inline-flex;align-items:center;gap:8px;
   background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:4px 12px;box-shadow:var(--shadow);font-size:12px;font-weight:700;color:var(--text);
+  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
   transition:all .2s ease;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:10px;padding:2px 6px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
 }
 .phone-dots{
   display:flex;align-items:center;gap:2px;
@@ -599,18 +602,18 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Telefon Ön İzleme Gezinme Okları */
 .phone-arrow{
   position:absolute;top:50%;transform:translateY(-50%);z-index:45;
-  width:34px;height:34px;border-radius:50%;background:rgba(20,22,28,.88);
-  border:1.5px solid rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;
-  justify-content:center;cursor:pointer;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.45);
-  transition:all .18s ease;padding:0;
+  width:38px;height:38px;border-radius:50%;background:rgba(15,23,42,.85);
+  border:1.5px solid rgba(255,255,255,.22);color:#fff;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.5);
+  transition:all .2s ease;padding:0;
 }
 .phone-arrow:hover{background:var(--brand);border-color:var(--brand);transform:translateY(-50%) scale(1.08)}
 .phone-arrow svg{width:18px;height:18px}
-.phone-arrow-left{left:-16px}
-.phone-arrow-right{right:-16px}
+.phone-arrow-left{left:-19px}
+.phone-arrow-right{right:-19px}
 @media(max-width:480px){
-  .phone-arrow-left{left:-10px}
-  .phone-arrow-right{right:-10px}
+  .phone-arrow-left{left:-12px}
+  .phone-arrow-right{right:-12px}
 }
 
 /* Navbar Giriş / Hesap Butonu & Avatar */
@@ -1612,7 +1615,6 @@ function renderHeader(c, currentPath = '') {
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
     <nav class="nav" aria-label="${isTr ? 'Ana menü' : 'Main menu'}">
       ${c.nav.map(([href, label]) => `<a href="${href}">${esc(label)}</a>`).join('\n      ')}
-      ${APP_URL ? `<a href="${APP_URL}" target="_blank" rel="noopener">${isTr ? 'Web uygulaması' : 'Web app'}</a>` : ''}
     </nav>
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
@@ -1674,20 +1676,12 @@ function renderHero(c, hasShots) {
       <div class="phone-glow" aria-hidden="true"></div>
       <div class="phone-case" id="phoneMockup" title="${isTr ? 'Sonraki ekran için dokunun veya kaydırın' : 'Tap or swipe to see next screen'}">
         <div class="phone-inner-screen">
-          <div class="phone-status-bar">
-            <span>09:41</span>
-            <div class="phone-status-icons">
-              <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
-              <svg viewBox="0 0 24 24"><path d="M17 5v14H7V5h10m1-2H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/></svg>
-            </div>
-          </div>
           <div class="phone-island">
             <span class="island-camera"></span>
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`).join('\n            ')}
+            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" ${i === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy" decoding="async"'}></div>`).join('\n            ')}
           </div>
           <!-- Uygulamanın KENDİ sayfası çerçevenin içinde: ziyaretçi gezinebilsin.
                data-src: ilk "Kendin dene" tıkında atanır (ana sayfa iframe yüzünden
@@ -1712,12 +1706,14 @@ function renderHero(c, hasShots) {
           <button type="button" class="phone-mode-btn" id="phoneModeLive" aria-pressed="false" onclick="nxSetPhoneMode('live')">${isTr ? 'Kendin dene' : 'Try it live'}</button>
           <a class="phone-mode-open" id="phoneModeOpen" href="${APP_URL}/" target="_blank" rel="noopener" hidden>${isTr ? 'Tam ekran aç' : 'Open full screen'}</a>
         </div>
-        <div class="phone-caption-pill" id="phoneCaptionPill">
-          <span class="badge" id="phoneSlideNum">1/${shots.length}</span>
-          <span id="phoneSlideTitle">${esc(shots[0].label)}</span>
-        </div>
-        <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
-          ${shots.map((s, i) => `<button role="tab" class="phone-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0 ? 'true' : 'false'}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
+        <div class="phone-nav-row">
+          <div class="phone-caption-pill" id="phoneCaptionPill">
+            <span class="badge" id="phoneSlideNum">1/${shots.length}</span>
+            <span id="phoneSlideTitle">${esc(shots[0].label)}</span>
+          </div>
+          <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
+            ${shots.map((s, i) => `<button role="tab" class="phone-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0 ? 'true' : 'false'}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
+          </div>
         </div>
         <span class="phone-tap-hint" id="phoneTapHint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
         <span class="phone-tap-hint" id="phonePreviewNote" hidden>${icon('sparkles')}${isTr ? 'Bu gerçek uygulama — bu tarayıcıda giriş yaptıysan kendi verilerin görünür' : 'This is the real app — sign in here and your own data shows up'}</span>
@@ -1892,14 +1888,6 @@ function renderDownloads(c) {
         )
         .join('\n      ')}
     </div>
-    ${c.downloads.webCard ? `
-    <div class="dl-web-card rv">
-      <div class="dl-web-info">
-        <h3>${esc(c.downloads.webCard.title)}</h3>
-        <p>${esc(c.downloads.webCard.desc)}</p>
-      </div>
-      <a class="btn btn-ghost" href="${c.downloads.webCard.cta.href}" target="_blank" rel="noopener">${esc(c.downloads.webCard.cta.label)} ${icon('arrow')}</a>
-    </div>` : ''}
     <p class="dl-note">${esc(c.downloads.smartScreenNote)}</p>
   </div>
 </section>`;

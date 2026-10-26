@@ -64,7 +64,7 @@ export const content = {
       trust: [
         "Free, unlimited devices",
         "No cloud required for control",
-        "Windows · Linux · Android · Web",
+        "Windows · Linux · Android",
       ],
     },
     features: {
@@ -347,7 +347,7 @@ export const content = {
       trust: [
         "Ücretsiz, sınırsız cihaz",
         "Kontrol için bulut şart değil",
-        "Windows · Linux · Android · Web",
+        "Windows · Linux · Android",
       ],
     },
     features: {
