@@ -1048,11 +1048,12 @@
     if (!c || !googleAvailable()) return;
     var back = isWebOrigin() ? location.href.split("#")[0] : (webBase() + "/stitch-login.html");
     var authUrl = c.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(back);
-    if (isDesktopApp() && window.nexusDesktop && typeof window.nexusDesktop.googleLogin === "function") {
-      window.nexusDesktop.googleLogin(authUrl);
-    } else {
-      location.href = authUrl;
+    // Masaüstü penceresi siteye gitmez. Google, uygulamanın kendi penceresinde açılır.
+    if (isDesktopApp()) {
+      if (window.nexusDesktop && typeof window.nexusDesktop.googleLogin === "function") window.nexusDesktop.googleLogin(authUrl);
+      return;
     }
+    location.href = authUrl;
   }
 
   function hashParams() {

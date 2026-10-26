@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
@@ -15,7 +15,8 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
       min-height: 100dvh;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .btn-primary {
@@ -44,14 +45,14 @@
 </head>
 <body class="flex flex-col items-center text-slate-900 relative min-h-[100dvh]">
 
-  <div id="slide-container" class="relative flex flex-col h-full min-h-[100dvh] items-center justify-start px-6 pt-10 pb-8 w-full max-w-md mx-auto">
+  <div id="slide-container" class="relative flex flex-col min-h-[100dvh] items-center justify-center px-6 py-4 w-full max-w-md mx-auto my-auto box-border">
     <!-- Skip Button (Top Right of container) -->
-    <button id="skip-btn" class="absolute top-6 right-4 z-50 px-3 py-1.5 text-[#4C7DFF] font-bold tracking-wide rounded-full hover:bg-white/40 active:scale-95 transition-all cursor-pointer" onclick="goToLogin()">
+    <button id="skip-btn" class="absolute top-4 right-4 z-50 px-3 py-1.5 text-[#4C7DFF] font-bold tracking-wide rounded-full hover:bg-white/40 active:scale-95 transition-all cursor-pointer" onclick="goToLogin()">
       Geç
     </button>
     <!-- Header -->
-    <header class="w-full text-center mt-6 flex flex-col items-center shrink-0">
-      <div class="w-16 h-16 mb-4 drop-shadow-sm">
+    <header class="w-full text-center mt-2 flex flex-col items-center shrink-0">
+      <div class="w-14 h-14 mb-2 drop-shadow-sm">
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo">
           <defs>
             <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
@@ -68,26 +69,26 @@
         </svg>
       </div>
       <h1 class="text-2xl font-extrabold tracking-tight">NEXUS AI</h1>
-      <h2 id="slide-subtitle" class="text-lg font-semibold text-[#4C7DFF] mt-1 transition-opacity duration-300">Geleceğin Evi</h2>
+      <h2 id="slide-subtitle" class="text-base font-semibold text-[#4C7DFF] mt-0.5 transition-opacity duration-300">Geleceğin Evi</h2>
     </header>
 
     <!-- Main Content (Image + Text) -->
-    <main class="flex flex-col items-center justify-start w-full mt-8" id="slide-content">
-      <div class="w-full mb-6 rounded-[2rem] overflow-hidden glass-panel border border-white/50 card-shadow p-3 relative h-56 shrink-0">
+    <main class="flex flex-col items-center justify-start w-full mt-3 shrink-0" id="slide-content">
+      <div class="w-full mb-3 rounded-3xl overflow-hidden glass-panel border border-white/50 card-shadow p-2.5 relative h-44 sm:h-48 shrink-0">
         <img id="slide-image" alt="Onboarding Image" class="w-full h-full object-cover rounded-2xl transition-opacity duration-300" src="assets/photos/photo-1558002038-1055907df827.jpg"/>
       </div>
 
       <!-- Indicators -->
-      <div class="flex gap-2 mb-6" id="indicators"></div>
+      <div class="flex gap-2 mb-3" id="indicators"></div>
 
       <!-- Description -->
-      <div class="text-center px-2 min-h-[5rem] flex items-start justify-center mb-8">
-        <p id="slide-desc" class="text-base text-slate-700 leading-relaxed font-medium transition-opacity duration-300">Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın.</p>
+      <div class="text-center px-2 min-h-[3.5rem] flex items-start justify-center mb-4">
+        <p id="slide-desc" class="text-sm sm:text-base text-slate-700 leading-relaxed font-medium transition-opacity duration-300">Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın.</p>
       </div>
 
       <!-- Button exactly below description -->
-      <div class="w-full max-w-[280px]">
-        <button id="next-btn" class="btn-primary w-full py-4 rounded-full text-white text-lg font-bold focus:outline-none" onclick="nextSlide()">
+      <div class="w-full max-w-[280px] mb-2">
+        <button id="next-btn" class="btn-primary w-full py-3.5 rounded-full text-white text-base font-bold focus:outline-none shadow-md" onclick="nextSlide()">
           İleri
         </button>
       </div>

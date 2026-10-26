@@ -193,7 +193,34 @@ html.nx-desk:not(.nx-desk-auth) .nx-desk-overlay { left: 0 !important; }
 
 /* Giriş/kayıt: ortalanmış tek sütun */
 html.nx-desk.nx-desk-auth { --page-max: 460px; }
-html.nx-desk.nx-desk-auth body { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; }
+html.nx-desk.nx-desk-auth body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0 !important;
+  overflow-y: auto !important;
+}
+/* Karşılama: düğme pencerenin altında kesilmesin. Sütun ekran boyu zorlanmaz, sayfa kayar. */
+html.nx-desk[data-nx-page="onboarding"] body {
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
+html.nx-desk[data-nx-page="onboarding"] #slide-container {
+  min-height: 0 !important;
+  height: auto !important;
+  justify-content: flex-start !important;
+  margin: 0 auto !important;
+  padding: 28px 24px 40px !important;
+}
+html.nx-desk[data-nx-page="onboarding"] #slide-content > div:first-child {
+  height: min(168px, 26vh) !important;
+  margin-bottom: 12px !important;
+}
+html.nx-desk[data-nx-page="onboarding"] #next-btn {
+  position: sticky;
+  bottom: 16px;
+}
 
 /* Masaüstünde fare imleci ve odak */
 html.nx-desk a, html.nx-desk button, html.nx-desk [role="button"] { cursor: pointer; }

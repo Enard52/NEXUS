@@ -344,6 +344,121 @@ ipcMain.handle("desktop:settings:set", (_e, patch) => {
   };
 });
 
+// Google dönüşü web uygulamasına bırakılmaz. Belirteç masaüstü penceresine verilir
+// ve site penceresi hiç gösterilmez.
+let authWin = null;
+function oauthTokenFrom(targetUrl) {
+  if (!targetUrl || typeof targetUrl !== "string") return "";
+  const hashIdx = targetUrl.indexOf("#");
+  const hash = hashIdx !== -1 ? targetUrl.slice(hashIdx + 1) : "";
+  if (/access_token=|error=/.test(hash)) return hash;
+  try {
+    const u = new URL(targetUrl);
+    if (u.searchParams.get("access_token") || u.searchParams.get("error")) return u.search.slice(1);
+  } catch { /* adres parçalanamadı */ }
+  return "";
+}
+function oauthCallbackOf(authUrl) {
+  try { return new URL(authUrl).searchParams.get("redirect_to") || ""; } catch { return ""; }
+}
+function isOAuthCallback(targetUrl, callback) {
+  if (!targetUrl || !callback) return false;
+  const bare = targetUrl.split("#")[0];
+  return bare === callback || bare.startsWith(callback);
+}
+function deliverOAuth(hash) {
+  if (win && !win.isDestroyed() && hash) win.webContents.send("oauth:success", hash);
+}
+function startGoogleAuth(customUrl) {
+  const authUrl = customUrl || "";
+  if (!authUrl || !win || win.isDestroyed()) return;
+  if (authWin && !authWin.isDestroyed()) {
+    authWin.focus();
+    return;
+  }
+  const callback = oauthCallbackOf(authUrl);
+  authWin = new BrowserWindow({
+    parent: win,
+    modal: true,
+    width: 520,
+    height: 680,
+    show: false,
+    title: L("Google ile Giriş Yap", "Sign In with Google"),
+    autoHideMenuBar: true,
+    backgroundColor: nativeTheme.shouldUseDarkColors ? "#0f172a" : "#ffffff",
+    webPreferences: {
+      preload: path.join(__dirname, "auth-preload.cjs"),
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: true,
+    },
+  });
+  const popup = authWin;
+  // Google, Electron kullanıcı aracısını reddeder; güncel Chrome gibi görünür.
+  popup.webContents.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+  );
+  let finished = false;
+  function finish(hash) {
+    if (finished) return;
+    finished = true;
+    deliverOAuth(hash);
+    setTimeout(() => { if (!popup.isDestroyed()) popup.close(); }, 40);
+  }
+  function consider(targetUrl, event) {
+    const token = oauthTokenFrom(targetUrl);
+    if (token) {
+      if (event) event.preventDefault();
+      finish(token);
+      return true;
+    }
+    // Belirteç henüz adreste yoksa sayfa yüklensin ama görünmesin. Önyükleme
+    // sayfa betiğinden önce hash'i okur; site ekranı açılmaz.
+    if (isOAuthCallback(targetUrl, callback) && !popup.isDestroyed()) popup.hide();
+    return false;
+  }
+  function onPopupHash(event, hash) {
+    if (popup.isDestroyed() || event.sender !== popup.webContents) return;
+    const token = oauthTokenFrom(String(hash || "").startsWith("#") ? hash : "#" + hash);
+    if (token) finish(token);
+  }
+  ipcMain.on("oauth:popup-hash", onPopupHash);
+  popup.on("closed", () => ipcMain.removeListener("oauth:popup-hash", onPopupHash));
+  function showUnlessCallback(url) {
+    if (finished || popup.isDestroyed()) return;
+    if (isOAuthCallback(url, callback) || oauthTokenFrom(url)) { popup.hide(); return; }
+    if (!popup.isVisible()) popup.show();
+  }
+  popup.webContents.on("will-redirect", (event, url) => { consider(url, event); });
+  popup.webContents.on("will-navigate", (event, url) => {
+    if (consider(url, event)) return;
+    showUnlessCallback(url);
+  });
+  popup.webContents.on("did-start-navigation", (_event, url, _inPlace, isMainFrame) => {
+    if (isMainFrame) showUnlessCallback(url);
+  });
+  popup.webContents.on("did-navigate", (_event, url) => { consider(url); showUnlessCallback(url); });
+  popup.webContents.on("did-navigate-in-page", (_event, url) => { consider(url); });
+  popup.webContents.on("did-finish-load", () => {
+    if (finished || popup.isDestroyed()) return;
+    popup.webContents.executeJavaScript("location.href").then((href) => {
+      if (finished || popup.isDestroyed()) return;
+      if (!consider(href)) showUnlessCallback(href);
+    }).catch(() => { if (!finished && !popup.isDestroyed()) showUnlessCallback(""); });
+  });
+  popup.webContents.setWindowOpenHandler(({ url }) => {
+    if (consider(url)) return { action: "deny" };
+    popup.loadURL(url);
+    return { action: "deny" };
+  });
+  popup.on("closed", () => { if (authWin === popup) authWin = null; });
+  popup.loadURL(authUrl);
+}
+
+ipcMain.handle("auth:google", async (_e, customUrl) => {
+  startGoogleAuth(customUrl);
+});
+
 // ---------- Uygulama içeriği: nexus://app/... → paketlenmiş dosyalar ----------
 function serveApp() {
   protocol.handle(SCHEME, (request) => {
@@ -408,15 +523,22 @@ function createWindow() {
     hideToTray();
   });
 
-  // Dış bağlantılar varsayılan tarayıcıda açılır; uygulama dışına gezinme engellenir
-  win.webContents.setWindowOpenHandler(({ url }) => {
+  // Dış bağlantılar varsayılan tarayıcıda açılır. Giriş adresi tarayıcıya bırakılmaz;
+  // Google penceresi uygulamanın içinde kalır, dönüşteki oturum siteye düşmez.
+  function leaveApp(url) {
+    const token = oauthTokenFrom(url);
+    if (token) { deliverOAuth(token); return; }
+    if (/supabase\.co\/auth\/v1\/authorize/.test(url)) { startGoogleAuth(url); return; }
     if (/^https?:|^mailto:|^tel:/.test(url)) shell.openExternal(url);
+  }
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    leaveApp(url);
     return { action: "deny" };
   });
   win.webContents.on("will-navigate", (event, url) => {
     if (isAppUrl(url)) return;
     event.preventDefault();
-    if (/^https?:|^mailto:|^tel:/.test(url)) shell.openExternal(url);
+    leaveApp(url);
   });
 
   win.loadURL(START_URL);
