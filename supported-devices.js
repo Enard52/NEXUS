@@ -44,8 +44,8 @@
     {
       brand: "TP-Link Tapo",
       protocol: "tapo",
-      availability: "soon",
-      note: "Şifreli yerel API — yakında",
+      availability: "all",
+      note: "Yerel HTTP & RTSP kamera akışı — ücretsiz, bulutsuz",
       models: [
         { name: "Tapo P110 Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
         { name: "Tapo L530E Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },

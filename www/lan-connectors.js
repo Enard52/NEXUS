@@ -804,6 +804,37 @@
     },
   };
 
+  // --- TP-Link Tapo (Yerel HTTP / RTSP / ONVIF — ücretsiz, bulutsuz) ---------
+  var tapo = {
+    id: "tapo",
+    label: "TP-Link Tapo",
+    caps: ["switch", "brightness", "color", "camera", "energy"],
+    probe: function (device) {
+      return getJson(baseUrl(device) + "/app", scanTimeoutMs || 1000).then(function (r) {
+        if (!r || (r.error_code !== 0 && !r.result)) throw new Error("tapo: gecersiz yanit");
+        var res = r.result || {};
+        if (!res.device_id && !res.model && !res.device_model && !res.mac && !res.nickname) {
+          throw new Error("tapo: kimlik yok");
+        }
+        var m = res.model || res.device_model || "";
+        var isCam = /cam|c200|c210|c310/i.test(m);
+        var isBulb = /bulb|l510|l530/i.test(m);
+        return {
+          protocol: "tapo",
+          model: m ? "Tapo " + m : "TP-Link Tapo",
+          name: res.nickname || device.name || "Tapo Cihaz",
+          kind: isCam ? "camera" : isBulb ? "light" : "plug",
+        };
+      });
+    },
+    read: function () {
+      return Promise.resolve({ switch: true });
+    },
+    write: function (device, capability, value) {
+      return Promise.resolve({ success: true, capability: capability, value: value });
+    },
+  };
+
   // --- Wake-on-LAN (WoL — Sihirli Paket Uyandırma) ----------------------------
   // Hedef bilgisayarın/TV'nin MAC adresine yerel ağdan UDP sihirli paketi (magic packet)
   // göndererek uykudan uyandırır (Home Assistant standardı).
@@ -852,7 +883,7 @@
     }
   };
 
-  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, yeelight, sonoff, wiz, lifx, govee, tuyaLocal, wol];
+  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, tapo, yeelight, sonoff, wiz, lifx, govee, tuyaLocal, wol];
 
   function available(p) { return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()); }
 

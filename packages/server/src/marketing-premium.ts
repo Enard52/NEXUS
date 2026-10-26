@@ -122,8 +122,8 @@ export const TR_RAW: ReadonlyArray<readonly [string, string]> = [
     "Sahip olduğunuz Wi-Fi cihazlarını ücretli hub olmadan bağlayın.",
   ],
   [
-    "Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.",
-    "Yerel ağınız üzerinden doğrudan eşleşir — ücretli hub, bulut hesabı veya abonelik yok. Matter, Tapo ve Tuya yol haritasında.",
+    "Paired directly over your local network — no paid hub, cloud account or subscription. Matter and Zigbee connect through your Home Assistant bridge.",
+    "Yerel ağınız üzerinden doğrudan eşleşir — ücretli hub, bulut hesabı veya abonelik yok. Matter ve Zigbee Home Assistant köprünüz üzerinden bağlanır.",
   ],
   ["“Set the house for movie night.”", "“Evi film gecesine hazırla.”"],
   ["“Make downstairs comfortable.”", "“Alt katı rahatlat.”"],
@@ -645,8 +645,8 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
     "Evet. Yerel ağınızdaki cihazları eşleştirmek ve kontrol etmek, senaryolar ve otomasyonlar ücretsizdir; hub, bulut hesabı ya da abonelik gerekmez. Premium planlar gelişmiş yapay zekâ ve hane yönetimi araçları ekler.",
   ],
   [
-    "Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED and ESPHome devices are controlled directly over your local network. TP-Link Kasa and Yeelight work in the desktop app. Matter, Tapo and Tuya are on the roadmap.",
-    "Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED ve ESPHome cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa ve Yeelight masaüstü uygulamasında çalışır. Matter, Tapo ve Tuya yol haritasında.",
+    "Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED, ESPHome, TP-Link Tapo, Sonoff and Tuya devices are controlled directly over your local network. TP-Link Kasa, Yeelight, WiZ, LIFX and Govee work in the desktop app. Matter and Zigbee connect through Home Assistant.",
+    "Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED, ESPHome, TP-Link Tapo, Sonoff ve Tuya cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa, Yeelight, WiZ, LIFX ve Govee masaüstü uygulamasında çalışır. Matter ve Zigbee Home Assistant üzerinden bağlanır.",
   ],
   ["Can I control my home while I am away?", "Evden uzaktayken evimi kontrol edebilir miyim?"],
   [

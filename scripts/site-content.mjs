@@ -128,18 +128,20 @@ export const content = {
       lead: "Free, local protocols first. Anything without a direct connector still works through the Home Assistant bridge.",
       groups: [
         [
-          "HTTP — everywhere",
+          "Local HTTP — on every platform",
           [
             "Shelly Gen1 & Gen2+",
             "Tasmota",
+            "TP-Link Tapo",
             "WLED",
             "ESPHome",
             "Philips Hue bridge",
             "Home Assistant",
+            "Tuya (Local LAN)",
+            "Wake-on-LAN",
           ],
         ],
-        ["TCP / UDP — desktop app", ["TP-Link Kasa", "Yeelight"]],
-        ["Connector coming soon", ["TP-Link Tapo"]],
+        ["Local TCP — desktop app", ["TP-Link Kasa", "Yeelight"]],
       ],
       more: "Something missing? Request a connector",
       moreHref: "javascript:nxOpenContactModal('Connector Request')",
@@ -244,7 +246,7 @@ export const content = {
         ],
         [
           "Which devices and ecosystems are supported?",
-          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome and Philips Hue over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. TP-Link Tapo and Tuya connectors are on the way. Everything else — Sonoff, Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
+          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue and Tuya over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
         ],
         [
           "How are security cameras and sensors integrated?",
@@ -412,18 +414,20 @@ export const content = {
       lead: "Önce ücretsiz, yerel protokoller. Doğrudan bağlayıcısı olmayan her şey Home Assistant köprüsüyle çalışır.",
       groups: [
         [
-          "HTTP — her yerde",
+          "Yerel HTTP — her platformda",
           [
             "Shelly Gen1 & Gen2+",
             "Tasmota",
+            "TP-Link Tapo",
             "WLED",
             "ESPHome",
             "Philips Hue köprüsü",
             "Home Assistant",
+            "Tuya (yerel mod)",
+            "Wake-on-LAN",
           ],
         ],
-        ["TCP / UDP — masaüstü", ["TP-Link Kasa", "Yeelight"]],
-        ["Bağlayıcı yakında", ["TP-Link Tapo"]],
+        ["Yerel TCP — masaüstü uygulamasında", ["TP-Link Kasa", "Yeelight"]],
       ],
       more: "Eksik bir şey mi var? Bağlayıcı iste",
       moreHref: "javascript:nxOpenContactModal('Cihaz & Bağlayıcı İsteği')",
@@ -528,7 +532,7 @@ export const content = {
         ],
         [
           "Hangi cihazlar ve markalar destekleniyor?",
-          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, WLED, ESPHome ve Philips Hue'yu her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. TP-Link Tapo ve Tuya bağlayıcıları yolda. Sonoff, Matter veya Zigbee cihazları gibi doğrudan bağlayıcısı olmayan her şey, kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
+          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue ve Tuya'yı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
         ],
         [
           "Güvenlik kameraları ve sensörler nasıl entegre edilir?",

@@ -467,7 +467,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* İletişim & Destek Modülü (Contact Modal) */
 .nx-modal-backdrop{
   position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
+  z-index:9999;display:none;align-items:center;align-items:safe center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
   overflow-y:auto;-webkit-overflow-scrolling:touch;
 }
 .nx-modal-backdrop.open{display:flex;opacity:1}
@@ -475,6 +475,12 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px -12px rgba(0,0,0,.55);
   width:100%;max-width:440px;padding:22px 24px 20px;position:relative;
   transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+}
+#nxAuthModal.nx-account-open .nx-modal-card{
+  max-width:400px;padding:28px 18px 16px;
+  background:
+    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 72%),
+    var(--surface);
 }
 .nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
 .nx-modal-close{
@@ -588,62 +594,86 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 .nx-auth-alert{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;font-size:12px;padding:8px 12px;border-radius:10px;margin-bottom:10px;line-height:1.4}
 
-/* Profil & Gelişmiş Hesap Ayarları Görünümü */
-.nx-profile-header{
-  display:flex;align-items:center;gap:12px;margin-bottom:12px;background:var(--surface-2);border:1px solid var(--border);
-  padding:12px 14px;border-radius:16px;
+/* Hesap merkezi: kimlik, plan, işlemler. Sahte bağlantı durumu yok. */
+.nx-account{flex-direction:column}
+.nx-account-person{
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:8px 28px 18px;
 }
 .nx-profile-avatar-large{
-  width:52px;height:52px;border-radius:50%;background:var(--brand-grad);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;box-shadow:0 4px 14px rgba(76,125,255,.35);position:relative;overflow:visible;
+  width:76px;height:76px;border-radius:50%;background:var(--brand-grad);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+  flex-shrink:0;box-shadow:0 12px 28px rgba(76,125,255,.32);
+  border:3px solid color-mix(in srgb,#fff 72%,var(--surface));overflow:hidden;
 }
-.nx-profile-avatar-large .nx-avatar-photo{
-  width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;
+.nx-profile-avatar-large .nx-avatar-photo{width:100%;height:100%;object-fit:cover;display:block}
+.nx-profile-avatar-large .nx-user-icon{width:40px;height:40px;color:#fff;display:block}
+.nx-profile-name-wrap{width:100%;min-width:0}
+.nx-profile-name-row{display:flex;align-items:center;justify-content:center;gap:6px;max-width:100%}
+.nx-profile-name-row h3{
+  margin:0;font-size:22px;font-weight:800;letter-spacing:-.03em;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
 }
-.nx-profile-avatar-large .nx-user-icon{
-  width:30px;height:30px;color:#fff;display:block;
-}
-.nx-avatar-status-dot{
-  position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#10B981;
-  border:2px solid var(--surface-2);box-shadow:0 0 6px #10B981;z-index:2;
-}
-.nx-profile-name-wrap{flex:1;min-width:0}
-.nx-profile-name-row{display:flex;align-items:center;gap:6px}
-.nx-profile-name-row h3{margin:0;font-size:16px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nx-edit-name-btn{
-  background:none;border:none;color:var(--muted);cursor:pointer;padding:3px;display:flex;align-items:center;
-  border-radius:6px;transition:all .15s ease;
+  width:28px;height:28px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);
+  color:var(--muted);cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:color .15s ease,border-color .15s ease,background .15s ease;
 }
-.nx-edit-name-btn:hover{color:var(--brand);background:var(--surface)}
+.nx-edit-name-btn:hover{color:var(--brand);border-color:var(--brand);background:var(--surface)}
 .nx-edit-name-btn svg{width:13px;height:13px}
-.nx-profile-email-chip{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:1px}
-
-.nx-profile-grid{display:grid;gap:8px;margin-bottom:12px}
-.nx-profile-card{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;
+.nx-profile-email-chip{
+  display:block;margin-top:3px;font-size:13.5px;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.nx-profile-card-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.nx-account-plan{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:18px;
+  padding:14px 14px 12px;margin:0 2px 12px;
+}
+.nx-account-plan-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nx-account-kicker{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
 .nx-plan-tag{
-  background:var(--brand-grad);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:12px;font-weight:700;
+  padding:4px 10px;border-radius:999px;line-height:1.2;white-space:nowrap;flex-shrink:0;
 }
-.nx-profile-card-sub{margin:0 0 8px;font-size:12.5px;font-weight:700;color:var(--text)}
-.nx-profile-card-actions{display:flex;gap:6px;flex-wrap:wrap}
-.btn-xs{padding:5px 11px;font-size:11.5px;font-weight:700;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
-.nx-status-pill{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:99px}
-.nx-status-pill.online{background:rgba(16,185,129,.12);color:#10B981;border:1px solid rgba(16,185,129,.3)}
-.nx-profile-kv{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:4px}
-.nx-profile-kv small{color:var(--muted)}
-.nx-profile-kv b{color:var(--text);font-weight:600}
-
-.nx-profile-footer-actions{display:grid;gap:6px}
-.nx-profile-link-btn{
-  background:none;border:1px solid var(--border);border-radius:12px;color:var(--text-2);
-  font:600 12px Inter,sans-serif;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;
-  justify-content:center;gap:6px;transition:all .18s ease;
+.nx-account-perks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.nx-account-perks li{
+  display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;color:var(--text-2);line-height:1.35;
 }
-.nx-profile-link-btn:hover{background:var(--surface-2);border-color:var(--brand);color:var(--brand)}
-.nx-profile-link-btn svg{width:14px;height:14px}
+.nx-account-perks svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;color:var(--brand)}
+.nx-account-save{margin:12px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
+.nx-account-upgrade{
+  display:flex;align-items:center;justify-content:center;margin-top:14px;min-height:44px;
+  border-radius:999px;background:var(--brand-grad);color:#fff;font-weight:700;font-size:14.5px;
+  text-decoration:none;box-shadow:0 8px 20px rgba(76,125,255,.28);
+}
+.nx-account-upgrade:hover{opacity:.94}
+a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
+.nx-account-upgrade.is-hidden,.nx-account-save.is-hidden,.nx-account-perks.is-hidden{display:none !important}
+.nx-account-menu{
+  border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface-2);margin:0 2px;
+}
+.nx-account-item{
+  width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;background:transparent;
+  border:0;border-top:1px solid var(--border);color:var(--text);cursor:pointer;text-align:left;font:inherit;
+}
+.nx-account-item:first-child{border-top:0}
+.nx-account-item:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.nx-account-ico{
+  width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--brand) 12%,var(--surface));color:var(--brand);flex-shrink:0;
+}
+.nx-account-ico svg{width:16px;height:16px}
+.nx-account-item-copy{display:flex;flex-direction:column;min-width:0;flex:1;gap:1px}
+.nx-account-item-copy b{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.nx-account-item-copy small{font-size:12px;color:var(--muted);font-weight:500}
+.nx-account-chevron{color:var(--muted);display:flex;flex-shrink:0}
+.nx-account-chevron svg{width:16px;height:16px}
+.nx-account-signout .nx-account-ico{
+  background:color-mix(in srgb,var(--danger) 12%,var(--surface));color:var(--danger);
+}
+.nx-account-signout .nx-account-item-copy b{color:var(--danger)}
 .nx-contact-security-note{
   font-size:11px;color:var(--muted);margin:8px 0 0;text-align:center;display:flex;align-items:center;
   justify-content:center;gap:5px;
@@ -885,69 +915,57 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       </div>
     </div>
 
-    <!-- Profil & Gelişmiş Hesap Ayarları Görünümü (Giriş Yapılmışsa) -->
-    <div id="nxAuthProfileView" style="display:none">
-      <div class="nx-auth-brand-badge" style="margin-bottom:12px">
-        <div class="nx-app-logo" style="width:36px;height:36px;margin-bottom:4px"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 style="font-size:18px">NEXUS Hesap Merkezi</h3>
-        <p style="font-size:12px">Cihazlarınız ve ev ayarlarınız bu hesapla senkronize edilir.</p>
-      </div>
-
-      <div class="nx-profile-header">
+    <div id="nxAuthProfileView" class="nx-account" style="display:none">
+      <div class="nx-account-person">
         <div class="nx-profile-avatar-large" id="nxProfileAvatarWrap">
-          <svg viewBox="0 0 24 24" class="nx-user-icon" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-          <span class="nx-avatar-status-dot"></span>
+          <svg viewBox="0 0 24 24" class="nx-user-icon" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
         </div>
         <div class="nx-profile-name-wrap">
           <div class="nx-profile-name-row">
             <h3 id="nxProfileNameDisplay">Kullanıcı</h3>
-            <button type="button" class="nx-edit-name-btn" onclick="nxEditProfileName()" title="İsmi Düzenle">
-              <svg viewBox="0 0 24 24" class="icon"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            <button type="button" class="nx-edit-name-btn" onclick="nxEditProfileName()" title="İsmi düzenle" aria-label="İsmi düzenle">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
             </button>
           </div>
-          <span id="nxProfileEmail" class="nx-profile-email-chip">kullanici@eposta.com</span>
+          <span id="nxProfileEmail" class="nx-profile-email-chip"></span>
         </div>
       </div>
 
-      <!-- Detay Kartları -->
-      <div class="nx-profile-grid">
-        <div class="nx-profile-card">
-          <div class="nx-profile-card-head">
-            <span>Abonelik & Plan</span>
-            <span class="nx-plan-tag" id="nxProfilePlanTag">Free</span>
-          </div>
-          <p id="nxProfilePlanDesc" class="nx-profile-card-sub">Temel Başlangıç Planı</p>
-          <div class="nx-profile-card-actions">
-            <a href="/tr/#pricing" class="btn-xs btn-primary" onclick="nxCloseAuthModal()">NEXUS+ Yükselt (%33 İndirim)</a>
-            <a href="https://whop.com/hub/" target="_blank" rel="noopener" class="btn-xs btn-ghost">Faturalar & Whop</a>
-          </div>
+      <section class="nx-account-plan" aria-label="Plan">
+        <div class="nx-account-plan-top">
+          <span class="nx-account-kicker">Plan</span>
+          <span class="nx-plan-tag" id="nxProfilePlanTag">Ücretsiz</span>
         </div>
+        <ul class="nx-account-perks" id="nxProfilePerksFree">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Sınırsız cihaz ve oda</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Yerel otomasyon ve sahneler</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Günde 30 NEXUS AI komutu</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Cihazların arasında hesap eşitlemesi</span></li>
+        </ul>
+        <ul class="nx-account-perks is-hidden" id="nxProfilePerksPlus">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Ücretsiz plandaki her şey</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Ayda 2.000 NEXUS AI yanıtı</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Doğal dille kural ve senaryo üretimi</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Enerji için tasarruf önerileri</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Yeni özelliklere ve beta bağlayıcılara erken erişim</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Öncelikli e-posta desteği</span></li>
+        </ul>
+        <p class="nx-account-save" id="nxProfileSaveNote">Yıllık planda %33 indirim</p>
+        <a id="nxProfileUpgrade" class="nx-account-upgrade" href="/tr/#pricing" onclick="nxCloseAuthModal()">NEXUS+'a geç</a>
+      </section>
 
-        <div class="nx-profile-card">
-          <div class="nx-profile-card-head">
-            <span>Bulut & Eşitleme</span>
-            <span class="nx-status-pill online">Bağlı</span>
-          </div>
-          <div class="nx-profile-kv">
-            <small>Altyapı</small>
-            <b>Supabase Cloud & Auth</b>
-          </div>
-          <div class="nx-profile-kv">
-            <small>Eşitleme</small>
-            <b class="text-emerald">Tüm cihazlarla senkron</b>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hesap İşlemleri -->
-      <div class="nx-profile-footer-actions">
-        <button type="button" class="nx-profile-link-btn" onclick="nxSendPasswordReset()">
-          <svg viewBox="0 0 24 24" class="icon"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-          <span>Şifre Sıfırlama Bağlantısı Gönder</span>
+      <div class="nx-account-menu">
+        <a class="nx-account-item" href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">
+          <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M2 10h20"/></svg></span>
+          <span class="nx-account-item-copy">
+            <b>Aboneliği yönet</b>
+            <small>Kart, fatura ve iptal</small>
+          </span>
+          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-8 8"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg></span>
+        </a>
+        <button type="button" class="nx-account-item" onclick="nxSendPasswordReset()">
+          <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg></span>
+          <span class="nx-account-item-copy">
+            <b>Şifreyi sıfırla</b>
+            <small>Bağlantı e-postana gider</small>
+          </span>
+          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
         </button>
-        <button type="button" class="btn btn-outline w-full" onclick="nxSignOut()">
-          <svg viewBox="0 0 24 24" class="icon"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-          <span>Oturumu Kapat</span>
+        <button type="button" class="nx-account-item nx-account-signout" onclick="nxSignOut()">
+          <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></span>
+          <span class="nx-account-item-copy"><b>Oturumu kapat</b></span>
         </button>
       </div>
     </div>

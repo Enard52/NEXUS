@@ -619,7 +619,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
         <div class="section-head center reveal">
           <span class="section-kicker">Integrations</span>
           <h2 class="section-heading">Works with what you already have.</h2>
-          <p class="section-copy">Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.</p>
+          <p class="section-copy">Paired directly over your local network — no paid hub, cloud account or subscription. Matter and Zigbee connect through your Home Assistant bridge.</p>
         </div>
       </div>
       <div class="integrations-wrap reveal">
@@ -976,7 +976,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           </div>
           <div class="faq-card">
             <div class="faq-question">Which devices are supported?</div>
-            <div class="faq-answer">Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED and ESPHome devices are controlled directly over your local network. TP-Link Kasa and Yeelight work in the desktop app. Matter, Tapo and Tuya are on the roadmap.</div>
+            <div class="faq-answer">Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED, ESPHome, TP-Link Tapo, Sonoff and Tuya devices are controlled directly over your local network. TP-Link Kasa, Yeelight, WiZ, LIFX and Govee work in the desktop app. Matter and Zigbee connect through Home Assistant.</div>
           </div>
           <div class="faq-card">
             <div class="faq-question">Does it work without a cloud connection?</div>

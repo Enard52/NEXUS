@@ -317,7 +317,7 @@ function nxOpenAuthModal(){
 
   if(user){
     if(formView)formView.style.display='none';
-    if(profileView)profileView.style.display='block';
+    if(profileView)profileView.style.display='flex';
     var customName=null;
     try{
       customName=localStorage.getItem('nexusUserName');
@@ -331,21 +331,41 @@ function nxOpenAuthModal(){
     var avatarWrap=document.getElementById('nxProfileAvatarWrap');
     var nameEl=document.getElementById('nxProfileNameDisplay');
     var emailEl=document.getElementById('nxProfileEmail');
-    if(avatarWrap){
-      avatarWrap.innerHTML = nxGetAvatarHtml(true) + '<span class="nx-avatar-status-dot"></span>';
-    }
+    if(avatarWrap) avatarWrap.innerHTML = nxGetAvatarHtml(true);
     if(nameEl)nameEl.textContent = displayName;
     if(emailEl)emailEl.textContent = user;
     
-    var plusActive = false;
-    try{plusActive = localStorage.getItem('nexusPlusActive')==='true';}catch(e){}
+    var plusPlan = '';
+    try {
+      plusPlan = localStorage.getItem('nexusPlusPlan') || '';
+      if (!plusPlan && window.nexusGetItem) plusPlan = window.nexusGetItem('nexusPlusPlan') || '';
+    } catch (e) {}
+    var plusActive = plusPlan === 'Aylık' || plusPlan === 'Yıllık';
+    if (!plusActive) {
+      try { plusActive = localStorage.getItem('nexusPlusActive') === 'true'; } catch (e) {}
+    }
     var planTag=document.getElementById('nxProfilePlanTag');
-    var planDesc=document.getElementById('nxProfilePlanDesc');
-    if(planTag)planTag.textContent = plusActive ? 'NEXUS+ Pro' : (isTr ? 'Ücretsiz' : 'Free');
-    if(planDesc)planDesc.textContent = plusActive ? (isTr ? 'Aktif NEXUS+ Aboneliği (Sınırsız AI)' : 'Active NEXUS+ Pro (Unlimited AI)') : (isTr ? 'Temel Plan (Cihaz/Oda Sınırı Yok)' : 'Starter Plan (No device limits)');
+    if(planTag){
+      if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : 'Free';
+      else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : 'NEXUS+ · Yearly';
+      else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : 'NEXUS+ · Monthly';
+      else planTag.textContent = 'NEXUS+';
+    }
+    var perksFree=document.getElementById('nxProfilePerksFree');
+    var perksPlus=document.getElementById('nxProfilePerksPlus');
+    if(perksFree)perksFree.classList.toggle('is-hidden', plusActive);
+    if(perksPlus)perksPlus.classList.toggle('is-hidden', !plusActive);
+    var upgrade=document.getElementById('nxProfileUpgrade');
+    var saveNote=document.getElementById('nxProfileSaveNote');
+    if(upgrade)upgrade.classList.toggle('is-hidden', plusActive);
+    if(saveNote)saveNote.classList.toggle('is-hidden', plusActive);
+    m.classList.add('nx-account-open');
+    m.setAttribute('aria-labelledby','nxProfileNameDisplay');
   }else{
     if(formView)formView.style.display='block';
     if(profileView)profileView.style.display='none';
+    m.classList.remove('nx-account-open');
+    m.setAttribute('aria-labelledby','nxAuthTitle');
     var alertEl=document.getElementById('nxAuthAlert');
     if(alertEl)alertEl.style.display='none';
   }
