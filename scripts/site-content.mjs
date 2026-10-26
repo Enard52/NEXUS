@@ -119,7 +119,7 @@ export const content = {
         [
           "3",
           "Live your home",
-          "Control panels, scenes, scheduled automations and real energy readings — from your mobile companion app or your native desktop program.",
+          "Scenes, scheduled automations and real energy readings — from your mobile companion app or your native desktop program.",
         ],
       ],
     },
@@ -132,13 +132,10 @@ export const content = {
           [
             "Shelly Gen1 & Gen2+",
             "Tasmota",
-            "TP-Link Tapo",
             "WLED",
             "ESPHome",
             "Philips Hue bridge",
             "Home Assistant",
-            "Tuya (Local LAN)",
-            "Wake-on-LAN",
           ],
         ],
         ["Local TCP — desktop app", ["TP-Link Kasa", "Yeelight"]],
@@ -147,8 +144,8 @@ export const content = {
       moreHref: "javascript:nxOpenContactModal('Connector Request')",
     },
     pricing: {
-      heading: "Free to use. NEXUS+ when you want more.",
-      lead: "No device or room limits — home control stays free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial.",
+      heading: "Free to use. NEXUS+ when you want more",
+      lead: "",
       currencyNote: "Prices in USD",
       plans: [
         {
@@ -203,7 +200,7 @@ export const content = {
       lead: "Always free. Installers are served from GitHub Releases with published checksums.",
       cards: [
         ["windows", "monitor", "Windows", "Windows 10/11 · 64-bit", "NEXUS-Setup.exe", ".exe"],
-        ["linux", "terminal", "Linux", "AppImage & .deb", "NEXUS-linux.AppImage", ".AppImage"],
+        ["linux", "terminal", "Linux", "Debian and Ubuntu · .deb", "NEXUS-linux.deb", ".deb"],
         [
           "android",
           "smartphone",
@@ -216,10 +213,12 @@ export const content = {
       versionLabel: "Version",
       sizeLabel: "Size",
       webCard: {
-        title: "One account, four surfaces",
-        desc: "Native desktop programs for Windows and Linux, a mobile app for Android, and the full web app in your browser. Signed in, your rooms, devices, scenes and automations match on every one of them.",
-        cta: { label: "Open the web app", href: APP_URL },
+        title: "One account, every screen you install",
+        desc: "Native desktop programs for Windows and Linux, and the Android app. Signed in, your rooms, devices, scenes and automations match on each of them.",
+        cta: { label: "Download", href: "#downloads" },
       },
+      otherOs:
+        "On a Mac, iPhone, or another system? You can still download the Windows, Linux and Android installers here. A native package for that system is not published yet.",
       smartScreenNote:
         "Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.",
     },
@@ -231,8 +230,8 @@ export const content = {
           "Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens.",
         ],
         [
-          "Can I control my home from a web browser, or do I need the native apps?",
-          "NEXUS runs its full interface in your browser too: use the web app for your account, devices, dashboards, scenes and NEXUS AI. Device commands, however, go straight across your own local network (LAN), and a browser sandbox can only reach devices that accept browser requests (CORS) — local HTTP APIs like Shelly, Philips Hue and ESPHome do. Protocols that need raw TCP/UDP (TP-Link Kasa, Yeelight) work only in the desktop app. For whole-home control on every surface we recommend the native desktop program (Windows, Linux) and the mobile app (Android); this marketing site itself is for account, downloads, and billing.",
+          "Do I need to install NEXUS, or does it run in the browser?",
+          "Install the desktop program (Windows or Linux) or the Android app. NEXUS is not offered as a browser app. Device commands go across your own local network. Shelly, Philips Hue, ESPHome, Tasmota, WLED and Home Assistant use local HTTP in the desktop program and on Android. TP-Link Kasa and Yeelight need raw TCP, so they run in the desktop program. This site is for the account, downloads and billing.",
         ],
         [
           "What does the NEXUS+ plan add?",
@@ -244,7 +243,7 @@ export const content = {
         ],
         [
           "Which devices and ecosystems are supported?",
-          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue and Tuya over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
+          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome, Philips Hue and Home Assistant over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
         ],
         [
           "How are security cameras and sensors integrated?",
@@ -286,7 +285,7 @@ export const content = {
         lead: "NEXUS keeps a lightweight desktop engine in your system tray so schedules and sensor rules keep evaluating while your computer is on, and the mobile app opens straight onto the same local network.",
         items: [
           { icon: "layers", title: "Desktop", desc: "The Windows and Linux apps stay in the system tray and keep local schedules and sensor rules running while the computer is on." },
-          { icon: "wifi", title: "Phone and web", desc: "The Android app and the web app open onto the same local network; device commands still go across your LAN." },
+          { icon: "wifi", title: "Phone", desc: "The Android app opens onto the same local network; device commands still go across your LAN." },
           { icon: "lock", title: "Account", desc: "An account is required so rooms, devices and scenes match on every screen. Device commands do not leave your home network." },
         ],
       },
@@ -406,7 +405,7 @@ export const content = {
         [
           "3",
           "Evinin tadını çıkar",
-          "Kontrol panelleri, sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundaki mobil uygulamadan veya bilgisayarındaki masaüstü programından.",
+          "Sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundaki mobil uygulamadan veya bilgisayarındaki masaüstü programından.",
         ],
       ],
     },
@@ -419,13 +418,10 @@ export const content = {
           [
             "Shelly Gen1 & Gen2+",
             "Tasmota",
-            "TP-Link Tapo",
             "WLED",
             "ESPHome",
             "Philips Hue köprüsü",
             "Home Assistant",
-            "Tuya (yerel mod)",
-            "Wake-on-LAN",
           ],
         ],
         ["Yerel TCP — masaüstü uygulamasında", ["TP-Link Kasa", "Yeelight"]],
@@ -434,8 +430,8 @@ export const content = {
       moreHref: "javascript:nxOpenContactModal('Cihaz & Bağlayıcı İsteği')",
     },
     pricing: {
-      heading: "Ücretsiz kullan. Daha fazlasını istersen NEXUS+.",
-      lead: "Cihaz veya oda sınırı yok; ev kontrolü ücretsiz. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır.",
+      heading: "Ücretsiz kullan. Daha fazlasını istersen NEXUS+",
+      lead: "",
       currencyNote: "Fiyatlar TL cinsinden",
       plans: [
         {
@@ -490,7 +486,7 @@ export const content = {
       lead: "Hepsi ücretsiz. Kurulum dosyaları sağlama (checksum) değerleriyle GitHub Releases üzerinden sunulur.",
       cards: [
         ["windows", "monitor", "Windows", "Windows 10/11 · 64-bit", "NEXUS-Setup.exe", ".exe"],
-        ["linux", "terminal", "Linux", "AppImage ve .deb", "NEXUS-linux.AppImage", ".AppImage"],
+        ["linux", "terminal", "Linux", "Debian ve Ubuntu · .deb", "NEXUS-linux.deb", ".deb"],
         [
           "android",
           "smartphone",
@@ -503,10 +499,12 @@ export const content = {
       versionLabel: "Sürüm",
       sizeLabel: "Boyut",
       webCard: {
-        title: "Tek hesap, dört yüzey",
-        desc: "Windows ve Linux için yerel masaüstü programı, Android için mobil uygulama, tarayıcıda ise tam web uygulaması. Giriş yaptığında odaların, cihazların, sahnelerin ve otomasyonların hepsinde aynı kalır.",
-        cta: { label: "Web uygulamasını aç", href: APP_URL },
+        title: "Tek hesap, kurduğun her ekranda",
+        desc: "Windows ve Linux için masaüstü programı, Android için mobil uygulama. Giriş yaptığında odaların, cihazların, sahnelerin ve otomasyonların hepsinde aynı kalır.",
+        cta: { label: "İndir", href: "#downloads" },
       },
+      otherOs:
+        "Mac, iPhone veya başka bir sistemdeysen de Windows, Linux ve Android kurulumlarını buradan indirebilirsin. O sistem için ayrı bir paket henüz yok.",
       smartScreenNote:
         "Windows imzasız kurulumlar için uyarı verebilir (“bilinmeyen yayıncı”). Dosya güvenlidir — sağlama değerlerine bak.",
     },
@@ -519,7 +517,7 @@ export const content = {
         ],
         [
           "NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?",
-          "NEXUS'un tam arayüzü tarayıcıda da çalışır: hesap, eşyalar, panolar, sahneler ve NEXUS AI için web uygulamasını kullanabilirsin. Cihaz komutları ise kendi yerel ağndan (LAN) doğrudan gider; tarayıcı güvenlik kum havuzu (sandbox) yüzünden yalnızca tarayıcı isteklerine izin veren (CORS) cihazlara ulaşabilir — Shelly, Philips Hue, ESPHome gibi yerel HTTP API'ler buna örnektir. Ham TCP/UDP isteyen protokoller (TP-Link Kasa, Yeelight) yalnızca masaüstü uygulamasında çalışır. Evin tamamını her ortamda kontrol etmek için masaüstü programı (Windows, Linux) ve mobil uygulama (Android) kurulumunu öneriyoruz; tanıtım sitemiz ise hesap, indirme ve faturalandırma içindir.",
+          "Masaüstü programını (Windows veya Linux) ya da Android uygulamasını kurman gerekir. NEXUS ayrı bir tarayıcı uygulaması olarak sunulmuyor. Cihaz komutları kendi yerel ağından gider. Shelly, Philips Hue, ESPHome, Tasmota, WLED ve Home Assistant yerel HTTP ile masaüstünde ve Android'de çalışır. TP-Link Kasa ve Yeelight ham TCP istediği için masaüstü programındadır. Bu site hesap, indirme ve faturalandırma içindir.",
         ],
         [
           "NEXUS+ aboneliği tam olarak ne sağlar?",
@@ -531,7 +529,7 @@ export const content = {
         ],
         [
           "Hangi cihazlar ve markalar destekleniyor?",
-          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue ve Tuya'yı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
+          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, WLED, ESPHome, Philips Hue ve Home Assistant'ı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
         ],
         [
           "Güvenlik kameraları ve sensörler nasıl entegre edilir?",
@@ -573,7 +571,7 @@ export const content = {
         lead: "NEXUS; masaüstünde sistem tepsisinde 7/24 arka planda nöbet tutan ultra hafif çekirdeği ve mobilde optimize edilmiş yerel köprüleriyle evinizi her an senkronize tutar.",
         items: [
           { icon: "layers", title: "Masaüstü", desc: "Windows ve Linux uygulaması sistem tepsisinde kalır; bilgisayar açıkken yerel zamanlayıcılar ve sensör kuralları çalışmaya devam eder." },
-          { icon: "wifi", title: "Telefon ve web", desc: "Android uygulaması ve web uygulaması aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider." },
+          { icon: "wifi", title: "Telefon", desc: "Android uygulaması aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider." },
           { icon: "lock", title: "Hesap", desc: "Hesap gerekir ki odalar, cihazlar ve sahneler her ekranda aynı olsun. Cihaz komutları ev ağından çıkmaz." },
         ],
       },

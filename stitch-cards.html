@@ -73,6 +73,7 @@
 <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="nexus-dialog.js"></script>
 </head>
 <body>
   <div class="picker-shell px-4 pt-12 pb-6">
@@ -177,7 +178,7 @@
             <span class="block text-[16px] font-semibold text-slate-900">${title}</span>
             ${subtitle ? `<span class="block text-[12px] text-slate-500 mt-1">${subtitle}</span>` : ''}
           </span>
-          ${onEdit ? `<div onclick="event.stopPropagation(); ${onEdit}" class="p-2 text-slate-300 hover:text-blue-500 active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></div>` : ''}
+          ${onEdit ? `<div data-rename="${encodeURIComponent(onEdit)}" role="button" aria-label="Cihaz adını değiştir" class="p-2 text-slate-300 hover:text-blue-500 active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></div>` : ''}
         </button>
       `;
     }
@@ -222,7 +223,7 @@
             subtitle: device.room || device.state || 'Akıllı cihaz',
             iconHtml: `<div class="w-11 h-11 rounded-full ${accent.wrap} flex items-center justify-center shrink-0">${svg}</div>`,
             selected: pickerState.devices.has(device.id),
-            onEdit: `renameDevicePrompt('${device.id}', '${device.name || 'Cihaz'}')`
+            onEdit: device.id
           });
         }).join('');
         return;
@@ -248,12 +249,80 @@
       }).join('');
     }
 
-    function showRenameModal(id, currentName) {
-      // TODO: rename modal eklenecek
+    function pairedDevices() {
+      try {
+        var raw = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
+        return Array.isArray(raw) ? raw : [];
+      } catch (e) {
+        return [];
+      }
     }
 
-    window.renameDevicePrompt = function(id, currentName) {
-      showRenameModal(id, currentName);
+    function listedName(id) {
+      var row = getDeviceSource().find(function (d) { return d && d.id === id; });
+      return row && row.name ? row.name : '';
+    }
+
+    function saveRename(id, name) {
+      var paired = pairedDevices();
+      var direct = paired.find(function (d) { return d && d.id === id; });
+      if (direct) {
+        direct.name = name;
+        nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
+        return true;
+      }
+      var index = /^paired-(\d+)$/.exec(String(id || ''));
+      if (index) {
+        var want = Number(index[1]);
+        var seen = 0;
+        for (var i = 0; i < paired.length; i++) {
+          var device = paired[i];
+          if (!device || !device.name || !device.host) continue;
+          if (seen === want) {
+            paired[i].name = name;
+            nexusSetItem('nexusPairedDevices', JSON.stringify(paired));
+            return true;
+          }
+          seen++;
+        }
+        return false;
+      }
+      var cards = [];
+      try { cards = JSON.parse(nexusGetItem('nexusDashboardCards') || '[]'); } catch (e) { cards = []; }
+      if (!Array.isArray(cards)) return false;
+      var card = cards.find(function (c) { return c && c.id === id; });
+      if (!card) return false;
+      card.title = name;
+      nexusSetItem('nexusDashboardCards', JSON.stringify(cards));
+      return true;
+    }
+
+    function showRenameModal(id) {
+      var currentName = listedName(id);
+      if (!currentName || typeof window.nexusDialog !== 'function') return;
+      window.nexusDialog({
+        title: 'Cihaz adı',
+        message: 'Bu ad ana sayfa kartında ve cihaz listesinde görünür.',
+        input: { value: currentName, placeholder: 'Cihaz adı', maxLength: 60 },
+        primary: {
+          label: 'Kaydet',
+          onClick: function (value) {
+            var name = String(value || '').trim().slice(0, 60);
+            if (!name || !saveRename(id, name)) return;
+            if (window.nexusCloud && window.nexusCloud.notifyLocalChange) window.nexusCloud.notifyLocalChange();
+            if (window.NEXUS_DATA && Array.isArray(window.NEXUS_DATA.devices)) {
+              var live = window.NEXUS_DATA.devices.find(function (d) { return d && d.id === id; });
+              if (live) live.name = name;
+            }
+            renderPicker();
+          }
+        },
+        secondary: { label: 'Vazgeç' }
+      });
+    }
+
+    window.renameDevicePrompt = function(id) {
+      showRenameModal(id);
     };
 
     function toggleItem(id) {
@@ -293,6 +362,17 @@
 
     function cancelPicker() {
       location.href = 'stitch-home.html';
+    }
+
+    var pickerList = document.getElementById('picker-list');
+    if (pickerList) {
+      pickerList.addEventListener('click', function (e) {
+        var pen = e.target.closest('[data-rename]');
+        if (!pen) return;
+        e.preventDefault();
+        e.stopPropagation();
+        renameDevicePrompt(decodeURIComponent(pen.getAttribute('data-rename') || ''));
+      }, true);
     }
 
     document.querySelectorAll('.picker-tab').forEach(tab => {

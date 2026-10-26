@@ -71,7 +71,7 @@ const privacy = {
         p: [
           "Verilerinizi hesabınız açık olduğu sürece saklarız. Hesabınızın ve verilerinizin silinmesi için " +
             EMAIL +
-            " adresine yazın; talebinizi en geç 30 gün içinde yerine getiririz (yasal saklama yükümlülüğü olan abonelik kayıtları hariç). Uygulamada hesap silme düğmesi henüz yoktur.",
+            " adresine yazın; talebinizi en geç 30 gün içinde yerine getiririz (yasal saklama yükümlülüğü olan abonelik kayıtları hariç). Uygulamada Ayarlar, ardından Hesap güvenliği ekranındaki Hesabımı Sil düğmesi hesabı siler. Sunucu işlemi bitiremezse ekran bunu söyler.",
         ],
       },
       {
@@ -172,7 +172,7 @@ const privacy = {
         p: [
           "We keep your data while your account is open. To delete your account and data, write to " +
             EMAIL +
-            "; we will complete the request within 30 days (except subscription records we must keep by law). The app does not yet have a delete-account button.",
+            "; we will complete the request within 30 days (except subscription records we must keep by law). In the app, open Settings and then Account security, and use Delete my account. If the server cannot finish it, the screen says so.",
         ],
       },
       {

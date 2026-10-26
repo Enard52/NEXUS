@@ -2,6 +2,32 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8"/>
+<script>
+(function(){
+  try{
+    var d='light',t=null;
+    try{t=localStorage.getItem('nx-site-theme')}catch(e){}
+    if(t==='dark'||t==='light') d=t;
+    else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches) d='dark';
+    document.documentElement.setAttribute('data-theme',d);
+  }catch(e){}
+  try{
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+    var nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];
+    var reload=nav&&nav.type==='reload';
+    if(reload){
+      if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+      scrollTo(0,0);
+    }else if(location.hash){
+      document.addEventListener('DOMContentLoaded',function(){
+        var id=location.hash.slice(1);
+        var el=id&&document.getElementById(id);
+        if(el) el.scrollIntoView();
+      });
+    }
+  }catch(e){}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>NEXUS — Your smart home, managed on your own network</title>
 <meta name="description" content="NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
@@ -28,7 +54,7 @@
 <meta name="twitter:description" content="NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan."/>
 <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <link href="/fonts/inter/inter.css" rel="stylesheet"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/","logo":"https://nexus-smarthome.pages.dev/icon.svg","email":"nexus.smarthome.app@gmail.com"},{"@type":"WebSite","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/","inLanguage":"en"},{"@type":"SoftwareApplication","name":"NEXUS — Windows","applicationCategory":"HomeApplication","operatingSystem":"Windows","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"SoftwareApplication","name":"NEXUS — Linux","applicationCategory":"HomeApplication","operatingSystem":"Linux","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"SoftwareApplication","name":"NEXUS — Android","applicationCategory":"HomeApplication","operatingSystem":"Android","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does NEXUS operate entirely on my local network?","acceptedAnswer":{"@type":"Answer","text":"Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens."}},{"@type":"Question","name":"Can I control my home from a web browser, or do I need the native apps?","acceptedAnswer":{"@type":"Answer","text":"NEXUS runs its full interface in your browser too: use the web app for your account, devices, dashboards, scenes and NEXUS AI. Device commands, however, go straight across your own local network (LAN), and a browser sandbox can only reach devices that accept browser requests (CORS) — local HTTP APIs like Shelly, Philips Hue and ESPHome do. Protocols that need raw TCP/UDP (TP-Link Kasa, Yeelight) work only in the desktop app. For whole-home control on every surface we recommend the native desktop program (Windows, Linux) and the mobile app (Android); this marketing site itself is for account, downloads, and billing."}},{"@type":"Question","name":"What does the NEXUS+ plan add?","acceptedAnswer":{"@type":"Answer","text":"Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost."}},{"@type":"Question","name":"How do automations and scheduled rules run?","acceptedAnswer":{"@type":"Answer","text":"The NEXUS automation engine evaluates your schedules and sensor rules on the device you keep running — the desktop app stays in the system tray and executes around the clock, so lighting, energy and security routines never wait for a cloud. Scenes and timers triggered from your phone apply instantly over your LAN. New events fan out to the notification channels you enable on the Instant Notifications page: the in-app strip, system notifications, ntfy, Telegram, or your own HTTPS webhook."}},{"@type":"Question","name":"Which devices and ecosystems are supported?","acceptedAnswer":{"@type":"Answer","text":"NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue and Tuya over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between."}},{"@type":"Question","name":"How are security cameras and sensors integrated?","acceptedAnswer":{"@type":"Answer","text":"NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy modes, arm surveillance routines when leaving home, and see every movement or contact event in the app — plus on the notification channels you enable (system notifications, ntfy, Telegram, or your own webhook)."}},{"@type":"Question","name":"Can I cancel NEXUS+ anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely hassle-free with zero commitments. You can cancel with a single click anytime: from the in-app Account & Billing settings, through our website, or directly from the order link in your billing email receipt. Your premium benefits remain active until the end of your billing cycle with zero future charges."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/","logo":"https://nexus-smarthome.pages.dev/icon.svg","email":"nexus.smarthome.app@gmail.com"},{"@type":"WebSite","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/","inLanguage":"en"},{"@type":"SoftwareApplication","name":"NEXUS — Windows","applicationCategory":"HomeApplication","operatingSystem":"Windows","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"SoftwareApplication","name":"NEXUS — Linux","applicationCategory":"HomeApplication","operatingSystem":"Linux","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.deb","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"SoftwareApplication","name":"NEXUS — Android","applicationCategory":"HomeApplication","operatingSystem":"Android","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does NEXUS operate entirely on my local network?","acceptedAnswer":{"@type":"Answer","text":"Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens."}},{"@type":"Question","name":"Do I need to install NEXUS, or does it run in the browser?","acceptedAnswer":{"@type":"Answer","text":"Install the desktop program (Windows or Linux) or the Android app. NEXUS is not offered as a browser app. Device commands go across your own local network. Shelly, Philips Hue, ESPHome, Tasmota, WLED and Home Assistant use local HTTP in the desktop program and on Android. TP-Link Kasa and Yeelight need raw TCP, so they run in the desktop program. This site is for the account, downloads and billing."}},{"@type":"Question","name":"What does the NEXUS+ plan add?","acceptedAnswer":{"@type":"Answer","text":"Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost."}},{"@type":"Question","name":"How do automations and scheduled rules run?","acceptedAnswer":{"@type":"Answer","text":"The NEXUS automation engine evaluates your schedules and sensor rules on the device you keep running — the desktop app stays in the system tray and executes around the clock, so lighting, energy and security routines never wait for a cloud. Scenes and timers triggered from your phone apply instantly over your LAN. New events fan out to the notification channels you enable on the Instant Notifications page: the in-app strip, system notifications, ntfy, Telegram, or your own HTTPS webhook."}},{"@type":"Question","name":"Which devices and ecosystems are supported?","acceptedAnswer":{"@type":"Answer","text":"NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome, Philips Hue and Home Assistant over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between."}},{"@type":"Question","name":"How are security cameras and sensors integrated?","acceptedAnswer":{"@type":"Answer","text":"NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy modes, arm surveillance routines when leaving home, and see every movement or contact event in the app — plus on the notification channels you enable (system notifications, ntfy, Telegram, or your own webhook)."}},{"@type":"Question","name":"Can I cancel NEXUS+ anytime?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely hassle-free with zero commitments. You can cancel with a single click anytime: from the in-app Account & Billing settings, through our website, or directly from the order link in your billing email receipt. Your premium benefits remain active until the end of your billing cycle with zero future charges."}}]}]}</script>
 <style>
 :root{
   /* Uygulama / program (www/css/nexus-ui.css) ile aynı açık palet. */
@@ -72,6 +98,7 @@ html.nx-modal-open,
 html.nx-modal-open body{
   overflow:hidden !important;
   overscroll-behavior:none;
+  scrollbar-gutter:auto !important;
 }
 html[data-theme=dark]{
   --page:#0F172A; --page-grad:linear-gradient(180deg, #020617 0%, #0F172A 100%);
@@ -82,6 +109,7 @@ html[data-theme=dark]{
 *{box-sizing:border-box}
 body{
   margin:0;
+  padding-top:var(--header-h);
   font:400 16px/1.6 Inter,system-ui,-apple-system,sans-serif;
   color:var(--text);
   background:var(--page-grad);
@@ -96,8 +124,8 @@ a{color:inherit;text-decoration:none}
 .brand-svg{width:22px;height:22px;vertical-align:middle;display:inline-block;flex-shrink:0}
 
 /* Header */
-.hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  background:color-mix(in srgb,var(--surface) 78%,transparent);border-bottom:1px solid var(--border);height:var(--header-h);display:flex;align-items:center}
+.hd{position:fixed;top:0;left:0;right:0;width:100%;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:color-mix(in srgb,var(--surface) 92%,transparent);border-bottom:1px solid var(--border);height:var(--header-h);display:flex;align-items:center}
 .hd .wrap{display:flex;align-items:center;width:100%;gap:8px}
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em;flex-shrink:0}
 .logo svg{width:32px;height:32px}
@@ -163,7 +191,7 @@ html[data-theme=dark] .btn-ghost .plat-marks{background:var(--surface)}
   box-shadow:none;line-height:1.25;text-wrap:balance;max-width:100%}
 .eyebrow .icon{width:15px;height:15px;flex-shrink:0}
 h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margin:0 0 16px;font-weight:900}
-.hero-copy h1{font-size:clamp(16px,calc((100vw - 40px) / 16.8),2.45rem);line-height:1.12;letter-spacing:-.045em;margin:0;white-space:nowrap}
+.hero-copy h1{font-size:clamp(28px,7.2vw,40px);line-height:1.08;letter-spacing:-.04em;margin:0;white-space:normal;text-wrap:balance;max-width:12em}
 .grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .lead{font-size:clamp(15px,1.65vw,17.5px);color:var(--text-2);margin:0 0 22px;max-width:52ch;line-height:1.6}
 .hero-copy .lead{font-size:clamp(15px,1.7vw,19px);line-height:1.5;color:var(--text);margin:0 0 10px;max-width:46ch;font-weight:500;text-align:left}
@@ -181,17 +209,17 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 .trust .icon{color:#10B981;width:16px;height:16px;flex-shrink:0}
 @media(min-width:960px){
   .hero{padding:20px 0 28px}
-  .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:28px 40px;align-items:center;
+  .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:32px 56px;align-items:center;
     min-height:calc(100dvh - var(--header-h) - 36px)}
   .hero-copy{max-width:none}
-  .hero-copy h1{font-size:clamp(36px,4.6vw,62px);line-height:1.06;white-space:nowrap}
+  .hero-copy h1{font-size:clamp(32px,3.15vw,48px);line-height:1.08;white-space:normal;max-width:9.2em}
   .hero-display{width:fit-content;align-items:flex-start;text-align:left}
   .phone-wrapper{margin:0}
 }
 @media(max-width:959px){
   .hero{padding:20px 0 28px}
   .hero-copy{text-align:center;margin:0 auto}
-  .hero-copy h1{white-space:nowrap}
+  .hero-copy h1{white-space:normal;max-width:14em}
   .hero-copy .lead,.hero-copy .lead-sub{text-align:center;margin-left:auto;margin-right:auto}
   .hero-cta{justify-content:center}
   .trust{display:flex;flex-direction:column;align-items:center;text-align:left}
@@ -260,10 +288,13 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
    JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
    190px'e sikisirir ve okunmaz). */
-.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:transparent}
+.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:#ECE9FD;overflow:hidden}
 .phone-preview.on{display:block}
-.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;background:transparent;
-  transform-origin:top left;transform:scale(var(--nx-preview-scale,.8))}
+.phone-case.previewing .phone-screen-content{display:none}
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;background:#ECE9FD;
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.8));overflow:hidden;
+  scrollbar-width:none;-ms-overflow-style:none}
+.phone-preview-frame::-webkit-scrollbar,.phone-inner-screen::-webkit-scrollbar,.phone-preview::-webkit-scrollbar{width:0;height:0;display:none}
 .phone-case.previewing .phone-arrow{display:none}
 .phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
 .phone-mode-btn{background:transparent;border:0;border-radius:999px;
@@ -598,16 +629,19 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 .nx-modal-backdrop{
   position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
   background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
-  overflow:hidden;overscroll-behavior:none;
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;opacity:0;transition:opacity .22s ease;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
 }
+.nx-modal-backdrop::-webkit-scrollbar{width:0;height:0;display:none}
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
   background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px -12px rgba(0,0,0,.55);
-  width:100%;max-width:440px;max-height:min(92dvh, calc(100% - 24px));padding:22px 24px 20px;position:relative;
-  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
+  width:100%;max-width:440px;max-height:min(96dvh, calc(100% - 8px));padding:22px 24px 20px;position:relative;
+  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
   overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;-ms-overflow-style:none;
 }
+.nx-modal-card::-webkit-scrollbar{width:0;height:0;display:none}
 #nxAuthModal.nx-account-open .nx-modal-card{
   max-width:420px;padding:28px 18px 16px;
   background:
@@ -838,15 +872,25 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 .nx-dialog-backdrop{
   position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
   background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:10050;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .2s ease;
-  overflow:hidden;overscroll-behavior:none;
+  z-index:10050;display:none;align-items:center;justify-content:center;padding:12px;opacity:0;transition:opacity .2s ease;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
 }
+.nx-dialog-backdrop::-webkit-scrollbar{width:0;height:0;display:none}
 .nx-dialog-backdrop.open{display:flex;opacity:1}
 .nx-dialog-card{
   background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 24px 20px;
-  width:100%;max-width:380px;max-height:min(92dvh, calc(100% - 24px));text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
-  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
-  overflow-y:auto;overscroll-behavior:contain;
+  width:100%;max-width:380px;max-height:min(96dvh, calc(100% - 8px));text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
+  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
+}
+.nx-dialog-card::-webkit-scrollbar{width:0;height:0;display:none}
+.nx-modal-backdrop,.nx-modal-backdrop *,
+.nx-dialog-backdrop,.nx-dialog-backdrop *{
+  scrollbar-width:none !important;-ms-overflow-style:none !important;
+}
+.nx-modal-backdrop::-webkit-scrollbar,.nx-modal-backdrop *::-webkit-scrollbar,
+.nx-dialog-backdrop::-webkit-scrollbar,.nx-dialog-backdrop *::-webkit-scrollbar{
+  width:0 !important;height:0 !important;display:none !important;background:transparent !important;
 }
 .nx-dialog-backdrop.open .nx-dialog-card{transform:scale(1)}
 .nx-dialog-icon{
@@ -926,7 +970,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
           </div>
           <!-- Canlı Mobil Uygulama: Doğrudan Ana Sayfada (stitch-home) başlar -->
           <div class="phone-preview on" id="phonePreview">
-            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="Preview of the NEXUS mobile app" data-src="https://nexus-web-jre.pages.dev/stitch-home.html?preview=1"></iframe>
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="Preview of the NEXUS mobile app" scrolling="no" data-src="https://nexus-web-jre.pages.dev/stitch-home.html?preview=1"></iframe>
           </div>
           <div class="phone-screen-content" aria-hidden="true">
             <div class="shot-slide active" data-shot="home" data-label="Home Screen"><img src="/images/shots/en/home.png" alt="NEXUS app screen — Home Screen" width="390" height="844" loading="lazy"></div>
@@ -988,7 +1032,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
           <div class="step-icon-bubble"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></div>
         </div>
         <h3>Live your home</h3>
-        <p>Control panels, scenes, scheduled automations and real energy readings — from your mobile companion app or your native desktop program.</p>
+        <p>Scenes, scheduled automations and real energy readings — from your mobile companion app or your native desktop program.</p>
       </div>
     </div>
   </div>
@@ -997,13 +1041,13 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   <div class="wrap">
     <div class="sec-head rv"><h2>Works with what you already have.</h2><p>Free, local protocols first. Anything without a direct connector still works through the Home Assistant bridge.</p></div>
     <div class="int-groups">
-      <div class="card rv"><span class="int-kicker">HTTP · every surface</span><h3>Local HTTP</h3><p class="int-hint">The desktop program, Android and the web app share these connectors. Straight to the device HTTP API on your LAN.</p><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly Plus / Pro</span><span class="chip"><svg viewBox="0 0 24 24" fill="#1FA3EC" class="brand-svg" aria-hidden="true"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>Tasmota</span><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Tapo</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E040FB"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5 5 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>WLED</span><span class="chip"><svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>ESPHome</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#00A3E0"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5.002 5.002 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>Philips Hue</span><span class="chip"><svg viewBox="0 0 24 24" fill="#41BDF5" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h21c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311m0 2.444 8.75 8.75v8.995h-5.25v-4.5a3.5 3.5 0 0 0-7 0v4.5H3.25V11.5z"/></svg>Home Assistant</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#FF5000"/><path fill="#fff" d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5H12V4.5z"/></svg>Tuya</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#6366F1"/><path d="M12 3v9M6.3 7.3a8 8 0 1 0 11.4 0" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>Wake-on-LAN</span></div></div>
+      <div class="card rv"><span class="int-kicker">HTTP · every surface</span><h3>Local HTTP</h3><p class="int-hint">The desktop program and the Android app share these connectors. Straight to the device HTTP API on your LAN.</p><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly Plus / Pro</span><span class="chip"><svg viewBox="0 0 24 24" fill="#1FA3EC" class="brand-svg" aria-hidden="true"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>Tasmota</span><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Tapo</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E040FB"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5 5 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>WLED</span><span class="chip"><svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>ESPHome</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#00A3E0"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5.002 5.002 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>Philips Hue</span><span class="chip"><svg viewBox="0 0 24 24" fill="#41BDF5" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h21c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311m0 2.444 8.75 8.75v8.995h-5.25v-4.5a3.5 3.5 0 0 0-7 0v4.5H3.25V11.5z"/></svg>Home Assistant</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#FF5000"/><path fill="#fff" d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5H12V4.5z"/></svg>Tuya</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#6366F1"/><path d="M12 3v9M6.3 7.3a8 8 0 1 0 11.4 0" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>Wake-on-LAN</span></div></div>
       <div class="int-desktop rv">
       <div>
         <div class="int-logo-row" aria-hidden="true"><svg viewBox="0 0 88 88" class="brand-svg" aria-hidden="true"><path fill="#0078D4" d="M0 12.402l35.688-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.016 45.728zm4.326-39.025L87.914 0v41.527l-47.918.375zm47.918 43.465L40.014 88V46.527l47.904-.342z"/></svg><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#2B2B2B" d="M12.5 0.5C8.8 0.5 7.8 4.2 7.7 6.3c-.1 1.5-.4 2.4-1.2 3.6-.9 1.3-2.2 3-2.7 4.9-.5 1.7-.3 3.3.4 4.5.3.5.7.9 1.1 1.2.5.4 1.1.7 1.8.8.8.1 1.8 0 2.6-.5.8.7 1.8 1.1 2.8 1.1 1.2 0 2.2-.4 3-1.1.8.5 1.8.6 2.6.5.7-.1 1.3-.4 1.8-.8.4-.3.8-.7 1.1-1.2.7-1.2.9-2.8.4-4.5-.5-1.9-1.8-3.6-2.7-4.9-.8-1.2-1.1-2.1-1.2-3.6-.1-2.1-1.1-5.8-4.8-5.8z"/><ellipse cx="12.5" cy="14" rx="4.2" ry="5.5" fill="#FFFFFF"/><ellipse cx="10.8" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><ellipse cx="14.2" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><circle cx="11" cy="5.2" r="0.45" fill="#000000"/><circle cx="14" cy="5.2" r="0.45" fill="#000000"/><path fill="#FFB525" d="M12.5 6.5c-1.5 0-2 1.2-2 1.2s.8.5 2 .5 2-.5 2-.5-.5-1.2-2-1.2z"/><path fill="#F57900" d="M7 20c-1.5 0-2.5.8-2.5 1.8 0 .8.8 1.4 2 1.4 1.5 0 2.5-.8 3-1.8-.8-.9-1.7-1.4-2.5-1.4zm11 0c-.8 0-1.7.5-2.5 1.4.5 1 1.5 1.8 3 1.8 1.2 0 2-.6 2-1.4 0-1-1-1.8-2.5-1.8z"/></svg><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E60012"/><path d="M7 7l5 6 5-6M12 13v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <span class="int-kicker">Extra on the desktop program</span>
         <h3>Local TCP on desktop</h3>
-        <p class="int-hint">The Windows and Linux programs run every HTTP brand above, and add local TCP for TP-Link Kasa and Yeelight. On phone and web the HTTP list still applies.</p>
+        <p class="int-hint">The Windows and Linux programs run every HTTP brand above, and add local TCP for TP-Link Kasa and Yeelight. The Android app keeps the HTTP list.</p>
       </div>
       <div class="chips"><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Kasa</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E60012"/><path d="M7 7l5 6 5-6M12 13v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Yeelight</span></div>
     </div>
@@ -1024,10 +1068,9 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 </section>
 <section id="pricing">
   <div class="wrap">
-    <div class="sec-head center rv" style="margin-bottom:28px">
+    <div class="sec-head center rv" style="margin-bottom:24px">
       <div class="sec-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="nx-pricing-lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nx-pricing-lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h2>Free to use. NEXUS+ when you want more.</h2>
-      <p>No device or room limits — home control stays free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial.</p>
+      <h2 style="margin-bottom:0">Free to use. NEXUS+ when you want more</h2>
     </div>
 
     <!-- Aylık / Yıllık Geçiş Düğmesi -->
@@ -1129,14 +1172,14 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         <div class="dl-top">
           <div class="dl-ic"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#2B2B2B" d="M12.5 0.5C8.8 0.5 7.8 4.2 7.7 6.3c-.1 1.5-.4 2.4-1.2 3.6-.9 1.3-2.2 3-2.7 4.9-.5 1.7-.3 3.3.4 4.5.3.5.7.9 1.1 1.2.5.4 1.1.7 1.8.8.8.1 1.8 0 2.6-.5.8.7 1.8 1.1 2.8 1.1 1.2 0 2.2-.4 3-1.1.8.5 1.8.6 2.6.5.7-.1 1.3-.4 1.8-.8.4-.3.8-.7 1.1-1.2.7-1.2.9-2.8.4-4.5-.5-1.9-1.8-3.6-2.7-4.9-.8-1.2-1.1-2.1-1.2-3.6-.1-2.1-1.1-5.8-4.8-5.8z"/><ellipse cx="12.5" cy="14" rx="4.2" ry="5.5" fill="#FFFFFF"/><ellipse cx="10.8" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><ellipse cx="14.2" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><circle cx="11" cy="5.2" r="0.45" fill="#000000"/><circle cx="14" cy="5.2" r="0.45" fill="#000000"/><path fill="#FFB525" d="M12.5 6.5c-1.5 0-2 1.2-2 1.2s.8.5 2 .5 2-.5 2-.5-.5-1.2-2-1.2z"/><path fill="#F57900" d="M7 20c-1.5 0-2.5.8-2.5 1.8 0 .8.8 1.4 2 1.4 1.5 0 2.5-.8 3-1.8-.8-.9-1.7-1.4-2.5-1.4zm11 0c-.8 0-1.7.5-2.5 1.4.5 1 1.5 1.8 3 1.8 1.2 0 2-.6 2-1.4 0-1-1-1.8-2.5-1.8z"/></svg></div>
           <h3>Linux</h3>
-          <span class="plat">AppImage &amp; .deb</span>
+          <span class="plat">Debian and Ubuntu · .deb</span>
         </div>
         <div class="dl-meta">
           <span><b data-nexus-ver>v1.0.15</b></span>
-          <span>AppImage / .deb</span>
+          <span>.deb</span>
           <a class="dl-sums" href="https://github.com/Enard52/nexus-releases/releases/latest/download/SHA256SUMS-Linux.txt" target="_blank" rel="noopener" title="View the published checksum">SHA-256</a>
         </div>
-        <a class="btn btn-primary" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage" download><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download</a>
+        <a class="btn btn-primary" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.deb" download><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download</a>
       </div>
       <div class="dl-card rv" data-platform="android">
         <div class="dl-top">
@@ -1152,6 +1195,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         <a class="btn btn-primary" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk" download><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download</a>
       </div>
     </div>
+    <p class="dl-note">On a Mac, iPhone, or another system? You can still download the Windows, Linux and Android installers here. A native package for that system is not published yet.</p>
     <p class="dl-note">Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.</p>
   </div>
 </section>
@@ -1160,10 +1204,10 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     <div class="sec-head center rv" style="margin-bottom:36px"><h2>The important questions, answered.</h2></div>
     <div class="faq-list">
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Does NEXUS operate entirely on my local network?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Yes. NEXUS is built on a strict local-first architecture. Your devices, rooms, scenes, and sensor telemetry are processed directly across your own home hardware. Even during internet outages, all local controls, lighting, and automations continue to function seamlessly with zero latency. Signing in securely synchronizes your settings across all your screens.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Can I control my home from a web browser, or do I need the native apps?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS runs its full interface in your browser too: use the web app for your account, devices, dashboards, scenes and NEXUS AI. Device commands, however, go straight across your own local network (LAN), and a browser sandbox can only reach devices that accept browser requests (CORS) — local HTTP APIs like Shelly, Philips Hue and ESPHome do. Protocols that need raw TCP/UDP (TP-Link Kasa, Yeelight) work only in the desktop app. For whole-home control on every surface we recommend the native desktop program (Windows, Linux) and the mobile app (Android); this marketing site itself is for account, downloads, and billing.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Do I need to install NEXUS, or does it run in the browser?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Install the desktop program (Windows or Linux) or the Android app. NEXUS is not offered as a browser app. Device commands go across your own local network. Shelly, Philips Hue, ESPHome, Tasmota, WLED and Home Assistant use local HTTP in the desktop program and on Android. TP-Link Kasa and Yeelight need raw TCP, so they run in the desktop program. This site is for the account, downloads and billing.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>What does the NEXUS+ plan add?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>How do automations and scheduled rules run?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>The NEXUS automation engine evaluates your schedules and sensor rules on the device you keep running — the desktop app stays in the system tray and executes around the clock, so lighting, energy and security routines never wait for a cloud. Scenes and timers triggered from your phone apply instantly over your LAN. New events fan out to the notification channels you enable on the Instant Notifications page: the in-app strip, system notifications, ntfy, Telegram, or your own HTTPS webhook.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Which devices and ecosystems are supported?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue and Tuya over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Which devices and ecosystems are supported?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome, Philips Hue and Home Assistant over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>How are security cameras and sensors integrated?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS consolidates your security cameras, motion detectors, and entry sensors into a centralized security dashboard. You can automate privacy modes, arm surveillance routines when leaving home, and see every movement or contact event in the app — plus on the notification channels you enable (system notifications, ntfy, Telegram, or your own webhook).</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Can I cancel NEXUS+ anytime?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Yes, completely hassle-free with zero commitments. You can cancel with a single click anytime: from the in-app Account &amp; Billing settings, through our website, or directly from the order link in your billing email receipt. Your premium benefits remain active until the end of your billing cycle with zero future charges.</p></div></div>
     </div>
@@ -1178,7 +1222,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         <p>Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down. An account is required; it syncs your setup across your screens.</p>
         <div class="ft-trust-row">
           <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>On your LAN</span>
-          <span class="ft-trust-pill"><span class="ft-status-dot"></span>No analytics</span>
           <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>Account required</span>
         </div>
       </div>
@@ -1383,6 +1426,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   </div>
 </div>
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js?v=20261026e"></script>
 </body>
 </html>

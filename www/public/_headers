@@ -13,6 +13,12 @@
 /assets/*
   Cache-Control: public, max-age=86400
 
+/assets/site.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/site-boot.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /images/*
   Cache-Control: public, max-age=604800
 

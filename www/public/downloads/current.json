@@ -1,0 +1,9 @@
+{
+  "version": "1.0.15",
+  "files": {
+    "NEXUS-Setup.exe": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.14/NEXUS-Setup.exe",
+    "SHA256SUMS-Windows.txt": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.14/SHA256SUMS-Windows.txt",
+    "NEXUS-linux.deb": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.14/NEXUS-linux.deb",
+    "SHA256SUMS-Linux.txt": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.14/SHA256SUMS-Linux.txt"
+  }
+}

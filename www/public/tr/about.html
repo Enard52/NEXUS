@@ -2,6 +2,32 @@
 <html lang="tr" data-theme="light">
 <head>
 <meta charset="utf-8"/>
+<script>
+(function(){
+  try{
+    var d='light',t=null;
+    try{t=localStorage.getItem('nx-site-theme')}catch(e){}
+    if(t==='dark'||t==='light') d=t;
+    else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches) d='dark';
+    document.documentElement.setAttribute('data-theme',d);
+  }catch(e){}
+  try{
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+    var nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];
+    var reload=nav&&nav.type==='reload';
+    if(reload){
+      if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+      scrollTo(0,0);
+    }else if(location.hash){
+      document.addEventListener('DOMContentLoaded',function(){
+        var id=location.hash.slice(1);
+        var el=id&&document.getElementById(id);
+        if(el) el.scrollIntoView();
+      });
+    }
+  }catch(e){}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>NEXUS — Akıllı evin, kendi ağında, senin kontrolünde</title>
 <meta name="description" content="NEXUS; Windows, Linux ve Android için yerel-öncelikli akıllı ev uygulaması. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı."/>
@@ -72,6 +98,7 @@ html.nx-modal-open,
 html.nx-modal-open body{
   overflow:hidden !important;
   overscroll-behavior:none;
+  scrollbar-gutter:auto !important;
 }
 html[data-theme=dark]{
   --page:#0F172A; --page-grad:linear-gradient(180deg, #020617 0%, #0F172A 100%);
@@ -82,6 +109,7 @@ html[data-theme=dark]{
 *{box-sizing:border-box}
 body{
   margin:0;
+  padding-top:var(--header-h);
   font:400 16px/1.6 Inter,system-ui,-apple-system,sans-serif;
   color:var(--text);
   background:var(--page-grad);
@@ -96,8 +124,8 @@ a{color:inherit;text-decoration:none}
 .brand-svg{width:22px;height:22px;vertical-align:middle;display:inline-block;flex-shrink:0}
 
 /* Header */
-.hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  background:color-mix(in srgb,var(--surface) 78%,transparent);border-bottom:1px solid var(--border);height:var(--header-h);display:flex;align-items:center}
+.hd{position:fixed;top:0;left:0;right:0;width:100%;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:color-mix(in srgb,var(--surface) 92%,transparent);border-bottom:1px solid var(--border);height:var(--header-h);display:flex;align-items:center}
 .hd .wrap{display:flex;align-items:center;width:100%;gap:8px}
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em;flex-shrink:0}
 .logo svg{width:32px;height:32px}
@@ -163,7 +191,7 @@ html[data-theme=dark] .btn-ghost .plat-marks{background:var(--surface)}
   box-shadow:none;line-height:1.25;text-wrap:balance;max-width:100%}
 .eyebrow .icon{width:15px;height:15px;flex-shrink:0}
 h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margin:0 0 16px;font-weight:900}
-.hero-copy h1{font-size:clamp(16px,calc((100vw - 40px) / 16.8),2.45rem);line-height:1.12;letter-spacing:-.045em;margin:0;white-space:nowrap}
+.hero-copy h1{font-size:clamp(28px,7.2vw,40px);line-height:1.08;letter-spacing:-.04em;margin:0;white-space:normal;text-wrap:balance;max-width:12em}
 .grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .lead{font-size:clamp(15px,1.65vw,17.5px);color:var(--text-2);margin:0 0 22px;max-width:52ch;line-height:1.6}
 .hero-copy .lead{font-size:clamp(15px,1.7vw,19px);line-height:1.5;color:var(--text);margin:0 0 10px;max-width:46ch;font-weight:500;text-align:left}
@@ -181,17 +209,17 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 .trust .icon{color:#10B981;width:16px;height:16px;flex-shrink:0}
 @media(min-width:960px){
   .hero{padding:20px 0 28px}
-  .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:28px 40px;align-items:center;
+  .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:32px 56px;align-items:center;
     min-height:calc(100dvh - var(--header-h) - 36px)}
   .hero-copy{max-width:none}
-  .hero-copy h1{font-size:clamp(36px,4.6vw,62px);line-height:1.06;white-space:nowrap}
+  .hero-copy h1{font-size:clamp(32px,3.15vw,48px);line-height:1.08;white-space:normal;max-width:9.2em}
   .hero-display{width:fit-content;align-items:flex-start;text-align:left}
   .phone-wrapper{margin:0}
 }
 @media(max-width:959px){
   .hero{padding:20px 0 28px}
   .hero-copy{text-align:center;margin:0 auto}
-  .hero-copy h1{white-space:nowrap}
+  .hero-copy h1{white-space:normal;max-width:14em}
   .hero-copy .lead,.hero-copy .lead-sub{text-align:center;margin-left:auto;margin-right:auto}
   .hero-cta{justify-content:center}
   .trust{display:flex;flex-direction:column;align-items:center;text-align:left}
@@ -260,10 +288,13 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
    JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
    190px'e sikisirir ve okunmaz). */
-.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:transparent}
+.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:#ECE9FD;overflow:hidden}
 .phone-preview.on{display:block}
-.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;background:transparent;
-  transform-origin:top left;transform:scale(var(--nx-preview-scale,.8))}
+.phone-case.previewing .phone-screen-content{display:none}
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;background:#ECE9FD;
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.8));overflow:hidden;
+  scrollbar-width:none;-ms-overflow-style:none}
+.phone-preview-frame::-webkit-scrollbar,.phone-inner-screen::-webkit-scrollbar,.phone-preview::-webkit-scrollbar{width:0;height:0;display:none}
 .phone-case.previewing .phone-arrow{display:none}
 .phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
 .phone-mode-btn{background:transparent;border:0;border-radius:999px;
@@ -598,16 +629,19 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 .nx-modal-backdrop{
   position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
   background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
-  overflow:hidden;overscroll-behavior:none;
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;opacity:0;transition:opacity .22s ease;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
 }
+.nx-modal-backdrop::-webkit-scrollbar{width:0;height:0;display:none}
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
   background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px -12px rgba(0,0,0,.55);
-  width:100%;max-width:440px;max-height:min(92dvh, calc(100% - 24px));padding:22px 24px 20px;position:relative;
-  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
+  width:100%;max-width:440px;max-height:min(96dvh, calc(100% - 8px));padding:22px 24px 20px;position:relative;
+  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
   overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;-ms-overflow-style:none;
 }
+.nx-modal-card::-webkit-scrollbar{width:0;height:0;display:none}
 #nxAuthModal.nx-account-open .nx-modal-card{
   max-width:420px;padding:28px 18px 16px;
   background:
@@ -838,15 +872,25 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 .nx-dialog-backdrop{
   position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
   background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:10050;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .2s ease;
-  overflow:hidden;overscroll-behavior:none;
+  z-index:10050;display:none;align-items:center;justify-content:center;padding:12px;opacity:0;transition:opacity .2s ease;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
 }
+.nx-dialog-backdrop::-webkit-scrollbar{width:0;height:0;display:none}
 .nx-dialog-backdrop.open{display:flex;opacity:1}
 .nx-dialog-card{
   background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 24px 20px;
-  width:100%;max-width:380px;max-height:min(92dvh, calc(100% - 24px));text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
-  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
-  overflow-y:auto;overscroll-behavior:contain;
+  width:100%;max-width:380px;max-height:min(96dvh, calc(100% - 8px));text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
+  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
+}
+.nx-dialog-card::-webkit-scrollbar{width:0;height:0;display:none}
+.nx-modal-backdrop,.nx-modal-backdrop *,
+.nx-dialog-backdrop,.nx-dialog-backdrop *{
+  scrollbar-width:none !important;-ms-overflow-style:none !important;
+}
+.nx-modal-backdrop::-webkit-scrollbar,.nx-modal-backdrop *::-webkit-scrollbar,
+.nx-dialog-backdrop::-webkit-scrollbar,.nx-dialog-backdrop *::-webkit-scrollbar{
+  width:0 !important;height:0 !important;display:none !important;background:transparent !important;
 }
 .nx-dialog-backdrop.open .nx-dialog-card{transform:scale(1)}
 .nx-dialog-icon{
@@ -953,8 +997,8 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       
         <div class="card rv">
           <div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg></div>
-          <h3>Telefon ve web</h3>
-          <p>Android uygulaması ve web uygulaması aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider.</p>
+          <h3>Telefon</h3>
+          <p>Android uygulaması aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider.</p>
         </div>
       
         <div class="card rv">
@@ -984,7 +1028,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         <p>Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. NEXUS için hesap gerekir; giriş yaptıktan sonra kurulumun kendi hesabına senkronize olur. Cihaz komutları yerel ağında kalır.</p>
         <div class="ft-trust-row">
           <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Yerel ağ</span>
-          <span class="ft-trust-pill"><span class="ft-status-dot"></span>Analitik yok</span>
           <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>Hesap gerekir</span>
         </div>
       </div>
@@ -1189,6 +1232,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   </div>
 </div>
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js?v=20261026e"></script>
 </body>
 </html>

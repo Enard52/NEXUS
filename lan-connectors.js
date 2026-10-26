@@ -828,11 +828,12 @@
         };
       });
     },
+    // Tapo yerel API'si şifreli el sıkışma ister. Komut gitmeden başarı dönmek cihaz açılmış gibi gösterir.
     read: function () {
-      return Promise.resolve({ switch: true });
+      return Promise.reject(new Error("Tapo yerel kontrolü bu sürümde kullanılamıyor."));
     },
-    write: function (device, capability, value) {
-      return Promise.resolve({ success: true, capability: capability, value: value });
+    write: function () {
+      return Promise.reject(new Error("Tapo yerel kontrolü bu sürümde kullanılamıyor."));
     },
   };
 

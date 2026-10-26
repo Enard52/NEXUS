@@ -55,6 +55,21 @@
   // Hemen çalıştır
   enforceAuth();
 
+  // Site telefonu yenilenince aynı ekranda kalsın. Yalnızca sayfa adı gider.
+  if (isPreviewMode && window.parent && window.parent !== window) {
+    var previewPage = page;
+    var previewIndex = '';
+    try {
+      var previewQuery = new URLSearchParams(window.location.search);
+      if (/^\d+$/.test(previewQuery.get('i') || '')) previewIndex = previewQuery.get('i');
+    } catch (e) {}
+    if (/^stitch-[a-z0-9-]+\.html$/.test(previewPage) && !isPublicPage) {
+      try {
+        window.parent.postMessage({ source: 'nexus-preview', page: previewPage, index: previewIndex }, '*');
+      } catch (e) {}
+    }
+  }
+
   // Veri İzolasyon (Ön-ek / Prefix) Fonksiyonları
   window.nexusGetItem = function(key) {
     if (isPreviewMode) {
@@ -148,16 +163,45 @@
 
   if (isPreviewMode) {
     document.documentElement.classList.add('nexus-preview');
+    if (!document.getElementById('nexus-preview-scroll')) {
+      var hideBar = document.createElement('style');
+      hideBar.id = 'nexus-preview-scroll';
+      hideBar.textContent = 'html.nexus-preview,html.nexus-preview body,html.nexus-preview *{scrollbar-width:none!important;-ms-overflow-style:none!important;scrollbar-gutter:auto!important}' +
+        'html.nexus-preview::-webkit-scrollbar,html.nexus-preview body::-webkit-scrollbar,html.nexus-preview *::-webkit-scrollbar{width:0!important;height:0!important;background:transparent!important;display:none!important}' +
+        '#nexus-preview-toast{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:36px 22px;background:rgba(15,23,42,.48);font-family:Inter,system-ui,sans-serif}' +
+        '#nexus-preview-toast .nx-preview-card{width:min(340px,100%);background:#fff;color:#0f172a;border-radius:28px;padding:32px 26px 28px;text-align:center;box-shadow:0 24px 60px rgba(15,23,42,.35)}' +
+        '#nexus-preview-toast .nx-preview-kicker{margin:0 0 12px;font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#4C7DFF}' +
+        '#nexus-preview-toast .nx-preview-title{margin:0;font-size:32px;font-weight:760;line-height:1.15;letter-spacing:-.03em}' +
+        '#nexus-preview-toast .nx-preview-text{margin:14px 0 0;font-size:20px;font-weight:560;line-height:1.4;color:#475569}' +
+        'html.dark #nexus-preview-toast .nx-preview-card{background:#0f172a;color:#f8fafc;border:1px solid rgba(255,255,255,.1)}' +
+        'html.dark #nexus-preview-toast .nx-preview-text{color:#cbd5e1}';
+      (document.head || document.documentElement).appendChild(hideBar);
+    }
     function previewToast() {
       var old = document.getElementById('nexus-preview-toast');
       if (old) old.remove();
+      var t = window.nexusT || function (tr) { return tr; };
       var box = document.createElement('div');
       box.id = 'nexus-preview-toast';
       box.setAttribute('role', 'status');
-      box.style.cssText = 'position:fixed;left:50%;bottom:88px;transform:translateX(-50%);z-index:2147483647;max-width:88vw;padding:10px 14px;border-radius:14px;background:rgba(15,23,42,.92);color:#fff;font:650 13px/1.35 Inter,system-ui,sans-serif;text-align:center;box-shadow:0 10px 28px rgba(0,0,0,.28)';
-      box.textContent = (window.nexusT ? window.nexusT('Bu bir önizleme. Cihaz, ödeme ve hesap işlemleri uygulamada çalışır.', 'This is a preview. Device, billing and account actions run in the app.') : 'Bu bir önizleme. Cihaz, ödeme ve hesap işlemleri uygulamada çalışır.');
+      var card = document.createElement('div');
+      card.className = 'nx-preview-card';
+      var kicker = document.createElement('p');
+      kicker.className = 'nx-preview-kicker';
+      kicker.textContent = t('Önizleme', 'Preview');
+      var title = document.createElement('p');
+      title.className = 'nx-preview-title';
+      title.textContent = t('Bu bir önizleme', 'This is a preview');
+      var text = document.createElement('p');
+      text.className = 'nx-preview-text';
+      text.textContent = t('Cihaz ekleme, ödeme ve hesap burada çalışmaz. Bunlar uygulamada yapılır.', 'Adding devices, billing and account actions do not run here. They run in the app.');
+      card.appendChild(kicker);
+      card.appendChild(title);
+      card.appendChild(text);
+      box.appendChild(card);
+      box.addEventListener('click', function () { box.remove(); });
       document.body.appendChild(box);
-      setTimeout(function () { if (box.parentNode) box.remove(); }, 2600);
+      setTimeout(function () { if (box.parentNode) box.remove(); }, 4600);
     }
     function previewAllowed(el) {
       if (!el || !el.closest) return false;

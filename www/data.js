@@ -1262,10 +1262,10 @@ function renderDevices() {
                 bg = 'bg-blue-50';
             }
             
-            // Eklenen cihazlar kendi panelinin ortak kontrol ekranını açar
+            // Eklenen cihazlar kendi kontrol ekranını açar
             const pairedIndex = /^paired-(\d+)$/.test(String(device.id)) ? String(device.id).slice(7) : null;
             const tag = pairedIndex !== null ? 'a' : 'article';
-            const link = pairedIndex !== null ? ` href="stitch-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')} kontrol ekranı"` : '';
+            const link = pairedIndex !== null ? ` href="stitch-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')}"` : '';
             // Cihazın ürün görseli (katalogda seçilen ya da ağda bulunan); görsel yoksa simge gösterilir
             let imgSrc = '';
             if (pairedIndex !== null && window.NX && typeof window.NX.imageUrl === 'function') {

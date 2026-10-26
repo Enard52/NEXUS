@@ -306,9 +306,12 @@
     delete LAN_ERRORS[index];
     window.nexusLan.write(device, capability, value).then(function () {
       LAN_ONLINE[index] = true;
-    }).catch(function () {
+    }).catch(function (err) {
       LAN_ONLINE[index] = false;
-      LAN_ERRORS[index] = "Komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.";
+      var msg = err && err.message ? String(err.message) : "";
+      LAN_ERRORS[index] = /kullanılamıyor|desteklenmiyor|yalnızca masaüstü/.test(msg)
+        ? msg
+        : "Komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.";
       notify(index);
     });
   }

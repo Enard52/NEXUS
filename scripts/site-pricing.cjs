@@ -1,4 +1,4 @@
-﻿// Fiyat bölümünü gerçek NEXUS+ planına (Whop) göre günceller. Idempotent.
+// Fiyat bölümünü gerçek NEXUS+ planına (Whop) göre günceller. Idempotent.
 // Kullanım: node scripts/site-pricing.cjs <index.html, tr/index.html, light.html, tr/light.html içeren klasör>
 const fs = require("fs");
 const path = require("path");
@@ -77,7 +77,7 @@ const T = {
   tr: {
     heading: [
       "Bugün ücretsiz. Premium hazır olduğunda.",
-      "Ücretsiz kullan. Daha fazlası için NEXUS+.",
+      "Ücretsiz kullan. Daha fazlası için NEXUS+",
     ],
     copy: [
       "NEXUS&#39;un bugün yaptığı her şey ücretsiz; cihaz sınırı ve hesap ücreti yok. Premium ve Aile planları yolda.",

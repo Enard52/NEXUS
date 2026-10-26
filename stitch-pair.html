@@ -219,12 +219,7 @@
             <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Eklenmiş Cihazlar</h3>
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mt-0.5 dark:text-slate-300">Hesabına bağlı gerçek kayıtlar</p>
           </div>
-          <div class="flex items-center gap-2 shrink-0">
-            <a href="stitch-panels.html" class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-[11px] font-bold text-slate-600 active:scale-[0.98] dark:border-slate-700 dark:text-slate-300">
-              <i data-lucide="layout-grid" class="text-sm"></i> Paneller
-            </a>
-            <span id="paired-device-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-200">0 cihaz</span>
-          </div>
+          <span id="paired-device-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-200">0 cihaz</span>
         </div>
         <div id="paired-devices-list" class="space-y-3"></div>
       </section>
@@ -579,9 +574,9 @@
       return false;
     }
 
-    function panelsLinkHtml() {
-      return '<a href="stitch-panels.html" class="mt-1 inline-flex items-center gap-2 rounded-full bg-nexusPurple px-4 py-2 text-xs font-bold text-white active:scale-[0.98]">' +
-        '<i data-lucide="layout-grid" class="text-sm"></i> Panelleri aç</a>';
+    function homeLinkHtml() {
+      return '<a href="stitch-home.html" class="mt-1 inline-flex items-center gap-2 rounded-full bg-nexusPurple px-4 py-2 text-xs font-bold text-white active:scale-[0.98]">' +
+        '<i data-lucide="home" class="text-sm"></i> Ana sayfayı aç</a>';
     }
 
     function addScannedDevice() {
@@ -594,8 +589,8 @@
         found.entity = entity;
       }
       storeFoundDevice(found);
-      setScanStatus("Eklendi. Kontrol panellerinden yönetebilirsin.", "ok");
-      document.getElementById("lan-scan-result").innerHTML = panelsLinkHtml();
+      setScanStatus("Eklendi. Ana sayfadan yönetebilirsin.", "ok");
+      document.getElementById("lan-scan-result").innerHTML = homeLinkHtml();
       if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
@@ -625,7 +620,7 @@
             });
             if (ok) added += 1;
           });
-          status.textContent = lights.length ? added + " lamba eklendi. Kontrol panellerinden yönetebilirsin." : "Köprüye bağlı lamba bulunamadı.";
+          status.textContent = lights.length ? added + " lamba eklendi. Ana sayfadan yönetebilirsin." : "Köprüye bağlı lamba bulunamadı.";
           setScanStatus("Hue köprüsü bağlandı.", "ok");
         });
       }).catch(function (e) {
@@ -701,7 +696,7 @@
       if (!haConn || !haConn.token) return;
       var n = 0;
       haEntities.forEach(function (it) { if (storeFoundDevice(haDeviceRecord(it))) n += 1; });
-      document.getElementById("ha-status").textContent = n + " cihaz eklendi. Kontrol panellerinden yönetebilirsin.";
+      document.getElementById("ha-status").textContent = n + " cihaz eklendi. Ana sayfadan yönetebilirsin.";
       renderHaEntities();
     }
 
@@ -781,7 +776,7 @@
         },
       })
         .then(function (all) {
-          if (all.length) setScanStatus(all.length + " cihaz bulundu. Ekle'ye dokunarak panellere taşıyabilirsin.", "ok");
+          if (all.length) setScanStatus(all.length + " cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.", "ok");
           else setScanStatus(autoScanStop ? "Tarama durduruldu." : "Bu ağda desteklenen bir cihaz bulunamadı. Cihazın açık ve aynı Wi-Fi'da olduğundan emin ol; olmazsa aşağıdan kataloğu ya da QR / kurulum kodunu kullan.", autoScanStop ? "" : "error");
           renderSubnetFindings();
         })

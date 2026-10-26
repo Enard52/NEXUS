@@ -29,7 +29,7 @@
     "stitch-login", "stitch-register", "stitch-forgot-password", "stitch-onboarding", "index", ""
   ];
   // Geniş içerikli (ızgara/pano) sayfalar
-  var WIDE = ["stitch-home.html", "stitch-smart.html", "stitch-discover.html", "stitch-panels.html", "stitch-integrations.html",
+  var WIDE = ["stitch-home.html", "stitch-smart.html", "stitch-discover.html", "stitch-integrations.html",
     "stitch-pair.html", "stitch-map.html", "stitch-household.html", "stitch-skills.html", "stitch-multi-video.html",
     "stitch-cards.html", "stitch-energy.html", "stitch-device.html", "stitch-chat.html", "stitch-plus.html", "stitch-billing.html"];
 
@@ -73,7 +73,7 @@
 
   // Alt sayfaların hangi menü öğesine ait olduğu
   var PARENT = {
-    "stitch-device.html": "panels", "stitch-integrations.html": "pair", "stitch-scan.html": "pair", "stitch-setup-code.html": "pair",
+    "stitch-device.html": "home", "stitch-integrations.html": "pair", "stitch-scan.html": "pair", "stitch-setup-code.html": "pair",
     "stitch-energy-devices.html": "energy", "stitch-energy-strategy.html": "energy",
     "stitch-smart-app-detail.html": "smart", "stitch-skills.html": "smart", "stitch-program.html": "smart", "stitch-scenario-settings.html": "smart",
     "stitch-cards.html": "home", "stitch-map.html": "home", "stitch-lighting-master.html": "discover", "stitch-cleaning-start.html": "discover",

@@ -29,6 +29,8 @@
       '.nx-dlg-btn:active{transform:scale(.98)}' +
       '.nx-dlg-primary{color:#fff;background:linear-gradient(135deg,#6f9bff,#4C7DFF 60%,#8b7bff);box-shadow:0 12px 24px -12px rgba(76,125,255,.9)}' +
       '.nx-dlg-secondary{background:transparent;color:#64748b}' +
+      '.nx-dlg-input{width:100%;box-sizing:border-box;min-height:48px;margin:0 0 16px;padding:0 14px;border-radius:14px;border:1px solid #e2e8f0;background:#f8fafc;color:#0f172a;font:600 15px/1.2 Inter,system-ui,sans-serif}' +
+      'html.dark .nx-dlg-input,html[data-theme="dark"] .nx-dlg-input{background:#0f172a;border-color:#334155;color:#f1f5f9}' +
       '.nx-dlg-list{display:flex;flex-direction:column;gap:8px;margin:0 0 16px}' +
       '.nx-dlg-opt{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;padding:0 16px;border-radius:14px;border:1px solid #e2e8f0;background:#f8fafc;color:#0f172a;font-size:15px;font-weight:600;cursor:pointer;text-align:left}' +
       'html.dark .nx-dlg-opt,html[data-theme="dark"] .nx-dlg-opt{background:#0f172a;border-color:#334155;color:#f1f5f9}' +
@@ -76,6 +78,18 @@
       card.appendChild(msg);
     }
 
+    var field = null;
+    if (opts.input) {
+      field = document.createElement('input');
+      field.className = 'nx-dlg-input';
+      field.type = 'text';
+      field.maxLength = opts.input.maxLength || 60;
+      field.placeholder = opts.input.placeholder || '';
+      field.value = opts.input.value || '';
+      field.setAttribute('aria-label', opts.title || 'NEXUS');
+      card.appendChild(field);
+    }
+
     var actions = document.createElement('div');
     actions.className = 'nx-dlg-actions';
 
@@ -85,9 +99,10 @@
       b.className = 'nx-dlg-btn ' + cls;
       b.textContent = cfg.label || 'Tamam';
       b.addEventListener('click', function () {
+        var value = field ? field.value : undefined;
         close(back);
         current = null;
-        if (typeof cfg.onClick === 'function') cfg.onClick();
+        if (typeof cfg.onClick === 'function') cfg.onClick(value);
       });
       return b;
     }
@@ -124,9 +139,17 @@
     });
     document.body.appendChild(back);
     document.addEventListener('keydown', onKey);
+    if (field && opts.primary) {
+      field.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        var primary = actions.querySelector('.nx-dlg-primary');
+        if (primary) primary.click();
+      });
+    }
     current = back;
-    var first = actions.querySelector('button');
-    if (first) first.focus();
+    if (field) { field.focus(); field.select(); }
+    else { var first = actions.querySelector('button'); if (first) first.focus(); }
     return back;
   };
 })();

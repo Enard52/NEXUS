@@ -1,20 +1,3 @@
-// Tema: sistem tercihi + kullanıcı seçimi
-(function(){
-  var d='light';
-  var t=null;
-  try{t=localStorage.getItem('nx-site-theme')}catch(e){}
-  if(t==='dark'||t==='light') d=t;
-  else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches) d='dark';
-  document.documentElement.setAttribute('data-theme',d);
-})();
-
-// Yenilemede tarayıcı eski kaydırmayı geri yüklemesin; hash yoksa tepeye in.
-if('scrollRestoration' in history) history.scrollRestoration='manual';
-if(!location.hash){
-  window.scrollTo(0,0);
-  document.addEventListener('DOMContentLoaded',function(){ if(!location.hash) window.scrollTo(0,0); });
-}
-
 function nxToggleTheme(){
   var d=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',d);
@@ -854,10 +837,7 @@ function nxPrevShot(){
 }
 
 function nxResetShotTimer(){
-  if(nxShotTimer)clearInterval(nxShotTimer);
-  nxShotTimer=setInterval(function(){
-    nxShowShot(nxCurrentShot+1);
-  },4500);
+  if(nxShotTimer){ clearInterval(nxShotTimer); nxShotTimer=null; }
 }
 
 // Canlı mobil uygulama ön izlemesi: doğrudan Ana Sayfada (stitch-home) başlar
@@ -888,43 +868,59 @@ function nxPreviewLooksEmpty(frame){
     return false;
   }
 }
+function nxPreviewPage(){
+  var page='stitch-home.html';
+  var extra='';
+  try{
+    var saved=sessionStorage.getItem('nxPreviewPage')||'';
+    if(/^stitch-[a-z0-9-]+\.html$/.test(saved)) page=saved;
+    var idx=sessionStorage.getItem('nxPreviewIndex')||'';
+    if(/^\d+$/.test(idx)) extra='&i='+idx;
+  }catch(e){}
+  return page+'?preview=1'+extra;
+}
+var nxPreviewBooted=false;
 function nxBootPreview(){
+  if(nxPreviewBooted) return;
+  nxPreviewBooted=true;
   var frame=document.getElementById('phonePreviewFrame');
   var shots=document.querySelector('.phone-screen-content');
-  var local=/^(localhost|127.0.0.1)$/.test(location.hostname);
-  if(frame){
-    var d=frame.getAttribute('data-src');
-    if(d && !frame.getAttribute('src')) frame.setAttribute('src',d);
-  }
+  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   nxScalePreview();
   if(local){
     nxUseShotFallback();
     return;
   }
   if(!frame) return;
-  frame.style.opacity='0';
-  var settled=false;
-  function ok(){
-    if(settled) return;
-    settled=true;
-    frame.style.opacity='1';
-    if(shots) shots.style.display='none';
-  }
-  function fail(){
-    if(settled) return;
-    settled=true;
-    nxUseShotFallback();
-  }
-  frame.addEventListener('load',function(){
-    if(nxPreviewLooksEmpty(frame)) fail();
-    else ok();
-  });
+  var base=frame.getAttribute('data-src')||'';
+  var root=base.replace(/stitch-[a-z0-9-]+\.html.*$/,'');
+  if(!root) return;
+  if(shots) shots.style.display='none';
+  frame.setAttribute('src', root+nxPreviewPage());
+  function fail(){ nxUseShotFallback(); }
   frame.addEventListener('error',fail);
   setTimeout(function(){
     if(nxPreviewLooksEmpty(frame)) fail();
-    else ok();
-  },2200);
+  },4000);
 }
+window.addEventListener('message',function(e){
+  var frame=document.getElementById('phonePreviewFrame');
+  if(!frame) return;
+  var base=frame.getAttribute('data-src')||'';
+  var root=base.replace(/stitch-[a-z0-9-]+\.html.*$/,'');
+  if(!root || e.origin!==root.replace(/\/$/,'')) return;
+  var data=e.data||{};
+  if(data.source!=='nexus-preview') return;
+  var page=String(data.page||'');
+  if(!/^stitch-[a-z0-9-]+\.html$/.test(page)) return;
+  var idx=String(data.index||'');
+  if(idx && !/^\d+$/.test(idx)) return;
+  try{
+    sessionStorage.setItem('nxPreviewPage', page);
+    if(idx) sessionStorage.setItem('nxPreviewIndex', idx);
+    else sessionStorage.removeItem('nxPreviewIndex');
+  }catch(err){}
+});
 
 function nxSetPhoneMode(mode){
   nxBootPreview();
@@ -932,14 +928,11 @@ function nxSetPhoneMode(mode){
 
 window.addEventListener('resize',nxScalePreview);
 document.addEventListener('DOMContentLoaded',nxBootPreview);
-setTimeout(nxBootPreview,100);
 
 // Telefon dokunma, sürükleme ve tıklama yönetimi
 document.addEventListener('DOMContentLoaded',function(){
   var mockup=document.getElementById('phoneMockup');
   if(mockup){
-    nxResetShotTimer();
-
     mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;if(nxShotTimer)clearInterval(nxShotTimer);});
     mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxResetShotTimer();});
 
@@ -1003,18 +996,36 @@ document.addEventListener('DOMContentLoaded',function(){
   // Giriş Durumu Güncelleme
   nxUpdateNavAuth();
 
-  // GitHub Sürüm Etiketi Çekimi (nexus-releases deposu)
-  fetch('https://api.github.com/repos/Enard52/nexus-releases/releases/latest')
-    .then(function(r){return r.ok?r.json():null;})
-    .then(function(d){
-      if(!d||!d.tag_name)return;
-      var tag=String(d.tag_name);
-      var v=tag.indexOf('v')===0?tag.slice(1):tag;
-      document.querySelectorAll('[data-nexus-ver]').forEach(function(el){
-        el.textContent='v'+v;
-      });
-    })
-    .catch(function(){});
+  // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
+  // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
+  var NX_VER="1.0.15";
+  function nxVerLess(a,b){
+    var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
+    var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
+    for(var i=0;i<3;i++){var da=pa[i]||0,db=pb[i]||0;if(da!==db)return da<db;}
+    return false;
+  }
+  function nxApplyVer(tag){
+    var v=String(tag||'');
+    if(v.indexOf('v')===0)v=v.slice(1);
+    if(!v)return;
+    document.querySelectorAll('[data-nexus-ver]').forEach(function(el){el.textContent='v'+v;});
+  }
+  Promise.all([
+    fetch('https://api.github.com/repos/Enard52/nexus-releases/releases/latest').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}),
+    fetch('/downloads/current.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+  ]).then(function(pair){
+    var gh=pair[0], mirror=pair[1];
+    var ghVer=gh&&gh.tag_name?String(gh.tag_name).replace(/^v/,''):'';
+    var ghReady=!!ghVer && !nxVerLess(ghVer, NX_VER);
+    if(ghReady) nxApplyVer(gh.tag_name);
+    if(ghReady || !mirror || !mirror.files) return;
+    var names=mirror.files;
+    document.querySelectorAll('a[href*="nexus-releases/releases/latest/download/"]').forEach(function(a){
+      var file=decodeURIComponent((a.getAttribute('href')||'').split('/').pop().split('?')[0]);
+      if(names[file]) a.href=names[file];
+    });
+  });
 
   // ESC Tuşu ile Modal Kapatma
   document.addEventListener('keydown',function(e){

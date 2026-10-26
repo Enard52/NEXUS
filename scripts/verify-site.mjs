@@ -494,11 +494,13 @@ for (const [label, file, canonical] of [
       html.indexOf("cloud-config.js") > -1 && html.indexOf("cloud-config.js") < html.indexOf("assets/site.js")
     );
   }
-  // Giriş kısa yolları web uygulamasına gitmeli (elle kopyalanmış adresler bayatlıyordu).
+  // Giriş kısa yolu tarayıcı uygulamasına gitmez; kurulum bölümüne iner.
   for (const f of ["login.html", "tr/login.html"]) {
     if (!existsSync(join(PUB, f))) continue;
     const html = readFileSync(join(PUB, f), "utf8");
-    check(`${f}: ${APP_URL} adresine yönlendiriyor`, html.includes(APP_URL));
+    const downloads = f.startsWith("tr/") ? "/tr/#downloads" : "/#downloads";
+    check(`${f}: web uygulamasına yönlendirmiyor`, !html.includes(APP_URL));
+    check(`${f}: indirme bölümüne gidiyor`, html.includes(downloads));
     check(`${f}: noindex`, /robots" content="noindex/.test(html));
   }
 }
@@ -707,7 +709,7 @@ for (const [label, url, lang, price, saveText] of [
   );
 
   const hrefs = await pg.$$eval("a", (els) => els.map((e) => e.href));
-  check(`${label}: web uygulaması bağlantısı tıklanabilir`, hrefs.some((h) => h.startsWith(APP_URL)), APP_URL);
+  check(`${label}: tarayıcı uygulamasına giden bağlantı yok`, !hrefs.some((h) => h.startsWith(APP_URL)));
 
   // Fiyat geçişi: yıllık seçilince gerçek yıllık rakam + etiket + ödeme bağlantısı.
   await pg.click("#billingYearly");
@@ -1053,7 +1055,7 @@ if (LIVE) {
   const htmlUrl = await head("/about.html");
   check("canlı: .html adresi temiz URL'e yönleniyor", [301, 302, 307, 308].includes(htmlUrl.status) && htmlUrl.loc.includes("/about"), `${htmlUrl.status} → ${htmlUrl.loc}`);
   const login = await head("/login");
-  check("canlı: /login web uygulamasına yönlendiriyor", login.status === 200 && login.txt.includes(APP_URL), String(login.status));
+  check("canlı: /login kurulum bölümüne gidiyor", login.status === 200 && !login.txt.includes(APP_URL) && login.txt.includes("/#downloads"), String(login.status));
   // Sitenin vaat ettiği kurulum dosyaları ve sağlama değerleri release'de duruyor mu.
   const DL = "https://github.com/Enard52/nexus-releases/releases/latest/download/";
   const dlLinks = [

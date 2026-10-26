@@ -127,20 +127,12 @@
 
     function hero(device, extraClass, halo) {
       var status = NX.statusOf(device, INDEX);
-      var panel = NX.panelOf(device);
       return '<section class="nx-card">' +
         '<div class="flex items-center justify-between gap-2">' +
         '<span class="nx-badge ' + status.badge + '">' + esc(status.text) + "</span>" +
         (device.room ? '<span class="nx-sub truncate flex items-center gap-1">' + icon("map-pin", "w-3.5 h-3.5") + esc(device.room) + "</span>" : "") + "</div>" +
         '<div class="nx-hero ' + (extraClass || "") + '"' + (halo ? ' style="--halo:' + halo + '"' : "") + '><div class="halo"></div>' +
-        '<img src="' + NX.imageUrl(device) + '" alt="' + esc(device.name) + '" decoding="async"></div>' +
-        '<a href="javascript:void(0)" onclick="openPanel(' + q(panel.id) + ')" class="flex items-center justify-center gap-1.5 nx-sub font-semibold">' +
-        icon(panel.icon, "w-4 h-4") + esc(panel.label) + " paneli" + icon("chevron-right", "w-3.5 h-3.5") + "</a></section>";
-    }
-
-    function openPanel(id) {
-      try { sessionStorage.setItem("nexusPanelFilter", id); } catch (e) {}
-      location.href = "stitch-panels.html";
+        '<img src="' + NX.imageUrl(device) + '" alt="' + esc(device.name) + '" decoding="async"></div></section>';
     }
 
     // ---------- şablonlar: aynı işlevi gören cihazlar aynı ekranı paylaşır ----------
@@ -243,12 +235,10 @@
     // Kadranlı/kilitli ekranlarda ürün görseli küçük başlık kartında durur
     function miniHeader(d) {
       var status = NX.statusOf(d, INDEX);
-      var panel = NX.panelOf(d);
       return '<section class="nx-card flex items-center gap-3">' +
         '<img class="device-thumb w-14 h-14 object-contain shrink-0" src="' + NX.imageUrl(d) + '" alt="">' +
         '<div class="min-w-0 flex-1"><span class="nx-badge ' + status.badge + '">' + esc(status.text) + "</span>" +
-        '<p class="nx-sub mt-1 truncate">' + esc(d.room || "Oda seçilmedi") + " · " +
-        '<a href="javascript:void(0)" onclick="openPanel(' + q(panel.id) + ')" class="font-semibold text-[#4C7DFF]">' + esc(panel.label) + "</a></p></div></section>";
+        '<p class="nx-sub mt-1 truncate">' + esc(d.room || "Oda seçilmedi") + "</p></div></section>";
     }
 
     T.lock = function (d, st) {
@@ -425,7 +415,6 @@
 
     // ---------- bilgi ve yönetim ----------
     function infoCard(d) {
-      var panel = NX.panelOf(d);
       var lan = d.host && d.protocol && d.protocol !== "unknown";
       var conn = lan ? "Yerel ağ · " + (d.brand || d.protocol) + (d.host ? " (" + d.host + ")" : "") : "Katalogdan eklendi";
       var nameRow = renaming
@@ -460,7 +449,6 @@
 
       return '<section id="device-info" class="nx-card scroll-mt-4"><h2 class="nx-h mb-1">Cihaz bilgileri</h2>' + nameRow +
         '<div class="nx-row"><div><p class="d">Oda</p><p class="t">' + esc(d.room || "Seçilmedi") + "</p></div></div>" +
-        '<div class="nx-row"><div><p class="d">Kontrol paneli</p><p class="t">' + esc(panel.label) + "</p></div></div>" +
         '<div class="nx-row"><div><p class="d">Bağlantı</p><p class="t truncate">' + esc(conn) + "</p></div></div>" +
         '<div class="nx-row"><div class="min-w-0"><p class="d">Fabrika sıfırlama</p><p class="t">' + esc(resetHint(d)) + "</p></div></div>" +
         remove + "</section>";
@@ -470,7 +458,7 @@
     function saveName() { var i = document.getElementById("rename-input"); if (i) NX.renameDevice(INDEX, i.value); renaming = false; render(); }
     function askRemove() { confirmRemove = true; render(); }
     function cancelRemove() { confirmRemove = false; render(); }
-    function doRemove() { NX.removeDevice(INDEX); location.replace("stitch-panels.html"); }
+    function doRemove() { NX.removeDevice(INDEX); location.replace("stitch-home.html"); }
 
     function set(field, value) { NX.setField(INDEX, field, value); render(); }
     function feed() { set("lastFed", new Date().toLocaleTimeString(window.nexusLocale || "tr-TR", { hour: "2-digit", minute: "2-digit" })); }
@@ -483,7 +471,7 @@
         document.getElementById("device-title").textContent = "Cihaz";
         main.innerHTML = '<div class="nx-empty mt-10"><p class="text-base font-bold">Cihaz bulunamadı</p>' +
           '<p class="text-sm text-slate-500 mt-1 dark:text-slate-300">Kaldırılmış ya da başka bir hesapta olabilir.</p>' +
-          '<a href="stitch-panels.html" class="nx-empty__cta">Kontrol Panellerine dön</a></div>';
+          '<a href="stitch-home.html" class="nx-empty__cta">Ana sayfaya dön</a></div>';
         bar.classList.add("hidden");
         if (typeof lucide !== "undefined") lucide.createIcons();
         return;
