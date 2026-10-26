@@ -1,9 +1,8 @@
-name: Web ve site yayını
+name: Site yayını
 
-# main'e push edilince web uygulamasını (Cloudflare Pages: nexus-web-jre) ve tanıtım sitesini (Enard52.github.io -> nexus-smarthome)
-# kendiliğinden yayınlar. Gizli anahtarlar yoksa ilgili adım atlanır (hata vermez).
-# Gerekli: CLOUDFLARE_API_TOKEN (Pages düzenleme izni), SITE_REPO_TOKEN (site deposuna yazma izni). scripts/setup-automation.ps1 kurar.
-# Web uygulamasının hesap/cihaz senkronu için depo değişkenleri: NEXUS_SUPABASE_URL, NEXUS_SUPABASE_ANON_KEY.
+# main'e push edilince yalnız tanıtım sitesini (Enard52.github.io -> nexus-smarthome) yayınlar.
+# Web uygulaması canlıya çıkmaz. Gizli anahtar yoksa site adımı atlanır (hata vermez).
+# Gerekli: SITE_REPO_TOKEN (site deposuna yazma izni). scripts/setup-automation.ps1 kurar.
 on:
   push:
     branches: [main]
@@ -26,32 +25,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  web:
-    runs-on: ubuntu-latest
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: 24c5d9c4db354c0a3173febb9b7af3bd
-      NEXUS_SUPABASE_URL: ${{ vars.NEXUS_SUPABASE_URL }}
-      NEXUS_SUPABASE_ANON_KEY: ${{ vars.NEXUS_SUPABASE_ANON_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      # cloud-config.js gitignore'da; CI'de olmazsa yayınlanan uygulama "yerel mod"a düşer
-      # ve hesap/cihaz senkronu hiç çalışmaz. Değerler depo değişkenlerinden gelir.
-      - name: Bulut yapılandırmasını üret
-        run: node scripts/ensure-cloud-config.mjs
-      - name: www klasörünü kaynaklardan eşitle
-        run: node scripts/sync-www.mjs
-      - name: Web uygulamasını yayınla
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then echo "::notice::CLOUDFLARE_API_TOKEN yok; web yayını atlandı."; exit 0; fi
-          mkdir -p _stage && rsync -a --exclude public www/ _stage/
-          # Cloudflare'de PROJE adı "nexus-web"; ÜRETİM ALANI adı nexus-web-jre.pages.dev.
-          # Ölçüldü (wrangler pages project list): bu hesapta "nexus-web-jre" diye bir proje
-          # yok — o adla deploy hiç yayınlayamıyordu, bu yüzden alan günlerdir bayat kaldı.
-          npx --yes wrangler@4 pages deploy _stage --project-name nexus-web --branch main --commit-dirty=true
   site:
     runs-on: ubuntu-latest
     env:

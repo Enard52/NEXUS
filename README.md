@@ -1,6 +1,6 @@
 # NEXUS — local-first smart home / yerel-öncelikli akıllı ev
 
-Cihazlarınla yerel ağda konuşan tek uygulama; hub veya bulut ücreti gerektirmez. Windows · Linux · Android · Web (PWA).
+Cihazlarınla yerel ağda konuşan tek uygulama; hub veya bulut ücreti gerektirmez. Windows · Linux · Android. Web uygulaması yayında değil.
 
 > **Temel kural:** uygulama asla rol yapmaz. Gerçek cihaz durumu, gerçekten çalışan otomasyonlar, dürüst enerji rakamları. Henüz desteklenmeyen şey arayüzde açıkça söylenir (`CLAUDE.md`).
 
@@ -8,7 +8,7 @@ Cihazlarınla yerel ağda konuşan tek uygulama; hub veya bulut ücreti gerektir
 
 ```
 depo kökü (tek kaynak)               üretilen kopyalar — elle düzenlenmez
-├─ stitch-*.html   62 ekran    →  www/  (sync-www.mjs)        → web uygulaması (Cloudflare Pages: nexus-web-jre)
+├─ stitch-*.html   62 ekran    →  www/  (sync-www.mjs)        → masaüstü ve Android ile aynı arayüz (ayrı site olarak yayınlanmaz)
 ├─ *.js (theme, data, device-    →  desktop/app (prepare-app)  → Electron (nexus:// protokolü)
 │  controls, lan-connectors,     →  android assets (cap sync)  → Capacitor APK (imzalı)
 │  automation-engine.js)
@@ -42,7 +42,7 @@ node scripts/verify-site.mjs                   # site E2E (Playwright)
 
 ## Yayın akışı
 
-- `main`'e push → site + web uygulaması otomatik (`web-deploy.yml`).
+- `main`'e push → yalnız tanıtım sitesi (`web-deploy.yml`). Web uygulaması yayınlanmaz.
 - `v*` etiketi → masaüstü + Android derlemeleri [nexus-releases](https://github.com/Enard52/nexus-releases)'e (sağlama + SBOM: `release-manifest.mjs`). Sürüm artırma: `scripts/bump-version.mjs`.
 - Bulut ayarları: `cloud-config.js` yerelde, Git'te yok (örnek: `cloud-config.example.js`).
 

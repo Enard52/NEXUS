@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync, existsSync, cpSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { content, brand, priceFor, PRICES, CHECKOUT_URLS, APP_URL, MANAGE_URL } from './site-content.mjs';
+import { content, brand, priceFor, PRICES, CHECKOUT_URLS, MANAGE_URL } from './site-content.mjs';
 import { LEGAL_DOCS } from './site-legal-content.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -1888,8 +1888,8 @@ function nxResetShotTimer(){
   if(nxShotTimer){ clearInterval(nxShotTimer); nxShotTimer=null; }
 }
 
-// Canlı mobil uygulama ön izlemesi: doğrudan Ana Sayfada (stitch-home) başlar
-var nxPreviewOn=true;
+// Web uygulaması yayında değil. Telefon, uygulama ve programla aynı ekranların görsellerini gösterir.
+var nxPreviewOn=false;
 
 function nxScalePreview(){
   var box=document.querySelector('.phone-inner-screen');
@@ -1931,25 +1931,7 @@ var nxPreviewBooted=false;
 function nxBootPreview(){
   if(nxPreviewBooted) return;
   nxPreviewBooted=true;
-  var frame=document.getElementById('phonePreviewFrame');
-  var shots=document.querySelector('.phone-screen-content');
-  var local=/^(localhost|127\\.0\\.0\\.1)$/.test(location.hostname);
-  nxScalePreview();
-  if(local){
-    nxUseShotFallback();
-    return;
-  }
-  if(!frame) return;
-  var base=frame.getAttribute('data-src')||'';
-  var root=base.replace(/stitch-[a-z0-9-]+\\.html.*$/,'');
-  if(!root) return;
-  if(shots) shots.style.display='none';
-  frame.setAttribute('src', root+nxPreviewPage());
-  function fail(){ nxUseShotFallback(); }
-  frame.addEventListener('error',fail);
-  setTimeout(function(){
-    if(nxPreviewLooksEmpty(frame)) fail();
-  },4000);
+  nxUseShotFallback();
 }
 window.addEventListener('message',function(e){
   var frame=document.getElementById('phonePreviewFrame');
@@ -2341,24 +2323,20 @@ function renderHero(c, hasShots) {
         ? `
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case previewing" id="phoneMockup" title="${isTr ? 'Uygulamada gez — özellikler bu önizlemede kapalı' : 'Browse the app — features stay locked in this preview'}">
+      <div class="phone-case" id="phoneMockup" title="${isTr ? 'Uygulama ekranları' : 'App screens'}">
         <div class="phone-inner-screen">
           <div class="phone-island">
             <span class="island-camera"></span>
             <span class="island-sensor"></span>
           </div>
-          <!-- Canlı Mobil Uygulama: Doğrudan Ana Sayfada (stitch-home) başlar -->
-          <div class="phone-preview on" id="phonePreview">
-            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="${isTr ? 'NEXUS mobil uygulamasının önizlemesi' : 'Preview of the NEXUS mobile app'}" scrolling="no" data-src="${APP_URL}/stitch-home.html?preview=1"></iframe>
-          </div>
-          <div class="phone-screen-content" aria-hidden="true">
+          <div class="phone-screen-content">
             ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
         </div>
       </div>
-      <span id="phonePreviewNote" class="sr-only">${isTr ? 'Gerçek uygulama arayüzü — ekranlarda gez, özellikler kapalı' : 'Real app screens — browse around, features stay locked'}</span>
+      <span id="phonePreviewNote" class="sr-only">${isTr ? 'Uygulamanın ekranları' : 'Screens from the app'}</span>
     </div>`
         : ''
     }
@@ -3390,7 +3368,7 @@ function renderHeaders() {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self'",
-    `frame-src 'self' ${APP_URL}`,
+    "frame-src 'self'",
     'connect-src \'self\' https://api.github.com https://formsubmit.co https://*.supabase.co',
     "object-src 'none'",
     "base-uri 'self'",

@@ -840,8 +840,8 @@ function nxResetShotTimer(){
   if(nxShotTimer){ clearInterval(nxShotTimer); nxShotTimer=null; }
 }
 
-// Canlı mobil uygulama ön izlemesi: doğrudan Ana Sayfada (stitch-home) başlar
-var nxPreviewOn=true;
+// Web uygulaması yayında değil. Telefon, uygulama ve programla aynı ekranların görsellerini gösterir.
+var nxPreviewOn=false;
 
 function nxScalePreview(){
   var box=document.querySelector('.phone-inner-screen');
@@ -883,25 +883,7 @@ var nxPreviewBooted=false;
 function nxBootPreview(){
   if(nxPreviewBooted) return;
   nxPreviewBooted=true;
-  var frame=document.getElementById('phonePreviewFrame');
-  var shots=document.querySelector('.phone-screen-content');
-  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  nxScalePreview();
-  if(local){
-    nxUseShotFallback();
-    return;
-  }
-  if(!frame) return;
-  var base=frame.getAttribute('data-src')||'';
-  var root=base.replace(/stitch-[a-z0-9-]+\.html.*$/,'');
-  if(!root) return;
-  if(shots) shots.style.display='none';
-  frame.setAttribute('src', root+nxPreviewPage());
-  function fail(){ nxUseShotFallback(); }
-  frame.addEventListener('error',fail);
-  setTimeout(function(){
-    if(nxPreviewLooksEmpty(frame)) fail();
-  },4000);
+  nxUseShotFallback();
 }
 window.addEventListener('message',function(e){
   var frame=document.getElementById('phonePreviewFrame');

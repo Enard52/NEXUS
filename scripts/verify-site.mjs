@@ -135,7 +135,7 @@ for (const [file, cur, saveText] of [
   check(`${label}: iç bağlantılar temiz URL`, dirty.length === 0, dirty.slice(0, 3).join(", "));
   for (const id of ["pricing", "downloads", "faq", "integrations", "features", "how"])
     check(`${label}: #${id} bölümü işaretli`, new RegExp(`id="${id}"`).test(html));
-  check(`${label}: web uygulaması adresi geçiyor`, html.includes(APP_URL), APP_URL);
+  check(`${label}: web uygulaması adresi yok`, !html.includes(APP_URL), APP_URL);
   // Sürüm rozetinin yedek değeri bayatlamasın (GitHub API hız sınırında görünür olan değer).
   const baked = attr(html, /data-nexus-ver>(v[0-9.]+)</);
   const pkgVer = "v" + JSON.parse(readFileSync(join(ROOT, "desktop", "package.json"), "utf8")).version;
@@ -220,7 +220,7 @@ for (const [file, cur, saveText] of [
   if (existsSync(join(PUB, "_headers"))) {
     const h = readFileSync(join(PUB, "_headers"), "utf8");
     check("site: _headers üretimden geliyor (elle kopya değil)", /site-build\.mjs → renderHeaders\(\)/.test(h));
-    check(`site: CSP frame-src ${appOrigin}`, new RegExp(`frame-src 'self' ${escRe(appOrigin)}`).test(h), h.match(/frame-src[^;]*/)?.[0]);
+    check("site: CSP frame-src yalnız site", /frame-src 'self'/.test(h) && !h.includes(appOrigin), h.match(/frame-src[^;]*/)?.[0]);
   } else check("site: _headers var", false);
   if (existsSync(join(ROOT, "www", "_headers"))) {
     const a = readFileSync(join(ROOT, "www", "_headers"), "utf8");
@@ -273,14 +273,8 @@ for (const [file, cur, saveText] of [
     if (!existsSync(join(PUB, file))) continue;
     const html = readFileSync(join(PUB, file), "utf8");
     const label = lang === "tr" ? "TR" : "EN";
-    check(`${label}: telefon içinde önizleme katmanı var`, /id="phonePreview"/.test(html));
-    const frame = /<iframe[^>]*id="phonePreviewFrame"[^>]*>/.exec(html);
-    check(`${label}: önizleme iframe'i var`, !!frame);
-    if (frame) {
-      check(`${label}: iframe adresi uygulamaya gidiyor`, frame[0].includes(APP_URL), frame[0].slice(0, 120));
-      check(`${label}: iframe'de sandbox yok (uygulamanın depolaması bozulmasın)`, !/sandbox=/.test(frame[0]));
-    }
-    check(`${label}: önizleme katmanı aktif üretildi`, /class="phone-preview on"/.test(html));
+    check(`${label}: telefon canlı web uygulamasını açmıyor`, !/phonePreviewFrame/.test(html) && !html.includes(APP_URL));
+    check(`${label}: telefon uygulama ekran görsellerini gösteriyor`, /class="phone-screen-content"/.test(html) && /data-shot="home"/.test(html));
     const note = /id="phonePreviewNote"[^>]*>([\s\S]{0,400}?)<\/span>/.exec(html);
     check(`${label}: önizleme notu var`, !!note, "phonePreviewNote bulunamadı");
   }
@@ -783,91 +777,32 @@ for (const [label, url, lang, price, saveText] of [
   await ctx.close();
 }
 
-/* ------------------------------------------------- telefon içindeki canlı önizleme
-   Hero'daki "Kendin dene" düğmesi gerçek uygulamayı telefon çerçevesinin içine alır.
-   Bu akış ölçülmeden bırakılamaz: iframe tembel yüklendiği için HTML'de görünmüyor,
-   ölçek yanlışsa uygulama 190px'e sıkışıyor, CSP eksikse çerçeve bomboş kalıyor. */
+/* ------------------------------------------------- telefon: uygulama ekran görselleri
+   Web uygulaması yayında değil. Çerçeve, site-shots'un ürettiği aynı ekranları gösterir. */
 {
-  const { ctx, pg, errors } = await openPage(TR_LANG, "/tr/");
+  const { ctx, pg } = await openPage(TR_LANG, "/tr/");
   const geo = await pg.evaluate(() => {
     const b = document.querySelector(".phone-inner-screen");
     return b ? { w: b.clientWidth, h: b.clientHeight } : null;
   });
   check("önizleme: telefon ekranı ölçüldü", !!geo && geo.w > 100, JSON.stringify(geo));
-
   const state = await pg.evaluate(() => {
-    const f = document.getElementById("phonePreviewFrame");
-    const b = document.querySelector(".phone-inner-screen");
+    const slide = document.querySelector(".shot-slide.active img");
+    const shots = document.querySelector(".phone-screen-content");
+    const shown = shots ? getComputedStyle(shots).display !== "none" : false;
     return {
-      src: f.getAttribute("src") || f.getAttribute("data-src") || "",
-      on: document.getElementById("phonePreview").classList.contains("on"),
-      scale: getComputedStyle(b).getPropertyValue("--nx-preview-scale").trim(),
-      boxW: b.clientWidth,
-      frameW: f.getBoundingClientRect().width,
+      frame: !!document.getElementById("phonePreviewFrame"),
+      shown,
+      src: slide ? slide.getAttribute("src") || "" : "",
+      w: slide ? Math.round(slide.getBoundingClientRect().width) : 0,
     };
   });
-  check("önizleme: canlı katman doğrudan aktif (display:block)", state.on);
-  check("önizleme: iframe doğrudan ana sayfayı yüklüyor", state.src.includes(APP_URL), state.src || "src yok");
-  const expected = state.boxW / 390;
-  check(
-    `önizleme: ölçek kutuya göre hesaplandı (${state.scale})`,
-    Math.abs(parseFloat(state.scale || "0") - expected) < 0.02,
-    `beklenen ${expected.toFixed(4)}`
-  );
-  check("önizleme: uygulama 390px genişliğinde render alıyor", Math.abs(state.frameW - 390 * parseFloat(state.scale || "0")) < 2, `${Math.round(state.frameW)}px`);
-
-  const frame = pg.frames().find((f) => f.url().startsWith(APP_URL));
-  if (frame) {
-    let frameText = "";
-    for (let i = 0; i < 20 && !frameText; i++) {
-      try {
-        frameText = frame ? await frame.evaluate(() => (document.body ? document.body.innerText : "").slice(0, 400)) : "";
-      } catch {
-        frameText = "";
-      }
-      if (!frameText) await pg.waitForTimeout(500);
-    }
-    const renders = /NEXUS|Hoş geldin|Kayıt|Giriş|Ev\b/i.test(frameText);
-    if (LIVE) {
-      check("canlı: çerçevede gerçek uygulama arayüzü görünüyor", renders, frameText.slice(0, 60).replace(/\n/g, " · ") || "boş çerçeve");
-      /* Önizleme notunun dayanağı burada ÖLÇÜLÜR: çerçevede yazılan anahtar, aynı
-         tarayıcı bağlamında uygulamanın kendi sekmesinden okunabiliyorsa depolama
-         PAYLAŞILIYOR → giriş yapmış ziyaretçinin kendi verisi çerçevede görünür.
-         Chrome depolamayı bölümlerse (partition) kapı patlar ve metin değişmeli.
-         Taze Playwright profili kullanılıyor: gerçek bir kullanıcının verisine dokunulmaz. */
-      if (frame) {
-        let shared = false;
-        try {
-          await frame.evaluate(() => localStorage.setItem("nxVerifyShared", "from-frame"));
-          const probe = await ctx.newPage();
-          await probe.goto(`${APP_URL}/`, { waitUntil: "domcontentloaded" });
-          shared = (await probe.evaluate(() => localStorage.getItem("nxVerifyShared"))) === "from-frame";
-          await probe.evaluate(() => localStorage.removeItem("nxVerifyShared"));
-          await probe.close();
-        } catch (e) {
-          info("önizleme: depolama paylaşımı ölçülemedi — " + String(e && e.message).slice(0, 70));
-        }
-        check("canlı: çerçeve uygulamanın deposunu paylaşıyor (notun iddiası doğrulanıyor)", shared);
-      }
-    } else {
-      // CSP ihlali konsol mesajı yanıt olayından biraz sonra düşebiliyor: kısa yoklama.
-      let blocked = false;
-      for (let i = 0; i < 12 && !blocked; i++) {
-        blocked = errors.some((e) => /frame-ancestors/i.test(e));
-        if (!blocked) await pg.waitForTimeout(400);
-      }
-      check("yerel: çerçeve frame-ancestors allowlist'i ile reddediliyor (beklenen)", blocked, errors.filter((e) => /framing/i.test(e))[0]?.slice(0, 90) || "engel mesajı yok");
-      info("yerel: çerçeve içeriği ancak yayında ölçülebilir — node scripts/verify-site.mjs --live");
-    }
-  } else {
-    info("önizleme: uygulama çerçevesi isteği yakalanmadı (çevrimdışı çalışılıyor olabilir)");
-  }
-
+  check("önizleme: web uygulaması çerçevesi yok", !state.frame);
+  check("önizleme: ekran görseli görünür", state.shown && state.src.includes("/images/shots/") && state.w > 40, state.src + " " + state.w + "px");
   const overflowLive = await pg.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth
   );
-  check("önizleme: canlı modda yatay taşma yok", overflowLive <= 0, `fark ${overflowLive}px`);
-
+  check("önizleme: yatay taşma yok", overflowLive <= 0, `fark ${overflowLive}px`);
   await ctx.close();
 }
 
@@ -1031,12 +966,14 @@ if (LIVE) {
   /* Canlı önizleme iki başlığın anlaşmasına bağlı: site çerçeveye izin vermeli,
      uygulama da kendisini çerçevede göstermeye. Yayınlanandan okunur (kaynak değil). */
   const appOriginLive = new URL(APP_URL).origin;
-  check("canlı: site CSP'si frame-src ile uygulamaya izin veriyor", home.csp.includes(appOriginLive), home.csp.match(/frame-src[^;]*/)?.[0] || "frame-src yok");
-  const appHome = await fetch(`${APP_URL}/`, { redirect: "manual" });
-  const appCsp = appHome.headers.get("content-security-policy") || "";
-  const appXfo = appHome.headers.get("x-frame-options") || "";
-  check(`canlı: uygulama frame-ancestors içinde site var`, /frame-ancestors[^\n;]*nexus-smarthome\.pages\.dev/.test(appCsp), appCsp.match(/frame-ancestors[^;]*/)?.[0] || "başlık yok");
-  check("canlı: uygulama X-Frame-Options çerçeveyi kırmıyor", appXfo === "" || /SAMEORIGIN/.test(appXfo), appXfo || "yok");
+  check("canlı: site web uygulamasını çerçeveye almıyor", !home.csp.includes(appOriginLive) && !home.txt.includes(APP_URL), home.csp.match(/frame-src[^;]*/)?.[0] || "frame-src yok");
+  let webStillLive = false;
+  try {
+    const appHome = await fetch(`${APP_URL}/`, { redirect: "manual" });
+    const appBody = appHome.status === 200 ? await appHome.text() : "";
+    webStillLive = appHome.status === 200 && /stitch-|NEXUS/.test(appBody);
+  } catch { webStillLive = false; }
+  check("canlı: web uygulaması yayında değil", !webStillLive);
   const cfg = await head("/assets/cloud-config.js");
   check("canlı: /assets/cloud-config.js yayınlanıyor", cfg.status === 200 && /NEXUS_CLOUD/.test(cfg.txt), String(cfg.status));
   // Yayınlanan anahtar kamu (anon) anahtarı olmalı; service_role asla istemciye inmez.
