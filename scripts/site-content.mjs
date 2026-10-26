@@ -55,7 +55,7 @@ export const content = {
       h1a: "Your home.",
       h1b: "Quietly in your control.",
       lead: "One unified app for your lights, climate, covers and sensors — talking directly to the devices on your own local network. Responsive automations, live power metering, and control that keeps working when the internet goes down.",
-      primary: { label: "Download NEXUS", href: "#downloads" },
+      primary: { label: "Windows · Linux · Android", href: "#downloads" },
       secondary: null,
       versionNote: "Latest version",
       // Etiket her ekranla birlikte "— <ekran adı>" olarak tamamlanır; bu yüzden
@@ -163,7 +163,7 @@ export const content = {
             "Multi-device account sync (rooms, devices, scenes)",
             "100% private: no tracking, no data harvesting",
           ],
-          cta: { label: "Download NEXUS", href: "#downloads" },
+          cta: { label: "Windows · Linux · Android", href: "#downloads" },
         },
         {
           name: "NEXUS+",
@@ -307,7 +307,7 @@ export const content = {
       accountLinks: [
         ["Contact & Technical Support", "javascript:nxOpenContactModal('Technical Support')"],
         ["Release Notes & Community", RELEASES_URL],
-        ["Download Apps", "#downloads"],
+        ["Windows · Linux · Android", "#downloads"],
       ],
       legal: "Legal",
       legalLinks: [
@@ -344,7 +344,7 @@ export const content = {
       h1a: "Evini.",
       h1b: "Sessizce kontrol et.",
       lead: "Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek uygulamada — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir. Kesintisiz otomasyonlar, canlı enerji ölçümleri ve internet kesilse de durmayan bir kontrol mimarisi.",
-      primary: { label: "NEXUS'u indir", href: "#downloads" },
+      primary: { label: "Windows · Linux · Android", href: "#downloads" },
       secondary: null,
       versionNote: "Güncel sürüm",
       shotAlt: "NEXUS uygulama ekranı",
@@ -450,7 +450,7 @@ export const content = {
             "Çoklu cihaz hesap senkronizasyonu (odalar, cihazlar, sahneler)",
             "Tam gizlilik: Reklam izleyicisi ve veri ticareti yok",
           ],
-          cta: { label: "NEXUS'u İndir", href: "#downloads" },
+          cta: { label: "Windows · Linux · Android", href: "#downloads" },
         },
         {
           name: "NEXUS+",
@@ -594,7 +594,7 @@ export const content = {
       accountLinks: [
         ["İletişim ve Teknik Destek", "javascript:nxOpenContactModal('Teknik Destek')"],
         ["Sürüm Notları ve Topluluk", RELEASES_URL],
-        ["Uygulama İndir", "#downloads"],
+        ["Windows · Linux · Android", "#downloads"],
       ],
       legal: "Yasal",
       legalLinks: [

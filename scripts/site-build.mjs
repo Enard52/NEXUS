@@ -125,6 +125,14 @@ function getPlatformLogo(plat) {
   return BRAND_LOGOS.windows;
 }
 
+function platformMarks() {
+  return `<span class="plat-marks" aria-hidden="true">${getPlatformLogo('windows')}${getPlatformLogo('linux')}${getPlatformLogo('android')}</span>`;
+}
+
+function platformDownloadBtn(href, btnClass = 'btn btn-primary') {
+  return `<a class="${btnClass} btn-platforms" href="${href}">${platformMarks()}<span>Windows · Linux · Android</span></a>`;
+}
+
 function icon(name, cls = 'icon') {
   const I = {
     check: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>`,
@@ -164,7 +172,9 @@ const CSS = `
 }
 html{
   scrollbar-gutter: stable;
+  overflow-x: clip;
 }
+body{overflow-x:clip}
 ::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:var(--text)}
 .skip{
   position:absolute;left:12px;top:-56px;z-index:200;background:var(--brand);color:#fff;
@@ -209,7 +219,8 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 a{color:inherit;text-decoration:none}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px;min-width:0;width:100%}
+@media(max-width:400px){.wrap{padding:0 16px}}
 .icon{width:20px;height:20px;vertical-align:middle;display:inline-block}
 .brand-svg{width:22px;height:22px;vertical-align:middle;display:inline-block;flex-shrink:0}
 
@@ -232,7 +243,7 @@ a{color:inherit;text-decoration:none}
   .hd .wrap{padding:0 12px}
   .logo{gap:8px;font-size:16px}
   .logo svg{width:28px;height:28px}
-  .logo span{display:none}
+  .hd .logo span{display:none}
   .nav-controls{gap:4px}
 }
 
@@ -263,6 +274,14 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow)}
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
 .btn.disabled{opacity:.55;pointer-events:none}
+.btn-platforms{flex-wrap:wrap;padding:6px 16px 6px 8px;gap:10px}
+.plat-marks{display:inline-flex;align-items:center;gap:5px;background:#fff;border-radius:999px;padding:5px 8px;flex-shrink:0;box-shadow:0 1px 3px rgba(15,23,42,.08)}
+.plat-marks .brand-svg{width:18px;height:18px;display:block}
+.btn-ghost .plat-marks{border:1px solid var(--border);box-shadow:none}
+html[data-theme=dark] .btn-ghost .plat-marks{background:var(--surface)}
+.ft-plat-link{display:inline-flex !important;align-items:center;gap:8px;flex-wrap:wrap}
+.ft-plat-link .plat-marks{padding:3px 6px}
+.ft-plat-link .plat-marks .brand-svg{width:14px;height:14px}
 
 /* Hero */
 .hero{padding:28px 0 32px;position:relative}
@@ -270,16 +289,16 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
   background:radial-gradient(ellipse at center,rgba(76,125,255,.16) 0%,rgba(34,211,238,.07) 45%,transparent 70%);pointer-events:none;z-index:0}
 .hero .wrap{display:grid;gap:28px;align-items:center;position:relative;z-index:1}
 .hero-copy{max-width:38rem;width:100%;min-width:0}
-.hero-display{display:flex;flex-direction:column;align-items:center;text-align:center;width:fit-content;max-width:100%;margin:0 0 16px}
-.eyebrow{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;
+.hero-display{display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;max-width:100%;margin:0 0 16px}
+.eyebrow{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:clamp(10px,2.8vw,12px);font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;color:var(--brand);background:none;padding:0;border:0;border-radius:0;margin:0 0 10px;
-  box-shadow:none;line-height:1}
-.eyebrow .icon{width:15px;height:15px}
+  box-shadow:none;line-height:1.25;text-wrap:balance;max-width:100%}
+.eyebrow .icon{width:15px;height:15px;flex-shrink:0}
 h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margin:0 0 16px;font-weight:900}
-.hero-copy h1{font-size:clamp(32px,4.8vw,62px);line-height:1.06;letter-spacing:-.045em;margin:0;text-wrap:nowrap}
+.hero-copy h1{font-size:clamp(16px,calc((100vw - 40px) / 16.8),2.45rem);line-height:1.12;letter-spacing:-.045em;margin:0;white-space:nowrap}
 .grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .lead{font-size:clamp(15px,1.65vw,17.5px);color:var(--text-2);margin:0 0 22px;max-width:52ch;line-height:1.6}
-.hero-copy .lead{font-size:clamp(16px,1.7vw,19px);line-height:1.5;color:var(--text);margin:0 0 10px;max-width:46ch;font-weight:500;text-align:left}
+.hero-copy .lead{font-size:clamp(15px,1.7vw,19px);line-height:1.5;color:var(--text);margin:0 0 10px;max-width:46ch;font-weight:500;text-align:left}
 .hero-copy .lead-sub{font-size:15px;line-height:1.55;color:var(--muted);margin:0 0 26px;max-width:48ch;text-align:left}
 .hero-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px 16px;margin-bottom:22px}
 .ver-chip{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:650;color:var(--text-2);
@@ -297,12 +316,18 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:28px 40px;align-items:center;
     min-height:calc(100dvh - var(--header-h) - 36px)}
   .hero-copy{max-width:none}
-  .hero-copy h1{white-space:nowrap}
+  .hero-copy h1{font-size:clamp(36px,4.6vw,62px);line-height:1.06;white-space:nowrap}
+  .hero-display{width:fit-content;align-items:flex-start;text-align:left}
   .phone-wrapper{margin:0}
-  .sec-head h2{white-space:nowrap}
 }
 @media(max-width:959px){
-  .hero-copy h1{text-wrap:balance;white-space:normal}
+  .hero{padding:20px 0 28px}
+  .hero-copy{text-align:center;margin:0 auto}
+  .hero-copy h1{white-space:nowrap}
+  .hero-copy .lead,.hero-copy .lead-sub{text-align:center;margin-left:auto;margin-right:auto}
+  .hero-cta{justify-content:center}
+  .trust{display:flex;flex-direction:column;align-items:center;text-align:left}
+  .trust li{width:fit-content;max-width:100%}
 }
 
 /* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
@@ -458,18 +483,23 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 /* Bölümler */
 section{padding:72px 0}
 @media(max-width:700px){section{padding:48px 0}}
-.sec-head{max-width:none;margin-bottom:36px}
+.sec-head{max-width:none;margin:0 0 32px}
 .sec-mark{width:48px;height:48px;margin:0 auto 14px}
 .sec-mark svg{width:48px;height:48px;display:block}
-h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height:1.16;margin:0 0 12px;font-weight:800}
-.sec-head h2{white-space:nowrap}
-.sec-head p{color:var(--text-2);margin:0}
+h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03em;line-height:1.2;margin:0 0 12px;font-weight:800}
+.sec-head h2{white-space:nowrap;max-width:100%}
+.sec-head p{color:var(--text-2);margin:0;max-width:54ch;line-height:1.6}
+.sec-head.center{text-align:center;display:flex;flex-direction:column;align-items:center;margin-left:auto;margin-right:auto}
+.sec-head.center p{margin:0 auto;max-width:min(54ch,100%);text-align:center}
 .grid{display:grid;gap:18px}
-@media(min-width:700px){.grid.c3{grid-template-columns:repeat(3,1fr)}.grid.c2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:640px){.grid.c2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:640px) and (max-width:959px){.grid.c3{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.grid.c3{grid-template-columns:repeat(3,1fr)}.sec-head{max-width:none}}
 
 /* Kartlar - Asla gizli/kayıp kalmaz, opacity 1 */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:26px;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease;position:relative;overflow:hidden}
+  padding:26px;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease;position:relative;overflow:hidden;min-width:0}
+@media(max-width:520px){.card{padding:20px 18px}.card h3{font-size:17px}}
 .f-ic{width:50px;height:50px;border-radius:15px;background:color-mix(in srgb,var(--brand) 12%,transparent);
   color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 18%,transparent)}
 .f-ic svg{width:25px;height:25px}
@@ -526,17 +556,18 @@ h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height
 /* Fiyatlar */
 #pricing{padding:48px 0 54px}
 .billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 24px}
-.billing-toggle{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
+.billing-toggle{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;max-width:100%;background:var(--surface);border:1px solid var(--border);
   border-radius:999px;padding:4px;box-shadow:var(--shadow)}
 .billing-btn{border:0;background:transparent;color:var(--muted);font:700 13px/1 Inter,sans-serif;
-  padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px}
+  padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px;min-height:40px}
 .billing-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 4px 14px rgba(76,125,255,.35)}
 .save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:6px}
 .billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 
 .plans{display:grid;gap:18px;width:100%;max-width:1100px;margin:22px auto 0}
 @media(min-width:960px){.plans{grid-template-columns:repeat(3,1fr);align-items:stretch}}
-@media(max-width:959px){.plans{grid-template-columns:1fr;max-width:440px;margin:22px auto 0}}
+@media(min-width:720px) and (max-width:959px){.plans{grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px;margin:22px auto 0}.plan.hot{grid-column:1 / -1}}
+@media(max-width:719px){.plans{grid-template-columns:1fr;max-width:440px;margin:22px auto 0}}
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:24px 20px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
@@ -583,15 +614,16 @@ h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
   transition:transform .2s ease,box-shadow .2s ease}
-.dl-web-info{flex:1;min-width:280px}
+.dl-web-info{flex:1;min-width:0}
 .dl-web-info h3{margin:0 0 6px;font-size:18px;font-weight:800}
 .dl-web-info p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
 
 /* SSS */
 .faq-list{display:grid;gap:14px;max-width:800px;margin:0 auto}
 .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
-.faq-q{width:100%;text-align:left;background:transparent;border:0;padding:20px 22px;font:700 16px/1.4 Inter,sans-serif;
-  color:var(--text);display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px}
+.faq-q{width:100%;text-align:left;background:transparent;border:0;padding:18px 18px;font:700 15px/1.4 Inter,sans-serif;
+  color:var(--text);display:flex;justify-content:space-between;align-items:flex-start;cursor:pointer;gap:12px}
+@media(min-width:640px){.faq-q{padding:20px 22px;font-size:16px;align-items:center}}
 .faq-q span{flex:1;min-width:0}
 .faq-q:hover{color:var(--brand)}
 .faq-a{padding:0 22px 20px;color:var(--text-2);font-size:14.5px;line-height:1.6;display:none}
@@ -603,7 +635,7 @@ h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height
 .ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
 .ft-grid{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px}
 .ft-brand{max-width:390px;flex:1 1 260px}
-.ft-links-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;flex:1 1 420px;min-width:0}
+.ft-links-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;flex:1 1 420px;min-width:0;align-items:start}
 .ft-col{min-width:0}
 .ft h4{margin:0 0 14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
 .ft a{display:block;font-size:13.5px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
@@ -622,21 +654,28 @@ h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height
 .nx-form-success svg{width:46px;height:46px;color:#10B981;margin:0 auto 12px;display:block}
 .nx-form-success h4{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
 .nx-form-success p{margin:0 0 18px;color:var(--muted);font-size:13.5px;line-height:1.55}
-.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
-  justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
-.ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
-.ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:0}
+.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 16px;align-items:start;color:var(--muted);font-size:13px}
+.ft-privacy{display:inline-flex;align-items:flex-start;gap:8px;font-weight:600;text-align:left;min-width:0}
+.ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:2px 0 0}
 @media(max-width:768px){
+  .ft{padding:32px 0 22px;margin-top:16px}
   .ft-grid{flex-direction:column;gap:28px}
-  .ft-brand{max-width:none}
-  .ft-links-group{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
-  .ft a{font-size:13px;padding:4px 0}
+  .ft-brand{flex:none;max-width:none;width:100%}
+  .ft-brand p{max-width:none;margin:12px 0 14px;font-size:14px;line-height:1.65}
+  .ft-trust-row{margin-top:12px;gap:10px 14px}
+  .ft-links-group{flex:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;width:100%;align-items:start}
+  .ft-col:last-child{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
+  .ft-col:last-child h4{width:100%;margin:0 0 6px}
+  .ft h4{margin-bottom:12px}
+  .ft a{font-size:14px;padding:6px 0}
+  .ft-bottom{margin-top:24px;padding-top:16px;gap:10px 16px;font-size:13px}
 }
 @media(max-width:480px){
-  .ft-links-group{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-  .ft h4{font-size:10px;margin-bottom:10px}
-  .ft a{font-size:12.5px}
-  .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}
+  .ft{padding:28px 0 18px}
+  .ft h4{font-size:11px;margin-bottom:10px;line-height:1.35}
+  .ft a{font-size:13.5px;padding:5px 0}
+  .ft-bottom{margin-top:20px;padding-top:14px}
 }
 
 /* İçerikler varsayılan olarak görünür (opacity 1) */
@@ -662,7 +701,13 @@ h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height
 .about-arch h3{font-size:16px;font-weight:800;margin:0 0 8px}
 .about-arch p{font-size:14px;line-height:1.6;color:var(--text-2);margin:0}
 .about-cta{margin:8px 0 24px;background:color-mix(in srgb,var(--brand) 6%,var(--surface))}
-.about-cta .btn{margin:0}
+.about-cta-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.about-cta-actions .btn{margin:0;width:100%;justify-content:center}
+.about-cta-actions .btn-primary{grid-column:1 / -1}
+@media(min-width:640px){
+  .about-cta-actions{display:flex;flex-wrap:wrap;gap:12px}
+  .about-cta-actions .btn{width:auto;grid-column:auto}
+}
 
 .doc-hero{padding:56px 0 16px}
 .doc-hero h1{font-size:clamp(28px,4vw,38px);margin:0 0 10px;font-weight:800;letter-spacing:-.02em}
@@ -2063,7 +2108,7 @@ function renderHero(c, hasShots) {
       <p class="lead">${esc(leadMain)}</p>
       ${leadSub ? `<p class="lead-sub">${esc(leadSub)}</p>` : ''}
       <div class="hero-cta">
-        <a class="btn btn-primary" href="${c.hero.primary.href}">${esc(c.hero.primary.label)}</a>
+        ${platformDownloadBtn(c.hero.primary.href)}
         <p class="ver-chip"><span class="dot"></span><span>${esc(c.hero.versionNote)}</span><b class="ver-num" data-nexus-ver>${APP_VERSION}</b></p>
       </div>
       <ul class="trust">
@@ -2236,7 +2281,7 @@ function renderPricing(c) {
 
   return `<section id="pricing">
   <div class="wrap">
-    <div class="sec-head rv" style="text-align:center;margin:0 auto 28px">
+    <div class="sec-head center rv" style="margin-bottom:28px">
       <div class="sec-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="nx-pricing-lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nx-pricing-lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>${esc(c.pricing.heading)}</h2>
       <p>${esc(c.pricing.lead)}</p>
@@ -2268,7 +2313,7 @@ function renderPricing(c) {
         <ul>
           ${c.pricing.plans[0].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
-        <a class="btn btn-ghost" href="${c.pricing.plans[0].cta.href}">${esc(c.pricing.plans[0].cta.label)}</a>
+        ${platformDownloadBtn(c.pricing.plans[0].cta.href, 'btn btn-ghost')}
       </div>
 
       <!-- 2. NEXUS+ Plan (Popüler) -->
@@ -2348,7 +2393,7 @@ function renderDownloads(c) {
 function renderFaq(c) {
   return `<section id="faq">
   <div class="wrap">
-    <div class="sec-head rv" style="text-align:center;margin:0 auto 36px"><h2>${esc(c.faq.heading)}</h2></div>
+    <div class="sec-head center rv" style="margin-bottom:36px"><h2>${esc(c.faq.heading)}</h2></div>
     <div class="faq-list">
       ${c.faq.items.map(([q, a]) => `<div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><p>${esc(a)}</p></div></div>`).join('\n      ')}
     </div>
@@ -2361,7 +2406,8 @@ function renderFooter(c) {
     `<div class="ft-col"><h4>${esc(title)}</h4>${links.map(([l, h]) => {
       let href = h;
       if (href.startsWith('#')) href = c.canonical + href;
-      return `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l)}</a>`;
+      const label = l === 'Windows · Linux · Android' ? `${platformMarks()} Windows · Linux · Android` : esc(l);
+      return `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}${l === 'Windows · Linux · Android' ? ' class="ft-plat-link"' : ''}>${label}</a>`;
     }).join('')}</div>`;
 
   return `<footer class="ft">
@@ -2863,8 +2909,8 @@ ${renderHeader(c, path)}
   <div class="about-card about-cta rv">
     <h2>${isTr ? 'Kurulum dosyaları' : 'Get the apps'}</h2>
     <p style="margin:0 0 18px">${isTr ? 'Windows, Linux ve Android kurulumları ücretsizdir. Cihaz komutları yerel ağında kalır.' : 'Windows, Linux and Android installs are free. Device commands stay on your LAN.'}</p>
-    <div style="display:flex;flex-wrap:wrap;gap:12px">
-      <a href="${c.canonical}#downloads" class="btn btn-primary">${isTr ? 'Uygulamayı indir' : 'Download apps'}</a>
+    <div class="about-cta-actions">
+      ${platformDownloadBtn(`${c.canonical}#downloads`)}
       <a href="${c.canonical}#features" class="btn btn-ghost">${isTr ? 'Özellikler' : 'Features'}</a>
       <a href="${c.canonical}#pricing" class="btn btn-ghost">${isTr ? 'Fiyatlar' : 'Pricing'}</a>
     </div>
@@ -2974,7 +3020,7 @@ function renderNotFound(c) {
       : 'The link may have moved or been mistyped. Downloads and pricing live on the home page.'}</p>
     <div class="row">
       <a class="btn primary" href="${home}">${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
-      <a class="btn" href="${home}#downloads">${isTr ? 'Uygulamaları indir' : 'Download the apps'}</a>
+      ${platformDownloadBtn(`${home}#downloads`, 'btn')}
     </div>
     <p class="lang">${isTr
       ? `Bu sayfayı İngilizce okumak istersen: <a href="/404.html">English</a>`
