@@ -48,6 +48,10 @@ function nxUnlockScroll(){
 function nxOpenContactModal(category){
   var m=document.getElementById('nxContactModal');
   if(!m)return;
+  var form=document.getElementById('nxContactForm');
+  var successEl=document.getElementById('nxContactSuccess');
+  if(form)form.style.display='block';
+  if(successEl)successEl.style.display='none';
   if(category){
     var sel=document.getElementById('nxContactCategory');
     if(sel)sel.value=category;
@@ -55,6 +59,34 @@ function nxOpenContactModal(category){
   m.style.display='flex';
   setTimeout(function(){m.classList.add('open')},10);
   nxLockScroll();
+}
+
+// Mojibake Karakter Düzeltici & UTF-8 JWT Çözücü
+function nxFixMojibake(str){
+  if(!str)return '';
+  try{
+    if(/[Â-Å]/.test(str)){
+      var bytes=new Uint8Array(str.length);
+      for(var i=0;i<str.length;i++)bytes[i]=str.charCodeAt(i)&0xff;
+      var decoded=new TextDecoder('utf-8').decode(bytes);
+      if(decoded && !decoded.includes('�'))return decoded;
+    }
+  }catch(e){}
+  return str;
+}
+
+function nxDecodeJwt(token){
+  try{
+    var base64Url=token.split('.')[1];
+    var base64=base64Url.replace(/-/g,'+').replace(/_/g,'/');
+    while(base64.length%4)base64+='=';
+    var binary=atob(base64);
+    var bytes=new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    return JSON.parse(new TextDecoder('utf-8').decode(bytes));
+  }catch(e){
+    try{return JSON.parse(atob(token.split('.')[1]));}catch(err){return {};}
+  }
 }
 
 function nxCloseContactModal(){
@@ -251,7 +283,13 @@ function nxUpdateNavAuth(){
   if(user){
     btn.classList.add('logged-in');
     var customName=null;
-    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    try{
+      customName=localStorage.getItem('nexusUserName');
+      if(customName){
+        var fixed=nxFixMojibake(customName);
+        if(fixed!==customName){customName=fixed;localStorage.setItem('nexusUserName',fixed);}
+      }
+    }catch(e){}
     var displayName = customName || user.split('@')[0];
     label.textContent = displayName;
     label.title = displayName + ' (' + user + ')';
@@ -281,7 +319,13 @@ function nxOpenAuthModal(){
     if(formView)formView.style.display='none';
     if(profileView)profileView.style.display='block';
     var customName=null;
-    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    try{
+      customName=localStorage.getItem('nexusUserName');
+      if(customName){
+        var fixed=nxFixMojibake(customName);
+        if(fixed!==customName){customName=fixed;localStorage.setItem('nexusUserName',fixed);}
+      }
+    }catch(e){}
     var displayName = customName || user.split('@')[0];
     
     var avatarWrap=document.getElementById('nxProfileAvatarWrap');
@@ -314,14 +358,14 @@ function nxOpenAuthModal(){
 function nxEditProfileName(){
   var isTr=document.documentElement.lang==='tr';
   var curName='';
-  try{curName=localStorage.getItem('nexusUserName')||'';}catch(e){}
+  try{curName=nxFixMojibake(localStorage.getItem('nexusUserName')||'');}catch(e){}
   nxShowPrompt(
     isTr ? 'İsmi Düzenle' : 'Edit Display Name',
     isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:',
     curName,
     function(newName){
       if(!newName)return;
-      try{localStorage.setItem('nexusUserName', newName);}catch(e){}
+      try{localStorage.setItem('nexusUserName', nxFixMojibake(newName));}catch(e){}
       nxUpdateNavAuth();
       nxOpenAuthModal();
     }
@@ -517,7 +561,7 @@ function nxSubmitAuth(e){
           localStorage.setItem('nexusUserAvatar', data.user.user_metadata.avatar_url || data.user.user_metadata.picture);
         }
         if(data.user.user_metadata.full_name || data.user.user_metadata.name){
-          localStorage.setItem('nexusUserName', data.user.user_metadata.full_name || data.user.user_metadata.name);
+          localStorage.setItem('nexusUserName', nxFixMojibake(data.user.user_metadata.full_name || data.user.user_metadata.name));
         }
       }
       if(data.access_token){
@@ -660,9 +704,8 @@ function nxResetShotTimer(){
   },4500);
 }
 
-// Telefonun icinde canli uygulama onizlemesi: statik ekranlar <-> gercek uygulama.
-// iframe yalnizca ilk kez "Kendin dene"e basilinca yuklenir (anisayfa agirliklanmasin).
-var nxPreviewOn=false;
+// Canlı mobil uygulama ön izlemesi: doğrudan Ana Sayfada (stitch-home) başlar
+var nxPreviewOn=true;
 
 function nxScalePreview(){
   var box=document.querySelector('.phone-inner-screen');
@@ -671,41 +714,22 @@ function nxScalePreview(){
   box.style.setProperty('--nx-preview-scale',(w/390).toFixed(4));
 }
 
-function nxSetPhoneMode(mode){
-  var prev=document.getElementById('phonePreview');
-  var shots=document.querySelector('.phone-screen-content');
-  var caseEl=document.querySelector('.phone-case');
+function nxBootPreview(){
   var frame=document.getElementById('phonePreviewFrame');
-  if(!prev||!shots||!frame)return;
-  nxPreviewOn=(mode==='live');
-  prev.classList.toggle('on',nxPreviewOn);
-  prev.setAttribute('aria-hidden',nxPreviewOn?'false':'true');
-  shots.style.visibility=nxPreviewOn?'hidden':'visible';
-  if(caseEl)caseEl.classList.toggle('previewing',nxPreviewOn);
-  var bShots=document.getElementById('phoneModeShots');
-  var bLive=document.getElementById('phoneModeLive');
-  if(bShots){bShots.classList.toggle('active',!nxPreviewOn);bShots.setAttribute('aria-pressed',nxPreviewOn?'false':'true');}
-  if(bLive){bLive.classList.toggle('active',nxPreviewOn);bLive.setAttribute('aria-pressed',nxPreviewOn?'true':'false');}
-  var open=document.getElementById('phoneModeOpen');
-  if(open)open.hidden=!nxPreviewOn;
-  var hint=document.getElementById('phoneTapHint');
-  if(hint)hint.hidden=nxPreviewOn;
-  var note=document.getElementById('phonePreviewNote');
-  if(note)note.hidden=!nxPreviewOn;
-  var pill=document.getElementById('phoneCaptionPill');
-  if(pill)pill.style.display=nxPreviewOn?'none':'';
-  var dots=document.querySelector('.phone-dots');
-  if(dots)dots.style.display=nxPreviewOn?'none':'';
-  if(nxPreviewOn){
-    if(!frame.getAttribute('src'))frame.setAttribute('src',frame.getAttribute('data-src'));
-    nxScalePreview();
-    if(nxShotTimer)clearInterval(nxShotTimer);
-  }else{
-    nxResetShotTimer();
+  if(frame){
+    var d=frame.getAttribute('data-src');
+    if(d && !frame.getAttribute('src')) frame.setAttribute('src',d);
   }
+  nxScalePreview();
 }
 
-window.addEventListener('resize',function(){if(nxPreviewOn)nxScalePreview();});
+function nxSetPhoneMode(mode){
+  nxBootPreview();
+}
+
+window.addEventListener('resize',nxScalePreview);
+document.addEventListener('DOMContentLoaded',nxBootPreview);
+setTimeout(nxBootPreview,100);
 
 // Telefon dokunma, sürükleme ve tıklama yönetimi
 document.addEventListener('DOMContentLoaded',function(){
@@ -751,7 +775,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var hashParams=new URLSearchParams(window.location.hash.substring(1));
       var token=hashParams.get('access_token');
       if(token){
-        var payload=JSON.parse(atob(token.split('.')[1]));
+        var payload=nxDecodeJwt(token);
         var userEmail=payload.email||'kullanici@nexus';
         localStorage.setItem('nexusCurrentUser',userEmail);
         if(payload.user_metadata){
@@ -759,7 +783,7 @@ document.addEventListener('DOMContentLoaded',function(){
             localStorage.setItem('nexusUserAvatar', payload.user_metadata.avatar_url || payload.user_metadata.picture);
           }
           if(payload.user_metadata.full_name || payload.user_metadata.name){
-            localStorage.setItem('nexusUserName', payload.user_metadata.full_name || payload.user_metadata.name);
+            localStorage.setItem('nexusUserName', nxFixMojibake(payload.user_metadata.full_name || payload.user_metadata.name));
           }
         }
         localStorage.setItem('nexus_cloud_session',JSON.stringify({

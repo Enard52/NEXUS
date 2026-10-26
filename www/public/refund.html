@@ -32,11 +32,11 @@
 :root{
   --brand:#4C7DFF; --brand-press:#3F6FFF; --accent:#22D3EE;
   --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 55%,#818CF8 100%);
-  --page:#F6F8FD; --page-grad:radial-gradient(120% 75% at 50% -10%, #E8EEFF 0%, #F1F4FD 45%, #F8FAFF 100%);
-  --surface:#FFFFFF; --surface-2:#F4F6FC; --text:#0F172A; --text-2:#334155;
-  --muted:#64748B; --border:#E2E8F0; --danger:#E5484D;
+  --page:#ECE9FD; --page-grad:linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+  --surface:rgba(255, 255, 255, 0.88); --surface-2:#F6F4FE; --text:#0F172A; --text-2:#334155;
+  --muted:#64748B; --border:rgba(147, 130, 220, 0.24); --danger:#E5484D;
   --radius:18px; --radius-lg:26px;
-  --shadow:0 4px 20px -2px rgba(15,23,42,.06); --shadow-lg:0 24px 56px -12px rgba(15,23,42,.15);
+  --shadow:0 4px 20px -2px rgba(99, 102, 241, 0.08); --shadow-lg:0 24px 56px -12px rgba(99, 102, 241, 0.16);
   --header-h:68px; --max:1120px;
 }
 html{
@@ -150,11 +150,10 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   padding:8px;
   box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 30px 60px -12px rgba(0,0,0,.65), 0 0 50px rgba(76,125,255,.18);
   user-select:none;
-  cursor:grab;
-  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+  cursor:default;
+  transition:box-shadow .3s ease;
   animation:phoneFloat 6s ease-in-out infinite;
 }
-.phone-case:active{cursor:grabbing}
 @keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 @media(max-height:800px), (max-width:600px){
@@ -170,7 +169,7 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   position:relative;width:100%;
   aspect-ratio:390 / 844;
   border-radius:40px;overflow:hidden;
-  background:#05070A;
+  background:#ECE9FD;
 }
 
 /* Dinamik Ada */
@@ -199,10 +198,10 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
    JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
    190px'e sikisirir ve okunmaz). */
-.phone-preview{position:absolute;inset:0;z-index:22;display:none;background:#05070A}
+.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:#ECE9FD}
 .phone-preview.on{display:block}
 .phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
-  transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.8))}
 .phone-case.previewing .phone-arrow{display:none}
 .phone-case.previewing{cursor:default}
 .phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
@@ -303,15 +302,19 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .card h3{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.015em}
 .card p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.6}
 
-/* Nasıl Çalışır */
-.steps{display:grid;gap:18px;counter-reset:st}
+/* Nasıl Çalışır (1-2-3 Adım Tasarımı) */
+.steps{display:grid;gap:20px;counter-reset:st;position:relative}
 @media(min-width:800px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px 24px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease}
-.step:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 35%,transparent)}
-.step-n{position:absolute;top:-16px;left:22px;width:36px;height:36px;border-radius:12px;background:var(--brand-grad);
-  color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.4)}
-.step h3{margin:10px 0 8px;font-size:17.5px;font-weight:800}
-.step p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow);transition:all .3s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column}
+.step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 45%,transparent)}
+.step-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.step-n{width:36px;height:36px;border-radius:12px;background:var(--brand-grad);
+  color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.35);flex-shrink:0}
+.step-micro-pill{font-size:10.5px;font-weight:800;letter-spacing:.05em;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);padding:3px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--brand) 20%,transparent)}
+.step-icon-bubble{width:34px;height:34px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-2);flex-shrink:0}
+.step-icon-bubble svg{width:17px;height:17px}
+.step h3{margin:0 0 8px;font-size:17.5px;font-weight:800;letter-spacing:-.015em}
+.step p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6}
 
 /* Entegrasyonlar */
 .int-groups{display:grid;gap:18px}
@@ -414,9 +417,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
-.ft-pills{display:flex;flex-wrap:wrap;gap:8px}
-.ft-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
-.ft-pill svg{width:13px;height:13px;color:var(--brand)}
+.ft-trust-row{display:flex;align-items:center;margin-top:14px}
+.ft-trust-badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.ft-status-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
+@keyframes nxStatusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.2)}}
+.nx-form-success{display:none;text-align:center;padding:24px 16px}
+.nx-form-success svg{width:46px;height:46px;color:#10B981;margin:0 auto 12px;display:block}
+.nx-form-success h4{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
+.nx-form-success p{margin:0 0 18px;color:var(--muted);font-size:13.5px;line-height:1.55}
 .ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
@@ -736,14 +744,15 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
       <div class="ft-brand">
         <a class="logo" href="/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
         <p>Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down, and signing in is only ever optional.</p>
-        <div class="ft-pills">
-          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Local-First LAN</span>
-          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Control without the cloud</span>
-          <span class="ft-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg> Privacy-First</span>
+        <div class="ft-trust-row">
+          <div class="ft-trust-badge">
+            <span class="ft-status-dot"></span>
+            <span>Local LAN Encrypted — Zero Telemetry &amp; Absolute Privacy</span>
+          </div>
         </div>
       </div>
       <div class="ft-links-group">
-        <div class="ft-col"><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="/#faq">FAQ</a><a href="/about">About</a></div>
+        <div class="ft-col"><h4>Product</h4><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/#downloads">Download</a><a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Web App</a><a href="/#faq">FAQ</a><a href="/about">About</a></div>
         <div class="ft-col"><h4>Customer &amp; Support</h4><a href="/#pricing">Plans &amp; Pricing</a><a href="javascript:nxOpenContactModal('Technical Support')">Contact &amp; Technical Support</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Release Notes &amp; Community</a><a href="/#downloads">Download Apps</a></div>
         <div class="ft-col"><h4>Legal</h4><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/refund">Refunds</a></div>
       </div>
@@ -796,7 +805,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
         <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Your message is sent directly to developers. Replies within 24h.
       </p>
     </form>
-    <div id="nxContactSuccess" class="nx-form-success">
+    <div id="nxContactSuccess" class="nx-form-success" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
       <h4>Message Received!</h4>
       <p>Thank you for reaching out. Our team will review your message and reply to your email address shortly.</p>

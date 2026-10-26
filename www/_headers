@@ -1,7 +1,7 @@
 /*
   X-Robots-Tag: noindex, nofollow
   X-Frame-Options: SAMEORIGIN
-  Content-Security-Policy: frame-ancestors 'self' https://nexus-smarthome.pages.dev
+  Content-Security-Policy: frame-ancestors 'self' https://nexus-smarthome.pages.dev https://enard52.github.io
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(self), microphone=(), geolocation=(self)

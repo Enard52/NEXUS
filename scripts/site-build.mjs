@@ -151,11 +151,11 @@ const CSS = `
 :root{
   --brand:#4C7DFF; --brand-press:#3F6FFF; --accent:#22D3EE;
   --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 55%,#818CF8 100%);
-  --page:#F6F8FD; --page-grad:radial-gradient(120% 75% at 50% -10%, #E8EEFF 0%, #F1F4FD 45%, #F8FAFF 100%);
-  --surface:#FFFFFF; --surface-2:#F4F6FC; --text:#0F172A; --text-2:#334155;
-  --muted:#64748B; --border:#E2E8F0; --danger:#E5484D;
+  --page:#ECE9FD; --page-grad:linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+  --surface:rgba(255, 255, 255, 0.88); --surface-2:#F6F4FE; --text:#0F172A; --text-2:#334155;
+  --muted:#64748B; --border:rgba(147, 130, 220, 0.24); --danger:#E5484D;
   --radius:18px; --radius-lg:26px;
-  --shadow:0 4px 20px -2px rgba(15,23,42,.06); --shadow-lg:0 24px 56px -12px rgba(15,23,42,.15);
+  --shadow:0 4px 20px -2px rgba(99, 102, 241, 0.08); --shadow-lg:0 24px 56px -12px rgba(99, 102, 241, 0.16);
   --header-h:68px; --max:1120px;
 }
 html{
@@ -269,11 +269,10 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   padding:8px;
   box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 30px 60px -12px rgba(0,0,0,.65), 0 0 50px rgba(76,125,255,.18);
   user-select:none;
-  cursor:grab;
-  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
+  cursor:default;
+  transition:box-shadow .3s ease;
   animation:phoneFloat 6s ease-in-out infinite;
 }
-.phone-case:active{cursor:grabbing}
 @keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
 @media(max-height:800px), (max-width:600px){
@@ -289,7 +288,7 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   position:relative;width:100%;
   aspect-ratio:390 / 844;
   border-radius:40px;overflow:hidden;
-  background:#05070A;
+  background:#ECE9FD;
 }
 
 /* Dinamik Ada */
@@ -318,10 +317,10 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
    JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
    190px'e sikisirir ve okunmaz). */
-.phone-preview{position:absolute;inset:0;z-index:22;display:none;background:#05070A}
+.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:#ECE9FD}
 .phone-preview.on{display:block}
 .phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
-  transform-origin:top left;transform:scale(var(--nx-preview-scale,.55))}
+  transform-origin:top left;transform:scale(var(--nx-preview-scale,.8))}
 .phone-case.previewing .phone-arrow{display:none}
 .phone-case.previewing{cursor:default}
 .phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
@@ -422,15 +421,19 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .card h3{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.015em}
 .card p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.6}
 
-/* Nasıl Çalışır */
-.steps{display:grid;gap:18px;counter-reset:st}
+/* Nasıl Çalışır (1-2-3 Adım Tasarımı) */
+.steps{display:grid;gap:20px;counter-reset:st;position:relative}
 @media(min-width:800px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px 24px;box-shadow:var(--shadow);transition:transform .25s ease,box-shadow .25s ease}
-.step:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 35%,transparent)}
-.step-n{position:absolute;top:-16px;left:22px;width:36px;height:36px;border-radius:12px;background:var(--brand-grad);
-  color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.4)}
-.step h3{margin:10px 0 8px;font-size:17.5px;font-weight:800}
-.step p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow);transition:all .3s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column}
+.step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 45%,transparent)}
+.step-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.step-n{width:36px;height:36px;border-radius:12px;background:var(--brand-grad);
+  color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.35);flex-shrink:0}
+.step-micro-pill{font-size:10.5px;font-weight:800;letter-spacing:.05em;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);padding:3px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--brand) 20%,transparent)}
+.step-icon-bubble{width:34px;height:34px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-2);flex-shrink:0}
+.step-icon-bubble svg{width:17px;height:17px}
+.step h3{margin:0 0 8px;font-size:17.5px;font-weight:800;letter-spacing:-.015em}
+.step p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6}
 
 /* Entegrasyonlar */
 .int-groups{display:grid;gap:18px}
@@ -533,9 +536,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
-.ft-pills{display:flex;flex-wrap:wrap;gap:8px}
-.ft-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
-.ft-pill svg{width:13px;height:13px;color:var(--brand)}
+.ft-trust-row{display:flex;align-items:center;margin-top:14px}
+.ft-trust-badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.ft-status-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
+@keyframes nxStatusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.2)}}
+.nx-form-success{display:none;text-align:center;padding:24px 16px}
+.nx-form-success svg{width:46px;height:46px;color:#10B981;margin:0 auto 12px;display:block}
+.nx-form-success h4{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
+.nx-form-success p{margin:0 0 18px;color:var(--muted);font-size:13.5px;line-height:1.55}
 .ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;
   justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
@@ -843,6 +851,10 @@ function nxUnlockScroll(){
 function nxOpenContactModal(category){
   var m=document.getElementById('nxContactModal');
   if(!m)return;
+  var form=document.getElementById('nxContactForm');
+  var successEl=document.getElementById('nxContactSuccess');
+  if(form)form.style.display='block';
+  if(successEl)successEl.style.display='none';
   if(category){
     var sel=document.getElementById('nxContactCategory');
     if(sel)sel.value=category;
@@ -850,6 +862,34 @@ function nxOpenContactModal(category){
   m.style.display='flex';
   setTimeout(function(){m.classList.add('open')},10);
   nxLockScroll();
+}
+
+// Mojibake Karakter Düzeltici & UTF-8 JWT Çözücü
+function nxFixMojibake(str){
+  if(!str)return '';
+  try{
+    if(/[\u00C2-\u00C5]/.test(str)){
+      var bytes=new Uint8Array(str.length);
+      for(var i=0;i<str.length;i++)bytes[i]=str.charCodeAt(i)&0xff;
+      var decoded=new TextDecoder('utf-8').decode(bytes);
+      if(decoded && !decoded.includes('\uFFFD'))return decoded;
+    }
+  }catch(e){}
+  return str;
+}
+
+function nxDecodeJwt(token){
+  try{
+    var base64Url=token.split('.')[1];
+    var base64=base64Url.replace(/-/g,'+').replace(/_/g,'/');
+    while(base64.length%4)base64+='=';
+    var binary=atob(base64);
+    var bytes=new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    return JSON.parse(new TextDecoder('utf-8').decode(bytes));
+  }catch(e){
+    try{return JSON.parse(atob(token.split('.')[1]));}catch(err){return {};}
+  }
 }
 
 function nxCloseContactModal(){
@@ -1046,7 +1086,13 @@ function nxUpdateNavAuth(){
   if(user){
     btn.classList.add('logged-in');
     var customName=null;
-    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    try{
+      customName=localStorage.getItem('nexusUserName');
+      if(customName){
+        var fixed=nxFixMojibake(customName);
+        if(fixed!==customName){customName=fixed;localStorage.setItem('nexusUserName',fixed);}
+      }
+    }catch(e){}
     var displayName = customName || user.split('@')[0];
     label.textContent = displayName;
     label.title = displayName + ' (' + user + ')';
@@ -1076,7 +1122,13 @@ function nxOpenAuthModal(){
     if(formView)formView.style.display='none';
     if(profileView)profileView.style.display='block';
     var customName=null;
-    try{customName=localStorage.getItem('nexusUserName');}catch(e){}
+    try{
+      customName=localStorage.getItem('nexusUserName');
+      if(customName){
+        var fixed=nxFixMojibake(customName);
+        if(fixed!==customName){customName=fixed;localStorage.setItem('nexusUserName',fixed);}
+      }
+    }catch(e){}
     var displayName = customName || user.split('@')[0];
     
     var avatarWrap=document.getElementById('nxProfileAvatarWrap');
@@ -1109,14 +1161,14 @@ function nxOpenAuthModal(){
 function nxEditProfileName(){
   var isTr=document.documentElement.lang==='tr';
   var curName='';
-  try{curName=localStorage.getItem('nexusUserName')||'';}catch(e){}
+  try{curName=nxFixMojibake(localStorage.getItem('nexusUserName')||'');}catch(e){}
   nxShowPrompt(
     isTr ? 'İsmi Düzenle' : 'Edit Display Name',
     isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:',
     curName,
     function(newName){
       if(!newName)return;
-      try{localStorage.setItem('nexusUserName', newName);}catch(e){}
+      try{localStorage.setItem('nexusUserName', nxFixMojibake(newName));}catch(e){}
       nxUpdateNavAuth();
       nxOpenAuthModal();
     }
@@ -1312,7 +1364,7 @@ function nxSubmitAuth(e){
           localStorage.setItem('nexusUserAvatar', data.user.user_metadata.avatar_url || data.user.user_metadata.picture);
         }
         if(data.user.user_metadata.full_name || data.user.user_metadata.name){
-          localStorage.setItem('nexusUserName', data.user.user_metadata.full_name || data.user.user_metadata.name);
+          localStorage.setItem('nexusUserName', nxFixMojibake(data.user.user_metadata.full_name || data.user.user_metadata.name));
         }
       }
       if(data.access_token){
@@ -1458,9 +1510,8 @@ function nxResetShotTimer(){
   },4500);
 }
 
-// Telefonun icinde canli uygulama onizlemesi: statik ekranlar <-> gercek uygulama.
-// iframe yalnizca ilk kez "Kendin dene"e basilinca yuklenir (anisayfa agirliklanmasin).
-var nxPreviewOn=false;
+// Canlı mobil uygulama ön izlemesi: doğrudan Ana Sayfada (stitch-home) başlar
+var nxPreviewOn=true;
 
 function nxScalePreview(){
   var box=document.querySelector('.phone-inner-screen');
@@ -1469,41 +1520,22 @@ function nxScalePreview(){
   box.style.setProperty('--nx-preview-scale',(w/390).toFixed(4));
 }
 
-function nxSetPhoneMode(mode){
-  var prev=document.getElementById('phonePreview');
-  var shots=document.querySelector('.phone-screen-content');
-  var caseEl=document.querySelector('.phone-case');
+function nxBootPreview(){
   var frame=document.getElementById('phonePreviewFrame');
-  if(!prev||!shots||!frame)return;
-  nxPreviewOn=(mode==='live');
-  prev.classList.toggle('on',nxPreviewOn);
-  prev.setAttribute('aria-hidden',nxPreviewOn?'false':'true');
-  shots.style.visibility=nxPreviewOn?'hidden':'visible';
-  if(caseEl)caseEl.classList.toggle('previewing',nxPreviewOn);
-  var bShots=document.getElementById('phoneModeShots');
-  var bLive=document.getElementById('phoneModeLive');
-  if(bShots){bShots.classList.toggle('active',!nxPreviewOn);bShots.setAttribute('aria-pressed',nxPreviewOn?'false':'true');}
-  if(bLive){bLive.classList.toggle('active',nxPreviewOn);bLive.setAttribute('aria-pressed',nxPreviewOn?'true':'false');}
-  var open=document.getElementById('phoneModeOpen');
-  if(open)open.hidden=!nxPreviewOn;
-  var hint=document.getElementById('phoneTapHint');
-  if(hint)hint.hidden=nxPreviewOn;
-  var note=document.getElementById('phonePreviewNote');
-  if(note)note.hidden=!nxPreviewOn;
-  var pill=document.getElementById('phoneCaptionPill');
-  if(pill)pill.style.display=nxPreviewOn?'none':'';
-  var dots=document.querySelector('.phone-dots');
-  if(dots)dots.style.display=nxPreviewOn?'none':'';
-  if(nxPreviewOn){
-    if(!frame.getAttribute('src'))frame.setAttribute('src',frame.getAttribute('data-src'));
-    nxScalePreview();
-    if(nxShotTimer)clearInterval(nxShotTimer);
-  }else{
-    nxResetShotTimer();
+  if(frame){
+    var d=frame.getAttribute('data-src');
+    if(d && !frame.getAttribute('src')) frame.setAttribute('src',d);
   }
+  nxScalePreview();
 }
 
-window.addEventListener('resize',function(){if(nxPreviewOn)nxScalePreview();});
+function nxSetPhoneMode(mode){
+  nxBootPreview();
+}
+
+window.addEventListener('resize',nxScalePreview);
+document.addEventListener('DOMContentLoaded',nxBootPreview);
+setTimeout(nxBootPreview,100);
 
 // Telefon dokunma, sürükleme ve tıklama yönetimi
 document.addEventListener('DOMContentLoaded',function(){
@@ -1549,7 +1581,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var hashParams=new URLSearchParams(window.location.hash.substring(1));
       var token=hashParams.get('access_token');
       if(token){
-        var payload=JSON.parse(atob(token.split('.')[1]));
+        var payload=nxDecodeJwt(token);
         var userEmail=payload.email||'kullanici@nexus';
         localStorage.setItem('nexusCurrentUser',userEmail);
         if(payload.user_metadata){
@@ -1557,7 +1589,7 @@ document.addEventListener('DOMContentLoaded',function(){
             localStorage.setItem('nexusUserAvatar', payload.user_metadata.avatar_url || payload.user_metadata.picture);
           }
           if(payload.user_metadata.full_name || payload.user_metadata.name){
-            localStorage.setItem('nexusUserName', payload.user_metadata.full_name || payload.user_metadata.name);
+            localStorage.setItem('nexusUserName', nxFixMojibake(payload.user_metadata.full_name || payload.user_metadata.name));
           }
         }
         localStorage.setItem('nexus_cloud_session',JSON.stringify({
@@ -1674,49 +1706,29 @@ function renderHero(c, hasShots) {
         ? `
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case" id="phoneMockup" title="${isTr ? 'Sonraki ekran için dokunun veya kaydırın' : 'Tap or swipe to see next screen'}">
+      <div class="phone-case" id="phoneMockup" title="${isTr ? 'Canlı mobil uygulamayı doğrudan ekrandan deneyin' : 'Interact directly with the live mobile app'}">
         <div class="phone-inner-screen">
           <div class="phone-island">
             <span class="island-camera"></span>
             <span class="island-sensor"></span>
           </div>
-          <div class="phone-screen-content">
-            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" ${i === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy" decoding="async"'}></div>`).join('\n            ')}
+          <!-- Canlı Mobil Uygulama: Doğrudan Ana Sayfada (stitch-home) başlar -->
+          <div class="phone-preview on" id="phonePreview">
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="${isTr ? 'NEXUS mobil uygulamasının canlı önizlemesi' : 'Live preview of the NEXUS mobile app'}" data-src="${APP_URL}/stitch-home.html?preview=1" loading="lazy" referrerpolicy="no-referrer"></iframe>
           </div>
-          <!-- Uygulamanın KENDİ sayfası çerçevenin içinde: ziyaretçi gezinebilsin.
-               data-src: ilk "Kendin dene" tıkında atanır (ana sayfa iframe yüzünden
-               ağırlaşmasın). Adres APP_URL + "/" — Cloudflare Pages /index.html'i
-               308 ile /'ye yönlendiriyor (ölçüldü), fazladan sıçrama gereksiz. -->
-          <div class="phone-preview" id="phonePreview" aria-hidden="true">
-            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="${isTr ? 'NEXUS mobil uygulamasının canlı önizlemesi' : 'Live preview of the NEXUS mobile app'}" data-src="${APP_URL}/" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <div class="phone-screen-content" aria-hidden="true" style="display:none">
+            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
         </div>
-        <button type="button" class="phone-arrow phone-arrow-left" onclick="event.stopPropagation();nxPrevShot()" aria-label="${isTr ? 'Önceki Ekran' : 'Previous Screen'}">
-          <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <button type="button" class="phone-arrow phone-arrow-right" onclick="event.stopPropagation();nxNextShot()" aria-label="${isTr ? 'Sonraki Ekran' : 'Next Screen'}">
-          <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg>
-        </button>
       </div>
       <div class="phone-bottom-bar">
-        <div class="phone-modes" role="group" aria-label="${isTr ? 'Telefon ön izleme modu' : 'Phone preview mode'}">
-          <button type="button" class="phone-mode-btn active" id="phoneModeShots" aria-pressed="true" onclick="nxSetPhoneMode('shots')">${isTr ? 'Ekranlar' : 'Screens'}</button>
-          <button type="button" class="phone-mode-btn" id="phoneModeLive" aria-pressed="false" onclick="nxSetPhoneMode('live')">${isTr ? 'Kendin dene' : 'Try it live'}</button>
-          <a class="phone-mode-open" id="phoneModeOpen" href="${APP_URL}/" target="_blank" rel="noopener" hidden>${isTr ? 'Tam ekran aç' : 'Open full screen'}</a>
+        <div class="phone-caption-pill" id="phoneCaptionPill">
+          <span class="badge">CANLI</span>
+          <span id="phonePreviewNote">${isTr ? 'İnteraktif Uygulama — Odaları ve cihazları doğrudan yönetin' : 'Interactive App — Control rooms and devices directly'}</span>
         </div>
-        <div class="phone-nav-row">
-          <div class="phone-caption-pill" id="phoneCaptionPill">
-            <span class="badge" id="phoneSlideNum">1/${shots.length}</span>
-            <span id="phoneSlideTitle">${esc(shots[0].label)}</span>
-          </div>
-          <div class="phone-dots" role="tablist" aria-label="${isTr ? 'Ekranlar' : 'Screens'}">
-            ${shots.map((s, i) => `<button role="tab" class="phone-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0 ? 'true' : 'false'}" onclick="nxShowShot(${i});nxResetShotTimer();" aria-label="${esc(s.label)}" title="${esc(s.label)}"></button>`).join('')}
-          </div>
-        </div>
-        <span class="phone-tap-hint" id="phoneTapHint">${icon('sparkles')}${isTr ? 'Sonraki ekran için dokunun veya oklara basın' : 'Tap phone or use arrows to explore'}</span>
-        <span class="phone-tap-hint" id="phonePreviewNote" hidden>${icon('sparkles')}${isTr ? 'Bu gerçek uygulama — bu tarayıcıda giriş yaptıysan kendi verilerin görünür' : 'This is the real app — sign in here and your own data shows up'}</span>
+        <span class="phone-tap-hint" id="phoneTapHint">${icon('sparkles')}${isTr ? 'Sayfa yenilenince ana ekrana döner' : 'Resets to home screen when page reloads'}</span>
       </div>
     </div>`
         : ''
@@ -1737,11 +1749,24 @@ function renderFeatures(c) {
 }
 
 function renderHow(c) {
+  const isTr = c.lang === 'tr';
+  const stepIcons = ['wifi', 'zap', 'shield'];
+  const stepBadges = isTr
+    ? ['01 • AĞ KEŞFİ', '02 • ANINDA EŞLE', '03 • YEREL ÇALIŞTIR']
+    : ['01 • LAN SCAN', '02 • INSTANT PAIR', '03 • LOCAL RUN'];
   return `<section id="how">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.how.heading)}</h2><p>${esc(c.how.lead)}</p></div>
     <div class="steps">
-      ${c.how.steps.map(([n, title, desc]) => `<div class="step rv"><span class="step-n">${n}</span><h3>${esc(title)}</h3><p>${esc(desc)}</p></div>`).join('\n      ')}
+      ${c.how.steps.map(([n, title, desc], idx) => `<div class="step rv">
+        <div class="step-top-row">
+          <span class="step-n">${n}</span>
+          <span class="step-micro-pill">${stepBadges[idx] || ('ADIM ' + n)}</span>
+          <div class="step-icon-bubble">${icon(stepIcons[idx] || 'check')}</div>
+        </div>
+        <h3>${esc(title)}</h3>
+        <p>${esc(desc)}</p>
+      </div>`).join('\n      ')}
     </div>
   </div>
 </section>`;
@@ -1918,10 +1943,11 @@ function renderFooter(c) {
       <div class="ft-brand">
         <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
         <p>${esc(c.footer.tagline)}</p>
-        <div class="ft-pills">
-          <span class="ft-pill">${icon('lock')} ${c.lang === 'tr' ? 'Yerel Ağ Güvenliği' : 'Local-First LAN'}</span>
-          <span class="ft-pill">${icon('zap')} ${c.lang === 'tr' ? 'Kontrol için bulut şart değil' : 'Control without the cloud'}</span>
-          <span class="ft-pill">${icon('sparkles')} ${c.lang === 'tr' ? 'Gizlilik Odaklı' : 'Privacy-First'}</span>
+        <div class="ft-trust-row">
+          <div class="ft-trust-badge">
+            <span class="ft-status-dot"></span>
+            <span>${c.lang === 'tr' ? 'Yerel Ağ Şifreli — Sıfır Telemetri &amp; Tam Bağımsızlık' : 'Local LAN Encrypted — Zero Telemetry &amp; Absolute Privacy'}</span>
+          </div>
         </div>
       </div>
       <div class="ft-links-group">
@@ -1982,7 +2008,7 @@ function renderContactModal(c) {
         ${icon('lock')} ${isTr ? 'Talebiniz geliştirici ekibimize doğrudan iletilir. En geç 24 saat içinde dönüş yapılır.' : 'Your message is sent directly to developers. Replies within 24h.'}
       </p>
     </form>
-    <div id="nxContactSuccess" class="nx-form-success">
+    <div id="nxContactSuccess" class="nx-form-success" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
       <h4>${isTr ? 'Mesajınız Başarıyla İletildi!' : 'Message Received!'}</h4>
       <p>${isTr ? 'Talebiniz ekibimize ulaştı. Belirttiğiniz e-posta adresi üzerinden en kısa sürede sizinle iletişime geçeceğiz.' : 'Thank you for reaching out. Our team will review your message and reply to your email address shortly.'}</p>

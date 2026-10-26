@@ -376,7 +376,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
                olduğu için 20→32px yükseklik GLİF KONUMUNU DEĞİŞTİRMEZ; satırın
                yüksekliğini zaten 32px'lik logo belirliyordu. (Kanıt: denetim
                öncesi/sonrası ekran karşılaştırması + L kovası.) */
-.nx-tap, .nx-tap-t { position: relative; }
+.nx-tap:not(.absolute), .nx-tap-t:not(.absolute) { position: relative; }
 .nx-tap-f { min-height: 32px; }
 .nx-tap::after {
   content: "";

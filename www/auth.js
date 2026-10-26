@@ -4,6 +4,21 @@
 (function() {
   const CURRENT_USER_KEY = 'nexusCurrentUser';
 
+  // Canlı Telefon Ön İzlemesi / Demo Kontrolü
+  // Sitedeki telefon çerçevesinde (iframe) ve demo modunda onboarding/giriş duvarı yerine
+  // doğrudan Ana Sayfa deneyimi sunulur.
+  const isPreviewMode = (function() {
+    try {
+      return window.self !== window.top || /[?&](preview|demo)=1/.test(window.location.search);
+    } catch {
+      return false;
+    }
+  })();
+
+  if (isPreviewMode && !localStorage.getItem(CURRENT_USER_KEY)) {
+    localStorage.setItem(CURRENT_USER_KEY, 'demo_user');
+  }
+
   // Yönlendirme (Auth Guard) Mantığı
   function enforceAuth() {
     const path = window.location.pathname;
@@ -15,6 +30,19 @@
       'stitch-login', 'stitch-onboarding', 'stitch-forgot-password', 'stitch-register'
     ].includes(page);
     const user = localStorage.getItem(CURRENT_USER_KEY);
+
+    // Canlı önizleme çerçevesinde onboarding/giriş duvarı engellenir; doğrudan ana sayfaya yönlendirilir
+    if (isPreviewMode) {
+      if (!user) {
+        localStorage.setItem(CURRENT_USER_KEY, 'demo_user');
+      }
+      if (isPublicPage || page === 'index.html' || page === 'index' || page === '') {
+        window.location.replace('stitch-home.html');
+        return;
+      }
+      return;
+    }
+
     // E-posta bağlantısından (doğrulama / şifre sıfırlama / Google) dönülürken belirteçler adres çubuğundadır;
     // oturum açık olsa bile sayfa bunları işleyebilsin diye eve yönlendirilmez.
     if (user && isPublicPage && /[#&]access_token=/.test(window.location.hash || '')) return;
