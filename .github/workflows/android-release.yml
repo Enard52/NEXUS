@@ -57,6 +57,7 @@ jobs:
         run: |
           echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/nexus-release.jks"
           printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' "$RUNNER_TEMP/nexus-release.jks" "$KS_PASS" "${KS_ALIAS:-nexus}" "${KEY_PASS:-$KS_PASS}" > "$RUNNER_TEMP/keystore.properties"
+          chmod +x android/gradlew
           cd android && NEXUS_KEYSTORE_PROPS="$RUNNER_TEMP/keystore.properties" ./gradlew assembleRelease --no-daemon
       - name: Sürüme yükle
         if: steps.gate.outputs.run == 'true'
