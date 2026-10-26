@@ -6,6 +6,10 @@
  */
 (function () {
   if (!window.nexusDesktop || window.__nexusPalette) return;
+  try {
+    var u = typeof nexusGetItem === "function" ? nexusGetItem("nexusCurrentUser") : localStorage.getItem("nexusCurrentUser");
+    if (!u || !String(u).trim()) return;
+  } catch (e) { return; }
   window.__nexusPalette = true;
 
   var T = function (tr, en) { return (window.nexusT || function (a) { return a; })(tr, en); };

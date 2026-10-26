@@ -550,33 +550,12 @@ window.nexusCopy = function (text) {
   return Promise.resolve(legacy());
 };
 
-// Giriş / kayıt / tanıtım ekranlarında dil seçimi (Ayarlar'a ulaşmadan önce gerekir)
-(function () {
-  var page = (location.pathname.split('/').pop() || '').toLowerCase();
-  var AUTH = ['stitch-login.html', 'stitch-register.html', 'stitch-forgot-password.html', 'stitch-onboarding.html'];
-  if (AUTH.indexOf(page) === -1) return;
-  function add() {
-    if (document.getElementById('nx-lang-switch')) return;
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.id = 'nx-lang-switch';
-    b.setAttribute('data-no-i18n', '');
-    b.setAttribute('aria-label', window.nexusLang === 'en' ? 'Türkçe\'ye geç' : 'Switch to English');
-    b.innerHTML = '<span' + (window.nexusLang === 'tr' ? ' class="on"' : '') + '>TR</span><span' + (window.nexusLang === 'en' ? ' class="on"' : '') + '>EN</span>';
-    b.addEventListener('click', function () { nexusSetLanguage(window.nexusLang === 'en' ? 'tr' : 'en'); });
-    document.body.appendChild(b);
-  }
-  var css = document.createElement('style');
-  css.textContent = '#nx-lang-switch{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;z-index:60;display:flex;gap:2px;padding:3px;border-radius:999px;border:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:600 12px/1 Inter,system-ui,sans-serif;color:#64748b;cursor:pointer}' +
-    '#nx-lang-switch span{padding:6px 9px;border-radius:999px}#nx-lang-switch span.on{background:#4C7DFF;color:#fff}' +
-    'html.dark #nx-lang-switch{background:rgba(15,23,42,.72);border-color:rgba(148,163,184,.25);color:#94a3b8}';
-  document.head.appendChild(css);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
-})();
-
-// Masaüstü uygulamasında Ctrl+K komut paleti (yalnızca Electron + geniş ekran)
+// Masaüstü uygulamasında Ctrl+K komut paleti (yalnızca Electron + geniş ekran; auth sayfalarında yüklenmez)
 (function () {
   if (!window.nexusDesktop || !window.matchMedia || !window.matchMedia('(min-width: 1024px)').matches) return;
+  var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+  var AUTH = ['index', 'stitch-login', 'stitch-register', 'stitch-forgot-password', 'stitch-onboarding', ''];
+  if (AUTH.indexOf(page) !== -1) return;
   var s = document.createElement('script');
   s.src = 'command-palette.js';
   s.defer = true;

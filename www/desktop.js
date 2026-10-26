@@ -20,14 +20,38 @@
     } catch (e) { return false; }
   })();
   var root = document.documentElement;
-  var page = (location.pathname.split("/").pop() || "stitch-home.html").toLowerCase();
+  var rawPage = (location.pathname.split("/").pop() || "").toLowerCase();
+  var page = rawPage || "index.html";
 
-  // Giriş/kayıt ekranlarında menü yok; ortalanmış tek kart
-  var AUTH = ["stitch-login.html", "stitch-register.html", "stitch-forgot-password.html", "stitch-onboarding.html", "index.html"];
+  // Giriş/kayıt/onboarding ekranlarında menü yok; ortalanmış tek kart
+  var AUTH = [
+    "stitch-login.html", "stitch-register.html", "stitch-forgot-password.html", "stitch-onboarding.html", "index.html",
+    "stitch-login", "stitch-register", "stitch-forgot-password", "stitch-onboarding", "index", ""
+  ];
   // Geniş içerikli (ızgara/pano) sayfalar
   var WIDE = ["stitch-home.html", "stitch-smart.html", "stitch-discover.html", "stitch-panels.html", "stitch-integrations.html",
     "stitch-pair.html", "stitch-map.html", "stitch-household.html", "stitch-skills.html", "stitch-multi-video.html",
     "stitch-cards.html", "stitch-energy.html", "stitch-device.html", "stitch-chat.html", "stitch-plus.html", "stitch-billing.html"];
+
+  function get(key) {
+    try { return typeof nexusGetItem === "function" ? nexusGetItem(key) : localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function set(key, val) {
+    try { if (typeof nexusSetItem === "function") nexusSetItem(key, val); else localStorage.setItem(key, val); } catch (e) {}
+  }
+
+  function isLoggedIn() {
+    try {
+      var u = get("nexusCurrentUser");
+      return !!(u && String(u).trim());
+    } catch (e) { return false; }
+  }
+
+  function isAuthPage() {
+    var clean = (location.pathname.split("/").pop() || "").toLowerCase();
+    if (!clean || clean === "index.html" || clean === "index") return true;
+    return AUTH.indexOf(clean) !== -1 || AUTH.indexOf(clean.replace(/\.html$/, "")) !== -1;
+  }
 
   var NAV = [
     { group: "", items: [
@@ -73,25 +97,30 @@
 
   function applyMode() {
     var on = isDesk();
+    var authMode = isAuthPage() || !isLoggedIn();
     root.classList.toggle("nx-desk", on);
-    root.classList.toggle("nx-desk-auth", on && AUTH.indexOf(page) !== -1);
-    root.classList.toggle("nx-desk-wide", on && WIDE.indexOf(page) !== -1);
+    root.classList.toggle("nx-desk-auth", on && authMode);
+    root.classList.toggle("nx-logged-in", isLoggedIn() && !authMode);
+    root.classList.toggle("nx-desk-wide", on && !authMode && WIDE.indexOf(page) !== -1);
     root.classList.toggle("nx-tab", isTab());
+
+    if (authMode) {
+      var existingSide = document.getElementById("nx-side");
+      if (existingSide) existingSide.remove();
+    }
   }
   applyMode(); // ilk boyamadan önce: titreme olmasın
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
-  function get(key) {
-    try { return typeof nexusGetItem === "function" ? nexusGetItem(key) : localStorage.getItem(key); } catch (e) { return null; }
-  }
-  function set(key, val) {
-    try { if (typeof nexusSetItem === "function") nexusSetItem(key, val); else localStorage.setItem(key, val); } catch (e) {}
-  }
-
   function buildSidebar() {
-    if (document.getElementById("nx-side") || AUTH.indexOf(page) !== -1) return;
-    var name = get("nexusUserName") || "Misafir";
+    if (isAuthPage() || !isLoggedIn()) {
+      var existingSide = document.getElementById("nx-side");
+      if (existingSide) existingSide.remove();
+      return;
+    }
+    if (document.getElementById("nx-side")) return;
+    var name = get("nexusUserName") || "NEXUS Kullanıcısı";
     var initials = name.trim().split(/\s+/).map(function (p) { return p.charAt(0); }).join("").slice(0, 2).toLocaleUpperCase("tr-TR");
     var dark = root.classList.contains("dark");
     var html = '<a href="stitch-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
@@ -300,6 +329,7 @@
   window.addEventListener("load", function () { setTimeout(addTips, 400); });
   document.addEventListener("keydown", function (e) {
     if (!isDesk() || e.defaultPrevented) return;
+    if (isAuthPage() || !isLoggedIn()) return;
     if (e.key === "Escape") { if (closeTopSheet()) e.preventDefault(); return; }
     if (e.ctrlKey || e.metaKey) return;
     if (e.altKey && /^[1-5]$/.test(e.key)) {

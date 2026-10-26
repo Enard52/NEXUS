@@ -18,6 +18,19 @@ html.nx-desk .nx-side {
   border-right: 1px solid rgba(148, 163, 184, 0.22);
   font-family: Inter, sans-serif;
 }
+/* Giriş, kayıt ve karşılama (onboarding) ekranlarında ve oturum açılmamışken menü kesinlikle gösterilmez */
+html.nx-desk.nx-desk-auth .nx-side,
+html.nx-desk:not(.nx-logged-in) .nx-side,
+body.nx-auth-page .nx-side,
+body.nx-desk-auth .nx-side {
+  display: none !important;
+}
+html.nx-desk.nx-desk-auth body,
+html.nx-desk:not(.nx-logged-in) body,
+body.nx-auth-page,
+body.nx-desk-auth {
+  padding-left: 0 !important;
+}
 html.nx-desk.dark .nx-side { background: #0b1222; border-right-color: rgba(148, 163, 184, 0.14); }
 .nx-side-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 14px; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; }
 html.dark .nx-side-brand { color: #f8fafc; }

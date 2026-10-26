@@ -137,11 +137,6 @@ function trayTemplate() {
   const items = [
     { label: L("NEXUS'u Göster", "Show NEXUS"), click: showMainWindow },
     { type: "separator" },
-    { label: L("Ev", "Home"), click: () => showPage("stitch-home.html") },
-    { label: L("Cihaz Ekle", "Add Device"), click: () => showPage("stitch-pair.html") },
-    { label: L("Mesaj Merkezi", "Message Center"), click: () => showPage("stitch-messages.html") },
-    { label: L("Ayarlar", "Settings"), click: () => showPage("stitch-settings.html") },
-    { type: "separator" },
     { label: L("Kapatınca arka planda çalış", "Keep running in background when closed"),
       type: "checkbox", checked: backgroundRun,
       click: (item) => { backgroundRun = item.checked; persistDesktopSettings({ backgroundRun }); } },
@@ -399,6 +394,8 @@ function createWindow() {
       spellcheck: false,
     },
   });
+  win.removeMenu();
+  win.setMenuBarVisibility(false);
   if (saved?.maximized) win.maximize();
   // Sessiz başlangıç: tepsi varsa pencere açılmadan arka planda başlar; yoksa normal açılır.
   win.once("ready-to-show", () => { if (!(startHidden && tray && backgroundRun)) win.show(); });
@@ -443,13 +440,18 @@ const L = (tr, en) => (uiLang === "en" ? en : tr);
 
 function buildMenu() {
   const isMac = process.platform === "darwin";
+  if (!isMac) {
+    Menu.setApplicationMenu(null);
+    if (win && !win.isDestroyed()) win.removeMenu();
+    return;
+  }
   const template = [
-    ...(isMac ? [{ label: "NEXUS", submenu: [{ role: "about", label: L("NEXUS Hakkında", "About NEXUS") }, { type: "separator" }, { role: "hide", label: L("Gizle", "Hide") }, { role: "hideOthers", label: L("Diğerlerini Gizle", "Hide Others") }, { type: "separator" }, { role: "quit", label: L("Çıkış", "Quit") }] }] : []),
+    { label: "NEXUS", submenu: [{ role: "about", label: L("NEXUS Hakkında", "About NEXUS") }, { type: "separator" }, { role: "hide", label: L("Gizle", "Hide") }, { role: "hideOthers", label: L("Diğerlerini Gizle", "Hide Others") }, { type: "separator" }, { role: "quit", label: L("Çıkış", "Quit") }] },
     { label: L("Dosya", "File"), submenu: [
       { label: L("Arka Plana Gizle", "Hide to Background"), accelerator: "CommandOrControl+Shift+H", click: () => hideToTray() },
       { type: "separator" },
       { label: L("Yeniden Başlat", "Restart"), click: restartApp },
-      isMac ? { role: "close", label: L("Pencereyi Kapat", "Close Window") } : { label: L("Tamamen Çıkış", "Quit Completely"), click: quitApp },
+      { role: "close", label: L("Pencereyi Kapat", "Close Window") },
     ] },
     { label: L("Düzen", "Edit"), submenu: [{ role: "undo", label: L("Geri Al", "Undo") }, { role: "redo", label: L("Yinele", "Redo") }, { type: "separator" }, { role: "cut", label: L("Kes", "Cut") }, { role: "copy", label: L("Kopyala", "Copy") }, { role: "paste", label: L("Yapıştır", "Paste") }, { role: "selectAll", label: L("Tümünü Seç", "Select All") }] },
     { label: L("Görünüm", "View"), submenu: [{ role: "reload", label: L("Yenile", "Reload") }, { type: "separator" }, { role: "resetZoom", label: L("Gerçek Boyut", "Actual Size") }, { role: "zoomIn", label: L("Yakınlaştır", "Zoom In") }, { role: "zoomOut", label: L("Uzaklaştır", "Zoom Out") }, { type: "separator" }, { role: "togglefullscreen", label: L("Tam Ekran", "Full Screen") }] },
