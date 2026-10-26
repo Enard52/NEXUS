@@ -307,7 +307,7 @@ export const content = {
       accountLinks: [
         ["Contact & Technical Support", "javascript:nxOpenContactModal('Technical Support')"],
         ["Release Notes & Community", RELEASES_URL],
-        ["Windows · Linux · Android", "#downloads"],
+        ["Download Apps", "#downloads"],
       ],
       legal: "Legal",
       legalLinks: [
@@ -594,7 +594,7 @@ export const content = {
       accountLinks: [
         ["İletişim ve Teknik Destek", "javascript:nxOpenContactModal('Teknik Destek')"],
         ["Sürüm Notları ve Topluluk", RELEASES_URL],
-        ["Windows · Linux · Android", "#downloads"],
+        ["Uygulama İndir", "#downloads"],
       ],
       legal: "Yasal",
       legalLinks: [

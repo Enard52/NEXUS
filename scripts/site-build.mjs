@@ -279,9 +279,6 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .plat-marks .brand-svg{width:18px;height:18px;display:block}
 .btn-ghost .plat-marks{border:1px solid var(--border);box-shadow:none}
 html[data-theme=dark] .btn-ghost .plat-marks{background:var(--surface)}
-.ft-plat-link{display:inline-flex !important;align-items:center;gap:8px;flex-wrap:wrap}
-.ft-plat-link .plat-marks{padding:3px 6px}
-.ft-plat-link .plat-marks .brand-svg{width:14px;height:14px}
 
 /* Hero */
 .hero{padding:28px 0 32px;position:relative}
@@ -2406,8 +2403,7 @@ function renderFooter(c) {
     `<div class="ft-col"><h4>${esc(title)}</h4>${links.map(([l, h]) => {
       let href = h;
       if (href.startsWith('#')) href = c.canonical + href;
-      const label = l === 'Windows · Linux · Android' ? `${platformMarks()} Windows · Linux · Android` : esc(l);
-      return `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}${l === 'Windows · Linux · Android' ? ' class="ft-plat-link"' : ''}>${label}</a>`;
+      return `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l)}</a>`;
     }).join('')}</div>`;
 
   return `<footer class="ft">
