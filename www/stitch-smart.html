@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -446,7 +446,7 @@ function toggleHomeSelector() {
           autos.forEach((auto) => {
             const run = runs[auto.id];
             const triggerText = auto.trigger && auto.trigger.type === 'time' && auto.trigger.value
-              ? (auto.trigger.value === 'sunset' ? 'Gün batımı' : auto.trigger.value)
+              ? (auto.trigger.value === 'sunset' ? 'Gün batımı' : (auto.trigger.value === 'sunrise' ? 'Gündoğumu' : auto.trigger.value))
               : null;
             let meta = '';
             if (triggerText && run) {

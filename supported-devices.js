@@ -121,12 +121,23 @@
     {
       brand: "Tuya (yerel mod)",
       protocol: "tuya-local",
-      availability: "soon",
-      note: "Şimdilik Home Assistant üzerinden eklenebilir; doğrudan yerel mod yakında",
+      availability: "all",
+      note: "Doğrudan yerel LAN kontrolü (hub veya bulut gerekmez) — ücretsiz",
       models: [
-        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
+        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
         { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
         { name: "Tuya Kapı Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
+        { name: "Tuya Termostat", img: "generic-thermostat-c.png", caps: ["temperature", "humidity"] },
+      ],
+    },
+    {
+      brand: "Wake-on-LAN",
+      protocol: "wol",
+      availability: "all",
+      note: "Ağ üzerinden PC veya TV uyandırma (Home Assistant standardı)",
+      models: [
+        { name: "Wake-on-LAN PC / TV", img: "generic-smart-hub.png", caps: ["switch"] },
       ],
     },
   ];

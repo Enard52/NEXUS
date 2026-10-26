@@ -85,6 +85,7 @@ function createAutomationWorker() {
       show: false,
       skipTaskbar: true,
       webPreferences: {
+        preload: path.join(__dirname, "preload.cjs"),
         contextIsolation: true,
         nodeIntegration: false,
         sandbox: true,
@@ -102,6 +103,13 @@ function showMainWindow() {
   if (win.isMinimized()) win.restore();
   win.show();
   win.focus();
+}
+
+function showPage(page) {
+  showMainWindow();
+  if (win && !win.isDestroyed()) {
+    win.loadURL(`${SCHEME}://app/${page}`);
+  }
 }
 
 function quitApp() {
@@ -129,12 +137,17 @@ function trayTemplate() {
   const items = [
     { label: L("NEXUS'u Göster", "Show NEXUS"), click: showMainWindow },
     { type: "separator" },
+    { label: L("Ev", "Home"), click: () => showPage("stitch-home.html") },
+    { label: L("Cihaz Ekle", "Add Device"), click: () => showPage("stitch-pair.html") },
+    { label: L("Mesaj Merkezi", "Message Center"), click: () => showPage("stitch-messages.html") },
+    { label: L("Ayarlar", "Settings"), click: () => showPage("stitch-settings.html") },
+    { type: "separator" },
     { label: L("Kapatınca arka planda çalış", "Keep running in background when closed"),
       type: "checkbox", checked: backgroundRun,
       click: (item) => { backgroundRun = item.checked; persistDesktopSettings({ backgroundRun }); } },
   ];
   // Otomatik başlangıç Windows/macOS'ta anlamlı ve Electron destekli; Linux'ta yok.
-  if (app.isPackaged && process.platform !== "linux") {
+  if (process.platform !== "linux") {
     items.push({
       label: L("Bilgisayar açılınca başlat", "Start with computer"),
       type: "checkbox", checked: getOpenAtLogin(),
@@ -189,12 +202,12 @@ function createTray() {
 // ---------- Özel ağ adresi denetimi ----------
 function isPrivateHost(host) {
   const h = String(host || "").replace(/^\[|\]$/g, "").toLowerCase();
-  if (h === "localhost" || h === "::1") return true;
+  if (h === "localhost" || h === "::1" || h === "255.255.255.255") return true;
   if (/\.local$/.test(h)) return true; // mDNS adları (shelly-xxxx.local)
   const m = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
   if (!m) return /^fe80:|^fc|^fd/.test(h);
   const [a, b] = [Number(m[1]), Number(m[2])];
-  return a === 10 || a === 127 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31) || (a === 169 && b === 254);
+  return a === 10 || a === 127 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31) || (a === 169 && b === 254) || (a === 255 && b === 255);
 }
 
 // ---------- Köprü: yerel ağ HTTP ----------
@@ -219,8 +232,8 @@ ipcMain.handle("lan:http", (_e, opts) => new Promise((resolve, reject) => {
   req.end();
 }));
 
-// ---------- Köprü: yerel ağ TCP (Kasa 9999, Yeelight 55443) ----------
-const TCP_PORTS = new Set([9999, 55443]);
+// ---------- Köprü: yerel ağ TCP (Kasa 9999, Yeelight 55443, Tuya Local 6668) ----------
+const TCP_PORTS = new Set([9999, 55443, 6668]);
 ipcMain.handle("lan:tcp", (_e, opts) => new Promise((resolve, reject) => {
   const port = Number(opts.port);
   if (!isPrivateHost(opts.host) || !TCP_PORTS.has(port)) return reject(new Error("izin verilmeyen hedef"));
@@ -244,8 +257,8 @@ ipcMain.handle("lan:tcp", (_e, opts) => new Promise((resolve, reject) => {
   sock.on("error", (err) => finish(reject, new Error(err.message)));
 }));
 
-// ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003; Govee yanıtları 4002'ye gelir) ----------
-const UDP_PORTS = new Set([38899, 56700, 4001, 4003]);
+// ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003, WoL 9/7; Govee yanıtları 4002'ye gelir) ----------
+const UDP_PORTS = new Set([38899, 56700, 4001, 4003, 9, 7]);
 const UDP_REPLY_PORTS = new Set([4002]);
 const replyWaiters = new Map(); // port -> { sock, waiters: Map<host, (msg)=>void> }
 function replyChannel(port) {
@@ -268,10 +281,17 @@ ipcMain.handle("lan:udp", async (_e, opts) => {
   const timeout = Math.min(Number(opts.timeoutMs) || 2500, 15000);
   const answer = (msg) => ({ text: msg.toString("utf8"), hex: msg.toString("hex") });
   if (opts.noReply) {
-    // Yanıt vermeyen komutlar (Govee turn/brightness/colorwc): paketi gönderir, yazma hatasını bildirir.
+    // Yanıt vermeyen komutlar (Govee turn/brightness/colorwc, Wake-on-LAN): paketi gönderir, yazma hatasını bildirir.
     return await new Promise((resolve, reject) => {
       const sock = dgram.createSocket("udp4");
-      sock.send(payload, port, opts.host, (err) => { try { sock.close(); } catch { /* kapalı */ } if (err) reject(new Error(err.message)); else resolve({ sent: true }); });
+      sock.bind(0, () => {
+        try { sock.setBroadcast(true); } catch (_) {}
+        sock.send(payload, port, opts.host, (err) => {
+          try { sock.close(); } catch { /* kapalı */ }
+          if (err) reject(new Error(err.message));
+          else resolve({ sent: true });
+        });
+      });
     });
   }
   if (replyPort) {
@@ -306,6 +326,28 @@ ipcMain.handle("lan:subnets", () => {
 });
 
 ipcMain.handle("app:info", () => ({ version: app.getVersion(), platform: process.platform, arch: process.arch }));
+
+ipcMain.handle("desktop:settings:get", () => ({
+  backgroundRun,
+  openAtLogin: getOpenAtLogin(),
+  platform: process.platform,
+}));
+
+ipcMain.handle("desktop:settings:set", (_e, patch) => {
+  if (patch && typeof patch.backgroundRun === "boolean") {
+    backgroundRun = patch.backgroundRun;
+    persistDesktopSettings({ backgroundRun });
+  }
+  if (patch && typeof patch.openAtLogin === "boolean" && process.platform !== "linux") {
+    setOpenAtLogin(patch.openAtLogin);
+  }
+  updateTrayMenu();
+  return {
+    backgroundRun,
+    openAtLogin: getOpenAtLogin(),
+    platform: process.platform,
+  };
+});
 
 // ---------- Uygulama içeriği: nexus://app/... → paketlenmiş dosyalar ----------
 function serveApp() {
@@ -598,8 +640,9 @@ ipcMain.on("event:notify", (_e, ev) => {
     while (notifyStamps.length && now - notifyStamps[0] > 10000) notifyStamps.shift();
     if (notifyStamps.length >= 4) return; // sel olmasın: 10 sn'de en fazla 4
     notifyStamps.push(now);
+    const targetPage = (ev && typeof ev.page === "string" && ev.page) ? ev.page : "stitch-messages.html";
     const n = new Notification({ title: clip(ev.title, 80) || "NEXUS", body: clip(ev.detail, 200), silent: false });
-    n.on("click", showMainWindow);
+    n.on("click", () => showPage(targetPage));
     n.show();
   } catch { /* bildirim gösterilemezse sorun değil */ }
 });

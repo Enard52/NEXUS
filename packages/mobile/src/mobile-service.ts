@@ -20,6 +20,9 @@ import { PermissionsManager, type PermissionName } from "./permissions.js";
 import { MobileVoiceBridge, type VoiceBridgeConfig } from "./voice-bridge.js";
 import { RemoteConnection, type ConnectionOptions, type ServerEndpoint } from "./remote-access.js";
 import { DeepLinkRouter, type DeepLinkResult } from "./deep-links.js";
+import { SensorsManager, type DeviceSensorsSnapshot } from "./sensors.js";
+import { NfcManager } from "./nfc.js";
+import { QuickTilesManager, type QuickTile } from "./quick-tiles.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -46,7 +49,14 @@ export type ServiceEvent =
   | { type: "deep-link"; result: DeepLinkResult }
   | { type: "notification"; payload: NotificationPayload }
   | { type: "connection-change"; connected: boolean; mode: "local" | "remote" | "none" }
-  | { type: "intent"; text: string; source: "voice" | "deep-link" | "notification" }
+  | {
+      type: "intent";
+      text: string;
+      source: "voice" | "deep-link" | "notification" | "nfc" | "quick-tile";
+    }
+  | { type: "sensor-change"; snapshot: DeviceSensorsSnapshot }
+  | { type: "nfc-tag"; tagId: string; actionUri?: string }
+  | { type: "quick-tile"; tile: QuickTile; actionUri: string }
   | { type: "error"; subsystem: string; message: string };
 
 export type ServiceEventHandler = (event: ServiceEvent) => void;
@@ -69,6 +79,9 @@ export class MobileService {
   readonly voice: MobileVoiceBridge;
   readonly remote: RemoteConnection;
   readonly deepLinks: DeepLinkRouter;
+  readonly sensors: SensorsManager;
+  readonly nfc: NfcManager;
+  readonly quickTiles: QuickTilesManager;
 
   private _state: AppLifecycleState = "initializing";
   private eventHandlers: ServiceEventHandler[] = [];
@@ -84,6 +97,9 @@ export class MobileService {
     this.voice = new MobileVoiceBridge(bridge, config.voice);
     this.remote = new RemoteConnection(bridge, config.connection);
     this.deepLinks = new DeepLinkRouter();
+    this.sensors = new SensorsManager(bridge);
+    this.nfc = new NfcManager(bridge);
+    this.quickTiles = new QuickTilesManager(bridge);
 
     // Wire internal event routing
     this.wireSubsystems();
@@ -208,6 +224,8 @@ export class MobileService {
   /** Shutdown the service (app terminating). */
   async shutdown(): Promise<void> {
     this._state = "terminated";
+    this.sensors.stopPolling();
+    this.nfc.stopScan();
     await this.remote.disconnect();
     await this.voice.deactivateAudioSession();
     this.emit({ type: "lifecycle", state: "terminated" });
@@ -260,6 +278,17 @@ export class MobileService {
       } else if (event.type === "disconnected") {
         this.emit({ type: "connection-change", connected: false, mode: "none" });
       }
+    });
+
+    // Sensors state change
+    this.sensors.subscribe((snapshot) => {
+      this.emit({ type: "sensor-change", snapshot });
+    });
+
+    // Quick Tiles trigger
+    this.quickTiles.onTrigger((tile) => {
+      this.emit({ type: "quick-tile", tile, actionUri: tile.actionUri });
+      void this.processIntent(`trigger tile ${tile.id}`, "quick-tile");
     });
   }
 

@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   udp: (opts) => ipcRenderer.invoke("lan:udp", opts),
   subnets: () => ipcRenderer.invoke("lan:subnets"),
   info: () => ipcRenderer.invoke("app:info"),
+  getDesktopSettings: () => ipcRenderer.invoke("desktop:settings:get"),
+  setDesktopSettings: (patch) => ipcRenderer.invoke("desktop:settings:set", patch),
   setLanguage: (lang) => ipcRenderer.send("app:language", lang),
   notifyEvent: (ev) => ipcRenderer.send("event:notify", ev),
   updateStatus: (st) => ipcRenderer.send("tray:status", st),

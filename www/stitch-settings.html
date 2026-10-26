@@ -185,6 +185,14 @@
         <span><b>Güncellemeleri otomatik indir</b><small>Yeni sürüm bulununca arka planda hemen indirilsin.</small></span>
         <input type="checkbox" id="auto-download-toggle" aria-label="Güncellemeleri otomatik indir">
       </label>
+      <label class="nx-upd-toggle mt-4">
+        <span><b>Bilgisayar açılınca başlat</b><small>Bilgisayar açıldığında NEXUS arka planda açılsın.</small></span>
+        <input type="checkbox" id="desktop-autostart-toggle" aria-label="Bilgisayar açılınca başlat">
+      </label>
+      <label class="nx-upd-toggle mt-4">
+        <span><b>Kapatınca arka planda çalıştır</b><small>Pencere kapatılsa da otomasyonlar tepside çalışmaya devam etsin.</small></span>
+        <input type="checkbox" id="desktop-bg-toggle" aria-label="Kapatınca arka planda çalıştır">
+      </label>
       <div id="update-card" class="nx-upd-card mt-4 hidden">
         <div class="flex items-center justify-between gap-3">
           <p id="update-status" class="text-sm font-medium text-slate-500 min-h-[1.5rem]"></p>
@@ -450,6 +458,27 @@
       autoToggle.addEventListener('change', function () {
         api.setPrefs({ autoDownload: autoToggle.checked });
       });
+    }
+
+    // Masaüstü başlangıç ve arka plan tercihleri
+    var deskApi = window.nexusDesktop;
+    var autostartToggle = document.getElementById('desktop-autostart-toggle');
+    var bgToggle = document.getElementById('desktop-bg-toggle');
+    if (deskApi && deskApi.getDesktopSettings) {
+      deskApi.getDesktopSettings().then(function (ds) {
+        if (autostartToggle) autostartToggle.checked = !!(ds && ds.openAtLogin);
+        if (bgToggle) bgToggle.checked = ds && ds.backgroundRun !== false;
+      });
+      if (autostartToggle) {
+        autostartToggle.addEventListener('change', function () {
+          deskApi.setDesktopSettings({ openAtLogin: autostartToggle.checked });
+        });
+      }
+      if (bgToggle) {
+        bgToggle.addEventListener('change', function () {
+          deskApi.setDesktopSettings({ backgroundRun: bgToggle.checked });
+        });
+      }
     }
     // Boş kart görünmesin: yalnızca durum mesajı, ilerleme ya da kurulum düğmesi varken göster
     var cardEl = document.getElementById('update-card');

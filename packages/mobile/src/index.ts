@@ -2495,6 +2495,9 @@ export {
   type HapticStyle,
   type AppInfo,
   type SharePayload,
+  type DetailedSensors,
+  type NfcTagData,
+  type QuickTileData,
   NexusNativeBridge,
   MockBridge,
 } from "./bridge.js";
@@ -2505,6 +2508,7 @@ export {
   type NotificationPayload,
   type NotificationChannel,
   type NotificationHandler,
+  type NotificationActionButton,
 } from "./notifications.js";
 export {
   PermissionsManager,
@@ -2540,6 +2544,16 @@ export {
   type DeepLinkAction,
   type DeepLinkHandler,
 } from "./deep-links.js";
+export {
+  SensorsManager,
+  DEFAULT_SENSORS_SNAPSHOT,
+  type DeviceSensorsSnapshot,
+  type SensorCondition,
+  type SensorListener,
+  type SensorOperator,
+} from "./sensors.js";
+export { NfcManager, type NfcActionMapping, type NfcScanCallback } from "./nfc.js";
+export { QuickTilesManager, type QuickTile, type QuickTileTriggerHandler } from "./quick-tiles.js";
 export {
   MobileService,
   type MobileServiceConfig,

@@ -54,6 +54,16 @@ describe("protokol sezme", () => {
     expect(found.model).toBe("WLED 0.14.2");
   });
 
+  it("Tuya Local uclarini tanir", async () => {
+    const lan = load((url) => {
+      if (url.includes(":6668/status"))
+        return Promise.resolve(ok({ devId: "tuya123", dps: { "1": true, "2": 800 } }));
+      return Promise.resolve({ status: 404, text: () => Promise.resolve("") });
+    });
+    const found = await lan.identify("192.168.1.55");
+    expect(found.protocol).toBe("tuya-local");
+  });
+
   it("hicbir protokol cevap vermezse hata verir", async () => {
     const lan = load(() => Promise.resolve({ status: 404, text: () => Promise.resolve("") }));
     await expect(lan.identify("192.168.1.99")).rejects.toBeTruthy();
@@ -174,5 +184,14 @@ describe("komut gövdesi", () => {
     await expect(
       lan.write({ protocol: "yok-boyle-bir-sey", host: "http://1.2.3.4" }, "switch", true),
     ).rejects.toBeTruthy();
+  });
+
+  it("Wake-on-LAN sihirli paketini 102 baytlık geçerli hex olarak üretir", () => {
+    const lan = load(() => Promise.resolve({ status: 404, text: () => Promise.resolve("") }));
+    const mac = "AA:BB:CC:DD:EE:FF";
+    const packet = lan.buildMagicPacket(mac);
+    expect(packet.length).toBe(204); // 102 bytes = 204 hex chars
+    expect(packet.startsWith("ffffffffffff")).toBe(true);
+    expect(packet.endsWith("aabbccddeeff")).toBe(true);
   });
 });

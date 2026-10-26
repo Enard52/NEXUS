@@ -61,8 +61,8 @@
     }
   }
 
-  // ---- güneş batışı (ev konumundan, NOAA yaklaşımı; konum yoksa tetiklenmez) ----
-  function sunsetTime() {
+  // ---- güneş doğuşu ve batışı (ev konumundan, NOAA yaklaşımı; konum yoksa tetiklenmez) ----
+  function calcSun(isSunrise) {
     var coords = get('nexusWeatherCoords', null) || null;
     if (!coords || !isFinite(coords.lat) || !isFinite(coords.lon)) return null;
     var rad = Math.PI / 180, day = new Date();
@@ -72,11 +72,13 @@
     var ha = Math.acos(-Math.tan(lat) * Math.tan(decl));
     if (!isFinite(ha)) return null; // kutup gecesi/gündüzü
     var solarNoonUTC = 12 - coords.lon / 15;
-    var sunsetUTC = solarNoonUTC + ha * 12 / Math.PI;
+    var utcHours = isSunrise ? (solarNoonUTC - ha * 12 / Math.PI) : (solarNoonUTC + ha * 12 / Math.PI);
     var local = new Date();
-    local.setUTCHours(Math.floor(sunsetUTC), Math.round((sunsetUTC % 1) * 60), 0, 0);
+    local.setUTCHours(Math.floor(utcHours), Math.round((utcHours % 1) * 60), 0, 0);
     return String(local.getHours()).padStart(2, '0') + ':' + String(local.getMinutes()).padStart(2, '0');
   }
+  function sunsetTime() { return calcSun(false); }
+  function sunriseTime() { return calcSun(true); }
 
   function repeatAllows(repeat, date) {
     var dow = date.getDay(); // 0 Paz .. 6 Cmt
@@ -205,6 +207,10 @@
         var ss = sunsetTime();
         if (!ss) { if (!runInfo(a.id + ':nosunset')) { markRun(a.id + ':nosunset'); logEvent('automation', a.title, tr('Gün batımı tetikleyicisi: ev konumu seçilmedi.', 'Sunset trigger: no home location set.')); } return; }
         value = ss;
+      } else if (value === 'sunrise') {
+        var sr = sunriseTime();
+        if (!sr) { if (!runInfo(a.id + ':nosunrise')) { markRun(a.id + ':nosunrise'); logEvent('automation', a.title, tr('Gündoğumu tetikleyicisi: ev konumu seçilmedi.', 'Sunrise trigger: no home location set.')); } return; }
+        value = sr;
       }
       var due = minutesOf(value);
       if (due === null || !repeatAllows(t.repeat, now)) return;
@@ -252,6 +258,8 @@
     platform: platform,
     isOwner: function () { return isOwner; },
     evaluate: function () { heartbeat(); if (isOwner) evaluate(); return isOwner; },
+    sunsetTime: sunsetTime,
+    sunriseTime: sunriseTime,
     // Test/denemek için: kuralı sahtesiz hemen çalıştırır (günlüğe "elle" yazar)
     runNow: function (id) {
       var autos = get('nexusCustomAutomations', []);

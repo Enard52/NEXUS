@@ -255,7 +255,7 @@
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
-            <button type="button" onclick="openCatalogCategory('kamera-ve-kilit')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+            <button type="button" style="display:none;" onclick="openCatalogCategory('kamera-ve-kilit')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 dark:bg-red-500/10 dark:text-red-300">
                   <i data-lucide="shield-check" class="text-xl"></i>
@@ -268,14 +268,27 @@
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
+            <button type="button" onclick="openCatalogCategory('sensor')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+              <div class="flex min-w-0 flex-1 items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-500 dark:bg-indigo-500/10 dark:text-indigo-300">
+                  <i data-lucide="radio" class="text-xl"></i>
+                </div>
+                <div class="min-w-0 flex-1 text-left">
+                  <span class="block text-sm font-bold">Sensörler</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Hareket, kapı/pencere ve çevre sensörleri</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
+            </button>
+
             <button type="button" onclick="openCatalogCategory('enerji-tasarrufu')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500 dark:bg-blue-500/10 dark:text-blue-300">
                   <i data-lucide="thermometer-snowflake" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
-                  <span class="block text-sm font-bold">İklimlendirme</span>
-                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Klima, termostat ve hava cihazları</span>
+                  <span class="block text-sm font-bold">İklimlendirme ve Enerji</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Klima, termostat ve enerji takibi</span>
                 </div>
               </div>
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
@@ -287,14 +300,14 @@
                   <i data-lucide="plug-zap" class="text-xl"></i>
                 </div>
                 <div class="min-w-0 flex-1 text-left">
-                  <span class="block text-sm font-bold">Priz ve Enerji</span>
-                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Akıllı priz, anahtar ve enerji ürünleri</span>
+                  <span class="block text-sm font-bold">Priz ve Anahtar</span>
+                  <span class="block text-[11px] text-slate-500 dark:text-slate-300">Akıllı priz, röle ve anahtar ürünleri</span>
                 </div>
               </div>
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
-            <button type="button" onclick="openCatalogCategory('eglence')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+            <button type="button" style="display:none;" onclick="openCatalogCategory('eglence')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 dark:bg-rose-500/10 dark:text-rose-300">
                   <i data-lucide="tv" class="text-xl"></i>
@@ -307,7 +320,7 @@
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
-            <button type="button" onclick="openCatalogCategory('kapi-ve-erisim')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+            <button type="button" style="display:none;" onclick="openCatalogCategory('kapi-ve-erisim')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 dark:bg-amber-500/10 dark:text-amber-300">
                   <i data-lucide="lock-keyhole" class="text-xl"></i>
@@ -320,7 +333,7 @@
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
-            <button type="button" onclick="openCatalogCategory('kucuk-ev-aleti')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+            <button type="button" style="display:none;" onclick="openCatalogCategory('kucuk-ev-aleti')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-300">
                   <i data-lucide="bot" class="text-xl"></i>
@@ -333,7 +346,7 @@
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
 
-            <button type="button" onclick="openCatalogCategory('buyuk-ev-aletleri')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
+            <button type="button" style="display:none;" onclick="openCatalogCategory('buyuk-ev-aletleri')" class="plain-card flex items-center justify-between bg-white border border-slate-100 p-4 rounded-2xl active:bg-slate-50 dark:border-slate-800">
               <div class="flex min-w-0 flex-1 items-center gap-3">
                 <div class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 dark:bg-sky-500/10 dark:text-sky-300">
                   <i data-lucide="refrigerator" class="text-xl"></i>
@@ -343,6 +356,8 @@
                   <span class="block text-[11px] text-slate-500 dark:text-slate-300">Beyaz eşya ve büyük ev cihazları</span>
                 </div>
               </div>
+              <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
+            </button>
               <i data-lucide="chevron-right" class="text-slate-300 text-lg"></i>
             </button>
           </div>

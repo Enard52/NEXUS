@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
@@ -71,6 +71,11 @@
 <script src="sheet-gestures.js"></script>
 </head>
 <body class="bg-dashboard-gradient min-h-screen flex flex-col text-slate-900">
+<!-- Pull to Refresh Indicator -->
+<div id="nexus-ptr" class="fixed top-3 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 flex items-center gap-2 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-lg border border-slate-100 dark:border-slate-700 text-xs font-bold text-[#4C7DFF]">
+  <svg id="nexus-ptr-icon" class="w-4 h-4 animate-spin hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+  <span id="nexus-ptr-text">Yenilemek için çekin</span>
+</div>
 <!-- BEGIN: Header -->
 <header class="pt-12 pb-4 flex items-center justify-between px-5" data-purpose="main-header">
 <div class="flex items-center">
@@ -520,6 +525,61 @@ if (window.NexusSheetGestures) {
     close: toggleHomeSelector
   });
 }
+
+// Pull-to-refresh implementation for mobile dashboard
+(function initPullToRefresh() {
+  var startY = 0;
+  var pullDist = 0;
+  var isPulling = false;
+  var ptr = document.getElementById('nexus-ptr');
+  var ptrIcon = document.getElementById('nexus-ptr-icon');
+  var ptrText = document.getElementById('nexus-ptr-text');
+  if (!ptr) return;
+
+  window.addEventListener('touchstart', function(e) {
+    if (window.scrollY <= 2 && e.touches.length === 1) {
+      startY = e.touches[0].clientY;
+      isPulling = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', function(e) {
+    if (!isPulling) return;
+    var currentY = e.touches[0].clientY;
+    pullDist = currentY - startY;
+    if (pullDist > 15 && window.scrollY <= 2) {
+      ptr.style.opacity = String(Math.min(1, pullDist / 60));
+      ptr.style.transform = 'translate(-50%, ' + Math.min(pullDist * 0.35, 25) + 'px)';
+      if (pullDist > 65) {
+        ptrText.textContent = 'Yenilemek için bırakın';
+      } else {
+        ptrText.textContent = 'Yenilemek için çekin';
+      }
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', function() {
+    if (!isPulling) return;
+    isPulling = false;
+    if (pullDist > 65 && window.scrollY <= 2) {
+      if (typeof window.nexusHaptic === 'function') window.nexusHaptic('medium');
+      if (ptrIcon) ptrIcon.classList.remove('hidden');
+      if (ptrText) ptrText.textContent = 'Yenileniyor…';
+      if (typeof window.renderDevices === 'function') window.renderDevices();
+      if (window.nexusCloud && typeof window.nexusCloud.syncNow === 'function') window.nexusCloud.syncNow();
+      setTimeout(function() {
+        ptr.style.opacity = '0';
+        ptr.style.transform = 'translate(-50%, 0)';
+        if (ptrIcon) ptrIcon.classList.add('hidden');
+        if (ptrText) ptrText.textContent = 'Yenilendi';
+      }, 650);
+    } else {
+      ptr.style.opacity = '0';
+      ptr.style.transform = 'translate(-50%, 0)';
+    }
+    pullDist = 0;
+  }, { passive: true });
+})();
 </script>
 
 </body></html>

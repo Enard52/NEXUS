@@ -757,7 +757,102 @@
       return unsupported("sonoff", capability);
     },
   };
-  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, yeelight, sonoff, wiz, lifx, govee];
+
+  // --- Tuya Local (Yerel LAN modu, port 6668, hub veya bulut gerekmez) --------
+  var tuyaLocal = {
+    id: "tuya-local",
+    label: "Tuya (Yerel)",
+    caps: ["switch", "brightness", "color"],
+    probe: function (device) {
+      return getJson("http://" + hostOnly(device) + ":6668/status", scanTimeoutMs || 1000).then(function (info) {
+        if (!info || (!info.dps && !info.devId)) throw new Error("tuya-local: kimlik yok");
+        var isBulb = info.dps && (info.dps["20"] != null || info.dps["22"] != null);
+        return {
+          protocol: "tuya-local",
+          model: info.model || "Tuya Akıllı Cihaz",
+          name: info.name || device.name || "Tuya Cihaz",
+          kind: isBulb ? "light" : "plug",
+        };
+      });
+    },
+    read: function (device) {
+      return getJson("http://" + hostOnly(device) + ":6668/status").then(function (s) {
+        var dps = s.dps || {};
+        var sw = dps["1"] != null ? dps["1"] : dps["20"];
+        var br = dps["2"] != null ? dps["2"] : dps["22"];
+        return {
+          switch: typeof sw === "boolean" ? sw : null,
+          brightness: typeof br === "number" ? Math.round(br / 10) : null,
+        };
+      });
+    },
+    write: function (device, capability, value) {
+      var dps = {};
+      if (capability === "switch") {
+        dps["1"] = !!value;
+        dps["20"] = !!value;
+      } else if (capability === "brightness") {
+        var b = Math.max(1, Math.min(100, Math.round(value)));
+        dps["2"] = b * 10;
+        dps["22"] = b * 10;
+      } else if (capability === "color") {
+        dps["24"] = String(value).replace("#", "");
+      } else {
+        return unsupported("tuya-local", capability);
+      }
+      return sendJson("http://" + hostOnly(device) + ":6668/set", "POST", { dps: dps });
+    },
+  };
+
+  // --- Wake-on-LAN (WoL — Sihirli Paket Uyandırma) ----------------------------
+  // Hedef bilgisayarın/TV'nin MAC adresine yerel ağdan UDP sihirli paketi (magic packet)
+  // göndererek uykudan uyandırır (Home Assistant standardı).
+  function buildMagicPacket(mac) {
+    var clean = String(mac || "").replace(/[^0-9a-fA-F]/g, "").toLowerCase();
+    if (clean.length !== 12) throw new Error("Geçersiz MAC adresi (12 onaltılık karakter gerekli)");
+    var hex = "ffffffffffff";
+    for (var i = 0; i < 16; i++) hex += clean;
+    return hex;
+  }
+
+  function wakeOnLan(mac, host) {
+    var targetHost = host || "255.255.255.255";
+    var hex = buildMagicPacket(mac);
+    var u = udpBridge();
+    if (u) {
+      return u({ host: targetHost, port: 9, hex: hex, noReply: true }).then(function () {
+        return { success: true, mac: mac, host: targetHost };
+      });
+    }
+    return Promise.reject(new Error("Wake-on-LAN bu ortamda desteklenmiyor (UDP köprüsü gerekli)."));
+  }
+
+  var wol = {
+    id: "wol",
+    label: "Wake-on-LAN (PC / TV)",
+    needsUdp: true,
+    caps: ["switch"],
+    probe: function (device) {
+      if (!device || (!device.mac && !device.host)) throw new Error("wol: MAC adresi veya IP gerekli");
+      return Promise.resolve({
+        protocol: "wol",
+        model: "Wake-on-LAN PC/TV",
+        name: device.name || "Ağ Cihazı (WoL)",
+        kind: "plug"
+      });
+    },
+    read: function () {
+      return Promise.resolve({ switch: false });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch" && value) {
+        return wakeOnLan(device.mac || device.host, device.host);
+      }
+      return Promise.resolve({ ignored: true });
+    }
+  };
+
+  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, yeelight, sonoff, wiz, lifx, govee, tuyaLocal, wol];
 
   function available(p) { return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()); }
 
@@ -921,6 +1016,8 @@
     autoScan: autoScan,
     guessSubnet: guessSubnet,
     normalizeSubnetBase: normalizeSubnetBase,
+    wakeOnLan: wakeOnLan,
+    buildMagicPacket: buildMagicPacket,
     hue: { pair: hue.pair, lights: hue.lights },
     homeassistant: { entities: homeassistant.entities },
     read: function (device) {

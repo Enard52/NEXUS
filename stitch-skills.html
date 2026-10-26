@@ -222,10 +222,11 @@
       // Çalışma zamanı seçenekleri
       const timeOptions = [
         { id: 'always',   label: 'Her zaman'  },
+        { id: 'sunrise',  label: 'Gündoğumu'   },
         { id: 'morning',  label: 'Sabah 07:00' },
         { id: 'evening',  label: 'Akşam 19:00' },
-        { id: 'night',    label: 'Gece 23:00'  },
-        { id: 'sunset',   label: 'Gün batımı'  }
+        { id: 'sunset',   label: 'Gün batımı'  },
+        { id: 'night',    label: 'Gece 23:00'  }
       ];
 
       // Seçili zaman (pendingAutomation'a kaydet)
@@ -317,10 +318,11 @@
       // Tetikleyici bilgisini al
       const triggerType = (window._pendingTrigger && window._pendingTrigger.type) || 'always';
       const triggerValueMap = {
+        sunrise:  'sunrise',
         morning:  '07:00',
         evening:  '19:00',
-        night:    '23:00',
         sunset:   'sunset',
+        night:    '23:00',
         always:   ''
       };
       const trigger = type === 'clickrun'

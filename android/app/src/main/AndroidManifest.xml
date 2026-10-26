@@ -29,6 +29,25 @@
             android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- Android Quick Settings Tile Service (Bildirim çekmecesinde hızlı buton) -->
+        <service
+            android:name=".NexusTileService"
+            android:label="@string/quick_tile_label"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- Yerel Ağ Otomasyon Motoru Arka Plan Servisi -->
+        <service
+            android:name=".NexusKeepAliveService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
     </application>
 
     <!-- Permissions -->
@@ -38,6 +57,11 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Foreground Service (Arka planda yerel otomasyonların Doze mode tarafından kapatılmaması için) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!-- NFC (Sıfır maliyetli oda/ışık etiketleri okutmak için) -->
+    <uses-permission android:name="android.permission.NFC" />
     <!-- Yerel ağdaki akıllı cihazları bulmak ve kontrol etmek için (bulut gerekmez) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

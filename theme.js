@@ -112,18 +112,75 @@ window.addEventListener('error', function(e) {
 
 (function() {
   // Global Haptic Feedback (Vibration) & Click Sound fallback
-  function triggerHaptic() {
+  function triggerHaptic(style) {
+    try {
+      var cap = window.Capacitor;
+      if (cap && cap.Plugins && cap.Plugins.Haptics && typeof cap.Plugins.Haptics.impact === 'function') {
+        cap.Plugins.Haptics.impact({ style: style === 'medium' ? 'MEDIUM' : 'LIGHT' });
+        return;
+      }
+    } catch (e) {}
     if (navigator.vibrate) {
-      navigator.vibrate(15); // Hafif ve premium titreşim
+      navigator.vibrate(style === 'medium' ? 25 : 12); // Hafif ve premium titreşim
     }
   }
+  window.nexusHaptic = triggerHaptic;
 
   window.addEventListener('click', function(e) {
-    var isInteractive = e.target.closest('button, a, input[type="range"], .cat-btn, .product-tile');
+    var isInteractive = e.target.closest('button, a, input[type="range"], .cat-btn, .product-tile, input[type="checkbox"]');
     if (isInteractive) {
       triggerHaptic();
     }
   }, { capture: true, passive: true });
+
+  // Android Donanım Geri Tuşu ve Escape tuşu yönetimi
+  function setupBackButton() {
+    function handleBack() {
+      // 1. Açık olan alt çekmece, modal veya dialogları kapat
+      var openOverlay = document.querySelector(
+        '.dialog-overlay:not(.hidden), .sheet.open, .qa-sheet.open, #loading-overlay[style*="flex"], .modal:not(.hidden)'
+      );
+      if (openOverlay) {
+        var closeBtn = openOverlay.querySelector('[onclick*="close"], [onclick*="hide"], [onclick*="toggle"], button');
+        if (closeBtn) {
+          closeBtn.click();
+          return;
+        }
+        openOverlay.classList.add('hidden');
+        if (openOverlay.classList.contains('open')) openOverlay.classList.remove('open');
+        return;
+      }
+
+      // 2. Alt sayfadaysak tarayıcı geçmişinde geri git
+      var isHome = window.location.pathname.indexOf('stitch-home.html') !== -1 || window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+      if (!isHome && window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      // 3. Ana sayfadaysak çift basışla çıkış
+      var now = Date.now();
+      if (window._nexusLastBack && (now - window._nexusLastBack < 2000)) {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+          window.Capacitor.Plugins.App.exitApp();
+        }
+      } else {
+        window._nexusLastBack = now;
+      }
+    }
+
+    try {
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+        window.Capacitor.Plugins.App.addListener('backButton', handleBack);
+      }
+    } catch (e) {}
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') handleBack();
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupBackButton);
+  else setupBackButton();
 
   // Erişilebilirlik: role="button" verilen öğeler klavyeyle (Enter/Boşluk) de çalışsın.
   document.addEventListener('keydown', function(e) {

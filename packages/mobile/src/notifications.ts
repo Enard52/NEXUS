@@ -17,6 +17,15 @@ export interface PushToken {
   registeredAt: number;
 }
 
+/** Actionable button definition on a notification */
+export interface NotificationActionButton {
+  id: string;
+  title: string;
+  destructive?: boolean;
+  requiresAuth?: boolean;
+  actionUri?: string;
+}
+
 /** Incoming notification payload. */
 export interface NotificationPayload {
   id: string;
@@ -25,6 +34,10 @@ export interface NotificationPayload {
   data?: Record<string, string>;
   /** If set, the notification was tapped (vs received in foreground). */
   actionId?: string;
+  /** Action buttons displayed in the notification tray (actionable notifications) */
+  actions?: NotificationActionButton[];
+  /** Critical alerts (bypasses silent mode if allowed) */
+  isCritical?: boolean;
   timestamp: number;
 }
 
@@ -234,5 +247,31 @@ export class PushManager {
     if (agent) return `ask ${agent}`;
 
     return null;
+  }
+
+  /**
+   * Schedules or displays a local notification directly on the device.
+   * 100% free, zero cloud fees, zero FCM relay servers needed.
+   */
+  scheduleLocalNotification(options: {
+    id?: string;
+    title: string;
+    body: string;
+    channelId?: string;
+    actions?: NotificationActionButton[];
+    isCritical?: boolean;
+    data?: Record<string, string>;
+  }): NotificationPayload {
+    const payload: NotificationPayload = {
+      id: options.id || `local_notif_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      title: options.title,
+      body: options.body,
+      actions: options.actions,
+      isCritical: options.isCritical,
+      data: options.data,
+      timestamp: Date.now(),
+    };
+    this.dispatchNotification(payload);
+    return payload;
   }
 }

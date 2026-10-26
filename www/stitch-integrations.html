@@ -2593,10 +2593,27 @@
         '</div>';
     }
 
+    // Yalnızca protokol desteği olan kategoriler gösterilir.
+    // Tam katalog (CATALOG) silinmez, ileride yeni protokoller eklendiğinde kullanılmak üzere korunur.
+    var SUPPORTED_CATEGORY_KEYS = [
+      'aydinlatma',
+      'elektrik-ustasi',
+      'sensor',
+      'enerji-tasarrufu',
+      'ag-gecidi-kontrol-paneli'
+    ];
+
+    function getVisibleCatalog() {
+      return CATALOG.filter(function (c) {
+        return SUPPORTED_CATEGORY_KEYS.indexOf(c.key) !== -1;
+      });
+    }
+
     function renderCatalogRail() {
       var rail = document.getElementById('catalog-rail');
       if (!rail) return;
-      rail.innerHTML = CATALOG.map(function (c) {
+      var list = getVisibleCatalog();
+      rail.innerHTML = list.map(function (c) {
         var cls = c.key === activeCatalogCategory ? 'cat-btn cat-active' : 'cat-btn cat-inactive';
         return '<button type="button" onclick="selectCatalogCategory(\'' + c.key + '\')" class="' + cls + ' w-full text-left py-3.5 px-3">' +
           '<span class="cat-text text-[13px] block">' + escapeCatalogHtml(c.label) + '</span></button>';
@@ -2607,10 +2624,11 @@
       var content = document.getElementById('catalog-content');
       if (!content) return;
       var query = normalizeCatalogText(((document.getElementById('catalog-search') || {}).value || '').trim());
+      var list = getVisibleCatalog();
 
       if (query) {
         var matches = [];
-        CATALOG.forEach(function (c) {
+        list.forEach(function (c) {
           c.groups.forEach(function (g) {
             g.items.forEach(function (it) {
               if (normalizeCatalogText(it.n).indexOf(query) !== -1) matches.push(it);
@@ -2626,7 +2644,7 @@
       }
 
       if (activeCatalogCategory === 'all') {
-        content.innerHTML = CATALOG.map(function (c) {
+        content.innerHTML = list.map(function (c) {
           return '<section class="mb-10">' +
             '<h2 class="catalog-heading mb-4 text-lg font-black text-slate-900">' + escapeCatalogHtml(c.label) + '</h2>' +
             c.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('') +
@@ -2636,8 +2654,8 @@
         return;
       }
 
-      var cat = CATALOG.filter(function (c) { return c.key === activeCatalogCategory; })[0] || CATALOG[0];
-      content.innerHTML = cat.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('');
+      var cat = list.filter(function (c) { return c.key === activeCatalogCategory; })[0] || list[0];
+      content.innerHTML = cat ? cat.groups.map(function (g) { return catalogGroupHtml(g.title, g.items); }).join('') : '';
       content.scrollTop = 0;
     }
 
@@ -2816,8 +2834,9 @@
       var params = new URLSearchParams(window.location.search);
       var requested = params.get('category');
       var mapped = requested ? (CATALOG_ALIAS[requested] || requested) : null;
-      var valid = CATALOG.some(function (c) { return c.key === mapped; });
-      activeCatalogCategory = mapped === 'all' || valid ? mapped : CATALOG[0].key;
+      var visible = getVisibleCatalog();
+      var valid = visible.some(function (c) { return c.key === mapped; });
+      activeCatalogCategory = (mapped === 'all' || valid) ? mapped : (visible[0] ? visible[0].key : 'aydinlatma');
       renderCatalogRail();
       renderCatalogContent();
     })();

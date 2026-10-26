@@ -63,6 +63,41 @@ export interface SecureStorageItem {
   value: string;
 }
 
+/** Extended sensor telemetry for local-first zero-cost automations. */
+export interface DetailedSensors {
+  battery: BatteryInfo & {
+    chargingSource?: "ac" | "usb" | "wireless" | "none";
+  };
+  network: NetworkStatus & {
+    ssid?: string;
+    bssid?: string;
+    isMetered?: boolean;
+  };
+  device: {
+    audioOutput?: "speaker" | "bluetooth" | "headphones" | "other";
+    doNotDisturb?: boolean;
+    screenOn?: boolean;
+    nextAlarmTimestamp?: number;
+  };
+  position?: GeoPosition;
+}
+
+/** NFC Tag payload */
+export interface NfcTagData {
+  id: string;
+  payload?: string;
+  tech?: string[];
+}
+
+/** Quick Settings Tile state */
+export interface QuickTileData {
+  id: string;
+  label: string;
+  subtitle?: string;
+  state: "active" | "inactive" | "unavailable";
+  actionUri: string;
+}
+
 // ─── Bridge Interface ────────────────────────────────────────────────────────
 
 /**
@@ -112,6 +147,16 @@ export interface MobileBridge {
 
   // ── Open External URL ──
   openExternal(url: string): Promise<void>;
+
+  // ── Native Sensors Telemetry (Zero-cost local sensing) ──
+  getDetailedSensors?(): Promise<DetailedSensors>;
+
+  // ── NFC Tag Scanning & Writing ──
+  isNfcAvailable?(): Promise<boolean>;
+  writeNfcTag?(data: string): Promise<boolean>;
+
+  // ── Quick Settings Tiles / Controls ──
+  updateQuickTile?(tile: QuickTileData): Promise<void>;
 }
 
 // ─── Nexus Native Bridge (real implementation) ──────────────────────────────────
@@ -221,6 +266,24 @@ export class NexusNativeBridge implements MobileBridge {
     void url;
   }
 
+  async getDetailedSensors(): Promise<DetailedSensors> {
+    return {
+      battery: { level: 1, isCharging: false, chargingSource: "none" },
+      network: { connected: true, type: "wifi", ssid: "Local-Home-Network" },
+      device: { audioOutput: "speaker", doNotDisturb: false, screenOn: true },
+    };
+  }
+
+  async isNfcAvailable(): Promise<boolean> {
+    return false;
+  }
+
+  async writeNfcTag(_data: string): Promise<boolean> {
+    return false;
+  }
+
+  async updateQuickTile(_tile: QuickTileData): Promise<void> {}
+
   /** Simulate lifecycle event (for native → JS bridge callbacks). */
   _emitResume(): void {
     this.resumeCallbacks.forEach((cb) => cb());
@@ -258,6 +321,18 @@ export class MockBridge implements MobileBridge {
   batteryInfo: BatteryInfo = { level: 0.85, isCharging: false };
   /** Simulated position. */
   position: GeoPosition = { latitude: 41.0082, longitude: 28.9784, accuracy: 10, timestamp: 0 };
+  /** Simulated NFC availability. */
+  nfcAvailable = true;
+  /** Recorded NFC writes. */
+  nfcWrites: string[] = [];
+  /** Recorded Quick Tiles. */
+  quickTiles: Map<string, QuickTileData> = new Map();
+  /** Simulated detailed sensors. */
+  detailedSensors: DetailedSensors = {
+    battery: { level: 0.85, isCharging: false, chargingSource: "none" },
+    network: { connected: true, type: "wifi", ssid: "Home-WiFi-5G" },
+    device: { audioOutput: "speaker", doNotDisturb: false, screenOn: true },
+  };
 
   private resumeCallbacks: Array<() => void> = [];
   private pauseCallbacks: Array<() => void> = [];
@@ -344,6 +419,23 @@ export class MockBridge implements MobileBridge {
     // no-op in mock
   }
 
+  async getDetailedSensors(): Promise<DetailedSensors> {
+    return this.detailedSensors;
+  }
+
+  async isNfcAvailable(): Promise<boolean> {
+    return this.nfcAvailable;
+  }
+
+  async writeNfcTag(data: string): Promise<boolean> {
+    this.nfcWrites.push(data);
+    return true;
+  }
+
+  async updateQuickTile(tile: QuickTileData): Promise<void> {
+    this.quickTiles.set(tile.id, tile);
+  }
+
   // ── Test Helpers ──
 
   emitResume(): void {
@@ -357,6 +449,8 @@ export class MockBridge implements MobileBridge {
   reset(): void {
     this.hapticCalls = [];
     this.shareCalls = [];
+    this.nfcWrites = [];
+    this.quickTiles.clear();
     this.storage.clear();
     this.resumeCallbacks = [];
     this.pauseCallbacks = [];
