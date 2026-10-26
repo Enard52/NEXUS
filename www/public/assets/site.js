@@ -998,7 +998,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
   // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
-  var NX_VER="1.0.15";
+  var NX_VER="1.0.16";
   function nxVerLess(a,b){
     var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
     var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
@@ -1034,4 +1034,172 @@ document.addEventListener('DOMContentLoaded',function(){
       nxCloseAuthModal();
     }
   });
+
+  // Nav ve sayfa içi bağlantılarda akıcı animasyonlu kaydırma ve ScrollSpy
+  function nxInitSmoothNav(){
+    var navLinks = document.querySelectorAll('.nav a');
+    var isAutoScrolling = false;
+
+    function nxNormalizePath(p){
+      if(!p) return '/';
+      var s = String(p).split('?')[0].split('#')[0];
+      if(s.slice(-11) === '/index.html') s = s.slice(0, -10);
+      while(s.length > 1 && s.charAt(s.length - 1) === '/') s = s.slice(0, -1);
+      return s || '/';
+    }
+
+    function nxSmoothScrollTo(targetEl, callback){
+      if(!targetEl) return;
+      var header = document.querySelector('.hd');
+      var headerH = header ? header.offsetHeight : 68;
+      var targetY = Math.max(0, targetEl.getBoundingClientRect().top + window.pageYOffset - headerH - 14);
+
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        window.scrollTo(0, targetY);
+        if(callback) callback();
+        return;
+      }
+
+      var startY = window.pageYOffset;
+      var diff = targetY - startY;
+      if(Math.abs(diff) < 2){
+        if(callback) callback();
+        return;
+      }
+
+      isAutoScrolling = true;
+      var duration = Math.min(650, Math.max(340, Math.abs(diff) * 0.42));
+      var startTime = null;
+      var isCancelled = false;
+
+      function onInterrupt(){
+        isCancelled = true;
+        isAutoScrolling = false;
+        cleanup();
+      }
+      function cleanup(){
+        window.removeEventListener('wheel', onInterrupt);
+        window.removeEventListener('touchstart', onInterrupt);
+      }
+      window.addEventListener('wheel', onInterrupt, { passive: true });
+      window.addEventListener('touchstart', onInterrupt, { passive: true });
+
+      function easeOutQuart(x){
+        return 1 - Math.pow(1 - x, 4);
+      }
+
+      function step(currentTime){
+        if(isCancelled) return;
+        if(!startTime) startTime = currentTime;
+        var elapsed = currentTime - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var eased = easeOutQuart(progress);
+        window.scrollTo(0, startY + diff * eased);
+
+        if(progress < 1){
+          requestAnimationFrame(step);
+        } else {
+          cleanup();
+          setTimeout(function(){
+            isAutoScrolling = false;
+            if(callback) callback();
+          }, 60);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    // Click dinleyicisi: Nav butonları ve sayfa içi bağlantılar
+    document.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if(!a) return;
+      var rawHref = a.getAttribute('href');
+      if(!rawHref) return;
+
+      var url;
+      try {
+        url = new URL(a.href, window.location.href);
+      } catch(err){
+        return;
+      }
+
+      if(nxNormalizePath(url.pathname) === nxNormalizePath(window.location.pathname) && url.hash){
+        var id = url.hash.replace(/^#/, '');
+        var target = id ? document.getElementById(id) : null;
+        if(target){
+          e.preventDefault();
+          if(history.pushState){
+            history.pushState(null, '', url.hash);
+          }
+
+          if(a.closest('.nav')){
+            navLinks.forEach(function(l){ l.classList.remove('active'); });
+            a.classList.add('active');
+          }
+
+          nxSmoothScrollTo(target, function(){
+            updateScrollSpy();
+          });
+        }
+      }
+    });
+
+    // ScrollSpy
+    var sections = [];
+    navLinks.forEach(function(a){
+      var href = a.getAttribute('href') || '';
+      var id = href.replace(/^.*#/, '');
+      var sec = id ? document.getElementById(id) : null;
+      if(sec) sections.push({ id: id, el: sec, link: a });
+    });
+
+    function updateScrollSpy(){
+      if(isAutoScrolling || !sections.length) return;
+      var header = document.querySelector('.hd');
+      var headerH = (header ? header.offsetHeight : 68) + 80;
+      var scrollPos = window.pageYOffset + headerH;
+      var atBottom = (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 60);
+      var currentId = null;
+
+      if(atBottom){
+        currentId = sections[sections.length - 1].id;
+      } else if(window.pageYOffset < 140){
+        currentId = null;
+      } else {
+        for(var i = sections.length - 1; i >= 0; i--){
+          var top = sections[i].el.getBoundingClientRect().top + window.pageYOffset;
+          if(scrollPos >= top){
+            currentId = sections[i].id;
+            break;
+          }
+        }
+      }
+
+      sections.forEach(function(item){
+        if(item.id === currentId){
+          item.link.classList.add('active');
+        } else {
+          item.link.classList.remove('active');
+        }
+      });
+    }
+
+    if(sections.length){
+      var ticking = false;
+      window.addEventListener('scroll', function(){
+        if(!ticking && !isAutoScrolling){
+          requestAnimationFrame(function(){
+            updateScrollSpy();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      updateScrollSpy();
+    }
+  }
+
+  nxInitSmoothNav();
 });

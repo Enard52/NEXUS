@@ -2,7 +2,7 @@
 
 Yalnızca kendi hesaplarınızdan yapılabilen işler. Kod tarafında yapılabilecekler bu listede yok.
 
-1. **GitHub kart/ödeme uyarısı** (Settings → Billing → Payment information). Kalkınca `v*` etiketi Actions ile masaüstü ve Android yayınını kendisi keser. Şimdilik indirmeler mevcut `v1.0.14` sürümünün üstüne yazılıyor; uygulama içi sürüm yazısı 1.0.15.
+1. **GitHub Actions** yeniden çalışıyor. Yeni sürüm `v*` etiketiyle `nexus-releases` deposuna gider. Elle aynı etiketin üstüne dosya yazmaya gerek yok.
 2. **Canlı ödeme denemesi:** masaüstü programda veya Android uygulamasında NEXUS+ → Ücretsiz dene (TRY ve USD, 3 gün, hemen iptal edilebilir). Discord'a "üyelik başladı" düşmeli, hesapta Plus ve 2.000 kredi görünmeli. Tarayıcı uygulaması ürün olarak yayınlanmıyor.
 3. **Canlı cihaz testleri:**
    - Android: kurulum, giriş, cihaz ekleme, kontrol.

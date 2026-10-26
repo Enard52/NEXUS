@@ -156,15 +156,24 @@
         <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </span>
     </button>
-    <hr class="mx-5 border-gray-100"/>
-    <button type="button" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="openLanguagePicker()" aria-label="Dil / Language">
+    <hr class="mx-5 border-gray-100" id="language-row-rule"/>
+    <button type="button" id="language-row" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="openLanguagePicker()" aria-label="Dil">
       <span class="text-xl text-gray-800 font-medium">Dil</span>
       <span class="flex items-center space-x-2">
         <span class="text-xl text-gray-400" id="language-label" data-no-i18n>Türkçe</span>
         <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </span>
     </button>
-    <script>document.getElementById('language-label').textContent = window.nexusLang === 'en' ? 'English' : 'Türkçe';</script>
+    <script>
+      if (window.nexusHomeLang !== 'tr') {
+        var languageRow = document.getElementById('language-row');
+        var languageRule = document.getElementById('language-row-rule');
+        if (languageRow) languageRow.remove();
+        if (languageRule) languageRule.remove();
+      } else {
+        document.getElementById('language-label').textContent = window.nexusLang === 'en' ? 'English' : 'Türkçe';
+      }
+    </script>
   </section>
 
   <section id="desktop-app-section" class="bg-white rounded-3xl overflow-hidden shadow-sm hidden" data-purpose="settings-card">
@@ -346,6 +355,7 @@
   }
 
   function openLanguagePicker() {
+    if (window.nexusHomeLang !== 'tr') return;
     var current = window.nexusLang === 'en' ? 'en' : 'tr';
     window.nexusDialog({
       title: 'Dil',

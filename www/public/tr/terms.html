@@ -70,6 +70,7 @@
 html{
   scrollbar-gutter: stable;
   overflow-x: clip;
+  scroll-behavior: smooth;
 }
 body{overflow-x:clip}
 ::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:var(--text)}
@@ -88,8 +89,9 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 14px)}
   .dl-web-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 }
 @media (prefers-reduced-motion: reduce){
-  .card,.step,.plan,.dl-card,.dl-web-card,.phone-glow,.dot,.ft-status-dot,.shot-slide{animation:none;transition:none}
-  .card:hover,.step:hover,.plan:hover,.dl-card:hover,.dl-web-card:hover{transform:none}
+  html{scroll-behavior: auto !important}
+  .card,.step,.plan,.dl-card,.dl-web-card,.phone-glow,.dot,.ft-status-dot,.shot-slide,.nav a{animation:none;transition:none}
+  .card:hover,.step:hover,.plan:hover,.dl-card:hover,.dl-web-card:hover,.nav a:hover{transform:none}
 }
 @supports not (scrollbar-gutter: stable){
   html{overflow-y:scroll}
@@ -130,9 +132,33 @@ a{color:inherit;text-decoration:none}
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em;flex-shrink:0}
 .logo svg{width:32px;height:32px}
 
-.nav{display:none;gap:6px;margin-left:auto}
-.nav a{padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--text-2);transition:all .15s ease}
-.nav a:hover{background:var(--surface);color:var(--text)}
+.nav{display:none;gap:4px;margin-left:auto;align-items:center}
+.nav a{
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:600;
+  color:var(--text-2);
+  transition:color .18s ease, background-color .18s ease, transform .15s cubic-bezier(.16,1,.3,1), box-shadow .18s ease;
+  position:relative;
+  user-select:none;
+}
+.nav a:hover{
+  background:var(--surface);
+  color:var(--text);
+  transform:translateY(-1px);
+}
+.nav a:active{
+  transform:scale(.94);
+}
+.nav a.active{
+  color:var(--brand);
+  background:color-mix(in srgb,var(--brand) 12%,transparent);
+}
+html[data-theme=dark] .nav a.active{
+  color:#93c5fd;
+  background:color-mix(in srgb,var(--brand) 22%,transparent);
+}
 
 .nav-controls{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
 @media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:14px;gap:10px}}
@@ -147,6 +173,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* Dil Değiştirici (Sleek Segmented Pill Control) */
+html:not([data-home-lang="tr"]) .lang-switch{display:none!important}
 .lang-switch{display:inline-flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);
   border-radius:999px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,.04);height:38px;box-sizing:border-box}
 .lang-btn{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;

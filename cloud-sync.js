@@ -188,9 +188,13 @@
     return isWebOrigin() ? location.origin : ((c && c.webUrl) || WEB_URL).replace(/\/+$/, "");
   }
 
-  // Google ile giriş yalnızca web adresinde güvenle geri dönebilir.
+  function isDesktopApp() {
+    return typeof window !== "undefined" && !!(window.nexusDesktop || (typeof location !== "undefined" && location.protocol === "nexus:"));
+  }
+
+  // Google ile giriş web adresinde ve masaüstü uygulamasında sunulur.
   function googleAvailable() {
-    return enabled() && isWebOrigin();
+    return enabled() && (isWebOrigin() || isDesktopApp());
   }
 
   function sessionFrom(data, fallbackEmail) {
@@ -219,6 +223,28 @@
     });
   }
 
+  function accountLang() {
+    var lang = (typeof window !== "undefined" && window.nexusLang) || "tr";
+    return lang === "en" ? "en" : "tr";
+  }
+
+  // Hesaba dili yazar. Supabase mektup şablonu bu alana bakıp yalnız o dili gönderir.
+  // Oturum yokken (şifre sıfırlama ekranı) yazılamaz; son girişte kaydedilen dil kullanılır.
+  function rememberMailLang(current) {
+    if (!current || !current.accessToken || !enabled()) return Promise.resolve();
+    var lang = accountLang();
+    try {
+      if (window.sessionStorage && window.sessionStorage.getItem("nexusMailLang") === lang) return Promise.resolve();
+    } catch (e) { /* özel mod */ }
+    return api("/auth/v1/user", {
+      method: "PUT",
+      headers: { Authorization: "Bearer " + current.accessToken },
+      body: JSON.stringify({ data: { lang: lang } }),
+    }).then(function () {
+      try { if (window.sessionStorage) window.sessionStorage.setItem("nexusMailLang", lang); } catch (e) { /* özel mod */ }
+    }, function () { /* mektup dili yazılamadı; şablon İngilizceye düşer */ });
+  }
+
   function signIn(email, password) {
     return grant({ email: email, password: password });
   }
@@ -227,9 +253,11 @@
   // kullanıcı e-postadaki bağlantıya tıklayınca web girişine döner ve oturum oradan alınır.
   function signUp(email, password, name) {
     var back = encodeURIComponent(webBase() + "/stitch-login.html");
+    var meta = { lang: accountLang() };
+    if (name) meta.name = name;
     return api("/auth/v1/signup?redirect_to=" + back, {
       method: "POST",
-      body: JSON.stringify({ email: email, password: password, data: name ? { name: name } : {} }),
+      body: JSON.stringify({ email: email, password: password, data: meta }),
     }).then(function (created) {
       if (created && created.access_token) {
         return grant({ email: email, password: password }).then(
@@ -1002,7 +1030,7 @@
         enqueue({ kind: "sync", at: Date.now() });
       }).then(function () { busy = false; });
     }
-    setTimeout(function () { run(true); startRealtime(); }, 1200);
+    setTimeout(function () { run(true); startRealtime(); session().then(rememberMailLang); }, 1200);
     setInterval(run, 45000);
     document.addEventListener("visibilitychange", function () { run(false); startRealtime(); });
     window.addEventListener("online", function () {
@@ -1017,9 +1045,14 @@
   // Google ile giriş: Supabase yetkilendirme adresine yönlendirir, dönüşte oturum URL'den alınır.
   function signInWithGoogle() {
     var c = cfg();
-    if (!c || !isWebOrigin()) return;
-    var back = location.href.split("#")[0];
-    location.href = c.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(back);
+    if (!c || !googleAvailable()) return;
+    var back = isWebOrigin() ? location.href.split("#")[0] : (webBase() + "/stitch-login.html");
+    var authUrl = c.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(back);
+    if (isDesktopApp() && window.nexusDesktop && typeof window.nexusDesktop.googleLogin === "function") {
+      window.nexusDesktop.googleLogin(authUrl);
+    } else {
+      location.href = authUrl;
+    }
   }
 
   function hashParams() {
@@ -1046,13 +1079,15 @@
   }
 
   // Google / e-posta doğrulama bağlantısı dönüşü: belirteçlerden oturum kurar.
-  function completeOAuthFromHash() {
-    var p = hashParams();
+  function completeOAuthFromHash(explicitHash) {
+    var p = explicitHash ? new URLSearchParams(explicitHash.replace(/^#/, "")) : hashParams();
     if (!p || !p.get("access_token") || p.get("type") === "recovery") return Promise.resolve(null);
     var access = p.get("access_token");
     var refresh = p.get("refresh_token") || "";
     var expires = parseInt(p.get("expires_in") || "3600", 10);
-    history.replaceState(null, "", location.pathname + location.search);
+    if (!explicitHash && typeof history !== "undefined" && history.replaceState) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
     return api("/auth/v1/user", { headers: { Authorization: "Bearer " + access } }).then(function (user) {
       var meta = user.user_metadata || {};
       var s = {

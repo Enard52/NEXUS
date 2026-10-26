@@ -573,7 +573,8 @@ function newCtx(opts = {}) {
   return browser.newContext({ viewport: { width: 390, height: 844 }, ...opts });
 }
 async function openPage(ctxInit, url) {
-  const ctx = await newCtx();
+  const wantsTr = (ctxInit && ctxInit["nx-lang"] === "tr") || String(url).includes("/tr/");
+  const ctx = await newCtx({ locale: wantsTr ? "tr-TR" : "en-US" });
   for (const [k, v] of Object.entries(ctxInit)) {
     await ctx.addInitScript(([key, val]) => localStorage.setItem(key, val), [k, v]);
   }
@@ -918,6 +919,16 @@ for (const [label, url, lang, needle] of [
 /* ---------------------------------------------------------------- dil geçişi */
 {
   const { ctx, pg } = await openPage(EN_LANG, "/");
+  check("İngilizce cihazda dil seçici yok", !(await pg.isVisible(".lang-switch")));
+  await ctx.close();
+}
+{
+  const ctx = await newCtx({ locale: "tr-TR" });
+  await ctx.addInitScript(() => localStorage.setItem("nx-lang", "en"));
+  const pg = await ctx.newPage();
+  await pg.goto(`${BASE}/`, { waitUntil: "load" });
+  await pg.waitForTimeout(400);
+  check("Türkçe cihazda dil seçici var", await pg.isVisible(".lang-switch"));
   await pg.click(".lang-btn:not(.active)");
   await pg.waitForTimeout(700);
   check("TR'ye geçiş /tr/ adresine gidiyor", pg.url().includes("/tr/"), pg.url());
@@ -988,7 +999,7 @@ for (const [label, url, lang, needle] of [
 
 /* ---------------------------------------------------------------- tablet */
 {
-  const ctx = await newCtx({ viewport: { width: 820, height: 1180 } });
+  const ctx = await newCtx({ viewport: { width: 820, height: 1180 }, locale: "tr-TR" });
   await ctx.addInitScript(() => localStorage.setItem("nx-lang", "tr"));
   const pg = await ctx.newPage();
   await pg.goto(`${BASE}/tr/`, { waitUntil: "load" });

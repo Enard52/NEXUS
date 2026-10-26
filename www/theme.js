@@ -1,11 +1,9 @@
-// Dil (Türkçe / English): önce kullanıcının kendi seçimi; seçim yoksa otomatik tespit.
-// Türk dünyası (Türkiye, KKTC, Azerbaycan, Kazakistan, Özbekistan, Kırgızistan, Türkmenistan)
-// → Türkçe; diğer tüm ülkeler → İngilizce. Tespit: cihaz dilleri, dil etiketindeki ülke ve saat dilimi.
+// Dil: Türkçe cihaz veya Türkçe bölge etiketi Türkçe açılır ve dil seçebilir.
+// Bunun dışındaki herkes sabit İngilizce görür; dil listesi ve Türkçe seçeneği yoktur.
 (function () {
   var KEY = 'nexusLanguage';
   var TURKIC_LANGS = /^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/i;
   var TURKIC_REGIONS = /^(TR|AZ|KZ|UZ|KG|TM)$/i;
-  var TURKIC_ZONES = /^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/;
   function detect() {
     var list = [];
     try { list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]).filter(Boolean); } catch (e) {}
@@ -14,14 +12,20 @@
       if (i === 0 && TURKIC_LANGS.test(parts[0])) return 'tr';
       for (var j = 1; j < parts.length; j++) if (TURKIC_REGIONS.test(parts[j])) return 'tr';
     }
-    try { if (TURKIC_ZONES.test(Intl.DateTimeFormat().resolvedOptions().timeZone || '')) return 'tr'; } catch (e) {}
-    for (var k = 1; k < list.length; k++) if (/^tr$/i.test(String(list[k]).split(/[-_]/)[0])) return 'tr';
+    for (var k = 1; k < list.length; k++) if (TURKIC_LANGS.test(String(list[k]).split(/[-_]/)[0])) return 'tr';
     return 'en';
   }
   window.nexusDetectLanguage = detect;
+  var home = detect();
+  window.nexusHomeLang = home;
   var lang = null;
   try { lang = localStorage.getItem(KEY); } catch (e) {}
-  if (lang !== 'tr' && lang !== 'en') lang = detect();
+  if (home !== 'tr') {
+    lang = 'en';
+    try { localStorage.setItem(KEY, 'en'); } catch (e) {}
+  } else if (lang !== 'tr' && lang !== 'en') {
+    lang = 'tr';
+  }
   window.nexusLang = lang;
   window.nexusLocale = lang === 'en' ? 'en-US' : 'tr-TR';
   window.nexusT = function (tr, en) { return lang === 'en' ? en : tr; };
@@ -58,6 +62,7 @@
     };
   })();
   window.nexusSetLanguage = function (next) {
+    if (window.nexusHomeLang !== 'tr') return;
     if (next !== 'tr' && next !== 'en') return;
     try { localStorage.setItem(KEY, next); } catch (e) {}
     location.reload();

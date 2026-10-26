@@ -498,7 +498,17 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(result.session).toBe(null);
     expect(calls[0].url).toContain("/auth/v1/signup?redirect_to=");
     expect(decodeURIComponent(calls[0].url)).toContain("/stitch-login.html");
-    expect(JSON.parse(String(calls[0].body)).data.name).toBe("Ayşe");
+    expect(JSON.parse(String(calls[0].body)).data).toEqual({ name: "Ayşe", lang: "tr" });
+  });
+
+  it("kayıt, İngilizce arayüzde mektup dilini en olarak yazar", async () => {
+    const { cloud, calls, win } = load({
+      config: CONFIG,
+      handler: () => ({ id: "u2", email: "yeni@b.co" }),
+    });
+    win.nexusLang = "en";
+    await cloud.signUp("yeni@b.co", "parola-123", "Ada");
+    expect(JSON.parse(String(calls[0].body)).data.lang).toBe("en");
   });
 
   it("şifre sıfırlama gerçekten Supabase'e istek gönderir ve web adresine döner", async () => {
