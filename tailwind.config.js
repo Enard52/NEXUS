@@ -20,7 +20,7 @@ module.exports = {
         'nexus-purple': '#4C7DFF',
         'nexus-cyan': '#22D3EE',
         'nexus-brand': '#4C7DFF',
-        'nexus-bg': '#F8F7FC',
+        'nexus-bg': '#ECE9FD',
         'nexus-border': '#F1F1F4',
         // stitch ekranlari developerce camelCase token kullaniyor (text-nexusPurple);
         // Play CDN kaldirildigi icin bu aliaslar statik CSS uretiminde de tanimli olmali.

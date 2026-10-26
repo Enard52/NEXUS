@@ -911,6 +911,39 @@
     return email ? base + "?email=" + encodeURIComponent(email) : base;
   }
 
+  function checkoutPlanId(plan, currency) {
+    var url = checkoutUrl(plan, "", currency);
+    if (!url) return "";
+    var parts = url.split("?")[0].split("/");
+    return parts[parts.length - 1] || "";
+  }
+
+  function billingAccount(action) {
+    if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    return session().then(function (current) {
+      if (!current) return Promise.reject(new Error("oturum yok"));
+      return api("/functions/v1/whop-account", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + current.accessToken },
+        body: JSON.stringify({ action: action === "cancel" ? "cancel" : "status" }),
+      }).then(function (d) {
+        var m = d && d.membership;
+        if (m && (m.plan === "Aylık" || m.plan === "Yıllık")) {
+          applyEntitlement({
+            status: "active",
+            plan: m.plan,
+            currency: m.currency,
+            period_end: m.periodEnd || null,
+            cancel_at_period_end: !!m.cancelAtPeriodEnd,
+          });
+        } else {
+          applyEntitlement(null);
+        }
+        return d || { membership: null, payments: [] };
+      });
+    });
+  }
+
   function applyEntitlement(row) {
     var set = function (k, v) { if (window.nexusSetItem) window.nexusSetItem(k, v); };
     var del = function (k) { if (window.nexusRemoveItem) window.nexusRemoveItem(k); else set(k, ""); };
@@ -1056,6 +1089,8 @@
     syncState: syncState,
     pullEntitlement: pullEntitlement,
     checkoutUrl: checkoutUrl,
+    checkoutPlanId: checkoutPlanId,
+    billingAccount: billingAccount,
     currencyForLang: currencyForLang,
     prices: function (currency) { return PRICES[currency || currencyForLang()] || PRICES.TRY; },
     manageUrl: function () { return MANAGE_URL; },

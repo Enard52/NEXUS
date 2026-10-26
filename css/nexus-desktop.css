@@ -14,7 +14,7 @@ html.nx-desk .nx-side {
   display: flex; flex-direction: column; gap: 6px;
   position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); z-index: 60;
   padding: 20px 16px 14px; overflow: hidden;
-  background: #fbfaff;
+  background: #ECE9FD;
   border-right: 1px solid rgba(148, 163, 184, 0.22);
   font-family: Inter, sans-serif;
 }
@@ -321,12 +321,12 @@ html.nx-desk[data-nx-page="multi-video"] main > .nx-empty {
 html.nx-desk[data-nx-page="device"] #device-main > .nx-empty { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 32px auto !important; height: auto; align-self: start; }
 /* Alt eylem çubukları: şeritli düz zemin yerine buzlu cam */
 html.nx-desk:not(.nx-desk-auth) .nx-desk-bottom {
-  background: rgba(255, 255, 255, 0.55) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-top: 0 !important; box-shadow: none !important;
 }
 html.dark.nx-desk:not(.nx-desk-auth) .nx-desk-bottom { background: rgba(15, 23, 42, 0.6) !important; }
 html.nx-desk footer[class*="bg-white"], html.nx-desk [data-purpose="chat-input-container"] {
-  background: rgba(255, 255, 255, 0.55) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 0 !important; }
+  background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 0 !important; }
 html.dark.nx-desk footer[class*="bg-white"], html.dark.nx-desk [data-purpose="chat-input-container"] { background: rgba(15, 23, 42, 0.6) !important; }
 /* Harita: tam ekran öğeler menünün sağında kalır */
 html.nx-desk[data-nx-page="map"] body { padding-left: 0 !important; margin-left: var(--side); position: relative; }

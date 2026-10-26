@@ -40,6 +40,7 @@
   }
 
   function request(opts) {
+    if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
     if (transport) return transport(opts);
     var timeout = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
     var headers = opts.headers || (opts.body ? { "Content-Type": "application/json" } : {});
@@ -1052,6 +1053,7 @@
     hue: { pair: hue.pair, lights: hue.lights },
     homeassistant: { entities: homeassistant.entities },
     read: function (device) {
+      if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
       var p = protocolFor(device.protocol);
       return p && available(p) ? p.read(device) : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
     },
@@ -1063,6 +1065,7 @@
       return p.firmware(device);
     },
     write: function (device, capability, value) {
+      if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
       var p = protocolFor(device.protocol);
       return p && available(p) ? p.write(device, capability, value) : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
     },

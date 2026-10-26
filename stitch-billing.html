@@ -33,7 +33,7 @@
     }
   </style>
 </head>
-<body class="bg-[#F3F2F9] dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300">
+<body class="bg-dashboard-gradient dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300">
 <!-- BEGIN: NavigationHeader -->
 <header class="sticky top-0 z-50 bg-[#F3F2F9]/80 dark:bg-slate-950/80 backdrop-blur-md px-4 py-4 pt-12 flex items-center transition-colors duration-300">
 <button onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1 flex items-center text-slate-800 dark:text-white active:opacity-70 transition-opacity">
@@ -99,7 +99,7 @@
 <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </div>
-<span class="text-[17px] font-semibold text-red-500">Aboneliği Yönet / İptal Et</span>
+<span class="text-[17px] font-semibold text-red-500">Dönem sonunda iptal et</span>
 </div>
 <svg class="h-6 w-6 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
 <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -117,13 +117,17 @@
 </div>
 </footer>
 <!-- END: InfoFooter -->
+<section class="hidden" id="pay-section" data-purpose="payment-history">
+<h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2 px-1">Ödemeler</h2>
+<ul class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm divide-y divide-slate-100 dark:divide-slate-800" id="pay-list"></ul>
+</section>
 <!-- BEGIN: Cancel Confirmation Sheet -->
 <div class="hidden fixed inset-0 bg-black/60 z-50 flex items-end" id="cancel-sheet" onclick="closeCancelConfirm()">
 <div class="bg-white dark:bg-slate-900 w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
 <div class="w-10 h-1 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-5"></div>
-<h2 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Aboneliği Whop'ta yönet</h2>
-<p class="text-slate-500 dark:text-slate-400 text-sm mb-5" id="cancel-note">İptal ve ödeme yöntemi değişikliği güvenli ödeme sayfamız Whop üzerinden yapılır. İptal edersen mevcut dönemin sonuna kadar kullanmaya devam edersin ve bir sonraki ödeme alınmaz.</p>
-<button class="w-full bg-red-500 text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform mb-2" onclick="cancelSubscription()">Whop'a Git</button>
+<h2 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Dönem sonunda iptal et</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-5" id="cancel-note">İptal bu hesapta yapılır. Mevcut dönemin sonuna kadar NEXUS+ kullanmaya devam edersin; bir sonraki ödeme alınmaz.</p>
+<button class="w-full bg-red-500 text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform mb-2" onclick="cancelSubscription()">Dönem sonunda iptal et</button>
 <button class="w-full py-3 font-semibold text-slate-500 dark:text-slate-400" onclick="closeCancelConfirm()">Vazgeç</button>
 </div>
 </div>
@@ -176,29 +180,61 @@
       document.querySelector('[data-purpose="payment-notice"]').style.display = 'none';
     }
 
-    // Yönetim butonu yalnızca aktif abonelikte görünür
-    document.getElementById("cancel-sub-btn").classList.toggle("hidden", !plan);
+    // Yönetim butonu yalnızca aktif abonelikte ve henüz iptal edilmemişse görünür
+    document.getElementById("cancel-sub-btn").classList.toggle("hidden", !plan || cancelling);
   }
+
+  function renderPayments(payments) {
+    const section = document.getElementById("pay-section");
+    const list = document.getElementById("pay-list");
+    if (!section || !list) return;
+    list.innerHTML = "";
+    const rows = Array.isArray(payments) ? payments.filter(function (p) { return p && (p.amount || p.status); }) : [];
+    if (!rows.length) {
+      section.classList.add("hidden");
+      return;
+    }
+    rows.forEach(function (p) {
+      const li = document.createElement("li");
+      li.className = "px-5 py-3 text-[15px] text-slate-700 dark:text-slate-200";
+      li.textContent = [p.amount, p.currency, p.status].filter(Boolean).join(" · ");
+      list.appendChild(li);
+    });
+    section.classList.remove("hidden");
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderBilling();
-    // Güncel durumu sunucudan al (başka cihazdan veya Whop'tan yapılan değişiklikler).
-    if (window.nexusCloud && window.nexusCloud.enabled()) {
-      window.nexusCloud.pullEntitlement().then(renderBilling).catch(() => {});
+    if (window.nexusCloud && window.nexusCloud.billingAccount) {
+      window.nexusCloud.billingAccount("status").then(function (d) {
+        renderBilling();
+        renderPayments(d && d.payments);
+      }).catch(function () {
+        if (window.nexusCloud.pullEntitlement) window.nexusCloud.pullEntitlement().then(renderBilling).catch(function () {});
+      });
+    } else if (window.nexusCloud && window.nexusCloud.enabled()) {
+      window.nexusCloud.pullEntitlement().then(renderBilling).catch(function () {});
     }
   });
 
-  /* ---------- Abonelik yönetimi / iptal (Whop) ---------- */
   function openCancelConfirm() {
     document.getElementById("cancel-sheet").classList.remove("hidden");
   }
   function closeCancelConfirm() {
     document.getElementById("cancel-sheet").classList.add("hidden");
   }
-  // İptal ve ödeme yöntemi Whop hesabında yapılır; iptal sonrası durum buraya otomatik yansır.
   function cancelSubscription() {
     closeCancelConfirm();
-    const url = (window.nexusCloud && window.nexusCloud.manageUrl && window.nexusCloud.manageUrl()) || "https://whop.com/@me/settings/memberships/";
-    window.open(url, "_blank", "noopener");
+    if (!window.nexusCloud || !window.nexusCloud.billingAccount) {
+      document.getElementById("sub-renewal").textContent = "İptal için önce hesabınla giriş yapmalısın.";
+      return;
+    }
+    window.nexusCloud.billingAccount("cancel").then(function (d) {
+      renderBilling();
+      renderPayments(d && d.payments);
+    }).catch(function () {
+      document.getElementById("sub-renewal").textContent = "İptal şu an tamamlanamadı. Biraz sonra yeniden dene.";
+    });
   }
 </script>
 </body>

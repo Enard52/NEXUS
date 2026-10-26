@@ -655,7 +655,7 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ],
   ["Android & iOS (soon)", "Android ve iOS (yakında)"],
   ["Apps", "Uygulamalar"],
-  ["Coming soon · Android 7+", "Yakında · Android 7+"],
+  ["Coming soon · Android 8+", "Yakında · Android 8+"],
   ["Coming soon · iOS 15+", "Yakında · iOS 15+"],
   ["Free today. Premium when it is ready.", "Bugün ücretsiz. Premium hazır olduğunda."],
   [

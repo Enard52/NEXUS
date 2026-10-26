@@ -121,6 +121,20 @@ async function shoot(context, p, outDir, tag) {
   const pg = await context.newPage();
   await pg.goto(`http://127.0.0.1:${PORT}/${p.path}`, { waitUntil: "networkidle", timeout: 20000 });
   await pg.waitForTimeout(p.wait);
+  // FAB gerçek telefonda sağ kenara yapışık (right:0, sol köşeleri yuvarlak). Kaydırma
+  // çubuğu ve dock animasyonu onu içeride yüzer gibi gösteriyordu.
+  await pg.addStyleTag({
+    content:
+      "html,body{overflow:hidden!important;margin:0}" +
+      ".nexus-ai-fab{transform:none!important;opacity:1!important;right:0!important}" +
+      ".nexus-ai-fab .fab-label{display:none!important}",
+  });
+  await pg.evaluate(() => {
+    const fab = document.querySelector(".nexus-ai-fab");
+    if (fab) {
+      fab.classList.remove("docked", "show-label", "pulse");
+    }
+  });
   const body = (await pg.evaluate(() => document.body.innerText)).toLowerCase();
   const bad = BANNED.filter((b) => body.includes(b));
   if (bad.length) {

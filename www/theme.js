@@ -67,13 +67,16 @@
   if (lang === 'en' && document.readyState === 'loading' && !window.__nexusI18n) {
     document.write('<script src="lang-en.js"><\/script><script src="i18n.js"><\/script>');
   }
+  var previewShell = false;
+  try { previewShell = !!window.nexusPreview || window.self !== window.top || /[?&](preview|demo)=1/.test(location.search); } catch (e) { previewShell = true; }
   // Hesap senkronu her sayfada çalışsın (giriş yapılmışsa): cloud-sync.js kendini iki kez kurmaz.
-  if (document.readyState === 'loading' && !window.nexusCloud && !window.__nexusCloudLoading) {
+  // Site önizlemesinde bulut ve bildirim kanalları açılmaz — özellik kilitlidir.
+  if (!previewShell && document.readyState === 'loading' && !window.nexusCloud && !window.__nexusCloudLoading) {
     window.__nexusCloudLoading = true;
     document.write('<script src="cloud-config.js"><\/script><script src="cloud-sync.js"><\/script>');
   }
   // Dışa dönük bildirim kanalları (ntfy / webhook / Telegram) her sayfada dinlesin.
-  if (document.readyState === 'loading' && !window.nexusNotify && !window.__nexusNotifyLoading) {
+  if (!previewShell && document.readyState === 'loading' && !window.nexusNotify && !window.__nexusNotifyLoading) {
     window.__nexusNotifyLoading = true;
     document.write('<script src="notify.js"><\/script>');
   }

@@ -16,8 +16,8 @@ const privacy = {
       {
         h: "Kısaca",
         ul: [
-          "Cihazlarınızı kontrol etmek için hesap gerekmez; hesap açmazsanız verileriniz yalnızca kendi cihazınızda kalır.",
-          "Hesap açarsanız ayarlarınız, cihaz listeniz ve sohbet geçmişiniz her cihazda aynı olsun diye bulutta saklanır.",
+          "NEXUS'u kullanmak için hesap gerekir. Cihaz komutları yine yerel ağınızda çalışır; üretici bulutuna gönderilmez.",
+          "Ayarlarınız, cihaz listeniz ve sohbet geçmişiniz her cihazda aynı olsun diye bulutta saklanır.",
           "Verilerinizi satmayız, reklam için kullanmayız, sizi profillemeyiz.",
           "Mikrofonu kullanmayız, ses kaydı almayız. Kamera yalnızca QR kod taramak için açılır ve görüntü cihazınızdan çıkmaz.",
         ],
@@ -117,8 +117,8 @@ const privacy = {
       {
         h: "In short",
         ul: [
-          "You do not need an account to control your devices; without one your data stays on your own device.",
-          "If you create an account, your settings, device list and chat history are stored in the cloud so they match on every device.",
+          "An account is required to use NEXUS. Device commands still run on your local network; they are not sent through a vendor cloud.",
+          "Your settings, device list and chat history are stored in the cloud so they match on every device.",
           "We do not sell your data, use it for advertising or profile you.",
           "We never use the microphone or record audio. The camera opens only to scan QR codes and the image never leaves your device.",
         ],
@@ -226,7 +226,7 @@ const terms = {
       {
         h: "Hesap",
         p: [
-          "Bulut özellikleri için hesap açmanız gerekir. Bilgilerinizi doğru tutmak ve şifrenizi korumak sizin sorumluluğunuzdadır. Hesabınızla yapılan işlemlerden siz sorumlusunuz. Şartlara aykırı kullanımda hesabı askıya alma veya kapatma hakkımızı saklı tutarız.",
+          "NEXUS'u kullanmak için hesap gerekir. Bilgilerinizi doğru tutmak ve şifrenizi korumak sizin sorumluluğunuzdadır. Hesabınızla yapılan işlemlerden siz sorumlusunuz. Şartlara aykırı kullanımda hesabı askıya alma veya kapatma hakkımızı saklı tutarız.",
         ],
       },
       {
@@ -248,7 +248,7 @@ const terms = {
         ul: [
           "Planlar: Aylık ve Yıllık. Türkiye için TL, diğer ülkeler için USD fiyatlı planlar sunulur (şu an Aylık ₺499,99 / $11.99, Yıllık ₺3.999,99 / $89.99). Güncel fiyatlar ödeme sayfasında gösterilir; vergiler ödeme sayfasında eklenebilir. Yıllık planda 7 gün, aylık planda 3 gün ücretsiz deneme sunulur.",
           "Ödemeler Whop üzerinden alınır. Abonelik, siz iptal edene kadar her dönem otomatik yenilenir; deneme süresi bitince seçtiğiniz plan ücreti tahsil edilir.",
-          "Aboneliğinizi dilediğiniz an Faturalandırma sayfasından veya Whop hesabınızdan iptal edebilirsiniz. İptal, içinde bulunduğunuz dönemin sonunda geçerli olur.",
+          "Aboneliğinizi dilediğiniz an uygulamadaki Faturalandırma sayfasından veya bu sitedeki hesabınızdan iptal edebilirsiniz. İptal, içinde bulunduğunuz dönemin sonunda geçerli olur.",
           "Ödemede NEXUS hesabınızın e-posta adresini kullanmalısınız; abonelik bu e-postayla eşleşir.",
           "Fiyat değişikliklerini yürürlüğe girmeden en az 30 gün önce duyururuz; mevcut dönemi etkilemez.",
           "İade koşulları İade ve İptal Politikası'nda yer alır.",
@@ -306,7 +306,7 @@ const terms = {
       {
         h: "Account",
         p: [
-          "Cloud features require an account. You are responsible for keeping your details accurate and your password safe, and for activity under your account. We may suspend or close accounts that breach these terms.",
+          "Using NEXUS requires an account. You are responsible for keeping your details accurate and your password safe, and for activity under your account. We may suspend or close accounts that breach these terms.",
         ],
       },
       {
@@ -328,7 +328,7 @@ const terms = {
         ul: [
           "Plans: Monthly and Yearly, priced in TRY for Türkiye and in USD elsewhere (currently Monthly ₺499.99 / $11.99, Yearly ₺3,999.99 / $89.99). Current prices are shown at checkout; taxes may be added at checkout. The yearly plan includes a 7-day free trial and the monthly plan a 3-day free trial.",
           "Payments are taken through Whop. The subscription renews automatically each period until you cancel; when the trial ends your chosen plan's price is charged.",
-          "You can cancel at any time on the Billing page or in your Whop account. Cancellation takes effect at the end of the current period.",
+          "You can cancel at any time from Billing in the app or from your account on this website. Cancellation takes effect at the end of the current period.",
           "At checkout use your NEXUS account's email address; the subscription is matched to that email.",
           "We announce price changes at least 30 days before they take effect; they do not affect the current period.",
           "Refund terms are in the Refund and Cancellation Policy.",
@@ -390,8 +390,8 @@ const refund = {
       {
         h: "Nasıl iptal edilir",
         ul: [
-          "Uygulamada: Plus → Faturalandırma → Aboneliği Yönet / İptal Et (sizi Whop hesabınıza götürür).",
-          "Doğrudan: whop.com üzerinden hesabınız → Ayarlar → Üyelikler → NEXUS+ → İptal.",
+          "Uygulamada: Plus → Faturalandırma → Dönem sonunda iptal et.",
+          "Web sitesinde: giriş yap → hesap → dönem sonunda iptal et.",
           "İptal, içinde bulunduğunuz ödeme döneminin sonunda geçerli olur; o zamana kadar NEXUS+ özelliklerini kullanmaya devam edersiniz ve yeni dönem için ücret alınmaz.",
         ],
       },
@@ -433,8 +433,8 @@ const refund = {
       {
         h: "How to cancel",
         ul: [
-          "In the app: Plus → Billing → Manage / Cancel subscription (takes you to your Whop account).",
-          "Directly: your whop.com account → Settings → Memberships → NEXUS+ → Cancel.",
+          "In the app: Plus → Billing → Cancel at period end.",
+          "On the website: sign in → account → cancel at period end.",
           "Cancellation takes effect at the end of the current billing period; you keep NEXUS+ features until then and are not charged for the next period.",
         ],
       },

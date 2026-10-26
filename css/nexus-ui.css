@@ -61,7 +61,57 @@ body {
 }
 
 /* Sayfa geçişi kayması: kaydırma çubuğu çıkıp kaybolunca içerik yatay kaymasın (tüm sayfalar, mobil + masaüstü) */
-html { scrollbar-gutter: stable; }
+html { scrollbar-gutter: stable; background-color: var(--nx-page); }
+
+/* Açık temada tam genişlik krom (alt menü, üst bar, sayfa kabuğu) lila kalsın;
+   kartların beyaz yüzeyi bilinçli kontrasttır, burası zemin sızıntısı değildir. */
+html:not(.dark) nav[data-purpose="bottom-nav"] {
+  background-color: color-mix(in srgb, #ECE9FD 88%, #fff) !important;
+  border-top-color: rgba(76, 125, 255, 0.12) !important;
+}
+html:not(.dark) header.bg-white,
+html:not(.dark) header[class*="bg-white/"],
+html:not(.dark) header[class*="bg-[#F9FAFB]"] {
+  background-color: rgba(236, 233, 253, 0.94) !important;
+}
+html:not(.dark) body,
+html:not(.dark) body.bg-white,
+html:not(.dark) body.bg-slate-100,
+html:not(.dark) body[class*="bg-[#F3F2F9]"],
+html:not(.dark) body[class*="bg-[#F8FAFC]"],
+html:not(.dark) body[class*="bg-[#f8fafc]"] {
+  background-color: var(--nx-page) !important;
+  background-image: var(--nx-page-gradient) !important;
+}
+html:not(.dark) .bg-gradient-custom,
+html:not(.dark) .bg-dashboard-gradient,
+html:not(.dark) .bg-miniapp-gradient,
+html:not(.dark) .bg-light-blue-gradient,
+html:not(.dark) .bg-comfort-gradient,
+html:not(.dark) .bg-smart-gradient,
+html:not(.dark) .bg-welcome-gradient,
+html:not(.dark) .bg-nexus-gradient {
+  background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%) !important;
+}
+html:not(.dark) .bg-bg-main,
+html:not(.dark) .bg-nexus-bg {
+  background-color: #ECE9FD !important;
+}
+html:not(.dark) [class*="h-screen"][class*="bg-[#EEF4FF]"],
+html:not(.dark) [class*="min-h-screen"][class*="bg-[#EEF4FF]"],
+html:not(.dark) [class*="h-screen"][class*="bg-white"],
+html:not(.dark) [class*="min-h-screen"][class*="bg-white"] {
+  background-color: var(--nx-page) !important;
+  background-image: var(--nx-page-gradient) !important;
+}
+html:not(.dark) .absolute.inset-0.bg-white,
+html:not(.dark) #catalog-rail,
+html:not(.dark) #catalog-content,
+html:not(.dark) footer.bg-white,
+html:not(.dark) footer[class*="bg-white/"] {
+  background-color: color-mix(in srgb, #ECE9FD 88%, #fff) !important;
+  background-image: none !important;
+}
 
 /* Sayfa açılışında ilk yerleşim sonrası kısa ve sade bir giriş: içerik zıplamadan belirir */
 @keyframes nxPageIn { from { opacity: 0; } to { opacity: 1; } }
@@ -282,7 +332,7 @@ html.dark .shadow-\[0_12px_36px_rgba\(15\2c 23\2c 42\2c 0\.08\)\] { box-shadow: 
 /* Menü ekranının yerel renk adları (Play CDN kaldırılınca derlenmiyordu) */
 .text-text-primary { color: #111827; }
 .text-text-secondary { color: #6B7280; }
-.bg-bg-main { background-color: #F9F9FB; }
+.bg-bg-main { background-color: #ECE9FD; }
 /* Sohbet ekranının yerel zeminleri */
 .bg-nexus-gradient { background-image: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%); }
 .bg-nexus-plus-bg { background-color: #4C7DFF; }

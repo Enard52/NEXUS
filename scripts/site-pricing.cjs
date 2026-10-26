@@ -32,7 +32,7 @@ const T = {
       ],
       [
         "Advanced AI, secure remote access, and automations that continuously adapt to your routines.",
-        "A much larger NEXUS AI allowance for your home: 2,000 credits every month and advanced NEXUS AI models.",
+        "A much larger NEXUS AI allowance for your home: 2,000 credits every month instead of 30 a day.",
       ],
       [
         /<div class="price price-soon">Soon<\/div>\s*<span class="price-note">Not on sale yet<\/span>/,
@@ -44,14 +44,14 @@ const T = {
       ],
       [
         "<span>Adaptive routines</span><span>Priority response</span>",
-        "<span>Advanced models</span><span>All your devices</span>",
+        "<span>Same assistant</span><span>All your devices</span>",
       ],
       [
         /<ul class="feature-list">[\s\S]*?<\/ul>/,
         list([
           "2,000 NEXUS AI credits every month (Free: 30 per day)",
           "NEXUS AI smart home control",
-          "Advanced NEXUS AI models",
+          "Ask NEXUS AI to set scenes and answer in plain language",
           "Works on all your NEXUS devices",
           "One account, valid on every device",
         ]),
@@ -98,7 +98,7 @@ const T = {
       ],
       [
         "Gelişmiş yapay zekâ, güvenli uzaktan erişim ve rutinlerine sürekli uyum sağlayan otomasyonlar.",
-        "Evin için çok daha büyük bir NEXUS AI hakkı: her ay 2.000 kredi ve gelişmiş NEXUS AI modelleri.",
+        "Evin için çok daha büyük bir NEXUS AI hakkı: günde 30 yerine her ay 2.000 kredi.",
       ],
       [
         /<div class="price price-soon">Yakında<\/div>\s*<span class="price-note">Henüz satışta değil<\/span>/,
@@ -110,14 +110,14 @@ const T = {
       ],
       [
         "<span>Uyarlanabilir rutinler</span><span>Öncelikli yanıt</span>",
-        "<span>Gelişmiş modeller</span><span>Tüm cihazların</span>",
+        "<span>Aynı asistan</span><span>Tüm cihazların</span>",
       ],
       [
         /<ul class="feature-list">[\s\S]*?<\/ul>/,
         list([
           "Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)",
           "NEXUS AI ile akıllı ev kontrolü",
-          "Gelişmiş NEXUS AI modelleri",
+          "NEXUS AI ile doğal dille senaryo ve soru",
           "Tüm NEXUS cihazlarında çalışır",
           "Tek hesap, her cihazda geçerli",
         ]),
@@ -191,12 +191,12 @@ const PLANS_V2 = {
     },
     premium: {
       stat: ["NEXUS AI credits", "2,000 / month"],
-      desc: "A much larger monthly NEXUS AI allowance for your home, and first access to new NEXUS AI features.",
+      desc: "A much larger monthly NEXUS AI allowance for your home: 2,000 credits a month instead of 30 a day.",
       items: [
         "2,000 NEXUS AI credits every month (Free: 30 per day)",
-        "New NEXUS AI features reach NEXUS+ members first",
+        "Ask NEXUS AI to set scenes and answer in plain language",
         "One subscription, valid on all your devices",
-        "Free trial included, cancel anytime",
+        "Free trial included, cancel at period end",
       ],
     },
     family: {
@@ -224,12 +224,12 @@ const PLANS_V2 = {
     },
     premium: {
       stat: ["NEXUS AI kredisi", "ayda 2.000"],
-      desc: "Evin için çok daha büyük bir aylık NEXUS AI hakkı ve yeni NEXUS AI özelliklerine ilk erişim.",
+      desc: "Evin için çok daha büyük bir aylık NEXUS AI hakkı: günde 30 yerine ayda 2.000 kredi.",
       items: [
         "Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)",
-        "Yeni NEXUS AI özellikleri önce NEXUS+ üyelerine açılır",
+        "NEXUS AI ile doğal dille senaryo ve soru",
         "Tek abonelik, tüm cihazlarında geçerli",
-        "Ücretsiz deneme dahil, istediğin zaman iptal",
+        "Ücretsiz deneme dahil, dönem sonunda iptal",
       ],
     },
     family: {
@@ -245,10 +245,10 @@ const PLANS_V2 = {
 };
 const OLD_PREMIUM_DESC = {
   en: [
-    "A much larger NEXUS AI allowance for your home: 2,000 credits every month and advanced NEXUS AI models.",
+    "A much larger NEXUS AI allowance for your home: 2,000 credits every month instead of 30 a day.",
   ],
   tr: [
-    "Evin için çok daha büyük bir NEXUS AI hakkı: her ay 2.000 kredi ve gelişmiş NEXUS AI modelleri.",
+    "Evin için çok daha büyük bir NEXUS AI hakkı: günde 30 yerine her ay 2.000 kredi.",
   ],
 };
 

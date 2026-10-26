@@ -12,6 +12,7 @@
 <link rel="icon" href="/icon.svg" type="image/svg+xml"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="manifest" href="/manifest.webmanifest"/>
+<meta name="theme-color" content="#ECE9FD"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="NEXUS"/>
 <meta property="og:locale" content="tr_TR"/>
@@ -27,20 +28,40 @@
 <meta name="twitter:description" content="NEXUS; Windows, Linux ve Android için yerel-öncelikli akıllı ev uygulaması. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı."/>
 <meta name="twitter:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <link href="/fonts/inter/inter.css" rel="stylesheet"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/tr/","logo":"https://nexus-smarthome.pages.dev/icon.svg","email":"nexus.smarthome.app@gmail.com"},{"@type":"WebSite","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/tr/","inLanguage":"tr"},{"@type":"SoftwareApplication","name":"NEXUS — Windows","applicationCategory":"HomeApplication","operatingSystem":"Windows","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}},{"@type":"SoftwareApplication","name":"NEXUS — Linux","applicationCategory":"HomeApplication","operatingSystem":"Linux","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}},{"@type":"SoftwareApplication","name":"NEXUS — Android","applicationCategory":"HomeApplication","operatingSystem":"Android","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?","acceptedAnswer":{"@type":"Answer","text":"Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Giriş yaptığında ise kurulumun TLS ve satır bazlı erişim denetimi (RLS) altındaki kendi hesabına senkronize olur; kontrol için bu senkron zorunlu değildir."}},{"@type":"Question","name":"NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?","acceptedAnswer":{"@type":"Answer","text":"NEXUS'un tam arayüzü tarayıcıda da çalışır: hesap, eşyalar, panolar, sahneler ve NEXUS AI için web uygulamasını kullanabilirsin. Cihaz komutları ise kendi yerel ağndan (LAN) doğrudan gider; tarayıcı güvenlik kum havuzu (sandbox) yüzünden yalnızca tarayıcı isteklerine izin veren (CORS) cihazlara ulaşabilir — Shelly, Philips Hue, ESPHome gibi yerel HTTP API'ler buna örnektir. Ham TCP/UDP isteyen protokoller (TP-Link Kasa, Yeelight) yalnızca masaüstü uygulamasında çalışır. Evin tamamını her ortamda kontrol etmek için masaüstü programı (Windows, Linux) ve mobil uygulama (Android) kurulumunu öneriyoruz; tanıtım sitemiz ise hesap, indirme ve faturalandırma içindir."}},{"@type":"Question","name":"NEXUS+ aboneliği tam olarak ne sağlar?","acceptedAnswer":{"@type":"Answer","text":"Temel akıllı ev yönetimi, sınırsız cihaz ekleme, oda kontrolleri ve yerel otomasyonlar tamamen sınırsızdır. NEXUS+ aboneliği; evinize entegre çalışan gelişmiş yapay zekâ modeline ayda 2.000 yüksek hızlı doğal dil yanıt hakkı, karmaşık kural ve senaryo üretimi, enerji optimizasyon önerileri ve yeni beta entegrasyonlara öncelikli erişim kazandırır."}},{"@type":"Question","name":"Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?","acceptedAnswer":{"@type":"Answer","text":"NEXUS otomasyon motoru kurallarını ve zamanlayıcılarını NEXUS'u çalıştırdığın cihazda yürütür: masaüstü programı sistem tepsisinde arka planda kalarak gün boyu izler ve uygular, böylece aydınlatma, enerji ve güvenlik rutinleri bulutu beklemez. Telefondan tetiklediğin sahneler ve zamanlayıcılar yerel ağndan anında uygulanır. Yeni olaylar, Anlık Bildirimler sayfasında açtığın kanallara dağıtılır: uygulama içi bildirim şeridi, sistem bildirimi, ntfy, Telegram veya kendi HTTPS webhook'un."}},{"@type":"Question","name":"Hangi cihazlar ve markalar destekleniyor?","acceptedAnswer":{"@type":"Answer","text":"NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue ve Tuya'yı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir."}},{"@type":"Question","name":"Güvenlik kameraları ve sensörler nasıl entegre edilir?","acceptedAnswer":{"@type":"Answer","text":"NEXUS; güvenlik kameralarınızın durumunu, gizlilik modlarını, hareket dedektörlerini ve kapı/pencere sensörlerini birleşik güvenlik merkezinde sunar. 'Evden Ayrılış' modunda kameraları ve sensörleri devreye sokabilir, 'Evdeyim' modunda gizlilik perdelerini otomatik kapatabilir, tüm güvenlik olaylarını anlık yerel bildirimlerle takip edebilirsiniz."}},{"@type":"Question","name":"NEXUS+ aboneliğimi dilediğim an iptal edebilir miyim?","acceptedAnswer":{"@type":"Answer","text":"Evet, hiçbir taahhüt ve bağlayıcılık yoktur. Aboneliğinizi dilediğiniz an tek tıkla iptal edebilirsiniz: İster uygulama içerisindeki Hesap & Faturalandırma menüsünden, ister web sitemizden, isterseniz de sipariş e-posta makbuzunuz üzerinden hemen yönetebilirsiniz. İptal ettiğinizde mevcut döneminiz boyunca tüm ayrıcalıklarınız korunur ve sonraki dönem için hiçbir ücret alınmaz."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/tr/","logo":"https://nexus-smarthome.pages.dev/icon.svg","email":"nexus.smarthome.app@gmail.com"},{"@type":"WebSite","name":"NEXUS","url":"https://nexus-smarthome.pages.dev/tr/","inLanguage":"tr"},{"@type":"SoftwareApplication","name":"NEXUS — Windows","applicationCategory":"HomeApplication","operatingSystem":"Windows","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Setup.exe","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}},{"@type":"SoftwareApplication","name":"NEXUS — Linux","applicationCategory":"HomeApplication","operatingSystem":"Linux","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-linux.AppImage","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}},{"@type":"SoftwareApplication","name":"NEXUS — Android","applicationCategory":"HomeApplication","operatingSystem":"Android","url":"https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?","acceptedAnswer":{"@type":"Answer","text":"Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Giriş yaptığında ise kurulumun TLS ve satır bazlı erişim denetimi (RLS) altındaki kendi hesabına senkronize olur; kontrol için bu senkron zorunlu değildir."}},{"@type":"Question","name":"NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?","acceptedAnswer":{"@type":"Answer","text":"NEXUS'un tam arayüzü tarayıcıda da çalışır: hesap, eşyalar, panolar, sahneler ve NEXUS AI için web uygulamasını kullanabilirsin. Cihaz komutları ise kendi yerel ağndan (LAN) doğrudan gider; tarayıcı güvenlik kum havuzu (sandbox) yüzünden yalnızca tarayıcı isteklerine izin veren (CORS) cihazlara ulaşabilir — Shelly, Philips Hue, ESPHome gibi yerel HTTP API'ler buna örnektir. Ham TCP/UDP isteyen protokoller (TP-Link Kasa, Yeelight) yalnızca masaüstü uygulamasında çalışır. Evin tamamını her ortamda kontrol etmek için masaüstü programı (Windows, Linux) ve mobil uygulama (Android) kurulumunu öneriyoruz; tanıtım sitemiz ise hesap, indirme ve faturalandırma içindir."}},{"@type":"Question","name":"NEXUS+ aboneliği tam olarak ne sağlar?","acceptedAnswer":{"@type":"Answer","text":"Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir."}},{"@type":"Question","name":"Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?","acceptedAnswer":{"@type":"Answer","text":"NEXUS otomasyon motoru kurallarını ve zamanlayıcılarını NEXUS'u çalıştırdığın cihazda yürütür: masaüstü programı sistem tepsisinde arka planda kalarak gün boyu izler ve uygular, böylece aydınlatma, enerji ve güvenlik rutinleri bulutu beklemez. Telefondan tetiklediğin sahneler ve zamanlayıcılar yerel ağndan anında uygulanır. Yeni olaylar, Anlık Bildirimler sayfasında açtığın kanallara dağıtılır: uygulama içi bildirim şeridi, sistem bildirimi, ntfy, Telegram veya kendi HTTPS webhook'un."}},{"@type":"Question","name":"Hangi cihazlar ve markalar destekleniyor?","acceptedAnswer":{"@type":"Answer","text":"NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue ve Tuya'yı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir."}},{"@type":"Question","name":"Güvenlik kameraları ve sensörler nasıl entegre edilir?","acceptedAnswer":{"@type":"Answer","text":"NEXUS; güvenlik kameralarınızın durumunu, gizlilik modlarını, hareket dedektörlerini ve kapı/pencere sensörlerini birleşik güvenlik merkezinde sunar. 'Evden Ayrılış' modunda kameraları ve sensörleri devreye sokabilir, 'Evdeyim' modunda gizlilik perdelerini otomatik kapatabilir, tüm güvenlik olaylarını anlık yerel bildirimlerle takip edebilirsiniz."}},{"@type":"Question","name":"NEXUS+ aboneliğimi dilediğim an iptal edebilir miyim?","acceptedAnswer":{"@type":"Answer","text":"Evet, hiçbir taahhüt ve bağlayıcılık yoktur. Aboneliğinizi dilediğiniz an tek tıkla iptal edebilirsiniz: İster uygulama içerisindeki Hesap & Faturalandırma menüsünden, ister web sitemizden, isterseniz de sipariş e-posta makbuzunuz üzerinden hemen yönetebilirsiniz. İptal ettiğinizde mevcut döneminiz boyunca tüm ayrıcalıklarınız korunur ve sonraki dönem için hiçbir ücret alınmaz."}}]}]}</script>
 <style>
 :root{
+  /* Uygulama / program (www/css/nexus-ui.css) ile aynı açık palet. */
   --brand:#4C7DFF; --brand-press:#3F6FFF; --accent:#22D3EE;
-  --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 55%,#818CF8 100%);
+  --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);
   --page:#ECE9FD; --page-grad:linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
-  --surface:rgba(255, 255, 255, 0.88); --surface-2:#F6F4FE; --text:#0F172A; --text-2:#334155;
-  --muted:#64748B; --border:rgba(147, 130, 220, 0.24); --danger:#E5484D;
-  --radius:18px; --radius-lg:26px;
-  --shadow:0 4px 20px -2px rgba(99, 102, 241, 0.08); --shadow-lg:0 24px 56px -12px rgba(99, 102, 241, 0.16);
+  --surface:#FFFFFF; --surface-2:#F4F5FA; --text:#0F172A; --text-2:#334155;
+  --muted:#64748B; --border:#E6E8F0; --danger:#E5484D;
+  --radius:20px; --radius-lg:28px;
+  --shadow:0 4px 16px rgba(15, 23, 42, 0.06); --shadow-lg:0 24px 56px -12px rgba(15, 23, 42, 0.12);
   --header-h:68px; --max:1120px;
 }
 html{
   scrollbar-gutter: stable;
+}
+::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:var(--text)}
+.skip{
+  position:absolute;left:12px;top:-56px;z-index:200;background:var(--brand);color:#fff;
+  padding:10px 14px;border-radius:12px;font-weight:700;font-size:13px;
+}
+.skip:focus{top:12px;outline:2px solid #fff;outline-offset:2px}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+section[id]{scroll-margin-top:calc(var(--header-h) + 14px)}
+@media (hover: hover) and (pointer: fine){
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 35%,transparent)}
+  .step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 45%,transparent)}
+  .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .dl-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 40%,transparent)}
+  .dl-web-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+}
+@media (prefers-reduced-motion: reduce){
+  .card,.step,.plan,.dl-card,.dl-web-card,.phone-glow,.dot,.ft-status-dot,.shot-slide{animation:none;transition:none}
+  .card:hover,.step:hover,.plan:hover,.dl-card:hover,.dl-web-card:hover{transform:none}
 }
 @supports not (scrollbar-gutter: stable){
   html{overflow-y:scroll}
@@ -48,12 +69,13 @@ html{
 html.nx-modal-open,
 html.nx-modal-open body{
   overflow:hidden !important;
+  overscroll-behavior:none;
 }
 html[data-theme=dark]{
-  --page:#080C16; --page-grad:radial-gradient(120% 75% at 50% -10%, #111A2E 0%, #0C1220 50%, #080C16 100%);
-  --surface:#101726; --surface-2:#161F33; --text:#F8FAFC; --text-2:#CBD5E1;
-  --muted:#94A3B8; --border:#1E293B;
-  --shadow:0 6px 24px -2px rgba(0,0,0,.45); --shadow-lg:0 24px 64px -12px rgba(0,0,0,.7);
+  --page:#0F172A; --page-grad:linear-gradient(180deg, #020617 0%, #0F172A 100%);
+  --surface:#1E293B; --surface-2:#273449; --text:#F1F5F9; --text-2:#CBD5E1;
+  --muted:#94A3B8; --border:rgba(148, 163, 184, 0.18);
+  --shadow:0 4px 16px rgba(0, 0, 0, 0.45); --shadow-lg:0 24px 64px -12px rgba(0,0,0,.7);
 }
 *{box-sizing:border-box}
 body{
@@ -73,16 +95,25 @@ a{color:inherit;text-decoration:none}
 /* Header */
 .hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   background:color-mix(in srgb,var(--surface) 78%,transparent);border-bottom:1px solid var(--border);height:var(--header-h);display:flex;align-items:center}
-.hd .wrap{display:flex;align-items:center;width:100%}
-.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.hd .wrap{display:flex;align-items:center;width:100%;gap:8px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em;flex-shrink:0}
 .logo svg{width:32px;height:32px}
 
 .nav{display:none;gap:6px;margin-left:auto}
 .nav a{padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--text-2);transition:all .15s ease}
 .nav a:hover{background:var(--surface);color:var(--text)}
 
-.nav-controls{display:flex;align-items:center;gap:10px;margin-left:auto}
-@media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:14px}}
+.nav-controls{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+@media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:14px;gap:10px}}
+@media(max-width:520px){
+  :root{--header-h:58px}
+  .hd{height:58px}
+  .hd .wrap{padding:0 12px}
+  .logo{gap:8px;font-size:16px}
+  .logo svg{width:28px;height:28px}
+  .logo span{display:none}
+  .nav-controls{gap:4px}
+}
 
 /* Dil Değiştirici (Sleek Segmented Pill Control) */
 .lang-switch{display:inline-flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);
@@ -113,26 +144,45 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn.disabled{opacity:.55;pointer-events:none}
 
 /* Hero */
-.hero{padding:36px 0 24px;position:relative}
+.hero{padding:28px 0 32px;position:relative}
 .hero::before{content:"";position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:min(920px,100vw);height:520px;
   background:radial-gradient(ellipse at center,rgba(76,125,255,.16) 0%,rgba(34,211,238,.07) 45%,transparent 70%);pointer-events:none;z-index:0}
-.hero .wrap{display:grid;gap:24px;align-items:center;position:relative;z-index:1}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:14px;gap:36px}}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
-  padding:6px 14px;border-radius:999px;margin-bottom:14px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent);
-  box-shadow:0 2px 10px rgba(76,125,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero .wrap{display:grid;gap:28px;align-items:center;position:relative;z-index:1}
+.hero-copy{max-width:38rem;width:100%;min-width:0}
+.hero-display{display:flex;flex-direction:column;align-items:center;text-align:center;width:fit-content;max-width:100%;margin:0 0 16px}
+.eyebrow{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--brand);background:none;padding:0;border:0;border-radius:0;margin:0 0 10px;
+  box-shadow:none;line-height:1}
+.eyebrow .icon{width:15px;height:15px}
 h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margin:0 0 16px;font-weight:900}
-.grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 50%,#818CF8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-copy h1{font-size:clamp(32px,4.8vw,62px);line-height:1.06;letter-spacing:-.045em;margin:0;text-wrap:nowrap}
+.grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .lead{font-size:clamp(15px,1.65vw,17.5px);color:var(--text-2);margin:0 0 22px;max-width:52ch;line-height:1.6}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
-.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);background:var(--surface);
-  border:1px solid var(--border);padding:4px 12px;border-radius:999px;box-shadow:var(--shadow)}
-.dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite}
+.hero-copy .lead{font-size:clamp(16px,1.7vw,19px);line-height:1.5;color:var(--text);margin:0 0 10px;max-width:46ch;font-weight:500;text-align:left}
+.hero-copy .lead-sub{font-size:15px;line-height:1.55;color:var(--muted);margin:0 0 26px;max-width:48ch;text-align:left}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px 16px;margin-bottom:22px}
+.ver-chip{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:650;color:var(--text-2);
+  background:var(--surface);border:1px solid var(--border);
+  padding:6px 8px 6px 12px;border-radius:12px;box-shadow:var(--shadow);line-height:1.2;margin:0}
+.ver-chip .ver-num{display:inline-flex;align-items:center;background:var(--brand-grad);color:#fff;
+  font-size:12.5px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite;flex-shrink:0}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-size:12.5px;color:var(--muted)}
-.trust span{display:inline-flex;align-items:center;gap:6px}
-.trust .icon{color:#10B981;width:15px;height:15px}
+.trust{display:grid;gap:10px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--text-2)}
+.trust li{display:flex;align-items:center;gap:8px}
+.trust .icon{color:#10B981;width:16px;height:16px;flex-shrink:0}
+@media(min-width:960px){
+  .hero{padding:20px 0 28px}
+  .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:28px 40px;align-items:center;
+    min-height:calc(100dvh - var(--header-h) - 36px)}
+  .hero-copy{max-width:none}
+  .hero-copy h1{white-space:nowrap}
+  .phone-wrapper{margin:0}
+  .sec-head h2{white-space:nowrap}
+}
+@media(max-width:959px){
+  .hero-copy h1{text-wrap:balance;white-space:normal}
+}
 
 /* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
 .phone-wrapper{position:relative;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -142,40 +192,38 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 
 .phone-case{
   position:relative;z-index:2;
-  width:clamp(290px,28vw,340px);
+  /* Aynı kasa; yükseklik ekrana sığsın diye genişlik viewport'tan türetilir (390/844 + çerçeve). */
+  width:min(236px, 52vw, calc((100dvh - var(--header-h) - 64px) * 390 / 920));
   max-width:86vw;
   background:linear-gradient(145deg, #252834 0%, #13151b 50%, #0a0b0e 100%);
   border:2.5px solid rgba(255,255,255,.18);
-  border-radius:48px;
-  padding:8px;
-  box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 30px 60px -12px rgba(0,0,0,.65), 0 0 50px rgba(76,125,255,.18);
+  border-radius:42px;
+  padding:7px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 24px 48px -12px rgba(0,0,0,.6), 0 0 40px rgba(76,125,255,.16);
   user-select:none;
   cursor:default;
   transition:box-shadow .3s ease;
-  animation:phoneFloat 6s ease-in-out infinite;
+  animation:none;
 }
-@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.phone-case.previewing{cursor:default}
 
-@media(max-height:800px), (max-width:600px){
-  .phone-case{width:clamp(240px,68vw,280px);border-radius:42px;padding:7px}
-  .phone-inner-screen{border-radius:35px}
-}
-@media(max-width:380px){
-  .phone-case{width:clamp(200px,75vw,240px);border-radius:36px;padding:5px}
-  .phone-inner-screen{border-radius:30px}
+@media(max-width:959px){
+  .phone-case{width:min(210px, 56vw, calc((100dvh - var(--header-h) - 48px) * 390 / 920));border-radius:38px;padding:6px}
+  .phone-inner-screen{border-radius:22px}
 }
 
 .phone-inner-screen{
   position:relative;width:100%;
   aspect-ratio:390 / 844;
-  border-radius:40px;overflow:hidden;
+  /* Ekran köşesi kasa kadar yuvarlak olursa sağdaki AI yaprağı kesilir (ölçüldü). */
+  border-radius:24px;overflow:hidden;
   background:#ECE9FD;
 }
 
 /* Dinamik Ada */
 .phone-island{
-  position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  width:72px;height:18px;background:#000;border-radius:14px;z-index:40;
+  position:absolute;top:5px;left:50%;transform:translateX(-50%);
+  width:min(64px, 28%);height:15px;background:#000;border-radius:14px;z-index:40;
   display:flex;align-items:center;justify-content:space-between;padding:0 7px;
   box-shadow:0 0 0 1px rgba(255,255,255,.06);
   pointer-events:none;
@@ -190,7 +238,7 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);
   pointer-events:none;
 }
-.shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.shot-slide img{width:100%;height:100%;object-fit:fill;display:block}
 .shot-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 
 /* Canli onizleme (telefonun icinde gercek uygulama).
@@ -198,12 +246,11 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
    JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
    190px'e sikisirir ve okunmaz). */
-.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:#ECE9FD}
+.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:transparent}
 .phone-preview.on{display:block}
-.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;background:transparent;
   transform-origin:top left;transform:scale(var(--nx-preview-scale,.8))}
 .phone-case.previewing .phone-arrow{display:none}
-.phone-case.previewing{cursor:default}
 .phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
 .phone-mode-btn{background:transparent;border:0;border-radius:999px;
   padding:5px 14px;min-height:30px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
@@ -224,25 +271,28 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    left:-50%/width:200% olan sürüm 390px'te belgeyi yatay kaydırıyordu). */
 .phone-glass-shine{
   position:absolute;top:0;left:0;width:100%;height:100%;
-  background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
-  pointer-events:none;z-index:32;border-radius:40px;
+  background:linear-gradient(135deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,0) 36%);
+  pointer-events:none;z-index:24;border-radius:inherit;
 }
 
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.phone-screen-content{position:absolute;inset:0;z-index:8;display:block}
+
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
-.phone-bottom-bar{
-  margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:8px;
-}
+.phone-bottom-bar{display:none}
 .phone-nav-row{
   display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
 }
 .phone-caption-pill{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
-  transition:all .2s ease;
+  display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;
+  max-width:min(340px,92vw);
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:8px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:650;color:var(--text);
+  line-height:1.35;text-align:center;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em;
+  padding:3px 8px;border-radius:99px;flex-shrink:0;
 }
 .phone-dots{
   display:flex;align-items:center;gap:2px;
@@ -279,15 +329,19 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 }
 
 .phone-tap-hint{
-  display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;max-width:min(340px,92vw);
+  font-size:12px;color:var(--text-2);line-height:1.4;text-align:center;
 }
-.phone-tap-hint svg{width:12px;height:12px;color:var(--brand)}
+.phone-tap-hint svg{width:13px;height:13px;color:var(--brand);flex-shrink:0}
 
 /* Bölümler */
 section{padding:72px 0}
 @media(max-width:700px){section{padding:48px 0}}
-.sec-head{max-width:640px;margin-bottom:36px}
-h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margin:0 0 12px;font-weight:800}
+.sec-head{max-width:none;margin-bottom:36px}
+.sec-mark{width:48px;height:48px;margin:0 auto 14px}
+.sec-mark svg{width:48px;height:48px;display:block}
+h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height:1.16;margin:0 0 12px;font-weight:800}
+.sec-head h2{white-space:nowrap}
 .sec-head p{color:var(--text-2);margin:0}
 .grid{display:grid;gap:18px}
 @media(min-width:700px){.grid.c3{grid-template-columns:repeat(3,1fr)}.grid.c2{grid-template-columns:repeat(2,1fr)}}
@@ -295,7 +349,6 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Kartlar - Asla gizli/kayıp kalmaz, opacity 1 */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:26px;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease;position:relative;overflow:hidden}
-.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 35%,transparent)}
 .f-ic{width:50px;height:50px;border-radius:15px;background:color-mix(in srgb,var(--brand) 12%,transparent);
   color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 18%,transparent)}
 .f-ic svg{width:25px;height:25px}
@@ -305,40 +358,59 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Nasıl Çalışır (1-2-3 Adım Tasarımı) */
 .steps{display:grid;gap:20px;counter-reset:st;position:relative}
 @media(min-width:800px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow);transition:all .3s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column}
-.step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 45%,transparent)}
-.step-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease,border-color .3s ease;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column}
+.step-top-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .step-n{width:36px;height:36px;border-radius:12px;background:var(--brand-grad);
   color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.35);flex-shrink:0}
-.step-micro-pill{font-size:10.5px;font-weight:800;letter-spacing:.05em;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);padding:3px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--brand) 20%,transparent)}
-.step-icon-bubble{width:34px;height:34px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-2);flex-shrink:0}
+.step-micro-pill{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--muted);background:none;padding:0;border:0;border-radius:0;margin-left:auto;white-space:nowrap}
+.step-icon-bubble{width:34px;height:34px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--brand);flex-shrink:0}
 .step-icon-bubble svg{width:17px;height:17px}
 .step h3{margin:0 0 8px;font-size:17.5px;font-weight:800;letter-spacing:-.015em}
 .step p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6}
 
-/* Entegrasyonlar */
-.int-groups{display:grid;gap:18px}
-@media(min-width:800px){.int-groups{grid-template-columns:repeat(2,1fr)}}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.chip{display:inline-flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);
-  border-radius:999px;padding:9px 18px;font-size:13.5px;font-weight:700;color:var(--text);box-shadow:0 2px 8px rgba(15,23,42,.04);
-  transition:all .18s ease}
+/* Entegrasyonlar — masaüstü TCP ayrı zayıf kolon değil, HTTP'nin üstüne ekstra. */
+.int-groups{display:grid;gap:16px}
+.int-groups .card{display:flex;flex-direction:column}
+.int-logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
+.int-logo-row .brand-svg,.int-logo-row .icon{width:28px;height:28px;border-radius:8px}
+.int-kicker{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--brand);background:none;border:0;border-left:2px solid var(--brand);border-radius:0;
+  padding:0 0 0 10px;margin-bottom:10px;width:fit-content}
+.int-groups .card h3{margin:0 0 8px}
+.int-hint{margin:0 0 4px;color:var(--muted);font-size:13.5px;line-height:1.55}
+.int-desktop{display:grid;gap:16px;padding:22px 24px;border-radius:var(--radius-lg);border:1px solid color-mix(in srgb,var(--brand) 28%,var(--border));
+  background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 8%,var(--surface)) 100%);box-shadow:var(--shadow)}
+@media(min-width:720px){.int-desktop{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center}}
+.int-desktop .chips{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:12px;padding:7px 11px 7px 8px;min-height:40px;font-size:13px;font-weight:700;color:var(--text);
+  transition:border-color .18s ease,box-shadow .18s ease;line-height:1.2}
+.chip .brand-svg{width:22px;height:22px;border-radius:6px}
 .chip:hover{transform:translateY(-2px);border-color:var(--brand);box-shadow:0 6px 18px rgba(76,125,255,.2);background:var(--surface)}
 .int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:10px 4px;cursor:pointer;transition:color .18s ease}
 .int-more:hover{color:var(--brand-press);text-decoration:underline}
-/* Entegrasyon uyarısı: doğrudan bağlayıcısı olmayan markaların gerçek koşulunu söyler. */
-.int-note{margin:22px 0 0;padding:16px 18px;border-radius:var(--radius-lg);border:1px dashed color-mix(in srgb,var(--brand) 35%,var(--border));
-  background:color-mix(in srgb,var(--brand) 5%,var(--surface));color:var(--muted);font-size:13.5px;line-height:1.6}
+/* Matter/Zigbee: doğrudan bağlayıcı yok; HA köprüsü ayrı kartta anlatılır. */
+.int-note,.int-bridge{margin:18px 0 0;padding:22px;border-radius:var(--radius-lg);border:1px solid var(--border);
+  background:var(--surface);box-shadow:var(--shadow);color:var(--text-2)}
+.int-bridge{display:grid;gap:18px}
+@media(min-width:720px){.int-bridge{grid-template-columns:1.1fr .9fr;align-items:center}}
+.int-bridge-kicker{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0 0 8px}
+.int-bridge h3{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
+.int-bridge p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.int-bridge-points{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.int-bridge-points li{display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.int-bridge-points .brand-svg,.int-bridge-points .icon{width:22px;height:22px;flex-shrink:0;margin-top:1px}
 
 /* Fiyatlar */
-#pricing{scroll-margin-top:80px;padding:48px 0 54px}
+#pricing{padding:48px 0 54px}
 .billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 24px}
 .billing-toggle{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
   border-radius:999px;padding:4px;box-shadow:var(--shadow)}
 .billing-btn{border:0;background:transparent;color:var(--muted);font:700 13px/1 Inter,sans-serif;
   padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px}
 .billing-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 4px 14px rgba(76,125,255,.35)}
-.save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:99px}
+.save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:6px}
 .billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 
 .plans{display:grid;gap:18px;width:100%;max-width:1100px;margin:22px auto 0}
@@ -347,11 +419,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:24px 20px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
-.plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
-.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
-  letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
+.plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:8px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
 .plan-head{min-height:auto;margin-bottom:6px;display:flex;flex-direction:column;justify-content:flex-start}
+.plan-logo{width:44px;height:44px;border-radius:14px;margin:4px 0 12px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--brand) 12%,transparent);color:var(--brand);flex-shrink:0}
+.plan-logo .icon{width:22px;height:22px}
+.plan.hot .plan-logo{background:color-mix(in srgb,var(--brand) 20%,transparent)}
 .plan h3{margin:0 0 6px;font-size:17.5px;font-weight:800}
 .price{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
 .price small{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0}
@@ -368,12 +443,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .dl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px;
   box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;
   transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
-.dl-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 40%,transparent)}
-.dl-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.dl-top{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:18px}
 .dl-ic{width:46px;height:46px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center}
+  display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .dl-ic svg{width:26px;height:26px}
-.dl-top h3{margin:0 0 2px;font-size:18px;font-weight:800}
+.dl-top h3{margin:0;font-size:18px;font-weight:800}
 .plat{color:var(--muted);font-size:13px;font-weight:500}
 .dl-meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
 .dl-meta span,.dl-sums{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;
@@ -388,7 +462,6 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
   transition:transform .2s ease,box-shadow .2s ease}
-.dl-web-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .dl-web-info{flex:1;min-width:280px}
 .dl-web-info h3{margin:0 0 6px;font-size:18px;font-weight:800}
 .dl-web-info p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
@@ -397,7 +470,8 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .faq-list{display:grid;gap:14px;max-width:800px;margin:0 auto}
 .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .faq-q{width:100%;text-align:left;background:transparent;border:0;padding:20px 22px;font:700 16px/1.4 Inter,sans-serif;
-  color:var(--text);display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  color:var(--text);display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px}
+.faq-q span{flex:1;min-width:0}
 .faq-q:hover{color:var(--brand)}
 .faq-a{padding:0 22px 20px;color:var(--text-2);font-size:14.5px;line-height:1.6;display:none}
 .faq-item.open .faq-a{display:block}
@@ -407,18 +481,20 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Footer */
 .ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
 .ft-grid{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px}
-.ft-brand{max-width:390px;flex:1 1 300px}
-.ft-links-group{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
-.ft-col{min-width:145px}
-.ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
+.ft-brand{max-width:390px;flex:1 1 260px}
+.ft-links-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;flex:1 1 420px;min-width:0}
+.ft-col{min-width:0}
+.ft h4{margin:0 0 14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.ft a{display:block;font-size:13.5px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
 .ft a:hover{color:var(--brand)}
 .ft a.logo{display:inline-flex !important;align-items:center !important;gap:10px !important;font-size:20px !important;
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
-.ft-trust-row{display:flex;align-items:center;margin-top:14px}
-.ft-trust-badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.ft-trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ft-trust-badge,.ft-trust-pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;line-height:1.2;color:var(--text-2);
+  background:none;border:0;padding:0;border-radius:0;box-shadow:none}
+.ft-trust-pill .icon{width:14px;height:14px;color:var(--brand);flex-shrink:0}
 .ft-status-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
 @keyframes nxStatusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.2)}}
 .nx-form-success{display:none;text-align:center;padding:24px 16px}
@@ -430,11 +506,15 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:0}
 @media(max-width:768px){
-  .ft-grid{flex-direction:column;gap:32px}
-  .ft-links-group{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;width:100%}
+  .ft-grid{flex-direction:column;gap:28px}
+  .ft-brand{max-width:none}
+  .ft-links-group{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
+  .ft a{font-size:13px;padding:4px 0}
 }
 @media(max-width:480px){
-  .ft-links-group{grid-template-columns:1fr;gap:22px}
+  .ft-links-group{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .ft h4{font-size:10px;margin-bottom:10px}
+  .ft a{font-size:12.5px}
   .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}
 }
 
@@ -442,10 +522,26 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .rv{opacity:1;transform:none}
 
 /* About & Yasal Belge Sayfaları */
-.about-hero{padding:64px 0 8px}
+.about-hero{padding:72px 0 28px;max-width:720px}
+.about-kicker{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand)}
+.about-hero h1{font-size:clamp(28px,4.6vw,44px);letter-spacing:-.03em;line-height:1.12;margin:0 0 14px;font-weight:800;white-space:normal}
+.about-hero .lead{font-size:17px;line-height:1.65;max-width:58ch;color:var(--text-2);margin:0}
+.about-back{margin:0 0 18px}
 .about-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
   padding:28px;margin:26px 0;display:grid;gap:14px}
 .about-body p{margin:0;color:var(--text-2);font-size:15px}
+.about-card h2{font-size:22px;margin:0 0 12px;font-weight:800;letter-spacing:-.02em;white-space:normal}
+.about-card p{font-size:15px;line-height:1.75;color:var(--text-2);margin:0}
+.about-section{margin:8px 0 40px}
+.about-section > h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 8px;white-space:normal}
+.about-section > p{color:var(--muted);font-size:14.5px;margin:0 0 20px}
+.about-arch{display:grid;gap:14px}
+@media(min-width:720px){.about-arch{grid-template-columns:repeat(3,1fr)}}
+.about-arch .card{padding:22px;height:100%}
+.about-arch h3{font-size:16px;font-weight:800;margin:0 0 8px}
+.about-arch p{font-size:14px;line-height:1.6;color:var(--text-2);margin:0}
+.about-cta{margin:8px 0 24px;background:color-mix(in srgb,var(--brand) 6%,var(--surface))}
+.about-cta .btn{margin:0}
 
 .doc-hero{padding:56px 0 16px}
 .doc-hero h1{font-size:clamp(28px,4vw,38px);margin:0 0 10px;font-weight:800;letter-spacing:-.02em}
@@ -466,20 +562,27 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 /* İletişim & Destek Modülü (Contact Modal) */
 .nx-modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:9999;display:none;align-items:center;align-items:safe center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
-  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
+  overflow:hidden;overscroll-behavior:none;
 }
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
   background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px -12px rgba(0,0,0,.55);
-  width:100%;max-width:440px;padding:22px 24px 20px;position:relative;
-  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+  width:100%;max-width:440px;max-height:min(92dvh, calc(100% - 24px));padding:22px 24px 20px;position:relative;
+  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
 }
 #nxAuthModal.nx-account-open .nx-modal-card{
-  max-width:400px;padding:28px 18px 16px;
+  max-width:420px;padding:28px 18px 16px;
   background:
-    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 72%),
+    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 72%),
+    #fff;
+}
+html[data-theme=dark] #nxAuthModal.nx-account-open .nx-modal-card{
+  background:
+    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 22%, transparent), transparent 72%),
     var(--surface);
 }
 .nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
@@ -519,8 +622,15 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 }
 .nx-auth-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--surface-2)}
 .nx-auth-btn.logged-in{
-  border-color:color-mix(in srgb,var(--brand) 45%,transparent);color:var(--text);
-  background:color-mix(in srgb,var(--brand) 10%,var(--surface));padding:4px 14px 4px 6px;
+  border-color:transparent;background:transparent;box-shadow:none;color:var(--text);padding:2px 6px 2px 2px;
+}
+.nx-auth-btn.logged-in:hover{background:color-mix(in srgb,var(--brand) 8%,transparent);border-color:transparent;color:var(--text)}
+@media(max-width:520px){
+  .nx-auth-btn{width:38px;padding:0;justify-content:center}
+  .nx-auth-btn .nx-nav-label{display:none}
+  .lang-switch{height:34px;padding:2px}
+  .lang-btn{height:28px;padding:0 9px;font-size:11px}
+  .theme-t{width:34px;height:34px}
 }
 .nx-nav-label{
   max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;
@@ -625,24 +735,33 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   display:block;margin-top:3px;font-size:13.5px;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.nx-account-plan{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:18px;
-  padding:14px 14px 12px;margin:0 2px 12px;
+.nx-account-now{
+  margin:0 4px 10px;font-size:12.5px;font-weight:600;color:var(--muted);text-align:center;line-height:1.4;
 }
-.nx-account-plan-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.nx-account-kicker{
-  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+.nx-offer{
+  margin:0 2px 12px;padding:1px;border-radius:20px;background:var(--brand-grad);
+  box-shadow:0 16px 36px rgba(76,125,255,.16);
 }
+.nx-offer-inner{
+  background:var(--surface);border-radius:19px;padding:16px 16px 14px;
+}
+html[data-theme=dark] .nx-offer-inner{background:#101726}
+.nx-offer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .nx-plan-tag{
   background:var(--brand-grad);color:#fff;font-size:12px;font-weight:700;
-  padding:4px 10px;border-radius:999px;line-height:1.2;white-space:nowrap;flex-shrink:0;
+  padding:4px 10px;border-radius:999px;line-height:1.2;white-space:nowrap;display:inline-flex;
 }
-.nx-account-perks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
-.nx-account-perks li{
-  display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;color:var(--text-2);line-height:1.35;
+.nx-plan-tag.is-free{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.nx-offer-price{text-align:right;line-height:1}
+.nx-offer-price b{font-size:22px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+.nx-offer-price small{display:block;margin-top:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.nx-offer-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:9px}
+.nx-offer-list li{
+  display:flex;align-items:flex-start;gap:8px;font-size:13.5px;font-weight:600;
+  color:var(--text);line-height:1.35;
 }
-.nx-account-perks svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;color:var(--brand)}
-.nx-account-save{margin:12px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
+.nx-offer-list svg{width:16px;height:16px;color:#10B981;flex-shrink:0;margin-top:1px}
+.nx-account-save{margin:8px 0 0;font-size:12.5px;color:var(--muted);line-height:1.4}
 .nx-account-upgrade{
   display:flex;align-items:center;justify-content:center;margin-top:14px;min-height:44px;
   border-radius:999px;background:var(--brand-grad);color:#fff;font-weight:700;font-size:14.5px;
@@ -650,7 +769,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 }
 .nx-account-upgrade:hover{opacity:.94}
 a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
-.nx-account-upgrade.is-hidden,.nx-account-save.is-hidden,.nx-account-perks.is-hidden{display:none !important}
+.nx-offer-list.is-hidden,.nx-account-item.is-hidden,.nx-account-upgrade.is-hidden,.nx-account-save.is-hidden,.nx-account-now.is-hidden,.nx-offer-price.is-hidden{display:none !important}
 .nx-account-menu{
   border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface-2);margin:0 2px;
 }
@@ -675,21 +794,25 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 }
 .nx-account-signout .nx-account-item-copy b{color:var(--danger)}
 .nx-contact-security-note{
-  font-size:11px;color:var(--muted);margin:8px 0 0;text-align:center;display:flex;align-items:center;
-  justify-content:center;gap:5px;
+  font-size:12.5px;color:var(--text-2);margin:12px 0 0;text-align:left;display:flex;align-items:flex-start;
+  justify-content:flex-start;gap:10px;line-height:1.45;padding:12px 14px;border-radius:14px;
+  background:color-mix(in srgb,var(--brand) 8%,var(--surface-2));border:1px solid color-mix(in srgb,var(--brand) 18%,var(--border));
 }
-.nx-contact-security-note svg{width:12px;height:12px;color:var(--brand);flex-shrink:0}
+.nx-contact-security-note svg{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin-top:1px}
 
 /* Özel NEXUS Dialog (Alert / Prompt) */
 .nx-dialog-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   z-index:10050;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .2s ease;
+  overflow:hidden;overscroll-behavior:none;
 }
 .nx-dialog-backdrop.open{display:flex;opacity:1}
 .nx-dialog-card{
   background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 24px 20px;
-  width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
-  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+  width:100%;max-width:380px;max-height:min(92dvh, calc(100% - 24px));text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
+  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
+  overflow-y:auto;overscroll-behavior:contain;
 }
 .nx-dialog-backdrop.open .nx-dialog-card{transform:scale(1)}
 .nx-dialog-icon{
@@ -711,6 +834,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 <script src="/assets/site-boot.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">İçeriğe geç</a>
 <header class="hd">
   <div class="wrap">
     <a class="logo" href="/tr/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
@@ -737,27 +861,30 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     </div>
   </div>
 </header>
-<main>
+<main id="main">
 <section class="hero" id="top">
   <div class="wrap">
-    <div>
-      <span class="eyebrow"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Yerel-öncelikli akıllı ev</span>
-      <h1>Evini.<br><span class="grad">Sessizce kontrol et.</span></h1>
-      <p class="lead">Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek uygulamada — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir. Kesintisiz otomasyonlar, canlı enerji ölçümleri ve internet kesilse de durmayan bir kontrol mimarisi.</p>
+    <div class="hero-copy">
+      <div class="hero-display">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Yerel-öncelikli akıllı ev</span>
+        <h1>Evini. <span class="grad">Sessizce kontrol et.</span></h1>
+      </div>
+      <p class="lead">Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek uygulamada — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir.</p>
+      <p class="lead-sub">Kesintisiz otomasyonlar, canlı enerji ölçümleri ve internet kesilse de durmayan bir kontrol mimarisi.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#downloads">NEXUS'u indir</a>
+        <p class="ver-chip"><span class="dot"></span><span>Güncel sürüm</span><b class="ver-num" data-nexus-ver>v1.0.15</b></p>
       </div>
-      <p class="ver-chip"><span class="dot"></span>Güncel sürüm: <b data-nexus-ver>v1.0.14</b></p>
-      <div class="trust">
-        <span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ücretsiz, sınırsız cihaz</span>
-        <span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Kontrol için bulut şart değil</span>
-        <span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Windows · Linux · Android</span>
-      </div>
+      <ul class="trust">
+        <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ücretsiz, sınırsız cihaz</li>
+        <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Kontrol için bulut şart değil</li>
+        <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Windows · Linux · Android</li>
+      </ul>
     </div>
     
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case" id="phoneMockup" title="Canlı mobil uygulamayı doğrudan ekrandan deneyin">
+      <div class="phone-case previewing" id="phoneMockup" title="Uygulamada gez — özellikler bu önizlemede kapalı">
         <div class="phone-inner-screen">
           <div class="phone-island">
             <span class="island-camera"></span>
@@ -765,9 +892,9 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
           </div>
           <!-- Canlı Mobil Uygulama: Doğrudan Ana Sayfada (stitch-home) başlar -->
           <div class="phone-preview on" id="phonePreview">
-            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="NEXUS mobil uygulamasının canlı önizlemesi" data-src="https://nexus-web-jre.pages.dev/stitch-home.html?preview=1" loading="lazy" referrerpolicy="no-referrer"></iframe>
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="NEXUS mobil uygulamasının önizlemesi" data-src="https://nexus-web-jre.pages.dev/stitch-home.html?preview=1"></iframe>
           </div>
-          <div class="phone-screen-content" aria-hidden="true" style="display:none">
+          <div class="phone-screen-content" aria-hidden="true">
             <div class="shot-slide active" data-shot="home" data-label="Ana Ekran"><img src="/images/shots/home.png" alt="NEXUS uygulama ekranı — Ana Ekran" width="390" height="844" loading="lazy"></div>
             <div class="shot-slide" data-shot="pair" data-label="Cihaz Ekleme Merkezi"><img src="/images/shots/pair.png" alt="NEXUS uygulama ekranı — Cihaz Ekleme Merkezi" width="390" height="844" loading="lazy"></div>
             <div class="shot-slide" data-shot="energy" data-label="AI Enerji Tasarrufu"><img src="/images/shots/energy.png" alt="NEXUS uygulama ekranı — AI Enerji Tasarrufu" width="390" height="844" loading="lazy"></div>
@@ -781,13 +908,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
           <div class="phone-glass-shine"></div>
         </div>
       </div>
-      <div class="phone-bottom-bar">
-        <div class="phone-caption-pill" id="phoneCaptionPill">
-          <span class="badge">CANLI</span>
-          <span id="phonePreviewNote">İnteraktif Uygulama — Odaları ve cihazları doğrudan yönetin</span>
-        </div>
-        <span class="phone-tap-hint" id="phoneTapHint"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>Sayfa yenilenince ana ekrana döner</span>
-      </div>
+      <span id="phonePreviewNote" class="sr-only">Gerçek uygulama arayüzü — ekranlarda gez, özellikler kapalı</span>
     </div>
   </div>
 </section>
@@ -797,10 +918,10 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     <div class="grid c3">
       <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3>Kesintisiz Yerel Otomasyonlar</h3><p>Saat ve gün batımı tetikleyicili senaryolar cihazlarınızda doğrudan yerel olarak yürütülür; masaüstünde arka planda sessizce çalışmaya devam eder.</p></div>
       <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 14 4-4"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div><h3>Canlı Enerji Ölçümleri</h3><p>Desteklenen akıllı priz ve anahtarlardan anlık watt ve güç tüketimi verilerini kendi yerel ağınız üzerinden gerçek zamanlı izleyin.</p></div>
-      <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg></div><h3>Yerel Ağ Hızı</h3><p>Shelly, Tasmota, WLED, ESPHome, Philips Hue ve Home Assistant ile HTTP, TCP ve UDP üzerinden doğrudan iletişim. Sıfır gecikme.</p></div>
-      <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Tasarımdan Gelen Gizlilik</h3><p>Ev düzenin ve cihaz verilerin yerel cihazında işlenir. Giriş yapmak isteğe bağlıdır; senkron, kurulumunu satır bazlı erişim denetimi (RLS) korumalı kendi hesap veritabanına taşır ve kontrol için asla zorunlu değildir.</p></div>
+      <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg></div><h3>Yerel Ağ Hızı</h3><p>Entegrasyonlar bölümündeki markalarla HTTP, TCP ve UDP üzerinden doğrudan yerel iletişim. Komut yolunda bulut yok.</p></div>
+      <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Tasarımdan Gelen Gizlilik</h3><p>Ev düzenin ve cihaz verilerin yerel cihazında işlenir. NEXUS için hesap gerekir; senkron, kurulumunu satır bazlı erişim denetimi (RLS) korumalı kendi hesap satırına taşır. Cihaz komutları yine yerel ağında kalır.</p></div>
       <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div><h3>NEXUS AI Asistanı</h3><p>Yerel akıllı ev komutları her zaman ücretsiz ve anında yanıt verir. İsteğe bağlı bulut yapay zekâsı ihtiyaç duyduğunuz her an yanınızda.</p></div>
-      <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 12.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 12.5"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 17.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 17.5"/></svg></div><h3>Açık Yerel Protokoller</h3><p>Shelly, Tasmota, WLED, ESPHome, Philips Hue ve kendi Home Assistant sunucun NEXUS'a doğrudan yerel ağndan cevap verir. Matter ve Zigbee cihazları bu Home Assistant köprüsüyle katılır.</p></div>
+      <div class="card rv"><div class="f-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 12.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 12.5"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 17.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 17.5"/></svg></div><h3>Açık Yerel Protokoller</h3><p>Doğrudan bağlayıcılar yerel ağında konuşur. Matter ve Zigbee kendi Home Assistant sunucun üzerinden katılır — hangisinin doğrudan olduğunu Entegrasyonlar listeler.</p></div>
     </div>
   </div>
 </section>
@@ -815,7 +936,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
           <div class="step-icon-bubble"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg></div>
         </div>
         <h3>Kur ve aç</h3>
-        <p>Platformuna uygun kurulum dosyasını indir (Windows, Linux veya Android). Cihazlar arası güvenli senkronizasyon için hesabını oluştur.</p>
+        <p>Platformuna uygun kurulum dosyasını indir (Windows, Linux veya Android). Sonra giriş yap: NEXUS için hesap gerekir; kurulumun da ekranlar arasında eşitlenir.</p>
       </div>
       <div class="step rv">
         <div class="step-top-row">
@@ -824,13 +945,13 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
           <div class="step-icon-bubble"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         </div>
         <h3>Cihazlarını ekle</h3>
-        <p>Markanı seç, yerel ağı tara veya IP gir. NEXUS cihazın kendi protokolüyle konuşur; üretici köprüsü gerekmez.</p>
+        <p>Markanı seç, yerel ağı tara veya IP gir. Doğrudan bağlayıcısı olan markalar kendi protokolünde konuşur; o yolda üretici bulutu yok.</p>
       </div>
       <div class="step rv">
         <div class="step-top-row">
           <span class="step-n">3</span>
           <span class="step-micro-pill">03 • YEREL ÇALIŞTIR</span>
-          <div class="step-icon-bubble"></div>
+          <div class="step-icon-bubble"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></div>
         </div>
         <h3>Evinin tadını çıkar</h3>
         <p>Kontrol panelleri, sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundaki mobil uygulamadan veya bilgisayarındaki masaüstü programından.</p>
@@ -842,18 +963,37 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   <div class="wrap">
     <div class="sec-head rv"><h2>Elindeki cihazlarla çalışır.</h2><p>Önce ücretsiz, yerel protokoller. Doğrudan bağlayıcısı olmayan her şey Home Assistant köprüsüyle çalışır.</p></div>
     <div class="int-groups">
-      <div class="card rv"><h3>Yerel HTTP — her platformda</h3><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly Plus / Pro</span><span class="chip"><svg viewBox="0 0 24 24" fill="#1FA3EC" class="brand-svg" aria-hidden="true"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>Tasmota</span><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Tapo</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E040FB"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5 5 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>WLED</span><span class="chip"><svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>ESPHome</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#00A3E0"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5.002 5.002 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>Philips Hue</span><span class="chip"><svg viewBox="0 0 24 24" fill="#41BDF5" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h21c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311m0 2.444 8.75 8.75v8.995h-5.25v-4.5a3.5 3.5 0 0 0-7 0v4.5H3.25V11.5z"/></svg>Home Assistant</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#FF5000"/><path fill="#fff" d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5H12V4.5z"/></svg>Tuya</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#6366F1"/><path d="M12 3v9M6.3 7.3a8 8 0 1 0 11.4 0" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>Wake-on-LAN</span></div></div>
-      <div class="card rv"><h3>Yerel TCP — masaüstü uygulamasında</h3><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Kasa</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E60012"/><path d="M7 7l5 6 5-6M12 13v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Yeelight</span></div></div>
+      <div class="card rv"><span class="int-kicker">HTTP · her yüzey</span><h3>Yerel HTTP</h3><p class="int-hint">Masaüstü programı, Android ve web aynı bağlayıcıları kullanır. Cihazın kendi HTTP arayüzüne, senin ağından.</p><div class="chips"><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4495D1"/><path fill="#fff" d="M12 4.5c-4.14 0-7.5 3.36-7.5 7.5 0 .58.07 1.15.2 1.69 1.42-.71 3.25-.94 5.3-.94h2.2c1.8 0 3.3.8 3.3 2.25 0 1.25-1.05 2.25-2.5 2.25H9.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h3.5c3.04 0 5.5-2.46 5.5-5.5 0-3.5-2.5-6-6.5-6.25z"/></svg>Shelly Plus / Pro</span><span class="chip"><svg viewBox="0 0 24 24" fill="#1FA3EC" class="brand-svg" aria-hidden="true"><path d="M12 0L0 12l1.371 1.372L12 2.743l10.629 10.629L24 12 12 0zm0 8.463a7.41 7.41 0 0 0-2.64 14.334v-2.133a5.464 5.464 0 0 1 1.671-10.17V24h1.94V10.494a5.464 5.464 0 0 1 1.669 10.171v2.133A7.41 7.41 0 0 0 12 8.463z"/></svg>Tasmota</span><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Tapo</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E040FB"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5 5 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>WLED</span><span class="chip"><svg viewBox="0 0 24 24" fill="#18BCF2" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h5.899V8.755a.6.6 0 0 1 .6-.6h8a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5v1.2h5a.6.6 0 0 1 .6.6v2.4a.6.6 0 0 1-.6.6h-5.6a.6.6 0 1 1 0-1.2h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2h-5a.6.6 0 0 1-.6-.6v-2.4a.6.6 0 0 1 .6-.6h5v-1.2H8.6v14.334h13.9c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311"/></svg>ESPHome</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#00A3E0"/><path fill="#fff" d="M12 4a5 5 0 0 0-5 5c0 1.95 1.12 3.64 2.76 4.47V16a1 1 0 0 0 1 1h2.48a1 1 0 0 0 1-1v-2.53A5.002 5.002 0 0 0 17 9a5 5 0 0 0-5-5zm-1.5 14h3v1.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1-.75-.75V18z"/></svg>Philips Hue</span><span class="chip"><svg viewBox="0 0 24 24" fill="#41BDF5" class="brand-svg" aria-hidden="true"><path d="M12 .311c-.384 0-.769.146-1.06.437l-9.878 9.88C.478 11.21 0 12.364 0 13.189v9c0 .825.675 1.5 1.5 1.5h21c.825 0 1.5-.675 1.5-1.5v-9c0-.825-.478-1.978-1.061-2.561l-9.88-9.88A1.5 1.5 0 0 0 12 .311m0 2.444 8.75 8.75v8.995h-5.25v-4.5a3.5 3.5 0 0 0-7 0v4.5H3.25V11.5z"/></svg>Home Assistant</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#FF5000"/><path fill="#fff" d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5H12V4.5z"/></svg>Tuya</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#6366F1"/><path d="M12 3v9M6.3 7.3a8 8 0 1 0 11.4 0" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>Wake-on-LAN</span></div></div>
+      <div class="int-desktop rv">
+      <div>
+        <div class="int-logo-row" aria-hidden="true"><svg viewBox="0 0 88 88" class="brand-svg" aria-hidden="true"><path fill="#0078D4" d="M0 12.402l35.688-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.016 45.728zm4.326-39.025L87.914 0v41.527l-47.918.375zm47.918 43.465L40.014 88V46.527l47.904-.342z"/></svg><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#2B2B2B" d="M12.5 0.5C8.8 0.5 7.8 4.2 7.7 6.3c-.1 1.5-.4 2.4-1.2 3.6-.9 1.3-2.2 3-2.7 4.9-.5 1.7-.3 3.3.4 4.5.3.5.7.9 1.1 1.2.5.4 1.1.7 1.8.8.8.1 1.8 0 2.6-.5.8.7 1.8 1.1 2.8 1.1 1.2 0 2.2-.4 3-1.1.8.5 1.8.6 2.6.5.7-.1 1.3-.4 1.8-.8.4-.3.8-.7 1.1-1.2.7-1.2.9-2.8.4-4.5-.5-1.9-1.8-3.6-2.7-4.9-.8-1.2-1.1-2.1-1.2-3.6-.1-2.1-1.1-5.8-4.8-5.8z"/><ellipse cx="12.5" cy="14" rx="4.2" ry="5.5" fill="#FFFFFF"/><ellipse cx="10.8" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><ellipse cx="14.2" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><circle cx="11" cy="5.2" r="0.45" fill="#000000"/><circle cx="14" cy="5.2" r="0.45" fill="#000000"/><path fill="#FFB525" d="M12.5 6.5c-1.5 0-2 1.2-2 1.2s.8.5 2 .5 2-.5 2-.5-.5-1.2-2-1.2z"/><path fill="#F57900" d="M7 20c-1.5 0-2.5.8-2.5 1.8 0 .8.8 1.4 2 1.4 1.5 0 2.5-.8 3-1.8-.8-.9-1.7-1.4-2.5-1.4zm11 0c-.8 0-1.7.5-2.5 1.4.5 1 1.5 1.8 3 1.8 1.2 0 2-.6 2-1.4 0-1-1-1.8-2.5-1.8z"/></svg><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E60012"/><path d="M7 7l5 6 5-6M12 13v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="int-kicker">Masaüstü programında ekstra</span>
+        <h3>Masaüstünde yerel TCP</h3>
+        <p class="int-hint">Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP ile TP-Link Kasa ve Yeelight eklenir. Telefonda ve webde HTTP listesi durur.</p>
+      </div>
+      <div class="chips"><span class="chip"><svg viewBox="0 0 24 24" fill="#4ACBD6" class="brand-svg" aria-hidden="true"><path d="M15.185 0C10.218 0 6.25 3.984 6.25 8.903V10.8h4.99V8.903c0-2.135 1.736-3.863 3.946-3.863 2.187 0 3.708 1.536 3.708 3.815 0 2.257-1.64 3.912-3.827 3.912h-1.878v5.039h1.878c4.874 0 8.819-4.007 8.819-8.952C23.885 3.72 20.2 0 15.185 0zM.115 12.6v4.103c0 .624.523 1.248 1.236 1.248h4.753v4.801c0 .624.523 1.248 1.236 1.248h4.065V12.6Z"/></svg>TP-Link Kasa</span><span class="chip"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#E60012"/><path d="M7 7l5 6 5-6M12 13v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Yeelight</span></div>
     </div>
-    <p class="int-note rv">Matter ve Zigbee protokolleri kendi Home Assistant sunucun üzerinden eklenir; NEXUS diğer tüm markalarla doğrudan yerel ağında konuşur.</p>
+    </div>
+    <div class="int-note int-bridge rv">
+      <div>
+        <p class="int-bridge-kicker"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 12.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 12.5"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 17.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 17.5"/></svg> Köprü ile eklenenler</p>
+        <h3>Matter ve Zigbee</h3>
+        <p>NEXUS’ta doğrudan Matter veya Zigbee bağlayıcısı yok. Bu cihazlar kendi Home Assistant sunucuna eklenir; NEXUS o sunucuyla yerel ağında konuşur.</p>
+      </div>
+      <ul class="int-bridge-points">
+        <li><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#4B5562"/><path d="M12 6v6m0 0l-5 3m5-3l5 3" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg><span><b>Matter / Zigbee</b> — yalnızca kendi Home Assistant sunucun üzerinden</span></li>
+        <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg><span><b>Diğer markalar</b> — doğrudan yerel ağ, üretici bulutu yok</span></li>
+      </ul>
+    </div>
     <button type="button" class="int-more" onclick="nxOpenContactModal('Cihaz & Bağlayıcı İsteği')">Eksik bir şey mi var? Bağlayıcı iste <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
   </div>
 </section>
 <section id="pricing">
   <div class="wrap">
     <div class="sec-head rv" style="text-align:center;margin:0 auto 28px">
+      <div class="sec-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="nx-pricing-lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nx-pricing-lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>Ücretsiz kullan. Daha fazlasını istersen NEXUS+.</h2>
-      <p>Cihaz veya oda sınırı yok, temel kullanım hep ücretsiz. NEXUS+ ile bulut yapay zekâ kotanızı artırın ve öncelikli model erişimi kazanın.</p>
+      <p>Cihaz veya oda sınırı yok; ev kontrolü ücretsiz. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır.</p>
     </div>
 
     <!-- Aylık / Yıllık Geçiş Düğmesi -->
@@ -874,12 +1014,13 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       <div class="plan rv">
         <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">Temel Başlangıç</span>
         <div class="plan-head">
+          <div class="plan-logo" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></div>
           <h3>Ücretsiz</h3>
           <div class="price">₺0 <small>/ sonsuza dek</small></div>
           <p class="price-note">Cihaz veya oda sınırı yok</p>
         </div>
         <ul>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Sınırsız cihaz ve oda (Shelly, Tasmota, WLED, ESPHome, Hue)</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Sınırsız cihaz ve oda — desteklenen tüm yerel protokoller</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Sıfır bulut bağımlılığı: Kendi yerel ağınızda kesintisiz çalışma</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Günde 30 NEXUS AI komutu ve yerel cihaz kontrolü</li>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Zamanlanmış yerel otomasyonlar ve özel sahneler</li>
@@ -893,20 +1034,19 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       <div class="plan hot rv" id="nexusPlusPlan">
         <span class="plan-badge">En çok tercih edilen</span>
         <div class="plan-head">
+          <div class="plan-logo" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div>
           <h3>NEXUS+</h3>
           <div class="price"><span id="planPriceVal">₺499,99</span> <small id="planPeriodVal">/ay</small></div>
           <p class="price-note" id="planPriceNote">Aylık faturalandırma</p>
         </div>
         <ul>
           <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ücretsiz plandaki tüm özellikler dahil</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Ayda 2.000 NEXUS AI yanıtı (Doğal dille senaryo ve kural üretimi)</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Öncelikli gelişmiş bulut AI altyapısı ve en düşük gecikme</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Yeni AI yeteneklerine ve beta entegrasyonlara erken erişim</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Bağımsız, reklamsız ve açık standartlı gelişime doğrudan destek</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Öncelikli VIP e-posta destek hattı</li>
-          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>3 günlük ücretsiz deneme (Aylık) / 7 gün (Yıllık), dilediğin an iptal</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Günde 30 yerine ayda 2.000 NEXUS AI yanıtı</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>NEXUS AI ile doğal dille senaryo kur ve evin hakkında soru sor</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>Tek hesap, tüm NEXUS cihazlarında geçerli</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>3 gün (aylık) / 7 gün (yıllık) deneme; dönem sonunda iptal</li>
         </ul>
-        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="https://whop.com/checkout/plan_fAMBHwTVE0hR2" data-monthly-href="https://whop.com/checkout/plan_fAMBHwTVE0hR2" data-yearly-href="https://whop.com/checkout/plan_UEXO1F5mjIgWB" data-monthly-label="3 gün ücretsiz dene" data-yearly-label="7 gün ücretsiz dene" target="_blank" rel="noopener">
+        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="/tr/#pricing" data-monthly-plan="plan_fAMBHwTVE0hR2" data-yearly-plan="plan_UEXO1F5mjIgWB" data-monthly-label="3 gün ücretsiz dene" data-yearly-label="7 gün ücretsiz dene" onclick="return nxOpenCheckout(event)">
           Ücretsiz denemeyi başlat
         </a>
       </div>
@@ -915,6 +1055,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       <div class="plan rv">
         <span class="plan-badge" style="background:linear-gradient(135deg,#10B981,#059669)">Tüm ev için</span>
         <div class="plan-head">
+          <div class="plan-logo" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
           <h3>Aile</h3>
           <div class="price">Dahil <small>/ evinizle birlikte dahil</small></div>
           <p class="price-note">Tüm aile fertleri için hazır</p>
@@ -930,7 +1071,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         <a class="btn btn-ghost" href="#downloads">Uygulamada Dahil</a>
       </div>
     </div>
-    <p class="cur-note rv">Fiyatlar TL cinsinden · Aboneliğini dilediğin an uygulamadaki Faturalandırma'dan yönet veya iptal et.</p>
+    <p class="cur-note rv">Fiyatlar TL cinsinden · İptal, uygulamadaki Faturalandırma'dan veya bu sitedeki hesabından yapılır. Dönem sonunda geçerli olur.</p>
   </div>
 </section>
 <section id="downloads">
@@ -940,10 +1081,11 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       <div class="dl-card rv" data-platform="windows">
         <div class="dl-top">
           <div class="dl-ic"><svg viewBox="0 0 88 88" class="brand-svg" aria-hidden="true"><path fill="#0078D4" d="M0 12.402l35.688-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.016 45.728zm4.326-39.025L87.914 0v41.527l-47.918.375zm47.918 43.465L40.014 88V46.527l47.904-.342z"/></svg></div>
-          <div><h3>Windows</h3><span class="plat">Windows 10/11 · 64-bit</span></div>
+          <h3>Windows</h3>
+          <span class="plat">Windows 10/11 · 64-bit</span>
         </div>
         <div class="dl-meta">
-          <span><b data-nexus-ver>v1.0.14</b></span>
+          <span><b data-nexus-ver>v1.0.15</b></span>
           <span>64-bit .exe</span>
           <a class="dl-sums" href="https://github.com/Enard52/nexus-releases/releases/latest/download/SHA256SUMS-Windows.txt" target="_blank" rel="noopener" title="Sağlama değerini gör">SHA-256</a>
         </div>
@@ -952,10 +1094,11 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       <div class="dl-card rv" data-platform="linux">
         <div class="dl-top">
           <div class="dl-ic"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#2B2B2B" d="M12.5 0.5C8.8 0.5 7.8 4.2 7.7 6.3c-.1 1.5-.4 2.4-1.2 3.6-.9 1.3-2.2 3-2.7 4.9-.5 1.7-.3 3.3.4 4.5.3.5.7.9 1.1 1.2.5.4 1.1.7 1.8.8.8.1 1.8 0 2.6-.5.8.7 1.8 1.1 2.8 1.1 1.2 0 2.2-.4 3-1.1.8.5 1.8.6 2.6.5.7-.1 1.3-.4 1.8-.8.4-.3.8-.7 1.1-1.2.7-1.2.9-2.8.4-4.5-.5-1.9-1.8-3.6-2.7-4.9-.8-1.2-1.1-2.1-1.2-3.6-.1-2.1-1.1-5.8-4.8-5.8z"/><ellipse cx="12.5" cy="14" rx="4.2" ry="5.5" fill="#FFFFFF"/><ellipse cx="10.8" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><ellipse cx="14.2" cy="5.2" rx="0.8" ry="1.2" fill="#FFFFFF"/><circle cx="11" cy="5.2" r="0.45" fill="#000000"/><circle cx="14" cy="5.2" r="0.45" fill="#000000"/><path fill="#FFB525" d="M12.5 6.5c-1.5 0-2 1.2-2 1.2s.8.5 2 .5 2-.5 2-.5-.5-1.2-2-1.2z"/><path fill="#F57900" d="M7 20c-1.5 0-2.5.8-2.5 1.8 0 .8.8 1.4 2 1.4 1.5 0 2.5-.8 3-1.8-.8-.9-1.7-1.4-2.5-1.4zm11 0c-.8 0-1.7.5-2.5 1.4.5 1 1.5 1.8 3 1.8 1.2 0 2-.6 2-1.4 0-1-1-1.8-2.5-1.8z"/></svg></div>
-          <div><h3>Linux</h3><span class="plat">AppImage ve .deb</span></div>
+          <h3>Linux</h3>
+          <span class="plat">AppImage ve .deb</span>
         </div>
         <div class="dl-meta">
-          <span><b data-nexus-ver>v1.0.14</b></span>
+          <span><b data-nexus-ver>v1.0.15</b></span>
           <span>AppImage / .deb</span>
           <a class="dl-sums" href="https://github.com/Enard52/nexus-releases/releases/latest/download/SHA256SUMS-Linux.txt" target="_blank" rel="noopener" title="Sağlama değerini gör">SHA-256</a>
         </div>
@@ -964,10 +1107,11 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       <div class="dl-card rv" data-platform="android">
         <div class="dl-top">
           <div class="dl-ic"><svg viewBox="0 0 24 24" class="brand-svg" aria-hidden="true"><path fill="#3DDC84" d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v6c0 .83.67 1.5 1.5 1.5S5 16.33 5 15.5v-6C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5zm-4.97-4.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 2.23 12.95 2 12 2c-.96 0-1.86.23-2.66.63L7.85 1.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 4.26 6 5.92 6 7.8h12c0-1.88-.97-3.54-2.47-4.64zM9 5.5c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75zm6 0c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75z"/></svg></div>
-          <div><h3>Android</h3><span class="plat">Android 7.0+ · imzalı APK</span></div>
+          <h3>Android</h3>
+          <span class="plat">Android 8.0+ · imzalı APK</span>
         </div>
         <div class="dl-meta">
-          <span><b data-nexus-ver>v1.0.14</b></span>
+          <span><b data-nexus-ver>v1.0.15</b></span>
           <span>APK</span>
           <a class="dl-sums" href="https://github.com/Enard52/nexus-releases/releases/latest/download/NEXUS-Android.apk.sha256.txt" target="_blank" rel="noopener" title="Sağlama değerini gör">SHA-256</a>
         </div>
@@ -981,9 +1125,9 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   <div class="wrap">
     <div class="sec-head rv" style="text-align:center;margin:0 auto 36px"><h2>Önemli sorular, net yanıtlar.</h2></div>
     <div class="faq-list">
-      <div class="faq-item rv open"><button class="faq-q" aria-expanded="true" onclick="nxToggleFaq(this)"><span>Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Giriş yaptığında ise kurulumun TLS ve satır bazlı erişim denetimi (RLS) altındaki kendi hesabına senkronize olur; kontrol için bu senkron zorunlu değildir.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Verilerim ve ev kontrollerim gerçekten yerel mi çalışır?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Evet. NEXUS, yerel-öncelikli (local-first) mimariyle çalışır. Cihazlarınız, odalarınız, otomasyonlarınız ve sensör verileriniz doğrudan kendi ev ağınızdaki donanımlarınız arasında işlenir. İnternet bağlantınız kesilse dahi tüm yerel anahtarlar, sahneler ve otomasyonlar anında çalışmaya devam eder. Giriş yaptığında ise kurulumun TLS ve satır bazlı erişim denetimi (RLS) altındaki kendi hesabına senkronize olur; kontrol için bu senkron zorunlu değildir.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>NEXUS'ı tarayıcıdan kullanabilir miyim, yoksa program veya mobil uygulama kurmak şart mı?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS'un tam arayüzü tarayıcıda da çalışır: hesap, eşyalar, panolar, sahneler ve NEXUS AI için web uygulamasını kullanabilirsin. Cihaz komutları ise kendi yerel ağndan (LAN) doğrudan gider; tarayıcı güvenlik kum havuzu (sandbox) yüzünden yalnızca tarayıcı isteklerine izin veren (CORS) cihazlara ulaşabilir — Shelly, Philips Hue, ESPHome gibi yerel HTTP API'ler buna örnektir. Ham TCP/UDP isteyen protokoller (TP-Link Kasa, Yeelight) yalnızca masaüstü uygulamasında çalışır. Evin tamamını her ortamda kontrol etmek için masaüstü programı (Windows, Linux) ve mobil uygulama (Android) kurulumunu öneriyoruz; tanıtım sitemiz ise hesap, indirme ve faturalandırma içindir.</p></div></div>
-      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>NEXUS+ aboneliği tam olarak ne sağlar?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Temel akıllı ev yönetimi, sınırsız cihaz ekleme, oda kontrolleri ve yerel otomasyonlar tamamen sınırsızdır. NEXUS+ aboneliği; evinize entegre çalışan gelişmiş yapay zekâ modeline ayda 2.000 yüksek hızlı doğal dil yanıt hakkı, karmaşık kural ve senaryo üretimi, enerji optimizasyon önerileri ve yeni beta entegrasyonlara öncelikli erişim kazandırır.</p></div></div>
+      <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>NEXUS+ aboneliği tam olarak ne sağlar?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS otomasyon motoru kurallarını ve zamanlayıcılarını NEXUS'u çalıştırdığın cihazda yürütür: masaüstü programı sistem tepsisinde arka planda kalarak gün boyu izler ve uygular, böylece aydınlatma, enerji ve güvenlik rutinleri bulutu beklemez. Telefondan tetiklediğin sahneler ve zamanlayıcılar yerel ağndan anında uygulanır. Yeni olaylar, Anlık Bildirimler sayfasında açtığın kanallara dağıtılır: uygulama içi bildirim şeridi, sistem bildirimi, ntfy, Telegram veya kendi HTTPS webhook'un.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Hangi cihazlar ve markalar destekleniyor?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, TP-Link Tapo, WLED, ESPHome, Philips Hue ve Tuya'yı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.</p></div></div>
       <div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>Güvenlik kameraları ve sensörler nasıl entegre edilir?</span><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></button><div class="faq-a"><p>NEXUS; güvenlik kameralarınızın durumunu, gizlilik modlarını, hareket dedektörlerini ve kapı/pencere sensörlerini birleşik güvenlik merkezinde sunar. 'Evden Ayrılış' modunda kameraları ve sensörleri devreye sokabilir, 'Evdeyim' modunda gizlilik perdelerini otomatik kapatabilir, tüm güvenlik olaylarını anlık yerel bildirimlerle takip edebilirsiniz.</p></div></div>
@@ -997,23 +1141,22 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     <div class="ft-grid">
       <div class="ft-brand">
         <a class="logo" href="/tr/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
-        <p>Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Kontrol için hesap ve internet gerekmez; giriş yaparsan kurulumun yalnızca kendi hesabına senkronize olur.</p>
+        <p>Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. NEXUS için hesap gerekir; giriş yaptıktan sonra kurulumun kendi hesabına senkronize olur. Cihaz komutları yerel ağında kalır.</p>
         <div class="ft-trust-row">
-          <div class="ft-trust-badge">
-            <span class="ft-status-dot"></span>
-            <span>Yerel Ağ Şifreli — Sıfır Telemetri &amp; Tam Bağımsızlık</span>
-          </div>
+          <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Yerel ağ</span>
+          <span class="ft-trust-pill"><span class="ft-status-dot"></span>Analitik yok</span>
+          <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>Hesap gerekir</span>
         </div>
       </div>
       <div class="ft-links-group">
-        <div class="ft-col"><h4>Ürün</h4><a href="/tr/#features">Özellikler</a><a href="/tr/#pricing">Fiyatlar</a><a href="/tr/#downloads">İndir</a><a href="https://nexus-web-jre.pages.dev" target="_blank" rel="noopener">Web Sürümü</a><a href="/tr/#faq">SSS</a><a href="/tr/about">Hakkında</a></div>
-        <div class="ft-col"><h4>Müşteri &amp; Destek</h4><a href="/tr/#pricing">Planlar ve Fiyatlar</a><a href="javascript:nxOpenContactModal('Teknik Destek')">İletişim ve Teknik Destek</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Sürüm Notları ve Topluluk</a><a href="/tr/#downloads">Uygulama İndir</a></div>
+        <div class="ft-col"><h4>Ürün</h4><a href="/tr/#features">Özellikler</a><a href="/tr/#pricing">Fiyatlar</a><a href="/tr/#downloads">İndir</a><a href="/tr/#faq">SSS</a><a href="/tr/about">Hakkında</a></div>
+        <div class="ft-col"><h4>Müşteri &amp; Destek</h4><a href="javascript:nxOpenContactModal('Teknik Destek')">İletişim ve Teknik Destek</a><a href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener">Sürüm Notları ve Topluluk</a><a href="/tr/#downloads">Uygulama İndir</a></div>
         <div class="ft-col"><h4>Yasal</h4><a href="/tr/privacy">Gizlilik</a><a href="/tr/terms">Şartlar</a><a href="/tr/refund">İade</a></div>
       </div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. Tüm hakları saklıdır.</span>
-      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Yerel kontrol hesap gerektirmez.</span>
+      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Cihaz komutları yerel ağında çalışır.</span>
     </div>
   </div>
 </footer>
@@ -1128,30 +1271,45 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         </div>
       </div>
 
-      <section class="nx-account-plan" aria-label="Plan">
-        <div class="nx-account-plan-top">
-          <span class="nx-account-kicker">Plan</span>
-          <span class="nx-plan-tag" id="nxProfilePlanTag">Ücretsiz</span>
+      <section class="nx-offer" aria-label="Plan">
+        <div class="nx-offer-inner">
+          <div class="nx-offer-top">
+            <span class="nx-plan-tag is-free" id="nxProfilePlanTag">Ücretsiz</span>
+          </div>
+          <ul class="nx-offer-list" id="nxProfilePerksFree">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Sınırsız cihaz ve oda</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Yerel otomasyon ve sahneler</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Günde 30 AI komutu</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Cihazlar arasında eşitleme</span></li>
+          </ul>
+          <ul class="nx-offer-list is-hidden" id="nxProfilePerksPlus">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Günde 30 yerine ayda 2.000 AI yanıtı</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>NEXUS AI ile doğal dille senaryo ve soru</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Tek hesap, tüm cihazlarında geçerli</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Dönem sonunda iptal</span></li>
+          </ul>
         </div>
-        <ul class="nx-account-perks" id="nxProfilePerksFree">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Sınırsız cihaz ve oda</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Yerel otomasyon ve sahneler</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Günde 30 NEXUS AI komutu</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Cihazların arasında hesap eşitlemesi</span></li>
-        </ul>
-        <ul class="nx-account-perks is-hidden" id="nxProfilePerksPlus">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Ücretsiz plandaki her şey</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Ayda 2.000 NEXUS AI yanıtı</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Doğal dille kural ve senaryo üretimi</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Enerji için tasarruf önerileri</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Yeni özelliklere ve beta bağlayıcılara erken erişim</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>Öncelikli e-posta desteği</span></li>
-        </ul>
-        <p class="nx-account-save" id="nxProfileSaveNote">Yıllık planda %33 indirim</p>
-        <a id="nxProfileUpgrade" class="nx-account-upgrade" href="/tr/#pricing" onclick="nxCloseAuthModal()">NEXUS+'a geç</a>
       </section>
 
+      <div id="nxBillingPanel" class="nx-offer" style="display:none">
+        <div class="nx-offer-inner">
+          <p id="nxBillingStatus" class="nx-account-now" style="text-align:left;margin:0 0 8px"></p>
+          <ul id="nxBillingPays" class="nx-offer-list"></ul>
+          <button type="button" id="nxBillingCancel" class="nx-account-upgrade" style="display:none" onclick="nxLoadBilling('cancel')">Dönem sonunda iptal et</button>
+        </div>
+      </div>
+
       <div class="nx-account-menu">
-        <a class="nx-account-item" href="https://whop.com/@me/settings/memberships/" target="_blank" rel="noopener">
+        <a id="nxProfileUpgrade" class="nx-account-item" href="/tr/#pricing" onclick="nxCloseAuthModal()">
+          <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v8M8 12h8"/></svg></span>
+          <span class="nx-account-item-copy">
+            <b>NEXUS+'a geç</b>
+            <small>Aylık ₺499,99 · Yıllık ₺3.999,99</small>
+          </span>
+          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
+        </a>
+        <button type="button" class="nx-account-item" onclick="nxOpenBilling()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M2 10h20"/></svg></span>
           <span class="nx-account-item-copy">
             <b>Aboneliği yönet</b>
-            <small>Kart, fatura ve iptal</small>
+            <small>Durum, ödemeler ve iptal</small>
           </span>
-          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-8 8"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg></span>
-        </a>
+          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
+        </button>
         <button type="button" class="nx-account-item" onclick="nxSendPasswordReset()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg></span>
           <span class="nx-account-item-copy">
@@ -1167,6 +1325,12 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       </div>
     </div>
 
+  </div>
+</div>
+<div id="nxCheckoutModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseCheckout()" role="dialog" aria-modal="true" aria-label="Ödeme">
+  <div class="nx-modal-card" style="max-width:480px;padding:18px 16px 16px">
+    <button class="nx-modal-close" onclick="nxCloseCheckout()" aria-label="Kapat">&times;</button>
+    <div id="nxCheckoutMount" style="min-height:420px"></div>
   </div>
 </div>
 

@@ -926,7 +926,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
             </div>
             <h3>Android</h3>
             <p>The same local-first home on Android. It will be published on Google Play.</p>
-            <span class="version">Coming soon · Android 7+</span>
+            <span class="version">Coming soon · Android 8+</span>
             <div class="platform-specs"><span>Local control</span><span>Works offline</span><span>No hub required</span></div>
             <span class="button button-secondary download-button is-disabled" aria-disabled="true">Coming soon to Google Play</span>
           </article>

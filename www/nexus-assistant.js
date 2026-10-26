@@ -287,6 +287,7 @@
   var hist = [];
   // Komut eşleşmediğinde gerçek yapay zekâya sor (cihaz adı/türü/odası bağlam olarak gider). Hata olursa null döner.
   function ask(raw) {
+    if (window.nexusPreview) return Promise.resolve(null);
     var lang = (window.nexusLang === "tr" || (!window.nexusLang && /^tr/i.test(navigator.language || ""))) ? "tr" : "en";
     var devs = [];
     try { devs = devices().map(function (d) { return { name: String(d.name || ""), type: String(d.type || d.kind || ""), room: String(d.room || "") }; }); } catch (e) {}

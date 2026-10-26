@@ -84,12 +84,12 @@ export const content = {
         [
           "wifi",
           "Local-Network Speed",
-          "Direct LAN communication with Shelly, Tasmota, WLED, ESPHome, Philips Hue and Home Assistant via HTTP, TCP and UDP. Zero cloud lag.",
+          "Direct LAN communication over HTTP, TCP and UDP with the brands listed under Integrations. No cloud hop in the command path.",
         ],
         [
           "lock",
           "Privacy By Design",
-          "Your home configuration and device telemetry stay on your local hardware. Signing in is optional: it syncs your setup to your own account under row-level access control, and control never depends on it.",
+          "Your home configuration and device telemetry stay on your local hardware. An account is required to use NEXUS; it stores your setup in your own row under row-level access control. Device commands still go over your LAN.",
         ],
         [
           "sparkles",
@@ -99,7 +99,7 @@ export const content = {
         [
           "layers",
           "Open Local Protocols",
-          "Shelly, Tasmota, WLED, ESPHome, Philips Hue and your own Home Assistant server answer NEXUS directly across your LAN. Matter and Zigbee devices join through that Home Assistant bridge.",
+          "Direct connectors talk on your LAN. Matter and Zigbee join through your own Home Assistant server — the Integrations section lists what is direct versus bridged.",
         ],
       ],
     },
@@ -109,12 +109,12 @@ export const content = {
         [
           "1",
           "Install & open",
-          "Download the native installer for your platform (Windows, Linux, or Android). Create an account to securely sync your setup across all your screens.",
+          "Download the native installer for your platform (Windows, Linux, or Android). Then sign in — an account is required to use NEXUS, and it also syncs setup across your screens.",
         ],
         [
           "2",
           "Add your devices",
-          "Pick your brand, scan the local network or enter an IP. NEXUS talks the device's own protocol; no vendor bridge needed.",
+          "Pick your brand, scan the local network or enter an IP. Brands with a direct connector speak their own protocol — no vendor cloud in that path.",
         ],
         [
           "3",
@@ -148,7 +148,7 @@ export const content = {
     },
     pricing: {
       heading: "Free to use. NEXUS+ when you want more.",
-      lead: "No device or room limits — core smart home control is always free. NEXUS+ expands your cloud AI allowance with priority model access.",
+      lead: "No device or room limits — home control stays free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial.",
       currencyNote: "Prices in USD",
       plans: [
         {
@@ -156,7 +156,7 @@ export const content = {
           price: "$0",
           period: "forever",
           features: [
-            "Unlimited devices & rooms (Shelly, Tasmota, WLED, ESPHome, Hue)",
+            "Unlimited devices and rooms across every supported local protocol",
             "Zero cloud dependence: runs locally on your own LAN",
             "30 daily NEXUS AI commands & device actions",
             "Scheduled local automations & custom scenes",
@@ -172,12 +172,10 @@ export const content = {
           badge: "Most popular",
           features: [
             "Everything in Free tier included",
-            "2,000 monthly NEXUS AI responses & automation creation",
-            "Dedicated high-speed cloud AI engine & lowest latency",
-            "Early access to new AI features & beta connectors",
-            "Direct support for independent, ad-free development",
-            "Priority VIP email support",
-            "Free trial — 3 days on monthly, 7 days on yearly",
+            "2,000 NEXUS AI replies a month instead of 30 a day",
+            "Ask NEXUS AI to set scenes and answer in plain language",
+            "One account, valid on every NEXUS device",
+            "Free trial — 3 days monthly, 7 days yearly; cancel at period end",
           ],
           cta: { label: "Start your free trial", monthlyLabel: "Start 3-day free trial", yearlyLabel: "Start 7-day free trial", href: "https://whop.com/checkout/plan_HIySYESquBqlg", yearlyHref: "https://whop.com/checkout/plan_XlA3SacShoiJU" },
         },
@@ -198,7 +196,7 @@ export const content = {
           soon: false,
         },
       ],
-      manageNote: "Manage or cancel your subscription anytime from Billing in the app.",
+      manageNote: "Cancel anytime from Billing in the app or from your account on this site. Cancellation takes effect at the end of the current period.",
     },
     downloads: {
       heading: "Native on every desktop. At home on your phone.",
@@ -210,7 +208,7 @@ export const content = {
           "android",
           "smartphone",
           "Android",
-          "Android 7.0+ · signed APK",
+          "Android 8.0+ · signed APK",
           "NEXUS-Android.apk",
           ".apk",
         ],
@@ -238,7 +236,7 @@ export const content = {
         ],
         [
           "What does the NEXUS+ plan add?",
-          "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is completely unlimited. The optional NEXUS+ subscription adds dedicated high-speed cloud AI engine access with 2,000 monthly natural language queries, intelligent energy-saving routines, bespoke automation synthesis, and early access to beta integrations.",
+          "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.",
         ],
         [
           "How do automations and scheduled rules run?",
@@ -272,7 +270,7 @@ export const content = {
         },
         {
           title: "Uncompromising Privacy",
-          desc: "No analytics telemetry, no behavioral profiling, and no selling of your private routines. Local control needs no account; when you sign in, your setup is stored in your own row-level-protected account row.",
+          desc: "No analytics telemetry, no behavioral profiling, and no selling of your private routines. An account is required; your setup is stored in your own row-level-protected account row. Device commands still stay on your LAN.",
         },
         {
           title: "No Vendor Lock-In",
@@ -280,30 +278,33 @@ export const content = {
         },
         {
           title: "Honest, Sustainable SaaS",
-          desc: "Core smart home management is completely free and unlimited forever. NEXUS+ exists solely to cover high-speed cloud AI inference costs.",
+          desc: "Core smart home management is completely free and unlimited forever. NEXUS+ is the NEXUS AI plan and helps cover that cloud usage.",
         },
       ],
       architecture: {
         heading: "Engineered for Reliability",
         lead: "NEXUS keeps a lightweight desktop engine in your system tray so schedules and sensor rules keep evaluating while your computer is on, and the mobile app opens straight onto the same local network.",
+        items: [
+          { icon: "layers", title: "Desktop", desc: "The Windows and Linux apps stay in the system tray and keep local schedules and sensor rules running while the computer is on." },
+          { icon: "wifi", title: "Phone and web", desc: "The Android app and the web app open onto the same local network; device commands still go across your LAN." },
+          { icon: "lock", title: "Account", desc: "An account is required so rooms, devices and scenes match on every screen. Device commands do not leave your home network." },
+        ],
       },
       linksTitle: "Practical links",
     },
     footer: {
       tagline:
-        "Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down, and signing in is only ever optional.",
+        "Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down. An account is required; it syncs your setup across your screens.",
       product: "Product",
       productLinks: [
         ["Features", "#features"],
         ["Pricing", "#pricing"],
         ["Download", "#downloads"],
-        ["Web App", APP_URL],
         ["FAQ", "#faq"],
         ["About", "/about"],
       ],
       account: "Customer & Support",
       accountLinks: [
-        ["Plans & Pricing", "#pricing"],
         ["Contact & Technical Support", "javascript:nxOpenContactModal('Technical Support')"],
         ["Release Notes & Community", RELEASES_URL],
         ["Download Apps", "#downloads"],
@@ -370,12 +371,12 @@ export const content = {
         [
           "wifi",
           "Yerel Ağ Hızı",
-          "Shelly, Tasmota, WLED, ESPHome, Philips Hue ve Home Assistant ile HTTP, TCP ve UDP üzerinden doğrudan iletişim. Sıfır gecikme.",
+          "Entegrasyonlar bölümündeki markalarla HTTP, TCP ve UDP üzerinden doğrudan yerel iletişim. Komut yolunda bulut yok.",
         ],
         [
           "lock",
           "Tasarımdan Gelen Gizlilik",
-          "Ev düzenin ve cihaz verilerin yerel cihazında işlenir. Giriş yapmak isteğe bağlıdır; senkron, kurulumunu satır bazlı erişim denetimi (RLS) korumalı kendi hesap veritabanına taşır ve kontrol için asla zorunlu değildir.",
+          "Ev düzenin ve cihaz verilerin yerel cihazında işlenir. NEXUS için hesap gerekir; senkron, kurulumunu satır bazlı erişim denetimi (RLS) korumalı kendi hesap satırına taşır. Cihaz komutları yine yerel ağında kalır.",
         ],
         [
           "sparkles",
@@ -385,7 +386,7 @@ export const content = {
         [
           "layers",
           "Açık Yerel Protokoller",
-          "Shelly, Tasmota, WLED, ESPHome, Philips Hue ve kendi Home Assistant sunucun NEXUS'a doğrudan yerel ağndan cevap verir. Matter ve Zigbee cihazları bu Home Assistant köprüsüyle katılır.",
+          "Doğrudan bağlayıcılar yerel ağında konuşur. Matter ve Zigbee kendi Home Assistant sunucun üzerinden katılır — hangisinin doğrudan olduğunu Entegrasyonlar listeler.",
         ],
       ],
     },
@@ -395,12 +396,12 @@ export const content = {
         [
           "1",
           "Kur ve aç",
-          "Platformuna uygun kurulum dosyasını indir (Windows, Linux veya Android). Cihazlar arası güvenli senkronizasyon için hesabını oluştur.",
+          "Platformuna uygun kurulum dosyasını indir (Windows, Linux veya Android). Sonra giriş yap: NEXUS için hesap gerekir; kurulumun da ekranlar arasında eşitlenir.",
         ],
         [
           "2",
           "Cihazlarını ekle",
-          "Markanı seç, yerel ağı tara veya IP gir. NEXUS cihazın kendi protokolüyle konuşur; üretici köprüsü gerekmez.",
+          "Markanı seç, yerel ağı tara veya IP gir. Doğrudan bağlayıcısı olan markalar kendi protokolünde konuşur; o yolda üretici bulutu yok.",
         ],
         [
           "3",
@@ -434,7 +435,7 @@ export const content = {
     },
     pricing: {
       heading: "Ücretsiz kullan. Daha fazlasını istersen NEXUS+.",
-      lead: "Cihaz veya oda sınırı yok, temel kullanım hep ücretsiz. NEXUS+ ile bulut yapay zekâ kotanızı artırın ve öncelikli model erişimi kazanın.",
+      lead: "Cihaz veya oda sınırı yok; ev kontrolü ücretsiz. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır.",
       currencyNote: "Fiyatlar TL cinsinden",
       plans: [
         {
@@ -442,7 +443,7 @@ export const content = {
           price: "₺0",
           period: "sonsuza dek",
           features: [
-            "Sınırsız cihaz ve oda (Shelly, Tasmota, WLED, ESPHome, Hue)",
+            "Sınırsız cihaz ve oda — desteklenen tüm yerel protokoller",
             "Sıfır bulut bağımlılığı: Kendi yerel ağınızda kesintisiz çalışma",
             "Günde 30 NEXUS AI komutu ve yerel cihaz kontrolü",
             "Zamanlanmış yerel otomasyonlar ve özel sahneler",
@@ -458,12 +459,10 @@ export const content = {
           badge: "En çok tercih edilen",
           features: [
             "Ücretsiz plandaki tüm özellikler dahil",
-            "Ayda 2.000 NEXUS AI yanıtı (Doğal dille senaryo ve kural üretimi)",
-            "Öncelikli gelişmiş bulut AI altyapısı ve en düşük gecikme",
-            "Yeni AI yeteneklerine ve beta entegrasyonlara erken erişim",
-            "Bağımsız, reklamsız ve açık standartlı gelişime doğrudan destek",
-            "Öncelikli VIP e-posta destek hattı",
-            "3 günlük ücretsiz deneme (Aylık) / 7 gün (Yıllık), dilediğin an iptal",
+            "Günde 30 yerine ayda 2.000 NEXUS AI yanıtı",
+            "NEXUS AI ile doğal dille senaryo kur ve evin hakkında soru sor",
+            "Tek hesap, tüm NEXUS cihazlarında geçerli",
+            "3 gün (aylık) / 7 gün (yıllık) deneme; dönem sonunda iptal",
           ],
           cta: { label: "Ücretsiz denemeyi başlat", monthlyLabel: "3 gün ücretsiz dene", yearlyLabel: "7 gün ücretsiz dene", href: "https://whop.com/checkout/plan_fAMBHwTVE0hR2", yearlyHref: "https://whop.com/checkout/plan_UEXO1F5mjIgWB" },
         },
@@ -484,7 +483,7 @@ export const content = {
           soon: false,
         },
       ],
-      manageNote: "Aboneliğini dilediğin an uygulamadaki Faturalandırma'dan yönet veya iptal et.",
+      manageNote: "İptal, uygulamadaki Faturalandırma'dan veya bu sitedeki hesabından yapılır. Dönem sonunda geçerli olur.",
     },
     downloads: {
       heading: "Her masaüstünde yerli, telefonunda evinde.",
@@ -496,7 +495,7 @@ export const content = {
           "android",
           "smartphone",
           "Android",
-          "Android 7.0+ · imzalı APK",
+          "Android 8.0+ · imzalı APK",
           "NEXUS-Android.apk",
           ".apk",
         ],
@@ -524,7 +523,7 @@ export const content = {
         ],
         [
           "NEXUS+ aboneliği tam olarak ne sağlar?",
-          "Temel akıllı ev yönetimi, sınırsız cihaz ekleme, oda kontrolleri ve yerel otomasyonlar tamamen sınırsızdır. NEXUS+ aboneliği; evinize entegre çalışan gelişmiş yapay zekâ modeline ayda 2.000 yüksek hızlı doğal dil yanıt hakkı, karmaşık kural ve senaryo üretimi, enerji optimizasyon önerileri ve yeni beta entegrasyonlara öncelikli erişim kazandırır.",
+          "Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.",
         ],
         [
           "Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?",
@@ -558,7 +557,7 @@ export const content = {
         },
         {
           title: "Gerçek Veri Mahremiyeti",
-          desc: "Evinizin kat planı, oda isimleri ve kullanım alışkanlıklarınız satılır, profillenmez ve reklam hedeflemesi için kullanılmaz. Yerel kontrol hesap gerektirmez; giriş yaparsan yalnızca senkron listesindeki tanımlar kendi hesabına taşınır.",
+          desc: "Evinizin kat planı, oda isimleri ve kullanım alışkanlıklarınız satılmaz, profillenmez ve reklam hedeflemesi için kullanılmaz. NEXUS için hesap gerekir; senkron listesindeki tanımlar kendi hesabına taşınır. Cihaz komutları yerel ağında kalır.",
         },
         {
           title: "Sıfır Marka Kilidi",
@@ -566,30 +565,33 @@ export const content = {
         },
         {
           title: "Dürüst ve Şeffaf Model",
-          desc: "Temel akıllı ev kontrolü, sınırsız oda ve cihaz ekleme herkes için ücretsizdir. İsteğe bağlı NEXUS+ aboneliğimiz, yalnızca bulut yapay zekâ altyapısının işlem maliyetini karşılamak için şeffaf bir şekilde sunulur.",
+          desc: "Temel akıllı ev kontrolü, sınırsız oda ve cihaz herkes için ücretsizdir. NEXUS+ NEXUS AI planıdır ve o bulut kullanımının maliyetini karşılar.",
         },
       ],
       architecture: {
         heading: "Güvenilirlik Odaklı Mühendislik",
         lead: "NEXUS; masaüstünde sistem tepsisinde 7/24 arka planda nöbet tutan ultra hafif çekirdeği ve mobilde optimize edilmiş yerel köprüleriyle evinizi her an senkronize tutar.",
+        items: [
+          { icon: "layers", title: "Masaüstü", desc: "Windows ve Linux uygulaması sistem tepsisinde kalır; bilgisayar açıkken yerel zamanlayıcılar ve sensör kuralları çalışmaya devam eder." },
+          { icon: "wifi", title: "Telefon ve web", desc: "Android uygulaması ve web uygulaması aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider." },
+          { icon: "lock", title: "Hesap", desc: "Hesap gerekir ki odalar, cihazlar ve sahneler her ekranda aynı olsun. Cihaz komutları ev ağından çıkmaz." },
+        ],
       },
       linksTitle: "Pratik bağlantılar",
     },
     footer: {
       tagline:
-        "Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. Kontrol için hesap ve internet gerekmez; giriş yaparsan kurulumun yalnızca kendi hesabına senkronize olur.",
+        "Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. NEXUS için hesap gerekir; giriş yaptıktan sonra kurulumun kendi hesabına senkronize olur. Cihaz komutları yerel ağında kalır.",
       product: "Ürün",
       productLinks: [
         ["Özellikler", "#features"],
         ["Fiyatlar", "#pricing"],
         ["İndir", "#downloads"],
-        ["Web Sürümü", APP_URL],
         ["SSS", "#faq"],
         ["Hakkında", "/tr/about"],
       ],
       account: "Müşteri & Destek",
       accountLinks: [
-        ["Planlar ve Fiyatlar", "#pricing"],
         ["İletişim ve Teknik Destek", "javascript:nxOpenContactModal('Teknik Destek')"],
         ["Sürüm Notları ve Topluluk", RELEASES_URL],
         ["Uygulama İndir", "#downloads"],

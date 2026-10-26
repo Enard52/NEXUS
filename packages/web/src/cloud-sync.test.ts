@@ -609,6 +609,55 @@ describe("NEXUS+ aboneliği (Whop webhook'u → nexus_entitlements)", () => {
     expect(cloud.checkoutUrl("Bilinmeyen", "a@b.co")).toBe("");
   });
 
+  it("gömülü kasa için plan kimliği Whop adresinin son parçasıdır", () => {
+    const { cloud } = load({ config: CONFIG });
+    expect(cloud.checkoutPlanId("Aylık", "TRY")).toBe("plan_fAMBHwTVE0hR2");
+    expect(cloud.checkoutPlanId("Yıllık", "USD")).toBe("plan_XlA3SacShoiJU");
+    expect(cloud.checkoutPlanId("Bilinmeyen", "TRY")).toBe("");
+  });
+
+  it("hesap iptali ve durumu whop-account uçuna gider ve plan anahtarlarını günceller", async () => {
+    const { cloud, storage, calls } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: (call: Call) => {
+        const u = new URL(call.url);
+        if (u.pathname === "/auth/v1/token") {
+          return {
+            access_token: "tok",
+            refresh_token: "ref",
+            expires_in: 3600,
+            user: { id: "u1", email: "a@b.co" },
+          };
+        }
+        if (u.pathname === "/functions/v1/whop-account") {
+          const body = JSON.parse(String(call.body || "{}"));
+          return {
+            membership: {
+              plan: "Aylık",
+              currency: "TRY",
+              periodEnd: "2027-11-01T00:00:00.000Z",
+              cancelAtPeriodEnd: body.action === "cancel",
+            },
+            payments: [{ amount: "499.99", currency: "TRY", status: "paid" }],
+          };
+        }
+        return {};
+      },
+    });
+    await cloud.signIn("a@b.co", "parola-123");
+    const status = await cloud.billingAccount("status");
+    expect(status.membership.plan).toBe("Aylık");
+    expect(storage.getItem("a@b.co_nexusPlusPlan")).toBe("Aylık");
+    const canceled = await cloud.billingAccount("cancel");
+    expect(canceled.membership.cancelAtPeriodEnd).toBe(true);
+    expect(storage.getItem("a@b.co_nexusPlusCancel")).toBe("1");
+    const accountCalls = calls.filter((c) => c.url.includes("/functions/v1/whop-account"));
+    expect(accountCalls).toHaveLength(2);
+    expect(accountCalls[1].method).toBe("POST");
+    expect(JSON.parse(String(accountCalls[1].body)).action).toBe("cancel");
+  });
+
   it("USD planları yurt dışı için ayrı Whop bağlantılarına gider ve fiyatlar dile göre gelir", () => {
     const { cloud } = load({ config: CONFIG });
     expect(cloud.checkoutUrl("Yıllık", "", "USD")).toBe(

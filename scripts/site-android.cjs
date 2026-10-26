@@ -8,7 +8,8 @@ const R = [
     "Windows, Linux and Android apps you can download today. iOS is coming soon.",
   ],
   ["Windows and Linux apps, Android test build", "Windows, Linux and Android apps"],
-  ["Test APK · Android 7+", "Android APK · Android 7+"],
+  ["Test APK · Android 7+", "Android APK · Android 8+"],
+  ["Android APK · Android 7+", "Android APK · Android 8+"],
   ["Download test APK", "Download Android APK"],
   [
     "Allow installs from this source in Android settings. Test build; the Google Play version comes later.",

@@ -8,6 +8,13 @@
   document.documentElement.setAttribute('data-theme',d);
 })();
 
+// Yenilemede tarayıcı eski kaydırmayı geri yüklemesin; hash yoksa tepeye in.
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+if(!location.hash){
+  window.scrollTo(0,0);
+  document.addEventListener('DOMContentLoaded',function(){ if(!location.hash) window.scrollTo(0,0); });
+}
+
 function nxToggleTheme(){
   var d=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',d);
@@ -32,16 +39,52 @@ function nxSetLang(lang){
   }
 }
 
-// Modal Açıldığında Sayfanın Sağa/Sola Kaymasını Önleyen Kilit
+// Modal açıkken sayfa kaymasın: gövde sabitlenir, tekerlek arka plana gitmez.
+var nxScrollY=0;
+var nxScrollLocked=false;
+function nxGuardModalScroll(e){
+  var node=e.target;
+  while(node && node!==document.body){
+    if(node.classList && (node.classList.contains('nx-modal-card') || node.classList.contains('nx-dialog-card'))){
+      if(node.scrollHeight<=node.clientHeight+1){ e.preventDefault(); return; }
+      if(e.touches) return;
+      var dy=e.deltaY||0;
+      if((dy<0 && node.scrollTop<=0) || (dy>0 && node.scrollTop+node.clientHeight>=node.scrollHeight-1)) e.preventDefault();
+      return;
+    }
+    node=node.parentNode;
+  }
+  e.preventDefault();
+}
 function nxLockScroll(){
   document.documentElement.classList.add('nx-modal-open');
+  if(nxScrollLocked) return;
+  nxScrollLocked=true;
+  nxScrollY=window.scrollY||document.documentElement.scrollTop||0;
+  var b=document.body;
+  b.style.position='fixed';
+  b.style.top='-'+nxScrollY+'px';
+  b.style.left='0';
+  b.style.right='0';
+  b.style.width='100%';
+  document.addEventListener('wheel',nxGuardModalScroll,{passive:false,capture:true});
+  document.addEventListener('touchmove',nxGuardModalScroll,{passive:false,capture:true});
 }
-
 function nxUnlockScroll(){
-  var anyOpen = document.querySelectorAll('.nx-modal-backdrop.open').length > 0;
-  if(!anyOpen){
-    document.documentElement.classList.remove('nx-modal-open');
-  }
+  var anyOpen=document.querySelectorAll('.nx-modal-backdrop.open,.nx-dialog-backdrop.open').length>0;
+  if(anyOpen) return;
+  document.documentElement.classList.remove('nx-modal-open');
+  if(!nxScrollLocked) return;
+  nxScrollLocked=false;
+  document.removeEventListener('wheel',nxGuardModalScroll,true);
+  document.removeEventListener('touchmove',nxGuardModalScroll,true);
+  var b=document.body;
+  b.style.position='';
+  b.style.top='';
+  b.style.left='';
+  b.style.right='';
+  b.style.width='';
+  window.scrollTo(0,nxScrollY);
 }
 
 // İletişim & Destek Modülü Kontrolleri
@@ -346,6 +389,7 @@ function nxOpenAuthModal(){
     }
     var planTag=document.getElementById('nxProfilePlanTag');
     if(planTag){
+      planTag.classList.toggle('is-free', !plusActive);
       if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : 'Free';
       else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : 'NEXUS+ · Yearly';
       else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : 'NEXUS+ · Monthly';
@@ -356,9 +400,7 @@ function nxOpenAuthModal(){
     if(perksFree)perksFree.classList.toggle('is-hidden', plusActive);
     if(perksPlus)perksPlus.classList.toggle('is-hidden', !plusActive);
     var upgrade=document.getElementById('nxProfileUpgrade');
-    var saveNote=document.getElementById('nxProfileSaveNote');
     if(upgrade)upgrade.classList.toggle('is-hidden', plusActive);
-    if(saveNote)saveNote.classList.toggle('is-hidden', plusActive);
     m.classList.add('nx-account-open');
     m.setAttribute('aria-labelledby','nxProfileNameDisplay');
   }else{
@@ -651,18 +693,112 @@ function nxSetBilling(period){
       ? ('Yıllık ' + bundle.price.yearly + ' olarak faturalandırılır (%' + bundle.save + ' tasarruf)')
       : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
     if(cta){
-      if(cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
-      if(cta.dataset.yearlyLabel)cta.textContent=cta.dataset.yearlyLabel;
+      cta.dataset.plan=isYearly?cta.dataset.yearlyPlan:cta.dataset.monthlyPlan;
+      if(cta.dataset.yearlyLabel && isYearly)cta.textContent=cta.dataset.yearlyLabel;
+      if(cta.dataset.monthlyLabel && !isYearly)cta.textContent=cta.dataset.monthlyLabel;
     }
   }else{
     if(priceVal)priceVal.textContent=bundle.price.monthly;
     if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
     if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
     if(cta){
-      if(cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
+      cta.dataset.plan=cta.dataset.monthlyPlan;
       if(cta.dataset.monthlyLabel)cta.textContent=cta.dataset.monthlyLabel;
     }
   }
+}
+
+function nxOpenCheckout(e){
+  if(e && e.preventDefault) e.preventDefault();
+  var cta=document.getElementById('nexusPlusCta');
+  var box=document.getElementById('nxCheckoutMount');
+  var modal=document.getElementById('nxCheckoutModal');
+  if(!cta||!box||!modal) return false;
+  var yearly=document.getElementById('billingYearly');
+  var plan=(yearly && yearly.classList.contains('active') && cta.dataset.yearlyPlan) ? cta.dataset.yearlyPlan : (cta.dataset.plan || cta.dataset.monthlyPlan);
+  if(!plan) return false;
+  box.innerHTML='';
+  var el=document.createElement('div');
+  el.id='whop-embedded-checkout';
+  el.setAttribute('data-whop-checkout-plan-id', plan);
+  el.setAttribute('data-whop-checkout-return-url', location.href.split('#')[0]);
+  box.appendChild(el);
+  var old=document.getElementById('nxWhopLoader');
+  if(old) old.remove();
+  var s=document.createElement('script');
+  s.id='nxWhopLoader';
+  s.src='https://js.whop.com/static/checkout/loader.js';
+  s.async=true;
+  document.body.appendChild(s);
+  modal.style.display='flex';
+  setTimeout(function(){ modal.classList.add('open'); }, 10);
+  nxLockScroll();
+  return false;
+}
+function nxCloseCheckout(){
+  var modal=document.getElementById('nxCheckoutModal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  setTimeout(function(){
+    modal.style.display='none';
+    var box=document.getElementById('nxCheckoutMount');
+    if(box) box.innerHTML='';
+    nxUnlockScroll();
+  }, 220);
+}
+function nxCloudSession(){
+  try { return JSON.parse(localStorage.getItem('nexus_cloud_session')||'null'); } catch(err){ return null; }
+}
+function nxOpenBilling(){
+  var panel=document.getElementById('nxBillingPanel');
+  if(panel) panel.style.display='block';
+  nxLoadBilling('status');
+}
+function nxLoadBilling(action){
+  var status=document.getElementById('nxBillingStatus');
+  var pays=document.getElementById('nxBillingPays');
+  var cancelBtn=document.getElementById('nxBillingCancel');
+  var isTr=document.documentElement.lang==='tr';
+  var session=nxCloudSession();
+  var cfg=nxCloudConfig();
+  if(!session||!session.accessToken||!cfg.url||!cfg.anonKey){
+    if(status) status.textContent=isTr?'Aboneliği görmek için yeniden giriş yap.':'Sign in again to see the subscription.';
+    if(cancelBtn) cancelBtn.style.display='none';
+    return;
+  }
+  if(status) status.textContent=isTr?'Yükleniyor…':'Loading…';
+  fetch(cfg.url+'/functions/v1/whop-account',{
+    method:'POST',
+    headers:{ Authorization:'Bearer '+session.accessToken, apikey:cfg.anonKey, 'Content-Type':'application/json' },
+    body:JSON.stringify({ action: action==='cancel'?'cancel':'status' })
+  }).then(function(r){
+    return r.json().then(function(d){ return { ok:r.ok, d:d }; });
+  }).then(function(res){
+    if(!res.ok){
+      if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+      if(cancelBtn) cancelBtn.style.display='none';
+      return;
+    }
+    var m=res.d.membership;
+    if(!m){
+      if(status) status.textContent=isTr?'Bu hesapta NEXUS+ aboneliği yok.':'This account has no NEXUS+ subscription.';
+      if(cancelBtn) cancelBtn.style.display='none';
+    }else{
+      var when=m.periodEnd ? new Date(m.periodEnd).toLocaleDateString(isTr?'tr-TR':'en-US') : '';
+      if(status) status.textContent=(m.plan||'NEXUS+')+(m.cancelAtPeriodEnd?(isTr?' · dönem sonunda bitecek':' · ends at period end'):'')+(when?(isTr?' · yenileme ':' · renews ')+when:'');
+      if(cancelBtn) cancelBtn.style.display=m.cancelAtPeriodEnd?'none':'flex';
+    }
+    if(pays){
+      pays.innerHTML='';
+      (res.d.payments||[]).forEach(function(pmt){
+        var li=document.createElement('li');
+        li.textContent=[pmt.amount, pmt.currency, pmt.status].filter(Boolean).join(' · ');
+        pays.appendChild(li);
+      });
+    }
+  }).catch(function(){
+    if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+  });
 }
 
 // SSS tek-açıklık davranışı
@@ -734,13 +870,60 @@ function nxScalePreview(){
   box.style.setProperty('--nx-preview-scale',(w/390).toFixed(4));
 }
 
+function nxUseShotFallback(){
+  var prev=document.getElementById('phonePreview');
+  var shots=document.querySelector('.phone-screen-content');
+  var mock=document.getElementById('phoneMockup');
+  if(prev) prev.style.display='none';
+  if(shots){ shots.style.display='block'; shots.removeAttribute('aria-hidden'); }
+  if(mock) mock.classList.remove('previewing');
+  nxPreviewOn=false;
+  nxResetShotTimer();
+}
+function nxPreviewLooksEmpty(frame){
+  try{
+    var href=frame.contentWindow && frame.contentWindow.location && frame.contentWindow.location.href;
+    return !href || href==='about:blank';
+  }catch(e){
+    return false;
+  }
+}
 function nxBootPreview(){
   var frame=document.getElementById('phonePreviewFrame');
+  var shots=document.querySelector('.phone-screen-content');
+  var local=/^(localhost|127.0.0.1)$/.test(location.hostname);
   if(frame){
     var d=frame.getAttribute('data-src');
     if(d && !frame.getAttribute('src')) frame.setAttribute('src',d);
   }
   nxScalePreview();
+  if(local){
+    nxUseShotFallback();
+    return;
+  }
+  if(!frame) return;
+  frame.style.opacity='0';
+  var settled=false;
+  function ok(){
+    if(settled) return;
+    settled=true;
+    frame.style.opacity='1';
+    if(shots) shots.style.display='none';
+  }
+  function fail(){
+    if(settled) return;
+    settled=true;
+    nxUseShotFallback();
+  }
+  frame.addEventListener('load',function(){
+    if(nxPreviewLooksEmpty(frame)) fail();
+    else ok();
+  });
+  frame.addEventListener('error',fail);
+  setTimeout(function(){
+    if(nxPreviewLooksEmpty(frame)) fail();
+    else ok();
+  },2200);
 }
 
 function nxSetPhoneMode(mode){

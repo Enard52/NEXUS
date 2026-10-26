@@ -175,7 +175,7 @@ for (const [file, cur, saveText] of [
     const text = stripNoise(readFileSync(join(PUB, file), "utf8")).toLowerCase();
     const label = lang === "tr" ? "TR ana" : "EN ana";
 
-    // 1) Android sürüm alt sınırı doğru mu (uygulama API 24 = Android 7.0).
+    // 1) Android sürüm alt sınırı doğru mu (uygulama API 26 = Android 8.0).
     check(`${label}: Android alt sınırı minSdk ile aynı (Android ${androidFloor}+)`, text.includes(`android ${androidFloor}+`), `minSdk ${minSdk}`);
 
     // 2) Uydurma kısıt/özellik kalmasın: uygulamanın zorlamadığı sayısal sınır ve

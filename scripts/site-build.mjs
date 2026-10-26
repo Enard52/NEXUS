@@ -139,9 +139,12 @@ function icon(name, cls = 'icon') {
     zap: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
     gauge: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 14 4-4"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>`,
     wifi: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>`,
+    home: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>`,
     layers: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 12.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 12.5"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 17.5-9.4 4.3a1.4 1.4 0 0 1-1.2 0L2 17.5"/></svg>`,
     eye: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
     eyeOff: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"/></svg>`,
+    users: `<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   };
   return I[name] || '';
 }
@@ -149,17 +152,37 @@ function icon(name, cls = 'icon') {
 // ---------- Tasarım Sistemi CSS ----------
 const CSS = `
 :root{
+  /* Uygulama / program (www/css/nexus-ui.css) ile aynı açık palet. */
   --brand:#4C7DFF; --brand-press:#3F6FFF; --accent:#22D3EE;
-  --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 55%,#818CF8 100%);
+  --brand-grad:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);
   --page:#ECE9FD; --page-grad:linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
-  --surface:rgba(255, 255, 255, 0.88); --surface-2:#F6F4FE; --text:#0F172A; --text-2:#334155;
-  --muted:#64748B; --border:rgba(147, 130, 220, 0.24); --danger:#E5484D;
-  --radius:18px; --radius-lg:26px;
-  --shadow:0 4px 20px -2px rgba(99, 102, 241, 0.08); --shadow-lg:0 24px 56px -12px rgba(99, 102, 241, 0.16);
+  --surface:#FFFFFF; --surface-2:#F4F5FA; --text:#0F172A; --text-2:#334155;
+  --muted:#64748B; --border:#E6E8F0; --danger:#E5484D;
+  --radius:20px; --radius-lg:28px;
+  --shadow:0 4px 16px rgba(15, 23, 42, 0.06); --shadow-lg:0 24px 56px -12px rgba(15, 23, 42, 0.12);
   --header-h:68px; --max:1120px;
 }
 html{
   scrollbar-gutter: stable;
+}
+::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:var(--text)}
+.skip{
+  position:absolute;left:12px;top:-56px;z-index:200;background:var(--brand);color:#fff;
+  padding:10px 14px;border-radius:12px;font-weight:700;font-size:13px;
+}
+.skip:focus{top:12px;outline:2px solid #fff;outline-offset:2px}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+section[id]{scroll-margin-top:calc(var(--header-h) + 14px)}
+@media (hover: hover) and (pointer: fine){
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 35%,transparent)}
+  .step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 45%,transparent)}
+  .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .dl-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 40%,transparent)}
+  .dl-web-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+}
+@media (prefers-reduced-motion: reduce){
+  .card,.step,.plan,.dl-card,.dl-web-card,.phone-glow,.dot,.ft-status-dot,.shot-slide{animation:none;transition:none}
+  .card:hover,.step:hover,.plan:hover,.dl-card:hover,.dl-web-card:hover{transform:none}
 }
 @supports not (scrollbar-gutter: stable){
   html{overflow-y:scroll}
@@ -167,12 +190,13 @@ html{
 html.nx-modal-open,
 html.nx-modal-open body{
   overflow:hidden !important;
+  overscroll-behavior:none;
 }
 html[data-theme=dark]{
-  --page:#080C16; --page-grad:radial-gradient(120% 75% at 50% -10%, #111A2E 0%, #0C1220 50%, #080C16 100%);
-  --surface:#101726; --surface-2:#161F33; --text:#F8FAFC; --text-2:#CBD5E1;
-  --muted:#94A3B8; --border:#1E293B;
-  --shadow:0 6px 24px -2px rgba(0,0,0,.45); --shadow-lg:0 24px 64px -12px rgba(0,0,0,.7);
+  --page:#0F172A; --page-grad:linear-gradient(180deg, #020617 0%, #0F172A 100%);
+  --surface:#1E293B; --surface-2:#273449; --text:#F1F5F9; --text-2:#CBD5E1;
+  --muted:#94A3B8; --border:rgba(148, 163, 184, 0.18);
+  --shadow:0 4px 16px rgba(0, 0, 0, 0.45); --shadow-lg:0 24px 64px -12px rgba(0,0,0,.7);
 }
 *{box-sizing:border-box}
 body{
@@ -192,16 +216,25 @@ a{color:inherit;text-decoration:none}
 /* Header */
 .hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   background:color-mix(in srgb,var(--surface) 78%,transparent);border-bottom:1px solid var(--border);height:var(--header-h);display:flex;align-items:center}
-.hd .wrap{display:flex;align-items:center;width:100%}
-.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.hd .wrap{display:flex;align-items:center;width:100%;gap:8px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em;flex-shrink:0}
 .logo svg{width:32px;height:32px}
 
 .nav{display:none;gap:6px;margin-left:auto}
 .nav a{padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--text-2);transition:all .15s ease}
 .nav a:hover{background:var(--surface);color:var(--text)}
 
-.nav-controls{display:flex;align-items:center;gap:10px;margin-left:auto}
-@media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:14px}}
+.nav-controls{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+@media(min-width:960px){.nav{display:flex}.nav-controls{margin-left:14px;gap:10px}}
+@media(max-width:520px){
+  :root{--header-h:58px}
+  .hd{height:58px}
+  .hd .wrap{padding:0 12px}
+  .logo{gap:8px;font-size:16px}
+  .logo svg{width:28px;height:28px}
+  .logo span{display:none}
+  .nav-controls{gap:4px}
+}
 
 /* Dil Değiştirici (Sleek Segmented Pill Control) */
 .lang-switch{display:inline-flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);
@@ -232,26 +265,45 @@ html[data-theme=dark] .theme-t .ic-moon{display:block}
 .btn.disabled{opacity:.55;pointer-events:none}
 
 /* Hero */
-.hero{padding:36px 0 24px;position:relative}
+.hero{padding:28px 0 32px;position:relative}
 .hero::before{content:"";position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:min(920px,100vw);height:520px;
   background:radial-gradient(ellipse at center,rgba(76,125,255,.16) 0%,rgba(34,211,238,.07) 45%,transparent 70%);pointer-events:none;z-index:0}
-.hero .wrap{display:grid;gap:24px;align-items:center;position:relative;z-index:1}
-@media(min-width:960px){.hero .wrap{grid-template-columns:1.15fr .85fr;padding-top:14px;gap:36px}}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);
-  padding:6px 14px;border-radius:999px;margin-bottom:14px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent);
-  box-shadow:0 2px 10px rgba(76,125,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero .wrap{display:grid;gap:28px;align-items:center;position:relative;z-index:1}
+.hero-copy{max-width:38rem;width:100%;min-width:0}
+.hero-display{display:flex;flex-direction:column;align-items:center;text-align:center;width:fit-content;max-width:100%;margin:0 0 16px}
+.eyebrow{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--brand);background:none;padding:0;border:0;border-radius:0;margin:0 0 10px;
+  box-shadow:none;line-height:1}
+.eyebrow .icon{width:15px;height:15px}
 h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margin:0 0 16px;font-weight:900}
-.grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 50%,#818CF8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-copy h1{font-size:clamp(32px,4.8vw,62px);line-height:1.06;letter-spacing:-.045em;margin:0;text-wrap:nowrap}
+.grad{background:linear-gradient(135deg,#4C7DFF 0%,#22D3EE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .lead{font-size:clamp(15px,1.65vw,17.5px);color:var(--text-2);margin:0 0 22px;max-width:52ch;line-height:1.6}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
-.ver-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);background:var(--surface);
-  border:1px solid var(--border);padding:4px 12px;border-radius:999px;box-shadow:var(--shadow)}
-.dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite}
+.hero-copy .lead{font-size:clamp(16px,1.7vw,19px);line-height:1.5;color:var(--text);margin:0 0 10px;max-width:46ch;font-weight:500;text-align:left}
+.hero-copy .lead-sub{font-size:15px;line-height:1.55;color:var(--muted);margin:0 0 26px;max-width:48ch;text-align:left}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px 16px;margin-bottom:22px}
+.ver-chip{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:650;color:var(--text-2);
+  background:var(--surface);border:1px solid var(--border);
+  padding:6px 8px 6px 12px;border-radius:12px;box-shadow:var(--shadow);line-height:1.2;margin:0}
+.ver-chip .ver-num{display:inline-flex;align-items:center;background:var(--brand-grad);color:#fff;
+  font-size:12.5px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulseDot 2s infinite;flex-shrink:0}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-size:12.5px;color:var(--muted)}
-.trust span{display:inline-flex;align-items:center;gap:6px}
-.trust .icon{color:#10B981;width:15px;height:15px}
+.trust{display:grid;gap:10px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--text-2)}
+.trust li{display:flex;align-items:center;gap:8px}
+.trust .icon{color:#10B981;width:16px;height:16px;flex-shrink:0}
+@media(min-width:960px){
+  .hero{padding:20px 0 28px}
+  .hero .wrap{grid-template-columns:minmax(0,1fr) auto;gap:28px 40px;align-items:center;
+    min-height:calc(100dvh - var(--header-h) - 36px)}
+  .hero-copy{max-width:none}
+  .hero-copy h1{white-space:nowrap}
+  .phone-wrapper{margin:0}
+  .sec-head h2{white-space:nowrap}
+}
+@media(max-width:959px){
+  .hero-copy h1{text-wrap:balance;white-space:normal}
+}
 
 /* Telefon Ön İzleme - Ekrana Tam Sığan ve Asla Kesilmeyen Gerçek Mockup */
 .phone-wrapper{position:relative;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -261,40 +313,38 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 
 .phone-case{
   position:relative;z-index:2;
-  width:clamp(290px,28vw,340px);
+  /* Aynı kasa; yükseklik ekrana sığsın diye genişlik viewport'tan türetilir (390/844 + çerçeve). */
+  width:min(236px, 52vw, calc((100dvh - var(--header-h) - 64px) * 390 / 920));
   max-width:86vw;
   background:linear-gradient(145deg, #252834 0%, #13151b 50%, #0a0b0e 100%);
   border:2.5px solid rgba(255,255,255,.18);
-  border-radius:48px;
-  padding:8px;
-  box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 30px 60px -12px rgba(0,0,0,.65), 0 0 50px rgba(76,125,255,.18);
+  border-radius:42px;
+  padding:7px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6), 0 24px 48px -12px rgba(0,0,0,.6), 0 0 40px rgba(76,125,255,.16);
   user-select:none;
   cursor:default;
   transition:box-shadow .3s ease;
-  animation:phoneFloat 6s ease-in-out infinite;
+  animation:none;
 }
-@keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.phone-case.previewing{cursor:default}
 
-@media(max-height:800px), (max-width:600px){
-  .phone-case{width:clamp(240px,68vw,280px);border-radius:42px;padding:7px}
-  .phone-inner-screen{border-radius:35px}
-}
-@media(max-width:380px){
-  .phone-case{width:clamp(200px,75vw,240px);border-radius:36px;padding:5px}
-  .phone-inner-screen{border-radius:30px}
+@media(max-width:959px){
+  .phone-case{width:min(210px, 56vw, calc((100dvh - var(--header-h) - 48px) * 390 / 920));border-radius:38px;padding:6px}
+  .phone-inner-screen{border-radius:22px}
 }
 
 .phone-inner-screen{
   position:relative;width:100%;
   aspect-ratio:390 / 844;
-  border-radius:40px;overflow:hidden;
+  /* Ekran köşesi kasa kadar yuvarlak olursa sağdaki AI yaprağı kesilir (ölçüldü). */
+  border-radius:24px;overflow:hidden;
   background:#ECE9FD;
 }
 
 /* Dinamik Ada */
 .phone-island{
-  position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  width:72px;height:18px;background:#000;border-radius:14px;z-index:40;
+  position:absolute;top:5px;left:50%;transform:translateX(-50%);
+  width:min(64px, 28%);height:15px;background:#000;border-radius:14px;z-index:40;
   display:flex;align-items:center;justify-content:space-between;padding:0 7px;
   box-shadow:0 0 0 1px rgba(255,255,255,.06);
   pointer-events:none;
@@ -309,7 +359,7 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);
   pointer-events:none;
 }
-.shot-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.shot-slide img{width:100%;height:100%;object-fit:fill;display:block}
 .shot-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 
 /* Canli onizleme (telefonun icinde gercek uygulama).
@@ -317,12 +367,11 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    iframe 390px genislikte render alir ve kutuya sigacak sekilde olceklenir — olcek
    JS ile --nx-preview-scale degiskenine yazilir (olcumsuz sabit birakilirsa uygulama
    190px'e sikisirir ve okunmaz). */
-.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:#ECE9FD}
+.phone-preview{position:absolute;inset:0;z-index:22;display:block;background:transparent}
 .phone-preview.on{display:block}
-.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;
+.phone-preview-frame{position:absolute;top:0;left:0;width:390px;height:844px;border:0;background:transparent;
   transform-origin:top left;transform:scale(var(--nx-preview-scale,.8))}
 .phone-case.previewing .phone-arrow{display:none}
-.phone-case.previewing{cursor:default}
 .phone-modes{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:3px;backdrop-filter:blur(8px)}
 .phone-mode-btn{background:transparent;border:0;border-radius:999px;
   padding:5px 14px;min-height:30px;font:inherit;font-size:12px;font-weight:700;color:var(--text-2);
@@ -343,25 +392,28 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
    left:-50%/width:200% olan sürüm 390px'te belgeyi yatay kaydırıyordu). */
 .phone-glass-shine{
   position:absolute;top:0;left:0;width:100%;height:100%;
-  background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 40%);
-  pointer-events:none;z-index:32;border-radius:40px;
+  background:linear-gradient(135deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,0) 36%);
+  pointer-events:none;z-index:24;border-radius:inherit;
 }
 
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.phone-screen-content{position:absolute;inset:0;z-index:8;display:block}
+
 /* Gerçekçi Ekran Başlık Hapı & Minimalist Sayfalama */
-.phone-bottom-bar{
-  margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:8px;
-}
+.phone-bottom-bar{display:none}
 .phone-nav-row{
   display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
 }
 .phone-caption-pill{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--surface);border:1px solid var(--border);border-radius:999px;
-  padding:5px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;color:var(--text);
-  transition:all .2s ease;
+  display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;
+  max-width:min(340px,92vw);
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:8px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:650;color:var(--text);
+  line-height:1.35;text-align:center;
 }
 .phone-caption-pill .badge{
-  background:var(--brand-grad);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:99px;
+  background:var(--brand-grad);color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em;
+  padding:3px 8px;border-radius:99px;flex-shrink:0;
 }
 .phone-dots{
   display:flex;align-items:center;gap:2px;
@@ -398,15 +450,19 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
 }
 
 .phone-tap-hint{
-  display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;max-width:min(340px,92vw);
+  font-size:12px;color:var(--text-2);line-height:1.4;text-align:center;
 }
-.phone-tap-hint svg{width:12px;height:12px;color:var(--brand)}
+.phone-tap-hint svg{width:13px;height:13px;color:var(--brand);flex-shrink:0}
 
 /* Bölümler */
 section{padding:72px 0}
 @media(max-width:700px){section{padding:48px 0}}
-.sec-head{max-width:640px;margin-bottom:36px}
-h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margin:0 0 12px;font-weight:800}
+.sec-head{max-width:none;margin-bottom:36px}
+.sec-mark{width:48px;height:48px;margin:0 auto 14px}
+.sec-mark svg{width:48px;height:48px;display:block}
+h2{font-size:clamp(15px,calc(100vw / 32),36px);letter-spacing:-.02em;line-height:1.16;margin:0 0 12px;font-weight:800}
+.sec-head h2{white-space:nowrap}
 .sec-head p{color:var(--text-2);margin:0}
 .grid{display:grid;gap:18px}
 @media(min-width:700px){.grid.c3{grid-template-columns:repeat(3,1fr)}.grid.c2{grid-template-columns:repeat(2,1fr)}}
@@ -414,7 +470,6 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Kartlar - Asla gizli/kayıp kalmaz, opacity 1 */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:26px;box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease;position:relative;overflow:hidden}
-.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 35%,transparent)}
 .f-ic{width:50px;height:50px;border-radius:15px;background:color-mix(in srgb,var(--brand) 12%,transparent);
   color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--brand) 18%,transparent)}
 .f-ic svg{width:25px;height:25px}
@@ -424,40 +479,59 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Nasıl Çalışır (1-2-3 Adım Tasarımı) */
 .steps{display:grid;gap:20px;counter-reset:st;position:relative}
 @media(min-width:800px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow);transition:all .3s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column}
-.step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 45%,transparent)}
-.step-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 22px;box-shadow:var(--shadow);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease,border-color .3s ease;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column}
+.step-top-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .step-n{width:36px;height:36px;border-radius:12px;background:var(--brand-grad);
   color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(76,125,255,.35);flex-shrink:0}
-.step-micro-pill{font-size:10.5px;font-weight:800;letter-spacing:.05em;color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);padding:3px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--brand) 20%,transparent)}
-.step-icon-bubble{width:34px;height:34px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-2);flex-shrink:0}
+.step-micro-pill{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--muted);background:none;padding:0;border:0;border-radius:0;margin-left:auto;white-space:nowrap}
+.step-icon-bubble{width:34px;height:34px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--brand);flex-shrink:0}
 .step-icon-bubble svg{width:17px;height:17px}
 .step h3{margin:0 0 8px;font-size:17.5px;font-weight:800;letter-spacing:-.015em}
 .step p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6}
 
-/* Entegrasyonlar */
-.int-groups{display:grid;gap:18px}
-@media(min-width:800px){.int-groups{grid-template-columns:repeat(2,1fr)}}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.chip{display:inline-flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);
-  border-radius:999px;padding:9px 18px;font-size:13.5px;font-weight:700;color:var(--text);box-shadow:0 2px 8px rgba(15,23,42,.04);
-  transition:all .18s ease}
+/* Entegrasyonlar — masaüstü TCP ayrı zayıf kolon değil, HTTP'nin üstüne ekstra. */
+.int-groups{display:grid;gap:16px}
+.int-groups .card{display:flex;flex-direction:column}
+.int-logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
+.int-logo-row .brand-svg,.int-logo-row .icon{width:28px;height:28px;border-radius:8px}
+.int-kicker{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--brand);background:none;border:0;border-left:2px solid var(--brand);border-radius:0;
+  padding:0 0 0 10px;margin-bottom:10px;width:fit-content}
+.int-groups .card h3{margin:0 0 8px}
+.int-hint{margin:0 0 4px;color:var(--muted);font-size:13.5px;line-height:1.55}
+.int-desktop{display:grid;gap:16px;padding:22px 24px;border-radius:var(--radius-lg);border:1px solid color-mix(in srgb,var(--brand) 28%,var(--border));
+  background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 8%,var(--surface)) 100%);box-shadow:var(--shadow)}
+@media(min-width:720px){.int-desktop{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center}}
+.int-desktop .chips{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:12px;padding:7px 11px 7px 8px;min-height:40px;font-size:13px;font-weight:700;color:var(--text);
+  transition:border-color .18s ease,box-shadow .18s ease;line-height:1.2}
+.chip .brand-svg{width:22px;height:22px;border-radius:6px}
 .chip:hover{transform:translateY(-2px);border-color:var(--brand);box-shadow:0 6px 18px rgba(76,125,255,.2);background:var(--surface)}
 .int-more{margin-top:22px;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--brand);font:700 14px Inter,sans-serif;background:none;border:none;padding:10px 4px;cursor:pointer;transition:color .18s ease}
 .int-more:hover{color:var(--brand-press);text-decoration:underline}
-/* Entegrasyon uyarısı: doğrudan bağlayıcısı olmayan markaların gerçek koşulunu söyler. */
-.int-note{margin:22px 0 0;padding:16px 18px;border-radius:var(--radius-lg);border:1px dashed color-mix(in srgb,var(--brand) 35%,var(--border));
-  background:color-mix(in srgb,var(--brand) 5%,var(--surface));color:var(--muted);font-size:13.5px;line-height:1.6}
+/* Matter/Zigbee: doğrudan bağlayıcı yok; HA köprüsü ayrı kartta anlatılır. */
+.int-note,.int-bridge{margin:18px 0 0;padding:22px;border-radius:var(--radius-lg);border:1px solid var(--border);
+  background:var(--surface);box-shadow:var(--shadow);color:var(--text-2)}
+.int-bridge{display:grid;gap:18px}
+@media(min-width:720px){.int-bridge{grid-template-columns:1.1fr .9fr;align-items:center}}
+.int-bridge-kicker{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0 0 8px}
+.int-bridge h3{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
+.int-bridge p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.int-bridge-points{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.int-bridge-points li{display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.int-bridge-points .brand-svg,.int-bridge-points .icon{width:22px;height:22px;flex-shrink:0;margin-top:1px}
 
 /* Fiyatlar */
-#pricing{scroll-margin-top:80px;padding:48px 0 54px}
+#pricing{padding:48px 0 54px}
 .billing-toggle-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 24px}
 .billing-toggle{display:inline-flex;align-items:center;background:var(--surface);border:1px solid var(--border);
   border-radius:999px;padding:4px;box-shadow:var(--shadow)}
 .billing-btn{border:0;background:transparent;color:var(--muted);font:700 13px/1 Inter,sans-serif;
   padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .18s ease;display:inline-flex;align-items:center;gap:6px}
 .billing-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 4px 14px rgba(76,125,255,.35)}
-.save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:99px}
+.save-badge{font-size:11px;font-weight:800;background:rgba(255,255,255,.25);padding:3px 7px;border-radius:6px}
 .billing-btn:not(.active) .save-badge{background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 
 .plans{display:grid;gap:18px;width:100%;max-width:1100px;margin:22px auto 0}
@@ -466,11 +540,14 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:24px 20px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
-.plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
-.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
-  letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
+.plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:8px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
 .plan-head{min-height:auto;margin-bottom:6px;display:flex;flex-direction:column;justify-content:flex-start}
+.plan-logo{width:44px;height:44px;border-radius:14px;margin:4px 0 12px;display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--brand) 12%,transparent);color:var(--brand);flex-shrink:0}
+.plan-logo .icon{width:22px;height:22px}
+.plan.hot .plan-logo{background:color-mix(in srgb,var(--brand) 20%,transparent)}
 .plan h3{margin:0 0 6px;font-size:17.5px;font-weight:800}
 .price{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
 .price small{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0}
@@ -487,12 +564,11 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .dl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px;
   box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;
   transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
-.dl-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--brand) 40%,transparent)}
-.dl-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.dl-top{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:18px}
 .dl-ic{width:46px;height:46px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center}
+  display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .dl-ic svg{width:26px;height:26px}
-.dl-top h3{margin:0 0 2px;font-size:18px;font-weight:800}
+.dl-top h3{margin:0;font-size:18px;font-weight:800}
 .plat{color:var(--muted);font-size:13px;font-weight:500}
 .dl-meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
 .dl-meta span,.dl-sums{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;
@@ -507,7 +583,6 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
   transition:transform .2s ease,box-shadow .2s ease}
-.dl-web-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .dl-web-info{flex:1;min-width:280px}
 .dl-web-info h3{margin:0 0 6px;font-size:18px;font-weight:800}
 .dl-web-info p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
@@ -516,7 +591,8 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .faq-list{display:grid;gap:14px;max-width:800px;margin:0 auto}
 .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .faq-q{width:100%;text-align:left;background:transparent;border:0;padding:20px 22px;font:700 16px/1.4 Inter,sans-serif;
-  color:var(--text);display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  color:var(--text);display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px}
+.faq-q span{flex:1;min-width:0}
 .faq-q:hover{color:var(--brand)}
 .faq-a{padding:0 22px 20px;color:var(--text-2);font-size:14.5px;line-height:1.6;display:none}
 .faq-item.open .faq-a{display:block}
@@ -526,18 +602,20 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 /* Footer */
 .ft{border-top:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);padding:48px 0 34px;margin-top:24px}
 .ft-grid{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px}
-.ft-brand{max-width:390px;flex:1 1 300px}
-.ft-links-group{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
-.ft-col{min-width:145px}
-.ft h4{margin:0 0 14px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.ft a{display:block;font-size:14px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
+.ft-brand{max-width:390px;flex:1 1 260px}
+.ft-links-group{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;flex:1 1 420px;min-width:0}
+.ft-col{min-width:0}
+.ft h4{margin:0 0 14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.ft a{display:block;font-size:13.5px;color:var(--text-2);padding:5px 0;transition:color .15s ease}
 .ft a:hover{color:var(--brand)}
 .ft a.logo{display:inline-flex !important;align-items:center !important;gap:10px !important;font-size:20px !important;
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
-.ft-trust-row{display:flex;align-items:center;margin-top:14px}
-.ft-trust-badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.ft-trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ft-trust-badge,.ft-trust-pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;line-height:1.2;color:var(--text-2);
+  background:none;border:0;padding:0;border-radius:0;box-shadow:none}
+.ft-trust-pill .icon{width:14px;height:14px;color:var(--brand);flex-shrink:0}
 .ft-status-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
 @keyframes nxStatusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.2)}}
 .nx-form-success{display:none;text-align:center;padding:24px 16px}
@@ -549,11 +627,15 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .ft-privacy{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-align:left}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:0}
 @media(max-width:768px){
-  .ft-grid{flex-direction:column;gap:32px}
-  .ft-links-group{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;width:100%}
+  .ft-grid{flex-direction:column;gap:28px}
+  .ft-brand{max-width:none}
+  .ft-links-group{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
+  .ft a{font-size:13px;padding:4px 0}
 }
 @media(max-width:480px){
-  .ft-links-group{grid-template-columns:1fr;gap:22px}
+  .ft-links-group{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .ft h4{font-size:10px;margin-bottom:10px}
+  .ft a{font-size:12.5px}
   .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px}
 }
 
@@ -561,10 +643,26 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 .rv{opacity:1;transform:none}
 
 /* About & Yasal Belge Sayfaları */
-.about-hero{padding:64px 0 8px}
+.about-hero{padding:72px 0 28px;max-width:720px}
+.about-kicker{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand)}
+.about-hero h1{font-size:clamp(28px,4.6vw,44px);letter-spacing:-.03em;line-height:1.12;margin:0 0 14px;font-weight:800;white-space:normal}
+.about-hero .lead{font-size:17px;line-height:1.65;max-width:58ch;color:var(--text-2);margin:0}
+.about-back{margin:0 0 18px}
 .about-body{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);
   padding:28px;margin:26px 0;display:grid;gap:14px}
 .about-body p{margin:0;color:var(--text-2);font-size:15px}
+.about-card h2{font-size:22px;margin:0 0 12px;font-weight:800;letter-spacing:-.02em;white-space:normal}
+.about-card p{font-size:15px;line-height:1.75;color:var(--text-2);margin:0}
+.about-section{margin:8px 0 40px}
+.about-section > h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 8px;white-space:normal}
+.about-section > p{color:var(--muted);font-size:14.5px;margin:0 0 20px}
+.about-arch{display:grid;gap:14px}
+@media(min-width:720px){.about-arch{grid-template-columns:repeat(3,1fr)}}
+.about-arch .card{padding:22px;height:100%}
+.about-arch h3{font-size:16px;font-weight:800;margin:0 0 8px}
+.about-arch p{font-size:14px;line-height:1.6;color:var(--text-2);margin:0}
+.about-cta{margin:8px 0 24px;background:color-mix(in srgb,var(--brand) 6%,var(--surface))}
+.about-cta .btn{margin:0}
 
 .doc-hero{padding:56px 0 16px}
 .doc-hero h1{font-size:clamp(28px,4vw,38px);margin:0 0 10px;font-weight:800;letter-spacing:-.02em}
@@ -585,20 +683,27 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 
 /* İletişim & Destek Modülü (Contact Modal) */
 .nx-modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:9999;display:none;align-items:center;align-items:safe center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
-  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px 16px;opacity:0;transition:opacity .22s ease;
+  overflow:hidden;overscroll-behavior:none;
 }
 .nx-modal-backdrop.open{display:flex;opacity:1}
 .nx-modal-card{
   background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 24px 64px -12px rgba(0,0,0,.55);
-  width:100%;max-width:440px;padding:22px 24px 20px;position:relative;
-  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+  width:100%;max-width:440px;max-height:min(92dvh, calc(100% - 24px));padding:22px 24px 20px;position:relative;
+  transform:scale(.96);transition:transform .22s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
 }
 #nxAuthModal.nx-account-open .nx-modal-card{
-  max-width:400px;padding:28px 18px 16px;
+  max-width:420px;padding:28px 18px 16px;
   background:
-    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 72%),
+    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 72%),
+    #fff;
+}
+html[data-theme=dark] #nxAuthModal.nx-account-open .nx-modal-card{
+  background:
+    radial-gradient(90% 140px at 50% 0%, color-mix(in srgb, var(--brand) 22%, transparent), transparent 72%),
     var(--surface);
 }
 .nx-modal-backdrop.open .nx-modal-card{transform:scale(1)}
@@ -638,8 +743,15 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 }
 .nx-auth-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--surface-2)}
 .nx-auth-btn.logged-in{
-  border-color:color-mix(in srgb,var(--brand) 45%,transparent);color:var(--text);
-  background:color-mix(in srgb,var(--brand) 10%,var(--surface));padding:4px 14px 4px 6px;
+  border-color:transparent;background:transparent;box-shadow:none;color:var(--text);padding:2px 6px 2px 2px;
+}
+.nx-auth-btn.logged-in:hover{background:color-mix(in srgb,var(--brand) 8%,transparent);border-color:transparent;color:var(--text)}
+@media(max-width:520px){
+  .nx-auth-btn{width:38px;padding:0;justify-content:center}
+  .nx-auth-btn .nx-nav-label{display:none}
+  .lang-switch{height:34px;padding:2px}
+  .lang-btn{height:28px;padding:0 9px;font-size:11px}
+  .theme-t{width:34px;height:34px}
 }
 .nx-nav-label{
   max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;
@@ -744,24 +856,33 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
   display:block;margin-top:3px;font-size:13.5px;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.nx-account-plan{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:18px;
-  padding:14px 14px 12px;margin:0 2px 12px;
+.nx-account-now{
+  margin:0 4px 10px;font-size:12.5px;font-weight:600;color:var(--muted);text-align:center;line-height:1.4;
 }
-.nx-account-plan-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.nx-account-kicker{
-  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+.nx-offer{
+  margin:0 2px 12px;padding:1px;border-radius:20px;background:var(--brand-grad);
+  box-shadow:0 16px 36px rgba(76,125,255,.16);
 }
+.nx-offer-inner{
+  background:var(--surface);border-radius:19px;padding:16px 16px 14px;
+}
+html[data-theme=dark] .nx-offer-inner{background:#101726}
+.nx-offer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .nx-plan-tag{
   background:var(--brand-grad);color:#fff;font-size:12px;font-weight:700;
-  padding:4px 10px;border-radius:999px;line-height:1.2;white-space:nowrap;flex-shrink:0;
+  padding:4px 10px;border-radius:999px;line-height:1.2;white-space:nowrap;display:inline-flex;
 }
-.nx-account-perks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
-.nx-account-perks li{
-  display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;color:var(--text-2);line-height:1.35;
+.nx-plan-tag.is-free{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.nx-offer-price{text-align:right;line-height:1}
+.nx-offer-price b{font-size:22px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+.nx-offer-price small{display:block;margin-top:3px;font-size:12px;font-weight:600;color:var(--muted)}
+.nx-offer-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:9px}
+.nx-offer-list li{
+  display:flex;align-items:flex-start;gap:8px;font-size:13.5px;font-weight:600;
+  color:var(--text);line-height:1.35;
 }
-.nx-account-perks svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;color:var(--brand)}
-.nx-account-save{margin:12px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
+.nx-offer-list svg{width:16px;height:16px;color:#10B981;flex-shrink:0;margin-top:1px}
+.nx-account-save{margin:8px 0 0;font-size:12.5px;color:var(--muted);line-height:1.4}
 .nx-account-upgrade{
   display:flex;align-items:center;justify-content:center;margin-top:14px;min-height:44px;
   border-radius:999px;background:var(--brand-grad);color:#fff;font-weight:700;font-size:14.5px;
@@ -769,7 +890,7 @@ h2{font-size:clamp(24px,3.8vw,36px);letter-spacing:-.02em;line-height:1.16;margi
 }
 .nx-account-upgrade:hover{opacity:.94}
 a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
-.nx-account-upgrade.is-hidden,.nx-account-save.is-hidden,.nx-account-perks.is-hidden{display:none !important}
+.nx-offer-list.is-hidden,.nx-account-item.is-hidden,.nx-account-upgrade.is-hidden,.nx-account-save.is-hidden,.nx-account-now.is-hidden,.nx-offer-price.is-hidden{display:none !important}
 .nx-account-menu{
   border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface-2);margin:0 2px;
 }
@@ -794,21 +915,25 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 }
 .nx-account-signout .nx-account-item-copy b{color:var(--danger)}
 .nx-contact-security-note{
-  font-size:11px;color:var(--muted);margin:8px 0 0;text-align:center;display:flex;align-items:center;
-  justify-content:center;gap:5px;
+  font-size:12.5px;color:var(--text-2);margin:12px 0 0;text-align:left;display:flex;align-items:flex-start;
+  justify-content:flex-start;gap:10px;line-height:1.45;padding:12px 14px;border-radius:14px;
+  background:color-mix(in srgb,var(--brand) 8%,var(--surface-2));border:1px solid color-mix(in srgb,var(--brand) 18%,var(--border));
 }
-.nx-contact-security-note svg{width:12px;height:12px;color:var(--brand);flex-shrink:0}
+.nx-contact-security-note svg{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin-top:1px}
 
 /* Özel NEXUS Dialog (Alert / Prompt) */
 .nx-dialog-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:100%;height:100dvh;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   z-index:10050;display:none;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .2s ease;
+  overflow:hidden;overscroll-behavior:none;
 }
 .nx-dialog-backdrop.open{display:flex;opacity:1}
 .nx-dialog-card{
   background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 24px 20px;
-  width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
-  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:auto;
+  width:100%;max-width:380px;max-height:min(92dvh, calc(100% - 24px));text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.55);
+  transform:scale(.95);transition:transform .2s cubic-bezier(.16,1,.3,1);box-sizing:border-box;margin:0;
+  overflow-y:auto;overscroll-behavior:contain;
 }
 .nx-dialog-backdrop.open .nx-dialog-card{transform:scale(1)}
 .nx-dialog-icon{
@@ -841,6 +966,13 @@ function pageJs() {
   document.documentElement.setAttribute('data-theme',d);
 })();
 
+// Yenilemede tarayıcı eski kaydırmayı geri yüklemesin; hash yoksa tepeye in.
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+if(!location.hash){
+  window.scrollTo(0,0);
+  document.addEventListener('DOMContentLoaded',function(){ if(!location.hash) window.scrollTo(0,0); });
+}
+
 function nxToggleTheme(){
   var d=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',d);
@@ -865,16 +997,52 @@ function nxSetLang(lang){
   }
 }
 
-// Modal Açıldığında Sayfanın Sağa/Sola Kaymasını Önleyen Kilit
+// Modal açıkken sayfa kaymasın: gövde sabitlenir, tekerlek arka plana gitmez.
+var nxScrollY=0;
+var nxScrollLocked=false;
+function nxGuardModalScroll(e){
+  var node=e.target;
+  while(node && node!==document.body){
+    if(node.classList && (node.classList.contains('nx-modal-card') || node.classList.contains('nx-dialog-card'))){
+      if(node.scrollHeight<=node.clientHeight+1){ e.preventDefault(); return; }
+      if(e.touches) return;
+      var dy=e.deltaY||0;
+      if((dy<0 && node.scrollTop<=0) || (dy>0 && node.scrollTop+node.clientHeight>=node.scrollHeight-1)) e.preventDefault();
+      return;
+    }
+    node=node.parentNode;
+  }
+  e.preventDefault();
+}
 function nxLockScroll(){
   document.documentElement.classList.add('nx-modal-open');
+  if(nxScrollLocked) return;
+  nxScrollLocked=true;
+  nxScrollY=window.scrollY||document.documentElement.scrollTop||0;
+  var b=document.body;
+  b.style.position='fixed';
+  b.style.top='-'+nxScrollY+'px';
+  b.style.left='0';
+  b.style.right='0';
+  b.style.width='100%';
+  document.addEventListener('wheel',nxGuardModalScroll,{passive:false,capture:true});
+  document.addEventListener('touchmove',nxGuardModalScroll,{passive:false,capture:true});
 }
-
 function nxUnlockScroll(){
-  var anyOpen = document.querySelectorAll('.nx-modal-backdrop.open').length > 0;
-  if(!anyOpen){
-    document.documentElement.classList.remove('nx-modal-open');
-  }
+  var anyOpen=document.querySelectorAll('.nx-modal-backdrop.open,.nx-dialog-backdrop.open').length>0;
+  if(anyOpen) return;
+  document.documentElement.classList.remove('nx-modal-open');
+  if(!nxScrollLocked) return;
+  nxScrollLocked=false;
+  document.removeEventListener('wheel',nxGuardModalScroll,true);
+  document.removeEventListener('touchmove',nxGuardModalScroll,true);
+  var b=document.body;
+  b.style.position='';
+  b.style.top='';
+  b.style.left='';
+  b.style.right='';
+  b.style.width='';
+  window.scrollTo(0,nxScrollY);
 }
 
 // İletişim & Destek Modülü Kontrolleri
@@ -1179,6 +1347,7 @@ function nxOpenAuthModal(){
     }
     var planTag=document.getElementById('nxProfilePlanTag');
     if(planTag){
+      planTag.classList.toggle('is-free', !plusActive);
       if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : 'Free';
       else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : 'NEXUS+ · Yearly';
       else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : 'NEXUS+ · Monthly';
@@ -1189,9 +1358,7 @@ function nxOpenAuthModal(){
     if(perksFree)perksFree.classList.toggle('is-hidden', plusActive);
     if(perksPlus)perksPlus.classList.toggle('is-hidden', !plusActive);
     var upgrade=document.getElementById('nxProfileUpgrade');
-    var saveNote=document.getElementById('nxProfileSaveNote');
     if(upgrade)upgrade.classList.toggle('is-hidden', plusActive);
-    if(saveNote)saveNote.classList.toggle('is-hidden', plusActive);
     m.classList.add('nx-account-open');
     m.setAttribute('aria-labelledby','nxProfileNameDisplay');
   }else{
@@ -1487,18 +1654,112 @@ function nxSetBilling(period){
       ? ('Yıllık ' + bundle.price.yearly + ' olarak faturalandırılır (%' + bundle.save + ' tasarruf)')
       : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
     if(cta){
-      if(cta.dataset.yearlyHref)cta.href=cta.dataset.yearlyHref;
-      if(cta.dataset.yearlyLabel)cta.textContent=cta.dataset.yearlyLabel;
+      cta.dataset.plan=isYearly?cta.dataset.yearlyPlan:cta.dataset.monthlyPlan;
+      if(cta.dataset.yearlyLabel && isYearly)cta.textContent=cta.dataset.yearlyLabel;
+      if(cta.dataset.monthlyLabel && !isYearly)cta.textContent=cta.dataset.monthlyLabel;
     }
   }else{
     if(priceVal)priceVal.textContent=bundle.price.monthly;
     if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
     if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
     if(cta){
-      if(cta.dataset.monthlyHref)cta.href=cta.dataset.monthlyHref;
+      cta.dataset.plan=cta.dataset.monthlyPlan;
       if(cta.dataset.monthlyLabel)cta.textContent=cta.dataset.monthlyLabel;
     }
   }
+}
+
+function nxOpenCheckout(e){
+  if(e && e.preventDefault) e.preventDefault();
+  var cta=document.getElementById('nexusPlusCta');
+  var box=document.getElementById('nxCheckoutMount');
+  var modal=document.getElementById('nxCheckoutModal');
+  if(!cta||!box||!modal) return false;
+  var yearly=document.getElementById('billingYearly');
+  var plan=(yearly && yearly.classList.contains('active') && cta.dataset.yearlyPlan) ? cta.dataset.yearlyPlan : (cta.dataset.plan || cta.dataset.monthlyPlan);
+  if(!plan) return false;
+  box.innerHTML='';
+  var el=document.createElement('div');
+  el.id='whop-embedded-checkout';
+  el.setAttribute('data-whop-checkout-plan-id', plan);
+  el.setAttribute('data-whop-checkout-return-url', location.href.split('#')[0]);
+  box.appendChild(el);
+  var old=document.getElementById('nxWhopLoader');
+  if(old) old.remove();
+  var s=document.createElement('script');
+  s.id='nxWhopLoader';
+  s.src='https://js.whop.com/static/checkout/loader.js';
+  s.async=true;
+  document.body.appendChild(s);
+  modal.style.display='flex';
+  setTimeout(function(){ modal.classList.add('open'); }, 10);
+  nxLockScroll();
+  return false;
+}
+function nxCloseCheckout(){
+  var modal=document.getElementById('nxCheckoutModal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  setTimeout(function(){
+    modal.style.display='none';
+    var box=document.getElementById('nxCheckoutMount');
+    if(box) box.innerHTML='';
+    nxUnlockScroll();
+  }, 220);
+}
+function nxCloudSession(){
+  try { return JSON.parse(localStorage.getItem('nexus_cloud_session')||'null'); } catch(err){ return null; }
+}
+function nxOpenBilling(){
+  var panel=document.getElementById('nxBillingPanel');
+  if(panel) panel.style.display='block';
+  nxLoadBilling('status');
+}
+function nxLoadBilling(action){
+  var status=document.getElementById('nxBillingStatus');
+  var pays=document.getElementById('nxBillingPays');
+  var cancelBtn=document.getElementById('nxBillingCancel');
+  var isTr=document.documentElement.lang==='tr';
+  var session=nxCloudSession();
+  var cfg=nxCloudConfig();
+  if(!session||!session.accessToken||!cfg.url||!cfg.anonKey){
+    if(status) status.textContent=isTr?'Aboneliği görmek için yeniden giriş yap.':'Sign in again to see the subscription.';
+    if(cancelBtn) cancelBtn.style.display='none';
+    return;
+  }
+  if(status) status.textContent=isTr?'Yükleniyor…':'Loading…';
+  fetch(cfg.url+'/functions/v1/whop-account',{
+    method:'POST',
+    headers:{ Authorization:'Bearer '+session.accessToken, apikey:cfg.anonKey, 'Content-Type':'application/json' },
+    body:JSON.stringify({ action: action==='cancel'?'cancel':'status' })
+  }).then(function(r){
+    return r.json().then(function(d){ return { ok:r.ok, d:d }; });
+  }).then(function(res){
+    if(!res.ok){
+      if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+      if(cancelBtn) cancelBtn.style.display='none';
+      return;
+    }
+    var m=res.d.membership;
+    if(!m){
+      if(status) status.textContent=isTr?'Bu hesapta NEXUS+ aboneliği yok.':'This account has no NEXUS+ subscription.';
+      if(cancelBtn) cancelBtn.style.display='none';
+    }else{
+      var when=m.periodEnd ? new Date(m.periodEnd).toLocaleDateString(isTr?'tr-TR':'en-US') : '';
+      if(status) status.textContent=(m.plan||'NEXUS+')+(m.cancelAtPeriodEnd?(isTr?' · dönem sonunda bitecek':' · ends at period end'):'')+(when?(isTr?' · yenileme ':' · renews ')+when:'');
+      if(cancelBtn) cancelBtn.style.display=m.cancelAtPeriodEnd?'none':'flex';
+    }
+    if(pays){
+      pays.innerHTML='';
+      (res.d.payments||[]).forEach(function(pmt){
+        var li=document.createElement('li');
+        li.textContent=[pmt.amount, pmt.currency, pmt.status].filter(Boolean).join(' · ');
+        pays.appendChild(li);
+      });
+    }
+  }).catch(function(){
+    if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+  });
 }
 
 // SSS tek-açıklık davranışı
@@ -1570,13 +1831,60 @@ function nxScalePreview(){
   box.style.setProperty('--nx-preview-scale',(w/390).toFixed(4));
 }
 
+function nxUseShotFallback(){
+  var prev=document.getElementById('phonePreview');
+  var shots=document.querySelector('.phone-screen-content');
+  var mock=document.getElementById('phoneMockup');
+  if(prev) prev.style.display='none';
+  if(shots){ shots.style.display='block'; shots.removeAttribute('aria-hidden'); }
+  if(mock) mock.classList.remove('previewing');
+  nxPreviewOn=false;
+  nxResetShotTimer();
+}
+function nxPreviewLooksEmpty(frame){
+  try{
+    var href=frame.contentWindow && frame.contentWindow.location && frame.contentWindow.location.href;
+    return !href || href==='about:blank';
+  }catch(e){
+    return false;
+  }
+}
 function nxBootPreview(){
   var frame=document.getElementById('phonePreviewFrame');
+  var shots=document.querySelector('.phone-screen-content');
+  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if(frame){
     var d=frame.getAttribute('data-src');
     if(d && !frame.getAttribute('src')) frame.setAttribute('src',d);
   }
   nxScalePreview();
+  if(local){
+    nxUseShotFallback();
+    return;
+  }
+  if(!frame) return;
+  frame.style.opacity='0';
+  var settled=false;
+  function ok(){
+    if(settled) return;
+    settled=true;
+    frame.style.opacity='1';
+    if(shots) shots.style.display='none';
+  }
+  function fail(){
+    if(settled) return;
+    settled=true;
+    nxUseShotFallback();
+  }
+  frame.addEventListener('load',function(){
+    if(nxPreviewLooksEmpty(frame)) fail();
+    else ok();
+  });
+  frame.addEventListener('error',fail);
+  setTimeout(function(){
+    if(nxPreviewLooksEmpty(frame)) fail();
+    else ok();
+  },2200);
 }
 
 function nxSetPhoneMode(mode){
@@ -1692,11 +2000,15 @@ function renderHeader(c, currentPath = '') {
       trHref = `/tr/${clean}.html?lang=tr`;
     }
   }
-  return `<header class="hd">
+  return `<a class="skip" href="#main">${isTr ? 'İçeriğe geç' : 'Skip to content'}</a>
+<header class="hd">
   <div class="wrap">
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
     <nav class="nav" aria-label="${isTr ? 'Ana menü' : 'Main menu'}">
-      ${c.nav.map(([href, label]) => `<a href="${href}">${esc(label)}</a>`).join('\n      ')}
+      ${c.nav.map(([href, label]) => {
+        const h = currentPath && href.startsWith('#') ? c.canonical + href : href;
+        return `<a href="${h}">${esc(label)}</a>`;
+      }).join('\n      ')}
     </nav>
     <div class="nav-controls">
       <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
@@ -1737,26 +2049,33 @@ function renderHero(c, hasShots) {
       ]
     : [];
 
+  const leadBits = String(c.hero.lead).match(/^(.+?[.!?])\s+(.+)$/);
+  const leadMain = leadBits ? leadBits[1] : c.hero.lead;
+  const leadSub = leadBits ? leadBits[2] : '';
+
   return `<section class="hero" id="top">
   <div class="wrap">
-    <div>
-      <span class="eyebrow">${icon('sparkles', 'icon')}${esc(c.hero.eyebrow)}</span>
-      <h1>${esc(c.hero.h1a)}<br><span class="grad">${esc(c.hero.h1b)}</span></h1>
-      <p class="lead">${esc(c.hero.lead)}</p>
+    <div class="hero-copy">
+      <div class="hero-display">
+        <span class="eyebrow">${icon('sparkles', 'icon')}${esc(c.hero.eyebrow)}</span>
+        <h1>${esc(c.hero.h1a)} <span class="grad">${esc(c.hero.h1b)}</span></h1>
+      </div>
+      <p class="lead">${esc(leadMain)}</p>
+      ${leadSub ? `<p class="lead-sub">${esc(leadSub)}</p>` : ''}
       <div class="hero-cta">
         <a class="btn btn-primary" href="${c.hero.primary.href}">${esc(c.hero.primary.label)}</a>
+        <p class="ver-chip"><span class="dot"></span><span>${esc(c.hero.versionNote)}</span><b class="ver-num" data-nexus-ver>${APP_VERSION}</b></p>
       </div>
-      <p class="ver-chip"><span class="dot"></span>${esc(c.hero.versionNote)}: <b data-nexus-ver>${APP_VERSION}</b></p>
-      <div class="trust">
-        ${c.hero.trust.map((t) => `<span>${icon('check')}${esc(t)}</span>`).join('\n        ')}
-      </div>
+      <ul class="trust">
+        ${c.hero.trust.map((t) => `<li>${icon('check')}${esc(t)}</li>`).join('\n        ')}
+      </ul>
     </div>
     ${
       hasShots
         ? `
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case" id="phoneMockup" title="${isTr ? 'Canlı mobil uygulamayı doğrudan ekrandan deneyin' : 'Interact directly with the live mobile app'}">
+      <div class="phone-case previewing" id="phoneMockup" title="${isTr ? 'Uygulamada gez — özellikler bu önizlemede kapalı' : 'Browse the app — features stay locked in this preview'}">
         <div class="phone-inner-screen">
           <div class="phone-island">
             <span class="island-camera"></span>
@@ -1764,22 +2083,16 @@ function renderHero(c, hasShots) {
           </div>
           <!-- Canlı Mobil Uygulama: Doğrudan Ana Sayfada (stitch-home) başlar -->
           <div class="phone-preview on" id="phonePreview">
-            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="${isTr ? 'NEXUS mobil uygulamasının canlı önizlemesi' : 'Live preview of the NEXUS mobile app'}" data-src="${APP_URL}/stitch-home.html?preview=1" loading="lazy" referrerpolicy="no-referrer"></iframe>
+            <iframe class="phone-preview-frame" id="phonePreviewFrame" title="${isTr ? 'NEXUS mobil uygulamasının önizlemesi' : 'Preview of the NEXUS mobile app'}" data-src="${APP_URL}/stitch-home.html?preview=1"></iframe>
           </div>
-          <div class="phone-screen-content" aria-hidden="true" style="display:none">
+          <div class="phone-screen-content" aria-hidden="true">
             ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
         </div>
       </div>
-      <div class="phone-bottom-bar">
-        <div class="phone-caption-pill" id="phoneCaptionPill">
-          <span class="badge">CANLI</span>
-          <span id="phonePreviewNote">${isTr ? 'İnteraktif Uygulama — Odaları ve cihazları doğrudan yönetin' : 'Interactive App — Control rooms and devices directly'}</span>
-        </div>
-        <span class="phone-tap-hint" id="phoneTapHint">${icon('sparkles')}${isTr ? 'Sayfa yenilenince ana ekrana döner' : 'Resets to home screen when page reloads'}</span>
-      </div>
+      <span id="phonePreviewNote" class="sr-only">${isTr ? 'Gerçek uygulama arayüzü — ekranlarda gez, özellikler kapalı' : 'Real app screens — browse around, features stay locked'}</span>
     </div>`
         : ''
     }
@@ -1800,7 +2113,7 @@ function renderFeatures(c) {
 
 function renderHow(c) {
   const isTr = c.lang === 'tr';
-  const stepIcons = ['wifi', 'zap', 'shield'];
+  const stepIcons = ['wifi', 'zap', 'home'];
   const stepBadges = isTr
     ? ['01 • AĞ KEŞFİ', '02 • ANINDA EŞLE', '03 • YEREL ÇALIŞTIR']
     : ['01 • LAN SCAN', '02 • INSTANT PAIR', '03 • LOCAL RUN'];
@@ -1833,10 +2146,59 @@ function integrationGroups(c) {
   const label = (b) => String(b).replace(/\s*\([^)]*\)\s*/g, '').trim();
   const brands = (av) => DEVICE_MATRIX.filter((d) => d.availability === av).map((d) => label(d.brand));
   const groups = [];
-  if (brands('all').length) groups.push([isTr ? 'Yerel HTTP — her platformda' : 'Local HTTP — on every platform', brands('all')]);
-  if (brands('desktop').length) groups.push([isTr ? 'Yerel TCP — masaüstü uygulamasında' : 'Local TCP — desktop app', brands('desktop')]);
-  if (brands('soon').length) groups.push([isTr ? 'Doğrudan bağlayıcı yakında' : 'Direct connector coming soon', brands('soon')]);
+  if (brands('all').length) {
+    groups.push({
+      kind: 'http',
+      kicker: isTr ? 'HTTP · her yüzey' : 'HTTP · every surface',
+      title: isTr ? 'Yerel HTTP' : 'Local HTTP',
+      hint: isTr
+        ? 'Masaüstü programı, Android ve web aynı bağlayıcıları kullanır. Cihazın kendi HTTP arayüzüne, senin ağından.'
+        : 'The desktop program, Android and the web app share these connectors. Straight to the device HTTP API on your LAN.',
+      items: brands('all'),
+    });
+  }
+  if (brands('desktop').length) {
+    groups.push({
+      kind: 'desktop',
+      kicker: isTr ? 'Masaüstü programında ekstra' : 'Extra on the desktop program',
+      title: isTr ? 'Masaüstünde yerel TCP' : 'Local TCP on desktop',
+      hint: isTr
+        ? 'Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP ile TP-Link Kasa ve Yeelight eklenir. Telefonda ve webde HTTP listesi durur.'
+        : 'The Windows and Linux programs run every HTTP brand above, and add local TCP for TP-Link Kasa and Yeelight. On phone and web the HTTP list still applies.',
+      items: brands('desktop'),
+    });
+  }
+  if (brands('soon').length) {
+    groups.push({
+      kind: 'soon',
+      kicker: isTr ? 'Yakında' : 'Coming soon',
+      title: isTr ? 'Doğrudan bağlayıcı yakında' : 'Direct connector coming soon',
+      hint: '',
+      items: brands('soon'),
+    });
+  }
   return groups;
+}
+
+function renderIntGroup(g) {
+  const chips = `<div class="chips">${g.items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div>`;
+  const logos =
+    g.kind === 'desktop'
+      ? `${getPlatformLogo('windows')}${getPlatformLogo('linux')}${g.items.map((i) => getBrandLogo(i)).join('')}`
+      : '';
+  const mark = logos ? `<div class="int-logo-row" aria-hidden="true">${logos}</div>` : '';
+  if (g.kind === 'desktop') {
+    return `<div class="int-desktop rv">
+      <div>
+        ${mark}
+        <span class="int-kicker">${esc(g.kicker)}</span>
+        <h3>${esc(g.title)}</h3>
+        <p class="int-hint">${esc(g.hint)}</p>
+      </div>
+      ${chips}
+    </div>`;
+  }
+  return `<div class="card rv">${mark}<span class="int-kicker">${esc(g.kicker)}</span><h3>${esc(g.title)}</h3>${g.hint ? `<p class="int-hint">${esc(g.hint)}</p>` : ''}${chips}</div>`;
 }
 
 function renderIntegrations(c) {
@@ -1845,11 +2207,21 @@ function renderIntegrations(c) {
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.integrations.heading)}</h2><p>${esc(c.integrations.lead)}</p></div>
     <div class="int-groups">
-      ${integrationGroups(c).map(([g, items]) => `<div class="card rv"><h3>${esc(g)}</h3><div class="chips">${items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div></div>`).join('\n      ')}
+      ${integrationGroups(c).map(renderIntGroup).join('\n      ')}
     </div>
-    <p class="int-note rv">${isTr
-      ? 'Matter ve Zigbee protokolleri kendi Home Assistant sunucun üzerinden eklenir; NEXUS diğer tüm markalarla doğrudan yerel ağında konuşur.'
-      : 'Matter and Zigbee protocols connect through your own Home Assistant server; NEXUS communicates directly with all other brands on your local network.'}</p>
+    <div class="int-note int-bridge rv">
+      <div>
+        <p class="int-bridge-kicker">${icon('layers')} ${isTr ? 'Köprü ile eklenenler' : 'Added through a bridge'}</p>
+        <h3>${isTr ? 'Matter ve Zigbee' : 'Matter and Zigbee'}</h3>
+        <p>${isTr
+          ? 'NEXUS’ta doğrudan Matter veya Zigbee bağlayıcısı yok. Bu cihazlar kendi Home Assistant sunucuna eklenir; NEXUS o sunucuyla yerel ağında konuşur.'
+          : 'NEXUS has no direct Matter or Zigbee connector. Those devices join your own Home Assistant server; NEXUS talks to that server on your LAN.'}</p>
+      </div>
+      <ul class="int-bridge-points">
+        <li>${getBrandLogo('Matter')}<span><b>Matter / Zigbee</b> — ${isTr ? 'yalnızca kendi Home Assistant sunucun üzerinden' : 'only through your own Home Assistant server'}</span></li>
+        <li>${icon('wifi')}<span><b>${isTr ? 'Diğer markalar' : 'Other brands'}</b> — ${isTr ? 'doğrudan yerel ağ, üretici bulutu yok' : 'direct LAN, no vendor cloud in the path'}</span></li>
+      </ul>
+    </div>
     <button type="button" class="int-more" onclick="nxOpenContactModal('${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}')">${esc(c.integrations.more)} ${icon('arrow')}</button>
   </div>
 </section>`;
@@ -1865,6 +2237,7 @@ function renderPricing(c) {
   return `<section id="pricing">
   <div class="wrap">
     <div class="sec-head rv" style="text-align:center;margin:0 auto 28px">
+      <div class="sec-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="nx-pricing-lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nx-pricing-lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>${esc(c.pricing.heading)}</h2>
       <p>${esc(c.pricing.lead)}</p>
     </div>
@@ -1887,6 +2260,7 @@ function renderPricing(c) {
       <div class="plan rv">
         <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">${isTr ? 'Temel Başlangıç' : 'Starter'}</span>
         <div class="plan-head">
+          <div class="plan-logo" aria-hidden="true">${icon('home')}</div>
           <h3>${esc(c.pricing.plans[0].name)}</h3>
           <div class="price">${c.pricing.plans[0].price} <small>/ ${esc(c.pricing.plans[0].period)}</small></div>
           <p class="price-note">${isTr ? 'Cihaz veya oda sınırı yok' : 'No device or room limits'}</p>
@@ -1901,6 +2275,7 @@ function renderPricing(c) {
       <div class="plan hot rv" id="nexusPlusPlan">
         <span class="plan-badge">${esc(c.pricing.plans[1].badge)}</span>
         <div class="plan-head">
+          <div class="plan-logo" aria-hidden="true">${icon('sparkles')}</div>
           <h3>${esc(c.pricing.plans[1].name)}</h3>
           <div class="price"><span id="planPriceVal">${p.monthly}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
           <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
@@ -1908,7 +2283,7 @@ function renderPricing(c) {
         <ul>
           ${c.pricing.plans[1].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
-        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${monthlyCheckout}" data-monthly-href="${monthlyCheckout}" data-yearly-href="${yearlyCheckout}" data-monthly-label="${esc(c.pricing.plans[1].cta.monthlyLabel || c.pricing.plans[1].cta.label)}" data-yearly-label="${esc(c.pricing.plans[1].cta.yearlyLabel || c.pricing.plans[1].cta.label)}" target="_blank" rel="noopener">
+        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${c.canonical}#pricing" data-monthly-plan="${monthlyCheckout.split('/').pop()}" data-yearly-plan="${yearlyCheckout.split('/').pop()}" data-monthly-label="${esc(c.pricing.plans[1].cta.monthlyLabel || c.pricing.plans[1].cta.label)}" data-yearly-label="${esc(c.pricing.plans[1].cta.yearlyLabel || c.pricing.plans[1].cta.label)}" onclick="return nxOpenCheckout(event)">
           ${esc(c.pricing.plans[1].cta.label)}
         </a>
       </div>
@@ -1917,6 +2292,7 @@ function renderPricing(c) {
       <div class="plan rv">
         <span class="plan-badge" style="background:linear-gradient(135deg,#10B981,#059669)">${esc(c.pricing.plans[2].badge)}</span>
         <div class="plan-head">
+          <div class="plan-logo" aria-hidden="true">${icon('users')}</div>
           <h3>${esc(c.pricing.plans[2].name)}</h3>
           <div class="price">${isTr ? 'Dahil' : 'Included'} <small>/ ${esc(c.pricing.plans[2].period)}</small></div>
           <p class="price-note">${isTr ? 'Tüm aile fertleri için hazır' : 'Ready for the whole family'}</p>
@@ -1951,7 +2327,8 @@ function renderDownloads(c) {
           ([plat, ic, name, sub, file, ext]) => `<div class="dl-card rv" data-platform="${plat}">
         <div class="dl-top">
           <div class="dl-ic">${getPlatformLogo(plat)}</div>
-          <div><h3>${esc(name)}</h3><span class="plat">${esc(sub)}</span></div>
+          <h3>${esc(name)}</h3>
+          <span class="plat">${esc(sub)}</span>
         </div>
         <div class="dl-meta">
           <span><b data-nexus-ver>${APP_VERSION}</b></span>
@@ -1973,7 +2350,7 @@ function renderFaq(c) {
   <div class="wrap">
     <div class="sec-head rv" style="text-align:center;margin:0 auto 36px"><h2>${esc(c.faq.heading)}</h2></div>
     <div class="faq-list">
-      ${c.faq.items.map(([q, a], i) => `<div class="faq-item rv${i === 0 ? ' open' : ''}"><button class="faq-q" aria-expanded="${i === 0 ? 'true' : 'false'}" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><p>${esc(a)}</p></div></div>`).join('\n      ')}
+      ${c.faq.items.map(([q, a]) => `<div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><p>${esc(a)}</p></div></div>`).join('\n      ')}
     </div>
   </div>
 </section>`;
@@ -1994,10 +2371,9 @@ function renderFooter(c) {
         <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
         <p>${esc(c.footer.tagline)}</p>
         <div class="ft-trust-row">
-          <div class="ft-trust-badge">
-            <span class="ft-status-dot"></span>
-            <span>${c.lang === 'tr' ? 'Yerel Ağ Şifreli — Sıfır Telemetri &amp; Tam Bağımsızlık' : 'Local LAN Encrypted — Zero Telemetry &amp; Absolute Privacy'}</span>
-          </div>
+          <span class="ft-trust-pill">${icon('lock')}${c.lang === 'tr' ? 'Yerel ağ' : 'On your LAN'}</span>
+          <span class="ft-trust-pill"><span class="ft-status-dot"></span>${c.lang === 'tr' ? 'Analitik yok' : 'No analytics'}</span>
+          <span class="ft-trust-pill">${icon('shield')}${c.lang === 'tr' ? 'Hesap gerekir' : 'Account required'}</span>
         </div>
       </div>
       <div class="ft-links-group">
@@ -2008,7 +2384,7 @@ function renderFooter(c) {
     </div>
     <div class="ft-bottom">
       <span>© ${new Date().getFullYear()} NEXUS. ${esc(c.footer.rights)}</span>
-      <span class="ft-privacy">${icon('lock')} ${c.lang === 'tr' ? 'Yerel kontrol hesap gerektirmez.' : 'Local control needs no account.'}</span>
+      <span class="ft-privacy">${icon('lock')} ${c.lang === 'tr' ? 'Cihaz komutları yerel ağında çalışır.' : 'Device commands stay on your LAN.'}</span>
     </div>
   </div>
 </footer>`;
@@ -2070,6 +2446,34 @@ function renderContactModal(c) {
 
 function renderAuthModal(c) {
   const isTr = c.lang === 'tr';
+  const p = priceFor(c.lang);
+  const tick = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg>`;
+  const freeLines = isTr
+    ? [
+        'Sınırsız cihaz ve oda',
+        'Yerel otomasyon ve sahneler',
+        'Günde 30 AI komutu',
+        'Cihazlar arasında eşitleme',
+      ]
+    : [
+        'Unlimited devices and rooms',
+        'Local automations and scenes',
+        '30 AI commands a day',
+        'Sync across your devices',
+      ];
+  const offerLines = isTr
+    ? [
+        'Günde 30 yerine ayda 2.000 AI yanıtı',
+        'NEXUS AI ile doğal dille senaryo ve soru',
+        'Tek hesap, tüm cihazlarında geçerli',
+        'Dönem sonunda iptal',
+      ]
+    : [
+        '2,000 AI replies a month instead of 30 a day',
+        'Ask NEXUS AI to set scenes and answer in plain language',
+        'One account, valid on every device',
+        'Cancel at period end',
+      ];
   return `
 <div id="nxAuthModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseAuthModal()" role="dialog" aria-modal="true" aria-labelledby="nxAuthTitle">
   <div class="nx-modal-card">
@@ -2131,36 +2535,45 @@ function renderAuthModal(c) {
         </div>
       </div>
 
-      <section class="nx-account-plan" aria-label="${isTr ? 'Plan' : 'Plan'}">
-        <div class="nx-account-plan-top">
-          <span class="nx-account-kicker">${isTr ? 'Plan' : 'Plan'}</span>
-          <span class="nx-plan-tag" id="nxProfilePlanTag">${isTr ? 'Ücretsiz' : 'Free'}</span>
+      <section class="nx-offer" aria-label="${isTr ? 'Plan' : 'Plan'}">
+        <div class="nx-offer-inner">
+          <div class="nx-offer-top">
+            <span class="nx-plan-tag is-free" id="nxProfilePlanTag">${isTr ? 'Ücretsiz' : 'Free'}</span>
+          </div>
+          <ul class="nx-offer-list" id="nxProfilePerksFree">
+            ${freeLines.map((line) => `<li>${tick}<span>${line}</span></li>`).join('')}
+          </ul>
+          <ul class="nx-offer-list is-hidden" id="nxProfilePerksPlus">
+            ${offerLines.map((line) => `<li>${tick}<span>${line}</span></li>`).join('')}
+          </ul>
         </div>
-        <ul class="nx-account-perks" id="nxProfilePerksFree">
-          ${(isTr
-            ? ['Sınırsız cihaz ve oda', 'Yerel otomasyon ve sahneler', 'Günde 30 NEXUS AI komutu', 'Cihazların arasında hesap eşitlemesi']
-            : ['Unlimited devices and rooms', 'Local automations and scenes', '30 NEXUS AI commands a day', 'Account sync across your devices']
-          ).map((line) => `<li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>${line}</span></li>`).join('')}
-        </ul>
-        <ul class="nx-account-perks is-hidden" id="nxProfilePerksPlus">
-          ${(isTr
-            ? ['Ücretsiz plandaki her şey', 'Ayda 2.000 NEXUS AI yanıtı', 'Doğal dille kural ve senaryo üretimi', 'Enerji için tasarruf önerileri', 'Yeni özelliklere ve beta bağlayıcılara erken erişim', 'Öncelikli e-posta desteği']
-            : ['Everything in Free', '2,000 NEXUS AI replies a month', 'Rules and scenes from plain language', 'Energy-saving suggestions', 'Early access to new features and beta connectors', 'Priority email support']
-          ).map((line) => `<li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg><span>${line}</span></li>`).join('')}
-        </ul>
-        <p class="nx-account-save" id="nxProfileSaveNote">${isTr ? `Yıllık planda %${SAVE.TRY} indirim` : `${SAVE.USD}% off on the yearly plan`}</p>
-        <a id="nxProfileUpgrade" class="nx-account-upgrade" href="${c.canonical}#pricing" onclick="nxCloseAuthModal()">${isTr ? "NEXUS+'a geç" : 'Upgrade to NEXUS+'}</a>
       </section>
 
+      <div id="nxBillingPanel" class="nx-offer" style="display:none">
+        <div class="nx-offer-inner">
+          <p id="nxBillingStatus" class="nx-account-now" style="text-align:left;margin:0 0 8px"></p>
+          <ul id="nxBillingPays" class="nx-offer-list"></ul>
+          <button type="button" id="nxBillingCancel" class="nx-account-upgrade" style="display:none" onclick="nxLoadBilling('cancel')">${isTr ? 'Dönem sonunda iptal et' : 'Cancel at period end'}</button>
+        </div>
+      </div>
+
       <div class="nx-account-menu">
-        <a class="nx-account-item" href="${MANAGE_URL}" target="_blank" rel="noopener">
+        <a id="nxProfileUpgrade" class="nx-account-item" href="${c.canonical}#pricing" onclick="nxCloseAuthModal()">
+          <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v8M8 12h8"/></svg></span>
+          <span class="nx-account-item-copy">
+            <b>${isTr ? "NEXUS+'a geç" : 'Upgrade to NEXUS+'}</b>
+            <small>${isTr ? `Aylık ${p.monthly} · Yıllık ${p.yearly}` : `Monthly ${p.monthly} · Yearly ${p.yearly}`}</small>
+          </span>
+          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
+        </a>
+        <button type="button" class="nx-account-item" onclick="nxOpenBilling()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M2 10h20"/></svg></span>
           <span class="nx-account-item-copy">
             <b>${isTr ? 'Aboneliği yönet' : 'Manage subscription'}</b>
-            <small>${isTr ? 'Kart, fatura ve iptal' : 'Card, invoices, and cancellation'}</small>
+            <small>${isTr ? 'Durum, ödemeler ve iptal' : 'Status, payments, and cancellation'}</small>
           </span>
-          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-8 8"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg></span>
-        </a>
+          <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
+        </button>
         <button type="button" class="nx-account-item" onclick="nxSendPasswordReset()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg></span>
           <span class="nx-account-item-copy">
@@ -2176,6 +2589,12 @@ function renderAuthModal(c) {
       </div>
     </div>
 
+  </div>
+</div>
+<div id="nxCheckoutModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseCheckout()" role="dialog" aria-modal="true" aria-label="${isTr ? 'Ödeme' : 'Checkout'}">
+  <div class="nx-modal-card" style="max-width:480px;padding:18px 16px 16px">
+    <button class="nx-modal-close" onclick="nxCloseCheckout()" aria-label="${isTr ? 'Kapat' : 'Close'}">&times;</button>
+    <div id="nxCheckoutMount" style="min-height:420px"></div>
   </div>
 </div>`;
 }
@@ -2239,6 +2658,7 @@ function baseHead(c, path, opts = {}) {
 <link rel="icon" href="/icon.svg" type="image/svg+xml"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="manifest" href="/manifest.webmanifest"/>
+<meta name="theme-color" content="#ECE9FD"/>
 <meta property="og:type" content="${opts.ogType || 'website'}"/>
 <meta property="og:site_name" content="NEXUS"/>
 <meta property="og:locale" content="${c.lang === 'tr' ? 'tr_TR' : 'en_US'}"/>
@@ -2353,7 +2773,7 @@ ${baseHead(c, c.lang === 'tr' ? '/tr/' : '/', { schema: landingSchema(c) })}
 </head>
 <body>
 ${renderHeader(c)}
-<main>
+<main id="main">
 ${renderHero(c, hasShots)}
 ${renderFeatures(c)}
 ${renderHow(c)}
@@ -2399,25 +2819,26 @@ ${baseHead(c, path, {
 </head>
 <body>
 ${renderHeader(c, path)}
-<main class="wrap" style="padding-bottom:60px">
+<main id="main" class="wrap" style="padding-bottom:60px">
   <div class="about-hero rv">
-    <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
+    <a class="int-more about-back" href="${c.canonical}">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
+    <p class="about-kicker">${isTr ? 'Ürün' : 'Product'}</p>
     <h1>${esc(ab.title)}</h1>
     <p class="lead">${esc(ab.lead)}</p>
   </div>
 
-  <div class="about-card rv" style="margin:24px 0 32px">
-    <h2 style="font-size:22px;margin:0 0 12px;font-weight:800;letter-spacing:-.02em">${esc(ab.manifesto.heading)}</h2>
-    <p style="font-size:15px;line-height:1.75;color:var(--text-2);margin:0">${esc(ab.manifesto.text)}</p>
+  <div class="about-card rv">
+    <h2>${esc(ab.manifesto.heading)}</h2>
+    <p>${esc(ab.manifesto.text)}</p>
   </div>
 
-  <div style="margin:32px 0 16px">
-    <h2 style="font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 8px">${isTr ? 'Dört Temel İlkemiz' : 'Our Four Core Pillars'}</h2>
-    <p style="color:var(--muted);font-size:14.5px;margin:0 0 20px">${isTr ? 'NEXUS mimarisini şekillendiren tavizsiz mühendislik kuralları.' : 'The uncompromising engineering principles behind NEXUS.'}</p>
+  <div class="about-section">
+    <h2>${isTr ? 'Dört temel ilke' : 'Four principles'}</h2>
+    <p>${isTr ? 'NEXUS mimarisini şekillendiren kurallar.' : 'The rules that shape how NEXUS is built.'}</p>
     <div class="grid c2" style="gap:16px">
       ${ab.pillars.map((p, i) => `
         <div class="card rv" style="padding:24px">
-          <div class="f-ic">${icon(i === 0 ? 'zap' : i === 1 ? 'shield' : i === 2 ? 'globe' : 'sparkles')}</div>
+          <div class="f-ic">${icon(['zap', 'shield', 'plug', 'sparkles'][i])}</div>
           <h3 style="font-size:17px;font-weight:700;margin:0 0 8px">${esc(p.title)}</h3>
           <p style="font-size:14px;line-height:1.6;color:var(--text-2);margin:0">${esc(p.desc)}</p>
         </div>
@@ -2425,12 +2846,27 @@ ${renderHeader(c, path)}
     </div>
   </div>
 
-  <div class="about-card rv" style="margin:32px 0;background:color-mix(in srgb,var(--brand) 6%,var(--surface))">
-    <h2 style="font-size:20px;margin:0 0 10px;font-weight:800">${esc(ab.architecture.heading)}</h2>
-    <p style="font-size:14.5px;line-height:1.65;color:var(--text-2);margin:0 0 18px">${esc(ab.architecture.lead)}</p>
+  <div class="about-section">
+    <h2>${esc(ab.architecture.heading)}</h2>
+    <p>${esc(ab.architecture.lead)}</p>
+    <div class="about-arch">
+      ${(ab.architecture.items || []).map((item) => `
+        <div class="card rv">
+          <div class="f-ic">${icon(item.icon)}</div>
+          <h3>${esc(item.title)}</h3>
+          <p>${esc(item.desc)}</p>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+
+  <div class="about-card about-cta rv">
+    <h2>${isTr ? 'Kurulum dosyaları' : 'Get the apps'}</h2>
+    <p style="margin:0 0 18px">${isTr ? 'Windows, Linux ve Android kurulumları ücretsizdir. Cihaz komutları yerel ağında kalır.' : 'Windows, Linux and Android installs are free. Device commands stay on your LAN.'}</p>
     <div style="display:flex;flex-wrap:wrap;gap:12px">
-      <a href="${c.canonical}#downloads" class="btn btn-primary btn-sm">${isTr ? 'Uygulamayı İndir' : 'Download Apps'}</a>
-      <a href="${c.canonical}#features" class="btn btn-outline btn-sm">${isTr ? 'Tüm Özellikleri İncele' : 'Explore Features'}</a>
+      <a href="${c.canonical}#downloads" class="btn btn-primary">${isTr ? 'Uygulamayı indir' : 'Download apps'}</a>
+      <a href="${c.canonical}#features" class="btn btn-ghost">${isTr ? 'Özellikler' : 'Features'}</a>
+      <a href="${c.canonical}#pricing" class="btn btn-ghost">${isTr ? 'Fiyatlar' : 'Pricing'}</a>
     </div>
   </div>
 </main>
@@ -2471,7 +2907,7 @@ ${baseHead(c, path, {
 </head>
 <body>
 ${renderHeader(c, path)}
-<main class="wrap">
+<main id="main" class="wrap">
   <div class="doc-hero rv">
     <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
     <h1>${esc(doc.title)}</h1>
@@ -2633,7 +3069,7 @@ function renderManifest() {
         start_url: '/',
         scope: '/',
         display: 'standalone',
-        theme_color: '#8b7bff',
+        theme_color: '#4C7DFF',
         background_color: '#09090b',
         // PNG'ler scripts/site-icons.mjs ile icon.svg'den üretilir (apple-touch-icon
         // ve Android kurulum ikonu SVG'yi kullanamaz; /icons/*.png 404 olmasın).
