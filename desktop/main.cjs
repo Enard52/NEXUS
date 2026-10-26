@@ -12,7 +12,7 @@
 // devam eder (akıllı ev asistanı). Tepsi menüsünden: gösterme, "kapatınca arka planda
 // çalış" seçeneği, bilgisayarla başlatma (Windows/macOS), yeniden başlatma ve tam çıkış.
 
-const { app, BrowserWindow, Menu, shell, ipcMain, protocol, net, nativeTheme, dialog, Tray, Notification, screen, globalShortcut } = require("electron");
+const { app, BrowserWindow, Menu, shell, ipcMain, protocol, net, nativeTheme, dialog, Tray, Notification, screen, globalShortcut, session } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
 const os = require("node:os");
@@ -815,6 +815,12 @@ app.on("before-quit", () => { app.isQuitting = true; });
 
 app.whenReady().then(() => {
   uiLang = detectLang();
+  // QR tarama kamerayı, ev konumu da konumu ister. İkisi de programın içinde kalır.
+  const deskPerm = { media: 1, geolocation: 1, "clipboard-sanitized-write": 1, fullscreen: 1, notifications: 1 };
+  session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => {
+    callback(!!deskPerm[permission]);
+  });
+  session.defaultSession.setPermissionCheckHandler((_wc, permission) => !!deskPerm[permission]);
   serveApp();
   buildMenu();
   createWindow();

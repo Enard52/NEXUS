@@ -255,7 +255,7 @@
         scanLoop();
       } catch (error) {
         console.warn('Kamera erişimi sağlanamadı.', error);
-        setScanStatus('Kamera açılamadı. Tarayıcı izinlerini kontrol edin veya kurulum kodunu girin.');
+        setScanStatus(window.nexusDesktop ? 'Kamera açılamadı. Kurulum kodunu girebilirsin.' : 'Kamera açılamadı. Kamera iznini kontrol et veya kurulum kodunu gir.');
         disableTorch('Fener Kullanılamıyor');
       }
     }

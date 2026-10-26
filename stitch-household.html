@@ -289,7 +289,7 @@
     function settingRow(label, value, action) {
       var trailing = value == null
         ? '<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>'
-        : '<span class="max-w-[42vw] truncate font-medium text-slate-400">' + esc(value) + '</span><i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>';
+        : '<span class="max-w-[11rem] truncate text-right font-medium text-slate-400">' + esc(value) + '</span><i class="w-5 h-5 shrink-0 text-slate-300" data-lucide="chevron-right"></i>';
       return '<button class="flex w-full items-center justify-between px-5 py-4 active:bg-slate-50 dark:active:bg-slate-800/60" onclick="' + action + '">' +
         '<span class="text-base font-bold">' + esc(label) + '</span><span class="flex items-center gap-2">' + trailing + '</span></button>';
     }
@@ -337,6 +337,7 @@
         '<button class="flex w-full items-center gap-2 px-5 py-4 font-semibold text-[#4C7DFF] active:bg-slate-50 dark:active:bg-slate-800/60" onclick="openAddMember()"><i class="w-5 h-5" data-lucide="mail-plus"></i>Üye davet et</button></section>';
       var destroy = '<button class="surface card-shadow w-full rounded-3xl border border-transparent bg-white py-4 font-bold text-red-500 active:scale-[0.98] transition-transform dark:bg-slate-900" onclick="openDeleteConfirm()">Evi Sil</button>';
       document.getElementById("home-detail-body").innerHTML = settings + renderInvitePanel(home) + members + destroy;
+      maybeResolveStoredLocation(home);
       lucide.createIcons();
     }
     function openHomeDetail(index) {
@@ -373,6 +374,38 @@
       document.getElementById("input-sheet").classList.add("hidden");
       document.getElementById("input-sheet").classList.remove("flex");
     }
+    function looksLikeCoords(value) {
+      return /^-?\d{1,3}\.\d+\s*,\s*-?\d{1,3}\.\d+/.test(String(value || ""));
+    }
+    function placeFromCoords(lat, lon) {
+      var url = "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" + encodeURIComponent(lat) + "&longitude=" + encodeURIComponent(lon) + "&localityLanguage=tr";
+      return fetch(url, { headers: { Accept: "application/json" } }).then(function (r) {
+        if (!r.ok) throw new Error("geo");
+        return r.json();
+      }).then(function (data) {
+        var local = String((data && (data.locality || data.city)) || "").trim();
+        var region = String((data && data.principalSubdivision) || "").trim();
+        if (local && region && local.toLowerCase() !== region.toLowerCase()) return local + ", " + region;
+        return local || region || "";
+      });
+    }
+    var geoTried = {};
+    function maybeResolveStoredLocation(home) {
+      if (!home || !home.id || geoTried[home.id] || !looksLikeCoords(home.location)) return;
+      var match = String(home.location).match(/(-?\d{1,3}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/);
+      if (!match) return;
+      geoTried[home.id] = true;
+      placeFromCoords(match[1], match[2]).then(function (place) {
+        if (!place) return;
+        var homes = loadHomes();
+        var idx = -1;
+        for (var i = 0; i < homes.length; i++) if (homes[i].id === home.id) idx = i;
+        if (idx < 0 || !looksLikeCoords(homes[idx].location)) return;
+        homes[idx].location = place;
+        saveHomes(homes);
+        if (!document.getElementById("home-detail").classList.contains("hidden")) renderHomeDetail();
+      }).catch(function () { geoTried[home.id] = false; });
+    }
     function detectHomeLocation() {
       if (!navigator.geolocation) {
         showHouseholdToast("Bu cihazda otomatik konum desteği yok.", "error");
@@ -381,9 +414,17 @@
       var button = document.getElementById("sheet-auto-location");
       button.textContent = "Konum alınıyor...";
       navigator.geolocation.getCurrentPosition(function (position) {
-        var coords = position.coords.latitude.toFixed(4) + ", " + position.coords.longitude.toFixed(4) + " (otomatik algılandı)";
-        document.getElementById("sheet-input").value = coords;
-        button.textContent = "Konumu Otomatik Algıla";
+        placeFromCoords(position.coords.latitude, position.coords.longitude).then(function (place) {
+          button.textContent = "Konumu Otomatik Algıla";
+          if (!place) {
+            showHouseholdToast("Yer adı alınamadı. Konumu elle yazabilirsin.", "error");
+            return;
+          }
+          document.getElementById("sheet-input").value = place;
+        }).catch(function () {
+          button.textContent = "Konumu Otomatik Algıla";
+          showHouseholdToast("Yer adı alınamadı. Konumu elle yazabilirsin.", "error");
+        });
       }, function () {
         button.textContent = "Konumu Otomatik Algıla";
         showHouseholdToast("Konum izni verilmedi.", "error");
@@ -566,9 +607,9 @@
       { key: "settings", label: "Ev ayarlarını değiştir" }
     ];
     function permSwitch(memberIndex, key, enabled, disabled) {
-      return '<button type="button" class="relative h-7 w-12 rounded-full transition-colors ' + (enabled ? 'bg-[#4C7DFF]' : 'bg-slate-300') + (disabled ? ' opacity-60' : '') + '"' +
+      return '<button type="button" class="relative h-7 w-12 shrink-0 overflow-hidden rounded-full transition-colors ' + (enabled ? 'bg-[#4C7DFF]' : 'bg-slate-300') + (disabled ? ' opacity-60' : '') + '"' +
         (disabled ? "" : ' onclick="togglePerm(' + memberIndex + ',\'' + key + '\')"') + '>' +
-        '<span class="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-transform ' + (enabled ? 'translate-x-6' : 'translate-x-1') + '"></span></button>';
+        '<span class="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all" style="left:' + (enabled ? '22px' : '4px') + '"></span></button>';
     }
     function openPermissions() {
       renderPerms();
@@ -586,7 +627,7 @@
         var locked = member.role === "Ev Sahibi";
         var toggles = PERM_DEFS.map(function (perm) {
           var enabled = locked ? true : !!(member.perms && member.perms[perm.key]);
-          return '<div class="flex items-center justify-between gap-3 py-2.5"><span class="text-sm font-medium text-slate-600 dark:text-slate-300">' + esc(perm.label) + '</span>' + permSwitch(index, perm.key, enabled, locked) + '</div>';
+          return '<div class="flex items-center justify-between gap-3 py-2.5"><span class="min-w-0 flex-1 text-sm font-medium text-slate-600 dark:text-slate-300">' + esc(perm.label) + '</span>' + permSwitch(index, perm.key, enabled, locked) + '</div>';
         }).join("");
         return '<div class="mb-3 rounded-2xl bg-slate-50 p-4 dark:bg-slate-800"><div class="mb-2 flex items-center gap-3">' +
           memberAvatar(member) + '<div class="min-w-0"><p class="truncate font-bold leading-tight">' + esc(member.name) + '</p><p class="text-xs text-slate-400">' + esc(member.role) + (locked ? ' · tüm yetkiler' : "") + '</p></div></div>' + toggles + "</div>";

@@ -264,6 +264,8 @@
     body.style.removeProperty("background-color");
     body.style.removeProperty("background-attachment");
     if (!isDesk() && !isTab()) return;
+    // QR sayfası siyah kalır; arka planı lila zemine taşımak başlığı silikleştirir.
+    if (root.getAttribute("data-nx-page") === "scan") return;
     var vh = window.innerHeight;
     var cols = document.querySelectorAll("body > .nx-desk-col");
     for (var i = 0; i < cols.length; i++) {

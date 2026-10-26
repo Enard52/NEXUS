@@ -234,6 +234,49 @@ html.nx-desk ::-webkit-scrollbar-corner { background: transparent; }
 /* Tam ekran sayfalar (ör. QR tarama) menünün sağında kalır */
 html.nx-desk:not(.nx-desk-auth) .nx-desk-page { left: var(--side) !important; }
 
+/* İzin ve oda pencereleri: anahtar kartın sağından taşmasın */
+html.nx-desk #perm-modal,
+html.nx-desk #rooms-modal,
+html.nx-desk #member-modal,
+html.nx-desk #input-sheet,
+html.nx-desk #confirm-modal {
+  left: var(--side) !important;
+  right: 0 !important;
+  width: auto !important;
+}
+html.nx-desk #perm-modal > .surface,
+html.nx-desk #rooms-modal > .surface,
+html.nx-desk #member-modal > .surface,
+html.nx-desk #input-sheet > .surface {
+  box-sizing: border-box !important;
+  width: min(520px, calc(100% - 48px)) !important;
+  max-width: 520px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  overflow: visible !important;
+}
+
+/* QR tarama: başlık açık kalsın, çerçeve masaüstünde kaybolmasın */
+html.nx-desk[data-nx-page="scan"] body {
+  background: #000 !important;
+  background-image: none !important;
+  color: #fff;
+}
+html.nx-desk[data-nx-page="scan"] body > .nx-desk-col {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #000 !important;
+  min-height: 100vh;
+}
+html.nx-desk[data-nx-page="scan"] header { background: transparent !important; color: #fff !important; }
+html.nx-desk[data-nx-page="scan"] header .text-white\/70,
+html.nx-desk[data-nx-page="scan"] header button { color: #fff !important; }
+html.nx-desk[data-nx-page="scan"] .scan-frame {
+  width: min(420px, 52vh) !important;
+  height: min(420px, 52vh) !important;
+}
+
 /* Aile / Ev Ayarı: tam ekran alt sayfa menünün sağında, ortalanmış sütunda açılır */
 html.nx-desk #home-detail { left: var(--side) !important; }
 html.nx-desk #home-detail > header,
