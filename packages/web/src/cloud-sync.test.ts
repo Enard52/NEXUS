@@ -229,8 +229,13 @@ describe("Supabase kimlik doğrulama akışı", () => {
     expect(storage.getItem("nexusMfaEnrolled")).toBe("1");
     const enrolled = await cloud.enrollTotp();
     expect(enrolled.id).toBe("fac-new");
-    const enrollCall = calls.find((call) => call.method === "POST" && call.url.endsWith("/auth/v1/factors"));
-    expect(JSON.parse(String(enrollCall?.body))).toMatchObject({ factor_type: "totp", issuer: "NEXUS" });
+    const enrollCall = calls.find(
+      (call) => call.method === "POST" && call.url.endsWith("/auth/v1/factors"),
+    );
+    expect(JSON.parse(String(enrollCall?.body))).toMatchObject({
+      factor_type: "totp",
+      issuer: "NEXUS",
+    });
     const session = await cloud.verifyTotp("123456", "fac-new");
     expect(session.accessToken).toBe(aal2);
     expect(storage.getItem("nexusSessionAal")).toBe("aal2");
