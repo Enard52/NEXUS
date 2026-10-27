@@ -95,7 +95,7 @@ html.dark .nx-side-link.is-active { background: rgba(76, 125, 255, 0.22); color:
 html.dark .nx-side-user b { color: #f8fafc; }
 html.dark .nx-side-user small { color: #94a3b8; }
 .nx-side-avatar { width: 34px; height: 34px; flex: none; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
-  background: rgba(76, 125, 255, 0.14); color: #3F6FFF; font-size: 12px; font-weight: 800; }
+  background: rgba(76, 125, 255, 0.14); color: #3F6FFF; font-size: 12px; font-weight: 800; object-fit: cover; }
 .nx-side-theme { width: 40px; height: 40px; flex: none; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: #475569; background: transparent; }
 .nx-side-theme:hover { background: rgba(76, 125, 255, 0.08); }
 html.dark .nx-side-theme { color: #cbd5e1; }
@@ -174,8 +174,10 @@ html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet:not(.qa-sheet):not(.hidden) {
 }
 html.nx-desk .qa-sheet {
   transform: translateY(16px) !important; opacity: 0; pointer-events: none;
+  visibility: hidden;
   transition: transform .26s ease, opacity .2s ease;
 }
+html.nx-desk .qa-sheet.open { visibility: visible; }
 html.nx-desk .qa-sheet.open { transform: none !important; opacity: 1; pointer-events: auto; }
 html.nx-desk:not(.nx-desk-auth) .nx-desk-sheet:not(.qa-sheet):not(.hidden) {
   transform: none !important;
@@ -290,11 +292,15 @@ html.nx-desk #home-detail > header { padding-top: 32px !important; }
 /* ---------- Sayfaya özel geniş ekran düzenleri ---------- */
 /* Ev: kartlar 3 sütun, çok geniş ekranda 4 */
 html.nx-desk #favorites-grid,
-html.nx-desk #extra-smart-home-grid,
 html.nx-desk #dynamic-devices-grid,
 html.nx-desk #tap-to-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
 @media (min-width: 1440px) {
-  html.nx-desk #dynamic-devices-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  html.nx-desk #favorites-grid,
+  html.nx-desk #dynamic-devices-grid,
+  html.nx-desk #tap-to-run-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+#extra-smart-home-grid {
+  display: contents !important;
 }
 /* Boş durum ("Henüz cihaz yok") tam genişlikte */
 html.nx-desk #dynamic-devices-grid > .nx-empty,
@@ -398,6 +404,23 @@ html.dark.nx-desk:not(.nx-desk-auth) .nx-desk-bottom { background: rgba(15, 23, 
 html.nx-desk footer[class*="bg-white"], html.nx-desk [data-purpose="chat-input-container"] {
   background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 0 !important; }
 html.dark.nx-desk footer[class*="bg-white"], html.dark.nx-desk [data-purpose="chat-input-container"] { background: rgba(15, 23, 42, 0.6) !important; }
+/* Sohbet girişi: mobildeki gibi kenarlardan içeride, yuvarlak köşeli yüzen bir kutu;
+   sütunun tamamına yayılan köşeli şerit değil. Tablet sütununda da aynı görünüm.
+   pb-6 + safe-area inline stili yerine simetrik dolgu: hap kutu şeridin dikey ortasında. */
+html.nx-desk [data-purpose="chat-input-container"],
+html.nx-tab [data-purpose="chat-input-container"] {
+  margin: 8px 0 16px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 12px 30px rgba(76, 125, 255, 0.14) !important;
+}
+/* + ekle menüsü kutunun İÇİNE değil, tam üstüne açılır */
+html.nx-desk #attach-menu,
+html.nx-tab #attach-menu {
+  bottom: calc(100% + 8px) !important;
+  top: auto !important;
+}
 /* Harita: tam ekran öğeler menünün sağında kalır */
 html.nx-desk[data-nx-page="map"] body { padding-left: 0 !important; margin-left: var(--side); position: relative; }
 html.nx-desk[data-nx-page="map"] body > .nx-desk-col { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
@@ -414,6 +437,15 @@ html.nx-desk[data-nx-page="plus"] body > section[data-purpose="features-card"] {
 html.nx-tab[data-nx-page="map"] button[data-purpose="locate-me"] {
   width: 48px !important; left: auto !important;
   right: max(16px, calc((100vw - var(--tab-max)) / 2 + 16px)) !important;
+}
+
+/* Windows, tıklanınca düğmeye sistemin gri düğme yüzünü bırakıyor. Yalnızca masaüstü. */
+html.nx-desk button,
+html.nx-desk input[type="button"],
+html.nx-desk input[type="submit"],
+html.nx-desk input[type="reset"] {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* ---------- Fare ve klavye geri bildirimi (yalnızca masaüstü) ---------- */

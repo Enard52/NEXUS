@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -92,7 +93,7 @@
           <p class="text-center text-base font-medium text-white/90">QR kodunu çerçevenin içine hizalayın.</p>
           <p class="mt-4 text-center text-sm font-medium text-white/70 min-h-[2.5rem]" id="scan-status">Kamera başlatılıyor...</p>
 
-          <button class="nx-tap-t mt-8 mb-8 w-full text-center text-sm font-medium text-white/60 hover:text-white transition-colors active:scale-95 underline underline-offset-4" id="manual-add-cta" type="button" onclick="openSetupCodeEntry()">
+          <button class="nx-tap mt-8 mb-8 w-full text-center text-sm font-medium text-white/60 hover:text-white transition-colors active:scale-95 underline underline-offset-4" id="manual-add-cta" type="button" onclick="openSetupCodeEntry()">
             QR bulunamadıysa manuel ekleyin.
           </button>
 
@@ -255,7 +256,7 @@
         scanLoop();
       } catch (error) {
         console.warn('Kamera erişimi sağlanamadı.', error);
-        setScanStatus(window.nexusDesktop ? 'Kamera açılamadı. Kurulum kodunu girebilirsin.' : 'Kamera açılamadı. Kamera iznini kontrol et veya kurulum kodunu gir.');
+        setScanStatus('Kamera açılamadı. Tarayıcı izinlerini kontrol edin veya kurulum kodunu girin.');
         disableTorch('Fener Kullanılamıyor');
       }
     }

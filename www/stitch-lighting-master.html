@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>NEXUS - Aydınlatma Ustası</title>
   <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
@@ -48,6 +49,15 @@
       border-radius: 999px;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    /* Dokunma kutusu: görünür ray 8px kalır, isabet alanı 32px'e çıkar (WCAG 2.2 AA
+       üstü konfor sınırı). Dikey şeffaf dolgu + background-clip: content-box çizimi
+       değiştirmez; başparmak içerik kutusunda ortalandığı için yeri aynı kalır. */
+    .slider-thumb {
+      height: 32px;
+      padding: 12px 0;
+      box-sizing: border-box;
+      background-clip: content-box;
     }
   </style>
 </head>
@@ -110,7 +120,7 @@
             </div>
             <span id="brightness-value" class="text-sm font-bold text-[#4C7DFF]">%80</span>
           </div>
-          <input id="brightness-slider" type="range" min="10" max="100" value="80" class="slider-thumb h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-100 dark:bg-slate-800"/>
+          <input id="brightness-slider" type="range" min="10" max="100" value="80" aria-label="Parlaklık" class="slider-thumb h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-100 dark:bg-slate-800"/>
         </div>
 
         <div class="space-y-4">
@@ -122,7 +132,7 @@
             <span id="warmth-label" class="text-sm font-bold text-slate-500 dark:text-slate-300">Sıcak</span>
           </div>
           <div class="relative h-2 w-full rounded-lg bg-gradient-to-r from-blue-200 via-orange-100 to-orange-400">
-            <input id="warmth-slider" type="range" min="2000" max="6500" value="4000" class="slider-thumb absolute top-0 left-0 h-2 w-full cursor-pointer appearance-none bg-transparent"/>
+            <input id="warmth-slider" type="range" min="2000" max="6500" value="4000" aria-label="Renk Sıcaklığı" class="slider-thumb absolute -top-3 left-0 h-2 w-full cursor-pointer appearance-none bg-transparent"/>
           </div>
         </div>
 
@@ -158,6 +168,17 @@
       { id: "party", title: "Parti", subtitle: "Dinamik Renkler", icon: "lucide:sparkles", iconWrap: "bg-blue-100 text-[#4C7DFF]", prompt: "Eğlence için renkli ve dinamik aydınlatma sahnesi oluştur." }
     ];
     var ACCENT_COLORS = ["#FFD700", "#FF7F50", "#4C7DFF", "#22D3EE", "#32CD32"];
+    // Renk örnekleri ekranda yazısız; ekran okuyucu için adları buradan gelir.
+    // Kullanıcının eklediği özel renklerde ad yoktur, hex değeri okunur.
+    var ACCENT_NAMES = {
+      "#FFD700": ["Altın", "Gold"], "#FF7F50": ["Mercan", "Coral"], "#4C7DFF": ["NEXUS Mavisi", "NEXUS Blue"],
+      "#22D3EE": ["Turkuaz", "Turquoise"], "#32CD32": ["Yeşil", "Green"]
+    };
+    function accentLabel(color) {
+      var en = window.nexusLang === "en";
+      var n = ACCENT_NAMES[color];
+      return (en ? "Accent color: " : "Vurgu rengi: ") + (n ? n[en ? 1 : 0] : color);
+    }
         // Kullanicinin ekledigi ozel renkler kalici olarak saklanir
         try {
           var savedColors = JSON.parse(nexusGetItem("nexusCustomAccentColors") || "[]");
@@ -217,7 +238,7 @@
     function renderColors() {
       document.getElementById("accent-colors").innerHTML = ACCENT_COLORS.map(function (color) {
         var selected = color === selectedColor;
-        return '<button class="h-10 w-10 rounded-full ring-4 ring-offset-2 transition ' + (selected ? 'ring-[#4C7DFF]/30' : 'ring-transparent') + '" style="background:' + color + '" onclick="selectColor(\'' + color + '\')"></button>';
+        return '<button type="button" aria-label="' + accentLabel(color) + '" aria-pressed="' + (selected ? "true" : "false") + '" class="h-10 w-10 rounded-full ring-4 ring-offset-2 transition ' + (selected ? 'ring-[#4C7DFF]/30' : 'ring-transparent') + '" style="background:' + color + '" onclick="selectColor(\'' + color + '\')"></button>';
       }).join("") + '<button aria-label="Renk ekle" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800 active:scale-95 transition-transform" onclick="addCustomColor()"><i data-lucide="plus" class="text-lg"></i></button>';
     }
     function addCustomColor() {

@@ -293,6 +293,7 @@
 
   var LAN_ERRORS = {};
   var LAN_ONLINE = {}; // index -> true/false (son okuma sonucu); kayıt yoksa bilinmiyor
+  var LAN_STATUS = {}; // index -> "pending" | "ok" | "error" (gönderilen son komutun sonucu)
   var listeners = [];
 
   function onError(fn) { listeners.push(fn); }
@@ -300,16 +301,24 @@
 
   function isLan(device) { return !!(device && device.host && device.protocol && device.protocol !== "unknown"); }
 
+  // Son komutun gerçek durumu: sohbet/ekranlar "gönderildi" ile "cihaza ulaştı"yı ayırabilsin.
+  function lanStatus(index) { return LAN_STATUS[index] || null; }
+  function lanError(index) { return LAN_ERRORS[index] || null; }
+
   function sendCommand(device, capability, value, index) {
     if (!isLan(device) || typeof window.nexusLan === "undefined") return;
     if (!window.nexusLan.supports(device, capability)) return;
     delete LAN_ERRORS[index];
+    LAN_STATUS[index] = "pending";
     window.nexusLan.write(device, capability, value).then(function () {
       LAN_ONLINE[index] = true;
+      LAN_STATUS[index] = "ok";
+      notify(index);
     }).catch(function (err) {
       LAN_ONLINE[index] = false;
+      LAN_STATUS[index] = "error";
       var msg = err && err.message ? String(err.message) : "";
-      LAN_ERRORS[index] = /kullanılamıyor|desteklenmiyor|yalnızca masaüstü/.test(msg)
+      LAN_ERRORS[index] = /kullanılamıyor|desteklenmiyor|yalnızca masaüstü|yerel değil/.test(msg)
         ? msg
         : "Komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.";
       notify(index);
@@ -365,7 +374,11 @@
     return device;
   }
 
-  // Tek alan değişikliği: kaydet + (destekleniyorsa) LAN komutu gönder
+  // Tek alan değişikliği: kaydet + (destekleniyorsa) LAN komutu gönder.
+  // Anahtar (switch) çevrildiğinde tek cihaz sesi + kartta "komut gitti" nabzı;
+  // senaryo içi çağrılarda (SCENE_QUIET) ses çıkmaz, senaryo tek sesle biter.
+  var SCENE_QUIET = false;
+
   function setField(index, field, value) {
     var devices = readDevices();
     if (!devices[index]) return null;
@@ -375,7 +388,15 @@
     devices[index] = applyField(devices[index], field, value);
     writeDevices(devices);
     var st = devices[index].state;
-    if (st.switch !== prevSwitch && hasCap(devices[index], "switch")) sendCommand(devices[index], "switch", st.switch, index);
+    var flipped = st.switch !== prevSwitch && hasCap(devices[index], "switch");
+    if (flipped) {
+      if (SCENE_QUIET) { /* senaryo: tek sahne sesi yeter */ }
+      else if (window.nexusFeedback) {
+        var card = document.getElementById("dyn-card-" + devices[index].id);
+        window.nexusFeedback.power(st.switch, card);
+      }
+      sendCommand(devices[index], "switch", st.switch, index);
+    }
     if (st.brightness !== prevBrightness && hasCap(devices[index], "brightness")) sendCommand(devices[index], "brightness", st.brightness, index);
     if (field === "color" || (field === "preset" && value && value.color && hasCap(devices[index], "color"))) sendCommand(devices[index], "color", st.color, index);
     sendExtra(devices[index], field, index);
@@ -416,6 +437,11 @@
       if (stateOf(device).switch !== before && hasCap(device, "switch")) touched.push(index);
     });
     writeDevices(devices);
+    // Grup hareketi TEK ses: hepsini aç/kapat kabusu olmasın (cihaz başına değil).
+    if (touched.length && window.nexusFeedback) {
+      SCENE_QUIET = true;
+      try { window.nexusFeedback.power(action === "on", null); } finally { SCENE_QUIET = false; }
+    }
     touched.forEach(function (index) { sendCommand(devices[index], "switch", devices[index].state.switch, index); });
     devices.forEach(function (device, index) {
       if (panelOf(device).id !== panelId) return;
@@ -528,15 +554,22 @@
     var scene = SCENES[id];
     if (!scene) return { changed: 0, lan: 0, title: id, unknown: true };
     var devices = readDevices();
-    var changed = 0, lan = 0;
-    devices.forEach(function (device, index) {
-      var acts = sceneActs(scene, device);
-      if (!acts.length) return;
-      acts.forEach(function (a) { setField(index, a[0], a[1]); });
-      changed += 1;
-      if (isLan(device)) lan += 1;
-    });
-    return { changed: changed, lan: lan, title: scene.title };
+    var changed = 0, lan = 0, lanDevices = [];
+    // Toplu uygulama sessiz: her cihaz için ayrı toggle sesi değil, bitişte tek sahne sesi
+    // (smart-scene-page.js finish içinde çalar).
+    SCENE_QUIET = true;
+    try {
+      devices.forEach(function (device, index) {
+        var acts = sceneActs(scene, device);
+        if (!acts.length) return;
+        acts.forEach(function (a) { setField(index, a[0], a[1]); });
+        changed += 1;
+        if (isLan(device)) { lan += 1; lanDevices.push({ index: index, name: device.name }); }
+      });
+    } finally {
+      SCENE_QUIET = false;
+    }
+    return { changed: changed, lan: lan, lanDevices: lanDevices, title: scene.title };
   }
 
   function sceneSummary(r) {
@@ -554,6 +587,8 @@
     VACUUM_STATES: VACUUM_STATES,
     LAN_ERRORS: LAN_ERRORS,
     LAN_ONLINE: LAN_ONLINE,
+    lanStatus: lanStatus,
+    lanError: lanError,
     isLan: isLan,
     refreshFromDevice: refreshFromDevice,
     readDevices: readDevices,

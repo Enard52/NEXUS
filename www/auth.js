@@ -5,26 +5,47 @@
   const CURRENT_USER_KEY = 'nexusCurrentUser';
 
   // Site telefon çerçevesi: gerçek arayüzde gezilir, özellik çalışmaz.
-  // sessionStorage kullanılır ki aynı kökteki gerçek web uygulaması oturumu bozulmasın.
+  // sessionStorage kullanılır ki aynı kökteki gerçek hesap oturumu bozulmasın
+  // ve doğrudan sekmede açıldığında da sayfalar arası gezinti boyunca önizleme modu korunsun.
   const isPreviewMode = (function() {
     try {
-      return window.self !== window.top || /[?&](preview|demo)=1/.test(window.location.search);
+      if (/[?&](preview|demo)=1/.test(window.location.search)) {
+        sessionStorage.setItem('nexusPreviewMode', '1');
+        return true;
+      }
+      if (window.self !== window.top) return true;
+      if (sessionStorage.getItem('nexusPreviewMode') === '1') return true;
+      return false;
     } catch {
       return true;
     }
   })();
   window.nexusPreview = isPreviewMode;
 
+  // Sayfa adı + public sayfa denetimi — IIFE seviyesinde: hem enforceAuth hem
+  // aşağıdaki önizleme postMessage bloğu aynı değişkenleri kullanır. (Bunlar
+  // enforceAuth içinden yönetilince önizleme iframe'inde ReferenceError fırlayıp
+  // auth.js'in geri kalı — nexusGetItem vb. hiç tanımlanmadan — kesiliyordu.)
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  const isPublicPage = [
+    'stitch-login.html', 'stitch-onboarding.html', 'stitch-forgot-password.html', 'stitch-register.html',
+    'stitch-login', 'stitch-onboarding', 'stitch-forgot-password', 'stitch-register'
+  ].includes(page);
+
+  // Bu cihazda en az bir kez oturum açıldı mı? Açıldıysa kullanıcı artık "yeni gelen"
+  // değildir: çıkıştan sonra karşılama (onboarding) yerine giriş ekranına döner.
+  const EVER_LOGGED_IN_KEY = 'nexusEverLoggedIn';
+  try {
+    if (!isPreviewMode && localStorage.getItem(CURRENT_USER_KEY) && localStorage.getItem(EVER_LOGGED_IN_KEY) !== '1') {
+      localStorage.setItem(EVER_LOGGED_IN_KEY, '1');
+    }
+  } catch (e) { /* özel mod */ }
+  function everLoggedIn() {
+    try { return localStorage.getItem(EVER_LOGGED_IN_KEY) === '1'; } catch (e) { return false; }
+  }
+
   // Yönlendirme (Auth Guard) Mantığı
   function enforceAuth() {
-    const path = window.location.pathname;
-    const page = path.split('/').pop() || 'index.html';
-    
-    // Yalnızca public sayfalara herkes erişebilir
-    const isPublicPage = [
-      'stitch-login.html', 'stitch-onboarding.html', 'stitch-forgot-password.html', 'stitch-register.html',
-      'stitch-login', 'stitch-onboarding', 'stitch-forgot-password', 'stitch-register'
-    ].includes(page);
     const user = localStorage.getItem(CURRENT_USER_KEY);
 
     if (isPreviewMode) {
@@ -39,10 +60,23 @@
     // oturum açık olsa bile sayfa bunları işleyebilsin diye eve yönlendirilmez.
     if (user && isPublicPage && /[#&]access_token=/.test(window.location.hash || '')) return;
 
+    // İkinci adım beklenirken parola oturumu uygulamaya yetmez.
+    var mfaPending = false;
+    try {
+      mfaPending = localStorage.getItem('nexusMfaPending') === '1'
+        || (localStorage.getItem('nexusMfaEnrolled') === '1' && localStorage.getItem('nexusSessionAal') === 'aal1');
+    } catch (e) { /* özel mod */ }
+    if (mfaPending) {
+      if (page !== 'stitch-login.html' && page !== 'stitch-login') {
+        window.location.replace('stitch-login.html');
+      }
+      return;
+    }
+
     if (!user) {
       if (!isPublicPage) {
-        // Giriş yapmamışsa her zaman onboarding sayfasına yönlendir (index.html dahil)
-        window.location.replace('stitch-onboarding.html');
+        // Giriş yapmamışsa: ilk kez gelen karşılamaya, daha önce oturum açmış olan girişe gider.
+        window.location.replace(everLoggedIn() ? 'stitch-login.html' : 'stitch-onboarding.html');
       }
     } else {
       if (isPublicPage || page === 'index.html' || page === 'index' || page === '') {
@@ -99,16 +133,29 @@
     localStorage.setItem(`${user}_${key}`, value);
   };
   
-  // Yerel (bulutsuz) hesap şifresi: düz metin değil, tuzlu SHA-256 özeti saklanır.
-  // Eski sürümün düz metin kaydı (nexus_mock_pw_) ilk doğru girişte özete çevrilip silinir.
+  // Yerel (bulutsuz) hesap şifresi: düz metin değil, tuzlu PBKDF2-SHA256 özeti saklanır.
+  // Kayıt biçimi: "v2:<tuz>:<özet>". Eski kayıtlar (düz metin nexus_mock_pw_ ve tek turlu
+  // tuzlu SHA-256) ilk doğru girişte v2'ye yükseltilip eski hali silinir.
   var PW_PREFIX = 'nexus_pw_';
   var LEGACY_PREFIX = 'nexus_mock_pw_';
+  var PBKDF2_ROUNDS = 150000;
   function hex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); }
+  function hasSubtle() { return !!(window.crypto && crypto.subtle && window.TextEncoder); }
   function sha256(text) {
-    if (window.crypto && crypto.subtle && window.TextEncoder) {
+    if (hasSubtle()) {
       return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(hex);
     }
     return Promise.reject(new Error('Bu ortamda güvenli şifreleme yok'));
+  }
+  // Tek turlu SHA-256 çevrimdışı kırılabilir; PBKDF2 aynı özeti pahalı hale getirir.
+  function pbkdf2(password, salt) {
+    if (!hasSubtle()) return Promise.reject(new Error('Bu ortamda güvenli şifreleme yok'));
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey('raw', enc.encode(String(password)), 'PBKDF2', false, ['deriveBits'])
+      .then(function (key) {
+        return crypto.subtle.deriveBits({ name: 'PBKDF2', salt: enc.encode(String(salt)), iterations: PBKDF2_ROUNDS, hash: 'SHA-256' }, key, 256);
+      })
+      .then(hex);
   }
   function randomSalt() {
     var a = new Uint8Array(16);
@@ -123,8 +170,8 @@
     set: function (email, password) {
       email = String(email || '').trim().toLowerCase();
       var salt = randomSalt();
-      return sha256(salt + ':' + password).then(function (h) {
-        localStorage.setItem(PW_PREFIX + email, salt + ':' + h);
+      return pbkdf2(password, salt).then(function (h) {
+        localStorage.setItem(PW_PREFIX + email, 'v2:' + salt + ':' + h);
         localStorage.removeItem(LEGACY_PREFIX + email);
         return true;
       });
@@ -136,7 +183,17 @@
       var stored = localStorage.getItem(PW_PREFIX + email);
       if (stored) {
         var parts = stored.split(':');
-        return sha256(parts[0] + ':' + password).then(function (h) { return h === parts[1]; });
+        if (parts[0] === 'v2' && parts.length === 3) {
+          return pbkdf2(password, parts[1]).then(function (h) { return h === parts[2]; });
+        }
+        if (parts.length === 2) {
+          // Eski biçim (tuz:sha256): doğrula, tutarsa PBKDF2'ye yükselt.
+          return sha256(parts[0] + ':' + password).then(function (h) {
+            if (h !== parts[1]) return false;
+            return window.nexusLocalPassword.set(email, password).then(function () { return true; });
+          });
+        }
+        return Promise.resolve(false);
       }
       var legacy = localStorage.getItem(LEGACY_PREFIX + raw);
       if (legacy == null) legacy = localStorage.getItem(LEGACY_PREFIX + email);
@@ -230,9 +287,12 @@
   }
 
   window.nexusLogout = function() {
+    var backToLogin = everLoggedIn();
     function finish() {
       localStorage.removeItem(CURRENT_USER_KEY);
-      window.location.replace('index.html');
+      try { sessionStorage.removeItem('nexusPreviewMode'); } catch (e) {}
+      // Oturumu bilerek kapatan kullanıcı giriş ekranına döner; ilk kez gelen karşılamaya.
+      window.location.replace(backToLogin ? 'stitch-login.html' : 'index.html');
     }
     var cloud = window.nexusCloud;
     if (!cloud || !cloud.enabled || !cloud.enabled()) { finish(); return; }

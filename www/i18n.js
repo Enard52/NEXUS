@@ -188,8 +188,12 @@
   function walk(root) {
     if (!root) return;
     if (root.nodeType === 3) { doText(root); return; }
-    if (root.nodeType !== 1 || SKIP[root.nodeName]) return;
+    if (root.nodeType !== 1) return;
     if (root.closest && root.closest("[data-no-i18n],[translate=no]")) return;
+    // TEXTAREA içeriği kullanıcının yazdığı metindir; yalnızca öznitelikleri
+    // (placeholder, title, aria-label) çevrilir, değeri asla değiştirilmez.
+    if (root.nodeName === "TEXTAREA") { doAttrs(root); return; }
+    if (SKIP[root.nodeName]) return;
     doAttrs(root);
     if (doMixed(root)) return;
     for (var c = root.firstChild; c; c = c.nextSibling) {

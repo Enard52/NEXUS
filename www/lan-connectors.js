@@ -41,6 +41,8 @@
 
   function request(opts) {
     if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
+    var blocked = lanAddressError(opts.url);
+    if (blocked) return Promise.reject(blocked);
     if (transport) return transport(opts);
     var timeout = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
     var headers = opts.headers || (opts.body ? { "Content-Type": "application/json" } : {});
@@ -101,6 +103,37 @@
 
   function hostOnly(device) {
     return baseUrl(device).replace(/^https?:\/\//, "").split(":")[0];
+  }
+
+  // Yerel ağ allowlist'i: komutlar yalnızca kullanıcının kendi ağına gider. Genel bir
+  // adrese (ör. içe aktarılmış bozuk bir kayda) istek atılmaz; masaüstündeki LAN proxy
+  // aynı kuralı sunucu tarafında da uygular (main.cjs isPrivateHost).
+  function isPrivateHost(host) {
+    host = String(host || "").replace(/^\[|\]$/g, "").toLowerCase();
+    if (!host) return false;
+    if (host === "localhost" || host === "::1") return true;
+    if (/\.(local|lan|home|internal|home\.arpa)$/.test(host)) return true; // mDNS / yerel çözümleyici adları
+    var v4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (v4) {
+      var a = +v4[1], b = +v4[2];
+      return a === 10 || a === 127 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254);
+    }
+    if (/^[0-9a-f:]+$/.test(host) && host.indexOf(":") !== -1) return /^f[cd]/.test(host) || /^fe[89ab]/.test(host);
+    return false;
+  }
+
+  // URL/adres yerel ağa gitmiyorsa açıklayıcı bir hata döner, yoksa null.
+  function lanAddressError(urlOrHost) {
+    var host = urlOrHost;
+    if (/^[a-z]+:\/\//i.test(urlOrHost)) {
+      try { host = new URL(urlOrHost).hostname; } catch (e) { return new Error("geçersiz adres"); }
+    } else {
+      host = String(urlOrHost).replace(/^https?:\/\//i, "").split("/")[0].split(":")[0];
+    }
+    if (isPrivateHost(host)) return null;
+    var err = new Error("Yalnızca yerel ağ adreslerine komut gönderilir (" + host + " yerel değil).");
+    err.code = "not-lan";
+    return err;
   }
 
   function hexToRgb(hex) {
@@ -351,15 +384,34 @@
       });
     },
     url: function (device) {
-      return baseUrl(device) + "/api/" + encodeURIComponent(device.hueUser || "") + "/lights/" + encodeURIComponent(device.endpointId);
+      return baseUrl(device) + "/api/" + encodeURIComponent(device.hueUser || "") + "/lights/" + encodeURIComponent(device.endpointId == null ? 0 : device.endpointId);
+    },
+    // Eksik eşleştirme verisiyle (hueUser / endpointId) asla istek atılmaz: bozuk kayıt
+    // "/api//lights/undefined" gibi anlamsız URL üretirdi. Kullanıcıya net mesaj verilir.
+    identityError: function (device) {
+      if (!device.hueUser) {
+        var e = new Error("Hue köprüsü eşleştirmesi eksik — cihazı silip yeniden eşleştir.");
+        e.code = "hue-identity";
+        return e;
+      }
+      if (device.endpointId == null) {
+        var e2 = new Error("Hue ışık kimliği eksik — cihazı silip yeniden eşleştir.");
+        e2.code = "hue-identity";
+        return e2;
+      }
+      return null;
     },
     firmware: function (device) {
+      var bad = hue.identityError(device);
+      if (bad) return Promise.reject(bad);
       return getJson(hue.url(device)).then(function (l) {
         var sw = l.swupdate || {};
         return { current: l.swversion || null, latest: null, hasUpdate: sw.state ? sw.state !== "noupdates" : null };
       });
     },
     read: function (device) {
+      var bad = hue.identityError(device);
+      if (bad) return Promise.reject(bad);
       return getJson(hue.url(device)).then(function (l) {
         if (Array.isArray(l) && l[0] && l[0].error) throw new Error("hue: yetki yok");
         var s = l.state || {};
@@ -367,6 +419,8 @@
       });
     },
     write: function (device, capability, value) {
+      var bad = hue.identityError(device);
+      if (bad) return Promise.reject(bad);
       var body = null;
       if (capability === "switch") body = { on: !!value };
       if (capability === "brightness") body = { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 254)) };
@@ -526,6 +580,8 @@
     send: function (device, obj) {
       var tcp = tcpBridge();
       if (!tcp) return Promise.reject(new Error("kasa: TCP yalnızca masaüstü uygulamasında"));
+      var blocked = lanAddressError(hostOnly(device));
+      if (blocked) return Promise.reject(blocked);
       var payload = kasaEncrypt(JSON.stringify(obj));
       var framed = [(payload.length >>> 24) & 255, (payload.length >>> 16) & 255, (payload.length >>> 8) & 255, payload.length & 255].concat(payload);
       return tcp({ host: hostOnly(device), port: 9999, bytes: framed, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, lengthPrefixed: true }).then(function (resp) {
@@ -573,6 +629,8 @@
     send: function (device, method, params) {
       var tcp = tcpBridge();
       if (!tcp) return Promise.reject(new Error("yeelight: TCP yalnızca masaüstü uygulamasında"));
+      var blocked = lanAddressError(hostOnly(device));
+      if (blocked) return Promise.reject(blocked);
       var line = JSON.stringify({ id: 1, method: method, params: params }) + "\r\n";
       return tcp({ host: hostOnly(device), port: 55443, text: line, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, untilNewline: true }).then(function (resp) {
         var first = String(resp).split(/\r?\n/).filter(Boolean)[0] || "{}";
@@ -608,6 +666,8 @@
   function udpSend(opts) {
     var udp = udpBridge();
     if (!udp) return Promise.reject(new Error("UDP yalnızca masaüstü uygulamasında"));
+    var blocked = lanAddressError(opts.host);
+    if (blocked) return Promise.reject(blocked);
     opts.timeoutMs = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
     return Promise.resolve().then(function () { return udp(opts); });
   }
@@ -1068,7 +1128,16 @@
     write: function (device, capability, value) {
       if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
       var p = protocolFor(device.protocol);
-      return p && available(p) ? p.write(device, capability, value) : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      if (!p || !available(p)) return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      // HTTP taşıyan protokollerde 4xx/5xx yanıtı başarı sayılmaz. Bazı yazma
+      // uçları ham {status,text} döner (Shelly, ESPHome); eskiden bunlar da
+      // "komut gitti" sayılıyordu. Artık gerçek yanıt kodu denetlenir.
+      return Promise.resolve(p.write(device, capability, value)).then(function (res) {
+        if (res && typeof res.status === "number" && (res.status < 200 || res.status >= 300)) {
+          throw new Error("http " + res.status);
+        }
+        return res;
+      });
     },
   };
 })();

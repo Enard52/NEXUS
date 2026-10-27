@@ -7,14 +7,14 @@
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
-var CACHE = 'nexus-shell-v2';
+var CACHE = 'nexus-shell-v4'; // v4: nexus-feedback.js kabuğa girdi (ses/hareket)
 var SHELL = [
   'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
   'fonts/inter/inter.css',
   'js/lucide.js',
   'theme.js', 'auth.js', 'data.js', 'device-controls.js', 'supported-devices.js',
   'lan-connectors.js', 'automation-engine.js', 'i18n.js', 'lang-en.js',
-  'ai-fab.js', 'sheet-gestures.js', 'nexus-dialog.js', 'nexus-assistant.js',
+  'ai-fab.js', 'sheet-gestures.js', 'nexus-dialog.js', 'nexus-assistant.js', 'nexus-feedback.js',
   'icons/icon-192.webp', 'icons/icon-512.webp',
   'stitch-home.html', 'stitch-login.html', 'stitch-onboarding.html'
 ];

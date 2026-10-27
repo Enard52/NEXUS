@@ -125,21 +125,6 @@
     return new Date(t || Date.now()).toISOString();
   }
 
-  // Olay yazarlarının hepsi (automation-engine, smart-scene-page, enerji stratejisi)
-  // ts'i SAYI olarak yazıyor: ts: Date.now(). Date.parse(sayı) geçersiz tarih döndürür,
-  // yani tek taze olay sanılıp hepsi çöpe gidiyordu — hiçbir kanal hiç tetiklenmezdi.
-  function tsMs(event) {
-    var raw = event && event.ts;
-    if (typeof raw === "number" && isFinite(raw)) return raw > 1e11 ? raw : raw * 1000;
-    var parsed = Date.parse(String(raw == null ? "" : raw));
-    return isNaN(parsed) ? 0 : parsed;
-  }
-
-  function isoTs(event) {
-    var t = tsMs(event);
-    return new Date(t || Date.now()).toISOString();
-  }
-
   // --- Ayarlar sayfasının anahtarları (stitch-instant-notifications.html) ----------
   // Bu sayfadaki toggle'lar eskiden hiçbir yere okunmuyordu: "Bildirimlere İzin Ver"
   // kapalıyken bile Telegram'a haber gidebiliyordu. Artık dağıtım gerçekten bu
@@ -224,11 +209,16 @@
     return raw.length > max ? raw.slice(0, max - 1).trim() + "..." : raw;
   }
 
+  // Başlıksız olayların düşer metni: dil İngilizceyse İngilizce olsun (gövde/Telegram/bildirim).
+  function alertWord() {
+    return window.nexusT ? nexusT("Uyarı", "Alert") : "Uyarı";
+  }
+
   function sendNtfy(cfg, event) {
     var topic = String(cfg.topic || "").trim();
     if (!topic) return Promise.reject(new Error("ntfy topic boş"));
     // Okunabilirlik: Türkçe başlık gövdenin ilk satırında durur, başlıkta sade hâli.
-    var body = [String(event.title || "Uyarı"), event.detail || ""].filter(Boolean).join("\n");
+    var body = [String(event.title || alertWord()), event.detail || ""].filter(Boolean).join("\n");
     return fetch("https://ntfy.sh/" + encodeURIComponent(topic), {
       method: "POST",
       headers: {
@@ -260,26 +250,58 @@
     if (!token || !chat) return Promise.reject(new Error("telegram bot anahtarı veya sohbet id eksik"));
     return post("https://api.telegram.org/bot" + token + "/sendMessage", {
       chat_id: chat,
-      text: "NEXUS · " + (event.title || "Uyarı") + (event.detail ? "\n" + event.detail : ""),
+      text: "NEXUS · " + (event.title || alertWord()) + (event.detail ? "\n" + event.detail : ""),
       disable_web_page_preview: true,
     });
   }
 
+  var channelCreated = false;
+  function ensureLocalChannel(ln) {
+    if (channelCreated || !ln || typeof ln.createChannel !== "function") return Promise.resolve();
+    channelCreated = true;
+    return ln.createChannel({
+      id: "nexus-alerts",
+      name: (window.nexusT ? nexusT("NEXUS Ev Uyarıları", "NEXUS Home Alerts") : "NEXUS Ev Uyarıları"),
+      description: (window.nexusT ? nexusT("Akıllı ev olayları ve güvenlik bildirimleri", "Smart home events and security alerts") : "Akıllı ev olayları ve güvenlik bildirimleri"),
+      importance: 5,
+      visibility: 1, // Kilit ekranında tam içerik gösterimi (NotificationCompat.VISIBILITY_PUBLIC)
+      sound: "default",
+      vibration: true,
+      lights: true,
+      lightColor: "#4C7DFF",
+    }).catch(function () {});
+  }
+
   function sendSystem(event) {
-    // 1) Telefonda Capacitor yerel bildirim eklentisi kuruluysa onu kullan (ek kurulum adımı).
+    // 1) Telefonda (Android & gelecekte iOS) Capacitor yerel bildirim eklentisi (Kilit ekranı dahil)
     var cap = window.Capacitor;
     var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
     if (ln && typeof ln.schedule === "function") {
-      return Promise.resolve(ln.requestPermissions()).then(function () {
+      var notifTitle = String(event.title || (window.nexusT ? nexusT("NEXUS Uyarısı", "NEXUS Alert") : "NEXUS Uyarısı"));
+      return ensureLocalChannel(ln).then(function () {
+        return (ln.checkPermissions ? ln.checkPermissions() : Promise.resolve({ display: "granted" }));
+      }).then(function (perm) {
+        if (perm && perm.display === "prompt") return ln.requestPermissions();
+        return perm;
+      }).then(function (perm) {
+        if (perm && perm.display === "denied") return { denied: true };
         return ln.schedule({
-          notifications: [{ id: hashId(event), title: "NEXUS: " + (event.title || "Uyarı"), body: event.detail || "" }],
+          notifications: [{
+            id: hashId(event),
+            title: notifTitle,
+            body: String(event.detail || ""),
+            channelId: "nexus-alerts",
+            smallIcon: "ic_launcher",
+            sound: "default",
+            extra: { id: event.id, page: event.page || "stitch-messages.html" }
+          }]
         });
       });
     }
     // 2) Web: Notification API izni varsa gerçek sistem bildirimi.
     if (typeof Notification !== "undefined" && Notification.permission === "granted") {
       try {
-        var n = new Notification("NEXUS: " + (event.title || "Uyarı"), { body: event.detail || "", tag: "nexus-" + hashId(event) });
+        var n = new Notification("NEXUS: " + (event.title || alertWord()), { body: event.detail || "", tag: "nexus-" + hashId(event) });
         setTimeout(function () { try { n.close(); } catch (e) { } }, 12000);
         return Promise.resolve(n);
       } catch (e) { /* bazı WebView'lar kurucu izin vermez */ }
@@ -341,6 +363,11 @@
     if (!claim(event.id)) return Promise.resolve({ sent: [], duplicate: true });
     var reason = dndActive() ? "dnd" : suppressReason(event);
     if (reason) return Promise.resolve({ sent: [], dnd: reason === "dnd", suppressed: reason });
+    // Yeni gerçek olay: uygulama içinde nazik zil (Ayarlar → Ses kapalıysa sessiz;
+    // DND/sessiz saat zaten yukarıda kesildiği için buraya yalnızca aktarılan olay gelir).
+    try {
+      if (window.nexusFeedback && typeof window.nexusFeedback.play === "function") window.nexusFeedback.play("notify");
+    } catch (e) { /* ses asıl işi engellemesin */ }
     return fanout(channels(), event).then(function (results) { return { sent: results }; });
   }
 
@@ -382,6 +409,15 @@
   }
 
   function requestSystemPermission() {
+    var cap = window.Capacitor;
+    var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
+    if (ln && typeof ln.requestPermissions === "function") {
+      return ensureLocalChannel(ln).then(function () {
+        return ln.requestPermissions();
+      }).then(function (res) {
+        return (res && res.display === "granted") ? "granted" : ((res && res.display) || "denied");
+      }).catch(function () { return "denied"; });
+    }
     if (typeof Notification === "undefined" || Notification.permission !== "default") return Promise.resolve(Notification ? Notification.permission : "unsupported");
     return Promise.resolve(Notification.requestPermission()).catch(function () { return "denied"; });
   }
@@ -389,6 +425,19 @@
   function start() {
     if (started || typeof window === "undefined") return;
     started = true;
+    try {
+      var cap = window.Capacitor;
+      var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
+      if (ln && typeof ln.addListener === "function") {
+        ln.addListener("localNotificationActionPerformed", function (action) {
+          var extra = action && action.notification && action.notification.extra;
+          var targetPage = (extra && extra.page) ? extra.page : "stitch-messages.html";
+          if (window.location.href.indexOf(targetPage) === -1) {
+            window.location.href = targetPage;
+          }
+        });
+      }
+    } catch (e) {}
     // Kurulum anında biriken eski olaylar dağıtılmaz; yalnızca sonrakiler.
     if (!get(SEEN_KEY, null)) checkNew({ markOnly: true });
     checkNew();

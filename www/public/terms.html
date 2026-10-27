@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://nexus-smarthome.pages.dev/og-cover.png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="NEXUS smart home app on phone, tablet and desktop"/>
+<meta property="og:image:alt" content="NEXUS smart home ecosystem on desktop and mobile"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Terms of Service — NEXUS"/>
 <meta name="twitter:description" content="Terms of Service — NEXUS"/>
@@ -249,7 +249,8 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   .hero-copy h1{white-space:normal;max-width:14em}
   .hero-copy .lead,.hero-copy .lead-sub{text-align:center;margin-left:auto;margin-right:auto}
   .hero-cta{justify-content:center}
-  .trust{display:flex;flex-direction:column;align-items:center;text-align:left}
+  /* Tikler ortak bir sol hizada alt alta: liste bloğu ortada, satırlar sola dayalı */
+  .trust{display:flex;flex-direction:column;align-items:flex-start;width:fit-content;margin:0 auto;text-align:left}
   .trust li{width:fit-content;max-width:100%}
 }
 
@@ -497,7 +498,19 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:24px 20px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
-.plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
+.plan.hot{border:2px solid transparent;background-clip:padding-box;box-shadow:0 20px 50px rgba(76,125,255,.18)}
+/* Popüler plan: dönen gradyan çerçeve (premium fiyat sayfası örüntüsü).
+   Mask-halka tekniği: yalnızca 2px'lik halka çizilir, kart içeriği asla kapanmaz.
+   @property desteklemeyen tarayıcılarda halka sabit gradyan olarak kalır. */
+.plan.hot::before{content:"";position:absolute;inset:-2px;border-radius:30px;padding:2px;
+  background:conic-gradient(from var(--nx-ang,0deg),#4C7DFF 0%,#22D3EE 30%,#8B7BFF 60%,#4C7DFF 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  animation:nx-rot 6s linear infinite;pointer-events:none}
+@property --nx-ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes nx-rot{to{--nx-ang:360deg}}
 .plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
   letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:8px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
 .plan-head{min-height:auto;margin-bottom:6px;display:flex;flex-direction:column;justify-content:flex-start}
@@ -552,8 +565,11 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 @media(min-width:640px){.faq-q{padding:20px 22px;font-size:16px;align-items:center}}
 .faq-q span{flex:1;min-width:0}
 .faq-q:hover{color:var(--brand)}
-.faq-a{padding:0 22px 20px;color:var(--text-2);font-size:14.5px;line-height:1.6;display:none}
-.faq-item.open .faq-a{display:block}
+.faq-a{display:grid;grid-template-rows:0fr;overflow:hidden;padding:0 22px;color:var(--text-2);font-size:14.5px;line-height:1.6;
+  transition:grid-template-rows .32s ease}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a-in{min-height:0;overflow:hidden}
+.faq-a-in p{margin:2px 0 20px}
 .faq-item.open .faq-q svg{transform:rotate(180deg)}
 .faq-q svg{transition:transform .2s ease;width:18px;height:18px;color:var(--muted);flex-shrink:0}
 
@@ -570,18 +586,21 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
-.ft-trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.ft-trust-badge,.ft-trust-pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;line-height:1.2;color:var(--text-2);
-  background:none;border:0;padding:0;border-radius:0;box-shadow:none}
+.ft-trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.ft-trust-badge,.ft-trust-pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;line-height:1;
+  color:var(--text-2);padding:6px 13px;border-radius:999px;
+  background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,0.03);letter-spacing:0.01em;transition:all .2s ease}
+.ft-trust-pill:hover{border-color:color-mix(in srgb,var(--brand) 40%,var(--border));color:var(--text);transform:translateY(-1px)}
 .ft-trust-pill .icon{width:14px;height:14px;color:var(--brand);flex-shrink:0}
-.ft-status-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
+.ft-status-dot{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 8px rgba(16,185,129,0.7);flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
 @keyframes nxStatusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.2)}}
 .nx-form-success{display:none;text-align:center;padding:24px 16px}
 .nx-form-success svg{width:46px;height:46px;color:#10B981;margin:0 auto 12px;display:block}
 .nx-form-success h4{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
 .nx-form-success p{margin:0 0 18px;color:var(--muted);font-size:13.5px;line-height:1.55}
-.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 16px;align-items:start;color:var(--muted);font-size:13px}
+.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;
+  align-items:center;justify-content:center;text-align:center;gap:12px 16px;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:flex-start;gap:8px;font-weight:600;text-align:left;min-width:0}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:2px 0 0}
 @media(max-width:768px){
@@ -604,8 +623,65 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
   .ft-bottom{margin-top:20px;padding-top:14px}
 }
 
-/* İçerikler varsayılan olarak görünür (opacity 1) */
+/* İçerikler varsayılan olarak görünür (opacity 1). JS + IntersectionObserver
+   destekliyorsa site-boot.js <html>'e nx-io ekler ve .rv öğeleri görünüme girince
+   yumuşakça belirir (AOS örüntüsü: eşik 0.12, kardeşler arası kademeli gecikme).
+   JS çalışmazsa nx-io hiç eklenmez → içerik her zaman görünür kalır. */
 .rv{opacity:1;transform:none}
+html.nx-io .rv{opacity:0;transform:translateY(16px);
+  transition:opacity .55s cubic-bezier(.22,.61,.36,1),transform .55s cubic-bezier(.22,.61,.36,1);
+  transition-delay:calc(var(--rv-i,0)*70ms)}
+html.nx-io .rv.rv-in{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion: reduce){html.nx-io .rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- Premium mikro-etkileşimler (koyu + açık temada aynı değişkenlerle) ---------- */
+/* Birincil düğmede ışık süpürmesi */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-45%;width:34%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.42),transparent);
+  transform:skewX(-18deg);transition:left .6s ease;pointer-events:none}
+.btn-primary:hover::after,.btn-primary:focus-visible::after{left:125%}
+/* Başlık: sayfa kayınca hafif gölgeyle yükselir */
+.hd{transition:box-shadow .28s ease}
+html.nx-scrolled .hd{box-shadow:0 10px 30px rgba(2,6,23,.22)}
+/* İndirme kartı: ziyaretçinin platformu ("Sizin için" rozetiyle) vurgulanır */
+.dl-card.dl-you{border-color:color-mix(in srgb,var(--brand) 55%,transparent);
+  box-shadow:0 14px 38px rgba(76,125,255,.22)}
+.dl-you-badge{position:absolute;top:16px;right:16px;background:var(--brand-grad);color:#fff;
+  font-size:10.5px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px;
+  box-shadow:0 4px 14px rgba(76,125,255,.35)}
+/* Telefon maketi: 3B giriş animasyonu + fare takibi (vanilla-tilt örüntüsü).
+   Yalnızca transform: düzen kayması yok; reduced-motion'da hepsi kapalı. */
+.phone-wrapper{perspective:1100px}
+.phone-case{transform-style:preserve-3d;will-change:transform;
+  animation:nx-phone-in .9s cubic-bezier(.22,.61,.36,1) .25s backwards}
+@keyframes nx-phone-in{from{opacity:0;transform:translateY(30px) rotateY(-14deg) scale(.96)}
+  to{opacity:1;transform:translateY(0) rotateY(0) scale(1)}}
+/* Işımanın kendi glowPulse nefesi var (aşağıda); telefon fare takibiyle serbest.
+   Camda periyodik yansıma süpürmesi (overflow hidden — kadraj dışına taşmaz) */
+.phone-glass-shine{overflow:hidden}
+.phone-glass-shine::after{content:"";position:absolute;top:-30%;bottom:-30%;left:0;width:44%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.16),transparent);
+  transform:translateX(-160%) skewX(-18deg);animation:nx-shine 7s ease-in-out 2.5s infinite;pointer-events:none}
+@keyframes nx-shine{0%{transform:translateX(-160%) skewX(-18deg)}
+  24%{transform:translateX(340%) skewX(-18deg)}100%{transform:translateX(340%) skewX(-18deg)}}
+/* Sayfa başına dön düğmesi */
+.nx-to-top{position:fixed;right:22px;bottom:22px;z-index:90;width:44px;height:44px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;
+  transform:translateY(10px);box-shadow:var(--shadow);
+  transition:opacity .25s ease,transform .25s ease,visibility .25s,border-color .2s ease,color .2s ease}
+.nx-to-top.show{opacity:1;visibility:visible;transform:none}
+.nx-to-top:hover{color:var(--brand);border-color:var(--brand);transform:translateY(-2px)}
+.nx-to-top svg{width:18px;height:18px}
+@media(max-width:640px){.nx-to-top{right:14px;bottom:14px}}
+@media (prefers-reduced-motion: reduce){
+  .btn-primary::after{display:none}
+  .phone-case,.phone-glass-shine::after{animation:none}
+  .plan.hot::before{animation:none}
+  .nx-to-top{transition:none}
+  .hd{transition:none}
+}
 
 /* About & Yasal Belge Sayfaları */
 .about-hero{padding:72px 0 28px;max-width:720px}
@@ -933,6 +1009,71 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 .nx-dialog-actions{display:flex;gap:10px;margin-top:16px}
 .nx-dialog-actions .btn{flex:1;min-height:38px;height:38px;font-size:13px;border-radius:10px}
 
+/* ---------- Modal: kaydırmasız tam görünüm ----------
+   Kart içerikleri ekran yüksekliği daraldıkça zarifçe sıkışır; normal masaüstü
+   ve telefon yüksekliklerinde kaydırma hiç devreye girmez — her şey görünür.
+   Çok kısa ekranlarda (yatay telefon) gizli kaydırma son çare olarak kalır. */
+.nx-modal-card{display:flex;flex-direction:column}
+@media (max-height:840px){
+  .nx-modal-card{padding:18px 22px 16px}
+  #nxAuthModal.nx-account-open .nx-modal-card{padding:22px 18px 14px}
+  .nx-account-person{padding:2px 24px 12px}
+  .nx-profile-avatar-large{width:62px;height:62px;margin-bottom:10px}
+  .nx-profile-name-row h3{font-size:19px}
+  .nx-offer-inner{padding:13px 14px 12px}
+  .nx-offer-list{gap:6px;margin-top:10px}
+  .nx-account-upgrade{min-height:40px;margin-top:10px}
+  .nx-app-input{height:38px}
+  .nx-app-textarea{min-height:50px}
+  .nx-app-submit{height:40px;margin-top:4px}
+  .nx-auth-brand-badge h3{font-size:18px}
+  #nxCheckoutMount{min-height:340px}
+}
+@media (max-height:700px){
+  .nx-modal-card{padding:14px 18px 12px;border-radius:20px}
+  #nxAuthModal.nx-account-open .nx-modal-card{padding:16px 16px 10px}
+  .nx-app-logo{width:32px;height:32px;margin-bottom:4px}
+  .nx-auth-brand-badge h3{font-size:16.5px;margin-bottom:2px}
+  .nx-auth-brand-badge p{font-size:12px}
+  .nx-field-label{font-size:10px}
+  .nx-auth-field-wrap{margin-bottom:6px}
+  .nx-app-input{height:36px;font-size:13px}
+  .nx-app-textarea{min-height:44px;padding:6px 12px}
+  .nx-app-submit{height:38px;font-size:13.5px;margin-top:3px}
+  .nx-google-btn{height:36px;margin-top:5px}
+  .nx-auth-links{gap:3px;margin-top:8px}
+  .nx-auth-alert{padding:6px 10px;margin-bottom:6px}
+  .nx-account-person{padding:0 18px 8px}
+  .nx-profile-avatar-large{width:52px;height:52px;margin-bottom:8px}
+  .nx-profile-name-row h3{font-size:17px}
+  .nx-profile-email-chip{font-size:12.5px;margin-top:2px}
+  .nx-account-now{margin-bottom:7px}
+  .nx-offer{margin-bottom:8px}
+  .nx-offer-inner{padding:11px 12px 10px;border-radius:17px}
+  .nx-offer-price b{font-size:19px}
+  .nx-offer-list{gap:5px;margin-top:8px}
+  .nx-offer-list li{font-size:12.5px}
+  .nx-account-item{padding-top:9px;padding-bottom:9px;gap:10px}
+  .nx-account-ico{width:30px;height:30px;border-radius:10px}
+  .nx-account-item-copy b{font-size:13px}
+  .nx-account-item-copy small{font-size:11px}
+  .nx-account-upgrade{min-height:36px;margin-top:9px;font-size:13.5px}
+  .nx-account-save{margin-top:5px;font-size:11.5px}
+  .nx-contact-security-note{padding:9px 12px;margin-top:9px;font-size:12px}
+  .nx-modal-close{top:10px;right:10px;width:26px;height:26px}
+  #nxCheckoutMount{min-height:280px}
+}
+@media (max-height:580px){
+  .nx-modal-card{padding:12px 14px 10px}
+  .nx-profile-avatar-large{width:44px;height:44px;margin-bottom:6px}
+  .nx-offer-list{gap:4px}
+  .nx-offer-list li{font-size:12px}
+  .nx-app-input{height:34px}
+  .nx-app-textarea{min-height:38px}
+  .nx-app-submit,.nx-google-btn{height:34px}
+  .nx-account-item{padding-top:7px;padding-bottom:7px}
+}
+
 /* Hakkında Sayfası Kartları */
 .about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px}
 </style>
@@ -972,7 +1113,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     <h1>Terms of Service</h1>
   </div>
   <div class="doc-body rv">
-    <p class="legal-updated">Last updated: 25 October 2026</p>
+    <p class="legal-updated">Last updated: 27 October 2026</p>
 <p>By downloading, installing or using the NEXUS app and related services (the “Services”) you accept these terms. The Services are provided by NEXUS. For inquiries, see the Contact section below.</p>
 <h3>Licence</h3>
 <p>We grant you a personal, non-exclusive, non-transferable, revocable licence to use the NEXUS software on devices you own or control, for personal, non-commercial home automation. You may not distribute, lease, sell, sub-license, reverse-engineer it, or use it to build a product that directly competes with NEXUS. Third-party components are subject to their own licences.</p>
@@ -1016,10 +1157,10 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     <div class="ft-grid">
       <div class="ft-brand">
         <a class="logo" href="/"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>NEXUS</span></a>
-        <p>Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down. An account is required; it syncs your setup across your screens.</p>
+        <p>Control your entire smart home directly over your local network — with zero vendor lock-in and no cloud dependency. Even when the internet goes down, your home never stops.</p>
         <div class="ft-trust-row">
-          <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>On your LAN</span>
-          <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>Account required</span>
+          <span class="ft-trust-pill"><span class="ft-status-dot"></span>100% Local Control</span>
+          <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>Zero Cloud Dependency</span>
         </div>
       </div>
       <div class="ft-links-group">
@@ -1030,7 +1171,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     </div>
     <div class="ft-bottom">
       <span>© 2026 NEXUS. All rights reserved.</span>
-      <span class="ft-privacy"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Device commands stay on your LAN.</span>
     </div>
   </div>
 </footer>
@@ -1129,6 +1269,35 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
       </div>
     </div>
 
+    <!-- Şifre sıfırlama bağlantısından gelen görünüm -->
+    <div id="nxAuthRecoveryView" style="display:none">
+      <div class="nx-auth-brand-badge">
+        <div class="nx-app-logo"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3 id="nxRecoveryTitle">Set a New Password</h3>
+        <p id="nxRecoverySubtitle">Choose a new password for your account.</p>
+        <p id="nxRecoveryEmail" class="nx-profile-email-chip" style="margin-top:8px"></p>
+      </div>
+      <form id="nxRecoveryForm" onsubmit="nxSubmitRecovery(event)">
+        <div id="nxRecoveryAlert" class="nx-auth-alert" style="display:none"></div>
+        <div class="nx-auth-field-wrap">
+          <label for="nxRecoveryPassword" class="nx-field-label">New Password</label>
+          <input type="password" id="nxRecoveryPassword" class="nx-app-input" required placeholder="At least 6 characters" autocomplete="new-password">
+        </div>
+        <div class="nx-auth-field-wrap">
+          <label for="nxRecoveryPassword2" class="nx-field-label">New Password (again)</label>
+          <input type="password" id="nxRecoveryPassword2" class="nx-app-input" required placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <button type="submit" id="nxRecoverySubmitBtn" class="btn btn-primary w-full nx-app-submit">
+          <span>Save Password</span>
+        </button>
+      </form>
+      <div class="nx-auth-links">
+        <button type="button" class="nx-auth-link muted" onclick="nxCloseAuthModal()">
+          <span>Close</span>
+        </button>
+      </div>
+    </div>
+
     <div id="nxAuthProfileView" class="nx-account" style="display:none">
       <div class="nx-account-person">
         <div class="nx-profile-avatar-large" id="nxProfileAvatarWrap">
@@ -1223,6 +1392,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   </div>
 </div>
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261026e"></script>
+<script src="/assets/site.js?v=20261027d"></script>
 </body>
 </html>

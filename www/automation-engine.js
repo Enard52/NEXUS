@@ -107,6 +107,8 @@
     var evs = get(EVENTS_KEY, []);
     if (!Array.isArray(evs)) evs = [];
     evs.push({ id: 'auto-' + Date.now(), type: type, title: title, detail: detail, ts: Date.now() });
+    // Liste sınırsız büyüyerek 2-5 sn'lik yoklamaları ve bulut senkronunu yoruyordu; son 300 olay yeter.
+    if (evs.length > 300) evs = evs.slice(-300);
     set(EVENTS_KEY, evs);
   }
 

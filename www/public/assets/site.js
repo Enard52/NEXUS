@@ -67,7 +67,13 @@ function nxUnlockScroll(){
   b.style.left='';
   b.style.right='';
   b.style.width='';
+  // html{scroll-behavior:smooth} yüzünden bu geri yazma animasyonlu olurdu:
+  // kapanışta istemsiz kaydırma animasyonu tetiklenmesin diye anında, sert geri yazılır.
+  var de=document.documentElement;
+  var prevBehavior=de.style.scrollBehavior;
+  de.style.scrollBehavior='auto';
   window.scrollTo(0,nxScrollY);
+  de.style.scrollBehavior=prevBehavior;
 }
 
 // İletişim & Destek Modülü Kontrolleri
@@ -339,7 +345,9 @@ function nxOpenAuthModal(){
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   var formView=document.getElementById('nxAuthFormView');
   var profileView=document.getElementById('nxAuthProfileView');
+  var recoveryView=document.getElementById('nxAuthRecoveryView');
   var isTr=document.documentElement.lang==='tr';
+  if(recoveryView)recoveryView.style.display='none';
 
   if(user){
     if(formView)formView.style.display='none';
@@ -441,7 +449,7 @@ function nxSendPasswordReset(){
   var SUPABASE_URL=nxCloudConfig().url;
   var SUPABASE_KEY=nxCloudConfig().anonKey;
   if(!SUPABASE_URL||!SUPABASE_KEY){nxAuthUnavailable();return;}
-  fetch(SUPABASE_URL+'/auth/v1/recover',{
+  fetch(SUPABASE_URL+'/auth/v1/recover?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname),{
     method:'POST',
     headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
     body:JSON.stringify({email:user})
@@ -465,6 +473,11 @@ function nxSendPasswordReset(){
 function nxCloseAuthModal(){
   var m=document.getElementById('nxAuthModal');
   if(!m)return;
+  var recoveryView=document.getElementById('nxAuthRecoveryView');
+  if(recoveryView && recoveryView.style.display!=='none'){
+    recoveryView.style.display='none';
+    nxRecoveryToken=null;nxRecoveryRefresh=null;nxRecoveryEmail='';
+  }
   m.classList.remove('open');
   setTimeout(function(){
     m.style.display='none';
@@ -529,7 +542,7 @@ function nxForgotPassword(){
       var SUPABASE_URL=nxCloudConfig().url;
       var SUPABASE_KEY=nxCloudConfig().anonKey;
       if(!SUPABASE_URL||!SUPABASE_KEY){if(alertEl){alertEl.textContent=nxAuthUnavailableMsg();alertEl.style.display='block';}return;}
-      fetch(SUPABASE_URL+'/auth/v1/recover',{
+      fetch(SUPABASE_URL+'/auth/v1/recover?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname),{
         method:'POST',
         headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
         body:JSON.stringify({email:inputEmail})
@@ -550,6 +563,101 @@ function nxForgotPassword(){
       });
     }
   );
+}
+
+/* ---------- Şifre sıfırlama bağlantısı (site köküne dönen recovery akışı) ----------
+   Supabase bağlantısı #access_token=…&type=recovery ile döner. Token oturum olarak
+   yazılmaz; kullanıcı yeni şifresini kaydedince oturum açılır. */
+var nxRecoveryToken=null;
+var nxRecoveryRefresh=null;
+var nxRecoveryEmail='';
+
+function nxShowRecovery(){
+  var m=document.getElementById('nxAuthModal');
+  var formView=document.getElementById('nxAuthFormView');
+  var profileView=document.getElementById('nxAuthProfileView');
+  var recoveryView=document.getElementById('nxAuthRecoveryView');
+  if(!m||!recoveryView)return;
+  if(formView)formView.style.display='none';
+  if(profileView)profileView.style.display='none';
+  recoveryView.style.display='block';
+  m.classList.remove('nx-account-open');
+  m.setAttribute('aria-labelledby','nxRecoveryTitle');
+  var emailEl=document.getElementById('nxRecoveryEmail');
+  if(emailEl)emailEl.textContent=nxRecoveryEmail||'';
+  var alertEl=document.getElementById('nxRecoveryAlert');
+  if(alertEl)alertEl.style.display='none';
+  m.style.display='flex';
+  setTimeout(function(){m.classList.add('open')},10);
+  nxLockScroll();
+}
+
+function nxSubmitRecovery(e){
+  e.preventDefault();
+  var isTr=document.documentElement.lang==='tr';
+  var a=(document.getElementById('nxRecoveryPassword')||{}).value||'';
+  var b=(document.getElementById('nxRecoveryPassword2')||{}).value||'';
+  var btn=document.getElementById('nxRecoverySubmitBtn');
+  var alertEl=document.getElementById('nxRecoveryAlert');
+  var cfg=nxCloudConfig();
+
+  function fail(msg){
+    if(alertEl){alertEl.textContent=msg;alertEl.style.display='block';}
+  }
+  if(!nxRecoveryToken){fail(isTr?'Sıfırlama bağlantısı geçersiz. Yeni bir bağlantı isteyin.':'This reset link is invalid. Please request a new one.');return;}
+  if(a.length<6){fail(isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.');return;}
+  if(a!==b){fail(isTr?'Şifreler eşleşmiyor.':'Passwords do not match.');return;}
+  if(!cfg.url||!cfg.anonKey){fail(nxAuthUnavailableMsg());return;}
+
+  var origText=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML=isTr?'Kaydediliyor…':'Saving…';}
+  if(alertEl)alertEl.style.display='none';
+
+  fetch(cfg.url+'/auth/v1/user',{
+    method:'PUT',
+    headers:{
+      'apikey':cfg.anonKey,
+      'Authorization':'Bearer '+nxRecoveryToken,
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({password:a})
+  })
+  .then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){
+        throw new Error(data.msg||data.message||data.error_description||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+      }
+      return data;
+    });
+  })
+  .then(function(data){
+    if(btn){btn.disabled=false;btn.innerHTML=origText;}
+    var email=(data&&data.email)||nxRecoveryEmail;
+    try{
+      if(email)localStorage.setItem('nexusCurrentUser',email);
+      localStorage.setItem('nexus_cloud_session',JSON.stringify({
+        accessToken:nxRecoveryToken,
+        refreshToken:nxRecoveryRefresh,
+        userId:(data&&data.id)||null,
+        email:email
+      }));
+    }catch(err){}
+    nxRecoveryToken=null;nxRecoveryRefresh=null;nxRecoveryEmail='';
+    nxCloseAuthModal();
+    nxUpdateNavAuth();
+    nxShowAlert(
+      isTr?'Şifreniz güncellendi ve hesabınıza giriş yapıldı.':'Your password has been updated and you are signed in.',
+      isTr?'Şifre Güncellendi':'Password Updated',
+      'success'
+    );
+  })
+  .catch(function(err){
+    if(btn){btn.disabled=false;btn.innerHTML=origText;}
+    var msg=String((err&&err.message)||'');
+    if(/expired|invalid|jwt/i.test(msg))msg=isTr?'Bağlantının süresi dolmuş. Yeni bir sıfırlama bağlantısı isteyin.':'This link has expired. Please request a new reset link.';
+    else if(/same|different/i.test(msg))msg=isTr?'Yeni şifre eskisinden farklı olmalı.':'The new password must be different from the old one.';
+    fail(msg||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+  });
 }
 
 function nxSubmitAuth(e){
@@ -576,7 +684,7 @@ function nxSubmitAuth(e){
   }
 
   var endpoint=nxAuthMode==='signup'
-    ? SUPABASE_URL+'/auth/v1/signup'
+    ? SUPABASE_URL+'/auth/v1/signup?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname)
     : SUPABASE_URL+'/auth/v1/token?grant_type=password';
 
   fetch(endpoint,{
@@ -599,6 +707,16 @@ function nxSubmitAuth(e){
     btn.disabled=false;
     btn.innerHTML=origText;
     var userEmail=(data.user&&data.user.email)||email;
+    if(!data.access_token){
+      /* E-posta doğrulaması açık: oturum yok. Kullanıcıyı giriş yapmış gibi
+         göstermek yanıltıcıydı; doğrulama bağlantısına yönlendiriyoruz. */
+      nxShowAlert(
+        isTr ? 'Kayıt alındı. Giriş yapabilmek için e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.' : 'Account created. Click the verification link we sent to your email to sign in.',
+        isTr ? 'E-postanızı Kontrol Edin' : 'Check Your Email',
+        'success'
+      );
+      return;
+    }
     try{
       localStorage.setItem('nexusCurrentUser',userEmail);
       if(data.user && data.user.user_metadata){
@@ -609,14 +727,12 @@ function nxSubmitAuth(e){
           localStorage.setItem('nexusUserName', nxFixMojibake(data.user.user_metadata.full_name || data.user.user_metadata.name));
         }
       }
-      if(data.access_token){
-        localStorage.setItem('nexus_cloud_session',JSON.stringify({
-          accessToken:data.access_token,
-          refreshToken:data.refresh_token,
-          userId:data.user?data.user.id:null,
-          email:userEmail
-        }));
-      }
+      localStorage.setItem('nexus_cloud_session',JSON.stringify({
+        accessToken:data.access_token,
+        refreshToken:data.refresh_token,
+        userId:data.user?data.user.id:null,
+        email:userEmail
+      }));
     }catch(e){}
     nxUpdateNavAuth();
     nxOpenAuthModal();
@@ -677,6 +793,7 @@ function nxSetBilling(period){
       : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
     if(cta){
       cta.dataset.plan=isYearly?cta.dataset.yearlyPlan:cta.dataset.monthlyPlan;
+      if(cta.dataset.yearlyUrl && isYearly)cta.href=cta.dataset.yearlyUrl;
       if(cta.dataset.yearlyLabel && isYearly)cta.textContent=cta.dataset.yearlyLabel;
       if(cta.dataset.monthlyLabel && !isYearly)cta.textContent=cta.dataset.monthlyLabel;
     }
@@ -686,37 +803,27 @@ function nxSetBilling(period){
     if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
     if(cta){
       cta.dataset.plan=cta.dataset.monthlyPlan;
+      if(cta.dataset.monthlyUrl)cta.href=cta.dataset.monthlyUrl;
       if(cta.dataset.monthlyLabel)cta.textContent=cta.dataset.monthlyLabel;
     }
   }
 }
 
 function nxOpenCheckout(e){
-  if(e && e.preventDefault) e.preventDefault();
   var cta=document.getElementById('nexusPlusCta');
-  var box=document.getElementById('nxCheckoutMount');
-  var modal=document.getElementById('nxCheckoutModal');
-  if(!cta||!box||!modal) return false;
+  if(!cta) return true;
   var yearly=document.getElementById('billingYearly');
-  var plan=(yearly && yearly.classList.contains('active') && cta.dataset.yearlyPlan) ? cta.dataset.yearlyPlan : (cta.dataset.plan || cta.dataset.monthlyPlan);
-  if(!plan) return false;
-  box.innerHTML='';
-  var el=document.createElement('div');
-  el.id='whop-embedded-checkout';
-  el.setAttribute('data-whop-checkout-plan-id', plan);
-  el.setAttribute('data-whop-checkout-return-url', location.href.split('#')[0]);
-  box.appendChild(el);
-  var old=document.getElementById('nxWhopLoader');
-  if(old) old.remove();
-  var s=document.createElement('script');
-  s.id='nxWhopLoader';
-  s.src='https://js.whop.com/static/checkout/loader.js';
-  s.async=true;
-  document.body.appendChild(s);
-  modal.style.display='flex';
-  setTimeout(function(){ modal.classList.add('open'); }, 10);
-  nxLockScroll();
-  return false;
+  var isYearly=yearly && yearly.classList.contains('active');
+  var url = isYearly ? (cta.dataset.yearlyUrl || ('https://whop.com/checkout/' + cta.dataset.yearlyPlan))
+                     : (cta.dataset.monthlyUrl || ('https://whop.com/checkout/' + (cta.dataset.plan || cta.dataset.monthlyPlan)));
+  if(url){
+    if(e && e.preventDefault) e.preventDefault();
+    var returnUrl = window.location.origin + window.location.pathname + '?payment=success';
+    var sep = url.indexOf('?') >= 0 ? '&' : (url.endsWith('/') ? '?' : '/?');
+    window.location.href = url + sep + 'redirect_url=' + encodeURIComponent(returnUrl);
+    return false;
+  }
+  return true;
 }
 function nxCloseCheckout(){
   var modal=document.getElementById('nxCheckoutModal');
@@ -828,16 +935,37 @@ function nxShowShot(idx){
 
 function nxNextShot(){
   nxShowShot(nxCurrentShot+1);
-  nxResetShotTimer();
+  nxHoldShotTimer(8000);
 }
 
 function nxPrevShot(){
   nxShowShot(nxCurrentShot-1);
-  nxResetShotTimer();
+  nxHoldShotTimer(8000);
 }
 
 function nxResetShotTimer(){
   if(nxShotTimer){ clearInterval(nxShotTimer); nxShotTimer=null; }
+}
+
+/* Otomatik tanıtım: hero görünürken 4 sn'de bir sonraki ekran. Kullanıcı
+   dokunursa kısa süre durur, sonra kendiliğinden devam eder; sekme arka
+   plana geçince veya maket görünmezken saymaz. */
+var nxShotHold=null;
+var nxPhoneInView=true;
+function nxShotTick(){
+  if(document.hidden || !nxPhoneInView || nxPreviewOn) return;
+  nxShowShot(nxCurrentShot+1);
+}
+function nxStartShotTimer(){
+  if(nxShotTimer || nxPreviewOn || nxShotHold) return;
+  if(document.hidden || !nxPhoneInView) return;
+  nxShotTimer=setInterval(nxShotTick,4000);
+}
+function nxHoldShotTimer(ms){
+  nxResetShotTimer();
+  if(nxShotHold){ clearTimeout(nxShotHold); nxShotHold=null; }
+  if(nxPreviewOn) return;
+  nxShotHold=setTimeout(function(){ nxShotHold=null; nxStartShotTimer(); }, ms||8000);
 }
 
 // Web uygulaması yayında değil. Telefon, uygulama ve programla aynı ekranların görsellerini gösterir.
@@ -915,8 +1043,8 @@ document.addEventListener('DOMContentLoaded',nxBootPreview);
 document.addEventListener('DOMContentLoaded',function(){
   var mockup=document.getElementById('phoneMockup');
   if(mockup){
-    mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;if(nxShotTimer)clearInterval(nxShotTimer);});
-    mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxResetShotTimer();});
+    mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;nxResetShotTimer();if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;}});
+    mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxHoldShotTimer(3000);});
 
     mockup.addEventListener('click',function(e){
       if(nxPreviewOn)return;
@@ -935,7 +1063,8 @@ document.addEventListener('DOMContentLoaded',function(){
     mockup.addEventListener('touchstart',function(e){
       if(nxPreviewOn)return;
       touchStartX=e.changedTouches[0].screenX;
-      if(nxShotTimer)clearInterval(nxShotTimer);
+      nxResetShotTimer();
+      if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;}
     },{passive:true});
     mockup.addEventListener('touchend',function(e){
       if(nxPreviewOn)return;
@@ -943,44 +1072,143 @@ document.addEventListener('DOMContentLoaded',function(){
       var diff=touchEndX-touchStartX;
       if(diff>40) nxPrevShot();
       else if(diff<-40) nxNextShot();
-      nxResetShotTimer();
+      nxHoldShotTimer(8000);
     },{passive:true});
   }
 
-  // OAuth / Google Giriş Dönüşü Kontrolü
-  if(window.location.hash && window.location.hash.indexOf('access_token=')!==-1){
-    try{
-      var hashParams=new URLSearchParams(window.location.hash.substring(1));
-      var token=hashParams.get('access_token');
-      if(token){
-        var payload=nxDecodeJwt(token);
-        var userEmail=payload.email||'kullanici@nexus';
-        localStorage.setItem('nexusCurrentUser',userEmail);
-        if(payload.user_metadata){
-          if(payload.user_metadata.avatar_url || payload.user_metadata.picture){
-            localStorage.setItem('nexusUserAvatar', payload.user_metadata.avatar_url || payload.user_metadata.picture);
-          }
-          if(payload.user_metadata.full_name || payload.user_metadata.name){
-            localStorage.setItem('nexusUserName', nxFixMojibake(payload.user_metadata.full_name || payload.user_metadata.name));
-          }
-        }
-        localStorage.setItem('nexus_cloud_session',JSON.stringify({
-          accessToken:token,
-          refreshToken:hashParams.get('refresh_token'),
-          userId:payload.sub,
-          email:userEmail
-        }));
-        history.replaceState(null,null,window.location.pathname+window.location.search);
-      }
-    }catch(e){}
+  /* Sekme gizliyken sayma, maket görünmezken de durur; geri gelince kısa bir
+     aralıkla devam eder. Ok/dot ve nxNext/Prev çağrıları 8 sn'lik bekleme koyar. */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ nxResetShotTimer(); if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;} }
+    else if(nxPhoneInView){ nxHoldShotTimer(1200); }
+  });
+  var phoneWrap=document.querySelector('.phone-wrapper');
+  if(phoneWrap && 'IntersectionObserver' in window){
+    var phoneIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        nxPhoneInView=en.isIntersecting;
+        if(nxPhoneInView){ nxHoldShotTimer(900); }
+        else { nxResetShotTimer(); if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;} }
+      });
+    },{ threshold:0.25 });
+    phoneIo.observe(phoneWrap);
   }
+  /* Koşulsuz başlangıç: IO arka plan sekmesinde ertelenirse bile tanıtım kalksın.
+     nxShotTick zaten document.hidden ve görünüm kontrolü yapıyor. */
+  nxStartShotTimer();
+
+  /* OAuth / Google girişi, e-posta doğrulama ve şifre sıfırlama dönüşleri.
+     Supabase implicit akışı belirteçleri hash içinde döndürür:
+       • type=recovery → yeni şifre görünümü açılır (token oturum sayılmaz)
+       • type=signup/email → e-posta doğrulandı, oturum açılır
+       • error/error_description → süresi dolmuş bağlantı bildirimi
+     Hash her durumda temizlenir; belirteç adres çubuğunda kalmaz. */
+  var nxHashParams=null;
+  if(window.location.hash && window.location.hash.length>1){
+    try{nxHashParams=new URLSearchParams(window.location.hash.substring(1));}catch(e){nxHashParams=null;}
+  }
+  if(nxHashParams){
+    var nxHashError=nxHashParams.get('error_description')||nxHashParams.get('error');
+    if(nxHashError){
+      var nxHashIsTr=document.documentElement.lang==='tr';
+      var nxHashErrText=String(nxHashError).replace(/\+/g,' ');
+      try{nxHashErrText=decodeURIComponent(nxHashErrText);}catch(e){}
+      nxShowAlert(
+        /expired|invalid/i.test(nxHashErrText)
+          ? (nxHashIsTr?'Bağlantının süresi dolmuş ya da geçersiz. Yeni bir bağlantı isteyin.':'This link has expired or is invalid. Please request a new one.')
+          : nxHashErrText,
+        nxHashIsTr?'Bağlantı Hatası':'Link Error',
+        'warning'
+      );
+      history.replaceState(null,null,window.location.pathname+window.location.search);
+    }else if(nxHashParams.get('access_token')){
+      var nxHashToken=nxHashParams.get('access_token');
+      var nxHashType=nxHashParams.get('type')||'';
+      var nxHashRefresh=nxHashParams.get('refresh_token');
+      var nxPayload=nxDecodeJwt(nxHashToken);
+      var nxUserEmail=nxPayload.email||'kullanici@nexus';
+      var nxMeta=nxPayload.user_metadata||{};
+      if(nxHashType==='recovery'){
+        nxRecoveryToken=nxHashToken;
+        nxRecoveryRefresh=nxHashRefresh;
+        nxRecoveryEmail=nxUserEmail;
+        nxShowRecovery();
+      }else{
+        try{
+          localStorage.setItem('nexusCurrentUser',nxUserEmail);
+          if(nxMeta.avatar_url || nxMeta.picture){
+            localStorage.setItem('nexusUserAvatar', nxMeta.avatar_url || nxMeta.picture);
+          }
+          if(nxMeta.full_name || nxMeta.name){
+            localStorage.setItem('nexusUserName', nxFixMojibake(nxMeta.full_name || nxMeta.name));
+          }
+          localStorage.setItem('nexus_cloud_session',JSON.stringify({
+            accessToken:nxHashToken,
+            refreshToken:nxHashRefresh,
+            userId:nxPayload.sub,
+            email:nxUserEmail
+          }));
+        }catch(e){}
+        nxUpdateNavAuth();
+        if(nxHashType==='signup' || nxHashType==='email'){
+          var nxSignupIsTr=document.documentElement.lang==='tr';
+          nxShowAlert(
+            nxSignupIsTr?'E-posta adresiniz doğrulandı ve giriş yapıldı.':'Your email is verified and you are signed in.',
+            nxSignupIsTr?'E-posta Doğrulandı':'Email Verified',
+            'success'
+          );
+        }
+      }
+      history.replaceState(null,null,window.location.pathname+window.location.search);
+    }
+  }
+
+  // Whop Ödeme Dönüşü Kontrolü (Success / Cancel / Failed)
+  try {
+    var searchParams = new URLSearchParams(window.location.search);
+    var payStatus = searchParams.get('payment') || searchParams.get('checkout') || searchParams.get('status');
+    if(payStatus){
+      var isTr = document.documentElement.lang === 'tr';
+      if(payStatus === 'success'){
+        nxShowAlert(
+          isTr
+            ? 'NEXUS+ ayrıcalıklarınız hesabınıza başarıyla tanımlandı. Uygulamayı indirip giriş yaparak tüm özelliklerin ve NEXUS AI yapay zekâsının tadını çıkarabilirsiniz.'
+            : 'Your NEXUS+ privileges are now active on your account. Download the app and sign in to enjoy all premium features and NEXUS AI.',
+          isTr ? 'Aboneliğiniz Başlatıldı!' : 'Subscription Activated!',
+          'success',
+          function(){
+            var dl = document.getElementById('downloads');
+            if(dl) dl.scrollIntoView({ behavior: 'smooth' });
+          }
+        );
+      } else if(payStatus === 'failed' || payStatus === 'error'){
+        nxShowAlert(
+          isTr
+            ? 'Ödeme işlemi tamamlanamadı veya kartınız onaylanmadı. Lütfen kart bilgilerinizi kontrol edip tekrar deneyin veya bankanızla görüşün.'
+            : 'Payment could not be completed. Please check your card information and try again, or contact your issuing bank.',
+          isTr ? 'Ödeme Gerçekleştirilemedi' : 'Payment Failed',
+          'warning'
+        );
+      } else if(payStatus === 'cancel' || payStatus === 'canceled' || payStatus === 'cancelled'){
+        nxShowAlert(
+          isTr
+            ? 'Ödeme adımı tamamlanmadan sonlandırıldı. İstediğiniz zaman planınızı seçip ücretsiz denemenizi başlatabilirsiniz.'
+            : 'Checkout was not completed. You can start your free trial whenever you are ready.',
+          isTr ? 'Ödeme İptal Edildi' : 'Checkout Canceled',
+          'info'
+        );
+      }
+      var cleanUrl = window.location.pathname + (window.location.hash || '');
+      history.replaceState(null, document.title, cleanUrl);
+    }
+  } catch(e) {}
 
   // Giriş Durumu Güncelleme
   nxUpdateNavAuth();
 
   // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
   // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
-  var NX_VER="1.0.19";
+  var NX_VER="1.0.20";
   function nxVerLess(a,b){
     var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
     var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
@@ -1037,6 +1265,13 @@ document.addEventListener('DOMContentLoaded',function(){
       var targetY = Math.max(0, targetEl.getBoundingClientRect().top + window.pageYOffset - headerH - 14);
 
       if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        window.scrollTo(0, targetY);
+        if(callback) callback();
+        return;
+      }
+
+      // Sekme görünmüyorken animasyon kareleri işletilmez: gizli sekmede doğrudan atla.
+      if(document.hidden){
         window.scrollTo(0, targetY);
         if(callback) callback();
         return;
@@ -1182,6 +1417,124 @@ document.addEventListener('DOMContentLoaded',function(){
       updateScrollSpy();
     }
   }
+
+  /* ---------- Premium mikro-etkileşimler (kademeli açılış, platform vurgusu, yukarı çık) ---------- */
+  (function nxPolish(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var tr = document.documentElement.lang === 'tr';
+    window.__nxSiteReady = true;
+
+    // 1) Scroll-reveal (AOS örüntüsü): .rv öğeleri görünüme girince belirir.
+    //    Kademeli gecikme: aynı kapsayıcıdaki .rv kardeşler sırayla gelir (en fazla 5 adım).
+    var rvEls = Array.prototype.slice.call(document.querySelectorAll('.rv'));
+    if(rvEls.length){
+      rvEls.forEach(function(el){
+        var i = 0, sib = el.parentElement ? el.parentElement.children : [];
+        for(var k = 0; k < sib.length && sib[k] !== el; k++){
+          if(sib[k].classList && sib[k].classList.contains('rv')) i++;
+        }
+        el.style.setProperty('--rv-i', String(Math.min(i, 5)));
+      });
+      if(document.documentElement.classList.contains('nx-io') && 'IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting){ en.target.classList.add('rv-in'); io.unobserve(en.target); }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+        rvEls.forEach(function(el){ io.observe(el); });
+        /* Güvenlik ağı: arka plan sekmesinde IO geri çağrıları ertelenebilir.
+           Görünür pencerede IO zaten anındadır; gecikse bile ilk ekrandaki öğeler
+           1.2 sn içinde zorunlu belirir — kullanıcı asla boş bölüm görmez. */
+        setTimeout(function(){
+          Array.prototype.forEach.call(rvEls, function(el){
+            if(el.classList.contains('rv-in')) return;
+            var r = el.getBoundingClientRect();
+            if(r.top < window.innerHeight && r.bottom > 0) el.classList.add('rv-in');
+          });
+        }, 1200);
+      }
+    }
+
+    // 2) Yukarı çık düğmesi: kaydırınca belirir, var olan yumuşak kaydırmayı kullanır.
+    var topBtn = document.createElement('button');
+    topBtn.type = 'button';
+    topBtn.className = 'nx-to-top';
+    topBtn.setAttribute('aria-label', tr ? 'Sayfa başına dön' : 'Back to top');
+    topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(topBtn);
+    topBtn.addEventListener('click', function(){
+      var target = document.getElementById('top');
+      if(target && typeof nxSmoothScrollTo === 'function') nxSmoothScrollTo(target);
+      else window.scrollTo(0, 0);
+    });
+
+    // 3) Kaydırma durumu: başlık gölgesi + yukarı çık düğmesinin görünürlüğü.
+    //    Yalnızca iki sınıf togglesi: rAF'siz de ucuz; sekme arka plandayken bile doğru kalır.
+    function nxOnScroll(){
+      var y = window.pageYOffset || 0;
+      document.documentElement.classList.toggle('nx-scrolled', y > 10);
+      topBtn.classList.toggle('show', y > 640);
+    }
+    window.addEventListener('scroll', nxOnScroll, { passive: true });
+    nxOnScroll();
+
+    // 4) Platform-farkında indirme vurgusu: ziyaretçinin işletim sistemi kartı işaretlenir.
+    var dls = document.querySelectorAll('.dl-card[data-platform]');
+    if(dls.length){
+      var plat = '';
+      try{
+        var ua = navigator.userAgent || '';
+        if(/Android/i.test(ua)) plat = 'android';
+        else if(/Win/i.test(ua)) plat = 'windows';
+        else if(/Mac/i.test(ua) && !/iPhone|iPad/i.test(ua)) plat = 'mac';
+        else if(/Linux/i.test(ua)) plat = 'linux';
+      }catch(e){}
+      if(plat === 'windows' || plat === 'linux' || plat === 'android'){
+        Array.prototype.forEach.call(dls, function(card){
+          if(card.getAttribute('data-platform') !== plat) return;
+          card.classList.add('dl-you');
+          var badge = document.createElement('span');
+          badge.className = 'dl-you-badge';
+          badge.textContent = tr ? 'Sizin için' : 'For you';
+          card.appendChild(badge);
+        });
+      }
+    }
+
+    // 5) Telefon maketi fare takibi (vanilla-tilt örüntüsü): yalnızca hassas imleçte,
+    //    harekete duyarlılık kapalıysa hiç. Yumuşak takip: hedefe lerp'lenir, bırakınca
+    //    kendiliğinden sıfıra iner ve transform temizlenir.
+    var canTilt = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce;
+    var caseEl = document.getElementById('phoneMockup');
+    if(canTilt && caseEl){
+      var tx = 0, ty = 0, cx = 0, cy = 0, tiltRaf = null, hovering = false;
+      var nxTiltFrame = function(){
+        cx += (tx - cx) * 0.14;
+        cy += (ty - cy) * 0.14;
+        caseEl.style.transform = 'rotateX(' + cy.toFixed(2) + 'deg) rotateY(' + cx.toFixed(2) + 'deg)';
+        if(hovering || Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05){
+          tiltRaf = requestAnimationFrame(nxTiltFrame);
+        } else {
+          tiltRaf = null;
+          caseEl.style.transform = '';
+        }
+      };
+      var stage = caseEl.closest('.phone-wrapper') || caseEl.parentElement;
+      stage.addEventListener('mousemove', function(e){
+        var r = caseEl.getBoundingClientRect();
+        if(!r.width || !r.height) return;
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        tx = Math.max(-1, Math.min(1, px)) * 9;
+        ty = Math.max(-1, Math.min(1, py)) * -9;
+        if(!tiltRaf){ hovering = true; tiltRaf = requestAnimationFrame(nxTiltFrame); }
+      });
+      stage.addEventListener('mouseleave', function(){
+        tx = 0; ty = 0; hovering = false;
+        if(!tiltRaf) tiltRaf = requestAnimationFrame(nxTiltFrame);
+      });
+    }
+  })();
 
   nxInitSmoothNav();
 });

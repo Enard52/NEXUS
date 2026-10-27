@@ -6,6 +6,7 @@
  * tasarımı kullanılır; tablette yalnızca ortalanır. theme.js tarafından yüklenir.
  */
 (function () {
+  if (typeof window === "undefined") return;
   if (window.__nexusDesktop) return;
   window.__nexusDesktop = true;
 
@@ -122,6 +123,10 @@
     if (document.getElementById("nx-side")) return;
     var name = get("nexusUserName") || "NEXUS Kullanıcısı";
     var initials = name.trim().split(/\s+/).map(function (p) { return p.charAt(0); }).join("").slice(0, 2).toLocaleUpperCase("tr-TR");
+    var avatar = get("nexusAvatar");
+    var avatarHtml = avatar
+      ? '<img src="' + esc(avatar) + '" alt="" class="nx-side-avatar" style="object-fit:cover;" onerror="this.outerHTML=\'<span class=\\\'nx-side-avatar\\\'>' + esc(initials || "M") + '</span>\'"/>'
+      : '<span class="nx-side-avatar">' + esc(initials || "M") + '</span>';
     var dark = root.classList.contains("dark");
     var html = '<a href="stitch-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
       '<span class="nx-side-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
@@ -136,7 +141,7 @@
       }).join("") + "</nav>" +
       '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#3F6FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nx-side-ai-txt"><b>NEXUS AI\'a sor</b><small>Sor · kontrol et</small></span><span class="nx-side-ai-dot" aria-hidden="true"></span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
       '<div class="nx-side-foot">' +
-      '<a href="stitch-profile.html" class="nx-side-user"><span class="nx-side-avatar">' + esc(initials || "M") + '</span><span class="min-w-0"><b>' + esc(name) + '</b><small>Profili görüntüle</small></span></a>' +
+      '<a href="stitch-profile.html" class="nx-side-user">' + avatarHtml + '<span class="min-w-0"><b>' + esc(name) + '</b><small>Profili görüntüle</small></span></a>' +
       '<button type="button" id="nx-side-upd" class="nx-side-upd" hidden></button>' +
       '<button type="button" class="nx-side-theme" id="nx-side-theme" aria-label="Temayı değiştir" title="Temayı değiştir"><i data-lucide="' + (dark ? "sun" : "moon") + '"></i></button>' +
       "</div>";
@@ -161,6 +166,35 @@
     });
     if (window.lucide) lucide.createIcons();
     wireSideUpdate();
+    window.addEventListener("nexusAvatarChanged", function () {
+      var sideUser = document.querySelector(".nx-side-user");
+      if (!sideUser) return;
+      var av = get("nexusAvatar");
+      var nm = get("nexusUserName") || "NEXUS Kullanıcısı";
+      var inits = nm.trim().split(/\s+/).map(function (p) { return p.charAt(0); }).join("").slice(0, 2).toLocaleUpperCase("tr-TR");
+      var currentAv = sideUser.querySelector(".nx-side-avatar");
+      if (currentAv) {
+        if (av) {
+          if (currentAv.tagName === "IMG") {
+            currentAv.src = av;
+          } else {
+            var newImg = document.createElement("img");
+            newImg.src = av;
+            newImg.className = "nx-side-avatar";
+            newImg.style.objectFit = "cover";
+            newImg.onerror = function() { newImg.outerHTML = '<span class="nx-side-avatar">' + esc(inits || "M") + '</span>'; };
+            currentAv.replaceWith(newImg);
+          }
+        } else {
+          if (currentAv.tagName === "IMG") {
+            var span = document.createElement("span");
+            span.className = "nx-side-avatar";
+            span.textContent = inits || "M";
+            currentAv.replaceWith(span);
+          }
+        }
+      }
+    });
   }
 
   // Güncelleme bulununca menüde hızlı indirme/kurma butonu. Yalnızca masaüstü uygulamasında çalışır.

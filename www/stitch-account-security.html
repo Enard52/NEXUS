@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -76,16 +77,29 @@
       <section class="space-y-3">
         <h3 class="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Ekstra Güvenlik</h3>
         <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden nexus-shadow border border-transparent dark:border-slate-800">
-          <div class="flex items-center justify-between px-5 py-5 border-b border-gray-50">
-            <div class="flex items-center gap-3">
-              <i data-lucide="shield-check" class="w-6 h-6 text-[#4C7DFF]"></i>
-              <div>
+          <button type="button" onclick="openTwoFactor()" class="w-full flex items-center justify-between px-5 py-5 border-b border-gray-50 text-left">
+            <div class="flex items-center gap-3 min-w-0">
+              <i data-lucide="shield-check" class="w-6 h-6 text-[#4C7DFF] shrink-0"></i>
+              <div class="min-w-0">
                 <p class="text-base font-semibold">İki Adımlı Doğrulama</p>
-                <p class="text-xs text-medium text-slate-500" id="two-factor-status">Yakında (TOTP uygulama kodu)</p>
+                <p class="text-xs text-medium text-slate-500" id="two-factor-status">Kontrol ediliyor</p>
               </div>
             </div>
-            <!-- Dürüstlük: TOTP henüz yok; sahte "Aktif" durumu gösterilmez -->
-            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">Yakında</span>
+            <span id="two-factor-badge" class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg shrink-0">—</span>
+          </button>
+          <div id="two-factor-panel" class="hidden px-5 pb-5 space-y-3 border-b border-gray-50">
+            <p id="two-factor-help" class="text-sm text-slate-500 leading-relaxed"></p>
+            <img id="two-factor-qr" alt="Kurulum kodu" class="hidden mx-auto w-48 h-48 bg-white rounded-xl"/>
+            <p id="two-factor-secret" class="hidden text-xs text-center text-slate-600 leading-relaxed">
+              <span>Kodu okutamıyorsan bu anahtarı uygulamaya yaz:</span>
+              <span id="two-factor-secret-value" class="block mt-1 font-mono break-all"></span>
+            </p>
+            <input id="two-factor-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 haneli kod" class="w-full h-12 px-4 rounded-2xl bg-slate-50 text-slate-900 tracking-[0.3em]"/>
+            <p id="two-factor-error" class="hidden text-sm text-red-500"></p>
+            <div class="flex gap-2">
+              <button type="button" onclick="cancelTwoFactor()" class="flex-1 h-12 rounded-2xl bg-slate-100 font-semibold">İptal</button>
+              <button type="button" id="two-factor-submit" onclick="submitTwoFactor()" class="flex-1 h-12 rounded-2xl bg-[#4C7DFF] text-white font-semibold">Doğrula</button>
+            </div>
           </div>
           <button type="button" onclick="toggleSection('recovery-section')" class="w-full flex items-center justify-between px-5 py-5 active:bg-gray-50 text-left">
             <div class="flex items-center gap-3">
@@ -113,7 +127,7 @@
           <div class="px-5 py-5 border-b border-gray-50">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center shrink-0">
-                <i data-lucide="smartphone" class="w-6 h-6 text-[#4C7DFF]"></i>
+                <i id="current-session-icon" data-lucide="monitor" class="w-6 h-6 shrink-0 text-[#4C7DFF]"></i>
               </div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between gap-3">
@@ -164,7 +178,16 @@
       if (/Android/i.test(ua)) return 'Android';
       if (/Mac/i.test(ua)) return 'Mac';
       if (/Windows/i.test(ua)) return 'Windows';
+      if (/Linux/i.test(ua)) return 'Linux';
       return 'Bu Cihaz';
+    }
+
+    function sessionIcon(name) {
+      var label = String(name || '');
+      if (/iPad|tablet/i.test(label)) return 'tablet';
+      if (/iPhone|Android/i.test(label)) return 'smartphone';
+      if (/Windows|Mac|Linux/i.test(label)) return 'monitor';
+      return 'smartphone';
     }
 
     function ensureCurrentSession() {
@@ -199,15 +222,176 @@
       if (icon) icon.classList.toggle('rotate-180');
     }
 
+    var twoFactorId = '';
+    var twoFactorMode = '';
+
+    function setTwoFactorLabel(status, badge) {
+      var statusEl = document.getElementById('two-factor-status');
+      var badgeEl = document.getElementById('two-factor-badge');
+      if (statusEl) statusEl.textContent = status;
+      if (badgeEl) badgeEl.textContent = badge;
+    }
+
+    function twoFactorErrorText(error) {
+      var text = String((error && error.message) || '');
+      if (/invalid|expired|challenge|otp|totp/i.test(text)) return 'Kod hatalı ya da süresi geçti.';
+      if (/bulut oturumu yok/i.test(text)) return 'Önce bulut hesabınla giriş yap.';
+      return text || 'İşlem tamamlanamadı.';
+    }
+
+    function qrSrc(code) {
+      var value = String(code || '');
+      if (!value) return '';
+      if (value.indexOf('data:') === 0) return value;
+      if (value.indexOf('<svg') === 0) return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(value);
+      return value;
+    }
+
+    function showTwoFactorError(text) {
+      var box = document.getElementById('two-factor-error');
+      if (!box) return;
+      box.textContent = text || '';
+      box.classList.toggle('hidden', !text);
+    }
+
+    function closeTwoFactorPanel() {
+      var panel = document.getElementById('two-factor-panel');
+      if (panel) panel.classList.add('hidden');
+      twoFactorId = '';
+      twoFactorMode = '';
+      showTwoFactorError('');
+    }
+
+    function refreshTwoFactor() {
+      var cloud = window.nexusCloud;
+      if (!cloud || !cloud.enabled()) {
+        setTwoFactorLabel('Bulut hesabıyla açılır', 'Kapalı');
+        return;
+      }
+      cloud.session().then(function (current) {
+        if (!current) {
+          setTwoFactorLabel('Önce bulut hesabınla giriş yap.', 'Kapalı');
+          return null;
+        }
+        return cloud.listFactors();
+      }).then(function (factors) {
+        if (!factors) return;
+        var on = factors.some(function (factor) {
+          return (factor.factor_type || factor.factorType) === 'totp' && factor.status === 'verified';
+        });
+        try {
+          if (on) localStorage.setItem('nexusMfaEnrolled', '1');
+          else localStorage.removeItem('nexusMfaEnrolled');
+        } catch (e) { /* özel mod */ }
+        setTwoFactorLabel(on ? 'Kimlik uygulaması kodu açık' : 'Kapalı', on ? 'Açık' : 'Kapalı');
+      }).catch(function () {
+        setTwoFactorLabel('Durum alınamadı', '—');
+      });
+    }
+
+    function openTwoFactor() {
+      var cloud = window.nexusCloud;
+      var panel = document.getElementById('two-factor-panel');
+      if (!cloud || !cloud.enabled()) {
+        showSecurityToast('İki adımlı doğrulama bulut hesabıyla açılır.', true);
+        return;
+      }
+      if (panel && !panel.classList.contains('hidden')) {
+        cancelTwoFactor();
+        return;
+      }
+      cloud.session().then(function (current) {
+        if (!current) {
+          showSecurityToast('Önce bulut hesabınla giriş yap.', true);
+          return;
+        }
+        return cloud.listFactors().then(function (factors) {
+          var verified = factors.filter(function (factor) {
+            return (factor.factor_type || factor.factorType) === 'totp' && factor.status === 'verified';
+          })[0];
+          var help = document.getElementById('two-factor-help');
+          var qr = document.getElementById('two-factor-qr');
+          var secret = document.getElementById('two-factor-secret');
+          var code = document.getElementById('two-factor-code');
+          if (code) code.value = '';
+          showTwoFactorError('');
+          if (verified) {
+            twoFactorMode = 'disable';
+            twoFactorId = verified.id;
+            if (help) help.textContent = 'Kapatmak için kimlik uygulamasındaki kodu gir.';
+            if (qr) qr.classList.add('hidden');
+            if (secret) secret.classList.add('hidden');
+            if (panel) panel.classList.remove('hidden');
+            return;
+          }
+          return cloud.enrollTotp().then(function (enrolled) {
+            var totp = (enrolled && enrolled.totp) || {};
+            twoFactorMode = 'enroll';
+            twoFactorId = enrolled.id;
+            if (help) help.textContent = 'Kodu kimlik uygulamasına okut, sonra uygulamadaki 6 haneyi gir.';
+            if (qr && totp.qr_code) {
+              qr.src = qrSrc(totp.qr_code);
+              qr.classList.remove('hidden');
+            }
+            var secretValue = document.getElementById('two-factor-secret-value');
+            if (secret) secret.classList.toggle('hidden', !totp.secret);
+            if (secretValue) secretValue.textContent = totp.secret || '';
+            if (panel) panel.classList.remove('hidden');
+          });
+        });
+      }).catch(function (error) {
+        showSecurityToast(twoFactorErrorText(error), true);
+      });
+    }
+
+    function cancelTwoFactor() {
+      var cloud = window.nexusCloud;
+      var id = twoFactorId;
+      var mode = twoFactorMode;
+      closeTwoFactorPanel();
+      if (mode === 'enroll' && id && cloud && cloud.unenrollTotp) {
+        cloud.unenrollTotp(id).catch(function () { /* yarım kurulum bir sonraki denemede silinir */ });
+      }
+    }
+
+    function submitTwoFactor() {
+      var cloud = window.nexusCloud;
+      var mode = twoFactorMode;
+      var code = (document.getElementById('two-factor-code').value || '').replace(/\s/g, '');
+      var button = document.getElementById('two-factor-submit');
+      if (!/^\d{6}$/.test(code)) {
+        showTwoFactorError('Kod 6 hane olmalı.');
+        return;
+      }
+      if (!cloud || !twoFactorId) return;
+      if (button) button.disabled = true;
+      var action = mode === 'disable'
+        ? cloud.verifyTotp(code, twoFactorId).then(function () { return cloud.unenrollTotp(); })
+        : cloud.verifyTotp(code, twoFactorId);
+      action.then(function () {
+        if (button) button.disabled = false;
+        closeTwoFactorPanel();
+        refreshTwoFactor();
+        showSecurityToast(mode === 'disable' ? 'İki adımlı doğrulama kapatıldı.' : 'İki adımlı doğrulama açık.');
+      }).catch(function (error) {
+        if (button) button.disabled = false;
+        showTwoFactorError(twoFactorErrorText(error));
+      });
+    }
+
     function syncSecurityState() {
       const biometric = nexusGetItem('nexusBiometricLock') !== 'false';
       document.getElementById('biometric-toggle').checked = biometric;
-      // 2FA henüz yok (TOTP yol haritasında): statik dürüst etiket gösterilir.
+      refreshTwoFactor();
 
       const updatedAt = nexusGetItem('nexusPasswordUpdatedAt');
       document.getElementById('password-meta').textContent = updatedAt ? ('Son güncelleme ' + updatedAt) : 'Henüz güncellenmedi';
       document.getElementById('recovery-email').value = nexusGetItem('nexusRecoveryEmail') || nexusGetItem('nexusUserEmail') || '';
-      document.getElementById('recovery-phone').value = nexusGetItem('nexusRecoveryPhone') || '';
+      const phoneEl = document.getElementById('recovery-phone');
+      if (phoneEl) {
+        phoneEl.placeholder = (window.nexusT ? window.nexusT('+90 5XX XXX XX XX', '+1 (555) 000-0000') : (window.nexusLang === 'en' ? '+1 (555) 000-0000' : '+90 5XX XXX XX XX'));
+        phoneEl.value = nexusGetItem('nexusRecoveryPhone') || '';
+      }
     }
 
     function savePassword() {
@@ -245,12 +429,24 @@
         });
         return;
       }
-      // Yerel hesap: tuzlu özet olarak saklanır.
+      // Yerel hesap: tuzlu PBKDF2 özeti olarak saklanır. İki tur hash sürerken buton kilitli
+      // kalır; çift dokunuş aynı güncellemeyi iki kez başlatmasın.
       const email = localStorage.getItem('nexusCurrentUser') || '';
+      const pwButton = document.querySelector('[onclick="savePassword()"]');
+      const pwIdleLabel = pwButton ? pwButton.textContent.trim() : '';
+      const unlockPwButton = function () {
+        if (!pwButton) return;
+        pwButton.disabled = false;
+        pwButton.textContent = pwIdleLabel;
+      };
+      if (pwButton) {
+        pwButton.disabled = true;
+        pwButton.textContent = (window.nexusT ? nexusT('Kaydediliyor…', 'Saving…') : 'Kaydediliyor…');
+      }
       window.nexusLocalPassword.verify(email, current).then(function (ok) {
-        if (ok === false) return fail('Mevcut şifre yanlış.');
-        return window.nexusLocalPassword.set(email, next).then(done);
-      }).catch(function () { fail('Şifre güncellenemedi.'); });
+        if (ok === false) { unlockPwButton(); return fail('Mevcut şifre yanlış.'); }
+        return window.nexusLocalPassword.set(email, next).then(function () { unlockPwButton(); done(); });
+      }).catch(function () { unlockPwButton(); fail('Şifre güncellenemedi.'); });
     }
 
     function saveRecoveryMethods() {
@@ -264,6 +460,8 @@
       const current = sessions.find(item => item.current) || sessions[0];
       document.getElementById('current-session-title').textContent = current ? current.name : 'Bu Cihaz';
       document.getElementById('current-session-meta').textContent = current ? current.meta : 'Yerel oturum açık';
+      var sessionIconEl = document.getElementById('current-session-icon');
+      if (sessionIconEl) sessionIconEl.setAttribute('data-lucide', sessionIcon(current && current.name));
 
       const others = sessions.filter(item => !item.current);
       document.getElementById('trusted-count-label').textContent = 'Güvenilir Cihazlar (' + sessions.length + ')';
