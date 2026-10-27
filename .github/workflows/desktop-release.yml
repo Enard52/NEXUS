@@ -98,7 +98,11 @@ jobs:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: gh release delete-asset "${GITHUB_REF_NAME}" LOCAL-BUILD.txt --yes --repo Enard52/nexus-releases || true
 
+      # Yalnızca bilgi amaçlı kopya (etiketsiz çalıştırmalarda indirilebilir):
+      # yayından SONRA çalışır ve başarısız olursa (ör. Actions artifact kotası)
+      # gerçek yayın etkilenmemiş demektir — işi kırmayasın.
       - name: Derleme çıktıları (etiketsiz çalıştırmalarda indirilebilir)
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: nexus-desktop-${{ runner.os }}
