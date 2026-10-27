@@ -563,7 +563,11 @@
       devices.forEach(function (device, index) {
         var acts = sceneActs(scene, device);
         if (!acts.length) return;
-        var prev = stateOf(device);
+        // stateOf canlı referans döndürür; applyField aynı nesneyi yerinde
+        // değiştirir. Karşılaştırma ilkel kopyalarla yapılır (setField'teki gibi),
+        // yoksa "değişti mi" testi her zaman yanlış çıkar ve komut gitmez.
+        var before = stateOf(device);
+        var prev = { switch: before.switch, brightness: before.brightness };
         acts.forEach(function (a) {
           applyField(devices[index], a[0], a[1]);
           cmds.push({ index: index, field: a[0], value: a[1], prev: prev });
@@ -589,6 +593,10 @@
         sendCommand(device, "color", st.color, c.index);
       } else if (c.field === "preset") {
         if (c.value && c.value.color && hasCap(device, "color")) sendCommand(device, "color", st.color, c.index);
+      } else if (c.field === "coverAction") {
+        // setField davranışı: perde hareketi switch'i çevirirse o komut da gider
+        // (pozisyon komutu sendExtra ile ayrıca yollanır).
+        if (st.switch !== c.prev.switch && hasCap(device, "switch")) sendCommand(device, "switch", st.switch, c.index);
       }
       sendExtra(device, c.field, c.index);
     });
