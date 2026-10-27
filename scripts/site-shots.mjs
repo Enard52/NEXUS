@@ -119,7 +119,7 @@ const browser = await chromium.launch();
 // Ortak: sayfayı aç, hata/boş durum var mı diye metnine bak, sonra yakala.
 async function shoot(context, p, outDir, tag) {
   const pg = await context.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/${p.path}`, { waitUntil: "networkidle", timeout: 20000 });
+  await pg.goto(`http://127.0.0.1:${PORT}/${p.path}`, { waitUntil: "domcontentloaded", timeout: 20000 });
   await pg.waitForTimeout(p.wait);
   // FAB gerçek telefonda sağ kenara yapışık (right:0, sol köşeleri yuvarlak). Kaydırma
   // çubuğu ve dock animasyonu onu içeride yüzer gibi gösteriyordu.

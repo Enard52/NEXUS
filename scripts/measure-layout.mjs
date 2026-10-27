@@ -119,6 +119,7 @@ const HEADER_EXEMPT = {
   "stitch-onboarding.html": "ilk kurulum/auth akışı (kendi düzeni)",
   "stitch-register.html": "auth akışı (dikey ortalı)",
   "stitch-login.html": "auth akışı (dikey ortalı)",
+  "stitch-forgot-password.html": "auth akışı (dikey ortalı)",
   "stitch-smart-app-detail.html": "main.pt-12 kabuğu ritmi sağlar",
   "stitch-menu.html": "main.pt-12 içinde nav başlık satırı",
   "stitch-profile.html": "main.pt-12 kabuğu (sekme ailesi)",
@@ -168,6 +169,7 @@ for (const t of TAB_PAGES) {
 // 4) İçerik sütunu: mx-auto ortalı sayfa sütunları tek genişlik ailesinde mi?
 const colUsage = new Map();
 for (const r of report) {
+  if (isExempt(r.page)) continue;
   for (const c of r.contentColumns) {
     if (!colUsage.has(c)) colUsage.set(c, []);
     colUsage.get(c).push(r.page);

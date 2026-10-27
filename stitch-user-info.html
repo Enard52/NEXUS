@@ -2,6 +2,7 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,8 +68,8 @@
 <main class="flex-1 bg-nexus-tint p-6" data-purpose="settings-container">
 <!-- BEGIN: Settings Card (genişlik sınırı ile geniş ekranlarda da düzgün) -->
 <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden w-full max-w-xl mx-auto" data-purpose="info-card">
-<!-- Row 1: Profile Photo (gerçek dosya seçici açar) -->
-<button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="document.getElementById('avatar-input').click()">
+<!-- Row 1: Profile Photo (gerçek dosya seçici / işlem menüsü açar) -->
+<button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="handleAvatarClick()">
 <span class="text-[17px] font-medium text-gray-800">Profil Fotoğrafı</span>
 <div class="flex items-center gap-3">
 <div class="w-14 h-14 rounded-full overflow-hidden border border-gray-200 flex-shrink-0 bg-gray-100 flex items-center justify-center">
@@ -140,25 +141,121 @@
 <p class="hidden text-sm text-slate-400 text-center py-6" id="tz-empty">Eşleşen ülke bulunamadı.</p>
 </div>
 <!-- END: Timezone Sheet -->
+<!-- BEGIN: Avatar Sheet -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10 w-full max-w-xl mx-auto" data-purpose="avatar-sheet" id="sheet-avatar">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Profil Fotoğrafı</h3>
+<button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
+</div>
+<div class="space-y-2 mb-4">
+<button class="w-full flex items-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-2xl font-semibold text-slate-800 transition-colors" onclick="closeSheets(); setTimeout(function(){ document.getElementById('avatar-input').click(); }, 150);">
+<i class="w-5 h-5 text-[#4C7DFF]" data-lucide="image"></i>
+<span>Yeni Fotoğraf Seç</span>
+</button>
+<button id="avatar-revert-google" class="hidden w-full flex items-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-2xl font-semibold text-slate-800 transition-colors" onclick="revertGoogleAvatar()">
+<svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+<span>Google Fotoğrafına Dön</span>
+</button>
+<button class="w-full flex items-center gap-3 p-4 bg-rose-50 hover:bg-rose-100 rounded-2xl font-semibold text-rose-600 transition-colors" onclick="removeAvatar()">
+<i class="w-5 h-5 text-rose-500" data-lucide="trash-2"></i>
+<span>Fotoğrafı Kaldır</span>
+</button>
+</div>
+<button class="w-full bg-slate-100 rounded-2xl py-3.5 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">Vazgeç</button>
+</div>
+<!-- END: Avatar Sheet -->
 <script data-purpose="user-info-interactions">
     lucide.createIcons();
 
-    /* ---------- Profil fotoğrafı: gerçek dosya seçimi ---------- */
+    /* ---------- Profil fotoğrafı: gerçek dosya seçimi & sıkıştırma ---------- */
+    function handleAvatarClick() {
+      var avatar = nexusGetItem('nexusAvatar');
+      if (avatar) {
+        openSheet('avatar');
+      } else {
+        document.getElementById('avatar-input').click();
+      }
+    }
+
     function changeAvatar(input) {
       var file = input.files && input.files[0];
       if (!file) return;
       var reader = new FileReader();
       reader.onload = function (e) {
-        var img = document.getElementById('avatar-img');
-        img.src = e.target.result;
-        img.classList.remove('hidden');
-        var ph = document.getElementById('avatar-placeholder');
-        if (ph) ph.classList.add('hidden');
-        // Profil sayfası da aynı anahtardan okur
-        try { nexusSetItem('nexusAvatar', e.target.result); }
-        catch (err) { /* çok büyük görselde kota aşılırsa yalnızca bu oturumda görünür */ }
+        var raw = e.target.result;
+        var img = new Image();
+        img.onload = function () {
+          try {
+            var canvas = document.createElement('canvas');
+            var maxDim = 256;
+            var scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            applyAvatar(dataUrl);
+          } catch (err) {
+            applyAvatar(raw);
+          }
+        };
+        img.onerror = function () { applyAvatar(raw); };
+        img.src = raw;
       };
       reader.readAsDataURL(file);
+      input.value = '';
+    }
+
+    function applyAvatar(val) {
+      var img = document.getElementById('avatar-img');
+      img.src = val;
+      img.classList.remove('hidden');
+      var ph = document.getElementById('avatar-placeholder');
+      if (ph) ph.classList.add('hidden');
+      try {
+        nexusSetItem('nexusAvatar', val);
+        if (window.nexusCloud && typeof window.nexusCloud.notifyLocalChange === 'function') {
+          window.nexusCloud.notifyLocalChange('nexusAvatar');
+        }
+        window.dispatchEvent(new Event('nexusAvatarChanged'));
+      } catch (err) {}
+    }
+
+    function updateAvatarSheet() {
+      var googleAvatar = nexusGetItem('nexusGoogleAvatar') || '';
+      var currentAvatar = nexusGetItem('nexusAvatar') || '';
+      var revertBtn = document.getElementById('avatar-revert-google');
+      if (revertBtn) {
+        if (googleAvatar && currentAvatar !== googleAvatar) {
+          revertBtn.classList.remove('hidden');
+        } else {
+          revertBtn.classList.add('hidden');
+        }
+      }
+    }
+
+    function revertGoogleAvatar() {
+      var googleAvatar = nexusGetItem('nexusGoogleAvatar') || '';
+      if (googleAvatar) {
+        applyAvatar(googleAvatar);
+      }
+      closeSheets();
+    }
+
+    function removeAvatar() {
+      var img = document.getElementById('avatar-img');
+      img.src = '';
+      img.classList.add('hidden');
+      var ph = document.getElementById('avatar-placeholder');
+      if (ph) ph.classList.remove('hidden');
+      try {
+        nexusSetItem('nexusAvatar', '');
+        if (window.nexusCloud && typeof window.nexusCloud.notifyLocalChange === 'function') {
+          window.nexusCloud.notifyLocalChange('nexusAvatar');
+        }
+        window.dispatchEvent(new Event('nexusAvatarChanged'));
+      } catch (e) {}
+      closeSheets();
     }
 
     /* ---------- Kullanıcı adı düzenleme ---------- */
@@ -284,6 +381,10 @@
       document.getElementById('sheet-backdrop').classList.remove('hidden');
       document.getElementById('sheet-' + name).classList.add('open');
       if (name === 'name') setTimeout(function () { nameInput.focus(); }, 260);
+      if (name === 'avatar') {
+        updateAvatarSheet();
+        if (window.lucide) lucide.createIcons();
+      }
     }
     function closeSheets() {
       document.getElementById('sheet-backdrop').classList.add('hidden');

@@ -12,7 +12,6 @@ type Check = { name: string; url: string; method?: string; ok: (s: number) => bo
 const REL = "https://github.com/Enard52/nexus-releases/releases/latest/download";
 const CHECKS: Check[] = [
   { name: "Site", url: "https://nexus-smarthome.pages.dev/", ok: (s) => s === 200 },
-  { name: "Web uygulaması", url: "https://nexus-web-jre.pages.dev/", ok: (s) => s === 200 },
   { name: "Yapay zekâ (Worker)", url: "https://nexus-ai.ensarharmanci52.workers.dev", method: "OPTIONS", ok: (s) => s === 200 || s === 204 },
   { name: "Ödeme webhook'u", url: "https://flbctyolowzcizwwzbke.supabase.co/functions/v1/whop-webhook", method: "POST", ok: (s) => s === 401 },
   { name: "Windows indirme", url: `${REL}/NEXUS-Setup.exe`, method: "HEAD", ok: (s) => s === 200 },

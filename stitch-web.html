@@ -2,12 +2,13 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>NEXUS — NEXUS AI Web Sürümü</title>
+<title>NEXUS — NEXUS AI Masaüstü</title>
 <!-- Tailwind CSS CDN -->
 <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <!-- Google Fonts: Inter (NEXUS body font) -->
@@ -45,7 +46,7 @@
 <a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
 <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
 </a>
-<h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">NEXUS AI Web Sürümü</h1>
+<h1 class="text-lg font-bold tracking-tight absolute left-1/2 -translate-x-1/2 whitespace-nowrap">NEXUS AI Masaüstü</h1>
 </header>
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
@@ -53,14 +54,14 @@
 <!-- Hero -->
 <section class="flex flex-col items-center text-center mb-8" data-purpose="web-hero">
 <div class="w-20 h-20 drop-shadow-lg mb-4"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full"><defs><linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-<h2 class="text-xl font-bold">NEXUS AI, tarayıcında</h2>
+<h2 class="text-xl font-bold">NEXUS AI, masaüstü uygulamasında</h2>
 <p class="text-sm text-slate-500 mt-2 max-w-xs">Bilgisayarında NEXUS masaüstü uygulamasını kullan; aynı asistan ve kontroller orada da çalışır.</p>
 </section>
 <!-- Web address card -->
 <section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="web-address">
-<p class="text-sm font-semibold text-slate-500 mb-2">Web adresi</p>
+<p class="text-sm font-semibold text-slate-500 mb-2">Hesap ve indirme sitesi</p>
 <div class="flex items-center justify-between gap-3 bg-slate-50 rounded-xl px-3 py-3">
-<span class="min-w-0 font-bold text-sm text-[#4C7DFF] truncate" id="web-url">https://nexus-web-jre.pages.dev</span>
+<span class="min-w-0 font-bold text-sm text-[#4C7DFF] truncate" id="web-url">https://nexus-smarthome.pages.dev</span>
 <button aria-label="Bağlantıyı kopyala" class="nx-tap text-slate-400 flex-shrink-0" id="copy-icon" onclick="copyUrl()">
 <i class="w-5 h-5" data-lucide="copy"></i>
 </button>

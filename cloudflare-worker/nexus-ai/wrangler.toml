@@ -1,0 +1,16 @@
+# NEXUS AI — Cloudflare Worker yapılandırması
+# Dağıtım: bu klasörde `npx wrangler deploy`
+# Bağlantılar mevcut yayındakiyle birebir aynıdır (AI + RL: 15 istek/dk, namespace 1001).
+name = "nexus-ai"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+usage_model = "standard"
+
+[ai]
+binding = "AI"
+
+[[unsafe.bindings]]
+name = "RL"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 15, period = 60 }

@@ -20,6 +20,8 @@ export const PRICES = {
   USD: { monthly: "$11.99", yearly: "$89.99", perMonthOfYear: "$7.50" },
 };
 
+// Kasıtlı olarak kapatılmış eski web uygulaması adresi: verify-site.mjs canlı sitenin
+// bu adrese bağlantı vermediğini bu değerle denetler. Canlı site adresiyle değiştirmeyin.
 export const APP_URL = "https://nexus-web-jre.pages.dev";
 export const RELEASES_URL = "https://github.com/Enard52/nexus-releases";
 export const MANAGE_URL = "https://whop.com/@me/settings/memberships/";
@@ -38,9 +40,9 @@ export const content = {
     canonical: "/",
     alternate: { en: "/", tr: "/tr/" },
     title: "NEXUS — Your smart home, managed on your own network",
-    ogImageAlt: "NEXUS smart home app on phone, tablet and desktop",
+    ogImageAlt: "NEXUS smart home ecosystem on desktop and mobile",
     description:
-      "NEXUS is a local-first smart home app for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.",
+      "NEXUS is a local-first smart home ecosystem for Windows, Linux and Android. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.",
     nav: [
       ["#features", "Features"],
       ["#how", "How it works"],
@@ -54,13 +56,13 @@ export const content = {
       eyebrow: "Local-first smart home",
       h1a: "Your home.",
       h1b: "Quietly in your control.",
-      lead: "One unified app for your lights, climate, covers and sensors — talking directly to the devices on your own local network. Responsive automations, live power metering, and control that keeps working when the internet goes down.",
+      lead: "One unified ecosystem for your lights, climate, covers and sensors — talking directly to the devices on your own local network. Responsive automations, live power metering, and control that keeps working when the internet goes down.",
       primary: { label: "Windows · Linux · Android", href: "#downloads" },
       secondary: null,
       versionNote: "Latest version",
       // Etiket her ekranla birlikte "— <ekran adı>" olarak tamamlanır; bu yüzden
       // "home screen" gibi tek ekrana sabitlenmiş bir metin kullanılmaz.
-      shotAlt: "NEXUS app screen",
+      shotAlt: "NEXUS interface and control center",
       trust: [
         "Free, unlimited devices",
         "No cloud required for control",
@@ -119,7 +121,7 @@ export const content = {
         [
           "3",
           "Live your home",
-          "Scenes, scheduled automations and real energy readings — from your mobile companion app or your native desktop program.",
+          "Scenes, scheduled automations and real energy readings — unified control across desktop and mobile.",
         ],
       ],
     },
@@ -168,7 +170,7 @@ export const content = {
           period: "per month",
           badge: "Most popular",
           features: [
-            "Everything in Free tier included",
+            "Everything in Free tier, plus:",
             "2,000 NEXUS AI replies a month instead of 30 a day",
             "Ask NEXUS AI to set scenes and answer in plain language",
             "One account, valid on every NEXUS device",
@@ -179,17 +181,17 @@ export const content = {
         {
           name: "Family",
           price: "Free",
-          period: "included with your home",
+          period: "for the whole family",
           badge: "Whole home",
           features: [
             "Household members with role-based access — no member cap",
             "Owner, member, and guest roles",
             "Per-member control, invite, and settings permissions",
             "Scenes and automations sync across your own signed-in devices",
-            "Active across Android mobile and desktop apps (Windows, Linux)",
-            "Completely included and free with your home",
+            "Active across the entire ecosystem (desktop and mobile)",
+            "Completely free with your home",
           ],
-          cta: { label: "Included in NEXUS", href: "#downloads" },
+          cta: { label: "Start with Family", href: "#downloads" },
           soon: false,
         },
       ],
@@ -213,9 +215,9 @@ export const content = {
       versionLabel: "Version",
       sizeLabel: "Size",
       webCard: {
-        title: "One account, every screen you install",
-        desc: "Native desktop programs for Windows and Linux, and the Android app. Signed in, your rooms, devices, scenes and automations match on each of them.",
-        cta: { label: "Download", href: "#downloads" },
+        title: "One account, across your entire ecosystem",
+        desc: "Windows and Linux desktop programs and the Android app. Signed in, your rooms, devices, scenes and automations stay seamlessly synchronized across your screens.",
+        cta: { label: "Download NEXUS", href: "#downloads" },
       },
       otherOs:
         "On a Mac, iPhone, or another system? You can still download the Windows, Linux and Android installers here. A native package for that system is not published yet.",
@@ -293,7 +295,7 @@ export const content = {
     },
     footer: {
       tagline:
-        "Smart home control that talks to your devices directly on your own network — no vendor cloud in the middle. Automations keep running when the internet goes down. An account is required; it syncs your setup across your screens.",
+        "Control your entire smart home directly over your local network — with zero vendor lock-in and no cloud dependency. Even when the internet goes down, your home never stops.",
       product: "Product",
       productLinks: [
         ["Features", "#features"],
@@ -326,9 +328,9 @@ export const content = {
     canonical: "/tr/",
     alternate: { en: "/", tr: "/tr/" },
     title: "NEXUS — Akıllı evin, kendi ağında, senin kontrolünde",
-    ogImageAlt: "Telefon, tablet ve bilgisayarda NEXUS akıllı ev uygulaması",
+    ogImageAlt: "Masaüstü ve mobilde NEXUS akıllı ev ekosistemi",
     description:
-      "NEXUS; Windows, Linux ve Android için yerel-öncelikli akıllı ev uygulaması. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı.",
+      "NEXUS; Windows, Linux ve Android üzerinde çalışan yerel-öncelikli akıllı ev ekosistemi. Cihazlarınızla yerel ağınızda doğrudan iletişim, kesintisiz çalışan otomasyonlar ve anlık enerji ölçümleri. Ücretsiz; isteğe bağlı NEXUS+ yapay zekâ planı.",
     nav: [
       ["#features", "Özellikler"],
       ["#how", "Nasıl çalışır"],
@@ -342,11 +344,11 @@ export const content = {
       eyebrow: "Yerel-öncelikli akıllı ev",
       h1a: "Evini.",
       h1b: "Sessizce kontrol et.",
-      lead: "Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek uygulamada — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir. Kesintisiz otomasyonlar, canlı enerji ölçümleri ve internet kesilse de durmayan bir kontrol mimarisi.",
+      lead: "Işıklarınız, iklimlendirmeniz, perdeleriniz ve sensörleriniz tek bir ekosistemde — bulut aracılarına ihtiyaç duymadan, doğrudan yerel ağınız üzerinden haberleşir. Kesintisiz otomasyonlar, canlı enerji ölçümleri ve internet kesilse de durmayan bir kontrol mimarisi.",
       primary: { label: "Windows · Linux · Android", href: "#downloads" },
       secondary: null,
       versionNote: "Güncel sürüm",
-      shotAlt: "NEXUS uygulama ekranı",
+      shotAlt: "NEXUS kontrol merkezi ve arayüzü",
       trust: [
         "Ücretsiz, sınırsız cihaz",
         "Kontrol için bulut şart değil",
@@ -405,7 +407,7 @@ export const content = {
         [
           "3",
           "Evinin tadını çıkar",
-          "Sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — telefonundaki mobil uygulamadan veya bilgisayarındaki masaüstü programından.",
+          "Sahneler, zamanlanmış otomasyonlar ve gerçek enerji okumaları — bilgisayarından ve telefonundan tümleşik kontrol.",
         ],
       ],
     },
@@ -424,7 +426,7 @@ export const content = {
             "Home Assistant",
           ],
         ],
-        ["Yerel TCP — masaüstü uygulamasında", ["TP-Link Kasa", "Yeelight"]],
+        ["Yerel TCP — masaüstü programında", ["TP-Link Kasa", "Yeelight"]],
       ],
       more: "Eksik bir şey mi var? Bağlayıcı iste",
       moreHref: "javascript:nxOpenContactModal('Cihaz & Bağlayıcı İsteği')",
@@ -454,7 +456,7 @@ export const content = {
           period: "aylık",
           badge: "En çok tercih edilen",
           features: [
-            "Ücretsiz plandaki tüm özellikler dahil",
+            "Ücretsiz plandaki tüm özelliklere ek olarak",
             "Günde 30 yerine ayda 2.000 NEXUS AI yanıtı",
             "NEXUS AI ile doğal dille senaryo kur ve evin hakkında soru sor",
             "Tek hesap, tüm NEXUS cihazlarında geçerli",
@@ -465,21 +467,21 @@ export const content = {
         {
           name: "Aile",
           price: "Ücretsiz",
-          period: "evinizle birlikte dahil",
+          period: "tüm aile için",
           badge: "Tüm ev için",
           features: [
             "Rol bazlı ev halkı yönetimi — üye sayısı sınırı yok",
             "Ev sahibi, üye ve misafir rolleri",
             "Üye başına kontrol, davet ve ayar yetkileri",
             "Sahneler ve otomasyonlar giriş yaptığın tüm cihazlarında senkron",
-            "Tüm platformlarda (Android mobil, Windows ve Linux masaüstü) aktif",
+            "Tüm ekosistemde (masaüstü ve mobil) aktif",
             "Evinizle birlikte tamamen ücretsiz ve sınırsız",
           ],
-          cta: { label: "Uygulamada Dahil", href: "#downloads" },
+          cta: { label: "Ailenle Başla", href: "#downloads" },
           soon: false,
         },
       ],
-      manageNote: "İptal, uygulamadaki Faturalandırma'dan veya bu sitedeki hesabından yapılır. Dönem sonunda geçerli olur.",
+      manageNote: "İptal; uygulamadaki Faturalandırma menüsünden veya bu sitedeki hesabınızdan dilediğiniz an tek tıkla yapılır. İptal, dönem sonunda geçerli olur.",
     },
     downloads: {
       heading: "Her masaüstünde yerli, telefonunda evinde.",
@@ -499,9 +501,9 @@ export const content = {
       versionLabel: "Sürüm",
       sizeLabel: "Boyut",
       webCard: {
-        title: "Tek hesap, kurduğun her ekranda",
-        desc: "Windows ve Linux için masaüstü programı, Android için mobil uygulama. Giriş yaptığında odaların, cihazların, sahnelerin ve otomasyonların hepsinde aynı kalır.",
-        cta: { label: "İndir", href: "#downloads" },
+        title: "Tek hesap, tüm ekosisteminizde",
+        desc: "Windows ve Linux masaüstü programı ve Android mobil uygulaması. Giriş yaptığınızda odalarınız, cihazlarınız, sahneleriniz ve otomasyonlarınız tüm ekranlarınızda eksiksiz senkronize olur.",
+        cta: { label: "NEXUS'u İndir", href: "#downloads" },
       },
       otherOs:
         "Mac, iPhone veya başka bir sistemdeysen de Windows, Linux ve Android kurulumlarını buradan indirebilirsin. O sistem için ayrı bir paket henüz yok.",
@@ -537,7 +539,7 @@ export const content = {
         ],
         [
           "NEXUS+ aboneliğimi dilediğim an iptal edebilir miyim?",
-          "Evet, hiçbir taahhüt ve bağlayıcılık yoktur. Aboneliğinizi dilediğiniz an tek tıkla iptal edebilirsiniz: İster uygulama içerisindeki Hesap & Faturalandırma menüsünden, ister web sitemizden, isterseniz de sipariş e-posta makbuzunuz üzerinden hemen yönetebilirsiniz. İptal ettiğinizde mevcut döneminiz boyunca tüm ayrıcalıklarınız korunur ve sonraki dönem için hiçbir ücret alınmaz.",
+          "Evet, hiçbir taahhüt ve bağlayıcılık yoktur. Aboneliğinizi dilediğiniz an tek tıkla iptal edebilirsiniz: İster uygulamadaki Hesap & Faturalandırma menüsünden, ister bu sitedeki hesabınızdan, isterseniz de sipariş e-posta makbuzunuz üzerinden hemen yönetebilirsiniz. İptal ettiğinizde mevcut döneminiz boyunca tüm ayrıcalıklarınız korunur ve sonraki dönem için hiçbir ücret alınmaz.",
         ],
       ],
     },
@@ -579,7 +581,7 @@ export const content = {
     },
     footer: {
       tagline:
-        "Tüm akıllı ev cihazlarınızı bulut aracı olmadan, doğrudan yerel ağınızda birleştiren modern kontrol platformu. NEXUS için hesap gerekir; giriş yaptıktan sonra kurulumun kendi hesabına senkronize olur. Cihaz komutları yerel ağında kalır.",
+        "Tüm akıllı evinizi tek bir merkezden, üretici bulutlarına bağımlı olmadan ve doğrudan yerel ağınız üzerinden yönetin. İnternet kesilse bile eviniz kusursuz çalışmaya devam eder.",
       product: "Ürün",
       productLinks: [
         ["Özellikler", "#features"],
@@ -592,7 +594,7 @@ export const content = {
       accountLinks: [
         ["İletişim ve Teknik Destek", "javascript:nxOpenContactModal('Teknik Destek')"],
         ["Sürüm Notları ve Topluluk", RELEASES_URL],
-        ["Uygulama İndir", "#downloads"],
+        ["NEXUS'u İndir", "#downloads"],
       ],
       legal: "Yasal",
       legalLinks: [

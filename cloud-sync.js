@@ -143,7 +143,40 @@
         if (key !== canonicalKey) localStorage.removeItem(key);
       });
       localStorage.removeItem(SESSION_KEY); // en eski şema: öneksiz tek kayıt
+      noteAssurance(session);
     } catch (e) { /* kota dolu / özel mod */ }
+  }
+
+  // Oturum belirtecindeki güvence düzeyi (aal). İkinci adım açıksa aal1 oturum
+  // uygulamaya alınmaz; kod doğrulanınca Supabase aal2 belirteç verir.
+  function jwtClaims(token) {
+    try {
+      var part = String(token || "").split(".")[1] || "";
+      if (!part) return {};
+      var pad = part.length % 4 === 0 ? "" : "====".slice(part.length % 4);
+      var json = atob(part.replace(/-/g, "+").replace(/_/g, "/") + pad);
+      return JSON.parse(json) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function noteAssurance(session) {
+    try {
+      if (!session || !session.accessToken) {
+        localStorage.removeItem("nexusSessionAal");
+        localStorage.removeItem("nexusMfaPending");
+        return;
+      }
+      var aal = jwtClaims(session.accessToken).aal || "aal1";
+      localStorage.setItem("nexusSessionAal", aal);
+      if (aal === "aal2") localStorage.removeItem("nexusMfaPending");
+      else if (localStorage.getItem("nexusMfaEnrolled") === "1") localStorage.setItem("nexusMfaPending", "1");
+    } catch (e) { /* özel mod */ }
+  }
+
+  function authHeader(current) {
+    return { Authorization: "Bearer " + current.accessToken };
   }
 
   function expiryFrom(data) {
@@ -175,12 +208,23 @@
   }
 
   // Web adresi: e-posta bağlantıları (doğrulama, şifre sıfırlama) ve Google girişi buraya döner.
-  // Masaüstü (nexus://) ve Android (https://localhost) kendi adreslerine dönemez; web uygulamasını kullanır.
-  var WEB_URL = "https://nexus-web-jre.pages.dev";
+  // Masaüstü (nexus://) ve Android (https://localhost) kendi adreslerine dönemez; site
+  // belirteci yakalar ve oturumu açar. Eski web uygulaması adresi (nexus-web-jre.pages.dev)
+  // kapatıldı; canlı site kullanılır.
+  var WEB_URL = "https://nexus-smarthome.pages.dev";
+
+  function isNativeApp() {
+    try {
+      if (typeof window === "undefined") return false;
+      if (window.Capacitor && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform()) return true;
+    } catch (e) {}
+    return false;
+  }
 
   function isWebOrigin() {
     if (typeof location === "undefined") return false;
-    return /^https?:$/.test(location.protocol) && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+    if (isNativeApp()) return false;
+    return /^https?:$/.test(location.protocol);
   }
 
   function webBase() {
@@ -192,9 +236,24 @@
     return typeof window !== "undefined" && !!(window.nexusDesktop || (typeof location !== "undefined" && location.protocol === "nexus:"));
   }
 
-  // Google ile giriş web adresinde ve masaüstü uygulamasında sunulur.
+  // Mobil uygulamada Google dönüşü: sistem tarayıcısı siteye döner, site
+  // /app-auth.html üzerinden belirteçleri nexus://auth adresine taşır.
+  // Supabase yalnız site alan adına (ve loopback'e) yönlendirmeye izin verir;
+  // bu yüzden doğrudan özel şema yerine site aktarımı kullanılır.
+  var NATIVE_AUTH_REDIRECT = WEB_URL + "/app-auth.html";
+
+  function nativeBrowser() {
+    try {
+      return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser) || null;
+    } catch (e) { return null; }
+  }
+
+  // Google ile giriş web adresinde, masaüstü uygulamasında ve mobil uygulamada sunulur.
+  // Mobilde eklenti yoksa düğme gösterilmez; basıldığında hiçbir şey olmayan düğme bırakılmaz.
   function googleAvailable() {
-    return enabled() && (isWebOrigin() || isDesktopApp());
+    if (!enabled()) return false;
+    if (isWebOrigin() || isDesktopApp()) return true;
+    return isNativeApp() && !!nativeBrowser();
   }
 
   function sessionFrom(data, fallbackEmail) {
@@ -207,6 +266,7 @@
       userId: user.id || null,
       email: user.email || fallbackEmail || "",
       name: meta.full_name || meta.name || "",
+      avatar: meta.avatar_url || meta.picture || "",
     };
   }
 
@@ -218,6 +278,7 @@
       var previous = refresh ? readSession() : null;
       var session = sessionFrom(data, (idToken && idToken.email) || (previous && previous.email) || "");
       if (!session.name && previous && previous.name) session.name = previous.name;
+      if (!session.avatar && previous && previous.avatar) session.avatar = previous.avatar;
       writeSession(session);
       return session;
     });
@@ -249,10 +310,136 @@
     return grant({ email: email, password: password });
   }
 
+  // İki adımlı doğrulama: Supabase Auth TOTP (kimlik uygulaması). Yerel parola
+  // özeti ikinci adım sayılmaz; faktör yoksa "açık" denmez.
+  function listFactors() {
+    var current = readSession();
+    if (!current) return Promise.resolve([]);
+    return api("/auth/v1/factors", { headers: authHeader(current) }).then(function (body) {
+      if (Array.isArray(body)) return body;
+      if (body && Array.isArray(body.all)) return body.all;
+      if (body && Array.isArray(body.totp)) return body.totp.concat(body.phone || []);
+      return [];
+    });
+  }
+
+  function verifiedTotp(factors) {
+    return (factors || []).filter(function (factor) {
+      var type = factor.factor_type || factor.factorType;
+      return type === "totp" && factor.status === "verified";
+    });
+  }
+
+  function needsSecondFactor() {
+    var current = readSession();
+    if (!current || !current.accessToken) return Promise.resolve(false);
+    if ((jwtClaims(current.accessToken).aal || "aal1") === "aal2") {
+      try { localStorage.removeItem("nexusMfaPending"); } catch (e) { /* özel mod */ }
+      return Promise.resolve(false);
+    }
+    return listFactors().then(function (factors) {
+      var on = verifiedTotp(factors).length > 0;
+      try {
+        if (on) {
+          localStorage.setItem("nexusMfaEnrolled", "1");
+          localStorage.setItem("nexusMfaPending", "1");
+        } else {
+          localStorage.removeItem("nexusMfaEnrolled");
+          localStorage.removeItem("nexusMfaPending");
+        }
+      } catch (e) { /* özel mod */ }
+      return on;
+    });
+  }
+
+  function enrollTotp() {
+    var current = readSession();
+    if (!current) return Promise.reject(new Error("bulut oturumu yok"));
+    return listFactors().then(function (factors) {
+      var stale = factors.filter(function (factor) {
+        return (factor.factor_type || factor.factorType) === "totp" && factor.status !== "verified";
+      });
+      return stale.reduce(function (chain, factor) {
+        return chain.then(function () { return unenrollFactor(factor.id); });
+      }, Promise.resolve()).then(function () {
+        return api("/auth/v1/factors", {
+          method: "POST",
+          headers: authHeader(current),
+          body: JSON.stringify({ factor_type: "totp", friendly_name: "NEXUS", issuer: "NEXUS" }),
+        });
+      });
+    });
+  }
+
+  function verifyTotp(code, factorId) {
+    var current = readSession();
+    if (!current) return Promise.reject(new Error("bulut oturumu yok"));
+    var digits = String(code || "").replace(/\s/g, "");
+    var pick = factorId ? Promise.resolve(factorId) : listFactors().then(function (factors) {
+      var chosen = verifiedTotp(factors)[0] || factors.filter(function (factor) {
+        return (factor.factor_type || factor.factorType) === "totp";
+      })[0];
+      if (!chosen) throw new Error("doğrulama ayarı yok");
+      return chosen.id;
+    });
+    return pick.then(function (id) {
+      return api("/auth/v1/factors/" + encodeURIComponent(id) + "/challenge", {
+        method: "POST",
+        headers: authHeader(readSession() || current),
+        body: "{}",
+      }).then(function (challenge) {
+        return api("/auth/v1/factors/" + encodeURIComponent(id) + "/verify", {
+          method: "POST",
+          headers: authHeader(readSession() || current),
+          body: JSON.stringify({ challenge_id: challenge.id, code: digits }),
+        });
+      });
+    }).then(function (data) {
+      if (!data || !data.access_token) throw new Error("kod doğrulanamadı");
+      var previous = readSession();
+      try { localStorage.setItem("nexusMfaEnrolled", "1"); } catch (e) { /* özel mod */ }
+      var session = sessionFrom(data, (previous && previous.email) || "");
+      if (!session.name && previous && previous.name) session.name = previous.name;
+      writeSession(session);
+      return session;
+    });
+  }
+
+  function unenrollFactor(factorId) {
+    var current = readSession();
+    if (!current || !factorId) return Promise.resolve(null);
+    return api("/auth/v1/factors/" + encodeURIComponent(factorId), {
+      method: "DELETE",
+      headers: authHeader(current),
+    });
+  }
+
+  function unenrollTotp(onlyId) {
+    return listFactors().then(function (factors) {
+      var totp = factors.filter(function (factor) {
+        if ((factor.factor_type || factor.factorType) !== "totp") return false;
+        if (onlyId) return factor.id === onlyId && factor.status !== "verified";
+        return true;
+      });
+      return totp.reduce(function (chain, factor) {
+        return chain.then(function () { return unenrollFactor(factor.id); });
+      }, Promise.resolve());
+    }).then(function () {
+      if (onlyId) return readSession();
+      try {
+        localStorage.removeItem("nexusMfaEnrolled");
+        localStorage.removeItem("nexusMfaPending");
+      } catch (e) { /* özel mod */ }
+      var current = readSession();
+      if (current && current.refreshToken) return grant(current.refreshToken, true).catch(function () { return current; });
+      return current;
+    });
+  }
+
   // Dönüş: { session, needsConfirmation }. E-posta doğrulaması açıksa oturum gelmez;
-  // kullanıcı e-postadaki bağlantıya tıklayınca web girişine döner ve oturum oradan alınır.
+  // doğrulama bağlantısı site köküne döner (site kökü #type=signup belirtecini işler).
   function signUp(email, password, name) {
-    var back = encodeURIComponent(webBase() + "/stitch-login.html");
+    var back = encodeURIComponent(webBase() + "/");
     var meta = { lang: accountLang() };
     if (name) meta.name = name;
     return api("/auth/v1/signup?redirect_to=" + back, {
@@ -269,9 +456,10 @@
     });
   }
 
-  // Şifre sıfırlama e-postası gönderir (Supabase gönderir; bağlantı web uygulamasına döner).
+  // Şifre sıfırlama e-postası gönderir (Supabase gönderir; bağlantı site köküne döner,
+  // site kökü #type=recovery belirtecini yeni şifre formuna çevirir).
   function recover(email) {
-    var back = encodeURIComponent(webBase() + "/stitch-forgot-password.html");
+    var back = encodeURIComponent(webBase() + "/");
     return api("/auth/v1/recover?redirect_to=" + back, { method: "POST", body: JSON.stringify({ email: email }) });
   }
 
@@ -946,6 +1134,30 @@
     return parts[parts.length - 1] || "";
   }
 
+  // Aile davet e-postası: household-invite Edge Function, davetliye Auth "Invite"
+  // mektubunu gönderir — şablon .Data.lang'e bakıp yalnızca davetlinin dilinde yazar
+  // ve .Data.home_invite_code ile ev kodunu gösterir. Bulut kapalıysa çağıran taraf
+  // mailto akışına döner; buradan hata dönmesi davetin engellenmez.
+  function sendHouseholdInvite(invite) {
+    return session().then(function (current) {
+      if (!current || !current.accessToken) return { ok: false };
+      return api("/functions/v1/household-invite", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + current.accessToken },
+        body: JSON.stringify({
+          email: String((invite && invite.email) || ""),
+          homeName: String((invite && invite.homeName) || ""),
+          code: String((invite && invite.code) || ""),
+          role: String((invite && invite.role) || ""),
+          lang: accountLang(),
+        }),
+      }).then(
+        function (d) { return { ok: !!(d && d.ok), sent: !!(d && d.sent), alreadyAccount: !!(d && d.alreadyAccount) }; },
+        function () { return { ok: false }; }
+      );
+    }, function () { return { ok: false }; });
+  }
+
   function billingAccount(action) {
     if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
     return session().then(function (current) {
@@ -1008,8 +1220,12 @@
   }
 
   // Giriş yapılmış oturumda arka planda eşitler: açılışta, düzenli aralıkla, görünür olunca, çevrimiçi olunca.
+  function mfaBlocking() {
+    try { return localStorage.getItem("nexusMfaPending") === "1"; } catch (e) { return false; }
+  }
+
   function startAutoSync() {
-    if (typeof document === "undefined" || !enabled() || !currentUserKey()) return;
+    if (typeof document === "undefined" || !enabled() || !currentUserKey() || mfaBlocking()) return;
     var busy = false;
     function run(initial) {
       if (busy) return;
@@ -1046,11 +1262,24 @@
   function signInWithGoogle() {
     var c = cfg();
     if (!c || !googleAvailable()) return;
-    var back = isWebOrigin() ? location.href.split("#")[0] : (webBase() + "/stitch-login.html");
+    var back = isWebOrigin()
+      ? location.href.split("#")[0]
+      : (isNativeApp() ? NATIVE_AUTH_REDIRECT : (webBase() + "/"));
     var authUrl = c.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(back);
     // Masaüstü penceresi siteye gitmez. Google, uygulamanın kendi penceresinde açılır.
     if (isDesktopApp()) {
       if (window.nexusDesktop && typeof window.nexusDesktop.googleLogin === "function") window.nexusDesktop.googleLogin(authUrl);
+      return;
+    }
+    // Mobil WebView'de Google oturum açmaya izin vermez; sistem tarayıcısı (Custom Tab) açılır.
+    if (isNativeApp()) {
+      var Browser = nativeBrowser();
+      if (!Browser) return;
+      try {
+        Browser.open({ url: authUrl }).catch(function () {
+          // Tarayıcı açılamadı: çağıran ekran hatayı kullanıcıya gösterebilir.
+        });
+      } catch (e) {}
       return;
     }
     location.href = authUrl;
@@ -1091,6 +1320,7 @@
     }
     return api("/auth/v1/user", { headers: { Authorization: "Bearer " + access } }).then(function (user) {
       var meta = user.user_metadata || {};
+      var avatar = meta.avatar_url || meta.picture || "";
       var s = {
         accessToken: access,
         refreshToken: refresh,
@@ -1098,17 +1328,70 @@
         userId: user.id,
         email: user.email || "",
         name: meta.full_name || meta.name || "",
+        avatar: avatar,
       };
       // Oturum, kullanıcının kendi anahtar önekiyle yazılsın diye önce aktif kullanıcı ayarlanır.
       if (user.email) localStorage.setItem("nexusCurrentUser", user.email);
       writeSession(s);
+      if (avatar && typeof nexusGetItem === "function" && typeof nexusSetItem === "function") {
+        try {
+          if (!nexusGetItem("nexusGoogleAvatar")) nexusSetItem("nexusGoogleAvatar", avatar);
+          if (!nexusGetItem("nexusAvatar")) nexusSetItem("nexusAvatar", avatar);
+        } catch (e) {}
+      }
       return s;
     });
   }
 
+  // Mobil uygulamada Google dönüşü: /app-auth.html belirteçleri nexus://auth#...
+  // adresine taşır. Belirteçler doğrudan oturuma çevrilmez; giriş ekranına aktarılır.
+  // Böylece iki adımlı doğrulama, hesap geri yükleme ve yönlendirme aynı yoldan geçer.
+  function nativeAuthHash(url) {
+    if (!url || typeof url !== "string") return "";
+    if (!/^nexus:\/\/auth(?:[/?#]|$)/i.test(url)) return "";
+    var hashIdx = url.indexOf("#");
+    var hash = hashIdx !== -1 ? url.slice(hashIdx) : "";
+    if (!hash) {
+      var qIdx = url.indexOf("?");
+      if (qIdx !== -1) hash = "#" + url.slice(qIdx + 1);
+    }
+    return /(access_token|error)=/.test(hash) ? hash : "";
+  }
+
+  function initNativeAuth() {
+    if (!isNativeApp() || window.__nexusNativeAuthBound) return;
+    var App = null;
+    try {
+      App = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
+    } catch (e) { App = null; }
+    if (!App || typeof App.addListener !== "function") return;
+    window.__nexusNativeAuthBound = true;
+
+    function forward(url) {
+      var hash = nativeAuthHash(url);
+      if (!hash || window.__nexusNativeAuthForwarded) return;
+      window.__nexusNativeAuthForwarded = true;
+      // Aynı giriş sayfasındaysak yalnız hash değişimi sayfayı yeniden çalıştırmaz.
+      // ?oauth=1 sorgusu tam yüklemeyi garanti eder; hash'i giriş ekranı işler.
+      location.replace("stitch-login.html?oauth=1" + hash);
+    }
+
+    try {
+      App.addListener("appUrlOpen", function (event) { forward(event && event.url); });
+      if (typeof App.getLaunchUrl === "function") {
+        App.getLaunchUrl().then(function (event) { forward(event && event.url); }).catch(function () {});
+      }
+    } catch (e) {
+      window.__nexusNativeAuthBound = false;
+    }
+  }
+
+  initNativeAuth();
+
   window.nexusCloud = {
     signInWithGoogle: signInWithGoogle,
     googleAvailable: googleAvailable,
+    initNativeAuth: initNativeAuth,
     completeOAuthFromHash: completeOAuthFromHash,
     recoveryTokenFromHash: recoveryTokenFromHash,
     hashError: hashError,
@@ -1118,6 +1401,11 @@
     enabled: enabled,
     notifyLocalChange: notifyLocalChange,
     signIn: signIn,
+    listFactors: listFactors,
+    needsSecondFactor: needsSecondFactor,
+    enrollTotp: enrollTotp,
+    verifyTotp: verifyTotp,
+    unenrollTotp: unenrollTotp,
     signUp: signUp,
     signOut: signOut,
     session: session,
@@ -1125,6 +1413,7 @@
     syncState: syncState,
     pullEntitlement: pullEntitlement,
     checkoutUrl: checkoutUrl,
+    sendHouseholdInvite: sendHouseholdInvite,
     checkoutPlanId: checkoutPlanId,
     billingAccount: billingAccount,
     currencyForLang: currencyForLang,

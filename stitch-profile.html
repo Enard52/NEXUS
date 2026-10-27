@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -153,15 +154,31 @@
     lucide.createIcons();
     // Kullanıcı Bilgileri sayfasında yapılan ad/fotoğraf değişiklikleriyle senkron — gerçek veri yoksa nötr yer tutucu kalır
     (function () {
-      var name = nexusGetItem('nexusUserName');
-      if (name) document.getElementById('profile-name').textContent = name;
-      var avatar = nexusGetItem('nexusAvatar');
-      if (avatar) {
+      function refreshProfile() {
+        var name = nexusGetItem('nexusUserName');
+        if (name) document.getElementById('profile-name').textContent = name;
+        var avatar = nexusGetItem('nexusAvatar');
         var img = document.getElementById('profile-avatar');
-        img.src = avatar;
-        img.classList.remove('hidden');
-        document.getElementById('profile-avatar-placeholder').classList.add('hidden');
+        var ph = document.getElementById('profile-avatar-placeholder');
+        if (avatar && img && ph) {
+          img.onerror = function () {
+            img.classList.add('hidden');
+            ph.classList.remove('hidden');
+          };
+          img.src = avatar;
+          img.classList.remove('hidden');
+          ph.classList.add('hidden');
+        } else if (img && ph) {
+          img.src = '';
+          img.classList.add('hidden');
+          ph.classList.remove('hidden');
+        }
       }
+      refreshProfile();
+      window.addEventListener('nexusAvatarChanged', refreshProfile);
+      window.addEventListener('storage', function (e) {
+        if (e.key && e.key.includes('nexusAvatar')) refreshProfile();
+      });
     })();
   </script>
 <!-- END: IconInitialization -->

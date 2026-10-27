@@ -9,13 +9,13 @@ Güvenlik açıklarını lütfen özel olarak bildirin; herkese açık issue aç
 - **Email:** nexus.smarthome.app@gmail.com
 - Konu başlığı / Subject: `[SECURITY] NEXUS — <kısa özet>`
 
-Include: affected component (web app, desktop, Android, site, Edge Functions, AI worker), steps to reproduce, and impact. We aim to respond within 72 hours and will credit reporters after a fix unless you prefer to stay anonymous.
+Include: affected component (desktop, Android, site, Edge Functions, AI worker), steps to reproduce, and impact. We aim to respond within 72 hours and will credit reporters after a fix unless you prefer to stay anonymous.
 
-Ekleyin: etkilenen bileşen (web uygulaması, masaüstü, Android, site, Edge Functions, AI worker), yeniden üretme adımları ve etki. 72 saat içinde yanıt hedefliyoruz; düzeltmeden sonra (isimsiz kalmak istemezseniz) bildirenleri belirtiriz.
+Ekleyin: etkilenen bileşen (masaüstü, Android, site, Edge Functions, AI worker), yeniden üretme adımları ve etki. 72 saat içinde yanıt hedefliyoruz; düzeltmeden sonra (isimsiz kalmak istemezseniz) bildirenleri belirtiriz.
 
 ## Scope / Kapsam
 
-- `nexus-web-jre.pages.dev` (web app), `nexus-smarthome.pages.dev` (site)
+- `nexus-smarthome.pages.dev` (account, downloads and billing site)
 - NEXUS desktop (Windows/Linux) releases — https://github.com/Enard52/nexus-releases
 - NEXUS Android APK (site download)
 - Supabase Edge Functions (whop-webhook, daily-stats, weekly-backup, delete-account, client-error)

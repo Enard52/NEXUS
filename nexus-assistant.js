@@ -1,4 +1,4 @@
-﻿/**
+/**
  * NEXUS AI — çevrimdışı komut asistanı (Türkçe + İngilizce).
  * Yalnızca gerçekten yapabildiğini söyler: komutlar device-controls.js (NX) üzerinden
  * eşleşmiş cihazlara uygulanır; yerel ağ cihazlarına gerçek komut gider.
@@ -23,14 +23,14 @@
   function has(text, re) { return re.test(text); }
 
   var CATS = {
-    light: /\b(isik|isiklar|isiklari|isigi|lamba|lambalar|lambayi|lambalari|aydinlatma|ampul|ampulu|serit|light|lights|lamp|lamps|bulb|bulbs|lighting)\b/,
-    plug: /\b(priz|prizi|prizler|prizleri|plug|plugs|socket|outlet)\b/,
-    climate: /\b(klima|klimayi|isitici|isiticiyi|kombi|kombiyi|termostat|termostati|vantilator|air ?conditioner|a\/c|heater|thermostat|fan|boiler)\b/,
-    media: /\b(tv|televizyon|televizyonu|hoparlor|hoparloru|muzik|speaker|speakers|television|music|soundbar)\b/,
-    cover: /\b(perde|perdeleri|perdeyi|panjur|panjuru|panjurlari|stor|curtain|curtains|blind|blinds|shade|shades|shutter|shutters)\b/,
-    lock: /\b(kilit|kilidi|kapi kilidi|kilitle|lock|locks|door)\b/,
-    vacuum: /\b(supurge|supurgeyi|robot|vacuum|hoover)\b/,
-    purifier: /\b(temizleyici|temizleyiciyi|hava temizleyici|purifier)\b/
+    light: /\b(isik|isiklar|isiklari|isiklarini|isigi|lamba|lambalar|lambayi|lambalari|lambalarini|aydinlatma|aydinlatmalari|aydinlatmalarini|ampul|ampulu|ampulleri|ampullerini|serit|light|lights|lamp|lamps|bulb|bulbs|lighting)\b/,
+    plug: /\b(priz|prizi|prizler|prizleri|prizlerini|plug|plugs|socket|sockets|outlet|outlets)\b/,
+    climate: /\b(klima|klimayi|klimalar|klimalari|klimalarini|isitici|isiticiyi|isiticilar|isiticilari|isiticilarini|kombi|kombiyi|termostat|termostati|termostatlari|termostatlarini|vantilator|air ?conditioner|a\/c|heater|heaters|thermostat|thermostats|fan|fans|boiler)\b/,
+    media: /\b(tv|televizyon|televizyonu|televizyonlar|televizyonlari|hoparlor|hoparloru|hoparlorler|hoparlorleri|muzik|speaker|speakers|television|televisions|music|soundbar)\b/,
+    cover: /\b(perde|perdeler|perdeleri|perdelerini|perdeyi|panjur|panjurlar|panjuru|panjurlari|panjurlarini|stor|storlari|curtain|curtains|blind|blinds|shade|shades|shutter|shutters)\b/,
+    lock: /\b(kilit|kilidi|kilitler|kilitleri|kapi kilidi|kapi kilitleri|kilitle|lock|locks|door|doors)\b/,
+    vacuum: /\b(supurge|supurgeyi|supurgeler|supurgeleri|supurgelerini|robot|vacuum|vacuums|hoover)\b/,
+    purifier: /\b(temizleyici|temizleyiciyi|temizleyiciler|temizleyicileri|temizleyicilerini|hava temizleyici|hava temizleyicisi|purifier|purifiers)\b/
   };
   var ALL = /\b(her sey|herseyi|her seyi|hepsi|hepsini|tum cihaz|tum cihazlari|butun cihaz|butun cihazlari|everything|all devices|all)\b/;
   var ON = /\b(ac|acin|acar misin|yak|yakar misin|calistir|baslat|turn on|switch on|power on|start)\b|\bon\b/;
@@ -72,7 +72,11 @@
     }
     // 2) kategori (+ isteğe bağlı oda)
     var cat = null;
-    Object.keys(CATS).some(function (k) { if (CATS[k].test(text)) { cat = k; return true; } return false; });
+    if (EN && /\bac\b/.test(text)) {
+      cat = "climate";
+    } else {
+      Object.keys(CATS).some(function (k) { if (CATS[k].test(text)) { cat = k; return true; } return false; });
+    }
     var rooms = {};
     list.forEach(function (x) { if (x.room && x.room.length >= 3 && text.indexOf(x.room) !== -1) rooms[x.room] = 1; });
     var inRoom = Object.keys(rooms).length ? list.filter(function (x) { return rooms[x.room]; }) : null;
@@ -98,6 +102,16 @@
     return "other";
   }
 
+  // Son komutta yerel ağa komut giden cihazlar: sohbet gerçek sonucu sonradan doğrulayabilsin.
+  var LAST_LAN = [];
+  function trackLan(items) {
+    var N = nx();
+    if (!N || !items) return;
+    items.forEach(function (x) {
+      if (x && x.device && N.isLan(x.device)) LAST_LAN.push({ index: x.index, name: x.device.name || "" });
+    });
+  }
+
   function apply(items, field, value, filter) {
     var N = nx(), changed = [], lan = 0;
     items.forEach(function (x) {
@@ -106,10 +120,34 @@
       changed.push(x);
       if (N.isLan(x.device)) lan += 1;
     });
+    trackLan(changed);
     return { changed: changed, lan: lan };
   }
   function lanNote(r) {
     return r.lan ? T(" " + r.lan + " cihaza yerel ağdan komut gitti.", " A command was sent over your local network to " + r.lan + " device" + (r.lan > 1 ? "s" : "") + ".") : "";
+  }
+  // Komut sonrası durum sorgusu (stitch-chat.html gecikmeli olarak çağırır).
+  function lanPending() { return LAST_LAN.slice(); }
+  function lanSettled(items) {
+    var N = nx();
+    if (!N || !items || !items.length) return true;
+    return items.every(function (it) {
+      var s = N.lanStatus ? N.lanStatus(it.index) : null;
+      return s === "ok" || s === "error";
+    });
+  }
+  function lanFailureNote(items) {
+    var N = nx();
+    if (!N || !items || !items.length) return "";
+    var bad = items.filter(function (it) {
+      var msg = N.lanError ? N.lanError(it.index) : (N.LAN_ERRORS || {})[it.index];
+      return !!msg;
+    });
+    if (!bad.length) return "";
+    var list = bad.slice(0, 3).map(function (it) { return it.name; }).join(", ") +
+      (bad.length > 3 ? T(" ve " + (bad.length - 3) + " cihaz daha", " and " + (bad.length - 3) + " more") : "");
+    return T("⚠ " + list + " için komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.",
+      "⚠ The command did not reach " + list + " — make sure it is on and connected to the same Wi-Fi network.");
   }
   function powerable(x) { return nx().hasPower(x.device); }
 
@@ -121,6 +159,7 @@
   }
 
   function help() {
+    EN = window.nexusLang === "en";
     return T(
       "Evini benimle yönetebilirsin: ışıkları, prizleri, klimayı ya da belirli bir cihazı açıp kapatırım (\"salon ışıklarını kapat\"), parlaklığı (\"ışıkları %40 yap\") ve sıcaklığı (\"klimayı 22 derece yap\") ayarlarım, perdeleri açıp kapatır, kapıyı kilitlerim. \"Günaydın\", \"film modu\", \"iyi geceler\" ya da \"evden çıkıyorum\" dersen senaryoyu çalıştırırım, \"durum\" yazarsan neyin açık olduğunu söylerim. İstersen sadece sohbet edebilir ya da NEXUS hakkında soru sorabilirsin.",
       "You can run your home through me: I turn lights, plugs, the AC or a specific device on and off (\"turn off the living room lights\"), set brightness (\"set the lights to 40%\") and temperature (\"set the AC to 22 degrees\"), open and close curtains and lock the door. Say \"good morning\", \"movie mode\", \"good night\" or \"I'm leaving\" and I will run the scene, or write \"status\" to hear what is on. You can also just chat or ask me anything about NEXUS.");
@@ -151,6 +190,8 @@
     [/\b(entrance|entry|hallway|hall)\b/g, "giris koridor"], [/\bgarden|yard\b/g, "bahce"], [/\b(kids'? ?room|children'?s room|nursery)\b/g, "cocuk odasi"],
     [/\b(office|study)\b/g, "calisma odasi"], [/\bgarage\b/g, "garaj"], [/\bbalcony\b/g, "balkon"], [/\bdining room\b/g, "yemek odasi"]];
   function reply(raw) {
+    EN = window.nexusLang === "en";
+    LAST_LAN = [];
     var text = fold(raw);
     ROOM_EN.forEach(function (r) { text = text.replace(r[0], function (m) { return m + " " + r[1]; }); });
     var N = nx();
@@ -158,6 +199,10 @@
 
     if (!text) return { reply: help() };
     if (/\b(yardim|ne yapabilirsin|neler yapabilirsin|komutlar|help|what can you do|commands)\b/.test(text)) return { reply: help() };
+    if (/\b(sen kimsin|kimsin|ismin ne|adin ne|who are you|what are you|your name)\b/.test(text)) {
+      return { reply: T("Ben NEXUS AI, evinin asistanıyım. Işıklardan klimaya cihazlarını yönetir, senaryoları çalıştırır ve NEXUS hakkında sorularını yanıtlarım.",
+        "I am NEXUS AI, your home's assistant. I control your devices from lights to the AC, run your scenes and answer questions about NEXUS.") };
+    }
 
     // Tema
     if (/\b(karanlik tema|koyu tema|karanlik mod|koyu mod|dark mode|dark theme)\b/.test(text)) return { reply: V(["Tamamdır, koyu temaya geçtim.", "Koyu tema açıldı, gözlerin rahat etsin.", "Oldu, koyu tema devrede."], ["Done, dark theme is on.", "Switched to dark mode, easier on the eyes.", "Dark theme is on."]), action: "dark" };
@@ -167,11 +212,15 @@
       if (OFF.test(text) && !/bildirimleri kapat/.test(text)) return { reply: V(["Rahatsız etme modunu kapattım, bildirimler yeniden gelecek.", "Tamam, bildirimler tekrar açık."], ["Do not disturb is off, notifications are back.", "Okay, notifications are on again."]), action: "dnd-off" };
       return { reply: V(["Rahatsız etme modunu açtım, bildirimleri sessize aldım.", "Tamam, seni rahatsız etmeyeceğim; bildirimler sessizde."], ["Do not disturb is on, I silenced your notifications.", "Okay, I will keep quiet; notifications are silenced."]), action: "dnd-on" };
     }
-    // Durum
-    if (/\b(durum|durumu|ne acik|neler acik|hangi cihazlar acik|akilli kontrol|status|what'?s on|whats on|which devices are on|smart control)\b/.test(text)) return status(all);
+    // Durum ("hava durumu" karışmasın: o bir cihaz durumu değil, gerçek yapay zekâya gider)
+    if (/\b(hava durumu|hava nasil|weather|forecast)\b/.test(text)) {
+      return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
+    }
+    if (/\b(durum|durumu|ne acik|neler acik|hangi cihazlar acik|akilli kontrol|status|what is on|what'?s on|whats on|what is running|which devices are on|smart control)\b/.test(text)) return status(all);
 
     // Senaryo oluşturma (mevcut akış korunur)
-    var wantsCreate = /\b(olustur|kur|ekle|create|make|build|add)\b/.test(text) && /\b(senaryo|otomasyon|rutin|scenario|automation|routine)\b/.test(text);
+    var wantsCreate = (/\b(olustur|kur|ekle|create|make|build|add)\b/.test(text) && /\b(senaryo|otomasyon|rutin|scenario|automation|routine|akilli uygulama|uygulama|smart app|app)\b/.test(text)) ||
+      /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
     if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
 
     if (!N) return { reply: help() };
@@ -182,6 +231,7 @@
         if (!all.length) return { reply: noDevices() };
         var id = SCENE_WORDS[s][0];
         var r = N.runScene(id);
+        LAST_LAN = (r.lanDevices || []).slice();
         var nm = SCENE_NAMES[id][EN ? 1 : 0];
         if (!r.changed) return { reply: V([nm + " için ayarlanabilecek bir cihaz bulamadım.", nm + " senaryosu şu an hiçbir cihazını etkilemiyor."], ["I could not find a device to adjust for " + nm + ".", "The " + nm + " scene does not affect any of your devices right now."]) };
         return {
@@ -191,7 +241,15 @@
       }
     }
 
-    if (!all.length) return { reply: noDevices() };
+    // Cihaz gerektiren istekler cihaz ister; sohbet ve genel sorular cihazsız da akar
+    // (bilinmeyen yoluna düşer, gerçek yapay zekâ yanıtlar).
+    var wantsDevice = CATS.light.test(text) || CATS.plug.test(text) || CATS.climate.test(text) || CATS.media.test(text) ||
+      CATS.cover.test(text) || CATS.lock.test(text) || CATS.vacuum.test(text) || CATS.purifier.test(text) ||
+      ON.test(text) || OFF.test(text) || /\b(parlaklik|brightness|derece|degrees?)\b/.test(text);
+    if (!all.length) {
+      if (wantsDevice) return { reply: noDevices() };
+      return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
+    }
 
     var tg = targets(text, all);
     var pct = text.match(/(?:%|yuzde)\s*(\d{1,3})|(\d{1,3})\s*(?:%|percent|yuzde)/);
@@ -226,7 +284,7 @@
     if (tg.cat === "vacuum" || (tg.by === "name" && tg.list.every(function (x) { return x.kind === "vacuum"; }))) {
       var vac = tg.list.filter(function (x) { return x.kind === "vacuum"; });
       if (!vac.length) return { reply: V(["Eşleşmiş bir robot süpürge göremiyorum.", "Henüz robot süpürge eşleştirmemişsin."], ["I cannot see a paired robot vacuum.", "You have not paired a robot vacuum yet."]) };
-      var dock = /\b(sarj|istasyon|eve don|dock|return|stop|durdur)\b/.test(text);
+      var dock = /\b(sarj|sarja|sarjina|istasyon|istasyona|eve don|dock|return|stop|durdur)\b/.test(text);
       var rv = apply(vac, "mode", dock ? "docked" : "cleaning");
       return { reply: V([names(rv.changed) + (dock ? " şarj istasyonuna dönüyor." : " temizliğe başladı, merak etme."), (dock ? "Tamam, " : "Hemen, ") + names(rv.changed) + (dock ? " şarja gidiyor." : " işe koyuldu.")], [names(rv.changed) + (dock ? " is heading back to its dock." : " started cleaning, no worries."), (dock ? "Okay, " : "On it, ") + names(rv.changed) + (dock ? " is going to charge." : " is getting to work.")]) };
     }
@@ -275,12 +333,24 @@
       }
       var already = pool.filter(function (x) { return N.stateOf(x.device).switch === turnOn; });
       var rs = apply(pool, "switch", turnOn);
-      var msg = V([names(rs.changed) + (turnOn ? " açıldı." : " kapatıldı."), "Tamam, " + names(rs.changed) + (turnOn ? " açık." : " kapalı."), (turnOn ? "Açtım: " : "Kapattım: ") + names(rs.changed) + "."], [names(rs.changed) + (turnOn ? " is on." : " is off."), "Okay, " + names(rs.changed) + (turnOn ? " is on now." : " is off now."), (turnOn ? "Turned on: " : "Turned off: ") + names(rs.changed) + "."]);
+      var isPlural = rs.changed.length > 1;
+      var msg = V(
+        [
+          names(rs.changed) + (turnOn ? " açıldı." : " kapatıldı."),
+          "Tamam, " + names(rs.changed) + (turnOn ? " açık." : " kapalı."),
+          (turnOn ? "Açtım: " : "Kapattım: ") + names(rs.changed) + "."
+        ],
+        [
+          names(rs.changed) + (turnOn ? (isPlural ? " are on." : " is on.") : (isPlural ? " are off." : " is off.")),
+          "Okay, " + names(rs.changed) + (turnOn ? (isPlural ? " are on now." : " is on now.") : (isPlural ? " are off now." : " is off now.")),
+          (turnOn ? "Turned on: " : "Turned off: ") + names(rs.changed) + "."
+        ]
+      );
       if (already.length === pool.length) msg = V([names(rs.changed) + " zaten " + (turnOn ? "açıktı" : "kapalıydı") + ", yine de komutu gönderdim.", "Bu zaten " + (turnOn ? "açıktı" : "kapalıydı") + " (" + names(rs.changed) + "); komutu yine de iletmiş oldum."], [names(rs.changed) + " " + (pool.length > 1 ? "were" : "was") + " already " + (turnOn ? "on" : "off") + ", I sent the command anyway.", "That was already " + (turnOn ? "on" : "off") + " (" + names(rs.changed) + "); I sent it again just in case."]);
       return { reply: msg + lanNote(rs), widget: widget(turnOn ? "power" : "power-off", turnOn ? T("Açıldı", "Turned on") : T("Kapatıldı", "Turned off"), T(rs.changed.length + " cihaz", rs.changed.length + " device" + (rs.changed.length > 1 ? "s" : ""))) };
     }
 
-    return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]) + help(), unknown: true };
+    return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
   }
 
     var AI_URL = "https://nexus-ai.ensarharmanci52.workers.dev";
@@ -301,6 +371,44 @@
       .catch(function () { clearTimeout(timer); return null; });
   }
 
-  window.nexusAssistant = { reply: reply, help: help, fold: fold, ask: ask };
+  // Ses → metin: MediaRecorder kaydını Worker'daki Whisper'a gönderir. Kayıt cihazda
+  // veya sunucuda saklanmaz; yalnızca dönen metin sohbet girdisine yazılır.
+  // Tarayıcının kendi konuşma tanıması olmayan/başarısız olan cihazlarda kullanılır.
+  function transcribe(blob, lang) {
+    if (!blob || !blob.size) return Promise.resolve("");
+    if (blob.size > 8 * 1024 * 1024) return Promise.reject(new Error("too_large"));
+    var lng = lang === "tr" ? "tr" : "en";
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onerror = function () { reject(new Error("read_failed")); };
+      reader.onload = function () {
+        var raw = String(reader.result || "");
+        var comma = raw.indexOf(",");
+        var audio = comma >= 0 ? raw.slice(comma + 1) : raw;
+        if (!audio) { reject(new Error("read_failed")); return; }
+        var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+        var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 30000);
+        fetch(AI_URL + "/stt", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ audio: audio, lang: lng }),
+          signal: ctrl ? ctrl.signal : undefined,
+        })
+          .then(function (r) {
+            clearTimeout(timer);
+            if (!r.ok) throw new Error("stt_" + r.status);
+            return r.json();
+          })
+          .then(function (j) { resolve(j && j.text ? String(j.text).trim() : ""); })
+          .catch(function (err) { clearTimeout(timer); reject(err); });
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  window.nexusAssistant = {
+    reply: reply, help: help, fold: fold, ask: ask, transcribe: transcribe,
+    lanPending: lanPending, lanSettled: lanSettled, lanFailureNote: lanFailureNote
+  };
 })();
 

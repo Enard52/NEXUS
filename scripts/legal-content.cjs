@@ -4,7 +4,7 @@
 // Not: Bu metinler bir avukat tarafından hazırlanmamıştır; satış hacmi büyürse hukuki inceleme önerilir.
 
 const EMAIL = "nexus.smarthome.app@gmail.com";
-const UPDATED = { tr: "Son güncelleme: 25 Ekim 2026", en: "Last updated: 25 October 2026" };
+const UPDATED = { tr: "Son güncelleme: 27 Ekim 2026", en: "Last updated: 27 October 2026" };
 const OPERATOR = { tr: "NEXUS", en: "NEXUS" };
 
 const privacy = {
@@ -19,7 +19,7 @@ const privacy = {
           "NEXUS'u kullanmak için hesap gerekir. Cihaz komutları yine yerel ağınızda çalışır; üretici bulutuna gönderilmez.",
           "Ayarlarınız, cihaz listeniz ve sohbet geçmişiniz her cihazda aynı olsun diye bulutta saklanır.",
           "Verilerinizi satmayız, reklam için kullanmayız, sizi profillemeyiz.",
-          "Mikrofonu kullanmayız, ses kaydı almayız. Kamera yalnızca QR kod taramak için açılır ve görüntü cihazınızdan çıkmaz.",
+          "Mikrofon isteğe bağlıdır ve yalnızca NEXUS AI sohbetinde mikrofona dokunduğunuzda kullanılır; kayıt metne dökülür, saklanmaz. Kamera yalnızca QR kod taramak için açılır ve görüntü cihazınızdan çıkmaz.",
         ],
       },
       { h: "Veri sorumlusu", p: [`Veri sorumlusu ${OPERATOR.tr}. İletişim: ${EMAIL}`] },
@@ -43,13 +43,14 @@ const privacy = {
         h: "NEXUS AI",
         p: [
           "NEXUS AI iki parçadan oluşur. (1) Cihaz komutları (ışık açma, senaryo çalıştırma, durum sorma gibi) cihazınızda yerel olarak işlenir ve buluta gönderilmez. (2) Komut olmayan sohbet mesajlarınız ve soru-cevap istekleriniz yanıtlanmak üzere Cloudflare Workers AI hizmetine gönderilir; bununla birlikte cihaz adlarınız, türleriniz ve odalarınız bağlam olarak iletilir. Hesap bilgileriniz, e-postanız ve konumunuz iletilmez. Bu içerikleri yapay zekâ modellerini eğitmek için kullanmayız; Cloudflare ise hizmeti sunmak için işler. Gizlilik istiyorsanız sohbette yalnızca cihaz komutları kullanabilirsiniz. Sohbet geçmişiniz, hesapla giriş yaptıysanız diğer ayarlarınız gibi hesabınızla eşitlenir.",
+          "Sesle yazma: NEXUS AI sohbetindeki mikrofon düğmesine dokunduğunuzda konuşmanız metne dökülür. Tarayıcıda (Chrome/Edge) önce tarayıcının kendi konuşma tanıma hizmeti kullanılır; bu hizmete ulaşılamazsa veya masaüstü ya da mobil uygulamalarda kısa ses kaydı yalnızca metne dökülmek üzere Cloudflare Workers AI'ya (Whisper) gönderilir, saklanmaz ve hesabınıza kaydedilmez. Metne dökülen yazı yalnızca sohbet girişine eklenir; siz göndermeden hiçbir yere iletilmez.",
         ],
       },
       {
         h: "Hizmet sağlayıcılar ve aktarımlar",
         ul: [
           "Supabase: kimlik doğrulama, veritabanı ve sistem e-postaları.",
-          "Cloudflare: web sitesi ve web uygulamasının barındırılması; NEXUS AI sohbet yanıtları için Cloudflare Workers AI.",
+          "Cloudflare: web sitesinin barındırılması; NEXUS AI sohbet yanıtları ve sesin metne dökülmesi için Cloudflare Workers AI.",
           "Whop: abonelik ödemeleri ve fatura.",
           "Google: Google ile giriş ve (Gmail üzerinden) doğrulama/şifre sıfırlama e-postaları.",
           "GitHub: kurulum dosyalarının dağıtımı.",
@@ -120,7 +121,7 @@ const privacy = {
           "An account is required to use NEXUS. Device commands still run on your local network; they are not sent through a vendor cloud.",
           "Your settings, device list and chat history are stored in the cloud so they match on every device.",
           "We do not sell your data, use it for advertising or profile you.",
-          "We never use the microphone or record audio. The camera opens only to scan QR codes and the image never leaves your device.",
+          "Microphone access is optional and used only when you tap the mic in NEXUS AI chat; the recording is transcribed and not stored. The camera opens only to scan QR codes and the image never leaves your device.",
         ],
       },
       { h: "Data controller", p: [`The data controller is ${OPERATOR.en}. Contact: ${EMAIL}`] },
@@ -144,13 +145,14 @@ const privacy = {
         h: "NEXUS AI",
         p: [
           "NEXUS AI has two parts. (1) Device commands (turn on a light, run a scene, ask for status) are processed locally on your device and are not sent to the cloud. (2) Messages that are not device commands, such as general chat and questions, are sent to Cloudflare Workers AI to be answered; the names, types and rooms of your devices are included as context. Your account details, email and location are not sent. We do not use this content to train AI models; Cloudflare processes it to provide the service. If you prefer, you can use only device commands in the chat. If you are signed in, your chat history syncs with your account like your other settings.",
+          "Voice input: when you tap the mic button in NEXUS AI chat, your speech is turned into text. In a browser (Chrome/Edge) the browser's own speech recognition service is used first; if it is unreachable, or in the desktop and mobile apps, the short recording is sent only to Cloudflare Workers AI (Whisper) for transcription, is not stored and is not saved to your account. The transcript is only placed in the chat input and is not sent anywhere until you press send.",
         ],
       },
       {
         h: "Service providers and transfers",
         ul: [
           "Supabase: authentication, database and system emails.",
-          "Cloudflare: hosting of the website and web app; Cloudflare Workers AI for NEXUS AI chat answers.",
+          "Cloudflare: hosting of the website; Cloudflare Workers AI for NEXUS AI chat answers and speech-to-text.",
           "Whop: subscription payments and invoicing.",
           "Google: Google sign-in and (via Gmail) verification / password-reset emails.",
           "GitHub: distribution of installers.",

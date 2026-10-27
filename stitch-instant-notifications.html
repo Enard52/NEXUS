@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -61,8 +62,8 @@
         <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100/50">
           <div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600"><i data-lucide="moon" class="w-6 h-6"></i></div><p class="font-semibold">Zamanlanmış Sessiz Mod</p></div><label class="switch"><input type="checkbox" id="quiet-toggle"><span class="slider"></span></label></div>
           <div class="flex gap-3 mt-4 opacity-50" id="quiet-time-controls">
-            <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Başlangıç</p><input id="quiet-start" type="time" value="23:00" class="text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
-            <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Bitiş</p><input id="quiet-end" type="time" value="07:30" class="text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
+            <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Başlangıç</p><input id="quiet-start" type="time" value="23:00" aria-label="Sessiz saatler başlangıcı" class="nx-tap-f text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
+            <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Bitiş</p><input id="quiet-end" type="time" value="07:30" aria-label="Sessiz saatler bitişi" class="nx-tap-f text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
           </div>
           <p class="text-[11px] text-slate-400 mt-3 italic">Sessiz saatlerde dışa dönük kanallar durur; uyarılar uygulama içinde birikmeye devam eder.</p>
         </section>

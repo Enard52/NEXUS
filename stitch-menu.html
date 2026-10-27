@@ -2,6 +2,7 @@
 
 <html lang="tr"><head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -110,13 +111,6 @@
 <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </a>
-<!-- Setting Item 3 -->
-<a class="hidden bg-white p-5 rounded-2xl soft-shadow border border-gray-50 flex justify-between items-center cursor-pointer active:bg-gray-50 transition-colors" href="stitch-web.html">
-<span class="text-lg font-medium text-text-primary">NEXUS Web Sürümü</span>
-<svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-</a>
 </div>
 </section>
 <!-- END: OtherSettingsSection -->
@@ -155,14 +149,6 @@
         '<p class="text-lg font-medium text-text-primary truncate">' + esc(c.title || 'Sohbet') + '</p>' +
         '</a>';
     }).join('');
-  })();
-</script>
-<script>
-  (function () {
-    var webLink = document.querySelector('a[href="stitch-web.html"]');
-    if (webLink) {
-      webLink.remove();
-    }
   })();
 </script>
 </body></html>

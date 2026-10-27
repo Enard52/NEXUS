@@ -129,8 +129,10 @@ function platformMarks() {
   return `<span class="plat-marks" aria-hidden="true">${getPlatformLogo('windows')}${getPlatformLogo('linux')}${getPlatformLogo('android')}</span>`;
 }
 
-function platformDownloadBtn(href, btnClass = 'btn btn-primary') {
-  return `<a class="${btnClass} btn-platforms" href="${href}">${platformMarks()}<span>Windows · Linux · Android</span></a>`;
+function platformDownloadBtn(href, btnClass = 'btn btn-primary', isTr = false) {
+  // Düğme metni eylem odaklı: platformlar zaten ikonlarla ve güven listesinde söyleniyor.
+  const label = isTr ? 'NEXUS\u2019u \u0130ndir' : 'Download NEXUS';
+  return `<a class="${btnClass} btn-platforms" href="${href}">${platformMarks()}<span>${label}</span></a>`;
 }
 
 function icon(name, cls = 'icon') {
@@ -352,7 +354,8 @@ h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;letter-spacing:-.035em;margi
   .hero-copy h1{white-space:normal;max-width:14em}
   .hero-copy .lead,.hero-copy .lead-sub{text-align:center;margin-left:auto;margin-right:auto}
   .hero-cta{justify-content:center}
-  .trust{display:flex;flex-direction:column;align-items:center;text-align:left}
+  /* Tikler ortak bir sol hizada alt alta: liste bloğu ortada, satırlar sola dayalı */
+  .trust{display:flex;flex-direction:column;align-items:flex-start;width:fit-content;margin:0 auto;text-align:left}
   .trust li{width:fit-content;max-width:100%}
 }
 
@@ -600,7 +603,19 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 .plan{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:24px 20px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;
   box-sizing:border-box;transition:transform .25s ease,box-shadow .25s ease}
-.plan.hot{border:2px solid var(--brand);box-shadow:0 20px 50px rgba(76,125,255,.18)}
+.plan.hot{border:2px solid transparent;background-clip:padding-box;box-shadow:0 20px 50px rgba(76,125,255,.18)}
+/* Popüler plan: dönen gradyan çerçeve (premium fiyat sayfası örüntüsü).
+   Mask-halka tekniği: yalnızca 2px'lik halka çizilir, kart içeriği asla kapanmaz.
+   @property desteklemeyen tarayıcılarda halka sabit gradyan olarak kalır. */
+.plan.hot::before{content:"";position:absolute;inset:-2px;border-radius:30px;padding:2px;
+  background:conic-gradient(from var(--nx-ang,0deg),#4C7DFF 0%,#22D3EE 30%,#8B7BFF 60%,#4C7DFF 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  animation:nx-rot 6s linear infinite;pointer-events:none}
+@property --nx-ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes nx-rot{to{--nx-ang:360deg}}
 .plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--brand-grad);color:#fff;font-size:10.5px;font-weight:800;
   letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:8px;box-shadow:0 4px 12px rgba(76,125,255,.35);white-space:nowrap}
 .plan-head{min-height:auto;margin-bottom:6px;display:flex;flex-direction:column;justify-content:flex-start}
@@ -655,8 +670,11 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 @media(min-width:640px){.faq-q{padding:20px 22px;font-size:16px;align-items:center}}
 .faq-q span{flex:1;min-width:0}
 .faq-q:hover{color:var(--brand)}
-.faq-a{padding:0 22px 20px;color:var(--text-2);font-size:14.5px;line-height:1.6;display:none}
-.faq-item.open .faq-a{display:block}
+.faq-a{display:grid;grid-template-rows:0fr;overflow:hidden;padding:0 22px;color:var(--text-2);font-size:14.5px;line-height:1.6;
+  transition:grid-template-rows .32s ease}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a-in{min-height:0;overflow:hidden}
+.faq-a-in p{margin:2px 0 20px}
 .faq-item.open .faq-q svg{transform:rotate(180deg)}
 .faq-q svg{transition:transform .2s ease;width:18px;height:18px;color:var(--muted);flex-shrink:0}
 
@@ -673,18 +691,21 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
   font-weight:800 !important;color:var(--text) !important;padding:0 !important;text-decoration:none !important}
 .ft a.logo svg{width:32px !important;height:32px !important;flex-shrink:0 !important}
 .ft-brand p{color:var(--muted);font-size:13.5px;margin:12px 0 16px;max-width:44ch;line-height:1.6}
-.ft-trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.ft-trust-badge,.ft-trust-pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;line-height:1.2;color:var(--text-2);
-  background:none;border:0;padding:0;border-radius:0;box-shadow:none}
+.ft-trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.ft-trust-badge,.ft-trust-pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;line-height:1;
+  color:var(--text-2);padding:6px 13px;border-radius:999px;
+  background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,0.03);letter-spacing:0.01em;transition:all .2s ease}
+.ft-trust-pill:hover{border-color:color-mix(in srgb,var(--brand) 40%,var(--border));color:var(--text);transform:translateY(-1px)}
 .ft-trust-pill .icon{width:14px;height:14px;color:var(--brand);flex-shrink:0}
-.ft-status-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
+.ft-status-dot{width:7px;height:7px;border-radius:50%;background:#10B981;box-shadow:0 0 8px rgba(16,185,129,0.7);flex-shrink:0;animation:nxStatusPulse 2.5s infinite}
 @keyframes nxStatusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.2)}}
 .nx-form-success{display:none;text-align:center;padding:24px 16px}
 .nx-form-success svg{width:46px;height:46px;color:#10B981;margin:0 auto 12px;display:block}
 .nx-form-success h4{margin:0 0 8px;font-size:18px;font-weight:800;color:var(--text)}
 .nx-form-success p{margin:0 0 18px;color:var(--muted);font-size:13.5px;line-height:1.55}
-.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 16px;align-items:start;color:var(--muted);font-size:13px}
+.ft-bottom{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;
+  align-items:center;justify-content:center;text-align:center;gap:12px 16px;color:var(--muted);font-size:13px}
 .ft-privacy{display:inline-flex;align-items:flex-start;gap:8px;font-weight:600;text-align:left;min-width:0}
 .ft-privacy .icon{width:16px;height:16px;color:var(--brand);flex-shrink:0;margin:2px 0 0}
 @media(max-width:768px){
@@ -707,8 +728,65 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
   .ft-bottom{margin-top:20px;padding-top:14px}
 }
 
-/* İçerikler varsayılan olarak görünür (opacity 1) */
+/* İçerikler varsayılan olarak görünür (opacity 1). JS + IntersectionObserver
+   destekliyorsa site-boot.js <html>'e nx-io ekler ve .rv öğeleri görünüme girince
+   yumuşakça belirir (AOS örüntüsü: eşik 0.12, kardeşler arası kademeli gecikme).
+   JS çalışmazsa nx-io hiç eklenmez → içerik her zaman görünür kalır. */
 .rv{opacity:1;transform:none}
+html.nx-io .rv{opacity:0;transform:translateY(16px);
+  transition:opacity .55s cubic-bezier(.22,.61,.36,1),transform .55s cubic-bezier(.22,.61,.36,1);
+  transition-delay:calc(var(--rv-i,0)*70ms)}
+html.nx-io .rv.rv-in{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion: reduce){html.nx-io .rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- Premium mikro-etkileşimler (koyu + açık temada aynı değişkenlerle) ---------- */
+/* Birincil düğmede ışık süpürmesi */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-45%;width:34%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.42),transparent);
+  transform:skewX(-18deg);transition:left .6s ease;pointer-events:none}
+.btn-primary:hover::after,.btn-primary:focus-visible::after{left:125%}
+/* Başlık: sayfa kayınca hafif gölgeyle yükselir */
+.hd{transition:box-shadow .28s ease}
+html.nx-scrolled .hd{box-shadow:0 10px 30px rgba(2,6,23,.22)}
+/* İndirme kartı: ziyaretçinin platformu ("Sizin için" rozetiyle) vurgulanır */
+.dl-card.dl-you{border-color:color-mix(in srgb,var(--brand) 55%,transparent);
+  box-shadow:0 14px 38px rgba(76,125,255,.22)}
+.dl-you-badge{position:absolute;top:16px;right:16px;background:var(--brand-grad);color:#fff;
+  font-size:10.5px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px;
+  box-shadow:0 4px 14px rgba(76,125,255,.35)}
+/* Telefon maketi: 3B giriş animasyonu + fare takibi (vanilla-tilt örüntüsü).
+   Yalnızca transform: düzen kayması yok; reduced-motion'da hepsi kapalı. */
+.phone-wrapper{perspective:1100px}
+.phone-case{transform-style:preserve-3d;will-change:transform;
+  animation:nx-phone-in .9s cubic-bezier(.22,.61,.36,1) .25s backwards}
+@keyframes nx-phone-in{from{opacity:0;transform:translateY(30px) rotateY(-14deg) scale(.96)}
+  to{opacity:1;transform:translateY(0) rotateY(0) scale(1)}}
+/* Işımanın kendi glowPulse nefesi var (aşağıda); telefon fare takibiyle serbest.
+   Camda periyodik yansıma süpürmesi (overflow hidden — kadraj dışına taşmaz) */
+.phone-glass-shine{overflow:hidden}
+.phone-glass-shine::after{content:"";position:absolute;top:-30%;bottom:-30%;left:0;width:44%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.16),transparent);
+  transform:translateX(-160%) skewX(-18deg);animation:nx-shine 7s ease-in-out 2.5s infinite;pointer-events:none}
+@keyframes nx-shine{0%{transform:translateX(-160%) skewX(-18deg)}
+  24%{transform:translateX(340%) skewX(-18deg)}100%{transform:translateX(340%) skewX(-18deg)}}
+/* Sayfa başına dön düğmesi */
+.nx-to-top{position:fixed;right:22px;bottom:22px;z-index:90;width:44px;height:44px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;
+  transform:translateY(10px);box-shadow:var(--shadow);
+  transition:opacity .25s ease,transform .25s ease,visibility .25s,border-color .2s ease,color .2s ease}
+.nx-to-top.show{opacity:1;visibility:visible;transform:none}
+.nx-to-top:hover{color:var(--brand);border-color:var(--brand);transform:translateY(-2px)}
+.nx-to-top svg{width:18px;height:18px}
+@media(max-width:640px){.nx-to-top{right:14px;bottom:14px}}
+@media (prefers-reduced-motion: reduce){
+  .btn-primary::after{display:none}
+  .phone-case,.phone-glass-shine::after{animation:none}
+  .plan.hot::before{animation:none}
+  .nx-to-top{transition:none}
+  .hd{transition:none}
+}
 
 /* About & Yasal Belge Sayfaları */
 .about-hero{padding:72px 0 28px;max-width:720px}
@@ -1036,6 +1114,71 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 .nx-dialog-actions{display:flex;gap:10px;margin-top:16px}
 .nx-dialog-actions .btn{flex:1;min-height:38px;height:38px;font-size:13px;border-radius:10px}
 
+/* ---------- Modal: kaydırmasız tam görünüm ----------
+   Kart içerikleri ekran yüksekliği daraldıkça zarifçe sıkışır; normal masaüstü
+   ve telefon yüksekliklerinde kaydırma hiç devreye girmez — her şey görünür.
+   Çok kısa ekranlarda (yatay telefon) gizli kaydırma son çare olarak kalır. */
+.nx-modal-card{display:flex;flex-direction:column}
+@media (max-height:840px){
+  .nx-modal-card{padding:18px 22px 16px}
+  #nxAuthModal.nx-account-open .nx-modal-card{padding:22px 18px 14px}
+  .nx-account-person{padding:2px 24px 12px}
+  .nx-profile-avatar-large{width:62px;height:62px;margin-bottom:10px}
+  .nx-profile-name-row h3{font-size:19px}
+  .nx-offer-inner{padding:13px 14px 12px}
+  .nx-offer-list{gap:6px;margin-top:10px}
+  .nx-account-upgrade{min-height:40px;margin-top:10px}
+  .nx-app-input{height:38px}
+  .nx-app-textarea{min-height:50px}
+  .nx-app-submit{height:40px;margin-top:4px}
+  .nx-auth-brand-badge h3{font-size:18px}
+  #nxCheckoutMount{min-height:340px}
+}
+@media (max-height:700px){
+  .nx-modal-card{padding:14px 18px 12px;border-radius:20px}
+  #nxAuthModal.nx-account-open .nx-modal-card{padding:16px 16px 10px}
+  .nx-app-logo{width:32px;height:32px;margin-bottom:4px}
+  .nx-auth-brand-badge h3{font-size:16.5px;margin-bottom:2px}
+  .nx-auth-brand-badge p{font-size:12px}
+  .nx-field-label{font-size:10px}
+  .nx-auth-field-wrap{margin-bottom:6px}
+  .nx-app-input{height:36px;font-size:13px}
+  .nx-app-textarea{min-height:44px;padding:6px 12px}
+  .nx-app-submit{height:38px;font-size:13.5px;margin-top:3px}
+  .nx-google-btn{height:36px;margin-top:5px}
+  .nx-auth-links{gap:3px;margin-top:8px}
+  .nx-auth-alert{padding:6px 10px;margin-bottom:6px}
+  .nx-account-person{padding:0 18px 8px}
+  .nx-profile-avatar-large{width:52px;height:52px;margin-bottom:8px}
+  .nx-profile-name-row h3{font-size:17px}
+  .nx-profile-email-chip{font-size:12.5px;margin-top:2px}
+  .nx-account-now{margin-bottom:7px}
+  .nx-offer{margin-bottom:8px}
+  .nx-offer-inner{padding:11px 12px 10px;border-radius:17px}
+  .nx-offer-price b{font-size:19px}
+  .nx-offer-list{gap:5px;margin-top:8px}
+  .nx-offer-list li{font-size:12.5px}
+  .nx-account-item{padding-top:9px;padding-bottom:9px;gap:10px}
+  .nx-account-ico{width:30px;height:30px;border-radius:10px}
+  .nx-account-item-copy b{font-size:13px}
+  .nx-account-item-copy small{font-size:11px}
+  .nx-account-upgrade{min-height:36px;margin-top:9px;font-size:13.5px}
+  .nx-account-save{margin-top:5px;font-size:11.5px}
+  .nx-contact-security-note{padding:9px 12px;margin-top:9px;font-size:12px}
+  .nx-modal-close{top:10px;right:10px;width:26px;height:26px}
+  #nxCheckoutMount{min-height:280px}
+}
+@media (max-height:580px){
+  .nx-modal-card{padding:12px 14px 10px}
+  .nx-profile-avatar-large{width:44px;height:44px;margin-bottom:6px}
+  .nx-offer-list{gap:4px}
+  .nx-offer-list li{font-size:12px}
+  .nx-app-input{height:34px}
+  .nx-app-textarea{min-height:38px}
+  .nx-app-submit,.nx-google-btn{height:34px}
+  .nx-account-item{padding-top:7px;padding-bottom:7px}
+}
+
 /* Hakkında Sayfası Kartları */
 .about-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px}
 `;
@@ -1112,7 +1255,13 @@ function nxUnlockScroll(){
   b.style.left='';
   b.style.right='';
   b.style.width='';
+  // html{scroll-behavior:smooth} yüzünden bu geri yazma animasyonlu olurdu:
+  // kapanışta istemsiz kaydırma animasyonu tetiklenmesin diye anında, sert geri yazılır.
+  var de=document.documentElement;
+  var prevBehavior=de.style.scrollBehavior;
+  de.style.scrollBehavior='auto';
   window.scrollTo(0,nxScrollY);
+  de.style.scrollBehavior=prevBehavior;
 }
 
 // İletişim & Destek Modülü Kontrolleri
@@ -1384,7 +1533,9 @@ function nxOpenAuthModal(){
   try{user=localStorage.getItem('nexusCurrentUser');}catch(e){}
   var formView=document.getElementById('nxAuthFormView');
   var profileView=document.getElementById('nxAuthProfileView');
+  var recoveryView=document.getElementById('nxAuthRecoveryView');
   var isTr=document.documentElement.lang==='tr';
+  if(recoveryView)recoveryView.style.display='none';
 
   if(user){
     if(formView)formView.style.display='none';
@@ -1486,7 +1637,7 @@ function nxSendPasswordReset(){
   var SUPABASE_URL=nxCloudConfig().url;
   var SUPABASE_KEY=nxCloudConfig().anonKey;
   if(!SUPABASE_URL||!SUPABASE_KEY){nxAuthUnavailable();return;}
-  fetch(SUPABASE_URL+'/auth/v1/recover',{
+  fetch(SUPABASE_URL+'/auth/v1/recover?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname),{
     method:'POST',
     headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
     body:JSON.stringify({email:user})
@@ -1510,6 +1661,11 @@ function nxSendPasswordReset(){
 function nxCloseAuthModal(){
   var m=document.getElementById('nxAuthModal');
   if(!m)return;
+  var recoveryView=document.getElementById('nxAuthRecoveryView');
+  if(recoveryView && recoveryView.style.display!=='none'){
+    recoveryView.style.display='none';
+    nxRecoveryToken=null;nxRecoveryRefresh=null;nxRecoveryEmail='';
+  }
   m.classList.remove('open');
   setTimeout(function(){
     m.style.display='none';
@@ -1574,7 +1730,7 @@ function nxForgotPassword(){
       var SUPABASE_URL=nxCloudConfig().url;
       var SUPABASE_KEY=nxCloudConfig().anonKey;
       if(!SUPABASE_URL||!SUPABASE_KEY){if(alertEl){alertEl.textContent=nxAuthUnavailableMsg();alertEl.style.display='block';}return;}
-      fetch(SUPABASE_URL+'/auth/v1/recover',{
+      fetch(SUPABASE_URL+'/auth/v1/recover?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname),{
         method:'POST',
         headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
         body:JSON.stringify({email:inputEmail})
@@ -1595,6 +1751,101 @@ function nxForgotPassword(){
       });
     }
   );
+}
+
+/* ---------- Şifre sıfırlama bağlantısı (site köküne dönen recovery akışı) ----------
+   Supabase bağlantısı #access_token=…&type=recovery ile döner. Token oturum olarak
+   yazılmaz; kullanıcı yeni şifresini kaydedince oturum açılır. */
+var nxRecoveryToken=null;
+var nxRecoveryRefresh=null;
+var nxRecoveryEmail='';
+
+function nxShowRecovery(){
+  var m=document.getElementById('nxAuthModal');
+  var formView=document.getElementById('nxAuthFormView');
+  var profileView=document.getElementById('nxAuthProfileView');
+  var recoveryView=document.getElementById('nxAuthRecoveryView');
+  if(!m||!recoveryView)return;
+  if(formView)formView.style.display='none';
+  if(profileView)profileView.style.display='none';
+  recoveryView.style.display='block';
+  m.classList.remove('nx-account-open');
+  m.setAttribute('aria-labelledby','nxRecoveryTitle');
+  var emailEl=document.getElementById('nxRecoveryEmail');
+  if(emailEl)emailEl.textContent=nxRecoveryEmail||'';
+  var alertEl=document.getElementById('nxRecoveryAlert');
+  if(alertEl)alertEl.style.display='none';
+  m.style.display='flex';
+  setTimeout(function(){m.classList.add('open')},10);
+  nxLockScroll();
+}
+
+function nxSubmitRecovery(e){
+  e.preventDefault();
+  var isTr=document.documentElement.lang==='tr';
+  var a=(document.getElementById('nxRecoveryPassword')||{}).value||'';
+  var b=(document.getElementById('nxRecoveryPassword2')||{}).value||'';
+  var btn=document.getElementById('nxRecoverySubmitBtn');
+  var alertEl=document.getElementById('nxRecoveryAlert');
+  var cfg=nxCloudConfig();
+
+  function fail(msg){
+    if(alertEl){alertEl.textContent=msg;alertEl.style.display='block';}
+  }
+  if(!nxRecoveryToken){fail(isTr?'Sıfırlama bağlantısı geçersiz. Yeni bir bağlantı isteyin.':'This reset link is invalid. Please request a new one.');return;}
+  if(a.length<6){fail(isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.');return;}
+  if(a!==b){fail(isTr?'Şifreler eşleşmiyor.':'Passwords do not match.');return;}
+  if(!cfg.url||!cfg.anonKey){fail(nxAuthUnavailableMsg());return;}
+
+  var origText=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML=isTr?'Kaydediliyor…':'Saving…';}
+  if(alertEl)alertEl.style.display='none';
+
+  fetch(cfg.url+'/auth/v1/user',{
+    method:'PUT',
+    headers:{
+      'apikey':cfg.anonKey,
+      'Authorization':'Bearer '+nxRecoveryToken,
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({password:a})
+  })
+  .then(function(res){
+    return res.json().then(function(data){
+      if(!res.ok){
+        throw new Error(data.msg||data.message||data.error_description||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+      }
+      return data;
+    });
+  })
+  .then(function(data){
+    if(btn){btn.disabled=false;btn.innerHTML=origText;}
+    var email=(data&&data.email)||nxRecoveryEmail;
+    try{
+      if(email)localStorage.setItem('nexusCurrentUser',email);
+      localStorage.setItem('nexus_cloud_session',JSON.stringify({
+        accessToken:nxRecoveryToken,
+        refreshToken:nxRecoveryRefresh,
+        userId:(data&&data.id)||null,
+        email:email
+      }));
+    }catch(err){}
+    nxRecoveryToken=null;nxRecoveryRefresh=null;nxRecoveryEmail='';
+    nxCloseAuthModal();
+    nxUpdateNavAuth();
+    nxShowAlert(
+      isTr?'Şifreniz güncellendi ve hesabınıza giriş yapıldı.':'Your password has been updated and you are signed in.',
+      isTr?'Şifre Güncellendi':'Password Updated',
+      'success'
+    );
+  })
+  .catch(function(err){
+    if(btn){btn.disabled=false;btn.innerHTML=origText;}
+    var msg=String((err&&err.message)||'');
+    if(/expired|invalid|jwt/i.test(msg))msg=isTr?'Bağlantının süresi dolmuş. Yeni bir sıfırlama bağlantısı isteyin.':'This link has expired. Please request a new reset link.';
+    else if(/same|different/i.test(msg))msg=isTr?'Yeni şifre eskisinden farklı olmalı.':'The new password must be different from the old one.';
+    fail(msg||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+  });
 }
 
 function nxSubmitAuth(e){
@@ -1621,7 +1872,7 @@ function nxSubmitAuth(e){
   }
 
   var endpoint=nxAuthMode==='signup'
-    ? SUPABASE_URL+'/auth/v1/signup'
+    ? SUPABASE_URL+'/auth/v1/signup?redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname)
     : SUPABASE_URL+'/auth/v1/token?grant_type=password';
 
   fetch(endpoint,{
@@ -1644,6 +1895,16 @@ function nxSubmitAuth(e){
     btn.disabled=false;
     btn.innerHTML=origText;
     var userEmail=(data.user&&data.user.email)||email;
+    if(!data.access_token){
+      /* E-posta doğrulaması açık: oturum yok. Kullanıcıyı giriş yapmış gibi
+         göstermek yanıltıcıydı; doğrulama bağlantısına yönlendiriyoruz. */
+      nxShowAlert(
+        isTr ? 'Kayıt alındı. Giriş yapabilmek için e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.' : 'Account created. Click the verification link we sent to your email to sign in.',
+        isTr ? 'E-postanızı Kontrol Edin' : 'Check Your Email',
+        'success'
+      );
+      return;
+    }
     try{
       localStorage.setItem('nexusCurrentUser',userEmail);
       if(data.user && data.user.user_metadata){
@@ -1654,14 +1915,12 @@ function nxSubmitAuth(e){
           localStorage.setItem('nexusUserName', nxFixMojibake(data.user.user_metadata.full_name || data.user.user_metadata.name));
         }
       }
-      if(data.access_token){
-        localStorage.setItem('nexus_cloud_session',JSON.stringify({
-          accessToken:data.access_token,
-          refreshToken:data.refresh_token,
-          userId:data.user?data.user.id:null,
-          email:userEmail
-        }));
-      }
+      localStorage.setItem('nexus_cloud_session',JSON.stringify({
+        accessToken:data.access_token,
+        refreshToken:data.refresh_token,
+        userId:data.user?data.user.id:null,
+        email:userEmail
+      }));
     }catch(e){}
     nxUpdateNavAuth();
     nxOpenAuthModal();
@@ -1725,6 +1984,7 @@ function nxSetBilling(period){
       : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
     if(cta){
       cta.dataset.plan=isYearly?cta.dataset.yearlyPlan:cta.dataset.monthlyPlan;
+      if(cta.dataset.yearlyUrl && isYearly)cta.href=cta.dataset.yearlyUrl;
       if(cta.dataset.yearlyLabel && isYearly)cta.textContent=cta.dataset.yearlyLabel;
       if(cta.dataset.monthlyLabel && !isYearly)cta.textContent=cta.dataset.monthlyLabel;
     }
@@ -1734,37 +1994,27 @@ function nxSetBilling(period){
     if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
     if(cta){
       cta.dataset.plan=cta.dataset.monthlyPlan;
+      if(cta.dataset.monthlyUrl)cta.href=cta.dataset.monthlyUrl;
       if(cta.dataset.monthlyLabel)cta.textContent=cta.dataset.monthlyLabel;
     }
   }
 }
 
 function nxOpenCheckout(e){
-  if(e && e.preventDefault) e.preventDefault();
   var cta=document.getElementById('nexusPlusCta');
-  var box=document.getElementById('nxCheckoutMount');
-  var modal=document.getElementById('nxCheckoutModal');
-  if(!cta||!box||!modal) return false;
+  if(!cta) return true;
   var yearly=document.getElementById('billingYearly');
-  var plan=(yearly && yearly.classList.contains('active') && cta.dataset.yearlyPlan) ? cta.dataset.yearlyPlan : (cta.dataset.plan || cta.dataset.monthlyPlan);
-  if(!plan) return false;
-  box.innerHTML='';
-  var el=document.createElement('div');
-  el.id='whop-embedded-checkout';
-  el.setAttribute('data-whop-checkout-plan-id', plan);
-  el.setAttribute('data-whop-checkout-return-url', location.href.split('#')[0]);
-  box.appendChild(el);
-  var old=document.getElementById('nxWhopLoader');
-  if(old) old.remove();
-  var s=document.createElement('script');
-  s.id='nxWhopLoader';
-  s.src='https://js.whop.com/static/checkout/loader.js';
-  s.async=true;
-  document.body.appendChild(s);
-  modal.style.display='flex';
-  setTimeout(function(){ modal.classList.add('open'); }, 10);
-  nxLockScroll();
-  return false;
+  var isYearly=yearly && yearly.classList.contains('active');
+  var url = isYearly ? (cta.dataset.yearlyUrl || ('https://whop.com/checkout/' + cta.dataset.yearlyPlan))
+                     : (cta.dataset.monthlyUrl || ('https://whop.com/checkout/' + (cta.dataset.plan || cta.dataset.monthlyPlan)));
+  if(url){
+    if(e && e.preventDefault) e.preventDefault();
+    var returnUrl = window.location.origin + window.location.pathname + '?payment=success';
+    var sep = url.indexOf('?') >= 0 ? '&' : (url.endsWith('/') ? '?' : '/?');
+    window.location.href = url + sep + 'redirect_url=' + encodeURIComponent(returnUrl);
+    return false;
+  }
+  return true;
 }
 function nxCloseCheckout(){
   var modal=document.getElementById('nxCheckoutModal');
@@ -1876,16 +2126,37 @@ function nxShowShot(idx){
 
 function nxNextShot(){
   nxShowShot(nxCurrentShot+1);
-  nxResetShotTimer();
+  nxHoldShotTimer(8000);
 }
 
 function nxPrevShot(){
   nxShowShot(nxCurrentShot-1);
-  nxResetShotTimer();
+  nxHoldShotTimer(8000);
 }
 
 function nxResetShotTimer(){
   if(nxShotTimer){ clearInterval(nxShotTimer); nxShotTimer=null; }
+}
+
+/* Otomatik tanıtım: hero görünürken 4 sn'de bir sonraki ekran. Kullanıcı
+   dokunursa kısa süre durur, sonra kendiliğinden devam eder; sekme arka
+   plana geçince veya maket görünmezken saymaz. */
+var nxShotHold=null;
+var nxPhoneInView=true;
+function nxShotTick(){
+  if(document.hidden || !nxPhoneInView || nxPreviewOn) return;
+  nxShowShot(nxCurrentShot+1);
+}
+function nxStartShotTimer(){
+  if(nxShotTimer || nxPreviewOn || nxShotHold) return;
+  if(document.hidden || !nxPhoneInView) return;
+  nxShotTimer=setInterval(nxShotTick,4000);
+}
+function nxHoldShotTimer(ms){
+  nxResetShotTimer();
+  if(nxShotHold){ clearTimeout(nxShotHold); nxShotHold=null; }
+  if(nxPreviewOn) return;
+  nxShotHold=setTimeout(function(){ nxShotHold=null; nxStartShotTimer(); }, ms||8000);
 }
 
 // Web uygulaması yayında değil. Telefon, uygulama ve programla aynı ekranların görsellerini gösterir.
@@ -1963,8 +2234,8 @@ document.addEventListener('DOMContentLoaded',nxBootPreview);
 document.addEventListener('DOMContentLoaded',function(){
   var mockup=document.getElementById('phoneMockup');
   if(mockup){
-    mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;if(nxShotTimer)clearInterval(nxShotTimer);});
-    mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxResetShotTimer();});
+    mockup.addEventListener('mouseenter',function(){if(nxPreviewOn)return;nxResetShotTimer();if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;}});
+    mockup.addEventListener('mouseleave',function(){if(nxPreviewOn)return;nxHoldShotTimer(3000);});
 
     mockup.addEventListener('click',function(e){
       if(nxPreviewOn)return;
@@ -1983,7 +2254,8 @@ document.addEventListener('DOMContentLoaded',function(){
     mockup.addEventListener('touchstart',function(e){
       if(nxPreviewOn)return;
       touchStartX=e.changedTouches[0].screenX;
-      if(nxShotTimer)clearInterval(nxShotTimer);
+      nxResetShotTimer();
+      if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;}
     },{passive:true});
     mockup.addEventListener('touchend',function(e){
       if(nxPreviewOn)return;
@@ -1991,37 +2263,136 @@ document.addEventListener('DOMContentLoaded',function(){
       var diff=touchEndX-touchStartX;
       if(diff>40) nxPrevShot();
       else if(diff<-40) nxNextShot();
-      nxResetShotTimer();
+      nxHoldShotTimer(8000);
     },{passive:true});
   }
 
-  // OAuth / Google Giriş Dönüşü Kontrolü
-  if(window.location.hash && window.location.hash.indexOf('access_token=')!==-1){
-    try{
-      var hashParams=new URLSearchParams(window.location.hash.substring(1));
-      var token=hashParams.get('access_token');
-      if(token){
-        var payload=nxDecodeJwt(token);
-        var userEmail=payload.email||'kullanici@nexus';
-        localStorage.setItem('nexusCurrentUser',userEmail);
-        if(payload.user_metadata){
-          if(payload.user_metadata.avatar_url || payload.user_metadata.picture){
-            localStorage.setItem('nexusUserAvatar', payload.user_metadata.avatar_url || payload.user_metadata.picture);
-          }
-          if(payload.user_metadata.full_name || payload.user_metadata.name){
-            localStorage.setItem('nexusUserName', nxFixMojibake(payload.user_metadata.full_name || payload.user_metadata.name));
-          }
-        }
-        localStorage.setItem('nexus_cloud_session',JSON.stringify({
-          accessToken:token,
-          refreshToken:hashParams.get('refresh_token'),
-          userId:payload.sub,
-          email:userEmail
-        }));
-        history.replaceState(null,null,window.location.pathname+window.location.search);
-      }
-    }catch(e){}
+  /* Sekme gizliyken sayma, maket görünmezken de durur; geri gelince kısa bir
+     aralıkla devam eder. Ok/dot ve nxNext/Prev çağrıları 8 sn'lik bekleme koyar. */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ nxResetShotTimer(); if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;} }
+    else if(nxPhoneInView){ nxHoldShotTimer(1200); }
+  });
+  var phoneWrap=document.querySelector('.phone-wrapper');
+  if(phoneWrap && 'IntersectionObserver' in window){
+    var phoneIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        nxPhoneInView=en.isIntersecting;
+        if(nxPhoneInView){ nxHoldShotTimer(900); }
+        else { nxResetShotTimer(); if(nxShotHold){clearTimeout(nxShotHold);nxShotHold=null;} }
+      });
+    },{ threshold:0.25 });
+    phoneIo.observe(phoneWrap);
   }
+  /* Koşulsuz başlangıç: IO arka plan sekmesinde ertelenirse bile tanıtım kalksın.
+     nxShotTick zaten document.hidden ve görünüm kontrolü yapıyor. */
+  nxStartShotTimer();
+
+  /* OAuth / Google girişi, e-posta doğrulama ve şifre sıfırlama dönüşleri.
+     Supabase implicit akışı belirteçleri hash içinde döndürür:
+       • type=recovery → yeni şifre görünümü açılır (token oturum sayılmaz)
+       • type=signup/email → e-posta doğrulandı, oturum açılır
+       • error/error_description → süresi dolmuş bağlantı bildirimi
+     Hash her durumda temizlenir; belirteç adres çubuğunda kalmaz. */
+  var nxHashParams=null;
+  if(window.location.hash && window.location.hash.length>1){
+    try{nxHashParams=new URLSearchParams(window.location.hash.substring(1));}catch(e){nxHashParams=null;}
+  }
+  if(nxHashParams){
+    var nxHashError=nxHashParams.get('error_description')||nxHashParams.get('error');
+    if(nxHashError){
+      var nxHashIsTr=document.documentElement.lang==='tr';
+      var nxHashErrText=String(nxHashError).replace(/\\+/g,' ');
+      try{nxHashErrText=decodeURIComponent(nxHashErrText);}catch(e){}
+      nxShowAlert(
+        /expired|invalid/i.test(nxHashErrText)
+          ? (nxHashIsTr?'Bağlantının süresi dolmuş ya da geçersiz. Yeni bir bağlantı isteyin.':'This link has expired or is invalid. Please request a new one.')
+          : nxHashErrText,
+        nxHashIsTr?'Bağlantı Hatası':'Link Error',
+        'warning'
+      );
+      history.replaceState(null,null,window.location.pathname+window.location.search);
+    }else if(nxHashParams.get('access_token')){
+      var nxHashToken=nxHashParams.get('access_token');
+      var nxHashType=nxHashParams.get('type')||'';
+      var nxHashRefresh=nxHashParams.get('refresh_token');
+      var nxPayload=nxDecodeJwt(nxHashToken);
+      var nxUserEmail=nxPayload.email||'kullanici@nexus';
+      var nxMeta=nxPayload.user_metadata||{};
+      if(nxHashType==='recovery'){
+        nxRecoveryToken=nxHashToken;
+        nxRecoveryRefresh=nxHashRefresh;
+        nxRecoveryEmail=nxUserEmail;
+        nxShowRecovery();
+      }else{
+        try{
+          localStorage.setItem('nexusCurrentUser',nxUserEmail);
+          if(nxMeta.avatar_url || nxMeta.picture){
+            localStorage.setItem('nexusUserAvatar', nxMeta.avatar_url || nxMeta.picture);
+          }
+          if(nxMeta.full_name || nxMeta.name){
+            localStorage.setItem('nexusUserName', nxFixMojibake(nxMeta.full_name || nxMeta.name));
+          }
+          localStorage.setItem('nexus_cloud_session',JSON.stringify({
+            accessToken:nxHashToken,
+            refreshToken:nxHashRefresh,
+            userId:nxPayload.sub,
+            email:nxUserEmail
+          }));
+        }catch(e){}
+        nxUpdateNavAuth();
+        if(nxHashType==='signup' || nxHashType==='email'){
+          var nxSignupIsTr=document.documentElement.lang==='tr';
+          nxShowAlert(
+            nxSignupIsTr?'E-posta adresiniz doğrulandı ve giriş yapıldı.':'Your email is verified and you are signed in.',
+            nxSignupIsTr?'E-posta Doğrulandı':'Email Verified',
+            'success'
+          );
+        }
+      }
+      history.replaceState(null,null,window.location.pathname+window.location.search);
+    }
+  }
+
+  // Whop Ödeme Dönüşü Kontrolü (Success / Cancel / Failed)
+  try {
+    var searchParams = new URLSearchParams(window.location.search);
+    var payStatus = searchParams.get('payment') || searchParams.get('checkout') || searchParams.get('status');
+    if(payStatus){
+      var isTr = document.documentElement.lang === 'tr';
+      if(payStatus === 'success'){
+        nxShowAlert(
+          isTr
+            ? 'NEXUS+ ayrıcalıklarınız hesabınıza başarıyla tanımlandı. Uygulamayı indirip giriş yaparak tüm özelliklerin ve NEXUS AI yapay zekâsının tadını çıkarabilirsiniz.'
+            : 'Your NEXUS+ privileges are now active on your account. Download the app and sign in to enjoy all premium features and NEXUS AI.',
+          isTr ? 'Aboneliğiniz Başlatıldı!' : 'Subscription Activated!',
+          'success',
+          function(){
+            var dl = document.getElementById('downloads');
+            if(dl) dl.scrollIntoView({ behavior: 'smooth' });
+          }
+        );
+      } else if(payStatus === 'failed' || payStatus === 'error'){
+        nxShowAlert(
+          isTr
+            ? 'Ödeme işlemi tamamlanamadı veya kartınız onaylanmadı. Lütfen kart bilgilerinizi kontrol edip tekrar deneyin veya bankanızla görüşün.'
+            : 'Payment could not be completed. Please check your card information and try again, or contact your issuing bank.',
+          isTr ? 'Ödeme Gerçekleştirilemedi' : 'Payment Failed',
+          'warning'
+        );
+      } else if(payStatus === 'cancel' || payStatus === 'canceled' || payStatus === 'cancelled'){
+        nxShowAlert(
+          isTr
+            ? 'Ödeme adımı tamamlanmadan sonlandırıldı. İstediğiniz zaman planınızı seçip ücretsiz denemenizi başlatabilirsiniz.'
+            : 'Checkout was not completed. You can start your free trial whenever you are ready.',
+          isTr ? 'Ödeme İptal Edildi' : 'Checkout Canceled',
+          'info'
+        );
+      }
+      var cleanUrl = window.location.pathname + (window.location.hash || '');
+      history.replaceState(null, document.title, cleanUrl);
+    }
+  } catch(e) {}
 
   // Giriş Durumu Güncelleme
   nxUpdateNavAuth();
@@ -2085,6 +2456,13 @@ document.addEventListener('DOMContentLoaded',function(){
       var targetY = Math.max(0, targetEl.getBoundingClientRect().top + window.pageYOffset - headerH - 14);
 
       if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        window.scrollTo(0, targetY);
+        if(callback) callback();
+        return;
+      }
+
+      // Sekme görünmüyorken animasyon kareleri işletilmez: gizli sekmede doğrudan atla.
+      if(document.hidden){
         window.scrollTo(0, targetY);
         if(callback) callback();
         return;
@@ -2231,6 +2609,124 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   }
 
+  /* ---------- Premium mikro-etkileşimler (kademeli açılış, platform vurgusu, yukarı çık) ---------- */
+  (function nxPolish(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var tr = document.documentElement.lang === 'tr';
+    window.__nxSiteReady = true;
+
+    // 1) Scroll-reveal (AOS örüntüsü): .rv öğeleri görünüme girince belirir.
+    //    Kademeli gecikme: aynı kapsayıcıdaki .rv kardeşler sırayla gelir (en fazla 5 adım).
+    var rvEls = Array.prototype.slice.call(document.querySelectorAll('.rv'));
+    if(rvEls.length){
+      rvEls.forEach(function(el){
+        var i = 0, sib = el.parentElement ? el.parentElement.children : [];
+        for(var k = 0; k < sib.length && sib[k] !== el; k++){
+          if(sib[k].classList && sib[k].classList.contains('rv')) i++;
+        }
+        el.style.setProperty('--rv-i', String(Math.min(i, 5)));
+      });
+      if(document.documentElement.classList.contains('nx-io') && 'IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting){ en.target.classList.add('rv-in'); io.unobserve(en.target); }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+        rvEls.forEach(function(el){ io.observe(el); });
+        /* Güvenlik ağı: arka plan sekmesinde IO geri çağrıları ertelenebilir.
+           Görünür pencerede IO zaten anındadır; gecikse bile ilk ekrandaki öğeler
+           1.2 sn içinde zorunlu belirir — kullanıcı asla boş bölüm görmez. */
+        setTimeout(function(){
+          Array.prototype.forEach.call(rvEls, function(el){
+            if(el.classList.contains('rv-in')) return;
+            var r = el.getBoundingClientRect();
+            if(r.top < window.innerHeight && r.bottom > 0) el.classList.add('rv-in');
+          });
+        }, 1200);
+      }
+    }
+
+    // 2) Yukarı çık düğmesi: kaydırınca belirir, var olan yumuşak kaydırmayı kullanır.
+    var topBtn = document.createElement('button');
+    topBtn.type = 'button';
+    topBtn.className = 'nx-to-top';
+    topBtn.setAttribute('aria-label', tr ? 'Sayfa başına dön' : 'Back to top');
+    topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(topBtn);
+    topBtn.addEventListener('click', function(){
+      var target = document.getElementById('top');
+      if(target && typeof nxSmoothScrollTo === 'function') nxSmoothScrollTo(target);
+      else window.scrollTo(0, 0);
+    });
+
+    // 3) Kaydırma durumu: başlık gölgesi + yukarı çık düğmesinin görünürlüğü.
+    //    Yalnızca iki sınıf togglesi: rAF'siz de ucuz; sekme arka plandayken bile doğru kalır.
+    function nxOnScroll(){
+      var y = window.pageYOffset || 0;
+      document.documentElement.classList.toggle('nx-scrolled', y > 10);
+      topBtn.classList.toggle('show', y > 640);
+    }
+    window.addEventListener('scroll', nxOnScroll, { passive: true });
+    nxOnScroll();
+
+    // 4) Platform-farkında indirme vurgusu: ziyaretçinin işletim sistemi kartı işaretlenir.
+    var dls = document.querySelectorAll('.dl-card[data-platform]');
+    if(dls.length){
+      var plat = '';
+      try{
+        var ua = navigator.userAgent || '';
+        if(/Android/i.test(ua)) plat = 'android';
+        else if(/Win/i.test(ua)) plat = 'windows';
+        else if(/Mac/i.test(ua) && !/iPhone|iPad/i.test(ua)) plat = 'mac';
+        else if(/Linux/i.test(ua)) plat = 'linux';
+      }catch(e){}
+      if(plat === 'windows' || plat === 'linux' || plat === 'android'){
+        Array.prototype.forEach.call(dls, function(card){
+          if(card.getAttribute('data-platform') !== plat) return;
+          card.classList.add('dl-you');
+          var badge = document.createElement('span');
+          badge.className = 'dl-you-badge';
+          badge.textContent = tr ? 'Sizin için' : 'For you';
+          card.appendChild(badge);
+        });
+      }
+    }
+
+    // 5) Telefon maketi fare takibi (vanilla-tilt örüntüsü): yalnızca hassas imleçte,
+    //    harekete duyarlılık kapalıysa hiç. Yumuşak takip: hedefe lerp'lenir, bırakınca
+    //    kendiliğinden sıfıra iner ve transform temizlenir.
+    var canTilt = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce;
+    var caseEl = document.getElementById('phoneMockup');
+    if(canTilt && caseEl){
+      var tx = 0, ty = 0, cx = 0, cy = 0, tiltRaf = null, hovering = false;
+      var nxTiltFrame = function(){
+        cx += (tx - cx) * 0.14;
+        cy += (ty - cy) * 0.14;
+        caseEl.style.transform = 'rotateX(' + cy.toFixed(2) + 'deg) rotateY(' + cx.toFixed(2) + 'deg)';
+        if(hovering || Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05){
+          tiltRaf = requestAnimationFrame(nxTiltFrame);
+        } else {
+          tiltRaf = null;
+          caseEl.style.transform = '';
+        }
+      };
+      var stage = caseEl.closest('.phone-wrapper') || caseEl.parentElement;
+      stage.addEventListener('mousemove', function(e){
+        var r = caseEl.getBoundingClientRect();
+        if(!r.width || !r.height) return;
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        tx = Math.max(-1, Math.min(1, px)) * 9;
+        ty = Math.max(-1, Math.min(1, py)) * -9;
+        if(!tiltRaf){ hovering = true; tiltRaf = requestAnimationFrame(nxTiltFrame); }
+      });
+      stage.addEventListener('mouseleave', function(){
+        tx = 0; ty = 0; hovering = false;
+        if(!tiltRaf) tiltRaf = requestAnimationFrame(nxTiltFrame);
+      });
+    }
+  })();
+
   nxInitSmoothNav();
 });
 `.trim();
@@ -2304,17 +2800,17 @@ function renderHero(c, hasShots) {
   return `<section class="hero" id="top">
   <div class="wrap">
     <div class="hero-copy">
-      <div class="hero-display">
+      <div class="hero-display rv">
         <span class="eyebrow">${icon('sparkles', 'icon')}${esc(c.hero.eyebrow)}</span>
         <h1>${esc(c.hero.h1a)} <span class="grad">${esc(c.hero.h1b)}</span></h1>
       </div>
-      <p class="lead">${esc(leadMain)}</p>
-      ${leadSub ? `<p class="lead-sub">${esc(leadSub)}</p>` : ''}
-      <div class="hero-cta">
-        ${platformDownloadBtn(c.hero.primary.href)}
+      <p class="lead rv">${esc(leadMain)}</p>
+      ${leadSub ? `<p class="lead-sub rv">${esc(leadSub)}</p>` : ''}
+      <div class="hero-cta rv">
+        ${platformDownloadBtn(c.hero.primary.href, 'btn btn-primary', isTr)}
         <p class="ver-chip"><span class="dot"></span><span>${esc(c.hero.versionNote)}</span><b class="ver-num" data-nexus-ver>${APP_VERSION}</b></p>
       </div>
-      <ul class="trust">
+      <ul class="trust rv">
         ${c.hero.trust.map((t) => `<li>${icon('check')}${esc(t)}</li>`).join('\n        ')}
       </ul>
     </div>
@@ -2323,7 +2819,7 @@ function renderHero(c, hasShots) {
         ? `
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case" id="phoneMockup" title="${isTr ? 'Uygulama ekranları' : 'App screens'}">
+      <div class="phone-case" id="phoneMockup" title="${isTr ? 'NEXUS ekranları' : 'NEXUS screens'}">
         <div class="phone-inner-screen">
           <div class="phone-island">
             <span class="island-camera"></span>
@@ -2336,7 +2832,7 @@ function renderHero(c, hasShots) {
           <div class="phone-glass-shine"></div>
         </div>
       </div>
-      <span id="phonePreviewNote" class="sr-only">${isTr ? 'Uygulamanın ekranları' : 'Screens from the app'}</span>
+      <span id="phonePreviewNote" class="sr-only">${isTr ? 'NEXUS arayüz ekranları' : 'NEXUS interface screens'}</span>
     </div>`
         : ''
     }
@@ -2428,7 +2924,7 @@ function renderIntGroup(g) {
   const chips = `<div class="chips">${g.items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div>`;
   const logos =
     g.kind === 'desktop'
-      ? `${getPlatformLogo('windows')}${getPlatformLogo('linux')}${g.items.map((i) => getBrandLogo(i)).join('')}`
+      ? `${getPlatformLogo('windows')}${getPlatformLogo('linux')}`
       : '';
   const mark = logos ? `<div class="int-logo-row" aria-hidden="true">${logos}</div>` : '';
   if (g.kind === 'desktop') {
@@ -2503,7 +2999,6 @@ function renderPricing(c) {
       <div class="plan rv">
         <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">${isTr ? 'Temel Başlangıç' : 'Starter'}</span>
         <div class="plan-head">
-          <div class="plan-logo" aria-hidden="true">${icon('home')}</div>
           <h3>${esc(c.pricing.plans[0].name)}</h3>
           <div class="price">${c.pricing.plans[0].price} <small>/ ${esc(c.pricing.plans[0].period)}</small></div>
           <p class="price-note">${isTr ? 'Cihaz veya oda sınırı yok' : 'No device or room limits'}</p>
@@ -2511,14 +3006,13 @@ function renderPricing(c) {
         <ul>
           ${c.pricing.plans[0].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
-        ${platformDownloadBtn(c.pricing.plans[0].cta.href, 'btn btn-ghost')}
+        ${platformDownloadBtn(c.pricing.plans[0].cta.href, 'btn btn-ghost', isTr)}
       </div>
 
       <!-- 2. NEXUS+ Plan (Popüler) -->
       <div class="plan hot rv" id="nexusPlusPlan">
         <span class="plan-badge">${esc(c.pricing.plans[1].badge)}</span>
         <div class="plan-head">
-          <div class="plan-logo" aria-hidden="true">${icon('sparkles')}</div>
           <h3>${esc(c.pricing.plans[1].name)}</h3>
           <div class="price"><span id="planPriceVal">${p.monthly}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
           <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
@@ -2526,18 +3020,17 @@ function renderPricing(c) {
         <ul>
           ${c.pricing.plans[1].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
         </ul>
-        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${c.canonical}#pricing" data-monthly-plan="${monthlyCheckout.split('/').pop()}" data-yearly-plan="${yearlyCheckout.split('/').pop()}" data-monthly-label="${esc(c.pricing.plans[1].cta.monthlyLabel || c.pricing.plans[1].cta.label)}" data-yearly-label="${esc(c.pricing.plans[1].cta.yearlyLabel || c.pricing.plans[1].cta.label)}" onclick="return nxOpenCheckout(event)">
-          ${esc(c.pricing.plans[1].cta.label)}
+        <a class="btn btn-primary plan-cta" id="nexusPlusCta" href="${monthlyCheckout}" data-plan="${monthlyCheckout.split('/').pop()}" data-monthly-plan="${monthlyCheckout.split('/').pop()}" data-yearly-plan="${yearlyCheckout.split('/').pop()}" data-monthly-url="${monthlyCheckout}" data-yearly-url="${yearlyCheckout}" data-monthly-label="${esc(c.pricing.plans[1].cta.monthlyLabel || c.pricing.plans[1].cta.label)}" data-yearly-label="${esc(c.pricing.plans[1].cta.yearlyLabel || c.pricing.plans[1].cta.label)}" onclick="return nxOpenCheckout(event)">
+          ${esc(c.pricing.plans[1].cta.monthlyLabel || c.pricing.plans[1].cta.label)}
         </a>
       </div>
 
-      <!-- 3. Aile Planı (Uygulamada Açık & Dahil) -->
+      <!-- 3. Aile Planı -->
       <div class="plan rv">
         <span class="plan-badge" style="background:linear-gradient(135deg,#10B981,#059669)">${esc(c.pricing.plans[2].badge)}</span>
         <div class="plan-head">
-          <div class="plan-logo" aria-hidden="true">${icon('users')}</div>
           <h3>${esc(c.pricing.plans[2].name)}</h3>
-          <div class="price">${isTr ? 'Dahil' : 'Included'} <small>/ ${esc(c.pricing.plans[2].period)}</small></div>
+          <div class="price">${esc(c.pricing.plans[2].price)} <small>/ ${esc(c.pricing.plans[2].period)}</small></div>
           <p class="price-note">${isTr ? 'Tüm aile fertleri için hazır' : 'Ready for the whole family'}</p>
         </div>
         <ul>
@@ -2594,7 +3087,7 @@ function renderFaq(c) {
   <div class="wrap">
     <div class="sec-head center rv" style="margin-bottom:36px"><h2>${esc(c.faq.heading)}</h2></div>
     <div class="faq-list">
-      ${c.faq.items.map(([q, a]) => `<div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><p>${esc(a)}</p></div></div>`).join('\n      ')}
+      ${c.faq.items.map(([q, a]) => `<div class="faq-item rv"><button class="faq-q" aria-expanded="false" onclick="nxToggleFaq(this)"><span>${esc(q)}</span>${icon('arrow')}</button><div class="faq-a"><div class="faq-a-in"><p>${esc(a)}</p></div></div></div>`).join('\n      ')}
     </div>
   </div>
 </section>`;
@@ -2615,8 +3108,8 @@ function renderFooter(c) {
         <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
         <p>${esc(c.footer.tagline)}</p>
         <div class="ft-trust-row">
-          <span class="ft-trust-pill">${icon('lock')}${c.lang === 'tr' ? 'Yerel ağ' : 'On your LAN'}</span>
-          <span class="ft-trust-pill">${icon('shield')}${c.lang === 'tr' ? 'Hesap gerekir' : 'Account required'}</span>
+          <span class="ft-trust-pill"><span class="ft-status-dot"></span>${c.lang === 'tr' ? '%100 Yerel Kontrol' : '100% Local Control'}</span>
+          <span class="ft-trust-pill">${icon('shield')}${c.lang === 'tr' ? 'Sıfır Bulut Bağımlılığı' : 'Zero Cloud Dependency'}</span>
         </div>
       </div>
       <div class="ft-links-group">
@@ -2627,7 +3120,6 @@ function renderFooter(c) {
     </div>
     <div class="ft-bottom">
       <span>© ${new Date().getFullYear()} NEXUS. ${esc(c.footer.rights)}</span>
-      <span class="ft-privacy">${icon('lock')} ${c.lang === 'tr' ? 'Cihaz komutları yerel ağında çalışır.' : 'Device commands stay on your LAN.'}</span>
     </div>
   </div>
 </footer>`;
@@ -2758,6 +3250,35 @@ function renderAuthModal(c) {
         </button>
         <button type="button" class="nx-auth-link muted" onclick="nxForgotPassword()">
           <span>${isTr ? 'Şifremi Unuttum' : 'Forgot Password?'}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Şifre sıfırlama bağlantısından gelen görünüm -->
+    <div id="nxAuthRecoveryView" style="display:none">
+      <div class="nx-auth-brand-badge">
+        <div class="nx-app-logo">${brand.logoSvg}</div>
+        <h3 id="nxRecoveryTitle">${isTr ? 'Yeni Şifre Belirle' : 'Set a New Password'}</h3>
+        <p id="nxRecoverySubtitle">${isTr ? 'Hesabınız için yeni bir şifre girin.' : 'Choose a new password for your account.'}</p>
+        <p id="nxRecoveryEmail" class="nx-profile-email-chip" style="margin-top:8px"></p>
+      </div>
+      <form id="nxRecoveryForm" onsubmit="nxSubmitRecovery(event)">
+        <div id="nxRecoveryAlert" class="nx-auth-alert" style="display:none"></div>
+        <div class="nx-auth-field-wrap">
+          <label for="nxRecoveryPassword" class="nx-field-label">${isTr ? 'Yeni Şifre' : 'New Password'}</label>
+          <input type="password" id="nxRecoveryPassword" class="nx-app-input" required placeholder="${isTr ? 'En az 6 karakter' : 'At least 6 characters'}" autocomplete="new-password">
+        </div>
+        <div class="nx-auth-field-wrap">
+          <label for="nxRecoveryPassword2" class="nx-field-label">${isTr ? 'Yeni Şifre (tekrar)' : 'New Password (again)'}</label>
+          <input type="password" id="nxRecoveryPassword2" class="nx-app-input" required placeholder="${isTr ? '••••••••' : '••••••••'}" autocomplete="new-password">
+        </div>
+        <button type="submit" id="nxRecoverySubmitBtn" class="btn btn-primary w-full nx-app-submit">
+          <span>${isTr ? 'Şifreyi Kaydet' : 'Save Password'}</span>
+        </button>
+      </form>
+      <div class="nx-auth-links">
+        <button type="button" class="nx-auth-link muted" onclick="nxCloseAuthModal()">
+          <span>${isTr ? 'Kapat' : 'Close'}</span>
         </button>
       </div>
     </div>
@@ -2999,7 +3520,7 @@ if(location.hostname==='enard52.github.io'){
 }
 (function(){
   try{
-    var L=location, p=L.pathname, isTrPage=(p==='/tr/'||p.indexOf('/tr/')===0);
+    var L=location, p=L.pathname, isTrPage=(p==='/tr/'||p.indexOf('/tr/')!==-1);
     var navLangs=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]).filter(Boolean);
     var turkic=/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/;
     var home=false;
@@ -3019,16 +3540,31 @@ if(location.hostname==='enard52.github.io'){
       try{localStorage.setItem('nx-lang',q)}catch(e){}
     }
     var targetLang=home?(saved||'tr'):'en';
-    if(targetLang==='tr'&&!isTrPage){
-      var rel=p;
-      while(rel.charAt(0)==='/')rel=rel.slice(1);
-      if(rel==='index.html')rel='';
-      L.replace('/tr/'+rel+L.search+L.hash);
-    }else if(targetLang==='en'&&isTrPage){
-      var rel=p.slice(3);
-      while(rel.charAt(0)==='/')rel=rel.slice(1);
-      if(rel==='index.html')rel='';
-      L.replace('/'+rel+L.search+L.hash);
+    var isProd=(location.hostname==='nexus-smarthome.pages.dev'||location.hostname==='enard52.github.io');
+    if(isProd){
+      if(targetLang==='tr'&&!isTrPage){
+        var rel=p;
+        while(rel.charAt(0)==='/')rel=rel.slice(1);
+        if(rel==='index.html')rel='';
+        L.replace('/tr/'+rel+L.search+L.hash);
+      }else if(targetLang==='en'&&isTrPage){
+        var rel=p.slice(3);
+        while(rel.charAt(0)==='/')rel=rel.slice(1);
+        if(rel==='index.html')rel='';
+        L.replace('/'+rel+L.search+L.hash);
+      }
+    }
+  }catch(e){}
+  /* Scroll-reveal etiketi: ilk boyamadan ÖNCE eklenir (parlama olmasın). site.js
+     yüklenmezse içerik görünmez kalmasın diye güvenlik ağı: 2.5 sn içinde
+     __nxSiteReady işareti gelmezse etiket geri çekilir ve her şey görünür kalır. */
+  try{
+    var noMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!noMotion&&'IntersectionObserver' in window){
+      document.documentElement.classList.add('nx-io');
+      setTimeout(function(){
+        if(!window.__nxSiteReady) document.documentElement.classList.remove('nx-io');
+      },2500);
     }
   }catch(e){}
 })();`.trim();
@@ -3058,7 +3594,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261026e"></script>
+<script src="/assets/site.js?v=20261027d"></script>
 </body>
 </html>`;
 }
@@ -3135,7 +3671,7 @@ ${renderHeader(c, path)}
     <h2>${isTr ? 'Kurulum dosyaları' : 'Get the apps'}</h2>
     <p style="margin:0 0 18px">${isTr ? 'Windows, Linux ve Android kurulumları ücretsizdir. Cihaz komutları yerel ağında kalır.' : 'Windows, Linux and Android installs are free. Device commands stay on your LAN.'}</p>
     <div class="about-cta-actions">
-      ${platformDownloadBtn(`${c.canonical}#downloads`)}
+      ${platformDownloadBtn(`${c.canonical}#downloads`, 'btn btn-primary', isTr)}
       <a href="${c.canonical}#features" class="btn btn-ghost">${isTr ? 'Özellikler' : 'Features'}</a>
       <a href="${c.canonical}#pricing" class="btn btn-ghost">${isTr ? 'Fiyatlar' : 'Pricing'}</a>
     </div>
@@ -3146,7 +3682,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261026e"></script>
+<script src="/assets/site.js?v=20261027d"></script>
 </body>
 </html>`;
 }
@@ -3192,7 +3728,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261026e"></script>
+<script src="/assets/site.js?v=20261027d"></script>
 </body>
 </html>`;
 }
@@ -3245,7 +3781,7 @@ function renderNotFound(c) {
       : 'The link may have moved or been mistyped. Downloads and pricing live on the home page.'}</p>
     <div class="row">
       <a class="btn primary" href="${home}">${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
-      ${platformDownloadBtn(`${home}#downloads`, 'btn')}
+      ${platformDownloadBtn(`${home}#downloads`, 'btn', isTr)}
     </div>
     <p class="lang">${isTr
       ? `Bu sayfayı İngilizce okumak istersen: <a href="/404.html">English</a>`
@@ -3275,6 +3811,119 @@ function renderSignInRedirect(tr) {
 <script>location.replace(${JSON.stringify(home)});</script></body></html>`;
 }
 
+/* Mobil uygulamada Google girişi sistem tarayıcısında yapılır. Supabase yalnız
+   site alan adına dönüşe izin verdiği için belirteçler önce buraya gelir; sayfa
+   onları nexus://auth adresine taşır ve tarayıcı geçmişinde bırakmaz. */
+function renderAppAuth() {
+  return `<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NEXUS — Giriş aktarımı</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="referrer" content="no-referrer"/>
+<link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link href="/fonts/inter/inter.css" rel="stylesheet"/>
+<style>
+  :root { color-scheme: light dark; --bg:#fafafc; --fg:#0b1020; --fg2:#5a6172; --bd:#e6e8f0; --brand:#4C7DFF; --ok:#0f9d70; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b0d14; --fg:#eef1f8; --fg2:#9aa3b5; --bd:#232838; } }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100dvh; display:grid; place-items:center; background:var(--bg); color:var(--fg);
+         font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; -webkit-font-smoothing:antialiased; padding:24px; }
+  .box { max-width:520px; text-align:center; }
+  .mark { width:56px; height:56px; margin:0 auto 18px; display:block; }
+  .badge { width:44px; height:44px; margin:0 auto 16px; border-radius:50%; display:grid; place-items:center;
+           background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); }
+  .badge svg { width:24px; height:24px; }
+  .badge.warn { background:color-mix(in srgb, #e11d48 12%, transparent); color:#e11d48; }
+  h1 { font-size:26px; font-weight:800; letter-spacing:-.02em; margin:0 0 10px; }
+  p { font-size:15px; line-height:1.65; color:var(--fg2); margin:0 0 24px; }
+  a.btn { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 24px; border-radius:12px;
+          font-size:15px; font-weight:700; text-decoration:none; background:var(--brand); color:#fff; }
+  .hint { margin:18px 0 0; font-size:13px; color:var(--fg2); }
+  .hint a { color:var(--brand); font-weight:700; text-decoration:none; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+  <main class="box">
+    <img class="mark" src="/icon.svg" alt="NEXUS" width="56" height="56"/>
+    <div id="ok" class="hidden">
+      <div class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h1 id="ok-title">Giriş tamamlandı</h1>
+      <p id="ok-text">NEXUS uygulaması açılıyor. Açılmazsa aşağıdaki düğmeye dokun.</p>
+      <a class="btn" id="open-app" href="nexus://auth">NEXUS’u aç</a>
+      <p class="hint"><span id="no-app">Uygulama yüklü değil mi?</span> <a href="/tr/#downloads" id="download-link">Android sürümünü indir</a></p>
+    </div>
+    <div id="fail" class="hidden">
+      <div class="badge warn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg></div>
+      <h1 id="fail-title">Giriş tamamlanamadı</h1>
+      <p id="fail-text">Bağlantının süresi dolmuş olabilir. NEXUS’a dönüp yeniden dene.</p>
+      <a class="btn" href="nexus://auth">NEXUS’a dön</a>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var tr = /^tr\\b/i.test(navigator.language || '');
+      document.documentElement.lang = tr ? 'tr' : 'en';
+      function set(id, text) { var el = document.getElementById(id); if (el) el.textContent = text; }
+      function show(id) { var el = document.getElementById(id); if (el) el.classList.remove('hidden'); }
+
+      var hash = location.hash && location.hash.length > 1 ? location.hash.slice(1) : '';
+      var query = location.search && location.search.length > 1 ? location.search.slice(1) : '';
+      var raw = hash || query;
+      var params = new URLSearchParams(raw);
+      var hasToken = !!(params.get('access_token') && params.get('refresh_token'));
+      var error = params.get('error') || '';
+      var appUrl = 'nexus://auth' + (raw ? '#' + raw : '');
+
+      // Belirteçleri tarayıcı geçmişinde bırakma; adres çubuğu temiz kalsın.
+      try { history.replaceState(null, '', location.pathname); } catch (e) {}
+
+      if (hasToken) {
+        show('ok');
+        if (tr) {
+          set('ok-title', 'Giriş tamamlandı');
+          set('ok-text', 'NEXUS uygulaması açılıyor. Açılmazsa aşağıdaki düğmeye dokun.');
+          set('open-app', 'NEXUS’u aç');
+          set('no-app', 'Uygulama yüklü değil mi?');
+          set('download-link', 'Android sürümünü indir');
+          document.getElementById('download-link').href = '/tr/#downloads';
+        } else {
+          set('ok-title', 'Signed in');
+          set('ok-text', 'Opening the NEXUS app. If it does not open, tap the button below.');
+          set('open-app', 'Open NEXUS');
+          set('no-app', 'App not installed?');
+          set('download-link', 'Download the Android version');
+          document.getElementById('download-link').href = '/#downloads';
+        }
+        var open = document.getElementById('open-app');
+        if (open) open.setAttribute('href', appUrl);
+        // Özel şemayı kendiliğinden açmayı dene; tarayıcı engellerse düğme hazır.
+        setTimeout(function () { try { location.href = appUrl; } catch (e) {} }, 450);
+        return;
+      }
+
+      show('fail');
+      if (tr) {
+        set('fail-title', 'Giriş tamamlanamadı');
+        set('fail-text', 'Bağlantının süresi dolmuş olabilir. NEXUS’a dönüp yeniden dene.');
+      } else {
+        set('fail-title', 'Sign-in failed');
+        set('fail-text', 'The link may have expired. Go back to NEXUS and try again.');
+      }
+      if (error) {
+        var desc = params.get('error_description') || error;
+        desc = desc.replace(/\\+/g, ' ');
+        set('fail-text', desc);
+      }
+    })();
+  </script>
+</body>
+</html>`;
+}
+
 /* Eskiden robots/sitemap/manifest'i scripts/site-seo.cjs sayfa çıktısının üstünde
    dolaşıp yazıyordu; artık tek üretici bu dosya. Böylece elle sürüm kopyası,
    bayat enard52.github.io adresi ve sayfa listesi ile gerçek arasındaki fark kalmıyor.
@@ -3293,6 +3942,7 @@ function renderRobots() {
 Allow: /
 Disallow: /login
 Disallow: /tr/login
+Disallow: /app-auth.html
 Disallow: /light
 Disallow: /tr/light
 
@@ -3453,6 +4103,8 @@ window.NEXUS_CLOUD = {
   // login.html de artık üretiliyor: elle kopyalanan sürüm APP_URL'den kopabiliyordu.
   writeFileSync(join(PUB, 'login.html'), renderSignInRedirect(false), 'utf8');
   writeFileSync(join(PUB, 'tr', 'login.html'), renderSignInRedirect(true), 'utf8');
+  // Mobil Google giriş dönüşü: belirteçleri uygulamanın nexus://auth adresine taşır.
+  writeFileSync(join(PUB, 'app-auth.html'), renderAppAuth(), 'utf8');
 
   // 404 artık üretimin parçası: bayat elle kopya (253 KB, ölü bağlantılar) siliniyor.
   writeFileSync(join(PUB, '404.html'), renderNotFound(content.en), 'utf8');
@@ -3468,6 +4120,7 @@ window.NEXUS_CLOUD = {
   console.log('✓ tr/index.html');
   console.log('✓ 404.html & tr/404.html');
   console.log('✓ login.html & tr/login.html');
+  console.log('✓ app-auth.html');
   console.log('✓ about.html');
   console.log('✓ tr/about.html');
   console.log('✓ privacy.html & tr/privacy.html');

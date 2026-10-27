@@ -73,7 +73,7 @@
     document.write('<script src="lang-en.js"><\/script><script src="i18n.js"><\/script>');
   }
   var previewShell = false;
-  try { previewShell = !!window.nexusPreview || window.self !== window.top || /[?&](preview|demo)=1/.test(location.search); } catch (e) { previewShell = true; }
+  try { previewShell = !!window.nexusPreview || window.self !== window.top || /[?&](preview|demo)=1/.test(location.search) || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('nexusPreviewMode') === '1'); } catch (e) { previewShell = true; }
   // Hesap senkronu her sayfada çalışsın (giriş yapılmışsa): cloud-sync.js kendini iki kez kurmaz.
   // Site önizlemesinde bulut ve bildirim kanalları açılmaz — özellik kilitlidir.
   if (!previewShell && document.readyState === 'loading' && !window.nexusCloud && !window.__nexusCloudLoading) {
@@ -121,6 +121,11 @@ window.addEventListener('error', function(e) {
 (function() {
   // Global Haptic Feedback (Vibration) & Click Sound fallback
   function triggerHaptic(style) {
+    // Ayarlar → "Ses ve Hareket": Titreşim kapatıldıysa hiçbir yolla titreşme.
+    try {
+      var hKey = typeof nexusGetItem === 'function' ? nexusGetItem('nexusHapticsEnabled') : localStorage.getItem('nexusHapticsEnabled');
+      if (hKey === 'false') return;
+    } catch (e2) {}
     try {
       var cap = window.Capacitor;
       if (cap && cap.Plugins && cap.Plugins.Haptics && typeof cap.Plugins.Haptics.impact === 'function') {
@@ -254,6 +259,21 @@ window.addEventListener('error', function(e) {
     }
   }
 
+  // Hareket efektleri anahtarı (Ayarlar → Ses ve Hareket → Animasyonlar):
+  // kapalıysa html.nx-no-anim eklenir; css/nexus-ui.css'teki ortak kural tüm
+  // dekoratif hareketi durdurur. İşletim sistemi "hareketi azalt" istiyorsa
+  // anahtar ne olursa olsun kapanır. Boyamadan önce uygulanır (kayma olmasın).
+  function applyMotion() {
+    var off = false;
+    try {
+      var mKey = typeof nexusGetItem === 'function' ? nexusGetItem('nexusAnimationsEnabled') : localStorage.getItem('nexusAnimationsEnabled');
+      off = mKey === 'false';
+    } catch (e) {}
+    if (!off && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) off = true;
+    document.documentElement.classList.toggle('nx-no-anim', off);
+  }
+  applyMotion();
+
   // Apply immediately to avoid flicker
   applyTheme();
 
@@ -262,7 +282,12 @@ window.addEventListener('error', function(e) {
     if (e.key === 'nexusDarkMode') {
       applyTheme();
     }
+    if (e.key === 'nexusAnimationsEnabled') {
+      applyMotion();
+    }
   });
+  // Aynı sekmedeki Ayarlar değişikliği (Ayarlar sayfası olayı gönderir)
+  window.addEventListener('nexusMotionChanged', applyMotion);
   
   // Custom event listener for same-page updates
   window.addEventListener('themeChanged', applyTheme);
@@ -359,7 +384,7 @@ window.addEventListener('error', function(e) {
     /* Hover / Active States — imleçle üzerine gelince beyazlaşmayı önler */
     'html.dark .hover\\:bg-gray-50:hover, html.dark .hover\\:bg-slate-50:hover, html.dark .hover\\:bg-slate-100:hover { background-color: #334155 !important; }',
     'html.dark .active\\:bg-gray-50:active, html.dark .active\\:bg-slate-50:active, html.dark .active\\:bg-slate-100:active { background-color: #334155 !important; }',
-    'html.dark .active\:bg-slate-200:active, html.dark .active\:bg-slate-300:active { background-color: #475569 !important; }',
+    'html.dark .active\\:bg-slate-200:active, html.dark .active\\:bg-slate-300:active { background-color: #475569 !important; }',
     'html.dark .bg-dashboard-gradient { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }',
     'html.dark .divide-slate-50 > * + * { border-color: #334155 !important; }'
   ].join('\n');
@@ -456,14 +481,49 @@ window.addEventListener('error', function(e) {
     if (e.key === 'nexusEvents' || e.key === 'nexusReadNotifs') updateNavBadge();
   });
 
-  // 2. Profile Data Loader — gerçek kullanıcı verisi (nexusUserName/nexusAvatar)
-  window.addEventListener('DOMContentLoaded', () => {
+  // 2. Profile Data Loader & Nav Avatar Sync — gerçek kullanıcı verisi (nexusUserName/nexusAvatar)
+  function syncNavAvatar() {
+    try {
+      var avatar = (typeof nexusGetItem === 'function' && nexusGetItem('nexusAvatar')) || '';
+      document.querySelectorAll('a[href="stitch-profile.html"]').forEach(function (link) {
+        var existingImg = link.querySelector('.nav-user-avatar');
+        var icon = link.querySelector('i[data-lucide="user"], svg.lucide-user, svg[data-lucide="user"]');
+        if (avatar) {
+          if (existingImg) {
+            existingImg.src = avatar;
+            existingImg.style.display = '';
+            if (icon) icon.style.display = 'none';
+          } else if (icon) {
+            var img = document.createElement('img');
+            img.src = avatar;
+            img.className = 'w-6 h-6 rounded-full object-cover nav-user-avatar border border-current shadow-xs';
+            img.alt = 'Profil';
+            img.style.width = '24px';
+            img.style.height = '24px';
+            img.style.borderRadius = '9999px';
+            img.style.objectFit = 'cover';
+            img.onerror = function () {
+              img.style.display = 'none';
+              if (icon) icon.style.display = '';
+            };
+            icon.style.display = 'none';
+            link.insertBefore(img, icon);
+          }
+        } else {
+          if (existingImg) existingImg.style.display = 'none';
+          if (icon) icon.style.display = '';
+        }
+      });
+    } catch (e) {}
+  }
+
+  function loadProfileData() {
     const userNameElement = document.getElementById('nexus-user-name');
     const userAvatarElement = document.getElementById('nexus-user-avatar');
 
     if (userNameElement || userAvatarElement) {
-      const storedName = nexusGetItem('nexusUserName') || 'Misafir';
-      const storedAvatar = nexusGetItem('nexusAvatar');
+      const storedName = (typeof nexusGetItem === 'function' ? nexusGetItem('nexusUserName') : '') || 'Misafir';
+      const storedAvatar = typeof nexusGetItem === 'function' ? nexusGetItem('nexusAvatar') : '';
 
       if (userNameElement) {
         if (userNameElement.tagName === 'INPUT') {
@@ -477,6 +537,13 @@ window.addEventListener('error', function(e) {
         userAvatarElement.src = storedAvatar;
       }
     }
+    syncNavAvatar();
+  }
+
+  window.addEventListener('DOMContentLoaded', loadProfileData);
+  window.addEventListener('nexusAvatarChanged', syncNavAvatar);
+  window.addEventListener('storage', function (e) {
+    if (e.key && e.key.includes('nexusAvatar')) syncNavAvatar();
   });
 })();
 
@@ -542,7 +609,12 @@ window.nexusInfo = function (title, text, actions) {
 };
 
 // Panoya kopyalama: izin yoksa eski yönteme düşer; sonucu Promise<boolean> olarak döner.
+// Başarıda kısa "kopyalandı" tık sesi (nexus-feedback.js varsa); anahtar kapalıysa sessiz.
 window.nexusCopy = function (text) {
+  function announce(ok) {
+    if (ok && window.nexusFeedback && typeof nexusFeedback.play === 'function') nexusFeedback.play('copy');
+    return ok;
+  }
   function legacy() {
     try {
       var ta = document.createElement('textarea');
@@ -553,9 +625,9 @@ window.nexusCopy = function (text) {
     } catch (e) { return false; }
   }
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacy(); });
+    return navigator.clipboard.writeText(text).then(function () { return announce(true); }, function () { return announce(legacy()); });
   }
-  return Promise.resolve(legacy());
+  return Promise.resolve(announce(legacy()));
 };
 
 // Masaüstü uygulamasında Ctrl+K komut paleti (yalnızca Electron + geniş ekran; auth sayfalarında yüklenmez)
@@ -580,6 +652,27 @@ window.nexusCopy = function (text) {
   if (AUTH.indexOf(page) !== -1) return;
   var s = document.createElement('script');
   s.src = 'automation-engine.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
+
+// Ses / titreşim / hareket geri bildirim merkezi: tüm sayfalarda (auth dahil —
+// kopyalama sesi gibi ortak kanallar kullanıyor). Yüklenmesi yan etkisizdir.
+(function () {
+  if (document.querySelector('script[src="nexus-feedback.js"]')) return;
+  var s = document.createElement('script');
+  s.src = 'nexus-feedback.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
+
+// Masaüstü olay köprüsü: Electron ana sürecine olay bildirimi + tepsi durumu.
+// Dosya kendi içinde korumalı (yalnızca nexusDesktop.notifyEvent varsa çalışır);
+// daha önce hiç yüklenmediği için masaüstü bildirimleri ölü duruyordu.
+(function () {
+  if (document.querySelector('script[src="event-bridge.js"]')) return;
+  var s = document.createElement('script');
+  s.src = 'event-bridge.js';
   s.defer = true;
   (document.head || document.documentElement).appendChild(s);
 })();

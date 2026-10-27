@@ -12,7 +12,7 @@
 // devam eder (akıllı ev asistanı). Tepsi menüsünden: gösterme, "kapatınca arka planda
 // çalış" seçeneği, bilgisayarla başlatma (Windows/macOS), yeniden başlatma ve tam çıkış.
 
-const { app, BrowserWindow, Menu, shell, ipcMain, protocol, net, nativeTheme, dialog, Tray, Notification, screen, globalShortcut, session } = require("electron");
+const { app, BrowserWindow, Menu, shell, ipcMain, protocol, net, nativeTheme, dialog, Tray, Notification, screen, globalShortcut, session, nativeImage } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
 const os = require("node:os");
@@ -59,6 +59,19 @@ function saveBounds() {
   } catch { /* yazılamazsa sorun değil */ }
 }
 
+// ---------- Dil tespiti ve çok dilli metinler ----------
+function detectLang() {
+  const tags = [app.getLocale ? app.getLocale() : "", app.getSystemLocale ? app.getSystemLocale() : ""].concat(app.getPreferredSystemLanguages ? app.getPreferredSystemLanguages() : []);
+  if (/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)\b/i.test(tags[0] || "")) return "tr";
+  if (tags.some((t) => /[-_](TR|AZ|KZ|UZ|KG|TM)\b/i.test(t || ""))) return "tr";
+  let tz = "";
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { /* bilinmiyor */ }
+  if (/^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/.test(tz)) return "tr";
+  return tags.some((t) => /^tr\b/i.test(t || "")) ? "tr" : "en";
+}
+let uiLang = detectLang();
+const L = (tr, en) => (uiLang === "en" ? en : tr);
+
 // ---------- Arka planda çalışma / tepsi ayarları ----------
 // Akıllı ev asistanı olduğu için uygulama pencere kapatılsa da çalışmaya devam eder
 // (tepsi simgesine gizlenir). Davranış tepsi menüsünden ve menü çubuğundan yönetilir.
@@ -99,7 +112,10 @@ function createAutomationWorker() {
 }
 
 function showMainWindow() {
-  if (!win || win.isDestroyed()) return;
+  if (!win || win.isDestroyed()) {
+    createWindow();
+    return;
+  }
   if (win.isMinimized()) win.restore();
   win.show();
   win.focus();
@@ -133,18 +149,32 @@ function getOpenAtLogin() {
 }
 const startHidden = process.argv.includes("--hidden") || (process.platform === "darwin" && app.getLoginItemSettings().wasOpenedAsHidden);
 
+let lastTrayStatus = null;
+
 function trayTemplate() {
-  const items = [
-    { label: L("NEXUS'u Göster", "Show NEXUS"), click: showMainWindow },
+  const items = [];
+  if (lastTrayStatus && lastTrayStatus.devices > 0) {
+    items.push({
+      label: L(
+        `🟢  Ev: ${lastTrayStatus.devices} Cihaz (${lastTrayStatus.on} Açık)`,
+        `🟢  Home: ${lastTrayStatus.devices} Devices (${lastTrayStatus.on} On)`
+      ),
+      enabled: false,
+    });
+    items.push({ type: "separator" });
+  }
+
+  items.push(
+    { label: L("NEXUS'u Aç", "Open NEXUS"), click: showMainWindow, default: true },
     { type: "separator" },
-    { label: L("Kapatınca arka planda çalış", "Keep running in background when closed"),
+    { label: L("Kapatıldığında arka planda çalış", "Keep running in background when closed"),
       type: "checkbox", checked: backgroundRun,
       click: (item) => { backgroundRun = item.checked; persistDesktopSettings({ backgroundRun }); } },
-  ];
+  );
   // Otomatik başlangıç Windows/macOS'ta anlamlı ve Electron destekli; Linux'ta yok.
   if (process.platform !== "linux") {
     items.push({
-      label: L("Bilgisayar açılınca başlat", "Start with computer"),
+      label: L("Bilgisayar açıldığında otomatik başlat", "Launch on system startup"),
       type: "checkbox", checked: getOpenAtLogin(),
       click: (item) => setOpenAtLogin(item.checked),
     });
@@ -162,31 +192,68 @@ function updateTrayMenu() {
 }
 
 function hideToTray() {
+  if (!tray) createTray();
   if (win && !win.isDestroyed()) win.hide();
   if (trayBalloonShown) return;
   trayBalloonShown = true;
-  const title = "NEXUS";
-  const body = L(
-    "NEXUS arka planda çalışmaya devam ediyor. Geri açmak için tepsi simgesine tıkla; tamamen kapatmak için sağ tık → Tamamen Çıkış.",
-    "NEXUS keeps running in the background. Click the tray icon to reopen; right-click → Quit Completely to close it."
+  const notifTitle = L("Arka Planda Çalışıyor", "Running in Background");
+  const notifBody = L(
+    "Cihaz bağlantıları ve otomasyonlar aktif. Açmak için simgeye tıklayın.",
+    "Automations and device links stay active. Click icon to reopen."
   );
   try {
-    if (process.platform === "win32" && tray && tray.displayBalloon) tray.displayBalloon({ iconType: "info", title, content: body });
-    else if (Notification.isSupported()) new Notification({ title, body }).show();
+    const pngPath = path.join(__dirname, "resources", "icon.png");
+    const notifIcon = fs.existsSync(pngPath) ? pngPath : resolveTrayIcon();
+    if (Notification.isSupported()) {
+      const n = new Notification({
+        title: notifTitle,
+        body: notifBody,
+        icon: notifIcon || undefined,
+        silent: false,
+      });
+      n.on("click", () => showMainWindow());
+      n.show();
+    } else if (process.platform === "win32" && tray && tray.displayBalloon) {
+      tray.displayBalloon({
+        icon: resolveTrayIcon() || undefined,
+        title: notifTitle,
+        content: notifBody,
+      });
+    }
   } catch { /* bildirim gösterilemezse sorun değil */ }
+}
+
+function resolveTrayIcon() {
+  const icoPath = path.join(__dirname, "resources", "icon.ico");
+  const pngPath = path.join(__dirname, "resources", "icon.png");
+  if (process.platform === "win32" && fs.existsSync(icoPath)) {
+    try { return nativeImage.createFromPath(icoPath); } catch {}
+  }
+  if (fs.existsSync(pngPath)) {
+    try { return nativeImage.createFromPath(pngPath); } catch {}
+  }
+  if (fs.existsSync(icoPath)) {
+    try { return nativeImage.createFromPath(icoPath); } catch {}
+  }
+  return null;
 }
 
 function createTray() {
   // macOS'ta dock zaten uygulamayı canlı tutar; tepsi Windows/Linux davranışıdır.
   if (process.platform === "darwin") return;
+  if (tray) return;
   try {
-    const icon = path.join(__dirname, "resources", process.platform === "win32" ? "icon.ico" : "icon.png");
-    tray = new Tray(icon);
+    const iconImg = resolveTrayIcon();
+    if (!iconImg || iconImg.isEmpty()) return;
+    tray = new Tray(iconImg);
     tray.setToolTip("NEXUS");
     updateTrayMenu();
     tray.on("click", () => {
       if (win && !win.isDestroyed() && win.isVisible() && win.isFocused()) hideToTray();
       else showMainWindow();
+    });
+    tray.on("double-click", () => {
+      showMainWindow();
     });
   } catch (e) {
     // Tepsi oluşturulamazsa (ortam desteklemiyorsa) uygulama klasik davranışa döner.
@@ -344,9 +411,10 @@ ipcMain.handle("desktop:settings:set", (_e, patch) => {
   };
 });
 
-// Google dönüşü web uygulamasına bırakılmaz. Belirteç masaüstü penceresine verilir
-// ve site penceresi hiç gösterilmez.
-let authWin = null;
+// Google girişi kullanıcının varsayılan sistem tarayıcısında (Chrome, Edge vb.) açılır;
+// böylece tarayıcıda kayıtlı olan mevcut Google hesapları doğrudan görünür.
+// Dönüşte yerel loopback sunucusu belirteci alıp masaüstü penceresine aktarır.
+let loopbackServer = null;
 function oauthTokenFrom(targetUrl) {
   if (!targetUrl || typeof targetUrl !== "string") return "";
   const hashIdx = targetUrl.indexOf("#");
@@ -358,101 +426,139 @@ function oauthTokenFrom(targetUrl) {
   } catch { /* adres parçalanamadı */ }
   return "";
 }
-function oauthCallbackOf(authUrl) {
-  try { return new URL(authUrl).searchParams.get("redirect_to") || ""; } catch { return ""; }
-}
-function isOAuthCallback(targetUrl, callback) {
-  if (!targetUrl || !callback) return false;
-  const bare = targetUrl.split("#")[0];
-  return bare === callback || bare.startsWith(callback);
-}
 function deliverOAuth(hash) {
   if (win && !win.isDestroyed() && hash) win.webContents.send("oauth:success", hash);
 }
 function startGoogleAuth(customUrl) {
   const authUrl = customUrl || "";
   if (!authUrl || !win || win.isDestroyed()) return;
-  if (authWin && !authWin.isDestroyed()) {
-    authWin.focus();
-    return;
+
+  if (loopbackServer) {
+    try { loopbackServer.close(); } catch {}
+    loopbackServer = null;
   }
-  const callback = oauthCallbackOf(authUrl);
-  authWin = new BrowserWindow({
-    parent: win,
-    modal: true,
-    width: 520,
-    height: 680,
-    show: false,
-    title: L("Google ile Giriş Yap", "Sign In with Google"),
-    autoHideMenuBar: true,
-    backgroundColor: nativeTheme.shouldUseDarkColors ? "#0f172a" : "#ffffff",
-    webPreferences: {
-      preload: path.join(__dirname, "auth-preload.cjs"),
-      nodeIntegration: false,
-      contextIsolation: true,
-      sandbox: true,
-    },
-  });
-  const popup = authWin;
-  // Google, Electron kullanıcı aracısını reddeder; güncel Chrome gibi görünür.
-  popup.webContents.setUserAgent(
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
-  );
-  let finished = false;
-  function finish(hash) {
-    if (finished) return;
-    finished = true;
-    deliverOAuth(hash);
-    setTimeout(() => { if (!popup.isDestroyed()) popup.close(); }, 40);
-  }
-  function consider(targetUrl, event) {
-    const token = oauthTokenFrom(targetUrl);
-    if (token) {
-      if (event) event.preventDefault();
-      finish(token);
-      return true;
+
+  const http = require("http");
+  loopbackServer = http.createServer((req, res) => {
+    const reqUrl = req.url || "";
+
+    // 2. Adım: Tarayıcıdaki JavaScript hash belirtecini buraya GET ile iletir
+    if (reqUrl.startsWith("/__oauth_token?")) {
+      const hash = reqUrl.slice("/__oauth_token?".length);
+      const token = oauthTokenFrom(String(hash).startsWith("#") ? hash : "#" + hash);
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      });
+      res.end(JSON.stringify({ ok: true }));
+
+      if (token) {
+        deliverOAuth(token);
+        if (win && !win.isDestroyed()) {
+          win.show();
+          win.focus();
+          if (typeof win.flashFrame === "function") win.flashFrame(true);
+        }
+      }
+      setTimeout(() => {
+        if (loopbackServer) {
+          try { loopbackServer.close(); } catch {}
+          loopbackServer = null;
+        }
+      }, 1000);
+      return;
     }
-    // Belirteç henüz adreste yoksa sayfa yüklensin ama görünmesin. Önyükleme
-    // sayfa betiğinden önce hash'i okur; site ekranı açılmaz.
-    if (isOAuthCallback(targetUrl, callback) && !popup.isDestroyed()) popup.hide();
-    return false;
-  }
-  function onPopupHash(event, hash) {
-    if (popup.isDestroyed() || event.sender !== popup.webContents) return;
-    const token = oauthTokenFrom(String(hash || "").startsWith("#") ? hash : "#" + hash);
-    if (token) finish(token);
-  }
-  ipcMain.on("oauth:popup-hash", onPopupHash);
-  popup.on("closed", () => ipcMain.removeListener("oauth:popup-hash", onPopupHash));
-  function showUnlessCallback(url) {
-    if (finished || popup.isDestroyed()) return;
-    if (isOAuthCallback(url, callback) || oauthTokenFrom(url)) { popup.hide(); return; }
-    if (!popup.isVisible()) popup.show();
-  }
-  popup.webContents.on("will-redirect", (event, url) => { consider(url, event); });
-  popup.webContents.on("will-navigate", (event, url) => {
-    if (consider(url, event)) return;
-    showUnlessCallback(url);
+
+    // 1. Adım: Google & Supabase girişi tamamlandığında tarayıcı buraya yönlenir
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    res.end(`<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEXUS — Giriş Başarılı</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 24px;
+      padding: 40px 32px;
+      text-align: center;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(76, 125, 255, 0.15);
+      color: #4C7DFF;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.01em; }
+    p { color: #94a3b8; font-size: 15px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h1>Giriş Başarılı!</h1>
+    <p>NEXUS masaüstü uygulamasına aktarılıyor. Bu sekmeyi kapatabilirsin.</p>
+  </div>
+  <script>
+    (function() {
+      var hash = location.hash || "";
+      if (hash) {
+        fetch("/__oauth_token?" + hash.replace(/^#/, "")).then(function() {
+          setTimeout(function() { window.close(); }, 1200);
+        }).catch(function() {});
+      }
+    })();
+  </script>
+</body>
+</html>`);
   });
-  popup.webContents.on("did-start-navigation", (_event, url, _inPlace, isMainFrame) => {
-    if (isMainFrame) showUnlessCallback(url);
+
+  loopbackServer.listen(0, "127.0.0.1", () => {
+    const port = loopbackServer.address().port;
+    const redirectUrl = `http://127.0.0.1:${port}/oauth-callback`;
+
+    let targetUrl = authUrl;
+    try {
+      const u = new URL(authUrl);
+      u.searchParams.set("redirect_to", redirectUrl);
+      targetUrl = u.toString();
+    } catch {
+      targetUrl = authUrl + (authUrl.includes("?") ? "&" : "?") + "redirect_to=" + encodeURIComponent(redirectUrl);
+    }
+
+    // Kullanıcının mevcut Google hesaplarının bulunduğu varsayılan tarayıcıda açılır
+    shell.openExternal(targetUrl);
   });
-  popup.webContents.on("did-navigate", (_event, url) => { consider(url); showUnlessCallback(url); });
-  popup.webContents.on("did-navigate-in-page", (_event, url) => { consider(url); });
-  popup.webContents.on("did-finish-load", () => {
-    if (finished || popup.isDestroyed()) return;
-    popup.webContents.executeJavaScript("location.href").then((href) => {
-      if (finished || popup.isDestroyed()) return;
-      if (!consider(href)) showUnlessCallback(href);
-    }).catch(() => { if (!finished && !popup.isDestroyed()) showUnlessCallback(""); });
-  });
-  popup.webContents.setWindowOpenHandler(({ url }) => {
-    if (consider(url)) return { action: "deny" };
-    popup.loadURL(url);
-    return { action: "deny" };
-  });
-  popup.on("closed", () => { if (authWin === popup) authWin = null; });
-  popup.loadURL(authUrl);
+
+  setTimeout(() => {
+    if (loopbackServer) {
+      try { loopbackServer.close(); } catch {}
+      loopbackServer = null;
+    }
+  }, 180000);
 }
 
 ipcMain.handle("auth:google", async (_e, customUrl) => {
@@ -518,7 +624,15 @@ function createWindow() {
   // tepsiye gizle (akıllı ev asistanı çalışmaya devam eder); değilse normal çık.
   win.on("close", (event) => {
     saveBounds();
-    if (app.isQuitting || !backgroundRun || !tray) return;
+    if (app.isQuitting) return;
+    if (!backgroundRun || !tray) {
+      app.isQuitting = true;
+      if (automationWorker && !automationWorker.isDestroyed()) {
+        try { automationWorker.destroy(); } catch {}
+      }
+      app.quit();
+      return;
+    }
     event.preventDefault();
     hideToTray();
   });
@@ -541,25 +655,14 @@ function createWindow() {
     leaveApp(url);
   });
 
+  win.on("closed", () => {
+    win = null;
+  });
+
   win.loadURL(START_URL);
 }
 
 // Menü ve iletişim kutuları uygulamanın diliyle (Türkçe / English) gösterilir.
-// Uygulama dili renderer'dan bildirilir (app:language); bildirilene kadar sistem dili kullanılır.
-// Türk dünyası (TR, KKTC, AZ, KZ, UZ, KG, TM) → Türkçe, diğerleri → İngilizce. Uygulama açılınca
-// kullanıcının kendi seçimi (theme.js) setLanguage ile buraya gelir ve menüler ona uyar.
-function detectLang() {
-  const tags = [app.getLocale ? app.getLocale() : "", app.getSystemLocale ? app.getSystemLocale() : ""].concat(app.getPreferredSystemLanguages ? app.getPreferredSystemLanguages() : []);
-  if (/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)\b/i.test(tags[0] || "")) return "tr";
-  if (tags.some((t) => /[-_](TR|AZ|KZ|UZ|KG|TM)\b/i.test(t || ""))) return "tr";
-  let tz = "";
-  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { /* bilinmiyor */ }
-  if (/^(Europe\/Istanbul|Asia\/Istanbul|Asia\/Famagusta|Asia\/Baku|Asia\/(Almaty|Qyzylorda|Aqtobe|Aqtau|Atyrau|Oral|Qostanay)|Asia\/(Tashkent|Samarkand)|Asia\/Bishkek|Asia\/(Ashgabat|Ashkhabad)|Turkey)$/.test(tz)) return "tr";
-  return tags.some((t) => /^tr\b/i.test(t || "")) ? "tr" : "en";
-}
-let uiLang = "en";
-const L = (tr, en) => (uiLang === "en" ? en : tr);
-
 function buildMenu() {
   const isMac = process.platform === "darwin";
   if (!isMac) {
@@ -765,7 +868,14 @@ ipcMain.on("event:notify", (_e, ev) => {
     if (notifyStamps.length >= 4) return; // sel olmasın: 10 sn'de en fazla 4
     notifyStamps.push(now);
     const targetPage = (ev && typeof ev.page === "string" && ev.page) ? ev.page : "stitch-messages.html";
-    const n = new Notification({ title: clip(ev.title, 80) || "NEXUS", body: clip(ev.detail, 200), silent: false });
+    const pngPath = path.join(__dirname, "resources", "icon.png");
+    const notifIcon = fs.existsSync(pngPath) ? pngPath : resolveTrayIcon();
+    const n = new Notification({
+      title: clip(ev.title, 80) || "NEXUS",
+      body: clip(ev.detail, 200),
+      icon: notifIcon || undefined,
+      silent: false,
+    });
     n.on("click", () => showPage(targetPage));
     n.show();
   } catch { /* bildirim gösterilemezse sorun değil */ }
@@ -775,18 +885,36 @@ ipcMain.on("tray:status", (_e, st) => {
   if (!tray || !st || typeof st !== "object") return;
   const num = (v) => Math.max(0, Math.min(9999, Math.floor(Number(v) || 0)));
   const d = num(st.devices), on = num(st.on), un = num(st.unread);
+  lastTrayStatus = { devices: d, on, unread: un };
   const text = L(
     `NEXUS — ${d} cihaz · ${on} açık` + (un ? ` · ${un} okunmamış bildirim` : ""),
     `NEXUS — ${d} device${d === 1 ? "" : "s"} · ${on} on` + (un ? ` · ${un} unread` : "")
   );
-  try { tray.setToolTip(text); } catch { /* tepsi kapanmış olabilir */ }
+  try {
+    tray.setToolTip(text);
+    updateTrayMenu();
+  } catch { /* tepsi kapanmış olabilir */ }
 });
 
 // ---------- Windows görev çubuğu hızlı görevleri (JumpList) ----------
 function setupJumpList() {
-  if (process.platform !== "win32" || !app.isPackaged) return;
+  if (process.platform !== "win32") return;
+  const resolveTaskIcon = (key) => {
+    if (app.isPackaged) {
+      const unpacked = path.join(process.resourcesPath, "app.asar.unpacked", "resources", "icons", `${key}.ico`);
+      if (fs.existsSync(unpacked)) return unpacked;
+    }
+    const devPath = path.join(__dirname, "resources", "icons", `${key}.ico`);
+    if (fs.existsSync(devPath)) return devPath;
+    return process.execPath;
+  };
   const task = (key, title, description) => ({
-    program: process.execPath, arguments: `--go=${key}`, iconPath: process.execPath, iconIndex: 0, title, description,
+    program: process.execPath,
+    arguments: `--go=${key}`,
+    iconPath: resolveTaskIcon(key),
+    iconIndex: 0,
+    title,
+    description,
   });
   try {
     app.setUserTasks([

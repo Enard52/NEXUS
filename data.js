@@ -5,7 +5,7 @@ const API_BASE = window.location.hostname === 'localhost' || window.location.hos
 const SMART_HOME_STORAGE_KEY = 'nexusSelectedSmartHomeCards';
 const TAP_TO_RUN_STORAGE_KEY = 'nexusSelectedTapToRunCards';
 const HIDDEN_DEVICE_STORAGE_KEY = 'nexusHiddenCards';
-const CORE_SMART_HOME_IDS = ['weather', 'energy', 'dnd'];
+const CORE_SMART_HOME_IDS = ['weather', 'energy', 'dnd', 'ai-protect'];
 
 const CARD_HREFS = {
     weather: 'stitch-map.html',
@@ -57,7 +57,7 @@ const SMART_SCENE_HREFS = {
 const NEXUS_CARD_CATALOG = {
     smartHome: [
         { id: 'weather', title: 'Hava Durumu Hizmeti', icon: 'sun', defaultSelected: true },
-        { id: 'ai-protect', title: 'AI Koruma', icon: 'shield' },
+        { id: 'ai-protect', title: 'AI Koruma', icon: 'shield', defaultSelected: true },
         { id: 'energy', title: 'AI Enerji Tasarrufu', icon: 'bolt', defaultSelected: true },
         { id: 'dnd', title: 'Rahatsız Etme', icon: 'bell-off', defaultSelected: true },
         { id: 'home-schedule', title: 'Ev Planı', icon: 'calendar' },
@@ -1147,7 +1147,7 @@ function emptyCardState(title, detail, iconHtml, colorClass = 'text-slate-500') 
     }
 
     return `
-        <a class="bg-white rounded-[1.2rem] p-3.5 card-shadow flex flex-col h-[130px] active:scale-[0.98] transition-transform overflow-hidden relative border border-slate-100" href="${href}" id="${id}">
+        <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform overflow-hidden relative border border-slate-100" href="${href}" id="${id}">
             ${content}
         </a>
     `;
@@ -1171,11 +1171,11 @@ function renderExtraSmartHomeCards() {
     const extras = window.getSelectedSmartHomeCards().filter(card => !CORE_SMART_HOME_IDS.includes(card.id));
     if (extras.length === 0) {
         grid.innerHTML = '';
-        grid.classList.add('hidden');
+        grid.style.display = 'none';
         return;
     }
 
-    grid.classList.remove('hidden');
+    grid.style.display = 'contents';
     grid.innerHTML = extras.map(card => buildCustomHomeCard(card)).join('');
 }
 
@@ -1231,7 +1231,7 @@ function renderDevices() {
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"></path></svg>
             </div>
             <p class="nx-empty__title">Henüz cihaz yok</p>
-            <p class="nx-empty__text">Bu eve eklediğin cihazlar burada listelenir ve favori kartlarına bağlanır.</p>
+            <p class="nx-empty__text">Bu eve eklediğin cihazlar burada listelenir.</p>
             <a href="stitch-pair.html" class="nx-empty__cta">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"></path></svg>
                 Cihaz ekle

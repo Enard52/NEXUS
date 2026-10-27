@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];
-const APP_PLUS = "https://nexus-web-jre.pages.dev/stitch-plus.html";
+const APP_PLUS = "https://nexus-smarthome.pages.dev/#downloads";
 const check = '<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>';
 const list = (items) =>
   '<ul class="feature-list">\n' +

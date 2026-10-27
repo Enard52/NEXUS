@@ -446,3 +446,91 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
   height: max(100%, 24px);
   transform: translateY(-50%);
 }
+
+/* Ana Ekran: Ek akıllı ev kartları varsa favoriler ızgarasında kesintisiz akar */
+#extra-smart-home-grid {
+  display: contents;
+}
+
+/* ---------- Sohbet: yerel ağ komutu cihaza ulaşmadı ----------
+   Asistan komutu gönderdiğinde "komut gitti" der; cihaz yanıt vermezse
+   balonun altına bu satır eklenir (stitch-chat.html → watchLanResult).
+   Rose tonları derlenmiş tailwind.css'te olmadığı için burada tanımlı. */
+.nx-lan-note {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(225, 29, 72, 0.25);
+  font-size: 12.5px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #e11d48;
+}
+html.dark .nx-lan-note {
+  border-top-color: rgba(253, 164, 175, 0.28);
+  color: #fda4af;
+}
+
+/* ---------- Geri bildirim: ses & hareket (nexus-feedback.js) ----------
+   Ayarlar → "Ses ve Hareket"ten yönetilen efektlerin sınıfları. JS sınıfı
+   eklediğinde görünür; anahtar kapalıysa hiç eklenmez, burada iş yok. */
+
+/* "Komut gitti" nabzı: cihaz kartına tek seferlik marka halkası */
+@keyframes nxFxPulse {
+  from { box-shadow: 0 0 0 0 rgba(76, 125, 255, 0.38); }
+  to { box-shadow: 0 0 0 16px rgba(76, 125, 255, 0); }
+}
+.nx-fx-pulse { animation: nxFxPulse .55s ease-out 1; }
+
+/* Uyarı şeridi (toast): alttan-yukarı yumuşak giriş, ömür sonunda solma */
+@keyframes nxToastIn {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes nxToastOut {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to { opacity: 0; transform: translate(-50%, -8px); }
+}
+.nx-toast {
+  animation: nxToastIn .22s ease-out both,
+             nxToastOut .2s ease-in var(--nx-toast-life, 2200ms) forwards;
+}
+
+/* Sohbet mikrofonu kayıt modunda: marka kırmızısı + yayılan halka + nefes */
+#chat-mic { position: relative; }
+#chat-mic.nx-rec { color: #FF3B5C !important; }
+#chat-mic.nx-rec::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 59, 92, 0.55);
+  animation: nxMicRing 1.3s ease-out infinite;
+  pointer-events: none;
+}
+#chat-mic.nx-rec svg { animation: nxMicBreathe 1.3s ease-in-out infinite; }
+@keyframes nxMicRing {
+  from { transform: scale(0.55); opacity: 1; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+@keyframes nxMicBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+/* ---------- Hareketi azalt: kullanıcı isterse (Ayarlar) ya da işletim sistemi
+   "prefers-reduced-motion" derse tüm dekoratif hareket kapanır; düzen ölçüleri
+   değişmez, geçişler anında tamamlanır. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html.nx-no-anim *, html.nx-no-anim *::before, html.nx-no-anim *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

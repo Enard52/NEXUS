@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -110,10 +111,30 @@
   </section>
 
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
+    <div class="px-5 py-4 border-b border-gray-100" id="sound-motion-settings">
+      <h2 class="text-base font-bold text-slate-900">Ses ve Hareket</h2>
+      <p class="text-sm text-slate-500 mt-1">Uygulama sesleri, titreşim ve hareketli efektler.</p>
+    </div>
     <div class="flex items-center justify-between px-5 py-5">
-      <span class="text-xl text-gray-800 font-medium">Ses</span>
+      <span class="text-xl text-gray-800 font-medium">Ses Efektleri</span>
       <label class="switch">
         <input checked type="checkbox" id="toggle-sound"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <hr class="mx-5 border-gray-100"/>
+    <div class="flex items-center justify-between px-5 py-5">
+      <span class="text-xl text-gray-800 font-medium">Titreşim</span>
+      <label class="switch">
+        <input checked type="checkbox" id="toggle-haptics"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <hr class="mx-5 border-gray-100"/>
+    <div class="flex items-center justify-between px-5 py-5">
+      <span class="text-xl text-gray-800 font-medium">Animasyonlar</span>
+      <label class="switch">
+        <input checked type="checkbox" id="toggle-animations"/>
         <span class="slider"></span>
       </label>
     </div>
@@ -263,7 +284,7 @@
 </main>
 
 <script>
-  window.NEXUS_APP_VERSION = "1.0.19";
+  window.NEXUS_APP_VERSION = "1.0.21";
   (function () {
     var el = document.getElementById('nx-app-version');
     if (el && window.NEXUS_APP_VERSION) el.textContent = 'NEXUS v' + window.NEXUS_APP_VERSION;
@@ -272,17 +293,33 @@
 <script>
   (function () {
     var sound = document.getElementById('toggle-sound');
+    var haptics = document.getElementById('toggle-haptics');
+    var animations = document.getElementById('toggle-animations');
     var acc = document.getElementById('toggle-accessibility');
     var aiSuggestions = document.getElementById('toggle-ai-recommendations');
     var aiHistory = document.getElementById('toggle-ai-history');
 
     sound.checked = nexusGetItem('nexusSoundEnabled') !== 'false';
+    haptics.checked = nexusGetItem('nexusHapticsEnabled') !== 'false';
+    animations.checked = nexusGetItem('nexusAnimationsEnabled') !== 'false';
     acc.checked = nexusGetItem('nexusAccessibilityMode') === 'true';
     aiSuggestions.checked = nexusGetItem('nexusAiSuggestions') !== 'false';
     aiHistory.checked = nexusGetItem('nexusAiHistory') !== 'false';
 
     sound.addEventListener('change', function () {
       nexusSetItem('nexusSoundEnabled', sound.checked ? 'true' : 'false');
+      // Açılışta kısa onay tonu: kullanıcı sesin gerçekten geldiğini duyar.
+      if (sound.checked && window.nexusFeedback) window.nexusFeedback.play('toggle-on');
+    });
+    haptics.addEventListener('change', function () {
+      nexusSetItem('nexusHapticsEnabled', haptics.checked ? 'true' : 'false');
+      // Açılışta kısa onay titreşimi (theme.js triggerHaptic anahtarı kendisi okur).
+      if (haptics.checked && typeof window.nexusHaptic === 'function') window.nexusHaptic('light');
+    });
+    animations.addEventListener('change', function () {
+      nexusSetItem('nexusAnimationsEnabled', animations.checked ? 'true' : 'false');
+      // theme.js applyMotion html.nx-no-anim'i anında açar/kapatır (aynı sekmede olayla).
+      window.dispatchEvent(new Event('nexusMotionChanged'));
     });
     acc.addEventListener('change', function () {
       nexusSetItem('nexusAccessibilityMode', acc.checked ? 'true' : 'false');

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -38,12 +38,24 @@ function load(options: {
   handler?: (call: Call) => unknown;
   /** Sahte WebSocket üreteci (Realtime testleri için). */
   WebSocket?: unknown;
+  /** Capacitor ortamı: mobil uygulama gibi davranır. */
+  native?: boolean;
+  /** Capacitor eklentileri (Browser, App...). */
+  plugins?: Record<string, unknown>;
 }) {
   const calls: Call[] = [];
   const storage = makeStorage();
   if (options.user) storage.setItem("nexusCurrentUser", options.user);
   const win: Record<string, unknown> = { localStorage: storage };
   if (options.WebSocket) win.WebSocket = options.WebSocket;
+  if (options.native) {
+    win.Capacitor = {
+      isNativePlatform: () => true,
+      Plugins: options.plugins || {},
+    };
+  } else if (options.plugins) {
+    win.Capacitor = { Plugins: options.plugins };
+  }
   // auth.js ile aynı davranış: anahtarlar aktif kullanıcının önekiyle saklanır.
   const owner = () => storage.getItem("nexusCurrentUser") || "guest";
   win.nexusGetItem = (key: string) =>
@@ -175,6 +187,57 @@ describe("Supabase kimlik doğrulama akışı", () => {
     expect(JSON.parse(storage.getItem("a@b.co_nexusCloudSession") || "{}").accessToken).toBe(
       "tok-1",
     );
+  });
+
+  it("doğrulanmış TOTP, parola oturumunu ikinci adıma bırakır ve kod aal2 belirteciyle değişir", async () => {
+    const aal2 = `hdr.${Buffer.from(JSON.stringify({ aal: "aal2" })).toString("base64url")}.sig`;
+    const { cloud, calls, storage } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: (call) => {
+        if (call.url.includes("grant_type=password")) {
+          return {
+            access_token: "tok-1",
+            refresh_token: "ref-1",
+            expires_in: 3600,
+            user: { id: "u1", email: "a@b.co" },
+          };
+        }
+        if (call.method === "GET" && call.url.endsWith("/auth/v1/factors")) {
+          return { body: [{ id: "fac-1", factor_type: "totp", status: "verified" }] };
+        }
+        if (call.method === "POST" && call.url.endsWith("/auth/v1/factors")) {
+          return { body: { id: "fac-new", totp: { qr_code: "<svg></svg>", secret: "SECRET" } } };
+        }
+        if (call.url.endsWith("/challenge")) return { body: { id: "ch-1" } };
+        if (call.url.endsWith("/verify")) {
+          return {
+            body: {
+              access_token: aal2,
+              refresh_token: "ref-2",
+              expires_in: 3600,
+              user: { id: "u1", email: "a@b.co" },
+            },
+          };
+        }
+        return { body: [] };
+      },
+    });
+    await cloud.signIn("a@b.co", "parola");
+    await expect(cloud.needsSecondFactor()).resolves.toBe(true);
+    expect(storage.getItem("nexusMfaPending")).toBe("1");
+    expect(storage.getItem("nexusMfaEnrolled")).toBe("1");
+    const enrolled = await cloud.enrollTotp();
+    expect(enrolled.id).toBe("fac-new");
+    const enrollCall = calls.find((call) => call.method === "POST" && call.url.endsWith("/auth/v1/factors"));
+    expect(JSON.parse(String(enrollCall?.body))).toMatchObject({ factor_type: "totp", issuer: "NEXUS" });
+    const session = await cloud.verifyTotp("123456", "fac-new");
+    expect(session.accessToken).toBe(aal2);
+    expect(storage.getItem("nexusSessionAal")).toBe("aal2");
+    expect(storage.getItem("nexusMfaPending")).toBeNull();
+    const verifyCall = calls.find((call) => call.url.endsWith("/verify"));
+    expect(JSON.parse(String(verifyCall?.body))).toEqual({ challenge_id: "ch-1", code: "123456" });
+    await expect(cloud.needsSecondFactor()).resolves.toBe(false);
   });
 
   it("süresi dolmuş oturum refresh_token ile yenilenir", async () => {
@@ -488,7 +551,7 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(storage.getItem("guest_nexusCloudSession")).toBe(null);
   });
 
-  it("kayıt: e-posta doğrulaması açıksa oturum açılmaz, doğrulama web adresine döner", async () => {
+  it("kayıt: e-posta doğrulaması açıksa oturum açılmaz, doğrulama site köküne döner", async () => {
     const { cloud, calls } = load({
       config: CONFIG,
       handler: () => ({ id: "u2", email: "yeni@b.co" }),
@@ -497,7 +560,10 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(result.needsConfirmation).toBe(true);
     expect(result.session).toBe(null);
     expect(calls[0].url).toContain("/auth/v1/signup?redirect_to=");
-    expect(decodeURIComponent(calls[0].url)).toContain("/stitch-login.html");
+    const target = decodeURIComponent(calls[0].url);
+    expect(target).toContain("https://nexus-smarthome.pages.dev/");
+    // Site kökü hash'i işler; ayrı bir HTML sayfasına dönülmez (canlıda 404'tü).
+    expect(target).not.toContain("stitch-");
     expect(JSON.parse(String(calls[0].body)).data).toEqual({ name: "Ayşe", lang: "tr" });
   });
 
@@ -511,11 +577,14 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(JSON.parse(String(calls[0].body)).data.lang).toBe("en");
   });
 
-  it("şifre sıfırlama gerçekten Supabase'e istek gönderir ve web adresine döner", async () => {
+  it("şifre sıfırlama gerçekten Supabase'e istek gönderir ve site köküne döner", async () => {
     const { cloud, calls } = load({ config: CONFIG, handler: () => ({}) });
     await cloud.recover("a@b.co");
     expect(calls[0].url).toContain("/auth/v1/recover?redirect_to=");
-    expect(decodeURIComponent(calls[0].url)).toContain("/stitch-forgot-password.html");
+    const target = decodeURIComponent(calls[0].url);
+    expect(target).toContain("https://nexus-smarthome.pages.dev/");
+    // Eski /stitch-forgot-password.html canlıda 404'tü; kök #type=recovery'yi işler.
+    expect(target).not.toContain("stitch-");
     expect(JSON.parse(String(calls[0].body))).toEqual({ email: "a@b.co" });
   });
 
@@ -541,9 +610,71 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(sent[1].headers.Authorization).toMatch(/^Bearer tok-/);
   });
 
-  it("Google girişi yalnızca web adresinde sunulur (test ortamında kapalı)", () => {
+  it("Google girişi masaüstü/web dışında eklenti yoksa sunulmaz", () => {
     const { cloud } = load({ config: CONFIG });
     expect(cloud.googleAvailable()).toBe(false);
+  });
+
+  it("mobil uygulamada Google, sistem tarayıcısında açılır ve site aktarımına döner", () => {
+    const open = vi.fn().mockResolvedValue(undefined);
+    const { cloud } = load({
+      config: CONFIG,
+      native: true,
+      plugins: {
+        Browser: { open },
+        App: { addListener: vi.fn(), getLaunchUrl: vi.fn().mockResolvedValue(null) },
+      },
+    });
+    expect(cloud.googleAvailable()).toBe(true);
+    cloud.signInWithGoogle();
+    expect(open).toHaveBeenCalledTimes(1);
+    const auth = new URL(String(open.mock.calls[0][0].url));
+    expect(auth.hostname).toBe("example.supabase.co");
+    expect(auth.pathname).toBe("/auth/v1/authorize");
+    expect(auth.searchParams.get("provider")).toBe("google");
+    // Supabase yalnız site alan adına dönüşe izin verir; doğrudan özel şema kullanılmaz.
+    expect(auth.searchParams.get("redirect_to")).toBe(
+      "https://nexus-smarthome.pages.dev/app-auth.html",
+    );
+  });
+
+  it("mobil uygulamada Browser eklentisi yoksa düğme gösterilmez", () => {
+    const { cloud } = load({
+      config: CONFIG,
+      native: true,
+      plugins: {
+        App: { addListener: vi.fn(), getLaunchUrl: vi.fn().mockResolvedValue(null) },
+      },
+    });
+    expect(cloud.googleAvailable()).toBe(false);
+  });
+
+  it("nexus://auth dönüşü belirteçleri giriş ekranına aktarır", () => {
+    const listeners: Record<string, (event: { url: string }) => void> = {};
+    const replace = vi.fn();
+    (globalThis as Record<string, unknown>).location = { replace, pathname: "/index.html" };
+    try {
+      load({
+        config: CONFIG,
+        native: true,
+        plugins: {
+          Browser: { open: vi.fn() },
+          App: {
+            addListener: (name: string, fn: (event: { url: string }) => void) => {
+              listeners[name] = fn;
+              return Promise.resolve();
+            },
+            getLaunchUrl: vi.fn().mockResolvedValue(null),
+          },
+        },
+      });
+      listeners.appUrlOpen({ url: "nexus://auth#access_token=tok&refresh_token=ref" });
+      expect(replace).toHaveBeenCalledWith(
+        "stitch-login.html?oauth=1#access_token=tok&refresh_token=ref",
+      );
+    } finally {
+      delete (globalThis as Record<string, unknown>).location;
+    }
   });
 });
 

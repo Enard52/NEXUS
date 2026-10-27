@@ -36,11 +36,8 @@ const FILENAMES = {
 function renderHtml(docKey, lang) {
   const doc = docs[docKey][lang];
   const t = TITLES[docKey][lang];
-  const updated = new Date(UPDATED).toLocaleDateString(lang === "tr" ? "tr-TR" : "en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  // UPDATED zaten yerelleştirilmiş "Son güncelleme: 27 Ekim 2026" biçiminde; yalnızca tarihi al.
+  const updated = String(UPDATED[lang] || "").replace(/^[^:]+:\s*/, "");
   const sec = (s) => `
     <section>
       <h2>${esc(s.h)}</h2>

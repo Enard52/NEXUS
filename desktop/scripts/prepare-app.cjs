@@ -28,7 +28,7 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const dir of ["css", "fonts", "js", "leaflet", "icons"]) copy(path.join(WWW, dir), path.join(OUT, dir));
 
 // 2) Güncel uygulama dosyaları (kök her zaman en güncel kaynaktır)
-const APP_JS = new Set(["ai-fab.js", "auth.js", "automation-engine.js", "cloud-sync.js", "data.js", "desktop.js", "device-controls.js", "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js",
+const APP_JS = new Set(["ai-fab.js", "auth.js", "automation-engine.js", "cloud-sync.js", "data.js", "desktop.js", "device-controls.js", "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js", "nexus-feedback.js",
   "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js", "command-palette.js", "event-bridge.js", "nexus-dialog.js", "notify.js"]);
 for (const f of fs.readdirSync(ROOT)) {
   const isPage = /^stitch-.*\.html$/.test(f) || f === "index.html";

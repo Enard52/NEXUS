@@ -1,22 +1,22 @@
-﻿// Site account entry points: the web app is the account portal. Idempotent. Usage: node site-account.cjs <siteDir>
+﻿// Site account entry points: links to the NEXUS account site. Idempotent. Usage: node site-account.cjs <siteDir>
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];
-const APP = "https://nexus-web-jre.pages.dev/";
+const APP = "https://nexus-smarthome.pages.dev/";
 const L = {
   en: {
     account: "Account",
     signin: "Sign in",
     t: "Sign in to NEXUS",
-    d: "Redirecting you to the NEXUS web app…",
-    b: "Open the NEXUS web app",
+    d: "Redirecting you to your NEXUS account…",
+    b: "Open your NEXUS account",
   },
   tr: {
     account: "Hesabım",
     signin: "Giriş yap",
     t: "NEXUS'a giriş yap",
-    d: "NEXUS web uygulamasına yönlendiriliyorsun…",
-    b: "NEXUS web uygulamasını aç",
+    d: "NEXUS hesabına yönlendiriliyorsun…",
+    b: "NEXUS hesabını aç",
   },
 };
 let n = 0;

@@ -86,6 +86,8 @@
       detail: detailText || (sceneTitle + ' çalıştırıldı.'),
       ts: Date.now()
     });
+    // Liste sınırsız büyüyerek her 2 sn'lik okumayı ve bulut senkronunu yoruyordu; son 300 olay yeter.
+    if (events.length > 300) events = events.slice(-300);
     nexusSetItem('nexusEvents', JSON.stringify(events));
   }
 
@@ -95,6 +97,8 @@
     toast.style.maxWidth = 'min(92vw, 420px)';
     toast.setAttribute('role', 'status');
     toast.textContent = message;
+    // Giriş/solma animasyonu + süre (nexus-feedback.js; yoksa eski düz görünüm)
+    if (window.nexusFeedback) window.nexusFeedback.toastIn(toast, ms || 1600);
     document.body.appendChild(toast);
     setTimeout(function () {
       toast.remove();
@@ -156,6 +160,8 @@
         logSceneEvent(message);
         saveState();
         showToast(message, 2600);
+        // Sahne tamamlandı: tek yumuşak arpej (cihaz başına ses çıkmaz)
+        if (window.nexusFeedback) window.nexusFeedback.play('scene');
         running = false;
         if (button) button.disabled = false;
         if (navigateAfter) setTimeout(function () { window.location.href = completeHref; }, 1600);
@@ -234,6 +240,8 @@
       detail: (label || 'Aksiyon') + ' uygulandı.',
       ts: Date.now()
     });
+    // Son 300 olay (bkz. logSceneEvent)
+    if (events.length > 300) events = events.slice(-300);
     nexusSetItem('nexusEvents', JSON.stringify(events));
   }
 

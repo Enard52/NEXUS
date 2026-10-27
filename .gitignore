@@ -76,3 +76,4 @@ scripts/archive/www-arsiv/
 .replit
 console.log(*
 _web-publish/
+supabase/mail-token.txt

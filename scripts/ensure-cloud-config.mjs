@@ -4,8 +4,8 @@
  * ------------------------------------------------------------------
  * cloud-config.js gitignore'dadır (Supabase anahtarları repoya girmez). Bu yüzden CI
  * derlemelerinde dosya YOKTU ve uygulama sessizce "tamamen yerel" moda düşüyordu:
- * telefonda ve Actions'tan yayınlanan web uygulamasında gerçek hesap / cihaz senkronu
- * çalışmıyordu. Masaüstü derlemesi bunu kendi adimında üretiyordu; tek yere topladık.
+ * masaüstü ve mobil paketlerde gerçek hesap / cihaz senkronu çalışmıyordu.
+ * Masaüstü derlemesi bunu kendi adimında üretiyordu; tek yere topladık.
  *
  * Değerler yalnızca ortamdan gelir (workflow: vars.NEXUS_SUPABASE_URL / _ANON_KEY).
  * Betik hiçbir zaman anahtarı yazdırmaz — yalnızca hangisinin kullanıldığını bildirir.

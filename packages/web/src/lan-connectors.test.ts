@@ -186,6 +186,13 @@ describe("komut gövdesi", () => {
     ).rejects.toBeTruthy();
   });
 
+  it("Shelly 4xx/5xx yanıtı başarı sayılmaz", async () => {
+    const lan = load(() => Promise.resolve({ status: 500, text: () => Promise.resolve("err") }));
+    await expect(
+      lan.write({ protocol: "shelly", host: "http://192.168.1.24", kind: "plug" }, "switch", true),
+    ).rejects.toThrow("http 500");
+  });
+
   it("Wake-on-LAN sihirli paketini 102 baytlık geçerli hex olarak üretir", () => {
     const lan = load(() => Promise.resolve({ status: 404, text: () => Promise.resolve("") }));
     const mac = "AA:BB:CC:DD:EE:FF";
