@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
@@ -151,6 +151,14 @@
       <span class="text-xl text-gray-800 font-medium">Anlık Bildirimler</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </a>
+    <hr class="mx-5 border-gray-100" id="keepalive-rule"/>
+    <div class="flex items-center justify-between px-5 py-5" id="keepalive-row">
+      <span class="text-xl text-gray-800 font-medium">Arka Plan Otomasyonu</span>
+      <label class="switch">
+        <input type="checkbox" id="toggle-keepalive"/>
+        <span class="slider"></span>
+      </label>
+    </div>
   </section>
 
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
@@ -284,7 +292,7 @@
 </main>
 
 <script>
-  window.NEXUS_APP_VERSION = "1.0.21";
+  window.NEXUS_APP_VERSION = "1.0.22";
   (function () {
     var el = document.getElementById('nx-app-version');
     if (el && window.NEXUS_APP_VERSION) el.textContent = 'NEXUS v' + window.NEXUS_APP_VERSION;
@@ -330,6 +338,25 @@
     aiHistory.addEventListener('change', function () {
       nexusSetItem('nexusAiHistory', aiHistory.checked ? 'true' : 'false');
     });
+
+    // Arka Plan Otomasyonu: yalnızca Android yerel uygulamada görünür; anahtar
+    // NexusKeepAlivePlugin üzerinden ön plan servisini başlatır/durdurur.
+    var keepalive = document.getElementById('toggle-keepalive');
+    var keepaliveRow = document.getElementById('keepalive-row');
+    var keepaliveRule = document.getElementById('keepalive-rule');
+    var isAndroidNative = false;
+    try { isAndroidNative = !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android'); } catch (e) {}
+    if (!isAndroidNative || !keepalive) {
+      if (keepaliveRow) keepaliveRow.style.display = 'none';
+      if (keepaliveRule) keepaliveRule.style.display = 'none';
+    } else {
+      keepalive.checked = nexusGetItem('nexusKeepAlive') === 'true';
+      keepalive.addEventListener('change', function () {
+        nexusSetItem('nexusKeepAlive', keepalive.checked ? 'true' : 'false');
+        window.dispatchEvent(new Event('nexusKeepAliveChanged'));
+        if (keepalive.checked && window.nexusFeedback) window.nexusFeedback.play('toggle-on');
+      });
+    }
   })();
 
   function refreshDarkLabel() {

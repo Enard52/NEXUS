@@ -3,7 +3,7 @@
 <html lang="tr"><head>
 <meta charset="utf-8"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -14,7 +14,7 @@
 <!-- Google Fonts: Inter (NEXUS body font) -->
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
-<script src="js/lucide.js"></script>
+
 <style data-purpose="typography">
     body {
       font-family: 'Inter', sans-serif;
@@ -116,7 +116,7 @@
 <h3 class="text-lg font-bold">Kullanıcı Adını Düzenle</h3>
 <button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
 </div>
-<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#4C7DFF] mb-2" id="name-input" maxlength="30" placeholder="Adını gir" type="text" value=""/>
+<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#4C7DFF] mb-2" id="name-input" data-enter="saveName" enterkeyhint="done" maxlength="30" placeholder="Adını gir" type="text" value=""/>
 <p class="text-xs text-slate-400 mb-5"><span id="name-count">0</span>/30 karakter</p>
 <div class="flex gap-3">
 <button class="flex-1 bg-white border border-slate-200 rounded-2xl py-4 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">İptal</button>
@@ -164,6 +164,7 @@
 <button class="w-full bg-slate-100 rounded-2xl py-3.5 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">Vazgeç</button>
 </div>
 <!-- END: Avatar Sheet -->
+<script src="js/lucide.js"></script>
 <script data-purpose="user-info-interactions">
     lucide.createIcons();
 

@@ -19,22 +19,40 @@ Yalnızca kendi hesaplarınızdan yapılabilen işler. Kod tarafında yapılabil
 
 ---
 
-## 27 Ekim 2026 turu: Ses / Hareket / düzeltmeler (v1.0.21)
+## 27 Ekim 2026 turu 2: Çoklu AI + kullanılabilirlik paketi (v1.0.22) — SENDEN BEKLENENLER
 
-Kod tarafı bitti, tüm paketlere dağıtıldı (www → desktop/app → android assets), testler 980/980 yeşil.
-Sıra sende — cihazlarda doğrula:
+Kod tarafı bitti, tüm paketlere dağıtıldı (www → desktop/app → android assets), testler 980/980 yeşil,
+UI denetimi 386 ölçümde sıfır yeni kırılma. Sıra sende:
 
-1. **Android APK'yı yeniden derle ve telefona kur** (`npx cap open android` → Build). Ses/titreşim/animasyon anahtarları Ayarlar → "Ses ve Hareket"te. Cihaz aç/kapat kısa ses + kart nabzı, senaryo bitişte tek arpej, bildirimde zil çalmalı. Cihazda denedikten sonra beğenmezsen tek anahtarla susturulur.
-2. **Windows kurulumu yenile** (installer rebuild — `desktop/app` değişti): tepsi bildirimleri artık gerçekten çalışmalı (event-bridge ilk kez yükleniyor).
-3. **Sesli konuşma kontrolü (telefonda):** Sohbet → mikrofona dokun → kırmızı halka animasyonu + "Dinliyorum…" şeridi. Kayıt bitince metin geliyor mu?
-4. **Site güncel değil** — bu turda site tasarımı değişmedi, ama sürüm ilerlediyse istersen `npm run publish:site` ile siteyi de yenile (GitHub kartı açıksa Actions zaten halleder).
+1. **Android APK'yı yeniden derle ve telefona kur** (`npx cap open android` → Build). Bu turda yerel kod değişti (NexusKeepAlivePlugin eklendi, MainActivity güncellendi) — web sync yetmez, native derleme ŞART.
+2. **Telefonda "Arka Plan Otomasyonu"nu dene:** Ayarlar → Ses ve Hareket kartının en altında (yalnız Android'de görünür). Açınca bildirimde "NEXUS Yerel Otomasyon Motoru" şeridi düşmeli, uygulamayı kapatınca otomasyonlar çalışmaya devam etmeli. Kapatınca şerit kalkar. Varsayılan KAPALI (pil tercihi sende).
+3. **Enter ile kaydetme kontrolü:** Giriş'te e-posta/şifre yazıp Enter → doğrudan giriş; Kayıt 4 alan → Enter; Ev/oda ekle, üye daveti, cihaz adlandırma (Ad → Kaydet), Kurulum kodu, Home Assistant jetonu → hepsi Enter ile gönderiyor. Telefon klavyesinde tuşun adı "Git/Tamam"a döner.
+4. **Windows kurulumu:** programı açınca güncelleme merkezi 1.0.22'yi önerecek (ya da Setup.exe'yi yeniden çalıştır).
+5. **AI yedek sağlayıcı anahtarları (10 dakika, ücretsiz):** Worker artık sırayla Cloudflare → Groq → Gemini → OpenRouter deniyor; anahtar girmezsen o sağlayıcı sessizce atlanır. En az bir yedek girmen önerilir:
+   - Groq: console.groq.com → API Keys → anahtarı kopyala
+   - Google Gemini: aistudio.google.com → Get API key
+   - OpenRouter (isteğe bağlı): openrouter.ai → Keys
+   - Girme komutu (bu klasörde): `cd cloudflare-worker\nexus-ai` sonra `npx wrangler secret put GROQ_API_KEY` (ve/veya GEMINI_API_KEY, OPENROUTER_API_KEY) → yapıştır. Model değiştirmek istersen `GROQ_MODEL` / `GEMINI_MODEL` / `OPENROUTER_MODEL` sırrı.
 
-### Sahibin kararı bekleyen öneriler (kod istemiyor, sadece karar)
+### v1.0.22'de ne yapıldı (özet)
 
-- **Çoklu ücretsiz AI sağlayıcısı:** Asistan şu an yalnızca Cloudflare Workers AI'ya bağlı (kota/erişim kesilirse sohbet AI'sı susar). Ücretsiz katmanlı ikinci/üçüncü sağlayıcı (Groq, Google Gemini free tier, OpenRouter ücretsiz modeller) yedek zinciri önerilir; worker tarafında anahtar yönetimiyle kurulur. "Başla" de, araştırıp kurayım.
-- **Enter ile kaydetme paketi (onayını bekliyor):** Taramada görüldü — sohbet dışında HİÇBİR ekran Enter ile göndermiyor: giriş e-posta/şifre/2FA, kayıt 4 alan, şifre sıfırlama, ev/oda/üye adları, cihaz adı yeniden adlandırma, kişisel bilgi adı, ntfy/webhook/telegram alanları. Tek ortak yardımcıyla (theme.js) tümü bağlanır; telefon klavyesinde "git/enter" da çalışır. Onayla, bir turda bitireyim.
-- **İkon/metin düğme denetimi (onayını bekliyor):** Kural önerisi: (1) kart/satır listelerinde ikon yalnız satır başındadır, düğme metindir; (2) başlıkta ikon varsa aynı bölümün eylem düğmesinde ikon TEKRARLANMAZ; (3) yalnız-ikon düğmeler yalnızca evrensel eylemlerdir (kapat ×, geri ‹, ekle +) ve aria-label zorunlu; (4) birincil eylem her zaman metinlidir (Cihaz Ekle, Kaydet). 62 ekranın tek tek dökümünü çıkarıp tutarlı hale getireyim — onayla.
-- **Android arka plan servisi:** Telefonda otomasyonlar yalnız uygulama açıkken çalışıyor (masaüstünde tepsi var). NexusKeepAliveService manifest'te kayıtlı ama hiç başlatılmıyor — başlatma kararı akü tüketimi tartışması ister; istersen etkinleştirme yolu yazılır.
-- **Zoom kilidi (erişilebilirlik):** 52 sayfada pinch-zoom kapalı (`user-scalable=no`). WCAG için tartışmalı; kapatmak tasarımı korur, açmak erişilebilirliği artırır. Karar senin.
-- **CSP `unsafe-inline`:** Tüm sayfalarda satır içi betiklere izin veriliyor; uzun vadede harici dosyaya taşıma önerilir (büyük iş, acele değil).
-- **Performans notları (acele değil):** `js/lucide.js` 596 KB her sayfada senkron yükleniyor (kullanılan ikon küçültülebilir); İngilizce kullanıcıya 153 KB sözlük `document.write` ile ekleniyor; senaryo çalıştırma cihaz×alan başına tüm cihaz listesini okuyup yazıyor (tek yazıma sadeleştirilebilir).
+- **Çoklu ücretsiz AI sağlayıcı zinciri:** nexus-ai worker'ı Cloudflare Workers AI yanıt vermezse Groq → Gemini → OpenRouter'ı sırayla dener; yanıt `via` alanıyla hangi sağlayıcıdan geldiğini taşır. CANLI'ya dağıtıldı (duman testi ✓).
+- **Enter ile kaydetme:** theme.js'e ortak yardımcı; 16 sayfada 30+ girdi `data-enter` ile işaretlendi. Otomatik kaydeden alanlarda (bildirim kanalları) Enter değişikliği kesinleştirir. İşaretsiz girdilerde davranış değişmez (sıfır risk).
+- **İkon/metin düğme denetimi:** 4 kuralın taraması yapıldı — başlıkta+düğmede ikon tekrarı YOK, birincil eylemler hep metinli, yalnız-ikon düğmelerin tamamı evrensel eylem. 11 düğmeye eksik aria-label eklendi (+ "Odayı kaldır" sözlüğü).
+- **Android arka plan servisi:** NexusKeepAlivePlugin (Java) + MainActivity kaydı + Ayarlar anahtarı + theme.js açılış kancası; servis bildirimi iki dilli (TR/EN, açılış diline göre).
+- **Zoom kilidi kaldırıldı:** 52 sayfada `user-scalable=no` → `maximum-scale=3.0` (WCAG %200 yakınlaştırma artık çalışır, 3× üst sınırla düzen korunur). index.html'e eksik viewport meta eklendi.
+- **Performans:** `js/lucide.js` (596 KB) 51 sayfada head'den gövde sonuna taşındı — ilk boyama artık ikon kütüphanesini beklemez (harici çağrılar `window.lucide` korumalı, ikonlar test edildi ✓). Senaryo çalıştırma artık tüm cihaz listesini bir kez yazıyor (cihaz×alan yerine — ölçüldü: 4 yazı → 1 yazı). Sözlük `document.write` bilinçli kaldı (İngilizce'de Türkçe parlama yaşanmasın).
+
+### Hâlâ kararın bekleyenler
+
+- **CSP `unsafe-inline`:** uzun vadeli büyük iş; acele değil. Sayfalardaki satır içi betikler harici dosyalara taşınırsa konulabilir.
+- **lucide ikon küçültme:** sayfa başına yalnız kullanılan ikonlarla özel derleme (build hattı ister).
+- **Depo halka açılmadan önce** (üstteki madde 8): GitHub e-posta gizliliği + nexus-releases commit yazarı.
+
+---
+
+## 27 Ekim 2026 turu 1: Ses / Hareket / düzeltmeler (v1.0.21) — YAYINLANDI ✓
+
+Canlıya çıktı: site v1.0.21 gösteriyor, nexus-releases'te tüm kurulum dosyaları var, updater manifest 1.0.21.
+Telefonda/PC'de doğrulama maddeleri (ses anahtarları, tepsi bildirimi, sesli konuşma kırmızı halkası) aynen geçerli —
+1.0.22 APK'sıyla birlikte test edebilirsin.

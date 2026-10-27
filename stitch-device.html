@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz</title>
   <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/><link href="css/nexus-controls.css" rel="stylesheet"/>
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
-  <script src="js/lucide.js"></script>
+  
   <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="cloud-config.js"></script>
@@ -47,7 +47,8 @@
     <div id="device-actionbar" class="nx-actionbar hidden"></div>
   </div>
 
-  <script data-purpose="device-control-screen">
+  <script src="js/lucide.js"></script>
+<script data-purpose="device-control-screen">
     var params = new URLSearchParams(location.search);
     var INDEX = parseInt(params.get("i"), 10);
     var esc = NX.escapeHtml;
@@ -419,7 +420,7 @@
       var lan = d.host && d.protocol && d.protocol !== "unknown";
       var conn = lan ? "Yerel ağ · " + (d.brand || d.protocol) + (d.host ? " (" + d.host + ")" : "") : "Katalogdan eklendi";
       var nameRow = renaming
-        ? '<div class="nx-row"><input id="rename-input" class="nx-input" value="' + esc(d.name) + '" maxlength="60" aria-label="Cihaz adı">' +
+        ? '<div class="nx-row"><input id="rename-input" data-enter="saveName" enterkeyhint="done" class="nx-input" value="' + esc(d.name) + '" maxlength="60" aria-label="Cihaz adı">' +
           '<button type="button" class="nx-btn primary shrink-0" onclick="saveName()">Kaydet</button></div>'
         : '<button type="button" class="nx-row" onclick="startRename()"><div class="min-w-0"><p class="d">Ad</p><p class="t truncate">' + esc(d.name) + "</p></div>" + icon("pencil", "w-4 h-4 text-slate-400") + "</button>";
       var remove = confirmRemove

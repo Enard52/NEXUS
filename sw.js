@@ -7,7 +7,7 @@
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
-var CACHE = 'nexus-shell-v4'; // v4: nexus-feedback.js kabuğa girdi (ses/hareket)
+var CACHE = 'nexus-shell-v5'; // v5: 1.0.22 — lucide gövdeye taşındı, Enter kaydetme, arka plan otomasyonu
 var SHELL = [
   'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
   'fonts/inter/inter.css',

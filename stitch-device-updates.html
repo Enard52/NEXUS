@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>NEXUS - Cihaz Güncellemesi</title>
 <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
-<script src="js/lucide.js"></script>
+
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
   body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
@@ -87,7 +87,8 @@
       </button>
     </footer>
   </div>
-  <script>
+  <script src="js/lucide.js"></script>
+<script>
     const UPDATE_HISTORY_KEY = 'nexusUpdateHistory';
 
     // Yalnızca gerçekten eklenmiş cihazlar (pano kartları değil)

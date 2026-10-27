@@ -555,6 +555,7 @@
     if (!scene) return { changed: 0, lan: 0, title: id, unknown: true };
     var devices = readDevices();
     var changed = 0, lan = 0, lanDevices = [];
+    var cmds = [];
     // Toplu uygulama sessiz: her cihaz için ayrı toggle sesi değil, bitişte tek sahne sesi
     // (smart-scene-page.js finish içinde çalar).
     SCENE_QUIET = true;
@@ -562,13 +563,35 @@
       devices.forEach(function (device, index) {
         var acts = sceneActs(scene, device);
         if (!acts.length) return;
-        acts.forEach(function (a) { setField(index, a[0], a[1]); });
+        var prev = stateOf(device);
+        acts.forEach(function (a) {
+          applyField(devices[index], a[0], a[1]);
+          cmds.push({ index: index, field: a[0], value: a[1], prev: prev });
+        });
         changed += 1;
         if (isLan(device)) { lan += 1; lanDevices.push({ index: index, name: device.name }); }
       });
     } finally {
       SCENE_QUIET = false;
     }
+    // Tek toplu yazım: her cihaz×alan için ayrı localStorage okuma/yazma yerine
+    // değiştirilmiş listenin tamamı bir kez kaydedilir.
+    writeDevices(devices);
+    // Komut gönderimi setField ile aynı koşullarda: alan gerçekten değiştiyse.
+    cmds.forEach(function (c) {
+      var device = devices[c.index];
+      var st = stateOf(device);
+      if (c.field === "switch") {
+        if (st.switch !== c.prev.switch && hasCap(device, "switch")) sendCommand(device, "switch", st.switch, c.index);
+      } else if (c.field === "brightness") {
+        if (st.brightness !== c.prev.brightness && hasCap(device, "brightness")) sendCommand(device, "brightness", st.brightness, c.index);
+      } else if (c.field === "color") {
+        sendCommand(device, "color", st.color, c.index);
+      } else if (c.field === "preset") {
+        if (c.value && c.value.color && hasCap(device, "color")) sendCommand(device, "color", st.color, c.index);
+      }
+      sendExtra(device, c.field, c.index);
+    });
     return { changed: changed, lan: lan, lanDevices: lanDevices, title: scene.title };
   }
 

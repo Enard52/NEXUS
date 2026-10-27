@@ -71,6 +71,38 @@ var FACTS = {
 };
 var KNOW = "NEXUS facts you may rely on: NEXUS controls smart devices on the user's own local network, with no hub and no cloud fee. Apps: Windows, Linux, Android, and the site is for account, downloads and billing; iOS is coming soon. Devices: lights, plugs, AC/thermostat, curtains/blinds, smart locks, robot vacuums, cameras and sensors; Shelly, Tasmota, WLED, ESPHome, Philips Hue and Home Assistant over local HTTP, TP-Link Kasa and Yeelight over local TCP in the desktop app; Matter/Zigbee gear joins through the user's own Home Assistant. Local IP discovery pairs devices instantly with no vendor cloud. Features: homes and rooms, one-tap scenes (good morning, movie mode, good night, leaving home, welcome home, night security, guest mode, cleaning), automations and schedules that run on the always-on desktop app in the tray, energy overview with AI saving tips, security dashboard with cameras and privacy modes, household members with per-member permissions and invite codes, instant notification channels (in-app strip, system notifications, ntfy, Telegram, custom webhook), chat that runs commands like 'turn off the living room lights', 'set the AC to 22', 'good night', 'status', voice input, image attachments in chat, multi-language (Turkish and English) UI. For safety the chat never unlocks doors; unlocking happens on the lock's own screen. Plans: Free = 30 NEXUS AI credits per day, unlimited devices. NEXUS+ = 2,000 credits per month and first access to new AI features; price 499.99 TRY/month (3-day free trial) or 3,999.99 TRY/year (7-day trial) in Turkey, 11.99 USD/month or 89.99 USD/year elsewhere; cancel anytime, one click from the app, the site or the order email. Family plan is coming soon (not sold yet). Support: nexus.smarthome.app@gmail.com. Rules: never invent features, prices or device states; if you do not know something, say so briefly and point to the support email. Answer any question in a friendly way; you are not limited to a fixed list of topics, but keep NEXUS and smart homes as your home ground.";
 
+// Yedek sohbet sağlayıcıları: Workers AI kota/erişim vermezse sırayla denenir.
+// Hepsi OpenAI uyumlu uç nokta sunar; anahtar wrangler secret olarak girilir
+// (GROQ_API_KEY / GEMINI_API_KEY / OPENROUTER_API_KEY — model override: *_MODEL).
+// Anahtar tanımlı değilse o sağlayıcı sessizce atlanır; hiçbiri çalışmazsa 503 döner.
+var FALLBACKS = [
+  { env: "GROQ", url: "https://api.groq.com/openai/v1/chat/completions", model: "llama-3.3-70b-versatile" },
+  { env: "GEMINI", url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", model: "gemini-2.0-flash" },
+  { env: "OPENROUTER", url: "https://openrouter.ai/api/v1/chat/completions", model: "meta-llama/llama-3.3-70b-instruct:free" },
+];
+
+function cleanReply(text) {
+  return String(text || "")
+    .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, "")
+    .replace(/\*\*/g, "")
+    .replace(/\s*\n[\*\-•]\s*/g, ", ")
+    .replace(/\n+/g, " ")
+    .replace(/\s+$/, "")
+    .trim();
+}
+
+async function chatWithFallback(cfg, messages) {
+  const apiKey = cfg.apiKey;
+  const r = await fetch(cfg.url, {
+    method: "POST",
+    headers: { "authorization": "Bearer " + apiKey, "content-type": "application/json" },
+    body: JSON.stringify({ model: cfg.model, messages, max_tokens: 380, temperature: 0.6 }),
+  });
+  if (!r.ok) throw new Error(cfg.name + " " + r.status);
+  const d = await r.json();
+  return (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || "";
+};
+
 export default {
   async fetch(req, env) {
     const o = req.headers.get("Origin") || "";
@@ -100,12 +132,25 @@ export default {
     if (!msgs.length) return new Response("bad", { status: 400, headers: h });
     let ctx = "";
     if (Array.isArray(b.devices) && b.devices.length) ctx = "\nThe user's paired devices (name, type, room): " + b.devices.slice(0, 25).map((d) => [d.name, d.type, d.room].filter(Boolean).join("/").slice(0, 60)).join("; ") + ".";
+    const full = [{ role: "system", content: FACTS[lang] + "\n" + KNOW + ctx }, ...msgs];
+    let reply = "", via = "";
+    // 1) Workers AI (anahtarsız, hesabın içinde) — her zaman ilk sırada.
     try {
-      const r = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", { messages: [{ role: "system", content: FACTS[lang] + "\n" + KNOW + ctx }, ...msgs], max_tokens: 380, temperature: 0.6 });
-      const text = (typeof r.response === "string" ? r.response : (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content) || "").replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, "").replace(/\*\*/g, "").replace(/\s*\n[\*\-•]\s*/g, ", ").replace(/\n+/g, " ").replace(/\s+$/, "").trim();
-      return new Response(JSON.stringify({ reply: text }), { headers: { ...h, "content-type": "application/json" } });
-    } catch (e) {
-      return new Response(JSON.stringify({ reply: "" }), { status: 503, headers: { ...h, "content-type": "application/json" } });
+      const r = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", { messages: full, max_tokens: 380, temperature: 0.6 });
+      reply = (typeof r.response === "string" ? r.response : (r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content) || "");
+      if (reply) via = "cloudflare";
+    } catch (e) { reply = ""; }
+    // 2-4) Ücretsiz katmanlı yedekler: Groq → Gemini → OpenRouter (sırayla, ilk başarılı döner).
+    for (const f of FALLBACKS) {
+      if (reply) break;
+      const apiKey = env[f.env + "_API_KEY"];
+      if (!apiKey) continue;
+      try {
+        reply = await chatWithFallback({ name: f.env, url: f.url, apiKey, model: env[f.env + "_MODEL"] || f.model }, full);
+        if (reply) via = f.env.toLowerCase();
+      } catch (e) { reply = ""; }
     }
+    if (!reply) return new Response(JSON.stringify({ reply: "" }), { status: 503, headers: { ...h, "content-type": "application/json" } });
+    return new Response(JSON.stringify({ reply: cleanReply(reply), via }), { headers: { ...h, "content-type": "application/json" } });
   },
 };

@@ -694,6 +694,63 @@ window.nexusCopy = function (text) {
   }
 })();
 
+// Enter ile gönderme: <form> kullanmayan ekranlarda metin girişinde Enter,
+// girdinin data-enter ile işaretlediği eylemi çalıştırır ("fnAdı" global işlev
+// ya da "#düğme-id"). data-field'lı otomatik kaydeden alanlarda Enter, değişikliği
+// blur ile kesinleştirir. İşaretsiz girdilerde davranış hiç değişmez (sıfır risk).
+(function () {
+  if (window.__nexusEnterSubmit) return;
+  window.__nexusEnterSubmit = true;
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || e.isComposing || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) return;
+    var t = e.target;
+    if (!t || t.tagName !== 'INPUT') return;
+    var ty = t.type;
+    if (ty === 'hidden' || ty === 'checkbox' || ty === 'radio' || ty === 'file' || ty === 'button' || ty === 'submit') return;
+    if (t.closest('form') || t.closest('[data-no-enter]')) return; // form zaten yerel gönderir
+    var act = t.getAttribute('data-enter');
+    if (!act) {
+      if (t.hasAttribute('data-field')) { e.preventDefault(); t.blur(); } // change → kaydet
+      return;
+    }
+    e.preventDefault();
+    if (act.charAt(0) === '#') {
+      var btn = document.querySelector(act);
+      if (btn && !btn.disabled && (btn.offsetWidth || btn.offsetHeight)) btn.click();
+      return;
+    }
+    if (typeof window[act] === 'function') window[act]();
+  });
+})();
+
+// Android arka plan servisi: kullanıcı Ayarlar'dan "Arka Plan Otomasyonu"nu
+// açtıysa uygulama her açılışta servisi çalıştırır (NexusKeepAlivePlugin →
+// NexusKeepAliveService). Varsayılan kapalı; kapatınca servis durdurulur.
+(function () {
+  if (window.__nexusKeepAliveHook) return;
+  window.__nexusKeepAliveHook = true;
+  function androidNative() {
+    try {
+      return !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android');
+    } catch (e) { return false; }
+  }
+  if (!androidNative()) return;
+  function sync() {
+    var p = null;
+    try { p = window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.NexusKeepAlive; } catch (e) {}
+    if (!p || typeof window.nexusGetItem !== 'function') return;
+    var on = false;
+    try { on = window.nexusGetItem('nexusKeepAlive') === 'true'; } catch (e2) {}
+    try {
+      if (on) p.start({ lang: window.nexusLang === 'en' ? 'en' : 'tr' }).catch(function () {});
+      else p.stop().catch(function () {});
+    } catch (e3) { /* köprü yoksa sessizce geç */ }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
+  else sync();
+  window.addEventListener('nexusKeepAliveChanged', sync);
+})();
+
 // Anonim hata raporlama (issue #15): window.onerror → client-error Edge
 // Function. Kişisel veri yok (sayfa, sürüm, platform, mesaj). Ayarlardan
 // kapatılabilir: nexusSetItem('nexusErrorReporting', 'off').

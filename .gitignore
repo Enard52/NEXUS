@@ -77,4 +77,9 @@ scripts/archive/www-arsiv/
 console.log(*
 _web-publish/
 supabase/mail-token.txt
--e "\n# tool state / runtime logs (27 Eki)\n.mimosa/\ndesktop/std*.txt\nsupabase/.temp/"  
+
+# tool state / runtime logs (27 Eki)
+.mimosa/
+desktop/std*.txt
+supabase/.temp/
+.audit-shots/

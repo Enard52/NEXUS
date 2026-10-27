@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <meta name="theme-color" content="#ffffff"/>
   <title>NEXUS - Ev Yönetimi</title>
   <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
-  <script src="js/lucide.js"></script>
+  
   <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -68,7 +68,7 @@
       <div class="mx-auto mb-5 h-1 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
       <h2 id="sheet-title" class="mb-1 text-lg font-bold">Yeni Ev Oluştur</h2>
       <p id="sheet-desc" class="mb-4 text-sm text-slate-500 dark:text-slate-400">Evine bir isim ver.</p>
-      <input id="sheet-input" type="text" class="mb-4 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Yazlık"/>
+      <input id="sheet-input" data-enter="confirmInputSheet" enterkeyhint="go" type="text" class="mb-4 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Yazlık"/>
       <button id="sheet-auto-location" type="button" class="mb-3 hidden w-full rounded-xl border border-slate-200 py-3 font-semibold text-slate-700 active:scale-[0.98] transition-transform dark:border-slate-700 dark:text-slate-200" onclick="detectHomeLocation()">Konumu Otomatik Algıla</button>
       <button class="w-full rounded-xl bg-[#4C7DFF] py-3.5 font-bold text-white active:scale-[0.98] transition-transform" onclick="confirmInputSheet()">Onayla</button>
     </div>
@@ -80,9 +80,9 @@
       <h2 id="member-sheet-title" class="mb-1 text-lg font-bold">Üye Davet Et</h2>
       <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Davet edilecek kişinin bilgilerini gir.</p>
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">Ad Soyad</label>
-      <input id="member-name" type="text" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Ayşe Yılmaz"/>
+      <input id="member-name" data-enter="confirmMember" enterkeyhint="go" type="text" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Ayşe Yılmaz"/>
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">E-posta</label>
-      <input id="member-email" type="email" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="örnek@eposta.com"/>
+      <input id="member-email" data-enter="confirmMember" enterkeyhint="go" type="email" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="örnek@eposta.com"/>
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">Rol</label>
       <select id="member-role" class="mb-4 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50">
         <option value="Üye">Üye</option>
@@ -101,7 +101,7 @@
       <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Evindeki odaları ekle veya kaldır.</p>
       <div id="rooms-list" class="-mx-1 mb-4 flex-1 overflow-y-auto px-1"></div>
       <div class="flex gap-2">
-        <input id="room-input" type="text" class="flex-1 rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Oturma Odası"/>
+        <input id="room-input" data-enter="addRoom" enterkeyhint="done" type="text" class="flex-1 rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Oturma Odası"/>
         <button class="rounded-xl bg-[#4C7DFF] px-5 font-bold text-white active:scale-[0.98] transition-transform" onclick="addRoom()">Ekle</button>
       </div>
     </div>
@@ -130,7 +130,8 @@
     </div>
   </div>
 
-  <script>
+  <script src="js/lucide.js"></script>
+<script>
     lucide.createIcons();
 
     var HOUSE_KEY = "nexusHousehold";
@@ -597,7 +598,7 @@
             return '<div class="flex items-center justify-between border-b border-slate-100 py-3 last:border-0 dark:border-slate-800">' +
               '<div class="flex min-w-0 items-center gap-3"><div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 dark:bg-slate-800"><i class="w-5 h-5" data-lucide="door-open"></i></div>' +
               '<span class="truncate font-semibold">' + esc(room) + '</span></div>' +
-              '<button class="p-2 text-red-400 active:text-red-600" onclick="removeRoom(' + index + ')"><i class="w-5 h-5" data-lucide="trash-2"></i></button></div>';
+              '<button class="p-2 text-red-400 active:text-red-600" aria-label="Odayı kaldır" onclick="removeRoom(' + index + ')"><i class="w-5 h-5" data-lucide="trash-2"></i></button></div>';
           }).join("")
         : '<p class="py-6 text-center font-medium text-slate-400">Henüz oda eklenmedi</p>';
       lucide.createIcons();

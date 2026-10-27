@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
   <title>NEXUS - Cihaz Ekle</title>
   <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
-  <script src="js/lucide.js"></script>
+  
   <style>
     body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
     ::-webkit-scrollbar { width: 0px; background: transparent; }
@@ -270,7 +270,7 @@
         <p class="text-sm text-slate-500 mt-2">Cihazınızın üzerindeki 8 haneli kodu girin.</p>
       </div>
       <div class="mb-6">
-        <input type="text" id="setup-code-input" class="w-full text-center text-3xl tracking-[0.2em] font-bold text-slate-800 border-none bg-slate-50 rounded-2xl py-4 focus:ring-2 focus:ring-[#4C7DFF]" placeholder="00000000" maxlength="8" autocomplete="off" />
+        <input type="text" id="setup-code-input" data-enter="submitCode" enterkeyhint="go" class="w-full text-center text-3xl tracking-[0.2em] font-bold text-slate-800 border-none bg-slate-50 rounded-2xl py-4 focus:ring-2 focus:ring-[#4C7DFF]" placeholder="00000000" maxlength="8" autocomplete="off" />
       </div>
       <div class="flex gap-3">
         <button class="flex-1 py-3.5 rounded-2xl font-bold text-slate-600 bg-slate-100 active:bg-slate-200 transition-colors" onclick="closeCodeModal()">İptal</button>
@@ -299,7 +299,8 @@
     </div>
   </div>
 
-  <script>
+  <script src="js/lucide.js"></script>
+<script>
     lucide.createIcons();
 
     function focusCatalogSearch() {

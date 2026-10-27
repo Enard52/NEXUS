@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="tr"><head>
   <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0" name="viewport">
   <title>NEXUS - Oda Konforu</title>
   <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
-  <script src="js/lucide.js"></script>
+  
   <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <style>
     body {
@@ -40,7 +40,7 @@
         <i data-lucide="chevron-left" class="text-[28px]"></i>
       </a>
       <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white" data-sd-id="4">Oda Konforu</h1>
-      <button id="header-more-btn" class="p-1 -mr-1 flex items-center justify-center active:scale-95 transition-transform" data-sd-id="5">
+      <button id="header-more-btn" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center active:scale-95 transition-transform" data-sd-id="5">
         <i data-lucide="settings-2" class="text-slate-900 dark:text-white text-xl"></i>
       </button>
     </header>
@@ -158,7 +158,8 @@
   </style>
 
 <script src="smart-card-detail-state.js"></script>
-  <script data-purpose="icon-initialization">
+  <script src="js/lucide.js"></script>
+<script data-purpose="icon-initialization">
     if (typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 </body></html>

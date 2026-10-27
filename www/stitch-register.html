@@ -13,7 +13,7 @@
 <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
 <link href="fonts/inter/inter.css" rel="stylesheet"/>
   <!-- Lucide Icons -->
-<script src="js/lucide.js"></script>
+
 <style data-purpose="custom-layouts">
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -84,7 +84,7 @@
     <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
       <i class="w-4 h-4 text-slate-400 group-focus-within:text-[#4C7DFF] transition-colors" data-lucide="user"></i>
     </div>
-    <input class="w-full h-11 sm:h-12 pl-10 pr-4 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-name" placeholder="Adınız Soyadınız" type="text"/>
+    <input class="w-full h-11 sm:h-12 pl-10 pr-4 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-name" data-enter="doRegister" enterkeyhint="go" placeholder="Adınız Soyadınız" type="text"/>
   </div>
 
   <!-- Email Input -->
@@ -92,7 +92,7 @@
     <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
       <i class="w-4 h-4 text-slate-400 group-focus-within:text-[#4C7DFF] transition-colors" data-lucide="mail"></i>
     </div>
-    <input class="w-full h-11 sm:h-12 pl-10 pr-4 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-email" placeholder="E-posta Adresi" type="email"/>
+    <input class="w-full h-11 sm:h-12 pl-10 pr-4 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-email" data-enter="doRegister" enterkeyhint="go" placeholder="E-posta Adresi" type="email"/>
   </div>
 
   <!-- Password Input -->
@@ -101,7 +101,7 @@
       <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
         <i class="h-4 w-4 shrink-0 text-slate-400 group-focus-within:text-[#4C7DFF] transition-colors" data-lucide="lock"></i>
       </div>
-      <input class="w-full h-11 sm:h-12 pl-10 pr-10 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-password" placeholder="Şifre Belirleyin" type="password" minlength="8" autocomplete="new-password" oninput="pwStrength(this.value)"/>
+      <input class="w-full h-11 sm:h-12 pl-10 pr-10 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-password" data-enter="doRegister" enterkeyhint="go" placeholder="Şifre Belirleyin" type="password" minlength="8" autocomplete="new-password" oninput="pwStrength(this.value)"/>
     </div>
     <p class="mt-1 ml-1 text-[10px] sm:text-[11px] font-semibold text-slate-400 leading-tight" id="pw-strength" aria-live="polite">En az 8 karakter; harf + rakam kullan.</p>
   </div>
@@ -111,7 +111,7 @@
     <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
       <i class="w-4 h-4 text-slate-400 group-focus-within:text-[#4C7DFF] transition-colors" data-lucide="check-circle"></i>
     </div>
-    <input class="w-full h-11 sm:h-12 pl-10 pr-4 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-confirm-password" placeholder="Şifreyi Tekrar Girin" type="password"/>
+    <input class="w-full h-11 sm:h-12 pl-10 pr-4 rounded-2xl bg-white/70 border border-white/80 focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/20 text-slate-700 font-medium placeholder-slate-400 text-sm sm:text-base transition-all outline-none card-shadow" id="register-confirm-password" data-enter="doRegister" enterkeyhint="go" placeholder="Şifreyi Tekrar Girin" type="password"/>
   </div>
 
   <button class="btn-primary w-full h-11 sm:h-12 rounded-full text-white text-base sm:text-lg font-bold focus:outline-none flex items-center justify-center gap-2" data-purpose="submit-button" onclick="doRegister()">
@@ -130,6 +130,7 @@
 <!-- END: MainContent Container -->
 <!-- END: MainContent -->
 
+<script src="js/lucide.js"></script>
 <script data-purpose="icon-initialization">
   lucide.createIcons();
 </script>

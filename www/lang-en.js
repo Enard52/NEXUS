@@ -1518,6 +1518,8 @@ window.NEXUS_EN = {
 "Nötrsüz Anahtar (4 Çıkışlı)": "No-Neutral Switch (4 Gang)",
 "OTOMATİK MOD": "AUTO MODE",
 "Oda": "Room",
+"Odayı kaldır": "Remove room",
+"Arka Plan Otomasyonu": "Background automation",
 "Oda Bazlı Geçiş": "Room-by-Room Switching",
 "Oda Bazlı Görünüm": "Room-Based View",
 "Oda Bazlı Kontrol": "Room-by-Room Control",
