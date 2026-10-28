@@ -2,6 +2,18 @@
 
 _Bu dosya `node scripts/bump-version.mjs --changelog` ile Conventional Commits'ten üretilir; elle düzenlenmez._
 
+## v1.0.29
+
+### 🐛 Fixed
+- mobile: ship the NEXUS brand mark as the app icon and splash
+- ios: add the location usage description and lock capability declarations to a test
+
+### 📚 Docs
+- release: changelog entry for v1.0.28
+
+### 🧩 Other
+- v1.0.29
+
 ## v1.0.28
 
 ### 🐛 Fixed
