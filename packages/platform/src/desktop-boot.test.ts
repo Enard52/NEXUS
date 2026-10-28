@@ -57,12 +57,14 @@ function makeElectron(opts: { ready: boolean; locale?: string }): FakeElectron {
     getSystemLocale: () => gate("getSystemLocale", opts.locale ?? "en-US"),
     getPreferredSystemLanguages: () => {
       calls.push("getPreferredSystemLanguages");
-      if (!opts.ready) throw new Error("app.getPreferredSystemLanguages() can only be called after app is ready");
+      if (!opts.ready)
+        throw new Error("app.getPreferredSystemLanguages() can only be called after app is ready");
       return [opts.locale ?? "en-US"];
     },
     getLoginItemSettings: () => {
       calls.push("getLoginItemSettings");
-      if (!opts.ready) throw new Error("app.getLoginItemSettings() can only be called after app is ready");
+      if (!opts.ready)
+        throw new Error("app.getLoginItemSettings() can only be called after app is ready");
       return { openAtLogin: false, wasOpenedAsHidden: false };
     },
     setLoginItemSettings: () => {},
@@ -87,15 +89,29 @@ function makeElectron(opts: { ready: boolean; locale?: string }): FakeElectron {
       handle: (channel: string, fn: unknown) => ipcHandlers.set(channel, fn),
       on: (channel: string, fn: unknown) => ipcEvents.set(channel, fn),
     },
-    protocol: { registerSchemesAsPrivileged: () => {}, handle: () => {}, registerFileProtocol: () => {} },
+    protocol: {
+      registerSchemesAsPrivileged: () => {},
+      handle: () => {},
+      registerFileProtocol: () => {},
+    },
     net: { request: () => ({ on: () => {}, end: () => {}, write: () => {} }) },
     nativeTheme: { shouldUseDarkColors: false, on: () => {} },
     dialog: { showMessageBox: () => ({}), showErrorBox: () => {} },
     Tray: noopClass,
     Notification: noopClass,
-    screen: { on: () => {}, getDisplays: () => [], getPrimaryDisplay: () => ({ bounds: { width: 1920, height: 1080 } }) },
+    screen: {
+      on: () => {},
+      getDisplays: () => [],
+      getPrimaryDisplay: () => ({ bounds: { width: 1920, height: 1080 } }),
+    },
     globalShortcut: { register: () => true, unregisterAll: () => {} },
-    session: { defaultSession: { setPermissionRequestHandler: () => {}, setPermissionCheckHandler: () => {}, on: () => {} } },
+    session: {
+      defaultSession: {
+        setPermissionRequestHandler: () => {},
+        setPermissionCheckHandler: () => {},
+        on: () => {},
+      },
+    },
     nativeImage: { createFromPath: () => ({}) },
   };
 }
