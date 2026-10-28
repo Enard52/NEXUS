@@ -60,8 +60,28 @@ function saveBounds() {
 }
 
 // ---------- Dil tespiti ve çok dilli metinler ----------
+// app.getLocale / getSystemLocale / getPreferredSystemLanguages YALNIZCA app hazır
+// olduktan sonra çağrılabilir; önce çağrılırsa Electron fırlatır:
+//   "app.getSystemLocale() can only be called after app is ready"
+// detectLang modül yüklenirken de çalışıyor (uiLang'ın başlangıç değeri), bu yüzden
+// hiçbir çağrı fırlatmamalı — 1.0.26'da tam bu yüzden Windows kurulumu açılışta çöktü.
+// Hazır değilken Node/Chromium'un her zaman verdiği Intl yereli + saat dilimi kullanılır;
+// whenReady içinde (aşağıda) tam API ile bir kez daha tespit edilir.
+function appTag(fn) {
+  if (typeof fn !== "function") return "";
+  try { return String(fn.call(app) || ""); } catch { return ""; }
+}
 function detectLang() {
-  const tags = [app.getLocale ? app.getLocale() : "", app.getSystemLocale ? app.getSystemLocale() : ""].concat(app.getPreferredSystemLanguages ? app.getPreferredSystemLanguages() : []);
+  let ready = false;
+  try { ready = typeof app.isReady === "function" && !!app.isReady(); } catch { ready = false; }
+  const tags = [];
+  if (ready) {
+    tags.push(appTag(app.getLocale), appTag(app.getSystemLocale));
+    try {
+      if (typeof app.getPreferredSystemLanguages === "function") tags.push(...(app.getPreferredSystemLanguages() || []));
+    } catch { /* hazır değilse/desteklenmiyorsa tahmin yeterli */ }
+  }
+  try { tags.push(Intl.DateTimeFormat().resolvedOptions().locale || ""); } catch { /* ICU yok */ }
   if (/^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)\b/i.test(tags[0] || "")) return "tr";
   if (tags.some((t) => /[-_](TR|AZ|KZ|UZ|KG|TM)\b/i.test(t || ""))) return "tr";
   let tz = "";
@@ -147,7 +167,14 @@ function setOpenAtLogin(on) {
 function getOpenAtLogin() {
   try { return !!app.getLoginItemSettings({ args: LOGIN_ARGS }).openAtLogin; } catch { return false; }
 }
-const startHidden = process.argv.includes("--hidden") || (process.platform === "darwin" && app.getLoginItemSettings().wasOpenedAsHidden);
+// macOS'ta getLoginItemSettings() hazır değilken fırlatıyor ("can only be called
+// after app is ready"). Bu değer yalnızca pencere kurulurken okunuyor (aşağıda
+// ready-to-show), o yüzden tembel tutuluyor: modül yüklenirken çağrılırsa macOS
+// kurulumu da açılışta çökerdi.
+function wasOpenedAsHidden() {
+  try { return !!(app.getLoginItemSettings() || {}).wasOpenedAsHidden; } catch { return false; }
+}
+const isStartHidden = () => process.argv.includes("--hidden") || (process.platform === "darwin" && wasOpenedAsHidden());
 
 let lastTrayStatus = null;
 
@@ -619,7 +646,7 @@ function createWindow() {
   win.setMenuBarVisibility(false);
   if (saved?.maximized) win.maximize();
   // Sessiz başlangıç: tepsi varsa pencere açılmadan arka planda başlar; yoksa normal açılır.
-  win.once("ready-to-show", () => { if (!(startHidden && tray && backgroundRun)) win.show(); });
+  win.once("ready-to-show", () => { if (!(isStartHidden() && tray && backgroundRun)) win.show(); });
   // Pencere kapatılınca: arka planda çalışma açıksa ve tepsi varsa uygulamayı
   // tepsiye gizle (akıllı ev asistanı çalışmaya devam eder); değilse normal çık.
   win.on("close", (event) => {
