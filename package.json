@@ -26,6 +26,7 @@
     "scaffold:modules": "node scripts/scaffold-modules.mjs",
     "site:shots": "node scripts/site-shots.mjs",
     "site:icons": "node scripts/site-icons.mjs",
+    "icons:mobile": "node scripts/gen-mobile-icons.mjs && node scripts/sync-www.mjs",
     "site:build": "node scripts/site-build.mjs",
     "site:full": "node scripts/site-shots.mjs && node scripts/site-build.mjs && node scripts/verify-site.mjs",
     "verify:site": "node scripts/verify-site.mjs",
