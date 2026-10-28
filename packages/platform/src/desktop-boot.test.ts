@@ -33,7 +33,7 @@ interface FakeElectron {
   [key: string]: unknown;
 }
 
-function makeElectron(opts: { ready: boolean; locale?: string }): FakeElectron {
+function makeElectron(opts: { ready: boolean; locale?: string; lock?: boolean }): FakeElectron {
   const calls: string[] = [];
   const gate = (name: string, value: string): string => {
     calls.push(name);
@@ -50,7 +50,7 @@ function makeElectron(opts: { ready: boolean; locale?: string }): FakeElectron {
       app.name = String(n);
     },
     setAppUserModelId: () => {},
-    requestSingleInstanceLock: () => true,
+    requestSingleInstanceLock: () => opts.lock !== false,
     getPath: () => path.join(os.tmpdir(), "nexus-boot-test"),
     getVersion: () => "0.0.0-test",
     getLocale: () => gate("getLocale", opts.locale ?? "en-US"),
@@ -70,7 +70,9 @@ function makeElectron(opts: { ready: boolean; locale?: string }): FakeElectron {
     setLoginItemSettings: () => {},
     on: () => {},
     once: () => {},
-    quit: () => {},
+    quit: () => {
+      calls.push("quit");
+    },
     relaunch: () => {},
     whenReady: () => new Promise<never>(() => {}), // hazır anı bu testte hiç gelmez
   };
@@ -167,5 +169,36 @@ describe("desktop main boot safety", () => {
     const fake = makeElectron({ ready: true, locale: "tr-TR" });
     expect(() => withPlatform("win32", () => loadMainWith(fake))).not.toThrow();
     expect(fake.app.calls).toContain("getSystemLocale");
+  });
+
+  // Tek örnek kilodu alan ikinci süreç: main.cjs'in geri kalanı (pencere, tray,
+  // global kısayol, ~800 satır IPC kaydı) çalışmaya devam ederse aynı anda iki
+  // arayüz kurulur. 1.0.27'de yalnız app.quit() vardı; süreç kendi kendine
+  // sonlanmıyordu. Bu test "kaybedersem çık, ama ÇIKMADAN ÖNCE hiçbir şey kurma"
+  // kuralını kilitler.
+  it("shuts the losing second instance down before building any UI", () => {
+    const fake = makeElectron({ ready: true, lock: false });
+    const realExit = process.exit;
+    const STOP = Symbol("process.exit");
+    let code: number | undefined;
+    process.exit = ((c?: number) => {
+      code = c;
+      throw STOP; // gerçek süreç burada sonlanır: devamındaki hiçbir satır çalışmaz
+    }) as never;
+    let stopped = false;
+    try {
+      withPlatform("win32", () => loadMainWith(fake));
+    } catch (err) {
+      stopped = err === STOP;
+      if (!stopped) throw err;
+    } finally {
+      process.exit = realExit;
+    }
+    expect(stopped, "kaybeden örnek process.exit ile sonlanmalı").toBe(true);
+    expect(code).toBe(0);
+    expect(fake.app.calls).toContain("quit");
+    // Çıkıştan sonra hiçbir IPC işleyicisi ya da kısayol kaydı kurulmamalı.
+    expect(fake.ipcHandlers.size).toBe(0);
+    expect(fake.ipcEvents.size).toBe(0);
   });
 });

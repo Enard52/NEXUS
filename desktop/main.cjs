@@ -41,7 +41,11 @@ protocol.registerSchemesAsPrivileged([
 
 // ---------- Tek örnek ----------
 if (!app.requestSingleInstanceLock()) {
+  // Kilodu alan örnek değil. app.quit() burada yeterli değil: modülün geri kalanı
+  // (whenReady → pencere + tray + global kısayol) çalışmaya devam ediyor, yani iki
+  // simge birden kurulabiliyordu. Kaybeden süreç derhal sonlanır.
   app.quit();
+  process.exit(0);
 }
 
 let win = null;
