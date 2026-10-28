@@ -1,0 +1,65 @@
+name: Device support request
+description: Ask for support of a smart-home device, brand or protocol
+labels: ["device-support", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NEXUS controls devices over your **local network**. A request is
+        feasible when the device has a documented local protocol (HTTP/UDP/TCP/
+        MQTT) — cloud-only devices cannot be supported honestly. The more
+        technical detail you provide, the faster a connector can land.
+  - type: input
+    id: device
+    attributes:
+      label: Device / brand / model
+      placeholder: e.g. Sonoff POW Origin (S605TPF)
+    validations:
+      required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Known local protocol
+      options:
+        - Shelly (native local API)
+        - Tasmota (local HTTP)
+        - ESPHome (local API)
+        - WLED (local API)
+        - Philips Hue (local bridge)
+        - Home Assistant (local API)
+        - TP-Link Kasa / Tapo (local TCP)
+        - Yeelight (local TCP)
+        - MQTT (broker on my network)
+        - Matter / Zigbee via Home Assistant
+        - Unknown — that's why I'm asking
+        - Other (describe below)
+    validations:
+      required: true
+  - type: dropdown
+    id: capabilities
+    attributes:
+      label: What should NEXUS control?
+      options:
+        - On/Off switching
+        - Brightness / color
+        - Power monitoring
+        - Temperature / thermostat
+        - Cover / blinds
+        - Lock
+        - Vacuum
+        - Sensor readings
+        - Everything it can
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: Protocol documentation or captures
+      description: Links to API docs, GitHub projects, or HTTP captures from your device. Massive help.
+  - type: checkboxes
+    id: hardware
+    attributes:
+      label: Hardware access
+      options:
+        - label: I own this device and can test a development build
+        - label: I can capture HTTP/TCP traffic from the device

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Kullanıcı Bilgileri</title>
+<!-- Tailwind CSS v3 CDN -->
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
+
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Brand-tinted content background (source blue -> NEXUS purple tint) */
+    .bg-nexus-tint {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 60%, #F6F5FB 100%);
+    }
+    /* iOS-style list rows */
+    .settings-row {
+      min-height: 72px;
+    }
+    .chevron-right {
+      width: 18px;
+      height: 18px;
+      color: #9CA3AF;
+    }
+    /* Bottom sheet transition */
+    .sheet { transition: transform 0.25s ease; transform: translateY(100%); }
+    .sheet.open { transform: translateY(0); }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-dashboard-gradient min-h-screen flex flex-col">
+<!-- BEGIN: Navigation Header -->
+<header class="bg-white px-4 pt-12 pb-4 flex items-center justify-between border-b border-gray-50 relative" data-purpose="main-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
+<svg class="w-7 h-7 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap text-gray-900 absolute left-1/2 -translate-x-1/2">Kullanıcı Bilgileri</h1>
+<!-- Empty div for flex balance -->
+<div class="w-10"></div>
+</header>
+<!-- END: Navigation Header -->
+<!-- BEGIN: Content Area -->
+<main class="flex-1 bg-nexus-tint p-6" data-purpose="settings-container">
+<!-- BEGIN: Settings Card (genişlik sınırı ile geniş ekranlarda da düzgün) -->
+<div class="bg-white rounded-[2rem] shadow-sm overflow-hidden w-full max-w-xl mx-auto" data-purpose="info-card">
+<!-- Row 1: Profile Photo (gerçek dosya seçici / işlem menüsü açar) -->
+<button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="handleAvatarClick()">
+<span class="text-[17px] font-medium text-gray-800">Profil Fotoğrafı</span>
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-full overflow-hidden border border-gray-200 flex-shrink-0 bg-gray-100 flex items-center justify-center">
+<svg class="w-7 h-7 text-gray-300" fill="currentColor" id="avatar-placeholder" viewBox="0 0 24 24" aria-label="Profil fotoğrafı yok" role="img"><path d="M12 12c2.49 0 4.5-2.01 4.5-4.5S14.49 3 12 3 7.5 5.01 7.5 7.5 9.51 12 12 12zm0 2.25c-3 0-9 1.51-9 4.5V21h18v-2.25c0-2.99-6-4.5-9-4.5z"/></svg>
+<img alt="Profil fotoğrafı" class="w-full h-full object-cover hidden" id="avatar-img" src=""/>
+</div>
+<svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</button>
+<input accept="image/*" class="hidden" id="avatar-input" onchange="changeAvatar(this)" type="file"/>
+<!-- Row 2: Username (düzenleme sheet'i açar) -->
+<button class="settings-row w-full flex items-center justify-between px-6 border-b border-gray-100 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('name')">
+<span class="text-[17px] font-medium text-gray-800 flex-shrink-0">Kullanıcı Adı</span>
+<div class="flex items-center gap-3 min-w-0">
+<span class="text-[17px] text-gray-400 truncate" id="username-value">Misafir</span>
+<svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</button>
+<!-- Row 3: Device Timezone (cihazdan otomatik okunur, sheet ile değiştirilebilir) -->
+<button class="settings-row w-full flex items-center justify-between gap-3 px-6 hover:bg-gray-50 active:bg-gray-50 transition-colors text-left" onclick="openSheet('tz')">
+<span class="text-[17px] font-medium text-gray-800 flex-shrink-0">Cihaz Saat Dilimi</span>
+<!-- gap-4→gap-3 ve gap-3→gap-2: "Türkiye · 19:40" telefon genişliğinde 6px taşıyordu;
+   8px nefes boşluğundan geri verildi (ölçüm: tmp-ui-audit H kovası). -->
+<div class="flex items-center gap-2 min-w-0">
+<span class="text-[17px] text-gray-400 truncate" id="timezone-value">İstanbul</span>
+<svg class="chevron-right flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</button>
+</div>
+<!-- END: Settings Card -->
+</main>
+<!-- END: Content Area -->
+<!-- BEGIN: Sheet backdrop -->
+<div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
+<!-- BEGIN: Username Edit Sheet -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10 w-full max-w-xl mx-auto" data-purpose="name-sheet" id="sheet-name">
+<div class="flex items-center justify-between mb-5">
+<h3 class="text-lg font-bold">Kullanıcı Adını Düzenle</h3>
+<button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
+</div>
+<input class="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-[17px] font-medium focus:ring-2 focus:ring-[#4C7DFF] mb-2" id="name-input" enterkeyhint="done" maxlength="30" placeholder="Adını gir" type="text" value=""/>
+<p class="text-xs text-slate-400 mb-5"><span id="name-count">0</span>/30 karakter</p>
+<div class="flex gap-3">
+<button class="flex-1 bg-white border border-slate-200 rounded-2xl py-4 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">İptal</button>
+<button class="flex-1 bg-[#4C7DFF] text-white rounded-2xl py-4 font-bold active:scale-[0.98] transition-transform" onclick="saveName()">Kaydet</button>
+</div>
+</div>
+<!-- END: Username Edit Sheet -->
+<!-- BEGIN: Timezone Sheet -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10 w-full max-w-xl mx-auto" data-purpose="timezone-sheet" id="sheet-tz">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-lg font-bold">Saat Dilimi</h3>
+<button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
+</div>
+<p class="text-sm text-slate-400 mb-4">Ülkeni seç; senaryo ve programların bu ülkenin saatine göre çalışır.</p>
+<!-- Ülke arama -->
+<div class="bg-slate-50 rounded-2xl flex items-center px-4 py-3 gap-3 mb-3" data-purpose="tz-search-box">
+<svg class="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35" stroke-linecap="round"></path></svg>
+<input class="flex-grow border-none focus:ring-0 p-0 text-[16px] text-slate-800 font-medium bg-transparent min-w-0" id="tz-search" oninput="renderTzList(this.value)" placeholder="Ülke ara" type="text"/>
+</div>
+<!-- Tüm ülkeler (gerçek IANA saat dilimleriyle, script doldurur) -->
+<div class="space-y-1 overflow-y-auto max-h-[45vh] -mx-2 px-2" id="tz-list"></div>
+<p class="hidden text-sm text-slate-400 text-center py-6" id="tz-empty">Eşleşen ülke bulunamadı.</p>
+</div>
+<!-- END: Timezone Sheet -->
+<!-- BEGIN: Avatar Sheet -->
+<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10 w-full max-w-xl mx-auto" data-purpose="avatar-sheet" id="sheet-avatar">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Profil Fotoğrafı</h3>
+<button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
+</div>
+<div class="space-y-2 mb-4">
+<button class="w-full flex items-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-2xl font-semibold text-slate-800 transition-colors" onclick="closeSheets(); setTimeout(function(){ document.getElementById('avatar-input').click(); }, 150);">
+<i class="w-5 h-5 text-[#4C7DFF]" data-lucide="image"></i>
+<span>Yeni Fotoğraf Seç</span>
+</button>
+<button id="avatar-revert-google" class="hidden w-full flex items-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-2xl font-semibold text-slate-800 transition-colors" onclick="revertGoogleAvatar()">
+<svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+<span>Google Fotoğrafına Dön</span>
+</button>
+<button class="w-full flex items-center gap-3 p-4 bg-rose-50 hover:bg-rose-100 rounded-2xl font-semibold text-rose-600 transition-colors" onclick="removeAvatar()">
+<i class="w-5 h-5 text-rose-500" data-lucide="trash-2"></i>
+<span>Fotoğrafı Kaldır</span>
+</button>
+</div>
+<button class="w-full bg-slate-100 rounded-2xl py-3.5 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">Vazgeç</button>
+</div>
+<!-- END: Avatar Sheet -->
+<script src="js/lucide.js"></script>
+<script data-purpose="user-info-interactions">
+    lucide.createIcons();
+
+    /* ---------- Profil fotoğrafı: gerçek dosya seçimi & sıkıştırma ---------- */
+    function handleAvatarClick() {
+      var avatar = nexusGetItem('nexusAvatar');
+      if (avatar) {
+        openSheet('avatar');
+      } else {
+        document.getElementById('avatar-input').click();
+      }
+    }
+
+    function changeAvatar(input) {
+      var file = input.files && input.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var raw = e.target.result;
+        var img = new Image();
+        img.onload = function () {
+          try {
+            var canvas = document.createElement('canvas');
+            var maxDim = 256;
+            var scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            applyAvatar(dataUrl);
+          } catch (err) {
+            applyAvatar(raw);
+          }
+        };
+        img.onerror = function () { applyAvatar(raw); };
+        img.src = raw;
+      };
+      reader.readAsDataURL(file);
+      input.value = '';
+    }
+
+    function applyAvatar(val) {
+      var img = document.getElementById('avatar-img');
+      img.src = val;
+      img.classList.remove('hidden');
+      var ph = document.getElementById('avatar-placeholder');
+      if (ph) ph.classList.add('hidden');
+      try {
+        nexusSetItem('nexusAvatar', val);
+        if (window.nexusCloud && typeof window.nexusCloud.notifyLocalChange === 'function') {
+          window.nexusCloud.notifyLocalChange('nexusAvatar');
+        }
+        window.dispatchEvent(new Event('nexusAvatarChanged'));
+      } catch (err) {}
+    }
+
+    function updateAvatarSheet() {
+      var googleAvatar = nexusGetItem('nexusGoogleAvatar') || '';
+      var currentAvatar = nexusGetItem('nexusAvatar') || '';
+      var revertBtn = document.getElementById('avatar-revert-google');
+      if (revertBtn) {
+        if (googleAvatar && currentAvatar !== googleAvatar) {
+          revertBtn.classList.remove('hidden');
+        } else {
+          revertBtn.classList.add('hidden');
+        }
+      }
+    }
+
+    function revertGoogleAvatar() {
+      var googleAvatar = nexusGetItem('nexusGoogleAvatar') || '';
+      if (googleAvatar) {
+        applyAvatar(googleAvatar);
+      }
+      closeSheets();
+    }
+
+    function removeAvatar() {
+      var img = document.getElementById('avatar-img');
+      img.src = '';
+      img.classList.add('hidden');
+      var ph = document.getElementById('avatar-placeholder');
+      if (ph) ph.classList.remove('hidden');
+      try {
+        nexusSetItem('nexusAvatar', '');
+        if (window.nexusCloud && typeof window.nexusCloud.notifyLocalChange === 'function') {
+          window.nexusCloud.notifyLocalChange('nexusAvatar');
+        }
+        window.dispatchEvent(new Event('nexusAvatarChanged'));
+      } catch (e) {}
+      closeSheets();
+    }
+
+    /* ---------- Kullanıcı adı düzenleme ---------- */
+    var nameInput = document.getElementById('name-input');
+    nameInput.addEventListener('input', updateNameCount);
+    nameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveName(); });
+    function updateNameCount() {
+      document.getElementById('name-count').textContent = nameInput.value.length;
+    }
+    function saveName() {
+      var v = nameInput.value.trim();
+      if (!v) { nameInput.focus(); return; }
+      nexusSetItem('nexusUserName', v);
+      document.getElementById('username-value').textContent = v;
+      closeSheets();
+    }
+
+    /* ---------- Saat dilimi: tüm ülkeler, gerçek IANA dilimleri ---------- */
+    /* Her ülkenin başkentinin IANA saat dilimi (ISO 3166 kodu -> dilim) */
+    var COUNTRY_TZ = {
+      AF:'Asia/Kabul', AL:'Europe/Tirane', DZ:'Africa/Algiers', AD:'Europe/Andorra', AO:'Africa/Luanda', AG:'America/Antigua', AR:'America/Argentina/Buenos_Aires', AM:'Asia/Yerevan',
+      AU:'Australia/Sydney', AT:'Europe/Vienna', AZ:'Asia/Baku', BS:'America/Nassau', BH:'Asia/Bahrain', BD:'Asia/Dhaka', BB:'America/Barbados', BY:'Europe/Minsk',
+      BE:'Europe/Brussels', BZ:'America/Belize', BJ:'Africa/Porto-Novo', BT:'Asia/Thimphu', BO:'America/La_Paz', BA:'Europe/Sarajevo', BW:'Africa/Gaborone', BR:'America/Sao_Paulo',
+      BN:'Asia/Brunei', BG:'Europe/Sofia', BF:'Africa/Ouagadougou', BI:'Africa/Bujumbura', KH:'Asia/Phnom_Penh', CM:'Africa/Douala', CA:'America/Toronto', CV:'Atlantic/Cape_Verde',
+      CF:'Africa/Bangui', TD:'Africa/Ndjamena', CL:'America/Santiago', CN:'Asia/Shanghai', CO:'America/Bogota', KM:'Indian/Comoro', CG:'Africa/Brazzaville', CD:'Africa/Kinshasa',
+      CR:'America/Costa_Rica', CI:'Africa/Abidjan', HR:'Europe/Zagreb', CU:'America/Havana', CY:'Asia/Nicosia', CZ:'Europe/Prague', DK:'Europe/Copenhagen', DJ:'Africa/Djibouti',
+      DM:'America/Dominica', DO:'America/Santo_Domingo', EC:'America/Guayaquil', EG:'Africa/Cairo', SV:'America/El_Salvador', GQ:'Africa/Malabo', ER:'Africa/Asmara', EE:'Europe/Tallinn',
+      SZ:'Africa/Mbabane', ET:'Africa/Addis_Ababa', FJ:'Pacific/Fiji', FI:'Europe/Helsinki', FR:'Europe/Paris', GA:'Africa/Libreville', GM:'Africa/Banjul', GE:'Asia/Tbilisi',
+      DE:'Europe/Berlin', GH:'Africa/Accra', GR:'Europe/Athens', GD:'America/Grenada', GT:'America/Guatemala', GN:'Africa/Conakry', GW:'Africa/Bissau', GY:'America/Guyana',
+      HT:'America/Port-au-Prince', HN:'America/Tegucigalpa', HU:'Europe/Budapest', IS:'Atlantic/Reykjavik', IN:'Asia/Kolkata', ID:'Asia/Jakarta', IR:'Asia/Tehran', IQ:'Asia/Baghdad',
+      IE:'Europe/Dublin', IL:'Asia/Jerusalem', IT:'Europe/Rome', JM:'America/Jamaica', JP:'Asia/Tokyo', JO:'Asia/Amman', KZ:'Asia/Almaty', KE:'Africa/Nairobi',
+      KI:'Pacific/Tarawa', KP:'Asia/Pyongyang', KR:'Asia/Seoul', KW:'Asia/Kuwait', KG:'Asia/Bishkek', LA:'Asia/Vientiane', LV:'Europe/Riga', LB:'Asia/Beirut',
+      LS:'Africa/Maseru', LR:'Africa/Monrovia', LY:'Africa/Tripoli', LI:'Europe/Vaduz', LT:'Europe/Vilnius', LU:'Europe/Luxembourg', MG:'Indian/Antananarivo', MW:'Africa/Blantyre',
+      MY:'Asia/Kuala_Lumpur', MV:'Indian/Maldives', ML:'Africa/Bamako', MT:'Europe/Malta', MH:'Pacific/Majuro', MR:'Africa/Nouakchott', MU:'Indian/Mauritius', MX:'America/Mexico_City',
+      FM:'Pacific/Pohnpei', MD:'Europe/Chisinau', MC:'Europe/Monaco', MN:'Asia/Ulaanbaatar', ME:'Europe/Podgorica', MA:'Africa/Casablanca', MZ:'Africa/Maputo', MM:'Asia/Yangon',
+      NA:'Africa/Windhoek', NR:'Pacific/Nauru', NP:'Asia/Kathmandu', NL:'Europe/Amsterdam', NZ:'Pacific/Auckland', NI:'America/Managua', NE:'Africa/Niamey', NG:'Africa/Lagos',
+      MK:'Europe/Skopje', NO:'Europe/Oslo', OM:'Asia/Muscat', PK:'Asia/Karachi', PW:'Pacific/Palau', PS:'Asia/Hebron', PA:'America/Panama', PG:'Pacific/Port_Moresby',
+      PY:'America/Asuncion', PE:'America/Lima', PH:'Asia/Manila', PL:'Europe/Warsaw', PT:'Europe/Lisbon', QA:'Asia/Qatar', RO:'Europe/Bucharest', RU:'Europe/Moscow',
+      RW:'Africa/Kigali', KN:'America/St_Kitts', LC:'America/St_Lucia', VC:'America/St_Vincent', WS:'Pacific/Apia', SM:'Europe/San_Marino', ST:'Africa/Sao_Tome', SA:'Asia/Riyadh',
+      SN:'Africa/Dakar', RS:'Europe/Belgrade', SC:'Indian/Mahe', SL:'Africa/Freetown', SG:'Asia/Singapore', SK:'Europe/Bratislava', SI:'Europe/Ljubljana', SB:'Pacific/Guadalcanal',
+      SO:'Africa/Mogadishu', ZA:'Africa/Johannesburg', SS:'Africa/Juba', ES:'Europe/Madrid', LK:'Asia/Colombo', SD:'Africa/Khartoum', SR:'America/Paramaribo', SE:'Europe/Stockholm',
+      CH:'Europe/Zurich', SY:'Asia/Damascus', TW:'Asia/Taipei', TJ:'Asia/Dushanbe', TZ:'Africa/Dar_es_Salaam', TH:'Asia/Bangkok', TL:'Asia/Dili', TG:'Africa/Lome',
+      TO:'Pacific/Tongatapu', TT:'America/Port_of_Spain', TN:'Africa/Tunis', TR:'Europe/Istanbul', TM:'Asia/Ashgabat', TV:'Pacific/Funafuti', UG:'Africa/Kampala', UA:'Europe/Kyiv',
+      AE:'Asia/Dubai', GB:'Europe/London', US:'America/New_York', UY:'America/Montevideo', UZ:'Asia/Tashkent', VU:'Pacific/Efate', VA:'Europe/Vatican', VE:'America/Caracas',
+      VN:'Asia/Ho_Chi_Minh', XK:'Europe/Belgrade', YE:'Asia/Aden', ZM:'Africa/Lusaka', ZW:'Africa/Harare'
+    };
+    /* Ülke adları tarayıcının gerçek Türkçe verisinden gelir */
+    var countryName = (function () {
+      try { var dn = new Intl.DisplayNames([window.nexusLang || 'tr'], { type: 'region' }); return function (c) { return dn.of(c) || c; }; }
+      catch (e) { return function (c) { return c; }; }
+    })();
+    var COUNTRIES = Object.keys(COUNTRY_TZ).map(function (code) {
+      return { code: code, tz: COUNTRY_TZ[code], name: countryName(code) };
+    }).sort(function (a, b) { return a.name.localeCompare(b.name, window.nexusLang || 'tr'); });
+
+    function deviceTimezone() {
+      try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Istanbul'; }
+      catch (e) { return 'Europe/Istanbul'; }
+    }
+    function cityLabel(tz) {
+      var CITY_TR = { Istanbul: 'İstanbul', London: 'Londra', Vienna: 'Viyana', Rome: 'Roma', Athens: 'Atina', Cairo: 'Kahire', Moscow: 'Moskova', Brussels: 'Brüksel', Zurich: 'Zürih', Warsaw: 'Varşova', Lisbon: 'Lizbon', Copenhagen: 'Kopenhag', Stockholm: 'Stokholm', Kyiv: 'Kiev', Jerusalem: 'Kudüs', Riyadh: 'Riyad', Baghdad: 'Bağdat', Tehran: 'Tahran', Damascus: 'Şam', Tripoli: 'Trablus', Tunis: 'Tunus', Algiers: 'Cezayir', Beirut: 'Beyrut', Nicosia: 'Lefkoşa', Tokyo: 'Tokyo', Seoul: 'Seul' };
+      var city = tz.split('/').pop();
+      return CITY_TR[city] || city.replace(/_/g, ' ');
+    }
+    /* Gerçek GMT farkı (yaz saati dahil, canlı hesaplanır) */
+    function gmtOffset(tz) {
+      try {
+        var parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(new Date());
+        var p = parts.filter(function (x) { return x.type === 'timeZoneName'; })[0];
+        return p ? p.value : '';
+      } catch (e) { return ''; }
+    }
+    /* Seçili ülke: kayıt yoksa cihazı diliminden eşleşen ülke bulunur */
+    function selectedCountry() {
+      var code = nexusGetItem('nexusTimezoneCountry');
+      if (code && COUNTRY_TZ[code]) return code;
+      var saved = nexusGetItem('nexusTimezone');
+      var tz = (saved && saved !== 'auto') ? saved : deviceTimezone();
+      var hit = COUNTRIES.filter(function (c) { return c.tz === tz; })[0];
+      return hit ? hit.code : 'TR';
+    }
+    function renderTimezone() {
+      var code = selectedCountry();
+      var tz = COUNTRY_TZ[code];
+      var now = '';
+      try {
+        now = new Intl.DateTimeFormat((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date());
+      } catch (e) { /* bilinmeyen dilimde yalnızca ad gösterilir */ }
+      document.getElementById('timezone-value').textContent = countryName(code) + (now ? ' · ' + now : '');
+      renderTzList(document.getElementById('tz-search').value);
+    }
+    function renderTzList(filter) {
+      var list = document.getElementById('tz-list');
+      var q = (filter || '').trim().toLocaleLowerCase('tr');
+      var sel = selectedCountry();
+      list.innerHTML = '';
+      var shown = 0;
+      COUNTRIES.forEach(function (c) {
+        if (q && c.name.toLocaleLowerCase('tr').indexOf(q) === -1) return;
+        shown++;
+        var btn = document.createElement('button');
+        btn.className = 'w-full flex items-center justify-between gap-3 rounded-2xl px-4 py-3 active:bg-slate-50 transition-colors text-left';
+        btn.innerHTML =
+          '<span class="min-w-0"><span class="block text-[16px] font-medium truncate">' + c.name + '</span>' +
+          '<span class="block text-xs text-slate-400 mt-0.5">' + cityLabel(c.tz) + ' · ' + gmtOffset(c.tz) + '</span></span>' +
+          (c.code === sel
+            ? '<svg class="w-5 h-5 text-[#4C7DFF] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            : '');
+        btn.onclick = function () { pickCountry(c.code); };
+        list.appendChild(btn);
+      });
+      document.getElementById('tz-empty').classList.toggle('hidden', shown > 0);
+    }
+    function pickCountry(code) {
+      nexusSetItem('nexusTimezoneCountry', code);
+      nexusSetItem('nexusTimezone', COUNTRY_TZ[code]);
+      renderTimezone();
+      closeSheets();
+    }
+
+    /* ---------- Bottom sheets ---------- */
+    function openSheet(name) {
+      document.getElementById('sheet-backdrop').classList.remove('hidden');
+      document.getElementById('sheet-' + name).classList.add('open');
+      if (name === 'name') setTimeout(function () { nameInput.focus(); }, 260);
+      if (name === 'avatar') {
+        updateAvatarSheet();
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+    function closeSheets() {
+      document.getElementById('sheet-backdrop').classList.add('hidden');
+      document.querySelectorAll('.sheet').forEach(function (s) { s.classList.remove('open'); });
+    }
+
+    /* Ülke verileri hazır olduktan sonra kayıtlı verileri yükle (profil sayfasıyla senkron) — gerçek veri yoksa dürüst varsayılanlar */
+    (function () {
+      var name = nexusGetItem('nexusUserName');
+      document.getElementById('username-value').textContent = name || 'Misafir';
+      nameInput.value = name || '';
+      updateNameCount();
+      var avatar = nexusGetItem('nexusAvatar');
+      if (avatar) {
+        var img = document.getElementById('avatar-img');
+        img.src = avatar;
+        img.classList.remove('hidden');
+        var ph = document.getElementById('avatar-placeholder');
+        if (ph) ph.classList.add('hidden');
+      }
+      renderTimezone();
+    })();
+  </script>
+</body></html>
+

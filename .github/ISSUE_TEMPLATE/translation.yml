@@ -1,0 +1,31 @@
+name: Translation
+description: Report a missing/wrong translation or offer a new language
+labels: ["translation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NEXUS ships with 100% English + Turkish coverage (enforced by a test).
+        Community languages are welcome! A language is added by contributing a
+        dictionary file only — the layout is language-agnostic and no app code
+        needs to change.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is this about?
+      options:
+        - A string shows untranslated (EN or TR)
+        - A translation is wrong or awkward
+        - I want to offer a NEW language
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: |
+        For untranslated/wrong strings: which screen, what does it say, what
+        should it say, and in which language?
+        For new languages: which language, and are you willing to maintain it?
+    validations:
+      required: true

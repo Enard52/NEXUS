@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+  <title>NEXUS - Akıllı Uygulama</title>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="data.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #f8f6ff 0%, #ffffff 30%, #f7fbff 100%);
+    }
+    html.dark body {
+      background: linear-gradient(180deg, #020617 0%, #0f172a 28%, #111827 100%);
+      color: #f8fafc;
+    }
+    .feature-chip {
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    html.dark .feature-chip {
+      border-color: rgba(148, 163, 184, 0.24);
+      background: rgba(30, 41, 59, 0.82);
+      color: #e2e8f0;
+      box-shadow: 0 10px 24px rgba(2, 6, 23, 0.34);
+    }
+  </style>
+</head>
+<body class="text-slate-900 dark:text-slate-50">
+  <main class="mx-auto max-w-md px-5 pb-8 pt-12">
+    <header class="mb-5 flex items-center justify-between">
+      <button onclick="history.length > 1 ? history.back() : window.location.href='stitch-smart.html'" class="p-1 -ml-1 text-slate-700 dark:text-slate-200 active:scale-95 transition-transform" aria-label="Geri">
+        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <h1 id="smart-detail-title" class="text-lg font-bold tracking-tight max-w-[16rem] truncate">Akıllı Uygulama</h1>
+      <div class="w-10"></div>
+    </header>
+
+    <section class="overflow-hidden rounded-[2rem] bg-white shadow-[0_12px_36px_rgba(15,23,42,0.08)] dark:bg-slate-900 dark:shadow-[0_14px_36px_rgba(2,6,23,0.45)]">
+      <div class="relative h-72 w-full bg-slate-100 dark:bg-slate-800">
+        <img id="smart-detail-image" alt="" class="h-full w-full object-cover" src="assets/photos/photo-1586023492125-27b2c045efd7.jpg"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/18 via-transparent to-white/12"></div>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="text-[1.75rem] font-extrabold leading-tight tracking-tight whitespace-normal overflow-visible text-overflow-unset" id="smart-detail-heading">Akıllı Uygulama</h2>
+      <p class="mt-4 text-[15px] font-medium leading-7 text-slate-500 dark:text-slate-300" id="smart-detail-intro">
+        Eklenen cihazlarına göre anlamlı bir akıllı uygulama deneyimi hazırla.
+      </p>
+    </section>
+
+    <section class="mt-8">
+      <h3 class="mb-4 text-xl font-bold">Özellikler</h3>
+      <div id="smart-detail-features" class="flex flex-wrap gap-3"></div>
+    </section>
+
+    <section class="mt-8">
+      <button id="smart-detail-create" class="w-full rounded-[1.35rem] bg-[#4C7DFF] px-6 py-4 text-base font-bold text-white shadow-lg shadow-slate-900/10">
+        Uygulamayı Oluştur
+      </button>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var id = (params.get('id') || '').trim();
+      var template = typeof window.getSmartPromptById === 'function' ? window.getSmartPromptById(id) : null;
+      // Tanınmayan kimlikte yanlış bir uygulamayı göstermek yerine akıllı uygulamalar listesine dön.
+      if (!template) { window.location.replace('stitch-smart.html'); return; }
+
+      document.getElementById('smart-detail-title').textContent = template.title;
+      document.getElementById('smart-detail-heading').textContent = template.title;
+      document.getElementById('smart-detail-image').src = template.heroImage;
+      document.getElementById('smart-detail-image').alt = template.title;
+      document.getElementById('smart-detail-intro').textContent = template.introduction || template.subtitle || '';
+
+      var features = Array.isArray(template.features) ? template.features : [];
+      if (!features.length && template.category === 'security') {
+        features = ['Kamera Durumu', 'Kilit Kontrolü', 'Dışarıdayım Modu', 'Hızlı Güvenlik', 'Durum Özeti'];
+      } else if (!features.length && template.category === 'media') {
+        features = ['Film Başlat', 'Ortam Işıkları', 'Ses Seviyesi', 'Gece Modu', 'Eğlence Sahnesi'];
+      } else if (!features.length && template.category === 'lighting') {
+        features = ['Işık Aç/Kapat', 'Renk Sıcaklığı', 'Parlaklık Kontrolü', 'Hızlı Yüzdeler', 'Oda Bazlı Geçiş'];
+      } else if (!features.length && template.category === 'climate') {
+        features = ['Sıcaklık Ayarı', 'Eko Modu', 'Oda Bazlı Kontrol', 'Hızlı Modlar', 'Konfor Profilleri'];
+      } else if (!features.length && template.category === 'energy') {
+        features = ['Hızlı Kapatma', 'Eko Profilleri', 'Zamanlı Tasarruf', 'Tüketim Özeti', 'Priz Grupları'];
+      } else if (!features.length) {
+        features = ['Cihaz Durumu', 'Hızlı Komutlar', 'Sahne Başlatma', 'Oda Bazlı Görünüm', 'Akıllı Öneriler'];
+      }
+      var featuresWrap = document.getElementById('smart-detail-features');
+      featuresWrap.innerHTML = features.length ? features.map(function (feature) {
+        return '<span class="feature-chip inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold text-slate-700 whitespace-nowrap">' + feature + '</span>';
+      }).join('') : '<p class="text-sm text-slate-500 dark:text-slate-300">Bu akış için önerilen özellikler hazırlanıyor.</p>';
+
+      document.getElementById('smart-detail-create').addEventListener('click', function () {
+        var prompt = template.prompt || ('Bu akıllı uygulamayı oluştur: ' + template.title + '. ' + (template.subtitle || template.introduction || ''));
+        window.location.href = 'stitch-chat.html?promptId=' + encodeURIComponent(template.id) + '&promptText=' + encodeURIComponent(prompt);
+      });
+    })();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,47 @@
+{
+  "name": "@nexus/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NEXUS AI — Local sync server: auth, per-user data, static app hosting.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "build": "node ../../scripts/build-server.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "dependencies": {
+    "@nexus/accounts": "workspace:*",
+    "@nexus/agents": "workspace:*",
+    "@nexus/ai": "workspace:*",
+    "@nexus/billing": "workspace:*",
+    "@nexus/config": "workspace:*",
+    "@nexus/connectors": "workspace:*",
+    "@nexus/core": "workspace:*",
+    "@nexus/database": "workspace:*",
+    "@nexus/design-system": "workspace:*",
+    "@nexus/devices": "workspace:*",
+    "@nexus/i18n": "workspace:*",
+    "@nexus/interface": "workspace:*",
+    "@nexus/legal": "workspace:*",
+    "@nexus/memory": "workspace:*",
+    "@nexus/mobile": "workspace:*",
+    "@nexus/platform": "workspace:*",
+    "@nexus/plugins": "workspace:*",
+    "@nexus/routines": "workspace:*",
+    "@nexus/security": "workspace:*",
+    "@nexus/skills": "workspace:*",
+    "@nexus/support": "workspace:*",
+    "@nexus/web": "workspace:*"
+  },
+  "author": "NEXUS",
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+# Build output
+dist/
+dist-mobile/
+build/
+*.tsbuildinfo
+# Generated release manifest (rebuilt by `pnpm release:manifest`)
+sbom.json
+# Environment & secrets
+.env
+.env.*
+!.env.example
+# Yerel dev oturum cerezleri (curl tarafindan uretilir) — repoya girmemeli
+cookies.txt
+# Logs
+logs/
+*.log
+# Coverage & test artifacts
+coverage/
+test_out.txt
+vitest.config.ts.timestamp-*.mjs
+# One-off analysis scratch files & ad-hoc audit screenshots
+# Yerel yayin sahne klasorleri (wrangler/site push) — gecerli veri degil, cikti
+scripts/tmp-*
+.audit-*.png
+# Legacy recovery/scratch folders — must never come back
+.history/
+.recovery-ref/
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+# Temporary headless-browser profiles used for screenshotting demos
+.shot*/
+# Generated static assets (build mirrors)
+packages/server/data/
+nul
+.superdesign/tmp
+# Türetilmiş mobil/derleme çıktıları — repoda durmaz, release hattı üretir
+public/downloads/*.apk
+public/downloads/*.aab
+public/downloads/SHA256SUMS.txt
+# Supabase anahtarlari repoya girmez — cloud-config.example.js dan kopyala
+cloud-config.js
+mobile-app/www/cloud-config.js
+# Desktop app build output
+desktop/node_modules/
+desktop/dist/
+desktop/app/
+# Old www backup (contains large installers; not part of the source)
+scripts/archive/www-arsiv/
+# tool artifacts (not project files)
+.video_agent/
+.zcode/
+.replit
+console.log(*
+_web-publish/
+supabase/mail-token.txt
+# tool state / runtime logs (27 Eki)
+_tmp-*.txt
+gh-models.tmp
+_tmp-*.mjs
+.mimosa/
+desktop/std*.txt
+supabase/.temp/
+.audit-shots/
+.private/
+.wrangler/
+scripts/archive/
+# İç lansman planı — kamuya açık snapshot'a girmez (tam geçmiş: Enard52/NEXUS-archive)
+docs/OSS-LAUNCH-PLAN.md

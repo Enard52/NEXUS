@@ -1,0 +1,1143 @@
+// NEXUS — yerel ağ (LAN) connector katmanı. Bulut yok, ücret yok: komutlar telefondan /
+// bilgisayardan doğrudan cihaza gider.
+//
+// Taşıma (transport) sırası:
+//   1. Masaüstü uygulaması (Electron): preload'un verdiği window.nexusDesktop.http — CORS yok.
+//   2. Telefon (Capacitor 6+): çekirdekteki CapacitorHttp — WebView'ın mixed-content / CORS
+//      kısıtına takılmaz. (Android'de yerel http için network_security_config gerekir.)
+//   3. Tarayıcı: fetch (yalnızca CORS izni veren cihazlarda çalışır; geliştirme içindir).
+//
+// UDP isteyen protokoller (WiZ, LIFX, Govee) ve TCP isteyenler (Kasa, Yeelight) yalnızca köprüsü olan ortamda (masaüstü
+// uygulaması) etkinleşir; olmayan ortamda "desteklenmiyor" der, asla sahte başarı göstermez.
+
+(function () {
+  "use strict";
+
+  var DEFAULT_TIMEOUT_MS = 2500;
+  // Ağ taraması sırasında cevap vermeyen adresler hızlı elensin diye kısaltılır (tarama bitince sıfırlanır).
+  var scanTimeoutMs = 0;
+  var transport = null;
+
+  function setTransport(fn) {
+    transport = typeof fn === "function" ? fn : null;
+  }
+
+  function desktopBridge() {
+    return window.nexusDesktop && typeof window.nexusDesktop.http === "function" ? window.nexusDesktop : null;
+  }
+
+  function nativeHttpPlugin() {
+    var capi = window.Capacitor;
+    if (!capi || typeof capi.isNativePlatform !== "function" || !capi.isNativePlatform()) return null;
+    var plugins = capi.Plugins || {};
+    var plugin = plugins.CapacitorHttp || plugins.Http;
+    return plugin && typeof plugin.request === "function" ? plugin : null;
+  }
+
+  function tcpBridge() {
+    var d = desktopBridge();
+    return d && typeof d.tcp === "function" ? d.tcp : null;
+  }
+
+  function request(opts) {
+    if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
+    var blocked = lanAddressError(opts.url);
+    if (blocked) return Promise.reject(blocked);
+    if (transport) return transport(opts);
+    var timeout = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
+    var headers = opts.headers || (opts.body ? { "Content-Type": "application/json" } : {});
+    var desk = desktopBridge();
+    if (desk) {
+      return desk.http({ url: opts.url, method: opts.method || "GET", headers: headers, body: opts.body, timeoutMs: timeout });
+    }
+    var plugin = nativeHttpPlugin();
+    if (plugin) {
+      var data = opts.body;
+      if (typeof data === "string" && /json/i.test(headers["Content-Type"] || "")) {
+        try { data = JSON.parse(data); } catch (e) { /* düz metin olarak gönder */ }
+      }
+      return plugin.request({
+        method: opts.method || "GET",
+        url: opts.url,
+        headers: headers,
+        data: data,
+        connectTimeout: timeout,
+        readTimeout: timeout,
+        responseType: "text",
+      }).then(function (res) {
+        var text = typeof res.data === "string" ? res.data : JSON.stringify(res.data);
+        return { status: res.status, text: text };
+      });
+    }
+    var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, timeout) : null;
+    return fetch(opts.url, {
+      method: opts.method || "GET",
+      body: opts.body,
+      headers: opts.body || opts.headers ? headers : undefined,
+      signal: controller ? controller.signal : undefined,
+      cache: "no-store",
+    }).then(function (res) {
+      return res.text().then(function (text) { return { status: res.status, text: text }; });
+    }).finally(function () { if (timer) clearTimeout(timer); });
+  }
+
+  function getJson(url, timeoutMs) {
+    return request({ url: url, timeoutMs: timeoutMs }).then(function (res) {
+      if (res.status < 200 || res.status >= 300) throw new Error("http " + res.status);
+      return JSON.parse(res.text);
+    });
+  }
+
+  function sendJson(url, method, body) {
+    return request({ url: url, method: method, body: JSON.stringify(body), headers: { "Content-Type": "application/json" } }).then(function (res) {
+      if (res.status < 200 || res.status >= 300) throw new Error("http " + res.status);
+      try { return JSON.parse(res.text); } catch (e) { return res.text; }
+    });
+  }
+
+  function baseUrl(device) {
+    var host = /^https?:\/\//.test(device.host || "") ? device.host : "http://" + (device.host || device.ip);
+    return host.replace(/\/+$/, "");
+  }
+
+  function hostOnly(device) {
+    return baseUrl(device).replace(/^https?:\/\//, "").split(":")[0];
+  }
+
+  // Yerel ağ allowlist'i: komutlar yalnızca kullanıcının kendi ağına gider. Genel bir
+  // adrese (ör. içe aktarılmış bozuk bir kayda) istek atılmaz; masaüstündeki LAN proxy
+  // aynı kuralı sunucu tarafında da uygular (main.cjs isPrivateHost).
+  function isPrivateHost(host) {
+    host = String(host || "").replace(/^\[|\]$/g, "").toLowerCase();
+    if (!host) return false;
+    if (host === "localhost" || host === "::1") return true;
+    if (/\.(local|lan|home|internal|home\.arpa)$/.test(host)) return true; // mDNS / yerel çözümleyici adları
+    var v4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (v4) {
+      var a = +v4[1], b = +v4[2];
+      return a === 10 || a === 127 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254);
+    }
+    if (/^[0-9a-f:]+$/.test(host) && host.indexOf(":") !== -1) return /^f[cd]/.test(host) || /^fe[89ab]/.test(host);
+    return false;
+  }
+
+  // URL/adres yerel ağa gitmiyorsa açıklayıcı bir hata döner, yoksa null.
+  function lanAddressError(urlOrHost) {
+    var host = urlOrHost;
+    if (/^[a-z]+:\/\//i.test(urlOrHost)) {
+      try { host = new URL(urlOrHost).hostname; } catch (e) { return new Error("geçersiz adres"); }
+    } else {
+      host = String(urlOrHost).replace(/^https?:\/\//i, "").split("/")[0].split(":")[0];
+    }
+    if (isPrivateHost(host)) return null;
+    var err = new Error("Yalnızca yerel ağ adreslerine komut gönderilir (" + host + " yerel değil).");
+    err.code = "not-lan";
+    return err;
+  }
+
+  function hexToRgb(hex) {
+    var n = parseInt(String(hex || "#ffffff").replace("#", ""), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  function unsupported(id, capability) {
+    return Promise.reject(new Error(id + ": desteklenmeyen işlev " + capability));
+  }
+
+  // --- Shelly Gen1 (REST) ---------------------------------------------------
+  var shelly = {
+    id: "shelly",
+    label: "Shelly",
+    caps: ["switch", "brightness"],
+    probe: function (device) {
+      return getJson(baseUrl(device) + "/settings").then(function (info) {
+        if (!info || !info.device || !info.device.type) throw new Error("shelly: kimlik yok");
+        return {
+          protocol: "shelly",
+          model: info.device.type,
+          name: info.name || info.device.hostname || device.name,
+          kind: /SHCB|SHBLB|SHRGBW|SHDM|LTAH|dimmer|bulb/i.test(info.device.type) ? "light" : /SHPLG|SHPRO/i.test(info.device.type) ? "plug" : "switch",
+        };
+      });
+    },
+    read: function (device) {
+      return getJson(baseUrl(device) + "/status").then(function (status) {
+        var light = status.lights && status.lights[0] ? status.lights[0] : null;
+        var relay = status.relays && status.relays[0] ? status.relays[0] : null;
+        var meter = status.meters && status.meters[0] ? status.meters[0] : null;
+        return {
+          switch: light ? !!light.ison : relay ? !!relay.ison : null,
+          brightness: light && typeof light.brightness === "number" ? light.brightness : null,
+          power: meter && typeof meter.power === "number" ? meter.power : null,
+        };
+      });
+    },
+    firmware: function (device) {
+      return getJson(baseUrl(device) + "/ota").then(function (o) {
+        return { current: o.old_version || null, latest: o.has_update ? o.new_version : (o.old_version || null), hasUpdate: !!o.has_update };
+      });
+    },
+    write: function (device, capability, value) {
+      var id = device.endpointId == null ? 0 : device.endpointId;
+      if (capability === "brightness") return request({ url: baseUrl(device) + "/light/" + id + "?brightness=" + Math.round(value) });
+      if (capability === "switch") {
+        var path = device.kind === "light" ? "/light/" : "/relay/";
+        return request({ url: baseUrl(device) + path + id + "?turn=" + (value ? "on" : "off") });
+      }
+      return unsupported("shelly", capability);
+    },
+  };
+
+  // --- Shelly Gen2 / Plus / Pro (JSON-RPC over HTTP) -------------------------
+  var shellyRpc = {
+    id: "shelly-rpc",
+    label: "Shelly Plus / Pro",
+    caps: ["switch", "brightness"],
+    probe: function (device) {
+      return getJson(baseUrl(device) + "/rpc/Shelly.GetDeviceInfo").then(function (info) {
+        if (!info || !info.id || !info.gen) throw new Error("shelly-rpc: kimlik yok");
+        var app = String(info.app || info.model || "");
+        return {
+          protocol: "shelly-rpc",
+          model: info.model || app,
+          name: info.name || info.id,
+          kind: /dimmer|rgbw|bulb|light/i.test(app) ? "light" : /plug/i.test(app) ? "plug" : "switch",
+        };
+      });
+    },
+    read: function (device) {
+      var id = device.endpointId == null ? 0 : device.endpointId;
+      var comp = device.kind === "light" ? "Light" : "Switch";
+      return getJson(baseUrl(device) + "/rpc/" + comp + ".GetStatus?id=" + id).then(function (s) {
+        return {
+          switch: typeof s.output === "boolean" ? s.output : null,
+          brightness: typeof s.brightness === "number" ? s.brightness : null,
+          power: typeof s.apower === "number" ? s.apower : null,
+        };
+      });
+    },
+    firmware: function (device) {
+      return Promise.all([
+        getJson(baseUrl(device) + "/rpc/Shelly.GetDeviceInfo"),
+        getJson(baseUrl(device) + "/rpc/Shelly.CheckForUpdate").catch(function () { return {}; }),
+      ]).then(function (r) {
+        var latest = r[1] && r[1].stable && r[1].stable.version;
+        return { current: r[0].ver || r[0].fw_id || null, latest: latest || r[0].ver || null, hasUpdate: !!latest };
+      });
+    },
+    write: function (device, capability, value) {
+      var id = device.endpointId == null ? 0 : device.endpointId;
+      var comp = device.kind === "light" ? "Light" : "Switch";
+      if (capability === "switch") return getJson(baseUrl(device) + "/rpc/" + comp + ".Set?id=" + id + "&on=" + (value ? "true" : "false"));
+      if (capability === "brightness" && comp === "Light") return getJson(baseUrl(device) + "/rpc/Light.Set?id=" + id + "&brightness=" + Math.round(value));
+      return unsupported("shelly-rpc", capability);
+    },
+  };
+
+  // --- Tasmota (HTTP komut arayüzü) -----------------------------------------
+  var tasmota = {
+    id: "tasmota",
+    label: "Tasmota",
+    caps: ["switch", "brightness", "color"],
+    cmd: function (device, command) {
+      return getJson(baseUrl(device) + "/cm?cmnd=" + encodeURIComponent(command));
+    },
+    probe: function (device) {
+      return tasmota.cmd(device, "Status 0").then(function (s) {
+        if (!s || !s.Status || !s.StatusFWR) throw new Error("tasmota: kimlik yok");
+        var name = (s.Status.DeviceName || (s.Status.FriendlyName && s.Status.FriendlyName[0]) || "Tasmota").trim();
+        var light = s.StatusSTS && typeof s.StatusSTS.Dimmer === "number";
+        return { protocol: "tasmota", model: "Tasmota " + s.StatusFWR.Version, name: name, kind: light ? "light" : "switch" };
+      });
+    },
+    read: function (device) {
+      return tasmota.cmd(device, "Status 11").then(function (s) {
+        var sts = s.StatusSTS || {};
+        var p = sts.POWER || sts.POWER1;
+        return { switch: p == null ? null : p === "ON", brightness: typeof sts.Dimmer === "number" ? sts.Dimmer : null };
+      });
+    },
+    firmware: function (device) {
+      return tasmota.cmd(device, "Status 2").then(function (s) {
+        return { current: s.StatusFWR && s.StatusFWR.Version || null, latest: null, hasUpdate: null };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return tasmota.cmd(device, "Power " + (value ? "On" : "Off"));
+      if (capability === "brightness") return tasmota.cmd(device, "Dimmer " + Math.round(value));
+      if (capability === "color") return tasmota.cmd(device, "Color " + String(value).replace("#", ""));
+      return unsupported("tasmota", capability);
+    },
+  };
+
+  // --- WLED (JSON API) --------------------------------------------------------
+  var wled = {
+    id: "wled",
+    label: "WLED",
+    caps: ["switch", "brightness", "color"],
+    probe: function (device) {
+      return getJson(baseUrl(device) + "/json/info").then(function (info) {
+        if (!info || !info.ver || !info.leds) throw new Error("wled: sürüm alanı yok");
+        return { protocol: "wled", model: "WLED " + info.ver, name: info.name || device.name || "WLED", kind: "light" };
+      });
+    },
+    read: function (device) {
+      return getJson(baseUrl(device) + "/json/state").then(function (state) {
+        var col = state.seg && state.seg[0] && state.seg[0].col && state.seg[0].col[0];
+        return {
+          switch: !!state.on,
+          brightness: typeof state.bri === "number" ? Math.round((state.bri / 255) * 100) : null,
+          color: col ? "#" + col.slice(0, 3).map(function (v) { return ("0" + Number(v).toString(16)).slice(-2); }).join("").toUpperCase() : null,
+        };
+      });
+    },
+    firmware: function (device) {
+      return getJson(baseUrl(device) + "/json/info").then(function (i) { return { current: i.ver || null, latest: null, hasUpdate: null }; });
+    },
+    write: function (device, capability, value) {
+      var body = capability === "switch" ? { on: !!value }
+        : capability === "brightness" ? { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 255)) }
+        : capability === "color" ? { seg: [{ col: [hexToRgb(value)] }] }
+        : null;
+      if (!body) return unsupported("wled", capability);
+      return sendJson(baseUrl(device) + "/json/state", "POST", body);
+    },
+  };
+
+  // --- ESPHome (web_server bileşeni, REST) ----------------------------------
+  // Uç noktalar: /<domain>/<id>  ve  POST /<domain>/<id>/turn_on|turn_off|toggle
+  var esphome = {
+    id: "esphome",
+    label: "ESPHome",
+    caps: ["switch", "brightness"],
+    probe: function (device) {
+      // web_server v1/v2 kök sayfası "ESPHome" içerir; bileşen kimliği kayıtta tutulur
+      return request({ url: baseUrl(device) + "/" }).then(function (res) {
+        if (res.status !== 200 || !/esphome/i.test(res.text)) throw new Error("esphome: imza yok");
+        var title = (res.text.match(/<title>([^<]+)<\/title>/i) || [])[1] || "ESPHome";
+        var light = /light-|\/light\//i.test(res.text);
+        var idMatch = res.text.match(/(?:light|switch)[-/]([a-z0-9_]+)/i);
+        return {
+          protocol: "esphome", model: "ESPHome", name: title.trim(), kind: light ? "light" : "switch",
+          entity: idMatch ? idMatch[1] : null,
+        };
+      });
+    },
+    path: function (device) {
+      return "/" + (device.kind === "light" ? "light" : "switch") + "/" + (device.entity || (device.kind === "light" ? "light" : "relay"));
+    },
+    read: function (device) {
+      return getJson(baseUrl(device) + esphome.path(device)).then(function (s) {
+        return {
+          switch: s.state == null ? null : String(s.state).toUpperCase() === "ON",
+          brightness: typeof s.brightness === "number" ? Math.round((s.brightness / 255) * 100) : null,
+        };
+      });
+    },
+    write: function (device, capability, value) {
+      var p = esphome.path(device);
+      if (capability === "switch") return request({ url: baseUrl(device) + p + (value ? "/turn_on" : "/turn_off"), method: "POST" });
+      if (capability === "brightness" && device.kind === "light") {
+        return request({ url: baseUrl(device) + p + "/turn_on?brightness=" + Math.round((Number(value) / 100) * 255), method: "POST" });
+      }
+      return unsupported("esphome", capability);
+    },
+  };
+
+  // --- Philips Hue (yerel köprü API v1) --------------------------------------
+  // Köprü bir kez eşleştirilir (köprüdeki düğmeye basılır), sonra her lamba ayrı cihaz olur.
+  var hue = {
+    id: "hue",
+    label: "Philips Hue",
+    caps: ["switch", "brightness", "color"],
+    probe: function (device) {
+      return getJson(baseUrl(device) + "/api/config").then(function (c) {
+        if (!c || !c.bridgeid) throw new Error("hue: köprü değil");
+        return { protocol: "hue", model: c.modelid || "Hue Bridge", name: c.name || "Hue Köprüsü", kind: "bridge", bridgeid: c.bridgeid };
+      });
+    },
+    // Köprü düğmesine basıldıktan sonra 30 sn içinde çağrılır; kullanıcı adını döner.
+    pair: function (host) {
+      var device = { host: host };
+      return sendJson(baseUrl(device) + "/api", "POST", { devicetype: "nexus#app" }).then(function (r) {
+        var item = Array.isArray(r) ? r[0] : r;
+        if (item && item.success && item.success.username) return item.success.username;
+        if (item && item.error && item.error.type === 101) {
+          var e = new Error("Köprüdeki yuvarlak düğmeye bas, sonra tekrar dene."); e.code = "link-button"; throw e;
+        }
+        throw new Error("hue: eşleştirme başarısız");
+      });
+    },
+    lights: function (host, user) {
+      return getJson(baseUrl({ host: host }) + "/api/" + encodeURIComponent(user) + "/lights").then(function (all) {
+        if (Array.isArray(all) && all[0] && all[0].error) throw new Error("hue: yetki yok");
+        return Object.keys(all || {}).map(function (id) {
+          var l = all[id] || {};
+          var type = String(l.type || "");
+          var caps = ["switch"];
+          if (/dimmable|color|temperature/i.test(type)) caps.push("brightness");
+          if (/color light/i.test(type)) caps.push("color");
+          if (/temperature/i.test(type)) caps.push("colorTemp");
+          return { id: id, name: l.name || ("Hue " + id), type: type, caps: caps, model: l.modelid || "Hue" };
+        });
+      });
+    },
+    url: function (device) {
+      return baseUrl(device) + "/api/" + encodeURIComponent(device.hueUser || "") + "/lights/" + encodeURIComponent(device.endpointId == null ? 0 : device.endpointId);
+    },
+    // Eksik eşleştirme verisiyle (hueUser / endpointId) asla istek atılmaz: bozuk kayıt
+    // "/api//lights/undefined" gibi anlamsız URL üretirdi. Kullanıcıya net mesaj verilir.
+    identityError: function (device) {
+      if (!device.hueUser) {
+        var e = new Error("Hue köprüsü eşleştirmesi eksik — cihazı silip yeniden eşleştir.");
+        e.code = "hue-identity";
+        return e;
+      }
+      if (device.endpointId == null) {
+        var e2 = new Error("Hue ışık kimliği eksik — cihazı silip yeniden eşleştir.");
+        e2.code = "hue-identity";
+        return e2;
+      }
+      return null;
+    },
+    firmware: function (device) {
+      var bad = hue.identityError(device);
+      if (bad) return Promise.reject(bad);
+      return getJson(hue.url(device)).then(function (l) {
+        var sw = l.swupdate || {};
+        return { current: l.swversion || null, latest: null, hasUpdate: sw.state ? sw.state !== "noupdates" : null };
+      });
+    },
+    read: function (device) {
+      var bad = hue.identityError(device);
+      if (bad) return Promise.reject(bad);
+      return getJson(hue.url(device)).then(function (l) {
+        if (Array.isArray(l) && l[0] && l[0].error) throw new Error("hue: yetki yok");
+        var s = l.state || {};
+        return { switch: typeof s.on === "boolean" ? s.on : null, brightness: typeof s.bri === "number" ? Math.round((s.bri / 254) * 100) : null, reachable: s.reachable !== false };
+      });
+    },
+    write: function (device, capability, value) {
+      var bad = hue.identityError(device);
+      if (bad) return Promise.reject(bad);
+      var body = null;
+      if (capability === "switch") body = { on: !!value };
+      if (capability === "brightness") body = { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 254)) };
+      if (capability === "color") body = { on: true, xy: rgbToXy(hexToRgb(value)) };
+      if (!body) return unsupported("hue", capability);
+      return sendJson(hue.url(device) + "/state", "PUT", body).then(function (r) {
+        if (Array.isArray(r) && r[0] && r[0].error) throw new Error("hue: " + r[0].error.description);
+        return r;
+      });
+    },
+  };
+
+  function rgbToXy(rgb) {
+    var c = rgb.map(function (v) { v = v / 255; return v > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92; });
+    var X = c[0] * 0.664511 + c[1] * 0.154324 + c[2] * 0.162028;
+    var Y = c[0] * 0.283881 + c[1] * 0.668433 + c[2] * 0.047685;
+    var Z = c[0] * 0.000088 + c[1] * 0.07231 + c[2] * 0.986039;
+    var sum = X + Y + Z;
+    if (!sum) return [0.3227, 0.329];
+    return [Math.round((X / sum) * 10000) / 10000, Math.round((Y / sum) * 10000) / 10000];
+  }
+
+  // --- Home Assistant (yerel REST API, ücretsiz) ------------------------------
+  // Kullanıcının kendi Home Assistant sunucusu (ör. Raspberry Pi) üzerinden HA'nın
+  // desteklediği binlerce cihaz (Tuya, Xiaomi, Sonoff, Zigbee, Z-Wave, Matter…) NEXUS'tan
+  // kontrol edilir. Yetki: HA profilinde oluşturulan "uzun ömürlü erişim jetonu".
+  var HA_DOMAINS = {
+    light: { kind: "light", caps: ["switch"] },
+    "switch": { kind: "switch", caps: ["switch"] },
+    input_boolean: { kind: "switch", caps: ["switch"] },
+    fan: { kind: "switch", caps: ["switch"] },
+    cover: { kind: "cover", caps: ["cover"] },
+    climate: { kind: "ac", caps: ["switch", "temperature"] },
+    lock: { kind: "lock", caps: ["lock"] },
+    vacuum: { kind: "vacuum", caps: ["vacuum"] },
+    media_player: { kind: "media", caps: ["switch", "media"] },
+  };
+  function haBase(device) {
+    var b = baseUrl(device);
+    return /:\d+$/.test(b.replace(/^https?:\/\//, "")) ? b : b + ":8123";
+  }
+  function haCall(device, method, path, body, token) {
+    return request({
+      url: haBase(device) + path,
+      method: method,
+      body: body ? JSON.stringify(body) : undefined,
+      headers: { Authorization: "Bearer " + (token || device.haToken || ""), "Content-Type": "application/json" },
+      timeoutMs: 6000,
+    }).then(function (res) {
+      if (res.status === 401 || res.status === 403) { var e = new Error("Jeton geçersiz ya da süresi dolmuş."); e.code = "auth"; throw e; }
+      if (res.status < 200 || res.status >= 300) throw new Error("homeassistant: http " + res.status);
+      try { return JSON.parse(res.text); } catch (x) { return res.text; }
+    });
+  }
+  function haEntityCaps(st) {
+    var domain = String(st.entity_id || "").split(".")[0];
+    var def = HA_DOMAINS[domain];
+    if (!def) return null;
+    var caps = def.caps.slice();
+    var a = st.attributes || {};
+    if (domain === "light") {
+      var modes = a.supported_color_modes || [];
+      if (modes.some(function (m) { return m !== "onoff"; }) || typeof a.brightness === "number") caps.push("brightness");
+      if (modes.some(function (m) { return /^(hs|xy|rgb|rgbw|rgbww)$/.test(m); })) caps.push("color");
+    }
+    return { kind: def.kind, caps: caps };
+  }
+  var homeassistant = {
+    id: "homeassistant",
+    label: "Home Assistant",
+    caps: ["switch", "brightness", "color", "cover", "position", "target", "lock", "vacuum"],
+    probe: function (device) {
+      var d = { host: haBase(device) };
+      return getJson(d.host + "/manifest.json").then(function (m) {
+        if (!m || !/home assistant/i.test(String(m.name || ""))) throw new Error("homeassistant: değil");
+        return { protocol: "homeassistant", model: "Home Assistant", name: "Home Assistant", kind: "bridge", host: d.host };
+      });
+    },
+    // Jetonu doğrular ve NEXUS'un kontrol edebildiği varlıkları (entity) listeler.
+    entities: function (host, token) {
+      var device = { host: host };
+      return haCall(device, "GET", "/api/states", null, token).then(function (all) {
+        if (!Array.isArray(all)) throw new Error("homeassistant: beklenmeyen yanıt");
+        return all.map(function (st) {
+          var info = haEntityCaps(st);
+          if (!info) return null;
+          return { entity: st.entity_id, name: (st.attributes && st.attributes.friendly_name) || st.entity_id, kind: info.kind, caps: info.caps, model: "Home Assistant · " + st.entity_id.split(".")[0] };
+        }).filter(Boolean);
+      });
+    },
+    read: function (device) {
+      return haCall(device, "GET", "/api/states/" + encodeURIComponent(device.entity)).then(function (st) {
+        var a = st.attributes || {}, s = String(st.state || "");
+        var out = { reachable: s !== "unavailable" };
+        var domain = String(device.entity || "").split(".")[0];
+        if (domain === "cover") { out.position = typeof a.current_position === "number" ? a.current_position : (s === "open" ? 100 : s === "closed" ? 0 : null); out.switch = s === "open" || s === "opening"; }
+        else if (domain === "lock") out.locked = s === "locked";
+        else if (domain === "vacuum") out.mode = s === "cleaning" ? "cleaning" : "docked";
+        else if (domain === "climate") { out.switch = s !== "off"; if (typeof a.temperature === "number") out.target = a.temperature; }
+        else out.switch = s === "on" || s === "playing";
+        if (typeof a.brightness === "number") out.brightness = Math.round((a.brightness / 255) * 100);
+        return out;
+      });
+    },
+    write: function (device, capability, value) {
+      var id = device.entity, domain = String(id || "").split(".")[0];
+      function svc(d, name, extra) {
+        var body = { entity_id: id };
+        Object.keys(extra || {}).forEach(function (k) { body[k] = extra[k]; });
+        return haCall(device, "POST", "/api/services/" + d + "/" + name, body);
+      }
+      if (capability === "switch") {
+        if (domain === "cover") return svc("cover", value ? "open_cover" : "close_cover");
+        if (domain === "lock" || domain === "vacuum") return unsupported("homeassistant", capability);
+        return svc(domain === "input_boolean" ? "input_boolean" : domain, value ? "turn_on" : "turn_off");
+      }
+      if (capability === "brightness") return Number(value) > 0 ? svc("light", "turn_on", { brightness_pct: Math.round(Number(value)) }) : svc("light", "turn_off");
+      if (capability === "color") return svc("light", "turn_on", { rgb_color: hexToRgb(value) });
+      if (capability === "position" && domain === "cover") {
+        var pos = Math.round(Number(value));
+        if (pos >= 100) return svc("cover", "open_cover");
+        if (pos <= 0) return svc("cover", "close_cover");
+        return svc("cover", "set_cover_position", { position: pos });
+      }
+      if (capability === "target" && domain === "climate") return svc("climate", "set_temperature", { temperature: Number(value) });
+      if (capability === "lock" && domain === "lock") return svc("lock", value ? "lock" : "unlock");
+      if (capability === "vacuum" && domain === "vacuum") return svc("vacuum", value === "cleaning" ? "start" : "return_to_base");
+      return unsupported("homeassistant", capability);
+    },
+  };
+
+  // --- TP-Link Kasa (TCP 9999, XOR) — yalnızca masaüstü uygulamasında ----------
+  // Kasa protokolü UTF-8 baytları üzerinde XOR "otomatik anahtar" şifrelemesi kullanır
+  function utf8Bytes(str) {
+    if (typeof TextEncoder !== "undefined") return Array.from(new TextEncoder().encode(str));
+    return unescape(encodeURIComponent(str)).split("").map(function (c) { return c.charCodeAt(0); });
+  }
+  function utf8String(bytes) {
+    if (typeof TextDecoder !== "undefined") return new TextDecoder("utf-8").decode(new Uint8Array(bytes));
+    return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
+  }
+  function kasaEncrypt(str) {
+    var key = 171, out = [], bytes = utf8Bytes(str);
+    for (var i = 0; i < bytes.length; i++) { var c = bytes[i] ^ key; key = c; out.push(c); }
+    return out;
+  }
+  function kasaDecrypt(bytes) {
+    var key = 171, out = [];
+    for (var i = 0; i < bytes.length; i++) { out.push(bytes[i] ^ key); key = bytes[i]; }
+    return utf8String(out);
+  }
+  var kasa = {
+    id: "kasa",
+    label: "TP-Link Kasa",
+    caps: ["switch", "brightness"],
+    needsTcp: true,
+    send: function (device, obj) {
+      var tcp = tcpBridge();
+      if (!tcp) return Promise.reject(new Error("kasa: TCP yalnızca masaüstü uygulamasında"));
+      var blocked = lanAddressError(hostOnly(device));
+      if (blocked) return Promise.reject(blocked);
+      var payload = kasaEncrypt(JSON.stringify(obj));
+      var framed = [(payload.length >>> 24) & 255, (payload.length >>> 16) & 255, (payload.length >>> 8) & 255, payload.length & 255].concat(payload);
+      return tcp({ host: hostOnly(device), port: 9999, bytes: framed, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, lengthPrefixed: true }).then(function (resp) {
+        return JSON.parse(kasaDecrypt(resp.slice(4)));
+      });
+    },
+    firmware: function (device) {
+      return kasa.send(device, { system: { get_sysinfo: {} } }).then(function (r) {
+        return { current: r.system.get_sysinfo.sw_ver || null, latest: null, hasUpdate: null };
+      });
+    },
+    probe: function (device) {
+      return kasa.send(device, { system: { get_sysinfo: {} } }).then(function (r) {
+        var s = r && r.system && r.system.get_sysinfo;
+        if (!s) throw new Error("kasa: yanıt yok");
+        return { protocol: "kasa", model: s.model, name: s.alias || s.model, kind: s.brightness != null || /bulb|light/i.test(s.mic_type || s.type || "") ? "light" : "plug" };
+      });
+    },
+    read: function (device) {
+      return kasa.send(device, { system: { get_sysinfo: {} } }).then(function (r) {
+        var s = r.system.get_sysinfo;
+        var ls = s.light_state || {};
+        return { switch: s.relay_state != null ? s.relay_state === 1 : ls.on_off === 1, brightness: s.brightness != null ? s.brightness : (ls.brightness != null ? ls.brightness : null) };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") {
+        if (device.kind === "light") return kasa.send(device, { "smartlife.iot.smartbulb.lightingservice": { transition_light_state: { on_off: value ? 1 : 0 } } });
+        return kasa.send(device, { system: { set_relay_state: { state: value ? 1 : 0 } } });
+      }
+      if (capability === "brightness") {
+        if (device.kind === "light") return kasa.send(device, { "smartlife.iot.smartbulb.lightingservice": { transition_light_state: { on_off: 1, brightness: Math.round(value) } } });
+        return kasa.send(device, { "smartlife.iot.dimmer": { set_brightness: { brightness: Math.round(value) } } });
+      }
+      return unsupported("kasa", capability);
+    },
+  };
+
+  // --- Yeelight (TCP 55443, JSON satırları; "LAN Control" açık olmalı) — masaüstü ---
+  var yeelight = {
+    id: "yeelight",
+    label: "Yeelight",
+    caps: ["switch", "brightness", "color"],
+    needsTcp: true,
+    send: function (device, method, params) {
+      var tcp = tcpBridge();
+      if (!tcp) return Promise.reject(new Error("yeelight: TCP yalnızca masaüstü uygulamasında"));
+      var blocked = lanAddressError(hostOnly(device));
+      if (blocked) return Promise.reject(blocked);
+      var line = JSON.stringify({ id: 1, method: method, params: params }) + "\r\n";
+      return tcp({ host: hostOnly(device), port: 55443, text: line, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, untilNewline: true }).then(function (resp) {
+        var first = String(resp).split(/\r?\n/).filter(Boolean)[0] || "{}";
+        var r = JSON.parse(first);
+        if (r.error) throw new Error("yeelight: " + r.error.message);
+        return r.result;
+      });
+    },
+    probe: function (device) {
+      return yeelight.send(device, "get_prop", ["power", "bright", "name", "model"]).then(function (r) {
+        if (!Array.isArray(r)) throw new Error("yeelight: yanıt yok");
+        return { protocol: "yeelight", model: "Yeelight " + (r[3] || ""), name: r[2] || "Yeelight", kind: "light" };
+      });
+    },
+    read: function (device) {
+      return yeelight.send(device, "get_prop", ["power", "bright"]).then(function (r) {
+        return { switch: r[0] === "on", brightness: Number(r[1]) || null };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return yeelight.send(device, "set_power", [value ? "on" : "off", "smooth", 300]);
+      if (capability === "brightness") return yeelight.send(device, "set_bright", [Math.max(1, Math.round(value)), "smooth", 300]);
+      if (capability === "color") return yeelight.send(device, "set_rgb", [parseInt(String(value).replace("#", ""), 16), "smooth", 300]);
+      return unsupported("yeelight", capability);
+    },
+  };
+
+  // --- UDP köprüsü (yalnızca masaüstü uygulaması) — WiZ, LIFX, Govee --------------
+  function udpBridge() {
+    var d = desktopBridge();
+    return d && typeof d.udp === "function" ? d.udp : null;
+  }
+  function udpSend(opts) {
+    var udp = udpBridge();
+    if (!udp) return Promise.reject(new Error("UDP yalnızca masaüstü uygulamasında"));
+    var blocked = lanAddressError(opts.host);
+    if (blocked) return Promise.reject(blocked);
+    opts.timeoutMs = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
+    return Promise.resolve().then(function () { return udp(opts); });
+  }
+
+  // --- WiZ (UDP 38899, JSON) ----------------------------------------------------
+  var wiz = {
+    id: "wiz",
+    label: "WiZ",
+    caps: ["switch", "brightness", "color"],
+    needsUdp: true,
+    call: function (device, method, params) {
+      return udpSend({ host: hostOnly(device), port: 38899, text: JSON.stringify({ id: 1, method: method, params: params || {} }) }).then(function (r) {
+        var j = JSON.parse(r.text);
+        if (j.error) throw new Error("wiz: " + (j.error.message || j.error.code));
+        return j.result || {};
+      });
+    },
+    probe: function (device) {
+      return wiz.call(device, "getSystemConfig").then(function (r) {
+        if (!r.mac && !r.moduleName) throw new Error("wiz: kimlik yok");
+        return { protocol: "wiz", model: "WiZ " + (r.moduleName || ""), name: "WiZ " + String(r.mac || "").slice(-4).toUpperCase(), kind: "light" };
+      });
+    },
+    read: function (device) {
+      return wiz.call(device, "getPilot").then(function (r) {
+        return { switch: typeof r.state === "boolean" ? r.state : null, brightness: typeof r.dimming === "number" ? r.dimming : null };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return wiz.call(device, "setPilot", { state: !!value });
+      if (capability === "brightness") return wiz.call(device, "setPilot", { state: true, dimming: Math.max(10, Math.min(100, Math.round(value))) });
+      if (capability === "color") { var c = hexToRgb(value); return wiz.call(device, "setPilot", { state: true, r: c[0], g: c[1], b: c[2] }); }
+      return unsupported("wiz", capability);
+    },
+  };
+
+  // --- LIFX (UDP 56700, ikili LAN protokolü) ----------------------------------------
+  function lifxPacket(type, payload) {
+    var size = 36 + payload.length;
+    var b = new Array(size).fill(0);
+    b[0] = size & 255; b[1] = (size >> 8) & 255;
+    b[2] = 0x00; b[3] = 0x14;                 // protokol 1024 + addressable
+    b[4] = 0x4e; b[5] = 0x58; b[6] = 0; b[7] = 0;   // kaynak kimliği ("NX"), sıfırdan farklı olmalı
+    b[22] = 0x01;                             // res_required
+    b[32] = type & 255; b[33] = (type >> 8) & 255;
+    for (var i = 0; i < payload.length; i++) b[36 + i] = payload[i];
+    return b.map(function (x) { return (x < 16 ? "0" : "") + x.toString(16); }).join("");
+  }
+  function u16(n) { n = Math.max(0, Math.min(65535, Math.round(n))); return [n & 255, (n >> 8) & 255]; }
+  function u32(n) { return [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >>> 24) & 255]; }
+  function hexBytes(h) { var o = []; for (var i = 0; i + 1 < h.length; i += 2) o.push(parseInt(h.substr(i, 2), 16)); return o; }
+  function rgbToHsb(rgb) {
+    var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn, h = 0;
+    if (d) { if (mx === r) h = ((g - b) / d) % 6; else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
+    return { h: h / 360, s: mx ? d / mx : 0, v: mx };
+  }
+  var lifx = {
+    id: "lifx",
+    label: "LIFX",
+    caps: ["switch", "brightness", "color"],
+    needsUdp: true,
+    call: function (device, type, payload) {
+      return udpSend({ host: hostOnly(device), port: 56700, hex: lifxPacket(type, payload || []) }).then(function (r) { return hexBytes(r.hex); });
+    },
+    state: function (device) {
+      return lifx.call(device, 101).then(function (b) {
+        var t = b[32] | (b[33] << 8);
+        if (t !== 107 || b.length < 36 + 52) throw new Error("lifx: beklenmeyen yanıt");
+        var p = 36, w = function (o) { return b[p + o] | (b[p + o + 1] << 8); };
+        var label = ""; for (var i = 0; i < 32 && b[p + 12 + i]; i++) label += String.fromCharCode(b[p + 12 + i]);
+        return { hue: w(0), sat: w(2), bright: w(4), kelvin: w(6), power: w(10), label: label };
+      });
+    },
+    probe: function (device) {
+      return lifx.state(device).then(function (s) { return { protocol: "lifx", model: "LIFX", name: s.label || "LIFX", kind: "light" }; });
+    },
+    read: function (device) {
+      return lifx.state(device).then(function (s) { return { switch: s.power > 0, brightness: Math.round(s.bright / 65535 * 100) }; });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return lifx.call(device, 117, u16(value ? 65535 : 0).concat(u32(0)));
+      return lifx.state(device).then(function (s) {
+        var h = s.hue, sat = s.sat, br = s.bright;
+        if (capability === "brightness") br = Math.max(1, Math.min(100, value)) / 100 * 65535;
+        else if (capability === "color") { var c = rgbToHsb(hexToRgb(value)); h = c.h * 65535; sat = c.s * 65535; br = Math.max(c.v, 0.05) * 65535; }
+        else return unsupported("lifx", capability);
+        return lifx.call(device, 102, [0].concat(u16(h), u16(sat), u16(br), u16(s.kelvin || 3500), u32(250)));
+      });
+    },
+  };
+
+  // --- Govee (UDP, "LAN Control" uygulamadan açık olmalı; yanıtlar 4002'ye gelir) ---
+  var govee = {
+    id: "govee",
+    label: "Govee",
+    caps: ["switch", "brightness", "color"],
+    needsUdp: true,
+    ask: function (device, port, cmd, data) {
+      return udpSend({ host: hostOnly(device), port: port, replyPort: 4002, text: JSON.stringify({ msg: { cmd: cmd, data: data || {} } }) }).then(function (r) {
+        var j = JSON.parse(r.text);
+        return (j.msg && j.msg.data) || {};
+      });
+    },
+    tell: function (device, cmd, data) {
+      return udpSend({ host: hostOnly(device), port: 4003, noReply: true, text: JSON.stringify({ msg: { cmd: cmd, data: data } }) });
+    },
+    probe: function (device) {
+      return govee.ask(device, 4001, "scan", { account_topic: "reserve" }).then(function (d) {
+        if (!d.sku && !d.device) throw new Error("govee: kimlik yok");
+        return { protocol: "govee", model: "Govee " + (d.sku || ""), name: "Govee " + (d.sku || String(d.device || "").slice(-5)), kind: /^H508/i.test(d.sku || "") ? "plug" : "light" };
+      });
+    },
+    read: function (device) {
+      return govee.ask(device, 4003, "devStatus").then(function (d) {
+        return { switch: d.onOff == null ? null : d.onOff === 1, brightness: typeof d.brightness === "number" ? d.brightness : null };
+      });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return govee.tell(device, "turn", { value: value ? 1 : 0 });
+      if (capability === "brightness") return govee.tell(device, "brightness", { value: Math.max(1, Math.min(100, Math.round(value))) });
+      if (capability === "color") { var c = hexToRgb(value); return govee.tell(device, "colorwc", { color: { r: c[0], g: c[1], b: c[2] }, colorTemInKelvin: 0 }); }
+      return unsupported("govee", capability);
+    },
+  };
+
+  // --- Sonoff DIY modu (HTTP 8081, eWeLink DIY arayüzü) ----------------------------
+  var sonoff = {
+    id: "sonoff",
+    label: "Sonoff (DIY)",
+    caps: ["switch"],
+    call: function (device, path, data) {
+      return sendJson("http://" + hostOnly(device) + ":8081/zeroconf/" + path, "POST", { deviceid: "", data: data || {} }).then(function (j) {
+        if (!j || j.error !== 0) throw new Error("sonoff: hata " + (j && j.error));
+        return j.data || {};
+      });
+    },
+    probe: function (device) {
+      return sonoff.call(device, "info").then(function (d) {
+        if (!d.switch && !(d.switches && d.switches.length)) throw new Error("sonoff: kimlik yok");
+        return { protocol: "sonoff", model: "Sonoff DIY", name: "Sonoff " + String(d.deviceid || "").slice(-4), kind: "switch" };
+      });
+    },
+    read: function (device) {
+      return sonoff.call(device, "info").then(function (d) { return { switch: d.switch ? d.switch === "on" : null }; });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch") return sonoff.call(device, "switch", { switch: value ? "on" : "off" });
+      return unsupported("sonoff", capability);
+    },
+  };
+
+  // --- Tuya Local (Yerel LAN modu, port 6668, hub veya bulut gerekmez) --------
+  var tuyaLocal = {
+    id: "tuya-local",
+    label: "Tuya (Yerel)",
+    caps: ["switch", "brightness", "color"],
+    probe: function (device) {
+      return getJson("http://" + hostOnly(device) + ":6668/status", scanTimeoutMs || 1000).then(function (info) {
+        if (!info || (!info.dps && !info.devId)) throw new Error("tuya-local: kimlik yok");
+        var isBulb = info.dps && (info.dps["20"] != null || info.dps["22"] != null);
+        return {
+          protocol: "tuya-local",
+          model: info.model || "Tuya Akıllı Cihaz",
+          name: info.name || device.name || "Tuya Cihaz",
+          kind: isBulb ? "light" : "plug",
+        };
+      });
+    },
+    read: function (device) {
+      return getJson("http://" + hostOnly(device) + ":6668/status").then(function (s) {
+        var dps = s.dps || {};
+        var sw = dps["1"] != null ? dps["1"] : dps["20"];
+        var br = dps["2"] != null ? dps["2"] : dps["22"];
+        return {
+          switch: typeof sw === "boolean" ? sw : null,
+          brightness: typeof br === "number" ? Math.round(br / 10) : null,
+        };
+      });
+    },
+    write: function (device, capability, value) {
+      var dps = {};
+      if (capability === "switch") {
+        dps["1"] = !!value;
+        dps["20"] = !!value;
+      } else if (capability === "brightness") {
+        var b = Math.max(1, Math.min(100, Math.round(value)));
+        dps["2"] = b * 10;
+        dps["22"] = b * 10;
+      } else if (capability === "color") {
+        dps["24"] = String(value).replace("#", "");
+      } else {
+        return unsupported("tuya-local", capability);
+      }
+      return sendJson("http://" + hostOnly(device) + ":6668/set", "POST", { dps: dps });
+    },
+  };
+
+  // --- TP-Link Tapo (Yerel HTTP / RTSP / ONVIF — ücretsiz, bulutsuz) ---------
+  var tapo = {
+    id: "tapo",
+    label: "TP-Link Tapo",
+    caps: ["switch", "brightness", "color", "camera", "energy"],
+    probe: function (device) {
+      return getJson(baseUrl(device) + "/app", scanTimeoutMs || 1000).then(function (r) {
+        if (!r || (r.error_code !== 0 && !r.result)) throw new Error("tapo: gecersiz yanit");
+        var res = r.result || {};
+        if (!res.device_id && !res.model && !res.device_model && !res.mac && !res.nickname) {
+          throw new Error("tapo: kimlik yok");
+        }
+        var m = res.model || res.device_model || "";
+        var isCam = /cam|c200|c210|c310/i.test(m);
+        var isBulb = /bulb|l510|l530/i.test(m);
+        return {
+          protocol: "tapo",
+          model: m ? "Tapo " + m : "TP-Link Tapo",
+          name: res.nickname || device.name || "Tapo Cihaz",
+          kind: isCam ? "camera" : isBulb ? "light" : "plug",
+        };
+      });
+    },
+    // Tapo yerel API'si şifreli el sıkışma ister. Komut gitmeden başarı dönmek cihaz açılmış gibi gösterir.
+    read: function () {
+      return Promise.reject(new Error("Tapo yerel kontrolü bu sürümde kullanılamıyor."));
+    },
+    write: function () {
+      return Promise.reject(new Error("Tapo yerel kontrolü bu sürümde kullanılamıyor."));
+    },
+  };
+
+  // --- Wake-on-LAN (WoL — Sihirli Paket Uyandırma) ----------------------------
+  // Hedef bilgisayarın/TV'nin MAC adresine yerel ağdan UDP sihirli paketi (magic packet)
+  // göndererek uykudan uyandırır (Home Assistant standardı).
+  function buildMagicPacket(mac) {
+    var clean = String(mac || "").replace(/[^0-9a-fA-F]/g, "").toLowerCase();
+    if (clean.length !== 12) throw new Error("Geçersiz MAC adresi (12 onaltılık karakter gerekli)");
+    var hex = "ffffffffffff";
+    for (var i = 0; i < 16; i++) hex += clean;
+    return hex;
+  }
+
+  function wakeOnLan(mac, host) {
+    var targetHost = host || "255.255.255.255";
+    var hex = buildMagicPacket(mac);
+    var u = udpBridge();
+    if (u) {
+      return u({ host: targetHost, port: 9, hex: hex, noReply: true }).then(function () {
+        return { success: true, mac: mac, host: targetHost };
+      });
+    }
+    return Promise.reject(new Error("Wake-on-LAN bu ortamda desteklenmiyor (UDP köprüsü gerekli)."));
+  }
+
+  var wol = {
+    id: "wol",
+    label: "Wake-on-LAN (PC / TV)",
+    needsUdp: true,
+    caps: ["switch"],
+    probe: function (device) {
+      if (!device || (!device.mac && !device.host)) throw new Error("wol: MAC adresi veya IP gerekli");
+      return Promise.resolve({
+        protocol: "wol",
+        model: "Wake-on-LAN PC/TV",
+        name: device.name || "Ağ Cihazı (WoL)",
+        kind: "plug"
+      });
+    },
+    read: function () {
+      return Promise.resolve({ switch: false });
+    },
+    write: function (device, capability, value) {
+      if (capability === "switch" && value) {
+        return wakeOnLan(device.mac || device.host, device.host);
+      }
+      return Promise.resolve({ ignored: true });
+    }
+  };
+
+  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, tapo, yeelight, sonoff, wiz, lifx, govee, tuyaLocal, wol];
+
+  function available(p) { return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()); }
+
+  // Manuel IP ile ekleme: cihazın hangi protokolü konuştuğunu sırayla dener.
+  function identify(host) {
+    var device = { host: host };
+    var lastError = null;
+    return protocols.filter(available).reduce(function (chain, protocol) {
+      return chain.then(function (found) {
+        if (found) return found;
+        return protocol.probe(device).then(function (info) {
+          var out = { host: host };
+          Object.keys(info).forEach(function (k) { out[k] = info[k]; });
+          return out;
+        }).catch(function (error) { lastError = error; return null; });
+      });
+    }, Promise.resolve(null)).then(function (found) {
+      if (found) return found;
+      throw lastError || new Error("bilinen protokol bulunamadı");
+    });
+  }
+
+  function protocolFor(name) {
+    for (var i = 0; i < protocols.length; i++) if (protocols[i].id === name) return protocols[i];
+    return null;
+  }
+
+  // Bu cihaz bu işlevi gerçekten (yerel ağdan) yazabiliyor mu?
+  function supports(device, capability) {
+    if (!device || !device.host || !device.protocol) return false;
+    var p = protocolFor(device.protocol);
+    return !!p && available(p) && p.caps.indexOf(capability) !== -1;
+  }
+
+  function normalizeSubnetBase(input) {
+    var value = String(input || "").trim().replace(/\.+$/, "");
+    if (!/^\d{1,3}(\.\d{1,3}){2,3}$/.test(value)) return null;
+    var parts = value.split(".");
+    if (parts.length === 4) parts.pop();
+    if (parts.length !== 3) return null;
+    var ok = parts.every(function (p) { return Number(p) >= 0 && Number(p) <= 255; });
+    return ok ? parts.join(".") : null;
+  }
+
+  // Masaüstü uygulaması bilgisayarın alt ağını bilir; telefonda kullanıcı girer.
+  function guessSubnet() {
+    var d = desktopBridge();
+    if (d && typeof d.subnets === "function") {
+      return Promise.resolve(d.subnets()).then(function (list) { return (list && list[0]) || null; });
+    }
+    return Promise.resolve(null);
+  }
+
+  // Tarama için hızlı tanıma: tüm protokoller aynı anda yoklanır, sıradaki ilk başarılı olan seçilir.
+  function identifyFast(host) {
+    var device = { host: host };
+    return Promise.all(protocols.filter(available).map(function (protocol) {
+      return protocol.probe(device).then(function (info) {
+        var out = { host: host };
+        Object.keys(info).forEach(function (k) { out[k] = info[k]; });
+        return out;
+      }).catch(function () { return null; });
+    })).then(function (all) {
+      for (var i = 0; i < all.length; i++) if (all[i]) return all[i];
+      throw new Error("bilinen protokol bulunamadı");
+    });
+  }
+
+  // mDNS native eklentisi olmadan "kendiliğinden bulma" için alt ağ taraması (1-254).
+  // options: onFound(info,count), onProgress(host), shouldStop() → true olursa tarama durur, concurrency.
+  function scanSubnet(base, options) {
+    var opts = options || {};
+    var prefix = normalizeSubnetBase(base);
+    if (!prefix) return Promise.reject(new Error("geçersiz alt ağ"));
+    var concurrency = opts.concurrency || 16;
+    var found = [];
+    var nextHost = 1;
+    var active = 0;
+    scanTimeoutMs = opts.timeoutMs || 900;
+    return new Promise(function (resolvePromise) {
+      var settled = false;
+      function finishIfDone() {
+        if (settled) return;
+        if (nextHost > 254 && active === 0) { settled = true; scanTimeoutMs = 0; resolvePromise(found); }
+      }
+      function pump() {
+        while (active < concurrency && nextHost <= 254) {
+          if (opts.shouldStop && opts.shouldStop()) { nextHost = 255; break; }
+          (function (host) {
+            active += 1;
+            identifyFast(host)
+              .then(function (info) { found.push(info); if (opts.onFound) opts.onFound(info, found.length); })
+              .catch(function () { /* cevap vermeyen adres normal */ })
+              .then(function () { active -= 1; if (opts.onProgress) opts.onProgress(host); finishIfDone(); pump(); });
+          })(prefix + "." + nextHost);
+          nextHost += 1;
+        }
+      }
+      pump();
+      finishIfDone();
+    });
+  }
+
+  // Tarayıcının kendi yerel IP'sinden alt ağı tahmin eder (WebRTC); bilinmiyorsa null.
+  function rtcPrefix() {
+    return new Promise(function (resolve) {
+      try {
+        if (typeof RTCPeerConnection === "undefined") return resolve(null);
+        var pc = new RTCPeerConnection({ iceServers: [] });
+        var done = false;
+        var finish = function (v) { if (done) return; done = true; try { pc.close(); } catch (e) {} resolve(v); };
+        pc.createDataChannel("nx");
+        pc.onicecandidate = function (e) {
+          if (!e || !e.candidate) return finish(null);
+          var m = /(\b(?:192\.168|10\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01]))\.\d{1,3})\.\d{1,3}\b/.exec(e.candidate.candidate);
+          if (m) finish(normalizeSubnetBase(m[1] + ".0"));
+        };
+        pc.createOffer().then(function (o) { return pc.setLocalDescription(o); }).catch(function () { finish(null); });
+        setTimeout(function () { finish(null); }, 1500);
+      } catch (e) { resolve(null); }
+    });
+  }
+
+  var COMMON_PREFIXES = ["192.168.1", "192.168.0", "192.168.2", "192.168.10", "192.168.100", "192.168.178", "10.0.0", "10.0.1", "10.1.1", "172.16.0"];
+
+  // Kullanıcıdan hiçbir şey istemeden ağı tarar: önce cihazın kendi alt ağı (masaüstü / WebRTC),
+  // sonra yaygın modem aralıkları. İlk cihaz bulunan alt ağda durur.
+  // options: onPrefix(prefix,index,total), onFound, shouldStop, prefixes (ek öncelikli ön ekler)
+  function autoScan(options) {
+    var opts = options || {};
+    return Promise.all([guessSubnet().catch(function () { return null; }), rtcPrefix()]).then(function (known) {
+      var list = [];
+      function add(p) { p = p && normalizeSubnetBase(p); if (p && list.indexOf(p) === -1) list.push(p); }
+      (opts.prefixes || []).forEach(add);
+      known.forEach(add);
+      COMMON_PREFIXES.forEach(add);
+      var all = [];
+      var i = 0;
+      function next() {
+        if (i >= list.length || (opts.shouldStop && opts.shouldStop())) return Promise.resolve(all);
+        var prefix = list[i++];
+        if (opts.onPrefix) opts.onPrefix(prefix, i, list.length);
+        return scanSubnet(prefix, { onFound: function (info, n) { all.push(info); if (opts.onFound) opts.onFound(info, all.length); }, shouldStop: opts.shouldStop, onProgress: opts.onProgress })
+          .then(function () { return all.length ? all : next(); });
+      }
+      return next();
+    });
+  }
+
+  window.nexusLan = {
+    setTransport: setTransport,
+    request: request,
+    usingNativeTransport: function () { return !!transport || !!desktopBridge() || !!nativeHttpPlugin(); },
+    hasTcp: function () { return !!tcpBridge(); },
+    hasUdp: function () { return !!udpBridge(); },
+    protocols: protocols,
+    protocolFor: protocolFor,
+    supports: supports,
+    identify: identify,
+    scanSubnet: scanSubnet,
+    autoScan: autoScan,
+    guessSubnet: guessSubnet,
+    normalizeSubnetBase: normalizeSubnetBase,
+    wakeOnLan: wakeOnLan,
+    buildMagicPacket: buildMagicPacket,
+    hue: { pair: hue.pair, lights: hue.lights },
+    homeassistant: { entities: homeassistant.entities },
+    read: function (device) {
+      if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
+      var p = protocolFor(device.protocol);
+      return p && available(p) ? p.read(device) : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+    },
+    // Yazılım sürümü: { current, latest, hasUpdate } — bilinmeyen alanlar null
+    firmware: function (device) {
+      var p = protocolFor(device.protocol);
+      if (!p || !available(p)) return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      if (typeof p.firmware !== "function") return Promise.reject(new Error("bu cihaz sürüm bilgisi vermiyor"));
+      return p.firmware(device);
+    },
+    write: function (device, capability, value) {
+      if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
+      var p = protocolFor(device.protocol);
+      if (!p || !available(p)) return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      // HTTP taşıyan protokollerde 4xx/5xx yanıtı başarı sayılmaz. Bazı yazma
+      // uçları ham {status,text} döner (Shelly, ESPHome); eskiden bunlar da
+      // "komut gitti" sayılıyordu. Artık gerçek yanıt kodu denetlenir.
+      return Promise.resolve(p.write(device, capability, value)).then(function (res) {
+        if (res && typeof res.status === "number" && (res.status < 200 || res.status >= 300)) {
+          throw new Error("http " + res.status);
+        }
+        return res;
+      });
+    },
+  };
+})();

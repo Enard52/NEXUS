@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>NEXUS — Giriş aktarımı</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="referrer" content="no-referrer"/>
+<link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<link href="/fonts/inter/inter.css" rel="stylesheet"/>
+<style>
+  :root { color-scheme: light dark; --bg:#fafafc; --fg:#0b1020; --fg2:#5a6172; --bd:#e6e8f0; --brand:#4C7DFF; --ok:#0f9d70; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b0d14; --fg:#eef1f8; --fg2:#9aa3b5; --bd:#232838; } }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100dvh; display:grid; place-items:center; background:var(--bg); color:var(--fg);
+         font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; -webkit-font-smoothing:antialiased; padding:24px; }
+  .box { max-width:520px; text-align:center; }
+  .mark { width:56px; height:56px; margin:0 auto 18px; display:block; }
+  .badge { width:44px; height:44px; margin:0 auto 16px; border-radius:50%; display:grid; place-items:center;
+           background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); }
+  .badge svg { width:24px; height:24px; }
+  .badge.warn { background:color-mix(in srgb, #e11d48 12%, transparent); color:#e11d48; }
+  h1 { font-size:26px; font-weight:800; letter-spacing:-.02em; margin:0 0 10px; }
+  p { font-size:15px; line-height:1.65; color:var(--fg2); margin:0 0 24px; }
+  a.btn { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 24px; border-radius:12px;
+          font-size:15px; font-weight:700; text-decoration:none; background:var(--brand); color:#fff; }
+  .hint { margin:18px 0 0; font-size:13px; color:var(--fg2); }
+  .hint a { color:var(--brand); font-weight:700; text-decoration:none; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+  <main class="box">
+    <img class="mark" src="/icon.svg" alt="NEXUS" width="56" height="56"/>
+    <div id="ok" class="hidden">
+      <div class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h1 id="ok-title">Giriş tamamlandı</h1>
+      <p id="ok-text">NEXUS uygulaması açılıyor. Açılmazsa aşağıdaki düğmeye dokun.</p>
+      <a class="btn" id="open-app" href="nexus://auth">NEXUS’u aç</a>
+      <p class="hint"><span id="no-app">Uygulama yüklü değil mi?</span> <a href="/tr/#downloads" id="download-link">Android sürümünü indir</a></p>
+    </div>
+    <div id="fail" class="hidden">
+      <div class="badge warn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg></div>
+      <h1 id="fail-title">Giriş tamamlanamadı</h1>
+      <p id="fail-text">Bağlantının süresi dolmuş olabilir. NEXUS’a dönüp yeniden dene.</p>
+      <a class="btn" href="nexus://auth">NEXUS’a dön</a>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var tr = /^tr\b/i.test(navigator.language || '');
+      document.documentElement.lang = tr ? 'tr' : 'en';
+      function set(id, text) { var el = document.getElementById(id); if (el) el.textContent = text; }
+      function show(id) { var el = document.getElementById(id); if (el) el.classList.remove('hidden'); }
+
+      var hash = location.hash && location.hash.length > 1 ? location.hash.slice(1) : '';
+      var query = location.search && location.search.length > 1 ? location.search.slice(1) : '';
+      var raw = hash || query;
+      var params = new URLSearchParams(raw);
+      var hasToken = !!(params.get('access_token') && params.get('refresh_token'));
+      var error = params.get('error') || '';
+      var appUrl = 'nexus://auth' + (raw ? '#' + raw : '');
+
+      // Belirteçleri tarayıcı geçmişinde bırakma; adres çubuğu temiz kalsın.
+      try { history.replaceState(null, '', location.pathname); } catch (e) {}
+
+      if (hasToken) {
+        show('ok');
+        if (tr) {
+          set('ok-title', 'Giriş tamamlandı');
+          set('ok-text', 'NEXUS uygulaması açılıyor. Açılmazsa aşağıdaki düğmeye dokun.');
+          set('open-app', 'NEXUS’u aç');
+          set('no-app', 'Uygulama yüklü değil mi?');
+          set('download-link', 'Android sürümünü indir');
+          document.getElementById('download-link').href = '/tr/#downloads';
+        } else {
+          set('ok-title', 'Signed in');
+          set('ok-text', 'Opening the NEXUS app. If it does not open, tap the button below.');
+          set('open-app', 'Open NEXUS');
+          set('no-app', 'App not installed?');
+          set('download-link', 'Download the Android version');
+          document.getElementById('download-link').href = '/#downloads';
+        }
+        var open = document.getElementById('open-app');
+        if (open) open.setAttribute('href', appUrl);
+        // Özel şemayı kendiliğinden açmayı dene; tarayıcı engellerse düğme hazır.
+        setTimeout(function () { try { location.href = appUrl; } catch (e) {} }, 450);
+        return;
+      }
+
+      show('fail');
+      if (tr) {
+        set('fail-title', 'Giriş tamamlanamadı');
+        set('fail-text', 'Bağlantının süresi dolmuş olabilir. NEXUS’a dönüp yeniden dene.');
+      } else {
+        set('fail-title', 'Sign-in failed');
+        set('fail-text', 'The link may have expired. Go back to NEXUS and try again.');
+      }
+      if (error) {
+        var desc = params.get('error_description') || error;
+        desc = desc.replace(/\+/g, ' ');
+        set('fail-text', desc);
+      }
+    })();
+  </script>
+</body>
+</html>

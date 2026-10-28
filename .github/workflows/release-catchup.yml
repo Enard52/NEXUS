@@ -1,0 +1,38 @@
+name: Yayın yakalama
+
+# GitHub Actions bir süre çalışmadığında sürümler elle (yerel derlemeyle) yüklenir ve sürümde LOCAL-BUILD.txt bulunur.
+# Actions yeniden çalışınca bu iş her 6 saatte bir kontrol eder: dosyalar eksikse ya da LOCAL-BUILD.txt varsa
+# desktop-release.yml'i o etiket için kendiliğinden başlatır; tam derleme bitince LOCAL-BUILD.txt silinir.
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  catchup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Eksik ya da yerel derlenmiş sürüm varsa tam derlemeyi başlat
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VER=$(node -p "require('./desktop/package.json').version")
+          TAG="v$VER"
+          if ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then echo "Etiket $TAG yok; yapacak iş yok."; exit 0; fi
+          assets=$(curl -fsS "https://api.github.com/repos/Enard52/nexus-releases/releases/tags/$TAG" | jq -r '.assets[].name' || true)
+          need=0
+          for f in NEXUS-Setup.exe NEXUS-linux.AppImage NEXUS-linux.deb; do echo "$assets" | grep -qx "$f" || need=1; done
+          echo "$assets" | grep -qx "LOCAL-BUILD.txt" && need=1
+          if [ "$need" = 0 ]; then echo "$TAG tam; yapacak iş yok."; exit 0; fi
+          running=$(gh run list --workflow desktop-release.yml --json status -q '[.[] | select(.status=="in_progress" or .status=="queued")] | length')
+          if [ "$running" != "0" ]; then echo "Derleme zaten sürüyor."; exit 0; fi
+          echo "$TAG için tam derleme başlatılıyor."
+          gh workflow run desktop-release.yml --ref "$TAG"

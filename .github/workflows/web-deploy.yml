@@ -1,0 +1,70 @@
+name: Site yayını
+
+# main'e push edilince yalnız tanıtım sitesini yayınlar. Web uygulaması canlıya çıkmaz.
+# İki yol, otomatik seçim:
+#   1) CLOUDFLARE_API_TOKEN verildiyse: site doğrudan Cloudflare Pages'e yüklenir
+#      (tek depo hedefi — Enard52.github.io deposu tamamen devre dışı kalır).
+#   2) Yoksa eski yol: SITE_REPO_TOKEN ile Enard52.github.io deposuna push; Cloudflare
+#      oradan derler. (Kurulu eski yol; token eklenince 1. yol devreye girer.)
+# Ayrıca NEXUS_SUPABASE_URL/ANON_KEY yoksa site auth 'kullanımda değil' modunda yayınlanır.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "www/**"
+      - "lan-connectors.js"
+      - "stitch-*.html"
+      - "*.js"
+      # Site kaynağı: üreteç/değişkenler değişince de yayınlanmalı (ölçüldü: bayat çıktı).
+      - "scripts/site-*.mjs"
+      - "scripts/verify-site.mjs"
+      - "scripts/ensure-cloud-config.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-deploy
+  cancel-in-progress: true
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    env:
+      SITE_REPO_TOKEN: ${{ secrets.SITE_REPO_TOKEN }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      # Token yalnız Pages:Edit taşıdığı için wrangler hesabı kendisi keşfedemez;
+      # hesap kimliği repo değişkeninden verilir.
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      # Site girişi (kayıt/şifre sıfırlama) Supabase'e gidiyor; anahtar depoya girmiyor,
+      # yayında üretiliyor. Değer yoksa site auth 'kullanımda değil' modunda yayınlanır.
+      NEXUS_SUPABASE_URL: ${{ vars.NEXUS_SUPABASE_URL }}
+      NEXUS_SUPABASE_ANON_KEY: ${{ vars.NEXUS_SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # www/public TAKİPLİ bir üretime çıktısı; eskiden yalnızca elle üretiliyordu ve
+      # CI bayat kopyayı rsync'liyordu. Artık önce üretiliyor, sonra denetleniyor.
+      - name: Bulut yapılandırmasını üret
+        run: node scripts/ensure-cloud-config.mjs
+      - name: Siteyi kaynaklardan üret
+        run: node scripts/site-build.mjs
+      - name: Yapısal denetim (tarayıcısız kapı)
+        run: node scripts/verify-site.mjs --smoke
+      - name: Cloudflare Pages'e doğrudan yükle (tek depo yolu)
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: |
+          npx wrangler pages deploy www/public --project-name=nexus-smarthome --branch=main --commit-dirty=true
+      - name: Tanıtım sitesini site deposuna gönder (eski yol)
+        if: env.CLOUDFLARE_API_TOKEN == ''
+        run: |
+          if [ -z "$SITE_REPO_TOKEN" ]; then echo "::notice::SITE_REPO_TOKEN yok; site yayını atlandı."; exit 0; fi
+          git clone --depth 1 "https://x-access-token:${SITE_REPO_TOKEN}@github.com/Enard52/Enard52.github.io.git" _site
+          rsync -a --delete --exclude .git --exclude .nojekyll www/public/ _site/
+          cd _site
+          if [ -z "$(git status --porcelain)" ]; then echo "Site değişmedi."; exit 0; fi
+          git config user.name "nexus-ci"; git config user.email "ci@nexus.invalid"
+          git add -A && git commit -m "site: main ${GITHUB_SHA::7} ile eşitlendi" && git push

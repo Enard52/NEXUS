@@ -1,0 +1,45 @@
+name: Feature request
+description: Suggest an idea or improvement for NEXUS
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas welcome! Before opening, please search existing issues — if yours
+        exists, add a 👍 instead of a duplicate.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: What are you trying to achieve? What feels missing or clumsy?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should happen? Keep it honest — NEXUS never fakes states or features.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Devices / control
+        - Automations / scenes
+        - Energy
+        - AI assistant / chat
+        - Notifications
+        - Household / account
+        - Desktop shell (tray, updates)
+        - Translations
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: willingness
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to help implement this (open to being assigned)

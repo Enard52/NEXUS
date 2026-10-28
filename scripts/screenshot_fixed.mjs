@@ -1,0 +1,20 @@
+import { chromium } from "playwright";
+import path from "path";
+import { fileURLToPath } from "url";
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  await page.setViewportSize({ width: 1440, height: 1024 });
+  await page.goto("file:///" + path.resolve("public/index.html").replace(/\\\\/g, "/"));
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(2000);
+  await page.screenshot({
+    path: path.join(
+      "C:\\\\Users\\\\ensar\\\\.gemini\\\\antigravity\\\\brain\\\\cfbdd3ae-ecda-4bf8-9160-f64d151f06d7",
+      "landing_page_scrolled.png",
+    ),
+    fullPage: true,
+  });
+  await browser.close();
+  console.log("Screenshot taken!");
+})();

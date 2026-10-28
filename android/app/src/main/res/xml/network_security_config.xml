@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NEXUS yerel ağ kontrolü: Shelly, WLED, Tasmota, ESPHome ve Hue köprüsü gibi cihazlar
+     ev ağında şifresiz HTTP konuşur. Android 9+ bunu varsayılan olarak engellediği için
+     açıkça izin verilir. Uygulamanın internet bağlantıları (hesap/senkron) HTTPS kullanır. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

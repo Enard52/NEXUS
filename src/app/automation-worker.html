@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+<title>NEXUS Otomasyon Çalışanı</title>
+</head>
+<body>
+<!--
+  Masaüstü arka plan çalışanı (issue #24): main.cjs bu sayfayı gizli bir
+  pencerede açar. Kullanıcı pencereyi kapatsa bile uygulama tepside
+  çalıştığı sürece zaman tetikleyicili otomasyonlar bu sayfada değerlendirilir.
+  Görünür pencere ile sahiplik, localStorage kalp atışı üzerinden paylaşılır
+  (aynı oturum/profil → aynı localStorage). Arayüzü yoktur; kullanıcı ekranı
+  değildir. Web/Android'de bu sayfa kullanılmaz.
+-->
+<script>
+(function () {
+  // auth.js'in veri erişim uyumluluğu (yönlendirme guard'ı olmadan):
+  // anahtarlar kullanıcı önekli; oturum yoksa 'guest' öneki (auth.js ile aynı).
+  var CURRENT_USER_KEY = 'nexusCurrentUser';
+  function user() { return localStorage.getItem(CURRENT_USER_KEY) || 'guest'; }
+  window.nexusGetItem = function (key) {
+    if (key === CURRENT_USER_KEY) return localStorage.getItem(key);
+    return localStorage.getItem(user() + '_' + key);
+  };
+  window.nexusSetItem = function (key, value) {
+    if (key === CURRENT_USER_KEY) { localStorage.setItem(key, value); return; }
+    localStorage.setItem(user() + '_' + key, value);
+  };
+  window.nexusRemoveItem = function (key) {
+    if (key === CURRENT_USER_KEY) { localStorage.removeItem(key); return; }
+    localStorage.removeItem(user() + '_' + key);
+  };
+  // Çeviri katmanı yok (arayüzsüz sayfa): metinler kaynak dilinde kayda geçer,
+  // gösterim anında i18n katmanı sözlükten çevirir.
+  window.nexusT = function (trText) { return trText; };
+})();
+</script>
+<script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
+<script src="data.js"></script>
+<script src="automation-engine.js"></script>
+</body>
+</html>

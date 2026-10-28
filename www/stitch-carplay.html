@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — CarPlay</title>
+<!-- Tailwind CSS CDN -->
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
+
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">CarPlay</h1>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pt-4 pb-10">
+<!-- Hero -->
+<section class="flex flex-col items-center text-center mb-8" data-purpose="carplay-hero">
+<div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white shadow-lg mb-4">
+<i class="w-10 h-10" data-lucide="car-front"></i>
+</div>
+<h2 class="text-xl font-bold">CarPlay Desteği Yakında</h2>
+<p class="text-sm text-slate-500 mt-2 max-w-xs">NEXUS henüz CarPlay uygulaması içermiyor. Yayınlandığında eve yaklaşırken ışıkları açıp klimayı çalıştırabileceksin.</p>
+</section>
+<!-- Bugün araçta pratik yol -->
+<h3 class="text-lg font-bold mb-3">Bugün Arabada</h3>
+<section class="bg-white rounded-3xl menu-container-shadow p-5 space-y-4" data-purpose="today-steps">
+<div class="flex gap-4">
+<span class="w-7 h-7 rounded-full bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm flex items-center justify-center flex-shrink-0">1</span>
+<p class="text-sm text-slate-600 font-medium">NEXUS'u telefonunda ana ekrana ekle (PWA); araçta Apple CarPlay ana ekranından uygulama açılır.</p>
+</div>
+<div class="flex gap-4">
+<span class="w-7 h-7 rounded-full bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm flex items-center justify-center flex-shrink-0">2</span>
+<p class="text-sm text-slate-600 font-medium">"Eve Geldim" senaryosunu tek dokunuşla çalıştır: ışıklar, klima ve perdeler hazır.</p>
+</div>
+<div class="flex gap-4">
+<span class="w-7 h-7 rounded-full bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm flex items-center justify-center flex-shrink-0">3</span>
+<p class="text-sm text-slate-600 font-medium">Zamanlanmış otomasyonlar (ör. gece enerji kesme) sen araçta değilken de çalışır.</p>
+</div>
+<a class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform" href="stitch-smart.html">
+<i class="w-4 h-4" data-lucide="zap"></i>Senaryoları ve Otomasyonları Aç
+</a>
+</section>
+<!-- Feedback shortcut -->
+<a class="nx-tap-t nx-tap-b flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6" data-purpose="feedback-link" href="stitch-feedback.html">
+<i class="w-4 h-4" data-lucide="message-circle"></i>Görüşlerini paylaş
+</a>
+</main>
+<!-- END: MainContent -->
+<script src="js/lucide.js"></script>
+<script data-purpose="icon-renderer">
+    lucide.createIcons();
+  </script>
+</body></html>
+

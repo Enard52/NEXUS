@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or help using NEXUS
+    url: https://github.com/Enard52/NEXUS/discussions
+    about: Ask usage questions in Discussions instead of opening an issue.
+  - name: Security vulnerability
+    url: mailto:nexus.smarthome.app@gmail.com
+    about: Email us privately — never open a public issue (see SECURITY.md).
+  - name: Documentation
+    url: https://github.com/Enard52/NEXUS/tree/main/docs
+    about: Build guides, integration roadmap and project docs.

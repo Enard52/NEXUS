@@ -1,0 +1,16 @@
+# Cloudflare Pages: clean URLs are automatic (about.html -> /about)
+/tr   /tr/    301
+/about/   /about    301
+/privacy/ /privacy  301
+/terms/   /terms    301
+/refund/  /refund   301
+/tr/about/   /tr/about   301
+/tr/privacy/ /tr/privacy 301
+/tr/terms/   /tr/terms   301
+/tr/refund/  /tr/refund  301
+
+# Tarayicinin varsayilan istegi /favicon.ico 404 donduruyordu (yalnizca /icon.svg vardi).
+/favicon.ico /icon.svg 200
+# Eski/tilde'li baglantilar: /en/ diye bir sayfa yok, Ingilizce kok dizindir.
+/en / 301
+/en/ / 301

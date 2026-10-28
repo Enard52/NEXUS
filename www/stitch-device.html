@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffffff">
+  <title>NEXUS - Cihaz</title>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/><link href="css/nexus-controls.css" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="cloud-sync.js"></script>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+  <script src="device-controls.js"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+      color: #111827;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html.dark body {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 55%, #020617 100%);
+      color: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+  <div class="w-full min-h-screen flex flex-col overflow-x-hidden">
+    <header class="shrink-0 pt-14 pb-4 px-5 flex items-center justify-between gap-3">
+      <a href="javascript:void(0)" onclick="goBack()" aria-label="Geri" class="p-1 -ml-1 shrink-0">
+        <i data-lucide="chevron-left" class="text-[28px] text-slate-700 dark:text-slate-200"></i>
+      </a>
+      <h1 id="device-title" class="text-lg font-bold tracking-tight truncate text-center flex-1">Cihaz</h1>
+      <a href="#device-info" aria-label="Cihaz ayarları" class="p-1 -mr-1 shrink-0">
+        <i data-lucide="settings" class="text-xl text-slate-700 dark:text-slate-200"></i>
+      </a>
+    </header>
+
+    <main id="device-main" class="flex-1 px-5 pb-[128px] space-y-4"></main>
+    <div id="device-actionbar" class="nx-actionbar hidden"></div>
+  </div>
+
+  <script src="js/lucide.js"></script>
+<script data-purpose="device-control-screen">
+    var params = new URLSearchParams(location.search);
+    var INDEX = parseInt(params.get("i"), 10);
+    var esc = NX.escapeHtml;
+    var confirmRemove = false;
+    var renaming = false;
+
+    function goBack() {
+      // Önceki sayfaya dön (masaüstü uygulamasında referrer boş olduğundan referrer'a bakmıyoruz); geçmiş yoksa ana sayfa.
+      if (history.length > 1) history.back();
+      else location.href = "stitch-home.html";
+    }
+
+    function current() {
+      var devices = NX.readDevices();
+      return isFinite(INDEX) && devices[INDEX] ? devices[INDEX] : null;
+    }
+
+    function q(v) { return "'" + String(v).replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'"; }
+    function icon(name, cls) { return '<i data-lucide="' + name + '" class="' + (cls || "w-5 h-5") + '"></i>'; }
+
+    // ---------- ortak parçalar ----------
+    function card(title, inner, sub) {
+      return '<section class="nx-card">' + (title ? '<div class="flex items-baseline justify-between gap-3 mb-1"><h2 class="nx-h">' + esc(title) + "</h2>" +
+        (sub ? '<span class="nx-sub">' + sub + "</span>" : "") + "</div>" : "") + inner + "</section>";
+    }
+
+    function seg(field, options, current, label) {
+      return '<div class="nx-seg mt-2" role="group" aria-label="' + esc(label) + '">' + options.map(function (o) {
+        return '<button type="button" aria-pressed="' + (String(current) === String(o[0])) + '" onclick="set(' + q(field) + ", " +
+          (typeof o[0] === "number" ? o[0] : q(o[0])) + ')">' + esc(o[1]) + "</button>";
+      }).join("") + "</div>";
+    }
+
+    function toggleRow(field, on, title, desc) {
+      return '<div class="nx-row"><div class="min-w-0"><p class="t">' + esc(title) + "</p>" + (desc ? '<p class="d">' + esc(desc) + "</p>" : "") + "</div>" +
+        '<button type="button" role="switch" aria-checked="' + on + '" aria-label="' + esc(title) + '" class="nx-switch" onclick="set(' + q(field) + ", " + !on + ')"><b></b></button></div>';
+    }
+
+    function bigRange(field, value, title, iconName, unit) {
+      return '<div class="nx-big"><input type="range" min="0" max="100" step="1" value="' + value + '" style="--fill:' + value + '%" aria-label="' + esc(title) + '" ' +
+        'oninput="previewBig(this)" onchange="set(' + q(field) + ', Number(this.value))">' +
+        '<div class="lbl">' + icon(iconName) + '<span class="val' + (value > 86 ? " on-fill" : "") + '" data-unit="' + unit + '">' + value + unit + "</span></div></div>";
+    }
+
+    function previewBig(input) {
+      input.style.setProperty("--fill", input.value + "%");
+      var val = input.parentNode.querySelector(".val");
+      if (val) { val.textContent = input.value + val.getAttribute("data-unit"); val.classList.toggle("on-fill", input.value > 86); }
+    }
+
+    function readings(list) {
+      var any = list.some(function (r) { return typeof r[1] === "number" && isFinite(r[1]); });
+      if (!any) return '<p class="nx-wait">' + icon("activity", "w-4 h-4") + "Cihazdan ölçüm verisi bekleniyor</p>";
+      return '<div class="grid grid-cols-' + Math.min(list.length, 3) + ' gap-2 mt-3">' + list.map(function (r) {
+        var ok = typeof r[1] === "number" && isFinite(r[1]);
+        return '<div class="nx-tile"><p class="nx-label">' + esc(r[0]) + '</p><p class="v mt-0.5">' + (ok ? (r[2] === "°" ? NX.fmtTemp(r[1]) : r[1].toLocaleString(window.nexusLocale || "tr-TR") + r[2]) : "—") + "</p></div>";
+      }).join("") + "</div>";
+    }
+
+    function links(list) {
+      return card("Kısayollar", '<div class="nx-links mt-2">' + list.map(function (l) {
+        return '<a class="nx-link" href="' + l[0] + '">' + icon(l[2], "w-5 h-5") + "<span>" + esc(l[1]) + "</span>" + icon("chevron-right", "w-4 h-4 chev") + "</a>";
+      }).join("") + "</div>");
+    }
+
+    function dial(value, min, max, on, caption) {
+      var r = 94, C = 2 * Math.PI * r, arc = C * 0.75;
+      var frac = (value - min) / (max - min);
+      return '<div class="nx-dial' + (on ? "" : " is-off") + '"><svg viewBox="0 0 224 224" aria-hidden="true">' +
+        '<circle class="track" cx="112" cy="112" r="' + r + '" fill="none" stroke-width="16" stroke-linecap="round" stroke-dasharray="' + arc + " " + C + '" transform="rotate(135 112 112)"/>' +
+        '<circle class="value" cx="112" cy="112" r="' + r + '" fill="none" stroke-width="16" stroke-linecap="round" stroke-dasharray="' + Math.max(0.01, arc * frac) + " " + C + '" transform="rotate(135 112 112)"/>' +
+        '</svg><div class="center"><p class="nx-sub font-semibold">' + esc(caption) + '</p><p class="temp mt-1" aria-live="polite">' + NX.fmtTemp(value) + "</p></div></div>" +
+        '<div class="relative z-10 flex items-center justify-center gap-6 -mt-6">' +
+        '<button type="button" class="nx-step" aria-label="Sıcaklığı azalt" ' + (value <= min ? "disabled " : "") + 'onclick="set(\'target\', ' + (value - 0.5) + ')">' + icon("minus") + "</button>" +
+        '<span class="nx-sub w-20 text-center">' + NX.tempNum(min) + "–" + NX.tempNum(max) + NX.tempSymbol() + "</span>" +
+        '<button type="button" class="nx-step" aria-label="Sıcaklığı artır" ' + (value >= max ? "disabled " : "") + 'onclick="set(\'target\', ' + (value + 0.5) + ')">' + icon("plus") + "</button></div>";
+    }
+
+    function hero(device, extraClass, halo) {
+      var status = NX.statusOf(device, INDEX);
+      return '<section class="nx-card">' +
+        '<div class="flex items-center justify-between gap-2">' +
+        '<span class="nx-badge ' + status.badge + '">' + esc(status.text) + "</span>" +
+        (device.room ? '<span class="nx-sub truncate flex items-center gap-1">' + icon("map-pin", "w-3.5 h-3.5") + esc(device.room) + "</span>" : "") + "</div>" +
+        '<div class="nx-hero ' + (extraClass || "") + '"' + (halo ? ' style="--halo:' + halo + '"' : "") + '><div class="halo"></div>' +
+        '<img src="' + NX.imageUrl(device) + '" alt="' + esc(device.name) + '" decoding="async"></div></section>';
+    }
+
+    // ---------- şablonlar: aynı işlevi gören cihazlar aynı ekranı paylaşır ----------
+    var COLORS = [["#FFB45C", "Sıcak beyaz"], ["#FFFFFF", "Beyaz"], ["#4C7DFF", "Mavi"], ["#22C55E", "Yeşil"], ["#EF4444", "Kırmızı"], ["#A855F7", "Mor"]];
+    var TONE_HALO = { warm: "rgba(255,180,92,.45)", neutral: "rgba(255,236,200,.45)", cool: "rgba(186,214,255,.55)" };
+
+    var T = {};
+    var DEV = null;
+    function F(name) { return NX.hasFeature(DEV, name); }
+    function cards() { return Array.prototype.join.call(arguments, ""); }
+    function when(cond, html) { return cond ? html : ""; }
+
+    function presetsCard(st) {
+      return card("Hazır ayarlar", '<div class="nx-modes" style="grid-template-columns:repeat(3,minmax(0,1fr))">' +
+        preset("Okuma", "book-open", { brightness: 100, tone: "cool", color: "#FFFFFF" }) +
+        preset("Dinlenme", "sofa", { brightness: 45, tone: "warm", color: "#FFB45C" }) +
+        preset("Gece", "moon", { brightness: 10, tone: "warm", color: "#FFB45C" }) + "</div>");
+    }
+
+    T.light = function (d, st) {
+      var on = st.switch === true;
+      var halo = F("color") ? hexA(st.color || "#FFB45C", 0.45) : TONE_HALO[st.tone || "neutral"];
+      return {
+        html: cards(
+          hero(d, on ? "is-on" : "is-off", halo),
+          when(F("brightness"), card("Parlaklık", bigRange("brightness", NX.clamp(st.brightness, 0, 100, 60), "Parlaklık", "sun", "%"))),
+          when(F("color"), card("Renk", '<div class="nx-swatches" role="group" aria-label="Renk">' + COLORS.map(function (c) {
+            return '<button type="button" class="nx-swatch" style="background:' + c[0] + '" aria-pressed="' + ((st.color || "#FFB45C").toUpperCase() === c[0]) +
+              '" aria-label="' + c[1] + '" onclick="set(\'color\', ' + q(c[0]) + ')"></button>';
+          }).join("") + "</div>")),
+          when(F("colorTemp"), card("Işık tonu", seg("tone", [["warm", "Sıcak"], ["neutral", "Doğal"], ["cool", "Soğuk"]], st.tone || "neutral", "Işık tonu"))),
+          when(F("presets"), presetsCard(st)),
+          links([["stitch-lighting-master.html", "Aydınlatma Ustası", "lamp"], ["stitch-program.html", "Program ekle", "calendar-clock"]])
+        ),
+        action: F("power") ? powerAction(on) : null
+      };
+    };
+
+    function preset(name, ic, values) {
+      return '<button type="button" class="nx-mode" aria-pressed="false" onclick=\'set("preset", ' + JSON.stringify(values) + ')\'>' + icon(ic) + name + "</button>";
+    }
+
+    function hexA(hex, a) {
+      var n = parseInt(String(hex).replace("#", ""), 16);
+      if (!isFinite(n)) return "rgba(76,125,255," + a + ")";
+      return "rgba(" + (n >> 16 & 255) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")";
+    }
+
+    function round(label, ic, onclick, pressed) {
+      return '<button type="button" class="nx-round" aria-pressed="' + !!pressed + '" onclick="' + onclick + '"><span class="c">' + icon(ic, "w-6 h-6") + "</span>" + esc(label) + "</button>";
+    }
+
+    T.cover = function (d, st) {
+      var pos = NX.clamp(st.position, 0, 100, 0);
+      var w = Math.max(7, (100 - pos) / 2);
+      return {
+        html: cards(
+          hero(d),
+          card("Kontrol",
+            when(F("position"), '<div class="nx-window" aria-hidden="true"><div class="rail"></div><div class="panel l" style="width:' + w + '%"></div><div class="panel r" style="width:' + w + '%"></div></div>') +
+            '<div class="nx-round-row mt-4">' +
+            round("Aç", "chevrons-up", "set('coverAction','open')", pos === 100) +
+            round("Durdur", "pause", "set('coverAction','stop')", false) +
+            round("Kapat", "chevrons-down", "set('coverAction','close')", pos === 0) + "</div>" +
+            when(F("position"), '<p class="nx-label mt-4">Açıklık</p>' + bigRange("position", pos, "Açıklık", "blinds", "%"))),
+          links([["stitch-program.html", "Program ekle", "calendar-clock"], ["stitch-good-morning.html", "Günaydın senaryosu", "sunrise"]])
+        )
+      };
+    };
+
+    // İklim paneli: klima, kombi, ısıtıcı, termostat, vantilatör ve sıcaklık sensörleri aynı ekranı kullanır.
+    // Hangi bölümün görüneceğini cihazın özellikleri belirler.
+    T.climate = function (d, st) {
+      var on = F("power") ? st.switch === true : true;
+      var thermo = NX.kindOf(d) === "thermostat";
+      var min = thermo ? 5 : 16, max = 30;
+      var t = NX.clamp(st.target, min, max, thermo ? 21 : 22);
+      var r = [];
+      if (F("readTemp")) r.push([F("target") ? "Oda sıcaklığı" : "Sıcaklık", st.temperature, "°"]);
+      if (F("readHumidity")) r.push(["Nem", st.humidity, "%"]);
+      var toggles = when(F("swing"), toggleRow("swing", st.swing === true, "Salınım", "Yön kanatları / gövde hareket eder")) +
+        when(F("sleep"), toggleRow("sleep", st.sleep === true, "Uyku modu", "Gece boyunca sıcaklığı yavaşça ayarlar"));
+      return {
+        top: hero(d, F("power") ? (on ? "is-on" : "is-off") : ""),
+        html: cards(
+          when(F("target"), card("", dial(t, min, max, on, on ? "Hedef sıcaklık" : "Kapalı"))),
+          when(r.length, card("Ölçümler", readings(r))),
+          when(F("acModes"), card("Mod", '<div class="nx-modes">' + NX.AC_MODES.map(function (m) {
+            return '<button type="button" class="nx-mode" aria-pressed="' + ((st.mode || "auto") === m[0]) + '" onclick="set(\'mode\', ' + q(m[0]) + ')">' + icon(m[2]) + m[1] + "</button>";
+          }).join("") + "</div>")),
+          when(F("profile"), card("Profil", seg("profile", [["comfort", "Konfor"], ["eco", "Eko"], ["away", "Evde yok"]], st.profile || "comfort", "Profil"))),
+          when(F("fanSpeed"), card("Fan hızı", seg("fan", NX.FAN_SPEEDS, st.fan || "auto", "Fan hızı"))),
+          when(toggles, card("", toggles)),
+          links([["stitch-room-comfort.html", "Oda Konforu", "thermometer"], ["stitch-program.html", "Program ekle", "calendar-clock"]])
+        ),
+        action: F("power") ? powerAction(st.switch === true) : null
+      };
+    };
+
+    // Kadranlı/kilitli ekranlarda ürün görseli küçük başlık kartında durur
+    function miniHeader(d) {
+      var status = NX.statusOf(d, INDEX);
+      return '<section class="nx-card flex items-center gap-3">' +
+        '<img class="device-thumb w-14 h-14 object-contain shrink-0" src="' + NX.imageUrl(d) + '" alt="">' +
+        '<div class="min-w-0 flex-1"><span class="nx-badge ' + status.badge + '">' + esc(status.text) + "</span>" +
+        '<p class="nx-sub mt-1 truncate">' + esc(d.room || "Oda seçilmedi") + "</p></div></section>";
+    }
+
+    T.lock = function (d, st) {
+      var locked = st.locked !== false;
+      var settings = when(F("autoLock"), toggleRow("autoLock", st.autoLock === true, "Otomatik kilit", "Kapı kapandıktan sonra kilitlenir")) +
+        when(F("lockNotify"), toggleRow("notify", st.notify !== false, "Kilit bildirimleri", "Kilit açılınca bildirim gönderir"));
+      return {
+        top: hero(d),
+        html: cards(
+          card("", '<button type="button" class="nx-lock' + (locked ? "" : " open") + '" onclick="set(\'locked\', ' + !locked + ')" aria-label="' + (locked ? "Kilidi aç" : "Kilitle") + '">' +
+            icon(locked ? "lock" : "lock-open", "w-12 h-12") + (locked ? "Kilitli" : "Kilit açık") + "</button>" +
+            '<p class="nx-sub text-center mt-5">' + (locked ? "Açmak için dokun" : "Kilitlemek için dokun") + "</p>"),
+          when(settings, card("Ayarlar", settings)),
+          when(F("battery"), card("Durum", readings([["Pil", st.battery, "%"]]))),
+          links([["stitch-night-security.html", "Gece Güvenliği", "shield"], ["stitch-guest-mode.html", "Misafir modu", "users"]])
+        )
+      };
+    };
+
+    T.camera = function (d, st) {
+      var privacy = F("privacy") && st.privacy === true;
+      var settings = when(F("privacy"), toggleRow("privacy", privacy, "Gizlilik modu", "Kamerayı geçici olarak kapatır")) +
+        when(F("motionNotify"), toggleRow("notify", st.notify !== false, "Hareket bildirimi", "Hareket algılanınca haber verir")) +
+        when(F("nightVision"), '<div class="pt-3 border-t border-slate-200/60 dark:border-slate-700/60"><p class="nx-row-t">Gece görüşü</p></div>' + seg("night", [["auto", "Otomatik"], ["on", "Açık"], ["off", "Kapalı"]], st.night || "auto", "Gece görüşü"));
+      return {
+        top: hero(d),
+        html: cards(
+          '<section class="nx-preview" style="border-radius:28px">' +
+          (privacy ? icon("eye-off", "w-8 h-8") + '<p class="text-sm font-semibold">Gizlilik modu açık</p><p class="text-xs text-slate-400">Kamera kayıt yapmıyor ve görüntü paylaşmıyor.</p>'
+            : icon("video-off", "w-8 h-8") + '<p class="text-sm font-semibold">Canlı görüntü burada açılır</p><p class="text-xs text-slate-400">Kameranın akışı NEXUS\'a bağlandığında görüntü gösterilir.</p>') + "</section>",
+          when(settings, card("Ayarlar", settings)),
+          links([["stitch-multi-video.html", "Tüm kameralar", "layout-grid"], ["stitch-night-security.html", "Gece Güvenliği", "shield"]])
+        )
+      };
+    };
+
+    T.vacuum = function (d, st) {
+      var mode = st.mode || "docked";
+      var cleaning = mode === "cleaning";
+      return {
+        html: cards(
+          hero(d, cleaning ? "is-on" : ""),
+          card("Kontrol", '<div class="nx-round-row">' +
+            round("Başlat", "play", "set('mode','cleaning')", cleaning) +
+            round("Duraklat", "pause", "set('mode','paused')", mode === "paused") +
+            round("Üsse dön", "house", "set('mode','docked')", mode === "docked") + "</div>"),
+          when(F("suction"), card("Emiş gücü", seg("suction", [["quiet", "Sessiz"], ["standard", "Standart"], ["strong", "Güçlü"], ["max", "Maks"]], st.suction || "standard", "Emiş gücü"))),
+          when(F("cleanMode"), card("Temizlik modu", seg("cleanMode", [["vacuum", "Süpür"], ["mop", "Paspas"], ["both", "İkisi"]], st.cleanMode || "vacuum", "Temizlik modu"))),
+          links([["stitch-cleaning-start.html", "Temizlik Rutini", "sparkles"], ["stitch-program.html", "Program ekle", "calendar-clock"]])
+        ),
+        action: { label: cleaning ? "Duraklat" : "Temizliği başlat", icon: cleaning ? "pause" : "play", alt: cleaning, onclick: "set('mode','" + (cleaning ? "paused" : "cleaning") + "')" }
+      };
+    };
+
+    T.media = function (d, st) {
+      var on = st.switch === true;
+      return {
+        html: cards(
+          hero(d, on ? "is-on" : "is-off"),
+          when(F("volume"), card("Ses", bigRange("volume", NX.clamp(st.volume, 0, 100, 30), "Ses", st.muted ? "volume-x" : "volume-2", "%") +
+            when(F("mute"), '<div class="mt-2">' + toggleRow("muted", st.muted === true, "Sessiz", "") + "</div>"))),
+          when(F("source"), card("Kaynak", seg("source", [["tv", "TV"], ["hdmi1", "HDMI 1"], ["hdmi2", "HDMI 2"], ["app", "Uygulama"]], st.source || "tv", "Kaynak"))),
+          links([["stitch-movie-mode.html", "Film modu", "clapperboard"], ["stitch-program.html", "Program ekle", "calendar-clock"]])
+        ),
+        action: F("power") ? powerAction(on) : null
+      };
+    };
+
+    // Hava paneli: hava temizleyici, nemlendirici ve hava kalitesi sensörleri
+    T.air = function (d, st) {
+      var on = st.switch === true;
+      var r = [];
+      if (F("readPm25")) r.push(["PM2.5", st.pm25, " µg/m³"]);
+      if (F("readHumidity")) r.push(["Nem", st.humidity, "%"]);
+      var settings = when(F("display"), toggleRow("display", st.display !== false, "Ekran ışığı", "")) +
+        when(F("childLock"), toggleRow("childLock", st.childLock === true, "Çocuk kilidi", "Cihaz üzerindeki tuşları kilitler"));
+      return {
+        html: cards(
+          hero(d, F("power") ? (on ? "is-on" : "is-off") : ""),
+          when(r.length, card("Hava", readings(r))),
+          when(F("fanSpeed"), card("Fan hızı", seg("fan", NX.FAN_SPEEDS, st.fan || "auto", "Fan hızı"))),
+          when(settings, card("Ayarlar", settings)),
+          links([["stitch-air-quality.html", "Hava Kalitesi", "wind"], ["stitch-program.html", "Program ekle", "calendar-clock"]])
+        ),
+        action: F("power") ? powerAction(on) : null
+      };
+    };
+
+    function powerOnSeg(st, what) {
+      return '<p class="nx-row-t">Elektrik gelince</p><p class="nx-row-d">Kesintiden sonra ' + what + " durumu</p>" +
+        seg("powerOn", [["off", "Kapalı"], ["on", "Açık"], ["last", "Son durum"]], st.powerOn || "last", "Elektrik gelince");
+    }
+
+    // Prizler, anahtarlar, ev aletleri ve diğer aç/kapat cihazları aynı paneli paylaşır
+    T.onoff = function (d, st) {
+      var on = st.switch === true;
+      var settings = when(F("powerOn"), powerOnSeg(st, NX.kindOf(d) === "switch" ? "anahtarın" : "cihazın")) +
+        when(F("childLock"), '<div class="mt-2">' + toggleRow("childLock", st.childLock === true, "Çocuk kilidi", "Cihaz üzerindeki tuşu kilitler") + "</div>") +
+        when(F("indicator"), '<div class="mt-2">' + toggleRow("indicator", st.indicator !== false, "Gösterge ışığı", "") + "</div>");
+      return {
+        html: cards(
+          hero(d, F("power") ? (on ? "is-on" : "is-off") : ""),
+          when(F("metering"), card("Tüketim", readings([["Anlık güç", st.power, " W"], ["Bugün", st.energyToday, " kWh"]]))),
+          when(settings, card("Ayarlar", settings)),
+          when(F("battery"), card("Durum", readings([["Pil", st.battery, "%"]]))),
+          links(F("metering") ? [["stitch-energy.html", "Enerji", "zap"], ["stitch-program.html", "Program ekle", "calendar-clock"]]
+            : [["stitch-program.html", "Program ekle", "calendar-clock"], ["stitch-device-updates.html", "Cihaz güncellemeleri", "refresh-cw"]])
+        ),
+        action: F("power") ? powerAction(on) : null
+      };
+    };
+
+    T.garden = function (d, st) {
+      var on = st.switch === true;
+      var r = [];
+      if (F("readSoil")) r.push(["Toprak nemi", st.soilMoisture, "%"]);
+      return {
+        html: cards(
+          hero(d, F("power") ? (on ? "is-on" : "is-off") : ""),
+          when(F("duration"), card("Sulama süresi", seg("duration", [[5, "5 dk"], [10, "10 dk"], [20, "20 dk"], [30, "30 dk"]], st.duration || 10, "Sulama süresi"))),
+          when(r.length, card("Toprak", readings(r))),
+          links([["stitch-program.html", "Sulama programı", "calendar-clock"], ["stitch-away-home.html", "Evde yokken", "plane"]])
+        ),
+        action: F("power") ? (F("duration") ? { label: on ? "Sulamayı durdur" : "Sulamayı başlat", icon: on ? "square" : "droplets", alt: on, onclick: "set('switch'," + !on + ")" } : powerAction(on)) : null
+      };
+    };
+
+    T.pet = function (d, st) {
+      var on = st.switch === true;
+      return {
+        html: cards(
+          hero(d, F("feed") ? "" : (on ? "is-on" : "is-off")),
+          when(F("feed"), card("Besleme", '<p class="nx-label mt-1">Porsiyon</p>' + seg("portion", [[1, "1 ölçek"], [2, "2 ölçek"], [3, "3 ölçek"]], st.portion || 1, "Porsiyon") +
+            '<p class="nx-wait">' + icon("clock", "w-4 h-4") + (st.lastFed ? "Son besleme: " + esc(st.lastFed) : "Henüz beslenmedi") + "</p>")),
+          when(F("feed") && F("power"), card("", toggleRow("switch", on, "Cihaz açık", ""))),
+          links([["stitch-program.html", F("feed") ? "Besleme programı" : "Program ekle", "calendar-clock"], ["stitch-away-home.html", "Evde yokken", "plane"]])
+        ),
+        action: F("feed") ? { label: "Şimdi besle", icon: "bone", onclick: "feed()" } : (F("power") ? powerAction(on) : null)
+      };
+    };
+
+    // Sensörler (hareket, kapı/pencere, alarm, iklim, hava, ortam) ortak sensör panelini kullanır
+    var SENSOR_LINKS = {
+      motion: [["stitch-night-security.html", "Gece Güvenliği", "shield"], ["stitch-instant-notifications.html", "Bildirimler", "bell"]],
+      contact: [["stitch-night-security.html", "Gece Güvenliği", "shield"], ["stitch-leave-home.html", "Evden çıkış", "door-open"]],
+      alarm: [["stitch-ai-protect.html", "AI Koruma", "shield-check"], ["stitch-instant-notifications.html", "Bildirimler", "bell"]],
+      climatesensor: [["stitch-room-comfort.html", "Oda Konforu", "thermometer"], ["stitch-home-health.html", "Ev sağlığı", "heart-pulse"]],
+      airsensor: [["stitch-air-quality.html", "Hava Kalitesi", "wind"], ["stitch-home-health.html", "Ev sağlığı", "heart-pulse"]],
+      envsensor: [["stitch-home-health.html", "Ev sağlığı", "heart-pulse"], ["stitch-program.html", "Otomasyon ekle", "calendar-clock"]]
+    };
+    var NOTIFY_TITLE = { motion: "Hareket algılanınca bildir", contact: "Açılınca bildir", alarm: "Alarm bildirimi" };
+
+    T.sensor = function (d, st) {
+      var kind = NX.kindOf(d);
+      var r = [];
+      if (F("readTemp")) r.push(["Sıcaklık", st.temperature, "°"]);
+      if (F("readHumidity")) r.push(["Nem", st.humidity, "%"]);
+      if (F("readPm25")) r.push(["PM2.5", st.pm25, " µg/m³"]);
+      if (F("readValue")) r.push(["Ölçüm", st.value, ""]);
+      if (F("battery")) r.push(["Pil", st.battery, "%"]);
+      return {
+        html: cards(
+          hero(d, F("notify") && st.notify !== false ? "is-on" : ""),
+          when(r.length, card(r.length === 1 && F("battery") ? "Durum" : "Ölçümler", readings(r))),
+          when(F("notify"), card("Bildirim", toggleRow("notify", st.notify !== false, NOTIFY_TITLE[kind] || "Bildirim", ""))),
+          links(SENSOR_LINKS[kind] || SENSOR_LINKS.envsensor)
+        )
+      };
+    };
+
+    function powerAction(on) {
+      return { label: on ? "Kapat" : "Aç", icon: "power", alt: on, onclick: "set('switch'," + !on + ")" };
+    }
+
+    // ---------- bilgi ve yönetim ----------
+    function infoCard(d) {
+      var lan = d.host && d.protocol && d.protocol !== "unknown";
+      var conn = lan ? "Yerel ağ · " + (d.brand || d.protocol) + (d.host ? " (" + d.host + ")" : "") : "Katalogdan eklendi";
+      var nameRow = renaming
+        ? '<div class="nx-row"><input id="rename-input" data-enter="saveName" enterkeyhint="done" class="nx-input" value="' + esc(d.name) + '" maxlength="60" aria-label="Cihaz adı">' +
+          '<button type="button" class="nx-btn primary shrink-0" onclick="saveName()">Kaydet</button></div>'
+        : '<button type="button" class="nx-row" onclick="startRename()"><div class="min-w-0"><p class="d">Ad</p><p class="t truncate">' + esc(d.name) + "</p></div>" + icon("pencil", "w-4 h-4 text-slate-400") + "</button>";
+      var remove = confirmRemove
+        ? '<div class="nx-row"><p class="t">Cihaz kaldırılsın mı?</p><div class="flex gap-2"><button type="button" class="nx-btn" onclick="cancelRemove()">Vazgeç</button>' +
+          '<button type="button" class="nx-btn primary" style="background:#e11d48;border-color:#e11d48" onclick="doRemove()">Kaldır</button></div></div>'
+        : '<button type="button" class="nx-row" onclick="askRemove()"><p class="t nx-danger">Cihazı kaldır</p>' + icon("trash-2", "w-4 h-4 nx-danger") + "</button>";
+      // Fabrika sıfırlama adımları: marka bazlı gerçek yönergeler (uydurma yok;
+      // cihazın kendi uygulamasındaki adımın kısa hatırlatıcısı).
+      var RESET_HINTS = {
+        shelly: "Shelly: cihaz üzerindeki düğmeyi ~10 sn basılı tut (LED hızlı yanıp söner).",
+        tasmota: "Tasmota: ayarlar → Reset → Reset device. Veya düğmeyi 40 sn basılı tut.",
+        wled: "WLED: ayarlar → Security & Updates → Factory reset.",
+        esphome: "ESPHome: cihaz donanımına göre düğmeyle veya config'ten 'factory_reset' eylemi.",
+        hue: "Hue: ampulü kapat-aç sırasıyla (4 kez) fabrika moduna alır; köprü sıfırlamaları Hue uygulamasından.",
+        kasa: "Kasa: cihazı 5 sn prize tak-çıkar; tekrar eşleştirme gerekir.",
+        yeelight: "Yeelight: duvar düğmesini 5 kez aç-kapa (reset modu).",
+        wiz: "WiZ: duvar düğmesini hızlıca 5 kez aç-kapa.",
+        lifx: "LIFX: düğmeyi basılı tutun (LED beyaz döner) sonra bırakın.",
+        govee: "Govee LAN: cihazın kendi düğmesiyle veya Govee uygulamasından.",
+        sonoff: "Sonoff DIY: düğmeyi 5+ sn basılı tut.",
+        tapo: "Tapo: uygulamasından ayarlar → cihazı kaldır/sıfırla; kamera ise SETUP düğmesi 5 sn."
+      };
+      function resetHint(d) {
+        var brand = String((d && d.brand) || (d && d.protocol) || "").toLowerCase();
+        for (var key in RESET_HINTS) if (brand.indexOf(key) !== -1) return RESET_HINTS[key];
+        return "Cihazı sıfırlamak için üreticinin uygulamasındaki Fabrika Sıfırlama adımını kullan.";
+      }
+
+      return '<section id="device-info" class="nx-card scroll-mt-4"><h2 class="nx-h mb-1">Cihaz bilgileri</h2>' + nameRow +
+        '<div class="nx-row"><div><p class="d">Oda</p><p class="t">' + esc(d.room || "Seçilmedi") + "</p></div></div>" +
+        '<div class="nx-row"><div><p class="d">Bağlantı</p><p class="t truncate">' + esc(conn) + "</p></div></div>" +
+        '<div class="nx-row"><div class="min-w-0"><p class="d">Fabrika sıfırlama</p><p class="t">' + esc(resetHint(d)) + "</p></div></div>" +
+        remove + "</section>";
+    }
+
+    function startRename() { renaming = true; render(); var i = document.getElementById("rename-input"); if (i) { i.focus(); i.select(); } }
+    function saveName() { var i = document.getElementById("rename-input"); if (i) NX.renameDevice(INDEX, i.value); renaming = false; render(); }
+    function askRemove() { confirmRemove = true; render(); }
+    function cancelRemove() { confirmRemove = false; render(); }
+    function doRemove() { NX.removeDevice(INDEX); location.replace("stitch-home.html"); }
+
+    function set(field, value) { NX.setField(INDEX, field, value); render(); }
+    function feed() { set("lastFed", new Date().toLocaleTimeString(window.nexusLocale || "tr-TR", { hour: "2-digit", minute: "2-digit" })); }
+
+    function render() {
+      var main = document.getElementById("device-main");
+      var bar = document.getElementById("device-actionbar");
+      var d = current();
+      if (!d) {
+        document.getElementById("device-title").textContent = "Cihaz";
+        main.innerHTML = '<div class="nx-empty mt-10"><p class="text-base font-bold">Cihaz bulunamadı</p>' +
+          '<p class="text-sm text-slate-500 mt-1 dark:text-slate-300">Kaldırılmış ya da başka bir hesapta olabilir.</p>' +
+          '<a href="stitch-home.html" class="nx-empty__cta">Ana sayfaya dön</a></div>';
+        bar.classList.add("hidden");
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        return;
+      }
+      document.getElementById("device-title").textContent = d.name;
+      document.title = "NEXUS - " + d.name;
+      var kind = NX.screenOf(d);
+      DEV = d;
+      var view = (T[kind] || T.onoff)(d, NX.stateOf(d));
+      main.setAttribute("data-features", NX.featuresOf(d).join(" "));
+      main.setAttribute("data-kind", kind);
+      main.innerHTML = (NX.LAN_ERRORS[INDEX] ? '<p class="nx-wait" style="color:#e11d48">' + icon("wifi-off", "w-4 h-4") + esc(NX.LAN_ERRORS[INDEX]) + "</p>" : "") +
+        (view.top || "") + view.html + infoCard(d);
+      // Masaüstünde ilk kart (cihaz görseli) sol sütunda sabit durur ve ana eylem onun altına taşınır
+      var lead = main.querySelector(".nx-hero") ? main.querySelector(".nx-hero").closest("section") : null;
+      if (lead) {
+        lead.classList.add("nx-desk-lead");
+        if (view.action) {
+          lead.insertAdjacentHTML("beforeend", '<button type="button" class="nx-lead-action' + (view.action.alt ? " alt" : "") + '" onclick="' + view.action.onclick + '">' +
+            icon(view.action.icon) + esc(view.action.label) + "</button>");
+        }
+      }
+      if (view.action) {
+        bar.innerHTML = '<button type="button" class="' + (view.action.alt ? "alt" : "") + '" onclick="' + view.action.onclick + '">' + icon(view.action.icon) + esc(view.action.label) + "</button>";
+        bar.classList.remove("hidden");
+      } else {
+        bar.classList.add("hidden");
+        bar.innerHTML = "";
+      }
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    NX.onError(function (i) { if (i === INDEX) render(); });
+    // Yerel ağ cihazıysa gerçek durumu cihazdan oku
+    if (isFinite(INDEX)) NX.refreshFromDevice(INDEX);
+    if (typeof lucide !== "undefined") lucide.createIcons();
+    render();
+    window.addEventListener("pageshow", render);
+  </script>
+</body>
+</html>

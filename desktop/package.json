@@ -1,0 +1,163 @@
+{
+  "name": "nexus-desktop",
+  "productName": "NEXUS",
+  "version": "1.0.26",
+  "description": "NEXUS — akıllı ev asistanı (masaüstü)",
+  "homepage": "https://nexus-smarthome.pages.dev",
+  "main": "main.cjs",
+  "author": {
+    "name": "NEXUS",
+    "email": "nexus.smarthome.app@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "prepare-app": "node scripts/prepare-app.cjs",
+    "start": "npm run prepare-app && electron .",
+    "dist": "npm run prepare-app && electron-builder",
+    "dist:win": "npm run prepare-app && electron-builder --win",
+    "dist:linux": "npm run prepare-app && electron-builder --linux"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.9"
+  },
+  "devDependencies": {
+    "electron": "44.9.3",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "app.nexus.desktop",
+    "productName": "NEXUS",
+    "copyright": "Â© 2026 NEXUS",
+    "directories": {
+      "output": "dist",
+      "buildResources": "resources"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "auth-preload.cjs",
+      "resources/**/*",
+      "app/**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "resources/icons/**/*"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Enard52",
+        "repo": "nexus-releases",
+        "releaseType": "release"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.ico",
+      "artifactName": "NEXUS-Setup.${ext}",
+      "legalTrademarks": "NEXUS"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "NEXUS",
+      "installerIcon": "resources/icon.ico",
+      "uninstallerIcon": "resources/icon.ico",
+      "uninstallDisplayName": "NEXUS",
+      "installerSidebar": "resources/installerSidebar.bmp",
+      "uninstallerSidebar": "resources/installerSidebar.bmp",
+      "installerHeader": "resources/installerHeader.bmp",
+      "installerLanguages": [
+        "tr_TR",
+        "en_US"
+      ],
+      "multiLanguageInstaller": true,
+      "displayLanguageSelector": false,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "icon": "resources/icon-mac.png",
+      "category": "public.app-category.lifestyle",
+      "artifactName": "NEXUS-mac.${ext}",
+      "identity": "-",
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "title": "NEXUS",
+      "contents": [
+        {
+          "x": 140,
+          "y": 200
+        },
+        {
+          "x": 400,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "background": "resources/dmg-background.png",
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "iconSize": 96
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.png",
+      "category": "Utility",
+      "synopsis": "Akıllı ev asistanı",
+      "maintainer": "NEXUS <nexus.smarthome.app@gmail.com>",
+      "artifactName": "NEXUS-linux.${ext}",
+      "syncDesktopName": true
+    },
+    "appImage": {
+      "artifactName": "NEXUS-linux.${ext}"
+    },
+    "deb": {
+      "artifactName": "NEXUS-linux.${ext}"
+    }
+  },
+  "desktopName": "nexus.desktop"
+}

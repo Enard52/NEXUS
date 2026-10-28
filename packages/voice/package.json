@@ -1,0 +1,20 @@
+{
+  "name": "@nexus/voice",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NEXUS AI — Wake-word, STT, TTS and speaker identification engine.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nexus/memory": "workspace:*"
+  },
+  "author": "NEXUS",
+  "license": "SEE LICENSE IN LICENSE"
+}

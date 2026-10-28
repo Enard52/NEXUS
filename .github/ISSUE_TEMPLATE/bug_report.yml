@@ -1,0 +1,74 @@
+name: Bug report
+description: Report something that doesn't work as it should
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please fill in the details below — the more
+        precise, the faster the fix. **Security issues: do not open an issue;
+        email nexus.smarthome.app@gmail.com instead** (see SECURITY.md).
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - Linux
+        - Android
+        - Web (site)
+        - macOS (built from source)
+        - iOS (built from source)
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Devices / control
+        - Automations / scenes
+        - Energy
+        - AI assistant / chat
+        - Notifications
+        - Household / account
+        - Billing (NEXUS+)
+        - Desktop shell (tray, updates)
+        - Translations
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      placeholder: What did you expect, what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open …\n2. Tap …"
+    validations:
+      required: true
+  - type: checkboxes
+    id: state
+    attributes:
+      label: Device state
+      options:
+        - label: Fresh account (no devices)
+        - label: At least one device paired
+        - label: Happened while offline / device unreachable
+  - type: input
+    id: version
+    attributes:
+      label: App / program version
+      placeholder: e.g. 1.0.24 (Settings → bottom of page)
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots or logs
+      description: Screenshots help a lot. Never paste tokens or passwords.

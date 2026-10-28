@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+  <title>NEXUS — Senaryo Ayarları</title>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  
+  <script src="data.js"></script>
+  <script>
+    if (typeof nexusGetItem !== 'function') {
+      window.nexusGetItem = function(key) { return localStorage.getItem(key); };
+    }
+    if (typeof nexusSetItem !== 'function') {
+      window.nexusSetItem = function(key, value) { localStorage.setItem(key, value); };
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; min-height: 100dvh; background: #ECE9FD; }
+    .toggle-track { transition: background-color 0.2s; }
+    [contenteditable]:focus { outline: 2px solid #4C7DFF; outline-offset: 2px; border-radius: 6px; }
+    .toast { transform: translateY(100px); opacity: 0; transition: transform 0.3s, opacity 0.3s; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body class="text-slate-900">
+
+  <!-- Toast bildirimi -->
+  <div id="toast" class="toast fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-lg">
+    Kaydedildi ✓
+  </div>
+
+  <header class="pt-12 pb-4 px-5 flex items-center justify-between relative bg-white shadow-sm">
+    <button onclick="history.length > 1 ? history.back() : (window.location.href = 'stitch-smart.html')" class="p-1 -ml-1">
+      <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+    </button>
+    <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Senaryo Ayarları</h1>
+    <div class="w-7"></div>
+  </header>
+
+  <main class="px-5 pt-6 pb-28 space-y-4">
+
+    <!-- Senaryo Başlığı & Düzenleme -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" id="scenario-icon-wrap">
+          <i class="w-6 h-6" id="scenario-icon-el" data-lucide="lightbulb"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div
+            id="scenario-title-edit"
+            contenteditable="true"
+            spellcheck="false"
+            class="font-bold text-xl text-slate-900 leading-tight focus:outline-none cursor-text"
+          >Senaryo</div>
+          <div
+            id="scenario-desc-edit"
+            contenteditable="true"
+            spellcheck="false"
+            class="text-sm text-slate-500 mt-1 focus:outline-none cursor-text"
+          >Açıklama</div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-400">Başlık ve açıklamayı düzenlemek için üzerine dokunun.</p>
+    </section>
+
+    <!-- Tetikleyici Bilgisi -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm" id="trigger-section">
+      <h3 class="font-bold text-slate-900 mb-3">Tetikleyici</h3>
+      <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+          <i class="w-4 h-4 text-[#4C7DFF]" id="trigger-icon" data-lucide="clock"></i>
+        </div>
+        <div class="flex-1">
+          <span class="text-sm font-semibold text-slate-700" id="trigger-label">Zamanlama</span>
+          <p class="text-xs text-slate-400 mt-0.5" id="trigger-value-label">Her zaman</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ana Sayfada Göster -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="font-semibold text-slate-900">Ana Sayfada Göster</span>
+          <p class="text-xs text-slate-400 mt-0.5">Ana ekranda kısayol kartı oluşturur</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggle-show-home" class="sr-only peer">
+          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Odada Göster -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="font-semibold text-slate-900">Odada Göster</span>
+          <p class="text-xs text-slate-400 mt-0.5">İlgili oda sahneleri listesine ekler</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggle-show-room" class="sr-only peer">
+          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Otomasyon Etkin/Pasif (sadece automation tipinde göster) -->
+    <section class="bg-white rounded-3xl p-5 shadow-sm" id="enabled-section" style="display:none;">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="font-semibold text-slate-900">Otomasyon Etkin</span>
+          <p class="text-xs text-slate-400 mt-0.5">Kapalıysa tetikleyici çalışmaz</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggle-enabled" class="sr-only peer" checked>
+          <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Butonlar -->
+    <div class="space-y-3 pt-2">
+      <button onclick="saveScenario()" class="w-full bg-[#4C7DFF] text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform shadow-md shadow-blue-200">
+        Kaydet
+      </button>
+      <button id="delete-scenario-button" type="button" onclick="deleteScenario()" class="hidden w-full bg-red-50 text-red-600 py-4 rounded-2xl font-bold active:scale-95 transition-transform border border-red-100">
+        Senaryoyu Sil
+      </button>
+    </div>
+
+  </main>
+
+  <script src="js/lucide.js"></script>
+<script>
+    // ── URL parametrelerini oku ──────────────────────────────────────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const scenarioId   = urlParams.get('id');
+    const scenarioType = urlParams.get('type') ||
+      (findItemById('nexusCustomAutomations', scenarioId) ? 'automation' :
+       findItemById('nexusCustomClickRun',    scenarioId) ? 'clickrun'   : '');
+
+    const storageKey = scenarioType === 'automation'
+      ? 'nexusCustomAutomations'
+      : 'nexusCustomClickRun';
+
+    // ── Mevcut veriyi yükle ──────────────────────────────────────────────────
+    let currentItem = scenarioId
+      ? (findItemById('nexusCustomAutomations', scenarioId) ||
+         findItemById('nexusCustomClickRun',    scenarioId))
+      : null;
+
+    // URL'den fallback parametreler
+    if (!currentItem) {
+      currentItem = {
+        id: scenarioId || null,
+        title: decodeURIComponent(urlParams.get('title') || 'Senaryo'),
+        desc:  decodeURIComponent(urlParams.get('desc')  || 'Açıklama'),
+        icon:  urlParams.get('icon') || 'zap',
+        bgClass:    urlParams.get('bgClass')    || 'bg-blue-100',
+        colorClass: urlParams.get('colorClass') || 'text-[#4C7DFF]',
+        enabled:    true,
+        showOnHome: true,
+        showInRoom: false,
+        trigger: { type: 'manual' },
+        actions: []
+      };
+    }
+
+    // ── UI'ı doldur ──────────────────────────────────────────────────────────
+    document.getElementById('scenario-title-edit').textContent = currentItem.title;
+    document.getElementById('scenario-desc-edit').textContent  = currentItem.desc;
+
+    // İkon
+    const iconWrap = document.getElementById('scenario-icon-wrap');
+    iconWrap.className = `w-12 h-12 rounded-2xl ${currentItem.bgClass || 'bg-blue-100'} flex items-center justify-center shrink-0`;
+    const iconEl = document.getElementById('scenario-icon-el');
+    iconEl.className = `w-6 h-6 ${currentItem.colorClass || 'text-[#4C7DFF]'}`;
+    iconEl.setAttribute('data-lucide', currentItem.icon || 'zap');
+
+    // Toggle'lar
+    document.getElementById('toggle-show-home').checked = Boolean(currentItem.showOnHome);
+    document.getElementById('toggle-show-room').checked = Boolean(currentItem.showInRoom);
+    document.getElementById('toggle-enabled').checked   = currentItem.enabled !== false;
+
+    // Otomasyon etkin/pasif toggle'ı sadece automation tipinde göster
+    if (scenarioType === 'automation') {
+      document.getElementById('enabled-section').style.display = '';
+    }
+
+    // Tetikleyici bilgisi
+    renderTrigger(currentItem.trigger);
+
+    // Sil butonu
+    if (scenarioId && scenarioType) {
+      document.getElementById('delete-scenario-button').classList.remove('hidden');
+    }
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // ── Tetikleyici render ───────────────────────────────────────────────────
+    function renderTrigger(trigger) {
+      if (!trigger) return;
+      const iconMap = {
+        time:      { icon: 'clock',     label: 'Zamanlama'   },
+        device:    { icon: 'cpu',       label: 'Cihaz Durumu' },
+        location:  { icon: 'map-pin',   label: 'Konum'       },
+        condition: { icon: 'activity',  label: 'Koşul'       },
+        manual:    { icon: 'hand',      label: 'Manuel'      }
+      };
+      const meta = iconMap[trigger.type] || iconMap['manual'];
+      document.getElementById('trigger-icon').setAttribute('data-lucide', meta.icon);
+      document.getElementById('trigger-label').textContent = meta.label;
+
+      let valueText = 'Her zaman';
+      if (trigger.type === 'time' && trigger.value) {
+        valueText = trigger.value + (trigger.repeat ? ' · ' + repeatLabel(trigger.repeat) : '');
+      } else if (trigger.type === 'manual') {
+        valueText = 'Butona basıldığında çalışır';
+      } else if (trigger.type === 'device' && trigger.value) {
+        valueText = trigger.value;
+      } else if (trigger.type === 'location' && trigger.value) {
+        valueText = trigger.value;
+      }
+      document.getElementById('trigger-value-label').textContent = valueText;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function repeatLabel(r) {
+      return { daily: 'Günlük', weekly: 'Haftalık', always: 'Her zaman', weekdays: 'Hafta içi', weekends: 'Hafta sonu' }[r] || r;
+    }
+
+    // ── Kaydet ──────────────────────────────────────────────────────────────
+    function saveScenario() {
+      if (!scenarioId || !scenarioType) return;
+
+      const newTitle = nexusSrcText(document.getElementById('scenario-title-edit')) || currentItem.title;
+      const newDesc  = nexusSrcText(document.getElementById('scenario-desc-edit'))  || currentItem.desc;
+      const showOnHome = document.getElementById('toggle-show-home').checked;
+      const showInRoom = document.getElementById('toggle-show-room').checked;
+      const enabled    = document.getElementById('toggle-enabled').checked;
+
+      const updates = { title: newTitle, desc: newDesc, showOnHome, showInRoom, enabled };
+      const result = updateItemById(storageKey, scenarioId, updates);
+
+      if (result) {
+        showToast('Kaydedildi ✓');
+        setTimeout(() => window.history.back(), 1000);
+      } else {
+        showToast('Kayıt başarısız');
+      }
+    }
+
+    // ── Sil ─────────────────────────────────────────────────────────────────
+    function deleteScenario() {
+      if (!scenarioId || !scenarioType) return;
+      const items = readAndNormalizeItems(storageKey, scenarioType).filter(i => i.id !== scenarioId);
+      writeNormalizedItems(storageKey, items, scenarioType);
+
+      if (scenarioType === 'clickrun') {
+        try {
+          const sel = JSON.parse(nexusGetItem('nexusSelectedTapToRunCards') || '[]') || [];
+          nexusSetItem('nexusSelectedTapToRunCards', JSON.stringify(sel.filter(id => id !== scenarioId)));
+        } catch (e) {}
+        window.location.href = 'stitch-smart.html?tab=tab-clickrun';
+      } else {
+        window.location.href = 'stitch-smart.html?tab=tab-automation';
+      }
+    }
+
+    // ── Toast ────────────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+  </script>
+</body>
+</html>
+

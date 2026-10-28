@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+  <title>NEXUS - AI Koruma</title>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  
+  
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    .nexus-gradient-text { background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nexus-card-shadow { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+    .nexus-glow { box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28); }
+    .active-scale:active { transform: scale(0.96); }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+  <script src="device-controls.js"></script>
+</head>
+<body>
+  <div class="w-full h-screen flex flex-col bg-[#EEF4FF] transition-colors duration-300">
+    <header class="shrink-0 pt-14 px-6 pb-4 flex items-center justify-between">
+      <a href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'stitch-home.html';" class="p-1 -ml-1 text-slate-900 active-scale">
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
+      </a>
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">AI Koruma</h1>
+            <a href="stitch-settings.html" aria-label="Ayarlar" class="p-1 -mr-1 flex items-center justify-center text-slate-700 active:scale-95 transition-transform">
+        <i data-lucide="settings" class="text-[24px]"></i>
+      </a>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8">
+      <section class="bg-white rounded-[2rem] p-6 nexus-card-shadow relative overflow-hidden flex flex-col items-center justify-center text-center mt-4">
+        <div class="absolute w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
+        <div class="relative w-24 h-24 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+            <i data-lucide="shield-check" class="text-5xl text-emerald-500"></i>
+            <span class="absolute top-2 right-2 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
+        </div>
+        <h2 id="ai-protect-title" class="text-2xl font-extrabold text-slate-900 relative">Koruma Kurulmadı</h2>
+        <p id="ai-protect-subtitle" class="text-sm font-medium text-slate-500 mt-2 relative">Koruma başlatılınca durum burada görünür.</p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Koruma Kayıtları</h3>
+        <div id="ai-protect-events" class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-5 text-center">
+          <!-- Tailwind preflight svg'yi display:block yapar; text-center onu ortalamaz → mx-auto şart -->
+          <i data-lucide="shield" class="text-2xl text-slate-300 mx-auto"></i>
+          <p class="text-sm font-bold text-slate-900 mt-2">Kayıtlı olay yok</p>
+          <p class="text-[11px] font-medium text-slate-500 mt-1">Derin tarama çalışınca gerçek sonuçlar burada listelenir.</p>
+        </div>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.15em] ml-2">Gelişmiş Koruma Modları</h3>
+        <div class="bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+              <i data-lucide="fingerprint" class="text-xl"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-900">Biyometrik Kilit</p>
+              <p class="text-[11px] font-medium text-slate-500">Yönetici işlemleri için</p>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4C7DFF]"></div>
+          </label>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shrink-0 pb-[34px] px-6 pt-4 bg-white/40 backdrop-blur-md border-t border-white/40">
+      <button class="w-full h-16 bg-[#4C7DFF] text-white rounded-3xl flex items-center justify-center gap-3 active-scale nexus-glow transition-all" id="deep-scan-btn">
+        <i data-lucide="scan-line" class="text-2xl"></i>
+        <span class="text-base font-extrabold tracking-tight">Derin Tarama Başlat</span>
+      </button>
+    </footer>
+  </div>
+
+<script>
+// AI Koruma: eklenen cihazların gerçek durumuna göre güvenlik taraması.
+// Açık kilit, gizlilik modundaki kamera, bildirimi kapalı sensör ve yerel ağda ulaşılamayan cihazları bulur.
+var SCAN_KEY = 'nexusAiProtectScan';
+function esc(v) { return NX.escapeHtml(v); }
+
+function readScan() { try { return JSON.parse(nexusGetItem(SCAN_KEY) || 'null'); } catch (e) { return null; } }
+
+function renderScan(scan) {
+  var title = document.getElementById('ai-protect-title');
+  var subtitle = document.getElementById('ai-protect-subtitle');
+  var events = document.getElementById('ai-protect-events');
+  var dot = document.querySelector('.absolute.top-2.right-2');
+  if (!scan) {
+    title.textContent = 'Henüz tarama yapılmadı';
+    subtitle.textContent = 'Derin tarama, eklediğin cihazların güvenlik durumunu kontrol eder.';
+    if (dot) dot.className = 'absolute top-2 right-2 w-4 h-4 border-2 border-white rounded-full bg-slate-300';
+    return;
+  }
+  var issues = scan.findings.filter(function (f) { return f.level !== 'ok'; });
+  title.textContent = issues.length ? issues.length + ' konu dikkat istiyor' : 'Sorun bulunmadı';
+  subtitle.textContent = scan.checked + ' cihaz tarandı · ' + scan.time;
+  if (dot) dot.className = 'absolute top-2 right-2 w-4 h-4 border-2 border-white rounded-full ' + (issues.length ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse');
+  if (!scan.findings.length) {
+    events.innerHTML = '<p class="text-sm font-bold text-slate-900">Güvenlik cihazı yok</p><p class="text-[11px] font-medium text-slate-500 mt-1">Kilit, kamera veya sensör eklediğinde tarama onları da kontrol eder.</p>' +
+      '<a href="stitch-pair.html" class="mt-3 inline-flex min-h-[40px] items-center rounded-full bg-[#4C7DFF] px-4 text-xs font-bold text-white">Cihaz ekle</a>';
+    return;
+  }
+  var tone = { risk: 'text-rose-600 bg-rose-500/10', warn: 'text-amber-700 bg-amber-500/10', ok: 'text-emerald-700 bg-emerald-500/10' };
+  var label = { risk: 'Risk', warn: 'Dikkat', ok: 'Tamam' };
+  events.className = 'bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-2 text-left divide-y divide-slate-100';
+  events.innerHTML = scan.findings.map(function (f) {
+    return '<a href="stitch-device.html?i=' + f.index + '" class="flex items-center justify-between gap-3 p-3 min-h-[52px]">' +
+      '<span class="min-w-0"><span class="block text-sm font-bold text-slate-900 truncate">' + esc(f.name) + '</span>' +
+      '<span class="block text-[12px] font-medium text-slate-500">' + esc(f.text) + '</span></span>' +
+      '<span class="shrink-0 text-[11px] font-bold px-2 py-1 rounded-lg ' + tone[f.level] + '">' + label[f.level] + '</span></a>';
+  }).join('');
+}
+
+function deepScan() {
+  var btn = document.getElementById('deep-scan-btn');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Taranıyor…';
+  var devices = NX.readDevices();
+  var lan = [];
+  devices.forEach(function (d, i) { if (NX.isLan(d)) lan.push(i); });
+  Promise.all(lan.map(function (i) { return NX.refreshFromDevice(i); })).then(function () {
+    var list = NX.readDevices();
+    var findings = [];
+    list.forEach(function (d, i) {
+      var k = NX.kindOf(d), st = NX.stateOf(d);
+      if (NX.isLan(d) && NX.LAN_ONLINE[i] === false) findings.push({ index: i, name: d.name, level: 'warn', text: 'Yerel ağda ulaşılamıyor' });
+      if (k === 'lock') findings.push(st.locked === false ? { index: i, name: d.name, level: 'risk', text: 'Kilit açık' } : { index: i, name: d.name, level: 'ok', text: 'Kilitli' });
+      if (k === 'camera') {
+        if (st.privacy === true) findings.push({ index: i, name: d.name, level: 'warn', text: 'Gizlilik modunda — kayıt yapmıyor' });
+        else if (st.notify === false) findings.push({ index: i, name: d.name, level: 'warn', text: 'Hareket bildirimi kapalı' });
+        else findings.push({ index: i, name: d.name, level: 'ok', text: 'İzlemede' });
+      }
+      if (k === 'motion' || k === 'contact' || k === 'alarm') {
+        findings.push(st.notify === false ? { index: i, name: d.name, level: 'warn', text: 'Bildirimler kapalı' } : { index: i, name: d.name, level: 'ok', text: 'Bildirimler açık' });
+      }
+    });
+    var order = { risk: 0, warn: 1, ok: 2 };
+    findings.sort(function (a, b) { return order[a.level] - order[b.level]; });
+    var scan = { time: new Date().toLocaleString((window.nexusLocale || 'tr-TR'), { dateStyle: 'short', timeStyle: 'short' }), checked: list.length, findings: findings };
+    nexusSetItem(SCAN_KEY, JSON.stringify(scan));
+    renderScan(scan);
+    btn.disabled = false;
+    btn.querySelector('span').textContent = 'Yeniden Tara';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var toggle = document.querySelector('input[type="checkbox"]');
+  if (toggle) {
+    toggle.checked = nexusGetItem('nexusBiometricLock') !== 'false';
+    toggle.addEventListener('change', function (e) { nexusSetItem('nexusBiometricLock', e.target.checked ? 'true' : 'false'); });
+  }
+  var last = readScan();
+  renderScan(last);
+  if (last) document.querySelector('#deep-scan-btn span').textContent = 'Yeniden Tara';
+  // Taranacak cihaz yokken "Başlat" gösterme: dürüst eylem "Önce cihaz ekle".
+  var noDevices = !NX.readDevices().length;
+  if (noDevices) document.querySelector('#deep-scan-btn span').textContent = nexusT('Önce cihaz ekle', 'Add a device first');
+  document.getElementById('deep-scan-btn').addEventListener('click', function () {
+    if (!NX.readDevices().length) { location.href = 'stitch-pair.html'; return; }
+    deepScan();
+  });
+});
+</script>
+
+  <script src="js/lucide.js"></script>
+<script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

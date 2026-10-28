@@ -1,0 +1,22 @@
+# Dependabot: bağımlılık güncelleme PR'leri (ücretsiz; uyarılar için ayrıca
+# vulnerability-alerts açık). Sürüm PR'ları haftalık, az gürültülü.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+  - package-ecosystem: npm
+    directory: "/desktop"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2

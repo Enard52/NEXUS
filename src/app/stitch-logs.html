@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Günlükler</title>
+  <!-- Tailwind CSS CDN -->
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <!-- Google Fonts: Inter -->
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
+  
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #FAFAFA;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="text-slate-900">
+  <!-- Header -->
+  <header class="bg-white px-4 pt-12 pb-4 flex items-center justify-between sticky top-0 z-10 border-b border-gray-100">
+    <!-- Back Button -->
+    <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='stitch-home.html'" aria-label="Geri" class="p-1 -ml-1 text-slate-900 active:scale-95 transition-transform">
+      <i class="w-7 h-7" data-lucide="chevron-left"></i>
+    </a>
+    <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Günlükler</h1>
+    <div class="w-10"></div> <!-- Spacer -->
+  </header>
+
+  <!-- Gerçek olay akışı (nexusEvents) veya dürüst boş durum -->
+  <main class="flex-grow flex flex-col px-5 pt-4 pb-20" id="logs-main">
+    <div class="flex-grow flex flex-col items-center justify-center hidden" id="logs-empty">
+      <div class="flex flex-col items-center relative mb-4 mt-[-100px]">
+
+        <!-- Floating decorative icons (lightbulb & plug) -->
+        <div class="absolute -top-4 -left-6 text-slate-200">
+          <i class="w-5 h-5" data-lucide="lightbulb"></i>
+        </div>
+        <div class="absolute -top-6 -right-4 text-slate-200">
+          <i class="w-5 h-5" data-lucide="plug"></i>
+        </div>
+
+        <!-- Main Box Icon Container with subtle background glow/shadow -->
+        <div class="relative w-32 h-24 flex items-end justify-center mb-6">
+          <div class="absolute bottom-0 w-32 h-10 bg-slate-200/50 rounded-[100%] blur-md"></div>
+          <i class="w-20 h-20 text-slate-300 drop-shadow-sm relative z-10 stroke-[1.5]" data-lucide="package-open"></i>
+        </div>
+
+        <!-- Text -->
+        <p class="text-[15px] font-medium text-slate-400">Günlük Yok</p>
+      </div>
+    </div>
+    <div class="space-y-3" id="logs-list"></div>
+  </main>
+
+  <script src="js/lucide.js"></script>
+<script>
+    lucide.createIcons();
+
+    /* Gerçek olay günlüğü: nexusEvents */
+    (function () {
+      var events = [];
+      try { events = JSON.parse(nexusGetItem('nexusEvents') || '[]'); } catch (e) {}
+      if (!Array.isArray(events)) events = [];
+      events.sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+
+      var empty = document.getElementById('logs-empty');
+      var list = document.getElementById('logs-list');
+      if (!events.length) {
+        empty.classList.remove('hidden');
+        return;
+      }
+      function esc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+      var iconMap = { device: 'plug', energy: 'zap', plan: 'crown' };
+      list.innerHTML = events.map(function (ev) {
+        var d = new Date(ev.ts);
+        var when = isNaN(d.getTime()) ? '' :
+          d.toLocaleDateString((window.nexusLocale || 'tr-TR'), { day: 'numeric', month: 'long' }) + ' ' +
+          d.toLocaleTimeString((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit' });
+        return '<article class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-4 items-start">' +
+          '<div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#4C7DFF] flex-shrink-0">' +
+          '<i class="w-5 h-5" data-lucide="' + (iconMap[ev.type] || 'activity') + '"></i></div>' +
+          '<div class="min-w-0">' +
+          '<h2 class="font-semibold leading-tight">' + esc(ev.title || '') + '</h2>' +
+          (ev.detail ? '<p class="text-sm text-slate-500 mt-0.5">' + esc(ev.detail) + '</p>' : '') +
+          '<p class="text-xs text-slate-400 mt-1.5">' + when + '</p>' +
+          '</div></article>';
+      }).join('');
+      lucide.createIcons();
+    })();
+  </script>
+</body>
+</html>
+
