@@ -3366,7 +3366,7 @@ function renderDownloads(c) {
         .join('\n      ')}
     </div>
     <p class="dl-note">${esc(c.downloads.smartScreenNote)}</p>
-    <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener">${icon('github')}${c.lang === 'tr' ? 'Kaynak kodu GitHub\'da gör' : 'View the source on GitHub'}</a></div>
+    <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'Tüm kurucular, SHA-256 dosyaları ve güncelleme listeleri bu depoda' : 'Every installer, SHA-256 file and updater manifest lives in this repository'}">${icon('github')}${c.lang === 'tr' ? 'Kurulum deposunu gör' : 'View the installer repository'}</a></div>
   </div>
 </section>`;
 }
@@ -3922,7 +3922,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261028m"></script>
+<script src="/assets/site.js?v=20261028n"></script>
 </body>
 </html>`;
 }
@@ -4010,7 +4010,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261028m"></script>
+<script src="/assets/site.js?v=20261028n"></script>
 </body>
 </html>`;
 }
@@ -4056,7 +4056,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261028m"></script>
+<script src="/assets/site.js?v=20261028n"></script>
 </body>
 </html>`;
 }

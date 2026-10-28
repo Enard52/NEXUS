@@ -640,16 +640,31 @@ for (const [label, url, lang, price, saveText] of [
   // Yalnız GÖRÜNÜR görseller: pasif hero sekmeleri kasıtlı olarak sonradan yüklenir
   // (hepsinin kutusu üst üste; .shot-slide:not(.active) bu yüzden elenir) ve statik
   // denetim tüm /images/... yollarının dosyada var olduğunu zaten doğruluyor.
-  const broken = await pg.evaluate(() =>
-    [...document.images]
+  // loading="lazy" olan görüntü ekran dışındayken tarayıcı hiç istek ATMAZ (complete
+  // false, currentSrc boş) — bu bir bozukluk değil. Bu yüzden yalnızca yüklemeye
+  // BAŞLANMIŞ (currentSrc dolu) görüntüler beklenir ve doğal genişliği 0 kalanlar
+  // gerçek bozukluk olarak raporlanır.
+  const broken = await pg.evaluate(async () => {
+    const cand = [...document.images]
       .filter((i) => !i.closest(".shot-slide:not(.active)"))
       .filter((i) => {
         const r = i.getBoundingClientRect();
         return r.width > 1 && r.height > 1 && r.top < window.innerHeight * 2;
       })
-      .filter((i) => !i.complete || i.naturalWidth === 0)
-      .map((i) => i.currentSrc || i.src)
-  );
+      .filter((i) => i.currentSrc);
+    await Promise.all(
+      cand.map(
+        (i) =>
+          i.complete ||
+          new Promise((res) => {
+            i.addEventListener("load", res, { once: true });
+            i.addEventListener("error", res, { once: true });
+            setTimeout(res, 4000);
+          })
+      )
+    );
+    return cand.filter((i) => i.naturalWidth === 0).map((i) => i.currentSrc || i.src);
+  });
   check(`${label} render: görünen görseller yüklü`, broken.length === 0, broken.slice(0, 2).join(","));
 
   // Hero sekmeleri: her sekme gerçekten bir ekran görüntüsünü gösteriyor mu?
@@ -854,7 +869,18 @@ for (const [label, url, lang, needle] of [
 /* ---------------------------------------------------------------- dil geçişi */
 {
   const { ctx, pg } = await openPage(EN_LANG, "/");
-  check("İngilizce cihazda dil seçici yok", !(await pg.isVisible(".lang-switch")));
+  // Seçici HER ziyaretçiye açık: İngilizce cihazdaki biri de Türkçe sayfaya
+  // geçebilmeli. Denetim eskiden "İngilizce'de gizli"yi bekliyordu; arayüz öyle
+  // tasarlanmadı — TR|EN iki pil her iki dilde de basılıyor (site-build.mjs).
+  check("İngilizce cihazda dil seçici var", await pg.isVisible(".lang-switch"));
+  const pills = await pg.$$eval(".lang-btn", (els) =>
+    els.map((e) => ({ t: (e.textContent || "").trim(), active: e.classList.contains("active"), href: e.getAttribute("href") }))
+  );
+  check(
+    "İngilizce sayfada aktif pil EN, diğer pil TR'ye bağlı",
+    pills.some((p) => p.t === "EN" && p.active) && pills.some((p) => p.t === "TR" && !p.active && (p.href || "").includes("/tr/")),
+    JSON.stringify(pills)
+  );
   await ctx.close();
 }
 {
