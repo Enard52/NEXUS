@@ -3933,7 +3933,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261029a"></script>
+<script src="/assets/site.js?v=20261029b"></script>
 </body>
 </html>`;
 }
@@ -4021,7 +4021,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261029a"></script>
+<script src="/assets/site.js?v=20261029b"></script>
 </body>
 </html>`;
 }
@@ -4067,7 +4067,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261029a"></script>
+<script src="/assets/site.js?v=20261029b"></script>
 </body>
 </html>`;
 }
