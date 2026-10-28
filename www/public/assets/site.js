@@ -25,6 +25,23 @@ function nxSetLang(lang){
 // Modal açıkken sayfa kaymasın: gövde sabitlenir, tekerlek arka plana gitmez.
 var nxScrollY=0;
 var nxScrollLocked=false;
+// Kilit sırasında kutusu piksele sabitlenen öğeler (gövde + sabit başlık).
+// Kaydırma çubuğunun şeridi kilitte serbest kaldığı için sabit kutu genişler;
+// bu öğeler eski genişliklerinde tutulmazsa navbar ve içerik kayar.
+var nxPinned=[];
+function nxPinBox(el,w){
+  if(!el||!(w>0))return;
+  el.style.left='0';
+  el.style.right='auto';
+  el.style.width=w+'px';
+  nxPinned.push(el);
+}
+function nxUnpinBoxes(){
+  while(nxPinned.length){
+    var el=nxPinned.pop();
+    el.style.left=''; el.style.right=''; el.style.width='';
+  }
+}
 function nxGuardModalScroll(e){
   var node=e.target;
   while(node && node!==document.body){
@@ -40,21 +57,27 @@ function nxGuardModalScroll(e){
   e.preventDefault();
 }
 function nxLockScroll(){
-  // Çubuk genişliği KİLİTLENMEDEN ÖNCE ölçülür: body fixed olunca kaydırma çubuğu
-  // kaybolur ve clientWidth genişler — o anda ölçersen fark 0 çıkar, telafi uygulanmaz.
-  var nxSbWidth=window.innerWidth-document.documentElement.clientWidth;
+  // KİLİTLEMEDEN ÖNCE gövde ve başlığın gerçek genişliği ölçülür. Neden padding değil
+  // de piksel genişlik: html overflow:hidden olunca kaydırma çubuğu VE ayırdığı şerit
+  // kayboluyor (clientWidth 505 -> 520 ölçüldü). Sabit gövdenin containing block'u bu
+  // şeridi zaten dışlıyor; üstüne bir de paddingRight=çubuk eklenince kutu iki kez
+  // daralıyor ve margin:auto ile ortalanan içerik ~7.5px sola kayıyordu — sabit navbar
+  // bundan etkilenmediği için kaymazdı, "sadece içerik kayıyor" görüntüsü buydu.
+  // Şerit artık kilitte serbest (html.nx-modal-open{scrollbar-gutter:auto}), o yüzden
+  // sabit kutu da genişliyor: gövde ve başlık kilit anındaki kutularına kilitlenir.
+  var b=document.body;
+  var nxBodyW=b.getBoundingClientRect().width;
+  var nxHdr=document.querySelector('.hd');
+  var nxHdrW=nxHdr?nxHdr.getBoundingClientRect().width:0;
   document.documentElement.classList.add('nx-modal-open');
   if(nxScrollLocked) return;
   nxScrollLocked=true;
   nxScrollY=window.scrollY||document.documentElement.scrollTop||0;
-  var b=document.body;
   b.style.position='fixed';
   b.style.top='-'+nxScrollY+'px';
-  b.style.left='0';
-  b.style.right='0';
-  b.style.width='100%';
-  // Kaydırma çubuğu kaybolunca içeriğin sola kaymaması için çubuk genişliğini telafi et.
-  if(nxSbWidth>0) b.style.paddingRight=nxSbWidth+'px';
+  b.style.paddingRight='';
+  nxPinBox(b,nxBodyW);
+  nxPinBox(nxHdr,nxHdrW);
   document.addEventListener('wheel',nxGuardModalScroll,{passive:false,capture:true});
   document.addEventListener('touchmove',nxGuardModalScroll,{passive:false,capture:true});
 }
@@ -69,10 +92,8 @@ function nxUnlockScroll(){
   var b=document.body;
   b.style.position='';
   b.style.top='';
-  b.style.left='';
-  b.style.right='';
-  b.style.width='';
   b.style.paddingRight='';
+  nxUnpinBoxes();
   // html{scroll-behavior:smooth} yüzünden bu geri yazma animasyonlu olurdu:
   // kapanışta istemsiz kaydırma animasyonu tetiklenmesin diye anında, sert geri yazılır.
   var de=document.documentElement;

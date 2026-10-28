@@ -206,10 +206,16 @@ html.nx-modal-open,
 html.nx-modal-open body{
   overflow:hidden !important;
   overscroll-behavior:none;
-  /* scrollbar-gutter AUTO'ya düşürülmez: base 'stable' 15px ayırır, modal açılınca
-     auto olursa bu alan serbest kalıp içeriği 7.5px kaydırıyordu (ölçüldü). Gutter
-     kalır — kaydırma çubuğu zaten overflow:hidden ile gizli, boş şerit backdrop altında. */
 }
+/* Kilit sırasında şerit SERBEST bırakılır ('stable' → auto): 'stable' kalsaydı,
+   çubuğun ayırdığı 15px boş kalır ve Chrome oraya hiçbir şey boyamazdı — koyu
+   backdrop'un yanında beyaz bir bant görünüyordu (piksel ölçümü: boya 504px'te
+   bitiyor, pencere 520px). Çubuk zaten overflow:hidden ile gizli, şeride gerek yok.
+   İçeriğin kaymaması JS'ten geliyor: nxLockScroll kilitleme öncesi gövde ve başlık
+   kutularını piksel olarak sabitliyor. (Eski padding telafisi çift sayılıyor ve
+   akıştaki içeriği ~7.5px sola kaydırıyordu; sabit navbar bundan etkilenmediği için
+   kaymaz, "sadece içerik kayıyor" görüntüsü de buydu.) */
+html.nx-modal-open{scrollbar-gutter:auto}
 html[data-theme=dark]{
   --page:#0F172A; --page-grad:linear-gradient(180deg, #020617 0%, #0F172A 100%);
   --surface:#1E293B; --surface-2:#273449; --text:#F1F5F9; --text-2:#CBD5E1;
@@ -1253,6 +1259,23 @@ function nxSetLang(lang){
 // Modal açıkken sayfa kaymasın: gövde sabitlenir, tekerlek arka plana gitmez.
 var nxScrollY=0;
 var nxScrollLocked=false;
+// Kilit sırasında kutusu piksele sabitlenen öğeler (gövde + sabit başlık).
+// Kaydırma çubuğunun şeridi kilitte serbest kaldığı için sabit kutu genişler;
+// bu öğeler eski genişliklerinde tutulmazsa navbar ve içerik kayar.
+var nxPinned=[];
+function nxPinBox(el,w){
+  if(!el||!(w>0))return;
+  el.style.left='0';
+  el.style.right='auto';
+  el.style.width=w+'px';
+  nxPinned.push(el);
+}
+function nxUnpinBoxes(){
+  while(nxPinned.length){
+    var el=nxPinned.pop();
+    el.style.left=''; el.style.right=''; el.style.width='';
+  }
+}
 function nxGuardModalScroll(e){
   var node=e.target;
   while(node && node!==document.body){
@@ -1268,21 +1291,27 @@ function nxGuardModalScroll(e){
   e.preventDefault();
 }
 function nxLockScroll(){
-  // Çubuk genişliği KİLİTLENMEDEN ÖNCE ölçülür: body fixed olunca kaydırma çubuğu
-  // kaybolur ve clientWidth genişler — o anda ölçersen fark 0 çıkar, telafi uygulanmaz.
-  var nxSbWidth=window.innerWidth-document.documentElement.clientWidth;
+  // KİLİTLEMEDEN ÖNCE gövde ve başlığın gerçek genişliği ölçülür. Neden padding değil
+  // de piksel genişlik: html overflow:hidden olunca kaydırma çubuğu VE ayırdığı şerit
+  // kayboluyor (clientWidth 505 -> 520 ölçüldü). Sabit gövdenin containing block'u bu
+  // şeridi zaten dışlıyor; üstüne bir de paddingRight=çubuk eklenince kutu iki kez
+  // daralıyor ve margin:auto ile ortalanan içerik ~7.5px sola kayıyordu — sabit navbar
+  // bundan etkilenmediği için kaymazdı, "sadece içerik kayıyor" görüntüsü buydu.
+  // Şerit artık kilitte serbest (html.nx-modal-open{scrollbar-gutter:auto}), o yüzden
+  // sabit kutu da genişliyor: gövde ve başlık kilit anındaki kutularına kilitlenir.
+  var b=document.body;
+  var nxBodyW=b.getBoundingClientRect().width;
+  var nxHdr=document.querySelector('.hd');
+  var nxHdrW=nxHdr?nxHdr.getBoundingClientRect().width:0;
   document.documentElement.classList.add('nx-modal-open');
   if(nxScrollLocked) return;
   nxScrollLocked=true;
   nxScrollY=window.scrollY||document.documentElement.scrollTop||0;
-  var b=document.body;
   b.style.position='fixed';
   b.style.top='-'+nxScrollY+'px';
-  b.style.left='0';
-  b.style.right='0';
-  b.style.width='100%';
-  // Kaydırma çubuğu kaybolunca içeriğin sola kaymaması için çubuk genişliğini telafi et.
-  if(nxSbWidth>0) b.style.paddingRight=nxSbWidth+'px';
+  b.style.paddingRight='';
+  nxPinBox(b,nxBodyW);
+  nxPinBox(nxHdr,nxHdrW);
   document.addEventListener('wheel',nxGuardModalScroll,{passive:false,capture:true});
   document.addEventListener('touchmove',nxGuardModalScroll,{passive:false,capture:true});
 }
@@ -1297,10 +1326,8 @@ function nxUnlockScroll(){
   var b=document.body;
   b.style.position='';
   b.style.top='';
-  b.style.left='';
-  b.style.right='';
-  b.style.width='';
   b.style.paddingRight='';
+  nxUnpinBoxes();
   // html{scroll-behavior:smooth} yüzünden bu geri yazma animasyonlu olurdu:
   // kapanışta istemsiz kaydırma animasyonu tetiklenmesin diye anında, sert geri yazılır.
   var de=document.documentElement;
@@ -3895,7 +3922,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261027l"></script>
+<script src="/assets/site.js?v=20261028m"></script>
 </body>
 </html>`;
 }
@@ -3983,7 +4010,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261027l"></script>
+<script src="/assets/site.js?v=20261028m"></script>
 </body>
 </html>`;
 }
@@ -4029,7 +4056,7 @@ ${renderContactModal(c)}
 ${renderAuthModal(c)}
 ${renderCustomDialog(c)}
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261027l"></script>
+<script src="/assets/site.js?v=20261028m"></script>
 </body>
 </html>`;
 }

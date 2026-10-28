@@ -100,10 +100,16 @@ html.nx-modal-open,
 html.nx-modal-open body{
   overflow:hidden !important;
   overscroll-behavior:none;
-  /* scrollbar-gutter AUTO'ya düşürülmez: base 'stable' 15px ayırır, modal açılınca
-     auto olursa bu alan serbest kalıp içeriği 7.5px kaydırıyordu (ölçüldü). Gutter
-     kalır — kaydırma çubuğu zaten overflow:hidden ile gizli, boş şerit backdrop altında. */
 }
+/* Kilit sırasında şerit SERBEST bırakılır ('stable' → auto): 'stable' kalsaydı,
+   çubuğun ayırdığı 15px boş kalır ve Chrome oraya hiçbir şey boyamazdı — koyu
+   backdrop'un yanında beyaz bir bant görünüyordu (piksel ölçümü: boya 504px'te
+   bitiyor, pencere 520px). Çubuk zaten overflow:hidden ile gizli, şeride gerek yok.
+   İçeriğin kaymaması JS'ten geliyor: nxLockScroll kilitleme öncesi gövde ve başlık
+   kutularını piksel olarak sabitliyor. (Eski padding telafisi çift sayılıyor ve
+   akıştaki içeriği ~7.5px sola kaydırıyordu; sabit navbar bundan etkilenmediği için
+   kaymaz, "sadece içerik kayıyor" görüntüsü de buydu.) */
+html.nx-modal-open{scrollbar-gutter:auto}
 html[data-theme=dark]{
   --page:#0F172A; --page-grad:linear-gradient(180deg, #020617 0%, #0F172A 100%);
   --surface:#1E293B; --surface-2:#273449; --text:#F1F5F9; --text-2:#CBD5E1;
@@ -1451,6 +1457,6 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
   </div>
 </div>
 <script src="/assets/cloud-config.js"></script>
-<script src="/assets/site.js?v=20261027l"></script>
+<script src="/assets/site.js?v=20261028m"></script>
 </body>
 </html>
