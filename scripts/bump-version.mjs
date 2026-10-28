@@ -8,9 +8,11 @@
  *   1. desktop/package.json          → version (Electron/otomatik güncelleme)
  *   2. android/app/build.gradle      → versionName + versionCode (otomatik artar)
  *   3. stitch-settings.html          → window.NEXUS_APP_VERSION ("Hakkında" satırı)
- *   4. www/public/downloads/current.json → sitedeki indirme bağlantılarının "yayınlanmış
- *      sürüm" bakışı; güncellenmezse site, API'ya ulaşamayan ziyaretçiyi eski kurucuya
- *      yönlendirir (28 Ekim'de gerçek oldu: JSON 1.0.26'da kaldı).
+ *   4. www/public/downloads/current.json → sitenin indirme "acil durum freni"; her
+ *      sürümde pinned:false olarak yeniden yazılır, böylece fren kapalı kalır. Site
+ *      normalde releases/latest/download kullanır; elle pinned:true yapılırsa sitedeki
+ *      bağlantılar o sürüme sabitlenir. (Fren unutulursa ziyaretçi eski kurucuya döner —
+ *      28 Ekim'de JSON 1.0.26'da kaldı ve API'ya ulaşamayanlar çöken yapıyı indirdi.)
  *
  * Kullanım:
  *   node scripts/bump-version.mjs 1.0.14          # dört dosyayı güncelle
@@ -82,9 +84,11 @@ function applyVersion(next) {
     s.replace(/NEXUS_APP_VERSION = "[^"]+"/, `NEXUS_APP_VERSION = "${next}"`),
   );
 
-  // 4) www/public/downloads/current.json — sitedeki indirme bağlantılarının
-  //    "yayınlanmış sürüm" bakışı. Güncellenmezse site, GitHub API'sına
-  //    ulaşamayan ziyaretçiyi eski kurucuya yönlendirir.
+  // 4) www/public/downloads/current.json — acil durum freni. Site normalde
+  //    releases/latest/download üzerinden her zaman en yeni yayınlanmış sürümü
+  //    verir; bu dosya yalnız "pinned": true ise devreye girer. Her sürümde
+  //    yeniden yazılmasının sebebi freni KAPALI tutmak: bir geri alma sırasında
+  //    true bırakılırsa sonraki sürüm ziyaretçileri hâlâ eski kurucuya gider.
   const MIRROR_FILES = [
     "NEXUS-Setup.exe",
     "SHA256SUMS-Windows.txt",
@@ -95,6 +99,7 @@ function applyVersion(next) {
   const BASE = "https://github.com/Enard52/nexus-releases/releases/download/";
   const mirror = {
     version: next,
+    pinned: false,
     files: Object.fromEntries(MIRROR_FILES.map((f) => [f, `${BASE}v${next}/${f}`])),
   };
   writeFileSync(mirrorPath, JSON.stringify(mirror, null, 2) + "\n");

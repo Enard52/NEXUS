@@ -898,34 +898,25 @@ for (const [label, url, lang, needle] of [
 
 /* ---------------------------------------------------------------- indirme aynası */
 /* site-build.mjs'teki yedek yol: GitHub API'sına ulaşılamazsa (60 istek/saat hız
-   sınırı — gerçek ziyaretçilerde görülüyor) indirme bağlantıları /downloads/current.json
-   içindeki PINLİ adrese çevrilir. O dosya elle tutulduğu için biri sürüm yükseltmeyi
-   unutursa site, ziyaretçiyi sessizce ESKİ kurucuya indirir (28 Ekim: JSON 1.0.26'da
-   kaldı, 1.0.27 çoktan yayındaydı). Koruma: aynadaki sürüm sitede ilan edilenden eskiyse
-   yazılım yapılmaz ve 'releases/latest/download' kalır. İki yön de burada kilitleniyor. */
+   sınırı — gerçek ziyaretçilerde görülüyor) bağlantılar /downloads/current.json ile
+   çevrilebilir. 28-29 Ekim'de iki başarısızlık modu da ölçüldü: (a) dosya 1.0.26'da
+   kaldı → ziyaretçi SESSİZCE çöken eski kurucuya yönlendi; (b) dosya sürümden öne
+   düştü → kurucu henüz yüklenmemişken pinli adres 404 verecekti. Çözüm: fren yalnız
+   elle "pinned": true yazılırsa devrede. Üç yön de burada kilitleniyor. */
 {
   const GH = "https://github.com/Enard52/nexus-releases";
   const siteVer = JSON.parse(readFileSync(join(ROOT, "desktop", "package.json"), "utf8")).version;
-  const staleMirror = JSON.stringify({
-    version: "0.9.9",
-    files: {
-      "NEXUS-Setup.exe": `${GH}/releases/download/v0.9.9/NEXUS-Setup.exe`,
-      "NEXUS-linux.deb": `${GH}/releases/download/v0.9.9/NEXUS-linux.deb`,
-    },
+  const filesFor = (v) => ({
+    "NEXUS-Setup.exe": `${GH}/releases/download/v${v}/NEXUS-Setup.exe`,
+    "NEXUS-linux.deb": `${GH}/releases/download/v${v}/NEXUS-linux.deb`,
   });
-  const okMirror = JSON.stringify({
-    version: siteVer,
-    files: {
-      "NEXUS-Setup.exe": `${GH}/releases/download/v${siteVer}/NEXUS-Setup.exe`,
-      "NEXUS-linux.deb": `${GH}/releases/download/v${siteVer}/NEXUS-linux.deb`,
-    },
-  });
+  const mirror = (o) => JSON.stringify(o);
 
   async function linksWith(mirrorBody) {
     const ctx = await newCtx();
     await ctx.addInitScript(() => localStorage.setItem("nx-lang", "en"));
     const pg = await ctx.newPage();
-    // API kapalı → yedek yol devrede.
+    // API kapalı → yedek yol denenebilir durumda.
     await pg.route("https://api.github.com/**", (r) => r.abort());
     await pg.route("**/downloads/current.json", (r) =>
       r.fulfill({ status: 200, contentType: "application/json", body: mirrorBody }),
@@ -938,18 +929,30 @@ for (const [label, url, lang, needle] of [
     await ctx.close();
     return out;
   }
+  const allLatest = (l) => l.length > 0 && l.every((h) => h.includes("releases/latest/download/"));
 
-  const stale = await linksWith(staleMirror);
+  // (a) fren KAPALI ve ayna BAYAT → hiçbir şey yazılmamalı (28 Ekim vakası).
+  const staleUnpinned = await linksWith(mirror({ version: "0.9.9", files: filesFor("0.9.9") }));
   check(
-    "İndirme: API kapalıyken BAYAT ayna eski kurucuya geri sarmatmıyor",
-    stale.length > 0 && stale.every((h) => h.includes("releases/latest/download/")),
-    stale.slice(0, 3).join(" | "),
+    "İndirme: kapalı fren + BAYAT ayna eski kurucuya geri sarmatıyor",
+    allLatest(staleUnpinned),
+    staleUnpinned.slice(0, 3).join(" | "),
   );
-  const fresh = await linksWith(okMirror);
+
+  // (b) fren KAPALI ve ayna sürümden ÖNE düşmüş → yine yazılmamalı (404 penceresi).
+  const futureUnpinned = await linksWith(mirror({ version: "99.0.0", files: filesFor("99.0.0") }));
   check(
-    "İndirme: API kapalıyken güncel ayna pinli adrese çeviriyor",
-    fresh.some((h) => h.includes(`/releases/download/v${siteVer}/`)),
-    fresh.slice(0, 3).join(" | "),
+    "İndirme: kapalı fren + ÖNDEKİ ayna henüz yayımlanmamış sürüme kilitlemiyor",
+    allLatest(futureUnpinned),
+    futureUnpinned.slice(0, 3).join(" | "),
+  );
+
+  // (c) fren AÇIK (pinned:true) → acil durum geri alması gerçekten çalışmalı.
+  const pinned = await linksWith(mirror({ version: siteVer, pinned: true, files: filesFor(siteVer) }));
+  check(
+    "İndirme: pinned:true ayna acil durum bağlantılarına çeviriyor (fren durmuyor)",
+    pinned.some((h) => h.includes(`/releases/download/v${siteVer}/`)),
+    pinned.slice(0, 3).join(" | "),
   );
 }
 

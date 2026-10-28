@@ -1472,13 +1472,17 @@ document.addEventListener('DOMContentLoaded',function(){
     var ghReady=!!ghVer && !nxVerLess(ghVer, NX_VER);
     if(ghReady) nxApplyVer(gh.tag_name);
     if(ghReady || !mirror || !mirror.files) return;
-    /* current.json bakışı: bu dosya elle tutulan "yayınlandığı doğrulanmış sürüm" işaretidir.
-       biri güncellemeyi unutursa (28 Ekim: 1.0.27 çıktı, JSON 1.0.26'da kaldı) bu yol,
-       GitHub API'sına ulaşamayan her tarayıcıda ziyaretçiyi eski — çöken — bir kurucuya sessizce yönlendirir.
-       Kural: aynadaki sürüm sitede ilan edilen sürümden eskiyse hiçbir şey yazılmaz;
-       'releases/latest/download/…' zaten GitHub'in en yeni yayınlanmış sürümüne döner. */
-    var mv=String(mirror.version||'').replace(/^v/,'');
-    if(mv && nxVerLess(mv, NX_VER)) return;
+    /* current.json = acil durum freni; dokunulmadığı sürece HİÇBİR bağlantı yazılmaz.
+       'releases/latest/download/…' zaten GitHub'in en yeni YAYINLANMIŞ sürümüne döner,
+       yani sürüm yükseltmek için bu dosyayı güncellemek gerekmez.
+       Neden varsayılan kapalı — 29 Ekim'de iki ayrı başarısızlık modu da ölçüldü:
+         a) dosya bayat kaldı (1.0.27 çıktı, JSON 1.0.26'da kaldı) → API'ya ulaşamayan
+            ziyaretçi SESSİZCE ESKİ — o vakada çöken — kurucuya yönlendi;
+         b) dosya öne düştü (sürüm basıldı, CI kurucusu henüz yüklenmedi) → pinli adres
+            404 verir; 'latest' ise çalışmaya devam ederdi.
+       Fren gerçekten gerekirse (bozuk bir sürüm yayımlandıysa) bakımcı "pinned": true
+         ve doğrulanmış iyi sürümü elle yazar; bilinçli tek hamle, sessiz varsayılan değil. */
+    if(mirror.pinned !== true) return;
     var names=mirror.files;
     document.querySelectorAll('a[href*="nexus-releases/releases/latest/download/"]').forEach(function(a){
       var file=decodeURIComponent((a.getAttribute('href')||'').split('/').pop().split('?')[0]);
