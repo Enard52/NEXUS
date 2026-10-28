@@ -77,6 +77,15 @@
          AUDIO_CAPTURE isteğini bu izinle Android çalışma zamanı iznine çevirir. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- QR ile eşleştirme: stitch-scan.html kameralı tarama için VIDEO_CAPTURE ister.
+         Capacitor, WebView'in bu isteğini aşağıdaki izinle Android çalışma zamanı
+         iznine çevirir; İZİN BİLDİRİLMEDİĞİNDE sistem otomatik REDDEDER ve QR ile
+         eşleştirme telefonda hiçbir zaman çalışmaz (kurulum kodu / yerel ağ
+         yedeği çalışmaya devam eder). Kamera donanımı zorunlu değil: tablette/
+         kamerasız cihazda uygulama kurulabilmeli. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
     <!-- Yerel ağdaki akıllı cihazları bulmak ve kontrol etmek için (bulut gerekmez) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

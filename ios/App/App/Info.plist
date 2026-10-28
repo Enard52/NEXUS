@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>NEXUS uses the microphone only when you tap the mic button in NEXUS AI chat, to turn your speech into text. Recordings are not stored.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>NEXUS uses the camera only when you scan a device's QR code to pair it. The picture is analysed on the device and is never uploaded or stored.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
