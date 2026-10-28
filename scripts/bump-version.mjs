@@ -2,15 +2,18 @@
 /**
  * Sürüm tek kaynağı (issue #28).
  *
- * Sürüm numarası ÜÇ yerde tutuluyordu ve elle değiştiriliyordu (bir kez hata
- * bile oldu). Bu betik üçünü birlikte günceller ve tutarlılığını test
+ * Sürüm numarası DÖRT yerde tutuluyordu ve elle değiştiriliyordu (bir kez hata
+ * bile oldu). Bu betik dördünü birlikte günceller ve tutarlılığını test
  * (packages/core/src/version-consistency.test.ts) denetler:
  *   1. desktop/package.json          → version (Electron/otomatik güncelleme)
  *   2. android/app/build.gradle      → versionName + versionCode (otomatik artar)
  *   3. stitch-settings.html          → window.NEXUS_APP_VERSION ("Hakkında" satırı)
+ *   4. www/public/downloads/current.json → sitedeki indirme bağlantılarının "yayınlanmış
+ *      sürüm" bakışı; güncellenmezse site, API'ya ulaşamayan ziyaretçiyi eski kurucuya
+ *      yönlendirir (28 Ekim'de gerçek oldu: JSON 1.0.26'da kaldı).
  *
  * Kullanım:
- *   node scripts/bump-version.mjs 1.0.14          # üç dosyayı güncelle
+ *   node scripts/bump-version.mjs 1.0.14          # dört dosyayı güncelle
  *   node scripts/bump-version.mjs 1.0.14 --commit # + git commit + v* etiketi (push YOK)
  *   node scripts/bump-version.mjs --changelog     # CHANGELOG.md'yi git geçmişinden üret
  *   node scripts/bump-version.mjs --notes 1.0.14  # GitHub sürüm notu taslağını yazdır
@@ -38,6 +41,7 @@ const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
 const pkgPath = resolve(ROOT, "desktop/package.json");
 const gradlePath = resolve(ROOT, "android/app/build.gradle");
 const settingsPath = resolve(ROOT, "src/app/stitch-settings.html");
+const mirrorPath = resolve(ROOT, "www/public/downloads/current.json");
 
 const current = JSON.parse(readFileSync(pkgPath, "utf8")).version;
 const gradle = readFileSync(gradlePath, "utf8");
@@ -78,13 +82,33 @@ function applyVersion(next) {
     s.replace(/NEXUS_APP_VERSION = "[^"]+"/, `NEXUS_APP_VERSION = "${next}"`),
   );
 
+  // 4) www/public/downloads/current.json — sitedeki indirme bağlantılarının
+  //    "yayınlanmış sürüm" bakışı. Güncellenmezse site, GitHub API'sına
+  //    ulaşamayan ziyaretçiyi eski kurucuya yönlendirir.
+  const MIRROR_FILES = [
+    "NEXUS-Setup.exe",
+    "SHA256SUMS-Windows.txt",
+    "NEXUS-linux.deb",
+    "NEXUS-linux.AppImage",
+    "SHA256SUMS-Linux.txt",
+  ];
+  const BASE = "https://github.com/Enard52/nexus-releases/releases/download/";
+  const mirror = {
+    version: next,
+    files: Object.fromEntries(MIRROR_FILES.map((f) => [f, `${BASE}v${next}/${f}`])),
+  };
+  writeFileSync(mirrorPath, JSON.stringify(mirror, null, 2) + "\n");
+
   console.log(`✓ desktop/package.json        ${current} → ${next}`);
   console.log(`✓ android versionName         ${currentName} → ${next}`);
   console.log(`✓ android versionCode         ${currentCode} → ${nextCode}`);
   console.log(`✓ stitch-settings NEXUS_APP_VERSION → ${next}`);
+  console.log(`✓ downloads/current.json (site bakışı) → v${next}`);
 
   if (DO_COMMIT) {
-    sh(`git add desktop/package.json android/app/build.gradle src/app/stitch-settings.html`);
+    sh(
+      `git add desktop/package.json android/app/build.gradle src/app/stitch-settings.html www/public/downloads/current.json`,
+    );
     sh(`git commit -m "release: v${next}"`);
     sh(`git tag -a v${next} -m "NEXUS v${next}"`);
     console.log(`✓ commit + etiket v${next} (push yapılmadı — elle: git push && git push --tags)`);

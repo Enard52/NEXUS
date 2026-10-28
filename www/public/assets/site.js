@@ -1450,7 +1450,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
   // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
-  var NX_VER="1.0.26";
+  var NX_VER="1.0.27";
   function nxVerLess(a,b){
     var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
     var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
@@ -1472,6 +1472,13 @@ document.addEventListener('DOMContentLoaded',function(){
     var ghReady=!!ghVer && !nxVerLess(ghVer, NX_VER);
     if(ghReady) nxApplyVer(gh.tag_name);
     if(ghReady || !mirror || !mirror.files) return;
+    /* current.json bakışı: bu dosya elle tutulan "yayınlandığı doğrulanmış sürüm" işaretidir.
+       biri güncellemeyi unutursa (28 Ekim: 1.0.27 çıktı, JSON 1.0.26'da kaldı) bu yol,
+       GitHub API'sına ulaşamayan her tarayıcıda ziyaretçiyi eski — çöken — bir kurucuya sessizce yönlendirir.
+       Kural: aynadaki sürüm sitede ilan edilen sürümden eskiyse hiçbir şey yazılmaz;
+       'releases/latest/download/…' zaten GitHub'in en yeni yayınlanmış sürümüne döner. */
+    var mv=String(mirror.version||'').replace(/^v/,'');
+    if(mv && nxVerLess(mv, NX_VER)) return;
     var names=mirror.files;
     document.querySelectorAll('a[href*="nexus-releases/releases/latest/download/"]').forEach(function(a){
       var file=decodeURIComponent((a.getAttribute('href')||'').split('/').pop().split('?')[0]);

@@ -896,6 +896,63 @@ for (const [label, url, lang, needle] of [
   await ctx.close();
 }
 
+/* ---------------------------------------------------------------- indirme aynası */
+/* site-build.mjs'teki yedek yol: GitHub API'sına ulaşılamazsa (60 istek/saat hız
+   sınırı — gerçek ziyaretçilerde görülüyor) indirme bağlantıları /downloads/current.json
+   içindeki PINLİ adrese çevrilir. O dosya elle tutulduğu için biri sürüm yükseltmeyi
+   unutursa site, ziyaretçiyi sessizce ESKİ kurucuya indirir (28 Ekim: JSON 1.0.26'da
+   kaldı, 1.0.27 çoktan yayındaydı). Koruma: aynadaki sürüm sitede ilan edilenden eskiyse
+   yazılım yapılmaz ve 'releases/latest/download' kalır. İki yön de burada kilitleniyor. */
+{
+  const GH = "https://github.com/Enard52/nexus-releases";
+  const siteVer = JSON.parse(readFileSync(join(ROOT, "desktop", "package.json"), "utf8")).version;
+  const staleMirror = JSON.stringify({
+    version: "0.9.9",
+    files: {
+      "NEXUS-Setup.exe": `${GH}/releases/download/v0.9.9/NEXUS-Setup.exe`,
+      "NEXUS-linux.deb": `${GH}/releases/download/v0.9.9/NEXUS-linux.deb`,
+    },
+  });
+  const okMirror = JSON.stringify({
+    version: siteVer,
+    files: {
+      "NEXUS-Setup.exe": `${GH}/releases/download/v${siteVer}/NEXUS-Setup.exe`,
+      "NEXUS-linux.deb": `${GH}/releases/download/v${siteVer}/NEXUS-linux.deb`,
+    },
+  });
+
+  async function linksWith(mirrorBody) {
+    const ctx = await newCtx();
+    await ctx.addInitScript(() => localStorage.setItem("nx-lang", "en"));
+    const pg = await ctx.newPage();
+    // API kapalı → yedek yol devrede.
+    await pg.route("https://api.github.com/**", (r) => r.abort());
+    await pg.route("**/downloads/current.json", (r) =>
+      r.fulfill({ status: 200, contentType: "application/json", body: mirrorBody }),
+    );
+    await pg.goto(`${BASE}/`, { waitUntil: "load" });
+    await pg.waitForTimeout(900);
+    const out = await pg.$$eval('a[href*="nexus-releases/releases"]', (els) =>
+      els.map((e) => e.getAttribute("href")),
+    );
+    await ctx.close();
+    return out;
+  }
+
+  const stale = await linksWith(staleMirror);
+  check(
+    "İndirme: API kapalıyken BAYAT ayna eski kurucuya geri sarmatmıyor",
+    stale.length > 0 && stale.every((h) => h.includes("releases/latest/download/")),
+    stale.slice(0, 3).join(" | "),
+  );
+  const fresh = await linksWith(okMirror);
+  check(
+    "İndirme: API kapalıyken güncel ayna pinli adrese çeviriyor",
+    fresh.some((h) => h.includes(`/releases/download/v${siteVer}/`)),
+    fresh.slice(0, 3).join(" | "),
+  );
+}
+
 /* ---------------------------------------------------------------- tema */
 {
   const { ctx, pg, errors } = await openPage(EN_LANG, "/");
