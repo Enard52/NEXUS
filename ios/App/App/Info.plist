@@ -28,6 +28,8 @@
 	<string>NEXUS uses the microphone only when you tap the mic button in NEXUS AI chat, to turn your speech into text. Recordings are not stored.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>NEXUS uses the camera only when you scan a device's QR code to pair it. The picture is analysed on the device and is never uploaded or stored.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>NEXUS uses your location when you ask it to place your home on the map or fill in its address. The coordinates are used for that request and are not needed to control your devices.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
