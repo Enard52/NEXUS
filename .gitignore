@@ -38,6 +38,10 @@ Thumbs.db
 .shot*/
 # Generated static assets (build mirrors)
 packages/server/data/
+# www/ aynasının Windows'tan üretilen iOS kopyası (sync-www.mjs) — repoya girmez
+ios/App/App/public/
+# Tailwind sınıf taraması çıktısı (scan-missing-classes.mjs) — geçici denetim artefactı
+tw-missing/
 nul
 .superdesign/tmp
 # Türetilmiş mobil/derleme çıktıları — repoda durmaz, release hattı üretir
