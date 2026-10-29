@@ -2,6 +2,19 @@
 
 _Bu dosya `node scripts/bump-version.mjs --changelog` ile Conventional Commits'ten üretilir; elle düzenlenmez._
 
+## Unreleased
+
+### 📚 Docs
+- release: changelog entry for v1.0.29
+
+### 🧹 Refactoring
+- finish the stitch->nexus rebrand across screens, mirrors and assets
+
+### 🛠 Maintenance
+- add single-source mirror guard; deflake brand-assets splash test
+- app: carry screen tweaks (pair, smart, welcome-home) and resync www/ios mirrors
+- repo hygiene - drop unreferenced React SPA, binary junk and stale ignores
+
 ## v1.0.29
 
 ### 🐛 Fixed

@@ -5,7 +5,7 @@ program (Electron) and the mobile app (Capacitor). A change made once propagates
 to every shell through the sync pipeline — no per-platform code duplication.
 
 ```
-root (single source: stitch-*.html + JS + CSS)
+root (single source: nexus-*.html + JS + CSS)
  ├─ npm run sync:www                  → www/            (web + sync pipeline)
  │    └─ npm run site:build           → www/public/     (marketing site → Cloudflare Pages)
  ├─ node desktop/scripts/prepare-app.cjs → desktop/app/  (Electron shell)

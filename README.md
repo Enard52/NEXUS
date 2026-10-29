@@ -57,8 +57,8 @@ with a navigation sidebar, tray mode and background automation worker:
 ## Architecture (single source, three shells)
 
 ```
-repo root (single source)              generated copies — never edit by hand
-├─ stitch-*.html   62 screens  →  www/  (sync-www.mjs)        → same UI in desktop & Android
+src/app (single source)                generated copies — never edit by hand
+├─ nexus-*.html   62 screens  →  www/  (sync-www.mjs)        → same UI in desktop & Android
 ├─ *.js (theme, data, device-    →  desktop/app (prepare-app)  → Electron (nexus:// protocol)
 │  controls, lan-connectors,     →  android assets (cap sync)  → Capacitor APK (signed)
 │  automation-engine.js)
@@ -66,7 +66,7 @@ repo root (single source)              generated copies — never edit by hand
 ├─ www/public/     marketing site (site-content.mjs + site-build.mjs) → nexus-smarthome.pages.dev
 ├─ supabase/       Edge Functions + migrations (accounts, billing webhooks, invites)
 ├─ scripts/        build/verify tooling (measure-layout, verify-site, site-*, legal-pdf…)
-├─ packages/       unit-tested modules (vitest: 980 tests)
+├─ packages/       unit-tested modules (vitest: 1045 tests) — mirror & hygiene guards included
 └─ desktop/        Electron main/preload (tray mode, auto-update, automation worker)
 ```
 
@@ -93,6 +93,8 @@ Android builds land in
 
 ## Documentation
 
+- `docs/ARCHITECTURE.md` — the full architecture map (single source, shells, security posture, release flow)
+- `docs/BUILD-ALL-PLATFORMS.md` — platform build matrix
 - `docs/INTEGRATIONS.md` — integration roadmap (zero-budget first)
 - `docs/USABILITY.md` — usability audit results and next quick wins
 - `CLAUDE.md` — contributor rules (honesty, secrets, single-source pricing)

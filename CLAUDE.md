@@ -12,3 +12,4 @@
 6. Android signing: `~/NEXUS-signing/` (backup: private repo `nexus-signing-backup`). Keystore files never enter the repo.
 
 7. **Every screen is tested in 3 states:** (a) new user: no account/device, (b) one device paired, (c) offline/error. No action button (Start, Run, Save…) is shown without a device, capability or data; instead show an empty state and an honest next step (e.g. "Add a device first"). Never test with a demo account full of data only.
+8. **Single-source mirrors are never hand-edited.** `src/app` → `www/` / `desktop/app/` / Android assets via the sync scripts in §1 of `docs/ARCHITECTURE.md`; the byte-identity is guarded by `packages/core/src/repo-source.test.ts`. Don't commit one-off probes (`tmp-*`), logs or binaries into `scripts/` — the same guard fails the suite.
