@@ -47,8 +47,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
+      # Bu işte bağımlılık kurulmaz, bu yüzden pnpm önbelleği (cache: pnpm) kullanılmaz: kaydedilecek
+      # depo yolu olmadığından 'Post Setup Node' adımı iş akışını kırıyordu.
       # Lockfile tabanlı denetim — kurulum gerekmez; high sertifikalı bir açık
       # işi kırmalıdır (tarama 2026-10-29 itibarıyla temiz).
       - name: pnpm audit
