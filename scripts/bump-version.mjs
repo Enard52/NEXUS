@@ -73,16 +73,21 @@ function applyVersion(next) {
     .replace(/versionName\s+"[^"]+"/, `versionName "${next}"`);
   writeFileSync(gradlePath, g);
 
-  // 3) nexus-settings.html — NEXUS_APP_VERSION sabiti
-  const s = readFileSync(settingsPath, "utf8");
-  if (!/NEXUS_APP_VERSION = "/.test(s)) {
-    console.error("Hata: nexus-settings.html içinde NEXUS_APP_VERSION sabiti bulunamadı.");
-    process.exit(1);
+  // 3) nexus-settings.html — NEXUS_APP_VERSION sabiti. src/app'e yazılıyor AND
+  //    www aynasına: repo-source.test.ts iki klasörün bayt özdeşliğini zorunlu
+  //    kılar; sürüm yükselten betik aynayı da görüşmekle sorumlu.
+  const settingsRe = /NEXUS_APP_VERSION = "[^"]+"/;
+  for (const target of [settingsPath, resolve(ROOT, "www", "nexus-settings.html")]) {
+    const s = readFileSync(target, "utf8");
+    if (!settingsRe.test(s)) {
+      if (target === settingsPath) {
+        console.error("Hata: nexus-settings.html içinde NEXUS_APP_VERSION sabiti bulunamadı.");
+        process.exit(1);
+      }
+      continue; // www kopyası yoksa sessizce geç
+    }
+    writeFileSync(target, s.replace(settingsRe, `NEXUS_APP_VERSION = "${next}"`));
   }
-  writeFileSync(
-    settingsPath,
-    s.replace(/NEXUS_APP_VERSION = "[^"]+"/, `NEXUS_APP_VERSION = "${next}"`),
-  );
 
   // 4) www/public/downloads/current.json — acil durum freni. Site normalde
   //    releases/latest/download üzerinden her zaman en yeni yayınlanmış sürümü
