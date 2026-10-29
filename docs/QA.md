@@ -48,6 +48,28 @@ Recorded 2026-10-29 against the current `www/` mirror:
   same task = ONE sound, the tap is cancelled ✅ · double `nav()` = one tap
   (520 Hz, rate-limit) ✅ · taps disabled via the new "Dokunma Sesleri" row =
   silent click ✅ · re-enabling from the row = one confirmation tap ✅
+- **HomeKit (HAP) bridge protocol e2e, v1.0.32** — against the REAL module
+  `desktop/kit/bridge.cjs` (no mock), fresh persist dir → fresh identity
+  (random MAC, default pin `154-87-269`, port 51826), driven by
+  `hap-controller`, which implements the same protocol steps as the Apple Home
+  app (SRP pair-setup, encrypted sessions). Transcript:
+  1. `startKn` with a light (with brightness) + an outlet ▶ `running: true`,
+     `accessoryCount: 2` ✅
+  2. mDNS discovery matched by the published MAC (foreign bridges ignored) ✅
+  3. `pairSetup(<pin>)` ▶ **EŞLEŞME: OK** ✅
+  4. `getAccessories()` ▶ Lightbulb×1 (with Brightness) + Outlet×1 ✅
+  5. Initial `On` read-back = `0`: start state is published **without**
+     emitting `set` (`updateValue` guard added after the first run showed
+     startup echoes that would command-spam real devices) ✅
+  6. `setCharacteristics {"aid.10": true}` ▶ bridge `onCommand` log
+     `{switch: true}` ▶ read-back `value: 1` ✅
+  7. `setCharacteristics {"aid.bri": 40}` ▶ log `{brightness: 40}` ✅
+  8. Outlet `On:=true` ▶ log `{switch: true}` ✅
+  Verdict line: `KİT-E2E: TAMAM` (scratch log database under gitignored
+  `.audit-shots/kit-e2e/`). Same flow the i18n suite tests app-side surfaces:
+  suite total after this release is 1089/1089; i18n static coverage 657/657
+  (100%). Honest boundary: nothing here claims a real iPhone completed the
+  pairing — that is the human step below.
 
 ## Requires a human (cannot be faked — house rule number 1)
 
@@ -61,3 +83,8 @@ Recorded 2026-10-29 against the current `www/` mirror:
 - **Third app language**: `lang-en.js` is a full overlay (~2.9k keys) behind a
   100%-coverage gate; a third language needs committed translations, not a
   partial skeleton (the gate would fail it — by design).
+- **HomeKit: real iPhone/iPad pairing**: the bridge follows HomeKit
+  `pairSetup` correctly (proven by `hap-controller` on the same machine), but
+  an actual Apple Home pairing (device adds NEXUS bridge, real device flips
+  observed end-to-end over Wi-Fi) still needs a human with an Apple device and
+  an iPhone on the same LAN. When done, record the phone transcript here.
