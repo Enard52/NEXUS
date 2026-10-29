@@ -48,7 +48,13 @@ describe("encoding-fix: onarim kurallari", () => {
   });
 
   it("UTF-16LE dosyayi BOM'suz UTF-8'e cevirir (satir sonlarini korur)", () => {
-    const r = repairBytes("a/y.js", Buffer.concat([Buffer.from(UTF16LE_BOM), utf16le("\u015eifre de\u011fi\u015ftir\r\nT\u00fcrk\u00e7e\r\n")]));
+    const r = repairBytes(
+      "a/y.js",
+      Buffer.concat([
+        Buffer.from(UTF16LE_BOM),
+        utf16le("\u015eifre de\u011fi\u015ftir\r\nT\u00fcrk\u00e7e\r\n"),
+      ]),
+    );
     expect(r.changed).toBe(true);
     expect(hasBom(r.bytes)).toBe(false);
     expect(r.bytes.toString("utf8")).toBe("\u015eifre de\u011fi\u015ftir\r\nT\u00fcrk\u00e7e\r\n");
@@ -62,7 +68,10 @@ describe("encoding-fix: onarim kurallari", () => {
   });
 
   it("BOM'suz ama Turkce iceren .ps1'e BOM ekler (PowerShell 5.1 aksi halde ANSI okur)", () => {
-    const r = repairBytes("a/z.ps1", utf('Write-Host "T\u00fcrk\u00e7e \u00e7al\u0131\u015f\u0131r"'));
+    const r = repairBytes(
+      "a/z.ps1",
+      utf('Write-Host "T\u00fcrk\u00e7e \u00e7al\u0131\u015f\u0131r"'),
+    );
     expect(r.changed).toBe(true);
     expect(hasBom(r.bytes)).toBe(true);
     expect(r.actions).toContain("ps1-bom-eklendi");
@@ -76,7 +85,10 @@ describe("encoding-fix: onarim kurallari", () => {
   });
 
   it("bir kez daha kodlanmis dizileri cozer ve idempotent calisir", () => {
-    const r = repairBytes("a/m.html", utf("G" + DOUBLE_U + "venli " + DOUBLE_Telif + " " + DOUBLE_ENDASH + " 2026"));
+    const r = repairBytes(
+      "a/m.html",
+      utf("G" + DOUBLE_U + "venli " + DOUBLE_Telif + " " + DOUBLE_ENDASH + " 2026"),
+    );
     expect(r.bytes.toString("utf8")).toBe("G\u00fcvenli \u00a9 \u2013 2026");
     expect(repairBytes("a/m.html", r.bytes).changed).toBe(false);
   });
@@ -127,6 +139,10 @@ describe("encoding-fix: onarim kurallari", () => {
   });
 
   it("normal Turkce/Latin metini bozuk sanmaz (yanlis pozitif korumasi)", () => {
-    expect(unmojibake("\u0130\u015flem tamam, \u01e0\u00fcl\u00fc\u00f6m \u00d6. \u00c7. \u2014 100\u20ac \u00fc\u2013").fixed).toBe(0);
+    expect(
+      unmojibake(
+        "\u0130\u015flem tamam, \u01e0\u00fcl\u00fc\u00f6m \u00d6. \u00c7. \u2014 100\u20ac \u00fc\u2013",
+      ).fixed,
+    ).toBe(0);
   });
 });

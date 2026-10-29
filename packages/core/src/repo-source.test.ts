@@ -60,10 +60,7 @@ describe("tek kaynak aynası (src/app → www) ve depo hijyeni", () => {
       const withRef = names
         .filter((n) => /\.(html|js)$/.test(n) && !LOCAL_ONLY.has(n))
         .filter((n) => /stitch/i.test(readFileSync(join(dir, n), "utf8")));
-      expect(
-        withRef,
-        `${label} dosya içeriğinde eski 'stitch' adına referans`,
-      ).toEqual([]);
+      expect(withRef, `${label} dosya içeriğinde eski 'stitch' adına referans`).toEqual([]);
     }
   });
 
@@ -88,18 +85,15 @@ describe("tek kaynak aynası (src/app → www) ve depo hijyeni", () => {
       if (LOCAL_ONLY.has(name)) continue;
       if (sha256(join(APP, name)) !== sha256(join(WWW, name))) stale.push(name);
     }
-    expect(
-      stale,
-      "bayt farkı olan aynalar — önce `node scripts/sync-www.mjs` çalıştırın",
-    ).toEqual([]);
+    expect(stale, "bayt farkı olan aynalar — önce `node scripts/sync-www.mjs` çalıştırın").toEqual(
+      [],
+    );
   });
 
   it("scripts/ klasörü geçici analiz ve ikili çöp biriktirmiyor", () => {
     if (!existsSync(SCRIPTS)) return;
-    const junk = topLevelFiles(SCRIPTS).filter((n) =>
-      /\.(exe|dll|log)$/.test(n) ||
-      /^tmp-/.test(n) ||
-      /^preview-/.test(n),
+    const junk = topLevelFiles(SCRIPTS).filter(
+      (n) => /\.(exe|dll|log)$/.test(n) || /^tmp-/.test(n) || /^preview-/.test(n),
     );
     expect(junk, "scripts/ içinde silinmesi gereken çöp dosyalar").toEqual([]);
   });
@@ -108,8 +102,6 @@ describe("tek kaynak aynası (src/app → www) ve depo hijyeni", () => {
     // www/stitch-*.html git'te dururken, kaynağı olmayan www/nexus-radar.html
     // aynayı bozmuştu. İki yönde de tam eşleşme zorunlu (üstteki test kapsar;
     // bu, tek kümeye odaklanan hızlı regresyon sinyalidir).
-    expect(
-      WWW_FILES.filter((n) => /^nexus-.*\.html$/.test(n)),
-    ).toEqual(SCREENS);
+    expect(WWW_FILES.filter((n) => /^nexus-.*\.html$/.test(n))).toEqual(SCREENS);
   });
 });

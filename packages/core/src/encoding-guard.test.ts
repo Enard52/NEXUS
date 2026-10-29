@@ -259,7 +259,12 @@ describe("kodlama korumaları (BOM / mojibake / geçerli UTF-8)", () => {
     ];
     for (const s of samples) expect(findDoubleEncoded(s)).toEqual([s]);
     // Temiz metin örnekleri yakalanmamalı.
-    for (const clean of ["Güvenlik", "Şifreyi Değiştir", "Tüm hakları saklıdır © 2026", "café Noël — 5€"]) {
+    for (const clean of [
+      "Güvenlik",
+      "Şifreyi Değiştir",
+      "Tüm hakları saklıdır © 2026",
+      "café Noël — 5€",
+    ]) {
       expect(findDoubleEncoded(clean)).toEqual([]);
     }
   });

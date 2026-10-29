@@ -641,14 +641,22 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
   });
 
   it("e-posta değiştirme: sunucunun hata kodu (email_exists / same_email) arayüze taşınır", async () => {
-    for (const [code, msg] of [["email_exists", "A user with this email address has already been registered"], ["same_email", "New email address should be different from the current one."]]) {
+    for (const [code, msg] of [
+      ["email_exists", "A user with this email address has already been registered"],
+      ["same_email", "New email address should be different from the current one."],
+    ]) {
       const backend = fakeBackend();
       const orig = backend.handler;
-      backend.handler = ((call: Call) => (call.method === "PUT" && new URL(call.url).pathname === "/auth/v1/user"
-        ? { status: 422, body: { error_code: code, msg } }
-        : orig(call))) as typeof backend.handler;
+      backend.handler = ((call: Call) =>
+        call.method === "PUT" && new URL(call.url).pathname === "/auth/v1/user"
+          ? { status: 422, body: { error_code: code, msg } }
+          : orig(call)) as typeof backend.handler;
       const { cloud } = await freshDevice(backend);
-      await expect(cloud.changeEmail("baska@b.co")).rejects.toMatchObject({ code, status: 422, message: msg });
+      await expect(cloud.changeEmail("baska@b.co")).rejects.toMatchObject({
+        code,
+        status: 422,
+        message: msg,
+      });
     }
   });
 
@@ -1395,7 +1403,9 @@ describe("şifresiz (Google) hesap: ilk şifre akışı", () => {
     const { cloud, calls } = await withSession({ id: "u1", identities: [{ provider: "google" }] });
     const before = calls.length;
     await cloud.setPasswordWithSession("yeni-sifre-1");
-    const write = calls.slice(before).find((c) => c.method === "PUT" && c.url.endsWith("/auth/v1/user"));
+    const write = calls
+      .slice(before)
+      .find((c) => c.method === "PUT" && c.url.endsWith("/auth/v1/user"));
     expect(write).toBeTruthy();
     expect(JSON.parse(String(write?.body))).toEqual({ password: "yeni-sifre-1" });
     expect(write?.headers.Authorization).toBe("Bearer tok-1");
@@ -1437,13 +1447,18 @@ describe("şifresiz (Google) hesap: ilk şifre akışı", () => {
     const factors = [...calls].reverse().find((c) => c.url.endsWith("/auth/v1/factors"));
     expect(factors?.headers.Authorization).toBe("Bearer tok-1");
     await cloud.setPasswordWithSession("yeni-sifre-1");
-    const write = [...calls].reverse().find((c) => c.method === "PUT" && c.url.endsWith("/auth/v1/user"));
+    const write = [...calls]
+      .reverse()
+      .find((c) => c.method === "PUT" && c.url.endsWith("/auth/v1/user"));
     expect(write?.headers.Authorization).toBe("Bearer tok-1");
   });
 
   it("yeni metinlerin İngilizce karşılığı sözlükte var", () => {
     const dict = readFileSync(join(REPO_ROOT, "src", "app", "lang-en.js"), "utf8");
-    const screen = readFileSync(join(REPO_ROOT, "src", "app", "nexus-account-security.html"), "utf8");
+    const screen = readFileSync(
+      join(REPO_ROOT, "src", "app", "nexus-account-security.html"),
+      "utf8",
+    );
     const added = [
       "Şifre Belirle",
       "Bu hesapta henüz şifre yok",

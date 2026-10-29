@@ -117,6 +117,8 @@ jobs:
 # kontrolleri tamam). Özel depoda macOS runner'lar 10x dakika yakıyor; açılışa
 # kadar kapalı. Açmak için: Settings → Secrets and variables → Actions → Variables
 # → MACOS_BUILD = true, sonra etiketi yeniden çalıştır (Actions → Run workflow).
+# İmzalı/notarize derleme için (App Store'a dağıtım): secrets MACOS_IDENTITY,
+# APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID + variables.MACOS_SIGN=true.
   macos:
     if: vars.MACOS_BUILD == 'true'
     runs-on: macos-latest
@@ -150,10 +152,19 @@ jobs:
       - name: Uygulama dosyalarını hazırla
         run: node scripts/prepare-app.cjs
 
+      - name: İmza modunu belirle (MACOS_SIGN)
+        env:
+          MACOS_SIGN: ${{ vars.MACOS_SIGN }}
+          MACOS_IDENTITY: ${{ secrets.MACOS_IDENTITY }}
+        run: node scripts/configure-mac-sign.cjs
+
       - name: Derle ve yayınla
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+          CSC_IDENTITY_AUTO_DISCOVERY: ${{ vars.MACOS_SIGN == 'true' && 'true' || 'false' }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: npx electron-builder --mac --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
 
       - name: SHA-256 özetleri

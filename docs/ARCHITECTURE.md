@@ -7,6 +7,11 @@ the *why* behind each layer and the rules that keep it shippable.
 > House rule (binding): **the app never pretends.** Unsupported means labelled
 > unsupported. Failures are visible. See `CLAUDE.md` and the guard tests below.
 
+**Repo history.** The public repo starts at **v1.0.26** ("initial public
+release") — the pre-public development history lived in a private workspace
+(archive reference: `Enard52/NEXUS-archive`, also see rule 5 of `CLAUDE.md`
+and `docs/OSS-LAUNCH-PLAN.md`, which is gitignored by design).
+
 ---
 
 ## 1. Single source, four mirrors

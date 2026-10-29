@@ -33,3 +33,23 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+  security:
+    name: dependency audit (>= high)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # Lockfile tabanlı denetim — kurulum gerekmez; high sertifikalı bir açık
+      # işi kırmalıdır (tarama 2026-10-29 itibarıyla temiz).
+      - name: pnpm audit
+        run: pnpm audit --audit-level=high

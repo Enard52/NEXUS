@@ -94,6 +94,7 @@ Android builds land in
 ## Documentation
 
 - `docs/ARCHITECTURE.md` — the full architecture map (single source, shells, security posture, release flow)
+- `docs/QA.md` — verification ladder: CI gates, recorded UI/flow audit results, what still needs real hardware
 - `docs/BUILD-ALL-PLATFORMS.md` — platform build matrix
 - `docs/INTEGRATIONS.md` — integration roadmap (zero-budget first)
 - `docs/USABILITY.md` — usability audit results and next quick wins

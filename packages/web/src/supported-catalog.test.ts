@@ -55,8 +55,13 @@ describe("katalog destek filtresi", () => {
     const w = load();
     expect(w.nexusIsSupported("Duman Dedektörü", "Sensör")).toBe(false);
     w.NEXUS_SUPPORTED_DEVICES.push({
-      brand: "Test", protocol: "x", availability: "all", note: "",
-      models: [{ name: "Test Duman Dedektörü", img: "security-smoke-detector.png", caps: ["alarm"] }],
+      brand: "Test",
+      protocol: "x",
+      availability: "all",
+      note: "",
+      models: [
+        { name: "Test Duman Dedektörü", img: "security-smoke-detector.png", caps: ["alarm"] },
+      ],
     });
     expect(w.nexusIsSupported("Duman Dedektörü", "Sensör")).toBe(true);
   });
