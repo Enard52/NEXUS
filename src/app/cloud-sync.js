@@ -198,7 +198,7 @@
       return res.text().then(function (text) {
         var body = text ? JSON.parse(text) : {};
         if (!res.ok) {
-          var error = new Error((body && (body.error_description || body.msg || body.error)) || ("http " + res.status));
+          var error = new Error((body && (body.error_description || body.msg || body.message || body.error)) || ("http " + res.status));
           error.status = res.status;
           // Sunucunun makine okunur hata kodu (ör. email_exists, same_email): arayüz gerçek nedeni ayırt edebilsin.
           error.code = String((body && (body.error_code || body.code)) || "");
@@ -553,6 +553,8 @@
 
   function signOut() {
     var current = readSession();
+    // Sunucu bildirimi token'ı oturum silinmeden ÖNCE sunucudan kaldırılır (Aile modülü, yoksa atlanır).
+    try { if (current && window.nexusHouseholdCloud && window.nexusHouseholdCloud.onSignOut) window.nexusHouseholdCloud.onSignOut(current); } catch (e) { /* çıkışı engellemez */ }
     writeSession(null);
     rtStop();
     // Bu cihazın push token'ını bu hesaptan düşür: aynı tarayıcıda başka hesaba
@@ -1179,6 +1181,27 @@
     if (table === "nexus_user_state") { applyRemoteState(data.record || data.old_record); return; }
     if (table === "nexus_devices") { applyRemoteDevice(data.record || data.old_record, data.event_type === "DELETE"); return; }
     if (table === "nexus_entitlements") { pullEntitlement().catch(function () {}); return; }
+    if (/^household/.test(table) || table === "households") {
+      // Aile modülü (household-cloud.js) dinler; olay yoksa yoklama ve ekran açılışı yeterli.
+      try {
+        window.dispatchEvent(new CustomEvent("nexusHouseholdRealtime", {
+          detail: { table: table, type: data.event_type || data.type || "", record: data.record || null, old: data.old_record || null },
+        }));
+      } catch (e) { /* eski WebView */ }
+    }
+  }
+
+  // Oturumlu PostgREST / RPC / Edge Function çağrısı (Aile modülü için). Hata iletisi
+  // sunucunun makine okunur kodudur (ör. "forbidden", "rate_limited"); oturum yoksa "oturum yok".
+  function rest(path, options) {
+    if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    return session().then(function (current) {
+      if (!current) return Promise.reject(new Error("oturum yok"));
+      var opts = options || {};
+      return api(path, Object.assign({}, opts, {
+        headers: Object.assign({ Authorization: "Bearer " + current.accessToken }, opts.headers || {}),
+      }));
+    });
   }
 
   function startRealtime() {
@@ -1199,6 +1222,11 @@
               { event: "*", schema: "public", table: "nexus_user_state", filter: "user_id=eq." + current.userId },
               { event: "*", schema: "public", table: "nexus_devices", filter: "user_id=eq." + current.userId },
               { event: "*", schema: "public", table: "nexus_entitlements", filter: "email=eq." + String(current.email || "").toLowerCase() },
+              // Aile: süzgeç yok — RLS yalnızca bu hesabın üyesi olduğu evlerin satırlarını iletir.
+              { event: "*", schema: "public", table: "households" },
+              { event: "*", schema: "public", table: "household_members" },
+              { event: "*", schema: "public", table: "household_messages" },
+              { event: "*", schema: "public", table: "household_activity" },
             ],
           },
           access_token: current.accessToken,
@@ -1274,10 +1302,11 @@
         method: "POST",
         headers: { Authorization: "Bearer " + current.accessToken },
         body: JSON.stringify({
+          // Davet ve kod sunucuda üretildi (create_household_invite); fonksiyon yalnızca
+          // o davetin postasını gönderir ve ev adı / rolü veritabanından okur.
+          inviteId: String((invite && invite.inviteId) || ""),
           email: String((invite && invite.email) || ""),
-          homeName: String((invite && invite.homeName) || ""),
           code: String((invite && invite.code) || ""),
-          role: String((invite && invite.role) || ""),
           lang: accountLang(),
         }),
       }).then(
@@ -1705,6 +1734,7 @@
     sendNotifyEmail: sendNotifyEmail,
     pushRegisterToken: pushRegisterToken,
     pushSend: pushSend,
+    rest: rest,
     checkoutPlanId: checkoutPlanId,
     billingAccount: billingAccount,
     currencyForLang: currencyForLang,

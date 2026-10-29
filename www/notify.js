@@ -175,6 +175,7 @@
     if (type === "energy" || type === "plan") return "notif-energy";
     if (type === "ai") return "notif-ai";
     if (type === "emergency") return "notif-emergency";
+    if (type === "family") return "notif-family";
     return "notif-security";
   }
 
@@ -587,6 +588,15 @@
   }
 
   function fanout(cfg, event) {
+    // event.private: başka kişilerden gelen içerik (aile mesajı / paylaşılan uyarı) üçüncü
+    // taraf sunuculara (ntfy, webhook, Telegram) GİTMEZ; yalnızca bu cihazın sistem bildirimi.
+    if (event && event.private) {
+      cfg = Object.assign({}, cfg, {
+        ntfy: Object.assign({}, cfg.ntfy, { enabled: false }),
+        webhook: Object.assign({}, cfg.webhook, { enabled: false }),
+        telegram: Object.assign({}, cfg.telegram, { enabled: false }),
+      });
+    }
     var jobs = [];
     if (cfg.system.enabled)
       jobs.push([
@@ -660,6 +670,9 @@
   function deliver(event) {
     if (!event || !event.id) return Promise.resolve({ sent: [] });
     if (!claim(event.id)) return Promise.resolve({ sent: [], duplicate: true });
+    // pushed: sunucu bildirimi (FCM) bu olayı kapalı uygulamada zaten gösterdi; tekrar bildirim yok,
+    // olay yine de uygulama içi listede durur.
+    if (event.pushed) return Promise.resolve({ sent: [], pushed: true });
     var reason = dndActive() ? "dnd" : suppressReason(event);
     if (reason) return Promise.resolve({ sent: [], dnd: reason === "dnd", suppressed: reason });
     // Yeni gerçek olay: uygulama içinde nazik zil (Ayarlar → Ses kapalıysa sessiz;

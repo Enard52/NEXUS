@@ -168,6 +168,11 @@
       var members = home && Array.isArray(home.members) ? home.members : [];
       var head = '<a href="nexus-household.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
         '<span class="font-bold text-slate-800">Aile ve evi yönet</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+      // Aile sohbeti yalnızca sunucudaki (bulut) evlerde vardır; yerel evde bağlantı gösterilmez.
+      if (home && home.cloud) {
+        head += '<a href="nexus-family-chat.html?home=' + encodeURIComponent(home.id) + '" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
+          '<span class="font-bold text-slate-800">Aile Sohbeti</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+      }
       if (!members.length) {
         box.innerHTML = head + '<p class="text-sm text-slate-500 text-center pt-10">Henüz aile üyesi eklenmedi.</p>';
       } else {
@@ -176,7 +181,7 @@
             '<h2 class="font-bold text-slate-800">' + esc(m.name || 'Üye') + '</h2>' +
             '<p class="text-sm text-slate-500 mt-1">' + esc(m.role || '') + (m.email ? ' · ' + esc(m.email) : '') + '</p></article>';
         }).join('') +
-          '<p class="text-xs text-slate-400 text-center pt-4">Üyeler arası mesajlaşma henüz yok; üyeleri ve izinlerini Aile ekranından yönetebilirsin.</p>';
+          '<p class="text-xs text-slate-400 text-center pt-4">' + (home && home.cloud ? 'Üyeleri ve izinlerini Aile ekranından yönetebilirsin.' : 'Aile sohbeti için evin hesabına bağlı olması gerekir; üyeleri Aile ekranından yönetebilirsin.') + '</p>';
       }
     }
 

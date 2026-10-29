@@ -1213,7 +1213,15 @@ describe("anlık senkron (Supabase Realtime, ham WebSocket)", () => {
     expect(join.tenant).toBe("ornek");
     expect(join.payload.access_token).toBe("at-rt");
     const tables = join.payload.config.postgres_changes.map((c: Record<string, string>) => c.table);
-    expect(tables).toEqual(["nexus_user_state", "nexus_devices", "nexus_entitlements"]);
+    expect(tables).toEqual([
+      "nexus_user_state",
+      "nexus_devices",
+      "nexus_entitlements",
+      "households",
+      "household_members",
+      "household_messages",
+      "household_activity",
+    ]);
     expect(join.payload.config.postgres_changes[0].filter).toBe("user_id=eq.u-rt");
     expect(join.payload.config.postgres_changes[2].filter).toBe("email=eq.ayse@ornek.com");
   });

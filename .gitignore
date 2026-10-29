@@ -93,3 +93,6 @@ docs/OSS-LAUNCH-PLAN.md
 *.local-keys.json
 tuya-*.local.json
 tapo-*.local.json
+# Firebase istemci yapılandırması (proje kimliği/anahtarlar): repoya girmez, yerelde ya da CI secret'ından konur
+android/app/google-services.json
+ios/App/App/GoogleService-Info.plist

@@ -676,6 +676,11 @@
   var SCENE_QUIET = false;
 
   function setField(index, field, value) {
+    // Aile izni: tüm evlerinde "cihazları kontrol et" izni kapalı bir üye (ör. Misafir) komut gönderemez.
+    if (window.nexusHouseholdCloud && !window.nexusHouseholdCloud.canControl()) {
+      if (window.nexusDialog) window.nexusDialog({ icon: "warning", title: "İzin yok", message: "Bu evde cihaz kontrol iznin yok. Ev sahibi izni açabilir." });
+      return null;
+    }
     var devices = readDevices();
     if (!devices[index]) return null;
     var prev = stateOf(devices[index]);

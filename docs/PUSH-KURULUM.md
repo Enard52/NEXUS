@@ -78,21 +78,38 @@ sohbeti bildiriminin) alıcının bildirim merkezine düşmesi.
    B'nin e-postası olsun; A'da kritik bir olay üret → B kapalıyken bildirim
    B'nin cihazına düşmeli.
 
-## Android (yerel kabuk) — 2. faz (bilinçli olarak ertelendi)
+## Android + aile bildirimleri (sunucu tetiklemeli) — `push-notify`
 
-Web/PWA push yukarıdakiyle tam çalışır. Android APK'nın kapalıyken de push
-alması için ayrıca:
-1. Firebase konsolunda **Android uygulaması** ekle (paket: `com.nexus.app`) →
-   `google-services.json` → `android/app/` içine koy (repoya GİRMEZ).
-2. `npm i @capacitor/push-notifications` + `npx cap sync android` +
-   gradle'da google-services eklentisi (CI'da dosyayı secret'tan açan bir adım).
-3. APK yeniden derlenir. push.js Capacitor ortamını `platformName()` ile ayırır;
-   eklenti gelmeden Android'de push, WebView'da web push kurallarına düşer
-   (Android WebView SW push desteği sınırlı — bu yüzden 2. faz gerekli).
+Web/PWA yolu yukarıda (istemci tetiklemeli, `push-send`). Android uygulamasının **kapalıyken** aile
+mesajı ve ev sahibinin açtığı kritik olay aktarımını alması için ikinci bir yol vardır; bu yol
+**sunucudan** tetiklenir (istemci çağırmaz):
 
-Bu fazın gradle/CI kısmı `google-services.json` olmadan bozuk derleme
-üreteceğinden bilerek uygulanmadı; JSON geldiğinde 30 dakikalık iştir.
+```
+household_messages / household_activity (INSERT)
+  → Supabase Database Webhook  (gizli başlık x-webhook-secret)
+  → push-notify Edge Function  (FCM HTTP v1, servis hesabı Supabase Secret'ta)
+  → push_tokens tablosundaki Android cihazlar  (@capacitor/push-notifications)
+```
 
+Kullanıcı adımları (hepsi senin hesaplarınla; kodda secret yok):
+
+1. **Android uygulaması**: Firebase'de `com.nexus.app` kayıtlı olmalı ve `google-services.json`
+   `android/app/` içinde durmalı (`.gitignore`'da; CI'da bir secret'tan açılır).
+2. **Migration**: `supabase/migrations/20261031_push_tokens.sql` (tablo `push_tokens`; web yolunun
+   `nexus_push_tokens` tablosundan ayrıdır). Aile tabloları için önce `20261029_households.sql` ve
+   `20261030_households_activity.sql`.
+3. **Secret'lar**: `FCM_SERVICE_ACCOUNT` (Firebase servis hesabı JSON'unun tamamı) ve
+   `PUSH_WEBHOOK_SECRET` (kendi seçtiğin uzun rastgele değer). Web yolundaki
+   `FCM_SERVICE_ACCOUNT_JSON` ile aynı JSON'dur; iki ad ayrı fonksiyonlar içindir.
+4. **Fonksiyon**: `supabase functions deploy push-notify --no-verify-jwt` (webhook JWT taşımaz;
+   doğrulama gizli başlıkla yapılır).
+5. **Database Webhook'lar**: Supabase → Database → Webhooks: `household_messages` ve
+   `household_activity` tablolarında INSERT için `push-notify` fonksiyonunu çağır; HTTP başlığı
+   `x-webhook-secret: <PUSH_WEBHOOK_SECRET>`.
+6. Android APK'yı yeniden derle (`@capacitor/push-notifications` eklendi).
+
+Gerçek cihazla doğrulanmadı (issue #95, #97). Secret'lardan biri yoksa fonksiyon dürüstçe
+"push yapılandırılmadı" döner ve hiçbir şey göndermez. iOS için APNs (Apple geliştirici hesabı) gerekir; yok.
 ## Güvenlik notları
 
 - Servis hesabı JSON **yalnızca** Supabase secrets'ta; repoya girmaz.

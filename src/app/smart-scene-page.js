@@ -89,6 +89,8 @@
     // Liste sınırsız büyüyerek her 2 sn'lik okumayı ve bulut senkronunu yoruyordu; son 300 olay yeter.
     if (events.length > 300) events = events.slice(-300);
     nexusSetItem('nexusEvents', JSON.stringify(events));
+    // Gerçekten çalışan senaryo, bulut evlerinin ortak etkinlik akışına (yalnız ad) yazılır.
+    try { if (window.nexusHouseholdCloud) window.nexusHouseholdCloud.reportScene(sceneTitle); } catch (e) {}
   }
 
   function showToast(message, ms) { if (window.nexusToast) window.nexusToast(message, { type: 'info', duration: ms || 1600 }); }

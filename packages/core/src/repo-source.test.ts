@@ -65,7 +65,7 @@ describe("tek kaynak aynası (src/app → www) ve depo hijyeni", () => {
   });
 
   it("ekran sayısı bilinen tabloyla tutarlı ve iki ayna aynı adları taşıyor", () => {
-    expect(SCREENS.length, "src/app nexus-*.html ekran sayısı").toBe(62);
+    expect(SCREENS.length, "src/app nexus-*.html ekran sayısı").toBe(63);
 
     const srcNames = new Set(APP_FILES.filter((n) => !LOCAL_ONLY.has(n)));
     const wwwNames = new Set(WWW_FILES.filter((n) => !LOCAL_ONLY.has(n)));

@@ -90,6 +90,11 @@
     window.__nexusPushLoading = true;
     document.write('<script src="push.js"><\/script>');
   }
+  // Aile (çok kullanıcılı ev, izinler, sohbet bildirimi): oturum yoksa kendini devre dışı bırakır.
+  if (!previewShell && document.readyState === 'loading' && !window.nexusHouseholdCloud && !window.__nexusHouseholdLoading) {
+    window.__nexusHouseholdLoading = true;
+    document.write('<script src="household-cloud.js"><\/script>');
+  }
 })();
 
 

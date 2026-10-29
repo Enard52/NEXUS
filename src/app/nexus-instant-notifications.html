@@ -52,6 +52,13 @@
         <div><h2 class="text-lg font-bold">Bildirimlere İzin Ver</h2><p class="text-sm text-slate-500 font-medium">Tüm uyarıları tek bir yerden yönetin</p></div>
         <label class="switch"><input type="checkbox" id="master-toggle"><span class="slider"></span></label>
       </section>
+      <section id="push-section" class="hidden bg-white rounded-3xl p-5 shadow-sm border border-slate-100/50">
+        <div class="flex items-center justify-between gap-3">
+          <div class="min-w-0"><h2 class="text-lg font-bold">Sunucu Bildirimi</h2><p id="push-text" class="text-sm text-slate-500 font-medium"></p></div>
+          <label class="switch shrink-0"><input type="checkbox" id="push-toggle"><span class="slider"></span></label>
+        </div>
+        <p id="push-note" class="mt-3 text-xs text-slate-400 font-medium">Uygulama kapalıyken aile mesajı ve ev sahibinin paylaştığı uyarılar gelir. Ana anahtar, kategori ve sessiz saat ayarların sunucuya kopyalanır; uygulamayı açtığında güncellenir.</p>
+      </section>
       <div class="space-y-3">
         <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Kritik Uyarılar</h3>
         <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100/50">
@@ -66,6 +73,8 @@
           <div class="p-5 flex items-center justify-between notification-row"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500"><i data-lucide="zap" class="w-6 h-6"></i></div><div><p class="font-semibold">Enerji Raporları</p><p class="text-xs text-slate-500 font-medium">Haftalık tasarruf özetleri</p></div></div><label class="switch"><input type="checkbox" data-key="notif-energy"><span class="slider"></span></label></div>
           <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 flex items-center justify-between notification-row"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-[#4C7DFF]"><i data-lucide="bot" class="w-6 h-6"></i></div><div><p class="font-semibold">AI Önerileri</p><p class="text-xs text-slate-500 font-medium">Yeni senaryo tavsiyeleri</p></div></div><label class="switch"><input type="checkbox" data-key="notif-ai"><span class="slider"></span></label></div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="p-5 flex items-center justify-between notification-row"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-violet-50 flex items-center justify-center text-violet-500"><i data-lucide="message-circle" class="w-6 h-6"></i></div><div><p class="font-semibold">Aile Mesajları</p><p class="text-xs text-slate-500 font-medium">Ev üyelerinden yeni mesaj</p></div></div><label class="switch"><input type="checkbox" data-key="notif-family"><span class="slider"></span></label></div>
         </section>
       </div>
       <div class="space-y-3">
@@ -405,6 +414,33 @@
       });
     }
     refreshStatus();
+  </script>
+  <script src="household-cloud.js"></script>
+  <script>
+    /* Sunucu bildirimi (FCM): yalnız mobil uygulamada gösterilir. "Açık" yalnızca token sunucuya
+       gerçekten kaydedildiyse yazar; yapılandırma yoksa dürüstçe "yapılandırılmadı" der. */
+    (function () {
+      var HC = window.nexusHouseholdCloud;
+      var section = document.getElementById('push-section');
+      var toggle = document.getElementById('push-toggle');
+      var text = document.getElementById('push-text');
+      if (!HC || !section) return;
+      function paint(s) {
+        if (s.state === 'unsupported') { section.classList.add('hidden'); return; }
+        section.classList.remove('hidden');
+        text.textContent = s.text;
+        toggle.checked = s.state === 'registered';
+        toggle.disabled = !(s.state === 'off' || s.state === 'registered' || s.state === 'denied' || s.state === 'not-configured');
+      }
+      function refresh() { HC.pushStatus().then(paint); }
+      toggle.addEventListener('change', function () {
+        toggle.disabled = true;
+        text.textContent = 'Bekleniyor…';
+        (toggle.checked ? HC.enablePush() : HC.disablePush()).then(paint, refresh);
+      });
+      window.addEventListener('nexusPushState', refresh);
+      refresh();
+    })();
   </script>
 </body>
 </html>
