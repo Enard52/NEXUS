@@ -189,6 +189,20 @@
     // Motorun izlediği sensör türleri ve cihaz anahtarı (automation-engine.js ile aynı kural).
     const SENSOR_KINDS = { motion: 1, contact: 1, alarm: 1 };
     function sensorKey(d) { return String(d.id || (d.host + '|' + d.name)); }
+    function selectDevice(btn) {
+      document.querySelectorAll('#device-option-list button').forEach(function(b) {
+        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+      });
+      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      window._pendingDevice = { key: btn.getAttribute('data-device'), name: btn.getAttribute('data-name') };
+    }
+    function selectDeviceEvent(btn) {
+      document.querySelectorAll('#device-event-list button').forEach(function(b) {
+        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+      });
+      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      window._pendingDeviceEvent = btn.getAttribute('data-event') || 'any';
+    }
     function selectSensor(btn) {
       document.querySelectorAll('#sensor-option-list button').forEach(function(b) {
         b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
@@ -251,9 +265,11 @@
       // Dürüstlük notu: seçilen tetikleyici türü motor tarafından henüz
       // çalıştırılmıyorsa kullanıcıya açıkça söylenir (zamanlamaya düşer).
       const kind = window._pendingTriggerKind || 'time';
-      const kindNote = (kind === 'time' || kind === 'sensor') ? '' : `
+      // Çalışmayan türler (hava durumu, konum, güvenlik modu) artık zamanlamaya çevrilip
+      // kaydedilmez: kayıt engellenir ve neden açıkça yazılır.
+      const kindNote = (kind === 'time' || kind === 'sensor' || kind === 'device') ? '' : `
         <p class="p-3 bg-amber-50 text-amber-700 text-xs font-medium rounded-xl border border-amber-100 leading-relaxed">
-          Bu tetikleyici türü henüz otomatik çalışmıyor; kaydettiğinde aşağıda seçtiğin saatte (zamanlamayla) çalışır.
+          Bu tetikleyici türü henüz desteklenmiyor, bu yüzden kaydedilemez. Çalışan türler: Zamanlayıcı, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).
         </p>`;
 
       // Çalıştırılacak senaryo: motorun gerçekten yürüteceği eylem.
@@ -274,6 +290,35 @@
       // Sensör tetikleyicisi: yalnız gerçekten eşli yerel ağ sensörleri listelenir.
       // Sensör yoksa dürüst boş durum gösterilir ve kayıt engellenir.
       window._pendingSensor = null;
+      window._pendingDevice = null;
+      window._pendingDeviceEvent = 'any';
+      // Cihaz durumu tetikleyicisi: açma/kapama okunabilen yerel ağ cihazları listelenir.
+      let deviceBlock = '';
+      if (kind === 'device') {
+        const switchable = (window.NX && NX.isLan && NX.hasCap)
+          ? devices.filter(function(d) { return NX.isLan(d) && NX.hasCap(d, 'switch'); })
+          : [];
+        deviceBlock = switchable.length ? `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-1">İzlenecek Cihaz</span>
+          <p class="text-xs text-slate-400 mb-3">Cihazın açık/kapalı durumu uygulama açıkken yaklaşık 30 sn'de bir okunur; değişince çalışır.</p>
+          <div class="flex flex-wrap gap-2" id="device-option-list">
+            ${switchable.map(function(d) {
+              return '<button type="button" data-device="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Cihaz') + '" onclick="selectDevice(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.escapeHtml(d.name || 'Cihaz') + '</button>';
+            }).join('')}
+          </div>
+          <span class="text-sm font-semibold text-slate-700 block mt-4 mb-2">Ne zaman</span>
+          <div class="flex flex-wrap gap-2" id="device-event-list">
+            ${[['on','Açıldığında'],['off','Kapandığında'],['any','Durumu değiştiğinde']].map(function(o) {
+              return '<button type="button" data-event="' + o[0] + '" onclick="selectDeviceEvent(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (o[0] === 'any' ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + o[1] + '</button>';
+            }).join('')}
+          </div>
+        </div>` : `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-1">İzlenecek Cihaz</span>
+          <p class="text-xs text-slate-500 leading-relaxed">Yerel ağa eşli açılıp kapanabilen cihaz yok. Önce <a href="nexus-pair.html" class="text-[#4C7DFF] font-bold">bir cihaz ekle</a>; sonra bu tetikleyiciyi kurabilirsin.</p>
+        </div>`;
+      }
       let sensorBlock = '';
       if (kind === 'sensor') {
         const sensors = (window.NX && NX.kindOf && NX.isLan)
@@ -303,7 +348,7 @@
           </div>
           <p class="text-sm text-[#4C7DFF] font-bold">${deviceLabel}</p>
         </div>
-        ${kind === 'sensor' ? sensorBlock : `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+        ${kind === 'sensor' ? sensorBlock : kind === 'device' ? deviceBlock : (kind !== 'time') ? '' : `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <span class="text-sm font-semibold text-slate-700 block mb-3">Çalışma Zamanı</span>
           <div class="flex flex-wrap gap-2" id="time-option-list">
             ${timeOptions.map(function(opt) {
@@ -357,8 +402,18 @@
 
       // Sensör tetikleyicisi sensör seçilmeden kaydedilmez (tetiklenmeyecek bir kural kurulmasın).
       const isSensorTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'sensor';
+      const isDeviceTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'device';
+      const unsupportedKind = type !== 'clickrun' && ['weather', 'location', 'security'].indexOf(window._pendingTriggerKind) !== -1;
+      if (unsupportedKind) {
+        if (window.nexusToast) window.nexusToast('Bu tetikleyici türü henüz desteklenmiyor; kaydedilemedi.', { type: 'error' });
+        return;
+      }
       if (isSensorTrigger && !window._pendingSensor) {
         if (window.nexusToast) window.nexusToast('Önce tetikleyecek bir sensör seç.', { type: 'error' });
+        return;
+      }
+      if (isDeviceTrigger && !window._pendingDevice) {
+        if (window.nexusToast) window.nexusToast('Önce izlenecek bir cihaz seç.', { type: 'error' });
         return;
       }
 
@@ -376,6 +431,8 @@
         ? { type: 'manual' }
         : isSensorTrigger
         ? { type: 'sensor', value: window._pendingSensor.key, label: window._pendingSensor.name, event: 'active' }
+        : isDeviceTrigger
+        ? { type: 'device', value: window._pendingDevice.key, label: window._pendingDevice.name, event: window._pendingDeviceEvent || 'any' }
         : { type: triggerType === 'always' ? 'time' : 'time', value: triggerValueMap[triggerType] || '', repeat: triggerType === 'always' ? 'always' : 'daily' };
 
       let autos = [];

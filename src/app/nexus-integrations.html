@@ -2636,7 +2636,7 @@
         image = catalogFunctionImage(item.img);
       }
       var imageVersion = '20261029-products-10';
-      return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="simulateConnection(this, \'' + safe + '\')">' +
+      return '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="searchAndPairDevice(this, \'' + safe + '\')">' +
         '<div class="product-image-stage">' +
         '<img src="assets/products/' + image + '?v=' + imageVersion + '" data-file="' + image + '" alt="' + safe + '" class="catalog-img object-contain transition-transform duration-300 group-active:scale-95" loading="lazy" onerror="this.onerror=null;this.src=&quot;assets/products/generic-smart-hub.png?v=' + imageVersion + '&quot;;" />' +
         '</div>' +
@@ -2837,7 +2837,7 @@
       }
     }
 
-    function simulateConnection(el, deviceName) {
+    function searchAndPairDevice(el, deviceName) {
       const safeName = (deviceName || 'Yeni cihaz').trim();
       const groupTitle = nexusSrcText(el && el.querySelector('.product-category-pill'));
       const resolved = typeof nexusResolveDevice === 'function'

@@ -228,6 +228,87 @@
     </script>
   </section>
 
+  <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card" id="backup-settings">
+    <div class="px-5 py-4 border-b border-gray-100">
+      <h2 class="text-base font-bold text-slate-900">Yedekle ve Geri Yükle</h2>
+      <p class="text-sm text-slate-500 mt-1">Cihaz listesi, otomasyonlar, senaryolar ve ayarlar bir dosyaya kaydedilir. Cihaz parolaları, yerel anahtarlar, Telegram anahtarı ve oturum bilgisi yedeğe girmez.</p>
+    </div>
+    <button type="button" id="backup-export" class="nx-reset flex w-full items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="exportBackupFile()">
+      <span class="text-xl text-gray-800 font-medium">Yedeği dışa aktar</span>
+    </button>
+    <hr class="mx-5 border-gray-100"/>
+    <button type="button" id="backup-import" class="nx-reset flex w-full items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="document.getElementById('backup-file').click()">
+      <span class="text-xl text-gray-800 font-medium">Yedekten geri yükle</span>
+    </button>
+    <input type="file" id="backup-file" accept="application/json,.json" class="hidden" aria-label="Yedek dosyası seç"/>
+    <p id="backup-status" class="px-5 pb-4 text-sm text-slate-500" role="status"></p>
+    <script>
+      (function () {
+        var status = document.getElementById('backup-status');
+        function say(text, bad) {
+          status.textContent = text;
+          status.style.color = bad ? '#e11d48' : '';
+        }
+        if (!window.nexusCloud || !nexusCloud.exportBackup) {
+          document.getElementById('backup-export').disabled = true;
+          document.getElementById('backup-import').disabled = true;
+          say('Yedekleme bu sürümde yüklenemedi.', true);
+          return;
+        }
+        window.exportBackupFile = function () {
+          var data = nexusCloud.exportBackup();
+          if (!data) { say('Yedek almak için önce hesabınla giriş yap.', true); return; }
+          var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+          var fname = 'nexus-yedek-' + data.exportedAt.slice(0, 10) + '.json';
+          // Telefonlarda (WebView) blob indirmesi çalışmayabilir: paylaşım sayfası varsa dosya onunla verilir.
+          try {
+            var f = new File([blob], fname, { type: 'application/json' });
+            if (navigator.canShare && navigator.canShare({ files: [f] })) {
+              navigator.share({ files: [f], title: 'NEXUS yedeği' }).catch(function () {});
+              say('Yedek hazırlandı: ' + Object.keys(data.keys).length + ' ayar kaydı, ' + data.devices.length + ' cihaz. Açılan paylaşım penceresinden bir yere kaydet.');
+              return;
+            }
+          } catch (e) { /* paylaşım yoksa indirmeye düşer */ }
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = fname;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+          say('Yedek hazırlandı: ' + Object.keys(data.keys).length + ' ayar kaydı, ' + data.devices.length + ' cihaz. Dosyayı güvenli bir yerde sakla.');
+        };
+        document.getElementById('backup-file').addEventListener('change', function () {
+          var file = this.files && this.files[0];
+          this.value = '';
+          if (!file) return;
+          if (file.size > 5 * 1024 * 1024) { say('Dosya çok büyük; bu bir NEXUS yedeği olamaz.', true); return; }
+          var reader = new FileReader();
+          reader.onerror = function () { say('Dosya okunamadı.', true); };
+          reader.onload = function () {
+            var data;
+            try { data = JSON.parse(String(reader.result)); } catch (e) { say('Bu dosya geçerli bir yedek değil.', true); return; }
+            var run = function () {
+              var res = nexusCloud.importBackup(data);
+              if (!res.ok) { say(res.error, true); return; }
+              say('Geri yüklendi: ' + res.keys + ' ayar kaydı, ' + res.devices + ' yeni cihaz. Tapo/Tuya gibi şifre ya da anahtar isteyen cihazlar için bilgiyi yeniden girmen gerekir. Sayfalar yenileniyor…');
+              setTimeout(function () { location.reload(); }, 2500);
+            };
+            if (typeof nexusDialog === 'function') {
+              nexusDialog({
+                title: 'Yedekten geri yüklensin mi?',
+                icon: 'warning',
+                message: 'Aynı adlı ayarların ve otomasyonların üzerine yazılır. Listende olmayan cihazlar eklenir, var olanlara dokunulmaz.',
+                primary: { label: 'Geri yükle', onClick: run },
+                secondary: { label: 'Vazgeç' }
+              });
+            } else { run(); }
+          };
+          reader.readAsText(file);
+        });
+      })();
+    </script>
+  </section>
+
   <section id="desktop-app-section" class="bg-white rounded-3xl overflow-hidden shadow-sm hidden" data-purpose="settings-card">
     <div class="px-5 py-4 border-b border-gray-100">
       <h2 class="text-base font-bold text-slate-900">Masaüstü Uygulaması</h2>
@@ -345,7 +426,7 @@
 </main>
 
 <script>
-  window.NEXUS_APP_VERSION = "1.0.32";
+  window.NEXUS_APP_VERSION = "1.0.33";
   (function () {
     var el = document.getElementById('nx-app-version');
     if (el && window.NEXUS_APP_VERSION) el.textContent = 'NEXUS v' + window.NEXUS_APP_VERSION;

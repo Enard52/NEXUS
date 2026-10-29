@@ -84,6 +84,12 @@
     window.__nexusNotifyLoading = true;
     document.write('<script src="notify.js"><\/script>');
   }
+  // Push (FCM): uygulama kapalıyken aile olayı/sohbet bildirimi. Config yoksa
+  // push.js kendini kapatır (no-op) — yalnızca dosya yüklenir.
+  if (!previewShell && document.readyState === 'loading' && !window.nexusPush && !window.__nexusPushLoading) {
+    window.__nexusPushLoading = true;
+    document.write('<script src="push.js"><\/script>');
+  }
 })();
 
 

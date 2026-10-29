@@ -3,6 +3,7 @@
 // (tailwind.css, fontlar, lucide, leaflet). Telefonla aynı ekranlar, aynı sürüm.
 const fs = require("node:fs");
 const path = require("node:path");
+const { isAppFile } = require("./app-file-rules.cjs");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const APP = path.join(ROOT, "src", "app");
@@ -28,13 +29,12 @@ fs.mkdirSync(OUT, { recursive: true });
 // 1) Derlenmiş ortak varlıklar (yalnızca www'de bulunur)
 for (const dir of ["css", "fonts", "js", "leaflet", "icons"]) copy(path.join(WWW, dir), path.join(OUT, dir));
 
-// 2) Güncel uygulama dosyaları (src/app tek kaynaktır)
-const APP_JS = new Set(["ai-fab.js", "auth.js", "automation-engine.js", "cloud-sync.js", "data.js", "desktop.js", "device-controls.js", "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js", "nexus-feedback.js",
-  "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js", "command-palette.js", "event-bridge.js", "nexus-dialog.js", "nexus-undo.js", "notify.js"]);
+// 2) Güncel uygulama dosyaları (src/app tek kaynaktır).
+// Kuralın tek sahibi app-file-rules.cjs: src/app altındaki her .js varsayılan olarak
+// gemiye girer; EXCLUDE_JS'dekiler girmez. Böylece yeni bir modül (ör. push.js)
+// listeye eklenmeyi UNUTSAMASIN — eski el ile tutulan APP_JS listesi tam bunu atladı.
 for (const f of fs.readdirSync(APP)) {
-  const isPage = /^nexus-.*\.html$/.test(f) || f === "index.html";
-  const isAsset = ["logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "manifest.webmanifest", "automation-worker.html"].includes(f);
-  if (isPage || isAsset || APP_JS.has(f)) copy(path.join(APP, f), path.join(OUT, f));
+  if (isAppFile(f)) copy(path.join(APP, f), path.join(OUT, f));
 }
 copy(path.join(ROOT, "css"), path.join(OUT, "css"));
 copy(path.join(ROOT, "fonts"), path.join(OUT, "fonts"));
@@ -48,8 +48,17 @@ const cloud = path.join(ROOT, "cloud-config.js");
 copy(fs.existsSync(cloud) ? cloud : path.join(ROOT, "cloud-config.example.js"), path.join(OUT, "cloud-config.js"));
 
 // 4) Zorunlu dosyalar gerçekten var mı?
-const required = ["index.html", "nexus-home.html", "theme.js", "desktop.js", "lan-connectors.js", "automation-engine.js", "sw.js", "manifest.webmanifest", "automation-worker.html", "css/tailwind.css", "css/nexus-ui.css", "js/lucide.js", "fonts/inter/inter.css"];
+// theme.js bu katmanları sayfa açılırken enjekte ediyor. El ile tutulan APP_JS listesi
+// artık bir kuralın (app-file-rules.cjs) içinde eridiği için, "gerçekten paketlendi mi"
+// kontrolü burada yapılıyor: eksikse build düşer, kurulum sessiz özellik kaybıyla çıkmaz.
+const required = ["index.html", "nexus-home.html", "theme.js", "desktop.js", "lan-connectors.js", "automation-engine.js", "sw.js", "manifest.webmanifest", "automation-worker.html", "css/tailwind.css", "css/nexus-ui.css", "js/lucide.js", "fonts/inter/inter.css", "notify.js", "nexus-feedback.js", "nexus-undo.js", "nexus-dialog.js", "command-palette.js", "push.js", "firebase-messaging-sw.js"];
 const missing = required.filter((f) => !fs.existsSync(path.join(OUT, f)));
+// 4b) Kural gereği seçilen her src/app dosyası gerçekten kopyalandı mı?
+// (1.0.32'de köprü, push dalgasında push.js sessizce eksik kalıyordu — burada build düşer.)
+const unshipped = fs
+  .readdirSync(APP)
+  .filter((f) => isAppFile(f) && !fs.existsSync(path.join(OUT, f)));
+if (unshipped.length) missing.push("src/app seçilip kopyalanamayan: " + unshipped.join(", "));
 if (missing.length) {
   console.error("Eksik dosyalar:", missing.join(", "));
   process.exit(1);

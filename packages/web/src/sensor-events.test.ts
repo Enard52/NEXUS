@@ -15,7 +15,7 @@ type Dev = { id: string; name: string; host: string; protocol: string; kind: str
 
 function setup(
   devices: Dev[],
-  reads: Record<string, Array<{ active?: unknown } | null>>,
+  reads: Record<string, Array<Record<string, unknown> | null>>,
   automations: unknown[] = [],
 ) {
   const store = new Map<string, string>();
@@ -182,6 +182,56 @@ describe("sensör durum değişimi olaya dönüşür", () => {
     await engine.watchSensors(true);
     await engine.watchSensors(true);
     expect(ranScenes).toEqual([]);
+  });
+
+  const devRule = (event: string, over: Record<string, unknown> = {}) => ({
+    id: "dev-rule",
+    title: "Lamba olunca",
+    enabled: true,
+    sceneId: "evde",
+    trigger: { type: "device", value: "l1", event },
+    ...over,
+  });
+
+  it("cihaz durumu tetikleyicisi: ilk okuma başlangıçtır, kapalı→açık geçişinde 'on' kuralı çalışır", async () => {
+    const { engine, ranScenes } = setup([lamp], { l1: [{ switch: false }, { switch: true }] }, [
+      devRule("on"),
+    ]);
+    await engine.watchSensors(true);
+    expect(ranScenes).toEqual([]);
+    await engine.watchSensors(true);
+    expect(ranScenes).toEqual(["evde"]);
+  });
+
+  it("'on' kuralı kapanışta, 'off' kuralı açılışta çalışmaz; 'any' ikisinde de çalışır", async () => {
+    const turnOn = { l1: [{ switch: false }, { switch: true }] };
+    const turnOff = { l1: [{ switch: true }, { switch: false }] };
+    const a = setup([lamp], turnOff, [devRule("on")]);
+    await a.engine.watchSensors(true);
+    await a.engine.watchSensors(true);
+    expect(a.ranScenes).toEqual([]);
+    const b = setup([lamp], turnOn, [devRule("off")]);
+    await b.engine.watchSensors(true);
+    await b.engine.watchSensors(true);
+    expect(b.ranScenes).toEqual([]);
+    const c = setup([lamp], turnOff, [devRule("any")]);
+    await c.engine.watchSensors(true);
+    await c.engine.watchSensors(true);
+    expect(c.ranScenes).toEqual(["evde"]);
+  });
+
+  it("cihaz tetikleyicisi yoksa lamba okunmaz; okunamayan cihaz tetiklemez", async () => {
+    const none = setup([lamp], { l1: [{ switch: false }, { switch: true }] });
+    await none.engine.watchSensors(true);
+    await none.engine.watchSensors(true);
+    expect(none.ranScenes).toEqual([]);
+    const bad = setup([lamp], { l1: [{ switch: false }, null, { switch: undefined }] }, [
+      devRule("any"),
+    ]);
+    await bad.engine.watchSensors(true);
+    await bad.engine.watchSensors(true);
+    await bad.engine.watchSensors(true);
+    expect(bad.ranScenes).toEqual([]);
   });
 
   it("yerel ağ cihazı yoksa hiçbir okuma yapılmaz", async () => {

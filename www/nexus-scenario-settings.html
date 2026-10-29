@@ -219,7 +219,8 @@
       } else if (trigger.type === 'manual') {
         valueText = 'Butona basıldığında çalışır';
       } else if (trigger.type === 'device' && trigger.value) {
-        valueText = trigger.value;
+        const ev = { on: 'açıldığında', off: 'kapandığında', any: 'durumu değişince' }[trigger.event || 'any'] || 'durumu değişince';
+        valueText = (trigger.label || 'Cihaz') + ' ' + ev + ' çalışır';
       } else if (trigger.type === 'location' && trigger.value) {
         valueText = trigger.value;
       } else if (trigger.type === 'sensor') {

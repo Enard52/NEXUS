@@ -250,13 +250,30 @@
   // Sensör tetikleyicili otomasyonlar (trigger.type === 'sensor', value = cihaz anahtarı):
   // sensörün gerçek "kapalı → açık" geçişinde çalışır. Zaman tetikleyicilerinden farklı olarak
   // günde bir kez sınırı yoktur; yinelemeyi sensör başına 60 sn aralığı sınırlar.
-  function runSensorAutomations(key) {
+  function readAutos() {
     var autos = [];
     try { autos = typeof readAndNormalizeItems === 'function' ? readAndNormalizeItems('nexusCustomAutomations', 'automation') : get('nexusCustomAutomations', []); } catch (e) {}
-    autos.forEach(function (a) {
+    return Array.isArray(autos) ? autos : [];
+  }
+  function runSensorAutomations(key) {
+    readAutos().forEach(function (a) {
       if (!a || !a.id || a.enabled === false) return;
       var t = a.trigger || {};
       if (t.type === 'sensor' && String(t.value) === key) executeAutomation(a);
+    });
+  }
+
+  // Cihaz durumu tetikleyicisi (trigger.type === 'device', value = cihaz anahtarı,
+  // event = 'on' | 'off' | 'any'): izlenen yerel ağ cihazının OKUNAN açık/kapalı durumu
+  // değiştiğinde çalışır. İlk okuma yalnız başlangıçtır; okunamayan cihaz tetiklemez.
+  // Cihazı bu uygulamadan açıp kapatmak da durum değişimidir ve tetikler.
+  var deviceLast = {};
+  function runDeviceAutomations(key, dir) {
+    readAutos().forEach(function (a) {
+      if (!a || !a.id || a.enabled === false) return;
+      var t = a.trigger || {};
+      if (t.type !== 'device' || String(t.value) !== key) return;
+      if (!t.event || t.event === 'any' || t.event === dir) executeAutomation(a);
     });
   }
 
@@ -271,22 +288,39 @@
     return new Promise(function (resolve) { ensureEngine(resolve); }).then(function () {
       if (!window.NX || !NX.refreshFromDevice || !NX.kindOf || !NX.isLan) return 0;
       var jobs = [];
+      var devTrig = {};
+      readAutos().forEach(function (a) {
+        var t = a && a.enabled !== false && a.trigger;
+        if (t && t.type === 'device' && t.value) devTrig[String(t.value)] = true;
+      });
       NX.readDevices().forEach(function (d, i) {
         if (!d || !NX.isLan(d)) return;
         var kind = NX.kindOf(d);
-        if (!SENSOR_KINDS[kind]) return;
         var key = String(d.id || (d.host + '|' + d.name));
+        var isSensor = !!SENSOR_KINDS[kind];
+        var isDevTrig = !!devTrig[key];
+        if (!isSensor && !isDevTrig) return;
         jobs.push(NX.refreshFromDevice(i).then(function (st) {
-          if (!st || typeof st.active !== 'boolean') return 0;
-          var prev = sensorLast[key];
+          if (!st) return 0;
           var fired = 0;
-          if (prev && prev.active === false && st.active === true && Date.now() - (prev.t || 0) >= SENSOR_GAP_MS) {
-            var ev = sensorEvent(kind, d.name || tr('Sensör', 'Sensor'));
-            logEvent(ev.type, ev.title, ev.detail, 'sensor-' + key.replace(/[^a-z0-9]+/gi, '') + '-' + Date.now());
-            runSensorAutomations(key);
-            fired = 1;
+          if (isSensor && typeof st.active === 'boolean') {
+            var prev = sensorLast[key];
+            if (prev && prev.active === false && st.active === true && Date.now() - (prev.t || 0) >= SENSOR_GAP_MS) {
+              var ev = sensorEvent(kind, d.name || tr('Sensör', 'Sensor'));
+              logEvent(ev.type, ev.title, ev.detail, 'sensor-' + key.replace(/[^a-z0-9]+/gi, '') + '-' + Date.now());
+              runSensorAutomations(key);
+              fired = 1;
+            }
+            sensorLast[key] = { active: st.active, t: fired ? Date.now() : (prev && prev.t) || 0 };
           }
-          sensorLast[key] = { active: st.active, t: fired ? Date.now() : (prev && prev.t) || 0 };
+          if (isDevTrig && typeof st.switch === 'boolean') {
+            var before = deviceLast[key];
+            if (before !== undefined && before !== st.switch) {
+              runDeviceAutomations(key, st.switch ? 'on' : 'off');
+              fired += 1;
+            }
+            deviceLast[key] = st.switch;
+          }
           return fired;
         }));
       });

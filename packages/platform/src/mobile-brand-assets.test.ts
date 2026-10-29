@@ -258,11 +258,13 @@ describe("mobil marka varlıkları (launcher icon + splash)", () => {
       .filter((d) => d.startsWith("drawable") && fs.existsSync(path.join(RES, d, "splash.png")));
     expect(dirs.length, "splash varyant sayısı").toBeGreaterThanOrEqual(26);
     for (const d of dirs) {
-      const s = load(`${d}/splash.png`);
+      // Tek kodlama: readPng sonucu hem ölçüler hem pikeller için kullanılıyor.
+      // (load() ayrı bir çözüm yapıyordu; 26 varyant × 2 çözüm tam suite'te 20sn'yi aşabiliyor.)
+      const img = readPng(path.join(RES, d, "splash.png"));
+      const s = stats(img);
       expect(s.opaquePct, `${d}/splash.png saydam olamaz`).toBeGreaterThan(99.5);
       if (EXPECTED[d]) expect([s.width, s.height], `${d}/splash.png boyutu`).toEqual(EXPECTED[d]);
       // Ekran görüntüsü yerine marka: kareler ortalanmış karoyu kuşatmalı.
-      const img = readPng(path.join(RES, d, "splash.png"));
       const cx = Math.floor(img.width / 2) * 4 + Math.floor(img.height / 2) * img.width * 4;
       const [r, g, b] = [img.pixels[cx], img.pixels[cx + 1], img.pixels[cx + 2]];
       const brandish = b > 200 && b - r >= 10 && b - g >= 40;
@@ -272,9 +274,9 @@ describe("mobil marka varlıkları (launcher icon + splash)", () => {
         `${d}/splash.png merkezinde marka yok (rgb ${r},${g},${b})`,
       ).toBe(true);
     }
-    // 26 PNG kodlama çözümü (tam kaliteyle); parallel suite'te 5sn'lik varsayılan
-    // timeout yetersiz kalabiliyor (vitest CPU sıkışmasında flake).
-  }, 20000);
+    // 26 PNG kodlama çözümü; tam suite'te CPU sıkışması varken 20sn bile yetmedi,
+    // bu yüzden 60sn. (Bu test tek başına ~3sn sürüyor; bütçe sadece rakip iş için.)
+  }, 60000);
 
   it("iOS uygulama ikonu 1024x1024, alfasız ve marka renginde", () => {
     const file = path.join(IOS_ASSETS, "AppIcon.appiconset", "AppIcon-512@2x.png");

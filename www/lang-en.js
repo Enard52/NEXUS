@@ -453,6 +453,10 @@ window.NEXUS_EN = {
     "Bulut oturumu açıkken kendi adresine gönderilir; saklanacak anahtar yok.":
       "Sent to your own address while signed in; no secrets are stored in the app.",
     "Gönderilecek adres": "Recipient",
+    "Cihazlar Arası Push": "Cross-device Push",
+    "Aile üyesinin uyarısı uygulama kapalıyken de düşer": "A family member's alert arrives even when the app is closed",
+    "Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı push'u kendi cihazında açmış olmalı.":
+      "Goes to other members' and your other devices' notification centres; the recipient must have push enabled on their device.",
     "Kendi sunucuna JSON POST — gelişmiş": "JSON POST to your own server — advanced",
     "HTTPS adresi": "HTTPS URL",
     "Yalnızca HTTPS kabul edilir; her olay {source, id, title, detail, ts} olarak gönderilir.":
@@ -488,6 +492,12 @@ window.NEXUS_EN = {
     "Açık kanal yok": "No channel enabled",
     "Sessiz saatlerde dışa dönük kanallar durur; uyarılar uygulama içinde birikmeye devam eder.":
       "During quiet hours outbound channels pause; alerts keep accumulating inside the app.",
+    "Kritik uyarılar sessiz saatleri aşsın": "Let critical alerts bypass quiet hours",
+    "Güvenlik, acil durum ve alarm olayları bu saatlerde de bildirilir.":
+      "Security, emergency and alarm events are still delivered during those hours.",
+    "Ses ve Titreşim": "Sound and Vibration",
+    "Kritik uyarılar her zaman sesli gelir. Titreşim yalnızca telefonda geçerlidir; Android'de ses ve titreşim ayrıca telefonun bildirim ayarlarından da değiştirilebilir.":
+      "Critical alerts always sound. Vibration applies on phones only; on Android, sound and vibration can also be changed in the system notification settings.",
     "Bilgisayar açılınca başlat": "Start with computer",
     "Bilgisayar açıldığında NEXUS arka planda açılsın.":
       "Launch NEXUS in the background when your computer starts.",
@@ -558,6 +568,9 @@ window.NEXUS_EN = {
     "Köprüyü Başlat": "Start Bridge",
     "Köprüyü Durdur": "Stop Bridge",
     "Köprü çalışıyor": "Bridge running",
+    "Köprü kullanılamıyor": "Bridge unavailable",
+    "HomeKit köprüsü bu kurulumda kullanılamıyor (kit/bridge.cjs yüklenemedi) — Apple Ev için Home Assistant köprüsünü öneririz.":
+      "The HomeKit bridge isn't available in this install (kit/bridge.cjs could not be loaded) — for Apple Home we recommend the Home Assistant bridge.",
     "Çalışıyor · port {0} · {1} cihaz": "Running · port {0} · {1} devices",
     "Köprü, iOS cihazınla aynı Wi-Fi'da olmalı. Eşleşme kalıcıdır; NEXUS çalışıp tepside bekledikçe ev uygulamasındaki anahtarlar gerçek cihaza gider.":
       "The bridge must be on the same Wi-Fi as your iOS device. Pairing persists; as long as NEXUS stays running in the tray, switches in the Home app go to the real device.",

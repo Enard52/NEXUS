@@ -222,10 +222,13 @@
         function paint(st) {
           st = st || {};
           running = !!st.running;
-          if (pill) pill.textContent = running ? "Köprü çalışıyor" : "Kapalı";
+          // Köprü bu kurulumda hiç çalışamayacaksa (paketleme/destek farkı) bunu Başlat'a
+          // basmadan SÖYLERİZ: kullanıcı "Kapalı" görüp denemek zorunda kalmasın.
+          var nedekli = !running && st.lastError ? String(st.lastError) : "";
+          if (pill) pill.textContent = running ? "Köprü çalışıyor" : nedekli ? "Köprü kullanılamıyor" : "Kapalı";
           elStatus.textContent = running
             ? "Çalışıyor · port " + st.port + " · " + st.accessoryCount + " cihaz"
-            : "Kapalı";
+            : nedekli || "Kapalı";
           if (running && st.pincode) {
             pinRow.classList.remove("hidden");
             elPin.textContent = st.pincode;

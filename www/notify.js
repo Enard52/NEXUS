@@ -33,6 +33,7 @@
     webhook: { enabled: false, url: "" },
     telegram: { enabled: false, token: "", chat: "" },
     email: { enabled: false },
+    push: { enabled: true },
     system: { enabled: true },
   };
 
@@ -404,6 +405,60 @@
       });
   }
 
+  // Push kanalı: olayı push-send Edge Function'a taşır; sunucu FCM ile diğer
+  // cihazlara düşürür (uygulama kapalıyken bile). Hedefler aile üyelerinin
+  // e-postalarıdır (yerel ev verisi); alıcı opt-in'dir — token'ını kaydettiren
+  // cihaz alır. Yapılandırma/oturum yoksa kanal hiç işe girmez (sessiz).
+  function householdEmails() {
+    var emails = [];
+    try {
+      var homes = get("nexusHousehold", null);
+      (Array.isArray(homes) ? homes : []).forEach(function (home) {
+        (home && home.members || []).forEach(function (m) {
+          var em = String((m && m.email) || "").trim().toLowerCase();
+          if (em && emails.indexOf(em) === -1) emails.push(em);
+        });
+      });
+    } catch (e) { /* ev verisi bozuk: hedefsiz */ }
+    return emails;
+  }
+
+  function sendPush(cfg, event) {
+    var push = window.nexusPush;
+    if (!push || !push.status || !push.status().configured)
+      return Promise.reject(new Error("push yapılandırması yok"));
+    var targets = householdEmails();
+    if (!targets.length) return Promise.resolve({ skipped: true });
+    return push.sendEventTo(targets, event).then(function (res) {
+      if (!res || !res.ok) throw new Error(String((res && res.error) || "push gönderilemedi").slice(0, 120));
+      return res;
+    });
+  }
+
+  // Uzaktan gelen push (ön planda SW bildirim göstermeden uygulamaya verilir):
+  // olay akışına yazılır ama claim'lenir — yerel motor bunu TEKRAR dağıtmaz
+  // (aksi halde üye A'nın olayı B'de tekrar B'nin kanallarına giderdi).
+  function ingestRemoteEvent(event) {
+    var ev = event && event.id ? event : null;
+    if (!ev) return false;
+    var list = events();
+    var exists = list.some(function (e) { return e && e.id === ev.id; });
+    if (!exists) {
+      list.push({
+        id: String(ev.id).slice(0, 64),
+        type: "remote",
+        title: String(ev.title || "").slice(0, 160),
+        detail: String(ev.detail || "").slice(0, 400),
+        level: String(ev.level || "info").slice(0, 20),
+        ts: ev.ts || Date.now(),
+      });
+      if (list.length > 300) list = list.slice(-300);
+      put(EVENTS_KEY, list);
+    }
+    claim(ev.id); // dağıtımı işaretle: yalnızca kayıt + rozet/Mesajlar yüzeyi
+    return true;
+  }
+
   function sendSystem(event) {
     // 0) Masaüstü: işletim sisteminin yerel bildirimi (ana süreç, uygulama simgesiyle). Web
     //    Notification ile ikisi birden çıkıp çift bildirim vermesin diye tek yol bu.
@@ -566,6 +621,13 @@
         "email",
         function () {
           return sendEmail(cfg.email, event);
+        },
+      ]);
+    if (cfg.push && cfg.push.enabled && window.nexusPush && window.nexusPush.status && window.nexusPush.status().configured)
+      jobs.push([
+        "push",
+        function () {
+          return sendPush(cfg.push, event);
         },
       ]);
     var results = [];
@@ -955,6 +1017,7 @@
     applyChoices: applyChoices,
     finishSetup: finishSetup,
     showSetup: showSetup,
+    ingestRemoteEvent: ingestRemoteEvent,
     start: start,
   };
 

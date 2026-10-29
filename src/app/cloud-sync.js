@@ -555,6 +555,18 @@
     var current = readSession();
     writeSession(null);
     rtStop();
+    // Bu cihazın push token'ını bu hesaptan düşür: aynı tarayıcıda başka hesaba
+    // geçilirse eski hesaba giden push bu cihazı uyandırmasın.
+    try {
+      var saved = JSON.parse(localStorage.getItem("nexusPushToken") || "null");
+      if (current && current.accessToken && saved && saved.token) {
+        api("/rest/v1/nexus_push_tokens?token=eq." + encodeURIComponent(saved.token), {
+          method: "DELETE",
+          headers: authHeader(current),
+        }).catch(function () { /* best-effort */ });
+      }
+      localStorage.removeItem("nexusPushToken");
+    } catch (e) { /* özel mod */ }
     if (!current || !cfg()) return Promise.resolve(null);
     return api("/auth/v1/logout", { method: "POST", headers: { Authorization: "Bearer " + current.accessToken } }).catch(function () {
       return null;
@@ -1296,6 +1308,50 @@
     });
   }
 
+  // Push token kaydı: cihazın FCM token'ını nexus_push_tokens'a yazar (RLS ile
+  // yalnızca kendi satırları). Token birincil anahtarın parçası olduğundan
+  // upsert = merge-deduplicate; cihaz değişirse eski hesabın satırı logout'ta silinir.
+  function pushRegisterToken(token, platform) {
+    if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    return session().then(function (current) {
+      if (!current || !current.accessToken) return Promise.reject(new Error("oturum yok"));
+      return api("/rest/v1/nexus_push_tokens", {
+        method: "POST",
+        headers: Object.assign(authHeader(current), {
+          Prefer: "resolution=merge-deduplicate",
+        }),
+        body: JSON.stringify([
+          {
+            user_id: current.userId,
+            token: String(token).slice(0, 512),
+            platform: String(platform || "web").slice(0, 20),
+          },
+        ]),
+      }).then(function () { return true; });
+    });
+  }
+
+  // Push gönderim çağrısı: push-send Edge Function (FCM HTTP v1). notify.js ve
+  // push.js kullanır; hedef e-postalar sunucuda auth kullanıcılarına çözülür.
+  function pushSend(payload) {
+    if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    return session().then(function (current) {
+      if (!current || !current.accessToken) return Promise.reject(new Error("oturum yok"));
+      return api("/functions/v1/push-send", {
+        method: "POST",
+        headers: authHeader(current),
+        body: JSON.stringify({
+          action: String((payload && payload.action) || "event").slice(0, 10),
+          emails: Array.isArray(payload && payload.emails) ? payload.emails.slice(0, 12) : [],
+          title: String((payload && payload.title) || "").slice(0, 120),
+          body: String((payload && payload.body) || "").slice(0, 400),
+          level: String((payload && payload.level) || "info").slice(0, 20),
+          eventId: String((payload && payload.eventId) || "").slice(0, 64),
+        }),
+      });
+    });
+  }
+
   function billingAccount(action) {
     if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
     return session().then(function (current) {
@@ -1526,7 +1582,98 @@
 
   initNativeAuth();
 
+  // --- yerel yedek: dışa / içe aktarma (bulut gerekmez) ---------------------
+  // Yedek: hesabın ayar/senaryo/otomasyon kayıtları (snapshotState: oturum, parola ve
+  // bildirim kanal anahtarları hariç) + eşli cihaz listesi. Cihaz kayıtlarından sır gibi görünen
+  // her alan (anahtar, parola, belirteç, kullanıcı adı) ayrıca ayıklanır; Tapo hesabı / Tuya yerel
+  // anahtarı zaten ayrı depoda (nexusLanSecrets) durur ve yedeğe HİÇ girmez: geri yükledikten
+  // sonra bu cihazlar için sır yeniden girilir (ekran bunu söyler, başarı sahte gösterilmez).
+  var BACKUP_APP = "nexus-backup";
+  var BACKUP_VERSION = 1;
+  var SECRETISH = /(secret|token|passw|apikey|api_key|localkey|local_key|username|credential)/i;
+
+  function stripSecrets(value) {
+    if (Array.isArray(value)) return value.map(stripSecrets);
+    if (value && typeof value === "object") {
+      var out = {};
+      Object.keys(value).forEach(function (k) {
+        if (!SECRETISH.test(k)) out[k] = stripSecrets(value[k]);
+      });
+      return out;
+    }
+    return value;
+  }
+
+  function readDeviceList(user) {
+    try {
+      var list = JSON.parse(safeGet(user + "_nexusPairedDevices") || "[]");
+      return Array.isArray(list) ? list : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function exportBackup() {
+    var user = currentUserKey();
+    if (!user) return null;
+    return {
+      app: BACKUP_APP,
+      version: BACKUP_VERSION,
+      exportedAt: new Date().toISOString(),
+      keys: snapshotState(user),
+      devices: stripSecrets(readDeviceList(user)),
+    };
+  }
+
+  function importBackup(data) {
+    var user = currentUserKey();
+    if (!user) return { ok: false, error: "Önce hesabınla giriş yap." };
+    if (!data || data.app !== BACKUP_APP || data.version !== BACKUP_VERSION || !data.keys || typeof data.keys !== "object")
+      return { ok: false, error: "Bu dosya bir NEXUS yedeği değil ya da sürümü desteklenmiyor." };
+    var keys = 0;
+    // Kimlik ve çalışma anı kayıtları geri yüklenmez: yedek başka bir hesaptan gelmiş olabilir.
+    var IMPORT_SKIP = { nexusUserEmail: 1, nexusEngineBeat: 1, nexusCloudSessionOwner: 1 };
+    Object.keys(data.keys).forEach(function (k) {
+      var v = data.keys[k];
+      if (!k || k.length > 120 || STATE_EXCLUDE[k] || IMPORT_SKIP[k] || typeof v !== "string" || v.length > MAX_VALUE) return;
+      try {
+        localStorage.setItem(user + "_" + k, v);
+        keys++;
+      } catch (e) {
+        /* kota dolu: kalanlar atlanır, sonuçta sayı dürüstçe bildirilir */
+      }
+    });
+    var devices = 0;
+    if (Array.isArray(data.devices) && data.devices.length) {
+      var current = readDeviceList(user);
+      data.devices.forEach(function (d) {
+        if (!d || typeof d !== "object" || !d.name) return;
+        var clean = stripSecrets(d);
+        var exists = current.some(function (c) {
+          return c && c.name === clean.name && (c.host || "") === (clean.host || "");
+        });
+        if (!exists) {
+          current.push(clean);
+          devices++;
+        }
+      });
+      try {
+        localStorage.setItem(user + "_nexusPairedDevices", JSON.stringify(current));
+      } catch (e) {
+        devices = 0;
+      }
+    }
+    try {
+      notifyLocalChange();
+    } catch (e) {
+      /* bulut kapalıysa yalnızca yerelde kalır */
+    }
+    return { ok: true, keys: keys, devices: devices };
+  }
+
   window.nexusCloud = {
+    exportBackup: exportBackup,
+    importBackup: importBackup,
     signInWithGoogle: signInWithGoogle,
     googleAvailable: googleAvailable,
     initNativeAuth: initNativeAuth,
@@ -1556,6 +1703,8 @@
     checkoutUrl: checkoutUrl,
     sendHouseholdInvite: sendHouseholdInvite,
     sendNotifyEmail: sendNotifyEmail,
+    pushRegisterToken: pushRegisterToken,
+    pushSend: pushSend,
     checkoutPlanId: checkoutPlanId,
     billingAccount: billingAccount,
     currencyForLang: currencyForLang,

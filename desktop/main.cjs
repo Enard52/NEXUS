@@ -679,7 +679,34 @@ ipcMain.handle("desktop:settings:get", () => ({
 // Yalnızca yerel ağ; Apple Ev (iPhone/iPad/Mac) eşleşme koduyla bağlanır.
 // Komut akışı: Apple Home → HAP karakteristik → bridge.cjs → bu süreç → penceredeki
 // HomeKit ekranının executor'ı → NEXUS'un kendi setField yolu (doğrulamalar aynı).
-const kitBridge = require("./kit/bridge.cjs");
+// Yükleme korumalı: köprü modülü pakette yoksa (paketleme listesi eksği gibi bir
+// dağıtım hatası) tüm uygulama çökmesin — yalnızca HomeKit köprüsü devre dışı kalır.
+// status() alanları bridge.cjs ile aynı biçimdedir; ekranlar böyle bir kurulumda
+// "çalışmıyor + hata" görür, pencere/uygulama akmaya devam eder.
+let kitBridge;
+try {
+  kitBridge = require("./kit/bridge.cjs");
+} catch (e) {
+  // Kullanıcıya dönük metin kısa ve çözüm odaklı; gerçek neden konsolda.
+  const kitFail = "HomeKit köprüsü bu kurulumda kullanılamıyor (kit/bridge.cjs yüklenemedi) — Apple Ev için Home Assistant köprüsünü öneririz.";
+  kitBridge = {
+    unavailable: true,
+    status: () => ({
+      running: false,
+      starting: false,
+      pincode: null,
+      username: null,
+      port: null,
+      lastError: kitFail,
+      accessoryCount: 0,
+      accessories: [],
+    }),
+    startKn: () => Promise.reject(new Error(kitFail)),
+    stop: () => ({ stopped: true, running: false }),
+    onStatePatch: () => false,
+  };
+  console.error("[nexus] HomeKit köprüsü devre dışı:", (e && e.message) || e);
+}
 let kitCmdSeq = 0;
 let kitExecutorSender = null;
 const kitCmdPending = new Map();

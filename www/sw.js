@@ -7,7 +7,7 @@
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
-var CACHE = 'nexus-shell-v10'; // v10: 1.0.32 — bildirim kanalları yüzeyi, a11y modu, ayarlar düzeni
+var CACHE = 'nexus-shell-v11'; // v11: 1.0.33 — komut paleti/geri alma/durum duyurusu, push katmanı, masaüstü köprü paket düzeltmesi
 var SHELL = [
   'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
   'fonts/inter/inter.css',
@@ -15,6 +15,8 @@ var SHELL = [
   'theme.js', 'auth.js', 'data.js', 'device-controls.js', 'supported-devices.js',
   'lan-connectors.js', 'automation-engine.js', 'i18n.js', 'lang-en.js',
   'ai-fab.js', 'sheet-gestures.js', 'nexus-dialog.js', 'nexus-undo.js', 'nexus-assistant.js', 'nexus-feedback.js',
+  // theme.js her sayfada bunları da enjekte ediyor; kabukta yoksa ilk çevrimdışı açılışta eksik kalırlar.
+  'notify.js', 'command-palette.js', 'push.js',
   'icons/icon-192.webp', 'icons/icon-512.webp',
   'nexus-home.html', 'nexus-login.html', 'nexus-onboarding.html'
 ];
