@@ -16,7 +16,9 @@ describe("aile daveti: e-posta uygulaması kendiliğinden açılmaz", () => {
     const calls = PAGE.match(/mailtoInvite\(/g) || [];
     // 1 tanım + 1 onay penceresi düğmesi
     expect(calls).toHaveLength(2);
-    expect(PAGE).toMatch(/primary: \{ label: "E-posta uygulamasında aç", onClick: function \(\) \{ mailtoInvite/);
+    expect(PAGE).toMatch(
+      /primary: \{ label: "E-posta uygulamasında aç", onClick: function \(\) \{ mailtoInvite/,
+    );
   });
 
   it("gönderim başarısızlığı nedeniyle birlikte kullanıcıya bildirilir", () => {

@@ -53,14 +53,39 @@ function setup(
     (k: string) => store.get(k) ?? null,
     (k: string, v: string) => store.set(k, v),
   );
-  const events = () => JSON.parse(store.get("nexusEvents") || "[]") as Array<Record<string, string>>;
+  const events = () =>
+    JSON.parse(store.get("nexusEvents") || "[]") as Array<Record<string, string>>;
   return { engine: win.NexusAutomationEngine, events, ranScenes };
 }
 
-const motion: Dev = { id: "m1", name: "Koridor hareket", host: "192.168.1.5", protocol: "shelly", kind: "motion" };
-const door: Dev = { id: "d1", name: "Ön kapı", host: "192.168.1.6", protocol: "shelly", kind: "contact" };
-const smoke: Dev = { id: "s1", name: "Mutfak duman", host: "192.168.1.7", protocol: "shelly", kind: "alarm" };
-const lamp: Dev = { id: "l1", name: "Lamba", host: "192.168.1.8", protocol: "shelly", kind: "light" };
+const motion: Dev = {
+  id: "m1",
+  name: "Koridor hareket",
+  host: "192.168.1.5",
+  protocol: "shelly",
+  kind: "motion",
+};
+const door: Dev = {
+  id: "d1",
+  name: "Ön kapı",
+  host: "192.168.1.6",
+  protocol: "shelly",
+  kind: "contact",
+};
+const smoke: Dev = {
+  id: "s1",
+  name: "Mutfak duman",
+  host: "192.168.1.7",
+  protocol: "shelly",
+  kind: "alarm",
+};
+const lamp: Dev = {
+  id: "l1",
+  name: "Lamba",
+  host: "192.168.1.8",
+  protocol: "shelly",
+  kind: "light",
+};
 
 describe("sensör durum değişimi olaya dönüşür", () => {
   it("ilk okuma yalnız başlangıçtır; kapalı→açık geçişi güvenlik olayı yazar", async () => {
@@ -69,7 +94,11 @@ describe("sensör durum değişimi olaya dönüşür", () => {
     expect(events()).toEqual([]);
     expect(await engine.watchSensors(true)).toBe(1);
     expect(events()).toHaveLength(1);
-    expect(events()[0]).toMatchObject({ type: "security", title: "Hareket algılandı", detail: "Koridor hareket" });
+    expect(events()[0]).toMatchObject({
+      type: "security",
+      title: "Hareket algılandı",
+      detail: "Koridor hareket",
+    });
   });
 
   it("açık başlayan sensör olay üretmez (uygulama kapalıyken olanlar sayılmaz)", async () => {
@@ -130,11 +159,15 @@ describe("sensör durum değişimi olaya dönüşür", () => {
   });
 
   it("sensör tetikleyicili otomasyon yalnız o sensörün gerçek tetiklenmesinde çalışır", async () => {
-    const { engine, ranScenes, events } = setup([motion, door], { m1: [{ active: false }, { active: true }], d1: [{ active: false }, { active: false }] }, [
-      rule({}),
-      rule({ id: "auto-2", trigger: { type: "sensor", value: "d1", event: "active" } }),
-      rule({ id: "auto-3", enabled: false }),
-    ]);
+    const { engine, ranScenes, events } = setup(
+      [motion, door],
+      { m1: [{ active: false }, { active: true }], d1: [{ active: false }, { active: false }] },
+      [
+        rule({}),
+        rule({ id: "auto-2", trigger: { type: "sensor", value: "d1", event: "active" } }),
+        rule({ id: "auto-3", enabled: false }),
+      ],
+    );
     await engine.watchSensors(true);
     expect(ranScenes).toEqual([]);
     await engine.watchSensors(true);
@@ -143,7 +176,9 @@ describe("sensör durum değişimi olaya dönüşür", () => {
   });
 
   it("sensör tetiklenmediyse otomasyon çalışmaz", async () => {
-    const { engine, ranScenes } = setup([motion], { m1: [{ active: false }, { active: false }] }, [rule({})]);
+    const { engine, ranScenes } = setup([motion], { m1: [{ active: false }, { active: false }] }, [
+      rule({}),
+    ]);
     await engine.watchSensors(true);
     await engine.watchSensors(true);
     expect(ranScenes).toEqual([]);

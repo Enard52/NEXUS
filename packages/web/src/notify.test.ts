@@ -131,7 +131,12 @@ describe("masaüstü yerel bildirim", () => {
 const ALL_ON_SYSTEM = { system: { enabled: true } };
 
 function fakeLocalNotifications() {
-  const log = { scheduled: [] as any[], actionTypes: [] as any[], channels: [] as any[], handler: null as any };
+  const log = {
+    scheduled: [] as any[],
+    actionTypes: [] as any[],
+    channels: [] as any[],
+    handler: null as any,
+  };
   const plugin = {
     createChannel: (c: unknown) => (log.channels.push(c), Promise.resolve()),
     registerActionTypes: (t: unknown) => (log.actionTypes.push(t), Promise.resolve()),
@@ -150,7 +155,11 @@ function permissionPlugin(initial: string, afterAsk: string) {
     plugin: {
       createChannel: () => Promise.resolve(),
       checkPermissions: () => Promise.resolve({ display }),
-      requestPermissions: () => ((asked.count += 1), (display = afterAsk), Promise.resolve({ display })),
+      requestPermissions: () => (
+        (asked.count += 1),
+        (display = afterAsk),
+        Promise.resolve({ display })
+      ),
       schedule: () => Promise.resolve(),
       addListener: () => Promise.resolve(),
     },
@@ -161,7 +170,9 @@ describe("giriş sonrası bildirim kurulumu ve gerçek izin", () => {
   it("izin durumu sormadan okunur", async () => {
     const a = loadNotify({ localNotifications: permissionPlugin("denied", "denied").plugin });
     expect(await a.notify.permission()).toBe("denied");
-    const b = loadNotify({ localNotifications: permissionPlugin("prompt-with-rationale", "granted").plugin });
+    const b = loadNotify({
+      localNotifications: permissionPlugin("prompt-with-rationale", "granted").plugin,
+    });
     expect(await b.notify.permission()).toBe("prompt");
     const c = loadNotify({ localNotifications: permissionPlugin("granted", "granted").plugin });
     expect(await c.notify.permission()).toBe("granted");
@@ -208,9 +219,21 @@ describe("giriş sonrası bildirim kurulumu ve gerçek izin", () => {
   it("izin yokken telefon bildirimi hata olarak kaydedilir ve uygulama içi şerit gösterilir", async () => {
     const fake = permissionPlugin("denied", "denied");
     const shown: unknown[] = [];
-    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, localNotifications: fake.plugin, notice: (e) => shown.push(e) });
-    const out = await notify.deliver({ id: "k1", type: "security", title: "Alarm", detail: "x", ts: Date.now() });
-    expect(out.sent).toEqual([{ channel: "system", ok: false, error: "sistem bildirim izni kapalı" }]);
+    const { notify } = loadNotify({
+      channels: ALL_ON_SYSTEM,
+      localNotifications: fake.plugin,
+      notice: (e) => shown.push(e),
+    });
+    const out = await notify.deliver({
+      id: "k1",
+      type: "security",
+      title: "Alarm",
+      detail: "x",
+      ts: Date.now(),
+    });
+    expect(out.sent).toEqual([
+      { channel: "system", ok: false, error: "sistem bildirim izni kapalı" },
+    ]);
     expect(shown).toHaveLength(1);
   });
 });
@@ -219,8 +242,20 @@ describe("telefon bildirimi: eylem düğmeleri ve gruplama", () => {
   it("bildirim kategorisine göre gruplanır ve eylem türü bağlanır; tür bir kez kaydedilir", async () => {
     const { plugin, log } = fakeLocalNotifications();
     const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, localNotifications: plugin });
-    await notify.deliver({ id: "a1", type: "energy", title: "Enerji", detail: "x", ts: Date.now() });
-    await notify.deliver({ id: "a2", type: "energy", title: "Enerji 2", detail: "y", ts: Date.now() });
+    await notify.deliver({
+      id: "a1",
+      type: "energy",
+      title: "Enerji",
+      detail: "x",
+      ts: Date.now(),
+    });
+    await notify.deliver({
+      id: "a2",
+      type: "energy",
+      title: "Enerji 2",
+      detail: "y",
+      ts: Date.now(),
+    });
     expect(log.scheduled).toHaveLength(2);
     expect(log.scheduled[0]).toMatchObject({ group: "nexus-energy", actionTypeId: "NEXUS_ALERT" });
     expect(log.actionTypes).toHaveLength(1);
@@ -240,11 +275,21 @@ describe("telefon bildirimi: eylem düğmeleri ve gruplama", () => {
 const QUIET_ALL_DAY = { quietEnabled: "true", quietStart: "00:00", quietEnd: "00:00" };
 
 describe("kritik uyarılar ve ses tercihi", () => {
-  const ALARM = { id: "ev-alarm", type: "security", title: "Alarm", detail: "Kapı", ts: Date.now() };
+  const ALARM = {
+    id: "ev-alarm",
+    type: "security",
+    title: "Alarm",
+    detail: "Kapı",
+    ts: Date.now(),
+  };
 
   it("kritik olay sessiz saatleri aşar, sıradan olay aşmaz", async () => {
     const shown: Record<string, unknown>[] = [];
-    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, page: QUIET_ALL_DAY, desktop: (e) => shown.push(e) });
+    const { notify } = loadNotify({
+      channels: ALL_ON_SYSTEM,
+      page: QUIET_ALL_DAY,
+      desktop: (e) => shown.push(e),
+    });
     await notify.deliver({ ...EVENT, id: "ev-plain", type: "automation" });
     expect(shown).toEqual([]);
     await notify.deliver(ALARM);
@@ -264,7 +309,11 @@ describe("kritik uyarılar ve ses tercihi", () => {
 
   it("ana anahtar kapalıyken kritik olay da gönderilmez", async () => {
     const shown: Record<string, unknown>[] = [];
-    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, page: { master: "false" }, desktop: (e) => shown.push(e) });
+    const { notify } = loadNotify({
+      channels: ALL_ON_SYSTEM,
+      page: { master: "false" },
+      desktop: (e) => shown.push(e),
+    });
     await notify.deliver(ALARM);
     expect(shown).toEqual([]);
   });
@@ -276,7 +325,13 @@ describe("kritik uyarılar ve ses tercihi", () => {
       page: { "sound-energy": "false", "sound-security": "false" },
       desktop: (e) => shown.push(e),
     });
-    await notify.deliver({ id: "ev-en", type: "energy", title: "Enerji", detail: "x", ts: Date.now() });
+    await notify.deliver({
+      id: "ev-en",
+      type: "energy",
+      title: "Enerji",
+      detail: "x",
+      ts: Date.now(),
+    });
     await notify.deliver(ALARM);
     expect(shown.find((e) => e.id === "ev-en")!.silent).toBe(true);
     expect(shown.find((e) => e.id === "ev-alarm")!.silent).toBe(false);

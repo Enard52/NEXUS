@@ -206,7 +206,11 @@ describe("Supabase kimlik doğrulama akışı", () => {
         // Faktör listesi GoTrue'da kullanıcı kaydında gelir (GET /auth/v1/factors diye bir uç yoktur)
         if (call.method === "GET" && call.url.endsWith("/auth/v1/user")) {
           return {
-            body: { id: "u1", email: "a@b.co", factors: [{ id: "fac-1", factor_type: "totp", status: "verified" }] },
+            body: {
+              id: "u1",
+              email: "a@b.co",
+              factors: [{ id: "fac-1", factor_type: "totp", status: "verified" }],
+            },
           };
         }
         if (call.method === "POST" && call.url.endsWith("/auth/v1/factors")) {
