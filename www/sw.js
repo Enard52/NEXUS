@@ -7,7 +7,7 @@
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
-var CACHE = 'nexus-shell-v9'; // v9: 1.0.26 — e-posta değişimi güvenli taşıma, tema rozetleri
+var CACHE = 'nexus-shell-v10'; // v10: 1.0.32 — bildirim kanalları yüzeyi, a11y modu, ayarlar düzeni
 var SHELL = [
   'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
   'fonts/inter/inter.css',
