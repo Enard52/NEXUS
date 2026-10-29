@@ -59,7 +59,8 @@ jobs:
         env:
           GS_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          if [ -n "$GS_JSON" ]; then printf '%s' "$GS_JSON" > android/app/google-services.json; echo "google-services.json yazıldı."; else echo "::notice::GOOGLE_SERVICES_JSON tanımlı değil; APK sunucu bildirimi (push) olmadan derlenecek."; fi
+          # Secret yoksa ya da geçerli JSON değilse (ör. yanlış yapıştırılmış) yayın DÜŞMEZ: APK push'suz derlenir ve neden yazılır.
+          if [ -z "$GS_JSON" ]; then echo "::notice::GOOGLE_SERVICES_JSON tanımlı değil; APK sunucu bildirimi (push) olmadan derlenecek."; elif printf '%s' "$GS_JSON" | node -e "JSON.parse(require('fs').readFileSync(0,'utf8'))" 2>/dev/null; then printf '%s' "$GS_JSON" > android/app/google-services.json; echo "google-services.json yazıldı."; else echo "::warning::GOOGLE_SERVICES_JSON geçerli bir JSON değil; secret dosyanın tam içeriğiyle yeniden girilmeli. APK push'suz derleniyor."; fi
       - name: İmzalı APK derle
         if: steps.gate.outputs.run == 'true'
         run: |
