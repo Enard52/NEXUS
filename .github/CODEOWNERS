@@ -1,0 +1,8 @@
+# Bu dosya, ilgili yollar değişince incelemeye kimin çağrılacağını belirler.
+# Ana dal korumasında "kod sahibi incelemesi" zorunlu DEĞİL; yalnızca otomatik istek içindir.
+*                       @Enard52
+/.github/               @Enard52
+/supabase/              @Enard52
+/scripts/               @Enard52
+/SECURITY.md            @Enard52
+/legal-pdf/             @Enard52

@@ -12,6 +12,11 @@ sbom.json
 .env
 .env.*
 !.env.example
+# Firebase istemci yapılandırması (projeye özel; depoya girmez, her geliştirici kendi dosyasını koyar)
+google-services.json
+GoogleService-Info.plist
+# Firebase servis hesabı anahtarı (asla depoya girmez; Supabase Secret olarak tutulur)
+*-firebase-adminsdk-*.json
 # Yerel dev oturum cerezleri (curl tarafindan uretilir) — repoya girmemeli
 cookies.txt
 # Logs
@@ -55,6 +60,10 @@ mobile-app/www/cloud-config.js
 desktop/node_modules/
 desktop/dist/
 desktop/app/
+# Doğrulama/kanıt derlemeleri (yerel; bozuk sürümün yeniden üretilmesi için çalıştırılır)
+desktop/dist-*/
+desktop/tmp-*/
+desktop/.electron-dist/
 # Old www backup (contains large installers; not part of the source)
 scripts/archive/www-arsiv/
 # tool artifacts (not project files)

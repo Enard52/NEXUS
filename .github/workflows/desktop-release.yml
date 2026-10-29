@@ -66,6 +66,13 @@ jobs:
       - name: Uygulama dosyalarını hazırla
         run: node scripts/prepare-app.cjs
 
+      # Yayın kapısı: electron-builder `files` listesi bir İZİN LİSTESİDİR. v1.0.32'de
+      # kit/bridge.cjs listede olmadığı için tüm kurulumlar açılışta çöküyordu ve bunu
+      # hiçbir adım fark etmedi (testler yayın işinde çalışmıyor). Denetim düşerse
+      # derleme/yayın hiç başlamaz.
+      - name: Paket içeriğini denetle (yayın öncesi)
+        run: node ../scripts/verify-desktop-payload.mjs
+
       - name: Derle ve yayınla
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
@@ -73,6 +80,22 @@ jobs:
           # string atanmaması için zaten hiç yansıtılmıyor; identity "-" imzalamayı kapatır.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder ${{ matrix.target }} --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
+
+      # Kemer + yedek: gerçek üretile paketin içine bakılır. Bulunan eksik burada kırmızı
+      # işaret bırakır; sessiz ölü kurulum bir daha fark edilmeden çıkmasın.
+      - name: Üretilen paketi denetle (app.asar içi)
+        shell: bash
+        run: |
+          found=0
+          while IFS= read -r a; do
+            [ -n "$a" ] || continue
+            found=1
+            node ../scripts/verify-desktop-payload.mjs --asar "$a"
+          done < <(find dist -name app.asar -type f)
+          if [ "$found" = 0 ]; then
+            echo "::error::denetlenecek app.asar bulunamadı (derleme mi başarısız?)"
+            exit 1
+          fi
 
       - name: SHA-256 özetleri
         shell: bash
@@ -152,6 +175,10 @@ jobs:
       - name: Uygulama dosyalarını hazırla
         run: node scripts/prepare-app.cjs
 
+      # Yayın kapısı (Windows/Linux işiyle aynı): yanlışsa derleme başlamaz.
+      - name: Paket içeriğini denetle (yayın öncesi)
+        run: node ../scripts/verify-desktop-payload.mjs
+
       - name: İmza modunu belirle (MACOS_SIGN)
         env:
           MACOS_SIGN: ${{ vars.MACOS_SIGN }}
@@ -166,6 +193,21 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: npx electron-builder --mac --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
+
+      # Kemer + yedek: üretilmiş .app içindeki app.asar gerçekten denetlenir.
+      - name: Üretilen paketi denetle (app.asar içi)
+        shell: bash
+        run: |
+          found=0
+          while IFS= read -r a; do
+            [ -n "$a" ] || continue
+            found=1
+            node ../scripts/verify-desktop-payload.mjs --asar "$a"
+          done < <(find dist -name app.asar -type f)
+          if [ "$found" = 0 ]; then
+            echo "::error::denetlenecek app.asar bulunamadı (derleme mi başarısız?)"
+            exit 1
+          fi
 
       - name: SHA-256 özetleri
         shell: bash

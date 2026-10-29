@@ -1,0 +1,43 @@
+name: CodeQL
+
+# Statik güvenlik analizi (public depo için ücretsiz). Sonuçlar GitHub → Security → Code scanning'de görünür.
+# Ana dala her push/PR'da ve haftada bir çalışır; iş akışı yalnızca okuma izni + security-events yazma izni alır.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "23 4 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: CodeQL (javascript-typescript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          # Üretilmiş/kopya dizinler çift sonuç üretmesin: tek kaynak src/ ve packages/.
+          config: |
+            paths-ignore:
+              - www
+              - desktop/app
+              - _web-publish
+              - android/app/src/main/assets
+              - ios/App/App/public
+              - node_modules
+              - js
+              - fonts
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
