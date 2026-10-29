@@ -1,98 +1,336 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html lang="tr"><head>
-<meta charset="utf-8"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0" />
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#ffffff">
-<title>NEXUS — HomeKit Bilgileri</title>
-<!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
-<!-- Google Fonts: Inter (NEXUS body font) -->
-<link href="fonts/inter/inter.css" rel="stylesheet"/>
-  <!-- Lucide Icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>NEXUS — HomeKit Bilgileri</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="css/tailwind.css" rel="stylesheet" />
+    <link href="css/nexus-ui.css" rel="stylesheet" />
+    <!-- Google Fonts: Inter (NEXUS body font) -->
+    <link href="fonts/inter/inter.css" rel="stylesheet" />
+    <!-- Lucide Icons -->
 
-<style data-purpose="custom-typography">
-    body {
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-  </style>
-<style data-purpose="custom-layout">
-    /* Subtle brand-tinted gradient background (same as Profil) */
-    .bg-gradient-custom {
-      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
-    }
-    .menu-container-shadow {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    }
-  </style>
-<style>
-    body {
-      min-height: 100dvh;
-    }
-  </style>
-  <script src="auth.js"></script>
-  <script src="theme.js"></script>
-<script src="data.js"></script>
-<script src="ai-fab.js"></script>
-</head>
-<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
-<!-- BEGIN: Header -->
-<header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
-<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'nexus-home.html';">
-<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
-</a>
-<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">HomeKit Bilgileri</h1>
-</header>
-<!-- END: Header -->
-<!-- BEGIN: MainContent -->
-<main class="flex-grow px-5 pt-4 pb-10">
-<!-- Dürüst durum: NEXUS'ta yerleşik HomeKit köprüsü yok -->
-<section class="bg-white rounded-3xl menu-container-shadow p-5 mb-5" data-purpose="bridge-status">
-<div class="flex items-center gap-4 mb-4">
-<div class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center">
-<i class="w-6 h-6" data-lucide="router"></i>
-</div>
-<div>
-<h2 class="font-bold leading-tight">NEXUS HomeKit Köprüsü</h2>
-<p class="text-sm font-medium text-slate-500 flex items-center gap-1.5 mt-0.5">
-<span class="w-2 h-2 bg-slate-400 rounded-full"></span>Yerleşik köprü yok
-</p>
-</div>
-</div>
-<p class="text-sm text-slate-600 leading-relaxed">
-NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; HomeKit köprüsü içermez.
-Apple Ev (HomeKit) ile kullanmak istersen en pratik yol <strong>Home Assistant köprüsüdür</strong>:
-cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.
-</p>
-<a class="mt-4 flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform" href="nexus-integrations.html">
-<i class="w-4 h-4" data-lucide="plug"></i>Home Assistant Köprüsünü Aç
-</a>
-</section>
-<!-- Nasıl çalışır (gerçek adımlar) -->
-<h3 class="text-lg font-bold mb-3">HomeKit ile Kullanma</h3>
-<section class="bg-white rounded-3xl menu-container-shadow p-5" data-purpose="ha-steps">
-<ol class="space-y-4 text-sm text-slate-600 leading-relaxed list-decimal list-inside">
-<li>NEXUS'ta <strong>Entegrasyonlar</strong> üzerinden Home Assistant'ı bağla.</li>
-<li>Cihazlarını Home Assistant'ta NEXUS hesabınla eşleştir.</li>
-<li>Home Assistant ayarlarından <strong>HomeKit Bridge</strong> entegrasyonunu ekle; paylaşmak istediğin cihazları seç.</li>
-<li>Apple Ev uygulamasında "Aksesuar Ekle" ile HA'nın verdiği kodu gir.</li>
-</ol>
-<p class="text-xs text-slate-400 mt-5 leading-relaxed">HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Cihaz kontrolü Home Assistant üzerinden iletilir; NEXUS doğrudan HomeKit aksesuarı yayınlamaz.</p>
-</section>
-<!-- Feedback shortcut -->
-<a class="nx-tap-t nx-tap-b flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6" data-purpose="feedback-link" href="nexus-feedback.html">
-<i class="w-4 h-4" data-lucide="message-circle"></i>Sorun mu yaşıyorsun? Geri bildirim gönder
-</a>
-</main>
-<!-- END: MainContent -->
-<script src="js/lucide.js"></script>
-<script data-purpose="homekit-interactions">
-    lucide.createIcons();
-  </script>
-</body></html>
+    <style data-purpose="custom-typography">
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+    <style data-purpose="custom-layout">
+      /* Subtle brand-tinted gradient background (same as Profil) */
+      .bg-gradient-custom {
+        background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%);
+      }
+      .menu-container-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      }
+    </style>
+    <style>
+      body {
+        min-height: 100dvh;
+      }
+    </style>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="data.js"></script>
+    <script src="ai-fab.js"></script>
+    <script src="lan-connectors.js"></script>
+    <script src="device-controls.js"></script>
+  </head>
+  <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+    <!-- BEGIN: Header -->
+    <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+      <a
+        aria-label="Geri"
+        class="p-1 -ml-1"
+        href="#"
+        onclick="
+          event.preventDefault();
+          if (history.length > 1) history.back();
+          else location.href = 'nexus-home.html';
+        "
+      >
+        <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+      </a>
+      <h1
+        class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2"
+      >
+        HomeKit Bilgileri
+      </h1>
+    </header>
+    <!-- END: Header -->
+    <!-- BEGIN: MainContent -->
+    <main class="flex-grow px-5 pt-4 pb-10">
+      <!-- Dürüst durum: masaüstünde yerleşik köprü var, web/telefonda yok -->
+      <section
+        class="bg-white rounded-3xl menu-container-shadow p-5 mb-5"
+        data-purpose="bridge-status"
+      >
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-12 h-12 rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center"
+          >
+            <i class="w-6 h-6" data-lucide="router"></i>
+          </div>
+          <div>
+            <h2 class="font-bold leading-tight">NEXUS HomeKit Köprüsü</h2>
+            <p class="text-sm font-medium text-slate-500 flex items-center gap-1.5 mt-0.5">
+              <span class="w-2 h-2 bg-slate-400 rounded-full"></span
+              ><span id="nx-kit-pill">Yerleşik köprü yok</span>
+            </p>
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <p class="text-sm text-slate-600 leading-relaxed" data-purpose="kit-hero-desktop">
+            NEXUS, cihazlarına doğrudan kendi uygulamasından erişir;
+            <strong>masaüstü sürümünde</strong> yerleşik bir HomeKit köprüsü Apple Ev'e gerçek
+            aksesuar yayınlar (aşağıdaki panelden başlat). Web/telefon sürümünde köprü yoktur.
+          </p>
+        </div>
+        <p class="text-sm text-slate-600 leading-relaxed md:hidden" data-purpose="kit-hero-mobile">
+          NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; telefon/web sürümünde HomeKit
+          köprüsü içermez. Apple Ev (HomeKit) ile kullanmak istersen en pratik yol
+          <strong>Home Assistant köprüsüdür</strong>: cihazlarını Home Assistant'a ekler, HA'nın
+          HomeKit entegrasyonunu açarsın.
+        </p>
+        <a
+          class="mt-4 flex md:hidden items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform"
+          href="nexus-integrations.html"
+        >
+          <i class="w-4 h-4" data-lucide="plug"></i>Home Assistant Köprüsünü Aç
+        </a>
+      </section>
+      <!-- Masaüstü HomeKit köprüsü (yalnız bilgisayar sürümünde görünür; web sürümünde gizli) -->
+      <section
+        id="nx-kit-panel"
+        class="hidden bg-white rounded-3xl menu-container-shadow p-5 mb-5"
+        data-purpose="kit-bridge"
+      >
+        <h3 class="text-lg font-bold mb-1">Masaüstü HomeKit Köprüsü</h3>
+        <p id="nx-kit-status" class="text-sm font-medium text-slate-500 mt-1">Kapalı</p>
+        <div id="nx-kit-pin-row" class="hidden mt-3">
+          <p class="text-xs font-medium text-slate-400">HomeKit kurulum kodu</p>
+          <p id="nx-kit-pin" class="text-2xl font-bold tracking-widest text-slate-800">—</p>
+        </div>
+        <button
+          id="nx-kit-toggle"
+          type="button"
+          class="mt-4 w-full py-3.5 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform"
+        >
+          Köprüyü Başlat
+        </button>
+        <p id="nx-kit-error" class="hidden text-xs text-rose-600 font-medium mt-2"></p>
+        <p class="text-xs text-slate-400 mt-3 leading-relaxed" id="nx-kit-note">
+          Köprü, iOS cihazınla aynı Wi-Fi'da olmalı. Eşleşme kalıcıdır; NEXUS çalışıp tepside
+          bekledikçe ev uygulamasındaki anahtarlar gerçek cihaza gider.
+        </p>
+      </section>
+      <!-- Nasıl çalışır (gerçek adımlar; telefon/web sürümü: Home Assistant yolu — masaüstünde yerine panel var) -->
+      <div class="md:hidden" data-purpose="ha-steps-wrap">
+        <h3 class="text-lg font-bold mb-3">HomeKit ile Kullanma</h3>
+        <section class="bg-white rounded-3xl menu-container-shadow p-5" data-purpose="ha-steps">
+          <ol class="space-y-4 text-sm text-slate-600 leading-relaxed list-decimal list-inside">
+            <li>NEXUS'ta <strong>Entegrasyonlar</strong> üzerinden Home Assistant'ı bağla.</li>
+            <li>Cihazlarını Home Assistant'ta NEXUS hesabınla eşleştir.</li>
+            <li>
+              Home Assistant ayarlarından <strong>HomeKit Bridge</strong> entegrasyonunu ekle;
+              paylaşmak istediğin cihazları seç.
+            </li>
+            <li>Apple Ev uygulamasında "Aksesuar Ekle" ile HA'nın verdiği kodu gir.</li>
+          </ol>
+          <p class="text-xs text-slate-400 mt-5 leading-relaxed">
+            HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Bu adımlar telefon/web sürümü
+            içindir: cihaz kontrolü Home Assistant üzerinden iletilir. Masaüstü sürümünde NEXUS
+            kendi yerleşik köprüsünü yayınlar (yukarıdaki panel).
+          </p>
+        </section>
+      </div>
+      <!-- Feedback shortcut -->
+      <a
+        class="nx-tap-t nx-tap-b flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6"
+        data-purpose="feedback-link"
+        href="nexus-feedback.html"
+      >
+        <i class="w-4 h-4" data-lucide="message-circle"></i>Sorun mu yaşıyorsun? Geri bildirim
+        gönder
+      </a>
+    </main>
+    <!-- END: MainContent -->
+    <script src="js/lucide.js"></script>
+    <script data-purpose="kit-desktop-bridge">
+      (function () {
+        "use strict";
+        // Masaüstü HomeKit köprüsü — yalnız bilgisayar kabuğunda (nexusDesktop.kit) çalışır.
+        // Web/telefon sürümünde panel gizli kalır; akış: HAP karakteristiği → main.cjs → buradaki
+        // executor → NEXUS'un kendi setField yolu (LAN protokolleri + doğrulamaları aynı).
+        if (!window.nexusDesktop || !window.nexusDesktop.kit) return;
+        var K = window.nexusDesktop.kit;
+        var NXa = window.NX;
+        var panel = document.getElementById("nx-kit-panel");
+        var pill = document.getElementById("nx-kit-pill");
+        var elStatus = document.getElementById("nx-kit-status");
+        var pinRow = document.getElementById("nx-kit-pin-row");
+        var elPin = document.getElementById("nx-kit-pin");
+        var btn = document.getElementById("nx-kit-toggle");
+        var elErr = document.getElementById("nx-kit-error");
+        if (!panel || !NXa || !btn) return;
+        panel.classList.remove("hidden");
+        var running = false;
+        var lastSeen = {}; // id → { switch, brightness } (diferansiyel pushState için)
 
+        // v1 dürüst kapsam: yerel ağda, anahtar yeteneği olan cihazlar.
+        function devices4Kit() {
+          var out = [];
+          var devices = NXa.readDevices();
+          for (var i = 0; i < devices.length; i++) {
+            var d = devices[i];
+            if (!NXa.isLan(d) || !NXa.hasCap(d, "switch")) continue;
+            var isLight = NXa.kindOf(d) === "light";
+            var st = NXa.stateOf(d) || {};
+            out.push({
+              id: String(d.id || "dev-" + i),
+              name: String(d.name || "Cihaz"),
+              category: isLight ? "light" : "outlet",
+              brightness: isLight && NXa.hasCap(d, "brightness"),
+              state: {
+                switch: !!st.switch,
+                brightness: typeof st.brightness === "number" ? st.brightness : 100,
+              },
+            });
+          }
+          return out;
+        }
+
+        function fail(e) {
+          if (elErr) {
+            elErr.textContent = String((e && e.message) || e);
+            elErr.classList.remove("hidden");
+          }
+          K.status().then(paint, function () {});
+        }
+
+        function paint(st) {
+          st = st || {};
+          running = !!st.running;
+          if (pill) pill.textContent = running ? "Köprü çalışıyor" : "Kapalı";
+          elStatus.textContent = running
+            ? "Çalışıyor · port " + st.port + " · " + st.accessoryCount + " cihaz"
+            : "Kapalı";
+          if (running && st.pincode) {
+            pinRow.classList.remove("hidden");
+            elPin.textContent = st.pincode;
+          } else {
+            pinRow.classList.add("hidden");
+          }
+          btn.textContent = running ? "Köprüyü Durdur" : "Köprüyü Başlat";
+          btn.disabled = !!st.starting;
+        }
+
+        // Apple Ev'den gelen komut: cihazı id ile bul, uygulamanın kendi komut yolundan uygula.
+        K.onCommand(function (cmd) {
+          var seq = cmd && cmd.seq;
+          var done = function (ok, state, err) {
+            try {
+              K.commandResult({ seq: seq, ok: ok, state: state, error: err });
+            } catch (e) {}
+          };
+          try {
+            if (!cmd || !cmd.device) return done(false, null, "geçersiz komut");
+            var devices = NXa.readDevices();
+            var index = -1;
+            for (var i = 0; i < devices.length; i++) {
+              if (String(devices[i].id) === String(cmd.device.id)) {
+                index = i;
+                break;
+              }
+            }
+            var dev = index >= 0 ? devices[index] : null;
+            if (!dev || !NXa.hasCap(dev, "switch")) return done(false, null, "cihaz bulunamadı");
+            var st = dev;
+            var patch = cmd.patch || {};
+            if ("switch" in patch) st = NXa.setField(index, "switch", !!patch.switch) || st;
+            if ("brightness" in patch && NXa.hasCap(dev, "brightness"))
+              st = NXa.setField(index, "brightness", Number(patch.brightness) | 0) || st;
+            var s = NXa.stateOf(st) || {};
+            var state = { switch: !!s.switch };
+            if (typeof s.brightness === "number") state.brightness = s.brightness;
+            lastSeen[String(cmd.device.id)] = state;
+            done(true, state);
+          } catch (e) {
+            done(false, null, String((e && e.message) || e));
+          }
+        });
+
+        // Kullanıcı uygulamadan anahtar çevirirse 3 sn'de bir fark yoluyla Home'a yansıtılır.
+        setInterval(function () {
+          if (!running) return;
+          var devices = NXa.readDevices();
+          for (var i = 0; i < devices.length; i++) {
+            var d = devices[i];
+            var id = String(d.id);
+            var st = NXa.stateOf(d) || {};
+            var cur = { switch: !!st.switch };
+            var bri = typeof st.brightness === "number" ? st.brightness : 100;
+            var prev = lastSeen[id];
+            if (!prev) {
+              lastSeen[id] = cur;
+              continue;
+            }
+            var pBri = typeof prev.brightness === "number" ? prev.brightness : 100;
+            if (cur.switch !== prev.switch || bri !== pBri) {
+              lastSeen[id] = cur;
+              var patch = { switch: cur.switch };
+              if (bri !== 100 || prev.brightness != null) patch.brightness = bri;
+              try {
+                K.pushState(id, patch);
+              } catch (e) {}
+            }
+          }
+        }, 3000);
+
+        btn.addEventListener("click", function () {
+          if (elErr) {
+            elErr.classList.add("hidden");
+            elErr.textContent = "";
+          }
+          if (running) {
+            K.stop().then(paint, fail);
+            return;
+          }
+          var list = devices4Kit();
+          if (!list.length) {
+            fail(new Error("Paylaşılacak cihaz yok: yerel ağda anahtar yeteneği olan cihaz lazım"));
+            return;
+          }
+          btn.disabled = true;
+          K.start({ devices: list })
+            .then(function (st) {
+              paint(st);
+              if (!st || !st.running) fail(new Error((st && st.lastError) || "köprü başlamadı"));
+            })
+            .catch(fail);
+        });
+
+        K.status()
+          .then(function (st) {
+            paint(st);
+            if (st && st.running) lastSeen = {};
+          })
+          .catch(function () {});
+      })();
+    </script>
+    <script data-purpose="homekit-interactions">
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

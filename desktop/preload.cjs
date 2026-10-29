@@ -17,6 +17,23 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   },
   getDesktopSettings: () => ipcRenderer.invoke("desktop:settings:get"),
   setDesktopSettings: (patch) => ipcRenderer.invoke("desktop:settings:set", patch),
+  kit: {
+    start: (payload) => ipcRenderer.invoke("kit:start", payload),
+    stop: () => ipcRenderer.invoke("kit:stop"),
+    status: () => ipcRenderer.invoke("kit:status"),
+    commandResult: (r) => ipcRenderer.invoke("kit:commandResult", r),
+    pushState: (id, patch) => ipcRenderer.invoke("kit:state", { id, patch }),
+    onStatus: (cb) => {
+      const handler = (_e, st) => cb(st);
+      ipcRenderer.on("kit:status", handler);
+      return () => ipcRenderer.removeListener("kit:status", handler);
+    },
+    onCommand: (cb) => {
+      const handler = (_e, cmd) => cb(cmd);
+      ipcRenderer.on("kit:command", handler);
+      return () => ipcRenderer.removeListener("kit:command", handler);
+    },
+  },
   setLanguage: (lang) => ipcRenderer.send("app:language", lang),
   notifyEvent: (ev) => ipcRenderer.send("event:notify", ev),
   updateStatus: (st) => ipcRenderer.send("tray:status", st),
