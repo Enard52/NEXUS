@@ -19,31 +19,37 @@ hardware yet** — see [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 - Account security: two-factor authentication, honest empty/offline/error states on every screen
 - Automated checks on every change: typecheck, 1000+ tests, format, dependency audit, UI states (3 states per screen) and basic accessibility checks
 - Privacy policy names every third-party service that receives data (#94)
+- Backup and restore of local settings, automations and the device list (no secrets are ever exported)
 
-## In progress (maintainers)
+## Built, waiting for real-world testing
 
-- Server-backed Family: shared home, invites, permissions, chat, activity feed — code written,
-  needs verification against a real server and two devices ([#97](https://github.com/Enard52/NEXUS/issues/97))
-- Push notifications when the app is closed: web push is implemented; Android is the second phase
-  ([#95](https://github.com/Enard52/NEXUS/issues/95))
-- Backup and restore of local settings and automations ([#83](https://github.com/Enard52/NEXUS/issues/83))
+The code and the server side are in place; what is missing is someone trying them for real.
+Nothing below has been verified end to end yet.
+
+- Server-backed Family (shared home, invites, permissions, chat, activity feed): database, Edge Functions and
+  webhooks are deployed on the maintainer's project. Needs a test with two real accounts
+  ([#97](https://github.com/Enard52/NEXUS/issues/97))
+- Push notifications when the app is closed (web and Android): server and client are written. Needs a test on real
+  devices ([#95](https://github.com/Enard52/NEXUS/issues/95))
 
 ## Help wanted (the community picks these up)
 
-| Area                   | What                                                                                                                                                                   | Needs                     |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| **Verify on hardware** | Try your device and file a [device report](https://github.com/Enard52/NEXUS/issues/new?template=device_report.yml) ([#96](https://github.com/Enard52/NEXUS/issues/96)) | A real device, 10 minutes |
-| New brands             | Open a [device support request](https://github.com/Enard52/NEXUS/issues/new?template=device_support.yml) or write a connector (needs a documented local protocol)      | Code, ideally the device  |
-| Translations           | Add or fix languages ([translation issues](https://github.com/Enard52/NEXUS/labels/translation))                                                                       | Code-only                 |
-| iOS build-from-source  | Write and test the guide for a free Apple ID ([#76](https://github.com/Enard52/NEXUS/issues/76))                                                                       | A Mac                     |
-| Android widgets        | Device toggle and scene shortcuts ([#80](https://github.com/Enard52/NEXUS/issues/80))                                                                                  | Android Studio            |
-| Android in-app update  | "New version available" banner ([#78](https://github.com/Enard52/NEXUS/issues/78))                                                                                     | Code-only                 |
-| Tablet / landscape     | Layouts for tablets, iPad PWA, 2-in-1 ([#84](https://github.com/Enard52/NEXUS/issues/84))                                                                              | Code-only                 |
-| Linux ARM64 builds     | Raspberry Pi release builds ([#85](https://github.com/Enard52/NEXUS/issues/85))                                                                                        | A Pi to verify            |
-| Energy history         | Usage charts and local tariff estimate ([#82](https://github.com/Enard52/NEXUS/issues/82))                                                                             | Code-only                 |
-| Location automations   | Arrive/leave geofence triggers ([#81](https://github.com/Enard52/NEXUS/issues/81))                                                                                     | Code, a phone to test     |
-| Matter                 | Open-source SDK, long term ([#86](https://github.com/Enard52/NEXUS/issues/86))                                                                                         | Experience with Matter    |
-| Screen-reader pass     | Manual accessibility testing with real assistive tech ([#75](https://github.com/Enard52/NEXUS/issues/75))                                                              | A screen reader           |
+| Area                   | What                                                                                                                                                                   | Needs                             |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| **Verify on hardware** | Try your device and file a [device report](https://github.com/Enard52/NEXUS/issues/new?template=device_report.yml) ([#96](https://github.com/Enard52/NEXUS/issues/96)) | A real device, 10 minutes         |
+| **Test Family**        | Create a home, invite a second account, chat, check permissions ([#97](https://github.com/Enard52/NEXUS/issues/97))                                                    | Two accounts, two devices         |
+| **Test push**          | Closed-app notification on a phone or browser ([#95](https://github.com/Enard52/NEXUS/issues/95))                                                                      | A phone, a Firebase-enabled build |
+| New brands             | Open a [device support request](https://github.com/Enard52/NEXUS/issues/new?template=device_support.yml) or write a connector (needs a documented local protocol)      | Code, ideally the device          |
+| Translations           | Add or fix languages ([translation issues](https://github.com/Enard52/NEXUS/labels/translation))                                                                       | Code-only                         |
+| iOS build-from-source  | Write and test the guide for a free Apple ID ([#76](https://github.com/Enard52/NEXUS/issues/76))                                                                       | A Mac                             |
+| Android widgets        | Device toggle and scene shortcuts ([#80](https://github.com/Enard52/NEXUS/issues/80))                                                                                  | Android Studio                    |
+| Android in-app update  | "New version available" banner ([#78](https://github.com/Enard52/NEXUS/issues/78))                                                                                     | Code-only                         |
+| Tablet / landscape     | Layouts for tablets, iPad PWA, 2-in-1 ([#84](https://github.com/Enard52/NEXUS/issues/84))                                                                              | Code-only                         |
+| Linux ARM64 builds     | Raspberry Pi release builds ([#85](https://github.com/Enard52/NEXUS/issues/85))                                                                                        | A Pi to verify                    |
+| Energy history         | Usage charts and local tariff estimate ([#82](https://github.com/Enard52/NEXUS/issues/82))                                                                             | Code-only                         |
+| Location automations   | Arrive/leave geofence triggers ([#81](https://github.com/Enard52/NEXUS/issues/81))                                                                                     | Code, a phone to test             |
+| Matter                 | Open-source SDK, long term ([#86](https://github.com/Enard52/NEXUS/issues/86))                                                                                         | Experience with Matter            |
+| Screen-reader pass     | Manual accessibility testing with real assistive tech ([#75](https://github.com/Enard52/NEXUS/issues/75))                                                              | A screen reader                   |
 
 ## How to take something
 
