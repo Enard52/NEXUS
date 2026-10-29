@@ -52,6 +52,14 @@ jobs:
           node scripts/ensure-cloud-config.mjs
           node scripts/sync-www.mjs
           pnpm exec cap sync android
+      # Firebase istemci yapılandırması depoda YOKTUR (.gitignore). GOOGLE_SERVICES_JSON secret'ı varsa
+      # derleme öncesi dosyaya yazılır; yoksa APK push'suz derlenir (google-services eklentisi atlanır).
+      - name: Firebase yapılandırması (varsa)
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GS_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GS_JSON" ]; then printf '%s' "$GS_JSON" > android/app/google-services.json; echo "google-services.json yazıldı."; else echo "::notice::GOOGLE_SERVICES_JSON tanımlı değil; APK sunucu bildirimi (push) olmadan derlenecek."; fi
       - name: İmzalı APK derle
         if: steps.gate.outputs.run == 'true'
         run: |
