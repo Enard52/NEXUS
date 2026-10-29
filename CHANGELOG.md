@@ -2,18 +2,23 @@
 
 _Bu dosya `node scripts/bump-version.mjs --changelog` ile Conventional Commits'ten üretilir; elle düzenlenmez._
 
-## Unreleased
+## v1.0.30
 
 ### 📚 Docs
+- architecture guide, README accuracy, mirror-hygiene rule in CLAUDE.md
 - release: changelog entry for v1.0.29
 
 ### 🧹 Refactoring
 - finish the stitch->nexus rebrand across screens, mirrors and assets
 
 ### 🛠 Maintenance
+- release-integrity: CI dependency-audit gate, opt-in macOS signing, recorded QA evidence
 - add single-source mirror guard; deflake brand-assets splash test
 - app: carry screen tweaks (pair, smart, welcome-home) and resync www/ios mirrors
 - repo hygiene - drop unreferenced React SPA, binary junk and stale ignores
+
+### 🧩 Other
+- v1.0.30
 
 ## v1.0.29
 
