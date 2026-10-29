@@ -11,7 +11,9 @@ predictable so contributors know what to expect.
 
 ## Pull requests
 
-- `main` is protected: CI must pass (typecheck, tests, format, UI states) and one approving review is required.
+- `main` is protected: every change goes through a pull request. CI must pass (typecheck, tests, format, dependency audit, UI states and accessibility basics, CodeQL), a code owner must approve (see `.github/CODEOWNERS`), approval is dismissed when new commits are pushed, conversations must be resolved, history stays linear (squash merge) and force-pushes and deletions are blocked.
+- Release tags (`v*`) can only be created, moved or deleted by the maintainer.
+- Workflow runs from first-time and all other outside contributors need a maintainer's approval before they start.
 - Connector pull requests must include packet/response-format tests in `packages/web/src/lan-*.test.ts`. If the connector was not tried on real hardware, say so in the pull request; do not claim it is verified.
 - Generated mirrors (`www/`, `desktop/app/`, Android and iOS assets) are never edited by hand; run the sync scripts described in `docs/ARCHITECTURE.md`.
 

@@ -5,6 +5,7 @@
 Please report security issues privately — do not open a public issue.
 
 - **Email:** nexus.smarthome.app@gmail.com
+- **GitHub:** [private vulnerability report](https://github.com/Enard52/NEXUS/security/advisories/new) (visible only to the maintainers)
 - **Subject:** `[SECURITY] NEXUS — <short summary>`
 
 Include: affected component (desktop, Android, site, Edge Functions, AI worker), steps to reproduce, and impact. We aim to respond within 72 hours and will credit reporters after a fix unless you prefer to stay anonymous.
