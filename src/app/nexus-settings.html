@@ -124,6 +124,14 @@
     </div>
     <hr class="mx-5 border-gray-100"/>
     <div class="flex items-center justify-between px-5 py-5">
+      <span class="text-xl text-gray-800 font-medium">Dokunma Sesleri</span>
+      <label class="switch">
+        <input checked type="checkbox" id="toggle-tap"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <hr class="mx-5 border-gray-100"/>
+    <div class="flex items-center justify-between px-5 py-5">
       <span class="text-xl text-gray-800 font-medium">Titreşim</span>
       <label class="switch">
         <input checked type="checkbox" id="toggle-haptics"/>
@@ -309,6 +317,7 @@
 <script>
   (function () {
     var sound = document.getElementById('toggle-sound');
+    var taps = document.getElementById('toggle-tap');
     var haptics = document.getElementById('toggle-haptics');
     var animations = document.getElementById('toggle-animations');
     var acc = document.getElementById('toggle-accessibility');
@@ -316,6 +325,7 @@
     var aiHistory = document.getElementById('toggle-ai-history');
 
     sound.checked = nexusGetItem('nexusSoundEnabled') !== 'false';
+    taps.checked = nexusGetItem('nexusTapSoundsEnabled') !== 'false';
     haptics.checked = nexusGetItem('nexusHapticsEnabled') !== 'false';
     animations.checked = nexusGetItem('nexusAnimationsEnabled') !== 'false';
     acc.checked = nexusGetItem('nexusAccessibilityMode') === 'true';
@@ -326,6 +336,11 @@
       nexusSetItem('nexusSoundEnabled', sound.checked ? 'true' : 'false');
       // Açılışta kısa onay tonu: kullanıcı sesin gerçekten geldiğini duyar.
       if (sound.checked && window.nexusFeedback) window.nexusFeedback.play('toggle-on');
+    });
+    taps.addEventListener('change', function () {
+      nexusSetItem('nexusTapSoundsEnabled', taps.checked ? 'true' : 'false');
+      // Açılışta ilk tap'i hemen duy (click yakalayıcısı anahtar açılmadan önce koştu).
+      if (taps.checked && window.nexusFeedback) window.nexusFeedback.nav();
     });
     haptics.addEventListener('change', function () {
       nexusSetItem('nexusHapticsEnabled', haptics.checked ? 'true' : 'false');

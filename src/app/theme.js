@@ -118,7 +118,8 @@ window.addEventListener('error', function(e) {
 // NEXUS Global Theme, Profile & Experience Manager
 
 (function() {
-  // Global Haptic Feedback (Vibration) & Click Sound fallback
+  // Global Haptic Feedback (Vibration); tap sesi nexus-feedback.js nav() ile
+  // aynı yakalayıcıdan yönlendirilir (aşağıdaki click dinleyicisine bakınız).
   function triggerHaptic(style) {
     // Ayarlar → "Ses ve Hareket": Titreşim kapatıldıysa hiçbir yolla titreşme.
     try {
@@ -142,6 +143,11 @@ window.addEventListener('error', function(e) {
     var isInteractive = e.target.closest('button, a, input[type="range"], .cat-btn, .product-tile, input[type="checkbox"]');
     if (isInteractive) {
       triggerHaptic();
+      // Dokunma sesi: nexusFeedback.nav kendi anahtarını (nexusTapSoundsEnabled)
+      // ve aynı jestteki sonuç sesiyle çakışmayı denetler; burada sadece köprü kurarız.
+      if (window.nexusFeedback && typeof window.nexusFeedback.nav === 'function') {
+        try { window.nexusFeedback.nav(); } catch (e3) {}
+      }
     }
   }, { capture: true, passive: true });
 

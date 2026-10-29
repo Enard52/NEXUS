@@ -41,6 +41,13 @@ Recorded 2026-10-29 against the current `www/` mirror:
   - `showMfaStep()` reveals the MFA form ✅
   - Logged-out visit to `nexus-home.html` redirects to `nexus-onboarding.html` ✅
   - **0 uncaught page errors** ✅
+- **Tap-sound engine e2e** (`nexusTapSoundsEnabled`, recorded with real
+  Chromium; oscillator starts counted on the settings screen, 0 page errors):
+  master sound OFF-click = 0 tones (pending tap dies with the master) ✅ ·
+  ON-click = exactly one `toggle-on` (620 Hz) ✅ · `nav()` + `power()` in the
+  same task = ONE sound, the tap is cancelled ✅ · double `nav()` = one tap
+  (520 Hz, rate-limit) ✅ · taps disabled via the new "Dokunma Sesleri" row =
+  silent click ✅ · re-enabling from the row = one confirmation tap ✅
 
 ## Requires a human (cannot be faked — house rule number 1)
 

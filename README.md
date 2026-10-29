@@ -66,7 +66,7 @@ src/app (single source)                generated copies — never edit by hand
 ├─ www/public/     marketing site (site-content.mjs + site-build.mjs) → nexus-smarthome.pages.dev
 ├─ supabase/       Edge Functions + migrations (accounts, billing webhooks, invites)
 ├─ scripts/        build/verify tooling (measure-layout, verify-site, site-*, legal-pdf…)
-├─ packages/       unit-tested modules (vitest: 1052 tests) — mirror & hygiene guards included
+├─ packages/       unit-tested modules (vitest: 1057 tests) — mirror & hygiene guards included
 └─ desktop/        Electron main/preload (tray mode, auto-update, automation worker)
 ```
 

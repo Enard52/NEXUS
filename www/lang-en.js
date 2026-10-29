@@ -38,6 +38,7 @@ window.NEXUS_EN = {
 "Ses ve Hareket": "Sound & Motion",
 "Uygulama sesleri, titreşim ve hareketli efektler.": "App sounds, vibration and motion effects.",
 "Ses Efektleri": "Sound Effects",
+"Dokunma Sesleri": "Touch Sounds",
 "Titreşim": "Vibration",
 "Animasyonlar": "Animations",
 "NEXUS": "NEXUS",

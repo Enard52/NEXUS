@@ -6,6 +6,9 @@
  *    Hepsi kısık (kazanç ≤ 0.05), kısa (≤ 0.4 sn) ve markanın sakin tonunda.
  *  • Her tıklamada ses ÇIKMAZ — yalnızca sonuç sesleri: cihaz aç/kapat, senaryo,
  *    başarı/hata, yeni bildirim, kopyalama. Dokunma geri bildirimi titreşimle.
+ *    Bunun istisnası nav(): düğmeye/gezinmeye "tap" tıklaması (çok kısık, 0.02
+ *    kazanç). Ayarlar → "Dokunma Sesleri" (nexusTapSoundsEnabled) ile kapatılır
+ *    ve aynı jestte bir sonuç sesi çalarsa iptal olur (çift ses yok).
  *  • Üç anahtar Ayarlar → "Ses ve Hareket"ten yönetilir ve varsayılanı AÇIKTIR:
  *      nexusSoundEnabled       (mevcut anahtar; Ayarlar'daki "Ses" satırı zaten yazar)
  *      nexusHapticsEnabled     (titreşim)
@@ -25,6 +28,7 @@
 
   var KEYS = {
     sound: "nexusSoundEnabled",
+    taps: "nexusTapSoundsEnabled",
     haptics: "nexusHapticsEnabled",
     motion: "nexusAnimationsEnabled",
   };
@@ -84,6 +88,7 @@
 
   // Ses paleti — hepsi marka tonunda, yumuşak sinüs; "hata" bilinçli olarak boğuk.
   var SOUNDS = {
+    "tap": [{ f0: 520, f1: 380, dur: 0.05, gain: 0.02 }],
     "toggle-on": [{ f0: 620, f1: 880, dur: 0.1, gain: 0.04 }],
     "toggle-off": [{ f0: 620, f1: 430, dur: 0.1, gain: 0.038 }],
     "scene": [
@@ -101,7 +106,17 @@
     "pull": [{ f0: 440, f1: 660, dur: 0.08, gain: 0.032 }],
   };
 
+  // Sonuç sesi hoparlöre girmeden önce bekleyen tap'i iptal et: cihaz
+  // anahtarı çevrilirken "tık + bip" yerine tek anlamlı ses duyulmalı.
+  var pendingTap = null;
+  var lastTapAt = 0;
+
   function play(name) {
+    if (pendingTap) {
+      clearTimeout(pendingTap);
+      pendingTap = null;
+      lastTapAt = 0; // sonuç sesi tap'ın yerini aldı; yeniden tap hemen serbest
+    }
     var spec = SOUNDS[name];
     if (!spec) return;
     var c = audio();
@@ -109,6 +124,24 @@
     for (var i = 0; i < spec.length; i++) {
       try { tone(c, spec[i]); } catch (e) { /* ses asla akışı bozmasın */ }
     }
+  }
+
+  // ---------- Dokunma / gezinme sesi ----------
+  // theme.js'in global click yakalayıcısından çağrılır. Tonu anında değil
+  // ~70 ms sonra çalarız: aynı jestte bir sonuç sesi (cihaz aç/kapat, sahne,
+  // kopyala...) çalarsa tap iptal olur — tek ses, biri diğerini ezmez.
+  // 70 ms algısal olarak "anında"dir (kazanç 0.02 → ambiyans, dikkat çekmez).
+  function nav() {
+    if (!flag("taps") || !flag("sound")) return;
+    var now = Date.now();
+    if (now - lastTapAt < 90) return; // çift tık / liste kaydırma spam'e boğulmasın
+    lastTapAt = now;
+    if (pendingTap) clearTimeout(pendingTap);
+    pendingTap = setTimeout(function () {
+      pendingTap = null;
+      if (!flag("taps")) return; // kullanıcı bu pencerede kapattıysa sessizlik kazanır
+      play("tap");
+    }, 70);
   }
 
   // ---------- Titreşim ----------
@@ -159,8 +192,9 @@
     power: power,
     pulse: pulse,
     haptic: haptic,
+    nav: nav,
     toastIn: toastIn,
     motionAllowed: motionAllowed,
-    enabled: { sound: function () { return flag("sound"); }, haptics: function () { return flag("haptics"); }, motion: motionAllowed },
+    enabled: { sound: function () { return flag("sound"); }, taps: function () { return flag("taps"); }, haptics: function () { return flag("haptics"); }, motion: motionAllowed },
   };
 })();
