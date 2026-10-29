@@ -154,6 +154,20 @@ window.addEventListener('error', function(e) {
   // Android Donanım Geri Tuşu ve Escape tuşu yönetimi
   function setupBackButton() {
     function handleBack() {
+      // 0. Ortak katmanlar (nexus-dialog, komut paleti) açıkken genel geri davranışı
+      // devreye girmez: onlar kendi kapanışlarını yapar. Kapalı olmayan balonlu
+      // gönderim kullanılır ki theme.js'in kendi Escape dinleyicisi çift tetiklenmesin.
+      if (document.querySelector('.nx-dlg-back')) {
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: false, cancelable: true }));
+        return;
+      }
+      var palette = document.getElementById('nx-palette');
+      if (palette && palette.classList.contains('open')) {
+        var palInput = palette.querySelector('.nx-pal-input');
+        if (palInput) palInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: false, cancelable: true }));
+        return;
+      }
+
       // 1. Açık olan alt çekmece, modal veya dialogları kapat
       var openOverlay = document.querySelector(
         '.dialog-overlay:not(.hidden), .sheet.open, .qa-sheet.open, #loading-overlay[style*="flex"], .modal:not(.hidden)'
@@ -262,6 +276,33 @@ window.addEventListener('error', function(e) {
     } else {
       document.documentElement.classList.remove('dark');
     }
+    // Masaüstü: pencere düğmelerinin simge rengi temaya uysun
+    try { if (window.nexusDesktop && typeof nexusDesktop.setTitleTheme === 'function') nexusDesktop.setTitleTheme(!!isDark); } catch (e) {}
+  }
+
+  // Masaüstü uygulaması: sistem başlık çubuğu gizli olduğundan pencereyi sürüklemek için üstte ince bir tutamaç.
+  // Sağdaki 150px küçült/büyüt/kapat düğmelerine bırakılır; çift tıklama pencereyi büyütür/küçültür (sistem davranışı).
+  function addDesktopDragStrip() {
+    try {
+      if (!window.nexusDesktop || document.getElementById('nx-drag-strip')) return;
+      document.documentElement.classList.add('nx-electron');
+      var mac = /Mac/i.test(navigator.platform || '');
+      var strip = document.createElement('div');
+      strip.id = 'nx-drag-strip';
+      strip.setAttribute('aria-hidden', 'true');
+      strip.style.cssText = 'position:fixed;top:0;left:0;right:' + (mac ? '0' : '150px') + ';height:14px;z-index:2147483000;-webkit-app-region:drag;';
+      document.body.appendChild(strip);
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addDesktopDragStrip);
+  else addDesktopDragStrip();
+
+  // Alt sayfaların tutamaçla sürüklenip kapatılması her sayfada çalışsın: ortak jest dosyası yoksa yüklenir
+  // (kendi sayfasında zaten yükleyenlerde dosya iki kez çalışmaz; kendini korur).
+  if (!window.NexusSheetGestures && !document.querySelector('script[src$="sheet-gestures.js"]')) {
+    var sg = document.createElement('script');
+    sg.src = 'sheet-gestures.js';
+    document.head.appendChild(sg);
   }
 
   // Hareket efektleri anahtarı (Ayarlar → Ses ve Hareket → Animasyonlar):
@@ -279,6 +320,19 @@ window.addEventListener('error', function(e) {
   }
   applyMotion();
 
+  // Erişilebilirlik Modu anahtarı (Ayarlar → Erişilebilirlik Modu): açıksa html.nx-a11y
+  // eklenir; css/nexus-ui.css'teki ortak kural seti metin ölçeğini büyütür, odak
+  // halkalarını belirginleştirir ve dekoratif hareketi kısar. Boyamadan önce uygulanır.
+  function applyAccessibility() {
+    var on = false;
+    try {
+      var aKey = typeof nexusGetItem === 'function' ? nexusGetItem('nexusAccessibilityMode') : localStorage.getItem('nexusAccessibilityMode');
+      on = aKey === 'true';
+    } catch (e) {}
+    document.documentElement.classList.toggle('nx-a11y', on);
+  }
+  applyAccessibility();
+
   // Apply immediately to avoid flicker
   applyTheme();
 
@@ -290,9 +344,13 @@ window.addEventListener('error', function(e) {
     if (e.key === 'nexusAnimationsEnabled') {
       applyMotion();
     }
+    if (e.key === 'nexusAccessibilityMode') {
+      applyAccessibility();
+    }
   });
   // Aynı sekmedeki Ayarlar değişikliği (Ayarlar sayfası olayı gönderir)
   window.addEventListener('nexusMotionChanged', applyMotion);
+  window.addEventListener('nexusAccessibilityChanged', applyAccessibility);
   
   // Custom event listener for same-page updates
   window.addEventListener('themeChanged', applyTheme);
@@ -612,14 +670,29 @@ window.nexusCopy = function (text) {
   return Promise.resolve(announce(legacy()));
 };
 
-// Masaüstü uygulamasında Ctrl+K komut paleti (yalnızca Electron + geniş ekran; auth sayfalarında yüklenmez)
+// Komut paleti: artık yalnızca masaüstü değil — telefonda da yüklenir (dokunmatik
+// giriş düğmesi paletin kendi içinde). Giriş/şifre akışları paletin kendisinde
+// elenir; auth sayfalarında hiç kurulmaz.
 (function () {
-  if (!window.nexusDesktop || !window.matchMedia || !window.matchMedia('(min-width: 1024px)').matches) return;
   var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
   var AUTH = ['index', 'nexus-login', 'nexus-register', 'nexus-forgot-password', 'nexus-onboarding', ''];
   if (AUTH.indexOf(page) !== -1) return;
+  if (document.querySelector('script[src="command-palette.js"]')) return;
   var s = document.createElement('script');
   s.src = 'command-palette.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
+
+// Geri alma katmanı: yanlışlıkla silinen cihaz/olay/kart için 6 saniyelik "Geri al".
+// Depo yazımlarını gözlemler; yüklemesi yan etkisizdir, auth akışlarında gerekmez.
+(function () {
+  var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+  var AUTH = ['index', 'nexus-login', 'nexus-register', 'nexus-forgot-password', 'nexus-onboarding', ''];
+  if (AUTH.indexOf(page) !== -1) return;
+  if (document.querySelector('script[src="nexus-undo.js"]')) return;
+  var s = document.createElement('script');
+  s.src = 'nexus-undo.js';
   s.defer = true;
   (document.head || document.documentElement).appendChild(s);
 })();
@@ -644,6 +717,17 @@ window.nexusCopy = function (text) {
   if (document.querySelector('script[src="nexus-feedback.js"]')) return;
   var s = document.createElement('script');
   s.src = 'nexus-feedback.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
+
+// Ortak uyarı penceresi: bazı ekranlar kendi ekliyordu, bazıları alert'e düşüyordu.
+// Tüm sayfalarda hazır olsun; tanımı yan etkisizdir (window.nexusDialog) ve
+// ekleyen sayfalarda kendi etiketi kazanmaya devam eder.
+(function () {
+  if (document.querySelector('script[src="nexus-dialog.js"]')) return;
+  var s = document.createElement('script');
+  s.src = 'nexus-dialog.js';
   s.defer = true;
   (document.head || document.documentElement).appendChild(s);
 })();
@@ -758,4 +842,85 @@ window.nexusCopy = function (text) {
       }).catch(function () { /* sessiz: raporlama hatası kullanıcıyı rahatsız etmez */ });
     } catch (err2) { /* asla ikincil hata üretme */ }
   });
+})();
+
+// ---------- Ortak bildirim şeridi (toast) ----------
+// Tüm ekranlar aynı yerde ve aynı görünümde gösterir: üst orta (alt gezinme ve eylem çubuklarıyla çakışmaz),
+// masaüstünde içerik alanının ortası, hata kırmızı / başarı yeşil simge / bilgi mavi simge, ekran okuyucuya duyurulur.
+// nexusToast(metin, { type: 'success' | 'error' | 'info', duration: ms, key: 'aynı-anahtarlı-öncekini-değiştir' })
+(function () {
+  if (window.nexusToast) return;
+  var HOST_ID = 'nx-toast-host';
+  var ICONS = {
+    success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>',
+    error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5m0 3h.01"/></svg>',
+    info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>'
+  };
+  function ensureStyle() {
+    if (document.getElementById('nx-toast-style')) return;
+    var s = document.createElement('style');
+    s.id = 'nx-toast-style';
+    s.textContent =
+      '#nx-toast-host{position:fixed;top:calc(env(safe-area-inset-top,0px) + 16px);left:50%;transform:translateX(-50%);z-index:2147482000;display:flex;flex-direction:column;align-items:center;gap:8px;width:min(92vw,420px);pointer-events:none}' +
+      'html.nx-desk #nx-toast-host{left:calc(var(--side,0px) + (100vw - var(--side,0px)) / 2)}' +
+      '.nx-toast-item{display:flex;align-items:center;gap:10px;max-width:100%;box-sizing:border-box;padding:11px 16px;border-radius:16px;background:rgba(15,23,42,.95);color:#fff;font:600 14px/1.35 Inter,system-ui,sans-serif;text-align:left;box-shadow:0 14px 30px -12px rgba(2,6,23,.5);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);animation:nx-toast-in .22s ease both;overflow-wrap:anywhere}' +
+      '.nx-toast-item.is-out{animation:nx-toast-out .2s ease both}' +
+      '.nx-toast-item svg{width:18px;height:18px;flex:none}' +
+      '.nx-toast-item.is-success svg{color:#34d399}.nx-toast-item.is-info svg{color:#93b4ff}' +
+      '.nx-toast-item.is-error{background:rgba(190,18,60,.96)}.nx-toast-item.is-error svg{color:#fff}' +
+      'html.dark .nx-toast-item{background:rgba(30,41,59,.96);box-shadow:0 14px 30px -12px rgba(0,0,0,.65),0 0 0 1px rgba(148,163,184,.28)}' +
+      'html.dark .nx-toast-item.is-error{background:rgba(159,18,57,.97)}' +
+      '@keyframes nx-toast-in{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}' +
+      '@keyframes nx-toast-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-8px) scale(.98)}}' +
+      '@media (prefers-reduced-motion:reduce){.nx-toast-item,.nx-toast-item.is-out{animation:none}}';
+    document.head.appendChild(s);
+  }
+  function host() {
+    var h = document.getElementById(HOST_ID);
+    if (!h) {
+      h = document.createElement('div');
+      h.id = HOST_ID;
+      document.body.appendChild(h);
+    }
+    return h;
+  }
+  function dismiss(el) {
+    if (!el || el.__nxGone) return;
+    el.__nxGone = true;
+    clearTimeout(el.__nxTimer);
+    el.classList.add('is-out');
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 220);
+  }
+  window.nexusToast = function (message, opts) {
+    try {
+      opts = opts || {};
+      var text = String(message == null ? '' : message);
+      if (!text || !document.body) return null;
+      ensureStyle();
+      var type = opts.type === 'error' ? 'error' : opts.type === 'success' ? 'success' : 'info';
+      var h = host();
+      if (opts.key) {
+        var old = h.querySelector('[data-key="' + String(opts.key).replace(/"/g, '') + '"]');
+        if (old) dismiss(old);
+      }
+      var el = document.createElement('div');
+      el.className = 'nx-toast-item is-' + type;
+      el.setAttribute('role', type === 'error' ? 'alert' : 'status');
+      if (opts.key) el.setAttribute('data-key', String(opts.key));
+      el.innerHTML = ICONS[type] + '<span></span>';
+      el.lastChild.textContent = text;
+      h.appendChild(el);
+      // En çok 3 şerit birikir: en eskisi kalkar
+      var items = h.querySelectorAll('.nx-toast-item:not(.is-out)');
+      for (var i = 0; i < items.length - 3; i++) dismiss(items[i]);
+      el.__nxTimer = setTimeout(function () { dismiss(el); }, opts.duration || (type === 'error' ? 4200 : 2600));
+      return el;
+    } catch (e) { return null; }
+  };
+  // Olay bildirimi sistem bildirimi gösterilemediğinde (notify.js) uygulama içi şerit olarak çıkar
+  window.nexusShowNotice = window.nexusShowNotice || function (event) {
+    var title = event && event.title ? String(event.title) : '';
+    var detail = event && event.detail ? String(event.detail) : '';
+    return window.nexusToast([title, detail].filter(Boolean).join(' — '), { type: 'info', duration: 4200 });
+  };
 })();

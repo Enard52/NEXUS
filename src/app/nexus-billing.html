@@ -36,7 +36,7 @@
 </head>
 <body class="bg-dashboard-gradient dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 antialiased transition-colors duration-300" style="overflow-x:clip">
 <!-- BEGIN: NavigationHeader -->
-<header class="sticky top-0 z-50 bg-[#F3F2F9]/80 dark:bg-slate-950/80 backdrop-blur-md px-4 py-4 pt-12 flex items-center transition-colors duration-300">
+<header class="sticky top-0 z-50 nx-hdr-blend px-4 py-4 pt-12 flex items-center transition-colors duration-300">
 <button onclick="window.history.length > 1 ? history.back() : window.location.href='nexus-home.html'" aria-label="Geri" class="p-1 -ml-1 flex items-center text-slate-800 dark:text-white active:opacity-70 transition-opacity">
 <!-- Chevron Left Icon -->
 <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -79,7 +79,7 @@
 <!-- BEGIN: NavigationList (zero-dead-UI: yalnızca gerçek hedefi olan eylemler) -->
 <nav class="space-y-4" data-purpose="billing-menu">
 <!-- Abonelik Yönetimi -->
-<button class="w-full flex items-center justify-between bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm active:scale-[0.98] transition-transform" onclick="window.location.href='nexus-plus.html'">
+<button class="w-full flex items-center justify-between bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm active:scale-[0.98] transition-transform" onclick="openSubscriptionManagement()">
 <div class="flex items-center space-x-4">
 <div class="text-[#4C7DFF] bg-[#4C7DFF]/10 p-3.5 rounded-2xl">
 <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
@@ -136,6 +136,62 @@
 </main>
 
 <script>
+  // Abonelik Yönetimi: Whop portalı AÇILMAZ — iptal ve durum zaten whop-account
+  // Edge Function'ıyla uygulama içinde yapılıyor (billingAccount('cancel'/'status')).
+  // Kayıt VARSA uygulama içi yönetim diyaloğu: taze durum + dönem sonunda iptal.
+  // Kayıt YOKSA yönlendirme yapmadan uyarır.
+  function openSubscriptionManagement() {
+    const plan = nexusGetItem("nexusPlusPlan");
+    if (plan !== "Yıllık" && plan !== "Aylık") {
+      window.nexusDialog({
+        icon: 'info',
+        title: nexusT('Aktif abonelik yok', 'No active subscription'),
+        message: nexusT('Bu hesapta yönetilecek bir abonelik bulunamadı. NEXUS+ planına katılmak istersen Plus sayfasını kullanabilirsin.', 'There is no subscription to manage on this account. If you want to join NEXUS+, you can do it from the Plus page.'),
+        primary: {
+          label: nexusT('Tamam', 'OK'),
+          onClick: function () { /* yalnızca kapat — yönlendirme yok */ }
+        }
+      });
+      return;
+    }
+    // Diyaloğu yerel kayıtla anında aç; sunucudan taze durum arka planda gelir.
+    if (window.nexusCloud && window.nexusCloud.billingAccount) {
+      window.nexusCloud.billingAccount("status").then(function (d) {
+        renderBilling();
+        renderPayments(d && d.payments);
+      }).catch(function () { /* çevrimdışı: yerel kayıt yeterli */ });
+    }
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const endIso = nexusGetItem("nexusPlusEnd");
+    const endDate = endIso ? new Date(endIso) : null;
+    const hasEnd = endDate && !isNaN(endDate.getTime());
+    const dateStr = hasEnd ? endDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options) : "-";
+    const cancelling = nexusGetItem("nexusPlusCancel") === "1";
+    if (cancelling) {
+      window.nexusDialog({
+        icon: 'info',
+        title: 'NEXUS+ ' + plan,
+        message: hasEnd
+          ? nexusT('Aboneliğin dönem sonunda (' + dateStr + ') sonlanacak. O tarihe kadar NEXUS+ kullanmaya devam edebilirsin.', 'Your subscription ends on ' + dateStr + '. You can keep using NEXUS+ until then.')
+          : nexusT('Aboneliğin dönem sonunda sonlanacak; NEXUS+ kullanmaya devam edebilirsin.', 'Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.'),
+        primary: { label: nexusT('Tamam', 'OK'), onClick: function () {} }
+      });
+      return;
+    }
+    window.nexusDialog({
+      icon: 'info',
+      title: 'NEXUS+ ' + plan,
+      message: hasEnd
+        ? nexusT('Sonraki yenileme: ' + dateStr + '. İptal edersen bu dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.', 'Next renewal: ' + dateStr + '. If you cancel, you keep access until the end of this period; no further payment is taken.')
+        : nexusT('Aboneliğin aktif. İptal edersen dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.', 'Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.'),
+      primary: {
+        label: nexusT('Dönem sonunda iptal et', 'Cancel at period end'),
+        onClick: function () { openCancelConfirm(); }
+      },
+      secondary: { label: nexusT('Kapat', 'Close'), onClick: function () {} }
+    });
+  }
+
   // Dinamik Abonelik Yönetimi (gerçek veri: nexusPlusPlan + nexusPlusSince)
   function renderBilling() {
     const plan = nexusGetItem("nexusPlusPlan"); // 'Yıllık' veya 'Aylık' (sunucudan: Whop webhook'u)

@@ -62,7 +62,7 @@
 <script src="nexus-dialog.js"></script>
 </head>
 <body class="bg-dashboard-gradient min-h-screen flex flex-col">
-<header class="bg-white border-b border-gray-100 px-4 pt-12 pb-4 flex items-center justify-between sticky top-0 z-10">
+<header class="nx-hdr-blend px-4 pt-12 pb-4 flex items-center justify-between sticky top-0 z-10">
   <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='nexus-home.html'" aria-label="Geri" class="p-1 -ml-1">
     <svg class="h-7 w-7 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
   </a>
@@ -83,7 +83,12 @@
     </a>
     <hr class="mx-5 border-gray-100"/>
     <a href="nexus-device-updates.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
-      <span class="text-xl text-gray-800 font-medium">Cihaz Güncellemesi</span>
+      <span class="text-xl text-gray-800 font-medium">Cihaz Yazılım Güncellemeleri</span>
+      <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+    <hr class="mx-5 border-gray-100"/>
+    <a href="nexus-integrations.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+      <span class="text-xl text-gray-800 font-medium">Entegrasyonlar</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </a>
   </section>
@@ -154,9 +159,20 @@
         <span class="slider"></span>
       </label>
     </div>
-    <hr class="mx-5 border-gray-100"/>
+  </section>
+
+  <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
+    <div class="px-5 py-4 border-b border-gray-100" id="notifications-settings">
+      <h2 class="text-base font-bold text-slate-900">Bildirimler</h2>
+      <p class="text-sm text-slate-500 mt-1">Uyarı kategorileri, sessiz saatler ve dışa dönük kanallar.</p>
+    </div>
     <a href="nexus-instant-notifications.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
       <span class="text-xl text-gray-800 font-medium">Anlık Bildirimler</span>
+      <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+    <hr class="mx-5 border-gray-100"/>
+    <a href="nexus-dnd.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+      <span class="text-xl text-gray-800 font-medium">Rahatsız Etme</span>
       <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </a>
     <hr class="mx-5 border-gray-100" id="keepalive-rule"/>
@@ -170,6 +186,10 @@
   </section>
 
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
+    <div class="px-5 py-4 border-b border-gray-100" id="appearance-settings">
+      <h2 class="text-base font-bold text-slate-900">Görünüm ve Genel</h2>
+      <p class="text-sm text-slate-500 mt-1">Tema, birimler ve dil.</p>
+    </div>
     <button type="button" id="dark-mode-row" role="switch" aria-checked="false" class="nx-reset flex items-center justify-between px-5 py-5" onclick="toggleDarkMode()">
       <span class="text-xl text-gray-800 font-medium dark:text-white">Karanlık Mod</span>
       <span class="relative block" aria-hidden="true">
@@ -222,6 +242,23 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg>
         <span>Güncellemeleri Kontrol Et</span>
       </button>
+      <!-- Sonuç kartı kontrol düğmesinin hemen altında: aşağıdaki tercih satırlarının arasında kalmaz -->
+      <div id="update-card" class="nx-upd-card mt-3 hidden" data-state="" role="status" aria-live="polite">
+        <div class="flex items-start gap-3">
+          <span id="update-icon" class="nx-upd-icon" aria-hidden="true"></span>
+          <div class="min-w-0 flex-1">
+            <p id="update-status" class="nx-upd-title"></p>
+            <p id="update-detail" class="nx-upd-detail hidden"></p>
+          </div>
+          <span id="update-percent" class="hidden text-sm font-bold text-[#4C7DFF] tabular-nums"></span>
+        </div>
+        <div id="update-progress-wrap" class="nx-upd-track hidden mt-3">
+          <div id="update-progress-bar" class="nx-upd-fill"></div>
+        </div>
+        <button type="button" id="install-update-btn" class="nx-upd-install hidden mt-3">
+          Yeniden Başlat ve Yükle
+        </button>
+      </div>
       <label class="nx-upd-toggle mt-4">
         <span><b>Güncellemeleri otomatik indir</b><small>Yeni sürüm bulununca arka planda hemen indirilsin.</small></span>
         <input type="checkbox" id="auto-download-toggle" aria-label="Güncellemeleri otomatik indir">
@@ -234,19 +271,6 @@
         <span><b>Kapatınca arka planda çalıştır</b><small>Pencere kapatılsa da otomasyonlar tepside çalışmaya devam etsin.</small></span>
         <input type="checkbox" id="desktop-bg-toggle" aria-label="Kapatınca arka planda çalıştır">
       </label>
-      <div id="update-card" class="nx-upd-card mt-4 hidden" data-state="">
-        <div class="flex items-center gap-3">
-          <span id="update-icon" class="nx-upd-icon" aria-hidden="true"></span>
-          <p id="update-status" class="flex-1 text-[15px] font-semibold text-slate-700 min-h-[1.5rem]" role="status" aria-live="polite"></p>
-          <span id="update-percent" class="hidden text-sm font-bold text-[#4C7DFF] tabular-nums"></span>
-        </div>
-        <div id="update-progress-wrap" class="nx-upd-track hidden mt-2">
-          <div id="update-progress-bar" class="nx-upd-fill"></div>
-        </div>
-        <button type="button" id="install-update-btn" class="nx-upd-install hidden mt-3">
-          Yeniden Başlat ve Yükle
-        </button>
-      </div>
       <style>
         .nx-upd-check { width: 100%; min-height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
           background: #4C7DFF; color: #fff; font-size: 16px; font-weight: 800; letter-spacing: -0.01em; border: 0; cursor: pointer;
@@ -270,6 +294,19 @@
         html.dark .nx-upd-card[data-state="available"], html.dark .nx-upd-card[data-state="ready"] { background: rgba(76, 125, 255, 0.14); border-color: #1e3a8a; }
         html.dark .nx-upd-card[data-state="error"] { background: rgba(244, 63, 94, 0.12); border-color: #7f1d1d; }
         html.dark .nx-upd-card #update-status { color: #e2e8f0; }
+        .nx-upd-card { animation: nx-upd-in .25s ease both; }
+        @keyframes nx-upd-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { .nx-upd-card { animation: none; } }
+        .nx-upd-title { font-size: 15px; font-weight: 800; line-height: 1.35; color: #0f172a; margin: 0; }
+        .nx-upd-detail { font-size: 13px; font-weight: 500; line-height: 1.45; color: #64748b; margin: 3px 0 0; }
+        .nx-upd-card[data-state="latest"] .nx-upd-title { color: #047857; }
+        .nx-upd-card[data-state="available"] .nx-upd-title, .nx-upd-card[data-state="ready"] .nx-upd-title { color: #2447b8; }
+        .nx-upd-card[data-state="error"] .nx-upd-title { color: #be123c; }
+        html.dark .nx-upd-title { color: #f1f5f9; }
+        html.dark .nx-upd-detail { color: #94a3b8; }
+        html.dark .nx-upd-card[data-state="latest"] .nx-upd-title { color: #6ee7b7; }
+        html.dark .nx-upd-card[data-state="available"] .nx-upd-title, html.dark .nx-upd-card[data-state="ready"] .nx-upd-title { color: #a9c0ff; }
+        html.dark .nx-upd-card[data-state="error"] .nx-upd-title { color: #fda4af; }
         .nx-upd-track { height: 12px; width: 100%; border-radius: 9999px; overflow: hidden; background: #e2e8f0; }
         html.dark .nx-upd-track { background: #334155; }
         .nx-upd-fill { height: 100%; width: 0; border-radius: 9999px; transition: width .35s ease;
@@ -354,6 +391,8 @@
     });
     acc.addEventListener('change', function () {
       nexusSetItem('nexusAccessibilityMode', acc.checked ? 'true' : 'false');
+      // theme.js applyAccessibility html.nx-a11y'yi anında açar/kapatır (aynı sekmede olayla).
+      window.dispatchEvent(new Event('nexusAccessibilityChanged'));
     });
     aiSuggestions.addEventListener('change', function () {
       nexusSetItem('nexusAiSuggestions', aiSuggestions.checked ? 'true' : 'false');
@@ -519,38 +558,41 @@
       installBtn.textContent = s === 'available'
         ? T('NEXUS ' + (state.availableVersion || '') + ' — Şimdi indir', 'Download NEXUS ' + (state.availableVersion || '') + ' now')
         : T('Yeniden Başlat ve Yükle', 'Restart and install');
-      if (s === 'available') {
-        statusEl.textContent = T('Yeni sürüm bulundu: NEXUS ' + (state.availableVersion || ''), 'New version found: NEXUS ' + (state.availableVersion || ''));
-        statusEl.className = 'mt-3 text-sm font-semibold text-[#4C7DFF] min-h-[1.5rem]';
-      }
-
-      if (s === 'checking') statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
-      else if (s === 'downloading') {
-        statusEl.textContent = T('Yeni sürüm indiriliyor…', 'Downloading new version…') + ' %' + (state.progress || 0);
-        statusEl.className = 'mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]';
-      }
-      else if (s === 'ready') {
-        statusEl.textContent = T('NEXUS ' + (state.availableVersion || '') + ' hazır. Yeniden başlatınca kurulur.', 'NEXUS ' + (state.availableVersion || '') + ' is ready. It installs on restart.');
-        statusEl.className = 'mt-3 text-sm font-semibold text-emerald-600 min-h-[1.5rem]';
-      }
-      else if (s === 'latest') {
-        statusEl.textContent = T('Uygulama güncel.', 'The app is up to date.');
-        statusEl.className = 'mt-3 text-sm font-medium text-slate-500 min-h-[1.5rem]';
-      }
-      else if (s === 'error') {
-        statusEl.textContent = T('Güncelleme kontrol edilemedi. İnternet bağlantını kontrol edip tekrar dene.', 'Could not check for updates. Check your connection and try again.');
-        statusEl.className = 'mt-3 text-sm font-medium text-rose-500 min-h-[1.5rem]';
-      }
-      else if (s === 'unsupported') {
-        statusEl.textContent = T('Bu ortamda sürüm kontrolü yapılmaz (geliştirme sürümü).', 'Version check is unavailable here (development build).');
-        statusEl.className = 'mt-3 text-sm font-medium text-slate-400 min-h-[1.5rem]';
+      // Başlık (kısa sonuç) + açıklama (ne yapılmalı); renkler data-state ile CSS'ten gelir, class değiştirilmez
+      var detailEl = document.getElementById('update-detail');
+      var ver = state.availableVersion || '';
+      var title = '', detail = '';
+      if (s === 'checking') {
+        title = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
+      } else if (s === 'available') {
+        title = T('Yeni sürüm bulundu: NEXUS ' + ver, 'New version found: NEXUS ' + ver);
+        detail = T('İndirmek için aşağıdaki düğmeyi kullan.', 'Use the button below to download it.');
+      } else if (s === 'downloading') {
+        title = T('Yeni sürüm indiriliyor…', 'Downloading new version…');
+        detail = T('İndirme bitince yeniden başlatıp kurabilirsin.', 'When the download finishes you can restart to install.');
+      } else if (s === 'ready') {
+        title = T('NEXUS ' + ver + ' hazır', 'NEXUS ' + ver + ' is ready');
+        detail = T('Yeniden başlatınca kurulur.', 'It installs when you restart.');
+      } else if (s === 'latest') {
+        title = T('Uygulama güncel', 'The app is up to date');
+        detail = T('Yüklü sürüm en yeni sürüm.', 'You have the latest version.');
+      } else if (s === 'error') {
+        title = T('Güncelleme kontrol edilemedi', 'Could not check for updates');
+        detail = T('İnternet bağlantını kontrol edip tekrar dene.', 'Check your connection and try again.');
+      } else if (s === 'unsupported') {
+        title = T('Bu ortamda sürüm kontrolü yapılmaz', 'Version check is unavailable here');
+        detail = T('Geliştirme sürümünde güncelleme kontrol edilemez.', 'Updates cannot be checked in a development build.');
         checkBtn.disabled = true;
         checkBtn.style.opacity = '0.55';
       }
+      statusEl.textContent = title;
+      detailEl.textContent = detail;
+      detailEl.classList.toggle('hidden', !detail);
     }
 
     checkBtn.addEventListener('click', function () {
-      statusEl.textContent = T('Güncellemeler kontrol ediliyor…', 'Checking for updates…');
+      render({ state: 'checking' });
+      syncCard();
       api.check().then(function (st) { render(st); syncCard(); });
     });
     installBtn.addEventListener('click', function () {

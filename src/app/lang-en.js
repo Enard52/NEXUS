@@ -45,6 +45,11 @@ window.NEXUS_EN = {
     "Dokunma Sesleri": "Touch Sounds",
     Titreşim: "Vibration",
     Animasyonlar: "Animations",
+    "Uyarı kategorileri, sessiz saatler ve dışa dönük kanallar.":
+      "Alert categories, quiet hours and outbound channels.",
+    "Görünüm ve Genel": "Appearance & General",
+    "Tema, birimler ve dil.": "Theme, units and language.",
+    "Cihaz Yazılım Güncellemeleri": "Device Firmware Updates",
     NEXUS: "NEXUS",
     Siri: "Siri",
     "Iklim Konfor Paneli": "Climate Comfort Panel",
@@ -435,10 +440,23 @@ window.NEXUS_EN = {
     "Home Interior": "Home Interior",
     HomePod: "HomePod",
     "+90 5XX XXX XX XX": "+1 (555) 000-0000",
-    /* --- Anlık Bildirimler: dışa dönük kanallar (Telegram / sistem bildirimi) --- */
+    /* --- Anlık Bildirimler: dışa dönük kanallar (ntfy / Telegram / sistem bildirimi) --- */
     "Dışa Dönük Kanallar": "Outbound Channels",
     "Olaylar uygulamanın içinde kalır; istersen aynı uyarıyı telefonunun uyarı merkezine veya Telegram'a da gönder. Hiçbiri zorunlu değil.":
       "Events stay inside the app; if you want, send the same alert to your phone's notification centre or to Telegram. None of these is required.",
+    "Konu adı yaz, hesap gerekmez": "Enter a topic name — no account needed",
+    "Konu (topic)": "Topic",
+    "Bildirimler ntfy.sh üzerinde bu konuya gönderilir; konu adını sadece sen biliyorsan bildirimi sadece sen alırsın.":
+      "Notifications are published to this topic on ntfy.sh; if only you know the topic name, only you receive them.",
+    "E-posta": "Email",
+    "Uyarılar hesabının e-posta adresine gider": "Alerts are sent to your account's email address",
+    "Bulut oturumu açıkken kendi adresine gönderilir; saklanacak anahtar yok.":
+      "Sent to your own address while signed in; no secrets are stored in the app.",
+    "Gönderilecek adres": "Recipient",
+    "Kendi sunucuna JSON POST — gelişmiş": "JSON POST to your own server — advanced",
+    "HTTPS adresi": "HTTPS URL",
+    "Yalnızca HTTPS kabul edilir; her olay {source, id, title, detail, ts} olarak gönderilir.":
+      "Only HTTPS is accepted; each event is sent as {source, id, title, detail, ts}.",
     "Bot anahtarı": "Bot token",
     "Sohbet ID": "Chat ID",
     "Bot anahtarı yalnızca bu cihazda kalır": "The bot token stays on this device only",
@@ -543,6 +561,10 @@ window.NEXUS_EN = {
     "Çalışıyor · port {0} · {1} cihaz": "Running · port {0} · {1} devices",
     "Köprü, iOS cihazınla aynı Wi-Fi'da olmalı. Eşleşme kalıcıdır; NEXUS çalışıp tepside bekledikçe ev uygulamasındaki anahtarlar gerçek cihaza gider.":
       "The bridge must be on the same Wi-Fi as your iOS device. Pairing persists; as long as NEXUS stays running in the tray, switches in the Home app go to the real device.",
+    "Hesabına bağlı kayıtlar": "Linked to your account",
+    "Köprüler ve açık kaynak": "Bridges and open source",
+    "Bu yazılımları çalıştıran cihazlar ağda otomatik bulunur.":
+      "Devices running this software are found automatically on the network.",
     "HomeKit ve Apple Ev, Apple Inc. tescilli markalarıdır. Bu adımlar telefon/web sürümü içindir: cihaz kontrolü Home Assistant üzerinden iletilir. Masaüstü sürümünde NEXUS kendi yerleşik köprüsünü yayınlar (yukarıdaki panel).":
       "HomeKit and Apple Home are trademarks of Apple Inc. These steps are for the phone/web version: device control is relayed via Home Assistant. On desktop, NEXUS publishes its own built-in bridge (the panel above).",
     "Paylaşılacak cihaz yok: yerel ağda anahtar yeteneği olan cihaz lazım":
@@ -641,6 +663,17 @@ window.NEXUS_EN = {
     "İki adımlı doğrulama kapatıldı.": "Two-step verification is off.",
     "Kimlik uygulamasındaki 6 haneli kodu gir.":
       "Enter the 6-digit code from your authenticator app.",
+    "Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulaması aç.":
+      "Open an authenticator app such as Google Authenticator or Microsoft Authenticator.",
+    "Aşağıdaki kodu okut ya da anahtarı elle gir.": "Scan the code below or enter the key by hand.",
+    "Uygulamadaki 6 haneli kodu yaz ve Doğrula'ya dokun.":
+      "Type the 6-digit code from the app and tap Verify.",
+    "Anahtarı kopyala": "Copy key",
+    "Kimlik uygulamasında aç": "Open in authenticator app",
+    "Kimlik uygulamasına erişimini kaybedersen girişte kod isteneceği için hesabına giremezsin. Bu anahtarı güvenli bir yere kaydet.":
+      "If you lose access to your authenticator app you won't be able to sign in, because a code is required at login. Save this key somewhere safe.",
+    "Anahtar kopyalandı ✓": "Key copied ✓",
+    "Kopyalanamadı; anahtarı elle yaz.": "Couldn't copy; type the key by hand.",
     "6 haneli kod": "6-digit code",
     Doğrula: "Verify",
     Yakında: "Coming soon",
@@ -3173,6 +3206,21 @@ window.NEXUS_EN = {
       "We couldn't find your sign-in email; sign in first.",
     "Bağlantı gönderilemedi. Birazdan tekrar dene.":
       "The link couldn't be sent. Try again in a moment.",
+
+    /* --- Senaryonun yapacakları rozetleri (smart-card-detail-state.js / smart-scene-page.js
+       describeAct) ve kamera gizlilik satırı: bu metinler JS'te üretilir, statik HTML'de
+       geçmedikleri için üstteki liste onları görmüyordu. --- */
+    Açılır: "Turns on",
+    Kapanır: "Turns off",
+    "Sıcak ışık": "Warm light",
+    "Işık tonu ayarlanır": "Sets colour tone",
+    "Eko modu": "Eco mode",
+    "Konfor modu": "Comfort mode",
+    Kilitlenir: "Locks",
+    "Bildirimler açılır": "Turns on notifications",
+    "Fan otomatik": "Fan on auto",
+    "Parlaklık %{0}": "Brightness {0}%",
+    "bu kamera için ayarlanamıyor": "can't be set for this camera",
   },
   html: {},
   slots: {

@@ -47,8 +47,8 @@
   <main class="px-5 pt-4 pb-10">
     <section id="homes-list" class="space-y-4"></section>
     <section class="mt-8 space-y-3">
-      <button class="w-full rounded-2xl bg-[#4C7DFF] py-4 text-lg font-bold text-white shadow-md active:scale-[0.98] transition-transform" onclick="openInputSheet('create')">Yeni Ev Oluştur</button>
-      <button class="w-full rounded-2xl border border-slate-200 bg-white py-4 text-lg font-bold text-slate-800 active:scale-[0.98] transition-transform dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100" onclick="openInputSheet('join')">Bir Eve Katıl</button>
+      <button class="w-full rounded-2xl bg-[#4C7DFF] py-4 text-lg font-bold text-white shadow-md active:scale-[0.98] transition-transform flex items-center justify-center gap-2" onclick="openInputSheet('create')"><i class="w-5 h-5" data-lucide="plus"></i>Yeni Ev Oluştur</button>
+      <button class="w-full rounded-2xl border border-slate-200 bg-white py-4 text-lg font-bold text-slate-800 active:scale-[0.98] transition-transform dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 flex items-center justify-center gap-2" onclick="openInputSheet('join')"><i class="w-5 h-5" data-lucide="door-open"></i>Bir Eve Katıl</button>
     </section>
   </main>
 
@@ -137,14 +137,7 @@
     var sheetMode = "";
     var memberIndex = -1;
 
-    function showHouseholdToast(msg, type) {
-      var t = document.createElement('div');
-      var bg = type === 'error' ? '#dc2626' : '#1e293b';
-      t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:' + bg + ';color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;white-space:nowrap;max-width:90vw;text-align:center;';
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(function() { if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
-    }
+    function showHouseholdToast(msg, type) { window.nexusToast(msg, { type: type === 'error' ? 'error' : 'success' }); }
 
     function ownerName() { return nexusGetItem("nexusUserName") || "Misafir"; }
     function ownerEmail() { return nexusGetItem("nexusUserEmail") || ""; }
@@ -260,17 +253,29 @@
     function openMailInvite(invite, home) {
       if (!invite.email) return;
       // Bulut açıksa davet gerçek bir e-posta olarak gider (Supabase Auth davet mektubu,
-      // yalnızca davetlinin dilinde, ev kodu şablonda gösterilir). Değilse mailto ile devam.
+      // yalnızca davetlinin dilinde, ev kodu şablonda gösterilir). Gönderilemezse kullanıcıya
+      // açıkça sorulur; e-posta uygulaması/tarayıcı kendiliğinden AÇILMAZ.
       if (window.nexusCloud && nexusCloud.enabled() && typeof nexusCloud.sendHouseholdInvite === "function") {
         showHouseholdToast("Davet e-postası gönderiliyor…");
         nexusCloud.sendHouseholdInvite({ email: invite.email, homeName: home.name || "", code: invite.code || "", role: invite.role || "" }).then(function (res) {
           if (res && res.sent) showHouseholdToast("Davet e-postası gönderildi: " + invite.email);
           else if (res && res.alreadyAccount) showHouseholdToast("Bu e-postanın hesabı zaten var; kodla katılabilir.");
-          else mailtoInvite(invite, home);
+          else askMailFallback(invite, home, "Davet e-postası NEXUS sunucusundan gönderilemedi.");
         });
         return;
       }
-      mailtoInvite(invite, home);
+      askMailFallback(invite, home, "Bulut hesabı kapalı ya da oturum açık değil; e-posta otomatik gönderilemedi.");
+    }
+    // Chrome/Gmail gibi varsayılan e-posta programı yalnızca kullanıcı isterse açılır.
+    function askMailFallback(invite, home, reason) {
+      if (!window.nexusDialog) { showHouseholdToast(reason, "error"); return; }
+      nexusDialog({
+        title: "Davet gönderilemedi",
+        icon: "warning",
+        message: reason + " Daveti kendi e-posta uygulamanla göndermek istersen bu, bilgisayarının varsayılan e-posta programını (ör. tarayıcıda Gmail) açar.",
+        primary: { label: "E-posta uygulamasında aç", onClick: function () { mailtoInvite(invite, home); } },
+        secondary: { label: "Vazgeç" }
+      });
     }
     function mailtoInvite(invite, home) {
       if (!invite.email) return;
@@ -335,7 +340,7 @@
       var settings = '<section class="surface card-shadow mb-6 overflow-hidden rounded-3xl border border-transparent bg-white dark:bg-slate-900">' +
         settingRow("Ev İsmi", home.name, "openEditName()") + divider +
         settingRow("Oda yönetimi", home.rooms.length + " Oda", "openRooms()") + divider +
-        settingRow("Ev Konumu", home.location || "Otomatik algılanmadı", "openEditLocation()") + divider +
+        settingRow("Ev Konumu", looksLikeCoords(home.location) ? "Seçilen Konum" : (home.location || "Otomatik algılanmadı"), "openEditLocation()") + divider +
         settingRow("İzinleri Yönet", null, "openPermissions()") + '</section>';
       var membersRows = home.members.map(function (member, index) {
         return '<button class="flex w-full items-center gap-3 px-5 py-4 text-left active:bg-slate-50 dark:active:bg-slate-800/60" onclick="openMember(' + index + ')">' +
@@ -370,7 +375,7 @@
         create: { title: "Yeni Ev Oluştur", desc: "Evine bir isim ver.", placeholder: "Örn. Yazlık", value: "" },
         join: { title: "Bir Eve Katıl", desc: "Sana gönderilen davet kodunu gir.", placeholder: "Örn. NX-HOME-7F2A", value: "" },
         name: { title: "Ev İsmi", desc: "Evinin adını düzenle.", placeholder: "Örn. Evim", value: currentHome() ? currentHome().name : "" },
-        location: { title: "Ev Konumu", desc: "Sistem konumunu algılat veya elle düzenle.", placeholder: "Örn. Kadıköy", value: currentHome() ? currentHome().location : "" }
+        location: { title: "Ev Konumu", desc: "Sistem konumunu algılat veya elle düzenle.", placeholder: "Örn. Kadıköy", value: (currentHome() && !looksLikeCoords(currentHome().location)) ? currentHome().location : "" }
       }[mode];
       document.getElementById("sheet-title").textContent = cfg.title;
       document.getElementById("sheet-desc").textContent = cfg.desc;

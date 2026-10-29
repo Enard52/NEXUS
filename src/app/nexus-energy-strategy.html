@@ -156,10 +156,10 @@
 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
 <i class="w-5 h-5" data-lucide="zap"></i>
 </div>
-<div class="nx-sheet-head"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></span><h3>AI Enerji Tasarrufu</h3></div>
+<div class="nx-sheet-head"><h3>AI Enerji Tasarrufu</h3></div>
 </div>
 <p class="text-sm text-slate-400 mb-6">Bu mini uygulama resmî sağlayıcı tarafından sunulur.</p>
-<div class="grid grid-cols-4 gap-3 text-center" data-purpose="miniapp-actions">
+<div class="grid grid-cols-3 gap-3 text-center" data-purpose="miniapp-actions">
 <button class="flex flex-col items-center gap-2" onclick="closeSheets(); openSheet('settings')">
 <span class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center"><i class="w-6 h-6 text-slate-700" data-lucide="settings"></i></span>
 <span class="text-xs font-medium text-slate-600">Ayarlar</span>
@@ -214,13 +214,19 @@
     })();
 
     /* ---------- Home location synced back from the map picker ---------- */
+    /* Koordinat metni kullanıcıya gösterilmez: eski kayıtlarda ters geokodlama
+       yapılamadığından konum adına "41.0150, 28.9850" gibi koordinat yazılmış olabilir. */
+    function looksLikeCoords(v) {
+      return /^-?\d{1,3}\.\d+\s*,\s*-?\d{1,3}\.\d+$/.test(String(v || '').trim());
+    }
+    function locationLabel(loc) { return looksLikeCoords(loc) ? 'Seçilen Konum' : (loc || ''); }
     (function () {
       var loc = nexusGetItem('nexusHomeLocation');
       if (!loc) return;
       var val = document.getElementById('home-location-value');
-      val.textContent = loc;
+      val.textContent = locationLabel(loc);
       val.classList.remove('hidden');
-      document.getElementById('settings-status').textContent = 'Ev Konumu: ' + loc;
+      document.getElementById('settings-status').textContent = 'Ev Konumu: ' + locationLabel(loc);
       enableSave();
     })();
     function enableSave() {
@@ -236,7 +242,7 @@
       try { map = JSON.parse(nexusGetItem('nexusEnergySettingsMap') || '{}'); } catch (e) { map = {}; }
       map[currentTitle] = { homeLocation: loc, savedAt: Date.now() };
       nexusSetItem('nexusEnergySettingsMap', JSON.stringify(map));
-      document.getElementById('settings-status').textContent = loc ? 'Ev Konumu: ' + loc : 'Ayarlanmadı';
+      document.getElementById('settings-status').textContent = loc ? 'Ev Konumu: ' + locationLabel(loc) : 'Ayarlanmadı';
       closeSheets();
     }
 
