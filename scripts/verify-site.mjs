@@ -125,7 +125,10 @@ for (const [file, cur, saveText] of [
   check(`${label}: aylık fiyat gerçek (${PRICES[cur].monthly})`, text.includes(PRICES[cur].monthly));
   check(`${label}: indirim oranı gerçek (${saveText})`, text.includes(saveText));
   // Uygulamanın olmadığı marka/protokol vaatleri (supported-devices.js ile çelişiyorlardı).
-  const banned = ["HomeKit", "WiZ", "LIFX", "Govee", "Sonoff DIY", "MQTT"];
+  // Yasak liste: sitede vaat EDİLMEMESİ gereken markalar. WiZ/LIFX/Govee gerçek
+  // bağlayıcı olduğundan (UDP köprüsü + lan-connectors handler'ları) listeden
+  // çıkarıldı; HomeKit/Sonoff DIY/MQTT hâlâ uygulama surface'ünde vaat edilmemeli.
+  const banned = ["HomeKit", "Sonoff DIY", "MQTT"];
   const found = banned.filter((b) => text.includes(b));
   check(`${label}: olmayan marka vaat edilmiyor`, found.length === 0, found.join(","));
   // Bayat elle-kopya çıktıların imzası: iç sayfalar .html ile anılıyor.
