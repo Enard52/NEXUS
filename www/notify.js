@@ -395,11 +395,23 @@
     }, Promise.resolve());
   }
 
+  /* Tek kanallık denemeye izin verir: `only` verilmemişse açık tüm kanallara gider
+     (eskiden olduğu gibi), verilmişse yalnızca sayılan kanallar bırakılır. Sistem
+     izni düğmesi bu sayede Telegram'a sormadan sadece kendi bildirimi düşürebiliyor. */
+  function restrict(cfg, only) {
+    if (!Array.isArray(only)) return cfg;
+    var out = {};
+    Object.keys(cfg).forEach(function (name) {
+      out[name] = Object.assign({}, cfg[name], { enabled: only.indexOf(name) !== -1 && cfg[name].enabled });
+    });
+    return out;
+  }
+
   // "Test gönder" kullanıcı komutudur: sessiz saatler / kategori anahtarı testi
   // engellememeli, aksi halde kanal bozukmuş gibi görünür. DND asıl söz hakkı değil,
   // yine de test engellenmez — ama olay akışına YAZILMAZ (listede kirlilik olmaz).
-  function test() {
-    return fanout(channels(), {
+  function test(only) {
+    return fanout(restrict(channels(), only), {
       id: "notify-test-" + Date.now(),
       title: "Test bildirimi",
       detail: "NEXUS kanal denemesi — bunu görüyorsan kanal çalışıyor.",
@@ -408,18 +420,32 @@
     }).then(function (results) { return { sent: results }; });
   }
 
+  /* Sistem izni — DÜRÜST sonuç döner: { permission, asked }.
+     "asked" neden gerekli: Chromium bir kaynağa yalnızca KEZ sorar. İzin zaten
+     "granted" ya da "denied" ise requestPermission() hiçbir pencere açmaz ve eski
+     kararı geri döndürür. Masaüstü programda (desktop/main.cjs) izin istemcisi
+     notifications:1 ile otomatik onaylandığı için orada hiç pencere çıkmaz.
+     Çağıran "az önce sordum" ile "zaten biliniyordu"yu ayıramazsa, kullanıcı
+     "tıkladım, hiçbir şey sorulmadan verildi diyor" diye haklı olarak yanıltılır. */
   function requestSystemPermission() {
     var cap = window.Capacitor;
     var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
     if (ln && typeof ln.requestPermissions === "function") {
       return ensureLocalChannel(ln).then(function () {
-        return ln.requestPermissions();
-      }).then(function (res) {
-        return (res && res.display === "granted") ? "granted" : ((res && res.display) || "denied");
-      }).catch(function () { return "denied"; });
+        // Android/iOS da aynı: "prompt" değilse sistem sormaz, kararı olduğu gibi verir.
+        return ln.checkPermissions ? ln.checkPermissions() : { display: "prompt" };
+      }).then(function (cur) {
+        if (cur && cur.display && cur.display !== "prompt") return { permission: cur.display, asked: false };
+        return ln.requestPermissions().then(function (res) {
+          return { permission: (res && res.display) || "denied", asked: true };
+        });
+      }).catch(function () { return { permission: "denied", asked: true }; });
     }
-    if (typeof Notification === "undefined" || Notification.permission !== "default") return Promise.resolve(Notification ? Notification.permission : "unsupported");
-    return Promise.resolve(Notification.requestPermission()).catch(function () { return "denied"; });
+    if (typeof Notification === "undefined") return Promise.resolve({ permission: "unsupported", asked: false });
+    if (Notification.permission !== "default") return Promise.resolve({ permission: Notification.permission, asked: false });
+    return Promise.resolve(Notification.requestPermission())
+      .then(function (p) { return { permission: p, asked: true }; })
+      .catch(function () { return { permission: "denied", asked: true }; });
   }
 
   function start() {

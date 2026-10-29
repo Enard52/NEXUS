@@ -39,9 +39,9 @@ const page = await ctx.newPage();
 const errs = [];
 page.on("pageerror", (e) => errs.push(String(e.message)));
 const sent = [];
-await page.route("https://ntfy.sh/**", (route) => {
+await page.route("https://api.telegram.org/**", (route) => {
   sent.push({ url: route.request().url(), headers: route.request().headers(), body: route.request().postData() });
-  route.fulfill({ status: 200, body: "ok" });
+  route.fulfill({ status: 200, body: '{"ok":true}' });
 });
 
 const url = `http://127.0.0.1:${PORT}/nexus-instant-notifications.html`;
@@ -50,37 +50,55 @@ await page.waitForTimeout(600);
 
 ok("notify.js sayfada yüklendi", await page.evaluate(() => !!window.nexusNotify));
 
-// topic yaz + kanalı aç
-await page.fill("#ntfy-topic", "nexus-dogrulama");
-await page.click('input[data-channel="ntfy"] + .slider');
+// Arayüzden kaldırılan kanalların anahtarı artık yok; eski kurulumda açık kalmışsa
+// sayfa onları yüklenirken susturmalı (susturulamayan dışa gönderim kalmasın).
+ok("ntfy/webhook arayüzde yok", (await page.locator('[data-channel="ntfy"], [data-channel="webhook"]').count()) === 0);
+ok("kaldırılan kanallar kapalı tutulur", await page.evaluate(() => {
+  window.nexusNotify.save({ ntfy: { enabled: true, topic: "eski" }, webhook: { enabled: true, url: "https://eski/hook" } });
+  return true;
+}));
+await page.reload({ waitUntil: "load" });
+await page.waitForTimeout(500);
+ok("açık bırakılmış ntfy/webhook yüklenmede kapanır", await page.evaluate(() => {
+  const c = window.nexusNotify.channels();
+  return c.ntfy.enabled === false && c.webhook.enabled === false;
+}));
+
+// Telegram kanalını kur + aç (artık tek dış hizmet köprüsü bu)
+await page.fill("#telegram-token", "123456:TEST-anahtar");
+await page.fill("#telegram-chat", "987654321");
+await page.click('input[data-channel="telegram"] + .slider');
 await page.waitForTimeout(200);
 const cfg = await page.evaluate(() => window.nexusNotify.channels());
-ok("ntfy kanalı açık + topic kayıtlı", cfg.ntfy.enabled === true && cfg.ntfy.topic === "nexus-dogrulama", JSON.stringify(cfg.ntfy));
+ok("telegram kanalı açık + alanlar kayıtlı", cfg.telegram.enabled === true && cfg.telegram.chat === "987654321", JSON.stringify({ enabled: cfg.telegram.enabled, chat: cfg.telegram.chat }));
 
-// sistem kanalını kapat (test yalnızca ntfy'ye gitsin)
+// sistem kanalını kapat (test yalnızca telegram'a gitsin)
 await page.click('input[data-channel="system"] + .slider');
 await page.waitForTimeout(150);
 
 // test bildirimi
 await page.click("#notify-test");
 await page.waitForTimeout(1200);
-ok("test bildirimi ntfy'ye ulaştı", sent.length === 1, sent.length + " istek");
+ok("test bildirimi telegram'a ulaştı", sent.length === 1, sent.length + " istek");
 if (sent.length) {
-  ok("URL topic'i taşıyor", sent[0].url === "https://ntfy.sh/nexus-dogrulama", sent[0].url);
-  ok("Title başlığı ASCII", sent[0].headers["title"] === "NEXUS Test bildirimi", sent[0].headers["title"]);
+  ok("URL bot sohbetine gidiyor", /\/bot123456:TEST-anahtar\/sendMessage/.test(sent[0].url), sent[0].url);
+  let payload = {};
+  try { payload = JSON.parse(sent[0].body || "{}"); } catch { /* gövde okunamadı */ }
+  ok("gövde Türkçe metni bozmadan taşır", payload.chat_id === "987654321" && /Test bildirimi/.test(String(payload.text)), String(payload.text));
 }
 const status = await page.textContent("#notify-status");
 ok("durum satırı güncellendi", /Gönderilen 1/.test(status || ""), status);
+ok("durum satırı kanal adını Türkçe yazar", !/\bsystem\b|\btelegram\b|\bntfy\b|\bwebhook\b/.test(status || ""), status);
 
 // yeniden yükle: ayarlar kalıcı mı
 await page.reload({ waitUntil: "load" });
 await page.waitForTimeout(500);
 const after = await page.evaluate(() => ({
-  topic: document.getElementById("ntfy-topic").value,
-  checked: document.querySelector('input[data-channel="ntfy"]').checked,
+  chat: document.getElementById("telegram-chat").value,
+  checked: document.querySelector('input[data-channel="telegram"]').checked,
   system: document.querySelector('input[data-channel="system"]').checked,
 }));
-ok("topic yeniden yüklemede durur", after.topic === "nexus-dogrulama", after.topic);
+ok("sohbet id yeniden yüklemede durur", after.chat === "987654321", after.chat);
 ok("kanal anahtarları kalıcı", after.checked === true && after.system === false, JSON.stringify(after));
 
 // master anahtarı kapat → hiçbir şey gitmemeli
@@ -93,7 +111,6 @@ ok("master kapalı → dağıtım kesilir", muted === "master", String(muted));
 // gerçek olay akışı: nexusEvents'e sayı ts ile yazılan olay kanala gider mi
 sent.length = 0;
 await page.evaluate(() => {
-  window.nexusNotify.save({ telegram: { enabled: false } });
   const list = JSON.parse(localStorage.getItem(Object.keys(localStorage).find((k) => k.endsWith("nexusEvents")) || "k") || "[]");
   list.push({ id: "auto-" + Date.now(), type: "automation", title: "Kapı algılandı", detail: "Ön kapı", ts: Date.now() });
   Object.keys(localStorage).filter((k) => k.endsWith("nexusEvents")).forEach((k) => localStorage.setItem(k, JSON.stringify(list)));

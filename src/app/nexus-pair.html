@@ -503,6 +503,7 @@
     };
     // Protokolün gerçekten yazabildiği ek yetenekler (renk vb.)
     var PROTOCOL_EXTRA = { wled: ["color"], tasmota: [], yeelight: ["color"] };
+    var PROTOCOL_CT = { yeelight: 1, wiz: 1, lifx: 1 };
     var PROTOCOL_IMG = { wled: "generic-led-strip.png" };
 
     function setScanStatus(message, tone) {
@@ -552,6 +553,8 @@
         var profile = KIND_PROFILE[found.kind] || KIND_PROFILE.switch;
         var caps = (found.caps || profile.caps).slice();
         (PROTOCOL_EXTRA[found.protocol] || []).forEach(function (c) { if (found.kind === "light" && caps.indexOf(c) === -1) caps.push(c); });
+        // Renkli ampuller beyaz tonunu da ayarlar (Yeelight / WiZ / LIFX); renk yeteneği olmayan cihaza eklenmez.
+        if (PROTOCOL_CT[found.protocol] && found.kind === "light" && caps.indexOf("color") !== -1 && caps.indexOf("colorTemp") === -1) caps.push("colorTemp");
         devices.push({
           id: ("lan-" + normalizedHost + (found.endpointId != null && found.endpointId !== 0 ? "-" + found.endpointId : "")).replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
           name: found.name,

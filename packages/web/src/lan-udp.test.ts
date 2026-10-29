@@ -69,6 +69,11 @@ describe("WiZ", () => {
     expect(sent.at(-1)).toMatchObject({ method: "setPilot", params: { state: true, dimming: 10 } });
     await lan.protocolFor("wiz").write(dev, "color", "#ff8000");
     expect(sent.at(-1).params).toMatchObject({ r: 255, g: 128, b: 0 });
+    // Işık tonu: WiZ setPilot "temp" (Kelvin) alanı — resmi WiZ UDP API
+    await lan.protocolFor("wiz").write(dev, "colorTemp", "warm");
+    expect(sent.at(-1)).toMatchObject({ method: "setPilot", params: { state: true, temp: 2700 } });
+    await lan.protocolFor("wiz").write(dev, "colorTemp", "cool");
+    expect(sent.at(-1).params).toMatchObject({ temp: 6500 });
   });
 });
 

@@ -350,7 +350,7 @@
   var hue = {
     id: "hue",
     label: "Philips Hue",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp"],
     probe: function (device) {
       return getJson(baseUrl(device) + "/api/config").then(function (c) {
         if (!c || !c.bridgeid) throw new Error("hue: köprü değil");
@@ -378,7 +378,7 @@
           var caps = ["switch"];
           if (/dimmable|color|temperature/i.test(type)) caps.push("brightness");
           if (/color light/i.test(type)) caps.push("color");
-          if (/temperature/i.test(type)) caps.push("colorTemp");
+          if (/temperature|extended color/i.test(type)) caps.push("colorTemp");
           return { id: id, name: l.name || ("Hue " + id), type: type, caps: caps, model: l.modelid || "Hue" };
         });
       });
@@ -425,6 +425,7 @@
       if (capability === "switch") body = { on: !!value };
       if (capability === "brightness") body = { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 254)) };
       if (capability === "color") body = { on: true, xy: rgbToXy(hexToRgb(value)) };
+      if (capability === "colorTemp") body = { on: true, ct: Math.round(1000000 / toneKelvin(value)) }; // Hue ct: mired (153–500)
       if (!body) return unsupported("hue", capability);
       return sendJson(hue.url(device) + "/state", "PUT", body).then(function (r) {
         if (Array.isArray(r) && r[0] && r[0].error) throw new Error("hue: " + r[0].error.description);
@@ -432,6 +433,12 @@
       });
     },
   };
+
+  // Uygulamadaki "Sıcak / Doğal / Soğuk" seçimi → Kelvin (Hue için 153–500 mired aralığına denk gelir)
+  function toneKelvin(tone) {
+    if (typeof tone === "number" && isFinite(tone)) return Math.max(2000, Math.min(6500, Math.round(tone)));
+    return tone === "warm" ? 2700 : tone === "cool" ? 6500 : 4000;
+  }
 
   function rgbToXy(rgb) {
     var c = rgb.map(function (v) { v = v / 255; return v > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92; });
@@ -624,7 +631,7 @@
   var yeelight = {
     id: "yeelight",
     label: "Yeelight",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp"],
     needsTcp: true,
     send: function (device, method, params) {
       var tcp = tcpBridge();
@@ -654,6 +661,7 @@
       if (capability === "switch") return yeelight.send(device, "set_power", [value ? "on" : "off", "smooth", 300]);
       if (capability === "brightness") return yeelight.send(device, "set_bright", [Math.max(1, Math.round(value)), "smooth", 300]);
       if (capability === "color") return yeelight.send(device, "set_rgb", [parseInt(String(value).replace("#", ""), 16), "smooth", 300]);
+      if (capability === "colorTemp") return yeelight.send(device, "set_ct_abx", [toneKelvin(value), "smooth", 300]);
       return unsupported("yeelight", capability);
     },
   };
@@ -676,7 +684,7 @@
   var wiz = {
     id: "wiz",
     label: "WiZ",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp"],
     needsUdp: true,
     call: function (device, method, params) {
       return udpSend({ host: hostOnly(device), port: 38899, text: JSON.stringify({ id: 1, method: method, params: params || {} }) }).then(function (r) {
@@ -700,6 +708,7 @@
       if (capability === "switch") return wiz.call(device, "setPilot", { state: !!value });
       if (capability === "brightness") return wiz.call(device, "setPilot", { state: true, dimming: Math.max(10, Math.min(100, Math.round(value))) });
       if (capability === "color") { var c = hexToRgb(value); return wiz.call(device, "setPilot", { state: true, r: c[0], g: c[1], b: c[2] }); }
+      if (capability === "colorTemp") return wiz.call(device, "setPilot", { state: true, temp: toneKelvin(value) });
       return unsupported("wiz", capability);
     },
   };
@@ -727,7 +736,7 @@
   var lifx = {
     id: "lifx",
     label: "LIFX",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp"],
     needsUdp: true,
     call: function (device, type, payload) {
       return udpSend({ host: hostOnly(device), port: 56700, hex: lifxPacket(type, payload || []) }).then(function (r) { return hexBytes(r.hex); });
@@ -750,11 +759,12 @@
     write: function (device, capability, value) {
       if (capability === "switch") return lifx.call(device, 117, u16(value ? 65535 : 0).concat(u32(0)));
       return lifx.state(device).then(function (s) {
-        var h = s.hue, sat = s.sat, br = s.bright;
+        var h = s.hue, sat = s.sat, br = s.bright, kelvin = s.kelvin || 3500;
         if (capability === "brightness") br = Math.max(1, Math.min(100, value)) / 100 * 65535;
         else if (capability === "color") { var c = rgbToHsb(hexToRgb(value)); h = c.h * 65535; sat = c.s * 65535; br = Math.max(c.v, 0.05) * 65535; }
+        else if (capability === "colorTemp") { h = 0; sat = 0; kelvin = toneKelvin(value); } // doygunluk 0 = beyaz ışık, ton Kelvin ile
         else return unsupported("lifx", capability);
-        return lifx.call(device, 102, [0].concat(u16(h), u16(sat), u16(br), u16(s.kelvin || 3500), u32(250)));
+        return lifx.call(device, 102, [0].concat(u16(h), u16(sat), u16(br), u16(kelvin), u32(250)));
       });
     },
   };

@@ -146,7 +146,41 @@
   // Ortak kontrol ekranında hangi bölümlerin görüneceği: cihazın yeteneklerinden (caps) ve
   // model adından çıkarılır. Aynı paneli kullanan cihazlarda bölümler cihazdan cihaza değişir,
   // ekran düzeni aynı kalır. Kayıtta device.features varsa o esas alınır.
+  // --- Gönderilebilirlik kapısı ------------------------------------------------------------------
+  // Bir kontrol ancak cihaza GERÇEKTEN gönderilebiliyorsa gösterilir: cihaz yerel ağa bağlı olmalı ve
+  // protokolü o işlevi yazabilmeli. Aksi halde düğme "çalışıyormuş" gibi görünüp yalnızca uygulamada
+  // saklanırdı (sahte başarı). Salt okunur gösterimler (ölçüm, pil, tüketim) etkilenmez.
+  // Kontrol -> gereken yazma işlevi (lan-connectors protokol "caps" listesi):
+  var CONTROL_CAP = {
+    power: "switch", brightness: "brightness", presets: "brightness", color: "color", colorTemp: "colorTemp",
+    position: "position", coverButtons: "position", target: "target", acModes: "hvacMode", fanSpeed: "fanMode",
+    swing: "swing", lockButton: "lock", vacuumButtons: "vacuum", suction: "suction",
+    volume: "volume", mute: "mute", source: "source", indicator: "indicator"
+  };
+  // Cihaz bazında değişen yetenekler: protokol destekliyor olsa da cihazın kendi listesinde bulunmalı.
+  var PER_DEVICE_CAP = { brightness: 1, color: 1, colorTemp: 1, hvacMode: 1, fanMode: 1, swing: 1, suction: 1, volume: 1, mute: 1, source: 1, indicator: 1 };
+  // Hiçbir protokolle cihaza gönderilemeyen, yalnızca uygulamada saklanan alanlar: gösterilmez.
+  var LOCAL_ONLY = {
+    profile: 1, sleep: 1, lockNotify: 1, autoLock: 1, privacy: 1, nightVision: 1, motionNotify: 1, notify: 1,
+    childLock: 1, display: 1, powerOn: 1, cleanMode: 1, duration: 1, feed: 1, portion: 1, preview: 1
+  };
+
+  function canSend(device, capability) {
+    if (!isLan(device) || typeof window.nexusLan === "undefined") return false;
+    if (!window.nexusLan.supports(device, capability)) return false;
+    return PER_DEVICE_CAP[capability] ? hasCap(device, capability) : true;
+  }
+
   function featuresOf(device) {
+    var all = rawFeaturesOf(device);
+    return all.filter(function (feature) {
+      if (LOCAL_ONLY[feature]) return false;
+      var cap = CONTROL_CAP[feature];
+      return cap ? canSend(device, cap) : true;
+    });
+  }
+
+  function rawFeaturesOf(device) {
     if (device && Array.isArray(device.features) && device.features.length) return device.features.slice();
     var caps = deviceCaps(device);
     var has = function (c) { return caps.indexOf(c) !== -1; };
@@ -445,6 +479,7 @@
   function sendExtra(device, field, index) {
     var st = device.state || {};
     if ((field === "position" || field === "coverAction") && typeof st.position === "number") sendCommand(device, "position", st.position, index);
+    else if ((field === "tone" || (field === "preset" && st.tone)) && st.tone) sendCommand(device, "colorTemp", st.tone, index);
     else if (field === "target" && typeof st.target === "number") sendCommand(device, "target", st.target, index);
     else if (field === "locked") sendCommand(device, "lock", !!st.locked, index);
     else if (field === "mode" && kindOf(device) === "vacuum") sendCommand(device, "vacuum", st.mode, index);
@@ -570,14 +605,14 @@
   // Bir senaryonun bu cihazda gerçekten uygulayacağı alan/değer çiftleri (cihazda olmayan özellikler elenir).
   function sceneActs(scene, device) {
     var acts = scene.act(kindOf(device), device) || [];
+    // Yalnızca cihaza GERÇEKTEN gönderilebilen alanlar senaryoya girer; yalnızca uygulamada saklanacak adımlar
+    // (bildirim, gizlilik, uyku, profil…) "cihaz ayarlandı" gibi görünmesin diye elenir.
+    var FIELD_CAP = { "switch": "switch", brightness: "brightness", tone: "colorTemp", color: "color", coverAction: "position", position: "position", target: "target", locked: "lock", mode: "vacuum" };
     return acts.filter(function (a) {
-      // cihazda olmayan özellikleri uygulama (ör. ışık tonu olmayan ampul)
-      if (a[0] === "tone") return hasFeature(device, "colorTemp");
-      if (a[0] === "brightness") return hasCap(device, "brightness");
-      if (a[0] === "switch") return hasCap(device, "switch");
-      if (a[0] === "privacy") return hasFeature(device, "privacy");
-      if (a[0] === "sleep") return hasFeature(device, "sleep");
-      return true;
+      var cap = FIELD_CAP[a[0]];
+      if (!cap) return false;
+      if (cap === "switch" && !hasCap(device, "switch")) return false;
+      return canSend(device, cap);
     });
   }
 

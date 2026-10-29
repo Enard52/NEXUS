@@ -485,7 +485,8 @@
       var view = (T[kind] || T.onoff)(d, NX.stateOf(d));
       main.setAttribute("data-features", NX.featuresOf(d).join(" "));
       main.setAttribute("data-kind", kind);
-      main.innerHTML = (NX.LAN_ERRORS[INDEX] ? '<p class="nx-wait" style="color:#e11d48">' + icon("wifi-off", "w-4 h-4") + esc(NX.LAN_ERRORS[INDEX]) + "</p>" : "") +
+      var unlinked = !NX.isLan(d) ? '<p class="nx-wait">' + icon("info", "w-4 h-4") + "Bu cihaz yerel ağ üzerinden bağlı değil; komutlar cihaza gönderilmez, bu yüzden kontrol seçenekleri gösterilmiyor." + "</p>" : "";
+      main.innerHTML = unlinked + (NX.LAN_ERRORS[INDEX] ? '<p class="nx-wait" style="color:#e11d48">' + icon("wifi-off", "w-4 h-4") + esc(NX.LAN_ERRORS[INDEX]) + "</p>" : "") +
         (view.top || "") + view.html + infoCard(d);
       // Masaüstünde ilk kart (cihaz görseli) sol sütunda sabit durur ve ana eylem onun altına taşınır
       var lead = main.querySelector(".nx-hero") ? main.querySelector(".nx-hero").closest("section") : null;

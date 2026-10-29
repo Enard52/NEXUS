@@ -81,26 +81,8 @@
       </div>
       <div class="space-y-3">
         <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Dışa Dönük Kanallar</h3>
-        <p class="text-xs text-slate-500 leading-relaxed px-1">Olaylar uygulamanın içinde kalır; istersen aynı uyarıyı telefonuna, kendi sunucuna veya Telegram'a da gönder. Hiçbiri zorunlu değil.</p>
+        <p class="text-xs text-slate-500 leading-relaxed px-1">Olaylar uygulamanın içinde kalır; istersen aynı uyarıyı telefonunun uyarı merkezine veya Telegram'a da gönder. Hiçbiri zorunlu değil.</p>
         <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100/50">
-          <div class="p-5 channel-row">
-            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-slate-900 flex items-center justify-center text-white"><i data-lucide="smartphone" class="w-6 h-6"></i></div><div><p class="font-semibold">ntfy Mobil Bildirimi</p><p class="text-xs text-slate-500 font-medium">Hesap yok — sadece bir topic adı yeter</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="ntfy"><span class="slider"></span></label></div>
-            <div class="mt-4" data-fields="ntfy">
-              <label for="ntfy-topic" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Topic adı</label>
-              <input id="ntfy-topic" type="text" data-field="ntfy.topic" autocomplete="off" spellcheck="false" placeholder="ornek: nexus-evim" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30">
-              <p class="text-[11px] text-slate-400 mt-2">ntfy uygulamasında aynı topic adını takibe al.</p>
-            </div>
-          </div>
-          <div class="h-[1px] bg-slate-50 mx-5"></div>
-          <div class="p-5 channel-row">
-            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600"><i data-lucide="webhook" class="w-6 h-6"></i></div><div><p class="font-semibold">Webhook</p><p class="text-xs text-slate-500 font-medium">Kendi sunucuna JSON gönderimi</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="webhook"><span class="slider"></span></label></div>
-            <div class="mt-4" data-fields="webhook">
-              <label for="webhook-url" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Uç adresi (HTTPS)</label>
-              <input id="webhook-url" type="url" data-field="webhook.url" autocomplete="off" spellcheck="false" placeholder="https://sunucum/nexus" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30">
-              <p class="text-[11px] text-slate-400 mt-2">Gövde: <span class="font-mono">{"source":"NEXUS","id","title","detail","ts"}</span></p>
-            </div>
-          </div>
-          <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 channel-row">
             <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-sky-50 flex items-center justify-center text-sky-600"><i data-lucide="send" class="w-6 h-6"></i></div><div><p class="font-semibold">Telegram</p><p class="text-xs text-slate-500 font-medium">Bot anahtarı yalnızca bu cihazda kalır</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="telegram"><span class="slider"></span></label></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4" data-fields="telegram">
@@ -160,20 +142,61 @@
     const notify = window.nexusNotify || null;
     const statusLine = document.getElementById('notify-status');
 
+    /* Arayüzden kaldırılan kanallar (ntfy / webhook): motor onları hâlâ tanıyor ama
+       sayfada anahtarı yok. Anahtarı olmayan bir kanalın açık kalması, kullanıcının
+       susturamayacağı bir dışa gönderim demekti — eski kurulumlarda kalmışsa burada
+       kapatılır (topic/URL kaydı cihazda durur, yüzey geri gelirse anahtar da gelir). */
+    const HIDDEN_CHANNELS = ['ntfy', 'webhook'];
+
+    function disableHiddenChannels() {
+      const cfg = notify.channels();
+      const patch = {};
+      HIDDEN_CHANNELS.forEach((k) => { if (cfg[k] && cfg[k].enabled) patch[k] = { enabled: false }; });
+      if (Object.keys(patch).length) notify.save(patch);
+    }
+
+    /* Kanal anahtarları İngilizce ("system", "telegram"). Bunlar ham yazılınca Türkçe
+       arayüzde "Açık kanal: system" gibi yarım çeviri çıkıyordu; satır JS'te
+       kurulduğu için i18n gözlemcisine de yakalanmıyor — ad burada çevrilmeli. */
+    const CHANNEL_NAMES = {
+      system: ['Sistem Bildirimleri', 'System notifications'],
+      telegram: ['Telegram', 'Telegram'],
+      ntfy: ['ntfy', 'ntfy'],
+      webhook: ['Webhook', 'Webhook'],
+    };
+    // Durum satırı JS'te kurulduğu için i18n gözlemcisine yakalanmaz; metni
+    // üretirken dil seç (command-palette.js'teki T kalıbı).
+    const T = (tr, en) => (window.nexusT || ((a) => a))(tr, en);
+
+    function channelName(key) {
+      const names = CHANNEL_NAMES[key] || [key, key];
+      return T(names[0], names[1]);
+    }
+
     function channelSummary() {
       if (!notify) return 'Bildirim motoru bu sürümde yüklenmedi.';
       const cfg = notify.channels();
       const on = Object.keys(cfg).filter((k) => cfg[k].enabled);
       const s = notify.stats();
       const bits = [];
-      bits.push(on.length ? 'Açık kanal: ' + on.join(', ') : 'Hiçbir kanal açık değil.');
+      bits.push(on.length ? 'Açık kanal: ' + on.map(channelName).join(', ') : 'Hiçbir kanal açık değil.');
       if (s.sent) bits.push('Gönderilen ' + s.sent);
       if (s.failed) bits.push('Hatalı ' + s.failed);
       if (s.failed && s.lastError) bits.push('Son hata: ' + s.lastError);
       if (notify.dndActive()) bits.push('Şu an rahatsız etmeyin açık.');
       else if (notify.quietHoursActive()) bits.push('Şu an sessiz saatler içinde.');
       if (!masterOn()) bits.push('Üstteki anahtar kapalı: hiçbir bildirim gönderilmez.');
+      if (statusNote) bits.push(statusNote);
       return bits.join(' · ');
+    }
+
+    // İzin düğmesinin uzun açıklaması: durum satırında görünür, kendiliğinden söner.
+    let statusNote = '';
+    let statusNoteTimer = 0;
+    function showStatusNote(text) {
+      statusNote = text;
+      clearTimeout(statusNoteTimer);
+      statusNoteTimer = setTimeout(() => { statusNote = ''; refreshStatus(); }, 14000);
     }
 
     function masterOn() {
@@ -200,11 +223,11 @@
     function paintPermissionBtn() {
       const btn = document.getElementById("system-permission");
       if (!btn || !("Notification" in window)) return;
-      if (Notification.permission === "granted") setBtn(btn, "circle-check", "Sistem izni verildi", "text-emerald-600");
+      if (Notification.permission === "granted") setBtn(btn, "circle-check", "İzin zaten açık", "text-emerald-600");
       // Henuz hic sormadan da "denied" donebilir (tarayici varsayilani / Android'de
       // calisma zamani izni bekliyor): kullanici reddetmis gibi kizartmak yanlistir,
       // nudaki renk sadece gercek reddedilme sonucunda kullanilir.
-      else if (Notification.permission === "denied") setBtn(btn, "bell-off", "Sistem izni iste", "text-slate-400");
+      else if (Notification.permission === "denied") setBtn(btn, "bell-off", "İzin reddedilmiş", "text-slate-400");
       else setBtn(btn, "bell-plus", "Sistem izni iste", "text-slate-400");
     }
     paintPermissionBtn();
@@ -217,6 +240,7 @@
       document.getElementById('notify-test').disabled = true;
       document.getElementById('system-permission').disabled = true;
     } else {
+      disableHiddenChannels();
       const cfg = notify.channels();
       document.querySelectorAll('[data-channel]').forEach((input) => {
         const name = input.getAttribute('data-channel');
@@ -242,9 +266,32 @@
       });
       document.getElementById('system-permission').addEventListener('click', async function () {
         const btn = this;
-        const result = await notify.requestSystemPermission();
-        if (result === 'granted') setBtn(btn, 'circle-check', 'Sistem izni verildi', 'text-emerald-600');
-        else setBtn(btn, 'bell-off', 'İzin durumu: ' + result, 'text-rose-500');
+        /* İstek kullanıcı jesti İÇİNDE başlatılmalı: önce promise'i al, resmi sonra
+           değiştir. Yoksa Chromium "izin isteği bir dokunuşa bağlı değil" deyip
+           pencereyi hiç açmayabiliyor. */
+        const pending = notify.requestSystemPermission();
+        setBtn(btn, 'loader-circle', 'İzin bekleniyor…', 'text-slate-400');
+        const res = await pending;
+        if (res.permission === 'granted') {
+          /* Soru penceresi yalnızca ilk kez açılır. Zaten verilmişse (masaüstü
+             programda Electron izin istemcisini otomatik onaylıyor) "verildi" demek,
+             olmayan bir soruyu sorulmuş gibi göstermekti. Artık iki durum ayrı
+             yazılıyor ve kanıt olarak tek kanallık örnek bildirim düşüyor. */
+          setBtn(btn, 'circle-check', res.asked ? 'İzin verildi' : 'İzin zaten açık', 'text-emerald-600');
+          notify.test(['system']);
+          showStatusNote(res.asked
+            ? T('İzin çıktı — örnek bir bildirim gönderdim.', 'Permission granted — I sent a sample notification.')
+            : T('Bu cihaz daha önce izin vermişti, tarayıcı bir daha sormaz. Doğrulama için örnek bildirim gönderdim; gelmiyorsa işletim sisteminin bildirim ayarlarına bak.',
+              'This device granted permission earlier, so the browser will not ask again. I sent a sample notification to verify; if it did not appear, check your OS notification settings.'));
+        } else if (res.permission === 'denied') {
+          setBtn(btn, 'bell-off', 'İzin reddedilmiş', 'text-rose-500');
+          showStatusNote(T('Reddedilmiş görünüyor: tarayıcı bir daha sormaz. Adres çubuğundaki kilit simgesinden bildirim iznini sıfırla.',
+            'It looks denied — the browser will not ask again. Reset the notification permission from the lock icon in the address bar.'));
+        } else {
+          setBtn(btn, 'bell-off', 'Bildirim desteği yok', 'text-slate-400');
+          showStatusNote(T('Bu ortam sistem bildirimi gösteremiyor; uyarılar uygulama içinde birikmeye devam eder.',
+            'This environment cannot show system notifications; alerts keep accumulating inside the app.'));
+        }
         refreshStatus();
       });
       document.getElementById('notify-test').addEventListener('click', async function () {
