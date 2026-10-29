@@ -12,10 +12,19 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SERVE = join(ROOT, "www");
 const PORT = 4831;
 const MIME = {
-  ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript",
-  ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png",
-  ".jpg": "image/jpeg", ".webp": "image/webp", ".woff2": "font/woff2", ".woff": "font/woff",
-  ".ttf": "font/ttf", ".ico": "image/x-icon", ".webmanifest": "application/manifest+json",
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css",
+  ".js": "text/javascript",
+  ".json": "application/json",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".webp": "image/webp",
+  ".woff2": "font/woff2",
+  ".woff": "font/woff",
+  ".ttf": "font/ttf",
+  ".ico": "image/x-icon",
+  ".webmanifest": "application/manifest+json",
 };
 const server = http.createServer(async (req, res) => {
   try {
@@ -24,12 +33,16 @@ const server = http.createServer(async (req, res) => {
     const data = await readFile(join(SERVE, p.replace(/^\//, "")));
     res.writeHead(200, { "content-type": MIME[extname(p)] || "application/octet-stream" });
     res.end(data);
-  } catch { res.writeHead(404); res.end("nf"); }
+  } catch {
+    res.writeHead(404);
+    res.end("nf");
+  }
 });
 await new Promise((r) => server.listen(PORT, "127.0.0.1", r));
 
 const out = [];
-const ok = (name, pass, extra = "") => out.push(`${pass ? "✅" : "❌"} ${name}${extra ? " — " + extra : ""}`);
+const ok = (name, pass, extra = "") =>
+  out.push(`${pass ? "✅" : "❌"} ${name}${extra ? " — " + extra : ""}`);
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "tr-TR" });
@@ -40,7 +53,11 @@ const errs = [];
 page.on("pageerror", (e) => errs.push(String(e.message)));
 const sent = [];
 await page.route("https://api.telegram.org/**", (route) => {
-  sent.push({ url: route.request().url(), headers: route.request().headers(), body: route.request().postData() });
+  sent.push({
+    url: route.request().url(),
+    headers: route.request().headers(),
+    body: route.request().postData(),
+  });
   route.fulfill({ status: 200, body: '{"ok":true}' });
 });
 
@@ -52,17 +69,29 @@ ok("notify.js sayfada yüklendi", await page.evaluate(() => !!window.nexusNotify
 
 // Arayüzden kaldırılan kanalların anahtarı artık yok; eski kurulumda açık kalmışsa
 // sayfa onları yüklenirken susturmalı (susturulamayan dışa gönderim kalmasın).
-ok("ntfy/webhook arayüzde yok", (await page.locator('[data-channel="ntfy"], [data-channel="webhook"]').count()) === 0);
-ok("kaldırılan kanallar kapalı tutulur", await page.evaluate(() => {
-  window.nexusNotify.save({ ntfy: { enabled: true, topic: "eski" }, webhook: { enabled: true, url: "https://eski/hook" } });
-  return true;
-}));
+ok(
+  "ntfy/webhook arayüzde yok",
+  (await page.locator('[data-channel="ntfy"], [data-channel="webhook"]').count()) === 0,
+);
+ok(
+  "kaldırılan kanallar kapalı tutulur",
+  await page.evaluate(() => {
+    window.nexusNotify.save({
+      ntfy: { enabled: true, topic: "eski" },
+      webhook: { enabled: true, url: "https://eski/hook" },
+    });
+    return true;
+  }),
+);
 await page.reload({ waitUntil: "load" });
 await page.waitForTimeout(500);
-ok("açık bırakılmış ntfy/webhook yüklenmede kapanır", await page.evaluate(() => {
-  const c = window.nexusNotify.channels();
-  return c.ntfy.enabled === false && c.webhook.enabled === false;
-}));
+ok(
+  "açık bırakılmış ntfy/webhook yüklenmede kapanır",
+  await page.evaluate(() => {
+    const c = window.nexusNotify.channels();
+    return c.ntfy.enabled === false && c.webhook.enabled === false;
+  }),
+);
 
 // Telegram kanalını kur + aç (artık tek dış hizmet köprüsü bu)
 await page.fill("#telegram-token", "123456:TEST-anahtar");
@@ -70,7 +99,11 @@ await page.fill("#telegram-chat", "987654321");
 await page.click('input[data-channel="telegram"] + .slider');
 await page.waitForTimeout(200);
 const cfg = await page.evaluate(() => window.nexusNotify.channels());
-ok("telegram kanalı açık + alanlar kayıtlı", cfg.telegram.enabled === true && cfg.telegram.chat === "987654321", JSON.stringify({ enabled: cfg.telegram.enabled, chat: cfg.telegram.chat }));
+ok(
+  "telegram kanalı açık + alanlar kayıtlı",
+  cfg.telegram.enabled === true && cfg.telegram.chat === "987654321",
+  JSON.stringify({ enabled: cfg.telegram.enabled, chat: cfg.telegram.chat }),
+);
 
 // sistem kanalını kapat (test yalnızca telegram'a gitsin)
 await page.click('input[data-channel="system"] + .slider');
@@ -81,14 +114,30 @@ await page.click("#notify-test");
 await page.waitForTimeout(1200);
 ok("test bildirimi telegram'a ulaştı", sent.length === 1, sent.length + " istek");
 if (sent.length) {
-  ok("URL bot sohbetine gidiyor", /\/bot123456:TEST-anahtar\/sendMessage/.test(sent[0].url), sent[0].url);
+  ok(
+    "URL bot sohbetine gidiyor",
+    /\/bot123456:TEST-anahtar\/sendMessage/.test(sent[0].url),
+    sent[0].url,
+  );
   let payload = {};
-  try { payload = JSON.parse(sent[0].body || "{}"); } catch { /* gövde okunamadı */ }
-  ok("gövde Türkçe metni bozmadan taşır", payload.chat_id === "987654321" && /Test bildirimi/.test(String(payload.text)), String(payload.text));
+  try {
+    payload = JSON.parse(sent[0].body || "{}");
+  } catch {
+    /* gövde okunamadı */
+  }
+  ok(
+    "gövde Türkçe metni bozmadan taşır",
+    payload.chat_id === "987654321" && /Test bildirimi/.test(String(payload.text)),
+    String(payload.text),
+  );
 }
 const status = await page.textContent("#notify-status");
 ok("durum satırı güncellendi", /Gönderilen 1/.test(status || ""), status);
-ok("durum satırı kanal adını Türkçe yazar", !/\bsystem\b|\btelegram\b|\bntfy\b|\bwebhook\b/.test(status || ""), status);
+ok(
+  "durum satırı kanal adını Türkçe yazar",
+  !/\bsystem\b|\btelegram\b|\bntfy\b|\bwebhook\b/.test(status || ""),
+  status,
+);
 
 // yeniden yükle: ayarlar kalıcı mı
 await page.reload({ waitUntil: "load" });
@@ -99,33 +148,64 @@ const after = await page.evaluate(() => ({
   system: document.querySelector('input[data-channel="system"]').checked,
 }));
 ok("sohbet id yeniden yüklemede durur", after.chat === "987654321", after.chat);
-ok("kanal anahtarları kalıcı", after.checked === true && after.system === false, JSON.stringify(after));
+ok(
+  "kanal anahtarları kalıcı",
+  after.checked === true && after.system === false,
+  JSON.stringify(after),
+);
 
 // master anahtarı kapat → hiçbir şey gitmemeli
 sent.length = 0;
 await page.click("#master-toggle + .slider");
 await page.waitForTimeout(200);
-const muted = await page.evaluate(() => window.nexusNotify.mutedBy({ id: "x1", type: "scene", ts: Date.now() }));
+const muted = await page.evaluate(() =>
+  window.nexusNotify.mutedBy({ id: "x1", type: "scene", ts: Date.now() }),
+);
 ok("master kapalı → dağıtım kesilir", muted === "master", String(muted));
 
 // gerçek olay akışı: nexusEvents'e sayı ts ile yazılan olay kanala gider mi
 sent.length = 0;
 await page.evaluate(() => {
-  const list = JSON.parse(localStorage.getItem(Object.keys(localStorage).find((k) => k.endsWith("nexusEvents")) || "k") || "[]");
-  list.push({ id: "auto-" + Date.now(), type: "automation", title: "Kapı algılandı", detail: "Ön kapı", ts: Date.now() });
-  Object.keys(localStorage).filter((k) => k.endsWith("nexusEvents")).forEach((k) => localStorage.setItem(k, JSON.stringify(list)));
+  const list = JSON.parse(
+    localStorage.getItem(Object.keys(localStorage).find((k) => k.endsWith("nexusEvents")) || "k") ||
+      "[]",
+  );
+  list.push({
+    id: "auto-" + Date.now(),
+    type: "automation",
+    title: "Kapı algılandı",
+    detail: "Ön kapı",
+    ts: Date.now(),
+  });
+  Object.keys(localStorage)
+    .filter((k) => k.endsWith("nexusEvents"))
+    .forEach((k) => localStorage.setItem(k, JSON.stringify(list)));
 });
 await page.evaluate(() => window.nexusNotify.checkNew());
 await page.waitForTimeout(800);
-ok("sayı ts'li gerçek olay dağıtıldı (master kapalıyken gitmez)", sent.length === 0, sent.length + " istek");
+ok(
+  "sayı ts'li gerçek olay dağıtıldı (master kapalıyken gitmez)",
+  sent.length === 0,
+  sent.length + " istek",
+);
 await page.click("#master-toggle + .slider"); // geri aç
 await page.waitForTimeout(150);
 const delivered = await page.evaluate(async () => {
   const before = window.nexusNotify.stats().sent;
-  await window.nexusNotify.deliver({ id: "auto-" + Date.now(), type: "automation", title: "Kapı algılandı", detail: "Ön kapı", ts: Date.now() });
+  await window.nexusNotify.deliver({
+    id: "auto-" + Date.now(),
+    type: "automation",
+    title: "Kapı algılandı",
+    detail: "Ön kapı",
+    ts: Date.now(),
+  });
   return window.nexusNotify.stats().sent - before;
 });
-ok("master açıkken olay kanala gitti", delivered >= 1 && sent.length >= 1, `istatistik +${delivered}, ${sent.length} istek`);
+ok(
+  "master açıkken olay kanala gitti",
+  delivered >= 1 && sent.length >= 1,
+  `istatistik +${delivered}, ${sent.length} istek`,
+);
 
 // sır sızıntısı kontrolü: localStorage'da telegram tokenı + bulut anahtarları
 const leak = await page.evaluate(() => {
@@ -133,7 +213,22 @@ const leak = await page.evaluate(() => {
   const cloud = keys.filter((k) => /nexusNotify/.test(k) && !/^\w+@|^guest/.test(k));
   return { channelKeys: keys.filter((k) => /nexusNotifyChannels$/.test(k)) };
 });
-ok("kanal ayarları kullanıcı önekiyle saklanır", leak.channelKeys.length >= 1, leak.channelKeys.join(","));
+ok(
+  "kanal ayarları kullanıcı önekiyle saklanır",
+  leak.channelKeys.length >= 1,
+  leak.channelKeys.join(","),
+);
+
+/* İzin düğmesinin dürüstlüğü aşağıda ayrı bir turda ölçülüyor (Notification statikleri
+   taklit edilerek); burada yalnızca tek kanallık deneme sözleşmesi denetleniyor. */
+sent.length = 0;
+await page.evaluate(() => window.nexusNotify.save({ system: { enabled: true } }));
+await page.evaluate(() => window.nexusNotify.test(["system"]));
+await page.waitForTimeout(500);
+ok("test(['system']) dış kanallara dokunmaz", sent.length === 0, sent.length + " dış istek");
+await page.evaluate(() => window.nexusNotify.test());
+await page.waitForTimeout(500);
+ok("test() filtresiz açık kanala gider", sent.length === 1, sent.length + " dış istek");
 
 // düzen: yatay taşma + dokunma hedefleri
 const layout = await page.evaluate(() => {
@@ -142,8 +237,16 @@ const layout = await page.evaluate(() => {
   document.querySelectorAll("input, button, .switch, label.switch").forEach((el) => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) return;
-    if (el.classList.contains("slider") || el.classList.contains("switch") || el.tagName === "INPUT") return;
-    if (r.height < 24 || r.width < 24) bad.push(`${el.tagName}${el.id ? "#" + el.id : ""} ${Math.round(r.width)}x${Math.round(r.height)}`);
+    if (
+      el.classList.contains("slider") ||
+      el.classList.contains("switch") ||
+      el.tagName === "INPUT"
+    )
+      return;
+    if (r.height < 24 || r.width < 24)
+      bad.push(
+        `${el.tagName}${el.id ? "#" + el.id : ""} ${Math.round(r.width)}x${Math.round(r.height)}`,
+      );
   });
   return { overflow: de.scrollWidth - de.clientWidth, small: bad };
 });
@@ -155,11 +258,119 @@ await page.evaluate(() => localStorage.setItem("nexusLanguage", "en"));
 await page.reload({ waitUntil: "load" });
 await page.waitForTimeout(700);
 const en = await page.evaluate(() => document.body.innerText);
-ok("EN sözlük yeni başlıkları çeviriyor", /outbound channels/i.test(en) && /send a test notification/i.test(en), "");
+ok(
+  "EN sözlük yeni başlıkları çeviriyor",
+  /outbound channels/i.test(en) && /send a test notification/i.test(en),
+  "",
+);
 const enGap = /Dışa Dönük Kanallar|Test bildirimi gönder/.test(en);
 ok("EN modda Türkçe kalıntı yok", !enGap, enGap ? "Türkçe başlık kaldı" : "");
 
 ok("sayfa hatası yok", errs.length === 0, errs.join(" | "));
+
+/* --- 2. tur: iznin ZATEN VERİLMİŞ olduğu ortam --------------------------------
+   Asıl şikâyet buydu: masaüstü programda Electron izin istemcisini otomatik
+   onaylıyor (desktop/main.cjs notifications:1), tarayıcı da bir kez verilen izni
+   yeniden sormuyor. Düğme yine de "sordum, verildi" diyordu.
+   Headless Chromium bildirim izni akışını gerçekte göstermediği için (grantPermissions
+   "denied"de kalıyor) Notification statikleri taklit edilir: önemli olan çağrı
+   örüntüsü — izin belliyse requestPermission()'a hiç dokunulmamalı, bilinmiyorsa
+   TEK KEZ ve kullanıcı jesti içinde çağrılmalı. */
+async function izinSenaryosu(ad, izinDugumu) {
+  const sctx = await browser.newContext({
+    viewport: { width: 1280, height: 900 },
+    locale: "tr-TR",
+  });
+  await sctx.route("**/sw.js", (r) => r.fulfill({ status: 404, body: "" }));
+  await sctx.addInitScript(
+    ({ currentUser, permission }) => {
+      localStorage.setItem("nexusCurrentUser", currentUser);
+      let n = 0;
+      Object.defineProperty(window.Notification, "permission", {
+        get: () => permission,
+        configurable: true,
+      });
+      window.Notification.requestPermission = () => {
+        n++;
+        // Jestten doğan tek çağrı olmalı: Promise'i senkron başlatılıyor mu diye sayılıyor.
+        return Promise.resolve(permission === "denied" ? "denied" : "granted");
+      };
+      Object.defineProperty(window, "__permAskCount", { get: () => n, configurable: true });
+    },
+    { currentUser: "denetim@nexus.app", permission: izinDugumu },
+  );
+  const sp = await sctx.newPage();
+  const serrs = [];
+  sp.on("pageerror", (e) => serrs.push(String(e.message)));
+  await sp.goto(url, { waitUntil: "load" });
+  await sp.waitForTimeout(700);
+  const yuklenirken = await sp.evaluate(
+    () => document.querySelector("#system-permission .nx-btn-label").textContent,
+  );
+  const r = await sp.evaluate(async () => {
+    const before = window.nexusNotify.stats().sent;
+    document.getElementById("system-permission").click();
+    // Tıklama anında requestPermission çağrılmış olmalı (jest penceresi beklenirken
+    // etiket hâlâ "İzin bekleniyor…" gösteriyor mu diye ilk kareyi de yakala).
+    await new Promise((k) => setTimeout(k, 1500));
+    const btn = document.getElementById("system-permission");
+    return {
+      ask: window.__permAskCount,
+      etiket: btn.querySelector(".nx-btn-label").textContent,
+      ton: btn.querySelector(".nx-btn-ico").className,
+      ikon: btn.querySelector("svg").getAttribute("class"),
+      fark: window.nexusNotify.stats().sent - before,
+      durum: document.getElementById("notify-status").textContent,
+    };
+  });
+  ok(`${ad}: yüklenirken etiket`, true, `${yuklenirken} → ${r.etiket} (${r.ikon}, ${r.ask} istek)`);
+  await sctx.close();
+  return r;
+}
+
+const granted = await izinSenaryosu("izin zaten verilmiş", "granted");
+ok(
+  "izin verilmişken yeniden sorulmaz (pencere yalanı bitti)",
+  granted.ask === 0,
+  `${granted.ask} kez requestPermission`,
+);
+ok(
+  "izin verilmişken etiket 'İzin zaten açık'",
+  granted.etiket === "İzin zaten açık",
+  granted.etiket,
+);
+ok(
+  "izin verilmişken yeşil onay ikonu",
+  /emerald/.test(granted.ton) && /circle-check/.test(granted.ikon),
+  `${granted.ikon} / ${granted.ton}`,
+);
+ok(
+  "izin verilmişken kanıt olarak örnek bildirim gider",
+  granted.fark >= 1,
+  `+${granted.fark} gönderim`,
+);
+ok(
+  "izin verilmişken açıklama durum satırında",
+  /örnek bildirim/i.test(granted.durum),
+  granted.durum,
+);
+
+const asked = await izinSenaryosu("izin ilk kez soruluyor", "default");
+ok("bilinmeyen izinde gerçekten sorulur", asked.ask === 1, `${asked.ask} kez requestPermission`);
+ok("ilk soruda 'İzin verildi' denir (asked ayrımı)", asked.etiket === "İzin verildi", asked.etiket);
+ok("soru turunda örnek bildirim de gider", asked.fark >= 1, `+${asked.fark} gönderim`);
+
+const refused = await izinSenaryosu("izin reddedilmiş", "denied");
+ok(
+  "reddedilmiş izde yeniden pencere açılmaz",
+  refused.ask === 0,
+  `${refused.ask} kez requestPermission`,
+);
+ok(
+  "reddedilmiş izde suçlayıcı değil, yol gösterici metin",
+  refused.etiket === "İzin reddedilmiş" && /kilit simgesinden/i.test(refused.durum),
+  refused.etiket,
+);
 
 await browser.close();
 server.close();

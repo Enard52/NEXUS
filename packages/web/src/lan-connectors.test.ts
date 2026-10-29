@@ -153,7 +153,7 @@ describe("transport seçimi", () => {
     let used = "";
     const lan = load(() => Promise.reject(new Error("fetch kullanilmamali")));
     lan.setTransport((opts: { url: string }) => {
-      used = opts.url;
+      if (opts.url.endsWith("/json/info")) used = opts.url; // WLED probe ayrıca efekt/ayar listelerini de okur
       return Promise.resolve({
         status: 200,
         text: JSON.stringify({ ver: "0.14.0", name: "wled", leds: { count: 30 } }),

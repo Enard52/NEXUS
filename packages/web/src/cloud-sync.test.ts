@@ -1425,11 +1425,13 @@ describe("şifresiz (Google) hesap: ilk şifre akışı", () => {
     expect(src).toContain("passwordStatus()");
     expect(src).toContain("cloud.recover(email)");
     // Şifresiz hesapta "mevcut şifre" alanı gösterilmez, doğrulaması da istenmez.
-    expect(src).toContain("current.classList.toggle('hidden', oauth)");
+    // Tırnak/boşluk stili biçimlendiriciye ait bir ayrıntı: ham metin aramak,
+    // kod doğruyken testi kırmızıya düşürüyordu (prettier tek tırnağı çift yaptı).
+    expect(src).toMatch(/current\.classList\.toggle\(\s*['"]hidden['"]\s*,\s*oauth\s*\)/);
     expect(src).toContain("if (!pwOauth() && !current) return fail");
     // Belirledikten sonra yerel kasa da yazılır: çevrimdışı giriş başka türlü imkânsız.
     expect(src).toContain("nexusLocalPassword.set(owner, next)");
-    expect(src).toContain("nexusSetItem('nexusPasswordSet', '1')");
+    expect(src).toMatch(/nexusSetItem\(\s*['"]nexusPasswordSet['"]\s*,\s*['"]1['"]\s*\)/);
   });
 
   it("oturum başlığı faktör ve şifre çağrılarına gerçekten gidiyor", async () => {

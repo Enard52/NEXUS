@@ -3,6 +3,9 @@
 // Ekranlardaki statik Türkçe metinleri lang-en.js sözlüğüyle karşılaştırır
 // ve İngilizce karşılığı olmayanları raporlar. BAŞARISIZLIK üretmez —
 // kılavuzdur: yeni metin eklerken sözlüğü güncellemeyi hatırlatır.
+// TEK İSTİSNA: sözlük hiç okunamazsa (biçim değişti) çıkış kodu 1 — aksi halde
+// "hepsi eksik" ya da "hepsi tamam" diye boş bir rapor verir ve denetim
+// sessizce işlevsiz kalır (bir kez tam da böyle olmuştu).
 // Kullanım: node scripts/i18n-coverage.mjs [sayfaAdı]
 import { readdirSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -14,25 +17,41 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, "src", "app");
 const dict = readFileSync(join(APP, "lang-en.js"), "utf8");
 const DICT_TEXT = new Set();
-{
-  const m = dict.match(/"text":\s*\{([\s\S]*?)\n\s*\},/);
-  // Yakalanan anahtar ham metindir: "A \"B\" C" içindeki ters bölüler AYNI KALIR.
-  // Çözümlemeden karşılaştırırsak tırnak içeren her anahtar yanlışça "eksik çeviri" sayılır.
-  const unesc = (k) => { try { return JSON.parse('"' + k + '"'); } catch { return k; } };
-  if (m) for (const [, k] of m[1].matchAll(/"((?:[^"\\]|\\.)*)":\s*"/g)) { DICT_TEXT.add(k); DICT_TEXT.add(unesc(k)); }
+
+/* Sözlük REGEX'LE okunmaz, ÇALIŞTIRILARAK okunur.
+   Dil dosyası bir JS modülüdür (window.NEXUS_EN = { text, html, slots, patterns }).
+   Eskiden kalıp eşleşmesiyle taranıyordu ve biçimlendirici her geçtiğinde sessizce
+   çürüdü: tek kelimelik anahtarların tırnağı kalkınca ("text" → text) sayaç 0'a
+   düştü, tırnak içinde tırnak olan anahtarlar tek tırnağa geçince görünmez oldu.
+   Çalıştırma her iki yazımda da aynı nesneyi verir — denetim, denetlenen şeyin
+   biçimine bağımlı olmaktan çıkar. */
+function readDictionary(source) {
+  const win = {};
+  new Function("window", source)(win);
+  return win.NEXUS_EN || {};
 }
-{
-  // "slots" anahtarları satır içi vurgulu (<strong>/<b>) cümlelerdir. Çalışma zamanı cümleyi
-  // {0} yer tutucusundan böler; bu yüzden parçaların kendisi de "çevrilmiş" sayılmalı,
-  // aksi halde kapsama raporu doğru anahtarları eksik gösterir.
-  const m = dict.match(/"slots":\s*\{([\s\S]*?)\n\},/);
-  const unesc = (k) => { try { return JSON.parse('"' + k + '"'); } catch { return k; } };
-  if (m)
-    for (const [, k] of m[1].matchAll(/"((?:[^"\\]|\\.)*)":\s*"/g))
-      for (const frag of unesc(k).split(/\{\d+\}/)) {
-        const t = frag.replace(/\s+/g, " ").trim();
-        if (t) DICT_TEXT.add(t);
-      }
+
+const EN = readDictionary(dict);
+const frag = (s) => String(s).replace(/\s+/g, " ").trim();
+const addFragments = (key) => {
+  DICT_TEXT.add(frag(key));
+  // html anahtarlarında satır içi etiket var (<strong>…): çalışma zamanı metni
+  // parçalara böler, bu yüzden etiketten arındırılmış hâli de çevrilmiş sayılır.
+  for (const part of String(key).replace(/<[^>]*>/g, "").split(/\{\d+\}/)) {
+    const t = frag(part);
+    if (t) DICT_TEXT.add(t);
+  }
+};
+for (const group of ["text", "html", "slots"]) {
+  for (const key of Object.keys(EN[group] || {})) addFragments(key);
+}
+if (DICT_TEXT.size < 500) {
+  // Sözlük okunamazsa rapor "hepsi eksik" diye bağırır; bu, denetimin kendisinin
+  // bozulduğunun işaretidir — sessizce yanlış yüzde verme.
+  console.error(
+    `HATA: sözlükte yalnız ${DICT_TEXT.size} anahtar okundu — lang-en.js biçimi/ada değişmiş olabilir.`,
+  );
+  process.exitCode = 1;
 }
 const templ = (s) =>
   s

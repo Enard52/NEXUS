@@ -371,3 +371,119 @@ describe("bildirim ayarları dağıtımı keser", () => {
     });
   });
 });
+
+/* İzin düğmesinin asıl hatası: Chromium bir kaynağa yalnızca KEZ sorar ve masaüstü
+   programda Electron istemciyi otomatik onaylar (desktop/main.cjs notifications:1).
+   Bu ortamlarda requestPermission() pencere açmadan eski kararı döndürür; arayüz
+   "sordum ve verildi" yazınca kullanıcı olmayan bir soruyu sorulmuş sanıyor.
+   Sözleşme artık {permission, asked}: "asked" yalnızca GERÇEKTEN sorulduysa true. */
+describe("sistem izni — sorulmayan şey 'soruldu' yazılmaz", () => {
+  function fakeNotification(permission: string, resolves = "granted") {
+    const fake = {
+      permission,
+      calls: 0,
+      requestPermission() {
+        fake.calls++;
+        return Promise.resolve(resolves);
+      },
+    };
+    (globalThis as Record<string, unknown>).Notification = fake;
+    return fake;
+  }
+
+  it("izin zaten verilmişse yeniden sorulmaz, asked:false döner", async () => {
+    const { notify } = loadNotify({ channels: ALL_OFF });
+    const fake = fakeNotification("granted");
+    try {
+      expect(await notify.requestSystemPermission()).toEqual({
+        permission: "granted",
+        asked: false,
+      });
+      expect(fake.calls, "zaten bilinen izin için requestPermission çağrılmamalı").toBe(0);
+    } finally {
+      delete (globalThis as Record<string, unknown>).Notification;
+    }
+  });
+
+  it("izin daha önce reddedildiyse o da 'biliniyor'dur, pencere açılmaz", async () => {
+    const { notify } = loadNotify({ channels: ALL_OFF });
+    const fake = fakeNotification("denied");
+    try {
+      expect(await notify.requestSystemPermission()).toEqual({
+        permission: "denied",
+        asked: false,
+      });
+      expect(fake.calls).toBe(0);
+    } finally {
+      delete (globalThis as Record<string, unknown>).Notification;
+    }
+  });
+
+  it("karar hiç verilmediyse TEK KEZ ve senkron sorulur (kullanıcı jesti)", async () => {
+    const { notify } = loadNotify({ channels: ALL_OFF });
+    const fake = fakeNotification("default");
+    try {
+      const pending = notify.requestSystemPermission();
+      // Jest penceresi, çağrı bir makro göreve ertelenirse açılmaz: sayacın
+      // await'den ÖNCE artmış olması sözleşmenin parçası.
+      expect(fake.calls, "requestPermission await'den önce çağrılmalı").toBe(1);
+      expect(await pending).toEqual({ permission: "granted", asked: true });
+    } finally {
+      delete (globalThis as Record<string, unknown>).Notification;
+    }
+  });
+
+  it("bildirim API'si olmayan ortamda uydurma 'granted' dönmez", async () => {
+    const { notify } = loadNotify({ channels: ALL_OFF });
+    expect(await notify.requestSystemPermission()).toEqual({
+      permission: "unsupported",
+      asked: false,
+    });
+  });
+});
+
+describe("kanal yüzeyi daraltıldı (yalnız Telegram + sistem)", () => {
+  it("test(['system']) tek kanala iner, filtresiz test hepsine gider", async () => {
+    const { notify, calls } = loadNotify({
+      channels: {
+        ntfy: { enabled: true, topic: "eski" },
+        telegram: { enabled: true, token: "1:abc", chat: "9" },
+      },
+    });
+    const solo = await notify.test(["system"]);
+    expect(calls.length, "sistem tek kanallık denemede ağa çıkmamalı").toBe(0);
+    expect(solo.sent.map((r: { channel: string }) => r.channel)).toEqual(["system"]);
+    await notify.test();
+    expect(calls.length).toBe(2); // ntfy + telegram
+  });
+
+  it("ekranda ntfy/webhook anahtarı yok ama motor onları tanıyor (geri dönüş kapısı)", () => {
+    const screen = readFileSync(
+      join(REPO_ROOT, "src", "app", "nexus-instant-notifications.html"),
+      "utf8",
+    );
+    expect(screen).not.toMatch(/data-channel="(ntfy|webhook)"/);
+    expect(screen).not.toMatch(/id="(ntfy-topic|webhook-url)"/);
+    // Anahtarı olmayan kanal susturulamayan gönderimdir: sayfa yüklenirken kapamalı.
+    expect(screen).toMatch(/HIDDEN_CHANNELS\s*=\s*\[[^\]]*['"]ntfy['"][^\]]*['"]webhook['"]/);
+    expect(screen).toMatch(/disableHiddenChannels\(\)/);
+    const { notify } = loadNotify({ channels: { ntfy: { enabled: true, topic: "eski" } } });
+    expect(Object.keys(notify.channels())).toContain("ntfy");
+  });
+
+  it("durum satırı kanal anahtarını ham yazmaz (Türkçe arayüzde 'system' kalıntısı)", () => {
+    const screen = readFileSync(
+      join(REPO_ROOT, "src", "app", "nexus-instant-notifications.html"),
+      "utf8",
+    );
+    expect(screen, "'Açık kanal: ' + on.join(', ') ham anahtar basıyordu").not.toMatch(
+      /on\.join\(/,
+    );
+    expect(screen).toMatch(/CHANNEL_NAMES/);
+    expect(screen).toMatch(/on\.map\(channelName\)/);
+    const dict = readFileSync(join(REPO_ROOT, "src", "app", "lang-en.js"), "utf8");
+    ["İzin verildi", "İzin zaten açık", "İzin reddedilmiş", "İzin bekleniyor…"].forEach((s) =>
+      expect(dict, `lang-en.js'te "${s}" anahtarı olmalı`).toContain(`"${s}"`),
+    );
+  });
+});

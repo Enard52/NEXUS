@@ -503,7 +503,8 @@
     };
     // Protokolün gerçekten yazabildiği ek yetenekler (renk vb.)
     var PROTOCOL_EXTRA = { wled: ["color"], tasmota: [], yeelight: ["color"] };
-    var PROTOCOL_CT = { yeelight: 1, wiz: 1, lifx: 1 };
+    var PROTOCOL_POWERON = { sonoff: 1, shelly: 1, "shelly-rpc": 1, tasmota: 1 };
+    var PROTOCOL_CT = { yeelight: 1, wiz: 1, lifx: 1, govee: 1 };
     var PROTOCOL_IMG = { wled: "generic-led-strip.png" };
 
     function setScanStatus(message, tone) {
@@ -546,6 +547,17 @@
     }
 
     function storeFoundDevice(found) {
+      // Çok kanallı röleler (Sonoff DIY): her kanal ayrı cihaz olarak eklenir
+      if (found.channels > 1 && !found.channelOf) {
+        var any = false;
+        for (var ch = 0; ch < found.channels; ch++) {
+          var copy = {};
+          Object.keys(found).forEach(function (k) { copy[k] = found[k]; });
+          copy.channelOf = true; copy.endpointId = ch; copy.name = found.name + " · Kanal " + (ch + 1);
+          if (storeFoundDevice(copy)) any = true;
+        }
+        return any;
+      }
       var devices = getPairedDevices();
       var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
       var key = normalizedHost + "#" + (found.endpointId != null ? found.endpointId : 0);
@@ -555,6 +567,14 @@
         (PROTOCOL_EXTRA[found.protocol] || []).forEach(function (c) { if (found.kind === "light" && caps.indexOf(c) === -1) caps.push(c); });
         // Renkli ampuller beyaz tonunu da ayarlar (Yeelight / WiZ / LIFX); renk yeteneği olmayan cihaza eklenmez.
         if (PROTOCOL_CT[found.protocol] && found.kind === "light" && caps.indexOf("color") !== -1 && caps.indexOf("colorTemp") === -1) caps.push("colorTemp");
+        // Cihazın kendi bildirdiği efekt ve sahne listeleri (WLED / WiZ): liste varsa yetenek de vardır
+        // Yeelight sahneleri renk/ton gerektirir: yalnızca renkli ampullerde sunulur
+        if (found.options && found.options.scenes && found.options.scenes.length && caps.indexOf("lightScene") === -1 && (found.protocol !== "yeelight" || caps.indexOf("color") !== -1)) caps.push("lightScene");
+        if (found.options && found.options.effects && found.options.effects.length && caps.indexOf("effect") === -1) caps.push("effect");
+        // Röle tabanlı cihazlarda "elektrik gelince" başlangıç durumu protokolün kendi ayarıdır (Sonoff / Shelly / Tasmota)
+        if (PROTOCOL_POWERON[found.protocol] && (found.kind === "switch" || found.kind === "plug") && caps.indexOf("powerOn") === -1) caps.push("powerOn");
+        // Kasa prizlerinin durum ışığı set_led_off ile gerçekten yönetilir
+        if (found.protocol === "kasa" && found.kind === "plug" && caps.indexOf("indicator") === -1) caps.push("indicator");
         devices.push({
           id: ("lan-" + normalizedHost + (found.endpointId != null && found.endpointId !== 0 ? "-" + found.endpointId : "")).replace(/[^a-z0-9]+/gi, "-").toLowerCase(),
           name: found.name,
@@ -570,6 +590,8 @@
           entity: found.entity || null,
           hueUser: found.hueUser || null,
           haToken: found.haToken || null,
+          options: found.options || null,
+          channels: found.channels > 1 ? found.channels : null,
         });
         nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
         if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
@@ -631,7 +653,7 @@
           lights.forEach(function (l) {
             var ok = storeFoundDevice({
               host: host, name: l.name, protocol: "hue", kind: "light", model: l.model,
-              caps: l.caps, endpointId: l.id, hueUser: user,
+              caps: l.caps, options: l.options, endpointId: l.id, hueUser: user,
               img: l.caps.indexOf("color") !== -1 ? "generic-led-bulb.png" : "generic-led-bulb.png",
             });
             if (ok) added += 1;
@@ -679,7 +701,7 @@
 
     function haDeviceRecord(item) {
       var IMG = { light: "generic-led-bulb.png", cover: "control-curtain-motor.png", lock: "security-keypad-lock.png", vacuum: "generic-robot-vacuum.png", ac: "generic-air-conditioner.png", media: "generic-smart-tv.png" };
-      return { host: haConn.host, name: item.name, protocol: "homeassistant", kind: item.kind, model: item.model, caps: item.caps,
+      return { host: haConn.host, name: item.name, protocol: "homeassistant", kind: item.kind, model: item.model, caps: item.caps, options: item.options || null,
         endpointId: item.entity, entity: item.entity, haToken: haConn.token, img: IMG[item.kind] };
     }
 

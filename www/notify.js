@@ -46,7 +46,9 @@
     try {
       if (window.nexusSetItem) window.nexusSetItem(key, JSON.stringify(value));
       else localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) { /* kota dolu / özel mod */ }
+    } catch (e) {
+      /* kota dolu / özel mod */
+    }
   }
 
   function channels() {
@@ -71,13 +73,23 @@
   function dndActive() {
     var until = 0;
     try {
-      until = parseInt((window.nexusGetItem ? window.nexusGetItem("nexusDndEndTime") : localStorage.getItem("nexusDndEndTime")) || "0", 10) || 0;
+      until =
+        parseInt(
+          (window.nexusGetItem
+            ? window.nexusGetItem("nexusDndEndTime")
+            : localStorage.getItem("nexusDndEndTime")) || "0",
+          10,
+        ) || 0;
     } catch (e) {
       until = 0;
     }
     if (until && Date.now() < until) return true;
     try {
-      return (window.nexusGetItem ? window.nexusGetItem("nexusDndActive") : localStorage.getItem("nexusDndActive")) === "true";
+      return (
+        (window.nexusGetItem
+          ? window.nexusGetItem("nexusDndActive")
+          : localStorage.getItem("nexusDndActive")) === "true"
+      );
     } catch (e) {
       return false;
     }
@@ -92,7 +104,14 @@
     if (ok) s.sent++;
     else s.failed++;
     s.byChannel = s.byChannel || {};
-    s.byChannel[name] = { ok: ok ? (s.byChannel[name] && s.byChannel[name].ok || 0) + 1 : s.byChannel[name] && s.byChannel[name].ok || 0, failed: ok ? (s.byChannel[name] && s.byChannel[name].failed || 0) : (s.byChannel[name] && s.byChannel[name].failed || 0) + 1 };
+    s.byChannel[name] = {
+      ok: ok
+        ? ((s.byChannel[name] && s.byChannel[name].ok) || 0) + 1
+        : (s.byChannel[name] && s.byChannel[name].ok) || 0,
+      failed: ok
+        ? (s.byChannel[name] && s.byChannel[name].failed) || 0
+        : ((s.byChannel[name] && s.byChannel[name].failed) || 0) + 1,
+    };
     if (!ok) s.lastError = String((error && error.message) || error || "bilinmeyen").slice(0, 160);
     s.lastAt = Date.now();
     put(STATS_KEY, s);
@@ -200,11 +219,21 @@
 
   function asciiText(value, limit) {
     var raw = String(value == null ? "" : value);
-    raw = raw.replace(/[ğüşıöçâîû]/g, function (c) { return ASCII_MAP[c] || c; });
-    raw = raw.replace(/[ĞÜŞİÖÇÂÎÛ]/g, function (c) { return ASCII_MAP_U[c] || c; });
-    raw = raw.replace(/[—–·•]/g, "-").replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+    raw = raw.replace(/[ğüşıöçâîû]/g, function (c) {
+      return ASCII_MAP[c] || c;
+    });
+    raw = raw.replace(/[ĞÜŞİÖÇÂÎÛ]/g, function (c) {
+      return ASCII_MAP_U[c] || c;
+    });
+    raw = raw
+      .replace(/[—–·•]/g, "-")
+      .replace(/[‘’]/g, "'")
+      .replace(/[“”]/g, '"');
     raw = raw.normalize("NFD").replace(/[̀-ͯ]/g, ""); // kalan tüm aksanları düşür
-    raw = raw.replace(/[^\x20-\x7E]/g, "").replace(/\s+/g, " ").trim();
+    raw = raw
+      .replace(/[^\x20-\x7E]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
     var max = limit || 120;
     return raw.length > max ? raw.slice(0, max - 1).trim() + "..." : raw;
   }
@@ -247,7 +276,8 @@
   function sendTelegram(cfg, event) {
     var token = String(cfg.token || "").trim();
     var chat = String(cfg.chat || "").trim();
-    if (!token || !chat) return Promise.reject(new Error("telegram bot anahtarı veya sohbet id eksik"));
+    if (!token || !chat)
+      return Promise.reject(new Error("telegram bot anahtarı veya sohbet id eksik"));
     return post("https://api.telegram.org/bot" + token + "/sendMessage", {
       chat_id: chat,
       text: "NEXUS · " + (event.title || alertWord()) + (event.detail ? "\n" + event.detail : ""),
@@ -259,17 +289,26 @@
   function ensureLocalChannel(ln) {
     if (channelCreated || !ln || typeof ln.createChannel !== "function") return Promise.resolve();
     channelCreated = true;
-    return ln.createChannel({
-      id: "nexus-alerts",
-      name: (window.nexusT ? nexusT("NEXUS Ev Uyarıları", "NEXUS Home Alerts") : "NEXUS Ev Uyarıları"),
-      description: (window.nexusT ? nexusT("Akıllı ev olayları ve güvenlik bildirimleri", "Smart home events and security alerts") : "Akıllı ev olayları ve güvenlik bildirimleri"),
-      importance: 5,
-      visibility: 1, // Kilit ekranında tam içerik gösterimi (NotificationCompat.VISIBILITY_PUBLIC)
-      sound: "default",
-      vibration: true,
-      lights: true,
-      lightColor: "#4C7DFF",
-    }).catch(function () {});
+    return ln
+      .createChannel({
+        id: "nexus-alerts",
+        name: window.nexusT
+          ? nexusT("NEXUS Ev Uyarıları", "NEXUS Home Alerts")
+          : "NEXUS Ev Uyarıları",
+        description: window.nexusT
+          ? nexusT(
+              "Akıllı ev olayları ve güvenlik bildirimleri",
+              "Smart home events and security alerts",
+            )
+          : "Akıllı ev olayları ve güvenlik bildirimleri",
+        importance: 5,
+        visibility: 1, // Kilit ekranında tam içerik gösterimi (NotificationCompat.VISIBILITY_PUBLIC)
+        sound: "default",
+        vibration: true,
+        lights: true,
+        lightColor: "#4C7DFF",
+      })
+      .catch(function () {});
   }
 
   function sendSystem(event) {
@@ -277,47 +316,67 @@
     var cap = window.Capacitor;
     var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
     if (ln && typeof ln.schedule === "function") {
-      var notifTitle = String(event.title || (window.nexusT ? nexusT("NEXUS Uyarısı", "NEXUS Alert") : "NEXUS Uyarısı"));
-      return ensureLocalChannel(ln).then(function () {
-        return (ln.checkPermissions ? ln.checkPermissions() : Promise.resolve({ display: "granted" }));
-      }).then(function (perm) {
-        if (perm && perm.display === "prompt") return ln.requestPermissions();
-        return perm;
-      }).then(function (perm) {
-        if (perm && perm.display === "denied") return { denied: true };
-        return ln.schedule({
-          notifications: [{
-            id: hashId(event),
-            title: notifTitle,
-            body: String(event.detail || ""),
-            channelId: "nexus-alerts",
-            smallIcon: "ic_launcher",
-            sound: "default",
-            extra: { id: event.id, page: event.page || "nexus-messages.html" }
-          }]
+      var notifTitle = String(
+        event.title || (window.nexusT ? nexusT("NEXUS Uyarısı", "NEXUS Alert") : "NEXUS Uyarısı"),
+      );
+      return ensureLocalChannel(ln)
+        .then(function () {
+          return ln.checkPermissions
+            ? ln.checkPermissions()
+            : Promise.resolve({ display: "granted" });
+        })
+        .then(function (perm) {
+          if (perm && perm.display === "prompt") return ln.requestPermissions();
+          return perm;
+        })
+        .then(function (perm) {
+          if (perm && perm.display === "denied") return { denied: true };
+          return ln.schedule({
+            notifications: [
+              {
+                id: hashId(event),
+                title: notifTitle,
+                body: String(event.detail || ""),
+                channelId: "nexus-alerts",
+                smallIcon: "ic_launcher",
+                sound: "default",
+                extra: { id: event.id, page: event.page || "nexus-messages.html" },
+              },
+            ],
+          });
         });
-      });
     }
     // 2) Web: Notification API izni varsa gerçek sistem bildirimi.
     if (typeof Notification !== "undefined" && Notification.permission === "granted") {
       try {
-        var n = new Notification("NEXUS: " + (event.title || alertWord()), { body: event.detail || "", tag: "nexus-" + hashId(event) });
-        setTimeout(function () { try { n.close(); } catch (e) { } }, 12000);
+        var n = new Notification("NEXUS: " + (event.title || alertWord()), {
+          body: event.detail || "",
+          tag: "nexus-" + hashId(event),
+        });
+        setTimeout(function () {
+          try {
+            n.close();
+          } catch (e) {}
+        }, 12000);
         return Promise.resolve(n);
-      } catch (e) { /* bazı WebView'lar kurucu izin vermez */ }
+      } catch (e) {
+        /* bazı WebView'lar kurucu izin vermez */
+      }
     }
     // 3) Yedeği yok: uygulama içi şerit (sayfa açıksa görünür, olay zaten listede durur).
     if (typeof window.nexusShowNotice === "function") {
       try {
         window.nexusShowNotice(event);
         return Promise.resolve({ inApp: true });
-      } catch (e) { /* düşerse sessiz: olay listesi zaten güncel */ }
+      } catch (e) {
+        /* düşerse sessiz: olay listesi zaten güncel */
+      }
     }
     return Promise.resolve({ skipped: true });
   }
 
   function hashId(event) {
-    var raw = String((event && (event.id || (event.title + "|" + (event.ts || "")))) || Date.now());
+    var raw = String((event && (event.id || event.title + "|" + (event.ts || ""))) || Date.now());
     var h = 2166136261;
     for (var i = 0; i < raw.length; i++) {
       h ^= raw.charCodeAt(i);
@@ -343,19 +402,59 @@
 
   function fanout(cfg, event) {
     var jobs = [];
-    if (cfg.system.enabled) jobs.push(["system", function () { return sendSystem(event); }]);
-    if (cfg.ntfy.enabled) jobs.push(["ntfy", function () { return sendNtfy(cfg.ntfy, event); }]);
-    if (cfg.webhook.enabled) jobs.push(["webhook", function () { return sendWebhook(cfg.webhook, event); }]);
-    if (cfg.telegram.enabled) jobs.push(["telegram", function () { return sendTelegram(cfg.telegram, event); }]);
+    if (cfg.system.enabled)
+      jobs.push([
+        "system",
+        function () {
+          return sendSystem(event);
+        },
+      ]);
+    if (cfg.ntfy.enabled)
+      jobs.push([
+        "ntfy",
+        function () {
+          return sendNtfy(cfg.ntfy, event);
+        },
+      ]);
+    if (cfg.webhook.enabled)
+      jobs.push([
+        "webhook",
+        function () {
+          return sendWebhook(cfg.webhook, event);
+        },
+      ]);
+    if (cfg.telegram.enabled)
+      jobs.push([
+        "telegram",
+        function () {
+          return sendTelegram(cfg.telegram, event);
+        },
+      ]);
     var results = [];
-    return jobs.reduce(function (chain, job) {
-      return chain.then(function () {
-        return Promise.resolve()
-          .then(job[1])
-          .then(function () { results.push({ channel: job[0], ok: true }); record(job[0], true); },
-            function (error) { results.push({ channel: job[0], ok: false, error: String((error && error.message) || error).slice(0, 160) }); record(job[0], false, error); });
+    return jobs
+      .reduce(function (chain, job) {
+        return chain.then(function () {
+          return Promise.resolve()
+            .then(job[1])
+            .then(
+              function () {
+                results.push({ channel: job[0], ok: true });
+                record(job[0], true);
+              },
+              function (error) {
+                results.push({
+                  channel: job[0],
+                  ok: false,
+                  error: String((error && error.message) || error).slice(0, 160),
+                });
+                record(job[0], false, error);
+              },
+            );
+        });
+      }, Promise.resolve())
+      .then(function () {
+        return results;
       });
-    }, Promise.resolve()).then(function () { return results; });
   }
 
   function deliver(event) {
@@ -366,9 +465,14 @@
     // Yeni gerçek olay: uygulama içinde nazik zil (Ayarlar → Ses kapalıysa sessiz;
     // DND/sessiz saat zaten yukarıda kesildiği için buraya yalnızca aktarılan olay gelir).
     try {
-      if (window.nexusFeedback && typeof window.nexusFeedback.play === "function") window.nexusFeedback.play("notify");
-    } catch (e) { /* ses asıl işi engellemesin */ }
-    return fanout(channels(), event).then(function (results) { return { sent: results }; });
+      if (window.nexusFeedback && typeof window.nexusFeedback.play === "function")
+        window.nexusFeedback.play("notify");
+    } catch (e) {
+      /* ses asıl işi engellemesin */
+    }
+    return fanout(channels(), event).then(function (results) {
+      return { sent: results };
+    });
   }
 
   function events() {
@@ -384,14 +488,22 @@
     var list = events();
     if (opts.markOnly) {
       // İlk kurulum: eski olayları sahiplen, hiçbir yere gönderme.
-      list.forEach(function (e) { if (e && e.id) claim(e.id); });
+      list.forEach(function (e) {
+        if (e && e.id) claim(e.id);
+      });
       return Promise.resolve({ marked: list.length });
     }
     // "Taze" filtresi yerine sahiplenme (claim) kullanılıyor: uygulama kapalıyken
     // biriken haber de gider, ama hiçbir olay iki kez gitmez.
-    var pending = list.filter(function (e) { return !!(e && e.id); }).slice(-MAX_PER_RUN);
+    var pending = list
+      .filter(function (e) {
+        return !!(e && e.id);
+      })
+      .slice(-MAX_PER_RUN);
     return pending.reduce(function (chain, event) {
-      return chain.then(function () { return deliver(event); });
+      return chain.then(function () {
+        return deliver(event);
+      });
     }, Promise.resolve());
   }
 
@@ -402,7 +514,9 @@
     if (!Array.isArray(only)) return cfg;
     var out = {};
     Object.keys(cfg).forEach(function (name) {
-      out[name] = Object.assign({}, cfg[name], { enabled: only.indexOf(name) !== -1 && cfg[name].enabled });
+      out[name] = Object.assign({}, cfg[name], {
+        enabled: only.indexOf(name) !== -1 && cfg[name].enabled,
+      });
     });
     return out;
   }
@@ -417,7 +531,9 @@
       detail: "NEXUS kanal denemesi — bunu görüyorsan kanal çalışıyor.",
       ts: new Date().toISOString(),
       priority: "default",
-    }).then(function (results) { return { sent: results }; });
+    }).then(function (results) {
+      return { sent: results };
+    });
   }
 
   /* Sistem izni — DÜRÜST sonuç döner: { permission, asked }.
@@ -431,21 +547,33 @@
     var cap = window.Capacitor;
     var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
     if (ln && typeof ln.requestPermissions === "function") {
-      return ensureLocalChannel(ln).then(function () {
-        // Android/iOS da aynı: "prompt" değilse sistem sormaz, kararı olduğu gibi verir.
-        return ln.checkPermissions ? ln.checkPermissions() : { display: "prompt" };
-      }).then(function (cur) {
-        if (cur && cur.display && cur.display !== "prompt") return { permission: cur.display, asked: false };
-        return ln.requestPermissions().then(function (res) {
-          return { permission: (res && res.display) || "denied", asked: true };
+      return ensureLocalChannel(ln)
+        .then(function () {
+          // Android/iOS da aynı: "prompt" değilse sistem sormaz, kararı olduğu gibi verir.
+          return ln.checkPermissions ? ln.checkPermissions() : { display: "prompt" };
+        })
+        .then(function (cur) {
+          if (cur && cur.display && cur.display !== "prompt")
+            return { permission: cur.display, asked: false };
+          return ln.requestPermissions().then(function (res) {
+            return { permission: (res && res.display) || "denied", asked: true };
+          });
+        })
+        .catch(function () {
+          return { permission: "denied", asked: true };
         });
-      }).catch(function () { return { permission: "denied", asked: true }; });
     }
-    if (typeof Notification === "undefined") return Promise.resolve({ permission: "unsupported", asked: false });
-    if (Notification.permission !== "default") return Promise.resolve({ permission: Notification.permission, asked: false });
+    if (typeof Notification === "undefined")
+      return Promise.resolve({ permission: "unsupported", asked: false });
+    if (Notification.permission !== "default")
+      return Promise.resolve({ permission: Notification.permission, asked: false });
     return Promise.resolve(Notification.requestPermission())
-      .then(function (p) { return { permission: p, asked: true }; })
-      .catch(function () { return { permission: "denied", asked: true }; });
+      .then(function (p) {
+        return { permission: p, asked: true };
+      })
+      .catch(function () {
+        return { permission: "denied", asked: true };
+      });
   }
 
   function start() {
@@ -457,7 +585,7 @@
       if (ln && typeof ln.addListener === "function") {
         ln.addListener("localNotificationActionPerformed", function (action) {
           var extra = action && action.notification && action.notification.extra;
-          var targetPage = (extra && extra.page) ? extra.page : "nexus-messages.html";
+          var targetPage = extra && extra.page ? extra.page : "nexus-messages.html";
           if (window.location.href.indexOf(targetPage) === -1) {
             window.location.href = targetPage;
           }
@@ -475,7 +603,9 @@
       if (!document.hidden) checkNew();
     });
     // Aynı sekmede yazılanlar depolama olayı fırlatmaz: hafif yoklama.
-    setInterval(function () { checkNew(); }, 5000);
+    setInterval(function () {
+      checkNew();
+    }, 5000);
   }
 
   window.nexusNotify = {

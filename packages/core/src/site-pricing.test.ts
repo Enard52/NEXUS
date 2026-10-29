@@ -5,20 +5,36 @@ import { PRICES } from "../../../scripts/site-content.mjs";
 
 // CLAUDE.md kural 4: fiyatlar tek kaynaktan gelir. cloud-sync.js (uygulama)
 // ve scripts/site-content.mjs (site) aynı fiyatları göstermek zorundadır.
+//
+// Neden ham metin aramıyoruz: biçimlendirici (prettier) nesne anahtarlarındaki
+// tırnakları kaldırıyor ve satırları kırıyor — `toContain('"Aylık": "₺499,99"')`
+// ürün doğruyken bile kırmızıya düşüyordu. Sözleşme "bu planda bu fiyat yazıyor"
+// olmalı, tırnak/boşluk stiliyle değil.
 describe("site fiyatları tek kaynakla uyumlu (kural 4)", () => {
   const root = process.cwd();
   const cloudSync = readFileSync(join(root, "src", "app", "cloud-sync.js"), "utf8");
+  const rx = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  it("cloud-sync TRY aylık fiyatı site ile aynı", () => {
-    expect(cloudSync).toContain(`"Aylık": "${PRICES.TRY.monthly}"`);
-  });
-  it("cloud-sync TRY yıllık fiyatı site ile aynı", () => {
-    expect(cloudSync).toContain(`"Yıllık": "${PRICES.TRY.yearly}"`);
-  });
-  it("cloud-sync USD aylık fiyatı site ile aynı", () => {
-    expect(cloudSync).toContain(`"Aylık": "${PRICES.USD.monthly}"`);
-  });
-  it("cloud-sync USD yıllık fiyatı site ile aynı", () => {
-    expect(cloudSync).toContain(`"Yıllık": "${PRICES.USD.yearly}"`);
-  });
+  // site-content.mjs İngilizce anahtar taşıyor (monthly/yearly), uygulama Türkçe
+  // (Aylık/Yıllık): ikisini birbirine karıştırınca test "undefined" aratıyordu.
+  const PLANS = [
+    { key: "monthly", label: "Aylık" },
+    { key: "yearly", label: "Yıllık" },
+  ] as const;
+
+  function fiyatEşleşmesi(cur: "TRY" | "USD", plan: (typeof PLANS)[number]) {
+    const value = String(PRICES[cur][plan.key]);
+    return new RegExp(`['"]?${rx(plan.label)}['"]?\\s*:\\s*['"]${rx(value)}['"]`);
+  }
+
+  for (const cur of ["TRY", "USD"] as const) {
+    for (const plan of PLANS) {
+      it(`cloud-sync ${cur} ${plan.label.toLowerCase()} fiyatı site ile aynı`, () => {
+        expect(
+          cloudSync,
+          `cloud-sync.js içinde ${cur}/${plan.label} = ${PRICES[cur][plan.key]} bulunamadı`,
+        ).toMatch(fiyatEşleşmesi(cur, plan));
+      });
+    }
+  }
 });

@@ -23,12 +23,15 @@
   }
 
   function desktopBridge() {
-    return window.nexusDesktop && typeof window.nexusDesktop.http === "function" ? window.nexusDesktop : null;
+    return window.nexusDesktop && typeof window.nexusDesktop.http === "function"
+      ? window.nexusDesktop
+      : null;
   }
 
   function nativeHttpPlugin() {
     var capi = window.Capacitor;
-    if (!capi || typeof capi.isNativePlatform !== "function" || !capi.isNativePlatform()) return null;
+    if (!capi || typeof capi.isNativePlatform !== "function" || !capi.isNativePlatform())
+      return null;
     var plugins = capi.Plugins || {};
     var plugin = plugins.CapacitorHttp || plugins.Http;
     return plugin && typeof plugin.request === "function" ? plugin : null;
@@ -48,38 +51,60 @@
     var headers = opts.headers || (opts.body ? { "Content-Type": "application/json" } : {});
     var desk = desktopBridge();
     if (desk) {
-      return desk.http({ url: opts.url, method: opts.method || "GET", headers: headers, body: opts.body, timeoutMs: timeout });
+      return desk.http({
+        url: opts.url,
+        method: opts.method || "GET",
+        headers: headers,
+        body: opts.body,
+        timeoutMs: timeout,
+      });
     }
     var plugin = nativeHttpPlugin();
     if (plugin) {
       var data = opts.body;
       if (typeof data === "string" && /json/i.test(headers["Content-Type"] || "")) {
-        try { data = JSON.parse(data); } catch (e) { /* düz metin olarak gönder */ }
+        try {
+          data = JSON.parse(data);
+        } catch (e) {
+          /* düz metin olarak gönder */
+        }
       }
-      return plugin.request({
-        method: opts.method || "GET",
-        url: opts.url,
-        headers: headers,
-        data: data,
-        connectTimeout: timeout,
-        readTimeout: timeout,
-        responseType: "text",
-      }).then(function (res) {
-        var text = typeof res.data === "string" ? res.data : JSON.stringify(res.data);
-        return { status: res.status, text: text };
-      });
+      return plugin
+        .request({
+          method: opts.method || "GET",
+          url: opts.url,
+          headers: headers,
+          data: data,
+          connectTimeout: timeout,
+          readTimeout: timeout,
+          responseType: "text",
+        })
+        .then(function (res) {
+          var text = typeof res.data === "string" ? res.data : JSON.stringify(res.data);
+          return { status: res.status, text: text };
+        });
     }
     var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-    var timer = controller ? setTimeout(function () { controller.abort(); }, timeout) : null;
+    var timer = controller
+      ? setTimeout(function () {
+          controller.abort();
+        }, timeout)
+      : null;
     return fetch(opts.url, {
       method: opts.method || "GET",
       body: opts.body,
       headers: opts.body || opts.headers ? headers : undefined,
       signal: controller ? controller.signal : undefined,
       cache: "no-store",
-    }).then(function (res) {
-      return res.text().then(function (text) { return { status: res.status, text: text }; });
-    }).finally(function () { if (timer) clearTimeout(timer); });
+    })
+      .then(function (res) {
+        return res.text().then(function (text) {
+          return { status: res.status, text: text };
+        });
+      })
+      .finally(function () {
+        if (timer) clearTimeout(timer);
+      });
   }
 
   function getJson(url, timeoutMs) {
@@ -90,35 +115,58 @@
   }
 
   function sendJson(url, method, body) {
-    return request({ url: url, method: method, body: JSON.stringify(body), headers: { "Content-Type": "application/json" } }).then(function (res) {
+    return request({
+      url: url,
+      method: method,
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    }).then(function (res) {
       if (res.status < 200 || res.status >= 300) throw new Error("http " + res.status);
-      try { return JSON.parse(res.text); } catch (e) { return res.text; }
+      try {
+        return JSON.parse(res.text);
+      } catch (e) {
+        return res.text;
+      }
     });
   }
 
   function baseUrl(device) {
-    var host = /^https?:\/\//.test(device.host || "") ? device.host : "http://" + (device.host || device.ip);
+    var host = /^https?:\/\//.test(device.host || "")
+      ? device.host
+      : "http://" + (device.host || device.ip);
     return host.replace(/\/+$/, "");
   }
 
   function hostOnly(device) {
-    return baseUrl(device).replace(/^https?:\/\//, "").split(":")[0];
+    return baseUrl(device)
+      .replace(/^https?:\/\//, "")
+      .split(":")[0];
   }
 
   // Yerel ağ allowlist'i: komutlar yalnızca kullanıcının kendi ağına gider. Genel bir
   // adrese (ör. içe aktarılmış bozuk bir kayda) istek atılmaz; masaüstündeki LAN proxy
   // aynı kuralı sunucu tarafında da uygular (main.cjs isPrivateHost).
   function isPrivateHost(host) {
-    host = String(host || "").replace(/^\[|\]$/g, "").toLowerCase();
+    host = String(host || "")
+      .replace(/^\[|\]$/g, "")
+      .toLowerCase();
     if (!host) return false;
     if (host === "localhost" || host === "::1") return true;
     if (/\.(local|lan|home|internal|home\.arpa)$/.test(host)) return true; // mDNS / yerel çözümleyici adları
     var v4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
     if (v4) {
-      var a = +v4[1], b = +v4[2];
-      return a === 10 || a === 127 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254);
+      var a = +v4[1],
+        b = +v4[2];
+      return (
+        a === 10 ||
+        a === 127 ||
+        (a === 172 && b >= 16 && b <= 31) ||
+        (a === 192 && b === 168) ||
+        (a === 169 && b === 254)
+      );
     }
-    if (/^[0-9a-f:]+$/.test(host) && host.indexOf(":") !== -1) return /^f[cd]/.test(host) || /^fe[89ab]/.test(host);
+    if (/^[0-9a-f:]+$/.test(host) && host.indexOf(":") !== -1)
+      return /^f[cd]/.test(host) || /^fe[89ab]/.test(host);
     return false;
   }
 
@@ -126,12 +174,21 @@
   function lanAddressError(urlOrHost) {
     var host = urlOrHost;
     if (/^[a-z]+:\/\//i.test(urlOrHost)) {
-      try { host = new URL(urlOrHost).hostname; } catch (e) { return new Error("geçersiz adres"); }
+      try {
+        host = new URL(urlOrHost).hostname;
+      } catch (e) {
+        return new Error("geçersiz adres");
+      }
     } else {
-      host = String(urlOrHost).replace(/^https?:\/\//i, "").split("/")[0].split(":")[0];
+      host = String(urlOrHost)
+        .replace(/^https?:\/\//i, "")
+        .split("/")[0]
+        .split(":")[0];
     }
     if (isPrivateHost(host)) return null;
-    var err = new Error("Yalnızca yerel ağ adreslerine komut gönderilir (" + host + " yerel değil).");
+    var err = new Error(
+      "Yalnızca yerel ağ adreslerine komut gönderilir (" + host + " yerel değil).",
+    );
     err.code = "not-lan";
     return err;
   }
@@ -149,7 +206,7 @@
   var shelly = {
     id: "shelly",
     label: "Shelly",
-    caps: ["switch", "brightness"],
+    caps: ["switch", "brightness", "color", "colorTemp", "position", "coverStop", "powerOn"],
     probe: function (device) {
       return getJson(baseUrl(device) + "/settings").then(function (info) {
         if (!info || !info.device || !info.device.type) throw new Error("shelly: kimlik yok");
@@ -157,7 +214,20 @@
           protocol: "shelly",
           model: info.device.type,
           name: info.name || info.device.hostname || device.name,
-          kind: /SHCB|SHBLB|SHRGBW|SHDM|LTAH|dimmer|bulb/i.test(info.device.type) ? "light" : /SHPLG|SHPRO/i.test(info.device.type) ? "plug" : "switch",
+          kind:
+            info.mode === "roller"
+              ? "cover"
+              : /SHCB|SHBLB|SHRGBW|SHDM|LTAH|dimmer|bulb/i.test(info.device.type)
+                ? "light"
+                : /SHPLG|SHPRO/i.test(info.device.type)
+                  ? "plug"
+                  : "switch",
+          caps:
+            info.mode === "roller"
+              ? ["cover", "position"]
+              : /SHRGBW|SHBLB/i.test(info.device.type)
+                ? ["switch", "brightness", "color", "colorTemp"]
+                : null,
         };
       });
     },
@@ -166,6 +236,15 @@
         var light = status.lights && status.lights[0] ? status.lights[0] : null;
         var relay = status.relays && status.relays[0] ? status.relays[0] : null;
         var meter = status.meters && status.meters[0] ? status.meters[0] : null;
+        var roller = status.rollers && status.rollers[0] ? status.rollers[0] : null;
+        if (roller && device.kind === "cover") {
+          var rp = typeof roller.current_pos === "number" ? roller.current_pos : null;
+          return {
+            position: rp,
+            switch: rp == null ? null : rp > 0,
+            power: meter && typeof meter.power === "number" ? meter.power : null,
+          };
+        }
         return {
           switch: light ? !!light.ison : relay ? !!relay.ison : null,
           brightness: light && typeof light.brightness === "number" ? light.brightness : null,
@@ -175,13 +254,65 @@
     },
     firmware: function (device) {
       return getJson(baseUrl(device) + "/ota").then(function (o) {
-        return { current: o.old_version || null, latest: o.has_update ? o.new_version : (o.old_version || null), hasUpdate: !!o.has_update };
+        return {
+          current: o.old_version || null,
+          latest: o.has_update ? o.new_version : o.old_version || null,
+          hasUpdate: !!o.has_update,
+        };
       });
     },
     write: function (device, capability, value) {
       var id = device.endpointId == null ? 0 : device.endpointId;
-      if (capability === "brightness") return request({ url: baseUrl(device) + "/light/" + id + "?brightness=" + Math.round(value) });
+      // Shelly Gen1: /settings/relay/<id>?default_state=off|on|last (elektrik gelince başlangıç durumu)
+      if (capability === "powerOn")
+        return request({
+          url:
+            baseUrl(device) +
+            "/settings/relay/" +
+            id +
+            "?default_state=" +
+            (value === "on" ? "on" : value === "off" ? "off" : "last"),
+        });
+      if (capability === "brightness")
+        return request({
+          url: baseUrl(device) + "/light/" + id + "?brightness=" + Math.round(value),
+        });
+      if (capability === "coverStop") return request({ url: baseUrl(device) + "/roller/" + id + "?go=stop" });
+      // Shelly Gen1 REST: roller → go=open|close|to_pos&roller_pos; RGBW/Bulb → red/green/blue ve temp (Kelvin)
+      if (capability === "position") {
+        var pos = Math.max(0, Math.min(100, Math.round(Number(value))));
+        return request({
+          url:
+            baseUrl(device) +
+            "/roller/" +
+            id +
+            (pos >= 100 ? "?go=open" : pos <= 0 ? "?go=close" : "?go=to_pos&roller_pos=" + pos),
+        });
+      }
+      if (capability === "color") {
+        var c = hexToRgb(value);
+        return request({
+          url:
+            baseUrl(device) +
+            "/light/" +
+            id +
+            "?turn=on&mode=color&red=" +
+            c[0] +
+            "&green=" +
+            c[1] +
+            "&blue=" +
+            c[2],
+        });
+      }
+      if (capability === "colorTemp")
+        return request({
+          url: baseUrl(device) + "/light/" + id + "?turn=on&mode=white&temp=" + toneKelvin(value),
+        });
       if (capability === "switch") {
+        if (device.kind === "cover")
+          return request({
+            url: baseUrl(device) + "/roller/" + id + "?go=" + (value ? "open" : "close"),
+          });
         var path = device.kind === "light" ? "/light/" : "/relay/";
         return request({ url: baseUrl(device) + path + id + "?turn=" + (value ? "on" : "off") });
       }
@@ -190,10 +321,15 @@
   };
 
   // --- Shelly Gen2 / Plus / Pro (JSON-RPC over HTTP) -------------------------
+  function rpcComp(device) {
+    if (device.kind === "cover") return "Cover";
+    if (device.kind === "light") return (device.options && device.options.rgbComp) || "Light";
+    return "Switch";
+  }
   var shellyRpc = {
     id: "shelly-rpc",
     label: "Shelly Plus / Pro",
-    caps: ["switch", "brightness"],
+    caps: ["switch", "brightness", "color", "position", "coverStop", "powerOn"],
     probe: function (device) {
       return getJson(baseUrl(device) + "/rpc/Shelly.GetDeviceInfo").then(function (info) {
         if (!info || !info.id || !info.gen) throw new Error("shelly-rpc: kimlik yok");
@@ -202,14 +338,38 @@
           protocol: "shelly-rpc",
           model: info.model || app,
           name: info.name || info.id,
-          kind: /dimmer|rgbw|bulb|light/i.test(app) ? "light" : /plug/i.test(app) ? "plug" : "switch",
+          kind:
+            info.profile === "cover"
+              ? "cover"
+              : /dimmer|rgbw|bulb|light/i.test(app)
+                ? "light"
+                : /plug/i.test(app)
+                  ? "plug"
+                  : "switch",
+          caps:
+            info.profile === "cover"
+              ? ["cover", "position"]
+              : info.profile === "rgb" || info.profile === "rgbw"
+                ? ["switch", "brightness", "color"]
+                : null,
+          options:
+            info.profile === "rgb" || info.profile === "rgbw"
+              ? { rgbComp: info.profile.toUpperCase() }
+              : null,
         };
       });
     },
     read: function (device) {
       var id = device.endpointId == null ? 0 : device.endpointId;
-      var comp = device.kind === "light" ? "Light" : "Switch";
+      var comp = rpcComp(device);
       return getJson(baseUrl(device) + "/rpc/" + comp + ".GetStatus?id=" + id).then(function (s) {
+        if (comp === "Cover") {
+          return {
+            position: typeof s.current_pos === "number" ? s.current_pos : null,
+            switch: typeof s.current_pos === "number" ? s.current_pos > 0 : null,
+            power: typeof s.apower === "number" ? s.apower : null,
+          };
+        }
         return {
           switch: typeof s.output === "boolean" ? s.output : null,
           brightness: typeof s.brightness === "number" ? s.brightness : null,
@@ -220,17 +380,70 @@
     firmware: function (device) {
       return Promise.all([
         getJson(baseUrl(device) + "/rpc/Shelly.GetDeviceInfo"),
-        getJson(baseUrl(device) + "/rpc/Shelly.CheckForUpdate").catch(function () { return {}; }),
+        getJson(baseUrl(device) + "/rpc/Shelly.CheckForUpdate").catch(function () {
+          return {};
+        }),
       ]).then(function (r) {
         var latest = r[1] && r[1].stable && r[1].stable.version;
-        return { current: r[0].ver || r[0].fw_id || null, latest: latest || r[0].ver || null, hasUpdate: !!latest };
+        return {
+          current: r[0].ver || r[0].fw_id || null,
+          latest: latest || r[0].ver || null,
+          hasUpdate: !!latest,
+        };
       });
     },
     write: function (device, capability, value) {
       var id = device.endpointId == null ? 0 : device.endpointId;
-      var comp = device.kind === "light" ? "Light" : "Switch";
-      if (capability === "switch") return getJson(baseUrl(device) + "/rpc/" + comp + ".Set?id=" + id + "&on=" + (value ? "true" : "false"));
-      if (capability === "brightness" && comp === "Light") return getJson(baseUrl(device) + "/rpc/Light.Set?id=" + id + "&brightness=" + Math.round(value));
+      var comp = rpcComp(device);
+      // Gen2+: Switch.SetConfig initial_state = off | on | restore_last
+      if (capability === "powerOn" && comp === "Switch")
+        return getJson(
+          baseUrl(device) +
+            "/rpc/Switch.SetConfig?id=" +
+            id +
+            "&config=" +
+            encodeURIComponent(
+              JSON.stringify({
+                initial_state: value === "on" ? "on" : value === "off" ? "off" : "restore_last",
+              }),
+            ),
+        );
+      // Gen2+ Cover bileşeni: Cover.Open / Cover.Close / Cover.GoToPosition (pos 0–100)
+      if (device.kind === "cover") {
+        if (capability === "coverStop") return getJson(baseUrl(device) + "/rpc/Cover.Stop?id=" + id);
+        if (capability === "switch")
+          return getJson(
+            baseUrl(device) + "/rpc/Cover." + (value ? "Open" : "Close") + "?id=" + id,
+          );
+        if (capability === "position")
+          return getJson(
+            baseUrl(device) +
+              "/rpc/Cover.GoToPosition?id=" +
+              id +
+              "&pos=" +
+              Math.max(0, Math.min(100, Math.round(Number(value)))),
+          );
+        return unsupported("shelly-rpc", capability);
+      }
+      if (capability === "switch")
+        return getJson(
+          baseUrl(device) + "/rpc/" + comp + ".Set?id=" + id + "&on=" + (value ? "true" : "false"),
+        );
+      if (capability === "brightness" && comp !== "Switch")
+        return getJson(
+          baseUrl(device) + "/rpc/" + comp + ".Set?id=" + id + "&brightness=" + Math.round(value),
+        );
+      // RGB / RGBW bileşeni: RGB.Set rgb=[r,g,b]
+      if (capability === "color" && (comp === "RGB" || comp === "RGBW"))
+        return getJson(
+          baseUrl(device) +
+            "/rpc/" +
+            comp +
+            ".Set?id=" +
+            id +
+            "&on=true&rgb=" +
+            encodeURIComponent(JSON.stringify(hexToRgb(value))),
+        );
       return unsupported("shelly-rpc", capability);
     },
   };
@@ -239,34 +452,76 @@
   var tasmota = {
     id: "tasmota",
     label: "Tasmota",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp", "position", "coverStop", "powerOn"],
     cmd: function (device, command) {
       return getJson(baseUrl(device) + "/cm?cmnd=" + encodeURIComponent(command));
     },
     probe: function (device) {
       return tasmota.cmd(device, "Status 0").then(function (s) {
         if (!s || !s.Status || !s.StatusFWR) throw new Error("tasmota: kimlik yok");
-        var name = (s.Status.DeviceName || (s.Status.FriendlyName && s.Status.FriendlyName[0]) || "Tasmota").trim();
-        var light = s.StatusSTS && typeof s.StatusSTS.Dimmer === "number";
-        return { protocol: "tasmota", model: "Tasmota " + s.StatusFWR.Version, name: name, kind: light ? "light" : "switch" };
+        var name = (
+          s.Status.DeviceName ||
+          (s.Status.FriendlyName && s.Status.FriendlyName[0]) ||
+          "Tasmota"
+        ).trim();
+        var sts0 = s.StatusSTS || {};
+        var light = typeof sts0.Dimmer === "number";
+        var shutter = sts0.Shutter1 && typeof sts0.Shutter1.Position === "number";
+        var res = {
+          protocol: "tasmota",
+          model: "Tasmota " + s.StatusFWR.Version,
+          name: name,
+          kind: shutter ? "cover" : light ? "light" : "switch",
+        };
+        if (shutter) res.caps = ["cover", "position"];
+        else if (light && typeof sts0.CT === "number")
+          res.caps = ["switch", "brightness", "colorTemp"]; // CT kanalı varsa ton ayarlanabilir (renk desteği varsayılmaz)
+        return res;
       });
     },
     read: function (device) {
       return tasmota.cmd(device, "Status 11").then(function (s) {
         var sts = s.StatusSTS || {};
         var p = sts.POWER || sts.POWER1;
-        return { switch: p == null ? null : p === "ON", brightness: typeof sts.Dimmer === "number" ? sts.Dimmer : null };
+        if (sts.Shutter1 && typeof sts.Shutter1.Position === "number")
+          return { position: sts.Shutter1.Position, switch: sts.Shutter1.Position > 0 };
+        return {
+          switch: p == null ? null : p === "ON",
+          brightness: typeof sts.Dimmer === "number" ? sts.Dimmer : null,
+        };
       });
     },
     firmware: function (device) {
       return tasmota.cmd(device, "Status 2").then(function (s) {
-        return { current: s.StatusFWR && s.StatusFWR.Version || null, latest: null, hasUpdate: null };
+        return {
+          current: (s.StatusFWR && s.StatusFWR.Version) || null,
+          latest: null,
+          hasUpdate: null,
+        };
       });
     },
     write: function (device, capability, value) {
+      // Tasmota komutları: ShutterPosition1 0–100, CT 153–500 (mired), ShutterOpen1 / ShutterClose1,
+      // PowerOnState 0 = kapalı, 1 = açık, 3 = son durum
+      if (capability === "powerOn")
+        return tasmota.cmd(device, "PowerOnState " + (value === "on" ? 1 : value === "off" ? 0 : 3));
+      if (capability === "coverStop") return tasmota.cmd(device, "ShutterStop1");
+      if (capability === "position")
+        return tasmota.cmd(
+          device,
+          "ShutterPosition1 " + Math.max(0, Math.min(100, Math.round(Number(value)))),
+        );
+      if (capability === "colorTemp")
+        return tasmota.cmd(
+          device,
+          "CT " + Math.max(153, Math.min(500, Math.round(1000000 / toneKelvin(value)))),
+        );
+      if (capability === "switch" && device.kind === "cover")
+        return tasmota.cmd(device, value ? "ShutterOpen1" : "ShutterClose1");
       if (capability === "switch") return tasmota.cmd(device, "Power " + (value ? "On" : "Off"));
       if (capability === "brightness") return tasmota.cmd(device, "Dimmer " + Math.round(value));
-      if (capability === "color") return tasmota.cmd(device, "Color " + String(value).replace("#", ""));
+      if (capability === "color")
+        return tasmota.cmd(device, "Color " + String(value).replace("#", ""));
       return unsupported("tasmota", capability);
     },
   };
@@ -275,11 +530,40 @@
   var wled = {
     id: "wled",
     label: "WLED",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp", "effect", "lightScene"],
     probe: function (device) {
       return getJson(baseUrl(device) + "/json/info").then(function (info) {
         if (!info || !info.ver || !info.leds) throw new Error("wled: sürüm alanı yok");
-        return { protocol: "wled", model: "WLED " + info.ver, name: info.name || device.name || "WLED", kind: "light" };
+        var found = {
+          protocol: "wled",
+          model: "WLED " + info.ver,
+          name: info.name || device.name || "WLED",
+          kind: "light",
+        };
+        // Efekt adları (/json/effects, dizin = fx numarası) ve kayıtlı hazır ayarlar (/presets.json)
+        return Promise.all([
+          getJson(baseUrl(device) + "/json/effects").catch(function () {
+            return [];
+          }),
+          getJson(baseUrl(device) + "/presets.json").catch(function () {
+            return {};
+          }),
+        ]).then(function (r) {
+          var options = {};
+          if (Array.isArray(r[0]) && r[0].length) options.effects = r[0].slice(0, 256).map(String);
+          var presets = r[1] && typeof r[1] === "object" ? r[1] : {};
+          var scenes = Object.keys(presets)
+            .filter(function (k) {
+              return k !== "0" && presets[k] && presets[k].n;
+            })
+            .slice(0, 64)
+            .map(function (k) {
+              return [k, String(presets[k].n)];
+            });
+          if (scenes.length) options.scenes = scenes;
+          if (options.effects || options.scenes) found.options = options;
+          return found;
+        });
       });
     },
     read: function (device) {
@@ -288,18 +572,48 @@
         return {
           switch: !!state.on,
           brightness: typeof state.bri === "number" ? Math.round((state.bri / 255) * 100) : null,
-          color: col ? "#" + col.slice(0, 3).map(function (v) { return ("0" + Number(v).toString(16)).slice(-2); }).join("").toUpperCase() : null,
+          color: col
+            ? "#" +
+              col
+                .slice(0, 3)
+                .map(function (v) {
+                  return ("0" + Number(v).toString(16)).slice(-2);
+                })
+                .join("")
+                .toUpperCase()
+            : null,
         };
       });
     },
     firmware: function (device) {
-      return getJson(baseUrl(device) + "/json/info").then(function (i) { return { current: i.ver || null, latest: null, hasUpdate: null }; });
+      return getJson(baseUrl(device) + "/json/info").then(function (i) {
+        return { current: i.ver || null, latest: null, hasUpdate: null };
+      });
     },
     write: function (device, capability, value) {
-      var body = capability === "switch" ? { on: !!value }
-        : capability === "brightness" ? { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 255)) }
-        : capability === "color" ? { seg: [{ col: [hexToRgb(value)] }] }
-        : null;
+      var wopts = device.options || {};
+      if (capability === "effect") {
+        var fx = (wopts.effects || []).indexOf(value);
+        if (fx === -1) return unsupported("wled", capability);
+        return sendJson(baseUrl(device) + "/json/state", "POST", { on: true, seg: [{ fx: fx }] });
+      }
+      if (capability === "lightScene") {
+        var known = (wopts.scenes || []).some(function (s) {
+          return String(s[0]) === String(value);
+        });
+        if (!known) return unsupported("wled", capability);
+        return sendJson(baseUrl(device) + "/json/state", "POST", { on: true, ps: Number(value) });
+      }
+      var body =
+        capability === "switch"
+          ? { on: !!value }
+          : capability === "brightness"
+            ? { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 255)) }
+            : capability === "color"
+              ? { seg: [{ col: [hexToRgb(value)] }] }
+              : capability === "colorTemp"
+                ? { seg: [{ cct: toneKelvin(value) }] } // WLED 0.13+: 1900–10091 değeri Kelvin olarak okunur
+                : null;
       if (!body) return unsupported("wled", capability);
       return sendJson(baseUrl(device) + "/json/state", "POST", body);
     },
@@ -310,36 +624,91 @@
   var esphome = {
     id: "esphome",
     label: "ESPHome",
-    caps: ["switch", "brightness"],
+    caps: ["switch", "brightness", "color", "colorTemp", "position", "coverStop"],
     probe: function (device) {
       // web_server v1/v2 kök sayfası "ESPHome" içerir; bileşen kimliği kayıtta tutulur
       return request({ url: baseUrl(device) + "/" }).then(function (res) {
         if (res.status !== 200 || !/esphome/i.test(res.text)) throw new Error("esphome: imza yok");
         var title = (res.text.match(/<title>([^<]+)<\/title>/i) || [])[1] || "ESPHome";
         var light = /light-|\/light\//i.test(res.text);
-        var idMatch = res.text.match(/(?:light|switch)[-/]([a-z0-9_]+)/i);
+        var cover = !light && /cover-|\/cover\//i.test(res.text);
+        var idMatch = res.text.match(/(?:light|switch|cover)[-/]([a-z0-9_]+)/i);
         return {
-          protocol: "esphome", model: "ESPHome", name: title.trim(), kind: light ? "light" : "switch",
+          protocol: "esphome",
+          model: "ESPHome",
+          name: title.trim(),
+          kind: cover ? "cover" : light ? "light" : "switch",
+          caps: cover ? ["cover", "position"] : null,
           entity: idMatch ? idMatch[1] : null,
         };
       });
     },
     path: function (device) {
-      return "/" + (device.kind === "light" ? "light" : "switch") + "/" + (device.entity || (device.kind === "light" ? "light" : "relay"));
+      var dom = device.kind === "light" ? "light" : device.kind === "cover" ? "cover" : "switch";
+      return (
+        "/" +
+        dom +
+        "/" +
+        (device.entity || (dom === "light" ? "light" : dom === "cover" ? "cover" : "relay"))
+      );
     },
     read: function (device) {
       return getJson(baseUrl(device) + esphome.path(device)).then(function (s) {
+        if (device.kind === "cover") {
+          return {
+            position: typeof s.position === "number" ? Math.round(s.position * 100) : null,
+            switch: typeof s.position === "number" ? s.position > 0 : null,
+          };
+        }
         return {
           switch: s.state == null ? null : String(s.state).toUpperCase() === "ON",
-          brightness: typeof s.brightness === "number" ? Math.round((s.brightness / 255) * 100) : null,
+          brightness:
+            typeof s.brightness === "number" ? Math.round((s.brightness / 255) * 100) : null,
         };
       });
     },
     write: function (device, capability, value) {
       var p = esphome.path(device);
-      if (capability === "switch") return request({ url: baseUrl(device) + p + (value ? "/turn_on" : "/turn_off"), method: "POST" });
+      if (capability === "coverStop" && device.kind === "cover")
+        return request({ url: baseUrl(device) + p + "/stop", method: "POST" });
+      if (capability === "switch" && device.kind === "cover")
+        return request({ url: baseUrl(device) + p + (value ? "/open" : "/close"), method: "POST" });
+      if (capability === "switch")
+        return request({
+          url: baseUrl(device) + p + (value ? "/turn_on" : "/turn_off"),
+          method: "POST",
+        });
       if (capability === "brightness" && device.kind === "light") {
-        return request({ url: baseUrl(device) + p + "/turn_on?brightness=" + Math.round((Number(value) / 100) * 255), method: "POST" });
+        return request({
+          url:
+            baseUrl(device) + p + "/turn_on?brightness=" + Math.round((Number(value) / 100) * 255),
+          method: "POST",
+        });
+      }
+      // ESPHome web_server: light turn_on?r=&g=&b= / color_temp (mired); cover set?position=0..1, open, close
+      if (capability === "color" && device.kind === "light") {
+        var c = hexToRgb(value);
+        return request({
+          url: baseUrl(device) + p + "/turn_on?r=" + c[0] + "&g=" + c[1] + "&b=" + c[2],
+          method: "POST",
+        });
+      }
+      if (capability === "colorTemp" && device.kind === "light") {
+        return request({
+          url:
+            baseUrl(device) + p + "/turn_on?color_temp=" + Math.round(1000000 / toneKelvin(value)),
+          method: "POST",
+        });
+      }
+      if (capability === "position" && device.kind === "cover") {
+        return request({
+          url:
+            baseUrl(device) +
+            p +
+            "/set?position=" +
+            Math.max(0, Math.min(100, Math.round(Number(value)))) / 100,
+          method: "POST",
+        });
       }
       return unsupported("esphome", capability);
     },
@@ -350,41 +719,78 @@
   var hue = {
     id: "hue",
     label: "Philips Hue",
-    caps: ["switch", "brightness", "color", "colorTemp"],
+    caps: ["switch", "brightness", "color", "colorTemp", "lightScene"],
     probe: function (device) {
       return getJson(baseUrl(device) + "/api/config").then(function (c) {
         if (!c || !c.bridgeid) throw new Error("hue: köprü değil");
-        return { protocol: "hue", model: c.modelid || "Hue Bridge", name: c.name || "Hue Köprüsü", kind: "bridge", bridgeid: c.bridgeid };
+        return {
+          protocol: "hue",
+          model: c.modelid || "Hue Bridge",
+          name: c.name || "Hue Köprüsü",
+          kind: "bridge",
+          bridgeid: c.bridgeid,
+        };
       });
     },
     // Köprü düğmesine basıldıktan sonra 30 sn içinde çağrılır; kullanıcı adını döner.
     pair: function (host) {
       var device = { host: host };
-      return sendJson(baseUrl(device) + "/api", "POST", { devicetype: "nexus#app" }).then(function (r) {
-        var item = Array.isArray(r) ? r[0] : r;
-        if (item && item.success && item.success.username) return item.success.username;
-        if (item && item.error && item.error.type === 101) {
-          var e = new Error("Köprüdeki yuvarlak düğmeye bas, sonra tekrar dene."); e.code = "link-button"; throw e;
-        }
-        throw new Error("hue: eşleştirme başarısız");
-      });
+      return sendJson(baseUrl(device) + "/api", "POST", { devicetype: "nexus#app" }).then(
+        function (r) {
+          var item = Array.isArray(r) ? r[0] : r;
+          if (item && item.success && item.success.username) return item.success.username;
+          if (item && item.error && item.error.type === 101) {
+            var e = new Error("Köprüdeki yuvarlak düğmeye bas, sonra tekrar dene.");
+            e.code = "link-button";
+            throw e;
+          }
+          throw new Error("hue: eşleştirme başarısız");
+        },
+      );
     },
     lights: function (host, user) {
-      return getJson(baseUrl({ host: host }) + "/api/" + encodeURIComponent(user) + "/lights").then(function (all) {
-        if (Array.isArray(all) && all[0] && all[0].error) throw new Error("hue: yetki yok");
-        return Object.keys(all || {}).map(function (id) {
-          var l = all[id] || {};
-          var type = String(l.type || "");
-          var caps = ["switch"];
-          if (/dimmable|color|temperature/i.test(type)) caps.push("brightness");
-          if (/color light/i.test(type)) caps.push("color");
-          if (/temperature|extended color/i.test(type)) caps.push("colorTemp");
-          return { id: id, name: l.name || ("Hue " + id), type: type, caps: caps, model: l.modelid || "Hue" };
-        });
+      var apiBase = baseUrl({ host: host }) + "/api/" + encodeURIComponent(user);
+      // Köprüde kayıtlı sahneler: her ışığa yalnızca o ışığı içeren sahneler sunulur
+      var scenesReq = getJson(apiBase + "/scenes").catch(function () {
+        return {};
       });
+      return Promise.all([getJson(apiBase + "/lights"), scenesReq]).then(
+        function (res) {
+          var all = res[0], scenes = res[1] || {};
+          if (Array.isArray(all) && all[0] && all[0].error) throw new Error("hue: yetki yok");
+          return Object.keys(all || {}).map(function (id) {
+            var mine = Object.keys(scenes).filter(function (sid) {
+              var sc = scenes[sid] || {};
+              return Array.isArray(sc.lights) && sc.lights.indexOf(String(id)) !== -1 && sc.name;
+            }).slice(0, 24).map(function (sid) {
+              return [sid, scenes[sid].name];
+            });
+            var l = all[id] || {};
+            var type = String(l.type || "");
+            var caps = ["switch"];
+            if (/dimmable|color|temperature/i.test(type)) caps.push("brightness");
+            if (/color light/i.test(type)) caps.push("color");
+            if (/temperature|extended color/i.test(type)) caps.push("colorTemp");
+            return {
+              id: id,
+              name: l.name || "Hue " + id,
+              type: type,
+              caps: mine.length ? caps.concat(["lightScene"]) : caps,
+              options: mine.length ? { scenes: mine } : null,
+              model: l.modelid || "Hue",
+            };
+          });
+        },
+      );
     },
     url: function (device) {
-      return baseUrl(device) + "/api/" + encodeURIComponent(device.hueUser || "") + "/lights/" + encodeURIComponent(device.endpointId == null ? 0 : device.endpointId);
+      return (
+        baseUrl(device) +
+        "/api/" +
+        encodeURIComponent(device.hueUser || "") +
+        "/lights/" +
+        encodeURIComponent(device.endpointId == null ? 0 : device.endpointId)
+      );
     },
     // Eksik eşleştirme verisiyle (hueUser / endpointId) asla istek atılmaz: bozuk kayıt
     // "/api//lights/undefined" gibi anlamsız URL üretirdi. Kullanıcıya net mesaj verilir.
@@ -406,7 +812,11 @@
       if (bad) return Promise.reject(bad);
       return getJson(hue.url(device)).then(function (l) {
         var sw = l.swupdate || {};
-        return { current: l.swversion || null, latest: null, hasUpdate: sw.state ? sw.state !== "noupdates" : null };
+        return {
+          current: l.swversion || null,
+          latest: null,
+          hasUpdate: sw.state ? sw.state !== "noupdates" : null,
+        };
       });
     },
     read: function (device) {
@@ -415,7 +825,11 @@
       return getJson(hue.url(device)).then(function (l) {
         if (Array.isArray(l) && l[0] && l[0].error) throw new Error("hue: yetki yok");
         var s = l.state || {};
-        return { switch: typeof s.on === "boolean" ? s.on : null, brightness: typeof s.bri === "number" ? Math.round((s.bri / 254) * 100) : null, reachable: s.reachable !== false };
+        return {
+          switch: typeof s.on === "boolean" ? s.on : null,
+          brightness: typeof s.bri === "number" ? Math.round((s.bri / 254) * 100) : null,
+          reachable: s.reachable !== false,
+        };
       });
     },
     write: function (device, capability, value) {
@@ -423,12 +837,31 @@
       if (bad) return Promise.reject(bad);
       var body = null;
       if (capability === "switch") body = { on: !!value };
-      if (capability === "brightness") body = { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 254)) };
+      if (capability === "brightness")
+        body = { on: Number(value) > 0, bri: Math.max(1, Math.round((Number(value) / 100) * 254)) };
       if (capability === "color") body = { on: true, xy: rgbToXy(hexToRgb(value)) };
-      if (capability === "colorTemp") body = { on: true, ct: Math.round(1000000 / toneKelvin(value)) }; // Hue ct: mired (153–500)
+      if (capability === "colorTemp")
+        body = { on: true, ct: Math.round(1000000 / toneKelvin(value)) }; // Hue ct: mired (153–500)
+      // Sahne çağırma: PUT /api/<user>/groups/0/action {scene}; sahnedeki tüm ışıklar o sahneye geçer
+      if (capability === "lightScene") {
+        var known = ((device.options && device.options.scenes) || []).some(function (s) {
+          return String(s[0]) === String(value);
+        });
+        if (!known) return unsupported("hue", capability);
+        return sendJson(
+          baseUrl(device) + "/api/" + encodeURIComponent(device.hueUser) + "/groups/0/action",
+          "PUT",
+          { scene: String(value) },
+        ).then(function (r) {
+          if (Array.isArray(r) && r[0] && r[0].error)
+            throw new Error("hue: " + r[0].error.description);
+          return r;
+        });
+      }
       if (!body) return unsupported("hue", capability);
       return sendJson(hue.url(device) + "/state", "PUT", body).then(function (r) {
-        if (Array.isArray(r) && r[0] && r[0].error) throw new Error("hue: " + r[0].error.description);
+        if (Array.isArray(r) && r[0] && r[0].error)
+          throw new Error("hue: " + r[0].error.description);
         return r;
       });
     },
@@ -436,12 +869,16 @@
 
   // Uygulamadaki "Sıcak / Doğal / Soğuk" seçimi → Kelvin (Hue için 153–500 mired aralığına denk gelir)
   function toneKelvin(tone) {
-    if (typeof tone === "number" && isFinite(tone)) return Math.max(2000, Math.min(6500, Math.round(tone)));
+    if (typeof tone === "number" && isFinite(tone))
+      return Math.max(2000, Math.min(6500, Math.round(tone)));
     return tone === "warm" ? 2700 : tone === "cool" ? 6500 : 4000;
   }
 
   function rgbToXy(rgb) {
-    var c = rgb.map(function (v) { v = v / 255; return v > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92; });
+    var c = rgb.map(function (v) {
+      v = v / 255;
+      return v > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92;
+    });
     var X = c[0] * 0.664511 + c[1] * 0.154324 + c[2] * 0.162028;
     var Y = c[0] * 0.283881 + c[1] * 0.668433 + c[2] * 0.047685;
     var Z = c[0] * 0.000088 + c[1] * 0.07231 + c[2] * 0.986039;
@@ -456,9 +893,10 @@
   // kontrol edilir. Yetki: HA profilinde oluşturulan "uzun ömürlü erişim jetonu".
   var HA_DOMAINS = {
     light: { kind: "light", caps: ["switch"] },
-    "switch": { kind: "switch", caps: ["switch"] },
+    switch: { kind: "switch", caps: ["switch"] },
     input_boolean: { kind: "switch", caps: ["switch"] },
     fan: { kind: "switch", caps: ["switch"] },
+    humidifier: { kind: "purifier", caps: ["switch", "airQuality"] }, // airQuality yeteneği hava panelini seçtirir
     cover: { kind: "cover", caps: ["cover"] },
     climate: { kind: "ac", caps: ["switch", "temperature"] },
     lock: { kind: "lock", caps: ["lock"] },
@@ -474,14 +912,151 @@
       url: haBase(device) + path,
       method: method,
       body: body ? JSON.stringify(body) : undefined,
-      headers: { Authorization: "Bearer " + (token || device.haToken || ""), "Content-Type": "application/json" },
+      headers: {
+        Authorization: "Bearer " + (token || device.haToken || ""),
+        "Content-Type": "application/json",
+      },
       timeoutMs: 6000,
     }).then(function (res) {
-      if (res.status === 401 || res.status === 403) { var e = new Error("Jeton geçersiz ya da süresi dolmuş."); e.code = "auth"; throw e; }
-      if (res.status < 200 || res.status >= 300) throw new Error("homeassistant: http " + res.status);
-      try { return JSON.parse(res.text); } catch (x) { return res.text; }
+      if (res.status === 401 || res.status === 403) {
+        var e = new Error("Jeton geçersiz ya da süresi dolmuş.");
+        e.code = "auth";
+        throw e;
+      }
+      if (res.status < 200 || res.status >= 300)
+        throw new Error("homeassistant: http " + res.status);
+      try {
+        return JSON.parse(res.text);
+      } catch (x) {
+        return res.text;
+      }
     });
   }
+  // Uygulamadaki sabit seçenek anahtarlarını (cool/heat/fan/auto, low/mid/high/auto) varlığın bildirdiği
+  // değerlere eşler; eşleşmeyen seçenek cihaz için hiç sunulmaz (gönderilemeyen kontrol gösterilmez).
+  var HA_HVAC_CANDIDATES = {
+    cool: ["cool"],
+    heat: ["heat"],
+    fan: ["fan_only"],
+    auto: ["auto", "heat_cool"],
+  };
+  var HA_FAN_CANDIDATES = {
+    low: ["low", "quiet", "silent", "1"],
+    mid: ["medium", "mid", "middle", "2"],
+    high: ["high", "strong", "turbo", "3"],
+    auto: ["auto"],
+  };
+  function haPickMap(candidates, available) {
+    var low = (available || []).map(function (v) {
+      return [String(v).toLowerCase(), v];
+    });
+    var out = {},
+      any = false;
+    Object.keys(candidates).forEach(function (key) {
+      for (var i = 0; i < candidates[key].length; i++) {
+        var hit = low.filter(function (p) {
+          return p[0] === candidates[key][i];
+        })[0];
+        if (hit) {
+          out[key] = hit[1];
+          any = true;
+          return;
+        }
+      }
+    });
+    return any ? out : null;
+  }
+  // media_player / vacuum supported_features bit alanları (Home Assistant geliştirici belgeleri)
+  var HA_MEDIA_VOLUME_SET = 4,
+    HA_MEDIA_VOLUME_MUTE = 8,
+    HA_MEDIA_SELECT_SOURCE = 2048,
+    HA_VACUUM_FAN_SPEED = 32;
+
+  function haEntityOptions(st) {
+    var domain = String(st.entity_id || "").split(".")[0];
+    var a = st.attributes || {},
+      f = Number(a.supported_features) || 0,
+      caps = [],
+      options = {};
+    if (domain === "light" && (a.supported_color_modes || []).indexOf("color_temp") !== -1)
+      caps.push("colorTemp");
+    // humidifier.set_humidity (hedef nem %), cover.set_cover_tilt_position (SET_TILT_POSITION=128)
+    if (domain === "humidifier") {
+      caps.push("targetHumidity");
+      options.humidity = {
+        min: Number(a.min_humidity) || 0,
+        max: Number(a.max_humidity) || 100,
+      };
+    }
+    if (domain === "cover" && f & 128) caps.push("tilt");
+    // fan: SET_SPEED=1 (yüzde), OSCILLATE=2 — Home Assistant fan.set_percentage / fan.oscillate
+    if (domain === "fan") {
+      if (f & 1) {
+        caps.push("fanMode");
+        options.fanMap = { low: 33, mid: 66, high: 100 };
+      }
+      if (f & 2) {
+        caps.push("swing");
+        options.swing = { oscillate: true };
+      }
+    }
+    if (domain === "climate") {
+      var hv = haPickMap(HA_HVAC_CANDIDATES, a.hvac_modes);
+      if (hv) {
+        caps.push("hvacMode");
+        options.hvacMap = hv;
+      }
+      var fm = haPickMap(HA_FAN_CANDIDATES, a.fan_modes);
+      if (fm) {
+        caps.push("fanMode");
+        options.fanMap = fm;
+      }
+      var sw = a.swing_modes || [];
+      var off = sw.filter(function (m) {
+        return String(m).toLowerCase() === "off";
+      })[0];
+      var on = ["both", "on", "vertical", "horizontal"]
+        .map(function (w) {
+          return sw.filter(function (m) {
+            return String(m).toLowerCase() === w;
+          })[0];
+        })
+        .filter(Boolean)[0];
+      if (off && on) {
+        caps.push("swing");
+        options.swing = { on: on, off: off };
+      }
+    }
+    if (domain === "media_player") {
+      // Oynat / duraklat / önceki / sonraki: yalnızca varlığın bildirdiği özellik bitleri (PLAY=16384, PAUSE=1, PREVIOUS=16, NEXT=32)
+      var tr = [];
+      if (f & 16384) tr.push("play");
+      if (f & 1) tr.push("pause");
+      if (f & 16) tr.push("previous");
+      if (f & 32) tr.push("next");
+      if (tr.length) {
+        caps.push("transport");
+        options.transport = tr;
+      }
+      if (f & HA_MEDIA_VOLUME_SET) caps.push("volume");
+      if (f & HA_MEDIA_VOLUME_MUTE) caps.push("mute");
+      if (f & HA_MEDIA_SELECT_SOURCE && Array.isArray(a.source_list) && a.source_list.length) {
+        caps.push("source");
+        options.source = a.source_list.slice(0, 24);
+      }
+    }
+    if (
+      domain === "vacuum" &&
+      f & HA_VACUUM_FAN_SPEED &&
+      Array.isArray(a.fan_speed_list) &&
+      a.fan_speed_list.length
+    ) {
+      caps.push("suction");
+      options.suction = a.fan_speed_list.slice(0, 12);
+    }
+    return { caps: caps, options: options };
+  }
+
   function haEntityCaps(st) {
     var domain = String(st.entity_id || "").split(".")[0];
     var def = HA_DOMAINS[domain];
@@ -490,20 +1065,63 @@
     var a = st.attributes || {};
     if (domain === "light") {
       var modes = a.supported_color_modes || [];
-      if (modes.some(function (m) { return m !== "onoff"; }) || typeof a.brightness === "number") caps.push("brightness");
-      if (modes.some(function (m) { return /^(hs|xy|rgb|rgbw|rgbww)$/.test(m); })) caps.push("color");
+      if (
+        modes.some(function (m) {
+          return m !== "onoff";
+        }) ||
+        typeof a.brightness === "number"
+      )
+        caps.push("brightness");
+      if (
+        modes.some(function (m) {
+          return /^(hs|xy|rgb|rgbw|rgbww)$/.test(m);
+        })
+      )
+        caps.push("color");
     }
-    return { kind: def.kind, caps: caps };
+    var extra = haEntityOptions(st);
+    extra.caps.forEach(function (c) {
+      if (caps.indexOf(c) === -1) caps.push(c);
+    });
+    return { kind: def.kind, caps: caps, options: extra.options };
   }
   var homeassistant = {
     id: "homeassistant",
     label: "Home Assistant",
-    caps: ["switch", "brightness", "color", "cover", "position", "target", "lock", "vacuum"],
+    caps: [
+      "switch",
+      "brightness",
+      "color",
+      "colorTemp",
+      "cover",
+      "position",
+      "target",
+      "lock",
+      "vacuum",
+      "hvacMode",
+      "fanMode",
+      "swing",
+      "volume",
+      "mute",
+      "source",
+      "suction",
+      "transport",
+      "targetHumidity",
+      "tilt",
+      "coverStop",
+    ],
     probe: function (device) {
       var d = { host: haBase(device) };
       return getJson(d.host + "/manifest.json").then(function (m) {
-        if (!m || !/home assistant/i.test(String(m.name || ""))) throw new Error("homeassistant: değil");
-        return { protocol: "homeassistant", model: "Home Assistant", name: "Home Assistant", kind: "bridge", host: d.host };
+        if (!m || !/home assistant/i.test(String(m.name || "")))
+          throw new Error("homeassistant: değil");
+        return {
+          protocol: "homeassistant",
+          model: "Home Assistant",
+          name: "Home Assistant",
+          kind: "bridge",
+          host: d.host,
+        };
       });
     },
     // Jetonu doğrular ve NEXUS'un kontrol edebildiği varlıkları (entity) listeler.
@@ -511,50 +1129,184 @@
       var device = { host: host };
       return haCall(device, "GET", "/api/states", null, token).then(function (all) {
         if (!Array.isArray(all)) throw new Error("homeassistant: beklenmeyen yanıt");
-        return all.map(function (st) {
-          var info = haEntityCaps(st);
-          if (!info) return null;
-          return { entity: st.entity_id, name: (st.attributes && st.attributes.friendly_name) || st.entity_id, kind: info.kind, caps: info.caps, model: "Home Assistant · " + st.entity_id.split(".")[0] };
-        }).filter(Boolean);
+        return all
+          .map(function (st) {
+            var info = haEntityCaps(st);
+            if (!info) return null;
+            return {
+              entity: st.entity_id,
+              name: (st.attributes && st.attributes.friendly_name) || st.entity_id,
+              kind: info.kind,
+              caps: info.caps,
+              options: info.options,
+              model: "Home Assistant · " + st.entity_id.split(".")[0],
+            };
+          })
+          .filter(Boolean);
       });
     },
     read: function (device) {
-      return haCall(device, "GET", "/api/states/" + encodeURIComponent(device.entity)).then(function (st) {
-        var a = st.attributes || {}, s = String(st.state || "");
-        var out = { reachable: s !== "unavailable" };
-        var domain = String(device.entity || "").split(".")[0];
-        if (domain === "cover") { out.position = typeof a.current_position === "number" ? a.current_position : (s === "open" ? 100 : s === "closed" ? 0 : null); out.switch = s === "open" || s === "opening"; }
-        else if (domain === "lock") out.locked = s === "locked";
-        else if (domain === "vacuum") out.mode = s === "cleaning" ? "cleaning" : "docked";
-        else if (domain === "climate") { out.switch = s !== "off"; if (typeof a.temperature === "number") out.target = a.temperature; }
-        else out.switch = s === "on" || s === "playing";
-        if (typeof a.brightness === "number") out.brightness = Math.round((a.brightness / 255) * 100);
-        return out;
-      });
+      return haCall(device, "GET", "/api/states/" + encodeURIComponent(device.entity)).then(
+        function (st) {
+          var a = st.attributes || {},
+            s = String(st.state || "");
+          var out = { reachable: s !== "unavailable" };
+          var domain = String(device.entity || "").split(".")[0];
+          if (domain === "cover") {
+            out.position =
+              typeof a.current_position === "number"
+                ? a.current_position
+                : s === "open"
+                  ? 100
+                  : s === "closed"
+                    ? 0
+                    : null;
+            out.switch = s === "open" || s === "opening";
+            if (typeof a.current_tilt_position === "number") out.tilt = a.current_tilt_position;
+          } else if (domain === "lock") out.locked = s === "locked";
+          else if (domain === "vacuum") {
+            out.mode = s === "cleaning" ? "cleaning" : "docked";
+            if (typeof a.fan_speed === "string") out.suction = a.fan_speed;
+          } else if (domain === "humidifier") {
+            out.switch = s === "on";
+            if (typeof a.humidity === "number") out.targetHumidity = a.humidity;
+          } else if (domain === "fan") {
+            out.switch = s === "on";
+            if (typeof a.percentage === "number" && a.percentage > 0)
+              out.fan = a.percentage <= 33 ? "low" : a.percentage <= 66 ? "mid" : "high";
+            if (typeof a.oscillating === "boolean") out.swing = a.oscillating;
+          } else if (domain === "climate") {
+            out.switch = s !== "off";
+            if (typeof a.temperature === "number") out.target = a.temperature;
+            var o = device.options || {};
+            Object.keys(o.hvacMap || {}).forEach(function (k) {
+              if (o.hvacMap[k] === s) out.mode = k;
+            });
+            Object.keys(o.fanMap || {}).forEach(function (k) {
+              if (o.fanMap[k] === a.fan_mode) out.fan = k;
+            });
+            if (o.swing && typeof a.swing_mode === "string")
+              out.swing = a.swing_mode === o.swing.on;
+          } else {
+            out.switch = s === "on" || s === "playing";
+            if (domain === "media_player") {
+              if (typeof a.volume_level === "number") out.volume = Math.round(a.volume_level * 100);
+              if (typeof a.is_volume_muted === "boolean") out.muted = a.is_volume_muted;
+              if (typeof a.source === "string") out.source = a.source;
+            }
+          }
+          if (typeof a.brightness === "number")
+            out.brightness = Math.round((a.brightness / 255) * 100);
+          return out;
+        },
+      );
     },
     write: function (device, capability, value) {
-      var id = device.entity, domain = String(id || "").split(".")[0];
+      var id = device.entity,
+        domain = String(id || "").split(".")[0];
       function svc(d, name, extra) {
         var body = { entity_id: id };
-        Object.keys(extra || {}).forEach(function (k) { body[k] = extra[k]; });
+        Object.keys(extra || {}).forEach(function (k) {
+          body[k] = extra[k];
+        });
         return haCall(device, "POST", "/api/services/" + d + "/" + name, body);
       }
       if (capability === "switch") {
         if (domain === "cover") return svc("cover", value ? "open_cover" : "close_cover");
-        if (domain === "lock" || domain === "vacuum") return unsupported("homeassistant", capability);
-        return svc(domain === "input_boolean" ? "input_boolean" : domain, value ? "turn_on" : "turn_off");
+        if (domain === "lock" || domain === "vacuum")
+          return unsupported("homeassistant", capability);
+        return svc(
+          domain === "input_boolean" ? "input_boolean" : domain,
+          value ? "turn_on" : "turn_off",
+        );
       }
-      if (capability === "brightness") return Number(value) > 0 ? svc("light", "turn_on", { brightness_pct: Math.round(Number(value)) }) : svc("light", "turn_off");
+      if (capability === "brightness")
+        return Number(value) > 0
+          ? svc("light", "turn_on", { brightness_pct: Math.round(Number(value)) })
+          : svc("light", "turn_off");
       if (capability === "color") return svc("light", "turn_on", { rgb_color: hexToRgb(value) });
+      if (capability === "coverStop" && domain === "cover") return svc("cover", "stop_cover");
       if (capability === "position" && domain === "cover") {
         var pos = Math.round(Number(value));
         if (pos >= 100) return svc("cover", "open_cover");
         if (pos <= 0) return svc("cover", "close_cover");
         return svc("cover", "set_cover_position", { position: pos });
       }
-      if (capability === "target" && domain === "climate") return svc("climate", "set_temperature", { temperature: Number(value) });
+      if (capability === "target" && domain === "climate")
+        return svc("climate", "set_temperature", { temperature: Number(value) });
+      var opts = device.options || {};
+      if (capability === "colorTemp" && domain === "light")
+        return svc("light", "turn_on", { color_temp_kelvin: toneKelvin(value) });
+      if (capability === "hvacMode" && domain === "climate") {
+        var hv = opts.hvacMap && opts.hvacMap[value];
+        return hv
+          ? svc("climate", "set_hvac_mode", { hvac_mode: hv })
+          : unsupported("homeassistant", capability);
+      }
+      if (capability === "targetHumidity" && domain === "humidifier") {
+        var hr = opts.humidity || { min: 0, max: 100 };
+        return svc("humidifier", "set_humidity", {
+          humidity: Math.max(hr.min, Math.min(hr.max, Math.round(Number(value)))),
+        });
+      }
+      if (capability === "tilt" && domain === "cover")
+        return svc("cover", "set_cover_tilt_position", {
+          tilt_position: Math.max(0, Math.min(100, Math.round(Number(value)))),
+        });
+      if (capability === "fanMode" && domain === "fan") {
+        var pct = opts.fanMap && opts.fanMap[value];
+        return pct
+          ? svc("fan", "set_percentage", { percentage: pct })
+          : unsupported("homeassistant", capability);
+      }
+      if (capability === "swing" && domain === "fan")
+        return opts.swing && opts.swing.oscillate
+          ? svc("fan", "oscillate", { oscillating: !!value })
+          : unsupported("homeassistant", capability);
+      if (capability === "fanMode" && domain === "climate") {
+        var fm = opts.fanMap && opts.fanMap[value];
+        return fm
+          ? svc("climate", "set_fan_mode", { fan_mode: fm })
+          : unsupported("homeassistant", capability);
+      }
+      if (capability === "swing" && domain === "climate") {
+        return opts.swing
+          ? svc("climate", "set_swing_mode", { swing_mode: value ? opts.swing.on : opts.swing.off })
+          : unsupported("homeassistant", capability);
+      }
+      if (capability === "volume" && domain === "media_player")
+        return svc("media_player", "volume_set", {
+          volume_level: Math.max(0, Math.min(100, Number(value))) / 100,
+        });
+      if (capability === "mute" && domain === "media_player")
+        return svc("media_player", "volume_mute", { is_volume_muted: !!value });
+      if (capability === "source" && domain === "media_player") {
+        return (opts.source || []).indexOf(value) !== -1
+          ? svc("media_player", "select_source", { source: value })
+          : unsupported("homeassistant", capability);
+      }
+      if (capability === "suction" && domain === "vacuum") {
+        return (opts.suction || []).indexOf(value) !== -1
+          ? svc("vacuum", "set_fan_speed", { fan_speed: value })
+          : unsupported("homeassistant", capability);
+      }
       if (capability === "lock" && domain === "lock") return svc("lock", value ? "lock" : "unlock");
-      if (capability === "vacuum" && domain === "vacuum") return svc("vacuum", value === "cleaning" ? "start" : "return_to_base");
+      if (capability === "vacuum" && domain === "vacuum")
+        return svc(
+          "vacuum",
+          value === "cleaning" ? "start" : value === "paused" ? "pause" : "return_to_base",
+        );
+      if (capability === "transport" && domain === "media_player") {
+        var svcName = {
+          play: "media_play",
+          pause: "media_pause",
+          next: "media_next_track",
+          previous: "media_previous_track",
+        }[value];
+        return svcName && (opts.transport || []).indexOf(value) !== -1
+          ? svc("media_player", svcName)
+          : unsupported("homeassistant", capability);
+      }
       return unsupported("homeassistant", capability);
     },
   };
@@ -563,26 +1315,41 @@
   // Kasa protokolü UTF-8 baytları üzerinde XOR "otomatik anahtar" şifrelemesi kullanır
   function utf8Bytes(str) {
     if (typeof TextEncoder !== "undefined") return Array.from(new TextEncoder().encode(str));
-    return unescape(encodeURIComponent(str)).split("").map(function (c) { return c.charCodeAt(0); });
+    return unescape(encodeURIComponent(str))
+      .split("")
+      .map(function (c) {
+        return c.charCodeAt(0);
+      });
   }
   function utf8String(bytes) {
-    if (typeof TextDecoder !== "undefined") return new TextDecoder("utf-8").decode(new Uint8Array(bytes));
+    if (typeof TextDecoder !== "undefined")
+      return new TextDecoder("utf-8").decode(new Uint8Array(bytes));
     return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
   }
   function kasaEncrypt(str) {
-    var key = 171, out = [], bytes = utf8Bytes(str);
-    for (var i = 0; i < bytes.length; i++) { var c = bytes[i] ^ key; key = c; out.push(c); }
+    var key = 171,
+      out = [],
+      bytes = utf8Bytes(str);
+    for (var i = 0; i < bytes.length; i++) {
+      var c = bytes[i] ^ key;
+      key = c;
+      out.push(c);
+    }
     return out;
   }
   function kasaDecrypt(bytes) {
-    var key = 171, out = [];
-    for (var i = 0; i < bytes.length; i++) { out.push(bytes[i] ^ key); key = bytes[i]; }
+    var key = 171,
+      out = [];
+    for (var i = 0; i < bytes.length; i++) {
+      out.push(bytes[i] ^ key);
+      key = bytes[i];
+    }
     return utf8String(out);
   }
   var kasa = {
     id: "kasa",
     label: "TP-Link Kasa",
-    caps: ["switch", "brightness"],
+    caps: ["switch", "brightness", "color", "colorTemp", "indicator"],
     needsTcp: true,
     send: function (device, obj) {
       var tcp = tcpBridge();
@@ -590,8 +1357,19 @@
       var blocked = lanAddressError(hostOnly(device));
       if (blocked) return Promise.reject(blocked);
       var payload = kasaEncrypt(JSON.stringify(obj));
-      var framed = [(payload.length >>> 24) & 255, (payload.length >>> 16) & 255, (payload.length >>> 8) & 255, payload.length & 255].concat(payload);
-      return tcp({ host: hostOnly(device), port: 9999, bytes: framed, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, lengthPrefixed: true }).then(function (resp) {
+      var framed = [
+        (payload.length >>> 24) & 255,
+        (payload.length >>> 16) & 255,
+        (payload.length >>> 8) & 255,
+        payload.length & 255,
+      ].concat(payload);
+      return tcp({
+        host: hostOnly(device),
+        port: 9999,
+        bytes: framed,
+        timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS,
+        lengthPrefixed: true,
+      }).then(function (resp) {
         return JSON.parse(kasaDecrypt(resp.slice(4)));
       });
     },
@@ -604,34 +1382,98 @@
       return kasa.send(device, { system: { get_sysinfo: {} } }).then(function (r) {
         var s = r && r.system && r.system.get_sysinfo;
         if (!s) throw new Error("kasa: yanıt yok");
-        return { protocol: "kasa", model: s.model, name: s.alias || s.model, kind: s.brightness != null || /bulb|light/i.test(s.mic_type || s.type || "") ? "light" : "plug" };
+        var isLight = s.brightness != null || /bulb|light/i.test(s.mic_type || s.type || "");
+        var res = {
+          protocol: "kasa",
+          model: s.model,
+          name: s.alias || s.model,
+          kind: isLight ? "light" : "plug",
+        };
+        // Ampul yetenekleri cihazın kendi bildirdiği is_color / is_variable_color_temp alanlarından gelir
+        res.caps = isLight
+          ? ["switch", "brightness"].concat(
+              s.is_color ? ["color"] : [],
+              s.is_variable_color_temp ? ["colorTemp"] : [],
+            )
+          : ["switch", "indicator"];
+        return res;
       });
     },
     read: function (device) {
       return kasa.send(device, { system: { get_sysinfo: {} } }).then(function (r) {
         var s = r.system.get_sysinfo;
         var ls = s.light_state || {};
-        return { switch: s.relay_state != null ? s.relay_state === 1 : ls.on_off === 1, brightness: s.brightness != null ? s.brightness : (ls.brightness != null ? ls.brightness : null) };
+        return {
+          indicator: s.led_off != null ? s.led_off === 0 : undefined,
+          switch: s.relay_state != null ? s.relay_state === 1 : ls.on_off === 1,
+          brightness:
+            s.brightness != null ? s.brightness : ls.brightness != null ? ls.brightness : null,
+        };
       });
     },
     write: function (device, capability, value) {
       if (capability === "switch") {
-        if (device.kind === "light") return kasa.send(device, { "smartlife.iot.smartbulb.lightingservice": { transition_light_state: { on_off: value ? 1 : 0 } } });
+        if (device.kind === "light")
+          return kasa.send(device, {
+            "smartlife.iot.smartbulb.lightingservice": {
+              transition_light_state: { on_off: value ? 1 : 0 },
+            },
+          });
         return kasa.send(device, { system: { set_relay_state: { state: value ? 1 : 0 } } });
       }
       if (capability === "brightness") {
-        if (device.kind === "light") return kasa.send(device, { "smartlife.iot.smartbulb.lightingservice": { transition_light_state: { on_off: 1, brightness: Math.round(value) } } });
-        return kasa.send(device, { "smartlife.iot.dimmer": { set_brightness: { brightness: Math.round(value) } } });
+        if (device.kind === "light")
+          return kasa.send(device, {
+            "smartlife.iot.smartbulb.lightingservice": {
+              transition_light_state: { on_off: 1, brightness: Math.round(value) },
+            },
+          });
+        return kasa.send(device, {
+          "smartlife.iot.dimmer": { set_brightness: { brightness: Math.round(value) } },
+        });
       }
+      // Kasa akıllı ampul: transition_light_state içinde hue (0–360), saturation (0–100), color_temp (Kelvin; 0 = renk modu)
+      if (capability === "color" && device.kind === "light") {
+        var hsb = rgbToHsb(hexToRgb(value));
+        return kasa.send(device, {
+          "smartlife.iot.smartbulb.lightingservice": {
+            transition_light_state: {
+              on_off: 1,
+              color_temp: 0,
+              hue: Math.round(hsb.h * 360) % 360,
+              saturation: Math.round(hsb.s * 100),
+              brightness: Math.max(1, Math.round(hsb.v * 100)),
+            },
+          },
+        });
+      }
+      if (capability === "colorTemp" && device.kind === "light") {
+        return kasa.send(device, {
+          "smartlife.iot.smartbulb.lightingservice": {
+            transition_light_state: { on_off: 1, color_temp: toneKelvin(value) },
+          },
+        });
+      }
+      // set_led_off: off=1 göstergeyi söndürür (TP-Link smart plug sistem API'si)
+      if (capability === "indicator")
+        return kasa.send(device, { system: { set_led_off: { off: value ? 0 : 1 } } });
       return unsupported("kasa", capability);
     },
   };
 
   // --- Yeelight (TCP 55443, JSON satırları; "LAN Control" açık olmalı) — masaüstü ---
+  // [kimlik, ad, yöntem, parametreler]; start_cf ifadesi "süre,mod,değer,parlaklık" (mod 1 = RGB)
+  var YEELIGHT_SCENES = [
+    ["read", "Okuma", "set_scene", ["ct", 2700, 80]],
+    ["day", "Gün ışığı", "set_scene", ["ct", 5000, 100]],
+    ["night", "Gece lambası", "set_scene", ["ct", 2000, 5]],
+    ["romance", "Romantik", "set_scene", ["color", 0xff3366, 40]],
+    ["pulse", "Nabız", "start_cf", [0, 0, "1000,1,16711680,100,1000,1,16711680,1"]],
+  ];
   var yeelight = {
     id: "yeelight",
     label: "Yeelight",
-    caps: ["switch", "brightness", "color", "colorTemp"],
+    caps: ["switch", "brightness", "color", "colorTemp", "lightScene"],
     needsTcp: true,
     send: function (device, method, params) {
       var tcp = tcpBridge();
@@ -639,7 +1481,13 @@
       var blocked = lanAddressError(hostOnly(device));
       if (blocked) return Promise.reject(blocked);
       var line = JSON.stringify({ id: 1, method: method, params: params }) + "\r\n";
-      return tcp({ host: hostOnly(device), port: 55443, text: line, timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS, untilNewline: true }).then(function (resp) {
+      return tcp({
+        host: hostOnly(device),
+        port: 55443,
+        text: line,
+        timeoutMs: scanTimeoutMs || DEFAULT_TIMEOUT_MS,
+        untilNewline: true,
+      }).then(function (resp) {
         var first = String(resp).split(/\r?\n/).filter(Boolean)[0] || "{}";
         var r = JSON.parse(first);
         if (r.error) throw new Error("yeelight: " + r.error.message);
@@ -647,10 +1495,22 @@
       });
     },
     probe: function (device) {
-      return yeelight.send(device, "get_prop", ["power", "bright", "name", "model"]).then(function (r) {
-        if (!Array.isArray(r)) throw new Error("yeelight: yanıt yok");
-        return { protocol: "yeelight", model: "Yeelight " + (r[3] || ""), name: r[2] || "Yeelight", kind: "light" };
-      });
+      return yeelight
+        .send(device, "get_prop", ["power", "bright", "name", "model"])
+        .then(function (r) {
+          if (!Array.isArray(r)) throw new Error("yeelight: yanıt yok");
+          return {
+            protocol: "yeelight",
+            model: "Yeelight " + (r[3] || ""),
+            name: r[2] || "Yeelight",
+            kind: "light",
+            options: {
+              scenes: YEELIGHT_SCENES.map(function (s) {
+                return [s[0], s[1]];
+              }),
+            },
+          };
+        });
     },
     read: function (device) {
       return yeelight.send(device, "get_prop", ["power", "bright"]).then(function (r) {
@@ -658,10 +1518,26 @@
       });
     },
     write: function (device, capability, value) {
-      if (capability === "switch") return yeelight.send(device, "set_power", [value ? "on" : "off", "smooth", 300]);
-      if (capability === "brightness") return yeelight.send(device, "set_bright", [Math.max(1, Math.round(value)), "smooth", 300]);
-      if (capability === "color") return yeelight.send(device, "set_rgb", [parseInt(String(value).replace("#", ""), 16), "smooth", 300]);
-      if (capability === "colorTemp") return yeelight.send(device, "set_ct_abx", [toneKelvin(value), "smooth", 300]);
+      if (capability === "switch")
+        return yeelight.send(device, "set_power", [value ? "on" : "off", "smooth", 300]);
+      if (capability === "brightness")
+        return yeelight.send(device, "set_bright", [Math.max(1, Math.round(value)), "smooth", 300]);
+      if (capability === "color")
+        return yeelight.send(device, "set_rgb", [
+          parseInt(String(value).replace("#", ""), 16),
+          "smooth",
+          300,
+        ]);
+      if (capability === "colorTemp")
+        return yeelight.send(device, "set_ct_abx", [toneKelvin(value), "smooth", 300]);
+      // Yeelight set_scene ("ct" / "color") ve start_cf (renk akışı): Yeelight Inter-Operation Spec
+      if (capability === "lightScene") {
+        var scene = YEELIGHT_SCENES.filter(function (s) {
+          return s[0] === value;
+        })[0];
+        if (!scene) return unsupported("yeelight", capability);
+        return yeelight.send(device, scene[2], scene[3]);
+      }
       return unsupported("yeelight", capability);
     },
   };
@@ -677,17 +1553,32 @@
     var blocked = lanAddressError(opts.host);
     if (blocked) return Promise.reject(blocked);
     opts.timeoutMs = opts.timeoutMs || scanTimeoutMs || DEFAULT_TIMEOUT_MS;
-    return Promise.resolve().then(function () { return udp(opts); });
+    return Promise.resolve().then(function () {
+      return udp(opts);
+    });
   }
 
   // --- WiZ (UDP 38899, JSON) ----------------------------------------------------
+  // WiZ yerleşik sahneleri (setPilot sceneId, WiZ yerel UDP API belgesindeki numaralandırma)
+  var WIZ_SCENES = [
+    [1, "Okyanus"], [2, "Romantik"], [3, "Gün batımı"], [4, "Parti"], [5, "Şömine"], [6, "Rahat"],
+    [7, "Orman"], [8, "Pastel renkler"], [9, "Uyanış"], [10, "Yatma vakti"], [11, "Sıcak beyaz"],
+    [12, "Gün ışığı"], [13, "Soğuk beyaz"], [14, "Gece lambası"], [15, "Odaklanma"], [16, "Dinlenme"],
+    [18, "TV zamanı"], [19, "Bitki yetiştirme"], [20, "İlkbahar"], [21, "Yaz"], [22, "Sonbahar"],
+    [23, "Derin dalış"], [24, "Cangıl"], [25, "Mojito"], [26, "Kulüp"], [27, "Noel"], [28, "Cadılar Bayramı"],
+    [29, "Mum ışığı"], [30, "Altın beyaz"], [31, "Nabız"], [32, "Steampunk"],
+  ];
   var wiz = {
     id: "wiz",
     label: "WiZ",
-    caps: ["switch", "brightness", "color", "colorTemp"],
+    caps: ["switch", "brightness", "color", "colorTemp", "lightScene"],
     needsUdp: true,
     call: function (device, method, params) {
-      return udpSend({ host: hostOnly(device), port: 38899, text: JSON.stringify({ id: 1, method: method, params: params || {} }) }).then(function (r) {
+      return udpSend({
+        host: hostOnly(device),
+        port: 38899,
+        text: JSON.stringify({ id: 1, method: method, params: params || {} }),
+      }).then(function (r) {
         var j = JSON.parse(r.text);
         if (j.error) throw new Error("wiz: " + (j.error.message || j.error.code));
         return j.result || {};
@@ -696,19 +1587,48 @@
     probe: function (device) {
       return wiz.call(device, "getSystemConfig").then(function (r) {
         if (!r.mac && !r.moduleName) throw new Error("wiz: kimlik yok");
-        return { protocol: "wiz", model: "WiZ " + (r.moduleName || ""), name: "WiZ " + String(r.mac || "").slice(-4).toUpperCase(), kind: "light" };
+        return {
+          protocol: "wiz",
+          model: "WiZ " + (r.moduleName || ""),
+          name:
+            "WiZ " +
+            String(r.mac || "")
+              .slice(-4)
+              .toUpperCase(),
+          kind: "light",
+          options: { scenes: WIZ_SCENES },
+        };
       });
     },
     read: function (device) {
       return wiz.call(device, "getPilot").then(function (r) {
-        return { switch: typeof r.state === "boolean" ? r.state : null, brightness: typeof r.dimming === "number" ? r.dimming : null };
+        return {
+          switch: typeof r.state === "boolean" ? r.state : null,
+          brightness: typeof r.dimming === "number" ? r.dimming : null,
+        };
       });
     },
     write: function (device, capability, value) {
       if (capability === "switch") return wiz.call(device, "setPilot", { state: !!value });
-      if (capability === "brightness") return wiz.call(device, "setPilot", { state: true, dimming: Math.max(10, Math.min(100, Math.round(value))) });
-      if (capability === "color") { var c = hexToRgb(value); return wiz.call(device, "setPilot", { state: true, r: c[0], g: c[1], b: c[2] }); }
-      if (capability === "colorTemp") return wiz.call(device, "setPilot", { state: true, temp: toneKelvin(value) });
+      if (capability === "brightness")
+        return wiz.call(device, "setPilot", {
+          state: true,
+          dimming: Math.max(10, Math.min(100, Math.round(value))),
+        });
+      if (capability === "color") {
+        var c = hexToRgb(value);
+        return wiz.call(device, "setPilot", { state: true, r: c[0], g: c[1], b: c[2] });
+      }
+      if (capability === "colorTemp")
+        return wiz.call(device, "setPilot", { state: true, temp: toneKelvin(value) });
+      if (capability === "lightScene") {
+        var sid = Number(value);
+        return WIZ_SCENES.some(function (s) {
+          return s[0] === sid;
+        })
+          ? wiz.call(device, "setPilot", { state: true, sceneId: sid })
+          : unsupported("wiz", capability);
+      }
       return unsupported("wiz", capability);
     },
   };
@@ -717,20 +1637,51 @@
   function lifxPacket(type, payload) {
     var size = 36 + payload.length;
     var b = new Array(size).fill(0);
-    b[0] = size & 255; b[1] = (size >> 8) & 255;
-    b[2] = 0x00; b[3] = 0x14;                 // protokol 1024 + addressable
-    b[4] = 0x4e; b[5] = 0x58; b[6] = 0; b[7] = 0;   // kaynak kimliği ("NX"), sıfırdan farklı olmalı
-    b[22] = 0x01;                             // res_required
-    b[32] = type & 255; b[33] = (type >> 8) & 255;
+    b[0] = size & 255;
+    b[1] = (size >> 8) & 255;
+    b[2] = 0x00;
+    b[3] = 0x14; // protokol 1024 + addressable
+    b[4] = 0x4e;
+    b[5] = 0x58;
+    b[6] = 0;
+    b[7] = 0; // kaynak kimliği ("NX"), sıfırdan farklı olmalı
+    b[22] = 0x01; // res_required
+    b[32] = type & 255;
+    b[33] = (type >> 8) & 255;
     for (var i = 0; i < payload.length; i++) b[36 + i] = payload[i];
-    return b.map(function (x) { return (x < 16 ? "0" : "") + x.toString(16); }).join("");
+    return b
+      .map(function (x) {
+        return (x < 16 ? "0" : "") + x.toString(16);
+      })
+      .join("");
   }
-  function u16(n) { n = Math.max(0, Math.min(65535, Math.round(n))); return [n & 255, (n >> 8) & 255]; }
-  function u32(n) { return [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >>> 24) & 255]; }
-  function hexBytes(h) { var o = []; for (var i = 0; i + 1 < h.length; i += 2) o.push(parseInt(h.substr(i, 2), 16)); return o; }
+  function u16(n) {
+    n = Math.max(0, Math.min(65535, Math.round(n)));
+    return [n & 255, (n >> 8) & 255];
+  }
+  function u32(n) {
+    return [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >>> 24) & 255];
+  }
+  function hexBytes(h) {
+    var o = [];
+    for (var i = 0; i + 1 < h.length; i += 2) o.push(parseInt(h.substr(i, 2), 16));
+    return o;
+  }
   function rgbToHsb(rgb) {
-    var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn, h = 0;
-    if (d) { if (mx === r) h = ((g - b) / d) % 6; else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
+    var r = rgb[0] / 255,
+      g = rgb[1] / 255,
+      b = rgb[2] / 255,
+      mx = Math.max(r, g, b),
+      mn = Math.min(r, g, b),
+      d = mx - mn,
+      h = 0;
+    if (d) {
+      if (mx === r) h = ((g - b) / d) % 6;
+      else if (mx === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
     return { h: h / 360, s: mx ? d / mx : 0, v: mx };
   }
   var lifx = {
@@ -739,30 +1690,56 @@
     caps: ["switch", "brightness", "color", "colorTemp"],
     needsUdp: true,
     call: function (device, type, payload) {
-      return udpSend({ host: hostOnly(device), port: 56700, hex: lifxPacket(type, payload || []) }).then(function (r) { return hexBytes(r.hex); });
+      return udpSend({
+        host: hostOnly(device),
+        port: 56700,
+        hex: lifxPacket(type, payload || []),
+      }).then(function (r) {
+        return hexBytes(r.hex);
+      });
     },
     state: function (device) {
       return lifx.call(device, 101).then(function (b) {
         var t = b[32] | (b[33] << 8);
         if (t !== 107 || b.length < 36 + 52) throw new Error("lifx: beklenmeyen yanıt");
-        var p = 36, w = function (o) { return b[p + o] | (b[p + o + 1] << 8); };
-        var label = ""; for (var i = 0; i < 32 && b[p + 12 + i]; i++) label += String.fromCharCode(b[p + 12 + i]);
+        var p = 36,
+          w = function (o) {
+            return b[p + o] | (b[p + o + 1] << 8);
+          };
+        var label = "";
+        for (var i = 0; i < 32 && b[p + 12 + i]; i++) label += String.fromCharCode(b[p + 12 + i]);
         return { hue: w(0), sat: w(2), bright: w(4), kelvin: w(6), power: w(10), label: label };
       });
     },
     probe: function (device) {
-      return lifx.state(device).then(function (s) { return { protocol: "lifx", model: "LIFX", name: s.label || "LIFX", kind: "light" }; });
+      return lifx.state(device).then(function (s) {
+        return { protocol: "lifx", model: "LIFX", name: s.label || "LIFX", kind: "light" };
+      });
     },
     read: function (device) {
-      return lifx.state(device).then(function (s) { return { switch: s.power > 0, brightness: Math.round(s.bright / 65535 * 100) }; });
+      return lifx.state(device).then(function (s) {
+        return { switch: s.power > 0, brightness: Math.round((s.bright / 65535) * 100) };
+      });
     },
     write: function (device, capability, value) {
-      if (capability === "switch") return lifx.call(device, 117, u16(value ? 65535 : 0).concat(u32(0)));
+      if (capability === "switch")
+        return lifx.call(device, 117, u16(value ? 65535 : 0).concat(u32(0)));
       return lifx.state(device).then(function (s) {
-        var h = s.hue, sat = s.sat, br = s.bright, kelvin = s.kelvin || 3500;
-        if (capability === "brightness") br = Math.max(1, Math.min(100, value)) / 100 * 65535;
-        else if (capability === "color") { var c = rgbToHsb(hexToRgb(value)); h = c.h * 65535; sat = c.s * 65535; br = Math.max(c.v, 0.05) * 65535; }
-        else if (capability === "colorTemp") { h = 0; sat = 0; kelvin = toneKelvin(value); } // doygunluk 0 = beyaz ışık, ton Kelvin ile
+        var h = s.hue,
+          sat = s.sat,
+          br = s.bright,
+          kelvin = s.kelvin || 3500;
+        if (capability === "brightness") br = (Math.max(1, Math.min(100, value)) / 100) * 65535;
+        else if (capability === "color") {
+          var c = rgbToHsb(hexToRgb(value));
+          h = c.h * 65535;
+          sat = c.s * 65535;
+          br = Math.max(c.v, 0.05) * 65535;
+        } else if (capability === "colorTemp") {
+          h = 0;
+          sat = 0;
+          kelvin = toneKelvin(value);
+        } // doygunluk 0 = beyaz ışık, ton Kelvin ile
         else return unsupported("lifx", capability);
         return lifx.call(device, 102, [0].concat(u16(h), u16(sat), u16(br), u16(kelvin), u32(250)));
       });
@@ -773,32 +1750,65 @@
   var govee = {
     id: "govee",
     label: "Govee",
-    caps: ["switch", "brightness", "color"],
+    caps: ["switch", "brightness", "color", "colorTemp"],
     needsUdp: true,
     ask: function (device, port, cmd, data) {
-      return udpSend({ host: hostOnly(device), port: port, replyPort: 4002, text: JSON.stringify({ msg: { cmd: cmd, data: data || {} } }) }).then(function (r) {
+      return udpSend({
+        host: hostOnly(device),
+        port: port,
+        replyPort: 4002,
+        text: JSON.stringify({ msg: { cmd: cmd, data: data || {} } }),
+      }).then(function (r) {
         var j = JSON.parse(r.text);
         return (j.msg && j.msg.data) || {};
       });
     },
     tell: function (device, cmd, data) {
-      return udpSend({ host: hostOnly(device), port: 4003, noReply: true, text: JSON.stringify({ msg: { cmd: cmd, data: data } }) });
+      return udpSend({
+        host: hostOnly(device),
+        port: 4003,
+        noReply: true,
+        text: JSON.stringify({ msg: { cmd: cmd, data: data } }),
+      });
     },
     probe: function (device) {
       return govee.ask(device, 4001, "scan", { account_topic: "reserve" }).then(function (d) {
         if (!d.sku && !d.device) throw new Error("govee: kimlik yok");
-        return { protocol: "govee", model: "Govee " + (d.sku || ""), name: "Govee " + (d.sku || String(d.device || "").slice(-5)), kind: /^H508/i.test(d.sku || "") ? "plug" : "light" };
+        return {
+          protocol: "govee",
+          model: "Govee " + (d.sku || ""),
+          name: "Govee " + (d.sku || String(d.device || "").slice(-5)),
+          kind: /^H508/i.test(d.sku || "") ? "plug" : "light",
+        };
       });
     },
     read: function (device) {
       return govee.ask(device, 4003, "devStatus").then(function (d) {
-        return { switch: d.onOff == null ? null : d.onOff === 1, brightness: typeof d.brightness === "number" ? d.brightness : null };
+        return {
+          switch: d.onOff == null ? null : d.onOff === 1,
+          brightness: typeof d.brightness === "number" ? d.brightness : null,
+        };
       });
     },
     write: function (device, capability, value) {
       if (capability === "switch") return govee.tell(device, "turn", { value: value ? 1 : 0 });
-      if (capability === "brightness") return govee.tell(device, "brightness", { value: Math.max(1, Math.min(100, Math.round(value))) });
-      if (capability === "color") { var c = hexToRgb(value); return govee.tell(device, "colorwc", { color: { r: c[0], g: c[1], b: c[2] }, colorTemInKelvin: 0 }); }
+      if (capability === "brightness")
+        return govee.tell(device, "brightness", {
+          value: Math.max(1, Math.min(100, Math.round(value))),
+        });
+      if (capability === "color") {
+        var c = hexToRgb(value);
+        return govee.tell(device, "colorwc", {
+          color: { r: c[0], g: c[1], b: c[2] },
+          colorTemInKelvin: 0,
+        });
+      }
+      // Govee LAN API: colorwc içinde renk 0,0,0 + colorTemInKelvin → beyaz ton
+      if (capability === "colorTemp")
+        return govee.tell(device, "colorwc", {
+          color: { r: 0, g: 0, b: 0 },
+          colorTemInKelvin: toneKelvin(value),
+        });
       return unsupported("govee", capability);
     },
   };
@@ -807,9 +1817,12 @@
   var sonoff = {
     id: "sonoff",
     label: "Sonoff (DIY)",
-    caps: ["switch"],
+    caps: ["switch", "powerOn"],
     call: function (device, path, data) {
-      return sendJson("http://" + hostOnly(device) + ":8081/zeroconf/" + path, "POST", { deviceid: "", data: data || {} }).then(function (j) {
+      return sendJson("http://" + hostOnly(device) + ":8081/zeroconf/" + path, "POST", {
+        deviceid: "",
+        data: data || {},
+      }).then(function (j) {
         if (!j || j.error !== 0) throw new Error("sonoff: hata " + (j && j.error));
         return j.data || {};
       });
@@ -817,14 +1830,38 @@
     probe: function (device) {
       return sonoff.call(device, "info").then(function (d) {
         if (!d.switch && !(d.switches && d.switches.length)) throw new Error("sonoff: kimlik yok");
-        return { protocol: "sonoff", model: "Sonoff DIY", name: "Sonoff " + String(d.deviceid || "").slice(-4), kind: "switch" };
+        return {
+          protocol: "sonoff",
+          model: "Sonoff DIY",
+          name: "Sonoff " + String(d.deviceid || "").slice(-4),
+          kind: "switch",
+          channels: d.switches && d.switches.length > 1 ? d.switches.length : 1,
+        };
       });
     },
     read: function (device) {
-      return sonoff.call(device, "info").then(function (d) { return { switch: d.switch ? d.switch === "on" : null }; });
+      return sonoff.call(device, "info").then(function (d) {
+        // Çok kanallı modeller: info.switches[{switch, outlet}]
+        var ch = d.switches && d.switches.length > 1 ? d.switches[device.endpointId || 0] : null;
+        return {
+          switch: ch ? ch.switch === "on" : d.switch ? d.switch === "on" : null,
+          powerOn: d.startup ? (d.startup === "stay" ? "last" : d.startup) : undefined,
+        };
+      });
     },
     write: function (device, capability, value) {
-      if (capability === "switch") return sonoff.call(device, "switch", { switch: value ? "on" : "off" });
+      // eWeLink DIY API: /zeroconf/startup → "on" | "off" | "stay" (son durum)
+      if (capability === "powerOn")
+        return sonoff.call(device, "startup", {
+          startup: value === "on" ? "on" : value === "off" ? "off" : "stay",
+        });
+      // Çok kanallı: /zeroconf/switches {switches:[{switch, outlet}]}; endpointId kanal numarasıdır
+      if (capability === "switch" && device.channels > 1)
+        return sonoff.call(device, "switches", {
+          switches: [{ switch: value ? "on" : "off", outlet: device.endpointId || 0 }],
+        });
+      if (capability === "switch")
+        return sonoff.call(device, "switch", { switch: value ? "on" : "off" });
       return unsupported("sonoff", capability);
     },
   };
@@ -833,45 +1870,28 @@
   var tuyaLocal = {
     id: "tuya-local",
     label: "Tuya (Yerel)",
-    caps: ["switch", "brightness", "color"],
+    // Gerçek Tuya yerel protokolü şifreli TCP'dir ve cihaz başına yerel anahtar ister; bu sürümde uygulanmadı.
+    // Aşağıdaki HTTP uç noktası gerçek Tuya cihazlarında yoktur, bu yüzden hiçbir komut gönderilmez (caps boş).
+    caps: [],
     probe: function (device) {
-      return getJson("http://" + hostOnly(device) + ":6668/status", scanTimeoutMs || 1000).then(function (info) {
-        if (!info || (!info.dps && !info.devId)) throw new Error("tuya-local: kimlik yok");
-        var isBulb = info.dps && (info.dps["20"] != null || info.dps["22"] != null);
-        return {
-          protocol: "tuya-local",
-          model: info.model || "Tuya Akıllı Cihaz",
-          name: info.name || device.name || "Tuya Cihaz",
-          kind: isBulb ? "light" : "plug",
-        };
-      });
+      return getJson("http://" + hostOnly(device) + ":6668/status", scanTimeoutMs || 1000).then(
+        function (info) {
+          if (!info || (!info.dps && !info.devId)) throw new Error("tuya-local: kimlik yok");
+          var isBulb = info.dps && (info.dps["20"] != null || info.dps["22"] != null);
+          return {
+            protocol: "tuya-local",
+            model: info.model || "Tuya Akıllı Cihaz",
+            name: info.name || device.name || "Tuya Cihaz",
+            kind: isBulb ? "light" : "plug",
+          };
+        },
+      );
     },
-    read: function (device) {
-      return getJson("http://" + hostOnly(device) + ":6668/status").then(function (s) {
-        var dps = s.dps || {};
-        var sw = dps["1"] != null ? dps["1"] : dps["20"];
-        var br = dps["2"] != null ? dps["2"] : dps["22"];
-        return {
-          switch: typeof sw === "boolean" ? sw : null,
-          brightness: typeof br === "number" ? Math.round(br / 10) : null,
-        };
-      });
+    read: function () {
+      return Promise.reject(new Error("Tuya yerel kontrolü bu sürümde kullanılamıyor."));
     },
-    write: function (device, capability, value) {
-      var dps = {};
-      if (capability === "switch") {
-        dps["1"] = !!value;
-        dps["20"] = !!value;
-      } else if (capability === "brightness") {
-        var b = Math.max(1, Math.min(100, Math.round(value)));
-        dps["2"] = b * 10;
-        dps["22"] = b * 10;
-      } else if (capability === "color") {
-        dps["24"] = String(value).replace("#", "");
-      } else {
-        return unsupported("tuya-local", capability);
-      }
-      return sendJson("http://" + hostOnly(device) + ":6668/set", "POST", { dps: dps });
+    write: function () {
+      return Promise.reject(new Error("Tuya yerel kontrolü bu sürümde kullanılamıyor."));
     },
   };
 
@@ -911,7 +1931,9 @@
   // Hedef bilgisayarın/TV'nin MAC adresine yerel ağdan UDP sihirli paketi (magic packet)
   // göndererek uykudan uyandırır (Home Assistant standardı).
   function buildMagicPacket(mac) {
-    var clean = String(mac || "").replace(/[^0-9a-fA-F]/g, "").toLowerCase();
+    var clean = String(mac || "")
+      .replace(/[^0-9a-fA-F]/g, "")
+      .toLowerCase();
     if (clean.length !== 12) throw new Error("Geçersiz MAC adresi (12 onaltılık karakter gerekli)");
     var hex = "ffffffffffff";
     for (var i = 0; i < 16; i++) hex += clean;
@@ -927,7 +1949,9 @@
         return { success: true, mac: mac, host: targetHost };
       });
     }
-    return Promise.reject(new Error("Wake-on-LAN bu ortamda desteklenmiyor (UDP köprüsü gerekli)."));
+    return Promise.reject(
+      new Error("Wake-on-LAN bu ortamda desteklenmiyor (UDP köprüsü gerekli)."),
+    );
   }
 
   var wol = {
@@ -944,7 +1968,7 @@
         protocol: "wol",
         model: "Wake-on-LAN PC/TV",
         name: device.name || "Ağ Cihazı (WoL)",
-        kind: "plug"
+        kind: "plug",
       });
     },
     read: function () {
@@ -955,31 +1979,63 @@
         return wakeOnLan(device.mac || device.host, device.host);
       }
       return Promise.resolve({ ignored: true });
-    }
+    },
   };
 
-  var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, tapo, yeelight, sonoff, wiz, lifx, govee, tuyaLocal, wol];
+  var protocols = [
+    shelly,
+    shellyRpc,
+    tasmota,
+    wled,
+    esphome,
+    hue,
+    homeassistant,
+    kasa,
+    tapo,
+    yeelight,
+    sonoff,
+    wiz,
+    lifx,
+    govee,
+    tuyaLocal,
+    wol,
+  ];
 
-  function available(p) { return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()); }
-  function discoverable(p) { return available(p) && p.discoverable !== false; }
+  function available(p) {
+    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge());
+  }
+  function discoverable(p) {
+    return available(p) && p.discoverable !== false;
+  }
 
   // Manuel IP ile ekleme: cihazın hangi protokolü konuştuğunu sırayla dener.
   function identify(host) {
     var device = { host: host };
     var lastError = null;
-    return protocols.filter(discoverable).reduce(function (chain, protocol) {
-      return chain.then(function (found) {
+    return protocols
+      .filter(discoverable)
+      .reduce(function (chain, protocol) {
+        return chain.then(function (found) {
+          if (found) return found;
+          return protocol
+            .probe(device)
+            .then(function (info) {
+              var out = { host: host };
+              Object.keys(info).forEach(function (k) {
+                out[k] = info[k];
+              });
+              return out;
+            })
+            .catch(function (error) {
+              lastError = error;
+              return null;
+            });
+        });
+      }, Promise.resolve(null))
+      .then(function (found) {
         if (found) return found;
-        return protocol.probe(device).then(function (info) {
-          var out = { host: host };
-          Object.keys(info).forEach(function (k) { out[k] = info[k]; });
-          return out;
-        }).catch(function (error) { lastError = error; return null; });
+        throw lastError || new Error("bilinen protokol bulunamadı");
       });
-    }, Promise.resolve(null)).then(function (found) {
-      if (found) return found;
-      throw lastError || new Error("bilinen protokol bulunamadı");
-    });
   }
 
   function protocolFor(name) {
@@ -995,12 +2051,16 @@
   }
 
   function normalizeSubnetBase(input) {
-    var value = String(input || "").trim().replace(/\.+$/, "");
+    var value = String(input || "")
+      .trim()
+      .replace(/\.+$/, "");
     if (!/^\d{1,3}(\.\d{1,3}){2,3}$/.test(value)) return null;
     var parts = value.split(".");
     if (parts.length === 4) parts.pop();
     if (parts.length !== 3) return null;
-    var ok = parts.every(function (p) { return Number(p) >= 0 && Number(p) <= 255; });
+    var ok = parts.every(function (p) {
+      return Number(p) >= 0 && Number(p) <= 255;
+    });
     return ok ? parts.join(".") : null;
   }
 
@@ -1008,7 +2068,9 @@
   function guessSubnet() {
     var d = desktopBridge();
     if (d && typeof d.subnets === "function") {
-      return Promise.resolve(d.subnets()).then(function (list) { return (list && list[0]) || null; });
+      return Promise.resolve(d.subnets()).then(function (list) {
+        return (list && list[0]) || null;
+      });
     }
     return Promise.resolve(null);
   }
@@ -1016,13 +2078,22 @@
   // Tarama için hızlı tanıma: tüm protokoller aynı anda yoklanır, sıradaki ilk başarılı olan seçilir.
   function identifyFast(host) {
     var device = { host: host };
-    return Promise.all(protocols.filter(discoverable).map(function (protocol) {
-      return protocol.probe(device).then(function (info) {
-        var out = { host: host };
-        Object.keys(info).forEach(function (k) { out[k] = info[k]; });
-        return out;
-      }).catch(function () { return null; });
-    })).then(function (all) {
+    return Promise.all(
+      protocols.filter(discoverable).map(function (protocol) {
+        return protocol
+          .probe(device)
+          .then(function (info) {
+            var out = { host: host };
+            Object.keys(info).forEach(function (k) {
+              out[k] = info[k];
+            });
+            return out;
+          })
+          .catch(function () {
+            return null;
+          });
+      }),
+    ).then(function (all) {
       for (var i = 0; i < all.length; i++) if (all[i]) return all[i];
       throw new Error("bilinen protokol bulunamadı");
     });
@@ -1043,17 +2114,34 @@
       var settled = false;
       function finishIfDone() {
         if (settled) return;
-        if (nextHost > 254 && active === 0) { settled = true; scanTimeoutMs = 0; resolvePromise(found); }
+        if (nextHost > 254 && active === 0) {
+          settled = true;
+          scanTimeoutMs = 0;
+          resolvePromise(found);
+        }
       }
       function pump() {
         while (active < concurrency && nextHost <= 254) {
-          if (opts.shouldStop && opts.shouldStop()) { nextHost = 255; break; }
+          if (opts.shouldStop && opts.shouldStop()) {
+            nextHost = 255;
+            break;
+          }
           (function (host) {
             active += 1;
             identifyFast(host)
-              .then(function (info) { found.push(info); if (opts.onFound) opts.onFound(info, found.length); })
-              .catch(function () { /* cevap vermeyen adres normal */ })
-              .then(function () { active -= 1; if (opts.onProgress) opts.onProgress(host); finishIfDone(); pump(); });
+              .then(function (info) {
+                found.push(info);
+                if (opts.onFound) opts.onFound(info, found.length);
+              })
+              .catch(function () {
+                /* cevap vermeyen adres normal */
+              })
+              .then(function () {
+                active -= 1;
+                if (opts.onProgress) opts.onProgress(host);
+                finishIfDone();
+                pump();
+              });
           })(prefix + "." + nextHost);
           nextHost += 1;
         }
@@ -1070,29 +2158,67 @@
         if (typeof RTCPeerConnection === "undefined") return resolve(null);
         var pc = new RTCPeerConnection({ iceServers: [] });
         var done = false;
-        var finish = function (v) { if (done) return; done = true; try { pc.close(); } catch (e) {} resolve(v); };
+        var finish = function (v) {
+          if (done) return;
+          done = true;
+          try {
+            pc.close();
+          } catch (e) {}
+          resolve(v);
+        };
         pc.createDataChannel("nx");
         pc.onicecandidate = function (e) {
           if (!e || !e.candidate) return finish(null);
-          var m = /(\b(?:192\.168|10\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01]))\.\d{1,3})\.\d{1,3}\b/.exec(e.candidate.candidate);
+          var m = /(\b(?:192\.168|10\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01]))\.\d{1,3})\.\d{1,3}\b/.exec(
+            e.candidate.candidate,
+          );
           if (m) finish(normalizeSubnetBase(m[1] + ".0"));
         };
-        pc.createOffer().then(function (o) { return pc.setLocalDescription(o); }).catch(function () { finish(null); });
-        setTimeout(function () { finish(null); }, 1500);
-      } catch (e) { resolve(null); }
+        pc.createOffer()
+          .then(function (o) {
+            return pc.setLocalDescription(o);
+          })
+          .catch(function () {
+            finish(null);
+          });
+        setTimeout(function () {
+          finish(null);
+        }, 1500);
+      } catch (e) {
+        resolve(null);
+      }
     });
   }
 
-  var COMMON_PREFIXES = ["192.168.1", "192.168.0", "192.168.2", "192.168.10", "192.168.100", "192.168.178", "10.0.0", "10.0.1", "10.1.1", "172.16.0"];
+  var COMMON_PREFIXES = [
+    "192.168.1",
+    "192.168.0",
+    "192.168.2",
+    "192.168.10",
+    "192.168.100",
+    "192.168.178",
+    "10.0.0",
+    "10.0.1",
+    "10.1.1",
+    "172.16.0",
+  ];
 
   // Kullanıcıdan hiçbir şey istemeden ağı tarar: önce cihazın kendi alt ağı (masaüstü / WebRTC),
   // sonra yaygın modem aralıkları. İlk cihaz bulunan alt ağda durur.
   // options: onPrefix(prefix,index,total), onFound, shouldStop, prefixes (ek öncelikli ön ekler)
   function autoScan(options) {
     var opts = options || {};
-    return Promise.all([guessSubnet().catch(function () { return null; }), rtcPrefix()]).then(function (known) {
+    return Promise.all([
+      guessSubnet().catch(function () {
+        return null;
+      }),
+      rtcPrefix(),
+    ]).then(function (known) {
       var list = [];
-      function add(p) { p = p && normalizeSubnetBase(p); if (p && list.indexOf(p) === -1) list.push(p); }
+      function add(p) {
+        p = p && normalizeSubnetBase(p);
+        if (p && list.indexOf(p) === -1) list.push(p);
+      }
       (opts.prefixes || []).forEach(add);
       known.forEach(add);
       COMMON_PREFIXES.forEach(add);
@@ -1102,8 +2228,16 @@
         if (i >= list.length || (opts.shouldStop && opts.shouldStop())) return Promise.resolve(all);
         var prefix = list[i++];
         if (opts.onPrefix) opts.onPrefix(prefix, i, list.length);
-        return scanSubnet(prefix, { onFound: function (info, n) { all.push(info); if (opts.onFound) opts.onFound(info, all.length); }, shouldStop: opts.shouldStop, onProgress: opts.onProgress })
-          .then(function () { return all.length ? all : next(); });
+        return scanSubnet(prefix, {
+          onFound: function (info, n) {
+            all.push(info);
+            if (opts.onFound) opts.onFound(info, all.length);
+          },
+          shouldStop: opts.shouldStop,
+          onProgress: opts.onProgress,
+        }).then(function () {
+          return all.length ? all : next();
+        });
       }
       return next();
     });
@@ -1112,9 +2246,15 @@
   window.nexusLan = {
     setTransport: setTransport,
     request: request,
-    usingNativeTransport: function () { return !!transport || !!desktopBridge() || !!nativeHttpPlugin(); },
-    hasTcp: function () { return !!tcpBridge(); },
-    hasUdp: function () { return !!udpBridge(); },
+    usingNativeTransport: function () {
+      return !!transport || !!desktopBridge() || !!nativeHttpPlugin();
+    },
+    hasTcp: function () {
+      return !!tcpBridge();
+    },
+    hasUdp: function () {
+      return !!udpBridge();
+    },
     protocols: protocols,
     protocolFor: protocolFor,
     supports: supports,
@@ -1130,19 +2270,24 @@
     read: function (device) {
       if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
       var p = protocolFor(device.protocol);
-      return p && available(p) ? p.read(device) : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      return p && available(p)
+        ? p.read(device)
+        : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
     },
     // Yazılım sürümü: { current, latest, hasUpdate } — bilinmeyen alanlar null
     firmware: function (device) {
       var p = protocolFor(device.protocol);
-      if (!p || !available(p)) return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
-      if (typeof p.firmware !== "function") return Promise.reject(new Error("bu cihaz sürüm bilgisi vermiyor"));
+      if (!p || !available(p))
+        return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      if (typeof p.firmware !== "function")
+        return Promise.reject(new Error("bu cihaz sürüm bilgisi vermiyor"));
       return p.firmware(device);
     },
     write: function (device, capability, value) {
       if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
       var p = protocolFor(device.protocol);
-      if (!p || !available(p)) return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
+      if (!p || !available(p))
+        return Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
       // HTTP taşıyan protokollerde 4xx/5xx yanıtı başarı sayılmaz. Bazı yazma
       // uçları ham {status,text} döner (Shelly, ESPHome); eskiden bunlar da
       // "komut gitti" sayılıyordu. Artık gerçek yanıt kodu denetlenir.

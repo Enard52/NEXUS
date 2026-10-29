@@ -14,9 +14,17 @@
       note: "Yerel HTTP API — kurulumu en kolay marka",
       models: [
         { name: "Shelly Plug S", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
-        { name: "Shelly Bulb", img: "generic-led-bulb.png", caps: ["switch", "brightness", "colorTemp"] },
+        {
+          name: "Shelly Bulb",
+          img: "generic-led-bulb.png",
+          caps: ["switch", "brightness", "colorTemp"],
+        },
         { name: "Shelly Dimmer", img: "control-dimmer-knob.png", caps: ["switch", "brightness"] },
-        { name: "Shelly Motion", img: "generic-motion-sensor.png", caps: ["motion", "temperature"] },
+        {
+          name: "Shelly Motion",
+          img: "generic-motion-sensor.png",
+          caps: ["motion", "temperature"],
+        },
       ],
     },
     {
@@ -25,9 +33,18 @@
       availability: "all",
       note: "Yerel RPC API (Gen2/Gen3)",
       models: [
-        { name: "Shelly Plus 1PM", aliases: ["anahtar"], img: "control-single-wall-switch.png", caps: ["switch", "energy"] },
+        {
+          name: "Shelly Plus 1PM",
+          aliases: ["anahtar"],
+          img: "control-single-wall-switch.png",
+          caps: ["switch", "energy"],
+        },
         { name: "Shelly Plus Plug S", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
-        { name: "Shelly Dimmer Gen3", img: "control-dimmer-knob.png", caps: ["switch", "brightness"] },
+        {
+          name: "Shelly Dimmer Gen3",
+          img: "control-dimmer-knob.png",
+          caps: ["switch", "brightness"],
+        },
       ],
     },
     {
@@ -38,7 +55,11 @@
       models: [
         { name: "Tasmota Priz", img: "generic-smart-plug.png", caps: ["switch"] },
         { name: "Tasmota Röle", img: "generic-power-strip.png", caps: ["switch"] },
-        { name: "Tasmota RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        {
+          name: "Tasmota RGB Ampul",
+          img: "generic-led-bulb.png",
+          caps: ["switch", "brightness", "color"],
+        },
       ],
     },
     {
@@ -47,9 +68,21 @@
       availability: "all",
       note: "Yerel HTTP & RTSP kamera akışı — ücretsiz, bulutsuz",
       models: [
-        { name: "Tapo P110 Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
-        { name: "Tapo L530E Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
-        { name: "Tapo S265 Termostat", img: "generic-thermostat-c.png", caps: ["temperature", "humidity"] },
+        {
+          name: "Tapo P110 Akıllı Priz",
+          img: "generic-smart-plug.png",
+          caps: ["switch", "energy"],
+        },
+        {
+          name: "Tapo L530E Ampul",
+          img: "generic-led-bulb.png",
+          caps: ["switch", "brightness", "color"],
+        },
+        {
+          name: "Tapo S265 Termostat",
+          img: "generic-thermostat-c.png",
+          caps: ["temperature", "humidity"],
+        },
         { name: "Tapo C210 Kamera", img: "security-indoor-camera.png", caps: ["camera"] },
       ],
     },
@@ -70,9 +103,21 @@
       availability: "desktop",
       note: "Yerel TCP (LAN Control açık) — masaüstü uygulamasında",
       models: [
-        { name: "Yeelight Tavan Lambası", img: "generic-ceiling-light.png", caps: ["switch", "brightness", "color"] },
-        { name: "Yeelight Şerit", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
-        { name: "Yeelight Masa Lambası", img: "generic-table-lamp.png", caps: ["switch", "brightness"] },
+        {
+          name: "Yeelight Tavan Lambası",
+          img: "generic-ceiling-light.png",
+          caps: ["switch", "brightness", "color"],
+        },
+        {
+          name: "Yeelight Şerit",
+          img: "generic-led-strip.png",
+          caps: ["switch", "brightness", "color"],
+        },
+        {
+          name: "Yeelight Masa Lambası",
+          img: "generic-table-lamp.png",
+          caps: ["switch", "brightness"],
+        },
       ],
     },
     {
@@ -81,7 +126,11 @@
       availability: "all",
       note: "Açık JSON API",
       models: [
-        { name: "WLED Şerit Kontrolcü", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
+        {
+          name: "WLED Şerit Kontrolcü",
+          img: "generic-led-strip.png",
+          caps: ["switch", "brightness", "color"],
+        },
       ],
     },
     {
@@ -90,8 +139,18 @@
       availability: "all",
       note: "web_server bileşeniyle — DIY cihazlar",
       models: [
-        { name: "ESPHome Röle Paneli", aliases: ["çoklu priz"], img: "generic-power-strip.png", caps: ["switch"] },
-        { name: "ESPHome Hava Sensörü", aliases: ["hava kalitesi", "sıcaklık ve nem sensörü"], img: "generic-air-quality.png", caps: ["temperature", "humidity"] },
+        {
+          name: "ESPHome Röle Paneli",
+          aliases: ["çoklu priz"],
+          img: "generic-power-strip.png",
+          caps: ["switch"],
+        },
+        {
+          name: "ESPHome Hava Sensörü",
+          aliases: ["hava kalitesi", "sıcaklık ve nem sensörü"],
+          img: "generic-air-quality.png",
+          caps: ["temperature", "humidity"],
+        },
       ],
     },
     {
@@ -100,8 +159,16 @@
       availability: "all",
       note: "Yerel köprü API'si (Hue Bridge gerekir)",
       models: [
-        { name: "Hue White & Color Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
-        { name: "Hue Gradient Şerit", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
+        {
+          name: "Hue White & Color Ampul",
+          img: "generic-led-bulb.png",
+          caps: ["switch", "brightness", "color"],
+        },
+        {
+          name: "Hue Gradient Şerit",
+          img: "generic-led-strip.png",
+          caps: ["switch", "brightness", "color"],
+        },
       ],
     },
     {
@@ -110,10 +177,19 @@
       availability: "all",
       note: "Kendi Home Assistant sunucun üzerinden binlerce marka (Tuya, Xiaomi, Sonoff, Zigbee, Matter…) — ücretsiz",
       models: [
-        { name: "Home Assistant Işık", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        {
+          name: "Home Assistant Işık",
+          img: "generic-led-bulb.png",
+          caps: ["switch", "brightness", "color"],
+        },
         { name: "Home Assistant Priz / Anahtar", img: "generic-smart-plug.png", caps: ["switch"] },
         { name: "Home Assistant Perde", img: "control-curtain-motor.png", caps: ["cover"] },
-        { name: "Home Assistant Klima / Termostat", aliases: ["klima"], img: "generic-air-conditioner.png", caps: ["switch", "temperature"] },
+        {
+          name: "Home Assistant Klima / Termostat",
+          aliases: ["klima"],
+          img: "generic-air-conditioner.png",
+          caps: ["switch", "temperature"],
+        },
         { name: "Home Assistant Kilit", img: "security-keypad-lock.png", caps: ["lock"] },
         { name: "Home Assistant Robot Süpürge", img: "generic-robot-vacuum.png", caps: ["vacuum"] },
       ],
@@ -122,13 +198,25 @@
       brand: "Tuya (yerel mod)",
       protocol: "tuya-local",
       availability: "all",
-      note: "Doğrudan yerel LAN kontrolü (hub veya bulut gerekmez) — ücretsiz",
+      note: "Yerel mod şifreli protokol ve cihaz anahtarı gerektirir; bu sürümde komut gönderilmez",
       models: [
         { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
-        { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
-        { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
+        {
+          name: "Tuya RGB Ampul",
+          img: "generic-led-bulb.png",
+          caps: ["switch", "brightness", "color"],
+        },
+        {
+          name: "Tuya Akıllı Anahtar / Röle",
+          img: "control-single-wall-switch.png",
+          caps: ["switch"],
+        },
         { name: "Tuya Kapı Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
-        { name: "Tuya Termostat", img: "generic-thermostat-c.png", caps: ["temperature", "humidity"] },
+        {
+          name: "Tuya Termostat",
+          img: "generic-thermostat-c.png",
+          caps: ["temperature", "humidity"],
+        },
       ],
     },
     {
@@ -136,9 +224,7 @@
       protocol: "wol",
       availability: "all",
       note: "Ağ üzerinden PC veya TV uyandırma (Home Assistant standardı)",
-      models: [
-        { name: "Wake-on-LAN PC / TV", img: "generic-smart-hub.png", caps: ["switch"] },
-      ],
+      models: [{ name: "Wake-on-LAN PC / TV", img: "generic-smart-hub.png", caps: ["switch"] }],
     },
   ];
 
@@ -157,72 +243,306 @@
   // (tr-TR) metne uygulanır.
   var CAP_HINTS = [
     // Yük anahtarlamayan düğmeler, kumandalar ve titreşim sensörü; duvar anahtarı/hareket sensöründen ayrı işlevlerdir.
-    { test: /thermostat switch|termostat anahtar/, caps: ["switch", "temperature"], img: "control-thermostat-switch.png" },
-    { test: /kablosuz anahtar|akıllı buton|senaryo anahtar|uyandırma anahtar|kumanda/, caps: ["button"], img: "control-wireless-button.png" },
+    {
+      test: /thermostat switch|termostat anahtar/,
+      caps: ["switch", "temperature"],
+      img: "control-thermostat-switch.png",
+    },
+    {
+      test: /kablosuz anahtar|akıllı buton|senaryo anahtar|uyandırma anahtar|kumanda/,
+      caps: ["button"],
+      img: "control-wireless-button.png",
+    },
     { test: /titreşim|vibration/, caps: ["sensor"], img: "generic-motion-sensor.png" },
-    { test: /aydınlatma sensör|ışık sensör|lux/, caps: ["illuminance"], img: "generic-motion-sensor.png" },
-    { test: /basınç sensör|çok fonksiyonlu sensör|meteoroloji/, caps: ["sensor"], img: "generic-pressure-sensor.png" },
+    {
+      test: /aydınlatma sensör|ışık sensör|lux/,
+      caps: ["illuminance"],
+      img: "generic-motion-sensor.png",
+    },
+    {
+      test: /basınç sensör|çok fonksiyonlu sensör|meteoroloji/,
+      caps: ["sensor"],
+      img: "generic-pressure-sensor.png",
+    },
     { test: /projektör|projeksiyon/, caps: ["switch", "media"], img: "generic-projector.png" },
     { test: /priz|plug/, caps: ["switch", "energy"], img: "generic-smart-plug.png" },
-    { test: /evcil|pet feeder|kedi kumu|akvaryum|aquarium|balık besleyici/, caps: ["switch", "pet"], img: "misc-pet-feeder.png" },
-    { test: /bebek|beşik|mama hazırlayıcı|göğüs pompa|biberon/, caps: ["baby"], img: "misc-baby-monitor.png" },
-    { test: /tansiyon|oksimetre|ateş ölçer|bileklik|uyku|yastık|akıllı yatak|diş fırça|yüz temizley|yüz buhar|saç kurutma|masaj|ayak küvet|fizyoterapi|egzersiz aynası|kanepe|çalar saat|dinlenme ışığı|otoskop/, caps: ["health"], img: "health-smart-band.png" },
-    { test: /ip atlama|halter|raket|egzersiz tekerle|hula|direnç bandı|bilek güçlendirme|koşu bandı|kürek çekme|kondisyon/, caps: ["fitness"], img: "generic-treadmill.png" },
-    { test: /scooter|kaykay|bisiklet|bicycle|elektrikli araç(?! şarj)|tekerlekli sandalye|helmet|kompresör|tracker|(^|[\s(])izleyici/, caps: ["mobility"], img: "generic-scooter.png" },
-    { test: /sulama|su vana|fiskiye|bitki|toprak sensör|çim biçme/, caps: ["switch", "garden"], img: "agri-irrigation-sprinkler.png" },
-    { test: /ağ geçidi|çok modlu geçit|yönlendirici|router|menzil arttırıcı|yoğunlaştırıcı|konnektör/, caps: ["network"], img: "generic-smart-hub.png" },
-    { test: /robot süpürge|elektrikli süpürge|cam temizlik robot|vacuum|pool cleaner/, caps: ["switch", "vacuum"], img: "generic-robot-vacuum.png" },
-    { test: /kamera|camera|gözetim|kapı zili|doorbell|nvr|dvr|video baz/, caps: ["camera"], img: "security-indoor-camera.png" },
-    { test: /kilit|kilid|lock|kasa|turnike|gating|smart door|anahtar kutusu/, caps: ["lock"], img: "security-keypad-lock.png" },
-    { test: /duman|gaz dedekt|co dedekt|karbonmonoksit|su basma|sızıntı|siren|alarm|acil durum|organik bileşik/, caps: ["alarm"], img: "security-smoke-detector.png" },
+    {
+      test: /evcil|pet feeder|kedi kumu|akvaryum|aquarium|balık besleyici/,
+      caps: ["switch", "pet"],
+      img: "misc-pet-feeder.png",
+    },
+    {
+      test: /bebek|beşik|mama hazırlayıcı|göğüs pompa|biberon/,
+      caps: ["baby"],
+      img: "misc-baby-monitor.png",
+    },
+    {
+      test: /tansiyon|oksimetre|ateş ölçer|bileklik|uyku|yastık|akıllı yatak|diş fırça|yüz temizley|yüz buhar|saç kurutma|masaj|ayak küvet|fizyoterapi|egzersiz aynası|kanepe|çalar saat|dinlenme ışığı|otoskop/,
+      caps: ["health"],
+      img: "health-smart-band.png",
+    },
+    {
+      test: /ip atlama|halter|raket|egzersiz tekerle|hula|direnç bandı|bilek güçlendirme|koşu bandı|kürek çekme|kondisyon/,
+      caps: ["fitness"],
+      img: "generic-treadmill.png",
+    },
+    {
+      test: /scooter|kaykay|bisiklet|bicycle|elektrikli araç(?! şarj)|tekerlekli sandalye|helmet|kompresör|tracker|(^|[\s(])izleyici/,
+      caps: ["mobility"],
+      img: "generic-scooter.png",
+    },
+    {
+      test: /sulama|su vana|fiskiye|bitki|toprak sensör|çim biçme/,
+      caps: ["switch", "garden"],
+      img: "agri-irrigation-sprinkler.png",
+    },
+    {
+      test: /ağ geçidi|çok modlu geçit|yönlendirici|router|menzil arttırıcı|yoğunlaştırıcı|konnektör/,
+      caps: ["network"],
+      img: "generic-smart-hub.png",
+    },
+    {
+      test: /robot süpürge|elektrikli süpürge|cam temizlik robot|vacuum|pool cleaner/,
+      caps: ["switch", "vacuum"],
+      img: "generic-robot-vacuum.png",
+    },
+    {
+      test: /kamera|camera|gözetim|kapı zili|doorbell|nvr|dvr|video baz/,
+      caps: ["camera"],
+      img: "security-indoor-camera.png",
+    },
+    {
+      test: /kilit|kilid|lock|kasa|turnike|gating|smart door|anahtar kutusu/,
+      caps: ["lock"],
+      img: "security-keypad-lock.png",
+    },
+    {
+      test: /duman|gaz dedekt|co dedekt|karbonmonoksit|su basma|sızıntı|siren|alarm|acil durum|organik bileşik/,
+      caps: ["alarm"],
+      img: "security-smoke-detector.png",
+    },
     // Garaj/kapı açıcılar perdeden ayrı bir işlevdir (henüz desteklenen model yok).
     { test: /garaj|kapı açıcı|gate/, caps: ["switch", "cover"], img: "control-garage-remote.png" },
-    { test: /perde|panjur|curtain|blind/, caps: ["switch", "cover"], img: "control-curtain-motor.png" },
-    { test: /şerit|strip|rgb|ambiyans|ortam ışığı/, caps: ["switch", "brightness", "color"], img: "generic-led-strip.png" },
+    {
+      test: /perde|panjur|curtain|blind/,
+      caps: ["switch", "cover"],
+      img: "control-curtain-motor.png",
+    },
+    {
+      test: /şerit|strip|rgb|ambiyans|ortam ışığı/,
+      caps: ["switch", "brightness", "color"],
+      img: "generic-led-strip.png",
+    },
     { test: /dimmer/, caps: ["switch", "brightness"], img: "control-dimmer-knob.png" },
-    { test: /tavan|avize|ceiling|armatür/, caps: ["switch", "brightness"], img: "generic-ceiling-light.png" },
-    { test: /ampul|bulb|lamba|lamp|ışık|aydınlatma/, caps: ["switch", "brightness"], img: "generic-led-bulb.png" },
-    { test: /hava temiz|purifier|nemlendirici|nem alma|humidifier|hava kutusu/, caps: ["switch", "airQuality"], img: "generic-air-purifier.png" },
-    { test: /hava kalite|air quality|pm2\.5|voc/, caps: ["airQuality"], img: "generic-air-quality.png" },
-    { test: /termostat|thermostat|trv|radyatör vana/, caps: ["temperature"], img: "generic-thermostat-c.png" },
-    { test: /klima|kombi|ısıtıcı|soba|heater|ısı pompa|fan|vantilatör|havalandırma|kalorifer|battaniye|şömine|ısıtma|ısıtmalı/, caps: ["switch", "temperature"], img: "generic-air-conditioner.png" },
-    { test: /sıcaklık|nem sensör|temperature|humidity/, caps: ["temperature", "humidity"], img: "generic-temp-humidity.png" },
-    { test: /hareket|motion|varlı|vücudu|presence|titreşim/, caps: ["motion"], img: "generic-motion-sensor.png" },
-    { test: /kapı|pencere|door|window|contact/, caps: ["contact"], img: "security-door-sensor.png" },
-    { test: /devre kesici|breaker|invertör|transformatör|energy mate|güç istasyon|şarj istasyon/, caps: ["switch", "energy"], img: "energy-circuit-breaker.png" },
-    { test: /televizyon|hoparlör|amplifier|earphone|kulaklık|fotoğraf çerçeve|ekran|kitap okuyucu|yazıcı|12x48|5x36/, caps: ["switch", "media"], img: "generic-smart-tv.png" },
-    { test: /makine|fırın|oven|ocak|kettle|kahve|çamaşır|bulaşık|buzdolabı|mikrodalga|fritöz|blender|pişirme|robotu|mutfak|davlumbaz|aspiratör|sıkacağ|şarap dolab|çöp|sterilizatör|terazi|tartı|termometre|bardak|ayakkabı|sinek|giysi|ısıtıcı|lift/, caps: ["switch", "appliance"], img: "generic-smart-plug.png" },
-    { test: /priz|plug|power strip|sayaç|meter/, caps: ["switch", "energy"], img: "generic-smart-plug.png" },
-    { test: /anahtar|switch|buton|button|kumanda|remote/, caps: ["switch"], img: "control-single-wall-switch.png" },
+    {
+      test: /tavan|avize|ceiling|armatür/,
+      caps: ["switch", "brightness"],
+      img: "generic-ceiling-light.png",
+    },
+    {
+      test: /ampul|bulb|lamba|lamp|ışık|aydınlatma/,
+      caps: ["switch", "brightness"],
+      img: "generic-led-bulb.png",
+    },
+    {
+      test: /hava temiz|purifier|nemlendirici|nem alma|humidifier|hava kutusu/,
+      caps: ["switch", "airQuality"],
+      img: "generic-air-purifier.png",
+    },
+    {
+      test: /hava kalite|air quality|pm2\.5|voc/,
+      caps: ["airQuality"],
+      img: "generic-air-quality.png",
+    },
+    {
+      test: /termostat|thermostat|trv|radyatör vana/,
+      caps: ["temperature"],
+      img: "generic-thermostat-c.png",
+    },
+    {
+      test: /klima|kombi|ısıtıcı|soba|heater|ısı pompa|fan|vantilatör|havalandırma|kalorifer|battaniye|şömine|ısıtma|ısıtmalı/,
+      caps: ["switch", "temperature"],
+      img: "generic-air-conditioner.png",
+    },
+    {
+      test: /sıcaklık|nem sensör|temperature|humidity/,
+      caps: ["temperature", "humidity"],
+      img: "generic-temp-humidity.png",
+    },
+    {
+      test: /hareket|motion|varlı|vücudu|presence|titreşim/,
+      caps: ["motion"],
+      img: "generic-motion-sensor.png",
+    },
+    {
+      test: /kapı|pencere|door|window|contact/,
+      caps: ["contact"],
+      img: "security-door-sensor.png",
+    },
+    {
+      test: /devre kesici|breaker|invertör|transformatör|energy mate|güç istasyon|şarj istasyon/,
+      caps: ["switch", "energy"],
+      img: "energy-circuit-breaker.png",
+    },
+    {
+      test: /televizyon|hoparlör|amplifier|earphone|kulaklık|fotoğraf çerçeve|ekran|kitap okuyucu|yazıcı|12x48|5x36/,
+      caps: ["switch", "media"],
+      img: "generic-smart-tv.png",
+    },
+    {
+      test: /makine|fırın|oven|ocak|kettle|kahve|çamaşır|bulaşık|buzdolabı|mikrodalga|fritöz|blender|pişirme|robotu|mutfak|davlumbaz|aspiratör|sıkacağ|şarap dolab|çöp|sterilizatör|terazi|tartı|termometre|bardak|ayakkabı|sinek|giysi|ısıtıcı|lift/,
+      caps: ["switch", "appliance"],
+      img: "generic-smart-plug.png",
+    },
+    {
+      test: /priz|plug|power strip|sayaç|meter/,
+      caps: ["switch", "energy"],
+      img: "generic-smart-plug.png",
+    },
+    {
+      test: /anahtar|switch|buton|button|kumanda|remote/,
+      caps: ["switch"],
+      img: "control-single-wall-switch.png",
+    },
   ];
 
   // Kontrol panelleri: aynı işlevi gören cihazlar tek panelde toplanır.
   // Panel, cihazın yetenek kümesinden (caps) baskın işleve göre seçilir.
   var PANELS = [
     // Etiket: panelin ne kontrol ettiğini söyler ("… kontrol paneli" + kontrol edilebilen şeyler).
-    { id: "camera", label: "Kamera kontrol paneli · durum ve gizlilik", icon: "camera", when: ["camera"] },
-    { id: "vacuum", label: "Robot süpürge kontrol paneli · başlat, durdur, eve dön", icon: "bot", when: ["vacuum"] },
+    {
+      id: "camera",
+      label: "Kamera kontrol paneli · durum ve gizlilik",
+      icon: "camera",
+      when: ["camera"],
+    },
+    {
+      id: "vacuum",
+      label: "Robot süpürge kontrol paneli · başlat, durdur, eve dön",
+      icon: "bot",
+      when: ["vacuum"],
+    },
     { id: "lock", label: "Kilit kontrol paneli · kilitle, aç", icon: "lock", when: ["lock"] },
-    { id: "alarm", label: "Alarm kontrol paneli · kur, kapat, sirene", icon: "siren", when: ["alarm"] },
-    { id: "cover", label: "Perde ve panjur kontrol paneli · aç, kapat, konum", icon: "blinds", when: ["cover"] },
-    { id: "color-light", label: "Renkli aydınlatma kontrol paneli · renk, parlaklık", icon: "lightbulb", when: ["color"] },
-    { id: "light", label: "Aydınlatma kontrol paneli · aç, kapat, parlaklık", icon: "lamp-ceiling", when: ["brightness"] },
-    { id: "air", label: "Hava kalitesi paneli · ölçüm ve uyarılar", icon: "wind", when: ["airQuality"] },
-    { id: "motion", label: "Hareket sensörü paneli · algılama ve uyarılar", icon: "radar", when: ["motion"] },
-    { id: "contact", label: "Kapı ve pencere sensörü paneli · açık/kapalı durumu", icon: "door-closed", when: ["contact"] },
-    { id: "pet", label: "Evcil hayvan kontrol paneli · besleme, takip", icon: "paw-print", when: ["pet"] },
-    { id: "baby", label: "Bebek ürünleri paneli · izleme ve uyarılar", icon: "baby", when: ["baby"] },
-    { id: "health", label: "Sağlık ve uyku paneli · ölçüm, takip", icon: "heart-pulse", when: ["health"] },
-    { id: "fitness", label: "Spor ekipmanları paneli · takip, ölçüm", icon: "dumbbell", when: ["fitness"] },
-    { id: "garden", label: "Bahçe ve sulama kontrol paneli · vana, zamanlama", icon: "sprout", when: ["garden"] },
-    { id: "media", label: "Medya kontrol paneli · aç, kapat, ses, kanal", icon: "tv", when: ["media"] },
-    { id: "appliance", label: "Ev aletleri kontrol paneli · başlat, durdur, program", icon: "cooking-pot", when: ["appliance"] },
-    { id: "climate", label: "İklim kontrol paneli · sıcaklık, nem, mod", icon: "thermometer", when: ["temperature", "humidity"] },
-    { id: "env", label: "Ortam sensörü paneli · sıcaklık, ışık, durum", icon: "gauge", when: ["illuminance", "sensor"] },
-    { id: "energy", label: "Priz ve enerji kontrol paneli · aç, kapat, tüketim", icon: "plug-zap", when: ["energy"] },
-    { id: "mobility", label: "Ulaşım ve takip paneli · konum, şarj", icon: "bike", when: ["mobility"] },
-    { id: "network", label: "Ağ geçidi paneli · bağlantı, durum", icon: "router", when: ["network"] },
-    { id: "switch", label: "Anahtar kontrol paneli · aç, kapat", icon: "toggle-left", when: ["switch"] },
+    {
+      id: "alarm",
+      label: "Alarm kontrol paneli · kur, kapat, sirene",
+      icon: "siren",
+      when: ["alarm"],
+    },
+    {
+      id: "cover",
+      label: "Perde ve panjur kontrol paneli · aç, kapat, konum",
+      icon: "blinds",
+      when: ["cover"],
+    },
+    {
+      id: "color-light",
+      label: "Renkli aydınlatma kontrol paneli · renk, parlaklık",
+      icon: "lightbulb",
+      when: ["color"],
+    },
+    {
+      id: "light",
+      label: "Aydınlatma kontrol paneli · aç, kapat, parlaklık",
+      icon: "lamp-ceiling",
+      when: ["brightness"],
+    },
+    {
+      id: "air",
+      label: "Hava kalitesi paneli · ölçüm ve uyarılar",
+      icon: "wind",
+      when: ["airQuality"],
+    },
+    {
+      id: "motion",
+      label: "Hareket sensörü paneli · algılama ve uyarılar",
+      icon: "radar",
+      when: ["motion"],
+    },
+    {
+      id: "contact",
+      label: "Kapı ve pencere sensörü paneli · açık/kapalı durumu",
+      icon: "door-closed",
+      when: ["contact"],
+    },
+    {
+      id: "pet",
+      label: "Evcil hayvan kontrol paneli · besleme, takip",
+      icon: "paw-print",
+      when: ["pet"],
+    },
+    {
+      id: "baby",
+      label: "Bebek ürünleri paneli · izleme ve uyarılar",
+      icon: "baby",
+      when: ["baby"],
+    },
+    {
+      id: "health",
+      label: "Sağlık ve uyku paneli · ölçüm, takip",
+      icon: "heart-pulse",
+      when: ["health"],
+    },
+    {
+      id: "fitness",
+      label: "Spor ekipmanları paneli · takip, ölçüm",
+      icon: "dumbbell",
+      when: ["fitness"],
+    },
+    {
+      id: "garden",
+      label: "Bahçe ve sulama kontrol paneli · vana, zamanlama",
+      icon: "sprout",
+      when: ["garden"],
+    },
+    {
+      id: "media",
+      label: "Medya kontrol paneli · aç, kapat, ses, kanal",
+      icon: "tv",
+      when: ["media"],
+    },
+    {
+      id: "appliance",
+      label: "Ev aletleri kontrol paneli · başlat, durdur, program",
+      icon: "cooking-pot",
+      when: ["appliance"],
+    },
+    {
+      id: "climate",
+      label: "İklim kontrol paneli · sıcaklık, nem, mod",
+      icon: "thermometer",
+      when: ["temperature", "humidity"],
+    },
+    {
+      id: "env",
+      label: "Ortam sensörü paneli · sıcaklık, ışık, durum",
+      icon: "gauge",
+      when: ["illuminance", "sensor"],
+    },
+    {
+      id: "energy",
+      label: "Priz ve enerji kontrol paneli · aç, kapat, tüketim",
+      icon: "plug-zap",
+      when: ["energy"],
+    },
+    {
+      id: "mobility",
+      label: "Ulaşım ve takip paneli · konum, şarj",
+      icon: "bike",
+      when: ["mobility"],
+    },
+    {
+      id: "network",
+      label: "Ağ geçidi paneli · bağlantı, durum",
+      icon: "router",
+      when: ["network"],
+    },
+    {
+      id: "switch",
+      label: "Anahtar kontrol paneli · aç, kapat",
+      icon: "toggle-left",
+      when: ["switch"],
+    },
   ];
   var OTHER_PANEL = { id: "other", label: "Diğer cihazlar", icon: "cpu" };
 
@@ -256,7 +576,12 @@
     }
     for (var k = 0; k < CAP_HINTS.length; k++) {
       if (CAP_HINTS[k].test.test(label)) {
-        return { brand: "", protocol: "unknown", caps: CAP_HINTS[k].caps.slice(), img: CAP_HINTS[k].img };
+        return {
+          brand: "",
+          protocol: "unknown",
+          caps: CAP_HINTS[k].caps.slice(),
+          img: CAP_HINTS[k].img,
+        };
       }
     }
     return { brand: "", protocol: "unknown", caps: ["other"], img: "generic-smart-hub.png" };
@@ -274,7 +599,9 @@
   var supportedFnCache = null;
   function supportedFunctions() {
     var total = 0;
-    NEXUS_SUPPORTED_DEVICES.forEach(function (g) { total += g.models.length; });
+    NEXUS_SUPPORTED_DEVICES.forEach(function (g) {
+      total += g.models.length;
+    });
     if (supportedFnCache && supportedFnCache.total === total) return supportedFnCache.set;
     var set = {};
     NEXUS_SUPPORTED_DEVICES.forEach(function (g) {
@@ -296,7 +623,9 @@
         if (NEXUS_SUPPORTED_DEVICES[i].models[j].name === name) return true;
       }
     }
-    var idx = hintIndexOf((String(name || "") + " " + String(groupTitle || "")).toLocaleLowerCase("tr-TR"));
+    var idx = hintIndexOf(
+      (String(name || "") + " " + String(groupTitle || "")).toLocaleLowerCase("tr-TR"),
+    );
     return idx >= 0 && !!supportedFunctions()[idx];
   };
 })();
