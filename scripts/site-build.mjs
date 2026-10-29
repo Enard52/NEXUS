@@ -1361,13 +1361,16 @@ function nxFixMojibake(str){
     if(/[\u00C2-\u00C5]/.test(str)){
       var bytes=new Uint8Array(str.length);
       for(var i=0;i<str.length;i++)bytes[i]=str.charCodeAt(i)&0xff;
+      // NOTE: pageJs() is one big template literal. An unescaped hex escape would
+      // be parsed at generation time into a REAL U+FFFD and land in site.js,
+      // tripping the encoding guard. Doubling the backslash keeps it as text;
+      // the browser parses the escape identically at runtime.
       var decoded=new TextDecoder('utf-8').decode(bytes);
-      if(decoded && !decoded.includes('\uFFFD'))return decoded;
+      if(decoded && !decoded.includes('\\uFFFD'))return decoded;
     }
   }catch(e){}
   return str;
 }
-
 function nxDecodeJwt(token){
   try{
     var base64Url=token.split('.')[1];
