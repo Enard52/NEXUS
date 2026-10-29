@@ -1,187 +1,293 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html lang="tr"><head>
-<meta charset="utf-8"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0" />
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#ffffff">
-<title>NEXUS — Profil</title>
-<!-- Tailwind CSS CDN -->
-<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
-<!-- Google Fonts: Inter for a clean sans-serif look -->
-<link href="fonts/inter/inter.css" rel="stylesheet"/>
-  <!-- Lucide Icons for high-quality stroke icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>NEXUS — Profil</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="css/tailwind.css" rel="stylesheet" />
+    <link href="css/nexus-ui.css" rel="stylesheet" />
+    <!-- Google Fonts: Inter for a clean sans-serif look -->
+    <link href="fonts/inter/inter.css" rel="stylesheet" />
+    <!-- Lucide Icons for high-quality stroke icons -->
 
-<style data-purpose="custom-typography">
-    body {
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-  </style>
-<style data-purpose="custom-layout">
-    /* Subtle brand-tinted gradient background */
-    .bg-gradient-custom {
-      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
-    }
-    /* Fixed height for the main content area to allow scrolling if needed, minus bottom nav */
-    .content-area {
-      min-height: calc(100vh - 80px);
-      padding-bottom: 20px;
-    }
-    /* Custom shadow for the white container */
-    .menu-container-shadow {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    }
-  </style>
-<style>
-    body {
-      min-height: 100dvh;
-    }
-  </style>
-  <script src="auth.js"></script>
-  <script src="theme.js"></script>
-<script src="data.js"></script>
-<script src="ai-fab.js"></script>
-</head>
-<body class="bg-gradient-custom text-slate-900">
-<!-- BEGIN: MainContent -->
-<main class="content-area px-5 pt-12">
-<!-- BEGIN: HeaderSection (Kullanıcı Bilgileri sayfasına gider + sağ üstte Ayarlar) -->
-<div class="flex items-center justify-between mb-8">
-<a class="flex items-center justify-between flex-1 min-w-0" data-purpose="user-header" href="nexus-user-info.html">
-<div class="flex items-center gap-4 min-w-0">
-<!-- Profile Picture Container -->
-<div class="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm bg-slate-100 flex items-center justify-center flex-shrink-0">
-<svg class="w-10 h-10 text-slate-300" fill="currentColor" id="profile-avatar-placeholder" viewBox="0 0 24 24" aria-label="Profil fotoğrafı yok" role="img"><path d="M12 12c2.49 0 4.5-2.01 4.5-4.5S14.49 3 12 3 7.5 5.01 7.5 7.5 9.51 12 12 12zm0 2.25c-3 0-9 1.51-9 4.5V21h18v-2.25c0-2.99-6-4.5-9-4.5z"/></svg>
-<img alt="Profil Fotoğrafı" class="w-full h-full object-cover hidden" id="profile-avatar"/>
-</div>
-<!-- User Name -->
-<h1 class="text-2xl font-bold tracking-tight truncate" id="profile-name" style="font-size: 28px; font-weight: 800;">Misafir</h1>
-</div>
-<!-- Chevron Right -->
-<i class="w-6 h-6 text-slate-400 flex-shrink-0" data-lucide="chevron-right"></i>
-</a>
-<!-- Ayarlar -->
-<a href="nexus-settings.html" aria-label="Ayarlar" class="p-1 ml-3 flex items-center justify-center text-slate-700 active:scale-95 transition-transform flex-shrink-0" data-purpose="settings-link">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="settings"></i>
-</a>
-</div>
-<!-- END: HeaderSection -->
-<!-- BEGIN: MenuList -->
-<section class="bg-white rounded-[32px] menu-container-shadow p-5" data-purpose="menu-options">
-<ul class="divide-y divide-slate-50">
-<!-- Ev Yönetimi -->
-<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="nexus-household.html">
-<div class="flex items-center gap-4">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
-<span class="text-lg font-medium">Ev Yönetimi</span>
-</div>
-<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
-</a></li>
-<!-- Mesaj Merkezi -->
-<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="nexus-messages.html">
-<div class="flex items-center gap-4">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="message-square"></i>
-<span class="text-lg font-medium">Mesaj Merkezi</span>
-</div>
-<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
-</a></li>
-<!-- SSS & Geribildirim -->
-<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="nexus-feedback.html">
-<div class="flex items-center gap-4">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="help-circle"></i>
-<span class="text-lg font-medium whitespace-nowrap truncate">SSS &amp; Geribildirim</span>
-</div>
-<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
-</a></li>
-<!-- Üçüncü Taraf Cihaz ve Hizmetler -->
-<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="nexus-services.html">
-<div class="flex items-center gap-4">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="share-2"></i>
-<span class="text-lg font-medium">Üçüncü Taraf Cihaz ve Hizmetler</span>
-</div>
-<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
-</a></li>
-<!-- CarPlay -->
-<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="nexus-carplay.html">
-<div class="flex items-center gap-4">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="car-front"></i>
-<span class="text-lg font-medium">CarPlay</span>
-</div>
-<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
-</a></li>
-<!-- HomeKit Bilgileri -->
-<li><a class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors" href="nexus-homekit.html">
-<div class="flex items-center gap-4">
-<i class="w-6 h-6 stroke-[1.5]" data-lucide="router"></i>
-<span class="text-lg font-medium">HomeKit Bilgileri</span>
-</div>
-<i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
-</a></li>
-
-</ul>
-</section>
-<!-- END: MenuList -->
-</main>
-<!-- END: MainContent -->
-<!-- BEGIN: BottomNavigation -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); height: calc(4.5rem + env(safe-area-inset-bottom));" data-purpose="bottom-nav">
-  <a href="nexus-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #64748B;" aria-current="false">
-    <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
-    <span class="text-[10px] font-semibold leading-none">Ev</span>
-  </a>
-  <a href="nexus-smart.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #64748B;" aria-current="false">
-    <i class="w-6 h-6 stroke-[1.75]" data-lucide="layout-grid"></i>
-    <span class="text-[10px] font-semibold leading-none">Ak&#305;ll&#305;</span>
-  </a>
-  <a href="nexus-discover.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #64748B;" aria-current="false">
-    <i class="w-6 h-6 stroke-[1.75]" data-lucide="compass"></i>
-    <span class="text-[10px] font-semibold leading-none">Ke&#351;fet</span>
-  </a>
-  <a href="nexus-profile.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #4C7DFF;" aria-current="page">
-    <i class="w-6 h-6 stroke-[1.75]" data-lucide="user"></i>
-    <span class="text-[10px] font-semibold leading-none">Profil</span>
-  </a>
-</nav>
-<!-- END: BottomNavigation -->
-<!-- BEGIN: IconInitialization -->
-<script src="js/lucide.js"></script>
-<script data-purpose="icon-renderer">
-    // Initialize Lucide icons
-    lucide.createIcons();
-    // Kullanıcı Bilgileri sayfasında yapılan ad/fotoğraf değişiklikleriyle senkron — gerçek veri yoksa nötr yer tutucu kalır
-    (function () {
-      function refreshProfile() {
-        var name = nexusGetItem('nexusUserName');
-        if (name) document.getElementById('profile-name').textContent = name;
-        var avatar = nexusGetItem('nexusAvatar');
-        var img = document.getElementById('profile-avatar');
-        var ph = document.getElementById('profile-avatar-placeholder');
-        if (avatar && img && ph) {
-          img.onerror = function () {
-            img.classList.add('hidden');
-            ph.classList.remove('hidden');
-          };
-          img.src = avatar;
-          img.classList.remove('hidden');
-          ph.classList.add('hidden');
-        } else if (img && ph) {
-          img.src = '';
-          img.classList.add('hidden');
-          ph.classList.remove('hidden');
-        }
+    <style data-purpose="custom-typography">
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      refreshProfile();
-      window.addEventListener('nexusAvatarChanged', refreshProfile);
-      window.addEventListener('storage', function (e) {
-        if (e.key && e.key.includes('nexusAvatar')) refreshProfile();
-      });
-    })();
-  </script>
-<!-- END: IconInitialization -->
-</body></html>
-
+    </style>
+    <style data-purpose="custom-layout">
+      /* Subtle brand-tinted gradient background */
+      .bg-gradient-custom {
+        background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%);
+      }
+      /* Fixed height for the main content area to allow scrolling if needed, minus bottom nav */
+      .content-area {
+        min-height: calc(100vh - 80px);
+        padding-bottom: 20px;
+      }
+      /* Custom shadow for the white container */
+      .menu-container-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      }
+    </style>
+    <style>
+      body {
+        min-height: 100dvh;
+      }
+    </style>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="data.js"></script>
+    <script src="ai-fab.js"></script>
+  </head>
+  <body class="bg-gradient-custom text-slate-900">
+    <!-- BEGIN: MainContent -->
+    <main class="content-area px-5 pt-12">
+      <!-- BEGIN: HeaderSection (Kullanıcı Bilgileri sayfasına gider + sağ üstte Ayarlar) -->
+      <div class="flex items-center justify-between mb-8">
+        <a
+          class="flex items-center justify-between flex-1 min-w-0"
+          data-purpose="user-header"
+          href="nexus-user-info.html"
+        >
+          <div class="flex items-center gap-4 min-w-0">
+            <!-- Profile Picture Container -->
+            <div
+              class="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm bg-slate-100 flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-10 h-10 text-slate-300"
+                fill="currentColor"
+                id="profile-avatar-placeholder"
+                viewBox="0 0 24 24"
+                aria-label="Profil fotoğrafı yok"
+                role="img"
+              >
+                <path
+                  d="M12 12c2.49 0 4.5-2.01 4.5-4.5S14.49 3 12 3 7.5 5.01 7.5 7.5 9.51 12 12 12zm0 2.25c-3 0-9 1.51-9 4.5V21h18v-2.25c0-2.99-6-4.5-9-4.5z"
+                />
+              </svg>
+              <img
+                alt="Profil Fotoğrafı"
+                class="w-full h-full object-cover hidden"
+                id="profile-avatar"
+              />
+            </div>
+            <!-- User Name -->
+            <h1
+              class="text-2xl font-bold tracking-tight truncate"
+              id="profile-name"
+              style="font-size: 28px; font-weight: 800"
+            >
+              Misafir
+            </h1>
+          </div>
+          <!-- Chevron Right -->
+          <i class="w-6 h-6 text-slate-400 flex-shrink-0" data-lucide="chevron-right"></i>
+        </a>
+        <!-- Ayarlar -->
+        <a
+          href="nexus-settings.html"
+          aria-label="Ayarlar"
+          class="p-1 ml-3 flex items-center justify-center text-slate-700 active:scale-95 transition-transform flex-shrink-0"
+          data-purpose="settings-link"
+        >
+          <i class="w-6 h-6 stroke-[1.5]" data-lucide="settings"></i>
+        </a>
+      </div>
+      <!-- END: HeaderSection -->
+      <!-- BEGIN: MenuList -->
+      <section
+        class="bg-white rounded-[32px] menu-container-shadow p-5"
+        data-purpose="menu-options"
+      >
+        <ul class="divide-y divide-slate-50">
+          <!-- Ev Yönetimi -->
+          <li>
+            <a
+              class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+              href="nexus-household.html"
+            >
+              <div class="flex items-center gap-4">
+                <i class="w-6 h-6 stroke-[1.5]" data-lucide="home"></i>
+                <span class="text-lg font-medium">Ev Yönetimi</span>
+              </div>
+              <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+            </a>
+          </li>
+          <!-- Mesaj Merkezi -->
+          <li>
+            <a
+              class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+              href="nexus-messages.html"
+            >
+              <div class="flex items-center gap-4">
+                <i class="w-6 h-6 stroke-[1.5]" data-lucide="message-square"></i>
+                <span class="text-lg font-medium">Mesaj Merkezi</span>
+              </div>
+              <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+            </a>
+          </li>
+          <!-- SSS & Geribildirim -->
+          <li>
+            <a
+              class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+              href="nexus-feedback.html"
+            >
+              <div class="flex items-center gap-4">
+                <i class="w-6 h-6 stroke-[1.5]" data-lucide="help-circle"></i>
+                <span class="text-lg font-medium whitespace-nowrap truncate"
+                  >SSS &amp; Geribildirim</span
+                >
+              </div>
+              <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+            </a>
+          </li>
+          <!-- Üçüncü Taraf Cihaz ve Hizmetler -->
+          <li>
+            <a
+              class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+              href="nexus-services.html"
+            >
+              <div class="flex items-center gap-4">
+                <i class="w-6 h-6 stroke-[1.5]" data-lucide="share-2"></i>
+                <span class="text-lg font-medium">Üçüncü Taraf Cihaz ve Hizmetler</span>
+              </div>
+              <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+            </a>
+          </li>
+          <!-- CarPlay -->
+          <li>
+            <a
+              class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+              href="nexus-carplay.html"
+            >
+              <div class="flex items-center gap-4">
+                <i class="w-6 h-6 stroke-[1.5]" data-lucide="car-front"></i>
+                <span class="text-lg font-medium">CarPlay</span>
+                <span
+                  class="text-[10px] font-bold text-amber-600 bg-amber-100 rounded-full px-2 py-0.5"
+                  >Yakında</span
+                >
+              </div>
+              <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+            </a>
+          </li>
+          <!-- HomeKit Bilgileri -->
+          <li>
+            <a
+              class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+              href="nexus-homekit.html"
+            >
+              <div class="flex items-center gap-4">
+                <i class="w-6 h-6 stroke-[1.5]" data-lucide="router"></i>
+                <span class="text-lg font-medium">HomeKit Bilgileri</span>
+                <span
+                  class="text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full px-2 py-0.5"
+                  >Rehber</span
+                >
+              </div>
+              <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <!-- END: MenuList -->
+    </main>
+    <!-- END: MainContent -->
+    <!-- BEGIN: BottomNavigation -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50"
+      style="
+        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+        height: calc(4.5rem + env(safe-area-inset-bottom));
+      "
+      data-purpose="bottom-nav"
+    >
+      <a
+        href="nexus-home.html"
+        class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95"
+        style="color: #64748b"
+        aria-current="false"
+      >
+        <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
+        <span class="text-[10px] font-semibold leading-none">Ev</span>
+      </a>
+      <a
+        href="nexus-smart.html"
+        class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95"
+        style="color: #64748b"
+        aria-current="false"
+      >
+        <i class="w-6 h-6 stroke-[1.75]" data-lucide="layout-grid"></i>
+        <span class="text-[10px] font-semibold leading-none">Ak&#305;ll&#305;</span>
+      </a>
+      <a
+        href="nexus-discover.html"
+        class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95"
+        style="color: #64748b"
+        aria-current="false"
+      >
+        <i class="w-6 h-6 stroke-[1.75]" data-lucide="compass"></i>
+        <span class="text-[10px] font-semibold leading-none">Ke&#351;fet</span>
+      </a>
+      <a
+        href="nexus-profile.html"
+        class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95"
+        style="color: #4c7dff"
+        aria-current="page"
+      >
+        <i class="w-6 h-6 stroke-[1.75]" data-lucide="user"></i>
+        <span class="text-[10px] font-semibold leading-none">Profil</span>
+      </a>
+    </nav>
+    <!-- END: BottomNavigation -->
+    <!-- BEGIN: IconInitialization -->
+    <script src="js/lucide.js"></script>
+    <script data-purpose="icon-renderer">
+      // Initialize Lucide icons
+      lucide.createIcons();
+      // Kullanıcı Bilgileri sayfasında yapılan ad/fotoğraf değişiklikleriyle senkron — gerçek veri yoksa nötr yer tutucu kalır
+      (function () {
+        function refreshProfile() {
+          var name = nexusGetItem("nexusUserName");
+          if (name) document.getElementById("profile-name").textContent = name;
+          var avatar = nexusGetItem("nexusAvatar");
+          var img = document.getElementById("profile-avatar");
+          var ph = document.getElementById("profile-avatar-placeholder");
+          if (avatar && img && ph) {
+            img.onerror = function () {
+              img.classList.add("hidden");
+              ph.classList.remove("hidden");
+            };
+            img.src = avatar;
+            img.classList.remove("hidden");
+            ph.classList.add("hidden");
+          } else if (img && ph) {
+            img.src = "";
+            img.classList.add("hidden");
+            ph.classList.remove("hidden");
+          }
+        }
+        refreshProfile();
+        window.addEventListener("nexusAvatarChanged", refreshProfile);
+        window.addEventListener("storage", function (e) {
+          if (e.key && e.key.includes("nexusAvatar")) refreshProfile();
+        });
+      })();
+    </script>
+    <!-- END: IconInitialization -->
+  </body>
+</html>
