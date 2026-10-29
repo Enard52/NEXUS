@@ -200,6 +200,8 @@
         if (!res.ok) {
           var error = new Error((body && (body.error_description || body.msg || body.error)) || ("http " + res.status));
           error.status = res.status;
+          // Sunucunun makine okunur hata kodu (ör. email_exists, same_email): arayüz gerçek nedeni ayırt edebilsin.
+          error.code = String((body && (body.error_code || body.code)) || "");
           throw error;
         }
         return body;
@@ -418,18 +420,22 @@
     return listFactors().then(function (factors) {
       var totp = factors.filter(function (factor) {
         if ((factor.factor_type || factor.factorType) !== "totp") return false;
-        if (onlyId) return factor.id === onlyId && factor.status !== "verified";
+        // onlyId verilince durum fark etmeksizin o faktörü sil (AAL2 sonrası doğrulanmış
+        // faktör kapatılırken "verified" filtresi silmeyi engelliyordu — düzeltildi).
+        if (onlyId) return factor.id === onlyId;
         return true;
       });
       return totp.reduce(function (chain, factor) {
         return chain.then(function () { return unenrollFactor(factor.id); });
       }, Promise.resolve());
     }).then(function () {
-      if (onlyId) return readSession();
+      // onlyId ile de olsa tüm faktörler kaldırılıyorsa localStorage'ı temizle.
+      // (kapatma akışında onlyId ile çağrılır ve MFA kayıt durumu sıfırlanmalıdır.)
       try {
         localStorage.removeItem("nexusMfaEnrolled");
         localStorage.removeItem("nexusMfaPending");
       } catch (e) { /* özel mod */ }
+      if (onlyId) return readSession();
       var current = readSession();
       if (current && current.refreshToken) return grant(current.refreshToken, true).catch(function () { return current; });
       return current;
@@ -478,6 +484,43 @@
     if (!current || !current.email) return Promise.reject(new Error("oturum yok"));
     return grant({ email: current.email, password: currentPassword }).then(function (fresh) {
       return setPasswordWithToken(fresh.accessToken, nextPassword);
+    });
+  }
+
+  // Google ile açılan Supabase hesabında şifre HİÇBİR ZAMAN yoktu; changePassword bu
+  // yüzden o hesapta aşılamaz bir duvardır (mevcut şifre sorulur, doğrulanamaz).
+  // Durum kullanıcının identities listesinden okunur: e-posta kimliği varsa şifre
+  // vardır; yalnızca google/apple gibi dış sağlayıcılar varsa yoktur. Eski GoTrue
+  // yanıtlarında identities alanı hiç gelmez — tahmin edilmez, "unknown" döner ve
+  // arayüz eski (şifre soran) akışta kalır.
+  function passwordStatus() {
+    return session().then(function (current) {
+      if (!current || !current.accessToken) return "unknown";
+      return api("/auth/v1/user", { headers: authHeader(current) }).then(function (user) {
+        var ids = user && Array.isArray(user.identities) ? user.identities : null;
+        var providers = (ids || []).map(function (identity) {
+          return String((identity && identity.provider) || identity || "").toLowerCase();
+        });
+        if (providers.indexOf("email") >= 0 || providers.indexOf("password") >= 0) return "password";
+        if (providers.length) return "oauth";
+        var metaProvider = String(((user || {}).app_metadata || {}).provider || "").toLowerCase();
+        if (metaProvider === "email") return "password";
+        if (metaProvider) return "oauth";
+        return "unknown";
+      }, function () {
+        return "unknown";
+      });
+    });
+  }
+
+  // Şifresi olmayan hesapta ilk şifre, mevcut şifre sorulmadan belirlenir: yetki
+  // zaten elde edilen oturum belirtecinden gelir (PUT /auth/v1/user { password }).
+  // Supabase bu alanı hassas sayıp AAL2 isterse 401/403 döner; çağır taraf o zaman
+  // kurtarma mektubuna yönlendirir.
+  function setPasswordWithSession(nextPassword) {
+    return session().then(function (current) {
+      if (!current || !current.accessToken) throw new Error("oturum yok");
+      return setPasswordWithToken(current.accessToken, nextPassword);
     });
   }
 
@@ -598,7 +641,12 @@
     });
   }
 
-  function authHeader() {
+  // Oturum tazeleyip başlık üreten asenkron yardımıcı. Adı bilerek authHeader DEĞİL:
+  // yukarıdaki senkron authHeader(current) ile aynı adı taşıması, tek kapsamdaki son
+  // bildirimin kazanmasına yol açıyordu — faktör ve şifre çağrılarına başlık yerine
+  // Promise gidiyor, Authorization hiç gönderilmiyordu (Supabase 401). Cihaz senkronu
+  // kendi adıyla çağrılır ki iki davranış birbirini ezmesin.
+  function sessionAuthHeader() {
     return session().then(function (current) {
       if (!current) throw new Error("oturum yok");
       return { Authorization: "Bearer " + current.accessToken, "Content-Type": "application/json" };
@@ -620,7 +668,7 @@
     return session()
       .then(function (current) {
         if (!current) return { pushed: 0 };
-        return authHeader().then(function (headers) {
+        return sessionAuthHeader().then(function (headers) {
           var rows = toRows(current.userId, devices);
           if (!rows.length) return { pushed: 0 };
           // PostgREST upsert: dizi govde + Prefer: resolution=merge-duplicates
@@ -654,7 +702,7 @@
     if (!ids.length || !enabled()) return Promise.resolve();
     return session().then(function (current) {
       if (!current) return;
-      return authHeader().then(function (headers) {
+      return sessionAuthHeader().then(function (headers) {
         var list = ids.map(function (id) { return encodeURIComponent(id); }).join(",");
         return api("/rest/v1/nexus_devices?user_id=eq." + encodeURIComponent(current.userId) + "&device_id=in.(" + list + ")", {
           method: "DELETE",
@@ -1437,7 +1485,7 @@
       window.__nexusNativeAuthForwarded = true;
       // Aynı giriş sayfasındaysak yalnız hash değişimi sayfayı yeniden çalıştırmaz.
       // ?oauth=1 sorgusu tam yüklemeyi garanti eder; hash'i giriş ekranı işler.
-      location.replace("stitch-login.html?oauth=1" + hash);
+      location.replace("nexus-login.html?oauth=1" + hash);
     }
 
     try {
@@ -1462,6 +1510,8 @@
     recover: recover,
     setPasswordWithToken: setPasswordWithToken,
     changePassword: changePassword,
+    passwordStatus: passwordStatus,
+    setPasswordWithSession: setPasswordWithSession,
     changeEmail: changeEmail,
     enabled: enabled,
     notifyLocalChange: notifyLocalChange,

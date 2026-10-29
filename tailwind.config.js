@@ -5,8 +5,8 @@ module.exports = {
   // işletim sistemi temasını izler ve iki tema birbirine karışır.
   darkMode: 'class',
   content: [
-    "./src/app/stitch-*.html",
-    "./www/stitch-*.html",
+    "./src/app/nexus-*.html",
+    "./www/nexus-*.html",
     "./www/index.html",
     "./**/*.{html,js}"
   ],
@@ -22,7 +22,7 @@ module.exports = {
         'nexus-brand': '#4C7DFF',
         'nexus-bg': '#ECE9FD',
         'nexus-border': '#F1F1F4',
-        // stitch ekranlari developerce camelCase token kullaniyor (text-nexusPurple);
+        // nexus ekranlari developerce camelCase token kullaniyor (text-nexusPurple);
         // Play CDN kaldirildigi icin bu aliaslar statik CSS uretiminde de tanimli olmali.
         nexusPurple: '#4C7DFF',
         nexusCyan: '#22D3EE',

@@ -1,4 +1,4 @@
-﻿// Site: yeni bağlayıcıları (WiZ, LIFX, Govee, Sonoff DIY) entegrasyon şeridine ekler. Idempotent. Usage: node site-integrations.cjs <siteDir>
+// Site: yeni bağlayıcıları (WiZ, LIFX, Govee, Sonoff DIY) entegrasyon şeridine ekler. Idempotent. Usage: node site-integrations.cjs <siteDir>
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];

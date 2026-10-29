@@ -8,50 +8,50 @@ const HIDDEN_DEVICE_STORAGE_KEY = 'nexusHiddenCards';
 const CORE_SMART_HOME_IDS = ['weather', 'energy', 'dnd', 'ai-protect'];
 
 const CARD_HREFS = {
-    weather: 'stitch-map.html',
-    energy: 'stitch-energy.html',
-    dnd: 'stitch-dnd.html',
-    'ai-protect': 'stitch-ai-protect.html',
-    'home-schedule': 'stitch-home-schedule.html',
-    'privacy-mode': 'stitch-privacy-mode.html',
-    'multi-video': 'stitch-multi-video.html',
-    'away-home': 'stitch-away-home.html',
-    'data-dashboard': 'stitch-logs.html',
-    'air-quality': 'stitch-air-quality.html',
-    'device-health': 'stitch-device-updates.html',
-    'security-summary': 'stitch-account-security.html',
-    'room-scenes': 'stitch-room-scenes.html',
-    'cleaning-routine': 'stitch-cleaning-start.html',
-    'guest-mode': 'stitch-guest-mode.html',
-    'leave-home-summary': 'stitch-leave-home-summary.html',
-    'sleep-prep': 'stitch-sleep-prep.html',
-    'comfort-room': 'stitch-room-comfort.html',
-    'home-health': 'stitch-home-health.html',
-    'good-morning': 'stitch-good-morning.html',
-    'leave-home': 'stitch-leave-home.html',
-    'night-security': 'stitch-night-security.html',
-    'movie-mode': 'stitch-movie-mode.html',
-    'welcome-home': 'stitch-welcome-home.html',
-    'sleep-mode': 'stitch-sleep-mode.html',
-    'clean-start': 'stitch-cleaning-start.html',
-    'energy-check': 'stitch-energy.html',
-    'security-scan': 'stitch-account-security.html'
+    weather: 'nexus-map.html',
+    energy: 'nexus-energy.html',
+    dnd: 'nexus-dnd.html',
+    'ai-protect': 'nexus-ai-protect.html',
+    'home-schedule': 'nexus-home-schedule.html',
+    'privacy-mode': 'nexus-privacy-mode.html',
+    'multi-video': 'nexus-multi-video.html',
+    'away-home': 'nexus-away-home.html',
+    'data-dashboard': 'nexus-logs.html',
+    'air-quality': 'nexus-air-quality.html',
+    'device-health': 'nexus-device-updates.html',
+    'security-summary': 'nexus-account-security.html',
+    'room-scenes': 'nexus-room-scenes.html',
+    'cleaning-routine': 'nexus-cleaning-start.html',
+    'guest-mode': 'nexus-guest-mode.html',
+    'leave-home-summary': 'nexus-leave-home-summary.html',
+    'sleep-prep': 'nexus-sleep-prep.html',
+    'comfort-room': 'nexus-room-comfort.html',
+    'home-health': 'nexus-home-health.html',
+    'good-morning': 'nexus-good-morning.html',
+    'leave-home': 'nexus-leave-home.html',
+    'night-security': 'nexus-night-security.html',
+    'movie-mode': 'nexus-movie-mode.html',
+    'welcome-home': 'nexus-welcome-home.html',
+    'sleep-mode': 'nexus-sleep-mode.html',
+    'clean-start': 'nexus-cleaning-start.html',
+    'energy-check': 'nexus-energy.html',
+    'security-scan': 'nexus-account-security.html'
 };
 
 const SMART_SCENE_HREFS = {
-    'guest-mode-prep': 'stitch-guest-mode.html',
-    'leave-home-control': 'stitch-leave-home-summary.html',
-    'sleep-prep-center': 'stitch-sleep-prep.html',
-    'climate-comfort-panel': 'stitch-room-comfort.html',
-    'guest-mode': 'stitch-guest-mode.html',
-    'leave-home-summary': 'stitch-leave-home-summary.html',
-    'sleep-prep': 'stitch-sleep-prep.html',
-    'comfort-room': 'stitch-room-comfort.html',
-    'home-health': 'stitch-home-health.html',
-    'movie-mode': 'stitch-movie-mode.html',
-    'welcome-home': 'stitch-welcome-home.html',
-    'welcome-scene': 'stitch-welcome-home.html',
-    'clean-start': 'stitch-cleaning-start.html'
+    'guest-mode-prep': 'nexus-guest-mode.html',
+    'leave-home-control': 'nexus-leave-home-summary.html',
+    'sleep-prep-center': 'nexus-sleep-prep.html',
+    'climate-comfort-panel': 'nexus-room-comfort.html',
+    'guest-mode': 'nexus-guest-mode.html',
+    'leave-home-summary': 'nexus-leave-home-summary.html',
+    'sleep-prep': 'nexus-sleep-prep.html',
+    'comfort-room': 'nexus-room-comfort.html',
+    'home-health': 'nexus-home-health.html',
+    'movie-mode': 'nexus-movie-mode.html',
+    'welcome-home': 'nexus-welcome-home.html',
+    'welcome-scene': 'nexus-welcome-home.html',
+    'clean-start': 'nexus-cleaning-start.html'
 };
 
 const NEXUS_CARD_CATALOG = {
@@ -362,7 +362,7 @@ window.setDeviceCardSelected = function(id, selected) {
 };
 
 function getCardHref(id) {
-    return CARD_HREFS[id] || 'stitch-home.html';
+    return CARD_HREFS[id] || 'nexus-home.html';
 }
 
 window.getSmartSceneHref = function(id) {
@@ -491,7 +491,7 @@ async function initNexusData() {
     // Realistic Notification Badge Logic
     const discoverBadge = document.getElementById('discover-badge');
     if (discoverBadge) {
-        if (window.location.pathname.includes('stitch-discover.html')) {
+        if (window.location.pathname.includes('nexus-discover.html')) {
             nexusSetItem('nexusNotificationsRead', 'true');
         }
         
@@ -558,7 +558,9 @@ function getLocalDevices() {
         paired.forEach((d, i) => {
             if (!d || !d.name || !d.host) return; // bağlanmamış cihaz hiçbir listede eklenmiş görünmez
             if (list.some(x => x.name === d.name)) return; // aynı cihazı iki kaynakta sayılmasın
-            list.push({ id: 'paired-' + i, name: d.name, state: d.host ? 'Bağlı' : 'Eşleşme bekleniyor', type: d.icon === 'lightbulb' ? 'light' : '', img: d.img || '', linked: !!d.host });
+            // Ağ yokken ya da cihaza ulaşılamadığı bilindiğinde "Bağlı" yazmak yanlış olur.
+            const reachable = window.NX && window.NX.LAN_ONLINE && window.NX.LAN_ONLINE[i] === false ? 'Ulaşılamıyor' : (typeof navigator !== 'undefined' && navigator.onLine === false ? 'Çevrimdışı' : 'Bağlı');
+            list.push({ id: 'paired-' + i, name: d.name, state: d.host ? reachable : 'Eşleşme bekleniyor', type: d.icon === 'lightbulb' ? 'light' : '', img: d.img || '', linked: !!d.host });
         });
     }
     return list;
@@ -1232,7 +1234,7 @@ function renderDevices() {
             </div>
             <p class="nx-empty__title">Henüz cihaz yok</p>
             <p class="nx-empty__text">Bu eve eklediğin cihazlar burada listelenir.</p>
-            <a href="stitch-pair.html" class="nx-empty__cta">
+            <a href="nexus-pair.html" class="nx-empty__cta">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"></path></svg>
                 Cihaz ekle
             </a>
@@ -1265,7 +1267,7 @@ function renderDevices() {
             // Eklenen cihazlar kendi kontrol ekranını açar
             const pairedIndex = /^paired-(\d+)$/.test(String(device.id)) ? String(device.id).slice(7) : null;
             const tag = pairedIndex !== null ? 'a' : 'article';
-            const link = pairedIndex !== null ? ` href="stitch-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')}"` : '';
+            const link = pairedIndex !== null ? ` href="nexus-device.html?i=${pairedIndex}" aria-label="${(device.name || 'Cihaz').replace(/"/g, '&quot;')}"` : '';
             // Cihazın ürün görseli (katalogda seçilen ya da ağda bulunan); görsel yoksa simge gösterilir
             let imgSrc = '';
             if (pairedIndex !== null && window.NX && typeof window.NX.imageUrl === 'function') {

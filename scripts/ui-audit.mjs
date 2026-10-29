@@ -1,5 +1,5 @@
 // NEXUS arayüz denetimi — uygulama kodunu değiştirmez, yalnızca ölçer ve ekran görüntüsü alır.
-// Tüm stitch-*.html ekranlarını 4 cihaz profilinde (telefon/tablet/bilgisayar/Electron-900)
+// Tüm nexus-*.html ekranlarını 4 cihaz profilinde (telefon/tablet/bilgisayar/Electron-900)
 // ve 3 hesap durumunda (hesapsız · cihazlı · anonim) yükleyip düzen/işlev sorunlarını tarar.
 // Kullanım: SERVE_DIR=www node scripts/ui-audit.mjs   (pnpm audit:ui)
 // Çıktı: .shot-ui-audit-<SERVE_DIR>/report.json + shots/  →  özet: pnpm audit:ui:summary
@@ -89,9 +89,9 @@ const STATES = {
 
 // ---------------------------------------------------------------- sayfalar
 const PUBLIC_PAGES = new Set([
-  "stitch-login.html", "stitch-onboarding.html", "stitch-forgot-password.html", "stitch-register.html",
+  "nexus-login.html", "nexus-onboarding.html", "nexus-forgot-password.html", "nexus-register.html",
 ]);
-let pages = (await readdir(SERVE)).filter((f) => /^stitch-.*\.html$/.test(f)).sort();
+let pages = (await readdir(SERVE)).filter((f) => /^nexus-.*\.html$/.test(f)).sort();
 const only = arg("only");
 if (only) {
   const keys = only.split(",").map((s) => s.trim().toLowerCase());

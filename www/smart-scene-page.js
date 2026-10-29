@@ -13,7 +13,7 @@
 
   var pageId = body.getAttribute('data-scene-page') || location.pathname.split('/').pop() || 'scene-page';
   var sceneTitle = body.getAttribute('data-scene-title') || document.title.replace(/^NEXUS\s*-\s*/i, '') || 'Sahne';
-  var backHref = body.getAttribute('data-back-href') || 'stitch-home.html';
+  var backHref = body.getAttribute('data-back-href') || 'nexus-home.html';
   var completeHref = body.getAttribute('data-complete-href') || backHref;
   var storageKey = 'nexusSceneState:' + pageId;
   var state = safeParse(nexusGetItem(storageKey), { checks: {}, values: {} });
@@ -41,7 +41,7 @@
       if (!el) return;
       el.addEventListener('click', function (event) {
         event.preventDefault();
-        window.location.href = 'stitch-settings.html';
+        window.location.href = 'nexus-settings.html';
       });
     });
   }
@@ -146,7 +146,7 @@
       var dialogOpts = {
         title: 'Cihaz gerekli',
         message: 'Bu senaryoyu kullanmak için uyumlu bir cihaz eklemelisin.',
-        primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'stitch-pair.html'; } },
+        primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'nexus-pair.html'; } },
         secondary: { label: 'Vazgeç' }
       };
       if (window.nexusDialog) window.nexusDialog(dialogOpts);
@@ -186,6 +186,26 @@
     cta.setAttribute('data-scene-bound', '1');
     // Cihaz yokken "Başlat" gibi yanıltıcı bir düğme gösterme: dürüst eylem "Önce cihaz ekle".
     if (!checkRequiredDevices()) {
+      // Sayfanın içeriğinde zaten görünür bir "cihaz ekle" aksiyonu varsa (boş durum
+      // kartındaki "+ Cihaz ekle" gibi) alt çubuk aynı istemi tekrarlar: gizlenir.
+      var inPageAdd = null;
+      try {
+        inPageAdd = Array.prototype.slice.call(document.querySelectorAll('a[href*="nexus-pair"], button'))
+          .find(function (el) {
+            if (footer.contains(el)) return false;
+            var t = ((el.textContent || '') + ' ' + (el.getAttribute('aria-label') || '')).toLowerCase();
+            var isAddLink = (el.getAttribute('href') || '').indexOf('nexus-pair') !== -1;
+            if (!isAddLink && t.indexOf('cihaz ekle') === -1) return false;
+            var r = el.getBoundingClientRect();
+            var cs = getComputedStyle(el);
+            return r.width > 40 && r.height > 24 && r.top < innerHeight * 0.85 &&
+              cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0';
+          });
+      } catch (e) { inPageAdd = null; }
+      if (inPageAdd) {
+        footer.classList.add('hidden');
+        return;
+      }
       var label = cta.querySelector('span') || cta;
       label.textContent = window.nexusT ? window.nexusT('Önce cihaz ekle', 'Add a device first') : 'Önce cihaz ekle';
       cta.setAttribute('data-no-device', '1');
@@ -202,12 +222,12 @@
     }
     cta.addEventListener('click', function (event) {
       event.preventDefault();
-      if (cta.getAttribute('data-no-device') === '1') { window.location.href = 'stitch-pair.html'; return; }
+      if (cta.getAttribute('data-no-device') === '1') { window.location.href = 'nexus-pair.html'; return; }
       if (cta.getAttribute('data-no-compatible') === '1') {
         var opts = {
           title: 'Uyumlu cihaz yok',
           message: 'Bu senaryo mevcut cihazlarını etkilemiyor. Senaryonun çalışması için uygun bir cihaz (ör. ışık, perde, süpürge) eklemelisin.',
-          primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'stitch-pair.html'; } },
+          primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'nexus-pair.html'; } },
           secondary: { label: 'Vazgeç' }
         };
         if (window.nexusDialog) window.nexusDialog(opts); else showToast(opts.message);
@@ -256,6 +276,12 @@
       if (btn.hasAttribute('data-scene-bound')) return;
       btn.setAttribute('data-scene-bound', '1');
 
+      // Cihaz yokken "Çalıştır" gösterme: dürüst eylem "Önce cihaz ekle" (tıklayınca diyalog zaten cihaz ekletir).
+      var initialLabel = ((btn.textContent || '').replace(/\s+/g, ' ').trim());
+      if (!checkRequiredDevices() && /^(çalıştır|senaryoyu (başlat|çalıştır)|run|run scenario|start scenario)$/i.test(initialLabel)) {
+        btn.textContent = window.nexusT ? window.nexusT('Önce cihaz ekle', 'Add a device first') : 'Önce cihaz ekle';
+      }
+
       var parent = btn.parentElement;
       var siblingButtons = parent ? Array.prototype.filter.call(parent.children, function (c) { return c.tagName === 'BUTTON'; }) : [];
       var isSegmented = siblingButtons.length >= 2;
@@ -283,11 +309,78 @@
     });
   }
 
+  // Senaryo önizlemesi: sayfadaki sabit (örnek) adımlar yerine, senaryonun GERÇEKTEN uygulayacağı
+  // eşleşmiş cihazlar listelenir. Uygun cihaz yoksa dürüst bir boş durum gösterilir.
+  function describeAct(a) {
+    var f = a[0], v = a[1];
+    switch (f) {
+      case 'switch': return v ? 'Açılır' : 'Kapanır';
+      case 'brightness': return 'Parlaklık %' + v;
+      case 'tone': return v === 'warm' ? 'Sıcak ışık' : 'Işık tonu ayarlanır';
+      case 'coverAction': return v === 'open' ? 'Açılır' : 'Kapanır';
+      case 'target': return 'Hedef ' + v + '°';
+      case 'profile': return v === 'eco' ? 'Eko modu' : 'Konfor modu';
+      case 'locked': return 'Kilitlenir';
+      case 'notify': return 'Bildirimler açılır';
+      case 'privacy': return v ? 'Gizlilik modu açılır' : 'Gizlilik modu kapanır';
+      case 'mode': return v === 'docked' ? 'Şarj istasyonuna döner' : 'Temizliğe başlar';
+      case 'fan': return 'Fan otomatik';
+      case 'sleep': return 'Uyku modu';
+      default: return null;
+    }
+  }
+
+  function renderRealSceneSteps() {
+    if (pageId !== 'movie-mode' && pageId !== 'welcome-home') return;
+    ensureEngine(function () {
+      if (!window.NX || !NX.readDevices || !NX.sceneActsOf) return;
+      var rows = [];
+      NX.readDevices().forEach(function (d) {
+        var acts = NX.sceneActsOf(pageId, d);
+        if (!acts.length) return;
+        var parts = [];
+        acts.forEach(function (a) { var t = describeAct(a); if (t && parts.indexOf(t) === -1) parts.push(t); });
+        rows.push({ d: d, text: parts.join(' · ') });
+      });
+      var card = function (r) {
+        return '<div class="feature-card bg-white dark:bg-slate-800 rounded-3xl p-4 flex items-center gap-4">' +
+          '<img src="' + NX.imageUrl(r.d) + '" alt="" class="w-12 h-12 object-contain" onerror="this.style.visibility=\'hidden\'">' +
+          '<div class="flex-1 min-w-0"><h4 class="text-[15px] font-bold text-slate-900 dark:text-white truncate">' + NX.escapeHtml(r.d.name) + '</h4>' +
+          '<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">' + NX.escapeHtml(r.text) + '</p></div></div>';
+      };
+      var empty = '<div class="bg-white dark:bg-slate-800 rounded-3xl p-5 text-center">' +
+        '<p class="text-sm font-bold text-slate-900 dark:text-white">Bu senaryoyu uygulayacak uygun cihaz yok</p>' +
+        '<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Işık, perde, klima veya kilit gibi uyumlu bir cihaz eklediğinde burada listelenir.</p></div>';
+      var html = rows.length ? rows.map(card).join('') : empty;
+      var main = document.querySelector('main');
+      if (!main) return;
+      var count = main.querySelector('[data-device-count]');
+      var grid = pageId === 'movie-mode'
+        ? main.querySelector('section.space-y-4 .grid')
+        : main.querySelector('section.space-y-6 .grid');
+      if (grid) grid.innerHTML = html;
+      if (count) count.textContent = rows.length + ' cihaz etkilenecek';
+      // Sabit örnek içerikler (uydurma AI önerisi, örnek cihaz şeridi, "Tümünü Düzenle") kaldırılır.
+      var fake = main.querySelector('section[class*="bg-[#4C7DFF]/5"]');
+      if (fake) fake.remove();
+      Array.prototype.slice.call(main.querySelectorAll('section')).forEach(function (s) {
+        var h = s.querySelector('h3');
+        if (h && /Etkilenecek Cihazlar/i.test(h.textContent)) s.remove();
+      });
+      Array.prototype.slice.call(main.querySelectorAll('span')).forEach(function (s) {
+        if (/^Tümünü Düzenle$/i.test((s.textContent || '').trim())) s.remove();
+      });
+      var badge = Array.prototype.slice.call(main.querySelectorAll('span')).filter(function (s) { return /^(Hazır bekliyor|Önerilen)$/i.test((s.textContent || '').trim()); })[0];
+      if (badge) badge.textContent = rows.length ? 'Hazır' : 'Uygun cihaz yok';
+    });
+  }
+
   bindBackActions();
   bindSettingsActions();
   persistInputs();
   bindPrimaryCta();
   bindDeviceCount();
+  renderRealSceneSteps();
   bindSceneActionButtons();
   }
 

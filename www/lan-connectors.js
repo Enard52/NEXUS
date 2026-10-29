@@ -925,8 +925,11 @@
     label: "Wake-on-LAN (PC / TV)",
     needsUdp: true,
     caps: ["switch"],
+    // WoL uyuyan cihazla konuşmaz: cevap yoktur, bu yüzden bir IP'de "var mı" diye yoklanamaz.
+    // Tarama/IP tanıma bu protokolü atlar; yalnızca MAC bilinerek elle eklenir.
+    discoverable: false,
     probe: function (device) {
-      if (!device || (!device.mac && !device.host)) throw new Error("wol: MAC adresi veya IP gerekli");
+      if (!device || !device.mac) return Promise.reject(new Error("wol: MAC adresi gerekli"));
       return Promise.resolve({
         protocol: "wol",
         model: "Wake-on-LAN PC/TV",
@@ -948,12 +951,13 @@
   var protocols = [shelly, shellyRpc, tasmota, wled, esphome, hue, homeassistant, kasa, tapo, yeelight, sonoff, wiz, lifx, govee, tuyaLocal, wol];
 
   function available(p) { return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()); }
+  function discoverable(p) { return available(p) && p.discoverable !== false; }
 
   // Manuel IP ile ekleme: cihazın hangi protokolü konuştuğunu sırayla dener.
   function identify(host) {
     var device = { host: host };
     var lastError = null;
-    return protocols.filter(available).reduce(function (chain, protocol) {
+    return protocols.filter(discoverable).reduce(function (chain, protocol) {
       return chain.then(function (found) {
         if (found) return found;
         return protocol.probe(device).then(function (info) {
@@ -1002,7 +1006,7 @@
   // Tarama için hızlı tanıma: tüm protokoller aynı anda yoklanır, sıradaki ilk başarılı olan seçilir.
   function identifyFast(host) {
     var device = { host: host };
-    return Promise.all(protocols.filter(available).map(function (protocol) {
+    return Promise.all(protocols.filter(discoverable).map(function (protocol) {
       return protocol.probe(device).then(function (info) {
         var out = { host: host };
         Object.keys(info).forEach(function (k) { out[k] = info[k]; });

@@ -1,7 +1,7 @@
 /**
  * NEXUS — Masaüstü düzeni
  * Telefon tasarımına dokunmaz. Masaüstünde (masaüstü uygulaması ya da fareli geniş ekran)
- * aynı stitch sayfaları sol menülü, ortalanmış içerik sütunlu düzene geçer.
+ * aynı nexus sayfaları sol menülü, ortalanmış içerik sütunlu düzene geçer.
  * Telefon ve tablette (Android/iOS uygulaması ya da dokunmatik cihaz) her zaman telefon
  * tasarımı kullanılır; tablette yalnızca ortalanır. theme.js tarafından yüklenir.
  */
@@ -26,13 +26,13 @@
 
   // Giriş/kayıt/onboarding ekranlarında menü yok; ortalanmış tek kart
   var AUTH = [
-    "stitch-login.html", "stitch-register.html", "stitch-forgot-password.html", "stitch-onboarding.html", "index.html",
-    "stitch-login", "stitch-register", "stitch-forgot-password", "stitch-onboarding", "index", ""
+    "nexus-login.html", "nexus-register.html", "nexus-forgot-password.html", "nexus-onboarding.html", "index.html",
+    "nexus-login", "nexus-register", "nexus-forgot-password", "nexus-onboarding", "index", ""
   ];
   // Geniş içerikli (ızgara/pano) sayfalar
-  var WIDE = ["stitch-home.html", "stitch-smart.html", "stitch-discover.html", "stitch-integrations.html",
-    "stitch-pair.html", "stitch-map.html", "stitch-household.html", "stitch-skills.html", "stitch-multi-video.html",
-    "stitch-cards.html", "stitch-energy.html", "stitch-device.html", "stitch-chat.html", "stitch-plus.html", "stitch-billing.html"];
+  var WIDE = ["nexus-home.html", "nexus-smart.html", "nexus-discover.html", "nexus-integrations.html",
+    "nexus-pair.html", "nexus-map.html", "nexus-household.html", "nexus-skills.html", "nexus-multi-video.html",
+    "nexus-cards.html", "nexus-energy.html", "nexus-device.html", "nexus-chat.html", "nexus-plus.html", "nexus-billing.html"];
 
   function get(key) {
     try { return typeof nexusGetItem === "function" ? nexusGetItem(key) : localStorage.getItem(key); } catch (e) { return null; }
@@ -56,42 +56,42 @@
 
   var NAV = [
     { group: "", items: [
-      ["home", "Ev", "stitch-home.html", "home"],
-      ["smart", "Akıllı", "stitch-smart.html", "layout-grid"],
-      ["discover", "Keşfet", "stitch-discover.html", "compass"]
+      ["home", "Ev", "nexus-home.html", "home"],
+      ["smart", "Akıllı", "nexus-smart.html", "layout-grid"],
+      ["discover", "Keşfet", "nexus-discover.html", "compass"]
     ] },
     { group: "Ev", items: [
-      ["pair", "Cihaz Ekle", "stitch-pair.html", "circle-plus"],
-      ["energy", "AI Enerji Tasarrufu", "stitch-energy.html", "zap"],
-      ["household", "Aile", "stitch-household.html", "users"],
-      ["messages", "Mesaj Merkezi", "stitch-messages.html", "bell"]
+      ["pair", "Cihaz Ekle", "nexus-pair.html", "circle-plus"],
+      ["energy", "AI Enerji Tasarrufu", "nexus-energy.html", "zap"],
+      ["household", "Aile", "nexus-household.html", "users"],
+      ["messages", "Mesaj Merkezi", "nexus-messages.html", "bell"]
     ] },
     { group: "Hesap", items: [
-      ["profile", "Profil", "stitch-profile.html", "user"],
-      ["settings", "Ayarlar", "stitch-settings.html", "settings"]
+      ["profile", "Profil", "nexus-profile.html", "user"],
+      ["settings", "Ayarlar", "nexus-settings.html", "settings"]
     ] }
   ];
 
   // Alt sayfaların hangi menü öğesine ait olduğu
   var PARENT = {
-    "stitch-device.html": "home", "stitch-integrations.html": "pair", "stitch-scan.html": "pair", "stitch-setup-code.html": "pair",
-    "stitch-energy-devices.html": "energy", "stitch-energy-strategy.html": "energy",
-    "stitch-smart-app-detail.html": "smart", "stitch-skills.html": "smart", "stitch-program.html": "smart", "stitch-scenario-settings.html": "smart",
-    "stitch-cards.html": "home", "stitch-map.html": "home", "stitch-lighting-master.html": "discover", "stitch-cleaning-start.html": "discover",
-    "stitch-air-quality.html": "discover", "stitch-room-comfort.html": "discover", "stitch-movie-mode.html": "discover", "stitch-multi-video.html": "discover",
-    "stitch-night-security.html": "discover", "stitch-ai-protect.html": "discover", "stitch-home-health.html": "discover",
-    "stitch-user-info.html": "profile", "stitch-account-security.html": "profile", "stitch-menu.html": "profile",
-    "stitch-feedback.html": "settings", "stitch-privacy-mode.html": "settings", "stitch-instant-notifications.html": "settings",
-    "stitch-device-updates.html": "settings", "stitch-dnd.html": "settings", "stitch-logs.html": "settings", "stitch-services.html": "settings",
-    "stitch-homekit.html": "settings", "stitch-siri-shortcuts.html": "settings", "stitch-carplay.html": "settings", "stitch-web.html": "settings",
-    "stitch-guest-mode.html": "household"
+    "nexus-device.html": "home", "nexus-integrations.html": "pair", "nexus-scan.html": "pair", "nexus-setup-code.html": "pair",
+    "nexus-energy-devices.html": "energy", "nexus-energy-strategy.html": "energy",
+    "nexus-smart-app-detail.html": "smart", "nexus-skills.html": "smart", "nexus-program.html": "smart", "nexus-scenario-settings.html": "smart",
+    "nexus-cards.html": "home", "nexus-map.html": "home", "nexus-lighting-master.html": "discover", "nexus-cleaning-start.html": "discover",
+    "nexus-air-quality.html": "discover", "nexus-room-comfort.html": "discover", "nexus-movie-mode.html": "discover", "nexus-multi-video.html": "discover",
+    "nexus-night-security.html": "discover", "nexus-ai-protect.html": "discover", "nexus-home-health.html": "discover",
+    "nexus-user-info.html": "profile", "nexus-account-security.html": "profile", "nexus-menu.html": "profile",
+    "nexus-feedback.html": "settings", "nexus-privacy-mode.html": "settings", "nexus-instant-notifications.html": "settings",
+    "nexus-device-updates.html": "settings", "nexus-dnd.html": "settings", "nexus-logs.html": "settings", "nexus-services.html": "settings",
+    "nexus-homekit.html": "settings", "nexus-siri-shortcuts.html": "settings", "nexus-carplay.html": "settings", "nexus-web.html": "settings",
+    "nexus-guest-mode.html": "household"
   };
 
   var activeKey = null;
   NAV.forEach(function (g) { g.items.forEach(function (it) { if (it[2] === page) activeKey = it[0]; }); });
   if (!activeKey) activeKey = PARENT[page] || null;
 
-  root.setAttribute("data-nx-page", page.replace(/^stitch-|\.html$/g, ""));
+  root.setAttribute("data-nx-page", page.replace(/^nexus-|\.html$/g, ""));
 
   function isDesk() { return !MOBILE_DEVICE && MQ.matches; }
   function isTab() { return MQT.matches && !isDesk(); }
@@ -121,14 +121,14 @@
       return;
     }
     if (document.getElementById("nx-side")) return;
-    var name = get("nexusUserName") || "NEXUS Kullanıcısı";
+    var name = get("nexusUserName") || "Misafir";
     var initials = name.trim().split(/\s+/).map(function (p) { return p.charAt(0); }).join("").slice(0, 2).toLocaleUpperCase("tr-TR");
     var avatar = get("nexusAvatar");
     var avatarHtml = avatar
       ? '<img src="' + esc(avatar) + '" alt="" class="nx-side-avatar" style="object-fit:cover;" onerror="this.outerHTML=\'<span class=\\\'nx-side-avatar\\\'>' + esc(initials || "M") + '</span>\'"/>'
       : '<span class="nx-side-avatar">' + esc(initials || "M") + '</span>';
     var dark = root.classList.contains("dark");
-    var html = '<a href="stitch-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
+    var html = '<a href="nexus-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
       '<span class="nx-side-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
       "<span>NEXUS</span></a>" +
       '<nav class="nx-side-nav" aria-label="Ana menü">' +
@@ -139,9 +139,9 @@
             '<i data-lucide="' + it[3] + '"></i><span>' + esc(it[1]) + "</span></a>";
         }).join("");
       }).join("") + "</nav>" +
-      '<a href="stitch-chat.html" class="nx-side-ai' + (page === "stitch-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#3F6FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nx-side-ai-txt"><b>NEXUS AI\'a sor</b><small>Sor · kontrol et</small></span><span class="nx-side-ai-dot" aria-hidden="true"></span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
+      '<a href="nexus-chat.html" class="nx-side-ai' + (page === "nexus-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#3F6FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nx-side-ai-txt"><b>NEXUS AI\'a sor</b><small>Sor · kontrol et</small></span><span class="nx-side-ai-dot" aria-hidden="true"></span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
       '<div class="nx-side-foot">' +
-      '<a href="stitch-profile.html" class="nx-side-user">' + avatarHtml + '<span class="min-w-0"><b>' + esc(name) + '</b><small>Profili görüntüle</small></span></a>' +
+      '<a href="nexus-profile.html" class="nx-side-user">' + avatarHtml + '<span class="min-w-0"><b>' + esc(name) + '</b><small>Profili görüntüle</small></span></a>' +
       '<button type="button" id="nx-side-upd" class="nx-side-upd" hidden></button>' +
       '<button type="button" class="nx-side-theme" id="nx-side-theme" aria-label="Temayı değiştir" title="Temayı değiştir"><i data-lucide="' + (dark ? "sun" : "moon") + '"></i></button>' +
       "</div>";
@@ -170,7 +170,7 @@
       var sideUser = document.querySelector(".nx-side-user");
       if (!sideUser) return;
       var av = get("nexusAvatar");
-      var nm = get("nexusUserName") || "NEXUS Kullanıcısı";
+      var nm = get("nexusUserName") || "Misafir";
       var inits = nm.trim().split(/\s+/).map(function (p) { return p.charAt(0); }).join("").slice(0, 2).toLocaleUpperCase("tr-TR");
       var currentAv = sideUser.querySelector(".nx-side-avatar");
       if (currentAv) {
@@ -238,7 +238,7 @@
       if (cs.position !== "fixed") return;
       if (el.classList.contains("nexus-ai-fab")) return;
       var navLike = el.matches('nav[data-purpose="bottom-nav"]') ||
-        (el.tagName === "NAV" && el.querySelector('a[href="stitch-home.html"]') && el.querySelector('a[href="stitch-profile.html"]'));
+        (el.tagName === "NAV" && el.querySelector('a[href="nexus-home.html"]') && el.querySelector('a[href="nexus-profile.html"]'));
       if (navLike) { el.classList.add("nx-desk-hide"); return; }
       var r = el.getBoundingClientRect();
       var cls = String(el.className || "");

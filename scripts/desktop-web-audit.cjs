@@ -29,7 +29,7 @@ const MIME = {
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURIComponent(req.url.split("?")[0]);
-  if (reqPath === "/" || reqPath === "") reqPath = "/stitch-home.html";
+  if (reqPath === "/" || reqPath === "") reqPath = "/nexus-home.html";
 
   let filePath = path.join(ROOT, reqPath);
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
@@ -65,16 +65,16 @@ async function runAudit() {
   });
 
   const pagesToTest = [
-    "stitch-home.html",
-    "stitch-smart.html",
-    "stitch-discover.html",
-    "stitch-chat.html",
-    "stitch-pair.html",
-    "stitch-settings.html",
-    "stitch-profile.html",
-    "stitch-household.html",
-    "stitch-energy.html",
-    "stitch-login.html"
+    "nexus-home.html",
+    "nexus-smart.html",
+    "nexus-discover.html",
+    "nexus-chat.html",
+    "nexus-pair.html",
+    "nexus-settings.html",
+    "nexus-profile.html",
+    "nexus-household.html",
+    "nexus-energy.html",
+    "nexus-login.html"
   ];
 
   const results = [];
@@ -149,16 +149,16 @@ async function runAudit() {
     }
   }
 
-  // Also test Dark Mode toggle on stitch-home.html
+  // Also test Dark Mode toggle on nexus-home.html
   const darkPage = await context.newPage();
   try {
-    await darkPage.goto(`http://127.0.0.1:${PORT}/stitch-home.html`, { waitUntil: "networkidle" });
+    await darkPage.goto(`http://127.0.0.1:${PORT}/nexus-home.html`, { waitUntil: "networkidle" });
     const themeBtn = await darkPage.$("#nx-side-theme");
     if (themeBtn) {
       await themeBtn.click();
       await darkPage.waitForTimeout(400);
       const isDark = await darkPage.evaluate(() => document.documentElement.classList.contains("dark"));
-      const darkShot = path.join(SHOTS_DIR, `stitch-home-dark.png`);
+      const darkShot = path.join(SHOTS_DIR, `nexus-home-dark.png`);
       await darkPage.screenshot({ path: darkShot });
       console.log(`[PASS] Dark mode toggle: isDark=${isDark}`);
     }

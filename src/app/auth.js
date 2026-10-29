@@ -28,8 +28,8 @@
   // auth.js'in geri kalı — nexusGetItem vb. hiç tanımlanmadan — kesiliyordu.)
   const page = window.location.pathname.split('/').pop() || 'index.html';
   const isPublicPage = [
-    'stitch-login.html', 'stitch-onboarding.html', 'stitch-forgot-password.html', 'stitch-register.html',
-    'stitch-login', 'stitch-onboarding', 'stitch-forgot-password', 'stitch-register'
+    'nexus-login.html', 'nexus-onboarding.html', 'nexus-forgot-password.html', 'nexus-register.html',
+    'nexus-login', 'nexus-onboarding', 'nexus-forgot-password', 'nexus-register'
   ].includes(page);
 
   // Bu cihazda en az bir kez oturum açıldı mı? Açıldıysa kullanıcı artık "yeni gelen"
@@ -50,7 +50,7 @@
 
     if (isPreviewMode) {
       if (isPublicPage || page === 'index.html' || page === 'index' || page === '') {
-        window.location.replace('stitch-home.html?preview=1');
+        window.location.replace('nexus-home.html?preview=1');
         return;
       }
       return;
@@ -67,8 +67,8 @@
         || (localStorage.getItem('nexusMfaEnrolled') === '1' && localStorage.getItem('nexusSessionAal') === 'aal1');
     } catch (e) { /* özel mod */ }
     if (mfaPending) {
-      if (page !== 'stitch-login.html' && page !== 'stitch-login') {
-        window.location.replace('stitch-login.html');
+      if (page !== 'nexus-login.html' && page !== 'nexus-login') {
+        window.location.replace('nexus-login.html');
       }
       return;
     }
@@ -76,12 +76,12 @@
     if (!user) {
       if (!isPublicPage) {
         // Giriş yapmamışsa: ilk kez gelen karşılamaya, daha önce oturum açmış olan girişe gider.
-        window.location.replace(everLoggedIn() ? 'stitch-login.html' : 'stitch-onboarding.html');
+        window.location.replace(everLoggedIn() ? 'nexus-login.html' : 'nexus-onboarding.html');
       }
     } else {
       if (isPublicPage || page === 'index.html' || page === 'index' || page === '') {
         // Giriş yapmışsa ve public sayfaya girmeye çalışıyorsa eve yönlendir
-        window.location.replace('stitch-home.html');
+        window.location.replace('nexus-home.html');
       }
     }
   }
@@ -97,7 +97,7 @@
       var previewQuery = new URLSearchParams(window.location.search);
       if (/^\d+$/.test(previewQuery.get('i') || '')) previewIndex = previewQuery.get('i');
     } catch (e) {}
-    if (/^stitch-[a-z0-9-]+\.html$/.test(previewPage) && !isPublicPage) {
+    if (/^nexus-[a-z0-9-]+\.html$/.test(previewPage) && !isPublicPage) {
       try {
         window.parent.postMessage({ source: 'nexus-preview', page: previewPage, index: previewIndex }, '*');
       } catch (e) {}
@@ -292,7 +292,7 @@
       localStorage.removeItem(CURRENT_USER_KEY);
       try { sessionStorage.removeItem('nexusPreviewMode'); } catch (e) {}
       // Oturumu bilerek kapatan kullanıcı giriş ekranına döner; ilk kez gelen karşılamaya.
-      window.location.replace(backToLogin ? 'stitch-login.html' : 'index.html');
+      window.location.replace(backToLogin ? 'nexus-login.html' : 'index.html');
     }
     var cloud = window.nexusCloud;
     if (!cloud || !cloud.enabled || !cloud.enabled()) { finish(); return; }

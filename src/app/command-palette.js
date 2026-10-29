@@ -30,13 +30,13 @@
 
   function actions() {
     return [
-      { icon: "home", label: T("Ev", "Home"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-home.html"; } },
-      { icon: "layout-grid", label: T("Akıllı", "Smart"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-smart.html"; } },
-      { icon: "circle-plus", label: T("Cihaz Ekle", "Add device"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-pair.html"; } },
-      { icon: "bell", label: T("Mesaj Merkezi", "Message Center"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-messages.html"; } },
-      { icon: "settings", label: T("Ayarlar", "Settings"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-settings.html"; } },
-      { icon: "sparkles", label: T("NEXUS AI'a sor", "Ask NEXUS AI"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-chat.html"; } },
-      { icon: "zap", label: T("AI Enerji Tasarrufu", "AI Energy Saving"), hint: T("Sayfa", "Page"), run: function () { location.href = "stitch-energy.html"; } },
+      { icon: "home", label: T("Ev", "Home"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-home.html"; } },
+      { icon: "layout-grid", label: T("Akıllı", "Smart"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-smart.html"; } },
+      { icon: "circle-plus", label: T("Cihaz Ekle", "Add device"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-pair.html"; } },
+      { icon: "bell", label: T("Mesaj Merkezi", "Message Center"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-messages.html"; } },
+      { icon: "settings", label: T("Ayarlar", "Settings"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-settings.html"; } },
+      { icon: "sparkles", label: T("NEXUS AI'a sor", "Ask NEXUS AI"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-chat.html"; } },
+      { icon: "zap", label: T("AI Enerji Tasarrufu", "AI Energy Saving"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-energy.html"; } },
       { icon: "sun-moon", label: T("Temayı değiştir", "Toggle theme"), hint: T("Eylem", "Action"),
         run: function () {
           var on = document.documentElement.classList.contains("dark");
@@ -58,7 +58,7 @@
         icon: d && d.state && d.state.switch === true ? "power" : "cpu",
         label: name,
         hint: d && d.room ? d.room : T("Cihaz", "Device"),
-        run: function () { location.href = "stitch-device.html?i=" + i; },
+        run: function () { location.href = "nexus-device.html?i=" + i; },
       });
     });
     return out.slice(0, 9);

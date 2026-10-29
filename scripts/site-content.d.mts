@@ -1,4 +1,4 @@
-﻿// Tip tanımı: scripts/site-content.mjs (tek kaynak içerik) için TypeScript bildirimi.
+// Tip tanımı: scripts/site-content.mjs (tek kaynak içerik) için TypeScript bildirimi.
 export declare const PRICES: { TRY: { monthly: string; yearly: string; [k: string]: any }; USD: { monthly: string; yearly: string; [k: string]: any }; [k: string]: any };
 export declare const APP_URL: string;
 export declare const RELEASES_URL: string;

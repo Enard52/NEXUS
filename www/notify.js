@@ -125,7 +125,7 @@
     return new Date(t || Date.now()).toISOString();
   }
 
-  // --- Ayarlar sayfasının anahtarları (stitch-instant-notifications.html) ----------
+  // --- Ayarlar sayfasının anahtarları (nexus-instant-notifications.html) ----------
   // Bu sayfadaki toggle'lar eskiden hiçbir yere okunmuyordu: "Bildirimlere İzin Ver"
   // kapalıyken bile Telegram'a haber gidebiliyordu. Artık dağıtım gerçekten bu
   // anahtarlardan geçer. Varsayılan hepsi AÇIK — kimse dokunmazsa davranış değişmez.
@@ -293,7 +293,7 @@
             channelId: "nexus-alerts",
             smallIcon: "ic_launcher",
             sound: "default",
-            extra: { id: event.id, page: event.page || "stitch-messages.html" }
+            extra: { id: event.id, page: event.page || "nexus-messages.html" }
           }]
         });
       });
@@ -431,7 +431,7 @@
       if (ln && typeof ln.addListener === "function") {
         ln.addListener("localNotificationActionPerformed", function (action) {
           var extra = action && action.notification && action.notification.extra;
-          var targetPage = (extra && extra.page) ? extra.page : "stitch-messages.html";
+          var targetPage = (extra && extra.page) ? extra.page : "nexus-messages.html";
           if (window.location.href.indexOf(targetPage) === -1) {
             window.location.href = targetPage;
           }

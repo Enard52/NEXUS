@@ -7,7 +7,7 @@
  * (packages/core/src/version-consistency.test.ts) denetler:
  *   1. desktop/package.json          → version (Electron/otomatik güncelleme)
  *   2. android/app/build.gradle      → versionName + versionCode (otomatik artar)
- *   3. stitch-settings.html          → window.NEXUS_APP_VERSION ("Hakkında" satırı)
+ *   3. nexus-settings.html          → window.NEXUS_APP_VERSION ("Hakkında" satırı)
  *   4. www/public/downloads/current.json → sitenin indirme "acil durum freni"; her
  *      sürümde pinned:false olarak yeniden yazılır, böylece fren kapalı kalır. Site
  *      normalde releases/latest/download kullanır; elle pinned:true yapılırsa sitedeki
@@ -42,7 +42,7 @@ const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
 // ---- mevcut durum ----
 const pkgPath = resolve(ROOT, "desktop/package.json");
 const gradlePath = resolve(ROOT, "android/app/build.gradle");
-const settingsPath = resolve(ROOT, "src/app/stitch-settings.html");
+const settingsPath = resolve(ROOT, "src/app/nexus-settings.html");
 const mirrorPath = resolve(ROOT, "www/public/downloads/current.json");
 
 const current = JSON.parse(readFileSync(pkgPath, "utf8")).version;
@@ -73,10 +73,10 @@ function applyVersion(next) {
     .replace(/versionName\s+"[^"]+"/, `versionName "${next}"`);
   writeFileSync(gradlePath, g);
 
-  // 3) stitch-settings.html — NEXUS_APP_VERSION sabiti
+  // 3) nexus-settings.html — NEXUS_APP_VERSION sabiti
   const s = readFileSync(settingsPath, "utf8");
   if (!/NEXUS_APP_VERSION = "/.test(s)) {
-    console.error("Hata: stitch-settings.html içinde NEXUS_APP_VERSION sabiti bulunamadı.");
+    console.error("Hata: nexus-settings.html içinde NEXUS_APP_VERSION sabiti bulunamadı.");
     process.exit(1);
   }
   writeFileSync(
@@ -107,12 +107,12 @@ function applyVersion(next) {
   console.log(`✓ desktop/package.json        ${current} → ${next}`);
   console.log(`✓ android versionName         ${currentName} → ${next}`);
   console.log(`✓ android versionCode         ${currentCode} → ${nextCode}`);
-  console.log(`✓ stitch-settings NEXUS_APP_VERSION → ${next}`);
+  console.log(`✓ nexus-settings NEXUS_APP_VERSION → ${next}`);
   console.log(`✓ downloads/current.json (site bakışı) → v${next}`);
 
   if (DO_COMMIT) {
     sh(
-      `git add desktop/package.json android/app/build.gradle src/app/stitch-settings.html www/public/downloads/current.json`,
+      `git add desktop/package.json android/app/build.gradle src/app/nexus-settings.html www/public/downloads/current.json`,
     );
     sh(`git commit -m "release: v${next}"`);
     sh(`git tag -a v${next} -m "NEXUS v${next}"`);

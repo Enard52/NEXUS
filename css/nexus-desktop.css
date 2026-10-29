@@ -78,7 +78,7 @@ html.dark .nx-side-upd.is-available::after { border-color: #0f172a; }
 .nx-side-ai.is-active { outline: 2px solid rgba(76, 125, 255, 0.45); outline-offset: 2px; }
 .nx-side-ai svg { width: 18px; height: 18px; }
 .nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; justify-content: flex-start; }
-.nx-side-group { margin: 12px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94a3b8; }
+.nx-side-group { margin: 12px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748b; }
 .nx-side-link { display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 0 12px; border-radius: 12px;
   font-size: 14px; font-weight: 600; color: #475569; transition: background .15s ease, color .15s ease; }
 .nx-side-link svg { width: 19px; height: 19px; flex: none; }
@@ -396,14 +396,19 @@ html.nx-desk[data-nx-page="multi-video"] main > .nx-empty {
 }
 html.nx-desk[data-nx-page="device"] #device-main > .nx-empty { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 32px auto !important; height: auto; align-self: start; }
 /* Alt eylem çubukları: şeritli düz zemin yerine buzlu cam */
+/* Sayfa zemini aşağı doğru koyulaşan bir degrade olduğundan düz açık bir şerit kenarları belli eden bir bant oluşturuyordu;
+   çubuk artık zeminle aynı tonda yukarıya doğru şeffaflaşır. */
 html.nx-desk:not(.nx-desk-auth) .nx-desk-bottom {
-  background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: linear-gradient(to top, rgba(223, 218, 251, 0.97) 62%, rgba(223, 218, 251, 0)) !important; backdrop-filter: none; -webkit-backdrop-filter: none;
   border-top: 0 !important; box-shadow: none !important;
 }
 html.dark.nx-desk:not(.nx-desk-auth) .nx-desk-bottom { background: rgba(15, 23, 42, 0.6) !important; }
-html.nx-desk footer[class*="bg-white"], html.nx-desk [data-purpose="chat-input-container"] {
+html.nx-desk footer[class*="bg-white"] {
+  background: linear-gradient(to top, rgba(223, 218, 251, 0.97) 62%, rgba(223, 218, 251, 0)) !important; border-top: 0 !important; }
+html.nx-desk [data-purpose="chat-input-container"] {
   background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 0 !important; }
-html.dark.nx-desk footer[class*="bg-white"], html.dark.nx-desk [data-purpose="chat-input-container"] { background: rgba(15, 23, 42, 0.6) !important; }
+html.dark.nx-desk footer[class*="bg-white"] { background: linear-gradient(to top, rgba(15, 23, 42, 0.97) 62%, rgba(15, 23, 42, 0)) !important; }
+html.dark.nx-desk [data-purpose="chat-input-container"] { background: rgba(15, 23, 42, 0.6) !important; }
 /* Sohbet girişi: mobildeki gibi kenarlardan içeride, yuvarlak köşeli yüzen bir kutu;
    sütunun tamamına yayılan köşeli şerit değil. Tablet sütununda da aynı görünüm.
    pb-6 + safe-area inline stili yerine simetrik dolgu: hap kutu şeridin dikey ortasında. */

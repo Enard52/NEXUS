@@ -5,8 +5,8 @@ param (
     [string]$rootPath = (Split-Path -Parent $PSScriptRoot)
 )
 
-# Files to process (all stitch-*.html in root and www)
-$files = Get-ChildItem -Path $rootPath -Filter "stitch-*.html" -File -Recurse
+# Files to process (all nexus-*.html in root and www)
+$files = Get-ChildItem -Path $rootPath -Filter "nexus-*.html" -File -Recurse
 
 Write-Host "Found $($files.Count) HTML files to process..." -ForegroundColor Cyan
 

@@ -1,4 +1,4 @@
-﻿// NEXUS izleme -> Discord. pg_cron çağırır: her gün 06:00 UTC günlük özet, her saat başı sağlık denetimi (yalnızca sorun varsa yazar).
+// NEXUS izleme -> Discord. pg_cron çağırır: her gün 06:00 UTC günlük özet, her saat başı sağlık denetimi (yalnızca sorun varsa yazar).
 // Gizli bilgi yok: Discord adresi yalnızca DISCORD_WEBHOOK_URL ortam değişkeninden okunur.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 

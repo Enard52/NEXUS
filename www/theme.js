@@ -164,7 +164,7 @@ window.addEventListener('error', function(e) {
       }
 
       // 2. Alt sayfadaysak tarayıcı geçmişinde geri git
-      var isHome = window.location.pathname.indexOf('stitch-home.html') !== -1 || window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+      var isHome = window.location.pathname.indexOf('nexus-home.html') !== -1 || window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
       if (!isHome && window.history.length > 1) {
         window.history.back();
         return;
@@ -427,7 +427,7 @@ window.addEventListener('error', function(e) {
   document.head.appendChild(badgeStyle);
 
   function updateNavBadge() {
-    var links = document.querySelectorAll('a[href="stitch-messages.html"]');
+    var links = document.querySelectorAll('a[href="nexus-messages.html"]');
     if (!links.length) return;
 
     var readSet = [];
@@ -483,35 +483,12 @@ window.addEventListener('error', function(e) {
   // 2. Profile Data Loader & Nav Avatar Sync — gerçek kullanıcı verisi (nexusUserName/nexusAvatar)
   function syncNavAvatar() {
     try {
-      var avatar = (typeof nexusGetItem === 'function' && nexusGetItem('nexusAvatar')) || '';
-      document.querySelectorAll('a[href="stitch-profile.html"]').forEach(function (link) {
+      // Menüdeki Profil düğmesi her zaman kendi ikonunu gösterir (profil fotoğrafı ile değiştirilmez).
+      document.querySelectorAll('a[href="nexus-profile.html"]').forEach(function (link) {
         var existingImg = link.querySelector('.nav-user-avatar');
         var icon = link.querySelector('i[data-lucide="user"], svg.lucide-user, svg[data-lucide="user"]');
-        if (avatar) {
-          if (existingImg) {
-            existingImg.src = avatar;
-            existingImg.style.display = '';
-            if (icon) icon.style.display = 'none';
-          } else if (icon) {
-            var img = document.createElement('img');
-            img.src = avatar;
-            img.className = 'w-6 h-6 rounded-full object-cover nav-user-avatar border border-current shadow-xs';
-            img.alt = 'Profil';
-            img.style.width = '24px';
-            img.style.height = '24px';
-            img.style.borderRadius = '9999px';
-            img.style.objectFit = 'cover';
-            img.onerror = function () {
-              img.style.display = 'none';
-              if (icon) icon.style.display = '';
-            };
-            icon.style.display = 'none';
-            link.insertBefore(img, icon);
-          }
-        } else {
-          if (existingImg) existingImg.style.display = 'none';
-          if (icon) icon.style.display = '';
-        }
+        if (existingImg) existingImg.style.display = 'none';
+        if (icon) icon.style.display = '';
       });
     } catch (e) {}
   }
@@ -633,7 +610,7 @@ window.nexusCopy = function (text) {
 (function () {
   if (!window.nexusDesktop || !window.matchMedia || !window.matchMedia('(min-width: 1024px)').matches) return;
   var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
-  var AUTH = ['index', 'stitch-login', 'stitch-register', 'stitch-forgot-password', 'stitch-onboarding', ''];
+  var AUTH = ['index', 'nexus-login', 'nexus-register', 'nexus-forgot-password', 'nexus-onboarding', ''];
   if (AUTH.indexOf(page) !== -1) return;
   var s = document.createElement('script');
   s.src = 'command-palette.js';
@@ -647,7 +624,7 @@ window.nexusCopy = function (text) {
 (function () {
   if (document.querySelector('script[src="automation-engine.js"]')) return;
   var page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
-  var AUTH = ['index', 'stitch-login', 'stitch-register', 'stitch-forgot-password', 'stitch-onboarding'];
+  var AUTH = ['index', 'nexus-login', 'nexus-register', 'nexus-forgot-password', 'nexus-onboarding'];
   if (AUTH.indexOf(page) !== -1) return;
   var s = document.createElement('script');
   s.src = 'automation-engine.js';

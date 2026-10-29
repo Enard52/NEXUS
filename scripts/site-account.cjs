@@ -1,4 +1,4 @@
-﻿// Site account entry points: links to the NEXUS account site. Idempotent. Usage: node site-account.cjs <siteDir>
+// Site account entry points: links to the NEXUS account site. Idempotent. Usage: node site-account.cjs <siteDir>
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];

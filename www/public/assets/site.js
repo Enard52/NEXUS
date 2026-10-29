@@ -128,7 +128,7 @@ function nxFixMojibake(str){
       var bytes=new Uint8Array(str.length);
       for(var i=0;i<str.length;i++)bytes[i]=str.charCodeAt(i)&0xff;
       var decoded=new TextDecoder('utf-8').decode(bytes);
-      if(decoded && !decoded.includes('�'))return decoded;
+      if(decoded && !decoded.includes('\uFFFD'))return decoded;
     }
   }catch(e){}
   return str;
@@ -1232,11 +1232,11 @@ function nxPreviewLooksEmpty(frame){
   }
 }
 function nxPreviewPage(){
-  var page='stitch-home.html';
+  var page='nexus-home.html';
   var extra='';
   try{
     var saved=sessionStorage.getItem('nxPreviewPage')||'';
-    if(/^stitch-[a-z0-9-]+\.html$/.test(saved)) page=saved;
+    if(/^nexus-[a-z0-9-]+\.html$/.test(saved)) page=saved;
     var idx=sessionStorage.getItem('nxPreviewIndex')||'';
     if(/^\d+$/.test(idx)) extra='&i='+idx;
   }catch(e){}
@@ -1252,12 +1252,12 @@ window.addEventListener('message',function(e){
   var frame=document.getElementById('phonePreviewFrame');
   if(!frame) return;
   var base=frame.getAttribute('data-src')||'';
-  var root=base.replace(/stitch-[a-z0-9-]+\.html.*$/,'');
+  var root=base.replace(/nexus-[a-z0-9-]+\.html.*$/,'');
   if(!root || e.origin!==root.replace(/\/$/,'')) return;
   var data=e.data||{};
   if(data.source!=='nexus-preview') return;
   var page=String(data.page||'');
-  if(!/^stitch-[a-z0-9-]+\.html$/.test(page)) return;
+  if(!/^nexus-[a-z0-9-]+\.html$/.test(page)) return;
   var idx=String(data.index||'');
   if(idx && !/^\d+$/.test(idx)) return;
   try{

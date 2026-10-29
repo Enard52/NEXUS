@@ -3,14 +3,14 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 // Issue #28: sürüm numarası üç yerde tutuluyor (desktop/package.json,
-// android versionName, stitch-settings NEXUS_APP_VERSION). Bu test üçünün
+// android versionName, nexus-settings NEXUS_APP_VERSION). Bu test üçünün
 // aynı sürümü gösterdiğini ve versionCode'un monoton artış düzenine
 // uyduğunu denetler (CI kart kilidi çözülünce ci.yml'a da bağlanabilir).
 describe("sürüm tek kaynak tutarlılığı (issue #28)", () => {
   const root = process.cwd();
   const pkg = JSON.parse(readFileSync(join(root, "desktop", "package.json"), "utf8"));
   const gradle = readFileSync(join(root, "android", "app", "build.gradle"), "utf8");
-  const settings = readFileSync(join(root, "src", "app", "stitch-settings.html"), "utf8");
+  const settings = readFileSync(join(root, "src", "app", "nexus-settings.html"), "utf8");
 
   const versionName = gradle.match(/versionName\s+"([^"]+)"/)?.[1];
   const versionCode = Number(gradle.match(/versionCode\s+(\d+)/)?.[1]);
@@ -24,7 +24,7 @@ describe("sürüm tek kaynak tutarlılığı (issue #28)", () => {
     expect(versionName).toBe(pkg.version);
   });
 
-  it(`stitch-settings NEXUS_APP_VERSION eşit: ${pkg.version}`, () => {
+  it(`nexus-settings NEXUS_APP_VERSION eşit: ${pkg.version}`, () => {
     expect(appVersion).toBe(pkg.version);
   });
 

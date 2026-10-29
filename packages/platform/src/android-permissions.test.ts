@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 // Yetenek → bildirim eşleşmesi testi (mobil).
 //
 // Neden var: 1.0.27 ve öncesinde Android manifestinde CAMERA izini BİLDİRİLMEDİ,
-// oysa stitch-scan.html eşleştirmenin birincil akışı olarak arkaya bakan kamerayı
+// oysa nexus-scan.html eşleştirmenin birincil akışı olarak arkaya bakan kamerayı
 // istiyordu (getUserMedia({ video: … })). Android bildirilmeyen yetkiyi otomatik
 // reddeder; QR ile eşleştirme telefonda hiç çalışmadı ve kullanıcı yalnız
 // "Kamera açılamadı" mesajını gördü. Kod okunarak, manifest okunarak ve tek başına

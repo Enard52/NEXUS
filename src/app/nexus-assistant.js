@@ -126,7 +126,7 @@
   function lanNote(r) {
     return r.lan ? T(" " + r.lan + " cihaza yerel ağdan komut gitti.", " A command was sent over your local network to " + r.lan + " device" + (r.lan > 1 ? "s" : "") + ".") : "";
   }
-  // Komut sonrası durum sorgusu (stitch-chat.html gecikmeli olarak çağırır).
+  // Komut sonrası durum sorgusu (nexus-chat.html gecikmeli olarak çağırır).
   function lanPending() { return LAST_LAN.slice(); }
   function lanSettled(items) {
     var N = nx();
@@ -261,7 +261,7 @@
     }
     if (/\b(kilitle|kapiyi kilitle|lock)\b/.test(text) && !/\bunlock\b/.test(text)) {
       var locks = all.map(function (d, i) { return { device: d, index: i }; }).filter(function (x) { return N.kindOf(x.device) === "lock"; });
-      if (!locks.length) return { reply: V(["Henüz eşleştirdiğin bir akıllı kilit yok.", "Eşleşmiş bir akıllı kilit göremiyorum."], ["You have not paired a smart lock yet.", "I cannot see a paired smart lock."]) };
+      if (!locks.length) return { reply: V(["Henüz eşleştirdiğin bir akıllı kilit cihazı yok.", "Eşleşmiş bir akıllı kilit cihazı göremiyorum."], ["You have not paired a smart lock yet.", "I cannot see a paired smart lock."]) };
       var rl = apply(locks, "locked", true);
       return { reply: V([names(rl.changed) + " kilitlendi, içerisi güvende.", "Kilitledim: " + names(rl.changed) + "."], [names(rl.changed) + " locked, all secure.", "Locked: " + names(rl.changed) + "."]) + lanNote(rl), widget: widget("lock", T("Kilitlendi", "Locked"), names(rl.changed)) };
     }
@@ -269,7 +269,7 @@
     // Perde / panjur
     if (tg.cat === "cover" || (tg.by === "name" && tg.list.every(function (x) { return x.kind === "cover"; }))) {
       var covers = tg.list.filter(function (x) { return x.kind === "cover"; });
-      if (!covers.length) return { reply: V(["Eşleşmiş bir perde ya da panjur göremiyorum.", "Henüz eşleştirdiğin perde ya da panjur yok."], ["I cannot see any paired curtains or blinds.", "You have not paired any curtains or blinds yet."]) };
+      if (!covers.length) return { reply: V(["Eşleşmiş bir perde ya da panjur cihazı göremiyorum.", "Henüz eşleştirdiğin perde ya da panjur cihazı yok."], ["I cannot see any paired curtains or blinds.", "You have not paired any curtains or blinds yet."]) };
       var open = /\b(ac|open|raise|up)\b/.test(text) && !OFF.test(text);
       if (pct) {
         var p = Math.max(0, Math.min(100, +(pct[1] || pct[2])));
@@ -293,7 +293,7 @@
     if (deg || (tg.cat === "climate" && /\b(sicaklik|derece|temperature|degrees)\b/.test(text))) {
       var cl = (tg.list.length ? tg.list : all.map(function (d, i) { return { device: d, index: i, kind: N.kindOf(d) }; }))
         .filter(function (x) { return (x.kind === "ac" || x.kind === "thermostat") && N.hasFeature(x.device, "target"); });
-      if (!cl.length) return { reply: V(["Sıcaklığını ayarlayabileceğim bir klima ya da termostat bulamadım.", "Eşleşmiş bir klima ya da termostat göremiyorum."], ["I could not find an AC or thermostat I can set the temperature on.", "I cannot see a paired AC or thermostat."]) };
+      if (!cl.length) return { reply: V(["Sıcaklığını ayarlayabileceğim eşleşmiş bir klima ya da termostat cihazı bulamadım.", "Eşleşmiş bir klima ya da termostat cihazı göremiyorum."], ["I could not find an AC or thermostat I can set the temperature on.", "I cannot see a paired AC or thermostat."]) };
       if (!deg) return { reply: V(["Kaç dereceye ayarlayayım? Mesela \"klimayı 22 derece yap\" diyebilirsin.", "Hangi sıcaklığı istersin? Örneğin \"klimayı 22 derece yap\"."], ["What temperature would you like? For example \"set the AC to 22 degrees\".", "How warm should it be? Try \"set the AC to 22 degrees\"."]) };
       var t = parseFloat(String(deg[1]).replace(",", "."));
       if (/f/.test(deg[2]) || (N.tempUnit && N.tempUnit() === "F" && t > 40)) t = Math.round((t - 32) * 5 / 9 * 2) / 2; // °F → °C
@@ -308,7 +308,7 @@
     if (pct && (tg.cat === "light" || tg.by === "name" || tg.by === "room" || /\b(parlaklik|brightness|dim)\b/.test(text))) {
       var lights = (tg.list.length ? tg.list : all.map(function (d, i) { return { device: d, index: i, kind: N.kindOf(d) }; }).filter(function (x) { return x.kind === "light"; }))
         .filter(function (x) { return N.hasCap(x.device, "brightness"); });
-      if (!lights.length) return { reply: V(["Parlaklığını ayarlayabileceğim bir ışık bulamadım.", "Parlaklık ayarı olan eşleşmiş bir ışık göremiyorum."], ["I could not find a light with brightness control.", "I cannot see a paired light that supports dimming."]) };
+      if (!lights.length) return { reply: V(["Parlaklığını ayarlayabileceğim eşleşmiş bir ışık cihazı bulamadım.", "Parlaklık ayarı olan eşleşmiş bir ışık cihazı göremiyorum."], ["I could not find a light with brightness control.", "I cannot see a paired light that supports dimming."]) };
       var b = Math.max(1, Math.min(100, +(pct[1] || pct[2])));
       var rb = apply(lights, "brightness", b);
       return { reply: V([names(rb.changed) + " parlaklığını %" + b + " yaptım.", "Tamam, " + names(rb.changed) + " şimdi %" + b + " parlaklıkta."], ["I set " + names(rb.changed) + " to " + b + "% brightness.", "Okay, " + names(rb.changed) + " is now at " + b + "%."]) + lanNote(rb), widget: widget("sun", T("Parlaklık", "Brightness"), "%" + b) };
@@ -329,7 +329,7 @@
       }
       if (!pool.length) {
         var what = tg.cat ? { light: T("ışık", "light"), plug: T("priz", "plug"), climate: T("klima/ısıtıcı", "AC or heater"), media: T("TV/hoparlör", "TV or speaker"), purifier: T("hava temizleyici", "air purifier") }[tg.cat] || T("cihaz", "device") : T("cihaz", "device");
-        return { reply: T("Açılıp kapatılabilen eşleşmiş bir " + what + " bulunamadı" + (tg.room ? " (" + tg.room + ")" : "") + ".", "No paired " + what + " that can be switched was found" + (tg.room ? " (" + tg.room + ")" : "") + ".") };
+        return { reply: T("Eşleşmiş cihazlar arasında açılıp kapatılabilen bir " + what + " cihazı bulunamadı" + (tg.room ? " (" + tg.room + ")" : "") + ".", "No paired " + what + " that can be switched was found" + (tg.room ? " (" + tg.room + ")" : "") + ".") };
       }
       var already = pool.filter(function (x) { return N.stateOf(x.device).switch === turnOn; });
       var rs = apply(pool, "switch", turnOn);
@@ -365,7 +365,17 @@
     hist = hist.slice(-8);
     var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
-    return fetch(AI_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ lang: lang, messages: hist, devices: devs }), signal: ctrl ? ctrl.signal : undefined })
+    // Sistem talimatı geçmişe yazılmaz; her istekte taze gönderilir. Dil karışması ve
+    // eski/başka site adresleri için modeli baştan bağlar.
+    var sysMsg = { role: "system", content: T(
+      "Yanıtlarını her koşulda yalnızca Türkçe yaz; kullanıcı başka dilde yazsa bile Türkçe sürer. " +
+      "NEXUS web sitesi yalnızca şudur: https://nexus-smarthome.pages.dev — bağlantı verirsen yalnızca bu adresi kullan, başka adres uydurma. " +
+      "Cihaz türlerinden bahsederken 'ışık cihazı', 'priz cihazı' gibi 'cihazı' ekini kullan; tek bir cihazın yok olmuş gibi konuşma.",
+      "Always reply in English only, even if the user writes in another language. " +
+      "The NEXUS website is exactly: https://nexus-smarthome.pages.dev — if you share a link, use only this URL; never invent another. " +
+      "When referring to device types, use the 'device' noun (e.g. 'light device'); never speak as if a kind of device ceased to exist."
+    ) };
+    return fetch(AI_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ lang: lang, messages: [sysMsg].concat(hist), devices: devs }), signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) { clearTimeout(timer); var t = j && j.reply ? String(j.reply).trim() : ""; if (t) { hist.push({ role: "assistant", content: t }); hist = hist.slice(-8); return t; } return null; })
       .catch(function () { clearTimeout(timer); return null; });

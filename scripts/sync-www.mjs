@@ -52,7 +52,7 @@ function copy(src, dst) {
 
 let n = 0;
 for (const f of fs.readdirSync(APP)) {
-  if (/^stitch-.*\.html$/.test(f) || APP_FILES.includes(f) || APP_JS.includes(f))
+  if (/^nexus-.*\.html$/.test(f) || APP_FILES.includes(f) || APP_JS.includes(f))
     n += copy(path.join(APP, f), path.join(WWW, f));
 }
 for (const d of APP_DIRS) n += copy(path.join(ROOT, d), path.join(WWW, d));

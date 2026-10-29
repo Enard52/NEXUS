@@ -1,4 +1,4 @@
-﻿// Android artık "test" değil: site metinlerinden test ifadelerini kaldırır. Idempotent. Usage: node site-android.cjs <siteDir>
+// Android artık "test" değil: site metinlerinden test ifadelerini kaldırır. Idempotent. Usage: node site-android.cjs <siteDir>
 const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];

@@ -77,7 +77,7 @@ const check = (name, ok, detail = "") => {
   else { fail++; console.log("FAIL", name, detail); }
 };
 
-await page.goto(`http://127.0.0.1:${PORT}/stitch-login.html`, { waitUntil: "load" });
+await page.goto(`http://127.0.0.1:${PORT}/nexus-login.html`, { waitUntil: "load" });
 await page.waitForTimeout(500);
 const visibility = await page.evaluate(() => ({
   button: getComputedStyle(document.getElementById("google-login-btn")).display,
@@ -99,7 +99,7 @@ await page.evaluate(() => {
     url: "nexus://auth#access_token=fake-access&refresh_token=fake-refresh&expires_in=3600",
   });
 });
-await page.waitForURL("**/stitch-home.html", { timeout: 10000 }).catch(() => {});
+await page.waitForURL("**/nexus-home.html", { timeout: 10000 }).catch(() => {});
 await page.waitForTimeout(500);
 const result = await page.evaluate(() => {
   const user = localStorage.getItem("nexusCurrentUser") || "";
@@ -107,7 +107,7 @@ const result = await page.evaluate(() => {
   try { session = JSON.parse(localStorage.getItem(user + "_nexusCloudSession") || "null"); } catch (e) {}
   return { path: location.pathname, user, token: session && session.accessToken, hash: location.hash };
 });
-check("lands on home after deep link", /stitch-home\.html$/.test(result.path), JSON.stringify(result));
+check("lands on home after deep link", /nexus-home\.html$/.test(result.path), JSON.stringify(result));
 check("session user set", result.user === "e2e@nexus.local", JSON.stringify(result));
 check("session token stored", result.token === "fake-access", JSON.stringify(result));
 

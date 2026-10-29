@@ -6,7 +6,7 @@
 (function () {
   // Ana sayfa ve Akıllı sekmesinde üstte zaten "Nasıl yardımcı olabilirim?" giriş çubuğu var;
   // ikinci bir AI giriş noktası (yüzen N) kafa karıştırıyor ve içerikle çakışıyordu.
-  var EXCLUDE_PAGES = ['stitch-chat.html', 'stitch-login.html', 'stitch-onboarding.html', 'stitch-scan.html', 'stitch-map.html', 'stitch-home.html', 'stitch-smart.html', 'stitch-register.html', 'stitch-forgot-password.html', 'stitch-device.html'];
+  var EXCLUDE_PAGES = ['nexus-chat.html', 'nexus-login.html', 'nexus-onboarding.html', 'nexus-scan.html', 'nexus-map.html', 'nexus-home.html', 'nexus-smart.html', 'nexus-register.html', 'nexus-forgot-password.html', 'nexus-device.html'];
   if (EXCLUDE_PAGES.some(function (page) { return location.href.includes(page); })) return;
 
   var style = document.createElement('style');
@@ -121,8 +121,8 @@
       undock();
       return;
     }
-    var pageName = window.location.pathname.split('/').pop() || 'stitch-home.html';
-    window.location.href = 'stitch-chat.html?from=' + encodeURIComponent(pageName);
+    var pageName = window.location.pathname.split('/').pop() || 'nexus-home.html';
+    window.location.href = 'nexus-chat.html?from=' + encodeURIComponent(pageName);
   });
 
   var dockTimer = null;

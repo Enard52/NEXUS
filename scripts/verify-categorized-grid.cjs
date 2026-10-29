@@ -20,7 +20,7 @@ const fs = require('fs');
     ]));
   });
 
-  await page.goto('http://localhost:8766/stitch-home.html', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:8766/nexus-home.html', { waitUntil: 'networkidle' });
   await page.waitForTimeout(600);
 
   // Check Favorites Section
@@ -97,7 +97,7 @@ const fs = require('fs');
     ]));
   });
 
-  await deskPage.goto('http://localhost:8766/stitch-home.html', { waitUntil: 'networkidle' });
+  await deskPage.goto('http://localhost:8766/nexus-home.html', { waitUntil: 'networkidle' });
   await deskPage.waitForTimeout(600);
 
   const shotDesk = path.join(shotsDir, 'categorized-home-desktop.png');

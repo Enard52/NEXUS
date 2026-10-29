@@ -31,8 +31,8 @@ async function run() {
     } catch(e) {}
   });
 
-  console.log("Navigating to http://127.0.0.1:8766/stitch-home.html...");
-  await page.goto("http://127.0.0.1:8766/stitch-home.html", { waitUntil: "networkidle" });
+  console.log("Navigating to http://127.0.0.1:8766/nexus-home.html...");
+  await page.goto("http://127.0.0.1:8766/nexus-home.html", { waitUntil: "networkidle" });
   await page.waitForTimeout(500);
 
   // Take screenshot of desktop home
@@ -74,22 +74,22 @@ async function run() {
   console.log("Sidebar Computed Styles:", JSON.stringify(sideStyles, null, 2));
 
   // Inspect Smart page
-  await page.goto("http://127.0.0.1:8766/stitch-smart.html", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:8766/nexus-smart.html", { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT_DIR, "live-smart-desktop.png") });
 
   // Inspect Chat page
-  await page.goto("http://127.0.0.1:8766/stitch-chat.html", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:8766/nexus-chat.html", { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT_DIR, "live-chat-desktop.png") });
 
   // Inspect Settings page
-  await page.goto("http://127.0.0.1:8766/stitch-settings.html", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:8766/nexus-settings.html", { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT_DIR, "live-settings-desktop.png") });
 
   // Inspect Profile page
-  await page.goto("http://127.0.0.1:8766/stitch-profile.html", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:8766/nexus-profile.html", { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
   await page.screenshot({ path: path.join(OUT_DIR, "live-profile-desktop.png") });
 
@@ -109,7 +109,7 @@ async function run() {
     } catch(e) {}
   });
 
-  await mobPage.goto("http://127.0.0.1:8766/stitch-home.html", { waitUntil: "networkidle" });
+  await mobPage.goto("http://127.0.0.1:8766/nexus-home.html", { waitUntil: "networkidle" });
   await mobPage.waitForTimeout(300);
   await mobPage.screenshot({ path: path.join(OUT_DIR, "live-home-mobile.png") });
 

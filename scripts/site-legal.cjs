@@ -1,4 +1,4 @@
-﻿// Yasal sayfaları (gizlilik, koşullar, iade) scripts/legal-content.cjs'den üretir. Idempotent.
+// Yasal sayfaları (gizlilik, koşullar, iade) scripts/legal-content.cjs'den üretir. Idempotent.
 // Kullanım:
 //   node scripts/site-legal.cjs <siteDir> [pdfDir]
 // siteDir: privacy.html, terms.html, tr/privacy.html ... içeren klasör (refund.html yoksa terms.html'den kopyalanır).

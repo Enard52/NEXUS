@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIR = `.shot-ui-audit-${process.env.SERVE_DIR || "www"}`;
 const R = JSON.parse(await readFile(join(ROOT, DIR, "report.json"), "utf8"));
-const AUTH_PAGES = ["stitch-login.html", "stitch-register.html", "stitch-forgot-password.html", "stitch-onboarding.html", "index.html"];
+const AUTH_PAGES = ["nexus-login.html", "nexus-register.html", "nexus-forgot-password.html", "nexus-onboarding.html", "index.html"];
 
 const PLABEL = { phone: "Telefon", tablet: "Tablet", desktop: "Bilgisayar", deskmin: "Electron-900" };
 const SLABEL = { fresh: "cihazsız", devices: "cihazlı", anonim: "anonim" };
@@ -26,14 +26,14 @@ const buckets = {
 
 for (const r of R) {
   // Oturum açıkken public sayfalar eve yönlendirir; ölçüm home'un olur, atla.
-  const isPublicPage = ["stitch-login.html", "stitch-onboarding.html", "stitch-forgot-password.html", "stitch-register.html"].includes(r.page);
+  const isPublicPage = ["nexus-login.html", "nexus-onboarding.html", "nexus-forgot-password.html", "nexus-register.html"].includes(r.page);
   if (isPublicPage && r.state !== "anonim") continue;
   const tag = `${r.page} · ${PLABEL[r.profile]} · ${SLABEL[r.state]}`;
   const m = r.metrics || {};
   if (r.error) buckets.hardError.push(`${tag}: YÜKLENEMEDİ — ${r.error}`);
   if (r.httpStatus && r.httpStatus !== 200) buckets.hardError.push(`${tag}: HTTP ${r.httpStatus}`);
   if (r.landedOn && r.landedOn !== r.page && !r.error) {
-    const isPublic = ["stitch-login.html", "stitch-onboarding.html", "stitch-forgot-password.html", "stitch-register.html"].includes(r.page);
+    const isPublic = ["nexus-login.html", "nexus-onboarding.html", "nexus-forgot-password.html", "nexus-register.html"].includes(r.page);
     // Oturum açıkken public sayfadan eve yönlendirmek TASARIM gereği; anonimken yönlendirme ise hatadır.
     if (!(isPublic && r.state !== "anonim")) buckets.redirect.push(`${tag}: → ${r.landedOn}`);
   }

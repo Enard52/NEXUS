@@ -24,7 +24,7 @@ const MIME = {
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURIComponent(req.url.split("?")[0]);
-  if (reqPath === "/" || reqPath === "") reqPath = "/stitch-home.html";
+  if (reqPath === "/" || reqPath === "") reqPath = "/nexus-home.html";
 
   let filePath = path.join(ROOT, reqPath);
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {

@@ -44,6 +44,6 @@
   };
 
   window.nexusOpenLanPairing = function (host) {
-    location.href = "stitch-pair.html" + (host ? "?host=" + encodeURIComponent(host) : "") + "#lan-scan-section";
+    location.href = "nexus-pair.html" + (host ? "?host=" + encodeURIComponent(host) : "") + "#lan-scan-section";
   };
 })();

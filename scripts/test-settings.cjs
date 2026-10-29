@@ -8,7 +8,7 @@ const { chromium } = require("playwright");
   await trPage.addInitScript(() => {
     localStorage.setItem("nexusCurrentUser", "Ahmet Yılmaz");
   });
-  await trPage.goto("http://127.0.0.1:8766/stitch-settings.html", { waitUntil: "networkidle" });
+  await trPage.goto("http://127.0.0.1:8766/nexus-settings.html", { waitUntil: "networkidle" });
   const trData = await trPage.evaluate(() => ({
     url: location.href,
     homeLang: window.nexusHomeLang,
@@ -23,7 +23,7 @@ const { chromium } = require("playwright");
   await usPage.addInitScript(() => {
     localStorage.setItem("nexusCurrentUser", "John Doe");
   });
-  await usPage.goto("http://127.0.0.1:8766/stitch-settings.html", { waitUntil: "networkidle" });
+  await usPage.goto("http://127.0.0.1:8766/nexus-settings.html", { waitUntil: "networkidle" });
   const usData = await usPage.evaluate(() => ({
     url: location.href,
     homeLang: window.nexusHomeLang,

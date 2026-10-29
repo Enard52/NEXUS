@@ -13,7 +13,7 @@ on:
     paths:
       - "www/**"
       - "lan-connectors.js"
-      - "stitch-*.html"
+      - "nexus-*.html"
       - "*.js"
       # Site kaynağı: üreteç/değişkenler değişince de yayınlanmalı (ölçüldü: bayat çıktı).
       - "scripts/site-*.mjs"

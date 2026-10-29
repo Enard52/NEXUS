@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+  <title>NEXUS - Aydınlatma Ustası</title>
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+  <script src="data.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #ece9fd 0%, #ddd8fb 100%);
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html.dark body {
+      background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+      color: #f8fafc;
+    }
+    .glass-surface {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+    }
+    html.dark .glass-surface {
+      background: rgba(15, 23, 42, 0.82);
+      border-color: rgba(148, 163, 184, 0.18);
+    }
+    .custom-shadow {
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+    .hero-shadow {
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+    .slider-thumb::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border: 4px solid #4C7DFF;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    /* Dokunma kutusu: görünür ray 8px kalır, isabet alanı 32px'e çıkar (WCAG 2.2 AA
+       üstü konfor sınırı). Dikey şeffaf dolgu + background-clip: content-box çizimi
+       değiştirmez; başparmak içerik kutusunda ortalandığı için yeri aynı kalır. */
+    .slider-thumb {
+      height: 32px;
+      padding: 12px 0;
+      box-sizing: border-box;
+      background-clip: content-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen flex-col">
+    <header class="shrink-0 px-6 pb-4 pt-14 flex items-center justify-between">
+      <button onclick="history.length > 1 ? history.back() : window.location.href='nexus-discover.html'" class="p-1 -ml-1 text-slate-900 active:scale-95 transition-transform dark:text-slate-100" aria-label="Geri">
+        <i data-lucide="chevron-left" class="text-[28px]"></i>
+      </button>
+      <h1 class="text-lg font-bold tracking-tight">Aydınlatma Ustası</h1>
+      <button id="info-btn" aria-label="Bilgi" class="glass-surface flex h-10 w-10 items-center justify-center rounded-full text-slate-900 active:scale-95 transition-transform dark:text-slate-100">
+        <i data-lucide="info" class="text-xl"></i>
+      </button>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-6 pb-10 space-y-6">
+      <section class="glass-surface hero-shadow relative aspect-[4/3] overflow-hidden rounded-[2rem]">
+        <div class="absolute inset-0 bg-gradient-to-br from-white/70 via-[#ede7ff]/80 to-[#c8f3ff]/80 dark:from-slate-900/80 dark:via-[#2b2153]/80 dark:to-[#113444]/75"></div>
+        <div class="absolute inset-0 opacity-80">
+          <div class="absolute left-8 top-8 h-24 w-24 rounded-full bg-white/45 blur-2xl dark:bg-white/10"></div>
+          <div class="absolute right-10 top-12 h-16 w-16 rounded-full bg-[#22D3EE]/25 blur-xl"></div>
+          <div class="absolute bottom-8 left-10 right-10 rounded-[1.75rem] border border-white/40 bg-white/50 p-5 backdrop-blur-md dark:border-slate-700/60 dark:bg-slate-900/40">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-300">Canlı Önizleme</span>
+                <h2 id="selected-room-label" class="mt-1 text-xl font-bold text-slate-900 dark:text-white">Tüm Ev</h2>
+                <p id="lighting-summary" class="mt-2 text-sm font-medium text-slate-600 dark:text-slate-300">Aydınlatma cihazları için oda bazlı hızlı kontrol.</p>
+              </div>
+              <div class="rounded-2xl bg-white/70 px-3 py-2 text-right dark:bg-slate-800/80">
+                <p class="text-[11px] font-semibold text-slate-400">Aktif</p>
+                <p id="active-light-count" class="text-lg font-extrabold text-slate-900 dark:text-white">0</p>
+              </div>
+            </div>
+            <div id="hero-device-dots" class="mt-4 flex gap-2"></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+        <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+          <i data-lucide="lightbulb-off" class="text-4xl text-slate-400"></i>
+        </div>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Aydınlatma Cihazı Yok</h2>
+        <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-[250px] mx-auto">Sistemde ekli hiçbir aydınlatma cihazı bulunamadı. Lütfen cihaz ekleyip tekrar deneyin.</p>
+        <button onclick="window.location.href='nexus-home.html'" class="mt-8 rounded-full bg-[#4C7DFF] px-6 py-3 font-bold text-white shadow-lg active:scale-95 transition-transform">Ana Sayfaya Dön</button>
+      </div>
+
+      <div id="lighting-controls">
+      <section class="space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-300">Oda Seçimi</h3>
+        <div id="room-chips" class="flex gap-3 overflow-x-auto pb-2"></div>
+      </section>
+
+      <section class="custom-shadow rounded-3xl bg-white p-6 space-y-8 dark:bg-slate-900">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2 text-slate-900 dark:text-white">
+              <i data-lucide="sun" class="text-xl"></i>
+              <span class="font-bold">Parlaklık</span>
+            </div>
+            <span id="brightness-value" class="text-sm font-bold text-[#4C7DFF]">%80</span>
+          </div>
+          <input id="brightness-slider" type="range" min="10" max="100" value="80" aria-label="Parlaklık" class="slider-thumb h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-100 dark:bg-slate-800"/>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2 text-slate-900 dark:text-white">
+              <i data-lucide="thermometer" class="text-xl"></i>
+              <span class="font-bold">Renk Sıcaklığı</span>
+            </div>
+            <span id="warmth-label" class="text-sm font-bold text-slate-500 dark:text-slate-300">Sıcak</span>
+          </div>
+          <div class="relative h-2 w-full rounded-lg bg-gradient-to-r from-blue-200 via-orange-100 to-orange-400">
+            <input id="warmth-slider" type="range" min="2000" max="6500" value="4000" aria-label="Renk Sıcaklığı" class="slider-thumb absolute -top-3 left-0 h-2 w-full cursor-pointer appearance-none bg-transparent"/>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">Vurgu Renkleri</h4>
+          <div id="accent-colors" class="flex justify-between"></div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <div class="flex items-end justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-300">Akıllı Sahneler</h3>
+          <button id="see-all-scenes" class="nx-tap text-xs font-bold text-[#4C7DFF]">Tümünü Gör</button>
+        </div>
+        <div id="scene-grid" class="grid grid-cols-2 gap-4"></div>
+      </section>
+    </div>
+    </main>
+
+    <footer class="glass-surface shrink-0 px-6 pb-[34px] pt-4">
+      <button id="save-scene-btn" class="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#4C7DFF] text-white font-bold shadow-lg active:scale-[0.98] transition-transform">
+        <i data-lucide="save" class="text-xl"></i>
+        Sahneyi Kaydet ve Uygula
+      </button>
+    </footer>
+  </div>
+
+  <script>
+    var LIGHTING_SCENES = [
+      { id: "good-morning", title: "Günaydın", subtitle: "Yumuşak Başlangıç", icon: "lucide:coffee", iconWrap: "bg-orange-100 text-orange-600", prompt: "Sabah için yumuşak ve sıcak bir aydınlatma sahnesi oluştur." },
+      { id: "cinema", title: "Sinema", subtitle: "Kısık Mavi Işık", icon: "lucide:film", iconWrap: "bg-indigo-100 text-indigo-600", prompt: "TV odası için kısık parlaklıkta sinema sahnesi oluştur." },
+      { id: "reading", title: "Okuma", subtitle: "Net Beyaz Işık", icon: "lucide:book-open", iconWrap: "bg-green-100 text-green-600", prompt: "Okuma için parlak ve odaklı beyaz ışık sahnesi oluştur." },
+      { id: "party", title: "Parti", subtitle: "Dinamik Renkler", icon: "lucide:sparkles", iconWrap: "bg-blue-100 text-[#4C7DFF]", prompt: "Eğlence için renkli ve dinamik aydınlatma sahnesi oluştur." }
+    ];
+    var ACCENT_COLORS = ["#FFD700", "#FF7F50", "#4C7DFF", "#22D3EE", "#32CD32"];
+    // Renk örnekleri ekranda yazısız; ekran okuyucu için adları buradan gelir.
+    // Kullanıcının eklediği özel renklerde ad yoktur, hex değeri okunur.
+    var ACCENT_NAMES = {
+      "#FFD700": ["Altın", "Gold"], "#FF7F50": ["Mercan", "Coral"], "#4C7DFF": ["NEXUS Mavisi", "NEXUS Blue"],
+      "#22D3EE": ["Turkuaz", "Turquoise"], "#32CD32": ["Yeşil", "Green"]
+    };
+    function accentLabel(color) {
+      var en = window.nexusLang === "en";
+      var n = ACCENT_NAMES[color];
+      return (en ? "Accent color: " : "Vurgu rengi: ") + (n ? n[en ? 1 : 0] : color);
+    }
+        // Kullanicinin ekledigi ozel renkler kalici olarak saklanir
+        try {
+          var savedColors = JSON.parse(nexusGetItem("nexusCustomAccentColors") || "[]");
+          if (Array.isArray(savedColors)) savedColors.forEach(function (c) { if (typeof c === "string" && ACCENT_COLORS.indexOf(c) === -1) ACCENT_COLORS.push(c); });
+        } catch (e) {}
+    var selectedRoom = "all";
+    var selectedColor = "#4C7DFF";
+    var brightness = 80;
+
+    function getLightingDevices() {
+      var devices = typeof window.getNexusLocalDevices === "function" ? window.getNexusLocalDevices() : [];
+      return devices.filter(function (device) {
+        var full = ((device.type || "") + " " + (device.name || "")).toLowerCase();
+        return /light|lamp|ampul|isik|ayd/.test(full);
+      });
+    }
+    function getHouseRooms() {
+      try {
+        var homes = JSON.parse(nexusGetItem("nexusHousehold") || "[]");
+        if (Array.isArray(homes) && homes.length && Array.isArray(homes[0].rooms) && homes[0].rooms.length) {
+          return homes[0].rooms;
+        }
+      } catch (e) {}
+      return [];
+    }
+    function roomList() {
+      var rooms = getHouseRooms();
+      return [{ id: "all", title: "Tüm Ev" }].concat(rooms.map(function (room, index) {
+        return { id: "room-" + index, title: room };
+      }));
+    }
+    function selectedRoomTitle() {
+      var item = roomList().find(function (room) { return room.id === selectedRoom; });
+      return item ? item.title : "Tüm Ev";
+    }
+    function lightingSummary() {
+      var count = getLightingDevices().length;
+      if (!count) return "Henüz eklenmiş aydınlatma cihazı yok. Cihaz ekledikçe bu ekran canlı dolacak.";
+      return count + " aydınlatma cihazı için " + selectedRoomTitle() + " oda görünümü hazır.";
+    }
+    function renderHero() {
+      var devices = getLightingDevices();
+      document.getElementById("selected-room-label").textContent = selectedRoomTitle();
+      document.getElementById("active-light-count").textContent = String(devices.length);
+      document.getElementById("lighting-summary").textContent = lightingSummary();
+      document.getElementById("hero-device-dots").innerHTML = (devices.length ? devices.slice(0, 5) : [{ name: "Hazır" }, { name: "Kontrol" }, { name: "Bekleniyor" }]).map(function (device, index) {
+        var active = index % 2 === 0 || devices.length < 2;
+        return '<div class="flex h-3.5 w-3.5 rounded-full ' + (active ? 'bg-[#4C7DFF]' : 'bg-white/60 dark:bg-slate-700') + '"></div>';
+      }).join("");
+    }
+    function renderRooms() {
+      document.getElementById("room-chips").innerHTML = roomList().map(function (room) {
+        var active = room.id === selectedRoom;
+        return '<button class="whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-semibold transition ' + (active ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900' : 'bg-white/60 text-slate-600 dark:bg-slate-800 dark:text-slate-200') + '" onclick="selectRoom(\'' + room.id + '\')">' + room.title + '</button>';
+      }).join("");
+    }
+    function renderColors() {
+      document.getElementById("accent-colors").innerHTML = ACCENT_COLORS.map(function (color) {
+        var selected = color === selectedColor;
+        return '<button type="button" aria-label="' + accentLabel(color) + '" aria-pressed="' + (selected ? "true" : "false") + '" class="h-10 w-10 rounded-full ring-4 ring-offset-2 transition ' + (selected ? 'ring-[#4C7DFF]/30' : 'ring-transparent') + '" style="background:' + color + '" onclick="selectColor(\'' + color + '\')"></button>';
+      }).join("") + '<button aria-label="Renk ekle" class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800 active:scale-95 transition-transform" onclick="addCustomColor()"><i data-lucide="plus" class="text-lg"></i></button>';
+    }
+    function addCustomColor() {
+      // Gercek renk secici ac; secilen rengi paletine ekle ve kaydet
+      var input = document.createElement("input");
+      input.type = "color";
+      input.value = selectedColor;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      input.style.pointerEvents = "none";
+      document.body.appendChild(input);
+      input.addEventListener("change", function () {
+        var color = input.value.toUpperCase();
+        if (ACCENT_COLORS.indexOf(color) === -1) {
+          ACCENT_COLORS.push(color);
+          try {
+            var saved = JSON.parse(nexusGetItem("nexusCustomAccentColors") || "[]");
+            if (!Array.isArray(saved)) saved = [];
+            if (saved.indexOf(color) === -1) saved.push(color);
+            nexusSetItem("nexusCustomAccentColors", JSON.stringify(saved));
+          } catch (e) {}
+        }
+        selectedColor = color;
+        renderColors();
+        input.remove();
+      });
+      input.addEventListener("blur", function () { input.remove(); });
+      input.click();
+    }
+    function renderScenes() {
+      document.getElementById("scene-grid").innerHTML = LIGHTING_SCENES.map(function (scene) {
+        return '<button class="custom-shadow flex flex-col items-start gap-3 rounded-3xl border border-slate-100 bg-white p-4 text-left active:scale-95 transition-transform dark:border-slate-800 dark:bg-slate-900" onclick="openScenePrompt(\'' + scene.id + '\')">' +
+          '<div class="flex h-10 w-10 items-center justify-center rounded-2xl ' + scene.iconWrap + '"><i data-lucide="' + scene.icon.replace("lucide:", "") + '" class="text-xl"></i></div>' +
+          '<div><p class="text-sm font-bold text-slate-900 dark:text-white">' + scene.title + '</p><p class="text-[11px] text-slate-400">' + scene.subtitle + '</p></div></button>';
+      }).join("");
+    }
+    function updateControls() {
+      document.getElementById("brightness-value").textContent = "%" + brightness;
+    }
+    function selectRoom(roomId) {
+      selectedRoom = roomId;
+      renderHero();
+      renderRooms();
+    }
+    function selectColor(color) {
+      selectedColor = color;
+      renderColors();
+    }
+    function openScenePrompt(sceneId) {
+      var scene = LIGHTING_SCENES.find(function (item) { return item.id === sceneId; });
+      var room = selectedRoomTitle();
+      var prompt = (scene ? scene.prompt : "Aydınlatma sahnesi oluştur.") + " Hedef oda: " + room + ". Parlaklık: %" + brightness + ".";
+      window.location.href = "nexus-chat.html?promptText=" + encodeURIComponent(prompt);
+    }
+    function saveScene() {
+      var room = selectedRoomTitle();
+      var prompt = "Eklenen aydınlatma cihazları için " + room + " oda görünümünde, %" + brightness + " parlaklık ve " + selectedColor + " vurgu rengi kullanan bir akıllı uygulama oluştur.";
+      window.location.href = "nexus-chat.html?promptText=" + encodeURIComponent(prompt);
+    }
+
+    var warmthLabel = document.getElementById("warmth-label");
+    document.getElementById("brightness-slider").addEventListener("input", function (event) {
+      brightness = Number(event.target.value || 80);
+      updateControls();
+    });
+    document.getElementById("warmth-slider").addEventListener("input", function (event) {
+      var val = Number(event.target.value);
+      if(val < 3000) warmthLabel.textContent = "Çok Sıcak";
+      else if(val < 4500) warmthLabel.textContent = "Sıcak";
+      else if(val < 5500) warmthLabel.textContent = "Nötr";
+      else warmthLabel.textContent = "Soğuk";
+    });
+    document.getElementById("save-scene-btn").addEventListener("click", saveScene);
+    document.getElementById("see-all-scenes").addEventListener("click", function () {
+      window.location.href = "nexus-smart.html";
+    });
+    document.getElementById("info-btn").addEventListener("click", function () {
+      nexusInfo("Aydınlatma Ustası", "Bu ekran, eklediğin aydınlatma cihazlarını odalara göre toplar; sahne kaydettiğinde ışıkların parlaklığı ve tonu birlikte ayarlanır.");
+    });
+
+    if(getLightingDevices().length === 0) {
+      document.getElementById("lighting-controls").classList.add("hidden");
+      document.getElementById("empty-state").classList.remove("hidden");
+      document.getElementById("empty-state").classList.add("flex");
+      document.querySelector("footer").classList.add("hidden");
+    } else {
+      renderHero();
+      renderRooms();
+      renderColors();
+      renderScenes();
+      updateControls();
+    }
+  </script>
+
+  <script src="js/lucide.js"></script>
+<script data-purpose="icon-initialization">
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
+</body>
+</html>
+
+

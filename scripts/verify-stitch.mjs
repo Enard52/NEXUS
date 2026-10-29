@@ -4,7 +4,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const pages = readdirSync(ROOT).filter((f) => f.startsWith("stitch-") && f.endsWith(".html"));
+const pages = readdirSync(ROOT).filter((f) => f.startsWith("nexus-") && f.endsWith(".html"));
 let problems = 0;
 
 const emojiRe =
@@ -43,8 +43,8 @@ for (const page of pages) {
     }
   }
 
-  // 4. href hedefleri mevcut mu? (stitch-* ve public/*)
-  const hrefs = [...html.matchAll(/href="((?:stitch-|public\/)[^"#?]+)/g)].map((m) => m[1]);
+  // 4. href hedefleri mevcut mu? (nexus-* ve public/*)
+  const hrefs = [...html.matchAll(/href="((?:nexus-|public\/)[^"#?]+)/g)].map((m) => m[1]);
   for (const h of new Set(hrefs)) {
     try {
       readFileSync(join(ROOT, h));

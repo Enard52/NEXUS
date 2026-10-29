@@ -9,7 +9,10 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const dict = readFileSync(join(ROOT, "lang-en.js"), "utf8");
+// Ekranlar ve sözlük kökte değil, src/app'de duruyor (tek kaynak kuralı). Betik
+// eskiden kökü tarıyordu: ya ENOENT ile çöküyor ya da hiç sayfa bulamıyordu.
+const APP = join(ROOT, "src", "app");
+const dict = readFileSync(join(APP, "lang-en.js"), "utf8");
 const DICT_TEXT = new Set();
 {
   const m = dict.match(/"text":\s*\{([\s\S]*?)\n\s*\},/);
@@ -45,11 +48,11 @@ const only = process.argv[2];
 let total = 0,
   covered = 0;
 const gaps = [];
-for (const f of readdirSync(ROOT)
-  .filter((x) => /^stitch-.*\.html$/.test(x))
+for (const f of readdirSync(APP)
+  .filter((x) => /^nexus-.*\.html$/.test(x))
   .sort()) {
   if (only && !f.includes(only)) continue;
-  const html = readFileSync(join(ROOT, f), "utf8")
+  const html = readFileSync(join(APP, f), "utf8")
     .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "");
   // {4,120} idi: 120 karakteri aşan paragraflar hiç taranmıyordu ve eksik çeviriler görünmez kalıyordu.

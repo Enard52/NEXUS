@@ -1,6 +1,6 @@
 // NEXUS — masaüstü uygulaması (Windows, macOS, Linux)
 //
-// Telefon uygulamasıyla aynı ekranları (stitch-*.html) çevrimdışı olarak paketler ve
+// Telefon uygulamasıyla aynı ekranları (nexus-*.html) çevrimdışı olarak paketler ve
 // geniş ekranda masaüstü düzeninde açar. Ek olarak masaüstüne özgü bir köprü sağlar:
 //   - Yerel ağ HTTP istekleri (CORS/mixed-content yok)  → Shelly, WLED, Tasmota, ESPHome, Hue
 //   - Yerel ağ TCP istekleri                             → TP-Link Kasa, Yeelight
@@ -23,7 +23,7 @@ const { pathToFileURL } = require("node:url");
 
 const APP_DIR = path.join(__dirname, "app");
 const SCHEME = "nexus";
-const PAGES = { home: "stitch-home.html", pair: "stitch-pair.html", messages: "stitch-messages.html", settings: "stitch-settings.html", chat: "stitch-chat.html" };
+const PAGES = { home: "nexus-home.html", pair: "nexus-pair.html", messages: "nexus-messages.html", settings: "nexus-settings.html", chat: "nexus-chat.html" };
 function pageFromArgv(argv) {
   const a = (argv || []).find((x) => typeof x === "string" && x.startsWith("--go="));
   const key = a ? a.slice(5) : "";
@@ -898,7 +898,7 @@ ipcMain.on("event:notify", (_e, ev) => {
     while (notifyStamps.length && now - notifyStamps[0] > 10000) notifyStamps.shift();
     if (notifyStamps.length >= 4) return; // sel olmasın: 10 sn'de en fazla 4
     notifyStamps.push(now);
-    const targetPage = (ev && typeof ev.page === "string" && ev.page) ? ev.page : "stitch-messages.html";
+    const targetPage = (ev && typeof ev.page === "string" && ev.page) ? ev.page : "nexus-messages.html";
     const pngPath = path.join(__dirname, "resources", "icon.png");
     const notifIcon = fs.existsSync(pngPath) ? pngPath : resolveTrayIcon();
     const n = new Notification({

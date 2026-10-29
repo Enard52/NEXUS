@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS - Asistan</title>
+<!-- Tailwind CSS CDN with plugins -->
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  
+<!-- Custom Tailwind Configuration (NEXUS brand palette) -->
+<script>
+    window.tailwind = window.tailwind || {};
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'nexus-purple': '#4C7DFF',
+            'nexus-cyan': '#22D3EE',
+            'nexus-bg-light': '#F1F7FF',
+            'nexus-plus-bg': '#4C7DFF',
+          },
+          backgroundImage: {
+            'nexus-gradient': 'linear-gradient(180deg, #ECE9FD 0%, #F5F7FF 50%, #E4F7FB 100%)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style data-purpose="custom-fonts">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="layout-utilities">
+    /* Hide scrollbar for the horizontal features list */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="cloud-config.js"></script>
+<script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
+<script src="nexus-assistant.js"></script>
+
+  <style data-purpose="custom-gradient-border">
+    .custom-gradient-border {
+      position: relative;
+      background: white;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+      border-radius: 9999px;
+    }
+    .custom-gradient-border::before {
+      content: '';
+      position: absolute;
+      top: -2px; right: -2px; bottom: -2px; left: -2px;
+      z-index: -1;
+      border-radius: 9999px;
+      background: linear-gradient(to right, #4C7DFF, #22D3EE, #4C7DFF);
+    }
+    html.dark .custom-gradient-border {
+      background: #1e293b;
+      background-clip: padding-box;
+    }
+  </style>
+
+  <style>
+    .ai-bubble {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: #1e293b;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+    }
+    html.dark .ai-bubble {
+      background: rgba(30, 41, 59, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #f8fafc;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-bubble {
+      background: linear-gradient(135deg, #4C7DFF 0%, #3F6FFF 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(76, 125, 255, 0.28);
+    }
+  </style>
+</head>
+<body class="bg-dashboard-gradient text-gray-900 overflow-hidden h-[100dvh] flex flex-col">
+<!-- BEGIN: MainHeader -->
+<header class="flex items-center justify-between px-4 pt-12 pb-4 bg-white" data-purpose="app-header">
+<!-- Back Button -->
+<a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='nexus-home.html'" aria-label="Geri" class="p-1 -ml-1">
+<svg class="h-7 w-7 text-slate-700" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<!-- Logo and Title -->
+<div class="flex items-center gap-2" data-purpose="logo-container"><div class="w-8 h-8 flex shrink-0"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo" role="img" class="w-full h-full">
+  <defs>
+    <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+    </linearGradient>
+    <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+  <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+  <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+  <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+<span class="font-semibold text-xl tracking-tight">NEXUS AI</span></div>
+<!-- Actions -->
+<div class="flex items-center gap-3">
+<a href="nexus-plus.html" class="nx-tap bg-nexus-plus-bg text-white text-xs font-medium px-3 py-1 rounded-full">Plus</a>
+<a href="nexus-menu.html" aria-label="Menü" class="p-1">
+<svg class="h-8 w-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow flex flex-col relative bg-nexus-gradient h-[calc(100dvh-80px)]" data-purpose="main-chat-area">
+
+  <!-- Chat Messages Area (Scrollable) -->
+  <div id="chat-messages" class="flex-grow overflow-y-auto px-4 py-6 space-y-4 flex flex-col justify-start">
+
+    <!-- Central Greeting (Hidden when chat starts) -->
+    <div id="hero-greeting" class="flex flex-col items-center justify-center text-center mt-10 mb-8 transition-opacity duration-300">
+      <h1 class="text-3xl text-nexus-purple leading-tight mb-6 nx-greeting" style="font-weight: 500;">
+        Tekrar görüşmek güzel!<br/>Nasıl yardımcı olabilirim?
+      </h1>
+      <!-- Features Scrolling Pills -->
+      <div class="w-full overflow-x-auto no-scrollbar pb-2 nx-fade-x">
+        <div class="flex items-center gap-3 px-6 w-max">
+
+          <button onclick="sendQuickMessage('Klimayı 22 dereceye ayarla')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-blue-100/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+            <svg class="h-4 w-4 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            Sıcaklık Ayarı
+          </button>
+          <button onclick="sendQuickMessage('Film modunu başlat')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-rose-100/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+            <svg class="h-4 w-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+            Film Modu
+          </button>
+          <button onclick="sendQuickMessage('Tüm ışıkları kapat')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-amber-200/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+            <svg class="h-4 w-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Tasarruf Modu
+          </button>
+          <button onclick="sendQuickMessage('İyi geceler')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-indigo-100/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+            <svg class="h-4 w-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            Gece Modu
+          </button>
+          <button onclick="sendQuickMessage('Akıllı Kontrol')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-blue-100/60 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
+            <svg class="h-4 w-4 text-nexus-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            Akıllı Kontrol
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Bar -->
+  <div class="relative px-4 pb-6 pt-2 shrink-0 bg-white/80 backdrop-blur-md" style="padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));" data-purpose="chat-input-container">
+    <!-- + menüsü: doğrudan dosya açmak yerine seçenekler sunulur -->
+    <div id="attach-menu" class="hidden absolute bottom-[86px] left-4 z-40 w-56 rounded-2xl border border-slate-200 bg-white/95 backdrop-blur-md shadow-xl py-2" role="menu" aria-label="Ekle seçenekleri">
+      <button type="button" role="menuitem" onclick="attachChoice('gallery')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50">
+        <svg class="w-5 h-5 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 15l-3.2-3.2a2 2 0 0 0-2.8 0L7 20" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span class="attach-label">Galeriden fotoğraf</span>
+      </button>
+      <button type="button" role="menuitem" onclick="attachChoice('camera')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50">
+        <svg class="w-5 h-5 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4V8z" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+        <span class="attach-label">Fotoğraf çek</span>
+      </button>
+      <button type="button" role="menuitem" onclick="attachChoice('ask')" class="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50">
+        <svg class="w-5 h-5 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span class="attach-label">Cihazlarıma sor</span>
+      </button>
+    </div>
+    <div id="attach-backdrop" class="hidden fixed inset-0 z-30" onclick="toggleAttachMenu(false)"></div>
+    <div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm">
+      <button aria-label="Ek ekle" aria-expanded="false" onclick="toggleAttachMenu()" class="w-8 h-8 flex shrink-0 mr-3 items-center justify-center text-slate-500 hover:text-slate-700 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 5v14M5 12h14"></path>
+        </svg>
+      </button>
+
+      <input id="chat-file" type="file" accept="image/*" class="hidden" onchange="handleAttachment(event)"/>
+      <input id="chat-camera" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleAttachment(event)"/>
+      <!-- self-stretch: satır yüksekliğini (32px) doldurur → yazı alanının dokunma kutu 20px'ten
+           32px'e çıkar; metin/yer tutucu dikeyde ortalanmış kalır, görsel değişmez. -->
+      <input id="chat-input" class="flex-grow self-stretch border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500" placeholder="Nasıl yardımcı olabilirim?" type="text" onkeypress="handleKeyPress(event)"/>
+
+      <div class="flex items-center space-x-4 pr-1">
+        <!-- Mic: sesli giriş (tarayıcı konuşma tanıması veya MediaRecorder + Worker Whisper) -->
+        <button id="chat-mic" class="nx-tap text-gray-600 hover:text-gray-800 transition-colors" aria-label="Sesle yaz" aria-pressed="false" onclick="nxVoiceToggle()">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        </button>
+        <!-- Send Button -->
+        <button id="chat-send" onclick="sendMessage()" aria-label="Mesajı gönder" class="nx-tap text-[#4C7DFF] hover:text-[#4C7DFF] transition-colors disabled:opacity-40">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/lucide.js"></script>
+<script>
+  /* ---------- Sesli giriş ----------
+     İki yol var:
+     1) Tarayıcının konuşma tanıması (Chrome/Edge): hızlı ve ücretsiz.
+     2) MediaRecorder + Cloudflare Worker Whisper: Electron, Android, iOS ve
+        1. yolun çalışmadığı her durumda (ör. Electron'da "network" hatası).
+     Her iki yolda da metin yalnızca giriş alanına yazılır; kullanıcı gönder
+     düğmesine basana kadar hiçbir mesaj işlenmez. Kayıt cihazda/sunucuda saklanmaz. */
+  var nxVoiceRec = null;
+  var nxVoiceStopper = null;
+  var nxVoiceTimer = null;
+  var nxVoiceToastEl = null;
+  var nxVoiceToastTimer = null;
+
+  function nxVoiceIsTr() {
+    return (document.documentElement.lang || 'tr').slice(0, 2) === 'tr';
+  }
+  function nxSpeechSupported() {
+    return 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+  }
+  function nxRecorderSupported() {
+    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+  }
+  // Electron'da SpeechRecognition nesnesi vardır ama Google konuşma servisi anahtarı
+  // olmadığı için "network" hatası verir; doğrudan Worker yolunu kullan.
+  function nxSkipBrowserSpeech() {
+    try {
+      if (window.nexusDesktop || location.protocol === 'nexus:') return true;
+      if (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) return true;
+      if (/Electron/i.test(navigator.userAgent || '')) return true;
+    } catch (e) {}
+    return false;
+  }
+  function nxVoicePressed(on) {
+    var btn = document.getElementById('chat-mic');
+    if (!btn) return;
+    // Kayıt göstergesi: düz opacity yanıp sönme (animate-pulse) yerine marka
+    // kırmızısı + yayılan halka + ikon nefesi (css/nexus-ui.css → #chat-mic.nx-rec).
+    btn.classList.toggle('nx-rec', !!on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? (nxVoiceIsTr() ? 'Kaydı bitir' : 'Stop recording') : (nxVoiceIsTr() ? 'Sesle yaz' : 'Voice input'));
+  }
+  function nxVoiceToggle() {
+    if (nxVoiceRec) { try { nxVoiceRec.stop(); } catch (e) {} return; }
+    if (nxVoiceStopper) { nxVoiceStopper(); return; }
+    // Kayıt başlangıcı: kısa tek tık (mikrofonun açıldığını duyurur)
+    if (window.nexusFeedback) window.nexusFeedback.play('copy');
+    if (!nxSkipBrowserSpeech() && nxSpeechSupported()) { nxStartBrowserSpeech(); return; }
+    nxStartRecorder();
+  }
+
+  function nxStartBrowserSpeech() {
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var input = document.getElementById('chat-input');
+    var startText = input.value;
+    var networkFailed = false;
+    var rec = new SR();
+    nxVoiceRec = rec;
+    rec.lang = nxVoiceIsTr() ? 'tr-TR' : 'en-US';
+    rec.interimResults = true;
+    rec.continuous = false;
+    nxVoicePressed(true);
+    rec.onresult = function (e) {
+      var text = '';
+      for (var i = e.resultIndex; i < e.results.length; i++) text += e.results[i][0].transcript;
+      input.value = (startText ? startText + ' ' : '') + text.trim();
+      input.focus();
+    };
+    rec.onerror = function (e) {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        nxVoiceToast(nxVoiceIsTr() ? 'Mikrofon izni verilmedi. Tarayıcı ayarlarından izin ver.' : 'Microphone permission denied. Allow it in your browser settings.');
+      } else if (e.error === 'network') {
+        networkFailed = true;
+      } else if (e.error !== 'aborted') {
+        nxVoiceToast(nxVoiceIsTr() ? 'Ses tanınamadı, tekrar dene.' : 'Voice could not be recognized, please try again.');
+      }
+    };
+    rec.onend = function () {
+      nxVoicePressed(false);
+      nxVoiceRec = null;
+      if (networkFailed) {
+        if (nxRecorderSupported()) {
+          nxVoiceToast(nxVoiceIsTr() ? 'Tarayıcı konuşma servisine ulaşılamadı; kayıt yoluyla deniyorum.' : 'Browser speech service is unreachable; trying recording instead.');
+          nxStartRecorder();
+        } else {
+          nxVoiceToast(nxVoiceIsTr() ? 'Konuşma tanıma bu cihazda çalışmıyor (ağ/servis).' : 'Speech recognition is not available on this device (network/service).');
+        }
+      }
+    };
+    try { rec.start(); } catch (e) { rec.onend(); }
+  }
+
+  function nxPickAudioMime() {
+    var list = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+    for (var i = 0; i < list.length; i++) {
+      try { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(list[i])) return list[i]; } catch (e) {}
+    }
+    return '';
+  }
+  function nxStopStream(stream) {
+    try { (stream.getTracks() || []).forEach(function (t) { t.stop(); }); } catch (e) {}
+  }
+
+  function nxStartRecorder() {
+    if (!nxRecorderSupported()) {
+      nxVoiceToast(nxVoiceIsTr() ? 'Sesli yazma bu cihazda desteklenmiyor. Metinle yazabilirsin.' : 'Voice input is not supported on this device. You can type instead.');
+      return;
+    }
+    var input = document.getElementById('chat-input');
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+      var chunks = [];
+      var mime = nxPickAudioMime();
+      var rec;
+      try {
+        rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+      } catch (e) {
+        nxStopStream(stream);
+        nxVoiceToast(nxVoiceIsTr() ? 'Kayıt başlatılamadı.' : 'Could not start recording.');
+        return;
+      }
+      var finished = false;
+      function stop() {
+        if (finished) return;
+        finished = true;
+        nxVoiceStopper = null;
+        if (nxVoiceTimer) { clearTimeout(nxVoiceTimer); nxVoiceTimer = null; }
+        try { if (rec.state !== 'inactive') rec.stop(); } catch (e) { nxStopStream(stream); nxVoicePressed(false); }
+      }
+      nxVoiceStopper = stop;
+      nxVoicePressed(true);
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+      rec.onerror = function () {
+        nxStopStream(stream);
+        nxVoicePressed(false);
+        nxVoiceStopper = null;
+        nxVoiceToast(nxVoiceIsTr() ? 'Kayıt sırasında hata oluştu.' : 'Recording failed.');
+      };
+      rec.onstop = function () {
+        nxStopStream(stream);
+        nxVoicePressed(false);
+        if (!chunks.length) {
+          nxVoiceToast(nxVoiceIsTr() ? 'Ses duyulamadı; mikrofona yakın konuş.' : 'No audio was captured; speak closer to the mic.');
+          return;
+        }
+        var blob = new Blob(chunks, { type: mime || 'audio/webm' });
+        nxVoiceToast(nxVoiceIsTr() ? 'Yazıya dökülüyor…' : 'Transcribing…');
+        window.nexusAssistant.transcribe(blob, nxVoiceIsTr() ? 'tr' : 'en').then(function (text) {
+          if (!text) {
+            nxVoiceToast(nxVoiceIsTr() ? 'Ses anlaşılamadı, tekrar dene.' : 'Could not understand the audio, please try again.');
+            return;
+          }
+          var current = input.value.replace(/\s+$/, '');
+          input.value = (current ? current + ' ' : '') + text;
+          input.focus();
+          try { input.setSelectionRange(input.value.length, input.value.length); } catch (e) {}
+        }).catch(function (err) {
+          var msg = String((err && err.message) || '');
+          if (/too_large/.test(msg)) nxVoiceToast(nxVoiceIsTr() ? 'Kayıt çok uzun; 60 saniyeden kısa konuş.' : 'Recording is too long; keep it under 60 seconds.');
+          else nxVoiceToast(nxVoiceIsTr() ? 'Yazıya dökülemedi. İnternet bağlantını kontrol et.' : 'Could not transcribe. Check your internet connection.');
+        });
+      };
+      try { rec.start(); } catch (e) {
+        nxVoiceStopper = null;
+        nxVoicePressed(false);
+        nxStopStream(stream);
+        nxVoiceToast(nxVoiceIsTr() ? 'Kayıt başlatılamadı.' : 'Could not start recording.');
+        return;
+      }
+      nxVoiceTimer = setTimeout(stop, 60000);
+      nxVoiceToast(nxVoiceIsTr() ? 'Dinliyorum… Bitirmek için mikrofona tekrar dokun.' : 'Listening… Tap the mic again to stop.');
+    }).catch(function (err) {
+      nxVoicePressed(false);
+      nxVoiceStopper = null;
+      var name = (err && err.name) || '';
+      if (name === 'NotAllowedError' || name === 'SecurityError') nxVoiceToast(nxVoiceIsTr() ? 'Mikrofon izni verilmedi. Cihaz ayarlarından izin ver.' : 'Microphone permission denied. Allow it in your device settings.');
+      else if (name === 'NotFoundError' || name === 'DevicesNotFoundError') nxVoiceToast(nxVoiceIsTr() ? 'Bu cihazda mikrofon bulunamadı.' : 'No microphone was found on this device.');
+      else nxVoiceToast(nxVoiceIsTr() ? 'Mikrofon açılamadı.' : 'Could not open the microphone.');
+    });
+  }
+
+  function nxVoiceToast(msg, ms) {
+    if (nxVoiceToastEl && nxVoiceToastEl.parentNode) nxVoiceToastEl.parentNode.removeChild(nxVoiceToastEl);
+    if (nxVoiceToastTimer) { clearTimeout(nxVoiceToastTimer); nxVoiceToastTimer = null; }
+    var t = document.createElement('div');
+    t.className = 'fixed left-1/2 top-6 z-[120] -translate-x-1/2 rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center';
+    t.style.maxWidth = 'min(92vw, 420px)';
+    t.setAttribute('role', 'status');
+    t.textContent = msg;
+    // Yumuşak giriş + ömür sonunda solma (nexus-feedback.js; yoksa eski düz görünüm)
+    if (window.nexusFeedback) window.nexusFeedback.toastIn(t, ms || 2200);
+    document.body.appendChild(t);
+    nxVoiceToastEl = t;
+    nxVoiceToastTimer = setTimeout(function () {
+      if (t.parentNode) t.parentNode.removeChild(t);
+      if (nxVoiceToastEl === t) nxVoiceToastEl = null;
+    }, ms || 2200);
+  }
+
+  /* ---------- Gerçek sohbet geçmişi + günlük AI puan sayacı ---------- */
+  var CHAT_KEY = 'nexusChatHistory';
+  var POINTS_KEY = 'nexusAiPoints';
+  var currentChatId = null;
+
+  function loadChats() {
+    try { return JSON.parse(nexusGetItem(CHAT_KEY) || '[]') || []; } catch (e) { return []; }
+  }
+  function saveChats(list) {
+    try { nexusSetItem(CHAT_KEY, JSON.stringify(list)); } catch (e) { /* kota */ }
+  }
+  function persistMessage(role, text) {
+    var list = loadChats();
+    var chat = null;
+    for (var i = 0; i < list.length; i++) if (list[i].id === currentChatId) { chat = list[i]; break; }
+    if (!chat) {
+      chat = { id: currentChatId, title: '', createdAt: Date.now(), updatedAt: Date.now(), messages: [] };
+      list.push(chat);
+    }
+    chat.messages.push({ role: role, text: text, ts: Date.now() });
+    if (role === 'user' && !chat.title) chat.title = text.slice(0, 40);
+    chat.updatedAt = Date.now();
+    saveChats(list);
+  }
+
+  /* Puan: ücretsizde günlük 30, NEXUS+ aboneliğinde aylık 2000 (theme.js nexusPoints) */
+  function pointsLeft() { return window.nexusPoints.left(); }
+  function usePoint() { window.nexusPoints.use(); }
+  function updateInputLock() {
+    var input = document.getElementById('chat-input');
+    var send = document.getElementById('chat-send');
+    if (!input || !send) return;
+    // Yerel komutlar (cihaz kontrolü, senaryo, durum) krediden etkilenmez; kredi yalnızca yapay zekâ sohbet yanıtlarını sınırlar.
+    var out = pointsLeft() === 0;
+    input.disabled = false;
+    send.disabled = false;
+    send.classList.remove('opacity-40');
+    if (out) {
+      input.placeholder = window.nexusPoints.exhaustedText() + ' · ' + (window.nexusT ? nexusT('Cihaz komutları yine çalışır', 'Device commands still work') : 'Cihaz komutları yine çalışır');
+    } else {
+      input.placeholder = (window.nexusT ? nexusT('Nasıl yardımcı olabilirim?', 'How can I help you?') : 'Nasıl yardımcı olabilirim?');
+    }
+  }
+
+  /* Kullanıcının gerçekten eşleştirdiği cihazı sayısı */
+  function realDeviceCount() {
+    var n = 0;
+    try { n += (JSON.parse(nexusGetItem('nexusPairedDevices') || '[]') || []).length; } catch (e) {}
+    try {
+      var cards = JSON.parse(nexusGetItem('nexusDashboardCards') || '[]') || [];
+      n += cards.filter(function (c) { return c.id && c.id.indexOf('device-') === 0 && c.visible; }).length;
+    } catch (e) {}
+    return n;
+  }
+
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  }
+
+  function sendQuickMessage(text) {
+    const input = document.getElementById('chat-input');
+    input.value = window.nexusTr ? nexusTr(text) : text;
+    sendMessage();
+  }
+
+  function openAiSettings() {
+    window.location.href = 'nexus-settings.html#ai-settings';
+  }
+
+  function hideGreeting() {
+    const greeting = document.getElementById('hero-greeting');
+    if (greeting) greeting.style.display = 'none';
+  }
+
+  /* Kullanıcı kimliği: profil ile aynı gerçek veri (nexusUserName / nexusAvatar) */
+  var DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cbd5e1'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
+  function userFirstName() {
+    var n = '';
+    try { n = (nexusGetItem('nexusUserName') || '').trim(); } catch (e) {}
+    if (!n || n === 'Misafir') return '';
+    return n.split(' ')[0];
+  }
+
+  function appendUserBubble(text) {
+    const messages = document.getElementById('chat-messages');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'flex justify-end mb-4 w-full';
+
+    var avatar = '';
+    try {
+      // Profil ile aynı anahtar: nexusAvatar (user-info kaydeder, home/profil okur)
+      avatar = nexusGetItem('nexusAvatar') || DEFAULT_AVATAR;
+    } catch(e) { avatar = DEFAULT_AVATAR; }
+
+    userMsg.innerHTML = '<div class="flex items-end gap-2.5 max-w-[92%] justify-end">' +
+      '<div data-no-i18n class="user-bubble px-5 py-3.5 rounded-3xl rounded-br-sm text-[15px] font-medium leading-relaxed">' + escapeHtml(text) + '</div>' +
+      '<img src="' + avatar + '" class="w-7 h-7 shrink-0 mb-1 shadow-sm rounded-xl object-cover border border-slate-100 dark:border-slate-700" alt="User" />' +
+      '</div>';
+    messages.appendChild(userMsg);
+  }
+
+  function appendAiBubble(reply, widgetHtml) {
+    const messages = document.getElementById('chat-messages');
+    const aiResponse = document.createElement('div');
+    aiResponse.className = 'flex justify-start mb-4 w-full';
+    aiResponse.innerHTML = '<div class="flex items-end gap-2.5 max-w-[92%]"><div class="w-7 h-7 shrink-0 mb-1 shadow-sm rounded-xl overflow-hidden"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ai-bubble px-5 py-3.5 rounded-3xl rounded-bl-sm text-[15px] font-medium tracking-tight">' + escapeHtml(reply) + (widgetHtml || '') + '</div></div>';
+    messages.appendChild(aiResponse);
+    return aiResponse;
+  }
+
+  function normalizeIntentText(text) {
+    // Buyuk harf eslemesi toLowerCase() ONCESINE alindi: eskiden zincir zaten kucuk
+    // harfe cevrilmis metinde calisiyordu, bu yuzden hicbir dal eslesmiyordu (ol kod).
+    // Ustelik Ğ ve Ş kaliplari kaynakta bir kez daha bozuk kodlanmis halde duruyordu.
+    return (text || '')
+      .replace(/İ/g, 'i').replace(/I/g, 'i').replace(/Ğ/g, 'g').replace(/Ü/g, 'u').replace(/Ş/g, 's').replace(/Ö/g, 'o').replace(/Ç/g, 'c')
+      .toLowerCase()
+      .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function currentAiCreateType() {
+    if (window.__nexusAiCreateType === 'automation') return 'automation';
+    try {
+      return new URLSearchParams(window.location.search).get('type') === 'automation' ? 'automation' : 'clickrun';
+    } catch (e) {
+      return 'clickrun';
+    }
+  }
+
+  function inferScenarioMeta(text) {
+    var clean = normalizeIntentText(text);
+    var isEn = window.nexusLang === 'en';
+    var meta = {
+      title: isEn ? 'Smart Home Routine' : 'Akıllı Ev Rutini',
+      desc: isEn ? 'Actionable routine built around your conditions.' : 'İstediğin koşullara göre hazırlanan uygulanabilir ev rutini.',
+      icon: 'zap',
+      bgClass: 'bg-[#4C7DFF]/10',
+      colorClass: 'text-[#4C7DFF]'
+    };
+    if (/sabah|gunaydin|uyan|morning|wake/.test(clean)) {
+      return { title: isEn ? 'Morning Routine' : 'Sabah Rutini', desc: isEn ? 'Prepares selected devices in order at the start of your day.' : 'Güne başlarken seçili cihazları sırayla hazırlar.', icon: 'sun', bgClass: 'bg-amber-500/10', colorClass: 'text-amber-500' };
+    }
+    if (/film|sinema|tv|dizi|movie|cinema|series/.test(clean)) {
+      return { title: isEn ? 'Movie Mode' : 'Sinema Modu', desc: isEn ? 'Prepares lights, blinds and media for your viewing ambiance.' : 'İzleme ortamı için ışık, perde ve medya adımlarını hazırlar.', icon: 'film', bgClass: 'bg-rose-500/10', colorClass: 'text-rose-500' };
+    }
+    if (/gece|uyku|iyi geceler|night|sleep|bed/.test(clean)) {
+      return { title: isEn ? 'Good Night' : 'İyi Geceler', desc: isEn ? 'Adjusts lights, notifications and security for the night.' : 'Gece için ışıkları, bildirimleri ve güvenlik adımlarını düzenler.', icon: 'moon', bgClass: 'bg-indigo-500/10', colorClass: 'text-indigo-500' };
+    }
+    if (/kahve|mutfak|coffee|kitchen/.test(clean)) {
+      return { title: isEn ? 'Coffee Time' : 'Kahve Saati', desc: isEn ? 'Prepares kitchen devices with one tap.' : 'Mutfak rutini için uygun cihazları tek dokunuşla hazırlar.', icon: 'coffee', bgClass: 'bg-orange-500/10', colorClass: 'text-orange-500' };
+    }
+    if (/disari|cikis|evden cik|tatil|leave|leaving|away|holiday|vacation/.test(clean)) {
+      return { title: isEn ? 'Leaving Home' : 'Evden Çıkış', desc: isEn ? 'Bundles energy and security checks when you depart.' : 'Evden ayrılırken enerji ve güvenlik kontrollerini toparlar.', icon: 'door-open', bgClass: 'bg-sky-500/10', colorClass: 'text-sky-500' };
+    }
+    if (/guven|kilit|alarm|kamera|security|lock|camera/.test(clean)) {
+      return { title: isEn ? 'Security Check' : 'Güvenlik Kontrolü', desc: isEn ? 'Reviews locks, alarms and camera states together.' : 'Kilit, alarm ve kamera durumlarını birlikte kontrol eder.', icon: 'shield-check', bgClass: 'bg-red-500/10', colorClass: 'text-red-500' };
+    }
+    if (/enerji|tasarruf|priz|energy|saving|plug/.test(clean)) {
+      return { title: isEn ? 'Energy Saving' : 'Enerji Tasarrufu', desc: isEn ? 'Runs energy steps to reduce unnecessary consumption.' : 'Gereksiz tüketimi azaltmak için enerji adımlarını çalıştırır.', icon: 'bolt', bgClass: 'bg-lime-500/10', colorClass: 'text-lime-600' };
+    }
+    if (/temiz|robot|supurge|clean|vacuum/.test(clean)) {
+      return { title: isEn ? 'Start Cleaning' : 'Temizlik Başlat', desc: isEn ? 'Launches cleaning devices in sequence and mode.' : 'Temizlik cihazlarını uygun sıra ve modla başlatır.', icon: 'leaf', bgClass: 'bg-emerald-500/10', colorClass: 'text-emerald-500' };
+    }
+    return meta;
+  }
+
+  /* Yerel komut asistanı (nexus-assistant.js): komutları eşleşmiş cihazlara gerçekten uygular */
+  var ACTION_TAGS = { dark: 'ENABLE_DARK_MODE', light: 'ENABLE_LIGHT_MODE', 'dnd-on': 'ENABLE_DND', 'dnd-off': 'DISABLE_DND', create: 'CREATE_SCENARIO' };
+  function buildReply(text) {
+    if (!window.nexusAssistant) return { reply: nexusT('Asistan yüklenemedi.', 'The assistant could not be loaded.'), widgetHtml: '' };
+    var r = window.nexusAssistant.reply(text);
+    var tag = r.action && ACTION_TAGS[r.action] ? ' [ACTION: ' + ACTION_TAGS[r.action] + ']' : '';
+    return {
+      reply: r.reply + tag,
+      widgetHtml: r.widget || '',
+      unknown: !!r.unknown,
+      lanItems: window.nexusAssistant.lanPending ? window.nexusAssistant.lanPending() : []
+    };
+  }
+
+  /* Yerel ağ komutunun gerçek sonucunu bekle: cihaza ulaşmadıysa balonun altına uyarı ekle.
+     ("komut gitti" demek yeterli değil; kullanıcı cihazın gerçekten değişip değişmediğini bilmeli.) */
+  function watchLanResult(items, bubbleEl) {
+    if (!items || !items.length || !window.nexusAssistant || !window.nexusAssistant.lanFailureNote || !window.nexusAssistant.lanSettled) return;
+    var waited = 0, step = 300, limit = 7000;
+    var timer = setInterval(function () {
+      waited += step;
+      var settled = window.nexusAssistant.lanSettled(items);
+      if (!settled && waited < limit) return;
+      clearInterval(timer);
+      var note = window.nexusAssistant.lanFailureNote(items);
+      if (!note || !bubbleEl || !bubbleEl.parentNode) return;
+      var bubble = bubbleEl.querySelector('.ai-bubble');
+      if (!bubble || bubble.querySelector('[data-lan-note]')) return;
+      var line = document.createElement('p');
+      line.setAttribute('data-lan-note', '1');
+      line.setAttribute('data-no-i18n', '');
+      line.className = 'nx-lan-note';
+      line.textContent = note;
+      bubble.appendChild(line);
+      // Komut cihaza ulaşamadı: kısa boğuk uyarı sesi
+      if (window.nexusFeedback) window.nexusFeedback.play('error');
+      scrollToBottom();
+    }, step);
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    hideGreeting();
+
+    const messages = document.getElementById('chat-messages');
+
+    appendUserBubble(text);
+    persistMessage('user', text);
+    input.value = '';
+    // "Gönderildi" kısa tık sesi (nexus-feedback.js; anahtar kapalıysa sessiz)
+    if (window.nexusFeedback) window.nexusFeedback.play('copy');
+    scrollToBottom();
+
+    // Show processing
+    const aiProcessing = document.createElement('div');
+    aiProcessing.className = 'flex justify-start mb-4 w-full ai-msg';
+    aiProcessing.innerHTML = '<div class="flex items-end gap-2.5 max-w-[92%]"><div class="w-7 h-7 shrink-0 mb-1 shadow-sm rounded-xl overflow-hidden"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ai-bubble px-5 py-3.5 rounded-3xl rounded-bl-sm text-[14px] flex gap-1 items-center"><span class="w-2 h-2 bg-purple-300 rounded-full animate-bounce"></span><span class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span><span class="w-2 h-2 bg-[#4C7DFF] rounded-full animate-bounce" style="animation-delay: 0.2s"></span></div></div>';
+    messages.appendChild(aiProcessing);
+    scrollToBottom();
+
+    function finishReply(r) {
+      if (aiProcessing.parentNode) aiProcessing.parentNode.removeChild(aiProcessing);
+      var aiText = r.reply;
+
+      // Parse Action Tags
+      const actionRegex = /\[ACTION:\s*([A-Z0-9_]+)\]/g;
+      const actions = [];
+      let match;
+      while ((match = actionRegex.exec(aiText)) !== null) {
+          actions.push(match[1]);
+      }
+
+      // Clean text
+      const cleanText = aiText.replace(actionRegex, '').trim();
+
+      // Execute actions
+      var additionalWidget = '';
+      var sysSetting = (window.nexusT ? nexusT('Sistem Ayarı', 'System Setting') : 'Sistem Ayarı');
+      var viewLabel = (window.nexusT ? nexusT('Görüntüle', 'View') : 'Görüntüle');
+      actions.forEach(action => {
+          if (action === 'ENABLE_DARK_MODE') {
+              document.documentElement.classList.add('dark');
+              nexusSetItem('nexusDarkMode', 'true');
+              window.dispatchEvent(new Event('themeChanged'));
+              var darkMsg = (window.nexusT ? nexusT('Karanlık tema aktif edildi', 'Dark theme enabled') : 'Karanlık tema aktif edildi');
+              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white dark:bg-slate-800 rounded-lg text-slate-800 dark:text-white"><i data-lucide="moon" class="w-5 h-5"></i></div><div><p class="text-sm font-semibold text-gray-800 dark:text-white">' + sysSetting + '</p><p class="text-xs text-gray-500 dark:text-slate-400">' + darkMsg + '</p></div></div>';
+          } else if (action === 'ENABLE_LIGHT_MODE') {
+              document.documentElement.classList.remove('dark');
+              nexusSetItem('nexusDarkMode', 'false');
+              window.dispatchEvent(new Event('themeChanged'));
+              var lightMsg = (window.nexusT ? nexusT('Açık tema aktif edildi', 'Light theme enabled') : 'Açık tema aktif edildi');
+              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] border border-slate-200 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white rounded-lg text-amber-500"><i data-lucide="sun" class="w-5 h-5"></i></div><div><p class="text-sm font-semibold text-gray-800">' + sysSetting + '</p><p class="text-xs text-gray-500">' + lightMsg + '</p></div></div>';
+          } else if (action === 'ENABLE_DND') {
+              nexusSetItem('nexusDndState', 'Açık');
+              // notify.js dndActive() nexusDndActive/nexusDndEndTime okur; yalnız
+              // nexusDndState yazılıyorsa asistan "sessize aldım" derken dış
+              // kanallar (ntfy/Telegram/sistem) susturulmamış oluyordu.
+              nexusSetItem('nexusDndActive', 'true');
+              var dndOnMsg = (window.nexusT ? nexusT('Rahatsız etme modu açıldı', 'Do not disturb enabled') : 'Rahatsız etme modu açıldı');
+              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white dark:bg-slate-800 rounded-lg text-[#FF3B5C]"><i data-lucide="bell-off" class="w-5 h-5"></i></div><div><p class="text-sm font-semibold text-gray-800 dark:text-white">' + sysSetting + '</p><p class="text-xs text-gray-500 dark:text-slate-400">' + dndOnMsg + '</p></div></div>';
+          } else if (action === 'DISABLE_DND') {
+              nexusSetItem('nexusDndState', 'Kapalı');
+              nexusSetItem('nexusDndActive', 'false');
+              var dndOffMsg = (window.nexusT ? nexusT('Rahatsız etme modu kapatıldı', 'Do not disturb disabled') : 'Rahatsız etme modu kapatıldı');
+              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-3 flex items-center gap-3"><div class="p-2 bg-white dark:bg-slate-800 rounded-lg text-[#4C7DFF]"><i data-lucide="bell" class="w-5 h-5"></i></div><div><p class="text-sm font-semibold text-gray-800 dark:text-white">' + sysSetting + '</p><p class="text-xs text-gray-500 dark:text-slate-400">' + dndOffMsg + '</p></div></div>';
+          } else if (action === 'CREATE_SCENARIO') {
+              var targetType = currentAiCreateType();
+              var targetKey = targetType === 'automation' ? 'nexusCustomAutomations' : 'nexusCustomClickRun';
+              var targetTab = targetType === 'automation' ? 'tab-automation' : 'tab-clickrun';
+              var targetLabel = targetType === 'automation' ? (window.nexusT ? nexusT('Otomasyonlar listesine eklendi', 'Added to Automations') : 'Otomasyonlar listesine eklendi') : (window.nexusT ? nexusT('Tıkla ve Çalıştır listesine eklendi', 'Added to Tap to Run') : 'Tıkla ve Çalıştır listesine eklendi');
+              var items = [];
+              try {
+                items = typeof readAndNormalizeItems === 'function'
+                  ? readAndNormalizeItems(targetKey, targetType)
+                  : (JSON.parse(nexusGetItem(targetKey) || '[]') || []);
+              } catch(e) {}
+              var newId = 'ai-scene-' + Date.now();
+              var meta = inferScenarioMeta(text);
+
+              items.push({
+                id: newId,
+                title: meta.title,
+                desc: meta.desc,
+                icon: meta.icon,
+                bgClass: meta.bgClass,
+                colorClass: meta.colorClass,
+                room: (window.nexusT ? nexusT('Tüm Ev', 'Whole Home') : 'Tüm Ev'),
+                enabled: true,
+                source: 'ai-offline'
+              });
+              if (typeof writeNormalizedItems === 'function') {
+                writeNormalizedItems(targetKey, items, targetType);
+              } else {
+                nexusSetItem(targetKey, JSON.stringify(items));
+              }
+
+              additionalWidget += '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-blue-200 dark:border-blue-500/30 rounded-xl p-3 flex items-center justify-between gap-3"><div class="flex items-center gap-3 min-w-0"><div class="p-2 ' + meta.bgClass + ' rounded-lg ' + meta.colorClass + '"><i data-lucide="' + meta.icon + '" class="w-5 h-5"></i></div><div class="min-w-0"><p class="text-sm font-semibold text-gray-800 dark:text-white truncate">' + escapeHtml(meta.title) + '</p><p class="text-xs text-gray-500 dark:text-slate-400">' + targetLabel + '</p></div></div><a href="nexus-smart.html?tab=' + targetTab + '" class="shrink-0 text-xs font-bold text-[#4C7DFF] bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-blue-100 dark:border-slate-600 shadow-sm active:scale-95 transition-all">' + viewLabel + '</a></div>';
+          }
+      });
+
+      var finalWidget = (r.widgetHtml || '') + additionalWidget;
+
+      var bubbleEl = appendAiBubble(cleanText, finalWidget);
+      persistMessage('ai', cleanText); // Save clean text to history
+      // Yanıt geldi: kısa iki nota onay (hata notu ayrıca 'error' çalar)
+      if (window.nexusFeedback) window.nexusFeedback.play('success');
+      scrollToBottom();
+
+      if (additionalWidget && typeof lucide !== 'undefined') {
+          lucide.createIcons(); // re-init icons for the new widgets
+      }
+
+      watchLanResult(r.lanItems, bubbleEl);
+    }
+    setTimeout(function () {
+      var r = buildReply(text);
+      if (r.unknown && window.nexusAssistant && window.nexusAssistant.ask) {
+        if (pointsLeft() === 0) { r.reply = window.nexusPoints.exhaustedText() + '. ' + r.reply; finishReply(r); return; }
+        window.nexusAssistant.ask(text).then(function (ai) { if (ai) { r.reply = ai; usePoint(); updateInputLock(); } finishReply(r); });
+      } else { finishReply(r); }
+    }, 700);
+  }
+
+  function syncAttachMenuLang() {
+    var isEn = window.nexusLang === 'en';
+    var menu = document.getElementById('attach-menu');
+    if (!menu) return;
+    if (isEn) {
+      menu.setAttribute('aria-label', 'Attachment options');
+      var labels = menu.querySelectorAll('.attach-label');
+      if (labels[0]) labels[0].textContent = 'Photo from gallery';
+      if (labels[1]) labels[1].textContent = 'Take photo';
+      if (labels[2]) labels[2].textContent = 'Ask my devices';
+    }
+  }
+
+  function toggleAttachMenu(forceState) {
+    var menu = document.getElementById('attach-menu');
+    var backdrop = document.getElementById('attach-backdrop');
+    var btn = menu.parentElement.querySelector('button[aria-label="Ek ekle"]');
+    var show = typeof forceState === 'boolean' ? forceState : menu.classList.contains('hidden');
+    if (show) syncAttachMenuLang();
+    menu.classList.toggle('hidden', !show);
+    backdrop.classList.toggle('hidden', !show);
+    if (btn) btn.setAttribute('aria-expanded', String(show));
+  }
+
+  function attachChoice(kind) {
+    toggleAttachMenu(false);
+    if (kind === 'ask') {
+      var input = document.getElementById('chat-input');
+      input.value = (window.nexusT ? nexusT('Evimdeki cihazların durumu nedir?', 'What is the status of my devices?') : 'Evimdeki cihazların durumu nedir?');
+      input.focus();
+      return;
+    }
+    var picker = document.getElementById(kind === 'camera' ? 'chat-camera' : 'chat-file');
+    if (picker) picker.click();
+  }
+
+  function appendUserImage(dataUrl, name) {
+    var messages = document.getElementById('chat-messages');
+    var wrap = document.createElement('div');
+    wrap.className = 'flex justify-end mb-4 w-full';
+    wrap.innerHTML = '<div class="max-w-[70%]"><img src="' + dataUrl + '" alt="' + escapeHtml(name) + '" class="rounded-2xl rounded-tr-sm shadow-sm border border-gray-100 w-full object-cover"/></div>';
+    messages.appendChild(wrap);
+  }
+
+  function handleAttachment(e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!/^image\//.test(file.type)) { e.target.value = ''; return; }
+    hideGreeting();
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      appendUserImage(ev.target.result, file.name);
+      persistMessage('user', (window.nexusT ? nexusT('[Görsel: ', '[Image: ') : '[Görsel: ') + file.name + ']');
+      scrollToBottom();
+      setTimeout(function () {
+        var reply = nexusT('Görselini aldım ama şu an görselleri analiz edemiyorum. Cihazların ve uygulama hakkında yazarak yardım isteyebilirsin.', 'I received your image but I can not analyse images yet. You can ask me about your devices and the app in text.');
+        appendAiBubble(reply, '');
+        persistMessage('ai', reply);
+        scrollToBottom();
+      }, 1200);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  }
+
+  function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+  }
+
+  function scrollToBottom() {
+    const messages = document.getElementById('chat-messages');
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function autoSendIncomingPrompt() {
+    var params = new URLSearchParams(window.location.search);
+    var promptText = (params.get('promptText') || '').trim();
+    var promptId = (params.get('promptId') || '').trim();
+    var helper = (params.get('helper') || '').trim();
+    if (!promptText && helper === 'ready') {
+      promptText = 'Evdeki cihazlara göre hazır komutlar, hızlı otomasyonlar ve akıllı uygulama önerileri ver.';
+    }
+    if (!promptText && promptId && typeof window.getSmartPromptById === 'function') {
+      var promptItem = window.getSmartPromptById(promptId);
+      if (promptItem && promptItem.prompt) {
+        promptText = promptItem.prompt;
+      }
+    }
+    if (!promptText) return;
+    if (typeof window.nexusTr === 'function') promptText = window.nexusTr(promptText);
+    setTimeout(function () {
+      var input = document.getElementById('chat-input');
+      if (!input || input.disabled) return;
+      input.value = promptText;
+      sendMessage();
+      if (window.history && window.history.replaceState) {
+        var cleanUrl = window.location.pathname + (currentChatId ? ('?chat=' + encodeURIComponent(currentChatId)) : '');
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }, 250);
+  }
+
+  /* Sayfa açılışı: ?chat=<id> varsa geçmişi geri yükle, yoksa yeni konuşma */
+  (function initChat() {
+    // Karşılamayı kullanıcının adıyla kişiselleştir (gerçek veri: nexusUserName)
+    var fn = userFirstName();
+    var greetH1 = document.querySelector('#hero-greeting h1');
+    if (greetH1) {
+      var howHelp = window.nexusT ? nexusT('Nasıl yardımcı olabilirim?', 'How can I help you?') : 'Nasıl yardımcı olabilirim?';
+      greetH1.innerHTML = fn
+        ? ((window.nexusT ? nexusT('Tekrar hoş geldin, ', 'Welcome back, ') : 'Tekrar hoş geldin, ') + escapeHtml(fn) + '!<br/>' + howHelp)
+        : ((window.nexusT ? nexusT('Tekrar görüşmek güzel!', 'Great to see you again!') : 'Tekrar görüşmek güzel!') + '<br/>' + howHelp);
+    }
+    var params = new URLSearchParams(window.location.search);
+    window.__nexusAiCreateType = params.get('type') === 'automation' ? 'automation' : 'clickrun';
+    var requested = params.get('chat');
+    if (requested) {
+      var list = loadChats();
+      var chat = null;
+      for (var i = 0; i < list.length; i++) if (list[i].id === requested) { chat = list[i]; break; }
+      if (chat && chat.messages.length) {
+        currentChatId = chat.id;
+        hideGreeting();
+        chat.messages.forEach(function (m) {
+          if (m.role === 'user') appendUserBubble(m.text);
+          else appendAiBubble(m.text, '');
+        });
+        setTimeout(scrollToBottom, 0);
+      } else {
+        currentChatId = requested;
+      }
+    } else {
+      currentChatId = 'c' + Date.now() + Math.random().toString(36).slice(2, 7);
+    }
+    function run() {
+      syncAttachMenuLang();
+      updateInputLock();
+      autoSendIncomingPrompt();
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
+  })();
+</script>
+<!-- END: MainContent -->
+
+  <!-- Önceden burada chip satırı scrollLeft ile ortalanıyordu; bu, ilk öneri çiplerini
+       ekranın soluna taşıp erişilemez kılıyordu (telefon/tablette "Film Modu" kesik görünüyordu).
+       Satır artık doğal başlangıcında (scrollLeft 0) duruyor; sağdaki kesik kenarı nx-fade-x yumuşatıyor. -->
+</body>
+</html>
+
+

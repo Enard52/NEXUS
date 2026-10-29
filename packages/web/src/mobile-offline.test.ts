@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
- * NEXUS mobil yüzeyleri (kök stitch-*.html) Capacitor WebView içinde `https://localhost`
+ * NEXUS mobil yüzeyleri (kök nexus-*.html) Capacitor WebView içinde `https://localhost`
  * originsiyle açılır ve ev ağı dışında da çalışmalıdır. Bu test, yayını engelleyen
  * Offline/CDN gerilemelerini kalıcı olarak yakalar:
  *  - harici script/stylesheet/font yüklenmesi (ağ kesilirse ekran bozulur),
@@ -17,7 +17,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..", "..", "..");
 
 const SCREENS = readdirSync(join(REPO_ROOT, "src", "app")).filter(
-  (f) => f.startsWith("stitch-") && f.endsWith(".html"),
+  (f) => f.startsWith("nexus-") && f.endsWith(".html"),
 );
 
 /** src= ve stylesheet href= hedefleri; normal <a href> linkleri kasıtlı harici olabilir. */
@@ -59,7 +59,7 @@ function resolvesLocally(ref: string): boolean {
 }
 
 describe("mobil ekranlar — offline yüklenme Sözleşmesi", () => {
-  it("kök stitch ekranlarını tarayacak kadar çok sayfayı bulur", () => {
+  it("kök nexus ekranlarını tarayacak kadar çok sayfayı bulur", () => {
     expect(SCREENS.length).toBeGreaterThan(40);
   });
 

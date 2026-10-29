@@ -3,7 +3,7 @@ param (
     [string]$rootPath = (Split-Path -Parent $PSScriptRoot)
 )
 
-$files = Get-ChildItem -Path $rootPath -Filter "stitch-*.html" -File -Recurse | 
+$files = Get-ChildItem -Path $rootPath -Filter "nexus-*.html" -File -Recurse | 
          Where-Object { 
              $_.FullName -notmatch '\\backup_html\\' -and 
              $_.FullName -notmatch '\\mobile-app\\' -and 

@@ -8,7 +8,7 @@ async function main() {
 
   const failures = [];
 
-  await page.goto(baseUrl + "/stitch-smart.html", { waitUntil: "domcontentloaded" });
+  await page.goto(baseUrl + "/nexus-smart.html", { waitUntil: "domcontentloaded" });
   await page.evaluate(() => {
     localStorage.clear();
     localStorage.setItem(
@@ -78,7 +78,7 @@ async function main() {
     failures.push("Expected Automation filters to exist.");
   }
 
-  await page.goto(baseUrl + "/stitch-chat.html?promptText=Merhaba%20NEXUS", {
+  await page.goto(baseUrl + "/nexus-chat.html?promptText=Merhaba%20NEXUS", {
     waitUntil: "domcontentloaded",
   });
   await page.waitForTimeout(1800);
@@ -87,7 +87,7 @@ async function main() {
     failures.push("Expected chat to auto-send a ready prompt from the query string.");
   }
 
-  await page.goto(baseUrl + "/stitch-home.html", { waitUntil: "domcontentloaded" });
+  await page.goto(baseUrl + "/nexus-home.html", { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(300);
   const helperActionCount = await page.locator("[data-ai-helper-action]").count();
   if (helperActionCount < 1) {

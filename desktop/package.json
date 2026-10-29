@@ -28,7 +28,7 @@
   "build": {
     "appId": "app.nexus.desktop",
     "productName": "NEXUS",
-    "copyright": "Â© 2026 NEXUS",
+    "copyright": "© 2026 NEXUS",
     "directories": {
       "output": "dist",
       "buildResources": "resources"

@@ -25,7 +25,7 @@
       availability: "all",
       note: "Yerel RPC API (Gen2/Gen3)",
       models: [
-        { name: "Shelly Plus 1PM", img: "control-single-wall-switch.png", caps: ["switch", "energy"] },
+        { name: "Shelly Plus 1PM", aliases: ["anahtar"], img: "control-single-wall-switch.png", caps: ["switch", "energy"] },
         { name: "Shelly Plus Plug S", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
         { name: "Shelly Dimmer Gen3", img: "control-dimmer-knob.png", caps: ["switch", "brightness"] },
       ],
@@ -90,8 +90,8 @@
       availability: "all",
       note: "web_server bileşeniyle — DIY cihazlar",
       models: [
-        { name: "ESPHome Röle Paneli", img: "generic-power-strip.png", caps: ["switch"] },
-        { name: "ESPHome Hava Sensörü", img: "generic-air-quality.png", caps: ["temperature", "humidity"] },
+        { name: "ESPHome Röle Paneli", aliases: ["çoklu priz"], img: "generic-power-strip.png", caps: ["switch"] },
+        { name: "ESPHome Hava Sensörü", aliases: ["hava kalitesi", "sıcaklık ve nem sensörü"], img: "generic-air-quality.png", caps: ["temperature", "humidity"] },
       ],
     },
     {
@@ -113,7 +113,7 @@
         { name: "Home Assistant Işık", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
         { name: "Home Assistant Priz / Anahtar", img: "generic-smart-plug.png", caps: ["switch"] },
         { name: "Home Assistant Perde", img: "control-curtain-motor.png", caps: ["cover"] },
-        { name: "Home Assistant Klima / Termostat", img: "generic-air-conditioner.png", caps: ["switch", "temperature"] },
+        { name: "Home Assistant Klima / Termostat", aliases: ["klima"], img: "generic-air-conditioner.png", caps: ["switch", "temperature"] },
         { name: "Home Assistant Kilit", img: "security-keypad-lock.png", caps: ["lock"] },
         { name: "Home Assistant Robot Süpürge", img: "generic-robot-vacuum.png", caps: ["vacuum"] },
       ],
@@ -156,10 +156,14 @@
   // Sıra önemli: özel eşleşmeler genel olanlardan önce gelir. Desenler küçük harf
   // (tr-TR) metne uygulanır.
   var CAP_HINTS = [
+    // Yük anahtarlamayan düğmeler, kumandalar ve titreşim sensörü; duvar anahtarı/hareket sensöründen ayrı işlevlerdir.
+    { test: /thermostat switch|termostat anahtar/, caps: ["switch", "temperature"], img: "control-thermostat-switch.png" },
+    { test: /kablosuz anahtar|akıllı buton|senaryo anahtar|uyandırma anahtar|kumanda/, caps: ["button"], img: "control-wireless-button.png" },
+    { test: /titreşim|vibration/, caps: ["sensor"], img: "generic-motion-sensor.png" },
     { test: /aydınlatma sensör|ışık sensör|lux/, caps: ["illuminance"], img: "generic-motion-sensor.png" },
     { test: /basınç sensör|çok fonksiyonlu sensör|meteoroloji/, caps: ["sensor"], img: "generic-pressure-sensor.png" },
     { test: /projektör|projeksiyon/, caps: ["switch", "media"], img: "generic-projector.png" },
-    { test: /priz/, caps: ["switch", "energy"], img: "generic-smart-plug.png" },
+    { test: /priz|plug/, caps: ["switch", "energy"], img: "generic-smart-plug.png" },
     { test: /evcil|pet feeder|kedi kumu|akvaryum|aquarium|balık besleyici/, caps: ["switch", "pet"], img: "misc-pet-feeder.png" },
     { test: /bebek|beşik|mama hazırlayıcı|göğüs pompa|biberon/, caps: ["baby"], img: "misc-baby-monitor.png" },
     { test: /tansiyon|oksimetre|ateş ölçer|bileklik|uyku|yastık|akıllı yatak|diş fırça|yüz temizley|yüz buhar|saç kurutma|masaj|ayak küvet|fizyoterapi|egzersiz aynası|kanepe|çalar saat|dinlenme ışığı|otoskop/, caps: ["health"], img: "health-smart-band.png" },
@@ -171,7 +175,9 @@
     { test: /kamera|camera|gözetim|kapı zili|doorbell|nvr|dvr|video baz/, caps: ["camera"], img: "security-indoor-camera.png" },
     { test: /kilit|kilid|lock|kasa|turnike|gating|smart door|anahtar kutusu/, caps: ["lock"], img: "security-keypad-lock.png" },
     { test: /duman|gaz dedekt|co dedekt|karbonmonoksit|su basma|sızıntı|siren|alarm|acil durum|organik bileşik/, caps: ["alarm"], img: "security-smoke-detector.png" },
-    { test: /perde|panjur|curtain|blind|garaj/, caps: ["switch", "cover"], img: "control-curtain-motor.png" },
+    // Garaj/kapı açıcılar perdeden ayrı bir işlevdir (henüz desteklenen model yok).
+    { test: /garaj|kapı açıcı|gate/, caps: ["switch", "cover"], img: "control-garage-remote.png" },
+    { test: /perde|panjur|curtain|blind/, caps: ["switch", "cover"], img: "control-curtain-motor.png" },
     { test: /şerit|strip|rgb|ambiyans|ortam ışığı/, caps: ["switch", "brightness", "color"], img: "generic-led-strip.png" },
     { test: /dimmer/, caps: ["switch", "brightness"], img: "control-dimmer-knob.png" },
     { test: /tavan|avize|ceiling|armatür/, caps: ["switch", "brightness"], img: "generic-ceiling-light.png" },
@@ -254,5 +260,43 @@
       }
     }
     return { brand: "", protocol: "unknown", caps: ["other"], img: "generic-smart-hub.png" };
+  };
+
+  // Katalogdaki bir ürün (ad + grup) desteklenen bir modelle AYNI işlevde mi?
+  // Destek tek kaynaktan türetilir: NEXUS_SUPPORTED_DEVICES'a yeni model eklendiğinde ilgili
+  // katalog ürünleri kendiliğinden görünür; katalog verisi silinmez.
+  // İşlev = CAP_HINTS sırası (ör. priz, ampul, anahtar, hareket sensörü). Bir model, adının düştüğü
+  // işleve ve görselinin ait olduğu ilk işleve kaydedilir. Wake-on-LAN ağ geçidi değildir.
+  function hintIndexOf(label) {
+    for (var k = 0; k < CAP_HINTS.length; k++) if (CAP_HINTS[k].test.test(label)) return k;
+    return -1;
+  }
+  var supportedFnCache = null;
+  function supportedFunctions() {
+    var total = 0;
+    NEXUS_SUPPORTED_DEVICES.forEach(function (g) { total += g.models.length; });
+    if (supportedFnCache && supportedFnCache.total === total) return supportedFnCache.set;
+    var set = {};
+    NEXUS_SUPPORTED_DEVICES.forEach(function (g) {
+      g.models.forEach(function (m) {
+        if (m.img === "generic-smart-hub.png") return;
+        // Model adı ve (varsa) işlev takma adları: adı hiçbir işleve düşmeyen modeller için.
+        [m.name].concat(m.aliases || []).forEach(function (label) {
+          var idx = hintIndexOf(String(label).toLocaleLowerCase("tr-TR"));
+          if (idx >= 0) set[idx] = 1;
+        });
+      });
+    });
+    supportedFnCache = { total: total, set: set };
+    return set;
+  }
+  window.nexusIsSupported = function (name, groupTitle) {
+    for (var i = 0; i < NEXUS_SUPPORTED_DEVICES.length; i++) {
+      for (var j = 0; j < NEXUS_SUPPORTED_DEVICES[i].models.length; j++) {
+        if (NEXUS_SUPPORTED_DEVICES[i].models[j].name === name) return true;
+      }
+    }
+    var idx = hintIndexOf((String(name || "") + " " + String(groupTitle || "")).toLocaleLowerCase("tr-TR"));
+    return idx >= 0 && !!supportedFunctions()[idx];
   };
 })();

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
+  <title>Nexus AI: Karşılama</title>
+
+  <link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+  <link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style data-purpose="custom-layouts">
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .btn-primary {
+      background-color: #4C7DFF;
+      box-shadow: 0 4px 12px rgba(76, 125, 255, 0.28);
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s;
+    }
+    .btn-primary:active {
+      transform: scale(0.98);
+      background-color: #3F6FFF;
+    }
+
+    .card-shadow {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Dikey fotoğraflar kartta tam görünür; boşluklar aynı fotoğrafın
+       bulanık kopyasıyla dolarak yatay slaytlarla aynı dolu-kart hissini verir. */
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(16px);
+      transform: scale(1.2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .slide-bg.active { opacity: 1; }
+    #slide-image { position: relative; z-index: 1; }
+    #slide-image.img-portrait { object-fit: contain; }
+  </style>
+
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body class="flex flex-col items-center text-slate-900 relative min-h-[100dvh]">
+
+  <div id="slide-container" class="relative flex flex-col min-h-[100dvh] items-center justify-center px-6 py-4 w-full max-w-md mx-auto my-auto box-border">
+    <!-- Skip Button (Top Right of container) -->
+    <button id="skip-btn" class="absolute top-4 right-4 z-50 px-3 py-1.5 text-[#4C7DFF] font-bold tracking-wide rounded-full hover:bg-white/40 active:scale-95 transition-all cursor-pointer" onclick="goToLogin()">
+      Geç
+    </button>
+    <!-- Header -->
+    <header class="w-full text-center mt-2 flex flex-col items-center shrink-0">
+      <div class="w-14 h-14 mb-2 drop-shadow-sm">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="NEXUS logo">
+          <defs>
+            <linearGradient id="nxlogo" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6f9bff"/><stop offset="0.55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/>
+            </linearGradient>
+            <linearGradient id="nxsheen" x1="16" y1="1" x2="16" y2="17" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffffff" stop-opacity="0.30"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxlogo)"/>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nxsheen)"/>
+          <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
+          <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-extrabold tracking-tight">NEXUS AI</h1>
+      <h2 id="slide-subtitle" class="text-base font-semibold text-[#4C7DFF] mt-0.5 transition-opacity duration-300">Geleceğin Evi</h2>
+    </header>
+
+    <!-- Main Content (Image + Text) -->
+    <main class="flex flex-col items-center justify-start w-full mt-3 shrink-0" id="slide-content">
+      <div class="w-full mb-3 rounded-3xl overflow-hidden glass-panel border border-white/50 card-shadow p-2.5 relative h-44 sm:h-48 shrink-0">
+        <img id="slide-bg" aria-hidden="true" alt="" class="slide-bg"/>
+        <img id="slide-image" alt="Onboarding Image" class="w-full h-full object-cover rounded-2xl transition-opacity duration-300" src="assets/photos/photo-1558002038-1055907df827.jpg"/>
+      </div>
+
+      <!-- Indicators -->
+      <div class="flex gap-2 mb-3" id="indicators"></div>
+
+      <!-- Description -->
+      <div class="text-center px-2 min-h-[3.5rem] flex items-start justify-center mb-4">
+        <p id="slide-desc" class="text-sm sm:text-base text-slate-700 leading-relaxed font-medium transition-opacity duration-300">Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın.</p>
+      </div>
+
+      <!-- Button exactly below description -->
+      <div class="w-full max-w-[280px] mb-2">
+        <button id="next-btn" class="btn-primary w-full py-3.5 rounded-full text-white text-base font-bold focus:outline-none shadow-md" onclick="nextSlide()">
+          İleri
+        </button>
+      </div>
+    </main>
+  </div>
+
+<script>
+  const slides = [
+    {
+      subtitle: "Geleceğin Evi",
+      image: "assets/photos/photo-1558002038-1055907df827.jpg",
+      desc: "Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın."
+    },
+    {
+      subtitle: "Akıllı Kontrol",
+      image: "assets/photos/photo-1565814329452-e1efa11c5b89.jpg",
+      desc: "Tüm cihazlarınızı tek bir merkezden, sesinizle veya otomatik senaryolarla yönetin."
+    },
+    {
+      subtitle: "Kişisel Asistan",
+      image: "assets/photos/photo-1618221195710-dd6b41faaea6.jpg",
+      desc: "NEXUS AI alışkanlıklarınızı öğrenir ve evinizi size özel mükemmel bir yaşam alanına dönüştürür."
+    }
+  ];
+
+  let currentIndex = 0;
+
+  const subtitleEl = document.getElementById('slide-subtitle');
+  const imageEl = document.getElementById('slide-image');
+  const bgEl = document.getElementById('slide-bg');
+  const descEl = document.getElementById('slide-desc');
+  const indicatorsEl = document.getElementById('indicators');
+  const nextBtn = document.getElementById('next-btn');
+  const skipBtn = document.getElementById('skip-btn');
+
+  // Dikey fotoğrafta kırpma yerine tam gösterim: arkaya aynı fotoğrafın
+  // bulanık kopyası konur, yatay fotoğraflar olduğu gibi kaplamaya devam eder.
+  imageEl.addEventListener('load', function () {
+    const portrait = imageEl.naturalHeight > imageEl.naturalWidth;
+    imageEl.classList.toggle('img-portrait', portrait);
+    bgEl.src = imageEl.src;
+    bgEl.classList.toggle('active', portrait);
+  });
+
+  function renderSlide(index) {
+    // Fade out
+    subtitleEl.style.opacity = "0";
+    imageEl.style.opacity = "0";
+    descEl.style.opacity = "0";
+
+    setTimeout(function() {
+      const slide = slides[index];
+      subtitleEl.textContent = slide.subtitle;
+      imageEl.src = slide.image;
+      descEl.textContent = slide.desc;
+
+      // Update indicators
+      let indHtml = "";
+      for (let i = 0; i < slides.length; i++) {
+        if (i === index) {
+          indHtml += '<div class="h-2 rounded-full transition-all duration-300 w-6 bg-[#4C7DFF]"></div>';
+        } else {
+          indHtml += '<div class="h-2 rounded-full transition-all duration-300 w-2 bg-slate-300"></div>';
+        }
+      }
+      indicatorsEl.innerHTML = indHtml;
+
+      // Update buttons
+      if (index === slides.length - 1) {
+        nextBtn.textContent = "Hemen Başla";
+        skipBtn.classList.add("hidden");
+      } else {
+        nextBtn.textContent = "İleri";
+        skipBtn.classList.remove("hidden");
+      }
+
+      // Fade in
+      subtitleEl.style.opacity = "1";
+      imageEl.style.opacity = "1";
+      descEl.style.opacity = "1";
+    }, 200); // reduced timeout for snappier feeling
+  }
+
+  function nextSlide() {
+    if (currentIndex < slides.length - 1) {
+      currentIndex++;
+      renderSlide(currentIndex);
+    } else {
+      goToLogin();
+    }
+  }
+
+  function goToLogin() {
+    window.location.replace('nexus-login.html');
+  }
+
+  // Preload images for smooth transition
+  slides.forEach(function(s) {
+    const img = new Image();
+    img.src = s.image;
+  });
+
+  // Init
+  renderSlide(0);
+</script>
+</body>
+</html>
+

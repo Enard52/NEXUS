@@ -4,7 +4,7 @@
   "description": "Akıllı evin, kendi ağında, senin kontrolünde. / Your smart home, on your own network.",
   "lang": "tr",
   "dir": "ltr",
-  "start_url": "stitch-home.html",
+  "start_url": "nexus-home.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

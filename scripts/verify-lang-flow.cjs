@@ -9,7 +9,7 @@ const { chromium } = require("playwright");
     timezoneId: "America/New_York"
   });
   const usPage = await usContext.newPage();
-  await usPage.goto("http://127.0.0.1:8766/stitch-settings.html", { waitUntil: "networkidle" });
+  await usPage.goto("http://127.0.0.1:8766/nexus-settings.html", { waitUntil: "networkidle" });
   const usLang = await usPage.evaluate(() => window.nexusLang);
   const usHomeLang = await usPage.evaluate(() => window.nexusHomeLang);
   const usRow = await usPage.$("#language-row");
@@ -24,7 +24,7 @@ const { chromium } = require("playwright");
     timezoneId: "Europe/Istanbul"
   });
   const trPage = await trContext.newPage();
-  await trPage.goto("http://127.0.0.1:8766/stitch-settings.html", { waitUntil: "networkidle" });
+  await trPage.goto("http://127.0.0.1:8766/nexus-settings.html", { waitUntil: "networkidle" });
   const trLang = await trPage.evaluate(() => window.nexusLang);
   const trHomeLang = await trPage.evaluate(() => window.nexusHomeLang);
   const trRow = await trPage.$("#language-row");

@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-// Issue #1 kabuk standardı: tüm stitch ekranları tek başlık ritmi (pt/pb
+// Issue #1 kabuk standardı: tüm nexus ekranları tek başlık ritmi (pt/pb
 // 48/16) ve tek sütun ailesinde olmalı. scripts/measure-layout.mjs --check
 // ihlalde 1 döner; burada sürece bağlanır (CI'sız da koruma sağlar).
 // vitest kök dizinden çalışır; betik oraya göre çözülür.

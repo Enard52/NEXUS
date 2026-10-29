@@ -5,7 +5,7 @@
  * diğer ayarlar cihaz kaydında (state) tutulur.
  */
 (function () {
-  var IMAGE_VERSION = "20261023-products-8";
+  var IMAGE_VERSION = "20261029-products-10";
 
   var IMAGE_RENAMES = {
     // Eski katalog JPG'leri (düz mavi arka planlı) şeffaf PNG ürün görselleriyle değiştirildi; kayıtlı cihazlar da düzelsin.
@@ -29,7 +29,40 @@
     "sport-wrist-ball-v2.png": "sport-wrist-ball-v3.png",
     "generic-wall-switch.png": "control-single-wall-switch.png",
     "generic-door-lock.png": "security-keypad-lock.png",
-    "generic-indoor-camera.png": "security-indoor-camera.png"
+    "generic-indoor-camera.png": "security-indoor-camera.png",
+    // Gerçek ürün fotoğrafı olmayan eski düz ikonlar kaldırıldı; bu adlarla kayıtlı cihazlar işlevine uygun fotoğrafı gösterir.
+    "air-conditioner.png": "generic-air-conditioner.png",
+    "air-quality.png": "generic-air-quality.png",
+    "camera.png": "security-indoor-camera.png",
+    "dishwasher.png": "generic-dishwasher.png",
+    "door-lock.png": "security-keypad-lock.png",
+    "door-sensor.png": "security-door-sensor.png",
+    "fan.png": "generic-fan.png",
+    "fridge.png": "generic-refrigerator.png",
+    "humidifier.png": "generic-humidifier.png",
+    "idea.png": "generic-led-bulb.png",
+    "light.png": "generic-led-bulb.png",
+    "light-on.png": "generic-led-bulb.png",
+    "light-automation.png": "generic-led-bulb.png",
+    "motion-detector.png": "generic-motion-sensor.png",
+    "power-strip.png": "generic-power-strip.png",
+    "robot.png": "generic-robot-vacuum.png",
+    "vacuum-cleaner.png": "generic-robot-vacuum.png",
+    "solar-panel.png": "generic-solar-panel.png",
+    "speaker.png": "generic-smart-speaker.png",
+    "switch.png": "control-single-wall-switch.png",
+    "temperature.png": "generic-temp-humidity.png",
+    "temperature-inside.png": "generic-temp-humidity.png",
+    "thermometer.png": "generic-temp-humidity.png",
+    "tv.png": "generic-smart-tv.png",
+    "tv-show.png": "generic-smart-tv.png",
+    "monitor.png": "generic-smart-tv.png",
+    "washing-machine.png": "generic-washing-machine.png",
+    "wifi-router.png": "generic-router.png",
+    "bridge.png": "generic-smart-hub.png",
+    "hub.png": "generic-smart-hub.png",
+    "zigbee.png": "generic-smart-hub.png",
+    "home-automation.png": "generic-smart-hub.png"
   };
 
   function readDevices() {
@@ -246,7 +279,10 @@
         var pos = clamp(st.position, 0, 100, 0);
         return { text: pos === 0 ? "Kapalı" : pos === 100 ? "Tamamen açık" : "%" + pos + " açık", badge: pos > 0 ? "on" : "idle" };
       case "lock":
-        return st.locked === false ? { text: "Kilit açık", badge: "warn" } : { text: "Kilitli", badge: "ok" };
+        // Durum cihazdan okunmadıysa "Kilitli" demek yanlış güvence verir.
+        if (st.locked === true) return { text: "Kilitli", badge: "ok" };
+        if (st.locked === false) return { text: "Kilit açık", badge: "warn" };
+        return { text: "Durum okunmadı", badge: "idle" };
       case "camera":
         if (st.privacy === true) return { text: "Gizlilik modu", badge: "idle" };
         return { text: st.notify === false ? "Bildirimler kapalı" : "İzlemede", badge: st.notify === false ? "idle" : "on" };
@@ -261,6 +297,8 @@
         if (hasFeature(device, "target")) parts.push(fmtTemp(clamp(st.target, 16, 30, 22)));
         return { text: parts.length ? parts.join(" · ") : "Açık", badge: "on" };
       case "thermostat":
+        // Hedef cihazdan okunmadıysa varsayılan bir sıcaklık göstermek yanlış bilgi olur.
+        if (typeof st.target !== "number" || !isFinite(st.target)) return { text: "Hedef okunmadı", badge: "idle" };
         return { text: "Hedef " + fmtTemp(clamp(st.target, 5, 30, 21)), badge: "on" };
       case "media":
         if (!on) return { text: "Kapalı", badge: "idle" };
@@ -609,7 +647,7 @@
     return r.title + ": " + r.changed + " cihaz ayarlandı" + (r.lan ? " (" + r.lan + " cihaza yerel ağdan komut gitti)" : "") + ".";
   }
 
-  function deviceUrl(index) { return "stitch-device.html?i=" + index; }
+  function deviceUrl(index) { return "nexus-device.html?i=" + index; }
 
   window.NX = {
     IMAGE_VERSION: IMAGE_VERSION,
@@ -645,6 +683,8 @@
     deviceUrl: deviceUrl,
     runScene: runScene,
     sceneAffected: sceneAffected,
+    // Senaryonun bu cihazda gerçekten uygulayacağı alan/değer çiftleri (önizleme için).
+    sceneActsOf: function (id, device) { var s = SCENES[id]; return s ? sceneActs(s, device) : []; },
     sceneSummary: sceneSummary,
     SCENES: SCENES,
     onError: onError,

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS - Cihaz Güncellemesi</title>
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <style>
+  body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
+  .shadow-nexus { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+  .nexus-gradient-bg { background: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%); }
+</style>
+<script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
+<script src="nexus-dialog.js"></script>
+</head>
+<body class="text-slate-900 dark:text-slate-100">
+  <div class="min-h-screen flex flex-col">
+    <header class="shrink-0 pt-14 pb-4 px-5 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between sticky top-0 z-40">
+      <a href="javascript:void(0)" onclick="window.history.length > 1 ? history.back() : window.location.href='nexus-settings.html'" class="p-1 -ml-1 active:scale-95 transition-transform" aria-label="Geri">
+        <i data-lucide="chevron-left" class="w-7 h-7 text-slate-700 dark:text-slate-200"></i>
+      </a>
+      <h1 class="text-lg font-bold tracking-tight">Cihaz Güncellemesi</h1>
+      <button id="refresh-updates" class="nx-tap p-1 -mr-1 flex items-center justify-center text-slate-600 active:scale-95 transition-transform" type="button" aria-label="Yenile">
+        <i data-lucide="rotate-cw" class="w-5 h-5"></i>
+      </button>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-5 py-6 space-y-6">
+      <section class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-nexus border border-slate-50 dark:border-slate-800">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl nexus-gradient-bg flex items-center justify-center">
+            <i data-lucide="cpu" class="w-7 h-7 text-white"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-slate-500 uppercase tracking-widest leading-none mb-1">Durum</p>
+            <h2 class="text-lg font-extrabold leading-snug" id="update-count">Cihazlar kontrol bekliyor</h2>
+            <p class="text-xs text-slate-500 mt-1" id="update-subtitle">Güncelleme sonuçları harici servis bağlanınca alınacak.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold">Kayıtlı Cihazlar</h3>
+          <span class="text-xs font-bold text-slate-400 uppercase" id="device-total">0 Cihaz</span>
+        </div>
+        <div id="update-list" class="space-y-4"></div>
+      </section>
+
+      <section class="space-y-4">
+        <h3 class="text-xl font-bold">Kontrol Geçmişi</h3>
+        <div id="update-history" class="bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-nexus border border-slate-50 dark:border-slate-800"></div>
+      </section>
+
+      <section class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-100/50 dark:border-slate-800">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold">Otomatik kontrol bildirimi</p>
+            <p class="text-xs text-slate-500 mt-1">Servis bağlandığında yeni sürüm uyarıları gelsin.</p>
+          </div>
+          <label class="relative inline-block w-[52px] h-8">
+            <input type="checkbox" id="auto-update-alerts" class="peer sr-only">
+            <span class="absolute inset-0 rounded-full bg-slate-200 transition peer-checked:bg-[#4C7DFF]"></span>
+            <span class="absolute left-[3px] bottom-[3px] h-[26px] w-[26px] rounded-full bg-white transition peer-checked:translate-x-5"></span>
+          </label>
+        </div>
+      </section>
+
+      <div class="h-20"></div>
+    </main>
+
+    <footer class="shrink-0 px-5 pt-4 pb-[34px] bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+      <button id="check-all-btn" type="button" class="w-full nexus-gradient-bg text-white py-4 rounded-3xl text-lg font-bold flex items-center justify-center gap-3">
+        <i data-lucide="search" class="w-5 h-5"></i>
+        Tüm Cihazları Kontrol Et
+      </button>
+    </footer>
+  </div>
+  <script src="js/lucide.js"></script>
+<script>
+    const UPDATE_HISTORY_KEY = 'nexusUpdateHistory';
+
+    // Yalnızca gerçekten eklenmiş cihazlar (pano kartları değil)
+    function getRealDevices() {
+      try {
+        var paired = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
+        return Array.isArray(paired) ? paired : [];
+      } catch(e) { return []; }
+    }
+
+    function readHistory() {
+      try {
+        const parsed = JSON.parse(nexusGetItem(UPDATE_HISTORY_KEY) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function writeHistory(history) {
+      nexusSetItem(UPDATE_HISTORY_KEY, JSON.stringify(history));
+    }
+
+    function logCheck(deviceName, resultText) {
+      const history = readHistory();
+      history.unshift({
+        deviceName: deviceName,
+        result: resultText,
+        checkedAt: new Date().toLocaleString((window.nexusLocale || 'tr-TR'))
+      });
+      writeHistory(history.slice(0, 12));
+    }
+
+    // Yerel ağ cihazında yazılım sürümünü cihazın kendisinden okur; katalog cihazında dürüstçe söyler.
+    function checkDevice(device) {
+      var name = device.name || 'Cihaz';
+      var lan = device.host && device.protocol && device.protocol !== 'unknown' && window.nexusLan;
+      if (!lan) return Promise.resolve({ name: name, text: 'Katalogdan eklendi — sürüm bilgisi için cihazın kendi uygulamasını kullan' });
+      return window.nexusLan.firmware(device).then(function (fw) {
+        var cur = fw.current ? 'Sürüm ' + fw.current : 'Sürüm okunamadı';
+        if (fw.hasUpdate === true) return { name: name, text: cur + ' · güncelleme var: ' + fw.latest, update: true };
+        if (fw.hasUpdate === false) return { name: name, text: cur + ' · güncel' };
+        return { name: name, text: cur };
+      }).catch(function (e) {
+        return { name: name, text: /desteklenmeyen|vermiyor/.test(e.message) ? 'Bu cihaz sürüm bilgisi paylaşmıyor' : 'Cihaza ulaşılamadı — aynı Wi-Fi ağında mı?' };
+      });
+    }
+
+    var LAST = {};
+    function runCheck(index) {
+      var device = getRealDevices()[index];
+      if (!device) return;
+      LAST[index] = 'Kontrol ediliyor…';
+      renderDevices();
+      checkDevice(device).then(function (r) {
+        LAST[index] = r.text;
+        logCheck(r.name, r.text);
+        renderDevices();
+        renderHistory();
+        showUpdatesToast(r.name + ': ' + r.text.split(' — ')[0]);
+      });
+    }
+
+    function renderDevices() {
+      const devices = getRealDevices();
+      const list = document.getElementById('update-list');
+      document.getElementById('device-total').textContent = devices.length + ' Cihaz';
+
+      if (!devices.length) {
+        list.innerHTML = '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50 text-sm text-slate-500">Henüz kayıtlı cihaz yok. Önce cihaz ekledikten sonra güncelleme kontrolleri burada görünür.</div>';
+        document.getElementById('update-count').textContent = 'Kontrol edilecek cihaz yok';
+        return;
+      }
+
+      document.getElementById('update-count').textContent = devices.length + ' cihaz kontrol bekliyor';
+      list.innerHTML = devices.map((device, index) => (
+        '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50">' +
+          '<div class="flex items-center justify-between gap-3">' +
+            '<div class="min-w-0">' +
+              '<h4 class="font-bold truncate">' + escapeHtml(device.name || ('Cihaz ' + (index + 1))) + '</h4>' +
+              '<p class="text-xs text-slate-500 mt-0.5 dark:text-slate-300">' + escapeHtml(device.host && device.protocol ? 'Yerel ağ · ' + device.protocol : 'Katalogdan eklendi') + '</p>' +
+            '</div>' +
+            '<button type="button" onclick="runCheck(' + index + ')" class="shrink-0 min-h-[40px] px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold dark:bg-slate-100 dark:text-slate-900">Kontrol Et</button>' +
+          '</div>' +
+          // Aynı "Kontrol Et ile sürüm cihazdan okunur" notu her kartta tekrarlanmasın: yalnızca gerçek bir sonuç ya da farklı bir durum varsa gösterilir.
+          ((LAST[index] || !(device.host && device.protocol)) ?
+          '<div class="mt-3 pt-3 border-t border-slate-50 flex items-center gap-2 text-[11px] text-slate-400">' +
+            '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01" stroke-linecap="round"></path></svg>' +
+            '<span class="truncate">' + escapeHtml(LAST[index] || 'Sürüm bilgisi cihazın kendi uygulamasında') + '</span>' +
+          '</div>' : '') +
+        '</div>'
+      )).join('');
+    }
+
+    function renderHistory() {
+      const history = readHistory();
+      const wrap = document.getElementById('update-history');
+      if (!history.length) {
+        wrap.innerHTML = '<div class="px-5 py-5 text-sm text-slate-500">Henüz hiçbir cihaz için kontrol yapılmadı.</div>';
+        return;
+      }
+      wrap.innerHTML = history.map((item, index) => (
+        '<div class="px-5 py-4 flex items-start justify-between gap-3' + (index < history.length - 1 ? ' border-b border-slate-50' : '') + '">' +
+          '<div class="min-w-0">' +
+            '<p class="text-sm font-bold truncate">' + escapeHtml(item.deviceName || 'Cihaz') + '</p>' +
+            '<p class="text-xs text-slate-500 mt-1">' + escapeHtml(item.result || '') + '</p>' +
+          '</div>' +
+          '<span class="text-[10px] text-slate-400 whitespace-nowrap">' + escapeHtml(item.checkedAt || '') + '</span>' +
+        '</div>'
+      )).join('');
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    document.getElementById('check-all-btn').addEventListener('click', function () {
+      const devices = getRealDevices();
+      if (!devices.length) {
+        window.nexusDialog({
+          title: 'Cihaz gerekli',
+          message: 'Güncellemeleri kontrol etmek için önce bir cihaz eklemelisin.',
+          primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'nexus-pair.html'; } },
+          secondary: { label: 'Vazgeç' }
+        });
+        return;
+      }
+      showUpdatesToast(devices.length + ' cihaz kontrol ediliyor…');
+      devices.forEach(function (device, index) { runCheck(index); });
+    });
+
+    document.getElementById('refresh-updates').addEventListener('click', function () {
+      const icon = this.querySelector('svg') || this.querySelector('i');
+      if (icon) {
+        icon.style.transition = 'transform 0.6s ease';
+        icon.style.transform = 'rotate(360deg)';
+        setTimeout(() => { icon.style.transition = 'none'; icon.style.transform = 'none'; }, 600);
+      }
+      renderDevices();
+      renderHistory();
+      lucide.createIcons();
+    });
+
+    document.getElementById('auto-update-alerts').checked = nexusGetItem('nexusAutoUpdateAlerts') !== 'false';
+    document.getElementById('auto-update-alerts').addEventListener('change', function () {
+      nexusSetItem('nexusAutoUpdateAlerts', this.checked.toString());
+    });
+
+    renderDevices();
+    renderHistory();
+    lucide.createIcons();
+  </script>
+<script>
+function showUpdatesToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;white-space:nowrap;max-width:90vw;text-align:center;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+}
+</script>
+</body>
+</html>
+

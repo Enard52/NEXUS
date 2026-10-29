@@ -580,7 +580,7 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     const target = decodeURIComponent(calls[0].url);
     expect(target).toContain("https://nexus-smarthome.pages.dev/");
     // Site kökü hash'i işler; ayrı bir HTML sayfasına dönülmez (canlıda 404'tü).
-    expect(target).not.toContain("stitch-");
+    expect(target).not.toContain(".html");
     expect(JSON.parse(String(calls[0].body)).data).toEqual({ name: "Ayşe", lang: "tr" });
   });
 
@@ -600,8 +600,8 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(calls[0].url).toContain("/auth/v1/recover?redirect_to=");
     const target = decodeURIComponent(calls[0].url);
     expect(target).toContain("https://nexus-smarthome.pages.dev/");
-    // Eski /stitch-forgot-password.html canlıda 404'tü; kök #type=recovery'yi işler.
-    expect(target).not.toContain("stitch-");
+    // Eski /nexus-forgot-password.html canlıda 404'tü; kök #type=recovery'yi işler.
+    expect(target).not.toContain(".html");
     expect(JSON.parse(String(calls[0].body))).toEqual({ email: "a@b.co" });
   });
 
@@ -638,6 +638,18 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
     expect(sent[0].url).toContain("/auth/v1/user");
     expect(JSON.parse(String(sent[0].body))).toEqual({ email: "yeni@b.co" });
     expect(sent[0].headers.Authorization).toMatch(/^Bearer tok-/);
+  });
+
+  it("e-posta değiştirme: sunucunun hata kodu (email_exists / same_email) arayüze taşınır", async () => {
+    for (const [code, msg] of [["email_exists", "A user with this email address has already been registered"], ["same_email", "New email address should be different from the current one."]]) {
+      const backend = fakeBackend();
+      const orig = backend.handler;
+      backend.handler = ((call: Call) => (call.method === "PUT" && new URL(call.url).pathname === "/auth/v1/user"
+        ? { status: 422, body: { error_code: code, msg } }
+        : orig(call))) as typeof backend.handler;
+      const { cloud } = await freshDevice(backend);
+      await expect(cloud.changeEmail("baska@b.co")).rejects.toMatchObject({ code, status: 422, message: msg });
+    }
   });
 
   it("e-posta değiştirme oturum yoksa istek göndermeden reddedilir", async () => {
@@ -749,7 +761,7 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
       });
       listeners.appUrlOpen({ url: "nexus://auth#access_token=tok&refresh_token=ref" });
       expect(replace).toHaveBeenCalledWith(
-        "stitch-login.html?oauth=1#access_token=tok&refresh_token=ref",
+        "nexus-login.html?oauth=1#access_token=tok&refresh_token=ref",
       );
     } finally {
       delete (globalThis as Record<string, unknown>).location;
@@ -1044,7 +1056,7 @@ describe("oturum anahtarı: e-posta büyük/küçük harf", () => {
    (access_token). Hesap silme akışı bu yüzden hiç çalışmıyordu — sınıfın geri
    gelmesini bu tarama engeller. */
 describe("oturum alan adları: sayfalar camelCase okur", () => {
-  const pages = readdirSync(REPO_ROOT).filter((f) => /^stitch-.*\.html$/.test(f));
+  const pages = readdirSync(REPO_ROOT).filter((f) => /^nexus-.*\.html$/.test(f));
 
   it("hiçbir sayfa depodaki oturumdan yılan kafesi alan okumaz", () => {
     const offending = pages.filter((f) =>
@@ -1056,7 +1068,7 @@ describe("oturum alan adları: sayfalar camelCase okur", () => {
   });
 
   it("hesap silme akışı cloud-sync'in kendi session API'sini kullanır", () => {
-    const src = readFileSync(join(REPO_ROOT, "src", "app", "stitch-account-security.html"), "utf8");
+    const src = readFileSync(join(REPO_ROOT, "src", "app", "nexus-account-security.html"), "utf8");
     expect(src).toContain("nexusCloud.session()");
     expect(src).toContain("session.accessToken");
   });
@@ -1294,5 +1306,155 @@ describe("anlık senkron (Supabase Realtime, ham WebSocket)", () => {
     expect(storage.getItem("ayse@ornek.com_nexusTheme")).toBe(null);
     sock.emit("bilinen_tablo", { record: { key: "nexusTheme", value: "kurcalama" } });
     expect(storage.getItem("ayse@ornek.com_nexusTheme")).toBe(null);
+  });
+});
+
+/* Google ile açılan hesapta şifre yoktur: changePassword o hesapta aşılamaz bir duvar
+   olurdu. passwordStatus durumu sunucudan okunur, setPasswordWithSession ilk şifreyi
+   mevcut şifre sormadan yazar. */
+describe("şifresiz (Google) hesap: ilk şifre akışı", () => {
+  /** { status, body } biçiminde gelirse ham HTTP yanıtıdır; değilse kullanıcı gövdesi. */
+  function isHttpResult(value: unknown): value is { status: number; body?: unknown } {
+    return !!value && typeof value === "object" && "status" in (value as Record<string, unknown>);
+  }
+
+  /** Oturumu olan bir ortam kurar; GET /auth/v1/user yanıtı `user` olur. */
+  function signedIn(user: unknown) {
+    return load({
+      config: CONFIG,
+      user: "ayse@ornek.com",
+      handler: (call) => {
+        if (call.url.includes("grant_type=password")) {
+          return {
+            access_token: "tok-1",
+            refresh_token: "ref-1",
+            expires_in: 3600,
+            user: { id: "u1", email: "ayse@ornek.com" },
+          };
+        }
+        if (call.method === "GET" && call.url.endsWith("/auth/v1/user")) {
+          return isHttpResult(user) ? user : { body: user };
+        }
+        return { body: {} };
+      },
+    });
+  }
+
+  async function withSession(user: unknown) {
+    const env = signedIn(user);
+    await env.cloud.signIn("ayse@ornek.com", "parola-123");
+    const before = env.calls.length;
+    return { ...env, requestCount: () => env.calls.length - before };
+  }
+
+  it("yalnız dış sağlayıcı kimliği varsa durum oauth", async () => {
+    const { cloud, calls, requestCount } = await withSession({
+      id: "u1",
+      identities: [{ provider: "google", identity_id: "sub-1" }],
+    });
+    await expect(cloud.passwordStatus()).resolves.toBe("oauth");
+    const probe = calls[calls.length - 1];
+    expect(probe.method).toBe("GET");
+    expect(probe.url.endsWith("/auth/v1/user")).toBe(true);
+    expect(probe.headers.Authorization).toBe("Bearer tok-1");
+    expect(requestCount()).toBe(1);
+  });
+
+  it("e-posta kimliği varsa şifre vardır: durum password", async () => {
+    const { cloud } = await withSession({
+      id: "u1",
+      identities: [{ provider: "email" }, { provider: "google" }],
+    });
+    await expect(cloud.passwordStatus()).resolves.toBe("password");
+  });
+
+  it("identities alanı hiç gelmezse app_metadata.provider'a bakılır", async () => {
+    const a = await withSession({ id: "u1", app_metadata: { provider: "google" } });
+    await expect(a.cloud.passwordStatus()).resolves.toBe("oauth");
+    const b = await withSession({ id: "u1", app_metadata: { provider: "email" } });
+    await expect(b.cloud.passwordStatus()).resolves.toBe("password");
+  });
+
+  it("kimlik listesi boşsa tahmin edilmez: unknown (eski akışa düşer)", async () => {
+    const { cloud } = await withSession({ id: "u1", identities: [] });
+    await expect(cloud.passwordStatus()).resolves.toBe("unknown");
+  });
+
+  it("oturum yokken ağa çıkılmaz, durum unknown", async () => {
+    const { cloud, calls } = load({ config: CONFIG, user: "ayse@ornek.com" });
+    await expect(cloud.passwordStatus()).resolves.toBe("unknown");
+    expect(calls).toEqual([]);
+  });
+
+  it("sunucu hatasında durum unknown: kullanıcı yanlış akışa itilmez", async () => {
+    const { cloud } = await withSession({ status: 500, body: { msg: "geçici hata" } });
+    await expect(cloud.passwordStatus()).resolves.toBe("unknown");
+  });
+
+  it("ilk şifre mevcut şifre sorulmadan PUT /auth/v1/user ile yazılır", async () => {
+    const { cloud, calls } = await withSession({ id: "u1", identities: [{ provider: "google" }] });
+    const before = calls.length;
+    await cloud.setPasswordWithSession("yeni-sifre-1");
+    const write = calls.slice(before).find((c) => c.method === "PUT" && c.url.endsWith("/auth/v1/user"));
+    expect(write).toBeTruthy();
+    expect(JSON.parse(String(write?.body))).toEqual({ password: "yeni-sifre-1" });
+    expect(write?.headers.Authorization).toBe("Bearer tok-1");
+    // Eski akışın "mevcut şifre" doğrulaması (grant_type=password) hiç çağrılmadı.
+    expect(calls.slice(before).some((c) => c.url.includes("grant_type=password"))).toBe(false);
+  });
+
+  it("oturum yokken ilk şifre yazılamaz", async () => {
+    const { cloud, calls } = load({ config: CONFIG, user: "ayse@ornek.com" });
+    await expect(cloud.setPasswordWithSession("yeni-sifre-1")).rejects.toThrow("oturum yok");
+    expect(calls).toEqual([]);
+  });
+
+  it("AAL2 reddi arayüzü kurtarma mektubuna yönlendirir", async () => {
+    const src = readFileSync(join(REPO_ROOT, "src", "app", "nexus-account-security.html"), "utf8");
+    expect(src).toContain("setPasswordWithSession(next)");
+    expect(src).toContain("passwordStatus()");
+    expect(src).toContain("cloud.recover(email)");
+    // Şifresiz hesapta "mevcut şifre" alanı gösterilmez, doğrulaması da istenmez.
+    expect(src).toContain("current.classList.toggle('hidden', oauth)");
+    expect(src).toContain("if (!pwOauth() && !current) return fail");
+    // Belirledikten sonra yerel kasa da yazılır: çevrimdışı giriş başka türlü imkânsız.
+    expect(src).toContain("nexusLocalPassword.set(owner, next)");
+    expect(src).toContain("nexusSetItem('nexusPasswordSet', '1')");
+  });
+
+  it("oturum başlığı faktör ve şifre çağrılarına gerçekten gidiyor", async () => {
+    // cloud-sync.js içinde iki aynı adlı authHeader bildirimi vardı; tek kapsamdaki son
+    // ad kazanıyor, senkron çağrılar başlık yerine Promise gönderdiği için Authorization
+    // düşüyordu. Bu tarama o sınıf hatayı bir daha barındırmaz.
+    const src = readFileSync(join(REPO_ROOT, "src", "app", "cloud-sync.js"), "utf8");
+    const names = [...src.matchAll(/^ {2}function\s+([A-Za-z0-9_$]+)\s*\(/gm)].map((m) => m[1]);
+    const doubled = names.filter((n, i) => names.indexOf(n) !== i);
+    expect(doubled).toEqual([]);
+    expect(names.length).toBeGreaterThan(60);
+
+    const { cloud, calls } = await withSession({ id: "u1", identities: [{ provider: "google" }] });
+    await cloud.listFactors();
+    const factors = [...calls].reverse().find((c) => c.url.endsWith("/auth/v1/factors"));
+    expect(factors?.headers.Authorization).toBe("Bearer tok-1");
+    await cloud.setPasswordWithSession("yeni-sifre-1");
+    const write = [...calls].reverse().find((c) => c.method === "PUT" && c.url.endsWith("/auth/v1/user"));
+    expect(write?.headers.Authorization).toBe("Bearer tok-1");
+  });
+
+  it("yeni metinlerin İngilizce karşılığı sözlükte var", () => {
+    const dict = readFileSync(join(REPO_ROOT, "src", "app", "lang-en.js"), "utf8");
+    const screen = readFileSync(join(REPO_ROOT, "src", "app", "nexus-account-security.html"), "utf8");
+    const added = [
+      "Şifre Belirle",
+      "Bu hesapta henüz şifre yok",
+      "Şifren belirlendi ✓",
+      "Şifre belirleme bağlantısını e-postama gönder",
+      "Bu işlem ek doğrulama istiyor. Aşağıdan şifre belirleme bağlantısı isteyebilirsin.",
+      "Şifre belirleme bağlantısı e-postana gönderildi ✓",
+    ];
+    for (const key of added) {
+      expect(screen).toContain(key);
+      expect(dict).toContain(`"${key}":`);
+    }
   });
 });

@@ -1,4 +1,4 @@
-﻿-- Günlük istatistik: nexus_stats() + gönderim kaydı + pg_cron (06:00 UTC). Supabase'e uygulandı.
+-- Günlük istatistik: nexus_stats() + gönderim kaydı + pg_cron (06:00 UTC). Supabase'e uygulandı.
 create extension if not exists pg_cron;
 create extension if not exists pg_net with schema extensions;
 create table if not exists public.nexus_stats_log (id bigserial primary key, sent_at timestamptz not null default now());

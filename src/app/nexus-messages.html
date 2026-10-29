@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"/>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>NEXUS — Mesaj Merkezi</title>
+<!-- Tailwind CSS CDN -->
+<link href="css/tailwind.css" rel="stylesheet"/><link href="css/nexus-ui.css" rel="stylesheet"/>
+<!-- Google Fonts: Inter (NEXUS body font) -->
+<link href="fonts/inter/inter.css" rel="stylesheet"/>
+  <!-- Lucide Icons -->
+
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Subtle brand-tinted gradient background (same as Profil) */
+    .bg-gradient-custom {
+      background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%);
+    }
+    .menu-container-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+  </style>
+<style>
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+  <script src="auth.js"></script>
+  <script src="theme.js"></script>
+<script src="data.js"></script>
+<script src="ai-fab.js"></script>
+</head>
+<body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+<!-- BEGIN: Header -->
+<header class="pt-14 pb-4 px-5 flex items-center justify-between relative" data-purpose="page-header">
+<a aria-label="Geri" class="p-1 -ml-1" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'nexus-home.html';">
+<i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+</a>
+<h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Mesaj Merkezi</h1>
+<button aria-label="Tümünü okundu işaretle" class="p-1 text-[#4C7DFF]" onclick="markAllRead()">
+<i class="w-6 h-6" data-lucide="check-check"></i>
+</button>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Tabs -->
+<div class="px-5 pt-2 pb-4" data-purpose="message-tabs">
+<div class="bg-white/70 rounded-full p-1 flex" id="tabs">
+<button class="flex-1 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="switchTab(this, 'tab-alerts')">Uyarılar</button>
+<button class="flex-1 py-2 rounded-full text-sm font-semibold text-slate-500" onclick="switchTab(this, 'tab-family')">Aile</button>
+<button class="flex-1 py-2 rounded-full text-sm font-semibold text-slate-500" onclick="switchTab(this, 'tab-notices')">Duyurular</button>
+</div>
+</div>
+<!-- END: Tabs -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-5 pb-10">
+<!-- Tab: Uyarılar (gerçek veri: nexusEvents) -->
+<section class="space-y-3" id="tab-alerts"></section>
+<!-- Tab: Aile -->
+<!-- Aile: evdeki üyeler (yerel ev verisi). Üyeler arası mesajlaşma sunucu gerektirdiğinden burada yok. -->
+<section class="hidden" id="tab-family"></section>
+<!-- Duyurular: gerçek sistem bilgisi (kurulu sürüm, güncelleme durumu). -->
+<section class="hidden" id="tab-notices"></section>
+</main>
+<!-- END: MainContent -->
+<script src="js/lucide.js"></script>
+<script data-purpose="message-interactions">
+    lucide.createIcons();
+
+    /* ---------- Gerçek bildirim akışı: nexusEvents + nexusReadNotifs ---------- */
+    var EVENTS_KEY = 'nexusEvents';
+    var READ_KEY = 'nexusReadNotifs';
+    function loadEvents() {
+      try { var e = JSON.parse(nexusGetItem(EVENTS_KEY) || '[]'); return Array.isArray(e) ? e : []; } catch (err) { return []; }
+    }
+    function loadRead() {
+      try { var r = JSON.parse(nexusGetItem(READ_KEY) || '[]'); return Array.isArray(r) ? r : []; } catch (err) { return []; }
+    }
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function formatTs(ts) {
+      var d = new Date(ts);
+      if (isNaN(d.getTime())) return '';
+      var now = new Date();
+      var time = d.toLocaleTimeString((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit' });
+      var sameDay = d.toDateString() === now.toDateString();
+      var yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+      if (sameDay) return 'Bugün ' + time;
+      if (d.toDateString() === yesterday.toDateString()) return 'Dün ' + time;
+      return d.toLocaleDateString((window.nexusLocale || 'tr-TR'), { day: 'numeric', month: 'long' }) + ' ' + time;
+    }
+    function renderAlerts() {
+      var events = loadEvents().slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+      var read = loadRead();
+      var box = document.getElementById('tab-alerts');
+      if (!events.length) {
+        box.innerHTML =
+          '<div class="flex flex-col items-center justify-center pt-20 text-center" data-purpose="empty-state">' +
+          '<div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-slate-300 mb-4 menu-container-shadow">' +
+          '<i class="w-8 h-8" data-lucide="bell-off"></i></div>' +
+          '<p class="text-slate-400 font-medium">Bildirim yok</p></div>';
+      } else {
+        box.innerHTML = events.map(function (ev) {
+          var unread = read.indexOf(ev.id) === -1;
+          var dot = unread ? 'bg-[#FF3B5C]' : 'bg-slate-200';
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">' +
+            '<span class="unread-dot w-2.5 h-2.5 ' + dot + ' rounded-full mt-2 flex-shrink-0"></span>' +
+            '<div class="min-w-0">' +
+            '<h2 class="font-bold leading-tight">' + esc(ev.title || '') + '</h2>' +
+            (ev.detail ? '<p class="text-sm text-slate-500 mt-1">' + esc(ev.detail) + '</p>' : '') +
+            '<p class="text-xs text-slate-400 mt-2">' + formatTs(ev.ts) + '</p>' +
+            '</div></article>';
+        }).join('');
+      }
+      lucide.createIcons();
+    }
+
+    // Kullanıcı bildirimlere BAKTIĞINDA okundu sayılır (gerçek davranış):
+    // Bu görüntülemede okunmamış noktalar görünür kalır, ama arkada okundu
+    // olarak kaydedilir; böylece diğer sayfalardaki kırmızı rozet kalkar.
+    function markViewedAsRead() {
+      var events = loadEvents();
+      if (!events.length) return;
+      var read = loadRead();
+      var changed = false;
+      events.forEach(function (ev) {
+        if (read.indexOf(ev.id) === -1) { read.push(ev.id); changed = true; }
+      });
+      if (!changed) return;
+      try { nexusSetItem(READ_KEY, JSON.stringify(read)); } catch (err) {}
+      if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
+    }
+
+    // Switch between message tabs
+    function switchTab(btn, id) {
+      document.querySelectorAll('#tabs button').forEach(function (b) {
+        b.className = 'flex-1 py-2 rounded-full text-sm font-semibold text-slate-500';
+      });
+      btn.className = 'flex-1 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white';
+      ['tab-alerts', 'tab-family', 'tab-notices'].forEach(function (t) {
+        document.getElementById(t).classList.toggle('hidden', t !== id);
+      });
+    }
+    // Mark all events as read (persistent)
+    function markAllRead() {
+      var ids = loadEvents().map(function (ev) { return ev.id; });
+      try { nexusSetItem(READ_KEY, JSON.stringify(ids)); } catch (err) {}
+      renderAlerts();
+      if (typeof window.nexusUpdateNavBadge === 'function') window.nexusUpdateNavBadge();
+    }
+
+    /* ---------- Aile: evdeki üyeler (yerel nexusHousehold) ---------- */
+    function renderFamily() {
+      var box = document.getElementById('tab-family');
+      var homes = null;
+      try { homes = JSON.parse(nexusGetItem('nexusHousehold') || 'null'); } catch (err) { homes = null; }
+      var home = Array.isArray(homes) && homes.length ? homes[0] : null;
+      var members = home && Array.isArray(home.members) ? home.members : [];
+      var head = '<a href="nexus-household.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
+        '<span class="font-bold text-slate-800">Aile ve evi yönet</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+      if (!members.length) {
+        box.innerHTML = head + '<p class="text-sm text-slate-500 text-center pt-10">Henüz aile üyesi eklenmedi.</p>';
+      } else {
+        box.innerHTML = head + members.map(function (m) {
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 mb-3">' +
+            '<h2 class="font-bold text-slate-800">' + esc(m.name || 'Üye') + '</h2>' +
+            '<p class="text-sm text-slate-500 mt-1">' + esc(m.role || '') + (m.email ? ' · ' + esc(m.email) : '') + '</p></article>';
+        }).join('') +
+          '<p class="text-xs text-slate-400 text-center pt-4">Üyeler arası mesajlaşma henüz yok; üyeleri ve izinlerini Aile ekranından yönetebilirsin.</p>';
+      }
+    }
+
+    /* ---------- Duyurular: gerçek sistem bilgisi ---------- */
+    function renderNotices() {
+      var box = document.getElementById('tab-notices');
+      var desk = window.nexusDesktop;
+      var infoP = desk && desk.info ? desk.info() : Promise.resolve(null);
+      var stateP = desk && desk.updates && desk.updates.getState ? desk.updates.getState() : Promise.resolve(null);
+      Promise.all([infoP, stateP]).then(function (r) {
+        var info = r[0], st = r[1], items = [];
+        if (st && st.state === 'available') items.push({ t: 'Yeni sürüm bulundu: NEXUS ' + (st.availableVersion || ''), d: 'Ayarlar → Masaüstü Uygulaması bölümünden indirebilirsin.' });
+        if (st && st.state === 'downloading') items.push({ t: 'Yeni sürüm indiriliyor', d: 'İndirme %' + (st.progress || 0) + ' tamamlandı.' });
+        if (st && st.state === 'ready') items.push({ t: 'Güncelleme hazır: NEXUS ' + (st.availableVersion || ''), d: 'Yeniden başlatınca kurulur.' });
+        if (info && info.version) items.push({ t: 'Kurulu sürüm: NEXUS ' + info.version, d: 'Masaüstü uygulaması' });
+        if (!items.length) {
+          box.innerHTML = '<div class="flex flex-col items-center justify-center pt-20 text-center"><p class="text-slate-400 font-medium">Şu an duyuru yok</p></div>';
+          return;
+        }
+        box.innerHTML = items.map(function (it) {
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 mb-3"><h2 class="font-bold text-slate-800">' + esc(it.t) + '</h2>' +
+            '<p class="text-sm text-slate-500 mt-1">' + esc(it.d) + '</p></article>';
+        }).join('');
+      }).catch(function () {
+        box.innerHTML = '<div class="flex flex-col items-center justify-center pt-20 text-center"><p class="text-slate-400 font-medium">Şu an duyuru yok</p></div>';
+      });
+    }
+
+    renderAlerts();
+    renderFamily();
+    renderNotices();
+    // Kısa bir gecikmeyle okundu işaretle: kullanıcı yeni bildirimleri gördü sayılır
+    setTimeout(markViewedAsRead, 1200);
+  </script>
+</body></html>
+

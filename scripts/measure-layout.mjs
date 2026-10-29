@@ -1,6 +1,6 @@
 // Ekran kabuğu tutarlılık ölçümü (issue #1)
 // ------------------------------------------------------------
-// Tüm stitch-*.html ekranlarını statik tarar ve kabuk metriklerini
+// Tüm nexus-*.html ekranlarını statik tarar ve kabuk metriklerini
 // karşılaştırır: üst başlık dolgusu (pt/pb), alt menü varlığı, sayfa
 // içerik sütunu (ortalı max-w-*), sayfa zemini imzası.
 //
@@ -41,7 +41,7 @@ const effectivePad = (cls, side) => {
 };
 
 const pages = readdirSync(APP)
-  .filter((f) => /^stitch-.*\.html$/.test(f))
+  .filter((f) => /^nexus-.*\.html$/.test(f))
   .sort();
 
 const report = [];
@@ -115,16 +115,16 @@ for (const page of pages) {
 // ---- Standart denetimi ----
 // Kabuk ritmi bilinçli olarak farklı olan ekran aileleri (tasarım kararı):
 const HEADER_EXEMPT = {
-  "stitch-map.html": "harita üstü yüzen başlık (tam ekran harita)",
-  "stitch-cards.html": "picker-shell kabuğu dolguyu sağlar (İptal/Ekle çubuğu)",
-  "stitch-onboarding.html": "ilk kurulum/auth akışı (kendi düzeni)",
-  "stitch-register.html": "auth akışı (dikey ortalı)",
-  "stitch-login.html": "auth akışı (dikey ortalı)",
-  "stitch-forgot-password.html": "auth akışı (dikey ortalı)",
-  "stitch-smart-app-detail.html": "main.pt-12 kabuğu ritmi sağlar",
-  "stitch-menu.html": "main.pt-12 içinde nav başlık satırı",
-  "stitch-profile.html": "main.pt-12 kabuğu (sekme ailesi)",
-  "stitch-setup-code.html": "auth-bitişik kurulum akışı",
+  "nexus-map.html": "harita üstü yüzen başlık (tam ekran harita)",
+  "nexus-cards.html": "picker-shell kabuğu dolguyu sağlar (İptal/Ekle çubuğu)",
+  "nexus-onboarding.html": "ilk kurulum/auth akışı (kendi düzeni)",
+  "nexus-register.html": "auth akışı (dikey ortalı)",
+  "nexus-login.html": "auth akışı (dikey ortalı)",
+  "nexus-forgot-password.html": "auth akışı (dikey ortalı)",
+  "nexus-smart-app-detail.html": "main.pt-12 kabuğu ritmi sağlar",
+  "nexus-menu.html": "main.pt-12 içinde nav başlık satırı",
+  "nexus-profile.html": "main.pt-12 kabuğu (sekme ailesi)",
+  "nexus-setup-code.html": "auth-bitişik kurulum akışı",
 };
 const isExempt = (page) => Object.prototype.hasOwnProperty.call(HEADER_EXEMPT, page);
 
@@ -153,10 +153,10 @@ const noHeader = report.filter((r) => !r.header).map((r) => r.page);
 
 // 3) Alt menü ailesi değişkenlere göre sabit kalmalı (yeni sekme eklenirse güncelle)
 const EXPECTED_TABS = [
-  "stitch-home.html",
-  "stitch-smart.html",
-  "stitch-discover.html",
-  "stitch-profile.html",
+  "nexus-home.html",
+  "nexus-smart.html",
+  "nexus-discover.html",
+  "nexus-profile.html",
 ];
 const tabSet = new Set(TAB_PAGES);
 for (const t of EXPECTED_TABS) {

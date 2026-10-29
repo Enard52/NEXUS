@@ -1,7 +1,7 @@
 /*
  * NEXUS UI — ortak tasarım katmanı
  * --------------------------------
- * Tüm stitch-*.html ekranları bu dosyayı css/tailwind.css'ten SONRA yükler.
+ * Tüm nexus-*.html ekranları bu dosyayı css/tailwind.css'ten SONRA yükler.
  * Renk, yazı, köşe ve koyu tema kuralları tek yerden gelir; ekranlara
  * tek tek yama yapmak yerine burası güncellenir.
  *
@@ -263,7 +263,37 @@ html.dark header[class*="bg-white/"] {
 
 /* ---------- Bileşen cilası ---------- */
 /* Birincil butonlarda basma geri bildirimi */
-[class*="bg-[#4C7DFF]"]:is(button, a):active { background-color: var(--nx-primary-press) !important; }
+/* Yalnızca düz mavi (beyaz yazılı) butonlar koyulaşır; "bg-[#4C7DFF]/10" gibi açık tonlu
+   butonların yazısı da mavidir, düz maviye boyanırsa metin kaybolur. */
+[class*="bg-[#4C7DFF]"]:not([class*="bg-[#4C7DFF]/"]):is(button, a):active { background-color: var(--nx-primary-press) !important; }
+[class*="bg-[#4C7DFF]/"]:is(button, a):active { background-color: rgba(76, 125, 255, 0.22) !important; }
+
+/* ---------- Ürün görselleri: beyaz cihazlar beyaz kartta kaybolmasın ----------
+   Gerçek ürün fotoğraflarının çoğu beyaz gövdeli; beyaz kartın üstünde kenarları görünmüyor, yalnızca ışık halkası seçiliyordu.
+   Kartlardaki görsellerin arkasına hafif bir zemin konur (katalog karoları sayfa zemininde durduğu için hariç). */
+/* Orijinal stüdyo fotoğraflarında beyaz arka plan silinirken cihazların beyaz kısımları da silindi (hub kubbesi, router
+   antenleri…). Zemin SAF BEYAZ olmalı: silinen beyaz kısımlar kutuyla birleşir, hiçbir tema (açık/koyu) kesik göstermez.
+   İnce halka kutunun kenarını belli eder; beyaz kart üzerinde de beyaz cihaz seçilir. */
+img[src*="assets/products/"] {
+  box-sizing: border-box; padding: 4px; border-radius: 16px;
+  background: #ffffff; box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.30);
+}
+html.dark img[src*="assets/products/"] { background: #ffffff; box-shadow: none; }
+
+/* ---------- Okunabilirlik (açık tema, WCAG AA'ya yakın) ----------
+   Açık lavanta zeminde marka mavisi/camgöbeği ve 500/600 tonlu durum renkleri 3:1 altında kalıyordu. */
+html:not(.dark) .text-\[\#4C7DFF\],
+html:not(.dark) .text-nexusPurple,
+html:not(.dark) .text-nexus-purple { color: #3358D4; }
+html:not(.dark) .text-nexusCyan { color: #0E7490; }
+html:not(.dark) .text-amber-600 { color: #b45309; }
+html:not(.dark) .text-emerald-500 { color: #047857; }
+html:not(.dark) .text-red-500 { color: #dc2626; }
+/* Beyaz yazılı marka degradesi: uç rengi koyulaştır, alt yazıyı tam beyaz yap */
+.nexus-gradient-bg, .gradient-button, .nexus-cta, .bg-billing-hero {
+  background-image: linear-gradient(135deg, #3F6EF5 0%, #0891B2 100%) !important;
+}
+.bg-billing-hero .text-white\/85 { color: #ffffff; }
 
 /* Alt menü: koyu temada da etkin sekme net görünsün */
 html.dark nav[data-purpose="bottom-nav"] a[aria-current="page"],
@@ -474,7 +504,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
 
 /* ---------- Sohbet: yerel ağ komutu cihaza ulaşmadı ----------
    Asistan komutu gönderdiğinde "komut gitti" der; cihaz yanıt vermezse
-   balonun altına bu satır eklenir (stitch-chat.html → watchLanResult).
+   balonun altına bu satır eklenir (nexus-chat.html → watchLanResult).
    Rose tonları derlenmiş tailwind.css'te olmadığı için burada tanımlı. */
 .nx-lan-note {
   margin-top: 10px;

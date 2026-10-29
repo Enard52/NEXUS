@@ -35,7 +35,7 @@ if (Test-Path "www") {
     $name = $_.Name
     $keep = $false
     if ($_.PSIsContainer) { $keep = $keepDirs -contains $name }
-    else { $keep = ($keepFiles -contains $name) -or ($name -like "stitch-*.html") }
+    else { $keep = ($keepFiles -contains $name) -or ($name -like "nexus-*.html") }
     if (-not $keep) {
       Move-Item -LiteralPath $_.FullName -Destination (Join-Path $wwwArchive $name) -Force
       Write-Host "www'den taşındı: $name"

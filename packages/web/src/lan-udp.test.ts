@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -29,6 +29,15 @@ describe("UDP koprusu olmayan ortamda", () => {
     expect(lan.hasUdp()).toBe(false);
     expect(lan.supports({ host: "192.168.1.9", protocol: "wiz" }, "switch")).toBe(false);
     await expect(lan.identify("192.168.1.9")).rejects.toBeTruthy();
+  });
+});
+
+describe("Wake-on-LAN", () => {
+  it("IP taramasinda cihaz gibi gorunmez (yanit vermeyen IP'ler 'bulundu' sayilmaz)", async () => {
+    const lan = load(() => Promise.reject(new Error("zaman asimi")));
+    expect(lan.hasUdp()).toBe(true);
+    await expect(lan.identify("192.168.1.9")).rejects.toBeTruthy();
+    await expect(lan.protocolFor("wol").probe({ host: "192.168.1.9" })).rejects.toBeTruthy();
   });
 });
 

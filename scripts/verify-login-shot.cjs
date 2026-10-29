@@ -6,9 +6,9 @@ const path = require("path");
   const page = await browser.newPage({ viewport: { width: 420, height: 750 } });
 
   // 1. Initial State
-  await page.goto("http://127.0.0.1:8766/stitch-login.html", { waitUntil: "networkidle" });
+  await page.goto("http://127.0.0.1:8766/nexus-login.html", { waitUntil: "networkidle" });
   await page.waitForTimeout(300);
-  await page.screenshot({ path: path.resolve(".audit-shots/stitch-login-main.png") });
+  await page.screenshot({ path: path.resolve(".audit-shots/nexus-login-main.png") });
 
   const gvis = await page.isVisible("#google-login-btn");
   const mfavis = await page.isVisible("#mfa-step");
@@ -21,7 +21,7 @@ const path = require("path");
     window.showMfaStep();
   });
   await page.waitForTimeout(300);
-  await page.screenshot({ path: path.resolve(".audit-shots/stitch-login-mfa.png") });
+  await page.screenshot({ path: path.resolve(".audit-shots/nexus-login-mfa.png") });
 
   const mfavis2 = await page.isVisible("#mfa-step");
   const gvis2 = await page.isVisible("#google-login-btn");

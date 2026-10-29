@@ -44,22 +44,22 @@ mkdirSync(OUT_EN, { recursive: true });
 
 // Hava durumu kartı ağ isteğini beklemesin: açık-meteo'ya kısa süre tanınır.
 const PAGES = [
-  { name: "home", path: "stitch-home.html", wait: 1400 },
+  { name: "home", path: "nexus-home.html", wait: 1400 },
   // "Cihaz Ekleme Merkezi": uygulamanin gercek cihaz ekleme/protokol secim ekrani.
-  // Onceki "devices" kaynagi stitch-device.html (tek cihaz DETAYI) idi; kimlik secilmeden
+  // Onceki "devices" kaynagi nexus-device.html (tek cihaz DETAYI) idi; kimlik secilmeden
   // acildiginda "Cihaz bulunamadi" hata karti yakalaniyordu (canli sitede olculdu).
-  { name: "pair", path: "stitch-pair.html", wait: 1000 },
-  { name: "energy", path: "stitch-energy.html", wait: 800 },
-  { name: "smart", path: "stitch-smart.html", wait: 800 },
-  { name: "chat", path: "stitch-chat.html", wait: 900 },
-  { name: "lighting", path: "stitch-lighting-master.html", wait: 800 },
-  { name: "scenes", path: "stitch-movie-mode.html", wait: 800 },
-  { name: "settings", path: "stitch-settings.html", wait: 800 },
+  { name: "pair", path: "nexus-pair.html", wait: 1000 },
+  { name: "energy", path: "nexus-energy.html", wait: 800 },
+  { name: "smart", path: "nexus-smart.html", wait: 800 },
+  { name: "chat", path: "nexus-chat.html", wait: 900 },
+  { name: "lighting", path: "nexus-lighting-master.html", wait: 800 },
+  { name: "scenes", path: "nexus-movie-mode.html", wait: 800 },
+  { name: "settings", path: "nexus-settings.html", wait: 800 },
 ];
 
 // Pazarlama sitesinin hero'su bu görselleri "şu ekran" diye etiketliyor. Bazı uygulama
 // sayfaları kimlik/parametre olmadan açıldığında boşluk veya HATA kartı gösteriyor
-// (stitch-device.html → "Cihaz bulunamadı"): canlı sitede o hata kartı "Cihazlar &
+// (nexus-device.html → "Cihaz bulunamadı"): canlı sitede o hata kartı "Cihazlar &
 // Odalar" etiketiyle yayınlanmıştı. Ekran görüntüsü hata/boş durum yakalarsa betik
 // durur — bayat ya da yanlış görsel üretim hattına giremez.
 // Aşağıdaki diziler UYGULAMANIN KENDİ metinleridir (ölçüldü), uydurma değil.

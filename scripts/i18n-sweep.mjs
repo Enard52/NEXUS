@@ -28,7 +28,7 @@ const server = http.createServer(async (req, res) => {
 });
 await new Promise((r) => server.listen(PORT, "127.0.0.1", r));
 
-const pages = (await readdir(SERVE)).filter((f) => /^stitch-.*\.html$/.test(f)).sort();
+const pages = (await readdir(SERVE)).filter((f) => /^nexus-.*\.html$/.test(f)).sort();
 const browser = await chromium.launch();
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true,

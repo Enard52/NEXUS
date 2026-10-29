@@ -44,7 +44,7 @@ await page.route("https://ntfy.sh/**", (route) => {
   route.fulfill({ status: 200, body: "ok" });
 });
 
-const url = `http://127.0.0.1:${PORT}/stitch-instant-notifications.html`;
+const url = `http://127.0.0.1:${PORT}/nexus-instant-notifications.html`;
 await page.goto(url, { waitUntil: "load" });
 await page.waitForTimeout(600);
 

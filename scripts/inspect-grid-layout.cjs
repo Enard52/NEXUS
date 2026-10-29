@@ -22,7 +22,7 @@ const path = require("path");
     localStorage.setItem("nexusPairedDevices", JSON.stringify(devs));
   }, devices);
 
-  await mobPage.goto("http://127.0.0.1:8766/stitch-home.html", { waitUntil: "networkidle" });
+  await mobPage.goto("http://127.0.0.1:8766/nexus-home.html", { waitUntil: "networkidle" });
   await mobPage.waitForTimeout(400);
 
   const mobBoxes = await mobPage.evaluate(() => {
@@ -52,7 +52,7 @@ const path = require("path");
     localStorage.setItem("nexusPairedDevices", JSON.stringify(devs));
   }, devices);
 
-  await deskPage.goto("http://127.0.0.1:8766/stitch-home.html", { waitUntil: "networkidle" });
+  await deskPage.goto("http://127.0.0.1:8766/nexus-home.html", { waitUntil: "networkidle" });
   await deskPage.waitForTimeout(400);
 
   const deskBoxes = await deskPage.evaluate(() => {

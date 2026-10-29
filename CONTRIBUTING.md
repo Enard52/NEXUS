@@ -23,7 +23,7 @@ node scripts/measure-layout.mjs --check   # shell standard
 node scripts/verify-automation-live.mjs   # automation engine live test
 ```
 
-Single source of truth for screens is the repo root (`stitch-*.html`, `*.js`, `css/`). Copies in `www/`, `desktop/app/`, `android/.../public/`, `ios/App/App/public/` are generated — never edit them.
+Single source of truth for screens is the repo root (`nexus-*.html`, `*.js`, `css/`). Copies in `www/`, `desktop/app/`, `android/.../public/`, `ios/App/App/public/` are generated — never edit them.
 
 ## Pull requests
 

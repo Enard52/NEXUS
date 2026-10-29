@@ -77,7 +77,7 @@
          AUDIO_CAPTURE isteğini bu izinle Android çalışma zamanı iznine çevirir. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <!-- QR ile eşleştirme: stitch-scan.html kameralı tarama için VIDEO_CAPTURE ister.
+    <!-- QR ile eşleştirme: nexus-scan.html kameralı tarama için VIDEO_CAPTURE ister.
          Capacitor, WebView'in bu isteğini aşağıdaki izinle Android çalışma zamanı
          iznine çevirir; İZİN BİLDİRİLMEDİĞİNDE sistem otomatik REDDEDER ve QR ile
          eşleştirme telefonda hiçbir zaman çalışmaz (kurulum kodu / yerel ağ

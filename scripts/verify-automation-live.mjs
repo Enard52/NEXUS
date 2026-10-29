@@ -86,7 +86,7 @@ const check = (name, ok, detail) => {
 // --- 1) Motor: zaman tetikleyicisi gerçekten çalışıyor mu? ---
 {
   const pg = await ctx.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/stitch-home.html`, { waitUntil: "networkidle" });
+  await pg.goto(`http://127.0.0.1:${PORT}/nexus-home.html`, { waitUntil: "networkidle" });
   await pg
     .waitForFunction(() => window.NexusAutomationEngine, null, { timeout: 15000 })
     .catch(() => {});
@@ -121,7 +121,7 @@ const check = (name, ok, detail) => {
 // --- 2) Enerji ekranı: uydurma kWh yok, dürüst boş durum ---
 {
   const pg = await ctx.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/stitch-energy.html`, { waitUntil: "networkidle" });
+  await pg.goto(`http://127.0.0.1:${PORT}/nexus-energy.html`, { waitUntil: "networkidle" });
   const power = await pg.textContent("#live-power");
   const note = await pg.textContent("#live-power-note");
   check(
@@ -136,7 +136,7 @@ const check = (name, ok, detail) => {
 // --- 3) Kameralar: cihaz yoksa dürüst boş durum; sahte KAYITTA yok ---
 {
   const pg = await ctx.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/stitch-multi-video.html`, { waitUntil: "networkidle" });
+  await pg.goto(`http://127.0.0.1:${PORT}/nexus-multi-video.html`, { waitUntil: "networkidle" });
   const emptyVisible = await pg.isVisible("#camera-empty");
   const hasFakeBadge = (await pg.content()).includes("KAYITTA");
   const body = await pg.textContent("body");
@@ -149,7 +149,7 @@ const check = (name, ok, detail) => {
 // --- 4) Ev Planı: gerçek otomasyon listelenir, uydurma program yok ---
 {
   const pg = await ctx.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/stitch-home-schedule.html`, { waitUntil: "networkidle" });
+  await pg.goto(`http://127.0.0.1:${PORT}/nexus-home-schedule.html`, { waitUntil: "networkidle" });
   await pg.waitForTimeout(400);
   const cards = await pg.locator("#schedule-list a").count();
   const hasFake = (await pg.textContent("body")).includes("Kahve Makinesi");
@@ -161,7 +161,7 @@ const check = (name, ok, detail) => {
 // --- 5) Beceriler: sahne seçici + dürüstlük notu ---
 {
   const pg = await ctx.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/stitch-skills.html?type=automation`, {
+  await pg.goto(`http://127.0.0.1:${PORT}/nexus-skills.html?type=automation`, {
     waitUntil: "networkidle",
   });
   await pg.click('button.nx-reset:has-text("Konum")');
@@ -176,7 +176,7 @@ const check = (name, ok, detail) => {
 // --- 6) Akıllı sayfa: motor notu + son çalışma bilgisi ---
 {
   const pg = await ctx.newPage();
-  await pg.goto(`http://127.0.0.1:${PORT}/stitch-smart.html?tab=tab-automation`, {
+  await pg.goto(`http://127.0.0.1:${PORT}/nexus-smart.html?tab=tab-automation`, {
     waitUntil: "networkidle",
   });
   await pg.waitForTimeout(400);

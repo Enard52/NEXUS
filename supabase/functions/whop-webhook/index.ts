@@ -1,4 +1,4 @@
-﻿// Whop ödeme webhook'u -> nexus_entitlements (NEXUS+ abonelik durumu).
+// Whop ödeme webhook'u -> nexus_entitlements (NEXUS+ abonelik durumu).
 // Kimlik doğrulama JWT ile değil, Whop'un imzasıyla yapılır (Standard Webhooks: HMAC-SHA256).
 // Gerekli sır: WHOP_WEBHOOK_SECRET (Supabase > Edge Functions > Secrets). SUPABASE_URL ve
 // SUPABASE_SERVICE_ROLE_KEY platform tarafından otomatik sağlanır.

@@ -3,7 +3,7 @@
  * ------------------------------------
  * Amaç: kurulum (install) + temel çevrimdışı kabuk. Politikalar:
  *  - statik varlıklar (css/js/font/ikon): cache-first (stale-while-revalidate)
- *  - uygulama sayfaları (stitch-*.html): network-first, çevrimdışinda son kopya
+ *  - uygulama sayfaları (nexus-*.html): network-first, çevrimdışinda son kopya
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
@@ -16,7 +16,7 @@ var SHELL = [
   'lan-connectors.js', 'automation-engine.js', 'i18n.js', 'lang-en.js',
   'ai-fab.js', 'sheet-gestures.js', 'nexus-dialog.js', 'nexus-assistant.js', 'nexus-feedback.js',
   'icons/icon-192.webp', 'icons/icon-512.webp',
-  'stitch-home.html', 'stitch-login.html', 'stitch-onboarding.html'
+  'nexus-home.html', 'nexus-login.html', 'nexus-onboarding.html'
 ];
 
 self.addEventListener('install', function (e) {
@@ -62,7 +62,7 @@ self.addEventListener('fetch', function (e) {
       return res;
     }).catch(function () {
       return caches.match(req).then(function (hit) {
-        return hit || caches.match('stitch-home.html').then(function (h) { return h || Response.error(); });
+        return hit || caches.match('nexus-home.html').then(function (h) { return h || Response.error(); });
       });
     }));
   }

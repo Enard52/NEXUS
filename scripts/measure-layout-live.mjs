@@ -32,7 +32,7 @@ const MIME = {
   ".txt": "text/plain; charset=utf-8",
 };
 
-// Statik dosya sunucusu (kök dizin; stitch-*.html kaynağı burada)
+// Statik dosya sunucusu (kök dizin; nexus-*.html kaynağı burada)
 const server = http.createServer(async (req, res) => {
   try {
     let p = decodeURIComponent((req.url || "/").split("?")[0]);
@@ -50,26 +50,26 @@ await new Promise((r) => server.listen(PORT, "127.0.0.1", r));
 
 // Issue #1'deki kritik geçiş aileleri
 const DEFAULT_PAGES = [
-  "stitch-home.html",
-  "stitch-smart.html",
-  "stitch-discover.html",
-  "stitch-profile.html",
-  "stitch-chat.html",
-  "stitch-menu.html",
-  "stitch-user-info.html",
-  "stitch-settings.html",
-  "stitch-plus.html",
-  "stitch-billing.html",
-  "stitch-energy.html",
-  "stitch-energy-strategy.html",
-  "stitch-energy-devices.html",
-  "stitch-device.html",
-  "stitch-dnd.html",
-  "stitch-panels.html",
-  "stitch-lighting-master.html",
-  "stitch-air-quality.html",
-  "stitch-scenario-settings.html",
-  "stitch-forgot-password.html",
+  "nexus-home.html",
+  "nexus-smart.html",
+  "nexus-discover.html",
+  "nexus-profile.html",
+  "nexus-chat.html",
+  "nexus-menu.html",
+  "nexus-user-info.html",
+  "nexus-settings.html",
+  "nexus-plus.html",
+  "nexus-billing.html",
+  "nexus-energy.html",
+  "nexus-energy-strategy.html",
+  "nexus-energy-devices.html",
+  "nexus-device.html",
+  "nexus-dnd.html",
+  "nexus-panels.html",
+  "nexus-lighting-master.html",
+  "nexus-air-quality.html",
+  "nexus-scenario-settings.html",
+  "nexus-forgot-password.html",
 ];
 const pages = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_PAGES;
 
@@ -83,7 +83,7 @@ const ctx = await browser.newContext({
 });
 // auth.js guard'ı atlat: sahte oturum (yalnızca bu ölçüm bağlamında).
 // Public (auth) sayfalar OTURUMSUZ bağlamda ölçülür; aksi halde guard
-// örneği stitch-home.html'e yönlendirir ve ev sahibi ölçülür.
+// örneği nexus-home.html'e yönlendirir ve ev sahibi ölçülür.
 const anonCtx = await browser.newContext({
   viewport: { width: 390, height: 844 },
   deviceScaleFactor: 3,
@@ -92,10 +92,10 @@ const anonCtx = await browser.newContext({
   locale: "tr-TR",
 });
 const PUBLIC_PAGES = [
-  "stitch-login.html",
-  "stitch-onboarding.html",
-  "stitch-forgot-password.html",
-  "stitch-register.html",
+  "nexus-login.html",
+  "nexus-onboarding.html",
+  "nexus-forgot-password.html",
+  "nexus-register.html",
 ];
 await ctx.addInitScript(() => localStorage.setItem("nexusCurrentUser", "layout-probe@nexus.local"));
 

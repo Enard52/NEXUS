@@ -157,8 +157,8 @@ for (const [file, cur, saveText] of [
   check(`depo: android minSdk okunuyor (${minSdk})`, minSdk > 0 && !!androidFloor, String(minSdk));
 
   // Ev halkası ekranı: rol listesi ve yetki anahtarları sitenin aile kartıyla birebir aynı olmalı.
-  const hh = existsSync(join(ROOT, "src", "app", "stitch-household.html"))
-    ? readFileSync(join(ROOT, "src", "app", "stitch-household.html"), "utf8")
+  const hh = existsSync(join(ROOT, "src", "app", "nexus-household.html"))
+    ? readFileSync(join(ROOT, "src", "app", "nexus-household.html"), "utf8")
     : "";
   const roles = [...hh.matchAll(/<option value="([^"]+)">/g)].map((m) => m[1]);
   check("depo: hane rolleri bulunuyor", roles.length >= 2, roles.join(","));
@@ -299,7 +299,7 @@ for (const [file, cur, saveText] of [
   if (catalog) {
     // Ekranlar tek satırlık büyük HTML'ler: hepsini bir kez okuyup küçük harfe çevir.
     const screens = new Map();
-    for (const f of readdirSync(join(ROOT, "src", "app")).filter((n) => /^stitch-.*\.html$/.test(n)))
+    for (const f of readdirSync(join(ROOT, "src", "app")).filter((n) => /^nexus-.*\.html$/.test(n)))
       screens.set(f, readFileSync(join(ROOT, "src", "app", f), "utf8").toLowerCase());
     const dictText = (existsSync(join(ROOT, "src", "app", "lang-en.js")) ? readFileSync(join(ROOT, "src", "app", "lang-en.js"), "utf8") : "").toLowerCase();
     for (const brand of BRANDS) {
@@ -1057,7 +1057,7 @@ if (LIVE) {
   try {
     const appHome = await fetch(`${APP_URL}/`, { redirect: "manual" });
     const appBody = appHome.status === 200 ? await appHome.text() : "";
-    webStillLive = appHome.status === 200 && /stitch-|NEXUS/.test(appBody);
+    webStillLive = appHome.status === 200 && /nexus-|NEXUS/.test(appBody);
   } catch { webStillLive = false; }
   check("canlı: web uygulaması yayında değil", !webStillLive);
   const cfg = await head("/assets/cloud-config.js");
