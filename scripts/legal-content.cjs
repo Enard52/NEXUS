@@ -56,6 +56,7 @@ const privacy = {
           "GitHub: kurulum dosyalarının dağıtımı.",
           "Open-Meteo: hava durumu için şehir/yaklaşık koordinat bilgisi.",
           "OpenStreetMap / Nominatim: harita ve konum araması; Unsplash: bazı yedek görseller.",
+          "BigDataCloud: koordinattan yer adı bulma (Nominatim ulaşılamazsa yedek servis; ev konumu seçerken de kullanılır). Bu servis, seçtiğiniz ya da algılanan konumun tam koordinatlarını alır.",
         ],
         p: [
           "Bu sağlayıcıların sunucuları Türkiye dışında olabilir. Hesap açarak ve/veya ödeme yaparak verilerinizin bu sağlayıcılara ve yurt dışına aktarılmasına açık rıza vermiş olursunuz; rızanızı hesabınızı sildirerek geri alabilirsiniz.",
@@ -158,6 +159,7 @@ const privacy = {
           "GitHub: distribution of installers.",
           "Open-Meteo: city / approximate coordinates for weather.",
           "OpenStreetMap / Nominatim: maps and place search; Unsplash: some fallback images.",
+          "BigDataCloud: resolving a place name from coordinates (fallback when Nominatim is unreachable; also used when you pick your home location). This service receives the exact coordinates of the location you pick or that is detected.",
         ],
         p: [
           "These providers' servers may be outside Türkiye. By creating an account and/or paying you give explicit consent to your data being transferred to them and abroad; you can withdraw consent by having your account deleted.",
