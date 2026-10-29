@@ -577,8 +577,8 @@
     }
 
     function homeLinkHtml() {
-      return '<a href="nexus-home.html" class="mt-1 inline-flex items-center gap-2 rounded-full bg-nexusPurple px-4 py-2 text-xs font-bold text-white active:scale-[0.98]">' +
-        '<i data-lucide="home" class="text-sm"></i> Ana sayfayı aç</a>';
+      return '<a href="nexus-home.html" class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-2 text-[11px] font-bold text-white active:scale-[0.98]">' +
+        '<i data-lucide="home" class="w-3.5 h-3.5"></i>Ana Sayfa</a>';
     }
 
     function addScannedDevice() {
@@ -590,9 +590,20 @@
         if (!entity) { setScanStatus("ESPHome bileşen kimliğini yaz (cihazın YAML dosyasındaki id).", "error"); return; }
         found.entity = entity;
       }
-      storeFoundDevice(found);
-      setScanStatus("Eklendi. Ana sayfadan yönetebilirsin.", "ok");
-      document.getElementById("lan-scan-result").innerHTML = homeLinkHtml();
+      var isNew = storeFoundDevice(found);
+      if (isNew) {
+        setScanStatus("Eklendi.", "ok");
+        document.getElementById("lan-scan-result").innerHTML =
+          '<div class="rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 px-4 py-4 flex items-center gap-3">' +
+          '<div class="w-10 h-10 shrink-0 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600">' +
+          '<i data-lucide="check-circle" class="w-5 h-5"></i></div>' +
+          '<div class="min-w-0 flex-1">' +
+          '<p class="text-sm font-bold text-emerald-700 dark:text-emerald-400">' + escapeHtml(found.name) + ' eklendi</p>' +
+          '<p class="text-[11px] text-emerald-600/70 dark:text-emerald-400/60 mt-0.5">Ana sayfadan yönetebilirsin</p></div>' +
+          homeLinkHtml() + '</div>';
+      } else {
+        setScanStatus("Bu cihaz zaten ekli.", "ok");
+      }
       if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
@@ -707,18 +718,29 @@
     function renderSubnetFindings() {
       var host = document.getElementById("lan-subnet-results");
       var devices = getPairedDevices();
+      var PROTO_ICON = { wled: "lightstrip", tasmota: "plug-zap", shelly: "plug-zap", hue: "lightbulb", homeassistant: "home", esphome: "cpu" };
+      var PROTO_COLOR = { wled: "bg-cyan-50 text-cyan-500 dark:bg-cyan-500/10 dark:text-cyan-300", tasmota: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-300", shelly: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-300", hue: "bg-amber-50 text-amber-500 dark:bg-amber-500/10 dark:text-amber-300", homeassistant: "bg-blue-50 text-blue-500 dark:bg-blue-500/10 dark:text-blue-300", esphome: "bg-indigo-50 text-indigo-500 dark:bg-indigo-500/10 dark:text-indigo-300" };
       host.innerHTML = subnetFindings.map(function (found, index) {
         var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
         var already = devices.some(function (d) { return d && d.host === normalizedHost; });
-        return '<div class="plain-card flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-3.5 py-3 dark:border-slate-800">' +
-          '<div class="min-w-0"><p class="text-sm font-bold truncate">' + escapeHtml(found.name) + "</p>" +
-          '<p class="text-[11px] text-slate-500 truncate dark:text-slate-300">' + escapeHtml(found.protocol) +
-          " · " + escapeHtml(found.host) + "</p></div>" +
+        var proto = (found.protocol || "").toLowerCase();
+        var icon = PROTO_ICON[proto] || "cpu";
+        var colorCls = PROTO_COLOR[proto] || "bg-nexusPurple/10 text-nexusPurple";
+        var protoLabel = found.protocol ? found.protocol.charAt(0).toUpperCase() + found.protocol.slice(1) : "LAN";
+        return '<div class="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-3.5 dark:border-slate-800 dark:bg-slate-900">' +
+          '<div class="flex items-center gap-3 min-w-0">' +
+          '<div class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center ' + colorCls + '">' +
+          '<i data-lucide="' + icon + '" class="w-5 h-5"></i></div>' +
+          '<div class="min-w-0">' +
+          '<p class="text-sm font-bold truncate dark:text-white">' + escapeHtml(found.name) + '</p>' +
+          '<p class="text-[11px] text-slate-500 truncate dark:text-slate-400">' + protoLabel + ' · ' + escapeHtml(found.host) + '</p>' +
+          '</div></div>' +
           (already
-            ? '<span class="shrink-0 text-[11px] font-bold text-emerald-600">ekli</span>'
-            : '<button type="button" class="shrink-0 rounded-full bg-slate-900 px-3 py-1.5 text-[11px] font-bold text-white active:scale-[0.98] dark:bg-slate-100 dark:text-slate-900" onclick="addSubnetFinding(' + index + ')">Ekle</button>') +
-          "</div>";
+            ? '<span class="shrink-0 flex items-center gap-1 text-[11px] font-bold text-emerald-600"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i>Ekli</span>'
+            : '<button type="button" class="shrink-0 rounded-full bg-nexusPurple px-4 py-2 text-[11px] font-bold text-white active:scale-[0.98]" onclick="addSubnetFinding(' + index + ')">Ekle</button>') +
+          '</div>';
       }).join("");
+      if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
     function addSubnetFinding(index) {
