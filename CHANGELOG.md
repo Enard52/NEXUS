@@ -2,6 +2,24 @@
 
 _Bu dosya `node scripts/bump-version.mjs --changelog` ile Conventional Commits'ten üretilir; elle düzenlenmez._
 
+## v1.0.31
+
+### ✨ Added
+- feedback: tap/navigation sounds wired to the global click capture
+
+### 🐛 Fixed
+- site: emit the decode-guard U+FFFD as an escaped token
+- release: bump-version mirrors the version constant into the www screen copy
+
+### 📚 Docs
+- release: changelog entry for v1.0.30
+
+### 🧩 Other
+- v1.0.31
+- carry concurrent modal-head/product-image UI edits
+- carry concurrent dialog/settings/scene edits + feedback-motion guard
+- rebuild public pages with the v1.0.30 version chip
+
 ## v1.0.30
 
 ### 📚 Docs
