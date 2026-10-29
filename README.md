@@ -5,7 +5,7 @@
 # NEXUS — local-first smart home
 
 One app that talks to your devices **directly on your local network** — no hub, no
-vendor cloud, no subscription required. Windows · Linux · Android. macOS & iOS build from source.
+vendor cloud, no subscription required. Windows · Linux · macOS · Android. iOS builds from source.
 
 > **House rule: the app never pretends.** Real device states, automations that
 > actually run, honest energy numbers. Anything not supported yet is clearly
@@ -20,9 +20,12 @@ vendor cloud, no subscription required. Windows · Linux · Android. macOS & iOS
 
 ## Why NEXUS
 
-- **Local-first control.** Shelly, Tasmota, WLED, ESPHome, Philips Hue and Home
-  Assistant over local HTTP; TP-Link Kasa and Yeelight over local TCP. Pairing is
-  instant LAN discovery — no account creation per device.
+- **Local-first control.** Shelly, Tasmota, WLED, ESPHome, Philips Hue, Home Assistant
+  and Sonoff (DIY) over local HTTP; TP-Link Kasa/Tapo, Yeelight and Tuya over local TCP/HTTP;
+  WiZ, LIFX and Govee over UDP; Wake-on-LAN; a HomeKit bridge on desktop. Pairing is
+  instant LAN discovery — no account creation per device. Connectors are written from public
+  protocol documentation and tested against simulated devices; **most are not yet verified on
+  real hardware** — see [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and help us verify yours.
 - **Desktop with real tray automations.** The Windows/Linux program runs the same
   UI in a desktop shell with a sidebar, sits in the system tray, and keeps
   schedules and sunset triggers running even with the window closed.
@@ -51,14 +54,15 @@ with a navigation sidebar, tray mode and background automation worker:
 | Windows x64 + arm64 | [Download installer](https://github.com/Enard52/nexus-releases/releases/latest) (auto-update built in) |
 | Linux x64 | AppImage + deb from the same releases page |
 | Android | Signed APK from the same releases page |
-| macOS / iOS | Build configs ready in-repo — see [docs/BUILD-ALL-PLATFORMS.md](docs/BUILD-ALL-PLATFORMS.md) |
+| macOS | .dmg / .zip from the same releases page |
+| iOS | Build from source — see [docs/BUILD-ALL-PLATFORMS.md](docs/BUILD-ALL-PLATFORMS.md) |
 | Web | [nexus-smarthome.pages.dev](https://nexus-smarthome.pages.dev) — account, downloads & billing |
 
 ## Architecture (single source, three shells)
 
 ```
 src/app (single source)                generated copies — never edit by hand
-├─ nexus-*.html   62 screens  →  www/  (sync-www.mjs)        → same UI in desktop & Android
+├─ nexus-*.html   64 screens  →  www/  (sync-www.mjs)        → same UI in desktop & Android
 ├─ *.js (theme, data, device-    →  desktop/app (prepare-app)  → Electron (nexus:// protocol)
 │  controls, lan-connectors,     →  android assets (cap sync)  → Capacitor APK (signed)
 │  automation-engine.js)
@@ -66,7 +70,7 @@ src/app (single source)                generated copies — never edit by hand
 ├─ www/public/     marketing site (site-content.mjs + site-build.mjs) → nexus-smarthome.pages.dev
 ├─ supabase/       Edge Functions + migrations (accounts, billing webhooks, invites)
 ├─ scripts/        build/verify tooling (measure-layout, verify-site, site-*, legal-pdf…)
-├─ packages/       unit-tested modules (vitest: 1057 tests) — mirror & hygiene guards included
+├─ packages/       unit-tested modules (vitest: 1200+ tests) — mirror & hygiene guards included
 └─ desktop/        Electron main/preload (tray mode, auto-update, automation worker)
 ```
 
