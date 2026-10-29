@@ -272,7 +272,9 @@ describe("mobil marka varlıkları (launcher icon + splash)", () => {
         `${d}/splash.png merkezinde marka yok (rgb ${r},${g},${b})`,
       ).toBe(true);
     }
-  });
+    // 26 PNG kodlama çözümü (tam kaliteyle); parallel suite'te 5sn'lik varsayılan
+    // timeout yetersiz kalabiliyor (vitest CPU sıkışmasında flake).
+  }, 20000);
 
   it("iOS uygulama ikonu 1024x1024, alfasız ve marka renginde", () => {
     const file = path.join(IOS_ASSETS, "AppIcon.appiconset", "AppIcon-512@2x.png");
