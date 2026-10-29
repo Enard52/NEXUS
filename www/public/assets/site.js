@@ -128,7 +128,7 @@ function nxFixMojibake(str){
       var bytes=new Uint8Array(str.length);
       for(var i=0;i<str.length;i++)bytes[i]=str.charCodeAt(i)&0xff;
       var decoded=new TextDecoder('utf-8').decode(bytes);
-      if(decoded && !decoded.includes('\uFFFD'))return decoded;
+      if(decoded && !decoded.includes('�'))return decoded;
     }
   }catch(e){}
   return str;
@@ -1450,7 +1450,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
   // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
-  var NX_VER="1.0.28";
+  var NX_VER="1.0.30";
   function nxVerLess(a,b){
     var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
     var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
