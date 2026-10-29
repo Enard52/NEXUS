@@ -35,6 +35,9 @@ function loadNotify(
     dndUntil?: number;
     page?: Record<string, string>;
     responder?: (call: Call) => { status?: number };
+    desktop?: (ev: Record<string, unknown>) => void;
+    localNotifications?: Record<string, unknown>;
+    notice?: (ev: unknown) => void;
   } = {},
 ) {
   const owner = "ayse@ornek.com";
@@ -70,6 +73,10 @@ function loadNotify(
     nexusGetItem: (key: string) => storage.getItem(`${owner}_${key}`),
     nexusSetItem: (key: string, value: string) => storage.setItem(`${owner}_${key}`, value),
   };
+  if (options.desktop) win.nexusDesktop = { notifyEvent: options.desktop };
+  if (options.notice) win.nexusShowNotice = options.notice;
+  if (options.localNotifications)
+    win.Capacitor = { Plugins: { LocalNotifications: options.localNotifications } };
   (globalThis as Record<string, unknown>).localStorage = storage;
   new Function("window", "fetch", "document", NOTIFY)(win, fetchStub, {
     readyState: "loading",
@@ -91,6 +98,196 @@ const EVENT = {
   detail: "Koridor · kamera",
   ts: new Date().toISOString(),
 };
+
+describe("masaüstü yerel bildirim", () => {
+  it("olay tercihlere uyarak tek bir yerel bildirim olur", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, desktop: (e) => shown.push(e) });
+    await notify.deliver(EVENT);
+    expect(shown).toHaveLength(1);
+    expect(shown[0]).toMatchObject({ id: "ev-1", title: "Hareket algılandı", force: false });
+  });
+
+  it("ana anahtar kapalıyken yerel bildirim çıkmaz", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({
+      channels: ALL_ON_SYSTEM,
+      page: { master: "false" },
+      desktop: (e) => shown.push(e),
+    });
+    await notify.deliver(EVENT);
+    expect(shown).toEqual([]);
+  });
+
+  it("test bildirimi odaktaki pencerede de gösterilsin diye zorlanır", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, desktop: (e) => shown.push(e) });
+    await notify.test(["system"]);
+    expect(shown).toHaveLength(1);
+    expect(shown[0].force).toBe(true);
+  });
+});
+
+const ALL_ON_SYSTEM = { system: { enabled: true } };
+
+function fakeLocalNotifications() {
+  const log = { scheduled: [] as any[], actionTypes: [] as any[], channels: [] as any[], handler: null as any };
+  const plugin = {
+    createChannel: (c: unknown) => (log.channels.push(c), Promise.resolve()),
+    registerActionTypes: (t: unknown) => (log.actionTypes.push(t), Promise.resolve()),
+    checkPermissions: () => Promise.resolve({ display: "granted" }),
+    schedule: (p: any) => (log.scheduled.push(...p.notifications), Promise.resolve()),
+    addListener: (_n: string, fn: unknown) => ((log.handler = fn), Promise.resolve()),
+  };
+  return { plugin, log };
+}
+
+function permissionPlugin(initial: string, afterAsk: string) {
+  let display = initial;
+  const asked = { count: 0 };
+  return {
+    asked,
+    plugin: {
+      createChannel: () => Promise.resolve(),
+      checkPermissions: () => Promise.resolve({ display }),
+      requestPermissions: () => ((asked.count += 1), (display = afterAsk), Promise.resolve({ display })),
+      schedule: () => Promise.resolve(),
+      addListener: () => Promise.resolve(),
+    },
+  };
+}
+
+describe("giriş sonrası bildirim kurulumu ve gerçek izin", () => {
+  it("izin durumu sormadan okunur", async () => {
+    const a = loadNotify({ localNotifications: permissionPlugin("denied", "denied").plugin });
+    expect(await a.notify.permission()).toBe("denied");
+    const b = loadNotify({ localNotifications: permissionPlugin("prompt-with-rationale", "granted").plugin });
+    expect(await b.notify.permission()).toBe("prompt");
+    const c = loadNotify({ localNotifications: permissionPlugin("granted", "granted").plugin });
+    expect(await c.notify.permission()).toBe("granted");
+  });
+
+  it("onay: izin istenir, anlık ve kritik anahtarlar açılır", async () => {
+    const fake = permissionPlugin("prompt", "granted");
+    const { notify } = loadNotify({ localNotifications: fake.plugin });
+    const res = await notify.finishSetup(true, true);
+    expect(res.granted).toBe(true);
+    expect(fake.asked.count).toBe(1);
+    expect(notify.mutedBy({ id: "e", type: "energy" })).toBe("");
+    expect(notify.mutedBy({ id: "s", type: "security" })).toBe("");
+    expect(notify.mutedBy({ id: "m", type: "emergency" })).toBe("");
+    expect(notify.channels().system.enabled).toBe(true);
+  });
+
+  it("red: izin verilmezse hiçbir bildirim açık kalmaz", async () => {
+    const fake = permissionPlugin("prompt", "denied");
+    const { notify } = loadNotify({ localNotifications: fake.plugin });
+    const res = await notify.finishSetup(true, true);
+    expect(res.granted).toBe(false);
+    expect(notify.mutedBy({ id: "s", type: "security" })).toBe("master");
+    expect(notify.mutedBy({ id: "e", type: "energy" })).toBe("master");
+  });
+
+  it("'Şimdi değil' izin sormadan her şeyi kapatır", async () => {
+    const fake = permissionPlugin("prompt", "granted");
+    const { notify } = loadNotify({ localNotifications: fake.plugin });
+    await notify.finishSetup(false, false);
+    expect(fake.asked.count).toBe(0);
+    expect(notify.mutedBy({ id: "s", type: "security" })).toBe("master");
+  });
+
+  it("yalnız anlık seçilirse kritik kategoriler kapalı kalır", async () => {
+    const fake = permissionPlugin("granted", "granted");
+    const { notify } = loadNotify({ localNotifications: fake.plugin });
+    await notify.finishSetup(true, false);
+    expect(notify.mutedBy({ id: "e", type: "energy" })).toBe("");
+    expect(notify.mutedBy({ id: "s", type: "security" })).toBe("category");
+    expect(notify.mutedBy({ id: "m", type: "emergency" })).toBe("category");
+  });
+
+  it("izin yokken telefon bildirimi hata olarak kaydedilir ve uygulama içi şerit gösterilir", async () => {
+    const fake = permissionPlugin("denied", "denied");
+    const shown: unknown[] = [];
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, localNotifications: fake.plugin, notice: (e) => shown.push(e) });
+    const out = await notify.deliver({ id: "k1", type: "security", title: "Alarm", detail: "x", ts: Date.now() });
+    expect(out.sent).toEqual([{ channel: "system", ok: false, error: "sistem bildirim izni kapalı" }]);
+    expect(shown).toHaveLength(1);
+  });
+});
+
+describe("telefon bildirimi: eylem düğmeleri ve gruplama", () => {
+  it("bildirim kategorisine göre gruplanır ve eylem türü bağlanır; tür bir kez kaydedilir", async () => {
+    const { plugin, log } = fakeLocalNotifications();
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, localNotifications: plugin });
+    await notify.deliver({ id: "a1", type: "energy", title: "Enerji", detail: "x", ts: Date.now() });
+    await notify.deliver({ id: "a2", type: "energy", title: "Enerji 2", detail: "y", ts: Date.now() });
+    expect(log.scheduled).toHaveLength(2);
+    expect(log.scheduled[0]).toMatchObject({ group: "nexus-energy", actionTypeId: "NEXUS_ALERT" });
+    expect(log.actionTypes).toHaveLength(1);
+    const ids = log.actionTypes[0].types[0].actions.map((a: any) => a.id);
+    expect(ids).toEqual(["open", "mute1h"]);
+  });
+
+  it("'1 saat sustur' Rahatsız Etmeyin süresini 1 saat ileri alır ve sayfa açmaz", async () => {
+    const { plugin, log } = fakeLocalNotifications();
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, localNotifications: plugin });
+    notify.start();
+    expect(notify.dndActive()).toBe(false);
+    log.handler({ actionId: "mute1h", notification: { extra: { page: "nexus-messages.html" } } });
+    expect(notify.dndActive()).toBe(true);
+  });
+});
+const QUIET_ALL_DAY = { quietEnabled: "true", quietStart: "00:00", quietEnd: "00:00" };
+
+describe("kritik uyarılar ve ses tercihi", () => {
+  const ALARM = { id: "ev-alarm", type: "security", title: "Alarm", detail: "Kapı", ts: Date.now() };
+
+  it("kritik olay sessiz saatleri aşar, sıradan olay aşmaz", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, page: QUIET_ALL_DAY, desktop: (e) => shown.push(e) });
+    await notify.deliver({ ...EVENT, id: "ev-plain", type: "automation" });
+    expect(shown).toEqual([]);
+    await notify.deliver(ALARM);
+    expect(shown.map((e) => e.id)).toEqual(["ev-alarm"]);
+  });
+
+  it("aşım anahtarı kapalıysa kritik olay da sessiz saatte susar", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({
+      channels: ALL_ON_SYSTEM,
+      page: { ...QUIET_ALL_DAY, "critical-override": "false" },
+      desktop: (e) => shown.push(e),
+    });
+    await notify.deliver(ALARM);
+    expect(shown).toEqual([]);
+  });
+
+  it("ana anahtar kapalıyken kritik olay da gönderilmez", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({ channels: ALL_ON_SYSTEM, page: { master: "false" }, desktop: (e) => shown.push(e) });
+    await notify.deliver(ALARM);
+    expect(shown).toEqual([]);
+  });
+
+  it("kategori sesi kapalıysa yerel bildirim sessiz gider; kritik her zaman sesli", async () => {
+    const shown: Record<string, unknown>[] = [];
+    const { notify } = loadNotify({
+      channels: ALL_ON_SYSTEM,
+      page: { "sound-energy": "false", "sound-security": "false" },
+      desktop: (e) => shown.push(e),
+    });
+    await notify.deliver({ id: "ev-en", type: "energy", title: "Enerji", detail: "x", ts: Date.now() });
+    await notify.deliver(ALARM);
+    expect(shown.find((e) => e.id === "ev-en")!.silent).toBe(true);
+    expect(shown.find((e) => e.id === "ev-alarm")!.silent).toBe(false);
+  });
+
+  it("acil durum türü kendi kategori anahtarına bağlıdır", () => {
+    const { notify } = loadNotify({ page: { "notif-emergency": "false" } });
+    expect(notify.mutedBy({ id: "e", type: "emergency" })).toBe("category");
+    expect(notify.mutedBy({ id: "s", type: "security" })).toBe("");
+  });
+});
 
 describe("dışa dönük bildirim kanalları", () => {
   it("kanallar kapalıyken hiçbir ağ isteği gitmez", async () => {
@@ -457,15 +654,22 @@ describe("kanal yüzeyi daraltıldı (yalnız Telegram + sistem)", () => {
     expect(calls.length).toBe(2); // ntfy + telegram
   });
 
-  it("ekranda ntfy/webhook anahtarı yok ama motor onları tanıyor (geri dönüş kapısı)", () => {
+  it("ekranda tüm kanallar anahtar ve alanlarıyla görünür (ntfy/webhook yüzeye döndü)", () => {
     const screen = readFileSync(
       join(REPO_ROOT, "src", "app", "nexus-instant-notifications.html"),
       "utf8",
     );
-    expect(screen).not.toMatch(/data-channel="(ntfy|webhook)"/);
-    expect(screen).not.toMatch(/id="(ntfy-topic|webhook-url)"/);
-    // Anahtarı olmayan kanal susturulamayan gönderimdir: sayfa yüklenirken kapamalı.
-    expect(screen).toMatch(/HIDDEN_CHANNELS\s*=\s*\[[^\]]*['"]ntfy['"][^\]]*['"]webhook['"]/);
+    // Motorun tanıdığı her kanalın arayüzü olmalı: anahtarı olmayan kanal
+    // susturulamayan gönderimdir. ntfy/webhook gizliyken bu bekçi onları
+    // arayüzden YOK sayıyordu; kanallar yüzeye döndüğünde bekçi tersine döndü.
+    expect(screen).toMatch(/data-channel="ntfy"/);
+    expect(screen).toMatch(/data-channel="webhook"/);
+    expect(screen).toMatch(/data-field="ntfy\.topic"/);
+    expect(screen).toMatch(/data-field="webhook\.url"/);
+    expect(screen).toMatch(/data-channel="email"/);
+    // Gizli kanal mekanizması boş listeyle hazır dursun: ileride arayüzsüz
+    // kanal eklenirse sayfa onu yüklenirken kapayabilsin.
+    expect(screen).toMatch(/HIDDEN_CHANNELS\s*=\s*\[\s*\]/);
     expect(screen).toMatch(/disableHiddenChannels\(\)/);
     const { notify } = loadNotify({ channels: { ntfy: { enabled: true, topic: "eski" } } });
     expect(Object.keys(notify.channels())).toContain("ntfy");

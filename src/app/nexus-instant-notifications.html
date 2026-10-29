@@ -77,12 +77,39 @@
             <div class="flex-1 bg-slate-50 rounded-2xl p-3 text-center border border-slate-100"><p class="text-[10px] font-bold text-slate-400 uppercase">Bitiş</p><input id="quiet-end" type="time" value="07:30" aria-label="Sessiz saatler bitişi" class="nx-tap-f text-lg font-bold bg-transparent border-0 p-0 mt-1 text-center w-full focus:ring-0"></div>
           </div>
           <p class="text-[11px] text-slate-400 mt-3 italic">Sessiz saatlerde dışa dönük kanallar durur; uyarılar uygulama içinde birikmeye devam eder.</p>
+          <div class="flex items-center justify-between gap-3 mt-4 notification-row">
+            <div><p class="font-semibold text-sm">Kritik uyarılar sessiz saatleri aşsın</p><p class="text-[11px] text-slate-400 font-medium">Güvenlik, acil durum ve alarm olayları bu saatlerde de bildirilir.</p></div>
+            <label class="switch shrink-0"><input type="checkbox" data-key="critical-override"><span class="slider"></span></label>
+          </div>
         </section>
+      </div>
+      <div class="space-y-3">
+        <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Ses ve Titreşim</h3>
+        <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100/50">
+          <div class="px-5 pt-4 pb-1 flex items-center justify-end gap-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest"><span class="w-11 text-center">Ses</span><span class="w-11 text-center" data-vib-col>Titreşim</span></div>
+          <div class="px-5 py-3 flex items-center justify-between notification-row"><p class="font-semibold text-sm">Güvenlik</p><div class="flex items-center gap-5"><label class="switch"><input type="checkbox" data-key="sound-security" aria-label="Güvenlik sesi"><span class="slider"></span></label><label class="switch" data-vib-col><input type="checkbox" data-key="vib-security" aria-label="Güvenlik titreşimi"><span class="slider"></span></label></div></div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="px-5 py-3 flex items-center justify-between notification-row"><p class="font-semibold text-sm">Acil Durumlar</p><div class="flex items-center gap-5"><label class="switch"><input type="checkbox" data-key="sound-emergency" aria-label="Acil durum sesi"><span class="slider"></span></label><label class="switch" data-vib-col><input type="checkbox" data-key="vib-emergency" aria-label="Acil durum titreşimi"><span class="slider"></span></label></div></div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="px-5 py-3 flex items-center justify-between notification-row"><p class="font-semibold text-sm">Enerji</p><div class="flex items-center gap-5"><label class="switch"><input type="checkbox" data-key="sound-energy" aria-label="Enerji sesi"><span class="slider"></span></label><label class="switch" data-vib-col><input type="checkbox" data-key="vib-energy" aria-label="Enerji titreşimi"><span class="slider"></span></label></div></div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="px-5 py-3 flex items-center justify-between notification-row"><p class="font-semibold text-sm">AI Önerileri</p><div class="flex items-center gap-5"><label class="switch"><input type="checkbox" data-key="sound-ai" aria-label="AI önerileri sesi"><span class="slider"></span></label><label class="switch" data-vib-col><input type="checkbox" data-key="vib-ai" aria-label="AI önerileri titreşimi"><span class="slider"></span></label></div></div>
+        </section>
+        <p class="text-[11px] text-slate-400 leading-relaxed px-1" data-purpose="sound-note">Kritik uyarılar her zaman sesli gelir. Titreşim yalnızca telefonda geçerlidir; Android'de ses ve titreşim ayrıca telefonun bildirim ayarlarından da değiştirilebilir.</p>
       </div>
       <div class="space-y-3">
         <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Dışa Dönük Kanallar</h3>
         <p class="text-xs text-slate-500 leading-relaxed px-1">Olaylar uygulamanın içinde kalır; istersen aynı uyarıyı telefonunun uyarı merkezine veya Telegram'a da gönder. Hiçbiri zorunlu değil.</p>
         <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100/50">
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600"><i data-lucide="antenna" class="w-6 h-6"></i></div><div><p class="font-semibold">ntfy</p><p class="text-xs text-slate-500 font-medium">Konu adı yaz, hesap gerekmez</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="ntfy"><span class="slider"></span></label></div>
+            <div class="mt-4" data-fields="ntfy">
+              <label for="ntfy-topic" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Konu (topic)</label>
+              <input id="ntfy-topic" type="text" data-field="ntfy.topic" autocomplete="off" spellcheck="false" placeholder="nexus-ev-123" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30">
+            </div>
+            <p class="text-[11px] text-slate-400 mt-2">Bildirimler ntfy.sh üzerinde bu konuya gönderilir; konu adını sadece sen biliyorsan bildirimi sadece sen alırsın.</p>
+          </div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 channel-row">
             <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-sky-50 flex items-center justify-center text-sky-600"><i data-lucide="send" class="w-6 h-6"></i></div><div><p class="font-semibold">Telegram</p><p class="text-xs text-slate-500 font-medium">Bot anahtarı yalnızca bu cihazda kalır</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="telegram"><span class="slider"></span></label></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4" data-fields="telegram">
@@ -90,6 +117,20 @@
               <div><label for="telegram-chat" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sohbet ID</label><input id="telegram-chat" type="text" data-field="telegram.chat" autocomplete="off" spellcheck="false" placeholder="123456789" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30"></div>
             </div>
             <p class="text-[11px] text-slate-400 mt-2">Anahtar buluta yüklenmez; diğer cihazlarda tekrar girmen gerekir.</p>
+          </div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500"><i data-lucide="mail" class="w-6 h-6"></i></div><div><p class="font-semibold">E-posta</p><p class="text-xs text-slate-500 font-medium">Uyarılar hesabının e-posta adresine gider</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="email"><span class="slider"></span></label></div>
+            <p class="text-[11px] text-slate-400 mt-2" data-purpose="email-target">Bulut oturumu açıkken kendi adresine gönderilir; saklanacak anahtar yok.</p>
+          </div>
+          <div class="h-[1px] bg-slate-50 mx-5"></div>
+          <div class="p-5 channel-row">
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500"><i data-lucide="webhook" class="w-6 h-6"></i></div><div><p class="font-semibold">Webhook</p><p class="text-xs text-slate-500 font-medium">Kendi sunucuna JSON POST — gelişmiş</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="webhook"><span class="slider"></span></label></div>
+            <div class="mt-4" data-fields="webhook">
+              <label for="webhook-url" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">HTTPS adresi</label>
+              <input id="webhook-url" type="url" inputmode="url" data-field="webhook.url" autocomplete="off" spellcheck="false" placeholder="https://ornek.com/nexus" class="mt-2 w-full nx-field rounded-2xl bg-slate-50 border border-slate-100 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4C7DFF]/30">
+            </div>
+            <p class="text-[11px] text-slate-400 mt-2">Yalnızca HTTPS kabul edilir; her olay {source, id, title, detail, ts} olarak gönderilir.</p>
           </div>
           <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 channel-row">
@@ -123,17 +164,54 @@
         input.closest('.notification-row').classList.toggle('opacity-50', !enabled);
       });
     }
-    document.getElementById('master-toggle').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'master', this.checked.toString()); syncMaster(); if (window.nexusNotify) refreshStatus(); });
+    /* Bir bildirim anahtarı AÇILIRKEN gerçek sistem izni denetlenir: izin yoksa istenir; verilmezse
+       anahtar kapalı kalır (açık görünüp bildirim gelmemesi dürüst olmazdı). */
+    function guardPermission(input, key) {
+      if (!input.checked || !window.nexusNotify) return;
+      const revert = (note) => {
+        input.checked = false;
+        nexusSetItem(STORAGE_PREFIX + key, 'false');
+        if (key === 'master') syncMaster();
+        showStatusNote(note);
+        refreshStatus();
+      };
+      const denied = T('Sistem bildirim izni kapalı; anahtar açılamadı. Cihaz/tarayıcı ayarlarından bildirim iznini aç, sonra tekrar dene.',
+        'System notification permission is off, so the switch could not be turned on. Allow notifications in device/browser settings, then try again.');
+      nexusNotify.permission().then((p) => {
+        if (p === 'granted' || p === 'unsupported') return null;
+        if (p === 'prompt') return nexusNotify.requestSystemPermission().then((r) => { if (r.permission !== 'granted') revert(denied); });
+        revert(denied);
+        return null;
+      });
+    }
+    document.getElementById('master-toggle').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'master', this.checked.toString()); syncMaster(); if (window.nexusNotify) { refreshStatus(); guardPermission(this, 'master'); } });
     document.querySelectorAll('[data-key]').forEach((input) => {
       const key = input.getAttribute('data-key');
       input.checked = nexusGetItem(STORAGE_PREFIX + key) !== 'false';
-      input.addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + key, this.checked.toString()); });
+      input.addEventListener('change', function () {
+        nexusSetItem(STORAGE_PREFIX + key, this.checked.toString());
+        if (/^(notif-|critical-override)/.test(key)) guardPermission(this, key);
+      });
     });
+    /* Sayfa açılışında gerçek izin neyse anahtarlar onu yansıtsın: sistem izni reddedilmişse
+       ana anahtar kapalı gösterilir (kayıtlı değer de kapatılır). */
+    if (window.nexusNotify) {
+      nexusNotify.permission().then((p) => {
+        if (p !== 'denied' || nexusGetItem(STORAGE_PREFIX + 'master') === 'false') return;
+        nexusSetItem(STORAGE_PREFIX + 'master', 'false');
+        syncMaster();
+        showStatusNote(T('Sistem bildirim izni kapalı olduğu için bildirimler kapalı gösteriliyor. İzni açınca anahtarı yeniden açabilirsin.',
+          'Notifications are shown as off because system notification permission is off. Turn permission on, then switch this back on.'));
+        refreshStatus();
+      });
+    }
     document.getElementById('quiet-toggle').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'quietEnabled', this.checked.toString()); syncQuietMode(); });
     document.getElementById('quiet-start').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'quietStart', this.value); });
     document.getElementById('quiet-end').addEventListener('change', function () { nexusSetItem(STORAGE_PREFIX + 'quietEnd', this.value); });
     syncQuietMode();
     syncMaster();
+    // Titreşim masaüstünde yok: sütunu gizle (yalnızca telefonda anlamlı).
+    if (window.nexusDesktop) document.querySelectorAll('[data-vib-col]').forEach((el) => { el.style.display = 'none'; });
     lucide.createIcons();
 
     /* ---------- Dışa dönük kanallar (notify.js) ----------
@@ -142,11 +220,11 @@
     const notify = window.nexusNotify || null;
     const statusLine = document.getElementById('notify-status');
 
-    /* Arayüzden kaldırılan kanallar (ntfy / webhook): motor onları hâlâ tanıyor ama
-       sayfada anahtarı yok. Anahtarı olmayan bir kanalın açık kalması, kullanıcının
-       susturamayacağı bir dışa gönderim demekti — eski kurulumlarda kalmışsa burada
-       kapatılır (topic/URL kaydı cihazda durur, yüzey geri gelirse anahtar da gelir). */
-    const HIDDEN_CHANNELS = ['ntfy', 'webhook'];
+    /* Yüzeyi kalmadı: tüm kanallar (ntfy / webhook / Telegram / e-posta / sistem)
+       artık sayfada anahtar ve alanlarıyla görünüyor. Liste boş; motorun tanıdığı
+       ama arayüzü olmayan bir kanal ileride eklenirse susturulamayan dışa gönderim
+       riskine karşı buradaki kapatma mekanizması hazır dursun. */
+    const HIDDEN_CHANNELS = [];
 
     function disableHiddenChannels() {
       const cfg = notify.channels();
@@ -161,6 +239,7 @@
     const CHANNEL_NAMES = {
       system: ['Sistem Bildirimleri', 'System notifications'],
       telegram: ['Telegram', 'Telegram'],
+      email: ['E-posta', 'Email'],
       ntfy: ['ntfy', 'ntfy'],
       webhook: ['Webhook', 'Webhook'],
     };
@@ -255,6 +334,17 @@
         const fields = document.querySelector('[data-fields="' + name + '"]');
         if (fields) fields.classList.toggle('opacity-50', !input.checked);
       });
+      // E-posta kanalının hedefi: oturumun kendi adresi. Oturum yoksa kanal açık
+      // bile olsa gönderim hata verir; kullanıcıyı satırda önceden bilgilendir.
+      (function paintEmailTarget() {
+        const el = document.querySelector('[data-purpose="email-target"]');
+        if (!el || !window.nexusCloud || typeof nexusCloud.session !== 'function') return;
+        try {
+          Promise.resolve(nexusCloud.session()).then((cur) => {
+            if (cur && cur.email) el.textContent = T('Gönderilecek adres', 'Recipient') + ': ' + cur.email;
+          }).catch(() => {});
+        } catch (e) { /* oturum yok: varsayılan metin kalsın */ }
+      })();
       document.querySelectorAll('[data-field]').forEach((input) => {
         const [channel, key] = input.getAttribute('data-field').split('.');
         input.value = (cfg[channel] && cfg[channel][key]) || '';

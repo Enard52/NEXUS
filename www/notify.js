@@ -10,6 +10,8 @@
 //   • ntfy    → https://ntfy.sh/<topic> — topic seçmek yeterli, hesap açmadan çalışır.
 //   • webhook → kendi HTTPS ucun (JSON POST).
 //   • telegram→ kendi bot anahtarı + sohbet id (yalnızca bu cihazda saklanır).
+//   • e-posta → hesabın KENDİ adresine; gönderimi notify-email Edge Function yapar,
+//               istemcide saklanacak anahtar yok (gönderici anahtarı sunucudadır).
 //   • sistem  → telefonda Capacitor yerel bildirim eklentisi varsa, web'de Notification API;
 //               yoksa uygulama içi uyarı şeridiyle görünür kalır.
 // Rahatsız etmeyin (DND) süresi açıkken dış kanallara hiçbir şey gönderilmez; olay yine
@@ -30,6 +32,7 @@
     ntfy: { enabled: false, topic: "" },
     webhook: { enabled: false, url: "" },
     telegram: { enabled: false, token: "", chat: "" },
+    email: { enabled: false },
     system: { enabled: true },
   };
 
@@ -170,7 +173,30 @@
     var type = String((event && event.type) || "");
     if (type === "energy" || type === "plan") return "notif-energy";
     if (type === "ai") return "notif-ai";
+    if (type === "emergency") return "notif-emergency";
     return "notif-security";
+  }
+
+  // Kritik olay: yazarın açıkça işaretlediği (level:'critical') ya da türü güvenlik/acil/alarm
+  // olan olay. Bugünkü olay yazarları (otomasyon, sahne, enerji) bu türleri üretmez; gerçek bir
+  // sensör/alarm olayı yazıldığında bu kural onu kendiliğinden kritik sayar.
+  function isCritical(event) {
+    if (!event) return false;
+    if (String(event.level) === "critical") return true;
+    return /^(security|emergency|alarm)$/.test(String(event.type || ""));
+  }
+
+  // Kategori başına ses/titreşim tercihi (sayfadaki "Ses ve Titreşim" satırları). Varsayılan
+  // ikisi de açık; kritik olay tercihe bakmaz, her zaman sesli ve titreşimli gider.
+  function alertPrefs(event) {
+    var cat = categoryOf(event).replace("notif-", "");
+    var critical = isCritical(event);
+    return {
+      cat: cat,
+      critical: critical,
+      sound: critical || pageFlag("sound-" + cat, true),
+      vibrate: critical || pageFlag("vib-" + cat, true),
+    };
   }
 
   function minutesOf(value) {
@@ -195,13 +221,14 @@
   }
 
   // Sessiz saatler dışa dönük kanalları durdurur; olay listesi yine dolmaya devam eder.
-  // level:'critical' işareti gelecekteki güvenlik entegratörleri için ayrılmış aşım
-  // kapısıdır — bugün hiçbir yazar o işareti koymuyor, yani kural bilinçli olarak
-  // tembel: yanlış sınıflandırma ile gürültü üretmektense sessiz kalmayı seçiyoruz.
+  // Kritik olaylar (isCritical) sessiz saatleri aşar; kullanıcı sayfadaki
+  // "Kritik uyarılar sessiz saatleri aşsın" anahtarını kapatarak bunu iptal edebilir.
+  // Ana anahtar ve kategori anahtarı kritik olay için de geçerlidir.
   function suppressReason(event) {
     if (!pageFlag("master", true)) return "master";
     if (!pageFlag(categoryOf(event), true)) return "category";
-    if (quietHoursActive() && String(event && event.level) !== "critical") return "quiet-hours";
+    if (quietHoursActive() && !(isCritical(event) && pageFlag("critical-override", true)))
+      return "quiet-hours";
     return "";
   }
 
@@ -252,7 +279,7 @@
       method: "POST",
       headers: {
         Title: asciiText("NEXUS " + (event.title || "Uyari"), 100) || "NEXUS",
-        Priority: String(event.priority || "high"),
+        Priority: String(event.priority || (isCritical(event) ? "urgent" : "high")),
         Tags: "house",
       },
       body: body,
@@ -285,33 +312,114 @@
     });
   }
 
-  var channelCreated = false;
-  function ensureLocalChannel(ln) {
-    if (channelCreated || !ln || typeof ln.createChannel !== "function") return Promise.resolve();
-    channelCreated = true;
-    return ln
-      .createChannel({
-        id: "nexus-alerts",
-        name: window.nexusT
-          ? nexusT("NEXUS Ev Uyarıları", "NEXUS Home Alerts")
-          : "NEXUS Ev Uyarıları",
-        description: window.nexusT
-          ? nexusT(
-              "Akıllı ev olayları ve güvenlik bildirimleri",
-              "Smart home events and security alerts",
-            )
-          : "Akıllı ev olayları ve güvenlik bildirimleri",
-        importance: 5,
-        visibility: 1, // Kilit ekranında tam içerik gösterimi (NotificationCompat.VISIBILITY_PUBLIC)
-        sound: "default",
-        vibration: true,
-        lights: true,
-        lightColor: "#4C7DFF",
+  // E-posta kanalı: hedef adres bizim seçmediğimiz — hesabın kendi adresi.
+  // Gönderim bulut oturumu ister; oturum yoksa dürüstçe hata verir, sessizce
+  // "gitti" denmez. (Supabase tarafı kapalıysa kullanıcıya net gerekçe düşer.)
+  function sendEmail(cfg, event) {
+    var cloud = window.nexusCloud;
+    if (!cloud || typeof cloud.sendNotifyEmail !== "function")
+      return Promise.reject(new Error("e-posta kanalı için bulut oturumu gerekli"));
+    return cloud
+      .sendNotifyEmail({
+        title: String(event.title || alertWord()).slice(0, 120),
+        detail: String(event.detail || "").slice(0, 800),
+        level: String(event.level || "info"),
       })
-      .catch(function () {});
+      .then(function (res) {
+        if (!res || !res.ok) throw new Error(String((res && res.error) || "e-posta gönderilemedi").slice(0, 120));
+        return res;
+      });
+  }
+
+  // Android kanal ayarları (ses/titreşim/önem) oluşturulduktan sonra uygulamadan değiştirilemez;
+  // bu yüzden her ses+titreşim bileşimi kendi kanalına yazılır ve tercih değişince ilgili kanal
+  // seçilir. Kanallar ihtiyaç anında bir kez oluşturulur.
+  var channelsMade = {};
+  var CAT_NAMES = {
+    security: ["Güvenlik", "Security"],
+    emergency: ["Acil Durumlar", "Emergencies"],
+    energy: ["Enerji", "Energy"],
+    ai: ["AI Önerileri", "AI Suggestions"],
+  };
+
+  function localChannelSpec(prefs) {
+    var p = prefs || { cat: "security", critical: false, sound: true, vibrate: true };
+    var names = p.critical ? ["Kritik Uyarılar", "Critical Alerts"] : CAT_NAMES[p.cat] || CAT_NAMES.security;
+    var suffix = p.critical ? "" : (p.sound ? "" : " - sessiz") + (p.vibrate ? "" : " - titreşimsiz");
+    var suffixEn = p.critical ? "" : (p.sound ? "" : " - silent") + (p.vibrate ? "" : " - no vibration");
+    return {
+      id: p.critical ? "nexus-critical" : "nexus-" + p.cat + "-" + (p.sound ? "s" : "q") + (p.vibrate ? "v" : "n"),
+      name: window.nexusT
+        ? nexusT("NEXUS " + names[0] + suffix, "NEXUS " + names[1] + suffixEn)
+        : "NEXUS " + names[0] + suffix,
+      description: window.nexusT
+        ? nexusT("Akıllı ev olayları ve uyarıları", "Smart home events and alerts")
+        : "Akıllı ev olayları ve uyarıları",
+      // Android'de sesi kapatmak için kanal önemi düşürülür (2 = sessiz); sesli kanal 5.
+      importance: p.sound ? 5 : 2,
+      visibility: 1, // Kilit ekranında tam içerik gösterimi (NotificationCompat.VISIBILITY_PUBLIC)
+      sound: p.sound ? "default" : undefined,
+      vibration: !!p.vibrate,
+      lights: true,
+      lightColor: "#4C7DFF",
+    };
+  }
+
+  // Bildirim eylem düğmeleri (Android; Capacitor registerActionTypes). Masaüstü Windows
+  // bildirimi eylem düğmesi taşımıyor (Electron'da yalnız macOS'ta var): orada bildirime
+  // tıklamak ilgili sayfayı açar. "1 saat sustur" Rahatsız Etmeyin süresini 1 saat uzatır.
+  var ACTION_TYPE = "NEXUS_ALERT";
+  var actionTypesMade = false;
+  function ensureActionTypes(ln) {
+    if (actionTypesMade || !ln || typeof ln.registerActionTypes !== "function") return Promise.resolve();
+    actionTypesMade = true;
+    var T = function (a, b) {
+      return window.nexusT ? nexusT(a, b) : a;
+    };
+    return Promise.resolve(
+      ln.registerActionTypes({
+        types: [
+          {
+            id: ACTION_TYPE,
+            actions: [
+              { id: "open", title: T("Aç", "Open") },
+              { id: "mute1h", title: T("1 saat sustur", "Mute 1 hour") },
+            ],
+          },
+        ],
+      }),
+    ).catch(function () {});
+  }
+
+  function ensureLocalChannel(ln, prefs) {
+    if (!ln || typeof ln.createChannel !== "function") return Promise.resolve("nexus-alerts");
+    var spec = localChannelSpec(prefs);
+    if (channelsMade[spec.id]) return Promise.resolve(spec.id);
+    channelsMade[spec.id] = true;
+    return ln
+      .createChannel(spec)
+      .catch(function () {})
+      .then(function () {
+        return spec.id;
+      });
   }
 
   function sendSystem(event) {
+    // 0) Masaüstü: işletim sisteminin yerel bildirimi (ana süreç, uygulama simgesiyle). Web
+    //    Notification ile ikisi birden çıkıp çift bildirim vermesin diye tek yol bu.
+    var desk = window.nexusDesktop;
+    var prefs = alertPrefs(event);
+    if (desk && typeof desk.notifyEvent === "function") {
+      desk.notifyEvent({
+        id: String(event.id || ""),
+        title: String(event.title || alertWord()),
+        detail: String(event.detail || ""),
+        page: event.page,
+        force: /^notify-test-/.test(String(event.id || "")),
+        silent: !prefs.sound,
+      });
+      return Promise.resolve({ native: true });
+    }
     // 1) Telefonda (Android & gelecekte iOS) Capacitor yerel bildirim eklentisi (Kilit ekranı dahil)
     var cap = window.Capacitor;
     var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
@@ -319,7 +427,12 @@
       var notifTitle = String(
         event.title || (window.nexusT ? nexusT("NEXUS Uyarısı", "NEXUS Alert") : "NEXUS Uyarısı"),
       );
-      return ensureLocalChannel(ln)
+      var channelId = "nexus-alerts";
+      return ensureLocalChannel(ln, prefs)
+        .then(function (id) {
+          channelId = id || channelId;
+          return ensureActionTypes(ln);
+        })
         .then(function () {
           return ln.checkPermissions
             ? ln.checkPermissions()
@@ -330,16 +443,29 @@
           return perm;
         })
         .then(function (perm) {
-          if (perm && perm.display === "denied") return { denied: true };
+          if (perm && perm.display === "denied") {
+            // İzin yokken uyarı sessizce kaybolmasın: uygulama içi şerit göster, sonucu
+            // da hata olarak kaydet (istatistikte "hatalı" görünür, kullanıcı sebebi görür).
+            if (typeof window.nexusShowNotice === "function") {
+              try {
+                window.nexusShowNotice(event);
+              } catch (e) {}
+            }
+            throw new Error("sistem bildirim izni kapalı");
+          }
           return ln.schedule({
             notifications: [
               {
                 id: hashId(event),
                 title: notifTitle,
                 body: String(event.detail || ""),
-                channelId: "nexus-alerts",
-                smallIcon: "ic_launcher",
-                sound: "default",
+                channelId: channelId,
+                // Aynı kategorideki bildirimler Android'de tek grupta toplanır.
+                group: "nexus-" + prefs.cat,
+                actionTypeId: ACTION_TYPE,
+                smallIcon: "ic_stat_nexus",
+                iconColor: "#4C7DFF",
+                sound: prefs.sound ? "default" : undefined,
                 extra: { id: event.id, page: event.page || "nexus-messages.html" },
               },
             ],
@@ -349,9 +475,14 @@
     // 2) Web: Notification API izni varsa gerçek sistem bildirimi.
     if (typeof Notification !== "undefined" && Notification.permission === "granted") {
       try {
+        // Simge ve rozet verilmezse tarayıcı/WebView varsayılan simgesini gösterir
+        var iconUrl = new URL("icons/icon-192.webp", location.href).href;
         var n = new Notification("NEXUS: " + (event.title || alertWord()), {
           body: event.detail || "",
           tag: "nexus-" + hashId(event),
+          icon: iconUrl,
+          badge: iconUrl,
+          silent: !prefs.sound,
         });
         setTimeout(function () {
           try {
@@ -428,6 +559,13 @@
         "telegram",
         function () {
           return sendTelegram(cfg.telegram, event);
+        },
+      ]);
+    if (cfg.email && cfg.email.enabled)
+      jobs.push([
+        "email",
+        function () {
+          return sendEmail(cfg.email, event);
         },
       ]);
     var results = [];
@@ -525,6 +663,14 @@
   // engellememeli, aksi halde kanal bozukmuş gibi görünür. DND asıl söz hakkı değil,
   // yine de test engellenmez — ama olay akışına YAZILMAZ (listede kirlilik olmaz).
   function test(only) {
+    // Gerçek olaydaki gibi uygulama zili de çalar (Ayarlar → Ses kapalıysa sessiz); kullanıcı
+    // "ses geliyor mu" sorusunu bu düğmeyle sınar.
+    try {
+      if (window.nexusFeedback && typeof window.nexusFeedback.play === "function")
+        window.nexusFeedback.play("notify");
+    } catch (e) {
+      /* ses asıl işi engellemesin */
+    }
     return fanout(restrict(channels(), only), {
       id: "notify-test-" + Date.now(),
       title: "Test bildirimi",
@@ -544,6 +690,9 @@
      Çağıran "az önce sordum" ile "zaten biliniyordu"yu ayıramazsa, kullanıcı
      "tıkladım, hiçbir şey sorulmadan verildi diyor" diye haklı olarak yanıltılır. */
   function requestSystemPermission() {
+    // Masaüstü programda bildirimi ana süreç gösterir; Windows'ta ayrıca izin penceresi yoktur.
+    if (window.nexusDesktop && typeof window.nexusDesktop.notifyEvent === "function")
+      return Promise.resolve({ permission: "granted", asked: false });
     var cap = window.Capacitor;
     var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
     if (ln && typeof ln.requestPermissions === "function") {
@@ -576,6 +725,180 @@
       });
   }
 
+  /* Sistem izninin şu anki hâli, SORMADAN: "granted" | "denied" | "prompt" | "unsupported".
+     Ayarlar sayfası anahtarları bununla gerçek izne göre gösterir. */
+  function permissionState() {
+    if (window.nexusDesktop && typeof window.nexusDesktop.notifyEvent === "function")
+      return Promise.resolve("granted");
+    var cap = window.Capacitor;
+    var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
+    if (ln && typeof ln.checkPermissions === "function") {
+      return Promise.resolve()
+        .then(function () {
+          return ln.checkPermissions();
+        })
+        .then(
+          function (r) {
+            var d = r && r.display;
+            return d === "granted" ? "granted" : d === "denied" ? "denied" : "prompt";
+          },
+          function () {
+            return "denied";
+          },
+        );
+    }
+    if (typeof Notification === "undefined") return Promise.resolve("unsupported");
+    var p = Notification.permission;
+    return Promise.resolve(p === "default" ? "prompt" : p);
+  }
+
+  function setPageFlag(key, on) {
+    try {
+      if (window.nexusSetItem) window.nexusSetItem(PAGE_PREFIX + key, on ? "true" : "false");
+      else localStorage.setItem(PAGE_PREFIX + key, on ? "true" : "false");
+    } catch (e) {
+      /* kota dolu / özel mod */
+    }
+  }
+
+  /* İki grup: "anlık" (enerji, plan, AI önerileri) ve "kritik" (güvenlik, acil durum, alarm;
+     sessiz saatleri de aşar). Ana anahtar ikisinden biri açıksa açık kalır. */
+  function applyChoices(instant, critical) {
+    var any = !!(instant || critical);
+    setPageFlag("master", any);
+    setPageFlag("notif-energy", !!instant);
+    setPageFlag("notif-ai", !!instant);
+    setPageFlag("notif-security", !!critical);
+    setPageFlag("notif-emergency", !!critical);
+    setPageFlag("critical-override", !!critical);
+    if (any) saveChannels({ system: { enabled: true } });
+  }
+
+  var SETUP_KEY = "nexusNotifSetupDone";
+
+  function setupToast(text, isError) {
+    if (typeof window.nexusToast === "function")
+      window.nexusToast(text, { type: isError ? "error" : "success" });
+  }
+
+  // Seçimi uygular: önce gerçek sistem izni istenir; izin yoksa anahtarlar KAPALI kalır
+  // (açık görünüp bildirim gelmemesi dürüst olmazdı).
+  function finishSetup(instant, critical) {
+    var T = function (a, b) {
+      return window.nexusT ? nexusT(a, b) : a;
+    };
+    if (!instant && !critical) {
+      applyChoices(false, false);
+      setupToast(T("Bildirimler kapalı. Ayarlar → Anlık Bildirimler'den açabilirsin.", "Notifications are off. You can turn them on in Settings → Instant Notifications."));
+      return Promise.resolve({ granted: false });
+    }
+    return requestSystemPermission().then(function (res) {
+      var perm = res && res.permission;
+      if (perm === "granted") {
+        applyChoices(instant, critical);
+        setupToast(T("Bildirimler açıldı.", "Notifications turned on."));
+        return { granted: true };
+      }
+      if (perm === "unsupported") {
+        applyChoices(instant, critical);
+        setupToast(T("Bu cihaz sistem bildirimi göstermiyor; uyarılar uygulama içinde görünecek.", "This device cannot show system notifications; alerts will appear inside the app."));
+        return { granted: false, inApp: true };
+      }
+      applyChoices(false, false);
+      setupToast(
+        T("Bildirim izni verilmedi, bildirimler kapalı. Cihaz ayarlarından izin verip Ayarlar'dan açabilirsin.", "Notification permission was not granted, so notifications are off. Allow it in device settings, then turn it on in Settings."),
+        true,
+      );
+      return { granted: false };
+    });
+  }
+
+  function showSetup() {
+    if (typeof window.nexusDialog !== "function" || typeof document === "undefined") return null;
+    var T = function (a, b) {
+      return window.nexusT ? nexusT(a, b) : a;
+    };
+    var state = { instant: true, critical: true };
+    var decided = false;
+    var back = window.nexusDialog({
+      title: T("Bildirimleri açalım mı?", "Turn on notifications?"),
+      icon: "info",
+      message: T(
+        "Seçtiklerin için cihazdan izin istenecek. İzin vermezsen bildirimler kapalı kalır; Ayarlar → Anlık Bildirimler'den istediğin zaman değiştirebilirsin. Telefonun kendi Rahatsız Etmeyin modu kritik uyarıları da engelleyebilir.",
+        "Your device will ask for permission for what you pick. If you decline, notifications stay off; change it anytime in Settings → Instant Notifications. Your phone's own Do Not Disturb can still block critical alerts.",
+      ),
+      primary: {
+        label: T("Devam", "Continue"),
+        onClick: function () {
+          decided = true;
+          finishSetup(state.instant, state.critical);
+        },
+      },
+      secondary: {
+        label: T("Şimdi değil", "Not now"),
+        onClick: function () {
+          decided = true;
+          finishSetup(false, false);
+        },
+      },
+    });
+    if (!back) return null;
+    var rows = [
+      { key: "instant", title: T("Anlık bildirimler", "Instant notifications"), sub: T("Otomasyon, enerji ve AI önerileri", "Automations, energy and AI suggestions") },
+      { key: "critical", title: T("Kritik uyarılar", "Critical alerts"), sub: T("Güvenlik, acil durum ve alarm; sessiz saatlerde de gelir", "Security, emergencies and alarms; also during quiet hours") },
+    ];
+    var list = document.createElement("div");
+    list.className = "nx-dlg-list";
+    rows.forEach(function (r) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "nx-dlg-opt is-selected";
+      b.setAttribute("role", "switch");
+      b.setAttribute("aria-checked", "true");
+      b.innerHTML = '<span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px"><span></span><small style="font-weight:500;opacity:.7;font-size:12px;text-align:left"></small></span><i aria-hidden="true">✓</i>';
+      b.firstChild.firstChild.textContent = r.title;
+      b.firstChild.lastChild.textContent = r.sub;
+      b.style.height = "auto";
+      b.style.padding = "10px 16px";
+      b.addEventListener("click", function () {
+        state[r.key] = !state[r.key];
+        b.classList.toggle("is-selected", state[r.key]);
+        b.setAttribute("aria-checked", state[r.key] ? "true" : "false");
+        b.lastChild.textContent = state[r.key] ? "✓" : "";
+      });
+      list.appendChild(b);
+    });
+    var actions = back.querySelector(".nx-dlg-actions");
+    if (actions && actions.parentNode) actions.parentNode.insertBefore(list, actions);
+    // Pencere seçim yapmadan kapatılırsa (dışına dokunma, Esc) "şimdi değil" sayılır.
+    if (typeof MutationObserver === "function") {
+      var obs = new MutationObserver(function () {
+        if (document.body.contains(back)) return;
+        obs.disconnect();
+        if (!decided) finishSetup(false, false);
+      });
+      obs.observe(document.body, { childList: true });
+    }
+    return back;
+  }
+
+  // Giriş yapmış kullanıcıya ana ekranda bir kez sorulur (hesap başına).
+  function maybeSetup() {
+    try {
+      if (typeof location === "undefined" || !/nexus-home\.html$/.test(location.pathname || "")) return;
+      if (rawGet(SETUP_KEY)) return;
+      if (!rawGet("nexusUserEmail")) return;
+      setTimeout(function () {
+        if (rawGet(SETUP_KEY)) return;
+        if (window.nexusSetItem) window.nexusSetItem(SETUP_KEY, "1");
+        else localStorage.setItem(SETUP_KEY, "1");
+        showSetup();
+      }, 1500);
+    } catch (e) {
+      /* soru sorulamazsa uygulama yine çalışır */
+    }
+  }
+
   function start() {
     if (started || typeof window === "undefined") return;
     started = true;
@@ -584,6 +907,14 @@
       var ln = cap && cap.Plugins && cap.Plugins.LocalNotifications;
       if (ln && typeof ln.addListener === "function") {
         ln.addListener("localNotificationActionPerformed", function (action) {
+          if (action && action.actionId === "mute1h") {
+            try {
+              var until = String(Date.now() + 60 * 60 * 1000);
+              if (window.nexusSetItem) window.nexusSetItem("nexusDndEndTime", until);
+              else localStorage.setItem("nexusDndEndTime", until);
+            } catch (e) {}
+            return;
+          }
           var extra = action && action.notification && action.notification.extra;
           var targetPage = extra && extra.page ? extra.page : "nexus-messages.html";
           if (window.location.href.indexOf(targetPage) === -1) {
@@ -592,6 +923,7 @@
         });
       }
     } catch (e) {}
+    maybeSetup();
     // Kurulum anında biriken eski olaylar dağıtılmaz; yalnızca sonrakiler.
     if (!get(SEEN_KEY, null)) checkNew({ markOnly: true });
     checkNew();
@@ -619,6 +951,10 @@
     mutedBy: suppressReason,
     quietHoursActive: quietHoursActive,
     requestSystemPermission: requestSystemPermission,
+    permission: permissionState,
+    applyChoices: applyChoices,
+    finishSetup: finishSetup,
+    showSetup: showSetup,
     start: start,
   };
 

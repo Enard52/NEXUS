@@ -317,7 +317,10 @@
   function listFactors() {
     var current = readSession();
     if (!current) return Promise.resolve([]);
-    return api("/auth/v1/factors", { headers: authHeader(current) }).then(function (body) {
+    // Supabase Auth (GoTrue) faktörleri ayrı bir GET ucundan vermez: /auth/v1/factors yalnızca kayıt (POST) ile
+    // challenge/verify/silme içindir. Faktör listesi kullanıcı kaydında gelir (supabase-js mfa.listFactors da böyle okur).
+    return api("/auth/v1/user", { headers: authHeader(current) }).then(function (body) {
+      if (body && Array.isArray(body.factors)) return body.factors;
       if (Array.isArray(body)) return body;
       if (body && Array.isArray(body.all)) return body.all;
       if (body && Array.isArray(body.totp)) return body.totp.concat(body.phone || []);
@@ -818,6 +821,8 @@
     nexusLastRecoveryValue: 1,
     nexusLastRecoveryMethod: 1,
     nexusPairedDevices: 1,
+    // Tapo hesap bilgisi / Tuya yerel anahtarı: yalnızca bu cihazda kalır.
+    nexusLanSecrets: 1,
     // Abonelik durumu yalnızca sunucudan (Whop webhook'u) gelir; istemci durumu hesaba geri yazılmaz.
     nexusPlusPlan: 1,
     nexusPlusSince: 1,
@@ -1270,6 +1275,27 @@
     }, function () { return { ok: false }; });
   }
 
+  // Dışa dönük bildirim e-postası: notify-email Edge Function, maili SADECE
+  // çağıran oturumun kendi adresine gönderir (gövdede "to" yok, sunucu da kabul
+  // etmez) — oturumlu kullanıcı kendinden başkasına mail attıramaz ve istemcide
+  // saklanacak bir gönderim anahtarı gerekmez.
+  function sendNotifyEmail(payload) {
+    if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    return session().then(function (current) {
+      if (!current || !current.accessToken) return Promise.reject(new Error("oturum yok"));
+      return api("/functions/v1/notify-email", {
+        method: "POST",
+        headers: authHeader(current),
+        body: JSON.stringify({
+          title: String((payload && payload.title) || "").slice(0, 120),
+          detail: String((payload && payload.detail) || "").slice(0, 800),
+          level: String((payload && payload.level) || "info").slice(0, 20),
+          lang: accountLang(),
+        }),
+      });
+    });
+  }
+
   function billingAccount(action) {
     if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
     return session().then(function (current) {
@@ -1529,6 +1555,7 @@
     pullEntitlement: pullEntitlement,
     checkoutUrl: checkoutUrl,
     sendHouseholdInvite: sendHouseholdInvite,
+    sendNotifyEmail: sendNotifyEmail,
     checkoutPlanId: checkoutPlanId,
     billingAccount: billingAccount,
     currencyForLang: currencyForLang,
