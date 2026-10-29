@@ -6,6 +6,15 @@
 (function () {
   if (window.nexusDialog) return;
 
+  var SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">';
+  var ICONS = {
+    info: SVG + '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>',
+    language: SVG + '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>',
+    temperature: SVG + '<path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0z"/></svg>',
+    warning: SVG + '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+    check: SVG + '<path d="M20 6 9 17l-5-5"/></svg>'
+  };
+
   var STYLE_ID = 'nx-dialog-style';
   function injectStyle() {
     if (document.getElementById(STYLE_ID)) return;
@@ -61,9 +70,10 @@
     var card = document.createElement('div');
     card.className = 'nx-dlg';
 
+    // Simge diyaloğun içeriğine göre seçilir (ör. dil, sıcaklık, uyarı); verilmezse nötr bilgi simgesi.
     var ico = document.createElement('div');
     ico.className = 'nx-dlg-ico';
-    ico.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
+    ico.innerHTML = ICONS[opts.icon] || ICONS.info;
     card.appendChild(ico);
 
     var title = document.createElement('h2');

@@ -215,6 +215,7 @@
       if (!devices.length) {
         window.nexusDialog({
           title: 'Cihaz gerekli',
+          icon: 'warning',
           message: 'Güncellemeleri kontrol etmek için önce bir cihaz eklemelisin.',
           primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'nexus-pair.html'; } },
           secondary: { label: 'Vazgeç' }

@@ -226,9 +226,10 @@
         <span><b>Kapatınca arka planda çalıştır</b><small>Pencere kapatılsa da otomasyonlar tepside çalışmaya devam etsin.</small></span>
         <input type="checkbox" id="desktop-bg-toggle" aria-label="Kapatınca arka planda çalıştır">
       </label>
-      <div id="update-card" class="nx-upd-card mt-4 hidden">
-        <div class="flex items-center justify-between gap-3">
-          <p id="update-status" class="text-sm font-medium text-slate-500 min-h-[1.5rem]"></p>
+      <div id="update-card" class="nx-upd-card mt-4 hidden" data-state="">
+        <div class="flex items-center gap-3">
+          <span id="update-icon" class="nx-upd-icon" aria-hidden="true"></span>
+          <p id="update-status" class="flex-1 text-[15px] font-semibold text-slate-700 min-h-[1.5rem]" role="status" aria-live="polite"></p>
           <span id="update-percent" class="hidden text-sm font-bold text-[#4C7DFF] tabular-nums"></span>
         </div>
         <div id="update-progress-wrap" class="nx-upd-track hidden mt-2">
@@ -249,6 +250,18 @@
         .nx-upd-check:disabled { cursor: default; }
         .nx-upd-card { border-radius: 18px; padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0; }
         html.dark .nx-upd-card, html[data-theme="dark"] .nx-upd-card { background: rgba(30, 41, 59, 0.6); border-color: #334155; }
+        .nx-upd-icon { width: 36px; height: 36px; flex: none; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: #e2e8f0; color: #64748b; }
+        .nx-upd-icon svg { width: 18px; height: 18px; }
+        .nx-upd-card[data-state="latest"] { background: #ecfdf5; border-color: #a7f3d0; }
+        .nx-upd-card[data-state="latest"] .nx-upd-icon { background: #10b981; color: #fff; }
+        .nx-upd-card[data-state="available"], .nx-upd-card[data-state="ready"] { background: #eef4ff; border-color: #bfd3ff; }
+        .nx-upd-card[data-state="available"] .nx-upd-icon, .nx-upd-card[data-state="ready"] .nx-upd-icon { background: #4C7DFF; color: #fff; }
+        .nx-upd-card[data-state="error"] { background: #fff1f2; border-color: #fecdd3; }
+        .nx-upd-card[data-state="error"] .nx-upd-icon { background: #f43f5e; color: #fff; }
+        html.dark .nx-upd-card[data-state="latest"] { background: rgba(16, 185, 129, 0.12); border-color: #065f46; }
+        html.dark .nx-upd-card[data-state="available"], html.dark .nx-upd-card[data-state="ready"] { background: rgba(76, 125, 255, 0.14); border-color: #1e3a8a; }
+        html.dark .nx-upd-card[data-state="error"] { background: rgba(244, 63, 94, 0.12); border-color: #7f1d1d; }
+        html.dark .nx-upd-card #update-status { color: #e2e8f0; }
         .nx-upd-track { height: 12px; width: 100%; border-radius: 9999px; overflow: hidden; background: #e2e8f0; }
         html.dark .nx-upd-track { background: #334155; }
         .nx-upd-fill { height: 100%; width: 0; border-radius: 9999px; transition: width .35s ease;
@@ -401,6 +414,7 @@
     var current = nexusGetItem('nexusTempUnit') === 'F' ? 'F' : 'C';
     window.nexusDialog({
       title: 'Sıcaklık birimi',
+      icon: 'temperature',
       message: 'Sıcaklıkların hangi birimle gösterileceğini seç.',
       options: [
         { label: 'Santigrat (°C)', value: 'C', selected: current === 'C' },
@@ -419,6 +433,7 @@
     var current = window.nexusLang === 'en' ? 'en' : 'tr';
     window.nexusDialog({
       title: isTr ? 'Dil' : 'Language',
+      icon: 'language',
       message: isTr ? 'Uygulama dilini seç.' : 'Choose the app language.',
       options: [
         { label: 'Türkçe', value: 'tr', selected: current === 'tr' },
@@ -451,6 +466,7 @@
     document.getElementById('desktop-app-section').classList.remove('hidden');
 
     var statusEl = document.getElementById('update-status');
+    var cardEl = document.getElementById('update-card');
     var progressWrap = document.getElementById('update-progress-wrap');
     var progressBar = document.getElementById('update-progress-bar');
     var checkBtn = document.getElementById('check-update-btn');
@@ -461,9 +477,21 @@
       document.getElementById('app-version').textContent = info && info.version ? info.version : '—';
     });
 
+    var ICON_BY_STATE = {
+      checking: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg>',
+      downloading: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/><path d="M5 20h14"/></svg>',
+      available: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5"/><path d="M5 21h14"/></svg>',
+      ready: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+      latest: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+      error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5m0 3h.01"/></svg>',
+      unsupported: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg>'
+    };
     function render(state) {
       if (!state) return;
       var s = state.state;
+      var iconEl = document.getElementById('update-icon');
+      cardEl.dataset.state = s || '';
+      iconEl.innerHTML = ICON_BY_STATE[s] || '';
       checkBtn.disabled = s === 'checking' || s === 'downloading';
       checkBtn.style.opacity = checkBtn.disabled ? '0.55' : '1';
       progressWrap.classList.toggle('hidden', s !== 'downloading');
@@ -551,10 +579,9 @@
       }
     }
     // Boş kart görünmesin: yalnızca durum mesajı, ilerleme ya da kurulum düğmesi varken göster
-    var cardEl = document.getElementById('update-card');
+    // Durum paneli her durumda görünür: "güncel", "indiriliyor", "hata" gibi sonuçlar kullanıcıya açıkça gösterilir.
     function syncCard() {
-      var hasContent = !!statusEl.textContent || !progressWrap.classList.contains('hidden') || !installBtn.classList.contains('hidden');
-      cardEl.classList.toggle('hidden', !hasContent);
+      cardEl.classList.toggle('hidden', !statusEl.textContent);
     }
     api.onState(function (st) { render(st); syncCard(); });
   })();

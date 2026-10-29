@@ -145,6 +145,7 @@
       // Cihaz yoksa kullanıcıya seçim bırak: cihaz ekle ya da vazgeç (kendiliğinden yönlendirme yok).
       var dialogOpts = {
         title: 'Cihaz gerekli',
+        icon: 'warning',
         message: 'Bu senaryoyu kullanmak için uyumlu bir cihaz eklemelisin.',
         primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'nexus-pair.html'; } },
         secondary: { label: 'Vazgeç' }
@@ -226,6 +227,7 @@
       if (cta.getAttribute('data-no-compatible') === '1') {
         var opts = {
           title: 'Uyumlu cihaz yok',
+          icon: 'warning',
           message: 'Bu senaryo mevcut cihazlarını etkilemiyor. Senaryonun çalışması için uygun bir cihaz (ör. ışık, perde, süpürge) eklemelisin.',
           primary: { label: 'Cihaz ekle', onClick: function () { window.location.href = 'nexus-pair.html'; } },
           secondary: { label: 'Vazgeç' }
