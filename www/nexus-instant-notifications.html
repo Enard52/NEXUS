@@ -23,6 +23,17 @@
      dokunma hedefleri burada garanti altına alınıyor (WCAG 2.2 AA ≥ 24 px). */
   .nx-field { min-height: 44px; }
   .nx-cta { min-height: 48px; }
+  /* İkonlu düğme: ölçü burada sabitlenir, derlenmiş Tailwind çıktısına bırakılmaz —
+     lucide <i> etiketini <svg>'ye çevirirken sınıfı kopyalar ama kural eksikse ikon
+     24px basılıp düğmeyi şişiriyordu. */
+  .nx-btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding-left: 1rem; padding-right: 1rem; }
+  .nx-btn svg { width: 18px; height: 18px; flex: none; }
+  /* Devre dışı düğmeler eskiden_enabled_ gibi duruyordu (bildirim motoru yoksa). */
+  .nx-cta:disabled, .nx-field:disabled { opacity: .5; }
+  /* Bekleme ikonu döner; Ayarlar → "Hareket" kapalıysa html.nx-no-anim bunu 0.01ms'ye
+     düşürür, yani erişilebilirlik tercihi burada da geçerli. */
+  @keyframes nxSpin { to { transform: rotate(360deg); } }
+  .nx-btn-ico.nx-spin svg { animation: nxSpin .9s linear infinite; }
 </style>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
@@ -101,11 +112,11 @@
           <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 channel-row">
             <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-violet-50 flex items-center justify-center text-violet-600"><i data-lucide="bell-ring" class="w-6 h-6"></i></div><div><p class="font-semibold">Sistem Bildirimleri</p><p class="text-xs text-slate-500 font-medium">Tarayıcı ve telefonun uyarı merkezi</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="system"><span class="slider"></span></label></div>
-            <button type="button" id="system-permission" class="mt-4 nx-field w-full rounded-2xl bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 active:scale-[.99] transition">Sistem izni iste</button>
+            <button type="button" id="system-permission" class="mt-4 nx-btn nx-field w-full rounded-2xl bg-slate-50 border border-slate-100 text-sm font-semibold text-slate-700 active:scale-[.99] transition"><span class="nx-btn-ico text-slate-400"><i data-lucide="bell-plus"></i></span><span class="nx-btn-label">Sistem izni iste</span></button>
           </div>
         </section>
         <div class="flex items-center gap-3">
-          <button type="button" id="notify-test" class="flex-1 nx-cta rounded-2xl bg-[#4C7DFF] text-white text-sm font-bold shadow-sm active:scale-[.99] transition">Test bildirimi gönder</button>
+          <button type="button" id="notify-test" class="flex-1 nx-btn nx-cta rounded-2xl bg-[#4C7DFF] text-white text-sm font-bold shadow-sm active:scale-[.99] transition"><span class="nx-btn-ico opacity-90"><i data-lucide="send"></i></span><span class="nx-btn-label">Test bildirimi gönder</span></button>
         </div>
         <p id="notify-status" class="text-[11px] text-slate-400 leading-relaxed px-1">Değişiklikler otomatik kaydedilir.</p>
       </div>
@@ -173,6 +184,31 @@
       statusLine.textContent = channelSummary();
     }
 
+    /* Düğmelerin etiketi JS içinde değişiyor ("Gönderiliyor…" → "İletildi"); bu yüzden
+       ikon da aynı yerden üretilmeli — düz textContent ataması ikonu siler ve buton bir
+       anda çırılçıplak kalırdı. desktop.js'teki kalıp: <i> bas, sonra createIcons(). */
+    function setBtn(btn, icon, label, tone) {
+      if (!btn) return;
+      btn.innerHTML =
+        '<span class="nx-btn-ico ' + (tone || "opacity-90") + (icon === "loader-circle" ? " nx-spin" : "") + '"><i data-lucide="' + icon + '"></i></span>' +
+        '<span class="nx-btn-label"></span>';
+      btn.querySelector(".nx-btn-label").textContent = label;
+      if (window.lucide) lucide.createIcons();
+    }
+    // Sayfa ilk açıldığında gerçek izin durumu neyse ikonu onu göster ("iste" deyip
+    // zaten verilmiş izni tekrar istetmek gereksiz).
+    function paintPermissionBtn() {
+      const btn = document.getElementById("system-permission");
+      if (!btn || !("Notification" in window)) return;
+      if (Notification.permission === "granted") setBtn(btn, "circle-check", "Sistem izni verildi", "text-emerald-600");
+      // Henuz hic sormadan da "denied" donebilir (tarayici varsayilani / Android'de
+      // calisma zamani izni bekliyor): kullanici reddetmis gibi kizartmak yanlistir,
+      // nudaki renk sadece gercek reddedilme sonucunda kullanilir.
+      else if (Notification.permission === "denied") setBtn(btn, "bell-off", "Sistem izni iste", "text-slate-400");
+      else setBtn(btn, "bell-plus", "Sistem izni iste", "text-slate-400");
+    }
+    paintPermissionBtn();
+
     if (!notify) {
       document.querySelectorAll('.channel-row').forEach((row) => {
         row.classList.add('opacity-50');
@@ -205,20 +241,24 @@
         });
       });
       document.getElementById('system-permission').addEventListener('click', async function () {
+        const btn = this;
         const result = await notify.requestSystemPermission();
-        this.textContent = result === 'granted' ? 'Sistem izni verildi' : 'İzin durumu: ' + result;
+        if (result === 'granted') setBtn(btn, 'circle-check', 'Sistem izni verildi', 'text-emerald-600');
+        else setBtn(btn, 'bell-off', 'İzin durumu: ' + result, 'text-rose-500');
         refreshStatus();
       });
       document.getElementById('notify-test').addEventListener('click', async function () {
         const btn = this;
         btn.disabled = true;
-        btn.textContent = 'Gönderiliyor…';
+        setBtn(btn, 'loader-circle', 'Gönderiliyor…');
         const out = await notify.test();
         const ok = out.sent.filter((r) => r.ok).map((r) => r.channel);
         const bad = out.sent.filter((r) => !r.ok);
-        btn.textContent = ok.length && !bad.length ? 'İletildi' : bad.length ? 'Bazı kanallar hata verdi' : 'Açık kanal yok';
+        if (ok.length && !bad.length) setBtn(btn, 'circle-check', 'İletildi');
+        else if (bad.length) setBtn(btn, 'triangle-alert', 'Bazı kanallar hata verdi');
+        else setBtn(btn, 'inbox', 'Açık kanal yok');
         refreshStatus();
-        setTimeout(() => { btn.disabled = false; if (btn.textContent !== 'Test bildirimi gönder') btn.textContent = 'Test bildirimi gönder'; }, 2500);
+        setTimeout(() => { btn.disabled = false; setBtn(btn, 'send', 'Test bildirimi gönder'); }, 2500);
       });
     }
     refreshStatus();

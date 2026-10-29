@@ -268,17 +268,31 @@ html.dark header[class*="bg-white/"] {
 [class*="bg-[#4C7DFF]"]:not([class*="bg-[#4C7DFF]/"]):is(button, a):active { background-color: var(--nx-primary-press) !important; }
 [class*="bg-[#4C7DFF]/"]:is(button, a):active { background-color: rgba(76, 125, 255, 0.22) !important; }
 
+/* ---------- Modal başlığı: ortak düzen (kutusuz küçük simge, başlığın solunda) ----------
+   Tüm ayrı açılan modal/sheet başlıkları aynı satır düzenini kullanır. */
+.nx-sheet-head { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
+.nx-sheet-head .nx-sheet-ico { display: inline-flex; flex: none; width: 20px; height: 20px; color: #4C7DFF; }
+html.dark .nx-sheet-head .nx-sheet-ico { color: #8fb0ff; }
+.nx-sheet-head .nx-sheet-ico svg { width: 20px; height: 20px; }
+.nx-sheet-head h2, .nx-sheet-head h3 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
+
 /* ---------- Ürün görselleri: beyaz cihazlar beyaz kartta kaybolmasın ----------
    Gerçek ürün fotoğraflarının çoğu beyaz gövdeli; beyaz kartın üstünde kenarları görünmüyor, yalnızca ışık halkası seçiliyordu.
    Kartlardaki görsellerin arkasına hafif bir zemin konur (katalog karoları sayfa zemininde durduğu için hariç). */
 /* Orijinal stüdyo fotoğraflarında beyaz arka plan silinirken cihazların beyaz kısımları da silindi (hub kubbesi, router
    antenleri…). Zemin SAF BEYAZ olmalı: silinen beyaz kısımlar kutuyla birleşir, hiçbir tema (açık/koyu) kesik göstermez.
    İnce halka kutunun kenarını belli eder; beyaz kart üzerinde de beyaz cihaz seçilir. */
-img[src*="assets/products/"] {
-  box-sizing: border-box; padding: 4px; border-radius: 16px;
-  background: #ffffff; box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.30);
+img[src*="assets/products/"]:not(.catalog-img) {
+  box-sizing: border-box; padding: 6px; border-radius: 18px;
+  background: linear-gradient(150deg, #F3F5FC 0%, #E7ECF8 100%);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
 }
-html.dark img[src*="assets/products/"] { background: #ffffff; box-shadow: none; }
+/* Koyu temada ağır beyaz blok yerine saydam hafif bir kutu: beyaz cihaz koyu karta oturur. */
+html.dark img[src*="assets/products/"]:not(.catalog-img) {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+/* Katalog karoları (Cihaz Ekle) sayfa zemininde kutusuz durur: kart içinde kart gibi görünmesin. */
 
 /* ---------- Okunabilirlik (açık tema, WCAG AA'ya yakın) ----------
    Açık lavanta zeminde marka mavisi/camgöbeği ve 500/600 tonlu durum renkleri 3:1 altında kalıyordu. */

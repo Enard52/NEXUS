@@ -195,10 +195,11 @@
       renderConfigOptions(title);
 
       const iconWrap = document.getElementById('config-sheet-icon-wrap');
-      iconWrap.className = 'w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mx-auto mb-4 ' + bgClass + ' ' + colorClass;
+      // Ortak başlık düzeni korunur (kutusuz simge); yalnızca simgenin rengi senaryo türüne göre değişir.
+      iconWrap.className = 'nx-sheet-ico ' + colorClass;
 
       const iconEl = document.getElementById('config-sheet-icon');
-      iconEl.className = 'w-6 h-6';
+      iconEl.className = '';
       iconEl.setAttribute('data-lucide', icon);
       if(typeof lucide !== 'undefined') { lucide.createIcons(); }
 
@@ -363,10 +364,7 @@
     <div id="configure-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-10 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
       <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
 
-      <div id="config-sheet-icon-wrap" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mx-auto mb-4">
-        <i id="config-sheet-icon" class="w-6 h-6"></i>
-      </div>
-      <h3 id="config-sheet-title" class="text-2xl font-bold text-slate-800 mb-2 text-center">Senaryo</h3>
+      <div class="nx-sheet-head mb-2"><span class="nx-sheet-ico" id="config-sheet-icon-wrap" aria-hidden="true"><i id="config-sheet-icon"></i></span><h3 id="config-sheet-title">Senaryo</h3></div>
       <p id="config-sheet-desc" class="text-sm text-slate-500 mb-8 text-center">Açıklama</p>
 
       <div id="config-options" class="space-y-4 mb-8">

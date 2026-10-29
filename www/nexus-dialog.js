@@ -27,10 +27,11 @@
       'box-shadow:0 24px 60px -20px rgba(15,23,42,.45);animation:nxDlgPop .22s cubic-bezier(.2,.9,.3,1.2)}' +
       'html.dark .nx-dlg,html[data-theme="dark"] .nx-dlg{background:#1e293b;color:#f1f5f9}' +
       '.nx-dlg{text-align:center}' +
-      '.nx-dlg-ico{margin-left:auto;margin-right:auto;width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;' +
-      'background:linear-gradient(135deg,#6f9bff,#4C7DFF 60%,#8b7bff);color:#fff;box-shadow:0 10px 22px -10px rgba(76,125,255,.9);margin-bottom:14px}' +
-      '.nx-dlg-ico svg{width:24px;height:24px}' +
-      '.nx-dlg-title{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px}' +
+      '.nx-dlg-head{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 6px}' +
+      '.nx-dlg-ico{display:inline-flex;flex:none;width:20px;height:20px;color:#4C7DFF}' +
+      'html.dark .nx-dlg-ico{color:#8fb0ff}' +
+      '.nx-dlg-ico svg{width:20px;height:20px}' +
+      '.nx-dlg-title{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:0}' +
       '.nx-dlg-msg{font-size:14.5px;line-height:1.5;color:#64748b;margin:0 0 20px}' +
       'html.dark .nx-dlg-msg{color:#94a3b8}' +
       '.nx-dlg-actions{display:flex;flex-direction:column;gap:8px}' +
@@ -71,15 +72,20 @@
     card.className = 'nx-dlg';
 
     // Simge diyaloğun içeriğine göre seçilir (ör. dil, sıcaklık, uyarı); verilmezse nötr bilgi simgesi.
-    var ico = document.createElement('div');
+    // Başlık satırı: küçük, kutusuz simge + başlık. Aynı yerleşim tüm diyaloglarda geçerli.
+    var head = document.createElement('div');
+    head.className = 'nx-dlg-head';
+    var ico = document.createElement('span');
     ico.className = 'nx-dlg-ico';
+    ico.setAttribute('aria-hidden', 'true');
     ico.innerHTML = ICONS[opts.icon] || ICONS.info;
-    card.appendChild(ico);
+    head.appendChild(ico);
 
     var title = document.createElement('h2');
     title.className = 'nx-dlg-title';
     title.textContent = opts.title || 'NEXUS';
-    card.appendChild(title);
+    head.appendChild(title);
+    card.appendChild(head);
 
     if (opts.message) {
       var msg = document.createElement('p');
