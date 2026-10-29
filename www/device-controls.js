@@ -529,10 +529,17 @@
           : { text: "Henüz beslenmedi", badge: "idle" };
       case "motion":
       case "contact":
-      case "alarm":
-        return st.notify === false
-          ? { text: "Bildirim kapalı", badge: "idle" }
-          : { text: "İzlemede", badge: "ok" };
+      case "alarm": {
+        // Gerçek durum yalnızca cihazdan okunduysa gösterilir; "izlemede" gibi uydurma bir durum yazılmaz
+        if (typeof st.active !== "boolean") return { text: "Durum okunmadı", badge: "idle" };
+        if (kind === "motion")
+          return st.active
+            ? { text: "Hareket algılandı", badge: "on" }
+            : { text: "Hareket yok", badge: "ok" };
+        if (kind === "contact")
+          return st.active ? { text: "Açık", badge: "on" } : { text: "Kapalı", badge: "ok" };
+        return st.active ? { text: "Alarm!", badge: "on" } : { text: "Normal", badge: "ok" };
+      }
       case "airsensor":
       case "climatesensor":
       case "envsensor":

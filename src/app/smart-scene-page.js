@@ -91,19 +91,7 @@
     nexusSetItem('nexusEvents', JSON.stringify(events));
   }
 
-  function showToast(message, ms) {
-    var toast = document.createElement('div');
-    toast.className = 'fixed left-1/2 top-6 z-[120] -translate-x-1/2 rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center';
-    toast.style.maxWidth = 'min(92vw, 420px)';
-    toast.setAttribute('role', 'status');
-    toast.textContent = message;
-    // Giriş/solma animasyonu + süre (nexus-feedback.js; yoksa eski düz görünüm)
-    if (window.nexusFeedback) window.nexusFeedback.toastIn(toast, ms || 1600);
-    document.body.appendChild(toast);
-    setTimeout(function () {
-      toast.remove();
-    }, ms || 1600);
-  }
+  function showToast(message, ms) { if (window.nexusToast) window.nexusToast(message, { type: 'info', duration: ms || 1600 }); }
 
   function checkRequiredDevices() {
     var devices = safeParse(nexusGetItem('nexusPairedDevices'), []);

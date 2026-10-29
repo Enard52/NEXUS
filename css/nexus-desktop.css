@@ -490,3 +490,39 @@ html.dark #nx-palette .nx-pal-row { border-bottom-color: rgba(148,163,184,.18); 
 html.dark #nx-palette .nx-pal-kbd { background: rgba(148,163,184,.16); color: #cbd5e1; }
 html.dark #nx-palette .nx-pal-item.is-active, html.dark #nx-palette .nx-pal-item:hover { background: rgba(76,125,255,.2); }
 #nx-palette .nx-pal-input, #nx-palette .nx-pal-input:focus, #nx-palette .nx-pal-input:focus-visible { outline: 0 !important; box-shadow: none !important; border: 0 !important; background: transparent !important; }
+
+/* ---------- Sol menü: daralmış (simge şeridi) hâl ---------- */
+.nx-side-toggle { position: absolute; top: 22px; right: 12px; width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
+  color: #64748b; background: transparent; border: 0; cursor: pointer; transition: background .15s ease, color .15s ease; }
+.nx-side-toggle:hover { background: rgba(76, 125, 255, 0.10); color: #0f172a; }
+html.dark .nx-side-toggle { color: #94a3b8; }
+html.dark .nx-side-toggle:hover { background: rgba(148, 163, 184, 0.14); color: #f8fafc; }
+.nx-side-toggle svg { width: 18px; height: 18px; }
+html.nx-desk .nx-side { transition: width .2s ease; }
+html.nx-desk:not(.nx-desk-auth) body { transition: padding-left .2s ease; }
+@media (prefers-reduced-motion: reduce) { html.nx-desk .nx-side, html.nx-desk:not(.nx-desk-auth) body { transition: none; } }
+
+html.nx-desk.nx-side-collapsed { --side: 72px; }
+html.nx-desk.nx-side-collapsed .nx-side { padding: 20px 12px 14px; }
+html.nx-desk.nx-side-collapsed .nx-side-brand { justify-content: center; padding: 4px 0 46px; gap: 0; }
+html.nx-desk.nx-side-collapsed .nx-side-brand > span:not(.nx-side-logo) { display: none; }
+html.nx-desk.nx-side-collapsed .nx-side-toggle { top: 62px; right: auto; left: 50%; transform: translateX(-50%); width: 36px; height: 36px; }
+html.nx-desk.nx-side-collapsed .nx-side-group { height: 1px; margin: 8px 14px; padding: 0; font-size: 0; color: transparent; background: rgba(148, 163, 184, 0.28); overflow: hidden; }
+html.nx-desk.nx-side-collapsed .nx-side-link { justify-content: center; gap: 0; padding: 0; width: 48px; margin: 0 auto; }
+html.nx-desk.nx-side-collapsed .nx-side-link span { display: none; }
+html.nx-desk.nx-side-collapsed .nx-side-ai { width: 48px; min-height: 48px; margin: 0 auto 10px; padding: 6px; justify-content: center; gap: 0; }
+html.nx-desk.nx-side-collapsed .nx-side-ai-txt, html.nx-desk.nx-side-collapsed .nx-side-ai-arrow { display: none; }
+html.nx-desk.nx-side-collapsed .nx-side-ai-dot { left: 32px; }
+html.nx-desk.nx-side-collapsed .nx-side-foot { flex-direction: column; align-items: center; gap: 6px; }
+html.nx-desk.nx-side-collapsed .nx-side-user { flex: none; padding: 4px; }
+html.nx-desk.nx-side-collapsed .nx-side-user > span.min-w-0 { display: none; } /* avatar (img ya da span.nx-side-avatar) kalır, yalnızca ad/alt yazı gizlenir */
+
+/* ---------- Üst başlık: kaydırınca kompakt ---------- */
+html.nx-desk body > header.nx-desk-col { transition: padding .18s ease, min-height .18s ease, box-shadow .18s ease; }
+html.nx-desk body > header.nx-desk-col.nx-hdr-scrolled {
+  padding-bottom: 6px !important;
+  min-height: 76px !important; /* ortak 104px başlık standardı (nexus-ui.css) kaydırınca kompakta iner */
+  box-shadow: 0 1px 0 rgba(148, 163, 184, 0.28), 0 10px 18px -16px rgba(15, 23, 42, 0.4);
+}
+html.dark.nx-desk body > header.nx-desk-col.nx-hdr-scrolled { box-shadow: 0 1px 0 rgba(148, 163, 184, 0.16), 0 10px 18px -14px rgba(0, 0, 0, 0.6); }
+@media (prefers-reduced-motion: reduce) { html.nx-desk body > header.nx-desk-col { transition: none; } }

@@ -20,6 +20,9 @@
           caps: ["switch", "brightness", "colorTemp"],
         },
         { name: "Shelly Dimmer", img: "control-dimmer-knob.png", caps: ["switch", "brightness"] },
+        { name: "Shelly 1 / 1PM Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
+        { name: "Shelly 2.5 Perde Motoru", aliases: ["roller"], img: "control-curtain-motor.png", caps: ["cover"] },
+        { name: "Shelly RGBW2 Şerit", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
         {
           name: "Shelly Motion",
           img: "generic-motion-sensor.png",
@@ -40,6 +43,8 @@
           caps: ["switch", "energy"],
         },
         { name: "Shelly Plus Plug S", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
+        { name: "Shelly Plus 2PM Perde", img: "control-curtain-motor.png", caps: ["cover"] },
+        { name: "Shelly Plus RGBW PM", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
         {
           name: "Shelly Dimmer Gen3",
           img: "control-dimmer-knob.png",
@@ -50,6 +55,7 @@
     {
       brand: "Tasmota",
       protocol: "tasmota",
+      category: "bridge", // ürün değil, yazılım/köprü: ürün listelerinden ayrı gruplanır
       availability: "all",
       note: "Açık kaynak yazılımlı priz, röle ve ampuller",
       models: [
@@ -65,24 +71,12 @@
     {
       brand: "TP-Link Tapo",
       protocol: "tapo",
-      availability: "all",
-      note: "Yerel HTTP & RTSP kamera akışı — ücretsiz, bulutsuz",
+      availability: "desktop",
+      note: "Yerel şifreli HTTP (KLAP) — TP-Link hesabı e-postası + şifresiyle, masaüstü uygulamasında; priz, anahtar ve ampuller (kamera ve enerji ölçümü henüz yok)",
       models: [
-        {
-          name: "Tapo P110 Akıllı Priz",
-          img: "generic-smart-plug.png",
-          caps: ["switch", "energy"],
-        },
-        {
-          name: "Tapo L530E Ampul",
-          img: "generic-led-bulb.png",
-          caps: ["switch", "brightness", "color"],
-        },
-        {
-          name: "Tapo S265 Termostat",
-          img: "generic-thermostat-c.png",
-          caps: ["temperature", "humidity"],
-        },
+        { name: "Tapo P110 Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
+        { name: "Tapo L530E Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "Tapo S265 Termostat", img: "generic-thermostat-c.png", caps: ["temperature", "humidity"] },
         { name: "Tapo C210 Kamera", img: "security-indoor-camera.png", caps: ["camera"] },
       ],
     },
@@ -123,6 +117,7 @@
     {
       brand: "WLED",
       protocol: "wled",
+      category: "bridge", // ürün değil, yazılım/köprü: ürün listelerinden ayrı gruplanır
       availability: "all",
       note: "Açık JSON API",
       models: [
@@ -136,6 +131,7 @@
     {
       brand: "ESPHome",
       protocol: "esphome",
+      category: "bridge", // ürün değil, yazılım/köprü: ürün listelerinden ayrı gruplanır
       availability: "all",
       note: "web_server bileşeniyle — DIY cihazlar",
       models: [
@@ -174,6 +170,7 @@
     {
       brand: "Home Assistant",
       protocol: "homeassistant",
+      category: "bridge", // ürün değil, yazılım/köprü: ürün listelerinden ayrı gruplanır
       availability: "all",
       note: "Kendi Home Assistant sunucun üzerinden binlerce marka (Tuya, Xiaomi, Sonoff, Zigbee, Matter…) — ücretsiz",
       models: [
@@ -190,6 +187,9 @@
           img: "generic-air-conditioner.png",
           caps: ["switch", "temperature"],
         },
+        { name: "Home Assistant Fan", img: "generic-fan.png", caps: ["switch"] },
+        { name: "Home Assistant Nemlendirici", img: "generic-humidifier.png", caps: ["switch", "airQuality"] },
+        { name: "Home Assistant Medya Oynatıcı / TV", img: "generic-smart-tv.png", caps: ["switch", "media"] },
         { name: "Home Assistant Kilit", img: "security-keypad-lock.png", caps: ["lock"] },
         { name: "Home Assistant Robot Süpürge", img: "generic-robot-vacuum.png", caps: ["vacuum"] },
       ],
@@ -197,20 +197,12 @@
     {
       brand: "Tuya (yerel mod)",
       protocol: "tuya-local",
-      availability: "all",
-      note: "Yerel mod şifreli protokol ve cihaz anahtarı gerektirir; bu sürümde komut gönderilmez",
+      availability: "desktop",
+      note: "Yerel LAN (3.3 / 3.4, şifreli TCP) — ücretsiz Tuya IoT hesabından alınan cihaz kimliği + yerel anahtarla, masaüstü uygulamasında; priz, anahtar ve ampuller",
       models: [
-        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
-        {
-          name: "Tuya RGB Ampul",
-          img: "generic-led-bulb.png",
-          caps: ["switch", "brightness", "color"],
-        },
-        {
-          name: "Tuya Akıllı Anahtar / Röle",
-          img: "control-single-wall-switch.png",
-          caps: ["switch"],
-        },
+        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
+        { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
         { name: "Tuya Kapı Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
         {
           name: "Tuya Termostat",
@@ -220,8 +212,49 @@
       ],
     },
     {
+      brand: "Sonoff (DIY modu)",
+      protocol: "sonoff",
+      availability: "all",
+      note: "eWeLink DIY modu (cihazda DIY açılmış olmalı) — çok kanallı modellerde her kanal ayrı cihaz",
+      models: [
+        { name: "Sonoff BASICR3 Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
+        { name: "Sonoff MINIR2 Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
+        { name: "Sonoff 4CHPROR3 4 Kanallı Röle", img: "control-four-gang-switch.png", caps: ["switch"] },
+      ],
+    },
+    {
+      brand: "WiZ",
+      protocol: "wiz",
+      availability: "desktop",
+      note: "Yerel UDP — masaüstü uygulamasında; yerleşik sahneler dahil",
+      models: [
+        { name: "WiZ A60 Renkli Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "WiZ Işık Şeridi", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
+      ],
+    },
+    {
+      brand: "LIFX",
+      protocol: "lifx",
+      availability: "desktop",
+      note: "Yerel UDP — masaüstü uygulamasında",
+      models: [
+        { name: "LIFX Mini Color Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "LIFX Z LED Şerit", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
+      ],
+    },
+    {
+      brand: "Govee",
+      protocol: "govee",
+      availability: "desktop",
+      note: "Yerel UDP (Govee Home'da LAN Control açık olmalı) — masaüstü uygulamasında",
+      models: [
+        { name: "Govee H6159 LED Şerit", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
+      ],
+    },
+    {
       brand: "Wake-on-LAN",
       protocol: "wol",
+      category: "bridge", // ürün değil, yazılım/köprü: ürün listelerinden ayrı gruplanır
       availability: "all",
       note: "Ağ üzerinden PC veya TV uyandırma (Home Assistant standardı)",
       models: [{ name: "Wake-on-LAN PC / TV", img: "generic-smart-hub.png", caps: ["switch"] }],

@@ -7,6 +7,13 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   http: (opts) => ipcRenderer.invoke("lan:http", opts),
   tcp: (opts) => ipcRenderer.invoke("lan:tcp", opts),
   udp: (opts) => ipcRenderer.invoke("lan:udp", opts),
+  // Yetenek bayrakları: ikili HTTP (Tapo KLAP) ve oturumlu TCP (Tuya) yalnızca bu sürümde var.
+  binaryHttp: true,
+  tcpSession: {
+    open: (opts) => ipcRenderer.invoke("lan:tcp-open", opts),
+    exchange: (opts) => ipcRenderer.invoke("lan:tcp-exchange", opts),
+    close: (id) => ipcRenderer.invoke("lan:tcp-close", id),
+  },
   subnets: () => ipcRenderer.invoke("lan:subnets"),
   info: () => ipcRenderer.invoke("app:info"),
   googleLogin: (url) => ipcRenderer.invoke("auth:google", url),
@@ -35,6 +42,7 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
     },
   },
   setLanguage: (lang) => ipcRenderer.send("app:language", lang),
+  setTitleTheme: (dark) => ipcRenderer.send("app:title-theme", dark === true),
   notifyEvent: (ev) => ipcRenderer.send("event:notify", ev),
   updateStatus: (st) => ipcRenderer.send("tray:status", st),
   onPaletteOpen: (cb) => {

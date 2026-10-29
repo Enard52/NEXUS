@@ -143,10 +143,28 @@
     var pending = null; // henüz kaydedilmemiş seçim
     (function () {
       var saved = nexusGetItem(storageKey);
-      if (saved) {
-        document.getElementById('address-input').value = saved;
-        document.getElementById('pin-label').textContent = saved;
+      if (!saved) return;
+      if (looksLikeCoords(saved)) {
+        // Eski kayıt: ters geokodlama yapılamadığından konum adına koordinat metni
+        // yazılmış olabilir. Koordinatı GÖSTERMEYELİM: etiketle başla, gerçek yer
+        // adı çözülürse kaydı da sessizce düzelt.
+        var nice = coordsFallbackName();
+        document.getElementById('address-input').value = nice;
+        document.getElementById('pin-label').textContent = nice;
+        var cOld = null;
+        try { cOld = JSON.parse(nexusGetItem(coordsKey) || 'null'); } catch (e) {}
+        if (cOld && isFinite(cOld.lat) && isFinite(cOld.lon)) {
+          resolvePlaceName(cOld.lat, cOld.lon).then(function (name) {
+            if (name === coordsFallbackName()) return; // çözülemedi: etiketi koru
+            nexusSetItem(storageKey, name);
+            document.getElementById('address-input').value = name;
+            document.getElementById('pin-label').textContent = name;
+          });
+        }
+        return;
       }
+      document.getElementById('address-input').value = saved;
+      document.getElementById('pin-label').textContent = saved;
     })();
 
     /* ---------- Gerçek adres arama (OpenStreetMap Nominatim) ---------- */
@@ -173,14 +191,51 @@
           selectLocation(shortName(r.display_name), parseFloat(r.lat), parseFloat(r.lon));
         })
         .catch(function () {
-          // Çevrimdışı: yazılan adres yine de seçim olarak kullanılabilir
+          // Çevrimdışı: yazılan adres yine de seçim olarak kullanılabilir.
+          // (Kullanıcı koordinat yazmışsa da koordinat gösterilmemeli; etikete çevrilir.)
           setStatus('Arama servisine ulaşılamadı, yazdığın adres kullanılacak.');
-          selectLocation(q);
+          var name = looksLikeCoords(q) ? coordsFallbackName() : q;
+          addressInput.value = name;
+          selectLocation(name);
         });
     }
     function shortName(displayName) {
       // "Cadde, Mahalle, İlçe, İl, ..." -> ilk 2 parça yeterli
       return displayName.split(',').slice(0, 2).join(',').trim();
+    }
+    /* Koordinat hiçbir yerde metin olarak GÖSTERİLMEZ ya da konum adı olarak
+       KAYDEDİLMEZ. Adres servislerine ulaşılamazsa anlaşılır bir etiket kullanılır;
+       koordinatlar yalnızca coordsKey kaydında sayısal olarak yaşamaya devam eder.
+       (Etiket fonksiyon içinde sabit olarak tutulur: sayfanın başındaki kayıt
+       yükleme bloğu bu yardımcıları daha önce çağırabildiği için var'a bağlı kalmaz.) */
+    function coordsFallbackName() { return nexusT('Seçilen Konum', 'Selected location'); }
+    function looksLikeCoords(value) {
+      return /^-?\d{1,3}\.\d+\s*,\s*-?\d{1,3}\.\d+$/.test(String(value || '').trim());
+    }
+    function nominatimName(lat, lon) {
+      return fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=tr&lat=' + lat + '&lon=' + lon)
+        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          if (!r || !r.display_name) throw new Error('isim çözülemedi');
+          return shortName(r.display_name);
+        });
+    }
+    // Nominatim ulaşılamazsa yedek servis (BigDataCloud) ile aynı işi dener.
+    function bigdatacloudName(lat, lon) {
+      return fetch('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=tr', { headers: { Accept: 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error('geo hatası'); return r.json(); })
+        .then(function (d) {
+          var local = String((d && (d.locality || d.city)) || '').trim();
+          var region = String((d && d.principalSubdivision) || '').trim();
+          var text = (local && region && local.toLowerCase() !== region.toLowerCase()) ? (local + ', ' + region) : (local || region);
+          if (!text) throw new Error('isim çözülemedi');
+          return text;
+        });
+    }
+    function resolvePlaceName(lat, lon, fallback) {
+      return nominatimName(lat, lon)
+        .catch(function () { return bigdatacloudName(lat, lon); })
+        .catch(function () { return fallback || coordsFallbackName(); });
     }
     function moveMap(lat, lon) {
       programmaticMove = true;
@@ -200,20 +255,12 @@
       dragTimer = setTimeout(function () {
         var c = map.getCenter();
         setStatus('Konum alınıyor…');
-        fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=tr&lat=' + c.lat + '&lon=' + c.lng)
-          .then(function (r) { return r.json(); })
-          .then(function (r) {
-            setStatus('');
-            var name = r.display_name ? shortName(r.display_name) : (c.lat.toFixed(4) + ', ' + c.lng.toFixed(4));
-            addressInput.value = name;
-            selectLocation(name, c.lat, c.lng);
-          })
-          .catch(function () {
-            setStatus('');
-            var name = c.lat.toFixed(4) + ', ' + c.lng.toFixed(4);
-            addressInput.value = name;
-            selectLocation(name, c.lat, c.lng);
-          });
+        // İki servis dener; ikisi de başarısızsa asla koordinat değil, etiket döner.
+        resolvePlaceName(c.lat, c.lng).then(function (name) {
+          setStatus('');
+          addressInput.value = name;
+          selectLocation(name, c.lat, c.lng);
+        });
       }, 500);
     });
     /* Tıklanan noktayı da seç: harita tıklanan yere kayar, pin oraya oturur */
@@ -256,15 +303,11 @@
         }
 
         moveMap(lat, lon);
-        fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=tr&lat=' + lat + '&lon=' + lon)
-          .then(function (r) { return r.json(); })
-          .then(function (r) {
-            setStatus('');
-            var name = r.display_name ? shortName(r.display_name) : 'Mevcut Konum';
-            addressInput.value = name;
-            selectLocation(name, lat, lon);
-          })
-          .catch(function () { setStatus(''); addressInput.value = 'Mevcut Konum'; selectLocation('Mevcut Konum', lat, lon); });
+        resolvePlaceName(lat, lon, nexusT('Mevcut Konum', 'Current location')).then(function (name) {
+          setStatus('');
+          addressInput.value = name;
+          selectLocation(name, lat, lon);
+        });
       } catch (e) {
         // Hataya özel mesaj: izin reddi / GPS kapalı / zaman aşımı
         var msg = 'Konum alınamadı, tekrar dene.';

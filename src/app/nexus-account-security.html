@@ -97,11 +97,21 @@
           </button>
           <div id="two-factor-panel" class="hidden px-5 pb-5 space-y-3 border-b border-gray-50">
             <p id="two-factor-help" class="text-sm text-slate-500 leading-relaxed"></p>
+            <ol id="two-factor-steps" class="hidden text-sm text-slate-600 dark:text-slate-300 space-y-1 list-decimal pl-5 leading-relaxed">
+              <li>Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulaması aç.</li>
+              <li>Aşağıdaki kodu okut ya da anahtarı elle gir.</li>
+              <li>Uygulamadaki 6 haneli kodu yaz ve Doğrula'ya dokun.</li>
+            </ol>
             <img id="two-factor-qr" alt="Kurulum kodu" class="hidden mx-auto w-48 h-48 bg-white rounded-xl"/>
             <p id="two-factor-secret" class="hidden text-xs text-center text-slate-600 leading-relaxed">
               <span>Kodu okutamıyorsan bu anahtarı uygulamaya yaz:</span>
               <span id="two-factor-secret-value" class="block mt-1 font-mono break-all"></span>
             </p>
+            <div id="two-factor-tools" class="hidden flex flex-wrap items-center justify-center gap-2">
+              <button type="button" id="two-factor-copy" onclick="copyTwoFactorSecret()" class="h-10 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-semibold">Anahtarı kopyala</button>
+              <a id="two-factor-open" class="hidden h-10 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-semibold inline-flex items-center">Kimlik uygulamasında aç</a>
+            </div>
+            <p id="two-factor-warn" class="hidden text-xs text-amber-700 dark:text-amber-300 leading-relaxed rounded-xl bg-amber-50 dark:bg-amber-500/10 px-3 py-2">Kimlik uygulamasına erişimini kaybedersen girişte kod isteneceği için hesabına giremezsin. Bu anahtarı güvenli bir yere kaydet.</p>
             <input id="two-factor-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 haneli kod" class="w-full h-12 px-4 rounded-2xl bg-slate-50 text-slate-900 tracking-[0.3em]"/>
             <p id="two-factor-error" class="hidden text-sm text-red-500"></p>
             <div class="flex gap-2">
@@ -253,6 +263,31 @@
       return (window.nexusTr ? window.nexusTr(fallback) : fallback);
     }
 
+    // Kurulum kodunu cihazın kendisinde otpauth bağlantısından üretir (çevrimdışı çalışır, üçüncü tarafa gitmez).
+    // Bağlantı yoksa ya da kütüphane yüklenemezse Supabase'in gönderdiği görsele düşülür.
+    var qrLibPromise = null;
+    function loadQrLib() {
+      if (window.qrcode) return Promise.resolve(window.qrcode);
+      if (!qrLibPromise) {
+        qrLibPromise = new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = 'js/qrcode.js';
+          s.onload = function () { window.qrcode ? resolve(window.qrcode) : reject(new Error('qr')); };
+          s.onerror = function () { reject(new Error('qr')); };
+          document.head.appendChild(s);
+        });
+      }
+      return qrLibPromise;
+    }
+    function localQrSrc(uri) {
+      return loadQrLib().then(function (qrcode) {
+        var q = qrcode(0, 'M'); // tür otomatik, orta düzey hata düzeltme
+        q.addData(String(uri));
+        q.make();
+        return q.createDataURL(5, 4); // modül başına 5px, 4 modül sessiz bölge
+      });
+    }
+
     function qrSrc(code) {
       var value = String(code || '');
       if (!value) return '';
@@ -268,8 +303,35 @@
       box.classList.toggle('hidden', !text);
     }
 
+    function setTwoFactorEnrollUi(on, totp) {
+      ['two-factor-steps', 'two-factor-tools', 'two-factor-warn'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', !on);
+      });
+      var open = document.getElementById('two-factor-open');
+      if (open) {
+        // otpauth:// bağlantısı yalnızca telefonda kimlik uygulamasını açar; masaüstünde bir şey yapmaz
+        var mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '') || !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+        var uri = totp && totp.uri;
+        if (on && mobile && uri && /^otpauth:\/\//.test(uri)) { open.href = uri; open.classList.remove('hidden'); }
+        else { open.removeAttribute('href'); open.classList.add('hidden'); }
+      }
+      var copy = document.getElementById('two-factor-copy');
+      if (copy) copy.classList.toggle('hidden', !(on && totp && totp.secret));
+    }
+
+    function copyTwoFactorSecret() {
+      var value = (document.getElementById('two-factor-secret-value') || {}).textContent || '';
+      if (!value) return;
+      var done = function (ok) { showSecurityToast(ok ? 'Anahtar kopyalandı ✓' : 'Kopyalanamadı; anahtarı elle yaz.', !ok); };
+      if (window.nexusCopy) window.nexusCopy(value).then(done, function () { done(false); });
+      else if (navigator.clipboard) navigator.clipboard.writeText(value).then(function () { done(true); }, function () { done(false); });
+      else done(false);
+    }
+
     function closeTwoFactorPanel() {
       var panel = document.getElementById('two-factor-panel');
+      setTwoFactorEnrollUi(false);
       if (panel) panel.classList.add('hidden');
       twoFactorId = '';
       twoFactorMode = '';
@@ -332,7 +394,8 @@
           if (verified) {
             twoFactorMode = 'disable';
             twoFactorId = verified.id;
-            if (help) help.textContent = 'Kapatmak için kimlik uygulamasındaki kodu gir.';
+            if (help) { help.textContent = 'Kapatmak için kimlik uygulamasındaki kodu gir.'; help.classList.remove('hidden'); }
+            setTwoFactorEnrollUi(false);
             if (qr) qr.classList.add('hidden');
             if (secret) secret.classList.add('hidden');
             if (panel) panel.classList.remove('hidden');
@@ -342,10 +405,19 @@
             var totp = (enrolled && enrolled.totp) || {};
             twoFactorMode = 'enroll';
             twoFactorId = enrolled.id;
-            if (help) help.textContent = 'Kodu kimlik uygulamasına okut, sonra uygulamadaki 6 haneyi gir.';
-            if (qr && totp.qr_code) {
-              qr.src = qrSrc(totp.qr_code);
-              qr.classList.remove('hidden');
+            // Adımlar zaten aynı şeyi söylüyor: yardım satırı kurulumda gizlenir
+            if (help) { help.textContent = ''; help.classList.add('hidden'); }
+            setTwoFactorEnrollUi(true, totp);
+            if (qr) {
+              var showQr = function (src) {
+                if (!src) return;
+                qr.src = src;
+                qr.style.imageRendering = 'pixelated';
+                qr.classList.remove('hidden');
+              };
+              var fallbackQr = function () { showQr(totp.qr_code ? qrSrc(totp.qr_code) : ''); };
+              if (totp.uri && /^otpauth:\/\//.test(totp.uri)) localQrSrc(totp.uri).then(showQr, fallbackQr);
+              else fallbackQr();
             }
             var secretValue = document.getElementById('two-factor-secret-value');
             if (secret) secret.classList.toggle('hidden', !totp.secret);
@@ -725,14 +797,9 @@
   </script>
 <script>
 function showSecurityToast(msg, isError) {
-  // Dil İngilizce ise nexusTr ile çevir (i18n MutationObserver toast div'ini
-  // her zaman yakalamayabilir çünkü textContent direkt yazılıp kısa sürede kaldırılıyor).
+  // Dil İngilizce ise nexusTr ile çevir; sonra ortak bildirim şeridinde göster
   var text = (window.nexusTr ? window.nexusTr(String(msg || '')) : String(msg || ''));
-  var t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-size:14px;font-weight:600;color:#fff;white-space:nowrap;max-width:90vw;text-align:center;background:' + (isError ? '#dc2626' : '#1e293b') + ';';
-  t.textContent = text;
-  document.body.appendChild(t);
-  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+  window.nexusToast(text, { type: isError ? 'error' : 'success' });
 }
 </script>
 </body>

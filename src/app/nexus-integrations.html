@@ -223,7 +223,7 @@
 <body class="bg-dashboard-gradient text-slate-900 h-screen flex flex-col overflow-hidden">
 
   <!-- Header -->
-  <header id="int-header" class="pt-14 pb-4 px-4 flex items-center justify-between bg-white z-50 relative">
+  <header id="int-header" class="pt-14 pb-4 px-5 flex items-center justify-between nx-hdr-blend z-50 relative">
     <div class="flex items-center gap-3">
       <a aria-label="Geri" class="p-1 -ml-1 text-slate-700 active:scale-95 transition-transform" href="#" onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'nexus-home.html';">
         <i class="w-7 h-7" data-lucide="chevron-left"></i>
@@ -2930,13 +2930,7 @@
     })();
   </script>
 <script>
-function showIntegrationsToast(msg) {
-  var t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
-}
+function showIntegrationsToast(msg) { window.nexusToast(msg, { type: 'info' }); }
 </script>
 <script data-purpose="product-image-transparency">
   // Beyaz arka planlı ürün görsellerini şeffaflaştırır. Eskiden bu kod, src niteliği

@@ -102,23 +102,7 @@
 <!-- DYNAMIC JS -->
 <script>
 // Toast bildirimi
-function showSceneToast(msg) {
-  var existing = document.getElementById('scene-toast');
-  if (!existing) {
-    existing = document.createElement('div');
-    existing.id = 'scene-toast';
-    existing.style.cssText = 'position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;opacity:0;transition:opacity 0.25s,transform 0.25s;pointer-events:none;white-space:nowrap;';
-    document.body.appendChild(existing);
-  }
-  existing.textContent = msg;
-  existing.style.opacity = '1';
-  existing.style.transform = 'translateX(-50%) translateY(0)';
-  clearTimeout(existing._t);
-  existing._t = setTimeout(function() {
-    existing.style.opacity = '0';
-    existing.style.transform = 'translateX(-50%) translateY(20px)';
-  }, 2000);
-}
+function showSceneToast(msg) { window.nexusToast(msg, { type: 'success', key: 'scene' }); }
 
 document.addEventListener('DOMContentLoaded', function() {
   var state = {};

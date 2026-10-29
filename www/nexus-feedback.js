@@ -20,6 +20,12 @@
  *
  * Kullanım: nexusFeedback.play('scene') · nexusFeedback.power(true, kartElemanı)
  *           nexusFeedback.pulse(el) · nexusFeedback.toastIn(toastElemanı)
+ *           nexusFeedback.announce("Salon lambası kapatıldı") · nexusAnnounce(aynı şey)
+ *
+ * Dördüncü görev (ses/titreşim/harekete ek): EKRAN OKUYUCU DUYURULARI. Uygulamanın
+ * durum değişimleri görsel şeritlerle söyleniyor ama hiçbir yerde okunur değildi;
+ * tek merkezdeki iki aria-live bölgesi hem doğrudan çağrıları hem de ortak şeritleri
+ * ve çevrimdışı/çevrimiçi geçişlerini duyurur.
  */
 (function () {
   "use strict";
@@ -181,11 +187,124 @@
   // Ömür CSS'e --nx-toast-life olarak verilir; öğeyi kaldırmak çağıranın işi
   // (kendi setTimeout'u solmayla aynı anda vurur, görünüm zaten tamamlanmıştır).
   // Animasyonlar kapalıysa sınıf eklenmez: toast anında görünür/eski haliyle kalır.
+  //
+  // Bu fonksiyon aynı zamanda duyurunun ÇIKTIĞI yerdir: ekranda beliren her ortak
+  // şerit, animasyondan bağımsız olarak ekran okuyucuya da okunur (aşağıdaki
+  // announce()). Böylece 62 ekranın tek tek işaretlenmesine gerek kalmaz.
   function toastIn(el, lifeMs) {
-    if (!el || !motionAllowed() || !el.classList) return;
+    if (!el) return;
+    announce(el.textContent, { tone: el.classList && el.classList.contains('nx-toast-error') ? "error" : "status" });
+    if (!motionAllowed() || !el.classList) return;
     if (el.style && el.style.setProperty) el.style.setProperty("--nx-toast-life", (lifeMs || 2200) + "ms");
     el.classList.add("nx-toast");
   }
+
+  // ---------- Ekran okuyucu duyuruları ----------
+  // Uygulama tek sayfalık bir kabuk değil: her ekran kendi başına yükleniyor, bu
+  // yüzden tek kalıcı "live region" yeterli. Yalnızca EKRANDA GÖRÜNMEYEN durum
+  // değişiklikleri yazılır (ağ, geri alma, ortak şeritler); görsel şeritleri
+  // çift okutmamak için aynı metin 1,2 sn içinde yinelenirse atlanır.
+  var LIVE_IDS = { status: "nx-live-status", error: "nx-live-error" };
+  function liveRegion(tone) {
+    var id = LIVE_IDS[tone] || LIVE_IDS.status;
+    var el = document.getElementById(id);
+    if (el) return el;
+    if (!document.body) return null;
+    el = document.createElement("div");
+    el.id = id;
+    el.className = "nx-sr-only";
+    el.setAttribute("aria-atomic", "true");
+    if (tone === "error") {
+      el.setAttribute("role", "alert");
+      el.setAttribute("aria-live", "assertive");
+    } else {
+      el.setAttribute("role", "status");
+      el.setAttribute("aria-live", "polite");
+    }
+    document.body.appendChild(el);
+    return el;
+  }
+
+  var lastSpoken = { text: "", at: 0 };
+  function announce(text, opts) {
+    var s = String(text == null ? "" : text).replace(/\s+/g, " ").trim();
+    if (!s) return;
+    var tone = (opts && opts.tone) || "status";
+    var el = liveRegion(tone);
+    if (!el) return;
+    var now = Date.now();
+    if (lastSpoken.text === s && now - lastSpoken.at < 1200) return;
+    lastSpoken = { text: s, at: now };
+    // aynı metni yeniden okutmak için bölge önce boşaltılır (bazı okuyucular
+    // değişmeyen metni duyuruyu saymaz)
+    el.textContent = "";
+    var write = function () { el.textContent = s; };
+    if (el.textContent === "" && opts && opts.now) write();
+    else setTimeout(write, 40);
+    return s;
+  }
+
+  // Ortak şeritleri yakala: nexusFeedback.toastIn çağırmayan ekranlar da sınıfı
+  // kendisi ekliyorsa duyuru yine yapılır. Gözlem yalnızca yeni eklenen düğümlerle
+  // sınırlı, metin okumaları ucuz — akışı asla engellemez.
+  function watchToasts() {
+    if (!window.MutationObserver || !document.body) return;
+    var mo = new MutationObserver(function (records) {
+      for (var i = 0; i < records.length; i++) {
+        var added = records[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          var n = added[j];
+          if (!n || n.nodeType !== 1) continue;
+          var t = n.classList && n.classList.contains("nx-toast") ? n : n.querySelector && n.querySelector(".nx-toast");
+          if (t && t.textContent) announce(t.textContent, { tone: "status" });
+        }
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // Ağ durumu: çevrimdışı olmak bu uygulamanın en sık yaşanan durum değişikliği
+  // (yerel ağdan çalışıyor) ve görsel rozet dışında hiçbir şey söylemiyordu.
+  function watchNetwork() {
+    var say = function (online) {
+      announce(online ? window.nexusT ? nexusT("Bağlantı geri geldi.", "Back online.") : "Bağlantı geri geldi."
+        : window.nexusT ? nexusT("İnternet bağlantısı yok — cihazlar yerel ağdan çalışmaya devam eder.", "You're offline — devices keep working on your local network.") : "İnternet bağlantısı yok.", { tone: "error" });
+    };
+    window.addEventListener("offline", function () { say(false); });
+    window.addEventListener("online", function () { say(true); });
+  }
+
+  // Görünmez duyuru bölgelerinin tek kuralı. css/nexus-ui.css'e yazılmadı: bu dosya
+  // her sayfaya enjekte ediliyor, kuralı da kendisi taşırsa hiçbir ekranın
+  // yüklenme sırasına bağımlı kalmıyor.
+  function injectStyle() {
+    if (document.getElementById("nx-feedback-style")) return;
+    var s = document.createElement("style");
+    s.id = "nx-feedback-style";
+    s.textContent =
+      ".nx-sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;" +
+      "clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}";
+    document.head.appendChild(s);
+  }
+
+  injectStyle();
+  // Bölgeler baştan kurulur: ekran okuyucu kullanıcıları ilk duyuruyu kaçırmaz,
+  // denetimler de bölgenin varlığını yüklenme anında doğrulayabilir. Bu dosya
+  // theme.js'in head içinde eklediği dinamik betik olarak body'den önce de
+  // çalışabilir — o durumda kurulum DOMContentLoaded'a ertelenir.
+  if (document.body) {
+    liveRegion("status");
+    liveRegion("error");
+    watchToasts();
+  } else {
+    var initWhenReady = function () {
+      liveRegion("status");
+      liveRegion("error");
+      watchToasts();
+    };
+    document.addEventListener("DOMContentLoaded", initWhenReady);
+  }
+  watchNetwork();
 
   window.nexusFeedback = {
     play: play,
@@ -194,7 +313,11 @@
     haptic: haptic,
     nav: nav,
     toastIn: toastIn,
+    announce: announce,
     motionAllowed: motionAllowed,
     enabled: { sound: function () { return flag("sound"); }, taps: function () { return flag("taps"); }, haptics: function () { return flag("haptics"); }, motion: motionAllowed },
   };
+  // Duyuru o kadar ortak bir yetenek ki kısa adı da olsun: geri alma çubuğu,
+  // diyaloglar ve ekranlar aynı kapıdan seslenir.
+  window.nexusAnnounce = announce;
 })();

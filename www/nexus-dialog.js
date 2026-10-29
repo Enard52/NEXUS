@@ -54,9 +54,37 @@
   function close(back) {
     if (back && back.parentNode) back.parentNode.removeChild(back);
     document.removeEventListener('keydown', onKey);
+    document.removeEventListener('keydown', trapTab, true);
+    // Odak, pencereyi açan öğeye döner: klavye/ekran okuyucu kullanıcısı yerini
+    // kaybetmez. Açan öğe arada kaldırıldıysa sessizce geçilir.
+    try {
+      if (back && back.__nxFocusReturn && document.contains(back.__nxFocusReturn) && typeof back.__nxFocusReturn.focus === 'function') back.__nxFocusReturn.focus();
+    } catch (e) {}
   }
   var current = null;
-  function onKey(e) { if (e.key === 'Escape' && current) { close(current); current = null; } }
+  function onKey(e) {
+    if (e.key === 'Escape' && current) {
+      // Ortak katman bu tuşu sahiplenir: yayılımı durdurmadan bırakırsak theme.js'in
+      // genel "geri" davranışı (history.back) aynı Escape'de sayfayı uzaklaştırır.
+      e.stopPropagation();
+      close(current);
+      current = null;
+    }
+  }
+  // Sekme döngüsü: odak diyalogda kalır (aria-modal doğru çalışsın).
+  function trapTab(e) {
+    if (e.key !== 'Tab' || !current) return;
+    var card = current.querySelector('.nx-dlg');
+    if (!card) return;
+    var focusables = card.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+    var first = focusables[0], last = focusables[focusables.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !card.contains(document.activeElement))) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
 
   window.nexusDialog = function (opts) {
     opts = opts || {};
@@ -65,8 +93,11 @@
 
     var back = document.createElement('div');
     back.className = 'nx-dlg-back';
-    back.setAttribute('role', 'dialog');
+    // Bozucu işlemler (silme, ayrılma) alertdialog rolü alır: ekran okuyucu ciddiyeti
+    // böyle anlar. Görsel görünüm aynı kalır.
+    back.setAttribute('role', opts.destructive ? 'alertdialog' : 'dialog');
     back.setAttribute('aria-modal', 'true');
+    back.__nxFocusReturn = document.activeElement;
 
     var card = document.createElement('div');
     card.className = 'nx-dlg';
@@ -83,9 +114,11 @@
 
     var title = document.createElement('h2');
     title.className = 'nx-dlg-title';
+    title.id = 'nx-dlg-title';
     title.textContent = opts.title || 'NEXUS';
     head.appendChild(title);
     card.appendChild(head);
+    back.setAttribute('aria-labelledby', 'nx-dlg-title');
 
     if (opts.message) {
       var msg = document.createElement('p');
@@ -164,8 +197,12 @@
       });
     }
     current = back;
+    document.addEventListener('keydown', trapTab, true);
     if (field) { field.focus(); field.select(); }
     else { var first = actions.querySelector('button'); if (first) first.focus(); }
+    // Diyalog içeriği ekran okuyucuya da duyurulur: modal, bazı okuyucularda rol
+    // etiketiyle yetinir; başlık + mesajı açıkça söylemek her ortamda çalışır.
+    if (window.nexusAnnounce) window.nexusAnnounce((opts.title || '') + (opts.message ? ' — ' + opts.message : ''), { tone: opts.destructive ? 'error' : 'status' });
     return back;
   };
 })();

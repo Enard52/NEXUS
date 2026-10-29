@@ -181,8 +181,21 @@
       'Hava Durumu': 'weather',
       'Konum': 'location',
       'Güvenlik Modu': 'security',
-      'Alarm Tetiklendiğinde': 'security'
+      // Gerçek sensör tetikleyicisi: motor, eşli yerel ağ sensörünün durumu "kapalı → açık"
+      // döndüğünde çalıştırır (automation-engine.js watchSensors).
+      'Alarm Tetiklendiğinde': 'sensor'
     };
+
+    // Motorun izlediği sensör türleri ve cihaz anahtarı (automation-engine.js ile aynı kural).
+    const SENSOR_KINDS = { motion: 1, contact: 1, alarm: 1 };
+    function sensorKey(d) { return String(d.id || (d.host + '|' + d.name)); }
+    function selectSensor(btn) {
+      document.querySelectorAll('#sensor-option-list button').forEach(function(b) {
+        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+      });
+      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      window._pendingSensor = { key: btn.getAttribute('data-sensor'), name: btn.getAttribute('data-name') };
+    }
 
     function openConfigureSheet(title, desc, icon, colorClass, bgClass) {
       pendingAutomation = { title, desc, icon, colorClass, bgClass };
@@ -238,7 +251,7 @@
       // Dürüstlük notu: seçilen tetikleyici türü motor tarafından henüz
       // çalıştırılmıyorsa kullanıcıya açıkça söylenir (zamanlamaya düşer).
       const kind = window._pendingTriggerKind || 'time';
-      const kindNote = kind === 'time' ? '' : `
+      const kindNote = (kind === 'time' || kind === 'sensor') ? '' : `
         <p class="p-3 bg-amber-50 text-amber-700 text-xs font-medium rounded-xl border border-amber-100 leading-relaxed">
           Bu tetikleyici türü henüz otomatik çalışmıyor; kaydettiğinde aşağıda seçtiğin saatte (zamanlamayla) çalışır.
         </p>`;
@@ -258,6 +271,30 @@
           </div>
         </div>` : '';
 
+      // Sensör tetikleyicisi: yalnız gerçekten eşli yerel ağ sensörleri listelenir.
+      // Sensör yoksa dürüst boş durum gösterilir ve kayıt engellenir.
+      window._pendingSensor = null;
+      let sensorBlock = '';
+      if (kind === 'sensor') {
+        const sensors = (window.NX && NX.kindOf && NX.isLan)
+          ? devices.filter(function(d) { return NX.isLan(d) && SENSOR_KINDS[NX.kindOf(d)]; })
+          : [];
+        sensorBlock = sensors.length ? `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-1">Tetikleyen Sensör</span>
+          <p class="text-xs text-slate-400 mb-3">Sensör kapalıdan açığa geçtiğinde çalışır (uygulama açıkken, yaklaşık 30 sn'de bir okunur).</p>
+          <div class="flex flex-wrap gap-2" id="sensor-option-list">
+            ${sensors.map(function(d) {
+              return '<button type="button" data-sensor="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Sensör') + '" onclick="selectSensor(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.escapeHtml(d.name || 'Sensör') + '</button>';
+            }).join('')}
+          </div>
+        </div>` : `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-1">Tetikleyen Sensör</span>
+          <p class="text-xs text-slate-500 leading-relaxed">Yerel ağa eşli hareket, kapı/pencere ya da duman/su sensörü yok. Önce <a href="nexus-pair.html" class="text-[#4C7DFF] font-bold">bir sensör ekle</a>; sonra bu tetikleyiciyi kurabilirsin.</p>
+        </div>`;
+      }
+
       target.innerHTML = `
         ${kindNote}
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
@@ -266,7 +303,7 @@
           </div>
           <p class="text-sm text-[#4C7DFF] font-bold">${deviceLabel}</p>
         </div>
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+        ${kind === 'sensor' ? sensorBlock : `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <span class="text-sm font-semibold text-slate-700 block mb-3">Çalışma Zamanı</span>
           <div class="flex flex-wrap gap-2" id="time-option-list">
             ${timeOptions.map(function(opt) {
@@ -274,7 +311,7 @@
               return '<button type="button" data-time="' + opt.id + '" onclick="selectTime(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (isSelected ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + opt.label + '</button>';
             }).join('')}
           </div>
-        </div>
+        </div>`}
         ${sceneRow}
       `;
     }
@@ -318,6 +355,13 @@
       const storageKey = type === 'clickrun' ? 'nexusCustomClickRun' : 'nexusCustomAutomations';
       const targetTab  = type === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
 
+      // Sensör tetikleyicisi sensör seçilmeden kaydedilmez (tetiklenmeyecek bir kural kurulmasın).
+      const isSensorTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'sensor';
+      if (isSensorTrigger && !window._pendingSensor) {
+        if (window.nexusToast) window.nexusToast('Önce tetikleyecek bir sensör seç.', { type: 'error' });
+        return;
+      }
+
       // Tetikleyici bilgisini al
       const triggerType = (window._pendingTrigger && window._pendingTrigger.type) || 'always';
       const triggerValueMap = {
@@ -330,6 +374,8 @@
       };
       const trigger = type === 'clickrun'
         ? { type: 'manual' }
+        : isSensorTrigger
+        ? { type: 'sensor', value: window._pendingSensor.key, label: window._pendingSensor.name, event: 'active' }
         : { type: triggerType === 'always' ? 'time' : 'time', value: triggerValueMap[triggerType] || '', repeat: triggerType === 'always' ? 'always' : 'daily' };
 
       let autos = [];

@@ -49,7 +49,7 @@ public class NexusKeepAliveService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(en ? "NEXUS Local Automation Engine" : "NEXUS Yerel Otomasyon Motoru")
                 .setContentText(en ? "Devices are listening on your local network" : "Cihazlar yerel ağda dinleniyor")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_stat_nexus)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setOngoing(true)

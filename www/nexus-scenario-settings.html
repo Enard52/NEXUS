@@ -23,18 +23,13 @@
     body { font-family: 'Inter', sans-serif; min-height: 100dvh; background: #ECE9FD; }
     .toggle-track { transition: background-color 0.2s; }
     [contenteditable]:focus { outline: 2px solid #4C7DFF; outline-offset: 2px; border-radius: 6px; }
-    .toast { transform: translateY(100px); opacity: 0; transition: transform 0.3s, opacity 0.3s; }
-    .toast.show { transform: translateY(0); opacity: 1; }
+
   </style>
 </head>
 <body class="text-slate-900">
 
-  <!-- Toast bildirimi -->
-  <div id="toast" class="toast fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-lg">
-    Kaydedildi ✓
-  </div>
 
-  <header class="pt-12 pb-4 px-5 flex items-center justify-between relative bg-white shadow-sm">
+  <header class="pt-12 pb-4 px-5 flex items-center justify-between relative nx-hdr-blend">
     <button onclick="history.length > 1 ? history.back() : (window.location.href = 'nexus-smart.html')" class="p-1 -ml-1">
       <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
     </button>
@@ -211,6 +206,7 @@
         device:    { icon: 'cpu',       label: 'Cihaz Durumu' },
         location:  { icon: 'map-pin',   label: 'Konum'       },
         condition: { icon: 'activity',  label: 'Koşul'       },
+        sensor:    { icon: 'radio',     label: 'Sensör'      },
         manual:    { icon: 'hand',      label: 'Manuel'      }
       };
       const meta = iconMap[trigger.type] || iconMap['manual'];
@@ -226,6 +222,8 @@
         valueText = trigger.value;
       } else if (trigger.type === 'location' && trigger.value) {
         valueText = trigger.value;
+      } else if (trigger.type === 'sensor') {
+        valueText = (trigger.label || 'Sensör') + ' açıldığında / algıladığında çalışır';
       }
       document.getElementById('trigger-value-label').textContent = valueText;
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -274,12 +272,7 @@
     }
 
     // ── Toast ────────────────────────────────────────────────────────────────
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }
+    function showToast(msg) { window.nexusToast(msg, { type: /başarısız|hata/i.test(String(msg)) ? 'error' : 'success' }); }
   </script>
 </body>
 </html>

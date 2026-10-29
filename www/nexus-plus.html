@@ -236,13 +236,7 @@
     if (!nexusGetItem('nexusPlusPlan')) document.getElementById('cta-btn').textContent = 'Ücretsiz Dene';
   }
 
-  function toast(text) {
-    var box = document.createElement('div');
-    box.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-[120] rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center max-w-[90vw]';
-    box.textContent = text;
-    document.body.appendChild(box);
-    setTimeout(function () { box.remove(); }, 3200);
-  }
+  function toast(text) { window.nexusToast(text, { type: 'info', duration: 3200 }); }
 
   // CTA: abonelik varsa yönetime, yoksa onay ekranına götürür
   function ctaAction() {

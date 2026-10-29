@@ -61,7 +61,9 @@
     window.nexusDesktop.updateStatus({ devices: devices.length, on: on, unread: unread });
   }
 
-  function tick() { try { checkEvents(); pushStatus(); } catch (e) { /* arka plan görevi: sessiz */ } }
+  // Bildirimlerin kendisi artık notify.js üzerinden gider (ana anahtar, kategori, sessiz saat,
+  // rahatsız etmeyin ve "Sistem Bildirimleri" tercihlerine uyar); burada yalnızca tepsi durumu var.
+  function tick() { try { pushStatus(); } catch (e) { /* arka plan görevi: sessiz */ } }
 
   window.addEventListener("storage", function (e) {
     if (e.key === "nexusEvents" || e.key === "nexusPairedDevices" || e.key === "nexusReadNotifs") tick();

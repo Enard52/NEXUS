@@ -77,3 +77,10 @@ supabase/.temp/
 scripts/archive/
 # İç lansman planı — kamuya açık snapshot'a girmez (tam geçmiş: Enard52/NEXUS-archive)
 docs/OSS-LAUNCH-PLAN.md
+
+# Kullanıcıya ait cihaz sırları (Tuya yerel anahtarı, Tapo/TP-Link hesap bilgisi): depoya asla girmez.
+# Uygulama bunları yalnızca kullanıcının kendi cihazındaki yerel depoda tutar; yerelde not alınırsa şu adlarla tutulur.
+.secrets/
+*.local-keys.json
+tuya-*.local.json
+tapo-*.local.json

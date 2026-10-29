@@ -326,8 +326,7 @@ function hideToTray() {
     "Automations and device links stay active. Click icon to reopen.",
   );
   try {
-    const pngPath = path.join(__dirname, "resources", "icon.png");
-    const notifIcon = fs.existsSync(pngPath) ? pngPath : resolveTrayIcon();
+    const notifIcon = notificationIcon();
     if (Notification.isSupported()) {
       const n = new Notification({
         title: notifTitle,
@@ -347,6 +346,16 @@ function hideToTray() {
   } catch {
     /* bildirim gösterilemezse sorun değil */
   }
+}
+
+// Bildirim simgesi: yol metni yerine nativeImage verilir. Paket içindeki (asar) bir dosya yolunu işletim sistemi
+// okuyamaz ve bildirim varsayılan simgeyle çıkar; nativeImage asar içinden okur ve bildirime gömer.
+function notificationIcon() {
+  try {
+    const png = nativeImage.createFromPath(path.join(__dirname, "resources", "icon.png"));
+    if (png && !png.isEmpty()) return png;
+  } catch {}
+  return resolveTrayIcon();
 }
 
 function resolveTrayIcon() {
@@ -414,45 +423,31 @@ function isPrivateHost(host) {
 }
 
 // ---------- Köprü: yerel ağ HTTP ----------
-ipcMain.handle(
-  "lan:http",
-  (_e, opts) =>
-    new Promise((resolve, reject) => {
-      let url;
-      try {
-        url = new URL(opts.url);
-      } catch {
-        return reject(new Error("geçersiz adres"));
-      }
-      if (url.protocol !== "http:" || !isPrivateHost(url.hostname))
-        return reject(new Error("yalnızca yerel ağ adreslerine izin verilir"));
-      const body = opts.body == null ? null : Buffer.from(String(opts.body));
-      const req = http.request(
-        url,
-        {
-          method: opts.method || "GET",
-          headers: { ...(opts.headers || {}), ...(body ? { "Content-Length": body.length } : {}) },
-          timeout: Math.min(Number(opts.timeoutMs) || 2500, 15000),
-        },
-        (res) => {
-          const chunks = [];
-          let size = 0;
-          res.on("data", (c) => {
-            size += c.length;
-            if (size > 2 * 1024 * 1024) req.destroy(new Error("yanıt çok büyük"));
-            else chunks.push(c);
-          });
-          res.on("end", () =>
-            resolve({ status: res.statusCode, text: Buffer.concat(chunks).toString("utf8") }),
-          );
-        },
-      );
-      req.on("timeout", () => req.destroy(new Error("zaman aşımı")));
-      req.on("error", (err) => reject(new Error(err.message)));
-      if (body) req.write(body);
-      req.end();
-    }),
-);
+ipcMain.handle("lan:http", (_e, opts) => new Promise((resolve, reject) => {
+  let url;
+  try { url = new URL(opts.url); } catch { return reject(new Error("geçersiz adres")); }
+  if (url.protocol !== "http:" || !isPrivateHost(url.hostname)) return reject(new Error("yalnızca yerel ağ adreslerine izin verilir"));
+  // bodyBytes / binary: Tapo KLAP gibi ikili gövdeli protokoller için (bayt dizisi gönderir, bayt dizisi + başlıklar döner).
+  const body = Array.isArray(opts.bodyBytes) ? Buffer.from(opts.bodyBytes) : opts.body == null ? null : Buffer.from(String(opts.body));
+  const req = http.request(url, {
+    method: opts.method || "GET",
+    headers: { ...(opts.headers || {}), ...(body ? { "Content-Length": body.length } : {}) },
+    timeout: Math.min(Number(opts.timeoutMs) || 2500, 15000),
+  }, (res) => {
+    const chunks = [];
+    let size = 0;
+    res.on("data", (c) => { size += c.length; if (size > 2 * 1024 * 1024) req.destroy(new Error("yanıt çok büyük")); else chunks.push(c); });
+    res.on("end", () => {
+      const all = Buffer.concat(chunks);
+      if (opts.binary) resolve({ status: res.statusCode, bytes: Array.from(all), headers: res.headers });
+      else resolve({ status: res.statusCode, text: all.toString("utf8") });
+    });
+  });
+  req.on("timeout", () => req.destroy(new Error("zaman aşımı")));
+  req.on("error", (err) => reject(new Error(err.message)));
+  if (body) req.write(body);
+  req.end();
+}));
 
 // ---------- Köprü: yerel ağ TCP (Kasa 9999, Yeelight 55443, Tuya Local 6668) ----------
 const TCP_PORTS = new Set([9999, 55443, 6668]);
@@ -493,6 +488,55 @@ ipcMain.handle(
       sock.on("error", (err) => finish(reject, new Error(err.message)));
     }),
 );
+
+// ---------- Köprü: Tuya yerel protokolü için oturumlu TCP (6668; 3.4 oturum anahtarı el sıkışması aynı bağlantıda ilerler) ----------
+// Çerçeve: 000055aa | seq | cmd | uzunluk(4) | ... ; toplam = 16 + uzunluk. Köprü yalnızca çerçeveyi keser, içeriğe bakmaz (şifreleme web katmanında).
+const tuyaSessions = new Map();
+let tuyaSessionSeq = 0;
+function tuyaDrain(s) {
+  while (s.buf.length >= 16) {
+    if (s.buf.readUInt32BE(0) !== 0x000055aa) { s.buf = Buffer.alloc(0); return; }
+    const total = 16 + s.buf.readUInt32BE(12);
+    if (total > 65536) { s.buf = Buffer.alloc(0); return; }
+    if (s.buf.length < total) return;
+    const frame = s.buf.subarray(0, total);
+    s.buf = s.buf.subarray(total);
+    const cmd = frame.readUInt32BE(8);
+    if (s.waiter && s.waiter.cmds.includes(cmd)) { const w = s.waiter; s.waiter = null; clearTimeout(w.timer); w.resolve(Array.from(frame)); return; }
+  }
+}
+function tuyaClose(id) {
+  const s = tuyaSessions.get(id);
+  if (!s) return;
+  tuyaSessions.delete(id);
+  clearTimeout(s.idle);
+  if (s.waiter) { clearTimeout(s.waiter.timer); s.waiter.reject(new Error("bağlantı kapandı")); s.waiter = null; }
+  s.sock.destroy();
+}
+ipcMain.handle("lan:tcp-open", (_e, opts) => new Promise((resolve, reject) => {
+  const port = Number(opts.port);
+  if (!isPrivateHost(opts.host) || port !== 6668 || tuyaSessions.size >= 8) return reject(new Error("izin verilmeyen hedef"));
+  const sock = tcp.createConnection({ host: opts.host, port });
+  const id = ++tuyaSessionSeq;
+  const s = { sock, buf: Buffer.alloc(0), waiter: null, idle: setTimeout(() => tuyaClose(id), 30000) };
+  const timer = setTimeout(() => { tuyaClose(id); reject(new Error("zaman aşımı")); }, Math.min(Number(opts.timeoutMs) || 3000, 15000));
+  tuyaSessions.set(id, s);
+  sock.on("connect", () => { clearTimeout(timer); resolve(id); });
+  sock.on("data", (c) => { s.buf = Buffer.concat([s.buf, c]); tuyaDrain(s); });
+  sock.on("error", (err) => { clearTimeout(timer); const live = tuyaSessions.has(id); tuyaClose(id); if (!live) return; reject(new Error(err.message)); });
+  sock.on("close", () => tuyaClose(id));
+}));
+ipcMain.handle("lan:tcp-exchange", (_e, opts) => new Promise((resolve, reject) => {
+  const s = tuyaSessions.get(Number(opts.id));
+  if (!s || s.waiter) return reject(new Error("oturum yok"));
+  const cmds = (Array.isArray(opts.untilCmd) ? opts.untilCmd : [opts.untilCmd]).map(Number);
+  const timer = setTimeout(() => { s.waiter = null; reject(new Error("zaman aşımı")); }, Math.min(Number(opts.timeoutMs) || 3000, 15000));
+  if (opts.noReply) { clearTimeout(timer); if (Array.isArray(opts.bytes) && opts.bytes.length) s.sock.write(Buffer.from(opts.bytes)); return resolve([]); }
+  s.waiter = { cmds, timer, resolve, reject };
+  if (Array.isArray(opts.bytes) && opts.bytes.length) s.sock.write(Buffer.from(opts.bytes));
+  tuyaDrain(s);
+}));
+ipcMain.handle("lan:tcp-close", (_e, id) => { tuyaClose(Number(id)); return true; });
 
 // ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003, WoL 9/7; Govee yanıtları 4002'ye gelir) ----------
 const UDP_PORTS = new Set([38899, 56700, 4001, 4003, 9, 7]);
@@ -942,6 +986,9 @@ function rescueWindow() {
   if (!onScreen(win.getBounds())) win.center();
 }
 
+// Pencere denetim düğmelerinin (küçült/büyüt/kapat) yüksekliği; sayfa başlıkları bunun altından başlar (desktop css: 32px).
+const TITLEBAR_OVERLAY_HEIGHT = 32;
+
 function createWindow() {
   const saved = loadBounds();
   if (saved && !onScreen(saved)) {
@@ -959,6 +1006,19 @@ function createWindow() {
     backgroundColor: nativeTheme.shouldUseDarkColors ? "#0f172a" : "#ECE9FD",
     show: false,
     autoHideMenuBar: true,
+    // Sistem başlık çubuğu (pencere adı + çerçeve) gizli: içerik tam pencereyi kaplar. Windows/Linux'ta küçült-büyüt-kapat
+    // düğmeleri şeffaf bir kaplama olarak sağ üstte kalır; macOS'ta trafik ışıkları içeri alınır.
+    // Sürükleme alanı css/nexus-desktop.css'te (html.nx-desk::before).
+    titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "hidden",
+    ...(process.platform === "darwin"
+      ? {}
+      : {
+          titleBarOverlay: {
+            color: "#00000000",
+            symbolColor: nativeTheme.shouldUseDarkColors ? "#e2e8f0" : "#334155",
+            height: TITLEBAR_OVERLAY_HEIGHT,
+          },
+        }),
     icon: path.join(__dirname, "resources", "icon.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
@@ -1095,6 +1155,20 @@ function buildMenu() {
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
+
+// Uygulama teması değişince pencere düğmelerinin simge rengi zemine göre okunur kalsın
+ipcMain.on("app:title-theme", (_e, dark) => {
+  if (process.platform === "darwin" || !win || win.isDestroyed()) return;
+  try {
+    win.setTitleBarOverlay({
+      color: "#00000000",
+      symbolColor: dark === true ? "#e2e8f0" : "#334155",
+      height: TITLEBAR_OVERLAY_HEIGHT,
+    });
+  } catch {
+    /* kaplama desteklenmiyorsa sessiz geç */
+  }
+});
 
 ipcMain.on("app:language", (_e, lang) => {
   if ((lang === "tr" || lang === "en") && lang !== uiLang) {
@@ -1364,20 +1438,20 @@ const clip = (v, n) => String(v == null ? "" : v).slice(0, n);
 ipcMain.on("event:notify", (_e, ev) => {
   try {
     if (!ev || typeof ev !== "object" || !Notification.isSupported()) return;
-    if (win && !win.isDestroyed() && win.isVisible() && win.isFocused()) return;
+    // Öndeki pencerede bildirim gereksiz; "Test bildirimi" ise kullanıcı komutu, her zaman gösterilir.
+    if (ev.force !== true && win && !win.isDestroyed() && win.isVisible() && win.isFocused()) return;
     const now = Date.now();
     while (notifyStamps.length && now - notifyStamps[0] > 10000) notifyStamps.shift();
     if (notifyStamps.length >= 4) return; // sel olmasın: 10 sn'de en fazla 4
     notifyStamps.push(now);
     const targetPage =
       ev && typeof ev.page === "string" && ev.page ? ev.page : "nexus-messages.html";
-    const pngPath = path.join(__dirname, "resources", "icon.png");
-    const notifIcon = fs.existsSync(pngPath) ? pngPath : resolveTrayIcon();
+    const notifIcon = notificationIcon();
     const n = new Notification({
       title: clip(ev.title, 80) || "NEXUS",
       body: clip(ev.detail, 200),
       icon: notifIcon || undefined,
-      silent: false,
+      silent: ev.silent === true,
     });
     n.on("click", () => showPage(targetPage));
     n.show();

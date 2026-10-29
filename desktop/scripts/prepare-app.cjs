@@ -30,7 +30,7 @@ for (const dir of ["css", "fonts", "js", "leaflet", "icons"]) copy(path.join(WWW
 
 // 2) Güncel uygulama dosyaları (src/app tek kaynaktır)
 const APP_JS = new Set(["ai-fab.js", "auth.js", "automation-engine.js", "cloud-sync.js", "data.js", "desktop.js", "device-controls.js", "lan-connectors.js", "setup-codes.js", "i18n.js", "lang-en.js", "nexus-assistant.js", "nexus-feedback.js",
-  "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js", "command-palette.js", "event-bridge.js", "nexus-dialog.js", "notify.js"]);
+  "sheet-gestures.js", "smart-card-detail-state.js", "smart-scene-page.js", "supported-devices.js", "theme.js", "command-palette.js", "event-bridge.js", "nexus-dialog.js", "nexus-undo.js", "notify.js"]);
 for (const f of fs.readdirSync(APP)) {
   const isPage = /^nexus-.*\.html$/.test(f) || f === "index.html";
   const isAsset = ["logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "manifest.webmanifest", "automation-worker.html"].includes(f);

@@ -248,13 +248,7 @@
     lucide.createIcons();
   </script>
 <script>
-function showUpdatesToast(msg) {
-  var t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:999px;z-index:9999;white-space:nowrap;max-width:90vw;text-align:center;';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
-}
+function showUpdatesToast(msg) { window.nexusToast(msg, { type: 'info' }); }
 </script>
 </body>
 </html>

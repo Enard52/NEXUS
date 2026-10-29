@@ -203,8 +203,11 @@ describe("Supabase kimlik doğrulama akışı", () => {
             user: { id: "u1", email: "a@b.co" },
           };
         }
-        if (call.method === "GET" && call.url.endsWith("/auth/v1/factors")) {
-          return { body: [{ id: "fac-1", factor_type: "totp", status: "verified" }] };
+        // Faktör listesi GoTrue'da kullanıcı kaydında gelir (GET /auth/v1/factors diye bir uç yoktur)
+        if (call.method === "GET" && call.url.endsWith("/auth/v1/user")) {
+          return {
+            body: { id: "u1", email: "a@b.co", factors: [{ id: "fac-1", factor_type: "totp", status: "verified" }] },
+          };
         }
         if (call.method === "POST" && call.url.endsWith("/auth/v1/factors")) {
           return { body: { id: "fac-new", totp: { qr_code: "<svg></svg>", secret: "SECRET" } } };
@@ -225,6 +228,10 @@ describe("Supabase kimlik doğrulama akışı", () => {
     });
     await cloud.signIn("a@b.co", "parola");
     await expect(cloud.needsSecondFactor()).resolves.toBe(true);
+    // GoTrue'da GET /auth/v1/factors yok (405): faktörler kullanıcı kaydından okunmalı, yoksa yeni cihazda
+    // ikinci adım hiç sorulmaz ve aal1 oturum uygulamaya alınırdı.
+    expect(calls.some((c) => c.method === "GET" && c.url.endsWith("/auth/v1/factors"))).toBe(false);
+    expect(calls.some((c) => c.method === "GET" && c.url.endsWith("/auth/v1/user"))).toBe(true);
     expect(storage.getItem("nexusMfaPending")).toBe("1");
     expect(storage.getItem("nexusMfaEnrolled")).toBe("1");
     const enrolled = await cloud.enrollTotp();
@@ -1446,7 +1453,10 @@ describe("şifresiz (Google) hesap: ilk şifre akışı", () => {
 
     const { cloud, calls } = await withSession({ id: "u1", identities: [{ provider: "google" }] });
     await cloud.listFactors();
-    const factors = [...calls].reverse().find((c) => c.url.endsWith("/auth/v1/factors"));
+    // Faktör listesi GoTrue'da kullanıcı kaydından okunur: GET /auth/v1/user (başlık yine oturum belirteci)
+    const factors = [...calls]
+      .reverse()
+      .find((c) => c.method === "GET" && c.url.endsWith("/auth/v1/user"));
     expect(factors?.headers.Authorization).toBe("Bearer tok-1");
     await cloud.setPasswordWithSession("yeni-sifre-1");
     const write = [...calls]

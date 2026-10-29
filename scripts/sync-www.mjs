@@ -32,6 +32,7 @@ export const APP_JS = [
   "command-palette.js",
   "event-bridge.js",
   "nexus-dialog.js",
+  "nexus-undo.js",
   "notify.js",
 ];
 export const APP_FILES = ["index.html", "logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "manifest.webmanifest", "automation-worker.html"];

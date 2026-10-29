@@ -96,6 +96,42 @@
   function isDesk() { return !MOBILE_DEVICE && MQ.matches; }
   function isTab() { return MQT.matches && !isDesk(); }
 
+  // Sol menü: tam genişlik ↔ dar simge şeridi. Tercih saklanır ("1" dar, "0" geniş); hiç seçilmediyse
+  // pencere dar olunca (1100px altı) kendiliğinden daralır. Ctrl+B ile de değişir.
+  var SIDE_KEY = "nexusSideCollapsed";
+  function sidePref() { try { return localStorage.getItem(SIDE_KEY); } catch (e) { return null; } }
+  function applySide() {
+    var p = sidePref();
+    var collapsed = p === "1" || (p !== "0" && window.innerWidth < 1100);
+    root.classList.toggle("nx-side-collapsed", collapsed);
+    var btn = document.getElementById("nx-side-toggle");
+    if (btn) {
+      var label = collapsed ? "Menüyü genişlet (Ctrl+B)" : "Menüyü daralt (Ctrl+B)";
+      btn.setAttribute("aria-label", label);
+      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      btn.title = label;
+      btn.innerHTML = '<i data-lucide="' + (collapsed ? "panel-left-open" : "panel-left-close") + '"></i>';
+      if (window.lucide) lucide.createIcons();
+    }
+    // Daralmış menüde yazılar gizli: simgenin üstüne gelince adı görünsün
+    var links = document.querySelectorAll(".nx-side-link");
+    for (var i = 0; i < links.length; i++) {
+      var span = links[i].querySelector("span");
+      if (collapsed && span) links[i].setAttribute("title", span.textContent);
+      else links[i].removeAttribute("title");
+    }
+  }
+  function toggleSide() {
+    var collapsed = root.classList.contains("nx-side-collapsed");
+    try { localStorage.setItem(SIDE_KEY, collapsed ? "0" : "1"); } catch (e) {}
+    applySide();
+  }
+  var sideResizeTimer = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(sideResizeTimer);
+    sideResizeTimer = setTimeout(applySide, 120);
+  });
+
   function applyMode() {
     var on = isDesk();
     var authMode = isAuthPage() || !isLoggedIn();
@@ -104,6 +140,7 @@
     root.classList.toggle("nx-logged-in", isLoggedIn() && !authMode);
     root.classList.toggle("nx-desk-wide", on && !authMode && WIDE.indexOf(page) !== -1);
     root.classList.toggle("nx-tab", isTab());
+    applySide(); // ilk boyamadan önce: menü genişliği titremesin
 
     if (authMode) {
       var existingSide = document.getElementById("nx-side");
@@ -131,6 +168,7 @@
     var html = '<a href="nexus-home.html" class="nx-side-brand" aria-label="NEXUS ana sayfa">' +
       '<span class="nx-side-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' +
       "<span>NEXUS</span></a>" +
+      '<button type="button" id="nx-side-toggle" class="nx-side-toggle" aria-label="Menüyü daralt (Ctrl+B)"></button>' +
       '<nav class="nx-side-nav" aria-label="Ana menü">' +
       NAV.map(function (g) {
         return (g.group ? '<p class="nx-side-group">' + esc(g.group) + "</p>" : "") + g.items.map(function (it) {
@@ -164,6 +202,8 @@
       btn.innerHTML = '<i data-lucide="' + (on ? "moon" : "sun") + '"></i>';
       if (window.lucide) lucide.createIcons();
     });
+    document.getElementById("nx-side-toggle").addEventListener("click", toggleSide);
+    applySide(); // düğmenin simgesi/etiketi ve (daralmışsa) bağlantı ipuçları
     if (window.lucide) lucide.createIcons();
     wireSideUpdate();
     window.addEventListener("nexusAvatarChanged", function () {
@@ -269,11 +309,24 @@
     if (!header) return;
     if (!isDesk()) return;
     var pageBg = getComputedStyle(document.body).backgroundColor;
-    if (pageBg === "rgba(0, 0, 0, 0)") pageBg = document.documentElement.classList.contains("dark") ? "#0f172a" : "#F3F2F9";
+    var gradientBody = pageBg === "rgba(0, 0, 0, 0)" && getComputedStyle(document.body).backgroundImage !== "none";
+    if (pageBg === "rgba(0, 0, 0, 0)") {
+      // Gövde saydamsa (degrade arka plan) başlık, sayfanın gerçek zemin rengini alır; sabit gri-lila bir bant görünmesin
+      var rootBg = getComputedStyle(document.documentElement).backgroundColor;
+      pageBg = rootBg && rootBg !== "rgba(0, 0, 0, 0)" ? rootBg : document.documentElement.classList.contains("dark") ? "#0f172a" : "#F3F2F9";
+    }
     header.style.position = "sticky";
     header.style.top = "0";
     header.style.zIndex = "30";
-    if (getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)") header.style.background = pageBg;
+    if (getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)") {
+      var m = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(pageBg);
+      if (gradientBody && m) {
+        // Degrade zeminde düz renkli bir bant, degradenin ilerleyen tonundan ayrışır: yarı saydam + bulanıklık
+        header.style.background = "rgba(" + m[1] + "," + m[2] + "," + m[3] + ",0.22)";
+        header.style.backdropFilter = "blur(14px)";
+        header.style.webkitBackdropFilter = "blur(14px)";
+      } else header.style.background = pageBg;
+    }
     // Sekme çubuğu: başlıktan sonra gelen ilk sabit olmayan NAV (alt gezinme sabit olduğu için atlanır)
     var tabs = null;
     for (var s = header.nextElementSibling; s; s = s.nextElementSibling) {
@@ -284,7 +337,30 @@
       tabs.style.position = "sticky";
       tabs.style.top = header.offsetHeight + "px";
       tabs.style.zIndex = "29";
-      tabs.style.background = pageBg;
+      // Sekme çubuğu başlıkla aynı zemini alır (degrade sayfada aynı yarı saydam ton), aradan çizgi görünmesin
+      var tm = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(pageBg);
+      if (gradientBody && tm) {
+        tabs.style.background = "rgba(" + tm[1] + "," + tm[2] + "," + tm[3] + ",0.22)";
+        tabs.style.backdropFilter = "blur(14px)";
+        tabs.style.webkitBackdropFilter = "blur(14px)";
+      } else tabs.style.background = pageBg;
+    }
+
+    // Kaydırınca başlık kompakt hâle gelir (alt boşluk azalır, altında ince çizgi/gölge çıkar); tepeye dönünce eski hâli.
+    // Üst boşluk bilerek korunur: sağ üstte pencere düğmeleri (küçült/büyüt/kapat) o alanı kaplar.
+    if (!header.__nxScrollBound) {
+      header.__nxScrollBound = true;
+      var compact = false;
+      var onScroll = function () {
+        var want = (window.scrollY || document.documentElement.scrollTop || 0) > 8;
+        if (want === compact) return;
+        compact = want;
+        header.classList.toggle("nx-hdr-scrolled", compact);
+        // Sekme çubuğu başlığın yeni yüksekliğinin altında yapışsın (geçiş bitince ölçülür)
+        if (tabs) setTimeout(function () { tabs.style.top = header.offsetHeight + "px"; }, 220);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
     }
   }
 
@@ -367,6 +443,14 @@
     if (!isDesk() || e.defaultPrevented) return;
     if (isAuthPage() || !isLoggedIn()) return;
     if (e.key === "Escape") { if (closeTopSheet()) e.preventDefault(); return; }
+    // Ctrl/Cmd+B: menüyü daralt / genişlet (yazı alanında yazarken tetiklenmez)
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === "b" || e.key === "B")) {
+      var tg = e.target && e.target.tagName;
+      if (tg === "INPUT" || tg === "TEXTAREA" || (e.target && e.target.isContentEditable)) return;
+      e.preventDefault();
+      toggleSide();
+      return;
+    }
     if (e.ctrlKey || e.metaKey) return;
     if (e.altKey && /^[1-5]$/.test(e.key)) {
       var link = document.querySelectorAll(".nx-side-link")[Number(e.key) - 1];

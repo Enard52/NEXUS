@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bildirim durum çubuğu simgesi: Android yalnızca alfa kanalını kullanır, bu yüzden tek renkli (beyaz) "N" işareti.
+     Renkli başlatıcı simgesi verilirse düz beyaz bir kutu görünürdü. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <path
+        android:pathData="M10.5,22.5V10.5L21.5,22.5V10.5"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

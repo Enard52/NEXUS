@@ -54,14 +54,13 @@ describe("protokol sezme", () => {
     expect(found.model).toBe("WLED 0.14.2");
   });
 
-  it("Tuya Local uclarini tanir", async () => {
+  it("Tuya Local HTTP ile taninmaz (gercek protokol sifreli TCP'dir; yerel anahtarla eklenir)", async () => {
     const lan = load((url) => {
       if (url.includes(":6668/status"))
         return Promise.resolve(ok({ devId: "tuya123", dps: { "1": true, "2": 800 } }));
       return Promise.resolve({ status: 404, text: () => Promise.resolve("") });
     });
-    const found = await lan.identify("192.168.1.55");
-    expect(found.protocol).toBe("tuya-local");
+    await expect(lan.identify("192.168.1.55")).rejects.toBeTruthy();
   });
 
   it("hicbir protokol cevap vermezse hata verir", async () => {

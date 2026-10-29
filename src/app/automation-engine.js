@@ -103,26 +103,16 @@
     set(RUNS_KEY, runs);
   }
 
-  function logEvent(type, title, detail) {
+  function logEvent(type, title, detail, id) {
     var evs = get(EVENTS_KEY, []);
     if (!Array.isArray(evs)) evs = [];
-    evs.push({ id: 'auto-' + Date.now(), type: type, title: title, detail: detail, ts: Date.now() });
+    evs.push({ id: id || 'auto-' + Date.now(), type: type, title: title, detail: detail, ts: Date.now() });
     // Liste sınırsız büyüyerek 2-5 sn'lik yoklamaları ve bulut senkronunu yoruyordu; son 300 olay yeter.
     if (evs.length > 300) evs = evs.slice(-300);
     set(EVENTS_KEY, evs);
   }
 
-  function toast(msg) {
-    try {
-      var t = document.createElement('div');
-      t.className = 'fixed left-1/2 top-6 z-[120] -translate-x-1/2 rounded-2xl bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-white shadow-lg text-center';
-      t.style.maxWidth = 'min(92vw, 420px)';
-      t.setAttribute('role', 'status');
-      t.textContent = msg;
-      document.body.appendChild(t);
-      setTimeout(function () { t.remove(); }, 2600);
-    } catch (e) {}
-  }
+  function toast(msg) { if (window.nexusToast) window.nexusToast(msg); }
   function tr(trText, enText) { return typeof nexusT === 'function' ? nexusT(trText, enText) : trText; }
 
   // ---- motor bağımlılıklarını tembel yükle (yalnız çalıştırma anında) ----
@@ -237,9 +227,76 @@
     }
   }
 
+  // ---- sensör izleme: gerçek durum değişimi → güvenlik / acil olayı ----
+  // Yerel ağa eşli hareket, kapı-pencere ve alarm (duman/su baskını) sensörleri uygulama
+  // açıkken motor turuyla (yaklaşık 30 sn'de bir) cihazdan okunur; kısa süreli bir hareket
+  // iki okuma arasında kaçabilir (bu bir canlı yayın değil, yoklamadır). Olay YALNIZ okunan durum "kapalı → açık" döndüğünde
+  // yazılır; ilk okuma sadece başlangıç durumudur (uygulama kapalıyken olanlar olay sayılmaz,
+  // çünkü zamanı bilinmez). Aynı sensör 60 sn içinde ikinci olay üretmez. Okunamayan sensör
+  // olay üretmez. Olaylar güvenlik/acil türü taşıdığı için bildirim hattında kritik sayılır.
+  var SENSOR_EVERY_MS = 25000;
+  var SENSOR_GAP_MS = 60000;
+  var SENSOR_KINDS = { motion: 1, contact: 1, alarm: 1 };
+  var sensorLast = {};
+  var lastSensorPoll = 0;
+  var sensorBusy = false;
+
+  function sensorEvent(kind, name) {
+    if (kind === 'motion') return { type: 'security', title: tr('Hareket algılandı', 'Motion detected'), detail: name };
+    if (kind === 'contact') return { type: 'security', title: tr('Kapı/pencere açıldı', 'Door/window opened'), detail: name };
+    return { type: 'emergency', title: tr('Alarm algılandı', 'Alarm detected'), detail: name };
+  }
+
+  // Sensör tetikleyicili otomasyonlar (trigger.type === 'sensor', value = cihaz anahtarı):
+  // sensörün gerçek "kapalı → açık" geçişinde çalışır. Zaman tetikleyicilerinden farklı olarak
+  // günde bir kez sınırı yoktur; yinelemeyi sensör başına 60 sn aralığı sınırlar.
+  function runSensorAutomations(key) {
+    var autos = [];
+    try { autos = typeof readAndNormalizeItems === 'function' ? readAndNormalizeItems('nexusCustomAutomations', 'automation') : get('nexusCustomAutomations', []); } catch (e) {}
+    autos.forEach(function (a) {
+      if (!a || !a.id || a.enabled === false) return;
+      var t = a.trigger || {};
+      if (t.type === 'sensor' && String(t.value) === key) executeAutomation(a);
+    });
+  }
+
+  function watchSensors(force) {
+    var now = Date.now();
+    if (sensorBusy || (!force && now - lastSensorPoll < SENSOR_EVERY_MS)) return Promise.resolve(0);
+    var raw = get('nexusPairedDevices', []);
+    var hasLan = Array.isArray(raw) && raw.some(function (d) { return d && d.host && d.protocol && d.protocol !== 'unknown'; });
+    if (!hasLan) return Promise.resolve(0);
+    lastSensorPoll = now;
+    sensorBusy = true;
+    return new Promise(function (resolve) { ensureEngine(resolve); }).then(function () {
+      if (!window.NX || !NX.refreshFromDevice || !NX.kindOf || !NX.isLan) return 0;
+      var jobs = [];
+      NX.readDevices().forEach(function (d, i) {
+        if (!d || !NX.isLan(d)) return;
+        var kind = NX.kindOf(d);
+        if (!SENSOR_KINDS[kind]) return;
+        var key = String(d.id || (d.host + '|' + d.name));
+        jobs.push(NX.refreshFromDevice(i).then(function (st) {
+          if (!st || typeof st.active !== 'boolean') return 0;
+          var prev = sensorLast[key];
+          var fired = 0;
+          if (prev && prev.active === false && st.active === true && Date.now() - (prev.t || 0) >= SENSOR_GAP_MS) {
+            var ev = sensorEvent(kind, d.name || tr('Sensör', 'Sensor'));
+            logEvent(ev.type, ev.title, ev.detail, 'sensor-' + key.replace(/[^a-z0-9]+/gi, '') + '-' + Date.now());
+            runSensorAutomations(key);
+            fired = 1;
+          }
+          sensorLast[key] = { active: st.active, t: fired ? Date.now() : (prev && prev.t) || 0 };
+          return fired;
+        }));
+      });
+      return Promise.all(jobs).then(function (r) { return r.reduce(function (a, b) { return a + b; }, 0); });
+    }).then(function (n) { sensorBusy = false; return n; }, function () { sensorBusy = false; return 0; });
+  }
+
   function tick() {
     heartbeat();
-    if (isOwner) evaluate();
+    if (isOwner) { evaluate(); watchSensors(); }
   }
 
   function start() {
@@ -260,6 +317,7 @@
     platform: platform,
     isOwner: function () { return isOwner; },
     evaluate: function () { heartbeat(); if (isOwner) evaluate(); return isOwner; },
+    watchSensors: watchSensors,
     sunsetTime: sunsetTime,
     sunriseTime: sunriseTime,
     // Test/denemek için: kuralı sahtesiz hemen çalıştırır (günlüğe "elle" yazar)

@@ -203,6 +203,41 @@
   }
 
   // --- Shelly Gen1 (REST) ---------------------------------------------------
+  // Gen1 sensör modelleri (Shelly belgesindeki kodlar): H&T, Motion, Door/Window, Flood, Smoke
+  function shellySensorKind(type) {
+    var t = String(type || "");
+    if (/^SHHT/i.test(t)) return { kind: "climatesensor", caps: ["temperature", "humidity"] };
+    if (/^SH(MOS|BMO)/i.test(t)) return { kind: "motion", caps: ["motion"] };
+    if (/^SHDW/i.test(t)) return { kind: "contact", caps: ["contact"] };
+    if (/^SH(WT|SM)/i.test(t)) return { kind: "alarm", caps: ["alarm"] };
+    return null;
+  }
+  // /status: tmp{value,units,is_valid}, hum{value}, bat{value}, sensor{state|motion}, flood, smoke
+  function shellySensorRead(device, status) {
+    var out = {};
+    var num = function (o) {
+      return o && typeof o.value === "number" && o.is_valid !== false ? o.value : null;
+    };
+    if (device.kind === "climatesensor") {
+      var t = num(status.tmp);
+      if (t != null && status.tmp && status.tmp.units === "F") t = Math.round(((t - 32) * 5) / 9 * 10) / 10;
+      out.temperature = t;
+      out.humidity = num(status.hum);
+    } else if (device.kind === "motion") {
+      var s = status.sensor || {};
+      out.active = typeof s.motion === "boolean" && s.is_valid !== false ? s.motion : null;
+    } else if (device.kind === "contact") {
+      var d = status.sensor || {};
+      out.active = d.state === "open" ? true : d.state === "close" ? false : null;
+    } else if (device.kind === "alarm") {
+      var flag = typeof status.flood === "boolean" ? status.flood : typeof status.smoke === "boolean" ? status.smoke : null;
+      out.active = flag;
+    }
+    var bat = num(status.bat);
+    if (bat != null) out.battery = bat;
+    return out;
+  }
+
   var shelly = {
     id: "shelly",
     label: "Shelly",
@@ -210,20 +245,25 @@
     probe: function (device) {
       return getJson(baseUrl(device) + "/settings").then(function (info) {
         if (!info || !info.device || !info.device.type) throw new Error("shelly: kimlik yok");
+        // Gen1 pil sensörleri (H&T, Motion, Door/Window, Flood, Smoke): salt okunur. Uyku modundaki cihaz yalnızca
+        // uyanık olduğu kısa sürede HTTP'ye yanıt verir; yanıt vermezse arayüz "Ulaşılamıyor" der, değer uydurulmaz.
+        var sensor = shellySensorKind(info.device.type);
         return {
           protocol: "shelly",
           model: info.device.type,
           name: info.name || info.device.hostname || device.name,
-          kind:
-            info.mode === "roller"
+          kind: sensor
+            ? sensor.kind
+            : info.mode === "roller"
               ? "cover"
               : /SHCB|SHBLB|SHRGBW|SHDM|LTAH|dimmer|bulb/i.test(info.device.type)
                 ? "light"
                 : /SHPLG|SHPRO/i.test(info.device.type)
                   ? "plug"
                   : "switch",
-          caps:
-            info.mode === "roller"
+          caps: sensor
+            ? sensor.caps
+            : info.mode === "roller"
               ? ["cover", "position"]
               : /SHRGBW|SHBLB/i.test(info.device.type)
                 ? ["switch", "brightness", "color", "colorTemp"]
@@ -237,6 +277,9 @@
         var relay = status.relays && status.relays[0] ? status.relays[0] : null;
         var meter = status.meters && status.meters[0] ? status.meters[0] : null;
         var roller = status.rollers && status.rollers[0] ? status.rollers[0] : null;
+        if (/^(climatesensor|motion|contact|alarm)$/.test(device.kind || "") && !light && !relay) {
+          return shellySensorRead(device, status);
+        }
         if (roller && device.kind === "cover") {
           var rp = typeof roller.current_pos === "number" ? roller.current_pos : null;
           return {
@@ -1057,8 +1100,51 @@
     return { caps: caps, options: options };
   }
 
+  // Salt okunur sensörler (device_class'a göre). Tüm sensor.* varlıkları (işlemci ısısı, sürüm vb.) listelenmez;
+  // yalnızca ev ölçümleri ve olay sensörleri. Okuma: GET /api/states/<entity_id>.
+  var HA_SENSOR_CLASSES = {
+    temperature: { kind: "climatesensor", caps: ["temperature"], label: "Sıcaklık" },
+    humidity: { kind: "envsensor", caps: ["sensor"], label: "Nem" },
+    illuminance: { kind: "envsensor", caps: ["sensor"], label: "Işık düzeyi" },
+    pm25: { kind: "envsensor", caps: ["sensor"], label: "PM2.5" },
+    pm10: { kind: "envsensor", caps: ["sensor"], label: "PM10" },
+    carbon_dioxide: { kind: "envsensor", caps: ["sensor"], label: "CO₂" },
+    pressure: { kind: "envsensor", caps: ["sensor"], label: "Basınç" },
+    battery: { kind: "envsensor", caps: ["sensor"], label: "Pil" },
+    power: { kind: "envsensor", caps: ["sensor"], label: "Güç" },
+    energy: { kind: "envsensor", caps: ["sensor"], label: "Enerji" },
+  };
+  var HA_BINARY_CLASSES = {
+    motion: { kind: "motion", caps: ["motion"] },
+    occupancy: { kind: "motion", caps: ["motion"] },
+    presence: { kind: "motion", caps: ["motion"] },
+    door: { kind: "contact", caps: ["contact"] },
+    window: { kind: "contact", caps: ["contact"] },
+    garage_door: { kind: "contact", caps: ["contact"] },
+    opening: { kind: "contact", caps: ["contact"] },
+    moisture: { kind: "alarm", caps: ["alarm"] },
+    smoke: { kind: "alarm", caps: ["alarm"] },
+    gas: { kind: "alarm", caps: ["alarm"] },
+    carbon_monoxide: { kind: "alarm", caps: ["alarm"] },
+  };
+  function haSensorDef(st) {
+    var domain = String(st.entity_id || "").split(".")[0];
+    var cls = String((st.attributes || {}).device_class || "");
+    if (domain === "sensor" && HA_SENSOR_CLASSES[cls]) return HA_SENSOR_CLASSES[cls];
+    if (domain === "binary_sensor" && HA_BINARY_CLASSES[cls]) return HA_BINARY_CLASSES[cls];
+    return null;
+  }
+
   function haEntityCaps(st) {
     var domain = String(st.entity_id || "").split(".")[0];
+    var sensor = haSensorDef(st);
+    if (sensor) {
+      return {
+        kind: sensor.kind,
+        caps: sensor.caps.slice(),
+        options: sensor.label ? { label: sensor.label } : null,
+      };
+    }
     var def = HA_DOMAINS[domain];
     if (!def) return null;
     var caps = def.caps.slice();
@@ -1152,6 +1238,22 @@
             s = String(st.state || "");
           var out = { reachable: s !== "unavailable" };
           var domain = String(device.entity || "").split(".")[0];
+          if (domain === "sensor" || domain === "binary_sensor") {
+            // Salt okunur: unavailable/unknown durumunda değer uydurulmaz (null)
+            if (domain === "binary_sensor") {
+              out.active = s === "on" ? true : s === "off" ? false : null;
+            } else {
+              var num = parseFloat(s);
+              var isTemp = a.device_class === "temperature";
+              var val = isFinite(num) ? num : null;
+              if (isTemp) out.temperature = val;
+              else {
+                out.value = val;
+                if (typeof a.unit_of_measurement === "string") out.unit = a.unit_of_measurement;
+              }
+            }
+            return out;
+          }
           if (domain === "cover") {
             out.position =
               typeof a.current_position === "number"
@@ -1866,64 +1968,683 @@
     },
   };
 
-  // --- Tuya Local (Yerel LAN modu, port 6668, hub veya bulut gerekmez) --------
+  // --- Güvenli yerel protokoller: Tuya (LAN 3.3 / 3.4) ve TP-Link Tapo (KLAP / securePassthrough) ---
+  // UYARI (CLAUDE.md kural 1-2): bu iki bağlayıcı yayımlanmış protokol belgelerine (tinytuya, python-kasa)
+  // göre yazıldı; paket/şifreleme biçimi testlerle doğrulanır ama GERÇEK CİHAZLA DENENMEDİ. Kimlik bilgisi /
+  // yerel anahtar yoksa, köprü yoksa ya da cihaz yanıt vermezse hata döner; asla "gitti" gibi gösterilmez.
+  // Gizli bilgiler (Tapo hesap e-postası+şifresi, Tuya yerel anahtarı) cihaz kaydına DEĞİL, yalnızca bu cihazın
+  // yerel deposundaki "nexusLanSecrets" anahtarına yazılır; buluta (cloud-sync) hiç gitmez.
+
+  function toU8(a) { return a instanceof Uint8Array ? a : new Uint8Array(a || []); }
+  function cat() {
+    var parts = [], n = 0, i;
+    for (i = 0; i < arguments.length; i++) { var p = arguments[i]; p = typeof p === "string" ? new Uint8Array(utf8Bytes(p)) : toU8(p); parts.push(p); n += p.length; }
+    var out = new Uint8Array(n), o = 0;
+    parts.forEach(function (p) { out.set(p, o); o += p.length; });
+    return out;
+  }
+  function strBytes(s) { return new Uint8Array(utf8Bytes(String(s))); }
+  function bytesEq(a, b) {
+    a = toU8(a); b = toU8(b);
+    if (a.length !== b.length) return false;
+    var d = 0;
+    for (var i = 0; i < a.length; i++) d |= a[i] ^ b[i];
+    return d === 0;
+  }
+  function toHex(u8) { return Array.prototype.map.call(toU8(u8), function (x) { return (x < 16 ? "0" : "") + x.toString(16); }).join(""); }
+  function b64enc(u8) { var s = ""; u8 = toU8(u8); for (var i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]); return btoa(s); }
+  function b64dec(str) {
+    var s = atob(String(str).replace(/-/g, "+").replace(/_/g, "/").replace(/\s+/g, ""));
+    var out = new Uint8Array(s.length);
+    for (var i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+    return out;
+  }
+  function u32be(n) { return new Uint8Array([(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]); }
+  function readU32(u8, o) { return ((u8[o] << 24) | (u8[o + 1] << 16) | (u8[o + 2] << 8) | u8[o + 3]) >>> 0; }
+  function randomBytes(n) {
+    var c = subtleApi(), out = new Uint8Array(n);
+    if (!c) throw new Error("güvenli rastgele sayı üreteci bu ortamda yok");
+    c.getRandomValues(out);
+    return out;
+  }
+  function bareHost(h) { return String(h || "").trim().replace(/^https?:\/\//i, "").split("/")[0].split(":")[0]; }
+  function secureError(message, code) { var e = new Error(message); if (code) e.code = code; return e; }
+
+  function subtleApi() {
+    var c = (typeof crypto !== "undefined" && crypto) || (typeof window !== "undefined" && window.crypto);
+    return c && c.subtle ? c : null;
+  }
+  function needSubtle() {
+    var c = subtleApi();
+    return c ? Promise.resolve(c.subtle) : Promise.reject(secureError("Güvenli şifreleme bu ortamda kullanılamıyor.", "no-crypto"));
+  }
+  function digest(alg, data) { return needSubtle().then(function (s) { return s.digest(alg, toU8(data)); }).then(toU8); }
+  function sha1(d) { return digest("SHA-1", d); }
+  function sha256(d) { return digest("SHA-256", d); }
+  function hmac256(key, data) {
+    return needSubtle().then(function (s) {
+      return s.importKey("raw", toU8(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]).then(function (k) { return s.sign("HMAC", k, toU8(data)); });
+    }).then(toU8);
+  }
+  // AES-CBC + PKCS7 (WebCrypto uygular): KLAP ve securePassthrough
+  function aesCbc(mode, key, iv, data) {
+    return needSubtle().then(function (s) {
+      return s.importKey("raw", toU8(key), { name: "AES-CBC" }, false, [mode]).then(function (k) { return s[mode]({ name: "AES-CBC", iv: toU8(iv) }, k, toU8(data)); });
+    }).then(toU8);
+  }
+
+  // CRC-32 (IEEE) — Tuya 3.3 çerçeve sağlaması
+  var CRC_TABLE = (function () {
+    var t = [];
+    for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32(data) {
+    data = toU8(data);
+    var c = 0xffffffff;
+    for (var i = 0; i < data.length; i++) c = CRC_TABLE[(c ^ data[i]) & 255] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  }
+
+  // AES-128 ECB (WebCrypto ECB desteklemez; Tuya yerel anahtarı 16 bayttır). FIPS-197'ye göre; testte Node crypto ile çapraz doğrulanır.
+  var SBOX = [], INV_SBOX = [];
+  (function () {
+    var p = 1, q = 1, i;
+    function rotl8(x, s) { return ((x << s) | (x >> (8 - s))) & 255; }
+    do {
+      p = (p ^ (p << 1) ^ (p & 0x80 ? 0x11b : 0)) & 255;
+      q ^= (q << 1) & 255; q ^= (q << 2) & 255; q ^= (q << 4) & 255;
+      if (q & 0x80) q ^= 0x09;
+      SBOX[p] = (q ^ rotl8(q, 1) ^ rotl8(q, 2) ^ rotl8(q, 3) ^ rotl8(q, 4) ^ 0x63) & 255;
+    } while (p !== 1);
+    SBOX[0] = 0x63;
+    for (i = 0; i < 256; i++) INV_SBOX[SBOX[i]] = i;
+  })();
+  function xtime(a) { a <<= 1; return (a & 0x100 ? a ^ 0x11b : a) & 255; }
+  function gmul(a, b) { var r = 0; while (b) { if (b & 1) r ^= a; a = xtime(a); b >>= 1; } return r; }
+  function aesExpandKey(key) {
+    key = toU8(key);
+    if (key.length !== 16) throw secureError("AES anahtarı 16 bayt olmalı.", "bad-key");
+    var w = new Uint8Array(176), rcon = 1, i, j;
+    w.set(key);
+    for (i = 16; i < 176; i += 4) {
+      var t = [w[i - 4], w[i - 3], w[i - 2], w[i - 1]];
+      if (i % 16 === 0) { t = [SBOX[t[1]] ^ rcon, SBOX[t[2]], SBOX[t[3]], SBOX[t[0]]]; rcon = xtime(rcon); }
+      for (j = 0; j < 4; j++) w[i + j] = w[i - 16 + j] ^ t[j];
+    }
+    return w;
+  }
+  function addRoundKey(s, rk, r) { for (var i = 0; i < 16; i++) s[i] ^= rk[r * 16 + i]; }
+  function shiftRows(s, inv) {
+    var t = s.slice();
+    for (var c = 0; c < 4; c++) for (var r = 0; r < 4; r++) {
+      if (inv) s[r + 4 * ((c + r) % 4)] = t[r + 4 * c]; else s[r + 4 * c] = t[r + 4 * ((c + r) % 4)];
+    }
+  }
+  function mixColumns(s, inv) {
+    var m = inv ? [14, 11, 13, 9] : [2, 3, 1, 1];
+    for (var c = 0; c < 4; c++) {
+      var a = [s[4 * c], s[4 * c + 1], s[4 * c + 2], s[4 * c + 3]];
+      for (var r = 0; r < 4; r++) {
+        s[4 * c + r] = gmul(a[0], m[(4 - r) % 4]) ^ gmul(a[1], m[(5 - r) % 4]) ^ gmul(a[2], m[(6 - r) % 4]) ^ gmul(a[3], m[(7 - r) % 4]);
+      }
+    }
+  }
+  function aesBlock(rk, block, decrypt) {
+    var s = Array.prototype.slice.call(block), r, i;
+    if (!decrypt) {
+      addRoundKey(s, rk, 0);
+      for (r = 1; r <= 10; r++) {
+        for (i = 0; i < 16; i++) s[i] = SBOX[s[i]];
+        shiftRows(s, false);
+        if (r < 10) mixColumns(s, false);
+        addRoundKey(s, rk, r);
+      }
+    } else {
+      addRoundKey(s, rk, 10);
+      for (r = 9; r >= 0; r--) {
+        shiftRows(s, true);
+        for (i = 0; i < 16; i++) s[i] = INV_SBOX[s[i]];
+        addRoundKey(s, rk, r);
+        if (r > 0) mixColumns(s, true);
+      }
+    }
+    return s;
+  }
+  function aesEcbEncrypt(key, data, noPad) {
+    var rk = aesExpandKey(key), d = toU8(data), out;
+    if (noPad) { if (d.length % 16) throw secureError("AES bloğu 16 baytın katı olmalı.", "bad-block"); }
+    else { var pad = 16 - (d.length % 16); d = cat(d, new Uint8Array(pad).fill(pad)); }
+    out = new Uint8Array(d.length);
+    for (var o = 0; o < d.length; o += 16) out.set(aesBlock(rk, d.subarray(o, o + 16), false), o);
+    return out;
+  }
+  // PKCS7 payı geçerliyse atılır; değilse veri olduğu gibi döner (Tuya 3.4 oturum yanıtı payı belirsiz kalabilir).
+  function aesEcbDecrypt(key, data) {
+    var rk = aesExpandKey(key), d = toU8(data);
+    if (!d.length || d.length % 16) throw secureError("Şifreli veri uzunluğu geçersiz.", "bad-block");
+    var out = new Uint8Array(d.length);
+    for (var o = 0; o < d.length; o += 16) out.set(aesBlock(rk, d.subarray(o, o + 16), true), o);
+    var n = out[out.length - 1], ok = n >= 1 && n <= 16 && n <= out.length;
+    for (var i = 0; ok && i < n; i++) if (out[out.length - 1 - i] !== n) ok = false;
+    return ok ? out.slice(0, out.length - n) : out;
+  }
+
+  // --- gizli bilgi deposu (bu cihaza özel, buluta gitmez) ----------------------------------------
+  var SECRET_KEY = "nexusLanSecrets";
+  function readSecrets() {
+    try {
+      var raw = typeof window.nexusGetItem === "function" ? window.nexusGetItem(SECRET_KEY) : localStorage.getItem(SECRET_KEY);
+      var all = JSON.parse(raw || "{}");
+      return all && typeof all === "object" ? all : {};
+    } catch (e) { return {}; }
+  }
+  function writeSecrets(all) {
+    try {
+      var raw = JSON.stringify(all);
+      if (typeof window.nexusSetItem === "function") window.nexusSetItem(SECRET_KEY, raw); else localStorage.setItem(SECRET_KEY, raw);
+      return true;
+    } catch (e) { return false; }
+  }
+  function secretsFor(device) {
+    if (device && device.lanSecret) return device.lanSecret; // yalnızca bellek içi çağrılar (eşleştirme doğrulaması)
+    var all = readSecrets();
+    return (device && device.id && all[device.id]) || null;
+  }
+  var secrets = {
+    get: function (id) { return readSecrets()[id] || null; },
+    set: function (id, obj) { var all = readSecrets(); all[id] = Object.assign({}, all[id] || {}, obj); return writeSecrets(all); },
+    remove: function (id) { var all = readSecrets(); delete all[id]; return writeSecrets(all); },
+  };
+
+  // --- köprü yetenekleri ---------------------------------------------------------------------------
+  function binBridge() { var d = desktopBridge(); return d && d.binaryHttp === true ? d : null; }
+  function tcpSessionBridge() {
+    var d = desktopBridge();
+    return d && d.tcpSession && typeof d.tcpSession.open === "function" && typeof d.tcpSession.exchange === "function" ? d.tcpSession : null;
+  }
+  var SECURE_TIMEOUT_MS = 4000;
+
+  // =================================== TUYA ===================================
+  var TUYA_CMD = { SESS_START: 3, SESS_RESP: 4, SESS_FIN: 5, CONTROL: 7, STATUS: 8, DP_QUERY: 10, CONTROL_NEW: 13, DP_QUERY_NEW: 16 };
+  var TUYA_NO_HEADER = [9, 10, 16, 18, 3, 4, 5];
+  var TUYA_PREFIX = 0x000055aa, TUYA_SUFFIX = 0x0000aa55;
+  function tuyaVersionHeader(v) { return cat(v, new Uint8Array(12)); }
+
+  // payload: bayt dizisi (düz). 3.3: AES-ECB + CRC32; 3.4: AES-ECB + HMAC-SHA256 (tinytuya ile aynı).
+  function tuyaEncode(version, cmd, seq, payload, key) {
+    var withHeader = TUYA_NO_HEADER.indexOf(cmd) === -1;
+    try {
+      if (version === "3.3") {
+        var enc = aesEcbEncrypt(key, payload);
+        var body = withHeader ? cat(tuyaVersionHeader("3.3"), enc) : enc;
+        var pre = cat(u32be(TUYA_PREFIX), u32be(seq), u32be(cmd), u32be(body.length + 8), body);
+        return Promise.resolve(cat(pre, u32be(crc32(pre)), u32be(TUYA_SUFFIX)));
+      }
+      var plain = withHeader ? cat(tuyaVersionHeader("3.4"), payload) : toU8(payload);
+      var enc4 = aesEcbEncrypt(key, plain);
+      var pre4 = cat(u32be(TUYA_PREFIX), u32be(seq), u32be(cmd), u32be(enc4.length + 36), enc4);
+      return hmac256(key, pre4).then(function (h) { return cat(pre4, h, u32be(TUYA_SUFFIX)); });
+    } catch (e) { return Promise.reject(e); }
+  }
+
+  // Cihazdan gelen tek çerçeveyi doğrular ve çözer → { seq, cmd, retcode, data(bayt) }
+  function tuyaDecode(version, frame, key) {
+    var f = toU8(frame), trailer = version === "3.4" ? 36 : 8;
+    if (f.length < 16 + trailer || readU32(f, 0) !== TUYA_PREFIX) return Promise.reject(secureError("Tuya yanıtı geçersiz.", "bad-frame"));
+    var total = 16 + readU32(f, 12);
+    if (total !== f.length || readU32(f, total - 4) !== TUYA_SUFFIX) return Promise.reject(secureError("Tuya yanıtı eksik ya da bozuk.", "bad-frame"));
+    var signed = f.subarray(0, total - trailer), sig = f.subarray(total - trailer, total - 4);
+    var body = f.subarray(16, total - trailer);
+    var verified = version === "3.4"
+      ? hmac256(key, signed).then(function (h) { return bytesEq(h, sig); })
+      : Promise.resolve(crc32(signed) === readU32(sig, 0));
+    return verified.then(function (ok) {
+      if (!ok) throw secureError("Tuya yanıtının doğrulama değeri tutmuyor (yerel anahtar ya da sürüm yanlış olabilir).", "bad-mac");
+      var retcode = 0;
+      if (body.length >= 4 && (readU32(body, 0) & 0xffffff00) === 0) { retcode = readU32(body, 0); body = body.subarray(4); }
+      var data = new Uint8Array(0);
+      if (version === "3.3") {
+        if (body.length >= 15 && body[0] === 0x33 && body[1] === 0x2e && body[2] === 0x33) body = body.subarray(15);
+        if (body.length) data = aesEcbDecrypt(key, body);
+      } else if (body.length) {
+        data = aesEcbDecrypt(key, body);
+        if (data.length >= 15 && data[0] === 0x33 && data[1] === 0x2e && data[2] === 0x34) data = data.subarray(15);
+      }
+      return { seq: readU32(f, 4), cmd: readU32(f, 8), retcode: retcode, data: data };
+    });
+  }
+
+  // 3.4 oturum anahtarı: yerel anahtarla nonce değişimi → oturum anahtarı = AES-ECB(yerel anahtar, yerelNonce XOR uzakNonce)
+  function tuyaNegotiate(xchg, key) {
+    var localNonce = randomBytes(16);
+    return xchg("3.4", key, TUYA_CMD.SESS_START, localNonce, [TUYA_CMD.SESS_RESP]).then(function (frame) {
+      return tuyaDecode("3.4", frame, key);
+    }).then(function (r) {
+      if (r.data.length < 48) throw secureError("Tuya oturum anahtarı yanıtı geçersiz.", "bad-frame");
+      var remoteNonce = r.data.slice(0, 16), remoteMac = r.data.slice(16, 48);
+      return hmac256(key, localNonce).then(function (h) {
+        if (!bytesEq(h, remoteMac)) throw secureError("Tuya yerel anahtarı yanlış görünüyor (oturum doğrulanamadı).", "bad-key");
+        return hmac256(key, remoteNonce);
+      }).then(function (fin) {
+        return xchg("3.4", key, TUYA_CMD.SESS_FIN, fin, null);
+      }).then(function () {
+        var x = new Uint8Array(16);
+        for (var i = 0; i < 16; i++) x[i] = localNonce[i] ^ remoteNonce[i];
+        return aesEcbEncrypt(key, x, true);
+      });
+    });
+  }
+
+  function tuyaSessionOpen(host) {
+    var b = tcpSessionBridge();
+    if (!b) return Promise.reject(secureError("Tuya yerel kontrolü yalnızca masaüstü uygulamasında çalışır.", "no-bridge"));
+    var blocked = lanAddressError(host);
+    if (blocked) return Promise.reject(blocked);
+    return Promise.resolve(b.open({ host: host, port: 6668, timeoutMs: SECURE_TIMEOUT_MS })).then(function (id) {
+      return {
+        exchange: function (frame, reply) {
+          return Promise.resolve(b.exchange(reply ? { id: id, bytes: Array.from(frame), untilCmd: reply, timeoutMs: SECURE_TIMEOUT_MS } : { id: id, bytes: Array.from(frame), noReply: true })).then(toU8);
+        },
+        close: function () { try { return Promise.resolve(b.close(id)).catch(function () {}); } catch (e) { return Promise.resolve(); } },
+      };
+    });
+  }
+
+  // kind: "query" | "control" → çözülmüş JSON ({dps:…} ya da onay)
+  function tuyaRun(host, creds, kind, dps) {
+    var v = creds.version === "3.4" ? "3.4" : "3.3";
+    if (creds.version && creds.version !== "3.3" && creds.version !== "3.4") {
+      return Promise.reject(secureError("Tuya protokol sürümü " + creds.version + " desteklenmiyor (yalnızca 3.3 ve 3.4).", "bad-version"));
+    }
+    var id = String(creds.id), key = strBytes(creds.key), seq = 0, ts = String(Math.floor(Date.now() / 1000));
+    if (key.length !== 16) return Promise.reject(secureError("Tuya yerel anahtarı 16 karakter olmalı.", "bad-key"));
+    return tuyaSessionOpen(host).then(function (s) {
+      function xchg(version, k, cmd, payload, reply) {
+        seq += 1;
+        return tuyaEncode(version, cmd, seq, payload, k).then(function (frame) { return s.exchange(frame, reply); });
+      }
+      var ready = v === "3.3" ? Promise.resolve(key) : tuyaNegotiate(xchg, key);
+      return ready.then(function (sessKey) {
+        var cmd, body, reply;
+        if (kind === "query") {
+          cmd = v === "3.3" ? TUYA_CMD.DP_QUERY : TUYA_CMD.DP_QUERY_NEW;
+          // tinytuya yük şablonları: 3.3 DP_QUERY {gwId, devId}; 3.4 DP_QUERY_NEW (0x10) boş nesne {} ile sorulur
+          body = v === "3.3" ? { gwId: id, devId: id } : {};
+          reply = [cmd];
+        } else if (v === "3.3") {
+          cmd = TUYA_CMD.CONTROL;
+          body = { devId: id, uid: id, t: ts, dps: dps };
+          reply = [TUYA_CMD.CONTROL, TUYA_CMD.STATUS];
+        } else {
+          cmd = TUYA_CMD.CONTROL_NEW;
+          body = { data: { ctype: 0, devId: id, gwId: id, uid: id, dps: dps }, protocol: 5, t: Number(ts) };
+          reply = [cmd];
+        }
+        return xchg(v, sessKey, cmd, strBytes(JSON.stringify(body)), reply).then(function (frame) { return tuyaDecode(v, frame, sessKey); });
+      }).then(function (r) {
+        if (r.retcode !== 0) throw secureError("Tuya cihazı komutu reddetti (kod " + r.retcode + ").", "rejected");
+        if (!r.data.length) return {};
+        var text = utf8String(Array.from(r.data));
+        try { return JSON.parse(text); } catch (e) {
+          throw secureError("Tuya yanıtı çözülemedi — yerel anahtar yanlış olabilir.", "bad-key");
+        }
+      }).then(function (out) { return s.close().then(function () { return out; }); },
+        function (err) { return s.close().then(function () { throw err; }); });
+    });
+  }
+
+  // Standart Tuya veri noktaları (DP): ampul "20" (açık), "22" (parlaklık 10-1000), "24" (HSV, 12 onaltılık); priz/anahtar "1".
+  // Cihazın gerçekte bildirdiği noktalara bakılır; olmayan işlev yetenek olarak eklenmez.
+  function tuyaMapFromDps(dps) {
+    dps = dps || {};
+    var m = {};
+    // Ampul tipleri (tinytuya belgesi): tip B = DP 20 anahtar, 21 mod, 22 parlaklık (10–1000), 23 beyaz tonu, 24 renk (hhhhssssvvvv, 12 hane);
+    // tip A (eski) = DP 1 anahtar, 2 mod, 3 parlaklık (25–255), 4 beyaz tonu, 5 renk (rrggbbhhhhssvv, 14 hane).
+    if (typeof dps["20"] === "boolean") {
+      m.switch = "20"; m.kind = "light"; m.scale = 1000; m.min = 10;
+      if (typeof dps["22"] === "number") m.brightness = "22";
+      if (typeof dps["24"] === "string" && /^[0-9a-f]{12}$/i.test(dps["24"])) { m.color = "24"; m.mode = "21"; m.format = "hsv"; }
+    } else if (typeof dps["1"] === "boolean" && typeof dps["2"] === "string" && /^(white|colour|scene|music)$/.test(dps["2"]) && typeof dps["3"] === "number") {
+      m.switch = "1"; m.kind = "light"; m.scale = 255; m.min = 25; m.brightness = "3";
+      if (typeof dps["5"] === "string" && /^[0-9a-f]{14}$/i.test(dps["5"])) { m.color = "5"; m.mode = "2"; m.format = "rgbhsv"; }
+    } else if (typeof dps["1"] === "boolean") {
+      m.switch = "1"; m.kind = "plug";
+    } else {
+      return null;
+    }
+    return m;
+  }
+  function tuyaCapsFromMap(m) { return ["switch"].concat(m.brightness ? ["brightness"] : [], m.color ? ["color"] : []); }
+  function tuyaDpsOf(resp) { return (resp && (resp.dps || (resp.data && resp.data.dps))) || null; }
+  function tuyaCredsFor(device) {
+    var s = secretsFor(device);
+    if (!s || !s.tuyaId || !s.tuyaKey) return null;
+    return { id: s.tuyaId, key: s.tuyaKey, version: s.tuyaVersion || "3.3", map: s.tuyaMap || null };
+  }
+  function tuyaMissing() { return Promise.reject(secureError("Bu Tuya cihazının yerel anahtarı bu cihazda kayıtlı değil. Cihazı yeniden ekle.", "no-secret")); }
+
+  function tuyaHex(n, width) { var s = Math.round(n).toString(16); while (s.length < width) s = "0" + s; return s; }
+  // Tip B: hhhh ssss vvvv (h 0–360, s ve v 0–1000)
+  function tuyaHsv(hex) {
+    var hsb = rgbToHsb(hexToRgb(hex));
+    return tuyaHex(hsb.h * 360, 4) + tuyaHex(hsb.s * 1000, 4) + tuyaHex(hsb.v * 1000, 4);
+  }
+  // Tip A: rrggbb hhhh ss vv (h 0–360, s ve v 0–255)
+  function tuyaRgbHsv(hex) {
+    var rgb = hexToRgb(hex), hsb = rgbToHsb(rgb);
+    return tuyaHex(rgb[0], 2) + tuyaHex(rgb[1], 2) + tuyaHex(rgb[2], 2) + tuyaHex(hsb.h * 360, 4) + tuyaHex(hsb.s * 255, 2) + tuyaHex(hsb.v * 255, 2);
+  }
+
   var tuyaLocal = {
     id: "tuya-local",
     label: "Tuya (Yerel)",
-    // Gerçek Tuya yerel protokolü şifreli TCP'dir ve cihaz başına yerel anahtar ister; bu sürümde uygulanmadı.
-    // Aşağıdaki HTTP uç noktası gerçek Tuya cihazlarında yoktur, bu yüzden hiçbir komut gönderilmez (caps boş).
-    caps: [],
-    probe: function (device) {
-      return getJson("http://" + hostOnly(device) + ":6668/status", scanTimeoutMs || 1000).then(
-        function (info) {
-          if (!info || (!info.dps && !info.devId)) throw new Error("tuya-local: kimlik yok");
-          var isBulb = info.dps && (info.dps["20"] != null || info.dps["22"] != null);
-          return {
-            protocol: "tuya-local",
-            model: info.model || "Tuya Akıllı Cihaz",
-            name: info.name || device.name || "Tuya Cihaz",
-            kind: isBulb ? "light" : "plug",
-          };
-        },
-      );
-    },
-    read: function () {
-      return Promise.reject(new Error("Tuya yerel kontrolü bu sürümde kullanılamıyor."));
-    },
-    write: function () {
-      return Promise.reject(new Error("Tuya yerel kontrolü bu sürümde kullanılamıyor."));
-    },
-  };
-
-  // --- TP-Link Tapo (Yerel HTTP / RTSP / ONVIF — ücretsiz, bulutsuz) ---------
-  var tapo = {
-    id: "tapo",
-    label: "TP-Link Tapo",
-    caps: ["switch", "brightness", "color", "camera", "energy"],
-    probe: function (device) {
-      return getJson(baseUrl(device) + "/app", scanTimeoutMs || 1000).then(function (r) {
-        if (!r || (r.error_code !== 0 && !r.result)) throw new Error("tapo: gecersiz yanit");
-        var res = r.result || {};
-        if (!res.device_id && !res.model && !res.device_model && !res.mac && !res.nickname) {
-          throw new Error("tapo: kimlik yok");
-        }
-        var m = res.model || res.device_model || "";
-        var isCam = /cam|c200|c210|c310/i.test(m);
-        var isBulb = /bulb|l510|l530/i.test(m);
+    caps: ["switch", "brightness", "color"],
+    needsTcpSession: true,
+    discoverable: false, // yerel anahtar olmadan tanınamaz; yalnızca anahtar girilerek eklenir
+    // Eşleştirme: IP + cihaz kimliği + yerel anahtar + sürüm ile durumu sorar; yanıt çözülemezse eklenmez.
+    verify: function (host, creds) {
+      host = bareHost(host);
+      return tuyaRun(host, creds, "query").then(function (resp) {
+        var dps = tuyaDpsOf(resp);
+        var m = dps && tuyaMapFromDps(dps);
+        if (!m) throw secureError("Cihaz yanıt verdi ama anahtar ya da ampul veri noktası bulunamadı (desteklenen: priz/anahtar/ampul).", "unsupported-dps");
         return {
-          protocol: "tapo",
-          model: m ? "Tapo " + m : "TP-Link Tapo",
-          name: res.nickname || device.name || "Tapo Cihaz",
-          kind: isCam ? "camera" : isBulb ? "light" : "plug",
+          host: host, protocol: "tuya-local", model: "Tuya " + (m.kind === "light" ? "Ampul" : "Priz / Anahtar"), name: "Tuya " + (m.kind === "light" ? "Ampul" : "Priz"),
+          kind: m.kind, caps: tuyaCapsFromMap(m),
+          secret: { tuyaId: creds.id, tuyaKey: creds.key, tuyaVersion: creds.version, tuyaMap: m },
         };
       });
     },
-    // Tapo yerel API'si şifreli el sıkışma ister. Komut gitmeden başarı dönmek cihaz açılmış gibi gösterir.
-    read: function () {
-      return Promise.reject(new Error("Tapo yerel kontrolü bu sürümde kullanılamıyor."));
+    probe: function () { return Promise.reject(secureError("tuya-local: yerel anahtar gerekli", "no-secret")); },
+    read: function (device) {
+      var c = tuyaCredsFor(device);
+      if (!c) return tuyaMissing();
+      return tuyaRun(hostOnly(device), c, "query").then(function (resp) {
+        var dps = tuyaDpsOf(resp);
+        if (!dps) throw secureError("Tuya cihazı durum bilgisi vermedi.", "no-dps");
+        var m = c.map || tuyaMapFromDps(dps) || {};
+        var sw = m.switch ? dps[m.switch] : null, br = m.brightness ? dps[m.brightness] : null;
+        return { switch: typeof sw === "boolean" ? sw : null, brightness: typeof br === "number" ? Math.max(1, Math.min(100, Math.round((br / (m.scale || 1000)) * 100))) : null };
+      });
     },
-    write: function () {
-      return Promise.reject(new Error("Tapo yerel kontrolü bu sürümde kullanılamıyor."));
+    write: function (device, capability, value) {
+      var c = tuyaCredsFor(device);
+      if (!c) return tuyaMissing();
+      var m = c.map;
+      if (!m || !m[capability]) return unsupported("tuya-local", capability);
+      var dps = {};
+      if (capability === "switch") dps[m.switch] = !!value;
+      else if (capability === "brightness") {
+        var scale = m.scale || 1000, lo = m.min || 10;
+        dps[m.brightness] = Math.max(lo, Math.min(scale, Math.round((Number(value) / 100) * scale)));
+      } else if (capability === "color") { dps[m.mode] = "colour"; dps[m.color] = m.format === "rgbhsv" ? tuyaRgbHsv(value) : tuyaHsv(value); }
+      else return unsupported("tuya-local", capability);
+      return tuyaRun(hostOnly(device), c, "control", dps);
+    },
+  };
+
+  // =================================== TAPO ===================================
+  function binHttp(url, method, bytes, headers) {
+    var d = binBridge();
+    if (!d) return Promise.reject(secureError("Tapo yerel kontrolü yalnızca masaüstü uygulamasında çalışır.", "no-bridge"));
+    var blocked = lanAddressError(url);
+    if (blocked) return Promise.reject(blocked);
+    return Promise.resolve(d.http({ url: url, method: method || "POST", headers: headers || {}, bodyBytes: bytes ? Array.from(bytes) : undefined, binary: true, timeoutMs: SECURE_TIMEOUT_MS })).then(function (r) {
+      return { status: r.status, bytes: toU8(r.bytes || []), headers: r.headers || {} };
+    });
+  }
+  function sessionCookie(headers) {
+    var sc = headers && (headers["set-cookie"] || headers["Set-Cookie"]);
+    var list = Array.isArray(sc) ? sc : sc ? [sc] : [];
+    for (var i = 0; i < list.length; i++) { var m = /TP_SESSIONID=[^;\s]+/.exec(list[i]); if (m) return m[0]; }
+    return "";
+  }
+  function tapoCreds(device) {
+    var s = secretsFor(device);
+    return s && s.tapoUser && s.tapoPass ? { user: String(s.tapoUser), pass: String(s.tapoPass) } : null;
+  }
+
+  // --- KLAP (python-kasa klaptransport.py): el sıkışma 1/2, sonra AES-CBC + SHA-256 imzalı /app/request ---
+  function klapAuthHash(creds) {
+    return Promise.all([sha1(strBytes(creds.user)), sha1(strBytes(creds.pass))]).then(function (h) { return sha256(cat(h[0], h[1])); });
+  }
+  function klapDerive(localSeed, remoteSeed, authHash) {
+    var base = cat(localSeed, remoteSeed, authHash);
+    return Promise.all([sha256(cat("lsk", base)), sha256(cat("iv", base)), sha256(cat("ldk", base))]).then(function (h) {
+      var ivSeq = h[1], dv = new DataView(ivSeq.buffer, ivSeq.byteOffset, ivSeq.byteLength);
+      return { key: h[0].slice(0, 16), iv: ivSeq.slice(0, 12), seq: dv.getInt32(28, false), sig: h[2].slice(0, 28) };
+    });
+  }
+  function klapHandshake(host, creds) {
+    var base = "http://" + host, localSeed = randomBytes(16);
+    return binHttp(base + "/app/handshake1", "POST", localSeed, { "Content-Type": "application/octet-stream" }).then(function (r1) {
+      if (r1.status !== 200 || r1.bytes.length !== 48) throw secureError("Tapo KLAP el sıkışması yanıtlanmadı (http " + r1.status + ").", "handshake");
+      var remoteSeed = r1.bytes.slice(0, 16), serverHash = r1.bytes.slice(16), cookie = sessionCookie(r1.headers);
+      return klapAuthHash(creds).then(function (auth) {
+        return sha256(cat(localSeed, remoteSeed, auth)).then(function (expected) {
+          if (!bytesEq(expected, serverHash)) throw secureError("Tapo hesabı e-postası ya da şifresi cihaz tarafından kabul edilmedi.", "auth");
+          return sha256(cat(remoteSeed, localSeed, auth));
+        }).then(function (proof) {
+          var headers = { "Content-Type": "application/octet-stream" };
+          if (cookie) headers.Cookie = cookie;
+          return binHttp(base + "/app/handshake2", "POST", proof, headers);
+        }).then(function (r2) {
+          if (r2.status !== 200) throw secureError("Tapo KLAP el sıkışması tamamlanamadı (http " + r2.status + ").", "handshake");
+          return klapDerive(localSeed, remoteSeed, auth);
+        }).then(function (k) { k.type = "klap"; k.cookie = cookie; k.base = base; return k; });
+      });
+    });
+  }
+  function klapRequest(sess, json) {
+    sess.seq = (sess.seq + 1) | 0;
+    var seqBytes = new Uint8Array(4);
+    new DataView(seqBytes.buffer).setInt32(0, sess.seq, false);
+    var iv = cat(sess.iv, seqBytes);
+    return aesCbc("encrypt", sess.key, iv, strBytes(json)).then(function (cipher) {
+      return sha256(cat(sess.sig, seqBytes, cipher)).then(function (sig) {
+        var headers = { "Content-Type": "application/octet-stream" };
+        if (sess.cookie) headers.Cookie = sess.cookie;
+        return binHttp(sess.base + "/app/request?seq=" + sess.seq, "POST", cat(sig, cipher), headers);
+      });
+    }).then(function (r) {
+      if (r.status !== 200) throw secureError("Tapo isteği reddedildi (http " + r.status + ").", r.status === 403 ? "session" : "http");
+      if (r.bytes.length <= 32) throw secureError("Tapo yanıtı boş.", "session");
+      return aesCbc("decrypt", sess.key, iv, r.bytes.slice(32));
+    }).then(function (plain) { return utf8String(Array.from(plain)); });
+  }
+
+  // --- securePassthrough (eski yazılımlar): RSA-1024 el sıkışması + AES-CBC, JSON /app ---
+  // WebCrypto RSAES-PKCS1-v1_5 çözmeyi desteklemez: anahtar çifti RSA-OAEP olarak üretilir, özel anahtar JWK'dan
+  // alınıp çözme BigInt ile yapılır (PKCS#1 v1.5 tipi 2 dolgusu elle ayıklanır).
+  function bigFromBytes(u8) { var hex = toHex(u8); return BigInt("0x" + (hex || "0")); }
+  function modPow(b, e, m) {
+    var r = BigInt(1), zero = BigInt(0), one = BigInt(1), two = BigInt(2);
+    b = b % m;
+    while (e > zero) { if (e % two === one) r = (r * b) % m; e = e / two; b = (b * b) % m; }
+    return r;
+  }
+  function rsaPkcs1Decrypt(jwk, cipher) {
+    var n = bigFromBytes(b64dec(jwk.n)), d = bigFromBytes(b64dec(jwk.d)), k = b64dec(jwk.n).length;
+    var hex = modPow(bigFromBytes(cipher), d, n).toString(16);
+    while (hex.length < k * 2) hex = "0" + hex;
+    var em = new Uint8Array(k);
+    for (var i = 0; i < k; i++) em[i] = parseInt(hex.substr(i * 2, 2), 16);
+    if (em[0] !== 0 || em[1] !== 2) throw secureError("Tapo el sıkışması çözülemedi.", "handshake");
+    var z = 2;
+    while (z < k && em[z] !== 0) z++;
+    return em.slice(z + 1);
+  }
+  function pemFromSpki(spki) {
+    var b = b64enc(spki), lines = [];
+    for (var i = 0; i < b.length; i += 64) lines.push(b.substr(i, 64));
+    return "-----BEGIN PUBLIC KEY-----\n" + lines.join("\n") + "\n-----END PUBLIC KEY-----\n";
+  }
+  function jsonPost(url, obj, cookie) {
+    var headers = { "Content-Type": "application/json" };
+    if (cookie) headers.Cookie = cookie;
+    return binHttp(url, "POST", strBytes(JSON.stringify(obj)), headers).then(function (r) {
+      if (r.status !== 200) throw secureError("Tapo isteği reddedildi (http " + r.status + ").", r.status === 403 ? "session" : "http");
+      var j;
+      try { j = JSON.parse(utf8String(Array.from(r.bytes))); } catch (e) { throw secureError("Tapo yanıtı çözülemedi.", "http"); }
+      return { json: j, headers: r.headers };
+    });
+  }
+  function ptWrap(sess, obj) {
+    return aesCbc("encrypt", sess.key, sess.iv, strBytes(JSON.stringify(obj))).then(function (c) {
+      return { method: "securePassthrough", params: { request: b64enc(c) } };
+    });
+  }
+  function ptUnwrap(sess, resp) {
+    if (resp.error_code !== 0 || !resp.result || !resp.result.response) throw tapoError(resp.error_code);
+    return aesCbc("decrypt", sess.key, sess.iv, b64dec(resp.result.response)).then(function (p) { return JSON.parse(utf8String(Array.from(p))); });
+  }
+  function ptHandshake(host, creds) {
+    var base = "http://" + host, subtle;
+    return needSubtle().then(function (s) {
+      subtle = s;
+      return s.generateKey({ name: "RSA-OAEP", modulusLength: 1024, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-1" }, true, ["encrypt", "decrypt"]);
+    }).then(function (kp) {
+      return Promise.all([subtle.exportKey("spki", kp.publicKey), subtle.exportKey("jwk", kp.privateKey)]);
+    }).then(function (ex) {
+      return jsonPost(base + "/app", { method: "handshake", params: { key: pemFromSpki(toU8(ex[0])) }, requestTimeMils: 0 }).then(function (r) {
+        if (r.json.error_code !== 0 || !r.json.result || !r.json.result.key) throw secureError("Tapo el sıkışması yanıtlanmadı.", "handshake");
+        var kv = rsaPkcs1Decrypt(ex[1], b64dec(r.json.result.key));
+        if (kv.length !== 32) throw secureError("Tapo el sıkışma anahtarı geçersiz.", "handshake");
+        return { type: "pt", base: base, key: kv.slice(0, 16), iv: kv.slice(16, 32), cookie: sessionCookie(r.headers), token: "" };
+      });
+    }).then(function (sess) {
+      return sha1(strBytes(creds.user)).then(function (h) {
+        var login = { method: "login_device", params: { username: b64enc(strBytes(toHex(h))), password: b64enc(strBytes(creds.pass)) }, requestTimeMils: 0 };
+        return ptWrap(sess, login).then(function (w) { return jsonPost(base + "/app", w, sess.cookie); }).then(function (r) {
+          return ptUnwrap(sess, r.json);
+        }).then(function (inner) {
+          if (inner.error_code !== 0 || !inner.result || !inner.result.token) throw tapoError(inner.error_code);
+          sess.token = inner.result.token;
+          return sess;
+        });
+      });
+    });
+  }
+
+  function tapoError(code) {
+    if (code === -1501 || code === -1005 || code === 1002) return secureError("Tapo hesabı e-postası ya da şifresi cihaz tarafından kabul edilmedi.", "auth");
+    if (code === 9999 || code === 1003 || code === -1012) return secureError("Tapo oturumu doldu.", "session");
+    return secureError("Tapo cihazı hata döndü (kod " + code + ").", "device");
+  }
+
+  // Oturumlar adres+kullanıcı başına tutulur; her oturumda istekler sıraya girer (KLAP sıra numarası artmalı).
+  var tapoSessions = {};
+  function tapoConnect(host, creds) {
+    return klapHandshake(host, creds).catch(function (klapErr) {
+      if (klapErr && klapErr.code === "auth") throw klapErr;
+      return ptHandshake(host, creds).catch(function (ptErr) {
+        // Cihaz KLAP konuştuysa (el sıkışma 200 verdi) asıl hata odur; yoksa eski yöntemin hatası
+        throw ptErr && ptErr.code === "auth" ? ptErr : klapErr || ptErr;
+      });
+    });
+  }
+  function tapoSend(sess, method, params) {
+    var req = { method: method, params: params || {}, requestTimeMils: 0 };
+    if (sess.type === "klap") {
+      return klapRequest(sess, JSON.stringify(req)).then(function (text) { return JSON.parse(text); });
+    }
+    return ptWrap(sess, req).then(function (w) { return jsonPost(sess.base + "/app?token=" + encodeURIComponent(sess.token), w, sess.cookie); }).then(function (r) {
+      return ptUnwrap(sess, r.json);
+    });
+  }
+  function tapoCall(host, creds, method, params) {
+    var key = host + "|" + creds.user;
+    var entry = tapoSessions[key] || (tapoSessions[key] = { sess: null, queue: Promise.resolve() });
+    function attempt(retry) {
+      var ready = entry.sess ? Promise.resolve(entry.sess) : tapoConnect(host, creds).then(function (s) { entry.sess = s; return s; });
+      return ready.then(function (s) { return tapoSend(s, method, params); }).then(function (resp) {
+        if (resp.error_code === 9999 || resp.error_code === 1003) throw secureError("Tapo oturumu doldu.", "session");
+        if (resp.error_code !== 0) throw tapoError(resp.error_code);
+        return resp.result || {};
+      }).catch(function (err) {
+        entry.sess = null;
+        if (retry && err && (err.code === "session" || err.code === "http" || !err.code)) return attempt(false);
+        throw err;
+      });
+    }
+    var run = entry.queue.then(function () { return attempt(true); });
+    entry.queue = run.catch(function () {});
+    return run;
+  }
+  function tapoNickname(info) {
+    try { return utf8String(Array.from(b64dec(info.nickname))); } catch (e) { return ""; }
+  }
+  function tapoKindCaps(info) {
+    var type = String(info.type || "") + " " + String(info.model || "");
+    if (/BULB|LIGHT|^L\d/i.test(type)) {
+      var caps = ["switch"];
+      if (info.brightness != null) caps.push("brightness");
+      if (info.hue != null && info.saturation != null) caps.push("color");
+      // Beyaz tonu (Kelvin): yalnızca cihaz color_temp alanı bildiriyorsa (L520/L530/L535 gibi; L510 bildirmez)
+      if (info.color_temp != null) caps.push("colorTemp");
+      return { kind: "light", caps: caps };
+    }
+    if (/PLUG/i.test(type) || /\bP\d{3}/i.test(type)) return { kind: "plug", caps: ["switch"] };
+    if (/SWITCH/i.test(type) || /\bS\d{3}/i.test(type)) return { kind: "switch", caps: ["switch"] };
+    return null;
+  }
+
+  function tapoMissing() { return Promise.reject(secureError("Bu Tapo cihazının hesap bilgisi bu cihazda kayıtlı değil. Cihazı yeniden ekle.", "no-secret")); }
+  var tapo = {
+    id: "tapo",
+    label: "TP-Link Tapo",
+    caps: ["switch", "brightness", "color", "colorTemp"],
+    needsBinHttp: true,
+    // Kimlik bilgisi olmadan yalnızca cihazın Tapo/KLAP el sıkışmasına yanıt verdiği anlaşılır (model bilinmez).
+    probe: function (device) {
+      var host = hostOnly(device);
+      if (!binBridge()) return Promise.reject(secureError("tapo: ikili HTTP yalnızca masaüstü uygulamasında", "no-bridge"));
+      var generic = { protocol: "tapo", model: "TP-Link Tapo", name: device.name || "TP-Link Tapo", kind: "plug", caps: ["switch"], needsCredentials: true };
+      return binHttp("http://" + host + "/app/handshake1", "POST", randomBytes(16), { "Content-Type": "application/octet-stream" }).then(function (r) {
+        if (r.status === 200 && r.bytes.length === 48) return generic;
+        throw new Error("tapo: klap yok");
+      }).catch(function (err) {
+        // Eski (securePassthrough) yazılımlar: tarama sırasında yanlış pozitifi önlemek için yalnızca elle IP girilince denenir.
+        if (scanTimeoutMs) throw err;
+        return jsonPost("http://" + host + "/app", { method: "handshake", params: { key: "x" }, requestTimeMils: 0 }).then(function (r) {
+          if (typeof r.json.error_code === "number" && !r.json.result) return generic;
+          throw err;
+        });
+      });
+    },
+    // Hesap bilgisiyle bağlanır, cihaz bilgisini okur → eklenebilir kayıt (gizli bilgi "secret" alanında, cihaz kaydına yazılmaz)
+    verify: function (host, user, pass) {
+      host = bareHost(host);
+      var creds = { user: String(user || "").trim(), pass: String(pass || "") };
+      if (!creds.user || !creds.pass) return Promise.reject(secureError("TP-Link hesabının e-postasını ve şifresini yaz.", "no-secret"));
+      delete tapoSessions[host + "|" + creds.user];
+      return tapoCall(host, creds, "get_device_info").then(function (info) {
+        var kc = tapoKindCaps(info);
+        if (!kc) throw secureError("Bu Tapo cihaz türü (" + (info.model || info.type || "bilinmiyor") + ") henüz desteklenmiyor.", "unsupported");
+        return {
+          host: host, protocol: "tapo", model: "Tapo " + (info.model || ""), name: tapoNickname(info) || ("Tapo " + (info.model || "")),
+          kind: kc.kind, caps: kc.caps, secret: { tapoUser: creds.user, tapoPass: creds.pass },
+        };
+      });
+    },
+    read: function (device) {
+      var c = tapoCreds(device);
+      if (!c) return tapoMissing();
+      return tapoCall(hostOnly(device), c, "get_device_info").then(function (info) {
+        return { switch: typeof info.device_on === "boolean" ? info.device_on : null, brightness: typeof info.brightness === "number" ? info.brightness : null };
+      });
+    },
+    write: function (device, capability, value) {
+      var c = tapoCreds(device);
+      if (!c) return tapoMissing();
+      var params;
+      if (capability === "switch") params = { device_on: !!value };
+      else if (capability === "brightness") params = { brightness: Math.max(1, Math.min(100, Math.round(value))) };
+      else if (capability === "color") { var hsb = rgbToHsb(hexToRgb(value)); params = { hue: Math.round(hsb.h * 360) % 360, saturation: Math.round(hsb.s * 100), color_temp: 0 }; }
+      else if (capability === "colorTemp") params = { color_temp: Math.max(2500, Math.min(6500, toneKelvin(value))) };
+      else return unsupported("tapo", capability);
+      return tapoCall(hostOnly(device), c, "set_device_info", params);
     },
   };
 
@@ -2002,11 +2723,9 @@
   ];
 
   function available(p) {
-    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge());
+    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()) && (!p.needsBinHttp || !!binBridge()) && (!p.needsTcpSession || !!tcpSessionBridge());
   }
-  function discoverable(p) {
-    return available(p) && p.discoverable !== false;
-  }
+  function discoverable(p) { return available(p) && p.discoverable !== false; }
 
   // Manuel IP ile ekleme: cihazın hangi protokolü konuştuğunu sırayla dener.
   function identify(host) {
@@ -2265,6 +2984,15 @@
     normalizeSubnetBase: normalizeSubnetBase,
     wakeOnLan: wakeOnLan,
     buildMagicPacket: buildMagicPacket,
+    // Tapo / Tuya: eşleştirme doğrulaması (gerçek el sıkışma/sorgu) ve cihaza özel gizli bilgi deposu
+    tapo: { verify: tapo.verify },
+    tuya: { verify: tuyaLocal.verify },
+    hasSecure: function () { return { tapo: !!binBridge(), tuya: !!tcpSessionBridge() }; },
+    secrets: secrets,
+    internals: {
+      aesEcbEncrypt: aesEcbEncrypt, aesEcbDecrypt: aesEcbDecrypt, crc32: crc32, tuyaEncode: tuyaEncode, tuyaDecode: tuyaDecode,
+      klapDerive: klapDerive, klapAuthHash: klapAuthHash, rsaPkcs1Decrypt: rsaPkcs1Decrypt, tuyaHsv: tuyaHsv, tuyaMapFromDps: tuyaMapFromDps,
+    },
     hue: { pair: hue.pair, lights: hue.lights },
     homeassistant: { entities: homeassistant.entities },
     read: function (device) {

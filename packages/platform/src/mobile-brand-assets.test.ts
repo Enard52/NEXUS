@@ -302,7 +302,9 @@ describe("mobil marka varlıkları (launcher icon + splash)", () => {
         `${name} ortasında marka yok (rgb ${r},${g},${b})`,
       ).toBe(true);
     }
-  });
+    // 3 × 2732×2732 PNG kod çözüyor; tam suite'te CPU sıkışınca 5sn yetmiyor
+    // (buradaki tek PNG okuyan testler tek başına geçiyordu, suite içinde time-out'tu).
+  }, 20000);
 
   it("kaynak assets/ görselleri kare — ekran görüntüsü geri sızmış olamaz", () => {
     // Asıl kök neden buydu: assets/icon.png 1024x721 bir ekran görüntüsüydü ve
