@@ -453,11 +453,11 @@ window.NEXUS_EN = {
     "Bulut oturumu açıkken kendi adresine gönderilir; saklanacak anahtar yok.":
       "Sent to your own address while signed in; no secrets are stored in the app.",
     "Gönderilecek adres": "Recipient",
-    "Cihazlar Arası Push": "Cross-device Push",
-    "Aile üyesinin uyarısı uygulama kapalıyken de düşer":
-      "A family member's alert arrives even when the app is closed",
-    "Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı push'u kendi cihazında açmış olmalı.":
-      "Goes to other members' and your other devices' notification centres; the recipient must have push enabled on their device.",
+    "Cihazlar Arası Bildirim": "Cross-device Notifications",
+    "Aile üyesinin uyarısı, o kişinin uygulaması kapalıyken de bildirim merkezine düşer":
+      "A family member's alert arrives in the notification centre even when the app is closed",
+    "Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı bu kanalı kendi cihazında açmış olmalı.":
+      "Goes to other members' and your other devices' notification centres; the recipient must have this channel enabled on their device.",
     "Kendi sunucuna JSON POST — gelişmiş": "JSON POST to your own server — advanced",
     "HTTPS adresi": "HTTPS URL",
     "Yalnızca HTTPS kabul edilir; her olay {source, id, title, detail, ts} olarak gönderilir.":
@@ -1576,18 +1576,18 @@ window.NEXUS_EN = {
     "Haftalık Özet": "Weekly Summary",
     "Notlar": "Notes",
     "Pano boş": "Board is empty",
-    "Kalemi Sil": "Delete Item",
+    "Maddeyi Sil": "Delete Item",
     "Mesaj yaz…": "Type a message…",
     "Henüz okunmadı": "Not read yet",
     "senaryo çalıştırdı": "ran a scene",
     "uyarı paylaştı": "shared an alert",
     "Bu hafta kayda değer bir etkinlik yok. Senaryo çalıştırmaları ve uyarılar burada toplanır.":
       "No notable activity this week. Scene runs and alerts gather here.",
-    "Alışveriş listesi, ev işleri ya da kısa notlar — ailenle paylaştığın ilk kalemi ekle.":
+    "Alışveriş listesi, ev işleri ya da kısa notlar — ailenle paylaştığın ilk maddeyi ekle.":
       "Shopping list, chores or quick notes — add the first item to share with your family.",
     "Ev Panosu evin üyeleri arasındadır. Ev Yönetimi'nden ev oluştur ya da davetle katıl.":
       "The board belongs to your home's members. Create a home from Home Management or join by invite.",
-    "Bu kalem panodan tüm üyeler için kaldırılır.": "This item is removed from the board for all members.",
+    "Bu madde panodan tüm üyeler için kaldırılır.": "This item is removed from the board for all members.",
     "Pano şu an kapalı.": "The board is unavailable right now.",
     "Ev Panosu için oturum açmalısın.": "Sign in to use the Home Board.",
     "Ev Panosu bu sürümde kullanılamıyor.": "Home Board is unavailable in this build.",

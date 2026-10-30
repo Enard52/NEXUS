@@ -238,6 +238,10 @@ export const content = {
           "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.",
         ],
         [
+          "Which account does my NEXUS+ subscription belong to?",
+          "The email address used at checkout. Sign in on this site or in the app before you pay: checkout then opens with your account's email filled in, and the subscription shows up on every device you sign in to. NEXUS+ cannot be bought without an account. If you pay with a different email, the subscription is stored under that email and will not appear on your account until you sign in with it.",
+        ],
+        [
           "How do automations and scheduled rules run?",
           "The NEXUS automation engine evaluates your schedules and sensor rules on the device you keep running — the desktop app stays in the system tray and executes around the clock, so lighting, energy and security routines never wait for a cloud. Scenes and timers triggered from your phone apply instantly over your LAN. New events fan out to the notification channels you enable on the Instant Notifications page: the in-app strip, system notifications, ntfy, Telegram, or your own HTTPS webhook.",
         ],
@@ -259,15 +263,15 @@ export const content = {
         ],
         [
           "Is there an iPhone version?",
-          "There is no App Store app, because NEXUS does not use a paid Apple Developer account. With a Mac and a free Apple ID you can build it for your own iPhone (guide: docs/IOS-BUILD.md), and a release may also attach an unsigned IPA that AltStore or Sideloadly can sign for you; that path has not been verified on a real iPhone yet. A free Apple ID expires the app after 7 days, and push notifications while the app is closed are not available on iOS. The home hub is still the desktop app; the iPhone is a client.",
+          "There is no App Store app, because NEXUS does not use a paid Apple Developer account. With a Mac and a free Apple ID you can build it for your own iPhone (guide: docs/IOS-BUILD.md), and a release may also attach an unsigned IPA that AltStore or Sideloadly can sign for you; that path has not been verified on a real iPhone yet. A free Apple ID expires the app after 7 days, and notifications while the app is closed are not available on iOS. The home hub is still the desktop app; the iPhone is a client.",
         ],
         [
           "My device is not on the list. What can I do?",
           "NEXUS only supports devices with a documented local protocol; cloud-only devices are not supported because NEXUS never talks to a vendor cloud. The compatibility list (docs/COMPATIBILITY.md) also includes TP-Link Tapo, Sonoff in DIY mode, WiZ, LIFX, Govee (LAN), Tuya with local keys and Wake-on-LAN. Each of these has automated protocol tests, but a model counts as verified only when someone reports that it worked on a real device. Open a Device support request on GitHub for a missing device, or a Device test report to confirm one; never include passwords, local keys or tokens.",
         ],
         [
-          "Do I have to sign in? What happens if the server is down?",
-          "Controlling devices and running automations does not need an account. Sign-in adds sync, Family and the AI assistant, which use free cloud services with limits. When one of those is unavailable, for example when the free Supabase project has paused after about a week without activity, the cloud screens say the server is unreachable instead of showing something as saved; devices, automations and the tray keep working. If the AI quota or service is exhausted, the assistant says it could not reply.",
+          "Do I need an account? What happens if the server is down?",
+          "Yes: you sign in once with a free email account to open NEXUS. After that, controlling devices and running automations happens on your own network and keeps working without the internet. The account adds sync across your devices, Family and the AI assistant, which use free cloud services with limits. When one of those is unavailable, for example when the free Supabase project has paused after about a week without activity, the cloud screens say the server is unreachable instead of showing something as saved; devices, automations and the tray keep working. If the AI quota or service is exhausted, the assistant says it could not reply.",
         ],
         [
           "Can I back up my settings and move them to another device?",
@@ -552,6 +556,10 @@ export const content = {
           "Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.",
         ],
         [
+          "NEXUS+ aboneliğim hangi hesaba tanımlanır?",
+          "Ödemede kullanılan e-posta adresine. Ödemeden önce bu sitede ya da uygulamada giriş yap: ödeme sayfası hesabının e-postasıyla dolu açılır ve abonelik giriş yaptığın her cihazda görünür. NEXUS+ hesap olmadan satın alınamaz. Başka bir e-postayla ödersen abonelik o e-postanın altında saklanır ve o e-postayla giriş yapana kadar hesabında görünmez.",
+        ],
+        [
           "Otomasyonlar ve zamanlanmış kurallar nasıl çalışır?",
           "NEXUS otomasyon motoru kurallarını ve zamanlayıcılarını NEXUS'u çalıştırdığın cihazda yürütür: masaüstü programı sistem tepsisinde arka planda kalarak gün boyu izler ve uygular, böylece aydınlatma, enerji ve güvenlik rutinleri bulutu beklemez. Telefondan tetiklediğin sahneler ve zamanlayıcılar yerel ağından anında uygulanır. Yeni olaylar, Anlık Bildirimler sayfasında açtığın kanallara dağıtılır: uygulama içi bildirim şeridi, sistem bildirimi, ntfy, Telegram veya kendi HTTPS webhook'un.",
         ],
@@ -573,15 +581,15 @@ export const content = {
         ],
         [
           "iPhone sürümü var mı?",
-          "App Store uygulaması yok; çünkü NEXUS ücretli Apple Developer hesabı kullanmaz. Bir Mac ve ücretsiz Apple ID ile kendi iPhone'un için derleyebilirsin (rehber: docs/IOS-BUILD.md); bir sürümde imzasız IPA da yer alabilir ve AltStore veya Sideloadly bunu senin için imzalar. Bu yol gerçek bir iPhone'da henüz doğrulanmadı. Ücretsiz Apple ID ile uygulama 7 günde sona erer ve iOS'ta uygulama kapalıyken push bildirimi yoktur. Ev merkezi yine masaüstü uygulamasıdır; iPhone bir istemcidir.",
+          "App Store uygulaması yok; çünkü NEXUS ücretli Apple Developer hesabı kullanmaz. Bir Mac ve ücretsiz Apple ID ile kendi iPhone'un için derleyebilirsin (rehber: docs/IOS-BUILD.md); bir sürümde imzasız IPA da yer alabilir ve AltStore veya Sideloadly bunu senin için imzalar. Bu yol gerçek bir iPhone'da henüz doğrulanmadı. Ücretsiz Apple ID ile uygulama 7 günde sona erer ve iOS'ta uygulama kapalıyken telefona bildirim gelmez. Ev merkezi yine masaüstü uygulamasıdır; iPhone bir istemcidir.",
         ],
         [
           "Cihazım listede yok, ne yapabilirim?",
           "NEXUS yalnızca belgelenmiş yerel protokolü olan cihazları destekler; yalnızca buluttan çalışan cihazlar desteklenmez, çünkü NEXUS hiçbir üretici bulutuyla konuşmaz. Uyumluluk listesinde (docs/COMPATIBILITY.md) TP-Link Tapo, DIY modunda Sonoff, WiZ, LIFX, Govee (LAN), yerel anahtarlı Tuya ve Wake-on-LAN de yer alır. Hepsinin otomatik protokol testi vardır, ancak bir model ancak biri gerçek cihazda çalıştığını bildirdiğinde doğrulanmış sayılır. Eksik cihaz için GitHub'da Cihaz destek isteği, doğrulamak için Cihaz test raporu aç; şifre, yerel anahtar veya token yazma.",
         ],
         [
-          "Giriş yapmak zorunda mıyım? Sunucu kapanırsa ne olur?",
-          "Cihaz kontrolü ve otomasyonlar hesap gerektirmez. Giriş; senkron, Aile ve yapay zekâ asistanını ekler ve bunlar sınırları olan ücretsiz bulut hizmetlerini kullanır. Bunlardan biri kullanılamazsa — örneğin ücretsiz Supabase projesi yaklaşık bir hafta etkinlik olmayınca duraklatılırsa — bulut ekranları kaydedilmiş gibi göstermek yerine sunucuya ulaşılamadığını söyler; cihazlar, otomasyonlar ve tepsi çalışmaya devam eder. Yapay zekâ kotası veya hizmeti tükenirse asistan yanıt veremediğini belirtir.",
+          "Hesap açmak zorunda mıyım? Sunucu kapanırsa ne olur?",
+          "Evet: NEXUS'u açmak için ücretsiz bir e-posta hesabıyla bir kez giriş yaparsın. Sonrasında cihaz kontrolü ve otomasyonlar kendi ağında çalışır, internet kesilse de sürer. Hesap; cihazlar arası eşitleme, Aile ve yapay zekâ asistanını ekler ve bunlar sınırları olan ücretsiz bulut hizmetlerini kullanır. Bunlardan biri kullanılamazsa — örneğin ücretsiz Supabase projesi yaklaşık bir hafta etkinlik olmayınca duraklatılırsa — bulut ekranları kaydedilmiş gibi göstermek yerine sunucuya ulaşılamadığını söyler; cihazlar, otomasyonlar ve tepsi çalışmaya devam eder. Yapay zekâ kotası veya hizmeti tükenirse asistan yanıt veremediğini belirtir.",
         ],
         [
           "Ayarlarımı yedekleyip başka cihaza taşıyabilir miyim?",

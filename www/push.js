@@ -76,9 +76,9 @@
 
   function registerWeb() {
     var f = cfg();
-    if (!f) return Promise.reject(new Error("push-yapılandırma-yok"));
+    if (!f) return Promise.reject(new Error("sunucu bildirimi yapılandırılmamış"));
     if (!("serviceWorker" in navigator) || !("Notification" in window)) {
-      return Promise.reject(new Error("push-desteklenmiyor"));
+      return Promise.reject(new Error("bu cihaz sunucu bildirimini desteklemiyor"));
     }
     // Compat SDK vendor'dan (script-src 'self' CSP'siyle uyumlu).
     function loadSdk() {
@@ -150,7 +150,7 @@
     if (STATE.registering) return STATE.registering;
     var f = cfg();
     if (!f) {
-      STATE.disabledReason = "push-yapılandırma-yok";
+      STATE.disabledReason = "sunucu bildirimi yapılandırılmamış";
       return Promise.resolve(null);
     }
     if (!authed()) {
@@ -168,7 +168,7 @@
   // --- Gönderim (sunucuya) ----------------------------------------------------
   // Kritik olayı aile üyelerine ilet: hedefler üye e-postalarından gelir.
   function sendEventTo(emails, event) {
-    if (!cfg()) return Promise.reject(new Error("push-yapılandırma-yok"));
+    if (!cfg()) return Promise.reject(new Error("sunucu bildirimi yapılandırılmamış"));
     if (!authed()) return Promise.reject(new Error("oturum-yok"));
     var list = (Array.isArray(emails) ? emails : [])
       .map(function (e) { return String(e || "").trim(); })
@@ -188,8 +188,8 @@
     return register().then(function () {
       return window.nexusCloud.pushSend({
         action: "test",
-        title: window.nexusT ? nexusT("NEXUS push testi", "NEXUS push test") : "NEXUS push testi",
-        body: window.nexusT ? nexusT("Bu bir test bildirimi — uygulama kapalıyken de böyle düşer.", "This is a test push — it also arrives while the app is closed.") : "Test",
+        title: window.nexusT ? nexusT("NEXUS test bildirimi", "NEXUS test notification") : "NEXUS test bildirimi",
+        body: window.nexusT ? nexusT("Bu bir test bildirimi — uygulama kapalıyken de böyle düşer.", "This is a test notification — it also arrives while the app is closed.") : "Test",
       });
     });
   }

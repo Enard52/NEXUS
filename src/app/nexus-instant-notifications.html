@@ -95,7 +95,7 @@
       <div class="space-y-3">
         <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Ses ve Titreşim</h3>
         <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100/50">
-          <div class="px-5 pt-4 pb-1 flex items-center justify-end gap-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest"><span class="w-11 text-center">Ses</span><span class="w-11 text-center" data-vib-col>Titreşim</span></div>
+          <div class="px-5 pt-4 pb-1 flex items-center justify-end gap-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest"><span class="w-11 text-center" data-vib-col>Titreşim</span></div>
           <div class="px-5 py-3 flex items-center justify-between notification-row"><p class="font-semibold text-sm">Güvenlik</p><div class="flex items-center gap-5"><label class="switch"><input type="checkbox" data-key="sound-security" aria-label="Güvenlik sesi"><span class="slider"></span></label><label class="switch" data-vib-col><input type="checkbox" data-key="vib-security" aria-label="Güvenlik titreşimi"><span class="slider"></span></label></div></div>
           <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="px-5 py-3 flex items-center justify-between notification-row"><p class="font-semibold text-sm">Acil Durumlar</p><div class="flex items-center gap-5"><label class="switch"><input type="checkbox" data-key="sound-emergency" aria-label="Acil durum sesi"><span class="slider"></span></label><label class="switch" data-vib-col><input type="checkbox" data-key="vib-emergency" aria-label="Acil durum titreşimi"><span class="slider"></span></label></div></div>
@@ -129,8 +129,8 @@
           </div>
           <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 channel-row">
-            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600"><i data-lucide="smartphone" class="w-6 h-6"></i></div><div><p class="font-semibold">Cihazlar Arası Push</p><p class="text-xs text-slate-500 font-medium">Aile üyesinin uyarısı uygulama kapalıyken de düşer</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="push"><span class="slider"></span></label></div>
-            <p class="text-[11px] text-slate-400 mt-2">Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı push'u kendi cihazında açmış olmalı.</p>
+            <div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600"><i data-lucide="smartphone" class="w-6 h-6"></i></div><div><p class="font-semibold">Cihazlar Arası Bildirim</p><p class="text-xs text-slate-500 font-medium">Aile üyesinin uyarısı, o kişinin uygulaması kapalıyken de bildirim merkezine düşer</p></div></div><label class="switch shrink-0"><input type="checkbox" data-channel="push"><span class="slider"></span></label></div>
+            <p class="text-[11px] text-slate-400 mt-2">Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı bu kanalı kendi cihazında açmış olmalı.</p>
           </div>
           <div class="h-[1px] bg-slate-50 mx-5"></div>
           <div class="p-5 channel-row">
@@ -250,7 +250,7 @@
       system: ['Sistem Bildirimleri', 'System notifications'],
       telegram: ['Telegram', 'Telegram'],
       email: ['E-posta', 'Email'],
-      push: ['Cihazlar Arası Push', 'Cross-device Push'],
+      push: ['Cihazlar Arası Bildirim', 'Cross-device Notifications'],
       ntfy: ['ntfy', 'ntfy'],
       webhook: ['Webhook', 'Webhook'],
     };
