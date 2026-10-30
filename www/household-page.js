@@ -8,9 +8,10 @@
     var detailId = "";
     var sheetMode = "";
     var memberRef = null; // { userId } (bulut) ya da { index } (yerel)
-    var cloudState = { ok: false, reason: "cloud-off" };
-    var refreshInfo = { ok: true, reason: "" };
     var HC = window.nexusHouseholdCloud;
+    // Bulut durumu sorgulanana kadar "pending": sorgu bitmeden "bulut kapalı" uyarısı çakıp sönmesin.
+    var cloudState = HC ? { ok: false, reason: "pending" } : { ok: false, reason: "cloud-off" };
+    var refreshInfo = { ok: true, reason: "" };
 
     function showHouseholdToast(msg, type) { window.nexusToast(msg, { type: type === 'error' ? 'error' : 'success' }); }
     function fail(error) {
@@ -115,7 +116,9 @@
     function renderBanner() {
       var el = document.getElementById("cloud-banner");
       var text = "", action = "";
-      if (!cloudState.ok && cloudState.reason === "cloud-off") {
+      if (cloudState.reason === "pending") {
+        // henüz sorgulanıyor: uyarı gösterme
+      } else if (!cloudState.ok && cloudState.reason === "cloud-off") {
         text = "Bulut bağlantısı bu sürümde kapalı. Evler yalnızca bu cihazda tutulur; üye daveti ve aile sohbeti kullanılamaz.";
       } else if (!cloudState.ok) {
         text = "Oturum açık değil. Evler yalnızca bu cihazda tutulur. Üye davet etmek, bir eve katılmak ve aile sohbeti için oturum aç.";

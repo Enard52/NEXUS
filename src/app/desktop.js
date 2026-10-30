@@ -322,6 +322,14 @@
     var header = document.querySelector("body > header.nx-desk-col");
     if (!header) return;
     if (!isDesk()) return;
+    // Önceki çağrıda yazdığımız zemin rengini sıfırla: tema (açık/koyu) değişince eski renk kalmasın
+    var prevTabs = header.__nxAutoTabs;
+    if (header.__nxAutoBg) { header.style.background = ""; header.style.backdropFilter = ""; header.style.webkitBackdropFilter = ""; header.__nxAutoBg = false; }
+    if (prevTabs) { prevTabs.style.background = ""; prevTabs.style.backdropFilter = ""; prevTabs.style.webkitBackdropFilter = ""; header.__nxAutoTabs = null; }
+    if (!header.__nxThemeWatch && window.MutationObserver) {
+      header.__nxThemeWatch = true;
+      new MutationObserver(function () { stickyHeader(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    }
     var pageBg = getComputedStyle(document.body).backgroundColor;
     var gradientBody = pageBg === "rgba(0, 0, 0, 0)" && getComputedStyle(document.body).backgroundImage !== "none";
     if (pageBg === "rgba(0, 0, 0, 0)") {
@@ -340,6 +348,7 @@
         header.style.backdropFilter = "blur(14px)";
         header.style.webkitBackdropFilter = "blur(14px)";
       } else header.style.background = pageBg;
+      header.__nxAutoBg = true;
     }
     // Sekme çubuğu: başlıktan sonra gelen ilk sabit olmayan NAV (alt gezinme sabit olduğu için atlanır)
     var tabs = null;
@@ -358,6 +367,7 @@
         tabs.style.backdropFilter = "blur(14px)";
         tabs.style.webkitBackdropFilter = "blur(14px)";
       } else tabs.style.background = pageBg;
+      header.__nxAutoTabs = tabs;
     }
 
     // Kaydırınca başlık kompakt hâle gelir (alt boşluk azalır, altında ince çizgi/gölge çıkar); tepeye dönünce eski hâli.
