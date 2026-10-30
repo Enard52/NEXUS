@@ -71,6 +71,8 @@
 </header>
 
 <main class="flex-grow px-4 pt-6 pb-8 space-y-4 overflow-y-auto">
+  <input id="settings-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="Ayarlarda ara" aria-label="Ayarlarda ara" class="w-full h-12 px-5 rounded-2xl border-none bg-white text-slate-900 placeholder-slate-400 text-base shadow-sm focus:ring-2 focus:ring-[#4C7DFF]">
+  <p id="settings-search-empty" class="hidden text-center text-sm text-slate-500 py-6">Bu aramayla eşleşen ayar yok.</p>
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
     <a href="nexus-user-info.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
       <span class="text-xl text-gray-800 font-medium">Kişisel Bilgiler</span>
@@ -464,6 +466,28 @@
 </main>
 
 <script src="app-version.js"></script>
+<script>
+  // Ayar arama: bölüm kartlarını görünen metne göre süzer. Zaten gizli olan kartlar (ör. masaüstü bölümü) gizli kalır.
+  (function () {
+    var input = document.getElementById('settings-search');
+    var empty = document.getElementById('settings-search-empty');
+    if (!input) return;
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-purpose="settings-card"]'));
+    function norm(s) { return String(s || '').toLocaleLowerCase('tr').replace(/\s+/g, ' ').trim(); }
+    function apply() {
+      var q = norm(input.value);
+      var shown = 0;
+      cards.forEach(function (card) {
+        var match = !q || norm(card.textContent).indexOf(q) !== -1;
+        card.classList.toggle('nx-search-hidden', !match);
+        card.style.display = match ? '' : 'none';
+        if (match && !card.classList.contains('hidden')) shown++;
+      });
+      empty.classList.toggle('hidden', !q || shown > 0);
+    }
+    input.addEventListener('input', apply);
+  })();
+</script>
 <script>
   (function () {
     var el = document.getElementById('nx-app-version');
