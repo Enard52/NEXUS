@@ -4284,6 +4284,7 @@ const SEO_ROUTES = [
   ['/terms', 0.3, 'monthly'],
   ['/refund', 0.3, 'monthly'],
   ['/code-signing', 0.3, 'monthly'],
+  ['/contribute', 0.4, 'monthly'],
 ];
 const urlFor = (route, lang) => (lang === 'tr' ? (route === '/' ? '/tr/' : '/tr' + route) : route);
 
@@ -4448,6 +4449,8 @@ window.NEXUS_CLOUD = {
   writeFileSync(join(PUB, 'tr', 'refund.html'), renderLegalDoc(content.tr, 'refund', LEGAL_DOCS.refundTr), 'utf8');
 writeFileSync(join(PUB, 'code-signing.html'), renderLegalDoc(content.en, 'code-signing', LEGAL_DOCS.codeSigningEn), 'utf8');
 writeFileSync(join(PUB, 'tr', 'code-signing.html'), renderLegalDoc(content.tr, 'code-signing', LEGAL_DOCS.codeSigningTr), 'utf8');
+writeFileSync(join(PUB, 'contribute.html'), renderLegalDoc(content.en, 'contribute', LEGAL_DOCS.contributeEn), 'utf8');
+writeFileSync(join(PUB, 'tr', 'contribute.html'), renderLegalDoc(content.tr, 'contribute', LEGAL_DOCS.contributeTr), 'utf8');
 
   writeFileSync(join(PUB, 'light.html'), renderLightRedirect(false), 'utf8');
   writeFileSync(join(PUB, 'tr', 'light.html'), renderLightRedirect(true), 'utf8');
