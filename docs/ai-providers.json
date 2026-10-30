@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-10-30",
+  "providers": [
+    {
+      "id": "groq",
+      "name": "Groq",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "chatCompletionsUrl": "https://api.groq.com/openai/v1/chat/completions",
+      "getKeyUrl": "https://console.groq.com/keys",
+      "docsUrl": "https://console.groq.com/docs/rate-limits",
+      "freeTier": "Groq documents a 'Free Plan' with per-model limits shown in your own console under Settings > Limits. The numbers are not quoted here because the public rate-limits page does not list them.",
+      "workerEnv": "GROQ",
+      "defaultModel": "openai/gpt-oss-120b",
+      "caveats": [
+        "Limits are per organization and can change; check your console.",
+        "Reasoning models spend part of max_tokens on thinking."
+      ],
+      "verifiedOn": "2026-10-30"
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini API (Google AI Studio)",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "chatCompletionsUrl": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+      "getKeyUrl": "https://aistudio.google.com/apikey",
+      "docsUrl": "https://ai.google.dev/gemini-api/docs/pricing",
+      "freeTier": "The pricing page lists several models (for example Gemini 2.5 Flash and Flash-Lite) as 'Free of charge' on the Free Tier. Exact request limits are shown in Google AI Studio, not on the public rate-limits page.",
+      "workerEnv": "GEMINI",
+      "defaultModel": "gemini-3.5-flash",
+      "caveats": [
+        "On the Free Tier the pricing page states content is used to improve Google's products; the paid tier states it is not. Do not send private data through a free key.",
+        "Available free models change; confirm on the pricing page."
+      ],
+      "verifiedOn": "2026-10-30"
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter (':free' models)",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "chatCompletionsUrl": "https://openrouter.ai/api/v1/chat/completions",
+      "getKeyUrl": "https://openrouter.ai/keys",
+      "docsUrl": "https://openrouter.ai/docs/api-reference/limits",
+      "freeTier": "Models whose id ends in ':free' are limited to 20 requests per minute, and 50 requests per day with fewer than 10 credits purchased (1000 per day at 10 or more), per the OpenRouter limits page.",
+      "workerEnv": "OPENROUTER",
+      "defaultModel": "meta-llama/llama-3.3-70b-instruct:free",
+      "caveats": [
+        "Free models are shared and can be removed or rate-limited upstream without notice.",
+        "Prompts to free models may be logged by the upstream provider; check the model page."
+      ],
+      "verifiedOn": "2026-10-30"
+    }
+  ]
+}
