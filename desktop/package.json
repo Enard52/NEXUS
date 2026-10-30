@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
   "productName": "NEXUS",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "NEXUS — akıllı ev asistanı (masaüstü)",
   "homepage": "https://nexus-smarthome.pages.dev",
   "main": "main.cjs",
