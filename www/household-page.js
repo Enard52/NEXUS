@@ -626,7 +626,9 @@
         primary: { label: "Posta Uygulamasını Aç", onClick: function () {
           var subject = encodeURIComponent(home.name + " için NEXUS daveti");
           var body = encodeURIComponent("Merhaba " + (name || "") + ",\n\n" + home.name + " evine katılman için davet kodun: " + code + "\nNEXUS içinde \"Bir Eve Katıl\" alanına bu kodu gir (7 gün geçerli, yalnızca bu e-postayla çalışır).\n");
-          window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
+          // Adres formdan geliyor: yalnızca geçerli bir e-posta biçimi ve kodlanmış hâliyle mailto'ya girer
+          if (!/^[^\s@<>"'`]+@[^\s@<>"'`]+\.[^\s@<>"'`]+$/.test(email)) return;
+          window.location.href = "mailto:" + encodeURIComponent(email) + "?subject=" + subject + "&body=" + body;
         } },
         secondary: { label: "Vazgeç" }
       });
