@@ -160,6 +160,13 @@ describe("smart-card-detail-state: stored-data / device-keyword pages", () => {
     expect(isEmptyState(mk({ name: "Plug" }))).toBe(true);
   });
 
+  it("recognises a Turkish-named vacuum written with diacritics", () => {
+    const r = load({
+      file: "nexus-cleaning-start.html",
+      storage: { nexusLocalDevices: JSON.stringify([{ name: "Süpürge" }]) },
+    });
+    expect(r.main.innerHTML).toBe("");
+  });
   it("merges devices from every storage key and from getLocalDevices()", () => {
     const cam = JSON.stringify([{ name: "Cam", type: "camera" }]);
     for (const key of ["nexusPairedDevices", "nexusLocalDevices", "nexusDevices"]) {

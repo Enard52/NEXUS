@@ -75,7 +75,7 @@
       title: 'Temizlik cihazı yok',
       text: 'Robot süpürge eşleştirince oda ve rutin bilgileri burada görünecek.',
       icon: 'lucide:sparkles',
-      deviceKeywords: ['robot', 'vacuum', 'supurge', 'mop']
+      deviceKeywords: ['robot', 'vacuum', 'supurge', 'süpürge', 'mop']
     },
     'nexus-leave-home-summary.html': {
       title: 'Çıkış özeti hazır değil',
