@@ -3380,6 +3380,13 @@ function renderDownloads(c) {
         .join('\n      ')}
     </div>
     <p class="dl-note">${esc(c.downloads.smartScreenNote)}</p>
+    <p class="dl-note dl-more">${c.lang === 'tr' ? 'Diğer indirmeler' : 'More downloads'}:
+      <a href="${DL_BASE}/NEXUS-mac.dmg">macOS (.dmg)</a> ·
+      <a href="${DL_BASE}/NEXUS-linux.AppImage">Linux AppImage</a> ·
+      <a href="${DL_BASE}/NEXUS-linux.rpm">Linux .rpm</a> ·
+      <a href="${DL_BASE}/NEXUS-linux-arm64.AppImage">Linux ARM64 (Raspberry Pi)</a> ·
+      <a href="https://github.com/Enard52/NEXUS/blob/main/docs/IOS-BUILD.md" target="_blank" rel="noopener">${c.lang === 'tr' ? 'iPhone (ücretsiz Apple ID ile)' : 'iPhone (free Apple ID)'}</a>
+    </p>
     <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'Tüm kurucular, SHA-256 dosyaları ve güncelleme listeleri bu depoda' : 'Every installer, SHA-256 file and updater manifest lives in this repository'}">${icon('github')}${c.lang === 'tr' ? 'Kurulum deposunu gör' : 'View the installer repository'}</a></div>
   </div>
 </section>`;
