@@ -1,6 +1,6 @@
 // Sayfa başlığı geometrisi (#88): dikey boşluk ve yan boşluk ortak CSS'ten gelir; ekran başına sapma olmamalı.
 import { describe, expect, it } from "vitest";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const ROOT = resolve(__dirname, "..", "..", "..");
