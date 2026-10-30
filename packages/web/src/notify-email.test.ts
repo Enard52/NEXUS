@@ -126,6 +126,12 @@ describe("notify-email — HTML / başlık enjeksiyonu", () => {
     expect(buildMessage("", "", "tr").text).toBe("Uyarı");
   });
 
+  it("CRLF içeren başlık konu satırında satır sonu taşımaz (başlık enjeksiyonu)", () => {
+    const m = buildMessage("Merhaba\r\nBcc: victim@x.com\nX-Evil: 1", "", "tr");
+    expect(m.subject).not.toMatch(/[\r\n]/);
+    expect(m.subject.startsWith("NEXUS · Merhaba")).toBe(true);
+  });
+
   it("konu 'NEXUS · ' önekini taşır", () => {
     expect(buildMessage("Kapı açık", "", "tr").subject).toBe("NEXUS · Kapı açık");
   });
