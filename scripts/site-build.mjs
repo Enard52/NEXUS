@@ -2293,12 +2293,30 @@ function nxOpenCheckout(e){
                      : (cta.dataset.monthlyUrl || ('https://whop.com/checkout/' + (cta.dataset.plan || cta.dataset.monthlyPlan)));
   if(url){
     if(e && e.preventDefault) e.preventDefault();
+    // Abonelik, ödemede yazılan e-postaya tanımlanır (whop-webhook → nexus_entitlements.email).
+    // Hesapsız satın alma o e-postayla bir hesap açılana kadar hiçbir yerde görünmez; bu yüzden
+    // önce giriş/kayıt istenir ve ödeme e-postası hesabınkiyle doldurulur.
+    var sess = nxCloudSession();
+    if(!sess || !sess.accessToken || !sess.email){
+      nxRequireAccountForCheckout();
+      return false;
+    }
     var returnUrl = window.location.origin + window.location.pathname + '?payment=success';
     var sep = url.indexOf('?') >= 0 ? '&' : (url.endsWith('/') ? '?' : '/?');
-    window.location.href = url + sep + 'redirect_url=' + encodeURIComponent(returnUrl);
+    window.location.href = url + sep + 'email=' + encodeURIComponent(sess.email) + '&redirect_url=' + encodeURIComponent(returnUrl);
     return false;
   }
   return true;
+}
+function nxRequireAccountForCheckout(){
+  var isTr=document.documentElement.lang==='tr';
+  nxOpenAuthModal();
+  if(nxAuthMode==='login') nxToggleAuthMode();
+  // Bilgi, hata kutusuna değil alt başlığa yazılır (hata renkleri karışmasın); modu değiştirince eski metne döner.
+  var sub=document.getElementById('nxAuthSubtitle');
+  if(sub) sub.textContent=isTr
+    ? 'NEXUS+ aboneliği hesabına tanımlanır. Önce ücretsiz hesap oluştur ya da giriş yap, sonra ödemeye geç.'
+    : 'NEXUS+ is attached to your account. Create a free account or sign in first, then continue to checkout.';
 }
 function nxCloseCheckout(){
   var modal=document.getElementById('nxCheckoutModal');

@@ -144,7 +144,7 @@
           if (loading) { listEl.innerHTML = '<p class="mt-10 text-center text-sm text-slate-400">Pano yükleniyor…</p>'; return; }
           if (!items.length) {
             listEl.innerHTML = '<div class="mx-auto mt-12 max-w-xs text-center"><div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-7 h-7" data-lucide="clipboard-list"></i></div>' +
-              '<p class="text-lg font-bold">Pano boş</p><p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Alışveriş listesi, ev işleri ya da kısa notlar — ailenle paylaştığın ilk kalemi ekle.</p></div>';
+              '<p class="text-lg font-bold">Pano boş</p><p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Alışveriş listesi, ev işleri ya da kısa notlar — ailenle paylaştığın ilk maddeyi ekle.</p></div>';
             lucide.createIcons();
             return;
           }
@@ -221,7 +221,7 @@
           } else if (t.hasAttribute("data-del")) {
             var delId = t.getAttribute("data-del");
             window.nexusDialog({
-              icon: "warning", title: "Kalemi Sil", message: "Bu kalem panodan tüm üyeler için kaldırılır.",
+              icon: "warning", title: "Maddeyi Sil", message: "Bu madde panodan tüm üyeler için kaldırılır.",
               primary: { label: "Sil", onClick: function () {
                 HC.deleteBoardItem(homeId, delId).then(reload, function (e) { setBanner(e.message); });
               } },

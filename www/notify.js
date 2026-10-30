@@ -427,11 +427,11 @@
   function sendPush(cfg, event) {
     var push = window.nexusPush;
     if (!push || !push.status || !push.status().configured)
-      return Promise.reject(new Error("push yapılandırması yok"));
+      return Promise.reject(new Error("sunucu bildirimi yapılandırılmamış"));
     var targets = householdEmails();
     if (!targets.length) return Promise.resolve({ skipped: true });
     return push.sendEventTo(targets, event).then(function (res) {
-      if (!res || !res.ok) throw new Error(String((res && res.error) || "push gönderilemedi").slice(0, 120));
+      if (!res || !res.ok) throw new Error(String((res && res.error) || "sunucu bildirimi gönderilemedi").slice(0, 120));
       return res;
     });
   }
