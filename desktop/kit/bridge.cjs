@@ -23,6 +23,9 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+// Electron (BoringSSL) 'chacha20-poly1305' sunmaz; hap-nodejs açılışta bunu ister.
+// Shim'i hap YÜKLENMEDEN kur (açıldığı andaki assert atlar). Gerçek Node'da etkisiz.
+require("./chacha-polyfill.cjs")();
 const hap = require("hap-nodejs");
 const { Accessory, Bridge, Categories, Characteristic, Service, uuid, HAPStorage } = hap;
 

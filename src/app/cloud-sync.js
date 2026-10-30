@@ -1229,6 +1229,7 @@
               { event: "*", schema: "public", table: "household_members" },
               { event: "*", schema: "public", table: "household_messages" },
               { event: "*", schema: "public", table: "household_activity" },
+              { event: "*", schema: "public", table: "household_board_items" },
             ],
           },
           access_token: current.accessToken,

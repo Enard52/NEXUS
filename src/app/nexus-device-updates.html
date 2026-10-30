@@ -164,12 +164,16 @@
       }
 
       document.getElementById('update-count').textContent = devices.length + ' cihaz kontrol bekliyor';
+      // Ana sayfadaki cihaz kartıyla aynı görsel kimliği: satırda ürün görseli de görünsün
       list.innerHTML = devices.map((device, index) => (
         '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50">' +
           '<div class="flex items-center justify-between gap-3">' +
-            '<div class="min-w-0">' +
-              '<h4 class="font-bold truncate">' + escapeHtml(device.name || ('Cihaz ' + (index + 1))) + '</h4>' +
-              '<p class="text-xs text-slate-500 mt-0.5 dark:text-slate-300">' + escapeHtml(device.host && device.protocol ? 'Yerel ağ · ' + device.protocol : 'Katalogdan eklendi') + '</p>' +
+            '<div class="min-w-0 flex items-center gap-3">' +
+              (window.NX ? '<img src="' + NX.imageUrl(device) + '" alt="" class="w-12 h-12 object-contain shrink-0" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'">' : '') +
+              '<div class="min-w-0">' +
+                '<h4 class="font-bold truncate">' + escapeHtml(device.name || ('Cihaz ' + (index + 1))) + '</h4>' +
+                '<p class="text-xs text-slate-500 mt-0.5 dark:text-slate-300">' + escapeHtml(device.host && device.protocol ? 'Yerel ağ · ' + device.protocol : 'Katalogdan eklendi') + '</p>' +
+              '</div>' +
             '</div>' +
             '<button type="button" onclick="runCheck(' + index + ')" class="shrink-0 min-h-[40px] px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold dark:bg-slate-100 dark:text-slate-900">Kontrol Et</button>' +
           '</div>' +

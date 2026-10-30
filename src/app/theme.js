@@ -398,6 +398,26 @@ window.addEventListener('error', function(e) {
   window.addEventListener('nexusAccentChanged', applyAccent);
   window.addEventListener('storage', function (e) { if (e.key === 'nexusAccent') applyAccent(); });
 
+  // Sahibin kararı (30 Eki 2026): uygulama her yerde varsayılan OLARAK AÇIK temayla
+  // açılır. Kodda varsayılan zaten açıktı; kullanıcılarında kalmış eski "koyu"
+  // tercihi de bir kez aydınlatılır (isteyen Ayarlar'dan yeniden koyuya dönebilir).
+  // Tek seferlik göç: işaret bırakılır, sonraki tercihler dokunulmaz.
+  try {
+    const resetKey = 'nexusLightDefault20261030';
+    const store = typeof nexusGetItem === 'function' ? {
+      get: nexusGetItem, set: nexusSetItem,
+    } : {
+      get: (k) => localStorage.getItem(k), set: (k, v) => localStorage.setItem(k, v),
+    };
+    if (store.get(resetKey) !== '1') {
+      if (store.get('nexusDarkMode') === 'true' || store.get('nexusThemeSystem') === 'true') {
+        store.set('nexusDarkMode', 'false');
+        store.set('nexusThemeSystem', 'false');
+      }
+      store.set(resetKey, '1');
+    }
+  } catch (resetErr) { /* depolama kapalıysa varsayılan açık tema zaten geçerli */ }
+
   // Apply immediately to avoid flicker
   applyTheme();
 

@@ -62,6 +62,11 @@
     ];
   }
 
+  // Ana sayfa kartıyla aynı ürün görseli (NX.imageUrl); yoksa simge kalır
+  function deviceImage(d) {
+    try { return window.NX && typeof NX.imageUrl === "function" && d ? NX.imageUrl(d) : ""; } catch (e) { return ""; }
+  }
+
   function buildItems(q) {
     var query = String(q || "").trim().toLocaleLowerCase("tr-TR");
     var out = [];
@@ -71,6 +76,7 @@
       if (query && name.toLocaleLowerCase("tr-TR").indexOf(query) === -1) return;
       out.push({
         icon: d && d.state && d.state.switch === true ? "power" : "cpu",
+        img: deviceImage(d),
         label: name,
         hint: d && d.room ? d.room : T("Cihaz", "Device"),
         run: function () { location.href = "nexus-device.html?i=" + i; },
@@ -112,7 +118,10 @@
     active = 0;
     listEl.innerHTML = items.length ? items.map(function (it, i) {
       return '<button type="button" id="nx-pal-opt-' + i + '" role="option" class="nx-pal-item' + (i === 0 ? " is-active" : "") + '" data-i="' + i + '">' +
-        '<i data-lucide="' + it.icon + '"></i><span class="nx-pal-label">' + esc(it.label) + "</span>" +
+        (it.img
+          ? '<img src="' + esc(it.img) + '" alt="" width="24" height="24" style="width:24px;height:24px;object-fit:contain;flex-shrink:0" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"/>'
+          : '<i data-lucide="' + it.icon + '"></i>') +
+        '<span class="nx-pal-label">' + esc(it.label) + "</span>" +
         '<span class="nx-pal-hint">' + esc(it.hint) + "</span></button>";
     }).join("") : '<p class="nx-pal-empty">' + esc(T("Sonuç yok", "No results")) + "</p>";
     Array.prototype.forEach.call(listEl.querySelectorAll(".nx-pal-item"), function (btn) {

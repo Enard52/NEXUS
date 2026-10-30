@@ -1,0 +1,250 @@
+<!doctype html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0" />
+    <title>NEXUS — Ev Panosu</title>
+    <link href="css/tailwind.css" rel="stylesheet" />
+    <link href="css/nexus-ui.css" rel="stylesheet" />
+    <link href="fonts/inter/inter.css" rel="stylesheet" />
+    <style data-purpose="custom-typography">
+      body { font-family: "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+    </style>
+    <style data-purpose="custom-layout">
+      .bg-gradient-custom { background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%); }
+      .menu-container-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); }
+      body { min-height: 100dvh; }
+    </style>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="data.js"></script>
+    <script src="nexus-dialog.js"></script>
+  </head>
+  <body class="bg-gradient-custom text-slate-900 dark:text-slate-50 min-h-screen flex flex-col">
+    <!-- BEGIN: Header -->
+    <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+      <a
+        aria-label="Geri"
+        class="p-1 -ml-1 text-slate-700 dark:text-slate-200"
+        href="#"
+        onclick="event.preventDefault(); if (history.length > 1) history.back(); else location.href = 'nexus-messages.html';"
+      >
+        <i class="w-7 h-7 text-slate-700 dark:text-slate-200" data-lucide="chevron-left"></i>
+      </a>
+      <h1 class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2">Ev Panosu</h1>
+    </header>
+    <!-- END: Header -->
+
+    <main class="flex-grow px-5 pt-2 pb-10">
+      <div id="state-banner" class="warn mb-3 hidden rounded-2xl px-4 py-2.5 text-sm font-medium" aria-live="polite"></div>
+
+      <!-- Ekleme: metin + tür seçimi (Liste = işaretlenebilir madde, Not = düz not) -->
+      <form id="add-form" class="mb-5 flex items-center gap-2">
+        <input
+          id="add-input"
+          type="text"
+          maxlength="500"
+          enterkeyhint="done"
+          autocomplete="off"
+          placeholder="Listeye ekle ya da not yaz…"
+          class="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium focus:border-[#4C7DFF] focus:ring-2 focus:ring-[#4C7DFF]/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50"
+        />
+        <button
+          type="button"
+          id="kind-toggle"
+          aria-label="Tür değiştir: liste maddesi / not"
+          class="flex h-12 shrink-0 items-center gap-1.5 rounded-2xl bg-white px-3 text-xs font-bold text-[#4C7DFF] shadow-sm active:scale-95 transition-transform dark:bg-slate-800"
+        >
+          <i class="w-4 h-4" data-lucide="list-check"></i><span id="kind-label">Liste</span>
+        </button>
+        <button
+          type="submit"
+          aria-label="Ekle"
+          class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#4C7DFF] text-white transition-transform active:scale-95"
+        >
+          <i class="w-5 h-5" data-lucide="plus"></i>
+        </button>
+      </form>
+
+      <div id="board-list"></div>
+    </main>
+
+    <script src="js/lucide.js"></script>
+    <script src="household-cloud.js"></script>
+    <script data-purpose="board-interactions">
+      (function () {
+        "use strict";
+        var HC = window.nexusHouseholdCloud;
+        var listEl = document.getElementById("board-list");
+        var banner = document.getElementById("state-banner");
+        var form = document.getElementById("add-form");
+        var input = document.getElementById("add-input");
+        var kindToggle = document.getElementById("kind-toggle");
+        var kindLabel = document.getElementById("kind-label");
+        var kind = "item"; // 'item' | 'note'
+        var homeId = "";
+        var items = [];
+        var loading = true;
+
+        function esc(value) {
+          return String(value == null ? "" : value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+        }
+        function setBanner(text) {
+          if (!text) { banner.classList.add("hidden"); banner.textContent = ""; return; }
+          banner.textContent = text;
+          banner.classList.remove("hidden");
+        }
+        kindToggle.addEventListener("click", function () {
+          kind = kind === "item" ? "note" : "item";
+          kindLabel.textContent = kind === "item" ? "Liste" : "Not";
+          kindToggle.querySelector("i,svg").outerHTML = '<i class="w-4 h-4" data-lucide="' + (kind === "item" ? "list-check" : "sticky-note") + '"></i>';
+          lucide.createIcons();
+        });
+
+        // Panonun evi: sohbetle aynı kural — ilk bulut ev (çok evliyse seçici burada yoktur).
+        function resolveHome() {
+          var homes = (HC && HC.homes ? HC.homes() : []).filter(function (h) { return h && h.cloud; });
+          return homes[0] || null;
+        }
+
+        function timeLabel(iso) {
+          var d = new Date(iso);
+          var today = new Date();
+          if (d.toDateString() === today.toDateString()) return d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+          return d.toLocaleDateString("tr-TR", { day: "numeric", month: "short" });
+        }
+
+        function rowHtml(item) {
+          var mine = item.created_by === myId();
+          var isItem = item.kind === "item";
+          var lead = isItem
+            ? '<button type="button" data-toggle="' + esc(item.id) + '" aria-pressed="' + (item.done ? "true" : "false") + '" aria-label="' + (item.done ? "Geri al" : "Tamamla") + '" class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors ' + (item.done ? "border-[#4C7DFF] bg-[#4C7DFF] text-white" : "border-slate-300 dark:border-slate-600") + '">' + (item.done ? '<i class="w-4 h-4" data-lucide="check"></i>' : "") + "</button>"
+            : '<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-4 h-4" data-lucide="sticky-note"></i></span>';
+          var del = mine
+            ? '<button type="button" data-del="' + esc(item.id) + '" aria-label="Sil" class="ml-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-300 hover:text-red-500 active:scale-90 transition-all"><i class="w-4 h-4" data-lucide="trash-2"></i></button>'
+            : "";
+          return '<article class="mb-2.5 flex items-center gap-3 rounded-2xl bg-white p-4 menu-container-shadow dark:bg-slate-900">' +
+            lead +
+            '<div class="min-w-0 flex-1"><p class="break-words text-[15px] font-medium leading-snug ' + (item.done ? "text-slate-400 line-through" : "") + '">' + esc(item.body) + "</p>" +
+            '<p class="mt-0.5 text-[11px] font-medium text-slate-400">' + esc(item.author_name || "Bir üye") + " · " + esc(timeLabel(item.created_at)) + (isItem && item.done && item.done_by && item.done_by !== item.created_by ? " · " + esc(item.doneByName || "üye") + " tamamladı" : "") + "</p></div>" +
+            del + "</article>";
+        }
+
+        function myId() {
+          var h = resolveHome();
+          return h && h.myUserId ? h.myUserId : "";
+        }
+
+        function render() {
+          if (loading) { listEl.innerHTML = '<p class="mt-10 text-center text-sm text-slate-400">Pano yükleniyor…</p>'; return; }
+          if (!items.length) {
+            listEl.innerHTML = '<div class="mx-auto mt-12 max-w-xs text-center"><div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-7 h-7" data-lucide="clipboard-list"></i></div>' +
+              '<p class="text-lg font-bold">Pano boş</p><p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Alışveriş listesi, ev işleri ya da kısa notlar — ailenle paylaştığın ilk kalemi ekle.</p></div>';
+            lucide.createIcons();
+            return;
+          }
+          var doneItems = items.filter(function (x) { return x.kind === "item"; });
+          var notes = items.filter(function (x) { return x.kind === "note"; });
+          var html = "";
+          if (notes.length) {
+            html += '<p class="mb-2 px-1 text-sm font-medium text-slate-500">Notlar</p>' + notes.map(rowHtml).join("");
+          }
+          if (doneItems.length) {
+            var open = doneItems.filter(function (x) { return !x.done; });
+            var closed = doneItems.filter(function (x) { return x.done; });
+            html += '<p class="mb-2 mt-4 px-1 text-sm font-medium text-slate-500">Liste' + (closed.length ? " · " + open.length + "/" + doneItems.length : "") + "</p>" + open.concat(closed).map(rowHtml).join("");
+          }
+          listEl.innerHTML = html;
+          lucide.createIcons();
+        }
+
+        function reload() {
+          var home = resolveHome();
+          if (!home) {
+            loading = false;
+            form.classList.add("hidden");
+            listEl.innerHTML = '<div class="mx-auto mt-12 max-w-xs text-center"><p class="text-lg font-bold">Henüz bir evin yok</p><p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Ev Panosu evin üyeleri arasındadır. Ev Yönetimi\'nden ev oluştur ya da davetle katıl.</p>' +
+              '<a href="nexus-household.html" class="mt-5 inline-block rounded-xl bg-[#4C7DFF]/10 px-5 py-3 text-sm font-bold text-[#4C7DFF]">Ev Yönetimi</a></div>';
+            lucide.createIcons();
+            return;
+          }
+          homeId = home.id;
+          // done_by kimliğini adla göstermek için üye önbelleği kullanılır.
+          HC.listBoard(homeId).then(function (rows) {
+            loading = false;
+            items = rows || [];
+            items.forEach(function (it) {
+              if (it.done_by) {
+                var m = home.members.filter(function (x) { return x.userId === it.done_by; })[0];
+                it.doneByName = m && m.name ? m.name : "";
+              }
+            });
+            setBanner("");
+            form.classList.remove("hidden");
+            render();
+          }, function (e) {
+            loading = false;
+            render();
+            setBanner(e.message + " Pano şu an kapalı.");
+          });
+        }
+
+        form.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          var text = input.value;
+          if (!text.trim() || !homeId) return;
+          HC.addBoardItem(homeId, text, kind).then(function () {
+            input.value = "";
+            reload();
+          }, function (e) { setBanner(e.message); });
+        });
+
+        listEl.addEventListener("click", function (ev) {
+          var t = ev.target.closest("button");
+          if (!t) return;
+          if (t.hasAttribute("data-toggle")) {
+            var id = t.getAttribute("data-toggle");
+            var cur = items.filter(function (x) { return x.id === id; })[0];
+            HC.setBoardDone(homeId, id, !(cur && cur.done)).then(reload, function (e) { setBanner(e.message); });
+          } else if (t.hasAttribute("data-del")) {
+            var delId = t.getAttribute("data-del");
+            window.nexusDialog({
+              icon: "warning", title: "Kalemi Sil", message: "Bu kalem panodan tüm üyeler için kaldırılır.",
+              primary: { label: "Sil", onClick: function () {
+                HC.deleteBoardItem(homeId, delId).then(reload, function (e) { setBanner(e.message); });
+              } },
+              secondary: { label: "Vazgeç" }
+            });
+          }
+        });
+
+        // Pano canlı akar: Realtime INSERT/UPDATE/DELETE → yeniden yükle (basit ve doğru).
+        window.addEventListener("nexusBoardChanged", function () { if (!document.hidden) reload(); });
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) reload(); });
+
+        if (!HC) {
+          listEl.innerHTML = '<p class="mt-10 text-center text-sm text-slate-400">Ev Panosu bu sürümde kullanılamıyor.</p>';
+          form.classList.add("hidden");
+          return;
+        }
+        HC.status().then(function (st) {
+          if (!st.ok) {
+            loading = false;
+            form.classList.add("hidden");
+            listEl.innerHTML = st.reason === "cloud-off"
+              ? '<p class="mt-10 text-center text-sm text-slate-400">Bulut bağlantısı kapalı olduğu için pano kullanılamıyor.</p>'
+              : '<p class="mt-10 text-center text-sm text-slate-400">Ev Panosu için oturum açmalısın.</p><a href="nexus-login.html" class="mt-4 mx-auto flex w-40 items-center justify-center rounded-xl bg-[#4C7DFF] py-3 text-sm font-bold text-white">Oturum Aç</a>';
+            lucide.createIcons();
+            return;
+          }
+          HC.refresh().then(function () { reload(); }, function () { reload(); });
+        });
+      })();
+    </script>
+  </body>
+</html>

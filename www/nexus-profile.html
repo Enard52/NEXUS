@@ -287,6 +287,19 @@
           if (e.key && e.key.includes("nexusAvatar")) refreshProfile();
         });
       })();
+      // Masaüstünde HomeKit köprüsü gerçek: rozet "Rehber" değil "Köprü" der.
+      // Web/telefonda köprü olmadığından yol gösteren "Rehber" kalır.
+      (function () {
+        if (!(window.nexusDesktop && window.nexusDesktop.kit)) return;
+        var rows = document.querySelectorAll('a[href="nexus-homekit.html"]');
+        for (var i = 0; i < rows.length; i++) {
+          var badge = rows[i].querySelector("span.rounded-full");
+          if (badge && /Rehber/.test(badge.textContent || "")) {
+            badge.textContent = "Köprü";
+            badge.className = badge.className.replace(/text-slate-500\s+bg-slate-100/, "text-emerald-600 bg-emerald-100 dark:text-emerald-300 dark:bg-emerald-900/40");
+          }
+        }
+      })();
     </script>
     <!-- END: IconInitialization -->
   </body>

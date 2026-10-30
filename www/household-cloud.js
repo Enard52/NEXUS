@@ -111,7 +111,13 @@
   function permsOf(member) {
     var p = (member && member.perms) || {};
     var owner = member && member.role === "owner";
-    return { control: owner || p.control === true, invite: owner || p.invite === true, settings: owner || p.settings === true };
+    return {
+      control: owner || p.control === true,
+      invite: owner || p.invite === true,
+      settings: owner || p.settings === true,
+      // Oda erişimi: null = tüm odalar; dizi = yalnız bu odalar (sahipte hiç kısıt yok).
+      rooms: owner ? null : (Array.isArray(p.rooms) ? p.rooms.slice() : null),
+    };
   }
 
   function homeFromRow(row, myId) {
@@ -120,7 +126,9 @@
         userId: m.user_id,
         name: m.display_name || (m.email ? String(m.email).split("@")[0] : "Üye"),
         email: m.email || "",
-        avatar: "",
+        avatar: m.avatar_url || "",
+        lastSeenAt: m.last_seen_at || "",
+        chatLastRead: m.chat_last_read || "",
         roleKey: m.role,
         role: ROLE_TR[m.role] || "Üye",
         perms: permsOf(m),
@@ -155,12 +163,14 @@
   function refresh() {
     return status().then(function (st) {
       if (!st.ok) { lastRefresh = { ok: false, at: Date.now(), error: st.reason }; return { ok: false, reason: st.reason, homes: cachedHomes() }; }
-      return rest("/rest/v1/households?select=*,household_members(user_id,role,perms,display_name,email)&order=created_at.asc")
+      return rest("/rest/v1/households?select=*,household_members(user_id,role,perms,display_name,email,avatar_url,last_seen_at,chat_last_read)&order=created_at.asc")
         .then(function (rows) {
           var homes = (rows || []).map(function (r) { return homeFromRow(r, st.userId); });
           put(HOUSE_KEY, homes.concat(localOnlyHomes()));
           lastRefresh = { ok: true, at: Date.now(), error: "" };
           syncMyName(homes, st.userId);
+          syncMyAvatar(homes, st.userId);
+          startPresenceHeartbeat();
           changed({ kind: "homes" });
           return { ok: true, homes: homes };
         }, function (e) {
@@ -187,6 +197,132 @@
         }).catch(function () { /* en iyi çaba */ });
       }
     });
+  }
+
+  // Profil avatarı değiştiyse (nexusAvatarChanged) üye satırına küçük veri-URL olarak yazılır:
+  // aile listelerinde ve sohbette gerçek fotoğraf görünür. Yalnız kendi satırım.
+  // Sunucuya yazıldıktan sonra önbellek yerinde yamanır (yeniden fetch yok: gereksiz
+  // istek ve test koşusu sırasında istek kuyruğunu tüketme riski olmasın).
+  var lastAvatarSync = "";
+  function syncMyAvatar(homes, myId) {
+    var url = String((window.nexusGetItem && window.nexusGetItem("nexusAvatar")) || "");
+    if (!url || url.length > 200000 || url === lastAvatarSync) return;
+    var me = homes.length && homes[0].members.filter(function (m) { return m.userId === myId; })[0];
+    if (me && me.avatar === url) { lastAvatarSync = url; return; }
+    lastAvatarSync = url;
+    rpc("set_household_avatar", { p_avatar: url }).then(function () {
+      var all = get(HOUSE_KEY, []);
+      (Array.isArray(all) ? all : []).forEach(function (h) {
+        if (h && h.cloud && Array.isArray(h.members)) {
+          h.members.forEach(function (m) { if (m.userId === myId) m.avatar = url; });
+        }
+      });
+      put(HOUSE_KEY, all);
+      changed({ kind: "avatar" });
+    }, function () { /* en iyi çaba: sunucu reddederse ilk avatarla devam */ });
+  }
+
+  // --- çevrimiçi durumu (presence) ---------------------------------------------------
+  // Kalp atışı: uygulama açıkken 60 sn'de bir (ve görünürlük değişince) dokunulur.
+  // İlk vuruş 30 sn sonra: sayfa açılışındaki istek sırasına karışmaz (test koşuları
+  // ve hızlı ziyaretler ek istek görmez), üretimde ilk dakika içinde durum oturur.
+  // 3 dk = çevrimiçi, 15 dk = yakın zamanda, sonrası çevrimdışı (presenceOf hesaplar).
+  var presenceBooted = false;
+  function touchPresence() {
+    rpc("touch_household_presence", {}).catch(function () { /* sessiz: kalp atışı kritik değil */ });
+  }
+  function startPresenceHeartbeat() {
+    if (presenceBooted) return;
+    presenceBooted = true;
+    setTimeout(touchPresence, 30000);
+    setInterval(function () { if (!document.hidden) touchPresence(); }, 60000);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) touchPresence(); });
+  }
+  function presenceOf(member) {
+    var t = member && member.lastSeenAt ? Date.parse(member.lastSeenAt) : 0;
+    if (!t || isNaN(t)) return { key: "offline", label: "Çevrimdışı", online: false };
+    var mins = (Date.now() - t) / 60000;
+    if (mins <= 3) return { key: "online", label: "Çevrimiçi", online: true };
+    if (mins <= 15) return { key: "recent", label: "Son 15 dk içinde", online: false };
+    return { key: "offline", label: "Çevrimdışı", online: false };
+  }
+
+  // --- Ev Panosu: ortak liste + notlar ------------------------------------------------
+  // kind 'item' = işaretlenebilir madde (alışveriş vb.); 'note' = düz not.
+  // Herkes işaretleyebilir; silme yalnız kendi kaleminde (sahip herkesinkini silebilir).
+  function listBoard(homeId) {
+    return rest("/rest/v1/household_board_items?select=id,created_by,author_name,kind,body,done,done_by,created_at,updated_at" +
+      "&household_id=eq." + encodeURIComponent(homeId) + "&order=created_at.asc").then(function (rows) {
+      return rows || [];
+    });
+  }
+  function addBoardItem(homeId, body, kind) {
+    var text = cleanBody(String(body || "")).slice(0, 500);
+    if (!text) return Promise.reject(toError({ message: "empty_message" }));
+    return rest("/rest/v1/household_board_items", {
+      method: "POST", headers: { Prefer: "return=representation" },
+      body: JSON.stringify({ household_id: homeId, body: text, kind: kind === "note" ? "note" : "item", author_name: myName() }),
+    }).then(function (rows) { return Array.isArray(rows) ? rows[0] : rows; });
+  }
+  function setBoardDone(homeId, itemId, done) {
+    return patchOne("/rest/v1/household_board_items?id=eq." + encodeURIComponent(itemId) + "&household_id=eq." + encodeURIComponent(homeId),
+      { done: !!done, done_by: myUserId() || null });
+  }
+  function deleteBoardItem(homeId, itemId) {
+    return rest("/rest/v1/household_board_items?id=eq." + encodeURIComponent(itemId) + "&household_id=eq." + encodeURIComponent(homeId),
+      { method: "DELETE", headers: { Prefer: "return=representation" } })
+      .then(function (rows) {
+        if (!Array.isArray(rows) || !rows.length) throw toError({ message: "forbidden" });
+      });
+  }
+
+  // Kendi üye kimliğim (ilk bulut evinden); pano done_by için.
+  function myUserId() {
+    var homes = cachedHomes();
+    for (var i = 0; i < homes.length; i++) {
+      if (homes[i] && homes[i].myUserId) return homes[i].myUserId;
+    }
+    return "";
+  }
+
+  // Oda geçidi: aktif kullanıcının ev izinlerinde rooms dizisi varsa uygulama oda
+  // listelerini/cihazları bu odalarla sınırlar. null = kısıt yok (sahip/normal üye).
+  // Birden çok ev olabilir; oturum açan kullanıcının ilk bulut evi esas alınır.
+  function roomGate() {
+    var homes = cachedHomes();
+    for (var i = 0; i < homes.length; i++) {
+      var h = homes[i];
+      if (h && h.cloud && h.myPerms) {
+        return Array.isArray(h.myPerms.rooms) ? h.myPerms.rooms.slice() : null;
+      }
+    }
+    return null;
+  }
+
+  function setAvatar(url) {
+    return rpc("set_household_avatar", { p_avatar: String(url || "") }).then(function () { return refresh(); });
+  }
+
+  // Oturum açıksa yalnız-bu-cihaz evleri arka planda hesaba bağlanır (sahibin kararı:
+  // kullanıcı "taşı" düğmesine basmamalı; aile özellikleri doğrudan açık olur).
+  function migrateAllLocalHomes() {
+    var locals = localOnlyHomes();
+    if (!locals.length) return Promise.resolve(0);
+    var chain = Promise.resolve();
+    var done = 0;
+    locals.forEach(function (h) {
+      chain = chain.then(function () {
+        return migrateLocalHome(h).then(function () { done++; }, function () { /* tek ev hatası diğerini engellemesin */ });
+      });
+    });
+    return chain.then(function () { return done; });
+  }
+
+  // Sohbet/akışta gönderen kimliği: üye listesinden ad + avatar (sender_name boş/eksikse de doğru kimlik).
+  function memberById(homeId, userId) {
+    var home = cachedHomes().filter(function (h) { return h.id === homeId; })[0];
+    if (!home || !home.members) return null;
+    return home.members.filter(function (m) { return m.userId === userId; })[0] || null;
   }
 
   function changed(detail) {
@@ -245,6 +381,13 @@
 
   function setMemberAccess(homeId, userId, roleKey, perms) {
     return rpc("set_household_member_access", { p_household: homeId, p_user: userId, p_role: roleKey, p_perms: perms || {} })
+      .then(function () { return refresh(); });
+  }
+
+  // Oda erişimi: rooms = null (tüm odalar) | dizi (yalnız bu odalar). Yalnız sahip değiştirebilir.
+  function setMemberRooms(homeId, userId, rooms) {
+    var clean = rooms == null ? null : (Array.isArray(rooms) ? rooms.map(function (r) { return String(r).slice(0, 40); }) : null);
+    return rpc("set_household_member_rooms", { p_household: homeId, p_user: userId, p_rooms: clean })
       .then(function () { return refresh(); });
   }
 
@@ -370,13 +513,16 @@
 
   function listMessages(homeId, opts) {
     var o = opts || {};
-    var q = "/rest/v1/household_messages?select=id,sender_id,sender_name,body,created_at&household_id=eq." + encodeURIComponent(homeId) +
+    // parent:reply_to(...) — PostgREST kendi-tablo birleştirmesi: yanıtlanan mesajın
+    // kim ve ne yazdığı tek istekte gelir (yanıt baloncuğu için).
+    var q = "/rest/v1/household_messages?select=id,sender_id,sender_name,body,created_at,reply_to,reactions," +
+      "parent:reply_to(id,sender_name,body)&household_id=eq." + encodeURIComponent(homeId) +
       "&order=created_at.desc&limit=" + Math.min(100, o.limit || 50) +
       (o.before ? "&created_at=lt." + encodeURIComponent(o.before) : "");
     return rest(q).then(function (rows) { return (rows || []).slice().reverse(); });
   }
 
-  function sendMessage(homeId, text) {
+  function sendMessage(homeId, text, replyTo) {
     var body = cleanBody(text);
     if (!body) return Promise.reject(toError({ message: "empty_message" }));
     if (body.length > MAX_BODY) return Promise.reject(new Error("Mesaj en fazla " + MAX_BODY + " karakter olabilir."));
@@ -386,9 +532,36 @@
       return Promise.reject(toError({ message: "rate_limited" }));
     }
     sendTimes.push(now);
+    var payload = { household_id: homeId, body: body };
+    if (replyTo) payload.reply_to = String(replyTo);
     return rest("/rest/v1/household_messages", {
-      method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ household_id: homeId, body: body }),
+      method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(payload),
     }).then(function (rows) { return Array.isArray(rows) ? rows[0] : rows; });
+  }
+
+  // Tepki: sunucu toggle yapar ve güncel tepki haritasını döner; Realtime UPDATE'i
+  // tüm üyelere taşır (dönüş değeri yalnız çağıranın ekranını anında boyar).
+  var REACTION_EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🎉"];
+  function reactMessage(messageId, emoji) {
+    return rpc("react_household_message", { p_message: String(messageId || ""), p_emoji: String(emoji || "") })
+      .then(function (cur) { return cur || {}; });
+  }
+
+  // Okundu: "buraya kadar okudum" sunucuya yazılır; diğer üyelerin ✓✓'i Realtime ile gelir.
+  function markRead(homeId, iso) {
+    return rpc("mark_household_read", { p_household: homeId, p_iso: iso || new Date().toISOString() });
+  }
+
+  // Bir mesajı okuyan üyeler (gönderen hariç): chatLastRead >= mesaj anı.
+  function readersOf(message, home) {
+    if (!message || !home || !Array.isArray(home.members)) return [];
+    var t = Date.parse(message.created_at);
+    if (isNaN(t)) return [];
+    return home.members.filter(function (m) {
+      if (!m.chatLastRead || m.userId === message.sender_id) return false;
+      var r = Date.parse(m.chatLastRead);
+      return !isNaN(r) && r >= t;
+    });
   }
 
   function deleteMessage(id) {
@@ -738,10 +911,19 @@
       var d = (ev && ev.detail) || {};
       if (d.table === "household_messages") {
         if (d.type === "INSERT" && d.record) onIncoming(d.record);
+        else if (d.type === "UPDATE" && d.record) {
+          // Tepkiler RPC ile değişir: ekranlar baloncuğu yerinde günceller (yeniden çekmez).
+          try { window.dispatchEvent(new CustomEvent("nexusHouseholdMessageUpdated", { detail: { message: d.record } })); } catch (e) {}
+        }
         else if (d.type === "DELETE" && d.old) {
           try { window.dispatchEvent(new CustomEvent("nexusHouseholdMessageDeleted", { detail: { id: d.old.id } })); } catch (e) {}
         }
         setTimeout(updateBadge, 600);
+        return;
+      }
+      if (d.table === "household_board_items") {
+        // Pano canlı akar: sayfalar kendi önbelleklerini bu olayla tazeler.
+        try { window.dispatchEvent(new CustomEvent("nexusBoardChanged", { detail: { type: d.type || "", record: d.record || null, old: d.old || null } })); } catch (e) {}
         return;
       }
       if (d.table === "household_activity") {
@@ -813,6 +995,20 @@
     catchUp: catchUp,
     can: can,
     canControl: canControl,
+    presenceOf: presenceOf,
+    memberById: memberById,
+    setAvatar: setAvatar,
+    setMemberRooms: setMemberRooms,
+    roomGate: roomGate,
+    reactMessage: reactMessage,
+    REACTION_EMOJIS: REACTION_EMOJIS,
+    markRead: markRead,
+    readersOf: readersOf,
+    listBoard: listBoard,
+    addBoardItem: addBoardItem,
+    setBoardDone: setBoardDone,
+    deleteBoardItem: deleteBoardItem,
+    migrateAllLocalHomes: migrateAllLocalHomes,
     roleLabel: function (k) { return ROLE_TR[k] || "Üye"; },
     roleKey: function (label) { return ROLE_KEY[label] || "member"; },
     MAX_BODY: MAX_BODY,

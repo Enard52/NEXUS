@@ -91,6 +91,11 @@ const NEXUS_CARD_CATALOG = {
 
 window.NEXUS_CARD_CATALOG = NEXUS_CARD_CATALOG;
 
+// Öneri havuzu ilkesi (sahip kararı, 30 Eki 2026): geniş ve çeşitli bir şablon
+// havuzu; her şablonun KENDİ, tekil görseli olur; onboarding slaytlarında kullanılan
+// görseller burada ASLA tekrarlanmaz (bedroom 15056934, koridor 15136942, devre 15187706).
+// Seçim (getRecommendedSmartApps) cihaz profiline göre puanlar ve aynı görselli iki
+// kartı yan yana göstermez.
 const NEXUS_SMART_APP_TEMPLATES = [
     {
         id: 'whole-home-light-control',
@@ -146,7 +151,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Akıllı prizler ve enerji odaklı cihazlar için hızlı tasarruf akışları.',
         category: 'energy',
         deviceTypes: ['energy'],
-        heroImage: 'assets/photos/photo-1518770660439-4636190af475.jpg',
+        heroImage: 'assets/photos/photo-1416339306562-f3d12fefd36f.jpg',
         introduction: 'Akıllı prizler ve enerji tüketen cihazları tek merkezde topla. Hemen uygulanabilen tasarruf profilleri ve zamanlı eko aksiyonları oluştur.',
         features: ['Hızlı Kapatma', 'Eko Profilleri', 'Zamanlı Tasarruf', 'Tüketim Özeti', 'Priz Grupları'],
         prompt: 'Akıllı prizleri ve enerji tüketen cihazları yöneten bir enerji tasarruf paneli oluştur. Hızlı kapatma, eko profiller, zamanlanmış tasarruf ve tüketim özetleri ekle.',
@@ -158,7 +163,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Misafir geldiği anda kullanılacak ışık, erişim ve ortam ayarları.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'media'],
-        heroImage: 'assets/photos/photo-1505693416388-ac5ce068fe85.jpg',
+        heroImage: 'assets/photos/photo-1595526114035-0d45ed16cfbf.jpg',
         introduction: 'Misafir gelmeden önce giriş, aydınlatma, ortak alan ve eğlence cihazlarını tek panelde hazırla. Ev içinde rahat ama güvenli bir karşılama akışı oluştur.',
         features: ['Karşılama Işığı', 'Ortak Alan Hazırlık', 'Misafir Erişimi', 'Sessiz Bildirim', 'Tek Dokunuş Hazırlık'],
         prompt: 'Misafir geldiği anda giriş, aydınlatma ve ortak alan cihazlarını hazırlayan bir misafir modu uygulaması oluştur. Karşılama ışığı, sessiz bildirim ve misafir erişim adımları olsun.',
@@ -170,7 +175,7 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Gece ışık, sessiz mod, kilit ve iklim ayarlarını tek akışta topla.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'climate'],
-        heroImage: 'assets/photos/photo-1505693416388-ac5ce068fe85.jpg',
+        heroImage: 'assets/photos/photo-1586105251261-72a756497a11.jpg',
         introduction: 'Yatmadan önce gerekli tüm ev kontrollerini tek merkezde topla. Işık azaltma, rahatsız etme, kilit kontrolü ve gece iklim ayarları tek ekranda yönetilsin.',
         features: ['Işık Azaltma', 'Rahatsız Etme', 'Kilit Kontrolü', 'Gece Sıcaklığı', 'Son Kontrol Özeti'],
         prompt: 'Yatmadan önce ışık, sessiz mod, kilit ve iklim ayarlarını yöneten bir uykuya hazırlık merkezi oluştur. Son kontrol özeti ve tek dokunuş gece modu ekle.',
@@ -182,11 +187,107 @@ const NEXUS_SMART_APP_TEMPLATES = [
         subtitle: 'Evden çıkarken açık cihazları, kilitleri ve enerji durumunu tek ekranda göster.',
         category: 'general',
         deviceTypes: ['lighting', 'security', 'energy'],
-        heroImage: 'assets/photos/photo-1513694203232-719a280e022f.jpg',
+        heroImage: 'assets/photos/photo-1522708323590-d24dbb6b0267.jpg',
         introduction: 'Evden çıkmadan önce açık kalan ışık, priz, klima ve güvenlik ayarlarını tek panelde gör. Hızlı kapatma ve güvenlik aktif etme adımlarını tek akışa topla.',
         features: ['Açık Cihaz Özeti', 'Hızlı Kapatma', 'Kilit Durumu', 'Enerji Kontrolü', 'Çıkış Hazırlığı'],
         prompt: 'Evden çıkarken açık cihazları, kilit durumunu ve enerji ayarlarını tek ekranda gösteren bir çıkış kontrolü uygulaması oluştur. Hızlı kapatma ve güvenlik aktif etme butonları ekle.',
         quickRunLabel: 'Evden Cikiyorum'
+    },
+    {
+        id: 'morning-flow',
+        title: 'Günaydın Akışı',
+        subtitle: 'Uyanınca ışık, perde, iklim ve müziği tek dokunuşla başlat.',
+        category: 'general',
+        deviceTypes: ['lighting', 'climate', 'media'],
+        heroImage: 'assets/photos/photo-1493809842364-78817add7ffb.jpg',
+        introduction: 'Sabahları evini yumuşak bir geçişle uyandır. Işıklar kademeli açılır, iklim konfor seviyesine gelir ve günün özeti tek ekranda seni karşılar.',
+        features: ['Kademeli Işık', 'Sabah İklimi', 'Gün Özeti', 'Müzik Başlat', 'Tek Dokunuş'],
+        prompt: 'Sabah uyanma rutinini yöneten bir günaydın akışı oluştur. Kademeli açılan ışıklar, iklim ayarı, gün özeti ve müzik başlatma adımları olsun.',
+        quickRunLabel: 'Günaydın'
+    },
+    {
+        id: 'welcome-home',
+        title: 'Eve Geldim Karşılama',
+        subtitle: 'Kapıdan girerken ışıklar, iklim ve müzik seni karşılasın.',
+        category: 'general',
+        deviceTypes: ['lighting', 'climate', 'media'],
+        heroImage: 'assets/photos/photo-1600585154340-be6161a56a0c.jpg',
+        introduction: 'Eve vardığında ev seni hazırlasın: giriş ve salon ışıkları, ideal sıcaklık ve istediğin müzik tek senaryoda buluşur.',
+        features: ['Giriş Işığı', 'Salon Hazırlığı', 'İklim Karşılama', 'Müzik', 'Konum Tetikleyici'],
+        prompt: 'Eve geldiğinde çalışacak bir karşılama senaryosu uygulaması oluştur. Giriş ışıkları, salon hazırlığı, iklim ve müzik adımları olsun.',
+        quickRunLabel: 'Eve Geldim'
+    },
+    {
+        id: 'away-vacation-guard',
+        title: 'Tatil / Evde Yokum Modu',
+        subtitle: 'Ev boşken tasarruf, taklit hareket ve uyarı tek panelde.',
+        category: 'security',
+        deviceTypes: ['security', 'lighting', 'energy'],
+        heroImage: 'assets/photos/photo-1600566753190-17f0baa2a6c3.jpg',
+        introduction: 'Evden uzun süre uzak kalırken enerji kesilsin, ışıklar evde biri varmış gibi davransın ve kritik sensörler anında haber versin.',
+        features: ['Tasarruf Modu', 'Taklit Işık', 'Sensör Nöbeti', 'Anlık Uyarı', 'Dönüş Hazırlığı'],
+        prompt: 'Tatil modunda evi koruyan bir uygulama oluştur. Enerji tasarrufu, evde biri varmış izlenimi veren ışık planı, sensör nöbeti ve anlık uyarı adımları olsun.',
+        quickRunLabel: 'Evde Yokum'
+    },
+    {
+        id: 'cleaning-routine-center',
+        title: 'Temizlik Rutini Merkezi',
+        subtitle: 'Robot süpürge ve temizlik cihazları için gün ve oda planı.',
+        category: 'general',
+        deviceTypes: ['general'],
+        heroImage: 'assets/photos/photo-1558317374-067fb5f30001.jpg',
+        introduction: 'Temizlik cihazlarını gün ve oda bazlı planla. Süpürme saatleri, bölgeler ve temizlik sonrası özet tek akışta yürüsün.',
+        features: ['Oda Planı', 'Zamanlı Temizlik', 'Bölge Seçimi', 'Durum Özeti', 'Hızlı Başlat'],
+        prompt: 'Robot süpürge ve temizlik cihazlarını yöneten bir temizlik rutini uygulaması oluştur. Oda bazlı plan, zamanlı temizlik, bölge seçimi ve hızlı başlat aksiyonları olsun.',
+        quickRunLabel: 'Temizlik Başlat'
+    },
+    {
+        id: 'garden-watering',
+        title: 'Bahçe Sulama Merkezi',
+        subtitle: 'Sulama saatleri, bölgeler ve sensör verisiyle akıllı plan.',
+        category: 'general',
+        deviceTypes: ['general'],
+        heroImage: 'assets/photos/photo-1416879595882-3373a0480b5b.jpg',
+        introduction: 'Bahçeni saat ve toprak nemine göre sula. Bölge bazlı programlar, yağış erteleme ve sulama özeti tek panelde toplansın.',
+        features: ['Bölge Sulama', 'Nem Sensörü', 'Yağış Erteleme', 'Zamanlama', 'Sulama Özeti'],
+        prompt: 'Bahçe sulamasını yöneten bir uygulama oluştur. Bölge bazlı sulama, toprak nemi kontrolü, yağışta erteleme ve zamanlama adımları olsun.',
+        quickRunLabel: 'Sulama Başlat'
+    },
+    {
+        id: 'air-quality-guard',
+        title: 'Hava Kalitesi Nöbetçisi',
+        subtitle: 'Sensör verisiyle havalandırma ve temizleyiciyi otomatik yönet.',
+        category: 'energy',
+        deviceTypes: ['energy', 'security'],
+        heroImage: 'assets/photos/photo-1618221195710-dd6b41faaea6.jpg',
+        introduction: 'Hava kalitesi düştüğünde temizleyici ve havalandırmayı devreye al. Ölçümler, eşikler ve alınan aksiyonlar tek ekranda izlensin.',
+        features: ['Canlı Ölçüm', 'Eşik Uyarısı', 'Otomatik Temizlik', 'Havalandırma', 'Günlük Özet'],
+        prompt: 'Hava kalitesini izleyen bir uygulama oluştur. Sensör ölçümleri, eşik uyarıları, temizleyici ve havalandırma otomasyonu ve günlük özet adımları olsun.',
+        quickRunLabel: 'Hava Taraması'
+    },
+    {
+        id: 'focus-work-mode',
+        title: 'Odak Çalışma Modu',
+        subtitle: 'Çalışırken sessizlik, doğru ışık ve bildirim arası.',
+        category: 'general',
+        deviceTypes: ['lighting', 'media'],
+        heroImage: 'assets/photos/photo-1519710164239-da123dc03ef4.jpg',
+        introduction: 'Çalışmaya başlarken bildirimler kısılır, ışık odaklanmaya uygun seviyeye gelir ve mola sonları hatırlatılır.',
+        features: ['Rahatsız Etme', 'Odak Işığı', 'Mola Hatırlatıcı', 'Sahne Geçişi', 'Oturum Özeti'],
+        prompt: 'Çalışma odak modu oluşturan bir uygulama yap. Rahatsız etme, odak ışığı, mola hatırlatıcı ve oturum özeti adımları olsun.',
+        quickRunLabel: 'Odak Başlat'
+    },
+    {
+        id: 'evening-ambience',
+        title: 'Akşam Ortamı',
+        subtitle: 'Gün batımına hazır ışık sahneleri ve sakin bir ev düzeni.',
+        category: 'lighting',
+        deviceTypes: ['lighting'],
+        heroImage: 'assets/photos/photo-1565814329452-e1efa11c5b89.jpg',
+        introduction: 'Akşamüstü ışıkları tek dokunuşla sakin bir tona çevir; salon, mutfak ve koridor için hazır akşam sahneleri sun.',
+        features: ['Sahne Tonları', 'Oda Geçişleri', 'Zamanlama', 'Karartma', 'Hızlı Sahne'],
+        prompt: 'Akşam ortamını kuran bir ışık sahnesi uygulaması oluştur. Oda bazlı sakin tonlar, karartma ve zamanlama aksiyonları olsun.',
+        quickRunLabel: 'Akşam Sahnesi'
     }
 ];
 
@@ -596,6 +697,18 @@ function getMergedDevices(dataDevices) {
         seenNames.add(device.name);
     });
 
+    // Oda geçidi (aile): bulut evindeki üye iznimde rooms listesi varsa yalnız o
+    // odalardaki cihazlar listelenir (sahibin Üye İzinleri ekranındaki "Oda Erişimi").
+    // Odasız cihazlar görünür kalır; kısıt sunucuda cihaz bulunmadığı için istemci
+    // tarafında uygulanır ve üye değişikliği Realtime ile anında yansır.
+    try {
+        const gate = window.nexusHouseholdCloud && typeof window.nexusHouseholdCloud.roomGate === 'function'
+            ? window.nexusHouseholdCloud.roomGate() : null;
+        if (Array.isArray(gate)) {
+            return merged.filter(d => !d || !d.room || gate.indexOf(d.room) !== -1);
+        }
+    } catch (e) { /* geçit okunamazsa kısıt yok */ }
+
     return merged;
 }
 
@@ -653,7 +766,30 @@ window.getRecommendedSmartApps = function(limit = 3) {
         return a.order - b.order;
     });
 
-    return scored.slice(0, limit);
+    // Bir önizlemede aynı görsel iki kez gösterilmez: sıradaki eşit görselli aday
+    // atlanır, listeden bir sonraki en uygun şabona geçilir (görsel çeşitlilik).
+    const picked = [];
+    const usedImages = new Set();
+    for (const item of scored) {
+        if (usedImages.has(item.heroImage)) continue;
+        usedImages.add(item.heroImage);
+        picked.push(item);
+        if (picked.length >= limit) break;
+    }
+    return picked;
+};
+
+// Tüm havuz (puan sırasıyla): "diğer önerileri gör" genişletmesi bunu kullanır.
+window.getAllSmartAppsRanked = function() {
+    const profile = window.getSmartDeviceProfile();
+    return NEXUS_SMART_APP_TEMPLATES.map((template, index) => ({
+        ...template,
+        score: scoreTemplate(template, profile),
+        order: index
+    })).sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.order - b.order;
+    });
 };
 
 window.getSmartPromptById = function(id) {

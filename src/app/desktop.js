@@ -87,7 +87,7 @@
     "nexus-feedback.html": "settings", "nexus-privacy-mode.html": "settings", "nexus-instant-notifications.html": "settings",
     "nexus-device-updates.html": "settings", "nexus-dnd.html": "settings", "nexus-logs.html": "settings", "nexus-services.html": "settings",
     "nexus-homekit.html": "settings", "nexus-siri-shortcuts.html": "settings", "nexus-carplay.html": "settings", "nexus-web.html": "settings",
-    "nexus-guest-mode.html": "household"
+    "nexus-guest-mode.html": "household", "nexus-board.html": "household"
   };
 
   var activeKey = null;
@@ -191,11 +191,18 @@
     aside.className = "nx-side";
     aside.innerHTML = html;
     document.body.insertBefore(aside, document.body.firstChild);
-    // Menü sabit bir yüzeydir: sayfa değişse de kaydırma konumu korunur.
-    try { aside.scrollTop = +sessionStorage.getItem("nxSideScroll") || 0; } catch (e) {}
-    aside.addEventListener("scroll", function () {
-      try { sessionStorage.setItem("nxSideScroll", aside.scrollTop); } catch (e) {}
-    }, { passive: true });
+    // Menü sabit bir yüzeydir: bağlantı listesinin (nx-side-nav) kaydırma konumu
+    // sayfa değişse de korunur. Menünün kendisi (aside) overflow:clip — hiçbir
+    // şey onu kaydıramaz; eskiden aside üzerinden saklanan konum, odak kaydırmalarıyla
+    // menü içeriğini istemsizce "bir tık" aşağı itiyordu.
+    var sideNav = aside.querySelector(".nx-side-nav");
+    if (sideNav) {
+      try { sideNav.scrollTop = +sessionStorage.getItem("nxSideNavScroll") || 0; } catch (e) {}
+      sideNav.addEventListener("scroll", function () {
+        try { sessionStorage.setItem("nxSideNavScroll", sideNav.scrollTop); } catch (e) {}
+      }, { passive: true });
+    }
+    try { sessionStorage.removeItem("nxSideScroll"); } catch (e) {} // eski anahtar temizliği
     document.getElementById("nx-side-theme").addEventListener("click", function () {
       var on = document.documentElement.classList.contains("dark");
       set("nexusThemeSystem", "false");
@@ -296,9 +303,13 @@
       if (bottomAnchored) { el.classList.add("nx-desk-bottom"); return; }
       if (cs.top === "0px" && r.width >= window.innerWidth * 0.6) el.classList.add("nx-desk-top");
     });
-    // Sayfa gövdesindeki doğrudan içerik blokları ortalanmış sütuna alınır
+    // Sayfa gövdesindeki doğrudan içerik blokları ortalanmış sütuna alınır.
+    // .nx-sr-only (ekran okuyucu live bölgesi) kesinlikle hariç: sütun kuralının
+    // width/padding dayatması 1px'lik mutlak kutuyu genişletip görünmez kutuyla
+    // belgeyi yatay kaydırılabilir yapıyordu (33 sayfada +64px).
     Array.prototype.forEach.call(document.body.children, function (el) {
       if (/^(SCRIPT|STYLE|LINK|TEMPLATE|ASIDE)$/.test(el.tagName) || el.id === "nx-side") return;
+      if (el.classList.contains("nx-sr-only")) return;
       if (getComputedStyle(el).position === "fixed") return;
       el.classList.add("nx-desk-col");
     });

@@ -168,20 +168,39 @@
       var members = home && Array.isArray(home.members) ? home.members : [];
       var head = '<a href="nexus-household.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
         '<span class="font-bold text-slate-800">Aile ve evi yönet</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
-      // Aile sohbeti yalnızca sunucudaki (bulut) evlerde vardır; yerel evde bağlantı gösterilmez.
+      // Aile sohbeti ve pano yalnızca sunucudaki (bulut) evlerde vardır; yerel evde gösterilmez.
       if (home && home.cloud) {
         head += '<a href="nexus-family-chat.html?home=' + encodeURIComponent(home.id) + '" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
           '<span class="font-bold text-slate-800">Aile Sohbeti</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+        head += '<a href="nexus-board.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
+          '<span class="font-bold text-slate-800">Ev Panosu</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
       }
       if (!members.length) {
         box.innerHTML = head + '<p class="text-sm text-slate-500 text-center pt-10">Henüz aile üyesi eklenmedi.</p>';
       } else {
+        // Üye kartları: avatar (fotoğraf ya da baş harf) + çevrimiçi durumu; Ev Yönetimi'ndeki kimlikle aynı.
         box.innerHTML = head + members.map(function (m) {
-          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 mb-3">' +
-            '<h2 class="font-bold text-slate-800">' + esc(m.name || 'Üye') + '</h2>' +
-            '<p class="text-sm text-slate-500 mt-1">' + esc(m.role || '') + (m.email ? ' · ' + esc(m.email) : '') + '</p></article>';
+          var name = m.name || 'Üye';
+          var letter = esc(String(name).charAt(0).toUpperCase());
+          var avatarInner = m.avatar
+            ? '<img src="' + esc(m.avatar) + '" alt="" class="h-11 w-11 rounded-full object-cover" onerror="this.outerHTML=this.dataset.fb" data-fb="<div class=&quot;flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] font-bold text-white&quot;>' + letter + '</div>"/>'
+            : '<div class="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] font-bold text-white">' + letter + '</div>';
+          var dot = '', label = '';
+          if (home.cloud && m.lastSeenAt) {
+            var mins = (Date.now() - Date.parse(m.lastSeenAt)) / 60000;
+            var key = isNaN(mins) ? 'offline' : mins <= 3 ? 'online' : mins <= 15 ? 'recent' : 'offline';
+            var txt = key === 'online' ? 'Çevrimiçi' : key === 'recent' ? 'Son 15 dk içinde' : 'Çevrimdışı';
+            var color = key === 'online' ? 'bg-emerald-500' : key === 'recent' ? 'bg-amber-400' : 'bg-slate-300';
+            dot = '<span class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white ' + color + '" title="' + txt + '"></span>';
+            label = '<span class="block text-xs ' + (key === 'online' ? 'text-emerald-600' : 'text-slate-400') + '">' + txt + '</span>';
+          }
+          return '<article class="bg-white rounded-2xl menu-container-shadow p-4 mb-3 flex items-center gap-3">' +
+            '<span class="relative inline-flex shrink-0">' + avatarInner + dot + '</span>' +
+            '<div class="min-w-0 flex-1"><h2 class="font-bold text-slate-800 truncate">' + esc(name) + '</h2>' +
+            '<p class="text-sm text-slate-500 mt-0.5 truncate">' + esc(m.role || '') + (m.email ? ' · ' + esc(m.email) : '') + '</p>' +
+            label + '</div></article>';
         }).join('') +
-          '<p class="text-xs text-slate-400 text-center pt-4">' + (home && home.cloud ? 'Üyeleri ve izinlerini Aile ekranından yönetebilirsin.' : 'Aile sohbeti için evin hesabına bağlı olması gerekir; üyeleri Aile ekranından yönetebilirsin.') + '</p>';
+          '<p class="text-xs text-slate-400 text-center pt-4">' + (home && home.cloud ? 'Üyeleri ve izinlerini Aile ekranından yönetebilirsin.' : 'Üyeleri Aile ekranından yönetebilirsin.') + '</p>';
       }
     }
 

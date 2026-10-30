@@ -215,6 +215,14 @@
     return "assets/products/" + encodeURIComponent(thumbFor(device)) + "?v=" + IMAGE_VERSION;
   }
 
+  // Seçim düğmeleri/listeler için küçük ürün görseli (ana sayfa kartıyla aynı kaynak); çözülemezse boş döner
+  function thumbHtml(device, cls) {
+    try {
+      var src = device ? imageUrl(device) : "";
+      return src ? '<img src="' + escapeHtml(src) + '" alt="" class="' + (cls || "w-6 h-6 object-contain shrink-0") + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : "";
+    } catch (e) { return ""; }
+  }
+
   function stateOf(device) {
     return device && device.state ? device.state : {};
   }
@@ -1213,6 +1221,7 @@
     panelOf: panelOf,
     thumbFor: thumbFor,
     imageUrl: imageUrl,
+    thumbHtml: thumbHtml,
     photoOf: photoOf,
     setPhoto: setPhoto,
     photoFromFile: photoFromFile,
