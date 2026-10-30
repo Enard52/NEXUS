@@ -7,13 +7,13 @@
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
-var CACHE = 'nexus-shell-v16'; // v16: sürüm sabiti app-version.js'e taşındı + güncelleme bandı — v12: aile (sunucu tabanlı ev, sohbet), yedekleme, sensör olayları — v11: 1.0.33 komut paleti/geri alma/durum duyurusu, push katmanı
+var CACHE = 'nexus-shell-v17'; // v17: integrations-page.js ayrı dosya — v16: sürüm sabiti app-version.js'e taşındı + güncelleme bandı — v12: aile (sunucu tabanlı ev, sohbet), yedekleme, sensör olayları — v11: 1.0.33 komut paleti/geri alma/durum duyurusu, push katmanı
 var SHELL = [
   'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
   'fonts/inter/inter.css',
   'js/lucide.js',
   'theme.js', 'auth.js', 'data.js', 'device-controls.js', 'supported-devices.js',
-  'lan-connectors.js', 'lan-mqtt.js', 'automation-engine.js', 'i18n.js', 'lang-en.js',
+  'lan-connectors.js', 'integrations-page.js', 'lan-mqtt.js', 'automation-engine.js', 'i18n.js', 'lang-en.js',
   'ai-fab.js', 'sheet-gestures.js', 'nexus-dialog.js', 'nexus-undo.js', 'nexus-assistant.js', 'nexus-feedback.js',
   // theme.js her sayfada bunları da enjekte ediyor; kabukta yoksa ilk çevrimdışı açılışta eksik kalırlar.
   'notify.js', 'command-palette.js', 'push.js', 'household-cloud.js', 'app-version.js', 'update-check.js',
