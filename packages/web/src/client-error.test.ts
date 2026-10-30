@@ -115,6 +115,13 @@ describe("client-error — kayıt satırı", () => {
     expect(Object.keys(row).sort()).toEqual(["message", "page", "platform", "version"]);
   });
 
+  it("JSON `null` / sayı / string gövde çökmez, reddedilir (500 yerine 400 'empty')", () => {
+    expect(buildRow(null)).toBeNull();
+    expect(buildRow(undefined)).toBeNull();
+    expect(buildRow(42)).toBeNull();
+    expect(buildRow("text")).toBeNull();
+  });
+
   it("sadece boşluktan oluşan mesaj kabul edilir (mevcut davranış korunur)", () => {
     expect(buildRow({ message: "   " })?.message).toBe("   ");
   });

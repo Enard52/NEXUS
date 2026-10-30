@@ -40,6 +40,8 @@ export function createRateLimiter(): (ip: string, now?: number) => boolean {
 /** Gövdeden kayıt satırını üretir; mesaj boşsa null (istek "empty" ile reddedilir). */
 // deno-lint-ignore no-explicit-any
 export function buildRow(body: any): ClientErrorRow | null {
+  // JSON `null` geçerli bir gövdedir; `body.page` okumak TypeError ile 500'e yol açardı.
+  if (body === null || body === undefined) return null;
   const row = {
     page: String(body.page || "").slice(0, MAX_PAGE),
     version: String(body.version || "").slice(0, MAX_VERSION),
