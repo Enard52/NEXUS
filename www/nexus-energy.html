@@ -406,7 +406,8 @@
     function energyExportJson(latest, history) {
       return JSON.stringify({ latest: latest || [], history: history || [], history_available: !!(history && history.length) }, null, 2);
     }
-    // <<< energy-export    (function () {
+    // <<< energy-export
+    (function () {
       var row = document.getElementById('export-row');
       if (!row) return;
       function current() {
