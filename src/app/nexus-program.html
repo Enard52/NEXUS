@@ -65,6 +65,10 @@
       color: var(--nx-accent,#4C7DFF);
       transform: scale(1.15);
     }
+    html.dark .wheel-item.selected {
+      color: #9db8ff;
+      color: color-mix(in srgb, var(--nx-accent,#4C7DFF) 55%, #fff);
+    }
     /* Fade edges of the picker so it feels like a wheel */
     .wheel-mask {
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);

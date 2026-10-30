@@ -627,6 +627,11 @@ header:has(> .p-1.-ml-1) > .p-1.-mr-1 svg, header:has(> .p-1.-ml-1) > .p-1.-mr-1
 .nx-hdr-blend { background: rgba(236, 233, 253, 0.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 html.dark .nx-hdr-blend { background: rgba(15, 23, 42, 0.18); }
 
+/* ---------- Açık renkli uyarı/hata çipleri: metin >= 4.5:1 (hem açık hem koyu modda çip açık kalır) ---------- */
+.bg-amber-100.text-amber-600, .bg-amber-100 .text-amber-600 { color: #92400e; }
+.bg-red-50.text-red-600, .bg-red-50 .text-red-600 { color: #b91c1c; }
+.bg-rose-50.text-rose-600, .bg-rose-50 .text-rose-600 { color: #be123c; }
+
 /* >>> accent-overrides (scripts/build-accent-css.mjs ile üretilir; elle düzenlemeyin) */
 html .border-\[\#4C7DFF\]{border-color:rgb(var(--nx-accent-rgb) /var(--tw-border-opacity,1))}
 html .border-\[\#4C7DFF\]\/10{border-color:rgb(var(--nx-accent-rgb) / .1)}
