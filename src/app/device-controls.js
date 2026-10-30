@@ -117,7 +117,101 @@
     return (resolved && resolved.img) || "generic-smart-hub.png";
   }
 
+  // ---------- Kullanıcının kendi cihaz fotoğrafı ----------
+  // Fotoğraf yalnızca bu cihazda, kullanıcıya özel yerel depoda tutulur. Cihaz listesinden AYRI bir
+  // anahtardadır (nexusDevicePhotos) ve cloud-sync.js STATE_EXCLUDE ile buluta hiç gitmez.
+  var PHOTO_KEY = "nexusDevicePhotos";
+  var PHOTO_MAX_EDGE = 384;
+  var PHOTO_MAX_CHARS = 140000;
+  var PHOTO_RE = /^data:image\/(jpeg|webp);base64,[A-Za-z0-9+/]+=*$/;
+
+  // Uzun kenarı max pikselin altına indirir, oranı korur, asla büyütmez.
+  function photoFitSize(width, height, max) {
+    var w = Number(width);
+    var h = Number(height);
+    if (!(w > 0) || !(h > 0)) return null;
+    var scale = Math.min(1, max / Math.max(w, h));
+    return {
+      width: Math.max(1, Math.round(w * scale)),
+      height: Math.max(1, Math.round(h * scale)),
+    };
+  }
+
+  function readPhotos() {
+    try {
+      var map = JSON.parse(nexusGetItem(PHOTO_KEY) || "{}");
+      return map && typeof map === "object" && !Array.isArray(map) ? map : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function photoOf(device) {
+    var id = device && device.id;
+    if (id == null) return null;
+    var url = readPhotos()[id];
+    return typeof url === "string" && PHOTO_RE.test(url) ? url : null;
+  }
+
+  // Başarıyla yazıldıysa true; depo doluysa false (çağıran dürüst bir mesaj gösterir).
+  function setPhoto(device, dataUrl) {
+    var id = device && device.id;
+    if (id == null) return false;
+    if (dataUrl && !PHOTO_RE.test(dataUrl)) return false;
+    var map = readPhotos();
+    if (dataUrl) map[id] = dataUrl;
+    else delete map[id];
+    try {
+      nexusSetItem(PHOTO_KEY, JSON.stringify(map));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Seçilen dosyayı tuval ile küçültüp küçük bir WebP/JPEG veri adresine çevirir.
+  // Reddedilirse Error.message: "type" (resim değil) | "read" (okunamadı) | "size" (sığmadı).
+  function photoFromFile(file) {
+    return new Promise(function (resolve, reject) {
+      if (!file || !/^image\//.test(file.type || "")) return reject(new Error("type"));
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        reject(new Error("read"));
+      };
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var fit = photoFitSize(img.naturalWidth, img.naturalHeight, PHOTO_MAX_EDGE);
+        if (!fit) return reject(new Error("read"));
+        try {
+          var canvas = document.createElement("canvas");
+          canvas.width = fit.width;
+          canvas.height = fit.height;
+          canvas.getContext("2d").drawImage(img, 0, 0, fit.width, fit.height);
+          var out = null;
+          [0.82, 0.65, 0.5].some(function (q) {
+            var webp = canvas.toDataURL("image/webp", q);
+            var data = /^data:image\/webp/.test(webp) ? webp : canvas.toDataURL("image/jpeg", q);
+            if (PHOTO_RE.test(data) && data.length <= PHOTO_MAX_CHARS) {
+              out = data;
+              return true;
+            }
+            return false;
+          });
+          if (out) resolve(out);
+          else reject(new Error("size"));
+        } catch (e) {
+          reject(new Error("read"));
+        }
+      };
+      img.src = url;
+    });
+  }
+
   function imageUrl(device) {
+    var own = photoOf(device);
+    if (own) return own;
     return "assets/products/" + encodeURIComponent(thumbFor(device)) + "?v=" + IMAGE_VERSION;
   }
 
@@ -678,7 +772,12 @@
   function setField(index, field, value) {
     // Aile izni: tüm evlerinde "cihazları kontrol et" izni kapalı bir üye (ör. Misafir) komut gönderemez.
     if (window.nexusHouseholdCloud && !window.nexusHouseholdCloud.canControl()) {
-      if (window.nexusDialog) window.nexusDialog({ icon: "warning", title: "İzin yok", message: "Bu evde cihaz kontrol iznin yok. Ev sahibi izni açabilir." });
+      if (window.nexusDialog)
+        window.nexusDialog({
+          icon: "warning",
+          title: "İzin yok",
+          message: "Bu evde cihaz kontrol iznin yok. Ev sahibi izni açabilir.",
+        });
       return null;
     }
     var devices = readDevices();
@@ -726,8 +825,10 @@
       sendCommand(device, "lightScene", st.lightScene, index);
     else if (field === "targetHumidity" && canSend(device, "targetHumidity"))
       sendCommand(device, "targetHumidity", st.targetHumidity, index);
-    else if (field === "tilt" && canSend(device, "tilt")) sendCommand(device, "tilt", st.tilt, index);
-    else if (field === "powerOn" && canSend(device, "powerOn")) sendCommand(device, "powerOn", st.powerOn, index);
+    else if (field === "tilt" && canSend(device, "tilt"))
+      sendCommand(device, "tilt", st.tilt, index);
+    else if (field === "powerOn" && canSend(device, "powerOn"))
+      sendCommand(device, "powerOn", st.powerOn, index);
     else if (field === "transport" && canSend(device, "transport"))
       sendCommand(device, "transport", st.transport, index);
     else if (field === "indicator" && canSend(device, "indicator"))
@@ -804,7 +905,8 @@
   function removeDevice(index) {
     var devices = readDevices();
     if (!devices[index]) return;
-    devices.splice(index, 1);
+    var gone = devices.splice(index, 1)[0];
+    if (photoOf(gone)) setPhoto(gone, null);
     writeDevices(devices);
   }
 
@@ -1111,6 +1213,10 @@
     panelOf: panelOf,
     thumbFor: thumbFor,
     imageUrl: imageUrl,
+    photoOf: photoOf,
+    setPhoto: setPhoto,
+    photoFromFile: photoFromFile,
+    photoFitSize: photoFitSize,
     stateOf: stateOf,
     clamp: clamp,
     kindOf: kindOf,
