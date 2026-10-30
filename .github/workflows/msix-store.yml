@@ -1,0 +1,74 @@
+# Builds the Microsoft Store package (.appx / MSIX) of the desktop app.
+#
+# Manual only: run it from the Actions tab, download the artifact and upload it in
+# Partner Center (Product > Packages). The Store signs the package itself, so no
+# certificate is needed here. The identity values live in desktop/package.json ("appx")
+# and come from Partner Center > Product identity; they are public, not secrets.
+name: msix-store
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  msix:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Dependencies
+        run: npm ci
+
+      - name: Write cloud config (from repository variables)
+        shell: bash
+        env:
+          SUPABASE_URL: ${{ vars.NEXUS_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.NEXUS_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Cloud variables are not set; building with cloud features off."
+            exit 0
+          fi
+          printf 'window.NEXUS_CLOUD = {\n  url: "%s",\n  anonKey: "%s"\n};\n' "$SUPABASE_URL" "$SUPABASE_ANON_KEY" > ../cloud-config.js
+
+      - name: Prepare app files
+        run: node scripts/prepare-app.cjs
+
+      - name: Verify package payload
+        run: node ../scripts/verify-desktop-payload.mjs
+
+      - name: Build Store package
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npx electron-builder --win appx --x64 --publish never
+
+      - name: Verify built package (app.asar)
+        shell: bash
+        run: |
+          found=0
+          while IFS= read -r a; do
+            [ -n "$a" ] || continue
+            found=1
+            node ../scripts/verify-desktop-payload.mjs --asar "$a"
+          done < <(find dist -name app.asar -type f)
+          if [ "$found" = 0 ]; then
+            echo "::error::no app.asar found to verify (did the build fail?)"
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: NEXUS-Store-appx
+          path: desktop/dist/*.appx
+          if-no-files-found: error
