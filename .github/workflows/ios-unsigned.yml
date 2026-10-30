@@ -34,6 +34,12 @@ jobs:
       - name: Bağımlılıklar
         run: pnpm install --frozen-lockfile
 
+      # Web varlıkları ve config.xml depoda tutulmaz; Capacitor derlemeden önce üretir.
+      - name: Web varlıklarını iOS projesine kopyala
+        run: |
+          node scripts/sync-www.mjs
+          pnpm exec cap copy ios
+
       - name: İmzasız derleme
         run: |
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
