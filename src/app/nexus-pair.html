@@ -528,9 +528,26 @@
     var PROTOCOL_CT = { yeelight: 1, wiz: 1, lifx: 1, govee: 1 };
     var PROTOCOL_IMG = { wled: "generic-led-strip.png" };
 
-    function setScanStatus(message, tone) {
+    // Hata durumunda (retry verilirse) sonraki adım: "Tekrar dene" + yardım bağlantısı.
+    function setScanStatus(message, tone, retry) {
       var el = document.getElementById("lan-scan-status");
       el.textContent = message;
+      if (tone === "error" && typeof retry === "function") {
+        var row = document.createElement("span");
+        row.className = "mt-1 flex items-center gap-3";
+        var again = document.createElement("button");
+        again.type = "button";
+        again.className = "font-bold underline";
+        again.textContent = "Tekrar dene";
+        again.addEventListener("click", retry);
+        var help = document.createElement("a");
+        help.href = "nexus-feedback.html";
+        help.className = "font-bold underline";
+        help.textContent = "Yardım al";
+        row.appendChild(again);
+        row.appendChild(help);
+        el.appendChild(row);
+      }
       el.classList.toggle("text-rose-500", tone === "error");
       el.classList.toggle("text-emerald-600", tone === "ok");
     }
@@ -593,7 +610,7 @@
           '<span class="block text-[11px] text-slate-500 dark:text-slate-300">' + escapeHtml(host) +
           " · " + controlSummary(found) + "</span></span></button>";
       }).catch(function () {
-        setScanStatus("Bu adreste bilinen bir NEXUS cihazı bulunamadı. Cihazın aynı ağda ve açık olduğundan emin ol.", "error");
+        setScanStatus("Bu adreste bilinen bir NEXUS cihazı bulunamadı. Cihazın aynı ağda ve açık olduğundan emin ol.", "error", scanLanHost);
       }).finally(function () {
         btn.disabled = false;
       });
@@ -959,11 +976,11 @@
       })
         .then(function (all) {
           if (all.length) setScanStatus(all.length + " cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.", "ok");
-          else setScanStatus(autoScanStop ? "Tarama durduruldu." : "Bu ağda desteklenen bir cihaz bulunamadı. Cihazın açık ve aynı Wi-Fi'da olduğundan emin ol; olmazsa aşağıdan kataloğu ya da QR / kurulum kodunu kullan.", autoScanStop ? "" : "error");
+          else setScanStatus(autoScanStop ? "Tarama durduruldu." : "Bu ağda desteklenen bir cihaz bulunamadı. Cihazın açık ve aynı Wi-Fi'da olduğundan emin ol; olmazsa aşağıdan kataloğu ya da QR / kurulum kodunu kullan.", autoScanStop ? "" : "error", function () { startAutoScan(); });
           renderSubnetFindings();
         })
         .catch(function () {
-          setScanStatus("Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.", "error");
+          setScanStatus("Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.", "error", function () { startAutoScan(); });
         })
         .then(function () {
           autoScanning = false;

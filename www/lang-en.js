@@ -2819,6 +2819,8 @@ window.NEXUS_EN = {
     "Yapay zeka ile oluştur": "Create with AI",
     Yardım: "Help",
     "Yardım ve Geri Bildirim": "Help and Feedback",
+    "Tekrar dene": "Try again",
+    "Yardım al": "Get help",
     "Yardımı aç": "Open help",
     "Yatak Odası": "Bedroom",
     "Yatak Odası karartma miktarı": "Bedroom dimming amount",

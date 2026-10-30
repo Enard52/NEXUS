@@ -44,3 +44,26 @@ describe("settings search", () => {
     expect(en).toContain('"Bu aramayla eşleşen ayar yok."');
   });
 });
+
+describe("pair screen: LAN errors offer retry + help", () => {
+  const pair = read("nexus-pair.html");
+  const en = read("lang-en.js");
+
+  it("setScanStatus renders a retry button and a help link only for errors with a retry handler", () => {
+    expect(pair).toContain('if (tone === "error" && typeof retry === "function")');
+    expect(pair).toContain('help.href = "nexus-feedback.html"');
+  });
+
+  it("host-identify timeout and auto-scan failures pass a retry handler", () => {
+    expect(pair).toContain('emin ol.", "error", scanLanHost);');
+    expect(pair).toContain('emin ol.", "error", function () { startAutoScan(); });');
+    expect(pair).toContain(
+      'QR / kurulum kodunu kullan.", autoScanStop ? "" : "error", function () { startAutoScan(); });',
+    );
+  });
+
+  it("has EN strings for the new labels", () => {
+    expect(en).toContain('"Tekrar dene": "Try again"');
+    expect(en).toContain('"Yardım al": "Get help"');
+  });
+});
