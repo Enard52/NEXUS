@@ -27,11 +27,16 @@ export function findUnlabelledIconControls(src: string): number[] {
     if (/\b(aria-label|aria-labelledby|title)\s*=/.test(attrs)) continue;
     if (/\baria-hidden\s*=\s*"true"/.test(attrs)) continue;
     if (/<img\b[^>]*\balt\s*=\s*"[^"]+"/i.test(inner)) continue;
-    const text = inner
-      .replace(/<svg[\s\S]*?<\/svg>/gi, "")
-      .replace(/<[^>]+>/g, "")
-      .replace(/&[a-z#0-9]+;/gi, "")
-      .trim();
+    let text = inner;
+    let previous: string;
+    do {
+      previous = text;
+      text = text
+        .replace(/<svg[\s\S]*?<\/svg>/gi, "")
+        .replace(/<[^>]+>/g, "")
+        .replace(/&[a-z#0-9]+;/gi, "");
+    } while (text !== previous);
+    text = text.trim();
     if (text) continue;
     hits.push(lineOf(src, m.index));
   }
