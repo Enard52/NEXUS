@@ -603,7 +603,7 @@ html.nx-a11y *, html.nx-a11y *::before, html.nx-a11y *::after {
    Opt-in'dir: anahtar kapalıyken tasarım değişmez. Açıkken: metin/aralık ölçeği
    %12,5 büyür (Tailwind rem ölçeği), odak halkası belirginleşir, dokunma anahtarı
    (switch) 44px hedefe oturur ve dekoratif hareket kısılır (yukarıdaki kural). */
-html.nx-a11y { font-size: 112.5%; }
+html.nx-a11y { font-size: 112.5% !important; }
 html.nx-a11y :focus-visible { outline: 3px solid #4C7DFF; outline-offset: 2px; border-radius: 6px; }
 html.dark.nx-a11y :focus-visible { outline-color: #8fb0ff; }
 html.nx-a11y .switch { width: 60px; height: 34px; }

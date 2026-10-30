@@ -8,6 +8,11 @@
   // ikinci bir AI giriş noktası (yüzen N) kafa karıştırıyor ve içerikle çakışıyordu.
   var EXCLUDE_PAGES = ['nexus-chat.html', 'nexus-login.html', 'nexus-onboarding.html', 'nexus-scan.html', 'nexus-map.html', 'nexus-home.html', 'nexus-smart.html', 'nexus-register.html', 'nexus-forgot-password.html', 'nexus-device.html'];
   if (EXCLUDE_PAGES.some(function (page) { return location.href.includes(page); })) return;
+  // Kullanıcı Ayarlar'dan yüzen AI düğmesini kapatabilir.
+  try {
+    var fabPref = typeof nexusGetItem === 'function' ? nexusGetItem('nexusFabAi') : localStorage.getItem('nexusFabAi');
+    if (fabPref === 'false') return;
+  } catch (error) {}
 
   var style = document.createElement('style');
   style.textContent = [

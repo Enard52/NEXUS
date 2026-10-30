@@ -164,6 +164,47 @@
       if (el && el.classList.contains("open")) close(); else open();
     }
   });
+  // ---- klavye kısayolları penceresi ("?" tuşu) ----
+  var keysEl = null;
+  function closeKeys() {
+    if (keysEl) { keysEl.remove(); keysEl = null; }
+  }
+  function openKeys() {
+    if (keysEl) return;
+    var mod = /Mac/i.test(navigator.platform || "") ? "⌘" : "Ctrl";
+    var rows = [
+      [mod + " + K", T("Komut paleti: sayfa, cihaz, eylem ara", "Command palette: search pages, devices, actions")],
+      [mod + " + B", T("Yan menüyü aç / kapat", "Toggle the sidebar")],
+      ["?", T("Bu kısayol listesi", "This shortcut list")],
+      ["Esc", T("Açık pencereyi kapat", "Close the open dialog")]
+    ];
+    keysEl = document.createElement("div");
+    keysEl.setAttribute("role", "dialog");
+    keysEl.setAttribute("aria-modal", "true");
+    keysEl.setAttribute("aria-label", T("Klavye kısayolları", "Keyboard shortcuts"));
+    keysEl.style.cssText = "position:fixed;inset:0;z-index:2147482000;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:16px";
+    var dark = document.documentElement.classList.contains("dark");
+    var html = '<div style="max-width:440px;width:100%;border-radius:20px;padding:22px;box-shadow:0 24px 60px -12px rgba(15,23,42,.45);background:' + (dark ? "#1e293b" : "#fff") + ";color:" + (dark ? "#f1f5f9" : "#0f172a") + '">' +
+      '<p style="font-size:17px;font-weight:800;margin:0 0 14px">' + esc(T("Klavye kısayolları", "Keyboard shortcuts")) + "</p>";
+    rows.forEach(function (r) {
+      html += '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;font-size:14px"><kbd style="min-width:78px;text-align:center;padding:3px 8px;border-radius:8px;font:700 12px inherit;background:' + (dark ? "#334155" : "#f1f5f9") + '">' + esc(r[0]) + "</kbd><span>" + esc(r[1]) + "</span></div>";
+    });
+    html += "</div>";
+    keysEl.innerHTML = html;
+    keysEl.addEventListener("click", function (e) { if (e.target === keysEl) closeKeys(); });
+    document.body.appendChild(keysEl);
+  }
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && keysEl) { closeKeys(); return; }
+    var t = e.target, tag = t && t.tagName ? t.tagName.toLowerCase() : "";
+    if (e.key !== "?" || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (tag === "input" || tag === "textarea" || tag === "select" || (t && t.isContentEditable)) return;
+    if (el && el.classList.contains("open")) return;
+    e.preventDefault();
+    if (keysEl) closeKeys(); else openKeys();
+  });
+  window.nexusOpenShortcuts = openKeys;
+
   if (window.nexusDesktop && window.nexusDesktop.onPaletteOpen) window.nexusDesktop.onPaletteOpen(function () { open(); });
   window.nexusOpenPalette = open;
 
@@ -175,6 +216,8 @@
     try {
       var coarse = window.matchMedia && (window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(max-width: 1023px)").matches);
       if (!coarse || document.getElementById("nx-pal-entry")) return;
+      var pref = typeof nexusGetItem === "function" ? nexusGetItem("nexusFabSearch") : localStorage.getItem("nexusFabSearch");
+      if (pref === "false") return;
       var s = document.createElement("style");
       s.id = "nx-pal-entry-style";
       s.textContent =
@@ -197,6 +240,16 @@
       b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>';
       b.addEventListener("click", function () { open(b); });
       document.body.appendChild(b);
+      // Aşağı kaydırırken balon içeriği kapatmasın: gizlenir, yukarı kaydırınca geri gelir.
+      var lastY = window.pageYOffset || 0;
+      window.addEventListener("scroll", function () {
+        var y = window.pageYOffset || 0;
+        if (Math.abs(y - lastY) < 8) return;
+        var down = y > lastY && y > 80;
+        b.style.opacity = down ? "0" : "";
+        b.style.pointerEvents = down ? "none" : "";
+        lastY = y;
+      }, { passive: true });
     } catch (e) { /* giriş düğmesi çıkamazsa Ctrl+K/olay köprüsü yolu açık kalır */ }
   }
 

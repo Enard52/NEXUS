@@ -299,6 +299,8 @@ html.nx-desk #tap-to-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr))
   html.nx-desk #dynamic-devices-grid,
   html.nx-desk #tap-to-run-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
 }
+/* Favoriler: kartlar satırı eşit doldurur (3+1 yetim kart kalmaz) */
+html.nx-desk #favorites-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) !important; }
 #extra-smart-home-grid {
   display: contents !important;
 }

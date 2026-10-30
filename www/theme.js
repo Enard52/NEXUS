@@ -344,6 +344,18 @@ window.addEventListener('error', function(e) {
   }
   applyAccessibility();
 
+  // Yazı boyutu (Ayarlar → Görünüm ve Genel): small | normal | large. Kök yazı boyutunu
+  // yüzdeyle ölçekler (rem kullanan her şey birlikte büyür). Erişilebilirlik Modu açıksa
+  // onun kendi %112,5 ölçeği geçerli kalır.
+  function applyFontScale() {
+    var v = 'normal';
+    try { v = (typeof nexusGetItem === 'function' ? nexusGetItem('nexusFontScale') : localStorage.getItem('nexusFontScale')) || 'normal'; } catch (e) {}
+    var pct = v === 'small' ? '93.75%' : v === 'large' ? '106.25%' : '';
+    document.documentElement.style.fontSize = pct;
+  }
+  applyFontScale();
+  window.addEventListener('nexusFontScaleChanged', applyFontScale);
+
   // Apply immediately to avoid flicker
   applyTheme();
 

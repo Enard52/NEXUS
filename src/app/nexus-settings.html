@@ -221,6 +221,31 @@
         <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </span>
     </button>
+    <hr class="mx-5 border-gray-100"/>
+    <button type="button" id="font-scale-row" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="openFontScalePicker()">
+      <span class="text-xl text-gray-800 font-medium">Yazı Boyutu</span>
+      <span class="flex items-center space-x-2">
+        <span class="text-xl text-gray-400" id="font-scale-label">Normal</span>
+        <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </span>
+    </button>
+    <hr class="mx-5 border-gray-100"/>
+    <button type="button" id="fab-search-row" role="switch" aria-checked="true" class="nx-reset flex items-center justify-between px-5 py-5" onclick="toggleFab('nexusFabSearch')">
+      <span class="text-xl text-gray-800 font-medium">Yüzen Arama Düğmesi</span>
+      <span class="relative block" aria-hidden="true">
+        <span id="fab-search-track" class="block w-12 h-7 rounded-full transition-colors bg-gray-200"></span>
+        <span id="fab-search-thumb" class="block absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+      </span>
+    </button>
+    <hr class="mx-5 border-gray-100"/>
+    <button type="button" id="fab-ai-row" role="switch" aria-checked="true" class="nx-reset flex items-center justify-between px-5 py-5" onclick="toggleFab('nexusFabAi')">
+      <span class="text-xl text-gray-800 font-medium">Yüzen AI Düğmesi</span>
+      <span class="relative block" aria-hidden="true">
+        <span id="fab-ai-track" class="block w-12 h-7 rounded-full transition-colors bg-gray-200"></span>
+        <span id="fab-ai-thumb" class="block absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+      </span>
+    </button>
+    <p class="px-5 pb-4 text-sm text-slate-500">Düğmeler bir sonraki sayfa açılışında kaybolur ya da geri gelir. Masaüstünde klavye kısayolları için ? tuşuna bas.</p>
     <script>
       // Dil seçeneği artık tüm kullanıcılara açık: satır her koşulda görünür,
       // etiket güncel dili gösterir (Türkçe / English).
@@ -539,6 +564,49 @@
     refreshSystemTheme();
   }
 
+  var FONT_SCALE_LABELS = { small: 'Küçük', normal: 'Normal', large: 'Büyük' };
+  function refreshFontScale() {
+    var v = nexusGetItem('nexusFontScale') || 'normal';
+    var el = document.getElementById('font-scale-label');
+    if (el) el.textContent = FONT_SCALE_LABELS[v] || FONT_SCALE_LABELS.normal;
+  }
+  function openFontScalePicker() {
+    var current = nexusGetItem('nexusFontScale') || 'normal';
+    window.nexusDialog({
+      title: 'Yazı boyutu',
+      icon: 'settings',
+      message: 'Uygulamadaki yazıların boyutunu seç. Erişilebilirlik Modu açıksa onun ölçeği geçerli kalır.',
+      options: [
+        { label: 'Küçük', value: 'small', selected: current === 'small' },
+        { label: 'Normal', value: 'normal', selected: current === 'normal' },
+        { label: 'Büyük', value: 'large', selected: current === 'large' }
+      ],
+      onSelect: function (value) {
+        nexusSetItem('nexusFontScale', value);
+        window.dispatchEvent(new Event('nexusFontScaleChanged'));
+        refreshFontScale();
+      }
+    });
+  }
+
+  var FAB_ROWS = { nexusFabSearch: 'fab-search', nexusFabAi: 'fab-ai' };
+  function refreshFabs() {
+    Object.keys(FAB_ROWS).forEach(function (key) {
+      var id = FAB_ROWS[key];
+      var on = nexusGetItem(key) !== 'false';
+      var track = document.getElementById(id + '-track');
+      var thumb = document.getElementById(id + '-thumb');
+      var row = document.getElementById(id + '-row');
+      if (track) track.className = 'block w-12 h-7 rounded-full transition-colors ' + (on ? 'bg-[#4C7DFF]' : 'bg-gray-200');
+      if (thumb) thumb.style.transform = on ? 'translateX(20px)' : 'translateX(0)';
+      if (row) row.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+  }
+  function toggleFab(key) {
+    nexusSetItem(key, nexusGetItem(key) === 'false' ? 'true' : 'false');
+    refreshFabs();
+  }
+
   function refreshTempLabel() {
     document.getElementById('temp-unit-label').textContent =
       nexusGetItem('nexusTempUnit') === 'F' ? '°F' : '°C';
@@ -591,6 +659,8 @@
   refreshDarkLabel();
   refreshSystemTheme();
   refreshTempLabel();
+  refreshFontScale();
+  refreshFabs();
 
   // Masaüstü uygulaması: uygulama içi güncelleme kontrolü ve yükleme.
   // Yalnızca Electron köprüsü (window.nexusDesktop.updates) varsa görünür.
