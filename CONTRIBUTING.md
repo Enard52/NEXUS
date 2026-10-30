@@ -32,3 +32,7 @@ Single source of truth for screens is the repo root (`nexus-*.html`, `*.js`, `cs
 - PRs must keep `pnpm test` green.
 - UI changes: attach a screenshot (mobile 390 px + desktop if relevant).
 - New languages: add a dictionary file only (layout is language-agnostic); the 100% coverage gate applies to shipped languages.
+
+## Credit
+
+Your commits keep your authorship. Contributors are credited by GitHub handle in the release notes and README of the release that includes their work. Only real contributors are named; no numbers or rankings are published. (Also on the site: `/contribute`.)

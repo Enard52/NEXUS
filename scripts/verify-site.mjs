@@ -380,7 +380,7 @@ for (const [label, file, canonical] of [
     const sm = readFileSync(sitemapPath, "utf8");
     const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     check("sitemap: .html adresi yok", !locs.some((l) => l.endsWith(".html")), locs.filter((l) => l.endsWith(".html")).join(","));
-    check("sitemap: 12 adres (6 sayfa × 2 dil)", locs.length === 12, `${locs.length}`);
+    check("sitemap: 14 adres (7 sayfa × 2 dil)", locs.length === 14, `${locs.length}`);
     for (const want of [`${SITE_ORIGIN}/`, `${SITE_ORIGIN}/tr/`, `${SITE_ORIGIN}/about`, `${SITE_ORIGIN}/tr/privacy`])
       check(`sitemap: ${want.replace(SITE_ORIGIN, "")} listeli`, locs.includes(want));
     check("sitemap: XML gövdesi kapalı", sm.trimEnd().endsWith("</urlset>"));

@@ -479,10 +479,16 @@ window.addEventListener('error', function(e) {
     /* Text Colors */
     'html.dark .text-black, html.dark .text-slate-900, html.dark .text-slate-800, html.dark .text-gray-900, html.dark .text-gray-800 { color: #f8fafc !important; }',
     'html.dark .text-slate-700, html.dark .text-slate-600, html.dark .text-gray-700, html.dark .text-gray-600 { color: #cbd5e1 !important; }',
-    'html.dark .text-slate-500, html.dark .text-slate-400, html.dark .text-gray-500, html.dark .text-gray-400 { color: #94a3b8 !important; }',
+    /* #a8b4c6: #334155 yüzeyinde bile >= 4.5:1 (eski #94a3b8 orada 4.04 idi) */
+    'html.dark .text-slate-500, html.dark .text-slate-400, html.dark .text-gray-500, html.dark .text-gray-400 { color: #a8b4c6 !important; }',
     /* Sayfa özel metin tokenları (örn. menü: text-primary #111827) */
     'html.dark .text-text-primary { color: #f8fafc !important; }',
-    'html.dark .text-text-secondary { color: #94a3b8 !important; }',
+    'html.dark .text-text-secondary { color: #a8b4c6 !important; }',
+    /* Vurgu renkli METİN koyu yüzeylerde 2.8-3.9:1 kalıyordu; vurguyu beyazla açarak >= 4.5:1 */
+    'html.dark [class*="text-[#4C7DFF]"], html.dark .text-nexus-purple { color: #9db8ff !important; color: color-mix(in srgb, var(--nx-accent,#4C7DFF) 55%, #fff) !important; }',
+    /* Açık amber uyarı kutusu koyu modda açık kalıp metni (açık renk) görünmez yapıyordu */
+    'html.dark .bg-amber-50 { background-color: rgba(245,158,11,0.14) !important; }',
+    'html.dark .border-amber-200 { border-color: rgba(245,158,11,0.35) !important; }',
 
     /* Borders */
     'html.dark .border-slate-50, html.dark .border-slate-100, html.dark .border-slate-200, html.dark .border-gray-50, html.dark .border-gray-100, html.dark .border-gray-200, html.dark .border-nexus-border { border-color: #334155 !important; }',
