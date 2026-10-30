@@ -79,7 +79,27 @@
 <i class="w-7 h-7" data-lucide="zap"></i>
 </div>
 </section>
-<!-- Dışa aktarma: yalnızca gerçek güç okuması olan cihaz varsa görünür -->
+<!-- Tüketim geçmişi: yalnızca bu cihazda, gerçek güç okumalarından birikir; ölçüm yoksa dürüst boş durum. -->
+<section class="bg-white rounded-3xl card-shadow p-5 mb-6" data-purpose="energy-history" aria-labelledby="eh-title">
+<h2 class="text-lg font-bold mb-1" id="eh-title">Tüketim Geçmişi</h2>
+<p class="text-xs text-slate-400 mb-3">Son 7 gün · yalnızca bu cihazdaki gerçek ölçümlerden</p>
+<p class="text-sm text-slate-500" id="eh-empty">Henüz kayıtlı ölçüm yok. Güç ölçen bir cihaz ekleyip bu sayfayı açtığında okumalar burada birikir.</p>
+<div id="eh-body" style="display:none">
+<div id="eh-chart" style="color:#4C7DFF"></div>
+<p class="text-sm mt-3"><span class="text-slate-500">Bugün</span> <b id="eh-today">—</b> <span class="text-slate-500">kWh</span> · <span class="text-slate-500">Son 7 gün</span> <b id="eh-week">—</b> <span class="text-slate-500">kWh</span></p>
+<p class="text-xs text-slate-400 mt-1">Ölçüm alınmayan aralıklar hesaba katılmaz; bu yüzden değerler gerçek tüketimden düşük olabilir.</p>
+<div class="mt-4 pt-4" style="border-top:1px solid rgba(148,163,184,.3)">
+<label class="text-sm font-semibold text-slate-500" for="eh-price">Elektrik birim fiyatı (kWh başına)</label>
+<div class="flex gap-2 mt-2">
+<input id="eh-price" type="text" inputmode="decimal" autocomplete="off" placeholder="Örn. 2,50" class="flex-1 px-3 py-2.5 rounded-xl text-sm" style="border:1px solid rgba(148,163,184,.5);background:transparent;color:inherit;min-width:0"/>
+<input id="eh-cur" type="text" maxlength="4" autocomplete="off" placeholder="Para birimi" aria-label="Para birimi" class="px-3 py-2.5 rounded-xl text-sm" style="border:1px solid rgba(148,163,184,.5);background:transparent;color:inherit;width:6.5rem"/>
+<button class="px-4 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="eh-save" type="button">Kaydet</button>
+</div>
+<p class="text-sm mt-3" id="eh-cost" aria-live="polite"></p>
+<p class="text-xs text-slate-400 mt-1">Tahmini maliyet; fatura değildir. Fiyat yalnızca bu cihazda saklanır.</p>
+</div>
+</div>
+</section><!-- Dışa aktarma: yalnızca gerçek güç okuması olan cihaz varsa görünür -->
 <div class="flex gap-2 mb-6" id="export-row" data-purpose="energy-export" style="display:none">
 <button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-csv" type="button">CSV olarak dışa aktar</button>
 <button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-json" type="button">JSON olarak dışa aktar</button>
@@ -190,7 +210,7 @@
       });
       render(haveAny ? lastSum : null, meterIdx.length);
       Promise.all(meterIdx.map(function (i) { return NX.refreshFromDevice(i); }))
-        .then(function () {
+        .then(function (results) {
           var devices2 = [];
           try { devices2 = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]') || []; } catch (e) {}
           var sum = 0, ok = 0;
@@ -199,10 +219,138 @@
             if (typeof p === 'number') { sum += p; ok++; }
           });
           render(ok ? sum : null, meterIdx.length);
+          // Geçmişe yalnızca bu yenilemede gerçekten okunan cihazlar yazılır (eski değer örnek sayılmaz).
+          var fresh = [];
+          meterIdx.forEach(function (i, j) {
+            var p = devices2[i] && devices2[i].fields && devices2[i].fields.power;
+            if (results && results[j] && typeof p === 'number') fresh.push({ name: devices2[i].name, w: p });
+          });
+          if (fresh.length && window.__ehRecord) { window.__ehRecord(fresh); window.__ehDraw(); }
         })
         .catch(function () { /* tazeleme başarısızsa son bilinen değer kalır */ });
     })();
 
+    // Tüketim geçmişi: yalnızca gerçek okumalardan örnek biriktirilir (5 dk'da en çok bir örnek, 7 gün sınırı).
+    // kWh, ardışık gerçek örnekler arasındaki (en çok 30 dk) aralıkların trapez integralidir; boşluklar sayılmaz.
+    // >>> energy-history
+    var EH_BUCKET_MS = 300000, EH_KEEP_MS = 7 * 86400000, EH_MAX_GAP_MS = 1800000, EH_MAX_N = 2016;
+    function ehTrim(samples, now) {
+      var out = (samples || []).filter(function (s) {
+        return s && typeof s.t === 'number' && isFinite(s.t) && typeof s.w === 'number' && isFinite(s.w) && s.t >= now - EH_KEEP_MS && s.t <= now + 60000;
+      });
+      return out.length > EH_MAX_N ? out.slice(out.length - EH_MAX_N) : out;
+    }
+    // perDevice: [{ name, w }]; yalnızca sonlu sayılar alınır, hiç gerçek okuma yoksa örnek eklenmez.
+    function ehAppend(samples, t, perDevice) {
+      var list = ehTrim(samples, t);
+      var d = [], total = 0;
+      (perDevice || []).forEach(function (x) {
+        if (x && typeof x.w === 'number' && isFinite(x.w) && x.w >= 0) { d.push([String(x.name || ''), x.w]); total += x.w; }
+      });
+      if (!d.length) return list;
+      var last = list[list.length - 1];
+      if (last && t - last.t < EH_BUCKET_MS) return list;
+      list.push({ t: t, w: total, d: d });
+      return ehTrim(list, t);
+    }
+    // [from, to] içindeki ölçülmüş enerji: { kwh, coveredMs }
+    function ehIntegrate(samples, from, to) {
+      var kwh = 0, covered = 0;
+      for (var i = 1; i < (samples || []).length; i++) {
+        var a = samples[i - 1], b = samples[i];
+        var gap = b.t - a.t;
+        if (gap <= 0 || gap > EH_MAX_GAP_MS) continue;
+        var t0 = Math.max(a.t, from), t1 = Math.min(b.t, to);
+        if (t1 <= t0) continue;
+        var w0 = a.w + (b.w - a.w) * ((t0 - a.t) / gap);
+        var w1 = a.w + (b.w - a.w) * ((t1 - a.t) / gap);
+        kwh += ((w0 + w1) / 2) * ((t1 - t0) / 3600000) / 1000;
+        covered += t1 - t0;
+      }
+      return { kwh: kwh, coveredMs: covered };
+    }
+    // Son `days` yerel gün; ölçüm kapsamı olmayan günün kwh değeri null (0 değil).
+    function ehDaily(samples, now, days) {
+      var d0 = new Date(now); d0.setHours(0, 0, 0, 0);
+      var out = [];
+      for (var k = days - 1; k >= 0; k--) {
+        var s = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - k);
+        var e = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - k + 1);
+        var r = ehIntegrate(samples, s.getTime(), Math.min(e.getTime(), now));
+        out.push({ start: s.getTime(), kwh: r.coveredMs > 0 ? r.kwh : null });
+      }
+      return out;
+    }
+    function ehPrice(text) {
+      var n = parseFloat(String(text == null ? '' : text).trim().replace(',', '.'));
+      return isFinite(n) && n >= 0 && /^\s*\d+([.,]\d+)?\s*$/.test(String(text)) ? n : null;
+    }
+    function ehCost(kwh, price) {
+      return typeof kwh === 'number' && isFinite(kwh) && typeof price === 'number' && isFinite(price) && price >= 0 ? kwh * price : null;
+    }
+    // labels: günlük etiketler (gün sayısı kadar); label metni dışarıdan gelir, boş gün çubuk yerine kısa çizgi alır.
+    function ehChartSvg(daily, labels, ariaLabel) {
+      var W = 320, H = 150, top = 12, bot = 26, ph = H - top - bot, n = daily.length, slot = W / n, bw = Math.min(28, slot * 0.6);
+      var max = 0;
+      daily.forEach(function (x) { if (x.kwh !== null && x.kwh > max) max = x.kwh; });
+      var parts = ['<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="' + String(ariaLabel).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }) + '" xmlns="http://www.w3.org/2000/svg">'];
+      daily.forEach(function (x, i) {
+        var cx = slot * i + slot / 2;
+        if (x.kwh === null) {
+          parts.push('<rect x="' + (cx - bw / 2).toFixed(1) + '" y="' + (top + ph - 1) + '" width="' + bw.toFixed(1) + '" height="1.5" fill="currentColor" opacity=".25"/>');
+        } else {
+          var h = max > 0 ? Math.max(1.5, (x.kwh / max) * ph) : 1.5;
+          parts.push('<rect x="' + (cx - bw / 2).toFixed(1) + '" y="' + (top + ph - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="3" fill="currentColor"/>');
+        }
+        parts.push('<text x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">' + String(labels[i] == null ? '' : labels[i]).replace(/[&<>]/g, '') + '</text>');
+      });
+      parts.push('</svg>');
+      return parts.join('');
+    }
+    // <<< energy-history
+    (function () {
+      var KEY = 'nexusEnergyHistory', TARIFF = 'nexusEnergyTariff';
+      function tr(s) { return window.nexusTr ? window.nexusTr(s) : s; }
+      function load() { try { var v = JSON.parse(nexusGetItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+      function tariff() { try { return JSON.parse(nexusGetItem(TARIFF) || 'null') || {}; } catch (e) { return {}; } }
+      function fmt(n) { return n < 10 ? n.toFixed(2) : n.toFixed(1); }
+      function draw() {
+        var now = Date.now(), samples = ehTrim(load(), now);
+        var body = document.getElementById('eh-body'), empty = document.getElementById('eh-empty');
+        if (!body || !empty) return;
+        if (!samples.length) { body.style.display = 'none'; empty.style.display = ''; return; }
+        empty.style.display = 'none'; body.style.display = '';
+        var daily = ehDaily(samples, now, 7);
+        var labels = daily.map(function (x) { return new Date(x.start).toLocaleDateString(undefined, { weekday: 'short' }); });
+        var today = daily[daily.length - 1].kwh;
+        var wk = ehIntegrate(samples, now - 7 * 86400000, now);
+        var weekKwh = wk.coveredMs > 0 ? wk.kwh : null;
+        document.getElementById('eh-chart').innerHTML = ehChartSvg(daily, labels, tr('Günlük tüketim, son 7 gün (kWh)') + ': ' + daily.map(function (x, i) { return labels[i] + ' ' + (x.kwh === null ? tr('ölçüm yok') : fmt(x.kwh)); }).join(', '));
+        document.getElementById('eh-today').textContent = today === null ? '—' : fmt(today);
+        document.getElementById('eh-week').textContent = weekKwh === null ? '—' : fmt(weekKwh);
+        var t = tariff(), p = typeof t.price === 'number' ? t.price : null, cur = t.currency || '';
+        var priceEl = document.getElementById('eh-price');
+        if (p !== null && document.activeElement !== priceEl && !priceEl.value) priceEl.value = String(p).replace('.', ',');
+        var curEl = document.getElementById('eh-cur');
+        if (cur && !curEl.value) curEl.value = cur;
+        var cost = document.getElementById('eh-cost');
+        var ct = ehCost(today, p), cw = ehCost(weekKwh, p);
+        cost.textContent = (ct === null && cw === null) ? tr('Maliyet tahmini için birim fiyatı gir.') :
+          tr('Tahmini maliyet') + ' · ' + tr('Bugün') + ': ' + (ct === null ? '—' : fmt(ct) + ' ' + cur) + ' · ' + tr('Son 7 gün') + ': ' + (cw === null ? '—' : fmt(cw) + ' ' + cur);
+      }
+      var saveBtn = document.getElementById('eh-save');
+      if (saveBtn) saveBtn.addEventListener('click', function () {
+        var p = ehPrice(document.getElementById('eh-price').value);
+        if (p === null) { document.getElementById('eh-cost').textContent = tr('Geçerli bir fiyat gir (örn. 2,50).'); return; }
+        nexusSetItem(TARIFF, JSON.stringify({ price: p, currency: document.getElementById('eh-cur').value.trim().slice(0, 4) }));
+        draw();
+      });
+      window.__ehDraw = draw;
+      window.__ehRecord = function (perDevice) {
+        nexusSetItem(KEY, JSON.stringify(ehAppend(load(), Date.now(), perDevice)));
+      };
+      draw();
+    })();
     // Dışa aktarma: yalnızca cihazlardaki son gerçek güç okumaları; geçmiş kaydı tutulmadığı için
     // uydurma geçmiş satırı üretilmez. Veri cihazdan çıkmaz, dosya yerelde oluşur.
     // >>> energy-export

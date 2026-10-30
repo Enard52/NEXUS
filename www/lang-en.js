@@ -454,7 +454,8 @@ window.NEXUS_EN = {
       "Sent to your own address while signed in; no secrets are stored in the app.",
     "Gönderilecek adres": "Recipient",
     "Cihazlar Arası Push": "Cross-device Push",
-    "Aile üyesinin uyarısı uygulama kapalıyken de düşer": "A family member's alert arrives even when the app is closed",
+    "Aile üyesinin uyarısı uygulama kapalıyken de düşer":
+      "A family member's alert arrives even when the app is closed",
     "Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı push'u kendi cihazında açmış olmalı.":
       "Goes to other members' and your other devices' notification centres; the recipient must have push enabled on their device.",
     "Kendi sunucuna JSON POST — gelişmiş": "JSON POST to your own server — advanced",
@@ -514,8 +515,8 @@ window.NEXUS_EN = {
     "Wake-on-LAN PC / TV": "Wake-on-LAN PC / TV",
     /* --- Otomasyon motoru + enerji + dürüstlük düzeltmeleri (issue #24/#25, 2026-10-25) --- */
     "Anlık Tüketim": "Live Usage",
-"CSV olarak dışa aktar": "Export as CSV",
-"JSON olarak dışa aktar": "Export as JSON",
+    "CSV olarak dışa aktar": "Export as CSV",
+    "JSON olarak dışa aktar": "Export as JSON",
     "Güç ölçen cihaz ekleyince gerçek değer burada görünür.":
       "Add a power-metering device to see real values here.",
     "{0} güç ölçümlü cihazdan gerçek okuma.": "Live reading from {0} metered device(s).",
@@ -3332,6 +3333,25 @@ window.NEXUS_EN = {
     "İptal edildi — dönem sonuna kadar geçerli": "Cancelled — valid until the end of the period",
     "Aboneliğin aktif": "Your subscription is active",
 
+    /* --- Enerji: tüketim geçmişi ve maliyet tahmini --- */
+    "Tüketim Geçmişi": "Usage History",
+    "Son 7 gün · yalnızca bu cihazdaki gerçek ölçümlerden":
+      "Last 7 days · from real measurements on this device only",
+    "Son 7 gün": "Last 7 days",
+    "Henüz kayıtlı ölçüm yok. Güç ölçen bir cihaz ekleyip bu sayfayı açtığında okumalar burada birikir.":
+      "No measurements recorded yet. Add a device that measures power and open this page; readings will build up here.",
+    "Ölçüm alınmayan aralıklar hesaba katılmaz; bu yüzden değerler gerçek tüketimden düşük olabilir.":
+      "Intervals without measurements are not counted, so values may be lower than actual consumption.",
+    "Elektrik birim fiyatı (kWh başına)": "Electricity price (per kWh)",
+    "Örn. 2,50": "e.g. 2.50",
+    "Para birimi": "Currency",
+    "Tahmini maliyet; fatura değildir. Fiyat yalnızca bu cihazda saklanır.":
+      "Estimated cost, not a bill. The price is stored on this device only.",
+    "Günlük tüketim, son 7 gün (kWh)": "Daily usage, last 7 days (kWh)",
+    "ölçüm yok": "no data",
+    "Tahmini maliyet": "Estimated cost",
+    "Maliyet tahmini için birim fiyatı gir.": "Enter a unit price to estimate cost.",
+    "Geçerli bir fiyat gir (örn. 2,50).": "Enter a valid price (e.g. 2.50).",
     /* --- Bildirim yedeği --- */
     Uyarı: "Alert",
   },
