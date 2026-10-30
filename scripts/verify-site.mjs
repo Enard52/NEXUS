@@ -160,9 +160,9 @@ for (const [file, cur, saveText] of [
   check(`depo: android minSdk okunuyor (${minSdk})`, minSdk > 0 && !!androidFloor, String(minSdk));
 
   // Ev halkası ekranı: rol listesi ve yetki anahtarları sitenin aile kartıyla birebir aynı olmalı.
-  const hh = existsSync(join(ROOT, "src", "app", "nexus-household.html"))
-    ? readFileSync(join(ROOT, "src", "app", "nexus-household.html"), "utf8")
-    : "";
+  // Ekranın betiği household-page.js'e taşındı (satır içi script sınırı, #102): ikisi birlikte okunur.
+  const readApp = (f) => (existsSync(join(ROOT, "src", "app", f)) ? readFileSync(join(ROOT, "src", "app", f), "utf8") : "");
+  const hh = readApp("nexus-household.html") + readApp("household-page.js");
   const roles = [...hh.matchAll(/<option value="([^"]+)">/g)].map((m) => m[1]);
   check("depo: hane rolleri bulunuyor", roles.length >= 2, roles.join(","));
   const permsBlock = (hh.match(/function defaultPerms[\s\S]{0,220}?return \{([^}]+)\}/) || [])[1] || "";
