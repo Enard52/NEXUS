@@ -517,6 +517,7 @@ window.NEXUS_EN = {
     "Anlık Tüketim": "Live Usage",
     "CSV olarak dışa aktar": "Export as CSV",
     "JSON olarak dışa aktar": "Export as JSON",
+    "Kayıtlı geçmiş yok; yalnızca son okumalar dışa aktarılır.": "No stored history yet; only the latest readings are exported.",
     "Güç ölçen cihaz ekleyince gerçek değer burada görünür.":
       "Add a power-metering device to see real values here.",
     "{0} güç ölçümlü cihazdan gerçek okuma.": "Live reading from {0} metered device(s).",
