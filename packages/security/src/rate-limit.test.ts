@@ -180,6 +180,17 @@ describe("RateLimiter — exact boundaries", () => {
     expect(rl.check("").allowed).toBe(false);
   });
 
+  it("retryAfterMs is honest: waiting that long after a rejected call gets you through", () => {
+    let t = 0;
+    const rl = new RateLimiter({ maxRequests: 1, windowMs: 1_000, now: () => t });
+    expect(rl.check("k").allowed).toBe(true);
+    t = 500;
+    const denied = rl.check("k");
+    expect(denied).toEqual({ allowed: false, retryAfterMs: 500 });
+    t += denied.retryAfterMs ?? 0;
+    expect(rl.check("k").allowed).toBe(true);
+  });
+
   it("maxRequests 0 rejects everything", () => {
     const rl = new RateLimiter({ maxRequests: 0, windowMs: 1_000, now: () => 0 });
     expect(rl.check("k").allowed).toBe(false);
