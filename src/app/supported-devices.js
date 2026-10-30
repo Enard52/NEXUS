@@ -233,6 +233,15 @@
       ],
     },
     {
+      brand: "Nanoleaf",
+      protocol: "nanoleaf",
+      availability: "all",
+      note: "Yerel Open API (bağlantı noktası 16021); güç düğmesiyle eşleştirme gerekir",
+      models: [
+        { name: "Nanoleaf Işık Panelleri / Shapes", img: "generic-led-strip.png", caps: ["switch", "brightness", "color", "colorTemp"] },
+      ],
+    },
+    {
       brand: "LIFX",
       protocol: "lifx",
       availability: "desktop",
