@@ -92,18 +92,20 @@
     function isOwner(home) { return !home.cloud || home.myRole === "owner"; }
 
     // Üye görseli: varsa fotoğraf (yıkılırsa baş harfe döner) + çevrimiçi durumu noktası.
+    // Konum/boyut/renk satır içi: derlenmiş Tailwind'de -bottom-0.5 ve bg-amber-400 yok, nokta köşeden kayıyordu.
     var PRESENCE_DOT = {
-      online: "bg-emerald-500",
-      recent: "bg-amber-400",
-      offline: "bg-slate-300 dark:bg-slate-600",
+      online: ' style="background:#10b981"',
+      recent: ' style="background:#fbbf24"',
+      offline: ' style="background:#94a3b8"',
     };
+    var PRESENCE_POS = "position:absolute;right:-2px;bottom:-2px;width:14px;height:14px;box-sizing:border-box;";
     function memberAvatar(member) {
       var inner = member.avatar
         ? '<img src="' + esc(member.avatar) + '" alt="" class="h-11 w-11 rounded-full object-cover" onerror="this.outerHTML=\'<div class=&quot;flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] font-bold text-white&quot;>' + esc((member.name || "?").charAt(0).toUpperCase()) + '</div>\'"/>'
         : '<div class="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] font-bold text-white">' + esc((member.name || "?").charAt(0).toUpperCase()) + "</div>";
       // Yalnız bulut üyelerinin kalp atışı vardır; yerel üyede nokta gösterilmez.
       var p = member && member.lastSeenAt && HC && HC.presenceOf ? HC.presenceOf(member) : null;
-      var dot = p ? '<span class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-slate-900 ' + (PRESENCE_DOT[p.key] || PRESENCE_DOT.offline) + '" title="' + esc(p.label) + '"></span>' : "";
+      var dot = p ? '<span class="nx-presence-dot rounded-full border-2 border-white dark:border-slate-900"' + (PRESENCE_DOT[p.key] || PRESENCE_DOT.offline).replace('style="', 'style="' + PRESENCE_POS) + ' title="' + esc(p.label) + '"></span>' : "";
       return '<span class="relative inline-flex shrink-0">' + inner + dot + "</span>";
     }
     function memberPresenceLabel(member) {
@@ -768,7 +770,7 @@
         var roomChips = "";
         if (!locked && Array.isArray(home.rooms) && home.rooms.length) {
           var restricted = member.perms && Array.isArray(member.perms.rooms) ? member.perms.rooms : null;
-          roomChips = '<div class="mt-1 border-t border-slate-200 pt-2.5 dark:border-slate-700">' +
+          roomChips = '<div class="mt-1 border-t border-slate-200 dark:border-slate-700" style="padding-top:0.625rem">' +
             '<p class="mb-2 text-xs font-bold text-slate-400">Oda Erişimi</p><div class="flex flex-wrap gap-1.5">' +
             '<button type="button" onclick="setMemberRoomsAll(\'' + esc(member.userId) + '\')" class="rounded-full px-3 py-1 text-xs font-bold transition-colors ' +
               (restricted === null ? "bg-[#4C7DFF] text-white" : "bg-white text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700") + '">Tüm odalar</button>' +

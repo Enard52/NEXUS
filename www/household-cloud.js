@@ -203,24 +203,55 @@
   // aile listelerinde ve sohbette gerçek fotoğraf görünür. Yalnız kendi satırım.
   // Sunucuya yazıldıktan sonra önbellek yerinde yamanır (yeniden fetch yok: gereksiz
   // istek ve test koşusu sırasında istek kuyruğunu tüketme riski olmasın).
-  var lastAvatarSync = "";
-  function syncMyAvatar(homes, myId) {
-    var url = String((window.nexusGetItem && window.nexusGetItem("nexusAvatar")) || "");
-    if (!url || url.length > 200000 || url === lastAvatarSync) return;
-    var me = homes.length && homes[0].members.filter(function (m) { return m.userId === myId; })[0];
-    if (me && me.avatar === url) { lastAvatarSync = url; return; }
-    lastAvatarSync = url;
-    rpc("set_household_avatar", { p_avatar: url }).then(function () {
-      var all = get(HOUSE_KEY, []);
-      (Array.isArray(all) ? all : []).forEach(function (h) {
-        if (h && h.cloud && Array.isArray(h.members)) {
-          h.members.forEach(function (m) { if (m.userId === myId) m.avatar = url; });
-        }
-      });
-      put(HOUSE_KEY, all);
-      changed({ kind: "avatar" });
-    }, function () { /* en iyi çaba: sunucu reddederse ilk avatarla devam */ });
+  var lastAvatarSync = null;
+  // Sunucu yalnız küçük "data:image/" kabul eder (≤200 KB). Google fotoğrafı (https) ya da büyük
+  // görsel olduğu gibi gönderilirse reddedilir ve avatar sessizce eşitlenmezdi: 128 px JPEG'e indirilir.
+  // Çapraz kaynak görsel okunamazsa (CORS) "" döner ve yazılmaz; harf avatarı honest fallback'tir.
+  function avatarForServer(src) {
+    if (!src) return Promise.resolve("");
+    if (/^data:image\//.test(src) && src.length <= 200000) return Promise.resolve(src);
+    return new Promise(function (resolve) {
+      var img = new Image();
+      if (!/^data:/.test(src)) img.crossOrigin = "anonymous";
+      img.onload = function () {
+        try {
+          var side = 128, c = document.createElement("canvas");
+          c.width = side; c.height = side;
+          var s = Math.min(img.naturalWidth, img.naturalHeight) || side;
+          c.getContext("2d").drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, side, side);
+          var out = c.toDataURL("image/jpeg", 0.8);
+          resolve(out.length <= 200000 ? out : null);
+        } catch (e) { resolve(null); }
+      };
+      img.onerror = function () { resolve(null); };
+      img.src = src;
+    });
   }
+  function syncMyAvatar(homes, myId) {
+    var raw = String((window.nexusGetItem && window.nexusGetItem("nexusAvatar")) || "");
+    if (raw === lastAvatarSync) return;
+    var me = homes.length && homes[0].members.filter(function (m) { return m.userId === myId; })[0];
+    if (!me) return;
+    avatarForServer(raw).then(function (url) {
+      if (url === null) return; // dönüştürülemedi: sunucudakine dokunma
+      lastAvatarSync = raw;
+      if (me.avatar === url) return;
+      return rpc("set_household_avatar", { p_avatar: url }).then(function () {
+        var all = get(HOUSE_KEY, []);
+        (Array.isArray(all) ? all : []).forEach(function (h) {
+          if (h && h.cloud && Array.isArray(h.members)) {
+            h.members.forEach(function (m) { if (m.userId === myId) m.avatar = url; });
+          }
+        });
+        put(HOUSE_KEY, all);
+        changed({ kind: "avatar" });
+      }, function () { lastAvatarSync = null; /* sunucu reddetti: sonraki yenilemede tekrar dene */ });
+    });
+  }
+  // Profil fotoğrafı değişince (ya da kaldırılınca) bir sonraki yenilemeyi beklemeden eşitle.
+  window.addEventListener("nexusAvatarChanged", function () {
+    status().then(function (st) { if (st.ok) syncMyAvatar(cachedHomes(), st.userId); }, function () {});
+  });
 
   // --- çevrimiçi durumu (presence) ---------------------------------------------------
   // Kalp atışı: uygulama açıkken 60 sn'de bir (ve görünürlük değişince) dokunulur.

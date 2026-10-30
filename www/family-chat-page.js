@@ -54,9 +54,9 @@
         : '<div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] text-sm font-bold text-white">' + letter + '</div>';
       var p = member && member.lastSeenAt && HC && HC.presenceOf ? HC.presenceOf(member) : null;
       var dot = p
-        ? '<span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white dark:border-slate-900 ' + (p.key === "online" ? "bg-emerald-500" : p.key === "recent" ? "bg-amber-400" : "bg-slate-300 dark:bg-slate-600") + '" title="' + esc(p.label) + '"></span>'
+        ? '<span class="nx-presence-dot rounded-full border-2 border-white dark:border-slate-900" style="position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;box-sizing:border-box;background:' + (p.key === "online" ? "#10b981" : p.key === "recent" ? "#fbbf24" : "#94a3b8") + '" title="' + esc(p.label) + '"></span>'
         : "";
-      return '<span class="relative inline-flex shrink-0 ' + (mine ? "order-2" : "") + '">' + inner + dot + "</span>";
+      return '<span class="relative inline-flex shrink-0 ' + (mine ? "order-2" : "") + '" data-avatar-of="' + esc(member ? member.userId : "") + '">' + inner + dot + "</span>";
     }
     // Yanıt baloncuğu: yanıtlanan mesajın sahibi + kısa gövdesi (tek satır kesilir).
     function replyQuoteHtml(m) {
@@ -64,7 +64,7 @@
       var who = m.parent.sender_id === me ? "Sen" : (m.parent.sender_name || "Üye");
       var body = String(m.parent.body || "");
       if (body.length > 90) body = body.slice(0, 89) + "…";
-      return '<button type="button" class="mb-1 block max-w-full rounded-lg border-l-4 border-current/40 bg-black/5 px-2.5 py-1.5 text-left opacity-80 dark:bg-white/10" data-jump="' + esc(m.reply_to) + '">' +
+      return '<button type="button" class="msg-quote mb-1 block max-w-full rounded-lg bg-black/5 px-2.5 py-1.5 text-left opacity-80 dark:bg-white/10" data-jump="' + esc(m.reply_to) + '">' +
         '<span class="block text-[11px] font-bold">' + esc(who) + '</span>' +
         '<span class="block max-w-[15rem] truncate text-[11px]">' + esc(body) + '</span></button>';
     }
@@ -113,7 +113,7 @@
       var name = '<p class="mb-0.5 px-1 text-xs font-bold text-slate-400">' + esc(shownName) + '</p>';
       return '<div class="mb-3 flex items-start gap-2 ' + (mine ? "flex-row-reverse" : "") + '" data-id="' + esc(m.id) + '" data-day="' + esc(new Date(m.created_at).toDateString()) + '">' +
         chatAvatar(sender.member, shownName, mine) +
-        '<div class="flex min-w-0 flex-col ' + (mine ? "items-end" : "items-start") + '">' +
+        '<div class="msg-col flex min-w-0 flex-col ' + (mine ? "items-end" : "items-start") + '">' +
         name +
         replyQuoteHtml(m) +
         '<button type="button" data-bubble="' + esc(m.id) + '" class="bubble px-4 py-2.5 text-left text-[15px] font-medium leading-snug ' + (mine ? "bubble-me" : "bubble-other") + '">' + esc(m.body) + '</button>' +
@@ -132,10 +132,20 @@
       composer.classList.add("hidden");
       composer.classList.remove("flex");
     }
-    function setBanner(text) {
+    // Kalıcı uyarı (üye yok / sunucuya ulaşılamadı) ile geçici hata ayrı tutulur: yoklama her turda
+    // setBanner("") çağırır; kalıcı uyarı sönüp geri gelmesin, geçici hata birkaç sn sonra kalksın.
+    var baseBanner = "", bannerTimer = 0;
+    function showBanner(text) {
       if (!text) { banner.classList.add("hidden"); banner.textContent = ""; return; }
       banner.textContent = text;
       banner.classList.remove("hidden");
+    }
+    function setBanner(text, sticky) {
+      clearTimeout(bannerTimer);
+      if (sticky) { baseBanner = text || ""; showBanner(baseBanner); return; }
+      if (!text) { showBanner(baseBanner); return; }
+      showBanner(text);
+      bannerTimer = setTimeout(function () { showBanner(baseBanner); }, 5000);
     }
     function setComposerEnabled(on) {
       input.disabled = !on;
@@ -341,7 +351,6 @@
         setBanner("");
       }, function (e) {
         setBanner(e.message);
-        setTimeout(function () { if (banner.textContent === e.message) setBanner(""); }, 4000);
       }).then(function () { sendBtn.disabled = input.disabled; input.focus(); });
     });
     input.addEventListener("keydown", function (e) {
@@ -374,7 +383,26 @@
       if (ev && ev.detail && ev.detail.id) dropMessage(ev.detail.id);
     });
     // Üye satırları güncellendi (okundu/presence): ✓✓ işaretlerini tazele.
-    window.addEventListener("nexusHouseholdChanged", function () { refreshReadMarks(); });
+    // Avatar/ad/presence değişince üye önbelleği yeniden okunur ve görünen avatarlar yerinde tazelenir.
+    window.addEventListener("nexusHouseholdChanged", function () {
+      var fresh = HC.homes().filter(function (h) { return h.id === homeId; })[0];
+      if (fresh) {
+        activeHome = fresh;
+        Array.prototype.forEach.call(listEl.querySelectorAll("[data-avatar-of]"), function (el) {
+          var uid = el.getAttribute("data-avatar-of");
+          if (!uid) return;
+          var mem = fresh.members.filter(function (x) { return x.userId === uid; })[0];
+          if (!mem) return;
+          var tmp = document.createElement("div");
+          tmp.innerHTML = chatAvatar(mem, uid === me ? "Sen" : mem.name, uid === me);
+          if (tmp.firstChild && tmp.firstChild.innerHTML !== el.innerHTML) el.innerHTML = tmp.firstChild.innerHTML;
+        });
+        if (fresh.members.length >= 2 && baseBanner.indexOf("henüz başka üye yok") !== -1) setBanner("", true);
+      }
+      refreshReadMarks();
+    });
+    // Sohbet açıkken üye listesi (avatar, çevrimiçi) dakikada bir sunucudan tazelenir.
+    setInterval(function () { if (!document.hidden && homeId) HC.refresh().catch(function () {}); }, 60000);
     // Realtime yoksa 8 sn'lik yoklama (sunucu gerçeğine yetişmek için; uydurma yok)
     function startPolling() {
       if (pollTimer) clearInterval(pollTimer);
@@ -433,9 +461,9 @@
               if (next) openHome(next);
             });
           }
-          if (home.members.length < 2) setBanner("Bu evde henüz başka üye yok. Üye davet ettiğinde onlarla yazışabilirsin.");
+          if (home.members.length < 2) setBanner("Bu evde henüz başka üye yok. Üye davet ettiğinde onlarla yazışabilirsin.", true);
           openHome(home);
-          if (!res.ok) setBanner("Sunucuya tam ulaşılamadı; üye listesi eski olabilir.");
+          if (!res.ok) setBanner("Sunucuya tam ulaşılamadı; üye listesi eski olabilir.", true);
           startPolling();
         });
       });
