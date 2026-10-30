@@ -15,7 +15,8 @@ describe("login error → reset link", () => {
   });
 
   it("offers it only for wrong-credentials errors (not network errors) and never for local accounts", () => {
-    const calls = login.match(/[;)] showResetHint\(err, email\)|^\s+showResetHint\(err, email\)/gm) ?? [];
+    const calls =
+      login.match(/[;)] showResetHint\(err, email\)|^\s+showResetHint\(err, email\)/gm) ?? [];
     expect(calls).toHaveLength(1);
     expect(login).toContain("/invalid login credentials|E-posta veya şifre hatalı/i.test(");
     expect(login).toContain(") showResetHint(err, email);");
