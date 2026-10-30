@@ -1343,8 +1343,28 @@
           );
         }
 
+        var hasPhoto = !!NX.photoOf(d);
+        var photoRow =
+          d.id == null
+            ? ""
+            : '<div class="nx-row"><div class="min-w-0"><p class="d">Cihaz fotoğrafı</p>' +
+              '<p class="t">Yalnızca bu cihazda saklanır; hiçbir yere yüklenmez.</p>' +
+              (photoMsg
+                ? '<p class="nx-danger text-sm mt-1" role="alert">' + esc(photoMsg) + "</p>"
+                : "") +
+              "</div>" +
+              '<div class="flex gap-2 shrink-0">' +
+              '<input id="photo-input" type="file" accept="image/*" class="hidden" onchange="onPhotoPicked(this)">' +
+              '<button type="button" class="nx-btn" onclick="document.getElementById(\'photo-input\').click()">' +
+              (hasPhoto ? "Fotoğrafı değiştir" : "Fotoğraf ekle") +
+              "</button>" +
+              (hasPhoto
+                ? '<button type="button" class="nx-btn" onclick="removePhoto()">Fotoğrafı kaldır</button>'
+                : "") +
+              "</div></div>";
         return (
           nameRow +
+          photoRow +
           '<div class="nx-row"><div><p class="d">Oda</p><p class="t">' +
           esc(d.room || "Seçilmedi") +
           "</p></div></div>" +
@@ -1377,6 +1397,7 @@
       function closeInfo() {
         renaming = false;
         confirmRemove = false;
+        photoMsg = "";
         document.getElementById("info-sheet").classList.add("hidden");
         var b = document.getElementById("info-btn");
         if (b) b.focus();
@@ -1397,6 +1418,34 @@
         var i = document.getElementById("rename-input");
         if (i) NX.renameDevice(INDEX, i.value);
         renaming = false;
+        render();
+      }
+      var photoMsg = "";
+      function onPhotoPicked(input) {
+        var file = input.files && input.files[0];
+        var d = current();
+        if (!file || !d) return;
+        NX.photoFromFile(file).then(
+          function (dataUrl) {
+            photoMsg = NX.setPhoto(d, dataUrl)
+              ? ""
+              : "Fotoğraf kaydedilemedi; cihaz depolaması dolu olabilir.";
+            render();
+          },
+          function (err) {
+            photoMsg =
+              err && err.message === "type"
+                ? "Seçilen dosya bir resim değil."
+                : err && err.message === "size"
+                  ? "Fotoğraf çok büyük kaldı; daha küçük bir resim dene."
+                  : "Fotoğraf okunamadı; başka bir dosya dene.";
+            fillInfo();
+          },
+        );
+      }
+      function removePhoto() {
+        var d = current();
+        photoMsg = d && NX.setPhoto(d, null) ? "" : "Fotoğraf kaldırılamadı.";
         render();
       }
       function askRemove() {

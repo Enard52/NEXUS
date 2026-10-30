@@ -835,6 +835,8 @@
     nexusLastRecoveryValue: 1,
     nexusLastRecoveryMethod: 1,
     nexusPairedDevices: 1,
+    // Kullanıcının kendi cihaz fotoğrafları yalnızca bu cihazda kalır (gizlilik).
+    nexusDevicePhotos: 1,
     // Tapo hesap bilgisi / Tuya yerel anahtarı: yalnızca bu cihazda kalır.
     nexusLanSecrets: 1,
     // Abonelik durumu yalnızca sunucudan (Whop webhook'u) gelir; istemci durumu hesaba geri yazılmaz.

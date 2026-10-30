@@ -1244,6 +1244,19 @@ window.NEXUS_EN = {
     "Cihaz açık": "Device on",
     "Cihaz bilgileri": "Device details",
     "Cihaz bulunamadı": "Device not found",
+    "Cihaz fotoğrafı": "Device photo",
+    "Yalnızca bu cihazda saklanır; hiçbir yere yüklenmez.":
+      "Stored only on this device; never uploaded anywhere.",
+    "Fotoğraf ekle": "Add photo",
+    "Fotoğrafı değiştir": "Replace photo",
+    "Fotoğrafı kaldır": "Remove photo",
+    "Fotoğraf kaydedilemedi; cihaz depolaması dolu olabilir.":
+      "Couldn't save the photo; device storage may be full.",
+    "Seçilen dosya bir resim değil.": "The selected file is not an image.",
+    "Fotoğraf çok büyük kaldı; daha küçük bir resim dene.":
+      "The photo is still too large; try a smaller image.",
+    "Fotoğraf okunamadı; başka bir dosya dene.": "Couldn't read the photo; try another file.",
+    "Fotoğraf kaldırılamadı.": "Couldn't remove the photo.",
     "Cihaz durumu değiştiğinde senaryoları tetikle":
       "Trigger scenarios when a device's status changes",
     "Cihaz ekle": "Add device",
