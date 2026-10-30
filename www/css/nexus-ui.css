@@ -223,18 +223,18 @@ html.dark [class*="bg-[#DDD8FB]"] {
   background-color: #0F172A !important;
   background-image: none !important;
 }
-/* Küçük ikon zeminleri ve yumuşak kartlar */
-html.dark [class*="bg-[#ECE9FD]"],
-html.dark [class*="bg-[#F5F3FF]"],
-html.dark [class*="bg-[#EEF4FF]"],
-html.dark [class*="bg-[#F2F0FF]"],
-html.dark [class*="bg-[#F5F7FF]"],
-html.dark [class*="bg-[#E4F7FB]"],
-html.dark [class*="bg-[#F6F5FB]"],
-html.dark [class*="bg-[#F9F9FB]"],
-html.dark [class*="bg-violet-50"],
-html.dark [class*="bg-indigo-50"],
-html.dark [class*="bg-blue-50"] {
+/* Küçük ikon zeminleri ve yumuşak kartlar. Kendi dark:bg-* sınıfı olan öğe (ör. tam ekran alt sayfa zemini) bu şeffaf vurguyla ezilmez: altındaki sayfa görünür kalıyordu. */
+html.dark [class*="bg-[#ECE9FD]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#F5F3FF]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#EEF4FF]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#F2F0FF]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#F5F7FF]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#E4F7FB]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#F6F5FB]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-[#F9F9FB]"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-violet-50"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-indigo-50"]:not([class*="dark:bg-"]),
+html.dark [class*="bg-blue-50"]:not([class*="dark:bg-"]) {
   background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.16) !important;
 }
 html.dark [class*="bg-[#F9FAFB]"],
