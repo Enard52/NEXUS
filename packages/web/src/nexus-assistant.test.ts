@@ -332,6 +332,12 @@ describe("non-device intents", () => {
     expect(a.reply("rahatsız etme modunu kapat").action).toBe("dnd-off");
   });
 
+  it('turns do-not-disturb off with the natural phrase "rahatsız etmeyi kapat"', () => {
+    const { a } = setup(home);
+    expect(a.reply("rahatsız etmeyi kapat").action).toBe("dnd-off");
+    expect(a.reply("rahatsız etmeyin").action).toBe("dnd-on");
+  });
+
   it("sends weather questions to the AI instead of faking an answer", () => {
     const { a } = setup(home);
     expect(a.reply("hava durumu nasıl").unknown).toBe(true);
