@@ -79,6 +79,11 @@
 <i class="w-7 h-7" data-lucide="zap"></i>
 </div>
 </section>
+<!-- Dışa aktarma: yalnızca gerçek güç okuması olan cihaz varsa görünür -->
+<div class="flex gap-2 mb-6" id="export-row" data-purpose="energy-export" style="display:none">
+<button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-csv" type="button">CSV olarak dışa aktar</button>
+<button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-json" type="button">JSON olarak dışa aktar</button>
+</div>
 <!-- Strategy list -->
 <h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
 <section class="space-y-3" data-purpose="strategy-list">
@@ -196,6 +201,62 @@
           render(ok ? sum : null, meterIdx.length);
         })
         .catch(function () { /* tazeleme başarısızsa son bilinen değer kalır */ });
+    })();
+
+    // Dışa aktarma: yalnızca cihazlardaki son gerçek güç okumaları; geçmiş kaydı tutulmadığı için
+    // uydurma geçmiş satırı üretilmez. Veri cihazdan çıkmaz, dosya yerelde oluşur.
+    // >>> energy-export
+    function energyRows(devices) {
+      var at = new Date().toISOString();
+      var rows = [];
+      (devices || []).forEach(function (d) {
+        var p = d && d.fields && d.fields.power;
+        if (typeof p === 'number' && isFinite(p)) rows.push({ device: String(d.name || ''), power_w: p, read_at: at });
+      });
+      return rows;
+    }
+    function energyCsv(rows) {
+      function cell(v) {
+        var s = String(v);
+        return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      }
+      return ['device,power_w,read_at'].concat(rows.map(function (r) {
+        return [cell(r.device), cell(r.power_w), cell(r.read_at)].join(',');
+      })).join('\r\n') + '\r\n';
+    }
+    // <<< energy-export
+    (function () {
+      var row = document.getElementById('export-row');
+      if (!row) return;
+      function current() {
+        var devices = [];
+        try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]') || []; } catch (e) {}
+        return energyRows(devices);
+      }
+      function save(text, mime, ext) {
+        var fname = 'nexus-enerji-' + new Date().toISOString().slice(0, 10) + '.' + ext;
+        var blob = new Blob([text], { type: mime });
+        try {
+          var f = new File([blob], fname, { type: mime });
+          if (navigator.canShare && navigator.canShare({ files: [f] })) {
+            navigator.share({ files: [f], title: 'NEXUS enerji' }).catch(function () {});
+            return;
+          }
+        } catch (e) { /* paylaşım yoksa indirmeye düşer */ }
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fname;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      }
+      document.getElementById('export-csv').addEventListener('click', function () {
+        var r = current(); if (r.length) save(energyCsv(r), 'text/csv;charset=utf-8', 'csv');
+      });
+      document.getElementById('export-json').addEventListener('click', function () {
+        var r = current(); if (r.length) save(JSON.stringify(r, null, 2), 'application/json', 'json');
+      });
+      if (current().length) row.style.display = '';
     })();
 
     // Store the tapped strategy so the detail page shows the right content
