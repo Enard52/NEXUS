@@ -1,0 +1,31 @@
+name: Sürüm sonrası denetim
+
+# Masaüstü veya Android yayın iş akışı bitince (ya da elle) son sürümün indirme dosyalarını,
+# latest.yml sürümünü ve sitedeki sürüm rozetini denetler. Uyuşmazlıkta kırmızı olur:
+# "yayın yeşil görünüyor ama dosyalar eski" sürprizini önler.
+on:
+  workflow_run:
+    workflows: ["Masaüstü sürümü", "Android yayını"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: İndirme dosyaları ve hizmetler
+        run: node scripts/check-health.mjs
+      - name: Sürüm tutarlılığı (latest.yml ve site rozeti)
+        run: |
+          want=$(node -p "require('./desktop/package.json').version")
+          have=$(curl -fsSL https://github.com/Enard52/nexus-releases/releases/latest/download/latest.yml | sed -n 's/^version: *//p' | head -n 1 | tr -d '\r"')
+          echo "package.json: $want, latest.yml: $have"
+          [ "$want" = "$have" ] || { echo "::error::latest.yml sürümü ($have) desktop/package.json ile ($want) uyuşmuyor"; exit 1; }
+          curl -fsSL https://nexus-smarthome.pages.dev/ | grep -q "v$want" || echo "::warning::sitede v$want rozeti bulunamadı (önbellek gecikmesi olabilir)"
