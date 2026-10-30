@@ -2703,6 +2703,130 @@
     },
   };
 
+  // =================================== NANOLEAF ===================================
+  // Nanoleaf Open API (yerel HTTP, bağlantı noktası 16021). Belgelenmiş akış:
+  //   eşleştirme: cihazın güç düğmesi 5–7 sn basılı tutulur, ~30 sn içinde POST /api/v1/new -> {"auth_token": "..."}
+  //   (eşleştirme modunda değilken cihaz 403 döner); sonraki her istek /api/v1/<token>/ altındadır, geçersiz token 401.
+  //   GET  /api/v1/<token>/        -> {name, model, manufacturer, state:{on:{value}, brightness:{value,min,max},
+  //                                    hue:{value,min,max}, sat:{value,min,max}, ct:{value,min,max}, colorMode}}
+  //   PUT  /api/v1/<token>/state   -> {"on":{"value":true}} | {"brightness":{"value":50}} | {"hue":{"value":120}} |
+  //                                    {"sat":{"value":80}} | {"ct":{"value":4000}} (başarıda 204, gövde yok)
+  // Token koddan değil, cihaz başına nexusLan.secrets içinden okunur (nanoleafToken).
+  // UYARI: Gerçek donanımla DOĞRULANMADI; yalnızca belgelenmiş biçimlere karşı test edildi.
+  function nanoleafBase(device, token) {
+    return nanoleafOrigin(device) + "/api/v1/" + encodeURIComponent(token);
+  }
+  function nanoleafOrigin(device) {
+    return "http://" + hostOnly(device) + ":16021";
+  }
+  function nanoleafToken(device) {
+    var s = secretsFor(device);
+    return s && s.nanoleafToken ? String(s.nanoleafToken) : null;
+  }
+  function nanoleafNeedsPairing() {
+    return Promise.reject(
+      secureError(
+        "Nanoleaf eşleştirmesi gerekli: güç düğmesini 5–7 sn basılı tut, ışık yanıp sönünce eşleştir.",
+        "no-secret",
+      ),
+    );
+  }
+  function nanoleafCheck(res) {
+    if (res.status === 401)
+      throw secureError("Nanoleaf token'ı geçersiz — cihazı yeniden eşleştir.", "no-secret");
+    if (res.status < 200 || res.status >= 300) throw new Error("nanoleaf: http " + res.status);
+    return res;
+  }
+  function nanoleafInfo(device, token) {
+    return request({ url: nanoleafBase(device, token) + "/" }).then(function (res) {
+      nanoleafCheck(res);
+      var info = JSON.parse(res.text);
+      if (!info || !info.state || !info.state.on)
+        throw new Error("nanoleaf: beklenen yanıt yok");
+      return info;
+    });
+  }
+  function nanoleafVal(o) {
+    return o && typeof o.value === "number" ? o.value : null;
+  }
+  var nanoleaf = {
+    id: "nanoleaf",
+    label: "Nanoleaf",
+    caps: ["switch", "brightness", "color", "colorTemp"],
+    discoverable: false, // token olmadan hiçbir uç yanıt vermez; yalnızca eşleştirilerek eklenir
+    // Güç düğmesine basıldıktan sonra çağrılır; token'ı döndürür (saklamak çağıranın işi: secrets.set).
+    pair: function (host) {
+      var device = { host: host };
+      return request({ url: nanoleafOrigin(device) + "/api/v1/new", method: "POST" }).then(function (res) {
+        if (res.status === 403)
+          throw secureError("Güç düğmesini 5–7 sn basılı tut, sonra tekrar dene.", "pairing-mode");
+        nanoleafCheck(res);
+        var body = JSON.parse(res.text);
+        if (!body || !body.auth_token) throw new Error("nanoleaf: eşleştirme başarısız");
+        return body.auth_token;
+      });
+    },
+    verify: function (host, creds) {
+      var device = { host: host };
+      return nanoleafInfo(device, creds.token).then(function (info) {
+        return {
+          host: host,
+          protocol: "nanoleaf",
+          model: info.model || "Nanoleaf",
+          name: info.name || "Nanoleaf",
+          kind: "light",
+          caps: nanoleaf.caps,
+          secret: { nanoleafToken: creds.token },
+        };
+      });
+    },
+    probe: function (device) {
+      var token = nanoleafToken(device);
+      if (!token) return nanoleafNeedsPairing();
+      return nanoleafInfo(device, token).then(function (info) {
+        return { protocol: "nanoleaf", model: info.model || "Nanoleaf", name: info.name || "Nanoleaf", kind: "light" };
+      });
+    },
+    read: function (device) {
+      var token = nanoleafToken(device);
+      if (!token) return nanoleafNeedsPairing();
+      return nanoleafInfo(device, token).then(function (info) {
+        var st = info.state, br = st.brightness || {};
+        var min = typeof br.min === "number" ? br.min : 0, max = typeof br.max === "number" ? br.max : 100;
+        var raw = nanoleafVal(br);
+        var out = {
+          switch: typeof st.on.value === "boolean" ? st.on.value : null,
+          brightness: raw === null || max === min ? null : Math.round(((raw - min) / (max - min)) * 100),
+        };
+        if (st.colorMode === "ct" && nanoleafVal(st.ct) !== null) out.colorTemp = st.ct.value;
+        return out;
+      });
+    },
+    write: function (device, capability, value) {
+      var token = nanoleafToken(device);
+      if (!token) return nanoleafNeedsPairing();
+      var body = null;
+      if (capability === "switch") body = { on: { value: !!value } };
+      else if (capability === "brightness")
+        body = { brightness: { value: Math.max(0, Math.min(100, Math.round(Number(value)))) } };
+      else if (capability === "colorTemp") body = { ct: { value: toneKelvin(value) } };
+      else if (capability === "color") {
+        var hsb = rgbToHsb(hexToRgb(value));
+        body = {
+          on: { value: true },
+          hue: { value: Math.round(hsb.h * 360) % 360 },
+          sat: { value: Math.round(hsb.s * 100) },
+        };
+      } else return unsupported("nanoleaf", capability);
+      return request({
+        url: nanoleafBase(device, token) + "/state",
+        method: "PUT",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }).then(nanoleafCheck);
+    },
+  };
+
   var protocols = [
     shelly,
     shellyRpc,
@@ -2716,6 +2840,7 @@
     yeelight,
     sonoff,
     wiz,
+    nanoleaf,
     lifx,
     govee,
     tuyaLocal,
