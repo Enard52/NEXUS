@@ -253,6 +253,34 @@ export const content = {
           "Can I cancel NEXUS+ anytime?",
           "Yes, completely hassle-free with zero commitments. You can cancel with a single click anytime: from the in-app Account & Billing settings, through our website, or directly from the order link in your billing email receipt. Your premium benefits remain active until the end of your billing cycle with zero future charges.",
         ],
+        [
+          "Can I control my home when I am away?",
+          "Not through a NEXUS cloud: NEXUS talks to your devices directly on your home network and has no relay. To reach it from outside, put your phone or laptop on the home network with a VPN such as Tailscale (subnet router) or WireGuard on your router; NEXUS then works exactly as it does at home. NEXUS has no hub-address setting yet, so the VPN must make your local address range reachable, and scanning for new devices only works on the home network. Never expose a device to the internet with port forwarding. The step-by-step guide is docs/REMOTE-ACCESS.md in the repository.",
+        ],
+        [
+          "Is there an iPhone version?",
+          "There is no App Store app, because NEXUS does not use a paid Apple Developer account. With a Mac and a free Apple ID you can build it for your own iPhone (guide: docs/IOS-BUILD.md), and a release may also attach an unsigned IPA that AltStore or Sideloadly can sign for you; that path has not been verified on a real iPhone yet. A free Apple ID expires the app after 7 days, and push notifications while the app is closed are not available on iOS. The home hub is still the desktop app; the iPhone is a client.",
+        ],
+        [
+          "My device is not on the list. What can I do?",
+          "NEXUS only supports devices with a documented local protocol; cloud-only devices are not supported because NEXUS never talks to a vendor cloud. The compatibility list (docs/COMPATIBILITY.md) also includes TP-Link Tapo, Sonoff in DIY mode, WiZ, LIFX, Govee (LAN), Tuya with local keys and Wake-on-LAN. Each of these has automated protocol tests, but a model counts as verified only when someone reports that it worked on a real device. Open a Device support request on GitHub for a missing device, or a Device test report to confirm one; never include passwords, local keys or tokens.",
+        ],
+        [
+          "Do I have to sign in? What happens if the server is down?",
+          "Controlling devices and running automations does not need an account. Sign-in adds sync, Family and the AI assistant, which use free cloud services with limits. When one of those is unavailable, for example when the free Supabase project has paused after about a week without activity, the cloud screens say the server is unreachable instead of showing something as saved; devices, automations and the tray keep working. If the AI quota or service is exhausted, the assistant says it could not reply.",
+        ],
+        [
+          "Can I back up my settings and move them to another device?",
+          "Yes. Settings has a backup section where you can export your settings and automations to a JSON file and import it on another device or after a reinstall. Passwords, tokens and local keys are stripped from the paired device list in the file, so re-enter them after restoring. Keep the backup file private.",
+        ],
+        [
+          "Can I export my energy data?",
+          "Yes. The Energy page can export the latest real power readings from your devices as a CSV or JSON file. NEXUS only has data for devices that actually report power; with none paired, there is nothing to export.",
+        ],
+        [
+          "Why does Windows warn me when I run the installer?",
+          "The Windows installer is not yet signed with a commercial certificate, so SmartScreen may show “unknown publisher”. You can compare the file with the checksums listed in the downloads section before running it. Our code signing policy is linked from the site footer.",
+        ],
       ],
     },
     about: {
@@ -537,6 +565,34 @@ export const content = {
         [
           "NEXUS+ aboneliğimi dilediğim an iptal edebilir miyim?",
           "Evet, hiçbir taahhüt ve bağlayıcılık yoktur. Aboneliğinizi dilediğiniz an tek tıkla iptal edebilirsiniz: İster uygulamadaki Hesap & Faturalandırma menüsünden, ister bu sitedeki hesabınızdan, isterseniz de sipariş e-posta makbuzunuz üzerinden hemen yönetebilirsiniz. İptal ettiğinizde mevcut döneminiz boyunca tüm ayrıcalıklarınız korunur ve sonraki dönem için hiçbir ücret alınmaz.",
+        ],
+        [
+          "Evden uzaktayken evimi kontrol edebilir miyim?",
+          "NEXUS bulut üzerinden değil: cihazlarınla doğrudan ev ağında konuşur ve aracı bir sunucusu yoktur. Dışarıdan erişmek için telefonunu veya dizüstünü Tailscale (alt ağ yönlendirici) ya da router'ındaki WireGuard gibi bir VPN ile ev ağına bağla; NEXUS evdeki gibi çalışır. NEXUS'ta henüz merkez adresi ayarı yok, bu yüzden VPN yerel adres aralığını erişilebilir kılmalı; yeni cihaz taraması da yalnızca ev ağında çalışır. Cihazları port yönlendirmeyle asla internete açma. Adım adım rehber depodaki docs/REMOTE-ACCESS.md dosyasındadır.",
+        ],
+        [
+          "iPhone sürümü var mı?",
+          "App Store uygulaması yok; çünkü NEXUS ücretli Apple Developer hesabı kullanmaz. Bir Mac ve ücretsiz Apple ID ile kendi iPhone'un için derleyebilirsin (rehber: docs/IOS-BUILD.md); bir sürümde imzasız IPA da yer alabilir ve AltStore veya Sideloadly bunu senin için imzalar. Bu yol gerçek bir iPhone'da henüz doğrulanmadı. Ücretsiz Apple ID ile uygulama 7 günde sona erer ve iOS'ta uygulama kapalıyken push bildirimi yoktur. Ev merkezi yine masaüstü uygulamasıdır; iPhone bir istemcidir.",
+        ],
+        [
+          "Cihazım listede yok, ne yapabilirim?",
+          "NEXUS yalnızca belgelenmiş yerel protokolü olan cihazları destekler; yalnızca buluttan çalışan cihazlar desteklenmez, çünkü NEXUS hiçbir üretici bulutuyla konuşmaz. Uyumluluk listesinde (docs/COMPATIBILITY.md) TP-Link Tapo, DIY modunda Sonoff, WiZ, LIFX, Govee (LAN), yerel anahtarlı Tuya ve Wake-on-LAN de yer alır. Hepsinin otomatik protokol testi vardır, ancak bir model ancak biri gerçek cihazda çalıştığını bildirdiğinde doğrulanmış sayılır. Eksik cihaz için GitHub'da Cihaz destek isteği, doğrulamak için Cihaz test raporu aç; şifre, yerel anahtar veya token yazma.",
+        ],
+        [
+          "Giriş yapmak zorunda mıyım? Sunucu kapanırsa ne olur?",
+          "Cihaz kontrolü ve otomasyonlar hesap gerektirmez. Giriş; senkron, Aile ve yapay zekâ asistanını ekler ve bunlar sınırları olan ücretsiz bulut hizmetlerini kullanır. Bunlardan biri kullanılamazsa — örneğin ücretsiz Supabase projesi yaklaşık bir hafta etkinlik olmayınca duraklatılırsa — bulut ekranları kaydedilmiş gibi göstermek yerine sunucuya ulaşılamadığını söyler; cihazlar, otomasyonlar ve tepsi çalışmaya devam eder. Yapay zekâ kotası veya hizmeti tükenirse asistan yanıt veremediğini belirtir.",
+        ],
+        [
+          "Ayarlarımı yedekleyip başka cihaza taşıyabilir miyim?",
+          "Evet. Ayarlar'daki yedek bölümünden ayarlarını ve otomasyonlarını JSON dosyası olarak dışa aktarıp başka bir cihazda veya yeniden kurulumdan sonra içe aktarabilirsin. Dosyada eşleşmiş cihaz listesinden şifreler, token'lar ve yerel anahtarlar çıkarılır; geri yükledikten sonra bunları yeniden gir. Yedek dosyasını gizli tut.",
+        ],
+        [
+          "Enerji verilerimi dışa aktarabilir miyim?",
+          "Evet. Enerji sayfası, cihazlarının bildirdiği en son gerçek güç ölçümlerini CSV veya JSON olarak dışa aktarabilir. NEXUS yalnızca güç bildiren cihazlar için veriye sahiptir; hiç cihaz eşleşmemişse aktarılacak bir şey yoktur.",
+        ],
+        [
+          "Windows kurulum dosyasını açarken neden uyarı alıyorum?",
+          "Windows kurulum dosyası henüz ticari bir sertifikayla imzalı değil; bu yüzden SmartScreen “bilinmeyen yayıncı” gösterebilir. Çalıştırmadan önce dosyayı indirmeler bölümündeki sağlama değerleriyle karşılaştırabilirsin. Kod imzalama politikamız sitenin alt bilgisinden bağlantılıdır.",
         ],
       ],
     },
