@@ -110,6 +110,24 @@ describe("Nanoleaf bağlayıcısı", () => {
     expect(sent[1].body).toEqual({ brightness: { value: 100 } });
     expect(sent[2].body).toEqual({ ct: { value: 4000 } });
     expect(sent[3].body).toEqual({ on: { value: true }, hue: { value: 120 }, sat: { value: 100 } });
+    // community client (aionanoleaf) notes that "on" must be the last key of the state body
+    expect(Object.keys(sent[3].body).pop()).toBe("on");
+  });
+
+  it("colorTemp is clamped to the 1200–6500 K range reported by the device, not 2000", async () => {
+    const sent: any[] = [];
+    const lan = paired((_url, init) => {
+      sent.push(JSON.parse(init?.body));
+      return Promise.resolve(status(204));
+    });
+    await lan.write(DEV, "colorTemp", 1200);
+    await lan.write(DEV, "colorTemp", 100);
+    await lan.write(DEV, "colorTemp", 9000);
+    expect(sent).toEqual([
+      { ct: { value: 1200 } },
+      { ct: { value: 1200 } },
+      { ct: { value: 6500 } },
+    ]);
   });
 
   it("desteklenmeyen işlevi dürüstçe reddeder", async () => {

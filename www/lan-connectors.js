@@ -2713,6 +2713,18 @@
   //                                    {"sat":{"value":80}} | {"ct":{"value":4000}} (başarıda 204, gövde yok)
   // Token koddan değil, cihaz başına nexusLan.secrets içinden okunur (nanoleafToken).
   // UYARI: Gerçek donanımla DOĞRULANMADI; yalnızca belgelenmiş biçimlere karşı test edildi.
+  // KAYNAK DOĞRULAMASI (2026-10-30): Resmi Open API belgesi ULAŞILAMADI (forum.nanoleaf.me/docs/openapi ->
+  //   301 -> support.nanoleaf.me 403; resmi GitHub org'unda yalnızca aurora-sdk-* var, OpenAPI spec yok;
+  //   Wayback'teki Postman kopyası yalnızca boş kabuk döndürüyor). Aşağıdakiler yalnızca topluluk istemcisi
+  //   aionanoleaf'ın (milanmeu/aionanoleaf, Home Assistant'ın kullandığı) kaynağıyla karşılaştırıldı:
+  //   port 16021, POST /new (403 = eşleştirme modu kapalı), 401 = geçersiz token, GET /, PUT /state gövdeleri
+  //   (on/brightness/hue/sat/ct {value}), "on" anahtarının gövdede sonda olması, info.state.* alanları.
+  //   Yalnızca topluluk kaynaklı kalanlar: 204 yanıtı, 30 sn eşleştirme penceresi, ct 1200–6500 aralığı
+  //   (HA cihazın kendi min/max'ını kullanır), 422 (aralık dışı değer) davranışı.
+  // GERÇEK CİHAZLA DOĞRULANMASI GEREKENLER: (1) POST /new yanıtı ve eşleştirme dışı 403; (2) PUT /state
+  //   başarı kodu (200/204); (3) renk yazımı: hue+sat+on tek istekte, on son; (4) ct sınırları (GET / yanıtındaki
+  //   state.ct.min/max ile 1200–6500 örtüşüyor mu); (5) geçersiz token'da 401; (6) brightness
+  //   min/max ile yüzde dönüşümü; (7) colorMode "ct" dışında colorTemp'in okunmaması.
   function nanoleafBase(device, token) {
     return nanoleafOrigin(device) + "/api/v1/" + encodeURIComponent(token);
   }
@@ -2809,13 +2821,22 @@
       if (capability === "switch") body = { on: { value: !!value } };
       else if (capability === "brightness")
         body = { brightness: { value: Math.max(0, Math.min(100, Math.round(Number(value)))) } };
-      else if (capability === "colorTemp") body = { ct: { value: toneKelvin(value) } };
+      else if (capability === "colorTemp")
+        body = {
+          ct: {
+            value:
+              typeof value === "number" && isFinite(value)
+                ? Math.max(1200, Math.min(6500, Math.round(value)))
+                : toneKelvin(value),
+          },
+        };
       else if (capability === "color") {
         var hsb = rgbToHsb(hexToRgb(value));
+        // "on" son anahtar olmalı (aionanoleaf set_state notu); toneKelvin'in 2000 alt sınırı Nanoleaf için dar.
         body = {
-          on: { value: true },
           hue: { value: Math.round(hsb.h * 360) % 360 },
           sat: { value: Math.round(hsb.s * 100) },
+          on: { value: true },
         };
       } else return unsupported("nanoleaf", capability);
       return request({

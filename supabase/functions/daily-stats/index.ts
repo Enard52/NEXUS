@@ -3,6 +3,10 @@
 // Gösterilen her sayı gerçek bir kaynaktan gelir (veritabanı sayımı, GitHub API, canlı uç nokta denetimi);
 // bir kaynak okunamazsa "–" yazılır, sayı uydurulmaz.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import {
+  ago, bar, dailyColor, dailySummary, dailyWarnings, DAILY_DEDUPE_MS, failedWorkflowWarnings,
+  healthDedupeWindowMs, healthEmbed, hourlyActiveWarning, hourlyDbWarning, isQuiet, n, parseDbMb,
+} from "./logic.ts";
 
 const SUPA = Deno.env.get("SUPABASE_URL")!;
 const KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -27,8 +31,6 @@ async function gh(path: string): Promise<any | null> {
     return r.ok ? await r.json() : null;
   } catch (_e) { return null; }
 }
-
-const n = (v: unknown): string => (typeof v === "number" && isFinite(v) ? v.toLocaleString("tr-TR") : "–");
 
 type Check = { name: string; url: string; method?: string; ok: (s: number) => boolean; hint?: (s: number) => string };
 const REL = "https://github.com/Enard52/nexus-releases/releases/latest/download";
@@ -69,17 +71,6 @@ async function post(hook: string, body: unknown): Promise<boolean> {
   return d.ok;
 }
 
-function bar(pct: number): string {
-  const p = Math.max(0, Math.min(100, pct));
-  const filled = Math.round(p / 10);
-  return "▰".repeat(filled) + "▱".repeat(10 - filled) + " " + Math.round(p) + "%";
-}
-
-function ago(iso: string): string {
-  const h = Math.round((Date.now() - new Date(iso).getTime()) / 3600000);
-  return h < 1 ? "az önce" : h < 48 ? h + " sa önce" : Math.round(h / 24) + " gün önce";
-}
-
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("method not allowed", { status: 405 });
   const hook = Deno.env.get("DISCORD_WEBHOOK_URL");
@@ -95,48 +86,34 @@ Deno.serve(async (req) => {
       const sz = await fetch(SUPA + "/rest/v1/rpc/nexus_db_size", { method: "POST", headers: { ...AUTH, "Content-Type": "application/json" }, body: "{}" });
       if (sz.ok) {
         const mb = parseFloat(String(await sz.text()).replace(/"/g, ""));
-        if (isFinite(mb) && mb / 500 > 0.7) warns.push("DB boyutu " + mb + " MB (%" + Math.round((mb / 500) * 100) + ", ücretsiz limit 500 MB)");
+        const w = hourlyDbWarning(mb);
+        if (w) warns.push(w);
       }
       const st = await rest("rpc/nexus_stats", { method: "POST", body: "{}" });
       if (st.ok) {
         const s = await st.json();
-        if (typeof s.active_7d === "number" && s.active_7d > 35000) warns.push("Aktif kullanıcı " + s.active_7d + " (limit 50.000)");
+        const w = hourlyActiveWarning(s.active_7d);
+        if (w) warns.push(w);
       }
     } catch { /* ölçülemeyen limit sessiz geçilir; panoda "–" görünür */ }
     try {
       const runs = await gh("repos/Enard52/NEXUS/actions/runs?per_page=40");
-      if (runs && Array.isArray(runs.workflow_runs)) {
-        const seen = new Set<string>();
-        for (const w of runs.workflow_runs) {
-          if (seen.has(w.name) || w.status !== "completed") continue;
-          seen.add(w.name);
-          if (w.conclusion === "failure" && Date.now() - new Date(w.updated_at).getTime() < 24 * 3600000) {
-            warns.push("İş akışı başarısız: " + w.name + " (" + (w.head_branch || "") + ", " + ago(w.updated_at) + ")");
-          }
-        }
-      }
+      if (runs && Array.isArray(runs.workflow_runs)) warns.push(...failedWorkflowWarnings(runs.workflow_runs));
     } catch { /* GitHub'a ulaşılamazsa pano zaten "–" gösterir */ }
-    if (!h.failed.length && !warns.length) return Response.json({ ok: true, healthy: true });
+    if (isQuiet(h.failed, warns)) return Response.json({ ok: true, healthy: true });
     // Uç nokta herkese açık olduğundan tekrar yazmayı sınırlar: servis hatasında 50 dk, yalnız uyarıda 12 saat.
-    const windowMs = h.failed.length ? 50 * 60 * 1000 : 12 * 3600 * 1000;
+    const windowMs = healthDedupeWindowMs(h.failed);
     const since = new Date(Date.now() - windowMs).toISOString();
     const recent = await rest("nexus_stats_log?kind=eq.health&sent_at=gte." + encodeURIComponent(since) + "&select=id&limit=1");
     if (recent.ok && (await recent.json()).length) return Response.json({ ok: true, skipped: "recently sent" });
-    const lines = h.failed.map((f) => "❌ " + f).concat(warns.map((w) => "⚠️ " + w));
-    const embed = {
-      title: h.failed.length ? "🚨 NEXUS sağlık denetimi: " + h.failed.length + "/" + h.total + " sorun" : "⚠️ NEXUS uyarısı",
-      description: lines.join("\n"),
-      color: h.failed.length ? 0xef4444 : 0xfbbf24,
-      timestamp: new Date().toISOString(),
-      footer: { text: "Sorun sürerse hatırlatılır" },
-    };
+    const embed = healthEmbed(h.failed, h.total, warns);
     await post(hook, { username: "NEXUS", embeds: [embed] });
     await rest("nexus_stats_log", { method: "POST", body: JSON.stringify({ kind: "health" }) });
     return Response.json({ ok: true, failed: h.failed, warnings: warns });
   }
 
   // Günlük pano: herkese açık uç nokta olduğu için en fazla ~20 saatte bir (spam koruması).
-  const since = new Date(Date.now() - 20 * 3600 * 1000).toISOString();
+  const since = new Date(Date.now() - DAILY_DEDUPE_MS).toISOString();
   const recent = await rest("nexus_stats_log?kind=eq.daily&sent_at=gte." + encodeURIComponent(since) + "&select=id&limit=1");
   if (recent.ok && (await recent.json()).length) return Response.json({ ok: true, skipped: "recently sent" });
   const r = await rest("rpc/nexus_stats", { method: "POST", body: "{}" });
@@ -160,7 +137,7 @@ Deno.serve(async (req) => {
   let dbMb: number | null = null;
   try {
     const sz = await fetch(SUPA + "/rest/v1/rpc/nexus_db_size", { method: "POST", headers: { ...AUTH, "Content-Type": "application/json" }, body: "{}" });
-    if (sz.ok) { const v = parseFloat(String(await sz.text()).replace(/"/g, "")); if (isFinite(v)) dbMb = v; }
+    if (sz.ok) dbMb = parseDbMb(await sz.text());
   } catch { /* RPC yoksa sessiz geç */ }
 
   const plusTry = (s.plus_try_monthly ?? 0) + (s.plus_try_yearly ?? 0);
@@ -187,19 +164,14 @@ Deno.serve(async (req) => {
   const ciBad = ciLines.some((l) => l.startsWith("❌"));
 
   const dbPct = dbMb !== null ? (dbMb / 500) * 100 : null;
-  const warnings: string[] = [];
-  if (dbPct !== null && dbPct > 70) warnings.push("DB boyutu %" + Math.round(dbPct) + " (ücretsiz limit 500 MB)");
-  if (typeof s.active_7d === "number" && s.active_7d > 35000) warnings.push("Aktif kullanıcı limite yaklaşıyor (50.000)");
-  if (ciBad) warnings.push("Son CI koşusunda hata var");
+  const warnings = dailyWarnings(dbPct, s.active_7d, ciBad);
 
   const healthy = !h.failed.length;
-  const summary = healthy
-    ? "✅ **Tüm servisler çalışıyor** (" + h.total + "/" + h.total + ")"
-    : "🚨 **" + h.failed.length + "/" + h.total + " serviste sorun var**";
+  const summary = dailySummary(h.failed.length, h.total);
   const embed = {
     title: "📊 NEXUS günlük pano",
     description: summary + (warnings.length ? "\n⚠️ " + warnings.join("\n⚠️ ") : "") + (latest ? "\n🏷️ Son sürüm: **" + latest.tag_name + "** (" + ago(latest.published_at) + ")" : ""),
-    color: !healthy ? 0xef4444 : warnings.length ? 0xfbbf24 : 0x34d399,
+    color: dailyColor(healthy, warnings.length),
     timestamp: new Date().toISOString(),
     fields: [
       { name: "👥 Kullanıcılar", value: "Toplam **" + n(s.users_total) + "** (doğrulanmış " + n(s.confirmed_total) + ")\nYeni: 24 sa **" + n(s.users_24h) + "** · 7 gün **" + n(s.users_7d) + "**\nAktif: 24 sa **" + n(s.active_24h) + "** · 7 gün **" + n(s.active_7d) + "**", inline: true },

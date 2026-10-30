@@ -31,6 +31,14 @@ async function run(command: string): Promise<PlatformResult<string>> {
   }
 }
 
+/**
+ * POSIX single-quote escaping: the result is always one literal shell word, so names and
+ * paths that come from user or AI commands can never inject extra commands.
+ */
+export function shq(value: string): string {
+  return `'${String(value).replace(/'/g, `'\\''`)}'`;
+}
+
 export class LinuxPlatformAdapter implements PlatformAdapter {
   readonly id: PlatformId = "linux";
   readonly name = "Linux";
@@ -39,7 +47,7 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
 
   async launchApp(appName: string): Promise<PlatformResult<AppInfo>> {
     // Try xdg-open first, fallback to direct launch
-    const result = await run(`nohup ${appName} > /dev/null 2>&1 & echo $!`);
+    const result = await run(`nohup ${shq(appName)} > /dev/null 2>&1 & echo $!`);
     if (!result.success) return { success: false, error: result.error };
     const pid = parseInt(result.data ?? "0", 10);
     return {
@@ -50,11 +58,11 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
   }
 
   async closeApp(appName: string): Promise<PlatformResult> {
-    return run(`pkill -f "${appName}"`);
+    return run(`pkill -f ${shq(appName)}`);
   }
 
   async focusApp(appName: string): Promise<PlatformResult> {
-    return run(`xdotool search --name "${appName}" windowactivate`);
+    return run(`xdotool search --name ${shq(appName)} windowactivate`);
   }
 
   async listRunningApps(): Promise<PlatformResult<AppInfo[]>> {
@@ -100,24 +108,24 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
   }
 
   async createFile(filePath: string, isDirectory = false): Promise<PlatformResult> {
-    return run(isDirectory ? `mkdir -p "${filePath}"` : `touch "${filePath}"`);
+    return run(isDirectory ? `mkdir -p ${shq(filePath)}` : `touch ${shq(filePath)}`);
   }
 
   async deleteFile(filePath: string): Promise<PlatformResult> {
     // Use gio trash for safe deletion (sends to trash)
-    return run(`gio trash "${filePath}"`);
+    return run(`gio trash ${shq(filePath)}`);
   }
 
   async moveFile(source: string, destination: string): Promise<PlatformResult> {
-    return run(`mv "${source}" "${destination}"`);
+    return run(`mv -- ${shq(source)} ${shq(destination)}`);
   }
 
   async copyFile(source: string, destination: string): Promise<PlatformResult> {
-    return run(`cp -r "${source}" "${destination}"`);
+    return run(`cp -r -- ${shq(source)} ${shq(destination)}`);
   }
 
   async openFile(filePath: string): Promise<PlatformResult> {
-    return run(`xdg-open "${filePath}"`);
+    return run(`xdg-open ${shq(filePath)}`);
   }
 
   // ── System Control ───────────────────────────────────────────────────────
@@ -179,7 +187,7 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
   }
 
   async showNotification(title: string, body: string): Promise<PlatformResult> {
-    return run(`notify-send "${title}" "${body}"`);
+    return run(`notify-send -- ${shq(title)} ${shq(body)}`);
   }
 
   // ── Clipboard ────────────────────────────────────────────────────────────
@@ -190,7 +198,7 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
 
   async writeClipboard(text: string): Promise<PlatformResult> {
     return run(
-      `echo "${text.replace(/"/g, '\\"')}" | xclip -selection clipboard 2>/dev/null || echo "${text.replace(/"/g, '\\"')}" | xsel --clipboard --input`,
+      `printf '%s' ${shq(text)} | xclip -selection clipboard 2>/dev/null || printf '%s' ${shq(text)} | xsel --clipboard --input`,
     );
   }
 
@@ -213,6 +221,9 @@ export class LinuxPlatformAdapter implements PlatformAdapter {
   }
 
   async killProcess(pid: number): Promise<PlatformResult> {
+    if (!Number.isInteger(pid) || pid <= 0) {
+      return { success: false, error: `Invalid pid: ${String(pid)}` };
+    }
     return run(`kill -9 ${pid}`);
   }
 }

@@ -17,7 +17,10 @@
     try {
       if (window.nexusDesktop) return false; // masaüstü uygulaması (Electron)
       if (window.Capacitor && typeof Capacitor.isNativePlatform === "function" && Capacitor.isNativePlatform()) return true;
-      return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+      if (!window.matchMedia("(hover: none) and (pointer: coarse)").matches) return false;
+      // Tablet (kısa kenarı >= 600 px) yatayda >= 1024 px genişliğe ulaşırsa iki bölmeli düzeni kullanır (#84);
+      // telefonlar ve tabletin dikey/dar hâli ortalanmış telefon sütununda (nx-tab) kalır.
+      return Math.min(screen.width, screen.height) < 600;
     } catch (e) { return false; }
   })();
   var root = document.documentElement;

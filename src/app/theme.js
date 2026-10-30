@@ -315,6 +315,12 @@ window.addEventListener('error', function(e) {
     sg.src = 'sheet-gestures.js';
     document.head.appendChild(sg);
   }
+  // Alt çekmecelerde odak yönetimi (içeri taşı, Tab'ı tut, kapanınca geri ver).
+  if (!window.NexusSheetFocus) {
+    var sf = document.createElement('script');
+    sf.src = 'sheet-focus.js';
+    document.head.appendChild(sf);
+  }
 
   // Hareket efektleri anahtarı (Ayarlar → Ses ve Hareket → Animasyonlar):
   // kapalıysa html.nx-no-anim eklenir; css/nexus-ui.css'teki ortak kural tüm

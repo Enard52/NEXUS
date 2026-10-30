@@ -208,7 +208,7 @@
     if (/\b(karanlik tema|koyu tema|karanlik mod|koyu mod|dark mode|dark theme)\b/.test(text)) return { reply: V(["Tamamdır, koyu temaya geçtim.", "Koyu tema açıldı, gözlerin rahat etsin.", "Oldu, koyu tema devrede."], ["Done, dark theme is on.", "Switched to dark mode, easier on the eyes.", "Dark theme is on."]), action: "dark" };
     if (/\b(acik tema|aydinlik tema|acik mod|light mode|light theme)\b/.test(text)) return { reply: V(["Tamamdır, açık temaya geçtim.", "Açık tema devrede.", "Oldu, ortalık aydınlandı."], ["Done, light theme is on.", "Switched back to light mode.", "Light theme is on."]), action: "light" };
     // Rahatsız etme
-    if (/\b(rahatsiz etme|do not disturb|dnd)\b/.test(text)) {
+    if (/\b(rahatsiz etme\w*|do not disturb|dnd)\b/.test(text)) {
       if (OFF.test(text) && !/bildirimleri kapat/.test(text)) return { reply: V(["Rahatsız etme modunu kapattım, bildirimler yeniden gelecek.", "Tamam, bildirimler tekrar açık."], ["Do not disturb is off, notifications are back.", "Okay, notifications are on again."]), action: "dnd-off" };
       return { reply: V(["Rahatsız etme modunu açtım, bildirimleri sessize aldım.", "Tamam, seni rahatsız etmeyeceğim; bildirimler sessizde."], ["Do not disturb is on, I silenced your notifications.", "Okay, I will keep quiet; notifications are silenced."]), action: "dnd-on" };
     }

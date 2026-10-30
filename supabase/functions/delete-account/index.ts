@@ -14,18 +14,17 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, content-type",
-};
+import { CORS, deleteOwnAccount, hasBearer, isAuthenticated, UNAUTHORIZED, type DeleteResult } from "./logic.ts";
+
+const send = (r: DeleteResult) => new Response(JSON.stringify(r.body), {
+  status: r.status, headers: { ...CORS, "Content-Type": "application/json" },
+});
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
 
   const auth = req.headers.get("Authorization") || "";
-  if (!auth.startsWith("Bearer ")) {
-    return new Response(JSON.stringify({ error: "unauthorized" }), { status: 401, headers: { ...CORS, "Content-Type": "application/json" } });
-  }
+  if (!hasBearer(auth)) return send(UNAUTHORIZED);
 
   // Kullanıcıyı anonim istemciyle doğrula (JWT kendi kimliğini taşır)
   const anon = createClient(
@@ -34,37 +33,15 @@ Deno.serve(async (req) => {
     { global: { headers: { Authorization: auth } } },
   );
   const { data: { user }, error: userErr } = await anon.auth.getUser();
-  if (userErr || !user) {
-    return new Response(JSON.stringify({ error: "unauthorized" }), { status: 401, headers: { ...CORS, "Content-Type": "application/json" } });
-  }
+  if (!isAuthenticated(user, userErr)) return send(UNAUTHORIZED);
 
   const service = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
-  // Aktif abonelik kontrolü: bilgi amaçlı (silme engellenmez; kullanıcı onayı
-  // istemci tarafında alınır ve iptal bağlantısı gösterilir)
-  const { data: ent } = await service
-    .from("nexus_entitlements")
-    .select("plan, period_end")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  // 1) kullanıcı verileri
-  await service.from("nexus_user_state").delete().eq("user_id", user.id);
-  await service.from("nexus_devices").delete().eq("user_id", user.id);
-  await service.from("nexus_entitlements").delete().eq("user_id", user.id);
-
-  // 2) auth hesabı (admin API)
-  const { error: delErr } = await service.auth.admin.deleteUser(user.id);
-  if (delErr) {
-    return new Response(JSON.stringify({ error: "delete_failed", detail: delErr.message }), {
-      status: 500, headers: { ...CORS, "Content-Type": "application/json" },
-    });
-  }
-
-  return new Response(JSON.stringify({ ok: true, hadSubscription: !!ent }), {
-    headers: { ...CORS, "Content-Type": "application/json" },
-  });
+  // Aktif abonelik kontrolü (bilgi amaçlı), veri silme sırası ve auth silme logic.ts'te;
+  // yalnızca doğrulanmış çağıranın kendi kimliği (user.id) kullanılır.
+  return send(await deleteOwnAccount(service, user!.id));
 });
+

@@ -27,6 +27,7 @@ export const APP_JS = [
   "nexus-assistant.js",
   "nexus-feedback.js",
   "sheet-gestures.js",
+  "sheet-focus.js",
   "smart-card-detail-state.js",
   "smart-scene-page.js",
   "supported-devices.js",

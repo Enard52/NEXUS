@@ -517,6 +517,7 @@ window.NEXUS_EN = {
     "Anlık Tüketim": "Live Usage",
     "CSV olarak dışa aktar": "Export as CSV",
     "JSON olarak dışa aktar": "Export as JSON",
+    "Kayıtlı geçmiş yok; yalnızca son okumalar dışa aktarılır.": "No stored history yet; only the latest readings are exported.",
     "Güç ölçen cihaz ekleyince gerçek değer burada görünür.":
       "Add a power-metering device to see real values here.",
     "{0} güç ölçümlü cihazdan gerçek okuma.": "Live reading from {0} metered device(s).",
@@ -2818,6 +2819,8 @@ window.NEXUS_EN = {
     "Yapay zeka ile oluştur": "Create with AI",
     Yardım: "Help",
     "Yardım ve Geri Bildirim": "Help and Feedback",
+    "Tekrar dene": "Try again",
+    "Yardım al": "Get help",
     "Yardımı aç": "Open help",
     "Yatak Odası": "Bedroom",
     "Yatak Odası karartma miktarı": "Bedroom dimming amount",

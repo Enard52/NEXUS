@@ -100,9 +100,10 @@
 </div>
 </div>
 </section><!-- Dışa aktarma: yalnızca gerçek güç okuması olan cihaz varsa görünür -->
-<div class="flex gap-2 mb-6" id="export-row" data-purpose="energy-export" style="display:none">
+<div class="flex flex-wrap gap-2 mb-6" id="export-row" data-purpose="energy-export" style="display:none">
 <button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-csv" type="button">CSV olarak dışa aktar</button>
 <button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-json" type="button">JSON olarak dışa aktar</button>
+<p class="text-xs text-slate-400 w-full mt-1" id="export-note"></p>
 </div>
 <!-- Strategy list -->
 <h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
@@ -351,8 +352,8 @@
       };
       draw();
     })();
-    // Dışa aktarma: yalnızca cihazlardaki son gerçek güç okumaları; geçmiş kaydı tutulmadığı için
-    // uydurma geçmiş satırı üretilmez. Veri cihazdan çıkmaz, dosya yerelde oluşur.
+    // Dışa aktarma: son gerçek güç okumaları + yerelde kayıtlı gerçek geçmiş (nexusEnergyHistory);
+    // geçmiş boşsa yalnızca son okumalar verilir, uydurma satır üretilmez. Veri cihazdan çıkmaz, dosya yerelde oluşur.
     // >>> energy-export
     function energyRows(devices) {
       var at = new Date().toISOString();
@@ -372,6 +373,39 @@
         return [cell(r.device), cell(r.power_w), cell(r.read_at)].join(',');
       })).join('\r\n') + '\r\n';
     }
+    function energyHistory(samples) {
+      var out = [];
+      (samples || []).forEach(function (s) {
+        if (!s || typeof s.t !== 'number' || !isFinite(s.t) || typeof s.w !== 'number' || !isFinite(s.w)) return;
+        var d = [];
+        (Array.isArray(s.d) ? s.d : []).forEach(function (x) {
+          if (Array.isArray(x) && typeof x[1] === 'number' && isFinite(x[1])) d.push({ device: String(x[0] || ''), power_w: x[1] });
+        });
+        out.push({ at: new Date(s.t).toISOString(), total_w: s.w, devices: d });
+      });
+      return out;
+    }
+    // kind: latest = son okuma, history = kayıtlı örnek (cihaz başına), total = örneğin toplamı
+    function energyExportCsv(latest, history) {
+      function cell(v) {
+        var s = String(v);
+        return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+      }
+      var lines = ['kind,device,power_w,at'];
+      (latest || []).forEach(function (r) {
+        lines.push(['latest', cell(r.device), cell(r.power_w), cell(r.read_at)].join(','));
+      });
+      (history || []).forEach(function (h) {
+        h.devices.forEach(function (x) {
+          lines.push(['history', cell(x.device), cell(x.power_w), cell(h.at)].join(','));
+        });
+        lines.push(['total', '', cell(h.total_w), cell(h.at)].join(','));
+      });
+      return lines.join('\r\n') + '\r\n';
+    }
+    function energyExportJson(latest, history) {
+      return JSON.stringify({ latest: latest || [], history: history || [], history_available: !!(history && history.length) }, null, 2);
+    }
     // <<< energy-export
     (function () {
       var row = document.getElementById('export-row');
@@ -380,6 +414,15 @@
         var devices = [];
         try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]') || []; } catch (e) {}
         return energyRows(devices);
+      }
+      function hist() {
+        var s = []; try { s = JSON.parse(nexusGetItem('nexusEnergyHistory') || '[]') || []; } catch (e) {}
+        return energyHistory(s);
+      }
+      function note(h) {
+        var el = document.getElementById('export-note'); if (!el) return;
+        var tr = window.nexusTr || function (x) { return x; };
+        el.textContent = h.length ? '' : tr('Kayıtlı geçmiş yok; yalnızca son okumalar dışa aktarılır.');
       }
       function save(text, mime, ext) {
         var fname = 'nexus-enerji-' + new Date().toISOString().slice(0, 10) + '.' + ext;
@@ -399,12 +442,12 @@
         setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
       }
       document.getElementById('export-csv').addEventListener('click', function () {
-        var r = current(); if (r.length) save(energyCsv(r), 'text/csv;charset=utf-8', 'csv');
+        var r = current(), h = hist(); if (r.length || h.length) save(energyExportCsv(r, h), 'text/csv;charset=utf-8', 'csv');
       });
       document.getElementById('export-json').addEventListener('click', function () {
-        var r = current(); if (r.length) save(JSON.stringify(r, null, 2), 'application/json', 'json');
+        var r = current(), h = hist(); if (r.length || h.length) save(energyExportJson(r, h), 'application/json', 'json');
       });
-      if (current().length) row.style.display = '';
+      if (current().length || hist().length) { row.style.display = ''; note(hist()); }
     })();
 
     // Store the tapped strategy so the detail page shows the right content
