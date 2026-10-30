@@ -454,7 +454,8 @@ window.NEXUS_EN = {
       "Sent to your own address while signed in; no secrets are stored in the app.",
     "Gönderilecek adres": "Recipient",
     "Cihazlar Arası Push": "Cross-device Push",
-    "Aile üyesinin uyarısı uygulama kapalıyken de düşer": "A family member's alert arrives even when the app is closed",
+    "Aile üyesinin uyarısı uygulama kapalıyken de düşer":
+      "A family member's alert arrives even when the app is closed",
     "Diğer üyelerin ve kendi diğer cihazlarının bildirim merkezine gider; alıcı push'u kendi cihazında açmış olmalı.":
       "Goes to other members' and your other devices' notification centres; the recipient must have push enabled on their device.",
     "Kendi sunucuna JSON POST — gelişmiş": "JSON POST to your own server — advanced",
@@ -514,8 +515,8 @@ window.NEXUS_EN = {
     "Wake-on-LAN PC / TV": "Wake-on-LAN PC / TV",
     /* --- Otomasyon motoru + enerji + dürüstlük düzeltmeleri (issue #24/#25, 2026-10-25) --- */
     "Anlık Tüketim": "Live Usage",
-"CSV olarak dışa aktar": "Export as CSV",
-"JSON olarak dışa aktar": "Export as JSON",
+    "CSV olarak dışa aktar": "Export as CSV",
+    "JSON olarak dışa aktar": "Export as JSON",
     "Güç ölçen cihaz ekleyince gerçek değer burada görünür.":
       "Add a power-metering device to see real values here.",
     "{0} güç ölçümlü cihazdan gerçek okuma.": "Live reading from {0} metered device(s).",
@@ -529,6 +530,25 @@ window.NEXUS_EN = {
       "This strategy relies on location triggers; automatic location triggering isn't available yet. Enabling saves it, but it won't run on its own.",
     "Bu tetikleyici türü henüz otomatik çalışmıyor; kaydettiğinde aşağıda seçtiğin saatte (zamanlamayla) çalışır.":
       "This trigger type doesn't run automatically yet; once saved, it runs at the time you pick below (scheduled).",
+    "Güvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen gerçek bir alarm paneli durumu veya NEXUS düzeyinde bir mod anahtarı henüz yok. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).":
+      "A security-mode trigger can't be set up: the app has no readable alarm-panel state or NEXUS-level mode switch yet. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).",
+    "Bu tetikleyici türü henüz desteklenmiyor, bu yüzden kaydedilemez. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).":
+      "This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).",
+    "Hava Koşulu": "Weather Condition",
+    "Ev konumunun gerçek hava verisi uygulama açıkken yaklaşık 10 dk'da bir okunur. Koşul sağlanmıyorken sağlanır hale geldiğinde senaryo bir kez çalışır.":
+      "Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.",
+    "Sıcaklık (°C)": "Temperature (°C)",
+    "Rüzgâr (km/sa)": "Wind (km/h)",
+    "Yağış (mm)": "Precipitation (mm)",
+    "Üstüne çıkınca": "Rises above",
+    "Altına inince": "Falls below",
+    "Eşik değer": "Threshold value",
+    "Ev konumu seçilmedi, hava verisi okunamaz. Önce":
+      "No home location is set, so weather can't be read. First",
+    "konum seç": "choose a location",
+    "Önce ev konumunu seç.": "Choose your home location first.",
+    "Bir eşik değer gir.": "Enter a threshold value.",
+    "Hava durumu tetikleyicisi: ev konumu seçilmedi.": "Weather trigger: no home location set.",
     "Tetiklenince Çalışacak Senaryo": "Scenario to Run When Triggered",
     "Yalnızca bildirim": "Notification only",
     "Zamanlamalı otomasyonlar uygulama açıkken çalışır; masaüstü uygulaması tepsideyken de zamanlamalar devam eder.":
