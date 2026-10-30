@@ -9,7 +9,7 @@
     if (!m) return false;
     var a = +m[1], b = +m[2];
     if (a > 255 || b > 255 || +m[3] > 255 || +m[4] > 255) return false;
-    returna === 10 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31) || a === 127;
+    return a === 10 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31) || a === 127;
   }
 
   // Dönen tür: "lan" (host ile), "matter", "homekit", "wifi", "unknown"
