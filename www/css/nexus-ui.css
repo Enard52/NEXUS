@@ -37,7 +37,7 @@
   /* Kabuk metrikleri (issue #1): tüm standart ekranlarda başlık ve alt menü
      bu yüksekliklerde; içerik sütunu mobilde tam genişlik, masaüstünde
      nexus-desktop.css --page-max (1080px) ile sınırlı. */
-  --nx-header-h: 104px; /* pt 48 + satır ≤40 + pb 16 */
+  --nx-header-h: 108px; /* pt 48 + satır ≤44 (dokunma hedefi) + pb 16 */
   --nx-nav-h: 72px;     /* sabit alt menü (safe-area hariç) */
 }
 
@@ -436,7 +436,7 @@ html.dark .dark\:text-\[\#93b4ff\] { color: #93b4ff; }
    Muaf: hero başlıklı sayfalar (ör. Rahatsız Etme), gövde dolgulu hub
    sayfaları (Plus pt-6) ve auth akışları doğal yüksekliğinde kalır. */
 header.pt-14 { padding-top: 3rem; padding-bottom: 1rem; }
-header.pt-12, header.pt-14 { min-height: var(--nx-header-h, 104px); }
+header.pt-12, header.pt-14 { min-height: var(--nx-header-h, 108px); }
 /* Yan boşluk: sayfa başlıkları px-4/px-5/px-6 karışıktı; başlık/geri satırı ekranlar arası yatayda kaymasın diye hepsi 20px (px-5, baskın değer). */
 header.pt-12, header.pt-14 { padding-left: 1.25rem; padding-right: 1.25rem; }
 
@@ -623,12 +623,12 @@ html.nx-a11y .switch .slider:before { height: 28px; width: 28px; }
 html.nx-a11y .switch input:checked + .slider:before { transform: translateX(26px); }
 
 /* ---------- Üst başlık: tüm alt sayfalarda aynı ölçü ----------
-   Sayfalar arası geçişte geri düğmesi/başlık/ayar simgesi yer değiştirmesin: yatay boşluk 20px, geri düğmesi 36x36 (simge 28px),
-   sağ eylem 36x36 (simge 24px). Dikey ölçüler (üst 48px, alt 16px, başlık 18px/700) sayfalarda zaten ortak. */
+   Sayfalar arası geçişte geri düğmesi/başlık/ayar simgesi yer değiştirmesin: yatay boşluk 20px, geri düğmesi 44x44 (simge 28px, görsel konum aynı),
+   sağ eylem 44x44 (simge 24px). Dikey ölçüler (üst 48px, alt 16px, başlık 18px/700) sayfalarda zaten ortak. */
 header:has(> .p-1.-ml-1) { padding-left: 20px; padding-right: 20px; }
-header > .p-1.-ml-1 { width: 36px; height: 36px; padding: 0; margin-left: -6px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+header > .p-1.-ml-1 { width: 44px; height: 44px; padding: 0; margin-left: -10px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 header > .p-1.-ml-1 svg, header > .p-1.-ml-1 i { width: 28px; height: 28px; font-size: 28px; }
-header:has(> .p-1.-ml-1) > .p-1.-mr-1 { width: 36px; height: 36px; padding: 0; margin-right: -6px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+header:has(> .p-1.-ml-1) > .p-1.-mr-1 { width: 44px; height: 44px; padding: 0; margin-right: -10px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 header:has(> .p-1.-ml-1) > .p-1.-mr-1 svg, header:has(> .p-1.-ml-1) > .p-1.-mr-1 i { width: 24px; height: 24px; font-size: 24px; }
 /* ---------- Üst başlık zemini: sayfa zeminiyle bütün ----------
    Beyaz ya da düz renkli bir bant lila/koyu degrade zeminden ayrışıyordu. Başlık sayfa renginde yarı saydam durur;
