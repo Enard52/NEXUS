@@ -38,15 +38,16 @@ export class RateLimiter {
     const now = this.opts.now();
     const cutoff = now - this.opts.windowMs;
     const history = (this.hits.get(key) ?? []).filter((t) => t > cutoff);
-    history.push(now);
-    this.hits.set(key, history);
 
-    if (history.length > this.opts.maxRequests) {
-      // oldest entry in window
+    if (history.length >= this.opts.maxRequests) {
+      // Rejected calls are not recorded, so retryAfterMs stays truthful.
+      this.hits.set(key, history);
       const oldest = history[0];
-      const retryAfterMs = oldest + this.opts.windowMs - now;
+      const retryAfterMs = oldest === undefined ? 0 : oldest + this.opts.windowMs - now;
       return { allowed: false, retryAfterMs: Math.max(0, retryAfterMs) };
     }
+    history.push(now);
+    this.hits.set(key, history);
     return { allowed: true };
   }
 
