@@ -220,7 +220,7 @@ export const content = {
         cta: { label: "Download NEXUS", href: "#downloads" },
       },
         smartScreenNote:
-        "Windows may warn about unsigned installers (“unknown publisher”). The file is safe — see checksums.",
+        "On Windows the easiest route is the Microsoft Store: the package is signed by Microsoft and updates come through the Store. The direct .exe is unsigned, so Windows may warn about an “unknown publisher” — see checksums.",
     },
     faq: {
       heading: "The important questions, answered.",
@@ -534,7 +534,7 @@ export const content = {
         cta: { label: "NEXUS'u İndir", href: "#downloads" },
       },
         smartScreenNote:
-        "Windows imzasız kurulumlar için uyarı verebilir (“bilinmeyen yayıncı”). Dosya güvenlidir — sağlama değerlerine bak.",
+        "Windows için en kolay yol Microsoft Store: kurulum Microsoft tarafından imzalanır ve güncellemeler Store'dan gelir. Doğrudan .exe imzasızdır; Windows “bilinmeyen yayıncı” uyarısı verebilir — sağlama değerlerine bak.",
     },
     faq: {
       heading: "Önemli sorular, net yanıtlar.",

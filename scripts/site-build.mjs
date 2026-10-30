@@ -3347,6 +3347,10 @@ function renderPricing(c) {
 </section>`;
 }
 
+// Windows için birincil indirme Microsoft Store (Microsoft imzalar, Store günceller). Doğrudan .exe ikinci seçenek.
+const WINDOWS_STORE_URL = 'https://apps.microsoft.com/detail/9NKF7SWW5RSN';
+const WINDOWS_STORE_URL_TR = 'https://apps.microsoft.com/detail/9NKF7SWW5RSN?hl=tr-tr&gl=TR';
+
 function renderDownloads(c) {
   const DL_BASE = 'https://github.com/Enard52/nexus-releases/releases/latest/download';
   // Saglama degerleri release varliklarinda yayinda (olculdu: uc dosya da 200 + gerçek hash).
@@ -3371,10 +3375,15 @@ function renderDownloads(c) {
         </div>
         <div class="dl-meta">
           <span><b data-nexus-ver>${APP_VERSION}</b></span>
-          <span>${plat === 'windows' ? '64-bit .exe' : plat === 'android' ? 'APK' : '.deb'}</span>
+          <span>${plat === 'windows' ? 'Microsoft Store' : plat === 'android' ? 'APK' : '.deb'}</span>
           <a class="dl-sums" href="${DL_BASE}/${SUMS[plat]}" target="_blank" rel="noopener" title="${sumsLabel}">SHA-256</a>
         </div>
-        <a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : 'Download'}</a>
+        ${
+          plat === 'windows'
+            ? `<a class="btn btn-primary" href="${c.lang === 'tr' ? WINDOWS_STORE_URL_TR : WINDOWS_STORE_URL}" target="_blank" rel="noopener">${icon('download')}${c.lang === 'tr' ? "Microsoft Store'dan indir" : 'Get it from Microsoft Store'}</a>
+        <a class="dl-sums" style="display:block;margin-top:10px;text-align:center" href="${DL_BASE}/${file}" download>${c.lang === 'tr' ? 'Doğrudan indirme (.exe)' : 'Direct download (.exe)'}</a>`
+            : `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : 'Download'}</a>`
+        }
       </div>`
         )
         .join('\n      ')}
@@ -3827,7 +3836,7 @@ function landingSchema(c) {
       name: 'NEXUS' + (isTr ? ' — ' + name : ' — ' + name),
       applicationCategory: 'HomeApplication',
       operatingSystem: plat === 'windows' ? 'Windows' : plat === 'android' ? 'Android' : 'Linux',
-      url: dl(file),
+      url: plat === 'windows' ? (isTr ? WINDOWS_STORE_URL_TR : WINDOWS_STORE_URL) : dl(file),
       offers: { '@type': 'Offer', price: '0', priceCurrency: isTr ? 'TRY' : 'USD' },
     }));
   return {
