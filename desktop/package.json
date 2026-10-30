@@ -78,7 +78,7 @@
       "publisherDisplayName": "NEXUS Smart Home",
       "displayName": "NEXUS Smart Home",
       "applicationId": "NEXUS",
-      "backgroundColor": "#0B1020",
+      "backgroundColor": "transparent",
       "languages": [
         "en-US",
         "tr-TR"
