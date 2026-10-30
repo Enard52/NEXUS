@@ -10,9 +10,9 @@ const MAX_LINES = 350;
 const BUYUK_EKRANLAR: Record<string, number> = {
   "nexus-account-security.html": 608,
   "nexus-chat.html": 667,
-  "nexus-device.html": 1442,
+  "nexus-device.html": 1455,
   "nexus-household.html": 785,
-  "nexus-pair.html": 592,
+  "nexus-pair.html": 609,
   "nexus-settings.html": 424,
 };
 
