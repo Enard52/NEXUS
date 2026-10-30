@@ -46,8 +46,8 @@ export function escapeHtml(s: string): string {
 
 export function buildMessage(title: string, detail: string, lang: "en" | "tr") {
   const label = lang === "en" ? "Alert" : "Uyarı";
-  // Konu satırı tek satırdır: CR/LF (ve U+2028/9) boşluğa çevrilir (başlık enjeksiyonu savunması).
-  const subject = "NEXUS · " + title.replace(/[\r\n  ]+/g, " ");
+  // Konu satırı tek satırdır: CR/LF (ve U+2028/2029) boşluğa çevrilir (başlık enjeksiyonu savunması).
+  const subject = "NEXUS · " + title.replace(/[\r\n\u2028\u2029]+/g, " ");
   const text = [title, detail].filter(Boolean).join("\n") || label;
   const html =
     '<div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px">' +
