@@ -10,7 +10,7 @@ describe("sürüm tek kaynak tutarlılığı (issue #28)", () => {
   const root = process.cwd();
   const pkg = JSON.parse(readFileSync(join(root, "desktop", "package.json"), "utf8"));
   const gradle = readFileSync(join(root, "android", "app", "build.gradle"), "utf8");
-  const settings = readFileSync(join(root, "src", "app", "nexus-settings.html"), "utf8");
+  const settings = readFileSync(join(root, "src", "app", "app-version.js"), "utf8");
 
   const versionName = gradle.match(/versionName\s+"([^"]+)"/)?.[1];
   const versionCode = Number(gradle.match(/versionCode\s+(\d+)/)?.[1]);

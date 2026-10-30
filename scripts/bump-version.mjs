@@ -7,7 +7,7 @@
  * (packages/core/src/version-consistency.test.ts) denetler:
  *   1. desktop/package.json          → version (Electron/otomatik güncelleme)
  *   2. android/app/build.gradle      → versionName + versionCode (otomatik artar)
- *   3. nexus-settings.html          → window.NEXUS_APP_VERSION ("Hakkında" satırı)
+ *   3. app-version.js               → window.NEXUS_APP_VERSION ("Hakkında" satırı, güncelleme bandı)
  *   4. www/public/downloads/current.json → sitenin indirme "acil durum freni"; her
  *      sürümde pinned:false olarak yeniden yazılır, böylece fren kapalı kalır. Site
  *      normalde releases/latest/download kullanır; elle pinned:true yapılırsa sitedeki
@@ -42,7 +42,7 @@ const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
 // ---- mevcut durum ----
 const pkgPath = resolve(ROOT, "desktop/package.json");
 const gradlePath = resolve(ROOT, "android/app/build.gradle");
-const settingsPath = resolve(ROOT, "src/app/nexus-settings.html");
+const settingsPath = resolve(ROOT, "src/app/app-version.js");
 const mirrorPath = resolve(ROOT, "www/public/downloads/current.json");
 
 const current = JSON.parse(readFileSync(pkgPath, "utf8")).version;
@@ -77,11 +77,11 @@ function applyVersion(next) {
   //    www aynasına: repo-source.test.ts iki klasörün bayt özdeşliğini zorunlu
   //    kılar; sürüm yükselten betik aynayı da görüşmekle sorumlu.
   const settingsRe = /NEXUS_APP_VERSION = "[^"]+"/;
-  for (const target of [settingsPath, resolve(ROOT, "www", "nexus-settings.html")]) {
+  for (const target of [settingsPath, resolve(ROOT, "www", "app-version.js")]) {
     const s = readFileSync(target, "utf8");
     if (!settingsRe.test(s)) {
       if (target === settingsPath) {
-        console.error("Hata: nexus-settings.html içinde NEXUS_APP_VERSION sabiti bulunamadı.");
+        console.error("Hata: app-version.js içinde NEXUS_APP_VERSION sabiti bulunamadı.");
         process.exit(1);
       }
       continue; // www kopyası yoksa sessizce geç
@@ -112,12 +112,12 @@ function applyVersion(next) {
   console.log(`✓ desktop/package.json        ${current} → ${next}`);
   console.log(`✓ android versionName         ${currentName} → ${next}`);
   console.log(`✓ android versionCode         ${currentCode} → ${nextCode}`);
-  console.log(`✓ nexus-settings NEXUS_APP_VERSION → ${next}`);
+  console.log(`✓ app-version.js NEXUS_APP_VERSION → ${next}`);
   console.log(`✓ downloads/current.json (site bakışı) → v${next}`);
 
   if (DO_COMMIT) {
     sh(
-      `git add desktop/package.json android/app/build.gradle src/app/nexus-settings.html www/public/downloads/current.json`,
+      `git add desktop/package.json android/app/build.gradle src/app/app-version.js www/app-version.js www/public/downloads/current.json`,
     );
     sh(`git commit -m "release: v${next}"`);
     sh(`git tag -a v${next} -m "NEXUS v${next}"`);
