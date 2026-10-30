@@ -24,6 +24,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # iOS projesi eklentileri node_modules içindeki yerel Swift paketlerinden alır
+      # (CapApp-SPM/Package.swift); bağımlılıklar kurulmadan paket çözümlenemez.
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Bağımlılıklar
+        run: pnpm install --frozen-lockfile
+
       - name: İmzasız derleme
         run: |
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
