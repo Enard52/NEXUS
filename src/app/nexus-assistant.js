@@ -198,7 +198,21 @@
     var all = devices();
 
     if (!text) return { reply: help() };
-    if (/\b(yardim|ne yapabilirsin|neler yapabilirsin|komutlar|help|what can you do|commands)\b/.test(text)) return { reply: help() };
+    // Senaryo/uygulama oluşturma isteği, "oluştur" cümlesindeki yan sözcüklere (komut, yardım, durum, rahatsız etme…) takılmasın.
+    var CREATE_VERB = /\b(olustur\w*|kur|kurun|ekle|create|make|build|add)\b/;
+    var CREATE_NOUN = /\b(senaryo\w*|otomasyon\w*|rutin\w*|akis\w*|panel\w*|sahne\w*|merkez\w*|uygulama\w*|scenario|automation|routine|scene|panel|smart app|app)\b/;
+    var wantsCreate = (CREATE_VERB.test(text) && CREATE_NOUN.test(text)) || /\byapay zeka ile olustur/.test(text) ||
+      /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
+    if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
+    // SSS / destek: konuyu gerçekten yanıtlayan ekranı gösterir (genel komut listesi değil)
+    if (/\b(sss|destek|sikca sorulan|geri bildirim|sorun bildir|faq|support|feedback|contact)\b/.test(text)) {
+      return { reply: T("SSS ve Geri Bildirim ekranında sık sorulan soruların yanıtları ve geri bildirim formu var (Ayarlar'dan ya da Enerji ekranının altından ulaşabilirsin). Takıldığın konuyu buraya yazarsan bildiğim kadarıyla yardımcı olurum; çözemezsem formdan bize iletebilirsin.",
+        "The FAQ and Feedback screen has answers to common questions and a feedback form. Tell me what you are stuck on and I will help as far as I can; if I cannot solve it, send it to us through the form.") };
+    }
+    // Genel yardım: yalnızca "yardım", "ne yapabilirsin", "komutlar", "hazır komutlar/öneriler" gibi çıplak istekler
+    if (/^(bana )?(yardim( et)?( eder misin)?|help( me)?|komutlar|commands|ne yapabilirsin|neler yapabilirsin|what can you do)\??$/.test(text) ||
+      /\b(ne yapabilirsin|neler yapabilirsin|what can you do)\b/.test(text) ||
+      /\b(hazir komut\w*|ready commands)\b/.test(text)) return { reply: help() };
     if (/\b(sen kimsin|kimsin|ismin ne|adin ne|who are you|what are you|your name)\b/.test(text)) {
       return { reply: T("Ben NEXUS AI, evinin asistanıyım. Işıklardan klimaya cihazlarını yönetir, senaryoları çalıştırır ve NEXUS hakkında sorularını yanıtlarım.",
         "I am NEXUS AI, your home's assistant. I control your devices from lights to the AC, run your scenes and answer questions about NEXUS.") };
@@ -217,11 +231,6 @@
       return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
     }
     if (/\b(durum|durumu|ne acik|neler acik|hangi cihazlar acik|akilli kontrol|status|what is on|what'?s on|whats on|what is running|which devices are on|smart control)\b/.test(text)) return status(all);
-
-    // Senaryo oluşturma (mevcut akış korunur)
-    var wantsCreate = (/\b(olustur|kur|ekle|create|make|build|add)\b/.test(text) && /\b(senaryo|otomasyon|rutin|scenario|automation|routine|akilli uygulama|uygulama|smart app|app)\b/.test(text)) ||
-      /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
-    if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
 
     if (!N) return { reply: help() };
 
