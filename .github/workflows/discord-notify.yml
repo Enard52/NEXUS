@@ -1,0 +1,60 @@
+name: Discord bildirimi
+
+# GitHub olaylarını Discord'a düşürür: yeni issue / PR, yeni yıldız ve başarısız iş akışları.
+# Adres depo sırrından okunur (Settings → Secrets → Actions → DISCORD_WEBHOOK_URL); sır yoksa
+# iş sessizce atlanır. Başlıklar dışarıdan gelen metindir: betiğe doğrudan yazılmaz, ortam
+# değişkeniyle geçilir ve jq ile JSON'a çevrilir. pull_request_target kullanılır (çatal PR'larında
+# sırlar yalnızca bu olayda vardır) ama kod çekilmez ve PR kodu çalıştırılmaz.
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+  watch:
+    types: [started]
+  workflow_run:
+    workflows:
+      - "Masaüstü sürümü"
+      - "Android yayını"
+      - "CI"
+      - "CodeQL"
+      - "UI states"
+      - "Site yayını"
+      - "Sürüm sonrası denetim"
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  notify:
+    # Başarılı iş akışları için bildirim yok; yalnızca başarısızlar.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord'a gönder
+        env:
+          HOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          EVENT: ${{ github.event_name }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_USER: ${{ github.event.issue.user.login }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_USER: ${{ github.event.pull_request.user.login }}
+          STAR_USER: ${{ github.event.sender.login }}
+          STARS: ${{ github.event.repository.stargazers_count }}
+          RUN_NAME: ${{ github.event.workflow_run.name }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          [ -n "$HOOK" ] || { echo "DISCORD_WEBHOOK_URL tanımlı değil; bildirim atlandı."; exit 0; }
+          case "$EVENT" in
+            issues)              title="🐛 Yeni issue"; text="$ISSUE_TITLE (@$ISSUE_USER)"; url="$ISSUE_URL"; color=3447003 ;;
+            pull_request_target) title="🔀 Yeni PR"; text="$PR_TITLE (@$PR_USER)"; url="$PR_URL"; color=10181046 ;;
+            watch)               title="⭐ Yeni yıldız"; text="@$STAR_USER · toplam $STARS"; url="https://github.com/${{ github.repository }}"; color=16766720 ;;
+            workflow_run)        title="❌ İş akışı başarısız"; text="$RUN_NAME ($RUN_BRANCH)"; url="$RUN_URL"; color=15548997 ;;
+            *) exit 0 ;;
+          esac
+          jq -n --arg t "$title" --arg d "${text:0:300}" --arg u "$url" --argjson c "$color" \
+            '{username:"NEXUS GitHub",embeds:[{title:$t,description:$d,url:$u,color:$c}]}' \
+            | curl -fsS -X POST -H "Content-Type: application/json" -d @- "$HOOK"
