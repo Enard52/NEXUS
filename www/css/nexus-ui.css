@@ -145,8 +145,15 @@ html:not(.dark) textarea::placeholder {
   outline-offset: 2px;
 }
 button:focus:not(:focus-visible),
-a:focus:not(:focus-visible) {
+a:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
   outline: none;
+}
+/* Klavye odagi: tum etkilesimli ogelerde ayni vurgu halkasi (fare/dokunmada gorunmez) */
+summary:focus-visible, [tabindex]:not([tabindex="-1"]):focus-visible, [role="switch"]:focus-visible, [role="tab"]:focus-visible, [role="option"]:focus-visible, [role="menuitem"]:focus-visible {
+  outline: 2px solid rgba(var(--nx-accent-rgbc,76,125,255),0.70);
+  outline-offset: 2px;
 }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

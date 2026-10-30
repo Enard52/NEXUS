@@ -14,7 +14,7 @@ var SHELL = [
   'js/lucide.js',
   'theme.js', 'auth.js', 'data.js', 'device-controls.js', 'supported-devices.js',
   'lan-connectors.js', 'lan-mqtt.js', 'automation-engine.js', 'i18n.js', 'lang-en.js',
-  'ai-fab.js', 'sheet-gestures.js', 'nexus-dialog.js', 'nexus-undo.js', 'nexus-assistant.js', 'nexus-feedback.js',
+  'ai-fab.js', 'sheet-gestures.js', 'sheet-focus.js','nexus-dialog.js', 'nexus-undo.js', 'nexus-assistant.js', 'nexus-feedback.js',
   // theme.js her sayfada bunları da enjekte ediyor; kabukta yoksa ilk çevrimdışı açılışta eksik kalırlar.
   'notify.js', 'command-palette.js', 'push.js', 'household-cloud.js', 'app-version.js', 'update-check.js',
   'icons/icon-192.webp', 'icons/icon-512.webp',
