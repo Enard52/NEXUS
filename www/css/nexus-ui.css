@@ -430,6 +430,8 @@ html.dark .dark\:text-\[\#93b4ff\] { color: #93b4ff; }
    sayfaları (Plus pt-6) ve auth akışları doğal yüksekliğinde kalır. */
 header.pt-14 { padding-top: 3rem; padding-bottom: 1rem; }
 header.pt-12, header.pt-14 { min-height: var(--nx-header-h, 104px); }
+/* Yan boşluk: sayfa başlıkları px-4/px-5/px-6 karışıktı; başlık/geri satırı ekranlar arası yatayda kaymasın diye hepsi 20px (px-5, baskın değer). */
+header.pt-12, header.pt-14 { padding-left: 1.25rem; padding-right: 1.25rem; }
 
 /* ---------- Tutarlı odak göstergesi ----------
    Tarayıcının varsayılan keskin odak çizgileri yerine tüm form alanlarında
