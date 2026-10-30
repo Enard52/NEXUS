@@ -65,11 +65,15 @@ describe("a11y: src/app/*.html", () => {
   });
 
   it("detector flags an unlabelled icon button and accepts labelled ones", () => {
-    expect(findUnlabelledIconControls('<button><svg></svg></button>')).toEqual([1]);
-    expect(findUnlabelledIconControls('<button aria-label="Kapat"><svg></svg></button>')).toEqual([]);
+    expect(findUnlabelledIconControls("<button><svg></svg></button>")).toEqual([1]);
+    expect(findUnlabelledIconControls('<button aria-label="Kapat"><svg></svg></button>')).toEqual(
+      [],
+    );
     expect(findUnlabelledIconControls('<a href="#">Geri</a>')).toEqual([]);
     expect(findInaccessibleClickables('<div onclick="x()">a</div>')).toEqual([1]);
-    expect(findInaccessibleClickables('<div role="button" tabindex="0" onclick="x()">a</div>')).toEqual([]);
+    expect(
+      findInaccessibleClickables('<div role="button" tabindex="0" onclick="x()">a</div>'),
+    ).toEqual([]);
   });
 
   for (const file of FILES) {
