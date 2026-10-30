@@ -29,6 +29,8 @@ describe("katalog destek filtresi", () => {
       ["İnsan Vücudu Sensörü", "Sensör"],
       ["Kapı ve Pencere Sensörü", "Sensör"],
       ["Hava Kalitesi Sensörü", "Çevresel Sensörler"],
+      ["Duman Dedektörü", "Sensör"],
+      ["Su Sızıntısı Sensörü", "Sensör"],
     ]) {
       expect(w.nexusIsSupported(name, group), name).toBe(true);
     }
@@ -42,7 +44,7 @@ describe("katalog destek filtresi", () => {
       ["Thermostat Switch", "Anahtar"],
       ["Garaj Kapısı Kumandası (Wi-Fi)", "Diğer"],
       ["Titreşim Sensörü", "Sensör"],
-      ["Duman Dedektörü", "Sensör"],
+      ["Akıllı Siren", "Alarm"],
       ["Kablosuz Ağ Geçidi", "Ağ Geçidi"],
       ["Devre kesici", "Breaker"],
       ["Akıllı Elektrik Sayacı", "Elektrik Sayaçları"],
@@ -53,17 +55,17 @@ describe("katalog destek filtresi", () => {
 
   it("matrise yeni model eklenince ilgili ürünler kendiliğinden görünür", () => {
     const w = load();
-    expect(w.nexusIsSupported("Duman Dedektörü", "Sensör")).toBe(false);
+    expect(w.nexusIsSupported("Akıllı Siren", "Alarm")).toBe(false);
     w.NEXUS_SUPPORTED_DEVICES.push({
       brand: "Test",
       protocol: "x",
       availability: "all",
       note: "",
       models: [
-        { name: "Test Duman Dedektörü", img: "security-smoke-detector.png", caps: ["alarm"] },
+        { name: "Test Siren", img: "security-siren.png", caps: ["alarm"] },
       ],
     });
-    expect(w.nexusIsSupported("Duman Dedektörü", "Sensör")).toBe(true);
+    expect(w.nexusIsSupported("Akıllı Siren", "Alarm")).toBe(true);
   });
 
   it("Wake-on-LAN bir ağ geçidi değildir (ağ geçitleri desteklenmiş sayılmaz)", () => {
