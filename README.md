@@ -51,7 +51,7 @@ with a navigation sidebar, tray mode and background automation worker:
 
 | Platform | Install |
 | --- | --- |
-| Windows x64 + arm64 | [Download installer](https://github.com/Enard52/nexus-releases/releases/latest) (auto-update built in) |
+| Windows x64 + arm64 | [Microsoft Store](https://apps.microsoft.com/detail/9NKF7SWW5RSN) (signed by Microsoft, updates via the Store), or the [direct installer](https://github.com/Enard52/nexus-releases/releases/latest) (auto-update built in) |
 | Linux x64 + ARM64 (Raspberry Pi) | AppImage + deb + rpm from the same releases page (`NEXUS-linux*`, `NEXUS-linux-arm64*`) |
 | Android | Signed APK from the same releases page |
 | macOS | .dmg / .zip from the same releases page |
