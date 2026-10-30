@@ -29,7 +29,10 @@
       background: linear-gradient(180deg, #020617 0%, #0f172a 35%, #111827 100%);
       color: #f8fafc;
     }
-    .bubble { max-width: 82%; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+    /* "anywhere"/"break-word" en küçük içerik genişliğini 1 harfe indirir: kısa mesajlar ("Merhaba") iki satıra bölünürdü.
+       Genişlik sınırı baloncukta değil, belirli genişlikteki mesaj sütunundadır. */
+    .msg-col { max-width: 82%; }
+    .bubble { max-width: 100%; white-space: pre-wrap; overflow-wrap: break-word; }
     .bubble-me { background: var(--nx-accent,#4C7DFF); color: #fff; border-radius: 20px 20px 6px 20px; }
     .bubble-other { background: #fff; color: #0f172a; border-radius: 20px 20px 20px 6px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06); }
     html.dark .bubble-other { background: #1e293b; color: #f1f5f9; box-shadow: none; }

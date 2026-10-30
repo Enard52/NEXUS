@@ -197,11 +197,18 @@
         form.addEventListener("submit", function (ev) {
           ev.preventDefault();
           var text = input.value;
-          if (!text.trim() || !homeId) return;
+          // Sessiz dönme: boş metinde ya da hata olduğunda kullanıcı ne olduğunu görsün.
+          function say(msg, type) { if (window.nexusToast) window.nexusToast(msg, { type: type }); else setBanner(msg); }
+          if (!text.trim()) { say(kind === "note" ? "Önce notunu yaz." : "Önce eklenecek maddeyi yaz.", "error"); input.focus(); return; }
+          if (!homeId) { say("Pano için önce bir ev gerekli.", "error"); return; }
+          var addBtn = form.querySelector('button[type="submit"]');
+          addBtn.disabled = true;
           HC.addBoardItem(homeId, text, kind).then(function () {
             input.value = "";
+            setBanner("");
             reload();
-          }, function (e) { setBanner(e.message); });
+            input.focus();
+          }, function (e) { say(e.message || "Eklenemedi.", "error"); }).then(function () { addBtn.disabled = false; });
         });
 
         listEl.addEventListener("click", function (ev) {
