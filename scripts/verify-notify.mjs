@@ -110,7 +110,7 @@ await page.click('input[data-channel="system"] + .slider');
 await page.waitForTimeout(150);
 
 // test bildirimi
-await page.click("#notify-test");
+await page.evaluate(() => window.nexusNotify.test());
 await page.waitForTimeout(1200);
 ok("test bildirimi telegram'a ulaştı", sent.length === 1, sent.length + " istek");
 if (sent.length) {
@@ -260,22 +260,19 @@ await page.waitForTimeout(700);
 const en = await page.evaluate(() => document.body.innerText);
 ok(
   "EN sözlük yeni başlıkları çeviriyor",
-  /outbound channels/i.test(en) && /send a test notification/i.test(en),
+  /outbound channels/i.test(en),
   "",
 );
-const enGap = /Dışa Dönük Kanallar|Test bildirimi gönder/.test(en);
+const enGap = /Dışa Dönük Kanallar/.test(en);
 ok("EN modda Türkçe kalıntı yok", !enGap, enGap ? "Türkçe başlık kaldı" : "");
 
 ok("sayfa hatası yok", errs.length === 0, errs.join(" | "));
 
-/* --- 2. tur: iznin ZATEN VERİLMİŞ olduğu ortam --------------------------------
-   Asıl şikâyet buydu: masaüstü programda Electron izin istemcisini otomatik
-   onaylıyor (desktop/main.cjs notifications:1), tarayıcı da bir kez verilen izni
-   yeniden sormuyor. Düğme yine de "sordum, verildi" diyordu.
-   Headless Chromium bildirim izni akışını gerçekte göstermediği için (grantPermissions
-   "denied"de kalıyor) Notification statikleri taklit edilir: önemli olan çağrı
-   örüntüsü — izin belliyse requestPermission()'a hiç dokunulmamalı, bilinmiyorsa
-   TEK KEZ ve kullanıcı jesti içinde çağrılmalı. */
+/* --- 2. tur: sistem bildirimi anahtarı izni kendisi ister ----------------------
+   Ayrı "izin iste" düğmesi yok: kullanıcı "Sistem Bildirimleri" anahtarını açınca
+   izin (gerekiyorsa) o jestin içinde istenir. Headless Chromium izin akışını
+   göstermediği için Notification statikleri taklit edilir; önemli olan çağrı
+   örüntüsü ve anahtarın dürüst sonucu: izin yoksa anahtar açık kalmaz. */
 async function izinSenaryosu(ad, izinDugumu) {
   const sctx = await browser.newContext({
     viewport: { width: 1280, height: 900 },
@@ -292,7 +289,6 @@ async function izinSenaryosu(ad, izinDugumu) {
       });
       window.Notification.requestPermission = () => {
         n++;
-        // Jestten doğan tek çağrı olmalı: Promise'i senkron başlatılıyor mu diye sayılıyor.
         return Promise.resolve(permission === "denied" ? "denied" : "granted");
       };
       Object.defineProperty(window, "__permAskCount", { get: () => n, configurable: true });
@@ -300,78 +296,47 @@ async function izinSenaryosu(ad, izinDugumu) {
     { currentUser: "denetim@nexus.app", permission: izinDugumu },
   );
   const sp = await sctx.newPage();
-  const serrs = [];
-  sp.on("pageerror", (e) => serrs.push(String(e.message)));
   await sp.goto(url, { waitUntil: "load" });
   await sp.waitForTimeout(700);
-  const yuklenirken = await sp.evaluate(
-    () => document.querySelector("#system-permission .nx-btn-label").textContent,
+  const hasLegacyButtons = await sp.evaluate(
+    () => !!document.getElementById("system-permission") || !!document.getElementById("notify-test"),
   );
-  const r = await sp.evaluate(async () => {
-    const before = window.nexusNotify.stats().sent;
-    document.getElementById("system-permission").click();
-    // Tıklama anında requestPermission çağrılmış olmalı (jest penceresi beklenirken
-    // etiket hâlâ "İzin bekleniyor…" gösteriyor mu diye ilk kareyi de yakala).
-    await new Promise((k) => setTimeout(k, 1500));
-    const btn = document.getElementById("system-permission");
-    return {
-      ask: window.__permAskCount,
-      etiket: btn.querySelector(".nx-btn-label").textContent,
-      ton: btn.querySelector(".nx-btn-ico").className,
-      ikon: btn.querySelector("svg").getAttribute("class"),
-      fark: window.nexusNotify.stats().sent - before,
-      durum: document.getElementById("notify-status").textContent,
-    };
-  });
-  ok(`${ad}: yüklenirken etiket`, true, `${yuklenirken} → ${r.etiket} (${r.ikon}, ${r.ask} istek)`);
+  const wasOn = await sp.evaluate(
+    () => document.querySelector('input[data-channel="system"]').checked,
+  );
+  // Varsayılan açık: önce kapat, sonra yeniden aç (izin açarken istenir).
+  if (wasOn) {
+    await sp.click('input[data-channel="system"] + .slider');
+    await sp.waitForTimeout(300);
+  }
+  await sp.click('input[data-channel="system"] + .slider');
+  await sp.waitForTimeout(1200);
+  const r = await sp.evaluate(() => ({
+    ask: window.__permAskCount,
+    on: document.querySelector('input[data-channel="system"]').checked,
+    saved: window.nexusNotify.channels().system.enabled,
+    durum: document.getElementById("notify-status").textContent,
+  }));
+  r.hasLegacyButtons = hasLegacyButtons;
+  ok(`${ad}: ayrı izin/test düğmesi yok`, !hasLegacyButtons, "");
   await sctx.close();
   return r;
 }
 
-const granted = await izinSenaryosu("izin zaten verilmiş", "granted");
-ok(
-  "izin verilmişken yeniden sorulmaz (pencere yalanı bitti)",
-  granted.ask === 0,
-  `${granted.ask} kez requestPermission`,
-);
-ok(
-  "izin verilmişken etiket 'İzin zaten açık'",
-  granted.etiket === "İzin zaten açık",
-  granted.etiket,
-);
-ok(
-  "izin verilmişken yeşil onay ikonu",
-  /emerald/.test(granted.ton) && /circle-check/.test(granted.ikon),
-  `${granted.ikon} / ${granted.ton}`,
-);
-ok(
-  "izin verilmişken kanıt olarak örnek bildirim gider",
-  granted.fark >= 1,
-  `+${granted.fark} gönderim`,
-);
-ok(
-  "izin verilmişken açıklama durum satırında",
-  /örnek bildirim/i.test(granted.durum),
-  granted.durum,
-);
+const granted = await izinSenaryosu("izin verilmiş", "granted");
+ok("izin verilmişken anahtar açılır ve kaydedilir", granted.on && granted.saved, JSON.stringify(granted));
 
 const asked = await izinSenaryosu("izin ilk kez soruluyor", "default");
-ok("bilinmeyen izinde gerçekten sorulur", asked.ask === 1, `${asked.ask} kez requestPermission`);
-ok("ilk soruda 'İzin verildi' denir (asked ayrımı)", asked.etiket === "İzin verildi", asked.etiket);
-ok("soru turunda örnek bildirim de gider", asked.fark >= 1, `+${asked.fark} gönderim`);
+ok("bilinmeyen izinde anahtar izni tek kez ister", asked.ask === 1, `${asked.ask} kez requestPermission`);
+ok("izin verilince anahtar açık kalır", asked.on && asked.saved, JSON.stringify(asked));
 
 const refused = await izinSenaryosu("izin reddedilmiş", "denied");
+ok("reddedilmişte anahtar açık kalmaz", !refused.on && !refused.saved, JSON.stringify(refused));
 ok(
-  "reddedilmiş izde yeniden pencere açılmaz",
-  refused.ask === 0,
-  `${refused.ask} kez requestPermission`,
+  "reddedilmişte suçlayıcı değil, yol gösterici metin",
+  /kilit simgesinden/i.test(refused.durum),
+  refused.durum,
 );
-ok(
-  "reddedilmiş izde suçlayıcı değil, yol gösterici metin",
-  refused.etiket === "İzin reddedilmiş" && /kilit simgesinden/i.test(refused.durum),
-  refused.etiket,
-);
-
 await browser.close();
 server.close();
 console.log(out.join("\n"));

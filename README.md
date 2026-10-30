@@ -5,7 +5,7 @@
 # NEXUS — local-first smart home
 
 One app that talks to your devices **directly on your local network** — no hub, no
-vendor cloud, no subscription required. Windows · Linux · macOS · Android. iOS builds from source.
+vendor cloud, no subscription required. Windows · Linux · macOS · Android. iOS: sideload the unsigned IPA or build from source.
 
 > **House rule: the app never pretends.** Real device states, automations that
 > actually run, honest energy numbers. Anything not supported yet is clearly
@@ -52,10 +52,10 @@ with a navigation sidebar, tray mode and background automation worker:
 | Platform | Install |
 | --- | --- |
 | Windows x64 + arm64 | [Download installer](https://github.com/Enard52/nexus-releases/releases/latest) (auto-update built in) |
-| Linux x64 | AppImage + deb from the same releases page |
+| Linux x64 + ARM64 (Raspberry Pi) | AppImage + deb + rpm from the same releases page (`NEXUS-linux*`, `NEXUS-linux-arm64*`) |
 | Android | Signed APK from the same releases page |
 | macOS | .dmg / .zip from the same releases page |
-| iOS | Build from source — see [docs/BUILD-ALL-PLATFORMS.md](docs/BUILD-ALL-PLATFORMS.md) |
+| iOS | Unsigned `.ipa` for sideloading with a free Apple ID (AltStore / Sideloadly), attached to a release when built; or build from source — see [docs/BUILD-ALL-PLATFORMS.md](docs/BUILD-ALL-PLATFORMS.md). Push notifications need a paid Apple account and are not available on iOS. |
 | Web | [nexus-smarthome.pages.dev](https://nexus-smarthome.pages.dev) — account, downloads & billing |
 
 ## Architecture (single source, three shells)

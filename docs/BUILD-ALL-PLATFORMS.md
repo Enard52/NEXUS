@@ -18,7 +18,8 @@ root (single source: nexus-*.html + JS + CSS)
 | Platform | Package | How |
 | --- | --- | --- |
 | Windows x64 + arm64 | NSIS installer (`NEXUS-Setup.exe`) | `npx electron-builder --win` |
-| Linux x64 | AppImage + deb (`NEXUS-linux.*`) | `npx electron-builder --linux` |
+| Linux x64 | AppImage + deb + rpm (`NEXUS-linux.*`) | `npx electron-builder --linux` |
+| Linux ARM64 | AppImage + deb + rpm (`NEXUS-linux-arm64.*`) | `npx electron-builder --linux --arm64` |
 | Android | Signed APK (`NEXUS-Android.apk`) | `npx cap sync android` + Gradle release build |
 | Web | Marketing site + account/downloads | `npm run site:build` → Cloudflare Pages |
 
@@ -30,7 +31,7 @@ Release automation: tag `v*` → `.github/workflows/desktop-release.yml` +
 | Platform | State | How to activate |
 | --- | --- | --- |
 | **macOS** | electron-builder config already has `mac` targets (dmg + zip, universal, unsigned) and `main.cjs` is darwin-aware (tray PNG fallback, login-item guards). CI job exists. | Set the repo variable `MACOS_BUILD = true`, then re-run the tag workflow. Unsigned dmg (Gatekeeper: right-click → Open). **Project policy: unsigned only — no Apple Developer account.** |
-| **iOS** | Capacitor shell already synced in `ios/App` (assets auto-refresh on every `npm run sync:www`). Native build requires macOS + Xcode + a free Apple ID (free-account signing renews every 7 days; personal use). | On a Mac: `npm install && npm run build:full`, then `npx cap sync ios`, open `ios/App/App.xcworkspace` in Xcode, build. |
+| **iOS** | Release workflow `ios-unsigned.yml` (manual) builds an unsigned `NEXUS-ios-unsigned.ipa` you can sideload with AltStore/Sideloadly and a free Apple ID (not yet verified on a real iPhone). Or build yourself: Capacitor shell already synced in `ios/App` (assets auto-refresh on every `npm run sync:www`). Native build requires macOS + Xcode + a free Apple ID (free-account signing renews every 7 days; personal use). | On a Mac: `npm install && npm run build:full`, then `npx cap sync ios`, open `ios/App/App.xcworkspace` in Xcode, build. |
 
 ## Building locally (any OS with Node 22)
 

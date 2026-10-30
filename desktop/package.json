@@ -147,6 +147,12 @@
           "arch": [
             "x64"
           ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "resources/icon.png",
@@ -160,6 +166,9 @@
       "artifactName": "NEXUS-linux.${ext}"
     },
     "deb": {
+      "artifactName": "NEXUS-linux.${ext}"
+    },
+    "rpm": {
       "artifactName": "NEXUS-linux.${ext}"
     }
   },

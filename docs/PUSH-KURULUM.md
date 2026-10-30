@@ -72,7 +72,7 @@ sohbeti bildiriminin) alıcının bildirim merkezine düşmesi.
 1. Sitede/uygulamada hesabınla giriş yap (push yalnız oturumda çalışır).
 2. Anlık Bildirimler → "Cihazlar Arası Push" açık olsun → tarayıcı izin sorusu
    "İzin ver".
-3. "Test bildirimi gönder" → kendi cihazında bildirim düşmeli (bu, token
+3. Anahtarı açınca izin sorusu çıkar; ardından başka bir cihazdan/hesaptan gelen bir olay bu cihaza düşmeli (bu, token
    kaydını da doğrular: `nexus_push_tokens` satırı kontrol edilebilir).
 4. İki cihaz/hesap testi: hesap B'de push açık olsun; A'nın ev verisinde
    B'nin e-postası olsun; A'da kritik bir olay üret → B kapalıyken bildirim

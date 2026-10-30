@@ -22,8 +22,15 @@ jobs:
         include:
           - os: windows-latest
             target: --win
+            suffix: ""
           - os: ubuntu-latest
             target: --linux
+            suffix: ""
+          # Linux ARM64 (Raspberry Pi 4/5, ARM dizüstü/sunucu): x64 koşucuda çapraz derlenir.
+          # Dosya adları x64 ile çakışmasın diye -arm64 eki alır.
+          - os: ubuntu-latest
+            target: --linux --arm64 -c.appImage.artifactName=NEXUS-linux-arm64.\${ext} -c.deb.artifactName=NEXUS-linux-arm64.\${ext} -c.rpm.artifactName=NEXUS-linux-arm64.\${ext}
+            suffix: "-arm64"
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -47,6 +54,10 @@ jobs:
             echo "::error::RELEASES_TOKEN gizli anahtarı tanımlı değil (Settings → Secrets → Actions)."
             exit 1
           fi
+
+      - name: rpm paketleme aracı (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y rpm
 
       - name: Bağımlılıklar
         run: npm ci
@@ -101,18 +112,18 @@ jobs:
         shell: bash
         run: |
           cd dist
-          for f in *.exe *.dmg *.zip *.AppImage *.deb; do
+          for f in *.exe *.dmg *.zip *.AppImage *.deb *.rpm; do
             [ -f "$f" ] || continue
             if command -v sha256sum >/dev/null; then sha256sum "$f"; else shasum -a 256 "$f"; fi
-          done > SHA256SUMS-${{ runner.os }}.txt
-          cat SHA256SUMS-${{ runner.os }}.txt
+          done > SHA256SUMS-${{ runner.os }}${{ matrix.suffix }}.txt
+          cat SHA256SUMS-${{ runner.os }}${{ matrix.suffix }}.txt
 
       - name: Özetleri sürüme ekle
         if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-        run: gh release upload "${GITHUB_REF_NAME}" "dist/SHA256SUMS-${{ runner.os }}.txt" --clobber --repo Enard52/nexus-releases
+        run: gh release upload "${GITHUB_REF_NAME}" "dist/SHA256SUMS-${{ runner.os }}${{ matrix.suffix }}.txt" --clobber --repo Enard52/nexus-releases
 
       - name: Yerel derleme işaretini kaldır
         if: startsWith(github.ref, 'refs/tags/v') && matrix.os == 'ubuntu-latest'
@@ -130,7 +141,7 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
-          name: nexus-desktop-${{ runner.os }}
+          name: nexus-desktop-${{ runner.os }}${{ matrix.suffix }}
           path: |
             desktop/dist/SHA256SUMS-*.txt
           if-no-files-found: warn
@@ -156,6 +167,10 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: desktop/package-lock.json
+
+      - name: rpm paketleme aracı (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y rpm
 
       - name: Bağımlılıklar
         run: npm ci

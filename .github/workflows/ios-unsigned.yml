@@ -1,0 +1,55 @@
+name: iOS imzasız IPA
+
+# Elle çalıştırılır (Actions → Run workflow). Apple Developer hesabı GEREKTİRMEZ:
+# imzasız bir .ipa üretir. Kullanıcı bunu kendi ücretsiz Apple ID'siyle AltStore / Sideloadly
+# ile yükler (7 günde bir yeniden imzalanır). Ürün özelliği olarak push bildirimi bu yolla
+# çalışmaz (APNs ücretli hesap ister); diğer her şey çalışır.
+# NOT: Bu iş akışı henüz gerçek bir iPhone'da doğrulanmadı; ilk koşuda derleme hatası
+# çıkarsa sürüm notunda dürüstçe belirtilir.
+# "tag" verilirse IPA, nexus-releases deposundaki o sürüme eklenir (RELEASES_TOKEN gerekir).
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Sürüme eklenecek etiket (örn. v1.0.34); boşsa yalnızca artifact"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: İmzasız derleme
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -sdk iphoneos -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: IPA paketle
+        run: |
+          APP=$(find build/Build/Products -maxdepth 2 -name "App.app" -type d | head -n 1)
+          test -n "$APP" || { echo "::error::App.app bulunamadı"; exit 1; }
+          mkdir -p ipa/Payload
+          cp -R "$APP" ipa/Payload/
+          (cd ipa && zip -qry ../NEXUS-ios-unsigned.ipa Payload)
+          shasum -a 256 NEXUS-ios-unsigned.ipa | tee SHA256SUMS-iOS.txt
+
+      - name: Sürüme ekle
+        if: inputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        run: gh release upload "${{ inputs.tag }}" NEXUS-ios-unsigned.ipa SHA256SUMS-iOS.txt --clobber --repo Enard52/nexus-releases
+
+      - uses: actions/upload-artifact@v7
+        continue-on-error: true
+        with:
+          name: nexus-ios-unsigned
+          path: |
+            NEXUS-ios-unsigned.ipa
+            SHA256SUMS-iOS.txt

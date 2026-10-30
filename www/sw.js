@@ -7,7 +7,7 @@
  *  - API/lambilgi (supabase, open-meteo, whop, workers): asla önbelleklenmez
  * Cihaz kontrolü yerel ağa gider; SW bu isteklere dokunmaz (aynı-origin değil).
  */
-var CACHE = 'nexus-shell-v14'; // v12: aile (sunucu tabanlı ev, sohbet), yedekleme, sensör olayları — v11: 1.0.33 komut paleti/geri alma/durum duyurusu, push katmanı
+var CACHE = 'nexus-shell-v15'; // v12: aile (sunucu tabanlı ev, sohbet), yedekleme, sensör olayları — v11: 1.0.33 komut paleti/geri alma/durum duyurusu, push katmanı
 var SHELL = [
   'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
   'fonts/inter/inter.css',
