@@ -19,7 +19,9 @@ export interface SendFields {
 }
 
 // İstek gövdesi → kırpılmış alanlar. Eksik başlık "NEXUS", eksik düzey "info" olur.
-export function parseSendFields(body: any): SendFields {
+// JSON gövdesi nesne değilse (null, sayı, dizi…) null döner; çağıran 400 verir.
+export function parseSendFields(body: any): SendFields | null {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return null;
   return {
     action: body.action === "test" ? "test" : "event",
     title: String(body.title || "NEXUS").slice(0, 120),

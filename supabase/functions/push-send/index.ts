@@ -96,7 +96,9 @@ Deno.serve(async (req) => {
   let body;
   try { body = await req.json(); } catch { return new Response("bad json", { status: 400, headers: CORS }); }
 
-  const { action, title, msgBody, level, eventId } = parseSendFields(body);
+  const fields = parseSendFields(body);
+  if (!fields) return new Response("bad json", { status: 400, headers: CORS });
+  const { action, title, msgBody, level, eventId } = fields;
 
   const saRaw = Deno.env.get("FCM_SERVICE_ACCOUNT_JSON") || "";
   if (!saRaw) {

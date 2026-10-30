@@ -26,9 +26,9 @@ describe("push-send — parseSendFields", () => {
   });
 
   it("yalnızca tam 'test' eylemi test sayılır; bilinmeyen eylem event olur", () => {
-    expect(parseSendFields({ action: "test" }).action).toBe("test");
-    expect(parseSendFields({ action: "TEST" }).action).toBe("event");
-    expect(parseSendFields({ action: "wipe" }).action).toBe("event");
+    expect(parseSendFields({ action: "test" })!.action).toBe("test");
+    expect(parseSendFields({ action: "TEST" })!.action).toBe("event");
+    expect(parseSendFields({ action: "wipe" })!.action).toBe("event");
   });
 
   it("aşırı uzun alanlar kırpılır (120/400/20/64)", () => {
@@ -37,15 +37,19 @@ describe("push-send — parseSendFields", () => {
       body: "b".repeat(5000),
       level: "l".repeat(100),
       eventId: "e".repeat(300),
-    });
+    })!;
     expect(f.title).toHaveLength(120);
     expect(f.msgBody).toHaveLength(400);
     expect(f.level).toHaveLength(20);
     expect(f.eventId).toHaveLength(64);
   });
 
+  it("nesne olmayan JSON gövdesi (null, sayı, dizi, string) null döner — çağıran 400 verir", () => {
+    for (const b of [null, 5, "x", true, [1, 2]]) expect(parseSendFields(b)).toBeNull();
+  });
+
   it("string olmayan değerler string'e çevrilir, çökmez", () => {
-    const f = parseSendFields({ title: 42, body: { a: 1 }, level: ["x"], eventId: true });
+    const f = parseSendFields({ title: 42, body: { a: 1 }, level: ["x"], eventId: true })!;
     expect(f.title).toBe("42");
     expect(f.msgBody).toBe("[object Object]");
     expect(f.level).toBe("x");
