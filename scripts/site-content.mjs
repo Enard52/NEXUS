@@ -279,7 +279,7 @@ export const content = {
         ],
         [
           "Why does Windows warn me when I run the installer?",
-          "The Windows installer is not yet signed with a commercial certificate, so SmartScreen may show “unknown publisher”. You can compare the file with the checksums listed in the downloads section before running it. Our code signing policy is linked from the site footer.",
+          "Install from the Microsoft Store and you will not see this warning: Microsoft signs that package during certification and delivers updates through the Store. The direct .exe download is not yet signed with a commercial certificate, so SmartScreen may show “unknown publisher”. You can compare the file with the checksums listed in the downloads section before running it. Our code signing policy is linked from the site footer.",
         ],
       ],
     },
@@ -593,7 +593,7 @@ export const content = {
         ],
         [
           "Windows kurulum dosyasını açarken neden uyarı alıyorum?",
-          "Windows kurulum dosyası henüz ticari bir sertifikayla imzalı değil; bu yüzden SmartScreen “bilinmeyen yayıncı” gösterebilir. Çalıştırmadan önce dosyayı indirmeler bölümündeki sağlama değerleriyle karşılaştırabilirsin. Kod imzalama politikamız sitenin alt bilgisinden bağlantılıdır.",
+          "Microsoft Store'dan kurarsan bu uyarıyı görmezsin: o paketi Microsoft sertifikasyon sırasında imzalar ve güncellemeleri Store üzerinden iletir. Doğrudan indirilen .exe ise henüz ticari bir sertifikayla imzalı değil; bu yüzden SmartScreen “bilinmeyen yayıncı” gösterebilir. Çalıştırmadan önce dosyayı indirmeler bölümündeki sağlama değerleriyle karşılaştırabilirsin. Kod imzalama politikamız sitenin alt bilgisinden bağlantılıdır.",
         ],
       ],
     },
