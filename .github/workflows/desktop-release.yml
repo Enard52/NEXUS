@@ -18,6 +18,8 @@ jobs:
   build:
     strategy:
       fail-fast: false
+      # Sırayla: paralel işler aynı anda sürümü oluşturmaya çalışınca GitHub 422 (already_exists) veriyordu.
+      max-parallel: 1
       matrix:
         include:
           - os: windows-latest
@@ -154,7 +156,8 @@ jobs:
 # İmzalı/notarize derleme için (App Store'a dağıtım): secrets MACOS_IDENTITY,
 # APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID + variables.MACOS_SIGN=true.
   macos:
-    if: vars.MACOS_BUILD == 'true'
+    needs: build
+    if: ${{ !cancelled() && vars.MACOS_BUILD == 'true' }}
     runs-on: macos-latest
     defaults:
       run:
