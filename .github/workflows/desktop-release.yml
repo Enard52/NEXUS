@@ -29,7 +29,7 @@ jobs:
           # Linux ARM64 (Raspberry Pi 4/5, ARM dizüstü/sunucu): x64 koşucuda çapraz derlenir.
           # Dosya adları x64 ile çakışmasın diye -arm64 eki alır.
           - os: ubuntu-latest
-            target: --linux --arm64 -c.appImage.artifactName=NEXUS-linux-arm64.\${ext} -c.deb.artifactName=NEXUS-linux-arm64.\${ext} -c.rpm.artifactName=NEXUS-linux-arm64.\${ext}
+            target: --linux AppImage deb rpm --arm64 -c.appImage.artifactName=NEXUS-linux-arm64.\${ext} -c.deb.artifactName=NEXUS-linux-arm64.\${ext} -c.rpm.artifactName=NEXUS-linux-arm64.\${ext}
             suffix: "-arm64"
     runs-on: ${{ matrix.os }}
     defaults:

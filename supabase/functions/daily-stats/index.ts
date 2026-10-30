@@ -89,21 +89,50 @@ Deno.serve(async (req) => {
 
   if (mode === "health") {
     const h = await health();
-    if (!h.failed.length) return Response.json({ ok: true, healthy: true });
-    // Uç nokta herkese açık olduğundan 50 dk altında tekrar yazmaz.
-    const since = new Date(Date.now() - 50 * 60 * 1000).toISOString();
+    // Limit uyarıları saatlik denetimde de bakılır: günlük panoyu beklemeden Discord'a düşer.
+    const warns: string[] = [];
+    try {
+      const sz = await fetch(SUPA + "/rest/v1/rpc/nexus_db_size", { method: "POST", headers: { ...AUTH, "Content-Type": "application/json" }, body: "{}" });
+      if (sz.ok) {
+        const mb = parseFloat(String(await sz.text()).replace(/"/g, ""));
+        if (isFinite(mb) && mb / 500 > 0.7) warns.push("DB boyutu " + mb + " MB (%" + Math.round((mb / 500) * 100) + ", ücretsiz limit 500 MB)");
+      }
+      const st = await rest("rpc/nexus_stats", { method: "POST", body: "{}" });
+      if (st.ok) {
+        const s = await st.json();
+        if (typeof s.active_7d === "number" && s.active_7d > 35000) warns.push("Aktif kullanıcı " + s.active_7d + " (limit 50.000)");
+      }
+    } catch { /* ölçülemeyen limit sessiz geçilir; panoda "–" görünür */ }
+    try {
+      const runs = await gh("repos/Enard52/NEXUS/actions/runs?per_page=40");
+      if (runs && Array.isArray(runs.workflow_runs)) {
+        const seen = new Set<string>();
+        for (const w of runs.workflow_runs) {
+          if (seen.has(w.name) || w.status !== "completed") continue;
+          seen.add(w.name);
+          if (w.conclusion === "failure" && Date.now() - new Date(w.updated_at).getTime() < 24 * 3600000) {
+            warns.push("İş akışı başarısız: " + w.name + " (" + (w.head_branch || "") + ", " + ago(w.updated_at) + ")");
+          }
+        }
+      }
+    } catch { /* GitHub'a ulaşılamazsa pano zaten "–" gösterir */ }
+    if (!h.failed.length && !warns.length) return Response.json({ ok: true, healthy: true });
+    // Uç nokta herkese açık olduğundan tekrar yazmayı sınırlar: servis hatasında 50 dk, yalnız uyarıda 12 saat.
+    const windowMs = h.failed.length ? 50 * 60 * 1000 : 12 * 3600 * 1000;
+    const since = new Date(Date.now() - windowMs).toISOString();
     const recent = await rest("nexus_stats_log?kind=eq.health&sent_at=gte." + encodeURIComponent(since) + "&select=id&limit=1");
     if (recent.ok && (await recent.json()).length) return Response.json({ ok: true, skipped: "recently sent" });
+    const lines = h.failed.map((f) => "❌ " + f).concat(warns.map((w) => "⚠️ " + w));
     const embed = {
-      title: "🚨 NEXUS sağlık denetimi: " + h.failed.length + "/" + h.total + " sorun",
-      description: h.failed.map((f) => "❌ " + f).join("\n"),
-      color: 0xef4444,
+      title: h.failed.length ? "🚨 NEXUS sağlık denetimi: " + h.failed.length + "/" + h.total + " sorun" : "⚠️ NEXUS uyarısı",
+      description: lines.join("\n"),
+      color: h.failed.length ? 0xef4444 : 0xfbbf24,
       timestamp: new Date().toISOString(),
-      footer: { text: "Sorun sürerse saatte bir hatırlatılır" },
+      footer: { text: "Sorun sürerse hatırlatılır" },
     };
     await post(hook, { username: "NEXUS", embeds: [embed] });
     await rest("nexus_stats_log", { method: "POST", body: JSON.stringify({ kind: "health" }) });
-    return Response.json({ ok: true, failed: h.failed });
+    return Response.json({ ok: true, failed: h.failed, warnings: warns });
   }
 
   // Günlük pano: herkese açık uç nokta olduğu için en fazla ~20 saatte bir (spam koruması).
