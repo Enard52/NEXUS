@@ -427,8 +427,8 @@
       var host = document.getElementById("tuya-pair-card");
       if (!host) return;
       var avail = window.nexusLan && window.nexusLan.hasSecure && window.nexusLan.hasSecure().tuya;
-      host.innerHTML = '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
-        '<p class="text-sm font-bold">Tuya cihazı ekle (yerel anahtarla)</p>' +
+      host.innerHTML = '<details class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800"' + (avail ? '' : ' open') + '>' +
+        '<summary class="cursor-pointer text-sm font-bold">Tuya cihazı ekle (yerel anahtarla)</summary>' +
         (avail
           ? '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Cihazın kimliğini ve yerel anahtarını ücretsiz Tuya IoT hesabından (iot.tuya.com → Cloud → cihazlar) al. Anahtar yalnızca bu cihazda saklanır. Desteklenen sürümler: 3.3 ve 3.4.</p>' +
             '<input id="tuya-host" inputmode="decimal" autocomplete="off" class="' + FIELD_CLS + '" placeholder="Cihazın IP adresi (ör. 192.168.1.60)">' +
@@ -438,7 +438,7 @@
             '<button type="button" id="tuya-btn" onclick="connectTuya()" class="' + BTN_CLS + '">Bağlan ve ekle</button>' +
             '<p id="tuya-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300"></p>'
           : '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Tuya yerel kontrolü şifreli TCP gerektirir; şimdilik yalnızca NEXUS masaüstü uygulamasında çalışır. Telefonda ya da tarayıcıda bu cihazı ekleyemezsin.</p>') +
-        '</div>';
+        '</details>';
     }
 
     function connectTuya() {
@@ -605,8 +605,8 @@
           return '<span class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-800" title="' + escapeHtml(m.name || "") + '">' +
             '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(m.name || "") + '" class="h-7 w-7 object-contain" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"></span>';
         }).join("");
-        return '<div class="plain-card flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
-          '<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style="background:' + st.color + '1f;color:' + st.color + '"><i data-lucide="' + st.icon + '" class="h-5 w-5"></i></span>' +
+        return '<div class="plain-card flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-3 dark:border-slate-800">' +
+          '<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style="background:' + st.color + '1f;color:' + st.color + '"><i data-lucide="' + st.icon + '" class="h-5 w-5"></i></span>' +
           '<div class="min-w-0 flex-1">' +
           '<div class="flex items-center justify-between gap-2"><p class="truncate text-sm font-bold">' + escapeHtml(g.brand) + "</p>" +
           (desk ? '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold nx-count-badge"><i data-lucide="monitor" class="h-3 w-3"></i>Masaüstü</span>' : "") + "</div>" +
