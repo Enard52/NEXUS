@@ -19,6 +19,7 @@ export const APP_JS = [
   "desktop.js",
   "device-controls.js",
   "lan-connectors.js",
+  "integrations-page.js",
   "lan-mqtt.js",
   "setup-codes.js",
   "i18n.js",
