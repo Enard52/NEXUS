@@ -267,10 +267,42 @@
       const kind = window._pendingTriggerKind || 'time';
       // Çalışmayan türler (hava durumu, konum, güvenlik modu) artık zamanlamaya çevrilip
       // kaydedilmez: kayıt engellenir ve neden açıkça yazılır.
-      const kindNote = (kind === 'time' || kind === 'sensor' || kind === 'device') ? '' : `
+      const kindNote = (kind === 'time' || kind === 'sensor' || kind === 'device' || kind === 'weather') ? '' : `
         <p class="p-3 bg-amber-50 text-amber-700 text-xs font-medium rounded-xl border border-amber-100 leading-relaxed">
-          Bu tetikleyici türü henüz desteklenmiyor, bu yüzden kaydedilemez. Çalışan türler: Zamanlayıcı, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).
+          ${kind === 'security'
+            ? 'Güvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen gerçek bir alarm paneli durumu veya NEXUS düzeyinde bir mod anahtarı henüz yok. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).'
+            : 'Bu tetikleyici türü henüz desteklenmiyor, bu yüzden kaydedilemez. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).'}
         </p>`;
+
+      // Hava durumu tetikleyicisi: ev konumundan gerçek Open-Meteo okuması (motor 10 dk'da bir okur).
+      // Konum yoksa dürüst boş durum gösterilir ve kayıt engellenir.
+      window._pendingWeather = { metric: 'temp', op: 'above', value: '' };
+      let weatherBlock = '';
+      if (kind === 'weather') {
+        let wc = null;
+        try { wc = JSON.parse(nexusGetItem('nexusWeatherCoords') || 'null'); } catch(e) {}
+        const hasLoc = !!(wc && isFinite(wc.lat) && isFinite(wc.lon));
+        const pill = function(attr, fn, val, label, sel) {
+          return '<button type="button" ' + attr + '="' + val + '" onclick="' + fn + '(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (sel ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + label + '</button>';
+        };
+        weatherBlock = hasLoc ? `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-1">Hava Koşulu</span>
+          <p class="text-xs text-slate-400 mb-3">Ev konumunun gerçek hava verisi uygulama açıkken yaklaşık 10 dk'da bir okunur. Koşul sağlanmıyorken sağlanır hale geldiğinde senaryo bir kez çalışır.</p>
+          <div class="flex flex-wrap gap-2" id="weather-metric-list">
+            ${pill('data-metric', 'selectWeatherMetric', 'temp', 'Sıcaklık (°C)', true)}${pill('data-metric', 'selectWeatherMetric', 'wind', 'Rüzgâr (km/sa)', false)}${pill('data-metric', 'selectWeatherMetric', 'rain', 'Yağış (mm)', false)}
+          </div>
+          <div class="flex flex-wrap gap-2 mt-3" id="weather-op-list">
+            ${pill('data-op', 'selectWeatherOp', 'above', 'Üstüne çıkınca', true)}${pill('data-op', 'selectWeatherOp', 'below', 'Altına inince', false)}
+          </div>
+          <input id="weather-threshold" type="number" step="any" inputmode="decimal" placeholder="Eşik değer" oninput="window._pendingWeather.value = this.value" class="mt-3 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm" />
+        </div>` : `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <span class="text-sm font-semibold text-slate-700 block mb-1">Hava Koşulu</span>
+          <p class="text-xs text-slate-500 leading-relaxed">Ev konumu seçilmedi, hava verisi okunamaz. Önce <a href="nexus-map.html" class="text-[#4C7DFF] font-bold">konum seç</a>; sonra bu tetikleyiciyi kurabilirsin.</p>
+        </div>`;
+        window._pendingWeatherReady = hasLoc;
+      }
 
       // Çalıştırılacak senaryo: motorun gerçekten yürüteceği eylem.
       // SCENES cihaz türüne göre gerçek komut üretir (device-controls.js).
@@ -348,7 +380,7 @@
           </div>
           <p class="text-sm text-[#4C7DFF] font-bold">${deviceLabel}</p>
         </div>
-        ${kind === 'sensor' ? sensorBlock : kind === 'device' ? deviceBlock : (kind !== 'time') ? '' : `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+        ${kind === 'sensor' ? sensorBlock : kind === 'device' ? deviceBlock : kind === 'weather' ? weatherBlock : (kind !== 'time') ? '' : `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <span class="text-sm font-semibold text-slate-700 block mb-3">Çalışma Zamanı</span>
           <div class="flex flex-wrap gap-2" id="time-option-list">
             ${timeOptions.map(function(opt) {
@@ -360,6 +392,15 @@
         ${sceneRow}
       `;
     }
+
+    function selectWeatherPill(listId, btn) {
+      document.querySelectorAll('#' + listId + ' button').forEach(function(b) {
+        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+      });
+      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+    }
+    function selectWeatherMetric(btn) { selectWeatherPill('weather-metric-list', btn); window._pendingWeather.metric = btn.getAttribute('data-metric'); }
+    function selectWeatherOp(btn) { selectWeatherPill('weather-op-list', btn); window._pendingWeather.op = btn.getAttribute('data-op'); }
 
     function selectScene(btn) {
       document.querySelectorAll('#scene-option-list button').forEach(function(b) {
@@ -403,10 +444,22 @@
       // Sensör tetikleyicisi sensör seçilmeden kaydedilmez (tetiklenmeyecek bir kural kurulmasın).
       const isSensorTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'sensor';
       const isDeviceTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'device';
-      const unsupportedKind = type !== 'clickrun' && ['weather', 'location', 'security'].indexOf(window._pendingTriggerKind) !== -1;
+      const unsupportedKind = type !== 'clickrun' && ['location', 'security'].indexOf(window._pendingTriggerKind) !== -1;
       if (unsupportedKind) {
         if (window.nexusToast) window.nexusToast('Bu tetikleyici türü henüz desteklenmiyor; kaydedilemedi.', { type: 'error' });
         return;
+      }
+      const isWeatherTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'weather';
+      if (isWeatherTrigger) {
+        const w = window._pendingWeather || {};
+        if (!window._pendingWeatherReady) {
+          if (window.nexusToast) window.nexusToast('Önce ev konumunu seç.', { type: 'error' });
+          return;
+        }
+        if (w.value === '' || w.value === undefined || !isFinite(Number(w.value))) {
+          if (window.nexusToast) window.nexusToast('Bir eşik değer gir.', { type: 'error' });
+          return;
+        }
       }
       if (isSensorTrigger && !window._pendingSensor) {
         if (window.nexusToast) window.nexusToast('Önce tetikleyecek bir sensör seç.', { type: 'error' });
@@ -429,6 +482,8 @@
       };
       const trigger = type === 'clickrun'
         ? { type: 'manual' }
+        : isWeatherTrigger
+        ? { type: 'weather', metric: window._pendingWeather.metric, op: window._pendingWeather.op, value: Number(window._pendingWeather.value), label: 'weather' }
         : isSensorTrigger
         ? { type: 'sensor', value: window._pendingSensor.key, label: window._pendingSensor.name, event: 'active' }
         : isDeviceTrigger
