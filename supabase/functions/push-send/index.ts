@@ -15,33 +15,25 @@
 //   supabase secrets set FCM_SERVICE_ACCOUNT_JSON=<tek satır JSON servis hesabı>
 //   supabase functions deploy push-send
 
+import {
+  b64url, buildFcmSendBody, checkRate, classifyFcmStatus, collectUserIds, jwtUnsigned, MAX_USER_PAGES,
+  parseSendFields, pemBody, selectTargets, USERS_PER_PAGE,
+} from "./logic.ts";
+import type { FcmOutcome } from "./logic.ts";
+
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, content-type",
 };
 
 const stamps = new Map<string, number[]>(); // userId -> gönderim zamanları
-const RATE_CALLER = 30;
-const RATE_TARGET = 20;
 
 function withinLimit(userId: string, extraWeight = 0): boolean {
-  const now = Date.now();
-  const list = (stamps.get(userId) || []).filter((t) => now - t < 3600_000);
-  if (list.length + extraWeight >= RATE_CALLER) return false;
-  list.push(now);
-  stamps.set(userId, list);
-  return true;
+  return checkRate(stamps, userId, Date.now(), extraWeight);
 }
 
 // --- FCM HTTP v1: servis hesabı JWT'si ile OAuth2 erişim token'ı -------------
 let cachedToken: { token: string; exp: number } | null = null;
-
-function b64url(input: Uint8Array | string): string {
-  const bytes = typeof input === "string" ? new TextEncoder().encode(input) : input;
-  let bin = "";
-  bytes.forEach((b) => (bin += String.fromCharCode(b)));
-  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
 
 type ServiceAccount = {
   client_email: string;
@@ -50,10 +42,7 @@ type ServiceAccount = {
 };
 
 async function importKey(pem: string): Promise<CryptoKey> {
-  const body = pem
-    .replace(/-----BEGIN PRIVATE KEY-----/, "")
-    .replace(/-----END PRIVATE KEY-----/, "")
-    .replace(/\s+/g, "");
+  const body = pemBody(pem);
   const der = Uint8Array.from(atob(body), (c) => c.charCodeAt(0));
   return crypto.subtle.importKey(
     "pkcs8",
@@ -69,19 +58,10 @@ async function fcmAccessToken(sa: ServiceAccount): Promise<{ token: string; proj
   if (cachedToken && cachedToken.exp - 60 > now) {
     return { token: cachedToken.token, project: sa.project_id };
   }
-  const header = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const claims = b64url(
-    JSON.stringify({
-      iss: sa.client_email,
-      scope: "https://www.googleapis.com/auth/firebase.messaging",
-      aud: "https://oauth2.googleapis.com/token",
-      iat: now,
-      exp: now + 3600,
-    }),
-  );
+  const unsigned = jwtUnsigned(sa.client_email, now);
   const key = await importKey(sa.private_key);
-  const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(`${header}.${claims}`));
-  const assertion = `${header}.${claims}.${b64url(new Uint8Array(sig))}`;
+  const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(unsigned));
+  const assertion = `${unsigned}.${b64url(new Uint8Array(sig))}`;
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -96,24 +76,14 @@ async function fcmAccessToken(sa: ServiceAccount): Promise<{ token: string; proj
   return { token: data.access_token, project: sa.project_id };
 }
 
-async function fcmSend(sa: ServiceAccount, token: string, title: string, body: string, data: Record<string, string>): Promise<"ok" | "prune" | "fail"> {
+async function fcmSend(sa: ServiceAccount, token: string, title: string, body: string, data: Record<string, string>): Promise<FcmOutcome> {
   const { token: access, project } = await fcmAccessToken(sa);
   const res = await fetch(`https://fcm.googleapis.com/v1/projects/${project}/messages:send`, {
     method: "POST",
     headers: { Authorization: `Bearer ${access}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message: {
-        token,
-        notification: { title: title.slice(0, 120), body: body.slice(0, 400) },
-        data: Object.fromEntries(Object.entries(data).map(([k, v]) => [k, String(v).slice(0, 400)])),
-        android: { priority: "high" },
-        webpush: { headers: { Urgency: "high" } },
-      },
-    }),
+    body: JSON.stringify(buildFcmSendBody(token, title, body, data)),
   });
-  if (res.ok) return "ok";
-  if (res.status === 404 || res.status === 410) return "prune"; // token ölmüş
-  return "fail";
+  return classifyFcmStatus(res.ok, res.status); // 404/410 → token ölmüş (budanır)
 }
 
 Deno.serve(async (req) => {
@@ -126,11 +96,7 @@ Deno.serve(async (req) => {
   let body;
   try { body = await req.json(); } catch { return new Response("bad json", { status: 400, headers: CORS }); }
 
-  const action = body.action === "test" ? "test" : "event";
-  const title = String(body.title || "NEXUS").slice(0, 120);
-  const msgBody = String(body.body || "").slice(0, 400);
-  const level = String(body.level || "info").slice(0, 20);
-  const eventId = String(body.eventId || "").slice(0, 64);
+  const { action, title, msgBody, level, eventId } = parseSendFields(body);
 
   const saRaw = Deno.env.get("FCM_SERVICE_ACCOUNT_JSON") || "";
   if (!saRaw) {
@@ -150,17 +116,7 @@ Deno.serve(async (req) => {
   const callerEmail = String(caller.user.email || "").toLowerCase();
 
   // Hedef e-postalar → auth kullanıcıları → token'lar
-  let targets: string[] = [];
-  if (action === "test") {
-    targets = [callerEmail];
-  } else {
-    const emails = Array.isArray(body.emails) ? body.emails : [];
-    targets = emails
-      .map((e: unknown) => String(e || "").trim().toLowerCase().slice(0, 120))
-      .filter((e: string, i: number, arr: string[]) => e && arr.indexOf(e) === i)
-      .filter((e: string) => e !== callerEmail) // kendine zaten yerel bildirim düşer
-      .slice(0, 12);
-  }
+  const targets = selectTargets(action, body.emails, callerEmail);
   if (!targets.length) {
     return new Response(JSON.stringify({ ok: true, sent: 0, note: "alıcı yok" }), { headers: { ...CORS, "Content-Type": "application/json" } });
   }
@@ -168,14 +124,11 @@ Deno.serve(async (req) => {
   // Hedef kullanıcıları topla (admin listUsers sayfalı; küçük evler için yeterli)
   const userIds: string[] = [];
   let page = 1;
-  for (; page <= 10; page++) {
-    const { data: listed } = await db.auth.admin.listUsers({ page, perPage: 500 });
+  for (; page <= MAX_USER_PAGES; page++) {
+    const { data: listed } = await db.auth.admin.listUsers({ page, perPage: USERS_PER_PAGE });
     const users = listed?.users || [];
-    for (const u of users) {
-      const em = String(u.email || "").toLowerCase();
-      if (em && targets.indexOf(em) !== -1 && userIds.indexOf(u.id) === -1) userIds.push(u.id);
-    }
-    if (users.length < 500) break;
+    collectUserIds(users, targets, userIds);
+    if (users.length < USERS_PER_PAGE) break;
   }
   if (!userIds.length) {
     return new Response(JSON.stringify({ ok: true, sent: 0, note: "hedef kullanıcı bulunamadı (push token kaydetmemiş olabilir)" }), { headers: { ...CORS, "Content-Type": "application/json" } });
