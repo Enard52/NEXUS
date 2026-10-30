@@ -12,6 +12,7 @@ import { exec as execCb } from "node:child_process";
 import { promisify } from "node:util";
 import { stat, readdir } from "node:fs/promises";
 import { join } from "node:path";
+import { asq, shq } from "./shell-quote.js";
 import type {
   AppInfo,
   FileInfo,
@@ -47,7 +48,7 @@ export class MacosPlatformAdapter implements PlatformAdapter {
   // ── Application Control ──────────────────────────────────────────────────
 
   async launchApp(appName: string): Promise<PlatformResult<AppInfo>> {
-    const cmd = `open -a "${appName}"`;
+    const cmd = `open -a ${shq(appName)}`;
     const result = await run(cmd);
     if (!result.success) return { success: false, error: result.error, command: cmd };
     return {
@@ -58,12 +59,12 @@ export class MacosPlatformAdapter implements PlatformAdapter {
   }
 
   async closeApp(appName: string): Promise<PlatformResult> {
-    const script = `tell application "${appName}" to quit`;
+    const script = `tell application "${asq(appName)}" to quit`;
     return applescript(script);
   }
 
   async focusApp(appName: string): Promise<PlatformResult> {
-    const script = `tell application "${appName}" to activate`;
+    const script = `tell application "${asq(appName)}" to activate`;
     return applescript(script);
   }
 
@@ -99,33 +100,32 @@ export class MacosPlatformAdapter implements PlatformAdapter {
           // Skip inaccessible files
         }
       }
-      return { success: true, data: files, command: `ls -la "${dirPath}"` };
+      return { success: true, data: files, command: `ls -la ${shq(dirPath)}` };
     } catch (err: unknown) {
       return { success: false, error: err instanceof Error ? err.message : String(err) };
     }
   }
 
   async createFile(filePath: string, isDirectory = false): Promise<PlatformResult> {
-    const cmd = isDirectory ? `mkdir -p "${filePath}"` : `touch "${filePath}"`;
+    const cmd = isDirectory ? `mkdir -p ${shq(filePath)}` : `touch ${shq(filePath)}`;
     return run(cmd);
   }
 
   async deleteFile(filePath: string): Promise<PlatformResult> {
     // Use trash instead of rm for safety (macOS Trash)
-    const cmd = `osascript -e 'tell application "Finder" to delete POSIX file "${filePath}"'`;
-    return run(cmd);
+    return applescript(`tell application "Finder" to delete POSIX file "${asq(filePath)}"`);
   }
 
   async moveFile(source: string, destination: string): Promise<PlatformResult> {
-    return run(`mv "${source}" "${destination}"`);
+    return run(`mv -- ${shq(source)} ${shq(destination)}`);
   }
 
   async copyFile(source: string, destination: string): Promise<PlatformResult> {
-    return run(`cp -R "${source}" "${destination}"`);
+    return run(`cp -R -- ${shq(source)} ${shq(destination)}`);
   }
 
   async openFile(filePath: string): Promise<PlatformResult> {
-    return run(`open "${filePath}"`);
+    return run(`open ${shq(filePath)}`);
   }
 
   // ── System Control ───────────────────────────────────────────────────────
@@ -166,11 +166,15 @@ export class MacosPlatformAdapter implements PlatformAdapter {
   }
 
   async setVolume(level: number): Promise<PlatformResult> {
+    if (!Number.isFinite(level))
+      return { success: false, error: `Invalid volume: ${String(level)}` };
     const clamped = Math.max(0, Math.min(100, Math.round(level)));
     return applescript(`set volume output volume ${clamped}`);
   }
 
   async setBrightness(level: number): Promise<PlatformResult> {
+    if (!Number.isFinite(level))
+      return { success: false, error: `Invalid brightness: ${String(level)}` };
     // brightness command must be installed: brew install brightness
     const val = (Math.max(0, Math.min(100, level)) / 100).toFixed(2);
     return run(`brightness ${val}`);
@@ -195,7 +199,7 @@ export class MacosPlatformAdapter implements PlatformAdapter {
   }
 
   async showNotification(title: string, body: string): Promise<PlatformResult> {
-    const script = `display notification "${body}" with title "${title}"`;
+    const script = `display notification "${asq(body)}" with title "${asq(title)}"`;
     return applescript(script);
   }
 
@@ -206,8 +210,7 @@ export class MacosPlatformAdapter implements PlatformAdapter {
   }
 
   async writeClipboard(text: string): Promise<PlatformResult> {
-    // Pipe text to pbcopy via echo
-    return run(`echo "${text.replace(/"/g, '\\"')}" | pbcopy`);
+    return run(`printf '%s' ${shq(text)} | pbcopy`);
   }
 
   // ── Process Management ───────────────────────────────────────────────────
@@ -229,6 +232,9 @@ export class MacosPlatformAdapter implements PlatformAdapter {
   }
 
   async killProcess(pid: number): Promise<PlatformResult> {
+    if (!Number.isInteger(pid) || pid <= 0) {
+      return { success: false, error: `Invalid pid: ${String(pid)}` };
+    }
     return run(`kill -9 ${pid}`);
   }
 }
