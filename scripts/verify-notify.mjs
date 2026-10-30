@@ -47,7 +47,11 @@ const ok = (name, pass, extra = "") =>
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "tr-TR" });
 // auth.js oturum yoksa her sayfayı onboarding'e atıyor: denetim için sahte oturum kurulur
-await ctx.addInitScript(() => localStorage.setItem("nexusCurrentUser", "denetim@nexus.app"));
+await ctx.addInitScript(() => {
+  localStorage.setItem("nexusCurrentUser", "denetim@nexus.app");
+  // Headless Chromium bildirim iznini "denied" bildirir; ana anahtar da buna göre kapanırdı.
+  Object.defineProperty(window.Notification, "permission", { get: () => "granted", configurable: true });
+});
 const page = await ctx.newPage();
 const errs = [];
 page.on("pageerror", (e) => errs.push(String(e.message)));
@@ -67,33 +71,12 @@ await page.waitForTimeout(600);
 
 ok("notify.js sayfada yüklendi", await page.evaluate(() => !!window.nexusNotify));
 
-// Arayüzden kaldırılan kanalların anahtarı artık yok; eski kurulumda açık kalmışsa
-// sayfa onları yüklenirken susturmalı (susturulamayan dışa gönderim kalmasın).
+// ntfy ve webhook kanalları arayüzde görünür (notify.js hepsini destekler); anahtarlar çalışmalı.
 ok(
-  "ntfy/webhook arayüzde yok",
-  (await page.locator('[data-channel="ntfy"], [data-channel="webhook"]').count()) === 0,
+  "ntfy/webhook arayüzde var",
+  (await page.locator('[data-channel="ntfy"], [data-channel="webhook"]').count()) === 2,
 );
-ok(
-  "kaldırılan kanallar kapalı tutulur",
-  await page.evaluate(() => {
-    window.nexusNotify.save({
-      ntfy: { enabled: true, topic: "eski" },
-      webhook: { enabled: true, url: "https://eski/hook" },
-    });
-    return true;
-  }),
-);
-await page.reload({ waitUntil: "load" });
-await page.waitForTimeout(500);
-ok(
-  "açık bırakılmış ntfy/webhook yüklenmede kapanır",
-  await page.evaluate(() => {
-    const c = window.nexusNotify.channels();
-    return c.ntfy.enabled === false && c.webhook.enabled === false;
-  }),
-);
-
-// Telegram kanalını kur + aç (artık tek dış hizmet köprüsü bu)
+// Telegram kanalını kur + aç (bu testte dış istek yalnızca buraya gider)
 await page.fill("#telegram-token", "123456:TEST-anahtar");
 await page.fill("#telegram-chat", "987654321");
 await page.click('input[data-channel="telegram"] + .slider');
@@ -132,7 +115,9 @@ if (sent.length) {
   );
 }
 const status = await page.textContent("#notify-status");
-ok("durum satırı güncellendi", /Gönderilen 1/.test(status || ""), status);
+// Durum satırı yalnızca arayüz eylemlerinde yenilenir (test düğmesi kaldırıldı); sayaç motordan okunur.
+const stats = await page.evaluate(() => window.nexusNotify.stats());
+ok("gönderim sayacı güncellendi", stats.sent === 1, JSON.stringify(stats));
 ok(
   "durum satırı kanal adını Türkçe yazar",
   !/\bsystem\b|\btelegram\b|\bntfy\b|\bwebhook\b/.test(status || ""),
