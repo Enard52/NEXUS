@@ -71,7 +71,7 @@
     </div>
 
     <!-- Quick Start / Featured Card -->
-    <section onclick="openConfigureSheet('Duruma Göre Başlat', 'Cihaz durumu değiştiğinde senaryoları tetikle', 'activity', 'text-emerald-600', 'bg-emerald-500/10')" class="bg-white rounded-3xl card-shadow p-5 flex items-start space-x-4 border border-slate-50 active:scale-[0.99] transition-transform cursor-pointer">
+    <section role="button" tabindex="0" onkeydown="if((event.key==='Enter'||event.key===' ')&&event.target===this){event.preventDefault();this.click();}" onclick="openConfigureSheet('Duruma Göre Başlat', 'Cihaz durumu değiştiğinde senaryoları tetikle', 'activity', 'text-emerald-600', 'bg-emerald-500/10')" class="bg-white rounded-3xl card-shadow p-5 flex items-start space-x-4 border border-slate-50 active:scale-[0.99] transition-transform cursor-pointer">
       <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
         <i class="w-7 h-7" data-lucide="activity"></i>
       </div>
