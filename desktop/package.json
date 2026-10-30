@@ -16,6 +16,7 @@
     "start": "npm run prepare-app && electron .",
     "dist": "npm run prepare-app && electron-builder",
     "dist:win": "npm run prepare-app && electron-builder --win",
+    "dist:store": "npm run prepare-app && electron-builder --win appx --x64",
     "dist:linux": "npm run prepare-app && electron-builder --linux"
   },
   "dependencies": {
@@ -69,6 +70,19 @@
       "icon": "resources/icon.ico",
       "artifactName": "NEXUS-Setup.${ext}",
       "legalTrademarks": "NEXUS"
+    },
+    "appx": {
+      "identityName": "NEXUSSmartHome.NEXUSSmartHome",
+      "publisher": "CN=3FCF4ADE-FCBF-4742-B776-3BD63131E17F",
+      "publisherDisplayName": "NEXUS Smart Home",
+      "displayName": "NEXUS Smart Home",
+      "applicationId": "NEXUS",
+      "backgroundColor": "#0B1020",
+      "languages": [
+        "en-US",
+        "tr-TR"
+      ],
+      "artifactName": "NEXUS-Store.${ext}"
     },
     "nsis": {
       "oneClick": false,
