@@ -538,6 +538,9 @@ ipcMain.handle("lan:tcp-exchange", (_e, opts) => new Promise((resolve, reject) =
 }));
 ipcMain.handle("lan:tcp-close", (_e, id) => { tuyaClose(Number(id)); return true; });
 
+// ---------- Köprü: SSDP keşfi (yalnızca özel adreslerden gelen yanıtlar) ----------
+ipcMain.handle("lan:ssdp", async (_e, opts) => require("./ssdp.cjs").discover(opts || {}));
+
 // ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003, WoL 9/7; Govee yanıtları 4002'ye gelir) ----------
 const UDP_PORTS = new Set([38899, 56700, 4001, 4003, 9, 7]);
 const UDP_REPLY_PORTS = new Set([4002]);

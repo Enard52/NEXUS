@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   http: (opts) => ipcRenderer.invoke("lan:http", opts),
   tcp: (opts) => ipcRenderer.invoke("lan:tcp", opts),
   udp: (opts) => ipcRenderer.invoke("lan:udp", opts),
+  ssdp: (opts) => ipcRenderer.invoke("lan:ssdp", opts),
   // Yetenek bayrakları: ikili HTTP (Tapo KLAP) ve oturumlu TCP (Tuya) yalnızca bu sürümde var.
   binaryHttp: true,
   tcpSession: {

@@ -2964,6 +2964,29 @@
     });
   }
 
+  // SSDP (UPnP) ile ağda kendini duyuran cihazların adresleri; yalnızca masaüstü köprüsünde vardır.
+  // Sonuç yalnızca ADAY adrestir: cihazı gerçekten tanıyan yine protokol probe'udur (identifyFast).
+  function ssdpHosts(timeoutMs) {
+    var d = desktopBridge();
+    if (!d || typeof d.ssdp !== "function") return Promise.resolve([]);
+    return d
+      .ssdp({ timeoutMs: timeoutMs || 2500 })
+      .then(function (list) {
+        var seen = {};
+        var out = [];
+        (list || []).forEach(function (r) {
+          if (r && r.address && !seen[r.address]) {
+            seen[r.address] = 1;
+            out.push(r.address);
+          }
+        });
+        return out;
+      })
+      .catch(function () {
+        return [];
+      });
+  }
+
   // mDNS native eklentisi olmadan "kendiliğinden bulma" için alt ağ taraması (1-254).
   // options: onFound(info,count), onProgress(host), shouldStop() → true olursa tarama durur, concurrency.
   function scanSubnet(base, options) {
@@ -3089,12 +3112,37 @@
       COMMON_PREFIXES.forEach(add);
       var all = [];
       var i = 0;
+      // Önce SSDP ile duyurulan adresler: alt ağ süpürmeden hızlıca bulunan cihazlar listeye düşer.
+      function viaSsdp() {
+        return ssdpHosts().then(function (hosts) {
+          var idx = 0;
+          function one() {
+            if (idx >= hosts.length || (opts.shouldStop && opts.shouldStop())) return Promise.resolve();
+            var host = hosts[idx++];
+            return identifyFast(host)
+              .then(function (info) {
+                all.push(info);
+                if (opts.onFound) opts.onFound(info, all.length);
+              })
+              .catch(function () {
+                /* desteklenen protokol konuşmayan cihaz: listeye eklenmez */
+              })
+              .then(one);
+          }
+          return one();
+        });
+      }
+      function foundHost(h) {
+        for (var k = 0; k < all.length; k++) if (all[k].host === h) return true;
+        return false;
+      }
       function next() {
         if (i >= list.length || (opts.shouldStop && opts.shouldStop())) return Promise.resolve(all);
         var prefix = list[i++];
         if (opts.onPrefix) opts.onPrefix(prefix, i, list.length);
         return scanSubnet(prefix, {
           onFound: function (info, n) {
+            if (foundHost(info.host)) return;
             all.push(info);
             if (opts.onFound) opts.onFound(info, all.length);
           },
@@ -3104,7 +3152,7 @@
           return all.length ? all : next();
         });
       }
-      return next();
+      return viaSsdp().then(next);
     });
   }
 
@@ -3126,6 +3174,7 @@
     identify: identify,
     scanSubnet: scanSubnet,
     autoScan: autoScan,
+    ssdpHosts: ssdpHosts,
     guessSubnet: guessSubnet,
     normalizeSubnetBase: normalizeSubnetBase,
     wakeOnLan: wakeOnLan,
