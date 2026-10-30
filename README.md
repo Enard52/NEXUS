@@ -103,6 +103,7 @@ Android builds land in
 - `docs/INTEGRATIONS.md` — integration roadmap (zero-budget first)
 - `docs/USABILITY.md` — usability audit results and next quick wins
 - `ROADMAP.md` — what is done, in progress, and what the community can take
+- `docs/CONNECTORS.md` — generated connector support matrix (transport, tests, hardware-verification status; `node scripts/gen-connector-matrix.mjs`)
 - `docs/COMPATIBILITY.md` — device compatibility and real-device reports (file a [device report](https://github.com/Enard52/NEXUS/issues/new?template=device_report.yml))
 - `docs/REMOTE-ACCESS.md` — reach your home from outside with a free VPN
 - `GOVERNANCE.md` — how decisions and reviews work
