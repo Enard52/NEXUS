@@ -484,7 +484,7 @@ describe("Aile — üye/davet yönetimi, etkinlik akışı, uyarı paylaşımı"
     const { hc, calls } = load({
       respond: (c) =>
         c.path.endsWith(
-          "households?select=*,household_members(user_id,role,perms,display_name,email)&order=created_at.asc",
+          "households?select=*,household_members(user_id,role,perms,display_name,email,avatar_url,last_seen_at,chat_last_read)&order=created_at.asc",
         )
           ? [ROW]
           : {},

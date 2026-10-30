@@ -46,7 +46,7 @@ describe("settings search", () => {
 });
 
 describe("pair screen: LAN errors offer retry + help", () => {
-  const pair = read("nexus-pair.html");
+  const pair = read("nexus-pair.html") + read("pair-page.js");
   const en = read("lang-en.js");
 
   it("setScanStatus renders a retry button and a help link only for errors with a retry handler", () => {

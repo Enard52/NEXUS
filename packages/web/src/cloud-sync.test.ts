@@ -1221,6 +1221,7 @@ describe("anlık senkron (Supabase Realtime, ham WebSocket)", () => {
       "household_members",
       "household_messages",
       "household_activity",
+      "household_board_items",
     ]);
     expect(join.payload.config.postgres_changes[0].filter).toBe("user_id=eq.u-rt");
     expect(join.payload.config.postgres_changes[2].filter).toBe("email=eq.ayse@ornek.com");

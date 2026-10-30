@@ -49,6 +49,12 @@
       <h1 id="chat-title" class="truncate text-lg font-bold tracking-tight">Aile Sohbeti</h1>
       <p id="chat-sub" class="truncate text-xs font-medium text-slate-400"></p>
     </div>
+    <button id="summary-btn" type="button" aria-label="Haftalık özet" title="Haftalık Özet" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#4C7DFF] shadow-sm active:scale-95 transition-transform dark:bg-slate-800">
+      <i class="w-5 h-5" data-lucide="chart-column"></i>
+    </button>
+    <a href="nexus-board.html" aria-label="Ev Panosu" title="Ev Panosu" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#4C7DFF] shadow-sm active:scale-95 transition-transform dark:bg-slate-800">
+      <i class="w-5 h-5" data-lucide="clipboard-list"></i>
+    </a>
     <select id="home-select" aria-label="Ev seç" class="hidden max-w-[9rem] rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50"></select>
   </header>
 
@@ -60,6 +66,30 @@
   </div>
 
   <main id="messages" class="min-h-0 flex-1 overflow-y-auto px-5 py-3" aria-live="polite"></main>
+
+  <!-- Yanıtlanan mesaj önizlemesi: mesaja dokununca "Yanıtla" ile burada belirir -->
+  <div id="reply-bar" class="hidden shrink-0 items-center gap-2 px-5 pt-2">
+    <div class="flex min-w-0 flex-1 items-center gap-2 rounded-xl border-l-4 border-[#4C7DFF] bg-white px-3 py-2 dark:bg-slate-800">
+      <div class="min-w-0">
+        <p class="text-[11px] font-bold text-[#4C7DFF]" id="reply-name"></p>
+        <p id="reply-quote" class="truncate text-xs text-slate-500 dark:text-slate-300"></p>
+      </div>
+    </div>
+    <button id="reply-cancel" type="button" aria-label="Yanıttan vazgeç" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-400 active:scale-95 transition-transform">
+      <i class="w-5 h-5" data-lucide="x"></i>
+    </button>
+  </div>
+
+  <!-- Haftalık Özet katmanı: son 7 günün etkinlik özeti (etkinlik akışından hesaplanır) -->
+  <div id="summary-overlay" class="fixed inset-0 z-[80] hidden flex-col bg-slate-900/50 backdrop-blur-sm" onclick="if(event.target===this)closeSummary()">
+    <div class="mx-auto mt-auto w-full max-w-md rounded-t-[2rem] bg-white p-6 pb-10 dark:bg-slate-900" style="padding-bottom:max(2.5rem, env(safe-area-inset-bottom));">
+      <div class="mx-auto mb-4 h-1.5 w-14 rounded-full bg-slate-200"></div>
+      <h2 class="text-lg font-bold">Haftalık Özet</h2>
+      <p id="summary-sub" class="mt-0.5 text-xs font-medium text-slate-400"></p>
+      <div id="summary-body" class="mt-4 space-y-2"></div>
+      <button type="button" onclick="closeSummary()" class="mt-5 w-full py-3.5 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform">Kapat</button>
+    </div>
+  </div>
 
   <form id="composer" class="shrink-0 hidden items-end gap-2 px-5 pt-2" style="padding-bottom: max(1rem, env(safe-area-inset-bottom));" autocomplete="off">
     <div class="relative flex-1">
@@ -73,233 +103,6 @@
 
   <script src="js/lucide.js"></script>
   <script src="household-cloud.js"></script>
-  <script>
-    lucide.createIcons();
-
-    var HC = window.nexusHouseholdCloud;
-    var listEl = document.getElementById("messages");
-    var composer = document.getElementById("composer");
-    var input = document.getElementById("composer-input");
-    var sendBtn = document.getElementById("send-btn");
-    var banner = document.getElementById("state-banner");
-    var select = document.getElementById("home-select");
-    var homeId = "";
-    var me = "";
-    var shown = {}; // id -> true (çift çizimi önler)
-    var lastIso = "";
-    var pollTimer = null;
-
-    function esc(value) {
-      return String(value == null ? "" : value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-    }
-    function qs(name) {
-      var m = new RegExp("[?&]" + name + "=([^&]*)").exec(location.search);
-      return m ? decodeURIComponent(m[1]) : "";
-    }
-    function dayLabel(iso) {
-      var d = new Date(iso);
-      var today = new Date();
-      var y = new Date(today.getTime() - 86400000);
-      if (d.toDateString() === today.toDateString()) return "Bugün";
-      if (d.toDateString() === y.toDateString()) return "Dün";
-      return d.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
-    }
-    function timeLabel(iso) {
-      return new Date(iso).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
-    }
-
-    // Gönderen ve içerik textContent/esc ile basılır: mesaj gövdesi HTML olarak YORUMLANMAZ.
-    function messageHtml(m) {
-      var mine = m.sender_id === me;
-      var name = mine ? "" : '<p class="mb-0.5 px-1 text-xs font-bold text-slate-400">' + esc(m.sender_name || "Eski üye") + '</p>';
-      var del = mine ? '<button class="mt-0.5 px-1 text-[11px] font-semibold text-slate-400 hover:text-red-500" onclick="removeMessage(\'' + esc(m.id) + '\')">Sil</button>' : "";
-      return '<div class="mb-3 flex flex-col ' + (mine ? "items-end" : "items-start") + '" data-id="' + esc(m.id) + '" data-day="' + esc(new Date(m.created_at).toDateString()) + '">' +
-        name +
-        '<div class="bubble px-4 py-2.5 text-[15px] font-medium leading-snug ' + (mine ? "bubble-me" : "bubble-other") + '">' + esc(m.body) + '</div>' +
-        '<div class="flex items-center gap-2"><span class="px-1 text-[11px] font-medium text-slate-400">' + esc(timeLabel(m.created_at)) + '</span>' + del + '</div></div>';
-    }
-    function dayDivider(iso) {
-      return '<p class="mb-3 mt-1 text-center text-xs font-bold uppercase tracking-wide text-slate-400" data-day-label="' + esc(new Date(iso).toDateString()) + '">' + esc(dayLabel(iso)) + '</p>';
-    }
-
-    function emptyState(title, body, actionHtml) {
-      listEl.innerHTML = '<div class="mx-auto mt-10 max-w-xs text-center"><div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-7 h-7" data-lucide="message-circle"></i></div>' +
-        '<p class="text-lg font-bold">' + esc(title) + '</p><p class="mt-1 text-sm text-slate-500 dark:text-slate-400">' + esc(body) + '</p>' + (actionHtml || "") + '</div>';
-      lucide.createIcons();
-      composer.classList.add("hidden");
-      composer.classList.remove("flex");
-    }
-    function setBanner(text) {
-      if (!text) { banner.classList.add("hidden"); banner.textContent = ""; return; }
-      banner.textContent = text;
-      banner.classList.remove("hidden");
-    }
-    function setComposerEnabled(on) {
-      input.disabled = !on;
-      sendBtn.disabled = !on;
-    }
-    function nearBottom() {
-      return listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight < 120;
-    }
-    function scrollBottom() { listEl.scrollTop = listEl.scrollHeight; }
-
-    function appendMessages(rows) {
-      var stick = nearBottom();
-      var fresh = rows.filter(function (m) { return !shown[m.id]; });
-      if (!fresh.length) return;
-      if (listEl.querySelector("[data-empty]")) listEl.innerHTML = "";
-      var all = listEl.querySelectorAll("[data-id]");
-      var lastDay = all.length ? all[all.length - 1].getAttribute("data-day") : "";
-      var html = "";
-      fresh.forEach(function (m) {
-        shown[m.id] = true;
-        var day = new Date(m.created_at).toDateString();
-        if (day !== lastDay) { html += dayDivider(m.created_at); lastDay = day; }
-        html += messageHtml(m);
-        if (!lastIso || m.created_at > lastIso) lastIso = m.created_at;
-      });
-      listEl.insertAdjacentHTML("beforeend", html);
-      if (stick) scrollBottom();
-      HC.markSeen(homeId, lastIso);
-    }
-
-    function loadHistory() {
-      shown = {}; lastIso = "";
-      listEl.innerHTML = '<p class="mt-10 text-center text-sm text-slate-400">Mesajlar yükleniyor…</p>';
-      return HC.listMessages(homeId, { limit: 50 }).then(function (rows) {
-        setBanner("");
-        setComposerEnabled(true);
-        listEl.innerHTML = "";
-        if (!rows.length) {
-          listEl.innerHTML = '<p data-empty class="mt-10 text-center text-sm text-slate-400">Henüz mesaj yok. İlk mesajı sen yaz.</p>';
-          HC.markSeen(homeId, new Date().toISOString());
-          return;
-        }
-        appendMessages(rows);
-        scrollBottom();
-      }, function (e) {
-        // Çevrimdışı / sunucu hatası: eski mesajlar önbelleğe alınmaz, uydurulmaz.
-        listEl.innerHTML = '<p class="mt-10 text-center text-sm text-slate-400">Mesajlar yüklenemedi.</p>';
-        setBanner(e.message + " Gönderme şu an kapalı.");
-        setComposerEnabled(false);
-      });
-    }
-
-    function removeMessage(id) {
-      window.nexusDialog({
-        icon: "warning", title: "Mesajı Sil", message: "Bu mesaj tüm üyeler için silinir.",
-        primary: { label: "Sil", onClick: function () {
-          HC.deleteMessage(id).then(function () { dropMessage(id); }, function (e) { setBanner(e.message); });
-        } },
-        secondary: { label: "Vazgeç" }
-      });
-    }
-    function dropMessage(id) {
-      var node = listEl.querySelector('[data-id="' + id + '"]');
-      if (node && node.parentNode) node.parentNode.removeChild(node);
-      delete shown[id];
-    }
-
-    // Gönder: yalnızca düz metin; sınır ve hız sınırı istemcide de uygulanır, asıl sınır sunucudadır.
-    composer.addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      var text = input.value;
-      if (!text.trim() || sendBtn.disabled) return;
-      sendBtn.disabled = true;
-      HC.sendMessage(homeId, text).then(function (row) {
-        input.value = "";
-        autosize();
-        if (row) { appendMessages([row]); scrollBottom(); }
-        setBanner("");
-      }, function (e) {
-        setBanner(e.message);
-        setTimeout(function () { if (banner.textContent === e.message) setBanner(""); }, 4000);
-      }).then(function () { sendBtn.disabled = input.disabled; input.focus(); });
-    });
-    input.addEventListener("keydown", function (e) {
-      // Enter gönderir, Shift+Enter satır ekler (IME bileşimi sırasında gönderme)
-      if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); composer.requestSubmit(); }
-    });
-    function autosize() {
-      input.style.height = "auto";
-      input.style.height = Math.min(input.scrollHeight, 120) + "px";
-      var left = HC.MAX_BODY - input.value.length;
-      var c = document.getElementById("composer-count");
-      c.textContent = left;
-      c.classList.toggle("hidden", left > 150);
-    }
-    input.addEventListener("input", autosize);
-
-    // Canlı akış: Realtime (cloud-sync.js) → household-cloud.js → bu olaylar.
-    window.addEventListener("nexusHouseholdMessage", function (ev) {
-      var m = ev && ev.detail && ev.detail.message;
-      if (m && m.household_id === homeId) appendMessages([m]);
-    });
-    window.addEventListener("nexusHouseholdMessageDeleted", function (ev) {
-      if (ev && ev.detail && ev.detail.id) dropMessage(ev.detail.id);
-    });
-    // Realtime yoksa 8 sn'lik yoklama (sunucu gerçeğine yetişmek için; uydurma yok)
-    function startPolling() {
-      if (pollTimer) clearInterval(pollTimer);
-      pollTimer = setInterval(function () {
-        if (document.hidden || !homeId) return;
-        if (window.nexusCloud && window.nexusCloud.realtimeActive && window.nexusCloud.realtimeActive()) return;
-        HC.listMessages(homeId, { limit: 30 }).then(function (rows) { appendMessages(rows); setBanner(""); }, function () {});
-      }, 8000);
-    }
-    document.addEventListener("visibilitychange", function () {
-      if (!document.hidden && homeId) { HC.setActiveChat(homeId); HC.listMessages(homeId, { limit: 30 }).then(appendMessages, function () {}); }
-      else HC.setActiveChat("");
-    });
-    window.addEventListener("pagehide", function () { HC.setActiveChat(""); });
-
-    function openHome(home) {
-      homeId = home.id;
-      document.getElementById("chat-title").textContent = home.name;
-      document.getElementById("chat-sub").textContent = home.members.length + " üye";
-      HC.setActiveChat(homeId);
-      composer.classList.remove("hidden");
-      composer.classList.add("flex");
-      loadHistory();
-    }
-
-    function init() {
-      if (!HC) { emptyState("Aile sohbeti kullanılamıyor", "Bu sürümde bulut modülü yok."); return; }
-      HC.status().then(function (st) {
-        if (!st.ok) {
-          if (st.reason === "cloud-off") emptyState("Bulut bağlantısı kapalı", "Aile sohbeti mesajları sunucuda saklar; bu sürümde bulut kapalı olduğu için kullanılamıyor.");
-          else emptyState("Oturum açık değil", "Aile sohbeti için oturum açmalısın.", '<button class="mt-5 rounded-xl bg-[#4C7DFF] px-5 py-3 font-bold text-white" onclick="location.href=\'nexus-login.html\'">Oturum Aç</button>');
-          return;
-        }
-        me = st.userId;
-        return HC.refresh().then(function (res) {
-          var homes = HC.homes();
-          if (!res.ok && !homes.length) {
-            emptyState("Sunucuya ulaşılamadı", "Aile verisi alınamadı; çevrimdışı olabilirsin. İnternet bağlantını kontrol edip tekrar dene.", '<button class="mt-5 rounded-xl bg-[#4C7DFF] px-5 py-3 font-bold text-white" onclick="location.reload()">Tekrar Dene</button>');
-            return;
-          }
-          if (!homes.length) {
-            emptyState("Henüz bir evin yok", "Aile sohbeti için bir ev oluştur ya da sana gönderilen davetle bir eve katıl.", '<button class="mt-5 rounded-xl bg-[#4C7DFF] px-5 py-3 font-bold text-white" onclick="location.href=\'nexus-household.html\'">Ev Yönetimi</button>');
-            return;
-          }
-          var wanted = qs("home");
-          var home = homes.filter(function (h) { return h.id === wanted; })[0] || homes[0];
-          if (homes.length > 1) {
-            select.innerHTML = homes.map(function (h) { return '<option value="' + esc(h.id) + '"' + (h.id === home.id ? " selected" : "") + ">" + esc(h.name) + "</option>"; }).join("");
-            select.classList.remove("hidden");
-            select.addEventListener("change", function () {
-              var next = HC.homes().filter(function (h) { return h.id === select.value; })[0];
-              if (next) openHome(next);
-            });
-          }
-          if (home.members.length < 2) setBanner("Bu evde henüz başka üye yok. Üye davet ettiğinde onlarla yazışabilirsin.");
-          openHome(home);
-          if (!res.ok) setBanner("Sunucuya tam ulaşılamadı; üye listesi eski olabilir.");
-          startPolling();
-        });
-      });
-    }
-    init();
-  </script>
+  <script src="family-chat-page.js"></script>
 </body>
 </html>

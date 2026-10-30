@@ -298,8 +298,8 @@
     var s = document.createElement("style");
     s.id = "nx-feedback-style";
     s.textContent =
-      ".nx-sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;" +
-      "clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}";
+      ".nx-sr-only{position:absolute;left:0;top:0;width:1px !important;height:1px;margin:-1px;padding:0 !important;" +
+      "overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}";
     document.head.appendChild(s);
   }
 

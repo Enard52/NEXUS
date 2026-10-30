@@ -13,7 +13,9 @@ html.nx-desk {
 html.nx-desk .nx-side {
   display: flex; flex-direction: column; gap: 6px;
   position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); z-index: 60;
-  padding: 20px 16px 14px; overflow: hidden;
+  /* clip (hidden değil): hidden kutu odak/dişliden ötürü gizlice kaydırılabiliyor,
+     menü içeriği "bir tık" aşağı kayıyordu. clip hiçbir mekanizmayla kaydırılamaz. */
+  padding: 20px 16px 14px; overflow: clip;
   background: #ECE9FD;
   border-right: 1px solid rgba(148, 163, 184, 0.22);
   font-family: Inter, sans-serif;
@@ -34,8 +36,10 @@ body.nx-desk-auth {
 html.nx-desk.dark .nx-side { background: #0b1222; border-right-color: rgba(148, 163, 184, 0.14); }
 .nx-side-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 14px; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; }
 html.dark .nx-side-brand { color: #f8fafc; }
+/* Marka logosu vurgu renginden bağımsızdır: ekranlardaki SVG logo ile aynı sabit
+   marka gradyanı kullanılır (kullanıcı vurgu rengi değiştirse de logo mavi kalır). */
 .nx-side-logo { width: 34px; height: 34px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #6f9bff, var(--nx-accent,#4C7DFF) 55%, var(--nx-accent-press,#3F6FFF)); box-shadow: 0 6px 16px rgba(var(--nx-accent-rgbc,76,125,255),0.35); }
+  background: linear-gradient(135deg, #6f9bff, #5b8dff 55%, #8b7bff); box-shadow: 0 6px 16px rgba(91, 141, 255, 0.35); }
 .nx-side-logo svg { width: 22px; height: 22px; }
 /* NEXUS AI — marka kartı: koyu lacivert zemin, logo rozeti, canlı durum noktası */
 .nx-side-ai { position: relative; overflow: hidden; display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; min-height: 56px; padding: 6px 12px 6px 5px; margin: 0 0 12px; border-radius: 12px; text-decoration: none; color: #ffffff;
@@ -77,7 +81,9 @@ html.dark .nx-side-upd.is-available::after { border-color: #0f172a; }
 @media (prefers-reduced-motion: reduce) { .nx-side-upd.is-available::after { animation: none; } }
 .nx-side-ai.is-active { outline: 2px solid rgba(var(--nx-accent-rgbc,76,125,255),0.45); outline-offset: 2px; }
 .nx-side-ai svg { width: 18px; height: 18px; }
-.nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; justify-content: flex-start; }
+/* Kısa pencerelerde bağlantı listesi kendi içinde ince kaydırma çubuğuyla iner;
+   marka, AI kartı ve kullanıcı ayakları her zaman yerinde kalır. */
+.nx-side-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; justify-content: flex-start; overflow-y: auto; overscroll-behavior: contain; }
 .nx-side-group { margin: 12px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748b; }
 .nx-side-link { display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 0 12px; border-radius: 12px;
   font-size: 14px; font-weight: 600; color: #475569; transition: background .15s ease, color .15s ease; }

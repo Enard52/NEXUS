@@ -12,6 +12,15 @@
  * Vurgu:         #22D3EE (camgöbeği, gradyanlarda)
  */
 
+/*
+ * Belge düzeyinde yatay kaydırma yok: tüm ekranlar tek sütuna sığar; sayfayı
+ * sağa-sola kaydırabilmek gereksizdi (içerik zaten görünür). hidden kullanılır
+ * çünkü kökte yalnız hidden viewport'a taşınır (clip taşınmaz, tarayıcı yine
+ * kaydırırdı) — tekerlek/dokunmatikle yatay kaydırma tüm ekranlarda imkânsız
+ * olur. İç bileşenlerin kendi yatay şeritleri (odaçipli vb.) etkilenmez.
+ */
+html { overflow-x: hidden; }
+
 :root {
   --nx-primary: var(--nx-accent,#4C7DFF);
   --nx-primary-press: var(--nx-accent-press,#3F6FFF);

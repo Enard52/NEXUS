@@ -1568,6 +1568,37 @@ window.NEXUS_EN = {
     "Evet. NEXUS yerel öncelikli çalışır; cihaz verilerin bu cihazda kalır ve üçüncü taraflarla paylaşılmaz.":
       "Yes. NEXUS is local-first; your device data stays on this device and isn't shared with third parties.",
     "Evi Sil": "Delete Home",
+    // 30 Eki 2026 aile seti: pano, yanıt/tepki, okundu, oda izinleri, haftalık özet
+    "Ev Panosu": "Home Board",
+    "Oda Erişimi": "Room Access",
+    "Tüm odalar": "All rooms",
+    "Yanıtla": "Reply",
+    "Haftalık Özet": "Weekly Summary",
+    "Notlar": "Notes",
+    "Pano boş": "Board is empty",
+    "Kalemi Sil": "Delete Item",
+    "Mesaj yaz…": "Type a message…",
+    "Henüz okunmadı": "Not read yet",
+    "senaryo çalıştırdı": "ran a scene",
+    "uyarı paylaştı": "shared an alert",
+    "Bu hafta kayda değer bir etkinlik yok. Senaryo çalıştırmaları ve uyarılar burada toplanır.":
+      "No notable activity this week. Scene runs and alerts gather here.",
+    "Alışveriş listesi, ev işleri ya da kısa notlar — ailenle paylaştığın ilk kalemi ekle.":
+      "Shopping list, chores or quick notes — add the first item to share with your family.",
+    "Ev Panosu evin üyeleri arasındadır. Ev Yönetimi'nden ev oluştur ya da davetle katıl.":
+      "The board belongs to your home's members. Create a home from Home Management or join by invite.",
+    "Bu kalem panodan tüm üyeler için kaldırılır.": "This item is removed from the board for all members.",
+    "Pano şu an kapalı.": "The board is unavailable right now.",
+    "Ev Panosu için oturum açmalısın.": "Sign in to use the Home Board.",
+    "Ev Panosu bu sürümde kullanılamıyor.": "Home Board is unavailable in this build.",
+    "Pano yükleniyor…": "Loading board…",
+    "Listeye ekle ya da not yaz…": "Add to the list or write a note…",
+    "Tür değiştir: liste maddesi / not": "Switch type: list item / note",
+    "Yanıttan vazgeç": "Cancel reply",
+    "Bulut bağlantısı kapalı olduğu için pano kullanılamıyor.": "The board is unavailable because the cloud connection is off.",
+    "Henüz bir evin yok": "You don't have a home yet",
+    "tamamladı": "completed it",
+    "Bir üye": "A member",
     Evim: "My Home",
     "Evindeki odaları ekle veya kaldır.": "Add or remove rooms in your home.",
     "Evindeki tüm aydınlatma cihazlarını kontrol et": "Control all lighting devices in your home",
@@ -1687,9 +1718,12 @@ window.NEXUS_EN = {
     "Göğüs Pompası": "Breast Pump",
     Görüntüle: "View",
     "Gün batımı": "Sunset",
+    "Gün batımına hazır ışık sahneleri ve sakin bir ev düzeni.":
+      "Sunset-ready light scenes and a calm home setting.",
     "Gün batımında ışığı otomatik aç": "Turn on the light automatically at sunset",
     "Gün Ücretsiz Dene": "Day Free Trial",
     Günaydın: "Good morning",
+    "Günaydın Akışı": "Morning Flow",
     "Günaydın Rutini": "Good Morning Routine",
     "Günaydın Senaryosu": "Good Morning Scenario",
     "Günaydın senaryosu": "Good morning scene",
@@ -2779,6 +2813,29 @@ window.NEXUS_EN = {
     "Uykuya Geç": "Go to Sleep",
     "Uykuya Hazırlık": "Bedtime Preparation",
     "Uykuya Hazırlık Merkezi": "Bedtime Preparation Center",
+    // 30 Eki 2026 öneri havuzu genişletmesi (8 yeni akıllı uygulama şablonu)
+    "Akşam Ortamı": "Evening Ambience",
+    "Bahçe Sulama Merkezi": "Garden Watering Center",
+    "Diğer Önerileri Gör": "See More Suggestions",
+    "Eve Geldim Karşılama": "Welcome Home Greeting",
+    "Hava Kalitesi Nöbetçisi": "Air Quality Guard",
+    "Odak Çalışma Modu": "Focus Work Mode",
+    "Tatil / Evde Yokum Modu": "Vacation / Away Mode",
+    "Temizlik Rutini Merkezi": "Cleaning Routine Center",
+    "Uyanınca ışık, perde, iklim ve müziği tek dokunuşla başlat.":
+      "Start lights, blinds, climate and music with one tap when you wake up.",
+    "Kapıdan girerken ışıklar, iklim ve müzik seni karşılasın.":
+      "Lights, climate and music greet you as you walk in.",
+    "Ev boşken tasarruf, taklit hareket ve uyarı tek panelde.":
+      "Savings, simulated presence and alerts in one panel while the home is empty.",
+    "Robot süpürge ve temizlik cihazları için gün ve oda planı.":
+      "Day and room plans for robot vacuums and cleaning devices.",
+    "Sulama saatleri, bölgeler ve sensör verisiyle akıllı plan.":
+      "Smart watering schedules, zones and sensor-driven planning.",
+    "Sensör verisiyle havalandırma ve temizleyiciyi otomatik yönet.":
+      "Manage ventilation and purifiers automatically from sensor data.",
+    "Çalışırken sessizlik, doğru ışık ve bildirim arası.":
+      "Quiet, proper lighting and no interruptions while you work.",
     "Uzaktan Kumanda": "Remote Control",
     "Uzaktayken evi korumak için kameraları etkinleştir":
       "Turn on cameras to protect your home while you're away",

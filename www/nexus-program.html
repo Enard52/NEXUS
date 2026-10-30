@@ -86,6 +86,8 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="flex flex-col min-h-screen text-slate-900">
@@ -246,8 +248,13 @@
       }
 
       container.innerHTML = devices.map(function(d, i) {
+        // Ana sayfa kartıyla aynı görsel kimlik: seçim satırında cihazın ürün görseli
+        var thumb = window.NX
+          ? '<img src="' + NX.imageUrl(d) + '" alt="" class="w-9 h-9 object-contain shrink-0" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'">'
+          : '';
         return '<label class="flex items-center gap-3 py-3 border-b border-slate-100 last:border-0 cursor-pointer">' +
           '<input type="checkbox" class="rounded dev-item" data-device-index="' + i + '">' +
+          thumb +
           '<span class="font-medium text-slate-900">' + (d.name || 'Cihaz ' + (i + 1)) + '</span>' +
           '</label>';
       }).join('');

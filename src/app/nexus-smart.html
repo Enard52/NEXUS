@@ -150,12 +150,14 @@
   <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" fill="none" stroke="#ffffff" stroke-opacity="0.22"/>
   <path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg></div>
-<input id="smart-ai-input" class="flex-grow border-none focus:ring-0 text-sm font-medium text-gray-700 bg-transparent placeholder-gray-500 cursor-pointer" placeholder="Nasıl yardımcı olabilirim?" type="text" readonly/>
+<!-- Sahte giriş: tıklayınca anında nexus-chat'e gider; odaklanabilir giriş değildir,
+     yazma imleci (caret) asla görünmez. Sohbet sohbet sayfasında yazılır. -->
+<span id="smart-ai-input" class="flex-grow text-sm font-medium text-gray-500 select-none cursor-pointer" aria-hidden="true">Nasıl yardımcı olabilirim?</span>
 <div class="flex items-center space-x-4 pr-1">
 <!-- Mic Icon -->
 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 <!-- Create Icon -->
-<button type="button" aria-label="Yapay zeka ile oluştur" onclick="event.stopPropagation(); window.openSmartAiChat && window.openSmartAiChat(document.getElementById('smart-ai-input').value)" class="nx-tap text-[#4C7DFF] active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button type="button" aria-label="Yapay zeka ile oluştur" onclick="event.stopPropagation(); window.openSmartAiChat && window.openSmartAiChat('')" class="nx-tap text-[#4C7DFF] active:scale-95 transition-transform"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
 </div>
 </div>
 </section>
@@ -572,24 +574,44 @@ function toggleHomeSelector() {
        return 'bg-gray-100';
     }
 
+    // Varsayılan 3 kart cihazlarına göre sıralanır; "Diğer Önerileri Gör" ile puan
+    // sırasındaki geniş havuz açılır (her kartın kendi görseli vardır, tekrar yok).
+    var recommendationsExpanded = false;
+    function smartRecCard(item, esc) {
+      return '<a href="nexus-smart-app-detail.html?id=' + encodeURIComponent(item.id) + '" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">' +
+        '<div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">' +
+        '<img alt="' + esc(item.title) + '" class="w-full h-full object-cover" src="' + esc(item.heroImage) + '" loading="lazy"/>' +
+        '<div class="absolute inset-0 bg-black/10"></div>' +
+        '</div>' +
+        '<div class="min-w-0">' +
+        '<h4 class="font-bold text-gray-900 leading-tight" data-smart-recommendation-title>' + esc(item.title) + '</h4>' +
+        '<p class="text-xs text-gray-500 mt-1 leading-snug">' + esc(item.subtitle) + '</p>' +
+        '</div>' +
+        '</a>';
+    }
     function renderSmartRecommendations() {
       var container = document.getElementById('smart-recommendations-container');
       if (!container || typeof window.getRecommendedSmartApps !== 'function') return;
-      var apps = window.getRecommendedSmartApps(3);
-      if (!apps || !apps.length) return;
       var esc = function (s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
-      container.innerHTML = apps.map(function (item) {
-        return '<a href="nexus-smart-app-detail.html?id=' + encodeURIComponent(item.id) + '" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">' +
-          '<div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">' +
-          '<img alt="' + esc(item.title) + '" class="w-full h-full object-cover" src="' + esc(item.heroImage) + '"/>' +
-          '<div class="absolute inset-0 bg-black/10"></div>' +
-          '</div>' +
-          '<div>' +
-          '<h4 class="font-bold text-gray-900 leading-tight" data-smart-recommendation-title>' + esc(item.title) + '</h4>' +
-          '<p class="text-xs text-gray-500 mt-1 leading-snug">' + esc(item.subtitle) + '</p>' +
-          '</div>' +
-          '</a>';
-      }).join('');
+      var apps = recommendationsExpanded && typeof window.getAllSmartAppsRanked === 'function'
+        ? window.getAllSmartAppsRanked()
+        : window.getRecommendedSmartApps(3);
+      if (!apps || !apps.length) return;
+      container.innerHTML = apps.map(function (item) { return smartRecCard(item, esc); }).join('');
+      var old = document.getElementById('smart-recommendations-more');
+      if (old) old.remove();
+      if (!recommendationsExpanded && typeof window.getAllSmartAppsRanked === 'function') {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'smart-recommendations-more';
+        btn.className = 'w-full mt-3 py-3 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform';
+        btn.textContent = 'Diğer Önerileri Gör (' + window.getAllSmartAppsRanked().length + ')';
+        btn.addEventListener('click', function () {
+          recommendationsExpanded = true;
+          renderSmartRecommendations();
+        });
+        container.insertAdjacentElement('afterend', btn);
+      }
     }
 
     // Switch to tab if URL has ?tab=...
@@ -633,16 +655,8 @@ function toggleHomeSelector() {
     window.location.href = 'nexus-chat.html?type=' + encodeURIComponent(type) +
       '&promptText=' + encodeURIComponent(target + ' için yapay zeka ile oluştur: ' + prompt);
   }
-  document.addEventListener('DOMContentLoaded', function () {
-    var input = document.getElementById('smart-ai-input');
-    if (!input) return;
-    input.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        window.openSmartAiChat(input.value);
-      }
-    });
-  });
+  // Sahte giriş (span) artık yazılabilir değil: Enter ile gönderme kalktı,
+  // tıklama doğrudan openSmartAiChat'e gider.
 })();
 </script>
 </body>

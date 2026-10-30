@@ -191,23 +191,23 @@
     function sensorKey(d) { return String(d.id || (d.host + '|' + d.name)); }
     function selectDevice(btn) {
       document.querySelectorAll('#device-option-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
       });
-      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
       window._pendingDevice = { key: btn.getAttribute('data-device'), name: btn.getAttribute('data-name') };
     }
     function selectDeviceEvent(btn) {
       document.querySelectorAll('#device-event-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
       });
-      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
       window._pendingDeviceEvent = btn.getAttribute('data-event') || 'any';
     }
     function selectSensor(btn) {
       document.querySelectorAll('#sensor-option-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
       });
-      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
       window._pendingSensor = { key: btn.getAttribute('data-sensor'), name: btn.getAttribute('data-name') };
     }
 
@@ -283,7 +283,7 @@
         try { wc = JSON.parse(nexusGetItem('nexusWeatherCoords') || 'null'); } catch(e) {}
         const hasLoc = !!(wc && isFinite(wc.lat) && isFinite(wc.lon));
         const pill = function(attr, fn, val, label, sel) {
-          return '<button type="button" ' + attr + '="' + val + '" onclick="' + fn + '(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (sel ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + label + '</button>';
+          return '<button type="button" ' + attr + '="' + val + '" onclick="' + fn + '(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors ' + (sel ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + label + '</button>';
         };
         weatherBlock = hasLoc ? `
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
@@ -313,9 +313,9 @@
           <span class="text-sm font-semibold text-slate-700 block mb-3">Tetiklenince Çalışacak Senaryo</span>
           <div class="flex flex-wrap gap-2" id="scene-option-list">
             ${sceneIds.map(function(id) {
-              return '<button type="button" data-scene="' + id + '" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">' + scenes[id].title + '</button>';
+              return '<button type="button" data-scene="' + id + '" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">' + scenes[id].title + '</button>';
             }).join('')}
-            <button type="button" data-scene="" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">Yalnızca bildirim</button>
+            <button type="button" data-scene="" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">Yalnızca bildirim</button>
           </div>
         </div>` : '';
 
@@ -336,13 +336,13 @@
           <p class="text-xs text-slate-400 mb-3">Cihazın açık/kapalı durumu uygulama açıkken yaklaşık 30 sn'de bir okunur; değişince çalışır.</p>
           <div class="flex flex-wrap gap-2" id="device-option-list">
             ${switchable.map(function(d) {
-              return '<button type="button" data-device="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Cihaz') + '" onclick="selectDevice(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.escapeHtml(d.name || 'Cihaz') + '</button>';
+              return '<button type="button" data-device="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Cihaz') + '" onclick="selectDevice(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.thumbHtml(d) + NX.escapeHtml(d.name || 'Cihaz') + '</button>';
             }).join('')}
           </div>
           <span class="text-sm font-semibold text-slate-700 block mt-4 mb-2">Ne zaman</span>
           <div class="flex flex-wrap gap-2" id="device-event-list">
             ${[['on','Açıldığında'],['off','Kapandığında'],['any','Durumu değiştiğinde']].map(function(o) {
-              return '<button type="button" data-event="' + o[0] + '" onclick="selectDeviceEvent(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (o[0] === 'any' ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + o[1] + '</button>';
+              return '<button type="button" data-event="' + o[0] + '" onclick="selectDeviceEvent(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors ' + (o[0] === 'any' ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + o[1] + '</button>';
             }).join('')}
           </div>
         </div>` : `
@@ -362,7 +362,7 @@
           <p class="text-xs text-slate-400 mb-3">Sensör kapalıdan açığa geçtiğinde çalışır (uygulama açıkken, yaklaşık 30 sn'de bir okunur).</p>
           <div class="flex flex-wrap gap-2" id="sensor-option-list">
             ${sensors.map(function(d) {
-              return '<button type="button" data-sensor="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Sensör') + '" onclick="selectSensor(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.escapeHtml(d.name || 'Sensör') + '</button>';
+              return '<button type="button" data-sensor="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Sensör') + '" onclick="selectSensor(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.thumbHtml(d) + NX.escapeHtml(d.name || 'Sensör') + '</button>';
             }).join('')}
           </div>
         </div>` : `
@@ -385,7 +385,7 @@
           <div class="flex flex-wrap gap-2" id="time-option-list">
             ${timeOptions.map(function(opt) {
               const isSelected = window._pendingTrigger.type === opt.id;
-              return '<button type="button" data-time="' + opt.id + '" onclick="selectTime(this)" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ' + (isSelected ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + opt.label + '</button>';
+              return '<button type="button" data-time="' + opt.id + '" onclick="selectTime(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors ' + (isSelected ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + opt.label + '</button>';
             }).join('')}
           </div>
         </div>`}
@@ -395,26 +395,26 @@
 
     function selectWeatherPill(listId, btn) {
       document.querySelectorAll('#' + listId + ' button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
       });
-      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
     }
     function selectWeatherMetric(btn) { selectWeatherPill('weather-metric-list', btn); window._pendingWeather.metric = btn.getAttribute('data-metric'); }
     function selectWeatherOp(btn) { selectWeatherPill('weather-op-list', btn); window._pendingWeather.op = btn.getAttribute('data-op'); }
 
     function selectScene(btn) {
       document.querySelectorAll('#scene-option-list button').forEach(function(b) {
-        b.className = 'scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+        b.className = 'scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
       });
-      btn.className = 'scene-opt px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      btn.className = 'scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
       window._pendingSceneId = btn.getAttribute('data-scene') || null;
     }
 
     function selectTime(btn) {
       document.querySelectorAll('#time-option-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
+        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
       });
-      btn.className = 'px-3 py-1.5 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
+      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
       window._pendingTrigger = window._pendingTrigger || {};
       window._pendingTrigger.type = btn.getAttribute('data-time');
     }

@@ -4,7 +4,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
-const PAGE = readFileSync(resolve(ROOT, "src/app/nexus-household.html"), "utf8");
+const PAGE =
+  readFileSync(resolve(ROOT, "src/app/nexus-household.html"), "utf8") +
+  readFileSync(resolve(ROOT, "src/app/household-page.js"), "utf8");
 
 describe("aile daveti: e-posta uygulaması kendiliğinden açılmaz", () => {
   it("mailto yalnızca bir kez, onay penceresinin düğmesinde kurulur", () => {
