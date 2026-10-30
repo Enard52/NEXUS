@@ -5,21 +5,10 @@
 // Dağıtım (MANUEL): supabase functions deploy client-error
 // Migration: 20261025_client_errors.sql
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, content-type",
-};
+import { buildRow, CORS, createRateLimiter } from "./logic.ts";
 
 // Basit bellek-içi hız sınırı (örnek başına; yoğunlukta kaba ama yeterli)
-const hits = new Map();
-function allowed(ip) {
-  const now = Date.now();
-  const arr = (hits.get(ip) || []).filter((t) => now - t < 10 * 60 * 1000);
-  if (arr.length >= 5) { hits.set(ip, arr); return false; }
-  arr.push(now);
-  hits.set(ip, arr);
-  return true;
-}
+const allowed = createRateLimiter();
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
@@ -31,14 +20,8 @@ Deno.serve(async (req) => {
   let body;
   try { body = await req.json(); } catch { return new Response("bad json", { status: 400, headers: CORS }); }
 
-  const row = {
-    page: String(body.page || "").slice(0, 120),
-    version: String(body.version || "").slice(0, 20),
-    platform: String(body.platform || "").slice(0, 20),
-    message: String(body.message || "").slice(0, 500),
-    // Bilinçli olarak kişi verisi toplanmaz (gizlilik metniyle uyumlu)
-  };
-  if (!row.message) return new Response("empty", { status: 400, headers: CORS });
+  const row = buildRow(body);
+  if (!row) return new Response("empty", { status: 400, headers: CORS });
 
   const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
