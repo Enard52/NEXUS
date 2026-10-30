@@ -3352,6 +3352,25 @@ window.NEXUS_EN = {
     "İptal edildi — dönem sonuna kadar geçerli": "Cancelled — valid until the end of the period",
     "Aboneliğin aktif": "Your subscription is active",
 
+    /* --- Enerji: tüketim geçmişi ve maliyet tahmini --- */
+    "Tüketim Geçmişi": "Usage History",
+    "Son 7 gün · yalnızca bu cihazdaki gerçek ölçümlerden":
+      "Last 7 days · from real measurements on this device only",
+    "Son 7 gün": "Last 7 days",
+    "Henüz kayıtlı ölçüm yok. Güç ölçen bir cihaz ekleyip bu sayfayı açtığında okumalar burada birikir.":
+      "No measurements recorded yet. Add a device that measures power and open this page; readings will build up here.",
+    "Ölçüm alınmayan aralıklar hesaba katılmaz; bu yüzden değerler gerçek tüketimden düşük olabilir.":
+      "Intervals without measurements are not counted, so values may be lower than actual consumption.",
+    "Elektrik birim fiyatı (kWh başına)": "Electricity price (per kWh)",
+    "Örn. 2,50": "e.g. 2.50",
+    "Para birimi": "Currency",
+    "Tahmini maliyet; fatura değildir. Fiyat yalnızca bu cihazda saklanır.":
+      "Estimated cost, not a bill. The price is stored on this device only.",
+    "Günlük tüketim, son 7 gün (kWh)": "Daily usage, last 7 days (kWh)",
+    "ölçüm yok": "no data",
+    "Tahmini maliyet": "Estimated cost",
+    "Maliyet tahmini için birim fiyatı gir.": "Enter a unit price to estimate cost.",
+    "Geçerli bir fiyat gir (örn. 2,50).": "Enter a valid price (e.g. 2.50).",
     /* --- Bildirim yedeği --- */
     Uyarı: "Alert",
   },
