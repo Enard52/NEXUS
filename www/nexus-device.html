@@ -71,6 +71,8 @@
       .nx-info-head .close { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 9999px; color: #64748b; }
       .nx-info-head .close svg { width: 18px; height: 18px; }
       .nx-info-head .close:hover { background: rgba(148, 163, 184, 0.18); }
+      .nx-hero-photo { cursor: pointer; }
+      .nx-hero-photo:focus-visible { outline: 2px solid #4c7dff; outline-offset: 4px; border-radius: 12px; }
     </style>
   </head>
   <body>
@@ -396,8 +398,21 @@
           NX.imageUrl(device) +
           '" alt="' +
           esc(device.name) +
-          '" decoding="async"></div></section>'
+          '" decoding="async"' +
+          (device.id == null
+            ? ""
+            : ' class="nx-hero-photo" role="button" tabindex="0" aria-label="' +
+              (NX.photoOf(device) ? "Fotoğrafı değiştir" : "Fotoğraf ekle") +
+              '" onclick="openPhotoFlow()" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openPhotoFlow();}"') +
+          "></div></section>"
         );
+      }
+
+      // Ürün görseline dokunma: bilgi sayfasındaki "Cihaz fotoğrafı" satırını açar (ekle / değiştir / kaldır)
+      function openPhotoFlow() {
+        openInfo();
+        var b = document.querySelector("#info-body #photo-input + button");
+        if (b) b.focus();
       }
 
       // ---------- şablonlar: aynı işlevi gören cihazlar aynı ekranı paylaşır ----------
