@@ -514,6 +514,8 @@ window.NEXUS_EN = {
     "Wake-on-LAN PC / TV": "Wake-on-LAN PC / TV",
     /* --- Otomasyon motoru + enerji + dürüstlük düzeltmeleri (issue #24/#25, 2026-10-25) --- */
     "Anlık Tüketim": "Live Usage",
+"CSV olarak dışa aktar": "Export as CSV",
+"JSON olarak dışa aktar": "Export as JSON",
     "Güç ölçen cihaz ekleyince gerçek değer burada görünür.":
       "Add a power-metering device to see real values here.",
     "{0} güç ölçümlü cihazdan gerçek okuma.": "Live reading from {0} metered device(s).",
