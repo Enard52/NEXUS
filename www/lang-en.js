@@ -3255,6 +3255,10 @@ window.NEXUS_EN = {
     "Ödeme sayfasında {0} kullan; abonelik bu e-postayla eşleşir. Deneme süresi bitmeden iptal edersen ücret alınmaz. Aboneliğini Faturalandırma sayfasından istediğin an yönetebilirsin.":
       "Use {0} on the payment page; your subscription is matched to this email. Cancel before the trial ends and you're never charged. Manage your subscription any time from the Billing page.",
 
+    /* --- Ayar arama + giriş hatasından sıfırlama bağlantısı --- */
+    "Ayarlarda ara": "Search settings",
+    "Bu aramayla eşleşen ayar yok.": "No setting matches this search.",
+
     /* --- Ses ve Hareket ayarları (nexus-feedback) --- */
     "Ses ve Hareket": "Sound & Motion",
     "Uygulama sesleri, titreşim ve hareketli efektler.":

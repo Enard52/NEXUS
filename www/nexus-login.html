@@ -310,6 +310,17 @@
     return text || 'Giriş yapılamadı.';
   }
 
+  // Yanlış e-posta/şifre hatasının yanında sıfırlama bağlantısı; sayfadaki "Şifremi Unuttum" ile aynı yere gider, e-postayı taşır.
+  function showResetHint(err, email) {
+    var a = document.createElement('a');
+    a.href = 'nexus-forgot-password.html?email=' + encodeURIComponent(email);
+    a.id = 'login-error-reset';
+    a.className = 'nx-tap-t nx-tap-b ml-1 underline font-semibold';
+    a.textContent = 'Şifremi Unuttum';
+    err.appendChild(document.createTextNode(' '));
+    err.appendChild(a);
+  }
+
   function doLogin() {
     var email = (document.getElementById('login-email').value || '').trim();
     var pass = document.getElementById('login-password').value || '';
@@ -335,6 +346,7 @@
       }).catch(function (error) {
         if (button) button.disabled = false;
         err.textContent = cloudSignInMessage(error);
+        if (/invalid login credentials|E-posta veya şifre hatalı/i.test(String((error && error.message) || ''))) showResetHint(err, email);
         err.classList.remove('hidden');
       });
       return;
@@ -356,8 +368,7 @@
     window.nexusLocalPassword.verify(email, pass).then(function (result) {
       if (result === false) {
         restoreButton();
-        err.textContent = 'Şifre yanlış.';
-        err.classList.remove('hidden');
+        err.textContent = 'Şifre yanlış.';        err.classList.remove('hidden');
         return;
       }
       // Bu e-postayla ilk kez giriş yapılıyorsa yerel hesap oluşturulur
