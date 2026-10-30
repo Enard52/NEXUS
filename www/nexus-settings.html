@@ -47,7 +47,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
   input:checked + .slider {
-    background-color: #4C7DFF;
+    background-color: var(--nx-accent,#4C7DFF);
   }
   input:checked + .slider:before {
     transform: translateX(20px);
@@ -230,6 +230,19 @@
       </span>
     </button>
     <hr class="mx-5 border-gray-100"/>
+    <button type="button" id="chime-row" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="openChimePicker()">
+      <span class="text-xl text-gray-800 font-medium">Uygulama İçi Bildirim Sesi</span>
+      <span class="flex items-center space-x-2">
+        <span class="text-xl text-gray-400" id="chime-label">Yumuşak</span>
+        <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </span>
+    </button>
+    <hr class="mx-5 border-gray-100"/>
+    <div class="px-5 py-5">
+      <span class="text-xl text-gray-800 font-medium" id="accent-label">Vurgu Rengi</span>
+      <div id="accent-swatches" class="flex flex-wrap gap-3 mt-3" role="radiogroup" aria-labelledby="accent-label"></div>
+    </div>
+    <hr class="mx-5 border-gray-100"/>
     <button type="button" id="fab-search-row" role="switch" aria-checked="true" class="nx-reset flex items-center justify-between px-5 py-5" onclick="toggleFab('nexusFabSearch')">
       <span class="text-xl text-gray-800 font-medium">Yüzen Arama Düğmesi</span>
       <span class="relative block" aria-hidden="true">
@@ -379,8 +392,8 @@
       </label>
       <style>
         .nx-upd-check { width: 100%; min-height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
-          background: #4C7DFF; color: #fff; font-size: 16px; font-weight: 800; letter-spacing: -0.01em; border: 0; cursor: pointer;
-          box-shadow: 0 10px 24px -12px rgba(76, 125, 255, 0.6); transition: transform .15s ease, box-shadow .2s ease, opacity .2s; }
+          background: var(--nx-accent,#4C7DFF); color: #fff; font-size: 16px; font-weight: 800; letter-spacing: -0.01em; border: 0; cursor: pointer;
+          box-shadow: 0 10px 24px -12px rgba(var(--nx-accent-rgbc,76,125,255),0.6); transition: transform .15s ease, box-shadow .2s ease, opacity .2s; }
         .nx-upd-check svg { width: 18px; height: 18px; transition: transform .6s ease; }
         .nx-upd-check:hover { box-shadow: 0 14px 28px -12px rgba(15, 23, 42, 0.6); }
         .nx-upd-check:hover svg { transform: rotate(180deg); }
@@ -393,11 +406,11 @@
         .nx-upd-card[data-state="latest"] { background: #ecfdf5; border-color: #a7f3d0; }
         .nx-upd-card[data-state="latest"] .nx-upd-icon { background: #10b981; color: #fff; }
         .nx-upd-card[data-state="available"], .nx-upd-card[data-state="ready"] { background: #eef4ff; border-color: #bfd3ff; }
-        .nx-upd-card[data-state="available"] .nx-upd-icon, .nx-upd-card[data-state="ready"] .nx-upd-icon { background: #4C7DFF; color: #fff; }
+        .nx-upd-card[data-state="available"] .nx-upd-icon, .nx-upd-card[data-state="ready"] .nx-upd-icon { background: var(--nx-accent,#4C7DFF); color: #fff; }
         .nx-upd-card[data-state="error"] { background: #fff1f2; border-color: #fecdd3; }
         .nx-upd-card[data-state="error"] .nx-upd-icon { background: #f43f5e; color: #fff; }
         html.dark .nx-upd-card[data-state="latest"] { background: rgba(16, 185, 129, 0.12); border-color: #065f46; }
-        html.dark .nx-upd-card[data-state="available"], html.dark .nx-upd-card[data-state="ready"] { background: rgba(76, 125, 255, 0.14); border-color: #1e3a8a; }
+        html.dark .nx-upd-card[data-state="available"], html.dark .nx-upd-card[data-state="ready"] { background: rgba(var(--nx-accent-rgbc,76,125,255),0.14); border-color: #1e3a8a; }
         html.dark .nx-upd-card[data-state="error"] { background: rgba(244, 63, 94, 0.12); border-color: #7f1d1d; }
         html.dark .nx-upd-card #update-status { color: #e2e8f0; }
         .nx-upd-card { animation: nx-upd-in .25s ease both; }
@@ -416,15 +429,15 @@
         .nx-upd-track { height: 12px; width: 100%; border-radius: 9999px; overflow: hidden; background: #e2e8f0; }
         html.dark .nx-upd-track { background: #334155; }
         .nx-upd-fill { height: 100%; width: 0; border-radius: 9999px; transition: width .35s ease;
-          background: linear-gradient(90deg, #6f9bff 0%, #4C7DFF 60%, #8b7bff 100%);
-          box-shadow: 0 0 14px rgba(76, 125, 255, .55); position: relative; overflow: hidden; }
+          background: linear-gradient(90deg, #6f9bff 0%, var(--nx-accent,#4C7DFF) 60%, #8b7bff 100%);
+          box-shadow: 0 0 14px rgba(var(--nx-accent-rgbc,76,125,255),.55); position: relative; overflow: hidden; }
         .nx-upd-fill::after { content: ""; position: absolute; inset: 0;
           background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
           animation: nx-upd-shine 1.4s linear infinite; }
         @keyframes nx-upd-shine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
         .nx-upd-install { width: 100%; min-height: 48px; border-radius: 14px; border: 0; cursor: pointer; color: #fff; font-size: 15px; font-weight: 800;
-          background: linear-gradient(135deg, #6f9bff 0%, #4C7DFF 55%, #8b7bff 100%);
-          box-shadow: 0 12px 24px -12px rgba(76, 125, 255, .8); transition: transform .15s ease; }
+          background: linear-gradient(135deg, #6f9bff 0%, var(--nx-accent,#4C7DFF) 55%, #8b7bff 100%);
+          box-shadow: 0 12px 24px -12px rgba(var(--nx-accent-rgbc,76,125,255),.8); transition: transform .15s ease; }
         .nx-upd-install:active { transform: scale(0.98); }
         .nx-upd-install:disabled { opacity: .6; cursor: default; }
         .nx-upd-toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border-radius: 18px; background: #f8fafc; border: 1px solid #e2e8f0; cursor: pointer; }
@@ -434,7 +447,7 @@
         .nx-upd-toggle small { display: block; margin-top: 2px; font-size: 13px; color: #64748b; }
         .nx-upd-toggle input { width: 46px; height: 26px; flex: none; appearance: none; -webkit-appearance: none; border-radius: 9999px; background: #cbd5e1; position: relative; cursor: pointer; transition: background .2s; }
         .nx-upd-toggle input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 9999px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s; }
-        .nx-upd-toggle input:checked { background: #4C7DFF; }
+        .nx-upd-toggle input:checked { background: var(--nx-accent,#4C7DFF); }
         .nx-upd-toggle input:checked::after { transform: translateX(20px); }
       </style>
     </div>
@@ -589,6 +602,84 @@
     });
   }
 
+  var CHIME_LABELS = { soft: 'Yumuşak', bell: 'Çan', drop: 'Damla' };
+  function refreshChime() {
+    var el = document.getElementById('chime-label');
+    if (el) el.textContent = CHIME_LABELS[nexusGetItem('nexusChime') || 'soft'] || CHIME_LABELS.soft;
+  }
+  function openChimePicker() {
+    var current = nexusGetItem('nexusChime') || 'soft';
+    window.nexusDialog({
+      title: 'Uygulama içi bildirim sesi',
+      icon: 'bell',
+      message: 'Uygulama açıkken çalan bildirim sesi. Telefonun bildirim sesi işletim sistemi ayarlarından değişir.',
+      options: [
+        { label: 'Yumuşak', value: 'soft', selected: current === 'soft' },
+        { label: 'Çan', value: 'bell', selected: current === 'bell' },
+        { label: 'Damla', value: 'drop', selected: current === 'drop' }
+      ],
+      onSelect: function (value) {
+        nexusSetItem('nexusChime', value);
+        refreshChime();
+        if (window.nexusFeedback) window.nexusFeedback.play('notify');
+      }
+    });
+  }
+
+  var ACCENT_NAMES = { blue: 'Mavi', purple: 'Mor', green: 'Yeşil', orange: 'Turuncu', pink: 'Pembe', teal: 'Turkuaz' };
+  function refreshAccent() {
+    var host = document.getElementById('accent-swatches');
+    if (!host || !window.NEXUS_ACCENTS) return;
+    var cur = nexusGetItem('nexusAccent') || 'blue';
+    host.innerHTML = '';
+    Object.keys(window.NEXUS_ACCENTS).forEach(function (key) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'nx-reset';
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', key === cur ? 'true' : 'false');
+      b.setAttribute('aria-label', ACCENT_NAMES[key]);
+      b.style.cssText = 'width:44px;height:44px;border-radius:9999px;background:' + window.NEXUS_ACCENTS[key] + ';box-shadow:' +
+        (key === cur ? '0 0 0 3px #fff,0 0 0 5px ' + window.NEXUS_ACCENTS[key] : 'none') + ';cursor:pointer';
+      b.onclick = function () {
+        nexusSetItem('nexusAccent', key);
+        window.dispatchEvent(new Event('nexusAccentChanged'));
+        refreshAccent();
+      };
+      host.appendChild(b);
+    });
+    // Serbest renk seçici
+    var isCustom = /^#[0-9a-fA-F]{6}$/.test(cur);
+    var wrap = document.createElement('label');
+    wrap.setAttribute('aria-label', 'Özel renk seç');
+    wrap.style.cssText = 'position:relative;width:44px;height:44px;border-radius:9999px;cursor:pointer;overflow:hidden;display:block;' +
+      'background:' + (isCustom ? cur : 'conic-gradient(red,yellow,lime,aqua,blue,magenta,red)') + ';' +
+      (isCustom ? 'box-shadow:0 0 0 3px #fff,0 0 0 5px ' + cur : '');
+    var inp = document.createElement('input');
+    inp.type = 'color';
+    inp.value = isCustom ? cur : '#4C7DFF';
+    inp.style.cssText = 'position:absolute;inset:-8px;width:60px;height:60px;opacity:0;cursor:pointer';
+    inp.onchange = function () {
+      nexusSetItem('nexusAccent', inp.value.toLowerCase());
+      window.dispatchEvent(new Event('nexusAccentChanged'));
+      refreshAccent();
+    };
+    wrap.appendChild(inp);
+    host.appendChild(wrap);
+    var reset = document.createElement('button');
+    reset.type = 'button';
+    reset.className = 'nx-reset text-sm font-semibold';
+    reset.style.cssText = 'color:var(--nx-accent,#4C7DFF);padding:0 6px';
+    reset.textContent = 'Varsayılana dön (mavi)';
+    reset.hidden = cur === 'blue';
+    reset.onclick = function () {
+      nexusSetItem('nexusAccent', 'blue');
+      window.dispatchEvent(new Event('nexusAccentChanged'));
+      refreshAccent();
+    };
+    host.appendChild(reset);
+  }
+
   var FAB_ROWS = { nexusFabSearch: 'fab-search', nexusFabAi: 'fab-ai' };
   function refreshFabs() {
     Object.keys(FAB_ROWS).forEach(function (key) {
@@ -661,6 +752,8 @@
   refreshTempLabel();
   refreshFontScale();
   refreshFabs();
+  refreshAccent();
+  refreshChime();
 
   // Masaüstü uygulaması: uygulama içi güncelleme kontrolü ve yükleme.
   // Yalnızca Electron köprüsü (window.nexusDesktop.updates) varsa görünür.

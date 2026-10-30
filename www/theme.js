@@ -356,6 +356,42 @@ window.addEventListener('error', function(e) {
   applyFontScale();
   window.addEventListener('nexusFontScaleChanged', applyFontScale);
 
+  // Vurgu rengi (Ayarlar → Görünüm ve Genel → Vurgu Rengi): hazır, beyaz yazıyla okunur renklerden biri.
+  // css/nexus-ui.css'teki örtü katmanı ve var(--nx-accent) kullanan kurallar bu değişkenleri okur;
+  // varsayılan (mavi) seçiliyken hiçbir şey eklenmez.
+  var NX_ACCENTS = { blue: '#4C7DFF', purple: '#7C5CFC', green: '#12906B', orange: '#D9531E', pink: '#D6336C', teal: '#0E8A9A' };
+  window.NEXUS_ACCENTS = NX_ACCENTS;
+  function applyAccent() {
+    var key = 'blue';
+    try { key = (typeof nexusGetItem === 'function' ? nexusGetItem('nexusAccent') : localStorage.getItem('nexusAccent')) || 'blue'; } catch (e) {}
+    var st = document.documentElement.style;
+    var hex = NX_ACCENTS[key];
+    // Serbest renk: "#rrggbb". Beyaz yazı okunur kalsın diye çok açık renkler koyulaştırılır.
+    if (!hex && /^#[0-9a-fA-F]{6}$/.test(key)) {
+      var cn = parseInt(key.slice(1), 16), cr = cn >> 16, cg = (cn >> 8) & 255, cb = cn & 255;
+      var lum = function () {
+        var f = function (c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+        return 0.2126 * f(cr) + 0.7152 * f(cg) + 0.0722 * f(cb);
+      };
+      // Beyazla kontrast >= 3 için luminans <= 0.30
+      for (var i = 0; i < 20 && lum() > 0.30; i++) { cr = Math.round(cr * 0.92); cg = Math.round(cg * 0.92); cb = Math.round(cb * 0.92); }
+      hex = '#' + ((1 << 24) | (cr << 16) | (cg << 8) | cb).toString(16).slice(1);
+    }
+    if (!hex || key === 'blue') {
+      ['--nx-accent', '--nx-accent-rgb', '--nx-accent-rgbc', '--nx-accent-press'].forEach(function (p) { st.removeProperty(p); });
+      return;
+    }
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+    var dark = function (c) { return Math.round(c * 0.88); };
+    st.setProperty('--nx-accent', hex);
+    st.setProperty('--nx-accent-rgb', r + ' ' + g + ' ' + b);
+    st.setProperty('--nx-accent-rgbc', r + ',' + g + ',' + b);
+    st.setProperty('--nx-accent-press', 'rgb(' + dark(r) + ',' + dark(g) + ',' + dark(b) + ')');
+  }
+  applyAccent();
+  window.addEventListener('nexusAccentChanged', applyAccent);
+  window.addEventListener('storage', function (e) { if (e.key === 'nexusAccent') applyAccent(); });
+
   // Apply immediately to avoid flicker
   applyTheme();
 
@@ -458,7 +494,7 @@ window.addEventListener('error', function(e) {
     
     /* Settings Switches in Dark Mode */
     'html.dark .switch .slider { background-color: #475569 !important; }',
-    'html.dark input:checked + .slider { background-color: #4C7DFF !important; }',
+    'html.dark input:checked + .slider { background-color: var(--nx-accent,#4C7DFF) !important; }',
     'html.dark .switch .slider:before { background-color: #cbd5e1 !important; }',
     
     /* Shadows */
@@ -488,7 +524,7 @@ window.addEventListener('error', function(e) {
     'html { scrollbar-gutter: stable; }',
     /* Alt gezinme sekmeleri: geçiş/animasyon yok; yalnızca dokununca (aktifken) mor renk */
     'nav[data-purpose="bottom-nav"] a { transition: none !important; }',
-    'nav[data-purpose="bottom-nav"] a:active, nav[data-purpose="bottom-nav"] a:active i, nav[data-purpose="bottom-nav"] a:active span { color: #4C7DFF !important; }',
+    'nav[data-purpose="bottom-nav"] a:active, nav[data-purpose="bottom-nav"] a:active i, nav[data-purpose="bottom-nav"] a:active span { color: var(--nx-accent,#4C7DFF) !important; }',
     /* Tarayıcıların varsayılan şifre gösterme göz ikonunu gizle (Çift göz çıkmasını engeller) */
     'input[type="password"]::-ms-reveal, input[type="password"]::-ms-clear { display: none !important; }',
     'input[type="password"]::-webkit-contacts-auto-fill-button, input[type="password"]::-webkit-credentials-auto-fill-button { visibility: hidden !important; display: none !important; pointer-events: none !important; }'
@@ -649,7 +685,7 @@ window.nexusInfo = function (title, text, actions) {
   var esc = function (v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var btns = (actions && actions.length ? actions : [{ label: 'Tamam', primary: true }]).map(function (a, i) {
     return '<button type="button" data-i="' + i + '" style="flex:1;min-height:46px;border-radius:9999px;font-weight:700;font-size:14px;' +
-      (a.primary ? 'background:#4C7DFF;color:#fff;' : (dark ? 'background:#1e293b;color:#e2e8f0;' : 'background:#f1f5f9;color:#334155;')) + '">' + esc(a.label) + '</button>';
+      (a.primary ? 'background:var(--nx-accent,#4C7DFF);color:#fff;' : (dark ? 'background:#1e293b;color:#e2e8f0;' : 'background:#f1f5f9;color:#334155;')) + '">' + esc(a.label) + '</button>';
   }).join('');
   card.innerHTML = '<p style="font-size:17px;font-weight:800;margin:0 0 8px">' + esc(title) + '</p>' +
     '<p style="font-size:14px;line-height:1.55;margin:0 0 18px;opacity:.82">' + esc(text) + '</p>' +

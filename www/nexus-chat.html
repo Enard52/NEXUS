@@ -77,7 +77,7 @@
       top: -2px; right: -2px; bottom: -2px; left: -2px;
       z-index: -1;
       border-radius: 9999px;
-      background: linear-gradient(to right, #4C7DFF, #22D3EE, #4C7DFF);
+      background: linear-gradient(to right, var(--nx-accent,#4C7DFF), #22D3EE, var(--nx-accent,#4C7DFF));
     }
     html.dark .custom-gradient-border {
       background: #1e293b;
@@ -102,9 +102,9 @@
     }
 
     .user-bubble {
-      background: linear-gradient(135deg, #4C7DFF 0%, #3F6FFF 100%);
+      background: linear-gradient(135deg, var(--nx-accent,#4C7DFF) 0%, var(--nx-accent-press,#3F6FFF) 100%);
       color: #ffffff;
-      box-shadow: 0 4px 16px rgba(76, 125, 255, 0.28);
+      box-shadow: 0 4px 16px rgba(var(--nx-accent-rgbc,76,125,255),0.28);
     }
   </style>
 </head>

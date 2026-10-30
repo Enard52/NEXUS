@@ -227,7 +227,7 @@
       var host = document.getElementById('scan-status');
       if (host && !document.getElementById('scan-lan-btn')) {
         host.insertAdjacentHTML('afterend', '<div style="display:flex;gap:8px;justify-content:center;margin-top:12px">' +
-          '<button id="scan-lan-btn" type="button" onclick="nexusOpenLanPairing()" style="min-height:44px;padding:0 18px;border-radius:9999px;background:#4C7DFF;color:#fff;font-weight:700;font-size:14px">Yerel ağdan ekle</button>' +
+          '<button id="scan-lan-btn" type="button" onclick="nexusOpenLanPairing()" style="min-height:44px;padding:0 18px;border-radius:9999px;background:var(--nx-accent,#4C7DFF);color:#fff;font-weight:700;font-size:14px">Yerel ağdan ekle</button>' +
           '<button type="button" onclick="location.reload()" style="min-height:44px;padding:0 18px;border-radius:9999px;background:rgba(255,255,255,.15);color:#fff;font-weight:700;font-size:14px">Tekrar tara</button></div>');
       }
     }

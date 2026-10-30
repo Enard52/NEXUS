@@ -31,13 +31,13 @@
 
     /* NEXUS Standart Buton (Mor) */
     .btn-primary {
-      background-color: #4C7DFF;
-      box-shadow: 0 4px 12px rgba(76, 125, 255, 0.28);
+      background-color: var(--nx-accent,#4C7DFF);
+      box-shadow: 0 4px 12px rgba(var(--nx-accent-rgbc,76,125,255),0.28);
       transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s;
     }
     .btn-primary:active {
       transform: scale(0.98);
-      background-color: #3F6FFF;
+      background-color: var(--nx-accent-press,#3F6FFF);
     }
 
     /* NEXUS Beyaz Kart Gölgesi */

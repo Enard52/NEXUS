@@ -138,7 +138,7 @@
       ".nx-undo-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
       ".nx-undo-btn{flex:none;min-height:38px;padding:0 16px;border:0;border-radius:999px;cursor:pointer;" +
       "font:800 13.5px/1 Inter,system-ui,sans-serif;color:#fff;" +
-      "background:linear-gradient(135deg,#6f9bff,#4C7DFF 60%,#8b7bff);transition:transform .15s ease}" +
+      "background:linear-gradient(135deg,#6f9bff,var(--nx-accent,#4C7DFF) 60%,#8b7bff);transition:transform .15s ease}" +
       ".nx-undo-btn:active{transform:scale(.96)}" +
       ".nx-undo-btn:focus-visible{outline:2px solid #8fb0ff;outline-offset:2px}" +
       "@keyframes nxUndoIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}";

@@ -112,6 +112,16 @@
     "pull": [{ f0: 440, f1: 660, dur: 0.08, gain: 0.032 }],
   };
 
+  // Bildirim sesi seçenekleri (soft = varsayılan "notify" paleti).
+  var CHIMES = {
+    soft: SOUNDS.notify,
+    bell: [
+      { f0: 1319, dur: 0.35, gain: 0.032 },
+      { f0: 1976, t0: 0.02, dur: 0.3, gain: 0.018 },
+    ],
+    drop: [{ f0: 1100, f1: 520, dur: 0.14, gain: 0.04 }],
+  };
+
   // Sonuç sesi hoparlöre girmeden önce bekleyen tap'i iptal et: cihaz
   // anahtarı çevrilirken "tık + bip" yerine tek anlamlı ses duyulmalı.
   var pendingTap = null;
@@ -124,6 +134,12 @@
       lastTapAt = 0; // sonuç sesi tap'ın yerini aldı; yeniden tap hemen serbest
     }
     var spec = SOUNDS[name];
+    if (name === "notify") {
+      // Uygulama içi bildirim sesi seçimi (Ayarlar → Bildirim Sesi). Sistem bildirim sesi işletim sistemine aittir.
+      var pick = "soft";
+      try { pick = (window.nexusGetItem ? window.nexusGetItem("nexusChime") : localStorage.getItem("nexusChime")) || "soft"; } catch (e) {}
+      spec = CHIMES[pick] || spec;
+    }
     if (!spec) return;
     var c = audio();
     if (!c) return;

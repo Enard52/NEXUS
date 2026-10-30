@@ -64,7 +64,7 @@
       @media (prefers-reduced-motion: reduce) { .nx-info-panel { animation: none; } }
       @media (min-width: 700px) { .nx-info { align-items: center; } .nx-info-panel { border-radius: 28px; } .nx-info-panel .nx-sheet-grab { display: none; } }
       .nx-info-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-      .nx-info-head .ico { display: inline-flex; width: 20px; height: 20px; color: #4c7dff; }
+      .nx-info-head .ico { display: inline-flex; width: 20px; height: 20px; color: var(--nx-accent,#4C7DFF); }
       html.dark .nx-info-head .ico { color: #8fb0ff; }
       .nx-info-head .ico svg { width: 20px; height: 20px; }
       .nx-info-head h2 { margin: 0; flex: 1; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
@@ -544,7 +544,7 @@
 
       function hexA(hex, a) {
         var n = parseInt(String(hex).replace("#", ""), 16);
-        if (!isFinite(n)) return "rgba(76,125,255," + a + ")";
+        if (!isFinite(n)) return "rgba(var(--nx-accent-rgbc,76,125,255)," + a + ")";
         return (
           "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")"
         );

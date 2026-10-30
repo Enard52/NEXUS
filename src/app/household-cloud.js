@@ -526,7 +526,7 @@
         b = document.createElement("span");
         b.className = "nx-fam-badge";
         b.setAttribute("aria-label", "Okunmamış aile mesajı");
-        b.style.cssText = "margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#4C7DFF;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;line-height:1";
+        b.style.cssText = "margin-left:6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--nx-accent,#4C7DFF);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;line-height:1";
         if (a.matches('nav a[href="nexus-profile.html"]')) b.style.cssText += ";position:absolute;margin:0;transform:translate(14px,-14px)";
         if (getComputedStyle(a).position === "static") a.style.position = "relative";
         a.appendChild(b);

@@ -53,7 +53,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
     .nexus-glow {
-      box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28);
+      box-shadow: 0 12px 24px rgba(var(--nx-accent-rgbc,76,125,255),0.28);
     }
     body {
       font-family: "Inter", sans-serif;
@@ -122,11 +122,11 @@
     }
     /* "Eklenmiş Cihazlar" sayısı: başlığın yanında marka renginde küçük rozet */
     .nx-count-badge {
-      background: rgba(76, 125, 255, 0.14);
+      background: rgba(var(--nx-accent-rgbc,76,125,255),0.14);
       color: #3358d4;
     }
     html.dark .nx-count-badge {
-      background: rgba(76, 125, 255, 0.24);
+      background: rgba(var(--nx-accent-rgbc,76,125,255),0.24);
       color: #a9c0ff;
     }
   </style>

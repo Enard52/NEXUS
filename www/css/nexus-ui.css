@@ -1,3 +1,6 @@
+/* Vurgu rengi: varsayılan marka mavisi; theme.js Ayarlar'daki seçime göre html üzerinde değiştirir. */
+:root { --nx-accent: #4C7DFF; --nx-accent-rgb: 76 125 255; --nx-accent-rgbc: 76,125,255; --nx-accent-press: #3F6FFF; }
+
 /*
  * NEXUS UI — ortak tasarım katmanı
  * --------------------------------
@@ -5,16 +8,16 @@
  * Renk, yazı, köşe ve koyu tema kuralları tek yerden gelir; ekranlara
  * tek tek yama yapmak yerine burası güncellenir.
  *
- * Birincil renk: #4C7DFF (mevcut uygulamada kullanılan mavi)
+ * Birincil renk: var(--nx-accent,#4C7DFF) (mevcut uygulamada kullanılan mavi)
  * Vurgu:         #22D3EE (camgöbeği, gradyanlarda)
  */
 
 :root {
-  --nx-primary: #4C7DFF;
-  --nx-primary-press: #3F6FFF;
-  --nx-primary-soft: rgba(76, 125, 255, 0.12);
+  --nx-primary: var(--nx-accent,#4C7DFF);
+  --nx-primary-press: var(--nx-accent-press,#3F6FFF);
+  --nx-primary-soft: rgba(var(--nx-accent-rgbc,76,125,255),0.12);
   --nx-accent: #22D3EE;
-  --nx-gradient: linear-gradient(135deg, #4C7DFF 0%, #22D3EE 100%);
+  --nx-gradient: linear-gradient(135deg, var(--nx-accent,#4C7DFF) 0%, #22D3EE 100%);
 
   --nx-page: #ECE9FD;
   --nx-page-gradient: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%);
@@ -39,7 +42,7 @@
 }
 
 html.dark {
-  --nx-primary-soft: rgba(76, 125, 255, 0.18);
+  --nx-primary-soft: rgba(var(--nx-accent-rgbc,76,125,255),0.18);
   --nx-page: #0F172A;
   --nx-page-gradient: linear-gradient(180deg, #020617 0%, #0F172A 100%);
   --nx-surface: #1E293B;
@@ -67,7 +70,7 @@ html { scrollbar-gutter: stable; background-color: var(--nx-page); }
    kartların beyaz yüzeyi bilinçli kontrasttır, burası zemin sızıntısı değildir. */
 html:not(.dark) nav[data-purpose="bottom-nav"] {
   background-color: color-mix(in srgb, #ECE9FD 88%, #fff) !important;
-  border-top-color: rgba(76, 125, 255, 0.12) !important;
+  border-top-color: rgba(var(--nx-accent-rgbc,76,125,255),0.12) !important;
 }
 html:not(.dark) header.bg-white,
 html:not(.dark) header[class*="bg-white/"],
@@ -175,7 +178,7 @@ button.nx-reset {
   margin-top: 8px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   min-height: 44px; padding: 0 20px; border-radius: 9999px;
   background: var(--nx-primary); color: #fff; font-size: 14px; font-weight: 700;
-  box-shadow: 0 8px 20px rgba(76, 125, 255, 0.28);
+  box-shadow: 0 8px 20px rgba(var(--nx-accent-rgbc,76,125,255),0.28);
   transition: transform .15s ease, background .15s ease;
 }
 .nx-empty__cta:active { transform: scale(0.97); background: var(--nx-primary-press); }
@@ -216,7 +219,7 @@ html.dark [class*="bg-[#F9F9FB]"],
 html.dark [class*="bg-violet-50"],
 html.dark [class*="bg-indigo-50"],
 html.dark [class*="bg-blue-50"] {
-  background-color: rgba(76, 125, 255, 0.16) !important;
+  background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.16) !important;
 }
 html.dark [class*="bg-[#F9FAFB]"],
 html.dark [class*="bg-[#F8FAFC]"],
@@ -263,15 +266,15 @@ html.dark header[class*="bg-white/"] {
 
 /* ---------- Bileşen cilası ---------- */
 /* Birincil butonlarda basma geri bildirimi */
-/* Yalnızca düz mavi (beyaz yazılı) butonlar koyulaşır; "bg-[#4C7DFF]/10" gibi açık tonlu
+/* Yalnızca düz mavi (beyaz yazılı) butonlar koyulaşır; "bg-[var(--nx-accent,#4C7DFF)]/10" gibi açık tonlu
    butonların yazısı da mavidir, düz maviye boyanırsa metin kaybolur. */
-[class*="bg-[#4C7DFF]"]:not([class*="bg-[#4C7DFF]/"]):is(button, a):active { background-color: var(--nx-primary-press) !important; }
-[class*="bg-[#4C7DFF]/"]:is(button, a):active { background-color: rgba(76, 125, 255, 0.22) !important; }
+[class*="bg-[var(--nx-accent,#4C7DFF)]"]:not([class*="bg-[var(--nx-accent,#4C7DFF)]/"]):is(button, a):active { background-color: var(--nx-primary-press) !important; }
+[class*="bg-[var(--nx-accent,#4C7DFF)]/"]:is(button, a):active { background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.22) !important; }
 
 /* ---------- Modal başlığı: ortak düzen (kutusuz küçük simge, başlığın solunda) ----------
    Tüm ayrı açılan modal/sheet başlıkları aynı satır düzenini kullanır. */
 .nx-sheet-head { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
-.nx-sheet-head .nx-sheet-ico { display: inline-flex; flex: none; width: 20px; height: 20px; color: #4C7DFF; }
+.nx-sheet-head .nx-sheet-ico { display: inline-flex; flex: none; width: 20px; height: 20px; color: var(--nx-accent,#4C7DFF); }
 html.dark .nx-sheet-head .nx-sheet-ico { color: #8fb0ff; }
 .nx-sheet-head .nx-sheet-ico svg { width: 20px; height: 20px; }
 .nx-sheet-head h2, .nx-sheet-head h3 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
@@ -295,7 +298,7 @@ html.dark img[src*="assets/products/"]:not(.catalog-img) {
 
 /* ---------- Okunabilirlik (açık tema, WCAG AA'ya yakın) ----------
    Açık lavanta zeminde marka mavisi/camgöbeği ve 500/600 tonlu durum renkleri 3:1 altında kalıyordu. */
-html:not(.dark) .text-\[\#4C7DFF\],
+html:not(.dark) .text-\[\var(--nx-accent,#4C7DFF)\],
 html:not(.dark) .text-nexusPurple,
 html:not(.dark) .text-nexus-purple { color: #3358D4; }
 html:not(.dark) .text-nexusCyan { color: #0E7490; }
@@ -310,7 +313,7 @@ html:not(.dark) .text-red-500 { color: #dc2626; }
 
 /* Alt menü: koyu temada da etkin sekme net görünsün */
 html.dark nav[data-purpose="bottom-nav"] a[aria-current="page"],
-html.dark nav[data-purpose="bottom-nav"] a.text-\[\#4C7DFF\] {
+html.dark nav[data-purpose="bottom-nav"] a.text-\[\var(--nx-accent,#4C7DFF)\] {
   color: #7FA2FF !important;
 }
 
@@ -331,26 +334,26 @@ html.dark .nx-greeting { color: #DCE6FF !important; }
  * Bazı ekranlar camelCase marka sınıflarını (text-nexusPurple vb.) ve birkaç
  * keyfi değeri kullanıyor; derlenmiş tailwind.css bunları içermediği için
  * butonlar renksiz kalıyordu. Derleme ortamından bağımsız çalışsın diye burada.
- * (nexusPurple adı tarihsel; değeri birincil mavi #4C7DFF.) */
-.text-nexusPurple { color: #4C7DFF; }
+ * (nexusPurple adı tarihsel; değeri birincil mavi var(--nx-accent,#4C7DFF).) */
+.text-nexusPurple { color: var(--nx-accent,#4C7DFF); }
 .text-nexusCyan { color: #0EA5C4; }
-.bg-nexusPurple { background-color: #4C7DFF; }
-.bg-nexusPurple\/5 { background-color: rgba(76, 125, 255, 0.05); }
-.bg-nexusPurple\/10 { background-color: rgba(76, 125, 255, 0.10); }
-.hover\:bg-nexusPurple\/90:hover { background-color: rgba(76, 125, 255, 0.90); }
+.bg-nexusPurple { background-color: var(--nx-accent,#4C7DFF); }
+.bg-nexusPurple\/5 { background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.05); }
+.bg-nexusPurple\/10 { background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.10); }
+.hover\:bg-nexusPurple\/90:hover { background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.90); }
 .bg-nexusCyan { background-color: #22D3EE; }
 .bg-nexusCyan\/10 { background-color: rgba(34, 211, 238, 0.10); }
 .bg-nexusCyan\/20 { background-color: rgba(34, 211, 238, 0.20); }
-.border-nexusPurple { border-color: #4C7DFF; }
-.border-nexusPurple\/10 { border-color: rgba(76, 125, 255, 0.10); }
-.border-nexusPurple\/20 { border-color: rgba(76, 125, 255, 0.20); }
-.border-nexusPurple\/30 { border-color: rgba(76, 125, 255, 0.30); }
+.border-nexusPurple { border-color: var(--nx-accent,#4C7DFF); }
+.border-nexusPurple\/10 { border-color: rgba(var(--nx-accent-rgbc,76,125,255),0.10); }
+.border-nexusPurple\/20 { border-color: rgba(var(--nx-accent-rgbc,76,125,255),0.20); }
+.border-nexusPurple\/30 { border-color: rgba(var(--nx-accent-rgbc,76,125,255),0.30); }
 .border-nexusCyan\/30 { border-color: rgba(34, 211, 238, 0.30); }
-.focus\:border-nexusPurple:focus { border-color: #4C7DFF; }
-.decoration-nexusPurple\/30 { text-decoration-color: rgba(76, 125, 255, 0.30); }
-.peer:checked ~ .peer-checked\:bg-nexusPurple { background-color: #4C7DFF; }
-html.dark .dark\:bg-nexusPurple\/10 { background-color: rgba(76, 125, 255, 0.10); }
-html.dark .dark\:border-nexusPurple\/20 { border-color: rgba(76, 125, 255, 0.20); }
+.focus\:border-nexusPurple:focus { border-color: var(--nx-accent,#4C7DFF); }
+.decoration-nexusPurple\/30 { text-decoration-color: rgba(var(--nx-accent-rgbc,76,125,255),0.30); }
+.peer:checked ~ .peer-checked\:bg-nexusPurple { background-color: var(--nx-accent,#4C7DFF); }
+html.dark .dark\:bg-nexusPurple\/10 { background-color: rgba(var(--nx-accent-rgbc,76,125,255),0.10); }
+html.dark .dark\:border-nexusPurple\/20 { border-color: rgba(var(--nx-accent-rgbc,76,125,255),0.20); }
 html.dark .dark\:bg-dark-gradient { background: linear-gradient(180deg, #0F172A 0%, #020617 100%) !important; }
 html.dark .bg-light-blue-gradient { background: linear-gradient(180deg, #0F172A 0%, #020617 100%) !important; }
 html.dark .dark\:shadow-\[0_14px_36px_rgba\(2\2c 6\2c 23\2c 0\.45\)\] { box-shadow: 0 14px 36px rgba(2, 6, 23, 0.45); }
@@ -360,7 +363,7 @@ html.dark .dark\:shadow-\[0_14px_36px_rgba\(2\2c 6\2c 23\2c 0\.45\)\] { box-shad
 .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
 .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
 .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.625rem; }
-.shadow-\[0_12px_24px_rgba\(76\2c 125\2c 255\2c 0\.28\)\] { box-shadow: 0 12px 24px rgba(76, 125, 255, 0.28); }
+.shadow-\[0_12px_24px_rgba\(76\2c 125\2c 255\2c 0\.28\)\] { box-shadow: 0 12px 24px rgba(var(--nx-accent-rgbc,76,125,255),0.28); }
 .shadow-\[0_12px_36px_rgba\(15\2c 23\2c 42\2c 0\.08\)\] { box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08); }
 .shadow-\[0_4px_20px_rgba\(0\2c 0\2c 0\2c 0\.05\)\] { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
 .shadow-\[0_8px_28px_rgba\(15\2c 23\2c 42\2c 0\.05\)\] { box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05); }
@@ -378,7 +381,7 @@ html.dark .shadow-\[0_12px_36px_rgba\(15\2c 23\2c 42\2c 0\.08\)\] { box-shadow: 
 .bg-bg-main { background-color: #ECE9FD; }
 /* Sohbet ekranının yerel zeminleri */
 .bg-nexus-gradient { background-image: linear-gradient(180deg, #ECE9FD 0%, #DDD8FB 100%); }
-.bg-nexus-plus-bg { background-color: #4C7DFF; }
+.bg-nexus-plus-bg { background-color: var(--nx-accent,#4C7DFF); }
 
 /* ---------- Koyu tema: sayfa içi yerel yüzey sınıfları ---------- */
 html.dark .glass-surface,
@@ -409,7 +412,7 @@ html.dark .nexus-shadow { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); }
 .text-emerald-700 { color: #047857; }
 html.dark .text-emerald-700 { color: #34d399; }
 .min-h-\[40px\] { min-height: 40px; }
-.text-\[\#3F6FFF\] { color: #3F6FFF; }
+.text-\[\var(--nx-accent-press,#3F6FFF)\] { color: var(--nx-accent-press,#3F6FFF); }
 html.dark .dark\:text-\[\#93b4ff\] { color: #93b4ff; }
 
 /* Kapalı (ekranın üstüne itilmiş) üst panellerin gölgesi ekrana sızmasın */
@@ -435,15 +438,15 @@ header.pt-12, header.pt-14 { min-height: var(--nx-header-h, 104px); }
 input:focus, textarea:focus, select:focus { outline: none; }
 input:focus-visible, textarea:focus-visible, select:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(76, 125, 255, 0.30);
-  border-color: rgba(76, 125, 255, 0.65) !important;
+  box-shadow: 0 0 0 3px rgba(var(--nx-accent-rgbc,76,125,255),0.30);
+  border-color: rgba(var(--nx-accent-rgbc,76,125,255),0.65) !important;
 }
 html.dark input:focus-visible, html.dark textarea:focus-visible, html.dark select:focus-visible {
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35);
   border-color: rgba(96, 165, 250, 0.65) !important;
 }
 a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
-  outline: 2px solid rgba(76, 125, 255, 0.70);
+  outline: 2px solid rgba(var(--nx-accent-rgbc,76,125,255),0.70);
   outline-offset: 2px;
   border-radius: 10px;
 }
@@ -539,8 +542,8 @@ html.dark .nx-lan-note {
 
 /* "Komut gitti" nabzı: cihaz kartına tek seferlik marka halkası */
 @keyframes nxFxPulse {
-  from { box-shadow: 0 0 0 0 rgba(76, 125, 255, 0.38); }
-  to { box-shadow: 0 0 0 16px rgba(76, 125, 255, 0); }
+  from { box-shadow: 0 0 0 0 rgba(var(--nx-accent-rgbc,76,125,255),0.38); }
+  to { box-shadow: 0 0 0 16px rgba(var(--nx-accent-rgbc,76,125,255),0); }
 }
 .nx-fx-pulse { animation: nxFxPulse .55s ease-out 1; }
 
@@ -604,7 +607,7 @@ html.nx-a11y *, html.nx-a11y *::before, html.nx-a11y *::after {
    %12,5 büyür (Tailwind rem ölçeği), odak halkası belirginleşir, dokunma anahtarı
    (switch) 44px hedefe oturur ve dekoratif hareket kısılır (yukarıdaki kural). */
 html.nx-a11y { font-size: 112.5% !important; }
-html.nx-a11y :focus-visible { outline: 3px solid #4C7DFF; outline-offset: 2px; border-radius: 6px; }
+html.nx-a11y :focus-visible { outline: 3px solid var(--nx-accent,#4C7DFF); outline-offset: 2px; border-radius: 6px; }
 html.dark.nx-a11y :focus-visible { outline-color: #8fb0ff; }
 html.nx-a11y .switch { width: 60px; height: 34px; }
 html.nx-a11y .switch .slider:before { height: 28px; width: 28px; }
@@ -623,3 +626,41 @@ header:has(> .p-1.-ml-1) > .p-1.-mr-1 svg, header:has(> .p-1.-ml-1) > .p-1.-mr-1
    yapışkan başlıkta arkasından geçen içerik bulanık görünür. */
 .nx-hdr-blend { background: rgba(236, 233, 253, 0.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 html.dark .nx-hdr-blend { background: rgba(15, 23, 42, 0.18); }
+
+/* >>> accent-overrides (scripts/build-accent-css.mjs ile üretilir; elle düzenlemeyin) */
+html .border-\[\#4C7DFF\]{border-color:rgb(var(--nx-accent-rgb) /var(--tw-border-opacity,1))}
+html .border-\[\#4C7DFF\]\/10{border-color:rgb(var(--nx-accent-rgb) / .1)}
+html .border-\[\#4C7DFF\]\/20{border-color:rgb(var(--nx-accent-rgb) / .2)}
+html .border-nexus-purple{border-color:rgb(var(--nx-accent-rgb) /var(--tw-border-opacity,1))}
+html .border-t-\[\#4C7DFF\]{border-top-color:rgb(var(--nx-accent-rgb) /var(--tw-border-opacity,1))}
+html .bg-\[\#4C7DFF\]{background-color:rgb(var(--nx-accent-rgb) /var(--tw-bg-opacity,1))}
+html .bg-\[\#4C7DFF\]\/10{background-color:rgb(var(--nx-accent-rgb) / .1)}
+html .bg-\[\#4C7DFF\]\/5{background-color:rgb(var(--nx-accent-rgb) / .05)}
+html .bg-nexus-purple{background-color:rgb(var(--nx-accent-rgb) /var(--tw-bg-opacity,1))}
+html .bg-nexus-purple\/10{background-color:rgb(var(--nx-accent-rgb) / .1)}
+html .from-\[\#4C7DFF\]{--tw-gradient-from:rgb(var(--nx-accent-rgb)) var(--tw-gradient-from-position);--tw-gradient-to:rgb(var(--nx-accent-rgb) / 0) var(--tw-gradient-to-position)}
+html .from-nexus-purple{--tw-gradient-from:rgb(var(--nx-accent-rgb)) var(--tw-gradient-from-position);--tw-gradient-to:rgb(var(--nx-accent-rgb) / 0) var(--tw-gradient-to-position)}
+html .text-\[\#4C7DFF\]{color:rgb(var(--nx-accent-rgb) /var(--tw-text-opacity,1))}
+html .text-nexus-purple{color:rgb(var(--nx-accent-rgb) /var(--tw-text-opacity,1))}
+html .accent-\[\#4C7DFF\]{accent-color:rgb(var(--nx-accent-rgb))}
+html .shadow-\[0_0_8px_rgba\(76\2c 125\2c 255\2c 0\.35\)\]{--tw-shadow:0 0 8px rgb(var(--nx-accent-rgb) / .35)}
+html .shadow-\[\#4C7DFF\]\/20{--tw-shadow-color:rgb(var(--nx-accent-rgb) / .2)}
+html .shadow-\[\#4C7DFF\]\/30{--tw-shadow-color:rgb(var(--nx-accent-rgb) / .3)}
+html .ring-\[\#4C7DFF\]\/30{--tw-ring-color:rgb(var(--nx-accent-rgb) / .3)}
+html .ring-nexus-purple{--tw-ring-color:rgb(var(--nx-accent-rgb) /var(--tw-ring-opacity,1))}
+html .custom-gradient-border:before{background:linear-gradient(90deg,rgb(var(--nx-accent-rgb)),#22d3ee,rgb(var(--nx-accent-rgb)))}
+html .nexus-cta{background:linear-gradient(135deg,rgb(var(--nx-accent-rgb)),#22d3ee)}
+html .wheel-item.selected{color:rgb(var(--nx-accent-rgb))}
+html .hover\:border-\[\#4C7DFF\]:hover{border-color:rgb(var(--nx-accent-rgb) /var(--tw-border-opacity,1))}
+html .hover\:text-\[\#4C7DFF\]:hover{color:rgb(var(--nx-accent-rgb) /var(--tw-text-opacity,1))}
+html .focus\:border-\[\#4C7DFF\]:focus{border-color:rgb(var(--nx-accent-rgb) /var(--tw-border-opacity,1))}
+html .focus\:ring-\[\#4C7DFF\]:focus{--tw-ring-color:rgb(var(--nx-accent-rgb) /var(--tw-ring-opacity,1))}
+html .focus\:ring-\[\#4C7DFF\]\/20:focus{--tw-ring-color:rgb(var(--nx-accent-rgb) / .2)}
+html .focus\:ring-nexus-purple:focus{--tw-ring-color:rgb(var(--nx-accent-rgb) /var(--tw-ring-opacity,1))}
+html .group:focus-within .group-focus-within\:text-\[\#4C7DFF\]{color:rgb(var(--nx-accent-rgb) /var(--tw-text-opacity,1))}
+html .peer:checked~.peer-checked\:bg-\[\#4C7DFF\]{background-color:rgb(var(--nx-accent-rgb) /var(--tw-bg-opacity,1))}
+html html.dark .dark\:bg-\[\#4C7DFF\]{background-color:rgb(var(--nx-accent-rgb) /var(--tw-bg-opacity,1))}
+html .shadow-\[0_12px_24px_rgba\(76\2c 125\2c 255\2c 0\.28\)\]{--tw-shadow:0 12px 24px rgb(var(--nx-accent-rgb) / .28)}
+html .focus\:ring-\[\#4C7DFF\]\/30:focus{--tw-ring-color:rgb(var(--nx-accent-rgb) / .3)}
+html .group:active .group-active\:text-\[\#4C7DFF\]{color:rgb(var(--nx-accent-rgb) /var(--tw-text-opacity,1))}
+/* <<< accent-overrides */

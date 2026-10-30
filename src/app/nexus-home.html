@@ -50,7 +50,7 @@
       position: absolute;
       top: -2px; bottom: -2px;
       left: -2px; right: -2px;
-      background: linear-gradient(to right, #4C7DFF, #22D3EE, #4C7DFF);
+      background: linear-gradient(to right, var(--nx-accent,#4C7DFF), #22D3EE, var(--nx-accent,#4C7DFF));
       z-index: -1;
       border-radius: 9999px;
     }
@@ -266,7 +266,7 @@
 <!-- END: MainContent -->
 <!-- BEGIN: BottomNavigation -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 flex items-center justify-around px-2 z-50" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); height: calc(4.5rem + env(safe-area-inset-bottom));" data-purpose="bottom-nav">
-  <a href="nexus-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: #4C7DFF;" aria-current="page">
+  <a href="nexus-home.html" class="flex w-16 h-11 flex-col items-center justify-center gap-1 transition-colors active:scale-95" style="color: var(--nx-accent,#4C7DFF);" aria-current="page">
     <i class="w-6 h-6 stroke-[1.75]" data-lucide="home"></i>
     <span class="text-[10px] font-semibold leading-none">Ev</span>
   </a>

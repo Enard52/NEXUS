@@ -36,7 +36,7 @@
   /* Dark Theme Background - preserving the 3D aesthetic */
   html.dark body {
     background:
-      radial-gradient(120% 60% at 50% 0%, rgba(76,125,255,0.28) 0%, transparent 55%),
+      radial-gradient(120% 60% at 50% 0%, rgba(var(--nx-accent-rgbc,76,125,255),0.28) 0%, transparent 55%),
       linear-gradient(180deg, #020617 0%, #0f172a 100%);
   }
 
@@ -56,7 +56,7 @@
     position:absolute;
     top:-80px; left:-60px;
     width:260px; height:260px;
-    background: radial-gradient(circle, rgba(76,125,255,0.30), transparent 70%);
+    background: radial-gradient(circle, rgba(var(--nx-accent-rgbc,76,125,255),0.30), transparent 70%);
     filter: blur(10px);
     pointer-events:none;
   }
@@ -176,8 +176,8 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
   html:not(.dark) .digit.active {
-    border-color: #4C7DFF;
-    box-shadow: 0 0 0 3px rgba(76, 125, 255, 0.2);
+    border-color: var(--nx-accent,#4C7DFF);
+    box-shadow: 0 0 0 3px rgba(var(--nx-accent-rgbc,76,125,255),0.2);
     transform: translateY(-2px);
   }
 
@@ -226,22 +226,22 @@
     padding:16px 0;
     border:none;
     border-radius:27px;
-    background: #4C7DFF;
+    background: var(--nx-accent,#4C7DFF);
     color:#fff;
     font-size:16px;
     font-weight:700;
     letter-spacing:0.2px;
     cursor:pointer;
     box-shadow:
-      0 14px 26px rgba(76, 125, 255, 0.40),
+      0 14px 26px rgba(var(--nx-accent-rgbc,76,125,255),0.40),
       inset 0 1px 1px rgba(255,255,255,0.4);
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
   .verify-btn:active{ transform: translateY(1px); }
 
   html:not(.dark) .verify-btn {
-    background: #4C7DFF; /* Use solid blue for light mode */
-    box-shadow: 0 8px 20px rgba(76, 125, 255, 0.3);
+    background: var(--nx-accent,#4C7DFF); /* Use solid blue for light mode */
+    box-shadow: 0 8px 20px rgba(var(--nx-accent-rgbc,76,125,255),0.3);
   }
 
   /* ---------- QR link ---------- */
@@ -363,12 +363,12 @@
         box = document.createElement('div');
         box.id = 'setup-code-result';
         box.setAttribute('role', 'status');
-        box.style.cssText = 'margin-top:18px;padding:16px;border-radius:20px;background:rgba(76,125,255,.08);text-align:left;';
+        box.style.cssText = 'margin-top:18px;padding:16px;border-radius:20px;background:rgba(var(--nx-accent-rgbc,76,125,255),.08);text-align:left;';
         document.getElementById('verify-btn').insertAdjacentElement('afterend', box);
       }
       box.innerHTML = '<p style="font-weight:700;font-size:15px;margin:0 0 6px">' + msg.title + '</p>' +
         '<p style="font-size:13px;line-height:1.5;margin:0 0 12px;opacity:.85">' + msg.text + '</p>' +
-        '<button type="button" onclick="nexusOpenLanPairing()" style="min-height:44px;width:100%;border-radius:9999px;background:#4C7DFF;color:#fff;font-weight:700;font-size:14px">Yerel ağdan ekle</button>';
+        '<button type="button" onclick="nexusOpenLanPairing()" style="min-height:44px;width:100%;border-radius:9999px;background:var(--nx-accent,#4C7DFF);color:#fff;font-weight:700;font-size:14px">Yerel ağdan ekle</button>';
     }
 
     function updateDigitBoxes(value) {
