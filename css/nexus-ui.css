@@ -671,3 +671,10 @@ html .shadow-\[0_12px_24px_rgba\(76\2c 125\2c 255\2c 0\.28\)\]{--tw-shadow:0 12p
 html .focus\:ring-\[\#4C7DFF\]\/30:focus{--tw-ring-color:rgb(var(--nx-accent-rgb) / .3)}
 html .group:active .group-active\:text-\[\#4C7DFF\]{color:rgb(var(--nx-accent-rgb) /var(--tw-text-opacity,1))}
 /* <<< accent-overrides */
+
+/* Yatay telefon (alçak ekran, #84): alt menü görünür yüksekliğin ~%18'ini yiyordu; simge + etiket yan yana, ince şerit. */
+@media (orientation: landscape) and (max-height: 500px) {
+  nav[data-purpose="bottom-nav"] { height: calc(2.75rem + env(safe-area-inset-bottom)) !important; padding-top: 0 !important; padding-bottom: max(0rem, env(safe-area-inset-bottom)) !important; }
+  nav[data-purpose="bottom-nav"] a { flex-direction: row !important; gap: 6px !important; width: auto !important; min-width: 44px; height: 40px !important; padding: 0 12px; }
+  nav[data-purpose="bottom-nav"] a svg, nav[data-purpose="bottom-nav"] a i { width: 20px !important; height: 20px !important; }
+}
