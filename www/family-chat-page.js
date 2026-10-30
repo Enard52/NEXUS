@@ -54,7 +54,7 @@
         : '<div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] text-sm font-bold text-white">' + letter + '</div>';
       var p = member && member.lastSeenAt && HC && HC.presenceOf ? HC.presenceOf(member) : null;
       var dot = p
-        ? '<span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white dark:border-slate-900 ' + (p.key === "online" ? "bg-emerald-500" : p.key === "recent" ? "bg-amber-400" : "bg-slate-300 dark:bg-slate-600") + '" title="' + esc(p.label) + '"></span>'
+        ? '<span class="nx-presence-dot rounded-full border-2 border-white dark:border-slate-900" style="position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;box-sizing:border-box;background:' + (p.key === "online" ? "#10b981" : p.key === "recent" ? "#fbbf24" : "#94a3b8") + '" title="' + esc(p.label) + '"></span>'
         : "";
       return '<span class="relative inline-flex shrink-0 ' + (mine ? "order-2" : "") + '" data-avatar-of="' + esc(member ? member.userId : "") + '">' + inner + dot + "</span>";
     }
@@ -64,7 +64,7 @@
       var who = m.parent.sender_id === me ? "Sen" : (m.parent.sender_name || "Üye");
       var body = String(m.parent.body || "");
       if (body.length > 90) body = body.slice(0, 89) + "…";
-      return '<button type="button" class="mb-1 block max-w-full rounded-lg border-l-4 border-current/40 bg-black/5 px-2.5 py-1.5 text-left opacity-80 dark:bg-white/10" data-jump="' + esc(m.reply_to) + '">' +
+      return '<button type="button" class="msg-quote mb-1 block max-w-full rounded-lg bg-black/5 px-2.5 py-1.5 text-left opacity-80 dark:bg-white/10" data-jump="' + esc(m.reply_to) + '">' +
         '<span class="block text-[11px] font-bold">' + esc(who) + '</span>' +
         '<span class="block max-w-[15rem] truncate text-[11px]">' + esc(body) + '</span></button>';
     }
