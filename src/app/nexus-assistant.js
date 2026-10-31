@@ -205,7 +205,7 @@
       /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
     if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
     // SSS / destek: konuyu gerçekten yanıtlayan ekranı gösterir (genel komut listesi değil)
-    if (/\b(sss|destek|sikca sorulan|geri bildirim|sorun bildir|faq|support|feedback|contact)\b/.test(text)) {
+    if (/\b(sss|sikca sorulan|geri bildirim|sorun bildir|faq|feedback|destek ekib\w*|destek al\w*|destek istiyorum|musteri hizmetleri|customer support|contact support|contact us)\b/.test(text) || /\bsss ve destek\b/.test(text)) {
       return { reply: T("SSS ve Geri Bildirim ekranında sık sorulan soruların yanıtları ve geri bildirim formu var (Ayarlar'dan ya da Enerji ekranının altından ulaşabilirsin). Takıldığın konuyu buraya yazarsan bildiğim kadarıyla yardımcı olurum; çözemezsem formdan bize iletebilirsin.",
         "The FAQ and Feedback screen has answers to common questions and a feedback form. Tell me what you are stuck on and I will help as far as I can; if I cannot solve it, send it to us through the form.") };
     }
@@ -230,9 +230,16 @@
     if (/\b(hava durumu|hava nasil|weather|forecast)\b/.test(text)) {
       return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
     }
-    if (/\b(durum|durumu|ne acik|neler acik|hangi cihazlar acik|akilli kontrol|status|what is on|what'?s on|whats on|what is running|which devices are on|smart control)\b/.test(text)) return status(all);
+    // Yalnızca çıplak "durum" (en çok 3 kelime) ya da açık cihaz durumu sorusu; "kargo durumu" gibi cümleler yapay zekâya gider.
+    if ((text.split(" ").length <= 3 && /\b(durum|durumu|status|akilli kontrol|smart control)\b/.test(text) && !/\b(kargo|siparis|odeme|hesap|abonelik|order|payment|account|shipping)\b/.test(text)) ||
+      /\b(ne acik|neler acik|hangi cihazlar acik|cihaz durumu|ev durumu|what is on|what'?s on|whats on|what is running|which devices are on|device status|home status)\b/.test(text)) return status(all);
 
     if (!N) return { reply: help() };
+
+    // Bilgi / öneri soruları ("klimayı nasıl açarım", "bana film öner") komut değildir: cihaza dokunulmaz, yapay zekâya gider.
+    if (/\b(nasil|neden|niye|nedir|ne demek|hangi|kimdir|oner\w*|tavsiye\w*|sence|why|how|what is|what are|which|who|recommend\w*|suggest\w*)\b/.test(text)) {
+      return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. "]), unknown: true };
+    }
 
     // Senaryo çalıştırma
     for (var s = 0; s < SCENE_WORDS.length; s++) {
