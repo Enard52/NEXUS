@@ -464,6 +464,54 @@
       quickList();
       openSheet('quick-create');
     };
+
+    // ---------- Tıkla ve çalıştır: kendi sayfası (tetikleyici yok; tek dokunuşla çalışan senaryo) ----------
+    if (TYPE === 'clickrun') {
+      devices = readDevices();
+      S = fresh('time');
+      var main = document.querySelector('main');
+      document.querySelector('header h1').textContent = 'Tıkla ve Çalıştır';
+      main.className = 'flex-grow px-5 pt-4 pb-40 qs-wrap';
+      main.innerHTML = '<div class="text-center" style="margin-bottom:18px"><h2 class="text-2xl font-bold leading-tight tracking-tight mb-1">Yeni Senaryo</h2>' +
+        '<p class="text-slate-500 text-sm">Tek dokunuşla eşleşmiş cihazlarında çalışacak bir senaryo seç.</p></div>' +
+        '<div id="click-scenes"></div>' +
+        '<section class="qs-section" id="click-name-wrap" style="margin-top:18px"></section>';
+      var bar = document.createElement('div');
+      bar.className = 'qs-savebar qs-wrap';
+      bar.innerHTML = '<button type="button" id="click-save" class="qs-save" disabled>Senaryoyu kaydet</button><p class="qs-hint" id="click-hint"></p>';
+      document.body.appendChild(bar);
+      var nameTouched = false, nameVal = '';
+      var clickRender = function () {
+        document.getElementById('click-scenes').innerHTML = sceneHtml();
+        var wrap = document.getElementById('click-name-wrap');
+        var has = !!S.scene && QS && QS.available().length;
+        wrap.style.display = has ? '' : 'none';
+        if (has && !document.getElementById('qs-name')) {
+          wrap.innerHTML = '<div class="qs-label">Adı</div><input class="qs-input" id="qs-name" maxlength="40" value="">';
+        }
+        var nm = document.getElementById('qs-name');
+        if (nm) { nm.placeholder = S.scene ? NX.SCENES[S.scene].title : ''; if (!nameTouched) nm.value = ''; }
+        document.getElementById('click-save').disabled = !S.scene;
+        document.getElementById('click-hint').textContent = S.scene ? '' : (QS && QS.available().length ? 'Önce bir senaryo seç.' : '');
+        icons();
+      };
+      document.getElementById('click-scenes').addEventListener('click', function (ev) {
+        var t = ev.target.closest('[data-scene]');
+        if (!t) return;
+        S.scene = t.getAttribute('data-scene');
+        clickRender();
+      });
+      main.addEventListener('input', function (ev) {
+        if (ev.target.id === 'qs-name') { nameTouched = true; nameVal = ev.target.value; }
+      });
+      document.getElementById('click-save').addEventListener('click', function () {
+        if (!S.scene) return;
+        var title = (nameVal || '').trim() || NX.SCENES[S.scene].title;
+        QS.save('clickrun', S.scene, { title: title, desc: QS.metaFor(S.scene).desc, trigger: { type: 'manual' } });
+        finish();
+      });
+      clickRender();
+    }
   })();
   </script>
 </body>
