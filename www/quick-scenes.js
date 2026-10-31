@@ -54,7 +54,7 @@
         var t = describeAct(a);
         if (parts.indexOf(t) === -1) parts.push(t);
       });
-      out.push({ name: d.name || "Cihaz", index: i, text: parts.join(", ") });
+      out.push({ name: d.name || "Cihaz", index: i, text: parts.join(", "), thumb: NX.thumbHtml ? NX.thumbHtml(d, "qs-thumb") : "" });
     });
     return out;
   }

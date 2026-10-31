@@ -299,10 +299,11 @@
         h += '<button type="button" class="qs-choice' + (on ? ' is-on' : '') + '" data-scene="' + esc(s.id) + '">' +
           '<span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + esc(s.icon) + '"></i></span>' +
           '<span class="qs-body"><span class="qs-title">' + esc(s.title) + '</span><span class="qs-meta">' + esc(s.desc) + '</span>' +
+          '<span class="qs-thumbs">' + s.devices.slice(0, 4).map(function (d) { return d.thumb; }).join('') + '</span>' +
           '<span class="qs-meta" style="font-weight:700">' + s.affected + ' cihaz · ' + esc(names.slice(0, 2).join(', ') + (names.length > 2 ? ' +' + (names.length - 2) : '')) + '</span></span>' +
           '<span class="qs-radio"></span></button>';
         if (on) h += '<div class="qs-preview"><h5>Çalışınca ne olur</h5><ul>' + s.devices.map(function (d) {
-          return '<li><span>' + esc(d.name) + '</span><span>' + esc(d.text) + '</span></li>';
+          return '<li><span class="qs-devname">' + d.thumb + esc(d.name) + '</span><span>' + esc(d.text) + '</span></li>';
         }).join('') + '</ul></div>';
       });
       if (TYPE === 'automation') {

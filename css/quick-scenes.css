@@ -103,3 +103,8 @@ html.dark .qs-sheet { --qs-sheet: #111827; }
 .qs-done svg { width: 15px; height: 15px; }
 .qs-sugg .qs-ico + .qs-body { margin-left: 0; }
 .qs-sugg .qs-meta { display: block; margin-top: 2px; -webkit-line-clamp: 2; }
+/* Cihaz adının yanında gerçek ürün görseli */
+.qs-thumb { width: 22px; height: 22px; object-fit: contain; flex: none; }
+.qs-thumbs { display: flex; align-items: center; gap: 4px; min-height: 26px; }
+.qs-thumbs .qs-thumb { width: 26px; height: 26px; }
+.qs-devname { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }

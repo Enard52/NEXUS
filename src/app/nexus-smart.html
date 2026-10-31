@@ -609,6 +609,7 @@ function toggleHomeSelector() {
         return '<button type="button" class="qs-tile" data-scene="' + qsEsc(s.id) + '">' +
           '<span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + qsEsc(s.icon) + '"></i></span>' +
           '<span class="qs-title">' + qsEsc(s.title) + '</span>' +
+          '<span class="qs-thumbs">' + s.devices.slice(0, 4).map(function (d) { return d.thumb; }).join('') + '</span>' +
           '<span class="qs-meta">' + s.affected + ' cihaz · ' + qsEsc(deviceListText(s.devices)) + '</span>' +
           '<span class="qs-run" style="color:' + s.hex + '"><i data-lucide="play"></i><span class="qs-run-text">Çalıştır</span></span>' +
           '</button>';

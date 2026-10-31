@@ -475,8 +475,7 @@
         var protoLabel = found.protocol ? found.protocol.charAt(0).toUpperCase() + found.protocol.slice(1) : "LAN";
         return '<div class="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-3.5 dark:border-slate-800 dark:bg-slate-900">' +
           '<div class="flex items-center gap-3 min-w-0">' +
-          '<div class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center ' + colorCls + '">' +
-          '<i data-lucide="' + icon + '" class="w-5 h-5"></i></div>' +
+          foundImageHtml(found, "device-thumb w-11 h-11") +
           '<div class="min-w-0">' +
           '<p class="text-sm font-bold truncate dark:text-white">' + escapeHtml(found.name) + '</p>' +
           '<p class="text-[11px] text-slate-500 truncate dark:text-slate-400">' + protoLabel + ' · ' + escapeHtml(found.host) + '</p>' +
