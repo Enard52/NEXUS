@@ -230,15 +230,18 @@
       var s = document.createElement("style");
       s.id = "nx-pal-entry-style";
       s.textContent =
-        "#nx-pal-entry{position:fixed;right:18px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:90;" +
-        "width:44px;height:44px;border-radius:999px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;" +
-        "background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);" +
-        "box-shadow:0 10px 24px -8px rgba(15,23,42,.28);color:var(--nx-accent,#4C7DFF);transition:transform .15s ease,opacity .2s ease}" +
-        "html.dark #nx-pal-entry,html[data-theme='dark'] #nx-pal-entry{background:rgba(30,41,59,.92);color:#8fb0ff}" +
-        "#nx-pal-entry:active{transform:scale(.92)}" +
-        "#nx-pal-entry:focus-visible{outline:2px solid var(--nx-accent,#4C7DFF);outline-offset:2px}" +
+        // AI düğmesiyle aynı dil: ekranın sağ kenarına yapışık sekme; boştayken kenara gizlenir (docked).
+        "#nx-pal-entry{position:fixed;right:max(0px,env(safe-area-inset-right));bottom:calc(88px + env(safe-area-inset-bottom));z-index:90;" +
+        "width:48px;height:46px;border-radius:18px 0 0 18px;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;" +
+        "background:rgba(255,255,255,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);-webkit-tap-highlight-color:transparent;" +
+        "box-shadow:0 12px 30px rgba(15,23,42,.14),0 4px 14px rgba(91,141,255,.18);color:var(--nx-accent,#4C7DFF);opacity:.96;" +
+        "transition:transform .28s ease,opacity .28s ease,box-shadow .18s ease}" +
+        "html.dark #nx-pal-entry,html[data-theme='dark'] #nx-pal-entry{background:rgba(15,23,42,.84);color:#8fb0ff;border:1px solid rgba(148,163,184,.18)}" +
+        "#nx-pal-entry:active{transform:translateX(0) scale(.94)}" +
+        "#nx-pal-entry:focus-visible{outline:2px solid var(--nx-accent,#4C7DFF);outline-offset:-2px;transform:translateX(0);opacity:1}" +
         "#nx-pal-entry svg{width:21px;height:21px}" +
-        ".no-nav ~ #nx-pal-entry,#nx-pal-entry.no-nav{bottom:calc(140px + env(safe-area-inset-bottom))}";
+        "#nx-pal-entry.docked{transform:translateX(calc(100% - 14px));opacity:.34;box-shadow:0 6px 16px rgba(15,23,42,.10)}" +
+        "#nx-pal-entry.docked:hover{transform:translateX(0);opacity:1}";
       document.head.appendChild(s);
 
       var b = document.createElement("button");
@@ -247,18 +250,43 @@
       b.setAttribute("aria-label", T("Ara: sayfa, cihaz, eylem", "Search: page, device, action"));
       b.setAttribute("aria-haspopup", "dialog");
       b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>';
-      b.addEventListener("click", function () { open(b); });
       document.body.appendChild(b);
-      // Aşağı kaydırırken balon içeriği kapatmasın: gizlenir, yukarı kaydırınca geri gelir.
-      var lastY = window.pageYOffset || 0;
-      window.addEventListener("scroll", function () {
-        var y = window.pageYOffset || 0;
-        if (Math.abs(y - lastY) < 8) return;
-        var down = y > lastY && y > 80;
-        b.style.opacity = down ? "0" : "";
-        b.style.pointerEvents = down ? "none" : "";
-        lastY = y;
-      }, { passive: true });
+      // İçeriği kapatmasın: boştayken kenara gizlenir; kaydırınca / dokununca ya da sekmeye basınca açılır (ai-fab.js ile aynı).
+      var dockTimer = null;
+      function scheduleDock() { clearTimeout(dockTimer); dockTimer = setTimeout(function () { b.classList.add("docked"); }, 2600); }
+      function undock() { b.classList.remove("docked"); scheduleDock(); }
+      b.addEventListener("click", function () {
+        if (b.classList.contains("docked")) { undock(); return; }
+        open(b);
+      });
+      window.addEventListener("scroll", undock, { passive: true });
+      document.addEventListener("touchstart", function (e) { if (e.target !== b && !b.contains(e.target)) undock(); }, { passive: true });
+      scheduleDock();
+      // Konum: AI düğmesi varsa onun hemen üstüne dizilir; altta yapışık bir çubuk/buton varsa onun üstüne çıkar (üst üste binmez).
+      function place() {
+        var base = 88, bars = 0;
+        Array.prototype.forEach.call(document.body.querySelectorAll("footer,div,section,nav"), function (el) {
+          if (el === b || b.contains(el) || el.classList.contains("nexus-ai-fab")) return;
+          var cs = window.getComputedStyle(el);
+          if (cs.position !== "fixed" || cs.display === "none" || cs.visibility === "hidden") return;
+          var r = el.getBoundingClientRect();
+          if (r.height <= 0 || r.height > window.innerHeight * 0.5 || Math.abs(window.innerHeight - r.bottom) > 2 || r.width < window.innerWidth * 0.6) return;
+          bars = Math.max(bars, r.height);
+        });
+        if (bars > 0) base = Math.max(base, Math.round(bars + 16));
+        var fab = document.querySelector(".nexus-ai-fab"), abs = false;
+        if (fab) { var fr = fab.getBoundingClientRect(); if (fr.height) { base = Math.round(window.innerHeight - fr.top + 10); abs = true; } }
+        b.style.bottom = abs ? base + "px" : "calc(" + base + "px + env(safe-area-inset-bottom))";
+        // Listelerin son satırı sekmenin altında kalmasın.
+        var main = document.querySelector("main");
+        if (main) {
+          var pb = parseFloat(window.getComputedStyle(main).paddingBottom) || 0, need = base + 56;
+          if (pb < need) main.style.paddingBottom = need + "px";
+        }
+      }
+      place();
+      setTimeout(place, 700);
+      window.addEventListener("resize", place);
     } catch (e) { /* giriş düğmesi çıkamazsa Ctrl+K/olay köprüsü yolu açık kalır */ }
   }
 
