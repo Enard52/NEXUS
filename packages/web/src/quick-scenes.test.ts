@@ -62,7 +62,7 @@ describe("nexusQuickScenes", () => {
 
   it("önizleme cihaz adı ve Türkçe sonuç metni verir", () => {
     const { QS } = load([{ name: "Giriş Kilidi", kind: "lock" }]);
-    expect(QS.preview("leave-home")).toEqual([{ name: "Giriş Kilidi", index: 0, text: "kilitlenir" }]);
+    expect(QS.preview("leave-home")).toEqual([{ name: "Giriş Kilidi", index: 0, text: "kilitlenir", thumb: "" }]);
   });
 
   it("clickrun kaydı sceneId ile yazılır, otomasyon kaydı verilen tetikleyiciyi taşır", () => {
