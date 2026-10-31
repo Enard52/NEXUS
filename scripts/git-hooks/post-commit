@@ -1,0 +1,28 @@
+#!/bin/sh
+# NEXUS otomatik senkron post-commit kancasi (IZLENEN kopya: scripts/git-hooks/post-commit).
+# .git/hooks altindaki calisan kopyayi scripts/install-hooks.mjs kurar (npm prepare).
+# Kural: main'de olusan her commit aninda origin/main'e push'lanir; commit edilmis is
+# bulutta guvende olur. Commit'siz duzenlemeler yine yerelde kalir (bilerek).
+# Guvenlik kisitlari:
+#  - Bir islemin ortasindaki araci commit'ler (cherry-pick/rebase/merge/am/revert/bisect)
+#    push'lanmaz; islem bitince son commit zaten push edilir.
+#  - Yalnizca main dalinda calisir; baska daldan calisirsa dokunmaz.
+#  - Internet/credentials yoksa yalnizca hatirlatir, commit'i etkilemez.
+GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || exit 0
+for marker in CHERRY_PICK_HEAD MERGE_HEAD REVERT_HEAD BISECT_LOG; do
+  if [ -e "$GIT_DIR/$marker" ]; then
+    exit 0
+  fi
+done
+if [ -d "$GIT_DIR/rebase-merge" ] || [ -d "$GIT_DIR/rebase-apply" ]; then
+  exit 0
+fi
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+if [ "$branch" != "main" ]; then
+  exit 0
+fi
+git remote get-url origin >/dev/null 2>&1 || exit 0
+if ! git push --quiet origin main >/dev/null 2>&1; then
+  echo "NEXUS: otomatik push yapilamadi (cevrimdisi olabilirsin). Commit yerelde guvenli; internet gelince 'git push' dene." >&2
+fi
+exit 0
