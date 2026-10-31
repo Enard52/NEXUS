@@ -26,7 +26,11 @@
   },
   "devDependencies": {
     "electron": "44.9.3",
-    "electron-builder": "26.15.3"
+    "electron-builder": "26.18.0"
+  },
+  "overrides": {
+    "minimatch@<11.0.1": ">=11.0.1",
+    "glob@>=9.0.0": ">=14.0.2"
   },
   "build": {
     "appId": "app.nexus.desktop",
