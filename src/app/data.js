@@ -712,7 +712,27 @@ function getMergedDevices(dataDevices) {
     return merged;
 }
 
+// Eşleşmiş cihazın gerçek türü (NX.kindOf: yetenekler) öneri kategorisine çevrilir; tür çözülemezse ad/tür metnine bakılır.
+const SMART_KIND_CATEGORY = {
+    light: 'lighting',
+    ac: 'climate', thermostat: 'climate', climatesensor: 'climate',
+    lock: 'security', camera: 'security', alarm: 'security', motion: 'security', contact: 'security',
+    media: 'media',
+    switch: 'energy', energy: 'energy', purifier: 'energy', airsensor: 'energy'
+};
+function smartKindOf(device) {
+    try {
+        if (!(window.NX && NX.kindOf && NX.readDevices && device)) return '';
+        // Birleşik listedeki kayıt yetenek bilgisini kaybetmiş olabilir; türü eşleşmiş (yerel) kayıttan çöz.
+        const local = NX.readDevices().find(d => d && (d.id && d.id === device.id || d.name === device.name));
+        const kind = NX.kindOf(local || device);
+        return kind === 'generic' ? '' : kind;
+    } catch (e) { return ''; }
+}
+
 function inferSmartCategory(device) {
+    const kindCat = SMART_KIND_CATEGORY[smartKindOf(device)];
+    if (kindCat) return kindCat;
     const type = ((device && device.type) || '').toLowerCase();
     const name = ((device && device.name) || '').toLowerCase();
     const full = `${type} ${name}`;
@@ -735,19 +755,35 @@ window.getSmartDeviceProfile = function() {
         energy: 0,
         general: 0
     };
+    const kinds = {};
 
     devices.forEach(device => {
         counts[inferSmartCategory(device)] += 1;
+        const k = smartKindOf(device);
+        if (k) kinds[k] = (kinds[k] || 0) + 1;
     });
 
     return {
         devices,
         counts,
+        kinds,
         total: devices.length
     };
 };
 
+// Belirli bir cihaz türü gerektiren şablonlar: o türde cihaz yoksa önerilmez, varsa öne çıkar.
+const SMART_TEMPLATE_KINDS = {
+    'cleaning-routine-center': ['vacuum'],
+    'garden-watering': ['garden'],
+    'air-quality-guard': ['purifier', 'airsensor']
+};
+
 function scoreTemplate(template, profile) {
+    const needed = SMART_TEMPLATE_KINDS[template.id];
+    if (needed) {
+        const have = needed.reduce((sum, k) => sum + ((profile.kinds && profile.kinds[k]) || 0), 0);
+        return have ? 100 + have * 10 : 0;
+    }
     const categoryCount = profile.counts[template.category] || 0;
     const deviceBonus = template.deviceTypes.reduce((sum, type) => sum + (profile.counts[type] || 0), 0);
     return (categoryCount * 10) + (deviceBonus * 4);
@@ -777,19 +813,6 @@ window.getRecommendedSmartApps = function(limit = 3) {
         if (picked.length >= limit) break;
     }
     return picked;
-};
-
-// Tüm havuz (puan sırasıyla): "diğer önerileri gör" genişletmesi bunu kullanır.
-window.getAllSmartAppsRanked = function() {
-    const profile = window.getSmartDeviceProfile();
-    return NEXUS_SMART_APP_TEMPLATES.map((template, index) => ({
-        ...template,
-        score: scoreTemplate(template, profile),
-        order: index
-    })).sort((a, b) => {
-        if (b.score !== a.score) return b.score - a.score;
-        return a.order - b.order;
-    });
 };
 
 window.getSmartPromptById = function(id) {

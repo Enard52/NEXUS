@@ -661,9 +661,7 @@ function toggleHomeSelector() {
        return 'bg-gray-100';
     }
 
-    // Varsayılan 3 kart cihazlarına göre sıralanır; "Diğer Önerileri Gör" ile puan
-    // sırasındaki geniş havuz açılır (her kartın kendi görseli vardır, tekrar yok).
-    var recommendationsExpanded = false;
+    // Öneriler cihazlara göre puanlanır ve en alakalı 5 kart gösterilir (her kartın kendi görseli vardır, tekrar yok).
     function smartRecCard(item, esc) {
       return '<a href="nexus-smart-app-detail.html?id=' + encodeURIComponent(item.id) + '" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">' +
         '<div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">' +
@@ -680,25 +678,10 @@ function toggleHomeSelector() {
       var container = document.getElementById('smart-recommendations-container');
       if (!container || typeof window.getRecommendedSmartApps !== 'function') return;
       var esc = function (s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
-      var apps = recommendationsExpanded && typeof window.getAllSmartAppsRanked === 'function'
-        ? window.getAllSmartAppsRanked()
-        : window.getRecommendedSmartApps(3);
+      // Her zaman 5 kart: cihaz eklendiyse cihazlarıyla en alakalı 5'i (puan sırası), eklenmediyse varsayılan 5.
+      var apps = window.getRecommendedSmartApps(5);
       if (!apps || !apps.length) return;
       container.innerHTML = apps.map(function (item) { return smartRecCard(item, esc); }).join('');
-      var old = document.getElementById('smart-recommendations-more');
-      if (old) old.remove();
-      if (!recommendationsExpanded && typeof window.getAllSmartAppsRanked === 'function') {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.id = 'smart-recommendations-more';
-        btn.className = 'w-full mt-3 py-3 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform';
-        btn.textContent = 'Diğer Önerileri Gör (' + window.getAllSmartAppsRanked().length + ')';
-        btn.addEventListener('click', function () {
-          recommendationsExpanded = true;
-          renderSmartRecommendations();
-        });
-        container.insertAdjacentElement('afterend', btn);
-      }
     }
 
     // Switch to tab if URL has ?tab=...
