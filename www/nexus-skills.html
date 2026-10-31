@@ -156,7 +156,7 @@
     }
 
     function sceneSection(step, withNotify) {
-      if (!QS || !QS.hasDevices()) return '<section class="qs-section"><div class="qs-label"><span class="qs-step">' + step + '</span>Ne yapsın?</div>' + (TYPE === 'clickrun' ? noDevicesNote() : '<div class="qs-note">Senaryolar eşleştirdiğin cihazlarda çalışır. <a href="nexus-pair.html">Cihaz ekle</a></div>') + '</section>';
+      if (!QS || !QS.hasDevices()) return '<section class="qs-section"><div class="qs-label"><span class="qs-step">' + step + '</span>Ne yapsın?</div>' + noDevicesNote() + '</section>';
       var h = '<section class="qs-section"><div class="qs-label"><span class="qs-step">' + step + '</span>Ne yapsın?</div>';
       h += scenes.map(sceneCard).join('');
       if (withNotify) {
@@ -222,20 +222,6 @@
       return h;
     }
 
-    // Hızlı öneriler (yalnız otomasyon): eşleşmiş cihazlarda gerçekten çalışan senaryo + gerçek zaman tetikleyicisi
-    function suggestionSection() {
-      if (!QS || !QS.hasDevices()) return '<section class="qs-section"><div class="qs-label">Hızlı öneriler</div>' + noDevicesNote() + '</section>';
-      var sug = QS.available().filter(function (s) { return s.time; });
-      if (!sug.length) return '';
-      var h = '<section class="qs-section"><div class="qs-label">Hızlı öneriler</div><p class="qs-sub">Cihazlarına göre hazır; tek dokunuşla eklenir.</p>';
-      sug.forEach(function (s) {
-        h += '<div class="qs-sugg"><span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + esc(s.icon) + '"></i></span>' +
-          '<span class="qs-body"><span class="qs-title">' + esc(s.title) + '</span><span class="qs-meta">' + esc(s.time.label) + ' · ' + s.affected + ' cihaz</span></span>' +
-          '<button type="button" class="qs-link-btn" data-sugg="' + esc(s.id) + '"><i data-lucide="plus"></i> Ekle</button></div>';
-      });
-      return h + '</section>';
-    }
-
     // ---------- Doğrulama ve kayıt ----------
     function problem() {
       if (!S.scene) return TYPE === 'clickrun' ? 'Önce bir senaryo seç.' : 'Ne yapacağını seç.';
@@ -289,7 +275,7 @@
       } else {
         title.textContent = 'Yeni otomasyon';
         h += '<div class="qs-title-block"><h2>Yeni otomasyon</h2><p>Bir tetikleyici ve cihazlarında çalışacak senaryoyu seç.</p></div>';
-        h += suggestionSection() + triggerSection() + sceneSection(2, true) + nameSection(3);
+        h += triggerSection() + sceneSection(2, true) + nameSection(3);
       }
       var scrollY = window.scrollY;
       root.innerHTML = h;
@@ -309,30 +295,36 @@
     root.addEventListener('click', function (ev) {
       var t = ev.target.closest('button');
       if (!t || t.disabled) return;
-      if (t.hasAttribute('data-scene')) { S.scene = t.getAttribute('data-scene'); if (!S.nameTouched) S.name = ''; return render(); }
+      if (t.hasAttribute('data-scene')) {
+        S.scene = t.getAttribute('data-scene');
+        if (!S.nameTouched) S.name = '';
+        // Sahnenin önerilen zamanı varsa, saati elle seçmediysen kendiliğinden dolar.
+        var sm = TYPE === 'automation' && S.trig === 'time' && !S.timeTouched ? QS.metaFor(S.scene) : null;
+        if (sm && sm.time) {
+          var known = TIME_PRESETS.some(function (p) { return p[0] === sm.time.value; });
+          if (known) { S.timeMode = 'preset'; S.time = sm.time.value; } else { S.timeMode = 'custom'; S.customTime = sm.time.value; }
+          S.repeat = sm.time.repeat;
+        }
+        return render();
+      }
       if (t.hasAttribute('data-trig')) { S.trig = t.getAttribute('data-trig'); return render(); }
       if (t.hasAttribute('data-time')) {
         var v = t.getAttribute('data-time');
+        S.timeTouched = true;
         if (v === 'custom') S.timeMode = 'custom'; else { S.timeMode = 'preset'; S.time = v; }
         return render();
       }
-      if (t.hasAttribute('data-repeat')) { S.repeat = t.getAttribute('data-repeat'); return render(); }
+      if (t.hasAttribute('data-repeat')) { S.timeTouched = true; S.repeat = t.getAttribute('data-repeat'); return render(); }
       if (t.hasAttribute('data-device')) { S.device = { key: t.getAttribute('data-device'), name: t.getAttribute('data-name') }; return render(); }
       if (t.hasAttribute('data-event')) { S.event = t.getAttribute('data-event'); return render(); }
       if (t.hasAttribute('data-sensor')) { S.sensor = { key: t.getAttribute('data-sensor'), name: t.getAttribute('data-name') }; return render(); }
       if (t.hasAttribute('data-metric')) { S.weather.metric = t.getAttribute('data-metric'); return render(); }
       if (t.hasAttribute('data-op')) { S.weather.op = t.getAttribute('data-op'); return render(); }
-      if (t.hasAttribute('data-sugg')) {
-        var s = QS.available().filter(function (x) { return x.id === t.getAttribute('data-sugg'); })[0];
-        if (!s || !s.time) return;
-        QS.save('automation', s.id, { title: s.title, desc: s.time.label + ' · ' + s.title, trigger: { type: 'time', value: s.time.value, repeat: s.time.repeat } });
-        return finish();
-      }
     });
     root.addEventListener('input', function (ev) {
       var el = ev.target;
       if (el.id === 'qs-name') { S.name = el.value; S.nameTouched = true; }
-      else if (el.id === 'qs-time') { S.customTime = el.value || S.customTime; }
+      else if (el.id === 'qs-time') { S.timeTouched = true; S.customTime = el.value || S.customTime; }
       else if (el.id === 'qs-wval') { S.weather.value = el.value; }
       refreshSave();
     });
