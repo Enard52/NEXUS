@@ -50,6 +50,8 @@
 <script src="device-controls.js"></script>
 <script src="data.js"></script>
 <script src="quick-scenes.js"></script>
+<script src="security-mode.js"></script>
+<script src="location-trigger.js"></script>
 </head>
 <body class="text-slate-900 flex flex-col relative">
 
@@ -124,7 +126,7 @@
       </button>
 
       <!-- Item 4 -->
-      <button type="button" onclick="openConfigureSheet('Konum', 'Eve vardığında veya evden ayrıldığında', 'map-pin', 'text-emerald-500', 'bg-emerald-500/10')" class="nx-reset flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <button type="button" id="trigger-location-card" onclick="openConfigureSheet('Konum', 'Eve vardığında veya evden ayrıldığında', 'map-pin', 'text-emerald-500', 'bg-emerald-500/10')" class="nx-reset flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="map-pin"></i>
         </div>
@@ -136,13 +138,13 @@
       </button>
 
       <!-- Item 5 -->
-      <button type="button" onclick="openConfigureSheet('Güvenlik Modu', 'Alarm sistemi durumu değiştiğinde', 'shield-check', 'text-cyan-500', 'bg-cyan-500/10')" class="nx-reset flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
+      <button type="button" onclick="openConfigureSheet('Güvenlik Modu', 'Güvenlik modu (Evde/Dışarıda/Gece) değiştiğinde', 'shield-check', 'text-cyan-500', 'bg-cyan-500/10')" class="nx-reset flex items-center p-5 hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer border-b border-slate-100 last:border-0">
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center flex-shrink-0">
           <i class="w-6 h-6" data-lucide="shield-check"></i>
         </div>
         <div class="flex-1 ml-4 text-left">
           <h3 class="font-bold text-base text-slate-800">Güvenlik Modu</h3>
-          <p class="text-[13px] text-slate-400 mt-0.5">Alarm sistemi durumu değiştiğinde</p>
+          <p class="text-[13px] text-slate-400 mt-0.5">Güvenlik modu (Evde/Dışarıda/Gece) değiştiğinde</p>
         </div>
         <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
       </button>
@@ -199,6 +201,8 @@
     var KEY = TYPE === 'clickrun' ? 'nexusCustomClickRun' : 'nexusCustomAutomations';
     var TAB = TYPE === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
     var QS = window.nexusQuickScenes;
+    // Konum tetikleyicisi yalnızca mobil uygulamada anlamlı; tarayıcıda/masaüstünde kart gizlenir.
+    if (!window.nexusLocationTrigger.isNative()) { var lc = document.getElementById('trigger-location-card'); if (lc) lc.style.display = 'none'; }
 
     // Tetikleyici türü (kart başlığından). Konum ve güvenlik modu için motorda gerçek tetikleyici yok; kayıt engellenir.
     var TRIGGER_KINDS = {
@@ -237,7 +241,7 @@
 
     function fresh(kind) {
       return { kind: kind, scene: null, timeMode: 'preset', time: '07:00', customTime: '07:00', timeTouched: false, repeat: 'daily',
-        device: null, event: 'any', sensor: null, weather: { metric: 'temp', op: 'above', value: '' } };
+        device: null, event: 'any', sensor: null, secmode: 'away', loc: window.nexusLocationTrigger.fresh(), weather: { metric: 'temp', op: 'above', value: '' } };
     }
     function timeValue() { return S.timeMode === 'custom' ? S.customTime : S.time; }
     function coords() {
@@ -252,11 +256,8 @@
 
     function triggerHtml() {
       var k = S.kind;
-      if (k === 'location' || k === 'security') {
-        return '<div class="qs-note">' + (k === 'security'
-          ? 'Güvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen gerçek bir alarm paneli durumu veya NEXUS düzeyinde bir mod anahtarı henüz yok.'
-          : 'Konum tetikleyicisi henüz desteklenmiyor, bu yüzden kaydedilemez.') + ' Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).</div>';
-      }
+      if (k === 'security') return window.nexusSecurityMode.triggerHtml(S.secmode);
+      if (k === 'location') return window.nexusLocationTrigger.triggerHtml(S.loc);
       if (k === 'time') {
         var h = '<div class="qs-chips">' + TIME_PRESETS.map(function (p) { return chip('data-time', p[0], p[1], S.timeMode === 'preset' && S.time === p[0]); }).join('') +
           chip('data-time', 'custom', 'Saat seç', S.timeMode === 'custom') + '</div>';
@@ -307,6 +308,7 @@
         }).join('') + '</ul></div>';
       });
       if (TYPE === 'automation') {
+        h += window.nexusSecurityMode.actionChoices(S.scene);
         h += '<button type="button" class="qs-choice' + (S.scene === 'notify' ? ' is-on' : '') + '" data-scene="notify">' +
           '<span class="qs-ico" style="background:#64748b1f;color:#64748b"><i data-lucide="bell-ring"></i></span>' +
           '<span class="qs-body"><span class="qs-title">Yalnızca bildirim</span><span class="qs-meta">Cihazlara dokunmaz, sadece haber verir.</span></span><span class="qs-radio"></span></button>';
@@ -317,7 +319,7 @@
 
     function problem() {
       if (TYPE === 'automation') {
-        if (S.kind === 'location' || S.kind === 'security') return 'Bu tetikleyici türü henüz desteklenmiyor.';
+        if (S.kind === 'location') { var lp = window.nexusLocationTrigger.problem(); if (lp) return lp; }
         if (S.kind === 'device') { if (!switchable().length) return 'Bu tetikleyici için eşleşmiş cihaz yok.'; if (!S.device) return 'İzlenecek cihazı seç.'; }
         if (S.kind === 'sensor') { if (!sensors().length) return 'Bu tetikleyici için eşleşmiş sensör yok.'; if (!S.sensor) return 'Tetikleyen sensörü seç.'; }
         if (S.kind === 'weather') {
@@ -343,6 +345,7 @@
       body.scrollTop = top;
       icons();
       refresh();
+      if (S.kind === 'location' && TYPE === 'automation') window.nexusLocationTrigger.fillStatus();
     }
 
     window.openConfigureSheet = function (title, desc, icon, colorClass, bgClass) {
@@ -381,6 +384,11 @@
       else if (t.hasAttribute('data-device')) S.device = { key: t.getAttribute('data-device'), name: t.getAttribute('data-name') };
       else if (t.hasAttribute('data-event')) S.event = t.getAttribute('data-event');
       else if (t.hasAttribute('data-sensor')) S.sensor = { key: t.getAttribute('data-sensor'), name: t.getAttribute('data-name') };
+      else if (t.hasAttribute('data-locev')) S.loc.event = t.getAttribute('data-locev');
+      else if (t.hasAttribute('data-locrad')) S.loc.radius = Number(t.getAttribute('data-locrad'));
+      else if (t.hasAttribute('data-locperm')) { window.nexusLocationTrigger.requestPermission().then(render); return; }
+      else if (t.hasAttribute('data-secmode')) S.secmode = t.getAttribute('data-secmode');
+      else if (t.hasAttribute('data-setmode')) window.nexusSecurityMode.set(t.getAttribute('data-setmode'));
       else if (t.hasAttribute('data-metric')) S.weather.metric = t.getAttribute('data-metric');
       else if (t.hasAttribute('data-op')) S.weather.op = t.getAttribute('data-op');
       else return;
@@ -404,6 +412,8 @@
       if (S.kind === 'time') return { type: 'time', value: timeValue(), repeat: S.repeat };
       if (S.kind === 'device') return { type: 'device', value: S.device.key, label: S.device.name, event: S.event };
       if (S.kind === 'sensor') return { type: 'sensor', value: S.sensor.key, label: S.sensor.name, event: 'active' };
+      if (S.kind === 'security') return { type: 'security', value: S.secmode };
+      if (S.kind === 'location') return { type: 'location', event: S.loc.event, radius: S.loc.radius };
       return { type: 'weather', metric: S.weather.metric, op: S.weather.op, value: Number(S.weather.value), label: 'weather' };
     }
     function triggerSummary() {
@@ -414,16 +424,21 @@
       }
       if (S.kind === 'device') return S.device.name + ({ on: ' açılınca', off: ' kapanınca', any: ' değişince' }[S.event]);
       if (S.kind === 'sensor') return S.sensor.name + ' algılayınca';
+      if (S.kind === 'security') return window.nexusSecurityMode.whenLabel(S.secmode);
+      if (S.kind === 'location') return window.nexusLocationTrigger.summary(S.loc);
       return ({ temp: 'Sıcaklık', wind: 'Rüzgâr', rain: 'Yağış' }[S.weather.metric]) + (S.weather.op === 'above' ? ' üstüne çıkınca' : ' altına inince');
     }
     window.confirmAddAutomation = function () {
       var p = problem();
       if (p) { toast(p, 'error'); return; }
-      var sceneId = S.scene === 'notify' ? null : S.scene;
+      var sm = /^secmode:(home|away|night)$/.exec(S.scene || '');
+      var smLabel = sm ? window.nexusSecurityMode.actionLabel(sm[1]) : '';
+      var sceneId = S.scene === 'notify' || sm ? null : S.scene;
       var scene = sceneId ? NX.SCENES[sceneId] : null;
-      var desc = TYPE === 'automation' ? triggerSummary() + (scene ? ' · ' + scene.title : ' · bildirim') : QS.descFor(sceneId);
+      var desc = TYPE === 'automation' ? triggerSummary() + (scene ? ' · ' + scene.title : sm ? ' · ' + smLabel : ' · bildirim') : QS.descFor(sceneId);
       QS.save(TYPE, sceneId, {
-        title: scene ? scene.title : pending.title,
+        actions: sm ? [{ kind: 'security-mode', value: sm[1] }] : [],
+        title: scene ? scene.title : sm ? smLabel : pending.title,
         desc: desc,
         trigger: buildTrigger(),
         icon: sceneId ? undefined : pending.icon

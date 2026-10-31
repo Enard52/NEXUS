@@ -71,6 +71,10 @@ describe("yedeği dışa aktarma", () => {
     );
     storage.setItem(`${user}_nexusUserPassword`, "parola");
     storage.setItem(`${user}_nexusErrorLog`, JSON.stringify([{ message: "x" }]));
+    storage.setItem(
+      `${user}_nexusRemoteHosts`,
+      JSON.stringify({ "http://192.168.1.5": "http://100.64.0.5" }),
+    );
     const data = cloud.exportBackup();
     expect(data.app).toBe("nexus-backup");
     expect(data.keys.nexusDarkMode).toBe("true");
@@ -79,6 +83,7 @@ describe("yedeği dışa aktarma", () => {
     expect(data.keys).not.toHaveProperty("nexusNotifyChannels");
     expect(data.keys).not.toHaveProperty("nexusUserPassword");
     expect(data.keys).not.toHaveProperty("nexusErrorLog");
+    expect(data.keys).not.toHaveProperty("nexusRemoteHosts");
     const text = JSON.stringify(data);
     for (const secret of [
       "SECRET-LOCAL-KEY",

@@ -852,6 +852,7 @@
     nexusNotifyStats: 1,
     // Yerel hata günlüğü (theme.js): yalnız bu cihazda, kullanıcı kendisi kopyalamadıkça hiçbir yere gitmez.
     nexusErrorLog: 1,
+    nexusRemoteHosts: 1,
   };
 
   function currentUserKey() {

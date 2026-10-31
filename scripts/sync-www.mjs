@@ -49,6 +49,8 @@ export const APP_JS = [
   "app-version.js",
   "update-check.js",
   "settings-diagnostics.js",
+  "security-mode.js",
+  "location-trigger.js",
 ];
 export const APP_FILES = ["index.html", "logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "firebase-messaging-sw.js", "manifest.webmanifest", "automation-worker.html"];
 export const APP_DIRS = ["css", "fonts", "js", "assets", "icons", "leaflet"];

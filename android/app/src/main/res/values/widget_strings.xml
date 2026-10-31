@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Devices as last saved by NEXUS. Tap to open the app.</string>
+    <string name="widget_empty_title">NEXUS</string>
+    <string name="widget_empty_body">Open NEXUS and add a device.</string>
+    <string name="widget_title">%1$d of %2$d on</string>
+    <string name="widget_updated">Updated %1$s</string>
+</resources>

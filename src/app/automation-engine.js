@@ -20,7 +20,8 @@
  *
  * Sınırlar (dürüst): uygulama/sekme kapalıyken çalışmaz. Masaüstünde
  * tepsi modunda gizli çalışan pencere (automation-worker.html) sürdürür.
- * Konum (geofence) ve güvenlik modu tetikleyicileri bu sürümde yok.
+ * Güvenlik modu tetikleyicisi NEXUS içi mod anahtarını dinler (security-mode.js); konum (geofence) tetikleyicisi
+ * yalnızca mobil uygulamada ve uygulama açıkken çalışır (watchLocation; arka plan konumu istenmez).
  */
 (function () {
   if (window.NexusAutomationEngine) return;
@@ -195,7 +196,15 @@
       } else if (Array.isArray(item.actions) && item.actions.length && window.NX) {
         var devices = NX.readDevices();
         var done = 0;
+        var modeSet = "";
         item.actions.forEach(function (a) {
+          if (a && a.kind === "security-mode") {
+            if (SECURITY_MODES.indexOf(a.value) !== -1) {
+              set(SECURITY_KEY, a.value);
+              modeSet = a.value;
+            }
+            return;
+          }
           var idx =
             typeof a.index === "number"
               ? a.index
@@ -207,10 +216,18 @@
             done++;
           }
         });
-        summary = tr(
-          item.title + ": " + done + " cihaz güncellendi.",
-          item.title + ": " + done + " device(s) updated.",
-        );
+        if (modeSet && !done) {
+          var modeTr = { home: "Evde", away: "Dışarıda", night: "Gece" }[modeSet];
+          summary = tr(
+            item.title + ": güvenlik modu " + modeTr + " yapıldı.",
+            item.title + ": security mode set to " + modeSet + ".",
+          );
+        } else {
+          summary = tr(
+            item.title + ": " + done + " cihaz güncellendi.",
+            item.title + ": " + done + " device(s) updated.",
+          );
+        }
       } else {
         // Dürüst kayıt: eylem tanımlı değil; "çalıştı" sanılmasın
         summary = tr(
@@ -589,13 +606,193 @@
       );
   }
 
+  // ---- Android ana ekran widget'ı: son bilinen cihaz durumu anlık görüntüsü ----
+  // Yalnızca mobil uygulamada (Capacitor "NexusWidget" eklentisi) ve yalnızca uygulamanın KAYITLI durumunu bilen
+  // (açık/kapalı okunmuş) cihazlar yazılır; widget cihazları canlı sorgulamaz, uydurma değer yoktur. Değişmediyse
+  // yeniden yazılmaz.
+  var widgetLast = "";
+  function widgetPlugin() {
+    var c = window.Capacitor;
+    return c && c.isNativePlatform && c.isNativePlatform() && c.Plugins && c.Plugins.NexusWidget
+      ? c.Plugins.NexusWidget
+      : null;
+  }
+  function pushWidget() {
+    var plugin = widgetPlugin();
+    if (!plugin) return false;
+    var list = get("nexusPairedDevices", []);
+    var devices = [];
+    (Array.isArray(list) ? list : []).forEach(function (d) {
+      if (d && d.name && d.state && typeof d.state.switch === "boolean") {
+        devices.push({ name: String(d.name).slice(0, 40), on: d.state.switch });
+      }
+    });
+    var key = JSON.stringify(devices);
+    if (key === widgetLast) return false;
+    widgetLast = key;
+    try {
+      Promise.resolve(plugin.update({ devices: devices })).catch(function () {
+        widgetLast = ""; // yazılamadı: sonraki turda yeniden dene
+      });
+    } catch (e) {
+      widgetLast = "";
+    }
+    return true;
+  }
+
+  // ---- konum tetikleyicisi (trigger.type === 'location') ----
+  // trigger = { type:'location', event:'arrive'|'leave', radius:<metre> }. Merkez, kullanıcının seçtiği ev konumudur
+  // (nexusWeatherCoords). YALNIZCA mobil uygulamada (Capacitor Geolocation) ve uygulama AÇIKKEN çalışır: arka plan
+  // konumu (ACCESS_BACKGROUND_LOCATION) istenmez. İzin yoksa, ev konumu seçilmemişse ya da konum okunamıyorsa hiçbir
+  // şey tetiklenmez ve nedeni olay günlüğüne bir kez yazılır (uydurma konum yok). İlk okuma yalnız başlangıç durumudur;
+  // "dışarıdan içeriye" geçişte arrive, "içeriden dışarıya" geçişte leave çalışır. İzin istemek yalnız arayüzün
+  // işidir (nexus-skills.html), motor asla izin penceresi açmaz.
+  var LOC_EVERY_MS = 60 * 1000;
+  var locLast = {};
+  var lastLocPoll = 0;
+  var locBusy = false;
+
+  function nativeGeo() {
+    var c = window.Capacitor;
+    return c && c.isNativePlatform && c.isNativePlatform() && c.Plugins && c.Plugins.Geolocation
+      ? c.Plugins.Geolocation
+      : null;
+  }
+  // İki nokta arası büyük daire uzaklığı (metre).
+  function distanceM(a, b) {
+    var R = 6371000;
+    var rad = Math.PI / 180;
+    var dLat = (b.lat - a.lat) * rad;
+    var dLon = (b.lon - a.lon) * rad;
+    var x =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+  function noteOnce(rules, tag, trText, enText) {
+    rules.forEach(function (a) {
+      if (!runInfo(a.id + ":" + tag)) {
+        markRun(a.id + ":" + tag);
+        logEvent("automation", a.title, tr(trText, enText));
+      }
+    });
+  }
+
+  function watchLocation(force) {
+    var now = Date.now();
+    if (locBusy || (!force && now - lastLocPoll < LOC_EVERY_MS)) return Promise.resolve(0);
+    var rules = readAutos().filter(function (a) {
+      return a && a.id && a.enabled !== false && a.trigger && a.trigger.type === "location";
+    });
+    if (!rules.length) return Promise.resolve(0);
+    var geo = nativeGeo();
+    if (!geo) {
+      noteOnce(
+        rules,
+        "nogeo",
+        "Konum tetikleyicisi yalnızca mobil uygulamada çalışır.",
+        "The location trigger only works in the mobile app.",
+      );
+      return Promise.resolve(0);
+    }
+    var home = get("nexusWeatherCoords", null);
+    if (!home || !isFinite(home.lat) || !isFinite(home.lon)) {
+      noteOnce(
+        rules,
+        "nocoords",
+        "Konum tetikleyicisi: ev konumu seçilmedi.",
+        "Location trigger: no home location set.",
+      );
+      return Promise.resolve(0);
+    }
+    lastLocPoll = now;
+    locBusy = true;
+    return Promise.resolve()
+      .then(function () {
+        return geo.checkPermissions();
+      })
+      .then(function (perm) {
+        if (!perm || (perm.location !== "granted" && perm.coarseLocation !== "granted")) {
+          noteOnce(
+            rules,
+            "noperm",
+            "Konum tetikleyicisi: konum izni verilmedi.",
+            "Location trigger: location permission not granted.",
+          );
+          return 0;
+        }
+        return geo
+          .getCurrentPosition({ enableHighAccuracy: false, timeout: 10000, maximumAge: 30000 })
+          .then(function (pos) {
+            var c = pos && pos.coords;
+            if (!c || !isFinite(c.latitude) || !isFinite(c.longitude)) return 0;
+            var d = distanceM(home, { lat: c.latitude, lon: c.longitude });
+            var fired = 0;
+            rules.forEach(function (a) {
+              var radius = Number(a.trigger.radius);
+              if (!isFinite(radius) || radius < 50) radius = 150;
+              var inside = d <= radius;
+              var before = locLast[a.id];
+              locLast[a.id] = inside;
+              if (before === undefined || before === inside) return;
+              if ((a.trigger.event === "arrive" && inside) || (a.trigger.event === "leave" && !inside)) {
+                executeAutomation(a);
+                fired++;
+              }
+            });
+            return fired;
+          });
+      })
+      .then(
+        function (n) {
+          locBusy = false;
+          return n;
+        },
+        function () {
+          locBusy = false;
+          return 0;
+        },
+      );
+  }
+
+  // ---- güvenlik modu tetikleyicisi (trigger.type === 'security') ----
+  // trigger = { type:'security', value:'home'|'away'|'night' }. Mod DEĞİŞTİĞİNDE (kayıtlı mod değerine geçince) bir
+  // kez çalışır; ilk okuma yalnız başlangıç durumudur (uygulama açılışında kendiliğinden tetiklenmez).
+  // Mod NEXUS düzeyinde bir anahtardır (security-mode.js); gerçek alarm paneli okunmaz.
+  var SECURITY_KEY = "nexusSecurityMode";
+  var SECURITY_MODES = ["home", "away", "night"];
+  var securityLast;
+
+  function watchSecurity() {
+    var cur = get(SECURITY_KEY, null);
+    if (SECURITY_MODES.indexOf(cur) === -1) cur = null;
+    if (securityLast === undefined) {
+      securityLast = cur;
+      return 0;
+    }
+    if (cur === securityLast) return 0;
+    securityLast = cur;
+    if (!cur) return 0;
+    var fired = 0;
+    readAutos().forEach(function (a) {
+      if (a && a.id && a.enabled !== false && a.trigger && a.trigger.type === "security" && a.trigger.value === cur) {
+        executeAutomation(a);
+        fired++;
+      }
+    });
+    return fired;
+  }
+
   function tick() {
     heartbeat();
     if (isOwner) {
       evaluate();
       watchSensors();
       watchWeather();
+      watchSecurity();
+      if (!document.hidden) watchLocation();
     }
+    pushWidget();
   }
 
   function start() {
@@ -628,6 +825,10 @@
     },
     watchSensors: watchSensors,
     watchWeather: watchWeather,
+    watchSecurity: watchSecurity,
+    watchLocation: watchLocation,
+    pushWidget: pushWidget,
+    distanceM: distanceM,
     sunsetTime: sunsetTime,
     sunriseTime: sunriseTime,
     // Test/denemek için: kuralı sahtesiz hemen çalıştırır (günlüğe "elle" yazar)

@@ -3354,6 +3354,41 @@ window.NEXUS_EN = {
       "No light or plug that NEXUS can control was found on the broker.",
     "Zigbee Ampul (Zigbee2MQTT)": "Zigbee Bulb (Zigbee2MQTT)",
     "Zigbee Priz (Zigbee2MQTT)": "Zigbee Plug (Zigbee2MQTT)",
+    Evde: "At home",
+    Dışarıda: "Away",
+    "Güvenlik modunu Evde yap": "Set security mode to At home",
+    "Güvenlik modunu Dışarıda yap": "Set security mode to Away",
+    "Güvenlik modunu Gece yap": "Set security mode to Night",
+    "Güvenlik modu Evde olunca": "When security mode is At home",
+    "Güvenlik modu Dışarıda olunca": "When security mode is Away",
+    "Güvenlik modu Gece olunca": "When security mode is Night",
+    "Güvenlik modu (Evde/Dışarıda/Gece) değiştiğinde": "When the security mode (At home/Away/Night) changes",
+    "Yalnızca NEXUS modunu değiştirir; cihazlara dokunmaz.":
+      "Only changes the NEXUS mode; it does not touch devices.",
+    "Mod değişince çalışır (uygulama açıkken). Bu mod NEXUS içinde bir anahtardır; gerçek bir alarm paneline bağlanmaz ve cihazları kendiliğinden kilitlemez.":
+      "Runs when the mode changes (while the app is open). The mode is a switch inside NEXUS; it is not connected to a real alarm panel and does not lock devices by itself.",
+    "Şimdiki mod:": "Current mode:",
+    seçilmemiş: "not set",
+    "Konum tetikleyicisi henüz desteklenmiyor, bu yüzden kaydedilemez. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu, Güvenlik Modu ve Alarm Tetiklendiğinde (sensör).":
+      "The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).",
+    "Uzak Erişim Adresi": "Remote Access Address",
+    "Evin dışındayken (VPN ya da port yönlendirme) bir cihaza veya hub'a başka bir adresten ulaşıyorsan, yerel adres yanıt vermediğinde bu adres denenir. Yalnız bu cihazda saklanır.":
+      "If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.",
+    "Önce bir cihaz ekle; sonra ona uzak adres verebilirsin.":
+      "Add a device first; then you can give it a remote address.",
+    "Eve gelince": "When arriving home",
+    "Evden çıkınca": "When leaving home",
+    "Konum tetikleyicisi yalnızca mobil uygulamada çalışır; bu cihazda kurulamaz.":
+      "The location trigger only works in the mobile app; it cannot be set up on this device.",
+    "Konum tetikleyicisi yalnızca mobil uygulamada çalışır.": "The location trigger only works in the mobile app.",
+    "Ev konumu seçilmedi. Önce": "No home location selected. First",
+    "Ev konumuna göre çalışır. Yalnızca uygulama açıkken denetlenir (arka planda konum izlenmez); yaklaşık dakikada bir okunur.":
+      "Works relative to your home location. It is only checked while the app is open (location is not tracked in the background); read about once a minute.",
+    "Konum izni verildi.": "Location permission granted.",
+    "Konum servisi bu cihazda kullanılamıyor.": "Location service is not available on this device.",
+    "Konum izni verilmedi, tetikleyici çalışmaz.": "Location permission not granted; the trigger will not run.",
+    "Konum izni ver": "Allow location",
+    "Şu moda geçince çalışsın:": "Run when the mode changes to:",
     saat: "hour",
     dakika: "minute",
     Doğrulandı: "Verified",

@@ -17,7 +17,7 @@ This table is generated from the connector registry (`src/app/lan-connectors.js`
 
 | Id | Connector | Brands / devices | Capabilities | Transport | Packet/response tests | Verified on real hardware |
 | --- | --- | --- | --- | --- | --- | --- |
-| `shelly` | Shelly | Shelly (11 models) | `switch`, `brightness`, `color`, `colorTemp`, `position`, `coverStop`, `powerOn` | LAN HTTP, all platforms | yes: `lan-commands.test.ts`, `lan-connectors.test.ts`, `lan-scenes.test.ts`, `lan-sensors.test.ts`, `lan-startup.test.ts` | no / community testers wanted |
+| `shelly` | Shelly | Shelly (11 models) | `switch`, `brightness`, `color`, `colorTemp`, `position`, `coverStop`, `powerOn` | LAN HTTP, all platforms | yes: `lan-commands.test.ts`, `lan-connectors.test.ts`, `lan-remote-host.test.ts`, `lan-scenes.test.ts`, `lan-sensors.test.ts`, `lan-startup.test.ts` | no / community testers wanted |
 | `shelly-rpc` | Shelly Plus / Pro | Shelly Plus / Pro (5 models) | `switch`, `brightness`, `color`, `position`, `coverStop`, `powerOn` | LAN HTTP, all platforms | yes: `lan-commands.test.ts`, `lan-scenes.test.ts`, `lan-startup.test.ts` | no / community testers wanted |
 | `tasmota` | Tasmota | Tasmota (3 models) | `switch`, `brightness`, `color`, `colorTemp`, `position`, `coverStop`, `powerOn` | LAN HTTP, all platforms | yes: `lan-commands.test.ts`, `lan-mqtt.test.ts`, `lan-scenes.test.ts`, `lan-startup.test.ts` | no / community testers wanted |
 | `wled` | WLED | WLED (1 model) | `switch`, `brightness`, `color`, `colorTemp`, `effect`, `lightScene` | LAN HTTP, all platforms | yes: `lan-commands.test.ts`, `lan-connectors.test.ts`, `lan-scenes.test.ts` | no / community testers wanted |

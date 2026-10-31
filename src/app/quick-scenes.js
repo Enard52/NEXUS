@@ -153,7 +153,7 @@
       showInRoom: false,
       trigger: opts.trigger || (type === "clickrun" ? { type: "manual" } : { type: "time", value: "", repeat: "daily" }),
       sceneId: sceneId || undefined,
-      actions: [],
+      actions: Array.isArray(opts.actions) ? opts.actions : [],
     });
     writeNormalizedItems(key, items, type);
     return id;

@@ -438,6 +438,7 @@ function isPrivateHost(host) {
     (a === 192 && b === 168) ||
     (a === 172 && b >= 16 && b <= 31) ||
     (a === 169 && b === 254) ||
+    (a === 100 && b >= 64 && b <= 127) || // CGNAT / Tailscale: VPN ile uzak erişim adresi
     (a === 255 && b === 255)
   );
 }

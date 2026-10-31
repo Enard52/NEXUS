@@ -70,9 +70,11 @@ opening any port.
 
 ## What does not work remotely (honest limits)
 
-- **No hub-address setting exists yet.** There is no field to point the phone at a fixed
-  `host:port`; devices are always addressed by their local IP, hence the subnet approach above. Adding
-  such a setting is tracked in [#87](https://github.com/Enard52/NEXUS/issues/87) and is open for contribution.
+- **Remote address (optional).** Settings → Remote Access Address lets you give a paired device or hub (Hue bridge,
+  Home Assistant) a second address, for example a Tailscale 100.x address or a forwarded port. NEXUS tries the local
+  address first and uses the remote one only when the local one does not answer; if neither answers it reports the failure.
+  Only private/VPN ranges (including 100.64.0.0/10) are accepted, never public addresses. The mapping stays on the device
+  and is not synced or backed up. Not verified against a real VPN yet.
 - **UDP/TCP devices only work from the desktop app.** WiZ, LIFX and Govee (UDP) and Kasa, Yeelight and local Tuya (TCP) go
   through the desktop app's network bridge; the phone app has HTTP only and reports these as
   unsupported. Remote control of such devices from the phone is therefore not possible, VPN or not.

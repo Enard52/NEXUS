@@ -162,7 +162,8 @@
         a === 127 ||
         (a === 172 && b >= 16 && b <= 31) ||
         (a === 192 && b === 168) ||
-        (a === 169 && b === 254)
+        (a === 169 && b === 254) ||
+        (a === 100 && b >= 64 && b <= 127) // CGNAT / Tailscale (100.64.0.0/10): VPN ile uzak erişim adresi
       );
     }
     if (/^[0-9a-f:]+$/.test(host) && host.indexOf(":") !== -1)
@@ -3320,6 +3321,62 @@
     });
   }
 
+  // --- Uzak erişim adresi (isteğe bağlı) ---------------------------------------------------------------
+  // Evin dışındayken (VPN / port yönlendirme) bir cihaza ya da hub'a (Hue köprüsü, Home Assistant) başka bir
+  // adresten ulaşılıyorsa, yerel adres yanıt vermediğinde BU adres denenir. Eşleme yalnızca bu cihazda
+  // ("nexusRemoteHosts": { yerelHost: uzakHost }) tutulur, buluta gitmez. İkisi de başarısızsa ilk (yerel)
+  // hata döner: yanıt veren bir adres yoksa asla "başarılı" gösterilmez.
+  var REMOTE_KEY = "nexusRemoteHosts";
+  function remoteMap() {
+    try {
+      var raw = typeof window.nexusGetItem === "function" ? window.nexusGetItem(REMOTE_KEY) : localStorage.getItem(REMOTE_KEY);
+      var m = JSON.parse(raw || "{}");
+      return m && typeof m === "object" && !Array.isArray(m) ? m : {};
+    } catch (e) {
+      return {};
+    }
+  }
+  // "100.64.0.5:8123", "http://nas.example:8080" → "http://100.64.0.5:8123"; geçersizse null.
+  function normalizeRemoteHost(input) {
+    var s = String(input == null ? "" : input).trim();
+    if (!s) return null;
+    if (!/^https?:\/\//i.test(s)) s = "http://" + s;
+    var m = /^(https?):\/\/([A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?)(:(\d{1,5}))?\/?$/i.exec(s);
+    if (!m) return null;
+    if (m[5] && (Number(m[5]) < 1 || Number(m[5]) > 65535)) return null;
+    return m[1].toLowerCase() + "://" + m[2] + (m[5] ? ":" + m[5] : "");
+  }
+  function setRemoteHost(localHost, remote) {
+    var map = remoteMap();
+    if (remote === "" || remote == null) delete map[localHost];
+    else {
+      var n = normalizeRemoteHost(remote);
+      if (!n) return false;
+      map[localHost] = n;
+    }
+    try {
+      var raw = JSON.stringify(map);
+      if (typeof window.nexusSetItem === "function") window.nexusSetItem(REMOTE_KEY, raw);
+      else localStorage.setItem(REMOTE_KEY, raw);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function withRemote(device, run) {
+    return Promise.resolve()
+      .then(function () {
+        return run(device);
+      })
+      .catch(function (err) {
+      var r = device && device.host ? remoteMap()[device.host] : null;
+      if (!r || r === device.host) throw err;
+      return Promise.resolve().then(function () { return run(Object.assign({}, device, { host: r })); }).catch(function () {
+        throw err;
+      });
+    });
+  }
+
   window.nexusLan = {
     setTransport: setTransport,
     request: request,
@@ -3359,7 +3416,9 @@
       if (window.nexusPreview) return Promise.reject(new Error("önizleme"));
       var p = protocolFor(device.protocol);
       return p && available(p)
-        ? p.read(device)
+        ? withRemote(device, function (d) {
+            return p.read(d);
+          })
         : Promise.reject(new Error("bu ortamda desteklenmeyen protokol"));
     },
     // Yazılım sürümü: { current, latest, hasUpdate } — bilinmeyen alanlar null
@@ -3379,12 +3438,15 @@
       // HTTP taşıyan protokollerde 4xx/5xx yanıtı başarı sayılmaz. Bazı yazma
       // uçları ham {status,text} döner (Shelly, ESPHome); eskiden bunlar da
       // "komut gitti" sayılıyordu. Artık gerçek yanıt kodu denetlenir.
-      return Promise.resolve(p.write(device, capability, value)).then(function (res) {
-        if (res && typeof res.status === "number" && (res.status < 200 || res.status >= 300)) {
-          throw new Error("http " + res.status);
-        }
-        return res;
+      return withRemote(device, function (d) {
+        return Promise.resolve(p.write(d, capability, value)).then(function (res) {
+          if (res && typeof res.status === "number" && (res.status < 200 || res.status >= 300)) {
+            throw new Error("http " + res.status);
+          }
+          return res;
+        });
       });
     },
+    remoteHosts: { get: remoteMap, set: setRemoteHost, normalize: normalizeRemoteHost },
   };
 })();

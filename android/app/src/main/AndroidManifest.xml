@@ -53,6 +53,18 @@
             </intent-filter>
         </service>
 
+        <!-- Ana ekran widget'ı: uygulamanın son kaydettiği cihaz durumunu gösterir (NexusWidgetProvider) -->
+        <receiver
+            android:name=".NexusWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/nexus_widget_info" />
+        </receiver>
+
         <!-- Yerel Ağ Otomasyon Motoru Arka Plan Servisi -->
         <service
             android:name=".NexusKeepAliveService"

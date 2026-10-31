@@ -14,7 +14,9 @@ hardware yet** — see [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and
 - Local control for 16 device families (Shelly, Tasmota, WLED, ESPHome, Hue, Home Assistant, Kasa, Tapo,
   Yeelight, Sonoff DIY, WiZ, LIFX, Govee LAN, Tuya local, Zigbee2MQTT, Wake-on-LAN) and a HomeKit bridge on desktop
 - Sensor events (motion, door/window, smoke/water) with critical alerts that pass quiet hours
-- Automations with time, device-state, weather and sensor triggers
+- Automations with time, device-state, weather, sensor, security-mode and (mobile app, while open) arrive/leave-home triggers
+- Optional remote address for a device or hub (VPN or port forwarding), tried only when the local address does not answer
+- Android home-screen widget showing the last device state saved by the app (built, not yet tried on a real phone)
 - Notification setup after sign-in, per-category sound and vibration, Android action buttons
 - Account security: two-factor authentication; honest empty, offline and error states on every screen
 - Device credentials stay on the device; on desktop they are encrypted with the operating-system keychain
@@ -35,19 +37,18 @@ to end yet.
 
 ## Help wanted
 
-| Area                   | What                                                                    | Needs                     |
-| ---------------------- | ----------------------------------------------------------------------- | ------------------------- |
-| **Verify on hardware** | Try your device and file a [device report][device-report]               | A real device, 10 minutes |
-| **Test Family**        | Create a home, invite a second account, chat, check permissions         | Two accounts, two devices |
-| **Test push**          | Closed-app notification on a phone or browser                           | A phone                   |
-| New brands             | Open a [device support request][device-support] or write a connector    | Code, ideally the device  |
-| Translations           | Add or fix languages                                                    | Code-only                 |
-| Android widgets        | Device toggle and scene shortcuts                                       | Android Studio            |
-| Tablet / landscape     | Layouts for tablets, iPad PWA, 2-in-1                                   | Code-only                 |
-| Location automations   | Arrive/leave triggers (phone only, with explicit permission)            | Code, a phone to test     |
-| Cameras                | Live view over RTSP/ONVIF on desktop                                    | Code, an IP camera        |
-| Matter                 | Open-source SDK, long term                                              | Experience with Matter    |
-| Screen-reader pass     | Manual accessibility testing with real assistive tech                   | A screen reader           |
+| Area                   | What                                                                                            | Needs                     |
+| ---------------------- | ----------------------------------------------------------------------------------------------- | ------------------------- |
+| **Verify on hardware** | Try your device and file a [device report][device-report]                                       | A real device, 10 minutes |
+| **Test Family**        | Create a home, invite a second account, chat, check permissions                                 | Two accounts, two devices |
+| **Test push**          | Closed-app notification on a phone or browser                                                   | A phone                   |
+| New brands             | Open a [device support request][device-support] or write a connector                            | Code, ideally the device  |
+| Translations           | Add or fix languages                                                                            | Code-only                 |
+| Tablet / landscape     | Layouts for tablets, iPad PWA, 2-in-1                                                           | Code-only                 |
+| Background location    | Arrive/leave triggers while the app is closed (needs background-location permission and review) | Code, a phone to test     |
+| Cameras                | Live view over RTSP/ONVIF on desktop                                                            | Code, an IP camera        |
+| Matter                 | Open-source SDK, long term                                                                      | Experience with Matter    |
+| Screen-reader pass     | Manual accessibility testing with real assistive tech                                           | A screen reader           |
 
 [device-report]: https://github.com/Enard52/NEXUS/issues/new?template=device_report.yml
 [device-support]: https://github.com/Enard52/NEXUS/issues/new?template=device_support.yml
