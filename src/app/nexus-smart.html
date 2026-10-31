@@ -235,20 +235,21 @@
         <!-- Hazır senaryolar: yalnızca eşleşmiş cihazlarına gerçekten uygulanabilenler; dokununca çalışır -->
         <div class="qs-head">
           <h3>Senin için hazır</h3>
-          <button id="siri-badge" onclick="window.location.href='nexus-siri-shortcuts.html'" class="bg-black text-white text-xs font-semibold pl-1 pr-3 py-1 rounded-full shadow-sm hover:bg-slate-900 active:scale-95 transition-all flex items-center gap-1.5">
-            <img src="siri-logo.png" alt="Siri" class="w-6 h-6 object-contain rounded-full">
-            <span>Siri'ye Ekle</span>
-          </button>
         </div>
         <p class="qs-sub" id="ready-sub">Dokununca eşleşmiş cihazlarında hemen çalışır.</p>
         <div class="qs-grid" id="ready-scenes"></div>
         <div id="ready-empty" class="nx-empty" style="display:none"></div>
 
-        <div class="qs-head" style="margin-top:28px">
-          <h3>Senaryolarım</h3>
-          <a href="nexus-skills.html?type=clickrun" class="qs-link-btn ghost"><i data-lucide="plus"></i> Yeni</a>
+        <div class="flex items-center justify-between mb-4" style="margin-top:28px">
+          <h3 class="text-xl font-bold text-gray-900">Senaryolarım</h3>
+          <button id="siri-badge" onclick="window.location.href='nexus-siri-shortcuts.html'" class="bg-black text-white text-xs font-semibold pl-1 pr-3 py-1 rounded-full shadow-sm hover:bg-slate-900 active:scale-95 transition-all flex items-center gap-1.5">
+            <img src="siri-logo.png" alt="Siri" class="w-6 h-6 object-contain rounded-full">
+            <span>Siri'ye Ekle</span>
+          </button>
         </div>
-        <div id="custom-clickrun-container"></div>
+        <div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">
+          <!-- Dinamik Tıkla ve Çalıştır kartları buraya eklenecek -->
+        </div>
         <div id="empty-clickrun" class="nx-empty">
           <div class="nx-empty__icon" aria-hidden="true"><i data-lucide="zap"></i></div>
           <p class="nx-empty__title">Senaryo hazır değil</p>
@@ -523,32 +524,29 @@ function toggleHomeSelector() {
         }
 
       if (clickContainer) {
-        clickContainer.innerHTML = '';
-        const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        const QS = window.nexusQuickScenes;
+        clickContainer.innerHTML = ''; // Clear previous items
         clickruns.forEach((run) => {
-          const m = (QS && run.sceneId && QS.metaFor(run.sceneId)) || null;
-          const hex = m ? m.hex : '#4C7DFF';
-          const runnable = !!(run.sceneId && window.NX && NX.SCENES && NX.SCENES[run.sceneId]);
-          const row = document.createElement('div');
-          row.className = 'qs-mine';
-          row.setAttribute('role', 'button');
-          row.setAttribute('tabindex', '0');
-          row.dataset.runId = run.id;
-          row.innerHTML =
-            `<span class="qs-ico" style="background:${hex}1f;color:${hex}"><i data-lucide="${esc(run.icon)}"></i></span>` +
-            `<span class="qs-body"><span class="qs-title">${esc(run.title)}</span>` +
-            `<span class="qs-meta">${runnable ? 'Dokun, çalışsın' : 'Henüz bir eylem seçilmedi'}</span></span>` +
-            (runnable ? '' : `<a class="qs-link-btn ghost" href="nexus-skills.html?type=clickrun&edit=${encodeURIComponent(run.id)}" onclick="event.stopPropagation()">Eylem seç</a>`) +
-            `<button type="button" class="qs-icon-btn danger" aria-label="Senaryoyu sil" data-del="${esc(run.id)}"><i data-lucide="trash-2"></i></button>`;
-          const go = () => {
-            if (runnable) runReady(run.sceneId, row);
-            else window.location.href = 'nexus-skills.html?type=clickrun&edit=' + encodeURIComponent(run.id);
+          const btn = document.createElement('div');
+          btn.className = "relative bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform cursor-pointer";
+          btn.setAttribute('role', 'button');
+          btn.setAttribute('tabindex', '0');
+          btn.onclick = () => {
+            window.location.href = `nexus-scenario-settings.html?id=${run.id}&title=${encodeURIComponent(run.title)}&desc=${encodeURIComponent(run.desc)}&icon=${run.icon}`;
           };
-          row.addEventListener('click', go);
-          row.addEventListener('keydown', (ev) => { if (ev.target === row && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); go(); } });
-          row.querySelector('[data-del]').addEventListener('click', (ev) => { ev.stopPropagation(); deleteStoredScenario(run.id, 'clickrun'); });
-          clickContainer.appendChild(row);
+          btn.onkeydown = (event) => {
+            if (event.key === 'Enter' || event.key === ' ') btn.click();
+          };
+          btn.innerHTML = `
+            <button type="button" aria-label="Senaryoyu sil" onclick="event.stopPropagation(); deleteStoredScenario('${run.id}', 'clickrun')" class="absolute right-3 top-3 w-8 h-8 rounded-full bg-white text-red-500 border border-red-100 shadow-sm flex items-center justify-center active:scale-95 transition-transform">
+              <i class="w-4 h-4" data-lucide="trash-2"></i>
+            </button>
+            <div class="w-10 h-10 rounded-full ${autoBgToLight(run.bgClass)} ${run.colorClass} flex items-center justify-center mb-3">
+              <i class="w-5 h-5" data-lucide="${run.icon}"></i>
+            </div>
+            <h4 class="font-bold text-slate-800 pr-8">${run.title}</h4>
+            <p class="text-xs text-slate-500 mt-1">${run.desc}</p>
+          `;
+          clickContainer.appendChild(btn);
         });
       }
       renderReadyScenes();
