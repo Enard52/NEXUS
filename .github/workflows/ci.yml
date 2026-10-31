@@ -70,8 +70,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Herkese açık depoda lisans anahtarı gerekmez; GITHUB_TOKEN yalnız PR yorumu için.
+      # Üçüncü taraf action yerine resmi ikili dosya (depo action izin listesini aşmaz, lisans gerekmez).
       - name: gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz | tar -xz gitleaks
+          ./gitleaks detect --source . --redact --verbose
