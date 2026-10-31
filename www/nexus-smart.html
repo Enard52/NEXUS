@@ -640,6 +640,7 @@ function toggleHomeSelector() {
       res.failedNames.then(function (names) {
         if (names.length) {
           el.classList.remove('is-done'); el.classList.add('is-warn');
+          if (label) label.textContent = names.length >= res.changed ? 'Ulaşılamadı' : names.length + ' ulaşılamadı';
           toast(names.slice(0, 3).join(', ') + (names.length > 3 ? ' +' + (names.length - 3) : '') + ' cihazına ulaşılamadı; cihazın açık ve aynı Wi-Fi\'da olduğundan emin ol.', 'error');
         }
       });
