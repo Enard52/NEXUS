@@ -17,6 +17,10 @@ permissions:
 jobs:
   apk:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
     env:
       KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
       KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -74,5 +78,13 @@ jobs:
           TAG="${GITHUB_REF_NAME}"
           cp android/app/build/outputs/apk/release/app-release.apk NEXUS-Android.apk
           sha256sum NEXUS-Android.apk | sed 's/NEXUS-Android.apk/NEXUS-Android.apk/' > NEXUS-Android.apk.sha256.txt
+          cp NEXUS-Android.apk.sha256.txt SHA256SUMS-Android.txt
           gh release view "$TAG" --repo Enard52/nexus-releases >/dev/null 2>&1 || gh release create "$TAG" --repo Enard52/nexus-releases --title "NEXUS ${TAG#v}" --notes "NEXUS ${TAG#v}"
-          gh release upload "$TAG" NEXUS-Android.apk NEXUS-Android.apk.sha256.txt --clobber --repo Enard52/nexus-releases
+          gh release upload "$TAG" NEXUS-Android.apk NEXUS-Android.apk.sha256.txt SHA256SUMS-Android.txt --clobber --repo Enard52/nexus-releases
+      # Anahtarsız (Sigstore) kaynak kanıtı. Başarısız olursa yayın DÜŞMEZ: doğrulama için SHA-256 yeterli kalır.
+      - name: Kaynak kanıtı (attestation)
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: NEXUS-Android.apk

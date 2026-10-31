@@ -499,6 +499,9 @@ html.dark input:focus-visible, html.dark textarea:focus-visible, html.dark selec
 :where(.nx-sel-btn) { background: #fff; color: #0f172a; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; font: inherit; font-weight: 600; }
 .nx-sel-btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; cursor: pointer; appearance: none; -webkit-appearance: none; min-width: 0; }
 .nx-sel-btn.hidden { display: none; }
+/* Saat alanı: saat ve dakika düğmeleri yan yana, ortalı, okşuz (nexus-select.js enhanceTime) */
+.nx-time .nx-sel-btn { justify-content: center; text-align: center; padding-left: 4px; padding-right: 4px; }
+.nx-time .nx-sel-chev { display: none; }
 .nx-sel-btn:disabled { opacity: .55; cursor: not-allowed; }
 .nx-sel-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .nx-sel-label.is-placeholder { color: #94a3b8; font-weight: 500; }

@@ -1,0 +1,45 @@
+name: Supabase haftalık yedek
+
+# Ücretsiz Supabase planı yedek sunmaz. Bu iş veritabanını haftada bir dışa aktarır, parolayla ŞİFRELER ve
+# ÖZEL bir depoya iter. Depo herkese açık olduğu için çıktı asla Actions artifact'ı olarak yüklenmez.
+# Gerekli GitHub Secrets (yoksa iş atlanır, hata vermez): SUPABASE_DB_URL, BACKUP_PASSPHRASE,
+# BACKUP_REPO_TOKEN (özel "nexus-backups" deposuna yazma izni). Sırlar asla depoya yazılmaz.
+# Geri yükleme provası: docs/OPERATIONS.md → "Backup and restore".
+
+on:
+  schedule:
+    - cron: "17 3 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    env:
+      DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+      TOKEN: ${{ secrets.BACKUP_REPO_TOKEN }}
+    steps:
+      - name: Sırlar tamam mı?
+        id: gate
+        run: |
+          if [ -z "$DB_URL" ] || [ -z "$PASS" ] || [ -z "$TOKEN" ]; then echo "::notice::Yedek sırları tanımlı değil; yedek atlandı."; echo "run=false" >> "$GITHUB_OUTPUT"; else echo "run=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Dışa aktar ve şifrele
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          sudo apt-get install -y postgresql-client >/dev/null
+          pg_dump "$DB_URL" --no-owner --no-privileges --schema=public | gzip -9 > dump.sql.gz
+          gpg --batch --yes --passphrase "$PASS" --symmetric --cipher-algo AES256 -o "nexus-$(date -u +%Y-%m-%d).sql.gz.gpg" dump.sql.gz
+          rm -f dump.sql.gz
+      - name: Özel depoya it
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          git clone "https://x-access-token:${TOKEN}@github.com/Enard52/nexus-backups.git" backups
+          mkdir -p backups/weekly && mv nexus-*.sql.gz.gpg backups/weekly/
+          cd backups
+          # Yalnızca son 12 haftayı tut.
+          ls -1 weekly | sort | head -n -12 | xargs -r -I{} git rm -q "weekly/{}"
+          git config user.name "nexus-backup" && git config user.email "backup@users.noreply.github.com"
+          git add weekly && git commit -m "weekly backup $(date -u +%Y-%m-%d)" && git push

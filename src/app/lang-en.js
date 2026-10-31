@@ -3354,6 +3354,8 @@ window.NEXUS_EN = {
       "No light or plug that NEXUS can control was found on the broker.",
     "Zigbee Ampul (Zigbee2MQTT)": "Zigbee Bulb (Zigbee2MQTT)",
     "Zigbee Priz (Zigbee2MQTT)": "Zigbee Plug (Zigbee2MQTT)",
+    saat: "hour",
+    dakika: "minute",
     Doğrulandı: "Verified",
     "Henüz doğrulanmadı": "Not yet verified",
     "Bu bağlantı türü henüz gerçek bir cihazla denenmedi.": "This connection type has not been tested with a real device yet.",

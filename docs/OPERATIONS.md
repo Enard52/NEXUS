@@ -46,3 +46,15 @@ check fails. The same checks run hourly in the `daily-stats` Edge Function, whic
 
 - Everything in CI and hosting uses free tiers; no paid service is required to run NEXUS.
 - Optional upgrades when a budget exists (not needed now): paid code-signing certificate (removes SmartScreen warning), Apple Developer account (signed iOS builds), larger Supabase plan, error-reporting service. Each is prepared in the docs but intentionally not enabled.
+
+## Backup and restore
+
+The free Supabase plan has no backups, so `.github/workflows/supabase-backup.yml` exports the `public` schema weekly, encrypts it
+with a passphrase and pushes it to a **private** repository (`nexus-backups`; the main repo is public, so the dump is never an
+Actions artifact). It stays skipped until the owner adds the secrets `SUPABASE_DB_URL`, `BACKUP_PASSPHRASE` and `BACKUP_REPO_TOKEN`.
+
+Restore drill (try it once on an empty Supabase project, never on production):
+
+```bash
+gpg --decrypt nexus-YYYY-MM-DD.sql.gz.gpg | gunzip | psql "$TARGET_DB_URL"
+```

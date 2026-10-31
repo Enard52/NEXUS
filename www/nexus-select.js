@@ -206,10 +206,60 @@
   window.addEventListener('resize', closeList);
   window.addEventListener('blur', closeList);
 
+  // Saat alanları (<input type="time">): işletim sisteminin yerel saat seçicisi yerine saat + dakika için iki özel
+  // seçim kutusu. Yerel input DOM'da kalır (değer, "input"/"change" olayları ve sayfa kodu aynen çalışır).
+  var timeDesc = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function tr(s) { return typeof window.nexusT === 'function' ? window.nexusT(s) : s; }
+  function enhanceTime(inp) {
+    if (inp.__nxTime || inp.type !== 'time' || inp.hasAttribute('data-native')) return;
+    inp.__nxTime = true;
+    var wrap = document.createElement('span');
+    wrap.className = 'nx-time';
+    wrap.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;gap:4px;width:100%';
+    function make(n, label) {
+      var s = document.createElement('select');
+      s.className = inp.className;
+      s.style.width = 'auto';
+      s.style.flex = '1 1 0';
+      s.setAttribute('aria-label', (inp.getAttribute('aria-label') ? inp.getAttribute('aria-label') + ' – ' : '') + tr(label));
+      for (var i = 0; i < n; i++) { var o = document.createElement('option'); o.value = pad2(i); o.textContent = pad2(i); s.appendChild(o); }
+      return s;
+    }
+    var hh = make(24, 'saat'), mm = make(60, 'dakika');
+    var sep = document.createElement('span');
+    sep.textContent = ':';
+    sep.setAttribute('aria-hidden', 'true');
+    wrap.appendChild(hh); wrap.appendChild(sep); wrap.appendChild(mm);
+    inp.style.display = 'none';
+    inp.setAttribute('aria-hidden', 'true');
+    inp.setAttribute('tabindex', '-1');
+    inp.insertAdjacentElement('afterend', wrap);
+    function fromInput() {
+      var m = /^(\d{2}):(\d{2})/.exec(timeDesc.get.call(inp));
+      hh.value = m ? m[1] : '00';
+      mm.value = m ? m[2] : '00';
+    }
+    function toInput() {
+      timeDesc.set.call(inp, hh.value + ':' + mm.value);
+      inp.dispatchEvent(new Event('input', { bubbles: true }));
+      inp.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    hh.addEventListener('change', toInput);
+    mm.addEventListener('change', toInput);
+    Object.defineProperty(inp, 'value', { configurable: true, get: function () { return timeDesc.get.call(inp); }, set: function (v) { timeDesc.set.call(inp, v); fromInput(); } });
+    fromInput();
+    enhance(hh); enhance(mm);
+  }
+
   function scan(root) {
     if (!root) return;
     if (root.nodeType === 1 && root.tagName === 'SELECT') { enhance(root); return; }
-    if (root.querySelectorAll) Array.prototype.forEach.call(root.querySelectorAll('select'), enhance);
+    if (root.nodeType === 1 && root.tagName === 'INPUT') { enhanceTime(root); return; }
+    if (root.querySelectorAll) {
+      Array.prototype.forEach.call(root.querySelectorAll('input[type="time"]'), enhanceTime);
+      Array.prototype.forEach.call(root.querySelectorAll('select'), enhance);
+    }
   }
   function start() {
     scan(document.body);
