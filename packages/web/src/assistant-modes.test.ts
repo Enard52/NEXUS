@@ -14,7 +14,12 @@ function assistant() {
 describe("asistan modları", () => {
   it("dört mod listelenir ve varsayılan sohbettir", () => {
     const { a } = assistant();
-    expect(a.modes.list().map((m: any) => m.id)).toEqual(["chat", "device", "scenario", "automation"]);
+    expect(a.modes.list().map((m: any) => m.id)).toEqual([
+      "chat",
+      "device",
+      "scenario",
+      "automation",
+    ]);
     expect(a.modes.get()).toBe("chat");
     expect(a.modes.query("film modu")).toBe("film modu");
     expect(a.modes.local()).toBe(false);

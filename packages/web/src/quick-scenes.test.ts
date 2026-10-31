@@ -62,13 +62,19 @@ describe("nexusQuickScenes", () => {
 
   it("önizleme cihaz adı ve Türkçe sonuç metni verir", () => {
     const { QS } = load([{ name: "Giriş Kilidi", kind: "lock" }]);
-    expect(QS.preview("leave-home")).toEqual([{ name: "Giriş Kilidi", index: 0, text: "kilitlenir", thumb: "" }]);
+    expect(QS.preview("leave-home")).toEqual([
+      { name: "Giriş Kilidi", index: 0, text: "kilitlenir", thumb: "" },
+    ]);
   });
 
   it("clickrun kaydı sceneId ile yazılır, otomasyon kaydı verilen tetikleyiciyi taşır", () => {
     const { QS, written } = load([]);
     QS.save("clickrun", "leave-home", {});
-    expect(written.nexusCustomClickRun[0]).toMatchObject({ sceneId: "leave-home", title: "Evden çıkış", trigger: { type: "manual" } });
+    expect(written.nexusCustomClickRun[0]).toMatchObject({
+      sceneId: "leave-home",
+      title: "Evden çıkış",
+      trigger: { type: "manual" },
+    });
     const trigger = { type: "time", value: "23:00", repeat: "daily" };
     QS.save("automation", "leave-home", { trigger, title: "Gece" });
     expect(written.nexusCustomAutomations[0]).toMatchObject({ title: "Gece", trigger });

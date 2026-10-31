@@ -14,8 +14,14 @@ function assistant() {
   const NX: Record<string, any> = {
     readDevices: () => [dev],
     kindOf: (d: any) => d.kind,
-    runScene: (id: string) => { calls.push("scene:" + id); return { changed: 1, lanDevices: [] }; },
-    setField: (i: number, f: string, v: any) => { calls.push("set:" + f); return {}; },
+    runScene: (id: string) => {
+      calls.push("scene:" + id);
+      return { changed: 1, lanDevices: [] };
+    },
+    setField: (i: number, f: string, v: any) => {
+      calls.push("set:" + f);
+      return {};
+    },
     statusOf: () => ({ badge: "on", text: "" }),
     escapeHtml: (s: string) => s,
     isLan: () => false,
@@ -69,6 +75,8 @@ describe("yerel asistan yanlış tetiklenmez", () => {
     const { a } = assistant();
     expect(a.reply("bana destek olur musun").reply).not.toMatch(/SSS ve Geri Bildirim/);
     expect(a.reply("destek ekibine ulaşmak istiyorum").reply).toMatch(/SSS ve Geri Bildirim/);
-    expect(a.reply("SSS ve destek konusunda yardım istiyorum.").reply).toMatch(/SSS ve Geri Bildirim/);
+    expect(a.reply("SSS ve destek konusunda yardım istiyorum.").reply).toMatch(
+      /SSS ve Geri Bildirim/,
+    );
   });
 });

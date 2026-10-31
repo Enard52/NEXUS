@@ -58,10 +58,17 @@ describe("ssdpHosts (renderer)", () => {
     const lan = load({
       http: () => Promise.reject(new Error("x")),
       ssdp: () =>
-        Promise.resolve([{ address: "192.168.1.7" }, { address: "192.168.1.7" }, { address: "192.168.1.8" }]),
+        Promise.resolve([
+          { address: "192.168.1.7" },
+          { address: "192.168.1.7" },
+          { address: "192.168.1.8" },
+        ]),
     });
     expect(await lan.ssdpHosts()).toEqual(["192.168.1.7", "192.168.1.8"]);
-    const bad = load({ http: () => Promise.reject(new Error("x")), ssdp: () => Promise.reject(new Error("y")) });
+    const bad = load({
+      http: () => Promise.reject(new Error("x")),
+      ssdp: () => Promise.reject(new Error("y")),
+    });
     expect(await bad.ssdpHosts()).toEqual([]);
   });
 });

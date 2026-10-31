@@ -61,9 +61,7 @@ describe("katalog destek filtresi", () => {
       protocol: "x",
       availability: "all",
       note: "",
-      models: [
-        { name: "Test Siren", img: "security-siren.png", caps: ["alarm"] },
-      ],
+      models: [{ name: "Test Siren", img: "security-siren.png", caps: ["alarm"] }],
     });
     expect(w.nexusIsSupported("Akıllı Siren", "Alarm")).toBe(true);
   });
