@@ -2439,6 +2439,8 @@ function catalogTileHtml(item, groupTitle) {
   ) {
     image = catalogFunctionImage(item.img);
   }
+  // Destek matrisindeki modelin kendi gerçek ürün görseli vardır.
+  if (item.nx && item.img) image = catalogFunctionImage(item.img);
   var imageVersion = "20261029-products-10";
   return (
     '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="searchAndPairDevice(this, \'' +
@@ -2511,12 +2513,35 @@ var SUPPORTED_CATEGORY_KEYS = [
 
 // Ürün düzeyinde destek: yalnızca desteklenen bir modelle aynı işlevi gören ürünler gösterilir
 // (nexusIsSupported, supported-devices.js). Matrise model eklenince ilgili ürünler kendiliğinden görünür.
+// Güvenlik ya da doğrulama nedeniyle listelenmeyen ürünler: gaz/ısıtma cihazları, kazan/kombi/ısı pompası,
+// battaniye, çok amaçlı HVAC, GPRS alarm ve yalnızca işlev adıyla eşleşip protokolü doğrulanmamış aletler.
+// Bu cihazlar uzaktan açılıp kapatılırsa risk doğurabilir ya da hiçbir protokolümüzle konuşmaz.
+var CATALOG_RISKY = /gazli|kombi|isi pompasi|battaniye|gprs|akvaryum|su isitici|kazan|sirkulasyon|circulation|somine|soba|kalorifer|elektirikli supurge|elektrikli supurge|pool|cam temizlik|havalandirma sistemi|\bhvac\b|^isitma$/;
+
 function isCatalogItemSupported(item, groupTitle) {
+  if (CATALOG_RISKY.test(normalizeCatalogText(item.n || ""))) return false;
   return typeof nexusIsSupported !== "function" || nexusIsSupported(item.n, groupTitle);
+}
+
+// Desteklenen cihaz matrisi (supported-devices.js) tek kaynaktır: her destek verdiğimiz model burada
+// markasına göre listelenir ve tıklanınca o modelle eşleştirilir. Masaüstüne özel markalar yalnızca
+// masaüstü uygulamasında görünür (telefonda/tarayıcıda gizli).
+function supportedMatrixCategory() {
+  var groups = typeof nexusVisibleSupportedDevices === "function" ? nexusVisibleSupportedDevices() : [];
+  var out = [];
+  groups.forEach(function (g) {
+    var items = (g.models || []).map(function (m) {
+      return { n: m.name, img: m.img, nx: 1 };
+    });
+    if (items.length) out.push({ title: g.brand, items: items });
+  });
+  return out.length ? { key: "desteklenen", label: "Desteklenen Cihazlar", groups: out } : null;
 }
 
 function getVisibleCatalog() {
   var out = [];
+  var matrix = supportedMatrixCategory();
+  if (matrix) out.push(matrix);
   CATALOG.forEach(function (c) {
     if (SUPPORTED_CATEGORY_KEYS.indexOf(c.key) === -1) return;
     var groups = [];

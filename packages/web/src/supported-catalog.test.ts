@@ -26,6 +26,16 @@ describe("katalog destek filtresi", () => {
     expect(phone.length).toBeLessThan(desk.length);
   });
 
+  it("manuel katalogdaki her destek modeli kendi protokolüne çözülür", () => {
+    const w = load();
+    for (const g of w.nexusVisibleSupportedDevices()) {
+      for (const m of g.models) {
+        const r = w.nexusResolveDevice(m.name, g.brand);
+        expect(r.protocol, `${g.brand} / ${m.name}`).toBe(g.protocol);
+      }
+    }
+  });
+
   it("desteklenen işlevleri gösterir", () => {
     const w = load();
     for (const [name, group] of [
