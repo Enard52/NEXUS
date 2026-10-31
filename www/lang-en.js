@@ -3412,15 +3412,12 @@ window.NEXUS_EN = {
       "Your device list, automations, scenes and settings are saved to a file. Device passwords, local keys, the Telegram token and your session are not included in the backup.",
     "Yedeği dışa aktar": "Export backup",
     "Hata Günlüğü": "Error Log",
-    "Uygulamada oluşan hatalar yalnız bu cihazda tutulur. Bir sorun bildirirken raporu kopyalayıp GitHub'daki hata bildirimine yapıştırabilirsin.":
-      "Errors that happen in the app are kept only on this device. When reporting a problem, you can copy the report and paste it into a GitHub issue.",
+    "Uygulamada oluşan hatalar otomatik ve anonim olarak (kişisel veri olmadan) bize iletilir; son kayıtlar burada da görünür. İstersen aşağıdan kapatabilirsin.":
+      "Errors that happen in the app are sent to us automatically and anonymously (no personal data); recent entries also show here. You can turn it off below.",
     "Anonim Hata Raporu Gönder": "Send Anonymous Error Reports",
     "Anonim hata raporu gönder": "Send anonymous error reports",
     "Kayıtlı hata yok.": "No errors recorded.",
-    "Hata raporunu kopyala": "Copy error report",
     "Günlüğü temizle": "Clear log",
-    "Panoya kopyalanamadı. Bu cihaz pano erişimine izin vermiyor.":
-      "Could not copy to the clipboard. This device does not allow clipboard access.",
     "Günlük temizlendi.": "Log cleared.",
     "Hata günlüğü bu sürümde yüklenemedi.": "The error log could not be loaded in this version.",
     "Yedekten geri yükle": "Restore from backup",

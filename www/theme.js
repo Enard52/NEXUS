@@ -918,8 +918,8 @@ window.nexusCopy = function (text) {
   window.addEventListener('nexusKeepAliveChanged', sync);
 })();
 
-// Anonim hata raporlama (issue #15): window.onerror → client-error Edge
-// Function. Kişisel veri yok (sayfa, sürüm, platform, mesaj). Ayarlardan
+// Anonim hata raporlama (issue #15): window.onerror + yakalanmamış promise → client-error Edge
+// Function; varsayılan AÇIK, otomatik. Kişisel veri yok (sayfa, sürüm, platform, mesaj). Ayarlardan
 // kapatılabilir: nexusSetItem('nexusErrorReporting', 'off').
 // Aynı kayıt ayrıca yerel günlüğe (nexusErrorLog, son 50) yazılır: yalnız bu cihazda kalır,
 // buluta/yedeğe girmez (cloud-sync STATE_EXCLUDE); Ayarlar → Hata Günlüğü'nden kopyalanır.
@@ -936,14 +936,16 @@ window.nexusCopy = function (text) {
     read: readLog,
     clear: function () { try { nexusSetItem(LOG_KEY, '[]'); } catch (e) { /* depolama yok */ } }
   };
-  window.addEventListener('error', function (e) {
+  function onFailure(e) {
     try {
+      var rej = e.type === 'unhandledrejection';
+      var why = rej ? (e.reason && e.reason.message) || e.reason : e.message;
       var entry = {
         page: location.pathname.split('/').pop(),
         version: window.NEXUS_APP_VERSION || '',
         platform: document.documentElement.classList.contains('nx-desk') ? 'desktop'
           : (window.Capacitor && Capacitor.isNativePlatform ? 'android' : 'web'),
-        message: String(e.message || '').slice(0, 400) + ' @' + String((e.filename || '')).split('/').pop() + ':' + (e.lineno || 0)
+        message: String(why || '').slice(0, 400) + (rej ? ' @promise' : ' @' + String((e.filename || '')).split('/').pop() + ':' + (e.lineno || 0))
       };
       try {
         var log = readLog();
@@ -959,7 +961,9 @@ window.nexusCopy = function (text) {
         body: JSON.stringify(entry)
       }).catch(function () { /* sessiz: raporlama hatası kullanıcıyı rahatsız etmez */ });
     } catch (err2) { /* asla ikincil hata üretme */ }
-  });
+  }
+  window.addEventListener('error', onFailure);
+  window.addEventListener('unhandledrejection', onFailure);
 })();
 
 // ---------- Ortak bildirim şeridi (toast) ----------

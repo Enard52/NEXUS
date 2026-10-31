@@ -127,43 +127,6 @@
     document.getElementById('error-log-actions').classList.toggle('hidden', !has);
     document.getElementById('error-log-empty').classList.toggle('hidden', has);
   }
-  // GitHub hata bildirimine yapıştırmak için düz metin; kişisel veri içermez.
-  function reportText(list) {
-    var last = list[list.length - 1] || {};
-    var lines = [
-      'NEXUS error report',
-      'Version: ' + (window.NEXUS_APP_VERSION || last.version || '?'),
-      'Platform: ' + (last.platform || '?'),
-      'Entries: ' + list.length,
-      ''
-    ];
-    list.forEach(function (e) { lines.push('- ' + (e.at || '') + ' ' + (e.page || '?') + ' (' + (e.version || '?') + '): ' + (e.message || '')); });
-    return lines.join('\n');
-  }
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-    return new Promise(function (resolve, reject) {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.cssText = 'position:fixed;opacity:0';
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
-      ta.remove();
-      if (ok) resolve(); else reject(new Error('copy'));
-    });
-  }
-  document.getElementById('error-log-copy').addEventListener('click', function () {
-    var list = entries();
-    if (!list.length) { render(); return; }
-    copyText(reportText(list)).then(function () {
-      say(nexusT('Rapor panoya kopyalandı: ' + list.length + ' kayıt.', 'Report copied to clipboard: ' + list.length + ' entries.'));
-    }, function () {
-      say('Panoya kopyalanamadı. Bu cihaz pano erişimine izin vermiyor.', true);
-    });
-  });
   document.getElementById('error-log-clear').addEventListener('click', function () {
     if (api) api.clear();
     say('Günlük temizlendi.');
