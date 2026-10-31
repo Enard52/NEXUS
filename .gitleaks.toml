@@ -1,0 +1,15 @@
+# Yalnızca doğrulanmış yanlış pozitifler (gerçek sır DEĞİL). Genişletmeden önce bulguyu elle incele.
+title = "NEXUS gitleaks"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "PEM başlık metni ve test dosyalarındaki uydurma değerler"
+paths = [
+  '''packages/web/src/lan-secure\.test\.ts''',
+  '''packages/web/src/push-send\.test\.ts''',
+  '''packages/web/src/household-cloud\.test\.ts''',
+  '''supabase/functions/push-send/logic\.ts''',
+  '''supabase/functions/push-send/index\.ts''',
+]
