@@ -10,13 +10,22 @@ import { fileURLToPath } from "node:url";
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const SOURCE = readFileSync(resolve(REPO_ROOT, "src/app/supported-devices.js"), "utf8");
 
-function load() {
-  const win: Record<string, any> = {};
+function load(desktop = true) {
+  const win: Record<string, any> = desktop ? { nexusDesktop: {} } : {};
   new Function("window", SOURCE)(win);
   return win;
 }
 
 describe("katalog destek filtresi", () => {
+  it("yalnızca masaüstü markaları telefonda/tarayıcıda gizlenir, masaüstünde görünür", () => {
+    const desktopOnly = (g: any) => g.availability === "desktop";
+    const phone = load(false).nexusVisibleSupportedDevices();
+    const desk = load(true).nexusVisibleSupportedDevices();
+    expect(phone.some(desktopOnly)).toBe(false);
+    expect(desk.some(desktopOnly)).toBe(true);
+    expect(phone.length).toBeLessThan(desk.length);
+  });
+
   it("desteklenen işlevleri gösterir", () => {
     const w = load();
     for (const [name, group] of [

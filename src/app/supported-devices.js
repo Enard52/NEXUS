@@ -657,15 +657,25 @@
     for (var k = 0; k < CAP_HINTS.length; k++) if (CAP_HINTS[k].test.test(label)) return k;
     return -1;
   }
+  // Yalnızca masaüstü köprüsüyle çalışan markalar (availability: "desktop") telefonda/tarayıcıda listelenmez;
+  // masaüstü uygulamasında (window.nexusDesktop) görünür. Kayıtlı cihazların çözümlenmesini etkilemez.
+  function visibleGroups() {
+    var desk = !!window.nexusDesktop;
+    return NEXUS_SUPPORTED_DEVICES.filter(function (g) {
+      return desk || g.availability !== "desktop";
+    });
+  }
+  window.nexusVisibleSupportedDevices = visibleGroups;
   var supportedFnCache = null;
   function supportedFunctions() {
     var total = 0;
-    NEXUS_SUPPORTED_DEVICES.forEach(function (g) {
+    var groups = visibleGroups();
+    groups.forEach(function (g) {
       total += g.models.length;
     });
     if (supportedFnCache && supportedFnCache.total === total) return supportedFnCache.set;
     var set = {};
-    NEXUS_SUPPORTED_DEVICES.forEach(function (g) {
+    groups.forEach(function (g) {
       g.models.forEach(function (m) {
         if (m.img === "generic-smart-hub.png") return;
         // Model adı ve (varsa) işlev takma adları: adı hiçbir işleve düşmeyen modeller için.
@@ -679,9 +689,10 @@
     return set;
   }
   window.nexusIsSupported = function (name, groupTitle) {
-    for (var i = 0; i < NEXUS_SUPPORTED_DEVICES.length; i++) {
-      for (var j = 0; j < NEXUS_SUPPORTED_DEVICES[i].models.length; j++) {
-        if (NEXUS_SUPPORTED_DEVICES[i].models[j].name === name) return true;
+    var groups = visibleGroups();
+    for (var i = 0; i < groups.length; i++) {
+      for (var j = 0; j < groups[i].models.length; j++) {
+        if (groups[i].models[j].name === name) return true;
       }
     }
     var idx = hintIndexOf(
