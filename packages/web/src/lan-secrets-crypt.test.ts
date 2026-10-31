@@ -9,11 +9,12 @@ import { describe, expect, it } from "vitest";
  */
 const CONNECTORS = readFileSync(resolve(__dirname, "../../../src/app/lan-connectors.js"), "utf8");
 
-function load(crypt: unknown) {
+function load(crypt: unknown, android?: unknown) {
   const store = new Map<string, string>();
   const win: any = {
     nexusGetItem: (k: string) => store.get(k) ?? null,
     nexusSetItem: (k: string, v: string) => void store.set(k, v),
+    NexusSecure: android,
     nexusDesktop: crypt
       ? { http: () => Promise.reject(new Error("http yok")), secretCrypt: crypt }
       : undefined,
@@ -44,6 +45,15 @@ describe("cihaz sırları şifreli depo", () => {
     expect(lan.secrets.get("d1")).toEqual({ tapoPass: "eski" });
     expect(store.get("nexusLanSecrets")!.startsWith("enc1:")).toBe(true);
     expect(lan.secrets.get("d1")).toEqual({ tapoPass: "eski" });
+  });
+
+  it("Android Keystore köprüsü (window.NexusSecure) varsa o kullanılır", () => {
+    const { lan, store } = load(undefined, crypt());
+    lan.secrets.set("d1", { tuyaKey: "android-gizli" });
+    const raw = store.get("nexusLanSecrets")!;
+    expect(raw.startsWith("enc1:")).toBe(true);
+    expect(raw).not.toContain("android-gizli");
+    expect(lan.secrets.get("d1")).toEqual({ tuyaKey: "android-gizli" });
   });
 
   it("anahtarlık yoksa düz JSON kalır", () => {

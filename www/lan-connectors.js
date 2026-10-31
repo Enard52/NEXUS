@@ -2138,7 +2138,7 @@
   // okumada şifrelenip yerine yazılır.
   var SECRET_ENC = "enc1:";
   function secretCrypt() {
-    var d = desktopBridge(), c = d && d.secretCrypt;
+    var d = desktopBridge(), c = (d && d.secretCrypt) || window.NexusSecure; // masaüstü safeStorage ya da Android Keystore
     try { return c && typeof c.encrypt === "function" && typeof c.decrypt === "function" && c.available() ? c : null; } catch (e) { return null; }
   }
   function rawGet() { return typeof window.nexusGetItem === "function" ? window.nexusGetItem(SECRET_KEY) : localStorage.getItem(SECRET_KEY); }

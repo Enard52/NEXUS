@@ -24,7 +24,7 @@ documentation and covered by automated tests, but most are **not verified on rea
 ## Where are my device passwords and keys stored?
 
 Only on the device you entered them on. They are never synced to the cloud or included in backups. In the desktop
-app they are encrypted with the operating-system keychain; in a browser they are stored unencrypted in local storage.
+app they are encrypted with the operating-system keychain, on Android with the Android Keystore; in a browser they are stored unencrypted in local storage.
 
 ## Is any data sent anywhere?
 
@@ -50,7 +50,7 @@ There is no App Store build. Use the web app (Add to Home Screen) or sideload wi
 - **Ücretsiz mi?** Evet. Uygulamalar ve yerel cihaz kontrolü ücretsizdir; hub veya üretici bulutu gerekmez.
 - **Hesapsız çalışır mı?** Evet. Yerel kontrol, otomasyonlar ve yedekleme hesapsız çalışır. Hesap yalnızca bulut eşitleme ve Aile için gerekir.
 - **Cihazım bulunamıyor:** Telefon/bilgisayar ve cihaz aynı Wi-Fi'de olmalı (misafir ağı ve VPN keşfi engeller). Eşleştirme ekranında IP'yi elle gir. Tuya, Tapo, Kasa, Zigbee2MQTT gibi markalar yalnızca masaüstü uygulamasında çalışır.
-- **Cihaz şifreleri nerede?** Yalnızca girdiğin cihazda. Buluta eşitlenmez, yedeğe girmez. Masaüstünde işletim sistemi anahtarlığıyla şifrelenir; tarayıcıda yerel depoda şifresiz durur.
+- **Cihaz şifreleri nerede?** Yalnızca girdiğin cihazda. Buluta eşitlenmez, yedeğe girmez. Masaüstünde işletim sistemi anahtarlığıyla, Android'de Android Keystore ile şifrelenir; tarayıcıda yerel depoda şifresiz durur.
 - **Veri gönderiliyor mu?** Giriş yaparsan bulut eşitleme ve Aile bizim Supabase projemizi kullanır. Hata raporu, Ayarlar'dan açmadıkça kapalıdır.
 - **Evden uzakta?** Kendi VPN'inle (WireGuard/Tailscale): [REMOTE-ACCESS.md](REMOTE-ACCESS.md).
 - **iPhone:** App Store sürümü yok; web uygulamasını ana ekrana ekle ya da AltStore ile kur: [IOS-BUILD.md](IOS-BUILD.md).

@@ -37,18 +37,20 @@ to end yet.
 
 ## Help wanted
 
-| Area                   | What                                                                                            | Needs                     |
-| ---------------------- | ----------------------------------------------------------------------------------------------- | ------------------------- |
-| **Verify on hardware** | Try your device and file a [device report][device-report]                                       | A real device, 10 minutes |
-| **Test Family**        | Create a home, invite a second account, chat, check permissions                                 | Two accounts, two devices |
-| **Test push**          | Closed-app notification on a phone or browser                                                   | A phone                   |
-| New brands             | Open a [device support request][device-support] or write a connector                            | Code, ideally the device  |
-| Translations           | Add or fix languages                                                                            | Code-only                 |
-| Tablet / landscape     | Layouts for tablets, iPad PWA, 2-in-1                                                           | Code-only                 |
-| Background location    | Arrive/leave triggers while the app is closed (needs background-location permission and review) | Code, a phone to test     |
-| Cameras                | Live view over RTSP/ONVIF on desktop                                                            | Code, an IP camera        |
-| Matter                 | Open-source SDK, long term                                                                      | Experience with Matter    |
-| Screen-reader pass     | Manual accessibility testing with real assistive tech                                           | A screen reader           |
+| Area                   | What                                                                                                        | Needs                     |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **Verify on hardware** | Try your device and file a [device report][device-report]                                                   | A real device, 10 minutes |
+| **Test Family**        | Create a home, invite a second account, chat, check permissions                                             | Two accounts, two devices |
+| **Test push**          | Closed-app notification on a phone or browser                                                               | A phone                   |
+| New brands             | Open a [device support request][device-support] or write a connector                                        | Code, ideally the device  |
+| Translations           | Add or fix languages                                                                                        | Code-only                 |
+| Tablet / landscape     | Layouts for tablets, iPad PWA, 2-in-1                                                                       | Code-only                 |
+| Background location    | Arrive/leave triggers while the app is closed (needs background-location permission and review)             | Code, a phone to test     |
+| Windows arm64 build    | Add an arm64 Windows installer without breaking the x64 auto-update manifest, and test it on arm64 hardware | An arm64 Windows device   |
+| CSP hardening          | Remove `unsafe-inline` by moving inline scripts/styles to files and checking every screen for violations    | Code-only                 |
+| Cameras                | Live view over RTSP/ONVIF on desktop                                                                        | Code, an IP camera        |
+| Matter                 | Open-source SDK, long term                                                                                  | Experience with Matter    |
+| Screen-reader pass     | Manual accessibility testing with real assistive tech                                                       | A screen reader           |
 
 [device-report]: https://github.com/Enard52/NEXUS/issues/new?template=device_report.yml
 [device-support]: https://github.com/Enard52/NEXUS/issues/new?template=device_support.yml

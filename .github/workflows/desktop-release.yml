@@ -213,15 +213,24 @@ jobs:
         run: npx electron-builder --mac --publish ${{ startsWith(github.ref, 'refs/tags/v') && 'always' || 'never' }}
 
       # Kemer + yedek: üretilmiş .app içindeki app.asar gerçekten denetlenir.
+      # Evrensel (x64+arm64) paket: iki mimarinin asar'ları farklıysa birleştirici küçük bir giriş app.asar'ı bırakır,
+      # asıl içerik app-x64.asar / app-arm64.asar'dadır. Giriş asar'ı (içinde main.cjs yok) atlanır; GERÇEK içerik
+      # taşıyan en az bir asar denetlenmeden adım geçmez.
       - name: Üretilen paketi denetle (app.asar içi)
         shell: bash
         run: |
           found=0
           while IFS= read -r a; do
             [ -n "$a" ] || continue
+            size=$(wc -c < "$a")
+            echo "asar: $a ($size bayt)"
+            if [ "$size" -lt 100000 ]; then
+              echo "giriş (stub) asar atlandı: $a"
+              continue
+            fi
             found=1
             node ../scripts/verify-desktop-payload.mjs --asar "$a"
-          done < <(find dist -name app.asar -type f)
+          done < <(find dist -name '*.asar' -type f -not -path '*-temp/*')
           if [ "$found" = 0 ]; then
             echo "::error::denetlenecek app.asar bulunamadı (derleme mi başarısız?)"
             exit 1

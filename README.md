@@ -22,7 +22,7 @@ vendor cloud, no subscription required. Windows · Linux · macOS · Android. iO
 
 - **Local-first control.** Shelly, Tasmota, WLED, ESPHome, Philips Hue, Home Assistant
   and Sonoff (DIY) over local HTTP; TP-Link Kasa/Tapo, Yeelight and Tuya over local TCP/HTTP;
-  WiZ, LIFX and Govee over UDP; Wake-on-LAN; a HomeKit bridge on desktop. Pairing is
+  WiZ, LIFX and Govee over UDP; Zigbee2MQTT through an MQTT broker (desktop); Wake-on-LAN; a HomeKit bridge on desktop. Pairing is
   instant LAN discovery — no account creation per device. Connectors are written from public
   protocol documentation and tested against simulated devices; **most are not yet verified on
   real hardware** — see [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and help us verify yours.
@@ -34,7 +34,10 @@ vendor cloud, no subscription required. Windows · Linux · macOS · Android. iO
   multi-provider chain (Cloudflare → Groq → Gemini → OpenRouter) with a free
   daily credit quota.
 - **Privacy by architecture.** Device commands never leave your network. Cloud
-  sync is optional and stores only profile/settings — never device credentials.
+  sync is optional and stores only profile/settings — never device credentials,
+  which stay on the device (encrypted with the OS keychain / Android Keystore).
+- **Automations** on time, device state, weather, sensors, security mode and arriving/leaving home (phone, app open).
+- **Verify your download** with SHA-256 or build provenance: [docs/VERIFY-DOWNLOAD.md](docs/VERIFY-DOWNLOAD.md). Questions: [docs/FAQ.md](docs/FAQ.md).
 - **Bilingual UI** (English/Turkish) with an automated 100% translation-coverage
   gate.
 

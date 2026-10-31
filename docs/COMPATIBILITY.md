@@ -29,6 +29,7 @@ Never paste passwords, local keys, tokens or account e-mails.
 | Govee (LAN)       | UDP/JSON                    | yes                    | none yet            |
 | Tuya (local)      | 3.3 / 3.4 (AES-128)         | yes (simulated device) | none yet            |
 | Wake-on-LAN       | UDP magic packet            | yes (few cases)        | none yet            |
+| Zigbee2MQTT       | MQTT 3.1.1 broker (desktop) | yes (simulated broker) | none yet            |
 | HomeKit bridge    | HAP (desktop only)          | protocol e2e           | none yet            |
 
 "Real-device reports" will list verified models here as reports arrive. Maintainers can refresh
