@@ -38,120 +38,88 @@
       </a>
     </header>
 
-    <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8">
-
-      <!-- Salon -->
-      <section class="bg-white rounded-3xl p-5 nexus-card-shadow">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
-            <i data-lucide="sofa" class="text-xl"></i>
-          </div>
-          <h2 class="text-lg font-bold text-slate-900">Salon</h2>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <button data-room="salon" data-scene="Sinema" class="bg-[#4C7DFF] text-white rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <i data-lucide="clapperboard" class="text-2xl"></i>
-            <div>
-              <div class="font-bold text-sm leading-tight">Sinema</div>
-              <div class="text-[10px] opacity-80" data-status>Aktif</div>
-            </div>
-          </button>
-
-          <button data-room="salon" data-scene="Gündüz" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <i data-lucide="sun" class="text-2xl text-amber-500"></i>
-            <div>
-              <div class="font-bold text-sm leading-tight">Gündüz</div>
-              <div class="text-[10px] text-slate-400" data-status>Pasif</div>
-            </div>
-          </button>
-        </div>
-      </section>
-
-      <!-- Yatak Odası -->
-      <section class="bg-white rounded-3xl p-5 nexus-card-shadow">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
-            <i data-lucide="bed-double" class="text-xl"></i>
-          </div>
-          <h2 class="text-lg font-bold text-slate-900">Yatak Odası</h2>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <button data-room="yatak" data-scene="Uyku" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <i data-lucide="moon" class="text-2xl text-indigo-500"></i>
-            <div>
-              <div class="font-bold text-sm leading-tight">Uyku</div>
-              <div class="text-[10px] text-slate-400" data-status>Pasif</div>
-            </div>
-          </button>
-
-          <button data-room="yatak" data-scene="Okuma" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">
-            <i data-lucide="book-open" class="text-2xl text-sky-500"></i>
-            <div>
-              <div class="font-bold text-sm leading-tight">Okuma</div>
-              <div class="text-[10px] text-slate-400" data-status>Pasif</div>
-            </div>
-          </button>
-        </div>
-      </section>
-
+    <main class="flex-1 overflow-y-auto px-6 space-y-6 pb-8" id="room-scenes-main">
+      <!-- Odalar, cihazlarının gerçek oda bilgisinden gelir; her odada yalnızca o odadaki cihazları gerçekten
+           etkileyen sahneler gösterilir. Dokununca sahne yalnızca o odanın cihazlarına uygulanır (NX.runScene). -->
     </main>
   </div>
 
-<!-- DYNAMIC JS -->
+<script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
 <script>
-// Toast bildirimi
-function showSceneToast(msg) { window.nexusToast(msg, { type: 'success', key: 'scene' }); }
+(function () {
+  var SCENES = [
+    ['movie-mode', 'Sinema', 'clapperboard', '#e11d48'],
+    ['reading', 'Okuma', 'book-open', '#0ea5e9'],
+    ['dinner', 'Akşam yemeği', 'utensils', '#f97316'],
+    ['focus', 'Odaklanma', 'target', '#4C7DFF'],
+    ['all-lights-on', 'Işıklar açık', 'lightbulb', '#f59e0b'],
+    ['all-lights-off', 'Işıklar kapalı', 'lightbulb-off', '#475569'],
+    ['sleep-mode', 'Uyku', 'moon', '#6366f1'],
+    ['curtains-open', 'Perdeleri aç', 'blinds', '#10b981'],
+    ['curtains-close', 'Perdeleri kapat', 'blinds', '#6366f1'],
+    ['cool-down', 'Serinlet', 'snowflake', '#06b6d4']
+  ];
+  var ROOM_ICON = [[/salon|oturma|living/, 'sofa'], [/yatak|bed/, 'bed-double'], [/mutfak|kitchen/, 'cooking-pot'], [/banyo|bath/, 'bath'],
+    [/çocuk|cocuk|kid/, 'baby'], [/çalışma|calisma|ofis|office/, 'briefcase'], [/bahçe|bahce|balkon|teras|garden/, 'trees'], [/giriş|giris|koridor|hol/, 'door-open']];
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function iconFor(room) { var k = NX.roomKey(room); for (var i = 0; i < ROOM_ICON.length; i++) if (ROOM_ICON[i][0].test(k)) return ROOM_ICON[i][1]; return 'house'; }
+  function readState() { try { var s = JSON.parse(nexusGetItem('nexusRoomScenesActive') || '{}'); return s && typeof s === 'object' ? s : {}; } catch (e) { return {}; } }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var state = {};
-  try {
-    state = JSON.parse(nexusGetItem('nexusRoomScenesActive') || '{}') || {};
-  } catch(e) { state = {}; }
-
-  var buttons = document.querySelectorAll('main button[data-room]');
-
-  function syncUI() {
-    buttons.forEach(function(btn) {
-      var room  = btn.getAttribute('data-room');
-      var scene = btn.getAttribute('data-scene');
-      var isActive = state[room] === scene;
-      if (isActive) {
-        btn.classList.add('bg-[#4C7DFF]', 'text-white');
-        btn.classList.remove('bg-slate-50', 'text-slate-700', 'border', 'border-slate-100');
-        var statusEl = btn.querySelector('[data-status]');
-        if (statusEl) { statusEl.textContent = 'Aktif'; statusEl.classList.remove('text-slate-400'); statusEl.classList.add('opacity-80'); }
-      } else {
-        btn.classList.remove('bg-[#4C7DFF]', 'text-white');
-        btn.classList.add('bg-slate-50', 'text-slate-700', 'border', 'border-slate-100');
-        var statusEl = btn.querySelector('[data-status]');
-        if (statusEl) { statusEl.textContent = 'Pasif'; statusEl.classList.add('text-slate-400'); statusEl.classList.remove('opacity-80'); }
-      }
+  function render() {
+    var main = document.getElementById('room-scenes-main');
+    var devices = NX.readDevices();
+    var rooms = {};
+    devices.forEach(function (d) {
+      var r = String((d && d.room) || '').trim();
+      if (!r) return;
+      var key = NX.roomKey(r);
+      (rooms[key] = rooms[key] || { name: r, devices: [] }).devices.push(d);
     });
+    var state = readState();
+    var html = '';
+    Object.keys(rooms).forEach(function (key) {
+      var room = rooms[key];
+      var scenes = SCENES.filter(function (s) { return room.devices.some(function (d) { return NX.sceneActsOf(s[0], d).length; }); });
+      if (!scenes.length) return;
+      html += '<section class="bg-white rounded-3xl p-5 nexus-card-shadow"><div class="flex items-center gap-3 mb-4">' +
+        '<div class="w-10 h-10 rounded-full bg-[#4C7DFF]/10 flex items-center justify-center text-[#4C7DFF]"><i data-lucide="' + iconFor(room.name) + '" class="w-5 h-5"></i></div>' +
+        '<div class="min-w-0"><h2 class="text-lg font-bold text-slate-900 truncate">' + esc(room.name) + '</h2><p class="text-xs text-slate-400">' + room.devices.length + ' cihaz</p></div></div>' +
+        '<div class="grid grid-cols-2 gap-3">' + scenes.map(function (s) {
+          var last = state[key] === s[1];
+          return '<button type="button" data-room="' + esc(key) + '" data-room-name="' + esc(room.name) + '" data-scene="' + s[0] + '" data-title="' + esc(s[1]) + '" class="bg-slate-50 text-slate-700 border border-slate-100 rounded-2xl p-4 flex flex-col items-start gap-2 active-scale text-left">' +
+            '<i data-lucide="' + s[2] + '" class="w-6 h-6" style="color:' + s[3] + '"></i>' +
+            '<div><div class="font-bold text-sm leading-tight">' + esc(s[1]) + '</div>' +
+            '<div class="text-[10px] text-slate-400">' + (last ? 'Son çalıştırılan' : 'Dokun, çalışsın') + '</div></div></button>';
+        }).join('') + '</div></section>';
+    });
+    if (!html) {
+      var noDevices = !devices.length;
+      html = '<div class="nx-empty" style="margin:24px auto;max-width:420px"><div class="nx-empty__icon"><i class="w-7 h-7" data-lucide="layout-dashboard"></i></div>' +
+        '<h3 class="nx-empty__title">' + (noDevices ? 'Henüz cihaz yok' : 'Odası belirli uyumlu cihaz yok') + '</h3>' +
+        '<p class="nx-empty__text">' + (noDevices ? 'Cihaz ekleyip bir odaya yerleştirince o odanın sahneleri burada görünür.' : 'Işık, perde ya da klima gibi cihazlarına oda atayınca o odanın sahneleri burada görünür.') + '</p>' +
+        (noDevices ? '<a class="nx-empty__cta" href="nexus-pair.html"><i class="w-4 h-4" data-lucide="plus"></i>Cihaz ekle</a>' : '') + '</div>';
+    }
+    main.innerHTML = html;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
-  buttons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var room  = btn.getAttribute('data-room');
-      var scene = btn.getAttribute('data-scene');
-      // Aynı sahneye tekrar basınca deaktif et (toggle)
-      if (state[room] === scene) {
-        delete state[room];
-      } else {
-        state[room] = scene;
-      }
-      nexusSetItem('nexusRoomScenesActive', JSON.stringify(state));
-      syncUI();
-      var label = state[room] ? (scene + ' sahnesi aktif edildi') : (scene + ' deaktif edildi');
-      showSceneToast(label);
-    });
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('button[data-scene][data-room]');
+    if (!b) return;
+    var r = NX.runScene(b.getAttribute('data-scene'), b.getAttribute('data-room-name'));
+    if (r.changed) {
+      var st = readState();
+      st[b.getAttribute('data-room')] = b.getAttribute('data-title');
+      nexusSetItem('nexusRoomScenesActive', JSON.stringify(st));
+    }
+    if (window.nexusToast) window.nexusToast(b.getAttribute('data-room-name') + ' · ' + NX.sceneSummary(r), { type: r.changed ? 'success' : 'error', key: 'scene' });
+    render();
   });
-
-  syncUI();
-});
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render); else render();
+})();
 </script>
-<script src="smart-card-detail-state.js"></script>
   <script src="js/lucide.js"></script>
 <script data-purpose="icon-initialization">
     if (typeof lucide !== 'undefined') lucide.createIcons();

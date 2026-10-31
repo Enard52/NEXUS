@@ -5,7 +5,7 @@
  * diğer ayarlar cihaz kaydında (state) tutulur.
  */
 (function () {
-  var IMAGE_VERSION = "20261029-products-10";
+  var IMAGE_VERSION = "20261031-products-11";
 
   var IMAGE_RENAMES = {
     // Eski katalog JPG'leri (düz mavi arka planlı) şeffaf PNG ürün görselleriyle değiştirildi; kayıtlı cihazlar da düzelsin.
@@ -110,11 +110,36 @@
     return { id: "other", label: "Diğer cihazlar", icon: "cpu" };
   }
 
+  // Aynı türdeki cihazlar tek tip görünmesin: adı biçimini söylüyorsa (tavan lambası, masa lambası, bahçe ışığı,
+  // LED şerit, uzatma prizi) aynı ailedeki uygun ürün görseli seçilir. Yalnızca genel ışık/priz görselleri
+  // değişir; dimmer, sensör gibi özel görsellere ve kullanıcının kendi fotoğrafına dokunulmaz.
+  var LIGHT_IMGS = { "generic-led-bulb.png": 1, "generic-ceiling-light.png": 1, "generic-table-lamp.png": 1, "generic-outdoor-light.png": 1, "generic-led-strip.png": 1 };
+  var PLUG_IMGS = { "generic-smart-plug.png": 1, "generic-power-strip.png": 1 };
+  var NAME_IMG_RULES = [
+    [LIGHT_IMGS, /(serit|strip|led bant|lightstrip|gradient|wled)/, "generic-led-strip.png"],
+    [LIGHT_IMGS, /(tavan|avize|plafonyer|ceiling|chandelier)/, "generic-ceiling-light.png"],
+    [LIGHT_IMGS, /(masa|abajur|lambader|gece lambas|desk|table lamp|floor lamp|bedside)/, "generic-table-lamp.png"],
+    [LIGHT_IMGS, /(bahce|dis mekan|disari|balkon|teras|veranda|garden|outdoor|porch|patio|yard)/, "generic-outdoor-light.png"],
+    [PLUG_IMGS, /(uzatma|coklu priz|grup priz|power strip|powerstrip)/, "generic-power-strip.png"],
+  ];
+  function foldName(s) {
+    return String(s || "").toLocaleLowerCase("tr-TR")
+      .replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s").replace(/ö/g, "o").replace(/ç/g, "c");
+  }
+  function refineImg(name, img) {
+    var n = foldName(name);
+    for (var i = 0; i < NAME_IMG_RULES.length; i++) {
+      var r = NAME_IMG_RULES[i];
+      if (r[0][img] && r[1].test(n)) return r[2];
+    }
+    return img;
+  }
+
   function thumbFor(device) {
-    if (device.img) return IMAGE_RENAMES[device.img] || device.img;
+    if (device.img) return refineImg(device.name, IMAGE_RENAMES[device.img] || device.img);
     var resolved =
       typeof nexusResolveDevice === "function" ? nexusResolveDevice(device.name, "") : null;
-    return (resolved && resolved.img) || "generic-smart-hub.png";
+    return refineImg(device.name, (resolved && resolved.img) || "generic-smart-hub.png");
   }
 
   // ---------- Kullanıcının kendi cihaz fotoğrafı ----------
@@ -220,6 +245,20 @@
     try {
       var src = device ? imageUrl(device) : "";
       return src ? '<img src="' + escapeHtml(src) + '" alt="" class="' + (cls || "w-6 h-6 object-contain shrink-0") + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' : "";
+    } catch (e) { return ""; }
+  }
+
+  // Olay günlüğü gibi yalnız metin saklayan yerlerde: metinde adı AYNEN geçen kayıtlı cihazın görseli (en uzun ad
+  // kazanır, 3 harften kısa adlar eşleşmez); eşleşme yoksa boş döner — görsel uydurulmaz.
+  function thumbForText(text, cls) {
+    try {
+      var hay = String(text || "").toLocaleLowerCase("tr-TR");
+      var best = null;
+      readDevices().forEach(function (d) {
+        var n = String((d && d.name) || "").toLocaleLowerCase("tr-TR");
+        if (n.length >= 3 && hay.indexOf(n) !== -1 && (!best || n.length > String(best.name).length)) best = d;
+      });
+      return best ? thumbHtml(best, cls) : "";
     } catch (e) { return ""; }
   }
 
@@ -1057,6 +1096,76 @@
           ];
       },
     },
+    // Tek amaçlı hazır senaryolar (Tıkla ve Çalıştır): yalnız ilgili cihaz türüne dokunur.
+    "all-lights-on": {
+      title: "Tüm ışıkları aç",
+      act: function (k) {
+        if (k === "light") return [["switch", true], ["brightness", 100]];
+      },
+    },
+    "all-lights-off": {
+      title: "Tüm ışıkları kapat",
+      act: function (k) {
+        if (k === "light") return [["switch", false]];
+      },
+    },
+    reading: {
+      title: "Okuma modu",
+      act: function (k) {
+        if (k === "light") return [["switch", true], ["brightness", 100], ["tone", "cool"]];
+      },
+    },
+    focus: {
+      title: "Odaklanma",
+      act: function (k) {
+        if (k === "light") return [["switch", true], ["brightness", 85], ["tone", "neutral"]];
+        if (k === "media") return [["switch", false]];
+      },
+    },
+    dinner: {
+      title: "Akşam yemeği",
+      act: function (k) {
+        if (k === "light") return [["switch", true], ["brightness", 40], ["tone", "warm"]];
+      },
+    },
+    "cool-down": {
+      title: "Serinlet",
+      act: function (k, d) {
+        if (k === "ac") return hasFeature(d, "target") ? [["switch", true], ["target", 20]] : [["switch", true]];
+        if (k === "thermostat") return [["target", 20]];
+      },
+    },
+    "warm-up": {
+      title: "Isıt",
+      act: function (k) {
+        if (k === "thermostat") return [["target", 24], ["profile", "comfort"]];
+      },
+    },
+    "curtains-open": {
+      title: "Perdeleri aç",
+      act: function (k) {
+        if (k === "cover") return [["coverAction", "open"]];
+      },
+    },
+    "curtains-close": {
+      title: "Perdeleri kapat",
+      act: function (k) {
+        if (k === "cover") return [["coverAction", "close"]];
+      },
+    },
+    "lock-doors": {
+      title: "Kapıları kilitle",
+      act: function (k) {
+        if (k === "lock") return [["locked", true]];
+      },
+    },
+    "energy-save": {
+      title: "Enerji tasarrufu",
+      act: function (k) {
+        // Prizler (buzdolabı vb.) ve klima/termostat kapatılmaz; yalnız ışık ve medya.
+        if (k === "light" || k === "media") return [["switch", false]];
+      },
+    },
   };
   function awayActs(k) {
     if (k === "light" || k === "media" || k === "purifier") return [["switch", false]];
@@ -1123,10 +1232,16 @@
     }).length;
   }
 
-  function runScene(id) {
+  // Oda adları karşılaştırması (büyük/küçük harf ve boşluk farkı yok sayılır).
+  function roomKey(r) {
+    return String(r || "").trim().toLocaleLowerCase("tr-TR");
+  }
+  // room verilirse senaryo yalnızca o odadaki cihazlara uygulanır (Oda Sahneleri).
+  function runScene(id, room) {
     var scene = SCENES[id];
     if (!scene) return { changed: 0, lan: 0, title: id, unknown: true };
     var devices = readDevices();
+    var onlyRoom = room ? roomKey(room) : "";
     var changed = 0,
       lan = 0,
       lanDevices = [];
@@ -1136,6 +1251,7 @@
     SCENE_QUIET = true;
     try {
       devices.forEach(function (device, index) {
+        if (onlyRoom && roomKey(device && device.room) !== onlyRoom) return;
         var acts = sceneActs(scene, device);
         if (!acts.length) return;
         // stateOf canlı referans döndürür; applyField aynı nesneyi yerinde
@@ -1198,6 +1314,42 @@
     );
   }
 
+  // Kaydedilmiş bir Tıkla ve Çalıştır / otomasyon kaydını çalıştırır: hazır senaryo (sceneId) ya da cihaz adımları
+  // (actions: { name | index, field, value }; { kind: "security-mode", value }). Ana ekran kartı, Siri/derin bağlantı
+  // ve sohbet aynı yolu kullanır. Dönüş: { changed, summary, lanDevices, runnable }.
+  var SECURITY_MODES = { home: "Evde", away: "Dışarıda", night: "Gece" };
+  function itemRunnable(item) {
+    if (!item) return false;
+    if (item.sceneId && SCENES[item.sceneId]) return true;
+    return Array.isArray(item.actions) && item.actions.some(function (a) { return a && (a.field || a.kind === "security-mode"); });
+  }
+  function runItem(item) {
+    var title = (item && item.title) || "Senaryo";
+    if (!itemRunnable(item)) return { changed: 0, lanDevices: [], runnable: false, summary: title + ": tanımlı eylem yok." };
+    if (item.sceneId && SCENES[item.sceneId]) {
+      var r = runScene(item.sceneId);
+      return { changed: r.changed, lanDevices: r.lanDevices || [], runnable: true, summary: sceneSummary(r) };
+    }
+    var devices = readDevices(), done = 0, lanDevices = [], mode = "";
+    item.actions.forEach(function (a) {
+      if (!a) return;
+      if (a.kind === "security-mode") {
+        if (SECURITY_MODES[a.value]) { try { nexusSetItem("nexusSecurityMode", a.value); mode = a.value; } catch (e) {} }
+        return;
+      }
+      var idx = typeof a.index === "number" ? a.index : devices.findIndex(function (d) { return d && d.name === a.name; });
+      if (idx < 0 || !devices[idx] || !a.field) return;
+      setField(idx, a.field, a.value);
+      done += 1;
+      if (isLan(devices[idx]) && !lanDevices.some(function (x) { return x.index === idx; })) lanDevices.push({ index: idx, name: devices[idx].name });
+    });
+    var summary = done
+      ? title + ": " + done + " cihaz ayarlandı" + (lanDevices.length ? " (" + lanDevices.length + " cihaza yerel ağdan komut gitti)" : "") + "."
+      : mode ? title + ": güvenlik modu " + SECURITY_MODES[mode] + " yapıldı."
+        : title + ": adımlardaki cihazlar artık eşleşmiş değil.";
+    return { changed: done + (mode ? 1 : 0), lanDevices: lanDevices, runnable: true, summary: summary };
+  }
+
   function deviceUrl(index) {
     return "nexus-device.html?i=" + index;
   }
@@ -1222,6 +1374,7 @@
     thumbFor: thumbFor,
     imageUrl: imageUrl,
     thumbHtml: thumbHtml,
+    thumbForText: thumbForText,
     photoOf: photoOf,
     setPhoto: setPhoto,
     photoFromFile: photoFromFile,
@@ -1240,6 +1393,7 @@
     renameDevice: renameDevice,
     deviceUrl: deviceUrl,
     runScene: runScene,
+    roomKey: roomKey,
     sceneAffected: sceneAffected,
     // Senaryonun bu cihazda gerçekten uygulayacağı alan/değer çiftleri (önizleme için).
     sceneActsOf: function (id, device) {
@@ -1247,6 +1401,8 @@
       return s ? sceneActs(s, device) : [];
     },
     sceneSummary: sceneSummary,
+    runItem: runItem,
+    itemRunnable: itemRunnable,
     SCENES: SCENES,
     onError: onError,
     fmtTemp: fmtTemp,

@@ -204,7 +204,7 @@
     NX.readDevices().forEach(function (d) {
       var st = NX.stateOf(d);
       var add = function (label, value) { cards.push('<div class="bg-white dark:bg-slate-800 rounded-3xl p-5 nexus-shadow"><span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">' + label + '</span>' +
-        '<p class="text-xl font-bold mt-2">' + value + '</p><p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 truncate">' + esc(d.name) + '</p></div>'); };
+        '<p class="text-xl font-bold mt-2">' + value + '</p><p class="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 min-w-0">' + (NX.thumbHtml ? NX.thumbHtml(d, 'w-6 h-6 object-contain shrink-0') : '') + '<span class="truncate">' + esc(d.name) + '</span></p></div>'); };
       var num = function (v) { return typeof v === 'number' && isFinite(v); };
       if (num(st.temperature)) add('Isı', NX.fmtTemp(st.temperature));
       if (num(st.humidity)) add('Nem', '%' + st.humidity);

@@ -31,6 +31,14 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="nexus" android:host="auth" />
             </intent-filter>
+            <!-- Kestirme / ana ekran kısayolu: nexus://run/<senaryo> uygulamayı açar ve o Tıkla ve Çalıştır
+                 senaryosunu çalıştırır (cloud-sync.js nativeRunTarget → nexus-home.html?run=…). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="nexus" android:host="run" />
+            </intent-filter>
         </activity>
 
         <provider

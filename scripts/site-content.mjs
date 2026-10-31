@@ -42,7 +42,7 @@ export const content = {
     title: "NEXUS — Your smart home, managed on your own network",
     ogImageAlt: "NEXUS smart home ecosystem on desktop and mobile",
     description:
-      "NEXUS is a local-first smart home ecosystem for Windows, macOS, Linux, Android and iOS. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ AI plan.",
+      "NEXUS is a local-first smart home ecosystem for Windows, macOS, Linux, Android and iOS. Direct device control over your own local network, responsive automations, and live energy metrics. Free forever; optional NEXUS+ plan.",
     nav: [
       ["#features", "Features"],
       ["#how", "How it works"],
@@ -235,7 +235,7 @@ export const content = {
         ],
         [
           "What does the NEXUS+ plan add?",
-          "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.",
+          "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, advanced connections for adding Home Assistant, MQTT/Zigbee2MQTT, Tuya and Tapo devices, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.",
         ],
         [
           "Which account does my NEXUS+ subscription belong to?",
@@ -553,7 +553,7 @@ export const content = {
         ],
         [
           "NEXUS+ aboneliği tam olarak ne sağlar?",
-          "Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.",
+          "Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı, Home Assistant, MQTT/Zigbee2MQTT, Tuya ve Tapo cihazı eklemeyi sağlayan gelişmiş bağlantıları ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.",
         ],
         [
           "NEXUS+ aboneliğim hangi hesaba tanımlanır?",

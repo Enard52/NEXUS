@@ -15,11 +15,11 @@ const T = {
     heading: ["Free today. Premium when it is ready.", "Free to use. NEXUS+ when you want more."],
     copy: [
       "Everything NEXUS does today is free, with no device limit and no account fee. Premium and Family plans are on the way.",
-      "NEXUS is free to use, with no device limit and no account fee. NEXUS+ adds a much larger monthly NEXUS AI allowance. A Family plan is on the way.",
+      "NEXUS is free to use, with no device limit and no account fee. NEXUS+ adds a much larger monthly NEXUS AI allowance and advanced connections (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo). A Family plan is on the way.",
     ],
     faq: [
       "Paid Premium and Family plans will come later; nothing you use today will be taken away.",
-      "The optional NEXUS+ subscription adds a larger NEXUS AI allowance, and a Family plan will come later; nothing you use today will be taken away.",
+      "The optional NEXUS+ subscription adds a larger NEXUS AI allowance and advanced connections (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo), and a Family plan will come later; devices you have already added keep working.",
     ],
     premium: [
       [
@@ -50,6 +50,7 @@ const T = {
         /<ul class="feature-list">[\s\S]*?<\/ul>/,
         list([
           "2,000 NEXUS AI credits every month (Free: 30 per day)",
+          "Advanced connections: add Home Assistant, MQTT/Zigbee2MQTT, Tuya and Tapo devices",
           "NEXUS AI smart home control",
           "Ask NEXUS AI to set scenes and answer in plain language",
           "Works on all your NEXUS devices",
@@ -73,6 +74,22 @@ const T = {
       ["Everything in Premium, plus", "Everything in NEXUS+, plus"],
       [">Everything in Premium<", ">Everything in NEXUS+<"],
     ],
+    // Sayfanın başka yerlerindeki eski iddialar: gelişmiş bağlantılarla cihaz eklemek artık NEXUS+ ister,
+    // "uzaktan erişim" ise hiçbir planda yok.
+    claims: [
+      [
+        "Pairing and controlling devices on your local network, scenes, automations and NEXUS AI are free, with no device limit, hub, cloud account or subscription.",
+        "Controlling devices on your local network, scenes, automations and NEXUS AI (30 credits a day) are free, with no device limit, hub or cloud fee; adding devices through the advanced connections (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo) needs NEXUS+.",
+      ],
+      [
+        "Pairing and controlling devices on your local network, scenes and automations are free, with no hub, cloud account or subscription. Premium plans add advanced AI and household management tools.",
+        "Controlling devices on your local network, scenes and automations are free, with no hub or cloud fee. NEXUS+ adds a larger NEXUS AI allowance and the advanced connections (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo).",
+      ],
+      [
+        "Core local control stays free. Premium plans add advanced intelligence, remote access, and household tools.",
+        "Core local control stays free. NEXUS+ adds a larger NEXUS AI allowance and advanced connections.",
+      ],
+    ],
   },
   tr: {
     heading: [
@@ -81,11 +98,11 @@ const T = {
     ],
     copy: [
       "NEXUS&#39;un bugün yaptığı her şey ücretsiz; cihaz sınırı ve hesap ücreti yok. Premium ve Aile planları yolda.",
-      "NEXUS ücretsiz kullanılır; cihaz sınırı ve hesap ücreti yok. NEXUS+ çok daha büyük bir aylık NEXUS AI hakkı ekler. Aile planı yolda.",
+      "NEXUS ücretsiz kullanılır; cihaz sınırı ve hesap ücreti yok. NEXUS+ çok daha büyük bir aylık NEXUS AI hakkı ve gelişmiş bağlantılar (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo) ekler. Aile planı yolda.",
     ],
     faq: [
       "Ücretli Premium ve Aile planları daha sonra gelecek; bugün kullandığın hiçbir şey elinden alınmayacak.",
-      "İsteğe bağlı NEXUS+ aboneliği daha büyük bir NEXUS AI hakkı ekler, Aile planı daha sonra gelecek; bugün kullandığın hiçbir şey elinden alınmayacak.",
+      "İsteğe bağlı NEXUS+ aboneliği daha büyük bir NEXUS AI hakkı ve gelişmiş bağlantılar (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo) ekler, Aile planı daha sonra gelecek; zaten eklediğin cihazlar çalışmaya devam eder.",
     ],
     premium: [
       [
@@ -116,6 +133,7 @@ const T = {
         /<ul class="feature-list">[\s\S]*?<\/ul>/,
         list([
           "Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)",
+          "Gelişmiş bağlantılar: Home Assistant, MQTT/Zigbee2MQTT, Tuya ve Tapo cihazı ekle",
           "NEXUS AI ile akıllı ev kontrolü",
           "NEXUS AI ile doğal dille senaryo ve soru",
           "Tüm NEXUS cihazlarında çalışır",
@@ -139,13 +157,27 @@ const T = {
       ["Premium&#39;daki her şey, artı", "NEXUS+&#39;daki her şey, artı"],
       ["Premium&#39;daki her şey</li>", "NEXUS+&#39;daki her şey</li>"],
     ],
+    claims: [
+      [
+        "Yerel ağındaki cihazları eşleştirmek ve kontrol etmek, senaryolar, otomasyonlar ve NEXUS AI ücretsizdir; cihaz sınırı, hub, bulut hesabı ya da abonelik yok.",
+        "Yerel ağındaki cihazları kontrol etmek, senaryolar, otomasyonlar ve NEXUS AI (günde 30 kredi) ücretsizdir; cihaz sınırı, hub ya da bulut ücreti yok. Gelişmiş bağlantılarla (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo) cihaz eklemek NEXUS+ gerektirir.",
+      ],
+      [
+        "Yerel ağınızdaki cihazları eşleştirmek ve kontrol etmek, senaryolar ve otomasyonlar ücretsizdir; hub, bulut hesabı ya da abonelik gerekmez. Premium planlar gelişmiş yapay zekâ ve hane yönetimi araçları ekler.",
+        "Yerel ağınızdaki cihazları kontrol etmek, senaryolar ve otomasyonlar ücretsizdir; hub ya da bulut ücreti gerekmez. NEXUS+ daha büyük bir NEXUS AI hakkı ve gelişmiş bağlantılar (Home Assistant, MQTT/Zigbee2MQTT, Tuya, Tapo) ekler.",
+      ],
+      [
+        "Temel yerel kontrol ücretsiz kalır. Premium planlar gelişmiş zekâ, uzaktan erişim ve ev araçları ekler.",
+        "Temel yerel kontrol ücretsiz kalır. NEXUS+ daha büyük bir NEXUS AI hakkı ve gelişmiş bağlantılar ekler.",
+      ],
+    ],
   },
 };
 
 const FREE_FAMILY = {
   en: {
     free: [
-      "Unlimited connected devices",
+      "Unlimited connected devices (advanced connections need NEXUS+)",
       "Scenes, automations and NEXUS AI chat (30 credits a day)",
       "Homes, rooms and household members with per-member permissions",
       "100% local device control",
@@ -160,7 +192,7 @@ const FREE_FAMILY = {
   },
   tr: {
     free: [
-      "Sınırsız bağlı cihaz",
+      "Sınırsız bağlı cihaz (gelişmiş bağlantılar NEXUS+ ile)",
       "Senaryolar, otomasyonlar ve NEXUS AI sohbeti (günde 30 kredi)",
       "Evler, odalar ve üye başına izinli ev üyeleri",
       "%100 yerel cihaz kontrolü",
@@ -180,7 +212,7 @@ const PLANS_V2 = {
     free: {
       stat: ["NEXUS AI credits", "30 / day"],
       items: [
-        "Unlimited connected devices, controlled on your own network",
+        "Unlimited connected devices, controlled on your own network (advanced connections need NEXUS+)",
         "Scenes, schedules and automations",
         "NEXUS AI assistant for device commands",
         "Homes, rooms, household members and per-member permissions",
@@ -194,6 +226,7 @@ const PLANS_V2 = {
       desc: "A much larger monthly NEXUS AI allowance for your home: 2,000 credits a month instead of 30 a day.",
       items: [
         "2,000 NEXUS AI credits every month (Free: 30 per day)",
+        "Advanced connections: Home Assistant, MQTT/Zigbee2MQTT, Tuya and Tapo",
         "Ask NEXUS AI to set scenes and answer in plain language",
         "One subscription, valid on all your devices",
         "Free trial included, cancel at period end",
@@ -213,7 +246,7 @@ const PLANS_V2 = {
     free: {
       stat: ["NEXUS AI kredisi", "günde 30"],
       items: [
-        "Kendi ağında kontrol edilen sınırsız bağlı cihaz",
+        "Kendi ağında kontrol edilen sınırsız bağlı cihaz (gelişmiş bağlantılar NEXUS+ ile)",
         "Senaryolar, programlar ve otomasyonlar",
         "Cihaz komutları için NEXUS AI asistanı",
         "Evler, odalar, ev üyeleri ve üye başına izinler",
@@ -227,6 +260,7 @@ const PLANS_V2 = {
       desc: "Evin için çok daha büyük bir aylık NEXUS AI hakkı: günde 30 yerine ayda 2.000 kredi.",
       items: [
         "Her ay 2.000 NEXUS AI kredisi (Ücretsiz: günde 30)",
+        "Gelişmiş bağlantılar: Home Assistant, MQTT/Zigbee2MQTT, Tuya ve Tapo",
         "NEXUS AI ile doğal dille senaryo ve soru",
         "Tek abonelik, tüm cihazlarında geçerli",
         "Ücretsiz deneme dahil, dönem sonunda iptal",
@@ -288,7 +322,7 @@ for (const f of ["index.html", "tr/index.html", "light.html", "tr/light.html"]) 
   const lang = f.startsWith("tr/") ? "tr" : "en";
   const t = T[lang];
   let h = fs.readFileSync(p, "utf8");
-  h = apply(h, [t.heading, t.copy, t.faq]);
+  h = apply(h, [t.heading, t.copy, t.faq].concat(t.claims));
   if (lang === "tr")
     h = h.split("<sup>$</sup>0<span>/ ay</span>").join("<sup>₺</sup>0<span>/ ay</span>");
   const a = h.indexOf('<article class="price-card price-card-premium');

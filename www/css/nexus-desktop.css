@@ -57,7 +57,10 @@ html.dark .nx-side-brand { color: #f8fafc; }
 .nx-side-ai-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .nx-side-ai-txt b { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nx-side-ai-txt small { font-size: 11.5px; font-weight: 500; color: rgba(255, 255, 255, 0.68); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nx-side-ai-dot { position: absolute; left: 34px; top: 6px; width: 9px; height: 9px; border-radius: 9999px; border: 2px solid #14204d; background: #34d399; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); animation: nx-side-ai-pulse 2.4s ease-out infinite; }
+/* Durum noktası logonun sağ üst köşesine bağlı (menü açık da daraltılmış da aynı yerde). Gri: internet yok. */
+.nx-side-ai-ico { position: relative; }
+.nx-side-ai.is-offline .nx-side-ai-dot { background: #94a3b8; animation: none; }
+.nx-side-ai-dot { position: absolute; right: -2px; top: -2px; width: 9px; height: 9px; box-sizing: content-box; border-radius: 9999px; border: 2px solid #14204d; background: #34d399; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); animation: nx-side-ai-pulse 2.4s ease-out infinite; }
 @keyframes nx-side-ai-pulse { 0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } }
 .nx-side-ai-arrow { width: 16px; height: 16px; flex: none; opacity: 0.8; transition: transform 0.2s ease; }
 .nx-side-ai:hover { transform: translateY(-1px); border-color: rgba(139, 123, 255, 0.6);
@@ -252,10 +255,11 @@ html.nx-desk #confirm-modal {
   right: 0 !important;
   width: auto !important;
 }
-html.nx-desk #perm-modal > .surface,
-html.nx-desk #rooms-modal > .surface,
-html.nx-desk #member-modal > .surface,
-html.nx-desk #input-sheet > .surface {
+/* Tam ekran içerik sayfası olanlar (.nx-full: izin, oda, üye) sütunu doldurur; daraltılmaz. */
+html.nx-desk #perm-modal > .surface:not(.nx-full),
+html.nx-desk #rooms-modal > .surface:not(.nx-full),
+html.nx-desk #member-modal > .surface:not(.nx-full),
+html.nx-desk #input-sheet > .surface:not(.nx-full) {
   box-sizing: border-box !important;
   width: min(520px, calc(100% - 48px)) !important;
   max-width: 520px;
@@ -412,20 +416,28 @@ html.nx-desk:not(.nx-desk-auth) .nx-desk-bottom {
 html.dark.nx-desk:not(.nx-desk-auth) .nx-desk-bottom { background: rgba(15, 23, 42, 0.6) !important; }
 html.nx-desk footer[class*="bg-white"] {
   background: linear-gradient(to top, rgba(223, 218, 251, 0.97) 62%, rgba(223, 218, 251, 0)) !important; border-top: 0 !important; }
-html.nx-desk [data-purpose="chat-input-container"] {
-  background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 0 !important; }
+/* Zemin kartı yalnız yazı kutusunu sarar (.nx-chat-card); asistan modu etiketleri kartın dışında, sayfa zemininde durur */
+html.nx-desk [data-purpose="chat-input-container"] { background: transparent !important; backdrop-filter: none; -webkit-backdrop-filter: none; border-top: 0 !important; }
+html.nx-desk .nx-chat-card,
+html.nx-tab .nx-chat-card {
+  background: color-mix(in srgb, #ECE9FD 88%, #fff) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 html.dark.nx-desk footer[class*="bg-white"] { background: linear-gradient(to top, rgba(15, 23, 42, 0.97) 62%, rgba(15, 23, 42, 0)) !important; }
-html.dark.nx-desk [data-purpose="chat-input-container"] { background: rgba(15, 23, 42, 0.6) !important; }
+html.dark.nx-desk [data-purpose="chat-input-container"] { background: transparent !important; }
+html.dark.nx-desk .nx-chat-card, html.dark.nx-tab .nx-chat-card { background: rgba(15, 23, 42, 0.6) !important; }
 /* Sohbet girişi: mobildeki gibi kenarlardan içeride, yuvarlak köşeli yüzen bir kutu;
    sütunun tamamına yayılan köşeli şerit değil. Tablet sütununda da aynı görünüm.
    pb-6 + safe-area inline stili yerine simetrik dolgu: hap kutu şeridin dikey ortasında. */
 html.nx-desk [data-purpose="chat-input-container"],
 html.nx-tab [data-purpose="chat-input-container"] {
   margin: 8px 0 16px !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  border-radius: 24px !important;
-  box-shadow: 0 12px 30px rgba(var(--nx-accent-rgbc,76,125,255),0.14) !important;
+  padding: 0 !important;
+  background: transparent !important; box-shadow: none !important; border-top: 0 !important;
+}
+html.nx-desk .nx-chat-card,
+html.nx-tab .nx-chat-card {
+  padding: 10px 16px;
+  border-radius: 24px;
+  box-shadow: 0 12px 30px rgba(var(--nx-accent-rgbc,76,125,255),0.14);
 }
 /* + ekle menüsü kutunun İÇİNE değil, tam üstüne açılır */
 html.nx-desk #attach-menu,
@@ -519,7 +531,6 @@ html.nx-desk.nx-side-collapsed .nx-side-link { justify-content: center; gap: 0; 
 html.nx-desk.nx-side-collapsed .nx-side-link span { display: none; }
 html.nx-desk.nx-side-collapsed .nx-side-ai { width: 48px; min-height: 48px; margin: 0 auto 10px; padding: 6px; justify-content: center; gap: 0; }
 html.nx-desk.nx-side-collapsed .nx-side-ai-txt, html.nx-desk.nx-side-collapsed .nx-side-ai-arrow { display: none; }
-html.nx-desk.nx-side-collapsed .nx-side-ai-dot { left: 32px; }
 html.nx-desk.nx-side-collapsed .nx-side-foot { flex-direction: column; align-items: center; gap: 6px; }
 html.nx-desk.nx-side-collapsed .nx-side-user { flex: none; padding: 4px; }
 html.nx-desk.nx-side-collapsed .nx-side-user > span.min-w-0 { display: none; } /* avatar (img ya da span.nx-side-avatar) kalır, yalnızca ad/alt yazı gizlenir */

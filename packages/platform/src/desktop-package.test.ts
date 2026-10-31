@@ -186,6 +186,8 @@ describe("desktop app file rules (src/app → packaged app/)", () => {
       "settings-diagnostics.js",
       "security-mode.js",
       "location-trigger.js",
+      "energy-strategies.js",
+      "skills-page.js",
     ]) {
       // Dosya henüz depoya girmemişse (dev bir dalga) var olduğunu iddia etmeyiz;
       // ama VARSA kural gereği pakete girmek zorunda.

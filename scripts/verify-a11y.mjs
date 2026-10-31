@@ -60,16 +60,16 @@ const browser = await chromium.launch();
   await page.goto(`http://127.0.0.1:${PORT}/nexus-home.html`, { waitUntil: "load" });
   await page.waitForTimeout(700);
 
-  const entry = await page.$("#nx-pal-entry");
-  ok("telefonda arama düğmesi çıkar", !!entry);
+  // Yüzen arama balonu kaldırıldı; palet telefonda yalnızca kodla (nexusOpenPalette) açılır.
+  ok("telefonda yüzen arama düğmesi çıkmaz", !(await page.$("#nx-pal-entry")));
   const live = await page.$("#nx-live-status");
   ok("aria-live bölgesi kurulur", !!live);
 
-  if (entry) {
-    await entry.tap();
+  {
+    await page.evaluate(() => window.nexusOpenPalette());
     await page.waitForTimeout(200);
     const open = await page.$eval("#nx-palette", (el) => el.classList.contains("open"));
-    ok("dokunuş paleti açar", open);
+    ok("palet açılır", open);
     await page.fill(".nx-pal-input", "ayar");
     await page.waitForTimeout(200);
     const hits = await page.$$eval("#nx-palette .nx-pal-item", (els) => els.map((e) => e.textContent.trim()));

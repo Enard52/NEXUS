@@ -134,29 +134,6 @@ describe("ai-fab injection", () => {
     env.doc.fire("DOMContentLoaded");
     expect(env.fab()).toBeDefined();
   });
-
-  it("honors nexusFabAi=false through nexusGetItem", () => {
-    const get = vi.fn((k: string) => (k === "nexusFabAi" ? "false" : null));
-    const env = load({ href: "https://app.example/nexus-settings.html", nexusGetItem: get });
-    expect(get).toHaveBeenCalledWith("nexusFabAi");
-    expect(env.fab()).toBeUndefined();
-  });
-
-  it("honors nexusFabAi=false through localStorage when nexusGetItem is absent", () => {
-    const env = load({
-      href: "https://app.example/nexus-settings.html",
-      localStorageValue: "false",
-    });
-    expect(env.fab()).toBeUndefined();
-  });
-
-  it("still shows the button for any other preference value", () => {
-    const env = load({
-      href: "https://app.example/nexus-settings.html",
-      nexusGetItem: () => "true",
-    });
-    expect(env.fab()).toBeDefined();
-  });
 });
 
 describe("ai-fab behavior", () => {

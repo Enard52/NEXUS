@@ -74,6 +74,8 @@
 <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="nexus-dialog.js"></script>
 </head>
 <body>
@@ -223,7 +225,9 @@
             id: device.id,
             title: device.name || 'Cihaz',
             subtitle: device.room || device.state || 'Akıllı cihaz',
-            iconHtml: `<div class="w-11 h-11 rounded-full ${accent.wrap} flex items-center justify-center shrink-0">${svg}</div>`,
+            // Ana sayfa kartındaki gibi ürün görseli (eklenen cihazlarda); görsel yoksa simge kalır
+            iconHtml: (window.NX && /^paired-\d+$/.test(String(device.id)) && NX.thumbHtml(device, 'w-11 h-11 object-contain shrink-0')) ||
+              `<div class="w-11 h-11 rounded-full ${accent.wrap} flex items-center justify-center shrink-0">${svg}</div>`,
             selected: pickerState.devices.has(device.id),
             onEdit: device.id
           });

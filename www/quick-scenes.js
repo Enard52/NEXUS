@@ -19,8 +19,20 @@
     "clean-start": { icon: "sparkles", hex: "#4C7DFF", bg: "bg-blue-500/10", color: "text-blue-500", desc: "Robot süpürgeyi başlatır.", time: { value: "10:00", repeat: "weekdays", label: "Hafta içi 10:00" } },
     "comfort-room": { icon: "thermometer", hex: "#0ea5e9", bg: "bg-sky-500/10", color: "text-sky-500", desc: "Klimayı ve termostatı konfor ayarına getirir, hava temizleyiciyi çalıştırır." },
     "sleep-prep": { icon: "bed-double", hex: "#7c3aed", bg: "bg-purple-500/10", color: "text-purple-500", desc: "Işıkları ve TV'yi kapatır, perdeleri kapatır, kapıyı kilitler." },
+    "all-lights-on": { icon: "lightbulb", hex: "#f59e0b", bg: "bg-amber-500/10", color: "text-amber-500", desc: "Bütün ışıkları tam parlaklıkta açar." },
+    "all-lights-off": { icon: "lightbulb-off", hex: "#475569", bg: "bg-slate-500/10", color: "text-slate-500", desc: "Bütün ışıkları kapatır.", time: { value: "01:00", repeat: "daily", label: "Her gece 01:00" } },
+    reading: { icon: "book-open", hex: "#0ea5e9", bg: "bg-sky-500/10", color: "text-sky-500", desc: "Işıkları tam parlaklıkta, gün ışığı tonunda açar." },
+    focus: { icon: "target", hex: "#4C7DFF", bg: "bg-blue-500/10", color: "text-blue-500", desc: "Işıkları %85 nötr tona getirir, TV'yi kapatır." },
+    dinner: { icon: "utensils", hex: "#f97316", bg: "bg-orange-500/10", color: "text-orange-500", desc: "Işıkları %40 sıcak tona getirir.", time: { value: "19:30", repeat: "daily", label: "Her akşam 19:30" } },
+    "cool-down": { icon: "snowflake", hex: "#06b6d4", bg: "bg-cyan-500/10", color: "text-cyan-500", desc: "Klimayı açıp 20°'ye, termostatı 20°'ye ayarlar." },
+    "warm-up": { icon: "flame", hex: "#ef4444", bg: "bg-red-500/10", color: "text-red-500", desc: "Termostatı 24° konfor ayarına getirir.", time: { value: "06:30", repeat: "weekdays", label: "Hafta içi 06:30" } },
+    "curtains-open": { icon: "blinds", hex: "#10b981", bg: "bg-emerald-500/10", color: "text-emerald-500", desc: "Bütün perde ve panjurları açar.", time: { value: "sunrise", repeat: "daily", label: "Her gün gün doğumunda" } },
+    "curtains-close": { icon: "blinds", hex: "#6366f1", bg: "bg-indigo-500/10", color: "text-indigo-500", desc: "Bütün perde ve panjurları kapatır.", time: { value: "sunset", repeat: "daily", label: "Her gün gün batımında" } },
+    "lock-doors": { icon: "lock", hex: "#0f172a", bg: "bg-slate-500/10", color: "text-slate-700", desc: "Bütün akıllı kilitleri kilitler (kilit hiçbir zaman açılmaz).", time: { value: "23:00", repeat: "daily", label: "Her gece 23:00" } },
+    "energy-save": { icon: "leaf", hex: "#22c55e", bg: "bg-green-500/10", color: "text-green-600", desc: "Işıkları ve TV'yi kapatır; prizlere ve klimaya dokunmaz." },
   };
-  var ORDER = ["good-morning", "welcome-home", "leave-home", "sleep-mode", "movie-mode", "night-security", "guest-mode", "clean-start", "comfort-room", "sleep-prep"];
+  var ORDER = ["good-morning", "welcome-home", "leave-home", "sleep-mode", "movie-mode", "night-security", "guest-mode", "clean-start", "comfort-room", "sleep-prep",
+    "all-lights-on", "all-lights-off", "reading", "focus", "dinner", "cool-down", "warm-up", "curtains-open", "curtains-close", "lock-doors", "energy-save"];
 
   function NXok() {
     return window.NX && NX.SCENES && NX.readDevices && NX.sceneActsOf;
@@ -159,7 +171,41 @@
     return id;
   }
 
+  // Senaryo oluşturma ekranındaki tam ekran görünümler (nexus-skills.html: tetikleyici ayarı, Hızlı Öneriler).
+  // Açılınca geçmişe bir adım eklenir: Geri (uygulama ya da tarayıcı) önce görünümü kapatır.
+  // Esc ve Android geri tuşu theme.js'ten gelir (.qs-screen.is-open içindeki Geri düğmesine basar).
+  var screens = { current: null };
+  function screenEl(id) { return document.getElementById(id + "-screen"); }
+  function hideScreen(id) {
+    var el = screenEl(id);
+    el.classList.remove("is-open");
+    el.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("qs-lock");
+    if (screens.current === id) screens.current = null;
+  }
+  function openScreen(id) {
+    var el = screenEl(id);
+    el.querySelector(".qs-screen-body").scrollTop = 0;
+    el.classList.add("is-open");
+    el.setAttribute("aria-hidden", "false");
+    document.body.classList.add("qs-lock");
+    screens.current = id;
+    try { history.pushState({ qsScreen: id }, ""); } catch (e) {}
+    var back = el.querySelector(".qs-screen-back");
+    if (back) setTimeout(function () { back.focus({ preventScroll: true }); }, 50);
+  }
+  function closeScreen(id) {
+    if (history.state && history.state.qsScreen === id) history.back();
+    else hideScreen(id);
+  }
+  if (typeof window.addEventListener === "function") {
+    window.addEventListener("popstate", function () { if (screens.current) hideScreen(screens.current); });
+  }
+
   window.nexusQuickScenes = {
+    screens: screens,
+    openScreen: openScreen,
+    closeScreen: closeScreen,
     META: META,
     list: list,
     available: available,

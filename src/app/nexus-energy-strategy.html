@@ -90,7 +90,7 @@
 <!-- Device card -->
 <section class="bg-white rounded-3xl card-shadow p-5 mb-4" data-purpose="device-card">
 <a class="nx-tap-b flex items-center justify-between mb-4" href="nexus-energy-devices.html">
-<h2 class="text-lg font-bold">Cihaz</h2>
+<h2 class="text-lg font-bold flex items-center gap-2"><i class="w-5 h-5 text-[#4C7DFF]" data-lucide="plug-zap"></i>Cihaz</h2>
 <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
 </a>
 <div class="bg-slate-50 rounded-2xl p-4 flex items-center gap-4">
@@ -109,7 +109,7 @@
 <!-- Settings card -->
 <section class="bg-white rounded-3xl card-shadow p-5" data-purpose="settings-card">
 <button class="nx-tap-b w-full flex items-center justify-between mb-4" onclick="openSheet('settings')">
-<h2 class="text-lg font-bold">Ayarlar</h2>
+<h2 class="text-lg font-bold flex items-center gap-2"><i class="w-5 h-5 text-[#4C7DFF]" data-lucide="sliders-horizontal"></i>Ayarlar</h2>
 <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
 </button>
 <div class="bg-slate-50 rounded-2xl p-4 flex items-center justify-between gap-4">
@@ -126,27 +126,25 @@
 <!-- BEGIN: Sheet backdrop -->
 <div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
 <!-- BEGIN: Settings Sheet (Ayarlar) -->
-<div class="sheet fixed bottom-0 inset-x-0 bg-slate-50 rounded-t-3xl z-50 flex flex-col" data-purpose="settings-sheet" id="sheet-settings" style="height: 85dvh;">
-<div class="flex items-center justify-between px-6 pt-6 pb-4">
-<div class="nx-sheet-head min-w-0 pr-3"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><h3 class="truncate" id="sheet-title">Evden çıktıktan sonra ışığı otom...</h3></div>
-<button aria-label="Kapat" class="flex-shrink-0 text-slate-400" onclick="closeSheets()">
-<i class="w-6 h-6" data-lucide="x"></i>
-</button>
-</div>
-<div class="flex-grow px-4 overflow-y-auto">
+<div class="sheet nx-full fixed bottom-0 inset-x-0 bg-slate-50 z-50 flex flex-col" data-purpose="settings-sheet" id="sheet-settings" role="dialog" aria-modal="true" aria-labelledby="settings-sheet-title">
+<div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeSheets()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="settings-sheet-title">Ayarlar</h2></div>
+<p class="nx-full-lead" id="sheet-title"></p>
+<div>
 <!-- Ev Konumu: mevcut harita seçicisine gider, dönüşte senkronize olur -->
 <a class="bg-white rounded-2xl card-shadow px-5 py-4 flex items-center justify-between active:bg-slate-100 transition-colors" href="nexus-map.html?return=energy">
+<div class="flex items-center gap-3 min-w-0">
+<span class="w-10 h-10 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] flex items-center justify-center flex-shrink-0"><i class="w-5 h-5" data-lucide="map-pin"></i></span>
 <div class="min-w-0">
 <span class="text-[17px] font-medium block">Ev Konumu</span>
 <span class="hidden text-sm text-slate-400 mt-0.5 block truncate" id="home-location-value"></span>
 </div>
+</div>
 <i class="w-5 h-5 text-slate-300 flex-shrink-0" data-lucide="chevron-right"></i>
 </a>
 </div>
-<div class="flex gap-3 px-4 pb-10 pt-4">
-<button class="flex-1 bg-white border border-slate-200 rounded-2xl py-4 font-bold text-slate-700 active:scale-[0.98] transition-transform" onclick="closeSheets()">İptal</button>
-<button class="flex-1 bg-slate-300 text-white rounded-2xl py-4 font-bold transition-colors" disabled id="save-settings-btn" onclick="saveSettings()">Ayarları Kaydet</button>
-</div>
+<p class="text-sm text-slate-400 text-center mt-4" id="save-settings-hint">Kaydetmek için önce ev konumunu seç.</p>
+<!-- Konum seçilmeden kaydedilecek ayar yok: düğme gri/pasif görünmez, konum seçilince belirir. -->
+<div class="nx-full-foot"><button class="hidden w-full bg-[#4C7DFF] text-white rounded-2xl py-4 font-bold active:scale-[0.98] transition-transform" id="save-settings-btn" onclick="saveSettings()">Ayarları Kaydet</button></div>
 </div>
 <!-- END: Settings Sheet -->
 <!-- BEGIN: MiniApp Menu Sheet (••• menüsü) -->
@@ -191,7 +189,7 @@
         document.getElementById('strategy-desc').textContent = s.desc;
         document.getElementById('device-name').textContent = s.device;
         // Sheet başlığı: uzunsa kısalt (kaynak tasarımdaki gibi)
-        document.getElementById('sheet-title').textContent = s.title.length > 32 ? s.title.slice(0, 32) + '...' : s.title;
+        document.getElementById('sheet-title').textContent = s.title;
       } catch (e) { /* bozuk kayıt varsa varsayılan içerik kalır */ }
     })();
 
@@ -230,10 +228,8 @@
       enableSave();
     })();
     function enableSave() {
-      var btn = document.getElementById('save-settings-btn');
-      btn.disabled = false;
-      btn.classList.remove('bg-slate-300');
-      btn.classList.add('bg-[#4C7DFF]', 'active:scale-[0.98]');
+      document.getElementById('save-settings-btn').classList.remove('hidden');
+      document.getElementById('save-settings-hint').classList.add('hidden');
     }
     function saveSettings() {
       // Ayarları strateji bazında kalıcı yaz (ev konumu bu stratejiye bağlanır)

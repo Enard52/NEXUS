@@ -108,14 +108,9 @@
     <!-- Cihaz bilgileri: özelliklerin arasına karışmaz, dişli düğmesiyle açılan pencerede durur -->
     <div id="info-sheet" class="nx-info modal hidden" role="dialog" aria-modal="true" aria-labelledby="info-title">
       <div class="nx-info-backdrop" onclick="closeInfo()"></div>
-      <div class="nx-info-panel" data-nx-sheet>
-        <div class="nx-sheet-grab" style="width:44px;height:5px;border-radius:9999px;background:rgba(148,163,184,.55);margin:0 auto 12px"></div>
-        <div class="nx-info-head">
-          <span class="ico" aria-hidden="true"><i data-lucide="info"></i></span>
-          <h2 id="info-title">Cihaz bilgileri</h2>
-          <button type="button" class="close" onclick="closeInfo()" aria-label="Kapat"><i data-lucide="x"></i></button>
-        </div>
-        <div id="info-body"></div>
+      <div class="nx-info-panel nx-full">
+        <div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="info-title">Cihaz bilgileri</h2></div>
+        <div id="info-body" class="nx-full-card"></div>
       </div>
     </div>
 
@@ -1367,7 +1362,7 @@
       function openInfo() {
         fillInfo();
         document.getElementById("info-sheet").classList.remove("hidden");
-        var c = document.querySelector("#info-sheet .close");
+        var c = document.querySelector("#info-sheet .nx-full-back");
         if (c) c.focus();
       }
       function closeInfo() {

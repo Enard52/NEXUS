@@ -188,17 +188,14 @@
     return /^(security|emergency|alarm)$/.test(String(event.type || ""));
   }
 
-  // Kategori başına ses/titreşim tercihi (sayfadaki "Ses ve Titreşim" satırları). Varsayılan
-  // ikisi de açık; kritik olay tercihe bakmaz, her zaman sesli ve titreşimli gider.
+  // Kategori başına ses ve titreşim tercihi: sayfadaki "Ses ve Titreşim" satırında TEK anahtar
+  // (sound-<kategori>) ikisini birlikte yönetir. Varsayılan açık; kritik olay tercihe bakmaz,
+  // her zaman sesli ve titreşimli gider.
   function alertPrefs(event) {
     var cat = categoryOf(event).replace("notif-", "");
     var critical = isCritical(event);
-    return {
-      cat: cat,
-      critical: critical,
-      sound: critical || pageFlag("sound-" + cat, true),
-      vibrate: critical || pageFlag("vib-" + cat, true),
-    };
+    var on = critical || pageFlag("sound-" + cat, true);
+    return { cat: cat, critical: critical, sound: on, vibrate: on };
   }
 
   function minutesOf(value) {

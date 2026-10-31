@@ -201,13 +201,13 @@
       label.textContent = window.nexusT ? window.nexusT('Önce cihaz ekle', 'Add a device first') : 'Önce cihaz ekle';
       cta.setAttribute('data-no-device', '1');
     }
-    // Cihaz var ama bu senaryo için uygun tür yoksa (ör. süpürge yokken Temizlik) dürüst etiket göster.
+    // Cihaz var ama bu senaryo için uygun tür yoksa (ör. süpürge yokken Temizlik) çalıştırma düğmesi hiç
+    // gösterilmez (basılamayan / işe yaramayan düğme olmaz); sayfadaki boş durum bir sonraki adımı söyler.
     if (cta.getAttribute('data-no-device') !== '1' && pageId !== 'home-health') {
       ensureEngine(function () {
         if (window.NX && NX.sceneAffected && NX.sceneAffected(pageId) === 0) {
-          var lbl = cta.querySelector('span') || cta;
-          lbl.textContent = window.nexusT ? window.nexusT('Uyumlu cihaz yok', 'No compatible device') : 'Uyumlu cihaz yok';
           cta.setAttribute('data-no-compatible', '1');
+          footer.classList.add('hidden');
         }
       });
     }
@@ -268,10 +268,11 @@
       if (btn.hasAttribute('data-scene-bound')) return;
       btn.setAttribute('data-scene-bound', '1');
 
-      // Cihaz yokken "Çalıştır" gösterme: dürüst eylem "Önce cihaz ekle" (tıklayınca diyalog zaten cihaz ekletir).
+      // Cihaz yokken "Çalıştır" düğmesi hiç gösterilmez (pasif ya da yönlendiren bir düğme de değil).
       var initialLabel = ((btn.textContent || '').replace(/\s+/g, ' ').trim());
       if (!checkRequiredDevices() && /^(çalıştır|senaryoyu (başlat|çalıştır)|run|run scenario|start scenario)$/i.test(initialLabel)) {
-        btn.textContent = window.nexusT ? window.nexusT('Önce cihaz ekle', 'Add a device first') : 'Önce cihaz ekle';
+        btn.classList.add('hidden');
+        return;
       }
 
       var parent = btn.parentElement;

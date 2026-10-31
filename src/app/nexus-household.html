@@ -77,46 +77,47 @@
     </div>
   </div>
 
-  <div id="member-sheet" class="fixed inset-0 z-[60] hidden items-end bg-black/50" onclick="closeMemberSheet()">
-    <div class="surface w-full rounded-t-3xl border border-transparent bg-white p-6 pb-10 dark:bg-slate-900" onclick="event.stopPropagation()">
-      <div class="mx-auto mb-5 h-1 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-      <div class="nx-sheet-head"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M19 8v6m3-3h-6"/></svg></span><h2 id="member-sheet-title">Üye Davet Et</h2></div>
-      <p id="member-sheet-desc" class="mb-4 text-sm text-slate-500 dark:text-slate-400">Davet edilecek kişinin bilgilerini gir.</p>
+  <div id="member-sheet" class="nx-full-wrap fixed inset-0 z-[60] hidden items-end bg-black/50" onclick="closeMemberSheet()">
+    <div class="surface nx-full w-full bg-white dark:bg-slate-900" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="member-sheet-title">
+      <div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeMemberSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="member-sheet-title">Üye Davet Et</h2></div>
+      <p id="member-sheet-desc" class="nx-full-lead">Davet edilecek kişinin bilgilerini gir.</p>
+      <div class="nx-full-card">
       <label for="member-name" class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">Ad Soyad</label>
       <input id="member-name" data-enter="confirmMember" enterkeyhint="go" type="text" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"/>
       <label for="member-email" class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">E-posta</label>
       <input id="member-email" data-enter="confirmMember" enterkeyhint="go" type="email" class="mb-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"/>
       <label class="mb-1 block text-sm font-semibold text-slate-600 dark:text-slate-300">Rol</label>
-      <select id="member-role" class="mb-4 w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50">
+      <select id="member-role" class="w-full rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50">
         <option value="Üye">Üye</option>
         <option value="Misafir">Misafir</option>
         <option value="Ev Sahibi">Ev Sahibi</option>
       </select>
+      </div>
+      <div class="nx-full-foot">
       <button id="member-confirm-btn" class="w-full rounded-xl bg-[#4C7DFF] py-3.5 font-bold text-white active:scale-[0.98] transition-transform" onclick="confirmMember()">Daveti Gönder</button>
-      <button id="member-transfer-btn" class="mt-2 hidden w-full rounded-xl border border-slate-200 py-3.5 font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200" onclick="transferOwnership()">Sahipliği Devret</button>
-      <button id="member-remove-btn"class="mt-2 hidden w-full py-3.5 font-semibold text-red-500" onclick="removeMember()">Üyeyi Çıkar</button>
+      <button id="member-transfer-btn" class="mt-2 hidden w-full rounded-xl border border-slate-200 bg-white py-3.5 font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200" onclick="transferOwnership()">Sahipliği Devret</button>
+      <button id="member-remove-btn" class="mt-2 hidden w-full py-3.5 font-semibold text-red-500" onclick="removeMember()">Üyeyi Çıkar</button>
+      </div>
     </div>
   </div>
 
-  <div id="rooms-modal" class="fixed inset-0 z-[60] hidden items-end bg-black/50" onclick="closeRooms()">
-    <div class="surface flex max-h-[85vh] w-full flex-col rounded-t-3xl border border-transparent bg-white p-6 pb-10 dark:bg-slate-900" onclick="event.stopPropagation()">
-      <div class="mx-auto mb-5 h-1 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-      <div class="nx-sheet-head"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><h2>Oda Yönetimi</h2></div>
-      <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Evindeki odaları ekle veya kaldır.</p>
-      <div id="rooms-list" class="-mx-1 mb-4 flex-1 overflow-y-auto px-1"></div>
-      <div class="flex gap-2">
+  <div id="rooms-modal" class="nx-full-wrap fixed inset-0 z-[60] hidden items-end bg-black/50" onclick="closeRooms()">
+    <div class="surface nx-full w-full bg-white dark:bg-slate-900" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="rooms-modal-title">
+      <div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeRooms()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="rooms-modal-title">Oda Yönetimi</h2></div>
+      <p class="nx-full-lead">Evindeki odaları ekle veya kaldır.</p>
+      <div id="rooms-list" class="nx-full-card mb-4"></div>
+      <div class="nx-full-foot flex gap-2">
         <input id="room-input" data-enter="addRoom" enterkeyhint="done" type="text" class="flex-1 rounded-xl border border-slate-200 px-4 py-3 font-medium focus:border-[#4C7DFF] focus:ring-[#4C7DFF] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50" placeholder="Örn. Oturma Odası"/>
         <button class="rounded-xl bg-[#4C7DFF] px-5 font-bold text-white active:scale-[0.98] transition-transform" onclick="addRoom()">Ekle</button>
       </div>
     </div>
   </div>
 
-  <div id="perm-modal" class="fixed inset-0 z-[60] hidden items-end bg-black/50" onclick="closePerms()">
-    <div class="surface flex max-h-[85vh] w-full flex-col rounded-t-3xl border border-transparent bg-white p-6 pb-10 dark:bg-slate-900" onclick="event.stopPropagation()">
-      <div class="mx-auto mb-5 h-1 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-      <div class="nx-sheet-head"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h2>İzinleri Yönet</h2></div>
-      <p class="mb-4 text-sm text-slate-500 dark:text-slate-400">Her üyenin yetkilerini ayrı ayrı açıp kapatabilirsin.</p>
-      <div id="perm-list" class="-mx-1 flex-1 overflow-y-auto px-1"></div>
+  <div id="perm-modal" class="nx-full-wrap fixed inset-0 z-[60] hidden items-end bg-black/50" onclick="closePerms()">
+    <div class="surface nx-full w-full bg-white dark:bg-slate-900" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="perm-modal-title">
+      <div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closePerms()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="perm-modal-title">İzinleri Yönet</h2></div>
+      <p class="nx-full-lead">Her üyenin yetkilerini ayrı ayrı açıp kapatabilirsin.</p>
+      <div id="perm-list" class="nx-full-card"></div>
     </div>
   </div>
 

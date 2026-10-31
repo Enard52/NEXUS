@@ -293,6 +293,47 @@ html.dark header[class*="bg-white/"] {
 .nx-sheet-head .nx-sheet-ico { display: inline-flex; flex: none; width: 20px; height: 20px; color: var(--nx-accent,#4C7DFF); }
 html.dark .nx-sheet-head .nx-sheet-ico { color: #8fb0ff; }
 
+/* ---------- Tam ekran içerik sayfası ----------
+   İçeriği ya da formu uzun olan pencereler (cihaz bilgisi, oda/izin yönetimi, enerji planı, cihaz seçimi,
+   saat dilimi…) yarım alt sayfa yerine sayfa gibi tam ekran açılır. Panelin kendi açma/kapama mantığı
+   aynen kalır; yalnızca görünüm değişir. Üstte sayfalardaki gibi Geri oku + ortalı başlık (.nx-full-head),
+   altta sabit eylem alanı (.nx-full-foot). Kısa onaylar, menüler ve tek alanlı düzenlemeler alt sayfa kalır.
+   Kapsayıcı katmanı olan pencerelerde kapsayıcıya .nx-full-wrap verilir (theme.js geri tuşu bunu kapatır). */
+.nx-full {
+  position: fixed !important; inset: 0 !important; z-index: 60;
+  width: auto !important; max-width: none !important; height: 100dvh !important; max-height: none !important;
+  margin: 0 !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  display: flex !important; flex-direction: column; overflow-y: auto; overscroll-behavior: contain;
+  padding: 0 20px calc(20px + env(safe-area-inset-bottom)) !important;
+  background: linear-gradient(to bottom, #ECE9FD 0%, #F5F3FF 40%, #ffffff 100%) !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}
+html.dark .nx-full { background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important; }
+.nx-full > * { width: 100%; max-width: 760px; margin-left: auto; margin-right: auto; }
+.nx-full-head { position: relative; flex: none; display: flex; align-items: center; padding: 56px 0 18px; }
+.nx-full-back { display: inline-flex; padding: 4px; margin-left: -4px; border: 0; background: none; color: #334155; cursor: pointer; }
+html.dark .nx-full-back { color: #e2e8f0; }
+.nx-full-back svg { width: 28px; height: 28px; }
+.nx-full-head h2, .nx-full-head h3 {
+  position: absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 88px); margin: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 18px; font-weight: 700; letter-spacing: -.01em;
+}
+.nx-full-lead { margin: 0 auto 18px !important; text-align: center; font-size: 14px; line-height: 1.5; color: #64748b; }
+html.dark .nx-full-lead { color: #94a3b8; }
+.nx-full-card { padding: 18px; border-radius: 24px; background: #fff; border: 1px solid #eef0f6; box-shadow: 0 4px 20px rgba(15, 23, 42, .04); }
+html.dark .nx-full-card { background: #1e293b; border-color: #334155; }
+.nx-full-foot { position: sticky; bottom: 0; margin-top: auto !important; padding-top: 16px; }
+.nx-full-foot > button { width: 100%; }
+/* Masaüstü: pencere sayfa sütununu doldurur (kenar çubuğu açık kalır); masaüstünün ortalanmış kart kuralları uygulanmaz. */
+html.nx-desk:not(.nx-desk-auth) body .nx-full.nx-full.nx-full {
+  left: var(--side) !important; right: 0 !important; top: 0 !important; bottom: 0 !important;
+  width: auto !important; height: 100vh !important; max-height: none !important; border-radius: 0 !important;
+}
+html.nx-tab body .nx-full.nx-full.nx-full {
+  left: max(0px, calc((100vw - var(--tab-max)) / 2)) !important; right: max(0px, calc((100vw - var(--tab-max)) / 2)) !important;
+  width: auto !important; border-radius: 0 !important;
+}
+
 /* ---------- 31 Eki yüzeyleri: koyu tema ----------
    Projede Tailwind dark: varyantı derlenmez; koyu tema bu katmandan gelir.
    Yeni eklenen sheet/sayfalar burada açık hedeflerle koyuya çevrilir. */

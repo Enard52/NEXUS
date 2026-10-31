@@ -198,9 +198,8 @@
           <p id="lan-scan-status" role="status" aria-live="polite" class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-300">Ağ taranıyor…</p>
           <input id="lan-scan-host" type="hidden" value="" />
           <div id="lan-subnet-results" class="mt-3 space-y-2"></div>
+          <div id="lan-secure-results" class="mt-3 space-y-2"></div>
           <div id="lan-scan-result" class="mt-3"></div>
-          <div id="tuya-pair-card" class="mt-3"></div>
-          <div id="mqtt-pair-card" class="mt-3"></div>
         </div>
       </section>
 
@@ -223,27 +222,6 @@
             <span class="text-[11px] text-slate-500 font-medium dark:text-slate-300">Kodu elle gir</span>
           </div>
         </a>
-      </section>
-
-      <section id="paired-devices-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden p-5">
-        <div class="flex items-center justify-between gap-3 mb-4">
-          <div class="min-w-0">
-            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Eklenmiş Cihazlar</h3>
-            <p class="text-xs font-medium text-slate-500 mt-1 dark:text-slate-300">Hesabına bağlı kayıtlar</p>
-          </div>
-          <!-- Başlıkta "Cihazlar" zaten yazıyor: rozette yalnızca sayı (kelime tekrarlanmaz) -->
-          <span id="paired-device-count" class="nx-count-badge shrink-0 min-w-[2rem] text-center whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold" aria-label="0 cihaz">0</span>
-        </div>
-        <div id="paired-devices-list" class="space-y-3"></div>
-      </section>
-
-      <!-- Köprüler ve açık kaynak yazılımlar: ürün değil yazılım/köprü olduklarından ürün listesinden ayrı gösterilir (supported-devices.js category: "bridge") -->
-      <section id="bridge-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden p-5 hidden">
-        <div class="mb-4">
-          <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Köprüler ve açık kaynak</h3>
-          <p class="text-xs font-medium text-slate-500 mt-1 dark:text-slate-300">Bu yazılımları çalıştıran cihazlar ağda otomatik bulunur.</p>
-        </div>
-        <div id="bridge-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:.75rem"></div>
       </section>
 
       <section id="manual-catalog-section" class="glass-card bg-white/80 backdrop-blur-md rounded-[2.5rem] border border-white/60 nexus-shadow overflow-hidden">

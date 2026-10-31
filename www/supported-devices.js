@@ -65,7 +65,7 @@
       note: "Açık kaynak yazılımlı priz, röle ve ampuller",
       models: [
         { name: "Tasmota Priz", img: "generic-smart-plug.png", caps: ["switch"] },
-        { name: "Tasmota Röle", img: "generic-power-strip.png", caps: ["switch"] },
+        { name: "Tasmota Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
         {
           name: "Tasmota RGB Ampul",
           img: "generic-led-bulb.png",
@@ -92,7 +92,7 @@
       note: "Yerel TCP — masaüstü uygulamasında",
       models: [
         { name: "Kasa KP105 Priz", img: "generic-smart-plug.png", caps: ["switch", "energy"] },
-        { name: "Kasa KS205 Anahtar", img: "control-single-wall-switch.png", caps: ["switch"] },
+        { name: "Kasa KS205 Anahtar", img: "generic-wall-switch.png", caps: ["switch"] },
         { name: "Kasa KL110 Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness"] },
       ],
     },
@@ -185,7 +185,7 @@
           caps: ["switch", "brightness", "color"],
         },
         { name: "Home Assistant Priz / Anahtar", img: "generic-smart-plug.png", caps: ["switch"] },
-        { name: "Home Assistant Perde", img: "control-curtain-motor.png", caps: ["cover"] },
+        { name: "Home Assistant Perde", img: "generic-curtain-motor.png", caps: ["cover"] },
         {
           name: "Home Assistant Klima / Termostat",
           aliases: ["klima"],
@@ -198,7 +198,7 @@
         { name: "Home Assistant Kilit", img: "security-keypad-lock.png", caps: ["lock"] },
         { name: "Home Assistant Robot Süpürge", img: "generic-robot-vacuum.png", caps: ["vacuum"] },
         // Salt okunur sensörler: device_class'a göre (HA_SENSOR_CLASSES / HA_BINARY_CLASSES, lan-connectors.js)
-        { name: "Home Assistant Hareket Sensörü", img: "generic-motion-sensor.png", caps: ["motion"] },
+        { name: "Home Assistant Hareket Sensörü", img: "security-motion-sensor.png", caps: ["motion"] },
         { name: "Home Assistant Kapı ve Pencere Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
         { name: "Home Assistant Sıcaklık ve Nem Sensörü", img: "generic-temp-humidity.png", caps: ["temperature"] },
         { name: "Home Assistant Su Sızıntısı Sensörü", img: "security-water-leak.png", caps: ["alarm"] },
@@ -216,7 +216,7 @@
         { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
         { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
         { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
-        { name: "Tuya Kapı Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
+        { name: "Tuya Kapı Sensörü", img: "generic-door-sensor.png", caps: ["contact"] },
         {
           name: "Tuya Termostat",
           img: "generic-thermostat-c.png",
@@ -279,7 +279,7 @@
       category: "bridge", // ürün değil, yazılım/köprü: ürün listelerinden ayrı gruplanır
       availability: "all",
       note: "Ağ üzerinden PC veya TV uyandırma (Home Assistant standardı)",
-      models: [{ name: "Wake-on-LAN PC / TV", img: "generic-smart-hub.png", caps: ["switch"] }],
+      models: [{ name: "Wake-on-LAN PC / TV", img: "generic-smart-tv.png", caps: ["switch"] }],
     },
     {
       brand: "Zigbee2MQTT",

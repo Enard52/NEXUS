@@ -168,10 +168,11 @@
 <!-- BEGIN: Sheet backdrop -->
 <div class="fixed inset-0 bg-black/40 z-40 hidden" id="sheet-backdrop" onclick="closeSheets()"></div>
 <!-- BEGIN: Devices Sheet -->
-<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10" data-purpose="devices-sheet" id="sheet-devices">
-<div class="nx-sheet-head mb-4"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><h3>Hangi cihazlar sessize alınsın?</h3></div>
-<div id="program-devices-list"></div>
-<button class="w-full bg-nexus-purple text-white font-bold py-3.5 rounded-xl mt-5 active:scale-[0.98] transition-transform" onclick="confirmDevices()">Tamam</button>
+<div class="sheet nx-full fixed bottom-0 inset-x-0 bg-white z-50" data-purpose="devices-sheet" id="sheet-devices" role="dialog" aria-modal="true" aria-labelledby="devices-sheet-title">
+<div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeSheets()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="devices-sheet-title">Cihaz Seç</h2></div>
+<p class="nx-full-lead">Hangi cihazlar sessize alınsın?</p>
+<div class="nx-full-card" id="program-devices-list"></div>
+<div class="nx-full-foot"><button class="w-full bg-nexus-purple text-white font-bold py-3.5 rounded-xl active:scale-[0.98] transition-transform" onclick="confirmDevices()">Tamam</button></div>
 </div>
 <!-- END: Devices Sheet -->
 <!-- BEGIN: Repeat Sheet -->
@@ -243,7 +244,8 @@
       try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch(e) {}
 
       if (!devices.length) {
-        container.innerHTML = '<div class="py-4 text-center text-sm text-slate-400 font-medium">Henüz eşleştirilmiş cihaz yok.</div>';
+        container.innerHTML = '<div class="py-4 text-center text-sm text-slate-400 font-medium">Henüz eşleştirilmiş cihaz yok.</div>' +
+          '<a href="nexus-pair.html" class="block text-center text-sm font-bold text-nexus-purple pb-2">Cihaz ekle</a>';
         return;
       }
 

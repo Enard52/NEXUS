@@ -32,48 +32,6 @@
         .replace(/'/g, "&#39;");
     }
 
-    function renderPairedDevices() {
-      var devices = getPairedDevices();
-      var countEl = document.getElementById("paired-device-count");
-      var listEl = document.getElementById("paired-devices-list");
-      countEl.textContent = String(devices.length);
-      countEl.setAttribute("aria-label", devices.length + " cihaz");
-
-      if (!devices.length) {
-        listEl.innerHTML = '<div class="nx-empty">' +
-          '<div class="nx-empty__icon" aria-hidden="true"><i data-lucide="cpu"></i></div>' +
-          '<p class="nx-empty__title">Henüz eklenmiş cihaz yok</p>' +
-          '<p class="nx-empty__text">QR, kurulum kodu veya manuel katalog ile eklediğin cihazlar burada görünür.</p></div>';
-        if (typeof lucide !== "undefined") lucide.createIcons();
-        return;
-      }
-
-      listEl.innerHTML = devices.map(function (device, index) {
-        var name = device && device.name ? device.name : "Adsız cihaz";
-        var room = device && device.room ? device.room : "Ana sayfaya bağlı";
-        return '<div class="plain-card flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-4 dark:border-slate-800">' +
-          '<div class="flex min-w-0 items-center gap-3">' +
-          (window.NX ? '<img class="device-thumb w-11 h-11 object-contain shrink-0" src="' + NX.imageUrl(device) + '" alt="" loading="lazy" decoding="async">'
-            : '<div class="w-11 h-11 rounded-2xl bg-slate-100 text-[#4C7DFF] flex items-center justify-center shrink-0 dark:bg-slate-800"><i data-lucide="cpu" class="w-5 h-5"></i></div>') +
-          '<a href="nexus-device.html?i=' + index + '" class="min-w-0 block"><p class="font-semibold line-clamp-2">' + escapeHtml(name) + '</p>' +
-          '<p class="text-xs text-slate-500 dark:text-slate-300 truncate">' + escapeHtml(room) + '</p></a></div>' +
-          '<button type="button" onclick="removePairedDevice(' + index + ')" class="rounded-full bg-white border border-slate-200 px-3 py-2 text-xs font-bold text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300">Kaldır</button>' +
-          '</div>';
-      }).join("");
-      if (typeof lucide !== "undefined") lucide.createIcons();
-    }
-
-    function removePairedDevice(index) {
-      var devices = getPairedDevices();
-      devices.splice(index, 1);
-      nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
-      if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
-      renderPairedDevices();
-      if (typeof window.refreshDashboardSupplements === "function") {
-        window.refreshDashboardSupplements();
-      }
-    }
-
     function buildCatalogUrl(category) {
       var target = "nexus-integrations.html";
       if (!category || category === "all") return target;
@@ -176,6 +134,7 @@
       window.nexusLan.identify(host).then(function (found) {
         setScanStatus(found.name + " bulundu · " + protocolLabel(found) + (found.model ? " · " + found.model : ""), "ok");
         window.__nexusScannedDevice = found;
+        if (plusBlocked(resultHost, found.protocol)) return;
         if (found.protocol === "hue") { renderHuePairing(resultHost, host); return; }
         if (found.protocol === "homeassistant") { renderHaPairing(resultHost, found.host); return; }
         if (found.protocol === "tapo") { renderTapoPairing(resultHost, host); return; }
@@ -250,7 +209,6 @@
         });
         nexusSetItem("nexusPairedDevices", JSON.stringify(devices));
         if (window.nexusCloud) window.nexusCloud.notifyLocalChange();
-        renderPairedDevices();
         return true;
       }
       return false;
@@ -422,80 +380,65 @@
       }).then(function () { btn.disabled = false; });
     }
 
-    // Tuya: cihaz yerel ağda şifreli TCP konuşur; ücretsiz Tuya IoT hesabından alınan cihaz kimliği + yerel anahtar gerekir.
-    function renderTuyaPairing() {
-      var host = document.getElementById("tuya-pair-card");
-      if (!host) return;
-      var avail = window.nexusLan && window.nexusLan.hasSecure && window.nexusLan.hasSecure().tuya;
-      // Yalnızca masaüstünde çalışan Tuya kartı telefonda/tarayıcıda hiç gösterilmez.
-      if (!avail) { host.innerHTML = ""; host.style.display = "none"; return; }
-      host.style.display = "";
-      host.innerHTML = '<details class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800"' + (avail ? '' : ' open') + '>' +
-        '<summary class="cursor-pointer text-sm font-bold">Tuya cihazı ekle (yerel anahtarla)</summary>' +
-        (avail
-          ? '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Cihazın kimliğini ve yerel anahtarını ücretsiz Tuya IoT hesabından (iot.tuya.com → Cloud → cihazlar) al. Anahtar yalnızca bu cihazda saklanır. Desteklenen sürümler: 3.3 ve 3.4.</p>' +
-            '<input id="tuya-host" inputmode="decimal" autocomplete="off" class="' + FIELD_CLS + '" placeholder="Cihazın IP adresi (ör. 192.168.1.60)">' +
-            '<input id="tuya-id" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Cihaz kimliği (Device ID)">' +
-            '<input id="tuya-key" type="password" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Yerel anahtar (Local Key, 16 karakter)">' +
-            '<select id="tuya-ver" class="' + FIELD_CLS + '"><option value="3.3">Protokol sürümü 3.3</option><option value="3.4">Protokol sürümü 3.4</option></select>' +
-            '<button type="button" id="tuya-btn" onclick="connectTuya()" class="' + BTN_CLS + '">Bağlan ve ekle</button>' +
-            '<p id="tuya-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300"></p>'
-          : '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Tuya yerel kontrolü şifreli TCP gerektirir; şimdilik yalnızca NEXUS masaüstü uygulamasında çalışır. Telefonda ya da tarayıcıda bu cihazı ekleyemezsin.</p>') +
-        '</details>';
+    // Tuya: cihaz yerel ağda şifreli TCP (6668) konuşur. Ağ taramasında bu kapısı açık bulunan adres ADAY olarak listelenir;
+    // cihazın gerçekten Tuya olduğu, ücretsiz Tuya IoT hesabından (iot.tuya.com → Cloud → cihazlar) alınan cihaz kimliği +
+    // yerel anahtarla gerçek bir sorgu yapılınca anlaşılır. Anahtar yalnızca bu cihazda saklanır. Desteklenen sürümler: 3.3 ve 3.4.
+    function renderTuyaPairing(target, host) {
+      target.innerHTML = '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
+        '<p class="text-sm font-bold">Tuya cihazı olabilir</p>' +
+        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">' + escapeHtml(String(host).replace(/^https?:\/\//, "")) + ' adresinde Tuya cihazlarının kullandığı kapı açık. Eklemek için cihazın kimliğini ve yerel anahtarını Tuya IoT hesabından al. Anahtar yalnızca bu cihazda saklanır. Desteklenen sürümler: 3.3 ve 3.4.</p>' +
+        '<input id="tuya-id" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Cihaz kimliği (Device ID)">' +
+        '<input id="tuya-key" type="password" autocomplete="off" spellcheck="false" data-enter="connectTuya" enterkeyhint="go" class="' + FIELD_CLS + '" placeholder="Yerel anahtar (Local Key, 16 karakter)">' +
+        '<select id="tuya-ver" class="' + FIELD_CLS + '"><option value="3.3">Protokol sürümü 3.3</option><option value="3.4">Protokol sürümü 3.4</option></select>' +
+        '<button type="button" id="tuya-btn" onclick="connectTuya(\'' + escapeHtml(host) + '\')" class="' + BTN_CLS + '">Bağlan ve ekle</button>' +
+        '<p id="tuya-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300" role="status"></p></div>';
     }
 
-    function connectTuya() {
+    function connectTuya(host) {
       var status = document.getElementById("tuya-status");
       var btn = document.getElementById("tuya-btn");
-      var ip = normalizeHost(document.getElementById("tuya-host").value);
+      var ip = normalizeHost(host);
       var id = document.getElementById("tuya-id").value.trim();
       var key = document.getElementById("tuya-key").value.trim();
-      if (!ip || !id || !key) { status.textContent = "IP adresini, cihaz kimliğini ve yerel anahtarı yaz."; return; }
+      if (!ip || !id || !key) { status.textContent = "Cihaz kimliğini ve yerel anahtarı yaz."; return; }
       btn.disabled = true;
       status.textContent = "Cihaza bağlanılıyor…";
       window.nexusLan.tuya.verify(ip, { id: id, key: key, version: document.getElementById("tuya-ver").value }).then(function (found) {
         var isNew = storeFoundDevice(found);
         status.textContent = isNew ? found.name + " eklendi. Ana sayfadan yönetebilirsin." : "Bu cihaz zaten ekli (yerel anahtar güncellendi).";
         setScanStatus("Tuya cihazı bağlandı.", "ok");
+        renderSecureFindings();
       }).catch(function (e) {
-        status.textContent = e && e.message ? e.message : "Cihaza bağlanılamadı. Aynı ağda olduğundan, IP adresinin ve yerel anahtarın doğru olduğundan emin ol.";
+        status.textContent = e && e.message ? e.message : "Cihaza bağlanılamadı. Aynı ağda olduğundan, cihaz kimliğinin ve yerel anahtarın doğru olduğundan emin ol.";
       }).then(function () { btn.disabled = false; });
     }
 
-    // Zigbee2MQTT: broker adresi (+ isteğe bağlı kullanıcı/parola) → broker'daki cihaz listesi → seçileni ekle.
-    // Yalnızca masaüstünde (kalıcı TCP gerekir); telefonda/tarayıcıda kart hiç gösterilmez.
+    // Zigbee2MQTT: ağ taramasında 1883 kapısı açık bulunan adres ADAY olarak listelenir; broker'a (isteğe bağlı kullanıcı/parola
+    // ile) bağlanılıp cihaz listesi gerçekten okununca eklenebilir. Yalnızca masaüstünde (kalıcı TCP gerekir).
     var mqttFound = [];
     var mqttBroker = null;
-    function renderMqttPairing() {
-      var host = document.getElementById("mqtt-pair-card");
-      if (!host) return;
-      var avail = window.nexusLan && window.nexusLan.hasSecure && window.nexusLan.hasSecure().mqtt;
-      if (!avail) { host.innerHTML = ""; host.style.display = "none"; return; }
-      host.style.display = "";
-      host.innerHTML = '<details class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
-        '<summary class="cursor-pointer text-sm font-bold">Zigbee2MQTT cihazı ekle (MQTT broker)</summary>' +
-        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Broker\'ın (ör. Mosquitto) yerel IP adresini yaz. Kullanıcı adı ve parola yalnızca bu cihazda saklanır. Şimdilik lamba ve prizlerde aç/kapat ve parlaklık desteklenir.</p>' +
-        '<input id="mqtt-host" inputmode="decimal" autocomplete="off" class="' + FIELD_CLS + '" placeholder="Broker IP adresi (ör. 192.168.1.10)">' +
-        '<input id="mqtt-port" inputmode="numeric" autocomplete="off" class="' + FIELD_CLS + '" placeholder="Port (varsayılan 1883)">' +
+    function renderMqttPairing(target, host, port) {
+      mqttFound = [];
+      mqttBroker = null;
+      target.innerHTML = '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
+        '<p class="text-sm font-bold">MQTT sunucusu olabilir</p>' +
+        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">' + escapeHtml(String(host).replace(/^https?:\/\//, "")) + ':' + port + ' adresinde MQTT kapısı açık. Sunucuda kullanıcı adı ve parola varsa gir; yoksa boş bırak. Bilgiler yalnızca bu cihazda saklanır. Şimdilik lamba ve prizlerde aç/kapat ve parlaklık desteklenir.</p>' +
         '<input id="mqtt-user" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Kullanıcı adı (yoksa boş bırak)">' +
         '<input id="mqtt-pass" type="password" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Parola (yoksa boş bırak)">' +
         '<input id="mqtt-base" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Temel konu (varsayılan zigbee2mqtt)">' +
-        '<button type="button" id="mqtt-btn" onclick="listMqttDevices()" class="' + BTN_CLS + '">Cihazları getir</button>' +
+        '<button type="button" id="mqtt-btn" onclick="listMqttDevices(\'' + escapeHtml(host) + '\', ' + Number(port) + ')" class="' + BTN_CLS + '">Cihazları getir</button>' +
         '<p id="mqtt-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300" role="status"></p>' +
-        '<div id="mqtt-list" class="mt-2 space-y-2"></div>' +
-        '</details>';
+        '<div id="mqtt-list" class="mt-2 space-y-2"></div></div>';
     }
 
-    function listMqttDevices() {
+    function listMqttDevices(host, port) {
       var status = document.getElementById("mqtt-status");
       var btn = document.getElementById("mqtt-btn");
-      var ip = normalizeHost(document.getElementById("mqtt-host").value);
-      var port = parseInt(document.getElementById("mqtt-port").value, 10) || 1883;
+      var ip = normalizeHost(host);
       var user = document.getElementById("mqtt-user").value.trim();
       var pass = document.getElementById("mqtt-pass").value;
       var base = document.getElementById("mqtt-base").value.trim() || "zigbee2mqtt";
-      if (!ip) { status.textContent = "Broker'ın IP adresini yaz."; return; }
-      if (!(port >= 1 && port <= 65535)) { status.textContent = "Port 1 ile 65535 arasında olmalı."; return; }
+      if (!ip) { status.textContent = "Sunucu adresi geçersiz. Taramayı yeniden başlat."; return; }
       var creds = user ? { mqttUser: user, mqttPass: pass || "" } : null;
       btn.disabled = true;
       status.textContent = "Broker'a bağlanılıyor…";
@@ -508,7 +451,7 @@
           : "Broker'da NEXUS'un kontrol edebileceği lamba ya da priz bulunamadı.";
         renderMqttList();
       }).catch(function (e) {
-        status.textContent = e && e.message ? e.message : "Broker'a bağlanılamadı. Adresin ve portun doğru, broker'ın açık olduğundan emin ol.";
+        status.textContent = e && e.message ? e.message : "Broker'a bağlanılamadı. Kullanıcı adı ve parolanın doğru olduğundan emin ol.";
       }).then(function () { btn.disabled = false; });
     }
 
@@ -587,6 +530,82 @@
       if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
+    // NEXUS+: gelişmiş bağlantılarla (Home Assistant, MQTT, Tuya, Tapo) YENİ cihaz eklemek Plus'a özeldir.
+    // Zaten eklenmiş cihazlar çalışmaya devam eder. Plus bilgisi sunucudan gelen abonelik kaydıdır (nexusPlusPlan).
+    var PLUS_PROTOCOLS = { homeassistant: "Home Assistant", mqtt: "MQTT / Zigbee2MQTT", "tuya-local": "Tuya", tapo: "Tapo" };
+    function hasPlus() {
+      try { return !!nexusGetItem("nexusPlusPlan"); } catch (error) { return false; }
+    }
+    function plusBlocked(target, protocol) {
+      if (!PLUS_PROTOCOLS[protocol] || hasPlus()) return false;
+      target.innerHTML = '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
+        '<p class="text-sm font-bold">' + escapeHtml(PLUS_PROTOCOLS[protocol]) + ' cihazı eklemek NEXUS+ ile açılır</p>' +
+        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Gelişmiş bağlantılar NEXUS+ aboneliğine dahildir. Zaten eklediğin cihazlar çalışmaya devam eder.</p>' +
+        '<a href="nexus-plus.html" class="mt-3 flex min-h-[44px] w-full items-center justify-center rounded-full bg-[#4C7DFF] text-sm font-bold text-white active:scale-[0.98]">NEXUS+ planlarını gör</a></div>';
+      return true;
+    }
+
+    // Tuya (6668) ve MQTT (1883) cihazları anahtar/kimlik olmadan tanınamaz; ağ taramasından sonra bu kapıları açık olan
+    // adresler ADAY olarak listelenir ve bilgi istenir. Yalnızca masaüstü uygulamasında çalışır; donanımla doğrulanmadı.
+    var secureFindings = [];
+    var secureRun = 0;
+    var SECURE_TITLES = { tuya: "Tuya cihazı olabilir", mqtt: "MQTT sunucusu olabilir" };
+    function secureAlready(c, devices) {
+      var ip = normalizeHost(c.host);
+      return devices.some(function (d) {
+        if (!d) return false;
+        if (c.kind === "tuya") return d.protocol === "tuya-local" && d.host === ip;
+        return d.protocol === "mqtt" && String(d.host).indexOf(ip + ":") === 0;
+      });
+    }
+    function renderSecureFindings() {
+      var host = document.getElementById("lan-secure-results");
+      if (!host) return;
+      var devices = getPairedDevices();
+      host.innerHTML = secureFindings.map(function (c, index) {
+        var already = secureAlready(c, devices);
+        return '<div class="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-3.5 dark:border-slate-800 dark:bg-slate-900">' +
+          '<div class="min-w-0"><p class="text-sm font-bold truncate dark:text-white">' + SECURE_TITLES[c.kind] + '</p>' +
+          '<p class="text-[11px] text-slate-500 truncate dark:text-slate-400">' + escapeHtml(c.host) + ':' + c.port + ' · bilgi girilince doğrulanır</p></div>' +
+          (already
+            ? '<span class="shrink-0 flex items-center gap-1 text-[11px] font-bold text-emerald-600"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i>Ekli</span>'
+            : '<button type="button" class="shrink-0 rounded-full bg-nexusPurple px-4 py-2 text-[11px] font-bold text-white active:scale-[0.98]" onclick="connectSecureCandidate(' + index + ')">Bağla</button>') +
+          '</div>';
+      }).join("");
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+    function connectSecureCandidate(index) {
+      var c = secureFindings[index];
+      if (!c) return;
+      var target = document.getElementById("lan-scan-result");
+      if (plusBlocked(target, c.kind === "tuya" ? "tuya-local" : "mqtt")) { target.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+      if (c.kind === "tuya") renderTuyaPairing(target, c.host);
+      else renderMqttPairing(target, c.host, c.port);
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    function startSecureScan() {
+      var lan = window.nexusLan;
+      var avail = lan && lan.hasSecure ? lan.hasSecure() : {};
+      if (!lan || !lan.secureScan || !(avail.tuya || avail.mqtt)) return Promise.resolve();
+      var run = ++secureRun;
+      secureFindings = [];
+      renderSecureFindings();
+      setRadarBadge("Şifreli cihazlar aranıyor…", true);
+      return lan.secureScan({
+        shouldStop: function () { return run !== secureRun; },
+        onFound: function (item) {
+          if (run !== secureRun) return;
+          secureFindings.push(item);
+          renderSecureFindings();
+          setScanStatus(secureFindings.length + " şifreli cihaz adayı bulundu. Bağla'ya dokunup bilgisini gir.", "ok");
+        },
+      }).catch(function () {
+        /* aday bulunamadı: normal tarama sonucu geçerli kalır */
+      }).then(function () {
+        if (run === secureRun) setRadarBadge("NEXUS Hazır", false);
+      });
+    }
+
     function addSubnetFinding(index) {
       var found = subnetFindings[index];
       if (!found) return;
@@ -640,6 +659,9 @@
       autoScanning = true;
       autoScanStop = false;
       subnetFindings = [];
+      secureRun += 1;
+      secureFindings = [];
+      renderSecureFindings();
       document.getElementById("lan-subnet-results").innerHTML = "";
       document.getElementById("lan-scan-result").innerHTML = "";
       setScanBtn(btn, "Durdur", "square");
@@ -670,55 +692,11 @@
           setScanBtn(btn, "Yeniden Tara", "refresh-cw");
           bar.style.width = subnetFindings.length ? "100%" : "0%";
           setRadarBadge("NEXUS Hazır", false);
+          if (!autoScanStop) startSecureScan();
         });
     }
 
-    renderPairedDevices();
-
-    // "Köprüler ve açık kaynak": destek matrisindeki category:"bridge" grupları (Home Assistant, Tasmota, WLED, ESPHome, Wake-on-LAN)
-    (function renderBridges() {
-      var groups = (window.nexusVisibleSupportedDevices ? window.nexusVisibleSupportedDevices() : (window.NEXUS_SUPPORTED_DEVICES || [])).filter(function (g) { return g.category === "bridge"; });
-      var section = document.getElementById("bridge-section");
-      var list = document.getElementById("bridge-list");
-      if (!groups.length || !section || !list) return;
-      // Köprü başına simge ve renk; tek kaynak olarak yalnızca görünüm (protokol mantığı lan-connectors.js'de)
-      var BRIDGE_STYLE = {
-        homeassistant: { icon: "house", color: "#0ea5e9" },
-        tasmota: { icon: "plug-zap", color: "#f59e0b" },
-        wled: { icon: "lightbulb", color: "#d946ef" },
-        esphome: { icon: "cpu", color: "#10b981" },
-        wol: { icon: "power", color: "#6366f1" },
-        mqtt: { icon: "radio-tower", color: "#eab308" }
-      };
-      list.innerHTML = groups.map(function (g) {
-        var desk = g.availability === "desktop";
-        var st = BRIDGE_STYLE[g.protocol] || { icon: "network", color: "#64748b" };
-        // Köprünün gerçekten ekleyebildiği cihaz türleri: tekrarsız ürün görselleri (en fazla 4)
-        var seen = {};
-        var thumbs = (g.models || []).filter(function (m) {
-          if (!m || !m.img || seen[m.img]) return false;
-          seen[m.img] = 1;
-          return true;
-        }).slice(0, 4).map(function (m) {
-          var src = window.NX && NX.imageUrl ? NX.imageUrl({ img: m.img }) : "assets/products/" + m.img;
-          return '<span class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-800" title="' + escapeHtml(m.name || "") + '">' +
-            '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(m.name || "") + '" class="h-7 w-7 object-contain" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"></span>';
-        }).join("");
-        return '<div class="plain-card flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-3 dark:border-slate-800">' +
-          '<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style="background:' + st.color + '1f;color:' + st.color + '"><i data-lucide="' + st.icon + '" class="h-5 w-5"></i></span>' +
-          '<div class="min-w-0 flex-1">' +
-          '<div class="flex items-center justify-between gap-2"><p class="truncate text-sm font-bold">' + escapeHtml(g.brand) + "</p>" +
-          (desk ? '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold nx-count-badge"><i data-lucide="monitor" class="h-3 w-3"></i>Masaüstü</span>' : "") + "</div>" +
-          '<p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">' + escapeHtml(g.note || "") + "</p>" +
-          '<div class="mt-1.5">' + verifiedChip(g.protocol) + "</div>" +
-          (thumbs ? '<div class="mt-2.5 flex flex-wrap gap-1.5">' + thumbs + "</div>" : "") +
-          "</div></div>";
-      }).join("");
-      section.classList.remove("hidden");
-      if (window.lucide) lucide.createIcons();
-    })();
-    renderTuyaPairing();
-    renderMqttPairing();
+    // Köprü/yazılım kartları ve elle bilgi giren Tuya/Zigbee2MQTT formları Cihaz Ekle'de gösterilmez: cihazlar otomatik taramayla bulunur.
     // QR / kurulum kodu ekranından gelen yerel ağ adresi: otomatik doldur ve cihazı tanı
     (function () {
       var host = new URLSearchParams(location.search).get("host");
@@ -730,7 +708,6 @@
     })();
     // Sayfa açılınca tarama kendiliğinden başlar (QR / kurulum kodundan adresle gelindiyse o cihaz tanınır).
     if (!new URLSearchParams(location.search).get("host")) setTimeout(function () { startAutoScan(true); }, 400);
-    window.addEventListener("pageshow", renderPairedDevices);
     window.addEventListener("DOMContentLoaded", function () {
       if (window.location.hash === "#manual-catalog-section") {
         setTimeout(scrollToManualCatalog, 120);

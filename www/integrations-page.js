@@ -2441,7 +2441,7 @@ function catalogTileHtml(item, groupTitle) {
   }
   // Destek matrisindeki modelin kendi gerçek ürün görseli vardır.
   if (item.nx && item.img) image = catalogFunctionImage(item.img);
-  var imageVersion = "20261029-products-10";
+  var imageVersion = "20261031-products-11";
   return (
     '<button type="button" class="product-tile product-card text-left active:scale-[0.98] transition-transform cursor-pointer group" onclick="searchAndPairDevice(this, \'' +
     safe +
@@ -2516,28 +2516,103 @@ var SUPPORTED_CATEGORY_KEYS = [
 // Güvenlik ya da doğrulama nedeniyle listelenmeyen ürünler: gaz/ısıtma cihazları, kazan/kombi/ısı pompası,
 // battaniye, çok amaçlı HVAC, GPRS alarm ve yalnızca işlev adıyla eşleşip protokolü doğrulanmamış aletler.
 // Bu cihazlar uzaktan açılıp kapatılırsa risk doğurabilir ya da hiçbir protokolümüzle konuşmaz.
-var CATALOG_RISKY = /gazli|kombi|isi pompasi|battaniye|gprs|akvaryum|su isitici|kazan|sirkulasyon|circulation|somine|soba|kalorifer|elektirikli supurge|elektrikli supurge|pool|cam temizlik|havalandirma sistemi|\bhvac\b|^isitma$/;
+var CATALOG_RISKY =
+  /gazli|kombi|isi pompasi|battaniye|gprs|akvaryum|su isitici|kazan|sirkulasyon|circulation|somine|soba|kalorifer|elektirikli supurge|elektrikli supurge|pool|cam temizlik|havalandirma sistemi|\bhvac\b|^isitma$/;
 
 function isCatalogItemSupported(item, groupTitle) {
   if (CATALOG_RISKY.test(normalizeCatalogText(item.n || ""))) return false;
   return typeof nexusIsSupported !== "function" || nexusIsSupported(item.n, groupTitle);
 }
 
-// Desteklenen cihaz matrisi (supported-devices.js) tek kaynaktır: her destek verdiğimiz model burada
-// markasına göre listelenir ve tıklanınca o modelle eşleştirilir. Masaüstüne özel markalar yalnızca
-// masaüstü uygulamasında görünür (telefonda/tarayıcıda gizli).
+// Desteklenen cihaz matrisi (supported-devices.js) tek kaynaktır: destek verdiğimiz modeller burada
+// cihaz türüne indirgenir. Masaüstüne özel markalar yalnızca masaüstü uygulamasında görünür
+// (telefonda/tarayıcıda gizli).
+// Katalog marka/protokol değil cihaz TÜRÜ gösterir: başlık kategori, kutucuk genel ad ("Akıllı Priz").
+// Marka ve model adları yalnızca aramada eşleşir (q). Sıra önemli: ilk eşleşen kural kazanır.
+var MATRIX_CATEGORIES = [
+  "Aydınlatma",
+  "Priz ve Enerji",
+  "Anahtar ve Röle",
+  "Perde ve Panjur",
+  "Sensörler",
+  "İklimlendirme",
+  "Kamera ve Kilit",
+  "Diğer Cihazlar",
+];
+
+var MATRIX_TYPES = [
+  [/kamera/, "Kamera", "Kamera ve Kilit"],
+  [/kilit/, "Akıllı Kilit", "Kamera ve Kilit"],
+  [/perde/, "Perde Motoru", "Perde ve Panjur"],
+  [/priz|plug/, "Akıllı Priz", "Priz ve Enerji"],
+  [/anahtar/, "Akıllı Anahtar", "Anahtar ve Röle"],
+  [/4 kanalli/, "4 Kanallı Röle", "Anahtar ve Röle"],
+  [/role paneli/, "Çoklu Röle", "Anahtar ve Röle"],
+  [/role|\b1pm\b/, "Röle", "Anahtar ve Röle"],
+  [/hareket|motion/, "Hareket Sensörü", "Sensörler"],
+  [/kapi|door/, "Kapı ve Pencere Sensörü", "Sensörler"],
+  [/su baskin|su sizinti|flood/, "Su Baskını Sensörü", "Sensörler"],
+  [/duman|smoke/, "Duman Dedektörü", "Sensörler"],
+  [/gaz ve co/, "Gaz ve CO Dedektörü", "Sensörler"],
+  [/hava sensoru|hava kalitesi/, "Hava Kalitesi Sensörü", "Sensörler"],
+  [/sicaklik/, "Sıcaklık ve Nem Sensörü", "Sensörler"],
+  [/termostat|klima/, "Termostat / Klima", "İklimlendirme"],
+  [/\bfan\b/, "Fan", "İklimlendirme"],
+  [/nemlendirici/, "Nemlendirici", "İklimlendirme"],
+  [/serit|rgbw/, "LED Şerit", "Aydınlatma"],
+  [/tavan lambasi/, "Tavan Lambası", "Aydınlatma"],
+  [/masa lambasi/, "Masa Lambası", "Aydınlatma"],
+  [/dimmer/, "Dimmer", "Aydınlatma"],
+  [/panel/, "Işık Paneli", "Aydınlatma"],
+  [/ampul|bulb|isik/, "Akıllı Ampul", "Aydınlatma"],
+  [/medya/, "Medya Oynatıcı / TV", "Diğer Cihazlar"],
+  [/wake|\bpc\b/, "Bilgisayar / TV", "Diğer Cihazlar"],
+  [/robot supurge/, "Robot Süpürge", "Diğer Cihazlar"],
+];
+
+// Genel tür adı → kategori, yetenekler ve görsel (tıklanınca ağda aynı türdeki cihaz aranır).
+var MATRIX_GENERIC = {};
+
+function matrixTypeOf(m) {
+  var name = normalizeCatalogText(m.name || "");
+  for (var i = 0; i < MATRIX_TYPES.length; i++) {
+    if (MATRIX_TYPES[i][0].test(name))
+      return { name: MATRIX_TYPES[i][1], category: MATRIX_TYPES[i][2] };
+  }
+  return { name: m.name, category: "Diğer Cihazlar" };
+}
+
 function supportedMatrixCategory() {
-  var groups = typeof nexusVisibleSupportedDevices === "function" ? nexusVisibleSupportedDevices() : [];
-  var out = [];
+  var groups =
+    typeof nexusVisibleSupportedDevices === "function" ? nexusVisibleSupportedDevices() : [];
+  var byCategory = {};
+  var byType = {};
   groups.forEach(function (g) {
-    var items = (g.models || []).map(function (m) {
-      return { n: m.name, img: m.img, nx: 1 };
+    (g.models || []).forEach(function (m) {
+      var t = matrixTypeOf(m);
+      var item = byType[t.name];
+      if (!item) {
+        item = byType[t.name] = { n: t.name, img: m.img, nx: 1, q: "", caps: m.caps || [] };
+        (byCategory[t.category] = byCategory[t.category] || []).push(item);
+      }
+      // Türün en zengin yetenekli modeli görseli ve yetenekleri belirler (ör. renkli ampul).
+      if ((m.caps || []).length > item.caps.length) {
+        item.caps = m.caps;
+        item.img = m.img;
+      }
+      item.q += " " + m.name;
     });
-    if (items.length) out.push({ title: g.brand, items: items });
+  });
+  var out = [];
+  MATRIX_CATEGORIES.forEach(function (cat) {
+    if (!byCategory[cat]) return;
+    byCategory[cat].forEach(function (item) {
+      MATRIX_GENERIC[item.n] = { caps: item.caps.slice(), img: item.img };
+    });
+    out.push({ title: cat, items: byCategory[cat] });
   });
   return out.length ? { key: "desteklenen", label: "Desteklenen Cihazlar", groups: out } : null;
 }
-
 function getVisibleCatalog() {
   var out = [];
   var matrix = supportedMatrixCategory();
@@ -2590,7 +2665,8 @@ function renderCatalogContent() {
     list.forEach(function (c) {
       c.groups.forEach(function (g) {
         g.items.forEach(function (it) {
-          if (normalizeCatalogText(it.n).indexOf(query) !== -1) matches.push(it);
+          if (normalizeCatalogText(it.n + " " + (it.q || "")).indexOf(query) !== -1)
+            matches.push(it);
         });
       });
     });
@@ -2755,8 +2831,11 @@ function savePairedEntry(entry) {
 function searchAndPairDevice(el, deviceName) {
   const safeName = (deviceName || "Yeni cihaz").trim();
   const groupTitle = nexusSrcText(el && el.querySelector(".product-category-pill"));
-  const resolved =
-    typeof nexusResolveDevice === "function"
+  // Desteklenen cihaz türleri markasızdır: ağda aynı türdeki (desteklenen protokolden) cihaz aranır.
+  const generic = MATRIX_GENERIC[safeName];
+  const resolved = generic
+    ? { protocol: "unknown", brand: "", caps: generic.caps.slice(), img: generic.img }
+    : typeof nexusResolveDevice === "function"
       ? nexusResolveDevice(safeName, groupTitle)
       : { protocol: "unknown", brand: "", caps: ["other"], img: "generic-smart-hub.png" };
   const tileImg = el && el.querySelector("img");

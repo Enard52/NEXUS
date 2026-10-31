@@ -66,17 +66,12 @@ describe("dokunma sesi kontratı (nav/tap)", () => {
     );
   });
 
-  it("ayarlar ekranı: Dokunma Sesleri satırı + toggle-tap kablosu mevcut", () => {
+  it("ayarlar ekranı: tek Ses Efektleri anahtarı dokunma sesi anahtarını da yazar", () => {
     const html = read(APP, "nexus-settings.html");
-    expect(html, "ayarlar satırı düştü").toContain("Dokunma Sesleri");
-    expect(html, "toggle-tap düştü").toContain('id="toggle-tap"');
+    expect(html, "ses anahtarı düştü").toContain('id="toggle-sound"');
     expect(html, "anahtar yazım hattı düştü").toContain("nexusSetItem('nexusTapSoundsEnabled'");
-  });
-
-  it("lang-en.js: Dokunma Sesleri çevirisi sözlükte", () => {
-    const en = read(APP, "lang-en.js");
-    expect(en, "çeviri düştü; i18n kapısı %100 tutamaz").toContain(
-      '"Dokunma Sesleri": "Touch Sounds"',
+    expect(html, "ayrı dokunma sesi satırı geri geldi; tek anahtar kuralı bozuldu").not.toContain(
+      'id="toggle-tap"',
     );
   });
 });

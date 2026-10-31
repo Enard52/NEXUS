@@ -29,10 +29,13 @@ describe("asistan modları", () => {
     const { a, win } = assistant();
     a.modes.set("automation");
     expect(win.__nexusAiCreateType).toBe("automation");
-    expect(a.reply(a.modes.query("her gece ışıkları kapat")).action).toBe("create");
+    expect(a.modes.query("her gece ışıkları kapat")).toMatch(/^yapay zeka ile olustur: /);
+    // Cihaz yokken hiçbir şey "oluşturuldu" denmez (gerçek kayıt: assistant-create.test.ts)
+    const r = a.reply(a.modes.query("her gece ışıkları kapat"));
+    expect(r.created).toBeUndefined();
+    expect(r.reply).toMatch(/önce bir cihaz/);
     a.modes.set("scenario");
     expect(win.__nexusAiCreateType).toBe("clickrun");
-    expect(a.reply(a.modes.query("film modu")).action).toBe("create");
   });
 
   it("cihaz modu yalnızca yerel çalışır ve anlaşılmayanı yapay zekâya göndermez", () => {

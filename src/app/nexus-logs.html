@@ -27,6 +27,8 @@
 <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="text-slate-900">
@@ -92,9 +94,12 @@
         var when = isNaN(d.getTime()) ? '' :
           d.toLocaleDateString((window.nexusLocale || 'tr-TR'), { day: 'numeric', month: 'long' }) + ' ' +
           d.toLocaleTimeString((window.nexusLocale || 'tr-TR'), { hour: '2-digit', minute: '2-digit' });
+        // Olay yalnız metin saklar; adı metinde geçen kayıtlı cihazın görseli gösterilir (yoksa görsel yok)
+        var thumb = window.NX && NX.thumbForText ? NX.thumbForText((ev.title || '') + ' ' + (ev.detail || ''), 'w-10 h-10 object-contain') : '';
         return '<article class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-4 items-start">' +
           '<div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#4C7DFF] flex-shrink-0">' +
           '<i class="w-5 h-5" data-lucide="' + (iconMap[ev.type] || 'activity') + '"></i></div>' +
+          (thumb ? '<div class="shrink-0">' + thumb + '</div>' : '') +
           '<div class="min-w-0">' +
           '<h2 class="font-semibold leading-tight">' + esc(ev.title || '') + '</h2>' +
           (ev.detail ? '<p class="text-sm text-slate-500 mt-0.5">' + esc(ev.detail) + '</p>' : '') +

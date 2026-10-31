@@ -297,7 +297,7 @@
     }).catch(function (error) {
       if (button) button.disabled = false;
       var text = String((error && error.message) || '');
-      err.textContent = /invalid|expired|challenge|otp|totp/i.test(text) ? 'Kod hatalı ya da süresi geçti.' : (text || 'Kod doğrulanamadı.');
+      err.textContent = /invalid|expired|challenge|otp|totp/i.test(text) ? 'Kod hatalı ya da süresi geçti. Telefonunun saati otomatik ayarlı değilse kodlar tutmaz; saati otomatiğe alıp yenilenen kodu bir kez dene.' : (text || 'Kod doğrulanamadı.');
       err.classList.remove('hidden');
     });
   }

@@ -1096,10 +1096,13 @@ function emptyCardState(title, detail, iconHtml, colorClass = 'text-slate-500') 
             `;
             break;
         }
-        case 'room-scenes':
-            if (!roomScenes) {
-                content = emptyCardState('SAHNELER', 'Oda sahnesi seçilince burada görünür.', svg, 'text-amber-500');
+        case 'room-scenes': {
+            // Son çalıştırılan oda sahneleri (nexus-room-scenes.html yazar: { odaAnahtarı: sahneAdı }).
+            const entries = roomScenes && typeof roomScenes === 'object' ? Object.keys(roomScenes).filter(k => roomScenes[k]).slice(0, 2) : [];
+            if (!entries.length) {
+                content = emptyCardState('SAHNELER', 'Oda sahnesi çalıştırınca burada görünür.', svg, 'text-amber-500');
             } else {
+                const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
                 content = `
                 <div class="flex items-center justify-between mb-2 text-amber-500">
                     <div class="flex items-center gap-2">
@@ -1107,19 +1110,15 @@ function emptyCardState(title, detail, iconHtml, colorClass = 'text-slate-500') 
                     </div>
                 </div>
                 <div class="flex gap-1.5 mt-auto">
-                    <div class="flex-1 ${roomScenes.salon ? 'bg-amber-50 border-amber-100' : 'bg-slate-50 border-slate-100'} rounded-lg py-2 flex flex-col items-center justify-center border transition-colors">
-                        <svg class="w-3.5 h-3.5 ${roomScenes.salon ? 'text-amber-500' : 'text-slate-400'} mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                        <div class="text-[8px] font-bold ${roomScenes.salon ? 'text-amber-700' : 'text-slate-500'}">SALON ${roomScenes.salon ? '(' + roomScenes.salon + ')' : ''}</div>
-                    </div>
-                    <div class="flex-1 ${roomScenes.mutfak ? 'bg-sky-50 border-sky-100' : 'bg-slate-50 border-slate-100'} rounded-lg py-2 flex flex-col items-center justify-center border transition-colors">
-                        <svg class="w-3.5 h-3.5 ${roomScenes.mutfak ? 'text-sky-500' : 'text-slate-400'} mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path></svg>
-                        <div class="text-[8px] font-bold ${roomScenes.mutfak ? 'text-sky-700' : 'text-slate-500'}">MUTFAK ${roomScenes.mutfak ? '(' + roomScenes.mutfak + ')' : ''}</div>
-                    </div>
+                    ${entries.map(k => `<div class="flex-1 min-w-0 bg-amber-50 border border-amber-100 rounded-lg py-2 px-1 flex flex-col items-center justify-center">
+                        <div class="text-[8px] font-bold text-amber-700 uppercase truncate max-w-full">${esc(k)}</div>
+                        <div class="text-[9px] text-amber-600 truncate max-w-full">${esc(roomScenes[k])}</div>
+                    </div>`).join('')}
                 </div>
             `;
             }
             break;
-        case 'guest-mode':
+        }        case 'guest-mode':
             if (!guestMode) {
                 content = emptyCardState('MİSAFİR', 'Misafir ağı ayarlanınca burada görünür.', svg, 'text-sky-500');
             } else {
@@ -1355,10 +1354,10 @@ function renderTapToRunCards() {
     section.classList.remove('hidden');
     grid.innerHTML = selected.map(card => {
         const accent = getCardAccentClasses(card.icon);
-        // Bağlı bir hazır senaryosu varsa kart gerçekten çalıştırır (device-controls.js yüklüyse); yoksa eski davranış: ayar sayfası.
-        const runnable = !!(card.sceneId && window.NX && NX.SCENES && NX.SCENES[card.sceneId]);
+        // Hazır senaryosu ya da cihaz adımları varsa kart gerçekten çalıştırır (device-controls.js yüklüyse); yoksa ayar sayfası.
+        const runnable = !!(window.NX && NX.itemRunnable && NX.itemRunnable(card));
         return `
-            <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" href="${getCardHref(card.id)}" id="dyn-card-${card.id}"${runnable ? ` data-run-scene="${card.sceneId}"` : ''}>
+            <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" href="${getCardHref(card.id)}" id="dyn-card-${card.id}"${runnable ? ` data-run-item="${card.id}"` : ''}>
                 <div class="mb-2 ${(accent.wrap.match(/text-\S+/) || ['text-slate-500'])[0]}">
                     ${getCardIconSvg(card.icon, 'w-8 h-8')}
                 </div>
@@ -1369,14 +1368,35 @@ function renderTapToRunCards() {
             </a>
         `;
     }).join('');
-    Array.prototype.forEach.call(grid.querySelectorAll('[data-run-scene]'), function (a) {
+    Array.prototype.forEach.call(grid.querySelectorAll('[data-run-item]'), function (a) {
         a.addEventListener('click', function (ev) {
             ev.preventDefault();
-            const r = NX.runScene(a.getAttribute('data-run-scene'));
-            if (window.nexusToast) window.nexusToast(NX.sceneSummary(r), { type: r.changed ? 'success' : 'error' });
+            const id = a.getAttribute('data-run-item');
+            const item = selected.find(c => c.id === id);
+            const r = NX.runItem(item);
+            if (window.nexusToast) window.nexusToast(r.summary, { type: r.changed ? 'success' : 'error' });
         });
     });
 }
+
+// Siri / Kestirmeler bağlantısı (nexus://run/<id> → cloud-sync.js → nexus-home.html?run=<id>): kaydı bir kez çalıştırır,
+// sonucu dürüstçe söyler (kayıt silinmişse ya da eylemi yoksa "çalıştı" denmez).
+(function runLinkedItem() {
+    var id = null;
+    try { id = new URLSearchParams(location.search).get('run'); } catch (e) { id = null; }
+    if (!id) return;
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    var T = function (tr, en) { return typeof nexusT === 'function' ? nexusT(tr, en) : tr; };
+    function go() {
+        var item = window.getCustomClickRunCards().find(function (c) { return c.id === id; });
+        var msg, ok = false;
+        if (!item) msg = T('Bu kestirmenin senaryosu artık yok. Siri Kısayolları ekranından yeniden ekleyebilirsin.', 'The scene behind this shortcut no longer exists. You can add it again from the Siri Shortcuts screen.');
+        else if (!window.NX || !NX.runItem) msg = T('Senaryo şu an çalıştırılamadı.', 'The scene could not be run right now.');
+        else { var r = NX.runItem(item); msg = r.summary; ok = r.changed > 0; }
+        if (window.nexusToast) window.nexusToast(msg, { type: ok ? 'success' : 'error' });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
 
 window.refreshDashboardSupplements = function() {
     syncHomeStaticCards();

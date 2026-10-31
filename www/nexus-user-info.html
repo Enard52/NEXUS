@@ -125,19 +125,16 @@
 </div>
 <!-- END: Username Edit Sheet -->
 <!-- BEGIN: Timezone Sheet -->
-<div class="sheet fixed bottom-0 inset-x-0 bg-white rounded-t-3xl z-50 p-6 pb-10 w-full max-w-xl mx-auto" data-purpose="timezone-sheet" id="sheet-tz">
-<div class="flex items-center justify-between mb-2">
-<div class="nx-sheet-head"><span class="nx-sheet-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Saat Dilimi</h3></div>
-<button aria-label="Kapat" class="text-slate-400" onclick="closeSheets()"><i class="w-6 h-6" data-lucide="x"></i></button>
-</div>
-<p class="text-sm text-slate-400 mb-4">Ülkeni seç; senaryo ve programların bu ülkenin saatine göre çalışır.</p>
+<div class="sheet nx-full fixed bottom-0 inset-x-0 bg-white z-50" data-purpose="timezone-sheet" id="sheet-tz" role="dialog" aria-modal="true" aria-labelledby="tz-sheet-title">
+<div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeSheets()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="tz-sheet-title">Saat Dilimi</h2></div>
+<p class="nx-full-lead">Ülkeni seç; senaryo ve programların bu ülkenin saatine göre çalışır.</p>
 <!-- Ülke arama -->
-<div class="bg-slate-50 rounded-2xl flex items-center px-4 py-3 gap-3 mb-3" data-purpose="tz-search-box">
+<div class="bg-white rounded-2xl flex items-center px-4 py-3 gap-3 mb-3 shadow-sm" data-purpose="tz-search-box">
 <svg class="w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35" stroke-linecap="round"></path></svg>
 <input class="flex-grow border-none focus:ring-0 p-0 text-[16px] text-slate-800 font-medium bg-transparent min-w-0" id="tz-search" oninput="renderTzList(this.value)" placeholder="Ülke ara" type="text"/>
 </div>
 <!-- Tüm ülkeler (gerçek IANA saat dilimleriyle, script doldurur) -->
-<div class="space-y-1 overflow-y-auto max-h-[45vh] -mx-2 px-2" id="tz-list"></div>
+<div class="nx-full-card space-y-1" id="tz-list"></div>
 <p class="hidden text-sm text-slate-400 text-center py-6" id="tz-empty">Eşleşen ülke bulunamadı.</p>
 </div>
 <!-- END: Timezone Sheet -->
@@ -369,6 +366,7 @@
         list.appendChild(btn);
       });
       document.getElementById('tz-empty').classList.toggle('hidden', shown > 0);
+      list.classList.toggle('hidden', shown === 0);
     }
     function pickCountry(code) {
       nexusSetItem('nexusTimezoneCountry', code);

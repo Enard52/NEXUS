@@ -50,10 +50,43 @@
 
     <!-- Senaryo Listesi -->
 
+    <!-- iPhone dışında: Siri kestirmesi kurulamaz; dürüst not, eylem düğmesi yok -->
+    <div id="siri-platform-note" class="hidden bg-white rounded-[1.5rem] p-5 mb-4 text-center shadow-sm">
+      <p class="text-[14px] font-bold text-slate-800 mb-1">Siri kestirmeleri iPhone'da kurulur</p>
+      <p class="text-[13px] text-slate-500 leading-relaxed">Bu ekranı iPhone'daki NEXUS uygulamasında aç; senaryoların aşağıda listelenir ve her biri için Siri kestirmesi kurabilirsin.</p>
+    </div>
+
     <div id="scenario-list" class="space-y-3">
       <!-- Senaryolar buraya dinamik olarak eklenecek -->
     </div>
   </main>
+
+  <!-- Siri'ye ekleme rehberi: tam ekran. Kestirme nexus://run/<kimlik> bağlantısını açar; uygulama senaryoyu çalıştırır. -->
+  <div id="siri-guide" class="nx-full-wrap hidden fixed inset-0 z-[60]" onclick="closeSiriGuide()">
+    <div class="nx-full" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="siri-guide-title">
+      <div class="nx-full-head"><button type="button" class="nx-full-back" aria-label="Geri" onclick="closeSiriGuide()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button><h2 id="siri-guide-title">Siri'ye Ekle</h2></div>
+      <p class="nx-full-lead" id="siri-guide-lead"></p>
+      <div class="nx-full-card space-y-5">
+        <div>
+          <p class="text-[14px] font-bold text-slate-800 mb-1">1. Senaryo bağlantısını kopyala</p>
+          <p class="text-[13px] text-slate-500 mb-3">Bu bağlantı NEXUS'u açar ve senaryoyu hemen çalıştırır.</p>
+          <div class="flex items-center gap-2">
+            <code id="siri-guide-link" data-no-i18n class="flex-1 min-w-0 truncate rounded-xl bg-slate-50 px-3 py-3 text-[13px] text-slate-700"></code>
+            <button type="button" id="siri-copy-btn" class="shrink-0 rounded-xl bg-[#4C7DFF] px-4 py-3 text-[13px] font-bold text-white active:scale-[0.98] transition-transform" onclick="copySiriLink()">Kopyala</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-[14px] font-bold text-slate-800 mb-1">2. Kestirmeler'de yeni kestirme oluştur</p>
+          <p class="text-[13px] text-slate-500 mb-3">"Eylem Ekle" › "URL'leri Aç" eylemini seç ve kopyaladığın bağlantıyı yapıştır.</p>
+          <a href="shortcuts://create-shortcut" class="flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white py-3 text-[14px] font-bold text-slate-700 active:scale-[0.98] transition-transform">Kestirmeler uygulamasını aç</a>
+        </div>
+        <div>
+          <p class="text-[14px] font-bold text-slate-800 mb-1">3. Kestirmeye ad ver</p>
+          <p class="text-[13px] text-slate-500" id="siri-guide-say"></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="js/lucide.js"></script>
 <script>
@@ -75,10 +108,19 @@
         return;
       }
 
+      // Kestirme yalnız iPhone uygulamasında kurulabilir; başka yerde liste görünür ama eklenemez (sahte "+" yok).
+      const onIos = isIosApp();
+      document.getElementById('siri-platform-note').classList.toggle('hidden', onIos);
+
       clickruns.forEach((scenario) => {
         const scenarioElement = document.createElement('div');
-        scenarioElement.className = "bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex items-center justify-between cursor-pointer active:scale-[0.98] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] group";
-        scenarioElement.onclick = () => addToSiri(scenario.title);
+        scenarioElement.className = "bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex items-center justify-between" + (onIos ? " cursor-pointer active:scale-[0.98] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] group" : "");
+        if (onIos) {
+          scenarioElement.setAttribute('role', 'button');
+          scenarioElement.tabIndex = 0;
+          scenarioElement.onclick = () => openSiriGuide(scenario);
+          scenarioElement.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSiriGuide(scenario); } };
+        }
 
         // Use data.js helper functions
         const accent = window.getCardAccentClasses ? window.getCardAccentClasses(scenario.icon) : {wrap: 'bg-slate-100 text-slate-600'};
@@ -102,9 +144,9 @@
               <p class="text-[13px] text-slate-500 mt-0.5 truncate">${escSiri(scenario.desc)}</p>
             </div>
           </div>
-          <div class="w-10 h-10 ml-3 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0 group-active:bg-blue-50 group-active:text-[#4C7DFF] transition-colors">
+          ${onIos ? `<div class="w-10 h-10 ml-3 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center shrink-0 group-active:bg-blue-50 group-active:text-[#4C7DFF] transition-colors">
             <i class="w-5 h-5" data-lucide="plus"></i>
-          </div>
+          </div>` : ''}
         `;
 
         scenarioList.appendChild(scenarioElement);
@@ -113,11 +155,29 @@
       lucide.createIcons();
     });
 
-    // Siri'ye ekleme yalnızca yerel iOS uygulamasıyla mümkündür; uygulama yayınlanana kadar dürüstçe söylenir.
-    function addToSiri(scenarioTitle) {
-      nexusInfo('Siri desteği iOS uygulamasıyla gelecek',
-        '"' + scenarioTitle + '" senaryosunu şimdilik ana ekrandaki Tıkla ve Çalıştır kartından tek dokunuşla çalıştırabilirsin. NEXUS App Store\'da yayınlandığında bu ekrandan doğrudan Siri\'ye ekleyebileceksin.',
-        [{ label: 'Ana ekrana git', href: 'nexus-home.html', primary: true }, { label: 'Kapat' }]);
+    // Siri: iPhone'daki Kestirmeler uygulamasında "URL'leri Aç" eylemiyle nexus://run/<kimlik> açılır;
+    // cloud-sync.js bağlantıyı yakalar, ana ekran (data.js runLinkedItem) senaryoyu NX.runItem ile çalıştırır.
+    function isIosApp() {
+      try { return !!(window.Capacitor && Capacitor.getPlatform && Capacitor.getPlatform() === 'ios'); } catch (e) { return false; }
+    }
+    var siriLink = '';
+    function openSiriGuide(scenario) {
+      siriLink = 'nexus://run/' + encodeURIComponent(scenario.id);
+      var T = window.nexusT || function (tr) { return tr; };
+      document.getElementById('siri-guide-lead').textContent = scenario.title;
+      document.getElementById('siri-guide-link').textContent = siriLink;
+      document.getElementById('siri-copy-btn').textContent = T('Kopyala', 'Copy');
+      document.getElementById('siri-guide-say').textContent = T(
+        'Kestirmenin adı Siri komutun olur. Örneğin "' + scenario.title + '" adını verirsen "Hey Siri, ' + scenario.title + '" demen yeterli.',
+        'The shortcut name becomes your Siri phrase. Name it "' + scenario.title + '" and just say "Hey Siri, ' + scenario.title + '".');
+      document.getElementById('siri-guide').classList.remove('hidden');
+    }
+    function closeSiriGuide() { document.getElementById('siri-guide').classList.add('hidden'); }
+    function copySiriLink() {
+      var btn = document.getElementById('siri-copy-btn');
+      var T = window.nexusT || function (tr) { return tr; };
+      var done = function (ok) { btn.textContent = ok ? T('Kopyalandı', 'Copied') : T('Kopyalanamadı', 'Copy failed'); };
+      try { navigator.clipboard.writeText(siriLink).then(function () { done(true); }, function () { done(false); }); } catch (e) { done(false); }
     }
     function escSiri(v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   </script>

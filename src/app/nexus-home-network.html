@@ -1,0 +1,272 @@
+<!doctype html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>NEXUS — Ev Ağı</title>
+    <link href="css/tailwind.css" rel="stylesheet" />
+    <link href="css/nexus-ui.css" rel="stylesheet" />
+    <link href="fonts/inter/inter.css" rel="stylesheet" />
+
+    <style data-purpose="custom-typography">
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+    <style data-purpose="custom-layout">
+      .bg-gradient-custom {
+        background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%);
+      }
+      .menu-container-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      }
+    </style>
+    <style>
+      body {
+        min-height: 100dvh;
+      }
+    </style>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="cloud-config.js"></script>
+    <script src="cloud-sync.js"></script>
+    <script src="data.js"></script>
+    <script src="supported-devices.js"></script>
+    <script src="lan-connectors.js"></script>
+    <script src="ai-fab.js"></script>
+  </head>
+  <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+    <!-- BEGIN: Header -->
+    <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+      <a
+        aria-label="Geri"
+        class="p-1 -ml-1"
+        href="#"
+        onclick="
+          event.preventDefault();
+          if (history.length > 1) history.back();
+          else location.href = 'nexus-profile.html';
+        "
+      >
+        <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+      </a>
+      <h1
+        class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2"
+      >
+        Ev Ağı
+      </h1>
+    </header>
+    <!-- END: Header -->
+    <!-- BEGIN: MainContent -->
+    <main class="flex-grow px-5 pt-4 pb-10">
+      <!-- Bu cihazın yerel ağa erişimi -->
+      <section
+        class="bg-white rounded-3xl menu-container-shadow p-5 mb-5"
+        data-purpose="network-access"
+      >
+        <div class="flex items-start gap-4">
+          <div
+            id="net-icon"
+            class="w-11 h-11 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center flex-shrink-0"
+          >
+            <i class="w-6 h-6" data-lucide="wifi"></i>
+          </div>
+          <div class="min-w-0">
+            <h2 id="net-title" class="font-bold leading-tight"></h2>
+            <p id="net-text" class="text-sm text-slate-500 mt-1 leading-relaxed"></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-lg font-bold">Ağdaki Cihazlar</h3>
+        <button
+          id="net-check-all"
+          type="button"
+          class="hidden text-sm font-bold text-[#4C7DFF] px-1 min-h-[44px]"
+          onclick="checkAll()"
+        >
+          Hepsini kontrol et
+        </button>
+      </div>
+      <section id="net-list" class="space-y-3" data-purpose="network-devices" aria-live="polite"></section>
+
+      <h3 class="text-lg font-bold mt-8 mb-3">Ağ İşlemleri</h3>
+      <section class="bg-white rounded-3xl menu-container-shadow divide-y divide-slate-50" data-purpose="network-actions">
+        <a
+          class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+          href="nexus-pair.html"
+        >
+          <div class="flex items-center gap-4">
+            <i class="w-6 h-6 stroke-[1.5]" data-lucide="radar"></i>
+            <span class="text-base font-medium">Yeni cihazları ara</span>
+          </div>
+          <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+        </a>
+        <a
+          class="flex items-center justify-between p-5 active:bg-slate-50 transition-colors"
+          href="nexus-settings.html"
+        >
+          <div class="flex items-center gap-4">
+            <i class="w-6 h-6 stroke-[1.5]" data-lucide="globe"></i>
+            <span class="text-base font-medium">Uzak erişim adresi</span>
+          </div>
+          <i class="w-5 h-5 text-slate-300" data-lucide="chevron-right"></i>
+        </a>
+      </section>
+      <!-- Feedback shortcut -->
+      <a
+        class="nx-tap-t nx-tap-b flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6"
+        data-purpose="feedback-link"
+        href="nexus-feedback.html"
+      >
+        <i class="w-4 h-4" data-lucide="message-circle"></i>Bağlantıda sorun mu var? Geri bildirim gönder
+      </a>
+    </main>
+    <!-- END: MainContent -->
+    <script src="js/lucide.js"></script>
+    <script data-purpose="network-render">
+      // Durumlar gerçek cihaz okumasından gelir (nexusLan.read). Henüz kontrol edilmemiş cihaz "Kontrol edilmedi"
+      // diye gösterilir; sonuç uydurulmaz. Bu ortamda yerel ağa erişim yoksa (ör. düz tarayıcı) bunu açıkça söyler.
+      lucide.createIcons();
+      var CHECK_TIMEOUT_MS = 8000;
+      var results = {};
+
+      function el(tag, cls, text) {
+        var node = document.createElement(tag);
+        if (cls) node.className = cls;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+      function pairedDevices() {
+        try {
+          var list = JSON.parse(nexusGetItem("nexusPairedDevices") || "[]");
+          return Array.isArray(list) ? list : [];
+        } catch (e) {
+          return [];
+        }
+      }
+      function lanDevices() {
+        var all = pairedDevices();
+        var out = [];
+        all.forEach(function (d, index) {
+          if (d && typeof d.host === "string" && d.host && d.protocol) out.push({ device: d, index: index });
+        });
+        return out;
+      }
+      function lanReady() {
+        return !!(window.nexusLan && window.nexusLan.usingNativeTransport && window.nexusLan.usingNativeTransport());
+      }
+      function plainHost(host) {
+        return String(host).replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+      }
+
+      function renderAccess() {
+        var title = document.getElementById("net-title");
+        var text = document.getElementById("net-text");
+        var icon = document.getElementById("net-icon");
+        var ready = lanReady();
+        title.textContent = ready
+          ? nexusT("Bu cihaz yerel ağa erişebilir", "This device can reach your local network")
+          : nexusT("Bu ortamda yerel ağa erişilemiyor", "The local network is not reachable here");
+        text.textContent = ready
+          ? nexusT("Cihazlarını burada kontrol edebilirsin. Yerel adres yanıt vermezse isteğe bağlı uzak adres denenir.", "You can check your devices here. If the local address does not answer, the optional remote address is tried.")
+          : nexusT("Tarayıcı, evindeki cihazlarla doğrudan konuşamaz. Cihaz kontrolü için masaüstü veya mobil uygulamayı kullan.", "A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.");
+        icon.className = "w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 " +
+          (ready ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600");
+      }
+
+      function badge(state) {
+        var map = {
+          idle: ["bg-slate-100 text-slate-500", nexusT("Kontrol edilmedi", "Not checked")],
+          busy: ["bg-slate-100 text-slate-500", nexusT("Kontrol ediliyor…", "Checking…")],
+          ok: ["bg-emerald-50 text-emerald-600", nexusT("Ulaşılıyor", "Reachable")],
+          fail: ["bg-red-50 text-red-600", nexusT("Ulaşılamıyor", "Not reachable")]
+        };
+        var pick = map[state] || map.idle;
+        return el("span", "text-[11px] font-bold rounded-full px-2.5 py-1 whitespace-nowrap " + pick[0], pick[1]);
+      }
+
+      function renderList() {
+        var list = document.getElementById("net-list");
+        var checkAllBtn = document.getElementById("net-check-all");
+        var rows = lanDevices();
+        list.innerHTML = "";
+        checkAllBtn.classList.toggle("hidden", !(rows.length && lanReady()));
+        if (!rows.length) {
+          var box = el("div", "nx-empty");
+          var ic = el("div", "nx-empty__icon");
+          ic.setAttribute("aria-hidden", "true");
+          var i = document.createElement("i");
+          i.setAttribute("data-lucide", "router");
+          ic.appendChild(i);
+          box.appendChild(ic);
+          box.appendChild(el("p", "nx-empty__title", nexusT("Ağda eklenmiş cihaz yok", "No devices on your network yet")));
+          box.appendChild(el("p", "nx-empty__text", nexusT("Önce Cihaz Ekle'den cihazlarını bul. Yerel ağdaki cihazlar burada listelenir.", "First find your devices from Add Device. Devices on your local network are listed here.")));
+          var link = el("a", "inline-block mt-3 text-sm font-bold text-[#4C7DFF]", nexusT("Cihaz Ekle", "Add Device"));
+          link.href = "nexus-pair.html";
+          box.appendChild(link);
+          list.appendChild(box);
+          lucide.createIcons();
+          return;
+        }
+        rows.forEach(function (row) {
+          var d = row.device;
+          var state = results[row.index] || "idle";
+          var card = el("div", "bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3");
+          var left = el("div", "min-w-0");
+          left.appendChild(el("p", "font-bold leading-tight truncate", d.name || nexusT("Adsız cihaz", "Unnamed device")));
+          var addr = el("p", "text-xs text-slate-400 mt-0.5 truncate", plainHost(d.host));
+          addr.setAttribute("data-no-i18n", "");
+          left.appendChild(addr);
+          var right = el("div", "flex flex-col items-end gap-2 flex-shrink-0");
+          right.appendChild(badge(state));
+          if (lanReady()) {
+            var btn = el("button", "text-xs font-bold text-[#4C7DFF]", nexusT("Kontrol et", "Check"));
+            btn.type = "button";
+            btn.disabled = state === "busy";
+            btn.addEventListener("click", function () { checkOne(row); });
+            right.appendChild(btn);
+          }
+          card.appendChild(left);
+          card.appendChild(right);
+          list.appendChild(card);
+        });
+      }
+
+      function checkOne(row) {
+        if (!lanReady() || results[row.index] === "busy") return Promise.resolve();
+        results[row.index] = "busy";
+        renderList();
+        var timer;
+        var timeout = new Promise(function (_, reject) {
+          timer = setTimeout(function () { reject(new Error("zaman aşımı")); }, CHECK_TIMEOUT_MS);
+        });
+        return Promise.race([Promise.resolve().then(function () { return window.nexusLan.read(row.device); }), timeout])
+          .then(function () { results[row.index] = "ok"; })
+          .catch(function () { results[row.index] = "fail"; })
+          .then(function () { clearTimeout(timer); renderList(); });
+      }
+
+      function checkAll() {
+        var rows = lanDevices();
+        // Ağı boğmamak için sırayla kontrol edilir.
+        rows.reduce(function (chain, row) { return chain.then(function () { return checkOne(row); }); }, Promise.resolve());
+      }
+
+      renderAccess();
+      renderList();
+      window.addEventListener("pageshow", function () { renderAccess(); renderList(); });
+    </script>
+  </body>
+</html>

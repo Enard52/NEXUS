@@ -203,7 +203,7 @@
     var CREATE_NOUN = /\b(senaryo\w*|otomasyon\w*|rutin\w*|akis\w*|panel\w*|sahne\w*|merkez\w*|uygulama\w*|scenario|automation|routine|scene|panel|smart app|app)\b/;
     var wantsCreate = (CREATE_VERB.test(text) && CREATE_NOUN.test(text)) || /\byapay zeka ile olustur/.test(text) ||
       /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
-    if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
+    if (wantsCreate) { var made = create(text, all); made.action = "create"; return made; }
     // SSS / destek: konuyu gerçekten yanıtlayan ekranı gösterir (genel komut listesi değil)
     if (/\b(sss|sikca sorulan|geri bildirim|sorun bildir|faq|feedback|destek ekib\w*|destek al\w*|destek istiyorum|musteri hizmetleri|customer support|contact support|contact us)\b/.test(text) || /\bsss ve destek\b/.test(text)) {
       return { reply: T("SSS ve Geri Bildirim ekranında sık sorulan soruların yanıtları ve geri bildirim formu var (Ayarlar'dan ya da Enerji ekranının altından ulaşabilirsin). Takıldığın konuyu buraya yazarsan bildiğim kadarıyla yardımcı olurum; çözemezsem formdan bize iletebilirsin.",
@@ -367,6 +367,171 @@
     }
 
     return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
+  }
+
+  // ---------- Sohbetten oluşturma: GERÇEK, çalışan bir senaryo / otomasyon kaydı ----------
+  // Kayıt yalnızca eşleşmiş cihazlarda gerçekten uygulanabilen bir hazır senaryo (sceneId) ya da cihaz adımları (actions)
+  // bulunduğunda, otomasyonda ayrıca gerçek bir zaman tetikleyicisi olduğunda yapılır. Biri eksikse HİÇBİR ŞEY kaydedilmez,
+  // kullanıcıya neyin eksik olduğu söylenir. Yazma, Akıllı ekranının kullandığı nexusQuickScenes.save ile yapılır
+  // (otomasyon motoru sceneId'yi ya da {name, field, value} adımlarını çalıştırır).
+  // Oluşturma isteklerinde ek ipuçları: yalnızca NX.SCENES'te gerçekten bulunan senaryolara eşlenir.
+  var CREATE_HINTS = [
+    ["movie-mode", /\b(sinema\w*|film\w*|movie|cinema)\b/],
+    ["guest-mode", /\b(misafir\w*|guests?)\b/],
+    ["good-morning", /\b(gunaydin\w*|uyanma\w*|sabah rutin\w*|wake ?up|morning routine)\b/],
+    ["welcome-home", /\b(eve geldi\w*|karsilama\w*|welcome)\b/],
+    ["leave-home", /\b(evden cik\w*|cikis kontrol\w*|leaving)\b/],
+    ["sleep-prep", /\b(uykuya hazirlik\w*|yatmadan|bedtime)\b/],
+    ["sleep-mode", /\b(uyku\w*|iyi geceler|good night|sleep)\b/],
+    ["clean-start", /\b(temizlik\w*|supurge\w*|cleaning|vacuum)\b/],
+    ["comfort-room", /\b(iklim\w*|konfor\w*|climate|comfort)\b/]
+  ];
+  var REPEAT_NAMES = { daily: ["Her gün", "Every day"], weekdays: ["Hafta içi", "Weekdays"], weekends: ["Hafta sonu", "Weekends"] };
+  // Sohbetten kurulamayan tetikleyiciler (sensör, cihaz durumu, konum, hava): Akıllı Senaryolar ekranına yönlendirilir.
+  var OTHER_TRIGGER = /\b(gelince|geldigimde|girince|ciktigimda|cikinca|ayrilinca|algilayinca|algiladiginda|acilinca|acildiginda|kapaninca|kapandiginda|hareket|sensor\w*|yagmur yagin\w*|sicaklik \w+ (ustune|altina)|when i (arrive|leave|get home)|when motion|when (it|the \w+) (opens|closes|rains))\b/;
+
+  function createType(text) {
+    if (mode === "automation") return "automation";
+    if (mode === "scenario") return "clickrun";
+    if (/\b(otomasyon\w*|automation|her (gun|gece|sabah|aksam)|every (day|night|morning|evening)|hafta (ici|sonu)|weekdays?|weekends?|saat \d|\d{1,2}[:.]\d{2})\b/.test(text)) return "automation";
+    return window.__nexusAiCreateType === "automation" ? "automation" : "clickrun";
+  }
+
+  // Metinden gerçek zaman tetikleyicisi: "23:00", "saat 7", "7'de", "8 pm", "gün batımında", "her sabah"…
+  function parseTime(text) {
+    var repeat = /\b(hafta ici|weekdays?)\b/.test(text) ? "weekdays" : /\b(hafta sonu|weekends?)\b/.test(text) ? "weekends" : "daily";
+    if (/\b(gun ?batimi\w*|aksam ustu|sunset)\b/.test(text)) return { value: "sunset", repeat: repeat };
+    if (/\b(gun ?dogumu\w*|sunrise)\b/.test(text)) return { value: "sunrise", repeat: repeat };
+    var h = null, min = 0, m;
+    if ((m = text.match(/\b(\d{1,2})[:.](\d{2})\b/))) { h = +m[1]; min = +m[2]; }
+    else if ((m = text.match(/\b(\d{1,2}) ?(am|pm)\b/))) { h = +m[1] % 12 + (m[2] === "pm" ? 12 : 0); }
+    else if ((m = text.match(/\bsaat (\d{1,2})\b|\b(\d{1,2}) ?'?(?:de|da|te|ta)\b|\bat (\d{1,2})\b/))) { h = +(m[1] || m[2] || m[3]); }
+    if (h !== null) {
+      // "akşam 8" → 20:00; "gece 11" → 23:00 ama "gece 1" → 01:00
+      if (/\b(aksam|evening|tonight)\b/.test(text) && h >= 1 && h < 12) h += 12;
+      else if (/\b(gece|night)\b/.test(text) && h >= 6 && h < 12) h += 12;
+    } else if (/\b(sabah|morning)\b/.test(text)) h = 7;
+    else if (/\b(ogle\w*|noon)\b/.test(text)) h = 12;
+    else if (/\b(aksam|evening)\b/.test(text)) h = 19;
+    else if (/\b(gece|night|tonight)\b/.test(text)) h = 23;
+    if (h === null || h > 23 || min > 59) return null;
+    return { value: (h < 10 ? "0" : "") + h + ":" + (min < 10 ? "0" : "") + min, repeat: repeat };
+  }
+  function timeLabel(t) {
+    var base = t.value === "sunset" ? T("gün batımı", "sunset") : t.value === "sunrise" ? T("gün doğumu", "sunrise") : t.value;
+    return REPEAT_NAMES[t.repeat][EN ? 1 : 0] + " " + base;
+  }
+
+  // Metindeki cihaz isteğini otomasyon motorunun çalıştırabileceği adımlara çevirir (cihaza o an dokunmaz).
+  function deviceSteps(text, all) {
+    var N = nx();
+    var tg = targets(text, all);
+    if (!tg.list.length) return null;
+    var pct = text.match(/(?:%|yuzde)\s*(\d{1,3})|(\d{1,3})\s*(?:%|percent|yuzde)/);
+    var deg = text.match(/(\d{1,2}(?:[.,]5)?)\s*(derece|°|degrees?)/);
+    // Oluşturma cümlelerinde fiil çekimli gelir: "ışıkları kapatan / kapansın", "perdeleri açan / açılsın"
+    var offWord = OFF.test(text) || /\b(kapa(tan|tsin|nsin|nacak|tir)|sondur\w*)\b/.test(text);
+    var onWord = ON.test(text) || /\b(acan|acsin|acilsin|acilacak|yakan|yaksin)\b/.test(text);
+    // "aç/kapat kontrolleri olsun" gibi iki yönlü istek tek bir adıma çevrilmez (yanlışlıkla "kapat" kaydedilmesin)
+    if (onWord && offWord && !/\b(her sey|herseyi|her seyi|everything)\b/.test(text)) return null;
+    var turnOff = offWord, turnOn = onWord && !offWord;
+    var pick = function (fn, field, value) {
+      return tg.list.filter(fn).map(function (x) { return { name: x.device.name, field: field, value: value }; });
+    };
+    var steps = [];
+    if (/\b(kilitle|lock)\b/.test(text) && !/\b(kilidi ac|unlock)\b/.test(text)) steps = pick(function (x) { return x.kind === "lock"; }, "locked", true);
+    else if (tg.cat === "cover" || tg.list.every(function (x) { return x.kind === "cover"; })) steps = pick(function (x) { return x.kind === "cover"; }, "coverAction", turnOff ? "close" : "open");
+    else if (tg.cat === "vacuum") steps = pick(function (x) { return x.kind === "vacuum"; }, "mode", /\b(sarj|dock|durdur|stop)\b/.test(text) ? "docked" : "cleaning");
+    else if (deg) steps = pick(function (x) { return (x.kind === "ac" || x.kind === "thermostat") && N.hasFeature(x.device, "target"); }, "target", Math.max(5, Math.min(30, parseFloat(deg[1].replace(",", ".")))));
+    else if (pct) steps = pick(function (x) { return N.hasCap(x.device, "brightness"); }, "brightness", Math.max(1, Math.min(100, +(pct[1] || pct[2]))));
+    else if (turnOn || turnOff) {
+      steps = pick(function (x) {
+        if (!powerable(x)) return false;
+        // "Her şeyi kapat": prizler ve sürekli çalışması gereken cihazlar kapatılmaz (sohbet komutuyla aynı kural)
+        return !(tg.by === "all" && turnOff) || ["light", "media", "purifier", "ac"].indexOf(x.kind) !== -1;
+      }, "switch", turnOn);
+    }
+    return steps.length ? steps : null;
+  }
+  function stepsTitle(steps) {
+    var s = steps[0], who = names(steps.map(function (x) { return { device: { name: x.name } }; }), 2);
+    if (s.field === "switch") return who + (s.value ? T(" açılsın", " on") : T(" kapansın", " off"));
+    if (s.field === "brightness") return who + " %" + s.value;
+    if (s.field === "target") return who + " " + s.value + "°";
+    if (s.field === "locked") return who + T(" kilitlensin", " locked");
+    if (s.field === "coverAction") return who + (s.value === "open" ? T(" açılsın", " open") : T(" kapansın", " closed"));
+    return who + (s.value === "docked" ? T(" şarja dönsün", " docks") : T(" temizlesin", " cleans"));
+  }
+
+  function createdWidget(icon, title, sub, type) {
+    var e = nx() ? nx().escapeHtml : function (s) { return s; };
+    var tab = type === "automation" ? "tab-automation" : "tab-clickrun";
+    return '<div class="mt-3 bg-[#F1F7FF] dark:bg-slate-700/50 border border-blue-100 dark:border-slate-600 rounded-xl p-3 flex items-center justify-between gap-3" data-no-i18n>' +
+      '<div class="flex items-center gap-3 min-w-0"><div class="p-2 bg-white dark:bg-slate-800 rounded-lg text-[#4C7DFF]"><i data-lucide="' + e(icon) + '" class="w-5 h-5"></i></div>' +
+      '<div class="min-w-0"><p class="text-sm font-semibold text-gray-800 dark:text-white truncate">' + e(title) + '</p><p class="text-xs text-gray-500 dark:text-slate-400 truncate">' + e(sub) + "</p></div></div>" +
+      '<a href="nexus-smart.html?tab=' + tab + '" class="shrink-0 text-xs font-bold text-[#4C7DFF] bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-blue-100 dark:border-slate-600">' + T("Görüntüle", "View") + "</a></div>";
+  }
+
+  function create(text, all) {
+    text = text.replace(/^yapay zeka ile olustur:?\s*/, "");
+    var type = createType(text);
+    var QS = window.nexusQuickScenes, N = nx();
+    if (!all.length) return { reply: T("Senaryo kurmak için önce bir cihaz eklemen gerekiyor; cihaz olmadan çalışacak bir şey kaydetmem. Cihaz Ekle ekranından başlayabilirsin.", "To build a scene you first need a device; I will not save something that cannot run. Start from the Add Device screen.") };
+    if (!QS || !QS.save || !N) return { reply: T("Senaryo şu an kaydedilemedi. Akıllı ekranından oluşturabilirsin.", "The scene could not be saved right now. You can create it from the Smart screen.") };
+    if (type === "automation" && OTHER_TRIGGER.test(text)) {
+      return { reply: T("Sensör, cihaz durumu, konum ya da hava tetikleyicisini sohbetten kuramıyorum; bunlar Akıllı Senaryolar ekranında (Akıllı › Otomasyon › Yeni Otomasyon) seçiliyor. Sohbetten saatli otomasyon kurabilirim, örneğin \"her gece 23:00'te ışıkları kapat\".",
+        "I cannot set up sensor, device-state, location or weather triggers from chat; you pick those on the Smart Scenarios screen (Smart › Automations › New Automation). From chat I can set up timed automations, e.g. \"turn off the lights every night at 23:00\".") };
+    }
+    // 1) Hazır senaryo (yalnızca eşleşmiş cihazlarda gerçekten bir şey değiştiriyorsa)
+    var sceneId = null, byHint = false;
+    for (var s = 0; s < SCENE_WORDS.length; s++) if (SCENE_WORDS[s][1].test(text)) { sceneId = SCENE_WORDS[s][0]; break; }
+    if (!sceneId) for (var c = 0; c < CREATE_HINTS.length; c++) if (CREATE_HINTS[c][1].test(text)) { sceneId = CREATE_HINTS[c][0]; byHint = true; break; }
+    var scene = sceneId ? QS.available().filter(function (x) { return x.id === sceneId; })[0] : null;
+    // Senaryo adı açıkça söylendiyse ve cihazlarda bir şey değiştirmiyorsa söylenir; yalnızca ipucuyla eşleştiyse cihaz adımlarına bakılır.
+    if (sceneId && !scene && !byHint) {
+      var nm0 = SCENE_NAMES[sceneId] ? SCENE_NAMES[sceneId][EN ? 1 : 0] : (N.SCENES && N.SCENES[sceneId] ? N.SCENES[sceneId].title : sceneId);
+      return { reply: T(nm0 + " senaryosu eşleşmiş cihazlarında hiçbir şeyi değiştirmiyor, bu yüzden kaydetmedim. Uygun bir cihaz ekleyince tekrar dene.", "The " + nm0 + " scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.") };
+    }
+    // 2) Yoksa cihaz adımları ("salon ışığını kapat", "klimayı 22 derece yap")
+    var steps = scene ? null : deviceSteps(text, all);
+    if (!scene && !steps && /\b(panel\w*|merkez\w*|ekran\w*|dashboard|hub|uygulama\w*|app)\b/.test(text)) {
+      return { reply: T("Ayrı bir panel ya da uygulama ekranı kuramıyorum, bu yüzden bir şey kaydetmedim; cihazlarını Ana ekrandaki kartlardan ve Akıllı ekranından yönetirsin. Sohbetten tek dokunuşla çalışan bir senaryo ya da saatli otomasyon kurabilirim, örneğin \"film modu\", \"salon ışıklarını %40 yap\" ya da \"her gece 23:00'te ışıkları kapat\".",
+        "I cannot build a separate panel or app screen, so I did not save anything; you manage your devices from the Home cards and the Smart screen. From chat I can set up a one-tap scene or a timed automation, e.g. \"movie mode\", \"set the living room lights to 40%\" or \"turn off the lights every night at 23:00\".") };
+    }
+    if (!scene && !steps) {
+      return { reply: T("Bu istekten eşleşmiş cihazlarına uygulanabilecek bir adım çıkaramadım, bu yüzden bir şey kaydetmedim. Örneğin \"film modu\", \"salon ışıklarını kapat\" ya da \"her sabah 7'de perdeleri aç\" diyebilirsin.",
+        "I could not turn this into a step your paired devices can run, so I did not save anything. Try e.g. \"movie mode\", \"turn off the living room lights\" or \"open the curtains every morning at 7\".") };
+    }
+    // 3) Otomasyonda gerçek zaman tetikleyicisi (yoksa senaryonun önerilen saati; o da yoksa sorulur)
+    var trigger = { type: "manual" };
+    if (type === "automation") {
+      var t = parseTime(text);
+      var meta = scene && QS.metaFor ? QS.metaFor(scene.id) : null;
+      if (!t && meta && meta.time) t = { value: meta.time.value, repeat: meta.time.repeat };
+      if (!t) return { reply: T("Ne zaman çalışsın? Saatini de yaz, örneğin \"her gece 23:00'te\", \"hafta içi sabah 7'de\" ya da \"gün batımında\".", "When should it run? Add a time, e.g. \"every night at 23:00\", \"weekdays at 7 am\" or \"at sunset\".") };
+      trigger = { type: "time", value: t.value, repeat: t.repeat };
+    }
+    var title = scene ? scene.title : stepsTitle(steps);
+    var what = scene ? QS.descFor(scene.id) : steps.map(function (x) { return x.name + " " + (QS.describeAct ? QS.describeAct([x.field, x.value]) : ""); }).join(", ") + ".";
+    var when = type === "automation" ? timeLabel(trigger) : "";
+    QS.save(type, scene ? scene.id : null, {
+      title: title,
+      desc: (when ? when + " · " : "") + what,
+      trigger: trigger,
+      actions: steps || [],
+      icon: scene ? undefined : (steps[0].field === "switch" ? "power" : "sliders-horizontal")
+    });
+    var count = scene ? scene.affected : steps.length;
+    var listName = type === "automation" ? T("Otomasyonlar", "Automations") : T("Tıkla ve Çalıştır", "Tap to Run");
+    return {
+      reply: type === "automation"
+        ? T("\"" + title + "\" otomasyonunu kurdum: " + when.toLocaleLowerCase("tr-TR") + " çalışacak ve " + count + " cihazı ayarlayacak. Otomasyonlar uygulama açıkken (masaüstünde tepsideyken de) çalışır.",
+          "I set up the \"" + title + "\" automation: it runs " + when.toLowerCase() + " and adjusts " + count + " device" + (count > 1 ? "s" : "") + ". Automations run while the app is open (also from the tray on desktop).")
+        : T("\"" + title + "\" senaryosunu Tıkla ve Çalıştır listene ekledim; dokununca " + count + " cihazı ayarlar.",
+          "I added \"" + title + "\" to Tap to Run; one tap adjusts " + count + " device" + (count > 1 ? "s" : "") + "."),
+      widget: createdWidget(scene ? (QS.metaFor(scene.id) || {}).icon || "sparkles" : "zap", title, listName + (when ? " · " + when : ""), type),
+      created: type
+    };
   }
 
     var AI_URL = "https://nexus-ai.nexus-smarthome.workers.dev";

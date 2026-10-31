@@ -1453,13 +1453,8 @@
     try { return localStorage.getItem("nexusMfaPending") === "1"; } catch (e) { return false; }
   }
 
-  // Düzenli eşitleme sıklığı (Ayarlar → Bulut eşitleme sıklığı). Bilinmeyen değer varsayılana düşer.
-  var SYNC_INTERVALS = { fast: 15000, normal: 45000, slow: 300000 };
-  function syncIntervalMs() {
-    var v = null;
-    try { v = window.nexusGetItem ? window.nexusGetItem("nexusSyncInterval") : localStorage.getItem("nexusSyncInterval"); } catch (e) { v = null; }
-    return SYNC_INTERVALS[v] || SYNC_INTERVALS.normal;
-  }
+  // Düzenli eşitleme aralığı sabittir (kullanıcıya ayar olarak sunulmaz).
+  var SYNC_INTERVAL_MS = 45000;
 
   function startAutoSync() {
     if (typeof document === "undefined" || !enabled() || !currentUserKey() || mfaBlocking()) return;
@@ -1485,12 +1480,12 @@
     }
     setTimeout(function () { run(true); startRealtime(); session().then(rememberMailLang); }, 1200);
     // Sayfa gizliyken ağ yoklaması yapılmaz (pil/veri): Realtime kanalı açık kalır,
-    // görünür olunca aşağıdaki visibilitychange hemen bir tur koşar. Aralık her turda yeniden okunur.
+    // görünür olunca aşağıdaki visibilitychange hemen bir tur koşar. 
     (function loop() {
       setTimeout(function () {
         if (!document.hidden) run(false);
         loop();
-      }, syncIntervalMs());
+      }, SYNC_INTERVAL_MS);
     })();
     document.addEventListener("visibilitychange", function () { run(false); startRealtime(); });
     window.addEventListener("online", function () {
@@ -1602,6 +1597,13 @@
     return /(access_token|error)=/.test(hash) ? hash : "";
   }
 
+  // Siri / Kestirmeler: nexus://run/<kayıt kimliği> uygulamayı açar ve o Tıkla ve Çalıştır kaydını ana ekranda
+  // çalıştırır (nexus-home.html?run=…, data.js runLinkedItem). Kimlik yalnız harf, rakam, "-" ve "_" olabilir.
+  function nativeRunTarget(url) {
+    var m = typeof url === "string" && /^nexus:\/\/run\/([A-Za-z0-9_-]{1,80})\/?(?:[?#].*)?$/i.exec(url);
+    return m ? m[1] : "";
+  }
+
   function initNativeAuth() {
     if (!isNativeApp() || window.__nexusNativeAuthBound) return;
     var App = null;
@@ -1611,7 +1613,20 @@
     if (!App || typeof App.addListener !== "function") return;
     window.__nexusNativeAuthBound = true;
 
-    function forward(url) {
+    function forward(url, fromLaunch) {
+      var run = nativeRunTarget(url);
+      if (run) {
+        // Soğuk açılışta getLaunchUrl her sayfada aynı adresi döndürür: aynı açılış bir kez işlenir.
+        // Uygulama açıkken gelen her kestirme (appUrlOpen) ise her seferinde çalışır.
+        if (fromLaunch) {
+          try {
+            if (sessionStorage.getItem("nexusRunLaunchHandled") === url) return;
+            sessionStorage.setItem("nexusRunLaunchHandled", url);
+          } catch (e) {}
+        }
+        location.replace("nexus-home.html?run=" + encodeURIComponent(run));
+        return;
+      }
       var hash = nativeAuthHash(url);
       if (!hash || window.__nexusNativeAuthForwarded) return;
       window.__nexusNativeAuthForwarded = true;
@@ -1623,7 +1638,7 @@
     try {
       App.addListener("appUrlOpen", function (event) { forward(event && event.url); });
       if (typeof App.getLaunchUrl === "function") {
-        App.getLaunchUrl().then(function (event) { forward(event && event.url); }).catch(function () {});
+        App.getLaunchUrl().then(function (event) { forward(event && event.url, true); }).catch(function () {});
       }
     } catch (e) {
       window.__nexusNativeAuthBound = false;
@@ -1771,7 +1786,7 @@
     stopRealtime: rtStop,
     realtimeActive: function () { return !!rt.socket && rt.socket.readyState === 1; },
     // test penetrasyonu: saf yardimcilara erisim
-    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState, syncIntervalMs: syncIntervalMs },
+    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
   };
 
   startAutoSync();

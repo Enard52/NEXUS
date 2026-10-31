@@ -38,6 +38,8 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
@@ -51,61 +53,7 @@
 <!-- END: Header -->
 <!-- BEGIN: MainContent -->
 <main class="flex-grow px-5 pt-4 pb-10">
-<p class="text-sm text-slate-500 mb-5">Bu hizmet bağlantıları henüz kullanılabilir değil. Üçüncü taraf cihazlar için Entegrasyonlar'dan Home Assistant'ı kullanabilirsin.</p>
-<section class="space-y-3" data-purpose="services-list">
-<!-- Sesli Asistanlar -->
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
-<div class="flex items-center gap-4 min-w-0">
-<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
-<i class="w-6 h-6" data-lucide="mic"></i>
-</div>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">Sesli Asistan</h2>
-<p class="text-xs text-slate-400 mt-0.5">Sesli komutlarla kontrol</p>
-</div>
-</div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
-</article>
-<!-- Akıllı TV -->
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
-<div class="flex items-center gap-4 min-w-0">
-<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
-<i class="w-6 h-6" data-lucide="tv"></i>
-</div>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">Akıllı TV</h2>
-<p class="text-xs text-slate-400 mt-0.5">Ekranda bildirim ve kontrol</p>
-</div>
-</div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
-</article>
-<!-- Akıllı Saat -->
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
-<div class="flex items-center gap-4 min-w-0">
-<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
-<i class="w-6 h-6" data-lucide="watch"></i>
-</div>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">Akıllı Saat</h2>
-<p class="text-xs text-slate-400 mt-0.5">Bileğinden hızlı kontrol</p>
-</div>
-</div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
-</article>
-<!-- Müzik Servisi -->
-<article class="bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3">
-<div class="flex items-center gap-4 min-w-0">
-<div class="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0">
-<i class="w-6 h-6" data-lucide="music"></i>
-</div>
-<div class="min-w-0">
-<h2 class="font-bold leading-tight">Müzik Servisi</h2>
-<p class="text-xs text-slate-400 mt-0.5">Hoparlörlerde müzik çal</p>
-</div>
-</div>
-<button class="connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-[#4C7DFF] text-white" onclick="toggleConnect(this)">Bağla</button>
-</article>
-</section>
+<div id="services-root" data-purpose="services-list"></div>
 <!-- Feedback shortcut -->
 <a class="nx-tap-t nx-tap-b flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6" data-purpose="feedback-link" href="nexus-feedback.html">
 <i class="w-4 h-4" data-lucide="message-circle"></i>Bağlantıda sorun mu var? Geri bildirim gönder
@@ -114,19 +62,124 @@
 <!-- END: MainContent -->
 <script src="js/lucide.js"></script>
 <script data-purpose="service-interactions">
-    lucide.createIcons();
-    // Bu hizmetler için gerçek bir bağlantı henüz yok: düğmeler "Bağlı" gibi sahte bir sonuç göstermez,
-    // dürüstçe "Yakında" der. (Eski sürümde yerel olarak kaydedilmiş sahte "bağlı" durumu temizlenir.)
+    // Hiçbir hizmet "bağlıymış" gibi gösterilmez: durum, gerçek eklenmiş cihazlardan ve bu uygulamanın
+    // gerçek yeteneklerinden (nexusLan) okunur. Çalışmayan hizmetler listeye hiç konmaz.
+    // Eski sürümde yerel olarak kaydedilmiş sahte "bağlı" durumu temizlenir.
     try { nexusSetItem('nexusConnectedServices', '[]'); } catch (e) {}
-    function toggleConnect() {}
-    (function () {
-      document.querySelectorAll('.connect-btn').forEach(function (btn) {
-        btn.textContent = 'Yakında';
-        btn.disabled = true;
-        btn.removeAttribute('onclick');
-        btn.className = 'connect-btn flex-shrink-0 px-4 py-2 rounded-full text-sm font-bold bg-slate-100 text-slate-500 cursor-not-allowed';
+
+    var CATEGORIES = [
+      {
+        title: ['Cihaz Bağlantıları', 'Device Connections'],
+        items: [
+          { icon: 'house', title: ['Home Assistant', 'Home Assistant'], desc: ['Kendi sunucundaki cihazlar', 'Devices on your own server'], protocol: 'homeassistant', need: 'lan', plus: true },
+          { icon: 'lightbulb', title: ['Philips Hue', 'Philips Hue'], desc: ['Hue köprüsüne bağlı ışıklar', 'Lights on a Hue bridge'], protocol: 'hue', need: 'lan' },
+          { icon: 'radio', title: ['MQTT / Zigbee2MQTT', 'MQTT / Zigbee2MQTT'], desc: ['MQTT sunucusundaki cihazlar', 'Devices on an MQTT broker'], protocol: 'mqtt', need: 'mqtt', plus: true },
+          { icon: 'plug-zap', title: ['Tuya Yerel', 'Tuya Local'], desc: ['Tuya cihazlarına yerel ağdan', 'Tuya devices over the local network'], protocol: 'tuya-local', need: 'tuya', plus: true },
+          { icon: 'camera', title: ['Tapo', 'Tapo'], desc: ['Tapo priz ve kameraları', 'Tapo plugs and cameras'], protocol: 'tapo', need: 'tapo', plus: true }
+        ]
+      },
+      {
+        title: ['AI Konnektörleri', 'AI Connectors'],
+        items: [
+          { icon: 'sparkles', title: ['NEXUS Asistan', 'NEXUS Assistant'], desc: ['Uygulama içinde sohbet et', 'Chat inside the app'], ready: true, href: 'nexus-chat.html', cta: ['Aç', 'Open'] }
+        ]
+      }
+    ];
+
+    function L(pair) { return nexusT(pair[0], pair[1]); }
+    function el(tag, cls, text) {
+      var node = document.createElement(tag);
+      if (cls) node.className = cls;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+    function paired() {
+      try { var d = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); return Array.isArray(d) ? d : []; } catch (e) { return []; }
+    }
+    function countFor(protocol) {
+      return paired().filter(function (d) { return d && d.protocol === protocol; }).length;
+    }
+    function hasPlus() {
+      try { return !!nexusGetItem('nexusPlusPlan'); } catch (e) { return false; }
+    }
+    function available(need) {
+      var lan = window.nexusLan;
+      if (!lan) return false;
+      var secure = lan.hasSecure ? lan.hasSecure() : {};
+      if (need === 'mqtt') return !!secure.mqtt;
+      if (need === 'tuya') return !!secure.tuya;
+      if (need === 'tapo') return !!secure.tapo;
+      return !!(lan.usingNativeTransport && lan.usingNativeTransport());
+    }
+
+    function pill(text, cls) {
+      return el('span', 'flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ' + cls, text);
+    }
+
+    function rowFor(item) {
+      var wrapTag = item.href ? 'a' : 'article';
+      var row = el(wrapTag, 'bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3' + (item.href ? ' active:bg-slate-50 transition-colors' : ''));
+      if (item.href) row.href = item.href;
+      var left = el('div', 'flex items-center gap-4 min-w-0');
+      var ic = el('div', 'w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 flex-shrink-0');
+      var i = document.createElement('i');
+      i.className = 'w-6 h-6';
+      i.setAttribute('data-lucide', item.icon);
+      ic.appendChild(i);
+      var text = el('div', 'min-w-0');
+      text.appendChild(el('h2', 'font-bold leading-tight', L(item.title)));
+      var sub = L(item.desc);
+      var subColor = 'text-slate-400';
+      var badge;
+      if (item.ready) {
+        badge = pill(L(item.cta || ['Hazır', 'Ready']), 'bg-[#4C7DFF]/10 text-[#4C7DFF]');
+      } else {
+        var n = countFor(item.protocol);
+        if (n > 0) {
+          sub = nexusT(n + ' cihaz bağlı', n + ' device' + (n === 1 ? '' : 's') + ' connected');
+          subColor = 'text-emerald-600';
+          badge = pill(nexusT('Bağlı', 'Connected'), 'bg-emerald-50 text-emerald-600');
+        } else if (item.plus && !hasPlus()) {
+          sub = nexusT('Yeni cihaz eklemek NEXUS+ ile açılır.', 'Adding new devices needs NEXUS+.');
+          badge = pill('NEXUS+', 'bg-[#4C7DFF]/10 text-[#4C7DFF]');
+          row = rewrap(row, 'nexus-plus.html');
+        } else if (available(item.need)) {
+          sub = nexusT('Henüz bağlı cihaz yok. Cihaz Ekle ağını tarayınca bulur.', 'No connected devices yet. Add Device finds them while scanning your network.');
+          badge = pill(nexusT('Ekle', 'Add'), 'bg-[#4C7DFF]/10 text-[#4C7DFF]');
+          row = rewrap(row, 'nexus-pair.html');
+        } else {
+          sub = nexusT('Bu uygulamada kullanılamıyor; masaüstü ya da mobil uygulama gerekir.', 'Not available here; the desktop or mobile app is required.');
+          badge = pill(nexusT('Kullanılamıyor', 'Unavailable'), 'bg-amber-50 text-amber-700');
+        }
+      }
+      text.appendChild(el('p', 'text-xs mt-0.5 ' + subColor, sub));
+      left.appendChild(ic);
+      left.appendChild(text);
+      row.appendChild(left);
+      row.appendChild(badge);
+      return row;
+    }
+
+    // Bağlantılı olmayan bir <article> satırını bağlantıya çevirir (aynı sınıflar, aynı içerik sırası).
+    function rewrap(row, href) {
+      var a = el('a', row.className + ' active:bg-slate-50 transition-colors');
+      a.href = href;
+      return a;
+    }
+
+    function render() {
+      var root = document.getElementById('services-root');
+      root.innerHTML = '';
+      CATEGORIES.forEach(function (cat) {
+        root.appendChild(el('h3', 'text-lg font-bold mt-6 mb-3', L(cat.title)));
+        var list = el('section', 'space-y-3');
+        cat.items.forEach(function (item) { list.appendChild(rowFor(item)); });
+        root.appendChild(list);
       });
-    })();
+      lucide.createIcons();
+    }
+
+    render();
+    window.addEventListener('pageshow', render);
   </script>
 </body></html>
-

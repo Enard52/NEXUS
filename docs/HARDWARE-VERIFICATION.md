@@ -6,6 +6,13 @@ Sürüm notlarına ve commit mesajına aynen taşınacak satır:
 > Paket biçimleri yayımlanmış belgelere (tinytuya, python-kasa) göre yazıldı ve `packages/web/src/lan-secure.test.ts` içinde
 > kendi içinde sınanıyor; bu test donanım doğrulaması değildir.
 
+Cihaz Ekle'deki şifreli cihaz adayı taraması (Tuya 6668 / MQTT 1883 kapısı açık adresleri listeler, hiçbir veri göndermez;
+`secureScan` / `secureProbe`) da gerçek ağda denenmedi; `packages/web/src/lan-secure-scan.test.ts` sahte köprüyle sınar.
+
+Siri kestirmesi (`nexus://run/<kimlik>`, iOS Kestirmeler "URL'leri Aç" → `cloud-sync.js` → `nexus-home.html?run=`)
+gerçek iPhone'da denenmedi; yönlendirme `packages/web/src/cloud-sync.test.ts`, çalıştırma `run-item.test.ts` ile sınanır.
+Apple Watch'tan doğrudan çalıştırma desteklenmiyor (ayrı bir watchOS uygulaması / App Intents derlemesi gerekir).
+
 Doğrulama bekleyen bağlayıcılar: `tuya-local`, `tapo`. Gerçek bir cihaz eşleştirilip komut/durum okuması
 başarılı olduğunda bu dosya güncellenir.
 

@@ -1,0 +1,213 @@
+<!doctype html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.whop.com https://*.whop.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http:; font-src 'self' data:; connect-src 'self' data: blob: https: http: ws: wss:; media-src 'self' data: blob: https: http:; frame-src 'self' https://*.whop.com https://js.whop.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.whop.com"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>NEXUS — Siparişlerim</title>
+    <link href="css/tailwind.css" rel="stylesheet" />
+    <link href="css/nexus-ui.css" rel="stylesheet" />
+    <link href="fonts/inter/inter.css" rel="stylesheet" />
+
+    <style data-purpose="custom-typography">
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+    <style data-purpose="custom-layout">
+      .bg-gradient-custom {
+        background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%);
+      }
+      .menu-container-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      }
+    </style>
+    <style>
+      body {
+        min-height: 100dvh;
+      }
+    </style>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="cloud-config.js"></script>
+    <script src="cloud-sync.js"></script>
+    <script src="data.js"></script>
+    <script src="ai-fab.js"></script>
+  </head>
+  <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
+    <!-- BEGIN: Header -->
+    <header class="pt-14 pb-4 px-5 flex items-center relative" data-purpose="page-header">
+      <a
+        aria-label="Geri"
+        class="p-1 -ml-1"
+        href="#"
+        onclick="
+          event.preventDefault();
+          if (history.length > 1) history.back();
+          else location.href = 'nexus-profile.html';
+        "
+      >
+        <i class="w-7 h-7 text-slate-700" data-lucide="chevron-left"></i>
+      </a>
+      <h1
+        class="text-lg font-bold tracking-tight whitespace-nowrap absolute left-1/2 -translate-x-1/2"
+      >
+        Siparişlerim
+      </h1>
+    </header>
+    <!-- END: Header -->
+    <!-- BEGIN: MainContent -->
+    <main class="flex-grow px-5 pt-4 pb-10">
+      <!-- Abonelik özeti: yalnız gerçek kayıt varsa görünür -->
+      <section
+        id="orders-plan"
+        class="hidden bg-white rounded-3xl menu-container-shadow p-5 mb-5"
+        data-purpose="plan-summary"
+      >
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Abonelik</p>
+        <p id="orders-plan-title" class="text-lg font-bold mt-1"></p>
+        <p id="orders-plan-note" class="text-sm text-slate-500 mt-1"></p>
+        <a
+          class="inline-block mt-3 text-sm font-bold text-[#4C7DFF]"
+          href="nexus-billing.html"
+          >Faturalandırmayı yönet</a
+        >
+      </section>
+      <h3 class="text-lg font-bold mb-3">Ödemeler</h3>
+      <section id="orders-list" class="space-y-3" data-purpose="orders-list" aria-live="polite"></section>
+      <p id="orders-status" class="text-sm text-slate-500 text-center mt-4"></p>
+      <!-- Feedback shortcut -->
+      <a
+        class="nx-tap-t nx-tap-b flex items-center justify-center gap-2 text-sm font-medium text-slate-400 mt-6"
+        data-purpose="feedback-link"
+        href="nexus-feedback.html"
+      >
+        <i class="w-4 h-4" data-lucide="message-circle"></i>Siparişle ilgili sorun mu var? Geri bildirim gönder
+      </a>
+    </main>
+    <!-- END: MainContent -->
+    <script src="js/lucide.js"></script>
+    <script data-purpose="orders-render">
+      // Siparişler yalnızca sunucudaki gerçek ödeme kayıtlarından (Whop, whop-account işlevi) gelir.
+      // Kayıt yoksa ya da sunucuya ulaşılamıyorsa dürüstçe söylenir; örnek/uydurma satır gösterilmez.
+      lucide.createIcons();
+      (function () {
+        var list = document.getElementById("orders-list");
+        var status = document.getElementById("orders-status");
+
+        function el(tag, cls, text) {
+          var node = document.createElement(tag);
+          if (cls) node.className = cls;
+          if (text != null) node.textContent = text;
+          return node;
+        }
+        function empty(icon, title, text, href, label) {
+          list.innerHTML = "";
+          var box = el("div", "nx-empty");
+          var ic = el("div", "nx-empty__icon");
+          ic.setAttribute("aria-hidden", "true");
+          var i = document.createElement("i");
+          i.setAttribute("data-lucide", icon);
+          ic.appendChild(i);
+          box.appendChild(ic);
+          box.appendChild(el("p", "nx-empty__title", title));
+          box.appendChild(el("p", "nx-empty__text", text));
+          if (href) {
+            var a = el("a", "inline-block mt-3 text-sm font-bold text-[#4C7DFF]", label);
+            a.href = href;
+            box.appendChild(a);
+          }
+          list.appendChild(box);
+          lucide.createIcons();
+        }
+        function fmtDate(iso) {
+          var d = iso ? new Date(iso) : null;
+          if (!d || isNaN(d.getTime())) return "";
+          return d.toLocaleDateString(window.nexusLocale || "tr-TR", { year: "numeric", month: "long", day: "numeric" });
+        }
+        function statusText(raw) {
+          var s = String(raw || "").toLowerCase();
+          if (s === "paid" || s === "succeeded" || s === "completed") return nexusT("Ödendi", "Paid");
+          if (s === "failed" || s === "past_due" || s === "uncollectible") return nexusT("Başarısız", "Failed");
+          if (s === "refunded") return nexusT("İade edildi", "Refunded");
+          if (s === "pending" || s === "open") return nexusT("Bekliyor", "Pending");
+          return raw ? String(raw) : "";
+        }
+
+        function renderPlan() {
+          var plan = nexusGetItem("nexusPlusPlan");
+          if (plan !== "Yıllık" && plan !== "Aylık") return;
+          var box = document.getElementById("orders-plan");
+          document.getElementById("orders-plan-title").textContent =
+            "NEXUS+ " + (plan === "Yıllık" ? nexusT("Yıllık", "Yearly") : nexusT("Aylık", "Monthly"));
+          var end = fmtDate(nexusGetItem("nexusPlusEnd"));
+          var note = nexusGetItem("nexusPlusCancel") === "1"
+            ? (end ? nexusT("Dönem sonunda sona erecek: " + end, "Ends at period end: " + end) : nexusT("Dönem sonunda sona erecek.", "Ends at period end."))
+            : (end ? nexusT("Sonraki yenileme: " + end, "Next renewal: " + end) : nexusT("Aboneliğin aktif.", "Your subscription is active."));
+          document.getElementById("orders-plan-note").textContent = note;
+          box.classList.remove("hidden");
+        }
+
+        function renderPayments(payments) {
+          var rows = Array.isArray(payments) ? payments.filter(function (p) { return p && (p.amount || p.status); }) : [];
+          if (!rows.length) {
+            empty(
+              "package",
+              nexusT("Henüz siparişin yok", "You have no orders yet"),
+              nexusT("NEXUS+ satın aldığında ödemelerin burada listelenir.", "When you buy NEXUS+, your payments are listed here."),
+              "nexus-plus.html",
+              nexusT("NEXUS+ planlarını gör", "See NEXUS+ plans")
+            );
+            return;
+          }
+          list.innerHTML = "";
+          rows.forEach(function (p) {
+            var card = el("div", "bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3");
+            var left = el("div", "min-w-0");
+            left.appendChild(el("p", "font-bold leading-tight", "NEXUS+"));
+            var when = fmtDate(p.createdAt);
+            if (when) left.appendChild(el("p", "text-xs text-slate-400 mt-0.5", when));
+            var right = el("div", "text-right flex-shrink-0");
+            right.appendChild(el("p", "font-bold", [p.amount, p.currency].filter(Boolean).join(" ")));
+            var st = statusText(p.status);
+            if (st) right.appendChild(el("p", "text-xs text-slate-500 mt-0.5", st));
+            card.appendChild(left);
+            card.appendChild(right);
+            list.appendChild(card);
+          });
+        }
+
+        renderPlan();
+        var cloud = window.nexusCloud;
+        if (!cloud || !cloud.enabled || !cloud.enabled() || !cloud.billingAccount) {
+          empty("cloud-off", nexusT("Siparişler bulut hesabıyla görünür", "Orders need a cloud account"), nexusT("Ödeme kayıtları sunucuda tutulur. Bulut hesabınla giriş yapınca burada görünür.", "Payment records are kept on the server. They appear here once you sign in with your cloud account."), "nexus-account-security.html", nexusT("Hesap ve güvenlik", "Account and security"));
+          return;
+        }
+        status.textContent = nexusT("Ödemeler alınıyor…", "Loading payments…");
+        cloud.session().then(function (current) {
+          if (!current) {
+            status.textContent = "";
+            empty("log-in", nexusT("Önce bulut hesabınla giriş yap", "Sign in with your cloud account first"), nexusT("Ödeme kayıtlarını görmek için giriş gerekir.", "You need to sign in to see payment records."));
+            return null;
+          }
+          return cloud.billingAccount("status").then(function (data) {
+            status.textContent = "";
+            renderPayments(data && data.payments);
+          });
+        }).catch(function () {
+          status.textContent = "";
+          empty("wifi-off", nexusT("Siparişler alınamadı", "Could not load orders"), nexusT("Sunucuya ulaşılamadı. Bağlantını kontrol edip sayfayı yeniden aç.", "The server could not be reached. Check your connection and reopen the page."));
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -84,6 +84,7 @@
     "nexus-air-quality.html": "discover", "nexus-room-comfort.html": "discover", "nexus-movie-mode.html": "discover", "nexus-multi-video.html": "discover",
     "nexus-night-security.html": "discover", "nexus-ai-protect.html": "discover", "nexus-home-health.html": "discover",
     "nexus-user-info.html": "profile", "nexus-account-security.html": "profile", "nexus-menu.html": "profile",
+    "nexus-orders.html": "profile", "nexus-home-network.html": "profile",
     "nexus-feedback.html": "settings", "nexus-privacy-mode.html": "settings", "nexus-instant-notifications.html": "settings",
     "nexus-device-updates.html": "settings", "nexus-dnd.html": "settings", "nexus-logs.html": "settings", "nexus-services.html": "settings",
     "nexus-homekit.html": "settings", "nexus-siri-shortcuts.html": "settings", "nexus-carplay.html": "settings", "nexus-web.html": "settings",
@@ -180,7 +181,7 @@
             '<i data-lucide="' + it[3] + '"></i><span>' + esc(it[1]) + "</span></a>";
         }).join("");
       }).join("") + "</nav>" +
-      '<a href="nexus-chat.html" class="nx-side-ai' + (page === "nexus-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#3F6FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="nx-side-ai-txt"><b>NEXUS AI\'a sor</b><small>Sor · kontrol et</small></span><span class="nx-side-ai-dot" aria-hidden="true"></span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
+      '<a href="nexus-chat.html" class="nx-side-ai' + (page === "nexus-chat.html" ? " is-active" : "") + '"><span class="nx-side-ai-ico" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#3F6FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nx-side-ai-dot" aria-hidden="true"></span></span><span class="nx-side-ai-txt"><b>NEXUS AI\'a sor</b><small>Sor · kontrol et</small></span><svg class="nx-side-ai-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>' +
       '<div class="nx-side-foot">' +
       '<a href="nexus-profile.html" class="nx-side-user">' + avatarHtml + '<span class="min-w-0"><b>' + esc(name) + '</b><small>Profili görüntüle</small></span></a>' +
       '<button type="button" id="nx-side-upd" class="nx-side-upd" hidden></button>' +
@@ -191,6 +192,20 @@
     aside.className = "nx-side";
     aside.innerHTML = html;
     document.body.insertBefore(aside, document.body.firstChild);
+    // NEXUS AI kartındaki nokta gerçek bağlantıyı gösterir: çevrimiçiyken yeşil, internet yokken gri
+    // (o sırada yapay zekâ sohbeti yanıt veremez; cihaz komutları yine yerelde çalışır).
+    var aiCard = aside.querySelector(".nx-side-ai");
+    if (aiCard) {
+      var T = window.nexusT || function (tr) { return tr; };
+      var syncOnline = function () {
+        var on = navigator.onLine !== false;
+        aiCard.classList.toggle("is-offline", !on);
+        aiCard.title = on ? T("NEXUS AI hazır", "NEXUS AI is ready") : T("İnternet yok: yapay zekâ yanıt veremez, cihaz komutları çalışır", "Offline: AI replies are unavailable, device commands still work");
+      };
+      syncOnline();
+      window.addEventListener("online", syncOnline);
+      window.addEventListener("offline", syncOnline);
+    }
     // Menü sabit bir yüzeydir: bağlantı listesinin (nx-side-nav) kaydırma konumu
     // sayfa değişse de korunur. Menünün kendisi (aside) overflow:clip — hiçbir
     // şey onu kaydıramaz; eskiden aside üzerinden saklanan konum, odak kaydırmalarıyla

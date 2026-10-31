@@ -101,6 +101,7 @@
               <li>Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulaması aç.</li>
               <li>Aşağıdaki kodu okut ya da anahtarı elle gir.</li>
               <li>Uygulamadaki 6 haneli kodu yaz ve Doğrula'ya dokun.</li>
+              <li>Uygulamada eski bir NEXUS kaydı varsa sil; her kurulumda yeni anahtar üretilir, yalnız en son okuttuğunun kodu geçerlidir.</li>
             </ol>
             <img id="two-factor-qr" alt="Kurulum kodu" class="hidden mx-auto w-48 h-48 bg-white rounded-xl"/>
             <p id="two-factor-secret" class="hidden text-xs text-center text-slate-600 leading-relaxed">
@@ -254,7 +255,7 @@
     function twoFactorErrorText(error) {
       var text = String((error && error.message) || '');
       // API'dan gelen İngilizce hata metinleri + cloud-sync iç hataları:
-      if (/invalid|expired|challenge|otp|totp/i.test(text)) return 'Kod hatalı ya da süresi geçti.';
+      if (/invalid|expired|challenge|otp|totp/i.test(text)) return 'Kod hatalı ya da süresi geçti. Telefonunun saati otomatik ayarlı değilse kodlar tutmaz; saati otomatiğe alıp yenilenen kodu bir kez dene.';
       if (/bulut oturumu yok|no session|no cloud/i.test(text)) return 'Önce bulut hesabınla giriş yap.';
       if (/doğrulama ayarı yok|no factor/i.test(text)) return 'Doğrulama faktörü bulunamadı.';
       // Bilinmeyen ham metin varsa nexusTr ile İngilizce'ye çevir (dil EN ise),

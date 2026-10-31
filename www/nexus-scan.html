@@ -108,7 +108,7 @@
               <span class="text-sm font-semibold text-center leading-tight">Kurulum Kodu Girin</span>
             </a>
 
-            <button class="flex flex-col items-center gap-3 text-white/90 disabled:opacity-50" id="torch-button" type="button" onclick="toggleTorch(this)">
+            <button class="flex flex-col items-center gap-3 text-white/90 disabled:opacity-50" id="torch-button" type="button" onclick="toggleTorch(this)" disabled aria-hidden="true" style="visibility:hidden">
               <span class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24">
                   <path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12v4zM6 6h12M12 13v1" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -271,6 +271,8 @@
       button.setAttribute('aria-hidden', 'true');
     }
 
+    // Fener düğmesi HTML'de gizli başlar; yalnızca kamera izi gerçekten fener desteği bildirirse görünür
+    // (önceden varsayılan görünür olduğundan destek yoksa ekranda anlık görünüp kayboluyordu).
     function updateTorchAvailability() {
       const button = document.getElementById('torch-button');
       const text = document.getElementById('torch-label');

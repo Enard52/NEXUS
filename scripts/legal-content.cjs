@@ -4,7 +4,7 @@
 // Not: Bu metinler bir avukat tarafından hazırlanmamıştır; satış hacmi büyürse hukuki inceleme önerilir.
 
 const EMAIL = "nexus.smarthome.app@gmail.com";
-const UPDATED = { tr: "Son güncelleme: 27 Ekim 2026", en: "Last updated: 27 October 2026" };
+const UPDATED = { tr: "Son güncelleme: 31 Ekim 2026", en: "Last updated: 31 October 2026" };
 const OPERATOR = { tr: "NEXUS", en: "NEXUS" };
 
 const privacy = {
@@ -250,6 +250,7 @@ const terms = {
       {
         h: "NEXUS+ aboneliği",
         ul: [
+          "Kapsam: NEXUS+ ayda 2.000 NEXUS AI kredisi verir ve gelişmiş bağlantılarla (Home Assistant, MQTT/Zigbee2MQTT, yerel Tuya, Tapo) yeni cihaz eklemeyi açar. Abonelik sona erdiğinde daha önce eklediğiniz cihazlar çalışmaya devam eder; bu bağlantılarla yeni cihaz eklemek için yeniden NEXUS+ gerekir.",
           "Planlar: Aylık ve Yıllık. Türkiye için TL, diğer ülkeler için USD fiyatlı planlar sunulur (şu an Aylık ₺499,99 / $11.99, Yıllık ₺3.999,99 / $89.99). Güncel fiyatlar ödeme sayfasında gösterilir; vergiler ödeme sayfasında eklenebilir. Yıllık planda 7 gün, aylık planda 3 gün ücretsiz deneme sunulur.",
           "Ödemeler Whop üzerinden alınır. Abonelik, siz iptal edene kadar her dönem otomatik yenilenir; deneme süresi bitince seçtiğiniz plan ücreti tahsil edilir.",
           "Aboneliğinizi dilediğiniz an uygulamadaki Faturalandırma sayfasından veya bu sitedeki hesabınızdan iptal edebilirsiniz. İptal, içinde bulunduğunuz dönemin sonunda geçerli olur.",
@@ -330,6 +331,7 @@ const terms = {
       {
         h: "NEXUS+ subscription",
         ul: [
+          "Scope: NEXUS+ gives 2,000 NEXUS AI credits per month and unlocks adding new devices through the advanced connections (Home Assistant, MQTT/Zigbee2MQTT, local Tuya, Tapo). When the subscription ends, devices you already added keep working; adding new devices through these connections needs NEXUS+ again.",
           "Plans: Monthly and Yearly, priced in TRY for Türkiye and in USD elsewhere (currently Monthly ₺499.99 / $11.99, Yearly ₺3,999.99 / $89.99). Current prices are shown at checkout; taxes may be added at checkout. The yearly plan includes a 7-day free trial and the monthly plan a 3-day free trial.",
           "Payments are taken through Whop. The subscription renews automatically each period until you cancel; when the trial ends your chosen plan's price is charged.",
           "You can cancel at any time from Billing in the app or from your account on this website. Cancellation takes effect at the end of the current period.",

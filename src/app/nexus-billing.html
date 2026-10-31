@@ -118,10 +118,17 @@
 </div>
 </footer>
 <!-- END: InfoFooter -->
-<section class="hidden" id="pay-section" data-purpose="payment-history">
-<h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2 px-1">Ödemeler</h2>
-<ul class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm divide-y divide-slate-100 dark:divide-slate-800" id="pay-list"></ul>
-</section>
+<a class="mt-4 w-full flex items-center justify-between bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-sm active:scale-[0.98] transition-transform" data-purpose="payment-history" href="nexus-orders.html">
+<div class="flex items-center space-x-4">
+<div class="text-emerald-600 bg-emerald-500/10 p-3.5 rounded-2xl">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg>
+</div>
+<span class="text-[17px] font-semibold text-slate-800 dark:text-slate-100">Ödeme geçmişi (Siparişlerim)</span>
+</div>
+<svg class="h-6 w-6 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
 <!-- BEGIN: Cancel Confirmation Sheet -->
 <div class="hidden fixed inset-0 bg-black/60 z-50 flex items-end" id="cancel-sheet" onclick="closeCancelConfirm()">
 <div class="bg-white dark:bg-slate-900 w-full rounded-t-3xl p-6 pb-10" onclick="event.stopPropagation()">
@@ -156,9 +163,8 @@
     }
     // Diyaloğu yerel kayıtla anında aç; sunucudan taze durum arka planda gelir.
     if (window.nexusCloud && window.nexusCloud.billingAccount) {
-      window.nexusCloud.billingAccount("status").then(function (d) {
+      window.nexusCloud.billingAccount("status").then(function () {
         renderBilling();
-        renderPayments(d && d.payments);
       }).catch(function () { /* çevrimdışı: yerel kayıt yeterli */ });
     }
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -241,31 +247,12 @@
     document.getElementById("cancel-sub-btn").classList.toggle("hidden", !plan || cancelling);
   }
 
-  function renderPayments(payments) {
-    const section = document.getElementById("pay-section");
-    const list = document.getElementById("pay-list");
-    if (!section || !list) return;
-    list.innerHTML = "";
-    const rows = Array.isArray(payments) ? payments.filter(function (p) { return p && (p.amount || p.status); }) : [];
-    if (!rows.length) {
-      section.classList.add("hidden");
-      return;
-    }
-    rows.forEach(function (p) {
-      const li = document.createElement("li");
-      li.className = "px-5 py-3 text-[15px] text-slate-700 dark:text-slate-200";
-      li.textContent = [p.amount, p.currency, p.status].filter(Boolean).join(" · ");
-      list.appendChild(li);
-    });
-    section.classList.remove("hidden");
-  }
-
+  // Ödeme geçmişi artık Siparişlerim sayfasında (nexus-orders.html).
   document.addEventListener("DOMContentLoaded", () => {
     renderBilling();
     if (window.nexusCloud && window.nexusCloud.billingAccount) {
-      window.nexusCloud.billingAccount("status").then(function (d) {
+      window.nexusCloud.billingAccount("status").then(function () {
         renderBilling();
-        renderPayments(d && d.payments);
       }).catch(function () {
         if (window.nexusCloud.pullEntitlement) window.nexusCloud.pullEntitlement().then(renderBilling).catch(function () {});
       });
@@ -286,9 +273,8 @@
       document.getElementById("sub-renewal").textContent = "İptal için önce hesabınla giriş yapmalısın.";
       return;
     }
-    window.nexusCloud.billingAccount("cancel").then(function (d) {
+    window.nexusCloud.billingAccount("cancel").then(function () {
       renderBilling();
-      renderPayments(d && d.payments);
     }).catch(function () {
       document.getElementById("sub-renewal").textContent = "İptal şu an tamamlanamadı. Biraz sonra yeniden dene.";
     });

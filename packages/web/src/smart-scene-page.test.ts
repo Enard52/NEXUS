@@ -322,22 +322,17 @@ describe("smart-scene-page: footer CTA with devices", () => {
     expect(t.nav.href).toBe("nexus-scenes.html");
   });
 
-  it("labels the CTA 'no compatible device' when the scene would affect nothing, and shows a dialog instead of running", () => {
+  it("hides the run CTA entirely when the scene would affect nothing (no useless button)", () => {
     const { footer, cta } = footerWith();
     const t = load({
       footer,
       store: devices([{ name: "Priz" }]),
       engine: { sceneAffected: () => 0 },
     });
-    expect(cta.textContent).toBe("Uyumlu cihaz yok");
-    cta.fire("click");
-    expect(t.dialogs).toHaveLength(1);
-    expect(t.dialogs[0].title).toBe("Uyumlu cihaz yok");
+    expect(footer.classes.has("hidden")).toBe(true);
+    expect(cta.getAttribute("data-no-compatible")).toBe("1");
     expect(t.calls.runScene).toEqual([]);
     expect(events(t)).toEqual([]);
-    // dialog action leads to pairing
-    t.dialogs[0].primary.onClick();
-    expect(t.nav.href).toBe("nexus-pair.html");
   });
 
   it("keeps the normal label when the scene affects at least one device", () => {
@@ -437,12 +432,11 @@ describe("smart-scene-page: in-page action buttons", () => {
     return { main, parent };
   }
 
-  it("with no device, a 'Çalıştır' button is relabelled and clicking it asks for a device (dialog), not a run", () => {
+  it("with no device, a 'Çalıştır' button is not shown at all and never runs", () => {
     const run = el("BUTTON", "Çalıştır");
     const { main } = mainWith([run]);
     const t = load({ main, buttons: [run] });
-    expect(run.textContent).toBe("Önce cihaz ekle");
-    // label no longer matches the run regex, so a click is just logged as an action
+    expect(run.classes.has("hidden")).toBe(true);
     run.fire("click");
     expect(t.calls.runScene).toEqual([]);
   });
@@ -472,7 +466,7 @@ describe("smart-scene-page: in-page action buttons", () => {
     const run = el("BUTTON", "Run");
     const { main } = mainWith([run]);
     const t = load({ main, buttons: [run], store: { nexusPairedDevices: "{not json" } });
-    expect(run.textContent).toBe("Önce cihaz ekle");
+    expect(run.classes.has("hidden")).toBe(true);
     expect(t.calls.runScene).toEqual([]);
   });
 

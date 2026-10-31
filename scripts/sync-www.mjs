@@ -21,6 +21,7 @@ export const APP_JS = [
   "lan-connectors.js",
   "integrations-page.js",
   "pair-page.js",
+  "skills-page.js",
   "household-page.js",
   "family-chat-page.js",
   "lan-mqtt.js",
@@ -51,6 +52,7 @@ export const APP_JS = [
   "settings-diagnostics.js",
   "security-mode.js",
   "location-trigger.js",
+  "energy-strategies.js",
 ];
 export const APP_FILES = ["index.html", "logos.json", "logo.png", "siri-logo.png", "favicon.ico", "sw.js", "firebase-messaging-sw.js", "manifest.webmanifest", "automation-worker.html"];
 export const APP_DIRS = ["css", "fonts", "js", "assets", "icons", "leaflet"];

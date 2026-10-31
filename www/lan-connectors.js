@@ -3321,6 +3321,100 @@
     });
   }
 
+  // --- Şifreli / kimlik gerektiren cihazlar için ADAY adresler (Tuya 6668, MQTT 1883) -----------------------
+  // Bu protokoller yerel anahtar ya da broker bilgisi olmadan konuşmaz; bu yüzden identify() ile TANINAMAZ.
+  // Yalnızca TCP kapısının açık olması ADAY sayılır: cihazın gerçekten Tuya / MQTT olduğu, anahtar ya da broker bilgisi
+  // girilip doğrulanınca anlaşılır (tuya.verify / mqtt.listDevices). Yalnızca masaüstü köprülerinde çalışır.
+  // GERÇEK donanımla doğrulanmadı (docs/HARDWARE-VERIFICATION.md); davranış sahte köprüyle test edilir.
+  var SECURE_CANDIDATES = {
+    tuya: { port: 6668, bridge: function () { return tcpSessionBridge(); } },
+    mqtt: { port: 1883, bridge: function () { return mqttBridge(); } },
+  };
+  function secureKindsAvailable() {
+    return Object.keys(SECURE_CANDIDATES).filter(function (kind) {
+      return !!SECURE_CANDIDATES[kind].bridge();
+    });
+  }
+  // Adreste ilgili TCP kapısı açık mı? Bağlantı hemen kapatılır; hiçbir veri gönderilmez.
+  function secureProbe(kind, host) {
+    var spec = SECURE_CANDIDATES[kind];
+    var bridge = spec && spec.bridge();
+    if (!bridge || lanAddressError(host)) return Promise.resolve(false);
+    return Promise.resolve()
+      .then(function () {
+        return bridge.open({ host: host, port: spec.port, timeoutMs: 900 });
+      })
+      .then(function (id) {
+        try {
+          Promise.resolve(bridge.close(id)).catch(function () {});
+        } catch (e) {}
+        return true;
+      })
+      .catch(function () {
+        return false;
+      });
+  }
+  // Cihazın kendi alt ağını (masaüstü ya da WebRTC) tarar. options: onFound({kind, host, port}), onProgress(host),
+  // shouldStop(), concurrency. Sonuç: aday listesi. Köprü yoksa boş döner (hiçbir şey uydurulmaz).
+  function secureScan(options) {
+    var opts = options || {};
+    var kinds = secureKindsAvailable();
+    if (!kinds.length) return Promise.resolve([]);
+    return Promise.all([
+      guessSubnet().catch(function () {
+        return null;
+      }),
+      rtcPrefix(),
+    ]).then(function (known) {
+      var prefix = null;
+      for (var i = 0; i < known.length && !prefix; i++) prefix = known[i] && normalizeSubnetBase(known[i]);
+      if (!prefix) return [];
+      // Köprü eşzamanlı oturum sınırları küçüktür (MQTT 4, Tuya 8): düşük eşzamanlılık yanlış "kapalı" sonucunu önler.
+      var concurrency = opts.concurrency || 3;
+      var found = [];
+      var nextHost = 1;
+      var active = 0;
+      return new Promise(function (resolvePromise) {
+        var settled = false;
+        function finishIfDone() {
+          if (!settled && nextHost > 254 && active === 0) {
+            settled = true;
+            resolvePromise(found);
+          }
+        }
+        function pump() {
+          while (active < concurrency && nextHost <= 254) {
+            if (opts.shouldStop && opts.shouldStop()) {
+              nextHost = 255;
+              break;
+            }
+            (function (host) {
+              active += 1;
+              Promise.all(
+                kinds.map(function (kind) {
+                  return secureProbe(kind, host).then(function (open) {
+                    if (!open) return;
+                    var item = { kind: kind, host: host, port: SECURE_CANDIDATES[kind].port };
+                    found.push(item);
+                    if (opts.onFound) opts.onFound(item, found.length);
+                  });
+                }),
+              ).then(function () {
+                  active -= 1;
+                  if (opts.onProgress) opts.onProgress(host);
+                  finishIfDone();
+                  pump();
+                });
+            })(prefix + "." + nextHost);
+            nextHost += 1;
+          }
+        }
+        pump();
+        finishIfDone();
+      });
+    });
+  }
+
   // --- Uzak erişim adresi (isteğe bağlı) ---------------------------------------------------------------
   // Evin dışındayken (VPN / port yönlendirme) bir cihaza ya da hub'a (Hue köprüsü, Home Assistant) başka bir
   // adresten ulaşılıyorsa, yerel adres yanıt vermediğinde BU adres denenir. Eşleme yalnızca bu cihazda
@@ -3395,6 +3489,8 @@
     identify: identify,
     scanSubnet: scanSubnet,
     autoScan: autoScan,
+    secureScan: secureScan,
+    secureProbe: secureProbe,
     ssdpHosts: ssdpHosts,
     guessSubnet: guessSubnet,
     normalizeSubnetBase: normalizeSubnetBase,

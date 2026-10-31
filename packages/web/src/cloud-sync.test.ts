@@ -110,21 +110,10 @@ describe("bulut yapılandırması yokken yerel mod", () => {
   });
 });
 
-describe("bulut eşitleme sıklığı (nexusSyncInterval)", () => {
-  it("ayar yoksa ya da bilinmiyorsa varsayılan 45 sn kullanılır", () => {
-    const { cloud, win } = load({ config: null, user: "u1" });
-    expect(cloud._internal.syncIntervalMs()).toBe(45000);
-    (win.nexusSetItem as (k: string, v: string) => void)("nexusSyncInterval", "çok-hızlı");
-    expect(cloud._internal.syncIntervalMs()).toBe(45000);
-  });
-
-  it("kullanıcının seçtiği sıklık aktif kullanıcının anahtarından okunur", () => {
-    const { cloud, win } = load({ config: null, user: "u1" });
-    const set = win.nexusSetItem as (k: string, v: string) => void;
-    set("nexusSyncInterval", "fast");
-    expect(cloud._internal.syncIntervalMs()).toBe(15000);
-    set("nexusSyncInterval", "slow");
-    expect(cloud._internal.syncIntervalMs()).toBe(300000);
+describe("bulut eşitleme aralığı", () => {
+  it("aralık sabit 45 sn'dir ve kullanıcı ayarından okunmaz", () => {
+    expect(CLOUD_SYNC).toMatch(/var SYNC_INTERVAL_MS = 45000;/);
+    expect(CLOUD_SYNC).not.toMatch(/nexusSyncInterval/);
   });
 
   it("düzenli eşitleme gizli sayfada ağ yoklaması yapmaz", () => {
@@ -805,6 +794,37 @@ describe("hesap akışları (kayıt, şifre sıfırlama, şifre değiştirme)", 
       expect(replace).toHaveBeenCalledWith(
         "nexus-login.html?oauth=1#access_token=tok&refresh_token=ref",
       );
+    } finally {
+      delete (globalThis as Record<string, unknown>).location;
+    }
+  });
+
+  it("Siri kestirmesi: nexus://run/<kimlik> senaryoyu ana ekranda çalıştırmaya yönlendirir", () => {
+    const listeners: Record<string, (event: { url: string }) => void> = {};
+    const replace = vi.fn();
+    (globalThis as Record<string, unknown>).location = { replace, pathname: "/index.html" };
+    try {
+      load({
+        config: CONFIG,
+        native: true,
+        plugins: {
+          App: {
+            addListener: (name: string, fn: (event: { url: string }) => void) => {
+              listeners[name] = fn;
+              return Promise.resolve();
+            },
+            getLaunchUrl: vi.fn().mockResolvedValue(null),
+          },
+        },
+      });
+      listeners.appUrlOpen({ url: "nexus://run/custom-1730000000000" });
+      expect(replace).toHaveBeenCalledWith("nexus-home.html?run=custom-1730000000000");
+      // Uygulama açıkken aynı kestirme tekrar çalıştırılabilir
+      listeners.appUrlOpen({ url: "nexus://run/custom-1730000000000" });
+      expect(replace).toHaveBeenCalledTimes(2);
+      // Geçersiz kimlik yönlendirilmez
+      listeners.appUrlOpen({ url: "nexus://run/../nexus-login.html" });
+      expect(replace).toHaveBeenCalledTimes(2);
     } finally {
       delete (globalThis as Record<string, unknown>).location;
     }

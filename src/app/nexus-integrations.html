@@ -16,6 +16,20 @@
     ::-webkit-scrollbar { width: 0px; background: transparent; }
     #loading-overlay { display: none; }
     .manual-shell-divider { border-top: 1px solid rgba(226, 232, 240, 0.95); }
+    /* En altta titreme: liste sonunda taşan kaydırma (overscroll/lastik etkisi) sayfaya zincirleniyordu ve üstteki
+       buzlu cam (backdrop-filter) başlık + arama çubuğu her seferinde yeniden boyanıyordu. Taşma kaydırması
+       listelerde kapatıldı; başlık/arama çubuğu buzlu camsız, kendi katmanında (kaydıran içerik altlarına girmez). */
+    html, body { overscroll-behavior: none; }
+    #catalog-content, #catalog-rail { overscroll-behavior: contain; overflow-anchor: none; }
+    #int-header, .catalog-toolbar {
+      -webkit-backdrop-filter: none; backdrop-filter: none;
+      transform: translateZ(0); backface-visibility: hidden;
+    }
+    /* Masaüstünde (desktop.js) kökteki her öğeye yan boşluk (gutter) verilir; liste şeffaf main'in içinde kalır
+       ama başlık kutusunun beyaz zemini boşluğun altına da taşıp içerikten geniş görünüyordu. Zemin yalnızca
+       içerik kutusuna kırpılır, iç boşluk alt kutuya taşınır. */
+    html.nx-desk .catalog-toolbar { background-clip: content-box !important; }
+    html.nx-desk .catalog-toolbar > div { padding-left: 1rem; padding-right: 1rem; }
     .catalog-search-pill {
       background: #f8fafc;
       border: 1px solid rgba(226, 232, 240, 0.95);

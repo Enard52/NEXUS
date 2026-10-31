@@ -48,4 +48,4 @@ Helper scripts for building, verifying and releasing NEXUS. Run everything from 
 
 ## Other
 
-Remaining files (catalog generators such as `gen-catalog-code.mjs` / `translate-catalogs.mjs` with their data files, `nexus-ai-worker.js`, `*.ps1` setup helpers, CDP/Playwright inspection helpers) are maintainer tools run by hand; check the header comment of each before use. Several have no references yet and may be pruned in a later hygiene pass.
+Remaining files (catalog generators such as `gen-catalog-code.mjs` / `translate-catalogs.mjs` with their data files, `*.ps1` setup helpers, CDP/Playwright inspection helpers) are maintainer tools run by hand; check the header comment of each before use. Several have no references yet and may be pruned in a later hygiene pass.

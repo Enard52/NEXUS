@@ -97,10 +97,14 @@ function renderScan(scan) {
   var tone = { risk: 'text-rose-600 bg-rose-500/10', warn: 'text-amber-700 bg-amber-500/10', ok: 'text-emerald-700 bg-emerald-500/10' };
   var label = { risk: 'Risk', warn: 'Dikkat', ok: 'Tamam' };
   events.className = 'bg-white/90 backdrop-blur-xl border border-white/60 rounded-[1.6rem] p-2 text-left divide-y divide-slate-100';
+  var known = NX.readDevices();
   events.innerHTML = scan.findings.map(function (f) {
+    // Tarama kaydı yalnız sıra ve ad tutar; ad hâlâ aynı cihaza aitse görseli gösterilir
+    var dev = known[f.index] && known[f.index].name === f.name ? known[f.index] : null;
     return '<a href="nexus-device.html?i=' + f.index + '" class="flex items-center justify-between gap-3 p-3 min-h-[52px]">' +
+      '<span class="min-w-0 flex items-center gap-3">' + (dev ? NX.thumbHtml(dev, 'w-10 h-10 object-contain shrink-0') : '') +
       '<span class="min-w-0"><span class="block text-sm font-bold text-slate-900 truncate">' + esc(f.name) + '</span>' +
-      '<span class="block text-[12px] font-medium text-slate-500">' + esc(f.text) + '</span></span>' +
+      '<span class="block text-[12px] font-medium text-slate-500">' + esc(f.text) + '</span></span></span>' +
       '<span class="shrink-0 text-[11px] font-bold px-2 py-1 rounded-lg ' + tone[f.level] + '">' + label[f.level] + '</span></a>';
   }).join('');
 }

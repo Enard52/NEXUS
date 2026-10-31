@@ -181,7 +181,7 @@ window.addEventListener('error', function(e) {
 
       // 1. Açık olan alt çekmece, modal veya dialogları kapat
       var openOverlay = document.querySelector(
-        '.dialog-overlay:not(.hidden), .sheet.open, .qa-sheet.open, #loading-overlay[style*="flex"], .modal:not(.hidden)'
+        '.dialog-overlay:not(.hidden), .sheet.open, .qa-sheet.open, #loading-overlay[style*="flex"], .modal:not(.hidden), .qs-screen.is-open, .nx-full-wrap:not(.hidden)'
       );
       if (openOverlay) {
         var closeBtn = openOverlay.querySelector('[onclick*="close"], [onclick*="hide"], [onclick*="toggle"], button');
@@ -922,7 +922,7 @@ window.nexusCopy = function (text) {
 // Function; varsayılan AÇIK, otomatik. Kişisel veri yok (sayfa, sürüm, platform, mesaj). Ayarlardan
 // kapatılabilir: nexusSetItem('nexusErrorReporting', 'off').
 // Aynı kayıt ayrıca yerel günlüğe (nexusErrorLog, son 50) yazılır: yalnız bu cihazda kalır,
-// buluta/yedeğe girmez (cloud-sync STATE_EXCLUDE); Ayarlar → Hata Günlüğü'nden kopyalanır.
+// buluta/yedeğe girmez (cloud-sync STATE_EXCLUDE); yalnızca cihazda tutulur.
 (function () {
   if (window.__nexusErrorHook) return;
   window.__nexusErrorHook = true;

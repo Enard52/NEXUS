@@ -38,6 +38,8 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
 <script src="data.js"></script>
+<script src="supported-devices.js"></script>
+<script src="device-controls.js"></script>
 <script src="ai-fab.js"></script>
 </head>
 <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
@@ -113,8 +115,9 @@
         box.innerHTML = events.map(function (ev) {
           var unread = read.indexOf(ev.id) === -1;
           var dot = unread ? 'bg-[#FF3B5C]' : 'bg-slate-200';
+          var thumb = window.NX && NX.thumbForText ? NX.thumbForText((ev.title || '') + ' ' + (ev.detail || ''), 'w-10 h-10 object-contain shrink-0') : '';
           return '<article class="bg-white rounded-2xl menu-container-shadow p-4 flex gap-4">' +
-            '<span class="unread-dot w-2.5 h-2.5 ' + dot + ' rounded-full mt-2 flex-shrink-0"></span>' +
+            '<span class="unread-dot w-2.5 h-2.5 ' + dot + ' rounded-full mt-2 flex-shrink-0"></span>' + thumb +
             '<div class="min-w-0">' +
             '<h2 class="font-bold leading-tight">' + esc(ev.title || '') + '</h2>' +
             (ev.detail ? '<p class="text-sm text-slate-500 mt-1">' + esc(ev.detail) + '</p>' : '') +
