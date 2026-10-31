@@ -127,8 +127,9 @@ for (const [file, cur, saveText] of [
   // Uygulamanın olmadığı marka/protokol vaatleri (supported-devices.js ile çelişiyorlardı).
   // Yasak liste: sitede vaat EDİLMEMESİ gereken markalar. WiZ/LIFX/Govee gerçek
   // bağlayıcı olduğundan (UDP köprüsü + lan-connectors handler'ları) listeden
-  // çıkarıldı; HomeKit/Sonoff DIY/MQTT hâlâ uygulama surface'ünde vaat edilmemeli.
-  const banned = ["HomeKit", "Sonoff DIY", "MQTT"];
+  // çıkarıldı; MQTT/Zigbee2MQTT de artık gerçek bir bağlayıcı (masaüstü; desteklenen cihaz kataloğundan geliyor).
+  // HomeKit/Sonoff DIY hâlâ uygulama surface'ünde vaat edilmemeli.
+  const banned = ["HomeKit", "Sonoff DIY"];
   const found = banned.filter((b) => text.includes(b));
   check(`${label}: olmayan marka vaat edilmiyor`, found.length === 0, found.join(","));
   // Bayat elle-kopya çıktıların imzası: iç sayfalar .html ile anılıyor.
