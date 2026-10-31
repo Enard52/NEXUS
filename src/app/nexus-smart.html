@@ -717,13 +717,10 @@ function toggleHomeSelector() {
   window.openSmartAiChat = function (raw) {
     var text = (raw || '').trim();
     var type = activeSmartType();
-    var fallback = type === 'automation'
-      ? 'Yeni bir otomasyon oluşturmak istiyorum.'
-      : 'Yeni bir tıkla ve çalıştır senaryosu oluşturmak istiyorum.';
-    var prompt = text || fallback;
+    // Çubuğa basınca kullanıcı adına mesaj gönderilmez: boşsa input boş açılır, yazılmış metin varsa input'a konur.
     var target = type === 'automation' ? 'otomasyon' : 'tıkla ve çalıştır';
     window.location.href = 'nexus-chat.html?type=' + encodeURIComponent(type) +
-      '&promptText=' + encodeURIComponent(target + ' için yapay zeka ile oluştur: ' + prompt);
+      (text ? '&promptText=' + encodeURIComponent(target + ' için yapay zeka ile oluştur: ' + text) : '');
   }
   // Sahte giriş (span) artık yazılabilir değil: Enter ile gönderme kalktı,
   // tıklama doğrudan openSmartAiChat'e gider.

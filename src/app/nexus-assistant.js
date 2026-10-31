@@ -425,9 +425,46 @@
     });
   }
 
+  // Asistan modları: her mod mesajın nasıl işleneceğini gerçekten değiştirir (süs değil).
+  //  chat       : her şeyi sorar (yerel komut, bilinmezse yapay zekâ sohbeti)
+  //  device     : yalnız cihaz/durum komutları; anlaşılmazsa yapay zekâya (krediye) gitmez, örnek komut önerir
+  //  scenario   : mesajı "Tıkla ve çalıştır" senaryosu oluşturma isteği olarak işler
+  //  automation : mesajı otomasyon oluşturma isteği olarak işler
+  var MODES = [
+    { id: "chat", tr: "Sohbet", en: "Chat", hintTr: "Nasıl yardımcı olabilirim?", hintEn: "How can I help you?" },
+    { id: "device", tr: "Cihaz kontrolü", en: "Device control", hintTr: "Örn. salon ışığını kapat", hintEn: "e.g. turn off the living room light" },
+    { id: "scenario", tr: "Senaryo oluştur", en: "Create scenario", hintTr: "Tek dokunuşla ne olsun? Örn. film modu", hintEn: "What should one tap do? e.g. movie mode" },
+    { id: "automation", tr: "Otomasyon oluştur", en: "Create automation", hintTr: "Ne zaman ne olsun? Örn. her gece ışıkları kapat", hintEn: "When should what happen? e.g. lights off every night" }
+  ];
+  var mode = "chat";
+  function modeInfo(id) { return MODES.filter(function (m) { return m.id === id; })[0] || MODES[0]; }
+  var modes = {
+    list: function () {
+      var en = window.nexusLang === "en";
+      return MODES.map(function (m) { return { id: m.id, label: en ? m.en : m.tr, hint: en ? m.hintEn : m.hintTr }; });
+    },
+    get: function () { return mode; },
+    set: function (id) {
+      mode = modeInfo(id).id;
+      window.__nexusAiCreateType = mode === "automation" ? "automation" : "clickrun";
+      return mode;
+    },
+    hint: function () { var m = modeInfo(mode); return window.nexusLang === "en" ? m.hintEn : m.hintTr; },
+    // Motora giden metin: oluşturma modlarında istek "oluştur" niyetiyle işaretlenir (kullanıcıya gösterilen metin değişmez).
+    query: function (text) { return mode === "scenario" || mode === "automation" ? "yapay zeka ile olustur: " + text : text; },
+    // Cihaz modunda anlaşılmayan mesaj yapay zekâya gitmez.
+    local: function () { return mode === "device"; },
+    notUnderstood: function () {
+      return window.nexusLang === "en"
+        ? "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\"."
+        : "Bu bir cihaz komutu gibi anlaşılmadı. Örneğin: \"salon ışığını kapat\" ya da \"klimayı 22 yap\".";
+    }
+  };
+
   window.nexusAssistant = {
     reply: reply, help: help, fold: fold, ask: ask, transcribe: transcribe,
-    lanPending: lanPending, lanSettled: lanSettled, lanFailureNote: lanFailureNote
+    lanPending: lanPending, lanSettled: lanSettled, lanFailureNote: lanFailureNote,
+    modes: modes
   };
 })();
 

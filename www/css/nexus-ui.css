@@ -694,3 +694,10 @@ html .group:active .group-active\:text-\[\#4C7DFF\]{color:rgb(var(--nx-accent-rg
   nav[data-purpose="bottom-nav"] a { flex-direction: row !important; gap: 6px !important; width: auto !important; min-width: 44px; height: 40px !important; padding: 0 12px; }
   nav[data-purpose="bottom-nav"] a svg, nav[data-purpose="bottom-nav"] a i { width: 20px !important; height: 20px !important; }
 }
+/* Asistan modları: input üstünde yatay kayan seçim çipleri */
+.nx-modes { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 10px; margin: 0 -4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.nx-modes::-webkit-scrollbar { display: none; }
+.nx-mode { flex: none; padding: 8px 14px; border-radius: 999px; border: 1.5px solid rgba(100, 116, 139, .25); background: rgba(255, 255, 255, .75); color: #475569; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: background .12s ease, color .12s ease; }
+.nx-mode.is-on { border-color: var(--nx-accent, #4C7DFF); background: var(--nx-accent, #4C7DFF); color: #fff; }
+html.dark .nx-mode { background: rgba(30, 41, 59, .8); color: #cbd5e1; border-color: #334155; }
+html.dark .nx-mode.is-on { background: var(--nx-accent, #4C7DFF); color: #fff; border-color: var(--nx-accent, #4C7DFF); }
