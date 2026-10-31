@@ -40,6 +40,7 @@ export const APP_JS = [
   "event-bridge.js",
   "nexus-dialog.js",
   "nexus-undo.js",
+  "nexus-select.js",
   "notify.js",
   "push.js",
   "household-cloud.js",
