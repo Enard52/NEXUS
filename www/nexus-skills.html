@@ -385,6 +385,12 @@
       else if (t.hasAttribute('data-op')) S.weather.op = t.getAttribute('data-op');
       else return;
       render();
+      // Seçilen senaryonun "Çalışınca ne olur" kutusu alttan kesik kalmasın.
+      var body = document.getElementById('config-options'), pv = body.querySelector('.qs-preview');
+      if (pv && t.hasAttribute('data-scene')) {
+        var over = pv.getBoundingClientRect().bottom - body.getBoundingClientRect().bottom;
+        if (over > 0) body.scrollTop += over + 8;
+      }
     });
     document.getElementById('config-options').addEventListener('input', function (ev) {
       if (!S) return;
@@ -415,7 +421,7 @@
       if (p) { toast(p, 'error'); return; }
       var sceneId = S.scene === 'notify' ? null : S.scene;
       var scene = sceneId ? NX.SCENES[sceneId] : null;
-      var desc = TYPE === 'automation' ? triggerSummary() + (scene ? ' · ' + scene.title : ' · bildirim') : QS.metaFor(sceneId).desc;
+      var desc = TYPE === 'automation' ? triggerSummary() + (scene ? ' · ' + scene.title : ' · bildirim') : QS.descFor(sceneId);
       QS.save(TYPE, sceneId, {
         title: scene ? scene.title : pending.title,
         desc: desc,
@@ -508,7 +514,7 @@
       document.getElementById('click-save').addEventListener('click', function () {
         if (!S.scene) return;
         var title = (nameVal || '').trim() || NX.SCENES[S.scene].title;
-        QS.save('clickrun', S.scene, { title: title, desc: QS.metaFor(S.scene).desc, trigger: { type: 'manual' } });
+        QS.save('clickrun', S.scene, { title: title, desc: QS.descFor(S.scene), trigger: { type: 'manual' } });
         finish();
       });
       clickRender();

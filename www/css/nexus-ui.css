@@ -463,6 +463,8 @@ html.dark input:focus-visible, html.dark textarea:focus-visible, html.dark selec
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35);
   border-color: rgba(96, 165, 250, 0.65) !important;
 }
+/* Sohbet girişi zaten yuvarlak bir çubuğun içinde; kendi odak halkası çubukta kare görünür. */
+html.dark #chat-input:focus-visible { box-shadow: none; border-color: transparent !important; }
 a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
   outline: 2px solid rgba(var(--nx-accent-rgbc,76,125,255),0.70);
   outline-offset: 2px;

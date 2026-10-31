@@ -59,13 +59,25 @@
     return out;
   }
 
+  // Açıklama yalnızca eşleşmiş cihazlarda gerçekten olacakları anlatır; cihaz yoksa genel metne düşer.
+  function descFromPreview(pv, fallback) {
+    if (!pv.length) return fallback || "";
+    var shown = pv.slice(0, 3).map(function (d) { return d.name + " " + d.text; });
+    var more = pv.length - shown.length;
+    return shown.join(", ") + (more > 0 ? " ve " + more + " cihaz daha" : "") + ".";
+  }
+  function descFor(id) {
+    var m = META[id];
+    return descFromPreview(preview(id), m ? m.desc : "");
+  }
+
   function entry(id) {
     var m = META[id] || { icon: "zap", hex: "#4C7DFF", bg: "bg-indigo-500/10", color: "text-indigo-500", desc: "" };
     var pv = preview(id);
     return {
       id: id,
       title: NX.SCENES[id].title,
-      desc: m.desc,
+      desc: descFromPreview(pv, m.desc),
       icon: m.icon,
       hex: m.hex,
       bg: m.bg,
@@ -156,6 +168,7 @@
     run: run,
     save: save,
     metaFor: metaFor,
+    descFor: descFor,
     describeAct: describeAct,
   };
 })();
