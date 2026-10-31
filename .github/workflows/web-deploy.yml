@@ -43,9 +43,14 @@ jobs:
       NEXUS_SUPABASE_ANON_KEY: ${{ vars.NEXUS_SUPABASE_ANON_KEY }}
     steps:
       - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
+      # site-build.mjs simple-icons gibi paketleri içe aktarır; bağımlılıklar kurulmadan üretim çöküyordu.
+      - name: Bagimliliklar
+        run: pnpm install --frozen-lockfile
       # www/public TAKİPLİ bir üretime çıktısı; eskiden yalnızca elle üretiliyordu ve
       # CI bayat kopyayı rsync'liyordu. Artık önce üretiliyor, sonra denetleniyor.
       - name: Kodlama kapısı (kaynaklar)
