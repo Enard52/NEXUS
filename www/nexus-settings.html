@@ -249,6 +249,14 @@
         <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </span>
     </button>
+    <hr class="mx-5 border-gray-100 hidden" id="sync-interval-rule"/>
+    <button type="button" id="sync-interval-row" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer hidden" onclick="openSyncIntervalPicker()">
+      <span class="text-xl text-gray-800 font-medium">Bulut Eşitleme Sıklığı</span>
+      <span class="flex items-center space-x-2">
+        <span class="text-xl text-gray-400" id="sync-interval-label">Normal</span>
+        <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </span>
+    </button>
     <hr class="mx-5 border-gray-100"/>
     <button type="button" id="chime-row" class="nx-reset flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer" onclick="openChimePicker()">
       <span class="text-xl text-gray-800 font-medium">Uygulama İçi Bildirim Sesi</span>
@@ -365,6 +373,34 @@
         });
       })();
     </script>
+  </section>
+
+  <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card" id="error-log-settings">
+    <div class="px-5 py-4 border-b border-gray-100">
+      <h2 class="text-base font-bold text-slate-900">Hata Günlüğü</h2>
+      <p class="text-sm text-slate-500 mt-1">Uygulamada oluşan hatalar yalnız bu cihazda tutulur. Bir sorun bildirirken raporu kopyalayıp GitHub'daki hata bildirimine yapıştırabilirsin.</p>
+    </div>
+    <div class="flex items-center justify-between px-5 py-5">
+      <span class="text-xl text-gray-800 font-medium">Anonim Hata Raporu Gönder</span>
+      <label class="switch">
+        <input type="checkbox" id="toggle-error-reporting" aria-label="Anonim hata raporu gönder"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <hr class="mx-5 border-gray-100"/>
+    <p id="error-log-empty" class="px-5 py-5 text-sm text-slate-500">Kayıtlı hata yok.</p>
+    <ul id="error-log-list" class="hidden px-5 py-4 space-y-2 text-sm text-slate-600" data-no-i18n></ul>
+    <div id="error-log-actions" class="hidden">
+      <hr class="mx-5 border-gray-100"/>
+      <button type="button" id="error-log-copy" class="nx-reset flex w-full items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+        <span class="text-xl text-gray-800 font-medium">Hata raporunu kopyala</span>
+      </button>
+      <hr class="mx-5 border-gray-100"/>
+      <button type="button" id="error-log-clear" class="nx-reset flex w-full items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
+        <span class="text-xl text-gray-800 font-medium">Günlüğü temizle</span>
+      </button>
+    </div>
+    <p id="error-log-status" class="px-5 pb-4 text-sm text-slate-500" role="status"></p>
   </section>
 
   <section id="desktop-app-section" class="bg-white rounded-3xl overflow-hidden shadow-sm hidden" data-purpose="settings-card">
@@ -489,6 +525,7 @@
 </main>
 
 <script src="app-version.js"></script>
+<script src="settings-diagnostics.js"></script>
 <script>
   // Ayar arama: bölüm kartlarını görünen metne göre süzer. Zaten gizli olan kartlar (ör. masaüstü bölümü) gizli kalır.
   (function () {

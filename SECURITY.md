@@ -23,3 +23,13 @@ Out of scope: self-hosted Home Assistant instances, your local network devices, 
 ## Disclosure
 
 Coordinated disclosure preferred; please allow up to 90 days before public disclosure.
+
+## Threat model (summary)
+
+| Asset | Where it lives | Protection | Known limits |
+|---|---|---|---|
+| Device credentials (Tuya local keys, Tapo password, MQTT login) | This device only (`nexusLanSecrets`); never synced to the cloud or included in backups | Desktop app: encrypted with the OS keychain (Electron `safeStorage`); old plain records are migrated on first read | Browser and keychain-less environments store them unencrypted in local storage; the UI says so. Android secure storage is not implemented yet. |
+| Account data (Supabase) | Supabase with row-level security | Per-user policies; only publishable keys ship in the app | Depends on correct RLS; report issues via the policy above |
+| LAN control traffic | Local network | Desktop bridge only talks to private addresses | Many LAN protocols are plain by design (device firmware); a hostile local network can observe them |
+| Error reports | Optional, opt-in toggle in Settings | Only page, version, platform and message; local log can be viewed and cleared | None known |
+| Release binaries | GitHub Releases | Published from CI; checksums provided | Windows builds are not yet signed with a paid certificate |

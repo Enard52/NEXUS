@@ -616,6 +616,12 @@ a.ft-star-pill svg{width:12px;height:12px;fill:currentColor}
    (verify-site kalıcı denetimi ölçüyor). Dolgu dokunma alanını büyütür, negatif kenar
    boşluğu görsel düzeni aynı bırakır. */
 .dl-note a{display:inline-block;padding:5px 3px;margin:-5px -3px}
+/* "Diğer indirmeler" düz metin değil; resmi logo taşlı chip satırı. */
+.dl-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.dl-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font-size:13px;font-weight:600;box-shadow:var(--shadow);text-decoration:none;
+  transition:border-color .2s ease,color .2s ease,transform .2s ease}
+.dl-chip:hover{border-color:var(--brand);color:var(--brand)}
+.dl-chip svg{flex:none}
 .dl-web-card{margin-top:22px;padding:26px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
@@ -1243,7 +1249,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 <h3>Your rights</h3>
 <p>Under Turkish Law No. 6698 (KVKK) art. 11 and, where applicable, the GDPR, you may ask whether your data is processed, access it, correct it, have it deleted, object to processing and request portability. You may submit your request through our support channels. You may also complain to the Turkish Personal Data Protection Authority.</p>
 <h3>Security</h3>
-<p>Connections are encrypted with TLS. The database enforces row-level access control: each user can read and write only their own data. Family chat messages are sent and stored encrypted and can be read only by members of the home; end-to-end encryption is not used. No system is perfectly secure; we recommend a strong password and keeping your devices up to date.</p>
+<p>Connections are encrypted with TLS. The database enforces row-level access control: each user can read and write only their own data. No system is perfectly secure; we recommend a strong password and keeping your devices up to date.</p>
 <h3>Third-party devices</h3>
 <p>Smart devices you connect (e.g. Shelly, WLED, ESPHome) may talk to their manufacturers' servers under their own privacy policies. NEXUS does not share your data with those manufacturers.</p>
 <h3>Children</h3>

@@ -15,6 +15,19 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
     exchange: (opts) => ipcRenderer.invoke("lan:tcp-exchange", opts),
     close: (id) => ipcRenderer.invoke("lan:tcp-close", id),
   },
+  // MQTT broker'ı (Zigbee2MQTT): akış TCP — gelen baytlar recv ile uzun yoklamayla alınır.
+  mqttSession: {
+    open: (opts) => ipcRenderer.invoke("lan:mqtt-open", opts),
+    send: (opts) => ipcRenderer.invoke("lan:mqtt-send", opts),
+    recv: (opts) => ipcRenderer.invoke("lan:mqtt-recv", opts),
+    close: (id) => ipcRenderer.invoke("lan:mqtt-close", id),
+  },
+  // Cihaz sırlarını işletim sistemi anahtarlığıyla (Electron safeStorage) şifreler; eşzamanlı çünkü okuyucu eşzamanlı.
+  secretCrypt: {
+    available: () => ipcRenderer.sendSync("secret:available") === true,
+    encrypt: (text) => ipcRenderer.sendSync("secret:encrypt", String(text)),
+    decrypt: (b64) => ipcRenderer.sendSync("secret:decrypt", String(b64)),
+  },
   subnets: () => ipcRenderer.invoke("lan:subnets"),
   info: () => ipcRenderer.invoke("app:info"),
   googleLogin: (url) => ipcRenderer.invoke("auth:google", url),

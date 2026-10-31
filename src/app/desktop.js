@@ -340,7 +340,8 @@
     header.style.position = "sticky";
     header.style.top = "0";
     header.style.zIndex = "30";
-    if (getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)") {
+    // theme.js otomatik gizlenen başlığın zeminini kendisi boyar (kaydırma konumuna göre); burada boyanmaz.
+    if (!header.__nxHdrAuto && getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)") {
       var m = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(pageBg);
       if (gradientBody && m) {
         // Degrade zeminde düz renkli bir bant, degradenin ilerleyen tonundan ayrışır: yarı saydam + bulanıklık
@@ -370,22 +371,7 @@
       header.__nxAutoTabs = tabs;
     }
 
-    // Kaydırınca başlık kompakt hâle gelir (alt boşluk azalır, altında ince çizgi/gölge çıkar); tepeye dönünce eski hâli.
-    // Üst boşluk bilerek korunur: sağ üstte pencere düğmeleri (küçült/büyüt/kapat) o alanı kaplar.
-    if (!header.__nxScrollBound) {
-      header.__nxScrollBound = true;
-      var compact = false;
-      var onScroll = function () {
-        var want = (window.scrollY || document.documentElement.scrollTop || 0) > 8;
-        if (want === compact) return;
-        compact = want;
-        header.classList.toggle("nx-hdr-scrolled", compact);
-        // Sekme çubuğu başlığın yeni yüksekliğinin altında yapışsın (geçiş bitince ölçülür)
-        if (tabs) setTimeout(function () { tabs.style.top = header.offsetHeight + "px"; }, 220);
-      };
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-    }
+    // Kaydırınca gizlenme/geri gelme ve zemin rengi theme.js'tedir (tüm ekranlarda aynı davranış).
   }
 
   // Telefon tasarımında arka plan çoğu sayfada en dıştaki sarmalayıcıdadır; masaüstünde

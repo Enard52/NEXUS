@@ -52,11 +52,10 @@
     "audit:ui:summary": "node scripts/ui-audit-summary.mjs",
     "audit:i18n": "node scripts/i18n-sweep.mjs",
     "audit:i18n:coverage": "node scripts/i18n-coverage.mjs",
-    "audit:i18n:live": "node scripts/i18n-live-check.mjs",
     "verify:notify": "node scripts/verify-notify.mjs",
     "verify:desktop": "node scripts/verify-desktop-payload.mjs",
     "verify:cloud": "node node_modules/vitest/vitest.mjs run packages/web/src/cloud-sync.test.ts packages/web/src/notify.test.ts",
-    "audit:all": "npm run typecheck && npm test && npm run verify:desktop && npm run audit:i18n && npm run audit:i18n:coverage && npm run sync:www && npm run audit:i18n:live && npm run audit:ui && npm run audit:ui:summary && npm run verify:site:smoke",
+    "audit:all": "npm run typecheck && npm test && npm run verify:desktop && npm run audit:i18n:coverage && npm run sync:www && npm run audit:i18n && npm run audit:ui && npm run audit:ui:summary && npm run verify:site:smoke",
     "build:full": "npm run build:assets && npm run sync:www"
   },
   "devDependencies": {

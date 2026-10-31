@@ -385,7 +385,6 @@ html.nx-tab .nx-desk-page {
   right: max(0px, calc((100vw - var(--tab-max)) / 2)) !important;
   width: auto !important;
 }
-html.nx-tab .nexus-ai-fab { right: max(0px, calc((100vw - var(--tab-max)) / 2)) !important; }
 html.nx-tab .nx-desk-sheet { border-radius: 28px 28px 0 0 !important; }
 
 /* ---------- Masaüstü düzeltmeleri (ekran taraması) ---------- */
@@ -525,12 +524,5 @@ html.nx-desk.nx-side-collapsed .nx-side-foot { flex-direction: column; align-ite
 html.nx-desk.nx-side-collapsed .nx-side-user { flex: none; padding: 4px; }
 html.nx-desk.nx-side-collapsed .nx-side-user > span.min-w-0 { display: none; } /* avatar (img ya da span.nx-side-avatar) kalır, yalnızca ad/alt yazı gizlenir */
 
-/* ---------- Üst başlık: kaydırınca kompakt ---------- */
-html.nx-desk body > header.nx-desk-col { transition: padding .18s ease, min-height .18s ease, box-shadow .18s ease; }
-html.nx-desk body > header.nx-desk-col.nx-hdr-scrolled {
-  padding-bottom: 6px !important;
-  min-height: 76px !important; /* ortak 104px başlık standardı (nexus-ui.css) kaydırınca kompakta iner */
-  box-shadow: 0 1px 0 rgba(148, 163, 184, 0.28), 0 10px 18px -16px rgba(15, 23, 42, 0.4);
-}
-html.dark.nx-desk body > header.nx-desk-col.nx-hdr-scrolled { box-shadow: 0 1px 0 rgba(148, 163, 184, 0.16), 0 10px 18px -14px rgba(0, 0, 0, 0.6); }
-@media (prefers-reduced-motion: reduce) { html.nx-desk body > header.nx-desk-col { transition: none; } }
+/* ---------- Üst başlık ---------- */
+/* Üst başlık masaüstünde de telefondaki gibi kaydırınca tamamen gizlenir (theme.js + nexus-ui.css .nx-hdr-auto). */

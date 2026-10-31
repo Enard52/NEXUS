@@ -558,6 +558,81 @@ ipcMain.handle("lan:tcp-exchange", (_e, opts) => new Promise((resolve, reject) =
 }));
 ipcMain.handle("lan:tcp-close", (_e, id) => { tuyaClose(Number(id)); return true; });
 
+// ---------- Cihaz sırları: işletim sistemi anahtarlığıyla şifreleme (safeStorage) ----------
+// Anahtarlık yoksa (ör. bazı Linux ortamları) available=false döner; web katmanı düz kayda döner ve bunu belgeler.
+ipcMain.on("secret:available", (e) => {
+  try { e.returnValue = require("electron").safeStorage.isEncryptionAvailable() === true; } catch { e.returnValue = false; }
+});
+ipcMain.on("secret:encrypt", (e, text) => {
+  try {
+    const { safeStorage } = require("electron");
+    e.returnValue = safeStorage.isEncryptionAvailable() ? safeStorage.encryptString(String(text)).toString("base64") : null;
+  } catch { e.returnValue = null; }
+});
+ipcMain.on("secret:decrypt", (e, b64) => {
+  try {
+    const { safeStorage } = require("electron");
+    e.returnValue = safeStorage.decryptString(Buffer.from(String(b64), "base64"));
+  } catch { e.returnValue = null; }
+});
+
+// ---------- Köprü: MQTT broker'ı için akış TCP (Zigbee2MQTT) ----------
+// Broker istediği an PUBLISH gönderebildiği için istek-yanıt değil: gelen baytlar biriktirilir, sayfa
+// recv ile (uzun yoklama) alır. Paket çözümü web katmanında (lan-mqtt.js). Yalnızca özel ağ adresleri.
+const mqttSessions = new Map();
+let mqttSessionSeq = 0;
+const MQTT_MAX_BUF = 1024 * 1024;
+function mqttClose(id) {
+  const s = mqttSessions.get(id);
+  if (!s) return;
+  mqttSessions.delete(id);
+  clearTimeout(s.idle);
+  if (s.waiter) { clearTimeout(s.waiter.timer); s.waiter.resolve([]); s.waiter = null; }
+  s.sock.destroy();
+}
+function mqttTouch(id, s) {
+  clearTimeout(s.idle);
+  s.idle = setTimeout(() => mqttClose(id), 30000);
+}
+ipcMain.handle("lan:mqtt-open", (_e, opts) => new Promise((resolve, reject) => {
+  const port = Number(opts && opts.port) || 1883;
+  if (!isPrivateHost(opts && opts.host) || !(port >= 1 && port <= 65535) || mqttSessions.size >= 4) return reject(new Error("izin verilmeyen hedef"));
+  const sock = tcp.createConnection({ host: opts.host, port });
+  const id = ++mqttSessionSeq;
+  const s = { sock, buf: Buffer.alloc(0), waiter: null, closed: false, idle: null };
+  mqttTouch(id, s);
+  const timer = setTimeout(() => { mqttClose(id); reject(new Error("zaman aşımı")); }, Math.min(Number(opts.timeoutMs) || 4000, 15000));
+  mqttSessions.set(id, s);
+  let connected = false;
+  sock.on("connect", () => { connected = true; clearTimeout(timer); resolve(id); });
+  sock.on("data", (c) => {
+    s.buf = Buffer.concat([s.buf, c]);
+    if (s.buf.length > MQTT_MAX_BUF) { mqttClose(id); return; }
+    if (s.waiter) { const w = s.waiter; s.waiter = null; clearTimeout(w.timer); w.resolve(Array.from(s.buf)); s.buf = Buffer.alloc(0); }
+  });
+  // Bağlanmadan önceki hata açmayı reddeder; sonrası oturumu kapatır (bekleyen recv boş döner, sayfa "bağlantı koptu" der).
+  sock.on("error", (err) => { clearTimeout(timer); s.closed = true; mqttClose(id); if (!connected) reject(new Error(err.message)); });
+  sock.on("close", () => { s.closed = true; mqttClose(id); });
+}));
+ipcMain.handle("lan:mqtt-send", (_e, opts) => {
+  const s = mqttSessions.get(Number(opts && opts.id));
+  if (!s || s.closed) throw new Error("oturum yok");
+  mqttTouch(Number(opts.id), s);
+  if (Array.isArray(opts.bytes) && opts.bytes.length) s.sock.write(Buffer.from(opts.bytes));
+  return true;
+});
+ipcMain.handle("lan:mqtt-recv", (_e, opts) => new Promise((resolve, reject) => {
+  const id = Number(opts && opts.id);
+  const s = mqttSessions.get(id);
+  if (!s) return reject(new Error("oturum yok"));
+  if (s.waiter) return reject(new Error("bekleyen okuma var"));
+  mqttTouch(id, s);
+  if (s.buf.length) { const out = Array.from(s.buf); s.buf = Buffer.alloc(0); return resolve(out); }
+  const timer = setTimeout(() => { s.waiter = null; resolve([]); }, Math.min(Number(opts.timeoutMs) || 3000, 15000));
+  s.waiter = { timer, resolve };
+}));
+ipcMain.handle("lan:mqtt-close", (_e, id) => { mqttClose(Number(id)); return true; });
+
 // ---------- Köprü: SSDP keşfi (yalnızca özel adreslerden gelen yanıtlar) ----------
 ipcMain.handle("lan:ssdp", async (_e, opts) => require("./ssdp.cjs").discover(opts || {}));
 

@@ -281,6 +281,17 @@
       note: "Ağ üzerinden PC veya TV uyandırma (Home Assistant standardı)",
       models: [{ name: "Wake-on-LAN PC / TV", img: "generic-smart-hub.png", caps: ["switch"] }],
     },
+    {
+      brand: "Zigbee2MQTT",
+      protocol: "mqtt",
+      category: "bridge", // ürün değil, köprü: broker'a bağlı Zigbee cihazlarını getirir
+      availability: "desktop",
+      note: "MQTT broker üzerinden Zigbee lamba ve prizler (masaüstü uygulamasında); şimdilik aç/kapat ve parlaklık",
+      models: [
+        { name: "Zigbee Ampul (Zigbee2MQTT)", img: "generic-led-bulb.png", caps: ["switch", "brightness"] },
+        { name: "Zigbee Priz (Zigbee2MQTT)", img: "generic-smart-plug.png", caps: ["switch"] },
+      ],
+    },
   ];
 
   window.NEXUS_SUPPORTED_DEVICES = NEXUS_SUPPORTED_DEVICES;
@@ -666,6 +677,15 @@
     });
   }
   window.nexusVisibleSupportedDevices = visibleGroups;
+  // Gerçek cihazla doğrulama: bir grup ancak canlı testten sonra (docs/HARDWARE-VERIFICATION.md'ye
+  // kaydedilerek) `verified: true` alır. Alanı olmayan bağlayıcı eşleştirme ekranında "henüz doğrulanmadı" görünür.
+  window.nexusIsVerified = function (protocol) {
+    var p = String(protocol || "").toLowerCase();
+    for (var i = 0; i < NEXUS_SUPPORTED_DEVICES.length; i++) {
+      if (NEXUS_SUPPORTED_DEVICES[i].protocol === p) return NEXUS_SUPPORTED_DEVICES[i].verified === true;
+    }
+    return false;
+  };
   var supportedFnCache = null;
   function supportedFunctions() {
     var total = 0;

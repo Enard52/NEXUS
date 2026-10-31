@@ -27,3 +27,22 @@ node scripts/check-health.mjs
 
 It prints whether the site, the AI worker, Supabase and the latest release assets answer, and exits non-zero if any
 check fails. The same checks run hourly in the `daily-stats` Edge Function, which posts to Discord only on problems.
+## Rollback plan
+
+- **Web / site** (`web-deploy.yml`): revert the faulty commit on `main` (`git revert <sha>`); the push redeploys. Service-worker cache name (`CACHE` in `src/app/sw.js`) is bumped on every shell change, so clients pick up the revert on next load.
+- **Desktop / Android**: do not delete a published release. Fix forward with a new patch tag (`vX.Y.Z+1`); users on the broken build are moved by the in-app update check. If a build is dangerous, mark the release as pre-release in `Enard52/nexus-releases` so it stops being offered as "latest".
+- **Database (Supabase)**: schema changes go through migrations only; never edit production by hand. Restore from the latest export (see below) if data is damaged.
+- **Secrets leaked**: rotate first (Supabase/GitHub Secrets), then clean history. Rotation is the owner's task.
+
+## Incident response (small team, zero budget)
+
+1. Confirm and note the time, the affected platform and version.
+2. Stop the bleeding: revert or disable the feature (see Rollback plan); say so honestly in the app (status/ announcements) rather than hiding it.
+3. Fix forward with a tested patch release.
+4. Write a short public note (what happened, who was affected, what changed) in the release notes.
+5. Add a regression test so it cannot return.
+
+## Free-tier guardrails
+
+- Everything in CI and hosting uses free tiers; no paid service is required to run NEXUS.
+- Optional upgrades when a budget exists (not needed now): paid code-signing certificate (removes SmartScreen warning), Apple Developer account (signed iOS builds), larger Supabase plan, error-reporting service. Each is prepared in the docs but intentionally not enabled.

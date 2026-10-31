@@ -183,6 +183,7 @@ describe("desktop app file rules (src/app → packaged app/)", () => {
       "command-palette.js",
       "lang-en.js",
       "desktop.js",
+      "settings-diagnostics.js",
     ]) {
       // Dosya henüz depoya girmemişse (dev bir dalga) var olduğunu iddia etmeyiz;
       // ama VARSA kural gereği pakete girmek zorunda.

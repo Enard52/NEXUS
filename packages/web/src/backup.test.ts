@@ -70,6 +70,7 @@ describe("yedeği dışa aktarma", () => {
       JSON.stringify({ telegram: { token: "BOT-TOKEN" } }),
     );
     storage.setItem(`${user}_nexusUserPassword`, "parola");
+    storage.setItem(`${user}_nexusErrorLog`, JSON.stringify([{ message: "x" }]));
     const data = cloud.exportBackup();
     expect(data.app).toBe("nexus-backup");
     expect(data.keys.nexusDarkMode).toBe("true");
@@ -77,6 +78,7 @@ describe("yedeği dışa aktarma", () => {
     expect(data.keys).not.toHaveProperty("nexusLanSecrets");
     expect(data.keys).not.toHaveProperty("nexusNotifyChannels");
     expect(data.keys).not.toHaveProperty("nexusUserPassword");
+    expect(data.keys).not.toHaveProperty("nexusErrorLog");
     const text = JSON.stringify(data);
     for (const secret of [
       "SECRET-LOCAL-KEY",

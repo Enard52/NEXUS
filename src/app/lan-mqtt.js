@@ -1,9 +1,9 @@
 /* NEXUS — MQTT 3.1.1 paket kodlayıcı/çözücü + Zigbee2MQTT / Tasmota konu eşlemesi (issue #50, ilk dilim).
  *
- * DÜRÜSTLÜK NOTU (CLAUDE.md kural 1-2): Bu dosya SAF veri katmanıdır; ağa hiç dokunmaz ve henüz hiçbir
- * bağlayıcı (connector) olarak KAYITLI DEĞİLDİR — lan-connectors.js `protocols` dizisinde yer almaz, çünkü
- * mevcut masaüstü `tcpSession` köprüsü (open/exchange/close) istek-yanıt içindir; MQTT'nin gerektirdiği
- * kalıcı abonelik akışını (broker'ın istediği an PUBLISH göndermesi) sunmaz. Paket biçimleri MQTT 3.1.1
+ * DÜRÜSTLÜK NOTU (CLAUDE.md kural 1-2): Bu dosya SAF veri katmanıdır; ağa hiç dokunmaz. Taşıma
+ * lan-connectors.js `mqtt` bağlayıcısındadır (yalnızca masaüstü: desktop/main.cjs lan:mqtt-* akış köprüsü)
+ * ve bu dosyayı ihtiyaç anında yükler; bugün Zigbee2MQTT lamba/priz (aç/kapat, parlaklık) kullanılır,
+ * Tasmota MQTT eşlemesi hazır ama bağlı değil (Tasmota HTTP bağlayıcısı kullanılıyor). Paket biçimleri MQTT 3.1.1
  * (OASIS) belirtiminden, konu/yük biçimleri Zigbee2MQTT ve Tasmota belgelerinden yazıldı; GERÇEK bir broker
  * (Mosquitto, Zigbee2MQTT, Tasmota) ile DOĞRULANMADI. Yalnızca birim testleri var (lan-mqtt.test.ts).
  *

@@ -34,3 +34,4 @@ This table is generated from the connector registry (`src/app/lan-connectors.js`
 | `govee` | Govee | Govee (1 model) | `switch`, `brightness`, `color`, `colorTemp` | UDP bridge, desktop only | yes: `lan-commands.test.ts`, `lan-udp.test.ts` | no / community testers wanted |
 | `tuya-local` | Tuya (Yerel) | Tuya (yerel mod) (5 models) | `switch`, `brightness`, `color` | TCP session bridge, desktop only; added manually (not auto-discovered) | yes: `lan-scenes.test.ts`, `lan-secure.test.ts` | no / community testers wanted |
 | `wol` | Wake-on-LAN (PC / TV) | Wake-on-LAN (1 model) | `switch` | UDP bridge, all platforms; added manually (not auto-discovered) | yes: `lan-udp.test.ts` | no / community testers wanted |
+| `mqtt` | MQTT (Zigbee2MQTT) | Zigbee2MQTT (2 models) | `switch`, `brightness` | LAN HTTP, desktop only; added manually (not auto-discovered) | yes: `lan-mqtt-connector.test.ts` | no / community testers wanted |

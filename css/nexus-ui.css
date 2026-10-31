@@ -705,7 +705,17 @@ header:has(> .p-1.-ml-1) > .p-1.-mr-1 svg, header:has(> .p-1.-ml-1) > .p-1.-mr-1
    Beyaz ya da düz renkli bir bant lila/koyu degrade zeminden ayrışıyordu. Başlık sayfa renginde yarı saydam durur;
    yapışkan başlıkta arkasından geçen içerik bulanık görünür. */
 .nx-hdr-blend { background: rgba(236, 233, 253, 0.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
-html.dark .nx-hdr-blend { background: rgba(15, 23, 42, 0.18); }
+/* Koyu temada başlık zeminin üst rengiyle aynı olmalı, ayrı kutu gibi görünmemeli: düz zemin #0f172a,
+   geçişli zeminler (theme.js: #020617 → #0f172a) #020617 ile başlar. Yarı saydam kalınca altından kayan
+   kartların köşeleri bulanık leke olarak görünüyordu. */
+html.dark .nx-hdr-blend { background: rgba(15, 23, 42, 0.92); }
+html.dark :is(.bg-dashboard-gradient, .bg-gradient-custom, .bg-miniapp-gradient, .bg-smart-gradient) .nx-hdr-blend { background: rgba(2, 6, 23, 0.92); }
+
+/* Üst başlık otomatik gizlenir (theme.js): aşağı kaydırınca tamamen yukarı çıkar, yukarı kaydırınca geri gelir.
+   İç alanı kayan sayfalarda theme.js margin-top ile katlar. */
+.nx-hdr-auto { transition: transform .25s ease, margin-top .25s ease; }
+.nx-hdr-auto.nx-hdr-hidden { transform: translateY(-100%); box-shadow: none !important; }
+@media (prefers-reduced-motion: reduce) { .nx-hdr-auto { transition: none; } }
 
 /* ---------- Açık renkli uyarı/hata çipleri: metin >= 4.5:1 (hem açık hem koyu modda çip açık kalır) ---------- */
 .bg-amber-100.text-amber-600, .bg-amber-100 .text-amber-600 { color: #92400e; }

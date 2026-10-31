@@ -462,7 +462,102 @@
       }).then(function () { btn.disabled = false; });
     }
 
+    // Zigbee2MQTT: broker adresi (+ isteğe bağlı kullanıcı/parola) → broker'daki cihaz listesi → seçileni ekle.
+    // Yalnızca masaüstünde (kalıcı TCP gerekir); telefonda/tarayıcıda kart hiç gösterilmez.
+    var mqttFound = [];
+    var mqttBroker = null;
+    function renderMqttPairing() {
+      var host = document.getElementById("mqtt-pair-card");
+      if (!host) return;
+      var avail = window.nexusLan && window.nexusLan.hasSecure && window.nexusLan.hasSecure().mqtt;
+      if (!avail) { host.innerHTML = ""; host.style.display = "none"; return; }
+      host.style.display = "";
+      host.innerHTML = '<details class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
+        '<summary class="cursor-pointer text-sm font-bold">Zigbee2MQTT cihazı ekle (MQTT broker)</summary>' +
+        '<p class="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-300">Broker\'ın (ör. Mosquitto) yerel IP adresini yaz. Kullanıcı adı ve parola yalnızca bu cihazda saklanır. Şimdilik lamba ve prizlerde aç/kapat ve parlaklık desteklenir.</p>' +
+        '<input id="mqtt-host" inputmode="decimal" autocomplete="off" class="' + FIELD_CLS + '" placeholder="Broker IP adresi (ör. 192.168.1.10)">' +
+        '<input id="mqtt-port" inputmode="numeric" autocomplete="off" class="' + FIELD_CLS + '" placeholder="Port (varsayılan 1883)">' +
+        '<input id="mqtt-user" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Kullanıcı adı (yoksa boş bırak)">' +
+        '<input id="mqtt-pass" type="password" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Parola (yoksa boş bırak)">' +
+        '<input id="mqtt-base" autocomplete="off" spellcheck="false" class="' + FIELD_CLS + '" placeholder="Temel konu (varsayılan zigbee2mqtt)">' +
+        '<button type="button" id="mqtt-btn" onclick="listMqttDevices()" class="' + BTN_CLS + '">Cihazları getir</button>' +
+        '<p id="mqtt-status" class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-300" role="status"></p>' +
+        '<div id="mqtt-list" class="mt-2 space-y-2"></div>' +
+        '</details>';
+    }
+
+    function listMqttDevices() {
+      var status = document.getElementById("mqtt-status");
+      var btn = document.getElementById("mqtt-btn");
+      var ip = normalizeHost(document.getElementById("mqtt-host").value);
+      var port = parseInt(document.getElementById("mqtt-port").value, 10) || 1883;
+      var user = document.getElementById("mqtt-user").value.trim();
+      var pass = document.getElementById("mqtt-pass").value;
+      var base = document.getElementById("mqtt-base").value.trim() || "zigbee2mqtt";
+      if (!ip) { status.textContent = "Broker'ın IP adresini yaz."; return; }
+      if (!(port >= 1 && port <= 65535)) { status.textContent = "Port 1 ile 65535 arasında olmalı."; return; }
+      var creds = user ? { mqttUser: user, mqttPass: pass || "" } : null;
+      btn.disabled = true;
+      status.textContent = "Broker'a bağlanılıyor…";
+      document.getElementById("mqtt-list").innerHTML = "";
+      window.nexusLan.mqtt.listDevices(ip, port, creds, base).then(function (res) {
+        mqttFound = res.devices;
+        mqttBroker = { host: ip + ":" + port, base: base, creds: creds };
+        status.textContent = res.devices.length
+          ? res.devices.length + " cihaz bulundu. Eklemek istediklerini seç." + (res.skipped ? " (" + res.skipped + " cihaz henüz desteklenmiyor.)" : "")
+          : "Broker'da NEXUS'un kontrol edebileceği lamba ya da priz bulunamadı.";
+        renderMqttList();
+      }).catch(function (e) {
+        status.textContent = e && e.message ? e.message : "Broker'a bağlanılamadı. Adresin ve portun doğru, broker'ın açık olduğundan emin ol.";
+      }).then(function () { btn.disabled = false; });
+    }
+
+    function renderMqttList() {
+      var list = document.getElementById("mqtt-list");
+      if (!list) return;
+      var devices = getPairedDevices();
+      list.innerHTML = mqttFound.map(function (d, i) {
+        var already = devices.some(function (x) { return x && x.protocol === "mqtt" && x.entity === d.name; });
+        return '<div class="flex items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">' +
+          '<div class="min-w-0"><p class="text-sm font-bold truncate dark:text-white">' + escapeHtml(d.name) + '</p>' +
+          '<p class="text-[11px] text-slate-500 truncate dark:text-slate-400">' + escapeHtml([d.vendor, d.model].filter(Boolean).join(" ")) + '</p></div>' +
+          (already
+            ? '<span class="shrink-0 flex items-center gap-1 text-[11px] font-bold text-emerald-600"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i>Ekli</span>'
+            : '<button type="button" class="shrink-0 rounded-full bg-nexusPurple px-4 py-2 text-[11px] font-bold text-white active:scale-[0.98]" onclick="addMqttDevice(' + i + ')">Ekle</button>') +
+          '</div>';
+      }).join("");
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function addMqttDevice(index) {
+      var d = mqttFound[index];
+      if (!d || !mqttBroker) return;
+      storeFoundDevice({
+        host: mqttBroker.host,
+        protocol: "mqtt",
+        name: d.name,
+        model: [d.vendor, d.model].filter(Boolean).join(" ") || "Zigbee",
+        kind: d.kind === "light" ? "light" : "plug",
+        caps: d.caps.slice(),
+        img: d.kind === "light" ? "generic-led-bulb.png" : "generic-smart-plug.png",
+        endpointId: d.name,
+        entity: d.name,
+        options: { mqttBase: mqttBroker.base, brightnessMax: d.brightnessMax },
+        secret: mqttBroker.creds || undefined,
+      });
+      renderMqttList();
+      setScanStatus(d.name + " eklendi.", "ok");
+    }
+
     var subnetFindings = [];
+
+    // Bağlayıcının gerçek cihazla doğrulanıp doğrulanmadığı (supported-devices.js verified alanı)
+    function verifiedChip(protocol) {
+      if (window.nexusIsVerified && nexusIsVerified(protocol)) {
+        return '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold text-emerald-600"><i data-lucide="badge-check" class="h-3 w-3"></i>Doğrulandı</span>';
+      }
+      return '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold nx-count-badge" title="Bu bağlantı türü henüz gerçek bir cihazla denenmedi.">Henüz doğrulanmadı</span>';
+    }
 
     function renderSubnetFindings() {
       var host = document.getElementById("lan-subnet-results");
@@ -482,6 +577,7 @@
           '<div class="min-w-0">' +
           '<p class="text-sm font-bold truncate dark:text-white">' + escapeHtml(found.name) + '</p>' +
           '<p class="text-[11px] text-slate-500 truncate dark:text-slate-400">' + protoLabel + ' · ' + escapeHtml(found.host) + '</p>' +
+          '<div class="mt-1">' + verifiedChip(proto) + '</div>' +
           '</div></div>' +
           (already
             ? '<span class="shrink-0 flex items-center gap-1 text-[11px] font-bold text-emerald-600"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i>Ekli</span>'
@@ -591,7 +687,8 @@
         tasmota: { icon: "plug-zap", color: "#f59e0b" },
         wled: { icon: "lightbulb", color: "#d946ef" },
         esphome: { icon: "cpu", color: "#10b981" },
-        wol: { icon: "power", color: "#6366f1" }
+        wol: { icon: "power", color: "#6366f1" },
+        mqtt: { icon: "radio-tower", color: "#eab308" }
       };
       list.innerHTML = groups.map(function (g) {
         var desk = g.availability === "desktop";
@@ -613,6 +710,7 @@
           '<div class="flex items-center justify-between gap-2"><p class="truncate text-sm font-bold">' + escapeHtml(g.brand) + "</p>" +
           (desk ? '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold nx-count-badge"><i data-lucide="monitor" class="h-3 w-3"></i>Masaüstü</span>' : "") + "</div>" +
           '<p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-300">' + escapeHtml(g.note || "") + "</p>" +
+          '<div class="mt-1.5">' + verifiedChip(g.protocol) + "</div>" +
           (thumbs ? '<div class="mt-2.5 flex flex-wrap gap-1.5">' + thumbs + "</div>" : "") +
           "</div></div>";
       }).join("");
@@ -620,6 +718,7 @@
       if (window.lucide) lucide.createIcons();
     })();
     renderTuyaPairing();
+    renderMqttPairing();
     // QR / kurulum kodu ekranından gelen yerel ağ adresi: otomatik doldur ve cihazı tanı
     (function () {
       var host = new URLSearchParams(location.search).get("host");

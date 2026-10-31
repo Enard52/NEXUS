@@ -622,8 +622,9 @@ window.addEventListener('error', function(e) {
 
   function startBadgeWatch() {
     updateNavBadge();
-    // Aynı sekmede yeni olay eklenirse yakalamak için hafif polling
-    setInterval(updateNavBadge, 2000);
+    // Aynı sekmede yeni olay eklenirse yakalamak için hafif polling; gizli sayfada rozet görünmez, atlanır.
+    setInterval(function () { if (!document.hidden) updateNavBadge(); }, 2000);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) updateNavBadge(); });
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startBadgeWatch);
@@ -920,25 +921,42 @@ window.nexusCopy = function (text) {
 // Anonim hata raporlama (issue #15): window.onerror → client-error Edge
 // Function. Kişisel veri yok (sayfa, sürüm, platform, mesaj). Ayarlardan
 // kapatılabilir: nexusSetItem('nexusErrorReporting', 'off').
+// Aynı kayıt ayrıca yerel günlüğe (nexusErrorLog, son 50) yazılır: yalnız bu cihazda kalır,
+// buluta/yedeğe girmez (cloud-sync STATE_EXCLUDE); Ayarlar → Hata Günlüğü'nden kopyalanır.
 (function () {
   if (window.__nexusErrorHook) return;
   window.__nexusErrorHook = true;
+  var LOG_KEY = 'nexusErrorLog';
+  var LOG_MAX = 50;
   var sent = 0;
+  function readLog() {
+    try { var v = JSON.parse(nexusGetItem(LOG_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; }
+  }
+  window.nexusErrorLog = {
+    read: readLog,
+    clear: function () { try { nexusSetItem(LOG_KEY, '[]'); } catch (e) { /* depolama yok */ } }
+  };
   window.addEventListener('error', function (e) {
     try {
+      var entry = {
+        page: location.pathname.split('/').pop(),
+        version: window.NEXUS_APP_VERSION || '',
+        platform: document.documentElement.classList.contains('nx-desk') ? 'desktop'
+          : (window.Capacitor && Capacitor.isNativePlatform ? 'android' : 'web'),
+        message: String(e.message || '').slice(0, 400) + ' @' + String((e.filename || '')).split('/').pop() + ':' + (e.lineno || 0)
+      };
+      try {
+        var log = readLog();
+        log.push({ at: new Date().toISOString(), page: entry.page, version: entry.version, platform: entry.platform, message: entry.message });
+        nexusSetItem(LOG_KEY, JSON.stringify(log.slice(-LOG_MAX)));
+      } catch (e3) { /* kota dolu: günlük atlanır */ }
       if (nexusGetItem('nexusErrorReporting') === 'off') return;
       if (!window.NEXUS_CLOUD || !NEXUS_CLOUD.url || sent >= 5) return; // oturum başına en fazla 5
       sent++;
       fetch(NEXUS_CLOUD.url.replace(/\/$/, '') + '/functions/v1/client-error', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          page: location.pathname.split('/').pop(),
-          version: window.NEXUS_APP_VERSION || '',
-          platform: document.documentElement.classList.contains('nx-desk') ? 'desktop'
-            : (window.Capacitor && Capacitor.isNativePlatform ? 'android' : 'web'),
-          message: String(e.message || '').slice(0, 400) + ' @' + String((e.filename || '')).split('/').pop() + ':' + (e.lineno || 0)
-        })
+        body: JSON.stringify(entry)
       }).catch(function () { /* sessiz: raporlama hatası kullanıcıyı rahatsız etmez */ });
     } catch (err2) { /* asla ikincil hata üretme */ }
   });
@@ -1023,4 +1041,143 @@ window.nexusCopy = function (text) {
     var detail = event && event.detail ? String(event.detail) : '';
     return window.nexusToast([title, detail].filter(Boolean).join(' — '), { type: 'info', duration: 4200 });
   };
+})();
+
+// ---------- Üst başlık: aşağı kaydırınca tamamen gizlenir, yukarı kaydırınca geri gelir ----------
+// Tüm ekranlarda (telefon + masaüstü) aynı davranış. Sayfanın kendisi kayıyorsa başlık yapışkan (sticky)
+// yapılır ve yukarı ötelenir; iç bir alan kayıyorsa (sohbet, entegrasyonlar) başlık yukarı katlanır.
+// Zemin: başlığın arkasındaki sayfa zemininin o anki rengi (geçişli zeminde kaydırma konumuna göre),
+// ayrı bir kutu gibi görünmesin. Başlıkta odak varken gizlenmez. Görünüm kuralları: nexus-ui.css .nx-hdr-auto.
+(function () {
+  if (window.__nexusHdrAuto) return;
+  window.__nexusHdrAuto = true;
+  var STEP = 8; // bu kadar piksellik aynı yönde kaydırma birikmeden durum değişmez
+
+  function rgbList(s) {
+    var out = [], re = /rgba?\(([^)]+)\)/g, m;
+    while ((m = re.exec(s))) {
+      var p = m[1].split(',').map(function (x) { return parseFloat(x); });
+      out.push([p[0], p[1], p[2], p.length > 3 ? p[3] : 1]);
+    }
+    return out;
+  }
+
+  function findHeader() {
+    var list = document.querySelectorAll('header');
+    for (var i = 0; i < list.length; i++) {
+      var h = list[i], r = h.getBoundingClientRect();
+      if (!h.offsetHeight || h.offsetHeight > 220 || r.top + (window.scrollY || 0) > 8) continue;
+      // İçeriğin üstüne bindirilmiş başlıklar (harita: saydam geçişli) kendi tasarımıyla kalır
+      if (getComputedStyle(h).position === 'absolute') continue;
+      // Gizli paneller / açılır sayfalar içindeki başlıklar değil, sayfanın kendi başlığı
+      for (var n = h.parentElement, ok = true; n && n !== document.body; n = n.parentElement) {
+        if (getComputedStyle(n).position === 'fixed') { ok = false; break; }
+      }
+      if (ok) return h;
+    }
+    return null;
+  }
+
+  // Başlığın arkasındaki zemin: ilk boyalı ata (düz renk ya da geçiş)
+  function backdropOf(h) {
+    for (var n = h.parentElement; n; n = n.parentElement) {
+      var cs = getComputedStyle(n);
+      if (cs.backgroundImage && cs.backgroundImage.indexOf('gradient') !== -1) {
+        var stops = rgbList(cs.backgroundImage);
+        if (stops.length >= 2) return { el: n, from: stops[0], to: stops[stops.length - 1] };
+      }
+      var c = rgbList(cs.backgroundColor)[0];
+      if (c && c[3] > 0) return { el: n, from: c, to: c };
+    }
+    var dark = document.documentElement.classList.contains('dark');
+    var d = dark ? [15, 23, 42, 1] : [236, 233, 253, 1];
+    return { el: document.documentElement, from: d, to: d };
+  }
+
+  function init() {
+    var h = findHeader();
+    if (!h || h.__nxHdrAuto) return;
+    h.__nxHdrAuto = true;
+    h.classList.add('nx-hdr-auto');
+    var hidden = false, acc = 0, lastWin = window.scrollY || 0, raf = 0, bd = backdropOf(h);
+    var winScroll = getComputedStyle(h).position !== 'fixed';
+    function paint() {
+      raf = 0;
+      var y = window.scrollY || document.documentElement.scrollTop || 0;
+      var H = Math.max(1, bd.el === document.documentElement ? document.documentElement.scrollHeight : bd.el.offsetHeight);
+      var t = Math.min(1, Math.max(0, y / H));
+      var c = [0, 1, 2].map(function (i) { return Math.round(bd.from[i] + (bd.to[i] - bd.from[i]) * t); });
+      var bg = 'rgba(' + c.join(',') + ',0.96)';
+      h.style.background = bg;
+      if (h.__nxAutoTabs) h.__nxAutoTabs.style.background = bg;
+    }
+    function schedulePaint() { if (!raf) raf = requestAnimationFrame(paint); }
+    function set(hide, inner) {
+      if (hide && h.contains(document.activeElement) && document.activeElement !== document.body) hide = false;
+      if (hide === hidden) return;
+      hidden = hide;
+      h.classList.toggle('nx-hdr-hidden', hide && !inner);
+      // İç alan kayan sayfada başlık akıştan katlanır (yer kaplamaya devam etmesin)
+      h.style.marginTop = hide && inner ? -h.offsetHeight + 'px' : '';
+      var tabs = h.__nxAutoTabs;
+      if (tabs) {
+        tabs.style.transition = 'transform .25s ease';
+        tabs.style.transform = hide && !inner ? 'translateY(' + -h.offsetHeight + 'px)' : '';
+      }
+      if (!hide) schedulePaint();
+    }
+    function step(y, last, limit, inner) {
+      var dy = y - last;
+      if (y <= limit) { acc = 0; set(false, inner); return; }
+      if ((dy > 0 && acc < 0) || (dy < 0 && acc > 0)) acc = 0;
+      acc += dy;
+      if (acc > STEP) set(true, inner);
+      else if (acc < -STEP) set(false, inner);
+    }
+    document.addEventListener('scroll', function (e) {
+      var t = e.target;
+      if (t === document || t === document.documentElement || t === document.body) {
+        ensureSticky();
+        var y = window.scrollY || document.documentElement.scrollTop || 0;
+        step(y, lastWin, h.offsetHeight, false);
+        lastWin = y;
+        schedulePaint();
+        return;
+      }
+      // İç kaydırıcı: büyük, başlığı içermeyen, sabit panelde olmayan alan
+      if (!t || !t.getBoundingClientRect || t.contains(h) || h.contains(t)) return;
+      if (t.__nxHdrInner === undefined) {
+        var ok = t.clientHeight > window.innerHeight * 0.5;
+        for (var n = t; ok && n && n !== document.body; n = n.parentElement) {
+          if (getComputedStyle(n).position === 'fixed') ok = false;
+        }
+        t.__nxHdrInner = ok;
+      }
+      if (!t.__nxHdrInner) return;
+      var yi = t.scrollTop;
+      step(yi, t.__nxHdrLast || 0, 24, true);
+      t.__nxHdrLast = yi;
+    }, { capture: true, passive: true });
+    // Klavyeyle başlığa gelince görünür olsun
+    h.addEventListener('focusin', function () { set(false, false); });
+    // Sayfa kendisi kayıyorsa başlık yapışkan olmalı ki yukarı kaydırınca geri gelebilsin. İlk pencere
+    // kaydırmasında yapılır: iç alanı kayan sayfada yapışkanlık katlanan başlığı tepede tutardı.
+    function ensureSticky() {
+      if (!winScroll) return;
+      winScroll = false;
+      if (getComputedStyle(h).position === 'sticky') return;
+      h.style.position = 'sticky';
+      h.style.top = '0';
+      if ((parseInt(getComputedStyle(h).zIndex, 10) || 0) < 30) h.style.zIndex = '30';
+    }
+    function refresh() { bd = backdropOf(h); paint(); }
+    window.addEventListener('themeChanged', function () { setTimeout(refresh, 0); });
+    if (window.MutationObserver) {
+      new MutationObserver(function () { setTimeout(refresh, 0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    }
+    refresh();
+  }
+  function boot() { init(); setTimeout(init, 400); } // masaüstü düzeni (desktop.js) sayfayı yeniden kurabilir
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();

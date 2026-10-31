@@ -3334,6 +3334,36 @@ window.NEXUS_EN = {
     "Aile Mesajları": "Family Messages",
     "Ev üyelerinden yeni mesaj": "New message from home members",
     "Yazı Boyutu": "Text Size",
+    "Broker'a bağlanılamadı. Adresin ve portun doğru, broker'ın açık olduğundan emin ol.":
+      "Could not connect to the broker. Make sure the address and port are correct and the broker is running.",
+    "MQTT broker üzerinden Zigbee lamba ve prizler (masaüstü uygulamasında); şimdilik aç/kapat ve parlaklık":
+      "Zigbee lights and plugs through an MQTT broker (in the desktop app); on/off and brightness for now",
+    "Zigbee2MQTT cihazı ekle (MQTT broker)": "Add a Zigbee2MQTT device (MQTT broker)",
+    "Broker'ın (ör. Mosquitto) yerel IP adresini yaz. Kullanıcı adı ve parola yalnızca bu cihazda saklanır. Şimdilik lamba ve prizlerde aç/kapat ve parlaklık desteklenir.":
+      "Enter the local IP address of the broker (e.g. Mosquitto). The username and password are stored only on this device. On/off and brightness for lights and plugs are supported for now.",
+    "Broker IP adresi (ör. 192.168.1.10)": "Broker IP address (e.g. 192.168.1.10)",
+    "Port (varsayılan 1883)": "Port (default 1883)",
+    "Kullanıcı adı (yoksa boş bırak)": "Username (leave empty if none)",
+    "Parola (yoksa boş bırak)": "Password (leave empty if none)",
+    "Temel konu (varsayılan zigbee2mqtt)": "Base topic (default zigbee2mqtt)",
+    "Cihazları getir": "Fetch devices",
+    "Broker'ın IP adresini yaz.": "Enter the broker's IP address.",
+    "Port 1 ile 65535 arasında olmalı.": "The port must be between 1 and 65535.",
+    "Broker'a bağlanılıyor…": "Connecting to the broker…",
+    "Broker'da NEXUS'un kontrol edebileceği lamba ya da priz bulunamadı.":
+      "No light or plug that NEXUS can control was found on the broker.",
+    "Zigbee Ampul (Zigbee2MQTT)": "Zigbee Bulb (Zigbee2MQTT)",
+    "Zigbee Priz (Zigbee2MQTT)": "Zigbee Plug (Zigbee2MQTT)",
+    Doğrulandı: "Verified",
+    "Henüz doğrulanmadı": "Not yet verified",
+    "Bu bağlantı türü henüz gerçek bir cihazla denenmedi.": "This connection type has not been tested with a real device yet.",
+    "Bulut Eşitleme Sıklığı": "Cloud Sync Frequency",
+    "Bulut eşitleme sıklığı": "Cloud sync frequency",
+    "Sık (15 sn)": "Frequent (15 s)",
+    "Normal (45 sn)": "Normal (45 s)",
+    "Tasarruflu (5 dk)": "Battery saver (5 min)",
+    "Uygulama açıkken diğer cihazlarınla ne sıklıkla eşitlensin. Uygulama arka plandayken düzenli eşitleme durur; değişiklikler anlık bağlantı açıksa yine gelir.":
+      "How often to sync with your other devices while the app is open. Regular syncing pauses while the app is in the background; changes still arrive if the live connection is open.",
     "Uygulama İçi Bildirim Sesi": "In-App Notification Sound",
     Yumuşak: "Soft",
     "Yüzen Arama Düğmesi": "Floating Search Button",
@@ -3344,6 +3374,18 @@ window.NEXUS_EN = {
     "Cihaz listesi, otomasyonlar, senaryolar ve ayarlar bir dosyaya kaydedilir. Cihaz parolaları, yerel anahtarlar, Telegram anahtarı ve oturum bilgisi yedeğe girmez.":
       "Your device list, automations, scenes and settings are saved to a file. Device passwords, local keys, the Telegram token and your session are not included in the backup.",
     "Yedeği dışa aktar": "Export backup",
+    "Hata Günlüğü": "Error Log",
+    "Uygulamada oluşan hatalar yalnız bu cihazda tutulur. Bir sorun bildirirken raporu kopyalayıp GitHub'daki hata bildirimine yapıştırabilirsin.":
+      "Errors that happen in the app are kept only on this device. When reporting a problem, you can copy the report and paste it into a GitHub issue.",
+    "Anonim Hata Raporu Gönder": "Send Anonymous Error Reports",
+    "Anonim hata raporu gönder": "Send anonymous error reports",
+    "Kayıtlı hata yok.": "No errors recorded.",
+    "Hata raporunu kopyala": "Copy error report",
+    "Günlüğü temizle": "Clear log",
+    "Panoya kopyalanamadı. Bu cihaz pano erişimine izin vermiyor.":
+      "Could not copy to the clipboard. This device does not allow clipboard access.",
+    "Günlük temizlendi.": "Log cleared.",
+    "Hata günlüğü bu sürümde yüklenemedi.": "The error log could not be loaded in this version.",
     "Yedekten geri yükle": "Restore from backup",
     "Eşleşmiş cihazlarına göre hazır; tek dokunuşla eklenir.":
       "Ready for your paired devices; added with a single tap.",

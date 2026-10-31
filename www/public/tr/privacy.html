@@ -616,6 +616,12 @@ a.ft-star-pill svg{width:12px;height:12px;fill:currentColor}
    (verify-site kalıcı denetimi ölçüyor). Dolgu dokunma alanını büyütür, negatif kenar
    boşluğu görsel düzeni aynı bırakır. */
 .dl-note a{display:inline-block;padding:5px 3px;margin:-5px -3px}
+/* "Diğer indirmeler" düz metin değil; resmi logo taşlı chip satırı. */
+.dl-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.dl-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font-size:13px;font-weight:600;box-shadow:var(--shadow);text-decoration:none;
+  transition:border-color .2s ease,color .2s ease,transform .2s ease}
+.dl-chip:hover{border-color:var(--brand);color:var(--brand)}
+.dl-chip svg{flex:none}
 .dl-web-card{margin-top:22px;padding:26px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
@@ -1243,7 +1249,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 <h3>Haklarınız</h3>
 <p>6698 sayılı KVKK m.11 ve (uygulanıyorsa) GDPR kapsamında: verilerinizin işlenip işlenmediğini öğrenme, erişim, düzeltme, silme, işlemeye itiraz ve taşınabilirlik haklarına sahipsiniz. Taleplerinizi sayfa sonundaki destek kanalımız üzerinden iletebilirsiniz. Kişisel Verileri Koruma Kurulu'na şikâyet hakkınız saklıdır.</p>
 <h3>Güvenlik</h3>
-<p>Bağlantılar TLS ile şifrelenir. Veritabanında satır bazlı erişim denetimi vardır: her kullanıcı yalnızca kendi verisini okuyabilir ve yazabilir. Aile Sohbeti mesajları şifreli olarak gönderilir ve saklanır; yalnızca evin üyeleri okuyabilir, uçtan uca şifreleme kullanılmaz. Hiçbir sistem tamamen güvenli değildir; güçlü bir şifre kullanmanızı ve cihazlarınızı güncel tutmanızı öneririz.</p>
+<p>Bağlantılar TLS ile şifrelenir. Veritabanında satır bazlı erişim denetimi vardır: her kullanıcı yalnızca kendi verisini okuyabilir ve yazabilir. Hiçbir sistem tamamen güvenli değildir; güçlü bir şifre kullanmanızı ve cihazlarınızı güncel tutmanızı öneririz.</p>
 <h3>Üçüncü taraf cihazlar</h3>
 <p>Bağladığınız akıllı cihazlar (ör. Shelly, WLED, ESPHome) kendi üreticilerinin sunucularıyla kendi gizlilik politikalarına göre haberleşebilir. NEXUS verilerinizi bu üreticilerle paylaşmaz.</p>
 <h3>Çocuklar</h3>

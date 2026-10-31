@@ -850,6 +850,8 @@
     nexusNotifyChannels: 1,
     nexusNotifySeen: 1,
     nexusNotifyStats: 1,
+    // Yerel hata günlüğü (theme.js): yalnız bu cihazda, kullanıcı kendisi kopyalamadıkça hiçbir yere gitmez.
+    nexusErrorLog: 1,
   };
 
   function currentUserKey() {
@@ -1450,6 +1452,14 @@
     try { return localStorage.getItem("nexusMfaPending") === "1"; } catch (e) { return false; }
   }
 
+  // Düzenli eşitleme sıklığı (Ayarlar → Bulut eşitleme sıklığı). Bilinmeyen değer varsayılana düşer.
+  var SYNC_INTERVALS = { fast: 15000, normal: 45000, slow: 300000 };
+  function syncIntervalMs() {
+    var v = null;
+    try { v = window.nexusGetItem ? window.nexusGetItem("nexusSyncInterval") : localStorage.getItem("nexusSyncInterval"); } catch (e) { v = null; }
+    return SYNC_INTERVALS[v] || SYNC_INTERVALS.normal;
+  }
+
   function startAutoSync() {
     if (typeof document === "undefined" || !enabled() || !currentUserKey() || mfaBlocking()) return;
     var busy = false;
@@ -1473,7 +1483,14 @@
       }).then(function () { busy = false; });
     }
     setTimeout(function () { run(true); startRealtime(); session().then(rememberMailLang); }, 1200);
-    setInterval(run, 45000);
+    // Sayfa gizliyken ağ yoklaması yapılmaz (pil/veri): Realtime kanalı açık kalır,
+    // görünür olunca aşağıdaki visibilitychange hemen bir tur koşar. Aralık her turda yeniden okunur.
+    (function loop() {
+      setTimeout(function () {
+        if (!document.hidden) run(false);
+        loop();
+      }, syncIntervalMs());
+    })();
     document.addEventListener("visibilitychange", function () { run(false); startRealtime(); });
     window.addEventListener("online", function () {
       // bağlantıya geçince bekleyen işleri bekleme; hemen dene, sonra tam senkron.
@@ -1753,7 +1770,7 @@
     stopRealtime: rtStop,
     realtimeActive: function () { return !!rt.socket && rt.socket.readyState === 1; },
     // test penetrasyonu: saf yardimcilara erisim
-    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
+    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState, syncIntervalMs: syncIntervalMs },
   };
 
   startAutoSync();

@@ -2132,17 +2132,35 @@
 
   // --- gizli bilgi deposu (bu cihaza özel, buluta gitmez) ----------------------------------------
   var SECRET_KEY = "nexusLanSecrets";
+  // Masaüstü uygulamasında kayıt işletim sistemi anahtarlığıyla şifrelenir ("enc1:" öneki); tarayıcı ve
+  // anahtarlığı olmayan ortamlarda düz JSON kalır (UI/belgeler bunu dürüstçe söyler). Eski düz kayıt ilk
+  // okumada şifrelenip yerine yazılır.
+  var SECRET_ENC = "enc1:";
+  function secretCrypt() {
+    var d = desktopBridge(), c = d && d.secretCrypt;
+    try { return c && typeof c.encrypt === "function" && typeof c.decrypt === "function" && c.available() ? c : null; } catch (e) { return null; }
+  }
+  function rawGet() { return typeof window.nexusGetItem === "function" ? window.nexusGetItem(SECRET_KEY) : localStorage.getItem(SECRET_KEY); }
+  function rawSet(v) { if (typeof window.nexusSetItem === "function") window.nexusSetItem(SECRET_KEY, v); else localStorage.setItem(SECRET_KEY, v); }
   function readSecrets() {
     try {
-      var raw = typeof window.nexusGetItem === "function" ? window.nexusGetItem(SECRET_KEY) : localStorage.getItem(SECRET_KEY);
-      var all = JSON.parse(raw || "{}");
+      var raw = rawGet() || "{}", c = secretCrypt();
+      if (raw.indexOf(SECRET_ENC) === 0) {
+        if (!c) return {};
+        var plain = c.decrypt(raw.slice(SECRET_ENC.length));
+        raw = plain == null ? "{}" : plain;
+      } else if (c && raw !== "{}") {
+        var enc = c.encrypt(raw);
+        if (enc) rawSet(SECRET_ENC + enc); // eski düz kaydı taşı
+      }
+      var all = JSON.parse(raw);
       return all && typeof all === "object" ? all : {};
     } catch (e) { return {}; }
   }
   function writeSecrets(all) {
     try {
-      var raw = JSON.stringify(all);
-      if (typeof window.nexusSetItem === "function") window.nexusSetItem(SECRET_KEY, raw); else localStorage.setItem(SECRET_KEY, raw);
+      var raw = JSON.stringify(all), c = secretCrypt(), enc = c ? c.encrypt(raw) : null;
+      rawSet(enc ? SECRET_ENC + enc : raw);
       return true;
     } catch (e) { return false; }
   }
@@ -2848,6 +2866,151 @@
     },
   };
 
+  // =================================== MQTT / ZIGBEE2MQTT ===================================
+  // Kaynak: MQTT 3.1.1 (OASIS) + Zigbee2MQTT "MQTT topics and messages" belgesi; paket/konu kodlaması lan-mqtt.js.
+  // Yalnızca masaüstünde: broker'a kalıcı TCP gerekir (desktop/main.cjs lan:mqtt-*). GERÇEK broker ile
+  // DOĞRULANMADI (docs/HARDWARE-VERIFICATION.md). Her işlem kısa bir oturumdur: CONNECT → (SUBSCRIBE) →
+  // PUBLISH → DISCONNECT. Cihaz kaydı: host = broker adresi:port, entity = Zigbee2MQTT cihaz adı,
+  // options.mqttBase = temel konu, options.brightnessMax. Broker kullanıcı/parolası yalnız yerel gizli depoda.
+  function mqttBridge() {
+    var d = desktopBridge();
+    var m = d && d.mqttSession;
+    return m && typeof m.open === "function" && typeof m.recv === "function" ? m : null;
+  }
+  var mqttCodecLoading = null;
+  function mqttCodec() {
+    if (window.nexusMqtt) return Promise.resolve(window.nexusMqtt);
+    if (mqttCodecLoading) return mqttCodecLoading;
+    mqttCodecLoading = new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.src = "lan-mqtt.js";
+      s.onload = function () { window.nexusMqtt ? resolve(window.nexusMqtt) : reject(new Error("MQTT modülü yüklenemedi")); };
+      s.onerror = function () { mqttCodecLoading = null; reject(new Error("MQTT modülü yüklenemedi")); };
+      document.head.appendChild(s);
+    });
+    return mqttCodecLoading;
+  }
+  function mqttAddr(device) {
+    var raw = baseUrl(device).replace(/^https?:\/\//, "");
+    var parts = raw.split(":");
+    return { host: parts[0], port: Number(parts[1]) || 1883 };
+  }
+  // Tek oturum: bağlan, işi yap, kapat. fn(client) bir Promise döndürür.
+  function mqttSession(addr, creds, fn) {
+    var bridge = mqttBridge();
+    if (!bridge) return Promise.reject(secureError("MQTT yalnızca NEXUS masaüstü uygulamasında çalışır.", "no-bridge"));
+    return mqttCodec().then(function (M) {
+      var P = M.packets, parser = P.createParser(), queue = [], nextId = P.packetIds(), sid = null;
+      function send(bytes) { return bridge.send({ id: sid, bytes: Array.from(bytes) }); }
+      // Koşulu sağlayan ilk paketi bekler; arada gelen diğer paketler kuyrukta kalır.
+      function waitFor(match, timeoutMs) {
+        var until = Date.now() + (timeoutMs || SECURE_TIMEOUT_MS);
+        function scan() {
+          for (var i = 0; i < queue.length; i++) if (match(queue[i])) return queue.splice(i, 1)[0];
+          return null;
+        }
+        function loop() {
+          var hit = scan();
+          if (hit) return Promise.resolve(hit);
+          var left = until - Date.now();
+          if (left <= 0) return Promise.reject(secureError("Broker yanıt vermedi (zaman aşımı).", "timeout"));
+          return bridge.recv({ id: sid, timeoutMs: Math.min(left, 3000) }).then(function (bytes) {
+            if (bytes && bytes.length) queue = queue.concat(parser.feed(bytes));
+            return loop();
+          });
+        }
+        return loop();
+      }
+      var client = {
+        M: M,
+        subscribe: function (topic) {
+          var pid = nextId();
+          return send(P.encodeSubscribe({ packetId: pid, topics: [topic] })).then(function () {
+            return waitFor(function (p) { return p.type === "suback" && p.packetId === pid; });
+          }).then(function (ack) {
+            if (!ack.granted[0]) throw secureError("Broker bu konuya abone olmaya izin vermedi: " + topic, "denied");
+          });
+        },
+        publish: function (topic, payload) { return send(P.encodePublish({ topic: topic, payload: payload, qos: 0 })); },
+        message: function (topic, timeoutMs) {
+          return waitFor(function (p) { return p.type === "publish" && p.topic === topic; }, timeoutMs).then(function (p) {
+            if (p.qos === 1 && p.packetId) send(P.encodePuback(p.packetId));
+            return P.text(p.payload);
+          });
+        },
+      };
+      return bridge.open({ host: addr.host, port: addr.port, timeoutMs: SECURE_TIMEOUT_MS }).then(function (id) {
+        sid = id;
+        var c = creds || {};
+        return send(P.encodeConnect({
+          clientId: "nexus-" + Math.random().toString(36).slice(2, 10),
+          keepAlive: 30,
+          username: c.mqttUser ? String(c.mqttUser) : undefined,
+          password: c.mqttUser && c.mqttPass ? String(c.mqttPass) : undefined,
+        }));
+      }).then(function () {
+        return waitFor(function (p) { return p.type === "connack"; });
+      }).then(function (ack) {
+        if (!ack.ok) throw secureError(ack.message || "Broker bağlantıyı reddetti.", ack.returnCode === 4 || ack.returnCode === 5 ? "auth" : "refused");
+        return fn(client);
+      }).then(function (result) {
+        return send(P.encodeDisconnect()).catch(function () {}).then(function () { return result; });
+      }).then(function (result) {
+        bridge.close(sid);
+        return result;
+      }, function (e) {
+        if (sid != null) bridge.close(sid);
+        throw e;
+      });
+    });
+  }
+  function mqttDeviceCtx(device) {
+    var o = device.options || {};
+    return { name: device.entity, base: o.mqttBase || "zigbee2mqtt", brightnessMax: o.brightnessMax || 254 };
+  }
+  var mqtt = {
+    id: "mqtt",
+    label: "MQTT (Zigbee2MQTT)",
+    caps: ["switch", "brightness"],
+    discoverable: false, // broker adresi ve (varsa) kimlik bilgisiyle eşleştirme formundan eklenir
+    needsMqtt: true,
+    // Eşleştirme: broker'daki Zigbee2MQTT cihaz listesi (bridge/devices, retained).
+    listDevices: function (host, port, creds, base) {
+      var b = base || "zigbee2mqtt";
+      return mqttSession({ host: host, port: Number(port) || 1883 }, creds, function (c) {
+        var topic = c.M.z2m.bridgeDevicesTopic(b);
+        return c.subscribe(topic).then(function () { return c.message(topic, 5000); }).then(function (text) {
+          return c.M.z2m.parseDevices(text);
+        });
+      }).catch(function (e) {
+        if (e && e.code === "timeout") throw secureError("Broker'a bağlanıldı ama Zigbee2MQTT cihaz listesi gelmedi. Temel konuyu (ör. zigbee2mqtt) kontrol et.", "no-z2m");
+        throw e;
+      });
+    },
+    read: function (device) {
+      var ctx = mqttDeviceCtx(device);
+      return mqttSession(mqttAddr(device), secretsFor(device), function (c) {
+        var t = c.M.z2m.topics(ctx.name, ctx.base);
+        var q = c.M.z2m.query(ctx.name, ctx.base);
+        return c.subscribe(t.state)
+          .then(function () { return c.publish(q.topic, q.payload); })
+          .then(function () { return c.message(t.state, 4000); })
+          .then(function (text) {
+            var st = c.M.z2m.parseState(text, { brightnessMax: ctx.brightnessMax });
+            if (!st) throw new Error("mqtt: durum okunamadı");
+            return st;
+          });
+      });
+    },
+    write: function (device, capability, value) {
+      var ctx = mqttDeviceCtx(device);
+      return mqttSession(mqttAddr(device), secretsFor(device), function (c) {
+        var cmd = c.M.z2m.command(ctx.name, capability, value, { brightnessMax: ctx.brightnessMax }, ctx.base);
+        return c.publish(cmd.topic, cmd.payload);
+      });
+    },
+  };
+
   var protocols = [
     shelly,
     shellyRpc,
@@ -2866,10 +3029,11 @@
     govee,
     tuyaLocal,
     wol,
+    mqtt,
   ];
 
   function available(p) {
-    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()) && (!p.needsBinHttp || !!binBridge()) && (!p.needsTcpSession || !!tcpSessionBridge());
+    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()) && (!p.needsBinHttp || !!binBridge()) && (!p.needsTcpSession || !!tcpSessionBridge()) && (!p.needsMqtt || !!mqttBridge());
   }
   function discoverable(p) { return available(p) && p.discoverable !== false; }
 
@@ -3182,7 +3346,8 @@
     // Tapo / Tuya: eşleştirme doğrulaması (gerçek el sıkışma/sorgu) ve cihaza özel gizli bilgi deposu
     tapo: { verify: tapo.verify },
     tuya: { verify: tuyaLocal.verify },
-    hasSecure: function () { return { tapo: !!binBridge(), tuya: !!tcpSessionBridge() }; },
+    hasSecure: function () { return { tapo: !!binBridge(), tuya: !!tcpSessionBridge(), mqtt: !!mqttBridge() }; },
+    mqtt: { listDevices: mqtt.listDevices },
     secrets: secrets,
     internals: {
       aesEcbEncrypt: aesEcbEncrypt, aesEcbDecrypt: aesEcbDecrypt, crc32: crc32, tuyaEncode: tuyaEncode, tuyaDecode: tuyaDecode,

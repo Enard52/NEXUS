@@ -110,6 +110,29 @@ describe("bulut yapılandırması yokken yerel mod", () => {
   });
 });
 
+describe("bulut eşitleme sıklığı (nexusSyncInterval)", () => {
+  it("ayar yoksa ya da bilinmiyorsa varsayılan 45 sn kullanılır", () => {
+    const { cloud, win } = load({ config: null, user: "u1" });
+    expect(cloud._internal.syncIntervalMs()).toBe(45000);
+    (win.nexusSetItem as (k: string, v: string) => void)("nexusSyncInterval", "çok-hızlı");
+    expect(cloud._internal.syncIntervalMs()).toBe(45000);
+  });
+
+  it("kullanıcının seçtiği sıklık aktif kullanıcının anahtarından okunur", () => {
+    const { cloud, win } = load({ config: null, user: "u1" });
+    const set = win.nexusSetItem as (k: string, v: string) => void;
+    set("nexusSyncInterval", "fast");
+    expect(cloud._internal.syncIntervalMs()).toBe(15000);
+    set("nexusSyncInterval", "slow");
+    expect(cloud._internal.syncIntervalMs()).toBe(300000);
+  });
+
+  it("düzenli eşitleme gizli sayfada ağ yoklaması yapmaz", () => {
+    expect(CLOUD_SYNC).toMatch(/if \(!document\.hidden\) run\(false\);/);
+    expect(CLOUD_SYNC).not.toMatch(/setInterval\(run,/);
+  });
+});
+
 describe("cihaz kayıtlarının tutarlılığı", () => {
   it("eski kayıtlara kararlı id kazandırır, ikinci çağrı değişmez", () => {
     const { cloud } = load({ config: CONFIG });

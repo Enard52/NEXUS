@@ -3,6 +3,16 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { content, brand, priceFor, PRICES, CHECKOUT_URLS, MANAGE_URL } from './site-content.mjs';
 import { LEGAL_DOCS } from './site-legal-content.mjs';
+import { siApple, siLinux, siRaspberrypi } from 'simple-icons';
+
+/* --- Platform logoları: resmi logo biçimleri (simple-icons) ---
+   Apple ve Raspberry Pi kendi marka renkleriyle; Tux'un simple-icons marka
+   rengi (#FCC624) açık zeminde okunmaz olduğundan gövde siyahı kullanılır. */
+const OSI = (fill, path) =>
+  `<svg viewBox="0 0 24 24" fill="${fill.startsWith('#') ? fill : '#' + fill}" width="15" height="15" aria-hidden="true"><path d="${path}"/></svg>`;
+const LOGO_APPLE = OSI(siApple.hex, siApple.path);
+const LOGO_LINUX = OSI('#1B1F24', siLinux.path);
+const LOGO_RPI = OSI(siRaspberrypi.hex, siRaspberrypi.path);
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = join(ROOT, 'www', 'public');
@@ -722,6 +732,12 @@ a.ft-star-pill svg{width:12px;height:12px;fill:currentColor}
    (verify-site kalıcı denetimi ölçüyor). Dolgu dokunma alanını büyütür, negatif kenar
    boşluğu görsel düzeni aynı bırakır. */
 .dl-note a{display:inline-block;padding:5px 3px;margin:-5px -3px}
+/* "Diğer indirmeler" düz metin değil; resmi logo taşlı chip satırı. */
+.dl-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.dl-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text);font-size:13px;font-weight:600;box-shadow:var(--shadow);text-decoration:none;
+  transition:border-color .2s ease,color .2s ease,transform .2s ease}
+.dl-chip:hover{border-color:var(--brand);color:var(--brand)}
+.dl-chip svg{flex:none}
 .dl-web-card{margin-top:22px;padding:26px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
@@ -3503,13 +3519,13 @@ function renderDownloads(c) {
         .join('\n      ')}
     </div>
     <p class="dl-note">${esc(c.downloads.smartScreenNote)}</p>
-    <p class="dl-note dl-more">${c.lang === 'tr' ? 'Diğer indirmeler' : 'More downloads'}:
-      <a href="${DL_BASE}/NEXUS-mac.dmg">macOS (.dmg)</a> ·
-      <a href="${DL_BASE}/NEXUS-linux.AppImage">Linux AppImage</a> ·
-      <a href="${DL_BASE}/NEXUS-linux.rpm">Linux .rpm</a> ·
-      <a href="${DL_BASE}/NEXUS-linux-arm64.AppImage">Linux ARM64 (Raspberry Pi)</a> ·
-      <a href="https://github.com/Enard52/NEXUS/blob/main/docs/IOS-BUILD.md" target="_blank" rel="noopener">${c.lang === 'tr' ? 'iPhone (ücretsiz Apple ID ile)' : 'iPhone (free Apple ID)'}</a>
-    </p>
+    <div class="dl-chips">
+      <a class="dl-chip" href="https://github.com/Enard52/NEXUS/blob/main/docs/BUILD-ALL-PLATFORMS.md" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'macOS kurulum kılavuzu — kaynak koddan derleme' : 'macOS build guide — build from source'}">${LOGO_APPLE}${c.lang === 'tr' ? 'macOS (kaynaktan kurulum)' : 'macOS (build from source)'}</a>
+      <a class="dl-chip" href="${DL_BASE}/NEXUS-linux.AppImage">${LOGO_LINUX}Linux AppImage</a>
+      <a class="dl-chip" href="${DL_BASE}/NEXUS-linux.rpm">${LOGO_LINUX}Linux .rpm</a>
+      <a class="dl-chip" href="${DL_BASE}/NEXUS-linux-arm64.AppImage">${LOGO_RPI}Linux ARM64 (Raspberry Pi)</a>
+      <a class="dl-chip" href="https://github.com/Enard52/NEXUS/blob/main/docs/IOS-BUILD.md" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'iPhone kurulum kılavuzu — ücretsiz Apple ID ile' : 'iPhone build guide — free Apple ID'}">${LOGO_APPLE}${c.lang === 'tr' ? 'iPhone (ücretsiz Apple ID ile)' : 'iPhone (free Apple ID)'}</a>
+    </div>
     <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'Tüm kurucular, SHA-256 dosyaları ve güncelleme listeleri bu depoda' : 'Every installer, SHA-256 file and updater manifest lives in this repository'}">${icon('github')}${c.lang === 'tr' ? 'Kurulum deposunu gör' : 'View the installer repository'}</a></div>
   </div>
 </section>`;
