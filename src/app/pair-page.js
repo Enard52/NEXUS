@@ -464,7 +464,7 @@
     function renderSubnetFindings() {
       var host = document.getElementById("lan-subnet-results");
       var devices = getPairedDevices();
-      var PROTO_ICON = { wled: "lightstrip", tasmota: "plug-zap", shelly: "plug-zap", hue: "lightbulb", homeassistant: "home", esphome: "cpu" };
+      var PROTO_ICON = { wled: "lamp", tasmota: "plug-zap", shelly: "plug-zap", hue: "lightbulb", homeassistant: "home", esphome: "cpu" };
       var PROTO_COLOR = { wled: "bg-cyan-50 text-cyan-500 dark:bg-cyan-500/10 dark:text-cyan-300", tasmota: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-300", shelly: "bg-lime-50 text-lime-600 dark:bg-lime-500/10 dark:text-lime-300", hue: "bg-amber-50 text-amber-500 dark:bg-amber-500/10 dark:text-amber-300", homeassistant: "bg-blue-50 text-blue-500 dark:bg-blue-500/10 dark:text-blue-300", esphome: "bg-indigo-50 text-indigo-500 dark:bg-indigo-500/10 dark:text-indigo-300" };
       host.innerHTML = subnetFindings.map(function (found, index) {
         var normalizedHost = /^https?:\/\//.test(found.host) ? found.host : "http://" + found.host;
