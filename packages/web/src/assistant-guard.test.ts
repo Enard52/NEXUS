@@ -18,7 +18,7 @@ function assistant() {
       calls.push("scene:" + id);
       return { changed: 1, lanDevices: [] };
     },
-    setField: (i: number, f: string, v: any) => {
+    setField: (_i: number, f: string, _v: any) => {
       calls.push("set:" + f);
       return {};
     },
