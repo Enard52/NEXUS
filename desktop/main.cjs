@@ -268,21 +268,41 @@ const isStartHidden = () =>
 
 let lastTrayStatus = null;
 
+// Menü simgeleri (resources/tray/*.png, 32 px; menüde 16 px). nativeImage asar içinden okur; dosya yoksa simgesiz kalır.
+const trayIconCache = {};
+function trayIcon(name) {
+  if (trayIconCache[name] !== undefined) return trayIconCache[name];
+  let img = null;
+  try {
+    const raw = nativeImage.createFromPath(path.join(__dirname, "resources", "tray", `${name}.png`));
+    if (raw && !raw.isEmpty()) img = raw.resize({ width: 16, height: 16 });
+  } catch {
+    /* simge yoksa menü simgesiz çalışır */
+  }
+  trayIconCache[name] = img;
+  return img;
+}
+
 function trayTemplate() {
   const items = [];
   if (lastTrayStatus && lastTrayStatus.devices > 0) {
     items.push({
       label: L(
-        `🟢  Ev: ${lastTrayStatus.devices} Cihaz (${lastTrayStatus.on} Açık)`,
-        `🟢  Home: ${lastTrayStatus.devices} Devices (${lastTrayStatus.on} On)`,
+        `Ev: ${lastTrayStatus.devices} Cihaz (${lastTrayStatus.on} Açık)`,
+        `Home: ${lastTrayStatus.devices} Devices (${lastTrayStatus.on} On)`,
       ),
+      icon: trayIcon("status") || undefined,
       enabled: false,
     });
     items.push({ type: "separator" });
   }
 
   items.push(
-    { label: L("NEXUS'u Aç", "Open NEXUS"), click: showMainWindow, default: true },
+    { label: L("NEXUS'u Aç", "Open NEXUS"), icon: trayIcon("open") || undefined, click: showMainWindow, default: true },
+    { label: L("Ev", "Home"), icon: trayIcon("home") || undefined, click: () => showPage(PAGES.home) },
+    { label: L("Cihaz Ekle", "Add device"), icon: trayIcon("pair") || undefined, click: () => showPage(PAGES.pair) },
+    { label: L("Mesaj Merkezi", "Message center"), icon: trayIcon("messages") || undefined, click: () => showPage(PAGES.messages) },
+    { label: L("Ayarlar", "Settings"), icon: trayIcon("settings") || undefined, click: () => showPage(PAGES.settings) },
     { type: "separator" },
     {
       label: L("Kapatıldığında arka planda çalış", "Keep running in background when closed"),
@@ -305,8 +325,8 @@ function trayTemplate() {
   }
   items.push(
     { type: "separator" },
-    { label: L("Yeniden Başlat", "Restart"), click: restartApp },
-    { label: L("Tamamen Çıkış", "Quit Completely"), click: quitApp },
+    { label: L("Yeniden Başlat", "Restart"), icon: trayIcon("restart") || undefined, click: restartApp },
+    { label: L("Tamamen Çıkış", "Quit Completely"), icon: trayIcon("quit") || undefined, click: quitApp },
   );
   return items;
 }
@@ -537,6 +557,9 @@ ipcMain.handle("lan:tcp-exchange", (_e, opts) => new Promise((resolve, reject) =
   tuyaDrain(s);
 }));
 ipcMain.handle("lan:tcp-close", (_e, id) => { tuyaClose(Number(id)); return true; });
+
+// ---------- Köprü: SSDP keşfi (yalnızca özel adreslerden gelen yanıtlar) ----------
+ipcMain.handle("lan:ssdp", async (_e, opts) => require("./ssdp.cjs").discover(opts || {}));
 
 // ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003, WoL 9/7; Govee yanıtları 4002'ye gelir) ----------
 const UDP_PORTS = new Set([38899, 56700, 4001, 4003, 9, 7]);

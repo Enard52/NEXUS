@@ -166,14 +166,18 @@
       try { homes = JSON.parse(nexusGetItem('nexusHousehold') || 'null'); } catch (err) { homes = null; }
       var home = Array.isArray(homes) && homes.length ? homes[0] : null;
       var members = home && Array.isArray(home.members) ? home.members : [];
-      var head = '<a href="nexus-household.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
-        '<span class="font-bold text-slate-800">Aile ve evi yönet</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+      // Kısayol kartı: ikon kutusu + başlık + ok (ikon kutusu satır içi stil: derlenmiş Tailwind'de olmayan sınıflara bağımlı değil)
+      function navCard(href, icon, title) {
+        return '<a href="' + href + '" class="flex items-center gap-3 bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
+          '<span class="inline-flex shrink-0 items-center justify-center text-[#4C7DFF]" style="width:40px;height:40px;border-radius:12px;background:rgba(76,125,255,.12)"><i data-lucide="' + icon + '" class="w-5 h-5"></i></span>' +
+          '<span class="min-w-0 flex-1 font-bold text-slate-800">' + title + '</span>' +
+          '<i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 shrink-0"></i></a>';
+      }
+      var head = navCard('nexus-household.html', 'house', 'Aile ve evi yönet');
       // Aile sohbeti ve pano yalnızca sunucudaki (bulut) evlerde vardır; yerel evde gösterilmez.
       if (home && home.cloud) {
-        head += '<a href="nexus-family-chat.html?home=' + encodeURIComponent(home.id) + '" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
-          '<span class="font-bold text-slate-800">Aile Sohbeti</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
-        head += '<a href="nexus-board.html" class="flex items-center justify-between bg-white rounded-2xl menu-container-shadow p-4 mb-3 active:scale-[0.98] transition-transform">' +
-          '<span class="font-bold text-slate-800">Ev Panosu</span><span class="text-[#4C7DFF] text-sm font-semibold">Aç</span></a>';
+        head += navCard('nexus-family-chat.html?home=' + encodeURIComponent(home.id), 'message-circle', 'Aile Sohbeti');
+        head += navCard('nexus-board.html', 'layout-dashboard', 'Ev Panosu');
       }
       if (!members.length) {
         box.innerHTML = head + '<p class="text-sm text-slate-500 text-center pt-10">Henüz aile üyesi eklenmedi.</p>';
@@ -202,6 +206,7 @@
         }).join('') +
           '<p class="text-xs text-slate-400 text-center pt-4">' + (home && home.cloud ? 'Üyeleri ve izinlerini Aile ekranından yönetebilirsin.' : 'Üyeleri Aile ekranından yönetebilirsin.') + '</p>';
       }
+      if (window.lucide) lucide.createIcons();
     }
 
     /* ---------- Duyurular: gerçek sistem bilgisi ---------- */

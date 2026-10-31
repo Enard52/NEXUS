@@ -28,6 +28,11 @@
           img: "generic-motion-sensor.png",
           caps: ["motion", "temperature"],
         },
+        // Gen1 sensör kodları (SHHT, SHDW, SHWT, SHSM) lan-connectors.js shellySensorKind ile okunur.
+        { name: "Shelly H&T Sıcaklık ve Nem Sensörü", img: "generic-temp-humidity.png", caps: ["temperature", "humidity"] },
+        { name: "Shelly Door/Window Kapı ve Pencere Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
+        { name: "Shelly Flood Su Baskını Sensörü", img: "security-water-leak.png", caps: ["alarm"] },
+        { name: "Shelly Smoke Duman Dedektörü", img: "security-smoke-detector.png", caps: ["alarm"] },
       ],
     },
     {
@@ -192,6 +197,14 @@
         { name: "Home Assistant Medya Oynatıcı / TV", img: "generic-smart-tv.png", caps: ["switch", "media"] },
         { name: "Home Assistant Kilit", img: "security-keypad-lock.png", caps: ["lock"] },
         { name: "Home Assistant Robot Süpürge", img: "generic-robot-vacuum.png", caps: ["vacuum"] },
+        // Salt okunur sensörler: device_class'a göre (HA_SENSOR_CLASSES / HA_BINARY_CLASSES, lan-connectors.js)
+        { name: "Home Assistant Hareket Sensörü", img: "generic-motion-sensor.png", caps: ["motion"] },
+        { name: "Home Assistant Kapı ve Pencere Sensörü", img: "security-door-sensor.png", caps: ["contact"] },
+        { name: "Home Assistant Sıcaklık ve Nem Sensörü", img: "generic-temp-humidity.png", caps: ["temperature"] },
+        { name: "Home Assistant Su Sızıntısı Sensörü", img: "security-water-leak.png", caps: ["alarm"] },
+        { name: "Home Assistant Duman Dedektörü", img: "security-smoke-detector.png", caps: ["alarm"] },
+        { name: "Home Assistant Gaz ve CO Dedektörü", img: "security-gas-detector.png", caps: ["alarm"] },
+        { name: "Home Assistant Hava Kalitesi Sensörü", img: "generic-air-quality.png", caps: ["sensor"] },
       ],
     },
     {
@@ -358,8 +371,14 @@
       caps: ["lock"],
       img: "security-keypad-lock.png",
     },
+    // Siren / alarm paneli salt-okunur sensör değildir; ayrı işlev olduğundan "destekli" sayılmaz (HA siren.* alanı yok).
     {
-      test: /duman|gaz dedekt|co dedekt|karbonmonoksit|su basma|sızıntı|siren|alarm|acil durum|organik bileşik/,
+      test: /siren|alarm paneli|acil durum/,
+      caps: ["alarm"],
+      img: "security-siren.png",
+    },
+    {
+      test: /duman|gaz dedekt|co dedekt|karbonmonoksit|su basma|sızıntı|alarm|organik bileşik/,
       caps: ["alarm"],
       img: "security-smoke-detector.png",
     },

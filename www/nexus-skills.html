@@ -44,9 +44,12 @@
 <script src="ai-fab.js"></script>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
+<link href="css/quick-scenes.css" rel="stylesheet"/>
 <script src="supported-devices.js"></script>
+<script src="lan-connectors.js"></script>
 <script src="device-controls.js"></script>
 <script src="data.js"></script>
+<script src="quick-scenes.js"></script>
 </head>
 <body class="text-slate-900 flex flex-col relative">
 
@@ -168,490 +171,356 @@
     if (typeof lucide !== 'undefined') lucide.createIcons();
   </script>
 
-  <script>
-    let pendingAutomation = null;
-
-    // Kart başlığından tetikleyici türü (dürüstlük notu için): motor şu an
-    // yalnız zaman tetikleyicilerini çalıştırır; diğer türler kayıtta
-    // zamanlamaya dönüşür ve bu kullanıcıya açıkça söylenir.
-    const TRIGGER_KINDS = {
-      'Duruma Göre Başlat': 'device',
-      'Cihaz Durumu': 'device',
-      'Zamanlayıcı': 'time',
-      'Hava Durumu': 'weather',
-      'Konum': 'location',
-      'Güvenlik Modu': 'security',
-      // Gerçek sensör tetikleyicisi: motor, eşli yerel ağ sensörünün durumu "kapalı → açık"
-      // döndüğünde çalıştırır (automation-engine.js watchSensors).
-      'Alarm Tetiklendiğinde': 'sensor'
-    };
-
-    // Motorun izlediği sensör türleri ve cihaz anahtarı (automation-engine.js ile aynı kural).
-    const SENSOR_KINDS = { motion: 1, contact: 1, alarm: 1 };
-    function sensorKey(d) { return String(d.id || (d.host + '|' + d.name)); }
-    function selectDevice(btn) {
-      document.querySelectorAll('#device-option-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
-      });
-      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
-      window._pendingDevice = { key: btn.getAttribute('data-device'), name: btn.getAttribute('data-name') };
-    }
-    function selectDeviceEvent(btn) {
-      document.querySelectorAll('#device-event-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
-      });
-      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
-      window._pendingDeviceEvent = btn.getAttribute('data-event') || 'any';
-    }
-    function selectSensor(btn) {
-      document.querySelectorAll('#sensor-option-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
-      });
-      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
-      window._pendingSensor = { key: btn.getAttribute('data-sensor'), name: btn.getAttribute('data-name') };
-    }
-
-    function openConfigureSheet(title, desc, icon, colorClass, bgClass) {
-      pendingAutomation = { title, desc, icon, colorClass, bgClass };
-
-      document.getElementById('config-sheet-title').innerText = title;
-      document.getElementById('config-sheet-desc').innerText = desc;
-      window._pendingTrigger = { type: 'always' };
-      window._pendingTriggerKind = TRIGGER_KINDS[title] || 'time';
-      window._pendingSceneId = null;
-      renderConfigOptions(title);
-
-      const iconWrap = document.getElementById('config-sheet-icon-wrap');
-      // Ortak başlık düzeni korunur (kutusuz simge); yalnızca simgenin rengi senaryo türüne göre değişir.
-      iconWrap.className = 'nx-sheet-ico ' + colorClass;
-
-      const iconEl = document.getElementById('config-sheet-icon');
-      iconEl.className = '';
-      iconEl.setAttribute('data-lucide', icon);
-      if(typeof lucide !== 'undefined') { lucide.createIcons(); }
-
-      const sheet = document.getElementById('configure-sheet');
-      const backdrop = document.getElementById('configure-backdrop');
-
-      backdrop.classList.remove('hidden');
-      setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
-      sheet.classList.remove('translate-y-full');
-    }
-
-    function renderConfigOptions(title) {
-      const target = document.getElementById('config-options');
-      if (!target) return;
-
-      // Cihaz listesini storage'dan oku
-      let devices = [];
-      try { devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]'); } catch(e) {}
-      const deviceLabel = devices.length > 0
-        ? devices.map(function(d) { return d.name || 'Cihaz'; }).slice(0, 3).join(', ') + (devices.length > 3 ? ' +' + (devices.length - 3) : '')
-        : 'Tüm uyumlu cihazlar';
-
-      // Çalışma zamanı seçenekleri
-      const timeOptions = [
-        { id: 'always',   label: 'Her zaman'  },
-        { id: 'sunrise',  label: 'Gündoğumu'   },
-        { id: 'morning',  label: 'Sabah 07:00' },
-        { id: 'evening',  label: 'Akşam 19:00' },
-        { id: 'sunset',   label: 'Gün batımı'  },
-        { id: 'night',    label: 'Gece 23:00'  }
-      ];
-
-      // Seçili zaman (pendingAutomation'a kaydet)
-      if (!window._pendingTrigger) window._pendingTrigger = { type: 'always', deviceLabel: deviceLabel };
-
-      // Dürüstlük notu: seçilen tetikleyici türü motor tarafından henüz
-      // çalıştırılmıyorsa kullanıcıya açıkça söylenir (zamanlamaya düşer).
-      const kind = window._pendingTriggerKind || 'time';
-      // Çalışmayan türler (hava durumu, konum, güvenlik modu) artık zamanlamaya çevrilip
-      // kaydedilmez: kayıt engellenir ve neden açıkça yazılır.
-      const kindNote = (kind === 'time' || kind === 'sensor' || kind === 'device' || kind === 'weather') ? '' : `
-        <p class="p-3 bg-amber-50 text-amber-700 text-xs font-medium rounded-xl border border-amber-100 leading-relaxed">
-          ${kind === 'security'
-            ? 'Güvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen gerçek bir alarm paneli durumu veya NEXUS düzeyinde bir mod anahtarı henüz yok. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).'
-            : 'Bu tetikleyici türü henüz desteklenmiyor, bu yüzden kaydedilemez. Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).'}
-        </p>`;
-
-      // Hava durumu tetikleyicisi: ev konumundan gerçek Open-Meteo okuması (motor 10 dk'da bir okur).
-      // Konum yoksa dürüst boş durum gösterilir ve kayıt engellenir.
-      window._pendingWeather = { metric: 'temp', op: 'above', value: '' };
-      let weatherBlock = '';
-      if (kind === 'weather') {
-        let wc = null;
-        try { wc = JSON.parse(nexusGetItem('nexusWeatherCoords') || 'null'); } catch(e) {}
-        const hasLoc = !!(wc && isFinite(wc.lat) && isFinite(wc.lon));
-        const pill = function(attr, fn, val, label, sel) {
-          return '<button type="button" ' + attr + '="' + val + '" onclick="' + fn + '(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors ' + (sel ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + label + '</button>';
-        };
-        weatherBlock = hasLoc ? `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-1">Hava Koşulu</span>
-          <p class="text-xs text-slate-400 mb-3">Ev konumunun gerçek hava verisi uygulama açıkken yaklaşık 10 dk'da bir okunur. Koşul sağlanmıyorken sağlanır hale geldiğinde senaryo bir kez çalışır.</p>
-          <div class="flex flex-wrap gap-2" id="weather-metric-list">
-            ${pill('data-metric', 'selectWeatherMetric', 'temp', 'Sıcaklık (°C)', true)}${pill('data-metric', 'selectWeatherMetric', 'wind', 'Rüzgâr (km/sa)', false)}${pill('data-metric', 'selectWeatherMetric', 'rain', 'Yağış (mm)', false)}
-          </div>
-          <div class="flex flex-wrap gap-2 mt-3" id="weather-op-list">
-            ${pill('data-op', 'selectWeatherOp', 'above', 'Üstüne çıkınca', true)}${pill('data-op', 'selectWeatherOp', 'below', 'Altına inince', false)}
-          </div>
-          <input id="weather-threshold" type="number" step="any" inputmode="decimal" placeholder="Eşik değer" oninput="window._pendingWeather.value = this.value" class="mt-3 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm" />
-        </div>` : `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-1">Hava Koşulu</span>
-          <p class="text-xs text-slate-500 leading-relaxed">Ev konumu seçilmedi, hava verisi okunamaz. Önce <a href="nexus-map.html" class="text-[#4C7DFF] font-bold">konum seç</a>; sonra bu tetikleyiciyi kurabilirsin.</p>
-        </div>`;
-        window._pendingWeatherReady = hasLoc;
-      }
-
-      // Çalıştırılacak senaryo: motorun gerçekten yürüteceği eylem.
-      // SCENES cihaz türüne göre gerçek komut üretir (device-controls.js).
-      const scenes = (window.NX && NX.SCENES) ? NX.SCENES : {};
-      const sceneIds = Object.keys(scenes);
-      const sceneRow = sceneIds.length ? `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-3">Tetiklenince Çalışacak Senaryo</span>
-          <div class="flex flex-wrap gap-2" id="scene-option-list">
-            ${sceneIds.map(function(id) {
-              return '<button type="button" data-scene="' + id + '" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">' + scenes[id].title + '</button>';
-            }).join('')}
-            <button type="button" data-scene="" onclick="selectScene(this)" class="scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200">Yalnızca bildirim</button>
-          </div>
-        </div>` : '';
-
-      // Sensör tetikleyicisi: yalnız gerçekten eşli yerel ağ sensörleri listelenir.
-      // Sensör yoksa dürüst boş durum gösterilir ve kayıt engellenir.
-      window._pendingSensor = null;
-      window._pendingDevice = null;
-      window._pendingDeviceEvent = 'any';
-      // Cihaz durumu tetikleyicisi: açma/kapama okunabilen yerel ağ cihazları listelenir.
-      let deviceBlock = '';
-      if (kind === 'device') {
-        const switchable = (window.NX && NX.isLan && NX.hasCap)
-          ? devices.filter(function(d) { return NX.isLan(d) && NX.hasCap(d, 'switch'); })
-          : [];
-        deviceBlock = switchable.length ? `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-1">İzlenecek Cihaz</span>
-          <p class="text-xs text-slate-400 mb-3">Cihazın açık/kapalı durumu uygulama açıkken yaklaşık 30 sn'de bir okunur; değişince çalışır.</p>
-          <div class="flex flex-wrap gap-2" id="device-option-list">
-            ${switchable.map(function(d) {
-              return '<button type="button" data-device="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Cihaz') + '" onclick="selectDevice(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.thumbHtml(d) + NX.escapeHtml(d.name || 'Cihaz') + '</button>';
-            }).join('')}
-          </div>
-          <span class="text-sm font-semibold text-slate-700 block mt-4 mb-2">Ne zaman</span>
-          <div class="flex flex-wrap gap-2" id="device-event-list">
-            ${[['on','Açıldığında'],['off','Kapandığında'],['any','Durumu değiştiğinde']].map(function(o) {
-              return '<button type="button" data-event="' + o[0] + '" onclick="selectDeviceEvent(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors ' + (o[0] === 'any' ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + o[1] + '</button>';
-            }).join('')}
-          </div>
-        </div>` : `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-1">İzlenecek Cihaz</span>
-          <p class="text-xs text-slate-500 leading-relaxed">Yerel ağa eşli açılıp kapanabilen cihaz yok. Önce <a href="nexus-pair.html" class="text-[#4C7DFF] font-bold">bir cihaz ekle</a>; sonra bu tetikleyiciyi kurabilirsin.</p>
-        </div>`;
-      }
-      let sensorBlock = '';
-      if (kind === 'sensor') {
-        const sensors = (window.NX && NX.kindOf && NX.isLan)
-          ? devices.filter(function(d) { return NX.isLan(d) && SENSOR_KINDS[NX.kindOf(d)]; })
-          : [];
-        sensorBlock = sensors.length ? `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-1">Tetikleyen Sensör</span>
-          <p class="text-xs text-slate-400 mb-3">Sensör kapalıdan açığa geçtiğinde çalışır (uygulama açıkken, yaklaşık 30 sn'de bir okunur).</p>
-          <div class="flex flex-wrap gap-2" id="sensor-option-list">
-            ${sensors.map(function(d) {
-              return '<button type="button" data-sensor="' + NX.escapeHtml(sensorKey(d)) + '" data-name="' + NX.escapeHtml(d.name || 'Sensör') + '" onclick="selectSensor(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]">' + NX.thumbHtml(d) + NX.escapeHtml(d.name || 'Sensör') + '</button>';
-            }).join('')}
-          </div>
-        </div>` : `
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-1">Tetikleyen Sensör</span>
-          <p class="text-xs text-slate-500 leading-relaxed">Yerel ağa eşli hareket, kapı/pencere ya da duman/su sensörü yok. Önce <a href="nexus-pair.html" class="text-[#4C7DFF] font-bold">bir sensör ekle</a>; sonra bu tetikleyiciyi kurabilirsin.</p>
-        </div>`;
-      }
-
-      target.innerHTML = `
-        ${kindNote}
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-sm font-semibold text-slate-700">Etkilenecek Cihazlar</span>
-          </div>
-          <p class="text-sm text-[#4C7DFF] font-bold">${deviceLabel}</p>
-        </div>
-        ${kind === 'sensor' ? sensorBlock : kind === 'device' ? deviceBlock : kind === 'weather' ? weatherBlock : (kind !== 'time') ? '' : `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-sm font-semibold text-slate-700 block mb-3">Çalışma Zamanı</span>
-          <div class="flex flex-wrap gap-2" id="time-option-list">
-            ${timeOptions.map(function(opt) {
-              const isSelected = window._pendingTrigger.type === opt.id;
-              return '<button type="button" data-time="' + opt.id + '" onclick="selectTime(this)" class="px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors ' + (isSelected ? 'bg-[#4C7DFF] text-white border-[#4C7DFF]' : 'bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]') + '">' + opt.label + '</button>';
-            }).join('')}
-          </div>
-        </div>`}
-        ${sceneRow}
-      `;
-    }
-
-    function selectWeatherPill(listId, btn) {
-      document.querySelectorAll('#' + listId + ' button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
-      });
-      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
-    }
-    function selectWeatherMetric(btn) { selectWeatherPill('weather-metric-list', btn); window._pendingWeather.metric = btn.getAttribute('data-metric'); }
-    function selectWeatherOp(btn) { selectWeatherPill('weather-op-list', btn); window._pendingWeather.op = btn.getAttribute('data-op'); }
-
-    function selectScene(btn) {
-      document.querySelectorAll('#scene-option-list button').forEach(function(b) {
-        b.className = 'scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
-      });
-      btn.className = 'scene-opt px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
-      window._pendingSceneId = btn.getAttribute('data-scene') || null;
-    }
-
-    function selectTime(btn) {
-      document.querySelectorAll('#time-option-list button').forEach(function(b) {
-        b.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-white text-slate-600 border-slate-200 hover:border-[#4C7DFF]';
-      });
-      btn.className = 'px-3 py-1.5 inline-flex items-center gap-2 rounded-full text-xs font-bold border transition-colors bg-[#4C7DFF] text-white border-[#4C7DFF]';
-      window._pendingTrigger = window._pendingTrigger || {};
-      window._pendingTrigger.type = btn.getAttribute('data-time');
-    }
-
-    function closeConfigureSheet() {
-      const sheet = document.getElementById('configure-sheet');
-      const backdrop = document.getElementById('configure-backdrop');
-
-      sheet.classList.add('translate-y-full');
-      backdrop.classList.add('opacity-0');
-      setTimeout(() => backdrop.classList.add('hidden'), 300);
-      pendingAutomation = null;
-    }
-
-    function confirmAddAutomation() {
-      if(!pendingAutomation) return;
-      addAutomation(pendingAutomation.title, pendingAutomation.desc, pendingAutomation.icon, pendingAutomation.colorClass, pendingAutomation.bgClass);
-    }
-
-    function addAutomation(title, desc, icon, colorClass, bgClass) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const type = urlParams.get('type') || 'automation';
-
-      const storageKey = type === 'clickrun' ? 'nexusCustomClickRun' : 'nexusCustomAutomations';
-      const targetTab  = type === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
-
-      // Sensör tetikleyicisi sensör seçilmeden kaydedilmez (tetiklenmeyecek bir kural kurulmasın).
-      const isSensorTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'sensor';
-      const isDeviceTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'device';
-      const unsupportedKind = type !== 'clickrun' && ['location', 'security'].indexOf(window._pendingTriggerKind) !== -1;
-      if (unsupportedKind) {
-        if (window.nexusToast) window.nexusToast('Bu tetikleyici türü henüz desteklenmiyor; kaydedilemedi.', { type: 'error' });
-        return;
-      }
-      const isWeatherTrigger = type !== 'clickrun' && window._pendingTriggerKind === 'weather';
-      if (isWeatherTrigger) {
-        const w = window._pendingWeather || {};
-        if (!window._pendingWeatherReady) {
-          if (window.nexusToast) window.nexusToast('Önce ev konumunu seç.', { type: 'error' });
-          return;
-        }
-        if (w.value === '' || w.value === undefined || !isFinite(Number(w.value))) {
-          if (window.nexusToast) window.nexusToast('Bir eşik değer gir.', { type: 'error' });
-          return;
-        }
-      }
-      if (isSensorTrigger && !window._pendingSensor) {
-        if (window.nexusToast) window.nexusToast('Önce tetikleyecek bir sensör seç.', { type: 'error' });
-        return;
-      }
-      if (isDeviceTrigger && !window._pendingDevice) {
-        if (window.nexusToast) window.nexusToast('Önce izlenecek bir cihaz seç.', { type: 'error' });
-        return;
-      }
-
-      // Tetikleyici bilgisini al
-      const triggerType = (window._pendingTrigger && window._pendingTrigger.type) || 'always';
-      const triggerValueMap = {
-        sunrise:  'sunrise',
-        morning:  '07:00',
-        evening:  '19:00',
-        sunset:   'sunset',
-        night:    '23:00',
-        always:   ''
-      };
-      const trigger = type === 'clickrun'
-        ? { type: 'manual' }
-        : isWeatherTrigger
-        ? { type: 'weather', metric: window._pendingWeather.metric, op: window._pendingWeather.op, value: Number(window._pendingWeather.value), label: 'weather' }
-        : isSensorTrigger
-        ? { type: 'sensor', value: window._pendingSensor.key, label: window._pendingSensor.name, event: 'active' }
-        : isDeviceTrigger
-        ? { type: 'device', value: window._pendingDevice.key, label: window._pendingDevice.name, event: window._pendingDeviceEvent || 'any' }
-        : { type: triggerType === 'always' ? 'time' : 'time', value: triggerValueMap[triggerType] || '', repeat: triggerType === 'always' ? 'always' : 'daily' };
-
-      let autos = [];
-      try { autos = readAndNormalizeItems(storageKey, type); } catch (e) {}
-      autos.push({
-        id: 'custom-' + Date.now(),
-        title: title,
-        desc: desc,
-        icon: icon,
-        colorClass: colorClass,
-        bgClass: bgClass,
-        room: 'Tüm Ev',
-        enabled: true,
-        showOnHome: true,
-        showInRoom: false,
-        trigger: trigger,
-        sceneId: (type !== 'clickrun' && window._pendingSceneId) ? window._pendingSceneId : undefined,
-        actions: []
-      });
-      writeNormalizedItems(storageKey, autos, type);
-
-      // Temizle
-      window._pendingTrigger = null;
-      window._pendingSceneId = null;
-
-      window.location.href = 'nexus-smart.html?tab=' + targetTab;
-    }
-  </script>
-
-  <!-- BEGIN: Configure Sheet -->
-    <div id="configure-backdrop" onclick="closeConfigureSheet()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity opacity-0 duration-300"></div>
-    <div id="configure-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-10 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col">
-      <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
-
-      <div class="nx-sheet-head mb-2"><span class="nx-sheet-ico" id="config-sheet-icon-wrap" aria-hidden="true"><i id="config-sheet-icon"></i></span><h3 id="config-sheet-title">Senaryo</h3></div>
-      <p id="config-sheet-desc" class="text-sm text-slate-500 mb-8 text-center">Açıklama</p>
-
-      <div id="config-options" class="space-y-4 mb-8">
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
-            <span class="text-sm font-semibold text-slate-700">Etkilenecek Cihazlar</span>
-            <span class="text-sm text-nexusPurple font-bold">Tüm Uyumlu Cihazlar</span>
-        </div>
-        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
-            <span class="text-sm font-semibold text-slate-700">Çalışma Zamanı</span>
-            <span class="text-sm text-slate-500" id="automation-time-display">Her Zaman</span>
-        </div>
-      </div>
-
-      <button onclick="confirmAddAutomation()" class="w-full py-4 rounded-2xl bg-[#4C7DFF] text-white font-bold text-base active:scale-95 transition-transform">Senaryoyu Kaydet</button>
-    </div>
-    <!-- END: Configure Sheet -->
-
-    <!-- BEGIN: Quick Create Bottom Sheet -->
-  <div id="quick-create-backdrop" onclick="toggleQuickCreate()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity opacity-0 duration-300"></div>
-  <div id="quick-create-sheet" class="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-[2.5rem] p-6 pb-12 translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] flex flex-col max-h-[80vh]">
-    <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
-    <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Hızlı Öneriler</h3>
-    <p class="text-sm text-slate-500 mb-6 text-center">Mevcut cihazlarınıza göre size özel senaryo önerileri.</p>
-
-    <div id="quick-create-list" class="space-y-3 overflow-y-auto">
-      <!-- Generated suggestions go here -->
+  <!-- Tetikleyici ayar sayfası (alttan açılır) -->
+  <div id="configure-backdrop" class="qs-backdrop" onclick="closeConfigureSheet()"></div>
+  <div id="configure-sheet" class="qs-sheet qs-wrap" role="dialog" aria-modal="true" aria-labelledby="config-sheet-title">
+    <div class="qs-grab"></div>
+    <div class="nx-sheet-head"><span class="nx-sheet-ico" id="config-sheet-icon-wrap" aria-hidden="true"><i id="config-sheet-icon"></i></span><h3 id="config-sheet-title">Senaryo</h3></div>
+    <p id="config-sheet-desc" class="qs-sheet-desc"></p>
+    <div id="config-options" class="qs-sheet-body"></div>
+    <div class="qs-sheet-foot">
+      <button type="button" id="config-save" class="qs-save" onclick="confirmAddAutomation()">Senaryoyu kaydet</button>
+      <p class="qs-hint" id="config-hint"></p>
     </div>
   </div>
 
+  <!-- Hızlı Öneriler -->
+  <div id="quick-create-backdrop" class="qs-backdrop" onclick="toggleQuickCreate()"></div>
+  <div id="quick-create-sheet" class="qs-sheet qs-wrap" role="dialog" aria-modal="true" aria-labelledby="quick-create-title">
+    <div class="qs-grab"></div>
+    <h3 id="quick-create-title" class="qs-sheet-title">Hızlı Öneriler</h3>
+    <p class="qs-sheet-desc" id="quick-create-desc">Eşleşmiş cihazlarına göre hazır; tek dokunuşla eklenir.</p>
+    <div id="quick-create-list" class="qs-sheet-body"></div>
+  </div>
+
   <script>
-    function toggleQuickCreate() {
-      const sheet = document.getElementById('quick-create-sheet');
-      const backdrop = document.getElementById('quick-create-backdrop');
+  (function () {
+    var TYPE = new URLSearchParams(location.search).get('type') === 'clickrun' ? 'clickrun' : 'automation';
+    var KEY = TYPE === 'clickrun' ? 'nexusCustomClickRun' : 'nexusCustomAutomations';
+    var TAB = TYPE === 'clickrun' ? 'tab-clickrun' : 'tab-automation';
+    var QS = window.nexusQuickScenes;
 
-      if (sheet.classList.contains('translate-y-full')) {
-        // Open
-        backdrop.classList.remove('hidden');
-        setTimeout(function() { backdrop.classList.remove('opacity-0'); }, 10);
-        sheet.classList.remove('translate-y-full');
+    // Tetikleyici türü (kart başlığından). Konum ve güvenlik modu için motorda gerçek tetikleyici yok; kayıt engellenir.
+    var TRIGGER_KINDS = {
+      'Duruma Göre Başlat': 'device', 'Cihaz Durumu': 'device', 'Zamanlayıcı': 'time', 'Hava Durumu': 'weather',
+      'Konum': 'location', 'Güvenlik Modu': 'security', 'Alarm Tetiklendiğinde': 'sensor'
+    };
+    var SENSOR_KINDS = { motion: 1, contact: 1, alarm: 1 };
+    var TIME_PRESETS = [['sunrise', 'Gündoğumu'], ['07:00', 'Sabah 07:00'], ['sunset', 'Gün batımı'], ['19:00', 'Akşam 19:00'], ['23:00', 'Gece 23:00']];
+    var REPEATS = [['daily', 'Her gün'], ['weekdays', 'Hafta içi'], ['weekends', 'Hafta sonu']];
 
-        populateQuickCreate();
-      } else {
-        // Close
-        sheet.classList.add('translate-y-full');
-        backdrop.classList.add('opacity-0');
-        setTimeout(function() { backdrop.classList.add('hidden'); }, 300);
-      }
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function toast(m, t) { if (window.nexusToast) window.nexusToast(m, { type: t || 'info' }); }
+    function icons() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
+    function sensorKey(d) { return String(d.id || (d.host + '|' + d.name)); }
+    function readDevices() { try { return NX.readDevices(); } catch (e) { return []; } }
+    function chip(attr, val, label, on) {
+      return '<button type="button" class="qs-chip' + (on ? ' is-on' : '') + '" ' + attr + '="' + esc(val) + '">' + label + '</button>';
+    }
+    // Cihaz yokken önceki "Öneri hazır değil" kartı aynen korunur.
+    var NO_SUGGESTION = '<div class="rounded-3xl border border-slate-100 bg-white p-6 text-center shadow-sm"><div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-7 h-7" data-lucide="sparkles"></i></div><h4 class="text-base font-extrabold text-slate-900">Öneri hazır değil</h4><p class="mt-2 text-sm text-slate-500">Cihaz eklenince hızlı oluşturma önerileri burada görünecek.</p></div>';
+
+    function finish() { location.href = 'nexus-smart.html?tab=' + TAB; }
+    function openSheet(id) {
+      document.getElementById(id + '-backdrop').classList.add('is-open');
+      document.getElementById(id + '-sheet').classList.add('is-open');
+    }
+    function closeSheet(id) {
+      document.getElementById(id + '-backdrop').classList.remove('is-open');
+      document.getElementById(id + '-sheet').classList.remove('is-open');
     }
 
-    function populateQuickCreate() {
-      const container = document.getElementById('quick-create-list');
-      container.innerHTML = '';
+    // ---------- Tetikleyici ayar sayfası ----------
+    var S = null;
+    var pending = null;
+    var devices = [];
 
-      let devices = [];
-      try {
-        devices = JSON.parse(nexusGetItem('nexusPairedDevices') || '[]');
-      } catch (e) {}
+    function fresh(kind) {
+      return { kind: kind, scene: null, timeMode: 'preset', time: '07:00', customTime: '07:00', timeTouched: false, repeat: 'daily',
+        device: null, event: 'any', sensor: null, weather: { metric: 'temp', op: 'above', value: '' } };
+    }
+    function timeValue() { return S.timeMode === 'custom' ? S.customTime : S.time; }
+    function coords() {
+      try { var c = JSON.parse(nexusGetItem('nexusWeatherCoords') || 'null'); return c && isFinite(c.lat) && isFinite(c.lon) ? c : null; } catch (e) { return null; }
+    }
+    function switchable() { return devices.filter(function (d) { return NX.isLan(d) && NX.hasCap(d, 'switch'); }); }
+    function sensors() { return devices.filter(function (d) { return NX.isLan(d) && SENSOR_KINDS[NX.kindOf(d)]; }); }
+    function sectionHtml(step, label, inner) {
+      return '<section class="qs-section"><div class="qs-label"><span class="qs-step">' + step + '</span>' + label + '</div>' + inner + '</section>';
+    }
+    function link(href, text) { return '<a href="' + href + '">' + text + '</a>'; }
 
-      if (devices.length === 0) {
-        container.innerHTML = '<div class="rounded-3xl border border-slate-100 bg-white p-6 text-center shadow-sm"><div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4C7DFF]/10 text-[#4C7DFF]"><i class="w-7 h-7" data-lucide="sparkles"></i></div><h4 class="text-base font-extrabold text-slate-900">Öneri hazır değil</h4><p class="mt-2 text-sm text-slate-500">Cihaz eklenince hızlı oluşturma önerileri burada görünecek.</p></div>'; if (typeof lucide !== 'undefined') lucide.createIcons(); return;
+    function triggerHtml() {
+      var k = S.kind;
+      if (k === 'location' || k === 'security') {
+        return '<div class="qs-note">' + (k === 'security'
+          ? 'Güvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen gerçek bir alarm paneli durumu veya NEXUS düzeyinde bir mod anahtarı henüz yok.'
+          : 'Konum tetikleyicisi henüz desteklenmiyor, bu yüzden kaydedilemez.') + ' Çalışan türler: Zamanlayıcı, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendiğinde (sensör).</div>';
       }
+      if (k === 'time') {
+        var h = '<div class="qs-chips">' + TIME_PRESETS.map(function (p) { return chip('data-time', p[0], p[1], S.timeMode === 'preset' && S.time === p[0]); }).join('') +
+          chip('data-time', 'custom', 'Saat seç', S.timeMode === 'custom') + '</div>';
+        if (S.timeMode === 'custom') h += '<div class="qs-row2"><input type="time" class="qs-input" id="qs-time" value="' + esc(S.customTime) + '"></div>';
+        h += '<div class="qs-chips" style="margin-top:10px">' + REPEATS.map(function (r) { return chip('data-repeat', r[0], r[1], S.repeat === r[0]); }).join('') + '</div>' +
+          '<p class="qs-sub" style="margin:10px 0 0">Zamanlamalar uygulama açıkken (masaüstünde tepsideyken de) çalışır.</p>';
+        return h;
+      }
+      if (k === 'device') {
+        var sw = switchable();
+        if (!sw.length) return '<div class="qs-note">Yerel ağa eşli, açılıp kapanabilen cihaz yok. Önce ' + link('nexus-pair.html', 'bir cihaz ekle') + '; sonra bu tetikleyiciyi kurabilirsin.</div>';
+        return '<p class="qs-sub">Cihazın açık/kapalı durumu uygulama açıkken yaklaşık 30 sn\'de bir okunur; değişince çalışır.</p><div class="qs-chips">' +
+          sw.map(function (d) { var key = sensorKey(d); return '<button type="button" class="qs-chip' + (S.device && S.device.key === key ? ' is-on' : '') + '" data-device="' + esc(key) + '" data-name="' + esc(d.name || 'Cihaz') + '">' + NX.thumbHtml(d) + esc(d.name || 'Cihaz') + '</button>'; }).join('') +
+          '</div><div class="qs-chips" style="margin-top:10px">' +
+          [['on', 'Açıldığında'], ['off', 'Kapandığında'], ['any', 'Durumu değişince']].map(function (o) { return chip('data-event', o[0], o[1], S.event === o[0]); }).join('') + '</div>';
+      }
+      if (k === 'sensor') {
+        var se = sensors();
+        if (!se.length) return '<div class="qs-note">Yerel ağa eşli hareket, kapı/pencere ya da duman/su sensörü yok. Önce ' + link('nexus-pair.html', 'bir sensör ekle') + '; sonra bu tetikleyiciyi kurabilirsin.</div>';
+        return '<p class="qs-sub">Sensör kapalıdan açığa geçince çalışır (uygulama açıkken, yaklaşık 30 sn\'de bir okunur).</p><div class="qs-chips">' +
+          se.map(function (d) { var key = sensorKey(d); return '<button type="button" class="qs-chip' + (S.sensor && S.sensor.key === key ? ' is-on' : '') + '" data-sensor="' + esc(key) + '" data-name="' + esc(d.name || 'Sensör') + '">' + NX.thumbHtml(d) + esc(d.name || 'Sensör') + '</button>'; }).join('') + '</div>';
+      }
+      // weather
+      if (!coords()) return '<div class="qs-note">Ev konumu seçilmedi, hava verisi okunamaz. Önce ' + link('nexus-map.html', 'konum seç') + '; sonra bu tetikleyiciyi kurabilirsin.</div>';
+      return '<p class="qs-sub">Ev konumunun gerçek hava verisi yaklaşık 10 dk\'da bir okunur; koşul sağlanır hale gelince senaryo bir kez çalışır.</p><div class="qs-chips">' +
+        [['temp', 'Sıcaklık (°C)'], ['wind', 'Rüzgâr (km/sa)'], ['rain', 'Yağış (mm)']].map(function (m) { return chip('data-metric', m[0], m[1], S.weather.metric === m[0]); }).join('') +
+        '</div><div class="qs-chips" style="margin-top:10px">' +
+        [['above', 'Üstüne çıkınca'], ['below', 'Altına inince']].map(function (o) { return chip('data-op', o[0], o[1], S.weather.op === o[0]); }).join('') +
+        '</div><div class="qs-row2"><input class="qs-input" id="qs-wval" type="number" step="any" inputmode="decimal" placeholder="Eşik değer" value="' + esc(S.weather.value) + '"></div>';
+    }
 
-      // Generate suggestions based on devices
-      devices.forEach(function(device) {
-        let suggestionTitle = "";
-        let suggestionDesc = "";
-        let icon = "zap";
-        let color = "text-[#4C7DFF]";
-        let bg = "bg-[#4C7DFF]/10";
-
-        const dName = (device.name || '').toLowerCase();
-
-        if (dName.indexOf('lamba') !== -1 || device.icon === 'lightbulb') {
-          suggestionTitle = "Akşam Aydınlatması (" + device.name + ")";
-          suggestionDesc = "Gün batımında ışığı otomatik aç";
-          icon = "lightbulb";
-          color = "text-amber-500";
-          bg = "bg-amber-500/10";
-        } else if (dName.indexOf('klima') !== -1 || device.icon === 'thermometer' || dName.indexOf('ısıt') !== -1) {
-          suggestionTitle = "Sıcaklık Kontrolü (" + device.name + ")";
-          suggestionDesc = "Oda sıcaklığı 25°C üstüne çıkarsa çalıştır";
-          icon = "thermometer";
-          color = "text-blue-500";
-          bg = "bg-blue-500/10";
-        } else if (dName.indexOf('priz') !== -1 || device.icon === 'plug') {
-          suggestionTitle = "Tasarruf Modu (" + device.name + ")";
-          suggestionDesc = "Evden çıkıldığında prizi kapat";
-          icon = "plug";
-          color = "text-emerald-500";
-          bg = "bg-emerald-500/10";
-        } else if (dName.indexOf('kapı') !== -1 || device.icon === 'door-open' || dName.indexOf('kilit') !== -1) {
-          suggestionTitle = "Güvenlik Uyarısı (" + device.name + ")";
-          suggestionDesc = "Gece kapı açılırsa bildirim gönder";
-          icon = "shield-alert";
-          color = "text-red-500";
-          bg = "bg-red-500/10";
-        } else {
-          suggestionTitle = device.name + " Otomasyonu";
-          suggestionDesc = device.name + " cihazı için akıllı kural";
-          icon = device.icon || "cpu";
-          color = "text-indigo-500";
-          bg = "bg-indigo-500/10";
-        }
-
-        const btn = document.createElement('div');
-        btn.onclick = function() {
-          openConfigureSheet(suggestionTitle, suggestionDesc, icon, color, bg);
-        };
-        btn.className = "flex items-center p-4 bg-slate-50 hover:bg-slate-100 active:bg-slate-200 rounded-2xl cursor-pointer transition-colors";
-        btn.innerHTML = `
-          <div class="w-12 h-12 rounded-xl ${bg} ${color} flex items-center justify-center shrink-0">
-            <i class="w-6 h-6" data-lucide="${icon}"></i>
-          </div>
-          <div class="ml-4 flex-1">
-            <h4 class="font-bold text-slate-800 text-[15px]">${suggestionTitle}</h4>
-            <p class="text-[13px] text-slate-500 mt-0.5">${suggestionDesc}</p>
-          </div>
-          <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <i class="w-4 h-4 text-slate-400" data-lucide="plus"></i>
-          </div>
-        `;
-        container.appendChild(btn);
+    // Yalnızca eşleşmiş cihazlara gerçekten uygulanabilen senaryolar listelenir; uygun olmayanlar gizlenir.
+    function sceneHtml() {
+      var avail = QS ? QS.available() : [];
+      var h = '';
+      if (!avail.length && TYPE === 'clickrun') return NO_SUGGESTION;
+      avail.forEach(function (s) {
+        var on = S.scene === s.id;
+        var names = s.devices.map(function (d) { return d.name; });
+        h += '<button type="button" class="qs-choice' + (on ? ' is-on' : '') + '" data-scene="' + esc(s.id) + '">' +
+          '<span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + esc(s.icon) + '"></i></span>' +
+          '<span class="qs-body"><span class="qs-title">' + esc(s.title) + '</span><span class="qs-meta">' + esc(s.desc) + '</span>' +
+          '<span class="qs-thumbs">' + s.devices.slice(0, 4).map(function (d) { return d.thumb; }).join('') + '</span>' +
+          '<span class="qs-meta" style="font-weight:700">' + s.affected + ' cihaz · ' + esc(names.slice(0, 2).join(', ') + (names.length > 2 ? ' +' + (names.length - 2) : '')) + '</span></span>' +
+          '<span class="qs-radio"></span></button>';
+        if (on) h += '<div class="qs-preview"><h5>Çalışınca ne olur</h5><ul>' + s.devices.map(function (d) {
+          return '<li><span class="qs-devname">' + d.thumb + esc(d.name) + '</span><span>' + esc(d.text) + '</span></li>';
+        }).join('') + '</ul></div>';
       });
-
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      if (TYPE === 'automation') {
+        h += '<button type="button" class="qs-choice' + (S.scene === 'notify' ? ' is-on' : '') + '" data-scene="notify">' +
+          '<span class="qs-ico" style="background:#64748b1f;color:#64748b"><i data-lucide="bell-ring"></i></span>' +
+          '<span class="qs-body"><span class="qs-title">Yalnızca bildirim</span><span class="qs-meta">Cihazlara dokunmaz, sadece haber verir.</span></span><span class="qs-radio"></span></button>';
+        if (!avail.length) h = '<div class="qs-note" style="margin-bottom:10px">Eşleşmiş cihazlarına uyan hazır senaryo yok. ' + link('nexus-pair.html', 'Cihaz ekle') + '</div>' + h;
+      }
+      return h;
     }
+
+    function problem() {
+      if (TYPE === 'automation') {
+        if (S.kind === 'location' || S.kind === 'security') return 'Bu tetikleyici türü henüz desteklenmiyor.';
+        if (S.kind === 'device') { if (!switchable().length) return 'Bu tetikleyici için eşleşmiş cihaz yok.'; if (!S.device) return 'İzlenecek cihazı seç.'; }
+        if (S.kind === 'sensor') { if (!sensors().length) return 'Bu tetikleyici için eşleşmiş sensör yok.'; if (!S.sensor) return 'Tetikleyen sensörü seç.'; }
+        if (S.kind === 'weather') {
+          if (!coords()) return 'Önce ev konumunu seç.';
+          var v = S.weather.value;
+          if (v === '' || !isFinite(Number(v))) return 'Bir eşik değer gir.';
+        }
+      }
+      return S.scene ? '' : 'Ne yapacağını seç.';
+    }
+    function refresh() {
+      var p = problem();
+      document.getElementById('config-save').disabled = !!p;
+      document.getElementById('config-hint').textContent = p;
+    }
+    function render() {
+      var body = document.getElementById('config-options');
+      var top = body.scrollTop;
+      var h = '';
+      if (TYPE === 'automation') h += sectionHtml(1, 'Ne zaman çalışsın?', triggerHtml());
+      h += sectionHtml(TYPE === 'automation' ? 2 : 1, 'Ne yapsın?', sceneHtml());
+      body.innerHTML = h;
+      body.scrollTop = top;
+      icons();
+      refresh();
+    }
+
+    window.openConfigureSheet = function (title, desc, icon, colorClass, bgClass) {
+      pending = { title: title, desc: desc, icon: icon, colorClass: colorClass, bgClass: bgClass };
+      devices = readDevices();
+      S = fresh(TRIGGER_KINDS[title] || 'time');
+      document.getElementById('config-sheet-title').textContent = title;
+      document.getElementById('config-sheet-desc').textContent = desc;
+      document.getElementById('config-sheet-icon-wrap').className = 'nx-sheet-ico ' + colorClass;
+      var iconEl = document.getElementById('config-sheet-icon');
+      iconEl.className = '';
+      iconEl.setAttribute('data-lucide', icon);
+      document.getElementById('config-options').scrollTop = 0;
+      render();
+      openSheet('configure');
+    };
+    window.closeConfigureSheet = function () { closeSheet('configure'); pending = null; };
+
+    document.getElementById('config-options').addEventListener('click', function (ev) {
+      var t = ev.target.closest('button');
+      if (!t || !S) return;
+      if (t.hasAttribute('data-scene')) {
+        S.scene = t.getAttribute('data-scene');
+        // Senaryonun önerilen saati varsa, saati elle seçmediysen kendiliğinden dolar.
+        var m = TYPE === 'automation' && S.kind === 'time' && !S.timeTouched && QS ? QS.metaFor(S.scene) : null;
+        if (m && m.time) {
+          if (TIME_PRESETS.some(function (p) { return p[0] === m.time.value; })) { S.timeMode = 'preset'; S.time = m.time.value; }
+          else { S.timeMode = 'custom'; S.customTime = m.time.value; }
+          S.repeat = m.time.repeat;
+        }
+      } else if (t.hasAttribute('data-time')) {
+        S.timeTouched = true;
+        var v = t.getAttribute('data-time');
+        if (v === 'custom') S.timeMode = 'custom'; else { S.timeMode = 'preset'; S.time = v; }
+      } else if (t.hasAttribute('data-repeat')) { S.timeTouched = true; S.repeat = t.getAttribute('data-repeat'); }
+      else if (t.hasAttribute('data-device')) S.device = { key: t.getAttribute('data-device'), name: t.getAttribute('data-name') };
+      else if (t.hasAttribute('data-event')) S.event = t.getAttribute('data-event');
+      else if (t.hasAttribute('data-sensor')) S.sensor = { key: t.getAttribute('data-sensor'), name: t.getAttribute('data-name') };
+      else if (t.hasAttribute('data-metric')) S.weather.metric = t.getAttribute('data-metric');
+      else if (t.hasAttribute('data-op')) S.weather.op = t.getAttribute('data-op');
+      else return;
+      render();
+      // Seçilen senaryonun "Çalışınca ne olur" kutusu alttan kesik kalmasın.
+      var body = document.getElementById('config-options'), pv = body.querySelector('.qs-preview');
+      if (pv && t.hasAttribute('data-scene')) {
+        var over = pv.getBoundingClientRect().bottom - body.getBoundingClientRect().bottom;
+        if (over > 0) body.scrollTop += over + 8;
+      }
+    });
+    document.getElementById('config-options').addEventListener('input', function (ev) {
+      if (!S) return;
+      if (ev.target.id === 'qs-time') { S.timeTouched = true; S.customTime = ev.target.value || S.customTime; }
+      else if (ev.target.id === 'qs-wval') S.weather.value = ev.target.value;
+      refresh();
+    });
+
+    function buildTrigger() {
+      if (TYPE === 'clickrun') return { type: 'manual' };
+      if (S.kind === 'time') return { type: 'time', value: timeValue(), repeat: S.repeat };
+      if (S.kind === 'device') return { type: 'device', value: S.device.key, label: S.device.name, event: S.event };
+      if (S.kind === 'sensor') return { type: 'sensor', value: S.sensor.key, label: S.sensor.name, event: 'active' };
+      return { type: 'weather', metric: S.weather.metric, op: S.weather.op, value: Number(S.weather.value), label: 'weather' };
+    }
+    function triggerSummary() {
+      if (S.kind === 'time') {
+        var v = timeValue();
+        var base = v === 'sunrise' ? 'Gündoğumu' : v === 'sunset' ? 'Gün batımı' : v;
+        return REPEATS.filter(function (r) { return r[0] === S.repeat; })[0][1].toLowerCase() + ' ' + base;
+      }
+      if (S.kind === 'device') return S.device.name + ({ on: ' açılınca', off: ' kapanınca', any: ' değişince' }[S.event]);
+      if (S.kind === 'sensor') return S.sensor.name + ' algılayınca';
+      return ({ temp: 'Sıcaklık', wind: 'Rüzgâr', rain: 'Yağış' }[S.weather.metric]) + (S.weather.op === 'above' ? ' üstüne çıkınca' : ' altına inince');
+    }
+    window.confirmAddAutomation = function () {
+      var p = problem();
+      if (p) { toast(p, 'error'); return; }
+      var sceneId = S.scene === 'notify' ? null : S.scene;
+      var scene = sceneId ? NX.SCENES[sceneId] : null;
+      var desc = TYPE === 'automation' ? triggerSummary() + (scene ? ' · ' + scene.title : ' · bildirim') : QS.descFor(sceneId);
+      QS.save(TYPE, sceneId, {
+        title: scene ? scene.title : pending.title,
+        desc: desc,
+        trigger: buildTrigger(),
+        icon: sceneId ? undefined : pending.icon
+      });
+      finish();
+    };
+
+    // ---------- Hızlı Öneriler ----------
+    function existingItems() { try { return readAndNormalizeItems(KEY, TYPE); } catch (e) { return []; } }
+    function alreadyAdded(items, s) {
+      return items.some(function (i) {
+        if (i.sceneId !== s.id) return false;
+        return TYPE === 'clickrun' || (i.trigger && s.time && i.trigger.type === 'time' && i.trigger.value === s.time.value && i.trigger.repeat === s.time.repeat);
+      });
+    }
+    function quickList() {
+      var list = document.getElementById('quick-create-list');
+      var sugg = QS ? QS.available().filter(function (s) { return TYPE === 'clickrun' || s.time; }) : [];
+      if (!sugg.length) { list.innerHTML = NO_SUGGESTION; icons(); return; }
+      var items = existingItems();
+      list.innerHTML = sugg.map(function (s) {
+        var done = alreadyAdded(items, s);
+        var meta = (s.time && TYPE === 'automation' ? s.time.label + ' · ' : '') + s.affected + ' cihaz';
+        return '<div class="qs-sugg"><span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + esc(s.icon) + '"></i></span>' +
+          '<span class="qs-body"><span class="qs-title">' + esc(s.title) + '</span><span class="qs-meta">' + esc(meta) + '</span>' +
+          '<span class="qs-meta">' + esc(s.desc) + '</span></span>' +
+          (done ? '<span class="qs-done"><i data-lucide="check"></i>Ekli</span>'
+            : '<button type="button" class="qs-link-btn" data-sugg="' + esc(s.id) + '"><i data-lucide="plus"></i>Ekle</button>') + '</div>';
+      }).join('');
+      icons();
+    }
+    document.getElementById('quick-create-list').addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-sugg]');
+      if (!b) return;
+      var s = QS.available().filter(function (x) { return x.id === b.getAttribute('data-sugg'); })[0];
+      if (!s) return;
+      var t = TYPE === 'clickrun' ? { type: 'manual' } : { type: 'time', value: s.time.value, repeat: s.time.repeat };
+      QS.save(TYPE, s.id, { title: s.title, desc: TYPE === 'clickrun' ? s.desc : s.time.label + ' · ' + s.title, trigger: t });
+      finish();
+    });
+    window.toggleQuickCreate = function () {
+      var sheet = document.getElementById('quick-create-sheet');
+      if (sheet.classList.contains('is-open')) { closeSheet('quick-create'); return; }
+      devices = readDevices();
+      quickList();
+      openSheet('quick-create');
+    };
+
+    // ---------- Tıkla ve çalıştır: kendi sayfası (tetikleyici yok; tek dokunuşla çalışan senaryo) ----------
+    if (TYPE === 'clickrun') {
+      devices = readDevices();
+      S = fresh('time');
+      var main = document.querySelector('main');
+      document.querySelector('header h1').textContent = 'Tıkla ve Çalıştır';
+      main.className = 'flex-grow px-5 pt-4 pb-40 qs-wrap';
+      main.innerHTML = '<div class="text-center" style="margin-bottom:18px"><h2 class="text-2xl font-bold leading-tight tracking-tight mb-1">Yeni Senaryo</h2>' +
+        '<p class="text-slate-500 text-sm">Tek dokunuşla eşleşmiş cihazlarında çalışacak bir senaryo seç.</p></div>' +
+        '<div id="click-scenes"></div>' +
+        '<section class="qs-section" id="click-name-wrap" style="margin-top:18px"></section>';
+      var bar = document.createElement('div');
+      bar.className = 'qs-savebar qs-wrap';
+      bar.innerHTML = '<button type="button" id="click-save" class="qs-save" disabled>Senaryoyu kaydet</button><p class="qs-hint" id="click-hint"></p>';
+      document.body.appendChild(bar);
+      var nameTouched = false, nameVal = '';
+      var clickRender = function () {
+        document.getElementById('click-scenes').innerHTML = sceneHtml();
+        var wrap = document.getElementById('click-name-wrap');
+        var has = !!S.scene && QS && QS.available().length;
+        wrap.style.display = has ? '' : 'none';
+        if (has && !document.getElementById('qs-name')) {
+          wrap.innerHTML = '<div class="qs-label">Adı</div><input class="qs-input" id="qs-name" maxlength="40" value="">';
+        }
+        var nm = document.getElementById('qs-name');
+        if (nm) { nm.placeholder = S.scene ? NX.SCENES[S.scene].title : ''; if (!nameTouched) nm.value = ''; }
+        document.getElementById('click-save').disabled = !S.scene;
+        document.getElementById('click-hint').textContent = S.scene ? '' : (QS && QS.available().length ? 'Önce bir senaryo seç.' : '');
+        icons();
+      };
+      document.getElementById('click-scenes').addEventListener('click', function (ev) {
+        var t = ev.target.closest('[data-scene]');
+        if (!t) return;
+        S.scene = t.getAttribute('data-scene');
+        clickRender();
+      });
+      main.addEventListener('input', function (ev) {
+        if (ev.target.id === 'qs-name') { nameTouched = true; nameVal = ev.target.value; }
+      });
+      document.getElementById('click-save').addEventListener('click', function () {
+        if (!S.scene) return;
+        var title = (nameVal || '').trim() || NX.SCENES[S.scene].title;
+        QS.save('clickrun', S.scene, { title: title, desc: QS.descFor(S.scene), trigger: { type: 'manual' } });
+        finish();
+      });
+      clickRender();
+    }
+  })();
   </script>
 </body>
 
 </html>
-
-

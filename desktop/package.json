@@ -39,6 +39,7 @@
     "files": [
       "main.cjs",
       "preload.cjs",
+      "ssdp.cjs",
       "auth-preload.cjs",
       "kit/**/*",
       "resources/**/*",

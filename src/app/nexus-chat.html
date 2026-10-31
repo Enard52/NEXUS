@@ -157,8 +157,9 @@
         Tekrar görüşmek güzel!<br/>Nasıl yardımcı olabilirim?
       </h1>
       <!-- Features Scrolling Pills -->
-      <div class="w-full overflow-x-auto no-scrollbar pb-2 nx-fade-x">
-        <div class="flex items-center gap-3 px-6 w-max">
+      <!-- Etiketler her zaman başlığın altında ortalanır; dar ekranda alt satıra sarar (kaydırma yok) -->
+      <div class="w-full pb-2">
+        <div class="flex items-center gap-3 px-4" style="flex-wrap:wrap;justify-content:center">
 
           <button onclick="sendQuickMessage('Klimayı 22 dereceye ayarla')" class="flex items-center gap-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-blue-100/50 rounded-2xl shadow-sm text-sm font-medium text-gray-700 shrink-0 transition-transform active:scale-95">
             <svg class="h-4 w-4 text-[#4C7DFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
@@ -204,6 +205,8 @@
       </button>
     </div>
     <div id="attach-backdrop" class="hidden fixed inset-0 z-30" onclick="toggleAttachMenu(false)"></div>
+    <!-- Asistan modu: sığmazsa yatay kayar; seçilen mod asistanın mesajı nasıl işleyeceğini belirler -->
+    <div id="assistant-modes" class="nx-modes" role="radiogroup" aria-label="Asistan modu"></div>
     <div class="custom-gradient-border px-4 py-3 flex items-center shadow-sm">
       <button aria-label="Ek ekle" aria-expanded="false" onclick="toggleAttachMenu()" class="w-8 h-8 flex shrink-0 mr-3 items-center justify-center text-slate-500 hover:text-slate-700 transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,188 +235,8 @@
 </main>
 
 <script src="js/lucide.js"></script>
+<script src="nexus-voice.js"></script>
 <script>
-  /* ---------- Sesli giriş ----------
-     İki yol var:
-     1) Tarayıcının konuşma tanıması (Chrome/Edge): hızlı ve ücretsiz.
-     2) MediaRecorder + Cloudflare Worker Whisper: Electron, Android, iOS ve
-        1. yolun çalışmadığı her durumda (ör. Electron'da "network" hatası).
-     Her iki yolda da metin yalnızca giriş alanına yazılır; kullanıcı gönder
-     düğmesine basana kadar hiçbir mesaj işlenmez. Kayıt cihazda/sunucuda saklanmaz. */
-  var nxVoiceRec = null;
-  var nxVoiceStopper = null;
-  var nxVoiceTimer = null;
-  var nxVoiceToastEl = null;
-  var nxVoiceToastTimer = null;
-
-  function nxVoiceIsTr() {
-    return (document.documentElement.lang || 'tr').slice(0, 2) === 'tr';
-  }
-  function nxSpeechSupported() {
-    return 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
-  }
-  function nxRecorderSupported() {
-    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
-  }
-  // Electron'da SpeechRecognition nesnesi vardır ama Google konuşma servisi anahtarı
-  // olmadığı için "network" hatası verir; doğrudan Worker yolunu kullan.
-  function nxSkipBrowserSpeech() {
-    try {
-      if (window.nexusDesktop || location.protocol === 'nexus:') return true;
-      if (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) return true;
-      if (/Electron/i.test(navigator.userAgent || '')) return true;
-    } catch (e) {}
-    return false;
-  }
-  function nxVoicePressed(on) {
-    var btn = document.getElementById('chat-mic');
-    if (!btn) return;
-    // Kayıt göstergesi: düz opacity yanıp sönme (animate-pulse) yerine marka
-    // kırmızısı + yayılan halka + ikon nefesi (css/nexus-ui.css → #chat-mic.nx-rec).
-    btn.classList.toggle('nx-rec', !!on);
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    btn.setAttribute('aria-label', on ? (nxVoiceIsTr() ? 'Kaydı bitir' : 'Stop recording') : (nxVoiceIsTr() ? 'Sesle yaz' : 'Voice input'));
-  }
-  function nxVoiceToggle() {
-    if (nxVoiceRec) { try { nxVoiceRec.stop(); } catch (e) {} return; }
-    if (nxVoiceStopper) { nxVoiceStopper(); return; }
-    // Kayıt başlangıcı: kısa tek tık (mikrofonun açıldığını duyurur)
-    if (window.nexusFeedback) window.nexusFeedback.play('copy');
-    if (!nxSkipBrowserSpeech() && nxSpeechSupported()) { nxStartBrowserSpeech(); return; }
-    nxStartRecorder();
-  }
-
-  function nxStartBrowserSpeech() {
-    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    var input = document.getElementById('chat-input');
-    var startText = input.value;
-    var networkFailed = false;
-    var rec = new SR();
-    nxVoiceRec = rec;
-    rec.lang = nxVoiceIsTr() ? 'tr-TR' : 'en-US';
-    rec.interimResults = true;
-    rec.continuous = false;
-    nxVoicePressed(true);
-    rec.onresult = function (e) {
-      var text = '';
-      for (var i = e.resultIndex; i < e.results.length; i++) text += e.results[i][0].transcript;
-      input.value = (startText ? startText + ' ' : '') + text.trim();
-      input.focus();
-    };
-    rec.onerror = function (e) {
-      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-        nxVoiceToast(nxVoiceIsTr() ? 'Mikrofon izni verilmedi. Tarayıcı ayarlarından izin ver.' : 'Microphone permission denied. Allow it in your browser settings.');
-      } else if (e.error === 'network') {
-        networkFailed = true;
-      } else if (e.error !== 'aborted') {
-        nxVoiceToast(nxVoiceIsTr() ? 'Ses tanınamadı, tekrar dene.' : 'Voice could not be recognized, please try again.');
-      }
-    };
-    rec.onend = function () {
-      nxVoicePressed(false);
-      nxVoiceRec = null;
-      if (networkFailed) {
-        if (nxRecorderSupported()) {
-          nxVoiceToast(nxVoiceIsTr() ? 'Tarayıcı konuşma servisine ulaşılamadı; kayıt yoluyla deniyorum.' : 'Browser speech service is unreachable; trying recording instead.');
-          nxStartRecorder();
-        } else {
-          nxVoiceToast(nxVoiceIsTr() ? 'Konuşma tanıma bu cihazda çalışmıyor (ağ/servis).' : 'Speech recognition is not available on this device (network/service).');
-        }
-      }
-    };
-    try { rec.start(); } catch (e) { rec.onend(); }
-  }
-
-  function nxPickAudioMime() {
-    var list = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
-    for (var i = 0; i < list.length; i++) {
-      try { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(list[i])) return list[i]; } catch (e) {}
-    }
-    return '';
-  }
-  function nxStopStream(stream) {
-    try { (stream.getTracks() || []).forEach(function (t) { t.stop(); }); } catch (e) {}
-  }
-
-  function nxStartRecorder() {
-    if (!nxRecorderSupported()) {
-      nxVoiceToast(nxVoiceIsTr() ? 'Sesli yazma bu cihazda desteklenmiyor. Metinle yazabilirsin.' : 'Voice input is not supported on this device. You can type instead.');
-      return;
-    }
-    var input = document.getElementById('chat-input');
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-      var chunks = [];
-      var mime = nxPickAudioMime();
-      var rec;
-      try {
-        rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
-      } catch (e) {
-        nxStopStream(stream);
-        nxVoiceToast(nxVoiceIsTr() ? 'Kayıt başlatılamadı.' : 'Could not start recording.');
-        return;
-      }
-      var finished = false;
-      function stop() {
-        if (finished) return;
-        finished = true;
-        nxVoiceStopper = null;
-        if (nxVoiceTimer) { clearTimeout(nxVoiceTimer); nxVoiceTimer = null; }
-        try { if (rec.state !== 'inactive') rec.stop(); } catch (e) { nxStopStream(stream); nxVoicePressed(false); }
-      }
-      nxVoiceStopper = stop;
-      nxVoicePressed(true);
-      rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
-      rec.onerror = function () {
-        nxStopStream(stream);
-        nxVoicePressed(false);
-        nxVoiceStopper = null;
-        nxVoiceToast(nxVoiceIsTr() ? 'Kayıt sırasında hata oluştu.' : 'Recording failed.');
-      };
-      rec.onstop = function () {
-        nxStopStream(stream);
-        nxVoicePressed(false);
-        if (!chunks.length) {
-          nxVoiceToast(nxVoiceIsTr() ? 'Ses duyulamadı; mikrofona yakın konuş.' : 'No audio was captured; speak closer to the mic.');
-          return;
-        }
-        var blob = new Blob(chunks, { type: mime || 'audio/webm' });
-        nxVoiceToast(nxVoiceIsTr() ? 'Yazıya dökülüyor…' : 'Transcribing…');
-        window.nexusAssistant.transcribe(blob, nxVoiceIsTr() ? 'tr' : 'en').then(function (text) {
-          if (!text) {
-            nxVoiceToast(nxVoiceIsTr() ? 'Ses anlaşılamadı, tekrar dene.' : 'Could not understand the audio, please try again.');
-            return;
-          }
-          var current = input.value.replace(/\s+$/, '');
-          input.value = (current ? current + ' ' : '') + text;
-          input.focus();
-          try { input.setSelectionRange(input.value.length, input.value.length); } catch (e) {}
-        }).catch(function (err) {
-          var msg = String((err && err.message) || '');
-          if (/too_large/.test(msg)) nxVoiceToast(nxVoiceIsTr() ? 'Kayıt çok uzun; 60 saniyeden kısa konuş.' : 'Recording is too long; keep it under 60 seconds.');
-          else nxVoiceToast(nxVoiceIsTr() ? 'Yazıya dökülemedi. İnternet bağlantını kontrol et.' : 'Could not transcribe. Check your internet connection.');
-        });
-      };
-      try { rec.start(); } catch (e) {
-        nxVoiceStopper = null;
-        nxVoicePressed(false);
-        nxStopStream(stream);
-        nxVoiceToast(nxVoiceIsTr() ? 'Kayıt başlatılamadı.' : 'Could not start recording.');
-        return;
-      }
-      nxVoiceTimer = setTimeout(stop, 60000);
-      nxVoiceToast(nxVoiceIsTr() ? 'Dinliyorum… Bitirmek için mikrofona tekrar dokun.' : 'Listening… Tap the mic again to stop.');
-    }).catch(function (err) {
-      nxVoicePressed(false);
-      nxVoiceStopper = null;
-      var name = (err && err.name) || '';
-      if (name === 'NotAllowedError' || name === 'SecurityError') nxVoiceToast(nxVoiceIsTr() ? 'Mikrofon izni verilmedi. Cihaz ayarlarından izin ver.' : 'Microphone permission denied. Allow it in your device settings.');
-      else if (name === 'NotFoundError' || name === 'DevicesNotFoundError') nxVoiceToast(nxVoiceIsTr() ? 'Bu cihazda mikrofon bulunamadı.' : 'No microphone was found on this device.');
-      else nxVoiceToast(nxVoiceIsTr() ? 'Mikrofon açılamadı.' : 'Could not open the microphone.');
-    });
-  }
-
-  function nxVoiceToast(msg, ms) { if (window.nexusToast) window.nexusToast(msg, { type: 'info', duration: ms || 2200, key: 'voice' }); }
-
   /* ---------- Gerçek sohbet geçmişi + günlük AI puan sayacı ---------- */
   var CHAT_KEY = 'nexusChatHistory';
   var POINTS_KEY = 'nexusAiPoints';
@@ -454,9 +277,24 @@
     if (out) {
       input.placeholder = window.nexusPoints.exhaustedText() + ' · ' + (window.nexusT ? nexusT('Cihaz komutları yine çalışır', 'Device commands still work') : 'Cihaz komutları yine çalışır');
     } else {
-      input.placeholder = (window.nexusT ? nexusT('Nasıl yardımcı olabilirim?', 'How can I help you?') : 'Nasıl yardımcı olabilirim?');
+      input.placeholder = window.nexusAssistant && window.nexusAssistant.modes ? window.nexusAssistant.modes.hint() : 'Nasıl yardımcı olabilirim?';
     }
   }
+  function renderModes() {
+    var M = window.nexusAssistant && window.nexusAssistant.modes, host = document.getElementById('assistant-modes');
+    if (!M || !host) return;
+    host.innerHTML = M.list().map(function (m) {
+      return '<button type="button" role="radio" aria-checked="' + (M.get() === m.id) + '" class="nx-mode' + (M.get() === m.id ? ' is-on' : '') + '" data-mode="' + m.id + '">' + escapeHtml(m.label) + '</button>';
+    }).join('');
+    var on = host.querySelector('.is-on');
+    if (on) host.scrollLeft = Math.max(0, on.offsetLeft - 16);
+  }
+  document.getElementById('assistant-modes').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mode]');
+    if (!b) return;
+    window.nexusAssistant.modes.set(b.getAttribute('data-mode'));
+    renderModes(); updateInputLock(); document.getElementById('chat-input').focus();
+  });
 
   /* Kullanıcının gerçekten eşleştirdiği cihazı sayısı */
   function realDeviceCount() {
@@ -740,7 +578,9 @@
       watchLanResult(r.lanItems, bubbleEl);
     }
     setTimeout(function () {
-      var r = buildReply(text);
+      var M = window.nexusAssistant && window.nexusAssistant.modes;
+      var r = buildReply(M ? M.query(text) : text);
+      if (r.unknown && M && M.local()) { r.reply = M.notUnderstood(); finishReply(r); return; }
       if (r.unknown && window.nexusAssistant && window.nexusAssistant.ask) {
         if (pointsLeft() === 0) { r.reply = window.nexusPoints.exhaustedText() + '. ' + r.reply; finishReply(r); return; }
         window.nexusAssistant.ask(text).then(function (ai) { if (ai) { r.reply = ai; usePoint(); updateInputLock(); } finishReply(r); });
@@ -831,28 +671,27 @@
     var params = new URLSearchParams(window.location.search);
     var promptText = (params.get('promptText') || '').trim();
     var promptId = (params.get('promptId') || '').trim();
-    var helper = (params.get('helper') || '').trim();
-    if (!promptText && helper === 'ready') {
-      promptText = 'Evdeki cihazlara göre hazır komutlar, hızlı otomasyonlar ve akıllı uygulama önerileri ver.';
-    }
+    // Hiçbir bağlantı kullanıcı adına mesaj göndermez: metin varsa yalnızca input'a yazılır, göndermek kullanıcıda.
+    // Asistan çubuğu/simgesi (helper=ready) ya da boş çubuk: input boş açılır.
     if (!promptText && promptId && typeof window.getSmartPromptById === 'function') {
       var promptItem = window.getSmartPromptById(promptId);
       if (promptItem && promptItem.prompt) {
         promptText = promptItem.prompt;
       }
     }
-    if (!promptText) return;
+    if (!promptText) return false;
     if (typeof window.nexusTr === 'function') promptText = window.nexusTr(promptText);
     setTimeout(function () {
       var input = document.getElementById('chat-input');
       if (!input || input.disabled) return;
       input.value = promptText;
-      sendMessage();
+      try { input.focus(); input.setSelectionRange(promptText.length, promptText.length); } catch (e) {}
       if (window.history && window.history.replaceState) {
         var cleanUrl = window.location.pathname + (currentChatId ? ('?chat=' + encodeURIComponent(currentChatId)) : '');
         window.history.replaceState({}, document.title, cleanUrl);
       }
     }, 250);
+    return true;
   }
 
   /* Sayfa açılışı: ?chat=<id> varsa geçmişi geri yükle, yoksa yeni konuşma */
@@ -868,6 +707,8 @@
     }
     var params = new URLSearchParams(window.location.search);
     window.__nexusAiCreateType = params.get('type') === 'automation' ? 'automation' : 'clickrun';
+    // Akıllı sayfasındaki asistan çubuğundan gelindiyse ilgili oluşturma modu seçili açılır.
+    if (params.get('type') && window.nexusAssistant && window.nexusAssistant.modes) window.nexusAssistant.modes.set(params.get('type') === 'automation' ? 'automation' : 'scenario');
     var requested = params.get('chat');
     if (requested) {
       var list = loadChats();
@@ -889,8 +730,22 @@
     }
     function run() {
       syncAttachMenuLang();
+      renderModes();
       updateInputLock();
-      autoSendIncomingPrompt();
+      var autoSent = autoSendIncomingPrompt();
+      // Ana sayfadaki/Akıllı'daki asistan çubuğuna tıklayıp gelince yazma imleci hazır
+      // olsun: input odaklı başlar, caret yanıp söner — kullanıcı direkt yazar.
+      // Dokunmatikte odaklanmıyoruz: ekran klavyesi istemsiz açılmasın; orada
+      // kullanıcı inputa dokununca odak kazanır. Otomatik gönderim varsa sendMessage
+      // kendi akışında zaten odağı geri alır.
+      try {
+        var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        var ci = document.getElementById('chat-input');
+        if (!autoSent && fine && ci && !ci.disabled) {
+          ci.focus();
+          if (typeof ci.setSelectionRange === 'function') { var L = ci.value.length; ci.setSelectionRange(L, L); }
+        }
+      } catch (e) {}
     }
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', run);

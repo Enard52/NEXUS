@@ -198,7 +198,21 @@
     var all = devices();
 
     if (!text) return { reply: help() };
-    if (/\b(yardim|ne yapabilirsin|neler yapabilirsin|komutlar|help|what can you do|commands)\b/.test(text)) return { reply: help() };
+    // Senaryo/uygulama oluşturma isteği, "oluştur" cümlesindeki yan sözcüklere (komut, yardım, durum, rahatsız etme…) takılmasın.
+    var CREATE_VERB = /\b(olustur\w*|kur|kurun|ekle|create|make|build|add)\b/;
+    var CREATE_NOUN = /\b(senaryo\w*|otomasyon\w*|rutin\w*|akis\w*|panel\w*|sahne\w*|merkez\w*|uygulama\w*|scenario|automation|routine|scene|panel|smart app|app)\b/;
+    var wantsCreate = (CREATE_VERB.test(text) && CREATE_NOUN.test(text)) || /\byapay zeka ile olustur/.test(text) ||
+      /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
+    if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
+    // SSS / destek: konuyu gerçekten yanıtlayan ekranı gösterir (genel komut listesi değil)
+    if (/\b(sss|sikca sorulan|geri bildirim|sorun bildir|faq|feedback|destek ekib\w*|destek al\w*|destek istiyorum|musteri hizmetleri|customer support|contact support|contact us)\b/.test(text) || /\bsss ve destek\b/.test(text)) {
+      return { reply: T("SSS ve Geri Bildirim ekranında sık sorulan soruların yanıtları ve geri bildirim formu var (Ayarlar'dan ya da Enerji ekranının altından ulaşabilirsin). Takıldığın konuyu buraya yazarsan bildiğim kadarıyla yardımcı olurum; çözemezsem formdan bize iletebilirsin.",
+        "The FAQ and Feedback screen has answers to common questions and a feedback form. Tell me what you are stuck on and I will help as far as I can; if I cannot solve it, send it to us through the form.") };
+    }
+    // Genel yardım: yalnızca "yardım", "ne yapabilirsin", "komutlar", "hazır komutlar/öneriler" gibi çıplak istekler
+    if (/^(bana )?(yardim( et)?( eder misin)?|help( me)?|komutlar|commands|ne yapabilirsin|neler yapabilirsin|what can you do)\??$/.test(text) ||
+      /\b(ne yapabilirsin|neler yapabilirsin|what can you do)\b/.test(text) ||
+      /\b(hazir komut\w*|ready commands)\b/.test(text)) return { reply: help() };
     if (/\b(sen kimsin|kimsin|ismin ne|adin ne|who are you|what are you|your name)\b/.test(text)) {
       return { reply: T("Ben NEXUS AI, evinin asistanıyım. Işıklardan klimaya cihazlarını yönetir, senaryoları çalıştırır ve NEXUS hakkında sorularını yanıtlarım.",
         "I am NEXUS AI, your home's assistant. I control your devices from lights to the AC, run your scenes and answer questions about NEXUS.") };
@@ -216,14 +230,16 @@
     if (/\b(hava durumu|hava nasil|weather|forecast)\b/.test(text)) {
       return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
     }
-    if (/\b(durum|durumu|ne acik|neler acik|hangi cihazlar acik|akilli kontrol|status|what is on|what'?s on|whats on|what is running|which devices are on|smart control)\b/.test(text)) return status(all);
-
-    // Senaryo oluşturma (mevcut akış korunur)
-    var wantsCreate = (/\b(olustur|kur|ekle|create|make|build|add)\b/.test(text) && /\b(senaryo|otomasyon|rutin|scenario|automation|routine|akilli uygulama|uygulama|smart app|app)\b/.test(text)) ||
-      /\b(yeni bir akilli uygulama|yeni akilli uygulama|yeni otomasyon|yeni senaryo|create new automation|create new scenario)\b/.test(text);
-    if (wantsCreate) return { reply: V(["İsteğine göre yeni bir senaryo hazırladım ve listene ekledim, bir göz atabilirsin.", "Senaryon hazır! Listene ekledim, istersen düzenleyebilirsin."], ["I built a new scenario from your request and added it to your list, have a look.", "Your scenario is ready! I added it to your list and you can edit it any time."]), action: "create" };
+    // Yalnızca çıplak "durum" (en çok 3 kelime) ya da açık cihaz durumu sorusu; "kargo durumu" gibi cümleler yapay zekâya gider.
+    if ((text.split(" ").length <= 3 && /\b(durum|durumu|status|akilli kontrol|smart control)\b/.test(text) && !/\b(kargo|siparis|odeme|hesap|abonelik|order|payment|account|shipping)\b/.test(text)) ||
+      /\b(ne acik|neler acik|hangi cihazlar acik|cihaz durumu|ev durumu|what is on|what'?s on|whats on|what is running|which devices are on|device status|home status)\b/.test(text)) return status(all);
 
     if (!N) return { reply: help() };
+
+    // Bilgi / öneri soruları ("klimayı nasıl açarım", "bana film öner") komut değildir: cihaza dokunulmaz, yapay zekâya gider.
+    if (/\b(nasil|neden|niye|nedir|ne demek|hangi|kimdir|oner\w*|tavsiye\w*|sence|why|how|what is|what are|which|who|recommend\w*|suggest\w*)\b/.test(text)) {
+      return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. "]), unknown: true };
+    }
 
     // Senaryo çalıştırma
     for (var s = 0; s < SCENE_WORDS.length; s++) {
@@ -416,9 +432,46 @@
     });
   }
 
+  // Asistan modları: her mod mesajın nasıl işleneceğini gerçekten değiştirir (süs değil).
+  //  chat       : her şeyi sorar (yerel komut, bilinmezse yapay zekâ sohbeti)
+  //  device     : yalnız cihaz/durum komutları; anlaşılmazsa yapay zekâya (krediye) gitmez, örnek komut önerir
+  //  scenario   : mesajı "Tıkla ve çalıştır" senaryosu oluşturma isteği olarak işler
+  //  automation : mesajı otomasyon oluşturma isteği olarak işler
+  var MODES = [
+    { id: "chat", tr: "Sohbet", en: "Chat", hintTr: "Nasıl yardımcı olabilirim?", hintEn: "How can I help you?" },
+    { id: "device", tr: "Cihaz kontrolü", en: "Device control", hintTr: "Örn. salon ışığını kapat", hintEn: "e.g. turn off the living room light" },
+    { id: "scenario", tr: "Senaryo oluştur", en: "Create scenario", hintTr: "Tek dokunuşla ne olsun? Örn. film modu", hintEn: "What should one tap do? e.g. movie mode" },
+    { id: "automation", tr: "Otomasyon oluştur", en: "Create automation", hintTr: "Ne zaman ne olsun? Örn. her gece ışıkları kapat", hintEn: "When should what happen? e.g. lights off every night" }
+  ];
+  var mode = "chat";
+  function modeInfo(id) { return MODES.filter(function (m) { return m.id === id; })[0] || MODES[0]; }
+  var modes = {
+    list: function () {
+      var en = window.nexusLang === "en";
+      return MODES.map(function (m) { return { id: m.id, label: en ? m.en : m.tr, hint: en ? m.hintEn : m.hintTr }; });
+    },
+    get: function () { return mode; },
+    set: function (id) {
+      mode = modeInfo(id).id;
+      window.__nexusAiCreateType = mode === "automation" ? "automation" : "clickrun";
+      return mode;
+    },
+    hint: function () { var m = modeInfo(mode); return window.nexusLang === "en" ? m.hintEn : m.hintTr; },
+    // Motora giden metin: oluşturma modlarında istek "oluştur" niyetiyle işaretlenir (kullanıcıya gösterilen metin değişmez).
+    query: function (text) { return mode === "scenario" || mode === "automation" ? "yapay zeka ile olustur: " + text : text; },
+    // Cihaz modunda anlaşılmayan mesaj yapay zekâya gitmez.
+    local: function () { return mode === "device"; },
+    notUnderstood: function () {
+      return window.nexusLang === "en"
+        ? "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\"."
+        : "Bu bir cihaz komutu gibi anlaşılmadı. Örneğin: \"salon ışığını kapat\" ya da \"klimayı 22 yap\".";
+    }
+  };
+
   window.nexusAssistant = {
     reply: reply, help: help, fold: fold, ask: ask, transcribe: transcribe,
-    lanPending: lanPending, lanSettled: lanSettled, lanFailureNote: lanFailureNote
+    lanPending: lanPending, lanSettled: lanSettled, lanFailureNote: lanFailureNote,
+    modes: modes
   };
 })();
 

@@ -775,6 +775,15 @@ window.nexusCopy = function (text) {
   (document.head || document.documentElement).appendChild(s);
 })();
 
+// Seçim kutuları: işletim sisteminin gri listesi yerine uygulamanın kendi açılır listesi (tüm sayfalarda).
+(function () {
+  if (document.querySelector('script[src="nexus-select.js"]')) return;
+  var s = document.createElement('script');
+  s.src = 'nexus-select.js';
+  s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
+
 // Geri alma katmanı: yanlışlıkla silinen cihaz/olay/kart için 6 saniyelik "Geri al".
 // Depo yazımlarını gözlemler; yüklemesi yan etkisizdir, auth akışlarında gerekmez.
 (function () {

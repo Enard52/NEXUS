@@ -178,6 +178,7 @@ describe("desktop app file rules (src/app → packaged app/)", () => {
       "notify.js",
       "nexus-feedback.js",
       "nexus-undo.js",
+      "nexus-select.js",
       "nexus-dialog.js",
       "command-palette.js",
       "lang-en.js",

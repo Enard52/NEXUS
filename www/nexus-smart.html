@@ -52,6 +52,11 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="data.js"></script>
+  <link href="css/quick-scenes.css" rel="stylesheet"/>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
+  <script src="quick-scenes.js"></script>
   <script>
     // Eğer nexusGetItem/nexusSetItem tanımlı değilse, localStorage kullan
     if (typeof nexusGetItem !== 'function') {
@@ -226,8 +231,16 @@
 <!-- END: Recommendations Section -->
 </div>
       <!-- BEGIN: Tıkla ve çalıştır Tab -->
-      <div id="tab-clickrun" class="hidden">
-        <div class="flex items-center justify-between mb-4">
+      <div id="tab-clickrun" class="hidden qs-wrap">
+        <!-- Hazır senaryolar: yalnızca eşleşmiş cihazlarına gerçekten uygulanabilenler; dokununca çalışır -->
+        <div class="qs-head">
+          <h3>Senin için hazır</h3>
+        </div>
+        <p class="qs-sub" id="ready-sub">Dokununca eşleşmiş cihazlarında hemen çalışır.</p>
+        <div class="qs-grid" id="ready-scenes"></div>
+        <div id="ready-empty" class="nx-empty" style="display:none"></div>
+
+        <div class="flex items-center justify-between mb-4" style="margin-top:28px">
           <h3 class="text-xl font-bold text-gray-900">Senaryolarım</h3>
           <button id="siri-badge" onclick="window.location.href='nexus-siri-shortcuts.html'" class="bg-black text-white text-xs font-semibold pl-1 pr-3 py-1 rounded-full shadow-sm hover:bg-slate-900 active:scale-95 transition-all flex items-center gap-1.5">
             <img src="siri-logo.png" alt="Siri" class="w-6 h-6 object-contain rounded-full">
@@ -536,6 +549,7 @@ function toggleHomeSelector() {
           clickContainer.appendChild(btn);
         });
       }
+      renderReadyScenes();
 
       // Show/hide empty states
       const emptyAuto = document.getElementById('empty-automation');
@@ -563,6 +577,80 @@ function toggleHomeSelector() {
       }
     }
 
+    // ---- Tıkla ve çalıştır: eşleşmiş cihazlara göre hazır senaryolar ----
+    function qsEsc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function deviceListText(devs) {
+      var names = devs.map(function (d) { return d.name; });
+      return names.slice(0, 2).join(', ') + (names.length > 2 ? ' +' + (names.length - 2) : '');
+    }
+    function renderReadyScenes() {
+      var grid = document.getElementById('ready-scenes');
+      var empty = document.getElementById('ready-empty');
+      var sub = document.getElementById('ready-sub');
+      var QS = window.nexusQuickScenes;
+      if (!grid || !empty || !QS) return;
+      grid.innerHTML = '';
+      var avail = QS.available();
+      if (!avail.length) {
+        if (sub) sub.style.display = 'none';
+        empty.style.display = '';
+        empty.innerHTML = '<div class="nx-empty__icon" aria-hidden="true"><i data-lucide="sparkles"></i></div>' +
+          '<p class="nx-empty__title">Öneri hazır değil</p>' +
+          '<p class="nx-empty__text">' + (QS.hasDevices()
+            ? 'Eşleşmiş cihazlarına uyan hazır bir senaryo yok. Senaryolar ışık, perde, klima, kilit ya da robot süpürge gibi cihazlarla çalışır.'
+            : 'Cihaz eklenince hazır senaryolar burada görünecek.') + '</p>' +
+          '<a href="nexus-pair.html" class="nx-empty__cta"><i data-lucide="plus" class="w-4 h-4"></i> Cihaz ekle</a>';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        return;
+      }
+      if (sub) sub.style.display = '';
+      empty.style.display = 'none';
+      grid.innerHTML = avail.map(function (s) {
+        return '<button type="button" class="qs-tile" data-scene="' + qsEsc(s.id) + '">' +
+          '<span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + qsEsc(s.icon) + '"></i></span>' +
+          '<span class="qs-title">' + qsEsc(s.title) + '</span>' +
+          '<span class="qs-thumbs">' + s.devices.slice(0, 4).map(function (d) { return d.thumb; }).join('') + '</span>' +
+          '<span class="qs-meta">' + s.affected + ' cihaz · ' + qsEsc(deviceListText(s.devices)) + '</span>' +
+          '<span class="qs-run" style="color:' + s.hex + '"><i data-lucide="play"></i><span class="qs-run-text">Çalıştır</span></span>' +
+          '</button>';
+      }).join('');
+      Array.prototype.forEach.call(grid.querySelectorAll('.qs-tile'), function (tile) {
+        tile.addEventListener('click', function () { runReady(tile.getAttribute('data-scene'), tile); });
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    function runReady(sceneId, el) {
+      var QS = window.nexusQuickScenes;
+      if (!QS || !el || el.dataset.busy) return;
+      el.dataset.busy = '1';
+      var label = el.querySelector('.qs-run-text') || el.querySelector('.qs-meta');
+      var before = label ? label.textContent : '';
+      var toast = function (m, t) { if (window.nexusToast) window.nexusToast(m, { type: t }); };
+      var res;
+      try { res = QS.run(sceneId); } catch (e) { res = null; }
+      if (!res) { toast('Senaryo çalıştırılamadı.', 'error'); delete el.dataset.busy; return; }
+      if (!res.changed) {
+        toast(res.summary, 'error');
+        delete el.dataset.busy;
+        return;
+      }
+      toast(res.summary, 'success');
+      el.classList.add('is-done');
+      if (label) label.textContent = res.changed + ' cihaz ayarlandı';
+      res.failedNames.then(function (names) {
+        if (names.length) {
+          el.classList.remove('is-done'); el.classList.add('is-warn');
+          if (label) label.textContent = names.length >= res.changed ? 'Ulaşılamadı' : names.length + ' ulaşılamadı';
+          toast(names.slice(0, 3).join(', ') + (names.length > 3 ? ' +' + (names.length - 3) : '') + ' cihazına ulaşılamadı; cihazın açık ve aynı Wi-Fi\'da olduğundan emin ol.', 'error');
+        }
+      });
+      setTimeout(function () {
+        el.classList.remove('is-done', 'is-warn');
+        if (label) label.textContent = before;
+        delete el.dataset.busy;
+      }, 3200);
+    }
+
     function autoBgToLight(bgClass) {
        // Convert bg-red-500/10 to bg-red-100 for the button style, just a simple fallback
        if(bgClass.includes('emerald')) return 'bg-emerald-100';
@@ -574,9 +662,7 @@ function toggleHomeSelector() {
        return 'bg-gray-100';
     }
 
-    // Varsayılan 3 kart cihazlarına göre sıralanır; "Diğer Önerileri Gör" ile puan
-    // sırasındaki geniş havuz açılır (her kartın kendi görseli vardır, tekrar yok).
-    var recommendationsExpanded = false;
+    // Öneriler cihazlara göre puanlanır ve en alakalı 5 kart gösterilir (her kartın kendi görseli vardır, tekrar yok).
     function smartRecCard(item, esc) {
       return '<a href="nexus-smart-app-detail.html?id=' + encodeURIComponent(item.id) + '" class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer active:scale-[0.98] transition-transform block">' +
         '<div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 relative">' +
@@ -593,25 +679,10 @@ function toggleHomeSelector() {
       var container = document.getElementById('smart-recommendations-container');
       if (!container || typeof window.getRecommendedSmartApps !== 'function') return;
       var esc = function (s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
-      var apps = recommendationsExpanded && typeof window.getAllSmartAppsRanked === 'function'
-        ? window.getAllSmartAppsRanked()
-        : window.getRecommendedSmartApps(3);
+      // Her zaman 5 kart: cihaz eklendiyse cihazlarıyla en alakalı 5'i (puan sırası), eklenmediyse varsayılan 5.
+      var apps = window.getRecommendedSmartApps(5);
       if (!apps || !apps.length) return;
       container.innerHTML = apps.map(function (item) { return smartRecCard(item, esc); }).join('');
-      var old = document.getElementById('smart-recommendations-more');
-      if (old) old.remove();
-      if (!recommendationsExpanded && typeof window.getAllSmartAppsRanked === 'function') {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.id = 'smart-recommendations-more';
-        btn.className = 'w-full mt-3 py-3 rounded-xl bg-[#4C7DFF]/10 text-[#4C7DFF] font-bold text-sm active:scale-[0.98] transition-transform';
-        btn.textContent = 'Diğer Önerileri Gör (' + window.getAllSmartAppsRanked().length + ')';
-        btn.addEventListener('click', function () {
-          recommendationsExpanded = true;
-          renderSmartRecommendations();
-        });
-        container.insertAdjacentElement('afterend', btn);
-      }
     }
 
     // Switch to tab if URL has ?tab=...
@@ -647,13 +718,10 @@ function toggleHomeSelector() {
   window.openSmartAiChat = function (raw) {
     var text = (raw || '').trim();
     var type = activeSmartType();
-    var fallback = type === 'automation'
-      ? 'Yeni bir otomasyon oluşturmak istiyorum.'
-      : 'Yeni bir tıkla ve çalıştır senaryosu oluşturmak istiyorum.';
-    var prompt = text || fallback;
+    // Çubuğa basınca kullanıcı adına mesaj gönderilmez: boşsa input boş açılır, yazılmış metin varsa input'a konur.
     var target = type === 'automation' ? 'otomasyon' : 'tıkla ve çalıştır';
     window.location.href = 'nexus-chat.html?type=' + encodeURIComponent(type) +
-      '&promptText=' + encodeURIComponent(target + ' için yapay zeka ile oluştur: ' + prompt);
+      (text ? '&promptText=' + encodeURIComponent(target + ' için yapay zeka ile oluştur: ' + text) : '');
   }
   // Sahte giriş (span) artık yazılabilir değil: Enter ile gönderme kalktı,
   // tıklama doğrudan openSmartAiChat'e gider.
