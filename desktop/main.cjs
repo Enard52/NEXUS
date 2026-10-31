@@ -1379,9 +1379,13 @@ function wireUpdater(autoUpdater) {
   autoUpdater.on("update-not-available", () =>
     sendUpdateState({ state: "latest", availableVersion: null, error: null }),
   );
-  autoUpdater.on("download-progress", (p) =>
-    sendUpdateState({ state: "downloading", progress: Math.round(p.percent || 0) }),
-  );
+  // Fark indirmesinde electron-updater her aşamada yüzdeyi yeniden 0→100 sürebilir; çubuk geri sarmasın ve
+  // %100 yalnızca "indirildi" olayında bir kez görünsün (indirme sırasında en çok %99).
+  autoUpdater.on("download-progress", (p) => {
+    const prev = updateState.state === "downloading" ? updateState.progress || 0 : 0;
+    const next = Math.min(99, Math.max(prev, Math.round(p.percent || 0)));
+    sendUpdateState({ state: "downloading", progress: next });
+  });
   autoUpdater.on("error", (e) =>
     sendUpdateState({
       state: "error",

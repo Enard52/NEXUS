@@ -907,8 +907,8 @@
       checkBtn.style.opacity = checkBtn.disabled ? '0.55' : '1';
       progressWrap.classList.toggle('hidden', s !== 'downloading');
       progressBar.style.width = (s === 'downloading' ? Math.max(3, state.progress || 0) : 0) + '%';
-      pctEl.textContent = s === 'downloading' ? (state.progress || 0) + '%' : '';
-      pctEl.classList.toggle('hidden', s !== 'downloading');
+      pctEl.textContent = s === 'downloading' ? (state.progress || 0) + '%' : s === 'ready' ? '100%' : '';
+      pctEl.classList.toggle('hidden', s !== 'downloading' && s !== 'ready');
       installBtn.classList.toggle('hidden', s !== 'ready' && s !== 'available');
       installBtn.disabled = false;
       installBtn.dataset.mode = s === 'available' ? 'download' : 'install';
