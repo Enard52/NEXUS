@@ -267,7 +267,7 @@ export const content = {
         ],
         [
           "My device is not on the list. What can I do?",
-          "NEXUS only supports devices with a documented local protocol; cloud-only devices are not supported because NEXUS never talks to a vendor cloud. The compatibility list (docs/COMPATIBILITY.md) also includes TP-Link Tapo, Sonoff in DIY mode, WiZ, LIFX, Govee (LAN), Tuya with local keys and Wake-on-LAN. Each of these has automated protocol tests, but a model counts as verified only when someone reports that it worked on a real device. Open a Device support request on GitHub for a missing device, or a Device test report to confirm one; never include passwords, local keys or tokens.",
+          "NEXUS only supports devices with a documented local protocol; cloud-only devices are not supported because NEXUS never talks to a vendor cloud. The compatibility list (docs/COMPATIBILITY.md) also includes TP-Link Tapo, Sonoff in DIY mode, WiZ, LIFX, Govee (LAN), Tuya with local keys and Wake-on-LAN. Each of these has automated protocol tests, but a model counts as verified only when someone reports that it worked on a real device. Write to us through the contact form on this site (choose “New Device / Connector Request”) or by e-mail: the brand and model, what you expected and what happened. Telling us that a model worked on your real device is what marks it verified; never include passwords, local keys or tokens.",
         ],
         [
           "Do I need an account? What happens if the server is down?",
@@ -585,7 +585,7 @@ export const content = {
         ],
         [
           "Cihazım listede yok, ne yapabilirim?",
-          "NEXUS yalnızca belgelenmiş yerel protokolü olan cihazları destekler; yalnızca buluttan çalışan cihazlar desteklenmez, çünkü NEXUS hiçbir üretici bulutuyla konuşmaz. Uyumluluk listesinde (docs/COMPATIBILITY.md) TP-Link Tapo, DIY modunda Sonoff, WiZ, LIFX, Govee (LAN), yerel anahtarlı Tuya ve Wake-on-LAN de yer alır. Hepsinin otomatik protokol testi vardır, ancak bir model ancak biri gerçek cihazda çalıştığını bildirdiğinde doğrulanmış sayılır. Eksik cihaz için GitHub'da Cihaz destek isteği, doğrulamak için Cihaz test raporu aç; şifre, yerel anahtar veya token yazma.",
+          "NEXUS yalnızca belgelenmiş yerel protokolü olan cihazları destekler; yalnızca buluttan çalışan cihazlar desteklenmez, çünkü NEXUS hiçbir üretici bulutuyla konuşmaz. Uyumluluk listesinde (docs/COMPATIBILITY.md) TP-Link Tapo, DIY modunda Sonoff, WiZ, LIFX, Govee (LAN), yerel anahtarlı Tuya ve Wake-on-LAN de yer alır. Hepsinin otomatik protokol testi vardır, ancak bir model ancak biri gerçek cihazda çalıştığını bildirdiğinde doğrulanmış sayılır. Bu sitedeki iletişim formundan (“Yeni Cihaz & Bağlayıcı İsteği” konusu) ya da e-postayla yaz: marka ve model, ne beklediğin ve ne olduğu. Bir modelin senin gerçek cihazında çalıştığını bildirmen, onu doğrulanmış işaretlememizi sağlar; şifre, yerel anahtar veya token yazma.",
         ],
         [
           "Hesap açmak zorunda mıyım? Sunucu kapanırsa ne olur?",

@@ -43,6 +43,8 @@ export const APP_JS = [
   "nexus-select.js",
   "notify.js",
   "push.js",
+  "nexus-voice.js",
+  "nexus-energy-plan.js",
   "household-cloud.js",
   "app-version.js",
   "update-check.js",

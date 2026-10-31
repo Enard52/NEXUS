@@ -458,10 +458,43 @@ h2{font-size:clamp(14px,calc((100vw - 40px) / 23.2),2.15rem);letter-spacing:-.03
 .contrib-chip img{width:44px;height:44px;border-radius:50%;border:2px solid var(--brand)}
 .contrib-login{font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap}
 .contrib-role{font-size:9px;font-weight:700;letter-spacing:.02em;padding:1px 7px;border-radius:999px}
-.contrib-role.is-owner{color:#b45309;background:color-mix(in srgb,#f59e0b 14%,transparent)}
-html[data-theme=dark] .contrib-role.is-owner{color:#fbbf24;background:color-mix(in srgb,#f59e0b 16%,transparent)}
-.contrib-role.is-maintainer{color:var(--brand-press);background:color-mix(in srgb,var(--brand) 12%,transparent)}
-html[data-theme=dark] .contrib-role.is-maintainer{color:#93b4ff;background:color-mix(in srgb,var(--brand) 16%,transparent)}
+/* Katkı sayısı rozeti: sıralamanın ziyaretçiye okunur olması için (kim kaç commit'te). */
+.contrib-role.is-count{color:var(--muted);background:color-mix(in srgb,var(--muted) 12%,transparent)}
+/* Yetkili/sahip sıralamanın DIŞINDA tutulur: rekabet adil kalsın; onlar yalnız not metininde anılır. */
+.contrib-note{max-width:720px;margin:10px auto 0;text-align:center;font-size:12px;color:var(--muted);line-height:1.6}
+.contrib-note a{color:var(--brand);text-decoration:none;font-weight:600}
+.contrib-note a:hover{text-decoration:underline}
+/* Varsayılan 12 çip: dev toplulukta tüm sıralamayı "Tümünü gör" açar. */
+.contrib-more{display:block;margin:18px auto 0;padding:10px 22px;border-radius:999px;border:1px solid var(--border);
+  background:var(--surface);color:var(--brand);font-weight:700;font-size:13px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+.contrib-more[hidden]{display:none}
+.contrib-more:hover{transform:translateY(-2px);box-shadow:0 8px 20px color-mix(in srgb,var(--brand) 14%,transparent)}
+.star-glyph{font-size:17px;line-height:1;display:inline-block;transform:translateY(-1px)}
+/* Yıldız teşviki: sıralamanın üstünde belirgin CTA + canlı yıldız sayacı. */
+.star-cta{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+  max-width:720px;margin:6px auto 26px;padding:18px 22px;border-radius:var(--radius-lg);
+  background:color-mix(in srgb,var(--brand) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--brand) 22%,transparent)}
+.star-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border-radius:999px;text-decoration:none;
+  background:var(--brand-grad);color:#fff;font-weight:800;font-size:14px;letter-spacing:.01em;
+  box-shadow:0 8px 22px color-mix(in srgb,var(--brand) 34%,transparent);transition:transform .15s ease,box-shadow .15s ease}
+.star-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px color-mix(in srgb,var(--brand) 44%,transparent)}
+.star-btn svg{width:18px;height:18px;fill:#fff}
+.star-cta-txt{text-align:left}
+.star-cta-title{margin:0;font-weight:800;font-size:15px;color:var(--text)}
+.star-cta-sub{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.star-count{font-weight:800;color:var(--brand)}
+/* Footer yıldız rozeti: her sayfada görünür canlı sayaç (tıklanınca stargazers). */
+a.ft-star-pill{text-decoration:none;color:inherit}
+a.ft-star-pill:hover{border-color:var(--brand);color:var(--brand)}
+a.ft-star-pill svg{width:12px;height:12px;fill:currentColor}
+/* Katkıcı yokken dürüst davet: boş sıralama tablosu değil, ilk adım. */
+.contrib-empty{max-width:520px;margin:6px auto 0;text-align:center;font-size:13px;color:var(--muted);line-height:1.7}
+.contrib-empty a{color:var(--brand);text-decoration:none;font-weight:700}
+.contrib-empty a:hover{text-decoration:underline}
+/* Parmak hedefi: not ve boş-durum bağlantıları satır içi metin linki, bu yüzden kutuları
+   24px'in altında kalıyordu (verify-site kalıcı denetimi ölçüyor). Dolgu ile dokunma
+   alanını büyütüp negatif kenar boşluğuyla görsel düzeni aynı bırakıyoruz. */
+.contrib-note a,.contrib-empty a{display:inline-block;padding:5px 3px;margin:-5px -3px}
 
 /* Nasıl Çalışır (1-2-3 Adım Tasarımı) */
 .steps{display:grid;gap:20px;counter-reset:st;position:relative}
@@ -579,6 +612,10 @@ html[data-theme=dark] .contrib-role.is-maintainer{color:#93b4ff;background:color
 .dl-sums:hover{border-color:var(--brand);color:var(--brand)}
 .dl-card .btn{width:100%}
 .dl-note{font-size:13px;color:var(--muted);margin-top:20px;text-align:center}
+/* Parmak hedefi: "diğer indirmeler" notundaki satır içi linkler 24px altında kalıyordu
+   (verify-site kalıcı denetimi ölçüyor). Dolgu dokunma alanını büyütür, negatif kenar
+   boşluğu görsel düzeni aynı bırakır. */
+.dl-note a{display:inline-block;padding:5px 3px;margin:-5px -3px}
 .dl-web-card{margin-top:22px;padding:26px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   box-shadow:var(--shadow);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;
   background:linear-gradient(135deg,var(--surface) 0%,color-mix(in srgb,var(--brand) 6%,var(--surface)) 100%);
@@ -754,6 +791,10 @@ html.nx-scrolled .hd{box-shadow:0 10px 30px rgba(2,6,23,.22)}
 .doc-body a{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
 .doc-body a:hover{color:var(--brand-dark)}
 .doc-body .legal-updated{font-size:13px;color:var(--muted);margin-bottom:18px;font-style:italic}
+/* Kod imzalama sayfası dosya adı ve doğrulama komutu gösteriyor: satır içi kod okunur kalsın. */
+.doc-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;color:var(--text);
+  background:color-mix(in srgb,var(--text) 7%,transparent);padding:1px 5px;border-radius:5px;word-break:break-word}
+.doc-body strong{color:var(--text);font-weight:700}
 @media(max-width:640px){
   .doc-body{padding:22px 18px}
 }
@@ -1159,18 +1200,31 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
     <h1>Code Signing Policy</h1>
   </div>
   <div class="doc-body rv">
-    <p class="legal-updated">Last updated: 30 October 2026</p>
-<p>NEXUS is free, open-source software (Apache-2.0). This page describes how the Windows installer is, or will be, code signed and who is responsible for it.</p>
-<h3>Signing provider</h3>
-<p>Free code signing provided by <a href="https://signpath.io">SignPath.io</a>, certificate by <a href="https://signpath.org">SignPath Foundation</a>. Until signing is active, the direct Windows installers are published unsigned together with SHA-256 checksums on every release page. The Microsoft Store package is signed by Microsoft itself during certification; this policy covers the direct installer.</p>
-<h3>What is signed</h3>
-<p>Only the Windows installer and program files that GitHub Actions builds from the public source code at <a href="https://github.com/Enard52/NEXUS">github.com/Enard52/NEXUS</a>. Nothing else is signed, and no third-party binaries are signed as our own.</p>
+    <p class="legal-updated">Last updated: 31 October 2026</p>
+<p>NEXUS is free, open-source software (Apache-2.0). This page states plainly what is and is not code signed for each download offered on this site, and how you can verify a file yourself.</p>
+<h3>Signing status of each download</h3>
+<ul>
+<li><strong>Windows — Microsoft Store.</strong> The Store package is signed by Microsoft during certification, and updates come through the Store. This is the easiest and the recommended way to install NEXUS on Windows.</li>
+<li><strong>Windows — direct .exe.</strong> Not signed. NEXUS does not hold a code-signing certificate today, so SmartScreen may warn about an “unknown publisher”. Every release publishes the file's SHA-256 checksum.</li>
+<li><strong>Linux — .deb.</strong> Not signed with a GPG key, so your package manager may warn that the source is untrusted. Every release publishes the file's SHA-256 checksum.</li>
+<li><strong>Android — .apk.</strong> Signed with our own release key: Android only installs packages that are signed. Because the file is distributed outside Google Play, your phone asks you to allow installs from unknown sources.</li>
+</ul>
+<h3>What we publish</h3>
+<p>Only files that GitHub Actions builds from the public source code at <a href="https://github.com/Enard52/NEXUS">github.com/Enard52/NEXUS</a> are published as NEXUS downloads. The binaries and their checksums are attached to the release page of the <a href="https://github.com/Enard52/nexus-releases">Enard52/nexus-releases</a> repository: <code>SHA256SUMS-Windows.txt</code>, <code>SHA256SUMS-Linux.txt</code> and <code>NEXUS-Android.apk.sha256.txt</code>. No third-party binary is distributed or presented as ours.</p>
+<h3>How to verify a download</h3>
+<ul>
+<li>Download the file, then open its SHA-256 link in the downloads section of this site.</li>
+<li>On Windows run <code>certutil -hashfile NEXUS-Setup.exe SHA256</code>. On Linux and macOS run <code>sha256sum NEXUS-linux.deb</code>. On Android use a terminal or any checksum app.</li>
+<li>Your value must match the published one exactly. If it does not, delete the file and tell us.</li>
+</ul>
 <h3>Team roles</h3>
 <ul>
-<li>Author, reviewer and approver of signing requests: the maintainer, <a href="https://github.com/Enard52">@Enard52</a>.</li>
-<li>Changes from other contributors are merged only after the maintainer's code-owner review (see GOVERNANCE.md in the repository). Release tags can only be created by the maintainer.</li>
-<li>Multi-factor authentication is used for the source repository and for the signing service.</li>
+<li>The maintainer, <a href="https://github.com/Enard52">@Enard52</a>, owns the source repository and the release pipeline.</li>
+<li>A pull request needs one approving review before it can be merged, and <code>CODEOWNERS</code> automatically requests the maintainers' review (see <a href="https://github.com/Enard52/NEXUS/blob/main/GOVERNANCE.md">GOVERNANCE.md</a>). Release tags can only be created by the repository owner; a tag ruleset enforces this.</li>
+<li>The Android release key is kept as a GitHub Actions secret and is never committed. The repository account uses multi-factor authentication.</li>
 </ul>
+<h3>If we obtain a certificate</h3>
+<p>If NEXUS gets a code-signing certificate, the direct Windows installer and the Linux packages will be signed and this page will be updated with the provider and the verification steps.</p>
 <h3>Privacy</h3>
 <p>NEXUS does not transfer information to other networked systems unless the user asks for it (for example by signing in, or turning on sync or push). The desktop program checks the public release page for updates. See the <a href="/privacy">Privacy Policy</a>.</p>
 <h3>Contact</h3>
@@ -1180,18 +1234,21 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 <section id="community">
   <div class="wrap">
     <div class="sec-head center rv"><h2>Built with the community</h2><p>NEXUS is open source — every contribution is credited.</p></div>
-    <div id="nx-contrib" class="contrib-row">
-      <a class="contrib-chip rv" href="https://github.com/Enard52" target="_blank" rel="noopener" title="@Enard52 — Owner">
-        <img src="https://github.com/Enard52.png" width="88" height="88" alt="@Enard52" loading="lazy"/>
-        <span class="contrib-login">@Enard52</span>
-        <span class="contrib-role is-owner">Owner</span>
+    <div class="star-cta rv">
+      <a class="star-btn" href="https://github.com/Enard52/NEXUS/stargazers" target="_blank" rel="noopener" aria-label="Star on GitHub">
+        <span class="star-glyph" aria-hidden="true">★</span><span>Star on GitHub</span>
       </a>
-      <a class="contrib-chip rv" href="https://github.com/hadesonline02" target="_blank" rel="noopener" title="@hadesonline02 — Maintainer">
-        <img src="https://github.com/hadesonline02.png" width="88" height="88" alt="@hadesonline02" loading="lazy"/>
-        <span class="contrib-login">@hadesonline02</span>
-        <span class="contrib-role is-maintainer">Maintainer</span>
-      </a>
+      <div class="star-cta-txt">
+        <p class="star-cta-title">If NEXUS is useful to you, star it on GitHub</p>
+        <p class="star-cta-sub">A star is the biggest motivation for new contributors · <span class="star-count"><span data-nx-stars>—</span> ★</span></p>
+      </div>
     </div>
+    <div id="nx-contrib" class="contrib-row"></div>
+    <button id="nx-contrib-more" type="button" class="contrib-more" hidden></button>
+    <div id="nx-contrib-empty" class="contrib-empty" hidden>
+      <p>No community contributors yet — be the first. <a href="https://github.com/Enard52/NEXUS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22" target="_blank" rel="noopener">Pick a good first issue →</a></p>
+    </div>
+    <p class="contrib-note">Maintainers <a href="https://github.com/Enard52" target="_blank" rel="noopener">@Enard52</a> (owner) and <a href="https://github.com/hadesonline02" target="_blank" rel="noopener">@hadesonline02</a> are kept <b>out of this ranking</b> — the board is a friendly race among contributors.</p>
   </div>
 </section><footer class="ft">
   <div class="wrap">
@@ -1202,6 +1259,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
         <div class="ft-trust-row">
           <span class="ft-trust-pill"><span class="ft-status-dot"></span>100% Local Control</span>
           <span class="ft-trust-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3 5 6v6c0 4.5 2.8 7.6 7 9 4.2-1.4 7-4.5 7-9V6z"/></svg>Zero Cloud Dependency</span>
+          <a class="ft-trust-pill ft-star-pill" href="https://github.com/Enard52/NEXUS/stargazers" target="_blank" rel="noopener" title="Star on GitHub"><span class="star-glyph" aria-hidden="true">★</span><span data-nx-stars>—</span></a>
         </div>
       </div>
       <div class="ft-links-group">

@@ -1482,7 +1482,62 @@ document.addEventListener('DOMContentLoaded',function(){
     var v=String(tag||'');
     if(v.indexOf('v')===0)v=v.slice(1);
     if(!v)return;
-    document.querySelectorAll('[data-nexus-ver]').forEach(function(el){el.textContent='v'+v;}); fetch('https://api.github.com/repos/Enard52/NEXUS/contributors?per_page=24').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(list){ if(!Array.isArray(list)||!list.length)return; var box=document.getElementById('nx-contrib'); if(!box)return; var SAFE_LOGIN=(function(s){if(typeof s!=='string'||s.length<1||s.length>39)return false;for(var i=0;i<s.length;i++){var c=s.charAt(i);var ok=(c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c==='-'||c==='_'||c==='.';if(!ok)return false;}return true;}), SAFE_PAGE='https://github.com/', SAFE_AV='https://avatars.githubusercontent.com/u/'; list.forEach(function(u){ if(!u||typeof u!=='object')return; var login=String(u.login||''); if(!SAFE_LOGIN(login))return; /* kurucular yukarıda sabit chip olarak durur */ if(login==='Enard52'||login==='hadesonline02')return; var page=SAFE_PAGE+login; if(u.html_url&&String(u.html_url).indexOf('https://github.com/')===0)page=u.html_url; var av=String(u.avatar_url||''); if(av.indexOf('https://avatars.githubusercontent.com/u/')!==0)return; var a=document.createElement('a'); a.href=page; a.target='_blank'; a.rel='noopener'; a.title='@'+login; a.className='contrib-chip'; var img=document.createElement('img'); img.src=av; img.alt='@'+login; img.width=88; img.height=88; img.loading='lazy'; var name=document.createElement('span'); name.className='contrib-login'; name.textContent='@'+login; a.appendChild(img); a.appendChild(name); box.appendChild(a); }); });
+    document.querySelectorAll('[data-nexus-ver]').forEach(function(el){el.textContent='v'+v;});
+  }
+  /* Katkıcı sıralaması sürüm akışından BAĞIMSIZ: releases API'si yavaşsa/erişilemezse
+     de topluluk tablosu çalışır (bu yüzden fetch nxApplyVer'in içinde değil). */
+  fetch('https://api.github.com/repos/Enard52/NEXUS/contributors?per_page=100').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(list){
+      var box=document.getElementById('nx-contrib'); if(!box) return;
+      var empty=document.getElementById('nx-contrib-empty');
+      var more=document.getElementById('nx-contrib-more');
+      if(!Array.isArray(list)) list=[];
+      /* Sıralama sözleşmesi: KATKI SAYISINA GÖRE AZALAN (en çok katkı en üstte).
+         Sahip ve yetkililer sıralamanın DIŞINDA tutulur (yalnız contrib-note metninde
+         anılırlar — rekabet adil kalsın); botlar listeye girmez. Her çipteki sayı
+         rozeti "kaç commit'i geçmeliyim" sorusunun cevabını görünür kılar. */
+      var people=list.filter(function(u){
+        var l=String((u&&u.login)||'');
+        if(!l) return false;
+        if(l==='Enard52'||l==='hadesonline02') return false;
+        if(/bot$/i.test(l)) return false;
+        return true;
+      }).sort(function(a,b){ return (b&&b.contributions||0)-(a&&a.contributions||0); });
+      var TR=document.documentElement.lang==='tr';
+      var LIMIT=12, UNIT=TR?'katkı':'commits';
+      var SEE_ALL=TR?'Tüm sıralamayı gör':'Show the full ranking';
+      function chip(u){
+        var login=String(u.login||'');
+        var page=String(u.html_url||'');
+        if(page.indexOf('https://github.com/')!==0) page='https://github.com/'+login;
+        var av=String(u.avatar_url||'');
+        var a=document.createElement('a');
+        a.href=page; a.target='_blank'; a.rel='noopener';
+        var n=parseInt(u.contributions,10);
+        a.title='@'+login+(n>0?' · '+n+' '+UNIT:'');
+        a.className='contrib-chip';
+        var img=document.createElement('img'); img.src=av; img.alt='@'+login; img.width=88; img.height=88; img.loading='lazy';
+        var name=document.createElement('span'); name.className='contrib-login'; name.textContent='@'+login;
+        var cnt=document.createElement('span'); cnt.className='contrib-role is-count'; cnt.textContent=(n>0?n.toLocaleString('en-US'):'0')+' '+UNIT;
+        a.appendChild(img); a.appendChild(name); a.appendChild(cnt);
+        return a;
+      }
+      var shown=0;
+      function render(upto){
+        while(shown<upto && shown<people.length){ box.appendChild(chip(people[shown])); shown++; }
+        var rest=people.length-shown;
+        if(more){ if(rest>0){ more.hidden=false; more.textContent=SEE_ALL+' ('+rest+')'; } else { more.hidden=true; } }
+        if(empty) empty.hidden=people.length>0;
+      }
+      render(LIMIT);
+      if(more) more.addEventListener('click', function(){ render(people.length); });
+    });
+  /* Yıldız sayacı: footer rozeti ve topluluk CTA'sındaki canlı sosyal kanıt.
+     Sayaç öğesi olmayan sayfada istek atılmaz. */
+  if(document.querySelector('[data-nx-stars]')){
+    fetch('https://api.github.com/repos/Enard52/NEXUS').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(j){
+      if(!j||typeof j.stargazers_count!=='number') return;
+      document.querySelectorAll('[data-nx-stars]').forEach(function(el){el.textContent=j.stargazers_count.toLocaleString('en-US');});
+    });
   }
   Promise.all([
     fetch('https://api.github.com/repos/Enard52/nexus-releases/releases/latest').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}),
