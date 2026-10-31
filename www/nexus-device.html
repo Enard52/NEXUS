@@ -1320,44 +1320,6 @@
           return "Cihazı sıfırlamak için üreticinin uygulamasındaki Fabrika Sıfırlama adımını kullan.";
         }
 
-        // Gerçek cihaz doğrulaması topluluk raporlarıyla yapılır: bağlantı yalnızca GitHub'da boş bir form
-        // açar (marka + sürüm önceden yazılır); hiçbir bilgi uygulamadan kendiliğinden gönderilmez.
-        var CONNECTOR_LABELS = {
-          shelly: "Shelly",
-          "shelly-rpc": "Shelly (Gen2+ RPC)",
-          tasmota: "Tasmota",
-          wled: "WLED",
-          esphome: "ESPHome",
-          hue: "Philips Hue",
-          homeassistant: "Home Assistant",
-          kasa: "TP-Link Kasa",
-          tapo: "TP-Link Tapo",
-          yeelight: "Yeelight",
-          sonoff: "Sonoff (DIY mode)",
-          wiz: "WiZ",
-          lifx: "LIFX",
-          govee: "Govee (LAN)",
-          "tuya-local": "Tuya (local)",
-          wol: "Wake-on-LAN",
-        };
-        function reportRow(d) {
-          if (!lan) return "";
-          var q = "template=device_report.yml";
-          var brand = String(d.brand || d.protocol || "");
-          if (brand) q += "&device=" + encodeURIComponent(brand + " ");
-          if (CONNECTOR_LABELS[d.protocol])
-            q += "&connector=" + encodeURIComponent(CONNECTOR_LABELS[d.protocol]);
-          if (window.NEXUS_APP_VERSION) q += "&version=" + encodeURIComponent(window.NEXUS_APP_VERSION);
-          return (
-            '<a class="nx-row" href="https://github.com/Enard52/NEXUS/issues/new?' +
-            q +
-            '" target="_blank" rel="noopener noreferrer"><div class="min-w-0"><p class="t">Bu cihaz sende çalıştı mı? Rapor et</p>' +
-            '<p class="d">GitHub\'da boş bir form açar; uygulamadan hiçbir bilgi kendiliğinden gönderilmez.</p></div>' +
-            icon("external-link", "w-4 h-4 text-slate-400") +
-            "</a>"
-          );
-        }
-
         var hasPhoto = !!NX.photoOf(d);
         var photoRow =
           d.id == null
@@ -1389,7 +1351,6 @@
           '<div class="nx-row"><div class="min-w-0"><p class="d">Fabrika sıfırlama</p><p class="t">' +
           esc(resetHint(d)) +
           "</p></div></div>" +
-          reportRow(d) +
           remove
         );
       }

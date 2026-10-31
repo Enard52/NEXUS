@@ -15,6 +15,14 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height: 100dvh;
   }
+  /* Arama kutusunda WebKit'in yerleşik temizle ✕'ını gizle: kendi temizle düğmemiz var
+     (çift ikon olmasın, tüm platformlarda aynı görünüm). */
+  #settings-search::-webkit-search-cancel-button,
+  #settings-search::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
   .switch {
     position: relative;
     display: inline-block;
@@ -71,7 +79,17 @@
 </header>
 
 <main class="flex-grow px-4 pt-6 pb-8 space-y-4 overflow-y-auto">
-  <input id="settings-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="Ayarlarda ara" aria-label="Ayarlarda ara" class="w-full h-12 px-5 rounded-2xl border-none bg-white text-slate-900 placeholder-slate-400 text-base shadow-sm focus:ring-2 focus:ring-[#4C7DFF]">
+  <!-- Arama: Entegrasyonlar'daki desenle aynı dil — solda büyüteç, metin olunca temizle düğmesi.
+       Sayfanın geri kalanı gibi inline SVG (lucide bağımlılığı eklenmez). -->
+  <div class="relative">
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+      <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+    <input id="settings-search" type="search" enterkeyhint="search" autocomplete="off" placeholder="Ayarlarda ara" aria-label="Ayarlarda ara" class="w-full h-12 pl-11 pr-11 rounded-2xl border-none bg-white text-slate-900 placeholder-slate-400 text-base shadow-sm focus:ring-2 focus:ring-[#4C7DFF]">
+    <button id="settings-search-clear" type="button" aria-label="Aramayı temizle" class="hidden absolute inset-y-0 right-0 pr-4 items-center text-slate-400 active:scale-90 transition-transform">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18" stroke-linecap="round" stroke-linejoin="round"></path><path d="m6 6 12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+  </div>
   <p id="settings-search-empty" class="hidden text-center text-sm text-slate-500 py-6">Bu aramayla eşleşen ayar yok.</p>
   <section class="bg-white rounded-3xl overflow-hidden shadow-sm" data-purpose="settings-card">
     <a href="nexus-user-info.html" class="flex items-center justify-between px-5 py-5 active:bg-gray-50 cursor-pointer">
@@ -490,7 +508,26 @@
       });
       empty.classList.toggle('hidden', !q || shown > 0);
     }
-    input.addEventListener('input', apply);
+    input.addEventListener('input', function () { apply(); syncClear(); });
+    // Temizle düğmesi: yalnız metin varken görünür; tıklayınca aramayı sıfırlar
+    // (input olayını yeniden tetikleyerek filtre de boş duruma döner).
+    var clearBtn = document.getElementById('settings-search-clear');
+    function syncClear() {
+      if (!clearBtn) return;
+      var has = !!input.value;
+      clearBtn.classList.toggle('hidden', !has);
+      clearBtn.classList.toggle('flex', has);
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        input.value = '';
+        apply();
+        syncClear();
+        input.focus();
+      });
+    }
+    apply();
+    syncClear();
   })();
 </script>
 <script>

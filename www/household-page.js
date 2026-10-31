@@ -237,7 +237,7 @@
       return '<p class="mb-2 px-1 text-sm font-medium text-slate-500">Davet ve Katılım</p>' +
         '<section class="surface card-shadow mb-6 rounded-3xl border border-transparent bg-white p-5 dark:bg-slate-900">' +
         '<div class="mb-4 rounded-2xl border border-[#E9E4FF] bg-[#F5F3FF] px-4 py-4 dark:border-[#3b2b76] dark:bg-[#1f173f]">' +
-        '<p class="text-sm font-medium text-slate-600 dark:text-slate-300">Davet kodu tek kullanımlıktır, 7 gün geçerlidir ve yalnızca davet edilen e-posta adresiyle kabul edilir. Kod burada gösterilmez; e-postayla iletilir.</p></div>' +
+        '<p class="text-sm font-medium text-slate-600 dark:text-slate-300">Davet kodu tek kullanımlıktır, 7 gün geçerlidir ve yalnızca davet edilen e-posta adresiyle çalışır; kod e-postayla iletilir.</p></div>' +
         '<div id="pending-invites"><p class="py-4 text-center text-sm text-slate-400">Davetler yükleniyor…</p></div></section>';
     }
     function loadPendingInvites(home) {

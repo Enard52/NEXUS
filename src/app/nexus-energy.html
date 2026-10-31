@@ -105,6 +105,16 @@
 <button class="flex-1 py-2.5 rounded-xl bg-white card-shadow text-sm font-semibold" id="export-json" type="button">JSON olarak dışa aktar</button>
 <p class="text-xs text-slate-400 w-full mt-1" id="export-note"></p>
 </div>
+<!-- İzleme Planı: kullanıcı kararlı hedef + gerçek ölçümlerden ilerleme + asistan köprüsü -->
+<section class="bg-white rounded-3xl card-shadow p-5 mb-6" data-purpose="plan-card" id="plan-card">
+  <div class="flex items-center gap-3 mb-3">
+    <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
+      <i class="w-5 h-5" data-lucide="target"></i>
+    </div>
+    <h2 class="text-lg font-bold">İzleme Planı</h2>
+  </div>
+  <div id="plan-card-body"></div>
+</section>
 <!-- Strategy list -->
 <h2 class="text-lg font-bold mb-3">Tasarruf Stratejileri</h2>
 <section class="space-y-3" data-purpose="strategy-list">
@@ -176,7 +186,63 @@
 <button class="w-full bg-white border-t border-slate-100 py-4 text-center font-bold text-slate-700 pb-8" onclick="closeSheets()">İptal</button>
 </div>
 <!-- END: MiniApp Menu Sheet -->
+<!-- BEGIN: İzleme Planı Sheet (3 adım: cihaz → hedef/saat → özet+onay) -->
+<div class="sheet fixed bottom-0 inset-x-0 z-50" data-purpose="energy-plan" id="sheet-plan">
+  <div class="bg-white dark:bg-slate-900 rounded-t-3xl p-6">
+    <div class="mx-auto mb-4 h-1.5 w-14 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4C7DFF] to-[#22D3EE] flex items-center justify-center text-white flex-shrink-0">
+        <i class="w-5 h-5" data-lucide="target"></i>
+      </div>
+      <div class="nx-sheet-head flex-1"><h3>İzleme Planı</h3></div>
+      <div class="flex items-center gap-1.5" aria-hidden="true">
+        <span id="plan-dot-1" class="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+        <span id="plan-dot-2" class="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+        <span id="plan-dot-3" class="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+      </div>
+    </div>
+
+    <!-- Adım 1: cihazlar (mevcut enerji cihazı seçimi) -->
+    <div id="plan-step-1">
+      <p class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Hangi cihazlar izlensin?</p>
+      <p class="text-xs text-slate-400 mb-3">Enerji Cihazları ekranındaki seçimin kullanılır.</p>
+      <div id="plan-devices" class="flex flex-wrap gap-2 mb-4"></div>
+    </div>
+
+    <!-- Adım 2: hedef + dikkat saatleri -->
+    <div id="plan-step-2" class="hidden">
+      <p class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">Aylık hedefin ne olsun?</p>
+      <div class="flex gap-2 mb-3">
+        <input id="plan-budget" type="text" inputmode="decimal" enterkeyhint="next" placeholder="Örn. 150" aria-label="Aylık hedef" class="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50">
+        <select id="plan-unit" aria-label="Hedef birimi" class="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+          <option value="kwh">kWh</option>
+          <option value="cur">TL</option>
+        </select>
+      </div>
+      <p class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">Dikkat saatleri</p>
+      <div class="flex items-center gap-2 mb-3">
+        <select id="plan-from" aria-label="Başlangıç saati" class="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></select>
+        <span class="text-slate-400 font-bold">–</span>
+        <select id="plan-to" aria-label="Bitiş saati" class="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></select>
+      </div>
+    </div>
+
+    <!-- Adım 3: özet + onay (kullanıcının kararı) -->
+    <div id="plan-step-3" class="hidden">
+      <p class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">Planın özeti — onaylıyor musun?</p>
+      <div id="plan-summary" class="rounded-2xl bg-slate-50 dark:bg-slate-800 px-4 py-3 mb-2"></div>
+    </div>
+
+    <div class="mt-5 flex gap-2">
+      <button id="plan-back" type="button" onclick="window.nexusEnergyPlan.back()" class="hidden py-3.5 px-5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-200 font-bold text-sm active:scale-[0.98] transition-transform">Geri</button>
+      <button id="plan-next" type="button" onclick="window.nexusEnergyPlan.next()" class="flex-1 py-3.5 rounded-xl bg-[#4C7DFF] text-white font-bold text-sm active:scale-[0.98] transition-transform">İleri</button>
+    </div>
+    <button type="button" onclick="closeSheets()" class="mt-1 w-full py-4 text-center font-bold text-slate-500 dark:text-slate-300 pb-2">Vazgeç</button>
+  </div>
+</div>
+<!-- END: İzleme Planı Sheet -->
   <script src="js/lucide.js"></script>
+  <script src="nexus-energy-plan.js"></script>
 <script data-purpose="energy-interactions">
     lucide.createIcons();
 

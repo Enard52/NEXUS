@@ -517,7 +517,8 @@ window.NEXUS_EN = {
     "Anlık Tüketim": "Live Usage",
     "CSV olarak dışa aktar": "Export as CSV",
     "JSON olarak dışa aktar": "Export as JSON",
-    "Kayıtlı geçmiş yok; yalnızca son okumalar dışa aktarılır.": "No stored history yet; only the latest readings are exported.",
+    "Kayıtlı geçmiş yok; yalnızca son okumalar dışa aktarılır.":
+      "No stored history yet; only the latest readings are exported.",
     "Güç ölçen cihaz ekleyince gerçek değer burada görünür.":
       "Add a power-metering device to see real values here.",
     "{0} güç ölçümlü cihazdan gerçek okuma.": "Live reading from {0} metered device(s).",
@@ -569,7 +570,6 @@ window.NEXUS_EN = {
     "Tetikleme saati kaçırıldı (uygulama kapalıydı).": "Trigger time missed (the app was closed).",
     Kameralar: "Cameras",
     "Kamera Cihazlarım": "My Cameras",
-    "Kamera cihazı yok": "No camera devices",
     "Kamera ekleyince durumunu ve gizlilik ayarını buradan izlersin. Video akışı (RTSP) desteği yakında.":
       "Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.",
     "Kamera Ekle": "Add Camera",
@@ -586,7 +586,6 @@ window.NEXUS_EN = {
     "masaüstü sürümünde": "on desktop,",
     "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir;":
       "NEXUS controls your devices directly from its own app;",
-    "Köprüyü Başlat": "Start Bridge",
     "Köprüyü Durdur": "Stop Bridge",
     "Köprü çalışıyor": "Bridge running",
     "Köprü kullanılamıyor": "Bridge unavailable",
@@ -674,7 +673,6 @@ window.NEXUS_EN = {
     "Orta — büyük harf veya simge ekle.": "Fair — add an uppercase letter or symbol.",
     "İyi.": "Good.",
     "Güçlü şifre.": "Strong password.",
-    "İki Adımlı Doğrulama": "Two-Factor Authentication",
     "Yakında (TOTP uygulama kodu)": "Coming soon (TOTP app codes)",
     "Kontrol ediliyor": "Checking",
     "Bulut hesabıyla açılır": "Available with a cloud account",
@@ -790,12 +788,11 @@ window.NEXUS_EN = {
     "Acil Durumlar": "Emergencies",
     Ad: "Name",
     "Ad Soyad": "Full Name",
+    "Kullanıcı adı": "Username",
     "Adres biliyorsan tek tek yaz, bilmiyorsan modem ağının ön ekini bırak (192.168.1 gibi) — NEXUS 254 adresi birlikte yoklar.":
       "If you know the address, type it; if not, leave your router network prefix (like 192.168.1) — NEXUS checks all 254 addresses.",
     "Adres veya semt ara": "Search address or neighborhood",
     "Adsız cihaz": "Unnamed device",
-    "Adını gir": "Enter your name",
-    "Adınız Soyadınız": "Your Full Name",
     Aile: "Family",
     "Aile mesajlaşma özelliği": "Family messaging feature",
     "Aksiyon Özeti": "Action Summary",
@@ -1304,7 +1301,6 @@ window.NEXUS_EN = {
     "Cihazları daralt": "Collapse devices",
     "Cihazları kontrol et": "Check devices",
     "Yakınındaki Cihazları Bul": "Find devices near you",
-    "Yeniden Tara": "Scan again",
     "Masaüstü Uygulaması": "Desktop App",
     "Sürümü görüntüle, yeni sürümü buradan kontrol et ve yükle.":
       "View the version, check for a new version here and install it.",
@@ -1420,8 +1416,8 @@ window.NEXUS_EN = {
       "Outdoor light is high; shall I close the blinds 100%?",
     "Dışarıdayım Bildirimleri": "Away Notifications",
     "Dışarıdayım Modu": "Away Mode",
-    "E-posta": "Email",
     "E-posta Adresi": "Email Address",
+    İsminiz: "Your Name",
     "E-posta Adresin": "Your Email Address",
     "E-posta adresi": "Email address",
     "E-posta eklenmedi": "No email added",
@@ -1572,9 +1568,9 @@ window.NEXUS_EN = {
     "Ev Panosu": "Home Board",
     "Oda Erişimi": "Room Access",
     "Tüm odalar": "All rooms",
-    "Yanıtla": "Reply",
+    Yanıtla: "Reply",
     "Haftalık Özet": "Weekly Summary",
-    "Notlar": "Notes",
+    Notlar: "Notes",
     "Pano boş": "Board is empty",
     "Maddeyi Sil": "Delete Item",
     "Mesaj yaz…": "Type a message…",
@@ -1587,7 +1583,8 @@ window.NEXUS_EN = {
       "Shopping list, chores or quick notes — add the first item to share with your family.",
     "Ev Panosu evin üyeleri arasındadır. Ev Yönetimi'nden ev oluştur ya da davetle katıl.":
       "The board belongs to your home's members. Create a home from Home Management or join by invite.",
-    "Bu madde panodan tüm üyeler için kaldırılır.": "This item is removed from the board for all members.",
+    "Bu madde panodan tüm üyeler için kaldırılır.":
+      "This item is removed from the board for all members.",
     "Pano şu an kapalı.": "The board is unavailable right now.",
     "Ev Panosu için oturum açmalısın.": "Sign in to use the Home Board.",
     "Ev Panosu bu sürümde kullanılamıyor.": "Home Board is unavailable in this build.",
@@ -1595,9 +1592,10 @@ window.NEXUS_EN = {
     "Listeye ekle ya da not yaz…": "Add to the list or write a note…",
     "Tür değiştir: liste maddesi / not": "Switch type: list item / note",
     "Yanıttan vazgeç": "Cancel reply",
-    "Bulut bağlantısı kapalı olduğu için pano kullanılamıyor.": "The board is unavailable because the cloud connection is off.",
+    "Bulut bağlantısı kapalı olduğu için pano kullanılamıyor.":
+      "The board is unavailable because the cloud connection is off.",
     "Henüz bir evin yok": "You don't have a home yet",
-    "tamamladı": "completed it",
+    tamamladı: "completed it",
     "Bir üye": "A member",
     Evim: "My Home",
     "Evindeki odaları ekle veya kaldır.": "Add or remove rooms in your home.",
@@ -1964,7 +1962,6 @@ window.NEXUS_EN = {
       "See cameras, locks and sensors on the same screen. At-home and away modes, critical status summaries and quick security actions in one place.",
     "Kamera, kilit ve sensörleri tek ekranda gösteren bir ev güvenlik merkezi oluştur. Evdeyim ve dışarıdayım modları, hızlı kontrol butonları ve kritik durum özetleri ekle.":
       "Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.",
-    Kameralar: "Cameras",
     "Kameralar ve mikrofonlar kapalı.": "Cameras and microphones are off.",
     "Kameralı Kapı Zili": "Video Doorbell",
     "Kameralı Kilitler": "Locks with Camera",
@@ -2176,7 +2173,6 @@ window.NEXUS_EN = {
     "Masa Lambası (Bluetooth)": "Desk Lamp (Bluetooth)",
     "Masa Lambası (ZigBee)": "Desk Lamp (ZigBee)",
     "Masaj Koltuğu": "Massage Chair",
-    "Masaüstü HomeKit Köprüsü": "Desktop HomeKit Bridge",
     "Masaüstü uygulamasında çalışır": "Works in the desktop app",
     "Matter cihazlarını eklemek için bir Matter denetleyicisi gerekir; NEXUS bu desteği henüz sunmuyor. Cihaz Wi-Fi ile bağlanıyorsa yerel ağdan IP adresiyle ekleyebilirsin.":
       "Adding Matter devices needs a Matter controller, which NEXUS doesn't offer yet. If the device connects over Wi-Fi, you can add it from your local network by its IP address.",
@@ -2585,7 +2581,6 @@ window.NEXUS_EN = {
       "Ask your questions directly to the NEXUS AI assistant and get instant help with your devices.",
     "Sorun bulunmadı": "No issues found",
     "Sorun mu yaşıyorsun?": "Having trouble?",
-    "Sorun mu yaşıyorsun? Geri bildirim gönder": "Having trouble? Send feedback",
     "Soya Sütü Makinesi": "Soy Milk Maker",
     Soğuk: "Cool",
     Soğut: "Cool",
@@ -2867,7 +2862,6 @@ window.NEXUS_EN = {
       "Scanning devices on the Wi-Fi network. Make sure the device is on.",
     "Windows ve Linux için ücretsiz masaüstü uygulaması": "Free desktop app for Windows and Linux",
     "Yaklaşan Otomasyonlar": "Upcoming Automations",
-    Yakında: "Coming soon",
     "Yakında geliyor": "Coming soon",
     "Yangın, su baskını tespiti": "Fire and flood detection",
     "Yapay Zeka Ayarları": "AI Settings",
@@ -3108,7 +3102,6 @@ window.NEXUS_EN = {
     "Öneri hazır değil": "Suggestion not ready",
     Önerilen: "Suggested",
     "Önerilen Aksiyonlar": "Recommended Actions",
-    "Örn. Ayşe Yılmaz": "e.g. Jane Smith",
     "Örn. Evim": "e.g. My Home",
     "Örn. Kadıköy": "e.g. Downtown",
     "Örn. NX-HOME-7F2A": "e.g. NX-HOME-7F2A",
@@ -3144,8 +3137,6 @@ window.NEXUS_EN = {
     çevre: "environment",
     çevrimdışı: "offline",
     çevrimiçi: "online",
-    "örnek@eposta.com": "example@email.com",
-    "örnek@nexus.com": "example@nexus.com",
     üye: "member",
     "İdeal Seviye": "Ideal Level",
     "İki Adımlı Doğrulama": "Two-Step Verification",
@@ -3327,52 +3318,54 @@ window.NEXUS_EN = {
     "Fan otomatik": "Fan on auto",
     "Parlaklık %{0}": "Brightness {0}%",
     "bu kamera için ayarlanamıyor": "can't be set for this camera",
-  },
-  html: {},
-  slots: {
-    "Sonraki ödeme {0} tutarında {1} tarihinde alınacak.":
-      "Next payment of {0} will be charged on {1}.",
-    "Aşağıdaki cihazlar internet bağlantısı olmadan, ev ağında NEXUS'a bağlanır. Eklediğin cihazlar {0} modelden seçilir.":
-      "The devices below connect to NEXUS on your home network, without an internet connection. Choose from {0} models.",
-    /* Satır içi vurgu (<strong>/<b>) içeren cümleler: {0} vurgunun kendisidir, yerinde kalır. */
-    "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; HomeKit köprüsü içermez. Apple Ev (HomeKit) ile kullanmak istersen en pratik yol {0}: cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.":
-      "NEXUS reaches your devices directly from its own app; it has no built-in HomeKit bridge. To use them with Apple Home (HomeKit), the practical path is {0}: add your devices to Home Assistant, then enable HA's HomeKit integration.",
-    "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; {0} yerleşik bir HomeKit köprüsü Apple Ev'e gerçek aksesuar yayınlar (aşağıdaki panelden başlat). Web/telefon sürümünde köprü yoktur.":
-      "NEXUS reaches your devices directly from its own app; on desktop, {0} built-in HomeKit bridge publishes real accessories to Apple Home (start it from the panel below). The web/phone version has no bridge.",
-    "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; telefon/web sürümünde HomeKit köprüsü içermez. Apple Ev (HomeKit) ile kullanmak istersen en pratik yol {0}: cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.":
-      "NEXUS reaches your devices directly from its own app; the phone/web version does not include a HomeKit bridge. To use them with Apple Home (HomeKit), the practical path is {0}: add your devices to Home Assistant, then enable HA's HomeKit integration.",
-    "NEXUS'ta {0} üzerinden Home Assistant'ı bağla.":
-      "Connect Home Assistant through {0} in NEXUS.",
-    "Home Assistant ayarlarından {0} entegrasyonunu ekle; paylaşmak istediğin cihazları seç.":
-      "In Home Assistant settings, add the {0} integration and pick the devices you want to share.",
-    "Ödeme sayfasında {0} kullan; abonelik bu e-postayla eşleşir. Deneme süresi bitmeden iptal edersen ücret alınmaz. Aboneliğini Faturalandırma sayfasından istediğin an yönetebilirsin.":
-      "Use {0} on the payment page; your subscription is matched to this email. Cancel before the trial ends and you're never charged. Manage your subscription any time from the Billing page.",
+    // 2026-10-31 i18n denetimi (scripts/i18n-coverage.mjs) eksikleri: enerji, aile sohbeti,
+    // ev halkı, anlık bildirimler, ayarlar, beceriler ve akıllı öneriler ekranlarından.
+    "İzleme Planı": "Monitoring Plan",
+    "Enerji Cihazları ekranındaki seçimin kullanılır.":
+      "The choice you made on the Energy Devices screen is used.",
+    "Aylık hedefin ne olsun?": "What should your monthly target be?",
+    "Planın özeti — onaylıyor musun?": "Summary of your plan — do you confirm?",
+    "Mesajlar şifreli olarak gönderilir ve saklanır. Bu evin üyeleri dışında kimse okuyamaz; ev silinirse mesajlar da silinir.":
+      "Messages are sent and stored encrypted. Nobody outside this home's members can read them; if the home is deleted, the messages are deleted too.",
+    "Daveti Gönder": "Send Invite",
+    "Sahipliği Devret": "Transfer Ownership",
+    "Uygulama kapalıyken aile mesajı ve ev sahibinin paylaştığı uyarılar gelir. Ana anahtar, kategori ve sessiz saat ayarların sunucuya kopyalanır; uygulamayı açtığında güncellenir.":
+      "Family messages and the alerts the home owner shares arrive while the app is closed. Your master switch, category and quiet-hours settings are copied to the server; they update when you open the app.",
+    "Aile Mesajları": "Family Messages",
+    "Ev üyelerinden yeni mesaj": "New message from home members",
+    "Yazı Boyutu": "Text Size",
+    "Uygulama İçi Bildirim Sesi": "In-App Notification Sound",
+    Yumuşak: "Soft",
+    "Yüzen Arama Düğmesi": "Floating Search Button",
+    "Yüzen AI Düğmesi": "Floating AI Button",
+    "Düğmeler bir sonraki sayfa açılışında kaybolur ya da geri gelir. Masaüstünde klavye kısayolları için ? tuşuna bas.":
+      "The buttons disappear or come back the next time a page opens. On desktop, press ? for keyboard shortcuts.",
+    "Yedekle ve Geri Yükle": "Backup & Restore",
+    "Cihaz listesi, otomasyonlar, senaryolar ve ayarlar bir dosyaya kaydedilir. Cihaz parolaları, yerel anahtarlar, Telegram anahtarı ve oturum bilgisi yedeğe girmez.":
+      "Your device list, automations, scenes and settings are saved to a file. Device passwords, local keys, the Telegram token and your session are not included in the backup.",
+    "Yedeği dışa aktar": "Export backup",
+    "Yedekten geri yükle": "Restore from backup",
+    "Eşleşmiş cihazlarına göre hazır; tek dokunuşla eklenir.":
+      "Ready for your paired devices; added with a single tap.",
+    "Senin için hazır": "Ready for you",
+    "Dokununca eşleşmiş cihazlarında hemen çalışır.":
+      "Runs on your paired devices as soon as you tap it.",
 
+    /* 2026-10-31 i18n denetimi: bu satırlar slots bölgesinden taşındı. lookup() yalnız
+       text'e bakıyor; {n} yer tutucusu olmayan bir slots anahtarı çalışma zamanında hiç
+       okunmuyor, yani İngilizce arayüzde Türkçe kalıyordu. Yeni düz metin BURAYA yazılır. */
     /* --- Ayar arama + giriş hatasından sıfırlama bağlantısı --- */
     "Ayarlarda ara": "Search settings",
     "Bu aramayla eşleşen ayar yok.": "No setting matches this search.",
-
-    /* --- Ses ve Hareket ayarları (nexus-feedback) --- */
-    "Ses ve Hareket": "Sound & Motion",
-    "Uygulama sesleri, titreşim ve hareketli efektler.":
-      "App sounds, vibration and motion effects.",
-    "Ses Efektleri": "Sound effects",
-    Titreşim: "Vibration",
-    Animasyonlar: "Animations",
-
     /* --- Ana ekran: çek-yenile dinamik metinleri --- */
     "Yenilemek için bırakın": "Release to refresh",
     "Yenileniyor…": "Refreshing…",
     Yenilendi: "Refreshed",
-
     /* --- Masaüstü kenar çubuğu / erişilebilirlik etiketleri --- */
     "NEXUS Kullanıcısı": "NEXUS User",
     "NEXUS ana sayfa": "NEXUS home",
     "Ana menü": "Main menu",
     "Temayı değiştir": "Change theme",
-
-    /* --- Giriş / kayıt / şifre akışları (JS ile yazılan mesajlar) --- */
-    "Lütfen geçerli bir e-posta girin.": "Please enter a valid email.",
     "Lütfen geçerli bir e-posta gir.": "Please enter a valid email.",
     "Bu e-posta ile zaten bir hesap var. Lütfen giriş yapın.":
       "An account with this email already exists. Please sign in.",
@@ -3384,27 +3377,16 @@ window.NEXUS_EN = {
       "If this address is linked to an account, a reset link has been sent. Check your inbox (and spam folder).",
     "Çok sık denedin. Bir dakika sonra tekrar dene.":
       "Too many attempts. Please try again in a minute.",
-    "Buluta ulaşılamadı. İnternet bağlantını kontrol et.":
-      "Could not reach the cloud. Check your internet connection.",
     "Bağlantı gönderilemedi.": "Could not send the link.",
-    "Şifre en az 6 karakter olmalı.": "Password must be at least 6 characters.",
-    "Şifreler eşleşmiyor.": "Passwords do not match.",
-    "Şifre en az {0} karakter olmalıdır.": "Password must be at least {0} characters.",
-    "Yeni şifre en az {0} karakter olmalı.": "New password must be at least {0} characters.",
-    "Gönderiliyor...": "Sending...",
     "Tekrar Gönder": "Send again",
-    "Sıfırlama Bağlantısı Gönder": "Send reset link",
     "Şifren güncellendi. Şimdi giriş yapabilirsin.":
       "Your password has been updated. You can sign in now.",
     "Mevcut şifreni gir.": "Enter your current password.",
-    "Yeni şifre tekrar alanı eşleşmiyor.": "New password confirmation does not match.",
-    "Şifre güncellendi ✓": "Password updated ✓",
     "Mevcut şifre yanlış.": "Current password is incorrect.",
     "Yeni şifre eskisinden farklı olmalı.": "New password must differ from the old one.",
     "Oturum bulunamadı. Çıkış yapıp tekrar giriş yap.":
       "Session not found. Sign out and sign in again.",
     "Şifre güncellenemedi.": "Could not update the password.",
-
     /* --- Ev Yönetimi: davet ve yetki ipuçları --- */
     "Davet e-postası gönderiliyor…": "Sending invitation email…",
     "Bu e-postanın hesabı zaten var; kodla katılabilir.":
@@ -3412,19 +3394,9 @@ window.NEXUS_EN = {
     "Ev sahibi yetkileri kapatılamaz": "Owner permissions cannot be turned off",
     "Yetkiyi kapat": "Turn permission off",
     "Yetkiyi aç": "Turn permission on",
-
-    /* --- Cihaz ekleme (Home Assistant) durum satırları --- */
-    "{0} cihaz bulundu. Eklemek istediklerini seç.":
-      "Found {0} devices. Pick the ones you want to add.",
-    "Home Assistant'ta NEXUS'un kontrol edebileceği cihaz bulunamadı.":
-      "No devices that NEXUS can control were found in Home Assistant.",
-    "{0} cihaz eklendi. Ana sayfadan yönetebilirsin.":
-      "Added {0} devices. Manage them from the Home tab.",
-
     /* --- Faturalandırma dinamik durum satırları --- */
     "İptal edildi — dönem sonuna kadar geçerli": "Cancelled — valid until the end of the period",
     "Aboneliğin aktif": "Your subscription is active",
-
     /* --- Enerji: tüketim geçmişi ve maliyet tahmini --- */
     "Tüketim Geçmişi": "Usage History",
     "Son 7 gün · yalnızca bu cihazdaki gerçek ölçümlerden":
@@ -3446,6 +3418,173 @@ window.NEXUS_EN = {
     "Geçerli bir fiyat gir (örn. 2,50).": "Enter a valid price (e.g. 2.50).",
     /* --- Bildirim yedeği --- */
     Uyarı: "Alert",
+    /* 2026-10-31 tarayıcı denetimi (İngilizce modda açılan ekranlar) + genişletilmiş
+       statik denetim: öznitelik metinleri (aria-label/placeholder) ve şapkasız Türkçe
+       sözcükler eskiden hiç denetlenmiyordu. */
+    "Aylık hedef": "Monthly target",
+    "Başlangıç saati": "Start time",
+    "Bitiş saati": "End time",
+    "Haftalık özet": "Weekly summary",
+    "Ev seç": "Choose home",
+    "Yeni şifre (en az 6 karakter)": "New password (at least 6 characters)",
+    "Yeni şifre (tekrar)": "New password (again)",
+    "Güvenlik sesi": "Security sound",
+    "Güvenlik titreşimi": "Security vibration",
+    "Acil durum titreşimi": "Emergency vibration",
+    "Enerji titreşimi": "Energy vibration",
+    "AI önerileri sesi": "AI suggestion sound",
+    "AI önerileri titreşimi": "AI suggestion vibration",
+    "Vurgu Rengi": "Accent Colour",
+    "Aramayı temizle": "Clear search",
+    "Yedek dosyası seç": "Choose backup file",
+    "Senaryoyu kaydet": "Save scene",
+    "Özel renk seç": "Choose a custom colour",
+    "Varsayılana dön (mavi)": "Reset to default (blue)",
+    "Menüyü daralt (Ctrl+B)": "Collapse menu (Ctrl+B)",
+    "Menüyü genişlet (Ctrl+B)": "Expand menu (Ctrl+B)",
+    "Oturum Aç": "Sign in",
+    "Oturum açık değil": "Not signed in",
+    "Aile sohbeti için oturum açmalısın.": "You need to sign in for the family chat.",
+    "Cihaz eklenince hazır senaryolar burada görünecek.":
+      "Ready-made scenes will appear here once you add a device.",
+    Turuncu: "Orange",
+    Pembe: "Pink",
+    Turkuaz: "Turquoise",
+    Etkin: "Active",
+    /* --- JS içindeki katalog alanları (name/label/note/title/desc/placeholder) ---
+       Bu metinler HTML düğümü değil, veri dosyasında dizi olarak durur; statik denetim
+       onları tarar (audit:i18n:coverage), ekranın kendisi ise canlı denetimde görülür. */
+    "Örn. 150": "e.g. 150",
+    "Örn. NX-1A2B-3C4D-5E6F": "e.g. NX-1A2B-3C4D-5E6F",
+    "Yerel oturum": "Local session",
+    "İzin yok": "No permission",
+    "Bu evde cihaz kontrol iznin yok. Ev sahibi izni açabilir.":
+      "You don't have device control permission in this home. The owner can turn it on.",
+    "Mesajı Sil": "Delete Message",
+    "Bu mesaj tüm üyeler için silinir.": "This message is deleted for all members.",
+    "Son 15 dk içinde": "Within the last 15 minutes",
+    "Aile mesajları ve paylaşılan uyarılar": "Family messages and shared alerts",
+    "Kritik uyarıları paylaş": "Share critical alerts",
+    "Bu cihazdaki güvenlik/acil olayların başlığı ve kısa metni evdeki diğer üyelerin uygulamasında görünür. Cihaz bilgileri ve anahtarlar paylaşılmaz; her üye kendi bildirim ayarlarına tabidir.":
+      "The title and short text of security/emergency events on this device appear in other members' apps in this home. Device details and keys are never shared; every member follows their own notification settings.",
+    "Evden Ayrıl": "Leave Home",
+    Ayrıl: "Leave",
+    "Davet e-postasındaki kodu gir. Kod tek kullanımlıktır ve yalnızca davet edilen e-posta adresiyle çalışır.":
+      "Enter the code from the invitation email. The code is single-use and only works with the invited email address.",
+    "Oturum gerekli": "Sign-in required",
+    "Üye davet etmek için önce oturum aç; evin hesabına otomatik bağlanır.":
+      "Sign in first to invite members; you'll be connected to your home's account automatically.",
+    "E-posta sunucudan gönderilemedi": "The email couldn't be sent from the server",
+    "Davet oluşturuldu ama otomatik e-posta gönderilemedi. Kendi posta uygulamanla davet metnini hazırlayalım mı?":
+      "The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?",
+    "Posta Uygulamasını Aç": "Open Mail App",
+    "Işık düzeyi": "Light level",
+    Basınç: "Pressure",
+    "Hareket algılandı": "Motion detected",
+    "Hareket yok": "No motion",
+    "Cihaza bağlanılamadı. Aynı ağda olduğundan emin ol.":
+      "Couldn't connect to the device. Make sure it's on the same network.",
+    "Cihaza bağlanılamadı. Aynı ağda olduğundan, IP adresinin ve yerel anahtarın doğru olduğundan emin ol.":
+      "Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.",
+    "Işıkları sıcak tonda açar, perdeleri açar, klimayı 22° yapar.":
+      "Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.",
+    "Işıkları ve perdeleri açar, klimayı 22° çalıştırır, süpürgeyi şarja gönderir.":
+      "Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.",
+    "Işık, TV ve klimayı kapatır, perdeleri kapatır, kapıyı kilitler.":
+      "Turns off the lights, TV and AC, closes the curtains and locks the door.",
+    "Işıkları ve TV'yi kapatır, perdeleri kapatır, kapıyı kilitler.":
+      "Turns off the lights and TV, closes the curtains and locks the door.",
+    "Işıkları %15 sıcak tona getirir, perdeleri kapatır, TV'yi açar.":
+      "Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.",
+    "Kapıyı kilitler, perdeleri kapatır.": "Locks the door and closes the curtains.",
+    "Işıkları %70 parlaklıkta açar.": "Turns the lights on at 70% brightness.",
+    "Robot süpürgeyi başlatır.": "Starts the robot vacuum.",
+    "Hafta içi 10:00": "Weekdays 10:00",
+    "Klimayı ve termostatı konfor ayarına getirir, hava temizleyiciyi çalıştırır.":
+      "Sets the AC and thermostat to the comfort setting and runs the air purifier.",
+    "Bildirim gönderir": "Sends a notification",
+    "Bu senaryo mevcut cihazlarını etkilemiyor. Senaryonun çalışması için uygun bir cihaz (ör. ışık, perde, süpürge) eklemelisin.":
+      "This scenario doesn't affect any of your current devices. To make it work, add a suitable device (e.g. a light, curtain or vacuum).",
+    "Yeni bir ev oluştur ya da sana gönderilen davet koduyla bir eve katıl.":
+      "Create a new home, or join one with the invite code sent to you.",
+    "Oturum açık değil. Evler yalnızca bu cihazda tutulur. Üye davet etmek, bir eve katılmak ve aile sohbeti için oturum aç.":
+      "You're not signed in. Homes are kept on this device only. Sign in to invite members, join a home and use the family chat.",
+    "Shelly 1 / 1PM Röle": "Shelly 1 / 1PM Relay",
+    "Shelly RGBW2 Şerit": "Shelly RGBW2 Strip",
+    "Shelly H&T Sıcaklık ve Nem Sensörü": "Shelly H&T Temperature & Humidity Sensor",
+    "Shelly Door/Window Kapı ve Pencere Sensörü": "Shelly Door/Window Contact Sensor",
+    "Shelly Flood Su Baskını Sensörü": "Shelly Flood Leak Sensor",
+    "Shelly Smoke Duman Dedektörü": "Shelly Smoke Detector",
+    "Yerel şifreli HTTP (KLAP) — TP-Link hesabı e-postası + şifresiyle, masaüstü uygulamasında; priz, anahtar ve ampuller (kamera ve enerji ölçümü henüz yok)":
+      "Local encrypted HTTP (KLAP) — with your TP-Link account email + password, in the desktop app; plugs, switches and bulbs (camera and energy metering not available yet)",
+    "Home Assistant Medya Oynatıcı / TV": "Home Assistant Media Player / TV",
+    "Home Assistant Hareket Sensörü": "Home Assistant Motion Sensor",
+    "Home Assistant Kapı ve Pencere Sensörü": "Home Assistant Door & Window Sensor",
+    "Home Assistant Sıcaklık ve Nem Sensörü": "Home Assistant Temperature & Humidity Sensor",
+    "Home Assistant Su Sızıntısı Sensörü": "Home Assistant Water Leak Sensor",
+    "Home Assistant Duman Dedektörü": "Home Assistant Smoke Detector",
+    "Home Assistant Gaz ve CO Dedektörü": "Home Assistant Gas & CO Detector",
+    "Home Assistant Hava Kalitesi Sensörü": "Home Assistant Air Quality Sensor",
+    "Yerel LAN (3.3 / 3.4, şifreli TCP) — ücretsiz Tuya IoT hesabından alınan cihaz kimliği + yerel anahtarla, masaüstü uygulamasında; priz, anahtar ve ampuller":
+      "Local LAN (3.3 / 3.4, encrypted TCP) — with the device ID + local key from a free Tuya IoT account, in the desktop app; plugs, switches and bulbs",
+    "Tuya Akıllı Anahtar / Röle": "Tuya Smart Switch / Relay",
+    "eWeLink DIY modu (cihazda DIY açılmış olmalı) — çok kanallı modellerde her kanal ayrı cihaz":
+      "eWeLink DIY mode (DIY must be enabled on the device) — on multi-channel models each channel is a separate device",
+    "Sonoff BASICR3 Röle": "Sonoff BASICR3 Relay",
+    "Sonoff MINIR2 Röle": "Sonoff MINIR2 Relay",
+    "Sonoff 4CHPROR3 4 Kanallı Röle": "Sonoff 4CHPROR3 4-Channel Relay",
+    "Yerel UDP — masaüstü uygulamasında; yerleşik sahneler dahil":
+      "Local UDP — in the desktop app; built-in scenes included",
+    "WiZ A60 Renkli Ampul": "WiZ A60 Colour Bulb",
+    "WiZ Işık Şeridi": "WiZ Light Strip",
+    "Yerel Open API (bağlantı noktası 16021); güç düğmesiyle eşleştirme gerekir":
+      "Local Open API (port 16021); pairing with the power button is required",
+    "Nanoleaf Işık Panelleri / Shapes": "Nanoleaf Light Panels / Shapes",
+    "Yerel UDP — masaüstü uygulamasında": "Local UDP — in the desktop app",
+    "LIFX Z LED Şerit": "LIFX Z LED Strip",
+    "Yerel UDP (Govee Home'da LAN Control açık olmalı) — masaüstü uygulamasında":
+      "Local UDP (LAN Control must be enabled in Govee Home) — in the desktop app",
+    "Govee H6159 LED Şerit": "Govee H6159 LED Strip",
+  },
+  html: {},
+  /* YALNIZCA {0}/{1} yer tutuculu ve satır içi etiket taşıyan cümleler buraya yazılır.
+     Düz metin anahtarı slots'ta ÖLÜDÜR: i18n.js lookup() yalnız text + patterns'e bakar,
+     slots sadece doMixed'in iç-düğüm şablonunda eşleşir. Denetim bunu "SLOTS-ÖLÜ" olarak
+     raporlar (npm run audit:i18n:coverage) ve CI kapısı packages/web/src/i18n-coverage.test.ts. */
+  slots: {
+    "Sonraki ödeme {0} tutarında {1} tarihinde alınacak.":
+      "Next payment of {0} will be charged on {1}.",
+    "Aşağıdaki cihazlar internet bağlantısı olmadan, ev ağında NEXUS'a bağlanır. Eklediğin cihazlar {0} modelden seçilir.":
+      "The devices below connect to NEXUS on your home network, without an internet connection. Choose from {0} models.",
+    /* Satır içi vurgu (<strong>/<b>) içeren cümleler: {0} vurgunun kendisidir, yerinde kalır. */
+    "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; HomeKit köprüsü içermez. Apple Ev (HomeKit) ile kullanmak istersen en pratik yol {0}: cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.":
+      "NEXUS reaches your devices directly from its own app; it has no built-in HomeKit bridge. To use them with Apple Home (HomeKit), the practical path is {0}: add your devices to Home Assistant, then enable HA's HomeKit integration.",
+    "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; {0} yerleşik bir HomeKit köprüsü Apple Ev'e gerçek aksesuar yayınlar (aşağıdaki panelden başlat). Web/telefon sürümünde köprü yoktur.":
+      "NEXUS reaches your devices directly from its own app; on desktop, {0} built-in HomeKit bridge publishes real accessories to Apple Home (start it from the panel below). The web/phone version has no bridge.",
+    "NEXUS, cihazlarına doğrudan kendi uygulamasından erişir; telefon/web sürümünde HomeKit köprüsü içermez. Apple Ev (HomeKit) ile kullanmak istersen en pratik yol {0}: cihazlarını Home Assistant'a ekler, HA'nın HomeKit entegrasyonunu açarsın.":
+      "NEXUS reaches your devices directly from its own app; the phone/web version does not include a HomeKit bridge. To use them with Apple Home (HomeKit), the practical path is {0}: add your devices to Home Assistant, then enable HA's HomeKit integration.",
+    "NEXUS'ta {0} üzerinden Home Assistant'ı bağla.":
+      "Connect Home Assistant through {0} in NEXUS.",
+    "Home Assistant ayarlarından {0} entegrasyonunu ekle; paylaşmak istediğin cihazları seç.":
+      "In Home Assistant settings, add the {0} integration and pick the devices you want to share.",
+    "Ödeme sayfasında {0} kullan; abonelik bu e-postayla eşleşir. Deneme süresi bitmeden iptal edersen ücret alınmaz. Aboneliğini Faturalandırma sayfasından istediğin an yönetebilirsin.":
+      "Use {0} on the payment page; your subscription is matched to this email. Cancel before the trial ends and you're never charged. Manage your subscription any time from the Billing page.",
+    "Şifre en az {0} karakter olmalıdır.": "Password must be at least {0} characters.",
+    "Yeni şifre en az {0} karakter olmalı.": "New password must be at least {0} characters.",
+    /* --- Cihaz ekleme (Home Assistant) durum satırları --- */
+    "{0} cihaz bulundu. Eklemek istediklerini seç.":
+      "Found {0} devices. Pick the ones you want to add.",
+    "{0} cihaz eklendi. Ana sayfadan yönetebilirsin.":
+      "Added {0} devices. Manage them from the Home tab.",
+    /* Satır içi {0} = <br> / <span> gibi öğe; yerinde kalır, yalnız çevresindeki metin değişir. */
+    "Tekrar görüşmek güzel!{0}Nasıl yardımcı olabilirim?":
+      "Great to see you again!{0}How can I help?",
+    "Lütfen cihazınızın üzerindeki 8 haneli{0} kurulum kodunu girin":
+      "Enter the 8-digit setup code{0} printed on your device",
+    "Aydınlatma {0}": "Lighting {0}",
+    "Konum tabanlı · Aydınlatma{0}": "Location-based · Lighting{0}",
+    "Konum tabanlı · Klima{0}": "Location-based · Climate{0}",
+    "Zamanlama tabanlı · Akıllı Priz{0}": "Schedule-based · Smart Plug{0}",
   },
   patterns: [
     ["^Giriş yapılamadı: (.+)$", "Sign-in failed: $1"],

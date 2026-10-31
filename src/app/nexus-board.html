@@ -19,6 +19,10 @@
       .bg-gradient-custom { background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%); }
       .menu-container-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); }
       body { min-height: 100dvh; }
+      /* Koyu tema: Tailwind dark: varyantı bu projede derlenmez; kural burada açık yazılır */
+      html.dark body { background: linear-gradient(180deg, #020617 0%, #0f172a 35%, #111827 100%); }
+      html.dark #add-input, html.dark #kind-toggle { border-color: #334155; }
+      html.dark #state-banner { background: rgba(120, 53, 15, 0.25); border-color: #92400e; color: #fde68a; }
     </style>
     <script src="auth.js"></script>
     <script src="theme.js"></script>
