@@ -52,6 +52,11 @@
   <script src="auth.js"></script>
   <script src="theme.js"></script>
   <script src="data.js"></script>
+  <link href="css/quick-scenes.css" rel="stylesheet"/>
+  <script src="supported-devices.js"></script>
+  <script src="lan-connectors.js"></script>
+<script src="device-controls.js"></script>
+  <script src="quick-scenes.js"></script>
   <script>
     // Eğer nexusGetItem/nexusSetItem tanımlı değilse, localStorage kullan
     if (typeof nexusGetItem !== 'function') {
@@ -226,17 +231,24 @@
 <!-- END: Recommendations Section -->
 </div>
       <!-- BEGIN: Tıkla ve çalıştır Tab -->
-      <div id="tab-clickrun" class="hidden">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-bold text-gray-900">Senaryolarım</h3>
+      <div id="tab-clickrun" class="hidden qs-wrap">
+        <!-- Hazır senaryolar: yalnızca eşleşmiş cihazlarına gerçekten uygulanabilenler; dokununca çalışır -->
+        <div class="qs-head">
+          <h3>Senin için hazır</h3>
           <button id="siri-badge" onclick="window.location.href='nexus-siri-shortcuts.html'" class="bg-black text-white text-xs font-semibold pl-1 pr-3 py-1 rounded-full shadow-sm hover:bg-slate-900 active:scale-95 transition-all flex items-center gap-1.5">
             <img src="siri-logo.png" alt="Siri" class="w-6 h-6 object-contain rounded-full">
             <span>Siri'ye Ekle</span>
           </button>
         </div>
-        <div class="grid grid-cols-2 gap-4" id="custom-clickrun-container">
-          <!-- Dinamik Tıkla ve Çalıştır kartları buraya eklenecek -->
+        <p class="qs-sub" id="ready-sub">Dokununca eşleşmiş cihazlarında hemen çalışır.</p>
+        <div class="qs-grid" id="ready-scenes"></div>
+        <div id="ready-empty" class="nx-empty" style="display:none"></div>
+
+        <div class="qs-head" style="margin-top:28px">
+          <h3>Senaryolarım</h3>
+          <a href="nexus-skills.html?type=clickrun" class="qs-link-btn ghost"><i data-lucide="plus"></i> Yeni</a>
         </div>
+        <div id="custom-clickrun-container"></div>
         <div id="empty-clickrun" class="nx-empty">
           <div class="nx-empty__icon" aria-hidden="true"><i data-lucide="zap"></i></div>
           <p class="nx-empty__title">Senaryo hazır değil</p>
@@ -511,31 +523,35 @@ function toggleHomeSelector() {
         }
 
       if (clickContainer) {
-        clickContainer.innerHTML = ''; // Clear previous items
+        clickContainer.innerHTML = '';
+        const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        const QS = window.nexusQuickScenes;
         clickruns.forEach((run) => {
-          const btn = document.createElement('div');
-          btn.className = "relative bg-gradient-to-br from-slate-50 to-gray-50 border border-gray-100 rounded-3xl p-5 text-left shadow-sm active:scale-95 transition-transform cursor-pointer";
-          btn.setAttribute('role', 'button');
-          btn.setAttribute('tabindex', '0');
-          btn.onclick = () => {
-            window.location.href = `nexus-scenario-settings.html?id=${run.id}&title=${encodeURIComponent(run.title)}&desc=${encodeURIComponent(run.desc)}&icon=${run.icon}`;
+          const m = (QS && run.sceneId && QS.metaFor(run.sceneId)) || null;
+          const hex = m ? m.hex : '#4C7DFF';
+          const runnable = !!(run.sceneId && window.NX && NX.SCENES && NX.SCENES[run.sceneId]);
+          const row = document.createElement('div');
+          row.className = 'qs-mine';
+          row.setAttribute('role', 'button');
+          row.setAttribute('tabindex', '0');
+          row.dataset.runId = run.id;
+          row.innerHTML =
+            `<span class="qs-ico" style="background:${hex}1f;color:${hex}"><i data-lucide="${esc(run.icon)}"></i></span>` +
+            `<span class="qs-body"><span class="qs-title">${esc(run.title)}</span>` +
+            `<span class="qs-meta">${runnable ? 'Dokun, çalışsın' : 'Henüz bir eylem seçilmedi'}</span></span>` +
+            (runnable ? '' : `<a class="qs-link-btn ghost" href="nexus-skills.html?type=clickrun&edit=${encodeURIComponent(run.id)}" onclick="event.stopPropagation()">Eylem seç</a>`) +
+            `<button type="button" class="qs-icon-btn danger" aria-label="Senaryoyu sil" data-del="${esc(run.id)}"><i data-lucide="trash-2"></i></button>`;
+          const go = () => {
+            if (runnable) runReady(run.sceneId, row);
+            else window.location.href = 'nexus-skills.html?type=clickrun&edit=' + encodeURIComponent(run.id);
           };
-          btn.onkeydown = (event) => {
-            if (event.key === 'Enter' || event.key === ' ') btn.click();
-          };
-          btn.innerHTML = `
-            <button type="button" aria-label="Senaryoyu sil" onclick="event.stopPropagation(); deleteStoredScenario('${run.id}', 'clickrun')" class="absolute right-3 top-3 w-8 h-8 rounded-full bg-white text-red-500 border border-red-100 shadow-sm flex items-center justify-center active:scale-95 transition-transform">
-              <i class="w-4 h-4" data-lucide="trash-2"></i>
-            </button>
-            <div class="w-10 h-10 rounded-full ${autoBgToLight(run.bgClass)} ${run.colorClass} flex items-center justify-center mb-3">
-              <i class="w-5 h-5" data-lucide="${run.icon}"></i>
-            </div>
-            <h4 class="font-bold text-slate-800 pr-8">${run.title}</h4>
-            <p class="text-xs text-slate-500 mt-1">${run.desc}</p>
-          `;
-          clickContainer.appendChild(btn);
+          row.addEventListener('click', go);
+          row.addEventListener('keydown', (ev) => { if (ev.target === row && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); go(); } });
+          row.querySelector('[data-del]').addEventListener('click', (ev) => { ev.stopPropagation(); deleteStoredScenario(run.id, 'clickrun'); });
+          clickContainer.appendChild(row);
         });
       }
+      renderReadyScenes();
 
       // Show/hide empty states
       const emptyAuto = document.getElementById('empty-automation');
@@ -561,6 +577,78 @@ function toggleHomeSelector() {
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();
       }
+    }
+
+    // ---- Tıkla ve çalıştır: eşleşmiş cihazlara göre hazır senaryolar ----
+    function qsEsc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function deviceListText(devs) {
+      var names = devs.map(function (d) { return d.name; });
+      return names.slice(0, 2).join(', ') + (names.length > 2 ? ' +' + (names.length - 2) : '');
+    }
+    function renderReadyScenes() {
+      var grid = document.getElementById('ready-scenes');
+      var empty = document.getElementById('ready-empty');
+      var sub = document.getElementById('ready-sub');
+      var QS = window.nexusQuickScenes;
+      if (!grid || !empty || !QS) return;
+      grid.innerHTML = '';
+      var avail = QS.available();
+      if (!avail.length) {
+        if (sub) sub.style.display = 'none';
+        empty.style.display = '';
+        empty.innerHTML = '<div class="nx-empty__icon" aria-hidden="true"><i data-lucide="sparkles"></i></div>' +
+          '<p class="nx-empty__title">Öneri hazır değil</p>' +
+          '<p class="nx-empty__text">' + (QS.hasDevices()
+            ? 'Eşleşmiş cihazlarına uyan hazır bir senaryo yok. Senaryolar ışık, perde, klima, kilit ya da robot süpürge gibi cihazlarla çalışır.'
+            : 'Cihaz eklenince hazır senaryolar burada görünecek.') + '</p>' +
+          '<a href="nexus-pair.html" class="nx-empty__cta"><i data-lucide="plus" class="w-4 h-4"></i> Cihaz ekle</a>';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        return;
+      }
+      if (sub) sub.style.display = '';
+      empty.style.display = 'none';
+      grid.innerHTML = avail.map(function (s) {
+        return '<button type="button" class="qs-tile" data-scene="' + qsEsc(s.id) + '">' +
+          '<span class="qs-ico" style="background:' + s.hex + '1f;color:' + s.hex + '"><i data-lucide="' + qsEsc(s.icon) + '"></i></span>' +
+          '<span class="qs-title">' + qsEsc(s.title) + '</span>' +
+          '<span class="qs-meta">' + s.affected + ' cihaz · ' + qsEsc(deviceListText(s.devices)) + '</span>' +
+          '<span class="qs-run" style="color:' + s.hex + '"><i data-lucide="play"></i><span class="qs-run-text">Çalıştır</span></span>' +
+          '</button>';
+      }).join('');
+      Array.prototype.forEach.call(grid.querySelectorAll('.qs-tile'), function (tile) {
+        tile.addEventListener('click', function () { runReady(tile.getAttribute('data-scene'), tile); });
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    function runReady(sceneId, el) {
+      var QS = window.nexusQuickScenes;
+      if (!QS || !el || el.dataset.busy) return;
+      el.dataset.busy = '1';
+      var label = el.querySelector('.qs-run-text') || el.querySelector('.qs-meta');
+      var before = label ? label.textContent : '';
+      var toast = function (m, t) { if (window.nexusToast) window.nexusToast(m, { type: t }); };
+      var res;
+      try { res = QS.run(sceneId); } catch (e) { res = null; }
+      if (!res) { toast('Senaryo çalıştırılamadı.', 'error'); delete el.dataset.busy; return; }
+      if (!res.changed) {
+        toast(res.summary, 'error');
+        delete el.dataset.busy;
+        return;
+      }
+      toast(res.summary, 'success');
+      el.classList.add('is-done');
+      if (label) label.textContent = res.changed + ' cihaz ayarlandı';
+      res.failedNames.then(function (names) {
+        if (names.length) {
+          el.classList.remove('is-done'); el.classList.add('is-warn');
+          toast(names.slice(0, 3).join(', ') + (names.length > 3 ? ' +' + (names.length - 3) : '') + ' cihazına ulaşılamadı; cihazın açık ve aynı Wi-Fi\'da olduğundan emin ol.', 'error');
+        }
+      });
+      setTimeout(function () {
+        el.classList.remove('is-done', 'is-warn');
+        if (label) label.textContent = before;
+        delete el.dataset.busy;
+      }, 3200);
     }
 
     function autoBgToLight(bgClass) {

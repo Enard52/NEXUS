@@ -9,7 +9,7 @@
  */
 var CACHE = 'nexus-shell-v19'; // v19: pair-page.js + household-page.js + family-chat-page.js ayrı dosya (satır içi script sınırı) - v18: birlestirme (integrations-page.js + sheet-focus.js) - v17: integrations-page.js ayrı dosya — v16: sürüm sabiti app-version.js'e taşındı + güncelleme bandı — v12: aile (sunucu tabanlı ev, sohbet), yedekleme, sensör olayları — v11: 1.0.33 komut paleti/geri alma/durum duyurusu, push katmanı
 var SHELL = [
-  'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css',
+  'css/tailwind.css', 'css/nexus-ui.css', 'css/nexus-controls.css', 'css/nexus-desktop.css', 'css/quick-scenes.css', 'quick-scenes.js',
   'fonts/inter/inter.css',
   'js/lucide.js',
   'theme.js', 'auth.js', 'data.js', 'device-controls.js', 'supported-devices.js',

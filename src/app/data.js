@@ -1332,18 +1332,27 @@ function renderTapToRunCards() {
     section.classList.remove('hidden');
     grid.innerHTML = selected.map(card => {
         const accent = getCardAccentClasses(card.icon);
+        // Bağlı bir hazır senaryosu varsa kart gerçekten çalıştırır (device-controls.js yüklüyse); yoksa eski davranış: ayar sayfası.
+        const runnable = !!(card.sceneId && window.NX && NX.SCENES && NX.SCENES[card.sceneId]);
         return `
-            <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" href="${getCardHref(card.id)}" id="dyn-card-${card.id}">
+            <a class="bg-white rounded-3xl p-5 card-shadow flex flex-col justify-between h-40 active:scale-[0.98] transition-transform" href="${getCardHref(card.id)}" id="dyn-card-${card.id}"${runnable ? ` data-run-scene="${card.sceneId}"` : ''}>
                 <div class="mb-2 ${(accent.wrap.match(/text-\S+/) || ['text-slate-500'])[0]}">
                     ${getCardIconSvg(card.icon, 'w-8 h-8')}
                 </div>
                 <div>
                     <div class="font-bold text-base leading-tight">${card.title}</div>
-                    <div class="text-xs text-slate-500 mt-1">Dokun çalıştır</div>
+                    <div class="text-xs text-slate-500 mt-1">${runnable ? 'Dokun, çalışsın' : 'Eylem seçilmedi'}</div>
                 </div>
             </a>
         `;
     }).join('');
+    Array.prototype.forEach.call(grid.querySelectorAll('[data-run-scene]'), function (a) {
+        a.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            const r = NX.runScene(a.getAttribute('data-run-scene'));
+            if (window.nexusToast) window.nexusToast(NX.sceneSummary(r), { type: r.changed ? 'success' : 'error' });
+        });
+    });
 }
 
 window.refreshDashboardSupplements = function() {

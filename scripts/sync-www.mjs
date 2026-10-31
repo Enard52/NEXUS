@@ -24,6 +24,7 @@ export const APP_JS = [
   "household-page.js",
   "family-chat-page.js",
   "lan-mqtt.js",
+  "quick-scenes.js",
   "setup-codes.js",
   "i18n.js",
   "lang-en.js",
