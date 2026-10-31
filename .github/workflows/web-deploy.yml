@@ -48,10 +48,18 @@ jobs:
           node-version: 22
       # www/public TAKİPLİ bir üretime çıktısı; eskiden yalnızca elle üretiliyordu ve
       # CI bayat kopyayı rsync'liyordu. Artık önce üretiliyor, sonra denetleniyor.
+      - name: Kodlama kapısı (kaynaklar)
+        run: node scripts/encoding-fix.mjs --check
       - name: Bulut yapılandırmasını üret
         run: node scripts/ensure-cloud-config.mjs
       - name: Siteyi kaynaklardan üret
         run: node scripts/site-build.mjs
+      # Üretilen çıktı bir kez daha denetleniyor: bozukluk yalnızca üreteçte de doğabiliyor.
+      # Gerçek örnek: şablon dizisine yazılan bir \u kaçışı üretim sırasında gerçek bir
+      # U+FFFD karakterine dönüşüp www/public/assets/site.js'e girmişti; kaynak temizken
+      # çıktı bozuktu. Yüklemeden önceki son kapı bu.
+      - name: Kodlama kapısı (üretilen site)
+        run: node scripts/encoding-fix.mjs --check
       - name: Yapısal denetim (tarayıcısız kapı)
         run: node scripts/verify-site.mjs --smoke
       - name: Cloudflare Pages'e doğrudan yükle (tek depo yolu)

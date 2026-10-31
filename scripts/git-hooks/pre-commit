@@ -1,0 +1,20 @@
+#!/bin/sh
+# NEXUS kodlama pre-commit kancasi (IZLENEN kopya: scripts/git-hooks/pre-commit).
+# .git/hooks altindaki calisan kopyayi scripts/install-hooks.mjs kurar (pnpm prepare).
+# Bu commit'e giren dosyalarda sunlari onarir: gereksiz UTF-8 BOM (.ps1 haric), UTF-16
+# ile kaydedilmis dosya, bir kez daha kodlanmis metin (mojibake), ANSI/CP1252 olarak
+# kaydedilmis metin. Onardigi dosyalari yeniden 'git add' eder; commit'e temiz hali girer.
+# Kaybolmus karakter (U+FFFD) icin hicbir sey uydurulmaz, yalnizca rapor edilir.
+root=$(git rev-parse --show-toplevel)
+cd "$root" || exit 0
+if command -v node >/dev/null 2>&1; then
+  node scripts/encoding-fix.mjs --staged
+  status=$?
+  if [ $status -ne 0 ]; then
+    echo "NEXUS: kodlama onarimi dogrulanamadi, commit durdu (dosya eski baytlarina donduruldu)."
+    exit 1
+  fi
+else
+  echo "NEXUS: node bulunamadi, kodlama kancasi atlandi."
+fi
+exit 0

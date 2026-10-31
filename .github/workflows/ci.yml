@@ -25,6 +25,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Kodlama kapısı: BOM / UTF-16 / bir kez daha kodlanmış (mojibake) Türkçe metin.
+      # Kancayı kurmayan bir makineden ya da PowerShell ile yazılmış bir betik ile giren
+      # bozukluk ancak yayına gittiğinde fark ediliyordu; burada commit'te durur.
+      - name: Encoding check (BOM · mojibake · geçerli UTF-8)
+        run: node scripts/encoding-fix.mjs --check
+
       - name: Format check
         run: pnpm format:check
 
@@ -54,3 +60,18 @@ jobs:
       # işi kırmalıdır (tarama 2026-10-29 itibarıyla temiz).
       - name: pnpm audit
         run: pnpm audit --audit-level=high
+
+  secrets:
+    name: secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      # Tüm geçmiş gerekir: PR'da yalnız yeni commit'ler, main'de push aralığı taranır.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Herkese açık depoda lisans anahtarı gerekmez; GITHUB_TOKEN yalnız PR yorumu için.
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
