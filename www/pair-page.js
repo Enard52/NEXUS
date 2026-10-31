@@ -427,6 +427,9 @@
       var host = document.getElementById("tuya-pair-card");
       if (!host) return;
       var avail = window.nexusLan && window.nexusLan.hasSecure && window.nexusLan.hasSecure().tuya;
+      // Yalnızca masaüstünde çalışan Tuya kartı telefonda/tarayıcıda hiç gösterilmez.
+      if (!avail) { host.innerHTML = ""; host.style.display = "none"; return; }
+      host.style.display = "";
       host.innerHTML = '<details class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800"' + (avail ? '' : ' open') + '>' +
         '<summary class="cursor-pointer text-sm font-bold">Tuya cihazı ekle (yerel anahtarla)</summary>' +
         (avail
@@ -578,7 +581,7 @@
 
     // "Köprüler ve açık kaynak": destek matrisindeki category:"bridge" grupları (Home Assistant, Tasmota, WLED, ESPHome, Wake-on-LAN)
     (function renderBridges() {
-      var groups = (window.NEXUS_SUPPORTED_DEVICES || []).filter(function (g) { return g.category === "bridge"; });
+      var groups = (window.nexusVisibleSupportedDevices ? window.nexusVisibleSupportedDevices() : (window.NEXUS_SUPPORTED_DEVICES || [])).filter(function (g) { return g.category === "bridge"; });
       var section = document.getElementById("bridge-section");
       var list = document.getElementById("bridge-list");
       if (!groups.length || !section || !list) return;
