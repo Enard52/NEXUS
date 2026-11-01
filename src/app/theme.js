@@ -1,7 +1,23 @@
-// Dil: Türkçe cihaz veya Türkçe bölge etiketi Türkçe açılır ve dil seçebilir.
-// Bunun dışındaki herkes sabit İngilizce görür; dil listesi ve Türkçe seçeneği yoktur.
+// Dil: Türkçe cihaz veya Türkçe bölge etiketi Türkçe açılır, diğerleri İngilizce; herkes ayarlardan dil seçebilir.
+// Ek diller topluluk sözlüğüyle gelir (COMMUNITY_LANGS + lang-<kod>.js).
 (function () {
   var KEY = 'nexusLanguage';
+  // Topluluk dilleri: yeni dil = buraya bir satır + src/app/lang-<kod>.js (bkz. docs/TRANSLATING.md).
+  // Gerçek bir sözlük dosyası birleşmeden buraya dil eklenmez; yoksa seçici sahte bir dil gösterirdi.
+  var COMMUNITY_LANGS = {
+    // de: { name: 'Deutsch', locale: 'de-DE' },
+    // ar: { name: 'العربية', locale: 'ar', rtl: true },
+  };
+  window.NEXUS_COMMUNITY_LANGS = COMMUNITY_LANGS;
+  function detectCommunity() {
+    var list = [];
+    try { list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]).filter(Boolean); } catch (e) {}
+    for (var i = 0; i < list.length; i++) {
+      var base = String(list[i]).replace('_', '-').split('-')[0].toLowerCase();
+      if (Object.prototype.hasOwnProperty.call(COMMUNITY_LANGS, base)) return base;
+    }
+    return null;
+  }
   var TURKIC_LANGS = /^(tr|az|kk|uz|ky|tk|tt|ba|crh|gag)$/i;
   var TURKIC_REGIONS = /^(TR|AZ|KZ|UZ|KG|TM)$/i;
   function detect() {
@@ -20,13 +36,18 @@
   window.nexusHomeLang = home;
   var lang = null;
   try { lang = localStorage.getItem(KEY); } catch (e) {}
-  if (lang !== 'tr' && lang !== 'en') {
-    // İlk ziyaret: Türkçe bölge Türkçe başlar, diğerleri İngilizce.
+  if (lang !== 'tr' && lang !== 'en' && !COMMUNITY_LANGS[lang]) {
+    // İlk ziyaret: Türkçe bölge Türkçe başlar; sözlüğü gönderilen bir dili konuşan cihaz o dille açılır; diğerleri İngilizce.
     // Dil seçeneği tüm kullanıcılara açık; seçim saklanır ve sonraki açılışta korunur.
-    lang = home === 'tr' ? 'tr' : 'en';
+    lang = home === 'tr' ? 'tr' : (detectCommunity() || 'en');
   }
+  // Topluluk dili seçiliyse taban dil İngilizce kalır (ödeme planı, asistan, İngilizce kaynaklı metinler);
+  // yalnızca görünen metinler lang-<kod>.js ile üstüne çevrilir. Sözlükte olmayan metin İngilizce görünür.
+  var uiLang = lang;
+  if (lang !== 'tr' && lang !== 'en') lang = 'en';
   window.nexusLang = lang;
-  window.nexusLocale = lang === 'en' ? 'en-US' : 'tr-TR';
+  window.nexusUiLang = uiLang;
+  window.nexusLocale = uiLang === 'tr' ? 'tr-TR' : (COMMUNITY_LANGS[uiLang] ? COMMUNITY_LANGS[uiLang].locale : 'en-US');
   window.nexusT = function (tr, en) { return lang === 'en' ? en : tr; };
   window.nexusTr = function (s) { return s; }; // İngilizcede i18n.js bunu çeviriciyle değiştirir
   window.nexusSrcText = function (el) { return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : ''; };
@@ -62,14 +83,16 @@
   })();
   window.nexusSetLanguage = function (next) {
     // Dil seçimi tüm kullanıcılara açık: EN kullanıcısı TR'ye, TR kullanıcısı EN'ye geçebilir.
-    if (next !== 'tr' && next !== 'en') return;
+    if (next !== 'tr' && next !== 'en' && !Object.prototype.hasOwnProperty.call(COMMUNITY_LANGS, next)) return;
     try { localStorage.setItem(KEY, next); } catch (e) {}
     location.reload();
   };
-  document.documentElement.setAttribute('lang', lang);
+  document.documentElement.setAttribute('lang', uiLang);
+  if (COMMUNITY_LANGS[uiLang] && COMMUNITY_LANGS[uiLang].rtl) document.documentElement.setAttribute('dir', 'rtl');
   try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(lang); } catch (e) {}
   if (lang === 'en' && document.readyState === 'loading' && !window.__nexusI18n) {
-    document.write('<script src="lang-en.js"><\/script><script src="i18n.js"><\/script>');
+    // Topluluk dilinde İngilizce sözlük önce yüklenir (eksik metin İngilizce kalır), dil dosyası üstüne biner.
+    document.write('<script src="lang-en.js"><\/script>' + (uiLang !== 'en' ? '<script src="lang-' + uiLang + '.js"><\/script>' : '') + '<script src="i18n.js"><\/script>');
   }
   var previewShell = false;
   try { previewShell = !!window.nexusPreview || window.self !== window.top || /[?&](preview|demo)=1/.test(location.search) || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('nexusPreviewMode') === '1'); } catch (e) { previewShell = true; }

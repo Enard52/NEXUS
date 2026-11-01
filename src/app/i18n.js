@@ -16,6 +16,20 @@
   var HTML = DICT.html || {};
   var SLOTS = DICT.slots || {}; // "Metin {0} metin" — {n}: n. iç öğe (yerinde korunur)
   var PATTERNS = (DICT.patterns || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });
+  // Topluluk dili: lang-<kod>.js window.NEXUS_LANG = { text, html, slots } tanımlar. Yalnızca dolu değerler
+  // İngilizce sözlüğün üstüne biner; boş/eksik anahtar İngilizce kalır. Desenler (regex) çevrilmez.
+  var OVER = window.NEXUS_LANG;
+  if (OVER && window.nexusUiLang && window.nexusUiLang !== "en" && window.nexusUiLang !== "tr") {
+    var merge = function (base, extra) {
+      var out = Object.create(null);
+      Object.keys(base).forEach(function (k) { out[k] = base[k]; });
+      Object.keys(extra || {}).forEach(function (k) { if (typeof extra[k] === "string" && extra[k].trim()) out[k] = extra[k]; });
+      return out;
+    };
+    TEXT = merge(TEXT, OVER.text);
+    HTML = merge(HTML, OVER.html);
+    SLOTS = merge(SLOTS, OVER.slots);
+  }
   var ATTRS = ["placeholder", "title", "aria-label", "alt", "data-tooltip", "label"];
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, CODE: 1, PRE: 1, NOSCRIPT: 1 };
   var TR_CHARS = /[çğıöşüÇĞİÖŞÜ]/;

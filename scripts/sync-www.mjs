@@ -72,7 +72,8 @@ function copy(src, dst) {
 
 let n = 0;
 for (const f of fs.readdirSync(APP)) {
-  if (/^nexus-.*\.html$/.test(f) || APP_FILES.includes(f) || APP_JS.includes(f))
+  // lang-<kod>.js topluluk sözlükleri kendiliğinden gelir (docs/TRANSLATING.md); listeye eklenmesi gerekmez.
+  if (/^nexus-.*\.html$/.test(f) || /^lang-[a-z]{2,3}(-[A-Za-z]{2,4})?\.js$/.test(f) || APP_FILES.includes(f) || APP_JS.includes(f))
     n += copy(path.join(APP, f), path.join(WWW, f));
 }
 for (const d of APP_DIRS) n += copy(path.join(ROOT, d), path.join(WWW, d));

@@ -249,7 +249,11 @@
     <script>
       // Dil seçeneği artık tüm kullanıcılara açık: satır her koşulda görünür,
       // etiket güncel dili gösterir (Türkçe / English).
-      document.getElementById('language-label').textContent = window.nexusLang === 'en' ? 'English' : 'Türkçe';
+      (function () {
+        var code = window.nexusUiLang || (window.nexusLang === 'en' ? 'en' : 'tr');
+        var community = window.NEXUS_COMMUNITY_LANGS || {};
+        document.getElementById('language-label').textContent = community[code] ? community[code].name : (code === 'en' ? 'English' : 'Türkçe');
+      })();
     </script>
   </section>
 
@@ -752,15 +756,20 @@
   function openLanguagePicker() {
     // Dil seçeneği tüm kullanıcılara açık; diyalog metinleri güncel dile göre.
     var isTr = window.nexusLang !== 'en';
-    var current = window.nexusLang === 'en' ? 'en' : 'tr';
+    var current = window.nexusUiLang || (window.nexusLang === 'en' ? 'en' : 'tr');
+    var community = window.NEXUS_COMMUNITY_LANGS || {};
+    var options = [
+      { label: 'Türkçe', value: 'tr', selected: current === 'tr' },
+      { label: 'English', value: 'en', selected: current === 'en' }
+    ];
+    Object.keys(community).forEach(function (code) {
+      options.push({ label: community[code].name, value: code, selected: current === code });
+    });
     window.nexusDialog({
       title: isTr ? 'Dil' : 'Language',
       icon: 'language',
       message: isTr ? 'Uygulama dilini seç.' : 'Choose the app language.',
-      options: [
-        { label: 'Türkçe', value: 'tr', selected: current === 'tr' },
-        { label: 'English', value: 'en', selected: current === 'en' }
-      ],
+      options: options,
       onSelect: function (value) {
         if (value !== current) nexusSetLanguage(value);
       }

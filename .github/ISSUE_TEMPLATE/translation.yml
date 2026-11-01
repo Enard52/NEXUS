@@ -6,9 +6,9 @@ body:
     attributes:
       value: |
         NEXUS ships with 100% English + Turkish coverage (enforced by a test).
-        Community languages are welcome! A language is added by contributing a
-        dictionary file only — the layout is language-agnostic and no app code
-        needs to change.
+        Community languages are welcome! A language is added by contributing one
+        dictionary file (`src/app/lang-<code>.js`) and one registry line in
+        `src/app/theme.js`. The step-by-step guide is docs/TRANSLATING.md.
   - type: dropdown
     id: kind
     attributes:

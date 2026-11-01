@@ -206,7 +206,11 @@ describe("desktop app file rules (src/app → packaged app/)", () => {
   it("the www sync allowlist registers the same modules", () => {
     const sync = fs.readFileSync(path.resolve(DESKTOP, "..", "scripts", "sync-www.mjs"), "utf8");
     const unregistered = appJs.filter(
-      (f) => !rules.EXCLUDE_JS.has(f) && !sync.includes('"' + f + '"'),
+      (f) =>
+        !rules.EXCLUDE_JS.has(f) &&
+        !sync.includes('"' + f + '"') &&
+        // lang-<kod>.js topluluk sözlükleri sync-www.mjs'te desenle kendiliğinden gelir
+        !(/^lang-[a-z]{2,3}(-[A-Za-z]{2,4})?\.js$/.test(f) && sync.includes("lang-[a-z]{2,3}")),
     );
     expect(
       unregistered,
