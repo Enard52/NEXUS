@@ -21,8 +21,9 @@ not be added.
    node scripts/lang-tool.mjs new de
    ```
 
-3. Fill in the values of `text`, then `html` and `slots` (keep `{0}`, `{name}` and HTML tags exactly as in the
-   English reference). Regex `patterns` are not translatable yet.
+3. Fill in the values of `text`, `html`, `slots` and `patterns` (keep `{0}`, `{name}`, `$1` and HTML tags exactly
+   as in the English reference). `text` also contains the messages the app builds in code (notifications, dialogs).
+   The assistant answers in your language automatically once the language is registered.
 4. Check it:
 
    ```bash
@@ -44,8 +45,16 @@ not be added.
 
 The language then appears in Settings, Language, and is chosen automatically for devices set to it.
 
-## Not covered yet
+## Not covered yet (tracked as issues)
 
-- The marketing site (`/`, `/tr/`) and the legal pages/PDFs are generated from two fixed languages
-  (`scripts/site-build.mjs`, `scripts/site-content.mjs`, `scripts/legal-content.cjs`). Extending them is a separate task.
-- Dates and numbers follow the `locale` you register.
+These surfaces are still fixed to Turkish/English; a language file alone does not translate them:
+
+- The marketing site and the legal pages/PDFs (`scripts/site-build.mjs`, `scripts/site-content.mjs`,
+  `scripts/legal-content.cjs`, `scripts/legal-pdf*.mjs`).
+- The desktop menu and tray (`desktop/main.cjs`), push notification text sent from servers, and voice input
+  (the speech-to-text worker accepts `tr`/`en` only).
+- Messages assembled from several variables in code (not literal pairs) and the assistant's built-in local replies.
+- Store listings and the checkout page (maintained in each store/Whop console by the owner).
+
+Dates and numbers follow the `locale` you register. The language picker is a searchable full-screen list, so it
+scales to many languages.

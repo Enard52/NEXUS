@@ -68,6 +68,7 @@
 <script src="data.js"></script>
 <script src="ai-fab.js"></script>
 <script src="nexus-dialog.js"></script>
+<script src="language-picker.js"></script>
 </head>
 <body class="bg-dashboard-gradient min-h-screen flex flex-col">
 <header class="nx-hdr-blend px-4 pt-12 pb-4 flex items-center justify-between sticky top-0 z-10">
@@ -754,26 +755,8 @@
   }
 
   function openLanguagePicker() {
-    // Dil seçeneği tüm kullanıcılara açık; diyalog metinleri güncel dile göre.
-    var isTr = window.nexusLang !== 'en';
-    var current = window.nexusUiLang || (window.nexusLang === 'en' ? 'en' : 'tr');
-    var community = window.NEXUS_COMMUNITY_LANGS || {};
-    var options = [
-      { label: 'Türkçe', value: 'tr', selected: current === 'tr' },
-      { label: 'English', value: 'en', selected: current === 'en' }
-    ];
-    Object.keys(community).forEach(function (code) {
-      options.push({ label: community[code].name, value: code, selected: current === code });
-    });
-    window.nexusDialog({
-      title: isTr ? 'Dil' : 'Language',
-      icon: 'language',
-      message: isTr ? 'Uygulama dilini seç.' : 'Choose the app language.',
-      options: options,
-      onSelect: function (value) {
-        if (value !== current) nexusSetLanguage(value);
-      }
-    });
+    // Dil seçeneği tüm kullanıcılara açık; çok dilde de düzgün görünsün diye aramalı tam ekran liste (language-picker.js).
+    window.nexusOpenLanguagePicker();
   }
 
   function logout() {

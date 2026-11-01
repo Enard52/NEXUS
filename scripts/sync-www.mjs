@@ -28,6 +28,7 @@ export const APP_JS = [
   "quick-scenes.js",
   "setup-codes.js",
   "i18n.js",
+  "language-picker.js",
   "lang-en.js",
   "nexus-assistant.js",
   "nexus-feedback.js",

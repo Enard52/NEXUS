@@ -11,7 +11,7 @@ const REPO_ROOT = resolve(__dirname, "../../..");
 // ta ki gerçek bir lang-<kod>.js birleşene kadar).
 const APP = resolve(REPO_ROOT, "src", "app");
 
-function runI18n(uiLang: string, overlay: unknown) {
+function runI18n(uiLang: string, overlay: unknown, dictSource?: string) {
   const noop = () => {};
   const root: Record<string, unknown> = {
     nodeType: 1,
@@ -31,7 +31,7 @@ function runI18n(uiLang: string, overlay: unknown) {
     Promise,
     console,
   });
-  vm.runInContext(readFileSync(join(APP, "lang-en.js"), "utf8"), ctx);
+  vm.runInContext(dictSource ?? readFileSync(join(APP, "lang-en.js"), "utf8"), ctx);
   vm.runInContext(readFileSync(join(APP, "i18n.js"), "utf8"), ctx);
   return (s: string) => (win.nexusTr as (x: string) => string)(s);
 }
@@ -43,6 +43,44 @@ describe("community language layer", () => {
     });
     expect(tr("Doğrulama Bağlantısı Gönder")).toBe("Bestätigungslink senden");
     expect(tr("Yeni e-posta adresi")).toBe("New email address");
+  });
+
+  it("translatable sources include strings built in code (nexusT) and regex patterns", async () => {
+    // @ts-expect-error saf JS aracı, tip bildirimi yok
+    const tool = await import("../../../scripts/lang-tool.mjs");
+    const src = tool.sources();
+    expect(src.text["No active subscription"]).toBe("No active subscription");
+    expect(Object.keys(src.patterns).length).toBeGreaterThan(0);
+  });
+
+  it("overlays regex patterns by their source", () => {
+    const dict = 'window.NEXUS_EN = { text: {}, patterns: [["^Merhaba (.+)$", "Hello $1"]] };';
+    const key = new RegExp("^Merhaba (.+)$").source;
+    expect(runI18n("en", {}, dict)("Merhaba Ayşe")).toBe("Hello Ayşe");
+    expect(runI18n("de", { patterns: { [key]: "Hallo $1" } }, dict)("Merhaba Ayşe")).toBe(
+      "Hallo Ayşe",
+    );
+    expect(runI18n("de", { patterns: { [key]: "" } }, dict)("Merhaba Ayşe")).toBe("Hello Ayşe");
+  });
+
+  it("detects a shipped community language from the device language list", () => {
+    const theme = readFileSync(join(APP, "theme.js"), "utf8");
+    const start = theme.indexOf("function detectCommunity()");
+    const end = theme.indexOf("var TURKIC_LANGS");
+    expect(start).toBeGreaterThan(0);
+    const detect = (langs: string[], registry: Record<string, unknown>) =>
+      vm.runInNewContext(
+        `var COMMUNITY_LANGS = ${JSON.stringify(registry)}; ${theme.slice(start, end)}; detectCommunity()`,
+        { navigator: { languages: langs, language: langs[0] } },
+      );
+    const reg = { de: {}, "pt-BR": {}, "zh-Hans": {}, "zh-Hant": {} };
+    expect(detect(["de-AT"], reg)).toBe("de");
+    expect(detect(["pt-PT"], reg)).toBe("pt-BR");
+    expect(detect(["zh-TW"], reg)).toBe("zh-Hant");
+    expect(detect(["zh-CN"], reg)).toBe("zh-Hans");
+    expect(detect(["xx", "de"], reg)).toBe("de");
+    expect(detect(["fr"], reg)).toBe(null);
+    expect(detect(["de"], {})).toBe(null);
   });
 
   it("is inert for tr/en (overlay ignored)", () => {

@@ -12,9 +12,20 @@
   function detectCommunity() {
     var list = [];
     try { list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]).filter(Boolean); } catch (e) {}
+    var keys = Object.keys(COMMUNITY_LANGS);
+    var ZH = { cn: 'zh-hans', sg: 'zh-hans', tw: 'zh-hant', hk: 'zh-hant', mo: 'zh-hant' };
+    function find(tag) {
+      for (var k = 0; k < keys.length; k++) if (keys[k].toLowerCase() === tag) return keys[k];
+      return null;
+    }
     for (var i = 0; i < list.length; i++) {
-      var base = String(list[i]).replace('_', '-').split('-')[0].toLowerCase();
-      if (Object.prototype.hasOwnProperty.call(COMMUNITY_LANGS, base)) return base;
+      var parts = String(list[i]).replace('_', '-').toLowerCase().split('-');
+      var hit = (parts[0] === 'zh' && parts[1] && ZH[parts[1]] && find(ZH[parts[1]])) ||
+        (parts.length > 1 && find(parts[0] + '-' + parts[1])) || find(parts[0]);
+      if (hit) return hit;
+      // pt-PT gibi bölge etiketi ayrı kayıtlı değilse aynı dilin tek kaydı (ör. pt-BR) kullanılır
+      var same = keys.filter(function (k) { return k.toLowerCase().split('-')[0] === parts[0]; });
+      if (same.length === 1) return same[0];
     }
     return null;
   }
@@ -48,7 +59,12 @@
   window.nexusLang = lang;
   window.nexusUiLang = uiLang;
   window.nexusLocale = uiLang === 'tr' ? 'tr-TR' : (COMMUNITY_LANGS[uiLang] ? COMMUNITY_LANGS[uiLang].locale : 'en-US');
-  window.nexusT = function (tr, en) { return lang === 'en' ? en : tr; };
+  // JavaScript içinden üretilen metinler (bildirim, diyalog…): topluluk dilinde İngilizce karşılık sözlükten çevrilir.
+  window.nexusT = function (tr, en) {
+    if (lang !== 'en') return tr;
+    if (uiLang !== 'en' && typeof window.nexusTr === 'function') { var t = window.nexusTr(en); return t == null ? en : t; }
+    return en;
+  };
   window.nexusTr = function (s) { return s; }; // İngilizcede i18n.js bunu çeviriciyle değiştirir
   window.nexusSrcText = function (el) { return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : ''; };
   window.NEXUS_SUPPORT_EMAIL = 'nexus.smarthome.app@gmail.com'; // geri bildirim e-postalarının gideceği adres

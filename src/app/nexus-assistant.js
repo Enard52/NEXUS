@@ -536,6 +536,11 @@
 
     var AI_URL = "https://nexus-ai.nexus-smarthome.workers.dev";
   var hist = [];
+  // Topluluk dili seçiliyse yapay zekâ o dilde yanıtlar (taban dil İngilizce kalır; yalnızca yanıt dili değişir).
+  function replyLangName() {
+    var ui = window.nexusUiLang, reg = window.NEXUS_COMMUNITY_LANGS || {};
+    return ui && ui !== "tr" && ui !== "en" && reg[ui] ? (reg[ui].en || reg[ui].name) : "English";
+  }
   // Komut eşleşmediğinde gerçek yapay zekâya sor (cihaz adı/türü/odası bağlam olarak gider). Hata olursa null döner.
   function ask(raw) {
     if (window.nexusPreview) return Promise.resolve(null);
@@ -552,7 +557,7 @@
       "Yanıtlarını her koşulda yalnızca Türkçe yaz; kullanıcı başka dilde yazsa bile Türkçe sürer. " +
       "NEXUS web sitesi yalnızca şudur: https://nexus-smarthome.pages.dev — bağlantı verirsen yalnızca bu adresi kullan, başka adres uydurma. " +
       "Cihaz türlerinden bahsederken 'ışık cihazı', 'priz cihazı' gibi 'cihazı' ekini kullan; tek bir cihazın yok olmuş gibi konuşma.",
-      "Always reply in English only, even if the user writes in another language. " +
+      "Always reply in " + replyLangName() + " only, even if the user writes in another language. " +
       "The NEXUS website is exactly: https://nexus-smarthome.pages.dev — if you share a link, use only this URL; never invent another. " +
       "When referring to device types, use the 'device' noun (e.g. 'light device'); never speak as if a kind of device ceased to exist."
     ) };

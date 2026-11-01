@@ -1123,6 +1123,8 @@ window.NEXUS_EN = {
     "Santigrat (°C)": "Celsius (°C)",
     "Fahrenheit (°F)": "Fahrenheit (°F)",
     "Uygulama dilini seç.": "Choose the app language.",
+    "Dil ara": "Search language",
+    "Eşleşen dil bulunamadı.": "No matching language.",
     "Güncellemeleri otomatik indir": "Download updates automatically",
     "Yeni sürüm bulunca arka planda hemen indirilsin.":
       "Download new versions in the background as soon as they are found.",

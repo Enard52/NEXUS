@@ -29,6 +29,12 @@
     TEXT = merge(TEXT, OVER.text);
     HTML = merge(HTML, OVER.html);
     SLOTS = merge(SLOTS, OVER.slots);
+    // Desenler: anahtar = İngilizce sözlükteki regex kaynağı, değer = çevrilmiş şablon ({t:1}, $1 aynen kalır)
+    var pat = OVER.patterns || {};
+    PATTERNS = PATTERNS.map(function (p) {
+      var v = pat[p[0].source];
+      return typeof v === "string" && v.trim() ? [p[0], v] : p;
+    });
   }
   var ATTRS = ["placeholder", "title", "aria-label", "alt", "data-tooltip", "label"];
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, CODE: 1, PRE: 1, NOSCRIPT: 1 };

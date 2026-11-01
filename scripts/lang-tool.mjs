@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const APP = path.join(ROOT, "src", "app");
 const CODE = /^[a-z]{2,3}(-[A-Za-z]{2,4})?$/;
-const SECTIONS = ["text", "html", "slots"];
+const SECTIONS = ["text", "html", "slots", "patterns"];
 
 function read(file, name) {
   const win = {};
@@ -19,14 +19,43 @@ function read(file, name) {
   return win[name] || {};
 }
 
-// "{0}", "{name}" ve HTML etiketleri çeviride aynen korunmalı.
+// "{0}", "{name}", "$1" ve HTML etiketleri çeviride aynen korunmalı.
 const tokens = (s) =>
-  [...String(s).matchAll(/\{[^}\s]+\}|<\/?[a-z][^>]*>/gi)].map((m) => m[0]).sort().join("|");
+  [...String(s).matchAll(/\{[^}\s]+\}|\$\d|<\/?[a-z][^>]*>/gi)].map((m) => m[0]).sort().join("|");
+
+// Kodun İÇİNDEN üretilen metinler (bildirim, diyalog…): nexusT("Türkçe", "English") çiftlerinin İngilizce tarafı.
+// Çalışma zamanında nexusT bunu sözlükten çevirir; bu yüzden dil dosyasında anahtar olarak yer alır.
+function codeStrings() {
+  const re = /nexusT\(\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\s*,\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\s*\)/g;
+  const out = {};
+  for (const f of fs.readdirSync(APP).filter((n) => /\.(js|html)$/.test(n) && !n.startsWith("lang-"))) {
+    const s = fs.readFileSync(path.join(APP, f), "utf8");
+    for (const m of s.matchAll(re)) {
+      try {
+        const en = Function(`return ${m[2]}`)();
+        if (typeof en === "string" && /[A-Za-z]{2}/.test(en)) out[en] = en;
+      } catch {
+        /* dinamik ifade: sabit metin değil */
+      }
+    }
+  }
+  return out;
+}
+
+// Dil dosyasının çevirebileceği tüm kaynaklar, bölüm bölüm: { anahtar: İngilizce karşılık }
+export function sources() {
+  const en = read(path.join(APP, "lang-en.js"), "NEXUS_EN");
+  const patterns = {};
+  for (const [src, tpl] of en.patterns || []) patterns[new RegExp(src).source] = tpl;
+  const text = { ...(en.text || {}) };
+  for (const [k, v] of Object.entries(codeStrings())) if (!(k in text)) text[k] = v;
+  return { text, html: en.html || {}, slots: en.slots || {}, patterns };
+}
 
 export function checkLanguage(code, dir = APP) {
   const file = path.join(dir, `lang-${code}.js`);
   if (!fs.existsSync(file)) return { ok: false, problems: [`${file} yok`], total: 0, done: 0 };
-  const en = read(path.join(APP, "lang-en.js"), "NEXUS_EN");
+  const en = sources();
   const lang = read(file, "NEXUS_LANG");
   const problems = [];
   let total = 0;
@@ -47,7 +76,7 @@ export function checkLanguage(code, dir = APP) {
 }
 
 export function skeleton(code) {
-  const en = read(path.join(APP, "lang-en.js"), "NEXUS_EN");
+  const en = sources();
   const q = JSON.stringify;
   const out = [
     `/* NEXUS — ${code} language file. Fill in the values; leave a value "" to fall back to English. */`,
@@ -56,7 +85,7 @@ export function skeleton(code) {
   ];
   for (const sec of SECTIONS) {
     out.push(`  ${sec}: {`);
-    for (const [k, v] of Object.entries(en[sec] || {})) {
+    for (const [k, v] of Object.entries(en[sec])) {
       out.push(`    ${q(k)}: "", // EN: ${String(v).replace(/\s+/g, " ")}`);
     }
     out.push(`  },`);
