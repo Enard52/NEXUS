@@ -3382,6 +3382,9 @@ function renderHow(c) {
 /* Entegrasyon listesi artık supported-devices.js'ten geliyor. Elle yazıldığı dönemde
    site, uygulamanın hiç bağlayıcısı olmayan markaları (HomeKit, Sonoff DIY, WiZ, LIFX,
    Govee LAN) ve Matter/Zigbee'yi doğrudan destek gibi gösteriyordu. */
+// Eşleştirmede hesap/anahtar/sunucu bilgisi isteyen bağlayıcılar (src/app/lan-connectors.js ile uyumlu).
+const NEEDS_CREDENTIALS = new Set(['tapo', 'tuya-local', 'mqtt']);
+
 function integrationGroups(c) {
   const isTr = c.lang === 'tr';
   if (!DEVICE_MATRIX.length) return c.integrations.groups;
@@ -3407,9 +3410,10 @@ function integrationGroups(c) {
       kicker: isTr ? 'Masaüstü programında ekstra' : 'Extra on the desktop program',
       title: isTr ? 'Masaüstünde yerel TCP' : 'Local TCP on desktop',
       hint: isTr
-        ? 'Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP ile TP-Link Kasa ve Yeelight eklenir. Android uygulamasında HTTP listesi durur.'
-        : 'The Windows and Linux programs run every HTTP brand above, and add local TCP for TP-Link Kasa and Yeelight. The Android app keeps the HTTP list.',
+        ? 'Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP/UDP/MQTT ile aşağıdaki markalar eklenir. Android uygulamasında HTTP listesi durur. 🔑 işaretli markalar ek bilgi ister: Tapo için TP-Link hesabı, Tuya için cihazın yerel anahtarı, Zigbee2MQTT için MQTT sunucusu.'
+        : 'The Windows and Linux programs run every HTTP brand above, and add the brands below over local TCP, UDP or MQTT. The Android app keeps the HTTP list. Brands marked 🔑 need extra details: a TP-Link account for Tapo, the device local key for Tuya, an MQTT broker for Zigbee2MQTT.',
       items: brands('desktop'),
+      keyed: DEVICE_MATRIX.filter((d) => d.availability === 'desktop' && NEEDS_CREDENTIALS.has(d.protocol)).map((d) => label(d.brand)),
     });
   }
   if (brands('soon').length) {
@@ -3425,7 +3429,8 @@ function integrationGroups(c) {
 }
 
 function renderIntGroup(g) {
-  const chips = `<div class="chips">${g.items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div>`;
+  const keyed = new Set(g.keyed || []);
+  const chips = `<div class="chips">${g.items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}${keyed.has(i) ? ' <span aria-hidden="true">🔑</span>' : ''}</span>`).join('')}</div>`;
   const logos =
     g.kind === 'desktop'
       ? `${getPlatformLogo('windows')}${getPlatformLogo('linux')}`
@@ -3551,6 +3556,7 @@ function renderPricing(c) {
 // Windows için birincil indirme Microsoft Store (Microsoft imzalar, Store günceller). Doğrudan .exe ikinci seçenek.
 const WINDOWS_STORE_URL = 'https://apps.microsoft.com/detail/9NKF7SWW5RSN';
 const WINDOWS_STORE_URL_TR = 'https://apps.microsoft.com/detail/9NKF7SWW5RSN?hl=tr-tr&gl=TR';
+const INSTALLER_REPO = 'https://github.com/Enard52/nexus-releases';
 
 function renderDownloads(c) {
   const DL_BASE = 'https://github.com/Enard52/nexus-releases/releases/latest/download';
@@ -3576,13 +3582,13 @@ function renderDownloads(c) {
         </div>
         <div class="dl-meta">
           <span><b data-nexus-ver>${APP_VERSION}</b></span>
-          <span>${plat === 'windows' ? 'Microsoft Store' : plat === 'android' ? 'APK' : '.deb'}</span>
+          <span>${plat === 'windows' ? '.exe' : plat === 'android' ? 'APK' : '.deb'}</span>
           <a class="dl-sums" href="${DL_BASE}/${SUMS[plat]}" target="_blank" rel="noopener" title="${sumsLabel}">SHA-256</a>
         </div>
         ${
           plat === 'windows'
-            ? `<a class="btn btn-primary" href="${c.lang === 'tr' ? WINDOWS_STORE_URL_TR : WINDOWS_STORE_URL}" target="_blank" rel="noopener">${icon('download')}${c.lang === 'tr' ? "Microsoft Store'dan indir" : 'Get it from Microsoft Store'}</a>
-        <a class="dl-sums" style="display:block;margin-top:10px;text-align:center" href="${DL_BASE}/${file}" download>${c.lang === 'tr' ? 'Doğrudan indirme (.exe)' : 'Direct download (.exe)'}</a>`
+            ? `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? "EXE olarak indir" : 'Download the .exe'}</a>
+        <a class="dl-sums" style="display:block;margin-top:10px;text-align:center" href="${c.lang === 'tr' ? WINDOWS_STORE_URL_TR : WINDOWS_STORE_URL}" target="_blank" rel="noopener">${c.lang === 'tr' ? "Microsoft Store'dan indir" : 'Get it from Microsoft Store'}</a>`
             : `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : 'Download'}</a>`
         }
       </div>`
@@ -3591,11 +3597,11 @@ function renderDownloads(c) {
     </div>
     <p class="dl-note">${esc(c.downloads.smartScreenNote)}</p>
     <div class="dl-chips">
-      <a class="dl-chip" href="https://github.com/Enard52/NEXUS/blob/main/docs/BUILD-ALL-PLATFORMS.md" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'macOS kurulum kılavuzu — kaynak koddan derleme' : 'macOS build guide — build from source'}">${LOGO_APPLE}${c.lang === 'tr' ? 'macOS (kaynaktan kurulum)' : 'macOS (build from source)'}</a>
+      <a class="dl-chip" href="${INSTALLER_REPO}" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'macOS kurucusu (.dmg / .zip) kurulum deposunda' : 'The macOS installer (.dmg / .zip) is in the installer repository'}">${LOGO_APPLE}macOS</a>
       <a class="dl-chip" href="${DL_BASE}/NEXUS-linux.AppImage">${LOGO_LINUX}Linux AppImage</a>
       <a class="dl-chip" href="${DL_BASE}/NEXUS-linux.rpm">${LOGO_LINUX}Linux .rpm</a>
       <a class="dl-chip" href="${DL_BASE}/NEXUS-linux-arm64.AppImage">${LOGO_RPI}Linux ARM64 (Raspberry Pi)</a>
-      <a class="dl-chip" href="https://github.com/Enard52/NEXUS/blob/main/docs/IOS-BUILD.md" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'iPhone kurulum kılavuzu — ücretsiz Apple ID ile' : 'iPhone build guide — free Apple ID'}">${LOGO_APPLE}${c.lang === 'tr' ? 'iPhone (ücretsiz Apple ID ile)' : 'iPhone (free Apple ID)'}</a>
+      <a class="dl-chip" href="${INSTALLER_REPO}" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'iPhone paketi kurulum deposunda; ücretsiz Apple ID ile yüklenir' : 'The iPhone package is in the installer repository; install it with a free Apple ID'}">${LOGO_APPLE}iPhone</a>
     </div>
     <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'Tüm kurucular, SHA-256 dosyaları ve güncelleme listeleri bu depoda' : 'Every installer, SHA-256 file and updater manifest lives in this repository'}">${icon('github')}${c.lang === 'tr' ? 'Kurulum deposunu gör' : 'View the installer repository'}</a></div>
   </div>
