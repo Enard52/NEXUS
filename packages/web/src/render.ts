@@ -898,8 +898,8 @@ export function renderFeatures(): string {
     {
       title: isTr ? "Evrensel Ekosistem" : "Unified Standards",
       desc: isTr
-        ? "Matter, HomeKit, Zigbee ve Philips Hue cihazlarını tek yerde yönetin."
-        : "Connect Matter, HomeKit, Zigbee, and Philips Hue seamlessly.",
+        ? "Philips Hue, Shelly, Tasmota ve WLED doğrudan; Matter ve Zigbee kendi Home Assistant sunucun üzerinden."
+        : "Philips Hue, Shelly, Tasmota and WLED directly; Matter and Zigbee through your own Home Assistant.",
     },
   ];
   const items = features
@@ -1101,7 +1101,7 @@ export function renderIntegrationMarquee(): string {
   return `<section id="integrations" class="mkt-integrations mkt-anchor">
 <p class="integration-title">${label("mkt.integrations.title")}</p>
 <div class="marquee">
-  <span>Matter</span> &middot; <span>Zigbee</span> &middot; <span>Z-Wave</span> &middot; <span>HomeKit</span> &middot; <span>Philips Hue</span> &middot; <span>Sonos</span> &middot; <span>Nest</span> &middot; <span>Ring</span>
+  <span>Shelly</span> &middot; <span>Philips Hue</span> &middot; <span>Tasmota</span> &middot; <span>WLED</span> &middot; <span>ESPHome</span> &middot; <span>Tapo</span> &middot; <span>Home Assistant</span>
 </div>
 </section>`;
 }
