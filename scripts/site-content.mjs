@@ -77,9 +77,9 @@ export function getSiteLanguages() {
     const themeSrc = fs.readFileSync(path.join(ROOT, "src", "app", "theme.js"), "utf8");
     const m = themeSrc.match(/var COMMUNITY_LANGS\s*=\s*\{([\s\S]*?)\};/);
     if (m) {
-      const keys = m[1].match(/^\s*([a-zA-Z0-9_-]+)\s*:/gm);
+      const keys = m[1].match(/^\s*['"]?([a-zA-Z0-9_-]+)['"]?\s*:/gm);
       if (keys) {
-        keys.forEach((k) => langs.add(k.replace(/[:\s]/g, "")));
+        keys.forEach((k) => langs.add(k.replace(/['":\s]/g, "")));
       }
     }
   } catch {}

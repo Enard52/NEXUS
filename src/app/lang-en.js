@@ -1,6 +1,7 @@
 /* NEXUS — English dictionary (auto-generated from the Turkish UI). Key: Turkish text, value: English. */
 window.NEXUS_EN = {
   text: {
+    "Français": "French",
     "Test bildirimi": "Test notification",
     "NEXUS kanal denemesi — bunu görüyorsan kanal çalışıyor.":
       "NEXUS channel test — if you see this, the channel is working.",

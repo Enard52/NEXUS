@@ -3175,7 +3175,7 @@ document.addEventListener('DOMContentLoaded',function(){
 // ---------- HTML Üretim Fonksiyonları ----------
 function renderHeader(c, currentPath = '') {
   const isTr = c.lang === 'tr';
-  const clean = currentPath.replace(/^\/?[a-z0-9_-]+\//, '').replace(/\.html$/, '');
+  const clean = currentPath.replace(/^\/?[a-zA-Z0-9_-]+\//i, '').replace(/\.html$/i, '');
   const pathPart = clean && clean !== 'index' ? `${clean}.html` : '';
 
   const langBtns = SITE_LANGS.map((l) => {
@@ -4111,10 +4111,11 @@ if(location.hostname==='enard52.github.io'){
 }
 
 function renderLanding(c, hasShots) {
+  const landingPath = c.lang === 'en' ? '/' : `/${c.lang}/`;
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}" data-theme="light">
 <head>
-${baseHead(c, c.lang === 'tr' ? '/tr/' : '/', { schema: landingSchema(c) })}
+${baseHead(c, landingPath, { schema: landingSchema(c) })}
 <style>${CSS}</style>
 <script src="/assets/site-boot.js"></script>
 </head>
@@ -4141,7 +4142,7 @@ ${renderCustomDialog(c)}
 
 function renderAbout(c) {
   const isTr = c.lang === 'tr';
-  const path = isTr ? '/tr/about.html' : '/about.html';
+  const path = c.lang === 'en' ? '/about.html' : `/${c.lang}/about.html`;
   const ab = c.about;
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}" data-theme="light">
@@ -4229,10 +4230,10 @@ ${renderCustomDialog(c)}
 
 function renderLegalDoc(c, slug, doc) {
   const isTr = c.lang === 'tr';
-  const path = isTr ? `/tr/${slug}.html` : `/${slug}.html`;
-  const canonicalUrl = `https://nexus-smarthome.pages.dev${isTr ? '/tr/' + slug : '/' + slug}`;
-  const enUrl = `https://nexus-smarthome.pages.dev/${slug}`;
-  const trUrl = `https://nexus-smarthome.pages.dev/tr/${slug}`;
+  const path = c.lang === 'en' ? `/${slug}.html` : `/${c.lang}/${slug}.html`;
+  const canonicalUrl = `${SITE_ORIGIN}${c.lang === 'en' ? '/' + slug : '/' + c.lang + '/' + slug}`;
+  const enUrl = `${SITE_ORIGIN}/${slug}`;
+  const trUrl = `${SITE_ORIGIN}/tr/${slug}`;
 
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}" data-theme="light">
@@ -4338,11 +4339,11 @@ function renderLightRedirect(tr) {
 
 /* Giriş kısa yolu tanıtım sitesinin indirme bölümüne gider. Ayrı bir tarayıcı
    uygulaması yayınlanmıyor; hesap masaüstü programında ve Android'de açılır. */
-function renderSignInRedirect(tr) {
-  const home = tr ? '/tr/#downloads' : '/#downloads';
+function renderSignInRedirect(tr, lang = (tr ? 'tr' : 'en')) {
+  const home = lang === 'en' ? '/#downloads' : `/${lang}/#downloads`;
   const t = tr
     ? { lang: 'tr', title: 'NEXUS kurulumu', h1: 'Giriş programda', p: 'Hesap, masaüstü programında ve Android uygulamasında açılır. Kurulum dosyaları ana sayfada.', link: 'Kurulumu indir' }
-    : { lang: 'en', title: 'Get NEXUS', h1: 'Sign in from the app', p: 'Your account opens in the desktop program and the Android app. Installers are on the home page.', link: 'Download' };
+    : { lang: lang, title: 'Get NEXUS', h1: 'Sign in from the app', p: 'Your account opens in the desktop program and the Android app. Installers are on the home page.', link: 'Download' };
   return `<!DOCTYPE html><html lang="${t.lang}" data-theme="dark"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>${t.title}</title><meta name="robots" content="noindex"/>
 <meta http-equiv="refresh" content="0;url=${home}"/>
@@ -4652,7 +4653,7 @@ window.NEXUS_CLOUD = {
     writeFileSync(join(langDir, 'contribute.html'), renderLegalDoc(c, 'contribute', contributeDoc), 'utf8');
 
     writeFileSync(join(langDir, 'light.html'), renderLightRedirect(lang === 'tr'), 'utf8');
-    writeFileSync(join(langDir, 'login.html'), renderSignInRedirect(lang === 'tr'), 'utf8');
+    writeFileSync(join(langDir, 'login.html'), renderSignInRedirect(lang === 'tr', lang), 'utf8');
     writeFileSync(join(langDir, '404.html'), renderNotFound(c), 'utf8');
   }
 
