@@ -121,6 +121,7 @@
         "cs_CZ",
         "sk_SK",
         "hu_HU",
+        "ro_RO",
         "bg_BG",
         "el_GR",
         "sv_SE",
@@ -131,6 +132,7 @@
         "pt_BR"
       ],
       "multiLanguageInstaller": true,
+      "warningsAsErrors": false,
       "displayLanguageSelector": false,
       "runAfterFinish": true,
       "deleteAppDataOnUninstall": false
