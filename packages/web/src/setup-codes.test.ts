@@ -82,13 +82,9 @@ describe("nexusParseSetupCode", () => {
   it("recognises 8-digit HomeKit and 11/21-digit Matter manual codes, ignoring spaces and dashes", () => {
     expect(parse("1234 5678")).toEqual({ type: "homekit" });
     expect(parse("123-45-678")).toEqual({ type: "homekit" });
-    // Matter kodu eşleştirme için temizlenmiş (yalnızca rakam) halde taşınır
-    expect(parse("34970112332")).toEqual({ type: "matter", code: "34970112332" });
-    expect(parse("3497-0112-332")).toEqual({ type: "matter", code: "34970112332" });
-    expect(parse("749701123643095751712")).toEqual({
-      type: "matter",
-      code: "749701123643095751712",
-    });
+    expect(parse("34970112332")).toEqual({ type: "matter" });
+    expect(parse("3497-0112-332")).toEqual({ type: "matter" });
+    expect(parse("749701123643095751712")).toEqual({ type: "matter" });
   });
 
   it("rejects digit strings of other lengths and non-code text", () => {

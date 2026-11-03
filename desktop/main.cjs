@@ -640,33 +640,6 @@ ipcMain.handle("lan:mqtt-close", (_e, id) => { mqttClose(Number(id)); return tru
 // ---------- Köprü: SSDP keşfi (yalnızca özel adreslerden gelen yanıtlar) ----------
 ipcMain.handle("lan:ssdp", async (_e, opts) => require("./ssdp.cjs").discover(opts || {}));
 
-// ---------- Köprü: Matter (matter.js; eşleştirme cihazın kendi kodu ile, bulut yok) ----------
-// Denetleyici ilk kullanımda başlar (matter-bridge.cjs). Hatalar sayfaya anlaşılır Türkçe iletiyle döner.
-let matterBridge = null;
-function getMatterBridge() {
-  if (!matterBridge) {
-    matterBridge = require("./matter-bridge.cjs").createMatterBridge({ storageDir: path.join(app.getPath("userData"), "matter") });
-  }
-  return matterBridge;
-}
-function matterCall(fn) {
-  return async (_e, opts) => {
-    try {
-      return await fn(getMatterBridge(), opts || {});
-    } catch (err) {
-      throw new Error(err && err.message ? err.message : "Matter işlemi başarısız.");
-    }
-  };
-}
-ipcMain.handle("lan:matter-commission", matterCall((b, o) => b.commission({ pairingCode: String(o.pairingCode || "") })));
-ipcMain.handle("lan:matter-list", matterCall((b) => b.list()));
-ipcMain.handle("lan:matter-read", matterCall((b, o) => b.read({ peerId: String(o.peerId || ""), endpoint: Number(o.endpoint) })));
-ipcMain.handle("lan:matter-write", matterCall((b, o) => b.write({
-  peerId: String(o.peerId || ""), endpoint: Number(o.endpoint), action: String(o.action || ""),
-  level: o.level, hue: o.hue, saturation: o.saturation, mireds: o.mireds,
-})));
-ipcMain.handle("lan:matter-remove", matterCall((b, o) => b.remove({ peerId: String(o.peerId || "") })));
-
 // ---------- Köprü: Tuya yerel yayınları (UDP 6666/6667, yalnızca dinleme) ----------
 // Tuya cihazları kimliklerini, adreslerini ve protokol sürümlerini ağa periyodik olarak yayınlar; paket anahtarsız okunur
 // (yerel anahtar bu yayında YOKTUR). Köprü ham paketleri döndürür, ayrıştırma sayfa tarafındadır. Yalnızca özel adreslerden gelenler.
@@ -1795,7 +1768,6 @@ app.on("will-quit", () => {
   } catch {
     /* yok */
   }
-  if (matterBridge) matterBridge.close().catch(() => {});
 });
 
 // Güncelleyici (quitAndInstall) ve diğer çıkış yolları gerçek kapanmaya işaret etmeli;

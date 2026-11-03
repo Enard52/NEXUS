@@ -222,10 +222,6 @@
         nexusOpenLanPairing(parsed.host);
         return;
       }
-      if (parsed.type === 'matter' && window.nexusDesktop && window.nexusDesktop.matter && window.nexusOpenMatterPairing && nexusOpenMatterPairing(parsed.code)) {
-        setScanStatus('Matter kodu okundu. Cihaz eşleştiriliyor…');
-        return;
-      }
       var msg = nexusSetupCodeMessage(parsed.type);
       setScanStatus(msg.title + ' — ' + msg.text);
       var host = document.getElementById('scan-status');

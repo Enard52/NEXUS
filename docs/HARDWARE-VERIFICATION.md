@@ -35,7 +35,6 @@ doğrulaması sayılmaz.
 | `nanoleaf` | Nanoleaf | tümü | Henüz doğrulanmadı | — |
 | `sonoff` | Sonoff (DIY / LAN) | tümü | Henüz doğrulanmadı | — |
 | `wol` | Wake-on-LAN | tümü | Henüz doğrulanmadı | — |
-| `matter` | Matter | masaüstü | Henüz doğrulanmadı | matter.js sanal kademeli ışığıyla denendi (eşleştirme, aç/kapa, parlaklık, durum, kaldırma); gerçek cihaz yok |
 | `mqtt` | MQTT / Zigbee2MQTT | masaüstü | Henüz doğrulanmadı | — |
 | `tapo` | TP-Link Tapo | masaüstü | Henüz doğrulanmadı | — |
 | `kasa` | TP-Link Kasa | masaüstü | Henüz doğrulanmadı | — |

@@ -593,68 +593,6 @@ function addAllHaEntities() {
   renderHaEntities();
 }
 
-// Matter: kurulum kodu / QR içeriği ekranlarından gelen kodla cihaz yerel ağda eşleştirilir (masaüstü uygulaması).
-// Kod bu sayfaya adres çubuğuyla değil, oturum belleğiyle taşınır. Eşleştirme 1,5 dakikaya kadar sürebilir.
-function startMatterPairing(code) {
-  var target = document.getElementById("lan-scan-result");
-  var bridge = window.nexusLan && window.nexusLan.matter;
-  var hasBridge = !!(window.nexusDesktop && window.nexusDesktop.matter && bridge);
-  var card = function (title, text, tone) {
-    target.innerHTML =
-      '<div class="plain-card rounded-2xl border border-slate-100 bg-white p-4 dark:border-slate-800">' +
-      '<p class="text-sm font-bold">' +
-      escapeHtml(title) +
-      "</p>" +
-      '<p class="nx-notice nx-notice--' +
-      (tone === "error" ? "error" : "info") +
-      ' mt-3" role="' +
-      (tone === "error" ? "alert" : "status") +
-      '">' +
-      escapeHtml(text) +
-      "</p></div>";
-  };
-  if (!hasBridge) {
-    setScanStatus("Matter cihazları şimdilik yalnızca masaüstü uygulamasında eklenir.", "error");
-    card(
-      "Matter için masaüstü uygulaması gerekir",
-      "Bu kodu NEXUS masaüstü uygulamasında gir. Cihaz Wi-Fi ile bağlıysa yerel ağdan IP adresiyle de ekleyebilirsin.",
-      "error",
-    );
-    return;
-  }
-  setScanStatus("Matter cihazı aranıyor…", "");
-  card(
-    "Matter cihazı eşleştiriliyor",
-    "Cihaz aynı ağda aranıyor ve eşleştiriliyor. Bu bir dakikayı bulabilir; cihazın açık ve eşleştirme modunda olması gerekir.",
-  );
-  bridge
-    .commission(code)
-    .then(function (records) {
-      var added = 0;
-      records.forEach(function (r) {
-        if (storeFoundDevice(r)) added += 1;
-      });
-      var first = records[0];
-      setScanStatus("Matter cihazı bağlandı.", "ok");
-      target.innerHTML =
-        '<div class="rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 px-4 py-4 flex items-center gap-3">' +
-        foundImageHtml(first, "device-thumb w-11 h-11") +
-        '<div class="min-w-0 flex-1"><p class="text-sm font-bold text-emerald-700 dark:text-emerald-400">' +
-        escapeHtml(first.name) +
-        (added > 1 ? " ve " + (added - 1) + " bölüm daha" : "") +
-        " eklendi</p>" +
-        '<p class="text-[11px] text-emerald-600/70 dark:text-emerald-400/60 mt-0.5">Ana sayfadan yönetebilirsin</p></div>' +
-        homeLinkHtml() +
-        "</div>";
-      if (typeof lucide !== "undefined") lucide.createIcons();
-    })
-    .catch(function (e) {
-      var msg = e && e.message ? e.message : "Matter cihazı eşleştirilemedi.";
-      setScanStatus("Matter cihazı eklenemedi.", "error");
-      card("Matter cihazı eklenemedi", msg, "error");
-    });
-}
-
 // Wake-on-LAN: cihaz NEXUS protokollerinden birini konuşmuyor ama ağda açık; MAC adresi ağ tablosundan okundu.
 // Eklenince ana sayfadaki düğme uyandırma paketi gönderir (cihazda Wake-on-LAN açık olmalı; cevap vermediği için sonuç doğrulanamaz).
 function renderWolPairing(target, host, mac) {
@@ -1315,37 +1253,7 @@ function startAutoScan(auto) {
   scanLanHost();
 })();
 // Sayfa açılınca tarama kendiliğinden başlar (QR / kurulum kodundan adresle gelindiyse o cihaz tanınır).
-// Matter kutusu yalnızca köprü varken görünür (kodu işleyecek bir şey yoksa eylem düğmesi gösterilmez).
-function addMatterFromInput() {
-  var input = document.getElementById("matter-code");
-  var code =
-    window.nexusLan && window.nexusLan.matterCode ? window.nexusLan.matterCode(input.value) : null;
-  if (!code) {
-    setScanStatus(
-      "Matter kodu geçersiz. 11 haneli kodu ya da MT: ile başlayan QR içeriğini gir.",
-      "error",
-    );
-    return;
-  }
-  input.value = "";
-  startMatterPairing(code);
-}
-(function revealMatter() {
-  var box = document.getElementById("matter-add");
-  if (box && window.nexusDesktop && window.nexusDesktop.matter) box.hidden = false;
-})();
-var pendingMatterCode = null;
-try {
-  pendingMatterCode = sessionStorage.getItem("nexusMatterCode");
-  sessionStorage.removeItem("nexusMatterCode");
-} catch (e) {
-  pendingMatterCode = null;
-}
-if (pendingMatterCode)
-  setTimeout(function () {
-    startMatterPairing(pendingMatterCode);
-  }, 300);
-else if (!new URLSearchParams(location.search).get("host"))
+if (!new URLSearchParams(location.search).get("host"))
   setTimeout(function () {
     startAutoScan(true);
   }, 400);

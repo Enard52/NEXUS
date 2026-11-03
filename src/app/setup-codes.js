@@ -16,7 +16,7 @@
   window.nexusParseSetupCode = function (raw) {
     var value = String(raw || "").trim();
     if (!value) return { type: "unknown" };
-    if (/^MT:/i.test(value)) return { type: "matter", code: value };
+    if (/^MT:/i.test(value)) return { type: "matter" };
     if (/^X-HM:\/\//i.test(value)) return { type: "homekit" };
     if (/^WIFI:/i.test(value)) return { type: "wifi" };
     var url = value.match(/^https?:\/\/([^/:?#]+)(?::(\d{1,5}))?/i);
@@ -27,14 +27,14 @@
     if (ip && privateIp(ip[1])) return { type: "lan", host: ip[1] + (ip[2] ? ":" + ip[2] : "") };
     var digits = value.replace(/[\s-]/g, "");
     if (/^\d{8}$/.test(digits)) return { type: "homekit" };
-    if (/^\d{11}$|^\d{21}$/.test(digits)) return { type: "matter", code: digits };
+    if (/^\d{11}$|^\d{21}$/.test(digits)) return { type: "matter" };
     return { type: "unknown" };
   };
 
   window.nexusSetupCodeMessage = function (type) {
     switch (type) {
       case "matter":
-        return { title: "Matter kurulum kodu", text: "Matter cihazları şimdilik yalnızca NEXUS masaüstü uygulamasında eklenir. Bu kodu masaüstü uygulamasında gir. Cihaz Wi-Fi ile bağlanıyorsa yerel ağdan IP adresiyle de ekleyebilirsin." };
+        return { title: "Matter kurulum kodu", text: "Matter cihazlarını eklemek için bir Matter denetleyicisi gerekir; NEXUS bu desteği henüz sunmuyor. Cihaz Wi-Fi ile bağlanıyorsa yerel ağdan IP adresiyle ekleyebilirsin." };
       case "homekit":
         return { title: "HomeKit kurulum kodu", text: "Bu 8 haneli kod Apple HomeKit eşleştirmesi içindir ve yalnızca Apple Ev uygulamasıyla kullanılır. Cihaz Shelly, WLED, Tasmota gibi yerel API destekliyorsa yerel ağdan ekleyebilirsin." };
       case "wifi":
@@ -42,13 +42,6 @@
       default:
         return { title: "Kod tanınmadı", text: "Bu kod desteklenen bir cihaz kodu değil. Cihazın IP adresini biliyorsan yerel ağdan ekleyebilirsin." };
     }
-  };
-
-  // Masaüstü uygulamasında Matter kodu eşleştirme ekranına oturum belleğiyle taşınır (adres çubuğuna yazılmaz).
-  window.nexusOpenMatterPairing = function (code) {
-    try { sessionStorage.setItem("nexusMatterCode", String(code)); } catch (e) { return false; }
-    location.href = "nexus-pair.html#lan-scan-section";
-    return true;
   };
 
   window.nexusOpenLanPairing = function (host) {

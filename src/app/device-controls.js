@@ -967,20 +967,6 @@
     var gone = devices.splice(index, 1)[0];
     if (photoOf(gone)) setPhoto(gone, null);
     writeDevices(devices);
-    // Matter: eşleşme denetleyicide durur; aynı eşin başka bölümü kalmadıysa cihaz denetleyiciden de kaldırılır
-    // (aksi halde aynı cihaz yeniden eklenemez).
-    if (
-      gone &&
-      gone.protocol === "matter" &&
-      gone.matterNode &&
-      window.nexusLan &&
-      window.nexusLan.matter &&
-      !devices.some(function (d) {
-        return d && d.matterNode === gone.matterNode;
-      })
-    ) {
-      window.nexusLan.matter.remove(gone).catch(function () {});
-    }
   }
 
   function renameDevice(index, name) {

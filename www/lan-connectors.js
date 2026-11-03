@@ -3072,114 +3072,6 @@
     },
   };
 
-  // =================================== MATTER ===================================
-  // Matter (CSA) yerel kontrolü: masaüstü köprüsü matter.js denetleyicisini çalıştırır (desktop/matter-bridge.cjs).
-  // Eşleştirme cihazın kendi kodudur (11 haneli ya da MT: QR içeriği); anahtar, hesap ve bulut yoktur. Cihaz başka bir
-  // uygulamada kayıtlıysa o uygulamadan "başka uygulamayla paylaş" kodu alınır.
-  // Matter değerleri: seviye 1–254, ton/doygunluk 0–254, renk sıcaklığı mired (1.000.000 / Kelvin). Cihaz kaydı
-  // `matterNode` (denetleyicideki eş kimliği) ve `endpointId` (cihazın bölümü) taşır; host yalnızca benzersiz ad içindir.
-  // UYARI: Gerçek donanımla DOĞRULANMADI; yalnızca matter.js'in sanal kademeli ışığıyla (eşleştirme, aç/kapa, parlaklık,
-  // durum, kaldırma) denendi. Renk ve renk sıcaklığı komutları belgelenmiş biçime göre yazıldı, hiçbir cihazla sınanmadı.
-  function matterBridge() {
-    var d = desktopBridge();
-    return d && d.matter && typeof d.matter.commission === "function" ? d.matter : null;
-  }
-  function matterNeeded() {
-    return Promise.reject(secureError("Matter yalnızca masaüstü uygulamasında kullanılabilir.", "no-bridge"));
-  }
-  // Kod biçimi: 11/21 haneli elle kod (tire/boşluk serbest) ya da MT: ile başlayan QR içeriği; aksi halde null.
-  function matterNormalizeCode(input) {
-    var text = String(input || "").trim();
-    if (/^MT:[A-Z0-9.\-]{6,}$/i.test(text)) return text.toUpperCase();
-    var digits = text.replace(/[\s-]/g, "");
-    return /^\d{11}$|^\d{21}$/.test(digits) ? digits : null;
-  }
-  function matterPercentToLevel(p) { return Math.max(1, Math.min(254, Math.round(Number(p) * 2.54))); }
-  function matterLevelToPercent(l) { return Math.max(0, Math.min(100, Math.round((Number(l) / 254) * 100))); }
-  function matterHueSat(hex) {
-    var hsb = rgbToHsb(hexToRgb(hex));
-    return { hue: Math.min(254, Math.round(hsb.h * 254)), saturation: Math.min(254, Math.round(hsb.s * 254)) };
-  }
-  function matterMireds(value) {
-    var k = typeof value === "number" && isFinite(value) ? value : toneKelvin(value);
-    return Math.max(153, Math.min(500, Math.round(1000000 / Math.max(1, k))));
-  }
-  // Electron IPC hata iletisini "Error invoking remote method '…': Error: " önekiyle sarar; kullanıcıya yalnızca iletiyi göster.
-  function matterClean(promise) {
-    return Promise.resolve(promise).catch(function (e) {
-      var msg = String((e && e.message) || "").replace(/^Error invoking remote method '[^']*':\s*(Error:\s*)?/, "");
-      var out = new Error(msg || "Matter işlemi başarısız.");
-      if (e && e.code) out.code = e.code;
-      throw out;
-    });
-  }
-  function matterCtx(device) {
-    if (!device || !device.matterNode) return Promise.reject(secureError("Bu Matter cihazı bu bilgisayarda kayıtlı değil. Cihazı yeniden ekle.", "no-secret"));
-    return Promise.resolve({ peerId: String(device.matterNode), endpoint: Number(device.endpointId) });
-  }
-  var matter = {
-    id: "matter",
-    label: "Matter",
-    caps: ["switch", "brightness", "color", "colorTemp"],
-    needsMatter: true,
-    discoverable: false, // eşleştirme kodu olmadan tanınamaz; kod girilerek eklenir
-    // Eşleştirme: kodla cihazı denetleyiciye ekler; her kullanılabilir bölüm ayrı cihaz kaydı olarak döner.
-    commission: function (code) {
-      var b = matterBridge();
-      if (!b) return matterNeeded();
-      return matterClean(b.commission({ pairingCode: code })).then(function (info) {
-        var many = info.endpoints.length > 1;
-        return info.endpoints.map(function (ep) {
-          return {
-            host: "matter-" + info.peerId + ".local",
-            protocol: "matter",
-            name: info.name + (many ? " · " + ep.endpoint : ""),
-            model: info.model,
-            kind: ep.kind,
-            caps: ep.caps,
-            endpointId: ep.endpoint,
-            matterNode: info.peerId,
-          };
-        });
-      });
-    },
-    probe: function () {
-      return Promise.reject(secureError("Matter cihazı eşleştirme koduyla eklenir.", "needs-pairing"));
-    },
-    read: function (device) {
-      var b = matterBridge();
-      if (!b) return matterNeeded();
-      return matterCtx(device).then(function (ctx) {
-        return matterClean(b.read(ctx));
-      }).then(function (st) {
-        var out = { switch: typeof st.onOff === "boolean" ? st.onOff : null };
-        if (typeof st.currentLevel === "number") out.brightness = matterLevelToPercent(st.currentLevel);
-        if (st.colorMode === 2 && typeof st.colorTemperatureMireds === "number" && st.colorTemperatureMireds > 0)
-          out.colorTemp = Math.round(1000000 / st.colorTemperatureMireds);
-        return out;
-      });
-    },
-    write: function (device, capability, value) {
-      var b = matterBridge();
-      if (!b) return matterNeeded();
-      var cmd;
-      if (capability === "switch") cmd = { action: value ? "on" : "off" };
-      else if (capability === "brightness") cmd = { action: "level", level: matterPercentToLevel(value) };
-      else if (capability === "color") { var hs = matterHueSat(value); cmd = { action: "hueSat", hue: hs.hue, saturation: hs.saturation }; }
-      else if (capability === "colorTemp") cmd = { action: "colorTemp", mireds: matterMireds(value) };
-      else return unsupported("matter", capability);
-      return matterCtx(device).then(function (ctx) {
-        return matterClean(b.write(Object.assign({}, ctx, cmd)));
-      });
-    },
-    // Cihaz NEXUS'tan silindiğinde çağrılır: denetleyiciden ve (çevrimiçiyse) cihazdan kaldırır.
-    remove: function (device) {
-      var b = matterBridge();
-      if (!b || !device || !device.matterNode) return Promise.resolve({ ok: true });
-      return Promise.resolve(b.remove({ peerId: String(device.matterNode) }));
-    },
-  };
-
   var protocols = [
     shelly,
     shellyRpc,
@@ -3199,11 +3091,10 @@
     tuyaLocal,
     wol,
     mqtt,
-    matter,
   ];
 
   function available(p) {
-    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()) && (!p.needsBinHttp || !!binBridge()) && (!p.needsTcpSession || !!tcpSessionBridge()) && (!p.needsMqtt || !!mqttBridge()) && (!p.needsMatter || !!matterBridge());
+    return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()) && (!p.needsBinHttp || !!binBridge()) && (!p.needsTcpSession || !!tcpSessionBridge()) && (!p.needsMqtt || !!mqttBridge());
   }
   function discoverable(p) { return available(p) && p.discoverable !== false; }
 
@@ -3669,14 +3560,11 @@
     tapo: { verify: tapo.verify },
     tuya: { verify: tuyaLocal.verify, discover: tuyaDiscover },
     wol: { lookupMac: wolLookupMac, probe: wol.probe },
-    matter: { commission: matter.commission, remove: matter.remove },
-    matterCode: matterNormalizeCode,
     hasSecure: function () { return { tapo: !!binBridge(), tuya: !!tcpSessionBridge(), mqtt: !!mqttBridge() }; },
     mqtt: { listDevices: mqtt.listDevices },
     secrets: secrets,
     internals: {
       aesEcbEncrypt: aesEcbEncrypt, aesEcbDecrypt: aesEcbDecrypt, crc32: crc32, tuyaEncode: tuyaEncode, tuyaDecode: tuyaDecode, tuyaParseBroadcast: tuyaParseBroadcast,
-      matterPercentToLevel: matterPercentToLevel, matterLevelToPercent: matterLevelToPercent, matterHueSat: matterHueSat, matterMireds: matterMireds,
       klapDerive: klapDerive, klapAuthHash: klapAuthHash, rsaPkcs1Decrypt: rsaPkcs1Decrypt, tuyaHsv: tuyaHsv, tuyaMapFromDps: tuyaMapFromDps,
     },
     hue: { pair: hue.pair, lights: hue.lights },
