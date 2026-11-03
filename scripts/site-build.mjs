@@ -276,6 +276,7 @@ a{color:inherit;text-decoration:none}
   transition:color .18s ease, background-color .18s ease, transform .15s cubic-bezier(.16,1,.3,1), box-shadow .18s ease;
   position:relative;
   user-select:none;
+  white-space:nowrap;
 }
 .nav a:hover{
   background:var(--surface);
@@ -306,15 +307,27 @@ html[data-theme=dark] .nav a.active{
   .nav-controls{gap:4px}
 }
 
-/* Dil Değiştirici (Sleek Segmented Pill Control) — tüm ziyaretçilere açık */
-.lang-switch{display:inline-flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);
-  border-radius:999px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,.04);height:38px;box-sizing:border-box}
-.lang-btn{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;
-  color:var(--muted);font:700 12px/1 Inter,sans-serif;letter-spacing:.02em;height:30px;padding:0 12px;
-  border-radius:999px;text-decoration:none !important;cursor:pointer;transition:all .18s cubic-bezier(.16,1,.3,1);user-select:none}
-.lang-btn:hover:not(.active){color:var(--text);background:color-mix(in srgb,var(--surface) 70%,transparent)}
-.lang-btn.active{background:var(--brand-grad);color:#fff !important;box-shadow:0 2px 8px rgba(76,125,255,.32);cursor:default}
-
+/* Dil Değiştirici: 60+ dil olduğu için tek düğme + kaydırılabilir açılır liste */
+.lang-switch{position:relative}
+.lang-switch summary{list-style:none;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;
+  padding:0 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface-2);color:var(--text-2);
+  font:700 12px/1 Inter,sans-serif;letter-spacing:.02em;cursor:pointer;user-select:none;box-shadow:0 1px 3px rgba(0,0,0,.04);
+  transition:border-color .15s ease,color .15s ease}
+.lang-switch summary::-webkit-details-marker{display:none}
+.lang-switch summary:hover,.lang-switch[open] summary{border-color:var(--brand);color:var(--text)}
+.lang-switch summary svg{width:15px;height:15px}
+.lang-switch .lang-caret{width:10px;height:10px;transition:transform .18s ease}
+.lang-switch[open] .lang-caret{transform:rotate(180deg)}
+.lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:min(260px,calc(100vw - 24px));max-height:min(60vh,420px);
+  overflow-y:auto;overscroll-behavior:contain;padding:6px;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;box-shadow:0 18px 40px rgba(15,23,42,.18);display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;
+  color:var(--text-2);font:600 13px/1.2 Inter,sans-serif;text-decoration:none !important;cursor:pointer;min-width:0}
+.lang-btn small{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.lang-btn:hover:not(.active){background:var(--surface-2);color:var(--text)}
+.lang-btn.active{background:var(--brand-grad);color:#fff !important;cursor:default}
+.lang-btn.active small{color:rgba(255,255,255,.85)}
+@media(max-width:520px){.lang-switch{position:static}.lang-menu{position:fixed;left:12px;right:12px;top:64px;width:auto;grid-template-columns:1fr 1fr}}
 /* Tema Değiştirici */
 .theme-t{border:1px solid var(--border);background:var(--surface);color:var(--text-2);
   border-radius:999px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
@@ -1002,8 +1015,7 @@ html[data-theme=dark] #nxAuthModal.nx-account-open .nx-modal-card{
 @media(max-width:520px){
   .nx-auth-btn{width:38px;padding:0;justify-content:center}
   .nx-auth-btn .nx-nav-label{display:none}
-  .lang-switch{height:34px;padding:2px}
-  .lang-btn{height:28px;padding:0 9px;font-size:11px}
+  .lang-switch summary{height:34px;padding:0 10px}
   .theme-t{width:34px;height:34px}
 }
 .nx-nav-label{
@@ -1304,6 +1316,10 @@ function nxToggleTheme(){
   document.documentElement.setAttribute('data-theme',d);
   try{localStorage.setItem('nx-site-theme',d)}catch(e){}
 }
+
+// Dil menüsü: dışarı tıklayınca veya Esc ile kapanır
+document.addEventListener('click',function(ev){var d=document.querySelector('.lang-switch[open]');if(d&&!d.contains(ev.target))d.removeAttribute('open')});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){var d=document.querySelector('.lang-switch[open]');if(d){d.removeAttribute('open');var s=d.querySelector('summary');if(s)s.focus()}}});
 
 // Dil değiştirme: seçimi kaydet ve doğru sayfaya git
 function nxSetLang(lang){
@@ -3173,6 +3189,15 @@ document.addEventListener('DOMContentLoaded',function(){
 }
 
 // ---------- HTML Üretim Fonksiyonları ----------
+function langName(l) {
+  try {
+    const n = new Intl.DisplayNames([l], { type: 'language' }).of(l);
+    return n ? n.charAt(0).toLocaleUpperCase(l) + n.slice(1) : l.toUpperCase();
+  } catch {
+    return l.toUpperCase();
+  }
+}
+
 function renderHeader(c, currentPath = '') {
   const isTr = c.lang === 'tr';
   const clean = currentPath.replace(/^\/?[a-zA-Z0-9_-]+\//i, '').replace(/\.html$/i, '');
@@ -3181,7 +3206,7 @@ function renderHeader(c, currentPath = '') {
   const langBtns = SITE_LANGS.map((l) => {
     const lUpper = l.toUpperCase();
     if (l === c.lang) {
-      return `<span class="lang-btn active">${lUpper}</span>`;
+      return `<span class="lang-btn active" aria-current="true"><span>${langName(l)}</span><small>${lUpper}</small></span>`;
     }
     const href =
       l === 'en'
@@ -3191,8 +3216,7 @@ function renderHeader(c, currentPath = '') {
         : pathPart
           ? `/${l}/${pathPart}?lang=${l}`
           : `/${l}/?lang=${l}`;
-    const title = l === 'tr' ? 'Türkçe' : l === 'en' ? 'English' : lUpper;
-    return `<a href="${href}" class="lang-btn" onclick="nxSetLang('${l}')" title="${title}">${lUpper}</a>`;
+    return `<a href="${href}" class="lang-btn" onclick="nxSetLang('${l}')" lang="${l}" hreflang="${l}"><span>${langName(l)}</span><small>${lUpper}</small></a>`;
   }).join('');
 
   return `<a class="skip" href="#main">${isTr ? 'İçeriğe geç' : 'Skip to content'}</a>
@@ -3209,9 +3233,10 @@ function renderHeader(c, currentPath = '') {
     </nav>
     <div class="nav-controls">
       <a class="gh-link" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener" aria-label="${isTr ? 'GitHub deposu' : 'GitHub repository'}" title="${isTr ? "Kaynak kodu GitHub'da" : 'Source on GitHub'}">${icon('github')}</a>
-      <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
-        ${langBtns}
-      </div>
+      <details class="lang-switch">
+        <summary aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>${c.lang.toUpperCase()}<svg class="lang-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <div class="lang-menu" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">${langBtns}</div>
+      </details>
       <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="${isTr ? 'Giriş Yap veya Hesap' : 'Sign In or Account'}">
         <span id="nxNavAuthAvatar"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg></span>
         <span id="nxNavAuthLabel" class="nx-nav-label">${isTr ? 'Giriş Yap' : 'Sign In'}</span>
