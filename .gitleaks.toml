@@ -8,6 +8,10 @@ useDefault = true
 description = "PEM başlık metni ve test dosyalarındaki uydurma değerler"
 paths = [
   '''packages/web/src/lan-secure\.test\.ts''',
+  '''packages/web/src/lan-tuya-discovery\.test\.ts''',
+  # Tuya yayın şifresi: protokolde herkese açık sabit (yerel anahtar değil)
+  '''src/app/lan-connectors\.js''',
+  '''www/lan-connectors\.js''',
   '''packages/web/src/push-send\.test\.ts''',
   '''packages/web/src/household-cloud\.test\.ts''',
   '''supabase/functions/push-send/logic\.ts''',
