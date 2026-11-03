@@ -144,7 +144,7 @@ Deno.serve(async (req) => {
   const payload = { title, body: msgBody, level, eventId };
   let sent = 0, pruned = 0, failed = 0;
   for (const uid of userIds) {
-    const { data: rows } = await db.from("nexus_push_tokens").select("token").eq("user_id", uid);
+    const { data: rows } = await db.from("nexus_push_tokens").select("token, lang").eq("user_id", uid);
     for (const row of rows || []) {
       const outcome = await fcmSend(sa, row.token, title, msgBody, {
         nexus_event_id: eventId, nexus_level: level,

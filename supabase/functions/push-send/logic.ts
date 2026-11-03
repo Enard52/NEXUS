@@ -16,6 +16,7 @@ export interface SendFields {
   msgBody: string;
   level: string;
   eventId: string;
+  lang?: string;
 }
 
 // İstek gövdesi → kırpılmış alanlar. Eksik başlık "NEXUS", eksik düzey "info" olur.
@@ -28,6 +29,7 @@ export function parseSendFields(body: any): SendFields | null {
     msgBody: String(body.body || "").slice(0, 400),
     level: String(body.level || "info").slice(0, 20),
     eventId: String(body.eventId || "").slice(0, 64),
+    lang: typeof body.lang === "string" ? String(body.lang).slice(0, 10) : undefined,
   };
 }
 

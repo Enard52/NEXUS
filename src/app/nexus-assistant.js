@@ -670,7 +670,10 @@
   function transcribe(blob, lang) {
     if (!blob || !blob.size) return Promise.resolve("");
     if (blob.size > 8 * 1024 * 1024) return Promise.reject(new Error("too_large"));
-    var lng = lang === "tr" ? "tr" : "en";
+    var lng =
+      typeof lang === "string" && lang
+        ? lang
+        : (typeof window !== "undefined" && (window.nexusUiLang || window.nexusLang)) || "en";
     return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.onerror = function () { reject(new Error("read_failed")); };

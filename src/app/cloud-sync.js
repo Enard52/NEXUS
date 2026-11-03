@@ -1346,8 +1346,9 @@
   // Push token kaydı: cihazın FCM token'ını nexus_push_tokens'a yazar (RLS ile
   // yalnızca kendi satırları). Token birincil anahtarın parçası olduğundan
   // upsert = merge-deduplicate; cihaz değişirse eski hesabın satırı logout'ta silinir.
-  function pushRegisterToken(token, platform) {
+  function pushRegisterToken(token, platform, lang) {
     if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    var chosenLang = lang || (typeof window !== "undefined" && (window.nexusUiLang || window.nexusLang)) || "en";
     return session().then(function (current) {
       if (!current || !current.accessToken) return Promise.reject(new Error("oturum yok"));
       return api("/rest/v1/nexus_push_tokens", {
@@ -1360,6 +1361,7 @@
             user_id: current.userId,
             token: String(token).slice(0, 512),
             platform: String(platform || "web").slice(0, 20),
+            lang: String(chosenLang).slice(0, 10),
           },
         ]),
       }).then(function () { return true; });

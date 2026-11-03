@@ -55,6 +55,13 @@ describe("push-send — parseSendFields", () => {
     expect(f.level).toBe("x");
     expect(f.eventId).toBe("true");
   });
+
+  it("dil tercihi (lang) aktarılır ve en çok 10 karakterle sınırlandırılır", () => {
+    const f = parseSendFields({ title: "Test", body: "Msg", lang: "de" })!;
+    expect(f.lang).toBe("de");
+    const longLang = parseSendFields({ title: "Test", body: "Msg", lang: "en-US-variant" })!;
+    expect(longLang.lang).toBe("en-US-vari");
+  });
 });
 
 describe("push-send — selectTargets", () => {

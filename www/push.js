@@ -67,8 +67,9 @@
   function saveTokenToServer(token) {
     if (!authed()) return Promise.resolve(false);
     // NOT: cloud-sync.pushSend yerine doğrudan REST upsert (tek satır kaydı);
-    // auth header session'dan gelir.
-    return window.nexusCloud.pushRegisterToken(token, platformName()).then(function () {
+    // auth header session'dan gelir. Dil tercihi de sunucuya iletilir.
+    var lang = (typeof window !== "undefined" && (window.nexusUiLang || window.nexusLang)) || "en";
+    return window.nexusCloud.pushRegisterToken(token, platformName(), lang).then(function () {
       put("nexusPushToken", { token: token, at: Date.now() });
       return true;
     });
@@ -174,22 +175,30 @@
       .map(function (e) { return String(e || "").trim(); })
       .filter(Boolean);
     if (!list.length) return Promise.resolve({ ok: true, sent: 0 });
+    var lang = (typeof window !== "undefined" && (window.nexusUiLang || window.nexusLang)) || "en";
+    var rawTitle = String((event && event.title) || "");
+    var rawBody = String((event && event.detail) || "");
+    var title = (window.nexusTr && lang !== "tr" ? window.nexusTr(rawTitle) : null) || rawTitle;
+    var body = (window.nexusTr && lang !== "tr" ? window.nexusTr(rawBody) : null) || rawBody;
     return window.nexusCloud.pushSend({
       action: "event",
       emails: list,
-      title: String(event && event.title || "").slice(0, 120),
-      body: String(event && event.detail || "").slice(0, 400),
+      title: title.slice(0, 120),
+      body: body.slice(0, 400),
       level: String(event && event.level || "info").slice(0, 20),
       eventId: String(event && event.id || "").slice(0, 64),
+      lang: lang,
     });
   }
 
   function sendTest() {
     return register().then(function () {
+      var lang = (typeof window !== "undefined" && (window.nexusUiLang || window.nexusLang)) || "en";
       return window.nexusCloud.pushSend({
         action: "test",
         title: window.nexusT ? nexusT("NEXUS test bildirimi", "NEXUS test notification") : "NEXUS test bildirimi",
         body: window.nexusT ? nexusT("Bu bir test bildirimi — uygulama kapalıyken de böyle düşer.", "This is a test notification — it also arrives while the app is closed.") : "Test",
+        lang: lang,
       });
     });
   }

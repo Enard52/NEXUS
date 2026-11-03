@@ -760,8 +760,13 @@
     }
     return fanout(restrict(channels(), only), {
       id: "notify-test-" + Date.now(),
-      title: "Test bildirimi",
-      detail: "NEXUS kanal denemesi — bunu görüyorsan kanal çalışıyor.",
+      title: window.nexusT ? nexusT("Test bildirimi", "Test notification") : "Test bildirimi",
+      detail: window.nexusT
+        ? nexusT(
+            "NEXUS kanal denemesi — bunu görüyorsan kanal çalışıyor.",
+            "NEXUS channel test — if you see this, the channel is working.",
+          )
+        : "NEXUS kanal denemesi — bunu görüyorsan kanal çalışıyor.",
       ts: new Date().toISOString(),
       priority: "default",
     }).then(function (results) {

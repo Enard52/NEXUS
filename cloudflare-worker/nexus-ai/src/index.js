@@ -31,6 +31,22 @@ function jsonResponse(data, status, headers) {
 const MAX_AUDIO_B64 = 8 * 1024 * 1024;
 const B64_RE = /^[A-Za-z0-9+/=\r\n]+$/;
 
+// Whisper modelinin desteklediği diller listesi (ISO-639-1)
+const WHISPER_LANGS = new Set([
+  "af", "am", "ar", "as", "az", "ba", "be", "bg", "bn", "bo", "br", "bs", "ca", "cs", "cy", "da", "de",
+  "el", "en", "es", "et", "eu", "fa", "fi", "fo", "fr", "gl", "gu", "ha", "haw", "he", "hi", "hr", "ht",
+  "hu", "hy", "id", "is", "it", "ja", "jw", "ka", "kk", "km", "kn", "ko", "la", "lb", "ln", "lo", "lt",
+  "lv", "mg", "mi", "mk", "ml", "mn", "mr", "ms", "mt", "my", "ne", "nl", "nn", "no", "oc", "pa", "pl",
+  "ps", "pt", "ro", "ru", "sa", "sd", "si", "sk", "sl", "sn", "so", "sq", "sr", "su", "sv", "sw", "ta",
+  "te", "tg", "th", "tk", "tl", "tr", "tt", "uk", "ur", "uz", "vi", "yi", "yo", "zh",
+]);
+
+function normalizeWhisperLang(input) {
+  if (typeof input !== "string") return "en";
+  const clean = input.trim().toLowerCase().split(/[-_]/)[0];
+  return WHISPER_LANGS.has(clean) ? clean : "en";
+}
+
 async function transcribeRequest(req, env, h) {
   let b;
   try {
@@ -42,7 +58,7 @@ async function transcribeRequest(req, env, h) {
   if (audio.length < 64 || audio.length > MAX_AUDIO_B64 || !B64_RE.test(audio)) {
     return jsonResponse({ error: "bad_audio" }, 400, h);
   }
-  const lang = b.lang === "tr" ? "tr" : "en";
+  const lang = normalizeWhisperLang(b && b.lang);
   if (!env.AI) return jsonResponse({ error: "stt_unavailable" }, 503, h);
   try {
     const out = await env.AI.run("@cf/openai/whisper-large-v3-turbo", {

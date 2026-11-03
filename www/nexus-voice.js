@@ -52,7 +52,12 @@ function nxStartBrowserSpeech() {
   var networkFailed = false;
   var rec = new SR();
   nxVoiceRec = rec;
-  rec.lang = nxVoiceIsTr() ? 'tr-TR' : 'en-US';
+  rec.lang =
+    typeof window !== "undefined" && window.nexusLocale
+      ? window.nexusLocale
+      : nxVoiceIsTr()
+        ? "tr-TR"
+        : "en-US";
   rec.interimResults = true;
   rec.continuous = false;
   // Güvenlik ağı: continuous=false ile tarayıcı konuşma sonunda kendisi durur; ama
@@ -156,7 +161,10 @@ function nxStartRecorder() {
       }
       var blob = new Blob(chunks, { type: mime || 'audio/webm' });
       nxVoiceToast(nxVoiceIsTr() ? 'Yazıya dökülüyor…' : 'Transcribing…');
-      window.nexusAssistant.transcribe(blob, nxVoiceIsTr() ? 'tr' : 'en').then(function (text) {
+      var voiceLang =
+        (typeof window !== "undefined" && (window.nexusUiLang || window.nexusLang)) ||
+        (nxVoiceIsTr() ? "tr" : "en");
+      window.nexusAssistant.transcribe(blob, voiceLang).then(function (text) {
         if (!text) {
           nxVoiceToast(nxVoiceIsTr() ? 'Ses anlaşılamadı, tekrar dene.' : 'Could not understand the audio, please try again.');
           return;
