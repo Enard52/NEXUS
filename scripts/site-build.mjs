@@ -2830,7 +2830,12 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   /* Katkıcı sıralaması sürüm akışından BAĞIMSIZ: releases API'si yavaşsa/erişilemezse
      de topluluk tablosu çalışır (bu yüzden fetch nxApplyVer'in içinde değil). */
-  fetch('https://api.github.com/repos/Enard52/NEXUS/contributors?per_page=100').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(list){
+  /* Önce yayın sırasında üretilen /assets/contributors.json (commit + issue + yorum katkıları);
+     yoksa canlı GitHub API'sine (yalnız commit sayar) düşülür. */
+  fetch('/assets/contributors.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(j){
+    if(j&&Array.isArray(j.people)&&j.people.length) return j.people;
+    return fetch('https://api.github.com/repos/Enard52/NEXUS/contributors?per_page=100').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+  }).then(function(list){
       var box=document.getElementById('nx-contrib'); if(!box) return;
       var empty=document.getElementById('nx-contrib-empty');
       var more=document.getElementById('nx-contrib-more');
@@ -2843,11 +2848,11 @@ document.addEventListener('DOMContentLoaded',function(){
         var l=String((u&&u.login)||'');
         if(!l) return false;
         if(l==='Enard52'||l==='hadesonline02') return false;
-        if(/bot$/i.test(l)) return false;
+        if(u.type==='Bot'||/\[bot\]$/i.test(l)||/bot$/i.test(l)) return false;
         return true;
       }).sort(function(a,b){ return (b&&b.contributions||0)-(a&&a.contributions||0); });
       var TR=document.documentElement.lang==='tr';
-      var LIMIT=12, UNIT=TR?'katkı':'commits';
+      var LIMIT=12, UNIT=TR?'katkı':'contributions';
       var SEE_ALL=TR?'Tüm sıralamayı gör':'Show the full ranking';
       function chip(u){
         var login=String(u.login||'');
@@ -2857,7 +2862,11 @@ document.addEventListener('DOMContentLoaded',function(){
         var a=document.createElement('a');
         a.href=page; a.target='_blank'; a.rel='noopener';
         var n=parseInt(u.contributions,10);
-        a.title='@'+login+(n>0?' · '+n+' '+UNIT:'');
+        var parts=[];
+        if(u.commits>0) parts.push(u.commits+(TR?' commit':' commits'));
+        if(u.issues>0) parts.push(u.issues+(TR?' issue':' issues'));
+        if(u.comments>0) parts.push(u.comments+(TR?' yorum':' comments'));
+        a.title='@'+login+(n>0?' · '+n+' '+UNIT:'')+(parts.length>1?' ('+parts.join(' + ')+')':'');
         a.className='contrib-chip';
         var img=document.createElement('img'); img.src=av; img.alt='@'+login; img.width=88; img.height=88; img.loading='lazy';
         var name=document.createElement('span'); name.className='contrib-login'; name.textContent='@'+login;
@@ -3677,7 +3686,6 @@ function renderFooter(c) {
         <div class="ft-trust-row">
           <span class="ft-trust-pill"><span class="ft-status-dot"></span>${c.lang === 'tr' ? '%100 Yerel Kontrol' : '100% Local Control'}</span>
           <span class="ft-trust-pill">${icon('shield')}${c.lang === 'tr' ? 'Sıfır Bulut Bağımlılığı' : 'Zero Cloud Dependency'}</span>
-          <a class="ft-trust-pill ft-star-pill" href="https://github.com/Enard52/NEXUS/stargazers" target="_blank" rel="noopener" title="${c.lang === 'tr' ? "GitHub'da yıldız ver" : 'Star on GitHub'}"><span class="star-glyph" aria-hidden="true">★</span><span data-nx-stars>—</span></a>
         </div>
       </div>
       <div class="ft-links-group">
@@ -4678,6 +4686,7 @@ function build() {
   }
 
   writeFileSync(join(PUB, 'assets', 'site.js'), pageJs(), 'utf8');
+  writeFileSync(join(PUB, 'assets', 'contributors.json'), CONTRIBUTORS_JSON, 'utf8');
   writeFileSync(join(PUB, 'assets', 'site-boot.js'), bootJs(), 'utf8');
   // Anahtar takipteki derleme çıktısına geri dönmesin: bu dosya .gitignore'da.
   writeFileSync(
@@ -4743,5 +4752,47 @@ window.NEXUS_CLOUD = {
   console.log('✓ robots.txt & sitemap.xml & manifest.webmanifest & _headers');
   console.log('Ekran görüntüleri:', hasShots ? 'VAR (images/shots/)' : 'YOK');
 }
+
+// Topluluk sıralaması: commit + açılan issue/PR + yorum. GitHub'ın contributors uç noktası yalnızca commit
+// saydığı için issue'da yardım edenler orada hiç görünmüyordu. Ağ/sınır hatasında `people` null kalır ve
+// sayfa canlı API'ye (yalnız commit) düşer; dosya yine de yazılır, yayın bozulmaz.
+const REPO_API = 'https://api.github.com/repos/Enard52/NEXUS';
+const RANKING_EXCLUDED = new Set(['Enard52', 'hadesonline02']);
+async function ghPages(path, maxPages = 6) {
+  const headers = { 'User-Agent': 'nexus-site-build', Accept: 'application/vnd.github+json' };
+  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  const out = [];
+  for (let page = 1; page <= maxPages; page++) {
+    const sep = path.includes('?') ? '&' : '?';
+    const r = await fetch(`${REPO_API}${path}${sep}per_page=100&page=${page}`, { headers, signal: AbortSignal.timeout(15000) });
+    if (!r.ok) throw new Error(`GitHub ${r.status} ${path}`);
+    const rows = await r.json();
+    out.push(...rows);
+    if (rows.length < 100) break;
+  }
+  return out;
+}
+async function loadContributors() {
+  try {
+    const who = new Map();
+    const touch = (u, key, n = 1) => {
+      if (!u || !u.login || u.type === 'Bot' || /\[bot\]$/i.test(u.login) || RANKING_EXCLUDED.has(u.login)) return;
+      const p = who.get(u.login) || { login: u.login, html_url: u.html_url, avatar_url: u.avatar_url, commits: 0, issues: 0, comments: 0 };
+      p[key] += n;
+      who.set(u.login, p);
+    };
+    for (const u of await ghPages('/contributors')) touch(u, 'commits', u.contributions || 0);
+    for (const i of await ghPages('/issues?state=all')) touch(i.user, 'issues');
+    for (const c of await ghPages('/issues/comments')) touch(c.user, 'comments');
+    const people = [...who.values()]
+      .map((p) => ({ ...p, contributions: p.commits + p.issues + p.comments }))
+      .sort((a, b) => b.contributions - a.contributions);
+    return JSON.stringify({ generated: new Date().toISOString(), people });
+  } catch (e) {
+    console.warn(`Katkıcı listesi üretilemedi (${e.message}); sayfa canlı API'ye düşecek.`);
+    return JSON.stringify({ generated: null, people: null });
+  }
+}
+const CONTRIBUTORS_JSON = await loadContributors();
 
 build();

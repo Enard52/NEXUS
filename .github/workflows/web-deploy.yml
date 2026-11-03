@@ -58,6 +58,9 @@ jobs:
       - name: Bulut yapılandırmasını üret
         run: node scripts/ensure-cloud-config.mjs
       - name: Siteyi kaynaklardan üret
+        env:
+          # Topluluk sıralaması için issue/yorum/commit sayımı (anonim istek sınırına takılmasın)
+          GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/site-build.mjs
       # Üretilen çıktı bir kez daha denetleniyor: bozukluk yalnızca üreteçte de doğabiliyor.
       # Gerçek örnek: şablon dizisine yazılan bir \u kaçışı üretim sırasında gerçek bir
