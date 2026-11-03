@@ -318,12 +318,13 @@ html[data-theme=dark] .nav a.active{
 .lang-switch summary svg{width:15px;height:15px}
 .lang-switch .lang-caret{width:10px;height:10px;transition:transform .18s ease}
 .lang-switch[open] .lang-caret{transform:rotate(180deg)}
-.lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:min(260px,calc(100vw - 24px));max-height:min(60vh,420px);
+.lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:min(340px,calc(100vw - 24px));max-height:min(60vh,420px);
   overflow-y:auto;overscroll-behavior:contain;padding:6px;background:var(--surface);border:1px solid var(--border);
   border-radius:16px;box-shadow:0 18px 40px rgba(15,23,42,.18);display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;
   color:var(--text-2);font:600 13px/1.2 Inter,sans-serif;text-decoration:none !important;cursor:pointer;min-width:0}
-.lang-btn small{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.lang-btn span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lang-btn small{flex-shrink:0;white-space:nowrap;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em}
 .lang-btn:hover:not(.active){background:var(--surface-2);color:var(--text)}
 .lang-btn.active{background:var(--brand-grad);color:#fff !important;cursor:default}
 .lang-btn.active small{color:rgba(255,255,255,.85)}
@@ -3192,7 +3193,9 @@ document.addEventListener('DOMContentLoaded',function(){
 function langName(l) {
   try {
     const n = new Intl.DisplayNames([l], { type: 'language' }).of(l);
-    return n ? n.charAt(0).toLocaleUpperCase(l) + n.slice(1) : l.toUpperCase();
+    // "português (Brasil)" → "Português": bölge/yazı türü zaten sağdaki kodda (PT-BR) görünüyor
+    const short = n ? n.replace(/\s*[(（].*[)）]\s*$/, '') : n;
+    return short ? short.charAt(0).toLocaleUpperCase(l) + short.slice(1) : l.toUpperCase();
   } catch {
     return l.toUpperCase();
   }
