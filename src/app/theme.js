@@ -5,8 +5,7 @@
   // Topluluk dilleri: yeni dil = buraya bir satır + src/app/lang-<kod>.js (bkz. docs/TRANSLATING.md).
   // Gerçek bir sözlük dosyası birleşmeden buraya dil eklenmez; yoksa seçici sahte bir dil gösterirdi.
   var COMMUNITY_LANGS = {
-    // de: { name: 'Deutsch', locale: 'de-DE' },
-    // ar: { name: 'العربية', locale: 'ar', rtl: true },
+    de: { name: 'Deutsch', locale: 'de-DE' },
   };
   window.NEXUS_COMMUNITY_LANGS = COMMUNITY_LANGS;
   function detectCommunity() {
