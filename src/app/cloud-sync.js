@@ -636,6 +636,21 @@
     });
   }
 
+  // Karşılaştırma imzası: zaman damgası ve alan sırasından bağımsız.
+  function deviceSignature(devices) {
+    return JSON.stringify(
+      (devices || []).map(function (device) {
+        var copy = {};
+        Object.keys(device || {})
+          .sort()
+          .forEach(function (key) {
+            if (key !== "updatedAt") copy[key] = device[key];
+          });
+        return copy;
+      }),
+    );
+  }
+
   // Birleştime: aynı id varsa daha yeni olan kazanır; uzaktaki cihazlar silinmez.
   function mergeDevices(local, remote) {
     var byId = {};
@@ -651,7 +666,9 @@
       }
       var mine = Date.parse(existing.updatedAt || "") || 0;
       var theirs = Date.parse(d.updatedAt || "") || 0;
-      byId[d.id] = theirs >= mine ? d : existing;
+      // Bulut satırı yalnızca bilinen sütunları taşır (mac, endpointId gibi yerel alanları değil):
+      // uzaktaki kazansa da bu cihazın yerel alanları korunur.
+      byId[d.id] = theirs >= mine ? Object.assign({}, existing, d) : existing;
     });
     return Object.keys(byId).map(function (id) {
       return byId[id];
@@ -747,7 +764,8 @@
       var staleIds = remote.filter(isUnconnected).map(function (d) { return d.id; });
       var remoteConnected = remote.filter(function (d) { return !isUnconnected(d); });
       var merged = mergeDevices(localConnected, remoteConnected);
-      var changed = JSON.stringify(merged) !== JSON.stringify(localConnected);
+      // updatedAt her itmede yenilenir; yalnızca zaman damgası farkı "değişti" sayılırsa sayfa 45 sn'de bir yenilenir.
+      var changed = deviceSignature(merged) !== deviceSignature(localConnected);
       if (window.nexusSetItem) window.nexusSetItem(DEVICE_KEY, JSON.stringify(merged));
       return removeRemoteDevices(staleIds).then(function () {
         return pushDevices(merged);
@@ -1788,7 +1806,7 @@
     stopRealtime: rtStop,
     realtimeActive: function () { return !!rt.socket && rt.socket.readyState === 1; },
     // test penetrasyonu: saf yardimcilara erisim
-    _internal: { toRows: toRows, fromRows: fromRows, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
+    _internal: { toRows: toRows, fromRows: fromRows, deviceSignature: deviceSignature, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
   };
 
   startAutoSync();

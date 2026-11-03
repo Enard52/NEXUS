@@ -152,6 +152,30 @@ describe("cihaz kayıtlarının tutarlılığı", () => {
     expect(merged.find((d: { id: string }) => d.id === "a").name).toBe("Buluttan gelen");
   });
 
+  it("uzaktaki kayıt kazansa da yerel alanlar (mac, endpointId) korunur; yalnız zaman damgası farkı değişiklik sayılmaz", () => {
+    const { cloud } = load({ config: CONFIG });
+    const local = [
+      {
+        id: "w",
+        name: "PC",
+        host: "http://192.168.1.18",
+        mac: "AA:BB:CC:DD:EE:FF",
+        endpointId: 1,
+        updatedAt: "2026-09-20T10:00:00.000Z",
+      },
+    ];
+    const remote = [
+      { id: "w", name: "PC", host: "http://192.168.1.18", updatedAt: "2026-09-22T10:00:00.000Z" },
+    ];
+    const merged = cloud.mergeDevices(local, remote);
+    expect(merged[0].mac).toBe("AA:BB:CC:DD:EE:FF");
+    expect(merged[0].endpointId).toBe(1);
+    expect(merged[0].updatedAt).toBe("2026-09-22T10:00:00.000Z");
+    const sig = cloud._internal.deviceSignature;
+    expect(sig(merged)).toBe(sig(local));
+    expect(sig([{ id: "w", name: "Başka" }])).not.toBe(sig(local));
+  });
+
   it("satır dönüşümü protokol/işlev/adresi korur ve geri okunabilir", () => {
     const { cloud } = load({ config: CONFIG });
     const devices = [
