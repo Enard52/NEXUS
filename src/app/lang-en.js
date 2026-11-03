@@ -1016,6 +1016,11 @@ window.NEXUS_EN = {
     "Arama servisine ulaşılamadı, yazdığın adres kullanılacak.":
       "Couldn't reach the search service; the address you typed will be used.",
     "Aramanla eşleşen cihaz bulunamadı.": "No device matches your search.",
+    "Listeden seç": "Choose from the list",
+    "NEXUS'un bağlanabildiği tüm cihaz türleri tek sayfada":
+      "Every device type NEXUS can connect to, on one page",
+    "Bu uygulamada eklenebilen cihaz türü bulunamadı.":
+      "No device types can be added in this app.",
     "Aramaya odaklan": "Focus search",
     "Aranıyor…": "Searching…",
     "Araç ekranında NEXUS simgesine dokun; favori kartların otomatik gelir.":
@@ -2482,6 +2487,8 @@ window.NEXUS_EN = {
     "Tuya cihazları dinleniyor…": "Listening for Tuya devices…",
     "Uyandırılabilir cihaz": "Device that can be woken",
     "Bilgisayar / TV": "Computer / TV",
+    "TV / Bilgisayar": "TV / Computer",
+    "LED Şerit / Işık Paneli": "LED Strip / Light Panel",
     "Uyandırma cihazı olarak ekle": "Add as a wake-up device",
     "Bu adreste bir cihaz var ama NEXUS protokolü konuşmuyor.": "There is a device at this address, but it does not speak a NEXUS protocol.",
     "Bu cihaz zaten ekli.": "This device is already added.",

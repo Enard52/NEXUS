@@ -176,6 +176,35 @@ describe("cihaz kayıtlarının tutarlılığı", () => {
     expect(sig([{ id: "w", name: "Başka" }])).not.toBe(sig(local));
   });
 
+  it("kendi değişikliğimizin buluttan dönen yankısı kaydı değiştirmez ve yerel alanları silmez (sayfa yenilenmez)", () => {
+    const { cloud, win } = load({ config: CONFIG, user: "u1" });
+    const local = [
+      {
+        id: "d1",
+        name: "Prizim",
+        protocol: "shelly",
+        host: "http://192.168.1.9",
+        mac: "AA:BB:CC:DD:EE:FF",
+        endpointId: 1,
+      },
+    ];
+    (win.nexusSetItem as (k: string, v: string) => void)(
+      "nexusPairedDevices",
+      JSON.stringify(local),
+    );
+    const row = cloud._internal.toRows("u1", local)[0];
+    expect(cloud._internal.applyRemoteDevice(row, false)).toBe(false);
+    const stored = JSON.parse((win.nexusGetItem as (k: string) => string)("nexusPairedDevices"));
+    expect(stored[0].mac).toBe("AA:BB:CC:DD:EE:FF");
+    expect(stored[0].endpointId).toBe(1);
+    // gerçek bir uzak değişiklik hâlâ uygulanır ve yerel alanlar korunur
+    const changed = { ...row, name: "Mutfak Prizi" };
+    expect(cloud._internal.applyRemoteDevice(changed, false)).toBe(true);
+    const after = JSON.parse((win.nexusGetItem as (k: string) => string)("nexusPairedDevices"));
+    expect(after[0].name).toBe("Mutfak Prizi");
+    expect(after[0].mac).toBe("AA:BB:CC:DD:EE:FF");
+  });
+
   it("satır dönüşümü protokol/işlev/adresi korur ve geri okunabilir", () => {
     const { cloud } = load({ config: CONFIG });
     const devices = [

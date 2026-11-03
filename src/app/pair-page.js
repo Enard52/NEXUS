@@ -232,7 +232,12 @@ function scanLanHost() {
           : Promise.resolve(null);
       return lookup.then(function (mac) {
         if (mac) renderWolPairing(resultHost, host, mac);
-        else setScanStatus("Bu adreste bilinen bir NEXUS cihazı bulunamadı. Cihazın aynı ağda ve açık olduğundan emin ol.", "error", scanLanHost);
+        else
+          setScanStatus(
+            "Bu adreste bilinen bir NEXUS cihazı bulunamadı. Cihazın aynı ağda ve açık olduğundan emin ol.",
+            "error",
+            scanLanHost,
+          );
       });
     })
     .finally(function () {
@@ -909,14 +914,6 @@ function addMqttDevice(index) {
 
 var subnetFindings = [];
 
-// Bağlayıcının gerçek cihazla doğrulanıp doğrulanmadığı (supported-devices.js verified alanı)
-function verifiedChip(protocol) {
-  if (window.nexusIsVerified && nexusIsVerified(protocol)) {
-    return '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold text-emerald-600"><i data-lucide="badge-check" class="h-3 w-3"></i>Doğrulandı</span>';
-  }
-  return '<span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold nx-count-badge" title="Bu bağlantı türü henüz gerçek bir cihazla denenmedi.">Henüz doğrulanmadı</span>';
-}
-
 function renderSubnetFindings() {
   var host = document.getElementById("lan-subnet-results");
   var devices = getPairedDevices();
@@ -961,9 +958,6 @@ function renderSubnetFindings() {
         " · " +
         escapeHtml(found.host) +
         "</p>" +
-        '<div class="mt-1">' +
-        verifiedChip(proto) +
-        "</div>" +
         "</div></div>" +
         (already
           ? '<span class="shrink-0 flex items-center gap-1 text-[11px] font-bold text-emerald-600"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i>Ekli</span>'
@@ -1008,6 +1002,7 @@ function plusBlocked(target, protocol) {
 // adresler ADAY olarak listelenir ve bilgi istenir. Yalnızca masaüstü uygulamasında çalışır; donanımla doğrulanmadı.
 var secureFindings = [];
 var secureRun = 0;
+var secureActive = false;
 var SECURE_TITLES = { tuya: "Tuya cihazı olabilir", mqtt: "MQTT sunucusu olabilir" };
 function secureAlready(c, devices) {
   var ip = normalizeHost(c.host);
@@ -1063,13 +1058,14 @@ function startSecureScan() {
   var avail = lan && lan.hasSecure ? lan.hasSecure() : {};
   if (!lan || !lan.secureScan || !(avail.tuya || avail.mqtt)) return Promise.resolve();
   var run = ++secureRun;
+  secureActive = true;
   secureFindings = [];
   renderSecureFindings();
-  setRadarBadge("Şifreli cihazlar aranıyor…", true);
+  if (!autoScanning) setRadarBadge("Şifreli cihazlar aranıyor…", true);
   return lan
     .secureScan({
       shouldStop: function () {
-        return run !== secureRun;
+        return run !== secureRun || autoScanStop;
       },
       onFound: function (item) {
         if (run !== secureRun) return;
@@ -1116,7 +1112,9 @@ function startSecureScan() {
       });
     })
     .then(function () {
-      if (run === secureRun) setRadarBadge("NEXUS Hazır", false);
+      if (run !== secureRun) return;
+      secureActive = false;
+      if (!autoScanning) setRadarBadge("NEXUS Hazır", false);
     });
 }
 
@@ -1227,19 +1225,35 @@ function startAutoScan(auto) {
           all.length + " cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.",
           "ok",
         );
-      else setScanStatus(autoScanStop ? "Tarama durduruldu." : "Bu ağda desteklenen bir cihaz bulunamadı. Cihazın açık ve aynı Wi-Fi'da olduğundan emin ol; olmazsa aşağıdan kataloğu ya da QR / kurulum kodunu kullan.", autoScanStop ? "" : "error", function () { startAutoScan(); });
+      else
+        setScanStatus(
+          autoScanStop
+            ? "Tarama durduruldu."
+            : "Bu ağda desteklenen bir cihaz bulunamadı. Cihazın açık ve aynı Wi-Fi'da olduğundan emin ol; olmazsa aşağıdan kataloğu ya da QR / kurulum kodunu kullan.",
+          autoScanStop ? "" : "error",
+          function () {
+            startAutoScan();
+          },
+        );
       renderSubnetFindings();
     })
     .catch(function () {
-      setScanStatus("Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.", "error", function () { startAutoScan(); });
+      setScanStatus(
+        "Tarama tamamlanamadı. Cihazların aynı ağda olduğundan emin ol.",
+        "error",
+        function () {
+          startAutoScan();
+        },
+      );
     })
     .then(function () {
       autoScanning = false;
       setScanBtn(btn, "Yeniden Tara", "refresh-cw");
       bar.style.width = subnetFindings.length ? "100%" : "0%";
-      setRadarBadge("NEXUS Hazır", false);
-      if (!autoScanStop) startSecureScan();
+      if (!secureActive) setRadarBadge("NEXUS Hazır", false);
     });
+  // Şifreli cihaz adayları (Tuya/MQTT) aynı anda aranır: eskiden ana taramadan SONRA başlıyor ve toplam süreyi ~100 sn yapıyordu.
+  startSecureScan();
 }
 
 // Köprü/yazılım kartları ve elle bilgi giren Tuya/Zigbee2MQTT formları Cihaz Ekle'de gösterilmez: cihazlar otomatik taramayla bulunur.

@@ -80,7 +80,7 @@
       note: "Yerel şifreli HTTP (KLAP) — TP-Link hesabı e-postası + şifresiyle, masaüstü uygulamasında; priz, anahtar ve ampuller (kamera ve enerji ölçümü henüz yok)",
       models: [
         { name: "Tapo P110 Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
-        { name: "Tapo L530E Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "Tapo L530E Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color", "colorTemp"] },
         { name: "Tapo S265 Termostat", img: "generic-thermostat-c.png", caps: ["temperature", "humidity"] },
         { name: "Tapo C210 Kamera", img: "security-indoor-camera.png", caps: ["camera"] },
       ],
@@ -105,7 +105,7 @@
         {
           name: "Yeelight Tavan Lambası",
           img: "generic-ceiling-light.png",
-          caps: ["switch", "brightness", "color"],
+          caps: ["switch", "brightness", "color", "colorTemp"],
         },
         {
           name: "Yeelight Şerit",
@@ -163,7 +163,7 @@
         {
           name: "Hue White & Color Ampul",
           img: "generic-led-bulb.png",
-          caps: ["switch", "brightness", "color"],
+          caps: ["switch", "brightness", "color", "colorTemp"],
         },
         {
           name: "Hue Gradient Şerit",
@@ -224,7 +224,7 @@
       availability: "desktop",
       note: "Yerel UDP — masaüstü uygulamasında; yerleşik sahneler dahil",
       models: [
-        { name: "WiZ A60 Renkli Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "WiZ A60 Renkli Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color", "colorTemp", "lightScene"] },
         { name: "WiZ Işık Şeridi", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
       ],
     },
@@ -243,7 +243,7 @@
       availability: "desktop",
       note: "Yerel UDP — masaüstü uygulamasında",
       models: [
-        { name: "LIFX Mini Color Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "LIFX Mini Color Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color", "colorTemp"] },
         { name: "LIFX Z LED Şerit", img: "generic-led-strip.png", caps: ["switch", "brightness", "color"] },
       ],
     },

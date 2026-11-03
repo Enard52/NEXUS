@@ -1151,8 +1151,11 @@
       var incoming = fromRows([row])[0];
       if (!incoming) return false;
       var same = local.filter(function (d) { return d && d.id === id; })[0];
-      if (same && JSON.stringify(same) === JSON.stringify(incoming)) return false;
-      out.push(incoming);
+      // Bulut satırı yalnızca bazı alanları taşır (mac, endpointId, options, hueUser… yerelde kalır).
+      // Yerel kayıt üstüne bindirilir: kendi yankımız "değişiklik" sayılıp sayfayı yenilemez, yerel alanlar silinmez.
+      var merged = Object.assign({}, same || {}, incoming);
+      if (same && deviceSignature(fromRows(toRows("", [same]))) === deviceSignature([incoming])) return false;
+      out.push(merged);
     }
     if (window.nexusSetItem) window.nexusSetItem(DEVICE_KEY, JSON.stringify(out));
     else localStorage.setItem(DEVICE_KEY, JSON.stringify(out));
@@ -1806,7 +1809,7 @@
     stopRealtime: rtStop,
     realtimeActive: function () { return !!rt.socket && rt.socket.readyState === 1; },
     // test penetrasyonu: saf yardimcilara erisim
-    _internal: { toRows: toRows, fromRows: fromRows, deviceSignature: deviceSignature, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
+    _internal: { toRows: toRows, fromRows: fromRows, deviceSignature: deviceSignature, applyRemoteDevice: applyRemoteDevice, deviceIdFor: deviceIdFor, hashOf: hashOf, snapshotState: snapshotState },
   };
 
   startAutoSync();

@@ -2309,7 +2309,15 @@
           throw secureError("Tuya yanıtı çözülemedi — yerel anahtar yanlış olabilir.", "bad-key");
         }
       }).then(function (out) { return s.close().then(function () { return out; }); },
-        function (err) { return s.close().then(function () { throw err; }); });
+        function (err) {
+          // Yanlış yerel anahtar/sürümde cihaz yanıt vermez ya da bağlantıyı keser; ham aktarım hatası
+          // ("bağlantı kapandı", "zaman aşımı") bunu açıklamaz.
+          var silent = !err.code && /kapandı|zaman aşımı|closed|timed? ?out|ECONNRESET/i.test(String(err.message || ""));
+          var shown = silent
+            ? secureError("Tuya cihazı yanıt vermedi ya da bağlantıyı kesti — yerel anahtar ya da protokol sürümü yanlış olabilir.", "no-reply")
+            : err;
+          return s.close().then(function () { throw shown; });
+        });
     });
   }
 
@@ -3124,7 +3132,11 @@
       }, Promise.resolve(null))
       .then(function (found) {
         if (found) return found;
-        throw lastError || new Error("bilinen protokol bulunamadı");
+        // Hiçbir protokol tanınmadıysa son denenen protokolün ham hatası (ör. "UDP zaman aşımı") kullanıcıya
+        // yanlış ipucu verirdi; nedenini cause alanında tutarak tek bir net hata döneriz.
+        var none = new Error("bilinen protokol bulunamadı");
+        none.cause = lastError;
+        throw none;
       });
   }
 
@@ -3403,7 +3415,7 @@
     if (!bridge || lanAddressError(host)) return Promise.resolve(false);
     return Promise.resolve()
       .then(function () {
-        return bridge.open({ host: host, port: spec.port, timeoutMs: 900 });
+        return bridge.open({ host: host, port: spec.port, timeoutMs: 500 }); // LAN'da açık kapı ms içinde yanıt verir
       })
       .then(function (id) {
         try {

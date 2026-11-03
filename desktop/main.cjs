@@ -63,6 +63,30 @@ const START_URL = `${SCHEME}://app/${launchPage || "index.html"}`;
 app.setName("NEXUS");
 if (process.platform === "win32") app.setAppUserModelId("app.nexus.desktop");
 
+// Windows bildirimleri uygulama adını/simgesini AppUserModelID kaydından okur. Kısayol bu kimliği
+// taşımıyorsa (taşınmış/elle oluşturulmuş kısayol, portable çalıştırma) Windows varsayılan simge gösterir.
+// Kaydı HKCU'ya yazarız; yönetici yetkisi gerekmez, yazılamazsa bildirimler yine çalışır.
+function registerWindowsToastIdentity() {
+  if (process.platform !== "win32") return;
+  try {
+    const png = path.join(app.getPath("userData"), "toast-icon.png");
+    const src = nativeImage.createFromPath(path.join(__dirname, "resources", "icon.png"));
+    if (!src.isEmpty()) fs.writeFileSync(png, src.resize({ width: 128, height: 128 }).toPNG());
+    const key = "HKCU\\Software\\Classes\\AppUserModelId\\app.nexus.desktop";
+    const add = (name, value) =>
+      require("node:child_process").execFile(
+        "reg",
+        ["add", key, "/v", name, "/t", "REG_SZ", "/d", value, "/f"],
+        { windowsHide: true, timeout: 5000 },
+        () => {},
+      );
+    add("DisplayName", "NEXUS");
+    if (fs.existsSync(png)) add("IconUri", png);
+  } catch {
+    /* kayıt yazılamazsa varsayılan davranış sürer */
+  }
+}
+
 protocol.registerSchemesAsPrivileged([
   {
     scheme: SCHEME,
@@ -1778,6 +1802,7 @@ app.on("before-quit", () => {
 
 app.whenReady().then(() => {
   uiLang = detectLang();
+  registerWindowsToastIdentity();
   // QR tarama kamerayı, ev konumu da konumu ister. İkisi de programın içinde kalır.
   const deskPerm = {
     media: 1,

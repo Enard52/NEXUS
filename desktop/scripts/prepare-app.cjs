@@ -40,8 +40,8 @@ copy(path.join(ROOT, "css"), path.join(OUT, "css"));
 copy(path.join(ROOT, "fonts"), path.join(OUT, "fonts"));
 copy(path.join(ROOT, "js"), path.join(OUT, "js"));
 copy(path.join(ROOT, "assets"), path.join(OUT, "assets"));
-// Kullanım koşulları / gizlilik sayfaları (site derlemesi) uygulama içinden açılır
-copy(path.join(ROOT, "public"), path.join(OUT, "public")) || copy(path.join(WWW, "public"), path.join(OUT, "public"));
+// Tanıtım sitesi (www/public: 70 MB, 70 dil klasörü) masaüstü paketine girmez; iOS kabuğu da aynı kuralı uygular.
+// Uygulama hukuki sayfaları kendi sitesinden açar (nexus-plus.html), yerel kopyaya ihtiyaç yoktur.
 
 // 3) Bulut anahtarları repoda yoksa uygulama yerel modda çalışır
 const cloud = path.join(ROOT, "cloud-config.js");
