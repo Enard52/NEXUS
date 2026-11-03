@@ -318,9 +318,11 @@ html[data-theme=dark] .nav a.active{
 .lang-switch summary svg{width:15px;height:15px}
 .lang-switch .lang-caret{width:10px;height:10px;transition:transform .18s ease}
 .lang-switch[open] .lang-caret{transform:rotate(180deg)}
-.lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:min(340px,calc(100vw - 24px));max-height:min(60vh,420px);
-  overflow-y:auto;overscroll-behavior:contain;padding:6px;background:var(--surface);border:1px solid var(--border);
+.lang-menu{position:absolute;left:50%;transform:translateX(calc(-50% + var(--lang-shift,0px)));top:calc(100% + 8px);z-index:60;width:min(340px,calc(100vw - 24px));max-height:min(60vh,420px);
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;padding:6px 6px 22px;
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 26px),transparent);mask-image:linear-gradient(#000 calc(100% - 26px),transparent);background:var(--surface);border:1px solid var(--border);
   border-radius:16px;box-shadow:0 18px 40px rgba(15,23,42,.18);display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.lang-menu::-webkit-scrollbar{display:none}
 .lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;
   color:var(--text-2);font:600 13px/1.2 Inter,sans-serif;text-decoration:none !important;cursor:pointer;min-width:0}
 .lang-btn span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -328,7 +330,7 @@ html[data-theme=dark] .nav a.active{
 .lang-btn:hover:not(.active){background:var(--surface-2);color:var(--text)}
 .lang-btn.active{background:var(--brand-grad);color:#fff !important;cursor:default}
 .lang-btn.active small{color:rgba(255,255,255,.85)}
-@media(max-width:520px){.lang-switch{position:static}.lang-menu{position:fixed;left:12px;right:12px;top:64px;width:auto;grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.lang-switch{position:static}.lang-menu{position:fixed;left:12px;right:12px;top:64px;width:auto;transform:none;grid-template-columns:1fr 1fr}}
 /* Tema Değiştirici */
 .theme-t{border:1px solid var(--border);background:var(--surface);color:var(--text-2);
   border-radius:999px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
@@ -1318,6 +1320,8 @@ function nxToggleTheme(){
   try{localStorage.setItem('nx-site-theme',d)}catch(e){}
 }
 
+// Dil menüsü düğmenin altında ortalanır; ekran kenarına taşarsa yatayda kaydırılır
+document.addEventListener('toggle',function(ev){var d=ev.target;if(!d||!d.classList||!d.classList.contains('lang-switch')||!d.open)return;var m=d.querySelector('.lang-menu');m.style.setProperty('--lang-shift','0px');var r=m.getBoundingClientRect(),s=0;if(r.right>innerWidth-12)s=innerWidth-12-r.right;else if(r.left<12)s=12-r.left;m.style.setProperty('--lang-shift',s+'px')},true);
 // Dil menüsü: dışarı tıklayınca veya Esc ile kapanır
 document.addEventListener('click',function(ev){var d=document.querySelector('.lang-switch[open]');if(d&&!d.contains(ev.target))d.removeAttribute('open')});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){var d=document.querySelector('.lang-switch[open]');if(d){d.removeAttribute('open');var s=d.querySelector('summary');if(s)s.focus()}}});
