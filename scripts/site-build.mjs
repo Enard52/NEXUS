@@ -12,6 +12,24 @@ import {
 } from './site-content.mjs';
 
 const SITE_LANGS = getSiteLanguages();
+
+// Dil menüsündeki bayraklar (branding/flags, flag-icons MIT). Ülkesi olmayan/çok ülkeli diller en yaygın ülkeyle eşlenir;
+// dil adı ve kodu yanında göründüğü için bayrak yalnızca görsel ipucudur.
+const LANG_FLAG = {
+  af: 'za', am: 'et', ar: 'sa', bg: 'bg', bn: 'bd', bs: 'ba', ca: 'es-ct', cs: 'cz', da: 'dk', de: 'de', el: 'gr',
+  en: 'gb', es: 'es', et: 'ee', eu: 'es-pv', fa: 'ir', fi: 'fi', fil: 'ph', fr: 'fr', ga: 'ie', gl: 'es-ga', gu: 'in',
+  he: 'il', hi: 'in', hr: 'hr', hu: 'hu', hy: 'am', id: 'id', is: 'is', it: 'it', ja: 'jp', ka: 'ge', km: 'kh',
+  kn: 'in', ko: 'kr', lt: 'lt', lv: 'lv', mk: 'mk', ml: 'in', mn: 'mn', mr: 'in', ms: 'my', my: 'mm', nb: 'no',
+  ne: 'np', nl: 'nl', pa: 'in', pl: 'pl', 'pt-BR': 'br', ro: 'ro', ru: 'ru', si: 'lk', sk: 'sk', sl: 'si', sq: 'al',
+  sr: 'rs', sv: 'se', sw: 'tz', ta: 'in', te: 'in', th: 'th', tr: 'tr', uk: 'ua', ur: 'pk', vi: 'vn',
+  'zh-Hans': 'cn', 'zh-Hant': 'tw', zu: 'za',
+};
+function langFlag(l) {
+  const c = LANG_FLAG[l];
+  return c
+    ? `<img class="lang-flag" src="/assets/flags/${c}.svg" alt="" width="20" height="15" loading="lazy" decoding="async">`
+    : '';
+}
 import { LEGAL_DOCS, getLegalDoc } from './site-legal-content.mjs';
 import { siApple, siLinux, siRaspberrypi } from 'simple-icons';
 
@@ -326,6 +344,9 @@ html[data-theme=dark] .nav a.active{
 .lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;
   color:var(--text-2);font:600 13px/1.2 Inter,sans-serif;text-decoration:none !important;cursor:pointer;min-width:0}
 .lang-btn span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lang-flag{width:20px;height:15px;border-radius:3px;object-fit:cover;flex-shrink:0;box-shadow:0 0 0 1px rgba(128,128,128,.28)}
+.lang-btn .lang-flag{margin-right:2px}
+.lang-btn span{flex:1}
 .lang-btn small{flex-shrink:0;white-space:nowrap;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em}
 .lang-btn:hover:not(.active){background:var(--surface-2);color:var(--text)}
 .lang-btn.active{background:var(--brand-grad);color:#fff !important;cursor:default}
@@ -3213,7 +3234,7 @@ function renderHeader(c, currentPath = '') {
   const langBtns = SITE_LANGS.map((l) => {
     const lUpper = l.toUpperCase();
     if (l === c.lang) {
-      return `<span class="lang-btn active" aria-current="true"><span>${langName(l)}</span><small>${lUpper}</small></span>`;
+      return `<span class="lang-btn active" aria-current="true">${langFlag(l)}<span>${langName(l)}</span><small>${lUpper}</small></span>`;
     }
     const href =
       l === 'en'
@@ -3223,7 +3244,7 @@ function renderHeader(c, currentPath = '') {
         : pathPart
           ? `/${l}/${pathPart}?lang=${l}`
           : `/${l}/?lang=${l}`;
-    return `<a href="${href}" class="lang-btn" onclick="nxSetLang('${l}')" lang="${l}" hreflang="${l}"><span>${langName(l)}</span><small>${lUpper}</small></a>`;
+    return `<a href="${href}" class="lang-btn" onclick="nxSetLang('${l}')" lang="${l}" hreflang="${l}">${langFlag(l)}<span>${langName(l)}</span><small>${lUpper}</small></a>`;
   }).join('');
 
   return `<a class="skip" href="#main">${isTr ? 'İçeriğe geç' : 'Skip to content'}</a>
@@ -3241,7 +3262,7 @@ function renderHeader(c, currentPath = '') {
     <div class="nav-controls">
       <a class="gh-link" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener" aria-label="${isTr ? 'GitHub deposu' : 'GitHub repository'}" title="${isTr ? "Kaynak kodu GitHub'da" : 'Source on GitHub'}">${icon('github')}</a>
       <details class="lang-switch">
-        <summary aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>${c.lang.toUpperCase()}<svg class="lang-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <summary aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">${langFlag(c.lang).replace(' loading="lazy"', '')}${c.lang.toUpperCase()}<svg class="lang-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
         <div class="lang-menu" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">${langBtns}</div>
       </details>
       <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="${isTr ? 'Giriş Yap veya Hesap' : 'Sign In or Account'}">
@@ -4642,6 +4663,9 @@ function build() {
 
   mkdirSync(join(PUB, 'assets'), { recursive: true });
   mkdirSync(join(PUB, 'fonts', 'inter'), { recursive: true });
+  if (existsSync(join(ROOT, 'branding', 'flags'))) {
+    cpSync(join(ROOT, 'branding', 'flags'), join(PUB, 'assets', 'flags'), { recursive: true });
+  }
 
   if (existsSync(join(ROOT, 'fonts', 'inter', 'inter.css'))) {
     cpSync(join(ROOT, 'fonts', 'inter'), join(PUB, 'fonts', 'inter'), { recursive: true });
