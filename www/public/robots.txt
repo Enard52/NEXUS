@@ -1,9 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /login
-Disallow: /tr/login
-Disallow: /app-auth.html
 Disallow: /light
+Disallow: /tr/login
 Disallow: /tr/light
+Disallow: /app-auth.html
 
 Sitemap: https://nexus-smarthome.pages.dev/sitemap.xml

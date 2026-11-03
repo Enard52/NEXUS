@@ -1,7 +1,17 @@
 import { mkdirSync, writeFileSync, existsSync, cpSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { content, brand, priceFor, PRICES, CHECKOUT_URLS, MANAGE_URL } from './site-content.mjs';
+import {
+  getSiteLanguages,
+  content,
+  brand,
+  priceFor,
+  PRICES,
+  CHECKOUT_URLS,
+  MANAGE_URL,
+} from './site-content.mjs';
+
+const SITE_LANGS = getSiteLanguages();
 import { LEGAL_DOCS } from './site-legal-content.mjs';
 import { siApple, siLinux, siRaspberrypi } from 'simple-icons';
 
@@ -1299,17 +1309,15 @@ function nxToggleTheme(){
 function nxSetLang(lang){
   try{localStorage.setItem('nx-lang',lang)}catch(e){}
   var p=location.pathname;
-  var isTr=(p==='/tr/'||p.indexOf('/tr/')===0);
-  if(lang==='tr'){
-    if(isTr)return;
-    var sub=p;
-    while(sub.charAt(0)==='/')sub=sub.slice(1);
-    location.href='/tr/'+sub+(sub?'':'?lang=tr')+location.hash;
-  }else{
-    if(!isTr)return;
-    var sub=p.slice(3);
-    while(sub.charAt(0)==='/')sub=sub.slice(1);
+  var parts=p.split('/').filter(Boolean);
+  if(parts.length>0&&parts[0]!=='assets'&&parts[0]!=='fonts'&&parts[0]!=='images'&&!parts[0].endsWith('.html')&&parts[0]!=='app-auth.html'){
+    parts.shift();
+  }
+  var sub=parts.join('/');
+  if(lang==='en'){
     location.href='/'+sub+(sub?'':'?lang=en')+location.hash;
+  }else{
+    location.href='/'+lang+'/'+sub+(sub?'':'?lang='+lang)+location.hash;
   }
 }
 
@@ -3167,32 +3175,42 @@ document.addEventListener('DOMContentLoaded',function(){
 // ---------- HTML Üretim Fonksiyonları ----------
 function renderHeader(c, currentPath = '') {
   const isTr = c.lang === 'tr';
-  let enHref = '/?lang=en';
-  let trHref = '/tr/?lang=tr';
-  if (currentPath) {
-    const clean = currentPath.replace(/^\/?(tr\/)?/, '').replace(/\.html$/, '');
-    if (clean && clean !== 'index') {
-      enHref = `/${clean}.html?lang=en`;
-      trHref = `/tr/${clean}.html?lang=tr`;
+  const clean = currentPath.replace(/^\/?[a-z0-9_-]+\//, '').replace(/\.html$/, '');
+  const pathPart = clean && clean !== 'index' ? `${clean}.html` : '';
+
+  const langBtns = SITE_LANGS.map((l) => {
+    const lUpper = l.toUpperCase();
+    if (l === c.lang) {
+      return `<span class="lang-btn active">${lUpper}</span>`;
     }
-  }
+    const href =
+      l === 'en'
+        ? pathPart
+          ? `/${pathPart}?lang=en`
+          : `/?lang=en`
+        : pathPart
+          ? `/${l}/${pathPart}?lang=${l}`
+          : `/${l}/?lang=${l}`;
+    const title = l === 'tr' ? 'Türkçe' : l === 'en' ? 'English' : lUpper;
+    return `<a href="${href}" class="lang-btn" onclick="nxSetLang('${l}')" title="${title}">${lUpper}</a>`;
+  }).join('');
+
   return `<a class="skip" href="#main">${isTr ? 'İçeriğe geç' : 'Skip to content'}</a>
 <header class="hd">
   <div class="wrap">
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
     <nav class="nav" aria-label="${isTr ? 'Ana menü' : 'Main menu'}">
-      ${c.nav.map(([href, label]) => {
-        const h = currentPath && href.startsWith('#') ? c.canonical + href : href;
-        return `<a href="${h}">${esc(label)}</a>`;
-      }).join('\n      ')}
+      ${c.nav
+        .map(([href, label]) => {
+          const h = currentPath && href.startsWith('#') ? c.canonical + href : href;
+          return `<a href="${h}">${esc(label)}</a>`;
+        })
+        .join('\n      ')}
     </nav>
     <div class="nav-controls">
-      <a class="gh-link" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener" aria-label="${isTr ? 'GitHub deposu' : 'GitHub repository'}" title="${isTr ? 'Kaynak kodu GitHub\'da' : 'Source on GitHub'}">${icon('github')}</a>
+      <a class="gh-link" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener" aria-label="${isTr ? 'GitHub deposu' : 'GitHub repository'}" title="${isTr ? "Kaynak kodu GitHub'da" : 'Source on GitHub'}">${icon('github')}</a>
       <div class="lang-switch" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">
-        ${isTr
-          ? `<span class="lang-btn active">TR</span><a href="${enHref}" class="lang-btn" onclick="nxSetLang('en')" title="English">EN</a>`
-          : `<a href="${trHref}" class="lang-btn" onclick="nxSetLang('tr')" title="Türkçe">TR</a><span class="lang-btn active">EN</span>`
-        }
+        ${langBtns}
       </div>
       <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="${isTr ? 'Giriş Yap veya Hesap' : 'Sign In or Account'}">
         <span id="nxNavAuthAvatar"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg></span>
@@ -3897,30 +3915,43 @@ const SITE_ORIGIN = 'https://nexus-smarthome.pages.dev';
    Aynı hata hreflang'da da vardı: her sayfa EN/TR karşılığı olarak ana sayfayı gösteriyordu. */
 function cleanPath(path) {
   let p = String(path || '/').replace(/index\.html$/i, '').replace(/\.html$/i, '');
-  if (p === '/tr' || p === '/tr/') return '/tr/';
+  for (const l of SITE_LANGS) {
+    if (l !== 'en' && (p === `/${l}` || p === `/${l}/`)) return `/${l}/`;
+  }
   p = p.replace(/\/+$/, '');
   return p === '' ? '/' : p;
 }
 
-function routePair(path) {
+function routeForAll(path) {
   const clean = cleanPath(path);
-  const slug = clean.startsWith('/tr') ? clean.slice(3) || '/' : clean;
-  return {
-    clean,
-    en: slug === '/' ? '/' : slug,
-    tr: slug === '/' ? '/tr/' : '/tr' + slug,
-  };
+  const parts = clean.split('/').filter(Boolean);
+  let slug = '/';
+  if (parts.length > 0 && SITE_LANGS.includes(parts[0])) {
+    const rest = parts.slice(1).join('/');
+    slug = rest ? `/${rest}` : '/';
+  } else if (parts.length > 0) {
+    slug = `/${parts.join('/')}`;
+  }
+  const routes = {};
+  for (const l of SITE_LANGS) {
+    routes[l] = l === 'en' ? (slug === '/' ? '/' : slug) : (slug === '/' ? `/${l}/` : `/${l}${slug}`);
+  }
+  return { clean, slug, routes };
 }
 
 function baseHead(c, path, opts = {}) {
-  const route = routePair(path);
-  const url = SITE_ORIGIN + route.clean;
+  const r = routeForAll(path);
+  const url = SITE_ORIGIN + r.clean;
   // Marka kapağı: TR sayfalarda TR, geri kalanlarda EN banner (branding/ tek kaynak).
   // Kök de EN sayfadır: EN kapak. TR sayfalar TR kapak gösterir.
   const ogImage = SITE_ORIGIN + (c.lang === 'tr' ? '/og-cover-tr.jpg' : '/og-cover-en.jpg');
   const jsonLd = opts.schema
     ? `\n<script type="application/ld+json">${JSON.stringify(opts.schema).replace(/</g, '\\u003c')}</script>`
     : '';
+  const hreflangs = SITE_LANGS.map(
+    (l) => `<link rel="alternate" hreflang="${l}" href="${SITE_ORIGIN}${r.routes[l]}"/>`
+  ).join('\n');
+  const xDefault = `<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${r.routes.en}"/>`;
   return `<meta charset="utf-8"/>
 <script>
 (function(){
@@ -3952,9 +3983,8 @@ function baseHead(c, path, opts = {}) {
 <title>${esc(opts.title || c.title)}</title>
 <meta name="description" content="${esc(opts.description || c.description)}"/>
 <link rel="canonical" href="${url}"/>
-<link rel="alternate" hreflang="en" href="${SITE_ORIGIN}${route.en}"/>
-<link rel="alternate" hreflang="tr" href="${SITE_ORIGIN}${route.tr}"/>
-<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${route.en}"/>
+${hreflangs}
+${xDefault}
 <link rel="icon" href="/icon.svg" type="image/svg+xml"/>
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="manifest" href="/manifest.webmanifest"/>
@@ -4447,16 +4477,19 @@ const SEO_ROUTES = [
   ['/code-signing', 0.3, 'monthly'],
   ['/contribute', 0.4, 'monthly'],
 ];
-const urlFor = (route, lang) => (lang === 'tr' ? (route === '/' ? '/tr/' : '/tr' + route) : route);
+const urlFor = (route, lang) => (lang === 'en' ? route : (route === '/' ? `/${lang}/` : `/${lang}${route}`));
 
 function renderRobots() {
+  const disallows = [];
+  for (const l of SITE_LANGS) {
+    const prefix = l === 'en' ? '' : `/${l}`;
+    disallows.push(`Disallow: ${prefix}/login`);
+    disallows.push(`Disallow: ${prefix}/light`);
+  }
   return `User-agent: *
 Allow: /
-Disallow: /login
-Disallow: /tr/login
+${disallows.join('\n')}
 Disallow: /app-auth.html
-Disallow: /light
-Disallow: /tr/light
 
 Sitemap: ${SITE_ORIGIN}/sitemap.xml
 `;
@@ -4465,17 +4498,18 @@ Sitemap: ${SITE_ORIGIN}/sitemap.xml
 function renderSitemap(today) {
   const rows = [];
   for (const [route, pr, cf] of SEO_ROUTES) {
-    for (const lang of ['en', 'tr']) {
-      const en = SITE_ORIGIN + urlFor(route, 'en');
-      const tr = SITE_ORIGIN + urlFor(route, 'tr');
-      const loc = lang === 'tr' ? tr : en;
-      const prio = lang === 'tr' ? Math.max(pr - 0.1, 0.2).toFixed(1) : pr.toFixed(1);
+    for (const lang of SITE_LANGS) {
+      const loc = SITE_ORIGIN + urlFor(route, lang);
+      const prio = lang !== 'en' ? Math.max(pr - 0.1, 0.2).toFixed(1) : pr.toFixed(1);
+      const alternates = SITE_LANGS.map(
+        (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE_ORIGIN}${urlFor(route, l)}" />`
+      ).join('\n');
+      const xDefault = `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${urlFor(route, 'en')}" />`;
       rows.push(
         `  <url>\n` +
           `    <loc>${loc}</loc>\n` +
-          `    <xhtml:link rel="alternate" hreflang="en" href="${en}" />\n` +
-          `    <xhtml:link rel="alternate" hreflang="tr" href="${tr}" />\n` +
-          `    <xhtml:link rel="alternate" hreflang="x-default" href="${en}" />\n` +
+          `${alternates}\n` +
+          `${xDefault}\n` +
           `    <lastmod>${today}</lastmod>\n` +
           `    <changefreq>${cf}</changefreq>\n` +
           `    <priority>${prio}</priority>\n` +
@@ -4574,7 +4608,6 @@ function build() {
   const today = new Date().toISOString().slice(0, 10);
 
   mkdirSync(join(PUB, 'assets'), { recursive: true });
-  mkdirSync(join(PUB, 'tr'), { recursive: true });
   mkdirSync(join(PUB, 'fonts', 'inter'), { recursive: true });
 
   if (existsSync(join(ROOT, 'fonts', 'inter', 'inter.css'))) {
@@ -4596,35 +4629,35 @@ window.NEXUS_CLOUD = {
     'utf8'
   );
 
-  writeFileSync(join(PUB, 'index.html'), renderLanding(content.en, hasShots), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'index.html'), renderLanding(content.tr, hasShots), 'utf8');
-  writeFileSync(join(PUB, 'about.html'), renderAbout(content.en), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'about.html'), renderAbout(content.tr), 'utf8');
+  for (const lang of SITE_LANGS) {
+    const isEn = lang === 'en';
+    const langDir = isEn ? PUB : join(PUB, lang);
+    mkdirSync(langDir, { recursive: true });
+    const c = content[lang];
 
-  // Yasal Sayfalar (Yeni Tasarım & Tipografi)
-  writeFileSync(join(PUB, 'privacy.html'), renderLegalDoc(content.en, 'privacy', LEGAL_DOCS.privacyEn), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'privacy.html'), renderLegalDoc(content.tr, 'privacy', LEGAL_DOCS.privacyTr), 'utf8');
-  writeFileSync(join(PUB, 'terms.html'), renderLegalDoc(content.en, 'terms', LEGAL_DOCS.termsEn), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'terms.html'), renderLegalDoc(content.tr, 'terms', LEGAL_DOCS.termsTr), 'utf8');
-  writeFileSync(join(PUB, 'refund.html'), renderLegalDoc(content.en, 'refund', LEGAL_DOCS.refundEn), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'refund.html'), renderLegalDoc(content.tr, 'refund', LEGAL_DOCS.refundTr), 'utf8');
-writeFileSync(join(PUB, 'code-signing.html'), renderLegalDoc(content.en, 'code-signing', LEGAL_DOCS.codeSigningEn), 'utf8');
-writeFileSync(join(PUB, 'tr', 'code-signing.html'), renderLegalDoc(content.tr, 'code-signing', LEGAL_DOCS.codeSigningTr), 'utf8');
-writeFileSync(join(PUB, 'contribute.html'), renderLegalDoc(content.en, 'contribute', LEGAL_DOCS.contributeEn), 'utf8');
-writeFileSync(join(PUB, 'tr', 'contribute.html'), renderLegalDoc(content.tr, 'contribute', LEGAL_DOCS.contributeTr), 'utf8');
+    writeFileSync(join(langDir, 'index.html'), renderLanding(c, hasShots), 'utf8');
+    writeFileSync(join(langDir, 'about.html'), renderAbout(c), 'utf8');
 
-  writeFileSync(join(PUB, 'light.html'), renderLightRedirect(false), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'light.html'), renderLightRedirect(true), 'utf8');
+    // Legal docs
+    const privacyDoc = lang === 'tr' ? LEGAL_DOCS.privacyTr : LEGAL_DOCS.privacyEn;
+    const termsDoc = lang === 'tr' ? LEGAL_DOCS.termsTr : LEGAL_DOCS.termsEn;
+    const refundDoc = lang === 'tr' ? LEGAL_DOCS.refundTr : LEGAL_DOCS.refundEn;
+    const codeSigningDoc = lang === 'tr' ? LEGAL_DOCS.codeSigningTr : LEGAL_DOCS.codeSigningEn;
+    const contributeDoc = lang === 'tr' ? LEGAL_DOCS.contributeTr : LEGAL_DOCS.contributeEn;
 
-  // login.html de artık üretiliyor: elle kopyalanan sürüm APP_URL'den kopabiliyordu.
-  writeFileSync(join(PUB, 'login.html'), renderSignInRedirect(false), 'utf8');
-  writeFileSync(join(PUB, 'tr', 'login.html'), renderSignInRedirect(true), 'utf8');
+    writeFileSync(join(langDir, 'privacy.html'), renderLegalDoc(c, 'privacy', privacyDoc), 'utf8');
+    writeFileSync(join(langDir, 'terms.html'), renderLegalDoc(c, 'terms', termsDoc), 'utf8');
+    writeFileSync(join(langDir, 'refund.html'), renderLegalDoc(c, 'refund', refundDoc), 'utf8');
+    writeFileSync(join(langDir, 'code-signing.html'), renderLegalDoc(c, 'code-signing', codeSigningDoc), 'utf8');
+    writeFileSync(join(langDir, 'contribute.html'), renderLegalDoc(c, 'contribute', contributeDoc), 'utf8');
+
+    writeFileSync(join(langDir, 'light.html'), renderLightRedirect(lang === 'tr'), 'utf8');
+    writeFileSync(join(langDir, 'login.html'), renderSignInRedirect(lang === 'tr'), 'utf8');
+    writeFileSync(join(langDir, '404.html'), renderNotFound(c), 'utf8');
+  }
+
   // Mobil Google giriş dönüşü: belirteçleri uygulamanın nexus://auth adresine taşır.
   writeFileSync(join(PUB, 'app-auth.html'), renderAppAuth(), 'utf8');
-
-  // 404 artık üretimin parçası: bayat elle kopya (253 KB, ölü bağlantılar) siliniyor.
-  writeFileSync(join(PUB, '404.html'), renderNotFound(content.en), 'utf8');
-  writeFileSync(join(PUB, 'tr', '404.html'), renderNotFound(content.tr), 'utf8');
 
   // Keşif dosyaları da üretime dahil (index.html <link rel="manifest"> bunlara işaret ediyor).
   // Marka görselleri: og kapakları (1200×630) + e-posta üst banner türevleri (~40 KB JPEG).
@@ -4640,16 +4673,8 @@ writeFileSync(join(PUB, 'tr', 'contribute.html'), renderLegalDoc(content.tr, 'co
   writeFileSync(join(PUB, 'manifest.webmanifest'), renderManifest(), 'utf8');
   writeFileSync(join(PUB, '_headers'), renderHeaders(), 'utf8');
 
-  console.log('✓ index.html');
-  console.log('✓ tr/index.html');
-  console.log('✓ 404.html & tr/404.html');
-  console.log('✓ login.html & tr/login.html');
+  console.log(`✓ site pages built for languages: ${SITE_LANGS.join(', ')}`);
   console.log('✓ app-auth.html');
-  console.log('✓ about.html');
-  console.log('✓ tr/about.html');
-  console.log('✓ privacy.html & tr/privacy.html');
-  console.log('✓ terms.html & tr/terms.html');
-  console.log('✓ refund.html & tr/refund.html');
   console.log('✓ assets/site.js');
   console.log('✓ assets/site-boot.js');
   console.log('✓ robots.txt & sitemap.xml & manifest.webmanifest & _headers');

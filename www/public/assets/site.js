@@ -8,17 +8,15 @@ function nxToggleTheme(){
 function nxSetLang(lang){
   try{localStorage.setItem('nx-lang',lang)}catch(e){}
   var p=location.pathname;
-  var isTr=(p==='/tr/'||p.indexOf('/tr/')===0);
-  if(lang==='tr'){
-    if(isTr)return;
-    var sub=p;
-    while(sub.charAt(0)==='/')sub=sub.slice(1);
-    location.href='/tr/'+sub+(sub?'':'?lang=tr')+location.hash;
-  }else{
-    if(!isTr)return;
-    var sub=p.slice(3);
-    while(sub.charAt(0)==='/')sub=sub.slice(1);
+  var parts=p.split('/').filter(Boolean);
+  if(parts.length>0&&parts[0]!=='assets'&&parts[0]!=='fonts'&&parts[0]!=='images'&&!parts[0].endsWith('.html')&&parts[0]!=='app-auth.html'){
+    parts.shift();
+  }
+  var sub=parts.join('/');
+  if(lang==='en'){
     location.href='/'+sub+(sub?'':'?lang=en')+location.hash;
+  }else{
+    location.href='/'+lang+'/'+sub+(sub?'':'?lang='+lang)+location.hash;
   }
 }
 
@@ -1471,7 +1469,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
   // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
-  var NX_VER="1.0.41";
+  var NX_VER="1.0.48";
   function nxVerLess(a,b){
     var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
     var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});

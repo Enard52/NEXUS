@@ -16,7 +16,7 @@ import { readFile } from "node:fs/promises";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, extname, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { PRICES, APP_URL, CHECKOUT_URLS } from "./site-content.mjs";
+import { PRICES, APP_URL, CHECKOUT_URLS, getSiteLanguages } from "./site-content.mjs";
 
 const SMOKE = process.argv.includes("--smoke");
 /* --live: yayından SONRA gerçek adreste denetlenir (Cloudflare'in temiz URL, 404 ve
@@ -51,24 +51,25 @@ const info = (name, detail) => {
   console.log("ℹ " + name + (detail ? " — " + detail : ""));
 };
 
-const PAGES = {
-  "index.html": "en",
-  "tr/index.html": "tr",
-  "about.html": "en",
-  "tr/about.html": "tr",
-  "privacy.html": "en",
-  "tr/privacy.html": "tr",
-  "terms.html": "en",
-  "tr/terms.html": "tr",
-  "refund.html": "en",
-  "tr/refund.html": "tr",
-  "404.html": "en",
-  "tr/404.html": "tr",
-  "light.html": "en",
-  "tr/light.html": "tr",
-  "login.html": "en",
-  "tr/login.html": "tr",
-};
+const SITE_LANGS = getSiteLanguages();
+const BASE_PAGE_NAMES = [
+  "index.html",
+  "about.html",
+  "privacy.html",
+  "terms.html",
+  "refund.html",
+  "404.html",
+  "light.html",
+  "login.html",
+];
+
+const PAGES = {};
+for (const lang of SITE_LANGS) {
+  for (const name of BASE_PAGE_NAMES) {
+    const rel = lang === "en" ? name : `${lang}/${name}`;
+    PAGES[rel] = lang;
+  }
+}
 
 const attr = (html, re) => (html.match(re) || [])[1] || "";
 const stripNoise = (html) =>
@@ -109,8 +110,16 @@ for (const [file, lang] of Object.entries(PAGES)) {
     "\u00E2\u20AC\u201D", // —
   ];
   check(`${label}: mojibake yok`, !MOJI.some((m) => html.includes(m)));
-  const hasLang = /<html[^>]+lang="(en|tr)"/.test(html);
-  if (!/light/.test(file)) check(`${label}: <html lang> doğru`, hasLang && html.includes(`lang="${lang}"`));
+  const hasLang = new RegExp(`<html[^>]+lang="${lang}"`).test(html);
+  if (!/light/.test(file)) check(`${label}: <html lang> doğru`, hasLang);
+  if (lang !== "tr" && !/light|login/.test(file)) {
+    const text = stripNoise(html).toLowerCase();
+    const trLeaks = ["için", "hakkında", "nasıl çalışır", "özellikler"];
+    const foundLeak = trLeaks.find(
+      (word) => text.includes(` ${word} `) || text.startsWith(`${word} `) || text.endsWith(` ${word}`)
+    );
+    check(`${label}: Türkçe sızıntı yok`, !foundLeak, foundLeak ? `bulundu: ${foundLeak}` : undefined);
+  }
 }
 
 /* --- ana sayfa içerik doğruluğu (tarayıcıya gerek yok: değerler build'de yazılıyor) --- */
@@ -381,7 +390,9 @@ for (const [label, file, canonical] of [
     const sm = readFileSync(sitemapPath, "utf8");
     const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     check("sitemap: .html adresi yok", !locs.some((l) => l.endsWith(".html")), locs.filter((l) => l.endsWith(".html")).join(","));
-    check("sitemap: 14 adres (7 sayfa × 2 dil)", locs.length === 14, `${locs.length}`);
+    const langs = getSiteLanguages();
+    const expectedCount = 7 * langs.length;
+    check(`sitemap: ${expectedCount} adres (7 sayfa × ${langs.length} dil)`, locs.length === expectedCount, `${locs.length}`);
     for (const want of [`${SITE_ORIGIN}/`, `${SITE_ORIGIN}/tr/`, `${SITE_ORIGIN}/about`, `${SITE_ORIGIN}/tr/privacy`])
       check(`sitemap: ${want.replace(SITE_ORIGIN, "")} listeli`, locs.includes(want));
     check("sitemap: XML gövdesi kapalı", sm.trimEnd().endsWith("</urlset>"));
