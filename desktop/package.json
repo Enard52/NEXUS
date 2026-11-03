@@ -45,6 +45,7 @@
     },
     "files": [
       "main.cjs",
+      "i18n.cjs",
       "preload.cjs",
       "ssdp.cjs",
       "matter-bridge.cjs",

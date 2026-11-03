@@ -101,11 +101,12 @@
     // Dil seçimi tüm kullanıcılara açık: EN kullanıcısı TR'ye, TR kullanıcısı EN'ye geçebilir.
     if (next !== 'tr' && next !== 'en' && !Object.prototype.hasOwnProperty.call(COMMUNITY_LANGS, next)) return;
     try { localStorage.setItem(KEY, next); } catch (e) {}
+    try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(next); } catch (e) {}
     location.reload();
   };
   document.documentElement.setAttribute('lang', uiLang);
   if (COMMUNITY_LANGS[uiLang] && COMMUNITY_LANGS[uiLang].rtl) document.documentElement.setAttribute('dir', 'rtl');
-  try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(lang); } catch (e) {}
+  try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(uiLang); } catch (e) {}
   if (lang === 'en' && document.readyState === 'loading' && !window.__nexusI18n) {
     // Topluluk dilinde İngilizce sözlük önce yüklenir (eksik metin İngilizce kalır), dil dosyası üstüne biner.
     document.write('<script src="lang-en.js"><\/script>' + (uiLang !== 'en' ? '<script src="lang-' + uiLang + '.js"><\/script>' : '') + '<script src="i18n.js"><\/script>');

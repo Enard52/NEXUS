@@ -36,6 +36,12 @@ const http = require("node:http");
 const tcp = require("node:net");
 const dgram = require("node:dgram");
 const { pathToFileURL } = require("node:url");
+const {
+  MENU_STRINGS,
+  localize,
+  formatDevicesStatus,
+  isSupportedLanguage,
+} = require("./i18n.cjs");
 
 const APP_DIR = path.join(__dirname, "app");
 const SCHEME = "nexus";
@@ -155,7 +161,7 @@ function detectLang() {
   return tags.some((t) => /^tr\b/i.test(t || "")) ? "tr" : "en";
 }
 let uiLang = detectLang();
-const L = (tr, en) => (uiLang === "en" ? en : tr);
+const L = (tr, en) => localize(uiLang, tr, en);
 
 // ---------- Arka planda çalışma / tepsi ayarları ----------
 // Akıllı ev asistanı olduğu için uygulama pencere kapatılsa da çalışmaya devam eder
@@ -287,10 +293,7 @@ function trayTemplate() {
   const items = [];
   if (lastTrayStatus && lastTrayStatus.devices > 0) {
     items.push({
-      label: L(
-        `Ev: ${lastTrayStatus.devices} Cihaz (${lastTrayStatus.on} Açık)`,
-        `Home: ${lastTrayStatus.devices} Devices (${lastTrayStatus.on} On)`,
-      ),
+      label: formatDevicesStatus(lastTrayStatus.devices, lastTrayStatus.on, uiLang),
       icon: trayIcon("status") || undefined,
       enabled: false,
     });
@@ -1328,15 +1331,9 @@ function createWindow() {
   win.loadURL(START_URL);
 }
 
-// Menü ve iletişim kutuları uygulamanın diliyle (Türkçe / English) gösterilir.
-function buildMenu() {
-  const isMac = process.platform === "darwin";
-  if (!isMac) {
-    Menu.setApplicationMenu(null);
-    if (win && !win.isDestroyed()) win.removeMenu();
-    return;
-  }
-  const template = [
+// Menü ve iletişim kutuları uygulamanın diliyle gösterilir.
+function menuTemplate() {
+  return [
     {
       label: "NEXUS",
       submenu: [
@@ -1389,14 +1386,23 @@ function buildMenu() {
       label: L("Yardım", "Help"),
       submenu: [
         {
-          label: "NEXUS Sitesi",
+          label: L("NEXUS Sitesi", "NEXUS Website"),
           click: () => shell.openExternal("https://nexus-smarthome.pages.dev"),
         },
         { label: L("Sürüm ", "Version ") + app.getVersion(), enabled: false },
       ],
     },
   ];
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
+function buildMenu() {
+  const isMac = process.platform === "darwin";
+  if (!isMac) {
+    Menu.setApplicationMenu(null);
+    if (win && !win.isDestroyed()) win.removeMenu();
+    return;
+  }
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate()));
 }
 
 // Uygulama teması değişince pencere düğmelerinin simge rengi zemine göre okunur kalsın
@@ -1414,7 +1420,7 @@ ipcMain.on("app:title-theme", (_e, dark) => {
 });
 
 ipcMain.on("app:language", (_e, lang) => {
-  if ((lang === "tr" || lang === "en") && lang !== uiLang) {
+  if (isSupportedLanguage(lang) && lang !== uiLang) {
     uiLang = lang;
     buildMenu();
     updateTrayMenu();
@@ -1753,19 +1759,23 @@ function setupJumpList() {
     description,
   });
   try {
-    app.setUserTasks([
-      task("home", L("Ev", "Home"), L("Ana ekranı aç", "Open the home screen")),
-      task("pair", L("Cihaz Ekle", "Add device"), L("Yeni cihaz ekle", "Add a new device")),
-      task(
-        "messages",
-        L("Mesaj Merkezi", "Message Center"),
-        L("Bildirimleri aç", "Open notifications"),
-      ),
-      task("settings", L("Ayarlar", "Settings"), L("Ayarları aç", "Open settings")),
-    ]);
+    app.setUserTasks(jumpListTasks(task));
   } catch {
     /* JumpList desteklenmiyorsa sorun değil */
   }
+}
+
+function jumpListTasks(task = (k, t, d) => ({ key: k, title: t, description: d })) {
+  return [
+    task("home", L("Ev", "Home"), L("Ana ekranı aç", "Open the home screen")),
+    task("pair", L("Cihaz Ekle", "Add device"), L("Yeni cihaz ekle", "Add a new device")),
+    task(
+      "messages",
+      L("Mesaj Merkezi", "Message Center"),
+      L("Bildirimleri aç", "Open notifications"),
+    ),
+    task("settings", L("Ayarlar", "Settings"), L("Ayarları aç", "Open settings")),
+  ];
 }
 
 // ---------- Ctrl+Alt+N: uygulamayı (tepsideyken bile) komut paletiyle aç ----------
@@ -1827,3 +1837,16 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+
+module.exports = {
+  detectLang,
+  getUiLang: () => uiLang,
+  setUiLang: (lang) => {
+    uiLang = lang;
+  },
+  L,
+  MENU_STRINGS,
+  menuTemplate,
+  trayTemplate,
+  jumpListTasks,
+};
