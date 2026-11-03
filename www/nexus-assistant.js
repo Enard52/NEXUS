@@ -289,11 +289,11 @@
         var id = SCENE_WORDS[s][0];
         var r = N.runScene(id);
         LAST_LAN = (r.lanDevices || []).slice();
-        var nm = SCENE_NAMES[id][EN ? 1 : 0];
+        var nm = window.nexusT ? nexusT(SCENE_NAMES[id][0], SCENE_NAMES[id][1]) : SCENE_NAMES[id][(typeof window !== "undefined" && window.nexusLang === "en") ? 1 : 0];
         if (!r.changed) return { reply: V([nm + " için ayarlanabilecek bir cihaz bulamadım.", nm + " senaryosu şu an hiçbir cihazını etkilemiyor."], ["I could not find a device to adjust for " + nm + ".", "The " + nm + " scene does not affect any of your devices right now."]) };
         return {
           reply: V(["Tamamdır, " + nm + " devrede; " + r.changed + " cihazı ayarladım.", nm + " senaryosunu çalıştırdım, " + r.changed + " cihaz hazır."], ["Done, " + nm + " is on; I adjusted " + r.changed + " device" + (r.changed > 1 ? "s" : "") + ".", "Ran " + nm + ", " + r.changed + " device" + (r.changed > 1 ? "s are" : " is") + " set."]) + lanNote(r),
-          widget: widget("sparkles", nm, T(r.changed + " cihaz", r.changed + " device" + (r.changed > 1 ? "s" : "")))
+          widget: widget("sparkles", nm, format(r.changed > 1 ? nexusT("{0} cihaz", "{0} devices") : nexusT("{0} cihaz", "{0} device"), [r.changed]))
         };
       }
     }
@@ -358,7 +358,7 @@
       var rt = apply(cl, "target", t);
       cl.forEach(function (x) { if (x.kind === "ac" && N.hasCap(x.device, "switch")) N.setField(x.index, "switch", true); });
       var shown = N.fmtTemp ? N.fmtTemp(t) : t + "°";
-      return { reply: V([names(rt.changed) + " artık " + shown + ".", "Tamam, " + names(rt.changed) + " " + shown + " olarak ayarlandı."], [names(rt.changed) + " is now at " + shown + ".", "Okay, " + names(rt.changed) + " set to " + shown + "."]) + lanNote(rt), widget: widget("thermometer", T("Hedef sıcaklık", "Target temperature"), shown) };
+      return { reply: V([names(rt.changed) + " artık " + shown + ".", "Tamam, " + names(rt.changed) + " " + shown + " olarak ayarlandı."], [names(rt.changed) + " is now at " + shown + ".", "Okay, " + names(rt.changed) + " set to " + shown + "."]) + lanNote(rt), widget: widget("thermometer", nexusT("Hedef sıcaklık", "Target temperature"), shown) };
     }
 
     // Parlaklık
@@ -368,7 +368,7 @@
       if (!lights.length) return { reply: V(["Parlaklığını ayarlayabileceğim eşleşmiş bir ışık cihazı bulamadım.", "Parlaklık ayarı olan eşleşmiş bir ışık cihazı göremiyorum."], ["I could not find a light with brightness control.", "I cannot see a paired light that supports dimming."]) };
       var b = Math.max(1, Math.min(100, +(pct[1] || pct[2])));
       var rb = apply(lights, "brightness", b);
-      return { reply: V([names(rb.changed) + " parlaklığını %" + b + " yaptım.", "Tamam, " + names(rb.changed) + " şimdi %" + b + " parlaklıkta."], ["I set " + names(rb.changed) + " to " + b + "% brightness.", "Okay, " + names(rb.changed) + " is now at " + b + "%."]) + lanNote(rb), widget: widget("sun", T("Parlaklık", "Brightness"), "%" + b) };
+      return { reply: V([names(rb.changed) + " parlaklığını %" + b + " yaptım.", "Tamam, " + names(rb.changed) + " şimdi %" + b + " parlaklıkta."], ["I set " + names(rb.changed) + " to " + b + "% brightness.", "Okay, " + names(rb.changed) + " is now at " + b + "%."]) + lanNote(rb), widget: widget("sun", nexusT("Parlaklık", "Brightness"), "%" + b) };
     }
 
     // Aç / kapat
@@ -376,8 +376,20 @@
     if (wantOn || wantOff) {
       var turnOn = wantOn && !wantOff;
       if (tg.by === "none") {
-        return { reply: T("Hangi cihazı " + (turnOn ? "açayım" : "kapatayım") + "? Cihazın adını, odasını ya da \"ışıklar\", \"prizler\" gibi bir türü yazabilirsin. Eşleşmiş cihazların: " + names(all.map(function (d) { return { device: d }; }), 4) + ".",
-          "Which device should I turn " + (turnOn ? "on" : "off") + "? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: " + names(all.map(function (d) { return { device: d }; }), 4) + ".") };
+        return {
+          reply: format(
+            turnOn
+              ? nexusT(
+                  "Hangi cihazı açayım? Cihazın adını, odasını ya da \"ışıklar\", \"prizler\" gibi bir türü yazabilirsin. Eşleşmiş cihazların: {0}.",
+                  "Which device should I turn on? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: {0}."
+                )
+              : nexusT(
+                  "Hangi cihazı kapatayım? Cihazın adını, odasını ya da \"ışıklar\", \"prizler\" gibi bir türü yazabilirsin. Eşleşmiş cihazların: {0}.",
+                  "Which device should I turn off? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: {0}."
+                ),
+            [names(all.map(function (d) { return { device: d }; }), 4)]
+          )
+        };
       }
       var pool = tg.list.filter(powerable);
       if (tg.by === "all" && !turnOn) {
@@ -385,8 +397,24 @@
         pool = pool.filter(function (x) { return ["light", "media", "purifier", "ac"].indexOf(x.kind) !== -1; });
       }
       if (!pool.length) {
-        var what = tg.cat ? { light: T("ışık", "light"), plug: T("priz", "plug"), climate: T("klima/ısıtıcı", "AC or heater"), media: T("TV/hoparlör", "TV or speaker"), purifier: T("hava temizleyici", "air purifier") }[tg.cat] || T("cihaz", "device") : T("cihaz", "device");
-        return { reply: T("Eşleşmiş cihazlar arasında açılıp kapatılabilen bir " + what + " cihazı bulunamadı" + (tg.room ? " (" + tg.room + ")" : "") + ".", "No paired " + what + " that can be switched was found" + (tg.room ? " (" + tg.room + ")" : "") + ".") };
+        var what = tg.cat
+          ? {
+              light: nexusT("ışık", "light"),
+              plug: nexusT("priz", "plug"),
+              climate: nexusT("klima/ısıtıcı", "AC or heater"),
+              media: nexusT("TV/hoparlör", "TV or speaker"),
+              purifier: nexusT("hava temizleyici", "air purifier")
+            }[tg.cat] || nexusT("cihaz", "device")
+          : nexusT("cihaz", "device");
+        return {
+          reply: format(
+            nexusT(
+              "Eşleşmiş cihazlar arasında açılıp kapatılabilen bir {0} cihazı bulunamadı{1}.",
+              "No paired {0} that can be switched was found{1}."
+            ),
+            [what, tg.room ? " (" + tg.room + ")" : ""]
+          )
+        };
       }
       var already = pool.filter(function (x) { return N.stateOf(x.device).switch === turnOn; });
       var rs = apply(pool, "switch", turnOn);
@@ -404,7 +432,7 @@
         ]
       );
       if (already.length === pool.length) msg = V([names(rs.changed) + " zaten " + (turnOn ? "açıktı" : "kapalıydı") + ", yine de komutu gönderdim.", "Bu zaten " + (turnOn ? "açıktı" : "kapalıydı") + " (" + names(rs.changed) + "); komutu yine de iletmiş oldum."], [names(rs.changed) + " " + (pool.length > 1 ? "were" : "was") + " already " + (turnOn ? "on" : "off") + ", I sent the command anyway.", "That was already " + (turnOn ? "on" : "off") + " (" + names(rs.changed) + "); I sent it again just in case."]);
-      return { reply: msg + lanNote(rs), widget: widget(turnOn ? "power" : "power-off", turnOn ? T("Açıldı", "Turned on") : T("Kapatıldı", "Turned off"), T(rs.changed.length + " cihaz", rs.changed.length + " device" + (rs.changed.length > 1 ? "s" : ""))) };
+      return { reply: msg + lanNote(rs), widget: widget(turnOn ? "power" : "power-off", turnOn ? nexusT("Açıldı", "Turned on") : nexusT("Kapatıldı", "Turned off"), format(rs.changed.length > 1 ? nexusT("{0} cihaz", "{0} devices") : nexusT("{0} cihaz", "{0} device"), [rs.changed.length])) };
     }
 
     return { reply: V(["Bunu tam çıkaramadım. ", "Hmm, bunu anlayamadım. ", "Tam anlayamadım ama yardımcı olmak isterim. "], ["I did not quite catch that. ", "Hmm, I am not sure what you mean. ", "I did not get that, but I would love to help. "]), unknown: true };
@@ -530,8 +558,16 @@
     var scene = sceneId ? QS.available().filter(function (x) { return x.id === sceneId; })[0] : null;
     // Senaryo adı açıkça söylendiyse ve cihazlarda bir şey değiştirmiyorsa söylenir; yalnızca ipucuyla eşleştiyse cihaz adımlarına bakılır.
     if (sceneId && !scene && !byHint) {
-      var nm0 = SCENE_NAMES[sceneId] ? SCENE_NAMES[sceneId][EN ? 1 : 0] : (N.SCENES && N.SCENES[sceneId] ? N.SCENES[sceneId].title : sceneId);
-      return { reply: T(nm0 + " senaryosu eşleşmiş cihazlarında hiçbir şeyi değiştirmiyor, bu yüzden kaydetmedim. Uygun bir cihaz ekleyince tekrar dene.", "The " + nm0 + " scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.") };
+      var nm0 = SCENE_NAMES[sceneId] ? (window.nexusT ? nexusT(SCENE_NAMES[sceneId][0], SCENE_NAMES[sceneId][1]) : SCENE_NAMES[sceneId][0]) : (N.SCENES && N.SCENES[sceneId] ? N.SCENES[sceneId].title : sceneId);
+      return {
+        reply: format(
+          nexusT(
+            "{0} senaryosu eşleşmiş cihazlarında hiçbir şeyi değiştirmiyor, bu yüzden kaydetmedim. Uygun bir cihaz ekleyince tekrar dene.",
+            "The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device."
+          ),
+          [nm0]
+        )
+      };
     }
     // 2) Yoksa cihaz adımları ("salon ışığını kapat", "klimayı 22 derece yap")
     var steps = scene ? null : deviceSteps(text, all);
@@ -566,10 +602,30 @@
     var listName = type === "automation" ? T("Otomasyonlar", "Automations") : T("Tıkla ve Çalıştır", "Tap to Run");
     return {
       reply: type === "automation"
-        ? T("\"" + title + "\" otomasyonunu kurdum: " + when.toLocaleLowerCase("tr-TR") + " çalışacak ve " + count + " cihazı ayarlayacak. Otomasyonlar uygulama açıkken (masaüstünde tepsideyken de) çalışır.",
-          "I set up the \"" + title + "\" automation: it runs " + when.toLowerCase() + " and adjusts " + count + " device" + (count > 1 ? "s" : "") + ". Automations run while the app is open (also from the tray on desktop).")
-        : T("\"" + title + "\" senaryosunu Tıkla ve Çalıştır listene ekledim; dokununca " + count + " cihazı ayarlar.",
-          "I added \"" + title + "\" to Tap to Run; one tap adjusts " + count + " device" + (count > 1 ? "s" : "") + "."),
+        ? format(
+            count > 1
+              ? nexusT(
+                  "\"{0}\" otomasyonunu kurdum: {1} çalışacak ve {2} cihazı ayarlayacak. Otomasyonlar uygulama açıkken (masaüstünde tepsideyken de) çalışır.",
+                  "I set up the \"{0}\" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop)."
+                )
+              : nexusT(
+                  "\"{0}\" otomasyonunu kurdum: {1} çalışacak ve {2} cihazı ayarlayacak. Otomasyonlar uygulama açıkken (masaüstünde tepsideyken de) çalışır.",
+                  "I set up the \"{0}\" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop)."
+                ),
+            [title, when.toLocaleLowerCase("tr-TR"), count]
+          )
+        : format(
+            count > 1
+              ? nexusT(
+                  "\"{0}\" senaryosunu Tıkla ve Çalıştır listene ekledim; dokununca {1} cihazı ayarlar.",
+                  "I added \"{0}\" to Tap to Run; one tap adjusts {1} devices."
+                )
+              : nexusT(
+                  "\"{0}\" senaryosunu Tıkla ve Çalıştır listene ekledim; dokununca {1} cihazı ayarlar.",
+                  "I added \"{0}\" to Tap to Run; one tap adjusts {1} device."
+                ),
+            [title, count]
+          ),
       widget: createdWidget(scene ? (QS.metaFor(scene.id) || {}).icon || "sparkles" : "zap", title, listName + (when ? " · " + when : ""), type),
       created: type
     };
@@ -658,8 +714,13 @@
   function modeInfo(id) { return MODES.filter(function (m) { return m.id === id; })[0] || MODES[0]; }
   var modes = {
     list: function () {
-      var en = window.nexusLang === "en";
-      return MODES.map(function (m) { return { id: m.id, label: en ? m.en : m.tr, hint: en ? m.hintEn : m.hintTr }; });
+      return MODES.map(function (m) {
+        return {
+          id: m.id,
+          label: window.nexusT ? nexusT(m.tr, m.en) : ((typeof window !== "undefined" && window.nexusLang === "en") ? m.en : m.tr),
+          hint: window.nexusT ? nexusT(m.hintTr, m.hintEn) : ((typeof window !== "undefined" && window.nexusLang === "en") ? m.hintEn : m.hintTr)
+        };
+      });
     },
     get: function () { return mode; },
     set: function (id) {
@@ -667,15 +728,20 @@
       window.__nexusAiCreateType = mode === "automation" ? "automation" : "clickrun";
       return mode;
     },
-    hint: function () { var m = modeInfo(mode); return window.nexusLang === "en" ? m.hintEn : m.hintTr; },
+    hint: function () {
+      var m = modeInfo(mode);
+      return window.nexusT ? nexusT(m.hintTr, m.hintEn) : ((typeof window !== "undefined" && window.nexusLang === "en") ? m.hintEn : m.hintTr);
+    },
     // Motora giden metin: oluşturma modlarında istek "oluştur" niyetiyle işaretlenir (kullanıcıya gösterilen metin değişmez).
     query: function (text) { return mode === "scenario" || mode === "automation" ? "yapay zeka ile olustur: " + text : text; },
     // Cihaz modunda anlaşılmayan mesaj yapay zekâya gitmez.
     local: function () { return mode === "device"; },
     notUnderstood: function () {
-      return window.nexusLang === "en"
-        ? "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\"."
-        : "Bu bir cihaz komutu gibi anlaşılmadı. Örneğin: \"salon ışığını kapat\" ya da \"klimayı 22 yap\".";
+      return window.nexusT
+        ? nexusT("Bu bir cihaz komutu gibi anlaşılmadı. Örneğin: \"salon ışığını kapat\" ya da \"klimayı 22 yap\".", "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\".")
+        : ((typeof window !== "undefined" && window.nexusLang === "en")
+          ? "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\"."
+          : "Bu bir cihaz komutu gibi anlaşılmadı. Örneğin: \"salon ışığını kapat\" ya da \"klimayı 22 yap\".");
     }
   };
 
