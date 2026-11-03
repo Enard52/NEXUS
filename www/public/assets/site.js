@@ -4,6 +4,12 @@ function nxToggleTheme(){
   try{localStorage.setItem('nx-site-theme',d)}catch(e){}
 }
 
+// Dil menüsü düğmenin altında ortalanır; ekran kenarına taşarsa yatayda kaydırılır
+document.addEventListener('toggle',function(ev){var d=ev.target;if(!d||!d.classList||!d.classList.contains('lang-switch')||!d.open)return;var m=d.querySelector('.lang-menu');m.style.setProperty('--lang-shift','0px');var r=m.getBoundingClientRect(),s=0;if(r.right>innerWidth-12)s=innerWidth-12-r.right;else if(r.left<12)s=12-r.left;m.style.setProperty('--lang-shift',s+'px')},true);
+// Dil menüsü: dışarı tıklayınca veya Esc ile kapanır
+document.addEventListener('click',function(ev){var d=document.querySelector('.lang-switch[open]');if(d&&!d.contains(ev.target))d.removeAttribute('open')});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){var d=document.querySelector('.lang-switch[open]');if(d){d.removeAttribute('open');var s=d.querySelector('summary');if(s)s.focus()}}});
+
 // Dil değiştirme: seçimi kaydet ve doğru sayfaya git
 function nxSetLang(lang){
   try{localStorage.setItem('nx-lang',lang)}catch(e){}
@@ -1469,7 +1475,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   // İndirme: GitHub sürümü kaynak sürümüne yetişmişse oradan, değilse geçici kayıttan.
   // Etiket yine açılınca (Actions) latest bağlantıları kendiliğinden kullanılır.
-  var NX_VER="1.0.51";
+  var NX_VER="1.0.54";
   function nxVerLess(a,b){
     var pa=String(a).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
     var pb=String(b).replace(/^v/,'').split('.').map(function(n){return parseInt(n,10)||0;});
@@ -1484,7 +1490,12 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   /* Katkıcı sıralaması sürüm akışından BAĞIMSIZ: releases API'si yavaşsa/erişilemezse
      de topluluk tablosu çalışır (bu yüzden fetch nxApplyVer'in içinde değil). */
-  fetch('https://api.github.com/repos/Enard52/NEXUS/contributors?per_page=100').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(list){
+  /* Önce yayın sırasında üretilen /assets/contributors.json (commit + issue + yorum katkıları);
+     yoksa canlı GitHub API'sine (yalnız commit sayar) düşülür. */
+  fetch('/assets/contributors.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(j){
+    if(j&&Array.isArray(j.people)&&j.people.length) return j.people;
+    return fetch('https://api.github.com/repos/Enard52/NEXUS/contributors?per_page=100').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+  }).then(function(list){
       var box=document.getElementById('nx-contrib'); if(!box) return;
       var empty=document.getElementById('nx-contrib-empty');
       var more=document.getElementById('nx-contrib-more');
@@ -1497,11 +1508,11 @@ document.addEventListener('DOMContentLoaded',function(){
         var l=String((u&&u.login)||'');
         if(!l) return false;
         if(l==='Enard52'||l==='hadesonline02') return false;
-        if(/bot$/i.test(l)) return false;
+        if(u.type==='Bot'||/[bot]$/i.test(l)||/bot$/i.test(l)) return false;
         return true;
       }).sort(function(a,b){ return (b&&b.contributions||0)-(a&&a.contributions||0); });
       var TR=document.documentElement.lang==='tr';
-      var LIMIT=12, UNIT=TR?'katkı':'commits';
+      var LIMIT=12, UNIT=TR?'katkı':'contributions';
       var SEE_ALL=TR?'Tüm sıralamayı gör':'Show the full ranking';
       function chip(u){
         var login=String(u.login||'');
@@ -1511,7 +1522,11 @@ document.addEventListener('DOMContentLoaded',function(){
         var a=document.createElement('a');
         a.href=page; a.target='_blank'; a.rel='noopener';
         var n=parseInt(u.contributions,10);
-        a.title='@'+login+(n>0?' · '+n+' '+UNIT:'');
+        var parts=[];
+        if(u.commits>0) parts.push(u.commits+(TR?' commit':' commits'));
+        if(u.issues>0) parts.push(u.issues+(TR?' issue':' issues'));
+        if(u.comments>0) parts.push(u.comments+(TR?' yorum':' comments'));
+        a.title='@'+login+(n>0?' · '+n+' '+UNIT:'')+(parts.length>1?' ('+parts.join(' + ')+')':'');
         a.className='contrib-chip';
         var img=document.createElement('img'); img.src=av; img.alt='@'+login; img.width=88; img.height=88; img.loading='lazy';
         var name=document.createElement('span'); name.className='contrib-login'; name.textContent='@'+login;
