@@ -116,21 +116,31 @@
   </div>
 
 <script>
+  const T = function (tr, en) {
+    return window.nexusT ? window.nexusT(tr, en) : tr;
+  };
+
   const slides = [
     {
-      subtitle: "Geleceğin Evi",
+      subtitleTr: "Geleceğin Evi",
+      subtitleEn: "Home of the Future",
       image: "assets/photos/photo-1600607687939-ce8a6c25118c.jpg",
-      desc: "Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın."
+      descTr: "Yapay zeka ile evinizi akıllıca yönetin, enerjiden tasarruf edin ve konforunuzu artırın.",
+      descEn: "Intelligently manage your home with artificial intelligence, save energy and increase your comfort."
     },
     {
-      subtitle: "Akıllı Kontrol",
+      subtitleTr: "Akıllı Kontrol",
+      subtitleEn: "Smart Control",
       image: "assets/photos/photo-1518770660439-4636190af475.jpg",
-      desc: "Tüm cihazlarınızı tek bir merkezden, sesinizle veya otomatik senaryolarla yönetin."
+      descTr: "Tüm cihazlarınızı tek bir merkezden, sesinizle veya otomatik senaryolarla yönetin.",
+      descEn: "Control all your devices from a single center, with your voice or automated scenarios."
     },
     {
-      subtitle: "Kişisel Asistan",
+      subtitleTr: "Kişisel Asistan",
+      subtitleEn: "Personal Assistant",
       image: "assets/photos/photo-1466692476868-aef1dfb1e735.jpg",
-      desc: "NEXUS AI alışkanlıklarınızı öğrenir ve evinizi size özel mükemmel bir yaşam alanına dönüştürür."
+      descTr: "NEXUS AI alışkanlıklarınızı öğrenir ve evinizi size özel mükemmel bir yaşam alanına dönüştürür.",
+      descEn: "NEXUS AI learns your habits and transforms your home into a personalized, perfect living space."
     }
   ];
 
@@ -161,9 +171,9 @@
 
     setTimeout(function() {
       const slide = slides[index];
-      subtitleEl.textContent = slide.subtitle;
+      subtitleEl.textContent = T(slide.subtitleTr, slide.subtitleEn);
       imageEl.src = slide.image;
-      descEl.textContent = slide.desc;
+      descEl.textContent = T(slide.descTr, slide.descEn);
 
       // Update indicators
       let indHtml = "";
@@ -178,10 +188,11 @@
 
       // Update buttons
       if (index === slides.length - 1) {
-        nextBtn.textContent = "Hemen Başla";
+        nextBtn.textContent = T("Hemen Başla", "Get Started");
         skipBtn.classList.add("hidden");
       } else {
-        nextBtn.textContent = "İleri";
+        nextBtn.textContent = T("İleri", "Next");
+        skipBtn.textContent = T("Geç", "Skip");
         skipBtn.classList.remove("hidden");
       }
 
@@ -212,6 +223,8 @@
   });
 
   // Init
+  document.title = T('Nexus AI: Karşılama', 'Nexus AI: Welcome');
+  skipBtn.textContent = T('Geç', 'Skip');
   renderSlide(0);
 </script>
 </body>

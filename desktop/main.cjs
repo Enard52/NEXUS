@@ -182,7 +182,17 @@ function detectLang() {
     )
   )
     return "tr";
-  return tags.some((t) => /^tr\b/i.test(t || "")) ? "tr" : "en";
+  if (tags.some((t) => /^tr\b/i.test(t || ""))) return "tr";
+  for (const tag of tags) {
+    if (!tag) continue;
+    const clean = String(tag).replace("_", "-");
+    const code = clean.split("-")[0].toLowerCase();
+    if (/^pt-br$/i.test(clean)) return "pt-BR";
+    if (/^zh-(cn|sg|hans)/i.test(clean)) return "zh-Hans";
+    if (/^zh-(tw|hk|mo|hant)/i.test(clean)) return "zh-Hant";
+    if (isSupportedLanguage(code) && code !== "en") return code;
+  }
+  return "en";
 }
 let uiLang = detectLang();
 const L = (tr, en) => localize(uiLang, tr, en);
