@@ -3334,7 +3334,8 @@
       }
       (opts.prefixes || []).forEach(add);
       known.forEach(add);
-      COMMON_PREFIXES.forEach(add);
+      // Cihazın kendi alt ağı biliniyorsa başka aralıklar taranmaz (her aralık ~45 sn, evdeki cihazlar zaten bu ağda).
+      if (!list.length) COMMON_PREFIXES.forEach(add);
       var all = [];
       var i = 0;
       // Önce SSDP ile duyurulan adresler: alt ağ süpürmeden hızlıca bulunan cihazlar listeye düşer.

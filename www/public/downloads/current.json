@@ -1,11 +1,11 @@
 {
-  "version": "1.0.49",
+  "version": "1.0.50",
   "pinned": false,
   "files": {
-    "NEXUS-Setup.exe": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.49/NEXUS-Setup.exe",
-    "SHA256SUMS-Windows.txt": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.49/SHA256SUMS-Windows.txt",
-    "NEXUS-linux.deb": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.49/NEXUS-linux.deb",
-    "NEXUS-linux.AppImage": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.49/NEXUS-linux.AppImage",
-    "SHA256SUMS-Linux.txt": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.49/SHA256SUMS-Linux.txt"
+    "NEXUS-Setup.exe": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.50/NEXUS-Setup.exe",
+    "SHA256SUMS-Windows.txt": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.50/SHA256SUMS-Windows.txt",
+    "NEXUS-linux.deb": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.50/NEXUS-linux.deb",
+    "NEXUS-linux.AppImage": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.50/NEXUS-linux.AppImage",
+    "SHA256SUMS-Linux.txt": "https://github.com/Enard52/nexus-releases/releases/download/v1.0.50/SHA256SUMS-Linux.txt"
   }
 }
