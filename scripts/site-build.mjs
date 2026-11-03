@@ -12,7 +12,7 @@ import {
 } from './site-content.mjs';
 
 const SITE_LANGS = getSiteLanguages();
-import { LEGAL_DOCS } from './site-legal-content.mjs';
+import { LEGAL_DOCS, getLegalDoc } from './site-legal-content.mjs';
 import { siApple, siLinux, siRaspberrypi } from 'simple-icons';
 
 /* --- Platform logoları: resmi logo biçimleri (simple-icons) ---
@@ -4639,11 +4639,11 @@ window.NEXUS_CLOUD = {
     writeFileSync(join(langDir, 'about.html'), renderAbout(c), 'utf8');
 
     // Legal docs
-    const privacyDoc = lang === 'tr' ? LEGAL_DOCS.privacyTr : LEGAL_DOCS.privacyEn;
-    const termsDoc = lang === 'tr' ? LEGAL_DOCS.termsTr : LEGAL_DOCS.termsEn;
-    const refundDoc = lang === 'tr' ? LEGAL_DOCS.refundTr : LEGAL_DOCS.refundEn;
-    const codeSigningDoc = lang === 'tr' ? LEGAL_DOCS.codeSigningTr : LEGAL_DOCS.codeSigningEn;
-    const contributeDoc = lang === 'tr' ? LEGAL_DOCS.contributeTr : LEGAL_DOCS.contributeEn;
+    const privacyDoc = getLegalDoc('privacy', lang);
+    const termsDoc = getLegalDoc('terms', lang);
+    const refundDoc = getLegalDoc('refund', lang);
+    const codeSigningDoc = getLegalDoc('codeSigning', lang);
+    const contributeDoc = getLegalDoc('contribute', lang);
 
     writeFileSync(join(langDir, 'privacy.html'), renderLegalDoc(c, 'privacy', privacyDoc), 'utf8');
     writeFileSync(join(langDir, 'terms.html'), renderLegalDoc(c, 'terms', termsDoc), 'utf8');

@@ -11,8 +11,9 @@ import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { getSiteLanguages } from "./site-content.mjs";
 const _mod = await import("../scripts/legal-content.cjs");
-const { EMAIL, UPDATED, docs } = _mod.default || _mod;
+const { EMAIL, UPDATED, docs, getLegalDoc } = _mod.default || _mod;
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "legal-pdf");
@@ -33,17 +34,34 @@ const FILENAMES = {
   refund: { tr: "NEXUS-Iade-ve-Iptal-Politikasi", en: "NEXUS-Refund-Policy" },
 };
 
-function renderHtml(docKey, lang) {
-  const doc = docs[docKey][lang];
-  const t = TITLES[docKey][lang];
-  // UPDATED zaten yerelleştirilmiş "Son güncelleme: 27 Ekim 2026" biçiminde; yalnızca tarihi al.
-  const updated = String(UPDATED[lang] || "").replace(/^[^:]+:\s*/, "");
+export function getDocFilename(docKey, lang) {
+  if (FILENAMES[docKey] && FILENAMES[docKey][lang]) {
+    return FILENAMES[docKey][lang];
+  }
+  const enBase = FILENAMES[docKey]?.en || `NEXUS-${docKey}`;
+  return `${enBase}-${lang.toUpperCase()}`;
+}
+
+export function getDocTitle(docKey, lang) {
+  if (TITLES[docKey] && TITLES[docKey][lang]) {
+    return TITLES[docKey][lang];
+  }
+  const d = getLegalDoc ? getLegalDoc(docKey, lang) : (docs[docKey] && docs[docKey][lang]);
+  return d?.title || (TITLES[docKey] && TITLES[docKey].en) || docKey;
+}
+
+export function renderHtml(docKey, lang) {
+  const doc = getLegalDoc ? getLegalDoc(docKey, lang) : (docs[docKey][lang] || docs[docKey].en);
+  const t = getDocTitle(docKey, lang);
+  const updatedVal = (typeof UPDATED === "object" ? (UPDATED[lang] || UPDATED.en) : UPDATED) || "";
+  const updated = String(updatedVal).replace(/^[^:]+:\s*/, "");
   const sec = (s) => `
     <section>
       <h2>${esc(s.h)}</h2>
       ${s.p ? s.p.map((p) => `<p>${esc(p)}</p>`).join("") : ""}
       ${s.ul ? `<ul>${s.ul.map((li) => `<li>${esc(li)}</li>`).join("")}</ul>` : ""}
     </section>`;
+  const isTr = lang === "tr";
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -69,27 +87,37 @@ function renderHtml(docKey, lang) {
     <b>NEXUS</b>
   </div>
   <h1>${esc(t)}</h1>
-  <p class="meta">${lang === "tr" ? "Son güncelleme" : "Last updated"}: ${esc(updated)} · ${lang === "tr" ? "İşleten" : "Operated by"}: NEXUS · ${esc(EMAIL)}</p>
+  <p class="meta">${isTr ? "Son güncelleme" : "Last updated"}: ${esc(updated)} · ${isTr ? "İşleten" : "Operated by"}: NEXUS · ${esc(EMAIL)}</p>
   <p>${esc(doc.intro)}</p>
   ${doc.sections.map(sec).join("")}
-  <footer>NEXUS · ${esc(EMAIL)} · ${lang === "tr" ? "Bu belge nexus-smarthome.pages.dev adresindeki yürürlükteki metinle birlikte okunur." : "This document is read together with the current text at nexus-smarthome.pages.dev."}</footer>
+  <footer>NEXUS · ${esc(EMAIL)} · ${isTr ? "Bu belge nexus-smarthome.pages.dev adresindeki yürürlükteki metinle birlikte okunur." : "This document is read together with the current text at nexus-smarthome.pages.dev."}</footer>
 </body>
 </html>`;
 }
 
-const browser = await chromium.launch();
-for (const docKey of Object.keys(docs)) {
-  for (const lang of ["tr", "en"]) {
-    const html = renderHtml(docKey, lang);
-    const base = FILENAMES[docKey][lang];
-    const htmlPath = join(OUT, base + ".html");
-    writeFileSync(htmlPath, html);
-    const page = await browser.newPage();
-    await page.goto("file:///" + htmlPath.replace(/\\/g, "/"), { waitUntil: "load" });
-    await page.pdf({ path: join(OUT, base + ".pdf"), format: "A4", printBackground: true });
-    await page.close();
-    console.log("✓", base + ".pdf");
+// Only launch browser and write files if run directly from CLI
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  const args = process.argv.slice(2).filter((a) => !a.startsWith("-"));
+  const langs = process.argv.includes("--all")
+    ? getSiteLanguages()
+    : args.length > 0
+      ? args
+      : ["tr", "en"];
+
+  const browser = await chromium.launch();
+  for (const docKey of Object.keys(docs)) {
+    for (const lang of langs) {
+      const html = renderHtml(docKey, lang);
+      const base = getDocFilename(docKey, lang);
+      const htmlPath = join(OUT, base + ".html");
+      writeFileSync(htmlPath, html);
+      const page = await browser.newPage();
+      await page.goto("file:///" + htmlPath.replace(/\\/g, "/"), { waitUntil: "load" });
+      await page.pdf({ path: join(OUT, base + ".pdf"), format: "A4", printBackground: true });
+      await page.close();
+      console.log("✓", base + ".pdf");
+    }
   }
+  await browser.close();
+  console.log("Tamam:", OUT);
 }
-await browser.close();
-console.log("Tamam:", OUT);

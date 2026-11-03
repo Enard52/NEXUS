@@ -470,4 +470,43 @@ const refund = {
   },
 };
 
-module.exports = { EMAIL, UPDATED, docs: { privacy, terms, refund } };
+function withEnglishFallback(obj) {
+  return new Proxy(obj, {
+    get(target, prop) {
+      if (typeof prop === "string" && prop in target) return target[prop];
+      if (typeof prop === "string" && prop !== "inspect" && prop !== "nodeType" && prop !== "then") {
+        return target.en;
+      }
+      return target[prop];
+    },
+  });
+}
+
+const docs = {
+  privacy: withEnglishFallback(privacy),
+  terms: withEnglishFallback(terms),
+  refund: withEnglishFallback(refund),
+};
+
+function getLegalDoc(key, lang) {
+  const d = docs[key];
+  if (!d) return null;
+  return d[lang] || d.en;
+}
+
+function getLegalLanguages() {
+  const s = new Set();
+  for (const k of Object.keys(docs)) {
+    for (const l of Object.keys(docs[k])) s.add(l);
+  }
+  return [...s];
+}
+
+module.exports = {
+  EMAIL,
+  UPDATED: withEnglishFallback(UPDATED),
+  OPERATOR: withEnglishFallback(OPERATOR),
+  docs,
+  getLegalDoc,
+  getLegalLanguages,
+};

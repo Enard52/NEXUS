@@ -6,7 +6,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
-const { docs, UPDATED } = require("./legal-content.cjs");
+const { docs, UPDATED, getLegalLanguages, getLegalDoc } = require("./legal-content.cjs");
 
 const siteDir = process.argv[2];
 const pdfDir = process.argv[3];
@@ -17,8 +17,9 @@ const link = (s) =>
   esc(s).replace(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,})/g, '<a href="mailto:$1">$1</a>');
 
 function body(doc, lang) {
-  const d = doc[lang];
-  let h = `<h1>${esc(d.title)}</h1>\n<p class="legal-updated">${UPDATED[lang]}</p>\n<p>${link(d.intro)}</p>\n`;
+  const d = (getLegalDoc ? getLegalDoc(doc, lang) : null) || doc[lang] || doc.en;
+  const upd = UPDATED[lang] || UPDATED.en;
+  let h = `<h1>${esc(d.title)}</h1>\n<p class="legal-updated">${upd}</p>\n<p>${link(d.intro)}</p>\n`;
   for (const s of d.sections) {
     h += `<h3>${esc(s.h)}</h3>\n`;
     for (const p of s.p || []) h += `<p>${link(p)}</p>\n`;
@@ -29,12 +30,13 @@ function body(doc, lang) {
 
 const MAIN_RE = /<main class="legal-content main-content">[\s\S]*?<\/main>/;
 let written = 0;
+const langs = getLegalLanguages ? getLegalLanguages() : ["en", "tr"];
 for (const key of Object.keys(docs)) {
-  for (const lang of ["en", "tr"]) {
-    const rel = lang === "tr" ? `tr/${key}.html` : `${key}.html`;
+  for (const lang of langs) {
+    const rel = lang === "en" ? `${key}.html` : `${lang}/${key}.html`;
     const file = path.join(siteDir, rel);
     if (!fs.existsSync(file) && key === "refund") {
-      const base = path.join(siteDir, lang === "tr" ? "tr/terms.html" : "terms.html");
+      const base = path.join(siteDir, lang === "en" ? "terms.html" : `${lang}/terms.html`);
       if (!fs.existsSync(base)) continue;
       fs.writeFileSync(file, fs.readFileSync(base, "utf8"));
     }
