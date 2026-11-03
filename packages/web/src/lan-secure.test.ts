@@ -519,11 +519,10 @@ describe("Tapo KLAP", () => {
     await expect(lan.write(tapoDev, "switch", true)).rejects.toBeTruthy();
   });
 
-  it("KLAP el sikismasina yanit veren cihaz Tapo olarak taninir", async () => {
+  it("KLAP el sikismasina yanit veren cihaz yeni cihaz olarak onerilmez (hesap isteyen baglayici kapali)", async () => {
     const fake = fakeKlap(USER, PASS, { on: false, brightness: 1 });
     const { lan } = load({ binaryHttp: true, http: fake.http });
-    const found = await lan.identify("192.168.1.70");
-    expect(found).toMatchObject({ protocol: "tapo", needsCredentials: true, caps: ["switch"] });
+    await expect(lan.identify("192.168.1.70")).rejects.toBeTruthy();
   });
 
   it("anahtar turetme: python-kasa sirasi (lsk / iv / ldk)", async () => {

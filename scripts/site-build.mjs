@@ -3391,9 +3391,6 @@ function renderHow(c) {
 /* Entegrasyon listesi artık supported-devices.js'ten geliyor. Elle yazıldığı dönemde
    site, uygulamanın hiç bağlayıcısı olmayan markaları (HomeKit, Sonoff DIY, WiZ, LIFX,
    Govee LAN) ve Matter/Zigbee'yi doğrudan destek gibi gösteriyordu. */
-// Eşleştirmede hesap/anahtar/sunucu bilgisi isteyen bağlayıcılar (src/app/lan-connectors.js ile uyumlu).
-const NEEDS_CREDENTIALS = new Set(['tapo', 'tuya-local', 'mqtt']);
-
 function integrationGroups(c) {
   const isTr = c.lang === 'tr';
   if (!DEVICE_MATRIX.length) return c.integrations.groups;
@@ -3419,10 +3416,9 @@ function integrationGroups(c) {
       kicker: isTr ? 'Masaüstü programında ekstra' : 'Extra on the desktop program',
       title: isTr ? 'Masaüstünde yerel TCP' : 'Local TCP on desktop',
       hint: isTr
-        ? 'Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP/UDP/MQTT ile aşağıdaki markalar eklenir. Android uygulamasında HTTP listesi durur. 🔑 işaretli markalar ek bilgi ister: Tapo için TP-Link hesabı, Tuya için cihazın yerel anahtarı, Zigbee2MQTT için MQTT sunucusu.'
-        : 'The Windows and Linux programs run every HTTP brand above, and add the brands below over local TCP, UDP or MQTT. The Android app keeps the HTTP list. Brands marked 🔑 need extra details: a TP-Link account for Tapo, the device local key for Tuya, an MQTT broker for Zigbee2MQTT.',
+        ? 'Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP/UDP ile aşağıdaki markalar eklenir. Android uygulamasında HTTP listesi durur. Hesap, anahtar ya da sunucu bilgisi gerekmez.'
+        : 'The Windows and Linux programs run every HTTP brand above, and add the brands below over local TCP or UDP. The Android app keeps the HTTP list. No account, key or server details are needed.',
       items: brands('desktop'),
-      keyed: DEVICE_MATRIX.filter((d) => d.availability === 'desktop' && NEEDS_CREDENTIALS.has(d.protocol)).map((d) => label(d.brand)),
     });
   }
   if (brands('soon').length) {
@@ -3438,8 +3434,7 @@ function integrationGroups(c) {
 }
 
 function renderIntGroup(g) {
-  const keyed = new Set(g.keyed || []);
-  const chips = `<div class="chips">${g.items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}${keyed.has(i) ? ' <span aria-hidden="true">🔑</span>' : ''}</span>`).join('')}</div>`;
+  const chips = `<div class="chips">${g.items.map((i) => `<span class="chip">${getBrandLogo(i)}${esc(i)}</span>`).join('')}</div>`;
   const logos =
     g.kind === 'desktop'
       ? `${getPlatformLogo('windows')}${getPlatformLogo('linux')}`

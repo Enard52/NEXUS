@@ -21,9 +21,9 @@ vendor cloud, no subscription required. Windows · Linux · macOS · Android. iO
 ## Why NEXUS
 
 - **Local-first control.** Shelly, Tasmota, WLED, ESPHome, Philips Hue, Home Assistant
-  and Sonoff (DIY) over local HTTP; TP-Link Kasa/Tapo, Yeelight and Tuya over local TCP/HTTP;
-  WiZ, LIFX and Govee over UDP; Zigbee2MQTT through an MQTT broker (desktop); Wake-on-LAN; a HomeKit bridge on desktop. Pairing is
-  instant LAN discovery — no account creation per device. Connectors are written from public
+  and Sonoff (DIY) over local HTTP; TP-Link Kasa and Yeelight over local TCP;
+  WiZ, LIFX and Govee over UDP; Wake-on-LAN. Pairing is instant LAN discovery — no account,
+  key or server details per device (devices that need them are not offered). Connectors are written from public
   protocol documentation and tested against simulated devices; **most are not yet verified on
   real hardware** — see [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and help us verify yours.
 - **Desktop with real tray automations.** The Windows/Linux program runs the same
@@ -52,14 +52,14 @@ with a navigation sidebar, tray mode and background automation worker:
 
 ## Screens & app
 
-| Platform | Install |
-| --- | --- |
-| Windows x64 + arm64 | [Microsoft Store](https://apps.microsoft.com/detail/9NKF7SWW5RSN) (signed by Microsoft, updates via the Store), or the [direct installer](https://github.com/Enard52/nexus-releases/releases/latest) (auto-update built in) |
-| Linux x64 + ARM64 (Raspberry Pi) | AppImage + deb + rpm from the same releases page (`NEXUS-linux*`, `NEXUS-linux-arm64*`) |
-| Android | Signed APK from the same releases page |
-| macOS | .dmg / .zip from the same releases page |
-| iOS | Unsigned `.ipa` for sideloading with a free Apple ID (AltStore / Sideloadly), attached to a release when built; or build from source — see [docs/BUILD-ALL-PLATFORMS.md](docs/BUILD-ALL-PLATFORMS.md). Push notifications need a paid Apple account and are not available on iOS. |
-| Web | [nexus-smarthome.pages.dev](https://nexus-smarthome.pages.dev) — account, downloads & billing |
+| Platform                         | Install                                                                                                                                                                                                                                                                           |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows x64 + arm64              | [Microsoft Store](https://apps.microsoft.com/detail/9NKF7SWW5RSN) (signed by Microsoft, updates via the Store), or the [direct installer](https://github.com/Enard52/nexus-releases/releases/latest) (auto-update built in)                                                       |
+| Linux x64 + ARM64 (Raspberry Pi) | AppImage + deb + rpm from the same releases page (`NEXUS-linux*`, `NEXUS-linux-arm64*`)                                                                                                                                                                                           |
+| Android                          | Signed APK from the same releases page                                                                                                                                                                                                                                            |
+| macOS                            | .dmg / .zip from the same releases page                                                                                                                                                                                                                                           |
+| iOS                              | Unsigned `.ipa` for sideloading with a free Apple ID (AltStore / Sideloadly), attached to a release when built; or build from source — see [docs/BUILD-ALL-PLATFORMS.md](docs/BUILD-ALL-PLATFORMS.md). Push notifications need a paid Apple account and are not available on iOS. |
+| Web                              | [nexus-smarthome.pages.dev](https://nexus-smarthome.pages.dev) — account, downloads & billing                                                                                                                                                                                     |
 
 ## Architecture (single source, three shells)
 

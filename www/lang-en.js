@@ -707,8 +707,8 @@ window.NEXUS_EN = {
       "Type the 6-digit code from the app and tap Verify.",
     "Uygulamada eski bir NEXUS kaydı varsa sil; her kurulumda yeni anahtar üretilir, yalnız en son okuttuğunun kodu geçerlidir.":
       "Delete any old NEXUS entry in the app; each setup creates a new key, and only the code of the one you scanned last is valid.",
-    "Gelişmiş bağlantılar: Home Assistant, MQTT, Tuya ve Tapo cihazı ekle":
-      "Advanced connections: add Home Assistant, MQTT, Tuya and Tapo devices",
+    "Gelişmiş bağlantılar: Home Assistant cihazı ekle":
+      "Advanced connections: add Home Assistant devices",
     "Cihaza bağlanılamadı. Aynı ağda olduğundan, cihaz kimliğinin ve yerel anahtarın doğru olduğundan emin ol.":
       "Could not connect to the device. Make sure it is on the same network and that the device ID and local key are correct.",
     "Broker'a bağlanılamadı. Kullanıcı adı ve parolanın doğru olduğundan emin ol.":

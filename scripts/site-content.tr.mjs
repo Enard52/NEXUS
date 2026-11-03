@@ -209,7 +209,7 @@ export const tr = {
       ],
       [
         "NEXUS+ aboneliği tam olarak ne sağlar?",
-        "Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı, Home Assistant, MQTT/Zigbee2MQTT, Tuya ve Tapo cihazı eklemeyi sağlayan gelişmiş bağlantıları ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.",
+        "Temel akıllı ev yönetimi, sınırsız cihaz, oda ve yerel otomasyon ücretsizdir. NEXUS+ ücretsiz plandaki her şeyi, NEXUS AI ile doğal dille senaryo ve soruyu, ayda 2.000 yanıtı, Home Assistant cihazı eklemeyi sağlayan gelişmiş bağlantıları ve tüm cihazlarında geçerli tek hesabı kapsar; aylıkta 3, yıllıkta 7 gün deneme vardır. Cihaz komutları yerelde çalışır. Ev halkı rolleri evinle birlikte ücretsizdir.",
       ],
       [
         "NEXUS+ aboneliğim hangi hesaba tanımlanır?",
@@ -241,7 +241,7 @@ export const tr = {
       ],
       [
         "Cihazım listede yok, ne yapabilirim?",
-        "NEXUS yalnızca belgelenmiş yerel protokolü olan cihazları destekler; yalnızca buluttan çalışan cihazlar desteklenmez, çünkü NEXUS hiçbir üretici bulutuyla konuşmaz. Uyumluluk listesinde (docs/COMPATIBILITY.md) TP-Link Tapo, DIY modunda Sonoff, WiZ, LIFX, Govee (LAN), yerel anahtarlı Tuya ve Wake-on-LAN de yer alır. Hepsinin otomatik protokol testi vardır, ancak bir model ancak biri gerçek cihazda çalıştığını bildirdiğinde doğrulanmış sayılır. Bu sitedeki iletişim formundan (“Yeni Cihaz & Bağlayıcı İsteği” konusu) ya da e-postayla yaz: marka ve model, ne beklediğin ve ne olduğu. Bir modelin senin gerçek cihazında çalıştığını bildirmen, onu doğrulanmış işaretlememizi sağlar; şifre, yerel anahtar veya token yazma.",
+        "NEXUS yalnızca belgelenmiş yerel protokolü olan cihazları destekler; yalnızca buluttan çalışan cihazlar desteklenmez, çünkü NEXUS hiçbir üretici bulutuyla konuşmaz. Uyumluluk listesinde (docs/COMPATIBILITY.md) DIY modunda Sonoff, WiZ, LIFX, Govee (LAN) ve Wake-on-LAN de yer alır. Hepsinin otomatik protokol testi vardır, ancak bir model ancak biri gerçek cihazda çalıştığını bildirdiğinde doğrulanmış sayılır. Bu sitedeki iletişim formundan (“Yeni Cihaz & Bağlayıcı İsteği” konusu) ya da e-postayla yaz: marka ve model, ne beklediğin ve ne olduğu. Bir modelin senin gerçek cihazında çalıştığını bildirmen, onu doğrulanmış işaretlememizi sağlar; şifre, yerel anahtar veya token yazma.",
       ],
       [
         "Hesap açmak zorunda mıyım? Sunucu kapanırsa ne olur?",

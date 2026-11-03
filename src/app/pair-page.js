@@ -1252,8 +1252,8 @@ function startAutoScan(auto) {
       bar.style.width = subnetFindings.length ? "100%" : "0%";
       if (!secureActive) setRadarBadge("NEXUS Hazır", false);
     });
-  // Şifreli cihaz adayları (Tuya/MQTT) aynı anda aranır: eskiden ana taramadan SONRA başlıyor ve toplam süreyi ~100 sn yapıyordu.
-  startSecureScan();
+  // Tuya/MQTT adayları (yerel anahtar / broker bilgisi ister) artık aranmaz: projede yalnızca otomatik eşleşen cihazlar var.
+  // startSecureScan ve Tuya/MQTT/Tapo formları kodda duruyor ama hiçbir akıştan çağrılmıyor.
 }
 
 // Köprü/yazılım kartları ve elle bilgi giren Tuya/Zigbee2MQTT formları Cihaz Ekle'de gösterilmez: cihazlar otomatik taramayla bulunur.

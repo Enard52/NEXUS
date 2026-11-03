@@ -3101,10 +3101,15 @@
     mqtt,
   ];
 
+  // Hesap, yerel anahtar veya broker bilgisi isteyen bağlayıcılar (kimseyi uğraştırmama kararı) yeni cihaz
+  // olarak ÖNERİLMEZ ve taramada/IP ile eklemede denenmez. Kayıtta kalırlar: daha önce eşleşmiş cihazlar
+  // (sendCommand/readState protocol alanıyla bulunur) çalışmaya devam eder. Geri açmak için kümeden çıkar.
+  var NO_NEW_PAIRING = { tapo: 1, "tuya-local": 1, mqtt: 1 };
+
   function available(p) {
     return (!p.needsTcp || !!tcpBridge()) && (!p.needsUdp || !!udpBridge()) && (!p.needsBinHttp || !!binBridge()) && (!p.needsTcpSession || !!tcpSessionBridge()) && (!p.needsMqtt || !!mqttBridge());
   }
-  function discoverable(p) { return available(p) && p.discoverable !== false; }
+  function discoverable(p) { return available(p) && p.discoverable !== false && !NO_NEW_PAIRING[p.id]; }
 
   // Manuel IP ile ekleme: cihazın hangi protokolü konuştuğunu sırayla dener.
   function identify(host) {

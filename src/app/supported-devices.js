@@ -74,18 +74,6 @@
       ],
     },
     {
-      brand: "TP-Link Tapo",
-      protocol: "tapo",
-      availability: "desktop",
-      note: "Yerel şifreli HTTP (KLAP) — TP-Link hesabı e-postası + şifresiyle, masaüstü uygulamasında; priz, anahtar ve ampuller (kamera ve enerji ölçümü henüz yok)",
-      models: [
-        { name: "Tapo P110 Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
-        { name: "Tapo L530E Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color", "colorTemp"] },
-        { name: "Tapo S265 Termostat", img: "generic-thermostat-c.png", caps: ["temperature", "humidity"] },
-        { name: "Tapo C210 Kamera", img: "security-indoor-camera.png", caps: ["camera"] },
-      ],
-    },
-    {
       brand: "TP-Link Kasa",
       protocol: "kasa",
       availability: "desktop",
@@ -263,34 +251,6 @@
       availability: "all",
       note: "Ağ üzerinden PC veya TV uyandırma (Home Assistant standardı)",
       models: [{ name: "Wake-on-LAN PC / TV", img: "generic-smart-tv.png", caps: ["switch"] }],
-    },
-    {
-      brand: "Zigbee2MQTT",
-      protocol: "mqtt",
-      category: "bridge", // ürün değil, köprü: broker'a bağlı Zigbee cihazlarını getirir
-      availability: "desktop",
-      note: "MQTT broker üzerinden Zigbee lamba ve prizler (masaüstü uygulamasında); şimdilik aç/kapat ve parlaklık",
-      models: [
-        { name: "Zigbee Ampul (Zigbee2MQTT)", img: "generic-led-bulb.png", caps: ["switch", "brightness"] },
-        { name: "Zigbee Priz (Zigbee2MQTT)", img: "generic-smart-plug.png", caps: ["switch"] },
-      ],
-    },
-    {
-      brand: "Tuya (yerel mod)",
-      protocol: "tuya-local",
-      availability: "desktop",
-      note: "Yerel LAN (3.3 / 3.4, şifreli TCP) — ücretsiz Tuya IoT hesabından alınan cihaz kimliği + yerel anahtarla, masaüstü uygulamasında; priz, anahtar ve ampuller",
-      models: [
-        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
-        { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
-        { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
-        { name: "Tuya Kapı Sensörü", img: "generic-door-sensor.png", caps: ["contact"] },
-        {
-          name: "Tuya Termostat",
-          img: "generic-thermostat-c.png",
-          caps: ["temperature", "humidity"],
-        },
-      ],
     },
   ];
 

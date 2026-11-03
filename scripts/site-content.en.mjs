@@ -209,7 +209,7 @@ export const en = {
       ],
       [
         "What does the NEXUS+ plan add?",
-        "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, advanced connections for adding Home Assistant, MQTT/Zigbee2MQTT, Tuya and Tapo devices, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.",
+        "Essential smart home control—unlimited devices, rooms, offline automations, and local dashboards—is free. NEXUS+ includes everything in Free, NEXUS AI for scenes and questions in plain language, 2,000 replies a month, advanced connections for adding Home Assistant devices, and one account on every device, with a 3-day monthly or 7-day yearly trial. Device commands still run locally. Household roles are included with your home at no extra cost.",
       ],
       [
         "Which account does my NEXUS+ subscription belong to?",
@@ -241,7 +241,7 @@ export const en = {
       ],
       [
         "My device is not on the list. What can I do?",
-        "NEXUS only supports devices with a documented local protocol; cloud-only devices are not supported because NEXUS never talks to a vendor cloud. The compatibility list (docs/COMPATIBILITY.md) also includes TP-Link Tapo, Sonoff in DIY mode, WiZ, LIFX, Govee (LAN), Tuya with local keys and Wake-on-LAN. Each of these has automated protocol tests, but a model counts as verified only when someone reports that it worked on a real device. Write to us through the contact form on this site (choose “New Device / Connector Request”) or by e-mail: the brand and model, what you expected and what happened. Telling us that a model worked on your real device is what marks it verified; never include passwords, local keys or tokens.",
+        "NEXUS only supports devices with a documented local protocol; cloud-only devices are not supported because NEXUS never talks to a vendor cloud. The compatibility list (docs/COMPATIBILITY.md) also includes Sonoff in DIY mode, WiZ, LIFX, Govee (LAN) and Wake-on-LAN. Each of these has automated protocol tests, but a model counts as verified only when someone reports that it worked on a real device. Write to us through the contact form on this site (choose “New Device / Connector Request”) or by e-mail: the brand and model, what you expected and what happened. Telling us that a model worked on your real device is what marks it verified; never include passwords, local keys or tokens.",
       ],
       [
         "Do I need an account? What happens if the server is down?",
