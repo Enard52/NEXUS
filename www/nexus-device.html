@@ -264,7 +264,7 @@
         });
         if (!any)
           return (
-            '<p class="nx-wait">' +
+            '<p class="nx-notice nx-notice--own-icon" role="status">' +
             icon("activity", "w-4 h-4") +
             "Cihazdan ölçüm verisi bekleniyor</p>"
           );
@@ -1170,7 +1170,7 @@
                     st.portion || 1,
                     "Porsiyon",
                   ) +
-                  '<p class="nx-wait">' +
+                  '<p class="nx-notice nx-notice--own-icon" role="status">' +
                   icon("clock", "w-4 h-4") +
                   (st.lastFed ? "Son besleme: " + esc(st.lastFed) : "Henüz beslenmedi") +
                   "</p>",
@@ -1262,6 +1262,9 @@
       };
 
       function powerAction(on) {
+        // Wake-on-LAN tek yönlüdür: "Kapat" yoktur, her basış yeni bir uyandırma paketi gönderir.
+        if (DEV && DEV.protocol === "wol")
+          return { label: "Uyandır", icon: "power", alt: false, onclick: "set('switch',true)" };
         return {
           label: on ? "Kapat" : "Aç",
           icon: "power",
@@ -1468,15 +1471,24 @@
         main.setAttribute("data-features", NX.featuresOf(d).join(" "));
         main.setAttribute("data-kind", kind);
         var unlinked = !NX.isLan(d)
-          ? '<p class="nx-wait">' +
+          ? '<p class="nx-notice nx-notice--own-icon" role="status">' +
             icon("info", "w-4 h-4") +
             "Bu cihaz yerel ağ üzerinden bağlı değil; komutlar cihaza gönderilmez, bu yüzden kontrol seçenekleri gösterilmiyor." +
             "</p>"
           : "";
+        // Wake-on-LAN yalnızca tek yönlü paket gönderir: başarıyı "cihaz uyandı" diye göstermeyiz, yalnızca paketin gittiğini söyleriz.
+        var wolSent =
+          d.protocol === "wol" && !NX.LAN_ERRORS[INDEX] && NX.lanStatus && NX.lanStatus(INDEX) === "ok"
+            ? '<p class="nx-notice nx-notice--own-icon nx-notice--ok" role="status">' +
+              icon("send", "w-4 h-4") +
+              "Uyandırma paketi gönderildi. Cihazda Wake-on-LAN açıksa birkaç saniye içinde uyanır; uyandığı buradan doğrulanamaz." +
+              "</p>"
+            : "";
         main.innerHTML =
           unlinked +
+          wolSent +
           (NX.LAN_ERRORS[INDEX]
-            ? '<p class="nx-wait" style="color:#e11d48">' +
+            ? '<p class="nx-notice nx-notice--own-icon nx-notice--error" role="alert">' +
               icon("wifi-off", "w-4 h-4") +
               esc(NX.LAN_ERRORS[INDEX]) +
               "</p>"

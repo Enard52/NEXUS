@@ -208,23 +208,6 @@
       ],
     },
     {
-      brand: "Tuya (yerel mod)",
-      protocol: "tuya-local",
-      availability: "desktop",
-      note: "Yerel LAN (3.3 / 3.4, şifreli TCP) — ücretsiz Tuya IoT hesabından alınan cihaz kimliği + yerel anahtarla, masaüstü uygulamasında; priz, anahtar ve ampuller",
-      models: [
-        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
-        { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
-        { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
-        { name: "Tuya Kapı Sensörü", img: "generic-door-sensor.png", caps: ["contact"] },
-        {
-          name: "Tuya Termostat",
-          img: "generic-thermostat-c.png",
-          caps: ["temperature", "humidity"],
-        },
-      ],
-    },
-    {
       brand: "Sonoff (DIY modu)",
       protocol: "sonoff",
       availability: "all",
@@ -290,6 +273,34 @@
       models: [
         { name: "Zigbee Ampul (Zigbee2MQTT)", img: "generic-led-bulb.png", caps: ["switch", "brightness"] },
         { name: "Zigbee Priz (Zigbee2MQTT)", img: "generic-smart-plug.png", caps: ["switch"] },
+      ],
+    },
+    {
+      brand: "Matter",
+      protocol: "matter",
+      availability: "desktop",
+      note: "Matter standardı, yerel ağ — cihazın eşleştirme koduyla (hesap, anahtar ve bulut yok), masaüstü uygulamasında; ışık, priz ve anahtarlar",
+      models: [
+        { name: "Matter Işık", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "Matter Priz", img: "generic-smart-plug.png", caps: ["switch"] },
+        { name: "Matter Anahtar", img: "control-single-wall-switch.png", caps: ["switch"] },
+      ],
+    },
+    {
+      brand: "Tuya (yerel mod)",
+      protocol: "tuya-local",
+      availability: "desktop",
+      note: "Yerel LAN (3.3 / 3.4, şifreli TCP) — ücretsiz Tuya IoT hesabından alınan cihaz kimliği + yerel anahtarla, masaüstü uygulamasında; priz, anahtar ve ampuller",
+      models: [
+        { name: "Tuya Akıllı Priz", img: "generic-smart-plug.png", caps: ["switch"] },
+        { name: "Tuya RGB Ampul", img: "generic-led-bulb.png", caps: ["switch", "brightness", "color"] },
+        { name: "Tuya Akıllı Anahtar / Röle", img: "control-single-wall-switch.png", caps: ["switch"] },
+        { name: "Tuya Kapı Sensörü", img: "generic-door-sensor.png", caps: ["contact"] },
+        {
+          name: "Tuya Termostat",
+          img: "generic-thermostat-c.png",
+          caps: ["temperature", "humidity"],
+        },
       ],
     },
   ];

@@ -27,7 +27,8 @@ export const RELEASES_URL = "https://github.com/Enard52/nexus-releases";
 export const MANAGE_URL = "https://whop.com/@me/settings/memberships/";
 export const BILLING_URL = "https://whop.com/@me/settings/billing/";
 export const SUPPORT_EMAIL = "mailto:nexus.smarthome.app@gmail.com";
-export const CONNECTOR_REQUEST_URL = "mailto:nexus.smarthome.app@gmail.com?subject=NEXUS%20Device%20Connector%20Request";
+export const CONNECTOR_REQUEST_URL =
+  "mailto:nexus.smarthome.app@gmail.com?subject=NEXUS%20Device%20Connector%20Request";
 
 const brand = {
   logoSvg: `<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -140,7 +141,10 @@ export const content = {
             "Home Assistant",
           ],
         ],
-        ["Local TCP — desktop app", ["TP-Link Kasa", "Yeelight"]],
+        [
+          "Local network, no account or key — desktop app",
+          ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ],
       ],
       more: "Something missing? Request a connector",
       moreHref: "javascript:nxOpenContactModal('Connector Request')",
@@ -176,7 +180,13 @@ export const content = {
             "One account, valid on every NEXUS device",
             "Free trial — 3 days monthly, 7 days yearly; cancel at period end",
           ],
-          cta: { label: "Start your free trial", monthlyLabel: "Start 3-day free trial", yearlyLabel: "Start 7-day free trial", href: "https://whop.com/checkout/plan_HIySYESquBqlg", yearlyHref: "https://whop.com/checkout/plan_XlA3SacShoiJU" },
+          cta: {
+            label: "Start your free trial",
+            monthlyLabel: "Start 3-day free trial",
+            yearlyLabel: "Start 7-day free trial",
+            href: "https://whop.com/checkout/plan_HIySYESquBqlg",
+            yearlyHref: "https://whop.com/checkout/plan_XlA3SacShoiJU",
+          },
         },
         {
           name: "Family",
@@ -195,7 +205,8 @@ export const content = {
           soon: false,
         },
       ],
-      manageNote: "Cancel anytime from Billing in the app or from your account on this site. Cancellation takes effect at the end of the current period.",
+      manageNote:
+        "Cancel anytime from Billing in the app or from your account on this site. Cancellation takes effect at the end of the current period.",
     },
     downloads: {
       heading: "Native on every desktop. At home on your phone.",
@@ -219,7 +230,7 @@ export const content = {
         desc: "Windows and Linux desktop programs and the Android app. Signed in, your rooms, devices, scenes and automations stay seamlessly synchronized across your screens.",
         cta: { label: "Download NEXUS", href: "#downloads" },
       },
-        smartScreenNote:
+      smartScreenNote:
         "On Windows the easiest route is the Microsoft Store: the package is signed by Microsoft and updates come through the Store. The direct .exe is unsigned, so Windows may warn about an “unknown publisher” — see checksums.",
     },
     faq: {
@@ -247,7 +258,7 @@ export const content = {
         ],
         [
           "Which devices and ecosystems are supported?",
-          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome, Philips Hue and Home Assistant over local HTTP on every platform, plus TP-Link Kasa and Yeelight over local TCP in the desktop app. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
+          "NEXUS speaks each device's own local protocol: Shelly (Gen1 and Gen2+), Tasmota, WLED, ESPHome, Philips Hue and Home Assistant over local HTTP on every platform, plus TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY mode) and Wake-on-LAN over the local network in the desktop app, with no account or key. Everything else — Matter or Zigbee gear — joins through your own Home Assistant server, which NEXUS treats as a single local hub. Local IP discovery pairs devices instantly, with no vendor cloud in between.",
         ],
         [
           "How are security cameras and sensors integrated?",
@@ -316,9 +327,21 @@ export const content = {
         heading: "Engineered for Reliability",
         lead: "NEXUS keeps a lightweight desktop engine in your system tray so schedules and sensor rules keep evaluating while your computer is on, and the mobile app opens straight onto the same local network.",
         items: [
-          { icon: "layers", title: "Desktop", desc: "The Windows, macOS and Linux apps stay in the system tray and keep local schedules and sensor rules running while the computer is on. Windows and Linux ship as ready installers; macOS is built from source (unsigned: right-click → Open)." },
-          { icon: "wifi", title: "Phone", desc: "The Android and iOS apps open onto the same local network; device commands still go across your LAN. Android ships as a signed APK; iOS is built from source with Xcode and a free Apple ID." },
-          { icon: "lock", title: "Account", desc: "An account is required so rooms, devices and scenes match on every screen. Device commands do not leave your home network." },
+          {
+            icon: "layers",
+            title: "Desktop",
+            desc: "The Windows, macOS and Linux apps stay in the system tray and keep local schedules and sensor rules running while the computer is on. Windows and Linux ship as ready installers; macOS is built from source (unsigned: right-click → Open).",
+          },
+          {
+            icon: "wifi",
+            title: "Phone",
+            desc: "The Android and iOS apps open onto the same local network; device commands still go across your LAN. Android ships as a signed APK; iOS is built from source with Xcode and a free Apple ID.",
+          },
+          {
+            icon: "lock",
+            title: "Account",
+            desc: "An account is required so rooms, devices and scenes match on every screen. Device commands do not leave your home network.",
+          },
         ],
       },
       linksTitle: "Practical links",
@@ -458,7 +481,10 @@ export const content = {
             "Home Assistant",
           ],
         ],
-        ["Yerel TCP — masaüstü programında", ["TP-Link Kasa", "Yeelight"]],
+        [
+          "Yerel ağ, hesap ya da anahtar gerekmez — masaüstü programında",
+          ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY modu)", "Wake-on-LAN"],
+        ],
       ],
       more: "Eksik bir şey mi var? Bağlayıcı iste",
       moreHref: "javascript:nxOpenContactModal('Cihaz & Bağlayıcı İsteği')",
@@ -494,7 +520,13 @@ export const content = {
             "Tek hesap, tüm NEXUS cihazlarında geçerli",
             "3 gün (aylık) / 7 gün (yıllık) deneme; dönem sonunda iptal",
           ],
-          cta: { label: "Ücretsiz denemeyi başlat", monthlyLabel: "3 gün ücretsiz dene", yearlyLabel: "7 gün ücretsiz dene", href: "https://whop.com/checkout/plan_fAMBHwTVE0hR2", yearlyHref: "https://whop.com/checkout/plan_UEXO1F5mjIgWB" },
+          cta: {
+            label: "Ücretsiz denemeyi başlat",
+            monthlyLabel: "3 gün ücretsiz dene",
+            yearlyLabel: "7 gün ücretsiz dene",
+            href: "https://whop.com/checkout/plan_fAMBHwTVE0hR2",
+            yearlyHref: "https://whop.com/checkout/plan_UEXO1F5mjIgWB",
+          },
         },
         {
           name: "Aile",
@@ -513,7 +545,8 @@ export const content = {
           soon: false,
         },
       ],
-      manageNote: "İptal; uygulamadaki Faturalandırma menüsünden veya bu sitedeki hesabınızdan dilediğiniz an tek tıkla yapılır. İptal, dönem sonunda geçerli olur.",
+      manageNote:
+        "İptal; uygulamadaki Faturalandırma menüsünden veya bu sitedeki hesabınızdan dilediğiniz an tek tıkla yapılır. İptal, dönem sonunda geçerli olur.",
     },
     downloads: {
       heading: "Bilgisayarında yerel, telefonunda evinde.",
@@ -537,7 +570,7 @@ export const content = {
         desc: "Windows ve Linux masaüstü programı ve Android mobil uygulaması. Giriş yaptığınızda odalarınız, cihazlarınız, sahneleriniz ve otomasyonlarınız tüm ekranlarınızda eksiksiz senkronize olur.",
         cta: { label: "NEXUS'u İndir", href: "#downloads" },
       },
-        smartScreenNote:
+      smartScreenNote:
         "Windows için en kolay yol Microsoft Store: kurulum Microsoft tarafından imzalanır ve güncellemeler Store'dan gelir. Doğrudan .exe imzasızdır; Windows “bilinmeyen yayıncı” uyarısı verebilir — sağlama değerlerine bak.",
     },
     faq: {
@@ -565,7 +598,7 @@ export const content = {
         ],
         [
           "Hangi cihazlar ve markalar destekleniyor?",
-          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, WLED, ESPHome, Philips Hue ve Home Assistant'ı her platformda yerel HTTP ile, TP-Link Kasa ve Yeelight'i masaüstü uygulamasında yerel TCP ile yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
+          "NEXUS; Shelly (Gen1 ve Gen2+), Tasmota, WLED, ESPHome, Philips Hue ve Home Assistant'ı her platformda yerel HTTP ile, TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY modu) ve Wake-on-LAN'ı masaüstü uygulamasında hesap ya da anahtar gerekmeden yerel ağ üzerinden yönetir. Matter veya Zigbee cihazları kendi Home Assistant sunucun üzerinden katılır; NEXUS onu tek bir yerel merkez görür. Yerel IP keşfi cihazları bulut aracı olmadan anında eşleştirir.",
         ],
         [
           "Güvenlik kameraları ve sensörler nasıl entegre edilir?",
@@ -634,9 +667,21 @@ export const content = {
         heading: "Güvenilirlik Odaklı Mühendislik",
         lead: "NEXUS; masaüstünde sistem tepsisinde 7/24 arka planda nöbet tutan ultra hafif çekirdeği ve mobilde optimize edilmiş yerel köprüleriyle evinizi her an senkronize tutar.",
         items: [
-          { icon: "layers", title: "Masaüstü", desc: "Windows, macOS ve Linux uygulaması sistem tepsisinde kalır; bilgisayar açıkken yerel zamanlayıcılar ve sensör kuralları çalışmaya devam eder. Windows ve Linux hazır kurulumla gelir; macOS kaynaktan derlenir (imzasız: sağ tık → Aç)." },
-          { icon: "wifi", title: "Telefon", desc: "Android ve iOS uygulamaları aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider. Android imzalı APK olarak gelir; iOS, Xcode ve ücretsiz bir Apple ID ile kaynaktan derlenir." },
-          { icon: "lock", title: "Hesap", desc: "Hesap gerekir ki odalar, cihazlar ve sahneler her ekranda aynı olsun. Cihaz komutları ev ağından çıkmaz." },
+          {
+            icon: "layers",
+            title: "Masaüstü",
+            desc: "Windows, macOS ve Linux uygulaması sistem tepsisinde kalır; bilgisayar açıkken yerel zamanlayıcılar ve sensör kuralları çalışmaya devam eder. Windows ve Linux hazır kurulumla gelir; macOS kaynaktan derlenir (imzasız: sağ tık → Aç).",
+          },
+          {
+            icon: "wifi",
+            title: "Telefon",
+            desc: "Android ve iOS uygulamaları aynı yerel ağa açılır; cihaz komutları yine LAN üzerinden gider. Android imzalı APK olarak gelir; iOS, Xcode ve ücretsiz bir Apple ID ile kaynaktan derlenir.",
+          },
+          {
+            icon: "lock",
+            title: "Hesap",
+            desc: "Hesap gerekir ki odalar, cihazlar ve sahneler her ekranda aynı olsun. Cihaz komutları ev ağından çıkmaz.",
+          },
         ],
       },
       linksTitle: "Pratik bağlantılar",

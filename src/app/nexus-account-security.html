@@ -112,7 +112,7 @@
               <button type="button" id="two-factor-copy" onclick="copyTwoFactorSecret()" class="h-10 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-semibold">Anahtarı kopyala</button>
               <a id="two-factor-open" class="hidden h-10 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-sm font-semibold inline-flex items-center">Kimlik uygulamasında aç</a>
             </div>
-            <p id="two-factor-warn" class="hidden text-xs text-amber-700 dark:text-amber-300 leading-relaxed rounded-xl bg-amber-50 dark:bg-amber-500/10 px-3 py-2">Kimlik uygulamasına erişimini kaybedersen girişte kod isteneceği için hesabına giremezsin. Bu anahtarı güvenli bir yere kaydet.</p>
+            <p id="two-factor-warn" role="status" class="nx-notice nx-notice--warn hidden">Kimlik uygulamasına erişimini kaybedersen girişte kod isteneceği için hesabına giremezsin. Bu anahtarı güvenli bir yere kaydet.</p>
             <input id="two-factor-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 haneli kod" class="w-full h-12 px-4 rounded-2xl bg-slate-50 text-slate-900 tracking-[0.3em]"/>
             <p id="two-factor-error" class="hidden text-sm text-red-500"></p>
             <div class="flex gap-2">

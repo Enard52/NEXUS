@@ -817,3 +817,30 @@ html .group:active .group-active\:text-\[\#4C7DFF\]{color:rgb(var(--nx-accent-rg
 .nx-mode.is-on { border-color: var(--nx-accent, #4C7DFF); background: var(--nx-accent, #4C7DFF); color: #fff; }
 html.dark .nx-mode { background: rgba(30, 41, 59, .8); color: #cbd5e1; border-color: #334155; }
 html.dark .nx-mode.is-on { background: var(--nx-accent, #4C7DFF); color: #fff; border-color: var(--nx-accent, #4C7DFF); }
+/* ---------- Ortak uyarı / bilgi kutusu (.nx-notice) ----------
+   Tek bileşen: bilgi (varsayılan), uyarı, hata, başarı. Simge CSS ile gelir (metni JS sonradan yazan kutularda da çalışır);
+   kendi simgesini getiren kutular `nx-notice--own-icon` ekler. Hata kutusu role="alert", diğerleri role="status" taşır. */
+.nx-notice {
+  --nx-n-bg: rgba(var(--nx-accent-rgbc, 76,125,255), .08); --nx-n-bd: rgba(var(--nx-accent-rgbc, 76,125,255), .22); --nx-n-fg: #3856c4;
+  --nx-n-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4M12 8h.01'/%3E%3C/svg%3E");
+  display: flex; align-items: flex-start; gap: 10px; box-sizing: border-box; width: 100%; padding: 12px 14px;
+  border: 1px solid var(--nx-n-bd); border-radius: 16px; background: var(--nx-n-bg); color: var(--nx-n-fg);
+  font-size: 13px; font-weight: 600; line-height: 1.45; text-align: start; overflow-wrap: anywhere;
+}
+.nx-notice.hidden, .nx-notice[hidden] { display: none; }
+.nx-notice:not(.nx-notice--own-icon)::before {
+  content: ""; flex: none; width: 18px; height: 18px; margin-top: 1px; background: currentColor;
+  -webkit-mask: var(--nx-n-icon) center / contain no-repeat; mask: var(--nx-n-icon) center / contain no-repeat;
+}
+.nx-notice > svg, .nx-notice > i { flex: none; width: 18px; height: 18px; margin-top: 1px; }
+.nx-notice a { color: inherit; font-weight: 800; text-decoration: underline; }
+.nx-notice--warn { --nx-n-bg: #fffbeb; --nx-n-bd: #fde68a; --nx-n-fg: #92400e;
+  --nx-n-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'/%3E%3Cpath d='M12 9v4M12 17h.01'/%3E%3C/svg%3E"); }
+.nx-notice--error { --nx-n-bg: #fff1f2; --nx-n-bd: #fecdd3; --nx-n-fg: #be123c;
+  --nx-n-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 8v4M12 16h.01'/%3E%3C/svg%3E"); }
+.nx-notice--ok { --nx-n-bg: #ecfdf5; --nx-n-bd: #a7f3d0; --nx-n-fg: #047857;
+  --nx-n-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E"); }
+html.dark .nx-notice { --nx-n-bg: rgba(147, 180, 255, .12); --nx-n-bd: rgba(147, 180, 255, .28); --nx-n-fg: #bcd0ff; }
+html.dark .nx-notice--warn { --nx-n-bg: rgba(245, 158, 11, .12); --nx-n-bd: rgba(245, 158, 11, .32); --nx-n-fg: #fcd34d; }
+html.dark .nx-notice--error { --nx-n-bg: rgba(244, 63, 94, .13); --nx-n-bd: rgba(244, 63, 94, .34); --nx-n-fg: #fda4af; }
+html.dark .nx-notice--ok { --nx-n-bg: rgba(16, 185, 129, .12); --nx-n-bd: rgba(16, 185, 129, .3); --nx-n-fg: #6ee7b7; }

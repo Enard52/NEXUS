@@ -140,7 +140,7 @@
       "<b>" + tr("Dikkat saatleri", "Attention hours") + ":</b> " + pad2(from) + ":00–" + pad2(to) + ":00"
     ];
     box.innerHTML = lines.map(function (l) { return '<p class="text-sm font-medium text-slate-700 dark:text-slate-200 py-1">' + l + "</p>"; }).join("") +
-      warns.map(function (w) { return '<p class="mt-1 text-xs font-semibold text-amber-700 dark:text-amber-300">⚠ ' + esc(w) + "</p>"; }).join("") +
+      warns.map(function (w) { return '<p class="nx-notice nx-notice--warn mt-2" role="status">' + esc(w) + "</p>"; }).join("") +
       '<p class="mt-2 text-xs text-slate-400 leading-relaxed">' + tr("Plan kaydedilir; ilerleme yalnızca gerçek ölçümlerden hesaplanır. Onay senin: kaydetmeden hiçbir şey değişmez.", "The plan is saved; progress is computed from real readings only. Your call: nothing changes until you save.") + "</p>";
   }
 

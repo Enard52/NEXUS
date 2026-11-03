@@ -637,6 +637,123 @@ ipcMain.handle("lan:mqtt-close", (_e, id) => { mqttClose(Number(id)); return tru
 // ---------- Köprü: SSDP keşfi (yalnızca özel adreslerden gelen yanıtlar) ----------
 ipcMain.handle("lan:ssdp", async (_e, opts) => require("./ssdp.cjs").discover(opts || {}));
 
+// ---------- Köprü: Matter (matter.js; eşleştirme cihazın kendi kodu ile, bulut yok) ----------
+// Denetleyici ilk kullanımda başlar (matter-bridge.cjs). Hatalar sayfaya anlaşılır Türkçe iletiyle döner.
+let matterBridge = null;
+function getMatterBridge() {
+  if (!matterBridge) {
+    matterBridge = require("./matter-bridge.cjs").createMatterBridge({ storageDir: path.join(app.getPath("userData"), "matter") });
+  }
+  return matterBridge;
+}
+function matterCall(fn) {
+  return async (_e, opts) => {
+    try {
+      return await fn(getMatterBridge(), opts || {});
+    } catch (err) {
+      throw new Error(err && err.message ? err.message : "Matter işlemi başarısız.");
+    }
+  };
+}
+ipcMain.handle("lan:matter-commission", matterCall((b, o) => b.commission({ pairingCode: String(o.pairingCode || "") })));
+ipcMain.handle("lan:matter-list", matterCall((b) => b.list()));
+ipcMain.handle("lan:matter-read", matterCall((b, o) => b.read({ peerId: String(o.peerId || ""), endpoint: Number(o.endpoint) })));
+ipcMain.handle("lan:matter-write", matterCall((b, o) => b.write({
+  peerId: String(o.peerId || ""), endpoint: Number(o.endpoint), action: String(o.action || ""),
+  level: o.level, hue: o.hue, saturation: o.saturation, mireds: o.mireds,
+})));
+ipcMain.handle("lan:matter-remove", matterCall((b, o) => b.remove({ peerId: String(o.peerId || "") })));
+
+// ---------- Köprü: Tuya yerel yayınları (UDP 6666/6667, yalnızca dinleme) ----------
+// Tuya cihazları kimliklerini, adreslerini ve protokol sürümlerini ağa periyodik olarak yayınlar; paket anahtarsız okunur
+// (yerel anahtar bu yayında YOKTUR). Köprü ham paketleri döndürür, ayrıştırma sayfa tarafındadır. Yalnızca özel adreslerden gelenler.
+ipcMain.handle("lan:tuya-broadcast", (_e, opts) =>
+  new Promise((resolve) => {
+    const timeout = Math.min(Math.max(Number(opts && opts.timeoutMs) || 8000, 1000), 15000);
+    const seen = new Set();
+    const packets = [];
+    const socks = [];
+    const done = () => {
+      clearTimeout(timer);
+      for (const s of socks) {
+        try {
+          s.close();
+        } catch {
+          /* kapalı */
+        }
+      }
+      resolve(packets);
+    };
+    const timer = setTimeout(done, timeout);
+    let pending = 2;
+    const bound = () => {
+      pending -= 1;
+      if (pending === 0 && !socks.length) done();
+    };
+    for (const port of [6666, 6667]) {
+      const sock = dgram.createSocket({ type: "udp4", reuseAddr: true });
+      sock.on("message", (msg, rinfo) => {
+        if (!isPrivateHost(rinfo.address) || msg.length > 1024 || packets.length >= 64) return;
+        const key = rinfo.address + ":" + msg.toString("hex");
+        if (seen.has(key)) return;
+        seen.add(key);
+        packets.push({ address: rinfo.address, port, hex: msg.toString("hex") });
+      });
+      sock.once("error", () => {
+        try {
+          sock.close();
+        } catch {
+          /* kapalı */
+        }
+        const i = socks.indexOf(sock);
+        if (i !== -1) socks.splice(i, 1);
+        bound();
+      });
+      sock.bind(port, () => {
+        socks.push(sock);
+        bound();
+      });
+    }
+  }),
+);
+
+// ---------- Köprü: IP → MAC (ARP önbelleği; Wake-on-LAN adresini kullanıcıya yazdırmamak için) ----------
+// Yalnızca özel IPv4 adresi sorulur; komut sabit argümanlarla çalışır (kabuk yok). Önbellekte yoksa 9. porta (discard)
+// boş bir UDP paketi atılır: bu, işletim sisteminin ARP isteği yapmasını sağlar. Uyuyan cihazın MAC'i bulunamaz.
+function parseArpMac(text) {
+  const m = String(text || "").match(/\b([0-9a-f]{1,2}(?:[:-][0-9a-f]{1,2}){5})\b/i);
+  if (!m) return null;
+  const mac = m[1].split(/[:-]/).map((x) => x.padStart(2, "0").toLowerCase());
+  const joined = mac.join(":");
+  if (joined === "ff:ff:ff:ff:ff:ff" || joined === "00:00:00:00:00:00" || (parseInt(mac[0], 16) & 1) === 1) return null;
+  return joined;
+}
+function arpLookupOnce(ip) {
+  return new Promise((resolve) => {
+    require("node:child_process").execFile("arp", ["-a", ip], { timeout: 4000, windowsHide: true }, (err, stdout) => {
+      if (err) return resolve(null);
+      const line = String(stdout).split(/\r?\n/).find((l) => l.includes(ip + " ") || l.includes("(" + ip + ")"));
+      resolve(line ? parseArpMac(line) : null);
+    });
+  });
+}
+ipcMain.handle("lan:arp", async (_e, opts) => {
+  const ip = String((opts && opts.host) || "");
+  if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(ip) || !isPrivateHost(ip) || ip === "255.255.255.255") throw new Error("izin verilmeyen hedef");
+  let mac = await arpLookupOnce(ip);
+  if (mac) return { mac };
+  await new Promise((resolve) => {
+    const sock = dgram.createSocket("udp4");
+    sock.send(Buffer.alloc(0), 9, ip, () => {
+      try { sock.close(); } catch { /* kapalı */ }
+      resolve();
+    });
+  });
+  await new Promise((r) => setTimeout(r, 600));
+  mac = await arpLookupOnce(ip);
+  return { mac: mac || null };
+});
+
 // ---------- Köprü: yerel ağ UDP (WiZ 38899, LIFX 56700, Govee 4001/4003, WoL 9/7; Govee yanıtları 4002'ye gelir) ----------
 const UDP_PORTS = new Set([38899, 56700, 4001, 4003, 9, 7]);
 const UDP_REPLY_PORTS = new Set([4002]);
@@ -1668,6 +1785,7 @@ app.on("will-quit", () => {
   } catch {
     /* yok */
   }
+  if (matterBridge) matterBridge.close().catch(() => {});
 });
 
 // Güncelleyici (quitAndInstall) ve diğer çıkış yolları gerçek kapanmaya işaret etmeli;

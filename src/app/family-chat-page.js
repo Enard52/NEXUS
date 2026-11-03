@@ -329,7 +329,7 @@
         body.innerHTML = html;
         lucide.createIcons();
       }, function (e) {
-        body.innerHTML = '<p class="py-6 text-center text-sm text-amber-700 dark:text-amber-300">' + esc(e.message) + '</p>';
+        body.innerHTML = '<p class="nx-notice nx-notice--warn my-4" role="alert">' + esc(e.message) + '</p>';
       });
     }
     function statCard(label, value) {

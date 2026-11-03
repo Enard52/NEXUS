@@ -178,9 +178,9 @@
         icon: 'info',
         title: 'NEXUS+ ' + plan,
         message: hasEnd
-          ? nexusT('Aboneliğin dönem sonunda (' + dateStr + ') sonlanacak. O tarihe kadar NEXUS+ kullanmaya devam edebilirsin.', 'Your subscription ends on ' + dateStr + '. You can keep using NEXUS+ until then.')
-          : nexusT('Aboneliğin dönem sonunda sonlanacak; NEXUS+ kullanmaya devam edebilirsin.', 'Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.'),
-        primary: { label: nexusT('Tamam', 'OK'), onClick: function () {} }
+          ? (window.nexusT ? nexusT('Aboneliğin dönem sonunda ({0}) sonlanacak. O tarihe kadar NEXUS+ kullanmaya devam edebilirsin.', 'Your subscription ends on {0}. You can keep using NEXUS+ until then.') : 'Aboneliğin dönem sonunda ({0}) sonlanacak. O tarihe kadar NEXUS+ kullanmaya devam edebilirsin.').replace('{0}', dateStr)
+          : (window.nexusT ? nexusT('Aboneliğin dönem sonunda sonlanacak; NEXUS+ kullanmaya devam edebilirsin.', 'Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.') : 'Aboneliğin dönem sonunda sonlanacak; NEXUS+ kullanmaya devam edebilirsin.'),
+        primary: { label: window.nexusT ? nexusT('Tamam', 'OK') : 'Tamam', onClick: function () {} }
       });
       return;
     }
@@ -188,8 +188,8 @@
       icon: 'info',
       title: 'NEXUS+ ' + plan,
       message: hasEnd
-        ? nexusT('Sonraki yenileme: ' + dateStr + '. İptal edersen bu dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.', 'Next renewal: ' + dateStr + '. If you cancel, you keep access until the end of this period; no further payment is taken.')
-        : nexusT('Aboneliğin aktif. İptal edersen dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.', 'Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.'),
+        ? (window.nexusT ? nexusT('Sonraki yenileme: {0}. İptal edersen bu dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.', 'Next renewal: {0}. If you cancel, you keep access until the end of this period; no further payment is taken.') : 'Sonraki yenileme: {0}. İptal edersen bu dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.').replace('{0}', dateStr)
+        : (window.nexusT ? nexusT('Aboneliğin aktif. İptal edersen dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.', 'Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.') : 'Aboneliğin aktif. İptal edersen dönemin sonuna kadar kullanmaya devam edersin; sonraki ödeme alınmaz.'),
       primary: {
         label: nexusT('Dönem sonunda iptal et', 'Cancel at period end'),
         onClick: function () { openCancelConfirm(); }
@@ -213,7 +213,7 @@
     const sinceDate = sinceIso ? new Date(sinceIso) : null;
     if (plan && sinceDate && !isNaN(sinceDate.getTime())) {
       var sinceStr = sinceDate.toLocaleDateString((window.nexusLocale || 'tr-TR'), options);
-      since.textContent = nexusT(sinceStr + " tarihinden beri aktif", "Active since " + sinceStr);
+      since.textContent = (window.nexusT ? nexusT("{0} tarihinden beri aktif", "Active since {0}") : "{0} tarihinden beri aktif").replace("{0}", sinceStr);
       since.classList.remove("hidden");
     }
 

@@ -592,6 +592,11 @@
 
   // Kısa durum metni + rozet tonu
   function statusOf(device, index) {
+    // Wake-on-LAN cevap vermez: uyuyan cihaz "ulaşılamıyor" değildir; yalnızca paketin gidip gitmediği bilinir.
+    if (device && device.protocol === "wol") {
+      if (index != null && LAN_STATUS[index] === "error") return { text: "Paket gönderilemedi", badge: "warn" };
+      return { text: "Uyandırmaya hazır", badge: "idle" };
+    }
     if (index != null && LAN_ONLINE[index] === false)
       return { text: "Ulaşılamıyor", badge: "warn" };
     // Katalogdan eklenmiş ama ağda bağlanmamış cihaz: "Bağlı" yazmak yanlış bilgi olur.
@@ -752,7 +757,9 @@
         var msg = err && err.message ? String(err.message) : "";
         LAN_ERRORS[index] = /kullanılamıyor|desteklenmiyor|yalnızca masaüstü|yerel değil/.test(msg)
           ? msg
-          : "Komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.";
+          : device.protocol === "wol"
+            ? "Uyandırma paketi gönderilemedi. Bu bilgisayarın ağ bağlantısını kontrol et."
+            : "Komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.";
         notify(index);
       });
   }
@@ -829,6 +836,11 @@
     }
     var devices = readDevices();
     if (!devices[index]) return null;
+    // Wake-on-LAN tek yönlüdür: açık/kapalı durumu yoktur, kayda "açık" yazılmaz; her basış yeni bir uyandırma paketi gönderir.
+    if (devices[index].protocol === "wol" && field === "switch") {
+      sendCommand(devices[index], "switch", true, index);
+      return devices[index];
+    }
     var prev = stateOf(devices[index]);
     var prevSwitch = prev.switch;
     var prevBrightness = prev.brightness;
@@ -955,6 +967,20 @@
     var gone = devices.splice(index, 1)[0];
     if (photoOf(gone)) setPhoto(gone, null);
     writeDevices(devices);
+    // Matter: eşleşme denetleyicide durur; aynı eşin başka bölümü kalmadıysa cihaz denetleyiciden de kaldırılır
+    // (aksi halde aynı cihaz yeniden eklenemez).
+    if (
+      gone &&
+      gone.protocol === "matter" &&
+      gone.matterNode &&
+      window.nexusLan &&
+      window.nexusLan.matter &&
+      !devices.some(function (d) {
+        return d && d.matterNode === gone.matterNode;
+      })
+    ) {
+      window.nexusLan.matter.remove(gone).catch(function () {});
+    }
   }
 
   function renameDevice(index, name) {

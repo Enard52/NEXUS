@@ -151,8 +151,8 @@
             "NEXUS+ " + (plan === "Yıllık" ? nexusT("Yıllık", "Yearly") : nexusT("Aylık", "Monthly"));
           var end = fmtDate(nexusGetItem("nexusPlusEnd"));
           var note = nexusGetItem("nexusPlusCancel") === "1"
-            ? (end ? nexusT("Dönem sonunda sona erecek: " + end, "Ends at period end: " + end) : nexusT("Dönem sonunda sona erecek.", "Ends at period end."))
-            : (end ? nexusT("Sonraki yenileme: " + end, "Next renewal: " + end) : nexusT("Aboneliğin aktif.", "Your subscription is active."));
+            ? (end ? (window.nexusT ? nexusT("Dönem sonunda sona erecek: {0}", "Ends at period end: {0}") : "Dönem sonunda sona erecek: {0}").replace("{0}", end) : (window.nexusT ? nexusT("Dönem sonunda sona erecek.", "Ends at period end.") : "Dönem sonunda sona erecek."))
+            : (end ? (window.nexusT ? nexusT("Sonraki yenileme: {0}", "Next renewal: {0}") : "Sonraki yenileme: {0}").replace("{0}", end) : (window.nexusT ? nexusT("Aboneliğin aktif.", "Your subscription is active.") : "Aboneliğin aktif."));
           document.getElementById("orders-plan-note").textContent = note;
           box.classList.remove("hidden");
         }

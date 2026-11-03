@@ -136,7 +136,10 @@
       } else {
         var n = countFor(item.protocol);
         if (n > 0) {
-          sub = nexusT(n + ' cihaz bağlı', n + ' device' + (n === 1 ? '' : 's') + ' connected');
+          sub = (n === 1
+            ? (window.nexusT ? nexusT('{0} cihaz bağlı', '{0} device connected') : '{0} cihaz bağlı')
+            : (window.nexusT ? nexusT('{0} cihaz bağlı', '{0} devices connected') : '{0} cihaz bağlı')
+          ).replace('{0}', String(n));
           subColor = 'text-emerald-600';
           badge = pill(nexusT('Bağlı', 'Connected'), 'bg-emerald-50 text-emerald-600');
         } else if (item.plus && !hasPlus()) {

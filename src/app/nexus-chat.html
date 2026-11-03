@@ -516,16 +516,13 @@
   }
 
   function syncAttachMenuLang() {
-    var isEn = window.nexusLang === 'en';
     var menu = document.getElementById('attach-menu');
     if (!menu) return;
-    if (isEn) {
-      menu.setAttribute('aria-label', 'Attachment options');
-      var labels = menu.querySelectorAll('.attach-label');
-      if (labels[0]) labels[0].textContent = 'Photo from gallery';
-      if (labels[1]) labels[1].textContent = 'Take photo';
-      if (labels[2]) labels[2].textContent = 'Ask my devices';
-    }
+    menu.setAttribute('aria-label', window.nexusT ? nexusT('Ek seçenekleri', 'Attachment options') : 'Ek seçenekleri');
+    var labels = menu.querySelectorAll('.attach-label');
+    if (labels[0]) labels[0].textContent = window.nexusT ? nexusT('Galeriden fotoğraf', 'Photo from gallery') : 'Galeriden fotoğraf';
+    if (labels[1]) labels[1].textContent = window.nexusT ? nexusT('Fotoğraf çek', 'Take photo') : 'Fotoğraf çek';
+    if (labels[2]) labels[2].textContent = window.nexusT ? nexusT('Cihazlarıma sor', 'Ask my devices') : 'Cihazlarıma sor';
   }
 
   function toggleAttachMenu(forceState) {

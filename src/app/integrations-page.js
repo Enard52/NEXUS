@@ -2611,12 +2611,14 @@ function supportedMatrixCategory() {
     });
     out.push({ title: cat, items: byCategory[cat] });
   });
-  return out.length ? { key: "desteklenen", label: "Desteklenen Cihazlar", groups: out } : null;
+  return out;
 }
+// Matris türlerinin başlığı mevcut bir katalog kategorisine denk geliyorsa o kategoriye eklenir,
+// aksi halde kendi kategorisi olur; "Desteklenen Cihazlar" gibi bir çatı kategori yoktur.
+var MATRIX_TO_CATALOG_KEY = { "Aydınlatma": "aydinlatma", "Sensörler": "sensor" };
+
 function getVisibleCatalog() {
   var out = [];
-  var matrix = supportedMatrixCategory();
-  if (matrix) out.push(matrix);
   CATALOG.forEach(function (c) {
     if (SUPPORTED_CATEGORY_KEYS.indexOf(c.key) === -1) return;
     var groups = [];
@@ -2627,6 +2629,13 @@ function getVisibleCatalog() {
       if (items.length) groups.push({ title: g.title, items: items });
     });
     if (groups.length) out.push({ key: c.key, label: c.label, groups: groups });
+  });
+  supportedMatrixCategory().forEach(function (g, i) {
+    var target = out.filter(function (c) {
+      return c.key === MATRIX_TO_CATALOG_KEY[g.title];
+    })[0];
+    if (target) target.groups.unshift(g);
+    else out.push({ key: "tur-" + i, label: g.title, groups: [g] });
   });
   return out;
 }

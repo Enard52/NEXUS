@@ -133,7 +133,7 @@
       }
       if (!text) { el.classList.add("hidden"); el.innerHTML = ""; return; }
       el.classList.remove("hidden");
-      el.innerHTML = '<div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">' + esc(text) + action + '</div>';
+      el.innerHTML = '<div class="nx-notice nx-notice--warn" role="status"><span class="min-w-0 flex-1"><span class="block">' + esc(text) + '</span>' + (action ? '<span class="block">' + action + '</span>' : '') + '</span></div>';
     }
     function reloadCloud() {
       if (!HC) return Promise.resolve();
@@ -261,7 +261,7 @@
             '</div></div>';
         }).join("") : '<p class="py-4 text-center text-sm text-slate-400">Şu an bekleyen davet yok.</p>';
       }, function (e) {
-        if (box) box.innerHTML = '<p class="py-4 text-center text-sm text-amber-700 dark:text-amber-300">' + esc(e.message) + '</p>';
+        if (box) box.innerHTML = '<p class="nx-notice nx-notice--warn my-3" role="alert">' + esc(e.message) + '</p>';
       });
     }
     var inviteCache = {};
@@ -356,7 +356,7 @@
         }).join("") : '<p class="py-2 text-center text-sm text-slate-400">Henüz etkinlik yok.</p>';
       }, function (e) {
         var box = document.getElementById("activity-panel");
-        if (box) box.innerHTML = '<p class="py-2 text-center text-sm text-amber-700 dark:text-amber-300">' + esc(e.message) + '</p>';
+        if (box) box.innerHTML = '<p class="nx-notice nx-notice--warn my-2" role="alert">' + esc(e.message) + '</p>';
       });
     }
     function toggleShareAlerts() {

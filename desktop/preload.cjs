@@ -8,6 +8,15 @@ contextBridge.exposeInMainWorld("nexusDesktop", {
   tcp: (opts) => ipcRenderer.invoke("lan:tcp", opts),
   udp: (opts) => ipcRenderer.invoke("lan:udp", opts),
   ssdp: (opts) => ipcRenderer.invoke("lan:ssdp", opts),
+  matter: {
+    commission: (opts) => ipcRenderer.invoke("lan:matter-commission", opts),
+    list: () => ipcRenderer.invoke("lan:matter-list"),
+    read: (opts) => ipcRenderer.invoke("lan:matter-read", opts),
+    write: (opts) => ipcRenderer.invoke("lan:matter-write", opts),
+    remove: (opts) => ipcRenderer.invoke("lan:matter-remove", opts),
+  },
+  arpLookup: (opts) => ipcRenderer.invoke("lan:arp", opts),
+  tuyaBroadcast: (opts) => ipcRenderer.invoke("lan:tuya-broadcast", opts),
   // Yetenek bayrakları: ikili HTTP (Tapo KLAP) ve oturumlu TCP (Tuya) yalnızca bu sürümde var.
   binaryHttp: true,
   tcpSession: {

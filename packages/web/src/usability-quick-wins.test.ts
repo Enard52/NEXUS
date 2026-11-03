@@ -55,10 +55,13 @@ describe("pair screen: LAN errors offer retry + help", () => {
   });
 
   it("host-identify timeout and auto-scan failures pass a retry handler", () => {
-    expect(pair).toContain('emin ol.", "error", scanLanHost);');
-    expect(pair).toContain('emin ol.", "error", function () { startAutoScan(); });');
-    expect(pair).toContain(
-      'QR / kurulum kodunu kullan.", autoScanStop ? "" : "error", function () { startAutoScan(); });',
+    const flat = pair
+      .replace(/,?\s+/g, (m) => (m.startsWith(",") ? ", " : " "))
+      .replace(/\( /g, "(");
+    expect(flat).toContain('emin ol.", "error", scanLanHost');
+    expect(flat).toContain('emin ol.", "error", function () { startAutoScan(); }');
+    expect(flat).toContain(
+      'QR / kurulum kodunu kullan.", autoScanStop ? "" : "error", function () { startAutoScan(); }',
     );
   });
 

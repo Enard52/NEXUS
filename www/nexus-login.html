@@ -204,11 +204,10 @@
       );
     } catch (e) {}
 
-    var isEn = (window.nexusLang === 'en' || (!window.nexusLang && /^en/i.test(navigator.language || '')));
     if (hasPrevUser) {
-      title.textContent = isEn ? 'Welcome Back' : 'Tekrar Hoş Geldin';
+      title.textContent = window.nexusT ? nexusT('Tekrar Hoş Geldin', 'Welcome Back') : 'Tekrar Hoş Geldin';
     } else {
-      title.textContent = isEn ? 'Welcome' : 'Hoş Geldin';
+      title.textContent = window.nexusT ? nexusT('Hoş Geldin', 'Welcome') : 'Hoş Geldin';
     }
 
     try {

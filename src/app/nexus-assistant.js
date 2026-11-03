@@ -9,10 +9,24 @@
  * Güvenlik: kilit sohbetten AÇILMAZ; "her şeyi kapat" buzdolabı gibi prizleri kapatmaz.
  */
 (function () {
-  var EN = window.nexusLang === "en";
-  function T(tr, en) { return EN ? en : tr; }
+  function nexusT(tr, en) {
+    if (typeof window !== "undefined" && typeof window.nexusT === "function") {
+      return window.nexusT(tr, en);
+    }
+    return (typeof window !== "undefined" && window.nexusLang === "en") ? en : tr;
+  }
+  var T = nexusT;
+  function format(template, args) {
+    return String(template || "").replace(/\{(\d+)\}/g, function (_, i) {
+      return args[i] !== undefined ? args[i] : "{" + i + "}";
+    });
+  }
   // V: birden fazla doğal söyleyişten birini seçer (tekrar eden robot cümlesi olmasın).
-  function V(trs, ens) { var a = EN ? ens : trs; return a[Math.floor(Math.random() * a.length)]; }
+  function V(trs, ens) {
+    var en = typeof window !== "undefined" && window.nexusLang === "en";
+    var a = en ? ens : trs;
+    return a[Math.floor(Math.random() * a.length)];
+  }
 
   function fold(s) {
     return String(s || "").toLocaleLowerCase("tr-TR")
@@ -57,7 +71,7 @@
   function names(list, max) {
     var shown = list.slice(0, max || 3).map(function (x) { return x.device.name; });
     var more = list.length - shown.length;
-    return shown.join(", ") + (more > 0 ? T(" ve " + more + " cihaz daha", " and " + more + " more") : "");
+    return shown.join(", ") + (more > 0 ? format(nexusT(" ve {0} cihaz daha", " and {0} more"), [more]) : "");
   }
 
   // Metinde geçen cihaz adı / oda / kategori
@@ -124,7 +138,10 @@
     return { changed: changed, lan: lan };
   }
   function lanNote(r) {
-    return r.lan ? T(" " + r.lan + " cihaza yerel ağdan komut gitti.", " A command was sent over your local network to " + r.lan + " device" + (r.lan > 1 ? "s" : "") + ".") : "";
+    if (!r.lan) return "";
+    return r.lan > 1
+      ? format(nexusT(" {0} cihaza yerel ağdan komut gitti.", " A command was sent over your local network to {0} devices."), [r.lan])
+      : nexusT(" 1 cihaza yerel ağdan komut gitti.", " A command was sent over your local network to 1 device.");
   }
   // Komut sonrası durum sorgusu (nexus-chat.html gecikmeli olarak çağırır).
   function lanPending() { return LAST_LAN.slice(); }
@@ -145,9 +162,12 @@
     });
     if (!bad.length) return "";
     var list = bad.slice(0, 3).map(function (it) { return it.name; }).join(", ") +
-      (bad.length > 3 ? T(" ve " + (bad.length - 3) + " cihaz daha", " and " + (bad.length - 3) + " more") : "");
-    return T("⚠ " + list + " için komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.",
-      "⚠ The command did not reach " + list + " — make sure it is on and connected to the same Wi-Fi network.");
+      (bad.length > 3 ? format(nexusT(" ve {0} cihaz daha", " and {0} more"), [bad.length - 3]) : "");
+    return format(
+      nexusT("⚠ {0} için komut cihaza ulaşamadı — cihazın açık ve aynı Wi-Fi ağında olduğunu doğrula.",
+        "⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network."),
+      [list]
+    );
   }
   function powerable(x) { return nx().hasPower(x.device); }
 
@@ -174,9 +194,30 @@
       if (st.badge === "on") on.push(d.name);
       if (st.badge === "warn") warn.push(d.name + " (" + (window.nexusTr ? nexusTr(st.text) : st.text) + ")");
     });
-    var parts = [T("Evinde " + all.length + " cihaz var.", "You have " + all.length + " device" + (all.length > 1 ? "s" : "") + " at home.")];
-    parts.push(on.length ? T("Şu an açık olanlar: " + on.slice(0, 6).join(", ") + (on.length > 6 ? " ve diğerleri" : "") + ".", "Right now these are on: " + on.slice(0, 6).join(", ") + (on.length > 6 ? " and a few more" : "") + ".") : T("Şu an hiçbiri açık değil, ev sakin.", "Nothing is on right now, the house is quiet."));
-    if (warn.length) parts.push(T("Dikkat etmen gerekenler: " + warn.slice(0, 4).join(", ") + ".", "These need your attention: " + warn.slice(0, 4).join(", ") + "."));
+    var parts = [
+      format(
+        all.length > 1
+          ? nexusT("Evinde {0} cihaz var.", "You have {0} devices at home.")
+          : nexusT("Evinde {0} cihaz var.", "You have {0} device at home."),
+        [all.length]
+      )
+    ];
+    parts.push(
+      on.length
+        ? format(
+            nexusT("Şu an açık olanlar: {0}.", "Right now these are on: {0}."),
+            [on.slice(0, 6).join(", ") + (on.length > 6 ? nexusT(" ve diğerleri", " and a few more") : "")]
+          )
+        : nexusT("Şu an hiçbiri açık değil, ev sakin.", "Nothing is on right now, the house is quiet.")
+    );
+    if (warn.length) {
+      parts.push(
+        format(
+          nexusT("Dikkat etmen gerekenler: {0}.", "These need your attention: {0}."),
+          [warn.slice(0, 4).join(", ")]
+        )
+      );
+    }
     return { reply: parts.join(" ") };
   }
 

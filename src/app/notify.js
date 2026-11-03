@@ -341,16 +341,31 @@
     ai: ["AI Önerileri", "AI Suggestions"],
   };
 
+  function channelNameForSpec(p) {
+    if (p.critical) return window.nexusT ? nexusT("NEXUS Kritik Uyarılar", "NEXUS Critical Alerts") : "NEXUS Kritik Uyarılar";
+    var c = p.cat === "device"
+      ? (window.nexusT ? nexusT("Cihazlar", "Devices") : "Cihazlar")
+      : p.cat === "energy"
+        ? (window.nexusT ? nexusT("Enerji", "Energy") : "Enerji")
+        : p.cat === "ai"
+          ? (window.nexusT ? nexusT("AI Önerileri", "AI Suggestions") : "AI Önerileri")
+          : (window.nexusT ? nexusT("Güvenlik", "Security") : "Güvenlik");
+    var s = (!p.sound && !p.vibrate)
+      ? (window.nexusT ? nexusT(" - sessiz - titreşimsiz", " - silent - no vibration") : " - sessiz - titreşimsiz")
+      : (!p.sound)
+        ? (window.nexusT ? nexusT(" - sessiz", " - silent") : " - sessiz")
+        : (!p.vibrate)
+          ? (window.nexusT ? nexusT(" - titreşimsiz", " - no vibration") : " - titreşimsiz")
+          : "";
+    var tpl = window.nexusT ? nexusT("NEXUS {0}{1}", "NEXUS {0}{1}") : "NEXUS {0}{1}";
+    return tpl.replace("{0}", c).replace("{1}", s);
+  }
+
   function localChannelSpec(prefs) {
     var p = prefs || { cat: "security", critical: false, sound: true, vibrate: true };
-    var names = p.critical ? ["Kritik Uyarılar", "Critical Alerts"] : CAT_NAMES[p.cat] || CAT_NAMES.security;
-    var suffix = p.critical ? "" : (p.sound ? "" : " - sessiz") + (p.vibrate ? "" : " - titreşimsiz");
-    var suffixEn = p.critical ? "" : (p.sound ? "" : " - silent") + (p.vibrate ? "" : " - no vibration");
     return {
       id: p.critical ? "nexus-critical" : "nexus-" + p.cat + "-" + (p.sound ? "s" : "q") + (p.vibrate ? "v" : "n"),
-      name: window.nexusT
-        ? nexusT("NEXUS " + names[0] + suffix, "NEXUS " + names[1] + suffixEn)
-        : "NEXUS " + names[0] + suffix,
+      name: channelNameForSpec(p),
       description: window.nexusT
         ? nexusT("Akıllı ev olayları ve uyarıları", "Smart home events and alerts")
         : "Akıllı ev olayları ve uyarıları",

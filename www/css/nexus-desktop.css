@@ -327,6 +327,7 @@ html.nx-desk[data-nx-page="pair"] main > section:first-child .absolute.top-4 { t
 /* Keşfet: kartlar iki sütun */
 html.nx-desk[data-nx-page="discover"] main { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
 html.nx-desk[data-nx-page="discover"] main > * { margin: 0 !important; }
+html.nx-desk[data-nx-page="discover"] main > h3 { grid-column: 1 / -1; padding-top: 8px; }
 /* Kameralar: önizlemeler iki sütun */
 html.nx-desk[data-nx-page="multi-video"] main { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
 html.nx-desk[data-nx-page="multi-video"] main > * { margin: 0 !important; }
@@ -404,6 +405,10 @@ html.nx-desk[data-nx-page="multi-video"] main > p { grid-column: 1 / -1; }
 html.nx-desk[data-nx-page="multi-video"] main > .nx-empty {
   width: 100%; max-width: 420px; height: auto; align-self: start;
   justify-self: center; margin: 24px auto !important;
+}
+/* Cihaz ekranı uyarı kutuları: ızgaranın tek sütununa sıkışıp sola yapışmasın; ürün kutusuyla aynı genişlikte, ortada ve tam satırda */
+@media (min-width: 1200px) {
+html.nx-desk[data-nx-page="device"] #device-main > .nx-notice { grid-column: 1 / -1; max-width: 640px; justify-self: center; }
 }
 html.nx-desk[data-nx-page="device"] #device-main > .nx-empty { grid-column: 1 / -1; max-width: 520px; width: 100%; margin: 32px auto !important; height: auto; align-self: start; }
 /* Alt eylem çubukları: şeritli düz zemin yerine buzlu cam */
