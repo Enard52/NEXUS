@@ -658,7 +658,8 @@
       "The NEXUS website is exactly: https://nexus-smarthome.pages.dev — if you share a link, use only this URL; never invent another. " +
       "When referring to device types, use the 'device' noun (e.g. 'light device'); never speak as if a kind of device ceased to exist."
     ) };
-    return fetch(AI_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ lang: lang, messages: [sysMsg].concat(hist), devices: devs }), signal: ctrl ? ctrl.signal : undefined })
+    var targetLang = replyLangName();
+    return fetch(AI_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ lang: lang, targetLang: targetLang, messages: [sysMsg].concat(hist), devices: devs }), signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) { clearTimeout(timer); var t = j && j.reply ? String(j.reply).trim() : ""; if (t) { hist.push({ role: "assistant", content: t }); hist = hist.slice(-8); return t; } return null; })
       .catch(function () { clearTimeout(timer); return null; });
