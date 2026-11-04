@@ -99,7 +99,8 @@ describe("legal pages and PDFs language-agnostic generation (Issue #191)", () =>
 
   it("renders right-to-left languages with dir=rtl once their file exists", async () => {
     const { existsSync } = await import("node:fs");
-    if (!existsSync(new URL("../../../scripts/legal-translations/ar.json", import.meta.url))) return;
+    if (!existsSync(new URL("../../../scripts/legal-translations/ar.json", import.meta.url)))
+      return;
     expect(renderHtml("privacy", "ar")).toContain('<html lang="ar" dir="rtl">');
   });
 });
