@@ -130,5 +130,6 @@ describe("community language layer", () => {
       const r = tool.checkLanguage(code);
       expect(r.problems, `${f} sorunları`).toEqual([]);
     }
-  });
+    // 66 dil tek tek denetlenir (yalnız çalışınca ~20 sn); tam suite yükü altında 30 sn'lik varsayılanı aşıyordu.
+  }, 180000);
 });

@@ -5,7 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        NEXUS ships with 100% English + Turkish coverage (enforced by a test).
+        NEXUS ships in 68 languages; English and Turkish are fully covered (enforced by a test)
+        and every other language falls back to English per string. Write in any language you like.
         Community languages are welcome! A language is added by contributing one
         dictionary file (`src/app/lang-<code>.js`) and one registry line in
         `src/app/theme.js`. The step-by-step guide is docs/TRANSLATING.md.
@@ -14,7 +15,7 @@ body:
     attributes:
       label: What is this about?
       options:
-        - A string shows untranslated (EN or TR)
+        - A string shows untranslated (in any language)
         - A translation is wrong or awkward
         - I want to offer a NEW language
     validations:

@@ -38,8 +38,9 @@ vendor cloud, no subscription required. Windows · Linux · macOS · Android. iO
   which stay on the device (encrypted with the OS keychain / Android Keystore).
 - **Automations** on time, device state, weather, sensors, security mode and arriving/leaving home (phone, app open).
 - **Verify your download** with SHA-256 or build provenance: [docs/VERIFY-DOWNLOAD.md](docs/VERIFY-DOWNLOAD.md). Questions: [docs/FAQ.md](docs/FAQ.md).
-- **Bilingual UI** (English/Turkish) with an automated 100% translation-coverage
-  gate.
+- **Global UI.** 68 languages (English and Turkish are fully covered by an automated
+  gate; the rest are community-maintained overlays that fall back to English per string).
+  Add or fix a language: [docs/TRANSLATING.md](docs/TRANSLATING.md).
 
 ## Desktop
 

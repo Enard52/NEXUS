@@ -583,8 +583,8 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
   ],
   ["Checksums published", "Özetler yayınlanır"],
   [
-    "Paired directly over your local network — no paid hub, cloud account or subscription. Matter, Tapo and Tuya are on the roadmap.",
-    "Doğrudan yerel ağınız üzerinden eşleşir — ücretli hub, bulut hesabı ya da abonelik yok. Matter, Tapo ve Tuya yol haritasında.",
+    "Paired directly over your local network — no paid hub, cloud account or subscription. Matter connects through Home Assistant.",
+    "Doğrudan yerel ağınız üzerinden eşleşir — ücretli hub, bulut hesabı ya da abonelik yok. Matter, Home Assistant üzerinden bağlanır.",
   ],
   ["Native on every desktop.", "Her masaüstünde yerel."],
   [
@@ -645,8 +645,8 @@ export const TR_TEXT: ReadonlyArray<readonly [string, string]> = [
     "Evet. Yerel ağınızdaki cihazları eşleştirmek ve kontrol etmek, senaryolar ve otomasyonlar ücretsizdir; hub, bulut hesabı ya da abonelik gerekmez. Premium planlar gelişmiş yapay zekâ ve hane yönetimi araçları ekler.",
   ],
   [
-    "Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED, ESPHome, TP-Link Tapo, Sonoff and Tuya devices are controlled directly over your local network. TP-Link Kasa, Yeelight, WiZ, LIFX and Govee work in the desktop app. Matter and Zigbee connect through Home Assistant.",
-    "Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED, ESPHome, TP-Link Tapo, Sonoff ve Tuya cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa, Yeelight, WiZ, LIFX ve Govee masaüstü uygulamasında çalışır. Matter ve Zigbee Home Assistant üzerinden bağlanır.",
+    "Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED, ESPHome and Sonoff devices are controlled directly over your local network. TP-Link Kasa, Yeelight, WiZ, LIFX and Govee work in the desktop app. Matter and Zigbee connect through Home Assistant.",
+    "Philips Hue, Shelly (Gen1, Plus ve Pro), Tasmota, WLED, ESPHome ve Sonoff cihazları doğrudan yerel ağınız üzerinden kontrol edilir. TP-Link Kasa, Yeelight, WiZ, LIFX ve Govee masaüstü uygulamasında çalışır. Matter ve Zigbee Home Assistant üzerinden bağlanır.",
   ],
   ["Can I control my home while I am away?", "Evden uzaktayken evimi kontrol edebilir miyim?"],
   [

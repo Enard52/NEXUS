@@ -976,7 +976,7 @@ export function renderPremiumBody(dyn: PremiumDynamicParts): string {
           </div>
           <div class="faq-card">
             <div class="faq-question">Which devices are supported?</div>
-            <div class="faq-answer">Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED, ESPHome, TP-Link Tapo, Sonoff and Tuya devices are controlled directly over your local network. TP-Link Kasa, Yeelight, WiZ, LIFX and Govee work in the desktop app. Matter and Zigbee connect through Home Assistant.</div>
+            <div class="faq-answer">Philips Hue, Shelly (Gen1, Plus and Pro), Tasmota, WLED, ESPHome and Sonoff devices are controlled directly over your local network. TP-Link Kasa, Yeelight, WiZ, LIFX and Govee work in the desktop app. Matter and Zigbee connect through Home Assistant.</div>
           </div>
           <div class="faq-card">
             <div class="faq-question">Does it work without a cloud connection?</div>

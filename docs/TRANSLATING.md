@@ -1,6 +1,7 @@
 # Translating NEXUS
 
-NEXUS ships in Turkish and English. Any other language is added by the community with **one dictionary file**
+NEXUS ships in 68 languages. Turkish and English are the reference languages (fully covered, enforced by tests);
+every other language is a community overlay. A new or missing language is added with **one dictionary file**
 plus one registry line. No paid tool or account is needed, and a language you cannot verify yourself should
 not be added.
 

@@ -383,12 +383,11 @@ function hideToTray() {
     "Automations and device links stay active. Click icon to reopen.",
   );
   try {
-    const notifIcon = notificationIcon();
     if (Notification.isSupported()) {
       const n = new Notification({
         title: notifTitle,
         body: notifBody,
-        icon: notifIcon || undefined,
+        icon: process.platform === "win32" ? undefined : notificationIcon() || undefined,
         silent: false,
       });
       n.on("click", () => showMainWindow());
@@ -402,6 +401,30 @@ function hideToTray() {
     }
   } catch {
     /* bildirim gösterilemezse sorun değil */
+  }
+}
+
+// nexusEvents[].type → resources/notify/<ad>.png (scripts/gen-notify-icons.mjs). Bilinmeyen/boş tür ikon almaz.
+const EVENT_ICON_BY_TYPE = {
+  automation: "automation",
+  scene: "scene",
+  energy: "energy",
+  security: "security",
+  emergency: "emergency",
+  weather: "weather",
+  location: "location",
+  family: "family",
+  info: "info",
+  remote: "info",
+};
+function eventTypeIcon(type) {
+  try {
+    const name = Object.prototype.hasOwnProperty.call(EVENT_ICON_BY_TYPE, type) ? EVENT_ICON_BY_TYPE[type] : "";
+    if (!name) return null;
+    const img = nativeImage.createFromPath(path.join(__dirname, "resources", "notify", `${name}.png`));
+    return img && !img.isEmpty() ? img : null;
+  } catch {
+    return null;
   }
 }
 
@@ -1705,12 +1728,15 @@ ipcMain.on("event:notify", (_e, ev) => {
     if (notifyStamps.length >= 4) return; // sel olmasın: 10 sn'de en fazla 4
     notifyStamps.push(now);
     const targetPage =
-      ev && typeof ev.page === "string" && ev.page ? ev.page : "nexus-messages.html";
-    const notifIcon = notificationIcon();
+      typeof ev.page === "string" && /^nexus-[a-z0-9-]+\.html(\?[\w=&%.-]*)?$/.test(ev.page)
+        ? ev.page
+        : "nexus-messages.html";
+    // Windows'ta marka logosu bildirim başlığında zaten var (registerWindowsToastIdentity); gövdede olayın türünü
+    // gösteren ikon durur, marka logosu ikinci kez konmaz.
     const n = new Notification({
       title: clip(ev.title, 80) || "NEXUS",
       body: clip(ev.detail, 200),
-      icon: notifIcon || undefined,
+      icon: eventTypeIcon(ev.type) || (process.platform === "win32" ? undefined : notificationIcon() || undefined),
       silent: ev.silent === true,
     });
     n.on("click", () => showPage(targetPage));

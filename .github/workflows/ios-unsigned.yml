@@ -40,6 +40,15 @@ jobs:
           node scripts/sync-www.mjs
           pnpm exec cap copy ios
 
+      # Package.swift pnpm'in sürüme bağlı yolunu (.pnpm/...@capacitor+core@X) yazıyor; kilit dosyası farklı bir
+      # core sürümü çözünce o klasör yok ve xcodebuild paketi bulamıyor (ilk koşu). Doğrudan bağımlılığın sabit
+      # sembolik bağlantısına çevrilir.
+      - name: Swift paket yolunu sabitle
+        run: |
+          sed -i '' -E 's#node_modules/\.pnpm/@capacitor\+geolocation@[^"]*/node_modules/@capacitor/geolocation#node_modules/@capacitor/geolocation#' ios/App/CapApp-SPM/Package.swift
+          test -d ios/App/CapApp-SPM/../../../node_modules/@capacitor/geolocation || { echo "::error::geolocation paketi yok"; exit 1; }
+          grep -n "CapacitorGeolocation" ios/App/CapApp-SPM/Package.swift
+
       - name: İmzasız derleme
         run: |
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \

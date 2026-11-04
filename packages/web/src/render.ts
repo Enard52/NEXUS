@@ -1101,7 +1101,7 @@ export function renderIntegrationMarquee(): string {
   return `<section id="integrations" class="mkt-integrations mkt-anchor">
 <p class="integration-title">${label("mkt.integrations.title")}</p>
 <div class="marquee">
-  <span>Shelly</span> &middot; <span>Philips Hue</span> &middot; <span>Tasmota</span> &middot; <span>WLED</span> &middot; <span>ESPHome</span> &middot; <span>Tapo</span> &middot; <span>Home Assistant</span>
+  <span>Shelly</span> &middot; <span>Philips Hue</span> &middot; <span>Tasmota</span> &middot; <span>WLED</span> &middot; <span>ESPHome</span> &middot; <span>Home Assistant</span>
 </div>
 </section>`;
 }

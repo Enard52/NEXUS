@@ -45,7 +45,7 @@
     events.forEach(function (ev) {
       if (!ev || !ev.id || seen[ev.id]) return;
       seen[ev.id] = 1; added = true;
-      window.nexusDesktop.notifyEvent({ id: String(ev.id), title: String(ev.title || "NEXUS"), detail: String(ev.detail || ""), ts: ev.ts || Date.now() });
+      window.nexusDesktop.notifyEvent({ id: String(ev.id), title: String(ev.title || "NEXUS"), detail: String(ev.detail || ""), type: String(ev.type || ""), page: typeof ev.page === "string" ? ev.page : "", ts: ev.ts || Date.now() });
     });
     if (added) saveSeen();
   }
