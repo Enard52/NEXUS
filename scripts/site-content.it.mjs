@@ -75,7 +75,7 @@ export const it = {
       ],
       [
         "sparkles",
-        "NEXUS AI Intelligence",
+        "Intelligenza artificiale NEXUS",
         "I comandi locali della casa intelligente sono istantanei e gratuiti per sempre. L'assistente AI opzionale nel cloud fornisce suggerimenti intelligenti ogni volta che hai bisogno di guida."
       ],
       [
@@ -251,7 +251,7 @@ export const it = {
         "Installa il programma desktop (Windows o Linux) o l'app Android. NEXUS non è offerto come app per browser. I comandi del dispositivo passano attraverso la tua rete locale. Shelly, Philips Hue, ESPHome, Tasmota, WLED e Home Assistant utilizzano HTTP locale nel programma desktop e su Android. TP-Link Kasa e Yeelight necessitano di TCP grezzo, quindi funzionano nel programma desktop. Questo sito è per l'account, i download e la fatturazione. Cosa aggiunge il piano NEXUS+?"
       ],
       [
-        "What does the NEXUS+ plan add?",
+        "Cosa aggiunge il piano NEXUS+?",
         "Il controllo essenziale della casa intelligente—dispositivi illimitati, stanze, automazioni offline e dashboard locali—è gratuito. NEXUS+ include tutto ciò che offre il piano Free, NEXUS AI per scene e domande in linguaggio naturale, 2.000 risposte al mese, connessioni avanzate per aggiungere dispositivi Home Assistant e un account su ogni dispositivo, con una prova di 3 giorni mensile o 7 giorni annuale. I comandi dei dispositivi continuano a funzionare localmente. I ruoli del nucleo familiare sono inclusi con la tua casa senza costi aggiuntivi."
       ],
       [
@@ -267,15 +267,15 @@ export const it = {
         "NEXUS parla il protocollo locale di ciascun dispositivo: Shelly (Gen1 e Gen2+), Tasmota, WLED, ESPHome, Philips Hue e Home Assistant tramite HTTP locale su ogni piattaforma, oltre a TP-Link Kasa, Yeelight, WiZ, Sonoff (modalità DIY) e Wake-on-LAN tramite la rete locale nell'app desktop, senza account o chiave. Tutto il resto — dispositivi Matter o Zigbee — si collega attraverso il proprio server Home Assistant, che NEXUS tratta come un singolo hub locale. La scoperta degli IP locali abbina i dispositivi istantaneamente, senza alcun cloud del fornitore in mezzo. Come sono integrati le telecamere di sicurezza e i sensori?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Come vengono integrati telecamere di sicurezza e sensori?",
         "NEXUS consolida le tue telecamere di sicurezza, i rilevatori di movimento e i sensori di ingresso in un cruscotto di sicurezza centralizzato. Puoi automatizzare le modalità di privacy, attivare le routine di sorveglianza quando esci di casa e vedere ogni movimento o evento di contatto nell'app — oltre che sui canali di notifica che abiliti (notifiche di sistema, ntfy, Telegram o il tuo webhook). Posso cancellare NEXUS+ in qualsiasi momento?"
       ],
       [
-        "Can I cancel NEXUS+ anytime?",
+        "Posso annullare NEXUS+ in qualsiasi momento?",
         "Sì, completamente senza problemi e senza alcun impegno. Puoi cancellare con un solo clic in qualsiasi momento: dalle impostazioni Account e Fatturazione nell'app, attraverso il nostro sito web o direttamente dal link dell'ordine nella tua ricevuta via email. I tuoi benefici premium rimangono attivi fino alla fine del ciclo di fatturazione senza alcun addebito futuro. Posso controllare la mia casa quando sono via?"
       ],
       [
-        "Can I control my home when I am away?",
+        "Posso controllare la casa quando sono fuori?",
         "Non attraverso un cloud NEXUS: NEXUS comunica direttamente con i tuoi dispositivi sulla rete di casa e non ha alcun relay. Per raggiungerlo dall'esterno, connetti il tuo telefono o laptop alla rete di casa tramite una VPN come Tailscale (router subnet) o WireGuard sul tuo router; NEXUS funziona allora esattamente come a casa. NEXUS non ha ancora un'impostazione per l'indirizzo hub, quindi la VPN deve rendere raggiungibile il tuo intervallo di indirizzi locali, e la scansione per nuovi dispositivi funziona solo sulla rete di casa. Non esporre mai un dispositivo a internet tramite il port forwarding. La guida passo-passo si trova in docs/REMOTE-ACCESS.md nel repository."
       ],
       [
@@ -299,7 +299,7 @@ export const it = {
         "Sì. La pagina Energia può esportare le ultime letture di potenza reale dai tuoi dispositivi come file CSV o JSON. NEXUS ha dati solo per i dispositivi che effettivamente riportano la potenza; se non ce ne sono collegati, non c'è nulla da esportare. Perché Windows mi avvisa quando eseguo l'installatore?"
       ],
       [
-        "Why does Windows warn me when I run the installer?",
+        "Perché Windows mi avvisa quando eseguo il programma di installazione?",
         "Installa dallo Store di Microsoft e non vedrai questo avviso: Microsoft firma quel pacchetto durante la certificazione e fornisce aggiornamenti tramite lo Store. Il download diretto del file .exe non è ancora firmato con un certificato commerciale, quindi SmartScreen potrebbe mostrare “editore sconosciuto”. Puoi confrontare il file con le somme di controllo elencate nella sezione download prima di eseguirlo. La nostra politica di firma del codice è collegata nel footer del sito."
       ]
     ]

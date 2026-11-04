@@ -102,7 +102,7 @@ export const ur = {
       ],
       [
         "مقامی نیٹ ورک، بغیر اکاؤنٹ یا کلید — ڈیسک ٹاپ ایپ",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY موڈ)", "Wake-on-LAN"],
       ],
     ],
     more: "کچھ کمی ہے؟ کنیکٹر کی درخواست کریں",
@@ -114,7 +114,7 @@ export const ur = {
     currencyNote: "قیمتیں امریکی ڈالر میں",
     plans: [
       {
-        name: "Free",
+        name: "مفت",
         price: "$0",
         period: "ہمیشہ کے لیے",
         features: [
@@ -148,7 +148,7 @@ export const ur = {
         },
       },
       {
-        name: "Family",
+        name: "فیملی",
         price: "مفت",
         period: "پورے خاندان کے لیے",
         badge: "پورا گھر",

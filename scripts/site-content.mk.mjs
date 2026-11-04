@@ -102,7 +102,7 @@ export const mk = {
       ],
       [
         "Локална мрежа, без сметка или клуч — десктоп апликација",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY режим)", "Wake-on-LAN"],
       ],
     ],
     more: "Нешто недостасува? Побарајте конектор",
@@ -114,7 +114,7 @@ export const mk = {
     currencyNote: "Цените се во USD",
     plans: [
       {
-        name: "Free",
+        name: "Бесплатно",
         price: "$0",
         period: "засекогаш",
         features: [
@@ -148,7 +148,7 @@ export const mk = {
         },
       },
       {
-        name: "Family",
+        name: "Семеен",
         price: "Бесплатно",
         period: "за целото семејство",
         badge: "Целиот дом",

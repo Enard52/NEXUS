@@ -114,7 +114,7 @@ export const lt = {
     currencyNote: "Kainos USD",
     plans: [
       {
-        name: "Free",
+        name: "Nemokamas",
         price: "$0",
         period: "visam laikui",
         features: [
@@ -148,8 +148,8 @@ export const lt = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Šeimos",
+        price: "Nemokamai",
         period: "visai šeimai",
         badge: "Visi namai",
         features: [

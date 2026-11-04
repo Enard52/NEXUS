@@ -149,7 +149,7 @@ export const nl = {
       },
       {
         name: "Gezin",
-        price: "Free",
+        price: "Gratis",
         period: "voor het hele gezin",
         badge: "Het hele huis",
         features: [

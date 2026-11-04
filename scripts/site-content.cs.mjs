@@ -114,7 +114,7 @@ export const cs = {
     currencyNote: "Ceny v USD",
     plans: [
       {
-        name: "Free",
+        name: "Zdarma",
         price: "$0",
         period: "navždy",
         features: [
@@ -148,8 +148,8 @@ export const cs = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Rodina",
+        price: "Zdarma",
         period: "pro celou rodinu",
         badge: "Celý domov",
         features: [

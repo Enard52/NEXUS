@@ -271,7 +271,7 @@ export const ga = {
         "Comhtháthaíonn NEXUS do cheamaraí slándála, braiteoirí gluaise, agus braiteoirí iontrála isteach i painéal lárnach slándála. Is féidir leat módanna príobháideachta a uathoibriú, nósanna faireachais a ghníomhachtú agus gach gluaiseacht nó eachtra teagmhála a fheiceáil san aip — chomh maith leis na cainéil fógra a ghníomhachtaíonn tú (fógraí an chórais, ntfy, Telegram, nó do own webhook). An féidir liom NEXUS+ a chealú am ar bith?"
       ],
       [
-        "Can I cancel NEXUS+ anytime?",
+        "An féidir liom NEXUS+ a chealú am ar bith?",
         "Sea, go hiomlán gan stró le díospóid ar bith. Is féidir leat cealú le cliceáil amháin am ar bith: ó shocruithe Cuntas & Billeála sa aip, trí ár suíomh Gréasáin, nó go díreach ón nasc ordaithe i dtiomsú éilimh ríomhphoist billeála. Fanann do sochair préimhe gníomhach go dtí deireadh do chuardach billeála le neamhní aon táillí sa todhchaí."
       ],
       [
@@ -305,7 +305,7 @@ export const ga = {
     ]
   },
   "about": {
-    "title": "About NEXUS",
+    "title": "Maidir le NEXUS",
     "lead": "Ardán cliste baile neamhspleách, áitiúil-ar-an-bhunscoil deartha le haghaidh luas, príobháideachas iomlán, agus úinéireacht fhíor ar dhéantús crua-earraí. Trí labhairt go díreach le do ghléasanna thar do líonra baile féin, cuireann NEXUS deireadh le ghlasanna scamall go deo.",
     "manifesto": {
       "heading": "Cén Fáth Ar Thógamar NEXUS",

@@ -102,7 +102,7 @@ export const eu = {
       ],
       [
         "Tokiko sarea, konturik edo gakorik gabe — mahaigaineko aplikazioa",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY modua)", "Wake-on-LAN"],
       ],
     ],
     more: "Zerbait falta da? Eskatu konektore bat",
@@ -114,7 +114,7 @@ export const eu = {
     currencyNote: "Prezioak USDtan",
     plans: [
       {
-        name: "Free",
+        name: "Doakoa",
         price: "$0",
         period: "betiko",
         features: [
@@ -148,8 +148,8 @@ export const eu = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Familia",
+        price: "Doakoa",
         period: "familia osoarentzat",
         badge: "Etxe osoa",
         features: [

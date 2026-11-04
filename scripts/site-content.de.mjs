@@ -114,7 +114,7 @@ export const de = {
     currencyNote: "Preise in USD",
     plans: [
       {
-        name: "Free",
+        name: "Kostenlos",
         price: "$0",
         period: "für immer",
         features: [
@@ -148,8 +148,8 @@ export const de = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Familie",
+        price: "Kostenlos",
         period: "für die ganze Familie",
         badge: "Ganzes Zuhause",
         features: [

@@ -114,7 +114,7 @@ export const ro = {
     currencyNote: "Prețuri în USD",
     plans: [
       {
-        name: "Free",
+        name: "Gratuit",
         price: "$0",
         period: "pentru totdeauna",
         features: [
@@ -148,8 +148,8 @@ export const ro = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Familie",
+        price: "Gratuit",
         period: "pentru toată familia",
         badge: "Toată casa",
         features: [

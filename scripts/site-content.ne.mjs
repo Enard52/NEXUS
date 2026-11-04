@@ -149,7 +149,7 @@ export const ne = {
       },
       {
         name: "परिवार",
-        price: "Free",
+        price: "निःशुल्क",
         period: "सम्पूर्ण परिवारका लागि",
         badge: "सम्पूर्ण घर",
         features: [

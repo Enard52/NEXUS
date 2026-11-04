@@ -114,7 +114,7 @@ export const ar = {
     currencyNote: "الأسعار بالدولار الأمريكي",
     plans: [
       {
-        name: "Free",
+        name: "مجاني",
         price: "$0",
         period: "للأبد",
         features: [
@@ -148,8 +148,8 @@ export const ar = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "العائلة",
+        price: "مجاني",
         period: "للعائلة كلها",
         badge: "المنزل كله",
         features: [

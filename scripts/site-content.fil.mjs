@@ -75,7 +75,7 @@ export const fil = {
       ],
       [
         "sparkles",
-        "NEXUS AI Intelligence",
+        "NEXUS AI na Katalinuhan",
         "Ang mga lokal na utos para sa smart home ay instant at libre magpakailanman. Ang opsyonal na cloud AI assistant ay nagbibigay ng mga intelligenteng suhestiyon tuwing kailangan mo ng gabay."
       ],
       [
@@ -106,7 +106,7 @@ export const fil = {
     ]
   },
   "integrations": {
-    "heading": "Works with what you already have.",
+    "heading": "Gumagana sa mga gamit mo na.",
     "lead": "Libre, unang lokal na mga protocol. Kahit ano na walang direktang connector ay gumagana pa rin sa pamamagitan ng Home Assistant bridge.",
     "groups": [
       [
@@ -251,7 +251,7 @@ export const fil = {
         "I-install ang desktop na programa (Windows o Linux) o ang Android app. Hindi inaalok ang NEXUS bilang browser app. Ang mga utos ng device ay dumadaan sa iyong sariling lokal na network. Ginagamit ng Shelly, Philips Hue, ESPHome, Tasmota, WLED at Home Assistant ang lokal na HTTP sa desktop na programa at sa Android. Nangangailangan ang TP-Link Kasa at Yeelight ng raw TCP, kaya tumatakbo sila sa desktop na programa. Ang site na ito ay para sa account, downloads at billing. Ano ang idinadagdag ng NEXUS+ plan?"
       ],
       [
-        "What does the NEXUS+ plan add?",
+        "Ano ang idinaragdag ng NEXUS+ plan?",
         "Ang mahalagang kontrol sa smart home—walang limitasyong mga device, kuwarto, offline na automations, at lokal na dashboards—ay libre. Kasama sa NEXUS+ ang lahat ng nasa Libre, NEXUS AI para sa mga eksena at tanong sa simpleng wika, 2,000 sagot kada buwan, advanced na koneksyon para sa pagdagdag ng mga Home Assistant device, at isang account sa bawat device, kasama ang 3-araw na buwanang o 7-araw na taunang trial. Ang mga utos sa device ay patuloy na tumatakbo nang lokal. Kasama rin ang mga tungkulin sa bahay sa iyong tahanan nang walang dagdag na gastos."
       ],
       [
@@ -259,7 +259,7 @@ export const fil = {
         "Ang email address na ginamit sa pag-checkout. Mag-sign in sa site na ito o sa app bago ka magbayad: magbubukas ang checkout na may nakalagay na email ng iyong account, at lilitaw ang subscription sa bawat device na iyong inilalog-inan. Hindi mabibili ang NEXUS+ nang walang account. Kung magbabayad ka gamit ang ibang email, ang subscription ay itatago sa email na iyon at hindi lalabas sa iyong account hanggang sa mag-sign in ka gamit ito. Paano tumatakbo ang mga awtomasyon at mga iskedyul na patakaran?"
       ],
       [
-        "How do automations and scheduled rules run?",
+        "Paano tumatakbo ang mga automation at naka-iskedyul na panuntunan?",
         "Sinusuri ng NEXUS automation engine ang iyong mga iskedyul at sensor rules sa device na patuloy mong pinapatakbo — nananatili ang desktop app sa system tray at nagpapatupad ng 24/7, kaya ang mga routine sa pag-iilaw, enerhiya at seguridad ay hindi kailanman naghihintay sa cloud. Ang mga eksena at timer na pinapagana mula sa iyong telepono ay agad na naaaplay sa iyong LAN. Ang mga bagong kaganapan ay kumakalat sa mga notification channel na pinapagana mo sa pahina ng Instant Notifications: ang in-app strip, system notifications, ntfy, Telegram, o iyong sariling HTTPS webhook."
       ],
       [
@@ -267,15 +267,15 @@ export const fil = {
         "Nagsasalita ang NEXUS ng sariling lokal na protocol ng bawat device: Shelly (Gen1 at Gen2+), Tasmota, WLED, ESPHome, Philips Hue at Home Assistant sa lokal na HTTP sa bawat platform, kasama ang TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY mode) at Wake-on-LAN sa lokal na network sa desktop app, nang walang account o key. Ang lahat ng iba pa — Matter o Zigbee na kagamitan — ay sumasali sa pamamagitan ng sarili mong Home Assistant server, na itinuturing ng NEXUS bilang isang solong lokal na hub. Agad na nagkapares ang mga device sa lokal na pagtuklas ng IP, nang walang vendor cloud sa pagitan. Paano isinasama ang mga security camera at sensor?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Paano isinasama ang mga security camera at sensor?",
         "Pinagsasama ng NEXUS ang iyong mga security camera, motion detector, at entry sensor sa isang sentralisadong security dashboard. Maaari mong i-automate ang mga privacy mode, i-arm ang mga surveillance routine kapag umaalis sa bahay, at makita ang bawat galaw o contact event sa app — pati na rin sa mga notification channel na iyong pinagana (system notifications, ntfy, Telegram, o iyong sariling webhook). Maaari ko bang kanselahin ang NEXUS+ anumang oras?"
       ],
       [
-        "Can I cancel NEXUS+ anytime?",
+        "Maaari ko bang kanselahin ang NEXUS+ anumang oras?",
         "Oo, ganap na walang abala at walang obligasyon. Maaari kang mag-cancel sa isang click anumang oras: mula sa Account & Billing settings sa app, sa pamamagitan ng aming website, o direkta mula sa order link sa iyong billing email receipt. Mananatiling aktibo ang iyong premium na benepisyo hanggang sa katapusan ng iyong billing cycle nang walang anumang karagdagang singil sa hinaharap. Maaari ko bang kontrolin ang aking bahay kapag wala ako?"
       ],
       [
-        "Can I control my home when I am away?",
+        "Makokontrol ko ba ang aking tahanan kapag wala ako?",
         "Hindi sa pamamagitan ng NEXUS cloud: Direktang nakikipag-usap ang NEXUS sa iyong mga device sa iyong home network at wala itong relay. Para maabot ito mula sa labas, ilagay ang iyong telepono o laptop sa home network gamit ang VPN tulad ng Tailscale (subnet router) o WireGuard sa iyong router; gagana ang NEXUS eksakto tulad ng sa bahay. Wala pang setting ng hub-address ang NEXUS, kaya kailangan ng VPN na maging maabot ang iyong lokal na address range, at gumagana lamang ang pag-scan para sa mga bagong device sa home network. Huwag kailanman ibukas ang isang device sa internet gamit ang port forwarding. Ang step-by-step na gabay ay nasa docs/REMOTE-ACCESS.md sa repository."
       ],
       [
@@ -313,7 +313,7 @@ export const fil = {
     },
     "pillars": [
       {
-        "title": "Local-First Speed",
+        "title": "Bilis na Una ang Lokal",
         "desc": "Bawat automation at utos ay naisasagawa sa iyong lokal na LAN sa loob ng millisecond. Walang roundtrips sa malalayong cloud server, zero latency."
       },
       {

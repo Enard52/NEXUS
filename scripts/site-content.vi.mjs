@@ -102,7 +102,7 @@ export const vi = {
       ],
       [
         "Mạng cục bộ, không cần tài khoản hay khóa — ứng dụng máy tính",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (chế độ DIY)", "Wake-on-LAN"],
       ],
     ],
     more: "Thiếu thiết bị nào? Hãy yêu cầu một trình kết nối",
@@ -114,7 +114,7 @@ export const vi = {
     currencyNote: "Giá tính bằng USD",
     plans: [
       {
-        name: "Free",
+        name: "Miễn phí",
         price: "$0",
         period: "mãi mãi",
         features: [
@@ -148,7 +148,7 @@ export const vi = {
         },
       },
       {
-        name: "Family",
+        name: "Gia đình",
         price: "Miễn phí",
         period: "cho cả gia đình",
         badge: "Cả ngôi nhà",

@@ -102,7 +102,7 @@ export const hu = {
       ],
       [
         "Helyi hálózat, fiók és kulcs nélkül — asztali alkalmazás",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mód)", "Wake-on-LAN"],
       ],
     ],
     more: "Hiányzik valami? Kérj csatlakozót",
@@ -149,7 +149,7 @@ export const hu = {
       },
       {
         name: "Család",
-        price: "Free",
+        price: "Ingyenes",
         period: "az egész családnak",
         badge: "Az egész otthon",
         features: [

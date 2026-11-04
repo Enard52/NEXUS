@@ -263,7 +263,7 @@ export const zh_Hans = {
         "NEXUS 自动化引擎会在你一直运行的设备上评估你的日程和传感器规则——桌面应用会驻留在系统托盘中并全天候运行，因此照明、能源和安全程序无需等待云端即可执行。从你的手机触发的场景和定时器会立即通过局域网生效。新的事件会分发到你在即时通知页面启用的通知渠道：应用内条、系统通知、ntfy、Telegram 或你自己的 HTTPS webhook。哪些设备和生态系统受到支持？"
       ],
       [
-        "Which devices and ecosystems are supported?",
+        "支持哪些设备和生态系统？",
         "NEXUS 使用每个设备自己的本地协议：Shelly（第1代和第2代+）、Tasmota、WLED、ESPHome、飞利浦 Hue 和 Home Assistant，通过每个平台的本地 HTTP，以及 TP-Link Kasa、Yeelight、WiZ、Sonoff（DIY 模式）和 Wake-on-LAN，通过桌面应用在本地网络通信，无需账户或密钥。其他设备——包括 Matter 或 Zigbee 设备——通过你自己的 Home Assistant 服务器接入，NEXUS 将其视为单一本地集线器。通过本地 IP 发现功能，设备可以瞬间配对，中间不经过厂商云服务。"
       ],
       [

@@ -126,7 +126,7 @@ export const bs = {
           "TP-Link Kasa",
           "Yeelight",
           "WiZ",
-          "Sonoff (DIY mode)",
+          "Sonoff (DIY način)",
           "Wake-on-LAN"
         ]
       ]
@@ -251,7 +251,7 @@ export const bs = {
         "Instalirajte desktop program (Windows ili Linux) ili Android aplikaciju. NEXUS nije dostupan kao aplikacija za preglednik. Uređaji se kontrolišu preko vaše lokalne mreže. Shelly, Philips Hue, ESPHome, Tasmota, WLED i Home Assistant koriste lokalni HTTP u desktop programu i na Androidu. TP-Link Kasa i Yeelight zahtijevaju raw TCP, pa rade u desktop programu. Ova stranica je za nalog, preuzimanja i naplatu. Šta dodaje NEXUS+ plan?"
       ],
       [
-        "What does the NEXUS+ plan add?",
+        "Šta NEXUS+ plan dodaje?",
         "Osnovna kontrola pametnog doma—neograničeni uređaji, sobe, offline automatizacije i lokalni kontrolni paneli—je besplatna. NEXUS+ uključuje sve što nudi besplatna verzija, NEXUS AI za scene i pitanja u običnom jeziku, 2.000 odgovora mjesečno, napredna povezivanja za dodavanje uređaja iz Home Assistanta i jedan račun na svakom uređaju, uz 3-dnevno mjesečno ili 7-dnevno godišnje probno razdoblje. Komande za uređaje i dalje se izvršavaju lokalno. Uloge u domaćinstvu su uključene s vašim domom bez dodatnih troškova."
       ],
       [
@@ -263,11 +263,11 @@ export const bs = {
         "NEXUS automatizacijski motor procjenjuje vaše rasporede i pravila senzora na uređaju koji stalno koristite — desktop aplikacija ostaje u sistemskoj traci i izvršava zadatke 24/7, tako da rasvjeta, energetske i sigurnosne rutine nikada ne čekaju na oblak. Scene i tajmeri pokrenuti sa vašeg telefona primjenjuju se odmah preko vaše LAN mreže. Novi događaji se šire na kanale obavijesti koje omogućite na stranici Instant Notifications: u aplikaciji traka, sistemske obavijesti, ntfy, Telegram ili vaš vlastiti HTTPS webhook. Koji uređaji i ekosistemi su podržani?"
       ],
       [
-        "Which devices and ecosystems are supported?",
+        "Koji uređaji i ekosistemi su podržani?",
         "NEXUS koristi protokol svakog uređaja: Shelly (Gen1 i Gen2+), Tasmota, WLED, ESPHome, Philips Hue i Home Assistant putem lokalnog HTTP-a na svakoj platformi, plus TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY način) i Wake-on-LAN preko lokalne mreže u desktop aplikaciji, bez potrebe za korisničkim računom ili ključem. Sve ostalo — Matter ili Zigbee uređaji — se povezuje putem vašeg vlastitog Home Assistant servera, kojeg NEXUS tretira kao jedinstveni lokalni hub. Lokacijsko otkrivanje IP-a uparuje uređaje odmah, bez posredovanja vendor oblaka. Kako su integrisane sigurnosne kamere i senzori?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Kako se integrišu sigurnosne kamere i senzori?",
         "NEXUS konsoliduje vaše sigurnosne kamere, detektore pokreta i senzore za ulaz u centralizovani sigurnosni kontrolni panel. Možete automatizovati privatne režime, aktivirati nadzorne rutine kada napuštate dom i vidjeti svaki pokret ili događaj kontakta u aplikaciji — kao i na kanalima obavijesti koje omogućite (sistemske obavijesti, ntfy, Telegram ili vlastiti webhook)."
       ],
       [
@@ -299,7 +299,7 @@ export const bs = {
         "Da. Stranica Energija može izvesti najnovija očitanja stvarne snage sa vaših uređaja u CSV ili JSON fajl. NEXUS ima podatke samo za uređaje koji zapravo izvještavaju o potrošnji; ako nijedan nije povezan, nema ničega za izvesti. Zašto me Windows upozorava kada pokrenem instalacioni program?"
       ],
       [
-        "Why does Windows warn me when I run the installer?",
+        "Zašto me Windows upozorava kada pokrenem instalater?",
         "Instalirajte iz Microsoft Store-a i nećete vidjeti ovo upozorenje: Microsoft potpisuje taj paket tokom certificiranja i dostavlja ažuriranja putem Store-a. Direktno preuzimanje .exe datoteke još nije potpisano komercijalnim certifikatom, pa SmartScreen može prikazati „nepoznatog izdavača“. Možete uporediti datoteku sa kontrolnim sumama navedenim u odjeljku za preuzimanja prije nego je pokrenete. Naša politika potpisivanja koda je povezana u podnožju sajta."
       ]
     ]

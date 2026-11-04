@@ -114,7 +114,7 @@ export const ca = {
     currencyNote: "Preus en USD",
     plans: [
       {
-        name: "Free",
+        name: "Gratuït",
         price: "$0",
         period: "per sempre",
         features: [
@@ -148,8 +148,8 @@ export const ca = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Família",
+        price: "Gratuït",
         period: "per a tota la família",
         badge: "Tota la llar",
         features: [

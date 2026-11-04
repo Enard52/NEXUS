@@ -102,7 +102,7 @@ export const uk = {
       ],
       [
         "Локальна мережа, без облікового запису чи ключа — десктопний застосунок",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (режим DIY)", "Wake-on-LAN"],
       ],
     ],
     more: "Чогось бракує? Надішліть запит на конектор",
@@ -114,7 +114,7 @@ export const uk = {
     currencyNote: "Ціни в USD",
     plans: [
       {
-        name: "Free",
+        name: "Безкоштовний",
         price: "$0",
         period: "назавжди",
         features: [
@@ -148,7 +148,7 @@ export const uk = {
         },
       },
       {
-        name: "Family",
+        name: "Сімейний",
         price: "Безкоштовно",
         period: "для всієї родини",
         badge: "Для всього дому",

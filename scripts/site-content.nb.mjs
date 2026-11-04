@@ -149,7 +149,7 @@ export const nb = {
       },
       {
         name: "Familie",
-        price: "Free",
+        price: "Gratis",
         period: "for hele familien",
         badge: "Hele hjemmet",
         features: [

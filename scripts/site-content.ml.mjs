@@ -102,7 +102,7 @@ export const ml = {
       ],
       [
         "ലോക്കൽ നെറ്റ്‌വർക്ക്, അക്കൗണ്ടോ കീയോ വേണ്ട — ഡെസ്ക്ടോപ്പ് ആപ്പ്",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY മോഡ്)", "Wake-on-LAN"],
       ],
     ],
     more: "എന്തെങ്കിലും കുറവുണ്ടോ? ഒരു കണക്ടർ അഭ്യർത്ഥിക്കുക",
@@ -114,7 +114,7 @@ export const ml = {
     currencyNote: "വിലകൾ USD-യിൽ",
     plans: [
       {
-        name: "Free",
+        name: "സൗജന്യം",
         price: "$0",
         period: "എന്നെന്നും",
         features: [
@@ -148,7 +148,7 @@ export const ml = {
         },
       },
       {
-        name: "Family",
+        name: "കുടുംബം",
         price: "സൗജന്യം",
         period: "മുഴുവൻ കുടുംബത്തിനും",
         badge: "വീടു മുഴുവൻ",

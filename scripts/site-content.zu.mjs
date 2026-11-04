@@ -247,7 +247,7 @@ export const zu = {
         "Yebo. I-NEXUS yakhelwe phezu kwesakhiwo esiqinile se-local-first. Amadivayisi akho, amagumbi, izigcawu, kanye nemibiko yezinzwa kucutshungulwa ngqo kudivayisi yakho yasekhaya. Noma ngabe i-inthanethi iphuka, wonke amalawula endawo, ukukhanyisa, kanye nezinhlelo ezenzakalelayo ziyaqhubeka ukusebenza ngaphandle kokulibala. Ukungena ngemvume ngokuphepha kuhlanganisa izilungiselelo zakho kuzo zonke izikrini zakho. Ngidinga ukufaka i-NEXUS, noma iyasebenza esipheqululini?"
       ],
       [
-        "Do I need to install NEXUS, or does it run in the browser?",
+        "Ngidinga yini ukufaka i-NEXUS, noma isebenza ku-browser?",
         "Faka uhlelo lwe-desktop (Windows noma Linux) noma uhlelo lokusebenza lwe-Android. I-NEXUS ayitholakali njenge-app yesiphequluli. Imiyalo yedivayisi idlula kunethiwekhi yakho yangakini. I-Shelly, i-Philips Hue, i-ESPHome, i-Tasmota, i-WLED kanye ne-Home Assistant zisebenzisa i-HTTP yangakini kuhlelo lwe-desktop nakwi-Android. I-TP-Link Kasa ne-Yeelight zidinga i-TCP eluhlaza, ngakho zisebenza kuhlelo lwe-desktop. Le sayithi iyatholakala nge-akhawunti, izilanda kanye nezimali."
       ],
       [
@@ -263,11 +263,11 @@ export const zu = {
         "Injini ye-NEXUS yokuzisholo ihlola izinhlelo zakho nezimiso zokuzwa kumshini ogcina usebenza — uhlelo lokusebenza lwe-desktop luhlala ku-system tray futhi lusebenza amahora onke, ngakho izinhlelo zokukhanyisa, amandla kanye nokuphepha azilindeli igagasi. Izimo nezikhathi ezibangelwa ifoni yakho zisebenza ngokushesha ku-LAN yakho. Izenzakalo ezintsha zisakazeka emigqeni yezaziso oyivulile ekhasini Lezaziso Ezisheshayo: umugqa ohambisana nohlelo, izaziso zesistimu, ntfy, iTelegram, noma i-HTTPS webhook yakho siqu. Yiziphi izinsiza nemvelo ezisekelwa?"
       ],
       [
-        "Which devices and ecosystems are supported?",
+        "Yiziphi izinsiza nezinhlelo ezixhasiwe?",
         "I-NEXUS ikhuluma ngohlelo ngalunye lwedivayisi lwendawo yalo: i-Shelly (i-Gen1 ne-Gen2+), i-Tasmota, i-WLED, i-ESPHome, i-Philips Hue ne-Home Assistant ngezinga lendawo le-HTTP kuzo zonke izinhlelo, kanye ne-TP-Link Kasa, i-Yeelight, i-WiZ, i-Sonoff (imodi ye-DIY) ne-Wake-on-LAN ngenethiwekhi yendawo kuhlelo lwedeskithophu, ngaphandle kwe-akhawunti noma ukhiye. Konke okunye — izinto ze-Matter noma i-Zigbee — kujoyina useva yakho ye-Home Assistant uqobo, okuyi-NEXUS ekubheka njengesikhungo sendawo esisodwa. Ukutholwa kwe-IP kwendawo kuhlanganisa amadivayisi ngokushesha, ngaphandle kwamafu womkhiqizi phakathi. Izibuko zokuphepha kanye nezinzwa zixhunywa kanjani?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Amakhamera ezokuphepha nezinzwa ahlanganiswa kanjani?",
         "I-NEXUS ihlanganisa amakhamera akho okuphepha, izinzwa zokunyakaza, nezinsiza zokungena zibe ku-dashboard yokuphepha ehlanganisiwe. Ungakwazi ukwenza ngokuzenzakalelayo izindlela zobumfihlo, uqale izinhlelo zokubhekwa uma ushiya ikhaya, futhi ubone yonke inyakazo noma umcimbi wokuxhumana kuhlelo lokusebenza — futhi nasemigudwini yezaziso oyivulile (izaziso zesistimu, ntfy, iTelegram, noma i-webhook yakho)."
       ],
       [
@@ -275,7 +275,7 @@ export const zu = {
         "Yebo, ngaphandle kwazo zonke izinkinga ngokuphelele ngaphandle kwezibopho. Ungakhansela ngokuchofoza okukodwa nganoma yisiphi isikhathi: kusuka kuzilungiselelo ze-Account & Billing ngaphakathi kohlelo, noma ngewebhusayithi yethu, noma ngqo kusixhumanisi se-oda esisemeyili yakho yebhili. Izinzuzo zakho ezikhethekile zihlala zisebenza kuze kube sekupheleni kwesikhathi sakho sokukhokhela ngaphandle kwezindleko ezizayo. Ngiyakwazi ukulawula indlu yami ngenkathi ngingekho?"
       ],
       [
-        "Can I control my home when I am away?",
+        "Ngingakwazi yini ukulawula ikhaya lami lapho ngingekho?",
         "Hhayi ngefu le-NEXUS: I-NEXUS ikhuluma namadivayisi akho ngqo kwinethiwekhi yakho yasekhaya futhi ayinayo indlela edluliselwayo. Ukuze uyifinyelele ngaphandle, faka ifoni yakho noma ilaptop yakho kwinethiwekhi yasekhaya usebenzisa i-VPN efana ne-Tailscale (umzila we-subnet) noma i-WireGuard kumzila wakho; i-NEXUS khona-ke isebenza ngqo njengasekhaya. I-NEXUS ayikakayifaki isethingi yekheli le-hub, ngakho-ke i-VPN kumele yenze uhla lwamakheli endawo lufinyeleleke, futhi ukuskena amadivayisi amasha kusebenza kuphela kwinethiwekhi yasekhaya. Ungalokothi uveze idivayisi ku-inthanethi usebenzisa ukudlulisa amapoti. Umhlahlandlela wesinyathelo ngesinyathelo use-docs/REMOTE-ACCESS.md esitokisini."
       ],
       [
@@ -292,10 +292,10 @@ export const zu = {
       ],
       [
         "Ngiyakwazi yini ukwenza isipele sezilungiselelo zami bese ngisidlulisa kwenye idivayisi? Yebo. Izilungiselelo zinecala lesipele lapho ungathumela khona izilungiselelo zakho nezinto ezenzekayo kufayela le-JSON bese ulifaka kwenye idivayisi noma ngemuva kokufaka kabusha. Amaphasiwedi, amathokheni nezikhiye zendawo zisusiwe ohlwini lwamadivayisi ahambisanayo kufayela, ngakho ungazifaka kabusha ngemuva kokubuyisela. Gcina ifayela lesipele liyimfihlo. Ngiyakwazi yini ukuthumela idatha yami yamandla?",
-        "Yes. Settings has a backup section where you can export your settings and automations to a JSON file and import it on another device or after a reinstall. Passwords, tokens and local keys are stripped from the paired device list in the file, so re-enter them after restoring. Keep the backup file private."
+        "Yebo. Amasethingi anesigaba sokwenza ikhophi yokulondoloza lapho ungathumela khona amasethingi akho nokwenza ngokuzenzakalela kufayela le-JSON bese ulifaka kolunye idivayisi noma ngemva kokufaka kabusha. Amaphasiwedi, amathokheni nezihluthulelo zasendaweni kususwa ohlwini lwamadivayisi ahlanganisiwe kufayela, ngakho zifake futhi ngemva kokubuyisela. Gcina ifayela lokulondoloza liyimfihlo."
       ],
       [
-        "Can I export my energy data?",
+        "Ngingakwazi yini ukuthumela idatha yami yamandla ngaphandle?",
         "Yebo. Ikhasi Lamandla lingakhipha ukufundwa kwamandla kwangempela kwakamuva kusuka kumadivayisi akho njengefayela le-CSV noma i-JSON. I-NEXUS inedatha kuphela yamadivayisi aqopha amandla ngempela; uma kungekho axhunyiwe, akukho lutho olungakhishwa."
       ],
       [
@@ -305,10 +305,10 @@ export const zu = {
     ]
   },
   "about": {
-    "title": "About NEXUS",
+    "title": "Mayelana ne-NEXUS",
     "lead": "Ipulatifomu yezindlu ezihlakaniphile ezizimele, eqala ngokwendawo eyenzelwe isivinini, ubumfihlo obuphelele, nokuba nekhono langempela lezingxenye zomzimba. Ngokukhuluma ngqo namadivayisi akho ngenethiwekhi yakho yasekhaya, i-NEXUS iyasusa ukuboshelwa efwini unomphelo. Kungani Sakha i-NEXUS",
     "manifesto": {
-      "heading": "Why We Built NEXUS",
+      "heading": "Kungani Sakhe i-NEXUS",
       "text": "Imboni yezindlu ezihlakaniphile zanamuhla ithathe indlela engalungile. Izinhlelo zokusebenza ezizimele ziphoqe abanikazi bezindlu ukuthi babhalisele, kube nokulibaziseka okuncike efwini, kanye nokulandela imininingwane ngokungemvume. Lapho uxhumano lwakho lwe-inthanethi luphuma, iswishi yegumbi lakho lokuhlala akufanele imise ukusebenza. Sakha i-NEXUS ngoba sikholelwa ukuthi ikhaya lakho liyindawo yakho yokuthula: uhlelo lwakho lwendawo, izimo zamakhamera akho, kanye nezindlela zomndeni wakho wansuku zonke kufanele zihlale kuphela kumakhompyutha akho siqu."
     },
     "pillars": [

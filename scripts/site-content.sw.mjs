@@ -149,7 +149,7 @@ export const sw = {
       },
       {
         name: "Familia",
-        price: "Free",
+        price: "Bure",
         period: "kwa familia nzima",
         badge: "Nyumba nzima",
         features: [

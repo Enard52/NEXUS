@@ -102,7 +102,7 @@ export const hr = {
       ],
       [
         "Lokalna mreža, bez računa ili ključa — desktop aplikacija",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY način)", "Wake-on-LAN"],
       ],
     ],
     more: "Nešto nedostaje? Zatražite konektor",
@@ -114,7 +114,7 @@ export const hr = {
     currencyNote: "Cijene u USD",
     plans: [
       {
-        name: "Free",
+        name: "Besplatno",
         price: "$0",
         period: "zauvijek",
         features: [
@@ -148,8 +148,8 @@ export const hr = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Obitelj",
+        price: "Besplatno",
         period: "za cijelu obitelj",
         badge: "Cijeli dom",
         features: [

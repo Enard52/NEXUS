@@ -34,7 +34,7 @@ export const sq = {
   "hero": {
     "eyebrow": "Shtëpia juaj.",
     "h1a": "Nën tuaj kontroll në heshtje.",
-    "h1b": "Quietly in your control.",
+    "h1b": "Në heshtje nën kontrollin tuaj.",
     "lead": "Një ekosistem i unifikuar për dritat, klimën, mbulesat dhe sensorët tuaj — duke komunikuar drejtpërdrejt me pajisjet në rrjetin tuaj lokal. Automatizime të përgjegjshme, matje të fuqisë në kohë reale, dhe kontroll që vazhdon të funksionojë kur interneti bie.",
     "primary": {
       "label": "Windows · Linux · Android",
@@ -75,7 +75,7 @@ export const sq = {
       ],
       [
         "sparkles",
-        "NEXUS AI Intelligence",
+        "Inteligjenca NEXUS AI",
         "Komandat lokale të shtëpisë inteligjente janë të menjëhershme dhe falas përgjithmonë. Asistenti opsional i AI në cloud ofron sugjerime inteligjente sa herë që keni nevojë për udhëzime."
       ],
       [
@@ -240,10 +240,10 @@ export const sq = {
     "smartScreenNote": "Në Windows rruga më e lehtë është Microsoft Store: paketa është e nënshkruar nga Microsoft dhe përditësimet vijnë përmes Store. .exe direkt nuk është i nënshkruar, kështu që Windows mund të paralajmërojë për një “botues të panjohur” — shihni kontrollet e përmbledhjeve. Pyetjet e rëndësishme, të përgjigjura. A funksionon NEXUS plotësisht në rrjetin tim lokal?"
   },
   "faq": {
-    "heading": "The important questions, answered.",
+    "heading": "Pyetjet e rëndësishme, të përgjigjura.",
     "items": [
       [
-        "Does NEXUS operate entirely on my local network?",
+        "A funksionon NEXUS tërësisht në rrjetin tim lokal?",
         "Po. NEXUS është ndërtuar mbi një arkitekturë strikte ‘local-first’. Pajisjet tuaja, dhomat, skenat dhe telemetria e sensorëve përpunohen drejtpërdrejt nëpërmjet harduerit tuaj të shtëpisë. Edhe gjatë prishjeve të internetit, të gjitha kontrollet lokale, ndriçimi dhe automatizimet funksionojnë pa probleme dhe me zero vonesë. Kyqja në mënyrë të sigurt sinkronizon cilësimet tuaja në të gjitha ekranet tuaja."
       ],
       [
@@ -275,15 +275,15 @@ export const sq = {
         "Po, krejtësisht pa telashe dhe pa angazhime. Mund të anuloni me një klikim në çdo kohë: nga cilësimet e Llogarisë & Pagesave në aplikacion, përmes faqes tonë të internetit, ose direkt nga lidhja e porosisë në faturën tuaj me email. Përfitimet tuaja premium mbeten aktive deri në fund të ciklit tuaj të faturimit pa asnjë pagesë të ardhshme. A mund ta kontrolloj shtëpinë time kur jam larg?"
       ],
       [
-        "Can I control my home when I am away?",
+        "A mund ta kontrolloj shtëpinë kur jam larg?",
         "Jo përmes një reje NEXUS: NEXUS komunikon drejtpërdrejt me pajisjet tuaja në rrjetin tuaj shtëpiak dhe nuk ka ndonjë përçues. Për t'ia arritur nga jashtë, vendosni telefonin ose laptopin tuaj në rrjetin shtëpiak me një VPN si Tailscale (router subneti) ose WireGuard në router-in tuaj; NEXUS pastaj funksionon saktësisht siç funksionon në shtëpi. NEXUS ende nuk ka një cilësim të adresës së qendrës, prandaj VPN duhet ta bëjë të arritshme gamën e adresave lokale, dhe skanimi për pajisje të reja funksionon vetëm në rrjetin shtëpiak. Mos e ekspozoni kurrë një pajisje në internet me përparim porti. Udhëzimi hap-pas-hapi është docs/REMOTE-ACCESS.md në depo."
       ],
       [
-        "A ka një version për iPhone? Nuk ka një aplikacion në App Store, sepse NEXUS nuk përdor një llogari të paguar të Apple Developer. Me një Mac dhe një Apple ID falas, mund ta ndërtoni për iPhone-in tuaj (udhëzues: docs/IOS-BUILD.md), dhe një version publik mund gjithashtu të bashkëngjisë një IPA të pasignuar që AltStore ose Sideloadly mund ta nënshkruajnë për ju; ky rrugë nuk është verifikuar ende në një iPhone të vërtetë. Një Apple ID falas skadon aplikacionin pas 7 ditësh, dhe njoftimet ndërkohë që aplikacioni është i mbyllur nuk janë të disponueshme në iOS. Qendra home mbetet ende aplikacioni për desktop; iPhone është një klient. Pajisja ime nuk është në listë. Çfarë mund të bëj?",
-        "There is no App Store app, because NEXUS does not use a paid Apple Developer account. With a Mac and a free Apple ID you can build it for your own iPhone (guide: docs/IOS-BUILD.md), and a release may also attach an unsigned IPA that AltStore or Sideloadly can sign for you; that path has not been verified on a real iPhone yet. A free Apple ID expires the app after 7 days, and notifications while the app is closed are not available on iOS. The home hub is still the desktop app; the iPhone is a client."
+        "A ka një version për iPhone?",
+        "Nuk ka aplikacion në App Store, sepse NEXUS nuk përdor llogari të paguar Apple Developer. Me një Mac dhe një Apple ID falas mund ta ndërtoni për iPhone-in tuaj (udhëzues: docs/IOS-BUILD.md), dhe një version publik mund të bashkëngjisë edhe një IPA të pasignuar që AltStore ose Sideloadly mund ta nënshkruajnë për ju; ky rrugë nuk është verifikuar ende në një iPhone të vërtetë. Një Apple ID falas e bën aplikacionin të skadojë pas 7 ditësh, dhe njoftimet kur aplikacioni është i mbyllur nuk janë të disponueshme në iOS. Qendra e shtëpisë mbetet aplikacioni për desktop; iPhone është një klient."
       ],
       [
-        "My device is not on the list. What can I do?",
+        "Pajisja ime nuk është në listë. Çfarë mund të bëj?",
         "NEXUS mbështet vetëm pajisjet me një protokoll lokal të dokumentuar; pajisjet që përdorin vetëm cloud nuk mbështeten sepse NEXUS kurrë nuk komunikon me cloud-in e një furnizuesi. Lista e kompatibilitetit (docs/COMPATIBILITY.md) përfshin gjithashtu Sonoff në mënyrën DIY, WiZ, LIFX, Govee (LAN) dhe Wake-on-LAN. Secila prej tyre ka teste të automatizuara të protokollit, por një model konsiderohet i verifikuar vetëm kur dikush raporton që ka funksionuar në një pajisje reale. Na shkruani përmes formularit të kontaktit në këtë faqe (zgjidhni “New Device / Connector Request”) ose me e-mail: marka dhe modeli, çfarë prisnit dhe çfarë ndodhi. Tregimi që një model ka funksionuar në pajisjen tuaj reale është ajo që e bën të verifikuar; kurrë mos përfshini fjalëkalime, çelësa lokalë ose tokena."
       ],
       [

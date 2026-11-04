@@ -149,7 +149,7 @@ export const ta = {
       },
       {
         name: "குடும்பம்",
-        price: "Free",
+        price: "இலவசம்",
         period: "முழு குடும்பத்திற்கும்",
         badge: "முழு வீடு",
         features: [

@@ -114,7 +114,7 @@ export const lv = {
     currencyNote: "Cenas USD",
     plans: [
       {
-        name: "Free",
+        name: "Bezmaksas",
         price: "$0",
         period: "uz visiem laikiem",
         features: [
@@ -148,8 +148,8 @@ export const lv = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Ģimenes",
+        price: "Bezmaksas",
         period: "visai ģimenei",
         badge: "Visa māja",
         features: [

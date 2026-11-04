@@ -102,7 +102,7 @@ export const hy = {
       ],
       [
         "Տեղական ցանց, առանց հաշվի կամ բանալու — համակարգչային հավելված",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY ռեժիմ)", "Wake-on-LAN"],
       ],
     ],
     more: "Ինչ-որ բան բացակայո՞ւմ է։ Խնդրեք միակցիչ",
@@ -149,7 +149,7 @@ export const hy = {
       },
       {
         name: "Ընտանիք",
-        price: "Free",
+        price: "Անվճար",
         period: "ամբողջ ընտանիքի համար",
         badge: "Ամբողջ տունը",
         features: [

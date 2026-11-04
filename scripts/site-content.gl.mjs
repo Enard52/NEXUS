@@ -102,7 +102,7 @@ export const gl = {
       ],
       [
         "Rede local, sen conta nin chave — aplicación de escritorio",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (modo DIY)", "Wake-on-LAN"],
       ],
     ],
     more: "Falta algo? Solicita un conector",
@@ -114,7 +114,7 @@ export const gl = {
     currencyNote: "Prezos en USD",
     plans: [
       {
-        name: "Free",
+        name: "Gratuíto",
         price: "$0",
         period: "para sempre",
         features: [
@@ -148,8 +148,8 @@ export const gl = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Familia",
+        price: "Gratuíto",
         period: "para toda a familia",
         badge: "Toda a casa",
         features: [

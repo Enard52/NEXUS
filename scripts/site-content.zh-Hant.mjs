@@ -255,7 +255,7 @@ export const zh_Hant = {
         "基本智慧家庭控制——無限制的設備、房間、離線自動化和本地儀表板——是免費的。NEXUS+ 包含免費方案中的所有內容、用於場景和自然語言問題的 NEXUS AI、每月 2,000 次回覆、用於添加 Home Assistant 設備的高級連接，以及每個設備上的一個帳戶，並提供每月 3 天或每年 7 天的試用。設備命令仍然在本地運行。家庭角色包含在您的家中，無需額外費用。 我的 NEXUS+ 訂閱屬於哪個帳戶？"
       ],
       [
-        "Which account does my NEXUS+ subscription belong to?",
+        "我的 NEXUS+ 訂閱屬於哪個帳號？",
         "結帳時使用的電子郵件地址。在付款前請先在此網站或應用程式中登入：結帳頁面將自動填入您帳戶的電子郵件，訂閱也會顯示在您登入的每個裝置上。沒有帳戶無法購買 NEXUS+。如果您使用不同的電子郵件付款，訂閱將會存儲在該電子郵件下，直到您使用該電子郵件登入才會出現在您的帳戶上。"
       ],
       [
@@ -267,7 +267,7 @@ export const zh_Hant = {
         "NEXUS 支援每個裝置自有的本地協議：Shelly（第一代和第二代+）、Tasmota、WLED、ESPHome、Philips Hue 以及 Home Assistant，透過各平台的本地 HTTP；此外，桌面應用程式還支援 TP-Link Kasa、Yeelight、WiZ、Sonoff（DIY 模式）以及網路喚醒（Wake-on-LAN），無需帳號或金鑰。其他裝置 — 無論是 Matter 或 Zigbee 設備 — 都可透過您自己的 Home Assistant 伺服器加入，NEXUS 將其視為單一本地集線器。本地 IP 探測可立即配對裝置，中間不經任何廠商雲端。安全攝像頭和感應器如何整合？"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "監控攝影機和感測器如何整合？",
         "NEXUS 將您的安全攝像頭、動作探測器和門禁感應器整合到一個中央安全儀表板中。您可以自動化隱私模式、在離家時啟動監控程序，並在應用程式中查看每一次動作或接觸事件——還可以通過您啟用的通知渠道（系統通知、ntfy、Telegram 或您自己的 webhook）接收通知。"
       ],
       [

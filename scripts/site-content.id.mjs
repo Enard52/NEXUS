@@ -102,7 +102,7 @@ export const id = {
       ],
       [
         "Jaringan lokal, tanpa akun atau kunci — aplikasi desktop",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (mode DIY)", "Wake-on-LAN"],
       ],
     ],
     more: "Ada yang belum ada? Minta konektor",
@@ -149,7 +149,7 @@ export const id = {
       },
       {
         name: "Keluarga",
-        price: "Free",
+        price: "Gratis",
         period: "untuk seluruh keluarga",
         badge: "Seluruh rumah",
         features: [

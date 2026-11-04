@@ -114,7 +114,7 @@ export const ko = {
     currencyNote: "가격은 USD 기준",
     plans: [
       {
-        name: "Free",
+        name: "무료",
         price: "$0",
         period: "영원히",
         features: [
@@ -148,8 +148,8 @@ export const ko = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "가족",
+        price: "무료",
         period: "온 가족을 위해",
         badge: "온 집안",
         features: [

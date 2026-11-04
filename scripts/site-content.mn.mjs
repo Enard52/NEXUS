@@ -102,7 +102,7 @@ export const mn = {
       ],
       [
         "Дотоод сүлжээ, бүртгэл болон түлхүүр шаардлагагүй — десктоп апп",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY горим)", "Wake-on-LAN"],
       ],
     ],
     more: "Юм дутаж байна уу? Холбогч хүс",
@@ -114,7 +114,7 @@ export const mn = {
     currencyNote: "Үнэ USD-ээр",
     plans: [
       {
-        name: "Free",
+        name: "Үнэгүй",
         price: "$0",
         period: "үргэлж",
         features: [
@@ -148,7 +148,7 @@ export const mn = {
         },
       },
       {
-        name: "Family",
+        name: "Гэр бүл",
         price: "Үнэгүй",
         period: "бүх гэр бүлд",
         badge: "Бүхэл гэр",

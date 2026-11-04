@@ -75,7 +75,7 @@ export const fr = {
       ],
       [
         "sparkles",
-        "NEXUS AI Intelligence",
+        "Intelligence NEXUS AI",
         "Les commandes locales de la maison intelligente sont instantanées et gratuites pour toujours. L'assistant AI optionnel dans le cloud fournit des suggestions intelligentes chaque fois que vous avez besoin de conseils."
       ],
       [
@@ -240,18 +240,18 @@ export const fr = {
     "smartScreenNote": "Sur Windows, la voie la plus facile est le Microsoft Store : le package est signé par Microsoft et les mises à jour passent par le Store. Le .exe direct n'est pas signé, donc Windows peut avertir d’un « éditeur inconnu » — voir les sommes de contrôle. Les questions importantes, répondues. Est-ce que NEXUS fonctionne entièrement sur mon réseau local ?"
   },
   "faq": {
-    "heading": "The important questions, answered.",
+    "heading": "Les questions importantes, avec leurs réponses.",
     "items": [
       [
-        "Does NEXUS operate entirely on my local network?",
+        "NEXUS fonctionne-t-il entièrement sur mon réseau local ?",
         "Oui. NEXUS est construit sur une architecture locale stricte. Vos appareils, pièces, scènes et télémétrie des capteurs sont traités directement par votre propre matériel domestique. Même en cas de coupure d'internet, tous les contrôles locaux, l'éclairage et les automatisations continuent de fonctionner sans interruption et sans latence. Se connecter de manière sécurisée synchronise vos paramètres sur tous vos écrans. Dois-je installer NEXUS ou fonctionne-t-il dans le navigateur ?"
       ],
       [
-        "Do I need to install NEXUS, or does it run in the browser?",
+        "Dois-je installer NEXUS, ou fonctionne-t-il dans le navigateur ?",
         "Installez le programme de bureau (Windows ou Linux) ou l'application Android. NEXUS n'est pas proposé en tant qu'application pour navigateur. Les commandes des appareils passent par votre propre réseau local. Shelly, Philips Hue, ESPHome, Tasmota, WLED et Home Assistant utilisent le HTTP local dans le programme de bureau et sur Android. TP-Link Kasa et Yeelight nécessitent le TCP brut, donc ils fonctionnent dans le programme de bureau. Ce site est destiné au compte, aux téléchargements et à la facturation. Qu'apporte le plan NEXUS+ ?"
       ],
       [
-        "What does the NEXUS+ plan add?",
+        "Qu'apporte le forfait NEXUS+ ?",
         "Le contrôle intelligent essentiel de la maison—appareils illimités, pièces, automatisations hors ligne et tableaux de bord locaux—est gratuit. NEXUS+ inclut tout ce qui est dans la version gratuite, NEXUS AI pour les scènes et questions en langage simple, 2 000 réponses par mois, des connexions avancées pour ajouter des appareils Home Assistant, et un compte sur chaque appareil, avec un essai de 3 jours par mois ou de 7 jours par an. Les commandes des appareils fonctionnent toujours localement. Les rôles au sein du foyer sont inclus avec votre maison sans coût supplémentaire."
       ],
       [
@@ -267,11 +267,11 @@ export const fr = {
         "NEXUS communique avec le protocole local de chaque appareil : Shelly (Gen1 et Gen2+), Tasmota, WLED, ESPHome, Philips Hue et Home Assistant via HTTP local sur toutes les plateformes, ainsi que TP-Link Kasa, Yeelight, WiZ, Sonoff (mode DIY) et Wake-on-LAN sur le réseau local dans l'application de bureau, sans compte ni clé. Tout le reste — appareils Matter ou Zigbee — se connecte via votre propre serveur Home Assistant, que NEXUS considère comme un seul hub local. La découverte IP locale permet d'apparier les appareils instantanément, sans passer par le cloud du fabricant. Comment les caméras de sécurité et les capteurs sont-ils intégrés ?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Comment les caméras de sécurité et les capteurs sont-ils intégrés ?",
         "NEXUS centralise vos caméras de sécurité, détecteurs de mouvement et capteurs d'entrée dans un tableau de bord de sécurité centralisé. Vous pouvez automatiser les modes de confidentialité, activer les routines de surveillance en quittant la maison et voir chaque mouvement ou événement de contact dans l'application — ainsi que sur les canaux de notification que vous activez (notifications système, ntfy, Telegram ou votre propre webhook). Puis-je annuler NEXUS+ à tout moment ?"
       ],
       [
-        "Can I cancel NEXUS+ anytime?",
+        "Puis-je annuler NEXUS+ à tout moment ?",
         "Oui, entièrement sans tracas et sans aucun engagement. Vous pouvez annuler en un clic à tout moment : depuis les paramètres de compte et de facturation dans l'application, via notre site Web, ou directement depuis le lien de commande dans votre reçu de facturation par email. Vos avantages premium restent actifs jusqu'à la fin de votre cycle de facturation sans frais futurs."
       ],
       [
@@ -308,7 +308,7 @@ export const fr = {
     "title": "À propos de NEXUS",
     "lead": "Une plateforme domotique indépendante, axée sur le local, conçue pour la rapidité, la confidentialité absolue et la véritable propriété du matériel. En communiquant directement avec vos appareils via votre propre réseau domestique, NEXUS élimine définitivement la dépendance au cloud. Pourquoi nous avons créé NEXUS",
     "manifesto": {
-      "heading": "Why We Built NEXUS",
+      "heading": "Pourquoi nous avons créé NEXUS",
       "text": "L'industrie moderne de la maison intelligente a pris une mauvaise direction. Les écosystèmes propriétaires ont imposé aux propriétaires des abonnements obligatoires, des retards dépendant du cloud et une surveillance invasive. Lorsque votre connexion Internet tombe en panne, votre interrupteur de salon ne devrait pas cesser de fonctionner. Nous avons créé NEXUS parce que nous croyons que votre maison est votre sanctuaire : votre plan d'étage, l'état de vos caméras et vos routines familiales quotidiennes appartiennent strictement à votre propre matériel."
     },
     "pillars": [

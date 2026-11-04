@@ -102,7 +102,7 @@ export const et = {
       ],
       [
         "Kohalik võrk, ilma konto või võtmeta — töölauarakendus",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY-režiim)", "Wake-on-LAN"],
       ],
     ],
     more: "Midagi puudu? Küsi uut liidest",
@@ -114,7 +114,7 @@ export const et = {
     currencyNote: "Hinnad USA dollarites",
     plans: [
       {
-        name: "Free",
+        name: "Tasuta",
         price: "$0",
         period: "alati",
         features: [
@@ -148,8 +148,8 @@ export const et = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Pere",
+        price: "Tasuta",
         period: "kogu perele",
         badge: "Kogu kodu",
         features: [

@@ -263,7 +263,7 @@ export const ja = {
         "NEXUSオートメーションエンジンは、常に稼働しているデバイス上でスケジュールやセンサー規則を評価します。デスクトップアプリはシステムトレイに常駐し、24時間実行されるため、照明、エネルギー、セキュリティのルーチンがクラウドを待つことはありません。電話からトリガーされたシーンやタイマーは、LAN上で即座に適用されます。新しいイベントは、Instant Notificationsページで有効にした通知チャネルに広がります：アプリ内ストリップ、システム通知、ntfy、Telegram、または独自のHTTPSウェブフックです。どのデバイスとエコシステムがサポートされていますか？"
       ],
       [
-        "Which devices and ecosystems are supported?",
+        "どのデバイスとエコシステムに対応していますか？",
         "NEXUSは各デバイス固有のローカルプロトコルをサポートしています：Shelly（Gen1およびGen2+）、Tasmota、WLED、ESPHome、Philips Hue、Home AssistantはすべてのプラットフォームでローカルHTTPを通じて、さらにTP-Link Kasa、Yeelight、WiZ、Sonoff（DIYモード）、Wake-on-LANはデスクトップアプリでローカルネットワーク経由で、アカウントやキーなしで接続可能です。それ以外の機器—MatterやZigbeeデバイス—は、NEXUSが単一のローカルハブとして扱うあなた自身のHome Assistantサーバーを通じて接続されます。ローカルIPによる検出で、ベンダークラウドを介さずにデバイスを瞬時にペアリングできます。"
       ],
       [

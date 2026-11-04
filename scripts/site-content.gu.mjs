@@ -90,23 +90,23 @@ export const gu = {
     "steps": [
       [
         "1",
-        "Install & open",
-        "Download the native installer for your platform (Windows, Linux, or Android). Then sign in — an account is required to use NEXUS, and it also syncs setup across your screens."
+        "ઇન્સ્ટોલ કરો અને ખોલો",
+        "તમારા પ્લેટફોર્મ માટે નેટિવ ઇન્સ્ટોલર ડાઉનલોડ કરો (Windows, Linux અથવા Android). પછી સાઇન ઇન કરો — NEXUS વાપરવા માટે એકાઉન્ટ જરૂરી છે, અને તે તમારી સ્ક્રીન પર સેટઅપ પણ સિંક કરે છે."
       ],
       [
         "2",
-        "Add your devices",
-        "Pick your brand, scan the local network or enter an IP. Brands with a direct connector speak their own protocol — no vendor cloud in that path."
+        "તમારા ઉપકરણો ઉમેરો",
+        "તમારી બ્રાન્ડ પસંદ કરો, લોકલ નેટવર્ક સ્કેન કરો અથવા IP દાખલ કરો. ડાયરેક્ટ કનેક્ટર ધરાવતી બ્રાન્ડ્સ પોતાનો પ્રોટોકોલ બોલે છે — તે માર્ગમાં કોઈ વેન્ડર ક્લાઉડ નથી."
       ],
       [
         "3",
-        "Live your home",
-        "Scenes, scheduled automations and real energy readings — unified control across desktop and mobile."
+        "તમારા ઘરને માણો",
+        "દ્રશ્યો, નિર્ધારિત ઓટોમેશન અને વાસ્તવિક ઊર્જા રીડિંગ — ડેસ્કટોપ અને મોબાઇલ પર એકીકૃત નિયંત્રણ."
       ]
     ]
   },
   "integrations": {
-    "heading": "Works with what you already have.",
+    "heading": "તમારી પાસે જે છે તેની સાથે કામ કરે છે.",
     "lead": "મોકળું, સ્થાનિક પ્રોટોકોલ પહેલા. સ્પષ્ટ કનેક્ટર વિના કોઈપણ વસ્તુ હમેશા હોમ આસિસ્ટન્ટ બ્રિજ મારફતે કામ કરે છે.",
     "groups": [
       [
@@ -267,7 +267,7 @@ export const gu = {
         "NEXUS દરેક ડિવાઇસની પોતાની સ્થાનિક પ્રોટોકોલ બોલે છે: Shelly (Gen1 અને Gen2+), Tasmota, WLED, ESPHome, Philips Hue અને Home Assistant સ્થાનિક HTTP મારફતે દરેક પ્લેટફોર્મ પર, તેમજ TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY મોડ) અને Wake-on-LAN સ્થાનિક નેટવર્કમાં ડેસ્કટોપ એપ પર, કોઈ ખાતું કે કી વગર. બાકીના બધા — Matter અથવા Zigbee ઉપકરણો — તમારા પોતાના Home Assistant સર્વર મારફતે જોડાય છે, જેને NEXUS એક એકલી સ્થાનિક હબ તરીકે સારવાર કરે છે. સ્થાનિક IP શોધ ઝડપથી ડિવાઇસોને જોડે છે, વચ્ચે કોઈ વેન્ડર ક્લાઉડ વિના. સુરક્ષા કેમેરા અને સેન્સરો કેવી રીતે એકીકૃત થાય છે?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "સિક્યુરિટી કેમેરા અને સેન્સર કેવી રીતે સંકલિત થાય છે?",
         "NEXUS તમારા સુરક્ષા કેમેરા, მოძრაობા ડિટેક્ટર્સ, અને પ્રવેશ સેન્સર્સને એક કેન્દ્રિય સુરક્ષા ડેશબોર્ડમાં એકત્ર કરે છે. તમે પ્રાઇવસી મોડ્સને автомат કરી શકો છો, ઘરમાંથી બહાર આવતા સમયે સર્વેલન્સ રૂટીન્સ સક્રિય કરી શકો છો, અને એપમાં દરેક ગતિ અથવા સંપર્ક ઇવેંટ જોઈ શકો છો — સાથે જ તમે સક્રિય કરેલી નોટિફિકેશન ચેનલો પર પણ (સિસ્ટમ નોટિફિકેશન્સ, ntfy, Telegram, અથવા તમારા પોતાના webhook) જોઈ શકો છો."
       ],
       [

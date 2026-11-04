@@ -149,7 +149,7 @@ export const sv = {
       },
       {
         name: "Familj",
-        price: "Free",
+        price: "Gratis",
         period: "för hela familjen",
         badge: "Hela hemmet",
         features: [

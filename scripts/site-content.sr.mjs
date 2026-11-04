@@ -149,7 +149,7 @@ export const sr = {
       },
       {
         name: "Породица",
-        price: "Free",
+        price: "Бесплатно",
         period: "за целу породицу",
         badge: "Цео дом",
         features: [

@@ -102,7 +102,7 @@ export const hi = {
       ],
       [
         "लोकल नेटवर्क, बिना खाते या कुंजी के — डेस्कटॉप ऐप",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY मोड)", "Wake-on-LAN"],
       ],
     ],
     more: "कुछ छूट गया? कनेक्टर का अनुरोध करें",
@@ -114,7 +114,7 @@ export const hi = {
     currencyNote: "कीमतें USD में",
     plans: [
       {
-        name: "Free",
+        name: "मुफ़्त",
         price: "$0",
         period: "हमेशा के लिए",
         features: [
@@ -148,8 +148,8 @@ export const hi = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "परिवार",
+        price: "मुफ़्त",
         period: "पूरे परिवार के लिए",
         badge: "पूरा घर",
         features: [

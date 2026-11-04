@@ -114,7 +114,7 @@ export const am = {
     currencyNote: "ዋጋዎች በUSD",
     plans: [
       {
-        name: "Free",
+        name: "ነፃ",
         price: "$0",
         period: "ለዘላለም",
         features: [
@@ -148,8 +148,8 @@ export const am = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "ቤተሰብ",
+        price: "ነፃ",
         period: "ለመላው ቤተሰብ",
         badge: "መላው ቤት",
         features: [

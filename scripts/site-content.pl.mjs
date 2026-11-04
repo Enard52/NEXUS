@@ -75,7 +75,7 @@ export const pl = {
       ],
       [
         "sparkles",
-        "NEXUS AI Intelligence",
+        "Inteligencja AI NEXUS",
         "Lokalne polecenia smart home są natychmiastowe i zawsze darmowe. Opcjonalny asystent AI w chmurze zapewnia inteligentne sugestie zawsze, gdy potrzebujesz wskazówek."
       ],
       [
@@ -251,7 +251,7 @@ export const pl = {
         "Zainstaluj program na komputer (Windows lub Linux) lub aplikację na Androida. NEXUS nie jest oferowany jako aplikacja przeglądarkowa. Polecenia urządzeń są przesyłane przez Twoją lokalną sieć. Shelly, Philips Hue, ESPHome, Tasmota, WLED i Home Assistant korzystają z lokalnego HTTP w programie na komputer oraz na Androidzie. TP-Link Kasa i Yeelight wymagają surowego TCP, więc działają w programie na komputer. Ta strona służy do zarządzania kontem, pobierania plików i rozliczeń. Co dodaje plan NEXUS+?"
       ],
       [
-        "What does the NEXUS+ plan add?",
+        "Co dodaje plan NEXUS+?",
         "Podstawowa kontrola inteligentnego domu — nieograniczona liczba urządzeń, pokoi, automatyzacji offline i lokalnych pulpitów — jest bezpłatna. NEXUS+ zawiera wszystko w wersji Free, NEXUS AI do scen i pytań w języku naturalnym, 2000 odpowiedzi miesięcznie, zaawansowane połączenia do dodawania urządzeń Home Assistant oraz jedno konto na każdym urządzeniu, z 3-dniową wersją próbną miesięczną lub 7-dniową wersją próbną roczną. Polecenia urządzeń nadal działają lokalnie. Role w gospodarstwie domowym są wliczone w cenę Twojego domu bez dodatkowych kosztów."
       ],
       [
@@ -263,11 +263,11 @@ export const pl = {
         "Silnik automatyzacji NEXUS ocenia Twoje harmonogramy i zasady dotyczące czujników na urządzeniu, które cały czas działa — aplikacja desktopowa pozostaje w zasobniku systemowym i działa przez całą dobę, dzięki czemu rutyny dotyczące oświetlenia, energii i bezpieczeństwa nigdy nie czekają na chmurę. Sceny i timery wywoływane z telefonu działają natychmiast w Twojej sieci LAN. Nowe zdarzenia rozprzestrzeniają się na kanały powiadomień, które włączysz na stronie Natychmiastowych Powiadomień: pasek w aplikacji, powiadomienia systemowe, ntfy, Telegram lub własny webhook HTTPS. Jakie urządzenia i ekosystemy są obsługiwane?"
       ],
       [
-        "Which devices and ecosystems are supported?",
+        "Które urządzenia i ekosystemy są obsługiwane?",
         "NEXUS obsługuje lokalny protokół każdego urządzenia: Shelly (Gen1 i Gen2+), Tasmota, WLED, ESPHome, Philips Hue i Home Assistant przez lokalny HTTP na każdej platformie, a także TP-Link Kasa, Yeelight, WiZ, Sonoff (tryb DIY) i Wake-on-LAN przez lokalną sieć w aplikacji desktopowej, bez konta ani klucza. Wszystkie inne urządzenia — Matter lub Zigbee — łączą się przez Twój własny serwer Home Assistant, który NEXUS traktuje jako jeden lokalny hub. Lokalna detekcja IP łączy urządzenia natychmiast, bez pośrednictwa chmury dostawcy. Jak zintegrowane są kamery bezpieczeństwa i czujniki?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Jak zintegrowane są kamery bezpieczeństwa i czujniki?",
         "NEXUS konsoliduje twoje kamery bezpieczeństwa, czujniki ruchu i czujniki wejściowe w centralnym panelu bezpieczeństwa. Możesz automatyzować tryby prywatności, włączać rutyny nadzoru podczas wychodzenia z domu i zobaczyć każdy ruch lub zdarzenie kontaktowe w aplikacji — a także na kanałach powiadomień, które włączysz (powiadomienia systemowe, ntfy, Telegram lub własny webhook)."
       ],
       [
@@ -292,14 +292,14 @@ export const pl = {
       ],
       [
         "Czy mogę zrobić kopię zapasową moich ustawień i przenieść je na inne urządzenie? Tak. Ustawienia mają sekcję kopii zapasowej, w której możesz wyeksportować swoje ustawienia i automatyzacje do pliku JSON i zaimportować go na innym urządzeniu lub po ponownej instalacji. Hasła, tokeny i lokalne klucze są usuwane z listy sparowanych urządzeń w pliku, więc należy je ponownie wprowadzić po przywróceniu. Zachowaj plik kopii zapasowej w tajemnicy. Czy mogę wyeksportować moje dane energetyczne?",
-        "Yes. Settings has a backup section where you can export your settings and automations to a JSON file and import it on another device or after a reinstall. Passwords, tokens and local keys are stripped from the paired device list in the file, so re-enter them after restoring. Keep the backup file private."
+        "Tak. W Ustawieniach jest sekcja kopii zapasowej, w której możesz wyeksportować ustawienia i automatyzacje do pliku JSON i zaimportować je na innym urządzeniu lub po ponownej instalacji. Hasła, tokeny i lokalne klucze są usuwane z listy sparowanych urządzeń w pliku, więc po przywróceniu wprowadź je ponownie. Przechowuj plik kopii zapasowej w tajemnicy."
       ],
       [
-        "Can I export my energy data?",
+        "Czy mogę wyeksportować dane o zużyciu energii?",
         "Tak. Strona Energii może eksportować najnowsze odczyty rzeczywistej mocy z Twoich urządzeń w formie pliku CSV lub JSON. NEXUS posiada dane tylko dla urządzeń, które faktycznie raportują moc; jeśli żadne nie jest sparowane, nie ma nic do eksportu. Dlaczego Windows ostrzega mnie, gdy uruchamiam instalator?"
       ],
       [
-        "Why does Windows warn me when I run the installer?",
+        "Dlaczego Windows ostrzega mnie podczas uruchamiania instalatora?",
         "Zainstaluj z Microsoft Store, a nie zobaczysz tego ostrzeżenia: Microsoft podpisuje ten pakiet podczas certyfikacji i dostarcza aktualizacje przez Store. Bezpośrednie pobranie pliku .exe nie jest jeszcze podpisane komercyjnym certyfikatem, więc SmartScreen może pokazać „nieznany wydawca”. Możesz porównać plik z sumami kontrolnymi podanymi w sekcji pobierania przed jego uruchomieniem. Nasza polityka podpisywania kodu jest podlinkowana w stopce strony."
       ]
     ]

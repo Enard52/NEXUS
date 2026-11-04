@@ -102,7 +102,7 @@ export const he = {
       ],
       [
         "רשת מקומית, בלי חשבון או מפתח — אפליקציית מחשב",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (מצב DIY)", "Wake-on-LAN"],
       ],
     ],
     more: "חסר משהו? בקשו מחבר",
@@ -114,7 +114,7 @@ export const he = {
     currencyNote: "המחירים בדולר ארה״ב",
     plans: [
       {
-        name: "Free",
+        name: "חינם",
         price: "$0",
         period: "לתמיד",
         features: [
@@ -148,8 +148,8 @@ export const he = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "משפחה",
+        price: "חינם",
         period: "לכל המשפחה",
         badge: "כל הבית",
         features: [

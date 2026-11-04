@@ -149,7 +149,7 @@ export const ptBR = {
       },
       {
         name: "Família",
-        price: "Free",
+        price: "Grátis",
         period: "para a família toda",
         badge: "Casa inteira",
         features: [
@@ -322,7 +322,7 @@ export const ptBR = {
       ["Notas de versão e comunidade", RELEASES_URL],
       ["Baixar os apps", "#downloads"],
     ],
-    legal: "Legal",
+    legal: "Jurídico",
     legalLinks: [
       ["Privacidade", "/privacy"],
       ["Termos", "/terms"],

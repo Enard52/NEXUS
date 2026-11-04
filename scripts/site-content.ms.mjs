@@ -247,7 +247,7 @@ export const ms = {
         "Ya. NEXUS dibina berdasarkan seni bina tempatan-pertama yang ketat. Peranti, bilik, adegan, dan telemetri sensor anda diproses terus melalui perkakasan rumah anda sendiri. Walaupun semasa gangguan internet, semua kawalan tempatan, pencahayaan, dan automasi terus berfungsi dengan lancar tanpa kelewatan. Masuk dengan selamat menyegerakkan tetapan anda di semua skrin anda. Adakah saya perlu memasang NEXUS, atau adakah ia dijalankan dalam pelayar?"
       ],
       [
-        "Do I need to install NEXUS, or does it run in the browser?",
+        "Adakah saya perlu memasang NEXUS, atau ia berjalan dalam pelayar?",
         "Pasang program desktop (Windows atau Linux) atau aplikasi Android. NEXUS tidak ditawarkan sebagai aplikasi pelayar. Arahan peranti dihantar melalui rangkaian tempatan anda sendiri. Shelly, Philips Hue, ESPHome, Tasmota, WLED dan Home Assistant menggunakan HTTP tempatan dalam program desktop dan di Android. TP-Link Kasa dan Yeelight memerlukan TCP mentah, jadi ia dijalankan dalam program desktop. Laman ini adalah untuk akaun, muat turun dan pengebilan."
       ],
       [
@@ -255,11 +255,11 @@ export const ms = {
         "Kawalan rumah pintar yang penting—peranti tanpa had, bilik, automasi luar talian, dan papan pemuka setempat—adalah percuma. NEXUS+ merangkumi segala-galanya dalam Free, NEXUS AI untuk adegan dan soalan dalam bahasa biasa, 2,000 balasan sebulan, sambungan lanjutan untuk menambah peranti Home Assistant, dan satu akaun pada setiap peranti, dengan percubaan 3 hari bulanan atau 7 hari tahunan. Arahan peranti masih dijalankan secara setempat. Peranan isi rumah disertakan dengan rumah anda tanpa kos tambahan. Akaun mana yang dimiliki oleh langganan NEXUS+ saya?"
       ],
       [
-        "Which account does my NEXUS+ subscription belong to?",
+        "Akaun manakah yang memiliki langganan NEXUS+ saya?",
         "Alamat emel yang digunakan semasa pembayaran. Log masuk di laman web ini atau dalam aplikasi sebelum anda membayar: halaman pembayaran kemudian dibuka dengan emel akaun anda diisi, dan langganan akan muncul di setiap peranti yang anda log masuk. NEXUS+ tidak boleh dibeli tanpa akaun. Jika anda membayar dengan emel lain, langganan akan disimpan di bawah emel tersebut dan tidak akan muncul di akaun anda sehingga anda log masuk dengan emel itu. Bagaimana automasi dan peraturan berjadual dijalankan?"
       ],
       [
-        "How do automations and scheduled rules run?",
+        "Bagaimanakah automasi dan peraturan berjadual dijalankan?",
         "Enjin automasi NEXUS menilai jadual dan peraturan sensor anda pada peranti yang anda sentiasa jalankan — aplikasi desktop kekal di dulang sistem dan berfungsi sepanjang masa, jadi rutin pencahayaan, tenaga dan keselamatan tidak menunggu awan. Adegan dan pemasa yang dicetuskan dari telefon anda berlaku serta-merta melalui LAN anda. Acara baru disebarkan ke saluran notifikasi yang anda aktifkan di halaman Notifikasi Segera: jalur dalam aplikasi, notifikasi sistem, ntfy, Telegram, atau webhook HTTPS anda sendiri."
       ],
       [
@@ -267,7 +267,7 @@ export const ms = {
         "NEXUS berbicara menggunakan protokol tempatan setiap peranti: Shelly (Gen1 dan Gen2+), Tasmota, WLED, ESPHome, Philips Hue dan Home Assistant melalui HTTP tempatan di setiap platform, ditambah TP-Link Kasa, Yeelight, WiZ, Sonoff (mod DIY) dan Wake-on-LAN melalui rangkaian tempatan dalam aplikasi desktop, tanpa akaun atau kunci. Semua yang lain — peralatan Matter atau Zigbee — bersambung melalui pelayan Home Assistant anda sendiri, yang NEXUS anggap sebagai satu hub tempatan. Penemuan IP tempatan memadankan peranti dengan segera, tanpa awan vendor di tengahnya. Kamera keselamatan dan sensor diintegrasikan bagaimana?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Bagaimanakah kamera keselamatan dan penderia disepadukan?",
         "NEXUS menggabungkan kamera keselamatan, pengesan pergerakan, dan sensor pintu anda ke dalam papan pemuka keselamatan berpusat. Anda boleh mengautomasikan mod privasi, mengaktifkan rutin pengawasan semasa meninggalkan rumah, dan melihat setiap pergerakan atau peristiwa sentuhan dalam aplikasi — serta pada saluran pemberitahuan yang anda aktifkan (pemberitahuan sistem, ntfy, Telegram, atau webhook anda sendiri)."
       ],
       [
@@ -292,20 +292,20 @@ export const ms = {
       ],
       [
         "Bolehkah saya membuat sandaran tetapan saya dan memindahkannya ke peranti lain? Ya. Tetapan mempunyai bahagian sandaran di mana anda boleh mengeksport tetapan dan automasi anda ke fail JSON dan mengimportnya ke peranti lain atau selepas pemasangan semula. Kata laluan, token dan kunci tempatan dibuang dari senarai peranti yang dipasangkan dalam fail, jadi masukkan semula selepas memulihkan. Simpan fail sandaran secara peribadi. Bolehkah saya mengeksport data tenaga saya?",
-        "Yes. Settings has a backup section where you can export your settings and automations to a JSON file and import it on another device or after a reinstall. Passwords, tokens and local keys are stripped from the paired device list in the file, so re-enter them after restoring. Keep the backup file private."
+        "Ya. Tetapan mempunyai bahagian sandaran di mana anda boleh mengeksport tetapan dan automasi anda ke fail JSON dan mengimportnya pada peranti lain atau selepas pemasangan semula. Kata laluan, token dan kunci setempat dibuang daripada senarai peranti berpasangan dalam fail, jadi masukkan semula selepas memulihkan. Simpan fail sandaran secara peribadi."
       ],
       [
-        "Can I export my energy data?",
+        "Bolehkah saya mengeksport data tenaga saya?",
         "Ya. Halaman Tenaga boleh mengeksport bacaan kuasa sebenar terkini daripada peranti anda sebagai fail CSV atau JSON. NEXUS hanya mempunyai data untuk peranti yang benar-benar melaporkan kuasa; tanpa sebarang peranti yang dipasangkan, tiada apa yang boleh dieksport. Mengapa Windows memberi amaran kepada saya apabila saya menjalankan pemasang?"
       ],
       [
-        "Why does Windows warn me when I run the installer?",
+        "Mengapakah Windows memberi amaran apabila saya menjalankan pemasang?",
         "Pasang dari Microsoft Store dan anda tidak akan melihat amaran ini: Microsoft menandatangani pakej itu semasa pensijilan dan menyampaikan kemas kini melalui Store. Muat turun .exe terus belum ditandatangani dengan sijil komersial, jadi SmartScreen mungkin menunjukkan “penerbit tidak diketahui”. Anda boleh membandingkan fail dengan jumlah semak yang disenaraikan di bahagian muat turun sebelum menjalankannya. Dasar penandatanganan kod kami dipautkan dari footer laman web. Tentang NEXUS"
       ]
     ]
   },
   "about": {
-    "title": "About NEXUS",
+    "title": "Perihal NEXUS",
     "lead": "Platform rumah pintar yang bebas, mengutamakan tempatan, direka untuk kelajuan, privasi mutlak, dan pemilikan perkakasan sebenar. Dengan berkomunikasi terus dengan peranti anda melalui rangkaian rumah anda sendiri, NEXUS menghapuskan penguncian awan untuk selamanya.",
     "manifesto": {
       "heading": "Mengapa Kami Membangunkan NEXUS",

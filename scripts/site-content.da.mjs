@@ -114,7 +114,7 @@ export const da = {
     currencyNote: "Priser i USD",
     plans: [
       {
-        name: "Free",
+        name: "Gratis",
         price: "$0",
         period: "for altid",
         features: [
@@ -148,8 +148,8 @@ export const da = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Familie",
+        price: "Gratis",
         period: "til hele familien",
         badge: "Hele hjemmet",
         features: [

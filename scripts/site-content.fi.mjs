@@ -275,7 +275,7 @@ export const fi = {
         "Kyllä, täysin vaivaton eikä sitoumuksia. Voit peruuttaa yhdellä napsautuksella milloin tahansa: sovelluksen Tilin ja maksujen asetuksista, verkkosivustomme kautta tai suoraan tilauslinkistä maksukuittisi sähköpostissa. Premium-edut pysyvät voimassa laskutusjakson loppuun asti ilman tulevia maksuja. Voinko hallita kotiani ollessani poissa?"
       ],
       [
-        "Can I control my home when I am away?",
+        "Voinko hallita kotiani, kun olen poissa?",
         "Ei NEXUS-pilven kautta: NEXUS kommunikoi laitteidesi kanssa suoraan kotiverkossasi eikä käytä välityspalvelinta. Jos haluat käyttää sitä ulkopuolelta, liitä puhelimesi tai kannettavasi kotiverkkoon VPN:n, kuten Tailscale (aliverkon reititin) tai WireGuardin kautta reitittimessäsi; NEXUS toimii silloin täsmälleen samalla tavalla kuin kotona. NEXUS ei vielä tue hub-osoitteen asetusta, joten VPN:n on tehtävä paikallinen osoitealueesi saavutettavaksi, ja uusien laitteiden skannaaminen toimii vain kotiverkossa. Älä koskaan altista laitetta internetiin porttiohjauksella. Vaiheittainen opas löytyy repositorion tiedostosta docs/REMOTE-ACCESS.md."
       ],
       [
@@ -308,7 +308,7 @@ export const fi = {
     "title": "Tietoja NEXUSista",
     "lead": "Itsenäinen, paikalliseen käyttöön ensisijaisesti suunniteltu älykoti-alusta, joka on suunniteltu nopeuteen, täydelliseen yksityisyyteen ja todelliseen laitteiston omistukseen. Keskustelemalla suoraan laitteidesi kanssa oman kotiverkkosi kautta, NEXUS poistaa pilvirajoitukset lopullisesti. Miksi rakensimme NEXUSin",
     "manifesto": {
-      "heading": "Why We Built NEXUS",
+      "heading": "Miksi rakensimme NEXUSin",
       "text": "Nykyaikainen älykotiteollisuus otti väärän käännöksen. Suljetut ekosysteemit pakottivat kodinomistajat pakollisiin tilauksiin, pilvestä riippuvaan viiveeseen ja tunkeilevaan telemetrian seurantaan. Kun internetyhteytesi menee poikki, olohuoneen kytkimesi ei pitäisi lakata toimimasta. Rakensimme NEXUSin, koska uskomme, että kotisi on turvapaikkasi: pohjapiirroksesi, kameratilasi ja päivittäiset perherutiinisi kuuluvat ehdottomasti vain omaan laitteistoon."
     },
     "pillars": [

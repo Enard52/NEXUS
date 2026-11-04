@@ -247,7 +247,7 @@ export const es = {
         "Sí. NEXUS está construido sobre una arquitectura estrictamente local. Tus dispositivos, habitaciones, escenas y telemetría de sensores se procesan directamente en tu propio hardware doméstico. Incluso durante cortes de internet, todos los controles locales, la iluminación y las automatizaciones continúan funcionando sin problemas y sin latencia. Iniciar sesión de forma segura sincroniza tus configuraciones en todas tus pantallas. ¿Necesito instalar NEXUS o se ejecuta en el navegador?"
       ],
       [
-        "Do I need to install NEXUS, or does it run in the browser?",
+        "¿Necesito instalar NEXUS o funciona en el navegador?",
         "Instale el programa de escritorio (Windows o Linux) o la aplicación de Android. NEXUS no se ofrece como aplicación de navegador. Los comandos del dispositivo se envían a través de su propia red local. Shelly, Philips Hue, ESPHome, Tasmota, WLED y Home Assistant utilizan HTTP local en el programa de escritorio y en Android. TP-Link Kasa y Yeelight necesitan TCP directo, por lo que funcionan en el programa de escritorio. Este sitio es para la cuenta, descargas y facturación."
       ],
       [
@@ -275,7 +275,7 @@ export const es = {
         "Sí, completamente sin complicaciones y sin compromisos. Puedes cancelar con un solo clic en cualquier momento: desde la configuración de Cuenta y Facturación en la aplicación, a través de nuestro sitio web, o directamente desde el enlace del pedido en tu recibo de correo electrónico de facturación. Tus beneficios premium permanecen activos hasta el final de tu ciclo de facturación sin cargos futuros. ¿Puedo controlar mi hogar cuando estoy fuera?"
       ],
       [
-        "Can I control my home when I am away?",
+        "¿Puedo controlar mi casa cuando estoy fuera?",
         "No a través de una nube NEXUS: NEXUS se comunica directamente con tus dispositivos en tu red doméstica y no tiene un relé. Para acceder desde fuera, conecta tu teléfono o portátil a la red doméstica usando una VPN como Tailscale (router de subred) o WireGuard en tu router; NEXUS entonces funciona exactamente como en casa. NEXUS aún no tiene una configuración de dirección de hub, por lo que la VPN debe hacer que tu rango de direcciones local sea accesible, y la búsqueda de nuevos dispositivos solo funciona en la red doméstica. Nunca expongas un dispositivo a internet mediante el reenvío de puertos. La guía paso a paso está en docs/REMOTE-ACCESS.md en el repositorio."
       ],
       [
@@ -292,10 +292,10 @@ export const es = {
       ],
       [
         "¿Puedo hacer una copia de seguridad de mis configuraciones y trasladarlas a otro dispositivo? Sí. Configuraciones tiene una sección de copia de seguridad donde puedes exportar tus configuraciones y automatizaciones a un archivo JSON e importarlo en otro dispositivo o después de una reinstalación. Las contraseñas, tokens y claves locales se eliminan de la lista de dispositivos emparejados en el archivo, así que vuelve a ingresarlos después de restaurar. Mantén el archivo de copia de seguridad privado. ¿Puedo exportar mis datos de energía?",
-        "Yes. Settings has a backup section where you can export your settings and automations to a JSON file and import it on another device or after a reinstall. Passwords, tokens and local keys are stripped from the paired device list in the file, so re-enter them after restoring. Keep the backup file private."
+        "Sí. Ajustes tiene una sección de copia de seguridad donde puedes exportar tus ajustes y automatizaciones a un archivo JSON e importarlo en otro dispositivo o tras una reinstalación. Las contraseñas, los tokens y las claves locales se eliminan de la lista de dispositivos emparejados del archivo, así que vuelve a introducirlos tras restaurar. Mantén el archivo de copia privado."
       ],
       [
-        "Can I export my energy data?",
+        "¿Puedo exportar mis datos de energía?",
         "Sí. La página de Energía puede exportar las últimas lecturas de energía real de sus dispositivos como un archivo CSV o JSON. NEXUS solo tiene datos de dispositivos que realmente reportan energía; sin ninguno emparejado, no hay nada que exportar."
       ],
       [

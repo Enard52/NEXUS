@@ -114,7 +114,7 @@ export const ru = {
     currencyNote: "Цены в USD",
     plans: [
       {
-        name: "Free",
+        name: "Бесплатно",
         price: "$0",
         period: "навсегда",
         features: [
@@ -148,8 +148,8 @@ export const ru = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Семейный",
+        price: "Бесплатно",
         period: "для всей семьи",
         badge: "Весь дом",
         features: [

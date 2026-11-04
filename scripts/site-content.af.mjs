@@ -114,7 +114,7 @@ export const af = {
     currencyNote: "Pryse in USD",
     plans: [
       {
-        name: "Free",
+        name: "Gratis",
         price: "$0",
         period: "vir ewig",
         features: [
@@ -148,8 +148,8 @@ export const af = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "Gesin",
+        price: "Gratis",
         period: "vir die hele gesin",
         badge: "Hele huis",
         features: [

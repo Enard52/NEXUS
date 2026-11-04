@@ -102,7 +102,7 @@ export const fa = {
       ],
       [
         "شبکه محلی، بدون حساب یا کلید — برنامه رومیزی",
-        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (DIY mode)", "Wake-on-LAN"],
+        ["TP-Link Kasa", "Yeelight", "WiZ", "Sonoff (حالت DIY)", "Wake-on-LAN"],
       ],
     ],
     more: "چیزی کم است؟ درخواست اتصال‌دهنده بدهید",
@@ -114,7 +114,7 @@ export const fa = {
     currencyNote: "قیمت‌ها به دلار آمریکا",
     plans: [
       {
-        name: "Free",
+        name: "رایگان",
         price: "$0",
         period: "برای همیشه",
         features: [
@@ -148,8 +148,8 @@ export const fa = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "خانواده",
+        price: "رایگان",
         period: "برای کل خانواده",
         badge: "کل خانه",
         features: [

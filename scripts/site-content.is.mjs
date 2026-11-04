@@ -255,7 +255,7 @@ export const is = {
         "Grunnstýring snjallheimilis—ótakmarkaðar tæki, herbergi, sjálfvirkni án nettengingar og staðbundnir skjáborð—er ókeypis. NEXUS+ inniheldur allt í Free, NEXUS AI fyrir senur og spurningar á venjulegu máli, 2.000 svör á mánuði, háþróað tengingar fyrir að bæta við Home Assistant tækjum, og eitt aðgang fyrir öll tæki, með 3 daga mánaðarlegu eða 7 daga árlegu prufu. Tækið skipanir keyra enn staðbundið. Heimilis hlutverk eru innifalin með heimilinu þínu án aukakostnaðar. Hvaða aðgangi tilheyrir NEXUS+ áskriftin mín?"
       ],
       [
-        "Which account does my NEXUS+ subscription belong to?",
+        "Á hvaða reikning er NEXUS+ áskriftin mín skráð?",
         "Netfangið sem notað er við afgreiðslu. Skráðu þig inn á þessum vef eða í appinu áður en þú greiðir: afgreiðsla opnast þá með netfangið í reikningnum þínum fyllt út, og áskriftin birtist á öllum tækjum sem þú skráir þig inn á. NEXUS+ er ekki hægt að kaupa án reiknings. Ef þú greiðir með öðru netfangi, þá er áskriftin geymd undir því netfangi og mun ekki birtast á reikningnum þínum fyrr en þú skráir þig inn með því."
       ],
       [
@@ -267,7 +267,7 @@ export const is = {
         "NEXUS talar hvert tæki með eigin staðbundna samskiptareglum: Shelly (Gen1 og Gen2+), Tasmota, WLED, ESPHome, Philips Hue og Home Assistant yfir staðbundnu HTTP á hverri vettvang, auk TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY hamur) og Wake-on-LAN yfir staðnetið í skjáborðsforritinu, án reiknings eða lykils. Allt annað — Matter eða Zigbee tæki — tengist í gegnum þinn eigin Home Assistant netþjón, sem NEXUS tekur sem einn staðbundinn miðstöð. Staðbundin IP-uppgötvun tengir tæki samstundis, án ský þjónustu seljanda á milli. Hvernig eru öryggismyndavélar og skynjarar samþætt?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Hvernig eru öryggismyndavélar og skynjarar samþættir?",
         "NEXUS sameinar öryggismyndavélar þínar, hreyfiskynjara og inngangs-skynjara í miðlægt öryggisstjórnborð. Þú getur sjálfvirkt stillt persónuverndarham, virkjað eftirlitsvenjur þegar þú ferð úr húsi og séð alla hreyfingu eða snertiatburð í forritinu – auk á tilkynningarrásum sem þú virkjar (kerfistilkynningar, ntfy, Telegram eða eigin webhook)."
       ],
       [
@@ -305,7 +305,7 @@ export const is = {
     ]
   },
   "about": {
-    "title": "About NEXUS",
+    "title": "Um NEXUS",
     "lead": "Sjálfstætt, staðbundið snjallheimilisvettvangur hannaður fyrir hraða, fullkomið einkalíf og raunverulegan eignarhald á vélbúnaði. Með því að tala beint við tækin þín yfir eigið heimilisnet fjarlægir NEXUS skýja-tenginguna að eilífu.",
     "manifesto": {
       "heading": "Af hverju við byggðum NEXUS",
