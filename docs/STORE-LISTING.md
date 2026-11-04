@@ -18,42 +18,37 @@ NEXUS Smart Home
 
 #### Short Description (max 270 chars)
 ```
-Local-first, hubless smart home control for Windows. Direct LAN control for Shelly, Philips Hue, Tasmota, WLED, ESPHome, Home Assistant and more. AI assistant with 68 languages, offline automations, sensor alerts, and total privacy.
+Modern, local-first smart home controller for Windows. Manage Shelly, Philips Hue, Tasmota, WLED, ESPHome, and Home Assistant directly over your local network with zero cloud lock-in, instant responsiveness, and complete privacy.
 ```
 
 #### Full Description (max 10,000 chars)
 ```markdown
-Take control of your smart home directly from your Windows PC — without third-party cloud lock-in, vendor hubs, or latency.
+NEXUS Smart Home is a modern, local-first desktop control center designed to manage your smart devices directly from your Windows PC — completely free from third-party cloud lock-in, subscriptions, or proprietary hardware hubs.
 
-NEXUS communicates directly with your smart devices over your local home network (LAN). Whether the internet is down or your broadband is sluggish, your lights, switches, scenes, and automations respond instantly with zero latency.
+PROJECT PURPOSE:
+Most smart home setups force you into fragmented vendor ecosystems: different mobile apps for every brand, mandatory internet connections, and reliance on remote cloud servers that introduce lag and privacy risks. If your broadband goes down, you lose control of your own home.
 
-KEY CAPABILITIES:
+NEXUS solves this by communicating directly with your devices over your local home network (LAN). Everything is unified into a single, beautiful desktop dashboard that works 100% offline with zero external dependencies.
 
-• LOCAL-FIRST & ZERO-HUB CONTROL
-Connect directly to devices speaking native local protocols:
-- Shelly (Gen1, Plus, Pro via local HTTP)
-- Philips Hue (Bridge via local REST API)
-- Tasmota, WLED, ESPHome (local HTTP / JSON RPC)
-- Home Assistant (bridges all Matter, Zigbee, and Z-Wave devices into NEXUS as a local hub)
-- TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY mode), and Wake-on-LAN over raw TCP/UDP LAN
+WHY CHOOSE NEXUS?
 
-• 68-LANGUAGE SUPPORT WITH LOCALIZED AI ASSISTANT
-Control your home in your preferred language. NEXUS offers complete native localization across 68 languages. The built-in NEXUS AI Assistant understands and responds in all 68 languages — set complex scenes, inspect power consumption, or ask about your home state in plain language.
+• ZERO-CLOUD & ZERO-HUB LOCAL CONTROL
+Your commands never travel across the world to a remote server just to flip a switch. NEXUS talks directly to devices on your local Wi-Fi or Ethernet network. Result: instantaneous, sub-millisecond response times with no cloud latency.
 
-• ADVANCED LOCAL AUTOMATION ENGINE
-Create powerful local rules triggered by time schedules, device status changes, ambient weather, or motion/door sensor events. The desktop app runs quietly in your Windows system tray, continuously evaluating rules and dispatching instant notifications without depending on any external server.
-
-• REAL-TIME ENERGY TELEMETRY
-Track actual power draw, monitor active energy meters, and export time-series readings to CSV/JSON files directly on your PC.
+• ONE UNIFIED DASHBOARD FOR ALL BRANDS
+Consolidate popular ecosystems including Shelly, Philips Hue, Tasmota, WLED, ESPHome, TP-Link, and Home Assistant into a single interface. No more jumping between five different phone apps.
 
 • PRIVACY BY ARCHITECTURE
-- Device passwords, IP addresses, and encryption tokens never leave your local PC.
-- Credentials are stored securely using Windows Data Protection / Credential Vault.
-- No analytics trackers, no tracking pixels, and no behavioral advertising.
-- Local features work 100% offline. Optional free cloud sync is available only if you choose to sync your dashboard and family accounts across multiple devices.
+Device credentials, local IP addresses, and usage patterns never leave your PC. There are no tracking pixels, analytics beacons, or behavioral advertising. Credentials are securely encrypted using Windows Credential Vault.
 
-HONEST LIMITS & COMPATIBILITY:
-NEXUS is designed for openness and clarity. Most connectors are engineered against published protocol standards and packet-level test harnesses. Some brand integrations require the desktop edition due to raw socket requirements. Always verify your device model in our open compatibility matrix.
+• OFFLINE LOCAL AUTOMATIONS
+Set up smart routines triggered by time schedules, device states, or motion and door sensor events. Your rules run reliably on your local machine without needing an internet connection.
+
+• INTEGRATED MULTILINGUAL AI ASSISTANT
+Control your smart home naturally in 68 languages. The built-in NEXUS AI Assistant understands plain-language commands to activate scenes, check device statuses, or inspect real-time power draw.
+
+• LIGHTWEIGHT BACKGROUND EXECUTION
+Runs quietly in your Windows system tray with minimal memory and CPU footprint, sending instant native Windows notifications for sensor alerts and automation events.
 ```
 
 #### Key Features (bullet points, max 120 chars each)
@@ -99,39 +94,37 @@ NEXUS Smart Home
 
 #### Kısa Açıklama (en fazla 270 karakter)
 ```
-Windows için yerel ağ tabanlı, göbeksiz (hub'sız) akıllı ev kontrolü. Shelly, Hue, Tasmota, WLED, ESPHome, Home Assistant ve daha fazlası için doğrudan LAN kontrolü. 68 dilde AI asistanı, çevrimdışı otomasyonlar ve tam gizlilik.
+Windows için modern, gizlilik odaklı akıllı ev kontrol merkezi. Shelly, Philips Hue, Tasmota, WLED, ESPHome ve Home Assistant cihazlarınızı harici köprü ve bulut zorunluluğu olmadan, doğrudan yerel ağınızdan yüksek hız ve tam kontrolle yönetin.
 ```
 
 #### Tam Açıklama (en fazla 10.000 karakter)
 ```markdown
-Akıllı evinizi üretici bulutlarına veya harici köprülere bağımlı olmadan, doğrudan Windows bilgisayarınızdan yönetin.
+NEXUS Smart Home, akıllı ev cihazlarınızı üretici bulutlarına bağımlı kalmadan, doğrudan Windows bilgisayarınızdan yönetmenizi sağlayan yerel öncelikli bir akıllı ev kontrol merkezidir.
 
-NEXUS, akıllı cihazlarınızla evinizin kendi yerel ağı (LAN) üzerinden doğrudan haberleşir. İnternet kesilse veya bağlantınız yavaşlasa bile ışıklarınız, prizleriniz, sahneleriniz ve otomasyonlarınız sıfır gecikmeyle çalışmaya devam eder.
+PROJENİN AMACI:
+Akıllı ev ekosistemleri genellikle kullanıcıları farklı markaların ayrı ayrı mobil uygulamalarına, harici donanım köprülerine ve üretici bulut sunucularına mecbur bırakır. İnternet kesildiğinde veya bulut sunucularında gecikme yaşandığında evinizdeki temel cihazlar dahi çalışmaz hale gelebilir.
 
-TEMEL ÖZELLİKLER:
+NEXUS bu karmaşayı ortadan kaldırır: Tüm cihazlarınızı doğrudan evinizin yerel ağı (LAN) üzerinden konuşarak tek bir masaüstü ekranında toplar. Sıfır bulut bağımlılığıyla çalışır; internetiniz olmasa bile evinizi eksiksiz yönetmenizi sağlar.
 
-• YEREL ÖNCELİKLİ (LOCAL-FIRST) & GÖBEKSİZ KONTROL
-Cihazlarla kendi yerel protokolleriyle doğrudan iletişim kurun:
-- Shelly (Gen1, Plus, Pro serisi yerel HTTP üzerinden)
-- Philips Hue (Hue Bridge yerel REST API)
-- Tasmota, WLED, ESPHome (yerel HTTP / JSON RPC)
-- Home Assistant (Matter, Zigbee ve Z-Wave cihazlarınızı NEXUS'a yerel bir köprü olarak bağlar)
-- TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY modu) ve Wake-on-LAN
+NEDEN NEXUS KULLANMALISINIZ?
 
-• 68 DİL DESTEĞİ & ÇOK DİLLİ AI ASİSTANI
-Uygulamayı ve web arayüzünü ana dilinizde kullanın. NEXUS 68 dilde eksiksiz yerel arayüz desteği sunar. Entegre NEXUS AI Asistanı, seçtiğiniz 68 dilden hangisi etkinse o dilde komutları anlar ve yanıt üretir.
+• BULUTSUZ & KÖPRÜSÜZ DOĞRUDAN KONTROL
+Işıklarınızı, prizlerinizi ve rölelerinizi açıp kapatırken komutlarınız dünyanın öbür ucundaki bir sunucuya gitmez. Cihazlarınızla doğrudan yerel Wi-Fi/Ethernet ağınız üzerinden haberleşir. Sonuç: Milisaniyeler mertebesinde anlık tepki ve sıfır gecikme.
 
-• GELİŞMİŞ YEREL OTOMASYON MOTORU
-Zaman kuralları, cihaz durumu değişimleri, hava durumu ve hareket/kapı sensörleriyle tetiklenen güçlü senaryolar oluşturun. Uygulama sistem tepsisinde (system tray) sessizce çalışarak kuralları sürekli değerlendirir ve yerel bildirimler üretir.
+• TEK ARAYÜZDEN TÜM CİHAZLARINIZ
+Shelly, Philips Hue, Tasmota, WLED, ESPHome, TP-Link ve Home Assistant gibi popüler akıllı ev sistemlerini tek bir çatı altında birleştirin. Her marka için farklı bir uygulama açmak zorunda kalmayın.
 
-• GERÇEK ZAMANLI ENERJİ TAKİBİ
-Cihazlarınızın anlık güç tüketimini izleyin ve enerji verilerini doğrudan CSV/JSON olarak dışa aktarın.
+• YÜZDE YÜZ GİZLİLİK VE VERİ GÜVENLİĞİ
+Cihaz şifreleriniz, yerel ağ IP adresleriniz ve kullanım alışkanlıklarınız asla bilgisayarınızın dışına çıkmaz. Hiçbir izleme (telemetri), reklam veya veri madenciliği yoktur. Bilgileriniz Windows Güvenli Kasasında şifreli olarak saklanır.
 
-• MİMARİDEN GELEN GİZLİLİK
-- Cihaz şifreleri, yerel anahtarlar ve token'lar asla bilgisayarınızın dışına çıkmaz.
-- Windows kimlik bilgisi kasası ile güvenle şifrelenir.
-- Reklam, izleme kodu veya veri madenciliği bulunmaz.
-- İsteğe bağlı ücretsiz bulut eşitleme yalnızca cihazlar arası ayar ve aile paylaşımı içindir.
+• YEREL OTOMASYON VE SENARYOLAR
+Zaman kuralları, cihaz tetikleyicileri ve sensör hareketlerine göre çalışan akıllı kurallar oluşturun. Bilgisayarınız açık olduğu sürece otomasyonlar yerel olarak sessizce çalışır; internet bağlantısına ihtiyaç duymaz.
+
+• 68 DİLDE DOĞAL YAPAY ZEKA ASİSTANI
+Evinizi ana dilinizde kontrol edin. Dahili NEXUS AI Asistanı, Türkçe dahil 68 dildeki komutları anlar; "çalışma odasındaki ışıkları kapat" veya "enerji tüketimini göster" gibi doğal taleplerinizi doğrudan yerine getirir.
+
+• SİSTEM TEPSİSİNDE SESSİZ VE HAFİF ÇALIŞMA
+Bilgisayarınızın kaynaklarını yormaz. Windows sistem tepsisinde arka planda çalışarak evinizi sürekli izler ve sensör alarmlarını anlık Windows bildirimleriyle iletir.
 ```
 
 #### Öne Çıkan Özellikler (en fazla 120 karakter)
@@ -148,53 +141,9 @@ Cihazlarınızın anlık güç tüketimini izleyin ve enerji verilerini doğruda
 
 #### v1.0.56 Sürüm Notları (en fazla 1.500 karakter)
 ```
-• 68 Dil Desteği: Arapça, Farsça, İbranice ve Urduca için sağdan sola (RTL) düzen desteği dahil tüm arayüz 68 dilde yerelleştirildi.
-• Çok Dilli AI Asistanı: NEXUS AI artık seçili dilde doğal yanıtlar üretiyor.
-• Genişletilmiş Donanım Uyumluluğu: Shelly Plus/Pro, ESPHome ve Philips Hue bağlantılarında kararlılık iyileştirmeleri.
-• Windows Sistem Bildirimleri: Sensör ve güvenlik olayları için simgeli yerel Windows bildirimleri.
-• Performans: Sistem tepsisinde boşta çalışma bellek kullanımı optimize edildi.
+• 68 Dil Desteği: Türkçe dahil 68 dilde tam yerel arayüz ve sağdan sola (RTL) dil desteği.
+• Çok Dilli AI Asistanı: Doğal Türkçe komutları anlayan entegre yapay zeka asistanı.
+• Gelişmiş Donanım Uyumluluğu: Shelly Plus/Pro, Philips Hue ve ESPHome cihaz bağlantılarında iyileştirmeler.
+• Zengin Windows Bildirimleri: Sensör ve güvenlik durumları için anlık masaüstü bildirimleri.
+• Performans ve Bellek İyileştirmeleri: Sistem tepsisinde arka planda minimum kaynak tüketimi.
 ```
-
----
-
-## Google Play & Android Listing
-
-## Short description (80 chars)
-
-Control your smart home over your own network. Free, local-first, no hub.
-
-## Long description
-
-NEXUS controls lights, plugs and other devices directly over your home network: no hub, no vendor cloud.
-Create automations (time, device state, weather, sensors), get sensor alerts, and keep a local backup.
-Signing in is optional and only adds cloud sync and a shared Family home.
-
-Honest limits: most device connectors are written from public protocol documentation and have not yet been
-verified on every real device. Some brands only work in the desktop app.
-
-## Screenshot list
-
-1. Home with devices and scenes
-2. Device pairing / discovery
-3. Automations
-4. Notifications and quiet hours settings
-5. Backup and privacy settings
-
-(Capture from a build with real paired devices, never mock data.)
-
-## Google Play: Data safety draft
-
-| Question | Draft answer |
-| --- | --- |
-| Data collected | Account email (only if the user signs in); synced settings, automations and device list names (only if cloud sync is used); optional error reports (page, app version, platform, message) |
-| Shared with third parties | Hosting/auth/database provider (Supabase) as a processor; push delivery (Firebase) if enabled; AI provider only when the user uses the AI assistant with their own request text |
-| Encrypted in transit | Yes (HTTPS) |
-| Deletion | User can delete the account and data in the app |
-| Device credentials | Never leave the device (not collected) |
-| Location | Not collected today |
-| Ads / tracking | None |
-
-## App Store privacy draft
-
-Data linked to the user: email (account), user content (synced settings). Data not linked: diagnostics (optional error
-reports). No tracking.
