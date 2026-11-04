@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Pistokkeet & kytkimet", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "Suunnittele", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/kk", // EN: $7.50/month
     "/month": "/kuukausi", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 p\u00e4iv\u00e4\u00e4 ilmaiseksi, sitten vain $89.99 vuodessa. Peruuta milloin tahansa.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "Opas", // EN: Guide
     "Ses ve Hareket": "\u00c4\u00e4ni & liike", // EN: Sound & Motion

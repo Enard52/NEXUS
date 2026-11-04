@@ -1153,7 +1153,7 @@ window.NEXUS_LANG = {
     "Foto\u011fraf kald\u0131r\u0131lamad\u0131.": "Gailu baten egoera aldatzen denean eszenarioak abiarazi", // EN: Couldn't remove the photo.
     "Cihaz durumu de\u011fi\u015fti\u011finde senaryolar\u0131 tetikle": "Gailua gehitu", // EN: Trigger scenarios when a device's status changes
     "Cihaz ekle": "Panelak hemen agertzen dira gailuak gehitzen dituzun heinean", // EN: Add device
-    "Cihaz ekledik\u00e7e paneller burada olu\u015fur": "", // EN: Panels appear here as you add devices
+    "Cihaz ekledik\u00e7e paneller burada olu\u015fur": "Gailuak gehitu ahala, panelak hemen agertuko dira", // EN: Panels appear here as you add devices
     "Cihaz ekledik\u00e7e tasarrufun burada g\u00f6r\u00fcn\u00fcr.": "Gordailuak hemen agertzen dira gailuak gehitzen dituzunean.", // EN: Your savings appear here as you add devices.
     "Cihaz ekleme merkezi": "Gailu zentroa", // EN: Device center
     "Cihaz eklenince h\u0131zl\u0131 olu\u015fturma \u00f6nerileri burada g\u00f6r\u00fcnecek.": "Sortze azkarreko gomendioak hemen agertuko dira gailuak gehitzen dituzunean.", // EN: Quick creation suggestions will appear here once you add devices.
@@ -2316,7 +2316,7 @@ window.NEXUS_LANG = {
     "Sistem konumunu alg\u0131lat veya elle d\u00fczenle.": "Ez da argiztapen gailurik aurkitu sisteman. Mesedez, gehitu gailu bat eta saiatu berriro.", // EN: Detect the system location or edit it manually.
     "Sistemde ekli hi\u00e7bir ayd\u0131nlatma cihaz\u0131 bulunamad\u0131. L\u00fctfen cihaz ekleyip tekrar deneyin.": "Puntuazioa", // EN: No lighting devices were found in the system. Please add a device and try again.
     "Skor": "Txat Historiala", // EN: Score
-    "Sohbet Ge\u00e7mi\u015fi": "", // EN: Chat History
+    "Sohbet Ge\u00e7mi\u015fi": "Txataren historia", // EN: Chat History
     "Sohbet Ge\u00e7mi\u015fini Sakla": "Txat Historioa Gorde", // EN: Keep Chat History
     "Sohbet ge\u00e7mi\u015fin telefon ve web aras\u0131nda senkronize": "Zure txat historia telefonoaren eta webaren artean sinkronizatzen da", // EN: Your chat history syncs between phone and web
     "Sohbeti \u015eimdi Dene": "Saiatu Orain Txateatzen", // EN: Try the Chat Now
@@ -2497,7 +2497,7 @@ window.NEXUS_LANG = {
     "T\u00fcm Uyumlu Cihazlar": "Kudeatu zure gailu guztiak tokian batean, zure ahotsarekin edo eszenario automatikoekin.", // EN: All Compatible Devices
     "T\u00fcm cihazlar\u0131n\u0131z\u0131 tek bir merkezden, sesinizle veya otomatik senaryolarla y\u00f6netin.": "Sortu etxea toki guztietan kontrolatzen duen argiztapen panela gelak gelaz. Gehitu piztu/itzali, distira eta kolore-tenperatura kontrolak gela bakoitzeko. Gehitu prest dauden ehunekotan azkarrak eta guztiak piztu/guztiak itzali ekintzak.", // EN: Manage all your devices from one place, with your voice or with automatic scenarios.
     "T\u00fcm evi oda bazl\u0131 kontrol eden bir ak\u0131ll\u0131 \u0131\u015f\u0131k paneli olu\u015ftur. Her oda i\u00e7in ac/kapat, parlakl\u0131k ve renk s\u0131cakl\u0131\u011f\u0131 kontrolleri olsun. Hemen kullan\u0131labilecek h\u0131zl\u0131 yuzdeler ve tumunu ac/tumunu kapat aksiyonlar\u0131 ekle.": "Pribatutasun babes guztiak itzalita daude.", // EN: Create a smart lighting panel that controls the whole home room by room. Include on/off, brightness and color temperature controls for each room. Add ready-to-use quick percentages and all on/all off actions.
-    "T\u00fcm gizlilik korumalar\u0131 kapal\u0131.": "", // EN: All privacy protections are off.
+    "T\u00fcm gizlilik korumalar\u0131 kapal\u0131.": "Pribatutasun-babes guztiak desgaituta daude.", // EN: All privacy protections are off.
     "T\u00fcm kameralar": "Jatingailu guztiak", // EN: All cameras
     "T\u00fcm kap\u0131lar a\u00e7\u0131k": "Ate guztiak zabalik", // EN: All doors open
     "T\u00fcm uyar\u0131lar\u0131 tek bir yerden y\u00f6netin": "Kudeatu alerta guztiak toki bakar batetik", // EN: Manage all alerts from one place
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "kidea", // EN: online
     "\u00fcye": "Maila Ideala", // EN: member
     "\u0130deal Seviye": "Bi-Urratseko Egiaztapena", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "Bi urratseko egiaztapena", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "Biko-lasterketa kargatzeko geltokia", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Biko-lasterketa kargatzeko geltokia (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "Bi-kanpai", // EN: Two-gang
@@ -3261,7 +3261,7 @@ window.NEXUS_LANG = {
     " A command was sent over your local network to 1 device.": "Agindua zure tokiko sarean bidali zen 1 gailura.", // EN: A command was sent over your local network to 1 device.
     "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 Agindua ez da iritsi {0} \u2014 ziurtatu piztuta dagoela eta Wi-Fi sare berean konektatuta dagoela.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
     "You have {0} devices at home.": "{0} gailu dituzu etxean.", // EN: You have {0} devices at home.
-    "You have {0} device at home.": "", // EN: You have {0} device at home.
+    "You have {0} device at home.": "Gailu {0} duzu etxean.", // EN: You have {0} device at home.
     "Right now these are on: {0}.": "Orain hau da piztuta: {0}.", // EN: Right now these are on: {0}.
     " and a few more": "eta beste batzuk", // EN: and a few more
     "Nothing is on right now, the house is quiet.": "Orain ez dago ezer piztuta, etxea isilik dago.", // EN: Nothing is on right now, the house is quiet.
@@ -3283,7 +3283,7 @@ window.NEXUS_LANG = {
     "Turned off": "Itzalia", // EN: Turned off
     "The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.": "{0} eszenak ez ditu zure parekatutako gailurik aldatzen, beraz ez dut gorde. Saiatu berriro gailu egokia gehitu ondoren.", // EN: The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.
     "I set up the \"{0}\" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop).": "\"{0}\" automatizazioa konfiguratu dut: {1} exekutatzen da eta {2} gailuak doitu. Automatizazioak aplikazioa irekita dagoenean exekutatzen dira (mahaigainetik ere, tray-etik).", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop).
-    "I set up the \"{0}\" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).": "", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).
+    "I set up the \"{0}\" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).": "\"{0}\" automatizazioa konfiguratu dut: {1} exekutatzen da eta {2} gailu doitzen du. Automatizazioak aplikazioa irekita dagoen bitartean exekutatzen dira (mahaigainean erretilutik ere bai).", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).
     "I added \"{0}\" to Tap to Run; one tap adjusts {1} devices.": "\"{0}\" Gehitu dut Tap to Run-era; tapatze batek {1} gailu egokitzen ditu.", // EN: I added "{0}" to Tap to Run; one tap adjusts {1} devices.
     "I added \"{0}\" to Tap to Run; one tap adjusts {1} device.": "\"{0}\" Gehitu dut Tap to Run-era; tapatze batek {1} gailu egokitzen du.", // EN: I added "{0}" to Tap to Run; one tap adjusts {1} device.
     "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\".": "Hori ez dirudi gailu agindu bat. Saiatu honakoarekin: \"birus-gela argia itzali\" edo \"AC 22ra ezarri\".", // EN: That does not look like a device command. Try: "turn off the living room light" or "set the AC to 22".

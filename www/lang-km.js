@@ -2,49 +2,49 @@
 /* Keep {0}, {name} and HTML tags exactly as in the English reference. See docs/TRANSLATING.md. */
 window.NEXUS_LANG = {
   text: {
-    "Fran\u00e7ais": "", // EN: French
-    "Test bildirimi": "", // EN: Test notification
-    "NEXUS kanal denemesi \u2014 bunu g\u00f6r\u00fcyorsan kanal \u00e7al\u0131\u015f\u0131yor.": "", // EN: NEXUS channel test — if you see this, the channel is working.
-    "E-posta Adresini De\u011fi\u015ftir": "", // EN: Change Email Address
-    "Hesab\u0131n\u0131n giri\u015f adresi": "", // EN: The address you sign in with
-    "Mevcut adres: \u2014": "", // EN: Current address: —
-    "Do\u011frulama Ba\u011flant\u0131s\u0131 G\u00f6nder": "", // EN: Send Verification Link
-    "Do\u011frulama ba\u011flant\u0131s\u0131 yeni adresine gider; ba\u011flant\u0131y\u0131 onaylayana kadar giri\u015fte eski adresin ge\u00e7erli kal\u0131r.": "", // EN: The verification link goes to your new address; your old address stays valid for sign-in until you confirm it.
-    "Yeni e-posta adresi": "", // EN: New email address
-    "Android": "", // EN: Android
-    "Add a device first": "", // EN: Add a device first
-    "AQI": "", // EN: AQI
-    "NEXUS+": "", // EN: NEXUS+
-    "NEXUS logo": "", // EN: NEXUS logo
-    "NEXUS AI": "", // EN: NEXUS AI
-    "Plus": "", // EN: Plus
-    "Great to see you again!": "", // EN: Great to see you again!
-    "How can I help you?": "", // EN: How can I help you?
-    "Photo from gallery": "", // EN: Photo from gallery
-    "Take photo": "", // EN: Take photo
-    "Normal": "", // EN: Normal
-    "Turbo": "", // EN: Turbo
-    "READY": "", // EN: READY
-    "Enerji Stratejileri": "", // EN: Energy Strategies
-    "HomeKit Bridge": "", // EN: HomeKit Bridge
-    "Webhook": "", // EN: Webhook
-    "Telegram": "", // EN: Telegram
-    "Thermostat Switch": "", // EN: Thermostat Switch
-    "\u00a9 OpenStreetMap": "", // EN: © OpenStreetMap
-    "Cinema Room": "", // EN: Cinema Room
-    "Priz ve Anahtar": "", // EN: Plugs & Switches
-    "NEXUS AI Plus": "", // EN: NEXUS AI Plus
-    "Plan": "", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
-    "/month": "", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
-    "CarPlay": "", // EN: CarPlay
-    "Rehber": "", // EN: Guide
-    "Ses ve Hareket": "", // EN: Sound & Motion
-    "Uygulama sesleri, titre\u015fim ve hareketli efektler.": "", // EN: App sounds, vibration and motion effects.
-    "Ses Efektleri": "", // EN: Sound Effects
-    "Titre\u015fim": "", // EN: Vibration
-    "Animasyonlar": "", // EN: Animations
+    "Fran\u00e7ais": "\u1794\u17b6\u179a\u17b6\u17c6\u1784", // EN: French
+    "Test bildirimi": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u179f\u17b6\u1780\u179b\u17d2\u1794\u1784", // EN: Test notification
+    "NEXUS kanal denemesi \u2014 bunu g\u00f6r\u00fcyorsan kanal \u00e7al\u0131\u015f\u0131yor.": "\u1780\u17b6\u179a\u179f\u17b6\u1780\u179b\u17d2\u1794\u1784\u1794\u178e\u17d2\u178f\u17b6\u1789 NEXUS \u2014 \u1794\u17d2\u179a\u179f\u17b7\u1793\u1794\u17be\u17a2\u17d2\u1793\u1780\u1783\u17be\u1789\u179f\u17b6\u179a\u1793\u17c1\u17c7 \u1794\u178e\u17d2\u178f\u17b6\u1789\u1780\u17c6\u1796\u17bb\u1784\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u17d4", // EN: NEXUS channel test — if you see this, the channel is working.
+    "E-posta Adresini De\u011fi\u015ftir": "\u1794\u17d2\u178f\u17bc\u179a\u17a2\u17b6\u179f\u1799\u178a\u17d2\u178b\u17b6\u1793\u17a2\u17ca\u17b8\u1798\u17c2\u179b", // EN: Change Email Address
+    "Hesab\u0131n\u0131n giri\u015f adresi": "\u17a2\u17b6\u179f\u1799\u178a\u17d2\u178b\u17b6\u1793\u178a\u17c2\u179b\u17a2\u17d2\u1793\u1780\u1794\u17d2\u179a\u17be\u178a\u17be\u1798\u17d2\u1794\u17b8\u1785\u17bc\u179b\u1782\u178e\u1793\u17b8", // EN: The address you sign in with
+    "Mevcut adres: \u2014": "\u17a2\u17b6\u179f\u1799\u178a\u17d2\u178b\u17b6\u1793\u1794\u1785\u17d2\u1785\u17bb\u1794\u17d2\u1794\u1793\u17d2\u1793: \u2014", // EN: Current address: —
+    "Do\u011frulama Ba\u011flant\u0131s\u0131 G\u00f6nder": "\u1795\u17d2\u1789\u17be\u178f\u17c6\u178e\u1795\u17d2\u1791\u17c0\u1784\u1795\u17d2\u1791\u17b6\u178f\u17cb", // EN: Send Verification Link
+    "Do\u011frulama ba\u011flant\u0131s\u0131 yeni adresine gider; ba\u011flant\u0131y\u0131 onaylayana kadar giri\u015fte eski adresin ge\u00e7erli kal\u0131r.": "\u178f\u17c6\u178e\u1795\u17d2\u1791\u17c0\u1784\u1795\u17d2\u1791\u17b6\u178f\u17cb\u1793\u17b9\u1784\u178f\u17d2\u179a\u17bc\u179c\u1795\u17d2\u1789\u17be\u1791\u17c5\u17a2\u17b6\u179f\u1799\u178a\u17d2\u178b\u17b6\u1793\u1790\u17d2\u1798\u17b8\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u17d4 \u17a2\u17b6\u179f\u1799\u178a\u17d2\u178b\u17b6\u1793\u1785\u17b6\u179f\u17cb\u1793\u17c5\u178f\u17c2\u1794\u17d2\u179a\u17be\u1794\u17b6\u1793\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u1785\u17bc\u179b\u1782\u178e\u1793\u17b8 \u179a\u17a0\u17bc\u178f\u178a\u179b\u17cb\u17a2\u17d2\u1793\u1780\u1794\u1789\u17d2\u1787\u17b6\u1780\u17cb\u178f\u17c6\u178e\u1793\u17c4\u17c7\u17d4", // EN: The verification link goes to your new address; your old address stays valid for sign-in until you confirm it.
+    "Yeni e-posta adresi": "\u17a2\u17b6\u179f\u1799\u178a\u17d2\u178b\u17b6\u1793\u17a2\u17ca\u17b8\u1798\u17c2\u179b\u1790\u17d2\u1798\u17b8", // EN: New email address
+    "Android": "Android", // EN: Android
+    "Add a device first": "\u179f\u17bc\u1798\u1794\u1793\u17d2\u1790\u17c2\u1798\u17a7\u1794\u1780\u179a\u178e\u17cd\u1787\u17b6\u1798\u17bb\u1793\u179f\u17b7\u1793", // EN: Add a device first
+    "AQI": "AQI", // EN: AQI
+    "NEXUS+": "NEXUS+", // EN: NEXUS+
+    "NEXUS logo": "\u1793\u17b7\u1798\u17b7\u178f\u17d2\u178f\u179f\u1789\u17d2\u1789\u17b6 NEXUS", // EN: NEXUS logo
+    "NEXUS AI": "NEXUS AI", // EN: NEXUS AI
+    "Plus": "Plus", // EN: Plus
+    "Great to see you again!": "\u179a\u17b8\u1780\u179a\u17b6\u1799\u178a\u17c2\u179b\u1794\u17b6\u1793\u1783\u17be\u1789\u17a2\u17d2\u1793\u1780\u1798\u17d2\u178f\u1784\u1791\u17c0\u178f!", // EN: Great to see you again!
+    "How can I help you?": "\u178f\u17be\u1781\u17d2\u1789\u17bb\u17c6\u17a2\u17b6\u1785\u1787\u17bd\u1799\u17a2\u17d2\u179c\u17b8\u17a2\u17d2\u1793\u1780\u1794\u17b6\u1793?", // EN: How can I help you?
+    "Photo from gallery": "\u179a\u17bc\u1794\u1790\u178f\u1796\u17b8\u179c\u17b7\u1785\u17b7\u178f\u17d2\u179a\u179f\u17b6\u179b", // EN: Photo from gallery
+    "Take photo": "\u1790\u178f\u179a\u17bc\u1794", // EN: Take photo
+    "Normal": "\u1792\u1798\u17d2\u1798\u178f\u17b6", // EN: Normal
+    "Turbo": "Turbo", // EN: Turbo
+    "READY": "\u178f\u17d2\u179a\u17c0\u1798\u179a\u17bd\u1785\u179a\u17b6\u179b\u17cb", // EN: READY
+    "Enerji Stratejileri": "\u1799\u17bb\u1791\u17d2\u1792\u179f\u17b6\u179f\u17d2\u178f\u17d2\u179a\u1790\u17b6\u1798\u1796\u179b", // EN: Energy Strategies
+    "HomeKit Bridge": "HomeKit Bridge", // EN: HomeKit Bridge
+    "Webhook": "Webhook", // EN: Webhook
+    "Telegram": "Telegram", // EN: Telegram
+    "Thermostat Switch": "\u1780\u17bb\u1784\u178f\u17b6\u1780\u17cb\u1791\u17c2\u1798\u17c9\u17bc\u179f\u17d2\u178f\u17b6\u178f", // EN: Thermostat Switch
+    "\u00a9 OpenStreetMap": "\u00a9 OpenStreetMap", // EN: © OpenStreetMap
+    "Cinema Room": "\u1794\u1793\u17d2\u1791\u1794\u17cb\u1797\u17b6\u1796\u1799\u1793\u17d2\u178f", // EN: Cinema Room
+    "Priz ve Anahtar": "\u1796\u17d2\u179a\u17b8\u179f \u1793\u17b7\u1784\u1780\u17bb\u1784\u178f\u17b6\u1780\u17cb", // EN: Plugs & Switches
+    "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
+    "Plan": "\u1782\u1798\u17d2\u179a\u17c4\u1784", // EN: Plan
+    "$7.50/month": "$7.50/\u1781\u17c2", // EN: $7.50/month
+    "/month": "/\u1781\u17c2", // EN: /month
+    "7 days free, then just $89.99 per year. Cancel anytime.": "\u17a5\u178f\u1782\u17b7\u178f\u1790\u17d2\u179b\u17c3 7 \u1790\u17d2\u1784\u17c3 \u1794\u1793\u17d2\u1791\u17b6\u1794\u17cb\u1798\u1780\u178f\u17d2\u179a\u17b9\u1798\u178f\u17c2 $89.99 \u1780\u17d2\u1793\u17bb\u1784\u1798\u17bd\u1799\u1786\u17d2\u1793\u17b6\u17c6\u17d4 \u1794\u17c4\u17c7\u1794\u1784\u17cb\u1794\u17b6\u1793\u1782\u17d2\u179a\u1794\u17cb\u1796\u17c1\u179b\u17d4", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "CarPlay": "CarPlay", // EN: CarPlay
+    "Rehber": "\u1780\u17b6\u179a\u178e\u17c2\u1793\u17b6\u17c6", // EN: Guide
+    "Ses ve Hareket": "\u179f\u17c6\u17a1\u17c1\u1784 \u1793\u17b7\u1784\u1785\u179b\u1793\u17b6", // EN: Sound & Motion
+    "Uygulama sesleri, titre\u015fim ve hareketli efektler.": "\u179f\u17c6\u17a1\u17c1\u1784\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8 \u1780\u17b6\u179a\u1789\u17d0\u179a \u1793\u17b7\u1784\u17a5\u1791\u17d2\u1792\u17b7\u1796\u179b\u1785\u179b\u1793\u17b6\u17d4", // EN: App sounds, vibration and motion effects.
+    "Ses Efektleri": "\u17a5\u1791\u17d2\u1792\u17b7\u1796\u179b\u179f\u17c6\u17a1\u17c1\u1784", // EN: Sound Effects
+    "Titre\u015fim": "\u1780\u17b6\u179a\u1789\u17d0\u179a", // EN: Vibration
+    "Animasyonlar": "\u1785\u179b\u1793\u17b6\u1787\u17b8\u179c\u1785\u179b", // EN: Animations
     "Uyar\u0131 kategorileri, sessiz saatler ve d\u0131\u015fa d\u00f6n\u00fck kanallar.": "\u1794\u17d2\u179a\u1797\u17c1\u1791\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784 \u1798\u17c9\u17c4\u1784\u179f\u17d2\u1784\u17b6\u178f\u17cb \u1793\u17b7\u1784\u1780\u17b6\u179a\u1795\u17d2\u178a\u17b6\u1785\u17cb\u1794\u178e\u17d2\u178a\u17b6\u1789\u1785\u17c1\u1789\u17d4", // EN: Alert categories, quiet hours and outbound channels.
     "G\u00f6r\u00fcn\u00fcm ve Genel": "\u179a\u17bc\u1794\u179a\u17b6\u1784 \u1793\u17b7\u1784\u1791\u17bc\u1791\u17c5", // EN: Appearance & General
     "Tema, birimler ve dil.": "\u1794\u17d2\u179a\u1792\u17b6\u1793\u1794\u1791 \u17af\u1780\u178f\u17b6 \u1793\u17b7\u1784\u1797\u17b6\u179f\u17b6\u17d4", // EN: Theme, units and language.
@@ -516,29 +516,29 @@ window.NEXUS_LANG = {
     "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "\u1791\u17b7\u1793\u17d2\u1793\u1793\u17d0\u1799\u17a2\u17b6\u1780\u17b6\u179f\u1792\u17b6\u178f\u17bb\u1796\u17b7\u178f\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u1780\u1793\u17d2\u179b\u17c2\u1784\u1793\u17c5\u1795\u17d2\u1791\u17c7\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780 \u178f\u17d2\u179a\u17bc\u179c\u1794\u17b6\u1793\u17a2\u17b6\u1793\u179a\u17b6\u179b\u17cb\u1794\u17d2\u179a\u17a0\u17c2\u179b \u17e1\u17e0 \u1793\u17b6\u1791\u17b8 \u1781\u178e\u17c8\u1796\u17c1\u179b\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8\u1794\u17be\u1780\u17d4 \u179a\u17bf\u1784\u179f\u17c1\u1793\u17b6\u179a\u17b8\u1799\u17c4\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u178f\u17c2\u1798\u17d2\u178f\u1784 \u1793\u17c5\u1796\u17c1\u179b\u179b\u1780\u17d2\u1781\u1781\u178e\u17d2\u178c\u1795\u17d2\u179b\u17b6\u179f\u17cb\u1796\u17b8\u1798\u17b7\u1793\u1794\u17c6\u1796\u17c1\u1789\u1791\u17c5\u1794\u17c6\u1796\u17c1\u1789\u17d4", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
     "S\u0131cakl\u0131k (\u00b0C)": "\u179f\u17b8\u178f\u17bb\u178e\u17d2\u17a0\u1797\u17b6\u1796 (\u00b0C)", // EN: Temperature (°C)
     "R\u00fczg\u00e2r (km/sa)": "\u1781\u17d2\u1799\u179b\u17cb (\u1782\u1798/\u1798\u17c9\u17b6)", // EN: Wind (km/h)
-    "Ya\u011f\u0131\u015f (mm)": "", // EN: Precipitation (mm)
-    "\u00dcst\u00fcne \u00e7\u0131k\u0131nca": "", // EN: Rises above
-    "Alt\u0131na inince": "", // EN: Falls below
-    "E\u015fik de\u011fer": "", // EN: Threshold value
-    "Ev konumu se\u00e7ilmedi, hava verisi okunamaz. \u00d6nce": "", // EN: No home location is set, so weather can't be read. First
-    "konum se\u00e7": "", // EN: choose a location
-    "\u00d6nce ev konumunu se\u00e7.": "", // EN: Choose your home location first.
-    "Bir e\u015fik de\u011fer gir.": "", // EN: Enter a threshold value.
-    "Hava durumu tetikleyicisi: ev konumu se\u00e7ilmedi.": "", // EN: Weather trigger: no home location set.
-    "Tetiklenince \u00c7al\u0131\u015facak Senaryo": "", // EN: Scenario to Run When Triggered
-    "Yaln\u0131zca bildirim": "", // EN: Notification only
-    "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
-    "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
-    "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
-    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
-    "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "", // EN: Night strategy triggered; no selected energy devices.
-    "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "", // EN: Energy strategy ran
-    "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "", // EN: Sunset trigger: no home location set.
-    "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Ya\u011f\u0131\u015f (mm)": "\u1791\u17b9\u1780\u1797\u17d2\u179b\u17c0\u1784 (mm)", // EN: Precipitation (mm)
+    "\u00dcst\u00fcne \u00e7\u0131k\u0131nca": "\u1793\u17c5\u1796\u17c1\u179b\u17a1\u17be\u1784\u179b\u17be\u179f\u1796\u17b8", // EN: Rises above
+    "Alt\u0131na inince": "\u1793\u17c5\u1796\u17c1\u179b\u1792\u17d2\u179b\u17b6\u1780\u17cb\u1780\u17d2\u179a\u17c4\u1798", // EN: Falls below
+    "E\u015fik de\u011fer": "\u178f\u1798\u17d2\u179b\u17c3\u1780\u1798\u17d2\u179a\u17b7\u178f", // EN: Threshold value
+    "Ev konumu se\u00e7ilmedi, hava verisi okunamaz. \u00d6nce": "\u1798\u17b7\u1793\u1791\u17b6\u1793\u17cb\u1780\u17c6\u178e\u178f\u17cb\u1791\u17b8\u178f\u17b6\u17c6\u1784\u1795\u17d2\u1791\u17c7\u1791\u17c1 \u1798\u17b7\u1793\u17a2\u17b6\u1785\u17a2\u17b6\u1793\u1791\u17b7\u1793\u17d2\u1793\u1793\u17d0\u1799\u17a2\u17b6\u1780\u17b6\u179f\u1792\u17b6\u178f\u17bb\u1794\u17b6\u1793\u1791\u17c1\u17d4 \u179f\u17bc\u1798", // EN: No home location is set, so weather can't be read. First
+    "konum se\u00e7": "\u1787\u17d2\u179a\u17be\u179f\u179a\u17be\u179f\u1791\u17b8\u178f\u17b6\u17c6\u1784", // EN: choose a location
+    "\u00d6nce ev konumunu se\u00e7.": "\u179f\u17bc\u1798\u1787\u17d2\u179a\u17be\u179f\u179a\u17be\u179f\u1791\u17b8\u178f\u17b6\u17c6\u1784\u1795\u17d2\u1791\u17c7\u1787\u17b6\u1798\u17bb\u1793\u179f\u17b7\u1793\u17d4", // EN: Choose your home location first.
+    "Bir e\u015fik de\u011fer gir.": "\u179f\u17bc\u1798\u1794\u1789\u17d2\u1785\u17bc\u179b\u178f\u1798\u17d2\u179b\u17c3\u1780\u1798\u17d2\u179a\u17b7\u178f\u17d4", // EN: Enter a threshold value.
+    "Hava durumu tetikleyicisi: ev konumu se\u00e7ilmedi.": "\u178f\u17d2\u179a\u17b7\u1782\u17d0\u179a\u17a2\u17b6\u1780\u17b6\u179f\u1792\u17b6\u178f\u17bb\u17d6 \u1798\u17b7\u1793\u1791\u17b6\u1793\u17cb\u1780\u17c6\u178e\u178f\u17cb\u1791\u17b8\u178f\u17b6\u17c6\u1784\u1795\u17d2\u1791\u17c7\u1791\u17c1\u17d4", // EN: Weather trigger: no home location set.
+    "Tetiklenince \u00c7al\u0131\u015facak Senaryo": "\u179f\u17c1\u178e\u17b6\u179a\u17b8\u1799\u17c9\u17bc\u178a\u17c2\u179b\u178f\u17d2\u179a\u17bc\u179c\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1793\u17c5\u1796\u17c1\u179b\u178f\u17d2\u179a\u17b7\u1782\u17d0\u179a", // EN: Scenario to Run When Triggered
+    "Yaln\u0131zca bildirim": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u1794\u17c9\u17bb\u178e\u17d2\u178e\u17c4\u17c7", // EN: Notification only
+    "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "\u179f\u17d2\u179c\u17d0\u1799\u1794\u17d2\u179a\u179c\u178f\u17d2\u178f\u17b7\u1780\u1798\u17d2\u1798\u178f\u17b6\u1798\u1780\u17b6\u179b\u179c\u17b7\u1797\u17b6\u1782\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1796\u17c1\u179b\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8\u1794\u17be\u1780\u17d4 \u1793\u17c5\u179b\u17be\u1780\u17bb\u17c6\u1796\u17d2\u1799\u17bc\u1791\u17d0\u179a \u1780\u17b6\u179b\u179c\u17b7\u1797\u17b6\u1782\u1793\u17c5\u178f\u17c2\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1796\u17c1\u179b\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8\u179f\u17d2\u1790\u17b7\u178f\u1780\u17d2\u1793\u17bb\u1784\u1790\u17b6\u179f\u1794\u17d2\u179a\u1796\u17d0\u1793\u17d2\u1792\u17d4", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
+    "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "\u179f\u17d2\u179c\u17d0\u1799\u1794\u17d2\u179a\u179c\u178f\u17d2\u178f\u17b7\u1780\u1798\u17d2\u1798\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1796\u17c1\u179b\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8\u1794\u17be\u1780\u17d4 \u1793\u17c5\u179b\u17be\u1780\u17bb\u17c6\u1796\u17d2\u1799\u17bc\u1791\u17d0\u179a \u1780\u17b6\u179b\u179c\u17b7\u1797\u17b6\u1782\u1793\u17c5\u178f\u17c2\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1796\u17c1\u179b\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8\u179f\u17d2\u1790\u17b7\u178f\u1780\u17d2\u1793\u17bb\u1784\u1790\u17b6\u179f\u1794\u17d2\u179a\u1796\u17d0\u1793\u17d2\u1792\u17d4", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
+    "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "\u1798\u17b7\u1793\u1791\u17b6\u1793\u17cb\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1793\u17c5\u17a1\u17be\u1799", // EN: Not run yet
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(\u1781\u1780\u1781\u17b6\u1793)", // EN: (missed)
+    "{0} cihaz g\u00fcncellendi.": "\u1794\u17b6\u1793\u1792\u17d2\u179c\u17be\u1794\u1785\u17d2\u1785\u17bb\u1794\u17d2\u1794\u1793\u17d2\u1793\u1797\u17b6\u1796\u17a7\u1794\u1780\u179a\u178e\u17cd {0}\u17d4", // EN: {0} device(s) updated.
+    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "\u1794\u17b6\u1793\u178f\u17d2\u179a\u17b7\u1782\u17d0\u179a; \u1798\u17b7\u1793\u1798\u17b6\u1793\u179f\u1780\u1798\u17d2\u1798\u1797\u17b6\u1796\u1780\u17c6\u178e\u178f\u17cb\u1791\u17c1 (\u17a2\u17d2\u1793\u1780\u17a2\u17b6\u1785\u1787\u17d2\u179a\u17be\u179f\u179a\u17be\u179f\u179f\u17c1\u178e\u17b6\u179a\u17b8\u1799\u17c9\u17bc\u1796\u17b8\u1780\u17b6\u179a\u1780\u17c6\u178e\u178f\u17cb\u179f\u17c1\u178e\u17b6\u179a\u17b8\u1799\u17c9\u17bc)\u17d4", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "\u1794\u17b6\u1793\u1780\u17b6\u178f\u17cb\u1785\u179a\u1793\u17d2\u178f\u17a7\u1794\u1780\u179a\u178e\u17cd {0}\u17d4", // EN: power cut to {0} device(s).
+    "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "\u1799\u17bb\u1791\u17d2\u1792\u179f\u17b6\u179f\u17d2\u178f\u17d2\u179a\u1796\u17c1\u179b\u1799\u1794\u17cb\u1794\u17b6\u1793\u178f\u17d2\u179a\u17b7\u1782\u17d0\u179a; \u1798\u17b7\u1793\u1798\u17b6\u1793\u17a7\u1794\u1780\u179a\u178e\u17cd\u1790\u17b6\u1798\u1796\u179b\u178a\u17c2\u179b\u1794\u17b6\u1793\u1787\u17d2\u179a\u17be\u179f\u179a\u17be\u179f\u1791\u17c1\u17d4", // EN: Night strategy triggered; no selected energy devices.
+    "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "\u1799\u17bb\u1791\u17d2\u1792\u179f\u17b6\u179f\u17d2\u178f\u17d2\u179a\u1790\u17b6\u1798\u1796\u179b\u1794\u17b6\u1793\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a", // EN: Energy strategy ran
+    "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "\u178f\u17d2\u179a\u17b7\u1782\u17d0\u179a\u1790\u17d2\u1784\u17c3\u179b\u17b7\u1785\u17d6 \u1798\u17b7\u1793\u1791\u17b6\u1793\u17cb\u1780\u17c6\u178e\u178f\u17cb\u1791\u17b8\u178f\u17b6\u17c6\u1784\u1795\u17d2\u1791\u17c7\u1791\u17c1\u17d4", // EN: Sunset trigger: no home location set.
+    "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "\u1798\u17c9\u17c4\u1784\u178f\u17d2\u179a\u17b7\u1782\u17d0\u179a\u1794\u17b6\u1793\u1781\u1780\u1781\u17b6\u1793 (\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8\u1794\u17b6\u1793\u1794\u17b7\u1791)\u17d4", // EN: Trigger time missed (the app was closed).
+    "Kameralar": "\u1780\u17b6\u1798\u17c1\u179a\u17c9\u17b6", // EN: Cameras
     "Kamera Cihazlar\u0131m": "\u1780\u17b6\u1798\u17c1\u179a\u17c9\u17b6\u179a\u1794\u179f\u17cb\u1781\u17d2\u1789\u17bb\u17c6", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "\u1794\u1793\u17d2\u1790\u17c2\u1798\u1780\u17b6\u1798\u17c1\u179a\u17c9\u17b6\u1798\u17bd\u1799\u178a\u17be\u1798\u17d2\u1794\u17b8\u178f\u17d2\u179a\u17bd\u178f\u1796\u17b7\u1793\u17b7\u178f\u17d2\u1799\u179f\u17d2\u1790\u17b6\u1793\u1797\u17b6\u1796 \u1793\u17b7\u1784\u1780\u17b6\u179a\u1780\u17c6\u178e\u178f\u17cb\u1797\u17b6\u1796\u17af\u1780\u1787\u1793\u1793\u17c5\u1791\u17b8\u1793\u17c1\u17c7\u17d4 \u1780\u17b6\u179a\u1795\u17d2\u1791\u17bb\u1780\u179c\u17b8\u178a\u17c1\u17a2\u17bc\u1795\u17d2\u179f\u17b6\u1799\u1794\u1793\u17d2\u178f\u1795\u17d2\u1791\u17b6\u179b\u17cb (RTSP) \u1793\u17b9\u1784\u1798\u1780\u178a\u179b\u17cb\u1786\u17b6\u1794\u17cb\u0e46 \u0e19\u0e35\u0e49\u17d4", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "\u1794\u1793\u17d2\u1790\u17c2\u1798\u1780\u17b6\u1798\u17c1\u179a\u17c9\u17b6", // EN: Add Camera
@@ -752,20 +752,20 @@ window.NEXUS_LANG = {
     "Hedef okunmad\u0131": "\u1782\u17c4\u179b\u178a\u17c5\u1798\u17b7\u1793\u1794\u17b6\u1793\u17a2\u17b6\u1793", // EN: Target not read
     "\u00d6l\u00e7\u00fcm verisi yok": "\u1782\u17d2\u1798\u17b6\u1793\u1791\u17b7\u1793\u17d2\u1793\u1793\u17d0\u1799\u179c\u17b6\u179f\u17cb", // EN: No measurement data
     "Ekledi\u011fin cihazlar hen\u00fcz s\u0131cakl\u0131k, nem veya hava kalitesi verisi vermedi. Sens\u00f6r\u00fcn a\u00e7\u0131k ve a\u011fda oldu\u011fundan emin ol.": "\u17a7\u1794\u1780\u179a\u178e\u17cd\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u1798\u17b7\u1793\u1791\u17b6\u1793\u17cb\u179a\u17b6\u1799\u1780\u17b6\u179a\u178e\u17cd\u179f\u17b8\u178f\u17bb\u178e\u1797\u17b6\u1796, \u179f\u17c6\u178e\u17be\u1798 \u17ac\u1782\u17bb\u178e\u1797\u17b6\u1796\u1781\u17d2\u1799\u179b\u17cb\u17a1\u17be\u1799\u17d4 \u179f\u17bc\u1798\u1794\u17d2\u179a\u17b6\u1780\u178a\u1790\u17b6\u17a7\u1794\u1780\u179a\u178e\u17cd\u179f\u17d2\u1791\u1784\u17cb\u179f\u17b8\u178f\u17bb\u178e\u17d2\u17a0\u1797\u17b6\u1796\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1793\u17b7\u1784\u1798\u17b6\u1793\u1793\u17c5\u179b\u17be\u1794\u178e\u17d2\u178f\u17b6\u1789\u17d4", // EN: Your devices have not reported temperature, humidity or air quality yet. Make sure the sensor is on and on the network.
-    "Son okunan \u00f6l\u00e7\u00fcmler": "", // EN: Latest readings
+    "Son okunan \u00f6l\u00e7\u00fcmler": "\u1780\u17b6\u179a\u179c\u17b6\u179f\u17cb\u1785\u17bb\u1784\u1780\u17d2\u179a\u17c4\u1799", // EN: Latest readings
     "Skor \u00fcretmiyoruz; yaln\u0131zca cihazlardan okunan ger\u00e7ek de\u011ferler g\u00f6sterilir.": "\u1780\u17b6\u179a\u17a2\u17b6\u1793\u1790\u17d2\u1798\u17b8\u17d7", // EN: We do not produce a score; only real values read from your devices are shown.
     "Haz\u0131rl\u0131\u011f\u0131 bitirdi\u011finde \u015fu cihazlara uygulan\u0131r.": "\u1799\u17be\u1784\u1798\u17b7\u1793\u1794\u1784\u17d2\u1780\u17be\u178f\u1796\u17b7\u1793\u17d2\u1791\u17bb\u1791\u17c1; \u178f\u17c2\u1780\u178f\u1798\u17d2\u179b\u17c3\u1796\u17b7\u178f\u178a\u17c2\u179b\u1794\u17b6\u1793\u17a2\u17b6\u1793\u1796\u17b8\u17a7\u1794\u1780\u179a\u178e\u17cd\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u178f\u17d2\u179a\u17bc\u179c\u1794\u17b6\u1793\u1794\u1784\u17d2\u17a0\u17b6\u1789\u17d4", // EN: When you finish, this is applied to the following devices.
-    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "", // EN: No suitable device for sleep preparation
+    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "\u1798\u17b7\u1793\u1798\u17b6\u1793\u17a7\u1794\u1780\u179a\u178e\u17cd\u179f\u17d0\u1780\u17d2\u178f\u17b7\u179f\u1798\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u178f\u17d2\u179a\u17c0\u1798\u178a\u17c6\u178e\u17c1\u1780\u1791\u17c1", // EN: No suitable device for sleep preparation
     "I\u015f\u0131k, perde, kilit veya iklim cihaz\u0131 ekledi\u011finde haz\u0131rl\u0131k burada listelenir.": "\u1796\u17c1\u179b\u17a2\u17d2\u1793\u1780\u1794\u1789\u17d2\u1785\u1794\u17cb, \u1793\u17c1\u17c7\u178f\u17d2\u179a\u17bc\u179c\u1794\u17b6\u1793\u17a2\u1793\u17bb\u179c\u178f\u17d2\u178f\u1791\u17c5\u17a7\u1794\u1780\u179a\u178e\u17cd\u178a\u17bc\u1785\u1781\u17b6\u1784\u1780\u17d2\u179a\u17c4\u1798\u17d4", // EN: Once you add a light, curtain, lock or climate device, the preparation is listed here.
-    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "", // EN: Last known state and readings of your climate devices.
+    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "\u179f\u17d2\u1790\u17b6\u1793\u1797\u17b6\u1796\u178a\u17c2\u179b\u179f\u17d2\u1782\u17b6\u179b\u17cb\u1785\u17bb\u1784\u1780\u17d2\u179a\u17c4\u1799 \u1793\u17b7\u1784\u1780\u17b6\u179a\u179c\u17b6\u179f\u17cb\u179a\u1794\u179f\u17cb\u17a7\u1794\u1780\u179a\u178e\u17cd\u17a2\u17b6\u1780\u17b6\u179f\u1792\u17b6\u178f\u17bb\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u17d4", // EN: Last known state and readings of your climate devices.
     "Kamera gizlili\u011fi": "\u1798\u17b7\u1793\u1798\u17b6\u1793\u17a7\u1794\u1780\u179a\u178e\u17cd\u179f\u1798\u179f\u17d2\u179a\u1794\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u1780\u17b6\u179a\u179a\u17c0\u1794\u1785\u17c6\u1782\u17c1\u1784", // EN: Camera privacy
     "Her kameran\u0131n gizlilik modunu ayr\u0131 ayr\u0131 y\u00f6net.": "\u1794\u17d2\u179a\u179f\u17b7\u1793\u1794\u17be\u17a2\u17d2\u1793\u1780\u1794\u1793\u17d2\u1790\u17c2\u1798\u1797\u17d2\u179b\u17be\u1784, \u1796\u178e\u17cc\u179f\u17d2\u179a\u17c4\u1798\u1797\u17d2\u179b\u17be\u1784, \u179f\u17c4 \u17ac\u17a7\u1794\u1780\u179a\u178e\u17cd\u17a2\u17b6\u1780\u17b6\u179f\u1792\u17b6\u178f\u17bb, \u1780\u17b6\u179a\u179a\u17c0\u1794\u1785\u17c6\u178f\u17d2\u179a\u17bc\u179c\u1794\u17b6\u1793\u1794\u1789\u17d2\u1787\u17b8\u1793\u17c5\u1791\u17b8\u1793\u17c1\u17c7\u17d4", // EN: Manage each camera's privacy mode separately.
-    "Kamera cihaz\u0131 yok": "", // EN: No camera device
+    "Kamera cihaz\u0131 yok": "\u1798\u17b7\u1793\u1798\u17b6\u1793\u17a7\u1794\u1780\u179a\u178e\u17cd\u1780\u17b6\u1798\u17c1\u179a\u17c9\u17b6\u1791\u17c1", // EN: No camera device
     "Kamera ekledi\u011finde gizlilik modu her kamera i\u00e7in burada g\u00f6r\u00fcn\u00fcr.": "\u179f\u17d2\u1790\u17b6\u1793\u1797\u17b6\u1796\u17a0\u17be\u1799\u1793\u17b7\u1784\u1780\u17b6\u179a\u17a2\u17b6\u1793\u1785\u17bb\u1784\u1780\u17d2\u179a\u17c4\u1799\u1793\u17c3\u17a7\u1794\u1780\u179a\u178e\u17cd\u17a2\u17b6\u1780\u17b6\u179f\u1792\u17b6\u178f\u17bb\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u17d4", // EN: Once you add a camera, its privacy mode appears here.
-    "Bu senaryoyu uygulayacak uygun cihaz yok": "", // EN: No suitable device to run this scenario
+    "Bu senaryoyu uygulayacak uygun cihaz yok": "\u1798\u17b7\u1793\u1798\u17b6\u1793\u17a7\u1794\u1780\u179a\u178e\u17cd\u179f\u17d0\u1780\u17d2\u178f\u17b7\u179f\u1798\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u179f\u17c1\u178e\u17b6\u179a\u17b8\u1799\u17c9\u17bc\u1793\u17c1\u17c7\u1791\u17c1", // EN: No suitable device to run this scenario
     "I\u015f\u0131k, perde, klima veya kilit gibi uyumlu bir cihaz ekledi\u011finde burada listelenir.": "\u1797\u17b6\u1796\u17af\u1780\u1787\u1793\u1780\u17b6\u1798\u17c1\u179a\u17b6", // EN: Once you add a compatible device such as a light, curtain, air conditioner or lock, it is listed here.
     "Uygun cihaz yok": "\u1782\u17d2\u179a\u1794\u17cb\u1782\u17d2\u179a\u1784\u1798\u17bb\u1781\u1784\u17b6\u179a\u1797\u17b6\u1796\u17af\u1780\u1787\u1793\u1793\u17c3\u1780\u17b6\u1798\u17c1\u179a\u17b6\u1780\u17d2\u1793\u17bb\u1784\u1798\u17bd\u1799\u178a\u17c4\u1799\u1794\u1789\u17d2\u1785\u17b6\u1780\u17cb\u1795\u17d2\u1791\u17b6\u179b\u17cb\u17d4", // EN: No suitable device
-    "Hen\u00fcz a\u00e7\u0131lmad\u0131": "", // EN: Not turned on yet
+    "Hen\u00fcz a\u00e7\u0131lmad\u0131": "\u1798\u17b7\u1793\u1791\u17b6\u1793\u17cb\u1794\u17b6\u1793\u1794\u17be\u1780\u1793\u17c5\u17a1\u17be\u1799", // EN: Not turned on yet
     "Aktif Uyar\u0131lar": "\u1798\u17b7\u1793\u1798\u17b6\u1793\u17a7\u1794\u1780\u179a\u178e\u17cd\u1780\u17b6\u1798\u17c1\u179a\u17b6", // EN: Active Alerts
     "Akvaryum": "\u1794\u17d2\u179a\u179f\u17b7\u1793\u1794\u17be\u17a2\u17d2\u1793\u1780\u1794\u1793\u17d2\u1790\u17c2\u1798\u1780\u17b6\u1798\u17c1\u179a\u17b6, \u1798\u17bb\u1781\u1784\u17b6\u179a\u1797\u17b6\u1796\u17af\u1780\u1787\u1793\u179a\u1794\u179f\u17cb\u179c\u17b6\u178f\u17d2\u179a\u17bc\u179c\u1794\u17b6\u1793\u1794\u1784\u17d2\u17a0\u17b6\u1789\u1793\u17c5\u1791\u17b8\u1793\u17c1\u17c7\u17d4", // EN: Aquarium
     "Akvaryum Is\u0131t\u0131c\u0131": "\u1791\u17b9\u1780\u1780\u1780\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u178f\u1784\u17cb\u178a\u17b9\u1780\u178f\u17d2\u179a\u17b8", // EN: Aquarium Heater
@@ -1030,36 +1030,36 @@ window.NEXUS_LANG = {
     "Ba\u015flang\u0131\u00e7": "\u1785\u17b6\u1794\u17cb\u1795\u17d2\u178f\u17be\u1798", // EN: Start
     "Ba\u015flat": "\u1785\u17b6\u1794\u17cb\u1795\u17d2\u178f\u17be\u1798", // EN: Start
     "Ba\u015fl\u0131k ve a\u00e7\u0131klamay\u0131 d\u00fczenlemek i\u00e7in \u00fczerine dokunun.": "\u1785\u17bb\u1785\u179b\u17be\u1785\u17c6\u178e\u1784\u1787\u17be\u1784 \u1793\u17b7\u1784\u1780\u17b6\u179a\u1796\u17b7\u1796\u178e\u17cc\u1793\u17b6\u178a\u17be\u1798\u17d2\u1794\u17b8\u1780\u17c2\u1794\u17d2\u179a\u17c2\u179c\u17b6\u17d4", // EN: Tap the title and description to edit them.
-    "Bebek \u00dcr\u00fcnleri": "", // EN: Baby Products
-    "Bebek \u00fcr\u00fcnleri": "", // EN: Baby products
-    "Bekleme Moduna Al": "", // EN: Put on Standby
-    "Belirli bir saatte veya g\u00fcnde": "", // EN: At a specific time or day
-    "Benim Evim": "", // EN: My Home
-    "Besleme": "", // EN: Feeding
-    "Besleme program\u0131": "", // EN: Feeding schedule
-    "Beyaz": "", // EN: White
-    "Beyaz Dinlenme I\u015f\u0131\u011f\u0131": "", // EN: White Rest Light
-    "Beyaz e\u015fya ve b\u00fcy\u00fck ev cihazlar\u0131": "", // EN: White goods and large appliances
-    "Be\u015fik": "", // EN: Crib
-    "Be\u015fli": "", // EN: Five-gang
-    "Biberon Is\u0131t\u0131c\u0131": "", // EN: Bottle Warmer
-    "Bildirim": "", // EN: Notification
-    "Bildirim kapal\u0131": "", // EN: Notifications off
-    "Bildirim yok": "", // EN: No notifications
-    "Bildirimler": "", // EN: Notifications
-    "Bildirimler 2 saat sessiz": "", // EN: Notifications silent for 2 hours
-    "Bildirimler a\u00e7\u0131k": "", // EN: Notifications on
-    "Bildirimler kapal\u0131": "", // EN: Notifications off
-    "Bildirimlere \u0130zin Ver": "", // EN: Allow Notifications
-    "Bildirimleri a\u00e7": "", // EN: Turn on notifications
-    "Bildirimleri ge\u00e7ici olarak sessize al": "", // EN: Silence notifications temporarily
-    "Bile\u011finden h\u0131zl\u0131 kontrol": "", // EN: Quick control from your wrist
-    "Bilgi": "", // EN: Info
-    "Bilgilerini girdikten sonra g\u00f6nderilecek ad\u0131mlar\u0131 takip ederek \u015fifreni kolayca yenileyebilirsin.": "", // EN: After entering your details, you can easily reset your password by following the steps we send.
-    "Bilgisayar\u0131nda NEXUS masa\u00fcst\u00fc uygulamas\u0131n\u0131 kullan; ayn\u0131 asistan ve kontroller orada da \u00e7al\u0131\u015f\u0131r.": "", // EN: Use the NEXUS desktop app on your computer; the same assistant and controls work there too.
-    "Bilgisayar\u0131ndan da sohbet et; konu\u015fmalar\u0131n t\u00fcm cihazlar\u0131nda senkronize kal\u0131r.": "", // EN: Chat from your computer too; your conversations stay in sync across your devices.
-    "Bir Eve Kat\u0131l": "", // EN: Join a Home
-    "Bir cihaz a\u00e7\u0131ld\u0131\u011f\u0131nda veya kapand\u0131\u011f\u0131nda": "", // EN: When a device turns on or off
+    "Bebek \u00dcr\u00fcnleri": "\u1795\u179b\u17b7\u178f\u1795\u179b\u1791\u17b6\u179a\u1780", // EN: Baby Products
+    "Bebek \u00fcr\u00fcnleri": "\u1795\u179b\u17b7\u178f\u1795\u179b\u1791\u17b6\u179a\u1780", // EN: Baby products
+    "Bekleme Moduna Al": "\u178a\u17b6\u1780\u17cb\u1780\u17d2\u1793\u17bb\u1784\u1798\u17bb\u1781\u1784\u17b6\u179a\u179a\u1784\u17cb\u1785\u17b6\u17c6", // EN: Put on Standby
+    "Belirli bir saatte veya g\u00fcnde": "\u1793\u17c5\u1798\u17c9\u17c4\u1784 \u17ac\u1790\u17d2\u1784\u17c3\u1787\u17b6\u1780\u17cb\u179b\u17b6\u1780\u17cb", // EN: At a specific time or day
+    "Benim Evim": "\u1795\u17d2\u1791\u17c7\u179a\u1794\u179f\u17cb\u1781\u17d2\u1789\u17bb\u17c6", // EN: My Home
+    "Besleme": "\u1780\u17b6\u179a\u1794\u17c6\u1794\u17c5", // EN: Feeding
+    "Besleme program\u0131": "\u1780\u17b6\u179b\u179c\u17b7\u1797\u17b6\u1782\u1794\u17c6\u1794\u17c5", // EN: Feeding schedule
+    "Beyaz": "\u1796\u178e\u17cc\u179f", // EN: White
+    "Beyaz Dinlenme I\u015f\u0131\u011f\u0131": "\u1796\u1793\u17d2\u179b\u17ba\u179f\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u179f\u1798\u17d2\u179a\u17b6\u1780", // EN: White Rest Light
+    "Beyaz e\u015fya ve b\u00fcy\u00fck ev cihazlar\u0131": "\u1782\u17d2\u179a\u17bf\u1784\u1794\u17d2\u179a\u17be\u1794\u17d2\u179a\u17b6\u179f\u17cb\u1780\u17d2\u1793\u17bb\u1784\u1795\u17d2\u1791\u17c7\u1792\u17c6\u17d7", // EN: White goods and large appliances
+    "Be\u015fik": "\u1791\u17d2\u179a\u1793\u17c6\u1791\u17b6\u179a\u1780", // EN: Crib
+    "Be\u015fli": "\u1794\u17d2\u179a\u17b6\u17c6\u179a\u1793\u17d2\u1792", // EN: Five-gang
+    "Biberon Is\u0131t\u0131c\u0131": "\u17a7\u1794\u1780\u179a\u178e\u17cd\u1780\u17c6\u178a\u17c5\u178a\u1794\u1791\u17b9\u1780\u178a\u17c4\u17c7", // EN: Bottle Warmer
+    "Bildirim": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784", // EN: Notification
+    "Bildirim kapal\u0131": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u1794\u17b6\u1793\u1794\u17b7\u1791", // EN: Notifications off
+    "Bildirim yok": "\u1782\u17d2\u1798\u17b6\u1793\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784", // EN: No notifications
+    "Bildirimler": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784", // EN: Notifications
+    "Bildirimler 2 saat sessiz": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u179f\u17d2\u1784\u17b6\u178f\u17cb 2 \u1798\u17c9\u17c4\u1784", // EN: Notifications silent for 2 hours
+    "Bildirimler a\u00e7\u0131k": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u1794\u17b6\u1793\u1794\u17be\u1780", // EN: Notifications on
+    "Bildirimler kapal\u0131": "\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u1794\u17b6\u1793\u1794\u17b7\u1791", // EN: Notifications off
+    "Bildirimlere \u0130zin Ver": "\u17a2\u1793\u17bb\u1789\u17d2\u1789\u17b6\u178f\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784", // EN: Allow Notifications
+    "Bildirimleri a\u00e7": "\u1794\u17be\u1780\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784", // EN: Turn on notifications
+    "Bildirimleri ge\u00e7ici olarak sessize al": "\u1794\u17b7\u1791\u179f\u17c6\u17a1\u17c1\u1784\u1780\u17b6\u179a\u1787\u17bc\u1793\u178a\u17c6\u178e\u17b9\u1784\u1794\u178e\u17d2\u178f\u17c4\u17c7\u17a2\u17b6\u179f\u1793\u17d2\u1793", // EN: Silence notifications temporarily
+    "Bile\u011finden h\u0131zl\u0131 kontrol": "\u1780\u17b6\u179a\u1782\u17d2\u179a\u1794\u17cb\u1782\u17d2\u179a\u1784\u179a\u17a0\u17d0\u179f\u1796\u17b8\u1780\u178a\u17c3\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780", // EN: Quick control from your wrist
+    "Bilgi": "\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793", // EN: Info
+    "Bilgilerini girdikten sonra g\u00f6nderilecek ad\u0131mlar\u0131 takip ederek \u015fifreni kolayca yenileyebilirsin.": "\u1794\u1793\u17d2\u1791\u17b6\u1794\u17cb\u1796\u17b8\u1794\u1789\u17d2\u1785\u17bc\u179b\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780 \u17a2\u17d2\u1793\u1780\u17a2\u17b6\u1785\u1780\u17c6\u178e\u178f\u17cb\u1796\u17b6\u1780\u17d2\u1799\u179f\u1798\u17d2\u1784\u17b6\u178f\u17cb\u17a1\u17be\u1784\u179c\u17b7\u1789\u1794\u17b6\u1793\u1799\u17c9\u17b6\u1784\u1784\u17b6\u1799\u179f\u17d2\u179a\u17bd\u179b\u178a\u17c4\u1799\u1792\u17d2\u179c\u17be\u178f\u17b6\u1798\u1787\u17c6\u17a0\u17b6\u1793\u178a\u17c2\u179b\u1799\u17be\u1784\u1795\u17d2\u1789\u17be\u17d4", // EN: After entering your details, you can easily reset your password by following the steps we send.
+    "Bilgisayar\u0131nda NEXUS masa\u00fcst\u00fc uygulamas\u0131n\u0131 kullan; ayn\u0131 asistan ve kontroller orada da \u00e7al\u0131\u015f\u0131r.": "\u1794\u17d2\u179a\u17be\u1780\u1798\u17d2\u1798\u179c\u17b7\u1792\u17b8 NEXUS \u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u1780\u17bb\u17c6\u1796\u17d2\u1799\u17bc\u1791\u17d0\u179a\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780; \u1787\u17c6\u1793\u17bd\u1799\u1780\u17b6\u179a \u1793\u17b7\u1784\u1780\u17b6\u179a\u1782\u17d2\u179a\u1794\u17cb\u1782\u17d2\u179a\u1784\u178a\u17bc\u1785\u1782\u17d2\u1793\u17b6\u1780\u17cf\u178a\u17c6\u178e\u17be\u179a\u1780\u17b6\u179a\u1793\u17c5\u1791\u17b8\u1793\u17c4\u17c7\u178a\u17c2\u179a\u17d4", // EN: Use the NEXUS desktop app on your computer; the same assistant and controls work there too.
+    "Bilgisayar\u0131ndan da sohbet et; konu\u015fmalar\u0131n t\u00fcm cihazlar\u0131nda senkronize kal\u0131r.": "\u1787\u1787\u17c2\u1780\u1796\u17b8\u1780\u17bb\u17c6\u1796\u17d2\u1799\u17bc\u1791\u17d0\u179a\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u1780\u17cf\u1794\u17b6\u1793; \u1780\u17b6\u179a\u179f\u1793\u17d2\u1791\u1793\u17b6\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u1793\u17c5\u178f\u17c2\u1792\u17d2\u179c\u17be\u179f\u1798\u1780\u17b6\u179b\u1780\u1798\u17d2\u1798\u1793\u17c5\u179b\u17be\u17a7\u1794\u1780\u179a\u178e\u17cd\u1791\u17b6\u17c6\u1784\u17a2\u179f\u17cb\u17d4", // EN: Chat from your computer too; your conversations stay in sync across your devices.
+    "Bir Eve Kat\u0131l": "\u1785\u17bc\u179b\u179a\u17bd\u1798\u1795\u17d2\u1791\u17c7\u1798\u17bd\u1799", // EN: Join a Home
+    "Bir cihaz a\u00e7\u0131ld\u0131\u011f\u0131nda veya kapand\u0131\u011f\u0131nda": "\u1793\u17c5\u1796\u17c1\u179b\u17a7\u1794\u1780\u179a\u178e\u17cd\u1798\u17bd\u1799\u1794\u17be\u1780 \u17ac\u1794\u17b7\u1791", // EN: When a device turns on or off
     "Bir cihaza dokununca panelin kontrol ekran\u0131 a\u00e7\u0131l\u0131r; ekranda yaln\u0131zca o cihaz\u0131n destekledi\u011fi \u00f6zellikler g\u00f6r\u00fcn\u00fcr. Shelly, WLED ve ESPHome cihazlar\u0131nda a\u00e7/kapat ve parlakl\u0131k do\u011frudan cihaza gider.": "\u1785\u17bb\u1785\u17a7\u1794\u1780\u179a\u178e\u17cd\u1798\u17bd\u1799\u178a\u17be\u1798\u17d2\u1794\u17b8\u1794\u17be\u1780\u17a2\u17c1\u1780\u17d2\u179a\u1784\u17cb\u1782\u17d2\u179a\u1794\u17cb\u1782\u17d2\u179a\u1784\u1793\u17c3\u1795\u17d2\u1791\u17b6\u17c6\u1784; \u179c\u17b6\u1794\u1784\u17d2\u17a0\u17b6\u1789\u178f\u17c2\u1793\u17bc\u179c\u1798\u17bb\u1781\u1784\u17b6\u179a\u178a\u17c2\u179b\u17a7\u1794\u1780\u179a\u178e\u17cd\u1793\u17c4\u17c7\u1782\u17b6\u17c6\u1791\u17d2\u179a\u17d4 \u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u17a7\u1794\u1780\u179a\u178e\u17cd Shelly, WLED \u1793\u17b7\u1784 ESPHome, \u1780\u17b6\u179a\u1794\u17b7\u1791/\u1794\u17be\u1780 \u1793\u17b7\u1784\u1797\u17b6\u1796\u1797\u17d2\u179b\u17ba\u1791\u17c5\u178a\u179b\u17cb\u17a7\u1794\u1780\u179a\u178e\u17cd\u0e42\u0e14\u0e22\u1795\u17d2\u1791\u17b6\u179b\u17cb\u17d4", // EN: Tap a device to open the panel's control screen; it shows only the features that device supports. For Shelly, WLED and ESPHome devices, on/off and brightness go straight to the device.
     "Bir eve kat\u0131l ekran\u0131nda bu kod kullan\u0131l\u0131r.": "\u1780\u17bc\u178a\u1793\u17c1\u17c7\u178f\u17d2\u179a\u17bc\u179c\u1794\u17b6\u1793\u1794\u17d2\u179a\u17be\u1793\u17c5\u179b\u17be\u17a2\u17c1\u1780\u17d2\u179a\u1784\u17cb Join a Home\u17d4", // EN: This code is used on the Join a Home screen.
     "Bir kez dokunman\u0131z yeterli": "\u178f\u17c2\u1785\u17bb\u1785\u1798\u17bd\u1799\u1782\u178f\u17cb\u1782\u17d2\u179a\u17b6\u1793\u17cb\u17a0\u17be\u1799", // EN: One tap is all it takes
@@ -1263,7 +1263,7 @@ window.NEXUS_LANG = {
     "D\u00f6rtl\u00fc N\u00f6trs\u00fcz Anahtar": "\u1798\u17d2\u179f\u17b7\u179b\u1798\u17b7\u1789", // EN: Four-gang No-Neutral Switch
     "D\u00fcn": "\u1780\u17c2\u179f\u1798\u17d2\u179a\u17bd\u179b", // EN: Yesterday
     "D\u00fczenle": "\u1791\u17b6\u1794", // EN: Edit
-    "D\u00fc\u015f\u00fck": "", // EN: Low
+    "D\u00fc\u015f\u00fck": "\u1791\u17b6\u1794", // EN: Low
     "D\u0131\u015f Kap\u0131 Kilitli": "\u1791\u17d2\u179c\u17b6\u179a\u1798\u17bb\u1781\u1794\u17b6\u1793\u1785\u17b6\u1780\u17cb\u179f\u17c4", // EN: Front Door Locked
     "D\u0131\u015f Mekan Ayd\u0131nlatmas\u0131": "\u1796\u1793\u17d2\u179b\u17ba\u1781\u17b6\u1784\u1780\u17d2\u179a\u17c5", // EN: Outdoor Lighting
     "D\u0131\u015f Mekan Ayd\u0131nlatmas\u0131 (BLE)": "\u1796\u1793\u17d2\u179b\u17ba\u1781\u17b6\u1784\u1780\u17d2\u179a\u17c5 (BLE)", // EN: Outdoor Lighting (BLE)
@@ -1591,7 +1591,7 @@ window.NEXUS_LANG = {
     "Harika G\u00f6r\u00fcn\u00fcyor": "\u1798\u17be\u179b\u179b\u17d2\u17a2", // EN: Looking Great
     "Harika bir fikir! \u0130stedi\u011fin detaylara g\u00f6re uygulanabilir bir ak\u0131ll\u0131 senaryo kurgulad\u0131m ve ilgili listeye ekledim. A\u015fa\u011f\u0131dan hemen g\u00f6z atabilirsin! [ACTION: CREATE_SCENARIO]": "\u1782\u17c6\u1793\u17b7\u178f\u178a\u17cf\u17a2\u179f\u17d2\u1785\u17b6\u179a\u17d2\u1799! \u1781\u17d2\u1789\u17bb\u17c6\u1794\u17b6\u1793\u1794\u1784\u17d2\u1780\u17be\u178f\u17a0\u17c1\u178f\u17bb\u1780\u17b6\u179a\u178e\u17cd\u1786\u17d2\u179b\u17b6\u178f\u179c\u17c3\u17a2\u17b6\u1785\u179a\u178f\u17cb\u1794\u17b6\u1793\u1785\u17c1\u1789\u1796\u17b8\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780 \u17a0\u17be\u1799\u1794\u17b6\u1793\u1794\u1789\u17d2\u1785\u17bc\u179b\u179c\u17b6\u1791\u17c5\u1780\u17d2\u1793\u17bb\u1784\u1794\u1789\u17d2\u1787\u17b8\u17d4 \u179f\u17bc\u1798\u1798\u17be\u179b\u1781\u17b6\u1784\u1780\u17d2\u179a\u17c4\u1798! [ACTION: CREATE_SCENARIO]", // EN: Great idea! I've built a runnable smart scenario from your details and added it to the list. Take a look below! [ACTION: CREATE_SCENARIO]
     "Harika bir fikir! \u0130stedi\u011fin detaylara g\u00f6re yeni bir ak\u0131ll\u0131 senaryo kurgulad\u0131m ve hemen \"T\u0131kla ve \u00c7al\u0131\u015ft\u0131r\" sekmesine ekledim. A\u015fa\u011f\u0131dan hemen g\u00f6z atabilirsin! [ACTION: CREATE_SCENARIO]": "\u1782\u17c6\u1793\u17b7\u178f\u17a2\u179f\u17d2\u1785\u17b6\u179a\u17d2\u1799! \u1781\u17d2\u1789\u17bb\u17c6\u1794\u17b6\u1793\u1794\u1784\u17d2\u1780\u17be\u178f\u179f\u17c1\u1793\u17b6\u179a\u17b8\u1786\u17d2\u179b\u17b6\u178f\u1790\u17d2\u1798\u17b8\u1798\u17bd\u1799\u1796\u17b8\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793\u179b\u1798\u17d2\u17a2\u17b7\u178f\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780 \u17a0\u17be\u1799\u1794\u17b6\u1793\u1794\u1793\u17d2\u1790\u17c2\u1798\u179c\u17b6\u1791\u17c5\u1795\u17d2\u1791\u17b6\u17c6\u1784 \"\u1785\u17bb\u1785\u178a\u17be\u1798\u17d2\u1794\u17b8\u179a\u178f\u17cb\"\u17d4 \u179f\u17bc\u1798\u1798\u17be\u179b\u1781\u17b6\u1784\u1780\u17d2\u179a\u17c4\u1798! [\u179f\u1780\u1798\u17d2\u1798\u1797\u17b6\u1796: \u1794\u1784\u17d2\u1780\u17be\u178f\u179f\u17c1\u1793\u17b6\u179a\u17b8]", // EN: Great idea! I've built a new smart scenario from your details and added it to the "Tap to Run" tab. Take a look below! [ACTION: CREATE_SCENARIO]
-    "Hassas Mutfak Terazisi": "", // EN: Precision Kitchen Scale
+    "Hassas Mutfak Terazisi": "\u1787\u1789\u17d2\u1787\u17b8\u1784\u1795\u17d2\u1791\u17c7\u1794\u17b6\u1799\u1785\u17d2\u1794\u17b6\u179f\u17cb\u179b\u17b6\u179f\u17cb", // EN: Precision Kitchen Scale
     "Hata Bildirimi": "\u1792\u17d2\u1793\u17b6\u1780\u17cb\u179f\u17c6\u179a\u17b6\u1794\u17cb\u179c\u17b6\u179f\u17cb\u1791\u1798\u17d2\u1784\u1793\u17cb\u1795\u17d2\u1791\u17c7\u1794\u17b6\u1799", // EN: Bug Report
     "Hava": "\u179a\u1794\u17b6\u1799\u1780\u17b6\u179a\u178e\u17cd\u1794\u1789\u17d2\u17a0\u17b6", // EN: Air
     "Hava Durumu": "\u1781\u17d2\u1799\u179b\u17cb", // EN: Weather
@@ -1620,8 +1620,8 @@ window.NEXUS_LANG = {
     "Hedef Odalar": "\u1794\u1789\u17d2\u1785\u1794\u17cb\u1780\u17b6\u179a\u178f\u17d2\u179a\u17c0\u1798", // EN: Target Rooms
     "Hedef S\u0131cakl\u0131k": "\u1794\u1793\u17d2\u1791\u1794\u17cb\u1782\u17c4\u179b\u178a\u17c5", // EN: Target Temperature
     "Hedef s\u0131cakl\u0131k": "\u1780\u17c6\u178a\u17c5\u1782\u17c4\u179b\u178a\u17c5", // EN: Target temperature
-    "Hedef {0}\u00b0": "", // EN: Target {0}°
-    "Hemen Ba\u015fla": "", // EN: Get Started
+    "Hedef {0}\u00b0": "\u1782\u17c4\u179b\u178a\u17c5 {0}\u00b0", // EN: Target {0}°
+    "Hemen Ba\u015fla": "\u1785\u17b6\u1794\u17cb\u1795\u17d2\u178f\u17be\u1798\u17a5\u17a1\u17bc\u179c\u1793\u17c1\u17c7", // EN: Get Started
     "Hemen Ba\u015flat": "\u1785\u17b6\u1794\u17cb\u1795\u17d2\u178f\u17be\u1798", // EN: Start Now
     "Hemen devreye girsin": "\u1785\u17b6\u1794\u17cb\u1795\u17d2\u178f\u17be\u1798\u17a5\u17a1\u17bc\u179c", // EN: Start immediately
     "Hemen karanl\u0131k temay\u0131 aktif ediyorum, g\u00f6zlerin art\u0131k daha rahat edecek. [ACTION: ENABLE_DARK_MODE]": "\u1780\u17c6\u1796\u17bb\u1784\u1794\u17be\u1780\u179a\u1794\u17c0\u1794\u1781\u17d2\u1798\u17c5\u17a5\u17a1\u17bc\u179c\u1793\u17c1\u17c7, \u1797\u17b6\u1782\u1784\u17b6\u1799\u179f\u17d2\u179a\u17bd\u179b\u179f\u1798\u17d2\u179a\u17b6\u1794\u17cb\u1797\u17d2\u1793\u17c2\u1780\u179a\u1794\u179f\u17cb\u17a2\u17d2\u1793\u1780\u17d4 [\u179f\u1780\u1798\u17d2\u1798\u1797\u17b6\u1796: \u1794\u17be\u1780\u200b\u179a\u1794\u17c0\u1794\u1781\u17d2\u1798\u17c5]", // EN: Turning on the dark theme now, easier on your eyes. [ACTION: ENABLE_DARK_MODE]
@@ -1948,7 +1948,7 @@ window.NEXUS_LANG = {
     "Medya odakl\u0131 e\u011flence profilini tetikle.": "\u1794\u17be\u1780\u1796\u17b8\u1795\u17d2\u1791\u17b6\u17c6\u1784\u1798\u17c1\u178c\u17c0", // EN: Trigger the media-focused entertainment profile.
     "Medya panelinden a\u00e7\u0131l\u0131r": "\u1798\u17c1\u178c\u17c0 \u1793\u17b7\u1784\u179f\u17bc\u179a", // EN: Turns on from the media panel
     "Medya ve Ses": "\u1798\u17c1\u178c\u17c0 \u1793\u17b7\u1784\u1780\u1798\u17d2\u179f\u17b6\u1793\u17d2\u178f", // EN: Media and Audio
-    "Medya ve e\u011flence": "", // EN: Media and entertainment
+    "Medya ve e\u011flence": "\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793 \u1793\u17b7\u1784\u1780\u1798\u17d2\u179f\u17b6\u1793\u17d2\u178f", // EN: Media and entertainment
     "Medya ve e\u011flence paneli": "\u1795\u17d2\u1791\u17b6\u17c6\u1784\u17a7\u1794\u1780\u179a\u178e\u17cd\u179f\u17b6\u179a\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793 \u1793\u17b7\u1784 \u0437\u0430\u0431\u0430\u0432\u17b6", // EN: Media and entertainment panel
     "Medya ve ortam cihazlar\u0131yla kar\u015f\u0131lama sahnesi \u00e7al\u0131\u015ft\u0131r.": "\u179a\u178f\u17cb\u179f\u17b7\u17d2\u179c\u1784\u179f\u17d2\u179c\u17b6\u1782\u1798\u1793\u17cd\u1787\u17b6\u1798\u17bd\u1799\u17a7\u1794\u1780\u179a\u178e\u17cd\u179f\u17b6\u179a\u1796\u17d0\u178f\u17cc\u1798\u17b6\u1793 \u1793\u17b7\u1784\u1794\u179a\u17b7\u1799\u17b6\u1780\u17b6\u179f\u17d4", // EN: Run a welcome scene with media and ambient devices.
     "Menzil Artt\u0131r\u0131c\u0131": "\u17a7\u1794\u1780\u179a\u178e\u17cd\u1796\u1784\u17d2\u179a\u17b8\u1780\u179f\u1789\u17d2\u1789\u17b6", // EN: Range Extender
@@ -2355,7 +2355,7 @@ window.NEXUS_LANG = {
     "Su Is\u0131t\u0131c\u0131s\u0131": "\u1798\u17c9\u17b6\u179f\u17ca\u17b8\u1793\u1792\u17d2\u179c\u17be\u1780\u17d2\u178f\u17b6\u1794\u17cb\u1791\u17b9\u1780 (\u1794\u17d2\u179a\u1797\u17c1\u1791\u1792\u17bb\u1784)", // EN: Water Heater
     "Su Is\u0131t\u0131c\u0131s\u0131 (Kazan Tipi)": "\u1798\u17c9\u17c2\u178f\u17d2\u179a\u1791\u17b9\u1780", // EN: Water Heater (Tank Type)
     "Su Saya\u00e7lar\u0131": "\u1780\u1798\u17d2\u1798\u1784\u17cb\u1785\u17d2\u179a\u1780\u1791\u17b9\u1780", // EN: Water Meters
-    "Su Vanas\u0131 Kumandas\u0131": "", // EN: Water Valve Controller
+    "Su Vanas\u0131 Kumandas\u0131": "\u17a7\u1794\u1780\u179a\u178e\u17cd\u1794\u1789\u17d2\u1787\u17b6\u179f\u1793\u17d2\u1791\u17c7\u1791\u17b9\u1780", // EN: Water Valve Controller
     "Su Vanas\u0131 Kumandas\u0131 (Gateway)": "\u179f\u17d2\u1782\u1793\u17d2\u1792\u17b8\u178f\u17d2\u179a\u17bd\u178f\u1791\u17b9\u1780 (\u17a7\u1794\u1780\u179a\u178e\u17cd\u1785\u17d2\u179a\u1780)", // EN: Water Valve Controller (Gateway)
     "Sulama Fiskiyesi": "\u1798\u17c9\u17b6\u179f\u17ca\u17b8\u1793\u179a\u17c7\u1791\u17b9\u1780", // EN: Sprinkler
     "Sulama program\u0131": "\u1780\u17b6\u179b\u179c\u17b7\u1797\u17b6\u1782\u1785\u1798\u17d2\u179b\u1780\u17cb\u1791\u17b9\u1780", // EN: Watering schedule

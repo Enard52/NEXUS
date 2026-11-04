@@ -36,6 +36,8 @@ import { createRequire } from 'node:module';
 // Gizlilik / Şartlar / İade: TR ve EN site-legal-content.mjs'ten; diğer diller scripts/legal-translations/<kod>.json
 // dosyalarından (kolaylık çevirisi; altında bunu belirten not yer alır). Çevirisi olmayan dil İngilizceye düşer.
 const legalCjs = createRequire(import.meta.url)('./legal-content.cjs');
+// Sağdan sola yazılan diller: sayfa yönü <html dir> ile verilir.
+const htmlDir = (lang) => (['ar', 'fa', 'he', 'ur'].includes(lang) ? ' dir="rtl"' : '');
 const legalEsc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const legalLink = (s) => legalEsc(s).replace(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,})/g, '<a href="mailto:$1">$1</a>');
 function getLegalDoc(name, lang = 'en') {
@@ -4198,7 +4200,7 @@ if(location.hostname==='enard52.github.io'){
 function renderLanding(c, hasShots) {
   const landingPath = c.lang === 'en' ? '/' : `/${c.lang}/`;
   return `<!DOCTYPE html>
-<html lang="${c.htmlLang}" data-theme="light">
+<html lang="${c.htmlLang}"${htmlDir(c.lang)} data-theme="light">
 <head>
 ${baseHead(c, landingPath, { schema: landingSchema(c) })}
 <style>${CSS}</style>
@@ -4230,7 +4232,7 @@ function renderAbout(c) {
   const path = c.lang === 'en' ? '/about.html' : `/${c.lang}/about.html`;
   const ab = c.about;
   return `<!DOCTYPE html>
-<html lang="${c.htmlLang}" data-theme="light">
+<html lang="${c.htmlLang}"${htmlDir(c.lang)} data-theme="light">
 <head>
 ${baseHead(c, path, {
     schema: {
@@ -4323,7 +4325,7 @@ function renderLegalDoc(c, slug, doc) {
   const trUrl = `${SITE_ORIGIN}/tr/${slug}`;
 
   return `<!DOCTYPE html>
-<html lang="${c.htmlLang}" data-theme="light">
+<html lang="${c.htmlLang}"${htmlDir(c.lang)} data-theme="light">
 <head>
 ${baseHead(c, path, {
     title: doc.title + ' — NEXUS',
@@ -4370,7 +4372,7 @@ function renderNotFound(c) {
   const other = isTr ? content.en : content.tr;
   const home = isTr ? '/tr/' : '/';
   return `<!DOCTYPE html>
-<html lang="${c.htmlLang}" data-theme="light">
+<html lang="${c.htmlLang}"${htmlDir(c.lang)} data-theme="light">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -4431,7 +4433,7 @@ function renderSignInRedirect(tr, lang = (tr ? 'tr' : 'en')) {
   const t = tr
     ? { lang: 'tr', title: 'NEXUS kurulumu', h1: 'Giriş programda', p: 'Hesap, masaüstü programında ve Android uygulamasında açılır. Kurulum dosyaları ana sayfada.', link: 'Kurulumu indir' }
     : { lang: lang, title: 'Get NEXUS', h1: 'Sign in from the app', p: 'Your account opens in the desktop program and the Android app. Installers are on the home page.', link: 'Download' };
-  return `<!DOCTYPE html><html lang="${t.lang}" data-theme="dark"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  return `<!DOCTYPE html><html lang="${t.lang}"${htmlDir(t.lang)} data-theme="dark"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>${t.title}</title><meta name="robots" content="noindex"/>
 <meta http-equiv="refresh" content="0;url=${home}"/>
 <style>:root{color-scheme:dark light}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#09090b;color:#e5e7eb;font:16px Inter,system-ui,sans-serif;text-align:center}main{padding:24px}h1{font-size:20px;margin:0 0 8px}p{margin:0;color:#9ca3af;font-size:14px}a{display:inline-block;margin-top:16px;min-height:44px;padding:12px 20px;border-radius:12px;background:#818cf8;color:#09090b;font-weight:700;text-decoration:none}</style>

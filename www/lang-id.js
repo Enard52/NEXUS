@@ -617,19 +617,19 @@ window.NEXUS_LANG = {
     "Durum al\u0131namad\u0131": "Tidak dapat memuat status", // EN: Couldn't load the status
     "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "Kode Authenticator ada di", // EN: Authenticator code is on
     "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "Verifikasi dua langkah memerlukan akun cloud. Masukkan kode autentikator untuk mematikannya. Pindai kode dengan aplikasi autentikator Anda, lalu masukkan 6 digitnya. Kode pengaturan Jika Anda tidak dapat memindainya, ketik kunci ini ke dalam aplikasi: Kode harus terdiri dari 6 digit. Kode salah atau telah kedaluwarsa. Kode salah atau telah kedaluwarsa. Kode tidak cocok jika jam ponsel Anda tidak disetel secara otomatis; ubah ke otomatis dan coba kode yang diperbarui sekali lagi. Kode tidak dapat diverifikasi. Tindakan tidak dapat diselesaikan. Verifikasi dua langkah aktif. Verifikasi dua langkah mati. Masukkan kode 6 digit dari aplikasi autentikator Anda. Buka aplikasi autentikator seperti Google Authenticator atau Microsoft Authenticator.", // EN: Two-step verification needs a cloud account.
-    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "", // EN: Enter the authenticator code to turn it off.
-    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "", // EN: Scan the code with your authenticator app, then enter the 6 digits.
-    "Kurulum kodu": "", // EN: Setup code
-    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "", // EN: If you can't scan it, type this key into the app:
-    "Kod 6 hane olmal\u0131.": "", // EN: The code must be 6 digits.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "", // EN: The code is wrong or has expired.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
-    "Kod do\u011frulanamad\u0131.": "", // EN: The code could not be verified.
-    "\u0130\u015flem tamamlanamad\u0131.": "", // EN: The action could not be completed.
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "", // EN: Two-step verification is on.
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "", // EN: Two-step verification is off.
-    "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "", // EN: Enter the 6-digit code from your authenticator app.
-    "Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulamas\u0131 a\u00e7.": "", // EN: Open an authenticator app such as Google Authenticator or Microsoft Authenticator.
+    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "Masukkan kode autentikator untuk menonaktifkannya.", // EN: Enter the authenticator code to turn it off.
+    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "Pindai kode dengan aplikasi autentikator, lalu masukkan 6 digitnya.", // EN: Scan the code with your authenticator app, then enter the 6 digits.
+    "Kurulum kodu": "Kode penyiapan", // EN: Setup code
+    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "Jika tidak bisa memindai, ketik kunci ini ke dalam aplikasi:", // EN: If you can't scan it, type this key into the app:
+    "Kod 6 hane olmal\u0131.": "Kode harus 6 digit.", // EN: The code must be 6 digits.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "Kode salah atau sudah kedaluwarsa.", // EN: The code is wrong or has expired.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "Kode salah atau sudah kedaluwarsa. Kode tidak akan cocok jika jam ponsel tidak diatur otomatis; ubah ke otomatis lalu coba kode yang diperbarui sekali lagi.", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
+    "Kod do\u011frulanamad\u0131.": "Kode tidak dapat diverifikasi.", // EN: The code could not be verified.
+    "\u0130\u015flem tamamlanamad\u0131.": "Tindakan tidak dapat diselesaikan.", // EN: The action could not be completed.
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "Verifikasi dua langkah aktif.", // EN: Two-step verification is on.
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "Verifikasi dua langkah nonaktif.", // EN: Two-step verification is off.
+    "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "Masukkan kode 6 digit dari aplikasi autentikator.", // EN: Enter the 6-digit code from your authenticator app.
+    "Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulamas\u0131 a\u00e7.": "Buka aplikasi autentikator seperti Google Authenticator atau Microsoft Authenticator.", // EN: Open an authenticator app such as Google Authenticator or Microsoft Authenticator.
     "A\u015fa\u011f\u0131daki kodu okut ya da anahtar\u0131 elle gir.": "Pindai kode di bawah ini atau masukkan kunci secara manual.", // EN: Scan the code below or enter the key by hand.
     "Uygulamadaki 6 haneli kodu yaz ve Do\u011frula'ya dokun.": "Ketik kode 6 digit dari aplikasi dan ketuk Verifikasi.", // EN: Type the 6-digit code from the app and tap Verify.
     "Uygulamada eski bir NEXUS kayd\u0131 varsa sil; her kurulumda yeni anahtar \u00fcretilir, yaln\u0131z en son okuttu\u011funun kodu ge\u00e7erlidir.": "Hapus entri NEXUS lama di aplikasi; setiap pengaturan membuat kunci baru, dan hanya kode dari yang terakhir Anda pindai yang berlaku.", // EN: Delete any old NEXUS entry in the app; each setup creates a new key, and only the code of the one you scanned last is valid.
@@ -1176,7 +1176,7 @@ window.NEXUS_LANG = {
     "Masa\u00fcst\u00fc Uygulamas\u0131": "Aplikasi Desktop", // EN: Desktop App
     "S\u00fcr\u00fcm\u00fc g\u00f6r\u00fcnt\u00fcle, yeni s\u00fcr\u00fcm\u00fc buradan kontrol et ve y\u00fckle.": "Lihat versi, periksa versi baru di sini, dan pasang.\\nPeriksa Pembaruan", // EN: View the version, check for a new version here and install it.
     "G\u00fcncellemeleri Kontrol Et": "Mulai ulang dan Pasang", // EN: Check for Updates
-    "Yeniden Ba\u015flat ve Y\u00fckle": "", // EN: Restart and Install
+    "Yeniden Ba\u015flat ve Y\u00fckle": "Mulai Ulang dan Pasang", // EN: Restart and Install
     "Cihazlar\u0131n durumu de\u011fi\u015fti\u011finde di\u011fer senaryolar\u0131 otomatik olarak tetikleyin.": "Memicu skenario lain secara otomatis ketika status perangkat Anda berubah.", // EN: Trigger other scenarios automatically when your devices' status changes.
     "Cihazlar\u0131na dair i\u00e7g\u00f6r\u00fcler edin, stratejilerle otomatik tasarruf et.": "Dapatkan wawasan tentang perangkat Anda dan simpan secara otomatis dengan strategi.", // EN: Get insights about your devices and save automatically with strategies.
     "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "Anda dapat menambahkan perangkat Anda dengan pemindaian otomatis, kode QR, kode pengaturan, atau katalog manual.", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
@@ -1390,7 +1390,7 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Mari lakukan pemeriksaan terakhir sebelum Anda pergi.", // EN: Let's do the final checks before you leave.
     "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "Matikan lampu secara otomatis setelah meninggalkan rumah.", // EN: Turn off the lights automatically after leav...
     "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "Matikan lampu secara otomatis setelah meninggalkan rumah dan nyalakan kembali saat Anda kembali.", // EN: Turn off the lights automatically after leaving home
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "", // EN: Turn off the lights automatically after you leave and turn them on when you return.
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "Matikan lampu secara otomatis setelah Anda pergi dan nyalakan saat Anda kembali.", // EN: Turn off the lights automatically after you leave and turn them on when you return.
     "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "Matikan AC secara otomatis saat tidak ada orang di rumah dan hindari konsumsi yang tidak perlu.", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
     "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "Matikan daya secara otomatis ke perangkat yang siaga pada waktu yang Anda pilih di malam hari.", // EN: Automatically cut power to devices on standby at the time you choose at night.
     "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "Saat meninggalkan rumah", // EN: When leaving home
@@ -1748,24 +1748,24 @@ window.NEXUS_LANG = {
     "Kamera, alarm, zil ve sens\u00f6r gruplar\u0131": "Kamera, alarm, bel pintu, dan sensor", // EN: Cameras, alarms, doorbells and sensors
     "Kamera, kilit ve sens\u00f6r durumlar\u0131n\u0131 tek yerden takip et.": "Lacak status kamera, kunci, dan sensor dari satu tempat.", // EN: Track camera, lock and sensor status from one place.
     "Kamera, kilit ve sens\u00f6rleri ayn\u0131 ekranda g\u00f6r. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, kritik durum \u00f6zetleri ve h\u0131zl\u0131 g\u00fcvenlik aksiyonlar\u0131 tek yerde toplans\u0131n.": "Lihat kamera, kunci, dan sensor di layar yang sama. Mode di rumah dan di luar rumah, ringkasan status penting, dan tindakan keamanan cepat di satu tempat. Buat pusat keamanan rumah yang menampilkan kamera, kunci, dan sensor di satu layar. Tambahkan mode di rumah dan di luar rumah, tombol kontrol cepat, dan ringkasan status penting. Kamera dan mikrofon mati. Bel Pintu Video Kunci dengan Kamera Video muncul setelah aliran kamera terhubung ke NEXUS. Mematikan kamera sementara Mati Saat mati, pemicu tidak dijalankan Matikan Perintah Mati Dikirim Kunci Pintu Kunci Pintu (Gateway) Kunci Pintu (NB-IoT) Terkunci setelah pintu ditutup Kunci pintu Pintu dan Akses Sensor Pintu dan Jendela Sensor Pintu dan Jendela (Bluetooth)", // EN: See cameras, locks and sensors on the same screen. At-home and away modes, critical status summaries and quick security actions in one place.
-    "Kamera, kilit ve sens\u00f6rleri tek ekranda g\u00f6steren bir ev g\u00fcvenlik merkezi olu\u015ftur. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, h\u0131zl\u0131 kontrol butonlar\u0131 ve kritik durum \u00f6zetleri ekle.": "", // EN: Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.
-    "Kameralar ve mikrofonlar kapal\u0131.": "", // EN: Cameras and microphones are off.
-    "Kameral\u0131 Kap\u0131 Zili": "", // EN: Video Doorbell
-    "Kameral\u0131 Kilitler": "", // EN: Locks with Camera
-    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "", // EN: Video appears once the camera's stream is connected to NEXUS.
-    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "", // EN: Temporarily turns off the camera
-    "Kapal\u0131": "", // EN: Off
-    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "", // EN: When off, the trigger doesn't run
-    "Kapat": "", // EN: Turn off
-    "Kapatma Komutu G\u00f6nderildi": "", // EN: Turn-off Command Sent
-    "Kap\u0131 Kilidi": "", // EN: Door Lock
-    "Kap\u0131 Kilidi (Gateway)": "", // EN: Door Lock (Gateway)
-    "Kap\u0131 Kilidi (NB-IoT)": "", // EN: Door Lock (NB-IoT)
-    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "", // EN: Locks after the door closes
-    "Kap\u0131 kilidi": "", // EN: Door lock
-    "Kap\u0131 ve Eri\u015fim": "", // EN: Doors and Access
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "", // EN: Door and Window Sensor
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "", // EN: Door and Window Sensor (Bluetooth)
+    "Kamera, kilit ve sens\u00f6rleri tek ekranda g\u00f6steren bir ev g\u00fcvenlik merkezi olu\u015ftur. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, h\u0131zl\u0131 kontrol butonlar\u0131 ve kritik durum \u00f6zetleri ekle.": "Buat pusat keamanan rumah yang menampilkan kamera, kunci, dan sensor dalam satu layar. Tambahkan mode di rumah dan pergi, tombol kontrol cepat, serta ringkasan status penting.", // EN: Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.
+    "Kameralar ve mikrofonlar kapal\u0131.": "Kamera dan mikrofon nonaktif.", // EN: Cameras and microphones are off.
+    "Kameral\u0131 Kap\u0131 Zili": "Bel Pintu Video", // EN: Video Doorbell
+    "Kameral\u0131 Kilitler": "Kunci dengan Kamera", // EN: Locks with Camera
+    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "Video muncul setelah aliran kamera terhubung ke NEXUS.", // EN: Video appears once the camera's stream is connected to NEXUS.
+    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "Mematikan kamera untuk sementara", // EN: Temporarily turns off the camera
+    "Kapal\u0131": "Mati", // EN: Off
+    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "Jika mati, pemicu tidak berjalan", // EN: When off, the trigger doesn't run
+    "Kapat": "Matikan", // EN: Turn off
+    "Kapatma Komutu G\u00f6nderildi": "Perintah Mematikan Terkirim", // EN: Turn-off Command Sent
+    "Kap\u0131 Kilidi": "Kunci Pintu", // EN: Door Lock
+    "Kap\u0131 Kilidi (Gateway)": "Kunci Pintu (Gateway)", // EN: Door Lock (Gateway)
+    "Kap\u0131 Kilidi (NB-IoT)": "Kunci Pintu (NB-IoT)", // EN: Door Lock (NB-IoT)
+    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "Terkunci setelah pintu ditutup", // EN: Locks after the door closes
+    "Kap\u0131 kilidi": "Kunci pintu", // EN: Door lock
+    "Kap\u0131 ve Eri\u015fim": "Pintu dan Akses", // EN: Doors and Access
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "Sensor Pintu dan Jendela", // EN: Door and Window Sensor
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "Sensor Pintu dan Jendela (Bluetooth)", // EN: Door and Window Sensor (Bluetooth)
     "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (ZigBee)": "Sensor Pintu dan Jendela (ZigBee)", // EN: Door and Window Sensor (ZigBee)
     "Kap\u0131 ve pencere sens\u00f6rleri": "Sensor pintu dan jendela", // EN: Door and window sensors
     "Kap\u0131, pencere, hareket sens\u00f6r\u00fc": "Sensor pintu, jendela, gerakan", // EN: Door, window, motion sensor
@@ -3103,7 +3103,7 @@ window.NEXUS_LANG = {
     "Bu ba\u011flant\u0131 t\u00fcr\u00fc hen\u00fcz ger\u00e7ek bir cihazla denenmedi.": "Suara Notifikasi Dalam Aplikasi", // EN: This connection type has not been tested with a real device yet.
     "Uygulama \u0130\u00e7i Bildirim Sesi": "Lembut", // EN: In-App Notification Sound
     "Yumu\u015fak": "Cadangkan & Pulihkan", // EN: Soft
-    "Yedekle ve Geri Y\u00fckle": "", // EN: Backup & Restore
+    "Yedekle ve Geri Y\u00fckle": "Cadangkan & Pulihkan", // EN: Backup & Restore
     "Cihaz listesi, otomasyonlar, senaryolar ve ayarlar bir dosyaya kaydedilir. Cihaz parolalar\u0131, yerel anahtarlar, Telegram anahtar\u0131 ve oturum bilgisi yede\u011fe girmez.": "Daftar perangkat, otomatisasi, adegan, dan pengaturan Anda disimpan ke dalam berkas. Kata sandi perangkat, kunci lokal, token Telegram, dan sesi Anda tidak termasuk dalam cadangan.", // EN: Your device list, automations, scenes and settings are saved to a file. Device passwords, local keys, the Telegram token and your session are not included in the backup.
     "Yede\u011fi d\u0131\u015fa aktar": "Ekspor cadangan", // EN: Export backup
     "Hata Raporu": "Laporan Kesalahan", // EN: Error Report
@@ -3215,16 +3215,16 @@ window.NEXUS_LANG = {
     "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "Menyalakan lampu dan membuka tirai, menjalankan AC pada 22\u00b0 dan mengirim vacuum kembali untuk diisi daya.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
     "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Mematikan lampu, TV, dan AC, menutup tirai dan mengunci pintu.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Mematikan lampu dan TV, menutup tirai dan mengunci pintu. Mengatur lampu ke nada hangat pada 15%, menutup tirai dan menyalakan TV. Mengunci pintu dan menutup tirai. Menyalakan lampu dengan kecerahan 70%. Memulai robot vakum. Hari kerja pukul 10:00. Mengatur AC dan termostat ke pengaturan kenyamanan dan menjalankan pembersih udara. Mengirim notifikasi. Skenario ini tidak memengaruhi perangkat Anda saat ini. Untuk mengaktifkannya, tambahkan perangkat yang sesuai (mis. lampu, tirai, atau vakum). Buat rumah baru, atau bergabung dengan rumah menggunakan kode undangan yang dikirimkan kepada Anda. Anda belum masuk. Rumah disimpan hanya di perangkat ini. Masuk untuk mengundang anggota, bergabung dengan rumah, dan menggunakan obrolan keluarga.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
-    "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
-    "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "", // EN: Locks the door and closes the curtains.
-    "I\u015f\u0131klar\u0131 %70 parlakl\u0131kta a\u00e7ar.": "", // EN: Turns the lights on at 70% brightness.
-    "Robot s\u00fcp\u00fcrgeyi ba\u015flat\u0131r.": "", // EN: Starts the robot vacuum.
-    "Hafta i\u00e7i 10:00": "", // EN: Weekdays 10:00
-    "Klimay\u0131 ve termostat\u0131 konfor ayar\u0131na getirir, hava temizleyiciyi \u00e7al\u0131\u015ft\u0131r\u0131r.": "", // EN: Sets the AC and thermostat to the comfort setting and runs the air purifier.
-    "Bildirim g\u00f6nderir": "", // EN: Sends a notification
-    "Bu senaryo mevcut cihazlar\u0131n\u0131 etkilemiyor. Senaryonun \u00e7al\u0131\u015fmas\u0131 i\u00e7in uygun bir cihaz (\u00f6r. \u0131\u015f\u0131k, perde, s\u00fcp\u00fcrge) eklemelisin.": "", // EN: This scenario doesn't affect any of your current devices. To make it work, add a suitable device (e.g. a light, curtain or vacuum).
-    "Yeni bir ev olu\u015ftur ya da sana g\u00f6nderilen davet koduyla bir eve kat\u0131l.": "", // EN: Create a new home, or join one with the invite code sent to you.
-    "Oturum a\u00e7\u0131k de\u011fil. Evler yaln\u0131zca bu cihazda tutulur. \u00dcye davet etmek, bir eve kat\u0131lmak ve aile sohbeti i\u00e7in oturum a\u00e7.": "", // EN: You're not signed in. Homes are kept on this device only. Sign in to invite members, join a home and use the family chat.
+    "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "Mengatur lampu ke warna hangat 15%, menutup tirai, dan menyalakan TV.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
+    "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "Mengunci pintu dan menutup tirai.", // EN: Locks the door and closes the curtains.
+    "I\u015f\u0131klar\u0131 %70 parlakl\u0131kta a\u00e7ar.": "Menyalakan lampu dengan kecerahan 70%.", // EN: Turns the lights on at 70% brightness.
+    "Robot s\u00fcp\u00fcrgeyi ba\u015flat\u0131r.": "Menjalankan penyedot debu robot.", // EN: Starts the robot vacuum.
+    "Hafta i\u00e7i 10:00": "Hari kerja 10.00", // EN: Weekdays 10:00
+    "Klimay\u0131 ve termostat\u0131 konfor ayar\u0131na getirir, hava temizleyiciyi \u00e7al\u0131\u015ft\u0131r\u0131r.": "Mengatur AC dan termostat ke setelan nyaman dan menjalankan pemurni udara.", // EN: Sets the AC and thermostat to the comfort setting and runs the air purifier.
+    "Bildirim g\u00f6nderir": "Mengirim notifikasi", // EN: Sends a notification
+    "Bu senaryo mevcut cihazlar\u0131n\u0131 etkilemiyor. Senaryonun \u00e7al\u0131\u015fmas\u0131 i\u00e7in uygun bir cihaz (\u00f6r. \u0131\u015f\u0131k, perde, s\u00fcp\u00fcrge) eklemelisin.": "Skenario ini tidak memengaruhi perangkat Anda saat ini. Agar berfungsi, tambahkan perangkat yang sesuai (mis. lampu, tirai, atau penyedot debu).", // EN: This scenario doesn't affect any of your current devices. To make it work, add a suitable device (e.g. a light, curtain or vacuum).
+    "Yeni bir ev olu\u015ftur ya da sana g\u00f6nderilen davet koduyla bir eve kat\u0131l.": "Buat rumah baru, atau bergabung dengan rumah menggunakan kode undangan yang dikirim kepada Anda.", // EN: Create a new home, or join one with the invite code sent to you.
+    "Oturum a\u00e7\u0131k de\u011fil. Evler yaln\u0131zca bu cihazda tutulur. \u00dcye davet etmek, bir eve kat\u0131lmak ve aile sohbeti i\u00e7in oturum a\u00e7.": "Anda belum masuk. Rumah hanya disimpan di perangkat ini. Masuk untuk mengundang anggota, bergabung dengan rumah, dan menggunakan obrolan keluarga.", // EN: You're not signed in. Homes are kept on this device only. Sign in to invite members, join a home and use the family chat.
     "Shelly 1 / 1PM R\u00f6le": "Shelly 1 / 1PM Relay", // EN: Shelly 1 / 1PM Relay
     "Shelly RGBW2 \u015eerit": "Shelly RGBW2 Strip", // EN: Shelly RGBW2 Strip
     "Shelly H&T S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc": "Shelly H&T Sensor Suhu & Kelembaban", // EN: Shelly H&T Temperature & Humidity Sensor
@@ -3261,7 +3261,7 @@ window.NEXUS_LANG = {
     " A command was sent over your local network to 1 device.": "Perintah dikirim melalui jaringan lokal Anda ke 1 perangkat.", // EN: A command was sent over your local network to 1 device.
     "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 Perintah tidak sampai ke {0} \u2014 pastikan perangkat menyala dan terhubung ke jaringan Wi-Fi yang sama.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
     "You have {0} devices at home.": "Anda memiliki {0} perangkat di rumah.", // EN: You have {0} devices at home.
-    "You have {0} device at home.": "", // EN: You have {0} device at home.
+    "You have {0} device at home.": "Anda memiliki {0} perangkat di rumah.", // EN: You have {0} device at home.
     "Right now these are on: {0}.": "Saat ini yang menyala: {0}.", // EN: Right now these are on: {0}.
     " and a few more": "dan beberapa lagi", // EN: and a few more
     "Nothing is on right now, the house is quiet.": "Tidak ada yang menyala saat ini, rumah tenang.", // EN: Nothing is on right now, the house is quiet.

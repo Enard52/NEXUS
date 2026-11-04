@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Jungikliai ir lizdai", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "Planas", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/m\u0117n.", // EN: $7.50/month
     "/month": "/m\u0117n.", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 dienos nemokamai, v\u0117liau tik $89.99 per metus. At\u0161aukite bet kada.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "Vadovas", // EN: Guide
     "Ses ve Hareket": "Garsas ir judesys", // EN: Sound & Motion
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "narys", // EN: online
     "\u00fcye": "Ideali lygis", // EN: member
     "\u0130deal Seviye": "Dvi pakop\u0173 patvirtinimas", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "Dviej\u0173 \u017eingsni\u0173 patvirtinimas", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "Dvira\u010dio \u012fkrovimo stotis", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Dvira\u010dio \u012fkrovimo stotis (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "Dviej\u0173 mygtuk\u0173", // EN: Two-gang
@@ -3082,11 +3082,11 @@ window.NEXUS_LANG = {
     "\u015eimdiki mod:": "Esamas re\u017eimas:", // EN: Current mode:
     "se\u00e7ilmemi\u015f": "nesetintas", // EN: not set
     "Konum tetikleyicisi hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu, G\u00fcvenlik Modu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Vietos paleidiklis dar nepalaikomas, tod\u0117l negali b\u016bti i\u0161saugotas. Veikiantys tipai: Laikmatis, Oras, \u012erenginio b\u016bkl\u0117, Saugumo re\u017eimas ir Kai suveikia aliarmas (jutiklis).", // EN: The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).
-    "Uzak Eri\u015fim Adresi": "", // EN: Remote Access Address
+    "Uzak Eri\u015fim Adresi": "Nuotolin\u0117s prieigos adresas", // EN: Remote Access Address
     "Evin d\u0131\u015f\u0131ndayken (VPN ya da port y\u00f6nlendirme) bir cihaza veya hub'a ba\u015fka bir adresten ula\u015f\u0131yorsan, yerel adres yan\u0131t vermedi\u011finde bu adres denenir. Yaln\u0131z bu cihazda saklan\u0131r.": "Nuotolinio pri\u0117jimo adresas", // EN: If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.
     "\u00d6nce bir cihaz ekle; sonra ona uzak adres verebilirsin.": "Jei pasiekiate \u012frengin\u012f ar \u0161akotuv\u0105 i\u0161 kito adreso b\u016bdami toli nuo nam\u0173 (VPN arba porto peradresavimas), \u0161is adresas bus m\u0117ginamas, kai vietinis adresas neatsako. Jis saugomas tik \u0161iame \u012frenginyje.", // EN: Add a device first; then you can give it a remote address.
     "Eve gelince": "Pirmiausia prid\u0117kite \u012frengin\u012f; tada galite jam suteikti nuotolin\u012f adres\u0105.", // EN: When arriving home
-    "Evden \u00e7\u0131k\u0131nca": "", // EN: When leaving home
+    "Evden \u00e7\u0131k\u0131nca": "I\u0161\u0117jus i\u0161 nam\u0173", // EN: When leaving home
     "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r; bu cihazda kurulamaz.": "Atvykus namo", // EN: The location trigger only works in the mobile app; it cannot be set up on this device.
     "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r.": "Vietauls trigeris veikia tik mobiliojoje program\u0117l\u0117je.", // EN: The location trigger only works in the mobile app.
     "Ev konumu se\u00e7ilmedi. \u00d6nce": "N\u0117ra pasirinkta nam\u0173 vieta. Pirmiausia", // EN: No home location selected. First
@@ -3278,7 +3278,7 @@ window.NEXUS_LANG = {
     "TV or speaker": "TV arba garsiakalbis", // EN: TV or speaker
     "air purifier": "Oro valytuvas", // EN: air purifier
     "device": "\u012frenginys", // EN: device
-    "No paired {0} that can be switched was found{1}.": "", // EN: No paired {0} that can be switched was found{1}.
+    "No paired {0} that can be switched was found{1}.": "Nerasta suporuoto \u012frenginio ({0}), kur\u012f b\u016bt\u0173 galima \u012fjungti ar i\u0161jungti{1}.", // EN: No paired {0} that can be switched was found{1}.
     "Turned on": "\u012ejungta", // EN: Turned on
     "Turned off": "I\u0161jungta", // EN: Turned off
     "The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.": "{0} scena nekei\u010dia joki\u0173 j\u016bs\u0173 susiet\u0173 \u012frengini\u0173, tod\u0117l jos nei\u0161saugojau. Pam\u0117ginkite dar kart\u0105 prid\u0117jus tinkam\u0105 \u012frengin\u012f.", // EN: The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.

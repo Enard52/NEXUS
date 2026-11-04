@@ -46,63 +46,63 @@ window.NEXUS_LANG = {
     "Titre\u015fim": "Ukuvungula", // EN: Vibration
     "Animasyonlar": "Izithombe ezihambayo", // EN: Animations
     "Uyar\u0131 kategorileri, sessiz saatler ve d\u0131\u015fa d\u00f6n\u00fck kanallar.": "Izigaba zesexwayiso, amahora okuthula neziteshi zokuphuma. Ukubukeka & Okujwayelekile Isihloko, izinto nemininingwane. Izibuyekezo zeFirmware Zedivayisi I-NEXUS Siri Iphaneli Yokuthokozisa Isimo Sezulu Afghanistan Kabul \u00b7 GMT+4:30 Albania Tirane \u00b7 GMT+1 Algeria Algiers \u00b7 GMT+1 Andorra Andorra \u00b7 GMT+1 Angola Luanda \u00b7 GMT+1 Antigua & Barbuda Antigua \u00b7 GMT-4 Argentina Buenos Aires \u00b7 GMT-3 Armenia Yerevan \u00b7 GMT+4 Australia Sydney \u00b7 GMT+11 Austria Vienna \u00b7 GMT+1 Azerbaijan Baku \u00b7 GMT+4 Bahamas Nassau \u00b7 GMT-4 Bahrain Bahrain \u00b7 GMT+3 Bangladesh Dhaka \u00b7 GMT+6 Barbados Barbados \u00b7 GMT-4 Belarus Minsk \u00b7 GMT+3 Belgium Belize Belize \u00b7 GMT-6 Benin Porto-Novo \u00b7 GMT+1 Bhutan Thimphu \u00b7 GMT+6 Bolivia La Paz \u00b7 GMT-4 Bosnia & Herzegovina Sarajevo \u00b7 GMT+1 Botswana Gaborone \u00b7 GMT+2 Brazil Sao Paulo \u00b7 GMT-3 Brunei Brunei \u00b7 GMT+8 Bulgaria Sofia \u00b7 GMT+2", // EN: Alert categories, quiet hours and outbound channels.
-    "G\u00f6r\u00fcn\u00fcm ve Genel": "", // EN: Appearance & General
-    "Tema, birimler ve dil.": "", // EN: Theme, units and language.
-    "Cihaz Yaz\u0131l\u0131m G\u00fcncellemeleri": "", // EN: Device Firmware Updates
-    "NEXUS": "", // EN: NEXUS
-    "Siri": "", // EN: Siri
-    "Iklim Konfor Paneli": "", // EN: Climate Comfort Panel
-    "Afghanistan": "", // EN: Afghanistan
-    "Kabul \u00b7 GMT+4:30": "", // EN: Kabul · GMT+4:30
-    "Albania": "", // EN: Albania
-    "Tirane \u00b7 GMT+1": "", // EN: Tirane · GMT+1
-    "Algeria": "", // EN: Algeria
-    "Cezayir \u00b7 GMT+1": "", // EN: Algiers · GMT+1
-    "Andorra": "", // EN: Andorra
-    "Andorra \u00b7 GMT+1": "", // EN: Andorra · GMT+1
-    "Angola": "", // EN: Angola
-    "Luanda \u00b7 GMT+1": "", // EN: Luanda · GMT+1
-    "Antigua & Barbuda": "", // EN: Antigua & Barbuda
-    "Antigua \u00b7 GMT-4": "", // EN: Antigua · GMT-4
-    "Argentina": "", // EN: Argentina
-    "Buenos Aires \u00b7 GMT-3": "", // EN: Buenos Aires · GMT-3
-    "Armenia": "", // EN: Armenia
-    "Yerevan \u00b7 GMT+4": "", // EN: Yerevan · GMT+4
-    "Australia": "", // EN: Australia
-    "Sydney \u00b7 GMT+11": "", // EN: Sydney · GMT+11
-    "Austria": "", // EN: Austria
-    "Viyana \u00b7 GMT+1": "", // EN: Vienna · GMT+1
-    "Azerbaijan": "", // EN: Azerbaijan
-    "Baku \u00b7 GMT+4": "", // EN: Baku · GMT+4
-    "Bahamas": "", // EN: Bahamas
-    "Nassau \u00b7 GMT-4": "", // EN: Nassau · GMT-4
-    "Bahrain": "", // EN: Bahrain
-    "Bahrain \u00b7 GMT+3": "", // EN: Bahrain · GMT+3
-    "Bangladesh": "", // EN: Bangladesh
-    "Dhaka \u00b7 GMT+6": "", // EN: Dhaka · GMT+6
-    "Barbados": "", // EN: Barbados
-    "Barbados \u00b7 GMT-4": "", // EN: Barbados · GMT-4
-    "Belarus": "", // EN: Belarus
-    "Minsk \u00b7 GMT+3": "", // EN: Minsk · GMT+3
-    "Belgium": "", // EN: Belgium
-    "Belize": "", // EN: Belize
-    "Belize \u00b7 GMT-6": "", // EN: Belize · GMT-6
-    "Benin": "", // EN: Benin
-    "Porto-Novo \u00b7 GMT+1": "", // EN: Porto-Novo · GMT+1
-    "Bhutan": "", // EN: Bhutan
-    "Thimphu \u00b7 GMT+6": "", // EN: Thimphu · GMT+6
-    "Bolivia": "", // EN: Bolivia
-    "La Paz \u00b7 GMT-4": "", // EN: La Paz · GMT-4
-    "Bosnia & Herzegovina": "", // EN: Bosnia & Herzegovina
-    "Sarajevo \u00b7 GMT+1": "", // EN: Sarajevo · GMT+1
-    "Botswana": "", // EN: Botswana
-    "Gaborone \u00b7 GMT+2": "", // EN: Gaborone · GMT+2
-    "Brazil": "", // EN: Brazil
-    "Sao Paulo \u00b7 GMT-3": "", // EN: Sao Paulo · GMT-3
-    "Brunei": "", // EN: Brunei
-    "Brunei \u00b7 GMT+8": "", // EN: Brunei · GMT+8
-    "Bulgaria": "", // EN: Bulgaria
-    "Sofia \u00b7 GMT+2": "", // EN: Sofia · GMT+2
+    "G\u00f6r\u00fcn\u00fcm ve Genel": "Ukubukeka Nokujwayelekile", // EN: Appearance & General
+    "Tema, birimler ve dil.": "Itimu, amayunithi nolimi.", // EN: Theme, units and language.
+    "Cihaz Yaz\u0131l\u0131m G\u00fcncellemeleri": "Izibuyekezo Ze-Firmware Yedivayisi", // EN: Device Firmware Updates
+    "NEXUS": "NEXUS", // EN: NEXUS
+    "Siri": "Siri", // EN: Siri
+    "Iklim Konfor Paneli": "Iphaneli Yokunethezeka Kwesimo Sezulu", // EN: Climate Comfort Panel
+    "Afghanistan": "i-Afghanistan", // EN: Afghanistan
+    "Kabul \u00b7 GMT+4:30": "Kabul \u00b7 GMT+4:30", // EN: Kabul · GMT+4:30
+    "Albania": "i-Albania", // EN: Albania
+    "Tirane \u00b7 GMT+1": "Tirane \u00b7 GMT+1", // EN: Tirane · GMT+1
+    "Algeria": "i-Algeria", // EN: Algeria
+    "Cezayir \u00b7 GMT+1": "Algiers \u00b7 GMT+1", // EN: Algiers · GMT+1
+    "Andorra": "i-Andorra", // EN: Andorra
+    "Andorra \u00b7 GMT+1": "Andorra \u00b7 GMT+1", // EN: Andorra · GMT+1
+    "Angola": "i-Angola", // EN: Angola
+    "Luanda \u00b7 GMT+1": "Luanda \u00b7 GMT+1", // EN: Luanda · GMT+1
+    "Antigua & Barbuda": "i-Antigua ne-Barbuda", // EN: Antigua & Barbuda
+    "Antigua \u00b7 GMT-4": "Antigua \u00b7 GMT-4", // EN: Antigua · GMT-4
+    "Argentina": "i-Argentina", // EN: Argentina
+    "Buenos Aires \u00b7 GMT-3": "Buenos Aires \u00b7 GMT-3", // EN: Buenos Aires · GMT-3
+    "Armenia": "i-Armenia", // EN: Armenia
+    "Yerevan \u00b7 GMT+4": "Yerevan \u00b7 GMT+4", // EN: Yerevan · GMT+4
+    "Australia": "i-Australia", // EN: Australia
+    "Sydney \u00b7 GMT+11": "Sydney \u00b7 GMT+11", // EN: Sydney · GMT+11
+    "Austria": "i-Austria", // EN: Austria
+    "Viyana \u00b7 GMT+1": "Vienna \u00b7 GMT+1", // EN: Vienna · GMT+1
+    "Azerbaijan": "i-Azerbaijan", // EN: Azerbaijan
+    "Baku \u00b7 GMT+4": "Baku \u00b7 GMT+4", // EN: Baku · GMT+4
+    "Bahamas": "i-Bahamas", // EN: Bahamas
+    "Nassau \u00b7 GMT-4": "Nassau \u00b7 GMT-4", // EN: Nassau · GMT-4
+    "Bahrain": "i-Bahrain", // EN: Bahrain
+    "Bahrain \u00b7 GMT+3": "Bahrain \u00b7 GMT+3", // EN: Bahrain · GMT+3
+    "Bangladesh": "i-Bangladesh", // EN: Bangladesh
+    "Dhaka \u00b7 GMT+6": "Dhaka \u00b7 GMT+6", // EN: Dhaka · GMT+6
+    "Barbados": "i-Barbados", // EN: Barbados
+    "Barbados \u00b7 GMT-4": "Barbados \u00b7 GMT-4", // EN: Barbados · GMT-4
+    "Belarus": "i-Belarus", // EN: Belarus
+    "Minsk \u00b7 GMT+3": "Minsk \u00b7 GMT+3", // EN: Minsk · GMT+3
+    "Belgium": "i-Belgium", // EN: Belgium
+    "Belize": "i-Belize", // EN: Belize
+    "Belize \u00b7 GMT-6": "Belize \u00b7 GMT-6", // EN: Belize · GMT-6
+    "Benin": "i-Benin", // EN: Benin
+    "Porto-Novo \u00b7 GMT+1": "Porto-Novo \u00b7 GMT+1", // EN: Porto-Novo · GMT+1
+    "Bhutan": "i-Bhutan", // EN: Bhutan
+    "Thimphu \u00b7 GMT+6": "Thimphu \u00b7 GMT+6", // EN: Thimphu · GMT+6
+    "Bolivia": "i-Bolivia", // EN: Bolivia
+    "La Paz \u00b7 GMT-4": "La Paz \u00b7 GMT-4", // EN: La Paz · GMT-4
+    "Bosnia & Herzegovina": "i-Bosnia ne-Herzegovina", // EN: Bosnia & Herzegovina
+    "Sarajevo \u00b7 GMT+1": "Sarajevo \u00b7 GMT+1", // EN: Sarajevo · GMT+1
+    "Botswana": "i-Botswana", // EN: Botswana
+    "Gaborone \u00b7 GMT+2": "Gaborone \u00b7 GMT+2", // EN: Gaborone · GMT+2
+    "Brazil": "i-Brazil", // EN: Brazil
+    "Sao Paulo \u00b7 GMT-3": "Sao Paulo \u00b7 GMT-3", // EN: Sao Paulo · GMT-3
+    "Brunei": "i-Brunei", // EN: Brunei
+    "Brunei \u00b7 GMT+8": "Brunei \u00b7 GMT+8", // EN: Brunei · GMT+8
+    "Bulgaria": "i-Bulgaria", // EN: Bulgaria
+    "Sofia \u00b7 GMT+2": "Sofia \u00b7 GMT+2", // EN: Sofia · GMT+2
     "Burkina Faso": "IBurkina Faso", // EN: Burkina Faso
     "Ouagadougou \u00b7 GMT": "Ouagadougou \u00b7 GMT", // EN: Ouagadougou · GMT
     "Burundi": "IBurwanda", // EN: Burundi
@@ -531,7 +531,7 @@ window.NEXUS_LANG = {
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Izinhlelo ezenzakalelayo ziqhubeka uma uhlelo luvuliwe; kwikhompyutha yebhodi, izinhlelo eziyimodi ziqhubeka uma uhlelo luhlala esitolo.", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "Asikazenzi okwamanje", // EN: Not run yet
     "(ka\u00e7\u0131r\u0131ld\u0131)": "(kuphuthelwe)", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
+    "{0} cihaz g\u00fcncellendi.": "Amadivayisi angu-{0} abuyekeziwe.", // EN: {0} device(s) updated.
     "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "kuxhunywe; akukho senzo esichazwe (khetha isimo kusuka kuzilungiselelo zesenzo).", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
     "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "ukutsha kwamandla kwidivayisi {0}.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Isu lobusuku lixhunywe; akukho amadivayisi wamandla akhethiwe.", // EN: Night strategy triggered; no selected energy devices.
@@ -1179,16 +1179,16 @@ window.NEXUS_LANG = {
     "Yeniden Ba\u015flat ve Y\u00fckle": "Qala Kabusha Futhi Faka", // EN: Restart and Install
     "Cihazlar\u0131n durumu de\u011fi\u015fti\u011finde di\u011fer senaryolar\u0131 otomatik olarak tetikleyin.": "Qalisa ezinye izimo ngokuzenzakalela uma isimo samadivayisi akho sishintsha.", // EN: Trigger other scenarios automatically when your devices' status changes.
     "Cihazlar\u0131na dair i\u00e7g\u00f6r\u00fcler edin, stratejilerle otomatik tasarruf et.": "Thola ukuqonda ngemishini yakho futhi wonge ngokuzenzakalela ngezindlela. Ungangeza imishini yakho ngokuhlola ngokuzenzakalela, ikhodi ye-QR, ikhodi yokusetha noma ikhalenda yezandla. Thola ukuqonda ngemishini yakho kanye namacebiso wamandla. Qinisekisa Umshini Khetha Umshini Susa umshini Kungani umshini wami ubonakala ungaxhunywanga? Thayipha ikheli le-IP lomshini bese i-NEXUS ibona ukuthi iyiphi iprotokholi ekhuluma ngayo. Hlola uxhumano lwe-Wi-Fi lomshini wakho kanye ne-router yakho. Uma inkinga iqhubeka, susa umshini bese uwengeza futhi. Izinyathelo: Imishini > khetha umshini > Susa. Hlola uxhumano lwe-Wi-Fi lomshini kanye ne-router yakho. Uma inkinga iqhubeka, susa umshini kuhlelo lokusebenza lwe-NEXUS bese uwengeza futhi. Uma umshini wakho ungaveli, sebenzisa ukuhlola ikhodi ye-QR noma ikhodi yokusetha. Ungavula ikhasi losizo ukuthola ukwesekwa nomhlahlandlela.", // EN: Get insights about your devices and save automatically with strategies.
-    "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
-    "Cihazlar\u0131n\u0131za dair i\u00e7g\u00f6r\u00fcler edinin ve enerji ipu\u00e7lar\u0131 al\u0131n.": "", // EN: Get insights about your devices and energy tips.
-    "Cihaz\u0131 Do\u011frula": "", // EN: Verify Device
-    "Cihaz\u0131 Se\u00e7": "", // EN: Select Device
-    "Cihaz\u0131 kald\u0131r": "", // EN: Remove device
-    "Cihaz\u0131m neden \u00e7evrimd\u0131\u015f\u0131 g\u00f6r\u00fcn\u00fcyor?": "", // EN: Why does my device show as offline?
-    "Cihaz\u0131n IP adresini yaz, NEXUS konu\u015fabildi\u011fi protokol\u00fc kendisi anlas\u0131n.": "", // EN: Type the device's IP address and NEXUS figures out which protocol it speaks.
-    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modemini kontrol et. Sorun s\u00fcrerse cihaz\u0131 kald\u0131r\u0131p yeniden ekle. Ad\u0131mlar: Cihazlar > cihaz\u0131 se\u00e7 > Kald\u0131r.": "", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device and add it again. Steps: Devices > choose the device > Remove.
-    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modeminizi kontrol edin. Sorun s\u00fcrerse cihaz\u0131 NEXUS uygulamas\u0131ndan kald\u0131r\u0131p yeniden ekleyin.": "", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device from the NEXUS app and add it again.
-    "Cihaz\u0131n g\u00f6r\u00fcnm\u00fcyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve y\u00f6nlendirme i\u00e7in yard\u0131m sayfas\u0131n\u0131 a\u00e7abilirsin.": "", // EN: If your device doesn't show up, use QR scanning or a setup code. You can open the help page for support and guidance.
+    "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "Ungangeza amadivayisi akho ngokuskena okuzenzakalelayo, ikhodi ye-QR, ikhodi yokusetha noma ikhathalogi yokwenza ngesandla.", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
+    "Cihazlar\u0131n\u0131za dair i\u00e7g\u00f6r\u00fcler edinin ve enerji ipu\u00e7lar\u0131 al\u0131n.": "Thola ulwazi ngamadivayisi akho namathiphu emandla kagesi.", // EN: Get insights about your devices and energy tips.
+    "Cihaz\u0131 Do\u011frula": "Qinisekisa Idivayisi", // EN: Verify Device
+    "Cihaz\u0131 Se\u00e7": "Khetha Idivayisi", // EN: Select Device
+    "Cihaz\u0131 kald\u0131r": "Susa idivayisi", // EN: Remove device
+    "Cihaz\u0131m neden \u00e7evrimd\u0131\u015f\u0131 g\u00f6r\u00fcn\u00fcyor?": "Kungani idivayisi yami ibonakala ingaxhunyiwe?", // EN: Why does my device show as offline?
+    "Cihaz\u0131n IP adresini yaz, NEXUS konu\u015fabildi\u011fi protokol\u00fc kendisi anlas\u0131n.": "Thayipha ikheli le-IP ledivayisi bese i-NEXUS izazi ukuthi isebenzisa iprothokholi yini.", // EN: Type the device's IP address and NEXUS figures out which protocol it speaks.
+    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modemini kontrol et. Sorun s\u00fcrerse cihaz\u0131 kald\u0131r\u0131p yeniden ekle. Ad\u0131mlar: Cihazlar > cihaz\u0131 se\u00e7 > Kald\u0131r.": "Hlola uxhumo lwe-Wi-Fi ledivayisi kanye ne-router yakho. Uma inkinga iqhubeka, susa idivayisi bese uyengeza futhi. Izinyathelo: Amadivayisi > khetha idivayisi > Susa.", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device and add it again. Steps: Devices > choose the device > Remove.
+    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modeminizi kontrol edin. Sorun s\u00fcrerse cihaz\u0131 NEXUS uygulamas\u0131ndan kald\u0131r\u0131p yeniden ekleyin.": "Hlola uxhumo lwe-Wi-Fi ledivayisi kanye ne-router yakho. Uma inkinga iqhubeka, susa idivayisi kuhlelo lokusebenza le-NEXUS bese uyengeza futhi.", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device from the NEXUS app and add it again.
+    "Cihaz\u0131n g\u00f6r\u00fcnm\u00fcyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve y\u00f6nlendirme i\u00e7in yard\u0131m sayfas\u0131n\u0131 a\u00e7abilirsin.": "Uma idivayisi yakho ingavezi, sebenzisa ukuskena i-QR noma ikhodi yokusetha. Ungavula ikhasi losizo ukuthola ukwesekwa nesiqondiso.", // EN: If your device doesn't show up, use QR scanning or a setup code. You can open the help page for support and guidance.
     "Cihaz\u0131n konum (GPS) servisi kapal\u0131. A\u00e7\u0131p tekrar dene.": "Insiza yendawo yesixhobo sakho (GPS) icishiwe. Yivule bese uzama futhi.", // EN: Your device's location (GPS) service is off. Turn it on and try again.
     "Cihaz\u0131n konum servisini desteklemiyor.": "Isixhobo sakho asisekeli izinsiza zendawo.", // EN: Your device doesn't support location services.
     "Cihaz\u0131n listede yok mu? Geri bildirim g\u00f6nder": "Isixhobo asikho ohlwini? Thumela impendulo", // EN: Device not on the list? Send feedback
@@ -2087,45 +2087,45 @@ window.NEXUS_LANG = {
     "NEXUS+ hen\u00fcz sat\u0131\u015fta de\u011fil. Cihaz ekleme, kontrol panelleri, senaryolar ve NEXUS AI \u015fu an tamamen \u00fccretsiz; abonelik a\u00e7\u0131ld\u0131\u011f\u0131nda buradan haber verece\u011fiz.": "INEXUS+ ayikakabi sathengiswa okwamanje. Ukwengeza amadivayisi, izimo kanye neNEXUS AI kuyikhululekile ngokuphelele okwamanje; sizokutshela lapha lapho ukubhaliswa kuvulwa.", // EN: NEXUS+ isn't on sale yet. Adding devices, scenarios and NEXUS AI are completely free right now; we'll let you know here when subscriptions open.
     "NEXUS+ yak\u0131nda": "INEXUS+ ikusasa eliseduze", // EN: NEXUS+ coming soon
     "NEXUS, \u00e7er\u00e7eve i\u00e7indeki kodu otomatik alg\u0131lar ve e\u015fle\u015fmeyi ba\u015flat\u0131r.": "I-NEXUS ithola ikhodi ngaphakathi kwifreyimu ngokuzenzakalelayo futhi iqala ukuhlanganisa. I-NEXUS_CARD_CATALOG ayichaziwe. Ingabe i-data.js ilayishiwe? Indlela Yokusetha Ngingasiza Kanjani? Umhwamuko I-Dehumidifier Umhwamuko Dala Uhlelo Lokusebenza Lomhwamuko I-Humidifier Cacisa Ukukhanya Okumhlophe I-Nexus AI: Siyakwamukela I-Nexus AI: Bhalisela Okungalukhethile I-No-Neutral Switch (1 Gang) I-No-Neutral Switch (2 Gang) I-No-Neutral Switch (3 Gang) I-No-Neutral Switch (4 Gang) IMODE YOKUZIPHATHA Igumbi Susa igumbi Uzenzakalelayo wangemuva Ukushintshwa kweGumbi-ngokugumbi Umbono Osuselwa Ezigumbini Ukulawula igumbi ngamunye Izibani zegumbi Induduzo yegumbi Ukutholakala kwegumbi Izimo zegumbi Ukukhetha igumbi Ukuphathwa kwegumbi Induduzo yegumbi Kuzovela lapha uma isimo segumbi sikhethiwe Akukhethwanga isimo segumbi Akukhethwanga igumbi Izinga lokushisa kwegumbi Qalisa uma izinga lokushisa legumbi liphezulu kuka-25\u00b0C Ukuphathwa kwegumbi Bonisa Egumbini Gxila I-Oximeter", // EN: NEXUS detects the code inside the frame automatically and starts pairing.
-    "NEXUS_CARD_CATALOG tan\u0131ml\u0131 de\u011fil. data.js y\u00fcklendi mi?": "", // EN: NEXUS_CARD_CATALOG is not defined. Was data.js loaded?
-    "Nas\u0131l Kurulur?": "", // EN: How to Set Up
-    "Nas\u0131l yard\u0131mc\u0131 olabilirim?": "", // EN: How can I help?
-    "Nem": "", // EN: Humidity
-    "Nem Alma Cihaz\u0131": "", // EN: Dehumidifier
-    "Nem Oran\u0131": "", // EN: Humidity
-    "Nem Rutini Olu\u015ftur": "", // EN: Create Humidity Routine
-    "Nemlendirici": "", // EN: Humidifier
-    "Net Beyaz I\u015f\u0131k": "", // EN: Clear White Light
-    "Nexus AI: Kar\u015f\u0131lama": "", // EN: Nexus AI: Welcome
-    "Nexus AI: Kay\u0131t Ol": "", // EN: Nexus AI: Sign Up
-    "N\u00f6tr": "", // EN: Neutral
-    "N\u00f6trs\u00fcz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (1 Gang)
-    "N\u00f6trs\u00fcz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (2 Gang)
-    "N\u00f6trs\u00fcz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (3 Gang)
-    "N\u00f6trs\u00fcz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (4 Gang)
-    "OTOMAT\u0130K MOD": "", // EN: AUTO MODE
-    "Oda": "", // EN: Room
-    "Oday\u0131 kald\u0131r": "", // EN: Remove room
-    "Arka Plan Otomasyonu": "", // EN: Background automation
-    "Oda Bazl\u0131 Ge\u00e7i\u015f": "", // EN: Room-by-Room Switching
-    "Oda Bazl\u0131 G\u00f6r\u00fcn\u00fcm": "", // EN: Room-Based View
-    "Oda Bazl\u0131 Kontrol": "", // EN: Room-by-Room Control
-    "Oda I\u015f\u0131klar\u0131": "", // EN: Room Lights
-    "Oda Konforu": "", // EN: Room Comfort
-    "Oda M\u00fcsaitli\u011fi": "", // EN: Room Availability
-    "Oda Sahneleri": "", // EN: Room Scenes
-    "Oda Se\u00e7imi": "", // EN: Room Selection
-    "Oda Y\u00f6netimi": "", // EN: Room Management
-    "Oda konforu": "", // EN: Room comfort
-    "Oda sahnesi se\u00e7ilince burada g\u00f6r\u00fcn\u00fcr.": "", // EN: It will appear here once a room scene is selected.
-    "Oda sahnesi se\u00e7ilmedi": "", // EN: No room scene selected
-    "Oda se\u00e7ilmedi": "", // EN: No room selected
-    "Oda s\u0131cakl\u0131\u011f\u0131": "", // EN: Room temperature
-    "Oda s\u0131cakl\u0131\u011f\u0131 25\u00b0C \u00fcst\u00fcne \u00e7\u0131karsa \u00e7al\u0131\u015ft\u0131r": "", // EN: Run if room temperature goes above 25°C
-    "Oda y\u00f6netimi": "", // EN: Room management
-    "Odada G\u00f6ster": "", // EN: Show in Room
-    "Odaklanma": "", // EN: Focus
-    "Oksimetre": "", // EN: Oximeter
+    "NEXUS_CARD_CATALOG tan\u0131ml\u0131 de\u011fil. data.js y\u00fcklendi mi?": "I-NEXUS_CARD_CATALOG ayichazwanga. Ingabe i-data.js ilayishiwe?", // EN: NEXUS_CARD_CATALOG is not defined. Was data.js loaded?
+    "Nas\u0131l Kurulur?": "Indlela Yokusetha", // EN: How to Set Up
+    "Nas\u0131l yard\u0131mc\u0131 olabilirim?": "Ngingakusiza kanjani?", // EN: How can I help?
+    "Nem": "Umswakama", // EN: Humidity
+    "Nem Alma Cihaz\u0131": "Isikhipha Umswakama", // EN: Dehumidifier
+    "Nem Oran\u0131": "Umswakama", // EN: Humidity
+    "Nem Rutini Olu\u015ftur": "Dala Irutheni Yomswakama", // EN: Create Humidity Routine
+    "Nemlendirici": "Isengeza Umswakama", // EN: Humidifier
+    "Net Beyaz I\u015f\u0131k": "Ukukhanya Okumhlophe Okucacile", // EN: Clear White Light
+    "Nexus AI: Kar\u015f\u0131lama": "Nexus AI: Siyakwamukela", // EN: Nexus AI: Welcome
+    "Nexus AI: Kay\u0131t Ol": "Nexus AI: Bhalisa", // EN: Nexus AI: Sign Up
+    "N\u00f6tr": "Okungathathi hlangothi", // EN: Neutral
+    "N\u00f6trs\u00fcz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "Iswishi Engenayo I-Neutral (Isango elilodwa)", // EN: No-Neutral Switch (1 Gang)
+    "N\u00f6trs\u00fcz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "Iswishi Engenayo I-Neutral (Amasango amabili)", // EN: No-Neutral Switch (2 Gang)
+    "N\u00f6trs\u00fcz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "Iswishi Engenayo I-Neutral (Amasango amathathu)", // EN: No-Neutral Switch (3 Gang)
+    "N\u00f6trs\u00fcz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "Iswishi Engenayo I-Neutral (Amasango amane)", // EN: No-Neutral Switch (4 Gang)
+    "OTOMAT\u0130K MOD": "IMODI ENZAKALELAYO", // EN: AUTO MODE
+    "Oda": "Ikamelo", // EN: Room
+    "Oday\u0131 kald\u0131r": "Susa ikamelo", // EN: Remove room
+    "Arka Plan Otomasyonu": "Ukuzenzakalelayo okungemuva", // EN: Background automation
+    "Oda Bazl\u0131 Ge\u00e7i\u015f": "Ukushintsha Ikamelo Ngekamelo", // EN: Room-by-Room Switching
+    "Oda Bazl\u0131 G\u00f6r\u00fcn\u00fcm": "Ukubuka Okususelwe Ekamelweni", // EN: Room-Based View
+    "Oda Bazl\u0131 Kontrol": "Ukulawula Ikamelo Ngekamelo", // EN: Room-by-Room Control
+    "Oda I\u015f\u0131klar\u0131": "Amalambu Ekamelo", // EN: Room Lights
+    "Oda Konforu": "Induduzo Yekamelo", // EN: Room Comfort
+    "Oda M\u00fcsaitli\u011fi": "Ukutholakala Kwekamelo", // EN: Room Availability
+    "Oda Sahneleri": "Izigcawu Zekamelo", // EN: Room Scenes
+    "Oda Se\u00e7imi": "Ukukhetha Ikamelo", // EN: Room Selection
+    "Oda Y\u00f6netimi": "Ukuphatha Amakamelo", // EN: Room Management
+    "Oda konforu": "Induduzo yekamelo", // EN: Room comfort
+    "Oda sahnesi se\u00e7ilince burada g\u00f6r\u00fcn\u00fcr.": "Izovela lapha uma kukhethwa isigcawu sekamelo.", // EN: It will appear here once a room scene is selected.
+    "Oda sahnesi se\u00e7ilmedi": "Asikho isigcawu sekamelo esikhethiwe", // EN: No room scene selected
+    "Oda se\u00e7ilmedi": "Alikho ikamelo elikhethiwe", // EN: No room selected
+    "Oda s\u0131cakl\u0131\u011f\u0131": "Izinga lokushisa lekamelo", // EN: Room temperature
+    "Oda s\u0131cakl\u0131\u011f\u0131 25\u00b0C \u00fcst\u00fcne \u00e7\u0131karsa \u00e7al\u0131\u015ft\u0131r": "Gijima uma izinga lokushisa lekamelo likhuphuka ngaphezu kuka-25\u00b0C", // EN: Run if room temperature goes above 25°C
+    "Oda y\u00f6netimi": "Ukuphatha amakamelo", // EN: Room management
+    "Odada G\u00f6ster": "Bonisa Ekamelweni", // EN: Show in Room
+    "Odaklanma": "Ukugxila", // EN: Focus
+    "Oksimetre": "I-Oximeter", // EN: Oximeter
     "Okuma": "Ukufunda", // EN: Reading
     "Okuma i\u00e7in parlak ve odakl\u0131 beyaz \u0131\u015f\u0131k sahnesi olu\u015ftur.": "Dala isimo sokukhanya okumhlophe, okugqamile kokufunda.", // EN: Create a bright, focused white light scene for reading.
     "Olu\u015ftur": "Dala", // EN: Create
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "ilungu", // EN: online
     "\u00fcye": "Izinga Elifanele", // EN: member
     "\u0130deal Seviye": "Ukuqinisekiswa Kwezinyathelo Ezimbili", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "Ukuqinisekisa Ngezinyathelo Ezimbili", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "Isiteshi Sokushaja Samavili Amabili", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Isiteshi Sokushaja Samavili Amabili (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "Amabutho Amabili", // EN: Two-gang
@@ -2944,8 +2944,8 @@ window.NEXUS_LANG = {
     "\u0131\u015f\u0131k": "Isipholisi Sowayini", // EN: light
     "\u015eam": "Ukushaja", // EN: Damascus
     "\u015earap Dolab\u0131": "Iqoqo Lokuqhathanisa Ngokukhanya", // EN: Wine Cooler
-    "\u015earjda": "", // EN: Charging
-    "\u015eerit Lamba": "", // EN: Light Strip
+    "\u015earjda": "Iyashaja", // EN: Charging
+    "\u015eerit Lamba": "Umucu Wokukhanya", // EN: Light Strip
     "\u015eerit Lamba (BLE+Wi-Fi)": "Ibha Yokukhanya (BLE+Wi-Fi)", // EN: Light Strip (BLE+Wi-Fi)
     "\u015eerit Lamba (Bluetooth)": "Ibha Yokukhanya (Bluetooth)", // EN: Light Strip (Bluetooth)
     "\u015eerit Lamba (Zigbee)": "Ibha Yokukhanya (Zigbee)", // EN: Light Strip (Zigbee)
@@ -3202,18 +3202,18 @@ window.NEXUS_LANG = {
     "Davet e-postas\u0131ndaki kodu gir. Kod tek kullan\u0131ml\u0131kt\u0131r ve yaln\u0131zca davet edilen e-posta adresiyle \u00e7al\u0131\u015f\u0131r.": "Faka ikhodi evela ku-imeyili yesimemo. Ikhodi isetshenziselwa kanye kuphela futhi isebenza futhi ne-imeyili eseqokiwe kuphela.", // EN: Enter the code from the invitation email. The code is single-use and only works with the invited email address.
     "Oturum gerekli": "Ukungena kudinga", // EN: Sign-in required
     "\u00dcye davet etmek i\u00e7in \u00f6nce oturum a\u00e7; evin hesab\u0131na otomatik ba\u011flan\u0131r.": "Ngena kuqala ukuze umeme amalungu; uzoxhunywa ngokuzenzakalelayo ku-akhawunti yasekhaya lakho. I-imeyili ayikwazanga ukuthunyelwa kusuka kuseva Isimemo sakhiwe kodwa i-imeyili ezenzakalelayo ayikwazanga ukuthunyelwa. Ingabe silungise umbhalo wesimemo nge-app yakho ye-imeyili? Vula uhlelo lwe-imeyili Ibanga lokukhanya Ingcindezi Ukunyakaza kutholakele Akukho nyakazo Akuzenzekanga ukuxhuma kudivayisi. Qiniseka ukuthi ifakwe kunethiwekhi efanayo Akuzenzekanga ukuxhuma kudivayisi. Qiniseka ukuthi ikwi-nethiwekhi efanayo futhi ikheli le-IP kanye nokhiye wendawo kulungile Ivula izibani ngobunono bokushisa, ivula amalambu njalo ibeka i-AC ku-22\u00b0. Ivula izibani futhi ivula amalambu, iqhuba i-AC ku-22\u00b0 futhi ithumela i-vacuum ukuthi ibuyisele ekushajeni Ivele izibani zivaliwe, i-TV ne-AC, ivale amalambu futhi ivale umnyango.", // EN: Sign in first to invite members; you'll be connected to your home's account automatically.
-    "E-posta sunucudan g\u00f6nderilemedi": "", // EN: The email couldn't be sent from the server
-    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
-    "Posta Uygulamas\u0131n\u0131 A\u00e7": "", // EN: Open Mail App
-    "I\u015f\u0131k d\u00fczeyi": "", // EN: Light level
-    "Bas\u0131n\u00e7": "", // EN: Pressure
-    "Hareket alg\u0131land\u0131": "", // EN: Motion detected
-    "Hareket yok": "", // EN: No motion
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network.
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
-    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
-    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
-    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
+    "E-posta sunucudan g\u00f6nderilemedi": "I-imeyili ayikwazanga ukuthunyelwa kusuka kuseva", // EN: The email couldn't be sent from the server
+    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "Isimemo sidaliwe kodwa i-imeyili ezenzakalelayo ayikwazanga ukuthunyelwa. Ingabe silungiselele umbhalo wesimemo nge-app yakho yeposi?", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
+    "Posta Uygulamas\u0131n\u0131 A\u00e7": "Vula I-App Yeposi", // EN: Open Mail App
+    "I\u015f\u0131k d\u00fczeyi": "Izinga lokukhanya", // EN: Light level
+    "Bas\u0131n\u00e7": "Ingcindezi", // EN: Pressure
+    "Hareket alg\u0131land\u0131": "Kutholwe ukunyakaza", // EN: Motion detected
+    "Hareket yok": "Akukho kunyakaza", // EN: No motion
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "Ayikwazanga ukuxhumeka kudivayisi. Qiniseka ukuthi iku-inethiwekhi efanayo.", // EN: Couldn't connect to the device. Make sure it's on the same network.
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "Ayikwazanga ukuxhumeka kudivayisi. Qiniseka ukuthi iku-inethiwekhi efanayo nokuthi ikheli le-IP nokhiye wasendaweni kulungile.", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
+    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "Kuvula amalambu ngethoni efudumele, kuvule amakhethini futhi kubeke i-AC ku-22\u00b0.", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
+    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "Kuvula amalambu futhi kuvule amakhethini, kuqhube i-AC ku-22\u00b0 futhi kuthumele i-vacuum ukuyoshaja.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
+    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Kuvala amalambu, i-TV ne-AC, kuvale amakhethini futhi kukhiye umnyango.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Kuvala izibani ne-TV, kuvala amasheke futhi kuvalwa umnyango.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "Kusetha izibani zibe nombala oshisayo ku-15%, kuvala amasheke bese kuvulwa i-TV.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
     "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "Kuvalwa umnyango kuvaliwe amasheke.", // EN: Locks the door and closes the curtains.
@@ -3261,7 +3261,7 @@ window.NEXUS_LANG = {
     " A command was sent over your local network to 1 device.": "Umyalelo uthunyelwe ngenethiwekhi yakho yangakini kudivayisi elilodwa.", // EN: A command was sent over your local network to 1 device.
     "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 Umyalelo awufinyeleli ku-{0} \u2014 qiniseka ukuthi ivuliwe futhi ixhunywe enethwekhi ye-Wi-Fi efanayo.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
     "You have {0} devices at home.": "Unezisetshenziswa ezi-{0} ekhaya.", // EN: You have {0} devices at home.
-    "You have {0} device at home.": "", // EN: You have {0} device at home.
+    "You have {0} device at home.": "Unamadivayisi angu-{0} ekhaya.", // EN: You have {0} device at home.
     "Right now these are on: {0}.": "Njengamanje lezi zivuliwe: {0}.", // EN: Right now these are on: {0}.
     " and a few more": "noma ezimbalwa okwengeziwe", // EN: and a few more
     "Nothing is on right now, the house is quiet.": "Akukho lutho oluvuliwe okwamanje, indlu ithule.", // EN: Nothing is on right now, the house is quiet.

@@ -530,15 +530,15 @@ window.NEXUS_LANG = {
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Outomatisasies loop terwyl die app oop is; op die lessenaar gaan skedules voort terwyl die app in die lade bly.", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Nog nie uitgevoer nie", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "(gemist)", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
-    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(gemis)", // EN: (missed)
+    "{0} cihaz g\u00fcncellendi.": "{0} toestel(le) opgedateer.", // EN: {0} device(s) updated.
+    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "geaktiveer; geen aksie gedefinieer nie (kies 'n toneel in Toneelinstellings).", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "krag na {0} toestel(le) afgesny.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Energiestrategie uitgevoer", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "Sononder trigge: geen tuisplek gestel nie.", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Trigge tyd gemis (die app was gesluit).", // EN: Sunset trigger: no home location set.
     "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "Kamers", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Kameralar": "Kameras", // EN: Cameras
     "Kamera Cihazlar\u0131m": "My Kameras", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Voeg 'n kamera by om sy status en privaatheidinstelling hier te monitor. Video streaming (RTSP) ondersteuning kom binnekort.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Voeg Kamera By", // EN: Add Camera
@@ -577,11 +577,11 @@ window.NEXUS_LANG = {
     "NEXUS hen\u00fcz CarPlay uygulamas\u0131 i\u00e7ermiyor. Yay\u0131nland\u0131\u011f\u0131nda eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7\u0131p klimay\u0131 \u00e7al\u0131\u015ft\u0131rabileceksin.": "NEXUS sluit nog nie 'n CarPlay-app in nie. Wanneer dit beskikbaar is, sal jy ligte kan aanskakel en die lugversorger kan bestuur terwyl jy huis toe ry.", // EN: NEXUS doesn't include a CarPlay app yet. When it ships, you'll be able to turn on lights and run the AC as you approach home.
     "Bug\u00fcn Arabada": "In jou motor vandag", // EN: In Your Car Today
     "NEXUS'u telefonunda ana ekrana ekle (PWA); ara\u00e7ta kontrol i\u00e7in senaryo ve otomasyonlar arka planda \u00e7al\u0131\u015f\u0131r.": "Voeg NEXUS by jou foon se tuisskerm (PWA); vir beheer in die motor, hardloop scenario's en outomatisasies op die agtergrond.", // EN: Add NEXUS to your phone's home screen (PWA); for in-car control, scenarios and automations run in the background.
-    "\"Eve Geldim\" senaryosunu tek dokunu\u015fla \u00e7al\u0131\u015ft\u0131r: \u0131\u015f\u0131klar, klima ve perdeler haz\u0131r.": "", // EN: Run the "Welcome Home" scenario with one tap: lights, AC and covers ready.
+    "\"Eve Geldim\" senaryosunu tek dokunu\u015fla \u00e7al\u0131\u015ft\u0131r: \u0131\u015f\u0131klar, klima ve perdeler haz\u0131r.": "Voer die \"Welkom Tuis\"-toneel met een tik uit: ligte, lugversorging en gordyne gereed.", // EN: Run the "Welcome Home" scenario with one tap: lights, AC and covers ready.
     "Zamanlanm\u0131\u015f otomasyonlar (\u00f6r. gece enerji kesme) sen ara\u00e7ta de\u011filken de \u00e7al\u0131\u015f\u0131r.": "Hardloop die \"Welcome Home\" scenario met een tik: ligte, AC en bedekkings gereed.", // EN: Scheduled automations (e.g. night power cut) run even while you're away.
-    "Senaryolar\u0131 ve Otomasyonlar\u0131 A\u00e7": "", // EN: Open Scenarios & Automations
+    "Senaryolar\u0131 ve Otomasyonlar\u0131 A\u00e7": "Maak Tonele en Outomatiserings oop", // EN: Open Scenarios & Automations
     "G\u00f6r\u00fc\u015flerini payla\u015f": "Geskeduleerde outomatisasies (bv. nagkragonderbreking) hardloop selfs terwyl jy weg is.", // EN: Share your feedback
-    "Zamanlanm\u0131\u015f otomasyon yok": "", // EN: No scheduled automations
+    "Zamanlanm\u0131\u015f otomasyon yok": "Geen geskeduleerde outomatiserings nie", // EN: No scheduled automations
     "Saat belirleyen bir otomasyon ekleyince bug\u00fcn\u00fcn plan\u0131 burada listelenir.": "Maak Scenario's & Outomatisasies oop", // EN: Add an automation with a time and today's plan will be listed here.
     "Otomasyon Ekle": "Deel jou terugvoer", // EN: Add Automation
     "Enerji tasarruf stratejisi": "Geen geskeduleerde outomatisasies nie", // EN: Energy saving strategy
@@ -606,26 +606,26 @@ window.NEXUS_LANG = {
     "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "Om die toestel te herstel, gebruik die Fabrieksherstelstap in die vervaardiger se app.", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
     "En az 8 karakter; harf + rakam kullan.": "Minstens 8 karakters; gebruik letters + syfers.", // EN: At least 8 characters; use letters + digits.
     "\u00c7ok zay\u0131f \u2014 en az 8 karakter kullan.": "Baie swak \u2014 gebruik ten minste 8 karakters. Swak \u2014 voeg letters + syfers by. Redelik \u2014 voeg 'n hoofletter of simbool by. Goed. Sterk wagwoord. Binnekort (TOTP-appkodes) Besig om na te gaan Beskikbaar met 'n wolk-rekening Meld eers aan met jou wolk-rekening. Kon nie die status laai nie. Outentiseerderkode is aan Twee-stap verifikasi\u00eb benodig 'n wolk-rekening. Voer die outentiseerderkode in om dit af te skakel. Skandeer die kode met jou outentiseerder app, dan voer die 6 syfers in. Opstellingskode As jy dit nie kan skandeer nie, tik hierdie sleutel in die app in: Die kode moet 6 syfers wees. Die kode is verkeerd of het verval. Die kode is verkeerd of het verval. Kodes stem nie ooreen as jou foon se klok nie outomaties ingestel is nie; stel dit op outomaties en probeer die verfriste kode eenmaal. Die kode kon nie verifieer word nie. Die aksie kon nie voltooi word nie.", // EN: Very weak — use at least 8 characters.
-    "Zay\u0131f \u2014 harf + rakam ekle.": "", // EN: Weak — add letters + digits.
-    "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "", // EN: Fair — add an uppercase letter or symbol.
-    "\u0130yi.": "", // EN: Good.
-    "G\u00fc\u00e7l\u00fc \u015fifre.": "", // EN: Strong password.
-    "Yak\u0131nda (TOTP uygulama kodu)": "", // EN: Coming soon (TOTP app codes)
-    "Kontrol ediliyor": "", // EN: Checking
-    "Bulut hesab\u0131yla a\u00e7\u0131l\u0131r": "", // EN: Available with a cloud account
-    "\u00d6nce bulut hesab\u0131nla giri\u015f yap.": "", // EN: Sign in with your cloud account first.
-    "Durum al\u0131namad\u0131": "", // EN: Couldn't load the status
-    "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "", // EN: Authenticator code is on
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "", // EN: Two-step verification needs a cloud account.
-    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "", // EN: Enter the authenticator code to turn it off.
-    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "", // EN: Scan the code with your authenticator app, then enter the 6 digits.
-    "Kurulum kodu": "", // EN: Setup code
-    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "", // EN: If you can't scan it, type this key into the app:
-    "Kod 6 hane olmal\u0131.": "", // EN: The code must be 6 digits.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "", // EN: The code is wrong or has expired.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
-    "Kod do\u011frulanamad\u0131.": "", // EN: The code could not be verified.
-    "\u0130\u015flem tamamlanamad\u0131.": "", // EN: The action could not be completed.
+    "Zay\u0131f \u2014 harf + rakam ekle.": "Swak \u2014 voeg letters + syfers by.", // EN: Weak — add letters + digits.
+    "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "Redelik \u2014 voeg 'n hoofletter of simbool by.", // EN: Fair — add an uppercase letter or symbol.
+    "\u0130yi.": "Goed.", // EN: Good.
+    "G\u00fc\u00e7l\u00fc \u015fifre.": "Sterk wagwoord.", // EN: Strong password.
+    "Yak\u0131nda (TOTP uygulama kodu)": "Binnekort (TOTP-toepkodes)", // EN: Coming soon (TOTP app codes)
+    "Kontrol ediliyor": "Kontroleer tans", // EN: Checking
+    "Bulut hesab\u0131yla a\u00e7\u0131l\u0131r": "Beskikbaar met 'n wolkrekening", // EN: Available with a cloud account
+    "\u00d6nce bulut hesab\u0131nla giri\u015f yap.": "Meld eers met jou wolkrekening aan.", // EN: Sign in with your cloud account first.
+    "Durum al\u0131namad\u0131": "Kon nie die status laai nie", // EN: Couldn't load the status
+    "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "Verifikasiekode is aan", // EN: Authenticator code is on
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "Tweestap-verifikasie benodig 'n wolkrekening.", // EN: Two-step verification needs a cloud account.
+    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "Voer die verifikasiekode in om dit af te skakel.", // EN: Enter the authenticator code to turn it off.
+    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "Skandeer die kode met jou verifikasie-toep en voer dan die 6 syfers in.", // EN: Scan the code with your authenticator app, then enter the 6 digits.
+    "Kurulum kodu": "Opstelkode", // EN: Setup code
+    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "As jy dit nie kan skandeer nie, tik hierdie sleutel in die toep in:", // EN: If you can't scan it, type this key into the app:
+    "Kod 6 hane olmal\u0131.": "Die kode moet 6 syfers wees.", // EN: The code must be 6 digits.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "Die kode is verkeerd of het verval.", // EN: The code is wrong or has expired.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "Die kode is verkeerd of het verval. Kodes stem nie ooreen as jou foon se horlosie nie outomaties gestel is nie; skakel dit na outomaties en probeer die vernieude kode een keer.", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
+    "Kod do\u011frulanamad\u0131.": "Die kode kon nie geverifieer word nie.", // EN: The code could not be verified.
+    "\u0130\u015flem tamamlanamad\u0131.": "Die aksie kon nie voltooi word nie.", // EN: The action could not be completed.
     "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "Twee-stap verifikasie is aan.", // EN: Two-step verification is on.
     "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "Twee-stap verifikasie is af.", // EN: Two-step verification is off.
     "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "Voer die 6-syfer kode van jou verifikasie-app in.", // EN: Enter the 6-digit code from your authenticator app.
@@ -1061,20 +1061,20 @@ window.NEXUS_LANG = {
     "Bir Eve Kat\u0131l": "Sluit aan by 'n Huis", // EN: Join a Home
     "Bir cihaz a\u00e7\u0131ld\u0131\u011f\u0131nda veya kapand\u0131\u011f\u0131nda": "Wanneer 'n toestel aan- of afskakel", // EN: When a device turns on or off
     "Bir cihaza dokununca panelin kontrol ekran\u0131 a\u00e7\u0131l\u0131r; ekranda yaln\u0131zca o cihaz\u0131n destekledi\u011fi \u00f6zellikler g\u00f6r\u00fcn\u00fcr. Shelly, WLED ve ESPHome cihazlar\u0131nda a\u00e7/kapat ve parlakl\u0131k do\u011frudan cihaza gider.": "Tik op 'n toestel om die paneel se beheerskerm te open; dit wys slegs die funksies wat daardie toestel ondersteun. Vir Shelly-, WLED- en ESPHome-toestelle gaan aan/af en helderheid direk na die toestel. Hierdie kode word gebruik op die Sluit by 'n Huis-skerm. Een tik is al wat nodig is. Sodra jy 'n plan skep, sal tye en aksies hier verskyn met werklike data. Dit sal hier verskyn sodra jy 'n plan skep. Iets verkeerd? Stuur terugvoer. Gekombineerde Poort. Fietslaaienhede. Einde. Plantmoniter. Biometriese Slot. Vertel ons wat jy dink... Brussel. Hierdie 8-syfer kode is vir Apple HomeKit-koppeling en werk slegs met die Apple Home-app. As die toestel 'n plaaslike API soos Shelly, WLED of Tasmota ondersteun, kan jy dit vanaf jou plaaslike netwerk byvoeg. Hierdie Toestel", // EN: Tap a device to open the panel's control screen; it shows only the features that device supports. For Shelly, WLED and ESPHome devices, on/off and brightness go straight to the device.
-    "Bir eve kat\u0131l ekran\u0131nda bu kod kullan\u0131l\u0131r.": "", // EN: This code is used on the Join a Home screen.
-    "Bir kez dokunman\u0131z yeterli": "", // EN: One tap is all it takes
-    "Bir plan olu\u015fturdu\u011funda saat ve aksiyonlar burada ger\u00e7ek verilerle g\u00f6r\u00fcnecek.": "", // EN: Once you create a plan, times and actions will appear here with real data.
-    "Bir plan olu\u015fturunca burada g\u00f6r\u00fcnecek.": "", // EN: It will appear here once you create a plan.
-    "Bir sorun mu var? Geri bildirim g\u00f6nder": "", // EN: Something wrong? Send feedback
-    "Birle\u015fik A\u011f Ge\u00e7idi": "", // EN: Combined Gateway
-    "Bisiklet \u015earj \u00dcniteleri": "", // EN: Bike Charging Units
-    "Biti\u015f": "", // EN: End
-    "Bitki \u0130zleyici": "", // EN: Plant Monitor
-    "Biyometrik Kilit": "", // EN: Biometric Lock
-    "Bize d\u00fc\u015f\u00fcnceni yaz...": "", // EN: Tell us what you think...
-    "Br\u00fcksel": "", // EN: Brussels
-    "Bu 8 haneli kod Apple HomeKit e\u015fle\u015ftirmesi i\u00e7indir ve yaln\u0131zca Apple Ev uygulamas\u0131yla kullan\u0131l\u0131r. Cihaz Shelly, WLED, Tasmota gibi yerel API destekliyorsa yerel a\u011fdan ekleyebilirsin.": "", // EN: This 8-digit code is for Apple HomeKit pairing and only works with the Apple Home app. If the device supports a local API such as Shelly, WLED or Tasmota, you can add it from your local network.
-    "Bu Cihaz": "", // EN: This Device
+    "Bir eve kat\u0131l ekran\u0131nda bu kod kullan\u0131l\u0131r.": "Hierdie kode word op die Sluit by 'n Huis-skerm gebruik.", // EN: This code is used on the Join a Home screen.
+    "Bir kez dokunman\u0131z yeterli": "Een tik is al wat nodig is", // EN: One tap is all it takes
+    "Bir plan olu\u015fturdu\u011funda saat ve aksiyonlar burada ger\u00e7ek verilerle g\u00f6r\u00fcnecek.": "Sodra jy 'n plan skep, sal tye en aksies hier met werklike data verskyn.", // EN: Once you create a plan, times and actions will appear here with real data.
+    "Bir plan olu\u015fturunca burada g\u00f6r\u00fcnecek.": "Dit sal hier verskyn sodra jy 'n plan skep.", // EN: It will appear here once you create a plan.
+    "Bir sorun mu var? Geri bildirim g\u00f6nder": "Iets fout? Stuur terugvoer", // EN: Something wrong? Send feedback
+    "Birle\u015fik A\u011f Ge\u00e7idi": "Gekombineerde Poort", // EN: Combined Gateway
+    "Bisiklet \u015earj \u00dcniteleri": "Fietslaaieenhede", // EN: Bike Charging Units
+    "Biti\u015f": "Einde", // EN: End
+    "Bitki \u0130zleyici": "Plantmonitor", // EN: Plant Monitor
+    "Biyometrik Kilit": "Biometriese Slot", // EN: Biometric Lock
+    "Bize d\u00fc\u015f\u00fcnceni yaz...": "S\u00ea vir ons wat jy dink...", // EN: Tell us what you think...
+    "Br\u00fcksel": "Brussel", // EN: Brussels
+    "Bu 8 haneli kod Apple HomeKit e\u015fle\u015ftirmesi i\u00e7indir ve yaln\u0131zca Apple Ev uygulamas\u0131yla kullan\u0131l\u0131r. Cihaz Shelly, WLED, Tasmota gibi yerel API destekliyorsa yerel a\u011fdan ekleyebilirsin.": "Hierdie 8-syfer-kode is vir Apple HomeKit-koppeling en werk net met die Apple Home-toep. As die toestel 'n plaaslike API soos Shelly, WLED of Tasmota ondersteun, kan jy dit vanaf jou plaaslike netwerk byvoeg.", // EN: This 8-digit code is for Apple HomeKit pairing and only works with the Apple Home app. If the device supports a local API such as Shelly, WLED or Tasmota, you can add it from your local network.
+    "Bu Cihaz": "Hierdie Toestel", // EN: This Device
     "Bu QR kodu bir Wi-Fi a\u011f\u0131na aittir, cihaz de\u011fildir. Cihaz\u0131 ayn\u0131 a\u011fa ba\u011flad\u0131ktan sonra yerel a\u011fdan ekleyebilirsin.": "Hierdie QR-kode behoort aan 'n Wi-Fi-netwerk, nie 'n toestel nie. Nadat jy die toestel aan dieselfde netwerk gekoppel het, kan jy dit van jou plaaslike netwerk af byvoeg.", // EN: This QR code belongs to a Wi-Fi network, not a device. After connecting the device to the same network, you can add it from your local network.
     "Bu adreste bilinen bir NEXUS cihaz\u0131 bulunamad\u0131. Cihaz\u0131n ayn\u0131 a\u011fda ve a\u00e7\u0131k oldu\u011fundan emin ol.": "Geen bekende NEXUS-toestel is op hierdie adres gevind nie. Maak seker die toestel is aangeskakel en op dieselfde netwerk.", // EN: No known NEXUS device was found at this address. Make sure the device is on and on the same network.
     "Bu ak\u0131ll\u0131 uygulamay\u0131 olu\u015ftur:": "Skep hierdie slim app:", // EN: Create this smart app:
@@ -1372,19 +1372,19 @@ window.NEXUS_LANG = {
     "Evde yokken": "Wanneer weg", // EN: When away
     "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "Bestuur die ligte in jou huis kamer vir kamer in een vloei. Aan/af, helderheid, kleuretemperatuur en vinnige toneelskakelings in een app.", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
     "Evdeki cihazlara g\u00f6re haz\u0131r komutlar, h\u0131zl\u0131 otomasyonlar ve ak\u0131ll\u0131 uygulama \u00f6nerileri ver.": "Gee gereed opdragte, vinnige outomatisasies en slim app-aanbevelings gebaseer op die toestelle by die huis. Skep 'n klimaatbeheer-app wat die AC's en termostate in jou huis vanaf een paneel bestuur. Sluit temperatuurbeheer, vinnige modi, ekostaatmodus en kamer-gebaseerde aksies in. Wat is die status van my toestelle? Weg van die huis Weg van die huis-toneel Som energie- en sekuriteitskontroles op wanneer jy die huis verlaat. Weg van die huis Verlaat die huis Verlaat die huis-ondersoek Verlaat die huis-toneel Verlaat die huis-opsum Finish Leaving Home Skep 'n verlaat-huis-ondersoek-app wat toestelle wat aan is, slotstatus en energiestellings op een skerm wys. Voeg vinnige afskakel- en sekuriteitsaktiwasi-knoppies by. Kontroleer toestelle wat aan is, slotte en energiestatus in een vloei wanneer jy die huis verlaat.", // EN: Give ready commands, quick automations and smart app suggestions based on the devices at home.
-    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
-    "Evimdeki cihazlar\u0131n durumu nedir?": "", // EN: What is the status of my devices?
-    "Evden Uzakta": "", // EN: Away from Home
-    "Evden Uzakta Senaryosu": "", // EN: Away from Home Scene
-    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "", // EN: Wraps up energy and security checks when you leave home.
-    "Evden uzakta": "", // EN: Away from home
-    "Evden \u00c7\u0131k\u0131\u015f": "", // EN: Leaving Home
-    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "", // EN: Leaving Home Check
-    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "", // EN: Leaving Home Scene
-    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "", // EN: Leaving Home Summary
-    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "", // EN: Finish Leaving Home
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "", // EN: Check devices left on, locks and energy status in one flow when leaving home.
+    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "Skep 'n klimaatkomfort-toep wat die lugversorgers en termostate in jou huis vanaf een paneel bestuur. Sluit temperatuurbeheer, vinnige modusse, eko-modus en kamergebaseerde aksies in.", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
+    "Evimdeki cihazlar\u0131n durumu nedir?": "Wat is die status van my toestelle?", // EN: What is the status of my devices?
+    "Evden Uzakta": "Weg van die Huis", // EN: Away from Home
+    "Evden Uzakta Senaryosu": "Weg van die Huis-toneel", // EN: Away from Home Scene
+    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "Rond energie- en sekuriteitskontroles af wanneer jy die huis verlaat.", // EN: Wraps up energy and security checks when you leave home.
+    "Evden uzakta": "Weg van die huis", // EN: Away from home
+    "Evden \u00c7\u0131k\u0131\u015f": "Huis Verlaat", // EN: Leaving Home
+    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "Huis-verlaat-kontrole", // EN: Leaving Home Check
+    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "Huis-verlaat-toneel", // EN: Leaving Home Scene
+    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "Huis-verlaat-opsomming", // EN: Leaving Home Summary
+    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "Voltooi Huis Verlaat", // EN: Finish Leaving Home
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Skep 'n huis-verlaat-kontrole-toep wat toestelle wat aan gelaat is, slotstatus en energie-instellings op een skerm wys. Voeg vinnige afskakel- en sekuriteit-aktiveringsknoppies by.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Kontroleer toestelle wat aan gelaat is, slotte en energiestatus in een vloei wanneer jy die huis verlaat.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Wys toestelle wat aangeskakel is, slotte en energiestatus op een skerm wanneer jy die huis verlaat.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
     "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "Sien ligte, proppe, lugversorgers en sekuriteitsinstellings wat aangeskakel is voordat jy die huis verlaat, op een paneel. Versamel vinnige afskakel- en sekuriteitsaktiwasiestappe in een vloei.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
     "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Kom ons doen die finale kontroles voordat jy vertrek.", // EN: Let's do the final checks before you leave.
@@ -1591,7 +1591,7 @@ window.NEXUS_LANG = {
     "Harika G\u00f6r\u00fcn\u00fcyor": "Sien Goed uit", // EN: Looking Great
     "Harika bir fikir! \u0130stedi\u011fin detaylara g\u00f6re uygulanabilir bir ak\u0131ll\u0131 senaryo kurgulad\u0131m ve ilgili listeye ekledim. A\u015fa\u011f\u0131dan hemen g\u00f6z atabilirsin! [ACTION: CREATE_SCENARIO]": "Goeie idee! Ek het 'n uitvoerbare slim scenario van jou besonderhede gebou en dit by die lys gevoeg. Kyk hieronder! [AKSIE: SKEP_SCENARIO]", // EN: Great idea! I've built a runnable smart scenario from your details and added it to the list. Take a look below! [ACTION: CREATE_SCENARIO]
     "Harika bir fikir! \u0130stedi\u011fin detaylara g\u00f6re yeni bir ak\u0131ll\u0131 senaryo kurgulad\u0131m ve hemen \"T\u0131kla ve \u00c7al\u0131\u015ft\u0131r\" sekmesine ekledim. A\u015fa\u011f\u0131dan hemen g\u00f6z atabilirsin! [ACTION: CREATE_SCENARIO]": "Goeie idee! Ek het 'n nuwe slim scenario gebou uit jou besonderhede en dit by die \"Tik om te hardloop\"-oortjie gevoeg. Kyk hieronder!", // EN: Great idea! I've built a new smart scenario from your details and added it to the "Tap to Run" tab. Take a look below! [ACTION: CREATE_SCENARIO]
-    "Hassas Mutfak Terazisi": "", // EN: Precision Kitchen Scale
+    "Hassas Mutfak Terazisi": "Presisie-kombuisskaal", // EN: Precision Kitchen Scale
     "Hata Bildirimi": "[AKSIE: SKEP_SCENARIO]", // EN: Bug Report
     "Hava": "Presisie Kombuisskaal", // EN: Air
     "Hava Durumu": "Foutverslag", // EN: Weather
@@ -1620,9 +1620,9 @@ window.NEXUS_LANG = {
     "Hedef Odalar": "Gereed. Jy hoef net op dieselfde Wi-Fi-netwerk te wees.", // EN: Target Rooms
     "Hedef S\u0131cakl\u0131k": "Voltooi Voorbereiding", // EN: Target Temperature
     "Hedef s\u0131cakl\u0131k": "Teikenkamers", // EN: Target temperature
-    "Hedef {0}\u00b0": "", // EN: Target {0}°
+    "Hedef {0}\u00b0": "Teiken {0}\u00b0", // EN: Target {0}°
     "Hemen Ba\u015fla": "Teikentemperatuur", // EN: Get Started
-    "Hemen Ba\u015flat": "", // EN: Start Now
+    "Hemen Ba\u015flat": "Begin Nou", // EN: Start Now
     "Hemen devreye girsin": "Begin", // EN: Start immediately
     "Hemen karanl\u0131k temay\u0131 aktif ediyorum, g\u00f6zlerin art\u0131k daha rahat edecek. [ACTION: ENABLE_DARK_MODE]": "Skakel nou die donkertema aan, makliker op jou o\u00eb. [AKSIE: SKAKEL_DONKER_MODUS_AAN]", // EN: Turning on the dark theme now, easier on your eyes. [ACTION: ENABLE_DARK_MODE]
     "Hen\u00fcz beslenmedi": "Nog nie gevoer nie", // EN: Not fed yet
@@ -1977,35 +1977,35 @@ window.NEXUS_LANG = {
     "Misafir a\u011f\u0131 veya ge\u00e7ici eri\u015fim bilgisi olmadan haz\u0131r durum g\u00f6stermiyoruz.": "Ons wys nie 'n gereedstoestand sonder gaste-netwerk of tydelike toegangsbesonderhede nie.", // EN: We don't show a ready state without guest network or temporary access details.
     "Misafir geldi\u011fi anda giri\u015f, ayd\u0131nlatma ve ortak alan cihazlar\u0131n\u0131 haz\u0131rlayan bir misafir modu uygulamas\u0131 olu\u015ftur. Kar\u015f\u0131lama \u0131\u015f\u0131\u011f\u0131, sessiz bildirim ve misafir eri\u015fim ad\u0131mlar\u0131 olsun.": "Skep 'n gasmodus-app wat die ingang, beligting en gedeelde-area toestelle voorberei sodra gaste arriveer. Sluit 'n verwelkomingslig, stil kennisgewings en gaste-toegangsstappe in.", // EN: Create a guest mode app that prepares the entrance, lighting and shared-area devices as soon as guests arrive. Include a welcome light, quiet notifications and guest access steps.
     "Misafir geldi\u011fi anda kullan\u0131lacak \u0131\u015f\u0131k, eri\u015fim ve ortam ayarlar\u0131.": "Lig-, toegang- en atmosfeerinstellings om te gebruik sodra gaste aankom. Berei die ingang, beligting, gedeelde areas en vermaakstoestelle op een paneel voor gaste aankom. Skep 'n ontspanne maar veilige verwelkomingsvloei by die huis. Gaste-modus Gaste-modus nie opgestel nie Gasthokkie-temperatuur vasgestel op 22 grade Maak jou huis reg met een tik voordat jou gaste aankom. Modus Pers Kanielamp Kombuis Kombuisapparatuur Kombuislugventilasie benodig Kombuiskamera Kombuisvenster Voedselverwerker Kontroleer kombuisapparatuur Berei geskikte kombuistoestelle voor met een tik. Kombuis, Sitkamer, Gang Uitstekend Begin Musiek Musiekdiens VOCHTIGHEID NEXUS - KI Beskerming NEXUS - Slim App NEXUS - Onmiddellike Kennisgewings NEXUS - Assistent NEXUS - Instellings NEXUS - Beligtingsmeester NEXUS - Toestel NEXUS - Voeg Toestel Voeg", // EN: Light, access and ambience settings to use as soon as guests arrive.
-    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
-    "Misafir modu": "", // EN: Guest mode
-    "Misafir modu ayarlanmad\u0131": "", // EN: Guest mode not set up
-    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "", // EN: Guest room temperature fixed at 22 degrees
-    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "", // EN: Get your home ready with one tap before your guests arrive.
-    "Mod": "", // EN: Mode
-    "Mor": "", // EN: Purple
-    "Mum Lamba": "", // EN: Candle Lamp
-    "Mutfak": "", // EN: Kitchen
-    "Mutfak Aletleri": "", // EN: Kitchen Appliances
-    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "", // EN: Kitchen Ventilation Needed
-    "Mutfak Kamera": "", // EN: Kitchen Camera
-    "Mutfak Penceresi": "", // EN: Kitchen Window
-    "Mutfak Robotu": "", // EN: Food Processor
-    "Mutfak aletlerini kontrol et": "", // EN: Check kitchen appliances
-    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "", // EN: Prepares suitable kitchen devices with one tap.
-    "Mutfak, Salon, Hol": "", // EN: Kitchen, Living Room, Hall
-    "M\u00fckemmel": "", // EN: Excellent
-    "M\u00fczik Ba\u015flat": "", // EN: Start Music
-    "M\u00fczik Servisi": "", // EN: Music Service
-    "NEM": "", // EN: HUMIDITY
-    "NEXUS - AI Koruma": "", // EN: NEXUS - AI Protection
-    "NEXUS - Ak\u0131ll\u0131 Uygulama": "", // EN: NEXUS - Smart App
-    "NEXUS - Anl\u0131k Bildirimler": "", // EN: NEXUS - Instant Notifications
-    "NEXUS - Asistan": "", // EN: NEXUS - Assistant
-    "NEXUS - Ayarlar": "", // EN: NEXUS - Settings
-    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "", // EN: NEXUS - Lighting Master
-    "NEXUS - Cihaz": "", // EN: NEXUS - Device
-    "NEXUS - Cihaz Ekle": "", // EN: NEXUS - Add Device
+    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "Berei die ingang, beligting, gedeelde areas en vermaaktoestelle op een paneel voor voordat gaste opdaag. Skep 'n ontspanne maar veilige verwelkomingsvloei by die huis.", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
+    "Misafir modu": "Gasmodus", // EN: Guest mode
+    "Misafir modu ayarlanmad\u0131": "Gasmodus is nie opgestel nie", // EN: Guest mode not set up
+    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "Gaskamer-temperatuur vasgestel op 22 grade", // EN: Guest room temperature fixed at 22 degrees
+    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "Maak jou huis met een tik gereed voordat jou gaste opdaag.", // EN: Get your home ready with one tap before your guests arrive.
+    "Mod": "Modus", // EN: Mode
+    "Mor": "Pers", // EN: Purple
+    "Mum Lamba": "Kersligte Lamp", // EN: Candle Lamp
+    "Mutfak": "Kombuis", // EN: Kitchen
+    "Mutfak Aletleri": "Kombuistoestelle", // EN: Kitchen Appliances
+    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "Kombuisventilasie Nodig", // EN: Kitchen Ventilation Needed
+    "Mutfak Kamera": "Kombuiskamera", // EN: Kitchen Camera
+    "Mutfak Penceresi": "Kombuisvenster", // EN: Kitchen Window
+    "Mutfak Robotu": "Voedselverwerker", // EN: Food Processor
+    "Mutfak aletlerini kontrol et": "Kontroleer kombuistoestelle", // EN: Check kitchen appliances
+    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "Berei geskikte kombuistoestelle met een tik voor.", // EN: Prepares suitable kitchen devices with one tap.
+    "Mutfak, Salon, Hol": "Kombuis, Sitkamer, Gang", // EN: Kitchen, Living Room, Hall
+    "M\u00fckemmel": "Uitstekend", // EN: Excellent
+    "M\u00fczik Ba\u015flat": "Begin Musiek", // EN: Start Music
+    "M\u00fczik Servisi": "Musiekdiens", // EN: Music Service
+    "NEM": "VOGTIGHEID", // EN: HUMIDITY
+    "NEXUS - AI Koruma": "NEXUS - AI-beskerming", // EN: NEXUS - AI Protection
+    "NEXUS - Ak\u0131ll\u0131 Uygulama": "NEXUS - Slim Toep", // EN: NEXUS - Smart App
+    "NEXUS - Anl\u0131k Bildirimler": "NEXUS - Kitskennisgewings", // EN: NEXUS - Instant Notifications
+    "NEXUS - Asistan": "NEXUS - Assistent", // EN: NEXUS - Assistant
+    "NEXUS - Ayarlar": "NEXUS - Instellings", // EN: NEXUS - Settings
+    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "NEXUS - Beligtingsmeester", // EN: NEXUS - Lighting Master
+    "NEXUS - Cihaz": "NEXUS - Toestel", // EN: NEXUS - Device
+    "NEXUS - Cihaz Ekle": "NEXUS - Voeg Toestel By", // EN: NEXUS - Add Device
     "NEXUS - Cihaz Ekleme Merkezi": "NEXUS - Toestel Sentrum", // EN: NEXUS - Device Center
     "NEXUS - Cihaz G\u00fcncellemesi": "NEXUS - Toestel Opdaterings", // EN: NEXUS - Device Updates
     "NEXUS - Cihaz Kurulumu": "NEXUS - Toestel Opstel", // EN: NEXUS - Device Setup
@@ -2063,7 +2063,7 @@ window.NEXUS_LANG = {
     "NEXUS \u2014 Cihaz\u0131 Se\u00e7": "NEXUS \u2014 Logs", // EN: NEXUS — Select Device
     "NEXUS \u2014 G\u00fcnl\u00fckler": "NEXUS \u2014 HomeKit-inligting", // EN: NEXUS — Logs
     "NEXUS \u2014 HomeKit Bilgileri": "NEXUS \u2014 Ontdek", // EN: NEXUS — HomeKit Info
-    "NEXUS \u2014 Ke\u015ffet": "", // EN: NEXUS — Discover
+    "NEXUS \u2014 Ke\u015ffet": "NEXUS \u2014 Ontdek", // EN: NEXUS — Discover
     "NEXUS \u2014 Konum Se\u00e7": "NEXUS \u2014 Kies Ligging", // EN: NEXUS — Choose Location
     "NEXUS \u2014 Kullan\u0131c\u0131 Bilgileri": "NEXUS \u2014 Gebruiker-inligting", // EN: NEXUS — User Information
     "NEXUS \u2014 Men\u00fc": "NEXUS \u2014 Kieslys", // EN: NEXUS — Menu

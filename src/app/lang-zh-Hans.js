@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "\u63d2\u5934\u548c\u5f00\u5173", // EN: Plugs & Switches
     "NEXUS AI Plus": "Nexus \u4eba\u5de5\u667a\u80fd+", // EN: NEXUS AI Plus
     "Plan": "\u8ba1\u5212", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/\u6708", // EN: $7.50/month
     "/month": "/\u6708", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "\u514d\u8d39\u8bd5\u7528 7 \u5929\uff0c\u4e4b\u540e\u4ec5\u9700\u6bcf\u5e74 $89.99\u3002\u968f\u65f6\u53ef\u53d6\u6d88\u3002", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "\u8f66\u8f7d\u5e94\u7528", // EN: CarPlay
     "Rehber": "\u6307\u5357", // EN: Guide
     "Ses ve Hareket": "\u58f0\u97f3\u4e0e\u52a8\u4f5c", // EN: Sound & Motion

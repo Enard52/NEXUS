@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Uti\u010dnice i prekida\u010di", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "Plan", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/mjese\u010dno", // EN: $7.50/month
     "/month": "/mjese\u010dno", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 dana besplatno, zatim samo $89.99 godi\u0161nje. Otka\u017ei kad god \u017eeli\u0161.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "Vodi\u010d", // EN: Guide
     "Ses ve Hareket": "Zvuk i pokret", // EN: Sound & Motion
@@ -671,11 +671,11 @@ window.NEXUS_LANG = {
     "Hesap silme fonksiyonu hen\u00fcz da\u011f\u0131t\u0131lmad\u0131. \u015eimdilik \u00e7\u0131k\u0131\u015f yapabilirsin.": "Brisanje ra\u010duna na strani poslu\u017eitelja jo\u0161 nije implementirano. Za sada se mo\u017eete odjaviti.", // EN: The server-side account deletion isn't deployed yet. You can sign out for now.
     "! Rahats\u0131z etme modunu a\u00e7t\u0131m, hi\u00e7bir bildirim seni rahats\u0131z etmeyecek. [ACTION: ENABLE_DND]": "! Uklju\u010dio sam Ne ometaj; nikakva obavje\u0161tenja vas ne\u0107e ometati. [AKCIJA: UKLJU\u010cI_NOMETAJ]", // EN: ! I turned on Do Not Disturb; no notifications will bother you. [ACTION: ENABLE_DND]
     "\" senaryosunu \u015fimdilik ana ekrandaki T\u0131kla ve \u00c7al\u0131\u015ft\u0131r kart\u0131ndan tek dokunu\u015fla \u00e7al\u0131\u015ft\u0131rabilirsin. NEXUS App Store'da yay\u0131nland\u0131\u011f\u0131nda bu ekrandan do\u011frudan Siri'ye ekleyebileceksin.": "Scenarij se za sada mo\u017ee pokrenuti jednim dodirom s kartice Tap to Run na po\u010detnom zaslonu. Nakon \u0161to NEXUS bude na App Store-u, mo\u0107i \u0107ete ga dodati Siri direktno s ovog zaslona.", // EN: " scenario can be run with one tap from the Tap to Run card on the home screen for now. Once NEXUS is on the App Store, you'll be able to add it to Siri directly from this screen.
-    "\" ve t\u00fcm ayarlar\u0131 kal\u0131c\u0131 olarak silinecek. Emin misin?": "", // EN: " and all its settings will be deleted permanently. Are you sure?
+    "\" ve t\u00fcm ayarlar\u0131 kal\u0131c\u0131 olarak silinecek. Emin misin?": "\" i sve njegove postavke bit \u0107e trajno izbrisani. Jesi li siguran/na?", // EN: " and all its settings will be deleted permanently. Are you sure?
     "%100 \u015earj \u2022 \u00c7\u00f6p kutusu bo\u015f": "sva njegova postavke \u0107e biti trajno izbrisane. Jeste li sigurni?", // EN: 100% charged • Bin empty
     "%20 Karartma": "100% napunjeno \u2022 Ko\u0161 prazna", // EN: 20% Dimming
-    "%{0} a\u00e7\u0131k": "", // EN: {0}% open
-    "(otomatik alg\u0131land\u0131)": "", // EN: (detected automatically)
+    "%{0} a\u00e7\u0131k": "{0}% otvoreno", // EN: {0}% open
+    "(otomatik alg\u0131land\u0131)": "(automatski prepoznato)", // EN: (detected automatically)
     ". Cihaz tan\u0131n\u0131yor\u2026": "(otkriveno automatski)", // EN: . Recognizing device…
     ". Ev konumu, cihazlar\u0131n\u0131n do\u011fru e\u015fle\u015fmesi ve konum tabanl\u0131 otomasyon i\u00e7in gerekli.": ". Prepoznavanje ure\u0111aja\u2026", // EN: . Your home location is needed for correct device matching and location-based automations.
     ". Parlakl\u0131k: %": ". Za pravilno uskla\u0111ivanje ure\u0111aja i automatizacije temeljene na lokaciji potrebna je va\u0161a ku\u0107na lokacija.", // EN: . Brightness: %
@@ -1179,16 +1179,16 @@ window.NEXUS_LANG = {
     "Yeniden Ba\u015flat ve Y\u00fckle": "Ponovno pokreni i instaliraj", // EN: Restart and Install
     "Cihazlar\u0131n durumu de\u011fi\u015fti\u011finde di\u011fer senaryolar\u0131 otomatik olarak tetikleyin.": "Automatski pokreni druge scenarije kada se status va\u0161ih ure\u0111aja promijeni.", // EN: Trigger other scenarios automatically when your devices' status changes.
     "Cihazlar\u0131na dair i\u00e7g\u00f6r\u00fcler edin, stratejilerle otomatik tasarruf et.": "Dobijte uvid u svoje ure\u0111aje i automatski \u0161tedite pomo\u0107u strategija. Mo\u017eete dodati svoje ure\u0111aje pomo\u0107u automatskog skeniranja, QR koda, koda za postavljanje ili ru\u010dnog kataloga. Dobijte uvid u svoje ure\u0111aje i savjete za energiju. Potvrdite ure\u0111aj Odaberite ure\u0111aj Ukloni ure\u0111aj Za\u0161to moj ure\u0111aj pokazuje offline? Unesite IP adresu ure\u0111aja i NEXUS \u0107e odrediti koji protokol koristi. Provjerite Wi-Fi vezu ure\u0111aja i svoj router. Ako problem i dalje postoji, uklonite ure\u0111aj i dodajte ga ponovno. Koraci: Ure\u0111aji > odaberite ure\u0111aj > Ukloni. Provjerite Wi-Fi vezu ure\u0111aja i svoj router. Ako problem i dalje postoji, uklonite ure\u0111aj iz NEXUS aplikacije i dodajte ga ponovno. Ako se va\u0161 ure\u0111aj ne pojavljuje, koristite QR skeniranje ili kod za postavljanje. Mo\u017eete otvoriti stranicu pomo\u0107i za podr\u0161ku i upute.", // EN: Get insights about your devices and save automatically with strategies.
-    "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
-    "Cihazlar\u0131n\u0131za dair i\u00e7g\u00f6r\u00fcler edinin ve enerji ipu\u00e7lar\u0131 al\u0131n.": "", // EN: Get insights about your devices and energy tips.
-    "Cihaz\u0131 Do\u011frula": "", // EN: Verify Device
-    "Cihaz\u0131 Se\u00e7": "", // EN: Select Device
-    "Cihaz\u0131 kald\u0131r": "", // EN: Remove device
-    "Cihaz\u0131m neden \u00e7evrimd\u0131\u015f\u0131 g\u00f6r\u00fcn\u00fcyor?": "", // EN: Why does my device show as offline?
-    "Cihaz\u0131n IP adresini yaz, NEXUS konu\u015fabildi\u011fi protokol\u00fc kendisi anlas\u0131n.": "", // EN: Type the device's IP address and NEXUS figures out which protocol it speaks.
-    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modemini kontrol et. Sorun s\u00fcrerse cihaz\u0131 kald\u0131r\u0131p yeniden ekle. Ad\u0131mlar: Cihazlar > cihaz\u0131 se\u00e7 > Kald\u0131r.": "", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device and add it again. Steps: Devices > choose the device > Remove.
-    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modeminizi kontrol edin. Sorun s\u00fcrerse cihaz\u0131 NEXUS uygulamas\u0131ndan kald\u0131r\u0131p yeniden ekleyin.": "", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device from the NEXUS app and add it again.
-    "Cihaz\u0131n g\u00f6r\u00fcnm\u00fcyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve y\u00f6nlendirme i\u00e7in yard\u0131m sayfas\u0131n\u0131 a\u00e7abilirsin.": "", // EN: If your device doesn't show up, use QR scanning or a setup code. You can open the help page for support and guidance.
+    "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "Ure\u0111aje mo\u017ee\u0161 dodati automatskim skeniranjem, QR kodom, kodom za postavljanje ili ru\u010dno iz kataloga.", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
+    "Cihazlar\u0131n\u0131za dair i\u00e7g\u00f6r\u00fcler edinin ve enerji ipu\u00e7lar\u0131 al\u0131n.": "Saznaj vi\u0161e o svojim ure\u0111ajima i dobij savjete o energiji.", // EN: Get insights about your devices and energy tips.
+    "Cihaz\u0131 Do\u011frula": "Potvrdi ure\u0111aj", // EN: Verify Device
+    "Cihaz\u0131 Se\u00e7": "Odaberi ure\u0111aj", // EN: Select Device
+    "Cihaz\u0131 kald\u0131r": "Ukloni ure\u0111aj", // EN: Remove device
+    "Cihaz\u0131m neden \u00e7evrimd\u0131\u015f\u0131 g\u00f6r\u00fcn\u00fcyor?": "Za\u0161to je moj ure\u0111aj prikazan kao izvan mre\u017ee?", // EN: Why does my device show as offline?
+    "Cihaz\u0131n IP adresini yaz, NEXUS konu\u015fabildi\u011fi protokol\u00fc kendisi anlas\u0131n.": "Upi\u0161i IP adresu ure\u0111aja, a NEXUS \u0107e sam prepoznati koji protokol koristi.", // EN: Type the device's IP address and NEXUS figures out which protocol it speaks.
+    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modemini kontrol et. Sorun s\u00fcrerse cihaz\u0131 kald\u0131r\u0131p yeniden ekle. Ad\u0131mlar: Cihazlar > cihaz\u0131 se\u00e7 > Kald\u0131r.": "Provjeri Wi-Fi vezu ure\u0111aja i svoj router. Ako se problem nastavi, ukloni ure\u0111aj i dodaj ga ponovno. Koraci: Ure\u0111aji > odaberi ure\u0111aj > Ukloni.", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device and add it again. Steps: Devices > choose the device > Remove.
+    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modeminizi kontrol edin. Sorun s\u00fcrerse cihaz\u0131 NEXUS uygulamas\u0131ndan kald\u0131r\u0131p yeniden ekleyin.": "Provjeri Wi-Fi vezu ure\u0111aja i svoj router. Ako se problem nastavi, ukloni ure\u0111aj iz aplikacije NEXUS i dodaj ga ponovno.", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device from the NEXUS app and add it again.
+    "Cihaz\u0131n g\u00f6r\u00fcnm\u00fcyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve y\u00f6nlendirme i\u00e7in yard\u0131m sayfas\u0131n\u0131 a\u00e7abilirsin.": "Ako se ure\u0111aj ne pojavi, koristi QR skeniranje ili k\u00f4d za postavljanje. Za podr\u0161ku i upute otvori stranicu pomo\u0107i.", // EN: If your device doesn't show up, use QR scanning or a setup code. You can open the help page for support and guidance.
     "Cihaz\u0131n konum (GPS) servisi kapal\u0131. A\u00e7\u0131p tekrar dene.": "Usluga lokacije (GPS) na va\u0161em ure\u0111aju je isklju\u010dena. Uklju\u010dite je i poku\u0161ajte ponovno.", // EN: Your device's location (GPS) service is off. Turn it on and try again.
     "Cihaz\u0131n konum servisini desteklemiyor.": "Va\u0161 ure\u0111aj ne podr\u017eava usluge lokacije.", // EN: Your device doesn't support location services.
     "Cihaz\u0131n listede yok mu? Geri bildirim g\u00f6nder": "Ure\u0111aj nije na popisu? Po\u0161aljite povratnu informaciju", // EN: Device not on the list? Send feedback
@@ -2063,7 +2063,7 @@ window.NEXUS_LANG = {
     "NEXUS \u2014 Cihaz\u0131 Se\u00e7": "NEXUS \u2014 Dnevnici", // EN: NEXUS — Select Device
     "NEXUS \u2014 G\u00fcnl\u00fckler": "NEXUS \u2014 HomeKit informacije", // EN: NEXUS — Logs
     "NEXUS \u2014 HomeKit Bilgileri": "NEXUS \u2014 Otkrij", // EN: NEXUS — HomeKit Info
-    "NEXUS \u2014 Ke\u015ffet": "", // EN: NEXUS — Discover
+    "NEXUS \u2014 Ke\u015ffet": "NEXUS \u2014 Otkrij", // EN: NEXUS — Discover
     "NEXUS \u2014 Konum Se\u00e7": "NEXUS \u2014 Odaberi lokaciju", // EN: NEXUS — Choose Location
     "NEXUS \u2014 Kullan\u0131c\u0131 Bilgileri": "NEXUS \u2014 Informacije o korisniku", // EN: NEXUS — User Information
     "NEXUS \u2014 Men\u00fc": "NEXUS \u2014 Izbornik", // EN: NEXUS — Menu
@@ -2595,26 +2595,26 @@ window.NEXUS_LANG = {
     "Yatak odas\u0131": "Spava\u0107a soba", // EN: Bedroom
     "Yatmadan \u00f6nce gerekli t\u00fcm ev kontrollerini tek merkezde topla. I\u015f\u0131k azaltma, rahats\u0131z etme, kilit kontrol\u00fc ve gece iklim ayarlar\u0131 tek ekranda y\u00f6netilsin.": "Prikupite sve provjere doma potrebne prije spavanja na jednom sredi\u0161njem mjestu. Prigu\u0161ite svjetla, ne ometaj, provjera zaklju\u010davanja i no\u0107ne postavke klime na jednom ekranu.", // EN: Gather all the home checks you need before bed in one center. Dim lights, do not disturb, lock check and night climate settings on one screen.
     "Yatmadan \u00f6nce \u0131\u015f\u0131k, sessiz mod, kilit ve iklim ayarlar\u0131n\u0131 y\u00f6neten bir uykuya haz\u0131rl\u0131k merkezi olu\u015ftur. Son kontrol \u00f6zeti ve tek dokunu\u015f gece modu ekle.": "Kreirajte centar za pripremu za spavanje koji upravlja svjetlima, na\u010dinom ti\u0161ine, zaklju\u010davanjima i klimom prije spavanja. Dodajte kona\u010dni sa\u017eetak provjere i jednom tipkom aktivirajte no\u0107ni na\u010din.\\nKi\u0161no\\nYeelight Stolna Lampa\\nYeelight Plafonsko Svjetlo\\nYeelight Traka\\nKuhinjski Stroj\\nOdaberite Novi Okida\u010d\\nKreiraj Novi Dom\\nNova Automatizacija\\nKada bi to trebalo raditi?\\n\u0160to bi trebalo raditi?\\nOdaberite \u0161to bi trebalo raditi.\\nPrvo odaberite scenu.\\nPrvo odaberite lokaciju doma da biste spremili.\\nOdaberite Ure\u0111aje\\nOtvorite ovaj zaslon u NEXUS aplikaciji na svom iPhoneu; va\u0161e scene su navedene dolje i mo\u017eete postaviti Siri pre\u010dac za svaku.\\n1. Kopirajte poveznicu scene\\nOva poveznica otvara NEXUS i odmah izvr\u0161ava scenu.\\n2. Kreirajte novi pre\u010dac u Shortcuts\\nOdaberite \u201eDodaj radnju\u201c \u203a \u201eOtvori URL-ove\u201c i zalijepite kopiranu poveznicu.\\nOtvorite aplikaciju Shortcuts", // EN: Create a bedtime preparation center that manages lights, quiet mode, locks and climate before bed. Add a final check summary and one-tap night mode.
-    "Ya\u011fmurlu": "", // EN: Rainy
-    "Yeelight Masa Lambas\u0131": "", // EN: Yeelight Desk Lamp
-    "Yeelight Tavan Lambas\u0131": "", // EN: Yeelight Ceiling Light
-    "Yeelight \u015eerit": "", // EN: Yeelight Strip
-    "Yemek Pi\u015firme Makinesi": "", // EN: Cooking Machine
-    "Yeni Bir Tetikleyici Se\u00e7": "", // EN: Choose a New Trigger
-    "Yeni Ev Olu\u015ftur": "", // EN: Create New Home
-    "Yeni Otomasyon": "", // EN: New Automation
-    "Ne zaman \u00e7al\u0131\u015fs\u0131n?": "", // EN: When should it run?
-    "Ne yaps\u0131n?": "", // EN: What should it do?
-    "Ne yapaca\u011f\u0131n\u0131 se\u00e7.": "", // EN: Choose what it should do.
-    "\u00d6nce bir senaryo se\u00e7.": "", // EN: Choose a scene first.
-    "Kaydetmek i\u00e7in \u00f6nce ev konumunu se\u00e7.": "", // EN: Choose your home location first to save.
-    "Cihaz Se\u00e7": "", // EN: Choose Devices
-    "Bu ekran\u0131 iPhone'daki NEXUS uygulamas\u0131nda a\u00e7; senaryolar\u0131n a\u015fa\u011f\u0131da listelenir ve her biri i\u00e7in Siri kestirmesi kurabilirsin.": "", // EN: Open this screen in the NEXUS app on your iPhone; your scenes are listed below and you can set up a Siri shortcut for each one.
-    "1. Senaryo ba\u011flant\u0131s\u0131n\u0131 kopyala": "", // EN: 1. Copy the scene link
-    "Bu ba\u011flant\u0131 NEXUS'u a\u00e7ar ve senaryoyu hemen \u00e7al\u0131\u015ft\u0131r\u0131r.": "", // EN: This link opens NEXUS and runs the scene right away.
-    "2. Kestirmeler'de yeni kestirme olu\u015ftur": "", // EN: 2. Create a new shortcut in Shortcuts
-    "\"Eylem Ekle\" \u203a \"URL'leri A\u00e7\" eylemini se\u00e7 ve kopyalad\u0131\u011f\u0131n ba\u011flant\u0131y\u0131 yap\u0131\u015ft\u0131r.": "", // EN: Choose "Add Action" › "Open URLs" and paste the link you copied.
-    "Kestirmeler uygulamas\u0131n\u0131 a\u00e7": "", // EN: Open the Shortcuts app
+    "Ya\u011fmurlu": "Ki\u0161ovito", // EN: Rainy
+    "Yeelight Masa Lambas\u0131": "Yeelight stolna lampa", // EN: Yeelight Desk Lamp
+    "Yeelight Tavan Lambas\u0131": "Yeelight stropna svjetiljka", // EN: Yeelight Ceiling Light
+    "Yeelight \u015eerit": "Yeelight traka", // EN: Yeelight Strip
+    "Yemek Pi\u015firme Makinesi": "Kuhinjski aparat za kuhanje", // EN: Cooking Machine
+    "Yeni Bir Tetikleyici Se\u00e7": "Odaberi novi okida\u010d", // EN: Choose a New Trigger
+    "Yeni Ev Olu\u015ftur": "Stvori novi dom", // EN: Create New Home
+    "Yeni Otomasyon": "Nova automatizacija", // EN: New Automation
+    "Ne zaman \u00e7al\u0131\u015fs\u0131n?": "Kada da se pokrene?", // EN: When should it run?
+    "Ne yaps\u0131n?": "\u0160to da radi?", // EN: What should it do?
+    "Ne yapaca\u011f\u0131n\u0131 se\u00e7.": "Odaberi \u0161to treba raditi.", // EN: Choose what it should do.
+    "\u00d6nce bir senaryo se\u00e7.": "Prvo odaberi scenu.", // EN: Choose a scene first.
+    "Kaydetmek i\u00e7in \u00f6nce ev konumunu se\u00e7.": "Za spremanje prvo odaberi lokaciju doma.", // EN: Choose your home location first to save.
+    "Cihaz Se\u00e7": "Odaberi ure\u0111aje", // EN: Choose Devices
+    "Bu ekran\u0131 iPhone'daki NEXUS uygulamas\u0131nda a\u00e7; senaryolar\u0131n a\u015fa\u011f\u0131da listelenir ve her biri i\u00e7in Siri kestirmesi kurabilirsin.": "Otvori ovaj zaslon u aplikaciji NEXUS na iPhoneu; tvoje scene navedene su u nastavku i za svaku mo\u017ee\u0161 postaviti Siri pre\u010dac.", // EN: Open this screen in the NEXUS app on your iPhone; your scenes are listed below and you can set up a Siri shortcut for each one.
+    "1. Senaryo ba\u011flant\u0131s\u0131n\u0131 kopyala": "1. Kopiraj poveznicu scene", // EN: 1. Copy the scene link
+    "Bu ba\u011flant\u0131 NEXUS'u a\u00e7ar ve senaryoyu hemen \u00e7al\u0131\u015ft\u0131r\u0131r.": "Ova poveznica otvara NEXUS i odmah pokre\u0107e scenu.", // EN: This link opens NEXUS and runs the scene right away.
+    "2. Kestirmeler'de yeni kestirme olu\u015ftur": "2. Stvori novi pre\u010dac u Pre\u010dacima", // EN: 2. Create a new shortcut in Shortcuts
+    "\"Eylem Ekle\" \u203a \"URL'leri A\u00e7\" eylemini se\u00e7 ve kopyalad\u0131\u011f\u0131n ba\u011flant\u0131y\u0131 yap\u0131\u015ft\u0131r.": "Odaberi \"Dodaj radnju\" \u203a \"Otvori URL-ove\" i zalijepi kopiranu poveznicu.", // EN: Choose "Add Action" › "Open URLs" and paste the link you copied.
+    "Kestirmeler uygulamas\u0131n\u0131 a\u00e7": "Otvori aplikaciju Pre\u010daci", // EN: Open the Shortcuts app
     "Cihazlar\u0131na uyan haz\u0131r otomasyonlardan birini tek dokunu\u015fla ekle.": "Dodajte gotovu automatizaciju koja odgovara va\u0161im ure\u0111ajima jednim dodirom.", // EN: Add a ready-made automation that fits your devices with one tap.
     "Belirli bir saatte; her g\u00fcn, hafta i\u00e7i ya da hafta sonu": "U odre\u0111eno vrijeme; svaki dan, radnim danima ili vikendom", // EN: At a set time; every day, on weekdays or at weekends
     "G\u00fcn Do\u011fumu / Bat\u0131m\u0131": "Izlazak / Zalazak sunca", // EN: Sunrise / Sunset
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "\u010dlan", // EN: online
     "\u00fcye": "Idealna razina", // EN: member
     "\u0130deal Seviye": "Verifikacija u dva koraka", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "Dvostupanjska provjera", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "Stanica za punjenje dvokota\u010da", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Stanica za punjenje dvokota\u010da (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "Dvostruka sklopka", // EN: Two-gang
@@ -3082,11 +3082,11 @@ window.NEXUS_LANG = {
     "\u015eimdiki mod:": "Trenutni na\u010din rada:", // EN: Current mode:
     "se\u00e7ilmemi\u015f": "nije postavljeno", // EN: not set
     "Konum tetikleyicisi hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu, G\u00fcvenlik Modu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Okida\u010d lokacije jo\u0161 nije podr\u017ean, pa se ne mo\u017ee spremiti. Podr\u017eani tipovi: Timer, Vrijeme, Stanje ure\u0111aja, Sigurnosni na\u010din i Kada alarm signalizira (senzor).", // EN: The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).
-    "Uzak Eri\u015fim Adresi": "", // EN: Remote Access Address
+    "Uzak Eri\u015fim Adresi": "Adresa za udaljeni pristup", // EN: Remote Access Address
     "Evin d\u0131\u015f\u0131ndayken (VPN ya da port y\u00f6nlendirme) bir cihaza veya hub'a ba\u015fka bir adresten ula\u015f\u0131yorsan, yerel adres yan\u0131t vermedi\u011finde bu adres denenir. Yaln\u0131z bu cihazda saklan\u0131r.": "Adresa za daljinski pristup", // EN: If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.
     "\u00d6nce bir cihaz ekle; sonra ona uzak adres verebilirsin.": "Ako pristupate ure\u0111aju ili \u010dvori\u0161tu s druge adrese dok niste kod ku\u0107e (VPN ili proslje\u0111ivanje porta), ta se adresa poku\u0161ava koristiti kada lokalna adresa ne odgovara. Spremi se samo na ovom ure\u0111aju.", // EN: Add a device first; then you can give it a remote address.
     "Eve gelince": "Prvo dodajte ure\u0111aj; zatim mu mo\u017eete dodijeliti adresu za daljinski pristup.", // EN: When arriving home
-    "Evden \u00e7\u0131k\u0131nca": "", // EN: When leaving home
+    "Evden \u00e7\u0131k\u0131nca": "Pri izlasku iz ku\u0107e", // EN: When leaving home
     "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r; bu cihazda kurulamaz.": "Prilikom dolaska ku\u0107i", // EN: The location trigger only works in the mobile app; it cannot be set up on this device.
     "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r.": "Okida\u010d za lokaciju radi samo u mobilnoj aplikaciji.", // EN: The location trigger only works in the mobile app.
     "Ev konumu se\u00e7ilmedi. \u00d6nce": "Nije odabrana ku\u0107na lokacija. Prvo", // EN: No home location selected. First

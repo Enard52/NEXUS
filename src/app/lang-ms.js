@@ -511,18 +511,18 @@ window.NEXUS_LANG = {
     "Bu strateji konum tetiklemesine dayan\u0131r; otomatik konum tetiklemesi hen\u00fcz yok. Etkinle\u015ftirdi\u011finde kaydedilir ama kendili\u011finden \u00e7al\u0131\u015fmaz.": "Strategi ini bergantung pada pencetus lokasi; pencetus lokasi automatik belum tersedia. Mengaktifkan menyimpannya, tetapi ia tidak akan berjalan sendiri.", // EN: This strategy relies on location triggers; automatic location triggering isn't available yet. Enabling saves it, but it won't run on its own.
     "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz otomatik \u00e7al\u0131\u015fm\u0131yor; kaydetti\u011finde a\u015fa\u011f\u0131da se\u00e7ti\u011fin saatte (zamanlamayla) \u00e7al\u0131\u015f\u0131r.": "Jenis pencetus ini belum berjalan secara automatik; setelah disimpan, ia berjalan pada masa yang anda pilih di bawah (mengikut jadual).", // EN: This trigger type doesn't run automatically yet; once saved, it runs at the time you pick below (scheduled).
     "G\u00fcvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen ger\u00e7ek bir alarm paneli durumu veya NEXUS d\u00fczeyinde bir mod anahtar\u0131 hen\u00fcz yok. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Pencetus mod keselamatan tidak boleh disediakan: aplikasi belum mempunyai keadaan panel penggera yang boleh dibaca atau suis mod peringkat NEXUS lagi. Jenis yang berfungsi: Pemasa, Cuaca, Keadaan Peranti dan Penggera Dicetuskan (sensor). Jenis pencetus ini belum disokong, jadi ia tidak boleh disimpan. Jenis yang berfungsi: Pemasa, Cuaca, Keadaan Peranti dan Penggera Dicetuskan (sensor). Keadaan Cuaca Data cuaca sebenar untuk lokasi rumah anda dibaca kira-kira setiap 10 minit sementara aplikasi dibuka. Senario dijalankan sekali apabila keadaan berubah daripada tidak dipenuhi kepada dipenuhi. Suhu (\u00b0C) Angin (km/h) Hujan (mm) Meningkat melebihi Turun di bawah Nilai ambang Tiada lokasi rumah ditetapkan, jadi cuaca tidak boleh dibaca. Pilih lokasi dahulu Pilih lokasi rumah anda terlebih dahulu.", // EN: A security-mode trigger can't be set up: the app has no readable alarm-panel state or NEXUS-level mode switch yet. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
-    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
-    "Hava Ko\u015fulu": "", // EN: Weather Condition
-    "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
-    "S\u0131cakl\u0131k (\u00b0C)": "", // EN: Temperature (°C)
-    "R\u00fczg\u00e2r (km/sa)": "", // EN: Wind (km/h)
-    "Ya\u011f\u0131\u015f (mm)": "", // EN: Precipitation (mm)
-    "\u00dcst\u00fcne \u00e7\u0131k\u0131nca": "", // EN: Rises above
-    "Alt\u0131na inince": "", // EN: Falls below
-    "E\u015fik de\u011fer": "", // EN: Threshold value
-    "Ev konumu se\u00e7ilmedi, hava verisi okunamaz. \u00d6nce": "", // EN: No home location is set, so weather can't be read. First
-    "konum se\u00e7": "", // EN: choose a location
-    "\u00d6nce ev konumunu se\u00e7.": "", // EN: Choose your home location first.
+    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Jenis pencetus ini belum disokong, jadi tidak boleh disimpan. Jenis yang berfungsi: Pemasa, Cuaca, Keadaan Peranti dan Penggera Dicetuskan (penderia).", // EN: This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
+    "Hava Ko\u015fulu": "Keadaan Cuaca", // EN: Weather Condition
+    "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "Data cuaca sebenar untuk lokasi rumah anda dibaca kira-kira setiap 10 minit semasa apl dibuka. Senario dijalankan sekali apabila syarat bertukar daripada tidak dipenuhi kepada dipenuhi.", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
+    "S\u0131cakl\u0131k (\u00b0C)": "Suhu (\u00b0C)", // EN: Temperature (°C)
+    "R\u00fczg\u00e2r (km/sa)": "Angin (km/j)", // EN: Wind (km/h)
+    "Ya\u011f\u0131\u015f (mm)": "Hujan (mm)", // EN: Precipitation (mm)
+    "\u00dcst\u00fcne \u00e7\u0131k\u0131nca": "Naik melebihi", // EN: Rises above
+    "Alt\u0131na inince": "Turun di bawah", // EN: Falls below
+    "E\u015fik de\u011fer": "Nilai ambang", // EN: Threshold value
+    "Ev konumu se\u00e7ilmedi, hava verisi okunamaz. \u00d6nce": "Lokasi rumah belum ditetapkan, jadi cuaca tidak dapat dibaca. Mula-mula", // EN: No home location is set, so weather can't be read. First
+    "konum se\u00e7": "pilih lokasi", // EN: choose a location
+    "\u00d6nce ev konumunu se\u00e7.": "Pilih lokasi rumah anda dahulu.", // EN: Choose your home location first.
     "Bir e\u015fik de\u011fer gir.": "Masukkan nilai ambang.", // EN: Enter a threshold value.
     "Hava durumu tetikleyicisi: ev konumu se\u00e7ilmedi.": "Pencetus cuaca: tiada lokasi rumah ditetapkan.", // EN: Weather trigger: no home location set.
     "Tetiklenince \u00c7al\u0131\u015facak Senaryo": "Senario untuk Dijalankan Apabila Dicetuskan", // EN: Scenario to Run When Triggered
@@ -575,14 +575,14 @@ window.NEXUS_LANG = {
     "Sorun mu ya\u015f\u0131yorsun? Geri bildirim g\u00f6nder": "Mengalami masalah? Hantar maklum balas", // EN: Having trouble? Send feedback
     "CarPlay Deste\u011fi Yak\u0131nda": "Sokongan CarPlay Akan Datang", // EN: CarPlay Support Coming Soon
     "NEXUS hen\u00fcz CarPlay uygulamas\u0131 i\u00e7ermiyor. Yay\u0131nland\u0131\u011f\u0131nda eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7\u0131p klimay\u0131 \u00e7al\u0131\u015ft\u0131rabileceksin.": "NEXUS belum menyertakan aplikasi CarPlay. Apabila ia dihantar, anda akan dapat menghidupkan lampu dan menjalankan pendingin udara semasa anda menghampiri rumah.", // EN: NEXUS doesn't include a CarPlay app yet. When it ships, you'll be able to turn on lights and run the AC as you approach home.
-    "Bug\u00fcn Arabada": "", // EN: In Your Car Today
+    "Bug\u00fcn Arabada": "Dalam Kereta Anda Hari Ini", // EN: In Your Car Today
     "NEXUS'u telefonunda ana ekrana ekle (PWA); ara\u00e7ta kontrol i\u00e7in senaryo ve otomasyonlar arka planda \u00e7al\u0131\u015f\u0131r.": "Dalam Kereta Anda Hari Ini", // EN: Add NEXUS to your phone's home screen (PWA); for in-car control, scenarios and automations run in the background.
     "\"Eve Geldim\" senaryosunu tek dokunu\u015fla \u00e7al\u0131\u015ft\u0131r: \u0131\u015f\u0131klar, klima ve perdeler haz\u0131r.": "Tambahkan NEXUS ke skrin utama telefon anda (PWA); untuk kawalan dalam kereta, senario dan automasi berjalan di latar belakang.", // EN: Run the "Welcome Home" scenario with one tap: lights, AC and covers ready.
-    "Zamanlanm\u0131\u015f otomasyonlar (\u00f6r. gece enerji kesme) sen ara\u00e7ta de\u011filken de \u00e7al\u0131\u015f\u0131r.": "", // EN: Scheduled automations (e.g. night power cut) run even while you're away.
+    "Zamanlanm\u0131\u015f otomasyonlar (\u00f6r. gece enerji kesme) sen ara\u00e7ta de\u011filken de \u00e7al\u0131\u015f\u0131r.": "Automasi berjadual (cth. pemotongan kuasa malam) berjalan walaupun anda tiada.", // EN: Scheduled automations (e.g. night power cut) run even while you're away.
     "Senaryolar\u0131 ve Otomasyonlar\u0131 A\u00e7": "Jalankan senario \"Selamat Pulang\" dengan satu ketukan: lampu, pendingin udara dan penutup sedia.", // EN: Open Scenarios & Automations
-    "G\u00f6r\u00fc\u015flerini payla\u015f": "", // EN: Share your feedback
+    "G\u00f6r\u00fc\u015flerini payla\u015f": "Kongsi maklum balas anda", // EN: Share your feedback
     "Zamanlanm\u0131\u015f otomasyon yok": "Automasi berjadual (contoh: pemotongan kuasa malam) berjalan walaupun anda tiada.", // EN: No scheduled automations
-    "Saat belirleyen bir otomasyon ekleyince bug\u00fcn\u00fcn plan\u0131 burada listelenir.": "", // EN: Add an automation with a time and today's plan will be listed here.
+    "Saat belirleyen bir otomasyon ekleyince bug\u00fcn\u00fcn plan\u0131 burada listelenir.": "Tambah automasi dengan masa dan pelan hari ini akan disenaraikan di sini.", // EN: Add an automation with a time and today's plan will be listed here.
     "Otomasyon Ekle": "Buka Senario & Automasi", // EN: Add Automation
     "Enerji tasarruf stratejisi": "Kongsi maklumbalas anda", // EN: Energy saving strategy
     "Kamera kontrol paneli \u00b7 durum ve gizlilik": "Tiada automasi berjadual", // EN: Camera control panel · status & privacy
@@ -617,19 +617,19 @@ window.NEXUS_LANG = {
     "Durum al\u0131namad\u0131": "Tidak dapat memuat status", // EN: Couldn't load the status
     "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "Kod pengesah ada pada", // EN: Authenticator code is on
     "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "Pengesahan dua langkah memerlukan akaun awan. Masukkan kod pengesah untuk mematikannya. Imbas kod menggunakan aplikasi pengesah anda, kemudian masukkan 6 digit. Kod persediaan Jika anda tidak dapat mengimbasnya, taipkan kunci ini ke dalam aplikasi: Kod mesti terdiri daripada 6 digit. Kod salah atau telah tamat tempoh. Kod salah atau telah tamat tempoh. Kod tidak sepadan jika jam telefon anda tidak diset secara automatik; tukar kepada automatik dan cuba kod yang dikemas kini sekali lagi. Kod tidak dapat disahkan. Tindakan tidak dapat diselesaikan. Pengesahan dua langkah dihidupkan. Pengesahan dua langkah dimatikan. Masukkan kod 6 digit dari aplikasi pengesah anda. Buka aplikasi pengesah seperti Google Authenticator atau Microsoft Authenticator.", // EN: Two-step verification needs a cloud account.
-    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "", // EN: Enter the authenticator code to turn it off.
-    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "", // EN: Scan the code with your authenticator app, then enter the 6 digits.
-    "Kurulum kodu": "", // EN: Setup code
-    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "", // EN: If you can't scan it, type this key into the app:
-    "Kod 6 hane olmal\u0131.": "", // EN: The code must be 6 digits.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "", // EN: The code is wrong or has expired.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
-    "Kod do\u011frulanamad\u0131.": "", // EN: The code could not be verified.
-    "\u0130\u015flem tamamlanamad\u0131.": "", // EN: The action could not be completed.
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "", // EN: Two-step verification is on.
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "", // EN: Two-step verification is off.
-    "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "", // EN: Enter the 6-digit code from your authenticator app.
-    "Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulamas\u0131 a\u00e7.": "", // EN: Open an authenticator app such as Google Authenticator or Microsoft Authenticator.
+    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "Masukkan kod pengesah untuk mematikannya.", // EN: Enter the authenticator code to turn it off.
+    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "Imbas kod dengan apl pengesah anda, kemudian masukkan 6 digit.", // EN: Scan the code with your authenticator app, then enter the 6 digits.
+    "Kurulum kodu": "Kod persediaan", // EN: Setup code
+    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "Jika anda tidak dapat mengimbasnya, taip kunci ini ke dalam apl:", // EN: If you can't scan it, type this key into the app:
+    "Kod 6 hane olmal\u0131.": "Kod mestilah 6 digit.", // EN: The code must be 6 digits.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "Kod salah atau telah tamat tempoh.", // EN: The code is wrong or has expired.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "Kod salah atau telah tamat tempoh. Kod tidak sepadan jika jam telefon anda tidak ditetapkan secara automatik; tukar kepada automatik dan cuba kod yang dikemas kini sekali.", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
+    "Kod do\u011frulanamad\u0131.": "Kod tidak dapat disahkan.", // EN: The code could not be verified.
+    "\u0130\u015flem tamamlanamad\u0131.": "Tindakan tidak dapat diselesaikan.", // EN: The action could not be completed.
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "Pengesahan dua langkah dihidupkan.", // EN: Two-step verification is on.
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "Pengesahan dua langkah dimatikan.", // EN: Two-step verification is off.
+    "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "Masukkan kod 6 digit daripada apl pengesah anda.", // EN: Enter the 6-digit code from your authenticator app.
+    "Google Authenticator, Microsoft Authenticator gibi bir kimlik uygulamas\u0131 a\u00e7.": "Buka apl pengesah seperti Google Authenticator atau Microsoft Authenticator.", // EN: Open an authenticator app such as Google Authenticator or Microsoft Authenticator.
     "A\u015fa\u011f\u0131daki kodu okut ya da anahtar\u0131 elle gir.": "Imbas kod di bawah atau masukkan kunci secara manual.", // EN: Scan the code below or enter the key by hand.
     "Uygulamadaki 6 haneli kodu yaz ve Do\u011frula'ya dokun.": "Taip kod 6 digit dari aplikasi dan ketik Sahkan.", // EN: Type the 6-digit code from the app and tap Verify.
     "Uygulamada eski bir NEXUS kayd\u0131 varsa sil; her kurulumda yeni anahtar \u00fcretilir, yaln\u0131z en son okuttu\u011funun kodu ge\u00e7erlidir.": "Padam sebarang entri NEXUS lama dalam aplikasi; setiap persediaan menghasilkan kunci baru, dan hanya kod yang telah anda imbas terakhir adalah sah.", // EN: Delete any old NEXUS entry in the app; each setup creates a new key, and only the code of the one you scanned last is valid.
@@ -747,20 +747,20 @@ window.NEXUS_LANG = {
     "Durum okunmad\u0131": "Keadaan tidak dibaca", // EN: State not read
     "Bu zaten \u015fu an kulland\u0131\u011f\u0131n e-posta adresi. Farkl\u0131 bir adres gir.": "Ini sudah menjadi alamat emel yang anda gunakan. Masukkan satu yang lain.", // EN: This is already the email address you are using. Enter a different one.
     "Bu e-posta adresi ba\u015fka bir hesapta kay\u0131tl\u0131. Ba\u015fka bir adres dene.": "Alamat emel ini didaftarkan pada akaun lain. Cuba yang lain. Terlalu banyak percubaan. Cuba lagi dalam beberapa minit. Luar talian Sasaran tidak dibaca Tiada data pengukuran Peranti anda belum melaporkan suhu, kelembapan atau kualiti udara. Pastikan sensor dihidupkan dan berada dalam rangkaian. Bacaan terkini Kami tidak menghasilkan skor; hanya nilai sebenar yang dibaca daripada peranti anda yang dipaparkan. Apabila anda selesai, ini diterapkan kepada peranti berikut. Tiada peranti yang sesuai untuk persediaan tidur Setelah anda menambah peranti lampu, langsir, kunci atau iklim, persediaan disenaraikan di sini. Keadaan dan bacaan terakhir yang diketahui bagi peranti iklim anda. Privasi kamera Pengurusan mod privasi setiap kamera secara berasingan. Tiada peranti kamera", // EN: This email address is registered to another account. Try a different one.
-    "\u00c7ok s\u0131k denendi. Birka\u00e7 dakika sonra tekrar dene.": "", // EN: Too many attempts. Try again in a few minutes.
-    "\u00c7evrimd\u0131\u015f\u0131": "", // EN: Offline
-    "Hedef okunmad\u0131": "", // EN: Target not read
-    "\u00d6l\u00e7\u00fcm verisi yok": "", // EN: No measurement data
-    "Ekledi\u011fin cihazlar hen\u00fcz s\u0131cakl\u0131k, nem veya hava kalitesi verisi vermedi. Sens\u00f6r\u00fcn a\u00e7\u0131k ve a\u011fda oldu\u011fundan emin ol.": "", // EN: Your devices have not reported temperature, humidity or air quality yet. Make sure the sensor is on and on the network.
-    "Son okunan \u00f6l\u00e7\u00fcmler": "", // EN: Latest readings
-    "Skor \u00fcretmiyoruz; yaln\u0131zca cihazlardan okunan ger\u00e7ek de\u011ferler g\u00f6sterilir.": "", // EN: We do not produce a score; only real values read from your devices are shown.
-    "Haz\u0131rl\u0131\u011f\u0131 bitirdi\u011finde \u015fu cihazlara uygulan\u0131r.": "", // EN: When you finish, this is applied to the following devices.
-    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "", // EN: No suitable device for sleep preparation
-    "I\u015f\u0131k, perde, kilit veya iklim cihaz\u0131 ekledi\u011finde haz\u0131rl\u0131k burada listelenir.": "", // EN: Once you add a light, curtain, lock or climate device, the preparation is listed here.
-    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "", // EN: Last known state and readings of your climate devices.
-    "Kamera gizlili\u011fi": "", // EN: Camera privacy
-    "Her kameran\u0131n gizlilik modunu ayr\u0131 ayr\u0131 y\u00f6net.": "", // EN: Manage each camera's privacy mode separately.
-    "Kamera cihaz\u0131 yok": "", // EN: No camera device
+    "\u00c7ok s\u0131k denendi. Birka\u00e7 dakika sonra tekrar dene.": "Terlalu banyak percubaan. Cuba lagi dalam beberapa minit.", // EN: Too many attempts. Try again in a few minutes.
+    "\u00c7evrimd\u0131\u015f\u0131": "Luar talian", // EN: Offline
+    "Hedef okunmad\u0131": "Sasaran tidak dibaca", // EN: Target not read
+    "\u00d6l\u00e7\u00fcm verisi yok": "Tiada data pengukuran", // EN: No measurement data
+    "Ekledi\u011fin cihazlar hen\u00fcz s\u0131cakl\u0131k, nem veya hava kalitesi verisi vermedi. Sens\u00f6r\u00fcn a\u00e7\u0131k ve a\u011fda oldu\u011fundan emin ol.": "Peranti anda belum melaporkan suhu, kelembapan atau kualiti udara. Pastikan penderia dihidupkan dan berada dalam rangkaian.", // EN: Your devices have not reported temperature, humidity or air quality yet. Make sure the sensor is on and on the network.
+    "Son okunan \u00f6l\u00e7\u00fcmler": "Bacaan terkini", // EN: Latest readings
+    "Skor \u00fcretmiyoruz; yaln\u0131zca cihazlardan okunan ger\u00e7ek de\u011ferler g\u00f6sterilir.": "Kami tidak menghasilkan skor; hanya nilai sebenar yang dibaca daripada peranti anda dipaparkan.", // EN: We do not produce a score; only real values read from your devices are shown.
+    "Haz\u0131rl\u0131\u011f\u0131 bitirdi\u011finde \u015fu cihazlara uygulan\u0131r.": "Apabila anda selesai, ini dikenakan pada peranti berikut.", // EN: When you finish, this is applied to the following devices.
+    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "Tiada peranti sesuai untuk persediaan tidur", // EN: No suitable device for sleep preparation
+    "I\u015f\u0131k, perde, kilit veya iklim cihaz\u0131 ekledi\u011finde haz\u0131rl\u0131k burada listelenir.": "Setelah anda menambah lampu, langsir, kunci atau peranti iklim, persediaan akan disenaraikan di sini.", // EN: Once you add a light, curtain, lock or climate device, the preparation is listed here.
+    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "Keadaan terakhir diketahui dan bacaan peranti iklim anda.", // EN: Last known state and readings of your climate devices.
+    "Kamera gizlili\u011fi": "Privasi kamera", // EN: Camera privacy
+    "Her kameran\u0131n gizlilik modunu ayr\u0131 ayr\u0131 y\u00f6net.": "Urus mod privasi setiap kamera secara berasingan.", // EN: Manage each camera's privacy mode separately.
+    "Kamera cihaz\u0131 yok": "Tiada peranti kamera", // EN: No camera device
     "Kamera ekledi\u011finde gizlilik modu her kamera i\u00e7in burada g\u00f6r\u00fcn\u00fcr.": "Sebaik sahaja anda menambah kamera, mod privasinya akan muncul di sini.", // EN: Once you add a camera, its privacy mode appears here.
     "Bu senaryoyu uygulayacak uygun cihaz yok": "Tiada peranti yang sesuai untuk menjalankan senario ini", // EN: No suitable device to run this scenario
     "I\u015f\u0131k, perde, klima veya kilit gibi uyumlu bir cihaz ekledi\u011finde burada listelenir.": "Sebaik sahaja anda menambah peranti yang serasi seperti lampu, langsir, penghawa dingin atau kunci, ia akan disenaraikan di sini.", // EN: Once you add a compatible device such as a light, curtain, air conditioner or lock, it is listed here.
@@ -855,27 +855,27 @@ window.NEXUS_LANG = {
     "Ak\u0131ll\u0131 priz, anahtar ve enerji \u00fcr\u00fcnleri": "Suis, suis dan produk tenaga pintar", // EN: Smart plugs, switches and energy products
     "Ak\u0131ll\u0131 prizler ve enerji odakl\u0131 cihazlar i\u00e7in h\u0131zl\u0131 tasarruf ak\u0131\u015flar\u0131.": "Aliran penjimatan pantas untuk suis pintar dan peranti berfokus tenaga.", // EN: Quick saving flows for smart plugs and energy-focused devices.
     "Ak\u0131ll\u0131 prizler ve enerji t\u00fcketen cihazlar\u0131 tek merkezde topla. Hemen uygulanabilen tasarruf profilleri ve zamanl\u0131 eko aksiyonlar\u0131 olu\u015ftur.": "Satukan plag pintar dan peranti yang menggunakan tenaga di satu tempat. Cipta profil penjimatan segera dan tindakan ekologi berjadual. Cipta panel penjimatan tenaga yang mengurus plag pintar dan peranti yang menggunakan tenaga. Tambah penutupan cepat, profil ekologi, penjimatan berjadual dan ringkasan penggunaan. Jam Loceng Pintar Plag Pintar Berganda Plag Pintar Berganda (BLE+Wi-Fi) Tong Sampah Pintar Cadangan Pintar Tali Skipping Pintar Malam 19:00 Pencahayaan Malam ( Apabila Loceng Berdering Notifikasi loceng Apabila status sistem loceng berubah Aktifkan sistem loceng Imbasan album gagal. Imbas dari Album Awalan subnet Awalan subnet tidak sah. Contoh: 192.168.1 Meja Panas Enam-saklar Saklar Tanpa Wayar Enam-saklar Pencahayaan Persekitaran", // EN: Bring smart plugs and energy-consuming devices together in one place. Create instant saving profiles and scheduled eco actions.
-    "Ak\u0131ll\u0131 prizleri ve enerji t\u00fcketen cihazlar\u0131 y\u00f6neten bir enerji tasarruf paneli olu\u015ftur. H\u0131zl\u0131 kapatma, eko profiller, zamanlanm\u0131\u015f tasarruf ve t\u00fcketim \u00f6zetleri ekle.": "", // EN: Create an energy saving panel that manages smart plugs and energy-consuming devices. Add quick shut-off, eco profiles, scheduled saving and usage summaries.
-    "Ak\u0131ll\u0131 \u00c7alar Saat": "", // EN: Smart Alarm Clock
-    "Ak\u0131ll\u0131 \u00c7iftli Priz": "", // EN: Smart Double Plug
-    "Ak\u0131ll\u0131 \u00c7iftli Priz (BLE+Wi-Fi)": "", // EN: Smart Double Plug (BLE+Wi-Fi)
-    "Ak\u0131ll\u0131 \u00c7\u00f6p Tenekesi": "", // EN: Smart Trash Can
-    "Ak\u0131ll\u0131 \u00d6neriler": "", // EN: Smart Suggestions
-    "Ak\u0131ll\u0131 \u0130p Atlama": "", // EN: Smart Jump Rope
-    "Ak\u015fam 19:00": "", // EN: Evening 19:00
-    "Ak\u015fam Ayd\u0131nlatmas\u0131 (": "", // EN: Evening Lighting (
-    "Alarm Tetiklendi\u011finde": "", // EN: When the Alarm Triggers
-    "Alarm bildirimi": "", // EN: Alarm notification
-    "Alarm sistemi durumu de\u011fi\u015fti\u011finde": "", // EN: When the alarm system status changes
-    "Alarm sistemini kur": "", // EN: Arm the alarm system
-    "Alb\u00fcm taramas\u0131 ba\u015far\u0131s\u0131z.": "", // EN: Album scan failed.
-    "Alb\u00fcmden Tara": "", // EN: Scan from Album
-    "Alt a\u011f \u00f6n eki": "", // EN: Subnet prefix
-    "Alt a\u011f \u00f6neki ge\u00e7ersiz. \u00d6rnek: 192.168.1": "", // EN: Invalid subnet prefix. Example: 192.168.1
-    "Alttan Is\u0131tmal\u0131 Masa": "", // EN: Heated Table
-    "Alt\u0131l\u0131": "", // EN: Six-gang
-    "Alt\u0131l\u0131 Kablosuz Anahtar": "", // EN: Six-gang Wireless Switch
-    "Ambiyans Ayd\u0131nlatmas\u0131": "", // EN: Ambient Lighting
+    "Ak\u0131ll\u0131 prizleri ve enerji t\u00fcketen cihazlar\u0131 y\u00f6neten bir enerji tasarruf paneli olu\u015ftur. H\u0131zl\u0131 kapatma, eko profiller, zamanlanm\u0131\u015f tasarruf ve t\u00fcketim \u00f6zetleri ekle.": "Cipta panel penjimatan tenaga yang mengurus palam pintar dan peranti yang menggunakan tenaga. Tambah pemadaman pantas, profil eko, penjimatan berjadual dan ringkasan penggunaan.", // EN: Create an energy saving panel that manages smart plugs and energy-consuming devices. Add quick shut-off, eco profiles, scheduled saving and usage summaries.
+    "Ak\u0131ll\u0131 \u00c7alar Saat": "Jam Randik Pintar", // EN: Smart Alarm Clock
+    "Ak\u0131ll\u0131 \u00c7iftli Priz": "Palam Berganda Pintar", // EN: Smart Double Plug
+    "Ak\u0131ll\u0131 \u00c7iftli Priz (BLE+Wi-Fi)": "Palam Berganda Pintar (BLE+Wi-Fi)", // EN: Smart Double Plug (BLE+Wi-Fi)
+    "Ak\u0131ll\u0131 \u00c7\u00f6p Tenekesi": "Tong Sampah Pintar", // EN: Smart Trash Can
+    "Ak\u0131ll\u0131 \u00d6neriler": "Cadangan Pintar", // EN: Smart Suggestions
+    "Ak\u0131ll\u0131 \u0130p Atlama": "Tali Lompat Pintar", // EN: Smart Jump Rope
+    "Ak\u015fam 19:00": "Petang 19:00", // EN: Evening 19:00
+    "Ak\u015fam Ayd\u0131nlatmas\u0131 (": "Pencahayaan Petang (", // EN: Evening Lighting (
+    "Alarm Tetiklendi\u011finde": "Apabila Penggera Dicetuskan", // EN: When the Alarm Triggers
+    "Alarm bildirimi": "Pemberitahuan penggera", // EN: Alarm notification
+    "Alarm sistemi durumu de\u011fi\u015fti\u011finde": "Apabila status sistem penggera berubah", // EN: When the alarm system status changes
+    "Alarm sistemini kur": "Aktifkan sistem penggera", // EN: Arm the alarm system
+    "Alb\u00fcm taramas\u0131 ba\u015far\u0131s\u0131z.": "Imbasan album gagal.", // EN: Album scan failed.
+    "Alb\u00fcmden Tara": "Imbas dari Album", // EN: Scan from Album
+    "Alt a\u011f \u00f6n eki": "Awalan subnet", // EN: Subnet prefix
+    "Alt a\u011f \u00f6neki ge\u00e7ersiz. \u00d6rnek: 192.168.1": "Awalan subnet tidak sah. Contoh: 192.168.1", // EN: Invalid subnet prefix. Example: 192.168.1
+    "Alttan Is\u0131tmal\u0131 Masa": "Meja Berpemanas", // EN: Heated Table
+    "Alt\u0131l\u0131": "Enam gang", // EN: Six-gang
+    "Alt\u0131l\u0131 Kablosuz Anahtar": "Suis Wayarles Enam Gang", // EN: Six-gang Wireless Switch
+    "Ambiyans Ayd\u0131nlatmas\u0131": "Pencahayaan Ambien", // EN: Ambient Lighting
     "Ambiyans Lambas\u0131": "Lampu Ambient", // EN: Ambient Lamp
     "Ambiyans Lambas\u0131 (BLE+Wi-Fi)": "Lampu Ambient (BLE+Wi-Fi)", // EN: Ambient Lamp (BLE+Wi-Fi)
     "Ambiyans Lambas\u0131 (Bluetooth)": "Lampu Ambient (Bluetooth)", // EN: Ambient Lamp (Bluetooth)
@@ -1061,18 +1061,18 @@ window.NEXUS_LANG = {
     "Bir Eve Kat\u0131l": "Sertai Rumah", // EN: Join a Home
     "Bir cihaz a\u00e7\u0131ld\u0131\u011f\u0131nda veya kapand\u0131\u011f\u0131nda": "Apabila peranti dihidupkan atau dimatikan", // EN: When a device turns on or off
     "Bir cihaza dokununca panelin kontrol ekran\u0131 a\u00e7\u0131l\u0131r; ekranda yaln\u0131zca o cihaz\u0131n destekledi\u011fi \u00f6zellikler g\u00f6r\u00fcn\u00fcr. Shelly, WLED ve ESPHome cihazlar\u0131nda a\u00e7/kapat ve parlakl\u0131k do\u011frudan cihaza gider.": "Ketuk peranti untuk membuka skrin kawalan panel; ia hanya menunjukkan ciri-ciri yang disokong oleh peranti itu. Untuk peranti Shelly, WLED dan ESPHome, hidup/mati dan kecerahan pergi terus ke peranti. Kod ini digunakan pada skrin Sertai Rumah. Satu ketukan sahaja cukup. Setelah anda membuat rancangan, masa dan tindakan akan muncul di sini dengan data sebenar. Ia akan muncul di sini setelah anda membuat rancangan. Ada yang salah? Hantar maklum balas. Pintu Gerbang Gabungan. Unit Pengecasan Basikal. Tamat. Pemantau Tumbuhan. Kunci Biometrik. Beritahu kami apa pendapat anda... Brussels", // EN: Tap a device to open the panel's control screen; it shows only the features that device supports. For Shelly, WLED and ESPHome devices, on/off and brightness go straight to the device.
-    "Bir eve kat\u0131l ekran\u0131nda bu kod kullan\u0131l\u0131r.": "", // EN: This code is used on the Join a Home screen.
-    "Bir kez dokunman\u0131z yeterli": "", // EN: One tap is all it takes
-    "Bir plan olu\u015fturdu\u011funda saat ve aksiyonlar burada ger\u00e7ek verilerle g\u00f6r\u00fcnecek.": "", // EN: Once you create a plan, times and actions will appear here with real data.
-    "Bir plan olu\u015fturunca burada g\u00f6r\u00fcnecek.": "", // EN: It will appear here once you create a plan.
-    "Bir sorun mu var? Geri bildirim g\u00f6nder": "", // EN: Something wrong? Send feedback
-    "Birle\u015fik A\u011f Ge\u00e7idi": "", // EN: Combined Gateway
-    "Bisiklet \u015earj \u00dcniteleri": "", // EN: Bike Charging Units
-    "Biti\u015f": "", // EN: End
-    "Bitki \u0130zleyici": "", // EN: Plant Monitor
-    "Biyometrik Kilit": "", // EN: Biometric Lock
-    "Bize d\u00fc\u015f\u00fcnceni yaz...": "", // EN: Tell us what you think...
-    "Br\u00fcksel": "", // EN: Brussels
+    "Bir eve kat\u0131l ekran\u0131nda bu kod kullan\u0131l\u0131r.": "Kod ini digunakan pada skrin Sertai Rumah.", // EN: This code is used on the Join a Home screen.
+    "Bir kez dokunman\u0131z yeterli": "Satu ketikan sahaja sudah cukup", // EN: One tap is all it takes
+    "Bir plan olu\u015fturdu\u011funda saat ve aksiyonlar burada ger\u00e7ek verilerle g\u00f6r\u00fcnecek.": "Setelah anda mencipta pelan, masa dan tindakan akan dipaparkan di sini dengan data sebenar.", // EN: Once you create a plan, times and actions will appear here with real data.
+    "Bir plan olu\u015fturunca burada g\u00f6r\u00fcnecek.": "Ia akan dipaparkan di sini setelah anda mencipta pelan.", // EN: It will appear here once you create a plan.
+    "Bir sorun mu var? Geri bildirim g\u00f6nder": "Ada masalah? Hantar maklum balas", // EN: Something wrong? Send feedback
+    "Birle\u015fik A\u011f Ge\u00e7idi": "Get Laluan Gabungan", // EN: Combined Gateway
+    "Bisiklet \u015earj \u00dcniteleri": "Unit Pengecasan Basikal", // EN: Bike Charging Units
+    "Biti\u015f": "Tamat", // EN: End
+    "Bitki \u0130zleyici": "Pemantau Tumbuhan", // EN: Plant Monitor
+    "Biyometrik Kilit": "Kunci Biometrik", // EN: Biometric Lock
+    "Bize d\u00fc\u015f\u00fcnceni yaz...": "Beritahu kami pendapat anda...", // EN: Tell us what you think...
+    "Br\u00fcksel": "Brussels", // EN: Brussels
     "Bu 8 haneli kod Apple HomeKit e\u015fle\u015ftirmesi i\u00e7indir ve yaln\u0131zca Apple Ev uygulamas\u0131yla kullan\u0131l\u0131r. Cihaz Shelly, WLED, Tasmota gibi yerel API destekliyorsa yerel a\u011fdan ekleyebilirsin.": "Kod 8 digit ini adalah untuk penyambungan Apple HomeKit dan hanya berfungsi dengan aplikasi Apple Home. Jika peranti menyokong API tempatan seperti Shelly, WLED atau Tasmota, anda boleh menambahnya dari rangkaian tempatan anda.", // EN: This 8-digit code is for Apple HomeKit pairing and only works with the Apple Home app. If the device supports a local API such as Shelly, WLED or Tasmota, you can add it from your local network.
     "Bu Cihaz": "Peranti Ini", // EN: This Device
     "Bu QR kodu bir Wi-Fi a\u011f\u0131na aittir, cihaz de\u011fildir. Cihaz\u0131 ayn\u0131 a\u011fa ba\u011flad\u0131ktan sonra yerel a\u011fdan ekleyebilirsin.": "Kod QR ini milik rangkaian Wi-Fi, bukan peranti. Selepas menyambungkan peranti ke rangkaian yang sama, anda boleh menambahnya dari rangkaian tempatan anda.", // EN: This QR code belongs to a Wi-Fi network, not a device. After connecting the device to the same network, you can add it from your local network.
@@ -1384,13 +1384,13 @@ window.NEXUS_LANG = {
     "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "Ringkasan Meninggalkan Rumah", // EN: Leaving Home Summary
     "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "Selesai Meninggalkan Rumah", // EN: Finish Leaving Home
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Cipta aplikasi pemeriksaan sebelum meninggalkan rumah yang menunjukkan peranti yang masih dihidupkan, status kunci dan tetapan tenaga pada satu skrin. Tambahkan butang penutupan cepat dan pengaktifan keselamatan. Periksa peranti yang masih dihidupkan, kunci dan status tenaga dalam satu aliran ketika meninggalkan rumah. Tunjukkan peranti yang masih dihidupkan, kunci dan status tenaga pada satu skrin ketika meninggalkan rumah. Lihat lampu, soket, penghawa dingin dan tetapan keselamatan yang masih dihidupkan sebelum meninggalkan rumah, pada satu panel. Kumpulkan langkah penutupan cepat dan pengaktifan keselamatan ke dalam satu aliran. Mari lakukan pemeriksaan akhir sebelum anda pergi. Matikan lampu secara automatik selepas meninggalkan rumah. Matikan lampu secara automatik selepas anda pergi dan hidupkan semula apabila anda kembali.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "", // EN: Check devices left on, locks and energy status in one flow when leaving home.
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "", // EN: Show devices left on, locks and energy status on one screen when leaving home.
-    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
-    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "", // EN: Let's do the final checks before you leave.
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "", // EN: Turn off the lights automatically after leav...
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "", // EN: Turn off the lights automatically after leaving home
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "", // EN: Turn off the lights automatically after you leave and turn them on when you return.
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Semak peranti yang masih hidup, kunci dan status tenaga dalam satu aliran semasa meninggalkan rumah.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Papar peranti yang masih hidup, kunci dan status tenaga pada satu skrin semasa meninggalkan rumah.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
+    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "Lihat lampu, palam, penyaman udara dan tetapan keselamatan yang masih hidup sebelum meninggalkan rumah, pada satu panel. Satukan langkah pemadaman pantas dan pengaktifan keselamatan dalam satu aliran.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
+    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Mari lakukan semakan akhir sebelum anda pergi.", // EN: Let's do the final checks before you leave.
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "Matikan lampu secara automatik selepas meni...", // EN: Turn off the lights automatically after leav...
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "Matikan lampu secara automatik selepas meninggalkan rumah", // EN: Turn off the lights automatically after leaving home
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "Matikan lampu secara automatik selepas anda pergi dan hidupkannya semula apabila anda pulang.", // EN: Turn off the lights automatically after you leave and turn them on when you return.
     "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "Matikan penyaman udara secara automatik apabila tiada sesiapa di rumah dan elakkan penggunaan yang tidak perlu.", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
     "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "Potong kuasa secara automatik kepada peranti yang dalam mod siap sedia pada masa yang anda pilih pada waktu malam.", // EN: Automatically cut power to devices on standby at the time you choose at night.
     "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "Apabila meninggalkan rumah", // EN: When leaving home
@@ -1748,24 +1748,24 @@ window.NEXUS_LANG = {
     "Kamera, alarm, zil ve sens\u00f6r gruplar\u0131": "Kamera, penggera, loceng pintu dan penderia", // EN: Cameras, alarms, doorbells and sensors
     "Kamera, kilit ve sens\u00f6r durumlar\u0131n\u0131 tek yerden takip et.": "Jejaki status kamera, kunci dan penderia dari satu tempat.", // EN: Track camera, lock and sensor status from one place.
     "Kamera, kilit ve sens\u00f6rleri ayn\u0131 ekranda g\u00f6r. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, kritik durum \u00f6zetleri ve h\u0131zl\u0131 g\u00fcvenlik aksiyonlar\u0131 tek yerde toplans\u0131n.": "Lihat kamera, kunci dan sensor pada skrin yang sama. Mod di rumah dan semasa tiada di rumah, ringkasan status kritikal dan tindakan keselamatan cepat di satu tempat. Buat pusat keselamatan rumah yang menunjukkan kamera, kunci dan sensor pada satu skrin. Tambah mod di rumah dan tiada di rumah, butang kawalan pantas dan ringkasan status kritikal. Kamera dan mikrofon dimatikan. Pintu Bel Video Kunci dengan Kamera Video akan muncul setelah aliran kamera disambungkan ke NEXUS. Mematikan kamera sementara. Mati. Apabila dimatikan, pencetus tidak akan dijalankan. Matikan. Arahan Matikan Dihantar. Kunci Pintu. Kunci Pintu (Pintu Gerbang). Kunci Pintu (NB-IoT). Kunci selepas pintu ditutup. Kunci pintu. Pintu dan Akses. Sensor Pintu dan Tingkap. Sensor Pintu dan Tingkap (Bluetooth)", // EN: See cameras, locks and sensors on the same screen. At-home and away modes, critical status summaries and quick security actions in one place.
-    "Kamera, kilit ve sens\u00f6rleri tek ekranda g\u00f6steren bir ev g\u00fcvenlik merkezi olu\u015ftur. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, h\u0131zl\u0131 kontrol butonlar\u0131 ve kritik durum \u00f6zetleri ekle.": "", // EN: Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.
-    "Kameralar ve mikrofonlar kapal\u0131.": "", // EN: Cameras and microphones are off.
-    "Kameral\u0131 Kap\u0131 Zili": "", // EN: Video Doorbell
-    "Kameral\u0131 Kilitler": "", // EN: Locks with Camera
-    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "", // EN: Video appears once the camera's stream is connected to NEXUS.
-    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "", // EN: Temporarily turns off the camera
-    "Kapal\u0131": "", // EN: Off
-    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "", // EN: When off, the trigger doesn't run
-    "Kapat": "", // EN: Turn off
-    "Kapatma Komutu G\u00f6nderildi": "", // EN: Turn-off Command Sent
-    "Kap\u0131 Kilidi": "", // EN: Door Lock
-    "Kap\u0131 Kilidi (Gateway)": "", // EN: Door Lock (Gateway)
-    "Kap\u0131 Kilidi (NB-IoT)": "", // EN: Door Lock (NB-IoT)
-    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "", // EN: Locks after the door closes
-    "Kap\u0131 kilidi": "", // EN: Door lock
-    "Kap\u0131 ve Eri\u015fim": "", // EN: Doors and Access
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "", // EN: Door and Window Sensor
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "", // EN: Door and Window Sensor (Bluetooth)
+    "Kamera, kilit ve sens\u00f6rleri tek ekranda g\u00f6steren bir ev g\u00fcvenlik merkezi olu\u015ftur. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, h\u0131zl\u0131 kontrol butonlar\u0131 ve kritik durum \u00f6zetleri ekle.": "Cipta pusat keselamatan rumah yang memaparkan kamera, kunci dan penderia pada satu skrin. Tambah mod di rumah dan mod keluar, butang kawalan pantas dan ringkasan status kritikal.", // EN: Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.
+    "Kameralar ve mikrofonlar kapal\u0131.": "Kamera dan mikrofon dimatikan.", // EN: Cameras and microphones are off.
+    "Kameral\u0131 Kap\u0131 Zili": "Loceng Pintu Video", // EN: Video Doorbell
+    "Kameral\u0131 Kilitler": "Kunci dengan Kamera", // EN: Locks with Camera
+    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "Video dipaparkan setelah strim kamera disambungkan ke NEXUS.", // EN: Video appears once the camera's stream is connected to NEXUS.
+    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "Mematikan kamera buat sementara", // EN: Temporarily turns off the camera
+    "Kapal\u0131": "Mati", // EN: Off
+    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "Apabila mati, pencetus tidak berjalan", // EN: When off, the trigger doesn't run
+    "Kapat": "Matikan", // EN: Turn off
+    "Kapatma Komutu G\u00f6nderildi": "Arahan Mematikan Dihantar", // EN: Turn-off Command Sent
+    "Kap\u0131 Kilidi": "Kunci Pintu", // EN: Door Lock
+    "Kap\u0131 Kilidi (Gateway)": "Kunci Pintu (Get Laluan)", // EN: Door Lock (Gateway)
+    "Kap\u0131 Kilidi (NB-IoT)": "Kunci Pintu (NB-IoT)", // EN: Door Lock (NB-IoT)
+    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "Dikunci selepas pintu ditutup", // EN: Locks after the door closes
+    "Kap\u0131 kilidi": "Kunci pintu", // EN: Door lock
+    "Kap\u0131 ve Eri\u015fim": "Pintu dan Akses", // EN: Doors and Access
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "Penderia Pintu dan Tingkap", // EN: Door and Window Sensor
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "Penderia Pintu dan Tingkap (Bluetooth)", // EN: Door and Window Sensor (Bluetooth)
     "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (ZigBee)": "Sensor Pintu dan Tingkap (ZigBee)", // EN: Door and Window Sensor (ZigBee)
     "Kap\u0131 ve pencere sens\u00f6rleri": "Sensor pintu dan tingkap", // EN: Door and window sensors
     "Kap\u0131, pencere, hareket sens\u00f6r\u00fc": "Sensor pintu, tingkap, pergerakan", // EN: Door, window, motion sensor
@@ -2659,19 +2659,19 @@ window.NEXUS_LANG = {
     "Uzun s\u00fcre evde yokken cihazlar\u0131n\u0131 g\u00fcvenli ve tasarruflu konuma al.": "Letakkan peranti anda dalam keadaan selamat dan menjimatkan tenaga semasa anda jauh untuk jangka masa panjang.", // EN: Put your devices into a safe, energy-saving state while you are away for long.
     "I\u015f\u0131klar\u0131 k\u0131s, perdeleri kapat ve TV'yi a\u00e7.": "Meredupkan lampu, menutup langsir dan menghidupkan TV.", // EN: Dim the lights, close the curtains and turn on the TV.
     "Robot s\u00fcp\u00fcrgeni ba\u015flat ya da \u015farj istasyonuna g\u00f6nder.": "Mulakan vakum robot anda atau hantarkan kembali ke doknya. Kunci pintu, tutup langsir dan sediakan rumah untuk malam. Lihat status dan tetapan privasi kamera anda di satu skrin. Hidupkan atau matikan mod privasi untuk kamera anda dari satu tempat semasa anda berada di rumah. Lihat automasi mana yang berjalan hari ini. Kongsi nota dan tugasan dengan ahli rumah anda. Lihat ringkasan kesihatan rumah anda berdasarkan udara, kelembapan dan suhu yang diukur oleh sensor anda. Semak sama ada peranti anda boleh dicapai melalui rangkaian tempatan anda. Saya mahu mencipta automasi baru. Saya mahu mencipta senario ketik-untuk-jalankan baru. Peranti baru. Bagaimana saya menambah peranti baru? Cadangan senario baru. Kata laluan baru.", // EN: Start your robot vacuum or send it back to its dock.
-    "Kap\u0131y\u0131 kilitle, perdeleri kapat ve evi geceye haz\u0131rla.": "", // EN: Lock the door, close the curtains and get the house ready for the night.
-    "Ekledi\u011fin kameralar\u0131n durumunu ve gizlilik ayar\u0131n\u0131 tek ekranda g\u00f6r.": "", // EN: See the status and privacy setting of your cameras on one screen.
-    "Evdeyken kameralar\u0131n i\u00e7in gizlilik modunu tek yerden a\u00e7 ya da kapat.": "", // EN: Turn privacy mode for your cameras on or off from one place while you are home.
-    "Bug\u00fcn hangi otomasyonun ne zaman \u00e7al\u0131\u015faca\u011f\u0131n\u0131 g\u00f6r.": "", // EN: See which automation runs when today.
-    "Ev halk\u0131yla notlar\u0131 ve yap\u0131lacaklar\u0131 payla\u015f.": "", // EN: Share notes and to-dos with your household.
-    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava, nem ve s\u0131cakl\u0131ktan evinin sa\u011fl\u0131k \u00f6zetini g\u00f6r.": "", // EN: See your home's health summary from the air, humidity and temperature your sensors measure.
-    "Ekledi\u011fin cihazlar\u0131n yerel a\u011fdan ula\u015f\u0131labilir olup olmad\u0131\u011f\u0131n\u0131 kontrol et.": "", // EN: Check whether your devices can be reached over your local network.
-    "Yeni bir otomasyon olu\u015fturmak istiyorum.": "", // EN: I want to create a new automation.
-    "Yeni bir t\u0131kla ve \u00e7al\u0131\u015ft\u0131r senaryosu olu\u015fturmak istiyorum.": "", // EN: I want to create a new tap-to-run scenario.
-    "Yeni cihaz": "", // EN: New device
-    "Yeni cihaz\u0131 nas\u0131l eklerim?": "", // EN: How do I add a new device?
-    "Yeni senaryo tavsiyeleri": "", // EN: New scenario recommendations
-    "Yeni \u015fifre": "", // EN: New password
+    "Kap\u0131y\u0131 kilitle, perdeleri kapat ve evi geceye haz\u0131rla.": "Kunci pintu, tutup langsir dan sediakan rumah untuk malam.", // EN: Lock the door, close the curtains and get the house ready for the night.
+    "Ekledi\u011fin kameralar\u0131n durumunu ve gizlilik ayar\u0131n\u0131 tek ekranda g\u00f6r.": "Lihat status dan tetapan privasi kamera anda pada satu skrin.", // EN: See the status and privacy setting of your cameras on one screen.
+    "Evdeyken kameralar\u0131n i\u00e7in gizlilik modunu tek yerden a\u00e7 ya da kapat.": "Hidupkan atau matikan mod privasi untuk kamera anda dari satu tempat semasa anda di rumah.", // EN: Turn privacy mode for your cameras on or off from one place while you are home.
+    "Bug\u00fcn hangi otomasyonun ne zaman \u00e7al\u0131\u015faca\u011f\u0131n\u0131 g\u00f6r.": "Lihat automasi mana yang berjalan pada bila-bila masa hari ini.", // EN: See which automation runs when today.
+    "Ev halk\u0131yla notlar\u0131 ve yap\u0131lacaklar\u0131 payla\u015f.": "Kongsi nota dan senarai tugasan dengan isi rumah anda.", // EN: Share notes and to-dos with your household.
+    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava, nem ve s\u0131cakl\u0131ktan evinin sa\u011fl\u0131k \u00f6zetini g\u00f6r.": "Lihat ringkasan kesihatan rumah anda daripada udara, kelembapan dan suhu yang diukur oleh penderia anda.", // EN: See your home's health summary from the air, humidity and temperature your sensors measure.
+    "Ekledi\u011fin cihazlar\u0131n yerel a\u011fdan ula\u015f\u0131labilir olup olmad\u0131\u011f\u0131n\u0131 kontrol et.": "Semak sama ada peranti anda boleh dicapai melalui rangkaian setempat anda.", // EN: Check whether your devices can be reached over your local network.
+    "Yeni bir otomasyon olu\u015fturmak istiyorum.": "Saya mahu mencipta automasi baharu.", // EN: I want to create a new automation.
+    "Yeni bir t\u0131kla ve \u00e7al\u0131\u015ft\u0131r senaryosu olu\u015fturmak istiyorum.": "Saya mahu mencipta senario ketik-untuk-jalan baharu.", // EN: I want to create a new tap-to-run scenario.
+    "Yeni cihaz": "Peranti baharu", // EN: New device
+    "Yeni cihaz\u0131 nas\u0131l eklerim?": "Bagaimana saya menambah peranti baharu?", // EN: How do I add a new device?
+    "Yeni senaryo tavsiyeleri": "Cadangan senario baharu", // EN: New scenario recommendations
+    "Yeni \u015fifre": "Kata laluan baharu", // EN: New password
     "Yeni \u015fifre en az 4 karakter olmal\u0131.": "Kata laluan baru mesti sekurang-kurangnya 4 aksara.", // EN: New password must be at least 4 characters.
     "Yeni \u015fifre tekrar": "Ulang kata laluan baru", // EN: Repeat new password
     "Yeni \u015fifre tekrar alan\u0131 e\u015fle\u015fmiyor.": "Kata laluan yang diulang tidak sepadan.", // EN: The repeated password doesn't match.
@@ -3049,7 +3049,7 @@ window.NEXUS_LANG = {
     "Daveti G\u00f6nder": "Hantar Jemputan", // EN: Send Invite
     "Sahipli\u011fi Devret": "Pindah Pemilikan", // EN: Transfer Ownership
     "Uygulama kapal\u0131yken aile mesaj\u0131 ve ev sahibinin payla\u015ft\u0131\u011f\u0131 uyar\u0131lar gelir. Ana anahtar, kategori ve sessiz saat ayarlar\u0131n sunucuya kopyalan\u0131r; uygulamay\u0131 a\u00e7t\u0131\u011f\u0131nda g\u00fcncellenir.": "Mesej keluarga dan amaran yang dikongsi oleh pemilik rumah tiba semasa aplikasi ditutup. Suis utama, kategori dan tetapan waktu sunyi anda disalin ke pelayan; ia dikemas kini apabila anda membuka aplikasi.", // EN: Family messages and the alerts the home owner shares arrive while the app is closed. Your master switch, category and quiet-hours settings are copied to the server; they update when you open the app.
-    "Aile Mesajlar\u0131": "", // EN: Family Messages
+    "Aile Mesajlar\u0131": "Mesej Keluarga", // EN: Family Messages
     "Ev \u00fcyelerinden yeni mesaj": "Mesej Keluarga", // EN: New message from home members
     "Yaz\u0131 Boyutu": "Mesej baru daripada ahli rumah", // EN: Text Size
     "Broker'a ba\u011flan\u0131lamad\u0131. Adresin ve portun do\u011fru, broker'\u0131n a\u00e7\u0131k oldu\u011fundan emin ol.": "Saiz Teks", // EN: Could not connect to the broker. Make sure the address and port are correct and the broker is running.
@@ -3125,19 +3125,19 @@ window.NEXUS_LANG = {
     "Temay\u0131 de\u011fi\u015ftir": "Tukar tema", // EN: Change theme
     "L\u00fctfen ge\u00e7erli bir e-posta gir.": "Sila masukkan emel yang sah.", // EN: Please enter a valid email.
     "Bu e-posta ile zaten bir hesap var. L\u00fctfen giri\u015f yap\u0131n.": "Akaun dengan e-mel ini sudah wujud. Sila log masuk. Tautan ini telah tamat tempoh atau tidak sah. Sila cuba lagi. Akaun awan telah dinyahdayakan dalam binaan ini; kata laluan akaun tempatan tidak boleh diset semula. Jika alamat ini dikaitkan dengan akaun, pautan set semula telah dihantar. Semak peti masuk anda (dan folder spam). Terlalu banyak percubaan. Sila cuba lagi dalam satu minit. Tidak dapat menghantar pautan. Hantar sekali lagi Kata laluan anda telah dikemas kini. Anda boleh log masuk sekarang. Masukkan kata laluan semasa anda. Kata laluan semasa tidak betul. Kata laluan baru mesti berbeza daripada yang lama. Sesi tidak ditemui. Log keluar dan log masuk semula. Tidak dapat mengemas kini kata laluan. Menghantar e-mel jemputan\u2026", // EN: An account with this email already exists. Please sign in.
-    "Ba\u011flant\u0131n\u0131n s\u00fcresi dolmu\u015f ya da ge\u00e7ersiz. L\u00fctfen yeniden dene.": "", // EN: This link has expired or is invalid. Please try again.
-    "Bulut hesab\u0131 bu s\u00fcr\u00fcmde kapal\u0131; yerel hesaplarda \u015fifre s\u0131f\u0131rlanamaz.": "", // EN: Cloud account is disabled in this build; local account passwords cannot be reset.
-    "Bu adres bir hesaba ba\u011fl\u0131ysa s\u0131f\u0131rlama ba\u011flant\u0131s\u0131 g\u00f6nderildi. Gelen kutunu (ve gereksiz klas\u00f6r\u00fcn\u00fc) kontrol et.": "", // EN: If this address is linked to an account, a reset link has been sent. Check your inbox (and spam folder).
-    "\u00c7ok s\u0131k denedin. Bir dakika sonra tekrar dene.": "", // EN: Too many attempts. Please try again in a minute.
-    "Ba\u011flant\u0131 g\u00f6nderilemedi.": "", // EN: Could not send the link.
-    "Tekrar G\u00f6nder": "", // EN: Send again
-    "\u015eifren g\u00fcncellendi. \u015eimdi giri\u015f yapabilirsin.": "", // EN: Your password has been updated. You can sign in now.
-    "Mevcut \u015fifreni gir.": "", // EN: Enter your current password.
-    "Mevcut \u015fifre yanl\u0131\u015f.": "", // EN: Current password is incorrect.
-    "Yeni \u015fifre eskisinden farkl\u0131 olmal\u0131.": "", // EN: New password must differ from the old one.
-    "Oturum bulunamad\u0131. \u00c7\u0131k\u0131\u015f yap\u0131p tekrar giri\u015f yap.": "", // EN: Session not found. Sign out and sign in again.
-    "\u015eifre g\u00fcncellenemedi.": "", // EN: Could not update the password.
-    "Davet e-postas\u0131 g\u00f6nderiliyor\u2026": "", // EN: Sending invitation email…
+    "Ba\u011flant\u0131n\u0131n s\u00fcresi dolmu\u015f ya da ge\u00e7ersiz. L\u00fctfen yeniden dene.": "Pautan ini telah tamat tempoh atau tidak sah. Sila cuba lagi.", // EN: This link has expired or is invalid. Please try again.
+    "Bulut hesab\u0131 bu s\u00fcr\u00fcmde kapal\u0131; yerel hesaplarda \u015fifre s\u0131f\u0131rlanamaz.": "Akaun awan dilumpuhkan dalam binaan ini; kata laluan akaun setempat tidak boleh ditetapkan semula.", // EN: Cloud account is disabled in this build; local account passwords cannot be reset.
+    "Bu adres bir hesaba ba\u011fl\u0131ysa s\u0131f\u0131rlama ba\u011flant\u0131s\u0131 g\u00f6nderildi. Gelen kutunu (ve gereksiz klas\u00f6r\u00fcn\u00fc) kontrol et.": "Jika alamat ini dipautkan kepada akaun, pautan penetapan semula telah dihantar. Semak peti masuk anda (dan folder spam).", // EN: If this address is linked to an account, a reset link has been sent. Check your inbox (and spam folder).
+    "\u00c7ok s\u0131k denedin. Bir dakika sonra tekrar dene.": "Terlalu banyak percubaan. Sila cuba lagi dalam seminit.", // EN: Too many attempts. Please try again in a minute.
+    "Ba\u011flant\u0131 g\u00f6nderilemedi.": "Pautan tidak dapat dihantar.", // EN: Could not send the link.
+    "Tekrar G\u00f6nder": "Hantar semula", // EN: Send again
+    "\u015eifren g\u00fcncellendi. \u015eimdi giri\u015f yapabilirsin.": "Kata laluan anda telah dikemas kini. Anda boleh log masuk sekarang.", // EN: Your password has been updated. You can sign in now.
+    "Mevcut \u015fifreni gir.": "Masukkan kata laluan semasa anda.", // EN: Enter your current password.
+    "Mevcut \u015fifre yanl\u0131\u015f.": "Kata laluan semasa tidak betul.", // EN: Current password is incorrect.
+    "Yeni \u015fifre eskisinden farkl\u0131 olmal\u0131.": "Kata laluan baharu mestilah berbeza daripada yang lama.", // EN: New password must differ from the old one.
+    "Oturum bulunamad\u0131. \u00c7\u0131k\u0131\u015f yap\u0131p tekrar giri\u015f yap.": "Sesi tidak ditemui. Log keluar dan log masuk semula.", // EN: Session not found. Sign out and sign in again.
+    "\u015eifre g\u00fcncellenemedi.": "Kata laluan tidak dapat dikemas kini.", // EN: Could not update the password.
+    "Davet e-postas\u0131 g\u00f6nderiliyor\u2026": "Menghantar e-mel jemputan\u2026", // EN: Sending invitation email…
     "Bu e-postan\u0131n hesab\u0131 zaten var; kodla kat\u0131labilir.": "E-mel ini sudah mempunyai akaun; mereka boleh menyertai dengan kod tersebut.", // EN: This email already has an account; they can join with the code.
     "Ev sahibi yetkileri kapat\u0131lamaz": "Kebenaran pemilik tidak boleh dimatikan", // EN: Owner permissions cannot be turned off
     "Yetkiyi kapat": "Matikan kebenaran", // EN: Turn permission off
@@ -3315,7 +3315,7 @@ window.NEXUS_LANG = {
     "Feedback": "Dalam talian semula.", // EN: Feedback
     "Back online.": "Anda dalam mod luar talian \u2014 peranti terus berfungsi di rangkaian tempatan anda.", // EN: Back online.
     "You're offline \u2014 devices keep working on your local network.": "Peranti ini boleh mencapai rangkaian tempatan anda", // EN: You're offline — devices keep working on your local network.
-    "This device can reach your local network": "", // EN: This device can reach your local network
+    "This device can reach your local network": "Peranti ini boleh mencapai rangkaian setempat anda", // EN: This device can reach your local network
     "The local network is not reachable here": "Rangkaian tempatan tidak dapat dicapai di sini", // EN: The local network is not reachable here
     "You can check your devices here. If the local address does not answer, the optional remote address is tried.": "Anda boleh menyemak peranti anda di sini. Jika alamat tempatan tidak menjawab, alamat jauh pilihan akan dicuba.", // EN: You can check your devices here. If the local address does not answer, the optional remote address is tried.
     "A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.": "Pelayar tidak boleh bercakap dengan peranti rumah anda secara langsung. Gunakan aplikasi desktop atau mudah alih untuk mengawal peranti.", // EN: A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.

@@ -490,7 +490,7 @@ window.NEXUS_LANG = {
     "Kapat\u0131nca arka planda \u00e7al\u0131\u015ft\u0131r": "Seguir funcionando en segundo plano ao pechar", // EN: Keep running in background when closed
     "Pencere kapat\u0131lsa da otomasyonlar tepside \u00e7al\u0131\u015fmaya devam etsin.": "As automatizaci\u00f3ns seguen funcionando na bandexa do sistema cando a xanela est\u00e1 pechada.\\nPuxa para actualizar", // EN: Automations keep running in system tray when the window is closed.
     "Yenilemek i\u00e7in \u00e7ekin": "Sensores", // EN: Pull to refresh
-    "Sens\u00f6rler": "", // EN: Sensors
+    "Sens\u00f6rler": "Sensores", // EN: Sensors
     "Hareket, kap\u0131/pencere ve \u00e7evre sens\u00f6rleri": "Sensores de movemento, porta/fiestra e ambientais", // EN: Motion, door/window and environmental sensors
     "\u0130klimlendirme ve Enerji": "Clima e Enerx\u00eda", // EN: Climate and Energy
     "Ak\u0131ll\u0131 priz, r\u00f6le ve anahtar \u00fcr\u00fcnleri": "Produtos de enchufe intelixente, rel\u00e9 e interruptor", // EN: Smart plug, relay and switch products
@@ -870,7 +870,7 @@ window.NEXUS_LANG = {
     "Alarm sistemini kur": "Fallou a exploraci\u00f3n do \u00e1lbum.", // EN: Arm the alarm system
     "Alb\u00fcm taramas\u0131 ba\u015far\u0131s\u0131z.": "Explorar desde o \u00e1lbum", // EN: Album scan failed.
     "Alb\u00fcmden Tara": "Prefixo de subrede", // EN: Scan from Album
-    "Alt a\u011f \u00f6n eki": "", // EN: Subnet prefix
+    "Alt a\u011f \u00f6n eki": "Prefixo de subrede", // EN: Subnet prefix
     "Alt a\u011f \u00f6neki ge\u00e7ersiz. \u00d6rnek: 192.168.1": "Prefixo de subrede inv\u00e1lido. Exemplo: 192.168.1", // EN: Invalid subnet prefix. Example: 192.168.1
     "Alttan Is\u0131tmal\u0131 Masa": "Mesa calefactada", // EN: Heated Table
     "Alt\u0131l\u0131": "Six-gang", // EN: Six-gang
@@ -1386,19 +1386,19 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Crea unha aplicaci\u00f3n de comprobaci\u00f3n ao sa\u00edr de casa que mostre os dispositivos deixados acesos, o estado das pechaduras e a configuraci\u00f3n de enerx\u00eda nunha soa pantalla. Engade bot\u00f3ns de apagado r\u00e1pido e activaci\u00f3n de seguridade.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Comproba os dispositivos acesos, pechaduras e estado da enerx\u00eda nun \u00fanico fluxo ao sa\u00edr de casa.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Mostra os dispositivos acendidos, cerraduras e estado enerx\u00e9tico nunha soa pantalla ao sa\u00edr de casa. Vexa luces, enchufes, aire acondicionado e configuraci\u00f3ns de seguridade acesas antes de sa\u00edr de casa, nun panel. Reune pasos r\u00e1pidos de apagado e activaci\u00f3n de seguridade nun fluxo. Fai a revisi\u00f3n final antes de sa\u00edr. Apaga as luces automaticamente despois de sa\u00edr de casa. Apaga as luces automaticamente despois de sa\u00edr de casa. Apaga as luces automaticamente despois de sa\u00edr e ac\u00e9ndelas cando regreses. Apaga o aire acondicionado automaticamente cando non hai ningu\u00e9n en casa e evita o consumo innecesario. Corta automaticamente a enerx\u00eda dos dispositivos en espera \u00e1 hora que escollas pola noite. Ao sa\u00edr de casa. Apaga o enchufe ao sa\u00edr de casa. Sa\u00edr de casa. Estou en casa. Benvido a casa. Cando chegues a casa ou saias.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
-    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
-    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "", // EN: Let's do the final checks before you leave.
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "", // EN: Turn off the lights automatically after leav...
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "", // EN: Turn off the lights automatically after leaving home
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "", // EN: Turn off the lights automatically after you leave and turn them on when you return.
-    "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
-    "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "", // EN: Automatically cut power to devices on standby at the time you choose at night.
-    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "", // EN: When leaving home
-    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda prizi kapat": "", // EN: Turn off the plug when leaving home
-    "Evden \u00e7\u0131k\u0131\u015f": "", // EN: Leaving home
-    "Eve Geldim": "", // EN: I'm Home
-    "Eve geldim": "", // EN: Welcome home
-    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "", // EN: When you arrive home or leave
+    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "Mira nun s\u00f3 panel as luces, os enchufes, os aires acondicionados e os axustes de seguranza que quedan acesos antes de sa\u00edr de casa. Re\u00fane os pasos de apagado r\u00e1pido e activaci\u00f3n da seguranza nun s\u00f3 fluxo.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
+    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Fagamos as \u00faltimas comprobaci\u00f3ns antes de que saias.", // EN: Let's do the final checks before you leave.
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "Apaga as luces automaticamente despois de sa...", // EN: Turn off the lights automatically after leav...
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "Apaga as luces automaticamente despois de sa\u00edr de casa", // EN: Turn off the lights automatically after leaving home
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "Apaga as luces automaticamente cando saias e ac\u00e9ndeas cando volvas.", // EN: Turn off the lights automatically after you leave and turn them on when you return.
+    "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "Apaga o aire acondicionado automaticamente cando non haxa ningu\u00e9n na casa e evita o consumo innecesario.", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
+    "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "Corta automaticamente a corrente dos dispositivos en espera \u00e1 hora que escollas pola noite.", // EN: Automatically cut power to devices on standby at the time you choose at night.
+    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "Ao sa\u00edr de casa", // EN: When leaving home
+    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda prizi kapat": "Apaga o enchufe ao sa\u00edr de casa", // EN: Turn off the plug when leaving home
+    "Evden \u00e7\u0131k\u0131\u015f": "Sa\u00edda de casa", // EN: Leaving home
+    "Eve Geldim": "Xa estou na casa", // EN: I'm Home
+    "Eve geldim": "Benvido a casa", // EN: Welcome home
+    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "Cando chegues \u00e1 casa ou saias", // EN: When you arrive home or leave
     "Eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7, klimay\u0131 \u00e7al\u0131\u015ft\u0131r ve garaj kap\u0131s\u0131n\u0131 arac\u0131n\u0131n ekran\u0131ndan kontrol et.": "Acende as luces, inicia o aire acondicionado e controla a porta do garaxe desde a pantalla do teu coche ao achegarte \u00e1 casa.", // EN: Turn on the lights, start the AC and control the garage door from your car's screen as you approach home.
     "Evet, Uygula": "Si, Aplicar", // EN: Yes, Apply
     "Evet, \u0130ptal Et": "Si, Cancelar", // EN: Yes, Cancel
@@ -1977,35 +1977,35 @@ window.NEXUS_LANG = {
     "Misafir a\u011f\u0131 veya ge\u00e7ici eri\u015fim bilgisi olmadan haz\u0131r durum g\u00f6stermiyoruz.": "Non mostramos un estado listo sen rede de convidados ou detalles de acceso temporal.", // EN: We don't show a ready state without guest network or temporary access details.
     "Misafir geldi\u011fi anda giri\u015f, ayd\u0131nlatma ve ortak alan cihazlar\u0131n\u0131 haz\u0131rlayan bir misafir modu uygulamas\u0131 olu\u015ftur. Kar\u015f\u0131lama \u0131\u015f\u0131\u011f\u0131, sessiz bildirim ve misafir eri\u015fim ad\u0131mlar\u0131 olsun.": "Crear unha aplicaci\u00f3n en modo de convidado que prepare a entrada, a iluminaci\u00f3n e os dispositivos das \u00e1reas compartidas en canto cheguen os convidados. Incl\u00fae unha luz de benvida, notificaci\u00f3ns silenciosas e pasos de acceso para convidados.", // EN: Create a guest mode app that prepares the entrance, lighting and shared-area devices as soon as guests arrive. Include a welcome light, quiet notifications and guest access steps.
     "Misafir geldi\u011fi anda kullan\u0131lacak \u0131\u015f\u0131k, eri\u015fim ve ortam ayarlar\u0131.": "Configuraci\u00f3n de luz, acceso e ambiente para usar tan pronto como cheguen os invitados. Prepara a entrada, a iluminaci\u00f3n, as \u00e1reas compartidas e os dispositivos de entretemento desde un s\u00f3 panel antes de que cheguen os invitados. Crea un fluxo de benvida relaxado pero seguro na casa. Modo invitado Modo invitado non configurado Temperatura da habitaci\u00f3n de invitados fixada en 22 graos Prepara a t\u00faa casa cun s\u00f3 toque antes de que cheguen os invitados. Modo Roxo L\u00e1mpara de vela Coci\u00f1a Eletrodom\u00e9sticos da coci\u00f1a Neces\u00edtase ventilaci\u00f3n na coci\u00f1a C\u00e1mara da coci\u00f1a Vent\u00e1 da coci\u00f1a Procesador de alimentos Comprobar os electrodom\u00e9sticos da coci\u00f1a Prepara os dispositivos de coci\u00f1a axeitados cun s\u00f3 toque. Coci\u00f1a, Sala de estar, Recibidor Excelente Iniciar m\u00fasica Servizo de m\u00fasica HUMIDADE NEXUS - Protecci\u00f3n AI NEXUS - App intelixente NEXUS - Notificaci\u00f3ns instant\u00e1neas NEXUS - Asistente NEXUS - Configuraci\u00f3n NEXUS - Mestre de iluminaci\u00f3n NEXUS - Dispositivo NEXUS - Engadir dispositivo", // EN: Light, access and ambience settings to use as soon as guests arrive.
-    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
-    "Misafir modu": "", // EN: Guest mode
-    "Misafir modu ayarlanmad\u0131": "", // EN: Guest mode not set up
-    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "", // EN: Guest room temperature fixed at 22 degrees
-    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "", // EN: Get your home ready with one tap before your guests arrive.
-    "Mod": "", // EN: Mode
-    "Mor": "", // EN: Purple
-    "Mum Lamba": "", // EN: Candle Lamp
-    "Mutfak": "", // EN: Kitchen
-    "Mutfak Aletleri": "", // EN: Kitchen Appliances
-    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "", // EN: Kitchen Ventilation Needed
-    "Mutfak Kamera": "", // EN: Kitchen Camera
-    "Mutfak Penceresi": "", // EN: Kitchen Window
-    "Mutfak Robotu": "", // EN: Food Processor
-    "Mutfak aletlerini kontrol et": "", // EN: Check kitchen appliances
-    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "", // EN: Prepares suitable kitchen devices with one tap.
-    "Mutfak, Salon, Hol": "", // EN: Kitchen, Living Room, Hall
-    "M\u00fckemmel": "", // EN: Excellent
-    "M\u00fczik Ba\u015flat": "", // EN: Start Music
-    "M\u00fczik Servisi": "", // EN: Music Service
-    "NEM": "", // EN: HUMIDITY
-    "NEXUS - AI Koruma": "", // EN: NEXUS - AI Protection
-    "NEXUS - Ak\u0131ll\u0131 Uygulama": "", // EN: NEXUS - Smart App
-    "NEXUS - Anl\u0131k Bildirimler": "", // EN: NEXUS - Instant Notifications
-    "NEXUS - Asistan": "", // EN: NEXUS - Assistant
-    "NEXUS - Ayarlar": "", // EN: NEXUS - Settings
-    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "", // EN: NEXUS - Lighting Master
-    "NEXUS - Cihaz": "", // EN: NEXUS - Device
-    "NEXUS - Cihaz Ekle": "", // EN: NEXUS - Add Device
+    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "Prepara a entrada, a iluminaci\u00f3n, as zonas com\u00fans e os dispositivos de entretemento nun s\u00f3 panel antes de que cheguen os convidados. Crea un fluxo de benvida relaxado pero seguro na casa.", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
+    "Misafir modu": "Modo convidados", // EN: Guest mode
+    "Misafir modu ayarlanmad\u0131": "Modo convidados sen configurar", // EN: Guest mode not set up
+    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "Temperatura do cuarto de convidados fixada en 22 graos", // EN: Guest room temperature fixed at 22 degrees
+    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "Prepara a t\u00faa casa cun s\u00f3 toque antes de que cheguen os convidados.", // EN: Get your home ready with one tap before your guests arrive.
+    "Mod": "Modo", // EN: Mode
+    "Mor": "Violeta", // EN: Purple
+    "Mum Lamba": "L\u00e1mpada de vela", // EN: Candle Lamp
+    "Mutfak": "Coci\u00f1a", // EN: Kitchen
+    "Mutfak Aletleri": "Electrodom\u00e9sticos da coci\u00f1a", // EN: Kitchen Appliances
+    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "Ventilaci\u00f3n da coci\u00f1a necesaria", // EN: Kitchen Ventilation Needed
+    "Mutfak Kamera": "C\u00e1mara da coci\u00f1a", // EN: Kitchen Camera
+    "Mutfak Penceresi": "Fiestra da coci\u00f1a", // EN: Kitchen Window
+    "Mutfak Robotu": "Robot de coci\u00f1a", // EN: Food Processor
+    "Mutfak aletlerini kontrol et": "Comproba os electrodom\u00e9sticos da coci\u00f1a", // EN: Check kitchen appliances
+    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "Prepara os dispositivos axeitados da coci\u00f1a cun s\u00f3 toque.", // EN: Prepares suitable kitchen devices with one tap.
+    "Mutfak, Salon, Hol": "Coci\u00f1a, Sal\u00f3n, Vest\u00edbulo", // EN: Kitchen, Living Room, Hall
+    "M\u00fckemmel": "Excelente", // EN: Excellent
+    "M\u00fczik Ba\u015flat": "Iniciar m\u00fasica", // EN: Start Music
+    "M\u00fczik Servisi": "Servizo de m\u00fasica", // EN: Music Service
+    "NEM": "HUMIDADE", // EN: HUMIDITY
+    "NEXUS - AI Koruma": "NEXUS - Protecci\u00f3n con IA", // EN: NEXUS - AI Protection
+    "NEXUS - Ak\u0131ll\u0131 Uygulama": "NEXUS - Aplicaci\u00f3n intelixente", // EN: NEXUS - Smart App
+    "NEXUS - Anl\u0131k Bildirimler": "NEXUS - Notificaci\u00f3ns instant\u00e1neas", // EN: NEXUS - Instant Notifications
+    "NEXUS - Asistan": "NEXUS - Asistente", // EN: NEXUS - Assistant
+    "NEXUS - Ayarlar": "NEXUS - Axustes", // EN: NEXUS - Settings
+    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "NEXUS - Mestre da iluminaci\u00f3n", // EN: NEXUS - Lighting Master
+    "NEXUS - Cihaz": "NEXUS - Dispositivo", // EN: NEXUS - Device
+    "NEXUS - Cihaz Ekle": "NEXUS - Engadir dispositivo", // EN: NEXUS - Add Device
     "NEXUS - Cihaz Ekleme Merkezi": "NEXUS - Centro de Dispositivos", // EN: NEXUS - Device Center
     "NEXUS - Cihaz G\u00fcncellemesi": "NEXUS - Actualizaci\u00f3ns de Dispositivos", // EN: NEXUS - Device Updates
     "NEXUS - Cihaz Kurulumu": "NEXUS - Configuraci\u00f3n de Dispositivos", // EN: NEXUS - Device Setup
@@ -2616,7 +2616,7 @@ window.NEXUS_LANG = {
     "\"Eylem Ekle\" \u203a \"URL'leri A\u00e7\" eylemini se\u00e7 ve kopyalad\u0131\u011f\u0131n ba\u011flant\u0131y\u0131 yap\u0131\u015ft\u0131r.": "Escoller \u201cEngadir acci\u00f3n\u201d \u203a \u201cAbrir URLs\u201d e pegar o enlace que copiaste.", // EN: Choose "Add Action" › "Open URLs" and paste the link you copied.
     "Kestirmeler uygulamas\u0131n\u0131 a\u00e7": "Abrir a aplicaci\u00f3n Atallos", // EN: Open the Shortcuts app
     "Cihazlar\u0131na uyan haz\u0131r otomasyonlardan birini tek dokunu\u015fla ekle.": "Engade unha automatizaci\u00f3n predefinida que se axeite aos teus dispositivos cun s\u00f3 toque.", // EN: Add a ready-made automation that fits your devices with one tap.
-    "Belirli bir saatte; her g\u00fcn, hafta i\u00e7i ya da hafta sonu": "", // EN: At a set time; every day, on weekdays or at weekends
+    "Belirli bir saatte; her g\u00fcn, hafta i\u00e7i ya da hafta sonu": "A unha hora determinada; todos os d\u00edas, os d\u00edas laborables ou os fins de semana", // EN: At a set time; every day, on weekdays or at weekends
     "G\u00fcn Do\u011fumu / Bat\u0131m\u0131": "Nun horario establecido; todos os d\u00edas, en d\u00edas laborais ou nos fins de semana", // EN: Sunrise / Sunset
     "Ev konumuna g\u00f6re g\u00fcne\u015f do\u011farken ya da batarken": "Amencer / Anoitecer", // EN: At sunrise or sunset for your home location
     "Cihaz ve Sens\u00f6r": "Ao amencer ou anoitecer na localizaci\u00f3n do teu fogar", // EN: Devices & Sensors
@@ -3078,16 +3078,16 @@ window.NEXUS_LANG = {
     "G\u00fcvenlik modu Gece olunca": "Cando o modo de seguridade est\u00e1 en Noite", // EN: When security mode is Night
     "G\u00fcvenlik modu (Evde/D\u0131\u015far\u0131da/Gece) de\u011fi\u015fti\u011finde": "Cando o modo de seguridade (Na casa/F\u00f3ra/Noite) cambia", // EN: When the security mode (At home/Away/Night) changes
     "Yaln\u0131zca NEXUS modunu de\u011fi\u015ftirir; cihazlara dokunmaz.": "S\u00f3 cambia o modo NEXUS; non toca os dispositivos. Funciona cando cambia o modo (mentres a aplicaci\u00f3n est\u00e1 aberta). O modo \u00e9 un interruptor dentro de NEXUS; non est\u00e1 conectado a un panel de alarma real e non bloquea os dispositivos por si mesmo. Modo actual: non establecido A activaci\u00f3n por localizaci\u00f3n a\u00ednda non se admite, polo que non se pode gardar. Tipos compatibles: Temporizador, Clima, Estado do Dispositivo, Modo de Seguridade e Cando se activa a alarma (sensor). Enderezo de Acceso Remoto Se accedes a un dispositivo ou concentrador desde outro enderezo estando f\u00f3ra de casa (VPN ou reenv\u00edo de porto), ese enderezo intentarase cando o enderezo local non responda. S\u00f3 se almacena neste dispositivo. Primeiro engade un dispositivo; despois podes darlle un enderezo remoto. Ao chegar a casa Ao sa\u00edr de casa A activaci\u00f3n por localizaci\u00f3n s\u00f3 funciona na aplicaci\u00f3n m\u00f3bil; non se pode configurar neste dispositivo.", // EN: Only changes the NEXUS mode; it does not touch devices.
-    "Mod de\u011fi\u015fince \u00e7al\u0131\u015f\u0131r (uygulama a\u00e7\u0131kken). Bu mod NEXUS i\u00e7inde bir anahtard\u0131r; ger\u00e7ek bir alarm paneline ba\u011flanmaz ve cihazlar\u0131 kendili\u011finden kilitlemez.": "", // EN: Runs when the mode changes (while the app is open). The mode is a switch inside NEXUS; it is not connected to a real alarm panel and does not lock devices by itself.
-    "\u015eimdiki mod:": "", // EN: Current mode:
-    "se\u00e7ilmemi\u015f": "", // EN: not set
-    "Konum tetikleyicisi hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu, G\u00fcvenlik Modu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).
-    "Uzak Eri\u015fim Adresi": "", // EN: Remote Access Address
-    "Evin d\u0131\u015f\u0131ndayken (VPN ya da port y\u00f6nlendirme) bir cihaza veya hub'a ba\u015fka bir adresten ula\u015f\u0131yorsan, yerel adres yan\u0131t vermedi\u011finde bu adres denenir. Yaln\u0131z bu cihazda saklan\u0131r.": "", // EN: If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.
-    "\u00d6nce bir cihaz ekle; sonra ona uzak adres verebilirsin.": "", // EN: Add a device first; then you can give it a remote address.
-    "Eve gelince": "", // EN: When arriving home
-    "Evden \u00e7\u0131k\u0131nca": "", // EN: When leaving home
-    "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r; bu cihazda kurulamaz.": "", // EN: The location trigger only works in the mobile app; it cannot be set up on this device.
+    "Mod de\u011fi\u015fince \u00e7al\u0131\u015f\u0131r (uygulama a\u00e7\u0131kken). Bu mod NEXUS i\u00e7inde bir anahtard\u0131r; ger\u00e7ek bir alarm paneline ba\u011flanmaz ve cihazlar\u0131 kendili\u011finden kilitlemez.": "Exec\u00fatase cando cambia o modo (mentres a aplicaci\u00f3n est\u00e1 aberta). O modo \u00e9 un interruptor dentro de NEXUS; non est\u00e1 conectado a un panel de alarma real e non bloquea dispositivos por si mesmo.", // EN: Runs when the mode changes (while the app is open). The mode is a switch inside NEXUS; it is not connected to a real alarm panel and does not lock devices by itself.
+    "\u015eimdiki mod:": "Modo actual:", // EN: Current mode:
+    "se\u00e7ilmemi\u015f": "sen definir", // EN: not set
+    "Konum tetikleyicisi hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu, G\u00fcvenlik Modu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "O activador de localizaci\u00f3n a\u00ednda non \u00e9 compatible, polo que non se pode gardar. Tipos que funcionan: Temporizador, Tempo, Estado do dispositivo, Modo de seguranza e Cando salta a alarma (sensor).", // EN: The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).
+    "Uzak Eri\u015fim Adresi": "Enderezo de acceso remoto", // EN: Remote Access Address
+    "Evin d\u0131\u015f\u0131ndayken (VPN ya da port y\u00f6nlendirme) bir cihaza veya hub'a ba\u015fka bir adresten ula\u015f\u0131yorsan, yerel adres yan\u0131t vermedi\u011finde bu adres denenir. Yaln\u0131z bu cihazda saklan\u0131r.": "Se accedes a un dispositivo ou hub desde outro enderezo cando est\u00e1s f\u00f3ra de casa (VPN ou redirecci\u00f3n de portos), proba ese enderezo cando o enderezo local non responda. G\u00e1rdase s\u00f3 neste dispositivo.", // EN: If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.
+    "\u00d6nce bir cihaz ekle; sonra ona uzak adres verebilirsin.": "Engade primeiro un dispositivo; despois poder\u00e1s darlle un enderezo remoto.", // EN: Add a device first; then you can give it a remote address.
+    "Eve gelince": "Ao chegar \u00e1 casa", // EN: When arriving home
+    "Evden \u00e7\u0131k\u0131nca": "Ao sa\u00edr de casa", // EN: When leaving home
+    "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r; bu cihazda kurulamaz.": "O activador de localizaci\u00f3n s\u00f3 funciona na aplicaci\u00f3n m\u00f3bil; non se pode configurar neste dispositivo.", // EN: The location trigger only works in the mobile app; it cannot be set up on this device.
     "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r.": "O disparador de localizaci\u00f3n s\u00f3 funciona na aplicaci\u00f3n m\u00f3bil.", // EN: The location trigger only works in the mobile app.
     "Ev konumu se\u00e7ilmedi. \u00d6nce": "Non se seleccionou unha localizaci\u00f3n de inicio. Primeiro", // EN: No home location selected. First
     "Ev konumuna g\u00f6re \u00e7al\u0131\u015f\u0131r. Yaln\u0131zca uygulama a\u00e7\u0131kken denetlenir (arka planda konum izlenmez); yakla\u015f\u0131k dakikada bir okunur.": "Funciona en relaci\u00f3n \u00e1 t\u00faa localizaci\u00f3n de inicio. S\u00f3 se comproba mentres a aplicaci\u00f3n est\u00e1 aberta (a localizaci\u00f3n non se rastrexa en segundo plano); leu aproximademente unha vez por minuto.", // EN: Works relative to your home location. It is only checked while the app is open (location is not tracked in the background); read about once a minute.

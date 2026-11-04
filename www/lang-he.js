@@ -37,7 +37,7 @@ window.NEXUS_LANG = {
     "Plan": "\u05ea\u05db\u05e0\u05df", // EN: Plan
     "$7.50/month": "$7.50 \u05dc\u05d7\u05d5\u05d3\u05e9", // EN: $7.50/month
     "/month": "/\u05d7\u05d5\u05d3\u05e9", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 \u05d9\u05de\u05d9\u05dd \u05d1\u05d7\u05d9\u05e0\u05dd, \u05d5\u05d0\u05d6 \u05e8\u05e7 $89.99 \u05dc\u05e9\u05e0\u05d4. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d1\u05d8\u05dc \u05d1\u05db\u05dc \u05e2\u05ea.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "\u05de\u05d3\u05e8\u05d9\u05da", // EN: Guide
     "Ses ve Hareket": "\u05e7\u05d5\u05dc \u05d5\u05ea\u05e0\u05d5\u05e2\u05d4", // EN: Sound & Motion
@@ -2498,899 +2498,899 @@ window.NEXUS_LANG = {
     "T\u00fcm cihazlar\u0131n\u0131z\u0131 tek bir merkezden, sesinizle veya otomatik senaryolarla y\u00f6netin.": "\u05e0\u05d4\u05dc \u05d0\u05ea \u05db\u05dc \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05da \u05de\u05de\u05e7\u05d5\u05dd \u05d0\u05d7\u05d3, \u05e2\u05dd \u05d4\u05e7\u05d5\u05dc \u05e9\u05dc\u05da \u05d0\u05d5 \u05e2\u05dd \u05ea\u05e8\u05d7\u05d9\u05e9\u05d9\u05dd \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05d9\u05dd.", // EN: Manage all your devices from one place, with your voice or with automatic scenarios.
     "T\u00fcm evi oda bazl\u0131 kontrol eden bir ak\u0131ll\u0131 \u0131\u015f\u0131k paneli olu\u015ftur. Her oda i\u00e7in ac/kapat, parlakl\u0131k ve renk s\u0131cakl\u0131\u011f\u0131 kontrolleri olsun. Hemen kullan\u0131labilecek h\u0131zl\u0131 yuzdeler ve tumunu ac/tumunu kapat aksiyonlar\u0131 ekle.": "\u05e6\u05d5\u05e8 \u05e4\u05d0\u05e0\u05dc \u05ea\u05d0\u05d5\u05e8\u05d4 \u05d7\u05db\u05dd \u05e9\u05e9\u05d5\u05dc\u05d8 \u05d1\u05db\u05dc \u05d4\u05d1\u05d9\u05ea \u05d7\u05d3\u05e8 \u05d0\u05d7\u05e8 \u05d7\u05d3\u05e8.\u05db\u05dc\u05d5\u05dc \u05d1\u05e7\u05e8\u05d5\u05ea \u05d4\u05e4\u05e2\u05dc\u05d4/\u05db\u05d9\u05d1\u05d5\u05d9, \u05d1\u05d4\u05d9\u05e8\u05d5\u05ea \u05d5\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05ea \u05e6\u05d1\u05e2 \u05e2\u05d1\u05d5\u05e8 \u05db\u05dc \u05d7\u05d3\u05e8.\u05d4\u05d5\u05e1\u05e3 \u05d0\u05d7\u05d5\u05d6\u05d9\u05dd \u05de\u05d4\u05d9\u05e8\u05d9\u05dd \u05de\u05d5\u05db\u05e0\u05d9\u05dd \u05dc\u05e9\u05d9\u05de\u05d5\u05e9 \u05d5\u05db\u05dc \u05e4\u05e2\u05d5\u05dc\u05d5\u05ea \u05d4\u05e4\u05e2\u05dc\u05d4/\u05db\u05d9\u05d1\u05d5\u05d9.", // EN: Create a smart lighting panel that controls the whole home room by room. Include on/off, brightness and color temperature controls for each room. Add ready-to-use quick percentages and all on/all off actions.
     "T\u00fcm gizlilik korumalar\u0131 kapal\u0131.": "\u05db\u05dc \u05d4\u05d2\u05e0\u05d5\u05ea \u05d4\u05e4\u05e8\u05d8\u05d9\u05d5\u05ea \u05db\u05d1\u05d5\u05d9\u05d5\u05ea.", // EN: All privacy protections are off.
-    "T\u00fcm kameralar": "", // EN: All cameras
-    "T\u00fcm kap\u0131lar a\u00e7\u0131k": "", // EN: All doors open
-    "T\u00fcm uyar\u0131lar\u0131 tek bir yerden y\u00f6netin": "", // EN: Manage all alerts from one place
-    "T\u00fcm uyumlu cihazlar": "", // EN: All compatible devices
-    "T\u00fcm \u0131\u015f\u0131klar\u0131 kapat": "", // EN: Turn off all lights
-    "T\u00fcm\u00fc": "", // EN: All
-    "T\u00fcm\u00fcn\u00fc D\u00fczenle": "", // EN: Edit All
-    "T\u00fcm\u00fcn\u00fc G\u00f6r": "", // EN: See All
-    "T\u00fcm\u00fcn\u00fc Optimize Et": "", // EN: Optimize All
-    "T\u00fcm\u00fcn\u00fc a\u00e7": "", // EN: Turn all on
-    "T\u00fcm\u00fcn\u00fc ekle ({0})": "", // EN: Add all ({0})
-    "T\u00fcm\u00fcn\u00fc kapat": "", // EN: Turn all off
-    "T\u00fcm\u00fcn\u00fc kilitle": "", // EN: Lock all
-    "T\u00fcm\u00fcn\u00fc okundu i\u015faretle": "", // EN: Mark all as read
-    "T\u0131kla ve \u00c7al\u0131\u015ft\u0131r": "", // EN: Tap to Run
-    "T\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "", // EN: Tap to run
-    "T\u0131kla ve \u00c7al\u0131\u015ft\u0131r listesine eklendi": "", // EN: Added to Tap to Run
-    "U Tipi Kilit": "", // EN: U-Lock
-    "UYGULA": "", // EN: APPLY
-    "Ula\u015f\u0131lam\u0131yor": "", // EN: Unreachable
-    "Ula\u015f\u0131m ve takip": "", // EN: Mobility and tracking
-    "Uyand\u0131rma Anahtar\u0131": "", // EN: Wake-up Switch
-    "Uyar\u0131lar": "", // EN: Alerts
-    "Uygulama": "", // EN: App
-    "Uygulama Yok": "", // EN: No Apps
-    "Uygulamay\u0131 Olu\u015ftur": "", // EN: Create App
-    "Uyku": "", // EN: Sleep
-    "Uyku Butonu": "", // EN: Sleep Button
-    "Uyku Modu": "", // EN: Sleep Mode
-    "Uyku Modu Haz\u0131r": "", // EN: Sleep Mode Ready
-    "Uyku Modu Senaryosu": "", // EN: Sleep Mode Scene
-    "Uyku Profili": "", // EN: Sleep Profile
-    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in plan veya iklim cihaz\u0131 ba\u011flanmam\u0131\u015f.": "", // EN: No plan or climate device connected for bedtime preparation.
-    "Uyku i\u00e7in daha dengeli bir gece iklim profili uygula.": "", // EN: Apply a more balanced night climate profile for sleep.
-    "Uyku i\u00e7in s\u0131cakl\u0131\u011f\u0131 20\u00b0 seviyesine d\u00fc\u015f\u00fcr\u00fcn.": "", // EN: Lower the temperature to 20° for sleep.
-    "Uyku modu": "", // EN: Sleep mode
-    "Uyku plan\u0131 yok": "", // EN: No sleep plan
-    "Uyku \u0130zleme Band\u0131": "", // EN: Sleep Tracking Band
-    "Uykuya Ge\u00e7": "", // EN: Go to Sleep
-    "Uykuya Haz\u0131rl\u0131k": "", // EN: Bedtime Preparation
-    "Uykuya Haz\u0131rl\u0131k Merkezi": "", // EN: Bedtime Preparation Center
-    "Ak\u015fam Ortam\u0131": "", // EN: Evening Ambience
-    "Bah\u00e7e Sulama Merkezi": "", // EN: Garden Watering Center
-    "Di\u011fer \u00d6nerileri G\u00f6r": "", // EN: See More Suggestions
-    "Eve Geldim Kar\u015f\u0131lama": "", // EN: Welcome Home Greeting
-    "Hava Kalitesi N\u00f6bet\u00e7isi": "", // EN: Air Quality Guard
-    "Odak \u00c7al\u0131\u015fma Modu": "", // EN: Focus Work Mode
-    "Tatil / Evde Yokum Modu": "", // EN: Vacation / Away Mode
-    "Temizlik Rutini Merkezi": "", // EN: Cleaning Routine Center
-    "Uyan\u0131nca \u0131\u015f\u0131k, perde, iklim ve m\u00fczi\u011fi tek dokunu\u015fla ba\u015flat.": "", // EN: Start lights, blinds, climate and music with one tap when you wake up.
-    "Kap\u0131dan girerken \u0131\u015f\u0131klar, iklim ve m\u00fczik seni kar\u015f\u0131las\u0131n.": "", // EN: Lights, climate and music greet you as you walk in.
-    "Ev bo\u015fken tasarruf, taklit hareket ve uyar\u0131 tek panelde.": "", // EN: Savings, simulated presence and alerts in one panel while the home is empty.
-    "Robot s\u00fcp\u00fcrge ve temizlik cihazlar\u0131 i\u00e7in g\u00fcn ve oda plan\u0131.": "", // EN: Day and room plans for robot vacuums and cleaning devices.
-    "Sulama saatleri, b\u00f6lgeler ve sens\u00f6r verisiyle ak\u0131ll\u0131 plan.": "", // EN: Smart watering schedules, zones and sensor-driven planning.
-    "Sens\u00f6r verisiyle havaland\u0131rma ve temizleyiciyi otomatik y\u00f6net.": "", // EN: Manage ventilation and purifiers automatically from sensor data.
-    "\u00c7al\u0131\u015f\u0131rken sessizlik, do\u011fru \u0131\u015f\u0131k ve bildirim aras\u0131.": "", // EN: Quiet, proper lighting and no interruptions while you work.
-    "Uzaktan Kumanda": "", // EN: Remote Control
-    "Uzaktayken evi korumak i\u00e7in kameralar\u0131 etkinle\u015ftir": "", // EN: Turn on cameras to protect your home while you're away
-    "Uzun komutlar i\u00e7in klavyeyle rahat yaz\u0131m": "", // EN: Comfortable typing on a keyboard for long commands
-    "U\u00e7ucu Organik Bile\u015fik (VOC) Alarm\u0131": "", // EN: Volatile Organic Compound (VOC) Alarm
-    "U\u00e7ucu Organik Bile\u015fik (VOC) Alarm\u0131 (Gateway)": "", // EN: Volatile Organic Compound (VOC) Alarm (Gateway)
-    "Vakumlu Pi\u015firme Makinesi": "", // EN: Sous Vide Cooker
-    "Vana Kontrol Ekipmanlar\u0131": "", // EN: Valve Control Equipment
-    "Var\u015fova": "", // EN: Warsaw
-    "Vazge\u00e7": "", // EN: Cancel
-    "Vazge\u00e7 ve Giri\u015fe D\u00f6n": "", // EN: Cancel and Back to Sign In
-    "Veri Paneli": "", // EN: Data Panel
-    "Veri al\u0131namad\u0131": "", // EN: Couldn't get data
-    "Veri yok": "", // EN: No data
-    "Veriler cihaz\u0131nda kal\u0131r, ayn\u0131 gizlilik korumalar\u0131": "", // EN: Your data stays on your device, same privacy protections
-    "Verilerim g\u00fcvende mi?": "", // EN: Is my data safe?
-    "Veya QR Kodunu Tara": "", // EN: Or Scan the QR Code
-    "Video Baz istasyonu": "", // EN: Video Base Station
-    "Video Baz istasyonu (2.4GHz&5GHz)": "", // EN: Video Base Station (2.4GHz&5GHz)
-    "Video Kilidi": "", // EN: Video Lock
-    "Vurgu Renkleri": "", // EN: Accent Colors
-    "WLED \u015eerit Kontrolc\u00fc": "", // EN: WLED Strip Controller
-    "Web adresi": "", // EN: Web address
-    "Wi-Fi a\u011f bilgisi": "", // EN: Wi-Fi network details
-    "Wi-Fi a\u011f\u0131ndaki cihazlar taran\u0131yor. Cihaz\u0131n a\u00e7\u0131k oldu\u011fundan emin ol.": "", // EN: Scanning devices on the Wi-Fi network. Make sure the device is on.
-    "Windows ve Linux i\u00e7in \u00fccretsiz masa\u00fcst\u00fc uygulamas\u0131": "", // EN: Free desktop app for Windows and Linux
-    "Yakla\u015fan Otomasyonlar": "", // EN: Upcoming Automations
-    "Yak\u0131nda geliyor": "", // EN: Coming soon
-    "Yang\u0131n, su bask\u0131n\u0131 tespiti": "", // EN: Fire and flood detection
-    "Yapay Zeka Ayarlar\u0131": "", // EN: AI Settings
-    "Yapay zeka ile evinizi ak\u0131ll\u0131ca y\u00f6netin, enerjiden tasarruf edin ve konforunuzu art\u0131r\u0131n.": "", // EN: Manage your home smartly with AI, save energy and increase your comfort.
-    "Yapay zeka ile olu\u015ftur": "", // EN: Create with AI
-    "Yard\u0131m": "", // EN: Help
-    "Yard\u0131m ve Geri Bildirim": "", // EN: Help and Feedback
-    "Tekrar dene": "", // EN: Try again
-    "Yard\u0131m al": "", // EN: Get help
-    "Yard\u0131m\u0131 a\u00e7": "", // EN: Open help
-    "Yatak Odas\u0131": "", // EN: Bedroom
-    "Yatak Odas\u0131 karartma miktar\u0131": "", // EN: Bedroom dimming amount
-    "Yatak odas\u0131": "", // EN: Bedroom
-    "Yatmadan \u00f6nce gerekli t\u00fcm ev kontrollerini tek merkezde topla. I\u015f\u0131k azaltma, rahats\u0131z etme, kilit kontrol\u00fc ve gece iklim ayarlar\u0131 tek ekranda y\u00f6netilsin.": "", // EN: Gather all the home checks you need before bed in one center. Dim lights, do not disturb, lock check and night climate settings on one screen.
-    "Yatmadan \u00f6nce \u0131\u015f\u0131k, sessiz mod, kilit ve iklim ayarlar\u0131n\u0131 y\u00f6neten bir uykuya haz\u0131rl\u0131k merkezi olu\u015ftur. Son kontrol \u00f6zeti ve tek dokunu\u015f gece modu ekle.": "", // EN: Create a bedtime preparation center that manages lights, quiet mode, locks and climate before bed. Add a final check summary and one-tap night mode.
-    "Ya\u011fmurlu": "", // EN: Rainy
-    "Yeelight Masa Lambas\u0131": "", // EN: Yeelight Desk Lamp
-    "Yeelight Tavan Lambas\u0131": "", // EN: Yeelight Ceiling Light
-    "Yeelight \u015eerit": "", // EN: Yeelight Strip
-    "Yemek Pi\u015firme Makinesi": "", // EN: Cooking Machine
-    "Yeni Bir Tetikleyici Se\u00e7": "", // EN: Choose a New Trigger
-    "Yeni Ev Olu\u015ftur": "", // EN: Create New Home
-    "Yeni Otomasyon": "", // EN: New Automation
-    "Ne zaman \u00e7al\u0131\u015fs\u0131n?": "", // EN: When should it run?
-    "Ne yaps\u0131n?": "", // EN: What should it do?
-    "Ne yapaca\u011f\u0131n\u0131 se\u00e7.": "", // EN: Choose what it should do.
-    "\u00d6nce bir senaryo se\u00e7.": "", // EN: Choose a scene first.
-    "Kaydetmek i\u00e7in \u00f6nce ev konumunu se\u00e7.": "", // EN: Choose your home location first to save.
-    "Cihaz Se\u00e7": "", // EN: Choose Devices
-    "Bu ekran\u0131 iPhone'daki NEXUS uygulamas\u0131nda a\u00e7; senaryolar\u0131n a\u015fa\u011f\u0131da listelenir ve her biri i\u00e7in Siri kestirmesi kurabilirsin.": "", // EN: Open this screen in the NEXUS app on your iPhone; your scenes are listed below and you can set up a Siri shortcut for each one.
-    "1. Senaryo ba\u011flant\u0131s\u0131n\u0131 kopyala": "", // EN: 1. Copy the scene link
-    "Bu ba\u011flant\u0131 NEXUS'u a\u00e7ar ve senaryoyu hemen \u00e7al\u0131\u015ft\u0131r\u0131r.": "", // EN: This link opens NEXUS and runs the scene right away.
-    "2. Kestirmeler'de yeni kestirme olu\u015ftur": "", // EN: 2. Create a new shortcut in Shortcuts
-    "\"Eylem Ekle\" \u203a \"URL'leri A\u00e7\" eylemini se\u00e7 ve kopyalad\u0131\u011f\u0131n ba\u011flant\u0131y\u0131 yap\u0131\u015ft\u0131r.": "", // EN: Choose "Add Action" › "Open URLs" and paste the link you copied.
-    "Kestirmeler uygulamas\u0131n\u0131 a\u00e7": "", // EN: Open the Shortcuts app
-    "Cihazlar\u0131na uyan haz\u0131r otomasyonlardan birini tek dokunu\u015fla ekle.": "", // EN: Add a ready-made automation that fits your devices with one tap.
-    "Belirli bir saatte; her g\u00fcn, hafta i\u00e7i ya da hafta sonu": "", // EN: At a set time; every day, on weekdays or at weekends
-    "G\u00fcn Do\u011fumu / Bat\u0131m\u0131": "", // EN: Sunrise / Sunset
-    "Ev konumuna g\u00f6re g\u00fcne\u015f do\u011farken ya da batarken": "", // EN: At sunrise or sunset for your home location
-    "Cihaz ve Sens\u00f6r": "", // EN: Devices & Sensors
-    "Hareket Alg\u0131land\u0131\u011f\u0131nda": "", // EN: When Motion Is Detected
-    "Hareket sens\u00f6r\u00fc bir hareket alg\u0131lad\u0131\u011f\u0131nda": "", // EN: When a motion sensor detects movement
-    "Kap\u0131 veya Pencere A\u00e7\u0131ld\u0131\u011f\u0131nda": "", // EN: When a Door or Window Opens
-    "Kap\u0131/pencere sens\u00f6r\u00fc a\u00e7\u0131ld\u0131\u011f\u0131nda": "", // EN: When a door/window sensor opens
-    "Duman, su bask\u0131n\u0131 ya da gaz sens\u00f6r\u00fc uyard\u0131\u011f\u0131nda": "", // EN: When a smoke, flood or gas sensor raises an alarm
-    "Cihaz ve sens\u00f6r tetikleyicileri, uygun bir cihaz ekleyince burada g\u00f6r\u00fcn\u00fcr.": "", // EN: Device and sensor triggers appear here once you add a suitable device.
-    "Ev ve \u00c7evre": "", // EN: Home & Surroundings
-    "S\u0131cakl\u0131k, r\u00fczg\u00e2r ya da ya\u011f\u0131\u015f bir e\u015fi\u011fi ge\u00e7ti\u011finde": "", // EN: When temperature, wind or rain passes a threshold
-    "T\u00fcm \u0131\u015f\u0131klar\u0131 a\u00e7": "", // EN: Turn on all lights
-    "Ak\u015fam yeme\u011fi": "", // EN: Dinner
-    "Perdeleri a\u00e7": "", // EN: Open the curtains
-    "Kap\u0131lar\u0131 kilitle": "", // EN: Lock the doors
-    "B\u00fct\u00fcn \u0131\u015f\u0131klar\u0131 tam parlakl\u0131kta a\u00e7ar.": "", // EN: Turns on every light at full brightness.
-    "B\u00fct\u00fcn \u0131\u015f\u0131klar\u0131 kapat\u0131r.": "", // EN: Turns off every light.
-    "I\u015f\u0131klar\u0131 tam parlakl\u0131kta, g\u00fcn \u0131\u015f\u0131\u011f\u0131 tonunda a\u00e7ar.": "", // EN: Turns lights on at full brightness in a daylight tone.
-    "I\u015f\u0131klar\u0131 %85 n\u00f6tr tona getirir, TV'yi kapat\u0131r.": "", // EN: Sets lights to 85% in a neutral tone and turns off the TV.
-    "I\u015f\u0131klar\u0131 %40 s\u0131cak tona getirir.": "", // EN: Sets lights to 40% in a warm tone.
-    "Her ak\u015fam 19:30": "", // EN: Every evening 19:30
-    "Klimay\u0131 a\u00e7\u0131p 20\u00b0'ye, termostat\u0131 20\u00b0'ye ayarlar.": "", // EN: Turns the AC on at 20° and sets the thermostat to 20°.
-    "Termostat\u0131 24\u00b0 konfor ayar\u0131na getirir.": "", // EN: Sets the thermostat to a 24° comfort setting.
-    "Hafta i\u00e7i 06:30": "", // EN: Weekdays 06:30
-    "B\u00fct\u00fcn perde ve panjurlar\u0131 a\u00e7ar.": "", // EN: Opens every curtain and blind.
-    "Her g\u00fcn g\u00fcn do\u011fumunda": "", // EN: Every day at sunrise
-    "B\u00fct\u00fcn perde ve panjurlar\u0131 kapat\u0131r.": "", // EN: Closes every curtain and blind.
-    "Her g\u00fcn g\u00fcn bat\u0131m\u0131nda": "", // EN: Every day at sunset
-    "B\u00fct\u00fcn ak\u0131ll\u0131 kilitleri kilitler (kilit hi\u00e7bir zaman a\u00e7\u0131lmaz).": "", // EN: Locks every smart lock (locks are never unlocked).
-    "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r; prizlere ve klimaya dokunmaz.": "", // EN: Turns off lights and the TV; leaves plugs and the AC alone.
-    "Bir cihaz\u0131 a\u00e7 ya da kapat": "", // EN: Turn a device on or off
-    "Se\u00e7ti\u011fin tek cihaza komut g\u00f6nderir.": "", // EN: Sends a command to the one device you pick.
-    "Hangi cihaz?": "", // EN: Which device?
-    "A\u00e7\u0131ls\u0131n": "", // EN: Turn on
-    "Kapans\u0131n": "", // EN: Turn off
-    "Kontrol edilecek cihaz\u0131 se\u00e7.": "", // EN: Choose the device to control.
-    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava kalitesini, s\u0131cakl\u0131\u011f\u0131 ve nemi g\u00f6r; ar\u0131t\u0131c\u0131n\u0131 y\u00f6net.": "", // EN: See the air quality, temperature and humidity your sensors measure, and control your purifier.
-    "I\u015f\u0131klar\u0131, perdeleri ve klimay\u0131 g\u00fcne ba\u015flarken tek dokunu\u015fla haz\u0131rla.": "", // EN: Get lights, curtains and the AC ready for the day with one tap.
-    "Eve girerken \u0131\u015f\u0131klar\u0131, perdeleri ve iklimi birlikte a\u00e7.": "", // EN: Turn on lights, curtains and climate together when you get home.
-    "Uzun s\u00fcre evde yokken cihazlar\u0131n\u0131 g\u00fcvenli ve tasarruflu konuma al.": "", // EN: Put your devices into a safe, energy-saving state while you are away for long.
-    "I\u015f\u0131klar\u0131 k\u0131s, perdeleri kapat ve TV'yi a\u00e7.": "", // EN: Dim the lights, close the curtains and turn on the TV.
-    "Robot s\u00fcp\u00fcrgeni ba\u015flat ya da \u015farj istasyonuna g\u00f6nder.": "", // EN: Start your robot vacuum or send it back to its dock.
-    "Kap\u0131y\u0131 kilitle, perdeleri kapat ve evi geceye haz\u0131rla.": "", // EN: Lock the door, close the curtains and get the house ready for the night.
-    "Ekledi\u011fin kameralar\u0131n durumunu ve gizlilik ayar\u0131n\u0131 tek ekranda g\u00f6r.": "", // EN: See the status and privacy setting of your cameras on one screen.
-    "Evdeyken kameralar\u0131n i\u00e7in gizlilik modunu tek yerden a\u00e7 ya da kapat.": "", // EN: Turn privacy mode for your cameras on or off from one place while you are home.
-    "Bug\u00fcn hangi otomasyonun ne zaman \u00e7al\u0131\u015faca\u011f\u0131n\u0131 g\u00f6r.": "", // EN: See which automation runs when today.
-    "Ev halk\u0131yla notlar\u0131 ve yap\u0131lacaklar\u0131 payla\u015f.": "", // EN: Share notes and to-dos with your household.
-    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava, nem ve s\u0131cakl\u0131ktan evinin sa\u011fl\u0131k \u00f6zetini g\u00f6r.": "", // EN: See your home's health summary from the air, humidity and temperature your sensors measure.
-    "Ekledi\u011fin cihazlar\u0131n yerel a\u011fdan ula\u015f\u0131labilir olup olmad\u0131\u011f\u0131n\u0131 kontrol et.": "", // EN: Check whether your devices can be reached over your local network.
-    "Yeni bir otomasyon olu\u015fturmak istiyorum.": "", // EN: I want to create a new automation.
-    "Yeni bir t\u0131kla ve \u00e7al\u0131\u015ft\u0131r senaryosu olu\u015fturmak istiyorum.": "", // EN: I want to create a new tap-to-run scenario.
-    "Yeni cihaz": "", // EN: New device
-    "Yeni cihaz\u0131 nas\u0131l eklerim?": "", // EN: How do I add a new device?
-    "Yeni senaryo tavsiyeleri": "", // EN: New scenario recommendations
-    "Yeni \u015fifre": "", // EN: New password
-    "Yeni \u015fifre en az 4 karakter olmal\u0131.": "", // EN: New password must be at least 4 characters.
-    "Yeni \u015fifre tekrar": "", // EN: Repeat new password
-    "Yeni \u015fifre tekrar alan\u0131 e\u015fle\u015fmiyor.": "", // EN: The repeated password doesn't match.
-    "Yeniden Tara": "", // EN: Scan Again
-    "Yenile": "", // EN: Refresh
-    "Yerel HTTP API \u2014 kurulumu en kolay marka": "", // EN: Local HTTP API — the easiest brand to set up
-    "Yerel RPC API (Gen2/Gen3)": "", // EN: Local RPC API (Gen2/Gen3)
-    "Yerel TCP (LAN Control a\u00e7\u0131k) \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: Local TCP (LAN Control on) — in the desktop app
-    "Yerel TCP \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: Local TCP — in the desktop app
-    "Yerel a\u011f": "", // EN: Local network
-    "Yerel a\u011f adresi bulundu:": "", // EN: Local network address found:
-    "Yerel a\u011f \u00b7": "", // EN: Local network ·
-    "Yerel a\u011fda ula\u015f\u0131lam\u0131yor": "", // EN: Unreachable on the local network
-    "Yerel a\u011fdaki cihaz\u0131 bul": "", // EN: Find a device on your local network
-    "Yerel a\u011fdan ekle": "", // EN: Add from local network
-    "Yerel k\u00f6pr\u00fc API'si (Hue Bridge gerekir)": "", // EN: Local bridge API (requires a Hue Bridge)
-    "Yerel oturum a\u00e7\u0131k": "", // EN: Local session active
-    "Ye\u015fil": "", // EN: Green
-    "Yine de ekle": "", // EN: Add anyway
-    "Yo\u011funla\u015ft\u0131r\u0131c\u0131": "", // EN: Concentrator
-    "Yo\u011funla\u015ft\u0131r\u0131c\u0131 (Gateway)": "", // EN: Concentrator (Gateway)
-    "Yukar\u0131daki \"CarPlay'de NEXUS\" anahtar\u0131n\u0131 a\u00e7.": "", // EN: Turn on the "NEXUS on CarPlay" switch above.
-    "Yumu\u015fak Ba\u015flang\u0131\u00e7": "", // EN: Soft Start
-    "Y\u00f6n kanatlar\u0131 / g\u00f6vde hareket eder": "", // EN: Louvers / body move
-    "Y\u00f6netici i\u015flemleri i\u00e7in": "", // EN: For admin actions
-    "Y\u00f6nlendirici": "", // EN: Router
-    "Y\u00fckleniyor...": "", // EN: Loading...
-    "Y\u00fcksek": "", // EN: High
-    "Y\u00fcz Buhar Makinesi": "", // EN: Facial Steamer
-    "Y\u0131ll\u0131k": "", // EN: Yearly
-    "Zamanlama": "", // EN: Schedule
-    "Zamanlama tabanl\u0131 \u00b7 Ak\u0131ll\u0131 Priz": "", // EN: Schedule-based · Smart Plug
-    "Zamanlanm\u0131\u015f Sessiz Mod": "", // EN: Scheduled Quiet Mode
-    "Zamanlay\u0131c\u0131": "", // EN: Timer
-    "Zamanl\u0131 Tasarruf": "", // EN: Scheduled Saving
-    "Zorunlu": "", // EN: Required
-    "Z\u00fcrih": "", // EN: Zurich
-    "[G\u00f6rsel:": "", // EN: [Image:
-    "anahtar\u0131n": "", // EN: switch
-    "ayd\u0131nlatma cihaz\u0131 i\u00e7in": "", // EN: for lighting devices
-    "a\u00e7\u0131k": "", // EN: on
-    "a\u00e7\u0131k tema": "", // EN: light theme
-    "a\u011f ge\u00e7idi": "", // EN: gateway
-    "bas\u0131n\u00e7 sens\u00f6r\u00fc": "", // EN: pressure sensor
-    "ba\u011flan": "", // EN: connect
-    "bilinen protokol bulunamad\u0131": "", // EN: no known protocol found
-    "bu cihaz s\u00fcr\u00fcm bilgisi vermiyor": "", // EN: this device doesn't report its version
-    "bulut yap\u0131land\u0131rmas\u0131 yok": "", // EN: no cloud configuration
-    "cihaz": "", // EN: devices
-    "cihaz ayarland\u0131": "", // EN: devices adjusted
-    "cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "", // EN: devices found · scanning
-    "cihaz bulundu. Ekle'den panellere ta\u015f\u0131yabilirsin.": "", // EN: devices found. Use Add to move them to your panels.
-    "cihaz kay\u0131tl\u0131 \u00b7 yerel a\u011f cihaz\u0131 yok, \u00e7evrimi\u00e7i kontrol\u00fc yap\u0131lamad\u0131.": "", // EN: devices saved · no local network devices, online check couldn't run.
-    "cihaz kontrol bekliyor": "", // EN: devices waiting for a check
-    "cihaz kontrol ediliyor\u2026": "", // EN: devices being checked…
-    "cihaz tarand\u0131 \u00b7": "", // EN: devices scanned ·
-    "cihaz \u00b7": "", // EN: devices ·
-    "cihaza yerel a\u011fdan komut gitti)": "", // EN: devices received a command over the local network)
-    "cihaz\u0131 ekle": "", // EN: add device
-    "cihaz\u0131 i\u00e7in ak\u0131ll\u0131 kural": "", // EN: smart rule for device
-    "cihaz\u0131n": "", // EN: device
-    "ekli": "", // EN: added
-    "esphome: imza yok": "", // EN: esphome: no signature
-    "evine kat\u0131lman i\u00e7in davet kodun:": "", // EN: — your invite code to join the home:
-    "ge\u00e7ersiz alt a\u011f": "", // EN: invalid subnet
-    "g\u00fcn": "", // EN: days
-    "g\u00fcnd\u00fcz modu": "", // EN: day mode
-    "g\u00fcvenli": "", // EN: safe
-    "hue: e\u015fle\u015ftirme ba\u015far\u0131s\u0131z": "", // EN: hue: pairing failed
-    "hue: k\u00f6pr\u00fc de\u011fil": "", // EN: hue: not a bridge
-    "hue: yetki yok": "", // EN: hue: unauthorized
-    "iPhone'daki m\u00fczi\u011fi HomePod'a ta\u015f\u0131": "", // EN: Move music from iPhone to HomePod
-    "i\u00e7in NEXUS daveti": "", // EN: NEXUS invite for
-    "i\u00e7in yapay zeka ile olu\u015ftur:": "", // EN: create with AI for:
-    "kald\u0131": "", // EN: left
-    "kap\u0131": "", // EN: door
-    "karanl\u0131k": "", // EN: dark
-    "kasa: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: kasa: TCP only in the desktop app
-    "kasa: yan\u0131t yok": "", // EN: kasa: no response
-    "kontrol edilecek": "", // EN: to be checked
-    "korumas\u0131 aktif.": "", // EN: protection on.
-    "kurulum kodunu girin": "", // EN: setup code on your device
-    "lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "", // EN: lamps added. You can manage them from Home.
-    "modelden se\u00e7ilir.": "", // EN: chosen from the model.
-    "oda g\u00f6r\u00fcn\u00fcm\u00fc haz\u0131r.": "", // EN: room view ready.
-    "oda g\u00f6r\u00fcn\u00fcm\u00fcnde, %": "", // EN: in room view, %
-    "olay": "", // EN: event
-    "oturum yok": "", // EN: no session
-    "parlakl\u0131k ve": "", // EN: brightness and
-    "plan sonland\u0131r\u0131ld\u0131.": "", // EN: plan ended.
-    "plan, \u00fccretsiz deneme ile ba\u015flad\u0131.": "", // EN: plan, started with a free trial.
-    "rahats\u0131z etme": "", // EN: do not disturb
-    "se\u00e7ildi.": "", // EN: selected.
-    "shelly-rpc: kimlik yok": "", // EN: shelly-rpc: no ID
-    "shelly: kimlik yok": "", // EN: shelly: no ID
-    "so\u011fut": "", // EN: cool
-    "sulama": "", // EN: watering
-    "s\u00fcp\u00fcrge": "", // EN: vacuum
-    "s\u0131cakl\u0131k": "", // EN: temperature
-    "tarihinde al\u0131nacak.": "", // EN: will be charged on
-    "tasmota: kimlik yok": "", // EN: tasmota: no ID
-    "te\u015fekk": "", // EN: thank
-    "tutar\u0131nda": "", // EN: amount
-    "t\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "", // EN: tap to run
-    "ula\u015f\u0131lam\u0131yor": "", // EN: unreachable
-    "uyguland\u0131.": "", // EN: applied.
-    "uyumlu bir cihaz ekle": "", // EN: add a compatible device
-    "ve": "", // EN: and
-    "vurgu rengi kullanan bir ak\u0131ll\u0131 uygulama olu\u015ftur.": "", // EN: create a smart app that uses an accent color.
-    "web_server bile\u015feniyle \u2014 DIY cihazlar": "", // EN: With the web_server component — DIY devices
-    "wled: s\u00fcr\u00fcm alan\u0131 yok": "", // EN: wled: no version field
-    "yeelight: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: yeelight: TCP only in the desktop app
-    "yeelight: yan\u0131t yok": "", // EN: yeelight: no response
-    "UDP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: UDP only in the desktop app
-    "wiz: kimlik yok": "", // EN: wiz: no identity
-    "lifx: beklenmeyen yan\u0131t": "", // EN: lifx: unexpected response
-    "govee: kimlik yok": "", // EN: govee: no identity
-    "sonoff: kimlik yok": "", // EN: sonoff: no identity
-    "yeni cihaz\u0131": "", // EN: new device
-    "yerel a\u011f cihaz\u0131 kontrol edildi \u00b7": "", // EN: local network devices checked ·
-    "{0} Cihaz": "", // EN: {0} Devices
-    "{0} Oda": "", // EN: {0} Rooms
-    "{0} cihaz": "", // EN: {0} devices
-    "{0} cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "", // EN: {0} devices found · still scanning
-    "{0} cihaz bulundu. Ekle'den panellere ta\u015f\u0131yabilirsin.": "", // EN: {0} devices found. Use Add to move them to your panels.
-    "{0} cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.": "", // EN: {0} devices found. Tap Add to add them to your list.
-    "{0} cihaz bulundu. Eklemek istediklerini se\u00e7.": "", // EN: {0} devices found. Choose the ones to add.
-    "{0} cihaz eklendi. Ana sayfadan y\u00f6netebilirsin.": "", // EN: {0} devices added. You can manage them from Home.
-    "{0} cihaz kay\u0131tl\u0131 \u00b7 yerel a\u011f cihaz\u0131 yok, \u00e7evrimi\u00e7i kontrol\u00fc yap\u0131lamad\u0131.": "", // EN: {0} devices saved · no local network devices, online check couldn't run.
-    "{0} cihaz kontrol bekliyor": "", // EN: {0} devices waiting for a check
-    "{0} cihaz kontrol ediliyor\u2026": "", // EN: Checking {0} devices…
-    "{0} cihaz tarand\u0131": "", // EN: {0} devices scanned
-    "{0} cihaz tarand\u0131 \u00b7 tarama s\u00fcr\u00fcyor": "", // EN: {0} devices scanned · scanning
-    "{0} cihaz \u00b7": "", // EN: {0} devices ·
-    "{0} cihaz \u00b7 {1} a\u00e7\u0131k": "", // EN: {0} devices · {1} on
-    "{0} cihaz \u00b7 {1} a\u00e7\u0131k \u00b7": "", // EN: {0} devices · {1} on ·
-    "{0} cihaz \u00b7 {1} panel \u00b7 {2} a\u00e7\u0131k": "", // EN: {0} devices · {1} panels · {2} on
-    "{0} dk": "", // EN: {0} min
-    "{0} g\u00fcn": "", // EN: {0} days
-    "{0} konu dikkat istiyor": "", // EN: {0} issues need attention
-    "{0} lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "", // EN: {0} lamps added. You can manage them from Home.
-    "{0} oda \u00b7 {1} \u00fcye": "", // EN: {0} rooms · {1} members
-    "{0} saatli\u011fine": "", // EN: For {0} hours
-    "{0} ula\u015f\u0131lam\u0131yor": "", // EN: {0} unreachable
-    "{0} yerel a\u011f cihaz\u0131 kontrol edildi": "", // EN: {0} local network devices checked
-    "{0} \u00e7evrimi\u00e7i": "", // EN: {0} online
-    "{0}.x a\u011f\u0131 taran\u0131yor\u2026": "", // EN: Scanning the {0}.x network…
-    "{0}:{1} kald\u0131": "", // EN: {0}:{1} left
-    "\u00b7 Etkin": "", // EN: · Active
-    "\u00b7 g\u00fcncel": "", // EN: · up to date
-    "\u00b7 t\u00fcm yetkiler": "", // EN: · all permissions
-    "\u00b7 yerel a\u011fda kontrol edilir": "", // EN: · controlled on your local network
-    "\u00c7a": "", // EN: We
-    "\u00c7al\u0131\u015fma Zaman\u0131": "", // EN: Run Time
-    "\u00c7al\u0131\u015ft\u0131r": "", // EN: Run
-    "\u00c7al\u0131\u015ft\u0131r\u0131l\u0131yor...": "", // EN: Running...
-    "\u00c7ama\u015f\u0131r Kurutma": "", // EN: Clothes Drying
-    "\u00c7ama\u015f\u0131r Kurutma Ask\u0131s\u0131": "", // EN: Clothes Drying Rack
-    "\u00c7ama\u015f\u0131r Kurutma Ask\u0131s\u0131 (Gateway)": "", // EN: Clothes Drying Rack (Gateway)
-    "\u00c7ama\u015f\u0131r Kurutucu": "", // EN: Clothes Dryer
-    "\u00c7ama\u015f\u0131r Makineleri": "", // EN: Washing Machines
-    "\u00c7ama\u015f\u0131r Makinesi": "", // EN: Washing Machine
-    "\u00c7ay Demleme Tezgah\u0131": "", // EN: Tea Brewing Station
-    "\u00c7evrede e\u015fle\u015ftirilmeye haz\u0131r cihaz bulunamad\u0131.": "", // EN: No device ready for pairing was found nearby.
-    "\u00c7evresel Sens\u00f6rler": "", // EN: Environmental Sensors
-    "\u00c7evrimd\u0131\u015f\u0131 (Yerel Mod)": "", // EN: Offline (Local Mode)
-    "\u00c7evrimi\u00e7i": "", // EN: Online
-    "\u00c7im Bi\u00e7me Makinesi": "", // EN: Lawn Mower
-    "\u00c7im I\u015f\u0131\u011f\u0131": "", // EN: Lawn Light
-    "\u00c7ocuk kilidi": "", // EN: Child lock
-    "\u00c7ok Fonksiyonlu A\u011f Ge\u00e7idi": "", // EN: Multi-function Gateway
-    "\u00c7ok Fonksiyonlu Sens\u00f6r": "", // EN: Multi-function Sensor
-    "\u00c7ok Modlu A\u011f Ge\u00e7idi (BLE+ZigBee)": "", // EN: Multi-mode Gateway (BLE+ZigBee)
-    "\u00c7ok Modlu M\u00fchendislik A\u011f Ge\u00e7idi (BLE+ZigBee)": "", // EN: Multi-mode Engineering Gateway (BLE+ZigBee)
-    "\u00c7ok S\u0131cak": "", // EN: Very Warm
-    "\u00c7oklu A\u011f Ge\u00e7idi": "", // EN: Multi Gateway
-    "\u00c7oklu Priz": "", // EN: Power Strip
-    "\u00c7oklu Priz (Bluetooth)": "", // EN: Power Strip (Bluetooth)
-    "\u00c7oklu Priz (Zigbee)": "", // EN: Power Strip (Zigbee)
-    "\u00c7oklu Video \u00d6nizlemesi": "", // EN: Multi-Video Preview
-    "\u00c7\u00f6p \u00d6\u011f\u00fct\u00fcc\u00fc": "", // EN: Food Waste Disposer
-    "\u00c7\u0131k\u0131\u015f Haz\u0131rl\u0131\u011f\u0131": "", // EN: Leaving Preparation
-    "\u00c7\u0131k\u0131\u015f Yap": "", // EN: Sign Out
-    "\u00c7\u0131k\u0131\u015f kontrol\u00fc i\u00e7in cihaz ekle.": "", // EN: Add devices for the leaving-home check.
-    "\u00c7\u0131k\u0131\u015f \u00f6zeti haz\u0131r de\u011fil": "", // EN: Leaving summary not ready
-    "\u00d6NER\u0130LEN AKS\u0130YONLAR": "", // EN: RECOMMENDED ACTIONS
-    "\u00d6demeler ve Abonelik": "", // EN: Payments and Subscription
-    "\u00d6l\u00e7\u00fcm": "", // EN: Reading
-    "\u00d6l\u00e7\u00fcm Yok": "", // EN: No Readings
-    "\u00d6l\u00e7\u00fcmler": "", // EN: Readings
-    "\u00d6nce 'Ak\u0131ll\u0131' sekmesinden bir senaryo olu\u015fturun.": "", // EN: Create a scenario in the 'Smart' tab first.
-    "\u00d6nce en az bir cihaz eklemelisin": "", // EN: You need to add at least one device first
-    "\u00d6neri": "", // EN: Suggestion
-    "\u00d6neri haz\u0131r de\u011fil": "", // EN: Suggestion not ready
-    "\u00d6nerilen": "", // EN: Suggested
-    "\u00d6nerilen Aksiyonlar": "", // EN: Recommended Actions
-    "\u00d6rn. Evim": "", // EN: e.g. My Home
-    "\u00d6rn. Kad\u0131k\u00f6y": "", // EN: e.g. Downtown
-    "\u00d6rn. NX-HOME-7F2A": "", // EN: e.g. NX-HOME-7F2A
-    "\u00d6rn. Oturma Odas\u0131": "", // EN: e.g. Living Room
-    "\u00d6rn. Yazl\u0131k": "", // EN: e.g. Summer House
-    "\u00d6zellikler": "", // EN: Features
-    "\u00dccretsiz Dene": "", // EN: Try Free
-    "\u00dccretsiz deneme": "", // EN: Free trial
-    "\u00dccretsiz \u00b7 yerel a\u011fda \u00e7al\u0131\u015f\u0131r": "", // EN: Free · works on your local network
-    "\u00dclke ara": "", // EN: Search country
-    "\u00dclkeni se\u00e7; senaryo ve programlar\u0131n bu \u00fclkenin saatine g\u00f6re \u00e7al\u0131\u015f\u0131r.": "", // EN: Choose your country; your scenarios and schedules run on that country's time.
-    "\u00dcr\u00fcn katalo\u011fu": "", // EN: Product catalog
-    "\u00dcsse d\u00f6n": "", // EN: Return to base
-    "\u00dcst gezinme": "", // EN: Top navigation
-    "\u00dcstteki alana ne yapmak istedi\u011fini yaz ya da manuel olarak bir senaryo se\u00e7.": "", // EN: Type what you want to do in the field above, or choose a scenario manually.
-    "\u00dcstteki alana otomasyonu yaz veya tetikleyici se\u00e7erek olu\u015ftur.": "", // EN: Type the automation in the field above, or create it by choosing a trigger.
-    "\u00dcye": "", // EN: Member
-    "\u00dcye Davet Et": "", // EN: Invite Member
-    "\u00dcye davet et": "", // EN: Invite member
-    "\u00dcyeyi D\u00fczenle": "", // EN: Edit Member
-    "\u00dcyeyi \u00c7\u0131kar": "", // EN: Remove Member
-    "\u00dc\u00e7l\u00fc": "", // EN: Three-gang
-    "\u00dc\u00e7l\u00fc Ak\u0131ll\u0131 Anahtar": "", // EN: Three-gang Smart Switch
-    "\u00dc\u00e7l\u00fc Dokunmatik Anahtar": "", // EN: Three-gang Touch Switch
-    "\u00dc\u00e7l\u00fc Kablosuz Anahtar": "", // EN: Three-gang Wireless Switch
-    "\u00dc\u00e7l\u00fc N\u00f6trs\u00fcz Anahtar": "", // EN: Three-gang No-Neutral Switch
-    "\u00dc\u00e7\u00fcnc\u00fc Taraf Cihaz ve Hizmetler": "", // EN: Third-Party Devices and Services
-    "\u00dc\u00e7\u00fcnc\u00fc Taraf Hizmetler": "", // EN: Third-Party Services
-    "\u00e7al\u0131\u015ft\u0131r\u0131ld\u0131.": "", // EN: run.
-    "\u00e7evre": "", // EN: environment
-    "\u00e7evrimd\u0131\u015f\u0131": "", // EN: offline
-    "\u00e7evrimi\u00e7i": "", // EN: online
-    "\u00fcye": "", // EN: member
-    "\u0130deal Seviye": "", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
-    "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "", // EN: Two-Wheeler Charging Station
-    "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "", // EN: Two-Wheeler Charging Station (4G)
-    "\u0130kili": "", // EN: Two-gang
-    "\u0130kili Ak\u0131ll\u0131 Anahtar": "", // EN: Two-gang Smart Switch
-    "\u0130kili Dokunmatik Anahtar": "", // EN: Two-gang Touch Switch
-    "\u0130kili Kablosuz Anahtar": "", // EN: Two-gang Wireless Switch
-    "\u0130kili N\u00f6trs\u00fcz Anahtar": "", // EN: Two-gang No-Neutral Switch
-    "\u0130kisi": "", // EN: Both
-    "\u0130klim Konforu": "", // EN: Climate Comfort
-    "\u0130klim ve s\u0131cakl\u0131k": "", // EN: Climate and temperature
-    "\u0130klim ve s\u0131cakl\u0131k paneli": "", // EN: Climate and temperature panel
-    "\u0130klimlendirme": "", // EN: Climate Control
-    "\u0130klimlendirme 22\u00b0C Konfor Modu": "", // EN: Climate 22°C Comfort Mode
-    "\u0130leri": "", // EN: Next
-    "\u0130leti\u015fim E-postas\u0131": "", // EN: Contact Email
-    "\u0130lgili oda sahneleri listesine ekler": "", // EN: Adds it to the related room scenes list
-    "\u0130lk \u00f6deme tarihi": "", // EN: First payment date
-    "\u0130nsan Varl\u0131\u011f\u0131 Sens\u00f6r\u00fc": "", // EN: Human Presence Sensor
-    "\u0130nsan Varl\u0131\u011f\u0131 Sens\u00f6r\u00fc (Bluetooth)": "", // EN: Human Presence Sensor (Bluetooth)
-    "\u0130nsan V\u00fccudu Sens\u00f6r\u00fc": "", // EN: Human Body Sensor
-    "\u0130nsan V\u00fccudu Sens\u00f6r\u00fc (Bluetooth)": "", // EN: Human Body Sensor (Bluetooth)
-    "\u0130nsan V\u00fccudu Sens\u00f6r\u00fc (ZigBee)": "", // EN: Human Body Sensor (ZigBee)
-    "\u0130nvert\u00f6r": "", // EN: Inverter
-    "\u0130nvert\u00f6rler": "", // EN: Inverters
-    "\u0130ptal": "", // EN: Cancel
-    "\u0130ptal Et": "", // EN: Cancel
-    "\u0130stanbul": "", // EN: Istanbul
-    "\u0130stedi\u011fin ko\u015fullara g\u00f6re haz\u0131rlanan uygulanabilir ev rutini.": "", // EN: A runnable home routine prepared for the conditions you want.
-    "\u0130yi": "", // EN: Good
-    "\u0130yi dinlenmeler": "", // EN: Rest well
-    "\u0130yi geceler": "", // EN: Good night
-    "\u0130zinleri Y\u00f6net": "", // EN: Manage Permissions
-    "\u0130zleme ortam\u0131 i\u00e7in \u0131\u015f\u0131k, perde ve medya ad\u0131mlar\u0131n\u0131 haz\u0131rlar.": "", // EN: Prepares light, curtain and media steps for watching.
-    "\u0130zlemede": "", // EN: Monitoring
-    "\u0130zleyici": "", // EN: Tracker
-    "\u0130zleyici (GPRS)": "", // EN: Tracker (GPRS)
-    "\u0130zleyici (NB-IoT)": "", // EN: Tracker (NB-IoT)
-    "\u0131s\u0131t": "", // EN: heat
-    "\u0131\u015f\u0131k": "", // EN: light
-    "\u015eam": "", // EN: Damascus
-    "\u015earap Dolab\u0131": "", // EN: Wine Cooler
-    "\u015earjda": "", // EN: Charging
-    "\u015eerit Lamba": "", // EN: Light Strip
-    "\u015eerit Lamba (BLE+Wi-Fi)": "", // EN: Light Strip (BLE+Wi-Fi)
-    "\u015eerit Lamba (Bluetooth)": "", // EN: Light Strip (Bluetooth)
-    "\u015eerit Lamba (Zigbee)": "", // EN: Light Strip (Zigbee)
-    "\u015eifre": "", // EN: Password
-    "\u015eifre Belirleyin": "", // EN: Set a Password
-    "\u015eifre en az 4 karakter olmal\u0131": "", // EN: Password must be at least 4 characters
-    "\u015eifre en az 4 karakter olmal\u0131.": "", // EN: Password must be at least 4 characters.
-    "\u015eifre en az 4 karakter olmal\u0131d\u0131r.": "", // EN: Password must be at least 4 characters.
-    "\u015eifre en az 6 karakter olmal\u0131.": "", // EN: Password must be at least 6 characters.
-    "\u015eifre g\u00fcncellendi \u2713": "", // EN: Password updated ✓
-    "\u015eifre yanl\u0131\u015f.": "", // EN: Wrong password.
-    "\u015eifreler e\u015fle\u015fmiyor.": "", // EN: Passwords don't match.
-    "\u015eifreli yerel API \u2014 yak\u0131nda": "", // EN: Encrypted local API — coming soon
-    "\u015eifremi Unuttum": "", // EN: Forgot Password
-    "\u015eifreyi De\u011fi\u015ftir": "", // EN: Change Password
-    "\u015eifreyi G\u00fcncelle": "", // EN: Update Password
-    "\u015eifreyi Tekrar Girin": "", // EN: Re-enter Password
-    "\u015eifreyi g\u00f6ster/gizle": "", // EN: Show/hide password
-    "\u015eimdi besle": "", // EN: Feed now
-    "\u015eimdilik Home Assistant \u00fczerinden eklenebilir; do\u011frudan yerel mod yak\u0131nda": "", // EN: Can be added through Home Assistant for now; direct local mode coming soon
-    "\u015eu an a\u00e7\u0131k g\u00f6r\u00fcn\u00fcyor.": "", // EN: Appears to be open right now.
-    "\u015eu an bekleyen davet yok.": "", // EN: No pending invites right now.
-    "\u20ba333.33/ay": "", // EN: ₺333.33/mo
-    "\u20ba3999,99/y\u0131l": "", // EN: ₺3999.99/yr
-    "\u20ba{0}/ay": "", // EN: ₺{0}/mo
-    "Aboneli\u011fi Y\u00f6net / \u0130ptal Et": "", // EN: Manage / Cancel Subscription
-    "D\u00f6nem sonunda iptal et": "", // EN: Cancel at period end
-    "Aboneli\u011fi Whop'ta y\u00f6net": "", // EN: Manage your subscription on Whop
-    "\u0130ptal bu hesapta yap\u0131l\u0131r. Mevcut d\u00f6nemin sonuna kadar NEXUS+ kullanmaya devam edersin; bir sonraki \u00f6deme al\u0131nmaz.": "", // EN: Cancellation is done on this account. You keep NEXUS+ until the end of the current period; the next payment is not taken.
-    "\u00d6deme": "", // EN: Payment
-    "\u00d6demeler": "", // EN: Payments
-    "\u00d6demeyi tamamlay\u0131nca bu sayfada kal; aboneli\u011fin hesab\u0131na yaz\u0131l\u0131r.": "", // EN: Stay on this page after you pay; the subscription is written to your account.
-    "\u0130ptal i\u00e7in \u00f6nce hesab\u0131nla giri\u015f yapmal\u0131s\u0131n.": "", // EN: Sign in with your account first to cancel.
-    "\u0130ptal \u015fu an tamamlanamad\u0131. Biraz sonra yeniden dene.": "", // EN: Cancellation could not be completed. Try again in a moment.
-    "Galeriden foto\u011fraf": "", // EN: Photo from Gallery
-    "Foto\u011fraf \u00e7ek": "", // EN: Take a Photo
-    "Cihazlar\u0131ma sor": "", // EN: Ask my devices
-    "Ba\u011flant\u0131 do\u011fruland\u0131. Hesab\u0131n i\u00e7in yeni bir \u015fifre belirle.": "", // EN: Link verified. Set a new password for your account.
-    "\u015eifreyi Kaydet": "", // EN: Save Password
-    "Google ile giri\u015f \u015fu anda kullan\u0131lam\u0131yor. E-posta ve \u015fifreyle giri\u015f yap; Google ile hesap a\u00e7t\u0131ysan \u201c\u015eifremi Unuttum\u201d ile bir \u015fifre belirleyebilirsin.": "", // EN: Google sign-in isn't available right now. Sign in with email and password; if you created your account with Google, use “Forgot Password” to set a password.
-    "Google ile devam et": "", // EN: Continue with Google
-    "\u00d6demeye Ge\u00e7": "", // EN: Pay Now
-    "Zaten hesab\u0131n var m\u0131? Giri\u015f Yap": "", // EN: Already have an account? Sign In
-    "Yeni s\u00fcr\u00fcm bulununca arka planda hemen indirilsin.": "", // EN: Download new versions in the background as soon as they're found.
-    "Home Assistant k\u00f6pr\u00fcs\u00fcd\u00fcr": "", // EN: the Home Assistant bridge
-    "Entegrasyonlar": "", // EN: Integrations
-    "yukar\u0131daki hesap e-postas\u0131n\u0131": "", // EN: the account email above
-    "\u0130ptal ve \u00f6deme y\u00f6ntemi de\u011fi\u015fikli\u011fi g\u00fcvenli \u00f6deme sayfam\u0131z Whop \u00fczerinden yap\u0131l\u0131r. \u0130ptal edersen mevcut d\u00f6nemin sonuna kadar kullanmaya devam edersin ve bir sonraki \u00f6deme al\u0131nmaz.": "", // EN: Cancelling and changing your payment method happen on our secure checkout page, Whop. If you cancel, you keep using NEXUS+ until the end of the current period and the next payment is never taken.
-    "Aboneli\u011fin yok. NEXUS+ i\u00e7in Plus sayfas\u0131ndan \u00fccretsiz deneyebilirsin.": "", // EN: You don't have a subscription. Try NEXUS+ free from the Plus page.
-    "QR, kurulum kodu veya manuel katalog ile ekledi\u011fin cihazlar burada g\u00f6r\u00fcn\u00fcr.": "", // EN: Devices you add by QR, setup code or the manual catalog show up here.
-    "Robot s\u00fcp\u00fcrge kontrol paneli \u00b7 ba\u015flat, durdur, eve d\u00f6n": "", // EN: Robot vacuum control panel · start, stop, return home
-    "Kilit kontrol paneli \u00b7 kilitle, a\u00e7": "", // EN: Lock control panel · lock, unlock
-    "Alarm kontrol paneli \u00b7 kur, kapat, sirene": "", // EN: Alarm control panel · arm, disarm, siren
-    "Perde ve panjur kontrol paneli \u00b7 a\u00e7, kapat, konum": "", // EN: Curtain and blind control panel · open, close, position
-    "Renkli ayd\u0131nlatma kontrol paneli \u00b7 renk, parlakl\u0131k": "", // EN: Color lighting control panel · color, brightness
-    "Ayd\u0131nlatma kontrol paneli \u00b7 a\u00e7, kapat, parlakl\u0131k": "", // EN: Lighting control panel · on, off, brightness
-    "Hava kalitesi paneli \u00b7 \u00f6l\u00e7\u00fcm ve uyar\u0131lar": "", // EN: Air quality panel · readings and alerts
-    "Hareket sens\u00f6r\u00fc paneli \u00b7 alg\u0131lama ve uyar\u0131lar": "", // EN: Motion sensor panel · detection and alerts
-    "Kap\u0131 ve pencere sens\u00f6r\u00fc paneli \u00b7 a\u00e7\u0131k/kapal\u0131 durumu": "", // EN: Door and window sensor panel · open/closed state
-    "Evcil hayvan kontrol paneli \u00b7 besleme, takip": "", // EN: Pet control panel · feeding, tracking
-    "Bebek \u00fcr\u00fcnleri paneli \u00b7 izleme ve uyar\u0131lar": "", // EN: Baby products panel · monitoring and alerts
-    "Sa\u011fl\u0131k ve uyku paneli \u00b7 \u00f6l\u00e7\u00fcm, takip": "", // EN: Health and sleep panel · readings, tracking
-    "Spor ekipmanlar\u0131 paneli \u00b7 takip, \u00f6l\u00e7\u00fcm": "", // EN: Sports equipment panel · tracking, readings
-    "Bah\u00e7e ve sulama kontrol paneli \u00b7 vana, zamanlama": "", // EN: Garden and irrigation control panel · valve, scheduling
-    "Medya kontrol paneli \u00b7 a\u00e7, kapat, ses, kanal": "", // EN: Media control panel · on, off, volume, channel
-    "Ev aletleri kontrol paneli \u00b7 ba\u015flat, durdur, program": "", // EN: Home appliance control panel · start, stop, program
-    "\u0130klim kontrol paneli \u00b7 s\u0131cakl\u0131k, nem, mod": "", // EN: Climate control panel · temperature, humidity, mode
-    "Ortam sens\u00f6r\u00fc paneli \u00b7 s\u0131cakl\u0131k, \u0131\u015f\u0131k, durum": "", // EN: Ambient sensor panel · temperature, light, status
-    "Priz ve enerji kontrol paneli \u00b7 a\u00e7, kapat, t\u00fcketim": "", // EN: Plug and energy control panel · on, off, consumption
-    "Ula\u015f\u0131m ve takip paneli \u00b7 konum, \u015farj": "", // EN: Transport and tracking panel · location, charge
-    "A\u011f ge\u00e7idi paneli \u00b7 ba\u011flant\u0131, durum": "", // EN: Gateway panel · connection, status
-    "Anahtar kontrol paneli \u00b7 a\u00e7, kapat": "", // EN: Switch control panel · on, off
-    "Bu ad ana sayfa kart\u0131nda ve cihaz listesinde g\u00f6r\u00fcn\u00fcr.": "", // EN: This name shows on the home card and in the device list.
-    "Cihaz ad\u0131n\u0131 de\u011fi\u015ftir": "", // EN: Rename device
-    "\u015eifre Belirle": "", // EN: Set a password
-    "Bu hesapta hen\u00fcz \u015fifre yok": "", // EN: This account has no password yet
-    "\u015eifren belirlendi \u2713": "", // EN: Your password is set ✓
-    "Bu hesap Google ile a\u00e7\u0131ld\u0131, i\u00e7inde hen\u00fcz bir \u015fifre yok. \u0130lk \u015fifreni burada belirleyebilirsin; bundan sonra e-posta ve \u015fifreyle de giri\u015f yapabilirsin.": "", // EN: This account was opened with Google and has no password yet. Set your first password here; after that you can also sign in with email and password.
-    "\u015eifre belirleme ba\u011flant\u0131s\u0131n\u0131 e-postama g\u00f6nder": "", // EN: Email me a password setup link
-    "Bu i\u015flem ek do\u011frulama istiyor. A\u015fa\u011f\u0131dan \u015fifre belirleme ba\u011flant\u0131s\u0131 isteyebilirsin.": "", // EN: This action needs extra verification. You can request a password setup link below.
-    "\u015eifre belirleme ba\u011flant\u0131s\u0131 e-postana g\u00f6nderildi \u2713": "", // EN: Password setup link sent to your inbox ✓
-    "\u015eifre ba\u011flant\u0131s\u0131 \u015fu anda g\u00f6nderilemiyor.": "", // EN: The password link can't be sent right now.
-    "Giri\u015f e-postan bulunamad\u0131; \u00f6nce giri\u015f yap.": "", // EN: We couldn't find your sign-in email; sign in first.
-    "Ba\u011flant\u0131 g\u00f6nderilemedi. Birazdan tekrar dene.": "", // EN: The link couldn't be sent. Try again in a moment.
-    "A\u00e7\u0131l\u0131r": "", // EN: Turns on
-    "Kapan\u0131r": "", // EN: Turns off
-    "S\u0131cak \u0131\u015f\u0131k": "", // EN: Warm light
-    "I\u015f\u0131k tonu ayarlan\u0131r": "", // EN: Sets colour tone
-    "Eko modu": "", // EN: Eco mode
-    "Konfor modu": "", // EN: Comfort mode
-    "Kilitlenir": "", // EN: Locks
-    "Bildirimler a\u00e7\u0131l\u0131r": "", // EN: Turns on notifications
-    "Fan otomatik": "", // EN: Fan on auto
-    "Parlakl\u0131k %{0}": "", // EN: Brightness {0}%
-    "bu kamera i\u00e7in ayarlanam\u0131yor": "", // EN: can't be set for this camera
-    "\u0130zleme Plan\u0131": "", // EN: Monitoring Plan
-    "Enerji Cihazlar\u0131 ekran\u0131ndaki se\u00e7imin kullan\u0131l\u0131r.": "", // EN: The choice you made on the Energy Devices screen is used.
-    "Ayl\u0131k hedefin ne olsun?": "", // EN: What should your monthly target be?
-    "Plan\u0131n \u00f6zeti \u2014 onayl\u0131yor musun?": "", // EN: Summary of your plan — do you confirm?
-    "Mesajlar \u015fifreli olarak g\u00f6nderilir ve saklan\u0131r. Bu evin \u00fcyeleri d\u0131\u015f\u0131nda kimse okuyamaz; ev silinirse mesajlar da silinir.": "", // EN: Messages are sent and stored encrypted. Nobody outside this home's members can read them; if the home is deleted, the messages are deleted too.
-    "Daveti G\u00f6nder": "", // EN: Send Invite
-    "Sahipli\u011fi Devret": "", // EN: Transfer Ownership
-    "Uygulama kapal\u0131yken aile mesaj\u0131 ve ev sahibinin payla\u015ft\u0131\u011f\u0131 uyar\u0131lar gelir. Ana anahtar, kategori ve sessiz saat ayarlar\u0131n sunucuya kopyalan\u0131r; uygulamay\u0131 a\u00e7t\u0131\u011f\u0131nda g\u00fcncellenir.": "", // EN: Family messages and the alerts the home owner shares arrive while the app is closed. Your master switch, category and quiet-hours settings are copied to the server; they update when you open the app.
-    "Aile Mesajlar\u0131": "", // EN: Family Messages
-    "Ev \u00fcyelerinden yeni mesaj": "", // EN: New message from home members
-    "Yaz\u0131 Boyutu": "", // EN: Text Size
-    "Broker'a ba\u011flan\u0131lamad\u0131. Adresin ve portun do\u011fru, broker'\u0131n a\u00e7\u0131k oldu\u011fundan emin ol.": "", // EN: Could not connect to the broker. Make sure the address and port are correct and the broker is running.
-    "MQTT broker \u00fczerinden Zigbee lamba ve prizler (masa\u00fcst\u00fc uygulamas\u0131nda); \u015fimdilik a\u00e7/kapat ve parlakl\u0131k": "", // EN: Zigbee lights and plugs through an MQTT broker (in the desktop app); on/off and brightness for now
-    "Zigbee2MQTT cihaz\u0131 ekle (MQTT broker)": "", // EN: Add a Zigbee2MQTT device (MQTT broker)
-    "Broker'\u0131n (\u00f6r. Mosquitto) yerel IP adresini yaz. Kullan\u0131c\u0131 ad\u0131 ve parola yaln\u0131zca bu cihazda saklan\u0131r. \u015eimdilik lamba ve prizlerde a\u00e7/kapat ve parlakl\u0131k desteklenir.": "", // EN: Enter the local IP address of the broker (e.g. Mosquitto). The username and password are stored only on this device. On/off and brightness for lights and plugs are supported for now.
-    "Broker IP adresi (\u00f6r. 192.168.1.10)": "", // EN: Broker IP address (e.g. 192.168.1.10)
-    "Port (varsay\u0131lan 1883)": "", // EN: Port (default 1883)
-    "Kullan\u0131c\u0131 ad\u0131 (yoksa bo\u015f b\u0131rak)": "", // EN: Username (leave empty if none)
-    "Parola (yoksa bo\u015f b\u0131rak)": "", // EN: Password (leave empty if none)
-    "Temel konu (varsay\u0131lan zigbee2mqtt)": "", // EN: Base topic (default zigbee2mqtt)
-    "Cihazlar\u0131 getir": "", // EN: Fetch devices
-    "Broker'\u0131n IP adresini yaz.": "", // EN: Enter the broker's IP address.
-    "Port 1 ile 65535 aras\u0131nda olmal\u0131.": "", // EN: The port must be between 1 and 65535.
-    "Broker'a ba\u011flan\u0131l\u0131yor\u2026": "", // EN: Connecting to the broker…
-    "Broker'da NEXUS'un kontrol edebilece\u011fi lamba ya da priz bulunamad\u0131.": "", // EN: No light or plug that NEXUS can control was found on the broker.
-    "Zigbee Ampul (Zigbee2MQTT)": "", // EN: Zigbee Bulb (Zigbee2MQTT)
-    "Zigbee Priz (Zigbee2MQTT)": "", // EN: Zigbee Plug (Zigbee2MQTT)
-    "Evde": "", // EN: At home
-    "D\u0131\u015far\u0131da": "", // EN: Away
-    "G\u00fcvenlik modunu Evde yap": "", // EN: Set security mode to At home
-    "G\u00fcvenlik modunu D\u0131\u015far\u0131da yap": "", // EN: Set security mode to Away
-    "G\u00fcvenlik modunu Gece yap": "", // EN: Set security mode to Night
-    "G\u00fcvenlik modu Evde olunca": "", // EN: When security mode is At home
-    "G\u00fcvenlik modu D\u0131\u015far\u0131da olunca": "", // EN: When security mode is Away
-    "G\u00fcvenlik modu Gece olunca": "", // EN: When security mode is Night
-    "G\u00fcvenlik modu (Evde/D\u0131\u015far\u0131da/Gece) de\u011fi\u015fti\u011finde": "", // EN: When the security mode (At home/Away/Night) changes
-    "Yaln\u0131zca NEXUS modunu de\u011fi\u015ftirir; cihazlara dokunmaz.": "", // EN: Only changes the NEXUS mode; it does not touch devices.
-    "Mod de\u011fi\u015fince \u00e7al\u0131\u015f\u0131r (uygulama a\u00e7\u0131kken). Bu mod NEXUS i\u00e7inde bir anahtard\u0131r; ger\u00e7ek bir alarm paneline ba\u011flanmaz ve cihazlar\u0131 kendili\u011finden kilitlemez.": "", // EN: Runs when the mode changes (while the app is open). The mode is a switch inside NEXUS; it is not connected to a real alarm panel and does not lock devices by itself.
-    "\u015eimdiki mod:": "", // EN: Current mode:
-    "se\u00e7ilmemi\u015f": "", // EN: not set
-    "Konum tetikleyicisi hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu, G\u00fcvenlik Modu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).
-    "Uzak Eri\u015fim Adresi": "", // EN: Remote Access Address
-    "Evin d\u0131\u015f\u0131ndayken (VPN ya da port y\u00f6nlendirme) bir cihaza veya hub'a ba\u015fka bir adresten ula\u015f\u0131yorsan, yerel adres yan\u0131t vermedi\u011finde bu adres denenir. Yaln\u0131z bu cihazda saklan\u0131r.": "", // EN: If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.
-    "\u00d6nce bir cihaz ekle; sonra ona uzak adres verebilirsin.": "", // EN: Add a device first; then you can give it a remote address.
-    "Eve gelince": "", // EN: When arriving home
-    "Evden \u00e7\u0131k\u0131nca": "", // EN: When leaving home
-    "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r; bu cihazda kurulamaz.": "", // EN: The location trigger only works in the mobile app; it cannot be set up on this device.
-    "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r.": "", // EN: The location trigger only works in the mobile app.
-    "Ev konumu se\u00e7ilmedi. \u00d6nce": "", // EN: No home location selected. First
-    "Ev konumuna g\u00f6re \u00e7al\u0131\u015f\u0131r. Yaln\u0131zca uygulama a\u00e7\u0131kken denetlenir (arka planda konum izlenmez); yakla\u015f\u0131k dakikada bir okunur.": "", // EN: Works relative to your home location. It is only checked while the app is open (location is not tracked in the background); read about once a minute.
-    "Konum izni verildi.": "", // EN: Location permission granted.
-    "Konum servisi bu cihazda kullan\u0131lam\u0131yor.": "", // EN: Location service is not available on this device.
-    "Konum izni verilmedi, tetikleyici \u00e7al\u0131\u015fmaz.": "", // EN: Location permission not granted; the trigger will not run.
-    "Konum izni ver": "", // EN: Allow location
-    "\u015eu moda ge\u00e7ince \u00e7al\u0131\u015fs\u0131n:": "", // EN: Run when the mode changes to:
-    "saat": "", // EN: hour
-    "dakika": "", // EN: minute
-    "Do\u011fruland\u0131": "", // EN: Verified
-    "Hen\u00fcz do\u011frulanmad\u0131": "", // EN: Not yet verified
-    "Bu ba\u011flant\u0131 t\u00fcr\u00fc hen\u00fcz ger\u00e7ek bir cihazla denenmedi.": "", // EN: This connection type has not been tested with a real device yet.
-    "Uygulama \u0130\u00e7i Bildirim Sesi": "", // EN: In-App Notification Sound
-    "Yumu\u015fak": "", // EN: Soft
-    "Yedekle ve Geri Y\u00fckle": "", // EN: Backup & Restore
-    "Cihaz listesi, otomasyonlar, senaryolar ve ayarlar bir dosyaya kaydedilir. Cihaz parolalar\u0131, yerel anahtarlar, Telegram anahtar\u0131 ve oturum bilgisi yede\u011fe girmez.": "", // EN: Your device list, automations, scenes and settings are saved to a file. Device passwords, local keys, the Telegram token and your session are not included in the backup.
-    "Yede\u011fi d\u0131\u015fa aktar": "", // EN: Export backup
-    "Hata Raporu": "", // EN: Error Report
-    "Uygulamada olu\u015fan hatalar otomatik ve anonim olarak (ki\u015fisel veri olmadan) bize iletilir. \u0130stersen a\u015fa\u011f\u0131dan kapatabilirsin.": "", // EN: Errors that happen in the app are sent to us automatically and anonymously (no personal data). You can turn it off below.
-    "Anonim Hata Raporu G\u00f6nder": "", // EN: Send Anonymous Error Reports
-    "Anonim hata raporu g\u00f6nder": "", // EN: Send anonymous error reports
-    "Yedekten geri y\u00fckle": "", // EN: Restore from backup
-    "E\u015fle\u015fmi\u015f cihazlar\u0131na g\u00f6re haz\u0131r; tek dokunu\u015fla eklenir.": "", // EN: Ready for your paired devices; added with a single tap.
-    "Senin i\u00e7in haz\u0131r": "", // EN: Ready for you
-    "Dokununca e\u015fle\u015fmi\u015f cihazlar\u0131nda hemen \u00e7al\u0131\u015f\u0131r.": "", // EN: Runs on your paired devices as soon as you tap it.
-    "Ayarlarda ara": "", // EN: Search settings
-    "Bu aramayla e\u015fle\u015fen ayar yok.": "", // EN: No setting matches this search.
-    "Yenilemek i\u00e7in b\u0131rak\u0131n": "", // EN: Release to refresh
-    "Yenileniyor\u2026": "", // EN: Refreshing…
-    "Yenilendi": "", // EN: Refreshed
-    "NEXUS Kullan\u0131c\u0131s\u0131": "", // EN: NEXUS User
-    "NEXUS ana sayfa": "", // EN: NEXUS home
-    "Ana men\u00fc": "", // EN: Main menu
-    "Temay\u0131 de\u011fi\u015ftir": "", // EN: Change theme
-    "L\u00fctfen ge\u00e7erli bir e-posta gir.": "", // EN: Please enter a valid email.
-    "Bu e-posta ile zaten bir hesap var. L\u00fctfen giri\u015f yap\u0131n.": "", // EN: An account with this email already exists. Please sign in.
-    "Ba\u011flant\u0131n\u0131n s\u00fcresi dolmu\u015f ya da ge\u00e7ersiz. L\u00fctfen yeniden dene.": "", // EN: This link has expired or is invalid. Please try again.
-    "Bulut hesab\u0131 bu s\u00fcr\u00fcmde kapal\u0131; yerel hesaplarda \u015fifre s\u0131f\u0131rlanamaz.": "", // EN: Cloud account is disabled in this build; local account passwords cannot be reset.
-    "Bu adres bir hesaba ba\u011fl\u0131ysa s\u0131f\u0131rlama ba\u011flant\u0131s\u0131 g\u00f6nderildi. Gelen kutunu (ve gereksiz klas\u00f6r\u00fcn\u00fc) kontrol et.": "", // EN: If this address is linked to an account, a reset link has been sent. Check your inbox (and spam folder).
-    "\u00c7ok s\u0131k denedin. Bir dakika sonra tekrar dene.": "", // EN: Too many attempts. Please try again in a minute.
-    "Ba\u011flant\u0131 g\u00f6nderilemedi.": "", // EN: Could not send the link.
-    "Tekrar G\u00f6nder": "", // EN: Send again
-    "\u015eifren g\u00fcncellendi. \u015eimdi giri\u015f yapabilirsin.": "", // EN: Your password has been updated. You can sign in now.
-    "Mevcut \u015fifreni gir.": "", // EN: Enter your current password.
-    "Mevcut \u015fifre yanl\u0131\u015f.": "", // EN: Current password is incorrect.
-    "Yeni \u015fifre eskisinden farkl\u0131 olmal\u0131.": "", // EN: New password must differ from the old one.
-    "Oturum bulunamad\u0131. \u00c7\u0131k\u0131\u015f yap\u0131p tekrar giri\u015f yap.": "", // EN: Session not found. Sign out and sign in again.
-    "\u015eifre g\u00fcncellenemedi.": "", // EN: Could not update the password.
-    "Davet e-postas\u0131 g\u00f6nderiliyor\u2026": "", // EN: Sending invitation email…
-    "Bu e-postan\u0131n hesab\u0131 zaten var; kodla kat\u0131labilir.": "", // EN: This email already has an account; they can join with the code.
-    "Ev sahibi yetkileri kapat\u0131lamaz": "", // EN: Owner permissions cannot be turned off
-    "Yetkiyi kapat": "", // EN: Turn permission off
-    "Yetkiyi a\u00e7": "", // EN: Turn permission on
-    "\u0130ptal edildi \u2014 d\u00f6nem sonuna kadar ge\u00e7erli": "", // EN: Cancelled — valid until the end of the period
-    "Aboneli\u011fin aktif": "", // EN: Your subscription is active
-    "T\u00fcketim Ge\u00e7mi\u015fi": "", // EN: Usage History
-    "Son 7 g\u00fcn \u00b7 yaln\u0131zca bu cihazdaki ger\u00e7ek \u00f6l\u00e7\u00fcmlerden": "", // EN: Last 7 days · from real measurements on this device only
-    "Son 7 g\u00fcn": "", // EN: Last 7 days
-    "Hen\u00fcz kay\u0131tl\u0131 \u00f6l\u00e7\u00fcm yok. G\u00fc\u00e7 \u00f6l\u00e7en bir cihaz ekleyip bu sayfay\u0131 a\u00e7t\u0131\u011f\u0131nda okumalar burada birikir.": "", // EN: No measurements recorded yet. Add a device that measures power and open this page; readings will build up here.
-    "\u00d6l\u00e7\u00fcm al\u0131nmayan aral\u0131klar hesaba kat\u0131lmaz; bu y\u00fczden de\u011ferler ger\u00e7ek t\u00fcketimden d\u00fc\u015f\u00fck olabilir.": "", // EN: Intervals without measurements are not counted, so values may be lower than actual consumption.
-    "Elektrik birim fiyat\u0131 (kWh ba\u015f\u0131na)": "", // EN: Electricity price (per kWh)
-    "\u00d6rn. 2,50": "", // EN: e.g. 2.50
-    "Para birimi": "", // EN: Currency
-    "Tahmini maliyet; fatura de\u011fildir. Fiyat yaln\u0131zca bu cihazda saklan\u0131r.": "", // EN: Estimated cost, not a bill. The price is stored on this device only.
-    "G\u00fcnl\u00fck t\u00fcketim, son 7 g\u00fcn (kWh)": "", // EN: Daily usage, last 7 days (kWh)
-    "\u00f6l\u00e7\u00fcm yok": "", // EN: no data
-    "Tahmini maliyet": "", // EN: Estimated cost
-    "Maliyet tahmini i\u00e7in birim fiyat\u0131 gir.": "", // EN: Enter a unit price to estimate cost.
-    "Ge\u00e7erli bir fiyat gir (\u00f6rn. 2,50).": "", // EN: Enter a valid price (e.g. 2.50).
-    "Uyar\u0131": "", // EN: Alert
-    "Ayl\u0131k hedef": "", // EN: Monthly target
-    "Ba\u015flang\u0131\u00e7 saati": "", // EN: Start time
-    "Biti\u015f saati": "", // EN: End time
-    "Haftal\u0131k \u00f6zet": "", // EN: Weekly summary
-    "Ev se\u00e7": "", // EN: Choose home
-    "Yeni \u015fifre (en az 6 karakter)": "", // EN: New password (at least 6 characters)
-    "Yeni \u015fifre (tekrar)": "", // EN: New password (again)
-    "G\u00fcvenlik sesi ve titre\u015fimi": "", // EN: Security sound and vibration
-    "Acil durum sesi ve titre\u015fimi": "", // EN: Emergency sound and vibration
-    "Enerji sesi ve titre\u015fimi": "", // EN: Energy sound and vibration
-    "AI \u00f6nerileri sesi ve titre\u015fimi": "", // EN: AI suggestion sound and vibration
-    "Vurgu Rengi": "", // EN: Accent Colour
-    "Aramay\u0131 temizle": "", // EN: Clear search
-    "Yedek dosyas\u0131 se\u00e7": "", // EN: Choose backup file
-    "Senaryoyu kaydet": "", // EN: Save scene
-    "\u00d6zel renk se\u00e7": "", // EN: Choose a custom colour
-    "Varsay\u0131lana d\u00f6n (mavi)": "", // EN: Reset to default (blue)
-    "Men\u00fcy\u00fc daralt (Ctrl+B)": "", // EN: Collapse menu (Ctrl+B)
-    "Men\u00fcy\u00fc geni\u015flet (Ctrl+B)": "", // EN: Expand menu (Ctrl+B)
-    "Oturum A\u00e7": "", // EN: Sign in
-    "Oturum a\u00e7\u0131k de\u011fil": "", // EN: Not signed in
-    "Aile sohbeti i\u00e7in oturum a\u00e7mal\u0131s\u0131n.": "", // EN: You need to sign in for the family chat.
-    "Cihaz eklenince haz\u0131r senaryolar burada g\u00f6r\u00fcnecek.": "", // EN: Ready-made scenes will appear here once you add a device.
-    "Turuncu": "", // EN: Orange
-    "Pembe": "", // EN: Pink
-    "Turkuaz": "", // EN: Turquoise
-    "Etkin": "", // EN: Active
-    "\u00d6rn. 150": "", // EN: e.g. 150
-    "\u00d6rn. NX-1A2B-3C4D-5E6F": "", // EN: e.g. NX-1A2B-3C4D-5E6F
-    "Yerel oturum": "", // EN: Local session
-    "\u0130zin yok": "", // EN: No permission
-    "Bu evde cihaz kontrol iznin yok. Ev sahibi izni a\u00e7abilir.": "", // EN: You don't have device control permission in this home. The owner can turn it on.
-    "Mesaj\u0131 Sil": "", // EN: Delete Message
-    "Bu mesaj t\u00fcm \u00fcyeler i\u00e7in silinir.": "", // EN: This message is deleted for all members.
-    "Son 15 dk i\u00e7inde": "", // EN: Within the last 15 minutes
-    "Aile mesajlar\u0131 ve payla\u015f\u0131lan uyar\u0131lar": "", // EN: Family messages and shared alerts
-    "Kritik uyar\u0131lar\u0131 payla\u015f": "", // EN: Share critical alerts
-    "Bu cihazdaki g\u00fcvenlik/acil olaylar\u0131n ba\u015fl\u0131\u011f\u0131 ve k\u0131sa metni evdeki di\u011fer \u00fcyelerin uygulamas\u0131nda g\u00f6r\u00fcn\u00fcr. Cihaz bilgileri ve anahtarlar payla\u015f\u0131lmaz; her \u00fcye kendi bildirim ayarlar\u0131na tabidir.": "", // EN: The title and short text of security/emergency events on this device appear in other members' apps in this home. Device details and keys are never shared; every member follows their own notification settings.
-    "Evden Ayr\u0131l": "", // EN: Leave Home
-    "Ayr\u0131l": "", // EN: Leave
-    "Davet e-postas\u0131ndaki kodu gir. Kod tek kullan\u0131ml\u0131kt\u0131r ve yaln\u0131zca davet edilen e-posta adresiyle \u00e7al\u0131\u015f\u0131r.": "", // EN: Enter the code from the invitation email. The code is single-use and only works with the invited email address.
-    "Oturum gerekli": "", // EN: Sign-in required
-    "\u00dcye davet etmek i\u00e7in \u00f6nce oturum a\u00e7; evin hesab\u0131na otomatik ba\u011flan\u0131r.": "", // EN: Sign in first to invite members; you'll be connected to your home's account automatically.
-    "E-posta sunucudan g\u00f6nderilemedi": "", // EN: The email couldn't be sent from the server
-    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
-    "Posta Uygulamas\u0131n\u0131 A\u00e7": "", // EN: Open Mail App
-    "I\u015f\u0131k d\u00fczeyi": "", // EN: Light level
-    "Bas\u0131n\u00e7": "", // EN: Pressure
-    "Hareket alg\u0131land\u0131": "", // EN: Motion detected
-    "Hareket yok": "", // EN: No motion
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network.
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
-    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
-    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
-    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
-    "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights and TV, closes the curtains and locks the door.
-    "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
-    "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "", // EN: Locks the door and closes the curtains.
-    "I\u015f\u0131klar\u0131 %70 parlakl\u0131kta a\u00e7ar.": "", // EN: Turns the lights on at 70% brightness.
-    "Robot s\u00fcp\u00fcrgeyi ba\u015flat\u0131r.": "", // EN: Starts the robot vacuum.
-    "Hafta i\u00e7i 10:00": "", // EN: Weekdays 10:00
-    "Klimay\u0131 ve termostat\u0131 konfor ayar\u0131na getirir, hava temizleyiciyi \u00e7al\u0131\u015ft\u0131r\u0131r.": "", // EN: Sets the AC and thermostat to the comfort setting and runs the air purifier.
-    "Bildirim g\u00f6nderir": "", // EN: Sends a notification
-    "Bu senaryo mevcut cihazlar\u0131n\u0131 etkilemiyor. Senaryonun \u00e7al\u0131\u015fmas\u0131 i\u00e7in uygun bir cihaz (\u00f6r. \u0131\u015f\u0131k, perde, s\u00fcp\u00fcrge) eklemelisin.": "", // EN: This scenario doesn't affect any of your current devices. To make it work, add a suitable device (e.g. a light, curtain or vacuum).
-    "Yeni bir ev olu\u015ftur ya da sana g\u00f6nderilen davet koduyla bir eve kat\u0131l.": "", // EN: Create a new home, or join one with the invite code sent to you.
-    "Oturum a\u00e7\u0131k de\u011fil. Evler yaln\u0131zca bu cihazda tutulur. \u00dcye davet etmek, bir eve kat\u0131lmak ve aile sohbeti i\u00e7in oturum a\u00e7.": "", // EN: You're not signed in. Homes are kept on this device only. Sign in to invite members, join a home and use the family chat.
-    "Shelly 1 / 1PM R\u00f6le": "", // EN: Shelly 1 / 1PM Relay
-    "Shelly RGBW2 \u015eerit": "", // EN: Shelly RGBW2 Strip
-    "Shelly H&T S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc": "", // EN: Shelly H&T Temperature & Humidity Sensor
-    "Shelly Door/Window Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "", // EN: Shelly Door/Window Contact Sensor
-    "Shelly Flood Su Bask\u0131n\u0131 Sens\u00f6r\u00fc": "", // EN: Shelly Flood Leak Sensor
-    "Shelly Smoke Duman Dedekt\u00f6r\u00fc": "", // EN: Shelly Smoke Detector
-    "Yerel \u015fifreli HTTP (KLAP) \u2014 TP-Link hesab\u0131 e-postas\u0131 + \u015fifresiyle, masa\u00fcst\u00fc uygulamas\u0131nda; priz, anahtar ve ampuller (kamera ve enerji \u00f6l\u00e7\u00fcm\u00fc hen\u00fcz yok)": "", // EN: Local encrypted HTTP (KLAP) — with your TP-Link account email + password, in the desktop app; plugs, switches and bulbs (camera and energy metering not available yet)
-    "Home Assistant Medya Oynat\u0131c\u0131 / TV": "", // EN: Home Assistant Media Player / TV
-    "Home Assistant Hareket Sens\u00f6r\u00fc": "", // EN: Home Assistant Motion Sensor
-    "Home Assistant Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "", // EN: Home Assistant Door & Window Sensor
-    "Home Assistant S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc": "", // EN: Home Assistant Temperature & Humidity Sensor
-    "Home Assistant Su S\u0131z\u0131nt\u0131s\u0131 Sens\u00f6r\u00fc": "", // EN: Home Assistant Water Leak Sensor
-    "Home Assistant Duman Dedekt\u00f6r\u00fc": "", // EN: Home Assistant Smoke Detector
-    "Home Assistant Gaz ve CO Dedekt\u00f6r\u00fc": "", // EN: Home Assistant Gas & CO Detector
-    "Home Assistant Hava Kalitesi Sens\u00f6r\u00fc": "", // EN: Home Assistant Air Quality Sensor
-    "Yerel LAN (3.3 / 3.4, \u015fifreli TCP) \u2014 \u00fccretsiz Tuya IoT hesab\u0131ndan al\u0131nan cihaz kimli\u011fi + yerel anahtarla, masa\u00fcst\u00fc uygulamas\u0131nda; priz, anahtar ve ampuller": "", // EN: Local LAN (3.3 / 3.4, encrypted TCP) — with the device ID + local key from a free Tuya IoT account, in the desktop app; plugs, switches and bulbs
-    "Tuya Ak\u0131ll\u0131 Anahtar / R\u00f6le": "", // EN: Tuya Smart Switch / Relay
-    "eWeLink DIY modu (cihazda DIY a\u00e7\u0131lm\u0131\u015f olmal\u0131) \u2014 \u00e7ok kanall\u0131 modellerde her kanal ayr\u0131 cihaz": "", // EN: eWeLink DIY mode (DIY must be enabled on the device) — on multi-channel models each channel is a separate device
-    "Sonoff BASICR3 R\u00f6le": "", // EN: Sonoff BASICR3 Relay
-    "Sonoff MINIR2 R\u00f6le": "", // EN: Sonoff MINIR2 Relay
-    "Sonoff 4CHPROR3 4 Kanall\u0131 R\u00f6le": "", // EN: Sonoff 4CHPROR3 4-Channel Relay
-    "Yerel UDP \u2014 masa\u00fcst\u00fc uygulamas\u0131nda; yerle\u015fik sahneler dahil": "", // EN: Local UDP — in the desktop app; built-in scenes included
-    "WiZ A60 Renkli Ampul": "", // EN: WiZ A60 Colour Bulb
-    "WiZ I\u015f\u0131k \u015eeridi": "", // EN: WiZ Light Strip
-    "Yerel Open API (ba\u011flant\u0131 noktas\u0131 16021); g\u00fc\u00e7 d\u00fc\u011fmesiyle e\u015fle\u015ftirme gerekir": "", // EN: Local Open API (port 16021); pairing with the power button is required
-    "Nanoleaf I\u015f\u0131k Panelleri / Shapes": "", // EN: Nanoleaf Light Panels / Shapes
-    "Yerel UDP \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: Local UDP — in the desktop app
-    "LIFX Z LED \u015eerit": "", // EN: LIFX Z LED Strip
-    "Yerel UDP (Govee Home'da LAN Control a\u00e7\u0131k olmal\u0131) \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: Local UDP (LAN Control must be enabled in Govee Home) — in the desktop app
-    "Govee H6159 LED \u015eerit": "", // EN: Govee H6159 LED Strip
-    "Saving\u2026": "", // EN: Saving…
-    " and {0} more": "", // EN: and {0} more
-    " A command was sent over your local network to {0} devices.": "", // EN: A command was sent over your local network to {0} devices.
-    " A command was sent over your local network to 1 device.": "", // EN: A command was sent over your local network to 1 device.
-    "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
-    "You have {0} devices at home.": "", // EN: You have {0} devices at home.
-    "You have {0} device at home.": "", // EN: You have {0} device at home.
-    "Right now these are on: {0}.": "", // EN: Right now these are on: {0}.
-    " and a few more": "", // EN: and a few more
-    "Nothing is on right now, the house is quiet.": "", // EN: Nothing is on right now, the house is quiet.
-    "These need your attention: {0}.": "", // EN: These need your attention: {0}.
-    "{0} devices": "", // EN: {0} devices
-    "{0} device": "", // EN: {0} device
-    "Target temperature": "", // EN: Target temperature
-    "Brightness": "", // EN: Brightness
-    "Which device should I turn on? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: {0}.": "", // EN: Which device should I turn on? Use a device name, a room or a type like "lights" or "plugs". Your paired devices: {0}.
-    "Which device should I turn off? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: {0}.": "", // EN: Which device should I turn off? Use a device name, a room or a type like "lights" or "plugs". Your paired devices: {0}.
-    "light": "", // EN: light
-    "plug": "", // EN: plug
-    "AC or heater": "", // EN: AC or heater
-    "TV or speaker": "", // EN: TV or speaker
-    "air purifier": "", // EN: air purifier
-    "device": "", // EN: device
-    "No paired {0} that can be switched was found{1}.": "", // EN: No paired {0} that can be switched was found{1}.
-    "Turned on": "", // EN: Turned on
-    "Turned off": "", // EN: Turned off
-    "The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.": "", // EN: The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.
-    "I set up the \"{0}\" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop).": "", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop).
-    "I set up the \"{0}\" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).": "", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).
-    "I added \"{0}\" to Tap to Run; one tap adjusts {1} devices.": "", // EN: I added "{0}" to Tap to Run; one tap adjusts {1} devices.
-    "I added \"{0}\" to Tap to Run; one tap adjusts {1} device.": "", // EN: I added "{0}" to Tap to Run; one tap adjusts {1} device.
-    "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\".": "", // EN: That does not look like a device command. Try: "turn off the living room light" or "set the AC to 22".
-    "No active subscription": "", // EN: No active subscription
-    "There is no subscription to manage on this account. If you want to join NEXUS+, you can do it from the Plus page.": "", // EN: There is no subscription to manage on this account. If you want to join NEXUS+, you can do it from the Plus page.
-    "OK": "", // EN: OK
-    "Your subscription ends on {0}. You can keep using NEXUS+ until then.": "", // EN: Your subscription ends on {0}. You can keep using NEXUS+ until then.
-    "Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.": "", // EN: Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.
-    "Next renewal: {0}. If you cancel, you keep access until the end of this period; no further payment is taken.": "", // EN: Next renewal: {0}. If you cancel, you keep access until the end of this period; no further payment is taken.
-    "Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.": "", // EN: Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.
-    "Cancel at period end": "", // EN: Cancel at period end
-    "Close": "", // EN: Close
-    "Active since {0}": "", // EN: Active since {0}
-    "Device commands still work": "", // EN: Device commands still work
-    "The assistant could not be loaded.": "", // EN: The assistant could not be loaded.
-    "System Setting": "", // EN: System Setting
-    "View": "", // EN: View
-    "Dark theme enabled": "", // EN: Dark theme enabled
-    "Light theme enabled": "", // EN: Light theme enabled
-    "Do not disturb enabled": "", // EN: Do not disturb enabled
-    "Do not disturb disabled": "", // EN: Do not disturb disabled
-    "Attachment options": "", // EN: Attachment options
-    "Ask my devices": "", // EN: Ask my devices
-    "What is the status of my devices?": "", // EN: What is the status of my devices?
-    "[Image: ": "", // EN: [Image:
-    "I received your image but I can not analyse images yet. You can ask me about your devices and the app in text.": "", // EN: I received your image but I can not analyse images yet. You can ask me about your devices and the app in text.
-    "Welcome back, ": "", // EN: Welcome back,
-    "Fits this strategy": "", // EN: Fits this strategy
-    "Feedback": "", // EN: Feedback
-    "Back online.": "", // EN: Back online.
-    "You're offline \u2014 devices keep working on your local network.": "", // EN: You're offline — devices keep working on your local network.
-    "This device can reach your local network": "", // EN: This device can reach your local network
-    "The local network is not reachable here": "", // EN: The local network is not reachable here
-    "You can check your devices here. If the local address does not answer, the optional remote address is tried.": "", // EN: You can check your devices here. If the local address does not answer, the optional remote address is tried.
-    "A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.": "", // EN: A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.
-    "Not checked": "", // EN: Not checked
-    "Checking\u2026": "", // EN: Checking…
-    "Reachable": "", // EN: Reachable
-    "Not reachable": "", // EN: Not reachable
-    "No devices on your network yet": "", // EN: No devices on your network yet
-    "First find your devices from Add Device. Devices on your local network are listed here.": "", // EN: First find your devices from Add Device. Devices on your local network are listed here.
-    "Add Device": "", // EN: Add Device
-    "Unnamed device": "", // EN: Unnamed device
-    "Check": "", // EN: Check
-    "Accent color: {0}": "", // EN: Accent color: {0}
-    "Welcome Back": "", // EN: Welcome Back
-    "Welcome": "", // EN: Welcome
-    "Signing in\u2026": "", // EN: Signing in…
-    "Selected location": "", // EN: Selected location
-    "Current location": "", // EN: Current location
-    "Paid": "", // EN: Paid
-    "Failed": "", // EN: Failed
-    "Refunded": "", // EN: Refunded
-    "Pending": "", // EN: Pending
-    "Yearly": "", // EN: Yearly
-    "Monthly": "", // EN: Monthly
-    "Ends at period end: {0}": "", // EN: Ends at period end: {0}
-    "Ends at period end.": "", // EN: Ends at period end.
-    "Next renewal: {0}": "", // EN: Next renewal: {0}
-    "Your subscription is active.": "", // EN: Your subscription is active.
-    "You have no orders yet": "", // EN: You have no orders yet
-    "When you buy NEXUS+, your payments are listed here.": "", // EN: When you buy NEXUS+, your payments are listed here.
-    "See NEXUS+ plans": "", // EN: See NEXUS+ plans
-    "Orders need a cloud account": "", // EN: Orders need a cloud account
-    "Payment records are kept on the server. They appear here once you sign in with your cloud account.": "", // EN: Payment records are kept on the server. They appear here once you sign in with your cloud account.
-    "Account and security": "", // EN: Account and security
-    "Loading payments\u2026": "", // EN: Loading payments…
-    "Sign in with your cloud account first": "", // EN: Sign in with your cloud account first
-    "You need to sign in to see payment records.": "", // EN: You need to sign in to see payment records.
-    "Could not load orders": "", // EN: Could not load orders
-    "The server could not be reached. Check your connection and reopen the page.": "", // EN: The server could not be reached. Check your connection and reopen the page.
-    "7 days free, then just {0} per year. Cancel anytime.": "", // EN: 7 days free, then just {0} per year. Cancel anytime.
-    "{0} device connected": "", // EN: {0} device connected
-    "{0} devices connected": "", // EN: {0} devices connected
-    "Connected": "", // EN: Connected
-    "Adding new devices needs NEXUS+.": "", // EN: Adding new devices needs NEXUS+.
-    "No connected devices yet. Add Device finds them while scanning your network.": "", // EN: No connected devices yet. Add Device finds them while scanning your network.
-    "Add": "", // EN: Add
-    "Not available here; the desktop or mobile app is required.": "", // EN: Not available here; the desktop or mobile app is required.
-    "Unavailable": "", // EN: Unavailable
-    "Alert": "", // EN: Alert
-    "NEXUS Critical Alerts": "", // EN: NEXUS Critical Alerts
-    "Devices": "", // EN: Devices
-    "Energy": "", // EN: Energy
-    "AI Suggestions": "", // EN: AI Suggestions
-    "Security": "", // EN: Security
-    " - silent - no vibration": "", // EN: - silent - no vibration
-    " - silent": "", // EN: - silent
-    " - no vibration": "", // EN: - no vibration
-    "NEXUS {0}{1}": "", // EN: NEXUS {0}{1}
-    "Smart home events and alerts": "", // EN: Smart home events and alerts
-    "NEXUS Alert": "", // EN: NEXUS Alert
-    "Test notification": "", // EN: Test notification
-    "NEXUS test notification": "", // EN: NEXUS test notification
-    "This is a test notification \u2014 it also arrives while the app is closed.": "", // EN: This is a test notification — it also arrives while the app is closed.
-    "Remote address could not be loaded in this version.": "", // EN: Remote address could not be loaded in this version.
-    "Remote address (e.g. 100.64.0.5:8123), empty = off": "", // EN: Remote address (e.g. 100.64.0.5:8123), empty = off
-    "Remote address": "", // EN: Remote address
-    "Save": "", // EN: Save
-    "The address is not valid. Example: 100.64.0.5:8123": "", // EN: The address is not valid. Example: 100.64.0.5:8123
-    "Remote address saved. It is tried when the local address does not answer.": "", // EN: Remote address saved. It is tried when the local address does not answer.
-    "Remote address removed.": "", // EN: Remote address removed.
-    "Could not save.": "", // EN: Could not save.
-    "Monthly reset": "", // EN: Monthly reset
-    "Daily reset": "", // EN: Daily reset
-    "Monthly allowance used up; resets next month": "", // EN: Monthly allowance used up; resets next month
-    "Daily allowance used up; resets tomorrow": "", // EN: Daily allowance used up; resets tomorrow
+    "T\u00fcm kameralar": "\u05db\u05dc \u05d4\u05de\u05e6\u05dc\u05de\u05d5\u05ea", // EN: All cameras
+    "T\u00fcm kap\u0131lar a\u00e7\u0131k": "\u05db\u05dc \u05d4\u05d3\u05dc\u05ea\u05d5\u05ea \u05e4\u05ea\u05d5\u05d7\u05d5\u05ea", // EN: All doors open
+    "T\u00fcm uyar\u0131lar\u0131 tek bir yerden y\u00f6netin": "\u05e0\u05d4\u05dc\u05d5 \u05d0\u05ea \u05db\u05dc \u05d4\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05d1\u05de\u05e7\u05d5\u05dd \u05d0\u05d7\u05d3", // EN: Manage all alerts from one place
+    "T\u00fcm uyumlu cihazlar": "\u05db\u05dc \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05ea\u05d5\u05d0\u05de\u05d9\u05dd", // EN: All compatible devices
+    "T\u00fcm \u0131\u015f\u0131klar\u0131 kapat": "\u05db\u05d1\u05d4 \u05d0\u05ea \u05db\u05dc \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea", // EN: Turn off all lights
+    "T\u00fcm\u00fc": "\u05d4\u05db\u05d5\u05dc", // EN: All
+    "T\u00fcm\u00fcn\u00fc D\u00fczenle": "\u05e2\u05e8\u05d5\u05da \u05d4\u05db\u05d5\u05dc", // EN: Edit All
+    "T\u00fcm\u00fcn\u00fc G\u00f6r": "\u05d4\u05e6\u05d2 \u05d4\u05db\u05d5\u05dc", // EN: See All
+    "T\u00fcm\u00fcn\u00fc Optimize Et": "\u05d1\u05e6\u05e2 \u05d0\u05d5\u05e4\u05d8\u05d9\u05de\u05d9\u05d6\u05e6\u05d9\u05d4 \u05dc\u05db\u05d5\u05dc", // EN: Optimize All
+    "T\u00fcm\u00fcn\u00fc a\u00e7": "\u05d4\u05e4\u05e2\u05dc \u05d4\u05db\u05d5\u05dc", // EN: Turn all on
+    "T\u00fcm\u00fcn\u00fc ekle ({0})": "\u05d4\u05d5\u05e1\u05e3 \u05d4\u05db\u05d5\u05dc ({0})", // EN: Add all ({0})
+    "T\u00fcm\u00fcn\u00fc kapat": "\u05db\u05d1\u05d4 \u05d4\u05db\u05d5\u05dc", // EN: Turn all off
+    "T\u00fcm\u00fcn\u00fc kilitle": "\u05e0\u05e2\u05dc \u05d4\u05db\u05d5\u05dc", // EN: Lock all
+    "T\u00fcm\u00fcn\u00fc okundu i\u015faretle": "\u05e1\u05de\u05df \u05d4\u05db\u05d5\u05dc \u05db\u05e0\u05e7\u05e8\u05d0", // EN: Mark all as read
+    "T\u0131kla ve \u00c7al\u0131\u015ft\u0131r": "\u05d4\u05e7\u05e9 \u05d5\u05d4\u05e4\u05e2\u05dc", // EN: Tap to Run
+    "T\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "\u05d4\u05e7\u05e9 \u05d5\u05d4\u05e4\u05e2\u05dc", // EN: Tap to run
+    "T\u0131kla ve \u00c7al\u0131\u015ft\u0131r listesine eklendi": "\u05e0\u05d5\u05e1\u05e3 \u05dc\"\u05d4\u05e7\u05e9 \u05d5\u05d4\u05e4\u05e2\u05dc\"", // EN: Added to Tap to Run
+    "U Tipi Kilit": "\u05de\u05e0\u05e2\u05d5\u05dc U", // EN: U-Lock
+    "UYGULA": "\u05d4\u05d7\u05dc", // EN: APPLY
+    "Ula\u015f\u0131lam\u0131yor": "\u05dc\u05d0 \u05d6\u05de\u05d9\u05df", // EN: Unreachable
+    "Ula\u015f\u0131m ve takip": "\u05e0\u05d9\u05d9\u05d3\u05d5\u05ea \u05d5\u05de\u05e2\u05e7\u05d1", // EN: Mobility and tracking
+    "Uyand\u0131rma Anahtar\u0131": "\u05de\u05ea\u05d2 \u05d4\u05ea\u05e2\u05d5\u05e8\u05e8\u05d5\u05ea", // EN: Wake-up Switch
+    "Uyar\u0131lar": "\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea", // EN: Alerts
+    "Uygulama": "\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4", // EN: App
+    "Uygulama Yok": "\u05d0\u05d9\u05df \u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d5\u05ea", // EN: No Apps
+    "Uygulamay\u0131 Olu\u015ftur": "\u05e6\u05d5\u05e8 \u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4", // EN: Create App
+    "Uyku": "\u05e9\u05d9\u05e0\u05d4", // EN: Sleep
+    "Uyku Butonu": "\u05dc\u05d7\u05e6\u05df \u05e9\u05d9\u05e0\u05d4", // EN: Sleep Button
+    "Uyku Modu": "\u05de\u05e6\u05d1 \u05e9\u05d9\u05e0\u05d4", // EN: Sleep Mode
+    "Uyku Modu Haz\u0131r": "\u05de\u05e6\u05d1 \u05e9\u05d9\u05e0\u05d4 \u05de\u05d5\u05db\u05df", // EN: Sleep Mode Ready
+    "Uyku Modu Senaryosu": "\u05ea\u05e8\u05d7\u05d9\u05e9 \u05de\u05e6\u05d1 \u05e9\u05d9\u05e0\u05d4", // EN: Sleep Mode Scene
+    "Uyku Profili": "\u05e4\u05e8\u05d5\u05e4\u05d9\u05dc \u05e9\u05d9\u05e0\u05d4", // EN: Sleep Profile
+    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in plan veya iklim cihaz\u0131 ba\u011flanmam\u0131\u015f.": "\u05dc\u05d0 \u05d7\u05d5\u05d1\u05e8 \u05de\u05db\u05e9\u05d9\u05e8 \u05ea\u05db\u05e0\u05d5\u05df \u05d0\u05d5 \u05d0\u05e7\u05dc\u05d9\u05dd \u05dc\u05d4\u05db\u05e0\u05d4 \u05dc\u05e9\u05d9\u05e0\u05d4.", // EN: No plan or climate device connected for bedtime preparation.
+    "Uyku i\u00e7in daha dengeli bir gece iklim profili uygula.": "\u05d4\u05d7\u05dc \u05e4\u05e8\u05d5\u05e4\u05d9\u05dc \u05d0\u05e7\u05dc\u05d9\u05dd \u05dc\u05d9\u05dc\u05d9 \u05de\u05d0\u05d5\u05d6\u05df \u05d9\u05d5\u05ea\u05e8 \u05dc\u05e9\u05d9\u05e0\u05d4.", // EN: Apply a more balanced night climate profile for sleep.
+    "Uyku i\u00e7in s\u0131cakl\u0131\u011f\u0131 20\u00b0 seviyesine d\u00fc\u015f\u00fcr\u00fcn.": "\u05d4\u05d5\u05e8\u05d3 \u05d0\u05ea \u05d4\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4 \u05dc-20\u00b0 \u05dc\u05e9\u05d9\u05e0\u05d4.", // EN: Lower the temperature to 20° for sleep.
+    "Uyku modu": "\u05de\u05e6\u05d1 \u05e9\u05d9\u05e0\u05d4", // EN: Sleep mode
+    "Uyku plan\u0131 yok": "\u05d0\u05d9\u05df \u05ea\u05d5\u05db\u05e0\u05d9\u05ea \u05e9\u05d9\u05e0\u05d4", // EN: No sleep plan
+    "Uyku \u0130zleme Band\u0131": "\u05e6\u05de\u05d9\u05d3 \u05de\u05e2\u05e7\u05d1 \u05e9\u05d9\u05e0\u05d4", // EN: Sleep Tracking Band
+    "Uykuya Ge\u00e7": "\u05dc\u05da \u05dc\u05d9\u05e9\u05d5\u05df", // EN: Go to Sleep
+    "Uykuya Haz\u0131rl\u0131k": "\u05d4\u05db\u05e0\u05d4 \u05dc\u05e9\u05d9\u05e0\u05d4", // EN: Bedtime Preparation
+    "Uykuya Haz\u0131rl\u0131k Merkezi": "\u05de\u05e8\u05db\u05d6 \u05d4\u05db\u05e0\u05d4 \u05dc\u05e9\u05d9\u05e0\u05d4", // EN: Bedtime Preparation Center
+    "Ak\u015fam Ortam\u0131": "\u05d0\u05d5\u05d5\u05d9\u05e8\u05ea \u05e2\u05e8\u05d1", // EN: Evening Ambience
+    "Bah\u00e7e Sulama Merkezi": "\u05de\u05e8\u05db\u05d6 \u05d4\u05e9\u05e7\u05d9\u05d9\u05ea \u05d2\u05d9\u05e0\u05d4", // EN: Garden Watering Center
+    "Di\u011fer \u00d6nerileri G\u00f6r": "\u05d4\u05e6\u05d2 \u05d4\u05e6\u05e2\u05d5\u05ea \u05e0\u05d5\u05e1\u05e4\u05d5\u05ea", // EN: See More Suggestions
+    "Eve Geldim Kar\u015f\u0131lama": "\u05e7\u05d1\u05dc\u05ea \u05e4\u05e0\u05d9\u05dd \u05d1\u05d4\u05d2\u05e2\u05d4 \u05d4\u05d1\u05d9\u05ea\u05d4", // EN: Welcome Home Greeting
+    "Hava Kalitesi N\u00f6bet\u00e7isi": "\u05e9\u05d5\u05de\u05e8 \u05d0\u05d9\u05db\u05d5\u05ea \u05d4\u05d0\u05d5\u05d5\u05d9\u05e8", // EN: Air Quality Guard
+    "Odak \u00c7al\u0131\u015fma Modu": "\u05de\u05e6\u05d1 \u05e2\u05d1\u05d5\u05d3\u05d4 \u05de\u05de\u05d5\u05e7\u05d3\u05ea", // EN: Focus Work Mode
+    "Tatil / Evde Yokum Modu": "\u05de\u05e6\u05d1 \u05d7\u05d5\u05e4\u05e9\u05d4 / \u05dc\u05d0 \u05d1\u05d1\u05d9\u05ea", // EN: Vacation / Away Mode
+    "Temizlik Rutini Merkezi": "\u05de\u05e8\u05db\u05d6 \u05e9\u05d2\u05e8\u05ea \u05e0\u05d9\u05e7\u05d9\u05d5\u05df", // EN: Cleaning Routine Center
+    "Uyan\u0131nca \u0131\u015f\u0131k, perde, iklim ve m\u00fczi\u011fi tek dokunu\u015fla ba\u015flat.": "\u05d4\u05e4\u05e2\u05dc \u05d0\u05d5\u05e8\u05d5\u05ea, \u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea, \u05d0\u05e7\u05dc\u05d9\u05dd \u05d5\u05de\u05d5\u05d6\u05d9\u05e7\u05d4 \u05d1\u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea \u05db\u05e9\u05d0\u05ea\u05d4 \u05de\u05ea\u05e2\u05d5\u05e8\u05e8.", // EN: Start lights, blinds, climate and music with one tap when you wake up.
+    "Kap\u0131dan girerken \u0131\u015f\u0131klar, iklim ve m\u00fczik seni kar\u015f\u0131las\u0131n.": "\u05d0\u05d5\u05e8\u05d5\u05ea, \u05d0\u05e7\u05dc\u05d9\u05dd \u05d5\u05de\u05d5\u05d6\u05d9\u05e7\u05d4 \u05d9\u05e7\u05d1\u05dc\u05d5 \u05d0\u05d5\u05ea\u05da \u05d1\u05db\u05e0\u05d9\u05e1\u05d4.", // EN: Lights, climate and music greet you as you walk in.
+    "Ev bo\u015fken tasarruf, taklit hareket ve uyar\u0131 tek panelde.": "\u05d7\u05d9\u05e1\u05db\u05d5\u05df, \u05e0\u05d5\u05db\u05d7\u05d5\u05ea \u05de\u05d3\u05d5\u05de\u05d4 \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05d1\u05dc\u05d5\u05d7 \u05d0\u05d7\u05d3 \u05db\u05e9\u05d4\u05d1\u05d9\u05ea \u05e8\u05d9\u05e7.", // EN: Savings, simulated presence and alerts in one panel while the home is empty.
+    "Robot s\u00fcp\u00fcrge ve temizlik cihazlar\u0131 i\u00e7in g\u00fcn ve oda plan\u0131.": "\u05ea\u05d5\u05db\u05e0\u05d9\u05d5\u05ea \u05dc\u05d9\u05d5\u05dd \u05d5\u05dc\u05d7\u05d3\u05e8 \u05e2\u05d1\u05d5\u05e8 \u05e9\u05d5\u05d0\u05d1\u05d9 \u05d0\u05d1\u05e7 \u05e8\u05d5\u05d1\u05d5\u05d8\u05d9\u05d9\u05dd \u05d5\u05de\u05db\u05e9\u05d9\u05e8\u05d9 \u05e0\u05d9\u05e7\u05d9\u05d5\u05df.", // EN: Day and room plans for robot vacuums and cleaning devices.
+    "Sulama saatleri, b\u00f6lgeler ve sens\u00f6r verisiyle ak\u0131ll\u0131 plan.": "\u05ea\u05db\u05e0\u05d5\u05df \u05d7\u05db\u05dd \u05e2\u05dd \u05dc\u05d5\u05d7\u05d5\u05ea \u05d6\u05de\u05e0\u05d9\u05dd \u05dc\u05d4\u05e9\u05e7\u05d9\u05d4, \u05d0\u05d6\u05d5\u05e8\u05d9\u05dd \u05d5\u05e0\u05ea\u05d5\u05e0\u05d9 \u05d7\u05d9\u05d9\u05e9\u05e0\u05d9\u05dd.", // EN: Smart watering schedules, zones and sensor-driven planning.
+    "Sens\u00f6r verisiyle havaland\u0131rma ve temizleyiciyi otomatik y\u00f6net.": "\u05e0\u05d4\u05dc \u05d0\u05d5\u05d5\u05e8\u05d5\u05e8 \u05d5\u05de\u05d8\u05d4\u05e8\u05d9\u05dd \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05ea \u05dc\u05e4\u05d9 \u05e0\u05ea\u05d5\u05e0\u05d9 \u05d7\u05d9\u05d9\u05e9\u05e0\u05d9\u05dd.", // EN: Manage ventilation and purifiers automatically from sensor data.
+    "\u00c7al\u0131\u015f\u0131rken sessizlik, do\u011fru \u0131\u015f\u0131k ve bildirim aras\u0131.": "\u05e9\u05e7\u05d8, \u05ea\u05d0\u05d5\u05e8\u05d4 \u05de\u05ea\u05d0\u05d9\u05de\u05d4 \u05d5\u05dc\u05dc\u05d0 \u05d4\u05e4\u05e8\u05e2\u05d5\u05ea \u05d1\u05d6\u05de\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4.", // EN: Quiet, proper lighting and no interruptions while you work.
+    "Uzaktan Kumanda": "\u05e9\u05dc\u05d8 \u05e8\u05d7\u05d5\u05e7", // EN: Remote Control
+    "Uzaktayken evi korumak i\u00e7in kameralar\u0131 etkinle\u015ftir": "\u05d4\u05e4\u05e2\u05dc \u05de\u05e6\u05dc\u05de\u05d5\u05ea \u05db\u05d3\u05d9 \u05dc\u05d4\u05d2\u05df \u05e2\u05dc \u05d4\u05d1\u05d9\u05ea \u05d1\u05d6\u05de\u05df \u05e9\u05d0\u05ea\u05d4 \u05dc\u05d0 \u05e0\u05de\u05e6\u05d0", // EN: Turn on cameras to protect your home while you're away
+    "Uzun komutlar i\u00e7in klavyeyle rahat yaz\u0131m": "\u05d4\u05e7\u05dc\u05d3\u05d4 \u05e0\u05d5\u05d7\u05d4 \u05d1\u05de\u05e7\u05dc\u05d3\u05ea \u05e2\u05d1\u05d5\u05e8 \u05e4\u05e7\u05d5\u05d3\u05d5\u05ea \u05d0\u05e8\u05d5\u05db\u05d5\u05ea", // EN: Comfortable typing on a keyboard for long commands
+    "U\u00e7ucu Organik Bile\u015fik (VOC) Alarm\u0131": "\u05d4\u05ea\u05e8\u05d0\u05ea \u05ea\u05e8\u05db\u05d5\u05d1\u05d5\u05ea \u05d0\u05d5\u05e8\u05d2\u05e0\u05d9\u05d5\u05ea \u05e0\u05d3\u05d9\u05e4\u05d5\u05ea (VOC)", // EN: Volatile Organic Compound (VOC) Alarm
+    "U\u00e7ucu Organik Bile\u015fik (VOC) Alarm\u0131 (Gateway)": "\u05d4\u05ea\u05e8\u05d0\u05ea \u05ea\u05e8\u05db\u05d5\u05d1\u05d5\u05ea \u05d0\u05d5\u05e8\u05d2\u05e0\u05d9\u05d5\u05ea \u05e0\u05d3\u05d9\u05e4\u05d5\u05ea (VOC) (Gateway)", // EN: Volatile Organic Compound (VOC) Alarm (Gateway)
+    "Vakumlu Pi\u015firme Makinesi": "\u05de\u05db\u05e9\u05d9\u05e8 \u05d1\u05d9\u05e9\u05d5\u05dc \u05e1\u05d5-\u05d5\u05d9\u05d3\u05d4", // EN: Sous Vide Cooker
+    "Vana Kontrol Ekipmanlar\u0131": "\u05e6\u05d9\u05d5\u05d3 \u05d1\u05e7\u05e8\u05ea \u05e9\u05e1\u05ea\u05d5\u05de\u05d9\u05dd", // EN: Valve Control Equipment
+    "Var\u015fova": "\u05d5\u05e8\u05e9\u05d4", // EN: Warsaw
+    "Vazge\u00e7": "\u05d1\u05d9\u05d8\u05d5\u05dc", // EN: Cancel
+    "Vazge\u00e7 ve Giri\u015fe D\u00f6n": "\u05d1\u05d9\u05d8\u05d5\u05dc \u05d5\u05d7\u05d6\u05e8\u05d4 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8\u05d5\u05ea", // EN: Cancel and Back to Sign In
+    "Veri Paneli": "\u05dc\u05d5\u05d7 \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd", // EN: Data Panel
+    "Veri al\u0131namad\u0131": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e7\u05d1\u05dc \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd", // EN: Couldn't get data
+    "Veri yok": "\u05d0\u05d9\u05df \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd", // EN: No data
+    "Veriler cihaz\u0131nda kal\u0131r, ayn\u0131 gizlilik korumalar\u0131": "\u05d4\u05e0\u05ea\u05d5\u05e0\u05d9\u05dd \u05e0\u05e9\u05d0\u05e8\u05d9\u05dd \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05e9\u05dc\u05da, \u05e2\u05dd \u05d0\u05d5\u05ea\u05df \u05d4\u05d2\u05e0\u05d5\u05ea \u05e4\u05e8\u05d8\u05d9\u05d5\u05ea", // EN: Your data stays on your device, same privacy protections
+    "Verilerim g\u00fcvende mi?": "\u05d4\u05d0\u05dd \u05d4\u05e0\u05ea\u05d5\u05e0\u05d9\u05dd \u05e9\u05dc\u05d9 \u05d1\u05d8\u05d5\u05d7\u05d9\u05dd?", // EN: Is my data safe?
+    "Veya QR Kodunu Tara": "\u05d0\u05d5 \u05e1\u05e8\u05d5\u05e7 \u05d0\u05ea \u05e7\u05d5\u05d3 \u05d4-QR", // EN: Or Scan the QR Code
+    "Video Baz istasyonu": "\u05ea\u05d7\u05e0\u05ea \u05d1\u05e1\u05d9\u05e1 \u05d5\u05d9\u05d3\u05d0\u05d5", // EN: Video Base Station
+    "Video Baz istasyonu (2.4GHz&5GHz)": "\u05ea\u05d7\u05e0\u05ea \u05d1\u05e1\u05d9\u05e1 \u05d5\u05d9\u05d3\u05d0\u05d5 (2.4GHz&5GHz)", // EN: Video Base Station (2.4GHz&5GHz)
+    "Video Kilidi": "\u05de\u05e0\u05e2\u05d5\u05dc \u05d5\u05d9\u05d3\u05d0\u05d5", // EN: Video Lock
+    "Vurgu Renkleri": "\u05e6\u05d1\u05e2\u05d9 \u05d4\u05d3\u05d2\u05e9\u05d4", // EN: Accent Colors
+    "WLED \u015eerit Kontrolc\u00fc": "\u05d1\u05e7\u05e8 \u05e8\u05e6\u05d5\u05e2\u05ea WLED", // EN: WLED Strip Controller
+    "Web adresi": "\u05db\u05ea\u05d5\u05d1\u05ea \u05d0\u05ea\u05e8", // EN: Web address
+    "Wi-Fi a\u011f bilgisi": "\u05e4\u05e8\u05d8\u05d9 \u05e8\u05e9\u05ea Wi-Fi", // EN: Wi-Fi network details
+    "Wi-Fi a\u011f\u0131ndaki cihazlar taran\u0131yor. Cihaz\u0131n a\u00e7\u0131k oldu\u011fundan emin ol.": "\u05e1\u05d5\u05e8\u05e7 \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05e8\u05e9\u05ea Wi-Fi. \u05d5\u05d3\u05d0 \u05e9\u05d4\u05de\u05db\u05e9\u05d9\u05e8 \u05d3\u05d5\u05dc\u05e7.", // EN: Scanning devices on the Wi-Fi network. Make sure the device is on.
+    "Windows ve Linux i\u00e7in \u00fccretsiz masa\u00fcst\u00fc uygulamas\u0131": "\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05e2\u05d1\u05d5\u05d3\u05d4 \u05d7\u05d9\u05e0\u05de\u05d9\u05ea \u05dc-Windows \u05d5\u05dc-Linux", // EN: Free desktop app for Windows and Linux
+    "Yakla\u015fan Otomasyonlar": "\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d5\u05ea \u05e7\u05e8\u05d5\u05d1\u05d5\u05ea", // EN: Upcoming Automations
+    "Yak\u0131nda geliyor": "\u05d1\u05e7\u05e8\u05d5\u05d1", // EN: Coming soon
+    "Yang\u0131n, su bask\u0131n\u0131 tespiti": "\u05d6\u05d9\u05d4\u05d5\u05d9 \u05e9\u05e8\u05d9\u05e4\u05d4 \u05d5\u05d4\u05e6\u05e4\u05d4", // EN: Fire and flood detection
+    "Yapay Zeka Ayarlar\u0131": "\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05d1\u05d9\u05e0\u05d4 \u05de\u05dc\u05d0\u05db\u05d5\u05ea\u05d9\u05ea", // EN: AI Settings
+    "Yapay zeka ile evinizi ak\u0131ll\u0131ca y\u00f6netin, enerjiden tasarruf edin ve konforunuzu art\u0131r\u0131n.": "\u05e0\u05d4\u05dc\u05d5 \u05d0\u05ea \u05d4\u05d1\u05d9\u05ea \u05e9\u05dc\u05db\u05dd \u05d1\u05d7\u05db\u05de\u05d4 \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea \u05d1\u05d9\u05e0\u05d4 \u05de\u05dc\u05d0\u05db\u05d5\u05ea\u05d9\u05ea, \u05d7\u05e1\u05db\u05d5 \u05d1\u05d0\u05e0\u05e8\u05d2\u05d9\u05d4 \u05d5\u05d4\u05d2\u05d1\u05d9\u05e8\u05d5 \u05d0\u05ea \u05d4\u05e0\u05d5\u05d7\u05d5\u05ea.", // EN: Manage your home smartly with AI, save energy and increase your comfort.
+    "Yapay zeka ile olu\u015ftur": "\u05e6\u05d5\u05e8 \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea \u05d1\u05d9\u05e0\u05d4 \u05de\u05dc\u05d0\u05db\u05d5\u05ea\u05d9\u05ea", // EN: Create with AI
+    "Yard\u0131m": "\u05e2\u05d6\u05e8\u05d4", // EN: Help
+    "Yard\u0131m ve Geri Bildirim": "\u05e2\u05d6\u05e8\u05d4 \u05d5\u05de\u05e9\u05d5\u05d1", // EN: Help and Feedback
+    "Tekrar dene": "\u05e0\u05e1\u05d4 \u05e9\u05d5\u05d1", // EN: Try again
+    "Yard\u0131m al": "\u05e7\u05d1\u05dc \u05e2\u05d6\u05e8\u05d4", // EN: Get help
+    "Yard\u0131m\u0131 a\u00e7": "\u05e4\u05ea\u05d7 \u05e2\u05d6\u05e8\u05d4", // EN: Open help
+    "Yatak Odas\u0131": "\u05d7\u05d3\u05e8 \u05e9\u05d9\u05e0\u05d4", // EN: Bedroom
+    "Yatak Odas\u0131 karartma miktar\u0131": "\u05db\u05de\u05d5\u05ea \u05e2\u05de\u05e2\u05d5\u05dd \u05d1\u05d7\u05d3\u05e8 \u05d4\u05e9\u05d9\u05e0\u05d4", // EN: Bedroom dimming amount
+    "Yatak odas\u0131": "\u05d7\u05d3\u05e8 \u05e9\u05d9\u05e0\u05d4", // EN: Bedroom
+    "Yatmadan \u00f6nce gerekli t\u00fcm ev kontrollerini tek merkezde topla. I\u015f\u0131k azaltma, rahats\u0131z etme, kilit kontrol\u00fc ve gece iklim ayarlar\u0131 tek ekranda y\u00f6netilsin.": "\u05e8\u05db\u05d6 \u05d0\u05ea \u05db\u05dc \u05d1\u05d3\u05d9\u05e7\u05d5\u05ea \u05d4\u05d1\u05d9\u05ea \u05d4\u05d3\u05e8\u05d5\u05e9\u05d5\u05ea \u05dc\u05e4\u05e0\u05d9 \u05d4\u05e9\u05d9\u05e0\u05d4 \u05d1\u05de\u05e8\u05db\u05d6 \u05d0\u05d7\u05d3. \u05e2\u05de\u05e2\u05d5\u05dd \u05d0\u05d5\u05e8\u05d5\u05ea, \u05e0\u05d0 \u05dc\u05d0 \u05dc\u05d4\u05e4\u05e8\u05d9\u05e2, \u05d1\u05d3\u05d9\u05e7\u05ea \u05e0\u05e2\u05d9\u05dc\u05d4 \u05d5\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05d0\u05e7\u05dc\u05d9\u05dd \u05dc\u05d9\u05dc\u05d4 \u05d1\u05de\u05e1\u05da \u05d0\u05d7\u05d3.", // EN: Gather all the home checks you need before bed in one center. Dim lights, do not disturb, lock check and night climate settings on one screen.
+    "Yatmadan \u00f6nce \u0131\u015f\u0131k, sessiz mod, kilit ve iklim ayarlar\u0131n\u0131 y\u00f6neten bir uykuya haz\u0131rl\u0131k merkezi olu\u015ftur. Son kontrol \u00f6zeti ve tek dokunu\u015f gece modu ekle.": "\u05e6\u05d5\u05e8 \u05de\u05e8\u05db\u05d6 \u05d4\u05db\u05e0\u05d4 \u05dc\u05e9\u05d9\u05e0\u05d4 \u05e9\u05de\u05e0\u05d4\u05dc \u05d0\u05d5\u05e8\u05d5\u05ea, \u05de\u05e6\u05d1 \u05e9\u05e7\u05d8, \u05de\u05e0\u05e2\u05d5\u05dc\u05d9\u05dd \u05d5\u05d0\u05e7\u05dc\u05d9\u05dd \u05dc\u05e4\u05e0\u05d9 \u05d4\u05e9\u05d9\u05e0\u05d4. \u05d4\u05d5\u05e1\u05e3 \u05e1\u05d9\u05db\u05d5\u05dd \u05d1\u05d3\u05d9\u05e7\u05d4 \u05d0\u05d7\u05e8\u05d5\u05e0\u05d4 \u05d5\u05de\u05e6\u05d1 \u05dc\u05d9\u05dc\u05d4 \u05d1\u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea.", // EN: Create a bedtime preparation center that manages lights, quiet mode, locks and climate before bed. Add a final check summary and one-tap night mode.
+    "Ya\u011fmurlu": "\u05d2\u05e9\u05d5\u05dd", // EN: Rainy
+    "Yeelight Masa Lambas\u0131": "\u05de\u05e0\u05d5\u05e8\u05ea \u05e9\u05d5\u05dc\u05d7\u05df Yeelight", // EN: Yeelight Desk Lamp
+    "Yeelight Tavan Lambas\u0131": "\u05de\u05e0\u05d5\u05e8\u05ea \u05ea\u05e7\u05e8\u05d4 Yeelight", // EN: Yeelight Ceiling Light
+    "Yeelight \u015eerit": "\u05e8\u05e6\u05d5\u05e2\u05ea Yeelight", // EN: Yeelight Strip
+    "Yemek Pi\u015firme Makinesi": "\u05de\u05db\u05e9\u05d9\u05e8 \u05d1\u05d9\u05e9\u05d5\u05dc", // EN: Cooking Machine
+    "Yeni Bir Tetikleyici Se\u00e7": "\u05d1\u05d7\u05e8 \u05d8\u05e8\u05d9\u05d2\u05e8 \u05d7\u05d3\u05e9", // EN: Choose a New Trigger
+    "Yeni Ev Olu\u015ftur": "\u05e6\u05d5\u05e8 \u05d1\u05d9\u05ea \u05d7\u05d3\u05e9", // EN: Create New Home
+    "Yeni Otomasyon": "\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05d7\u05d3\u05e9\u05d4", // EN: New Automation
+    "Ne zaman \u00e7al\u0131\u015fs\u0131n?": "\u05de\u05ea\u05d9 \u05dc\u05d4\u05e4\u05e2\u05d9\u05dc?", // EN: When should it run?
+    "Ne yaps\u0131n?": "\u05de\u05d4 \u05dc\u05e2\u05e9\u05d5\u05ea?", // EN: What should it do?
+    "Ne yapaca\u011f\u0131n\u0131 se\u00e7.": "\u05d1\u05d7\u05e8 \u05de\u05d4 \u05dc\u05e2\u05e9\u05d5\u05ea.", // EN: Choose what it should do.
+    "\u00d6nce bir senaryo se\u00e7.": "\u05d1\u05d7\u05e8 \u05ea\u05d7\u05d9\u05dc\u05d4 \u05ea\u05e8\u05d7\u05d9\u05e9.", // EN: Choose a scene first.
+    "Kaydetmek i\u00e7in \u00f6nce ev konumunu se\u00e7.": "\u05d1\u05d7\u05e8 \u05ea\u05d7\u05d9\u05dc\u05d4 \u05d0\u05ea \u05de\u05d9\u05e7\u05d5\u05dd \u05d4\u05d1\u05d9\u05ea \u05db\u05d3\u05d9 \u05dc\u05e9\u05de\u05d5\u05e8.", // EN: Choose your home location first to save.
+    "Cihaz Se\u00e7": "\u05d1\u05d7\u05e8 \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: Choose Devices
+    "Bu ekran\u0131 iPhone'daki NEXUS uygulamas\u0131nda a\u00e7; senaryolar\u0131n a\u015fa\u011f\u0131da listelenir ve her biri i\u00e7in Siri kestirmesi kurabilirsin.": "\u05e4\u05ea\u05d7 \u05d0\u05ea \u05d4\u05de\u05e1\u05da \u05d4\u05d6\u05d4 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea NEXUS \u05d1-iPhone; \u05d4\u05ea\u05e8\u05d7\u05d9\u05e9\u05d9\u05dd \u05e9\u05dc\u05da \u05de\u05d5\u05e4\u05d9\u05e2\u05d9\u05dd \u05dc\u05de\u05d8\u05d4 \u05d5\u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05d2\u05d3\u05d9\u05e8 \u05e7\u05d9\u05e6\u05d5\u05e8 Siri \u05dc\u05db\u05dc \u05d0\u05d7\u05d3 \u05de\u05d4\u05dd.", // EN: Open this screen in the NEXUS app on your iPhone; your scenes are listed below and you can set up a Siri shortcut for each one.
+    "1. Senaryo ba\u011flant\u0131s\u0131n\u0131 kopyala": "1. \u05d4\u05e2\u05ea\u05e7 \u05d0\u05ea \u05e7\u05d9\u05e9\u05d5\u05e8 \u05d4\u05ea\u05e8\u05d7\u05d9\u05e9", // EN: 1. Copy the scene link
+    "Bu ba\u011flant\u0131 NEXUS'u a\u00e7ar ve senaryoyu hemen \u00e7al\u0131\u015ft\u0131r\u0131r.": "\u05d4\u05e7\u05d9\u05e9\u05d5\u05e8 \u05d4\u05d6\u05d4 \u05e4\u05d5\u05ea\u05d7 \u05d0\u05ea NEXUS \u05d5\u05de\u05e4\u05e2\u05d9\u05dc \u05d0\u05ea \u05d4\u05ea\u05e8\u05d7\u05d9\u05e9 \u05de\u05d9\u05d3.", // EN: This link opens NEXUS and runs the scene right away.
+    "2. Kestirmeler'de yeni kestirme olu\u015ftur": "2. \u05e6\u05d5\u05e8 \u05e7\u05d9\u05e6\u05d5\u05e8 \u05d3\u05e8\u05da \u05d7\u05d3\u05e9 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e7\u05d9\u05e6\u05d5\u05e8\u05d9 \u05d4\u05d3\u05e8\u05da", // EN: 2. Create a new shortcut in Shortcuts
+    "\"Eylem Ekle\" \u203a \"URL'leri A\u00e7\" eylemini se\u00e7 ve kopyalad\u0131\u011f\u0131n ba\u011flant\u0131y\u0131 yap\u0131\u015ft\u0131r.": "\u05d1\u05d7\u05e8 \"\u05d4\u05d5\u05e1\u05e3 \u05e4\u05e2\u05d5\u05dc\u05d4\" \u203a \"\u05e4\u05ea\u05d7 \u05db\u05ea\u05d5\u05d1\u05d5\u05ea URL\" \u05d5\u05d4\u05d3\u05d1\u05e7 \u05d0\u05ea \u05d4\u05e7\u05d9\u05e9\u05d5\u05e8 \u05e9\u05d4\u05e2\u05ea\u05e7\u05ea.", // EN: Choose "Add Action" › "Open URLs" and paste the link you copied.
+    "Kestirmeler uygulamas\u0131n\u0131 a\u00e7": "\u05e4\u05ea\u05d7 \u05d0\u05ea \u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e7\u05d9\u05e6\u05d5\u05e8\u05d9 \u05d4\u05d3\u05e8\u05da", // EN: Open the Shortcuts app
+    "Cihazlar\u0131na uyan haz\u0131r otomasyonlardan birini tek dokunu\u015fla ekle.": "\u05d4\u05d5\u05e1\u05e3 \u05d1\u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05de\u05d5\u05db\u05e0\u05d4 \u05e9\u05de\u05ea\u05d0\u05d9\u05de\u05d4 \u05dc\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05da.", // EN: Add a ready-made automation that fits your devices with one tap.
+    "Belirli bir saatte; her g\u00fcn, hafta i\u00e7i ya da hafta sonu": "\u05d1\u05e9\u05e2\u05d4 \u05e7\u05d1\u05d5\u05e2\u05d4; \u05db\u05dc \u05d9\u05d5\u05dd, \u05d1\u05d9\u05de\u05d9 \u05d7\u05d5\u05dc \u05d0\u05d5 \u05d1\u05e1\u05d5\u05e4\u05d9 \u05e9\u05d1\u05d5\u05e2", // EN: At a set time; every day, on weekdays or at weekends
+    "G\u00fcn Do\u011fumu / Bat\u0131m\u0131": "\u05d6\u05e8\u05d9\u05d7\u05d4 / \u05e9\u05e7\u05d9\u05e2\u05d4", // EN: Sunrise / Sunset
+    "Ev konumuna g\u00f6re g\u00fcne\u015f do\u011farken ya da batarken": "\u05d1\u05d6\u05e8\u05d9\u05d7\u05d4 \u05d0\u05d5 \u05d1\u05e9\u05e7\u05d9\u05e2\u05d4 \u05dc\u05e4\u05d9 \u05de\u05d9\u05e7\u05d5\u05dd \u05d4\u05d1\u05d9\u05ea", // EN: At sunrise or sunset for your home location
+    "Cihaz ve Sens\u00f6r": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d5\u05d7\u05d9\u05d9\u05e9\u05e0\u05d9\u05dd", // EN: Devices & Sensors
+    "Hareket Alg\u0131land\u0131\u011f\u0131nda": "\u05db\u05e9\u05de\u05d6\u05d5\u05d4\u05d4 \u05ea\u05e0\u05d5\u05e2\u05d4", // EN: When Motion Is Detected
+    "Hareket sens\u00f6r\u00fc bir hareket alg\u0131lad\u0131\u011f\u0131nda": "\u05db\u05e9\u05d7\u05d9\u05d9\u05e9\u05df \u05ea\u05e0\u05d5\u05e2\u05d4 \u05de\u05d6\u05d4\u05d4 \u05ea\u05e0\u05d5\u05e2\u05d4", // EN: When a motion sensor detects movement
+    "Kap\u0131 veya Pencere A\u00e7\u0131ld\u0131\u011f\u0131nda": "\u05db\u05e9\u05d3\u05dc\u05ea \u05d0\u05d5 \u05d7\u05dc\u05d5\u05df \u05e0\u05e4\u05ea\u05d7\u05d9\u05dd", // EN: When a Door or Window Opens
+    "Kap\u0131/pencere sens\u00f6r\u00fc a\u00e7\u0131ld\u0131\u011f\u0131nda": "\u05db\u05e9\u05d7\u05d9\u05d9\u05e9\u05df \u05d3\u05dc\u05ea/\u05d7\u05dc\u05d5\u05df \u05e0\u05e4\u05ea\u05d7", // EN: When a door/window sensor opens
+    "Duman, su bask\u0131n\u0131 ya da gaz sens\u00f6r\u00fc uyard\u0131\u011f\u0131nda": "\u05db\u05e9\u05d7\u05d9\u05d9\u05e9\u05df \u05e2\u05e9\u05df, \u05d4\u05e6\u05e4\u05d4 \u05d0\u05d5 \u05d2\u05d6 \u05de\u05ea\u05e8\u05d9\u05e2", // EN: When a smoke, flood or gas sensor raises an alarm
+    "Cihaz ve sens\u00f6r tetikleyicileri, uygun bir cihaz ekleyince burada g\u00f6r\u00fcn\u00fcr.": "\u05d8\u05e8\u05d9\u05d2\u05e8\u05d9\u05dd \u05e9\u05dc \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d5\u05d7\u05d9\u05d9\u05e9\u05e0\u05d9\u05dd \u05d9\u05d5\u05e4\u05d9\u05e2\u05d5 \u05db\u05d0\u05df \u05dc\u05d0\u05d7\u05e8 \u05e9\u05ea\u05d5\u05e1\u05d9\u05e3 \u05de\u05db\u05e9\u05d9\u05e8 \u05de\u05ea\u05d0\u05d9\u05dd.", // EN: Device and sensor triggers appear here once you add a suitable device.
+    "Ev ve \u00c7evre": "\u05d1\u05d9\u05ea \u05d5\u05e1\u05d1\u05d9\u05d1\u05d4", // EN: Home & Surroundings
+    "S\u0131cakl\u0131k, r\u00fczg\u00e2r ya da ya\u011f\u0131\u015f bir e\u015fi\u011fi ge\u00e7ti\u011finde": "\u05db\u05e9\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4, \u05e8\u05d5\u05d7 \u05d0\u05d5 \u05d2\u05e9\u05dd \u05d7\u05d5\u05e6\u05d9\u05dd \u05e1\u05e3", // EN: When temperature, wind or rain passes a threshold
+    "T\u00fcm \u0131\u015f\u0131klar\u0131 a\u00e7": "\u05d4\u05d3\u05dc\u05e7 \u05d0\u05ea \u05db\u05dc \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea", // EN: Turn on all lights
+    "Ak\u015fam yeme\u011fi": "\u05d0\u05e8\u05d5\u05d7\u05ea \u05e2\u05e8\u05d1", // EN: Dinner
+    "Perdeleri a\u00e7": "\u05e4\u05ea\u05d7 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea", // EN: Open the curtains
+    "Kap\u0131lar\u0131 kilitle": "\u05e0\u05e2\u05dc \u05d0\u05ea \u05d4\u05d3\u05dc\u05ea\u05d5\u05ea", // EN: Lock the doors
+    "B\u00fct\u00fcn \u0131\u015f\u0131klar\u0131 tam parlakl\u0131kta a\u00e7ar.": "\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05ea \u05db\u05dc \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05d1\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea \u05de\u05dc\u05d0\u05d4.", // EN: Turns on every light at full brightness.
+    "B\u00fct\u00fcn \u0131\u015f\u0131klar\u0131 kapat\u0131r.": "\u05de\u05db\u05d1\u05d4 \u05d0\u05ea \u05db\u05dc \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea.", // EN: Turns off every light.
+    "I\u015f\u0131klar\u0131 tam parlakl\u0131kta, g\u00fcn \u0131\u015f\u0131\u011f\u0131 tonunda a\u00e7ar.": "\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05d5\u05e8\u05d5\u05ea \u05d1\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea \u05de\u05dc\u05d0\u05d4 \u05d1\u05d2\u05d5\u05d5\u05df \u05d0\u05d5\u05e8 \u05d9\u05d5\u05dd.", // EN: Turns lights on at full brightness in a daylight tone.
+    "I\u015f\u0131klar\u0131 %85 n\u00f6tr tona getirir, TV'yi kapat\u0131r.": "\u05de\u05d2\u05d3\u05d9\u05e8 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05dc-85% \u05d1\u05d2\u05d5\u05d5\u05df \u05e0\u05d9\u05d8\u05e8\u05dc\u05d9 \u05d5\u05de\u05db\u05d1\u05d4 \u05d0\u05ea \u05d4\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4.", // EN: Sets lights to 85% in a neutral tone and turns off the TV.
+    "I\u015f\u0131klar\u0131 %40 s\u0131cak tona getirir.": "\u05de\u05d2\u05d3\u05d9\u05e8 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05dc-40% \u05d1\u05d2\u05d5\u05d5\u05df \u05d7\u05dd.", // EN: Sets lights to 40% in a warm tone.
+    "Her ak\u015fam 19:30": "\u05db\u05dc \u05e2\u05e8\u05d1 \u05d1-19:30", // EN: Every evening 19:30
+    "Klimay\u0131 a\u00e7\u0131p 20\u00b0'ye, termostat\u0131 20\u00b0'ye ayarlar.": "\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05ea \u05d4\u05de\u05d6\u05d2\u05df \u05e2\u05dc 20\u00b0 \u05d5\u05de\u05d2\u05d3\u05d9\u05e8 \u05d0\u05ea \u05d4\u05ea\u05e8\u05de\u05d5\u05e1\u05d8\u05d8 \u05dc-20\u00b0.", // EN: Turns the AC on at 20° and sets the thermostat to 20°.
+    "Termostat\u0131 24\u00b0 konfor ayar\u0131na getirir.": "\u05de\u05d2\u05d3\u05d9\u05e8 \u05d0\u05ea \u05d4\u05ea\u05e8\u05de\u05d5\u05e1\u05d8\u05d8 \u05dc\u05d4\u05d2\u05d3\u05e8\u05ea \u05e0\u05d5\u05d7\u05d5\u05ea \u05e9\u05dc 24\u00b0.", // EN: Sets the thermostat to a 24° comfort setting.
+    "Hafta i\u00e7i 06:30": "\u05d1\u05d9\u05de\u05d9 \u05d7\u05d5\u05dc \u05d1-06:30", // EN: Weekdays 06:30
+    "B\u00fct\u00fcn perde ve panjurlar\u0131 a\u00e7ar.": "\u05e4\u05d5\u05ea\u05d7 \u05d0\u05ea \u05db\u05dc \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05d4\u05ea\u05e8\u05d9\u05e1\u05d9\u05dd.", // EN: Opens every curtain and blind.
+    "Her g\u00fcn g\u00fcn do\u011fumunda": "\u05db\u05dc \u05d9\u05d5\u05dd \u05d1\u05d6\u05e8\u05d9\u05d7\u05d4", // EN: Every day at sunrise
+    "B\u00fct\u00fcn perde ve panjurlar\u0131 kapat\u0131r.": "\u05e1\u05d5\u05d2\u05e8 \u05d0\u05ea \u05db\u05dc \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05d4\u05ea\u05e8\u05d9\u05e1\u05d9\u05dd.", // EN: Closes every curtain and blind.
+    "Her g\u00fcn g\u00fcn bat\u0131m\u0131nda": "\u05db\u05dc \u05d9\u05d5\u05dd \u05d1\u05e9\u05e7\u05d9\u05e2\u05d4", // EN: Every day at sunset
+    "B\u00fct\u00fcn ak\u0131ll\u0131 kilitleri kilitler (kilit hi\u00e7bir zaman a\u00e7\u0131lmaz).": "\u05e0\u05d5\u05e2\u05dc \u05d0\u05ea \u05db\u05dc \u05d4\u05de\u05e0\u05e2\u05d5\u05dc\u05d9\u05dd \u05d4\u05d7\u05db\u05de\u05d9\u05dd (\u05de\u05e0\u05e2\u05d5\u05dc\u05d9\u05dd \u05d0\u05d9\u05e0\u05dd \u05e0\u05e4\u05ea\u05d7\u05d9\u05dd \u05dc\u05e2\u05d5\u05dc\u05dd).", // EN: Locks every smart lock (locks are never unlocked).
+    "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r; prizlere ve klimaya dokunmaz.": "\u05de\u05db\u05d1\u05d4 \u05d0\u05d5\u05e8\u05d5\u05ea \u05d5\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4; \u05dc\u05d0 \u05e0\u05d5\u05d2\u05e2 \u05d1\u05e9\u05e7\u05e2\u05d9\u05dd \u05d5\u05d1\u05de\u05d6\u05d2\u05df.", // EN: Turns off lights and the TV; leaves plugs and the AC alone.
+    "Bir cihaz\u0131 a\u00e7 ya da kapat": "\u05d4\u05e4\u05e2\u05dc \u05d0\u05d5 \u05db\u05d1\u05d4 \u05de\u05db\u05e9\u05d9\u05e8", // EN: Turn a device on or off
+    "Se\u00e7ti\u011fin tek cihaza komut g\u00f6nderir.": "\u05e9\u05d5\u05dc\u05d7 \u05e4\u05e7\u05d5\u05d3\u05d4 \u05dc\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d9\u05d7\u05d9\u05d3 \u05e9\u05d1\u05d7\u05e8\u05ea.", // EN: Sends a command to the one device you pick.
+    "Hangi cihaz?": "\u05d0\u05d9\u05d6\u05d4 \u05de\u05db\u05e9\u05d9\u05e8?", // EN: Which device?
+    "A\u00e7\u0131ls\u0131n": "\u05d9\u05d5\u05e4\u05e2\u05dc", // EN: Turn on
+    "Kapans\u0131n": "\u05d9\u05db\u05d1\u05d4", // EN: Turn off
+    "Kontrol edilecek cihaz\u0131 se\u00e7.": "\u05d1\u05d7\u05e8 \u05d0\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8 \u05dc\u05e9\u05dc\u05d9\u05d8\u05d4.", // EN: Choose the device to control.
+    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava kalitesini, s\u0131cakl\u0131\u011f\u0131 ve nemi g\u00f6r; ar\u0131t\u0131c\u0131n\u0131 y\u00f6net.": "\u05e8\u05d0\u05d4 \u05d0\u05ea \u05d0\u05d9\u05db\u05d5\u05ea \u05d4\u05d0\u05d5\u05d5\u05d9\u05e8, \u05d4\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4 \u05d5\u05d4\u05dc\u05d7\u05d5\u05ea \u05e9\u05d4\u05d7\u05d9\u05d9\u05e9\u05e0\u05d9\u05dd \u05e9\u05dc\u05da \u05de\u05d5\u05d3\u05d3\u05d9\u05dd, \u05d5\u05e9\u05dc\u05d5\u05d8 \u05d1\u05de\u05d8\u05d4\u05e8.", // EN: See the air quality, temperature and humidity your sensors measure, and control your purifier.
+    "I\u015f\u0131klar\u0131, perdeleri ve klimay\u0131 g\u00fcne ba\u015flarken tek dokunu\u015fla haz\u0131rla.": "\u05d4\u05db\u05df \u05d0\u05d5\u05e8\u05d5\u05ea, \u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05de\u05d6\u05d2\u05df \u05dc\u05d9\u05d5\u05dd \u05d1\u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea.", // EN: Get lights, curtains and the AC ready for the day with one tap.
+    "Eve girerken \u0131\u015f\u0131klar\u0131, perdeleri ve iklimi birlikte a\u00e7.": "\u05d4\u05d3\u05dc\u05e7 \u05d0\u05d5\u05e8\u05d5\u05ea, \u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05d0\u05e7\u05dc\u05d9\u05dd \u05d9\u05d7\u05d3 \u05db\u05e9\u05d0\u05ea\u05d4 \u05de\u05d2\u05d9\u05e2 \u05d4\u05d1\u05d9\u05ea\u05d4.", // EN: Turn on lights, curtains and climate together when you get home.
+    "Uzun s\u00fcre evde yokken cihazlar\u0131n\u0131 g\u00fcvenli ve tasarruflu konuma al.": "\u05d4\u05e2\u05d1\u05e8 \u05d0\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05da \u05dc\u05de\u05e6\u05d1 \u05d1\u05d8\u05d5\u05d7 \u05d5\u05d7\u05e1\u05db\u05d5\u05e0\u05d9 \u05d1\u05d6\u05de\u05df \u05e9\u05d0\u05ea\u05d4 \u05dc\u05d0 \u05d1\u05d1\u05d9\u05ea \u05dc\u05ea\u05e7\u05d5\u05e4\u05d4 \u05d0\u05e8\u05d5\u05db\u05d4.", // EN: Put your devices into a safe, energy-saving state while you are away for long.
+    "I\u015f\u0131klar\u0131 k\u0131s, perdeleri kapat ve TV'yi a\u00e7.": "\u05e2\u05de\u05e2\u05dd \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea, \u05e1\u05d2\u05d5\u05e8 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05d4\u05d3\u05dc\u05e7 \u05d0\u05ea \u05d4\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4.", // EN: Dim the lights, close the curtains and turn on the TV.
+    "Robot s\u00fcp\u00fcrgeni ba\u015flat ya da \u015farj istasyonuna g\u00f6nder.": "\u05d4\u05e4\u05e2\u05dc \u05d0\u05ea \u05e9\u05d5\u05d0\u05d1 \u05d4\u05d0\u05d1\u05e7 \u05d4\u05e8\u05d5\u05d1\u05d5\u05d8\u05d9 \u05d0\u05d5 \u05e9\u05dc\u05d7 \u05d0\u05d5\u05ea\u05d5 \u05d7\u05d6\u05e8\u05d4 \u05dc\u05e2\u05d2\u05d9\u05e0\u05d4.", // EN: Start your robot vacuum or send it back to its dock.
+    "Kap\u0131y\u0131 kilitle, perdeleri kapat ve evi geceye haz\u0131rla.": "\u05e0\u05e2\u05dc \u05d0\u05ea \u05d4\u05d3\u05dc\u05ea, \u05e1\u05d2\u05d5\u05e8 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05d4\u05db\u05df \u05d0\u05ea \u05d4\u05d1\u05d9\u05ea \u05dc\u05dc\u05d9\u05dc\u05d4.", // EN: Lock the door, close the curtains and get the house ready for the night.
+    "Ekledi\u011fin kameralar\u0131n durumunu ve gizlilik ayar\u0131n\u0131 tek ekranda g\u00f6r.": "\u05e8\u05d0\u05d4 \u05d0\u05ea \u05d4\u05de\u05e6\u05d1 \u05d5\u05d4\u05d2\u05d3\u05e8\u05ea \u05d4\u05e4\u05e8\u05d8\u05d9\u05d5\u05ea \u05e9\u05dc \u05d4\u05de\u05e6\u05dc\u05de\u05d5\u05ea \u05e9\u05dc\u05da \u05d1\u05de\u05e1\u05da \u05d0\u05d7\u05d3.", // EN: See the status and privacy setting of your cameras on one screen.
+    "Evdeyken kameralar\u0131n i\u00e7in gizlilik modunu tek yerden a\u00e7 ya da kapat.": "\u05d4\u05e4\u05e2\u05dc \u05d0\u05d5 \u05db\u05d1\u05d4 \u05d0\u05ea \u05de\u05e6\u05d1 \u05d4\u05e4\u05e8\u05d8\u05d9\u05d5\u05ea \u05e9\u05dc \u05d4\u05de\u05e6\u05dc\u05de\u05d5\u05ea \u05e9\u05dc\u05da \u05de\u05de\u05e7\u05d5\u05dd \u05d0\u05d7\u05d3 \u05d1\u05d6\u05de\u05df \u05e9\u05d0\u05ea\u05d4 \u05d1\u05d1\u05d9\u05ea.", // EN: Turn privacy mode for your cameras on or off from one place while you are home.
+    "Bug\u00fcn hangi otomasyonun ne zaman \u00e7al\u0131\u015faca\u011f\u0131n\u0131 g\u00f6r.": "\u05e8\u05d0\u05d4 \u05d0\u05d9\u05d6\u05d5 \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05e4\u05d5\u05e2\u05dc\u05ea \u05d5\u05de\u05ea\u05d9 \u05d4\u05d9\u05d5\u05dd.", // EN: See which automation runs when today.
+    "Ev halk\u0131yla notlar\u0131 ve yap\u0131lacaklar\u0131 payla\u015f.": "\u05e9\u05ea\u05e3 \u05d4\u05e2\u05e8\u05d5\u05ea \u05d5\u05de\u05e9\u05d9\u05de\u05d5\u05ea \u05e2\u05dd \u05d1\u05e0\u05d9 \u05d4\u05d1\u05d9\u05ea.", // EN: Share notes and to-dos with your household.
+    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava, nem ve s\u0131cakl\u0131ktan evinin sa\u011fl\u0131k \u00f6zetini g\u00f6r.": "\u05e8\u05d0\u05d4 \u05e1\u05d9\u05db\u05d5\u05dd \u05d1\u05e8\u05d9\u05d0\u05d5\u05ea \u05e9\u05dc \u05d4\u05d1\u05d9\u05ea \u05dc\u05e4\u05d9 \u05d4\u05d0\u05d5\u05d5\u05d9\u05e8, \u05d4\u05dc\u05d7\u05d5\u05ea \u05d5\u05d4\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4 \u05e9\u05d4\u05d7\u05d9\u05d9\u05e9\u05e0\u05d9\u05dd \u05e9\u05dc\u05da \u05de\u05d5\u05d3\u05d3\u05d9\u05dd.", // EN: See your home's health summary from the air, humidity and temperature your sensors measure.
+    "Ekledi\u011fin cihazlar\u0131n yerel a\u011fdan ula\u015f\u0131labilir olup olmad\u0131\u011f\u0131n\u0131 kontrol et.": "\u05d1\u05d3\u05d5\u05e7 \u05d0\u05dd \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05d4\u05d5\u05e1\u05e4\u05ea \u05e0\u05d2\u05d9\u05e9\u05d9\u05dd \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da.", // EN: Check whether your devices can be reached over your local network.
+    "Yeni bir otomasyon olu\u015fturmak istiyorum.": "\u05d0\u05e0\u05d9 \u05e8\u05d5\u05e6\u05d4 \u05dc\u05d9\u05e6\u05d5\u05e8 \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05d7\u05d3\u05e9\u05d4.", // EN: I want to create a new automation.
+    "Yeni bir t\u0131kla ve \u00e7al\u0131\u015ft\u0131r senaryosu olu\u015fturmak istiyorum.": "\u05d0\u05e0\u05d9 \u05e8\u05d5\u05e6\u05d4 \u05dc\u05d9\u05e6\u05d5\u05e8 \u05ea\u05e8\u05d7\u05d9\u05e9 \u05d7\u05d3\u05e9 \u05e9\u05dc \u05d4\u05e7\u05e9 \u05d5\u05d4\u05e4\u05e2\u05dc.", // EN: I want to create a new tap-to-run scenario.
+    "Yeni cihaz": "\u05de\u05db\u05e9\u05d9\u05e8 \u05d7\u05d3\u05e9", // EN: New device
+    "Yeni cihaz\u0131 nas\u0131l eklerim?": "\u05d0\u05d9\u05da \u05de\u05d5\u05e1\u05d9\u05e4\u05d9\u05dd \u05de\u05db\u05e9\u05d9\u05e8 \u05d7\u05d3\u05e9?", // EN: How do I add a new device?
+    "Yeni senaryo tavsiyeleri": "\u05d4\u05de\u05dc\u05e6\u05d5\u05ea \u05dc\u05ea\u05e8\u05d7\u05d9\u05e9\u05d9\u05dd \u05d7\u05d3\u05e9\u05d9\u05dd", // EN: New scenario recommendations
+    "Yeni \u015fifre": "\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d3\u05e9\u05d4", // EN: New password
+    "Yeni \u015fifre en az 4 karakter olmal\u0131.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d4\u05d7\u05d3\u05e9\u05d4 \u05d7\u05d9\u05d9\u05d1\u05ea \u05dc\u05d4\u05db\u05d9\u05dc \u05dc\u05e4\u05d7\u05d5\u05ea 4 \u05ea\u05d5\u05d5\u05d9\u05dd.", // EN: New password must be at least 4 characters.
+    "Yeni \u015fifre tekrar": "\u05d7\u05d6\u05d5\u05e8 \u05e2\u05dc \u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d4\u05d7\u05d3\u05e9\u05d4", // EN: Repeat new password
+    "Yeni \u015fifre tekrar alan\u0131 e\u015fle\u015fmiyor.": "\u05e9\u05d3\u05d4 \u05d7\u05d6\u05e8\u05ea \u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d0\u05d9\u05e0\u05d5 \u05ea\u05d5\u05d0\u05dd.", // EN: The repeated password doesn't match.
+    "Yeniden Tara": "\u05e1\u05e8\u05d5\u05e7 \u05e9\u05d5\u05d1", // EN: Scan Again
+    "Yenile": "\u05e8\u05e2\u05e0\u05df", // EN: Refresh
+    "Yerel HTTP API \u2014 kurulumu en kolay marka": "API HTTP \u05de\u05e7\u05d5\u05de\u05d9 \u2014 \u05d4\u05de\u05d5\u05ea\u05d2 \u05d4\u05e7\u05dc \u05d1\u05d9\u05d5\u05ea\u05e8 \u05dc\u05d4\u05d2\u05d3\u05e8\u05d4", // EN: Local HTTP API — the easiest brand to set up
+    "Yerel RPC API (Gen2/Gen3)": "API RPC \u05de\u05e7\u05d5\u05de\u05d9 (Gen2/Gen3)", // EN: Local RPC API (Gen2/Gen3)
+    "Yerel TCP (LAN Control a\u00e7\u0131k) \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "TCP \u05de\u05e7\u05d5\u05de\u05d9 (LAN Control \u05e4\u05e2\u05d9\u05dc) \u2014 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: Local TCP (LAN Control on) — in the desktop app
+    "Yerel TCP \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "TCP \u05de\u05e7\u05d5\u05de\u05d9 \u2014 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: Local TCP — in the desktop app
+    "Yerel a\u011f": "\u05e8\u05e9\u05ea \u05de\u05e7\u05d5\u05de\u05d9\u05ea", // EN: Local network
+    "Yerel a\u011f adresi bulundu:": "\u05e0\u05de\u05e6\u05d0\u05d4 \u05db\u05ea\u05d5\u05d1\u05ea \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea:", // EN: Local network address found:
+    "Yerel a\u011f \u00b7": "\u05e8\u05e9\u05ea \u05de\u05e7\u05d5\u05de\u05d9\u05ea \u00b7", // EN: Local network ·
+    "Yerel a\u011fda ula\u015f\u0131lam\u0131yor": "\u05dc\u05d0 \u05e0\u05d2\u05d9\u05e9 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea", // EN: Unreachable on the local network
+    "Yerel a\u011fdaki cihaz\u0131 bul": "\u05de\u05e6\u05d0 \u05de\u05db\u05e9\u05d9\u05e8 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da", // EN: Find a device on your local network
+    "Yerel a\u011fdan ekle": "\u05d4\u05d5\u05e1\u05e3 \u05de\u05d4\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea", // EN: Add from local network
+    "Yerel k\u00f6pr\u00fc API'si (Hue Bridge gerekir)": "API \u05d2\u05e9\u05e8 \u05de\u05e7\u05d5\u05de\u05d9 (\u05e0\u05d3\u05e8\u05e9 Hue Bridge)", // EN: Local bridge API (requires a Hue Bridge)
+    "Yerel oturum a\u00e7\u0131k": "\u05d4\u05e4\u05e2\u05dc\u05d4 \u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e4\u05e2\u05d9\u05dc\u05d4", // EN: Local session active
+    "Ye\u015fil": "\u05d9\u05e8\u05d5\u05e7", // EN: Green
+    "Yine de ekle": "\u05d4\u05d5\u05e1\u05e3 \u05d1\u05db\u05dc \u05d6\u05d0\u05ea", // EN: Add anyway
+    "Yo\u011funla\u015ft\u0131r\u0131c\u0131": "\u05de\u05e8\u05db\u05d6", // EN: Concentrator
+    "Yo\u011funla\u015ft\u0131r\u0131c\u0131 (Gateway)": "\u05de\u05e8\u05db\u05d6 (Gateway)", // EN: Concentrator (Gateway)
+    "Yukar\u0131daki \"CarPlay'de NEXUS\" anahtar\u0131n\u0131 a\u00e7.": "\u05d4\u05e4\u05e2\u05dc \u05d0\u05ea \u05d4\u05de\u05ea\u05d2 \"NEXUS \u05d1-CarPlay\" \u05e9\u05dc\u05de\u05e2\u05dc\u05d4.", // EN: Turn on the "NEXUS on CarPlay" switch above.
+    "Yumu\u015fak Ba\u015flang\u0131\u00e7": "\u05d4\u05ea\u05d7\u05dc\u05d4 \u05e8\u05db\u05d4", // EN: Soft Start
+    "Y\u00f6n kanatlar\u0131 / g\u00f6vde hareket eder": "\u05d4\u05e6\u05d9\u05e8\u05d9\u05dd / \u05d4\u05d2\u05d5\u05e3 \u05d6\u05d6\u05d9\u05dd", // EN: Louvers / body move
+    "Y\u00f6netici i\u015flemleri i\u00e7in": "\u05dc\u05e4\u05e2\u05d5\u05dc\u05d5\u05ea \u05de\u05e0\u05d4\u05dc", // EN: For admin actions
+    "Y\u00f6nlendirici": "\u05e0\u05ea\u05d1", // EN: Router
+    "Y\u00fckleniyor...": "\u05d8\u05d5\u05e2\u05df...", // EN: Loading...
+    "Y\u00fcksek": "\u05d2\u05d1\u05d5\u05d4", // EN: High
+    "Y\u00fcz Buhar Makinesi": "\u05de\u05d0\u05d3\u05d4 \u05e4\u05e0\u05d9\u05dd", // EN: Facial Steamer
+    "Y\u0131ll\u0131k": "\u05e9\u05e0\u05ea\u05d9", // EN: Yearly
+    "Zamanlama": "\u05ea\u05d6\u05de\u05d5\u05df", // EN: Schedule
+    "Zamanlama tabanl\u0131 \u00b7 Ak\u0131ll\u0131 Priz": "\u05de\u05d1\u05d5\u05e1\u05e1 \u05ea\u05d6\u05de\u05d5\u05df \u00b7 \u05e9\u05e7\u05e2 \u05d7\u05db\u05dd", // EN: Schedule-based · Smart Plug
+    "Zamanlanm\u0131\u015f Sessiz Mod": "\u05de\u05e6\u05d1 \u05e9\u05e7\u05d8 \u05de\u05ea\u05d5\u05d6\u05de\u05df", // EN: Scheduled Quiet Mode
+    "Zamanlay\u0131c\u0131": "\u05d8\u05d9\u05d9\u05de\u05e8", // EN: Timer
+    "Zamanl\u0131 Tasarruf": "\u05d7\u05d9\u05e1\u05db\u05d5\u05df \u05de\u05ea\u05d5\u05d6\u05de\u05df", // EN: Scheduled Saving
+    "Zorunlu": "\u05d7\u05d5\u05d1\u05d4", // EN: Required
+    "Z\u00fcrih": "\u05e6\u05d9\u05e8\u05d9\u05da", // EN: Zurich
+    "[G\u00f6rsel:": "[\u05ea\u05de\u05d5\u05e0\u05d4:", // EN: [Image:
+    "anahtar\u0131n": "\u05e9\u05dc \u05d4\u05de\u05ea\u05d2", // EN: switch
+    "ayd\u0131nlatma cihaz\u0131 i\u00e7in": "\u05e2\u05d1\u05d5\u05e8 \u05d4\u05ea\u05e7\u05e0\u05d9 \u05ea\u05d0\u05d5\u05e8\u05d4", // EN: for lighting devices
+    "a\u00e7\u0131k": "\u05e4\u05e2\u05d9\u05dc", // EN: on
+    "a\u00e7\u0131k tema": "\u05e2\u05e8\u05db\u05ea \u05e0\u05d5\u05e9\u05d0 \u05d1\u05d4\u05d9\u05e8\u05d4", // EN: light theme
+    "a\u011f ge\u00e7idi": "\u05e9\u05e2\u05e8", // EN: gateway
+    "bas\u0131n\u00e7 sens\u00f6r\u00fc": "\u05d7\u05d9\u05d9\u05e9\u05df \u05dc\u05d7\u05e5", // EN: pressure sensor
+    "ba\u011flan": "\u05d4\u05ea\u05d7\u05d1\u05e8", // EN: connect
+    "bilinen protokol bulunamad\u0131": "\u05dc\u05d0 \u05e0\u05de\u05e6\u05d0 \u05e4\u05e8\u05d5\u05d8\u05d5\u05e7\u05d5\u05dc \u05de\u05d5\u05db\u05e8", // EN: no known protocol found
+    "bu cihaz s\u00fcr\u00fcm bilgisi vermiyor": "\u05d4\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d6\u05d4 \u05d0\u05d9\u05e0\u05d5 \u05de\u05d3\u05d5\u05d5\u05d7 \u05e2\u05dc \u05d4\u05d2\u05e8\u05e1\u05d4 \u05e9\u05dc\u05d5", // EN: this device doesn't report its version
+    "bulut yap\u0131land\u0131rmas\u0131 yok": "\u05d0\u05d9\u05df \u05ea\u05e6\u05d5\u05e8\u05ea \u05e2\u05e0\u05df", // EN: no cloud configuration
+    "cihaz": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: devices
+    "cihaz ayarland\u0131": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05d5\u05d2\u05d3\u05e8\u05d5", // EN: devices adjusted
+    "cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05de\u05e6\u05d0\u05d5 \u00b7 \u05d4\u05e1\u05e8\u05d9\u05e7\u05d4 \u05e0\u05de\u05e9\u05db\u05ea", // EN: devices found · scanning
+    "cihaz bulundu. Ekle'den panellere ta\u015f\u0131yabilirsin.": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05de\u05e6\u05d0\u05d5. \u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\"\u05d4\u05d5\u05e1\u05e3\" \u05db\u05d3\u05d9 \u05dc\u05d4\u05e2\u05d1\u05d9\u05e8 \u05d0\u05d5\u05ea\u05dd \u05dc\u05dc\u05d5\u05d7\u05d5\u05ea \u05e9\u05dc\u05da.", // EN: devices found. Use Add to move them to your panels.
+    "cihaz kay\u0131tl\u0131 \u00b7 yerel a\u011f cihaz\u0131 yok, \u00e7evrimi\u00e7i kontrol\u00fc yap\u0131lamad\u0131.": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05e9\u05de\u05e8\u05d5 \u00b7 \u05d0\u05d9\u05df \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea, \u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d1\u05d3\u05d5\u05e7 \u05d0\u05dd \u05d4\u05dd \u05de\u05d7\u05d5\u05d1\u05e8\u05d9\u05dd.", // EN: devices saved · no local network devices, online check couldn't run.
+    "cihaz kontrol bekliyor": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05de\u05de\u05ea\u05d9\u05e0\u05d9\u05dd \u05dc\u05d1\u05d3\u05d9\u05e7\u05d4", // EN: devices waiting for a check
+    "cihaz kontrol ediliyor\u2026": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05d1\u05d3\u05e7\u05d9\u05dd\u2026", // EN: devices being checked…
+    "cihaz tarand\u0131 \u00b7": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05e1\u05e8\u05e7\u05d5 \u00b7", // EN: devices scanned ·
+    "cihaz \u00b7": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u00b7", // EN: devices ·
+    "cihaza yerel a\u011fdan komut gitti)": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e7\u05d9\u05d1\u05dc\u05d5 \u05e4\u05e7\u05d5\u05d3\u05d4 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea)", // EN: devices received a command over the local network)
+    "cihaz\u0131 ekle": "\u05d4\u05d5\u05e1\u05e3 \u05de\u05db\u05e9\u05d9\u05e8", // EN: add device
+    "cihaz\u0131 i\u00e7in ak\u0131ll\u0131 kural": "\u05db\u05dc\u05dc \u05d7\u05db\u05dd \u05e2\u05d1\u05d5\u05e8 \u05de\u05db\u05e9\u05d9\u05e8", // EN: smart rule for device
+    "cihaz\u0131n": "\u05de\u05db\u05e9\u05d9\u05e8", // EN: device
+    "ekli": "\u05e0\u05d5\u05e1\u05e3", // EN: added
+    "esphome: imza yok": "esphome: \u05d0\u05d9\u05df \u05d7\u05ea\u05d9\u05de\u05d4", // EN: esphome: no signature
+    "evine kat\u0131lman i\u00e7in davet kodun:": "\u2014 \u05e7\u05d5\u05d3 \u05d4\u05d4\u05d6\u05de\u05e0\u05d4 \u05e9\u05dc\u05da \u05dc\u05d4\u05e6\u05d8\u05e8\u05e4\u05d5\u05ea \u05dc\u05d1\u05d9\u05ea:", // EN: — your invite code to join the home:
+    "ge\u00e7ersiz alt a\u011f": "\u05e8\u05e9\u05ea \u05de\u05e9\u05e0\u05d4 \u05dc\u05d0 \u05ea\u05e7\u05e4\u05d4", // EN: invalid subnet
+    "g\u00fcn": "\u05d9\u05de\u05d9\u05dd", // EN: days
+    "g\u00fcnd\u00fcz modu": "\u05de\u05e6\u05d1 \u05d9\u05d5\u05dd", // EN: day mode
+    "g\u00fcvenli": "\u05d1\u05d8\u05d5\u05d7", // EN: safe
+    "hue: e\u015fle\u015ftirme ba\u015far\u0131s\u0131z": "hue: \u05d4\u05d4\u05ea\u05d0\u05de\u05d4 \u05e0\u05db\u05e9\u05dc\u05d4", // EN: hue: pairing failed
+    "hue: k\u00f6pr\u00fc de\u011fil": "hue: \u05d0\u05d9\u05e0\u05d5 \u05d2\u05e9\u05e8", // EN: hue: not a bridge
+    "hue: yetki yok": "hue: \u05d0\u05d9\u05df \u05d4\u05e8\u05e9\u05d0\u05d4", // EN: hue: unauthorized
+    "iPhone'daki m\u00fczi\u011fi HomePod'a ta\u015f\u0131": "\u05d4\u05e2\u05d1\u05e8 \u05de\u05d5\u05d6\u05d9\u05e7\u05d4 \u05de\u05d4-iPhone \u05dc-HomePod", // EN: Move music from iPhone to HomePod
+    "i\u00e7in NEXUS daveti": "\u05d4\u05d6\u05de\u05e0\u05d4 \u05dc-NEXUS \u05e2\u05d1\u05d5\u05e8", // EN: NEXUS invite for
+    "i\u00e7in yapay zeka ile olu\u015ftur:": "\u05e6\u05d5\u05e8 \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea \u05d1\u05d9\u05e0\u05d4 \u05de\u05dc\u05d0\u05db\u05d5\u05ea\u05d9\u05ea \u05e2\u05d1\u05d5\u05e8:", // EN: create with AI for:
+    "kald\u0131": "\u05e0\u05d5\u05ea\u05e8", // EN: left
+    "kap\u0131": "\u05d3\u05dc\u05ea", // EN: door
+    "karanl\u0131k": "\u05db\u05d4\u05d4", // EN: dark
+    "kasa: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "kasa: TCP \u05e8\u05e7 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: kasa: TCP only in the desktop app
+    "kasa: yan\u0131t yok": "kasa: \u05d0\u05d9\u05df \u05ea\u05d2\u05d5\u05d1\u05d4", // EN: kasa: no response
+    "kontrol edilecek": "\u05dc\u05d1\u05d3\u05d9\u05e7\u05d4", // EN: to be checked
+    "korumas\u0131 aktif.": "\u05d4\u05d4\u05d2\u05e0\u05d4 \u05e4\u05e2\u05d9\u05dc\u05d4.", // EN: protection on.
+    "kurulum kodunu girin": "\u05e7\u05d5\u05d3 \u05d4\u05d4\u05d2\u05d3\u05e8\u05d4 \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05e9\u05dc\u05da", // EN: setup code on your device
+    "lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "\u05de\u05e0\u05d5\u05e8\u05d5\u05ea \u05e0\u05d5\u05e1\u05e4\u05d5. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05e0\u05d4\u05dc \u05d0\u05d5\u05ea\u05df \u05de\u05d3\u05e3 \u05d4\u05d1\u05d9\u05ea.", // EN: lamps added. You can manage them from Home.
+    "modelden se\u00e7ilir.": "\u05e0\u05d1\u05d7\u05e8 \u05de\u05d4\u05d3\u05d2\u05dd.", // EN: chosen from the model.
+    "oda g\u00f6r\u00fcn\u00fcm\u00fc haz\u0131r.": "\u05ea\u05e6\u05d5\u05d2\u05ea \u05d4\u05d7\u05d3\u05e8 \u05de\u05d5\u05db\u05e0\u05d4.", // EN: room view ready.
+    "oda g\u00f6r\u00fcn\u00fcm\u00fcnde, %": "\u05d1\u05ea\u05e6\u05d5\u05d2\u05ea \u05d4\u05d7\u05d3\u05e8, %", // EN: in room view, %
+    "olay": "\u05d0\u05d9\u05e8\u05d5\u05e2", // EN: event
+    "oturum yok": "\u05d0\u05d9\u05df \u05d4\u05e4\u05e2\u05dc\u05d4", // EN: no session
+    "parlakl\u0131k ve": "\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea \u05d5", // EN: brightness and
+    "plan sonland\u0131r\u0131ld\u0131.": "\u05d4\u05ea\u05d5\u05db\u05e0\u05d9\u05ea \u05d4\u05e1\u05ea\u05d9\u05d9\u05de\u05d4.", // EN: plan ended.
+    "plan, \u00fccretsiz deneme ile ba\u015flad\u0131.": "\u05ea\u05d5\u05db\u05e0\u05d9\u05ea, \u05d4\u05ea\u05d7\u05d9\u05dc\u05d4 \u05e2\u05dd \u05e0\u05d9\u05e1\u05d9\u05d5\u05df \u05d7\u05d9\u05e0\u05dd.", // EN: plan, started with a free trial.
+    "rahats\u0131z etme": "\u05e0\u05d0 \u05dc\u05d0 \u05dc\u05d4\u05e4\u05e8\u05d9\u05e2", // EN: do not disturb
+    "se\u00e7ildi.": "\u05e0\u05d1\u05d7\u05e8.", // EN: selected.
+    "shelly-rpc: kimlik yok": "shelly-rpc: \u05d0\u05d9\u05df \u05de\u05d6\u05d4\u05d4", // EN: shelly-rpc: no ID
+    "shelly: kimlik yok": "shelly: \u05d0\u05d9\u05df \u05de\u05d6\u05d4\u05d4", // EN: shelly: no ID
+    "so\u011fut": "\u05e7\u05d9\u05e8\u05d5\u05e8", // EN: cool
+    "sulama": "\u05d4\u05e9\u05e7\u05d9\u05d4", // EN: watering
+    "s\u00fcp\u00fcrge": "\u05e9\u05d5\u05d0\u05d1 \u05d0\u05d1\u05e7", // EN: vacuum
+    "s\u0131cakl\u0131k": "\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4", // EN: temperature
+    "tarihinde al\u0131nacak.": "\u05d9\u05d7\u05d5\u05d9\u05d1 \u05d1\u05ea\u05d0\u05e8\u05d9\u05da", // EN: will be charged on
+    "tasmota: kimlik yok": "tasmota: \u05d0\u05d9\u05df \u05de\u05d6\u05d4\u05d4", // EN: tasmota: no ID
+    "te\u015fekk": "\u05ea\u05d5\u05d3\u05d4", // EN: thank
+    "tutar\u0131nda": "\u05d1\u05e1\u05da", // EN: amount
+    "t\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "\u05d4\u05e7\u05e9 \u05d5\u05d4\u05e4\u05e2\u05dc", // EN: tap to run
+    "ula\u015f\u0131lam\u0131yor": "\u05dc\u05d0 \u05d6\u05de\u05d9\u05df", // EN: unreachable
+    "uyguland\u0131.": "\u05d4\u05d5\u05d7\u05dc.", // EN: applied.
+    "uyumlu bir cihaz ekle": "\u05d4\u05d5\u05e1\u05e3 \u05de\u05db\u05e9\u05d9\u05e8 \u05ea\u05d5\u05d0\u05dd", // EN: add a compatible device
+    "ve": "\u05d5", // EN: and
+    "vurgu rengi kullanan bir ak\u0131ll\u0131 uygulama olu\u015ftur.": "\u05e6\u05d5\u05e8 \u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05d7\u05db\u05de\u05d4 \u05e9\u05de\u05e9\u05ea\u05de\u05e9\u05ea \u05d1\u05e6\u05d1\u05e2 \u05d4\u05d3\u05d2\u05e9\u05d4.", // EN: create a smart app that uses an accent color.
+    "web_server bile\u015feniyle \u2014 DIY cihazlar": "\u05e2\u05dd \u05e8\u05db\u05d9\u05d1 web_server \u2014 \u05de\u05db\u05e9\u05d9\u05e8\u05d9 DIY", // EN: With the web_server component — DIY devices
+    "wled: s\u00fcr\u00fcm alan\u0131 yok": "wled: \u05d0\u05d9\u05df \u05e9\u05d3\u05d4 \u05d2\u05e8\u05e1\u05d4", // EN: wled: no version field
+    "yeelight: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "yeelight: TCP \u05e8\u05e7 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: yeelight: TCP only in the desktop app
+    "yeelight: yan\u0131t yok": "yeelight: \u05d0\u05d9\u05df \u05ea\u05d2\u05d5\u05d1\u05d4", // EN: yeelight: no response
+    "UDP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "UDP \u05e8\u05e7 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: UDP only in the desktop app
+    "wiz: kimlik yok": "wiz: \u05d0\u05d9\u05df \u05d6\u05d4\u05d5\u05ea", // EN: wiz: no identity
+    "lifx: beklenmeyen yan\u0131t": "lifx: \u05ea\u05d2\u05d5\u05d1\u05d4 \u05d1\u05dc\u05ea\u05d9 \u05e6\u05e4\u05d5\u05d9\u05d4", // EN: lifx: unexpected response
+    "govee: kimlik yok": "govee: \u05d0\u05d9\u05df \u05d6\u05d4\u05d5\u05ea", // EN: govee: no identity
+    "sonoff: kimlik yok": "sonoff: \u05d0\u05d9\u05df \u05d6\u05d4\u05d5\u05ea", // EN: sonoff: no identity
+    "yeni cihaz\u0131": "\u05de\u05db\u05e9\u05d9\u05e8 \u05d7\u05d3\u05e9", // EN: new device
+    "yerel a\u011f cihaz\u0131 kontrol edildi \u00b7": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e0\u05d1\u05d3\u05e7\u05d5 \u00b7", // EN: local network devices checked ·
+    "{0} Cihaz": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: {0} Devices
+    "{0} Oda": "{0} \u05d7\u05d3\u05e8\u05d9\u05dd", // EN: {0} Rooms
+    "{0} cihaz": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: {0} devices
+    "{0} cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05de\u05e6\u05d0\u05d5 \u00b7 \u05d4\u05e1\u05e8\u05d9\u05e7\u05d4 \u05e0\u05de\u05e9\u05db\u05ea", // EN: {0} devices found · still scanning
+    "{0} cihaz bulundu. Ekle'den panellere ta\u015f\u0131yabilirsin.": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e0\u05de\u05e6\u05d0\u05d5. \u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\"\u05d4\u05d5\u05e1\u05e3\" \u05db\u05d3\u05d9 \u05dc\u05d4\u05e2\u05d1\u05d9\u05e8 \u05d0\u05d5\u05ea\u05dd \u05dc\u05dc\u05d5\u05d7\u05d5\u05ea \u05e9\u05dc\u05da.", // EN: {0} devices found. Use Add to move them to your panels.
+    "{0} cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.": "\u05e0\u05de\u05e6\u05d0\u05d5 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd. \u05d4\u05e7\u05e9 \u05e2\u05dc \u05d4\u05d5\u05e1\u05e4\u05d4 \u05db\u05d3\u05d9 \u05dc\u05d4\u05d5\u05e1\u05d9\u05e3 \u05d0\u05d5\u05ea\u05dd \u05dc\u05e8\u05e9\u05d9\u05de\u05d4.", // EN: {0} devices found. Tap Add to add them to your list.
+    "{0} cihaz bulundu. Eklemek istediklerini se\u00e7.": "\u05e0\u05de\u05e6\u05d0\u05d5 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd. \u05d1\u05d7\u05e8 \u05d0\u05ea \u05d0\u05dc\u05d4 \u05e9\u05d1\u05e8\u05e6\u05d5\u05e0\u05da \u05dc\u05d4\u05d5\u05e1\u05d9\u05e3.", // EN: {0} devices found. Choose the ones to add.
+    "{0} cihaz eklendi. Ana sayfadan y\u00f6netebilirsin.": "\u05e0\u05d5\u05e1\u05e4\u05d5 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05e0\u05d4\u05dc \u05d0\u05d5\u05ea\u05dd \u05de\u05d3\u05e3 \u05d4\u05d1\u05d9\u05ea.", // EN: {0} devices added. You can manage them from Home.
+    "{0} cihaz kay\u0131tl\u0131 \u00b7 yerel a\u011f cihaz\u0131 yok, \u00e7evrimi\u00e7i kontrol\u00fc yap\u0131lamad\u0131.": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05de\u05d5\u05e8\u05d9\u05dd \u00b7 \u05d0\u05d9\u05df \u05de\u05db\u05e9\u05d9\u05e8\u05d9 \u05e8\u05e9\u05ea \u05de\u05e7\u05d5\u05de\u05d9\u05ea, \u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d1\u05d3\u05d5\u05e7 \u05de\u05e6\u05d1 \u05de\u05e7\u05d5\u05d5\u05df.", // EN: {0} devices saved · no local network devices, online check couldn't run.
+    "{0} cihaz kontrol bekliyor": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05de\u05de\u05ea\u05d9\u05e0\u05d9\u05dd \u05dc\u05d1\u05d3\u05d9\u05e7\u05d4", // EN: {0} devices waiting for a check
+    "{0} cihaz kontrol ediliyor\u2026": "\u05d1\u05d5\u05d3\u05e7 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd\u2026", // EN: Checking {0} devices…
+    "{0} cihaz tarand\u0131": "\u05e0\u05e1\u05e8\u05e7\u05d5 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: {0} devices scanned
+    "{0} cihaz tarand\u0131 \u00b7 tarama s\u00fcr\u00fcyor": "\u05e0\u05e1\u05e8\u05e7\u05d5 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u00b7 \u05d4\u05e1\u05e8\u05d9\u05e7\u05d4 \u05e0\u05de\u05e9\u05db\u05ea", // EN: {0} devices scanned · scanning
+    "{0} cihaz \u00b7": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u00b7", // EN: {0} devices ·
+    "{0} cihaz \u00b7 {1} a\u00e7\u0131k": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u00b7 {1} \u05e4\u05d5\u05e2\u05dc\u05d9\u05dd", // EN: {0} devices · {1} on
+    "{0} cihaz \u00b7 {1} a\u00e7\u0131k \u00b7": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u00b7 {1} \u05e4\u05d5\u05e2\u05dc\u05d9\u05dd \u00b7", // EN: {0} devices · {1} on ·
+    "{0} cihaz \u00b7 {1} panel \u00b7 {2} a\u00e7\u0131k": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u00b7 {1} \u05dc\u05d5\u05d7\u05d5\u05ea \u00b7 {2} \u05e4\u05d5\u05e2\u05dc\u05d9\u05dd", // EN: {0} devices · {1} panels · {2} on
+    "{0} dk": "{0} \u05d3\u05e7\u05f3", // EN: {0} min
+    "{0} g\u00fcn": "{0} \u05d9\u05de\u05d9\u05dd", // EN: {0} days
+    "{0} konu dikkat istiyor": "{0} \u05e0\u05d5\u05e9\u05d0\u05d9\u05dd \u05d3\u05d5\u05e8\u05e9\u05d9\u05dd \u05ea\u05e9\u05d5\u05de\u05ea \u05dc\u05d1", // EN: {0} issues need attention
+    "{0} lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "\u05e0\u05d5\u05e1\u05e4\u05d5 {0} \u05de\u05e0\u05d5\u05e8\u05d5\u05ea. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05e0\u05d4\u05dc \u05d0\u05d5\u05ea\u05df \u05de\u05d3\u05e3 \u05d4\u05d1\u05d9\u05ea.", // EN: {0} lamps added. You can manage them from Home.
+    "{0} oda \u00b7 {1} \u00fcye": "{0} \u05d7\u05d3\u05e8\u05d9\u05dd \u00b7 {1} \u05d7\u05d1\u05e8\u05d9\u05dd", // EN: {0} rooms · {1} members
+    "{0} saatli\u011fine": "\u05dc-{0} \u05e9\u05e2\u05d5\u05ea", // EN: For {0} hours
+    "{0} ula\u015f\u0131lam\u0131yor": "{0} \u05dc\u05d0 \u05d6\u05de\u05d9\u05df", // EN: {0} unreachable
+    "{0} yerel a\u011f cihaz\u0131 kontrol edildi": "\u05e0\u05d1\u05d3\u05e7\u05d5 {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9 \u05e8\u05e9\u05ea \u05de\u05e7\u05d5\u05de\u05d9\u05ea", // EN: {0} local network devices checked
+    "{0} \u00e7evrimi\u00e7i": "{0} \u05de\u05e7\u05d5\u05d5\u05e0\u05d9\u05dd", // EN: {0} online
+    "{0}.x a\u011f\u0131 taran\u0131yor\u2026": "\u05e1\u05d5\u05e8\u05e7 \u05d0\u05ea \u05e8\u05e9\u05ea {0}.x\u2026", // EN: Scanning the {0}.x network…
+    "{0}:{1} kald\u0131": "\u05e0\u05d5\u05ea\u05e8\u05d5 {0}:{1}", // EN: {0}:{1} left
+    "\u00b7 Etkin": "\u00b7 \u05e4\u05e2\u05d9\u05dc", // EN: · Active
+    "\u00b7 g\u00fcncel": "\u00b7 \u05de\u05e2\u05d5\u05d3\u05db\u05df", // EN: · up to date
+    "\u00b7 t\u00fcm yetkiler": "\u00b7 \u05db\u05dc \u05d4\u05d4\u05e8\u05e9\u05d0\u05d5\u05ea", // EN: · all permissions
+    "\u00b7 yerel a\u011fda kontrol edilir": "\u00b7 \u05e0\u05e9\u05dc\u05d8 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da", // EN: · controlled on your local network
+    "\u00c7a": "\u05d3\u05f3", // EN: We
+    "\u00c7al\u0131\u015fma Zaman\u0131": "\u05d6\u05de\u05df \u05e8\u05d9\u05e6\u05d4", // EN: Run Time
+    "\u00c7al\u0131\u015ft\u0131r": "\u05d4\u05e4\u05e2\u05dc", // EN: Run
+    "\u00c7al\u0131\u015ft\u0131r\u0131l\u0131yor...": "\u05de\u05e4\u05e2\u05d9\u05dc...", // EN: Running...
+    "\u00c7ama\u015f\u0131r Kurutma": "\u05d9\u05d9\u05d1\u05d5\u05e9 \u05db\u05d1\u05d9\u05e1\u05d4", // EN: Clothes Drying
+    "\u00c7ama\u015f\u0131r Kurutma Ask\u0131s\u0131": "\u05de\u05ea\u05dc\u05d4 \u05d9\u05d9\u05d1\u05d5\u05e9 \u05db\u05d1\u05d9\u05e1\u05d4", // EN: Clothes Drying Rack
+    "\u00c7ama\u015f\u0131r Kurutma Ask\u0131s\u0131 (Gateway)": "\u05de\u05ea\u05dc\u05d4 \u05d9\u05d9\u05d1\u05d5\u05e9 \u05db\u05d1\u05d9\u05e1\u05d4 (Gateway)", // EN: Clothes Drying Rack (Gateway)
+    "\u00c7ama\u015f\u0131r Kurutucu": "\u05de\u05d9\u05d9\u05d1\u05e9 \u05db\u05d1\u05d9\u05e1\u05d4", // EN: Clothes Dryer
+    "\u00c7ama\u015f\u0131r Makineleri": "\u05de\u05db\u05d5\u05e0\u05d5\u05ea \u05db\u05d1\u05d9\u05e1\u05d4", // EN: Washing Machines
+    "\u00c7ama\u015f\u0131r Makinesi": "\u05de\u05db\u05d5\u05e0\u05ea \u05db\u05d1\u05d9\u05e1\u05d4", // EN: Washing Machine
+    "\u00c7ay Demleme Tezgah\u0131": "\u05e2\u05de\u05d3\u05ea \u05d4\u05db\u05e0\u05ea \u05ea\u05d4", // EN: Tea Brewing Station
+    "\u00c7evrede e\u015fle\u015ftirilmeye haz\u0131r cihaz bulunamad\u0131.": "\u05dc\u05d0 \u05e0\u05de\u05e6\u05d0 \u05d1\u05e7\u05e8\u05d1\u05ea\u05da \u05de\u05db\u05e9\u05d9\u05e8 \u05de\u05d5\u05db\u05df \u05dc\u05e6\u05d9\u05de\u05d5\u05d3.", // EN: No device ready for pairing was found nearby.
+    "\u00c7evresel Sens\u00f6rler": "\u05d7\u05d9\u05d9\u05e9\u05e0\u05d9 \u05e1\u05d1\u05d9\u05d1\u05d4", // EN: Environmental Sensors
+    "\u00c7evrimd\u0131\u015f\u0131 (Yerel Mod)": "\u05dc\u05d0 \u05de\u05e7\u05d5\u05d5\u05df (\u05de\u05e6\u05d1 \u05de\u05e7\u05d5\u05de\u05d9)", // EN: Offline (Local Mode)
+    "\u00c7evrimi\u00e7i": "\u05de\u05e7\u05d5\u05d5\u05df", // EN: Online
+    "\u00c7im Bi\u00e7me Makinesi": "\u05de\u05db\u05e1\u05d7\u05ea \u05d3\u05e9\u05d0", // EN: Lawn Mower
+    "\u00c7im I\u015f\u0131\u011f\u0131": "\u05ea\u05d0\u05d5\u05e8\u05ea \u05d3\u05e9\u05d0", // EN: Lawn Light
+    "\u00c7ocuk kilidi": "\u05e0\u05e2\u05d9\u05dc\u05ea \u05d9\u05dc\u05d3\u05d9\u05dd", // EN: Child lock
+    "\u00c7ok Fonksiyonlu A\u011f Ge\u00e7idi": "\u05e9\u05e2\u05e8 \u05e8\u05d1-\u05ea\u05db\u05dc\u05d9\u05ea\u05d9", // EN: Multi-function Gateway
+    "\u00c7ok Fonksiyonlu Sens\u00f6r": "\u05d7\u05d9\u05d9\u05e9\u05df \u05e8\u05d1-\u05ea\u05db\u05dc\u05d9\u05ea\u05d9", // EN: Multi-function Sensor
+    "\u00c7ok Modlu A\u011f Ge\u00e7idi (BLE+ZigBee)": "\u05e9\u05e2\u05e8 \u05e8\u05d1-\u05de\u05e6\u05d1\u05d9 (BLE+ZigBee)", // EN: Multi-mode Gateway (BLE+ZigBee)
+    "\u00c7ok Modlu M\u00fchendislik A\u011f Ge\u00e7idi (BLE+ZigBee)": "\u05e9\u05e2\u05e8 \u05d4\u05e0\u05d3\u05e1\u05d9 \u05e8\u05d1-\u05de\u05e6\u05d1\u05d9 (BLE+ZigBee)", // EN: Multi-mode Engineering Gateway (BLE+ZigBee)
+    "\u00c7ok S\u0131cak": "\u05d7\u05dd \u05de\u05d0\u05d5\u05d3", // EN: Very Warm
+    "\u00c7oklu A\u011f Ge\u00e7idi": "\u05e9\u05e2\u05e8 \u05de\u05e8\u05d5\u05d1\u05d4", // EN: Multi Gateway
+    "\u00c7oklu Priz": "\u05de\u05e4\u05e6\u05dc \u05d7\u05e9\u05de\u05dc", // EN: Power Strip
+    "\u00c7oklu Priz (Bluetooth)": "\u05de\u05e4\u05e6\u05dc \u05d7\u05e9\u05de\u05dc (Bluetooth)", // EN: Power Strip (Bluetooth)
+    "\u00c7oklu Priz (Zigbee)": "\u05de\u05e4\u05e6\u05dc \u05d7\u05e9\u05de\u05dc (Zigbee)", // EN: Power Strip (Zigbee)
+    "\u00c7oklu Video \u00d6nizlemesi": "\u05ea\u05e6\u05d5\u05d2\u05d4 \u05de\u05e7\u05d3\u05d9\u05de\u05d4 \u05e9\u05dc \u05db\u05de\u05d4 \u05e1\u05e8\u05d8\u05d5\u05e0\u05d9\u05dd", // EN: Multi-Video Preview
+    "\u00c7\u00f6p \u00d6\u011f\u00fct\u00fcc\u00fc": "\u05de\u05d8\u05d7\u05e0\u05ea \u05e4\u05e1\u05d5\u05dc\u05ea \u05de\u05d6\u05d5\u05df", // EN: Food Waste Disposer
+    "\u00c7\u0131k\u0131\u015f Haz\u0131rl\u0131\u011f\u0131": "\u05d4\u05db\u05e0\u05d4 \u05dc\u05d9\u05e6\u05d9\u05d0\u05d4", // EN: Leaving Preparation
+    "\u00c7\u0131k\u0131\u015f Yap": "\u05d4\u05ea\u05e0\u05ea\u05e7", // EN: Sign Out
+    "\u00c7\u0131k\u0131\u015f kontrol\u00fc i\u00e7in cihaz ekle.": "\u05d4\u05d5\u05e1\u05e3 \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05dc\u05d1\u05d3\u05d9\u05e7\u05ea \u05d9\u05e6\u05d9\u05d0\u05d4 \u05de\u05d4\u05d1\u05d9\u05ea.", // EN: Add devices for the leaving-home check.
+    "\u00c7\u0131k\u0131\u015f \u00f6zeti haz\u0131r de\u011fil": "\u05e1\u05d9\u05db\u05d5\u05dd \u05d4\u05d9\u05e6\u05d9\u05d0\u05d4 \u05d0\u05d9\u05e0\u05d5 \u05de\u05d5\u05db\u05df", // EN: Leaving summary not ready
+    "\u00d6NER\u0130LEN AKS\u0130YONLAR": "\u05e4\u05e2\u05d5\u05dc\u05d5\u05ea \u05de\u05d5\u05de\u05dc\u05e6\u05d5\u05ea", // EN: RECOMMENDED ACTIONS
+    "\u00d6demeler ve Abonelik": "\u05ea\u05e9\u05dc\u05d5\u05de\u05d9\u05dd \u05d5\u05de\u05e0\u05d5\u05d9", // EN: Payments and Subscription
+    "\u00d6l\u00e7\u00fcm": "\u05de\u05d3\u05d9\u05d3\u05d4", // EN: Reading
+    "\u00d6l\u00e7\u00fcm Yok": "\u05d0\u05d9\u05df \u05de\u05d3\u05d9\u05d3\u05d5\u05ea", // EN: No Readings
+    "\u00d6l\u00e7\u00fcmler": "\u05de\u05d3\u05d9\u05d3\u05d5\u05ea", // EN: Readings
+    "\u00d6nce 'Ak\u0131ll\u0131' sekmesinden bir senaryo olu\u015fturun.": "\u05e6\u05d5\u05e8 \u05e7\u05d5\u05d3\u05dd \u05ea\u05e8\u05d7\u05d9\u05e9 \u05d1\u05dc\u05e9\u05d5\u05e0\u05d9\u05ea '\u05d7\u05db\u05dd'.", // EN: Create a scenario in the 'Smart' tab first.
+    "\u00d6nce en az bir cihaz eklemelisin": "\u05e2\u05dc\u05d9\u05da \u05dc\u05d4\u05d5\u05e1\u05d9\u05e3 \u05e7\u05d5\u05d3\u05dd \u05dc\u05e4\u05d7\u05d5\u05ea \u05de\u05db\u05e9\u05d9\u05e8 \u05d0\u05d7\u05d3", // EN: You need to add at least one device first
+    "\u00d6neri": "\u05d4\u05e6\u05e2\u05d4", // EN: Suggestion
+    "\u00d6neri haz\u0131r de\u011fil": "\u05d4\u05d4\u05e6\u05e2\u05d4 \u05d0\u05d9\u05e0\u05d4 \u05de\u05d5\u05db\u05e0\u05d4", // EN: Suggestion not ready
+    "\u00d6nerilen": "\u05de\u05d5\u05e6\u05e2", // EN: Suggested
+    "\u00d6nerilen Aksiyonlar": "\u05e4\u05e2\u05d5\u05dc\u05d5\u05ea \u05de\u05d5\u05de\u05dc\u05e6\u05d5\u05ea", // EN: Recommended Actions
+    "\u00d6rn. Evim": "\u05dc\u05de\u05e9\u05dc: \u05d4\u05d1\u05d9\u05ea \u05e9\u05dc\u05d9", // EN: e.g. My Home
+    "\u00d6rn. Kad\u0131k\u00f6y": "\u05dc\u05de\u05e9\u05dc: \u05de\u05e8\u05db\u05d6 \u05d4\u05e2\u05d9\u05e8", // EN: e.g. Downtown
+    "\u00d6rn. NX-HOME-7F2A": "\u05dc\u05de\u05e9\u05dc: NX-HOME-7F2A", // EN: e.g. NX-HOME-7F2A
+    "\u00d6rn. Oturma Odas\u0131": "\u05dc\u05de\u05e9\u05dc: \u05e1\u05dc\u05d5\u05df", // EN: e.g. Living Room
+    "\u00d6rn. Yazl\u0131k": "\u05dc\u05de\u05e9\u05dc: \u05d1\u05d9\u05ea \u05e7\u05d9\u05e5", // EN: e.g. Summer House
+    "\u00d6zellikler": "\u05ea\u05db\u05d5\u05e0\u05d5\u05ea", // EN: Features
+    "\u00dccretsiz Dene": "\u05e0\u05e1\u05d4 \u05d1\u05d7\u05d9\u05e0\u05dd", // EN: Try Free
+    "\u00dccretsiz deneme": "\u05e0\u05d9\u05e1\u05d9\u05d5\u05df \u05d7\u05d9\u05e0\u05dd", // EN: Free trial
+    "\u00dccretsiz \u00b7 yerel a\u011fda \u00e7al\u0131\u015f\u0131r": "\u05d7\u05d9\u05e0\u05dd \u00b7 \u05e4\u05d5\u05e2\u05dc \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da", // EN: Free · works on your local network
+    "\u00dclke ara": "\u05d7\u05d9\u05e4\u05d5\u05e9 \u05de\u05d3\u05d9\u05e0\u05d4", // EN: Search country
+    "\u00dclkeni se\u00e7; senaryo ve programlar\u0131n bu \u00fclkenin saatine g\u00f6re \u00e7al\u0131\u015f\u0131r.": "\u05d1\u05d7\u05e8 \u05d0\u05ea \u05d4\u05de\u05d3\u05d9\u05e0\u05d4 \u05e9\u05dc\u05da; \u05d4\u05ea\u05e8\u05d7\u05d9\u05e9\u05d9\u05dd \u05d5\u05d4\u05dc\u05d5\u05d7\u05d5\u05ea \u05d4\u05d6\u05de\u05e0\u05d9\u05dd \u05e9\u05dc\u05da \u05e4\u05d5\u05e2\u05dc\u05d9\u05dd \u05dc\u05e4\u05d9 \u05d4\u05e9\u05e2\u05d5\u05df \u05e9\u05dc \u05d0\u05d5\u05ea\u05d4 \u05de\u05d3\u05d9\u05e0\u05d4.", // EN: Choose your country; your scenarios and schedules run on that country's time.
+    "\u00dcr\u00fcn katalo\u011fu": "\u05e7\u05d8\u05dc\u05d5\u05d2 \u05de\u05d5\u05e6\u05e8\u05d9\u05dd", // EN: Product catalog
+    "\u00dcsse d\u00f6n": "\u05d7\u05d6\u05e8\u05d4 \u05dc\u05d1\u05e1\u05d9\u05e1", // EN: Return to base
+    "\u00dcst gezinme": "\u05e0\u05d9\u05d5\u05d5\u05d8 \u05e2\u05dc\u05d9\u05d5\u05df", // EN: Top navigation
+    "\u00dcstteki alana ne yapmak istedi\u011fini yaz ya da manuel olarak bir senaryo se\u00e7.": "\u05d4\u05e7\u05dc\u05d3 \u05d1\u05e9\u05d3\u05d4 \u05e9\u05dc\u05de\u05e2\u05dc\u05d4 \u05de\u05d4 \u05d1\u05e8\u05e6\u05d5\u05e0\u05da \u05dc\u05e2\u05e9\u05d5\u05ea, \u05d0\u05d5 \u05d1\u05d7\u05e8 \u05ea\u05e8\u05d7\u05d9\u05e9 \u05d9\u05d3\u05e0\u05d9\u05ea.", // EN: Type what you want to do in the field above, or choose a scenario manually.
+    "\u00dcstteki alana otomasyonu yaz veya tetikleyici se\u00e7erek olu\u015ftur.": "\u05d4\u05e7\u05dc\u05d3 \u05d0\u05ea \u05d4\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \u05d1\u05e9\u05d3\u05d4 \u05e9\u05dc\u05de\u05e2\u05dc\u05d4, \u05d0\u05d5 \u05e6\u05d5\u05e8 \u05d0\u05d5\u05ea\u05d4 \u05e2\u05dc \u05d9\u05d3\u05d9 \u05d1\u05d7\u05d9\u05e8\u05ea \u05d8\u05e8\u05d9\u05d2\u05e8.", // EN: Type the automation in the field above, or create it by choosing a trigger.
+    "\u00dcye": "\u05d7\u05d1\u05e8", // EN: Member
+    "\u00dcye Davet Et": "\u05d4\u05d6\u05de\u05df \u05d7\u05d1\u05e8", // EN: Invite Member
+    "\u00dcye davet et": "\u05d4\u05d6\u05de\u05df \u05d7\u05d1\u05e8", // EN: Invite member
+    "\u00dcyeyi D\u00fczenle": "\u05e2\u05e8\u05d5\u05da \u05d7\u05d1\u05e8", // EN: Edit Member
+    "\u00dcyeyi \u00c7\u0131kar": "\u05d4\u05e1\u05e8 \u05d7\u05d1\u05e8", // EN: Remove Member
+    "\u00dc\u00e7l\u00fc": "\u05de\u05e9\u05d5\u05dc\u05e9", // EN: Three-gang
+    "\u00dc\u00e7l\u00fc Ak\u0131ll\u0131 Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05d7\u05db\u05dd \u05de\u05e9\u05d5\u05dc\u05e9", // EN: Three-gang Smart Switch
+    "\u00dc\u00e7l\u00fc Dokunmatik Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05de\u05d2\u05e2 \u05de\u05e9\u05d5\u05dc\u05e9", // EN: Three-gang Touch Switch
+    "\u00dc\u00e7l\u00fc Kablosuz Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05d0\u05dc\u05d7\u05d5\u05d8\u05d9 \u05de\u05e9\u05d5\u05dc\u05e9", // EN: Three-gang Wireless Switch
+    "\u00dc\u00e7l\u00fc N\u00f6trs\u00fcz Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05de\u05e9\u05d5\u05dc\u05e9 \u05dc\u05dc\u05d0 \u05d0\u05e4\u05e1", // EN: Three-gang No-Neutral Switch
+    "\u00dc\u00e7\u00fcnc\u00fc Taraf Cihaz ve Hizmetler": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d5\u05e9\u05d9\u05e8\u05d5\u05ea\u05d9\u05dd \u05e9\u05dc \u05e6\u05d3 \u05e9\u05dc\u05d9\u05e9\u05d9", // EN: Third-Party Devices and Services
+    "\u00dc\u00e7\u00fcnc\u00fc Taraf Hizmetler": "\u05e9\u05d9\u05e8\u05d5\u05ea\u05d9 \u05e6\u05d3 \u05e9\u05dc\u05d9\u05e9\u05d9", // EN: Third-Party Services
+    "\u00e7al\u0131\u015ft\u0131r\u0131ld\u0131.": "\u05d4\u05d5\u05e4\u05e2\u05dc.", // EN: run.
+    "\u00e7evre": "\u05e1\u05d1\u05d9\u05d1\u05d4", // EN: environment
+    "\u00e7evrimd\u0131\u015f\u0131": "\u05dc\u05d0 \u05de\u05e7\u05d5\u05d5\u05df", // EN: offline
+    "\u00e7evrimi\u00e7i": "\u05de\u05e7\u05d5\u05d5\u05df", // EN: online
+    "\u00fcye": "\u05d7\u05d1\u05e8", // EN: member
+    "\u0130deal Seviye": "\u05e8\u05de\u05d4 \u05d0\u05d9\u05d3\u05d9\u05d0\u05dc\u05d9\u05ea", // EN: Ideal Level
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "\u05d0\u05d9\u05de\u05d5\u05ea \u05d3\u05d5-\u05e9\u05dc\u05d1\u05d9", // EN: Two-Step Verification
+    "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "\u05ea\u05d7\u05e0\u05ea \u05d8\u05e2\u05d9\u05e0\u05d4 \u05dc\u05db\u05dc\u05d9 \u05e8\u05db\u05d1 \u05d3\u05d5-\u05d2\u05dc\u05d2\u05dc\u05d9\u05d9\u05dd", // EN: Two-Wheeler Charging Station
+    "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "\u05ea\u05d7\u05e0\u05ea \u05d8\u05e2\u05d9\u05e0\u05d4 \u05dc\u05db\u05dc\u05d9 \u05e8\u05db\u05d1 \u05d3\u05d5-\u05d2\u05dc\u05d2\u05dc\u05d9\u05d9\u05dd (4G)", // EN: Two-Wheeler Charging Station (4G)
+    "\u0130kili": "\u05d6\u05d5\u05d2\u05d9", // EN: Two-gang
+    "\u0130kili Ak\u0131ll\u0131 Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05d7\u05db\u05dd \u05d6\u05d5\u05d2\u05d9", // EN: Two-gang Smart Switch
+    "\u0130kili Dokunmatik Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05de\u05d2\u05e2 \u05d6\u05d5\u05d2\u05d9", // EN: Two-gang Touch Switch
+    "\u0130kili Kablosuz Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05d0\u05dc\u05d7\u05d5\u05d8\u05d9 \u05d6\u05d5\u05d2\u05d9", // EN: Two-gang Wireless Switch
+    "\u0130kili N\u00f6trs\u00fcz Anahtar": "\u05de\u05e4\u05e1\u05e7 \u05d6\u05d5\u05d2\u05d9 \u05dc\u05dc\u05d0 \u05d0\u05e4\u05e1", // EN: Two-gang No-Neutral Switch
+    "\u0130kisi": "\u05e9\u05e0\u05d9\u05d4\u05dd", // EN: Both
+    "\u0130klim Konforu": "\u05e0\u05d5\u05d7\u05d5\u05ea \u05d0\u05e7\u05dc\u05d9\u05dd", // EN: Climate Comfort
+    "\u0130klim ve s\u0131cakl\u0131k": "\u05d0\u05e7\u05dc\u05d9\u05dd \u05d5\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4", // EN: Climate and temperature
+    "\u0130klim ve s\u0131cakl\u0131k paneli": "\u05dc\u05d5\u05d7 \u05d0\u05e7\u05dc\u05d9\u05dd \u05d5\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4", // EN: Climate and temperature panel
+    "\u0130klimlendirme": "\u05d1\u05e7\u05e8\u05ea \u05d0\u05e7\u05dc\u05d9\u05dd", // EN: Climate Control
+    "\u0130klimlendirme 22\u00b0C Konfor Modu": "\u05d0\u05e7\u05dc\u05d9\u05dd 22\u00b0C \u05de\u05e6\u05d1 \u05e0\u05d5\u05d7\u05d5\u05ea", // EN: Climate 22°C Comfort Mode
+    "\u0130leri": "\u05d4\u05d1\u05d0", // EN: Next
+    "\u0130leti\u015fim E-postas\u0131": "\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05dc\u05d9\u05e6\u05d9\u05e8\u05ea \u05e7\u05e9\u05e8", // EN: Contact Email
+    "\u0130lgili oda sahneleri listesine ekler": "\u05de\u05d5\u05e1\u05d9\u05e3 \u05d0\u05d5\u05ea\u05d5 \u05dc\u05e8\u05e9\u05d9\u05de\u05ea \u05e1\u05e6\u05e0\u05d5\u05ea \u05d4\u05d7\u05d3\u05e8 \u05d4\u05e7\u05e9\u05d5\u05e8\u05d5\u05ea", // EN: Adds it to the related room scenes list
+    "\u0130lk \u00f6deme tarihi": "\u05ea\u05d0\u05e8\u05d9\u05da \u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05d4\u05e8\u05d0\u05e9\u05d5\u05df", // EN: First payment date
+    "\u0130nsan Varl\u0131\u011f\u0131 Sens\u00f6r\u00fc": "\u05d7\u05d9\u05d9\u05e9\u05df \u05e0\u05d5\u05db\u05d7\u05d5\u05ea \u05d0\u05d3\u05dd", // EN: Human Presence Sensor
+    "\u0130nsan Varl\u0131\u011f\u0131 Sens\u00f6r\u00fc (Bluetooth)": "\u05d7\u05d9\u05d9\u05e9\u05df \u05e0\u05d5\u05db\u05d7\u05d5\u05ea \u05d0\u05d3\u05dd (Bluetooth)", // EN: Human Presence Sensor (Bluetooth)
+    "\u0130nsan V\u00fccudu Sens\u00f6r\u00fc": "\u05d7\u05d9\u05d9\u05e9\u05df \u05d2\u05d5\u05e3 \u05d0\u05d3\u05dd", // EN: Human Body Sensor
+    "\u0130nsan V\u00fccudu Sens\u00f6r\u00fc (Bluetooth)": "\u05d7\u05d9\u05d9\u05e9\u05df \u05d2\u05d5\u05e3 \u05d0\u05d3\u05dd (Bluetooth)", // EN: Human Body Sensor (Bluetooth)
+    "\u0130nsan V\u00fccudu Sens\u00f6r\u00fc (ZigBee)": "\u05d7\u05d9\u05d9\u05e9\u05df \u05d2\u05d5\u05e3 \u05d0\u05d3\u05dd (ZigBee)", // EN: Human Body Sensor (ZigBee)
+    "\u0130nvert\u00f6r": "\u05de\u05de\u05d9\u05e8 \u05de\u05ea\u05d7", // EN: Inverter
+    "\u0130nvert\u00f6rler": "\u05de\u05de\u05d9\u05e8\u05d9 \u05de\u05ea\u05d7", // EN: Inverters
+    "\u0130ptal": "\u05d1\u05d9\u05d8\u05d5\u05dc", // EN: Cancel
+    "\u0130ptal Et": "\u05d1\u05d9\u05d8\u05d5\u05dc", // EN: Cancel
+    "\u0130stanbul": "\u05d0\u05d9\u05e1\u05d8\u05e0\u05d1\u05d5\u05dc", // EN: Istanbul
+    "\u0130stedi\u011fin ko\u015fullara g\u00f6re haz\u0131rlanan uygulanabilir ev rutini.": "\u05e9\u05d2\u05e8\u05ea \u05d1\u05d9\u05ea \u05d1\u05e8\u05ea \u05d4\u05e4\u05e2\u05dc\u05d4 \u05e9\u05d4\u05d5\u05db\u05e0\u05d4 \u05dc\u05e4\u05d9 \u05d4\u05ea\u05e0\u05d0\u05d9\u05dd \u05e9\u05d1\u05d7\u05e8\u05ea.", // EN: A runnable home routine prepared for the conditions you want.
+    "\u0130yi": "\u05d8\u05d5\u05d1", // EN: Good
+    "\u0130yi dinlenmeler": "\u05de\u05e0\u05d5\u05d7\u05d4 \u05e0\u05e2\u05d9\u05de\u05d4", // EN: Rest well
+    "\u0130yi geceler": "\u05dc\u05d9\u05dc\u05d4 \u05d8\u05d5\u05d1", // EN: Good night
+    "\u0130zinleri Y\u00f6net": "\u05e0\u05d9\u05d4\u05d5\u05dc \u05d4\u05e8\u05e9\u05d0\u05d5\u05ea", // EN: Manage Permissions
+    "\u0130zleme ortam\u0131 i\u00e7in \u0131\u015f\u0131k, perde ve medya ad\u0131mlar\u0131n\u0131 haz\u0131rlar.": "\u05de\u05db\u05d9\u05df \u05e9\u05dc\u05d1\u05d9 \u05ea\u05d0\u05d5\u05e8\u05d4, \u05d5\u05d9\u05dc\u05d5\u05df \u05d5\u05de\u05d3\u05d9\u05d4 \u05dc\u05e6\u05e4\u05d9\u05d9\u05d4.", // EN: Prepares light, curtain and media steps for watching.
+    "\u0130zlemede": "\u05d1\u05de\u05e2\u05e7\u05d1", // EN: Monitoring
+    "\u0130zleyici": "\u05d2\u05e9\u05e9", // EN: Tracker
+    "\u0130zleyici (GPRS)": "\u05d2\u05e9\u05e9 (GPRS)", // EN: Tracker (GPRS)
+    "\u0130zleyici (NB-IoT)": "\u05d2\u05e9\u05e9 (NB-IoT)", // EN: Tracker (NB-IoT)
+    "\u0131s\u0131t": "\u05d7\u05d9\u05de\u05d5\u05dd", // EN: heat
+    "\u0131\u015f\u0131k": "\u05d0\u05d5\u05e8", // EN: light
+    "\u015eam": "\u05d3\u05de\u05e9\u05e7", // EN: Damascus
+    "\u015earap Dolab\u0131": "\u05de\u05e7\u05e8\u05e8 \u05d9\u05d9\u05df", // EN: Wine Cooler
+    "\u015earjda": "\u05d1\u05d8\u05e2\u05d9\u05e0\u05d4", // EN: Charging
+    "\u015eerit Lamba": "\u05e4\u05e1 \u05ea\u05d0\u05d5\u05e8\u05d4", // EN: Light Strip
+    "\u015eerit Lamba (BLE+Wi-Fi)": "\u05e4\u05e1 \u05ea\u05d0\u05d5\u05e8\u05d4 (BLE+Wi-Fi)", // EN: Light Strip (BLE+Wi-Fi)
+    "\u015eerit Lamba (Bluetooth)": "\u05e4\u05e1 \u05ea\u05d0\u05d5\u05e8\u05d4 (Bluetooth)", // EN: Light Strip (Bluetooth)
+    "\u015eerit Lamba (Zigbee)": "\u05e4\u05e1 \u05ea\u05d0\u05d5\u05e8\u05d4 (Zigbee)", // EN: Light Strip (Zigbee)
+    "\u015eifre": "\u05e1\u05d9\u05e1\u05de\u05d4", // EN: Password
+    "\u015eifre Belirleyin": "\u05d4\u05d2\u05d3\u05e8\u05ea \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Set a Password
+    "\u015eifre en az 4 karakter olmal\u0131": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d9\u05d9\u05d1\u05ea \u05dc\u05d4\u05db\u05d9\u05dc \u05dc\u05e4\u05d7\u05d5\u05ea 4 \u05ea\u05d5\u05d5\u05d9\u05dd", // EN: Password must be at least 4 characters
+    "\u015eifre en az 4 karakter olmal\u0131.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d9\u05d9\u05d1\u05ea \u05dc\u05d4\u05db\u05d9\u05dc \u05dc\u05e4\u05d7\u05d5\u05ea 4 \u05ea\u05d5\u05d5\u05d9\u05dd.", // EN: Password must be at least 4 characters.
+    "\u015eifre en az 4 karakter olmal\u0131d\u0131r.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d9\u05d9\u05d1\u05ea \u05dc\u05d4\u05db\u05d9\u05dc \u05dc\u05e4\u05d7\u05d5\u05ea 4 \u05ea\u05d5\u05d5\u05d9\u05dd.", // EN: Password must be at least 4 characters.
+    "\u015eifre en az 6 karakter olmal\u0131.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d9\u05d9\u05d1\u05ea \u05dc\u05d4\u05db\u05d9\u05dc \u05dc\u05e4\u05d7\u05d5\u05ea 6 \u05ea\u05d5\u05d5\u05d9\u05dd.", // EN: Password must be at least 6 characters.
+    "\u015eifre g\u00fcncellendi \u2713": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05e2\u05d5\u05d3\u05db\u05e0\u05d4 \u2713", // EN: Password updated ✓
+    "\u015eifre yanl\u0131\u015f.": "\u05e1\u05d9\u05e1\u05de\u05d4 \u05e9\u05d2\u05d5\u05d9\u05d4.", // EN: Wrong password.
+    "\u015eifreler e\u015fle\u015fmiyor.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d0\u05d5\u05ea \u05d0\u05d9\u05e0\u05df \u05ea\u05d5\u05d0\u05de\u05d5\u05ea.", // EN: Passwords don't match.
+    "\u015eifreli yerel API \u2014 yak\u0131nda": "API \u05de\u05e7\u05d5\u05de\u05d9 \u05de\u05d5\u05e6\u05e4\u05df \u2014 \u05d1\u05e7\u05e8\u05d5\u05d1", // EN: Encrypted local API — coming soon
+    "\u015eifremi Unuttum": "\u05e9\u05db\u05d7\u05ea\u05d9 \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Forgot Password
+    "\u015eifreyi De\u011fi\u015ftir": "\u05e9\u05d9\u05e0\u05d5\u05d9 \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Change Password
+    "\u015eifreyi G\u00fcncelle": "\u05e2\u05d3\u05db\u05d5\u05df \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Update Password
+    "\u015eifreyi Tekrar Girin": "\u05d4\u05d6\u05df \u05e9\u05d5\u05d1 \u05d0\u05ea \u05d4\u05e1\u05d9\u05e1\u05de\u05d4", // EN: Re-enter Password
+    "\u015eifreyi g\u00f6ster/gizle": "\u05d4\u05e6\u05d2/\u05d4\u05e1\u05ea\u05e8 \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Show/hide password
+    "\u015eimdi besle": "\u05d4\u05d0\u05db\u05dc \u05e2\u05db\u05e9\u05d9\u05d5", // EN: Feed now
+    "\u015eimdilik Home Assistant \u00fczerinden eklenebilir; do\u011frudan yerel mod yak\u0131nda": "\u05d1\u05d9\u05e0\u05ea\u05d9\u05d9\u05dd \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05d5\u05e1\u05d9\u05e3 \u05d3\u05e8\u05da Home Assistant; \u05de\u05e6\u05d1 \u05de\u05e7\u05d5\u05de\u05d9 \u05d9\u05e9\u05d9\u05e8 \u05d1\u05e7\u05e8\u05d5\u05d1", // EN: Can be added through Home Assistant for now; direct local mode coming soon
+    "\u015eu an a\u00e7\u0131k g\u00f6r\u00fcn\u00fcyor.": "\u05e0\u05e8\u05d0\u05d4 \u05e9\u05e4\u05ea\u05d5\u05d7 \u05db\u05e8\u05d2\u05e2.", // EN: Appears to be open right now.
+    "\u015eu an bekleyen davet yok.": "\u05d0\u05d9\u05df \u05d4\u05d6\u05de\u05e0\u05d5\u05ea \u05de\u05de\u05ea\u05d9\u05e0\u05d5\u05ea \u05db\u05e8\u05d2\u05e2.", // EN: No pending invites right now.
+    "\u20ba333.33/ay": "\u20ba333.33/\u05d7\u05d5\u05d3\u05e9", // EN: ₺333.33/mo
+    "\u20ba3999,99/y\u0131l": "\u20ba3999.99/\u05e9\u05e0\u05d4", // EN: ₺3999.99/yr
+    "\u20ba{0}/ay": "\u20ba{0}/\u05d7\u05d5\u05d3\u05e9", // EN: ₺{0}/mo
+    "Aboneli\u011fi Y\u00f6net / \u0130ptal Et": "\u05e0\u05d9\u05d4\u05d5\u05dc / \u05d1\u05d9\u05d8\u05d5\u05dc \u05de\u05e0\u05d5\u05d9", // EN: Manage / Cancel Subscription
+    "D\u00f6nem sonunda iptal et": "\u05d1\u05d9\u05d8\u05d5\u05dc \u05d1\u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4", // EN: Cancel at period end
+    "Aboneli\u011fi Whop'ta y\u00f6net": "\u05e0\u05d4\u05dc \u05d0\u05ea \u05d4\u05de\u05e0\u05d5\u05d9 \u05d1-Whop", // EN: Manage your subscription on Whop
+    "\u0130ptal bu hesapta yap\u0131l\u0131r. Mevcut d\u00f6nemin sonuna kadar NEXUS+ kullanmaya devam edersin; bir sonraki \u00f6deme al\u0131nmaz.": "\u05d4\u05d1\u05d9\u05d8\u05d5\u05dc \u05de\u05ea\u05d1\u05e6\u05e2 \u05d1\u05d7\u05e9\u05d1\u05d5\u05df \u05d6\u05d4. \u05ea\u05d5\u05db\u05dc \u05dc\u05d4\u05de\u05e9\u05d9\u05da \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1-NEXUS+ \u05e2\u05d3 \u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4 \u05d4\u05e0\u05d5\u05db\u05d7\u05d9\u05ea; \u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05d4\u05d1\u05d0 \u05dc\u05d0 \u05d9\u05d2\u05d1\u05d4.", // EN: Cancellation is done on this account. You keep NEXUS+ until the end of the current period; the next payment is not taken.
+    "\u00d6deme": "\u05ea\u05e9\u05dc\u05d5\u05dd", // EN: Payment
+    "\u00d6demeler": "\u05ea\u05e9\u05dc\u05d5\u05de\u05d9\u05dd", // EN: Payments
+    "\u00d6demeyi tamamlay\u0131nca bu sayfada kal; aboneli\u011fin hesab\u0131na yaz\u0131l\u0131r.": "\u05dc\u05d0\u05d7\u05e8 \u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05d4\u05d9\u05e9\u05d0\u05e8 \u05d1\u05d3\u05e3 \u05d6\u05d4; \u05d4\u05de\u05e0\u05d5\u05d9 \u05e0\u05e8\u05e9\u05dd \u05d1\u05d7\u05e9\u05d1\u05d5\u05df \u05e9\u05dc\u05da.", // EN: Stay on this page after you pay; the subscription is written to your account.
+    "\u0130ptal i\u00e7in \u00f6nce hesab\u0131nla giri\u015f yapmal\u0131s\u0131n.": "\u05db\u05d3\u05d9 \u05dc\u05d1\u05d8\u05dc, \u05d4\u05ea\u05d7\u05d1\u05e8 \u05ea\u05d7\u05d9\u05dc\u05d4 \u05dc\u05d7\u05e9\u05d1\u05d5\u05df \u05e9\u05dc\u05da.", // EN: Sign in with your account first to cancel.
+    "\u0130ptal \u015fu an tamamlanamad\u0131. Biraz sonra yeniden dene.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d4\u05e9\u05dc\u05d9\u05dd \u05d0\u05ea \u05d4\u05d1\u05d9\u05d8\u05d5\u05dc. \u05e0\u05e1\u05d4 \u05e9\u05d5\u05d1 \u05d1\u05e2\u05d5\u05d3 \u05e8\u05d2\u05e2.", // EN: Cancellation could not be completed. Try again in a moment.
+    "Galeriden foto\u011fraf": "\u05ea\u05de\u05d5\u05e0\u05d4 \u05de\u05d4\u05d2\u05dc\u05e8\u05d9\u05d4", // EN: Photo from Gallery
+    "Foto\u011fraf \u00e7ek": "\u05e6\u05dc\u05dd \u05ea\u05de\u05d5\u05e0\u05d4", // EN: Take a Photo
+    "Cihazlar\u0131ma sor": "\u05e9\u05d0\u05dc \u05d0\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05d9", // EN: Ask my devices
+    "Ba\u011flant\u0131 do\u011fruland\u0131. Hesab\u0131n i\u00e7in yeni bir \u015fifre belirle.": "\u05d4\u05e7\u05d9\u05e9\u05d5\u05e8 \u05d0\u05d5\u05de\u05ea. \u05d4\u05d2\u05d3\u05e8 \u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d3\u05e9\u05d4 \u05dc\u05d7\u05e9\u05d1\u05d5\u05e0\u05da.", // EN: Link verified. Set a new password for your account.
+    "\u015eifreyi Kaydet": "\u05e9\u05de\u05d5\u05e8 \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Save Password
+    "Google ile giri\u015f \u015fu anda kullan\u0131lam\u0131yor. E-posta ve \u015fifreyle giri\u015f yap; Google ile hesap a\u00e7t\u0131ysan \u201c\u015eifremi Unuttum\u201d ile bir \u015fifre belirleyebilirsin.": "\u05d4\u05ea\u05d7\u05d1\u05e8\u05d5\u05ea \u05e2\u05dd Google \u05d0\u05d9\u05e0\u05d4 \u05d6\u05de\u05d9\u05e0\u05d4 \u05db\u05e8\u05d2\u05e2. \u05d4\u05ea\u05d7\u05d1\u05e8 \u05e2\u05dd \u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d5\u05e1\u05d9\u05e1\u05de\u05d4; \u05d0\u05dd \u05e4\u05ea\u05d7\u05ea \u05d0\u05ea \u05d4\u05d7\u05e9\u05d1\u05d5\u05df \u05e2\u05dd Google, \u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\u201c\u05e9\u05db\u05d7\u05ea\u05d9 \u05e1\u05d9\u05e1\u05de\u05d4\u201d \u05db\u05d3\u05d9 \u05dc\u05d4\u05d2\u05d3\u05d9\u05e8 \u05e1\u05d9\u05e1\u05de\u05d4.", // EN: Google sign-in isn't available right now. Sign in with email and password; if you created your account with Google, use “Forgot Password” to set a password.
+    "Google ile devam et": "\u05d4\u05de\u05e9\u05da \u05e2\u05dd Google", // EN: Continue with Google
+    "\u00d6demeye Ge\u00e7": "\u05de\u05e2\u05d1\u05e8 \u05dc\u05ea\u05e9\u05dc\u05d5\u05dd", // EN: Pay Now
+    "Zaten hesab\u0131n var m\u0131? Giri\u015f Yap": "\u05db\u05d1\u05e8 \u05d9\u05e9 \u05dc\u05da \u05d7\u05e9\u05d1\u05d5\u05df? \u05d4\u05ea\u05d7\u05d1\u05e8", // EN: Already have an account? Sign In
+    "Yeni s\u00fcr\u00fcm bulununca arka planda hemen indirilsin.": "\u05d4\u05d5\u05e8\u05d3 \u05d2\u05e8\u05e1\u05d0\u05d5\u05ea \u05d7\u05d3\u05e9\u05d5\u05ea \u05d1\u05e8\u05e7\u05e2 \u05de\u05d9\u05d3 \u05db\u05e9\u05d4\u05df \u05e0\u05de\u05e6\u05d0\u05d5\u05ea.", // EN: Download new versions in the background as soon as they're found.
+    "Home Assistant k\u00f6pr\u00fcs\u00fcd\u00fcr": "\u05d2\u05e9\u05e8 Home Assistant", // EN: the Home Assistant bridge
+    "Entegrasyonlar": "\u05d0\u05d9\u05e0\u05d8\u05d2\u05e8\u05e6\u05d9\u05d5\u05ea", // EN: Integrations
+    "yukar\u0131daki hesap e-postas\u0131n\u0131": "\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05e9\u05dc \u05d4\u05d7\u05e9\u05d1\u05d5\u05df \u05e9\u05dc\u05de\u05e2\u05dc\u05d4", // EN: the account email above
+    "\u0130ptal ve \u00f6deme y\u00f6ntemi de\u011fi\u015fikli\u011fi g\u00fcvenli \u00f6deme sayfam\u0131z Whop \u00fczerinden yap\u0131l\u0131r. \u0130ptal edersen mevcut d\u00f6nemin sonuna kadar kullanmaya devam edersin ve bir sonraki \u00f6deme al\u0131nmaz.": "\u05d1\u05d9\u05d8\u05d5\u05dc \u05d5\u05e9\u05d9\u05e0\u05d5\u05d9 \u05d0\u05de\u05e6\u05e2\u05d9 \u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05de\u05ea\u05d1\u05e6\u05e2\u05d9\u05dd \u05d1\u05d3\u05e3 \u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05d4\u05de\u05d0\u05d5\u05d1\u05d8\u05d7 \u05e9\u05dc\u05e0\u05d5, Whop. \u05d0\u05dd \u05ea\u05d1\u05d8\u05dc, \u05ea\u05de\u05e9\u05d9\u05da \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1-NEXUS+ \u05e2\u05d3 \u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4 \u05d4\u05e0\u05d5\u05db\u05d7\u05d9\u05ea \u05d5\u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05d4\u05d1\u05d0 \u05dc\u05d0 \u05d9\u05d2\u05d1\u05d4 \u05dc\u05e2\u05d5\u05dc\u05dd.", // EN: Cancelling and changing your payment method happen on our secure checkout page, Whop. If you cancel, you keep using NEXUS+ until the end of the current period and the next payment is never taken.
+    "Aboneli\u011fin yok. NEXUS+ i\u00e7in Plus sayfas\u0131ndan \u00fccretsiz deneyebilirsin.": "\u05d0\u05d9\u05df \u05dc\u05da \u05de\u05e0\u05d5\u05d9. \u05e0\u05e1\u05d4 \u05d0\u05ea NEXUS+ \u05d1\u05d7\u05d9\u05e0\u05dd \u05de\u05d3\u05e3 Plus.", // EN: You don't have a subscription. Try NEXUS+ free from the Plus page.
+    "QR, kurulum kodu veya manuel katalog ile ekledi\u011fin cihazlar burada g\u00f6r\u00fcn\u00fcr.": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05d4\u05d5\u05e1\u05e4\u05ea \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea QR, \u05e7\u05d5\u05d3 \u05d4\u05d2\u05d3\u05e8\u05d4 \u05d0\u05d5 \u05d4\u05e7\u05d8\u05dc\u05d5\u05d2 \u05d4\u05d9\u05d3\u05e0\u05d9 \u05d9\u05d5\u05e4\u05d9\u05e2\u05d5 \u05db\u05d0\u05df.", // EN: Devices you add by QR, setup code or the manual catalog show up here.
+    "Robot s\u00fcp\u00fcrge kontrol paneli \u00b7 ba\u015flat, durdur, eve d\u00f6n": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05e9\u05d5\u05d0\u05d1 \u05d0\u05d1\u05e7 \u05e8\u05d5\u05d1\u05d5\u05d8\u05d9 \u00b7 \u05d4\u05ea\u05d7\u05dc, \u05e2\u05e6\u05d5\u05e8, \u05d7\u05d6\u05d5\u05e8 \u05d4\u05d1\u05d9\u05ea\u05d4", // EN: Robot vacuum control panel · start, stop, return home
+    "Kilit kontrol paneli \u00b7 kilitle, a\u00e7": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05de\u05e0\u05e2\u05d5\u05dc \u00b7 \u05e0\u05e2\u05dc, \u05e4\u05ea\u05d7", // EN: Lock control panel · lock, unlock
+    "Alarm kontrol paneli \u00b7 kur, kapat, sirene": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05d0\u05d6\u05e2\u05e7\u05d4 \u00b7 \u05d4\u05e4\u05e2\u05dc, \u05db\u05d1\u05d4, \u05e6\u05d5\u05e4\u05e8", // EN: Alarm control panel · arm, disarm, siren
+    "Perde ve panjur kontrol paneli \u00b7 a\u00e7, kapat, konum": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05ea\u05e8\u05d9\u05e1\u05d9\u05dd \u00b7 \u05e4\u05ea\u05d7, \u05e1\u05d2\u05d5\u05e8, \u05de\u05d9\u05e7\u05d5\u05dd", // EN: Curtain and blind control panel · open, close, position
+    "Renkli ayd\u0131nlatma kontrol paneli \u00b7 renk, parlakl\u0131k": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05ea\u05d0\u05d5\u05e8\u05d4 \u05e6\u05d1\u05e2\u05d5\u05e0\u05d9\u05ea \u00b7 \u05e6\u05d1\u05e2, \u05d1\u05d4\u05d9\u05e8\u05d5\u05ea", // EN: Color lighting control panel · color, brightness
+    "Ayd\u0131nlatma kontrol paneli \u00b7 a\u00e7, kapat, parlakl\u0131k": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05ea\u05d0\u05d5\u05e8\u05d4 \u00b7 \u05d4\u05d3\u05dc\u05e7, \u05db\u05d1\u05d4, \u05d1\u05d4\u05d9\u05e8\u05d5\u05ea", // EN: Lighting control panel · on, off, brightness
+    "Hava kalitesi paneli \u00b7 \u00f6l\u00e7\u00fcm ve uyar\u0131lar": "\u05dc\u05d5\u05d7 \u05d0\u05d9\u05db\u05d5\u05ea \u05d0\u05d5\u05d5\u05d9\u05e8 \u00b7 \u05de\u05d3\u05d9\u05d3\u05d5\u05ea \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea", // EN: Air quality panel · readings and alerts
+    "Hareket sens\u00f6r\u00fc paneli \u00b7 alg\u0131lama ve uyar\u0131lar": "\u05dc\u05d5\u05d7 \u05d7\u05d9\u05d9\u05e9\u05df \u05ea\u05e0\u05d5\u05e2\u05d4 \u00b7 \u05d6\u05d9\u05d4\u05d5\u05d9 \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea", // EN: Motion sensor panel · detection and alerts
+    "Kap\u0131 ve pencere sens\u00f6r\u00fc paneli \u00b7 a\u00e7\u0131k/kapal\u0131 durumu": "\u05dc\u05d5\u05d7 \u05d7\u05d9\u05d9\u05e9\u05df \u05d3\u05dc\u05ea \u05d5\u05d7\u05dc\u05d5\u05df \u00b7 \u05de\u05e6\u05d1 \u05e4\u05ea\u05d5\u05d7/\u05e1\u05d2\u05d5\u05e8", // EN: Door and window sensor panel · open/closed state
+    "Evcil hayvan kontrol paneli \u00b7 besleme, takip": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05d7\u05d9\u05d5\u05ea \u05de\u05d7\u05de\u05d3 \u00b7 \u05d4\u05d0\u05db\u05dc\u05d4, \u05de\u05e2\u05e7\u05d1", // EN: Pet control panel · feeding, tracking
+    "Bebek \u00fcr\u00fcnleri paneli \u00b7 izleme ve uyar\u0131lar": "\u05dc\u05d5\u05d7 \u05de\u05d5\u05e6\u05e8\u05d9 \u05ea\u05d9\u05e0\u05d5\u05e7\u05d5\u05ea \u00b7 \u05e0\u05d9\u05d8\u05d5\u05e8 \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea", // EN: Baby products panel · monitoring and alerts
+    "Sa\u011fl\u0131k ve uyku paneli \u00b7 \u00f6l\u00e7\u00fcm, takip": "\u05dc\u05d5\u05d7 \u05d1\u05e8\u05d9\u05d0\u05d5\u05ea \u05d5\u05e9\u05d9\u05e0\u05d4 \u00b7 \u05de\u05d3\u05d9\u05d3\u05d5\u05ea, \u05de\u05e2\u05e7\u05d1", // EN: Health and sleep panel · readings, tracking
+    "Spor ekipmanlar\u0131 paneli \u00b7 takip, \u00f6l\u00e7\u00fcm": "\u05dc\u05d5\u05d7 \u05e6\u05d9\u05d5\u05d3 \u05e1\u05e4\u05d5\u05e8\u05d8 \u00b7 \u05de\u05e2\u05e7\u05d1, \u05de\u05d3\u05d9\u05d3\u05d5\u05ea", // EN: Sports equipment panel · tracking, readings
+    "Bah\u00e7e ve sulama kontrol paneli \u00b7 vana, zamanlama": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05d2\u05d9\u05e0\u05d4 \u05d5\u05d4\u05e9\u05e7\u05d9\u05d4 \u00b7 \u05d1\u05e8\u05d6, \u05ea\u05d6\u05de\u05d5\u05df", // EN: Garden and irrigation control panel · valve, scheduling
+    "Medya kontrol paneli \u00b7 a\u00e7, kapat, ses, kanal": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05de\u05d3\u05d9\u05d4 \u00b7 \u05d4\u05d3\u05dc\u05e7, \u05db\u05d1\u05d4, \u05e2\u05d5\u05e6\u05de\u05d4, \u05e2\u05e8\u05d5\u05e5", // EN: Media control panel · on, off, volume, channel
+    "Ev aletleri kontrol paneli \u00b7 ba\u015flat, durdur, program": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05de\u05db\u05e9\u05d9\u05e8\u05d9 \u05d7\u05e9\u05de\u05dc \u05d1\u05d9\u05ea\u05d9\u05d9\u05dd \u00b7 \u05d4\u05ea\u05d7\u05dc, \u05e2\u05e6\u05d5\u05e8, \u05ea\u05d5\u05db\u05e0\u05d9\u05ea", // EN: Home appliance control panel · start, stop, program
+    "\u0130klim kontrol paneli \u00b7 s\u0131cakl\u0131k, nem, mod": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05d0\u05e7\u05dc\u05d9\u05dd \u00b7 \u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4, \u05dc\u05d7\u05d5\u05ea, \u05de\u05e6\u05d1", // EN: Climate control panel · temperature, humidity, mode
+    "Ortam sens\u00f6r\u00fc paneli \u00b7 s\u0131cakl\u0131k, \u0131\u015f\u0131k, durum": "\u05dc\u05d5\u05d7 \u05d7\u05d9\u05d9\u05e9\u05df \u05e1\u05d1\u05d9\u05d1\u05d4 \u00b7 \u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4, \u05d0\u05d5\u05e8, \u05de\u05e6\u05d1", // EN: Ambient sensor panel · temperature, light, status
+    "Priz ve enerji kontrol paneli \u00b7 a\u00e7, kapat, t\u00fcketim": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05e9\u05e7\u05e2 \u05d5\u05d0\u05e0\u05e8\u05d2\u05d9\u05d4 \u00b7 \u05d4\u05d3\u05dc\u05e7, \u05db\u05d1\u05d4, \u05e6\u05e8\u05d9\u05db\u05d4", // EN: Plug and energy control panel · on, off, consumption
+    "Ula\u015f\u0131m ve takip paneli \u00b7 konum, \u015farj": "\u05dc\u05d5\u05d7 \u05ea\u05d7\u05d1\u05d5\u05e8\u05d4 \u05d5\u05de\u05e2\u05e7\u05d1 \u00b7 \u05de\u05d9\u05e7\u05d5\u05dd, \u05d8\u05e2\u05d9\u05e0\u05d4", // EN: Transport and tracking panel · location, charge
+    "A\u011f ge\u00e7idi paneli \u00b7 ba\u011flant\u0131, durum": "\u05dc\u05d5\u05d7 \u05e9\u05e2\u05e8 \u00b7 \u05d7\u05d9\u05d1\u05d5\u05e8, \u05de\u05e6\u05d1", // EN: Gateway panel · connection, status
+    "Anahtar kontrol paneli \u00b7 a\u00e7, kapat": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05ea \u05de\u05e4\u05e1\u05e7 \u00b7 \u05d4\u05d3\u05dc\u05e7, \u05db\u05d1\u05d4", // EN: Switch control panel · on, off
+    "Bu ad ana sayfa kart\u0131nda ve cihaz listesinde g\u00f6r\u00fcn\u00fcr.": "\u05d4\u05e9\u05dd \u05d4\u05d6\u05d4 \u05de\u05d5\u05e6\u05d2 \u05d1\u05db\u05e8\u05d8\u05d9\u05e1 \u05d3\u05e3 \u05d4\u05d1\u05d9\u05ea \u05d5\u05d1\u05e8\u05e9\u05d9\u05de\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd.", // EN: This name shows on the home card and in the device list.
+    "Cihaz ad\u0131n\u0131 de\u011fi\u015ftir": "\u05e9\u05e0\u05d4 \u05e9\u05dd \u05de\u05db\u05e9\u05d9\u05e8", // EN: Rename device
+    "\u015eifre Belirle": "\u05d4\u05d2\u05d3\u05e8\u05ea \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Set a password
+    "Bu hesapta hen\u00fcz \u015fifre yok": "\u05dc\u05d7\u05e9\u05d1\u05d5\u05df \u05d6\u05d4 \u05d0\u05d9\u05df \u05e2\u05d3\u05d9\u05d9\u05df \u05e1\u05d9\u05e1\u05de\u05d4", // EN: This account has no password yet
+    "\u015eifren belirlendi \u2713": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05e9\u05dc\u05da \u05d4\u05d5\u05d2\u05d3\u05e8\u05d4 \u2713", // EN: Your password is set ✓
+    "Bu hesap Google ile a\u00e7\u0131ld\u0131, i\u00e7inde hen\u00fcz bir \u015fifre yok. \u0130lk \u015fifreni burada belirleyebilirsin; bundan sonra e-posta ve \u015fifreyle de giri\u015f yapabilirsin.": "\u05d4\u05d7\u05e9\u05d1\u05d5\u05df \u05d4\u05d6\u05d4 \u05e0\u05e4\u05ea\u05d7 \u05e2\u05dd Google \u05d5\u05d0\u05d9\u05df \u05d1\u05d5 \u05e2\u05d3\u05d9\u05d9\u05df \u05e1\u05d9\u05e1\u05de\u05d4. \u05db\u05d0\u05df \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05d2\u05d3\u05d9\u05e8 \u05d0\u05ea \u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d4\u05e8\u05d0\u05e9\u05d5\u05e0\u05d4; \u05dc\u05d0\u05d7\u05e8 \u05de\u05db\u05df \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05d2\u05dd \u05e2\u05dd \u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d5\u05e1\u05d9\u05e1\u05de\u05d4.", // EN: This account was opened with Google and has no password yet. Set your first password here; after that you can also sign in with email and password.
+    "\u015eifre belirleme ba\u011flant\u0131s\u0131n\u0131 e-postama g\u00f6nder": "\u05e9\u05dc\u05d7 \u05dc\u05d9 \u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05e2\u05dd \u05e7\u05d9\u05e9\u05d5\u05e8 \u05dc\u05d4\u05d2\u05d3\u05e8\u05ea \u05e1\u05d9\u05e1\u05de\u05d4", // EN: Email me a password setup link
+    "Bu i\u015flem ek do\u011frulama istiyor. A\u015fa\u011f\u0131dan \u015fifre belirleme ba\u011flant\u0131s\u0131 isteyebilirsin.": "\u05e4\u05e2\u05d5\u05dc\u05d4 \u05d6\u05d5 \u05d3\u05d5\u05e8\u05e9\u05ea \u05d0\u05d9\u05de\u05d5\u05ea \u05e0\u05d5\u05e1\u05e3. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d1\u05e7\u05e9 \u05dc\u05de\u05d8\u05d4 \u05e7\u05d9\u05e9\u05d5\u05e8 \u05dc\u05d4\u05d2\u05d3\u05e8\u05ea \u05e1\u05d9\u05e1\u05de\u05d4.", // EN: This action needs extra verification. You can request a password setup link below.
+    "\u015eifre belirleme ba\u011flant\u0131s\u0131 e-postana g\u00f6nderildi \u2713": "\u05e7\u05d9\u05e9\u05d5\u05e8 \u05dc\u05d4\u05d2\u05d3\u05e8\u05ea \u05e1\u05d9\u05e1\u05de\u05d4 \u05e0\u05e9\u05dc\u05d7 \u05dc\u05ea\u05d9\u05d1\u05ea \u05d4\u05d3\u05d5\u05d0\u05e8 \u05e9\u05dc\u05da \u2713", // EN: Password setup link sent to your inbox ✓
+    "\u015eifre ba\u011flant\u0131s\u0131 \u015fu anda g\u00f6nderilemiyor.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05e9\u05dc\u05d5\u05d7 \u05db\u05e8\u05d2\u05e2 \u05d0\u05ea \u05e7\u05d9\u05e9\u05d5\u05e8 \u05d4\u05e1\u05d9\u05e1\u05de\u05d4.", // EN: The password link can't be sent right now.
+    "Giri\u015f e-postan bulunamad\u0131; \u00f6nce giri\u015f yap.": "\u05dc\u05d0 \u05de\u05e6\u05d0\u05e0\u05d5 \u05d0\u05ea \u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d4\u05d4\u05ea\u05d7\u05d1\u05e8\u05d5\u05ea \u05e9\u05dc\u05da; \u05d4\u05ea\u05d7\u05d1\u05e8 \u05ea\u05d7\u05d9\u05dc\u05d4.", // EN: We couldn't find your sign-in email; sign in first.
+    "Ba\u011flant\u0131 g\u00f6nderilemedi. Birazdan tekrar dene.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e9\u05dc\u05d5\u05d7 \u05d0\u05ea \u05d4\u05e7\u05d9\u05e9\u05d5\u05e8. \u05e0\u05e1\u05d4 \u05e9\u05d5\u05d1 \u05d1\u05e2\u05d5\u05d3 \u05e8\u05d2\u05e2.", // EN: The link couldn't be sent. Try again in a moment.
+    "A\u00e7\u0131l\u0131r": "\u05e0\u05d3\u05dc\u05e7", // EN: Turns on
+    "Kapan\u0131r": "\u05e0\u05db\u05d1\u05d4", // EN: Turns off
+    "S\u0131cak \u0131\u015f\u0131k": "\u05d0\u05d5\u05e8 \u05d7\u05dd", // EN: Warm light
+    "I\u015f\u0131k tonu ayarlan\u0131r": "\u05de\u05db\u05d5\u05d5\u05e0\u05df \u05d2\u05d5\u05d5\u05df \u05d4\u05d0\u05d5\u05e8", // EN: Sets colour tone
+    "Eko modu": "\u05de\u05e6\u05d1 \u05d7\u05d9\u05e1\u05db\u05d5\u05df", // EN: Eco mode
+    "Konfor modu": "\u05de\u05e6\u05d1 \u05e0\u05d5\u05d7\u05d5\u05ea", // EN: Comfort mode
+    "Kilitlenir": "\u05e0\u05e0\u05e2\u05dc", // EN: Locks
+    "Bildirimler a\u00e7\u0131l\u0131r": "\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05de\u05d5\u05e4\u05e2\u05dc\u05d5\u05ea", // EN: Turns on notifications
+    "Fan otomatik": "\u05de\u05d0\u05d5\u05d5\u05e8\u05e8 \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9", // EN: Fan on auto
+    "Parlakl\u0131k %{0}": "\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea {0}%", // EN: Brightness {0}%
+    "bu kamera i\u00e7in ayarlanam\u0131yor": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05d4\u05d2\u05d3\u05d9\u05e8 \u05e2\u05d1\u05d5\u05e8 \u05de\u05e6\u05dc\u05de\u05d4 \u05d6\u05d5", // EN: can't be set for this camera
+    "\u0130zleme Plan\u0131": "\u05ea\u05d5\u05db\u05e0\u05d9\u05ea \u05e0\u05d9\u05d8\u05d5\u05e8", // EN: Monitoring Plan
+    "Enerji Cihazlar\u0131 ekran\u0131ndaki se\u00e7imin kullan\u0131l\u0131r.": "\u05e0\u05e2\u05e9\u05d4 \u05e9\u05d9\u05de\u05d5\u05e9 \u05d1\u05d1\u05d7\u05d9\u05e8\u05d4 \u05e9\u05d1\u05d7\u05e8\u05ea \u05d1\u05de\u05e1\u05da \u05de\u05db\u05e9\u05d9\u05e8\u05d9 \u05d4\u05d0\u05e0\u05e8\u05d2\u05d9\u05d4.", // EN: The choice you made on the Energy Devices screen is used.
+    "Ayl\u0131k hedefin ne olsun?": "\u05de\u05d4\u05d5 \u05d4\u05d9\u05e2\u05d3 \u05d4\u05d7\u05d5\u05d3\u05e9\u05d9 \u05e9\u05dc\u05da?", // EN: What should your monthly target be?
+    "Plan\u0131n \u00f6zeti \u2014 onayl\u0131yor musun?": "\u05e1\u05d9\u05db\u05d5\u05dd \u05d4\u05ea\u05d5\u05db\u05e0\u05d9\u05ea \u05e9\u05dc\u05da \u2014 \u05de\u05d0\u05e9\u05e8?", // EN: Summary of your plan — do you confirm?
+    "Mesajlar \u015fifreli olarak g\u00f6nderilir ve saklan\u0131r. Bu evin \u00fcyeleri d\u0131\u015f\u0131nda kimse okuyamaz; ev silinirse mesajlar da silinir.": "\u05d4\u05d4\u05d5\u05d3\u05e2\u05d5\u05ea \u05e0\u05e9\u05dc\u05d7\u05d5\u05ea \u05d5\u05e0\u05e9\u05de\u05e8\u05d5\u05ea \u05de\u05d5\u05e6\u05e4\u05e0\u05d5\u05ea. \u05d0\u05d9\u05e9 \u05de\u05dc\u05d1\u05d3 \u05d7\u05d1\u05e8\u05d9 \u05d4\u05d1\u05d9\u05ea \u05d4\u05d6\u05d4 \u05d0\u05d9\u05e0\u05d5 \u05d9\u05db\u05d5\u05dc \u05dc\u05e7\u05e8\u05d5\u05d0 \u05d0\u05d5\u05ea\u05df; \u05d0\u05dd \u05d4\u05d1\u05d9\u05ea \u05e0\u05de\u05d7\u05e7, \u05d2\u05dd \u05d4\u05d4\u05d5\u05d3\u05e2\u05d5\u05ea \u05e0\u05de\u05d7\u05e7\u05d5\u05ea.", // EN: Messages are sent and stored encrypted. Nobody outside this home's members can read them; if the home is deleted, the messages are deleted too.
+    "Daveti G\u00f6nder": "\u05e9\u05dc\u05d7 \u05d4\u05d6\u05de\u05e0\u05d4", // EN: Send Invite
+    "Sahipli\u011fi Devret": "\u05d4\u05e2\u05d1\u05e8 \u05d1\u05e2\u05dc\u05d5\u05ea", // EN: Transfer Ownership
+    "Uygulama kapal\u0131yken aile mesaj\u0131 ve ev sahibinin payla\u015ft\u0131\u011f\u0131 uyar\u0131lar gelir. Ana anahtar, kategori ve sessiz saat ayarlar\u0131n sunucuya kopyalan\u0131r; uygulamay\u0131 a\u00e7t\u0131\u011f\u0131nda g\u00fcncellenir.": "\u05db\u05e9\u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e1\u05d2\u05d5\u05e8\u05d4 \u05de\u05d2\u05d9\u05e2\u05d5\u05ea \u05d4\u05d5\u05d3\u05e2\u05d5\u05ea \u05de\u05e9\u05e4\u05d7\u05d4 \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05e9\u05d1\u05e2\u05dc \u05d4\u05d1\u05d9\u05ea \u05de\u05e9\u05ea\u05e3. \u05d4\u05de\u05ea\u05d2 \u05d4\u05e8\u05d0\u05e9\u05d9, \u05d4\u05e7\u05d8\u05d2\u05d5\u05e8\u05d9\u05d5\u05ea \u05d5\u05e9\u05e2\u05d5\u05ea \u05d4\u05e9\u05e7\u05d8 \u05e9\u05dc\u05da \u05de\u05d5\u05e2\u05ea\u05e7\u05d9\u05dd \u05dc\u05e9\u05e8\u05ea; \u05d4\u05dd \u05de\u05ea\u05e2\u05d3\u05db\u05e0\u05d9\u05dd \u05db\u05e9\u05ea\u05e4\u05ea\u05d7 \u05d0\u05ea \u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4.", // EN: Family messages and the alerts the home owner shares arrive while the app is closed. Your master switch, category and quiet-hours settings are copied to the server; they update when you open the app.
+    "Aile Mesajlar\u0131": "\u05d4\u05d5\u05d3\u05e2\u05d5\u05ea \u05de\u05e9\u05e4\u05d7\u05d4", // EN: Family Messages
+    "Ev \u00fcyelerinden yeni mesaj": "\u05d4\u05d5\u05d3\u05e2\u05d4 \u05d7\u05d3\u05e9\u05d4 \u05de\u05d7\u05d1\u05e8\u05d9 \u05d4\u05d1\u05d9\u05ea", // EN: New message from home members
+    "Yaz\u0131 Boyutu": "\u05d2\u05d5\u05d3\u05dc \u05d8\u05e7\u05e1\u05d8", // EN: Text Size
+    "Broker'a ba\u011flan\u0131lamad\u0131. Adresin ve portun do\u011fru, broker'\u0131n a\u00e7\u0131k oldu\u011fundan emin ol.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05dc-broker. \u05d5\u05d3\u05d0 \u05e9\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d5\u05d4\u05e4\u05d5\u05e8\u05d8 \u05e0\u05db\u05d5\u05e0\u05d9\u05dd \u05d5\u05e9\u05d4-broker \u05e4\u05d5\u05e2\u05dc.", // EN: Could not connect to the broker. Make sure the address and port are correct and the broker is running.
+    "MQTT broker \u00fczerinden Zigbee lamba ve prizler (masa\u00fcst\u00fc uygulamas\u0131nda); \u015fimdilik a\u00e7/kapat ve parlakl\u0131k": "\u05e0\u05d5\u05e8\u05d5\u05ea \u05d5\u05e9\u05e7\u05e2\u05d9 Zigbee \u05d3\u05e8\u05da broker \u05e9\u05dc MQTT (\u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4); \u05d1\u05d9\u05e0\u05ea\u05d9\u05d9\u05dd \u05d4\u05d3\u05dc\u05e7\u05d4/\u05db\u05d9\u05d1\u05d5\u05d9 \u05d5\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea", // EN: Zigbee lights and plugs through an MQTT broker (in the desktop app); on/off and brightness for now
+    "Zigbee2MQTT cihaz\u0131 ekle (MQTT broker)": "\u05d4\u05d5\u05e1\u05e3 \u05de\u05db\u05e9\u05d9\u05e8 Zigbee2MQTT (broker \u05e9\u05dc MQTT)", // EN: Add a Zigbee2MQTT device (MQTT broker)
+    "Broker'\u0131n (\u00f6r. Mosquitto) yerel IP adresini yaz. Kullan\u0131c\u0131 ad\u0131 ve parola yaln\u0131zca bu cihazda saklan\u0131r. \u015eimdilik lamba ve prizlerde a\u00e7/kapat ve parlakl\u0131k desteklenir.": "\u05d4\u05d6\u05df \u05d0\u05ea \u05db\u05ea\u05d5\u05d1\u05ea \u05d4-IP \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc \u05d4-broker (\u05dc\u05de\u05e9\u05dc Mosquitto). \u05e9\u05dd \u05d4\u05de\u05e9\u05ea\u05de\u05e9 \u05d5\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05e0\u05e9\u05de\u05e8\u05d9\u05dd \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d6\u05d4 \u05d1\u05dc\u05d1\u05d3. \u05d1\u05d9\u05e0\u05ea\u05d9\u05d9\u05dd \u05e0\u05ea\u05de\u05db\u05d9\u05dd \u05d4\u05d3\u05dc\u05e7\u05d4/\u05db\u05d9\u05d1\u05d5\u05d9 \u05d5\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea \u05d1\u05e0\u05d5\u05e8\u05d5\u05ea \u05d5\u05d1\u05e9\u05e7\u05e2\u05d9\u05dd.", // EN: Enter the local IP address of the broker (e.g. Mosquitto). The username and password are stored only on this device. On/off and brightness for lights and plugs are supported for now.
+    "Broker IP adresi (\u00f6r. 192.168.1.10)": "\u05db\u05ea\u05d5\u05d1\u05ea IP \u05e9\u05dc \u05d4-broker (\u05dc\u05de\u05e9\u05dc 192.168.1.10)", // EN: Broker IP address (e.g. 192.168.1.10)
+    "Port (varsay\u0131lan 1883)": "\u05e4\u05d5\u05e8\u05d8 (\u05d1\u05e8\u05d9\u05e8\u05ea \u05de\u05d7\u05d3\u05dc 1883)", // EN: Port (default 1883)
+    "Kullan\u0131c\u0131 ad\u0131 (yoksa bo\u015f b\u0131rak)": "\u05e9\u05dd \u05de\u05e9\u05ea\u05de\u05e9 (\u05d4\u05e9\u05d0\u05e8 \u05e8\u05d9\u05e7 \u05d0\u05dd \u05d0\u05d9\u05df)", // EN: Username (leave empty if none)
+    "Parola (yoksa bo\u015f b\u0131rak)": "\u05e1\u05d9\u05e1\u05de\u05d4 (\u05d4\u05e9\u05d0\u05e8 \u05e8\u05d9\u05e7 \u05d0\u05dd \u05d0\u05d9\u05df)", // EN: Password (leave empty if none)
+    "Temel konu (varsay\u0131lan zigbee2mqtt)": "\u05e0\u05d5\u05e9\u05d0 \u05d1\u05e1\u05d9\u05e1 (\u05d1\u05e8\u05d9\u05e8\u05ea \u05de\u05d7\u05d3\u05dc zigbee2mqtt)", // EN: Base topic (default zigbee2mqtt)
+    "Cihazlar\u0131 getir": "\u05d4\u05d1\u05d0 \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: Fetch devices
+    "Broker'\u0131n IP adresini yaz.": "\u05d4\u05d6\u05df \u05d0\u05ea \u05db\u05ea\u05d5\u05d1\u05ea \u05d4-IP \u05e9\u05dc \u05d4-broker.", // EN: Enter the broker's IP address.
+    "Port 1 ile 65535 aras\u0131nda olmal\u0131.": "\u05d4\u05e4\u05d5\u05e8\u05d8 \u05d7\u05d9\u05d9\u05d1 \u05dc\u05d4\u05d9\u05d5\u05ea \u05d1\u05d9\u05df 1 \u05dc-65535.", // EN: The port must be between 1 and 65535.
+    "Broker'a ba\u011flan\u0131l\u0131yor\u2026": "\u05de\u05ea\u05d7\u05d1\u05e8 \u05dc-broker\u2026", // EN: Connecting to the broker…
+    "Broker'da NEXUS'un kontrol edebilece\u011fi lamba ya da priz bulunamad\u0131.": "\u05d1-broker \u05dc\u05d0 \u05e0\u05de\u05e6\u05d0\u05d4 \u05e0\u05d5\u05e8\u05d4 \u05d0\u05d5 \u05e9\u05e7\u05e2 \u05e9-NEXUS \u05d9\u05db\u05d5\u05dc \u05dc\u05e9\u05dc\u05d5\u05d8 \u05d1\u05d4\u05dd.", // EN: No light or plug that NEXUS can control was found on the broker.
+    "Zigbee Ampul (Zigbee2MQTT)": "\u05e0\u05d5\u05e8\u05ea Zigbee (Zigbee2MQTT)", // EN: Zigbee Bulb (Zigbee2MQTT)
+    "Zigbee Priz (Zigbee2MQTT)": "\u05e9\u05e7\u05e2 Zigbee (Zigbee2MQTT)", // EN: Zigbee Plug (Zigbee2MQTT)
+    "Evde": "\u05d1\u05d1\u05d9\u05ea", // EN: At home
+    "D\u0131\u015far\u0131da": "\u05d1\u05d7\u05d5\u05e5", // EN: Away
+    "G\u00fcvenlik modunu Evde yap": "\u05d4\u05d2\u05d3\u05e8 \u05d0\u05ea \u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 \u05dc\u201c\u05d1\u05d1\u05d9\u05ea\u201d", // EN: Set security mode to At home
+    "G\u00fcvenlik modunu D\u0131\u015far\u0131da yap": "\u05d4\u05d2\u05d3\u05e8 \u05d0\u05ea \u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 \u05dc\u201c\u05d1\u05d7\u05d5\u05e5\u201d", // EN: Set security mode to Away
+    "G\u00fcvenlik modunu Gece yap": "\u05d4\u05d2\u05d3\u05e8 \u05d0\u05ea \u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 \u05dc\u201c\u05dc\u05d9\u05dc\u05d4\u201d", // EN: Set security mode to Night
+    "G\u00fcvenlik modu Evde olunca": "\u05db\u05e9\u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 \u05d4\u05d5\u05d0 \u201c\u05d1\u05d1\u05d9\u05ea\u201d", // EN: When security mode is At home
+    "G\u00fcvenlik modu D\u0131\u015far\u0131da olunca": "\u05db\u05e9\u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 \u05d4\u05d5\u05d0 \u201c\u05d1\u05d7\u05d5\u05e5\u201d", // EN: When security mode is Away
+    "G\u00fcvenlik modu Gece olunca": "\u05db\u05e9\u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 \u05d4\u05d5\u05d0 \u201c\u05dc\u05d9\u05dc\u05d4\u201d", // EN: When security mode is Night
+    "G\u00fcvenlik modu (Evde/D\u0131\u015far\u0131da/Gece) de\u011fi\u015fti\u011finde": "\u05db\u05e9\u05de\u05e6\u05d1 \u05d4\u05d0\u05d1\u05d8\u05d7\u05d4 (\u05d1\u05d1\u05d9\u05ea/\u05d1\u05d7\u05d5\u05e5/\u05dc\u05d9\u05dc\u05d4) \u05de\u05e9\u05ea\u05e0\u05d4", // EN: When the security mode (At home/Away/Night) changes
+    "Yaln\u0131zca NEXUS modunu de\u011fi\u015ftirir; cihazlara dokunmaz.": "\u05de\u05e9\u05e0\u05d4 \u05e8\u05e7 \u05d0\u05ea \u05de\u05e6\u05d1 NEXUS; \u05d0\u05d9\u05e0\u05d5 \u05e0\u05d5\u05d2\u05e2 \u05d1\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd.", // EN: Only changes the NEXUS mode; it does not touch devices.
+    "Mod de\u011fi\u015fince \u00e7al\u0131\u015f\u0131r (uygulama a\u00e7\u0131kken). Bu mod NEXUS i\u00e7inde bir anahtard\u0131r; ger\u00e7ek bir alarm paneline ba\u011flanmaz ve cihazlar\u0131 kendili\u011finden kilitlemez.": "\u05e4\u05d5\u05e2\u05dc \u05db\u05e9\u05d4\u05de\u05e6\u05d1 \u05de\u05e9\u05ea\u05e0\u05d4 (\u05db\u05e9\u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e4\u05ea\u05d5\u05d7\u05d4). \u05d4\u05de\u05e6\u05d1 \u05d4\u05d5\u05d0 \u05de\u05ea\u05d2 \u05d1\u05ea\u05d5\u05da NEXUS; \u05d4\u05d5\u05d0 \u05d0\u05d9\u05e0\u05d5 \u05de\u05d7\u05d5\u05d1\u05e8 \u05dc\u05dc\u05d5\u05d7 \u05d0\u05d6\u05e2\u05e7\u05d4 \u05d0\u05de\u05d9\u05ea\u05d9 \u05d5\u05d0\u05d9\u05e0\u05d5 \u05e0\u05d5\u05e2\u05dc \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05de\u05e2\u05e6\u05de\u05d5.", // EN: Runs when the mode changes (while the app is open). The mode is a switch inside NEXUS; it is not connected to a real alarm panel and does not lock devices by itself.
+    "\u015eimdiki mod:": "\u05d4\u05de\u05e6\u05d1 \u05d4\u05e0\u05d5\u05db\u05d7\u05d9:", // EN: Current mode:
+    "se\u00e7ilmemi\u015f": "\u05dc\u05d0 \u05e0\u05d1\u05d7\u05e8", // EN: not set
+    "Konum tetikleyicisi hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu, G\u00fcvenlik Modu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "\u05d8\u05e8\u05d9\u05d2\u05e8 \u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05e2\u05d3\u05d9\u05d9\u05df \u05d0\u05d9\u05e0\u05d5 \u05e0\u05ea\u05de\u05da, \u05d5\u05dc\u05db\u05df \u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05e9\u05de\u05d5\u05e8 \u05d0\u05d5\u05ea\u05d5. \u05d4\u05e1\u05d5\u05d2\u05d9\u05dd \u05d4\u05e4\u05d5\u05e2\u05dc\u05d9\u05dd: \u05d8\u05d9\u05d9\u05de\u05e8, \u05de\u05d6\u05d2 \u05d0\u05d5\u05d5\u05d9\u05e8, \u05de\u05e6\u05d1 \u05de\u05db\u05e9\u05d9\u05e8, \u05de\u05e6\u05d1 \u05d0\u05d1\u05d8\u05d7\u05d4 \u05d5\u05db\u05e9\u05d4\u05d0\u05d6\u05e2\u05e7\u05d4 \u05de\u05d5\u05e4\u05e2\u05dc\u05ea (\u05d7\u05d9\u05d9\u05e9\u05df).", // EN: The location trigger is not supported yet, so it cannot be saved. Working types: Timer, Weather, Device State, Security Mode and When Alarm Triggers (sensor).
+    "Uzak Eri\u015fim Adresi": "\u05db\u05ea\u05d5\u05d1\u05ea \u05d2\u05d9\u05e9\u05d4 \u05de\u05e8\u05d7\u05d5\u05e7", // EN: Remote Access Address
+    "Evin d\u0131\u015f\u0131ndayken (VPN ya da port y\u00f6nlendirme) bir cihaza veya hub'a ba\u015fka bir adresten ula\u015f\u0131yorsan, yerel adres yan\u0131t vermedi\u011finde bu adres denenir. Yaln\u0131z bu cihazda saklan\u0131r.": "\u05db\u05e9\u05d0\u05ea\u05d4 \u05de\u05d7\u05d5\u05e5 \u05dc\u05d1\u05d9\u05ea (VPN \u05d0\u05d5 \u05d4\u05e4\u05e0\u05d9\u05d9\u05ea \u05e4\u05d5\u05e8\u05d8\u05d9\u05dd) \u05d5\u05de\u05d2\u05d9\u05e2 \u05dc\u05de\u05db\u05e9\u05d9\u05e8 \u05d0\u05d5 \u05dc\u05e8\u05db\u05d6\u05ea \u05de\u05db\u05ea\u05d5\u05d1\u05ea \u05d0\u05d7\u05e8\u05ea, \u05db\u05ea\u05d5\u05d1\u05ea \u05d6\u05d5 \u05ea\u05e0\u05d5\u05e1\u05d4 \u05db\u05e9\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05d0\u05d9\u05e0\u05d4 \u05e2\u05d5\u05e0\u05d4. \u05e0\u05e9\u05de\u05e8\u05ea \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d6\u05d4 \u05d1\u05dc\u05d1\u05d3.", // EN: If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.
+    "\u00d6nce bir cihaz ekle; sonra ona uzak adres verebilirsin.": "\u05d4\u05d5\u05e1\u05e3 \u05e7\u05d5\u05d3\u05dd \u05de\u05db\u05e9\u05d9\u05e8; \u05d0\u05d7\u05e8 \u05db\u05da \u05ea\u05d5\u05db\u05dc \u05dc\u05d4\u05d2\u05d3\u05d9\u05e8 \u05dc\u05d5 \u05db\u05ea\u05d5\u05d1\u05ea \u05de\u05e8\u05d7\u05d5\u05e7.", // EN: Add a device first; then you can give it a remote address.
+    "Eve gelince": "\u05db\u05e9\u05de\u05d2\u05d9\u05e2\u05d9\u05dd \u05d4\u05d1\u05d9\u05ea\u05d4", // EN: When arriving home
+    "Evden \u00e7\u0131k\u0131nca": "\u05db\u05e9\u05d9\u05d5\u05e6\u05d0\u05d9\u05dd \u05de\u05d4\u05d1\u05d9\u05ea", // EN: When leaving home
+    "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r; bu cihazda kurulamaz.": "\u05d8\u05e8\u05d9\u05d2\u05e8 \u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05e4\u05d5\u05e2\u05dc \u05e8\u05e7 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05d4\u05de\u05d5\u05d1\u05d9\u05d9\u05dc; \u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05d4\u05d2\u05d3\u05d9\u05e8\u05d5 \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d6\u05d4.", // EN: The location trigger only works in the mobile app; it cannot be set up on this device.
+    "Konum tetikleyicisi yaln\u0131zca mobil uygulamada \u00e7al\u0131\u015f\u0131r.": "\u05d8\u05e8\u05d9\u05d2\u05e8 \u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05e4\u05d5\u05e2\u05dc \u05e8\u05e7 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05d4\u05de\u05d5\u05d1\u05d9\u05d9\u05dc.", // EN: The location trigger only works in the mobile app.
+    "Ev konumu se\u00e7ilmedi. \u00d6nce": "\u05dc\u05d0 \u05e0\u05d1\u05d7\u05e8 \u05de\u05d9\u05e7\u05d5\u05dd \u05d1\u05d9\u05ea. \u05e7\u05d5\u05d3\u05dd", // EN: No home location selected. First
+    "Ev konumuna g\u00f6re \u00e7al\u0131\u015f\u0131r. Yaln\u0131zca uygulama a\u00e7\u0131kken denetlenir (arka planda konum izlenmez); yakla\u015f\u0131k dakikada bir okunur.": "\u05e4\u05d5\u05e2\u05dc \u05d1\u05d9\u05d7\u05e1 \u05dc\u05de\u05d9\u05e7\u05d5\u05dd \u05d4\u05d1\u05d9\u05ea \u05e9\u05dc\u05da. \u05e0\u05d1\u05d3\u05e7 \u05e8\u05e7 \u05db\u05e9\u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e4\u05ea\u05d5\u05d7\u05d4 (\u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05d0\u05d9\u05e0\u05d5 \u05e0\u05e2\u05e7\u05d1 \u05d1\u05e8\u05e7\u05e2); \u05e0\u05e7\u05e8\u05d0 \u05d1\u05e2\u05e8\u05da \u05e4\u05e2\u05dd \u05d1\u05d3\u05e7\u05d4.", // EN: Works relative to your home location. It is only checked while the app is open (location is not tracked in the background); read about once a minute.
+    "Konum izni verildi.": "\u05d4\u05e8\u05e9\u05d0\u05ea \u05de\u05d9\u05e7\u05d5\u05dd \u05e0\u05d9\u05ea\u05e0\u05d4.", // EN: Location permission granted.
+    "Konum servisi bu cihazda kullan\u0131lam\u0131yor.": "\u05e9\u05d9\u05e8\u05d5\u05ea \u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05d0\u05d9\u05e0\u05d5 \u05d6\u05de\u05d9\u05df \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d6\u05d4.", // EN: Location service is not available on this device.
+    "Konum izni verilmedi, tetikleyici \u00e7al\u0131\u015fmaz.": "\u05d4\u05e8\u05e9\u05d0\u05ea \u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05dc\u05d0 \u05e0\u05d9\u05ea\u05e0\u05d4; \u05d4\u05d8\u05e8\u05d9\u05d2\u05e8 \u05dc\u05d0 \u05d9\u05e4\u05e2\u05dc.", // EN: Location permission not granted; the trigger will not run.
+    "Konum izni ver": "\u05d0\u05e4\u05e9\u05e8 \u05de\u05d9\u05e7\u05d5\u05dd", // EN: Allow location
+    "\u015eu moda ge\u00e7ince \u00e7al\u0131\u015fs\u0131n:": "\u05d4\u05e4\u05e2\u05dc \u05db\u05e9\u05d4\u05de\u05e6\u05d1 \u05de\u05e9\u05ea\u05e0\u05d4 \u05dc:", // EN: Run when the mode changes to:
+    "saat": "\u05e9\u05e2\u05d4", // EN: hour
+    "dakika": "\u05d3\u05e7\u05d4", // EN: minute
+    "Do\u011fruland\u0131": "\u05d0\u05d5\u05de\u05ea", // EN: Verified
+    "Hen\u00fcz do\u011frulanmad\u0131": "\u05e2\u05d3\u05d9\u05d9\u05df \u05dc\u05d0 \u05d0\u05d5\u05de\u05ea", // EN: Not yet verified
+    "Bu ba\u011flant\u0131 t\u00fcr\u00fc hen\u00fcz ger\u00e7ek bir cihazla denenmedi.": "\u05e1\u05d5\u05d2 \u05d4\u05d7\u05d9\u05d1\u05d5\u05e8 \u05d4\u05d6\u05d4 \u05e2\u05d3\u05d9\u05d9\u05df \u05dc\u05d0 \u05e0\u05d1\u05d3\u05e7 \u05e2\u05dd \u05de\u05db\u05e9\u05d9\u05e8 \u05d0\u05de\u05d9\u05ea\u05d9.", // EN: This connection type has not been tested with a real device yet.
+    "Uygulama \u0130\u00e7i Bildirim Sesi": "\u05e6\u05dc\u05d9\u05dc \u05d4\u05ea\u05e8\u05d0\u05d4 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4", // EN: In-App Notification Sound
+    "Yumu\u015fak": "\u05e2\u05d3\u05d9\u05df", // EN: Soft
+    "Yedekle ve Geri Y\u00fckle": "\u05d2\u05d9\u05d1\u05d5\u05d9 \u05d5\u05e9\u05d7\u05d6\u05d5\u05e8", // EN: Backup & Restore
+    "Cihaz listesi, otomasyonlar, senaryolar ve ayarlar bir dosyaya kaydedilir. Cihaz parolalar\u0131, yerel anahtarlar, Telegram anahtar\u0131 ve oturum bilgisi yede\u011fe girmez.": "\u05e8\u05e9\u05d9\u05de\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd, \u05d4\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d5\u05ea, \u05d4\u05e1\u05e6\u05e0\u05d5\u05ea \u05d5\u05d4\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05e9\u05dc\u05da \u05e0\u05e9\u05de\u05e8\u05d5\u05ea \u05d1\u05e7\u05d5\u05d1\u05e5. \u05e1\u05d9\u05e1\u05de\u05d0\u05d5\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd, \u05d4\u05de\u05e4\u05ea\u05d7\u05d5\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05d9\u05dd, \u05d0\u05e1\u05d9\u05de\u05d5\u05df Telegram \u05d5\u05d4\u05d7\u05d9\u05d1\u05d5\u05e8 \u05e9\u05dc\u05da \u05d0\u05d9\u05e0\u05dd \u05e0\u05db\u05dc\u05dc\u05d9\u05dd \u05d1\u05d2\u05d9\u05d1\u05d5\u05d9.", // EN: Your device list, automations, scenes and settings are saved to a file. Device passwords, local keys, the Telegram token and your session are not included in the backup.
+    "Yede\u011fi d\u0131\u015fa aktar": "\u05d9\u05d9\u05e6\u05d5\u05d0 \u05d2\u05d9\u05d1\u05d5\u05d9", // EN: Export backup
+    "Hata Raporu": "\u05d3\u05d9\u05d5\u05d5\u05d7 \u05e9\u05d2\u05d9\u05d0\u05d5\u05ea", // EN: Error Report
+    "Uygulamada olu\u015fan hatalar otomatik ve anonim olarak (ki\u015fisel veri olmadan) bize iletilir. \u0130stersen a\u015fa\u011f\u0131dan kapatabilirsin.": "\u05e9\u05d2\u05d9\u05d0\u05d5\u05ea \u05e9\u05e7\u05d5\u05e8\u05d5\u05ea \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e0\u05e9\u05dc\u05d7\u05d5\u05ea \u05d0\u05dc\u05d9\u05e0\u05d5 \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05ea \u05d5\u05d1\u05d0\u05d5\u05e4\u05df \u05d0\u05e0\u05d5\u05e0\u05d9\u05de\u05d9 (\u05dc\u05dc\u05d0 \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd \u05d0\u05d9\u05e9\u05d9\u05d9\u05dd). \u05d0\u05e4\u05e9\u05e8 \u05dc\u05db\u05d1\u05d5\u05ea \u05d6\u05d0\u05ea \u05dc\u05de\u05d8\u05d4.", // EN: Errors that happen in the app are sent to us automatically and anonymously (no personal data). You can turn it off below.
+    "Anonim Hata Raporu G\u00f6nder": "\u05e9\u05dc\u05d9\u05d7\u05ea \u05d3\u05d9\u05d5\u05d5\u05d7\u05d9 \u05e9\u05d2\u05d9\u05d0\u05d5\u05ea \u05d0\u05e0\u05d5\u05e0\u05d9\u05de\u05d9\u05d9\u05dd", // EN: Send Anonymous Error Reports
+    "Anonim hata raporu g\u00f6nder": "\u05e9\u05dc\u05d9\u05d7\u05ea \u05d3\u05d9\u05d5\u05d5\u05d7\u05d9 \u05e9\u05d2\u05d9\u05d0\u05d5\u05ea \u05d0\u05e0\u05d5\u05e0\u05d9\u05de\u05d9\u05d9\u05dd", // EN: Send anonymous error reports
+    "Yedekten geri y\u00fckle": "\u05e9\u05d7\u05d6\u05d5\u05e8 \u05de\u05d2\u05d9\u05d1\u05d5\u05d9", // EN: Restore from backup
+    "E\u015fle\u015fmi\u015f cihazlar\u0131na g\u00f6re haz\u0131r; tek dokunu\u015fla eklenir.": "\u05de\u05d5\u05db\u05df \u05e2\u05d1\u05d5\u05e8 \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05de\u05e9\u05d5\u05d9\u05db\u05d9\u05dd \u05e9\u05dc\u05da; \u05de\u05ea\u05d5\u05d5\u05e1\u05e3 \u05d1\u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea.", // EN: Ready for your paired devices; added with a single tap.
+    "Senin i\u00e7in haz\u0131r": "\u05de\u05d5\u05db\u05df \u05d1\u05e9\u05d1\u05d9\u05dc\u05da", // EN: Ready for you
+    "Dokununca e\u015fle\u015fmi\u015f cihazlar\u0131nda hemen \u00e7al\u0131\u015f\u0131r.": "\u05e4\u05d5\u05e2\u05dc \u05de\u05d9\u05d3 \u05d1\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05de\u05e9\u05d5\u05d9\u05db\u05d9\u05dd \u05e9\u05dc\u05da \u05db\u05e9\u05de\u05e7\u05d9\u05e9\u05d9\u05dd \u05e2\u05dc\u05d9\u05d5.", // EN: Runs on your paired devices as soon as you tap it.
+    "Ayarlarda ara": "\u05d7\u05d9\u05e4\u05d5\u05e9 \u05d1\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea", // EN: Search settings
+    "Bu aramayla e\u015fle\u015fen ayar yok.": "\u05d0\u05d9\u05df \u05d4\u05d2\u05d3\u05e8\u05d4 \u05e9\u05ea\u05d5\u05d0\u05de\u05ea \u05dc\u05d7\u05d9\u05e4\u05d5\u05e9 \u05d4\u05d6\u05d4.", // EN: No setting matches this search.
+    "Yenilemek i\u00e7in b\u0131rak\u0131n": "\u05e9\u05d7\u05e8\u05e8 \u05db\u05d3\u05d9 \u05dc\u05e8\u05e2\u05e0\u05df", // EN: Release to refresh
+    "Yenileniyor\u2026": "\u05de\u05e8\u05e2\u05e0\u05df\u2026", // EN: Refreshing…
+    "Yenilendi": "\u05e8\u05d5\u05e2\u05e0\u05df", // EN: Refreshed
+    "NEXUS Kullan\u0131c\u0131s\u0131": "\u05de\u05e9\u05ea\u05de\u05e9 NEXUS", // EN: NEXUS User
+    "NEXUS ana sayfa": "\u05d3\u05e3 \u05d4\u05d1\u05d9\u05ea \u05e9\u05dc NEXUS", // EN: NEXUS home
+    "Ana men\u00fc": "\u05ea\u05e4\u05e8\u05d9\u05d8 \u05e8\u05d0\u05e9\u05d9", // EN: Main menu
+    "Temay\u0131 de\u011fi\u015ftir": "\u05d4\u05d7\u05dc\u05e4\u05ea \u05e2\u05e8\u05db\u05ea \u05e0\u05d5\u05e9\u05d0", // EN: Change theme
+    "L\u00fctfen ge\u00e7erli bir e-posta gir.": "\u05e0\u05d0 \u05dc\u05d4\u05d6\u05d9\u05df \u05db\u05ea\u05d5\u05d1\u05ea \u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05ea\u05e7\u05d9\u05e0\u05d4.", // EN: Please enter a valid email.
+    "Bu e-posta ile zaten bir hesap var. L\u00fctfen giri\u015f yap\u0131n.": "\u05db\u05d1\u05e8 \u05e7\u05d9\u05d9\u05dd \u05d7\u05e9\u05d1\u05d5\u05df \u05e2\u05dd \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d4\u05d6\u05d4. \u05e0\u05d0 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8.", // EN: An account with this email already exists. Please sign in.
+    "Ba\u011flant\u0131n\u0131n s\u00fcresi dolmu\u015f ya da ge\u00e7ersiz. L\u00fctfen yeniden dene.": "\u05d4\u05e7\u05d9\u05e9\u05d5\u05e8 \u05e4\u05d2 \u05ea\u05d5\u05e7\u05e3 \u05d0\u05d5 \u05e9\u05d0\u05d9\u05e0\u05d5 \u05ea\u05e7\u05d9\u05df. \u05e0\u05d0 \u05dc\u05e0\u05e1\u05d5\u05ea \u05e9\u05d5\u05d1.", // EN: This link has expired or is invalid. Please try again.
+    "Bulut hesab\u0131 bu s\u00fcr\u00fcmde kapal\u0131; yerel hesaplarda \u015fifre s\u0131f\u0131rlanamaz.": "\u05d7\u05e9\u05d1\u05d5\u05df \u05d4\u05e2\u05e0\u05df \u05db\u05d1\u05d5\u05d9 \u05d1\u05d2\u05e8\u05e1\u05d4 \u05d6\u05d5; \u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05d0\u05e4\u05e1 \u05e1\u05d9\u05e1\u05de\u05d4 \u05d1\u05d7\u05e9\u05d1\u05d5\u05e0\u05d5\u05ea \u05de\u05e7\u05d5\u05de\u05d9\u05d9\u05dd.", // EN: Cloud account is disabled in this build; local account passwords cannot be reset.
+    "Bu adres bir hesaba ba\u011fl\u0131ysa s\u0131f\u0131rlama ba\u011flant\u0131s\u0131 g\u00f6nderildi. Gelen kutunu (ve gereksiz klas\u00f6r\u00fcn\u00fc) kontrol et.": "\u05d0\u05dd \u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05d6\u05d5 \u05de\u05e7\u05d5\u05e9\u05e8\u05ea \u05dc\u05d7\u05e9\u05d1\u05d5\u05df, \u05e0\u05e9\u05dc\u05d7 \u05e7\u05d9\u05e9\u05d5\u05e8 \u05dc\u05d0\u05d9\u05e4\u05d5\u05e1. \u05d1\u05d3\u05d5\u05e7 \u05d0\u05ea \u05ea\u05d9\u05d1\u05ea \u05d4\u05d3\u05d5\u05d0\u05e8 \u05d4\u05e0\u05db\u05e0\u05e1 (\u05d5\u05d0\u05ea \u05ea\u05d9\u05e7\u05d9\u05d9\u05ea \u05d4\u05e1\u05e4\u05d0\u05dd).", // EN: If this address is linked to an account, a reset link has been sent. Check your inbox (and spam folder).
+    "\u00c7ok s\u0131k denedin. Bir dakika sonra tekrar dene.": "\u05e0\u05d9\u05e1\u05d9\u05ea \u05d9\u05d5\u05ea\u05e8 \u05de\u05d3\u05d9 \u05e4\u05e2\u05de\u05d9\u05dd. \u05e0\u05e1\u05d4 \u05e9\u05d5\u05d1 \u05d1\u05e2\u05d5\u05d3 \u05d3\u05e7\u05d4.", // EN: Too many attempts. Please try again in a minute.
+    "Ba\u011flant\u0131 g\u00f6nderilemedi.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e9\u05dc\u05d5\u05d7 \u05d0\u05ea \u05d4\u05e7\u05d9\u05e9\u05d5\u05e8.", // EN: Could not send the link.
+    "Tekrar G\u00f6nder": "\u05e9\u05dc\u05d9\u05d7\u05d4 \u05d7\u05d5\u05d6\u05e8\u05ea", // EN: Send again
+    "\u015eifren g\u00fcncellendi. \u015eimdi giri\u015f yapabilirsin.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05e9\u05dc\u05da \u05e2\u05d5\u05d3\u05db\u05e0\u05d4. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05e2\u05db\u05e9\u05d9\u05d5.", // EN: Your password has been updated. You can sign in now.
+    "Mevcut \u015fifreni gir.": "\u05d4\u05d6\u05df \u05d0\u05ea \u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d4\u05e0\u05d5\u05db\u05d7\u05d9\u05ea \u05e9\u05dc\u05da.", // EN: Enter your current password.
+    "Mevcut \u015fifre yanl\u0131\u015f.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d4\u05e0\u05d5\u05db\u05d7\u05d9\u05ea \u05e9\u05d2\u05d5\u05d9\u05d4.", // EN: Current password is incorrect.
+    "Yeni \u015fifre eskisinden farkl\u0131 olmal\u0131.": "\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05d4\u05d7\u05d3\u05e9\u05d4 \u05d7\u05d9\u05d9\u05d1\u05ea \u05dc\u05d4\u05d9\u05d5\u05ea \u05e9\u05d5\u05e0\u05d4 \u05de\u05d4\u05d9\u05e9\u05e0\u05d4.", // EN: New password must differ from the old one.
+    "Oturum bulunamad\u0131. \u00c7\u0131k\u0131\u015f yap\u0131p tekrar giri\u015f yap.": "\u05d4\u05d7\u05d9\u05d1\u05d5\u05e8 \u05dc\u05d0 \u05e0\u05de\u05e6\u05d0. \u05d4\u05ea\u05e0\u05ea\u05e7 \u05d5\u05d4\u05ea\u05d7\u05d1\u05e8 \u05de\u05d7\u05d3\u05e9.", // EN: Session not found. Sign out and sign in again.
+    "\u015eifre g\u00fcncellenemedi.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e2\u05d3\u05db\u05df \u05d0\u05ea \u05d4\u05e1\u05d9\u05e1\u05de\u05d4.", // EN: Could not update the password.
+    "Davet e-postas\u0131 g\u00f6nderiliyor\u2026": "\u05e9\u05d5\u05dc\u05d7 \u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d4\u05d6\u05de\u05e0\u05d4\u2026", // EN: Sending invitation email…
+    "Bu e-postan\u0131n hesab\u0131 zaten var; kodla kat\u0131labilir.": "\u05dc\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d4\u05d6\u05d4 \u05db\u05d1\u05e8 \u05d9\u05e9 \u05d7\u05e9\u05d1\u05d5\u05df; \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05e6\u05d8\u05e8\u05e3 \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea \u05d4\u05e7\u05d5\u05d3.", // EN: This email already has an account; they can join with the code.
+    "Ev sahibi yetkileri kapat\u0131lamaz": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05db\u05d1\u05d5\u05ea \u05d0\u05ea \u05d4\u05e8\u05e9\u05d0\u05d5\u05ea \u05d4\u05d1\u05e2\u05dc\u05d9\u05dd", // EN: Owner permissions cannot be turned off
+    "Yetkiyi kapat": "\u05db\u05d9\u05d1\u05d5\u05d9 \u05d4\u05d4\u05e8\u05e9\u05d0\u05d4", // EN: Turn permission off
+    "Yetkiyi a\u00e7": "\u05d4\u05e4\u05e2\u05dc\u05ea \u05d4\u05d4\u05e8\u05e9\u05d0\u05d4", // EN: Turn permission on
+    "\u0130ptal edildi \u2014 d\u00f6nem sonuna kadar ge\u00e7erli": "\u05d1\u05d5\u05d8\u05dc \u2014 \u05d1\u05ea\u05d5\u05e7\u05e3 \u05e2\u05d3 \u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4", // EN: Cancelled — valid until the end of the period
+    "Aboneli\u011fin aktif": "\u05d4\u05de\u05e0\u05d5\u05d9 \u05e9\u05dc\u05da \u05e4\u05e2\u05d9\u05dc", // EN: Your subscription is active
+    "T\u00fcketim Ge\u00e7mi\u015fi": "\u05d4\u05d9\u05e1\u05d8\u05d5\u05e8\u05d9\u05d9\u05ea \u05e6\u05e8\u05d9\u05db\u05d4", // EN: Usage History
+    "Son 7 g\u00fcn \u00b7 yaln\u0131zca bu cihazdaki ger\u00e7ek \u00f6l\u00e7\u00fcmlerden": "7 \u05d4\u05d9\u05de\u05d9\u05dd \u05d4\u05d0\u05d7\u05e8\u05d5\u05e0\u05d9\u05dd \u00b7 \u05de\u05de\u05d3\u05d9\u05d3\u05d5\u05ea \u05d0\u05de\u05d9\u05ea\u05d9\u05d5\u05ea \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d6\u05d4 \u05d1\u05dc\u05d1\u05d3", // EN: Last 7 days · from real measurements on this device only
+    "Son 7 g\u00fcn": "7 \u05d4\u05d9\u05de\u05d9\u05dd \u05d4\u05d0\u05d7\u05e8\u05d5\u05e0\u05d9\u05dd", // EN: Last 7 days
+    "Hen\u00fcz kay\u0131tl\u0131 \u00f6l\u00e7\u00fcm yok. G\u00fc\u00e7 \u00f6l\u00e7en bir cihaz ekleyip bu sayfay\u0131 a\u00e7t\u0131\u011f\u0131nda okumalar burada birikir.": "\u05e2\u05d3\u05d9\u05d9\u05df \u05d0\u05d9\u05df \u05de\u05d3\u05d9\u05d3\u05d5\u05ea \u05e9\u05e0\u05e9\u05de\u05e8\u05d5. \u05d4\u05d5\u05e1\u05e3 \u05de\u05db\u05e9\u05d9\u05e8 \u05e9\u05de\u05d5\u05d3\u05d3 \u05e6\u05e8\u05d9\u05db\u05ea \u05d7\u05e9\u05de\u05dc \u05d5\u05e4\u05ea\u05d7 \u05d0\u05ea \u05d4\u05d3\u05e3 \u05d4\u05d6\u05d4; \u05d4\u05e7\u05e8\u05d9\u05d0\u05d5\u05ea \u05d9\u05e6\u05d8\u05d1\u05e8\u05d5 \u05db\u05d0\u05df.", // EN: No measurements recorded yet. Add a device that measures power and open this page; readings will build up here.
+    "\u00d6l\u00e7\u00fcm al\u0131nmayan aral\u0131klar hesaba kat\u0131lmaz; bu y\u00fczden de\u011ferler ger\u00e7ek t\u00fcketimden d\u00fc\u015f\u00fck olabilir.": "\u05e4\u05e8\u05e7\u05d9 \u05d6\u05de\u05df \u05dc\u05dc\u05d0 \u05de\u05d3\u05d9\u05d3\u05d5\u05ea \u05d0\u05d9\u05e0\u05dd \u05e0\u05e1\u05e4\u05e8\u05d9\u05dd, \u05d5\u05dc\u05db\u05df \u05d4\u05e2\u05e8\u05db\u05d9\u05dd \u05e2\u05e9\u05d5\u05d9\u05d9\u05dd \u05dc\u05d4\u05d9\u05d5\u05ea \u05e0\u05de\u05d5\u05db\u05d9\u05dd \u05de\u05d4\u05e6\u05e8\u05d9\u05db\u05d4 \u05d1\u05e4\u05d5\u05e2\u05dc.", // EN: Intervals without measurements are not counted, so values may be lower than actual consumption.
+    "Elektrik birim fiyat\u0131 (kWh ba\u015f\u0131na)": "\u05de\u05d7\u05d9\u05e8 \u05d7\u05e9\u05de\u05dc (\u05dc\u05e7\u05d5\u05d8\u05f4\u05e9)", // EN: Electricity price (per kWh)
+    "\u00d6rn. 2,50": "\u05dc\u05d3\u05d5\u05d2\u05de\u05d4 2.50", // EN: e.g. 2.50
+    "Para birimi": "\u05de\u05d8\u05d1\u05e2", // EN: Currency
+    "Tahmini maliyet; fatura de\u011fildir. Fiyat yaln\u0131zca bu cihazda saklan\u0131r.": "\u05e2\u05dc\u05d5\u05ea \u05de\u05e9\u05d5\u05e2\u05e8\u05ea, \u05dc\u05d0 \u05d7\u05e9\u05d1\u05d5\u05e0\u05d9\u05ea. \u05d4\u05de\u05d7\u05d9\u05e8 \u05e0\u05e9\u05de\u05e8 \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d6\u05d4 \u05d1\u05dc\u05d1\u05d3.", // EN: Estimated cost, not a bill. The price is stored on this device only.
+    "G\u00fcnl\u00fck t\u00fcketim, son 7 g\u00fcn (kWh)": "\u05e6\u05e8\u05d9\u05db\u05d4 \u05d9\u05d5\u05de\u05d9\u05ea, 7 \u05d4\u05d9\u05de\u05d9\u05dd \u05d4\u05d0\u05d7\u05e8\u05d5\u05e0\u05d9\u05dd (\u05e7\u05d5\u05d8\u05f4\u05e9)", // EN: Daily usage, last 7 days (kWh)
+    "\u00f6l\u00e7\u00fcm yok": "\u05d0\u05d9\u05df \u05e0\u05ea\u05d5\u05e0\u05d9\u05dd", // EN: no data
+    "Tahmini maliyet": "\u05e2\u05dc\u05d5\u05ea \u05de\u05e9\u05d5\u05e2\u05e8\u05ea", // EN: Estimated cost
+    "Maliyet tahmini i\u00e7in birim fiyat\u0131 gir.": "\u05d4\u05d6\u05df \u05de\u05d7\u05d9\u05e8 \u05dc\u05d9\u05d7\u05d9\u05d3\u05d4 \u05db\u05d3\u05d9 \u05dc\u05d4\u05e2\u05e8\u05d9\u05da \u05e2\u05dc\u05d5\u05ea.", // EN: Enter a unit price to estimate cost.
+    "Ge\u00e7erli bir fiyat gir (\u00f6rn. 2,50).": "\u05d4\u05d6\u05df \u05de\u05d7\u05d9\u05e8 \u05ea\u05e7\u05d9\u05df (\u05dc\u05d3\u05d5\u05d2\u05de\u05d4 2.50).", // EN: Enter a valid price (e.g. 2.50).
+    "Uyar\u0131": "\u05d4\u05ea\u05e8\u05d0\u05d4", // EN: Alert
+    "Ayl\u0131k hedef": "\u05d9\u05e2\u05d3 \u05d7\u05d5\u05d3\u05e9\u05d9", // EN: Monthly target
+    "Ba\u015flang\u0131\u00e7 saati": "\u05e9\u05e2\u05ea \u05d4\u05ea\u05d7\u05dc\u05d4", // EN: Start time
+    "Biti\u015f saati": "\u05e9\u05e2\u05ea \u05e1\u05d9\u05d5\u05dd", // EN: End time
+    "Haftal\u0131k \u00f6zet": "\u05e1\u05d9\u05db\u05d5\u05dd \u05e9\u05d1\u05d5\u05e2\u05d9", // EN: Weekly summary
+    "Ev se\u00e7": "\u05d1\u05d7\u05d9\u05e8\u05ea \u05d1\u05d9\u05ea", // EN: Choose home
+    "Yeni \u015fifre (en az 6 karakter)": "\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d3\u05e9\u05d4 (\u05dc\u05e4\u05d7\u05d5\u05ea 6 \u05ea\u05d5\u05d5\u05d9\u05dd)", // EN: New password (at least 6 characters)
+    "Yeni \u015fifre (tekrar)": "\u05e1\u05d9\u05e1\u05de\u05d4 \u05d7\u05d3\u05e9\u05d4 (\u05e9\u05d5\u05d1)", // EN: New password (again)
+    "G\u00fcvenlik sesi ve titre\u015fimi": "\u05e6\u05dc\u05d9\u05dc \u05d5\u05e8\u05d8\u05d8 \u05d0\u05d1\u05d8\u05d7\u05d4", // EN: Security sound and vibration
+    "Acil durum sesi ve titre\u015fimi": "\u05e6\u05dc\u05d9\u05dc \u05d5\u05e8\u05d8\u05d8 \u05d7\u05d9\u05e8\u05d5\u05dd", // EN: Emergency sound and vibration
+    "Enerji sesi ve titre\u015fimi": "\u05e6\u05dc\u05d9\u05dc \u05d5\u05e8\u05d8\u05d8 \u05d0\u05e0\u05e8\u05d2\u05d9\u05d4", // EN: Energy sound and vibration
+    "AI \u00f6nerileri sesi ve titre\u015fimi": "\u05e6\u05dc\u05d9\u05dc \u05d5\u05e8\u05d8\u05d8 \u05dc\u05d4\u05e6\u05e2\u05d5\u05ea AI", // EN: AI suggestion sound and vibration
+    "Vurgu Rengi": "\u05e6\u05d1\u05e2 \u05d4\u05d3\u05d2\u05e9\u05d4", // EN: Accent Colour
+    "Aramay\u0131 temizle": "\u05e0\u05d9\u05e7\u05d5\u05d9 \u05d4\u05d7\u05d9\u05e4\u05d5\u05e9", // EN: Clear search
+    "Yedek dosyas\u0131 se\u00e7": "\u05d1\u05d7\u05d9\u05e8\u05ea \u05e7\u05d5\u05d1\u05e5 \u05d2\u05d9\u05d1\u05d5\u05d9", // EN: Choose backup file
+    "Senaryoyu kaydet": "\u05e9\u05de\u05d9\u05e8\u05ea \u05d4\u05e1\u05e6\u05e0\u05d4", // EN: Save scene
+    "\u00d6zel renk se\u00e7": "\u05d1\u05d7\u05d9\u05e8\u05ea \u05e6\u05d1\u05e2 \u05de\u05d5\u05ea\u05d0\u05dd", // EN: Choose a custom colour
+    "Varsay\u0131lana d\u00f6n (mavi)": "\u05d7\u05d6\u05e8\u05d4 \u05dc\u05d1\u05e8\u05d9\u05e8\u05ea \u05d4\u05de\u05d7\u05d3\u05dc (\u05db\u05d7\u05d5\u05dc)", // EN: Reset to default (blue)
+    "Men\u00fcy\u00fc daralt (Ctrl+B)": "\u05db\u05d9\u05d5\u05d5\u05e5 \u05d4\u05ea\u05e4\u05e8\u05d9\u05d8 (Ctrl+B)", // EN: Collapse menu (Ctrl+B)
+    "Men\u00fcy\u00fc geni\u015flet (Ctrl+B)": "\u05d4\u05e8\u05d7\u05d1\u05ea \u05d4\u05ea\u05e4\u05e8\u05d9\u05d8 (Ctrl+B)", // EN: Expand menu (Ctrl+B)
+    "Oturum A\u00e7": "\u05d4\u05ea\u05d7\u05d1\u05e8\u05d5\u05ea", // EN: Sign in
+    "Oturum a\u00e7\u0131k de\u011fil": "\u05dc\u05d0 \u05de\u05d7\u05d5\u05d1\u05e8", // EN: Not signed in
+    "Aile sohbeti i\u00e7in oturum a\u00e7mal\u0131s\u0131n.": "\u05d9\u05e9 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05db\u05d3\u05d9 \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\u05e6\u05f3\u05d0\u05d8 \u05d4\u05de\u05e9\u05e4\u05d7\u05ea\u05d9.", // EN: You need to sign in for the family chat.
+    "Cihaz eklenince haz\u0131r senaryolar burada g\u00f6r\u00fcnecek.": "\u05e1\u05e6\u05e0\u05d5\u05ea \u05de\u05d5\u05db\u05e0\u05d5\u05ea \u05d9\u05d5\u05e4\u05d9\u05e2\u05d5 \u05db\u05d0\u05df \u05dc\u05d0\u05d7\u05e8 \u05d4\u05d5\u05e1\u05e4\u05ea \u05de\u05db\u05e9\u05d9\u05e8.", // EN: Ready-made scenes will appear here once you add a device.
+    "Turuncu": "\u05db\u05ea\u05d5\u05dd", // EN: Orange
+    "Pembe": "\u05d5\u05e8\u05d5\u05d3", // EN: Pink
+    "Turkuaz": "\u05d8\u05d5\u05e8\u05e7\u05d9\u05d6", // EN: Turquoise
+    "Etkin": "\u05e4\u05e2\u05d9\u05dc", // EN: Active
+    "\u00d6rn. 150": "\u05dc\u05d3\u05d5\u05d2\u05de\u05d4 150", // EN: e.g. 150
+    "\u00d6rn. NX-1A2B-3C4D-5E6F": "\u05dc\u05d3\u05d5\u05d2\u05de\u05d4 NX-1A2B-3C4D-5E6F", // EN: e.g. NX-1A2B-3C4D-5E6F
+    "Yerel oturum": "\u05d7\u05d9\u05d1\u05d5\u05e8 \u05de\u05e7\u05d5\u05de\u05d9", // EN: Local session
+    "\u0130zin yok": "\u05d0\u05d9\u05df \u05d4\u05e8\u05e9\u05d0\u05d4", // EN: No permission
+    "Bu evde cihaz kontrol iznin yok. Ev sahibi izni a\u00e7abilir.": "\u05d0\u05d9\u05df \u05dc\u05da \u05d4\u05e8\u05e9\u05d0\u05d4 \u05dc\u05e9\u05dc\u05d5\u05d8 \u05d1\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05d1\u05d9\u05ea \u05d4\u05d6\u05d4. \u05d4\u05d1\u05e2\u05dc\u05d9\u05dd \u05d9\u05db\u05d5\u05dc \u05dc\u05d4\u05e4\u05e2\u05d9\u05dc \u05d0\u05d5\u05ea\u05d4.", // EN: You don't have device control permission in this home. The owner can turn it on.
+    "Mesaj\u0131 Sil": "\u05de\u05d7\u05d9\u05e7\u05ea \u05d4\u05d5\u05d3\u05e2\u05d4", // EN: Delete Message
+    "Bu mesaj t\u00fcm \u00fcyeler i\u00e7in silinir.": "\u05d4\u05d4\u05d5\u05d3\u05e2\u05d4 \u05d4\u05d6\u05d5 \u05ea\u05d9\u05de\u05d7\u05e7 \u05e2\u05d1\u05d5\u05e8 \u05db\u05dc \u05d4\u05d7\u05d1\u05e8\u05d9\u05dd.", // EN: This message is deleted for all members.
+    "Son 15 dk i\u00e7inde": "\u05d1-15 \u05d4\u05d3\u05e7\u05d5\u05ea \u05d4\u05d0\u05d7\u05e8\u05d5\u05e0\u05d5\u05ea", // EN: Within the last 15 minutes
+    "Aile mesajlar\u0131 ve payla\u015f\u0131lan uyar\u0131lar": "\u05d4\u05d5\u05d3\u05e2\u05d5\u05ea \u05de\u05e9\u05e4\u05d7\u05d4 \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05de\u05e9\u05d5\u05ea\u05e4\u05d5\u05ea", // EN: Family messages and shared alerts
+    "Kritik uyar\u0131lar\u0131 payla\u015f": "\u05e9\u05d9\u05ea\u05d5\u05e3 \u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05e7\u05e8\u05d9\u05d8\u05d9\u05d5\u05ea", // EN: Share critical alerts
+    "Bu cihazdaki g\u00fcvenlik/acil olaylar\u0131n ba\u015fl\u0131\u011f\u0131 ve k\u0131sa metni evdeki di\u011fer \u00fcyelerin uygulamas\u0131nda g\u00f6r\u00fcn\u00fcr. Cihaz bilgileri ve anahtarlar payla\u015f\u0131lmaz; her \u00fcye kendi bildirim ayarlar\u0131na tabidir.": "\u05d4\u05db\u05d5\u05ea\u05e8\u05ea \u05d5\u05d4\u05d8\u05e7\u05e1\u05d8 \u05d4\u05e7\u05e6\u05e8 \u05e9\u05dc \u05d0\u05d9\u05e8\u05d5\u05e2\u05d9 \u05d0\u05d1\u05d8\u05d7\u05d4/\u05d7\u05d9\u05e8\u05d5\u05dd \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d6\u05d4 \u05d9\u05d5\u05e4\u05d9\u05e2\u05d5 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e9\u05dc \u05e9\u05d0\u05e8 \u05d4\u05d7\u05d1\u05e8\u05d9\u05dd \u05d1\u05d1\u05d9\u05ea. \u05e4\u05e8\u05d8\u05d9 \u05d4\u05de\u05db\u05e9\u05d9\u05e8 \u05d5\u05d4\u05de\u05e4\u05ea\u05d7\u05d5\u05ea \u05dc\u05d0 \u05de\u05e9\u05d5\u05ea\u05e4\u05d9\u05dd \u05dc\u05e2\u05d5\u05dc\u05dd; \u05db\u05dc \u05d7\u05d1\u05e8 \u05db\u05e4\u05d5\u05e3 \u05dc\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05d4\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05e9\u05dc \u05e2\u05e6\u05de\u05d5.", // EN: The title and short text of security/emergency events on this device appear in other members' apps in this home. Device details and keys are never shared; every member follows their own notification settings.
+    "Evden Ayr\u0131l": "\u05e2\u05d6\u05d9\u05d1\u05ea \u05d4\u05d1\u05d9\u05ea", // EN: Leave Home
+    "Ayr\u0131l": "\u05e2\u05d6\u05d9\u05d1\u05d4", // EN: Leave
+    "Davet e-postas\u0131ndaki kodu gir. Kod tek kullan\u0131ml\u0131kt\u0131r ve yaln\u0131zca davet edilen e-posta adresiyle \u00e7al\u0131\u015f\u0131r.": "\u05d4\u05d6\u05df \u05d0\u05ea \u05d4\u05e7\u05d5\u05d3 \u05de\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d4\u05d4\u05d6\u05de\u05e0\u05d4. \u05d4\u05e7\u05d5\u05d3 \u05d4\u05d5\u05d0 \u05dc\u05e9\u05d9\u05de\u05d5\u05e9 \u05d7\u05d3-\u05e4\u05e2\u05de\u05d9 \u05d5\u05e4\u05d5\u05e2\u05dc \u05e8\u05e7 \u05e2\u05dd \u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05e9\u05d4\u05d5\u05d6\u05de\u05e0\u05d4.", // EN: Enter the code from the invitation email. The code is single-use and only works with the invited email address.
+    "Oturum gerekli": "\u05e0\u05d3\u05e8\u05e9\u05ea \u05d4\u05ea\u05d7\u05d1\u05e8\u05d5\u05ea", // EN: Sign-in required
+    "\u00dcye davet etmek i\u00e7in \u00f6nce oturum a\u00e7; evin hesab\u0131na otomatik ba\u011flan\u0131r.": "\u05db\u05d3\u05d9 \u05dc\u05d4\u05d6\u05de\u05d9\u05df \u05d7\u05d1\u05e8\u05d9\u05dd, \u05d4\u05ea\u05d7\u05d1\u05e8 \u05ea\u05d7\u05d9\u05dc\u05d4; \u05ea\u05d7\u05d5\u05d1\u05e8 \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05ea \u05dc\u05d7\u05e9\u05d1\u05d5\u05df \u05d4\u05d1\u05d9\u05ea \u05e9\u05dc\u05da.", // EN: Sign in first to invite members; you'll be connected to your home's account automatically.
+    "E-posta sunucudan g\u00f6nderilemedi": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e9\u05dc\u05d5\u05d7 \u05d0\u05ea \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05de\u05d4\u05e9\u05e8\u05ea", // EN: The email couldn't be sent from the server
+    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "\u05d4\u05d4\u05d6\u05de\u05e0\u05d4 \u05e0\u05d5\u05e6\u05e8\u05d4 \u05d0\u05da \u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e9\u05dc\u05d5\u05d7 \u05d0\u05ea \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d4\u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9. \u05dc\u05d4\u05db\u05d9\u05df \u05d0\u05ea \u05e0\u05d5\u05e1\u05d7 \u05d4\u05d4\u05d6\u05de\u05e0\u05d4 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05d4\u05d3\u05d5\u05d0\u05e8 \u05e9\u05dc\u05da?", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
+    "Posta Uygulamas\u0131n\u0131 A\u00e7": "\u05e4\u05ea\u05d9\u05d7\u05ea \u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05d4\u05d3\u05d5\u05d0\u05e8", // EN: Open Mail App
+    "I\u015f\u0131k d\u00fczeyi": "\u05e8\u05de\u05ea \u05d0\u05d5\u05e8", // EN: Light level
+    "Bas\u0131n\u00e7": "\u05dc\u05d7\u05e5", // EN: Pressure
+    "Hareket alg\u0131land\u0131": "\u05d6\u05d5\u05d4\u05ea\u05d4 \u05ea\u05e0\u05d5\u05e2\u05d4", // EN: Motion detected
+    "Hareket yok": "\u05d0\u05d9\u05df \u05ea\u05e0\u05d5\u05e2\u05d4", // EN: No motion
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05dc\u05de\u05db\u05e9\u05d9\u05e8. \u05d5\u05d3\u05d0 \u05e9\u05d4\u05d5\u05d0 \u05d1\u05d0\u05d5\u05ea\u05d4 \u05e8\u05e9\u05ea.", // EN: Couldn't connect to the device. Make sure it's on the same network.
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05dc\u05de\u05db\u05e9\u05d9\u05e8. \u05d5\u05d3\u05d0 \u05e9\u05d4\u05d5\u05d0 \u05d1\u05d0\u05d5\u05ea\u05d4 \u05e8\u05e9\u05ea \u05d5\u05e9\u05db\u05ea\u05d5\u05d1\u05ea \u05d4-IP \u05d5\u05d4\u05de\u05e4\u05ea\u05d7 \u05d4\u05de\u05e7\u05d5\u05de\u05d9 \u05e0\u05db\u05d5\u05e0\u05d9\u05dd.", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
+    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05d1\u05d2\u05d5\u05d5\u05df \u05d7\u05dd, \u05e4\u05d5\u05ea\u05d7 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05de\u05db\u05d5\u05d5\u05e0\u05df \u05d0\u05ea \u05d4\u05de\u05d6\u05d2\u05df \u05dc-22\u00b0.", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
+    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05d5\u05e4\u05d5\u05ea\u05d7 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea, \u05de\u05e4\u05e2\u05d9\u05dc \u05d0\u05ea \u05d4\u05de\u05d6\u05d2\u05df \u05e2\u05dc 22\u00b0 \u05d5\u05e9\u05d5\u05dc\u05d7 \u05d0\u05ea \u05d4\u05e9\u05d5\u05d0\u05d1 \u05dc\u05d8\u05e2\u05d9\u05e0\u05d4.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
+    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "\u05de\u05db\u05d1\u05d4 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea, \u05d4\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4 \u05d5\u05d4\u05de\u05d6\u05d2\u05df, \u05e1\u05d5\u05d2\u05e8 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05e0\u05d5\u05e2\u05dc \u05d0\u05ea \u05d4\u05d3\u05dc\u05ea.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
+    "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "\u05de\u05db\u05d1\u05d4 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05d5\u05d4\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4, \u05e1\u05d5\u05d2\u05e8 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05e0\u05d5\u05e2\u05dc \u05d0\u05ea \u05d4\u05d3\u05dc\u05ea.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
+    "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "\u05de\u05db\u05d5\u05d5\u05e0\u05df \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05dc\u05d2\u05d5\u05d5\u05df \u05d7\u05dd \u05d1-15%, \u05e1\u05d5\u05d2\u05e8 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea \u05d5\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05ea \u05d4\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
+    "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "\u05e0\u05d5\u05e2\u05dc \u05d0\u05ea \u05d4\u05d3\u05dc\u05ea \u05d5\u05e1\u05d5\u05d2\u05e8 \u05d0\u05ea \u05d4\u05d5\u05d5\u05d9\u05dc\u05d5\u05e0\u05d5\u05ea.", // EN: Locks the door and closes the curtains.
+    "I\u015f\u0131klar\u0131 %70 parlakl\u0131kta a\u00e7ar.": "\u05de\u05d3\u05dc\u05d9\u05e7 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8\u05d5\u05ea \u05d1-70% \u05d1\u05d4\u05d9\u05e8\u05d5\u05ea.", // EN: Turns the lights on at 70% brightness.
+    "Robot s\u00fcp\u00fcrgeyi ba\u015flat\u0131r.": "\u05de\u05e4\u05e2\u05d9\u05dc \u05d0\u05ea \u05e9\u05d5\u05d0\u05d1 \u05d4\u05d0\u05d1\u05e7 \u05d4\u05e8\u05d5\u05d1\u05d5\u05d8\u05d9.", // EN: Starts the robot vacuum.
+    "Hafta i\u00e7i 10:00": "\u05d1\u05d9\u05de\u05d9 \u05d7\u05d5\u05dc \u05d1-10:00", // EN: Weekdays 10:00
+    "Klimay\u0131 ve termostat\u0131 konfor ayar\u0131na getirir, hava temizleyiciyi \u00e7al\u0131\u015ft\u0131r\u0131r.": "\u05de\u05db\u05d5\u05d5\u05e0\u05df \u05d0\u05ea \u05d4\u05de\u05d6\u05d2\u05df \u05d5\u05d4\u05ea\u05e8\u05de\u05d5\u05e1\u05d8\u05d8 \u05dc\u05d4\u05d2\u05d3\u05e8\u05ea \u05d4\u05e0\u05d5\u05d7\u05d5\u05ea \u05d5\u05de\u05e4\u05e2\u05d9\u05dc \u05d0\u05ea \u05de\u05d8\u05d4\u05e8 \u05d4\u05d0\u05d5\u05d5\u05d9\u05e8.", // EN: Sets the AC and thermostat to the comfort setting and runs the air purifier.
+    "Bildirim g\u00f6nderir": "\u05e9\u05d5\u05dc\u05d7 \u05d4\u05ea\u05e8\u05d0\u05d4", // EN: Sends a notification
+    "Bu senaryo mevcut cihazlar\u0131n\u0131 etkilemiyor. Senaryonun \u00e7al\u0131\u015fmas\u0131 i\u00e7in uygun bir cihaz (\u00f6r. \u0131\u015f\u0131k, perde, s\u00fcp\u00fcrge) eklemelisin.": "\u05d4\u05e1\u05e6\u05e0\u05d4 \u05d4\u05d6\u05d5 \u05dc\u05d0 \u05de\u05e9\u05e4\u05d9\u05e2\u05d4 \u05e2\u05dc \u05d0\u05e3 \u05d0\u05d7\u05d3 \u05de\u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05e7\u05d9\u05d9\u05de\u05d9\u05dd \u05e9\u05dc\u05da. \u05db\u05d3\u05d9 \u05e9\u05ea\u05e2\u05d1\u05d5\u05d3, \u05d4\u05d5\u05e1\u05e3 \u05de\u05db\u05e9\u05d9\u05e8 \u05de\u05ea\u05d0\u05d9\u05dd (\u05dc\u05de\u05e9\u05dc \u05d0\u05d5\u05e8, \u05d5\u05d9\u05dc\u05d5\u05df \u05d0\u05d5 \u05e9\u05d5\u05d0\u05d1 \u05d0\u05d1\u05e7).", // EN: This scenario doesn't affect any of your current devices. To make it work, add a suitable device (e.g. a light, curtain or vacuum).
+    "Yeni bir ev olu\u015ftur ya da sana g\u00f6nderilen davet koduyla bir eve kat\u0131l.": "\u05e6\u05d5\u05e8 \u05d1\u05d9\u05ea \u05d7\u05d3\u05e9 \u05d0\u05d5 \u05d4\u05e6\u05d8\u05e8\u05e3 \u05dc\u05d1\u05d9\u05ea \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea \u05e7\u05d5\u05d3 \u05d4\u05d4\u05d6\u05de\u05e0\u05d4 \u05e9\u05e0\u05e9\u05dc\u05d7 \u05d0\u05dc\u05d9\u05da.", // EN: Create a new home, or join one with the invite code sent to you.
+    "Oturum a\u00e7\u0131k de\u011fil. Evler yaln\u0131zca bu cihazda tutulur. \u00dcye davet etmek, bir eve kat\u0131lmak ve aile sohbeti i\u00e7in oturum a\u00e7.": "\u05d0\u05d9\u05e0\u05da \u05de\u05d7\u05d5\u05d1\u05e8. \u05d4\u05d1\u05ea\u05d9\u05dd \u05e0\u05e9\u05de\u05e8\u05d9\u05dd \u05d1\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d6\u05d4 \u05d1\u05dc\u05d1\u05d3. \u05d4\u05ea\u05d7\u05d1\u05e8 \u05db\u05d3\u05d9 \u05dc\u05d4\u05d6\u05de\u05d9\u05df \u05d7\u05d1\u05e8\u05d9\u05dd, \u05dc\u05d4\u05e6\u05d8\u05e8\u05e3 \u05dc\u05d1\u05d9\u05ea \u05d5\u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\u05e6\u05f3\u05d0\u05d8 \u05d4\u05de\u05e9\u05e4\u05d7\u05ea\u05d9.", // EN: You're not signed in. Homes are kept on this device only. Sign in to invite members, join a home and use the family chat.
+    "Shelly 1 / 1PM R\u00f6le": "\u05de\u05de\u05e1\u05e8 Shelly 1 / 1PM", // EN: Shelly 1 / 1PM Relay
+    "Shelly RGBW2 \u015eerit": "\u05e4\u05e1 Shelly RGBW2", // EN: Shelly RGBW2 Strip
+    "Shelly H&T S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc": "\u05d7\u05d9\u05d9\u05e9\u05df \u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4 \u05d5\u05dc\u05d7\u05d5\u05ea Shelly H&T", // EN: Shelly H&T Temperature & Humidity Sensor
+    "Shelly Door/Window Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "\u05d7\u05d9\u05d9\u05e9\u05df \u05de\u05d2\u05e2 \u05dc\u05d3\u05dc\u05ea/\u05d7\u05dc\u05d5\u05df Shelly Door/Window", // EN: Shelly Door/Window Contact Sensor
+    "Shelly Flood Su Bask\u0131n\u0131 Sens\u00f6r\u00fc": "\u05d7\u05d9\u05d9\u05e9\u05df \u05d4\u05e6\u05e4\u05d4 Shelly Flood", // EN: Shelly Flood Leak Sensor
+    "Shelly Smoke Duman Dedekt\u00f6r\u00fc": "\u05d2\u05dc\u05d0\u05d9 \u05e2\u05e9\u05df Shelly Smoke", // EN: Shelly Smoke Detector
+    "Yerel \u015fifreli HTTP (KLAP) \u2014 TP-Link hesab\u0131 e-postas\u0131 + \u015fifresiyle, masa\u00fcst\u00fc uygulamas\u0131nda; priz, anahtar ve ampuller (kamera ve enerji \u00f6l\u00e7\u00fcm\u00fc hen\u00fcz yok)": "HTTP \u05de\u05d5\u05e6\u05e4\u05df \u05de\u05e7\u05d5\u05de\u05d9 (KLAP) \u2014 \u05e2\u05dd \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc \u05d5\u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05e9\u05dc \u05d7\u05e9\u05d1\u05d5\u05df TP-Link, \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4; \u05e9\u05e7\u05e2\u05d9\u05dd, \u05de\u05ea\u05d2\u05d9\u05dd \u05d5\u05e0\u05d5\u05e8\u05d5\u05ea (\u05de\u05e6\u05dc\u05de\u05d4 \u05d5\u05de\u05d3\u05d9\u05d3\u05ea \u05d0\u05e0\u05e8\u05d2\u05d9\u05d4 \u05e2\u05d3\u05d9\u05d9\u05df \u05dc\u05d0 \u05d6\u05de\u05d9\u05e0\u05d5\u05ea)", // EN: Local encrypted HTTP (KLAP) — with your TP-Link account email + password, in the desktop app; plugs, switches and bulbs (camera and energy metering not available yet)
+    "Home Assistant Medya Oynat\u0131c\u0131 / TV": "Home Assistant \u05e0\u05d2\u05df \u05de\u05d3\u05d9\u05d4 / \u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4", // EN: Home Assistant Media Player / TV
+    "Home Assistant Hareket Sens\u00f6r\u00fc": "Home Assistant \u05d7\u05d9\u05d9\u05e9\u05df \u05ea\u05e0\u05d5\u05e2\u05d4", // EN: Home Assistant Motion Sensor
+    "Home Assistant Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "Home Assistant \u05d7\u05d9\u05d9\u05e9\u05df \u05d3\u05dc\u05ea \u05d5\u05d7\u05dc\u05d5\u05df", // EN: Home Assistant Door & Window Sensor
+    "Home Assistant S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc": "Home Assistant \u05d7\u05d9\u05d9\u05e9\u05df \u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05d4 \u05d5\u05dc\u05d7\u05d5\u05ea", // EN: Home Assistant Temperature & Humidity Sensor
+    "Home Assistant Su S\u0131z\u0131nt\u0131s\u0131 Sens\u00f6r\u00fc": "Home Assistant \u05d7\u05d9\u05d9\u05e9\u05df \u05e0\u05d6\u05d9\u05dc\u05ea \u05de\u05d9\u05dd", // EN: Home Assistant Water Leak Sensor
+    "Home Assistant Duman Dedekt\u00f6r\u00fc": "Home Assistant \u05d2\u05dc\u05d0\u05d9 \u05e2\u05e9\u05df", // EN: Home Assistant Smoke Detector
+    "Home Assistant Gaz ve CO Dedekt\u00f6r\u00fc": "Home Assistant \u05d2\u05dc\u05d0\u05d9 \u05d2\u05d6 \u05d5-CO", // EN: Home Assistant Gas & CO Detector
+    "Home Assistant Hava Kalitesi Sens\u00f6r\u00fc": "Home Assistant \u05d7\u05d9\u05d9\u05e9\u05df \u05d0\u05d9\u05db\u05d5\u05ea \u05d0\u05d5\u05d5\u05d9\u05e8", // EN: Home Assistant Air Quality Sensor
+    "Yerel LAN (3.3 / 3.4, \u015fifreli TCP) \u2014 \u00fccretsiz Tuya IoT hesab\u0131ndan al\u0131nan cihaz kimli\u011fi + yerel anahtarla, masa\u00fcst\u00fc uygulamas\u0131nda; priz, anahtar ve ampuller": "LAN \u05de\u05e7\u05d5\u05de\u05d9 (3.3 / 3.4, TCP \u05de\u05d5\u05e6\u05e4\u05df) \u2014 \u05e2\u05dd \u05de\u05d6\u05d4\u05d4 \u05d4\u05de\u05db\u05e9\u05d9\u05e8 \u05d5\u05d4\u05de\u05e4\u05ea\u05d7 \u05d4\u05de\u05e7\u05d5\u05de\u05d9 \u05de\u05d7\u05e9\u05d1\u05d5\u05df Tuya IoT \u05d7\u05d9\u05e0\u05de\u05d9, \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4; \u05e9\u05e7\u05e2\u05d9\u05dd, \u05de\u05ea\u05d2\u05d9\u05dd \u05d5\u05e0\u05d5\u05e8\u05d5\u05ea", // EN: Local LAN (3.3 / 3.4, encrypted TCP) — with the device ID + local key from a free Tuya IoT account, in the desktop app; plugs, switches and bulbs
+    "Tuya Ak\u0131ll\u0131 Anahtar / R\u00f6le": "Tuya \u05de\u05ea\u05d2 \u05d7\u05db\u05dd / \u05de\u05de\u05e1\u05e8", // EN: Tuya Smart Switch / Relay
+    "eWeLink DIY modu (cihazda DIY a\u00e7\u0131lm\u0131\u015f olmal\u0131) \u2014 \u00e7ok kanall\u0131 modellerde her kanal ayr\u0131 cihaz": "\u05de\u05e6\u05d1 DIY \u05e9\u05dc eWeLink (\u05d9\u05e9 \u05dc\u05d4\u05e4\u05e2\u05d9\u05dc DIY \u05d1\u05de\u05db\u05e9\u05d9\u05e8) \u2014 \u05d1\u05d3\u05d2\u05de\u05d9\u05dd \u05de\u05e8\u05d5\u05d1\u05d9 \u05e2\u05e8\u05d5\u05e6\u05d9\u05dd \u05db\u05dc \u05e2\u05e8\u05d5\u05e5 \u05d4\u05d5\u05d0 \u05de\u05db\u05e9\u05d9\u05e8 \u05e0\u05e4\u05e8\u05d3", // EN: eWeLink DIY mode (DIY must be enabled on the device) — on multi-channel models each channel is a separate device
+    "Sonoff BASICR3 R\u00f6le": "\u05de\u05de\u05e1\u05e8 Sonoff BASICR3", // EN: Sonoff BASICR3 Relay
+    "Sonoff MINIR2 R\u00f6le": "\u05de\u05de\u05e1\u05e8 Sonoff MINIR2", // EN: Sonoff MINIR2 Relay
+    "Sonoff 4CHPROR3 4 Kanall\u0131 R\u00f6le": "\u05de\u05de\u05e1\u05e8 4 \u05e2\u05e8\u05d5\u05e6\u05d9\u05dd Sonoff 4CHPROR3", // EN: Sonoff 4CHPROR3 4-Channel Relay
+    "Yerel UDP \u2014 masa\u00fcst\u00fc uygulamas\u0131nda; yerle\u015fik sahneler dahil": "UDP \u05de\u05e7\u05d5\u05de\u05d9 \u2014 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4; \u05db\u05d5\u05dc\u05dc \u05e1\u05e6\u05e0\u05d5\u05ea \u05de\u05d5\u05d1\u05e0\u05d5\u05ea", // EN: Local UDP — in the desktop app; built-in scenes included
+    "WiZ A60 Renkli Ampul": "\u05e0\u05d5\u05e8\u05d4 \u05e6\u05d1\u05e2\u05d5\u05e0\u05d9\u05ea WiZ A60", // EN: WiZ A60 Colour Bulb
+    "WiZ I\u015f\u0131k \u015eeridi": "\u05e4\u05e1 \u05ea\u05d0\u05d5\u05e8\u05d4 WiZ", // EN: WiZ Light Strip
+    "Yerel Open API (ba\u011flant\u0131 noktas\u0131 16021); g\u00fc\u00e7 d\u00fc\u011fmesiyle e\u015fle\u015ftirme gerekir": "Open API \u05de\u05e7\u05d5\u05de\u05d9 (\u05e4\u05d5\u05e8\u05d8 16021); \u05e0\u05d3\u05e8\u05e9 \u05e6\u05d9\u05de\u05d5\u05d3 \u05d1\u05d0\u05de\u05e6\u05e2\u05d5\u05ea \u05dc\u05d7\u05e6\u05df \u05d4\u05d4\u05e4\u05e2\u05dc\u05d4", // EN: Local Open API (port 16021); pairing with the power button is required
+    "Nanoleaf I\u015f\u0131k Panelleri / Shapes": "\u05e4\u05d0\u05e0\u05dc\u05d9 \u05ea\u05d0\u05d5\u05e8\u05d4 Nanoleaf / Shapes", // EN: Nanoleaf Light Panels / Shapes
+    "Yerel UDP \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "UDP \u05de\u05e7\u05d5\u05de\u05d9 \u2014 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: Local UDP — in the desktop app
+    "LIFX Z LED \u015eerit": "\u05e4\u05e1 LED LIFX Z", // EN: LIFX Z LED Strip
+    "Yerel UDP (Govee Home'da LAN Control a\u00e7\u0131k olmal\u0131) \u2014 masa\u00fcst\u00fc uygulamas\u0131nda": "UDP \u05de\u05e7\u05d5\u05de\u05d9 (\u05d9\u05e9 \u05dc\u05d4\u05e4\u05e2\u05d9\u05dc LAN Control \u05d1-Govee Home) \u2014 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4", // EN: Local UDP (LAN Control must be enabled in Govee Home) — in the desktop app
+    "Govee H6159 LED \u015eerit": "\u05e4\u05e1 LED Govee H6159", // EN: Govee H6159 LED Strip
+    "Saving\u2026": "\u05e9\u05d5\u05de\u05e8\u2026", // EN: Saving…
+    " and {0} more": " \u05d5\u05e2\u05d5\u05d3 {0}", // EN: and {0} more
+    " A command was sent over your local network to {0} devices.": " \u05e4\u05e7\u05d5\u05d3\u05d4 \u05e0\u05e9\u05dc\u05d7\u05d4 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da \u05d0\u05dc {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd.", // EN: A command was sent over your local network to {0} devices.
+    " A command was sent over your local network to 1 device.": " \u05e4\u05e7\u05d5\u05d3\u05d4 \u05e0\u05e9\u05dc\u05d7\u05d4 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da \u05d0\u05dc \u05de\u05db\u05e9\u05d9\u05e8 \u05d0\u05d7\u05d3.", // EN: A command was sent over your local network to 1 device.
+    "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 \u05d4\u05e4\u05e7\u05d5\u05d3\u05d4 \u05dc\u05d0 \u05d4\u05d2\u05d9\u05e2\u05d4 \u05d0\u05dc {0} \u2014 \u05d5\u05d3\u05d0 \u05e9\u05d4\u05d5\u05d0 \u05d3\u05d5\u05dc\u05e7 \u05d5\u05de\u05d7\u05d5\u05d1\u05e8 \u05dc\u05d0\u05d5\u05ea\u05d4 \u05e8\u05e9\u05ea Wi-Fi.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
+    "You have {0} devices at home.": "\u05d9\u05e9 \u05dc\u05da {0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05d1\u05d9\u05ea.", // EN: You have {0} devices at home.
+    "You have {0} device at home.": "\u05d9\u05e9 \u05dc\u05da \u05de\u05db\u05e9\u05d9\u05e8 {0} \u05d1\u05d1\u05d9\u05ea.", // EN: You have {0} device at home.
+    "Right now these are on: {0}.": "\u05db\u05e8\u05d2\u05e2 \u05d0\u05dc\u05d4 \u05d3\u05d5\u05dc\u05e7\u05d9\u05dd: {0}.", // EN: Right now these are on: {0}.
+    " and a few more": " \u05d5\u05e2\u05d5\u05d3 \u05db\u05de\u05d4", // EN: and a few more
+    "Nothing is on right now, the house is quiet.": "\u05db\u05e8\u05d2\u05e2 \u05e9\u05d5\u05dd \u05d3\u05d1\u05e8 \u05dc\u05d0 \u05d3\u05d5\u05dc\u05e7, \u05d4\u05d1\u05d9\u05ea \u05e9\u05e7\u05d8.", // EN: Nothing is on right now, the house is quiet.
+    "These need your attention: {0}.": "\u05d0\u05dc\u05d4 \u05d3\u05d5\u05e8\u05e9\u05d9\u05dd \u05d0\u05ea \u05ea\u05e9\u05d5\u05de\u05ea \u05dc\u05d1\u05da: {0}.", // EN: These need your attention: {0}.
+    "{0} devices": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: {0} devices
+    "{0} device": "\u05de\u05db\u05e9\u05d9\u05e8 {0}", // EN: {0} device
+    "Target temperature": "\u05d8\u05de\u05e4\u05e8\u05d8\u05d5\u05e8\u05ea \u05d9\u05e2\u05d3", // EN: Target temperature
+    "Brightness": "\u05d1\u05d4\u05d9\u05e8\u05d5\u05ea", // EN: Brightness
+    "Which device should I turn on? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: {0}.": "\u05d0\u05d9\u05d6\u05d4 \u05de\u05db\u05e9\u05d9\u05e8 \u05dc\u05d4\u05d3\u05dc\u05d9\u05e7? \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\u05e9\u05dd \u05de\u05db\u05e9\u05d9\u05e8, \u05d1\u05d7\u05d3\u05e8 \u05d0\u05d5 \u05d1\u05e1\u05d5\u05d2 \u05db\u05de\u05d5 \"\u05d0\u05d5\u05e8\u05d5\u05ea\" \u05d0\u05d5 \"\u05e9\u05e7\u05e2\u05d9\u05dd\". \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05de\u05e9\u05d5\u05d9\u05db\u05d9\u05dd \u05e9\u05dc\u05da: {0}.", // EN: Which device should I turn on? Use a device name, a room or a type like "lights" or "plugs". Your paired devices: {0}.
+    "Which device should I turn off? Use a device name, a room or a type like \"lights\" or \"plugs\". Your paired devices: {0}.": "\u05d0\u05d9\u05d6\u05d4 \u05de\u05db\u05e9\u05d9\u05e8 \u05dc\u05db\u05d1\u05d5\u05ea? \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\u05e9\u05dd \u05de\u05db\u05e9\u05d9\u05e8, \u05d1\u05d7\u05d3\u05e8 \u05d0\u05d5 \u05d1\u05e1\u05d5\u05d2 \u05db\u05de\u05d5 \"\u05d0\u05d5\u05e8\u05d5\u05ea\" \u05d0\u05d5 \"\u05e9\u05e7\u05e2\u05d9\u05dd\". \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05de\u05e9\u05d5\u05d9\u05db\u05d9\u05dd \u05e9\u05dc\u05da: {0}.", // EN: Which device should I turn off? Use a device name, a room or a type like "lights" or "plugs". Your paired devices: {0}.
+    "light": "\u05d0\u05d5\u05e8", // EN: light
+    "plug": "\u05e9\u05e7\u05e2", // EN: plug
+    "AC or heater": "\u05de\u05d6\u05d2\u05df \u05d0\u05d5 \u05ea\u05e0\u05d5\u05e8 \u05d7\u05d9\u05de\u05d5\u05dd", // EN: AC or heater
+    "TV or speaker": "\u05d8\u05dc\u05d5\u05d5\u05d9\u05d6\u05d9\u05d4 \u05d0\u05d5 \u05e8\u05de\u05e7\u05d5\u05dc", // EN: TV or speaker
+    "air purifier": "\u05de\u05d8\u05d4\u05e8 \u05d0\u05d5\u05d5\u05d9\u05e8", // EN: air purifier
+    "device": "\u05de\u05db\u05e9\u05d9\u05e8", // EN: device
+    "No paired {0} that can be switched was found{1}.": "\u05dc\u05d0 \u05e0\u05de\u05e6\u05d0 {0} \u05de\u05e9\u05d5\u05d9\u05da \u05e9\u05e0\u05d9\u05ea\u05df \u05dc\u05d4\u05d3\u05dc\u05d9\u05e7 \u05d0\u05d5 \u05dc\u05db\u05d1\u05d5\u05ea{1}.", // EN: No paired {0} that can be switched was found{1}.
+    "Turned on": "\u05d4\u05d5\u05d3\u05dc\u05e7", // EN: Turned on
+    "Turned off": "\u05db\u05d5\u05d1\u05d4", // EN: Turned off
+    "The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.": "\u05d4\u05e1\u05e6\u05e0\u05d4 {0} \u05dc\u05d0 \u05de\u05e9\u05e0\u05d4 \u05d0\u05e3 \u05d0\u05d7\u05d3 \u05de\u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d4\u05de\u05e9\u05d5\u05d9\u05db\u05d9\u05dd \u05e9\u05dc\u05da, \u05d5\u05dc\u05db\u05df \u05dc\u05d0 \u05e9\u05de\u05e8\u05ea\u05d9 \u05d0\u05d5\u05ea\u05d4. \u05e0\u05e1\u05d4 \u05e9\u05d5\u05d1 \u05dc\u05d0\u05d7\u05e8 \u05d4\u05d5\u05e1\u05e4\u05ea \u05de\u05db\u05e9\u05d9\u05e8 \u05de\u05ea\u05d0\u05d9\u05dd.", // EN: The {0} scene does not change any of your paired devices, so I did not save it. Try again after adding a suitable device.
+    "I set up the \"{0}\" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop).": "\u05d4\u05d2\u05d3\u05e8\u05ea\u05d9 \u05d0\u05ea \u05d4\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \"{0}\": \u05d4\u05d9\u05d0 \u05e4\u05d5\u05e2\u05dc\u05ea {1} \u05d5\u05de\u05db\u05d5\u05d5\u05e0\u05e0\u05ea {2} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd. \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d5\u05ea \u05e4\u05d5\u05e2\u05dc\u05d5\u05ea \u05db\u05dc \u05e2\u05d5\u05d3 \u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e4\u05ea\u05d5\u05d7\u05d4 (\u05d2\u05dd \u05de\u05d0\u05d6\u05d5\u05e8 \u05d4\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05d1\u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4).", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} devices. Automations run while the app is open (also from the tray on desktop).
+    "I set up the \"{0}\" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).": "\u05d4\u05d2\u05d3\u05e8\u05ea\u05d9 \u05d0\u05ea \u05d4\u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d4 \"{0}\": \u05d4\u05d9\u05d0 \u05e4\u05d5\u05e2\u05dc\u05ea {1} \u05d5\u05de\u05db\u05d5\u05d5\u05e0\u05e0\u05ea \u05de\u05db\u05e9\u05d9\u05e8 {2}. \u05d0\u05d5\u05d8\u05d5\u05de\u05e6\u05d9\u05d5\u05ea \u05e4\u05d5\u05e2\u05dc\u05d5\u05ea \u05db\u05dc \u05e2\u05d5\u05d3 \u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e4\u05ea\u05d5\u05d7\u05d4 (\u05d2\u05dd \u05de\u05d0\u05d6\u05d5\u05e8 \u05d4\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05d1\u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4).", // EN: I set up the "{0}" automation: it runs {1} and adjusts {2} device. Automations run while the app is open (also from the tray on desktop).
+    "I added \"{0}\" to Tap to Run; one tap adjusts {1} devices.": "\u05d4\u05d5\u05e1\u05e4\u05ea\u05d9 \u05d0\u05ea \"{0}\" \u05dc\u05d4\u05e4\u05e2\u05dc\u05d4 \u05d1\u05d4\u05e7\u05e9\u05d4; \u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea \u05de\u05db\u05d5\u05d5\u05e0\u05e0\u05ea {1} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd.", // EN: I added "{0}" to Tap to Run; one tap adjusts {1} devices.
+    "I added \"{0}\" to Tap to Run; one tap adjusts {1} device.": "\u05d4\u05d5\u05e1\u05e4\u05ea\u05d9 \u05d0\u05ea \"{0}\" \u05dc\u05d4\u05e4\u05e2\u05dc\u05d4 \u05d1\u05d4\u05e7\u05e9\u05d4; \u05d4\u05e7\u05e9\u05d4 \u05d0\u05d7\u05ea \u05de\u05db\u05d5\u05d5\u05e0\u05e0\u05ea \u05de\u05db\u05e9\u05d9\u05e8 {1}.", // EN: I added "{0}" to Tap to Run; one tap adjusts {1} device.
+    "That does not look like a device command. Try: \"turn off the living room light\" or \"set the AC to 22\".": "\u05d6\u05d4 \u05dc\u05d0 \u05e0\u05e8\u05d0\u05d4 \u05db\u05de\u05d5 \u05e4\u05e7\u05d5\u05d3\u05d4 \u05dc\u05de\u05db\u05e9\u05d9\u05e8. \u05e0\u05e1\u05d4: \"\u05db\u05d1\u05d4 \u05d0\u05ea \u05d4\u05d0\u05d5\u05e8 \u05d1\u05e1\u05dc\u05d5\u05df\" \u05d0\u05d5 \"\u05db\u05d5\u05d5\u05e0\u05df \u05d0\u05ea \u05d4\u05de\u05d6\u05d2\u05df \u05dc-22\".", // EN: That does not look like a device command. Try: "turn off the living room light" or "set the AC to 22".
+    "No active subscription": "\u05d0\u05d9\u05df \u05de\u05e0\u05d5\u05d9 \u05e4\u05e2\u05d9\u05dc", // EN: No active subscription
+    "There is no subscription to manage on this account. If you want to join NEXUS+, you can do it from the Plus page.": "\u05d0\u05d9\u05df \u05de\u05e0\u05d5\u05d9 \u05dc\u05e0\u05d9\u05d4\u05d5\u05dc \u05d1\u05d7\u05e9\u05d1\u05d5\u05df \u05d4\u05d6\u05d4. \u05db\u05d3\u05d9 \u05dc\u05d4\u05e6\u05d8\u05e8\u05e3 \u05dc-NEXUS+, \u05d0\u05e4\u05e9\u05e8 \u05dc\u05e2\u05e9\u05d5\u05ea \u05d6\u05d0\u05ea \u05de\u05d3\u05e3 Plus.", // EN: There is no subscription to manage on this account. If you want to join NEXUS+, you can do it from the Plus page.
+    "OK": "\u05d0\u05d9\u05e9\u05d5\u05e8", // EN: OK
+    "Your subscription ends on {0}. You can keep using NEXUS+ until then.": "\u05d4\u05de\u05e0\u05d5\u05d9 \u05e9\u05dc\u05da \u05de\u05e1\u05ea\u05d9\u05d9\u05dd \u05d1-{0}. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05de\u05e9\u05d9\u05da \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1-NEXUS+ \u05e2\u05d3 \u05d0\u05d6.", // EN: Your subscription ends on {0}. You can keep using NEXUS+ until then.
+    "Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.": "\u05d4\u05de\u05e0\u05d5\u05d9 \u05e9\u05dc\u05da \u05de\u05e1\u05ea\u05d9\u05d9\u05dd \u05d1\u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4 \u05d4\u05e0\u05d5\u05db\u05d7\u05d9\u05ea; \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d4\u05de\u05e9\u05d9\u05da \u05dc\u05d4\u05e9\u05ea\u05de\u05e9 \u05d1-NEXUS+ \u05e2\u05d3 \u05d0\u05d6.", // EN: Your subscription ends at the close of the current period; you can keep using NEXUS+ until then.
+    "Next renewal: {0}. If you cancel, you keep access until the end of this period; no further payment is taken.": "\u05d4\u05d7\u05d9\u05d3\u05d5\u05e9 \u05d4\u05d1\u05d0: {0}. \u05d0\u05dd \u05ea\u05d1\u05d8\u05dc, \u05d4\u05d2\u05d9\u05e9\u05d4 \u05ea\u05d9\u05e9\u05d0\u05e8 \u05e2\u05d3 \u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4 \u05d4\u05d6\u05d5; \u05dc\u05d0 \u05d9\u05ea\u05d1\u05e6\u05e2 \u05d7\u05d9\u05d5\u05d1 \u05e0\u05d5\u05e1\u05e3.", // EN: Next renewal: {0}. If you cancel, you keep access until the end of this period; no further payment is taken.
+    "Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.": "\u05d4\u05de\u05e0\u05d5\u05d9 \u05e9\u05dc\u05da \u05e4\u05e2\u05d9\u05dc. \u05d0\u05dd \u05ea\u05d1\u05d8\u05dc, \u05d4\u05d2\u05d9\u05e9\u05d4 \u05ea\u05d9\u05e9\u05d0\u05e8 \u05e2\u05d3 \u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4; \u05dc\u05d0 \u05d9\u05ea\u05d1\u05e6\u05e2 \u05d7\u05d9\u05d5\u05d1 \u05e0\u05d5\u05e1\u05e3.", // EN: Your subscription is active. If you cancel, you keep access until the end of the period; no further payment is taken.
+    "Cancel at period end": "\u05d1\u05d9\u05d8\u05d5\u05dc \u05d1\u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4", // EN: Cancel at period end
+    "Close": "\u05e1\u05d2\u05d9\u05e8\u05d4", // EN: Close
+    "Active since {0}": "\u05e4\u05e2\u05d9\u05dc \u05de\u05d0\u05d6 {0}", // EN: Active since {0}
+    "Device commands still work": "\u05e4\u05e7\u05d5\u05d3\u05d5\u05ea \u05dc\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e2\u05d3\u05d9\u05d9\u05df \u05e4\u05d5\u05e2\u05dc\u05d5\u05ea", // EN: Device commands still work
+    "The assistant could not be loaded.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d8\u05e2\u05d5\u05df \u05d0\u05ea \u05d4\u05e2\u05d5\u05d6\u05e8.", // EN: The assistant could not be loaded.
+    "System Setting": "\u05d4\u05d2\u05d3\u05e8\u05ea \u05de\u05e2\u05e8\u05db\u05ea", // EN: System Setting
+    "View": "\u05d4\u05e6\u05d2\u05d4", // EN: View
+    "Dark theme enabled": "\u05e2\u05e8\u05db\u05ea \u05d4\u05e0\u05d5\u05e9\u05d0 \u05d4\u05db\u05d4\u05d4 \u05d4\u05d5\u05e4\u05e2\u05dc\u05d4", // EN: Dark theme enabled
+    "Light theme enabled": "\u05e2\u05e8\u05db\u05ea \u05d4\u05e0\u05d5\u05e9\u05d0 \u05d4\u05d1\u05d4\u05d9\u05e8\u05d4 \u05d4\u05d5\u05e4\u05e2\u05dc\u05d4", // EN: Light theme enabled
+    "Do not disturb enabled": "\u05de\u05e6\u05d1 \u05e0\u05d0 \u05dc\u05d0 \u05dc\u05d4\u05e4\u05e8\u05d9\u05e2 \u05d4\u05d5\u05e4\u05e2\u05dc", // EN: Do not disturb enabled
+    "Do not disturb disabled": "\u05de\u05e6\u05d1 \u05e0\u05d0 \u05dc\u05d0 \u05dc\u05d4\u05e4\u05e8\u05d9\u05e2 \u05db\u05d5\u05d1\u05d4", // EN: Do not disturb disabled
+    "Attachment options": "\u05d0\u05e4\u05e9\u05e8\u05d5\u05d9\u05d5\u05ea \u05e6\u05d9\u05e8\u05d5\u05e3", // EN: Attachment options
+    "Ask my devices": "\u05e9\u05d0\u05dc \u05d0\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05d9", // EN: Ask my devices
+    "What is the status of my devices?": "\u05de\u05d4 \u05de\u05e6\u05d1 \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05d9?", // EN: What is the status of my devices?
+    "[Image: ": "[\u05ea\u05de\u05d5\u05e0\u05d4: ", // EN: [Image:
+    "I received your image but I can not analyse images yet. You can ask me about your devices and the app in text.": "\u05e7\u05d9\u05d1\u05dc\u05ea\u05d9 \u05d0\u05ea \u05d4\u05ea\u05de\u05d5\u05e0\u05d4 \u05e9\u05dc\u05da, \u05d0\u05d1\u05dc \u05e2\u05d3\u05d9\u05d9\u05df \u05d0\u05d9\u05e0\u05d9 \u05d9\u05db\u05d5\u05dc \u05dc\u05e0\u05ea\u05d7 \u05ea\u05de\u05d5\u05e0\u05d5\u05ea. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05e9\u05d0\u05d5\u05dc \u05d0\u05d5\u05ea\u05d9 \u05d1\u05d8\u05e7\u05e1\u05d8 \u05e2\u05dc \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05da \u05d5\u05e2\u05dc \u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4.", // EN: I received your image but I can not analyse images yet. You can ask me about your devices and the app in text.
+    "Welcome back, ": "\u05d1\u05e8\u05d5\u05da \u05e9\u05d5\u05d1\u05da, ", // EN: Welcome back,
+    "Fits this strategy": "\u05de\u05ea\u05d0\u05d9\u05dd \u05dc\u05d0\u05e1\u05d8\u05e8\u05d8\u05d2\u05d9\u05d4 \u05d4\u05d6\u05d5", // EN: Fits this strategy
+    "Feedback": "\u05de\u05e9\u05d5\u05d1", // EN: Feedback
+    "Back online.": "\u05d7\u05d6\u05e8\u05ea \u05dc\u05e8\u05e9\u05ea.", // EN: Back online.
+    "You're offline \u2014 devices keep working on your local network.": "\u05d0\u05ea\u05d4 \u05dc\u05d0 \u05de\u05d7\u05d5\u05d1\u05e8 \u05dc\u05d0\u05d9\u05e0\u05d8\u05e8\u05e0\u05d8 \u2014 \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05de\u05de\u05e9\u05d9\u05db\u05d9\u05dd \u05dc\u05e2\u05d1\u05d5\u05d3 \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da.", // EN: You're offline — devices keep working on your local network.
+    "This device can reach your local network": "\u05d4\u05de\u05db\u05e9\u05d9\u05e8 \u05d4\u05d6\u05d4 \u05de\u05d2\u05d9\u05e2 \u05dc\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da", // EN: This device can reach your local network
+    "The local network is not reachable here": "\u05d4\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05d0\u05d9\u05e0\u05d4 \u05e0\u05d2\u05d9\u05e9\u05d4 \u05db\u05d0\u05df", // EN: The local network is not reachable here
+    "You can check your devices here. If the local address does not answer, the optional remote address is tried.": "\u05d0\u05e4\u05e9\u05e8 \u05dc\u05d1\u05d3\u05d5\u05e7 \u05d0\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05da \u05db\u05d0\u05df. \u05d0\u05dd \u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05dc\u05d0 \u05e2\u05d5\u05e0\u05d4, \u05ea\u05d9\u05d1\u05d3\u05e7 \u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e8\u05d5\u05d7\u05e7\u05ea \u05d4\u05d0\u05d5\u05e4\u05e6\u05d9\u05d5\u05e0\u05dc\u05d9\u05ea.", // EN: You can check your devices here. If the local address does not answer, the optional remote address is tried.
+    "A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.": "\u05d3\u05e4\u05d3\u05e4\u05df \u05dc\u05d0 \u05d9\u05db\u05d5\u05dc \u05dc\u05ea\u05e7\u05e9\u05e8 \u05d9\u05e9\u05d9\u05e8\u05d5\u05ea \u05e2\u05dd \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05d1\u05d9\u05ea \u05e9\u05dc\u05da. \u05d4\u05e9\u05ea\u05de\u05e9 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4 \u05d0\u05d5 \u05d4\u05e0\u05d9\u05d9\u05d3 \u05db\u05d3\u05d9 \u05dc\u05e9\u05dc\u05d5\u05d8 \u05d1\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd.", // EN: A browser cannot talk to your home devices directly. Use the desktop or mobile app to control devices.
+    "Not checked": "\u05dc\u05d0 \u05e0\u05d1\u05d3\u05e7", // EN: Not checked
+    "Checking\u2026": "\u05d1\u05d5\u05d3\u05e7\u2026", // EN: Checking…
+    "Reachable": "\u05e0\u05d2\u05d9\u05e9", // EN: Reachable
+    "Not reachable": "\u05dc\u05d0 \u05e0\u05d2\u05d9\u05e9", // EN: Not reachable
+    "No devices on your network yet": "\u05e2\u05d3\u05d9\u05d9\u05df \u05d0\u05d9\u05df \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05e8\u05e9\u05ea \u05e9\u05dc\u05da", // EN: No devices on your network yet
+    "First find your devices from Add Device. Devices on your local network are listed here.": "\u05ea\u05d7\u05d9\u05dc\u05d4 \u05de\u05e6\u05d0 \u05d0\u05ea \u05d4\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05e9\u05dc\u05da \u05d3\u05e8\u05da \u05d4\u05d5\u05e1\u05e4\u05ea \u05de\u05db\u05e9\u05d9\u05e8. \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d1\u05e8\u05e9\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05e9\u05dc\u05da \u05de\u05d5\u05e4\u05d9\u05e2\u05d9\u05dd \u05db\u05d0\u05df.", // EN: First find your devices from Add Device. Devices on your local network are listed here.
+    "Add Device": "\u05d4\u05d5\u05e1\u05e4\u05ea \u05de\u05db\u05e9\u05d9\u05e8", // EN: Add Device
+    "Unnamed device": "\u05de\u05db\u05e9\u05d9\u05e8 \u05dc\u05dc\u05d0 \u05e9\u05dd", // EN: Unnamed device
+    "Check": "\u05d1\u05d3\u05d9\u05e7\u05d4", // EN: Check
+    "Accent color: {0}": "\u05e6\u05d1\u05e2 \u05d4\u05d3\u05d2\u05e9\u05d4: {0}", // EN: Accent color: {0}
+    "Welcome Back": "\u05d1\u05e8\u05d5\u05da \u05e9\u05d5\u05d1\u05da", // EN: Welcome Back
+    "Welcome": "\u05d1\u05e8\u05d5\u05da \u05d4\u05d1\u05d0", // EN: Welcome
+    "Signing in\u2026": "\u05de\u05ea\u05d7\u05d1\u05e8\u2026", // EN: Signing in…
+    "Selected location": "\u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05e9\u05e0\u05d1\u05d7\u05e8", // EN: Selected location
+    "Current location": "\u05d4\u05de\u05d9\u05e7\u05d5\u05dd \u05d4\u05e0\u05d5\u05db\u05d7\u05d9", // EN: Current location
+    "Paid": "\u05e9\u05d5\u05dc\u05dd", // EN: Paid
+    "Failed": "\u05e0\u05db\u05e9\u05dc", // EN: Failed
+    "Refunded": "\u05d4\u05d5\u05d7\u05d6\u05e8", // EN: Refunded
+    "Pending": "\u05d1\u05d4\u05de\u05ea\u05e0\u05d4", // EN: Pending
+    "Yearly": "\u05e9\u05e0\u05ea\u05d9", // EN: Yearly
+    "Monthly": "\u05d7\u05d5\u05d3\u05e9\u05d9", // EN: Monthly
+    "Ends at period end: {0}": "\u05de\u05e1\u05ea\u05d9\u05d9\u05dd \u05d1\u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4: {0}", // EN: Ends at period end: {0}
+    "Ends at period end.": "\u05de\u05e1\u05ea\u05d9\u05d9\u05dd \u05d1\u05e1\u05d5\u05e3 \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4.", // EN: Ends at period end.
+    "Next renewal: {0}": "\u05d4\u05d7\u05d9\u05d3\u05d5\u05e9 \u05d4\u05d1\u05d0: {0}", // EN: Next renewal: {0}
+    "Your subscription is active.": "\u05d4\u05de\u05e0\u05d5\u05d9 \u05e9\u05dc\u05da \u05e4\u05e2\u05d9\u05dc.", // EN: Your subscription is active.
+    "You have no orders yet": "\u05e2\u05d3\u05d9\u05d9\u05df \u05d0\u05d9\u05df \u05dc\u05da \u05d4\u05d6\u05de\u05e0\u05d5\u05ea", // EN: You have no orders yet
+    "When you buy NEXUS+, your payments are listed here.": "\u05db\u05e9\u05ea\u05e8\u05db\u05d5\u05e9 \u05d0\u05ea NEXUS+, \u05d4\u05ea\u05e9\u05dc\u05d5\u05de\u05d9\u05dd \u05e9\u05dc\u05da \u05d9\u05d5\u05e4\u05d9\u05e2\u05d5 \u05db\u05d0\u05df.", // EN: When you buy NEXUS+, your payments are listed here.
+    "See NEXUS+ plans": "\u05e6\u05e4\u05d9\u05d9\u05d4 \u05d1\u05ea\u05d5\u05db\u05e0\u05d9\u05d5\u05ea NEXUS+", // EN: See NEXUS+ plans
+    "Orders need a cloud account": "\u05d4\u05d6\u05de\u05e0\u05d5\u05ea \u05d3\u05d5\u05e8\u05e9\u05d5\u05ea \u05d7\u05e9\u05d1\u05d5\u05df \u05e2\u05e0\u05df", // EN: Orders need a cloud account
+    "Payment records are kept on the server. They appear here once you sign in with your cloud account.": "\u05e8\u05e9\u05d5\u05de\u05d5\u05ea \u05d4\u05ea\u05e9\u05dc\u05d5\u05dd \u05e0\u05e9\u05de\u05e8\u05d5\u05ea \u05d1\u05e9\u05e8\u05ea. \u05d4\u05df \u05d9\u05d5\u05e4\u05d9\u05e2\u05d5 \u05db\u05d0\u05df \u05dc\u05d0\u05d7\u05e8 \u05e9\u05ea\u05ea\u05d7\u05d1\u05e8 \u05e2\u05dd \u05d7\u05e9\u05d1\u05d5\u05df \u05d4\u05e2\u05e0\u05df \u05e9\u05dc\u05da.", // EN: Payment records are kept on the server. They appear here once you sign in with your cloud account.
+    "Account and security": "\u05d7\u05e9\u05d1\u05d5\u05df \u05d5\u05d0\u05d1\u05d8\u05d7\u05d4", // EN: Account and security
+    "Loading payments\u2026": "\u05d8\u05d5\u05e2\u05df \u05ea\u05e9\u05dc\u05d5\u05de\u05d9\u05dd\u2026", // EN: Loading payments…
+    "Sign in with your cloud account first": "\u05d4\u05ea\u05d7\u05d1\u05e8 \u05ea\u05d7\u05d9\u05dc\u05d4 \u05e2\u05dd \u05d7\u05e9\u05d1\u05d5\u05df \u05d4\u05e2\u05e0\u05df \u05e9\u05dc\u05da", // EN: Sign in with your cloud account first
+    "You need to sign in to see payment records.": "\u05d9\u05e9 \u05dc\u05d4\u05ea\u05d7\u05d1\u05e8 \u05db\u05d3\u05d9 \u05dc\u05e8\u05d0\u05d5\u05ea \u05e8\u05e9\u05d5\u05de\u05d5\u05ea \u05ea\u05e9\u05dc\u05d5\u05dd.", // EN: You need to sign in to see payment records.
+    "Could not load orders": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d8\u05e2\u05d5\u05df \u05d4\u05d6\u05de\u05e0\u05d5\u05ea", // EN: Could not load orders
+    "The server could not be reached. Check your connection and reopen the page.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d4\u05d2\u05d9\u05e2 \u05dc\u05e9\u05e8\u05ea. \u05d1\u05d3\u05d5\u05e7 \u05d0\u05ea \u05d4\u05d7\u05d9\u05d1\u05d5\u05e8 \u05e9\u05dc\u05da \u05d5\u05e4\u05ea\u05d7 \u05d0\u05ea \u05d4\u05d3\u05e3 \u05de\u05d7\u05d3\u05e9.", // EN: The server could not be reached. Check your connection and reopen the page.
+    "7 days free, then just {0} per year. Cancel anytime.": "7 \u05d9\u05de\u05d9\u05dd \u05d1\u05d7\u05d9\u05e0\u05dd, \u05d5\u05d0\u05d6 \u05e8\u05e7 {0} \u05dc\u05e9\u05e0\u05d4. \u05d0\u05e4\u05e9\u05e8 \u05dc\u05d1\u05d8\u05dc \u05d1\u05db\u05dc \u05e2\u05ea.", // EN: 7 days free, then just {0} per year. Cancel anytime.
+    "{0} device connected": "\u05de\u05db\u05e9\u05d9\u05e8 {0} \u05de\u05d7\u05d5\u05d1\u05e8", // EN: {0} device connected
+    "{0} devices connected": "{0} \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05de\u05d7\u05d5\u05d1\u05e8\u05d9\u05dd", // EN: {0} devices connected
+    "Connected": "\u05de\u05d7\u05d5\u05d1\u05e8", // EN: Connected
+    "Adding new devices needs NEXUS+.": "\u05d4\u05d5\u05e1\u05e4\u05ea \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05d7\u05d3\u05e9\u05d9\u05dd \u05d3\u05d5\u05e8\u05e9\u05ea NEXUS+.", // EN: Adding new devices needs NEXUS+.
+    "No connected devices yet. Add Device finds them while scanning your network.": "\u05e2\u05d3\u05d9\u05d9\u05df \u05d0\u05d9\u05df \u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd \u05de\u05d7\u05d5\u05d1\u05e8\u05d9\u05dd. \u05d4\u05d5\u05e1\u05e4\u05ea \u05de\u05db\u05e9\u05d9\u05e8 \u05de\u05d5\u05e6\u05d0\u05ea \u05d0\u05d5\u05ea\u05dd \u05d1\u05d6\u05de\u05df \u05e1\u05e8\u05d9\u05e7\u05ea \u05d4\u05e8\u05e9\u05ea \u05e9\u05dc\u05da.", // EN: No connected devices yet. Add Device finds them while scanning your network.
+    "Add": "\u05d4\u05d5\u05e1\u05e4\u05d4", // EN: Add
+    "Not available here; the desktop or mobile app is required.": "\u05dc\u05d0 \u05d6\u05de\u05d9\u05df \u05db\u05d0\u05df; \u05e0\u05d3\u05e8\u05e9\u05ea \u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05e9\u05d5\u05dc\u05d7\u05df \u05d4\u05e2\u05d1\u05d5\u05d3\u05d4 \u05d0\u05d5 \u05d4\u05e0\u05d9\u05d9\u05d3.", // EN: Not available here; the desktop or mobile app is required.
+    "Unavailable": "\u05dc\u05d0 \u05d6\u05de\u05d9\u05df", // EN: Unavailable
+    "Alert": "\u05d4\u05ea\u05e8\u05d0\u05d4", // EN: Alert
+    "NEXUS Critical Alerts": "\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05e7\u05e8\u05d9\u05d8\u05d9\u05d5\u05ea \u05e9\u05dc NEXUS", // EN: NEXUS Critical Alerts
+    "Devices": "\u05de\u05db\u05e9\u05d9\u05e8\u05d9\u05dd", // EN: Devices
+    "Energy": "\u05d0\u05e0\u05e8\u05d2\u05d9\u05d4", // EN: Energy
+    "AI Suggestions": "\u05d4\u05e6\u05e2\u05d5\u05ea AI", // EN: AI Suggestions
+    "Security": "\u05d0\u05d1\u05d8\u05d7\u05d4", // EN: Security
+    " - silent - no vibration": " - \u05e9\u05e7\u05d8 - \u05dc\u05dc\u05d0 \u05e8\u05d8\u05d8", // EN: - silent - no vibration
+    " - silent": " - \u05e9\u05e7\u05d8", // EN: - silent
+    " - no vibration": " - \u05dc\u05dc\u05d0 \u05e8\u05d8\u05d8", // EN: - no vibration
+    "NEXUS {0}{1}": "NEXUS {0}{1}", // EN: NEXUS {0}{1}
+    "Smart home events and alerts": "\u05d0\u05d9\u05e8\u05d5\u05e2\u05d9\u05dd \u05d5\u05d4\u05ea\u05e8\u05d0\u05d5\u05ea \u05e9\u05dc \u05d4\u05d1\u05d9\u05ea \u05d4\u05d7\u05db\u05dd", // EN: Smart home events and alerts
+    "NEXUS Alert": "\u05d4\u05ea\u05e8\u05d0\u05ea NEXUS", // EN: NEXUS Alert
+    "Test notification": "\u05d4\u05ea\u05e8\u05d0\u05ea \u05d1\u05d3\u05d9\u05e7\u05d4", // EN: Test notification
+    "NEXUS test notification": "\u05d4\u05ea\u05e8\u05d0\u05ea \u05d1\u05d3\u05d9\u05e7\u05d4 \u05e9\u05dc NEXUS", // EN: NEXUS test notification
+    "This is a test notification \u2014 it also arrives while the app is closed.": "\u05d6\u05d5 \u05d4\u05ea\u05e8\u05d0\u05ea \u05d1\u05d3\u05d9\u05e7\u05d4 \u2014 \u05d4\u05d9\u05d0 \u05de\u05d2\u05d9\u05e2\u05d4 \u05d2\u05dd \u05db\u05e9\u05d4\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 \u05e1\u05d2\u05d5\u05e8\u05d4.", // EN: This is a test notification — it also arrives while the app is closed.
+    "Remote address could not be loaded in this version.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05d8\u05e2\u05d5\u05df \u05d0\u05ea \u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e8\u05d5\u05d7\u05e7\u05ea \u05d1\u05d2\u05e8\u05e1\u05d4 \u05d6\u05d5.", // EN: Remote address could not be loaded in this version.
+    "Remote address (e.g. 100.64.0.5:8123), empty = off": "\u05db\u05ea\u05d5\u05d1\u05ea \u05de\u05e8\u05d5\u05d7\u05e7\u05ea (\u05dc\u05d3\u05d5\u05d2\u05de\u05d4 100.64.0.5:8123), \u05e8\u05d9\u05e7 = \u05db\u05d1\u05d5\u05d9", // EN: Remote address (e.g. 100.64.0.5:8123), empty = off
+    "Remote address": "\u05db\u05ea\u05d5\u05d1\u05ea \u05de\u05e8\u05d5\u05d7\u05e7\u05ea", // EN: Remote address
+    "Save": "\u05e9\u05de\u05d9\u05e8\u05d4", // EN: Save
+    "The address is not valid. Example: 100.64.0.5:8123": "\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d0\u05d9\u05e0\u05d4 \u05ea\u05e7\u05d9\u05e0\u05d4. \u05d3\u05d5\u05d2\u05de\u05d4: 100.64.0.5:8123", // EN: The address is not valid. Example: 100.64.0.5:8123
+    "Remote address saved. It is tried when the local address does not answer.": "\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e8\u05d5\u05d7\u05e7\u05ea \u05e0\u05e9\u05de\u05e8\u05d4. \u05d4\u05d9\u05d0 \u05ea\u05d9\u05d1\u05d3\u05e7 \u05db\u05e9\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e7\u05d5\u05de\u05d9\u05ea \u05dc\u05d0 \u05e2\u05d5\u05e0\u05d4.", // EN: Remote address saved. It is tried when the local address does not answer.
+    "Remote address removed.": "\u05d4\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05de\u05e8\u05d5\u05d7\u05e7\u05ea \u05d4\u05d5\u05e1\u05e8\u05d4.", // EN: Remote address removed.
+    "Could not save.": "\u05dc\u05d0 \u05e0\u05d9\u05ea\u05df \u05d4\u05d9\u05d4 \u05dc\u05e9\u05de\u05d5\u05e8.", // EN: Could not save.
+    "Monthly reset": "\u05d0\u05d9\u05e4\u05d5\u05e1 \u05d7\u05d5\u05d3\u05e9\u05d9", // EN: Monthly reset
+    "Daily reset": "\u05d0\u05d9\u05e4\u05d5\u05e1 \u05d9\u05d5\u05de\u05d9", // EN: Daily reset
+    "Monthly allowance used up; resets next month": "\u05d4\u05de\u05db\u05e1\u05d4 \u05d4\u05d7\u05d5\u05d3\u05e9\u05d9\u05ea \u05e0\u05d5\u05e6\u05dc\u05d4; \u05ea\u05ea\u05d0\u05e4\u05e1 \u05d1\u05d7\u05d5\u05d3\u05e9 \u05d4\u05d1\u05d0", // EN: Monthly allowance used up; resets next month
+    "Daily allowance used up; resets tomorrow": "\u05d4\u05de\u05db\u05e1\u05d4 \u05d4\u05d9\u05d5\u05de\u05d9\u05ea \u05e0\u05d5\u05e6\u05dc\u05d4; \u05ea\u05ea\u05d0\u05e4\u05e1 \u05de\u05d7\u05e8", // EN: Daily allowance used up; resets tomorrow
   },
   slots: {
     "Sonraki \u00f6deme {0} tutar\u0131nda {1} tarihinde al\u0131nacak.": "", // EN: Next payment of {0} will be charged on {1}.

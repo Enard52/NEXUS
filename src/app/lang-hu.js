@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Dug\u00f3k \u00e9s kapcsol\u00f3k", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "Terv", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/h\u00f3", // EN: $7.50/month
     "/month": "/h\u00f3nap", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 nap ingyen, ut\u00e1na csak $89.99 \u00e9vente. B\u00e1rmikor lemondhat\u00f3.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "\u00datmutat\u00f3", // EN: Guide
     "Ses ve Hareket": "Hang \u00e9s mozg\u00e1s", // EN: Sound & Motion

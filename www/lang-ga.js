@@ -530,15 +530,15 @@ window.NEXUS_LANG = {
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Rithfidh uathoibrithe sceidealta nuair a bheidh an aip oscailte; ar dheasc coime\u00e1dann siad ag rith fad a bheidh an aip sa thr\u00e9.", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Rithfidh uathoibrithe fad a bheidh an aip oscailte; ar dheasc, leanann sceidil ar aghaidh fad a bheidh an aip sa thr\u00e9.\\nN\u00edor rith go f\u00f3ill", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "(cailleadh)", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
-    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(caillte)", // EN: (missed)
+    "{0} cihaz g\u00fcncellendi.": "Nuashonra\u00edodh {0} ngl\u00e9as.", // EN: {0} device(s) updated.
+    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "spreagtha; n\u00edl aon ghn\u00edomh sainithe (roghnaigh c\u00e1s \u00f3 Shocruithe C\u00e1sanna).", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "gearradh cumhacht chuig {0} ngl\u00e9as.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Rith strait\u00e9is fuinnimh", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "Spreagadh grianstad: n\u00edl aon l\u00e1thair ch\u00f3naithe socraithe.", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Am spreagtha caillte (d\u00fanadh an aip).", // EN: Sunset trigger: no home location set.
     "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "Ceamara\u00ed", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Kameralar": "Ceamara\u00ed", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Mo Ceamara\u00ed", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Cuir ceamara le haghaidh monat\u00f3ireachta a st\u00e1dais agus a shocraithe pr\u00edobh\u00e1ideachta anseo. T\u00e1 taca\u00edocht sruth\u00fa f\u00edse\u00e1in (RTSP) ag teacht go luath.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Cuir Ceamara", // EN: Add Camera
@@ -606,26 +606,26 @@ window.NEXUS_LANG = {
     "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "Chun an gl\u00e9as a athshocr\u00fa, \u00fas\u00e1id an ch\u00e9im Athshocruithe Saotharlainne san aip d\u00e9ant\u00f3ra.", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
     "En az 8 karakter; harf + rakam kullan.": "Ar a laghad 8 carachtar; \u00fas\u00e1id litreacha + uimhreacha.", // EN: At least 8 characters; use letters + digits.
     "\u00c7ok zay\u0131f \u2014 en az 8 karakter kullan.": "An-lag \u2014 \u00fas\u00e1id ar a laghad 8 gcarachtar. Lag \u2014 cuir litreacha + uimhreacha. Measartha \u2014 cuir litir mh\u00f3r n\u00f3 siombail leis. Maith. Pasfhocal l\u00e1idir. Ag teacht go luath (c\u00f3id aipe TOTP) Ag seice\u00e1il Ar f\u00e1il le cuntas scamall S\u00edn isteach le do chuntas scamall ar dt\u00fas. N\u00edorbh fh\u00e9idir st\u00e1das a lucht\u00fa T\u00e1 c\u00f3d an fh\u00edoraithe ar si\u00fal Teasta\u00edonn cuntas scamall le haghaidh f\u00edor\u00fa dh\u00e1 ch\u00e9im. Cuir isteach an c\u00f3d f\u00edoraithe chun \u00e9 a mh\u00fachadh. Scan\u00e1il an c\u00f3d leis an aip f\u00edoraithe, ansin cuir isteach na 6 dhigit. C\u00f3d socruithe Mura f\u00e9idir leat \u00e9 a scan\u00e1il, cl\u00f3scr\u00edobh an eochair seo san aip: Caithfidh an c\u00f3d a bheith 6 dhigit. T\u00e1 an c\u00f3d m\u00edcheart n\u00f3 t\u00e1 s\u00e9 \u00e9ag. T\u00e1 an c\u00f3d m\u00edcheart n\u00f3 t\u00e1 s\u00e9 \u00e9ag. N\u00ed dh\u00e9anann na c\u00f3id comhoiri\u00fan\u00fa m\u00e1 t\u00e1 clog do fh\u00f3in socraithe de l\u00e1imh; socraigh \u00e9 go huathoibr\u00edoch agus bain triail as an gc\u00f3d athnuaite uair amh\u00e1in. N\u00edorbh fh\u00e9idir an c\u00f3d a fh\u00edor\u00fa. N\u00edorbh fh\u00e9idir an t-gn\u00edomh a chr\u00edochn\u00fa.", // EN: Very weak — use at least 8 characters.
-    "Zay\u0131f \u2014 harf + rakam ekle.": "", // EN: Weak — add letters + digits.
-    "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "", // EN: Fair — add an uppercase letter or symbol.
-    "\u0130yi.": "", // EN: Good.
-    "G\u00fc\u00e7l\u00fc \u015fifre.": "", // EN: Strong password.
-    "Yak\u0131nda (TOTP uygulama kodu)": "", // EN: Coming soon (TOTP app codes)
-    "Kontrol ediliyor": "", // EN: Checking
-    "Bulut hesab\u0131yla a\u00e7\u0131l\u0131r": "", // EN: Available with a cloud account
-    "\u00d6nce bulut hesab\u0131nla giri\u015f yap.": "", // EN: Sign in with your cloud account first.
-    "Durum al\u0131namad\u0131": "", // EN: Couldn't load the status
-    "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "", // EN: Authenticator code is on
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "", // EN: Two-step verification needs a cloud account.
-    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "", // EN: Enter the authenticator code to turn it off.
-    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "", // EN: Scan the code with your authenticator app, then enter the 6 digits.
-    "Kurulum kodu": "", // EN: Setup code
-    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "", // EN: If you can't scan it, type this key into the app:
-    "Kod 6 hane olmal\u0131.": "", // EN: The code must be 6 digits.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "", // EN: The code is wrong or has expired.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
-    "Kod do\u011frulanamad\u0131.": "", // EN: The code could not be verified.
-    "\u0130\u015flem tamamlanamad\u0131.": "", // EN: The action could not be completed.
+    "Zay\u0131f \u2014 harf + rakam ekle.": "Lag \u2014 cuir litreacha + digit\u00ed leis.", // EN: Weak — add letters + digits.
+    "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "Measartha \u2014 cuir ceannlitir n\u00f3 siombail leis.", // EN: Fair — add an uppercase letter or symbol.
+    "\u0130yi.": "Maith.", // EN: Good.
+    "G\u00fc\u00e7l\u00fc \u015fifre.": "Pasfhocal l\u00e1idir.", // EN: Strong password.
+    "Yak\u0131nda (TOTP uygulama kodu)": "Ag teacht go luath (c\u00f3id aip TOTP)", // EN: Coming soon (TOTP app codes)
+    "Kontrol ediliyor": "Ag seice\u00e1il", // EN: Checking
+    "Bulut hesab\u0131yla a\u00e7\u0131l\u0131r": "Ar f\u00e1il le cuntas scamall", // EN: Available with a cloud account
+    "\u00d6nce bulut hesab\u0131nla giri\u015f yap.": "S\u00ednigh isteach le do chuntas scamall ar dt\u00fas.", // EN: Sign in with your cloud account first.
+    "Durum al\u0131namad\u0131": "N\u00edorbh fh\u00e9idir an st\u00e1das a lucht\u00fa", // EN: Couldn't load the status
+    "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "T\u00e1 c\u00f3d an fh\u00edordheimhnithe ar si\u00fal", // EN: Authenticator code is on
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "Teasta\u00edonn cuntas scamall le f\u00edor\u00fa dh\u00e1 ch\u00e9im.", // EN: Two-step verification needs a cloud account.
+    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "Cuir isteach c\u00f3d an fh\u00edordheimhnithe chun \u00e9 a chur as.", // EN: Enter the authenticator code to turn it off.
+    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "Scan an c\u00f3d le d'aip f\u00edordheimhnithe, ansin cuir isteach na 6 dhigit.", // EN: Scan the code with your authenticator app, then enter the 6 digits.
+    "Kurulum kodu": "C\u00f3d socraithe", // EN: Setup code
+    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "Mura f\u00e9idir leat \u00e9 a scanadh, cl\u00f3scr\u00edobh an eochair seo isteach san aip:", // EN: If you can't scan it, type this key into the app:
+    "Kod 6 hane olmal\u0131.": "Caithfidh an c\u00f3d a bheith 6 dhigit.", // EN: The code must be 6 digits.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "T\u00e1 an c\u00f3d m\u00edcheart n\u00f3 t\u00e1 s\u00e9 imithe in \u00e9ag.", // EN: The code is wrong or has expired.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "T\u00e1 an c\u00f3d m\u00edcheart n\u00f3 t\u00e1 s\u00e9 imithe in \u00e9ag. N\u00ed oirfidh c\u00f3id mura bhfuil clog do ghuth\u00e1in socraithe go huathoibr\u00edoch; athraigh go huathoibr\u00edoch \u00e9 agus bain triail as an gc\u00f3d athnuaite uair amh\u00e1in.", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
+    "Kod do\u011frulanamad\u0131.": "N\u00edorbh fh\u00e9idir an c\u00f3d a fh\u00edor\u00fa.", // EN: The code could not be verified.
+    "\u0130\u015flem tamamlanamad\u0131.": "N\u00edorbh fh\u00e9idir an gn\u00edomh a chr\u00edochn\u00fa.", // EN: The action could not be completed.
     "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "T\u00e1 f\u00edor\u00fa dh\u00e1 ch\u00e9im ar si\u00fal.", // EN: Two-step verification is on.
     "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "T\u00e1 f\u00edor\u00fa dh\u00e1 ch\u00e9im as.", // EN: Two-step verification is off.
     "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "Cuir isteach an c\u00f3d 6-digit \u00f3n aip f\u00edoraitheora.", // EN: Enter the 6-digit code from your authenticator app.
@@ -727,7 +727,7 @@ window.NEXUS_LANG = {
     "Acil Durumlar": "Ainm", // EN: Emergencies
     "Ad": "Ainm Ioml\u00e1n", // EN: Name
     "Ad Soyad": "Ainm \u00das\u00e1ideora", // EN: Full Name
-    "Kullan\u0131c\u0131 ad\u0131": "", // EN: Username
+    "Kullan\u0131c\u0131 ad\u0131": "Ainm \u00fas\u00e1ideora", // EN: Username
     "Adres biliyorsan tek tek yaz, bilmiyorsan modem a\u011f\u0131n\u0131n \u00f6n ekini b\u0131rak (192.168.1 gibi) \u2014 NEXUS 254 adresi birlikte yoklar.": "M\u00e1 t\u00e1 an seoladh ar eolas agat, cl\u00f3scr\u00edobh \u00e9; mura bhfuil, f\u00e1g pr\u00f3if\u00edl l\u00edonra do r\u00f3daire (cos\u00fail le 192.168.1) \u2014 seice\u00e1lann NEXUS na 254 seoladh go l\u00e9ir.", // EN: If you know the address, type it; if not, leave your router network prefix (like 192.168.1) — NEXUS checks all 254 addresses.
     "Adres veya semt ara": "Cuardaigh seoladh n\u00f3 comharsanacht", // EN: Search address or neighborhood
     "Ads\u0131z cihaz": "Feiste gan ainm", // EN: Unnamed device
@@ -752,20 +752,20 @@ window.NEXUS_LANG = {
     "Hedef okunmad\u0131": "Sprioc neamhl\u00e9ite", // EN: Target not read
     "\u00d6l\u00e7\u00fcm verisi yok": "N\u00edl aon shonra\u00ed tomhais", // EN: No measurement data
     "Ekledi\u011fin cihazlar hen\u00fcz s\u0131cakl\u0131k, nem veya hava kalitesi verisi vermedi. Sens\u00f6r\u00fcn a\u00e7\u0131k ve a\u011fda oldu\u011fundan emin ol.": "N\u00edl do ghl\u00e9is\u00ed tar \u00e9is teocht, taise n\u00f3 c\u00e1il\u00edocht aer a thuairisci\u00fa f\u00f3s. D\u00e9an cinnte go bhfuil an braiteoir ar agus ar an l\u00edonra.", // EN: Your devices have not reported temperature, humidity or air quality yet. Make sure the sensor is on and on the network.
-    "Son okunan \u00f6l\u00e7\u00fcmler": "", // EN: Latest readings
+    "Son okunan \u00f6l\u00e7\u00fcmler": "L\u00e9amha is d\u00e9ana\u00ed", // EN: Latest readings
     "Skor \u00fcretmiyoruz; yaln\u0131zca cihazlardan okunan ger\u00e7ek de\u011ferler g\u00f6sterilir.": "Na l\u00e9amha is d\u00e9ana\u00ed", // EN: We do not produce a score; only real values read from your devices are shown.
     "Haz\u0131rl\u0131\u011f\u0131 bitirdi\u011finde \u015fu cihazlara uygulan\u0131r.": "N\u00ed cruth\u00f3imid sc\u00f3r; taispe\u00e1ntar ach na luachanna f\u00edor a l\u00e9itear \u00f3 do ghl\u00e9is\u00ed.", // EN: When you finish, this is applied to the following devices.
-    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "", // EN: No suitable device for sleep preparation
+    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "N\u00edl aon ghl\u00e9as oiri\u00fanach le haghaidh ullmh\u00fa codlata", // EN: No suitable device for sleep preparation
     "I\u015f\u0131k, perde, kilit veya iklim cihaz\u0131 ekledi\u011finde haz\u0131rl\u0131k burada listelenir.": "Nuair a chr\u00edochna\u00edonn t\u00fa, cuirtear seo i bhfeidhm ar na gl\u00e9is\u00ed seo a leanas.", // EN: Once you add a light, curtain, lock or climate device, the preparation is listed here.
-    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "", // EN: Last known state and readings of your climate devices.
+    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "St\u00e1das agus l\u00e9amha deireanacha d'fheist\u00ed aer\u00e1ide.", // EN: Last known state and readings of your climate devices.
     "Kamera gizlili\u011fi": "N\u00edl aon ghl\u00e9as oiri\u00fanach le haghaidh ullmh\u00fach\u00e1in codlata", // EN: Camera privacy
     "Her kameran\u0131n gizlilik modunu ayr\u0131 ayr\u0131 y\u00f6net.": "Nuair a chuireann t\u00fa solas, cuirt\u00edn, glas n\u00f3 gl\u00e9as aer\u00e1ide leis, liost\u00e1iltear an ullmh\u00fach\u00e1n anseo.", // EN: Manage each camera's privacy mode separately.
-    "Kamera cihaz\u0131 yok": "", // EN: No camera device
+    "Kamera cihaz\u0131 yok": "N\u00edl aon ghl\u00e9as ceamara ann", // EN: No camera device
     "Kamera ekledi\u011finde gizlilik modu her kamera i\u00e7in burada g\u00f6r\u00fcn\u00fcr.": "St\u00e1it agus l\u00e9amha deireanacha aitheanta de do ghl\u00e9is\u00ed aer\u00e1ide.", // EN: Once you add a camera, its privacy mode appears here.
-    "Bu senaryoyu uygulayacak uygun cihaz yok": "", // EN: No suitable device to run this scenario
+    "Bu senaryoyu uygulayacak uygun cihaz yok": "N\u00edl aon ghl\u00e9as oiri\u00fanach chun an c\u00e1s seo a rith", // EN: No suitable device to run this scenario
     "I\u015f\u0131k, perde, klima veya kilit gibi uyumlu bir cihaz ekledi\u011finde burada listelenir.": "Pr\u00edobh\u00e1ideacht Ceamara", // EN: Once you add a compatible device such as a light, curtain, air conditioner or lock, it is listed here.
     "Uygun cihaz yok": "Bainistigh m\u00f3d pr\u00edobh\u00e1ideachta gach ceamara ar leithligh.", // EN: No suitable device
-    "Hen\u00fcz a\u00e7\u0131lmad\u0131": "", // EN: Not turned on yet
+    "Hen\u00fcz a\u00e7\u0131lmad\u0131": "Gan chur ar si\u00fal go f\u00f3ill", // EN: Not turned on yet
     "Aktif Uyar\u0131lar": "N\u00edl aon ghl\u00e9as ceamara", // EN: Active Alerts
     "Akvaryum": "Nuair a chuireann t\u00fa ceamara leis, d\u00e9anann a m\u00f3d pr\u00edobh\u00e1ideachta le feice\u00e1il anseo.", // EN: Aquarium
     "Akvaryum Is\u0131t\u0131c\u0131": "Teirmeall Aquariuma", // EN: Aquarium Heater
@@ -1372,19 +1372,19 @@ window.NEXUS_LANG = {
     "Evde yokken": "Nuair at\u00e1 amach", // EN: When away
     "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "Bainistigh na soilse i do seomra baile seomra ar bhealach amh\u00e1in. Ar/As, gile, teocht dath agus giorraithe aistear tapa in aon aip.", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
     "Evdeki cihazlara g\u00f6re haz\u0131r komutlar, h\u0131zl\u0131 otomasyonlar ve ak\u0131ll\u0131 uygulama \u00f6nerileri ver.": "Tabhair orduithe r\u00e9idh, uathoibrithe tapa agus molta\u00ed app cliste bunaithe ar na gl\u00e9asanna at\u00e1 sa teach. Cruthaigh aip compord aer\u00e1ide a bhainist\u00edonn na ACanna agus na teirmeastaitis i do theach \u00f3n bpain\u00e9al amh\u00e1in. Cuir rial\u00fa teocht, m\u00f3danna tapa, m\u00f3d \u00e9iceola\u00edoch agus gn\u00edomhartha bunaithe ar an seomra san \u00e1ireamh. Cad \u00e9 st\u00e1das mo ghl\u00e9asanna? Amuigh \u00f3n dTeach Radharc Amuigh \u00f3n dTeach Cr\u00edochna\u00edonn s\u00e9 seice\u00e1lacha fuinnimh agus sl\u00e1nd\u00e1la nuair a fh\u00e1gann t\u00fa an teach. Amuigh \u00f3n dteach Ag F\u00e1g\u00e1il an T\u00ed Seic\u00e9al Am F\u00e1g\u00e1la T\u00ed Radharc F\u00e1g\u00e1la T\u00ed Achoimre F\u00e1g\u00e1la T\u00ed Cr\u00edochnaigh F\u00e1g\u00e1il an T\u00ed Cruthaigh aip seic\u00e1la f\u00e1g\u00e1la-t\u00ed a thaispe\u00e1nann na gl\u00e9asanna at\u00e1 f\u00f3s ar si\u00fal, st\u00e1das na gcoilte agus socruithe fuinnimh ar sc\u00e1ile\u00e1n amh\u00e1in. Cuir cnaip\u00ed do mh\u00fachadh tapa agus gn\u00edomh\u00fa sl\u00e1nd\u00e1la san \u00e1ireamh. Seice\u00e1il na gl\u00e9asanna at\u00e1 f\u00f3s ar si\u00fal, na coilte agus st\u00e1das fuinnimh i sruth amh\u00e1in nuair a bh\u00edonn t\u00fa ag f\u00e1g\u00e1il an t\u00ed.", // EN: Give ready commands, quick automations and smart app suggestions based on the devices at home.
-    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
-    "Evimdeki cihazlar\u0131n durumu nedir?": "", // EN: What is the status of my devices?
-    "Evden Uzakta": "", // EN: Away from Home
-    "Evden Uzakta Senaryosu": "", // EN: Away from Home Scene
-    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "", // EN: Wraps up energy and security checks when you leave home.
-    "Evden uzakta": "", // EN: Away from home
-    "Evden \u00c7\u0131k\u0131\u015f": "", // EN: Leaving Home
-    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "", // EN: Leaving Home Check
-    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "", // EN: Leaving Home Scene
-    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "", // EN: Leaving Home Summary
-    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "", // EN: Finish Leaving Home
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "", // EN: Check devices left on, locks and energy status in one flow when leaving home.
+    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "Cruthaigh aip chompord aer\u00e1ide a bhainist\u00edonn aeracha agus teirmeastait do th\u00ed \u00f3 phain\u00e9al amh\u00e1in. Cuir rial\u00fa teochta, modhanna tapa, m\u00f3d \u00e9iceola\u00edoch agus gn\u00edomhartha bunaithe ar sheomra\u00ed san \u00e1ireamh.", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
+    "Evimdeki cihazlar\u0131n durumu nedir?": "C\u00e9n st\u00e1das at\u00e1 ar mo ghl\u00e9asanna?", // EN: What is the status of my devices?
+    "Evden Uzakta": "As an Teach", // EN: Away from Home
+    "Evden Uzakta Senaryosu": "C\u00e1s As an Teach", // EN: Away from Home Scene
+    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "Cuireann s\u00e9 seice\u00e1lacha fuinnimh agus sl\u00e1nd\u00e1la i gcr\u00edch nuair a fh\u00e1gann t\u00fa an baile.", // EN: Wraps up energy and security checks when you leave home.
+    "Evden uzakta": "As baile", // EN: Away from home
+    "Evden \u00c7\u0131k\u0131\u015f": "Ag F\u00e1g\u00e1il an Bhaile", // EN: Leaving Home
+    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "Seice\u00e1il F\u00e1g\u00e1la an Bhaile", // EN: Leaving Home Check
+    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "C\u00e1s F\u00e1g\u00e1la an Bhaile", // EN: Leaving Home Scene
+    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "Achoimre F\u00e1g\u00e1la an Bhaile", // EN: Leaving Home Summary
+    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "Cr\u00edochnaigh F\u00e1g\u00e1il an Bhaile", // EN: Finish Leaving Home
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Cruthaigh aip seice\u00e1la f\u00e1g\u00e1la an bhaile a thaispe\u00e1nann feist\u00ed at\u00e1 f\u00e1gtha ar si\u00fal, st\u00e1das glasanna agus socruithe fuinnimh ar sc\u00e1ile\u00e1n amh\u00e1in. Cuir cnaip\u00ed m\u00fachta tapa agus gn\u00edomhachtaithe sl\u00e1nd\u00e1la leis.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Seice\u00e1il feist\u00ed at\u00e1 f\u00e1gtha ar si\u00fal, glasanna agus st\u00e1das fuinnimh in aon sreabhadh amh\u00e1in agus t\u00fa ag f\u00e1g\u00e1il an bhaile.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Taispe\u00e1in na gairis at\u00e1 f\u00f3s ar si\u00fal, st\u00e1das na gclocha agus an fuinnimh ar sc\u00e1ile\u00e1n amh\u00e1in agus t\u00fa ag f\u00e1g\u00e1il an t\u00ed.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
     "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "F\u00e9ach ar soilse, pluideanna, acmhainn\u00ed aer\u00e1la agus socruithe sl\u00e1nd\u00e1la at\u00e1 f\u00f3s ar si\u00fal sula bhf\u00e1gfaidh t\u00fa an teach, ar phain\u00e9al amh\u00e1in.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
     "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Bailigh na c\u00e9imeanna tap\u00fala chun m\u00fachadh agus gn\u00edomhacht\u00fa sl\u00e1nd\u00e1la isteach i sreabhadh amh\u00e1in.", // EN: Let's do the final checks before you leave.
@@ -2658,22 +2658,22 @@ window.NEXUS_LANG = {
     "Eve girerken \u0131\u015f\u0131klar\u0131, perdeleri ve iklimi birlikte a\u00e7.": "Cas soilse, cuirt\u00edn\u00ed agus aer\u00e1id le ch\u00e9ile nuair a thagann t\u00fa abhaile.", // EN: Turn on lights, curtains and climate together when you get home.
     "Uzun s\u00fcre evde yokken cihazlar\u0131n\u0131 g\u00fcvenli ve tasarruflu konuma al.": "Cuir do ghl\u00e9asanna i staid shl\u00e1n, sh\u00e1bh\u00e1il fuinnimh fad is at\u00e1 t\u00fa i bhfad ar shi\u00fal.", // EN: Put your devices into a safe, energy-saving state while you are away for long.
     "I\u015f\u0131klar\u0131 k\u0131s, perdeleri kapat ve TV'yi a\u00e7.": "Lag na soilse, d\u00fain na cuirt\u00edn\u00ed agus cas ar an teilif\u00eds. Tosaigh do bh\u00e1c\u00e1la\u00ed r\u00f3bat n\u00f3 seol ar ais \u00e9 chuig a dhroch. D\u00fan an doras, d\u00fain na cuirt\u00edn\u00ed agus ullmhaigh an teach don o\u00edche. F\u00e9ach ar st\u00e1das agus socr\u00fa pr\u00edobh\u00e1ideachta do do cheamara\u00ed ar sc\u00e1ile\u00e1n amh\u00e1in. Cas m\u00f3d pr\u00edobh\u00e1ideachta do do cheamara\u00ed ar/amh\u00e1in \u00e1it amh\u00e1in fad is at\u00e1 t\u00fa sa bhaile. F\u00e9ach c\u00e9n uathoibri\u00fa a rith inniu. Roinn n\u00f3ta\u00ed agus tascanna leis an teaghlach. F\u00e9ach achoimre sl\u00e1inte do theach \u00f3 aer, taise agus teocht na braiteoir\u00ed. Seice\u00e1il an f\u00e9idir do ghl\u00e9is a bhaint amach thar do l\u00edonra \u00e1iti\u00fail. Ba mhaith liom uathoibri\u00fa nua a chruth\u00fa. Ba mhaith liom c\u00e1s nua 'tapa-le-rith' a chruth\u00fa. Gl\u00e9is nua. Conas is f\u00e9idir liom gl\u00e9is nua a chur leis? Molta\u00ed c\u00e1s nua. Focal faire nua. Caithfidh focal faire nua a bheith ar a laghad 4 charachtar. D\u00e9anath ar\u00eds an focal faire nua.", // EN: Dim the lights, close the curtains and turn on the TV.
-    "Robot s\u00fcp\u00fcrgeni ba\u015flat ya da \u015farj istasyonuna g\u00f6nder.": "", // EN: Start your robot vacuum or send it back to its dock.
-    "Kap\u0131y\u0131 kilitle, perdeleri kapat ve evi geceye haz\u0131rla.": "", // EN: Lock the door, close the curtains and get the house ready for the night.
-    "Ekledi\u011fin kameralar\u0131n durumunu ve gizlilik ayar\u0131n\u0131 tek ekranda g\u00f6r.": "", // EN: See the status and privacy setting of your cameras on one screen.
-    "Evdeyken kameralar\u0131n i\u00e7in gizlilik modunu tek yerden a\u00e7 ya da kapat.": "", // EN: Turn privacy mode for your cameras on or off from one place while you are home.
-    "Bug\u00fcn hangi otomasyonun ne zaman \u00e7al\u0131\u015faca\u011f\u0131n\u0131 g\u00f6r.": "", // EN: See which automation runs when today.
-    "Ev halk\u0131yla notlar\u0131 ve yap\u0131lacaklar\u0131 payla\u015f.": "", // EN: Share notes and to-dos with your household.
-    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava, nem ve s\u0131cakl\u0131ktan evinin sa\u011fl\u0131k \u00f6zetini g\u00f6r.": "", // EN: See your home's health summary from the air, humidity and temperature your sensors measure.
-    "Ekledi\u011fin cihazlar\u0131n yerel a\u011fdan ula\u015f\u0131labilir olup olmad\u0131\u011f\u0131n\u0131 kontrol et.": "", // EN: Check whether your devices can be reached over your local network.
-    "Yeni bir otomasyon olu\u015fturmak istiyorum.": "", // EN: I want to create a new automation.
-    "Yeni bir t\u0131kla ve \u00e7al\u0131\u015ft\u0131r senaryosu olu\u015fturmak istiyorum.": "", // EN: I want to create a new tap-to-run scenario.
-    "Yeni cihaz": "", // EN: New device
-    "Yeni cihaz\u0131 nas\u0131l eklerim?": "", // EN: How do I add a new device?
-    "Yeni senaryo tavsiyeleri": "", // EN: New scenario recommendations
-    "Yeni \u015fifre": "", // EN: New password
-    "Yeni \u015fifre en az 4 karakter olmal\u0131.": "", // EN: New password must be at least 4 characters.
-    "Yeni \u015fifre tekrar": "", // EN: Repeat new password
+    "Robot s\u00fcp\u00fcrgeni ba\u015flat ya da \u015farj istasyonuna g\u00f6nder.": "Tosaigh do ghlant\u00f3ir fol\u00fais r\u00f3bait n\u00f3 seol ar ais chuig a dhoca \u00e9.", // EN: Start your robot vacuum or send it back to its dock.
+    "Kap\u0131y\u0131 kilitle, perdeleri kapat ve evi geceye haz\u0131rla.": "Cuir glas ar an doras, d\u00fan na cuirt\u00edn\u00ed agus r\u00e9itigh an teach don o\u00edche.", // EN: Lock the door, close the curtains and get the house ready for the night.
+    "Ekledi\u011fin kameralar\u0131n durumunu ve gizlilik ayar\u0131n\u0131 tek ekranda g\u00f6r.": "F\u00e9ach st\u00e1das agus socr\u00fa pr\u00edobh\u00e1ideachta do cheamara\u00ed ar sc\u00e1ile\u00e1n amh\u00e1in.", // EN: See the status and privacy setting of your cameras on one screen.
+    "Evdeyken kameralar\u0131n i\u00e7in gizlilik modunu tek yerden a\u00e7 ya da kapat.": "Cuir m\u00f3d pr\u00edobh\u00e1ideachta do cheamara\u00ed air n\u00f3 as \u00f3 \u00e1it amh\u00e1in agus t\u00fa sa bhaile.", // EN: Turn privacy mode for your cameras on or off from one place while you are home.
+    "Bug\u00fcn hangi otomasyonun ne zaman \u00e7al\u0131\u015faca\u011f\u0131n\u0131 g\u00f6r.": "F\u00e9ach c\u00e9n uathoibri\u00fa a ritheann cathain inniu.", // EN: See which automation runs when today.
+    "Ev halk\u0131yla notlar\u0131 ve yap\u0131lacaklar\u0131 payla\u015f.": "Roinn n\u00f3ta\u00ed agus tascanna le do theaghlach.", // EN: Share notes and to-dos with your household.
+    "Sens\u00f6rlerinin \u00f6l\u00e7t\u00fc\u011f\u00fc hava, nem ve s\u0131cakl\u0131ktan evinin sa\u011fl\u0131k \u00f6zetini g\u00f6r.": "F\u00e9ach achoimre sl\u00e1inte do th\u00ed \u00f3n aer, \u00f3n taise agus \u00f3n teocht a thomhaiseann do bhraiteoir\u00ed.", // EN: See your home's health summary from the air, humidity and temperature your sensors measure.
+    "Ekledi\u011fin cihazlar\u0131n yerel a\u011fdan ula\u015f\u0131labilir olup olmad\u0131\u011f\u0131n\u0131 kontrol et.": "Seice\u00e1il an f\u00e9idir teacht ar d'fheist\u00ed thar do l\u00edonra \u00e1iti\u00fail.", // EN: Check whether your devices can be reached over your local network.
+    "Yeni bir otomasyon olu\u015fturmak istiyorum.": "Ba mhaith liom uathoibri\u00fa nua a chruth\u00fa.", // EN: I want to create a new automation.
+    "Yeni bir t\u0131kla ve \u00e7al\u0131\u015ft\u0131r senaryosu olu\u015fturmak istiyorum.": "Ba mhaith liom c\u00e1s nua tap\u00e1il-chun-rith a chruth\u00fa.", // EN: I want to create a new tap-to-run scenario.
+    "Yeni cihaz": "Gl\u00e9as nua", // EN: New device
+    "Yeni cihaz\u0131 nas\u0131l eklerim?": "Conas a chuirim gl\u00e9as nua leis?", // EN: How do I add a new device?
+    "Yeni senaryo tavsiyeleri": "Molta\u00ed c\u00e1sanna nua", // EN: New scenario recommendations
+    "Yeni \u015fifre": "Pasfhocal nua", // EN: New password
+    "Yeni \u015fifre en az 4 karakter olmal\u0131.": "Caithfidh 4 charachtar ar a laghad a bheith sa phasfhocal nua.", // EN: New password must be at least 4 characters.
+    "Yeni \u015fifre tekrar": "Athdh\u00e9an an pasfhocal nua", // EN: Repeat new password
     "Yeni \u015fifre tekrar alan\u0131 e\u015fle\u015fmiyor.": "N\u00ed oireann an focal faire athr\u00e1.", // EN: The repeated password doesn't match.
     "Yeniden Tara": "Scan\u00e1il Ar\u00eds", // EN: Scan Again
     "Yenile": "Athnuaigh", // EN: Refresh
@@ -2754,48 +2754,48 @@ window.NEXUS_LANG = {
     "kontrol edilecek": "le seice\u00e1il", // EN: to be checked
     "korumas\u0131 aktif.": "cosaint ar.", // EN: protection on.
     "kurulum kodunu girin": "c\u00f3d socraithe ar do ghl\u00e9as", // EN: setup code on your device
-    "lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "", // EN: lamps added. You can manage them from Home.
-    "modelden se\u00e7ilir.": "", // EN: chosen from the model.
-    "oda g\u00f6r\u00fcn\u00fcm\u00fc haz\u0131r.": "", // EN: room view ready.
-    "oda g\u00f6r\u00fcn\u00fcm\u00fcnde, %": "", // EN: in room view, %
-    "olay": "", // EN: event
-    "oturum yok": "", // EN: no session
-    "parlakl\u0131k ve": "", // EN: brightness and
-    "plan sonland\u0131r\u0131ld\u0131.": "", // EN: plan ended.
-    "plan, \u00fccretsiz deneme ile ba\u015flad\u0131.": "", // EN: plan, started with a free trial.
-    "rahats\u0131z etme": "", // EN: do not disturb
-    "se\u00e7ildi.": "", // EN: selected.
-    "shelly-rpc: kimlik yok": "", // EN: shelly-rpc: no ID
-    "shelly: kimlik yok": "", // EN: shelly: no ID
-    "so\u011fut": "", // EN: cool
-    "sulama": "", // EN: watering
-    "s\u00fcp\u00fcrge": "", // EN: vacuum
-    "s\u0131cakl\u0131k": "", // EN: temperature
-    "tarihinde al\u0131nacak.": "", // EN: will be charged on
-    "tasmota: kimlik yok": "", // EN: tasmota: no ID
-    "te\u015fekk": "", // EN: thank
-    "tutar\u0131nda": "", // EN: amount
-    "t\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "", // EN: tap to run
-    "ula\u015f\u0131lam\u0131yor": "", // EN: unreachable
-    "uyguland\u0131.": "", // EN: applied.
-    "uyumlu bir cihaz ekle": "", // EN: add a compatible device
-    "ve": "", // EN: and
-    "vurgu rengi kullanan bir ak\u0131ll\u0131 uygulama olu\u015ftur.": "", // EN: create a smart app that uses an accent color.
-    "web_server bile\u015feniyle \u2014 DIY cihazlar": "", // EN: With the web_server component — DIY devices
-    "wled: s\u00fcr\u00fcm alan\u0131 yok": "", // EN: wled: no version field
-    "yeelight: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: yeelight: TCP only in the desktop app
-    "yeelight: yan\u0131t yok": "", // EN: yeelight: no response
-    "UDP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: UDP only in the desktop app
-    "wiz: kimlik yok": "", // EN: wiz: no identity
-    "lifx: beklenmeyen yan\u0131t": "", // EN: lifx: unexpected response
-    "govee: kimlik yok": "", // EN: govee: no identity
-    "sonoff: kimlik yok": "", // EN: sonoff: no identity
-    "yeni cihaz\u0131": "", // EN: new device
-    "yerel a\u011f cihaz\u0131 kontrol edildi \u00b7": "", // EN: local network devices checked ·
-    "{0} Cihaz": "", // EN: {0} Devices
-    "{0} Oda": "", // EN: {0} Rooms
-    "{0} cihaz": "", // EN: {0} devices
-    "{0} cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "", // EN: {0} devices found · still scanning
+    "lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "lampa\u00ed curtha leis. Is f\u00e9idir leat iad a bhainisti\u00fa \u00f3n Leathanach Baile.", // EN: lamps added. You can manage them from Home.
+    "modelden se\u00e7ilir.": "roghnaithe \u00f3n tsamhail.", // EN: chosen from the model.
+    "oda g\u00f6r\u00fcn\u00fcm\u00fc haz\u0131r.": "amharc seomra r\u00e9idh.", // EN: room view ready.
+    "oda g\u00f6r\u00fcn\u00fcm\u00fcnde, %": "in amharc seomra, %", // EN: in room view, %
+    "olay": "imeacht", // EN: event
+    "oturum yok": "gan seisi\u00fan", // EN: no session
+    "parlakl\u0131k ve": "gile agus", // EN: brightness and
+    "plan sonland\u0131r\u0131ld\u0131.": "plean cr\u00edochnaithe.", // EN: plan ended.
+    "plan, \u00fccretsiz deneme ile ba\u015flad\u0131.": "plean, tosaithe le triail saor in aisce.", // EN: plan, started with a free trial.
+    "rahats\u0131z etme": "n\u00e1 cuir isteach orm", // EN: do not disturb
+    "se\u00e7ildi.": "roghnaithe.", // EN: selected.
+    "shelly-rpc: kimlik yok": "shelly-rpc: gan aitheantas", // EN: shelly-rpc: no ID
+    "shelly: kimlik yok": "shelly: gan aitheantas", // EN: shelly: no ID
+    "so\u011fut": "fuaraigh", // EN: cool
+    "sulama": "uisci\u00fa", // EN: watering
+    "s\u00fcp\u00fcrge": "fol\u00fasghlant\u00f3ir", // EN: vacuum
+    "s\u0131cakl\u0131k": "teocht", // EN: temperature
+    "tarihinde al\u0131nacak.": "gearrfar air ar", // EN: will be charged on
+    "tasmota: kimlik yok": "tasmota: gan aitheantas", // EN: tasmota: no ID
+    "te\u015fekk": "go raibh maith", // EN: thank
+    "tutar\u0131nda": "m\u00e9id", // EN: amount
+    "t\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "tap\u00e1il chun rith", // EN: tap to run
+    "ula\u015f\u0131lam\u0131yor": "dosroichte", // EN: unreachable
+    "uyguland\u0131.": "curtha i bhfeidhm.", // EN: applied.
+    "uyumlu bir cihaz ekle": "cuir gl\u00e9as comhoiri\u00fanach leis", // EN: add a compatible device
+    "ve": "agus", // EN: and
+    "vurgu rengi kullanan bir ak\u0131ll\u0131 uygulama olu\u015ftur.": "cruthaigh aip chliste a \u00fas\u00e1ideann dath aicinne.", // EN: create a smart app that uses an accent color.
+    "web_server bile\u015feniyle \u2014 DIY cihazlar": "Leis an gcomhph\u00e1irt web_server \u2014 feist\u00ed DIY", // EN: With the web_server component — DIY devices
+    "wled: s\u00fcr\u00fcm alan\u0131 yok": "wled: gan r\u00e9imse leagain", // EN: wled: no version field
+    "yeelight: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "yeelight: TCP san aip deisce amh\u00e1in", // EN: yeelight: TCP only in the desktop app
+    "yeelight: yan\u0131t yok": "yeelight: gan freagra", // EN: yeelight: no response
+    "UDP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "UDP san aip deisce amh\u00e1in", // EN: UDP only in the desktop app
+    "wiz: kimlik yok": "wiz: gan aitheantas", // EN: wiz: no identity
+    "lifx: beklenmeyen yan\u0131t": "lifx: freagra gan choinne", // EN: lifx: unexpected response
+    "govee: kimlik yok": "govee: gan aitheantas", // EN: govee: no identity
+    "sonoff: kimlik yok": "sonoff: gan aitheantas", // EN: sonoff: no identity
+    "yeni cihaz\u0131": "gl\u00e9as nua", // EN: new device
+    "yerel a\u011f cihaz\u0131 kontrol edildi \u00b7": "feist\u00ed l\u00edonra \u00e1iti\u00fail seice\u00e1ilte \u00b7", // EN: local network devices checked ·
+    "{0} Cihaz": "{0} Gl\u00e9as", // EN: {0} Devices
+    "{0} Oda": "{0} Seomra", // EN: {0} Rooms
+    "{0} cihaz": "{0} gl\u00e9as", // EN: {0} devices
+    "{0} cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "{0} gl\u00e9as aimsithe \u00b7 ag scanadh f\u00f3s", // EN: {0} devices found · still scanning
     "{0} cihaz bulundu. Ekle'den panellere ta\u015f\u0131yabilirsin.": "{0} gl\u00e9asanna aimsithe. Bain \u00fas\u00e1id as Cuir leis chun iad a chur chuig do phoist\u00e9al.", // EN: {0} devices found. Use Add to move them to your panels.
     "{0} cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.": "{0} gl\u00e9asanna aimsithe. Br\u00faigh Cuir leis chun iad a chur le do liosta.", // EN: {0} devices found. Tap Add to add them to your list.
     "{0} cihaz bulundu. Eklemek istediklerini se\u00e7.": "{0} gl\u00e9asanna aimsithe. Roghnaigh iad si\u00fad le cur leis.", // EN: {0} devices found. Choose the ones to add.
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "ball", // EN: online
     "\u00fcye": "Leibh\u00e9al Ideal", // EN: member
     "\u0130deal Seviye": "F\u00edor\u00fa Dh\u00e1-Ch\u00e9im", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "F\u00edor\u00fa Dh\u00e1 Ch\u00e9im", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "St\u00e1isi\u00fan luchtaithe dh\u00e1-rotha\u00ed", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "St\u00e1isi\u00fan luchtaithe dh\u00e1-rotha\u00ed (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "D\u00e1-luire", // EN: Two-gang
@@ -3202,18 +3202,18 @@ window.NEXUS_LANG = {
     "Davet e-postas\u0131ndaki kodu gir. Kod tek kullan\u0131ml\u0131kt\u0131r ve yaln\u0131zca davet edilen e-posta adresiyle \u00e7al\u0131\u015f\u0131r.": "Cuir isteach an c\u00f3d \u00f3n r\u00edomhphost cuireadh. T\u00e1 an c\u00f3d \u00fas\u00e1ide amh\u00e1in agus n\u00ed oibr\u00edonn s\u00e9 ach leis an seoladh r\u00edomhphoist a cuireadh cuireadh chuige.", // EN: Enter the code from the invitation email. The code is single-use and only works with the invited email address.
     "Oturum gerekli": "Riachtanach log\u00e1il isteach", // EN: Sign-in required
     "\u00dcye davet etmek i\u00e7in \u00f6nce oturum a\u00e7; evin hesab\u0131na otomatik ba\u011flan\u0131r.": "S\u00edn isteach ar dt\u00fas chun baill a iarraidh; beidh t\u00fa ceangailte go huathoibr\u00edoch le cuntas do theach. N\u00edorbh fh\u00e9idir an r\u00edomhphost a sheoladh \u00f3n bhfreastala\u00ed. Crutha\u00edodh an cuireadh ach n\u00edorbh fh\u00e9idir an r\u00edomhphost uathoibr\u00edoch a sheoladh. An nd\u00e9anfaidh muid r\u00e9amhullmh\u00fach\u00e1n ar th\u00e9acs an chuidi\u00fa le do aip r\u00edomhphoist f\u00e9in? Oscail Aip R\u00edomhphoist. Leibh\u00e9al solais. Br\u00fa. Rabhadh gluaiseachta. Gan gluaiseacht. N\u00edorbh fh\u00e9idir ceangal leis an bhfeiste. D\u00e9an cinnte go bhfuil s\u00ed ar an l\u00edonra c\u00e9anna. N\u00edorbh fh\u00e9idir ceangal leis an bhfeiste. D\u00e9an cinnte go bhfuil s\u00ed ar an l\u00edonra c\u00e9anna agus go bhfuil an seoladh IP agus an eochair \u00e1iti\u00fail ceart. Casann s\u00e9 na soilse ar dhath te, oscla\u00edonn s\u00e9 na cuirt\u00edn\u00ed agus socra\u00edonn s\u00e9 an oiri\u00fant\u00f3ir aer go 22\u00b0. Casann s\u00e9 na soilse ar agus oscla\u00edonn s\u00e9 na cuirt\u00edn\u00ed, rithfidh an oiri\u00fant\u00f3ir aer ag 22\u00b0 agus seolfaidh s\u00e9 an fol\u00fasghlant\u00f3ir ar ais le mhuirear\u00fa. M\u00fachann s\u00e9 na soilse, an teilif\u00eds agus an t-oiri\u00fant\u00f3ir aer, d\u00fanann s\u00e9 na cuirt\u00edn\u00ed agus glas\u00e1lann s\u00e9 an doras.", // EN: Sign in first to invite members; you'll be connected to your home's account automatically.
-    "E-posta sunucudan g\u00f6nderilemedi": "", // EN: The email couldn't be sent from the server
-    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
-    "Posta Uygulamas\u0131n\u0131 A\u00e7": "", // EN: Open Mail App
-    "I\u015f\u0131k d\u00fczeyi": "", // EN: Light level
-    "Bas\u0131n\u00e7": "", // EN: Pressure
-    "Hareket alg\u0131land\u0131": "", // EN: Motion detected
-    "Hareket yok": "", // EN: No motion
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network.
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
-    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
-    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
-    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
+    "E-posta sunucudan g\u00f6nderilemedi": "N\u00edorbh fh\u00e9idir an r\u00edomhphost a sheoladh \u00f3n bhfreastala\u00ed", // EN: The email couldn't be sent from the server
+    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "Crutha\u00edodh an cuireadh ach n\u00edorbh fh\u00e9idir an r\u00edomhphost uathoibr\u00edoch a sheoladh. An ullmh\u00f3imid t\u00e9acs an chuiridh le d'aip phoist f\u00e9in?", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
+    "Posta Uygulamas\u0131n\u0131 A\u00e7": "Oscail an Aip Phoist", // EN: Open Mail App
+    "I\u015f\u0131k d\u00fczeyi": "Leibh\u00e9al solais", // EN: Light level
+    "Bas\u0131n\u00e7": "Br\u00fa", // EN: Pressure
+    "Hareket alg\u0131land\u0131": "Aims\u00edodh gluaiseacht", // EN: Motion detected
+    "Hareket yok": "Gan gluaiseacht", // EN: No motion
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "N\u00edorbh fh\u00e9idir ceangal leis an ngl\u00e9as. Cinntigh go bhfuil s\u00e9 ar an l\u00edonra c\u00e9anna.", // EN: Couldn't connect to the device. Make sure it's on the same network.
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "N\u00edorbh fh\u00e9idir ceangal leis an ngl\u00e9as. Cinntigh go bhfuil s\u00e9 ar an l\u00edonra c\u00e9anna agus go bhfuil an seoladh IP agus an eochair \u00e1iti\u00fail ceart.", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
+    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "Cuireann s\u00e9 na soilse ar si\u00fal i dtonn te, oscla\u00edonn na cuirt\u00edn\u00ed agus socra\u00edonn an t-aerch\u00f3iritheoir ar 22\u00b0.", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
+    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "Cuireann s\u00e9 na soilse ar si\u00fal agus oscla\u00edonn na cuirt\u00edn\u00ed, ritheann an t-aerch\u00f3iritheoir ag 22\u00b0 agus seolann an fol\u00fasghlant\u00f3ir ar ais chun lucht\u00fa.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
+    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "M\u00fachann s\u00e9 na soilse, an teilif\u00eds agus an t-aerch\u00f3iritheoir, d\u00fanann na cuirt\u00edn\u00ed agus cuireann glas ar an doras.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "M\u00fachann na soilse agus an teilif\u00eds, d\u00fanann s\u00e9 na cuirt\u00edn\u00ed agus glas\u00e1lann s\u00e9 an doras.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "Socra\u00edonn s\u00e9 na soilse go ton te ag 15%, d\u00fanann s\u00e9 na cuirt\u00edn\u00ed agus casann s\u00e9 ar an teilif\u00eds.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
     "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "Locks an doras agus d\u00fanann s\u00e9 na cuirt\u00edn\u00ed.", // EN: Locks the door and closes the curtains.

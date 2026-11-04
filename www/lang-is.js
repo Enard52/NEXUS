@@ -35,7 +35,7 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Innstungur og rofar", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "\u00c1\u00e6tlun", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/m\u00e1nu\u00f0i", // EN: $7.50/month
     "/month": "/m\u00e1nu\u00f0ur", // EN: /month
     "7 days free, then just $89.99 per year. Cancel anytime.": "7 dagar fr\u00edtt, svo bara $89,99 \u00e1 \u00e1ri. H\u00e6ttu vi\u00f0 hven\u00e6r sem er.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
@@ -509,13 +509,13 @@ window.NEXUS_LANG = {
     "\u00b7 Etkin (konum tetiklemesi yak\u0131nda)": "\u00b7 Virkt (sta\u00f0setningarkveikja kemur flj\u00f3tlega)", // EN: · Active (location trigger coming soon)
     "Bu strateji zamanlamayla \u00e7al\u0131\u015f\u0131r: uygulama a\u00e7\u0131kken (masa\u00fcst\u00fcnde tepsideyken) her gece 23:00'te se\u00e7ili enerji cihazlar\u0131n\u0131n g\u00fcc\u00fcn\u00fc keser.": "\u00deessi a\u00f0fer\u00f0afr\u00e6\u00f0i keyrir eftir \u00e1\u00e6tlun: me\u00f0an forriti\u00f0 er opi\u00f0 (\u00ed kerfissv\u00e6\u00f0inu \u00e1 skj\u00e1bor\u00f0i), slekkur \u00fea\u00f0 \u00e1 orkut\u00e6kjum sem valin eru \u00e1 hverju kv\u00f6ldi klukkan 23:00.", // EN: This strategy runs on a schedule: while the app is open (in the tray on desktop), it cuts power to the selected energy devices nightly at 23:00.
     "Bu strateji konum tetiklemesine dayan\u0131r; otomatik konum tetiklemesi hen\u00fcz yok. Etkinle\u015ftirdi\u011finde kaydedilir ama kendili\u011finden \u00e7al\u0131\u015fmaz.": "\u00deessi stefna byggist \u00e1 sta\u00f0setningart\u00e6ki; sj\u00e1lfvirk sta\u00f0setningartenging er ekki tilt\u00e6k enn\u00fe\u00e1. A\u00f0 virkja sparar hana, en h\u00fan keyrir ekki sj\u00e1lf. \u00deessi tegund kveikjunar keyrir ekki sj\u00e1lfkrafa enn\u00fe\u00e1; \u00feegar h\u00fan er vistu\u00f0 keyrir h\u00fan \u00e1 \u00feeim t\u00edma sem \u00fe\u00fa velur h\u00e9r fyrir ne\u00f0an (\u00e1\u00e6tla\u00f0). \u00d6ryggishamarkveikja getur ekki veri\u00f0 sett upp: forriti\u00f0 hefur ekki l\u00e6silegan st\u00f6\u00f0u vi\u00f0v\u00f6runarpanels e\u00f0a NEXUS-stigs hamrofa enn\u00fe\u00e1. Vinnandi tegundir: T\u00edmaritari, Ve\u00f0ur, T\u00e6ki\u00f0\u00e1stand og Vi\u00f0v\u00f6runarkveikja (skynjari). \u00deessi tegund kveikjunar er ekki studd enn\u00fe\u00e1, svo h\u00fan getur ekki veri\u00f0 vistu\u00f0. Vinnandi tegundir: T\u00edmaritari, Ve\u00f0ur, T\u00e6ki\u00f0\u00e1stand og Vi\u00f0v\u00f6runarkveikja (skynjari). Ve\u00f0ur\u00e1stand Raunveruleg ve\u00f0uruppl\u00fdsingar fyrir heimilissta\u00f0 \u00feinn eru lesnar um \u00fea\u00f0 bil \u00e1 10 m\u00edn\u00fatna fresti \u00e1 me\u00f0an forriti\u00f0 er opi\u00f0. Senan keyrir einu sinni \u00feegar \u00e1standi\u00f0 fer \u00far \u00fev\u00ed a\u00f0 vera \u00f3satt \u00ed satt. Hitastig (\u00b0C) Vindur (km/klst)", // EN: This strategy relies on location triggers; automatic location triggering isn't available yet. Enabling saves it, but it won't run on its own.
-    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz otomatik \u00e7al\u0131\u015fm\u0131yor; kaydetti\u011finde a\u015fa\u011f\u0131da se\u00e7ti\u011fin saatte (zamanlamayla) \u00e7al\u0131\u015f\u0131r.": "", // EN: This trigger type doesn't run automatically yet; once saved, it runs at the time you pick below (scheduled).
-    "G\u00fcvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen ger\u00e7ek bir alarm paneli durumu veya NEXUS d\u00fczeyinde bir mod anahtar\u0131 hen\u00fcz yok. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: A security-mode trigger can't be set up: the app has no readable alarm-panel state or NEXUS-level mode switch yet. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
-    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
-    "Hava Ko\u015fulu": "", // EN: Weather Condition
-    "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
-    "S\u0131cakl\u0131k (\u00b0C)": "", // EN: Temperature (°C)
-    "R\u00fczg\u00e2r (km/sa)": "", // EN: Wind (km/h)
+    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz otomatik \u00e7al\u0131\u015fm\u0131yor; kaydetti\u011finde a\u015fa\u011f\u0131da se\u00e7ti\u011fin saatte (zamanlamayla) \u00e7al\u0131\u015f\u0131r.": "\u00deessi ger\u00f0 kveikju keyrir ekki sj\u00e1lfkrafa enn \u00fe\u00e1; \u00feegar h\u00fan er vistu\u00f0 keyrir h\u00fan \u00e1 t\u00edmanum sem \u00fe\u00fa velur h\u00e9r a\u00f0 ne\u00f0an (t\u00edmasett).", // EN: This trigger type doesn't run automatically yet; once saved, it runs at the time you pick below (scheduled).
+    "G\u00fcvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen ger\u00e7ek bir alarm paneli durumu veya NEXUS d\u00fczeyinde bir mod anahtar\u0131 hen\u00fcz yok. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Ekki er h\u00e6gt a\u00f0 setja upp kveikju fyrir \u00f6ryggisham: forriti\u00f0 hefur enn ekki l\u00e6silega st\u00f6\u00f0u vi\u00f0v\u00f6runarbor\u00f0s e\u00f0a NEXUS-rofa fyrir ham. Ger\u00f0ir sem virka: T\u00edmam\u00e6lir, Ve\u00f0ur, Sta\u00f0a t\u00e6kis og Vi\u00f0v\u00f6run virkju\u00f0 (skynjari).", // EN: A security-mode trigger can't be set up: the app has no readable alarm-panel state or NEXUS-level mode switch yet. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
+    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "\u00deessi ger\u00f0 kveikju er ekki studd enn \u00fe\u00e1 og \u00fev\u00ed er ekki h\u00e6gt a\u00f0 vista hana. Ger\u00f0ir sem virka: T\u00edmam\u00e6lir, Ve\u00f0ur, Sta\u00f0a t\u00e6kis og Vi\u00f0v\u00f6run virkju\u00f0 (skynjari).", // EN: This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
+    "Hava Ko\u015fulu": "Ve\u00f0urskilyr\u00f0i", // EN: Weather Condition
+    "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "Raunveruleg ve\u00f0urg\u00f6gn fyrir heimilissta\u00f0setningu \u00fe\u00edna eru lesin um \u00fea\u00f0 bil \u00e1 10 m\u00edn\u00fatna fresti \u00e1 me\u00f0an forriti\u00f0 er opi\u00f0. Atbur\u00f0ar\u00e1sin keyrir einu sinni \u00feegar skilyr\u00f0i\u00f0 fer \u00far \u00fev\u00ed a\u00f0 vera ekki uppfyllt \u00ed a\u00f0 vera uppfyllt.", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
+    "S\u0131cakl\u0131k (\u00b0C)": "Hitastig (\u00b0C)", // EN: Temperature (°C)
+    "R\u00fczg\u00e2r (km/sa)": "Vindur (km/klst.)", // EN: Wind (km/h)
     "Ya\u011f\u0131\u015f (mm)": "\u00darkoma (mm)", // EN: Precipitation (mm)
     "\u00dcst\u00fcne \u00e7\u0131k\u0131nca": "Fer yfir", // EN: Rises above
     "Alt\u0131na inince": "Fer undir", // EN: Falls below
@@ -538,7 +538,7 @@ window.NEXUS_LANG = {
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "S\u00f3lsetursvi\u00f0v\u00f6run: engin heimilissta\u00f0ur stilltur.", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Vi\u00f0v\u00f6runart\u00edmi misst (forriti\u00f0 var loka\u00f0).", // EN: Sunset trigger: no home location set.
     "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "Myndir", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Kameralar": "Myndav\u00e9lar", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Myndirnar m\u00ednar", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "B\u00e6ta myndav\u00e9l vi\u00f0 til a\u00f0 fylgjast me\u00f0 st\u00f6\u00f0u hennar og pers\u00f3nuverndarstillingum h\u00e9r. Stu\u00f0ningur vi\u00f0 myndbandsstreymi (RTSP) kemur flj\u00f3tlega.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "B\u00e6ta vi\u00f0 myndav\u00e9l", // EN: Add Camera
@@ -657,7 +657,7 @@ window.NEXUS_LANG = {
     "Kimlik uygulamas\u0131na eri\u015fimini kaybedersen giri\u015fte kod istenece\u011fi i\u00e7in hesab\u0131na giremezsin. Bu anahtar\u0131 g\u00fcvenli bir yere kaydet.": "Lykill afrita\u00f0ur \u2713", // EN: If you lose access to your authenticator app you won't be able to sign in, because a code is required at login. Save this key somewhere safe.
     "Anahtar kopyaland\u0131 \u2713": "Gat ekki afrita\u00f0; sl\u00e1\u00f0u inn lykilinn handvirkt.", // EN: Key copied ✓
     "Kopyalanamad\u0131; anahtar\u0131 elle yaz.": "6-stafa k\u00f3\u00f0i", // EN: Couldn't copy; type the key by hand.
-    "6 haneli kod": "", // EN: 6-digit code
+    "6 haneli kod": "6 stafa k\u00f3\u00f0i", // EN: 6-digit code
     "Do\u011frula": "Sta\u00f0festa", // EN: Verify
     "Yak\u0131nda": "Koma flj\u00f3tlega", // EN: Coming soon
     "Hesab\u0131m": "M\u00edn Reikningur", // EN: My Account
@@ -750,7 +750,7 @@ window.NEXUS_LANG = {
     "\u00c7ok s\u0131k denendi. Birka\u00e7 dakika sonra tekrar dene.": "\u00d3tengd", // EN: Too many attempts. Try again in a few minutes.
     "\u00c7evrimd\u0131\u015f\u0131": "Markmi\u00f0i\u00f0 ekki lesi\u00f0", // EN: Offline
     "Hedef okunmad\u0131": "Engin m\u00e6lig\u00f6gn", // EN: Target not read
-    "\u00d6l\u00e7\u00fcm verisi yok": "", // EN: No measurement data
+    "\u00d6l\u00e7\u00fcm verisi yok": "Engin m\u00e6lig\u00f6gn", // EN: No measurement data
     "Ekledi\u011fin cihazlar hen\u00fcz s\u0131cakl\u0131k, nem veya hava kalitesi verisi vermedi. Sens\u00f6r\u00fcn a\u00e7\u0131k ve a\u011fda oldu\u011fundan emin ol.": "T\u00e6kin \u00fe\u00edn hafa ekki skr\u00e1\u00f0 hitastig, loftg\u00e6\u00f0i e\u00f0a rakastig enn. Gakktu \u00far skugga um a\u00f0 skynjarinn s\u00e9 kveiktur og \u00e1 netinu.", // EN: Your devices have not reported temperature, humidity or air quality yet. Make sure the sensor is on and on the network.
     "Son okunan \u00f6l\u00e7\u00fcmler": "N\u00fdjustu m\u00e6lingar", // EN: Latest readings
     "Skor \u00fcretmiyoruz; yaln\u0131zca cihazlardan okunan ger\u00e7ek de\u011ferler g\u00f6sterilir.": "Vi\u00f0 framlei\u00f0um ekki einkunn; a\u00f0eins raunverulegar m\u00e6lingar sem teknar eru fr\u00e1 t\u00e6kinu \u00fe\u00ednu eru s\u00fdndar.", // EN: We do not produce a score; only real values read from your devices are shown.
@@ -1370,7 +1370,7 @@ window.NEXUS_LANG = {
     "Evde ve D\u0131\u015far\u0131da": "Fjar", // EN: At Home and Away
     "Evde yok": "\u00deegar ekki heima", // EN: Away
     "Evde yokken": "Stj\u00f3rna\u00f0u lj\u00f3sunum \u00ed heimilinu \u00fe\u00ednu herbergis fyrir herbergi \u00ed einu fl\u00e6\u00f0i. Kveikja/sl\u00f6kkva, birtustig, litahitastig og fl\u00fdtilei\u00f0ir fyrir au\u00f0hj\u00e1lplausnir \u00ed einni forriti.", // EN: When away
-    "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
+    "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "Stj\u00f3rna\u00f0u lj\u00f3sum heimilisins herbergi fyrir herbergi \u00ed einu fl\u00e6\u00f0i. Kveikt/sl\u00f6kkt, birtustig, litahiti og fl\u00fdtilei\u00f0ir fyrir senur \u00ed einu forriti.", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
     "Evdeki cihazlara g\u00f6re haz\u0131r komutlar, h\u0131zl\u0131 otomasyonlar ve ak\u0131ll\u0131 uygulama \u00f6nerileri ver.": "Gef\u00f0u tilb\u00fanar skipanir, hra\u00f0ar sj\u00e1lfvirkni og snjallar forritatilm\u00e6li bygg\u00f0 \u00e1 t\u00e6kjunum heima.", // EN: Give ready commands, quick automations and smart app suggestions based on the devices at home.
     "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "B\u00fa\u00f0u til loftslagsh\u00e6g\u00f0arforrit sem st\u00fdrir loftk\u00e6lingum og \u00feerm\u00f3statum heima hj\u00e1 \u00fe\u00e9r \u00far einu vi\u00f0m\u00f3ti. Inniheldur hitastj\u00f3rn, hra\u00f0a stillingar, vistv\u00e6na stillingu og herbergisst\u00fdr\u00f0ar a\u00f0ger\u00f0ir.", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
     "Evimdeki cihazlar\u0131n durumu nedir?": "Hver er sta\u00f0a t\u00e6kjanna minna?", // EN: What is the status of my devices?
@@ -1709,7 +1709,7 @@ window.NEXUS_LANG = {
     "Is\u0131tma": "Hitar", // EN: Heating
     "I\u015f\u0131k Azaltma": "Dimm lj\u00f3s", // EN: Dim Lights
     "I\u015f\u0131k A\u00e7/Kapat": "Kveikja/sl\u00f6kkva lj\u00f3s", // EN: Lights On/Off
-    "I\u015f\u0131k Kayna\u011f\u0131": "", // EN: Light Source
+    "I\u015f\u0131k Kayna\u011f\u0131": "Lj\u00f3sgjafi", // EN: Light Source
     "I\u015f\u0131k Kayna\u011f\u0131 (BLE+Wi-Fi)": "L\u00fdsingart\u00f3nn", // EN: Light Source (BLE+Wi-Fi)
     "I\u015f\u0131k tonu": "Lj\u00f3s- og loftnet rofi", // EN: Light tone
     "I\u015f\u0131k ve Fan Anahtar\u0131": "Lj\u00f3s og f\u00f3kus", // EN: Light and Fan Switch
@@ -1724,7 +1724,7 @@ window.NEXUS_LANG = {
     "Kablolu&Kablosuz A\u011f Ge\u00e7idi": "Kapall og \u00fer\u00e1\u00f0laust gateway (ZigBee+PLC)", // EN: Wired & Wireless Gateway
     "Kablolu&Kablosuz A\u011f Ge\u00e7idi (ZigBee+PLC)": "\u00der\u00e1\u00f0laus rofi", // EN: Wired & Wireless Gateway (ZigBee+PLC)
     "Kablosuz Anahtar": "\u00der\u00e1\u00f0laus rofi (1 Gang)", // EN: Wireless Switch
-    "Kablosuz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: Wireless Switch (1 Gang)
+    "Kablosuz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "\u00der\u00e1\u00f0laus rofi (1 r\u00e1s)", // EN: Wireless Switch (1 Gang)
     "Kablosuz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "\u00der\u00e1\u00f0laust rofi (2 gangar)", // EN: Wireless Switch (2 Gang)
     "Kablosuz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "\u00der\u00e1\u00f0laust rofi (3 gangar)", // EN: Wireless Switch (3 Gang)
     "Kablosuz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "\u00der\u00e1\u00f0laust rofi (4 gangar)", // EN: Wireless Switch (4 Gang)
@@ -1749,33 +1749,33 @@ window.NEXUS_LANG = {
     "Kamera, kilit ve sens\u00f6r durumlar\u0131n\u0131 tek yerden takip et.": "Fylgstu me\u00f0 st\u00f6\u00f0u myndav\u00e9la, l\u00e6singar og skynjara \u00e1 einum sta\u00f0.", // EN: Track camera, lock and sensor status from one place.
     "Kamera, kilit ve sens\u00f6rleri ayn\u0131 ekranda g\u00f6r. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, kritik durum \u00f6zetleri ve h\u0131zl\u0131 g\u00fcvenlik aksiyonlar\u0131 tek yerde toplans\u0131n.": "Sj\u00e1 myndav\u00e9lar, l\u00e6singar og skynjara \u00e1 sama skj\u00e1. Hjemainn- og fjarveru-stillingar, yfirlit yfir krit\u00edskar st\u00f6\u00f0ur og hra\u00f0virk \u00f6ryggisa\u00f0ger\u00f0ir allt \u00e1 einum sta\u00f0.", // EN: See cameras, locks and sensors on the same screen. At-home and away modes, critical status summaries and quick security actions in one place.
     "Kamera, kilit ve sens\u00f6rleri tek ekranda g\u00f6steren bir ev g\u00fcvenlik merkezi olu\u015ftur. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, h\u0131zl\u0131 kontrol butonlar\u0131 ve kritik durum \u00f6zetleri ekle.": "B\u00fa\u00f0u til heimili\u00f6ryggismi\u00f0st\u00f6\u00f0 sem s\u00fdnir myndav\u00e9lar, l\u00e1sa og skynjara \u00e1 einum skj\u00e1. B\u00e6ttu vi\u00f0 heima- og fjarveruham, fl\u00fdtit\u00f6kkum og yfirliti yfir mikilv\u00e6gt \u00e1stand. Myndav\u00e9lar og hlj\u00f3\u00f0nemar eru sl\u00f6kkt. Mynddyrabjalla L\u00e1sar me\u00f0 myndav\u00e9l Myndband birtist \u00feegar straumur myndav\u00e9larinnar er tengdur vi\u00f0 NEXUS. Slekkur t\u00edmabundi\u00f0 \u00e1 myndav\u00e9linni Sl\u00f6kkt \u00deegar sl\u00f6kkt er, keyrir ekki kveikjan Sl\u00f6kkva Sl\u00f6kkvibo\u00f0 Sent Hur\u00f0arl\u00e1s Hur\u00f0arl\u00e1s (G\u00e1tt) Hur\u00f0arl\u00e1s (NB-IoT) L\u00e6sist eftir a\u00f0 hur\u00f0in lokast Hur\u00f0arl\u00e1s Hur\u00f0ir og a\u00f0gangur Hur\u00f0a- og gluggaskynjari Hur\u00f0a- og gluggaskynjari (Bluetooth) Hur\u00f0a- og gluggaskynjari (ZigBee) Hur\u00f0a- og gluggaskynjarar Hur\u00f0a-, glugga- og hreyfiskynjari Hur\u00f0ir l\u00e6star Hur\u00f0ir l\u00e6sa, Hiti 20\u00b0C, Lj\u00f3s sl\u00f6kkt Leita \u00deema Kerfi Lj\u00f3st \u00feema D\u00f6kkt \u00feema", // EN: Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.
-    "Kameralar ve mikrofonlar kapal\u0131.": "", // EN: Cameras and microphones are off.
-    "Kameral\u0131 Kap\u0131 Zili": "", // EN: Video Doorbell
-    "Kameral\u0131 Kilitler": "", // EN: Locks with Camera
-    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "", // EN: Video appears once the camera's stream is connected to NEXUS.
-    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "", // EN: Temporarily turns off the camera
-    "Kapal\u0131": "", // EN: Off
-    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "", // EN: When off, the trigger doesn't run
-    "Kapat": "", // EN: Turn off
-    "Kapatma Komutu G\u00f6nderildi": "", // EN: Turn-off Command Sent
-    "Kap\u0131 Kilidi": "", // EN: Door Lock
-    "Kap\u0131 Kilidi (Gateway)": "", // EN: Door Lock (Gateway)
-    "Kap\u0131 Kilidi (NB-IoT)": "", // EN: Door Lock (NB-IoT)
-    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "", // EN: Locks after the door closes
-    "Kap\u0131 kilidi": "", // EN: Door lock
-    "Kap\u0131 ve Eri\u015fim": "", // EN: Doors and Access
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "", // EN: Door and Window Sensor
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "", // EN: Door and Window Sensor (Bluetooth)
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (ZigBee)": "", // EN: Door and Window Sensor (ZigBee)
-    "Kap\u0131 ve pencere sens\u00f6rleri": "", // EN: Door and window sensors
-    "Kap\u0131, pencere, hareket sens\u00f6r\u00fc": "", // EN: Door, window, motion sensor
-    "Kap\u0131lar Kilitli": "", // EN: Doors Locked
-    "Kap\u0131lar kilitlenir, Is\u0131 20\u00b0C, I\u015f\u0131klar kapan\u0131r": "", // EN: Doors lock, Heat 20°C, Lights turn off
-    "Ara": "", // EN: Search
-    "Tema": "", // EN: Theme
-    "Sistem": "", // EN: System
-    "A\u00e7\u0131k tema": "", // EN: Light theme
-    "Koyu tema": "", // EN: Dark theme
+    "Kameralar ve mikrofonlar kapal\u0131.": "Sl\u00f6kkt er \u00e1 myndav\u00e9lum og hlj\u00f3\u00f0nemum.", // EN: Cameras and microphones are off.
+    "Kameral\u0131 Kap\u0131 Zili": "Myndbandsdyrabjalla", // EN: Video Doorbell
+    "Kameral\u0131 Kilitler": "L\u00e1sar me\u00f0 myndav\u00e9l", // EN: Locks with Camera
+    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "Myndin birtist \u00feegar straumur myndav\u00e9larinnar er tengdur vi\u00f0 NEXUS.", // EN: Video appears once the camera's stream is connected to NEXUS.
+    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "Slekkur t\u00edmabundi\u00f0 \u00e1 myndav\u00e9linni", // EN: Temporarily turns off the camera
+    "Kapal\u0131": "Sl\u00f6kkt", // EN: Off
+    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "\u00deegar sl\u00f6kkt er keyrir kveikjan ekki", // EN: When off, the trigger doesn't run
+    "Kapat": "Sl\u00f6kkva", // EN: Turn off
+    "Kapatma Komutu G\u00f6nderildi": "Sl\u00f6kkviskipun send", // EN: Turn-off Command Sent
+    "Kap\u0131 Kilidi": "Hur\u00f0arl\u00e1s", // EN: Door Lock
+    "Kap\u0131 Kilidi (Gateway)": "Hur\u00f0arl\u00e1s (g\u00e1tt)", // EN: Door Lock (Gateway)
+    "Kap\u0131 Kilidi (NB-IoT)": "Hur\u00f0arl\u00e1s (NB-IoT)", // EN: Door Lock (NB-IoT)
+    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "L\u00e6sist eftir a\u00f0 hur\u00f0inni er loka\u00f0", // EN: Locks after the door closes
+    "Kap\u0131 kilidi": "Hur\u00f0arl\u00e1s", // EN: Door lock
+    "Kap\u0131 ve Eri\u015fim": "Hur\u00f0ir og a\u00f0gangur", // EN: Doors and Access
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "Hur\u00f0a- og gluggaskynjari", // EN: Door and Window Sensor
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "Hur\u00f0a- og gluggaskynjari (Bluetooth)", // EN: Door and Window Sensor (Bluetooth)
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (ZigBee)": "Hur\u00f0a- og gluggaskynjari (ZigBee)", // EN: Door and Window Sensor (ZigBee)
+    "Kap\u0131 ve pencere sens\u00f6rleri": "Hur\u00f0a- og gluggaskynjarar", // EN: Door and window sensors
+    "Kap\u0131, pencere, hareket sens\u00f6r\u00fc": "Hur\u00f0a-, glugga- og hreyfiskynjari", // EN: Door, window, motion sensor
+    "Kap\u0131lar Kilitli": "Hur\u00f0ir l\u00e6star", // EN: Doors Locked
+    "Kap\u0131lar kilitlenir, Is\u0131 20\u00b0C, I\u015f\u0131klar kapan\u0131r": "Hur\u00f0ir l\u00e6sast, hiti 20\u00b0C, lj\u00f3s slokkna", // EN: Doors lock, Heat 20°C, Lights turn off
+    "Ara": "Leita", // EN: Search
+    "Tema": "\u00deema", // EN: Theme
+    "Sistem": "Kerfi", // EN: System
+    "A\u00e7\u0131k tema": "Lj\u00f3st \u00feema", // EN: Light theme
+    "Koyu tema": "D\u00f6kkt \u00feema", // EN: Dark theme
     "Uygulaman\u0131n a\u00e7\u0131k ya da koyu g\u00f6r\u00fcnmesini se\u00e7. Sistem: cihaz\u0131n\u0131n ayar\u0131n\u0131 izler.": "Veldu hvort forriti\u00f0 l\u00edti \u00fat eins og l\u00e9tt e\u00f0a d\u00f6kkt \u00feema. Kerfi\u00f0 fylgir stillingum t\u00e6kisins \u00fe\u00edns.", // EN: Choose whether the app looks light or dark. System follows your device setting.
     "Karanl\u0131k tema aktif edildi": "D\u00f6kkt \u00feema kveikt", // EN: Dark theme turned on
     "Karl\u0131": "Sn\u00e6vi", // EN: Snowy
@@ -1977,35 +1977,35 @@ window.NEXUS_LANG = {
     "Misafir a\u011f\u0131 veya ge\u00e7ici eri\u015fim bilgisi olmadan haz\u0131r durum g\u00f6stermiyoruz.": "Vi\u00f0 s\u00fdnum ekki tilb\u00fai\u00f0 \u00e1stand \u00e1n gestanets e\u00f0a t\u00edmabundinna a\u00f0gangsuppl\u00fdsinga.", // EN: We don't show a ready state without guest network or temporary access details.
     "Misafir geldi\u011fi anda giri\u015f, ayd\u0131nlatma ve ortak alan cihazlar\u0131n\u0131 haz\u0131rlayan bir misafir modu uygulamas\u0131 olu\u015ftur. Kar\u015f\u0131lama \u0131\u015f\u0131\u011f\u0131, sessiz bildirim ve misafir eri\u015fim ad\u0131mlar\u0131 olsun.": "B\u00fa\u00f0u til forrit fyrir gestastillingu sem undirb\u00fdr inngang, l\u00fdsingu og sameiginlega sv\u00e6\u00f0isb\u00fana\u00f0 um lei\u00f0 og gestir koma. Innifali\u00f0 eru m\u00f3tt\u00f6kulj\u00f3s, hlj\u00f3\u00f0l\u00e1tar tilkynningar og skref til a\u00f0 f\u00e1 a\u00f0gang gesta.", // EN: Create a guest mode app that prepares the entrance, lighting and shared-area devices as soon as guests arrive. Include a welcome light, quiet notifications and guest access steps.
     "Misafir geldi\u011fi anda kullan\u0131lacak \u0131\u015f\u0131k, eri\u015fim ve ortam ayarlar\u0131.": "L\u00fdsing, a\u00f0gangur og stemningsstillingar sem h\u00e6gt er a\u00f0 nota um lei\u00f0 og gestir koma. Undirb\u00fa\u00f0u inngang, l\u00fdsingu, sameiginleg sv\u00e6\u00f0i og af\u00fereyingart\u00e6ki \u00e1 einum skj\u00e1 \u00e1\u00f0ur en gestir koma. B\u00fa\u00f0u til afslappa\u00f0 en \u00f6ruggt m\u00f3tt\u00f6kuferli heima. Gestahamur Gestahamur ekki stilltur Gestaherbergishiti fastur \u00e1 22 gr\u00e1\u00f0ur Undirb\u00fa\u00f0u heimili\u00f0 \u00feitt me\u00f0 einum smelli \u00e1\u00f0ur en gestir koma. Hamur Fj\u00f3lubl\u00e1r Kertalampi Eldh\u00fas Eldh\u00fasnet\u00e6ki \u00de\u00f6rf \u00e1 loftr\u00e6stingu \u00ed eldh\u00fasi Eldh\u00fasmyndav\u00e9l Eldh\u00fasgluggi Maturvinnsluv\u00e9l Athuga\u00f0u eldh\u00fasnet\u00e6ki Undirb\u00fdr vi\u00f0eigandi eldh\u00fast\u00e6ki me\u00f0 einum smelli. Eldh\u00fas, Stofa, Anddyri Fram\u00farskarandi Byrja t\u00f3nlist T\u00f3nlistar\u00fej\u00f3nusta RAKASTIG NEXUS - Gervigreindarv\u00f6rn NEXUS - Snjallforrit NEXUS - Samt\u00edmatilkynningar NEXUS - A\u00f0sto\u00f0arma\u00f0ur NEXUS - Stillingar NEXUS - L\u00fdsinga-stj\u00f3rn NEXUS - T\u00e6ki NEXUS - B\u00e6ta vi\u00f0 t\u00e6ki", // EN: Light, access and ambience settings to use as soon as guests arrive.
-    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
-    "Misafir modu": "", // EN: Guest mode
-    "Misafir modu ayarlanmad\u0131": "", // EN: Guest mode not set up
-    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "", // EN: Guest room temperature fixed at 22 degrees
-    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "", // EN: Get your home ready with one tap before your guests arrive.
-    "Mod": "", // EN: Mode
-    "Mor": "", // EN: Purple
-    "Mum Lamba": "", // EN: Candle Lamp
-    "Mutfak": "", // EN: Kitchen
-    "Mutfak Aletleri": "", // EN: Kitchen Appliances
-    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "", // EN: Kitchen Ventilation Needed
-    "Mutfak Kamera": "", // EN: Kitchen Camera
-    "Mutfak Penceresi": "", // EN: Kitchen Window
-    "Mutfak Robotu": "", // EN: Food Processor
-    "Mutfak aletlerini kontrol et": "", // EN: Check kitchen appliances
-    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "", // EN: Prepares suitable kitchen devices with one tap.
-    "Mutfak, Salon, Hol": "", // EN: Kitchen, Living Room, Hall
-    "M\u00fckemmel": "", // EN: Excellent
-    "M\u00fczik Ba\u015flat": "", // EN: Start Music
-    "M\u00fczik Servisi": "", // EN: Music Service
-    "NEM": "", // EN: HUMIDITY
-    "NEXUS - AI Koruma": "", // EN: NEXUS - AI Protection
-    "NEXUS - Ak\u0131ll\u0131 Uygulama": "", // EN: NEXUS - Smart App
-    "NEXUS - Anl\u0131k Bildirimler": "", // EN: NEXUS - Instant Notifications
-    "NEXUS - Asistan": "", // EN: NEXUS - Assistant
-    "NEXUS - Ayarlar": "", // EN: NEXUS - Settings
-    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "", // EN: NEXUS - Lighting Master
-    "NEXUS - Cihaz": "", // EN: NEXUS - Device
-    "NEXUS - Cihaz Ekle": "", // EN: NEXUS - Add Device
+    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "Undirb\u00fa\u00f0u inngang, l\u00fdsingu, sameiginleg r\u00fdmi og af\u00fereyingart\u00e6ki \u00e1 einu spjaldi \u00e1\u00f0ur en gestir koma. B\u00fa\u00f0u til \u00fe\u00e6gilegt en \u00f6ruggt m\u00f3tt\u00f6kufl\u00e6\u00f0i heima.", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
+    "Misafir modu": "Gestahamur", // EN: Guest mode
+    "Misafir modu ayarlanmad\u0131": "Gestahamur er ekki uppsettur", // EN: Guest mode not set up
+    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "Hitastig gestaherbergis fest \u00e1 22 gr\u00e1\u00f0ur", // EN: Guest room temperature fixed at 22 degrees
+    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "Ger\u00f0u heimili\u00f0 tilb\u00fai\u00f0 me\u00f0 einni snertingu \u00e1\u00f0ur en gestirnir koma.", // EN: Get your home ready with one tap before your guests arrive.
+    "Mod": "Hamur", // EN: Mode
+    "Mor": "Fj\u00f3lubl\u00e1r", // EN: Purple
+    "Mum Lamba": "Kertalampi", // EN: Candle Lamp
+    "Mutfak": "Eldh\u00fas", // EN: Kitchen
+    "Mutfak Aletleri": "Eldh\u00fast\u00e6ki", // EN: Kitchen Appliances
+    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "Eldh\u00fasloftr\u00e6sting nau\u00f0synleg", // EN: Kitchen Ventilation Needed
+    "Mutfak Kamera": "Eldh\u00fasmyndav\u00e9l", // EN: Kitchen Camera
+    "Mutfak Penceresi": "Eldh\u00fasgluggi", // EN: Kitchen Window
+    "Mutfak Robotu": "Matvinnsluv\u00e9l", // EN: Food Processor
+    "Mutfak aletlerini kontrol et": "Athuga\u00f0u eldh\u00fast\u00e6ki", // EN: Check kitchen appliances
+    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "Undirb\u00fdr vi\u00f0eigandi eldh\u00fast\u00e6ki me\u00f0 einni snertingu.", // EN: Prepares suitable kitchen devices with one tap.
+    "Mutfak, Salon, Hol": "Eldh\u00fas, stofa, forstofa", // EN: Kitchen, Living Room, Hall
+    "M\u00fckemmel": "Fr\u00e1b\u00e6rt", // EN: Excellent
+    "M\u00fczik Ba\u015flat": "Hefja t\u00f3nlist", // EN: Start Music
+    "M\u00fczik Servisi": "T\u00f3nlistar\u00fej\u00f3nusta", // EN: Music Service
+    "NEM": "RAKI", // EN: HUMIDITY
+    "NEXUS - AI Koruma": "NEXUS - gervigreindarvernd", // EN: NEXUS - AI Protection
+    "NEXUS - Ak\u0131ll\u0131 Uygulama": "NEXUS - snjallforrit", // EN: NEXUS - Smart App
+    "NEXUS - Anl\u0131k Bildirimler": "NEXUS - tafarlausar tilkynningar", // EN: NEXUS - Instant Notifications
+    "NEXUS - Asistan": "NEXUS - a\u00f0sto\u00f0arma\u00f0ur", // EN: NEXUS - Assistant
+    "NEXUS - Ayarlar": "NEXUS - stillingar", // EN: NEXUS - Settings
+    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "NEXUS - l\u00fdsingarmeistari", // EN: NEXUS - Lighting Master
+    "NEXUS - Cihaz": "NEXUS - t\u00e6ki", // EN: NEXUS - Device
+    "NEXUS - Cihaz Ekle": "NEXUS - b\u00e6ta vi\u00f0 t\u00e6ki", // EN: NEXUS - Add Device
     "NEXUS - Cihaz Ekleme Merkezi": "NEXUS - T\u00e6ki Mi\u00f0st\u00f6\u00f0", // EN: NEXUS - Device Center
     "NEXUS - Cihaz G\u00fcncellemesi": "NEXUS - T\u00e6ki Uppf\u00e6rslur", // EN: NEXUS - Device Updates
     "NEXUS - Cihaz Kurulumu": "NEXUS - T\u00e6ki Uppsetning", // EN: NEXUS - Device Setup
@@ -2405,40 +2405,40 @@ window.NEXUS_LANG = {
     "Tamamen a\u00e7\u0131k": "Algerlega opi\u00f0", // EN: Fully open
     "Tamamland\u0131": "B\u00fai\u00f0", // EN: Done
     "Taray\u0131c\u0131da otomatik a\u011f taramas\u0131 yap\u0131lamaz. Cihaz adresini elle gir ya da masa\u00fcst\u00fc/telefon uygulamas\u0131n\u0131 kullan.": "Sj\u00e1lfvirk netsk\u00f6nnun er ekki f\u00e1anleg \u00ed vafranum. Sl\u00e1\u00f0u inn t\u00e6kinu handvirkt e\u00f0a nota\u00f0u skrifbor\u00f0s-/s\u00edmaforriti\u00f0. Bl\u00f3\u00f0\u00fer\u00fdstingsm\u00e6lir Tapo C210 myndav\u00e9l Tapo L530E perla Tapo P110 snjallinnstunga Tapo S265 hitastillir Skanna Opna skannami\u00f0st\u00f6\u00f0 Sk\u00f6nnun h\u00e6tt. Sk\u00f6nnun gat ekki loki\u00f0. Gakktu \u00far skugga um a\u00f0 t\u00e6kin \u00fe\u00edn s\u00e9u \u00e1 sama neti. Sk\u00f6nnunarr\u00e1\u00f0 Sk\u00f6nnun\u2026 Byrja\u00f0u a\u00f0 vista Vistunarm\u00e1ti Vistunara\u00f0fer\u00f0ir Tasmota stinga Tasmota RGB perla Tasmota rofi Orlofs\u00f6ryggism\u00e1ti Loftlj\u00f3s Loftlj\u00f3s (BLE+Wi-Fi) Loftlj\u00f3s (Bluetooth) Loftlj\u00f3s (ZigBee) Loftlj\u00f3s me\u00f0 loftk\u00e6lingu Farslestaflugst\u00f6\u00f0 Farskam\u00e6li Loftk\u00e6ling Farskam\u00e6li (Bluetooth) Undirb\u00faningur me\u00f0 einum smelli Einn skipti k\u00f3\u00f0i er sendur Einstaklingur snjallrofi Einstaklingur snertirofi Einstaklingur \u00fer\u00e1\u00f0laus rofi Einstaklingur rofi \u00e1n n\u00falls Velkomin aftur Hla\u00f0a aftur", // EN: Automatic network scanning isn't available in the browser. Enter the device address manually or use the desktop/phone app.
-    "Tansiyon Aleti": "", // EN: Blood Pressure Monitor
-    "Tapo C210 Kamera": "", // EN: Tapo C210 Camera
-    "Tapo L530E Ampul": "", // EN: Tapo L530E Bulb
-    "Tapo P110 Ak\u0131ll\u0131 Priz": "", // EN: Tapo P110 Smart Plug
-    "Tapo S265 Termostat": "", // EN: Tapo S265 Thermostat
-    "Tara": "", // EN: Scan
-    "Tarama Merkezini A\u00e7": "", // EN: Open Scan Center
-    "Tarama durduruldu.": "", // EN: Scan stopped.
-    "Tarama tamamlanamad\u0131. Cihazlar\u0131n ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: The scan couldn't finish. Make sure your devices are on the same network.
-    "Tarama \u0130pu\u00e7lar\u0131": "", // EN: Scanning Tips
-    "Taran\u0131yor\u2026": "", // EN: Scanning…
-    "Tasarruf Ba\u015flat": "", // EN: Start Saving
-    "Tasarruf Modu": "", // EN: Saving Mode
-    "Tasarruf Stratejileri": "", // EN: Saving Strategies
-    "Tasmota Priz": "", // EN: Tasmota Plug
-    "Tasmota RGB Ampul": "", // EN: Tasmota RGB Bulb
-    "Tasmota R\u00f6le": "", // EN: Tasmota Relay
-    "Tatil G\u00fcvenlik Modu": "", // EN: Vacation Security Mode
-    "Tavan Lambas\u0131": "", // EN: Ceiling Light
-    "Tavan Lambas\u0131 (BLE+Wi-Fi)": "", // EN: Ceiling Light (BLE+Wi-Fi)
-    "Tavan Lambas\u0131 (Bluetooth)": "", // EN: Ceiling Light (Bluetooth)
-    "Tavan Lambas\u0131 (ZigBee)": "", // EN: Ceiling Light (ZigBee)
-    "Tavan Vantilat\u00f6r\u00fc Lambas\u0131": "", // EN: Ceiling Fan Light
-    "Ta\u015f\u0131nabilir G\u00fc\u00e7 \u0130stasyonu": "", // EN: Portable Power Station
-    "Ta\u015f\u0131nabilir Klima": "", // EN: Portable AC
-    "Ta\u015f\u0131nabilir Klima (Bluetooth)": "", // EN: Portable AC (Bluetooth)
-    "Tek Dokunu\u015f Haz\u0131rl\u0131k": "", // EN: One-Tap Preparation
-    "Tek kullan\u0131ml\u0131k kod g\u00f6nderilir": "", // EN: A one-time code is sent
-    "Tekli Ak\u0131ll\u0131 Anahtar": "", // EN: Single Smart Switch
-    "Tekli Dokunmatik Anahtar": "", // EN: Single Touch Switch
-    "Tekli Kablosuz Anahtar": "", // EN: Single Wireless Switch
-    "Tekli N\u00f6trs\u00fcz Anahtar": "", // EN: Single No-Neutral Switch
-    "Tekrar Ho\u015f Geldin": "", // EN: Welcome Back
-    "Tekrar Y\u00fckle": "", // EN: Reload
+    "Tansiyon Aleti": "Bl\u00f3\u00f0\u00fer\u00fdstingsm\u00e6lir", // EN: Blood Pressure Monitor
+    "Tapo C210 Kamera": "Tapo C210 myndav\u00e9l", // EN: Tapo C210 Camera
+    "Tapo L530E Ampul": "Tapo L530E pera", // EN: Tapo L530E Bulb
+    "Tapo P110 Ak\u0131ll\u0131 Priz": "Tapo P110 snjalltengi", // EN: Tapo P110 Smart Plug
+    "Tapo S265 Termostat": "Tapo S265 hitastillir", // EN: Tapo S265 Thermostat
+    "Tara": "Skanna", // EN: Scan
+    "Tarama Merkezini A\u00e7": "Opna sk\u00f6nnunarmi\u00f0st\u00f6\u00f0", // EN: Open Scan Center
+    "Tarama durduruldu.": "Sk\u00f6nnun st\u00f6\u00f0vu\u00f0.", // EN: Scan stopped.
+    "Tarama tamamlanamad\u0131. Cihazlar\u0131n ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "Sk\u00f6nnun t\u00f3kst ekki a\u00f0 kl\u00e1rast. Gakktu \u00far skugga um a\u00f0 t\u00e6kin \u00fe\u00edn s\u00e9u \u00e1 sama neti.", // EN: The scan couldn't finish. Make sure your devices are on the same network.
+    "Tarama \u0130pu\u00e7lar\u0131": "R\u00e1\u00f0 um sk\u00f6nnun", // EN: Scanning Tips
+    "Taran\u0131yor\u2026": "Skanna\u2026", // EN: Scanning…
+    "Tasarruf Ba\u015flat": "Hefja sparna\u00f0", // EN: Start Saving
+    "Tasarruf Modu": "Sparna\u00f0arhamur", // EN: Saving Mode
+    "Tasarruf Stratejileri": "Sparna\u00f0ara\u00f0fer\u00f0ir", // EN: Saving Strategies
+    "Tasmota Priz": "Tasmota tengill", // EN: Tasmota Plug
+    "Tasmota RGB Ampul": "Tasmota RGB pera", // EN: Tasmota RGB Bulb
+    "Tasmota R\u00f6le": "Tasmota gengi", // EN: Tasmota Relay
+    "Tatil G\u00fcvenlik Modu": "\u00d6ryggishamur \u00ed fr\u00edi", // EN: Vacation Security Mode
+    "Tavan Lambas\u0131": "Loftlj\u00f3s", // EN: Ceiling Light
+    "Tavan Lambas\u0131 (BLE+Wi-Fi)": "Loftlj\u00f3s (BLE+Wi-Fi)", // EN: Ceiling Light (BLE+Wi-Fi)
+    "Tavan Lambas\u0131 (Bluetooth)": "Loftlj\u00f3s (Bluetooth)", // EN: Ceiling Light (Bluetooth)
+    "Tavan Lambas\u0131 (ZigBee)": "Loftlj\u00f3s (ZigBee)", // EN: Ceiling Light (ZigBee)
+    "Tavan Vantilat\u00f6r\u00fc Lambas\u0131": "Loftviftulj\u00f3s", // EN: Ceiling Fan Light
+    "Ta\u015f\u0131nabilir G\u00fc\u00e7 \u0130stasyonu": "F\u00e6ranleg aflst\u00f6\u00f0", // EN: Portable Power Station
+    "Ta\u015f\u0131nabilir Klima": "F\u00e6ranlegur loftk\u00e6lir", // EN: Portable AC
+    "Ta\u015f\u0131nabilir Klima (Bluetooth)": "F\u00e6ranlegur loftk\u00e6lir (Bluetooth)", // EN: Portable AC (Bluetooth)
+    "Tek Dokunu\u015f Haz\u0131rl\u0131k": "Undirb\u00faningur me\u00f0 einni snertingu", // EN: One-Tap Preparation
+    "Tek kullan\u0131ml\u0131k kod g\u00f6nderilir": "Einnota k\u00f3\u00f0i er sendur", // EN: A one-time code is sent
+    "Tekli Ak\u0131ll\u0131 Anahtar": "Einn snjallrofi", // EN: Single Smart Switch
+    "Tekli Dokunmatik Anahtar": "Einn snertirofi", // EN: Single Touch Switch
+    "Tekli Kablosuz Anahtar": "Einn \u00fer\u00e1\u00f0laus rofi", // EN: Single Wireless Switch
+    "Tekli N\u00f6trs\u00fcz Anahtar": "Einn rofi \u00e1n n\u00falllei\u00f0ara", // EN: Single No-Neutral Switch
+    "Tekrar Ho\u015f Geldin": "Velkomin aftur", // EN: Welcome Back
+    "Tekrar Y\u00fckle": "Endurhla\u00f0a", // EN: Reload
     "Tekrar g\u00f6r\u00fc\u015fmek g\u00fczel!": "Gott a\u00f0 sj\u00e1 \u00feig aftur!", // EN: Good to see you again!
     "Tekrar ho\u015f geldin,": "Velkomin(n) aftur,", // EN: Welcome back,
     "Tekrar tara": "Skanna aftur", // EN: Scan again
@@ -2994,17 +2994,17 @@ window.NEXUS_LANG = {
     "Entegrasyonlar": "Sam\u00fe\u00e6ttingar", // EN: Integrations
     "yukar\u0131daki hesap e-postas\u0131n\u0131": "Reikningsnetfangi\u00f0 a\u00f0 ofan", // EN: the account email above
     "\u0130ptal ve \u00f6deme y\u00f6ntemi de\u011fi\u015fikli\u011fi g\u00fcvenli \u00f6deme sayfam\u0131z Whop \u00fczerinden yap\u0131l\u0131r. \u0130ptal edersen mevcut d\u00f6nemin sonuna kadar kullanmaya devam edersin ve bir sonraki \u00f6deme al\u0131nmaz.": "Afb\u00f3kun og breyting \u00e1 grei\u00f0slum\u00e1ta fer fram \u00e1 \u00f6ruggri \u00fattektars\u00ed\u00f0u okkar, Whop. Ef \u00fe\u00fa afb\u00fdtir heldur\u00f0u \u00e1fram a\u00f0 nota NEXUS+ til loka n\u00faverandi t\u00edmabils og n\u00e6sta grei\u00f0sla ver\u00f0ur aldrei tekin.", // EN: Cancelling and changing your payment method happen on our secure checkout page, Whop. If you cancel, you keep using NEXUS+ until the end of the current period and the next payment is never taken.
-    "Aboneli\u011fin yok. NEXUS+ i\u00e7in Plus sayfas\u0131ndan \u00fccretsiz deneyebilirsin.": "", // EN: You don't have a subscription. Try NEXUS+ free from the Plus page.
+    "Aboneli\u011fin yok. NEXUS+ i\u00e7in Plus sayfas\u0131ndan \u00fccretsiz deneyebilirsin.": "\u00de\u00fa ert ekki me\u00f0 \u00e1skrift. Pr\u00f3fa\u00f0u NEXUS+ \u00f3keypis \u00e1 Plus-s\u00ed\u00f0unni.", // EN: You don't have a subscription. Try NEXUS+ free from the Plus page.
     "QR, kurulum kodu veya manuel katalog ile ekledi\u011fin cihazlar burada g\u00f6r\u00fcn\u00fcr.": "\u00de\u00fa \u00e1tt ekki \u00e1skrift. Pr\u00f3fa\u00f0u NEXUS+ fr\u00edtt fr\u00e1 Plus-s\u00ed\u00f0unni.", // EN: Devices you add by QR, setup code or the manual catalog show up here.
-    "Robot s\u00fcp\u00fcrge kontrol paneli \u00b7 ba\u015flat, durdur, eve d\u00f6n": "", // EN: Robot vacuum control panel · start, stop, return home
+    "Robot s\u00fcp\u00fcrge kontrol paneli \u00b7 ba\u015flat, durdur, eve d\u00f6n": "Stj\u00f3rnbor\u00f0 v\u00e9lmennaryksugu \u00b7 r\u00e6sa, st\u00f6\u00f0va, fara heim", // EN: Robot vacuum control panel · start, stop, return home
     "Kilit kontrol paneli \u00b7 kilitle, a\u00e7": "T\u00e6ki sem \u00fe\u00fa b\u00e6tir vi\u00f0 me\u00f0 QR, uppsetningark\u00f3\u00f0a e\u00f0a handvirkum skr\u00e1ningu \u00ed skr\u00e1arsafn birtast h\u00e9r.", // EN: Lock control panel · lock, unlock
-    "Alarm kontrol paneli \u00b7 kur, kapat, sirene": "", // EN: Alarm control panel · arm, disarm, siren
+    "Alarm kontrol paneli \u00b7 kur, kapat, sirene": "Stj\u00f3rnbor\u00f0 vi\u00f0v\u00f6runarkerfis \u00b7 virkja, afvirkja, s\u00edrena", // EN: Alarm control panel · arm, disarm, siren
     "Perde ve panjur kontrol paneli \u00b7 a\u00e7, kapat, konum": "St\u00fdringartafla rykhreinsiv\u00e9lmenna \u00b7 byrja, st\u00f6\u00f0va, fara heim", // EN: Curtain and blind control panel · open, close, position
-    "Renkli ayd\u0131nlatma kontrol paneli \u00b7 renk, parlakl\u0131k": "", // EN: Color lighting control panel · color, brightness
+    "Renkli ayd\u0131nlatma kontrol paneli \u00b7 renk, parlakl\u0131k": "Stj\u00f3rnbor\u00f0 lital\u00fdsingar \u00b7 litur, birtustig", // EN: Color lighting control panel · color, brightness
     "Ayd\u0131nlatma kontrol paneli \u00b7 a\u00e7, kapat, parlakl\u0131k": "L\u00e1sast\u00fdringartafla \u00b7 l\u00e6sa, opna", // EN: Lighting control panel · on, off, brightness
-    "Hava kalitesi paneli \u00b7 \u00f6l\u00e7\u00fcm ve uyar\u0131lar": "", // EN: Air quality panel · readings and alerts
+    "Hava kalitesi paneli \u00b7 \u00f6l\u00e7\u00fcm ve uyar\u0131lar": "Loftg\u00e6\u00f0aspjald \u00b7 m\u00e6lingar og vi\u00f0varanir", // EN: Air quality panel · readings and alerts
     "Hareket sens\u00f6r\u00fc paneli \u00b7 alg\u0131lama ve uyar\u0131lar": "Vi\u00f0v\u00f6runartafla \u00b7 virkja, afvirkja, sir\u00e9na", // EN: Motion sensor panel · detection and alerts
-    "Kap\u0131 ve pencere sens\u00f6r\u00fc paneli \u00b7 a\u00e7\u0131k/kapal\u0131 durumu": "", // EN: Door and window sensor panel · open/closed state
+    "Kap\u0131 ve pencere sens\u00f6r\u00fc paneli \u00b7 a\u00e7\u0131k/kapal\u0131 durumu": "Hur\u00f0a- og gluggaskynjaraspjald \u00b7 opi\u00f0/loka\u00f0", // EN: Door and window sensor panel · open/closed state
     "Evcil hayvan kontrol paneli \u00b7 besleme, takip": "St\u00fdringartafla glugga- og gard\u00ednuvindna \u00b7 opna, loka, stilla st\u00f6\u00f0u", // EN: Pet control panel · feeding, tracking
     "Bebek \u00fcr\u00fcnleri paneli \u00b7 izleme ve uyar\u0131lar": "Barnav\u00f6rur spjaldi\u00f0 \u00b7 eftirlit og vi\u00f0v\u00f6run", // EN: Baby products panel · monitoring and alerts
     "Sa\u011fl\u0131k ve uyku paneli \u00b7 \u00f6l\u00e7\u00fcm, takip": "Heilsa og svefn spjaldi\u00f0 \u00b7 m\u00e6lingar, fylgjast me\u00f0", // EN: Health and sleep panel · readings, tracking

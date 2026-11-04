@@ -34,17 +34,17 @@ window.NEXUS_LANG = {
     "Cinema Room": "Mga Plug at Switch", // EN: Cinema Room
     "Priz ve Anahtar": "NEXUS AI Plus", // EN: Plugs & Switches
     "NEXUS AI Plus": "Plano", // EN: NEXUS AI Plus
-    "Plan": "", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
-    "/month": "", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "Plan": "Plano", // EN: Plan
+    "$7.50/month": "$7.50/buwan", // EN: $7.50/month
+    "/month": "/buwan", // EN: /month
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 araw na libre, pagkatapos ay $89.99 lang kada taon. Puwedeng magkansela anumang oras.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "Gabay", // EN: CarPlay
     "Rehber": "Tunog at Galaw", // EN: Guide
     "Ses ve Hareket": "Tunog ng app, panginginig at mga epekto ng galaw.", // EN: Sound & Motion
     "Uygulama sesleri, titre\u015fim ve hareketli efektler.": "Mga Epekto ng Tunog", // EN: App sounds, vibration and motion effects.
     "Ses Efektleri": "Panginginig", // EN: Sound Effects
     "Titre\u015fim": "Mga Animasyon", // EN: Vibration
-    "Animasyonlar": "", // EN: Animations
+    "Animasyonlar": "Mga animation", // EN: Animations
     "Uyar\u0131 kategorileri, sessiz saatler ve d\u0131\u015fa d\u00f6n\u00fck kanallar.": "Mga kategorya ng alerto, tahimik na oras at mga outbound na channel.", // EN: Alert categories, quiet hours and outbound channels.
     "G\u00f6r\u00fcn\u00fcm ve Genel": "Hitsura at Pangkalahatan", // EN: Appearance & General
     "Tema, birimler ve dil.": "Tema, yunit at wika.", // EN: Theme, units and language.
@@ -530,15 +530,15 @@ window.NEXUS_LANG = {
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Ang naka-iskedyul na mga automation ay tumatakbo habang bukas ang app; sa desktop, nagpapatuloy ang mga ito habang nananatili ang app sa tray.", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Ang mga automation ay tumatakbo habang bukas ang app; sa desktop, nagpapatuloy ang mga iskedyul habang nananatili ang app sa tray.\\nHindi pa tumatakbo", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "(nawala)", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
-    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(nalampasan)", // EN: (missed)
+    "{0} cihaz g\u00fcncellendi.": "{0} device ang na-update.", // EN: {0} device(s) updated.
+    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "na-trigger; walang tinukoy na aksyon (pumili ng senaryo sa Mga Setting ng Senaryo).", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "naputol ang kuryente sa {0} device.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Naganap ang energy strategy", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "Trigger sa paglubog ng araw: walang itinalagang lokasyon ng tahanan.", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Na-miss ang oras ng trigger (nakasara ang app).", // EN: Sunset trigger: no home location set.
     "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "Mga Kamera", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Kameralar": "Mga camera", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Aking Mga Kamera", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Magdagdag ng kamera upang masubaybayan ang status at setting ng privacy nito dito. Suporta sa video streaming (RTSP) ay darating sa lalong madaling panahon.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Magdagdag ng Kamera", // EN: Add Camera
@@ -594,17 +594,17 @@ window.NEXUS_LANG = {
     "Shelly: cihaz \u00fczerindeki d\u00fc\u011fmeyi ~10 sn bas\u0131l\u0131 tut (LED h\u0131zl\u0131 yan\u0131p s\u00f6ner).": "Shelly: pindutin ang button sa device sa loob ng ~10 s (mabilis na kumikislap ang LED).", // EN: Shelly: hold the button on the device for ~10 s (LED blinks fast).
     "Tasmota: ayarlar \u2192 Reset \u2192 Reset device. Veya d\u00fc\u011fmeyi 40 sn bas\u0131l\u0131 tut.": "Tasmota: Mga Setting \u2192 I-reset \u2192 I-reset ang device, o pindutin ang button sa loob ng 40 s.", // EN: Tasmota: Settings → Reset → Reset device, or hold the button for 40 s.
     "WLED: ayarlar \u2192 Security & Updates \u2192 Factory reset.": "WLED: Mga Setting \u2192 Seguridad at Mga Update \u2192 I-reset sa Pabrika. ESPHome: sa pamamagitan ng pindutan ng aparato o ang 'factory_reset' na aksyon sa config nito. Hue: i-power cycle ang bombilya ng 4 na beses para sa mode ng pabrika; ang mga reset ng bridge ay ginagawa sa Hue app. Kasa: i-unplug/i-replug ang aparato sa loob ng 5 s; kailangan mo itong i-pair muli. Yeelight: i-flip ang wall switch nang off-on ng 5 beses (mode ng reset). WiZ: i-flip ang wall switch nang off-on ng mabilis ng 5 beses. LIFX: hawakan ang pindutan (umiikot ang LED sa puti), pagkatapos ay bitawan. Govee LAN: gamit ang sariling pindutan ng aparato o mula sa Govee app. Sonoff DIY: hawakan ang pindutan ng higit sa 5 segundo. Tapo: mula sa app nito, Mga Setting \u2192 alisin/i-reset ang aparato; ang mga camera ay gumagamit ng SETUP na pindutan sa loob ng 5 s. Upang i-reset ang aparato, gamitin ang hakbang ng Factory Reset sa app ng gumawa. Hindi bababa sa 8 karakter; gumamit ng mga letra + numero.", // EN: WLED: Settings → Security & Updates → Factory reset.
-    "ESPHome: cihaz donan\u0131m\u0131na g\u00f6re d\u00fc\u011fmeyle veya config'ten 'factory_reset' eylemi.": "", // EN: ESPHome: via the device button or the 'factory_reset' action in its config.
-    "Hue: ampul\u00fc kapat-a\u00e7 s\u0131ras\u0131yla (4 kez) fabrika moduna al\u0131r; k\u00f6pr\u00fc s\u0131f\u0131rlamalar\u0131 Hue uygulamas\u0131ndan.": "", // EN: Hue: power-cycle the bulb 4 times for factory mode; bridge resets are done in the Hue app.
-    "Kasa: cihaz\u0131 5 sn prize tak-\u00e7\u0131kar; tekrar e\u015fle\u015ftirme gerekir.": "", // EN: Kasa: unplug/replug the device for 5 s; you'll need to pair it again.
-    "Yeelight: duvar d\u00fc\u011fmesini 5 kez a\u00e7-kapa (reset modu).": "", // EN: Yeelight: flip the wall switch off-on 5 times (reset mode).
-    "WiZ: duvar d\u00fc\u011fmesini h\u0131zl\u0131ca 5 kez a\u00e7-kapa.": "", // EN: WiZ: flip the wall switch off-on quickly 5 times.
-    "LIFX: d\u00fc\u011fmeyi bas\u0131l\u0131 tutun (LED beyaz d\u00f6ner) sonra b\u0131rak\u0131n.": "", // EN: LIFX: hold the button (LED cycles white), then release.
-    "Govee LAN: cihaz\u0131n kendi d\u00fc\u011fmesiyle veya Govee uygulamas\u0131ndan.": "", // EN: Govee LAN: with the device's own button or from the Govee app.
-    "Sonoff DIY: d\u00fc\u011fmeyi 5+ sn bas\u0131l\u0131 tut.": "", // EN: Sonoff DIY: hold the button for 5+ seconds.
-    "Tapo: uygulamas\u0131ndan ayarlar \u2192 cihaz\u0131 kald\u0131r/s\u0131f\u0131rla; kamera ise SETUP d\u00fc\u011fmesi 5 sn.": "", // EN: Tapo: from its app, Settings → remove/reset the device; cameras use the SETUP button for 5 s.
-    "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
-    "En az 8 karakter; harf + rakam kullan.": "", // EN: At least 8 characters; use letters + digits.
+    "ESPHome: cihaz donan\u0131m\u0131na g\u00f6re d\u00fc\u011fmeyle veya config'ten 'factory_reset' eylemi.": "ESPHome: gamit ang button ng device o ang 'factory_reset' na aksyon sa config nito.", // EN: ESPHome: via the device button or the 'factory_reset' action in its config.
+    "Hue: ampul\u00fc kapat-a\u00e7 s\u0131ras\u0131yla (4 kez) fabrika moduna al\u0131r; k\u00f6pr\u00fc s\u0131f\u0131rlamalar\u0131 Hue uygulamas\u0131ndan.": "Hue: i-power cycle ang bombilya nang 4 na beses para sa factory mode; ang pag-reset ng bridge ay ginagawa sa Hue app.", // EN: Hue: power-cycle the bulb 4 times for factory mode; bridge resets are done in the Hue app.
+    "Kasa: cihaz\u0131 5 sn prize tak-\u00e7\u0131kar; tekrar e\u015fle\u015ftirme gerekir.": "Kasa: hugutin at isaksak muli ang device sa loob ng 5 s; kakailanganin mo itong i-pair ulit.", // EN: Kasa: unplug/replug the device for 5 s; you'll need to pair it again.
+    "Yeelight: duvar d\u00fc\u011fmesini 5 kez a\u00e7-kapa (reset modu).": "Yeelight: i-flip ang wall switch nang off-on nang 5 beses (reset mode).", // EN: Yeelight: flip the wall switch off-on 5 times (reset mode).
+    "WiZ: duvar d\u00fc\u011fmesini h\u0131zl\u0131ca 5 kez a\u00e7-kapa.": "WiZ: i-flip nang mabilis ang wall switch nang off-on nang 5 beses.", // EN: WiZ: flip the wall switch off-on quickly 5 times.
+    "LIFX: d\u00fc\u011fmeyi bas\u0131l\u0131 tutun (LED beyaz d\u00f6ner) sonra b\u0131rak\u0131n.": "LIFX: pindutin nang matagal ang button (iikot sa puti ang LED), pagkatapos ay bitawan.", // EN: LIFX: hold the button (LED cycles white), then release.
+    "Govee LAN: cihaz\u0131n kendi d\u00fc\u011fmesiyle veya Govee uygulamas\u0131ndan.": "Govee LAN: gamit ang sariling button ng device o mula sa Govee app.", // EN: Govee LAN: with the device's own button or from the Govee app.
+    "Sonoff DIY: d\u00fc\u011fmeyi 5+ sn bas\u0131l\u0131 tut.": "Sonoff DIY: pindutin nang matagal ang button nang 5+ segundo.", // EN: Sonoff DIY: hold the button for 5+ seconds.
+    "Tapo: uygulamas\u0131ndan ayarlar \u2192 cihaz\u0131 kald\u0131r/s\u0131f\u0131rla; kamera ise SETUP d\u00fc\u011fmesi 5 sn.": "Tapo: mula sa app nito, Settings \u2192 alisin/i-reset ang device; sa mga camera, pindutin ang SETUP button nang 5 s.", // EN: Tapo: from its app, Settings → remove/reset the device; cameras use the SETUP button for 5 s.
+    "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "Para i-reset ang device, gamitin ang hakbang na Factory Reset sa app ng manufacturer.", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
+    "En az 8 karakter; harf + rakam kullan.": "Hindi bababa sa 8 character; gumamit ng mga letra + numero.", // EN: At least 8 characters; use letters + digits.
     "\u00c7ok zay\u0131f \u2014 en az 8 karakter kullan.": "Napakahina \u2014 gumamit ng hindi bababa sa 8 karakter.", // EN: Very weak — use at least 8 characters.
     "Zay\u0131f \u2014 harf + rakam ekle.": "Mahina \u2014 magdagdag ng mga letra + bilang.", // EN: Weak — add letters + digits.
     "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "Katamtaman \u2014 magdagdag ng malaking titik o simbolo.", // EN: Fair — add an uppercase letter or symbol.
@@ -2355,7 +2355,7 @@ window.NEXUS_LANG = {
     "Su Is\u0131t\u0131c\u0131s\u0131": "Pampainit ng Tubig (Uri ng Tangke)", // EN: Water Heater
     "Su Is\u0131t\u0131c\u0131s\u0131 (Kazan Tipi)": "Mga Metro ng Tubig", // EN: Water Heater (Tank Type)
     "Su Saya\u00e7lar\u0131": "Kontroler ng Balbula ng Tubig", // EN: Water Meters
-    "Su Vanas\u0131 Kumandas\u0131": "", // EN: Water Valve Controller
+    "Su Vanas\u0131 Kumandas\u0131": "Controller ng Water Valve", // EN: Water Valve Controller
     "Su Vanas\u0131 Kumandas\u0131 (Gateway)": "Controller ng Water Valve (Gateway)", // EN: Water Valve Controller (Gateway)
     "Sulama Fiskiyesi": "Sprinkler", // EN: Sprinkler
     "Sulama program\u0131": "Iskedyul ng Pagdidilig", // EN: Watering schedule
@@ -2405,7 +2405,7 @@ window.NEXUS_LANG = {
     "Tamamen a\u00e7\u0131k": "Ganap na bukas", // EN: Fully open
     "Tamamland\u0131": "Tapos na", // EN: Done
     "Taray\u0131c\u0131da otomatik a\u011f taramas\u0131 yap\u0131lamaz. Cihaz adresini elle gir ya da masa\u00fcst\u00fc/telefon uygulamas\u0131n\u0131 kullan.": "Awtomatikong pag-scan ng network ay hindi available sa browser. Ipasok ang address ng device nang manu-mano o gamitin ang desktop/phone app.", // EN: Automatic network scanning isn't available in the browser. Enter the device address manually or use the desktop/phone app.
-    "Tansiyon Aleti": "", // EN: Blood Pressure Monitor
+    "Tansiyon Aleti": "Monitor ng Blood Pressure", // EN: Blood Pressure Monitor
     "Tapo C210 Kamera": "Monitor ng Presyon ng Dugo", // EN: Tapo C210 Camera
     "Tapo L530E Ampul": "Tapo C210 Camera", // EN: Tapo L530E Bulb
     "Tapo P110 Ak\u0131ll\u0131 Priz": "Tapo L530E Bombilya", // EN: Tapo P110 Smart Plug
@@ -3149,38 +3149,38 @@ window.NEXUS_LANG = {
     "Son 7 g\u00fcn": "Huling 7 araw", // EN: Last 7 days
     "Hen\u00fcz kay\u0131tl\u0131 \u00f6l\u00e7\u00fcm yok. G\u00fc\u00e7 \u00f6l\u00e7en bir cihaz ekleyip bu sayfay\u0131 a\u00e7t\u0131\u011f\u0131nda okumalar burada birikir.": "Wala pang naitalang pagsukat. Magdagdag ng device na sumusukat ng power at buksan ang pahinang ito; dito bubuuin ang mga readings.", // EN: No measurements recorded yet. Add a device that measures power and open this page; readings will build up here.
     "\u00d6l\u00e7\u00fcm al\u0131nmayan aral\u0131klar hesaba kat\u0131lmaz; bu y\u00fczden de\u011ferler ger\u00e7ek t\u00fcketimden d\u00fc\u015f\u00fck olabilir.": "Ang mga pagitan na walang sukat ay hindi binibilang, kaya ang mga halaga ay maaaring mas mababa kaysa sa aktwal na konsumo. Presyo ng kuryente (bawat kWh) Halimbawa: 2.50 Pera Tinatayang gastos, hindi isang bill. Ang presyo ay nakaimbak lamang sa device na ito. Araw-araw na paggamit, huling 7 araw (kWh) walang data Tinatayang gastos Ipasok ang presyo bawat yunit para tantyahin ang gastos. Ipasok ang tamang presyo (hal. 2.50). Alerto Buwanang target Oras ng pagsisimula Oras ng pagtatapos Lingguhang buod Pumili ng tahanan Bagong password (hindi bababa sa 6 na karakter) Bagong password (muli) Tunog at panginginig sa seguridad Tunog at panginginig sa emerhensiya Tunog at panginginig para sa enerhiya Tunog at panginginig para sa mungkahing AI Kulay ng Accent Linisin ang paghahanap Pumili ng backup na file I-save ang eksena Pumili ng sariling kulay I-reset sa default (asul) I-collapse ang menu (Ctrl+B) Palawakin ang menu (Ctrl+B) Mag-sign in Hindi naka-sign in Kailangan mong mag-sign in para sa chat ng pamilya.", // EN: Intervals without measurements are not counted, so values may be lower than actual consumption.
-    "Elektrik birim fiyat\u0131 (kWh ba\u015f\u0131na)": "", // EN: Electricity price (per kWh)
-    "\u00d6rn. 2,50": "", // EN: e.g. 2.50
-    "Para birimi": "", // EN: Currency
-    "Tahmini maliyet; fatura de\u011fildir. Fiyat yaln\u0131zca bu cihazda saklan\u0131r.": "", // EN: Estimated cost, not a bill. The price is stored on this device only.
-    "G\u00fcnl\u00fck t\u00fcketim, son 7 g\u00fcn (kWh)": "", // EN: Daily usage, last 7 days (kWh)
-    "\u00f6l\u00e7\u00fcm yok": "", // EN: no data
-    "Tahmini maliyet": "", // EN: Estimated cost
-    "Maliyet tahmini i\u00e7in birim fiyat\u0131 gir.": "", // EN: Enter a unit price to estimate cost.
-    "Ge\u00e7erli bir fiyat gir (\u00f6rn. 2,50).": "", // EN: Enter a valid price (e.g. 2.50).
-    "Uyar\u0131": "", // EN: Alert
-    "Ayl\u0131k hedef": "", // EN: Monthly target
-    "Ba\u015flang\u0131\u00e7 saati": "", // EN: Start time
-    "Biti\u015f saati": "", // EN: End time
-    "Haftal\u0131k \u00f6zet": "", // EN: Weekly summary
-    "Ev se\u00e7": "", // EN: Choose home
-    "Yeni \u015fifre (en az 6 karakter)": "", // EN: New password (at least 6 characters)
-    "Yeni \u015fifre (tekrar)": "", // EN: New password (again)
-    "G\u00fcvenlik sesi ve titre\u015fimi": "", // EN: Security sound and vibration
-    "Acil durum sesi ve titre\u015fimi": "", // EN: Emergency sound and vibration
-    "Enerji sesi ve titre\u015fimi": "", // EN: Energy sound and vibration
-    "AI \u00f6nerileri sesi ve titre\u015fimi": "", // EN: AI suggestion sound and vibration
-    "Vurgu Rengi": "", // EN: Accent Colour
-    "Aramay\u0131 temizle": "", // EN: Clear search
-    "Yedek dosyas\u0131 se\u00e7": "", // EN: Choose backup file
-    "Senaryoyu kaydet": "", // EN: Save scene
-    "\u00d6zel renk se\u00e7": "", // EN: Choose a custom colour
-    "Varsay\u0131lana d\u00f6n (mavi)": "", // EN: Reset to default (blue)
-    "Men\u00fcy\u00fc daralt (Ctrl+B)": "", // EN: Collapse menu (Ctrl+B)
-    "Men\u00fcy\u00fc geni\u015flet (Ctrl+B)": "", // EN: Expand menu (Ctrl+B)
-    "Oturum A\u00e7": "", // EN: Sign in
-    "Oturum a\u00e7\u0131k de\u011fil": "", // EN: Not signed in
-    "Aile sohbeti i\u00e7in oturum a\u00e7mal\u0131s\u0131n.": "", // EN: You need to sign in for the family chat.
+    "Elektrik birim fiyat\u0131 (kWh ba\u015f\u0131na)": "Presyo ng kuryente (kada kWh)", // EN: Electricity price (per kWh)
+    "\u00d6rn. 2,50": "hal. 2.50", // EN: e.g. 2.50
+    "Para birimi": "Currency", // EN: Currency
+    "Tahmini maliyet; fatura de\u011fildir. Fiyat yaln\u0131zca bu cihazda saklan\u0131r.": "Tinatayang gastos, hindi ito bill. Sa device na ito lang naka-save ang presyo.", // EN: Estimated cost, not a bill. The price is stored on this device only.
+    "G\u00fcnl\u00fck t\u00fcketim, son 7 g\u00fcn (kWh)": "Arawang konsumo, huling 7 araw (kWh)", // EN: Daily usage, last 7 days (kWh)
+    "\u00f6l\u00e7\u00fcm yok": "walang data", // EN: no data
+    "Tahmini maliyet": "Tinatayang gastos", // EN: Estimated cost
+    "Maliyet tahmini i\u00e7in birim fiyat\u0131 gir.": "Maglagay ng presyo kada unit para matantiya ang gastos.", // EN: Enter a unit price to estimate cost.
+    "Ge\u00e7erli bir fiyat gir (\u00f6rn. 2,50).": "Maglagay ng wastong presyo (hal. 2.50).", // EN: Enter a valid price (e.g. 2.50).
+    "Uyar\u0131": "Alerto", // EN: Alert
+    "Ayl\u0131k hedef": "Buwanang target", // EN: Monthly target
+    "Ba\u015flang\u0131\u00e7 saati": "Oras ng simula", // EN: Start time
+    "Biti\u015f saati": "Oras ng pagtatapos", // EN: End time
+    "Haftal\u0131k \u00f6zet": "Lingguhang buod", // EN: Weekly summary
+    "Ev se\u00e7": "Pumili ng bahay", // EN: Choose home
+    "Yeni \u015fifre (en az 6 karakter)": "Bagong password (hindi bababa sa 6 na character)", // EN: New password (at least 6 characters)
+    "Yeni \u015fifre (tekrar)": "Bagong password (ulit)", // EN: New password (again)
+    "G\u00fcvenlik sesi ve titre\u015fimi": "Tunog at vibration ng seguridad", // EN: Security sound and vibration
+    "Acil durum sesi ve titre\u015fimi": "Tunog at vibration ng emergency", // EN: Emergency sound and vibration
+    "Enerji sesi ve titre\u015fimi": "Tunog at vibration ng enerhiya", // EN: Energy sound and vibration
+    "AI \u00f6nerileri sesi ve titre\u015fimi": "Tunog at vibration ng mga mungkahi ng AI", // EN: AI suggestion sound and vibration
+    "Vurgu Rengi": "Kulay ng Accent", // EN: Accent Colour
+    "Aramay\u0131 temizle": "I-clear ang paghahanap", // EN: Clear search
+    "Yedek dosyas\u0131 se\u00e7": "Pumili ng backup file", // EN: Choose backup file
+    "Senaryoyu kaydet": "I-save ang senaryo", // EN: Save scene
+    "\u00d6zel renk se\u00e7": "Pumili ng custom na kulay", // EN: Choose a custom colour
+    "Varsay\u0131lana d\u00f6n (mavi)": "Ibalik sa default (asul)", // EN: Reset to default (blue)
+    "Men\u00fcy\u00fc daralt (Ctrl+B)": "I-collapse ang menu (Ctrl+B)", // EN: Collapse menu (Ctrl+B)
+    "Men\u00fcy\u00fc geni\u015flet (Ctrl+B)": "I-expand ang menu (Ctrl+B)", // EN: Expand menu (Ctrl+B)
+    "Oturum A\u00e7": "Mag-sign in", // EN: Sign in
+    "Oturum a\u00e7\u0131k de\u011fil": "Hindi naka-sign in", // EN: Not signed in
+    "Aile sohbeti i\u00e7in oturum a\u00e7mal\u0131s\u0131n.": "Kailangan mong mag-sign in para sa family chat.", // EN: You need to sign in for the family chat.
     "Cihaz eklenince haz\u0131r senaryolar burada g\u00f6r\u00fcnecek.": "Ang mga handa nang eksena ay lilitaw dito kapag nagdagdag ka ng device.", // EN: Ready-made scenes will appear here once you add a device.
     "Turuncu": "Orange", // EN: Orange
     "Pembe": "Pink", // EN: Pink
@@ -3259,12 +3259,12 @@ window.NEXUS_LANG = {
     " and {0} more": "at {0} pa", // EN: and {0} more
     " A command was sent over your local network to {0} devices.": "Isang utos ang ipinadala sa iyong lokal na network sa {0} device.", // EN: A command was sent over your local network to {0} devices.
     " A command was sent over your local network to 1 device.": "Isang utos ang ipinadala sa iyong lokal na network sa 1 device.", // EN: A command was sent over your local network to 1 device.
-    "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
+    "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 Hindi umabot ang command sa {0} \u2014 tiyaking naka-on ito at nakakonekta sa parehong Wi-Fi network.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
     "You have {0} devices at home.": "Mayroon kang {0} device sa bahay.", // EN: You have {0} devices at home.
     "You have {0} device at home.": "Sa ngayon, ito ang mga naka-on: {0}.", // EN: You have {0} device at home.
-    "Right now these are on: {0}.": "", // EN: Right now these are on: {0}.
+    "Right now these are on: {0}.": "Sa ngayon, ito ang mga naka-on: {0}.", // EN: Right now these are on: {0}.
     " and a few more": "Wala pang naka-on ngayon, tahimik ang bahay.", // EN: and a few more
-    "Nothing is on right now, the house is quiet.": "", // EN: Nothing is on right now, the house is quiet.
+    "Nothing is on right now, the house is quiet.": "Walang naka-on ngayon, tahimik ang bahay.", // EN: Nothing is on right now, the house is quiet.
     "These need your attention: {0}.": "Kailangan nitong iyong pansin: {0}.", // EN: These need your attention: {0}.
     "{0} devices": "{0} na mga aparato", // EN: {0} devices
     "{0} device": "{0} na aparato", // EN: {0} device

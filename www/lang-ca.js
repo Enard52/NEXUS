@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Endolls i interruptors", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "Pla", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/mes", // EN: $7.50/month
     "/month": "/mes", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 dies gratis, despr\u00e9s nom\u00e9s $89.99 l'any. Cancel\u00b7la quan vulguis.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "Guia", // EN: Guide
     "Ses ve Hareket": "So i moviment", // EN: Sound & Motion
@@ -870,7 +870,7 @@ window.NEXUS_LANG = {
     "Alarm sistemini kur": "Escaneig d'\u00e0lbum fallit.", // EN: Arm the alarm system
     "Alb\u00fcm taramas\u0131 ba\u015far\u0131s\u0131z.": "Escanejar des de l'\u00e0lbum", // EN: Album scan failed.
     "Alb\u00fcmden Tara": "Prefix de subxarxa", // EN: Scan from Album
-    "Alt a\u011f \u00f6n eki": "", // EN: Subnet prefix
+    "Alt a\u011f \u00f6n eki": "Prefix de subxarxa", // EN: Subnet prefix
     "Alt a\u011f \u00f6neki ge\u00e7ersiz. \u00d6rnek: 192.168.1": "Prefix de subxarxa inv\u00e0lid. Exemple: 192.168.1", // EN: Invalid subnet prefix. Example: 192.168.1
     "Alttan Is\u0131tmal\u0131 Masa": "Taula calefactada", // EN: Heated Table
     "Alt\u0131l\u0131": "Sis interruptors", // EN: Six-gang
@@ -1372,19 +1372,19 @@ window.NEXUS_LANG = {
     "Evde yokken": "Quan estiguis fora", // EN: When away
     "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "Gestiona les llums de la teva llar habitaci\u00f3 per habitaci\u00f3 en un sol flux. Enc\u00e9s/apagat, brillantor, temperatura de color i dreceres de escena r\u00e0pides en una sola aplicaci\u00f3.", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
     "Evdeki cihazlara g\u00f6re haz\u0131r komutlar, h\u0131zl\u0131 otomasyonlar ve ak\u0131ll\u0131 uygulama \u00f6nerileri ver.": "D\u00f3na ordres llestes, automatitzacions r\u00e0pides i suggeriments intel\u00b7ligents d'aplicacions basats en els dispositius de casa. Crea una aplicaci\u00f3 de confort clim\u00e0tic que gestioni els aires condicionats i els term\u00f2stats de casa teva des d'un panell. Inclou control de temperatura, modes r\u00e0pids, mode eco i accions segons l'habitaci\u00f3. Quin \u00e9s l'estat dels meus dispositius? Fora de Casa Escena Fora de Casa Comprova energia i seguretat quan surts de casa. Fora de casa Sortint de Casa Comprovaci\u00f3 de Sortida de Casa Escena de Sortida de Casa Resum de Sortida de Casa Acaba la Sortida de Casa Crea una aplicaci\u00f3 de comprovaci\u00f3 de sortida de casa que mostri els dispositius encesos, l'estat de les portes i la configuraci\u00f3 energ\u00e8tica en una sola pantalla. Afegeix botons de tancament r\u00e0pid i activaci\u00f3 de seguretat. Comprova els dispositius encesos, les portes i l'estat energ\u00e8tic en un sol flux quan surts de casa.", // EN: Give ready commands, quick automations and smart app suggestions based on the devices at home.
-    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
-    "Evimdeki cihazlar\u0131n durumu nedir?": "", // EN: What is the status of my devices?
-    "Evden Uzakta": "", // EN: Away from Home
-    "Evden Uzakta Senaryosu": "", // EN: Away from Home Scene
-    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "", // EN: Wraps up energy and security checks when you leave home.
-    "Evden uzakta": "", // EN: Away from home
-    "Evden \u00c7\u0131k\u0131\u015f": "", // EN: Leaving Home
-    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "", // EN: Leaving Home Check
-    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "", // EN: Leaving Home Scene
-    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "", // EN: Leaving Home Summary
-    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "", // EN: Finish Leaving Home
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "", // EN: Check devices left on, locks and energy status in one flow when leaving home.
+    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "Crea una aplicaci\u00f3 de confort clim\u00e0tic que gestioni els aires condicionats i els term\u00f2stats de casa des d'un sol panell. Inclou control de temperatura, modes r\u00e0pids, mode eco i accions per habitaci\u00f3.", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
+    "Evimdeki cihazlar\u0131n durumu nedir?": "Quin \u00e9s l'estat dels meus dispositius?", // EN: What is the status of my devices?
+    "Evden Uzakta": "Fora de casa", // EN: Away from Home
+    "Evden Uzakta Senaryosu": "Escena Fora de casa", // EN: Away from Home Scene
+    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "Resumeix els controls d'energia i seguretat quan surts de casa.", // EN: Wraps up energy and security checks when you leave home.
+    "Evden uzakta": "Fora de casa", // EN: Away from home
+    "Evden \u00c7\u0131k\u0131\u015f": "Sortida de casa", // EN: Leaving Home
+    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "Control de sortida de casa", // EN: Leaving Home Check
+    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "Escena de sortida de casa", // EN: Leaving Home Scene
+    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "Resum de sortida de casa", // EN: Leaving Home Summary
+    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "Acaba la sortida de casa", // EN: Finish Leaving Home
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Crea una aplicaci\u00f3 de control de sortida que mostri en una sola pantalla els dispositius encesos, l'estat dels panys i els ajustos d'energia. Afegeix botons d'apagada r\u00e0pida i d'activaci\u00f3 de la seguretat.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Comprova els dispositius encesos, els panys i l'estat de l'energia en un sol flux en sortir de casa.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Mostra els dispositius encesos, els bloquejos i l\u2019estat energ\u00e8tic en una sola pantalla quan marxis de casa.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
     "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "Ves les llums, endolls, aires condicionats i ajustos de seguretat que han quedat encesos abans de marxar de casa, tot en un panell. Reuneix els passos r\u00e0pids d\u2019apagat i activaci\u00f3 de seguretat en un sol flux.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
     "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Fem les comprovacions finals abans de marxar.", // EN: Let's do the final checks before you leave.
@@ -2087,45 +2087,45 @@ window.NEXUS_LANG = {
     "NEXUS+ hen\u00fcz sat\u0131\u015fta de\u011fil. Cihaz ekleme, kontrol panelleri, senaryolar ve NEXUS AI \u015fu an tamamen \u00fccretsiz; abonelik a\u00e7\u0131ld\u0131\u011f\u0131nda buradan haber verece\u011fiz.": "NEXUS+ encara no est\u00e0 a la venda. Afegir dispositius, escenaris i NEXUS AI \u00e9s completament gratu\u00eft ara mateix; t'ho farem saber aqu\u00ed quan s'obrin les subscripcions.", // EN: NEXUS+ isn't on sale yet. Adding devices, scenarios and NEXUS AI are completely free right now; we'll let you know here when subscriptions open.
     "NEXUS+ yak\u0131nda": "NEXUS+ pr\u00f2ximament", // EN: NEXUS+ coming soon
     "NEXUS, \u00e7er\u00e7eve i\u00e7indeki kodu otomatik alg\u0131lar ve e\u015fle\u015fmeyi ba\u015flat\u0131r.": "NEXUS detecta autom\u00e0ticament el codi dins del marc i comen\u00e7a l'enlla\u00e7. NEXUS_CARD_CATALOG no est\u00e0 definit. S'ha carregat data.js? Com Configurar Com puc ajudar? Humitat Deshumidificador Humitat Crear rutina d'humitat Humidificador Esborrar llum blanca Nexus AI: Benvingut Nexus AI: Inscriu-te Neutral Interruptor sense neutre (1 via) Interruptor sense neutre (2 vies) Interruptor sense neutre (3 vies) Interruptor sense neutre (4 vies) MODE AUTOM\u00c0TIC Habitaci\u00f3 Eliminar habitaci\u00f3 Automatitzaci\u00f3 de fons Commutaci\u00f3 habitaci\u00f3 per habitaci\u00f3 Vista basada en habitacions Control habitaci\u00f3 per habitaci\u00f3 Llums de l'habitaci\u00f3 Confort de l'habitaci\u00f3 Disponibilitat de l'habitaci\u00f3 Escenes de l'habitaci\u00f3 Selecci\u00f3 d'habitaci\u00f3 Gesti\u00f3 d'habitacions Confort de l'habitaci\u00f3 Apareixer\u00e0 aqu\u00ed un cop s'hagi seleccionat una escena d'habitaci\u00f3 Cap escena d'habitaci\u00f3 seleccionada Cap habitaci\u00f3 seleccionada Temperatura de l'habitaci\u00f3 Executar si la temperatura de l'habitaci\u00f3 supera els 25\u00b0C Gesti\u00f3 d'habitacions Mostrar a l'habitaci\u00f3 Centrar Ox\u00edmetre", // EN: NEXUS detects the code inside the frame automatically and starts pairing.
-    "NEXUS_CARD_CATALOG tan\u0131ml\u0131 de\u011fil. data.js y\u00fcklendi mi?": "", // EN: NEXUS_CARD_CATALOG is not defined. Was data.js loaded?
-    "Nas\u0131l Kurulur?": "", // EN: How to Set Up
-    "Nas\u0131l yard\u0131mc\u0131 olabilirim?": "", // EN: How can I help?
-    "Nem": "", // EN: Humidity
-    "Nem Alma Cihaz\u0131": "", // EN: Dehumidifier
-    "Nem Oran\u0131": "", // EN: Humidity
-    "Nem Rutini Olu\u015ftur": "", // EN: Create Humidity Routine
-    "Nemlendirici": "", // EN: Humidifier
-    "Net Beyaz I\u015f\u0131k": "", // EN: Clear White Light
-    "Nexus AI: Kar\u015f\u0131lama": "", // EN: Nexus AI: Welcome
-    "Nexus AI: Kay\u0131t Ol": "", // EN: Nexus AI: Sign Up
-    "N\u00f6tr": "", // EN: Neutral
-    "N\u00f6trs\u00fcz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (1 Gang)
-    "N\u00f6trs\u00fcz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (2 Gang)
-    "N\u00f6trs\u00fcz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (3 Gang)
-    "N\u00f6trs\u00fcz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (4 Gang)
-    "OTOMAT\u0130K MOD": "", // EN: AUTO MODE
-    "Oda": "", // EN: Room
-    "Oday\u0131 kald\u0131r": "", // EN: Remove room
-    "Arka Plan Otomasyonu": "", // EN: Background automation
-    "Oda Bazl\u0131 Ge\u00e7i\u015f": "", // EN: Room-by-Room Switching
-    "Oda Bazl\u0131 G\u00f6r\u00fcn\u00fcm": "", // EN: Room-Based View
-    "Oda Bazl\u0131 Kontrol": "", // EN: Room-by-Room Control
-    "Oda I\u015f\u0131klar\u0131": "", // EN: Room Lights
-    "Oda Konforu": "", // EN: Room Comfort
-    "Oda M\u00fcsaitli\u011fi": "", // EN: Room Availability
-    "Oda Sahneleri": "", // EN: Room Scenes
-    "Oda Se\u00e7imi": "", // EN: Room Selection
-    "Oda Y\u00f6netimi": "", // EN: Room Management
-    "Oda konforu": "", // EN: Room comfort
-    "Oda sahnesi se\u00e7ilince burada g\u00f6r\u00fcn\u00fcr.": "", // EN: It will appear here once a room scene is selected.
-    "Oda sahnesi se\u00e7ilmedi": "", // EN: No room scene selected
-    "Oda se\u00e7ilmedi": "", // EN: No room selected
-    "Oda s\u0131cakl\u0131\u011f\u0131": "", // EN: Room temperature
-    "Oda s\u0131cakl\u0131\u011f\u0131 25\u00b0C \u00fcst\u00fcne \u00e7\u0131karsa \u00e7al\u0131\u015ft\u0131r": "", // EN: Run if room temperature goes above 25°C
-    "Oda y\u00f6netimi": "", // EN: Room management
-    "Odada G\u00f6ster": "", // EN: Show in Room
-    "Odaklanma": "", // EN: Focus
-    "Oksimetre": "", // EN: Oximeter
+    "NEXUS_CARD_CATALOG tan\u0131ml\u0131 de\u011fil. data.js y\u00fcklendi mi?": "NEXUS_CARD_CATALOG no est\u00e0 definit. S'ha carregat data.js?", // EN: NEXUS_CARD_CATALOG is not defined. Was data.js loaded?
+    "Nas\u0131l Kurulur?": "Com configurar-ho", // EN: How to Set Up
+    "Nas\u0131l yard\u0131mc\u0131 olabilirim?": "Com et puc ajudar?", // EN: How can I help?
+    "Nem": "Humitat", // EN: Humidity
+    "Nem Alma Cihaz\u0131": "Deshumidificador", // EN: Dehumidifier
+    "Nem Oran\u0131": "Humitat", // EN: Humidity
+    "Nem Rutini Olu\u015ftur": "Crea una rutina d'humitat", // EN: Create Humidity Routine
+    "Nemlendirici": "Humidificador", // EN: Humidifier
+    "Net Beyaz I\u015f\u0131k": "Llum blanca neta", // EN: Clear White Light
+    "Nexus AI: Kar\u015f\u0131lama": "Nexus AI: Benvinguda", // EN: Nexus AI: Welcome
+    "Nexus AI: Kay\u0131t Ol": "Nexus AI: Registre", // EN: Nexus AI: Sign Up
+    "N\u00f6tr": "Neutre", // EN: Neutral
+    "N\u00f6trs\u00fcz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "Interruptor sense neutre (1 sortida)", // EN: No-Neutral Switch (1 Gang)
+    "N\u00f6trs\u00fcz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "Interruptor sense neutre (2 sortides)", // EN: No-Neutral Switch (2 Gang)
+    "N\u00f6trs\u00fcz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "Interruptor sense neutre (3 sortides)", // EN: No-Neutral Switch (3 Gang)
+    "N\u00f6trs\u00fcz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "Interruptor sense neutre (4 sortides)", // EN: No-Neutral Switch (4 Gang)
+    "OTOMAT\u0130K MOD": "MODE AUTOM\u00c0TIC", // EN: AUTO MODE
+    "Oda": "Habitaci\u00f3", // EN: Room
+    "Oday\u0131 kald\u0131r": "Elimina l'habitaci\u00f3", // EN: Remove room
+    "Arka Plan Otomasyonu": "Automatitzaci\u00f3 en segon pla", // EN: Background automation
+    "Oda Bazl\u0131 Ge\u00e7i\u015f": "Commutaci\u00f3 per habitaci\u00f3", // EN: Room-by-Room Switching
+    "Oda Bazl\u0131 G\u00f6r\u00fcn\u00fcm": "Vista per habitacions", // EN: Room-Based View
+    "Oda Bazl\u0131 Kontrol": "Control per habitaci\u00f3", // EN: Room-by-Room Control
+    "Oda I\u015f\u0131klar\u0131": "Llums de l'habitaci\u00f3", // EN: Room Lights
+    "Oda Konforu": "Confort de l'habitaci\u00f3", // EN: Room Comfort
+    "Oda M\u00fcsaitli\u011fi": "Disponibilitat de l'habitaci\u00f3", // EN: Room Availability
+    "Oda Sahneleri": "Escenes de l'habitaci\u00f3", // EN: Room Scenes
+    "Oda Se\u00e7imi": "Selecci\u00f3 d'habitaci\u00f3", // EN: Room Selection
+    "Oda Y\u00f6netimi": "Gesti\u00f3 d'habitacions", // EN: Room Management
+    "Oda konforu": "Confort de l'habitaci\u00f3", // EN: Room comfort
+    "Oda sahnesi se\u00e7ilince burada g\u00f6r\u00fcn\u00fcr.": "Apareixer\u00e0 aqu\u00ed quan se seleccioni una escena d'habitaci\u00f3.", // EN: It will appear here once a room scene is selected.
+    "Oda sahnesi se\u00e7ilmedi": "Cap escena d'habitaci\u00f3 seleccionada", // EN: No room scene selected
+    "Oda se\u00e7ilmedi": "Cap habitaci\u00f3 seleccionada", // EN: No room selected
+    "Oda s\u0131cakl\u0131\u011f\u0131": "Temperatura de l'habitaci\u00f3", // EN: Room temperature
+    "Oda s\u0131cakl\u0131\u011f\u0131 25\u00b0C \u00fcst\u00fcne \u00e7\u0131karsa \u00e7al\u0131\u015ft\u0131r": "Executa si la temperatura de l'habitaci\u00f3 supera els 25\u00b0C", // EN: Run if room temperature goes above 25°C
+    "Oda y\u00f6netimi": "Gesti\u00f3 d'habitacions", // EN: Room management
+    "Odada G\u00f6ster": "Mostra a l'habitaci\u00f3", // EN: Show in Room
+    "Odaklanma": "Concentraci\u00f3", // EN: Focus
+    "Oksimetre": "Ox\u00edmetre", // EN: Oximeter
     "Okuma": "Lectura", // EN: Reading
     "Okuma i\u00e7in parlak ve odakl\u0131 beyaz \u0131\u015f\u0131k sahnesi olu\u015ftur.": "Crea una escena amb llum blanca brillant i enfocada per llegir.", // EN: Create a bright, focused white light scene for reading.
     "Olu\u015ftur": "Crear", // EN: Create
@@ -2387,7 +2387,7 @@ window.NEXUS_LANG = {
     "S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc (BLE)": "Sensor de temperatura i humitat (Zigbee)", // EN: Temperature and Humidity Sensor (BLE)
     "S\u0131cakl\u0131k ve Nem Sens\u00f6r\u00fc (Zigbee)": "Quan la temperatura, la humitat o el vent canvi\u00efn", // EN: Temperature and Humidity Sensor (Zigbee)
     "S\u0131cakl\u0131k, nem veya r\u00fczgar de\u011fi\u015fti\u011finde": "Augmentar la temperatura", // EN: When temperature, humidity or wind changes
-    "S\u0131cakl\u0131\u011f\u0131 art\u0131r": "", // EN: Increase temperature
+    "S\u0131cakl\u0131\u011f\u0131 art\u0131r": "Augmenta la temperatura", // EN: Increase temperature
     "S\u0131cakl\u0131\u011f\u0131 azalt": "Disminuir la temperatura", // EN: Decrease temperature
     "S\u0131f\u0131rla": "Restablir", // EN: Reset
     "S\u0131f\u0131rlama Ba\u011flant\u0131s\u0131 G\u00f6nder": "Envia l'enlla\u00e7 de restabliment", // EN: Send Reset Link
@@ -3213,7 +3213,7 @@ window.NEXUS_LANG = {
     "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "No s'ha pogut connectar al dispositiu. Assegureu-vos que estigui a la mateixa xarxa i que l'adre\u00e7a IP i la clau local siguin correctes.\\nEnc\u00e9n els llums amb un to c\u00e0lid, obre les cortines i ajusta l'aire condicionat a 22\u00b0.", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
     "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "Enc\u00e9n els llums i obre les cortines, posa l'aire condicionat a 22\u00b0 i envia l'aspirador de tornada a carregar.", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
     "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "Apaga els llums, la televisi\u00f3 i l'aire condicionat, tanca les cortines i tanca la porta.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
-    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
+    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Apaga els llums, la tele i l'aire condicionat, tanca les cortines i tanca la porta amb clau.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Apaga els llums i la televisi\u00f3, tanca les cortines i bloqueja la porta.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "Configura els llums a un to c\u00e0lid al 15%, tanca les cortines i enc\u00e9n la televisi\u00f3.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
     "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "Bloqueja la porta i tanca les cortines.", // EN: Locks the door and closes the curtains.

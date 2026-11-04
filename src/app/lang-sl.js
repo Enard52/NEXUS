@@ -530,15 +530,15 @@ window.NEXUS_LANG = {
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Na\u010drtovane avtomatizacije te\u010dejo, medtem ko je aplikacija odprta; na namizju se nadaljujejo, dokler aplikacija ostaja v pladnju.", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Avtomatizacije te\u010dejo, medtem ko je aplikacija odprta; na namizju se urniki nadaljujejo, dokler aplikacija ostaja v pladnju.\\n\u0160e ni izvedeno", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "(izpadlo)", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(zamujeno)", // EN: (missed)
     "{0} cihaz g\u00fcncellendi.": "Spro\u017eeno; dejanje ni dolo\u010deno (izberite scenarij v Nastavitvah scenarija).\\nprekinitve napajanja pri {0} napravi(nah).", // EN: {0} device(s) updated.
     "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "No\u010dna strategija spro\u017eena; izbrana energijska naprava ni dolo\u010dena.", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "napajanje prekinjeno za {0} naprav.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Spro\u017eilec ob son\u010dnem zahodu: doma\u010da lokacija ni nastavljena.", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "\u010cas spro\u017eitve zamujen (aplikacija je bila zaprta).", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Kamera", // EN: Sunset trigger: no home location set.
-    "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "\u010cas spro\u017eitve je bil zamujen (aplikacija je bila zaprta).", // EN: Trigger time missed (the app was closed).
+    "Kameralar": "Kamere", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Moje kamere", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Dodajte kamero, da spremljate njen status in nastavitve zasebnosti tukaj. Podpora za video pretakanje (RTSP) bo kmalu na voljo.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Dodaj kamero", // EN: Add Camera
@@ -1372,19 +1372,19 @@ window.NEXUS_LANG = {
     "Evde yokken": "Ko ste odsotni", // EN: When away
     "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "Upravljajte svetila v svojem domu soba po soba v enem poteku. Vklop/izklop, svetlost, barvna temperatura in bli\u017enjice do scen v eni aplikaciji.", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
     "Evdeki cihazlara g\u00f6re haz\u0131r komutlar, h\u0131zl\u0131 otomasyonlar ve ak\u0131ll\u0131 uygulama \u00f6nerileri ver.": "Dajte pripravljene ukaze, hitre avtomatizacije in pametne predloge aplikacij glede na naprave doma. Ustvarite aplikacijo za udobje klime, ki upravlja klimatske naprave in termostate v va\u0161em domu iz ene plo\u0161\u010de. Vklju\u010dite nadzor temperature, hitre na\u010dine, ekolo\u0161ki na\u010din in dejanja glede na sobo. Kak\u0161en je status mojih naprav? Od doma Dalje od doma Scena dalj od doma Povzame preverjanje energije in varnosti, ko zapustite dom. Dalje od doma Odhod od doma Odhod od doma preverjanje Scena odhoda od doma Povzetek odhoda od doma Dokon\u010daj odhod od doma Ustvarite aplikacijo za odhod od doma, ki prika\u017ee vklopljene naprave, status klju\u010davnic in nastavitve energije na enem zaslonu. Dodajte gumbe za hitro izklop in aktivacijo varnosti. Preverite naprave, ki so \u0161e vklopljene, klju\u010davnice in status energije v enem poteku pri odhodu od doma.", // EN: Give ready commands, quick automations and smart app suggestions based on the devices at home.
-    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
-    "Evimdeki cihazlar\u0131n durumu nedir?": "", // EN: What is the status of my devices?
-    "Evden Uzakta": "", // EN: Away from Home
-    "Evden Uzakta Senaryosu": "", // EN: Away from Home Scene
-    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "", // EN: Wraps up energy and security checks when you leave home.
-    "Evden uzakta": "", // EN: Away from home
-    "Evden \u00c7\u0131k\u0131\u015f": "", // EN: Leaving Home
-    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "", // EN: Leaving Home Check
-    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "", // EN: Leaving Home Scene
-    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "", // EN: Leaving Home Summary
-    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "", // EN: Finish Leaving Home
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
-    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "", // EN: Check devices left on, locks and energy status in one flow when leaving home.
+    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "Ustvari aplikacijo za klimatsko udobje, ki z ene plo\u0161\u010de upravlja klimatske naprave in termostate v domu. Vklju\u010duje nastavitev temperature, hitre na\u010dine, eko na\u010din in dejanja po sobah.", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
+    "Evimdeki cihazlar\u0131n durumu nedir?": "Kak\u0161no je stanje mojih naprav?", // EN: What is the status of my devices?
+    "Evden Uzakta": "Stran od doma", // EN: Away from Home
+    "Evden Uzakta Senaryosu": "Prizor Stran od doma", // EN: Away from Home Scene
+    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "Zaklju\u010di preglede energije in varnosti ob odhodu z doma.", // EN: Wraps up energy and security checks when you leave home.
+    "Evden uzakta": "Stran od doma", // EN: Away from home
+    "Evden \u00c7\u0131k\u0131\u015f": "Odhod z doma", // EN: Leaving Home
+    "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "Preverjanje ob odhodu z doma", // EN: Leaving Home Check
+    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "Prizor Odhod z doma", // EN: Leaving Home Scene
+    "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "Povzetek odhoda z doma", // EN: Leaving Home Summary
+    "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "Dokon\u010daj odhod z doma", // EN: Finish Leaving Home
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Ustvari aplikacijo za preverjanje ob odhodu z doma, ki na enem zaslonu prika\u017ee pri\u017egane naprave, stanje zaklepov in energijske nastavitve. Dodaj gumba za hitri izklop in vklop varovanja.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
+    "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Ob odhodu z doma v enem toku preveri pri\u017egane naprave, zaklepe in stanje energije.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Na enem zaslonu ob odhodu iz doma poka\u017eite naprave, ki so ostale vklopljene, klju\u010davnice in stanje energije.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
     "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "Oglejte si lu\u010di, vti\u010dnice, klimatske naprave in varnostne nastavitve, ki so pri\u017egane pred odhodom od doma, na eni plo\u0161\u010di. Zberite hitre korake za izklop in varnostno aktivacijo v enem toku.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
     "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Naredimo \u0161e zadnje preglede, preden gre\u0161.", // EN: Let's do the final checks before you leave.
@@ -1977,35 +1977,35 @@ window.NEXUS_LANG = {
     "Misafir a\u011f\u0131 veya ge\u00e7ici eri\u015fim bilgisi olmadan haz\u0131r durum g\u00f6stermiyoruz.": "Ne prikazujemo pripravljene funkcije brez gostovne mre\u017ee ali za\u010dasnih dostopnih podatkov.", // EN: We don't show a ready state without guest network or temporary access details.
     "Misafir geldi\u011fi anda giri\u015f, ayd\u0131nlatma ve ortak alan cihazlar\u0131n\u0131 haz\u0131rlayan bir misafir modu uygulamas\u0131 olu\u015ftur. Kar\u015f\u0131lama \u0131\u015f\u0131\u011f\u0131, sessiz bildirim ve misafir eri\u015fim ad\u0131mlar\u0131 olsun.": "Ustvarite aplikacijo za na\u010din za goste, ki pripravi vhod, razsvetljavo in naprave v skupnih prostorih, takoj ko gosti prispejo. Vklju\u010dite pozdravno lu\u010d, tiha obvestila in korake za dostop gostov.", // EN: Create a guest mode app that prepares the entrance, lighting and shared-area devices as soon as guests arrive. Include a welcome light, quiet notifications and guest access steps.
     "Misafir geldi\u011fi anda kullan\u0131lacak \u0131\u015f\u0131k, eri\u015fim ve ortam ayarlar\u0131.": "Nastavitve svetlobe, dostopa in vzdu\u0161ja za uporabo takoj, ko gostje prispejo. Pripravite vhod, razsvetljavo, skupne prostore in zabavne naprave na eni plo\u0161\u010di pred prihodom gostov. Ustvarite spro\u0161\u010den, a varen tok dobrodo\u0161lice doma. Na\u010din za goste Na\u010din za goste ni nastavljen Temperatura v sobi za goste nastavljena na 22 stopinj Pripravite svoj dom z enim dotikom pred prihodom gostov. Na\u010din Vijoli\u010dna Sve\u010da Kuhinja Kuhinjski aparati Potrebna kuhinjska ventilacija Kamera v kuhinji Kuhinjsko okno Kuhinjski procesor Preverite kuhinjske aparate Pripravi primerne kuhinjske naprave z enim dotikom. Kuhinja, dnevna soba, hodnik Odli\u010dno Za\u010detek glasbe Glasbena storitev VLAGA NEXUS - AI Za\u0161\u010dita NEXUS - Pametna aplikacija NEXUS - Takoj\u0161nja obvestila NEXUS - Pomo\u010dnik NEXUS - Nastavitve NEXUS - Glavni nadzor razsvetljave NEXUS - Naprava NEXUS - Dodaj napravo", // EN: Light, access and ambience settings to use as soon as guests arrive.
-    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
-    "Misafir modu": "", // EN: Guest mode
-    "Misafir modu ayarlanmad\u0131": "", // EN: Guest mode not set up
-    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "", // EN: Guest room temperature fixed at 22 degrees
-    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "", // EN: Get your home ready with one tap before your guests arrive.
-    "Mod": "", // EN: Mode
-    "Mor": "", // EN: Purple
-    "Mum Lamba": "", // EN: Candle Lamp
-    "Mutfak": "", // EN: Kitchen
-    "Mutfak Aletleri": "", // EN: Kitchen Appliances
-    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "", // EN: Kitchen Ventilation Needed
-    "Mutfak Kamera": "", // EN: Kitchen Camera
-    "Mutfak Penceresi": "", // EN: Kitchen Window
-    "Mutfak Robotu": "", // EN: Food Processor
-    "Mutfak aletlerini kontrol et": "", // EN: Check kitchen appliances
-    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "", // EN: Prepares suitable kitchen devices with one tap.
-    "Mutfak, Salon, Hol": "", // EN: Kitchen, Living Room, Hall
-    "M\u00fckemmel": "", // EN: Excellent
-    "M\u00fczik Ba\u015flat": "", // EN: Start Music
-    "M\u00fczik Servisi": "", // EN: Music Service
-    "NEM": "", // EN: HUMIDITY
-    "NEXUS - AI Koruma": "", // EN: NEXUS - AI Protection
-    "NEXUS - Ak\u0131ll\u0131 Uygulama": "", // EN: NEXUS - Smart App
-    "NEXUS - Anl\u0131k Bildirimler": "", // EN: NEXUS - Instant Notifications
-    "NEXUS - Asistan": "", // EN: NEXUS - Assistant
-    "NEXUS - Ayarlar": "", // EN: NEXUS - Settings
-    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "", // EN: NEXUS - Lighting Master
-    "NEXUS - Cihaz": "", // EN: NEXUS - Device
-    "NEXUS - Cihaz Ekle": "", // EN: NEXUS - Add Device
+    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "Pred prihodom gostov na eni plo\u0161\u010di pripravi vhod, razsvetljavo, skupne prostore in zabavne naprave. Ustvari spro\u0161\u010den, a varen potek sprejema doma.", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
+    "Misafir modu": "Gostujo\u010di na\u010din", // EN: Guest mode
+    "Misafir modu ayarlanmad\u0131": "Gostujo\u010di na\u010din ni nastavljen", // EN: Guest mode not set up
+    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "Temperatura v gostni sobi je dolo\u010dena na 22 stopinj", // EN: Guest room temperature fixed at 22 degrees
+    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "Z enim dotikom pripravi dom, preden prispejo gostje.", // EN: Get your home ready with one tap before your guests arrive.
+    "Mod": "Na\u010din", // EN: Mode
+    "Mor": "Vijoli\u010dna", // EN: Purple
+    "Mum Lamba": "Sve\u010dna svetilka", // EN: Candle Lamp
+    "Mutfak": "Kuhinja", // EN: Kitchen
+    "Mutfak Aletleri": "Kuhinjski aparati", // EN: Kitchen Appliances
+    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "Potrebno prezra\u010devanje kuhinje", // EN: Kitchen Ventilation Needed
+    "Mutfak Kamera": "Kuhinjska kamera", // EN: Kitchen Camera
+    "Mutfak Penceresi": "Kuhinjsko okno", // EN: Kitchen Window
+    "Mutfak Robotu": "Kuhinjski robot", // EN: Food Processor
+    "Mutfak aletlerini kontrol et": "Preveri kuhinjske aparate", // EN: Check kitchen appliances
+    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "Z enim dotikom pripravi primerne kuhinjske naprave.", // EN: Prepares suitable kitchen devices with one tap.
+    "Mutfak, Salon, Hol": "Kuhinja, dnevna soba, hodnik", // EN: Kitchen, Living Room, Hall
+    "M\u00fckemmel": "Odli\u010dno", // EN: Excellent
+    "M\u00fczik Ba\u015flat": "Za\u017eeni glasbo", // EN: Start Music
+    "M\u00fczik Servisi": "Glasbena storitev", // EN: Music Service
+    "NEM": "VLAGA", // EN: HUMIDITY
+    "NEXUS - AI Koruma": "NEXUS - AI za\u0161\u010dita", // EN: NEXUS - AI Protection
+    "NEXUS - Ak\u0131ll\u0131 Uygulama": "NEXUS - Pametna aplikacija", // EN: NEXUS - Smart App
+    "NEXUS - Anl\u0131k Bildirimler": "NEXUS - Takoj\u0161nja obvestila", // EN: NEXUS - Instant Notifications
+    "NEXUS - Asistan": "NEXUS - Pomo\u010dnik", // EN: NEXUS - Assistant
+    "NEXUS - Ayarlar": "NEXUS - Nastavitve", // EN: NEXUS - Settings
+    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "NEXUS - Mojster razsvetljave", // EN: NEXUS - Lighting Master
+    "NEXUS - Cihaz": "NEXUS - Naprava", // EN: NEXUS - Device
+    "NEXUS - Cihaz Ekle": "NEXUS - Dodaj napravo", // EN: NEXUS - Add Device
     "NEXUS - Cihaz Ekleme Merkezi": "NEXUS - Osrednje sredi\u0161\u010de naprav", // EN: NEXUS - Device Center
     "NEXUS - Cihaz G\u00fcncellemesi": "NEXUS - Posodobitve naprav", // EN: NEXUS - Device Updates
     "NEXUS - Cihaz Kurulumu": "NEXUS - Nastavitev naprav", // EN: NEXUS - Device Setup
@@ -2468,7 +2468,7 @@ window.NEXUS_LANG = {
     "Termostat": "Pojavi se, ko je povezan termostat ali senzor zraka.", // EN: Thermostat
     "Termostat veya hava sens\u00f6r\u00fc ba\u011flan\u0131nca g\u00f6r\u00fcn\u00fcr.": "Informacije o temperaturi se bodo prikazale tukaj, ko bo povezan termostat ali senzor zraka.", // EN: Appears once a thermostat or air sensor is connected.
     "Termostat ya da hava sens\u00f6r\u00fc ba\u011flan\u0131nca s\u0131cakl\u0131k bilgisi burada g\u00f6r\u00fcnecek.": "Termostatski ventil radiatorja (TRV)", // EN: Temperature info will appear here once a thermostat or air sensor is connected.
-    "Termostatik Radyat\u00f6r Vanas\u0131 (TRV)": "", // EN: Thermostatic Radiator Valve (TRV)
+    "Termostatik Radyat\u00f6r Vanas\u0131 (TRV)": "Termostatski radiatorski ventil (TRV)", // EN: Thermostatic Radiator Valve (TRV)
     "Termostatik Radyat\u00f6r Vanas\u0131 (TRV) (Gateway)": "Termostatski ventil radiatorja (TRV) (Gateway)", // EN: Thermostatic Radiator Valve (TRV) (Gateway)
     "Tetikleyici": "Spro\u017eilec", // EN: Trigger
     "Te\u015fekk\u00fcrler!": "Hvala!", // EN: Thanks!
@@ -2901,8 +2901,8 @@ window.NEXUS_LANG = {
     "\u00e7evrimd\u0131\u015f\u0131": "\u010clan", // EN: offline
     "\u00e7evrimi\u00e7i": "Idealna raven", // EN: online
     "\u00fcye": "Dvonivojska preverba", // EN: member
-    "\u0130deal Seviye": "", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130deal Seviye": "Idealna raven", // EN: Ideal Level
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "Dvostopenjsko preverjanje", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "Polnilna postaja za dvokolesnike", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Polnilna postaja za dvokolesnike (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "Dvojniki", // EN: Two-gang
@@ -3202,18 +3202,18 @@ window.NEXUS_LANG = {
     "Davet e-postas\u0131ndaki kodu gir. Kod tek kullan\u0131ml\u0131kt\u0131r ve yaln\u0131zca davet edilen e-posta adresiyle \u00e7al\u0131\u015f\u0131r.": "Vnesite kodo iz e-po\u0161te z vabilom. Koda je za enkratno uporabo in velja le za e-po\u0161tni naslov, ki je bil vabljen.", // EN: Enter the code from the invitation email. The code is single-use and only works with the invited email address.
     "Oturum gerekli": "Za prijavo je obvezno", // EN: Sign-in required
     "\u00dcye davet etmek i\u00e7in \u00f6nce oturum a\u00e7; evin hesab\u0131na otomatik ba\u011flan\u0131r.": "Najprej se prijavite, da povabite \u010dlane; samodejno boste povezani z ra\u010dunom svojega doma. E-po\u0161te ni bilo mogo\u010de poslati s stre\u017enika Povabilo je bilo ustvarjeno, vendar samodejna e-po\u0161ta ni bila poslana. Ali naj pripravimo besedilo povabila z va\u0161o lastno e-po\u0161tno aplikacijo? Odpri e-po\u0161tno aplikacijo Raven svetlobe Tlak Gibanje zaznano Ni gibanja Ni bilo mogo\u010de vzpostaviti povezave z napravo. Prepri\u010dajte se, da je na istem omre\u017eju. Ni bilo mogo\u010de vzpostaviti povezave z napravo. Prepri\u010dajte se, da je na istem omre\u017eju in da sta IP naslov ter lokalni klju\u010d pravilna. Vklopi lu\u010di v toplem tonu, odpre zavese in nastavi klimatsko napravo na 22\u00b0. Vklopi lu\u010di in odpre zavese, upravlja klimo na 22\u00b0 in po\u0161lje sesalec nazaj na polnjenje. Izklopi lu\u010di, televizor in klimo, zapre zavese in zaklene vrata.", // EN: Sign in first to invite members; you'll be connected to your home's account automatically.
-    "E-posta sunucudan g\u00f6nderilemedi": "", // EN: The email couldn't be sent from the server
-    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
-    "Posta Uygulamas\u0131n\u0131 A\u00e7": "", // EN: Open Mail App
-    "I\u015f\u0131k d\u00fczeyi": "", // EN: Light level
-    "Bas\u0131n\u00e7": "", // EN: Pressure
-    "Hareket alg\u0131land\u0131": "", // EN: Motion detected
-    "Hareket yok": "", // EN: No motion
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network.
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
-    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
-    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
-    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
+    "E-posta sunucudan g\u00f6nderilemedi": "E-po\u0161te ni bilo mogo\u010de poslati s stre\u017enika", // EN: The email couldn't be sent from the server
+    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "Povabilo je bilo ustvarjeno, vendar samodejne e-po\u0161te ni bilo mogo\u010de poslati. Naj besedilo povabila pripravimo v tvoji aplikaciji za po\u0161to?", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
+    "Posta Uygulamas\u0131n\u0131 A\u00e7": "Odpri aplikacijo za po\u0161to", // EN: Open Mail App
+    "I\u015f\u0131k d\u00fczeyi": "Raven svetlobe", // EN: Light level
+    "Bas\u0131n\u00e7": "Tlak", // EN: Pressure
+    "Hareket alg\u0131land\u0131": "Zaznano gibanje", // EN: Motion detected
+    "Hareket yok": "Ni gibanja", // EN: No motion
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "Povezava z napravo ni uspela. Prepri\u010daj se, da je v istem omre\u017eju.", // EN: Couldn't connect to the device. Make sure it's on the same network.
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "Povezava z napravo ni uspela. Prepri\u010daj se, da je v istem omre\u017eju ter da sta naslov IP in lokalni klju\u010d pravilna.", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
+    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "Pri\u017ege lu\u010di v toplem tonu, odpre zavese in nastavi klimo na 22\u00b0.", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
+    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "Pri\u017ege lu\u010di in odpre zavese, po\u017eene klimo na 22\u00b0 ter po\u0161lje sesalnik nazaj na polnjenje.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
+    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Ugasne lu\u010di, televizor in klimo, zapre zavese in zaklene vrata.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Uga\u0161a lu\u010di in televizijo, zapre zavese in zaklene vrata.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "Nastavi lu\u010di na toplo barvo pri 15 %, zapre zavese in vklopi televizijo.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
     "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "Zaklene vrata in zapre zavese.", // EN: Locks the door and closes the curtains.

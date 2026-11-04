@@ -37,7 +37,7 @@ window.NEXUS_LANG = {
     "Plan": "\u8a08\u753b", // EN: Plan
     "$7.50/month": "$7.50/\u6708", // EN: $7.50/month
     "/month": "/\u6708", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7\u65e5\u9593\u7121\u6599\u3001\u305d\u306e\u5f8c\u306f\u5e74\u984d$89.99\u306e\u307f\u3002\u3044\u3064\u3067\u3082\u30ad\u30e3\u30f3\u30bb\u30eb\u3067\u304d\u307e\u3059\u3002", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "\u30ab\u30fc\u30d7\u30ec\u30a4", // EN: CarPlay
     "Rehber": "\u30ac\u30a4\u30c9", // EN: Guide
     "Ses ve Hareket": "\u30b5\u30a6\u30f3\u30c9\uff06\u30e2\u30fc\u30b7\u30e7\u30f3", // EN: Sound & Motion
@@ -453,7 +453,7 @@ window.NEXUS_LANG = {
     "Di\u011fer \u00fcyelerin ve kendi di\u011fer cihazlar\u0131n\u0131n bildirim merkezine gider; al\u0131c\u0131 bu kanal\u0131 kendi cihaz\u0131nda a\u00e7m\u0131\u015f olmal\u0131.": "\u4ed6\u306e\u30e1\u30f3\u30d0\u30fc\u304a\u3088\u3073\u4ed6\u306e\u30c7\u30d0\u30a4\u30b9\u306e\u901a\u77e5\u30bb\u30f3\u30bf\u30fc\u306b\u79fb\u52d5\u3057\u307e\u3059\u3002\u53d7\u4fe1\u8005\u306f\u81ea\u5206\u306e\u30c7\u30d0\u30a4\u30b9\u3067\u3053\u306e\u30c1\u30e3\u30cd\u30eb\u3092\u6709\u52b9\u306b\u3057\u3066\u304a\u304f\u5fc5\u8981\u304c\u3042\u308a\u307e\u3059\u3002", // EN: Goes to other members' and your other devices' notification centres; the recipient must have this channel enabled on their device.
     "Kendi sunucuna JSON POST \u2014 geli\u015fmi\u015f": "\u72ec\u81ea\u306e\u30b5\u30fc\u30d0\u30fc\u3078\u306e JSON POST \u2014 \u9ad8\u5ea6\u306a", // EN: JSON POST to your own server — advanced
     "HTTPS adresi": "HTTPS URL", // EN: HTTPS URL
-    "Yaln\u0131zca HTTPS kabul edilir; her olay {source, id, title, detail, ts} olarak g\u00f6nderilir.": "", // EN: Only HTTPS is accepted; each event is sent as {source, id, title, detail, ts}.
+    "Yaln\u0131zca HTTPS kabul edilir; her olay {source, id, title, detail, ts} olarak g\u00f6nderilir.": "HTTPS\u306e\u307f\u53d7\u3051\u4ed8\u3051\u307e\u3059\u3002\u5404\u30a4\u30d9\u30f3\u30c8\u306f {source, id, title, detail, ts} \u3068\u3057\u3066\u9001\u4fe1\u3055\u308c\u307e\u3059\u3002", // EN: Only HTTPS is accepted; each event is sent as {source, id, title, detail, ts}.
     "Bot anahtar\u0131": "\u30dc\u30c3\u30c8\u30c8\u30fc\u30af\u30f3", // EN: Bot token
     "Sohbet ID": "\u30c1\u30e3\u30c3\u30c8ID", // EN: Chat ID
     "Bot anahtar\u0131 yaln\u0131zca bu cihazda kal\u0131r": "\u30dc\u30c3\u30c8 \u30c8\u30fc\u30af\u30f3\u306f\u3053\u306e\u30c7\u30d0\u30a4\u30b9\u4e0a\u306b\u306e\u307f\u5b58\u5728\u3057\u307e\u3059", // EN: The bot token stays on this device only

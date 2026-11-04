@@ -530,15 +530,15 @@ window.NEXUS_LANG = {
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Iepl\u0101not\u0101s automatiz\u0101cijas darbojas, kam\u0113r lietotne ir atv\u0113rta; uz galddatora t\u0101s turpina darboties, kam\u0113r lietotne paliek sist\u0113mas teknes ikonas zon\u0101.", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Automatiz\u0101cijas darbojas, kam\u0113r lietotne ir atv\u0113rta; uz galddatora grafiki turpin\u0101s, kam\u0113r lietotne paliek sist\u0113mas teknes ikonas zon\u0101.\\nV\u0113l nav izpild\u012bts", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "(tikl\u012bdz izlaists)", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
-    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(nokav\u0113ts)", // EN: (missed)
+    "{0} cihaz g\u00fcncellendi.": "Atjaunin\u0101to ier\u012b\u010du skaits: {0}.", // EN: {0} device(s) updated.
+    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "iedarbin\u0101ts; darb\u012bba nav defin\u0113ta (scen\u0101riju vari izv\u0113l\u0113ties scen\u0101riju iestat\u012bjumos).", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "Atsl\u0113gta str\u0101va {0} ier\u012bc\u0113m.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Ener\u0123ijas strat\u0113\u0123ija izpild\u012bta", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "Saulrieta aktiviz\u0113t\u0101js: m\u0101jas atra\u0161an\u0101s vieta nav iestat\u012bta.", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Aktiviz\u0101cijas laiks palaists gar\u0101m (lietotne bija sl\u0113gta).", // EN: Sunset trigger: no home location set.
     "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "Kameras", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Kameralar": "Kameras", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Manas kameras", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Pievienojiet kameru, lai \u0161eit uzraudz\u012btu t\u0101s statusu un priv\u0101tuma iestat\u012bjumus. Video straum\u0113\u0161anas (RTSP) atbalsts dr\u012bzum\u0101 b\u016bs pieejams.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Pievienot kameru", // EN: Add Camera
@@ -752,20 +752,20 @@ window.NEXUS_LANG = {
     "Hedef okunmad\u0131": "M\u0113r\u0137is nenolas\u012bts", // EN: Target not read
     "\u00d6l\u00e7\u00fcm verisi yok": "Nav m\u0113r\u012bjumu datu", // EN: No measurement data
     "Ekledi\u011fin cihazlar hen\u00fcz s\u0131cakl\u0131k, nem veya hava kalitesi verisi vermedi. Sens\u00f6r\u00fcn a\u00e7\u0131k ve a\u011fda oldu\u011fundan emin ol.": "J\u016bsu ier\u012bces v\u0113l nav zi\u0146oju\u0161as par temperat\u016bru, mitrumu vai gaisa kvalit\u0101ti. P\u0101rliecinieties, ka sensors ir iesl\u0113gts un pievienots t\u012bklam.", // EN: Your devices have not reported temperature, humidity or air quality yet. Make sure the sensor is on and on the network.
-    "Son okunan \u00f6l\u00e7\u00fcmler": "", // EN: Latest readings
+    "Son okunan \u00f6l\u00e7\u00fcmler": "Jaun\u0101kie r\u0101d\u012bjumi", // EN: Latest readings
     "Skor \u00fcretmiyoruz; yaln\u0131zca cihazlardan okunan ger\u00e7ek de\u011ferler g\u00f6sterilir.": "Jaun\u0101kie r\u0101d\u012bjumi", // EN: We do not produce a score; only real values read from your devices are shown.
     "Haz\u0131rl\u0131\u011f\u0131 bitirdi\u011finde \u015fu cihazlara uygulan\u0131r.": "M\u0113s neizveidojam v\u0113rt\u0113jumu; tiek par\u0101d\u012btas tikai j\u016bsu ier\u012bc\u0113s nolas\u012bt\u0101s faktisk\u0101s v\u0113rt\u012bbas.", // EN: When you finish, this is applied to the following devices.
-    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "", // EN: No suitable device for sleep preparation
+    "Uyku haz\u0131rl\u0131\u011f\u0131 i\u00e7in uygun cihaz yok": "Nav piem\u0113rotas ier\u012bces gatavo\u0161anai miegam", // EN: No suitable device for sleep preparation
     "I\u015f\u0131k, perde, kilit veya iklim cihaz\u0131 ekledi\u011finde haz\u0131rl\u0131k burada listelenir.": "Kad pabeigsiet, tas tiek piem\u0113rots \u0161\u0101d\u0101m ier\u012bc\u0113m.", // EN: Once you add a light, curtain, lock or climate device, the preparation is listed here.
-    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "", // EN: Last known state and readings of your climate devices.
+    "\u0130klim cihazlar\u0131n\u0131n son bilinen durumu ve okunan \u00f6l\u00e7\u00fcmler.": "Klimata ier\u012b\u010du p\u0113d\u0113jais zin\u0101mais st\u0101voklis un r\u0101d\u012bjumi.", // EN: Last known state and readings of your climate devices.
     "Kamera gizlili\u011fi": "Nav piem\u0113rotas ier\u012bces miega sagatavo\u0161anai", // EN: Camera privacy
     "Her kameran\u0131n gizlilik modunu ayr\u0131 ayr\u0131 y\u00f6net.": "Kad pievienosiet gaismu, aizkaru, sl\u0113dzeni vai klimata ier\u012bci, sagatavo\u0161ana tiks par\u0101d\u012bta \u0161eit.", // EN: Manage each camera's privacy mode separately.
-    "Kamera cihaz\u0131 yok": "", // EN: No camera device
+    "Kamera cihaz\u0131 yok": "Nav kameras ier\u012bces", // EN: No camera device
     "Kamera ekledi\u011finde gizlilik modu her kamera i\u00e7in burada g\u00f6r\u00fcn\u00fcr.": "J\u016bsu klimata ier\u012b\u010du p\u0113d\u0113jais zin\u0101mais st\u0101voklis un nolas\u012bjumi.", // EN: Once you add a camera, its privacy mode appears here.
-    "Bu senaryoyu uygulayacak uygun cihaz yok": "", // EN: No suitable device to run this scenario
+    "Bu senaryoyu uygulayacak uygun cihaz yok": "Nav piem\u0113rotas ier\u012bces \u0161\u012b scen\u0101rija izpildei", // EN: No suitable device to run this scenario
     "I\u015f\u0131k, perde, klima veya kilit gibi uyumlu bir cihaz ekledi\u011finde burada listelenir.": "Kameras priv\u0101tums", // EN: Once you add a compatible device such as a light, curtain, air conditioner or lock, it is listed here.
     "Uygun cihaz yok": "P\u0101rvaldiet katras kameras priv\u0101tuma re\u017e\u012bmu atsevi\u0161\u0137i.", // EN: No suitable device
-    "Hen\u00fcz a\u00e7\u0131lmad\u0131": "", // EN: Not turned on yet
+    "Hen\u00fcz a\u00e7\u0131lmad\u0131": "V\u0113l nav iesl\u0113gts", // EN: Not turned on yet
     "Aktif Uyar\u0131lar": "Nav kameras ier\u012bces", // EN: Active Alerts
     "Akvaryum": "Kad pievienosiet kameru, t\u0101s priv\u0101tuma re\u017e\u012bms par\u0101d\u012bsies \u0161eit.", // EN: Aquarium
     "Akvaryum Is\u0131t\u0131c\u0131": "Akv\u0101rija sild\u012bt\u0101js", // EN: Aquarium Heater
@@ -1398,7 +1398,7 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131k\u0131\u015f": "Es esmu m\u0101j\u0101s", // EN: Leaving home
     "Eve Geldim": "Laipni l\u016bdzam m\u0101j\u0101s", // EN: I'm Home
     "Eve geldim": "Kad ierodies m\u0101j\u0101s vai dodies prom", // EN: Welcome home
-    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "", // EN: When you arrive home or leave
+    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "Kad ierodies m\u0101j\u0101s vai izej no t\u0101m", // EN: When you arrive home or leave
     "Eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7, klimay\u0131 \u00e7al\u0131\u015ft\u0131r ve garaj kap\u0131s\u0131n\u0131 arac\u0131n\u0131n ekran\u0131ndan kontrol et.": "Iesl\u0113dziet gaismas, iesl\u0113dziet gaisa kondicionieri un kontrol\u0113jiet gar\u0101\u017eas durvis no sava automa\u0161\u012bnas ekr\u0101na, kad tuvojas m\u0101j\u0101m.", // EN: Turn on the lights, start the AC and control the garage door from your car's screen as you approach home.
     "Evet, Uygula": "J\u0101, Lietot", // EN: Yes, Apply
     "Evet, \u0130ptal Et": "J\u0101, Atcelt", // EN: Yes, Cancel
@@ -1422,7 +1422,7 @@ window.NEXUS_LANG = {
     "Bu madde panodan t\u00fcm \u00fcyeler i\u00e7in kald\u0131r\u0131l\u0131r.": "D\u0113lis \u0161obr\u012bd nav pieejams.", // EN: This item is removed from the board for all members.
     "Pano \u015fu an kapal\u0131.": "Pierakstieties, lai izmantotu M\u0101jas d\u0113li.", // EN: The board is unavailable right now.
     "Ev Panosu i\u00e7in oturum a\u00e7mal\u0131s\u0131n.": "M\u0101jas d\u0113lis \u0161aj\u0101 versij\u0101 nav pieejams.", // EN: Sign in to use the Home Board.
-    "Ev Panosu bu s\u00fcr\u00fcmde kullan\u0131lam\u0131yor.": "", // EN: Home Board is unavailable in this build.
+    "Ev Panosu bu s\u00fcr\u00fcmde kullan\u0131lam\u0131yor.": "M\u0101jas panelis \u0161aj\u0101 versij\u0101 nav pieejams.", // EN: Home Board is unavailable in this build.
     "Pano y\u00fckleniyor\u2026": "L\u0101d\u0113\u0161anas d\u0113lis\u2026", // EN: Loading board…
     "Listeye ekle ya da not yaz\u2026": "Pievienot sarakstam vai uzrakst\u012bt piez\u012bmi\u2026", // EN: Add to the list or write a note…
     "T\u00fcr de\u011fi\u015ftir: liste maddesi / not": "P\u0101rsl\u0113gt tipu: saraksta vien\u012bba / piez\u012bme", // EN: Switch type: list item / note
@@ -2005,7 +2005,7 @@ window.NEXUS_LANG = {
     "NEXUS - Ayarlar": "NEXUS - Apgaismojuma vad\u012bt\u0101js", // EN: NEXUS - Settings
     "NEXUS - Ayd\u0131nlatma Ustas\u0131": "NEXUS - Ier\u012bce", // EN: NEXUS - Lighting Master
     "NEXUS - Cihaz": "NEXUS - Pievienot ier\u012bci", // EN: NEXUS - Device
-    "NEXUS - Cihaz Ekle": "", // EN: NEXUS - Add Device
+    "NEXUS - Cihaz Ekle": "NEXUS - Pievienot ier\u012bci", // EN: NEXUS - Add Device
     "NEXUS - Cihaz Ekleme Merkezi": "NEXUS - Ier\u012b\u010du centrs", // EN: NEXUS - Device Center
     "NEXUS - Cihaz G\u00fcncellemesi": "NEXUS - Ier\u012b\u010du atjaunin\u0101jumi", // EN: NEXUS - Device Updates
     "NEXUS - Cihaz Kurulumu": "NEXUS - Ier\u012b\u010du iestat\u012b\u0161ana", // EN: NEXUS - Device Setup
@@ -2063,7 +2063,7 @@ window.NEXUS_LANG = {
     "NEXUS \u2014 Cihaz\u0131 Se\u00e7": "NEXUS \u2014 \u017durn\u0101li", // EN: NEXUS — Select Device
     "NEXUS \u2014 G\u00fcnl\u00fckler": "NEXUS \u2014 HomeKit inform\u0101cija", // EN: NEXUS — Logs
     "NEXUS \u2014 HomeKit Bilgileri": "NEXUS \u2014 Atkl\u0101t", // EN: NEXUS — HomeKit Info
-    "NEXUS \u2014 Ke\u015ffet": "", // EN: NEXUS — Discover
+    "NEXUS \u2014 Ke\u015ffet": "NEXUS \u2014 Atkl\u0101t", // EN: NEXUS — Discover
     "NEXUS \u2014 Konum Se\u00e7": "NEXUS \u2014 Izv\u0113l\u0113ties atra\u0161an\u0101s vietu", // EN: NEXUS — Choose Location
     "NEXUS \u2014 Kullan\u0131c\u0131 Bilgileri": "NEXUS \u2014 Lietot\u0101ja inform\u0101cija", // EN: NEXUS — User Information
     "NEXUS \u2014 Men\u00fc": "NEXUS \u2014 Mened\u017eeris", // EN: NEXUS — Menu
@@ -2595,7 +2595,7 @@ window.NEXUS_LANG = {
     "Yatak odas\u0131": "Gu\u013camistaba", // EN: Bedroom
     "Yatmadan \u00f6nce gerekli t\u00fcm ev kontrollerini tek merkezde topla. I\u015f\u0131k azaltma, rahats\u0131z etme, kilit kontrol\u00fc ve gece iklim ayarlar\u0131 tek ekranda y\u00f6netilsin.": "Apkopojiet visus nepiecie\u0161amos m\u0101jas p\u0101rbaudes pas\u0101kumus pirms gul\u0113tie\u0161anas vien\u0101 centr\u0101. Aptum\u0161ojiet gaismas, netrauc\u0113t, p\u0101rbaud\u012bt sl\u0113dzenes un nakts klimata iestat\u012bjumus vien\u0101 ekr\u0101n\u0101.", // EN: Gather all the home checks you need before bed in one center. Dim lights, do not disturb, lock check and night climate settings on one screen.
     "Yatmadan \u00f6nce \u0131\u015f\u0131k, sessiz mod, kilit ve iklim ayarlar\u0131n\u0131 y\u00f6neten bir uykuya haz\u0131rl\u0131k merkezi olu\u015ftur. Son kontrol \u00f6zeti ve tek dokunu\u015f gece modu ekle.": "Izveido gul\u0113\u0161anas sagatavo\u0161an\u0101s centru, kas p\u0101rvalda apgaismojumu, klusuma re\u017e\u012bmu, sl\u0113dzenes un klimatu pirms gul\u0113tie\u0161anas. Pievieno gal\u012bgo p\u0101rbaudes kopsavilkumu un vienas piesk\u0101riena nakts re\u017e\u012bmu.", // EN: Create a bedtime preparation center that manages lights, quiet mode, locks and climate before bed. Add a final check summary and one-tap night mode.
-    "Ya\u011fmurlu": "", // EN: Rainy
+    "Ya\u011fmurlu": "Lietains", // EN: Rainy
     "Yeelight Masa Lambas\u0131": "Lietains", // EN: Yeelight Desk Lamp
     "Yeelight Tavan Lambas\u0131": "Yeelight galda lampa", // EN: Yeelight Ceiling Light
     "Yeelight \u015eerit": "Yeelight griestu lampa", // EN: Yeelight Strip
@@ -2994,11 +2994,11 @@ window.NEXUS_LANG = {
     "Entegrasyonlar": "Integr\u0101cijas", // EN: Integrations
     "yukar\u0131daki hesap e-postas\u0131n\u0131": "iepriek\u0161 nor\u0101d\u012btais konta e-pasts", // EN: the account email above
     "\u0130ptal ve \u00f6deme y\u00f6ntemi de\u011fi\u015fikli\u011fi g\u00fcvenli \u00f6deme sayfam\u0131z Whop \u00fczerinden yap\u0131l\u0131r. \u0130ptal edersen mevcut d\u00f6nemin sonuna kadar kullanmaya devam edersin ve bir sonraki \u00f6deme al\u0131nmaz.": "Maks\u0101juma metodes atcel\u0161ana un mai\u0146a notiek m\u016bsu dro\u0161aj\u0101 nor\u0113\u0137inu lap\u0101, Whop. Ja atcelsit, j\u016bs var\u0113siet izmantot NEXUS+ l\u012bdz pa\u0161reiz\u0113j\u0101 perioda beig\u0101m, un n\u0101kam\u0101 maks\u0101juma netiks veikts.", // EN: Cancelling and changing your payment method happen on our secure checkout page, Whop. If you cancel, you keep using NEXUS+ until the end of the current period and the next payment is never taken.
-    "Aboneli\u011fin yok. NEXUS+ i\u00e7in Plus sayfas\u0131ndan \u00fccretsiz deneyebilirsin.": "", // EN: You don't have a subscription. Try NEXUS+ free from the Plus page.
+    "Aboneli\u011fin yok. NEXUS+ i\u00e7in Plus sayfas\u0131ndan \u00fccretsiz deneyebilirsin.": "Tev nav abonementa. Izm\u0113\u0123ini NEXUS+ bez maksas Plus lap\u0101.", // EN: You don't have a subscription. Try NEXUS+ free from the Plus page.
     "QR, kurulum kodu veya manuel katalog ile ekledi\u011fin cihazlar burada g\u00f6r\u00fcn\u00fcr.": "Jums nav abonementa. Izm\u0113\u0123iniet NEXUS+ bez maksas no Plus lapas.", // EN: Devices you add by QR, setup code or the manual catalog show up here.
-    "Robot s\u00fcp\u00fcrge kontrol paneli \u00b7 ba\u015flat, durdur, eve d\u00f6n": "", // EN: Robot vacuum control panel · start, stop, return home
+    "Robot s\u00fcp\u00fcrge kontrol paneli \u00b7 ba\u015flat, durdur, eve d\u00f6n": "Robotu putek\u013cs\u016bc\u0113ja vad\u012bbas panelis \u00b7 s\u0101kt, aptur\u0113t, atgriezties m\u0101j\u0101s", // EN: Robot vacuum control panel · start, stop, return home
     "Kilit kontrol paneli \u00b7 kilitle, a\u00e7": "Ier\u012bces, ko pievienojat ar QR, iestat\u012b\u0161anas kodu vai manu\u0101lo katalogu, par\u0101d\u0101s \u0161eit.", // EN: Lock control panel · lock, unlock
-    "Alarm kontrol paneli \u00b7 kur, kapat, sirene": "", // EN: Alarm control panel · arm, disarm, siren
+    "Alarm kontrol paneli \u00b7 kur, kapat, sirene": "Signaliz\u0101cijas vad\u012bbas panelis \u00b7 iesl\u0113gt, izsl\u0113gt, sir\u0113na", // EN: Alarm control panel · arm, disarm, siren
     "Perde ve panjur kontrol paneli \u00b7 a\u00e7, kapat, konum": "Robotu putek\u013cs\u016bc\u0113ja vad\u012bbas panelis \u00b7 start, stop, doties m\u0101j\u0101s", // EN: Curtain and blind control panel · open, close, position
     "Renkli ayd\u0131nlatma kontrol paneli \u00b7 renk, parlakl\u0131k": "Sl\u0113dzenes vad\u012bbas panelis \u00b7 atsl\u0113gt, atsl\u0113gt", // EN: Color lighting control panel · color, brightness
     "Ayd\u0131nlatma kontrol paneli \u00b7 a\u00e7, kapat, parlakl\u0131k": "Signaliz\u0101cijas vad\u012bbas panelis \u00b7 iedarbin\u0101t, atsl\u0113gt, sir\u0113na", // EN: Lighting control panel · on, off, brightness
@@ -3261,7 +3261,7 @@ window.NEXUS_LANG = {
     " A command was sent over your local network to 1 device.": "Komanda tika nos\u016bt\u012bta j\u016bsu lok\u0101laj\u0101 t\u012bkl\u0101 uz 1 ier\u012bci.", // EN: A command was sent over your local network to 1 device.
     "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 Komanda nesasniedza {0} \u2014 p\u0101rliecinieties, ka t\u0101 ir iesl\u0113gta un savienota ar to pa\u0161u Wi-Fi t\u012bklu.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
     "You have {0} devices at home.": "Jums m\u0101j\u0101s ir {0} ier\u012bces.", // EN: You have {0} devices at home.
-    "You have {0} device at home.": "", // EN: You have {0} device at home.
+    "You have {0} device at home.": "Tev m\u0101j\u0101s ir {0} ier\u012bce.", // EN: You have {0} device at home.
     "Right now these are on: {0}.": "Pa\u0161laik \u0161\u012bs ir iesl\u0113gtas: {0}.", // EN: Right now these are on: {0}.
     " and a few more": "un v\u0113l da\u017eas", // EN: and a few more
     "Nothing is on right now, the house is quiet.": "Pa\u0161laik nekas nav iesl\u0113gts, m\u0101ja ir klusa.", // EN: Nothing is on right now, the house is quiet.

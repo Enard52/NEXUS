@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "Wtyczki i prze\u0142\u0105czniki", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "Planuj", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/mies.", // EN: $7.50/month
     "/month": "/miesi\u0105c", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 dni za darmo, potem tylko $89.99 rocznie. Anuluj w dowolnym momencie.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "Przewodnik", // EN: Guide
     "Ses ve Hareket": "D\u017awi\u0119k i ruch", // EN: Sound & Motion

@@ -594,17 +594,17 @@ window.NEXUS_LANG = {
     "Shelly: cihaz \u00fczerindeki d\u00fc\u011fmeyi ~10 sn bas\u0131l\u0131 tut (LED h\u0131zl\u0131 yan\u0131p s\u00f6ner).": "Shelly: shikilia kitufe kwenye kifaa kwa ~10 s (LED inang'aa haraka).", // EN: Shelly: hold the button on the device for ~10 s (LED blinks fast).
     "Tasmota: ayarlar \u2192 Reset \u2192 Reset device. Veya d\u00fc\u011fmeyi 40 sn bas\u0131l\u0131 tut.": "Tasmota: Mipangilio \u2192 Weka upya \u2192 Weka kifaa upya, au shikilia kitufe kwa 40 s.", // EN: Tasmota: Settings → Reset → Reset device, or hold the button for 40 s.
     "WLED: ayarlar \u2192 Security & Updates \u2192 Factory reset.": "WLED: Mipangilio \u2192 Usalama & Sasisho \u2192 Weka upya kiwanda. ESPHome: kupitia kitufe cha kifaa au kitendo cha 'factory_reset' katika usanidi wake. Hue: zima-angaza balbu mara 4 kwa hali ya kiwanda; upya wa daraja unafanywa katika programu ya Hue. Kasa: toa/unganisha kifaa kwa sekunde 5; utahitajika kuunganisha tena. Yeelight: geuza swichi ya ukuta zima-on mara 5 (hali ya upya). WiZ: geuza swichi ya ukuta zima-on haraka mara 5. LIFX: shikilia kitufe (LED inazunguka nyeupe), kisha toa. Govee LAN: kwa kitufe cha kifaa au kutoka kwenye programu ya Govee. Sonoff DIY: shikilia kitufe kwa sekunde 5+. Tapo: kutoka kwenye programu yake, Mipangilio \u2192 ondoa/weke upya kifaa; kamera zinatumia kitufe cha SETUP kwa sekunde 5. Ili kuweka kifaa upya, tumia hatua ya Weka Upya Kiwanda katika programu ya mtengenezaji. Angalau wahusika 8; tumia herufi + nambari.", // EN: WLED: Settings → Security & Updates → Factory reset.
-    "ESPHome: cihaz donan\u0131m\u0131na g\u00f6re d\u00fc\u011fmeyle veya config'ten 'factory_reset' eylemi.": "", // EN: ESPHome: via the device button or the 'factory_reset' action in its config.
-    "Hue: ampul\u00fc kapat-a\u00e7 s\u0131ras\u0131yla (4 kez) fabrika moduna al\u0131r; k\u00f6pr\u00fc s\u0131f\u0131rlamalar\u0131 Hue uygulamas\u0131ndan.": "", // EN: Hue: power-cycle the bulb 4 times for factory mode; bridge resets are done in the Hue app.
-    "Kasa: cihaz\u0131 5 sn prize tak-\u00e7\u0131kar; tekrar e\u015fle\u015ftirme gerekir.": "", // EN: Kasa: unplug/replug the device for 5 s; you'll need to pair it again.
-    "Yeelight: duvar d\u00fc\u011fmesini 5 kez a\u00e7-kapa (reset modu).": "", // EN: Yeelight: flip the wall switch off-on 5 times (reset mode).
-    "WiZ: duvar d\u00fc\u011fmesini h\u0131zl\u0131ca 5 kez a\u00e7-kapa.": "", // EN: WiZ: flip the wall switch off-on quickly 5 times.
-    "LIFX: d\u00fc\u011fmeyi bas\u0131l\u0131 tutun (LED beyaz d\u00f6ner) sonra b\u0131rak\u0131n.": "", // EN: LIFX: hold the button (LED cycles white), then release.
-    "Govee LAN: cihaz\u0131n kendi d\u00fc\u011fmesiyle veya Govee uygulamas\u0131ndan.": "", // EN: Govee LAN: with the device's own button or from the Govee app.
-    "Sonoff DIY: d\u00fc\u011fmeyi 5+ sn bas\u0131l\u0131 tut.": "", // EN: Sonoff DIY: hold the button for 5+ seconds.
-    "Tapo: uygulamas\u0131ndan ayarlar \u2192 cihaz\u0131 kald\u0131r/s\u0131f\u0131rla; kamera ise SETUP d\u00fc\u011fmesi 5 sn.": "", // EN: Tapo: from its app, Settings → remove/reset the device; cameras use the SETUP button for 5 s.
-    "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
-    "En az 8 karakter; harf + rakam kullan.": "", // EN: At least 8 characters; use letters + digits.
+    "ESPHome: cihaz donan\u0131m\u0131na g\u00f6re d\u00fc\u011fmeyle veya config'ten 'factory_reset' eylemi.": "ESPHome: kwa kitufe cha kifaa au kitendo cha 'factory_reset' kwenye usanidi wake.", // EN: ESPHome: via the device button or the 'factory_reset' action in its config.
+    "Hue: ampul\u00fc kapat-a\u00e7 s\u0131ras\u0131yla (4 kez) fabrika moduna al\u0131r; k\u00f6pr\u00fc s\u0131f\u0131rlamalar\u0131 Hue uygulamas\u0131ndan.": "Hue: zima na uwashe balbu mara 4 ili kuingia hali ya kiwanda; urejeshaji wa bridge hufanywa kwenye programu ya Hue.", // EN: Hue: power-cycle the bulb 4 times for factory mode; bridge resets are done in the Hue app.
+    "Kasa: cihaz\u0131 5 sn prize tak-\u00e7\u0131kar; tekrar e\u015fle\u015ftirme gerekir.": "Kasa: chomoa/chomeka kifaa kwa sekunde 5; utahitaji kukioanisha tena.", // EN: Kasa: unplug/replug the device for 5 s; you'll need to pair it again.
+    "Yeelight: duvar d\u00fc\u011fmesini 5 kez a\u00e7-kapa (reset modu).": "Yeelight: washa na uzime swichi ya ukutani mara 5 (hali ya kuweka upya).", // EN: Yeelight: flip the wall switch off-on 5 times (reset mode).
+    "WiZ: duvar d\u00fc\u011fmesini h\u0131zl\u0131ca 5 kez a\u00e7-kapa.": "WiZ: washa na uzime swichi ya ukutani haraka mara 5.", // EN: WiZ: flip the wall switch off-on quickly 5 times.
+    "LIFX: d\u00fc\u011fmeyi bas\u0131l\u0131 tutun (LED beyaz d\u00f6ner) sonra b\u0131rak\u0131n.": "LIFX: shikilia kitufe (LED hubadilika kuwa nyeupe), kisha uachilie.", // EN: LIFX: hold the button (LED cycles white), then release.
+    "Govee LAN: cihaz\u0131n kendi d\u00fc\u011fmesiyle veya Govee uygulamas\u0131ndan.": "Govee LAN: kwa kitufe cha kifaa chenyewe au kutoka programu ya Govee.", // EN: Govee LAN: with the device's own button or from the Govee app.
+    "Sonoff DIY: d\u00fc\u011fmeyi 5+ sn bas\u0131l\u0131 tut.": "Sonoff DIY: shikilia kitufe kwa sekunde 5 au zaidi.", // EN: Sonoff DIY: hold the button for 5+ seconds.
+    "Tapo: uygulamas\u0131ndan ayarlar \u2192 cihaz\u0131 kald\u0131r/s\u0131f\u0131rla; kamera ise SETUP d\u00fc\u011fmesi 5 sn.": "Tapo: kutoka kwenye programu yake, Mipangilio \u2192 ondoa/weka upya kifaa; kamera hutumia kitufe cha SETUP kwa sekunde 5.", // EN: Tapo: from its app, Settings → remove/reset the device; cameras use the SETUP button for 5 s.
+    "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "Ili kuweka upya kifaa, tumia hatua ya Kuweka Upya Kiwandani katika programu ya mtengenezaji.", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
+    "En az 8 karakter; harf + rakam kullan.": "Angalau herufi 8; tumia herufi + tarakimu.", // EN: At least 8 characters; use letters + digits.
     "\u00c7ok zay\u0131f \u2014 en az 8 karakter kullan.": "Dhaifu sana \u2014 tumia angalau herufi 8.", // EN: Very weak — use at least 8 characters.
     "Zay\u0131f \u2014 harf + rakam ekle.": "Dhaifu \u2014 ongeza herufi + namba.", // EN: Weak — add letters + digits.
     "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "Wastani \u2014 ongeza herufi kubwa au alama.", // EN: Fair — add an uppercase letter or symbol.
@@ -726,8 +726,8 @@ window.NEXUS_LANG = {
     "Acil Durum D\u00fc\u011fmesi (Zigbee)": "Jina", // EN: Emergency Button (Zigbee)
     "Acil Durumlar": "Jina Kamili", // EN: Emergencies
     "Ad": "Jina la Mtumiaji", // EN: Name
-    "Ad Soyad": "", // EN: Full Name
-    "Kullan\u0131c\u0131 ad\u0131": "", // EN: Username
+    "Ad Soyad": "Jina Kamili", // EN: Full Name
+    "Kullan\u0131c\u0131 ad\u0131": "Jina la mtumiaji", // EN: Username
     "Adres biliyorsan tek tek yaz, bilmiyorsan modem a\u011f\u0131n\u0131n \u00f6n ekini b\u0131rak (192.168.1 gibi) \u2014 NEXUS 254 adresi birlikte yoklar.": "Kama unajua anwani, andika; kama sivyo, acha kiambatanisho cha mtandao wa router yako (kama 192.168.1) \u2014 NEXUS inakagua anwani zote 254.", // EN: If you know the address, type it; if not, leave your router network prefix (like 192.168.1) — NEXUS checks all 254 addresses.
     "Adres veya semt ara": "Tafuta anwani au jirani", // EN: Search address or neighborhood
     "Ads\u0131z cihaz": "Kifaa kisicho na jina", // EN: Unnamed device
@@ -1076,28 +1076,28 @@ window.NEXUS_LANG = {
     "Bu 8 haneli kod Apple HomeKit e\u015fle\u015ftirmesi i\u00e7indir ve yaln\u0131zca Apple Ev uygulamas\u0131yla kullan\u0131l\u0131r. Cihaz Shelly, WLED, Tasmota gibi yerel API destekliyorsa yerel a\u011fdan ekleyebilirsin.": "Msimbo huu wa tarakimu 8 ni kwa jozi ya Apple HomeKit na unaweza tu kufanya kazi na app ya Apple Home. Ikiwa kifaa kinaunga mkono API ya ndani kama Shelly, WLED au Tasmota, unaweza kuiongeza kutoka kwenye mtandao wako wa ndani.", // EN: This 8-digit code is for Apple HomeKit pairing and only works with the Apple Home app. If the device supports a local API such as Shelly, WLED or Tasmota, you can add it from your local network.
     "Bu Cihaz": "Kifaa Hiki", // EN: This Device
     "Bu QR kodu bir Wi-Fi a\u011f\u0131na aittir, cihaz de\u011fildir. Cihaz\u0131 ayn\u0131 a\u011fa ba\u011flad\u0131ktan sonra yerel a\u011fdan ekleyebilirsin.": "Hii nambari ya QR inamilikiwa na mtandao wa Wi-Fi, si kifaa. Baada ya kuunganisha kifaa kwenye mtandao huo huo, unaweza kuiongeza kutoka kwenye mtandao wako wa ndani. Hakuna kifaa kinachojulikana cha NEXUS kilichopatikana kwenye anwani hii. Hakikisha kifaa kiko wazi na kipo kwenye mtandao huo huo. Unda programu hii smart: Kuandaa vipengele vilivyopendekezwa kwa mtiririko huu. Imek\u4fdd\u5b58 mwezi huu Hakuna kifaa kinachounga mkono kilichopatikana kwenye mtandao huu. Hakuna kifaa kinachounga mkono kilichopatikana kwenye mtandao huu. Hakikisha kifaa kiko wazi na kimeunganishwa kwenye Wi-Fi hiyo hiyo; vinginevyo tumia katalogi iliyo hapa chini au nambari ya QR / ya usanidi. Ulinzi wa ndani kwa kifaa hiki Kifaa hiki hakishiriki taarifa za toleo Kifaa hiki au muunganisho hakikuungi mkono tochi. Kifaa hiki hakikuungi mkono eneo la kiotomatiki. Nambari hii ya mwaliko haikupatikana.", // EN: This QR code belongs to a Wi-Fi network, not a device. After connecting the device to the same network, you can add it from your local network.
-    "Bu adreste bilinen bir NEXUS cihaz\u0131 bulunamad\u0131. Cihaz\u0131n ayn\u0131 a\u011fda ve a\u00e7\u0131k oldu\u011fundan emin ol.": "", // EN: No known NEXUS device was found at this address. Make sure the device is on and on the same network.
-    "Bu ak\u0131ll\u0131 uygulamay\u0131 olu\u015ftur:": "", // EN: Create this smart app:
-    "Bu ak\u0131\u015f i\u00e7in \u00f6nerilen \u00f6zellikler haz\u0131rlan\u0131yor.": "", // EN: Preparing suggested features for this flow.
-    "Bu ayki tasarruf": "", // EN: Saved this month
-    "Bu a\u011fda desteklenen bir cihaz bulunamad\u0131.": "", // EN: No supported device was found on this network.
-    "Bu a\u011fda desteklenen bir cihaz bulunamad\u0131. Cihaz\u0131n a\u00e7\u0131k ve ayn\u0131 Wi-Fi'da oldu\u011fundan emin ol; olmazsa a\u015fa\u011f\u0131dan katalo\u011fu ya da QR / kurulum kodunu kullan.": "", // EN: No supported device was found on this network. Make sure the device is on and connected to the same Wi-Fi; otherwise use the catalog below or a QR / setup code.
-    "Bu cihaz i\u00e7in yerel koruma": "", // EN: Local protection for this device
-    "Bu cihaz s\u00fcr\u00fcm bilgisi payla\u015fm\u0131yor": "", // EN: This device doesn't share version info
-    "Bu cihaz veya ba\u011flant\u0131 fener deste\u011fi sunmuyor.": "", // EN: This device or connection doesn't support the flashlight.
-    "Bu cihazda otomatik konum deste\u011fi yok.": "", // EN: This device doesn't support automatic location.
-    "Bu davet kodu bulunamad\u0131.": "", // EN: This invite code wasn't found.
+    "Bu adreste bilinen bir NEXUS cihaz\u0131 bulunamad\u0131. Cihaz\u0131n ayn\u0131 a\u011fda ve a\u00e7\u0131k oldu\u011fundan emin ol.": "Hakuna kifaa cha NEXUS kinachojulikana kilichopatikana kwenye anwani hii. Hakikisha kifaa kimewashwa na kiko kwenye mtandao ule ule.", // EN: No known NEXUS device was found at this address. Make sure the device is on and on the same network.
+    "Bu ak\u0131ll\u0131 uygulamay\u0131 olu\u015ftur:": "Unda programu hii mahiri:", // EN: Create this smart app:
+    "Bu ak\u0131\u015f i\u00e7in \u00f6nerilen \u00f6zellikler haz\u0131rlan\u0131yor.": "Inaandaa vipengele vinavyopendekezwa kwa mtiririko huu.", // EN: Preparing suggested features for this flow.
+    "Bu ayki tasarruf": "Imeokolewa mwezi huu", // EN: Saved this month
+    "Bu a\u011fda desteklenen bir cihaz bulunamad\u0131.": "Hakuna kifaa kinachotumika kilichopatikana kwenye mtandao huu.", // EN: No supported device was found on this network.
+    "Bu a\u011fda desteklenen bir cihaz bulunamad\u0131. Cihaz\u0131n a\u00e7\u0131k ve ayn\u0131 Wi-Fi'da oldu\u011fundan emin ol; olmazsa a\u015fa\u011f\u0131dan katalo\u011fu ya da QR / kurulum kodunu kullan.": "Hakuna kifaa kinachotumika kilichopatikana kwenye mtandao huu. Hakikisha kifaa kimewashwa na kimeunganishwa kwenye Wi-Fi ile ile; la sivyo tumia katalogi iliyo hapa chini au msimbo wa QR / usanidi.", // EN: No supported device was found on this network. Make sure the device is on and connected to the same Wi-Fi; otherwise use the catalog below or a QR / setup code.
+    "Bu cihaz i\u00e7in yerel koruma": "Ulinzi wa ndani kwa kifaa hiki", // EN: Local protection for this device
+    "Bu cihaz s\u00fcr\u00fcm bilgisi payla\u015fm\u0131yor": "Kifaa hiki hakishiriki taarifa za toleo", // EN: This device doesn't share version info
+    "Bu cihaz veya ba\u011flant\u0131 fener deste\u011fi sunmuyor.": "Kifaa hiki au muunganisho hautumii tochi.", // EN: This device or connection doesn't support the flashlight.
+    "Bu cihazda otomatik konum deste\u011fi yok.": "Kifaa hiki hakitumii eneo la kiotomatiki.", // EN: This device doesn't support automatic location.
+    "Bu davet kodu bulunamad\u0131.": "Msimbo huu wa mwaliko haukupatikana.", // EN: This invite code wasn't found.
     "Bu ekran, ekledi\u011fin ayd\u0131nlatma cihazlar\u0131n\u0131 odalara g\u00f6re toplar; sahne kaydetti\u011finde \u0131\u015f\u0131klar\u0131n parlakl\u0131\u011f\u0131 ve tonu birlikte ayarlan\u0131r.": "Kioo hiki kinapanga vifaa vya mwanga ulivyoongeza kulingana na chumba; unapo hifadhi hali, mwangaza na tona vinawekwa pamoja. Vifaa unavyoongeza katika nyumba hii vinaorodheshwa hapa. Vifaa unavyoongeza katika nyumba hii vinaorodheshwa hapa na kuunganishwa na kadi zako upendazo. Je, una uhakika unataka kufuta nyumba hii na mipangilio yake yote kudumu? Nambari hii si kodi ya kifaa inayounga mkono. Ikiwa unajua anwani ya IP ya kifaa, unaweza kuiongeza kutoka kwenye mtandao wako wa ndani. Hizi ni chapa zinazodhibitiwa kupitia mtandao wako wa ndani. Programu ndogo hii inatolewa na mtoaji rasmi. Mazingira haya hayaungi mkono upatikanaji wa kamera. Kuchunguza mtandao hakupatikani hapa. Hakuna usimbaji wa usalama katika mazingira haya. Wakati hali hii inaendeshwa, vifaa vinavyohusiana vinatengenezwa moja kwa moja.", // EN: This screen groups the lighting devices you've added by room; when you save a scene, brightness and tone are set together.
-    "Bu eve ekledi\u011fin cihazlar burada listelenir.": "", // EN: Devices you add to this home are listed here.
-    "Bu eve ekledi\u011fin cihazlar burada listelenir ve favori kartlar\u0131na ba\u011flan\u0131r.": "", // EN: Devices you add to this home are listed here and linked to your favorite cards.
-    "Bu evi ve t\u00fcm ayarlar\u0131n\u0131 kal\u0131c\u0131 olarak silmek istedi\u011fine emin misin?": "", // EN: Are you sure you want to permanently delete this home and all its settings?
-    "Bu kod desteklenen bir cihaz kodu de\u011fil. Cihaz\u0131n IP adresini biliyorsan yerel a\u011fdan ekleyebilirsin.": "", // EN: This code isn't a supported device code. If you know the device's IP address, you can add it from your local network.
-    "Bu markalar yerel a\u011fdan kontrol edilir": "", // EN: These brands are controlled over your local network
-    "Bu mini uygulama resm\u00ee sa\u011flay\u0131c\u0131 taraf\u0131ndan sunulur.": "", // EN: This mini app is provided by the official provider.
-    "Bu ortam kamera eri\u015fimini desteklemiyor.": "", // EN: This environment doesn't support camera access.
-    "Bu ortamda a\u011f taramas\u0131 kullan\u0131lam\u0131yor.": "", // EN: Network scanning isn't available here.
-    "Bu ortamda g\u00fcvenli \u015fifreleme yok": "", // EN: No secure encryption in this environment
-    "Bu senaryo aktifle\u015fti\u011finde ilgili cihazlar otomatik olarak ayarlan\u0131r.": "", // EN: When this scenario runs, the related devices are adjusted automatically.
+    "Bu eve ekledi\u011fin cihazlar burada listelenir.": "Vifaa unavyoongeza kwenye nyumba hii huorodheshwa hapa.", // EN: Devices you add to this home are listed here.
+    "Bu eve ekledi\u011fin cihazlar burada listelenir ve favori kartlar\u0131na ba\u011flan\u0131r.": "Vifaa unavyoongeza kwenye nyumba hii huorodheshwa hapa na kuunganishwa na kadi zako unazopenda.", // EN: Devices you add to this home are listed here and linked to your favorite cards.
+    "Bu evi ve t\u00fcm ayarlar\u0131n\u0131 kal\u0131c\u0131 olarak silmek istedi\u011fine emin misin?": "Una uhakika unataka kufuta nyumba hii na mipangilio yake yote kabisa?", // EN: Are you sure you want to permanently delete this home and all its settings?
+    "Bu kod desteklenen bir cihaz kodu de\u011fil. Cihaz\u0131n IP adresini biliyorsan yerel a\u011fdan ekleyebilirsin.": "Msimbo huu si msimbo wa kifaa kinachotumika. Ikiwa unajua anwani ya IP ya kifaa, unaweza kukiongeza kutoka mtandao wako wa ndani.", // EN: This code isn't a supported device code. If you know the device's IP address, you can add it from your local network.
+    "Bu markalar yerel a\u011fdan kontrol edilir": "Chapa hizi hudhibitiwa kupitia mtandao wako wa ndani", // EN: These brands are controlled over your local network
+    "Bu mini uygulama resm\u00ee sa\u011flay\u0131c\u0131 taraf\u0131ndan sunulur.": "Programu ndogo hii hutolewa na mtoa huduma rasmi.", // EN: This mini app is provided by the official provider.
+    "Bu ortam kamera eri\u015fimini desteklemiyor.": "Mazingira haya hayatumii ufikiaji wa kamera.", // EN: This environment doesn't support camera access.
+    "Bu ortamda a\u011f taramas\u0131 kullan\u0131lam\u0131yor.": "Uchanganuzi wa mtandao haupatikani hapa.", // EN: Network scanning isn't available here.
+    "Bu ortamda g\u00fcvenli \u015fifreleme yok": "Hakuna usimbaji fiche salama katika mazingira haya", // EN: No secure encryption in this environment
+    "Bu senaryo aktifle\u015fti\u011finde ilgili cihazlar otomatik olarak ayarlan\u0131r.": "Hali hii inapowashwa, vifaa husika hurekebishwa kiotomatiki.", // EN: When this scenario runs, the related devices are adjusted automatically.
     "Bu senaryodan etkilenen cihaz yok \u2014 \u00f6nce uygun cihaz ekle.": "Hakuna vifaa vinavyoathiriwa na hali hii \u2014 ongeza kifaa kinachofaa kwanza.", // EN: No devices are affected by this scenario — add a suitable device first.
     "Bu senaryoyu kullanmak i\u00e7in uyumlu cihaz eklemelisin.": "Unahitaji kuongeza kifaa kinachofaa ili kutumia hali hii.", // EN: You need to add a compatible device to use this scenario.
     "Bu tek evin. Silersen bo\u015f bir \"Evim\" yeniden olu\u015fturulur. Devam edilsin mi?": "Hii ndio nyumbani kwako pekee. Ikiwa utaifuta, \"Nyumbani Mwangu\" tupu itaumbwa tena. Endelea?", // EN: This is your only home. If you delete it, an empty "My Home" will be created again. Continue?
@@ -1291,44 +1291,44 @@ window.NEXUS_LANG = {
     "Egzersiz ve Sa\u011fl\u0131k": "Ongeza kiambatisho", // EN: Fitness and Health
     "Ek ekle": "Ongeza", // EN: Add attachment
     "Ekle": "Chaguo za kiambatisho", // EN: Add
-    "Ekle se\u00e7enekleri": "", // EN: Attachment options
+    "Ekle se\u00e7enekleri": "Chaguo za kuambatisha", // EN: Attachment options
     "Eklendi. Ana sayfadan y\u00f6netebilirsin.": "Imeongezwa. Unaweza kuisimamia kutoka Nyumbani. Kwa vifaa vya taa vilivyoongezwa Tafadhali andaa uzoefu wa programu mahiri unaofaa kulingana na vifaa ulivyoongeza. Vifaa Vilivyoongezwa Kifaa cha Kuoka Mkate Eco Hali ya Eco Taa ya Onyesho Arifa na udhibiti kwenye skrini Usalama Zaidi Kwa jiko la umeme Vipimo vya Umeme Fundi Umeme Wakati nguvu itakaporudi Kituo cha Kuchaji EV Kituo cha Kuchaji EV (4G) Blanketi la Umeme Baiskeli ya Umeme Baiskeli ya Umeme (Bluetooth) Hoverboard Jiko la Umeme Rubani wa Ndege wa Umeme Kiyoyozi cha Umeme Ketli ya Umeme Kipiga Vakumu Kamineti ya Umeme Mizani Mahiri Nguvu ya Kivuta Usijali, tutakusaidia kupata akaunti yako tena. Tafadhali chagua njia. Nguvu Udhibiti wa Nguvu Ripoti za Nguvu Kuokoa Nguvu Mkakati wa Nguvu umewashwa Endesha kitendo cha eco kwa vifaa vinavyotumia nishati. Nishati na vijiti Bodi ya Nishati na vijiti", // EN: Added. You can manage it from Home.
-    "Eklenen ayd\u0131nlatma cihazlar\u0131 i\u00e7in": "", // EN: For the added lighting devices
-    "Eklenen cihazlar\u0131na g\u00f6re anlaml\u0131 bir ak\u0131ll\u0131 uygulama deneyimi haz\u0131rla.": "", // EN: Prepare a meaningful smart app experience based on the devices you've added.
-    "Eklenmi\u015f Cihazlar": "", // EN: Added Devices
-    "Ekmek Yapma Makinesi": "", // EN: Bread Maker
-    "Eko": "", // EN: Eco
-    "Eko Mod": "", // EN: Eco Mode
-    "Ekran \u0131\u015f\u0131\u011f\u0131": "", // EN: Display light
-    "Ekranda bildirim ve kontrol": "", // EN: Notifications and control on screen
-    "Ekstra G\u00fcvenlik": "", // EN: Extra Security
-    "Elektirikli Soba": "", // EN: Electric Heater
-    "Elektrik Saya\u00e7lar\u0131": "", // EN: Electricity Meters
-    "Elektrik Ustas\u0131": "", // EN: Electrician
-    "Elektrik gelince": "", // EN: When power returns
-    "Elektrikli Ara\u00e7 \u015earj \u0130stasyonu": "", // EN: EV Charging Station
-    "Elektrikli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "", // EN: EV Charging Station (4G)
-    "Elektrikli Battaniye": "", // EN: Electric Blanket
-    "Elektrikli Bisiklet": "", // EN: Electric Bicycle
-    "Elektrikli Bisiklet (Bluetooth)": "", // EN: Electric Bicycle (Bluetooth)
-    "Elektrikli Kaykay (Hoverboard)": "", // EN: Hoverboard
-    "Elektrikli Ocak": "", // EN: Electric Hob
-    "Elektrikli Sinek \u00d6ld\u00fcr\u00fcc\u00fc": "", // EN: Electric Fly Swatter
-    "Elektrikli Soba": "", // EN: Electric Heater
-    "Elektrikli Su Is\u0131t\u0131c\u0131s\u0131": "", // EN: Electric Kettle
-    "Elektrikli S\u00fcp\u00fcrge": "", // EN: Vacuum Cleaner
-    "Elektrikli \u015e\u00f6mine": "", // EN: Electric Fireplace
-    "Elektronik Ak\u0131ll\u0131 Tart\u0131": "", // EN: Smart Scale
-    "Emi\u015f g\u00fcc\u00fc": "", // EN: Suction power
-    "Endi\u015felenme, hesab\u0131n\u0131 kurtarmana yard\u0131mc\u0131 olaca\u011f\u0131z. L\u00fctfen bir y\u00f6ntem se\u00e7.": "", // EN: Don't worry, we'll help you recover your account. Please choose a method.
-    "Enerji": "", // EN: Energy
-    "Enerji Kontrol\u00fc": "", // EN: Energy Control
-    "Enerji Raporlar\u0131": "", // EN: Energy Reports
-    "Enerji Tasarrufu": "", // EN: Energy Saving
-    "Enerji stratejisi etkinle\u015ftirildi": "", // EN: Energy strategy turned on
-    "Enerji t\u00fcketen cihazlar i\u00e7in eko aksiyonunu \u00e7al\u0131\u015ft\u0131r.": "", // EN: Run the eco action for energy-consuming devices.
-    "Enerji ve prizler": "", // EN: Energy and plugs
-    "Enerji ve prizler paneli": "", // EN: Energy and plugs panel
+    "Eklenen ayd\u0131nlatma cihazlar\u0131 i\u00e7in": "Kwa vifaa vya taa vilivyoongezwa", // EN: For the added lighting devices
+    "Eklenen cihazlar\u0131na g\u00f6re anlaml\u0131 bir ak\u0131ll\u0131 uygulama deneyimi haz\u0131rla.": "Andaa uzoefu wa programu mahiri wenye maana kulingana na vifaa ulivyoongeza.", // EN: Prepare a meaningful smart app experience based on the devices you've added.
+    "Eklenmi\u015f Cihazlar": "Vifaa Vilivyoongezwa", // EN: Added Devices
+    "Ekmek Yapma Makinesi": "Mashine ya Kuoka Mkate", // EN: Bread Maker
+    "Eko": "Eko", // EN: Eco
+    "Eko Mod": "Hali ya Eko", // EN: Eco Mode
+    "Ekran \u0131\u015f\u0131\u011f\u0131": "Mwanga wa skrini", // EN: Display light
+    "Ekranda bildirim ve kontrol": "Arifa na udhibiti kwenye skrini", // EN: Notifications and control on screen
+    "Ekstra G\u00fcvenlik": "Usalama wa Ziada", // EN: Extra Security
+    "Elektirikli Soba": "Hita ya Umeme", // EN: Electric Heater
+    "Elektrik Saya\u00e7lar\u0131": "Mita za Umeme", // EN: Electricity Meters
+    "Elektrik Ustas\u0131": "Fundi Umeme", // EN: Electrician
+    "Elektrik gelince": "Umeme unaporudi", // EN: When power returns
+    "Elektrikli Ara\u00e7 \u015earj \u0130stasyonu": "Kituo cha Kuchaji Magari ya Umeme", // EN: EV Charging Station
+    "Elektrikli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Kituo cha Kuchaji Magari ya Umeme (4G)", // EN: EV Charging Station (4G)
+    "Elektrikli Battaniye": "Blanketi la Umeme", // EN: Electric Blanket
+    "Elektrikli Bisiklet": "Baiskeli ya Umeme", // EN: Electric Bicycle
+    "Elektrikli Bisiklet (Bluetooth)": "Baiskeli ya Umeme (Bluetooth)", // EN: Electric Bicycle (Bluetooth)
+    "Elektrikli Kaykay (Hoverboard)": "Hoverboard", // EN: Hoverboard
+    "Elektrikli Ocak": "Jiko la Umeme", // EN: Electric Hob
+    "Elektrikli Sinek \u00d6ld\u00fcr\u00fcc\u00fc": "Kifaa cha Umeme cha Kuua Nzi", // EN: Electric Fly Swatter
+    "Elektrikli Soba": "Hita ya Umeme", // EN: Electric Heater
+    "Elektrikli Su Is\u0131t\u0131c\u0131s\u0131": "Birika la Umeme", // EN: Electric Kettle
+    "Elektrikli S\u00fcp\u00fcrge": "Kisafisha Utupu", // EN: Vacuum Cleaner
+    "Elektrikli \u015e\u00f6mine": "Mahali pa Moto pa Umeme", // EN: Electric Fireplace
+    "Elektronik Ak\u0131ll\u0131 Tart\u0131": "Mizani Mahiri", // EN: Smart Scale
+    "Emi\u015f g\u00fcc\u00fc": "Nguvu ya kufyonza", // EN: Suction power
+    "Endi\u015felenme, hesab\u0131n\u0131 kurtarmana yard\u0131mc\u0131 olaca\u011f\u0131z. L\u00fctfen bir y\u00f6ntem se\u00e7.": "Usijali, tutakusaidia kurejesha akaunti yako. Tafadhali chagua njia.", // EN: Don't worry, we'll help you recover your account. Please choose a method.
+    "Enerji": "Nishati", // EN: Energy
+    "Enerji Kontrol\u00fc": "Udhibiti wa Nishati", // EN: Energy Control
+    "Enerji Raporlar\u0131": "Ripoti za Nishati", // EN: Energy Reports
+    "Enerji Tasarrufu": "Kuokoa Nishati", // EN: Energy Saving
+    "Enerji stratejisi etkinle\u015ftirildi": "Mkakati wa nishati umewashwa", // EN: Energy strategy turned on
+    "Enerji t\u00fcketen cihazlar i\u00e7in eko aksiyonunu \u00e7al\u0131\u015ft\u0131r.": "Endesha kitendo cha eko kwa vifaa vinavyotumia nishati.", // EN: Run the eco action for energy-consuming devices.
+    "Enerji ve prizler": "Nishati na plagi", // EN: Energy and plugs
+    "Enerji ve prizler paneli": "Paneli ya nishati na plagi", // EN: Energy and plugs panel
     "Entegre Mutfak": "Jikoni Lililo Unganishwa", // EN: Integrated Kitchen
     "Eri\u015filebilirlik Modu": "Hali ya Ufikiaji", // EN: Accessibility Mode
     "Eri\u015fim jetonu": "Tokeni ya kufikia", // EN: Access token
@@ -1398,7 +1398,7 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131k\u0131\u015f": "Niko Nyumbani", // EN: Leaving home
     "Eve Geldim": "Karibu nyumbani", // EN: I'm Home
     "Eve geldim": "Wakati unapo fika nyumbani au kuondoka", // EN: Welcome home
-    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "", // EN: When you arrive home or leave
+    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "Unapowasili nyumbani au kuondoka", // EN: When you arrive home or leave
     "Eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7, klimay\u0131 \u00e7al\u0131\u015ft\u0131r ve garaj kap\u0131s\u0131n\u0131 arac\u0131n\u0131n ekran\u0131ndan kontrol et.": "Washa taa, anzisha AC na udhibitishe mlango wa gereji kutoka kwenye skrini ya gari lako unakaribia nyumbani.", // EN: Turn on the lights, start the AC and control the garage door from your car's screen as you approach home.
     "Evet, Uygula": "Ndiyo, Tumia", // EN: Yes, Apply
     "Evet, \u0130ptal Et": "Ndiyo, Ghairi", // EN: Yes, Cancel
@@ -1749,33 +1749,33 @@ window.NEXUS_LANG = {
     "Kamera, kilit ve sens\u00f6r durumlar\u0131n\u0131 tek yerden takip et.": "Fuatilia hali ya kamera, kufunga na sensa kutoka mahali pamoja.", // EN: Track camera, lock and sensor status from one place.
     "Kamera, kilit ve sens\u00f6rleri ayn\u0131 ekranda g\u00f6r. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, kritik durum \u00f6zetleri ve h\u0131zl\u0131 g\u00fcvenlik aksiyonlar\u0131 tek yerde toplans\u0131n.": "Angalia kamera, mifungo na sensa kwenye skrini moja. Njia za nyumbani na nje, muhtasari wa hali muhimu na hatua za haraka za usalama mahali pamoja.", // EN: See cameras, locks and sensors on the same screen. At-home and away modes, critical status summaries and quick security actions in one place.
     "Kamera, kilit ve sens\u00f6rleri tek ekranda g\u00f6steren bir ev g\u00fcvenlik merkezi olu\u015ftur. Evdeyim ve d\u0131\u015far\u0131day\u0131m modlar\u0131, h\u0131zl\u0131 kontrol butonlar\u0131 ve kritik durum \u00f6zetleri ekle.": "Tengeneza kituo cha usalama wa nyumbani kinachoonyesha kamera, milango iliyo na vitufe vya kufunga na sensa kwenye skrini moja. Ongeza modi za nyumbani na nje, vitufe vya kudhibiti haraka na muhtasari wa hali muhimu. Kamera na vifaa vya kurekodi sauti vimezimwa. Kengele ya Video Kwa Mlango. Milango yenye Kamera. Video inaonekana mara kamera ikijumuishwa kwenye NEXUS. Zima kamera kwa muda. Zima. Wakati imezimwa, trigger haifanyi kazi. Zima. Amri ya kuzima imetumwa. Kufunga Mlango. Kufunga Mlango (Gateway). Kufunga Mlango (NB-IoT). Kufuata milango baada ya kufungwa. Kufunga mlango. Milango na Ufikiaji. Kengele ya mlango na dirisha. Kengele ya mlango na dirisha (Bluetooth). Kengele ya mlango na dirisha (ZigBee). Kengele za milango na madirisha. Mlango, dirisha, kiashirio cha mwendo. Milango Imefungwa. Milango imefungwa, Joto 20\u00b0C, Taa zimezimwa. Tafuta. Mandhari. Mfumo. Mandhari ya mwanga. Mandhari ya giza", // EN: Create a home security center that shows cameras, locks and sensors on one screen. Add at-home and away modes, quick control buttons and critical status summaries.
-    "Kameralar ve mikrofonlar kapal\u0131.": "", // EN: Cameras and microphones are off.
-    "Kameral\u0131 Kap\u0131 Zili": "", // EN: Video Doorbell
-    "Kameral\u0131 Kilitler": "", // EN: Locks with Camera
-    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "", // EN: Video appears once the camera's stream is connected to NEXUS.
-    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "", // EN: Temporarily turns off the camera
-    "Kapal\u0131": "", // EN: Off
-    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "", // EN: When off, the trigger doesn't run
-    "Kapat": "", // EN: Turn off
-    "Kapatma Komutu G\u00f6nderildi": "", // EN: Turn-off Command Sent
-    "Kap\u0131 Kilidi": "", // EN: Door Lock
-    "Kap\u0131 Kilidi (Gateway)": "", // EN: Door Lock (Gateway)
-    "Kap\u0131 Kilidi (NB-IoT)": "", // EN: Door Lock (NB-IoT)
-    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "", // EN: Locks after the door closes
-    "Kap\u0131 kilidi": "", // EN: Door lock
-    "Kap\u0131 ve Eri\u015fim": "", // EN: Doors and Access
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "", // EN: Door and Window Sensor
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "", // EN: Door and Window Sensor (Bluetooth)
-    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (ZigBee)": "", // EN: Door and Window Sensor (ZigBee)
-    "Kap\u0131 ve pencere sens\u00f6rleri": "", // EN: Door and window sensors
-    "Kap\u0131, pencere, hareket sens\u00f6r\u00fc": "", // EN: Door, window, motion sensor
-    "Kap\u0131lar Kilitli": "", // EN: Doors Locked
-    "Kap\u0131lar kilitlenir, Is\u0131 20\u00b0C, I\u015f\u0131klar kapan\u0131r": "", // EN: Doors lock, Heat 20°C, Lights turn off
-    "Ara": "", // EN: Search
-    "Tema": "", // EN: Theme
-    "Sistem": "", // EN: System
-    "A\u00e7\u0131k tema": "", // EN: Light theme
-    "Koyu tema": "", // EN: Dark theme
+    "Kameralar ve mikrofonlar kapal\u0131.": "Kamera na maikrofoni zimezimwa.", // EN: Cameras and microphones are off.
+    "Kameral\u0131 Kap\u0131 Zili": "Kengele ya Mlango yenye Kamera", // EN: Video Doorbell
+    "Kameral\u0131 Kilitler": "Makufuli yenye Kamera", // EN: Locks with Camera
+    "Kameran\u0131n ak\u0131\u015f\u0131 NEXUS'a ba\u011fland\u0131\u011f\u0131nda g\u00f6r\u00fcnt\u00fc g\u00f6sterilir.": "Video huonekana mara tu mtiririko wa kamera unapounganishwa na NEXUS.", // EN: Video appears once the camera's stream is connected to NEXUS.
+    "Kameray\u0131 ge\u00e7ici olarak kapat\u0131r": "Huzima kamera kwa muda", // EN: Temporarily turns off the camera
+    "Kapal\u0131": "Imezimwa", // EN: Off
+    "Kapal\u0131ysa tetikleyici \u00e7al\u0131\u015fmaz": "Ikizimwa, kichochezi hakifanyi kazi", // EN: When off, the trigger doesn't run
+    "Kapat": "Zima", // EN: Turn off
+    "Kapatma Komutu G\u00f6nderildi": "Amri ya Kuzima Imetumwa", // EN: Turn-off Command Sent
+    "Kap\u0131 Kilidi": "Kufuli ya Mlango", // EN: Door Lock
+    "Kap\u0131 Kilidi (Gateway)": "Kufuli ya Mlango (Gateway)", // EN: Door Lock (Gateway)
+    "Kap\u0131 Kilidi (NB-IoT)": "Kufuli ya Mlango (NB-IoT)", // EN: Door Lock (NB-IoT)
+    "Kap\u0131 kapand\u0131ktan sonra kilitlenir": "Hujifunga baada ya mlango kufungwa", // EN: Locks after the door closes
+    "Kap\u0131 kilidi": "Kufuli ya mlango", // EN: Door lock
+    "Kap\u0131 ve Eri\u015fim": "Milango na Ufikiaji", // EN: Doors and Access
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc": "Kihisi cha Mlango na Dirisha", // EN: Door and Window Sensor
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (Bluetooth)": "Kihisi cha Mlango na Dirisha (Bluetooth)", // EN: Door and Window Sensor (Bluetooth)
+    "Kap\u0131 ve Pencere Sens\u00f6r\u00fc (ZigBee)": "Kihisi cha Mlango na Dirisha (ZigBee)", // EN: Door and Window Sensor (ZigBee)
+    "Kap\u0131 ve pencere sens\u00f6rleri": "Vihisi vya milango na madirisha", // EN: Door and window sensors
+    "Kap\u0131, pencere, hareket sens\u00f6r\u00fc": "Mlango, dirisha, kihisi cha mwendo", // EN: Door, window, motion sensor
+    "Kap\u0131lar Kilitli": "Milango Imefungwa", // EN: Doors Locked
+    "Kap\u0131lar kilitlenir, Is\u0131 20\u00b0C, I\u015f\u0131klar kapan\u0131r": "Milango hujifunga, Joto 20\u00b0C, Taa huzima", // EN: Doors lock, Heat 20°C, Lights turn off
+    "Ara": "Tafuta", // EN: Search
+    "Tema": "Mandhari", // EN: Theme
+    "Sistem": "Mfumo", // EN: System
+    "A\u00e7\u0131k tema": "Mandhari meupe", // EN: Light theme
+    "Koyu tema": "Mandhari meusi", // EN: Dark theme
     "Uygulaman\u0131n a\u00e7\u0131k ya da koyu g\u00f6r\u00fcnmesini se\u00e7. Sistem: cihaz\u0131n\u0131n ayar\u0131n\u0131 izler.": "Chagua kama programu ionekane nyepesi au giza. Mfumo unafuata mpangilio wa kifaa chako.", // EN: Choose whether the app looks light or dark. System follows your device setting.
     "Karanl\u0131k tema aktif edildi": "Mandhari ya giza imewashwa", // EN: Dark theme turned on
     "Karl\u0131": "Mwezi wa theluji", // EN: Snowy
@@ -1869,37 +1869,37 @@ window.NEXUS_LANG = {
     "Konum al\u0131n\u0131yor\u2026": "Inapata mahali\u2026", // EN: Getting location…
     "Konum aramas\u0131 zaman a\u015f\u0131m\u0131na u\u011frad\u0131, tekrar dene.": "Utafutaji wa mahali umeisha muda, jaribu tena.", // EN: Location search timed out, try again.
     "Konum belirlenemedi. Cihaz\u0131n konum (GPS) servisi kapal\u0131 olabilir.": "Haikuwezekani kubaini eneo. Huduma ya eneo (GPS) ya kifaa chako inaweza kuwa imezimwa. Ruhusa ya eneo haikupatiwa. Unaweza kuiruhusu kwenye mipangilio ya programu. Eneo limechaguliwa Hakuna eneo lililochaguliwa Kiwango cha eneo \u00b7 Taa Kiwango cha eneo \u00b7 AC Tambua Eneo Kiotomatiki Pata eneo langu Kupata eneo lako... Nakili Haikuwezekani kunakili \u2014 chagua anwani kwa mkono Haikuwezekani kunakili \u2014 chagua nambari kwa mkono Imenakiliwa Sehemu ya kati ya ukumbi Kumbukumbu ya Ulinzi Ulinzi Haujasetishwa Hali itaonekana hapa mara ulinzi unapoanza. Gusa kadi kuona hali ya ulinzi. Mlango wa mazoezi Hali Tahadhari za Dharura Tahadhari za usalama wa dharura hazina athari wakati wa masaa tulivu. Yerusalemu Ondoa Sikia Otoscope (pamoja na Kamera) Mtumiaji Jina la mtumiaji Hariri Jina la mtumiaji Taarifa za Mtumiaji Masharti ya Matumizi Hifadhi Taarifa za Kupona Njia za Kupona Taarifa za kupona zimehifadhiwa \u2713", // EN: Couldn't determine the location. Your device's location (GPS) service may be off.
-    "Konum izni verilmedi. Uygulama ayarlar\u0131ndan izin verebilirsin.": "", // EN: Location permission wasn't granted. You can allow it in the app settings.
-    "Konum se\u00e7ildi": "", // EN: Location selected
-    "Konum se\u00e7ilmedi": "", // EN: No location selected
-    "Konum tabanl\u0131 \u00b7 Ayd\u0131nlatma": "", // EN: Location-based · Lighting
-    "Konum tabanl\u0131 \u00b7 Klima": "", // EN: Location-based · AC
-    "Konumu Otomatik Alg\u0131la": "", // EN: Detect Location Automatically
-    "Konumumu bul": "", // EN: Find my location
-    "Konumun bulunuyor...": "", // EN: Finding your location...
-    "Kopyala": "", // EN: Copy
-    "Kopyalanamad\u0131 \u2014 adresi elle se\u00e7": "", // EN: Couldn't copy — select the address manually
-    "Kopyalanamad\u0131 \u2014 kodu elle se\u00e7": "", // EN: Couldn't copy — select the code manually
-    "Kopyaland\u0131": "", // EN: Copied
-    "Koridor": "", // EN: Hallway
-    "Koruma Kay\u0131tlar\u0131": "", // EN: Protection Log
-    "Koruma Kurulmad\u0131": "", // EN: Protection Not Set Up
-    "Koruma ba\u015flat\u0131l\u0131nca durum burada g\u00f6r\u00fcn\u00fcr.": "", // EN: Status will appear here once protection starts.
-    "Koruma durumunu g\u00f6rmek i\u00e7in karta dokun.": "", // EN: Tap the card to see protection status.
-    "Ko\u015fu Band\u0131": "", // EN: Treadmill
-    "Ko\u015ful": "", // EN: Condition
-    "Kritik Uyar\u0131lar": "", // EN: Critical Alerts
-    "Kritik g\u00fcvenlik uyar\u0131lar\u0131 sessiz saatlerden etkilenmez.": "", // EN: Critical security alerts are not affected by quiet hours.
-    "Kud\u00fcs": "", // EN: Jerusalem
-    "Kulak Kiri \u00c7\u0131karma Otoskopu (Kameral\u0131)": "", // EN: Ear Wax Removal Otoscope (with Camera)
-    "Kullan\u0131c\u0131": "", // EN: User
-    "Kullan\u0131c\u0131 Ad\u0131": "", // EN: Username
-    "Kullan\u0131c\u0131 Ad\u0131n\u0131 D\u00fczenle": "", // EN: Edit Username
-    "Kullan\u0131c\u0131 Bilgileri": "", // EN: User Information
-    "Kullan\u0131m Ko\u015fullar\u0131": "", // EN: Terms of Use
-    "Kurtarma Bilgilerini Kaydet": "", // EN: Save Recovery Info
-    "Kurtarma Y\u00f6ntemleri": "", // EN: Recovery Methods
-    "Kurtarma bilgileri kaydedildi \u2713": "", // EN: Recovery info saved ✓
+    "Konum izni verilmedi. Uygulama ayarlar\u0131ndan izin verebilirsin.": "Ruhusa ya eneo haikutolewa. Unaweza kuiruhusu kwenye mipangilio ya programu.", // EN: Location permission wasn't granted. You can allow it in the app settings.
+    "Konum se\u00e7ildi": "Eneo limechaguliwa", // EN: Location selected
+    "Konum se\u00e7ilmedi": "Hakuna eneo lililochaguliwa", // EN: No location selected
+    "Konum tabanl\u0131 \u00b7 Ayd\u0131nlatma": "Kulingana na eneo \u00b7 Taa", // EN: Location-based · Lighting
+    "Konum tabanl\u0131 \u00b7 Klima": "Kulingana na eneo \u00b7 AC", // EN: Location-based · AC
+    "Konumu Otomatik Alg\u0131la": "Gundua Eneo Kiotomatiki", // EN: Detect Location Automatically
+    "Konumumu bul": "Tafuta eneo langu", // EN: Find my location
+    "Konumun bulunuyor...": "Inatafuta eneo lako...", // EN: Finding your location...
+    "Kopyala": "Nakili", // EN: Copy
+    "Kopyalanamad\u0131 \u2014 adresi elle se\u00e7": "Imeshindwa kunakili \u2014 chagua anwani mwenyewe", // EN: Couldn't copy — select the address manually
+    "Kopyalanamad\u0131 \u2014 kodu elle se\u00e7": "Imeshindwa kunakili \u2014 chagua msimbo mwenyewe", // EN: Couldn't copy — select the code manually
+    "Kopyaland\u0131": "Imenakiliwa", // EN: Copied
+    "Koridor": "Korido", // EN: Hallway
+    "Koruma Kay\u0131tlar\u0131": "Kumbukumbu za Ulinzi", // EN: Protection Log
+    "Koruma Kurulmad\u0131": "Ulinzi Haujasanidiwa", // EN: Protection Not Set Up
+    "Koruma ba\u015flat\u0131l\u0131nca durum burada g\u00f6r\u00fcn\u00fcr.": "Hali itaonekana hapa ulinzi utakapoanza.", // EN: Status will appear here once protection starts.
+    "Koruma durumunu g\u00f6rmek i\u00e7in karta dokun.": "Gusa kadi ili kuona hali ya ulinzi.", // EN: Tap the card to see protection status.
+    "Ko\u015fu Band\u0131": "Kinu cha Kukimbilia", // EN: Treadmill
+    "Ko\u015ful": "Sharti", // EN: Condition
+    "Kritik Uyar\u0131lar": "Arifa Muhimu", // EN: Critical Alerts
+    "Kritik g\u00fcvenlik uyar\u0131lar\u0131 sessiz saatlerden etkilenmez.": "Arifa muhimu za usalama haziathiriwi na saa za utulivu.", // EN: Critical security alerts are not affected by quiet hours.
+    "Kud\u00fcs": "Yerusalemu", // EN: Jerusalem
+    "Kulak Kiri \u00c7\u0131karma Otoskopu (Kameral\u0131)": "Otoskopu ya Kuondoa Nta ya Sikio (yenye Kamera)", // EN: Ear Wax Removal Otoscope (with Camera)
+    "Kullan\u0131c\u0131": "Mtumiaji", // EN: User
+    "Kullan\u0131c\u0131 Ad\u0131": "Jina la Mtumiaji", // EN: Username
+    "Kullan\u0131c\u0131 Ad\u0131n\u0131 D\u00fczenle": "Hariri Jina la Mtumiaji", // EN: Edit Username
+    "Kullan\u0131c\u0131 Bilgileri": "Taarifa za Mtumiaji", // EN: User Information
+    "Kullan\u0131m Ko\u015fullar\u0131": "Masharti ya Matumizi", // EN: Terms of Use
+    "Kurtarma Bilgilerini Kaydet": "Hifadhi Taarifa za Urejeshaji", // EN: Save Recovery Info
+    "Kurtarma Y\u00f6ntemleri": "Njia za Urejeshaji", // EN: Recovery Methods
+    "Kurtarma bilgileri kaydedildi \u2713": "Taarifa za urejeshaji zimehifadhiwa \u2713", // EN: Recovery info saved ✓
     "Kurulum Kodu": "Msimbo wa Usanidi", // EN: Setup Code
     "Kurulum Kodu Girin": "Weka Msimbo wa Usanidi", // EN: Enter Setup Code
     "Kurulum koduyla ekle": "Ongeza kwa msimbo wa usanidi", // EN: Add with setup code
@@ -2087,45 +2087,45 @@ window.NEXUS_LANG = {
     "NEXUS+ hen\u00fcz sat\u0131\u015fta de\u011fil. Cihaz ekleme, kontrol panelleri, senaryolar ve NEXUS AI \u015fu an tamamen \u00fccretsiz; abonelik a\u00e7\u0131ld\u0131\u011f\u0131nda buradan haber verece\u011fiz.": "NEXUS+ bado haijawekwa kwa mauzo. Kuongeza vifaa, hali na NEXUS AI ni bure kabisa sasa; tutakuarifu hapa unapofungua usajili.", // EN: NEXUS+ isn't on sale yet. Adding devices, scenarios and NEXUS AI are completely free right now; we'll let you know here when subscriptions open.
     "NEXUS+ yak\u0131nda": "NEXUS+ inakuja hivi karibuni", // EN: NEXUS+ coming soon
     "NEXUS, \u00e7er\u00e7eve i\u00e7indeki kodu otomatik alg\u0131lar ve e\u015fle\u015fmeyi ba\u015flat\u0131r.": "NEXUS inagundua msimbo ndani ya fremu moja kwa moja na inaanza jozi. NEXUS_CARD_CATALOG haija waziwa. Je, data.js imeloaded? Jinsi ya Kuweka Je, naweza kusaidia vipi? Unyevu Kichujio cha Hewa Unyevu Unda Utaratibu wa Unyevu Kiongeza Hewa Safisha Mwanga Mweupe Nexus AI: Karibu Nexus AI: Jisajili Kawaida Kipima cha Hakuna-Neutral (Gang 1) Kipima cha Hakuna-Neutral (Gang 2) Kipima cha Hakuna-Neutral (Gang 3) Kipima cha Hakuna-Neutral (Gang 4) MODE YA MOJAWAPO Chumba Ondoa chumba Uendeshaji wa nyuma Kubadilisha Kila Chumba Kuona Kulingana na Chumba Udhibiti Kila Chumba Taa za Chumba Urahisi wa Chumba Upatikanaji wa Chumba Mandhari ya Chumba Uchaguzi wa Chumba Usimamizi wa Chumba Urahisi wa chumba Katika hapa itajitokeza mara tu mandhari ya chumba itakapochaguliwa Hakuna mandhari ya chumba iliyochaguliwa Hakuna chumba kilichochaguliwa Joto la chumba Endesha ikiwa joto la chumba linaongezeka zaidi ya 25\u00b0C Usimamizi wa chumba Onyesha katika Chumba Lenga Oximeter", // EN: NEXUS detects the code inside the frame automatically and starts pairing.
-    "NEXUS_CARD_CATALOG tan\u0131ml\u0131 de\u011fil. data.js y\u00fcklendi mi?": "", // EN: NEXUS_CARD_CATALOG is not defined. Was data.js loaded?
-    "Nas\u0131l Kurulur?": "", // EN: How to Set Up
-    "Nas\u0131l yard\u0131mc\u0131 olabilirim?": "", // EN: How can I help?
-    "Nem": "", // EN: Humidity
-    "Nem Alma Cihaz\u0131": "", // EN: Dehumidifier
-    "Nem Oran\u0131": "", // EN: Humidity
-    "Nem Rutini Olu\u015ftur": "", // EN: Create Humidity Routine
-    "Nemlendirici": "", // EN: Humidifier
-    "Net Beyaz I\u015f\u0131k": "", // EN: Clear White Light
-    "Nexus AI: Kar\u015f\u0131lama": "", // EN: Nexus AI: Welcome
-    "Nexus AI: Kay\u0131t Ol": "", // EN: Nexus AI: Sign Up
-    "N\u00f6tr": "", // EN: Neutral
-    "N\u00f6trs\u00fcz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (1 Gang)
-    "N\u00f6trs\u00fcz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (2 Gang)
-    "N\u00f6trs\u00fcz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (3 Gang)
-    "N\u00f6trs\u00fcz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "", // EN: No-Neutral Switch (4 Gang)
-    "OTOMAT\u0130K MOD": "", // EN: AUTO MODE
-    "Oda": "", // EN: Room
-    "Oday\u0131 kald\u0131r": "", // EN: Remove room
-    "Arka Plan Otomasyonu": "", // EN: Background automation
-    "Oda Bazl\u0131 Ge\u00e7i\u015f": "", // EN: Room-by-Room Switching
-    "Oda Bazl\u0131 G\u00f6r\u00fcn\u00fcm": "", // EN: Room-Based View
-    "Oda Bazl\u0131 Kontrol": "", // EN: Room-by-Room Control
-    "Oda I\u015f\u0131klar\u0131": "", // EN: Room Lights
-    "Oda Konforu": "", // EN: Room Comfort
-    "Oda M\u00fcsaitli\u011fi": "", // EN: Room Availability
-    "Oda Sahneleri": "", // EN: Room Scenes
-    "Oda Se\u00e7imi": "", // EN: Room Selection
-    "Oda Y\u00f6netimi": "", // EN: Room Management
-    "Oda konforu": "", // EN: Room comfort
-    "Oda sahnesi se\u00e7ilince burada g\u00f6r\u00fcn\u00fcr.": "", // EN: It will appear here once a room scene is selected.
-    "Oda sahnesi se\u00e7ilmedi": "", // EN: No room scene selected
-    "Oda se\u00e7ilmedi": "", // EN: No room selected
-    "Oda s\u0131cakl\u0131\u011f\u0131": "", // EN: Room temperature
-    "Oda s\u0131cakl\u0131\u011f\u0131 25\u00b0C \u00fcst\u00fcne \u00e7\u0131karsa \u00e7al\u0131\u015ft\u0131r": "", // EN: Run if room temperature goes above 25°C
-    "Oda y\u00f6netimi": "", // EN: Room management
-    "Odada G\u00f6ster": "", // EN: Show in Room
-    "Odaklanma": "", // EN: Focus
-    "Oksimetre": "", // EN: Oximeter
+    "NEXUS_CARD_CATALOG tan\u0131ml\u0131 de\u011fil. data.js y\u00fcklendi mi?": "NEXUS_CARD_CATALOG haijafafanuliwa. Je, data.js ilipakiwa?", // EN: NEXUS_CARD_CATALOG is not defined. Was data.js loaded?
+    "Nas\u0131l Kurulur?": "Jinsi ya Kusanidi", // EN: How to Set Up
+    "Nas\u0131l yard\u0131mc\u0131 olabilirim?": "Nikusaidieje?", // EN: How can I help?
+    "Nem": "Unyevu", // EN: Humidity
+    "Nem Alma Cihaz\u0131": "Kifaa cha Kupunguza Unyevu", // EN: Dehumidifier
+    "Nem Oran\u0131": "Kiwango cha Unyevu", // EN: Humidity
+    "Nem Rutini Olu\u015ftur": "Unda Ratiba ya Unyevu", // EN: Create Humidity Routine
+    "Nemlendirici": "Kifaa cha Kuongeza Unyevu", // EN: Humidifier
+    "Net Beyaz I\u015f\u0131k": "Mwanga Mweupe Safi", // EN: Clear White Light
+    "Nexus AI: Kar\u015f\u0131lama": "Nexus AI: Karibu", // EN: Nexus AI: Welcome
+    "Nexus AI: Kay\u0131t Ol": "Nexus AI: Jisajili", // EN: Nexus AI: Sign Up
+    "N\u00f6tr": "Neutro", // EN: Neutral
+    "N\u00f6trs\u00fcz Anahtar (1 \u00c7\u0131k\u0131\u015fl\u0131)": "Swichi Isiyo na Neutro (Njia 1)", // EN: No-Neutral Switch (1 Gang)
+    "N\u00f6trs\u00fcz Anahtar (2 \u00c7\u0131k\u0131\u015fl\u0131)": "Swichi Isiyo na Neutro (Njia 2)", // EN: No-Neutral Switch (2 Gang)
+    "N\u00f6trs\u00fcz Anahtar (3 \u00c7\u0131k\u0131\u015fl\u0131)": "Swichi Isiyo na Neutro (Njia 3)", // EN: No-Neutral Switch (3 Gang)
+    "N\u00f6trs\u00fcz Anahtar (4 \u00c7\u0131k\u0131\u015fl\u0131)": "Swichi Isiyo na Neutro (Njia 4)", // EN: No-Neutral Switch (4 Gang)
+    "OTOMAT\u0130K MOD": "HALI YA KIOTOMATIKI", // EN: AUTO MODE
+    "Oda": "Chumba", // EN: Room
+    "Oday\u0131 kald\u0131r": "Ondoa chumba", // EN: Remove room
+    "Arka Plan Otomasyonu": "Otomatiki ya Chinichini", // EN: Background automation
+    "Oda Bazl\u0131 Ge\u00e7i\u015f": "Ubadilishaji kwa Kila Chumba", // EN: Room-by-Room Switching
+    "Oda Bazl\u0131 G\u00f6r\u00fcn\u00fcm": "Mwonekano kwa Chumba", // EN: Room-Based View
+    "Oda Bazl\u0131 Kontrol": "Udhibiti kwa Kila Chumba", // EN: Room-by-Room Control
+    "Oda I\u015f\u0131klar\u0131": "Taa za Chumba", // EN: Room Lights
+    "Oda Konforu": "Starehe ya Chumba", // EN: Room Comfort
+    "Oda M\u00fcsaitli\u011fi": "Upatikanaji wa Chumba", // EN: Room Availability
+    "Oda Sahneleri": "Mandhari za Chumba", // EN: Room Scenes
+    "Oda Se\u00e7imi": "Uchaguzi wa Chumba", // EN: Room Selection
+    "Oda Y\u00f6netimi": "Usimamizi wa Chumba", // EN: Room Management
+    "Oda konforu": "Starehe ya chumba", // EN: Room comfort
+    "Oda sahnesi se\u00e7ilince burada g\u00f6r\u00fcn\u00fcr.": "Itaonekana hapa mara tu mandhari ya chumba itakapochaguliwa.", // EN: It will appear here once a room scene is selected.
+    "Oda sahnesi se\u00e7ilmedi": "Hakuna mandhari ya chumba iliyochaguliwa", // EN: No room scene selected
+    "Oda se\u00e7ilmedi": "Hakuna chumba kilichochaguliwa", // EN: No room selected
+    "Oda s\u0131cakl\u0131\u011f\u0131": "Joto la chumba", // EN: Room temperature
+    "Oda s\u0131cakl\u0131\u011f\u0131 25\u00b0C \u00fcst\u00fcne \u00e7\u0131karsa \u00e7al\u0131\u015ft\u0131r": "Endesha ikiwa joto la chumba litapanda zaidi ya 25\u00b0C", // EN: Run if room temperature goes above 25°C
+    "Oda y\u00f6netimi": "Usimamizi wa chumba", // EN: Room management
+    "Odada G\u00f6ster": "Onyesha Chumbani", // EN: Show in Room
+    "Odaklanma": "Umakini", // EN: Focus
+    "Oksimetre": "Oksimita", // EN: Oximeter
     "Okuma": "Kusoma", // EN: Reading
     "Okuma i\u00e7in parlak ve odakl\u0131 beyaz \u0131\u015f\u0131k sahnesi olu\u015ftur.": "Tengeneza mwangaza mweupe, mkali na unaolenga kwa ajili ya kusoma.", // EN: Create a bright, focused white light scene for reading.
     "Olu\u015ftur": "Tengeneza", // EN: Create
@@ -2191,29 +2191,29 @@ window.NEXUS_LANG = {
     "Bu kodu NEXUS masa\u00fcst\u00fc uygulamas\u0131nda gir. Cihaz Wi-Fi ile ba\u011fl\u0131ysa yerel a\u011fdan IP adresiyle de ekleyebilirsin.": "Weka nambari hii kwenye programu ya NEXUS ya desktop. Ikiwa kifaa kiko kwenye Wi-Fi, pia unaweza kuongeza kutoka kwenye mtandao wako wa ndani kwa anwani yake ya IP.", // EN: Enter this code in the NEXUS desktop app. If the device is on Wi-Fi, you can also add it from your local network by its IP address.
     "Cihaz ayn\u0131 a\u011fda aran\u0131yor ve e\u015fle\u015ftiriliyor. Bu bir dakikay\u0131 bulabilir; cihaz\u0131n a\u00e7\u0131k ve e\u015fle\u015ftirme modunda olmas\u0131 gerekir.": "Kifaa kinatafutwa kwenye mtandao uleule na kinaundwa jozi. Hii inaweza kuchukua hadi dakika moja; kifaa lazima kiwe kimewashwa na kiko kwenye hali ya jozi.", // EN: The device is being searched for on the same network and paired. This can take up to a minute; the device must be on and in pairing mode.
     "Cihaz bulunamad\u0131 ya da e\u015fle\u015ftirilemedi. Ayn\u0131 a\u011fda, a\u00e7\u0131k ve e\u015fle\u015ftirme modunda oldu\u011fundan emin ol.": "Kifaa hakikupatikana au hakiwezi kuunganishwa. Hakikisha kiko kwenye mtandao huo huo, kimewashwa na kiko katika hali ya kuunganishwa. Kifaa hakikupatikana. Hakikisha kiko kwenye mtandao huo huo, kimewashwa na kiko katika hali ya kuunganishwa. Kizuizi cha moto cha kompyuta yako kinaweza kuwa kinazuia majibu kutoka kwa vifaa vilivyo kwenye mtandao wa ndani. Kifaa hakiwezi kuunganishwa. Angalia nambari ya kuunganisha na kwamba kifaa kiko katika hali ya kuunganishwa. Kifaa kimeunganishwa lakini hakina kazi yoyote ambayo NEXUS inaweza kudhibiti. Kifaa hakijajibu. Hakikisha kimewashwa na kiko kwenye mtandao huo huo. Swichi na Relays Mapazia na Vifunga Imafa Haikusambazwa kifurushi Tayari kuamka Profaili Picha ya Profaili Picha ya profaili Hakuna picha ya profaili Chagua Picha Mpya Rudisha Picha ya Google Ondoa Picha Tazama profaili Ongeza Ratiba Ongeza ratiba Porojekta Mo Su Nambari ya QR Nambari ya QR Tayari", // EN: The device was not found or could not be paired. Make sure it is on the same network, powered on and in pairing mode.
-    "Cihaz bulunamad\u0131. Ayn\u0131 a\u011fda, a\u00e7\u0131k ve e\u015fle\u015ftirme modunda oldu\u011fundan emin ol. Bilgisayar\u0131n g\u00fcvenlik duvar\u0131 yerel a\u011fdaki cihazlar\u0131n yan\u0131t\u0131n\u0131 engelliyor olabilir.": "", // EN: The device was not found. Make sure it is on the same network, powered on and in pairing mode. Your computer's firewall may be blocking replies from devices on the local network.
-    "Cihaz e\u015fle\u015ftirilemedi. E\u015fle\u015ftirme kodunu ve cihaz\u0131n e\u015fle\u015ftirme modunda oldu\u011funu kontrol et.": "", // EN: The device could not be paired. Check the pairing code and that the device is in pairing mode.
-    "Cihaz e\u015fle\u015fti ama NEXUS'un kontrol edebilece\u011fi bir i\u015flevi yok.": "", // EN: The device paired but has no function NEXUS can control.
-    "Cihaz yan\u0131t vermedi. A\u00e7\u0131k ve ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: The device did not respond. Make sure it is on and on the same network.
-    "Anahtar ve R\u00f6le": "", // EN: Switches and Relays
-    "Perde ve Panjur": "", // EN: Curtains and Shutters
-    "Paket g\u00f6nderilemedi": "", // EN: Failed to send packet
-    "Uyand\u0131rmaya haz\u0131r": "", // EN: Ready to wake
-    "Profil": "", // EN: Profile
-    "Profil Foto\u011fraf\u0131": "", // EN: Profile Photo
-    "Profil foto\u011fraf\u0131": "", // EN: Profile photo
-    "Profil foto\u011fraf\u0131 yok": "", // EN: No profile photo
-    "Yeni Foto\u011fraf Se\u00e7": "", // EN: Choose New Photo
-    "Google Foto\u011fraf\u0131na D\u00f6n": "", // EN: Revert to Google Photo
-    "Foto\u011fraf\u0131 Kald\u0131r": "", // EN: Remove Photo
-    "Profili g\u00f6r\u00fcnt\u00fcle": "", // EN: View profile
-    "Program Ekle": "", // EN: Add Schedule
-    "Program ekle": "", // EN: Add schedule
-    "Projekt\u00f6r": "", // EN: Projector
-    "Pt": "", // EN: Mo
-    "Pz": "", // EN: Su
-    "QR Kod": "", // EN: QR Code
-    "QR Kodu Haz\u0131r": "", // EN: QR Code Ready
+    "Cihaz bulunamad\u0131. Ayn\u0131 a\u011fda, a\u00e7\u0131k ve e\u015fle\u015ftirme modunda oldu\u011fundan emin ol. Bilgisayar\u0131n g\u00fcvenlik duvar\u0131 yerel a\u011fdaki cihazlar\u0131n yan\u0131t\u0131n\u0131 engelliyor olabilir.": "Kifaa hakikupatikana. Hakikisha kiko kwenye mtandao ule ule, kimewashwa na kiko katika hali ya kuoanisha. Ngome ya moto ya kompyuta yako inaweza kuwa inazuia majibu kutoka kwa vifaa vilivyo kwenye mtandao wa ndani.", // EN: The device was not found. Make sure it is on the same network, powered on and in pairing mode. Your computer's firewall may be blocking replies from devices on the local network.
+    "Cihaz e\u015fle\u015ftirilemedi. E\u015fle\u015ftirme kodunu ve cihaz\u0131n e\u015fle\u015ftirme modunda oldu\u011funu kontrol et.": "Kifaa hakikuweza kuoanishwa. Angalia msimbo wa kuoanisha na kwamba kifaa kiko katika hali ya kuoanisha.", // EN: The device could not be paired. Check the pairing code and that the device is in pairing mode.
+    "Cihaz e\u015fle\u015fti ama NEXUS'un kontrol edebilece\u011fi bir i\u015flevi yok.": "Kifaa kimeoanishwa lakini hakina kazi ambayo NEXUS inaweza kudhibiti.", // EN: The device paired but has no function NEXUS can control.
+    "Cihaz yan\u0131t vermedi. A\u00e7\u0131k ve ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "Kifaa hakikujibu. Hakikisha kimewashwa na kiko kwenye mtandao ule ule.", // EN: The device did not respond. Make sure it is on and on the same network.
+    "Anahtar ve R\u00f6le": "Swichi na Relei", // EN: Switches and Relays
+    "Perde ve Panjur": "Pazia na Shatari", // EN: Curtains and Shutters
+    "Paket g\u00f6nderilemedi": "Imeshindwa kutuma pakiti", // EN: Failed to send packet
+    "Uyand\u0131rmaya haz\u0131r": "Tayari kuamsha", // EN: Ready to wake
+    "Profil": "Wasifu", // EN: Profile
+    "Profil Foto\u011fraf\u0131": "Picha ya Wasifu", // EN: Profile Photo
+    "Profil foto\u011fraf\u0131": "Picha ya wasifu", // EN: Profile photo
+    "Profil foto\u011fraf\u0131 yok": "Hakuna picha ya wasifu", // EN: No profile photo
+    "Yeni Foto\u011fraf Se\u00e7": "Chagua Picha Mpya", // EN: Choose New Photo
+    "Google Foto\u011fraf\u0131na D\u00f6n": "Rudi kwenye Picha ya Google", // EN: Revert to Google Photo
+    "Foto\u011fraf\u0131 Kald\u0131r": "Ondoa Picha", // EN: Remove Photo
+    "Profili g\u00f6r\u00fcnt\u00fcle": "Tazama wasifu", // EN: View profile
+    "Program Ekle": "Ongeza Ratiba", // EN: Add Schedule
+    "Program ekle": "Ongeza ratiba", // EN: Add schedule
+    "Projekt\u00f6r": "Projekta", // EN: Projector
+    "Pt": "Jtt", // EN: Mo
+    "Pz": "Jpl", // EN: Su
+    "QR Kod": "Msimbo wa QR", // EN: QR Code
+    "QR Kodu Haz\u0131r": "Msimbo wa QR Uko Tayari", // EN: QR Code Ready
     "QR bulunamad\u0131ysa manuel ekleyin.": "Kama hakuna QR iliyo patikana, ongeza kwa mkono.", // EN: If no QR was found, add it manually.
     "QR ile Cihaz Kurulumu": "Mpangilio wa Kifaa kwa QR", // EN: Device Setup with QR
     "QR ile ekle": "Ongeza kwa QR", // EN: Add with QR

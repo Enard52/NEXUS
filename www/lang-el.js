@@ -35,9 +35,9 @@ window.NEXUS_LANG = {
     "Priz ve Anahtar": "\u0392\u03cd\u03c3\u03bc\u03b1\u03c4\u03b1 & \u0394\u03b9\u03b1\u03ba\u03cc\u03c0\u03c4\u03b5\u03c2", // EN: Plugs & Switches
     "NEXUS AI Plus": "NEXUS AI Plus", // EN: NEXUS AI Plus
     "Plan": "\u03a3\u03c7\u03ad\u03b4\u03b9\u03bf", // EN: Plan
-    "$7.50/month": "", // EN: $7.50/month
+    "$7.50/month": "$7.50/\u03bc\u03ae\u03bd\u03b1", // EN: $7.50/month
     "/month": "/\u03bc\u03ae\u03bd\u03b1", // EN: /month
-    "7 days free, then just $89.99 per year. Cancel anytime.": "", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
+    "7 days free, then just $89.99 per year. Cancel anytime.": "7 \u03b7\u03bc\u03ad\u03c1\u03b5\u03c2 \u03b4\u03c9\u03c1\u03b5\u03ac\u03bd, \u03bc\u03b5\u03c4\u03ac \u03bc\u03cc\u03bd\u03bf $89.99 \u03b1\u03bd\u03ac \u03ad\u03c4\u03bf\u03c2. \u0391\u03ba\u03cd\u03c1\u03c9\u03c3\u03b7 \u03b1\u03bd\u03ac \u03c0\u03ac\u03c3\u03b1 \u03c3\u03c4\u03b9\u03b3\u03bc\u03ae.", // EN: 7 days free, then just $89.99 per year. Cancel anytime.
     "CarPlay": "CarPlay", // EN: CarPlay
     "Rehber": "\u039f\u03b4\u03b7\u03b3\u03cc\u03c2", // EN: Guide
     "Ses ve Hareket": "\u0389\u03c7\u03bf\u03c2 & \u039a\u03af\u03bd\u03b7\u03c3\u03b7", // EN: Sound & Motion

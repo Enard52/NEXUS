@@ -490,7 +490,7 @@ window.NEXUS_LANG = {
     "Kapat\u0131nca arka planda \u00e7al\u0131\u015ft\u0131r": "Automatiseerimised j\u00e4tkavad s\u00fcsteemi salves t\u00f6\u00f6tamist, kui aken on suletud.", // EN: Keep running in background when closed
     "Pencere kapat\u0131lsa da otomasyonlar tepside \u00e7al\u0131\u015fmaya devam etsin.": "T\u00f5mba uuendamiseks", // EN: Automations keep running in system tray when the window is closed.
     "Yenilemek i\u00e7in \u00e7ekin": "Andurid", // EN: Pull to refresh
-    "Sens\u00f6rler": "", // EN: Sensors
+    "Sens\u00f6rler": "Andurid", // EN: Sensors
     "Hareket, kap\u0131/pencere ve \u00e7evre sens\u00f6rleri": "Liikumis-, ukse/akna- ja keskkonnasensorid", // EN: Motion, door/window and environmental sensors
     "\u0130klimlendirme ve Enerji": "Kliima ja energia", // EN: Climate and Energy
     "Ak\u0131ll\u0131 priz, r\u00f6le ve anahtar \u00fcr\u00fcnleri": "Nutika pistiku, relee ja l\u00fcliti tooted", // EN: Smart plug, relay and switch products
@@ -529,16 +529,16 @@ window.NEXUS_LANG = {
     "Yaln\u0131zca bildirim": "Plaani j\u00e4rgi automaatsed toimingud toimivad, kui rakendus on avatud; t\u00f6\u00f6laual j\u00e4tkavad need toimimist, kui rakendus j\u00e4\u00e4b salve.", // EN: Notification only
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Automaatika toimib, kui rakendus on avatud; t\u00f6\u00f6laual j\u00e4tkub ajakava, kui rakendus j\u00e4\u00e4b salve.\\nVeel k\u00e4ivitamata", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "(vahele j\u00e4etud)", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
-    "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "", // EN: Not run yet
+    "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "Pole veel k\u00e4ivitatud", // EN: Not run yet
     "(ka\u00e7\u0131r\u0131ld\u0131)": "k\u00e4ivitatud; tegevust ei ole m\u00e4\u00e4ratud (vali stsenaarium stsenaariumi seadistustest).", // EN: (missed)
     "{0} cihaz g\u00fcncellendi.": "voolukatkestus {0} seadmele(-le).", // EN: {0} device(s) updated.
     "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "\u00d6\u00f6strateegia k\u00e4ivitati; valitud energias seadmeid pole.", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "{0} seadme toide katkestati.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "P\u00e4ikeseloojanguk\u00e4ivitus: kodu asukoht pole m\u00e4\u00e4ratud.", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "K\u00e4ivitusaeg j\u00e4i vahele (rakendus oli suletud).", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Kaamerad", // EN: Sunset trigger: no home location set.
-    "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "K\u00e4ivitusaeg j\u00e4i vahele (rakendus oli suletud).", // EN: Trigger time missed (the app was closed).
+    "Kameralar": "Kaamerad", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Minu Kaamerad", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Lisa kaamera, et j\u00e4lgida selle olekut ja privaatsusseadeid siin. Video voo (RTSP) tugi tuleb peagi.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Lisa Kaamera", // EN: Add Camera
@@ -606,26 +606,26 @@ window.NEXUS_LANG = {
     "Cihaz\u0131 s\u0131f\u0131rlamak i\u00e7in \u00fcreticinin uygulamas\u0131ndaki Fabrika S\u0131f\u0131rlama ad\u0131m\u0131n\u0131 kullan.": "Seadme l\u00e4htestamiseks kasuta tehase l\u00e4htestamise sammu tootja rakenduses.", // EN: To reset the device, use the Factory Reset step in the manufacturer's app.
     "En az 8 karakter; harf + rakam kullan.": "V\u00e4hemalt 8 m\u00e4rki; kasuta t\u00e4hti + numbreid.", // EN: At least 8 characters; use letters + digits.
     "\u00c7ok zay\u0131f \u2014 en az 8 karakter kullan.": "V\u00e4ga n\u00f5rk \u2014 kasuta v\u00e4hemalt 8 m\u00e4rki. N\u00f5rk \u2014 lisa t\u00e4hti + numbreid. Keskmine \u2014 lisa suur t\u00e4ht v\u00f5i s\u00fcmbol. Hea. Tugev parool. Tulekul (TOTP rakenduse koodid) Kontrollimine Olemas pilvekontoga Logi esmalt sisse oma pilvekontoga. Ei saanud staatust laadida Autentimisrakenduse kood on sees Kaheastmeline kinnitamine vajab pilvekontot. Sisesta autentimiskood, et see v\u00e4lja l\u00fclitada. Skaneeri kood oma autentimisrakendusega, seej\u00e4rel sisesta 6 numbrit. Seadistuskood Kui sa ei saa skaneerida, sisesta see v\u00f5ti rakendusse: Kood peab olema 6 numbrit. Kood on vale v\u00f5i on aegunud. Kood on vale v\u00f5i on aegunud. Koodid ei \u00fchti, kui sinu telefoni kell ei ole automaatselt seadistatud; l\u00fclita see automaatseks ja proovi uuendatud koodi. Koodi ei saanud kinnitada. Tegevust ei saanud l\u00f5pule viia.", // EN: Very weak — use at least 8 characters.
-    "Zay\u0131f \u2014 harf + rakam ekle.": "", // EN: Weak — add letters + digits.
-    "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "", // EN: Fair — add an uppercase letter or symbol.
-    "\u0130yi.": "", // EN: Good.
-    "G\u00fc\u00e7l\u00fc \u015fifre.": "", // EN: Strong password.
-    "Yak\u0131nda (TOTP uygulama kodu)": "", // EN: Coming soon (TOTP app codes)
-    "Kontrol ediliyor": "", // EN: Checking
-    "Bulut hesab\u0131yla a\u00e7\u0131l\u0131r": "", // EN: Available with a cloud account
-    "\u00d6nce bulut hesab\u0131nla giri\u015f yap.": "", // EN: Sign in with your cloud account first.
-    "Durum al\u0131namad\u0131": "", // EN: Couldn't load the status
-    "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "", // EN: Authenticator code is on
-    "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "", // EN: Two-step verification needs a cloud account.
-    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "", // EN: Enter the authenticator code to turn it off.
-    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "", // EN: Scan the code with your authenticator app, then enter the 6 digits.
-    "Kurulum kodu": "", // EN: Setup code
-    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "", // EN: If you can't scan it, type this key into the app:
-    "Kod 6 hane olmal\u0131.": "", // EN: The code must be 6 digits.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "", // EN: The code is wrong or has expired.
-    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
-    "Kod do\u011frulanamad\u0131.": "", // EN: The code could not be verified.
-    "\u0130\u015flem tamamlanamad\u0131.": "", // EN: The action could not be completed.
+    "Zay\u0131f \u2014 harf + rakam ekle.": "N\u00f5rk \u2014 lisa t\u00e4hti ja numbreid.", // EN: Weak — add letters + digits.
+    "Orta \u2014 b\u00fcy\u00fck harf veya simge ekle.": "Keskmine \u2014 lisa suurt\u00e4ht v\u00f5i s\u00fcmbol.", // EN: Fair — add an uppercase letter or symbol.
+    "\u0130yi.": "Hea.", // EN: Good.
+    "G\u00fc\u00e7l\u00fc \u015fifre.": "Tugev parool.", // EN: Strong password.
+    "Yak\u0131nda (TOTP uygulama kodu)": "Tulekul (TOTP rakenduse koodid)", // EN: Coming soon (TOTP app codes)
+    "Kontrol ediliyor": "Kontrollimine", // EN: Checking
+    "Bulut hesab\u0131yla a\u00e7\u0131l\u0131r": "Saadaval pilvekontoga", // EN: Available with a cloud account
+    "\u00d6nce bulut hesab\u0131nla giri\u015f yap.": "Logi esmalt sisse oma pilvekontoga.", // EN: Sign in with your cloud account first.
+    "Durum al\u0131namad\u0131": "Olekut ei \u00f5nnestunud laadida", // EN: Couldn't load the status
+    "Kimlik uygulamas\u0131 kodu a\u00e7\u0131k": "Autentimisrakenduse kood on sisse l\u00fclitatud", // EN: Authenticator code is on
+    "\u0130ki ad\u0131ml\u0131 do\u011frulama bulut hesab\u0131yla a\u00e7\u0131l\u0131r.": "Kaheastmeline kinnitus vajab pilvekontot.", // EN: Two-step verification needs a cloud account.
+    "Kapatmak i\u00e7in kimlik uygulamas\u0131ndaki kodu gir.": "V\u00e4ljal\u00fclitamiseks sisesta autentimisrakenduse kood.", // EN: Enter the authenticator code to turn it off.
+    "Kodu kimlik uygulamas\u0131na okut, sonra uygulamadaki 6 haneyi gir.": "Skanni kood oma autentimisrakendusega, seej\u00e4rel sisesta rakenduses kuvatud 6 numbrit.", // EN: Scan the code with your authenticator app, then enter the 6 digits.
+    "Kurulum kodu": "Seadistuskood", // EN: Setup code
+    "Kodu okutam\u0131yorsan bu anahtar\u0131 uygulamaya yaz:": "Kui skannimine ei \u00f5nnestu, sisesta see v\u00f5ti rakendusse:", // EN: If you can't scan it, type this key into the app:
+    "Kod 6 hane olmal\u0131.": "Kood peab olema 6-kohaline.", // EN: The code must be 6 digits.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti.": "Kood on vale v\u00f5i aegunud.", // EN: The code is wrong or has expired.
+    "Kod hatal\u0131 ya da s\u00fcresi ge\u00e7ti. Telefonunun saati otomatik ayarl\u0131 de\u011filse kodlar tutmaz; saati otomati\u011fe al\u0131p yenilenen kodu bir kez dene.": "Kood on vale v\u00f5i aegunud. Koodid ei klapi, kui telefoni kell ei ole automaatselt seadistatud; l\u00fclita see automaatseks ja proovi v\u00e4rskendatud koodi \u00fcks kord.", // EN: The code is wrong or has expired. Codes do not match if your phone's clock is not set automatically; switch it to automatic and try the refreshed code once.
+    "Kod do\u011frulanamad\u0131.": "Koodi ei \u00f5nnestunud kinnitada.", // EN: The code could not be verified.
+    "\u0130\u015flem tamamlanamad\u0131.": "Toimingut ei \u00f5nnestunud l\u00f5pule viia.", // EN: The action could not be completed.
     "\u0130ki ad\u0131ml\u0131 do\u011frulama a\u00e7\u0131k.": "Kaheastmeline autentimine on sisse l\u00fclitatud.", // EN: Two-step verification is on.
     "\u0130ki ad\u0131ml\u0131 do\u011frulama kapat\u0131ld\u0131.": "Kaheastmeline autentimine on v\u00e4lja l\u00fclitatud.", // EN: Two-step verification is off.
     "Kimlik uygulamas\u0131ndaki 6 haneli kodu gir.": "Sisestage 6-kohaline kood oma autentimisrakendusest.", // EN: Enter the 6-digit code from your authenticator app.
@@ -1293,7 +1293,7 @@ window.NEXUS_LANG = {
     "Ekle": "Lisa", // EN: Add
     "Ekle se\u00e7enekleri": "Manuse valikud", // EN: Attachment options
     "Eklendi. Ana sayfadan y\u00f6netebilirsin.": "Lisas. Saate seda hallata Kodu kaudu.", // EN: Added. You can manage it from Home.
-    "Eklenen ayd\u0131nlatma cihazlar\u0131 i\u00e7in": "", // EN: For the added lighting devices
+    "Eklenen ayd\u0131nlatma cihazlar\u0131 i\u00e7in": "Lisatud valgustusseadmete jaoks", // EN: For the added lighting devices
     "Eklenen cihazlar\u0131na g\u00f6re anlaml\u0131 bir ak\u0131ll\u0131 uygulama deneyimi haz\u0131rla.": "Lisatud valgustusseadmete jaoks", // EN: Prepare a meaningful smart app experience based on the devices you've added.
     "Eklenmi\u015f Cihazlar": "Valmistage seadmete p\u00f5hjal t\u00e4henduslik nutirakenduse kogemus, mille olete lisanud.", // EN: Added Devices
     "Ekmek Yapma Makinesi": "Lisatud seadmed", // EN: Bread Maker
@@ -1386,19 +1386,19 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Loo kodust lahkumise kontrolli rakendus, mis n\u00e4itab \u00fchel ekraanil, millised seadmed on sisse l\u00fclitatud, luku staatus ja energiaseaded. Lisa kiirv\u00e4ljal\u00fclitus- ja turvalisuse aktiveerimise nupud.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Kontrolli \u00fches vooges, millised seadmed on sisse l\u00fclitatud, lukud ja energiaseis kodust lahkudes.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "N\u00e4ita \u00fchel ekraanil kodust lahkudes \u00fclej\u00e4\u00e4nud seadmeid, lukkude ja energia seisundit. Vaata \u00fchel paneelil kodust lahkudes \u00fclej\u00e4\u00e4nud tuled, pistikupesad, konditsioneerid ja turvas\u00e4tted. Koonda kiire v\u00e4lja l\u00fclitamise ja turvalisuse aktiveerimise sammud \u00fchte voogu. Teeme l\u00f5plikud kontrollid enne, kui lahkud. L\u00fclita tuled automaatselt v\u00e4lja p\u00e4rast lahkumist kodust. L\u00fclita tuled automaatselt v\u00e4lja p\u00e4rast kodust lahkumist ja sisse, kui naased. L\u00fclita konditsioneer automaatselt v\u00e4lja, kui keegi ei ole kodus, ja v\u00e4ldi tarbetut energiatarbimist. L\u00fclita \u00f6\u00f6sel valitud ajal automaatselt v\u00e4lja ootel seadmed. Kodust lahkudes. L\u00fclita pistikupesa kodust lahkudes v\u00e4lja. Kodust lahkudes. Olen kodus. Tere tulemast koju. Kui sa j\u00f5uad koju v\u00f5i lahkud.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
-    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
-    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "", // EN: Let's do the final checks before you leave.
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "", // EN: Turn off the lights automatically after leav...
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "", // EN: Turn off the lights automatically after leaving home
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "", // EN: Turn off the lights automatically after you leave and turn them on when you return.
-    "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
-    "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "", // EN: Automatically cut power to devices on standby at the time you choose at night.
-    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "", // EN: When leaving home
-    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda prizi kapat": "", // EN: Turn off the plug when leaving home
-    "Evden \u00e7\u0131k\u0131\u015f": "", // EN: Leaving home
-    "Eve Geldim": "", // EN: I'm Home
-    "Eve geldim": "", // EN: Welcome home
-    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "", // EN: When you arrive home or leave
+    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "N\u00e4e enne kodust lahkumist sisse j\u00e4\u00e4nud tulesid, pistikupesi, kliimaseadmeid ja turvaseadeid \u00fchel paneelil. Koonda kiire v\u00e4ljal\u00fclitamise ja turvalisuse aktiveerimise sammud \u00fcheks vooguks.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
+    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "Teeme enne lahkumist viimased kontrollid.", // EN: Let's do the final checks before you leave.
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "L\u00fclita tuled p\u00e4rast lahkumist automaatselt v\u00e4lja...", // EN: Turn off the lights automatically after leav...
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "L\u00fclita tuled p\u00e4rast kodust lahkumist automaatselt v\u00e4lja", // EN: Turn off the lights automatically after leaving home
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "L\u00fclita tuled p\u00e4rast lahkumist automaatselt v\u00e4lja ja sisse, kui tagasi tuled.", // EN: Turn off the lights automatically after you leave and turn them on when you return.
+    "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "L\u00fclita kliimaseade automaatselt v\u00e4lja, kui kedagi pole kodus, ja v\u00e4ldi tarbetut kulu.", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
+    "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "Katkesta ootere\u017eiimis seadmete toide \u00f6\u00f6sel automaatselt sinu valitud ajal.", // EN: Automatically cut power to devices on standby at the time you choose at night.
+    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "Kodust lahkumisel", // EN: When leaving home
+    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda prizi kapat": "L\u00fclita pistikupesa kodust lahkumisel v\u00e4lja", // EN: Turn off the plug when leaving home
+    "Evden \u00e7\u0131k\u0131\u015f": "Kodust lahkumine", // EN: Leaving home
+    "Eve Geldim": "Olen kodus", // EN: I'm Home
+    "Eve geldim": "Tere tulemast koju", // EN: Welcome home
+    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "Kui j\u00f5uad koju v\u00f5i lahkud", // EN: When you arrive home or leave
     "Eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7, klimay\u0131 \u00e7al\u0131\u015ft\u0131r ve garaj kap\u0131s\u0131n\u0131 arac\u0131n\u0131n ekran\u0131ndan kontrol et.": "L\u00fclita tuled sisse, alusta konditsioneeri ja kontrolli garaa\u017eiukse oma auto ekraanilt, kui l\u00e4hened koju.", // EN: Turn on the lights, start the AC and control the garage door from your car's screen as you approach home.
     "Evet, Uygula": "Jah, Rakenda", // EN: Yes, Apply
     "Evet, \u0130ptal Et": "Jah, T\u00fchista", // EN: Yes, Cancel
@@ -1422,7 +1422,7 @@ window.NEXUS_LANG = {
     "Bu madde panodan t\u00fcm \u00fcyeler i\u00e7in kald\u0131r\u0131l\u0131r.": "Tahvel pole hetkel saadaval.", // EN: This item is removed from the board for all members.
     "Pano \u015fu an kapal\u0131.": "Logi sisse, et kasutada Kodu tahvlit.", // EN: The board is unavailable right now.
     "Ev Panosu i\u00e7in oturum a\u00e7mal\u0131s\u0131n.": "Kodu tahvel ei ole selles versioonis saadaval.", // EN: Sign in to use the Home Board.
-    "Ev Panosu bu s\u00fcr\u00fcmde kullan\u0131lam\u0131yor.": "", // EN: Home Board is unavailable in this build.
+    "Ev Panosu bu s\u00fcr\u00fcmde kullan\u0131lam\u0131yor.": "Kodutahvel ei ole selles versioonis saadaval.", // EN: Home Board is unavailable in this build.
     "Pano y\u00fckleniyor\u2026": "Tahvli laadimine\u2026", // EN: Loading board…
     "Listeye ekle ya da not yaz\u2026": "Lisa nimekirja v\u00f5i kirjuta m\u00e4rkus\u2026", // EN: Add to the list or write a note…
     "T\u00fcr de\u011fi\u015ftir: liste maddesi / not": "Vaheta t\u00fc\u00fcpi: nimekirjaelement / m\u00e4rkus", // EN: Switch type: list item / note
@@ -1487,7 +1487,7 @@ window.NEXUS_LANG = {
     "Gece Modu": "\u00d6\u00f6re\u017eiimi ettevalmistus", // EN: Night Mode
     "Gece Modu Haz\u0131rl\u0131\u011f\u0131": "\u00d6ise temperatuuri", // EN: Night Mode Preparation
     "Gece S\u0131cakl\u0131\u011f\u0131": "L\u00f5ika \u00f6\u00f6sel ootere\u017eiimi tarbimine", // EN: Night Temperature
-    "Gece bekleme t\u00fcketimini kes": "", // EN: Cut standby consumption at night
+    "Gece bekleme t\u00fcketimini kes": "Katkesta \u00f6ine ootere\u017eiimi tarbimine", // EN: Cut standby consumption at night
     "Gece boyunca s\u0131cakl\u0131\u011f\u0131 yava\u015f\u00e7a ayarlar": "Seadistab temperatuuri \u00f6\u00f6 jooksul aeglaselt", // EN: Adjusts the temperature slowly through the night
     "Gece g\u00f6r\u00fc\u015f\u00fc": "\u00d6\u00f6n\u00e4gemine", // EN: Night vision
     "Gece g\u00fcvenli\u011fi": "\u00d6\u00f6 turvalisus", // EN: Night security
@@ -1554,9 +1554,9 @@ window.NEXUS_LANG = {
     "G\u00fcnl\u00fck Yok": "Igap\u00e4evane limiit kasutatud, l\u00e4htestatakse homme", // EN: No Logs
     "G\u00fcnl\u00fck hakk\u0131n doldu, yar\u0131n s\u0131f\u0131rlan\u0131r": "Igap\u00e4evane l\u00e4htestus", // EN: Daily allowance used up, resets tomorrow
     "G\u00fcnl\u00fck s\u0131f\u0131rlama": "Igap\u00e4evane l\u00e4htestus 30/30", // EN: Daily reset
-    "G\u00fcnl\u00fck s\u0131f\u0131rlama 30/30": "", // EN: Daily reset 30/30
-    "G\u00fcnl\u00fck s\u0131f\u0131rlama {0}/{1}": "", // EN: Daily reset {0}/{1}
-    "G\u00fcnl\u00fckler": "", // EN: Logs
+    "G\u00fcnl\u00fck s\u0131f\u0131rlama 30/30": "P\u00e4evane l\u00e4htestus 30/30", // EN: Daily reset 30/30
+    "G\u00fcnl\u00fck s\u0131f\u0131rlama {0}/{1}": "P\u00e4evane l\u00e4htestus {0}/{1}", // EN: Daily reset {0}/{1}
+    "G\u00fcnl\u00fckler": "Logid", // EN: Logs
     "G\u00fcvenilir Cihazlar": "Usaldusv\u00e4\u00e4rsed seadmed", // EN: Trusted Devices
     "G\u00fcvenilir Cihazlar (": "Usaldusv\u00e4\u00e4rsed seadmed (", // EN: Trusted Devices (
     "G\u00fcvenilir Cihazlar ({0})": "Usaldusv\u00e4\u00e4rsed seadmed ({0})", // EN: Trusted Devices ({0})
@@ -1977,35 +1977,35 @@ window.NEXUS_LANG = {
     "Misafir a\u011f\u0131 veya ge\u00e7ici eri\u015fim bilgisi olmadan haz\u0131r durum g\u00f6stermiyoruz.": "Me ei n\u00e4ita valmisseisundit ilma k\u00fclaliste v\u00f5rguta v\u00f5i ajutiste juurdep\u00e4\u00e4suandmeteta.", // EN: We don't show a ready state without guest network or temporary access details.
     "Misafir geldi\u011fi anda giri\u015f, ayd\u0131nlatma ve ortak alan cihazlar\u0131n\u0131 haz\u0131rlayan bir misafir modu uygulamas\u0131 olu\u015ftur. Kar\u015f\u0131lama \u0131\u015f\u0131\u011f\u0131, sessiz bildirim ve misafir eri\u015fim ad\u0131mlar\u0131 olsun.": "Loo k\u00fclalise re\u017eiimi rakendus, mis valmistab sissep\u00e4\u00e4su, valgustuse ja \u00fchiskasutusala seadmed ette kohe, kui k\u00fclalised saabuvad. Lisage tervitusvalgus, vaiksed teavitused ja k\u00fclalise juurdep\u00e4\u00e4su sammud.", // EN: Create a guest mode app that prepares the entrance, lighting and shared-area devices as soon as guests arrive. Include a welcome light, quiet notifications and guest access steps.
     "Misafir geldi\u011fi anda kullan\u0131lacak \u0131\u015f\u0131k, eri\u015fim ve ortam ayarlar\u0131.": "Valgustuse, juurdep\u00e4\u00e4su ja \u00f5hkkonna seaded, mida kasutada kohe, kui k\u00fclalised saabuvad. Valmista sissep\u00e4\u00e4s, valgustus, \u00fchiskasutatavad alad ja meelelahutusseadmed ette \u00fchel paneelil enne k\u00fclaliste saabumist. Loo kodus l\u00f5\u00f5gastav, kuid turvaline tervitusvoog. K\u00fclalise re\u017eiim K\u00fclalise re\u017eiim ei ole seadistatud K\u00fclalistetuba temperatuur fikseeritud 22 kraadi Kokku vajutamisega valmis oma kodu enne k\u00fclaliste saabumist. Re\u017eiim Lilla K\u00fc\u00fcnla lamp K\u00f6\u00f6k K\u00f6\u00f6giseadmed K\u00f6\u00f6gi ventilatsioon vaja K\u00f6\u00f6gi kaamera K\u00f6\u00f6gi aken K\u00f6\u00f6gikombain Kontrolli k\u00f6\u00f6giseadmeid \u00dche vajutusega valmistab sobivad k\u00f6\u00f6giseadmed. K\u00f6\u00f6k, elutuba, koridor Suurep\u00e4rane Alusta muusikat Muusikateenus NIISKUS NEXUS - tehisintellekti kaitse NEXUS - nutirakendus NEXUS - kohesed teavitused NEXUS - assistent NEXUS - seaded NEXUS - valgustuse meister NEXUS - seade NEXUS - lisa seade", // EN: Light, access and ambience settings to use as soon as guests arrive.
-    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
-    "Misafir modu": "", // EN: Guest mode
-    "Misafir modu ayarlanmad\u0131": "", // EN: Guest mode not set up
-    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "", // EN: Guest room temperature fixed at 22 degrees
-    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "", // EN: Get your home ready with one tap before your guests arrive.
-    "Mod": "", // EN: Mode
-    "Mor": "", // EN: Purple
-    "Mum Lamba": "", // EN: Candle Lamp
-    "Mutfak": "", // EN: Kitchen
-    "Mutfak Aletleri": "", // EN: Kitchen Appliances
-    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "", // EN: Kitchen Ventilation Needed
-    "Mutfak Kamera": "", // EN: Kitchen Camera
-    "Mutfak Penceresi": "", // EN: Kitchen Window
-    "Mutfak Robotu": "", // EN: Food Processor
-    "Mutfak aletlerini kontrol et": "", // EN: Check kitchen appliances
-    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "", // EN: Prepares suitable kitchen devices with one tap.
-    "Mutfak, Salon, Hol": "", // EN: Kitchen, Living Room, Hall
-    "M\u00fckemmel": "", // EN: Excellent
-    "M\u00fczik Ba\u015flat": "", // EN: Start Music
-    "M\u00fczik Servisi": "", // EN: Music Service
-    "NEM": "", // EN: HUMIDITY
-    "NEXUS - AI Koruma": "", // EN: NEXUS - AI Protection
-    "NEXUS - Ak\u0131ll\u0131 Uygulama": "", // EN: NEXUS - Smart App
-    "NEXUS - Anl\u0131k Bildirimler": "", // EN: NEXUS - Instant Notifications
-    "NEXUS - Asistan": "", // EN: NEXUS - Assistant
-    "NEXUS - Ayarlar": "", // EN: NEXUS - Settings
-    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "", // EN: NEXUS - Lighting Master
-    "NEXUS - Cihaz": "", // EN: NEXUS - Device
-    "NEXUS - Cihaz Ekle": "", // EN: NEXUS - Add Device
+    "Misafir gelmeden \u00f6nce giri\u015f, ayd\u0131nlatma, ortak alan ve e\u011flence cihazlar\u0131n\u0131 tek panelde haz\u0131rla. Ev i\u00e7inde rahat ama g\u00fcvenli bir kar\u015f\u0131lama ak\u0131\u015f\u0131 olu\u015ftur.": "Valmista enne k\u00fclaliste saabumist ette sissep\u00e4\u00e4s, valgustus, \u00fchisruumid ja meelelahutusseadmed \u00fchel paneelil. Loo kodus mugav, kuid turvaline vastuv\u00f5tuvoog.", // EN: Prepare the entrance, lighting, shared areas and entertainment devices on one panel before guests arrive. Create a relaxed but secure welcome flow at home.
+    "Misafir modu": "K\u00fclalisre\u017eiim", // EN: Guest mode
+    "Misafir modu ayarlanmad\u0131": "K\u00fclalisre\u017eiim pole seadistatud", // EN: Guest mode not set up
+    "Misafir odas\u0131 s\u0131cakl\u0131\u011f\u0131 22 dereceye sabitlendi": "K\u00fclalistetoa temperatuur fikseeriti 22 kraadile", // EN: Guest room temperature fixed at 22 degrees
+    "Misafirleriniz gelmeden \u00f6nce evinizi tek dokunu\u015fla haz\u0131r hale getirin.": "Tee oma kodu enne k\u00fclaliste saabumist \u00fche puudutusega valmis.", // EN: Get your home ready with one tap before your guests arrive.
+    "Mod": "Re\u017eiim", // EN: Mode
+    "Mor": "Lilla", // EN: Purple
+    "Mum Lamba": "K\u00fc\u00fcnlalamp", // EN: Candle Lamp
+    "Mutfak": "K\u00f6\u00f6k", // EN: Kitchen
+    "Mutfak Aletleri": "K\u00f6\u00f6giseadmed", // EN: Kitchen Appliances
+    "Mutfak Havaland\u0131rmas\u0131 Gerekli": "Vajalik k\u00f6\u00f6gi ventilatsioon", // EN: Kitchen Ventilation Needed
+    "Mutfak Kamera": "K\u00f6\u00f6gikaamera", // EN: Kitchen Camera
+    "Mutfak Penceresi": "K\u00f6\u00f6giaken", // EN: Kitchen Window
+    "Mutfak Robotu": "K\u00f6\u00f6gikombain", // EN: Food Processor
+    "Mutfak aletlerini kontrol et": "Kontrolli k\u00f6\u00f6giseadmeid", // EN: Check kitchen appliances
+    "Mutfak rutini i\u00e7in uygun cihazlar\u0131 tek dokunu\u015fla haz\u0131rlar.": "Valmistab sobivad k\u00f6\u00f6giseadmed ette \u00fche puudutusega.", // EN: Prepares suitable kitchen devices with one tap.
+    "Mutfak, Salon, Hol": "K\u00f6\u00f6k, elutuba, esik", // EN: Kitchen, Living Room, Hall
+    "M\u00fckemmel": "Suurep\u00e4rane", // EN: Excellent
+    "M\u00fczik Ba\u015flat": "K\u00e4ivita muusika", // EN: Start Music
+    "M\u00fczik Servisi": "Muusikateenus", // EN: Music Service
+    "NEM": "NIISKUS", // EN: HUMIDITY
+    "NEXUS - AI Koruma": "NEXUS - AI kaitse", // EN: NEXUS - AI Protection
+    "NEXUS - Ak\u0131ll\u0131 Uygulama": "NEXUS - Nutirakendus", // EN: NEXUS - Smart App
+    "NEXUS - Anl\u0131k Bildirimler": "NEXUS - Kohesed teavitused", // EN: NEXUS - Instant Notifications
+    "NEXUS - Asistan": "NEXUS - Assistent", // EN: NEXUS - Assistant
+    "NEXUS - Ayarlar": "NEXUS - Seaded", // EN: NEXUS - Settings
+    "NEXUS - Ayd\u0131nlatma Ustas\u0131": "NEXUS - Valgustusmeister", // EN: NEXUS - Lighting Master
+    "NEXUS - Cihaz": "NEXUS - Seade", // EN: NEXUS - Device
+    "NEXUS - Cihaz Ekle": "NEXUS - Lisa seade", // EN: NEXUS - Add Device
     "NEXUS - Cihaz Ekleme Merkezi": "NEXUS - Seadmete Keskus", // EN: NEXUS - Device Center
     "NEXUS - Cihaz G\u00fcncellemesi": "NEXUS - Seadmete Uuendused", // EN: NEXUS - Device Updates
     "NEXUS - Cihaz Kurulumu": "NEXUS - Seadmete H\u00e4\u00e4lestus", // EN: NEXUS - Device Setup
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "liige", // EN: online
     "\u00fcye": "Ideaalne tase", // EN: member
     "\u0130deal Seviye": "Kaheastmeline kinnitamine", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "Kaheastmeline kinnitus", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "Kahekohalise s\u00f5iduki laadimisjaam", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "Kahekohalise s\u00f5iduki laadimisjaam (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "Kahekordne l\u00fcliti", // EN: Two-gang
@@ -3261,7 +3261,7 @@ window.NEXUS_LANG = {
     " A command was sent over your local network to 1 device.": "K\u00e4sk saadeti teie kohaliku v\u00f5rgu kaudu 1 seadmele.", // EN: A command was sent over your local network to 1 device.
     "\u26a0 The command did not reach {0} \u2014 make sure it is on and connected to the same Wi-Fi network.": "\u26a0 K\u00e4sk ei j\u00f5udnud {0}-ni \u2014 veenduge, et see on sisse l\u00fclitatud ja \u00fchendatud samasse Wi-Fi v\u00f5rku.", // EN: ⚠ The command did not reach {0} — make sure it is on and connected to the same Wi-Fi network.
     "You have {0} devices at home.": "Teil on kodus {0} seadet.", // EN: You have {0} devices at home.
-    "You have {0} device at home.": "", // EN: You have {0} device at home.
+    "You have {0} device at home.": "Sul on kodus {0} seade.", // EN: You have {0} device at home.
     "Right now these are on: {0}.": "Praegu on need sisse l\u00fclitatud: {0}.", // EN: Right now these are on: {0}.
     " and a few more": "ja veel m\u00f5ned", // EN: and a few more
     "Nothing is on right now, the house is quiet.": "Praegu pole midagi sisse l\u00fclitatud, majas on vaikus.", // EN: Nothing is on right now, the house is quiet.

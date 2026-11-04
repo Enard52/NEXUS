@@ -1372,15 +1372,15 @@ window.NEXUS_LANG = {
     "Evde yokken": "\u0a1c\u0a26\u0a4b\u0a02 \u0a26\u0a42\u0a30", // EN: When away
     "Evdeki ayd\u0131nlatma cihazlar\u0131n\u0131 oda bazl\u0131 tek bir ak\u0131\u015f i\u00e7inde y\u00f6net. A\u00e7 kapa, parlakl\u0131k, renk s\u0131cakl\u0131\u011f\u0131 ve h\u0131zl\u0131 sahne k\u0131sayollar\u0131 ayn\u0131 uygulamada toplans\u0131n.": "\u0a07\u0a71\u0a15 \u0a39\u0a40 \u0a2b\u0a32\u0a4b \u0a35\u0a3f\u0a71\u0a1a \u0a06\u0a2a\u0a23\u0a47 \u0a18\u0a30 \u0a26\u0a47 \u0a15\u0a2e\u0a30\u0a47-\u0a15\u0a2e\u0a30\u0a47 \u0a26\u0a40\u0a06\u0a02 \u0a32\u0a3e\u0a08\u0a1f\u0a3e\u0a02 \u0a28\u0a42\u0a70 \u0a2a\u0a4d\u0a30\u0a2c\u0a70\u0a27\u0a3f\u0a24 \u0a15\u0a30\u0a4b\u0964 \u0a1a\u0a3e\u0a32\u0a42/\u0a2c\u0a70\u0a26, \u0a1a\u0a2e\u0a15, \u0a30\u0a70\u0a17 \u0a26\u0a40 \u0a24\u0a3e\u0a2a\u0a2e\u0a3e\u0a28 \u0a05\u0a24\u0a47 \u0a24\u0a47\u0a1c\u0a3c \u0a18\u0a1f\u0a28\u0a3e \u0a38\u0a3c\u0a3e\u0a30\u0a1f\u0a15\u0a1f\u0a38 \u0a07\u0a71\u0a15 \u0a10\u0a2a \u0a35\u0a3f\u0a71\u0a1a.", // EN: Manage the lights in your home room by room in one flow. On/off, brightness, color temperature and quick scene shortcuts in one app.
     "Evdeki cihazlara g\u00f6re haz\u0131r komutlar, h\u0131zl\u0131 otomasyonlar ve ak\u0131ll\u0131 uygulama \u00f6nerileri ver.": "\u0a18\u0a30\u0a47\u0a32\u0a42 \u0a21\u0a3f\u0a35\u0a3e\u0a08\u0a38\u0a3e\u0a02 \u0a26\u0a47 \u0a06\u0a27\u0a3e\u0a30 '\u0a24\u0a47 \u0a24\u0a3f\u0a06\u0a30 \u0a15\u0a2e\u0a3e\u0a02\u0a21\u0a3e\u0a02, \u0a24\u0a47\u0a1c\u0a3c \u0a06\u0a1f\u0a4b\u0a2e\u0a47\u0a38\u0a3c\u0a28 \u0a05\u0a24\u0a47 \u0a38\u0a2e\u0a3e\u0a30\u0a1f \u0a10\u0a2a \u0a38\u0a41\u0a1d\u0a3e\u0a35 \u0a26\u0a3f\u0a13\u0964", // EN: Give ready commands, quick automations and smart app suggestions based on the devices at home.
-    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
+    "Evdeki klima ve termostatlar\u0131 tek panelde y\u00f6neten bir iklim konfor uygulamas\u0131 olu\u015ftur. S\u0131cakl\u0131k ayar\u0131, h\u0131zl\u0131 mod se\u00e7enekleri, eko modu ve oda bazl\u0131 kontrol aksiyonlar\u0131 olsun.": "\u0a07\u0a71\u0a15 \u0a2e\u0a4c\u0a38\u0a2e-\u0a06\u0a30\u0a3e\u0a2e \u0a10\u0a2a \u0a2c\u0a23\u0a3e\u0a13 \u0a1c\u0a4b \u0a18\u0a30 \u0a26\u0a47 \u0a0f\u0a38\u0a40 \u0a05\u0a24\u0a47 \u0a25\u0a30\u0a2e\u0a4b\u0a38\u0a1f\u0a48\u0a1f \u0a07\u0a71\u0a15\u0a4b \u0a2a\u0a48\u0a28\u0a32 \u0a24\u0a4b\u0a02 \u0a38\u0a70\u0a2d\u0a3e\u0a32\u0a47\u0964 \u0a24\u0a3e\u0a2a\u0a2e\u0a3e\u0a28 \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32, \u0a24\u0a47\u0a1c\u0a3c \u0a2e\u0a4b\u0a21, \u0a08\u0a15\u0a4b \u0a2e\u0a4b\u0a21 \u0a05\u0a24\u0a47 \u0a15\u0a2e\u0a30\u0a47 \u0a05\u0a28\u0a41\u0a38\u0a3e\u0a30 \u0a15\u0a3e\u0a30\u0a35\u0a3e\u0a08\u0a06\u0a02 \u0a38\u0a3c\u0a3e\u0a2e\u0a32 \u0a15\u0a30\u0a4b\u0964", // EN: Create a climate comfort app that manages the ACs and thermostats in your home from one panel. Include temperature control, quick modes, eco mode and room-based actions.
     "Evimdeki cihazlar\u0131n durumu nedir?": "\u0a07\u0a71\u0a15 \u0a15\u0a32\u0a3e\u0a08\u0a2e\u0a47\u0a1f \u0a15\u0a2e\u0a2b\u0a30\u0a1f \u0a10\u0a2a \u0a2c\u0a23\u0a3e\u0a13 \u0a1c\u0a4b \u0a24\u0a41\u0a39\u0a3e\u0a21\u0a47 \u0a18\u0a30 \u0a26\u0a40\u0a06\u0a02 \u0a0f\u0a38\u0a40 \u0a05\u0a24\u0a47 \u0a25\u0a30\u0a2e\u0a4b\u0a38\u0a1f\u0a48\u0a1f\u0a3e\u0a02 \u0a28\u0a42\u0a70 \u0a07\u0a71\u0a15 \u0a2a\u0a48\u0a28\u0a32 \u0a24\u0a4b\u0a02 \u0a2e\u0a48\u0a28\u0a47\u0a1c \u0a15\u0a30\u0a47\u0964 \u0a07\u0a38 \u0a35\u0a3f\u0a71\u0a1a \u0a1f\u0a48\u0a2e\u0a2a\u0a30\u0a47\u0a1a\u0a30 \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32, \u0a24\u0a47\u0a1c\u0a3c \u0a2e\u0a4b\u0a21, \u0a07\u0a15\u0a4b \u0a2e\u0a4b\u0a21 \u0a05\u0a24\u0a47 \u0a15\u0a2e\u0a30\u0a47 \u0a05\u0a28\u0a41\u0a38\u0a3e\u0a30 \u0a15\u0a3e\u0a30\u0a35\u0a3e\u0a08\u0a06\u0a02 \u0a38\u0a3c\u0a3e\u0a2e\u0a3f\u0a32 \u0a15\u0a30\u0a4b\u0964", // EN: What is the status of my devices?
-    "Evden Uzakta": "", // EN: Away from Home
+    "Evden Uzakta": "\u0a18\u0a30\u0a4b\u0a02 \u0a2c\u0a3e\u0a39\u0a30", // EN: Away from Home
     "Evden Uzakta Senaryosu": "\u0a2e\u0a47\u0a30\u0a47 \u0a21\u0a3f\u0a35\u0a3e\u0a08\u0a38\u0a3e\u0a02 \u0a26\u0a40 \u0a38\u0a25\u0a3f\u0a24\u0a40 \u0a15\u0a40 \u0a39\u0a48?", // EN: Away from Home Scene
-    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "", // EN: Wraps up energy and security checks when you leave home.
+    "Evden ayr\u0131l\u0131rken enerji ve g\u00fcvenlik kontrollerini toparlar.": "\u0a18\u0a30\u0a4b\u0a02 \u0a28\u0a3f\u0a15\u0a32\u0a23 \u0a35\u0a47\u0a32\u0a47 \u0a0a\u0a30\u0a1c\u0a3e \u0a05\u0a24\u0a47 \u0a38\u0a41\u0a30\u0a71\u0a16\u0a3f\u0a06 \u0a1c\u0a3e\u0a02\u0a1a\u0a3e\u0a02 \u0a28\u0a42\u0a70 \u0a38\u0a2e\u0a47\u0a1f\u0a26\u0a3e \u0a39\u0a48\u0964", // EN: Wraps up energy and security checks when you leave home.
     "Evden uzakta": "\u0a18\u0a30 \u0a24\u0a4b\u0a02 \u0a26\u0a42\u0a30", // EN: Away from home
     "Evden \u00c7\u0131k\u0131\u015f": "\u0a18\u0a30 \u0a24\u0a4b\u0a02 \u0a26\u0a42\u0a30 \u0a38\u0a3f\u0a28\u0a47", // EN: Leaving Home
     "Evden \u00c7\u0131k\u0131\u015f Kontrol\u00fc": "\u0a1c\u0a26\u0a4b\u0a02 \u0a24\u0a41\u0a38\u0a40\u0a02 \u0a18\u0a30 \u0a1b\u0a71\u0a21\u0a26\u0a47 \u0a39\u0a4b \u0a24\u0a3e\u0a02 \u0a07\u0a39 \u0a0a\u0a30\u0a1c\u0a3e \u0a05\u0a24\u0a47 \u0a38\u0a41\u0a30\u0a71\u0a16\u0a3f\u0a06 \u0a1a\u0a48\u0a71\u0a15\u0a3e\u0a02 \u0a28\u0a42\u0a70 \u0a2a\u0a42\u0a30\u0a3e \u0a15\u0a30\u0a26\u0a3e \u0a39\u0a48\u0964", // EN: Leaving Home Check
-    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "", // EN: Leaving Home Scene
+    "Evden \u00c7\u0131k\u0131\u015f Senaryosu": "\u0a18\u0a30\u0a4b\u0a02 \u0a28\u0a3f\u0a15\u0a32\u0a23 \u0a26\u0a3e \u0a38\u0a40\u0a28", // EN: Leaving Home Scene
     "Evden \u00c7\u0131k\u0131\u015f \u00d6zeti": "\u0a18\u0a30 \u0a24\u0a4b\u0a02 \u0a26\u0a42\u0a30", // EN: Leaving Home Summary
     "Evden \u00c7\u0131k\u0131\u015f\u0131 Tamamla": "\u0a18\u0a30 \u0a1b\u0a71\u0a21\u0a23\u0a3e", // EN: Finish Leaving Home
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "\u0a18\u0a30 \u0a1b\u0a71\u0a21\u0a23 \u0a26\u0a40 \u0a1c\u0a3e\u0a02\u0a1a", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
@@ -1398,7 +1398,7 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131k\u0131\u015f": "\u0a2e\u0a48\u0a02 \u0a18\u0a30 \u0a06 \u0a17\u0a3f\u0a06 \u0a39\u0a3e\u0a02", // EN: Leaving home
     "Eve Geldim": "\u0a18\u0a30 \u0a06\u0a13 \u0a24\u0a47 \u0a38\u0a41\u0a06\u0a17\u0a24 \u0a39\u0a48", // EN: I'm Home
     "Eve geldim": "\u0a1c\u0a26\u0a4b\u0a02 \u0a24\u0a41\u0a38\u0a40\u0a02 \u0a18\u0a30 \u0a2a\u0a39\u0a41\u0a70\u0a1a\u0a26\u0a47 \u0a39\u0a4b \u0a1c\u0a3e\u0a02 \u0a1b\u0a71\u0a21\u0a26\u0a47 \u0a39\u0a4b", // EN: Welcome home
-    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "", // EN: When you arrive home or leave
+    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "\u0a1c\u0a26\u0a4b\u0a02 \u0a24\u0a41\u0a38\u0a40\u0a02 \u0a18\u0a30 \u0a2a\u0a39\u0a41\u0a70\u0a1a\u0a4b \u0a1c\u0a3e\u0a02 \u0a28\u0a3f\u0a15\u0a32\u0a4b", // EN: When you arrive home or leave
     "Eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7, klimay\u0131 \u00e7al\u0131\u015ft\u0131r ve garaj kap\u0131s\u0131n\u0131 arac\u0131n\u0131n ekran\u0131ndan kontrol et.": "\u0a2c\u0a71\u0a24\u0a40\u0a06\u0a02 \u0a1a\u0a3e\u0a32\u0a42 \u0a15\u0a30\u0a4b, \u0a0f\u0a38\u0a40 \u0a36\u0a41\u0a30\u0a42 \u0a15\u0a30\u0a4b \u0a05\u0a24\u0a47 \u0a06\u0a2a\u0a23\u0a47 \u0a18\u0a30 \u0a26\u0a47 \u0a2a\u0a39\u0a41\u0a70\u0a1a\u0a26\u0a47 \u0a38\u0a2e\u0a47\u0a02 \u0a06\u0a2a\u0a23\u0a47 \u0a15\u0a3e\u0a30 \u0a38\u0a15\u0a4d\u0a30\u0a40\u0a28 \u0a24\u0a4b\u0a02 \u0a17\u0a48\u0a30\u0a47\u0a1c \u0a26\u0a3e \u0a26\u0a30\u0a35\u0a3e\u0a1c\u0a3c\u0a3e \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32 \u0a15\u0a30\u0a4b\u0964", // EN: Turn on the lights, start the AC and control the garage door from your car's screen as you approach home.
     "Evet, Uygula": "\u0a39\u0a3e\u0a02, \u0a32\u0a3e\u0a17\u0a42 \u0a15\u0a30\u0a4b", // EN: Yes, Apply
     "Evet, \u0130ptal Et": "\u0a39\u0a3e\u0a02, \u0a30\u0a71\u0a26 \u0a15\u0a30\u0a4b", // EN: Yes, Cancel
@@ -1670,29 +1670,29 @@ window.NEXUS_LANG = {
     "Home Assistant Perde": "\u0a39\u0a4b\u0a2e \u0a05\u0a38\u0a3f\u0a38\u0a1f\u0a48\u0a02\u0a1f \u0a2c\u0a32\u0a3e\u0a08\u0a02\u0a21\u0a38", // EN: Home Assistant Blinds
     "Home Assistant Priz / Anahtar": "\u0a39\u0a4b\u0a2e \u0a05\u0a38\u0a3f\u0a38\u0a1f\u0a48\u0a02\u0a1f \u0a2a\u0a32\u0a71\u0a17 / \u0a38\u0a35\u0a3f\u0a71\u0a1a", // EN: Home Assistant Plug / Switch
     "Home Assistant Robot S\u00fcp\u00fcrge": "\u0a39\u0a4b\u0a2e \u0a05\u0a38\u0a3f\u0a38\u0a1f\u0a48\u0a02\u0a1f \u0a30\u0a4b\u0a2c\u0a4b\u0a1f \u0a35\u0a48\u0a15\u0a3f\u0a0a\u0a2e", // EN: Home Assistant Robot Vacuum
-    "Home Assistant ba\u011fland\u0131.": "", // EN: Home Assistant connected.
-    "Home Assistant bulundu": "", // EN: Home Assistant found
-    "Home Assistant'a ba\u011flan\u0131lamad\u0131. Adresin do\u011fru ve ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: Couldn't connect to Home Assistant. Make sure the address is correct and on the same network.
-    "Home Assistant'a ba\u011flan\u0131l\u0131yor\u2026": "", // EN: Connecting to Home Assistant…
-    "Home Assistant'ta NEXUS'un kontrol edebilece\u011fi cihaz bulunamad\u0131.": "", // EN: No devices NEXUS can control were found in Home Assistant.
-    "Home Assistant'ta Profil \u2192 G\u00fcvenlik \u2192 Uzun \u00f6m\u00fcrl\u00fc eri\u015fim jetonlar\u0131 b\u00f6l\u00fcm\u00fcnden bir jeton olu\u015ftur ve buraya yap\u0131\u015ft\u0131r. Jeton yaln\u0131zca bu cihazda saklan\u0131r.": "", // EN: In Home Assistant, go to Profile → Security → Long-lived access tokens, create a token and paste it here. The token is stored only on this device.
-    "HomeKit Bilgileri": "", // EN: HomeKit Info
-    "HomeKit kurulum kodu": "", // EN: HomeKit setup code
-    "HomeKit ve Apple Ev, Apple Inc. tescilli markalar\u0131d\u0131r. Aktar\u0131lan cihazlar hem NEXUS hem Apple Ev uygulamas\u0131ndan kontrol edilebilir.": "", // EN: HomeKit and Apple Home are registered trademarks of Apple Inc. Bridged devices can be controlled from both NEXUS and the Apple Home app.
-    "Hoparl\u00f6r": "", // EN: Speaker
-    "Hoparl\u00f6rlerde m\u00fczik \u00e7al": "", // EN: Play music on speakers
-    "Ho\u015f geldiniz. Eviniz sizi bekliyor.": "", // EN: Welcome. Your home is waiting for you.
-    "Ho\u015f Geldin": "", // EN: Welcome
-    "Ho\u015fgeldin": "", // EN: Welcome
-    "Hue Gradient \u015eerit": "", // EN: Hue Gradient Strip
-    "Hue K\u00f6pr\u00fcs\u00fc": "", // EN: Hue Bridge
-    "Hue White & Color Ampul": "", // EN: Hue White & Color Bulb
-    "Hue k\u00f6pr\u00fcs\u00fc ba\u011fland\u0131.": "", // EN: Hue bridge connected.
-    "Hue k\u00f6pr\u00fcs\u00fc bulundu": "", // EN: Hue bridge found
-    "Hula Hoop \u00c7ember": "", // EN: Hula Hoop
-    "H\u0131rs\u0131z Alarm\u0131": "", // EN: Burglar Alarm
-    "H\u0131rs\u0131z Alarm\u0131 (Bluetooth)": "", // EN: Burglar Alarm (Bluetooth)
-    "H\u0131rs\u0131z Alarm\u0131 (GPRS)": "", // EN: Burglar Alarm (GPRS)
+    "Home Assistant ba\u011fland\u0131.": "Home Assistant \u0a1c\u0a41\u0a5c \u0a17\u0a3f\u0a06\u0964", // EN: Home Assistant connected.
+    "Home Assistant bulundu": "Home Assistant \u0a2e\u0a3f\u0a32\u0a3f\u0a06", // EN: Home Assistant found
+    "Home Assistant'a ba\u011flan\u0131lamad\u0131. Adresin do\u011fru ve ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "Home Assistant \u0a28\u0a3e\u0a32 \u0a1c\u0a41\u0a5c \u0a28\u0a39\u0a40\u0a02 \u0a38\u0a15\u0a3f\u0a06\u0964 \u0a2f\u0a15\u0a40\u0a28\u0a40 \u0a2c\u0a23\u0a3e\u0a13 \u0a15\u0a3f \u0a2a\u0a24\u0a3e \u0a38\u0a39\u0a40 \u0a39\u0a48 \u0a05\u0a24\u0a47 \u0a09\u0a39\u0a40 \u0a28\u0a48\u0a71\u0a1f\u0a35\u0a30\u0a15 \u0a39\u0a48\u0964", // EN: Couldn't connect to Home Assistant. Make sure the address is correct and on the same network.
+    "Home Assistant'a ba\u011flan\u0131l\u0131yor\u2026": "Home Assistant \u0a28\u0a3e\u0a32 \u0a1c\u0a41\u0a5c \u0a30\u0a3f\u0a39\u0a3e \u0a39\u0a48\u2026", // EN: Connecting to Home Assistant…
+    "Home Assistant'ta NEXUS'un kontrol edebilece\u011fi cihaz bulunamad\u0131.": "Home Assistant \u0a35\u0a3f\u0a71\u0a1a NEXUS \u0a26\u0a41\u0a06\u0a30\u0a3e \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32 \u0a15\u0a40\u0a24\u0a47 \u0a1c\u0a3e \u0a38\u0a15\u0a23 \u0a35\u0a3e\u0a32\u0a47 \u0a15\u0a4b\u0a08 \u0a21\u0a3f\u0a35\u0a3e\u0a08\u0a38 \u0a28\u0a39\u0a40\u0a02 \u0a2e\u0a3f\u0a32\u0a47\u0964", // EN: No devices NEXUS can control were found in Home Assistant.
+    "Home Assistant'ta Profil \u2192 G\u00fcvenlik \u2192 Uzun \u00f6m\u00fcrl\u00fc eri\u015fim jetonlar\u0131 b\u00f6l\u00fcm\u00fcnden bir jeton olu\u015ftur ve buraya yap\u0131\u015ft\u0131r. Jeton yaln\u0131zca bu cihazda saklan\u0131r.": "Home Assistant \u0a35\u0a3f\u0a71\u0a1a \u0a2a\u0a4d\u0a30\u0a4b\u0a2b\u0a3c\u0a3e\u0a08\u0a32 \u2192 \u0a38\u0a41\u0a30\u0a71\u0a16\u0a3f\u0a06 \u2192 \u0a32\u0a70\u0a2c\u0a40 \u0a2e\u0a3f\u0a06\u0a26 \u0a35\u0a3e\u0a32\u0a47 \u0a10\u0a15\u0a38\u0a48\u0a38 \u0a1f\u0a4b\u0a15\u0a28 '\u0a24\u0a47 \u0a1c\u0a3e\u0a13, \u0a07\u0a71\u0a15 \u0a1f\u0a4b\u0a15\u0a28 \u0a2c\u0a23\u0a3e\u0a13 \u0a05\u0a24\u0a47 \u0a07\u0a71\u0a25\u0a47 \u0a2a\u0a47\u0a38\u0a1f \u0a15\u0a30\u0a4b\u0964 \u0a1f\u0a4b\u0a15\u0a28 \u0a38\u0a3f\u0a30\u0a2b\u0a3c \u0a07\u0a38 \u0a21\u0a3f\u0a35\u0a3e\u0a08\u0a38 '\u0a24\u0a47 \u0a38\u0a1f\u0a4b\u0a30 \u0a39\u0a41\u0a70\u0a26\u0a3e \u0a39\u0a48\u0964", // EN: In Home Assistant, go to Profile → Security → Long-lived access tokens, create a token and paste it here. The token is stored only on this device.
+    "HomeKit Bilgileri": "HomeKit \u0a1c\u0a3e\u0a23\u0a15\u0a3e\u0a30\u0a40", // EN: HomeKit Info
+    "HomeKit kurulum kodu": "HomeKit \u0a38\u0a48\u0a71\u0a1f\u0a05\u0a71\u0a2a \u0a15\u0a4b\u0a21", // EN: HomeKit setup code
+    "HomeKit ve Apple Ev, Apple Inc. tescilli markalar\u0131d\u0131r. Aktar\u0131lan cihazlar hem NEXUS hem Apple Ev uygulamas\u0131ndan kontrol edilebilir.": "HomeKit \u0a05\u0a24\u0a47 Apple Home, Apple Inc. \u0a26\u0a47 \u0a30\u0a1c\u0a3f\u0a38\u0a1f\u0a30\u0a21 \u0a1f\u0a4d\u0a30\u0a47\u0a21\u0a2e\u0a3e\u0a30\u0a15 \u0a39\u0a28\u0964 \u0a2c\u0a4d\u0a30\u0a3f\u0a1c \u0a15\u0a40\u0a24\u0a47 \u0a21\u0a3f\u0a35\u0a3e\u0a08\u0a38\u0a3e\u0a02 \u0a28\u0a42\u0a70 NEXUS \u0a05\u0a24\u0a47 Apple Home \u0a10\u0a2a, \u0a26\u0a4b\u0a35\u0a3e\u0a02 \u0a24\u0a4b\u0a02 \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32 \u0a15\u0a40\u0a24\u0a3e \u0a1c\u0a3e \u0a38\u0a15\u0a26\u0a3e \u0a39\u0a48\u0964", // EN: HomeKit and Apple Home are registered trademarks of Apple Inc. Bridged devices can be controlled from both NEXUS and the Apple Home app.
+    "Hoparl\u00f6r": "\u0a38\u0a2a\u0a40\u0a15\u0a30", // EN: Speaker
+    "Hoparl\u00f6rlerde m\u00fczik \u00e7al": "\u0a38\u0a2a\u0a40\u0a15\u0a30\u0a3e\u0a02 '\u0a24\u0a47 \u0a38\u0a70\u0a17\u0a40\u0a24 \u0a1a\u0a32\u0a3e\u0a13", // EN: Play music on speakers
+    "Ho\u015f geldiniz. Eviniz sizi bekliyor.": "\u0a1c\u0a40 \u0a06\u0a07\u0a06\u0a02 \u0a28\u0a42\u0a70\u0964 \u0a24\u0a41\u0a39\u0a3e\u0a21\u0a3e \u0a18\u0a30 \u0a24\u0a41\u0a39\u0a3e\u0a21\u0a40 \u0a09\u0a21\u0a40\u0a15 \u0a15\u0a30 \u0a30\u0a3f\u0a39\u0a3e \u0a39\u0a48\u0964", // EN: Welcome. Your home is waiting for you.
+    "Ho\u015f Geldin": "\u0a1c\u0a40 \u0a06\u0a07\u0a06\u0a02 \u0a28\u0a42\u0a70", // EN: Welcome
+    "Ho\u015fgeldin": "\u0a1c\u0a40 \u0a06\u0a07\u0a06\u0a02 \u0a28\u0a42\u0a70", // EN: Welcome
+    "Hue Gradient \u015eerit": "Hue \u0a17\u0a4d\u0a30\u0a47\u0a21\u0a40\u0a10\u0a02\u0a1f \u0a38\u0a1f\u0a4d\u0a30\u0a3f\u0a2a", // EN: Hue Gradient Strip
+    "Hue K\u00f6pr\u00fcs\u00fc": "Hue \u0a2c\u0a4d\u0a30\u0a3f\u0a1c", // EN: Hue Bridge
+    "Hue White & Color Ampul": "Hue White & Color \u0a2c\u0a32\u0a2c", // EN: Hue White & Color Bulb
+    "Hue k\u00f6pr\u00fcs\u00fc ba\u011fland\u0131.": "Hue \u0a2c\u0a4d\u0a30\u0a3f\u0a1c \u0a1c\u0a41\u0a5c \u0a17\u0a3f\u0a06\u0964", // EN: Hue bridge connected.
+    "Hue k\u00f6pr\u00fcs\u00fc bulundu": "Hue \u0a2c\u0a4d\u0a30\u0a3f\u0a1c \u0a2e\u0a3f\u0a32\u0a3f\u0a06", // EN: Hue bridge found
+    "Hula Hoop \u00c7ember": "\u0a39\u0a42\u0a32\u0a3e \u0a39\u0a42\u0a2a", // EN: Hula Hoop
+    "H\u0131rs\u0131z Alarm\u0131": "\u0a1a\u0a4b\u0a30 \u0a05\u0a32\u0a3e\u0a30\u0a2e", // EN: Burglar Alarm
+    "H\u0131rs\u0131z Alarm\u0131 (Bluetooth)": "\u0a1a\u0a4b\u0a30 \u0a05\u0a32\u0a3e\u0a30\u0a2e (Bluetooth)", // EN: Burglar Alarm (Bluetooth)
+    "H\u0131rs\u0131z Alarm\u0131 (GPRS)": "\u0a1a\u0a4b\u0a30 \u0a05\u0a32\u0a3e\u0a30\u0a2e (GPRS)", // EN: Burglar Alarm (GPRS)
     "H\u0131zl\u0131 Aksiyonlar": "\u0a24\u0a41\u0a30\u0a70\u0a24 \u0a15\u0a3e\u0a30\u0a35\u0a3e\u0a08\u0a06\u0a02", // EN: Quick Actions
     "H\u0131zl\u0131 G\u00fcvenlik": "\u0a24\u0a41\u0a30\u0a70\u0a24 \u0a38\u0a41\u0a30\u0a71\u0a16\u0a3f\u0a06", // EN: Quick Security
     "H\u0131zl\u0131 Kapatma": "\u0a24\u0a41\u0a30\u0a70\u0a24 \u0a2c\u0a70\u0a26 \u0a15\u0a30\u0a4b", // EN: Quick Shut-off
@@ -2284,7 +2284,7 @@ window.NEXUS_LANG = {
     "Senaryoyu Ba\u015flat": "\u0a38\u0a40\u0a28 \u0a38\u0a41\u0a30\u0a71\u0a16\u0a3f\u0a05\u0a24 \u0a15\u0a30\u0a4b", // EN: Start Scene
     "Senaryoyu Kaydet": "\u0a38\u0a40\u0a28 \u0a2e\u0a3f\u0a1f\u0a3e\u0a13", // EN: Save Scene
     "Senaryoyu Sil": "\u0a38\u0a40\u0a28 \u0a1a\u0a32\u0a3e\u0a13", // EN: Delete Scene
-    "Senaryoyu \u00c7al\u0131\u015ft\u0131r": "", // EN: Run Scene
+    "Senaryoyu \u00c7al\u0131\u015ft\u0131r": "\u0a38\u0a40\u0a28 \u0a1a\u0a32\u0a3e\u0a13", // EN: Run Scene
     "Sens\u00f6r": "\u0a38\u0a48\u0a02\u0a38\u0a30", // EN: Sensor
     "Sens\u00f6r veya cihaz verisi olmadan sa\u011fl\u0131k skoru \u00fcretmiyoruz.": "\u0a05\u0a38\u0a40\u0a02 \u0a38\u0a48\u0a02\u0a38\u0a30 \u0a1c\u0a3e\u0a02 \u0a21\u0a3f\u0a35\u0a3e\u0a08\u0a38 \u0a21\u0a3e\u0a1f\u0a3e \u0a2c\u0a3f\u0a28\u0a3e\u0a02 \u0a38\u0a3f\u0a39\u0a24 \u0a38\u0a15\u0a4b\u0a30 \u0a28\u0a39\u0a40\u0a02 \u0a2c\u0a23\u0a3e\u0a09\u0a02\u0a26\u0a47\u0964", // EN: We don't produce a health score without sensor or device data.
     "Sens\u00f6rler bir tehlike alg\u0131lad\u0131\u011f\u0131nda": "\u0a1c\u0a26\u0a4b\u0a02 \u0a38\u0a48\u0a02\u0a38\u0a30 \u0a16\u0a3c\u0a24\u0a30\u0a3e \u0a2a\u0a24\u0a3e \u0a32\u0a17\u0a3e\u0a09\u0a02\u0a26\u0a47 \u0a39\u0a28", // EN: When sensors detect a hazard
@@ -2355,7 +2355,7 @@ window.NEXUS_LANG = {
     "Su Is\u0131t\u0131c\u0131s\u0131": "\u0a2a\u0a3e\u0a23\u0a40 \u0a39\u0a40\u0a1f\u0a30 (\u0a1f\u0a48\u0a02\u0a15 \u0a15\u0a3f\u0a38\u0a2e)", // EN: Water Heater
     "Su Is\u0131t\u0131c\u0131s\u0131 (Kazan Tipi)": "\u0a2a\u0a3e\u0a23\u0a40 \u0a2e\u0a40\u0a1f\u0a30", // EN: Water Heater (Tank Type)
     "Su Saya\u00e7lar\u0131": "\u0a2a\u0a3e\u0a23\u0a40 \u0a35\u0a3e\u0a32\u0a35 \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32\u0a30", // EN: Water Meters
-    "Su Vanas\u0131 Kumandas\u0131": "", // EN: Water Valve Controller
+    "Su Vanas\u0131 Kumandas\u0131": "\u0a2a\u0a3e\u0a23\u0a40 \u0a35\u0a3e\u0a32\u0a35 \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32\u0a30", // EN: Water Valve Controller
     "Su Vanas\u0131 Kumandas\u0131 (Gateway)": "\u0a2a\u0a3e\u0a23\u0a40 \u0a35\u0a3e\u0a32\u0a35 \u0a15\u0a70\u0a1f\u0a30\u0a4b\u0a32\u0a30 (\u0a17\u0a47\u0a1f\u0a35\u0a47)", // EN: Water Valve Controller (Gateway)
     "Sulama Fiskiyesi": "\u0a38\u0a2a\u0a4d\u0a30\u0a3f\u0a70\u0a15\u0a32\u0a30", // EN: Sprinkler
     "Sulama program\u0131": "\u0a2a\u0a3e\u0a23\u0a40 \u0a2a\u0a3e\u0a23\u0a47 \u0a26\u0a3e \u0a38\u0a2e\u0a3e\u0a02-\u0a38\u0a42\u0a1a\u0a40", // EN: Watering schedule
@@ -2902,7 +2902,7 @@ window.NEXUS_LANG = {
     "\u00e7evrimi\u00e7i": "\u0a2e\u0a47\u0a2c\u0a30", // EN: online
     "\u00fcye": "\u0a06\u0a08\u0a21\u0a40\u0a05\u0a32 \u0a32\u0a48\u0a35\u0a32", // EN: member
     "\u0130deal Seviye": "\u0a26\u0a4b-\u0a15\u0a26\u0a2e\u0a40 \u0a2a\u0a41\u0a38\u0a3c\u0a1f\u0a40\u0a15\u0a30\u0a28", // EN: Ideal Level
-    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "", // EN: Two-Step Verification
+    "\u0130ki Ad\u0131ml\u0131 Do\u011frulama": "\u0a26\u0a4b-\u0a2a\u0a5c\u0a3e\u0a05 \u0a2a\u0a41\u0a38\u0a3c\u0a1f\u0a40\u0a15\u0a30\u0a28", // EN: Two-Step Verification
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu": "\u0a26\u0a41\u0a07-\u0a2a\u0a39\u0a40\u0a06 \u0a1a\u0a3e\u0a30\u0a1c\u0a3f\u0a70\u0a17 \u0a38\u0a1f\u0a47\u0a38\u0a3c\u0a28", // EN: Two-Wheeler Charging Station
     "\u0130ki Tekerlekli Ara\u00e7 \u015earj \u0130stasyonu (4G)": "\u0a26\u0a41\u0a07-\u0a2a\u0a39\u0a40\u0a06 \u0a1a\u0a3e\u0a30\u0a1c\u0a3f\u0a70\u0a17 \u0a38\u0a1f\u0a47\u0a38\u0a3c\u0a28 (4G)", // EN: Two-Wheeler Charging Station (4G)
     "\u0130kili": "\u0a26\u0a4b-\u0a17\u0a48\u0a02\u0a17", // EN: Two-gang

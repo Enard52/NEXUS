@@ -509,13 +509,13 @@ window.NEXUS_LANG = {
     "\u00b7 Etkin (konum tetiklemesi yak\u0131nda)": "\u00b7 Aktiv (nxitja e vendndodhjes s\u00eb ardhshme)", // EN: · Active (location trigger coming soon)
     "Bu strateji zamanlamayla \u00e7al\u0131\u015f\u0131r: uygulama a\u00e7\u0131kken (masa\u00fcst\u00fcnde tepsideyken) her gece 23:00'te se\u00e7ili enerji cihazlar\u0131n\u0131n g\u00fcc\u00fcn\u00fc keser.": "Kjo strategji funksionon sipas nj\u00eb orari: nd\u00ebrsa aplikacioni \u00ebsht\u00eb i hapur (n\u00eb tray n\u00eb desktop), ai ndalon furnizimin me energji p\u00ebr pajisjet e zgjedhura t\u00eb energjis\u00eb \u00e7do nat\u00eb n\u00eb 23:00.", // EN: This strategy runs on a schedule: while the app is open (in the tray on desktop), it cuts power to the selected energy devices nightly at 23:00.
     "Bu strateji konum tetiklemesine dayan\u0131r; otomatik konum tetiklemesi hen\u00fcz yok. Etkinle\u015ftirdi\u011finde kaydedilir ama kendili\u011finden \u00e7al\u0131\u015fmaz.": "Kjo strategji bazohet n\u00eb nxit\u00ebsit e vendndodhjes; nxitja automatike e vendndodhjes nuk \u00ebsht\u00eb n\u00eb dispozicion ende. Aktivizimi e ruan at\u00eb, por nuk do t\u00eb funksionoj\u00eb vet\u00eb. Ky tip nxit\u00ebsi nuk funksionon automatikisht ende; sapo t\u00eb ruhet, ai funksionon n\u00eb koh\u00ebn q\u00eb zgjedh m\u00eb posht\u00eb (e planifikuar). Nuk mund t\u00eb vendoset nj\u00eb nxit\u00ebs n\u00eb modalitet sigurie: aplikacioni nuk ka ende gjendje t\u00eb lexueshme t\u00eb panelit t\u00eb alarmit ose nd\u00ebrprer\u00ebs t\u00eb modalitetit n\u00eb nivel NEXUS. Llojet q\u00eb funksionojn\u00eb: Koha, Mot, Gjendja e Pajisjes dhe Alarm i Shkaktuar (sensor). Ky tip nxit\u00ebsi nuk mb\u00ebshtetet ende, k\u00ebshtu q\u00eb nuk mund t\u00eb ruhet. Llojet q\u00eb funksionojn\u00eb: Koha, Mot, Gjendja e Pajisjes dhe Alarm i Shkaktuar (sensor). Kusht i motit. T\u00eb dh\u00ebna t\u00eb motit real p\u00ebr vendndodhjen tuaj t\u00eb sht\u00ebpis\u00eb lexohet rreth \u00e7do 10 minuta nd\u00ebrsa aplikacioni \u00ebsht\u00eb i hapur. Skenari funksionon nj\u00eb her\u00eb kur kushti kalon nga i paplot\u00ebsuar n\u00eb i plot\u00ebsuar. Temperatura (\u00b0C) Er\u00eb (km/h)", // EN: This strategy relies on location triggers; automatic location triggering isn't available yet. Enabling saves it, but it won't run on its own.
-    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz otomatik \u00e7al\u0131\u015fm\u0131yor; kaydetti\u011finde a\u015fa\u011f\u0131da se\u00e7ti\u011fin saatte (zamanlamayla) \u00e7al\u0131\u015f\u0131r.": "", // EN: This trigger type doesn't run automatically yet; once saved, it runs at the time you pick below (scheduled).
-    "G\u00fcvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen ger\u00e7ek bir alarm paneli durumu veya NEXUS d\u00fczeyinde bir mod anahtar\u0131 hen\u00fcz yok. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: A security-mode trigger can't be set up: the app has no readable alarm-panel state or NEXUS-level mode switch yet. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
-    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "", // EN: This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
-    "Hava Ko\u015fulu": "", // EN: Weather Condition
-    "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
-    "S\u0131cakl\u0131k (\u00b0C)": "", // EN: Temperature (°C)
-    "R\u00fczg\u00e2r (km/sa)": "", // EN: Wind (km/h)
+    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz otomatik \u00e7al\u0131\u015fm\u0131yor; kaydetti\u011finde a\u015fa\u011f\u0131da se\u00e7ti\u011fin saatte (zamanlamayla) \u00e7al\u0131\u015f\u0131r.": "Ky lloj nxit\u00ebsi nuk funksionon ende automatikisht; pasi ta ruash, ai ekzekutohet n\u00eb orarin q\u00eb zgjedh m\u00eb posht\u00eb (i planifikuar).", // EN: This trigger type doesn't run automatically yet; once saved, it runs at the time you pick below (scheduled).
+    "G\u00fcvenlik modu tetikleyicisi kurulamaz: uygulamada okunabilen ger\u00e7ek bir alarm paneli durumu veya NEXUS d\u00fczeyinde bir mod anahtar\u0131 hen\u00fcz yok. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Nxit\u00ebsi i modalitetit t\u00eb siguris\u00eb nuk mund t\u00eb vendoset: aplikacioni nuk ka ende gjendje t\u00eb lexueshme t\u00eb panelit t\u00eb alarmit apo \u00e7el\u00ebs modaliteti n\u00eb nivel NEXUS. Llojet q\u00eb funksionojn\u00eb: Koh\u00ebmat\u00ebsi, Moti, Gjendja e pajisjes dhe Alarmi i aktivizuar (sensor).", // EN: A security-mode trigger can't be set up: the app has no readable alarm-panel state or NEXUS-level mode switch yet. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
+    "Bu tetikleyici t\u00fcr\u00fc hen\u00fcz desteklenmiyor, bu y\u00fczden kaydedilemez. \u00c7al\u0131\u015fan t\u00fcrler: Zamanlay\u0131c\u0131, Hava Durumu, Cihaz Durumu ve Alarm Tetiklendi\u011finde (sens\u00f6r).": "Ky lloj nxit\u00ebsi nuk mb\u00ebshtetet ende, prandaj nuk mund t\u00eb ruhet. Llojet q\u00eb funksionojn\u00eb: Koh\u00ebmat\u00ebsi, Moti, Gjendja e pajisjes dhe Alarmi i aktivizuar (sensor).", // EN: This trigger type isn't supported yet, so it can't be saved. Working types: Timer, Weather, Device State and Alarm Triggered (sensor).
+    "Hava Ko\u015fulu": "Kushti i motit", // EN: Weather Condition
+    "Ev konumunun ger\u00e7ek hava verisi uygulama a\u00e7\u0131kken yakla\u015f\u0131k 10 dk'da bir okunur. Ko\u015ful sa\u011flanm\u0131yorken sa\u011flan\u0131r hale geldi\u011finde senaryo bir kez \u00e7al\u0131\u015f\u0131r.": "T\u00eb dh\u00ebnat reale t\u00eb motit p\u00ebr vendndodhjen e sht\u00ebpis\u00eb lexohen af\u00ebrsisht \u00e7do 10 minuta nd\u00ebrsa aplikacioni \u00ebsht\u00eb i hapur. Skenari ekzekutohet nj\u00eb her\u00eb kur kushti kalon nga i paplot\u00ebsuar n\u00eb t\u00eb plot\u00ebsuar.", // EN: Real weather data for your home location is read about every 10 minutes while the app is open. The scenario runs once when the condition goes from not met to met.
+    "S\u0131cakl\u0131k (\u00b0C)": "Temperatura (\u00b0C)", // EN: Temperature (°C)
+    "R\u00fczg\u00e2r (km/sa)": "Era (km/h)", // EN: Wind (km/h)
     "Ya\u011f\u0131\u015f (mm)": "Shrirje (mm)", // EN: Precipitation (mm)
     "\u00dcst\u00fcne \u00e7\u0131k\u0131nca": "Ngrihet mbi", // EN: Rises above
     "Alt\u0131na inince": "Bie posht\u00eb", // EN: Falls below
@@ -530,15 +530,15 @@ window.NEXUS_LANG = {
     "Zamanlamal\u0131 otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Automatizimet e planifikuara ekzekutohen nd\u00ebrsa aplikacioni \u00ebsht\u00eb i hapur; n\u00eb desktop ato vazhdojn\u00eb t\u00eb ekzekutohen nd\u00ebrsa aplikacioni q\u00ebndron n\u00eb tray.", // EN: Scheduled automations run while the app is open; on desktop they keep running while the app stays in the tray.
     "Otomasyonlar uygulama a\u00e7\u0131kken \u00e7al\u0131\u015f\u0131r; masa\u00fcst\u00fc uygulamas\u0131 tepsideyken de zamanlamalar devam eder.": "Automatizimet ekzekutohen nd\u00ebrsa aplikacioni \u00ebsht\u00eb i hapur; n\u00eb desktop, skedulat vazhdojn\u00eb nd\u00ebrsa aplikacioni q\u00ebndron n\u00eb tray.\\nEnde nuk \u00ebsht\u00eb ekzekutuar", // EN: Automations run while the app is open; on desktop, schedules continue while the app stays in the tray.
     "Hen\u00fcz \u00e7al\u0131\u015fmad\u0131": "(e humbur)", // EN: Not run yet
-    "(ka\u00e7\u0131r\u0131ld\u0131)": "", // EN: (missed)
-    "{0} cihaz g\u00fcncellendi.": "", // EN: {0} device(s) updated.
-    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
-    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "", // EN: power cut to {0} device(s).
+    "(ka\u00e7\u0131r\u0131ld\u0131)": "(e humbur)", // EN: (missed)
+    "{0} cihaz g\u00fcncellendi.": "{0} pajisje u p\u00ebrdit\u00ebsuan.", // EN: {0} device(s) updated.
+    "tetiklendi; tan\u0131ml\u0131 eylem yok (Senaryo Ayarlar\u0131'ndan bir senaryo se\u00e7ebilirsin).": "u aktivizua; nuk ka veprim t\u00eb p\u00ebrcaktuar (zgjidh nj\u00eb skenar te Cil\u00ebsimet e skenarit).", // EN: triggered; no action defined (pick a scenario from Scenario Settings).
+    "{0} cihaz\u0131n g\u00fcc\u00fc kesildi.": "energjia u nd\u00ebrpre p\u00ebr {0} pajisje.", // EN: power cut to {0} device(s).
     "Gece stratejisi tetiklendi; se\u00e7ili enerji cihaz\u0131 yok.": "Strategjia e energjis\u00eb u ekzekutua", // EN: Night strategy triggered; no selected energy devices.
     "Enerji stratejisi \u00e7al\u0131\u015ft\u0131": "Shkakuesi i per\u00ebndimit t\u00eb diellit: asnj\u00eb vendbanim sht\u00ebpie i vendosur.", // EN: Energy strategy ran
     "G\u00fcn bat\u0131m\u0131 tetikleyicisi: ev konumu se\u00e7ilmedi.": "Koha e shkakut humbi (aplikacioni ishte i mbyllur).", // EN: Sunset trigger: no home location set.
     "Tetikleme saati ka\u00e7\u0131r\u0131ld\u0131 (uygulama kapal\u0131yd\u0131).": "Kamerat", // EN: Trigger time missed (the app was closed).
-    "Kameralar": "", // EN: Cameras
+    "Kameralar": "Kamerat", // EN: Cameras
     "Kamera Cihazlar\u0131m": "Kamerat e Mia", // EN: My Cameras
     "Kamera ekleyince durumunu ve gizlilik ayar\u0131n\u0131 buradan izlersin. Video ak\u0131\u015f\u0131 (RTSP) deste\u011fi yak\u0131nda.": "Shtoni nj\u00eb kamer\u00eb p\u00ebr t\u00eb monitoruar statusin dhe cil\u00ebsimet e privat\u00ebsis\u00eb k\u00ebtu. Mb\u00ebshtetja p\u00ebr transmetim video (RTSP) vjen s\u00eb shpejti.", // EN: Add a camera to monitor its status and privacy setting here. Video streaming (RTSP) support is coming soon.
     "Kamera Ekle": "Shtoni Kamer\u00eb", // EN: Add Camera
@@ -1099,27 +1099,27 @@ window.NEXUS_LANG = {
     "Bu ortamda g\u00fcvenli \u015fifreleme yok": "Asnj\u00eb enkriptim i sigurt n\u00eb k\u00ebt\u00eb mjedis.", // EN: No secure encryption in this environment
     "Bu senaryo aktifle\u015fti\u011finde ilgili cihazlar otomatik olarak ayarlan\u0131r.": "Kur kjo skenar t\u00eb funksionoj\u00eb, pajisjet p\u00ebrkat\u00ebse rregullohen automatikisht.", // EN: When this scenario runs, the related devices are adjusted automatically.
     "Bu senaryodan etkilenen cihaz yok \u2014 \u00f6nce uygun cihaz ekle.": "Asnj\u00eb pajisje nuk \u00ebsht\u00eb e prekur nga ky skenar \u2014 shtoni s\u00eb pari nj\u00eb pajisje t\u00eb p\u00ebrshtatshme. Ju duhet t\u00eb shtoni nj\u00eb pajisje t\u00eb p\u00ebrputhshme p\u00ebr t\u00eb p\u00ebrdorur k\u00ebt\u00eb skenar. Kjo \u00ebsht\u00eb e vetmja juaj sht\u00ebpi. N\u00ebse e fshini, nj\u00eb 'Sht\u00ebpia Ime' e zbraz\u00ebt do t\u00eb krijohet p\u00ebrs\u00ebri. T\u00eb vazhdojm\u00eb? Sot Energjia e sotme Ora e sotme Furr\u00eb me avull Lavapjatash Korniz\u00eb fotografie n\u00eb re Nuk mund t\u00eb arrihej llogaria n\u00eb re. Kontrolloni lidhjen tuaj n\u00eb internet. Nuk mund t\u00eb arrihej reja. Kontrolloni lidhjen tuaj n\u00eb internet. Nuk mund ta zgjidhja plot\u00ebsisht at\u00eb. D\u00ebrgoni ekipit ton\u00eb reagimin tuaj me formularin m\u00eb posht\u00eb dhe ne do t'ju kthehemi sa m\u00eb shpejt t\u00eb mundemi, ose vazhdoni me 'Hap bised\u00ebn e plot\u00eb'. Funksionon kur shtypet butoni Prodhuesi i akullit Pajisje t\u00eb m\u00ebdha Detektor CO Robot pastrimi dritareje Video live hapet k\u00ebtu P\u00ebrcaktoni s\u00eb pari nj\u00eb kamer\u00eb p\u00ebr t\u00eb treguar videon live. Shtoni nj\u00eb kamer\u00eb p\u00ebr pamje live. Pamje paraprake live NEXUS n\u00eb CarPlay", // EN: No devices are affected by this scenario — add a suitable device first.
-    "Bu senaryoyu kullanmak i\u00e7in uyumlu cihaz eklemelisin.": "", // EN: You need to add a compatible device to use this scenario.
-    "Bu tek evin. Silersen bo\u015f bir \"Evim\" yeniden olu\u015fturulur. Devam edilsin mi?": "", // EN: This is your only home. If you delete it, an empty "My Home" will be created again. Continue?
-    "Bug\u00fcn": "", // EN: Today
-    "Bug\u00fcnk\u00fc Enerji": "", // EN: Today's Energy
-    "Bug\u00fcnk\u00fc Program": "", // EN: Today's Schedule
-    "Buharl\u0131 F\u0131r\u0131n": "", // EN: Steam Oven
-    "Bula\u015f\u0131k Makinesi": "", // EN: Dishwasher
-    "Bulut Foto\u011fraf \u00c7er\u00e7evesi": "", // EN: Cloud Photo Frame
-    "Bulut hesab\u0131na ula\u015f\u0131lamad\u0131. \u0130nternet ba\u011flant\u0131n\u0131 kontrol et.": "", // EN: Couldn't reach the cloud account. Check your internet connection.
-    "Buluta ula\u015f\u0131lamad\u0131. \u0130nternet ba\u011flant\u0131n\u0131 kontrol et.": "", // EN: Couldn't reach the cloud. Check your internet connection.
-    "Bunu tam \u00e7\u00f6zemedim. A\u015fa\u011f\u0131daki formdan ekibimize geri bildirim g\u00f6nderirsen en k\u0131sa s\u00fcrede d\u00f6n\u00fc\u015f yapal\u0131m; ya da \"Tam sohbeti a\u00e7\" ile devam edebilirsin.": "", // EN: I couldn't fully solve that. Send our team feedback with the form below and we'll get back to you as soon as we can, or continue with "Open full chat".
-    "Butona bas\u0131ld\u0131\u011f\u0131nda \u00e7al\u0131\u015f\u0131r": "", // EN: Runs when the button is pressed
-    "Buz Makinesi": "", // EN: Ice Maker
-    "B\u00fcy\u00fck Ev Aletleri": "", // EN: Large Appliances
-    "CO Dedekt\u00f6r\u00fc": "", // EN: CO Detector
-    "Cam Temizlik Robotu": "", // EN: Window Cleaning Robot
-    "Canl\u0131 g\u00f6r\u00fcnt\u00fc burada a\u00e7\u0131l\u0131r": "", // EN: Live video opens here
-    "Canl\u0131 g\u00f6r\u00fcnt\u00fc g\u00f6stermek i\u00e7in \u00f6nce kamera e\u015fle\u015ftir.": "", // EN: Pair a camera first to show live video.
-    "Canl\u0131 g\u00f6r\u00fcnt\u00fc i\u00e7in kamera ekle.": "", // EN: Add a camera for live view.
-    "Canl\u0131 \u00d6nizleme": "", // EN: Live Preview
-    "CarPlay'de NEXUS": "", // EN: NEXUS on CarPlay
+    "Bu senaryoyu kullanmak i\u00e7in uyumlu cihaz eklemelisin.": "Duhet t\u00eb shtosh nj\u00eb pajisje t\u00eb p\u00ebrputhshme p\u00ebr ta p\u00ebrdorur k\u00ebt\u00eb skenar.", // EN: You need to add a compatible device to use this scenario.
+    "Bu tek evin. Silersen bo\u015f bir \"Evim\" yeniden olu\u015fturulur. Devam edilsin mi?": "Kjo \u00ebsht\u00eb e vetmja sht\u00ebpi q\u00eb ke. N\u00ebse e fshin, do t\u00eb krijohet p\u00ebrs\u00ebri nj\u00eb \"Sht\u00ebpia ime\" bosh. T\u00eb vazhdohet?", // EN: This is your only home. If you delete it, an empty "My Home" will be created again. Continue?
+    "Bug\u00fcn": "Sot", // EN: Today
+    "Bug\u00fcnk\u00fc Enerji": "Energjia e sotme", // EN: Today's Energy
+    "Bug\u00fcnk\u00fc Program": "Orari i sot\u00ebm", // EN: Today's Schedule
+    "Buharl\u0131 F\u0131r\u0131n": "Furr\u00eb me avull", // EN: Steam Oven
+    "Bula\u015f\u0131k Makinesi": "Makin\u00eb lar\u00ebse e en\u00ebve", // EN: Dishwasher
+    "Bulut Foto\u011fraf \u00c7er\u00e7evesi": "Korniz\u00eb fotosh n\u00eb cloud", // EN: Cloud Photo Frame
+    "Bulut hesab\u0131na ula\u015f\u0131lamad\u0131. \u0130nternet ba\u011flant\u0131n\u0131 kontrol et.": "Nuk u arrit llogaria cloud. Kontrollo lidhjen e internetit.", // EN: Couldn't reach the cloud account. Check your internet connection.
+    "Buluta ula\u015f\u0131lamad\u0131. \u0130nternet ba\u011flant\u0131n\u0131 kontrol et.": "Nuk u arrit cloud-i. Kontrollo lidhjen e internetit.", // EN: Couldn't reach the cloud. Check your internet connection.
+    "Bunu tam \u00e7\u00f6zemedim. A\u015fa\u011f\u0131daki formdan ekibimize geri bildirim g\u00f6nderirsen en k\u0131sa s\u00fcrede d\u00f6n\u00fc\u015f yapal\u0131m; ya da \"Tam sohbeti a\u00e7\" ile devam edebilirsin.": "Nuk arrita ta zgjidh plot\u00ebsisht. D\u00ebrgoji ekipit ton\u00eb komente me formularin m\u00eb posht\u00eb dhe do t\u00eb t\u00eb p\u00ebrgjigjemi sa m\u00eb shpejt, ose vazhdo me \"Hap bised\u00ebn e plot\u00eb\".", // EN: I couldn't fully solve that. Send our team feedback with the form below and we'll get back to you as soon as we can, or continue with "Open full chat".
+    "Butona bas\u0131ld\u0131\u011f\u0131nda \u00e7al\u0131\u015f\u0131r": "Ekzekutohet kur shtypet butoni", // EN: Runs when the button is pressed
+    "Buz Makinesi": "Makin\u00eb akulli", // EN: Ice Maker
+    "B\u00fcy\u00fck Ev Aletleri": "Pajisje t\u00eb m\u00ebdha sht\u00ebpiake", // EN: Large Appliances
+    "CO Dedekt\u00f6r\u00fc": "Detektor CO", // EN: CO Detector
+    "Cam Temizlik Robotu": "Robot pastrimi dritaresh", // EN: Window Cleaning Robot
+    "Canl\u0131 g\u00f6r\u00fcnt\u00fc burada a\u00e7\u0131l\u0131r": "Videoja live hapet k\u00ebtu", // EN: Live video opens here
+    "Canl\u0131 g\u00f6r\u00fcnt\u00fc g\u00f6stermek i\u00e7in \u00f6nce kamera e\u015fle\u015ftir.": "\u00c7ifto fillimisht nj\u00eb kamer\u00eb p\u00ebr t\u00eb shfaqur videon live.", // EN: Pair a camera first to show live video.
+    "Canl\u0131 g\u00f6r\u00fcnt\u00fc i\u00e7in kamera ekle.": "Shto nj\u00eb kamer\u00eb p\u00ebr pamjen live.", // EN: Add a camera for live view.
+    "Canl\u0131 \u00d6nizleme": "Pamje paraprake live", // EN: Live Preview
+    "CarPlay'de NEXUS": "NEXUS n\u00eb CarPlay", // EN: NEXUS on CarPlay
     "Cevab\u0131n\u0131 bulamad\u0131n m\u0131?": "Nuk e gjet\u00ebt p\u00ebrgjigjen tuaj?", // EN: Didn't find your answer?
     "Cihaz": "Pajisja", // EN: Device
     "Cihaz Aran\u0131yor...": "Duke k\u00ebrkuar p\u00ebr Pajisje...", // EN: Searching for Devices...
@@ -1179,16 +1179,16 @@ window.NEXUS_LANG = {
     "Yeniden Ba\u015flat ve Y\u00fckle": "Rifillo dhe Instalo", // EN: Restart and Install
     "Cihazlar\u0131n durumu de\u011fi\u015fti\u011finde di\u011fer senaryolar\u0131 otomatik olarak tetikleyin.": "Shtyt automatikisht skenar\u00eb t\u00eb tjer\u00eb kur statusi i pajisjeve tuaja ndryshon.", // EN: Trigger other scenarios automatically when your devices' status changes.
     "Cihazlar\u0131na dair i\u00e7g\u00f6r\u00fcler edin, stratejilerle otomatik tasarruf et.": "Merrni t\u00eb dh\u00ebna p\u00ebr pajisjet tuaja dhe kurseni automatikisht me strategji. Ju mund t\u00eb shtoni pajisjet tuaja me skanim automatik, kod QR, kod konfigurimi ose katalog manual. Merrni t\u00eb dh\u00ebna p\u00ebr pajisjet tuaja dhe k\u00ebshilla p\u00ebr energjin\u00eb. Verifikoni Pajisjen Zgjidhni Pajisjen Hiq pajisjen Pse pajisja ime shfaqet si joaktive? Shkruani adres\u00ebn IP t\u00eb pajisjes dhe NEXUS p\u00ebrcakton se cilin protokoll p\u00ebrdor. Kontrolloni lidhjen Wi-Fi t\u00eb pajisjes dhe ruterin tuaj. N\u00ebse problemi vazhdon, hiqni pajisjen dhe shtojeni p\u00ebrs\u00ebri. Hapat: Pajisjet > zgjidhni pajisjen > Hiq. Kontrolloni lidhjen Wi-Fi t\u00eb pajisjes dhe ruterin tuaj. N\u00ebse problemi vazhdon, hiqni pajisjen nga aplikacioni NEXUS dhe shtojeni p\u00ebrs\u00ebri. N\u00ebse pajisja juaj nuk shfaqet, p\u00ebrdorni skanimin QR ose nj\u00eb kod konfigurimi. Mund t\u00eb hapni faqen e ndihm\u00ebs p\u00ebr mb\u00ebshtetje dhe udh\u00ebzim.", // EN: Get insights about your devices and save automatically with strategies.
-    "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
-    "Cihazlar\u0131n\u0131za dair i\u00e7g\u00f6r\u00fcler edinin ve enerji ipu\u00e7lar\u0131 al\u0131n.": "", // EN: Get insights about your devices and energy tips.
-    "Cihaz\u0131 Do\u011frula": "", // EN: Verify Device
-    "Cihaz\u0131 Se\u00e7": "", // EN: Select Device
-    "Cihaz\u0131 kald\u0131r": "", // EN: Remove device
-    "Cihaz\u0131m neden \u00e7evrimd\u0131\u015f\u0131 g\u00f6r\u00fcn\u00fcyor?": "", // EN: Why does my device show as offline?
-    "Cihaz\u0131n IP adresini yaz, NEXUS konu\u015fabildi\u011fi protokol\u00fc kendisi anlas\u0131n.": "", // EN: Type the device's IP address and NEXUS figures out which protocol it speaks.
-    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modemini kontrol et. Sorun s\u00fcrerse cihaz\u0131 kald\u0131r\u0131p yeniden ekle. Ad\u0131mlar: Cihazlar > cihaz\u0131 se\u00e7 > Kald\u0131r.": "", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device and add it again. Steps: Devices > choose the device > Remove.
-    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modeminizi kontrol edin. Sorun s\u00fcrerse cihaz\u0131 NEXUS uygulamas\u0131ndan kald\u0131r\u0131p yeniden ekleyin.": "", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device from the NEXUS app and add it again.
-    "Cihaz\u0131n g\u00f6r\u00fcnm\u00fcyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve y\u00f6nlendirme i\u00e7in yard\u0131m sayfas\u0131n\u0131 a\u00e7abilirsin.": "", // EN: If your device doesn't show up, use QR scanning or a setup code. You can open the help page for support and guidance.
+    "Cihazlar\u0131n\u0131 otomatik tarama, QR kod, kurulum kodu ya da manuel katalog ile ekleyebilirsin.": "Mund t'i shtosh pajisjet me skanim automatik, kod QR, kod konfigurimi ose katalogun manual.", // EN: You can add your devices with automatic scan, QR code, setup code or the manual catalog.
+    "Cihazlar\u0131n\u0131za dair i\u00e7g\u00f6r\u00fcler edinin ve enerji ipu\u00e7lar\u0131 al\u0131n.": "Merr njohuri p\u00ebr pajisjet e tua dhe k\u00ebshilla p\u00ebr energjin\u00eb.", // EN: Get insights about your devices and energy tips.
+    "Cihaz\u0131 Do\u011frula": "Verifiko pajisjen", // EN: Verify Device
+    "Cihaz\u0131 Se\u00e7": "Zgjidh pajisjen", // EN: Select Device
+    "Cihaz\u0131 kald\u0131r": "Hiq pajisjen", // EN: Remove device
+    "Cihaz\u0131m neden \u00e7evrimd\u0131\u015f\u0131 g\u00f6r\u00fcn\u00fcyor?": "Pse pajisja ime shfaqet jasht\u00eb linje?", // EN: Why does my device show as offline?
+    "Cihaz\u0131n IP adresini yaz, NEXUS konu\u015fabildi\u011fi protokol\u00fc kendisi anlas\u0131n.": "Shkruaj adres\u00ebn IP t\u00eb pajisjes dhe NEXUS e kupton vet\u00eb cilin protokoll p\u00ebrdor.", // EN: Type the device's IP address and NEXUS figures out which protocol it speaks.
+    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modemini kontrol et. Sorun s\u00fcrerse cihaz\u0131 kald\u0131r\u0131p yeniden ekle. Ad\u0131mlar: Cihazlar > cihaz\u0131 se\u00e7 > Kald\u0131r.": "Kontrollo lidhjen Wi-Fi t\u00eb pajisjes dhe ruterin. N\u00ebse problemi vazhdon, hiqe pajisjen dhe shtoje s\u00ebrish. Hapat: Pajisjet > zgjidh pajisjen > Hiq.", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device and add it again. Steps: Devices > choose the device > Remove.
+    "Cihaz\u0131n Wi-Fi ba\u011flant\u0131s\u0131n\u0131 ve modeminizi kontrol edin. Sorun s\u00fcrerse cihaz\u0131 NEXUS uygulamas\u0131ndan kald\u0131r\u0131p yeniden ekleyin.": "Kontrollo lidhjen Wi-Fi t\u00eb pajisjes dhe ruterin. N\u00ebse problemi vazhdon, hiqe pajisjen nga aplikacioni NEXUS dhe shtoje s\u00ebrish.", // EN: Check the device's Wi-Fi connection and your router. If the problem continues, remove the device from the NEXUS app and add it again.
+    "Cihaz\u0131n g\u00f6r\u00fcnm\u00fcyorsa QR tarama veya kurulum kodu yolunu kullan. Destek ve y\u00f6nlendirme i\u00e7in yard\u0131m sayfas\u0131n\u0131 a\u00e7abilirsin.": "N\u00ebse pajisja nuk shfaqet, p\u00ebrdor skanimin QR ose kodin e konfigurimit. Mund t\u00eb hap\u00ebsh faqen e ndihm\u00ebs p\u00ebr mb\u00ebshtetje dhe udh\u00ebzime.", // EN: If your device doesn't show up, use QR scanning or a setup code. You can open the help page for support and guidance.
     "Cihaz\u0131n konum (GPS) servisi kapal\u0131. A\u00e7\u0131p tekrar dene.": "Sh\u00ebrbimi i vendndodhjes (GPS) i pajisjes suaj \u00ebsht\u00eb i fikur. Aktivizoje dhe provo p\u00ebrs\u00ebri.", // EN: Your device's location (GPS) service is off. Turn it on and try again.
     "Cihaz\u0131n konum servisini desteklemiyor.": "Pajisja juaj nuk mb\u00ebshtet sh\u00ebrbimet e vendndodhjes.", // EN: Your device doesn't support location services.
     "Cihaz\u0131n listede yok mu? Geri bildirim g\u00f6nder": "Pajisja nuk \u00ebsht\u00eb n\u00eb list\u00eb? D\u00ebrgo komentin", // EN: Device not on the list? Send feedback
@@ -1386,19 +1386,19 @@ window.NEXUS_LANG = {
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilit durumunu ve enerji ayarlar\u0131n\u0131 tek ekranda g\u00f6steren bir \u00e7\u0131k\u0131\u015f kontrol\u00fc uygulamas\u0131 olu\u015ftur. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme butonlar\u0131 ekle.": "Krijo nj\u00eb aplikacion kontrolli largimi nga sht\u00ebpia q\u00eb tregon pajisjet e l\u00ebna ndezur, statusin e bravave dhe cil\u00ebsimet e energjis\u00eb n\u00eb nj\u00eb ekran. Shto butona p\u00ebr fikje t\u00eb shpejt\u00eb dhe aktivizim t\u00eb siguris\u00eb.", // EN: Create a leaving-home check app that shows devices left on, lock status and energy settings on one screen. Add quick shut-off and security activation buttons.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ak\u0131\u015fta kontrol edin.": "Kontrollo pajisjet e l\u00ebna ndezur, bravave dhe statusin e energjis\u00eb n\u00eb nj\u00eb rrjedh\u00eb t\u00eb vetme kur largohesh nga sht\u00ebpia.", // EN: Check devices left on, locks and energy status in one flow when leaving home.
     "Evden \u00e7\u0131karken a\u00e7\u0131k cihazlar\u0131, kilitleri ve enerji durumunu tek ekranda g\u00f6ster.": "Shfaq pajisjet e l\u00ebna ndezur, bllokimet dhe statusin e energjis\u00eb n\u00eb nj\u00eb ekran kur largoheni nga sht\u00ebpia. Shihni dritat, prizat, kondicioner\u00ebt dhe cil\u00ebsimet e siguris\u00eb t\u00eb l\u00ebna ndezur para se t\u00eb largoheni nga sht\u00ebpia, n\u00eb nj\u00eb panel. Mbledhni hapat e menj\u00ebhersh\u00ebm p\u00ebr fikjen dhe aktivizimin e siguris\u00eb n\u00eb nj\u00eb rrjedh\u00eb t\u00eb vetme. Le t\u00eb b\u00ebjm\u00eb kontrollet e fundit para se t\u00eb largoheni. Fikni dritat automatikisht pasi t\u00eb largoheni... Fikni dritat automatikisht pasi t\u00eb largoheni nga sht\u00ebpia. Fikni dritat automatikisht pasi t\u00eb largoheni dhe ndizini ato kur ktheheni. Fikni kondicionerin automatikisht kur askush nuk \u00ebsht\u00eb n\u00eb sht\u00ebpi dhe shmangni konsumimin e panevojsh\u00ebm. Shk\u00ebputni automatikisht energjin\u00eb e pajisjeve n\u00eb pritje n\u00eb koh\u00ebn q\u00eb zgjidhni gjat\u00eb nat\u00ebs. Kur t\u00eb largoheni nga sht\u00ebpia. Fikni priz\u00ebn kur t\u00eb largoheni nga sht\u00ebpia. Largimi nga sht\u00ebpia. Jam n\u00eb sht\u00ebpi. Mir\u00eb se vini n\u00eb sht\u00ebpi. Kur arrini n\u00eb sht\u00ebpi ose kur largoheni.", // EN: Show devices left on, locks and energy status on one screen when leaving home.
-    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
-    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "", // EN: Let's do the final checks before you leave.
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "", // EN: Turn off the lights automatically after leav...
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "", // EN: Turn off the lights automatically after leaving home
-    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "", // EN: Turn off the lights automatically after you leave and turn them on when you return.
-    "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
-    "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "", // EN: Automatically cut power to devices on standby at the time you choose at night.
-    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "", // EN: When leaving home
-    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda prizi kapat": "", // EN: Turn off the plug when leaving home
-    "Evden \u00e7\u0131k\u0131\u015f": "", // EN: Leaving home
-    "Eve Geldim": "", // EN: I'm Home
-    "Eve geldim": "", // EN: Welcome home
-    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "", // EN: When you arrive home or leave
+    "Evden \u00e7\u0131kmadan \u00f6nce a\u00e7\u0131k kalan \u0131\u015f\u0131k, priz, klima ve g\u00fcvenlik ayarlar\u0131n\u0131 tek panelde g\u00f6r. H\u0131zl\u0131 kapatma ve g\u00fcvenlik aktif etme ad\u0131mlar\u0131n\u0131 tek ak\u0131\u015fa topla.": "Shiko n\u00eb nj\u00eb panel dritat, prizat, klimat dhe cil\u00ebsimet e siguris\u00eb q\u00eb kan\u00eb mbetur t\u00eb ndezura para se t\u00eb largohesh nga sht\u00ebpia. Bashko hapat e fikjes s\u00eb shpejt\u00eb dhe aktivizimit t\u00eb siguris\u00eb n\u00eb nj\u00eb rrjedh\u00eb t\u00eb vetme.", // EN: See lights, plugs, ACs and security settings left on before leaving home, on one panel. Gather quick shut-off and security activation steps into one flow.
+    "Evden \u00e7\u0131kmadan \u00f6nce son kontrolleri yapal\u0131m.": "T\u00eb b\u00ebjm\u00eb kontrollet e fundit para se t\u00eb largohesh.", // EN: Let's do the final checks before you leave.
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otom...": "Fik dritat automatikisht pasi largohesh nga...", // EN: Turn off the lights automatically after leav...
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat": "Fik dritat automatikisht pasi largohesh nga sht\u00ebpia", // EN: Turn off the lights automatically after leaving home
+    "Evden \u00e7\u0131kt\u0131ktan sonra \u0131\u015f\u0131\u011f\u0131 otomatik olarak kapat\u0131n ve eve d\u00f6nd\u00fckten sonra a\u00e7\u0131n.": "Fik dritat automatikisht pasi largohesh dhe ndiza kur kthehesh.", // EN: Turn off the lights automatically after you leave and turn them on when you return.
+    "Evde kimse yokken klimay\u0131 otomatik olarak kapat\u0131n, gereksiz t\u00fcketimi \u00f6nleyin.": "Fik klim\u00ebn automatikisht kur nuk ka njeri n\u00eb sht\u00ebpi dhe shmang konsumin e panevojsh\u00ebm.", // EN: Turn off the air conditioner automatically when nobody is home and avoid needless consumption.
+    "Gece belirledi\u011fin saatte bekleme modundaki cihazlar\u0131n g\u00fcc\u00fcn\u00fc otomatik olarak kesin.": "Nd\u00ebrprit automatikisht energjin\u00eb e pajisjeve n\u00eb gatishm\u00ebri n\u00eb orarin q\u00eb zgjedh nat\u00ebn.", // EN: Automatically cut power to devices on standby at the time you choose at night.
+    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda": "Kur largohesh nga sht\u00ebpia", // EN: When leaving home
+    "Evden \u00e7\u0131k\u0131ld\u0131\u011f\u0131nda prizi kapat": "Fik priz\u00ebn kur largohesh nga sht\u00ebpia", // EN: Turn off the plug when leaving home
+    "Evden \u00e7\u0131k\u0131\u015f": "Largimi nga sht\u00ebpia", // EN: Leaving home
+    "Eve Geldim": "Jam n\u00eb sht\u00ebpi", // EN: I'm Home
+    "Eve geldim": "Mir\u00eb se u ktheve n\u00eb sht\u00ebpi", // EN: Welcome home
+    "Eve vard\u0131\u011f\u0131nda veya evden ayr\u0131ld\u0131\u011f\u0131nda": "Kur arrin n\u00eb sht\u00ebpi ose largohesh", // EN: When you arrive home or leave
     "Eve yakla\u015f\u0131rken \u0131\u015f\u0131klar\u0131 a\u00e7, klimay\u0131 \u00e7al\u0131\u015ft\u0131r ve garaj kap\u0131s\u0131n\u0131 arac\u0131n\u0131n ekran\u0131ndan kontrol et.": "Ndizni dritat, ndizni AC dhe kontrolloni der\u00ebn e garazhit nga ekrani i makin\u00ebs suaj teksa afroheni n\u00eb sht\u00ebpi.", // EN: Turn on the lights, start the AC and control the garage door from your car's screen as you approach home.
     "Evet, Uygula": "Po, Apliko", // EN: Yes, Apply
     "Evet, \u0130ptal Et": "Po, Anulo", // EN: Yes, Cancel
@@ -1812,28 +1812,28 @@ window.NEXUS_LANG = {
     "Kilit ve sens\u00f6r odakl\u0131 ev g\u00fcvenli\u011fini h\u0131zla devreye al.": "Aktivizoni shpejt sigurin\u00eb e sht\u00ebpis\u00eb bazuar n\u00eb ky\u00e7je dhe sensor\u00eb.", // EN: Quickly activate lock- and sensor-based home security.
     "Kilit, alarm ve kamera durumlar\u0131n\u0131 birlikte kontrol eder.": "Kontrollon gjendjen e ky\u00e7jes, alarmit dhe kamerave s\u00eb bashku.", // EN: Checks lock, alarm and camera status together.
     "Kilit, kamera veya sens\u00f6r ekledi\u011finde tarama onlar\u0131 da kontrol eder.": "Kur shtoni nj\u00eb brav\u00eb, kamer\u00eb ose sensor, skanimi kontrollon edhe ato. Bravat, zile dhe zgjidhje hyrjeje Nj\u00eb p\u00ebrmbledhje sigurie do t\u00eb shfaqet k\u00ebtu sapo t\u00eb shtoni nj\u00eb brav\u00eb, sensor ose kamer\u00eb. Nj\u00eb p\u00ebrmbledhje krijohet sapo t\u00eb shtoni nj\u00eb brav\u00eb, sensor ose kamer\u00eb. Kontrolli p\u00ebr largimin nga sht\u00ebpia do t\u00eb shfaqet sapo t\u00eb shtoni pajisje si bravat, dritat ose kondicioner\u00ebt. Brava Trokit p\u00ebr t\u00eb mbyllur Bravat dhe qasja E mbyllur Fikni AC kur askush nuk \u00ebsht\u00eb n\u00eb sht\u00ebpi Lexues elektronik Asistent Personal Kujdes Personal Informacione personale AC AC (Ndenj\u00ebse) Freskuese AC Fikje automatike AC Shkurtore p\u00ebr temperatur\u00ebn, modalitetin dhe rehati p\u00ebr AC dhe termostat\u00eb. Menaxhoni AC dhe termostat\u00ebt nga nj\u00eb panel, krijoni profile rehatie p\u00ebr \u00e7do dhom\u00eb dhe p\u00ebrdorni modalitete t\u00eb gatshme p\u00ebr p\u00ebrdorim t\u00eb p\u00ebrditsh\u00ebm. AC duke funksionuar Bashkoni pajisjet AC, ajrin dhe ambientin n\u00eb nj\u00eb panel rehatie. AC, termostat\u00eb dhe pajisje ajri", // EN: When you add a lock, camera or sensor, the scan checks those too.
-    "Kilit, kap\u0131 zili ve giri\u015f \u00e7\u00f6z\u00fcmleri": "", // EN: Locks, doorbells and entry solutions
-    "Kilit, sens\u00f6r veya kamera eklenince g\u00fcvenlik \u00f6zeti burada olu\u015facak.": "", // EN: A security summary will appear here once you add a lock, sensor or camera.
-    "Kilit, sens\u00f6r veya kamera ekleyince \u00f6zet olu\u015fur.": "", // EN: A summary is created once you add a lock, sensor or camera.
-    "Kilit, \u0131\u015f\u0131k veya klima gibi cihazlar eklenince \u00e7\u0131k\u0131\u015f kontrol\u00fc olu\u015facak.": "", // EN: The leaving-home check will appear once you add devices such as locks, lights or ACs.
-    "Kilitle": "", // EN: Lock
-    "Kilitlemek i\u00e7in dokun": "", // EN: Tap to lock
-    "Kilitler ve ge\u00e7i\u015f": "", // EN: Locks and access
-    "Kilitli": "", // EN: Locked
-    "Kimse yokken klimay\u0131 kapat": "", // EN: Turn off the AC when nobody is home
-    "Kitap Okuyucu": "", // EN: E-Reader
-    "Ki\u015fisel Asistan": "", // EN: Personal Assistant
-    "Ki\u015fisel Bak\u0131m": "", // EN: Personal Care
-    "Ki\u015fisel Bilgiler": "", // EN: Personal Information
-    "Klima": "", // EN: AC
-    "Klima (Salon)": "", // EN: AC (Living Room)
-    "Klima Fan\u0131": "", // EN: AC Fan
-    "Klima Otomatik Kapanma": "", // EN: AC Auto Off
-    "Klima ve termostatlar i\u00e7in s\u0131cakl\u0131k, mod ve konfor k\u0131sayollar\u0131.": "", // EN: Temperature, mode and comfort shortcuts for ACs and thermostats.
-    "Klima ve termostatlar\u0131 tek panelden y\u00f6net, odalara g\u00f6re konfor profilleri olu\u015ftur ve g\u00fcnl\u00fck kullan\u0131m i\u00e7in haz\u0131r modlar kullan.": "", // EN: Manage ACs and thermostats from one panel, create comfort profiles per room and use ready-made modes for everyday use.
-    "Klima \u00c7al\u0131\u015f\u0131yor": "", // EN: AC Running
-    "Klima, hava ve ortam cihazlar\u0131n\u0131 tek konfor paneli i\u00e7inde bir araya getir.": "", // EN: Bring AC, air and ambient devices together in one comfort panel.
-    "Klima, termostat ve hava cihazlar\u0131": "", // EN: ACs, thermostats and air devices
+    "Kilit, kap\u0131 zili ve giri\u015f \u00e7\u00f6z\u00fcmleri": "Bravat, zilja e der\u00ebs dhe zgjidhjet e hyrjes", // EN: Locks, doorbells and entry solutions
+    "Kilit, sens\u00f6r veya kamera eklenince g\u00fcvenlik \u00f6zeti burada olu\u015facak.": "P\u00ebrmbledhja e siguris\u00eb do t\u00eb shfaqet k\u00ebtu pasi t\u00eb shtosh nj\u00eb brav\u00eb, sensor ose kamer\u00eb.", // EN: A security summary will appear here once you add a lock, sensor or camera.
+    "Kilit, sens\u00f6r veya kamera ekleyince \u00f6zet olu\u015fur.": "P\u00ebrmbledhja krijohet pasi t\u00eb shtosh nj\u00eb brav\u00eb, sensor ose kamer\u00eb.", // EN: A summary is created once you add a lock, sensor or camera.
+    "Kilit, \u0131\u015f\u0131k veya klima gibi cihazlar eklenince \u00e7\u0131k\u0131\u015f kontrol\u00fc olu\u015facak.": "Kontrolli i largimit nga sht\u00ebpia do t\u00eb shfaqet pasi t\u00eb shtosh pajisje si brava, drita ose klima.", // EN: The leaving-home check will appear once you add devices such as locks, lights or ACs.
+    "Kilitle": "Ky\u00e7", // EN: Lock
+    "Kilitlemek i\u00e7in dokun": "Prek p\u00ebr t\u00eb ky\u00e7ur", // EN: Tap to lock
+    "Kilitler ve ge\u00e7i\u015f": "Bravat dhe qasja", // EN: Locks and access
+    "Kilitli": "I ky\u00e7ur", // EN: Locked
+    "Kimse yokken klimay\u0131 kapat": "Fik klim\u00ebn kur nuk ka njeri n\u00eb sht\u00ebpi", // EN: Turn off the AC when nobody is home
+    "Kitap Okuyucu": "Lexues e-librash", // EN: E-Reader
+    "Ki\u015fisel Asistan": "Asistent personal", // EN: Personal Assistant
+    "Ki\u015fisel Bak\u0131m": "Kujdes personal", // EN: Personal Care
+    "Ki\u015fisel Bilgiler": "T\u00eb dh\u00ebna personale", // EN: Personal Information
+    "Klima": "Klima", // EN: AC
+    "Klima (Salon)": "Klima (Salloni)", // EN: AC (Living Room)
+    "Klima Fan\u0131": "Ventilatori i klim\u00ebs", // EN: AC Fan
+    "Klima Otomatik Kapanma": "Fikja automatike e klim\u00ebs", // EN: AC Auto Off
+    "Klima ve termostatlar i\u00e7in s\u0131cakl\u0131k, mod ve konfor k\u0131sayollar\u0131.": "Shkurtore p\u00ebr temperatur\u00ebn, modalitetin dhe rehatin\u00eb p\u00ebr klimat dhe termostatet.", // EN: Temperature, mode and comfort shortcuts for ACs and thermostats.
+    "Klima ve termostatlar\u0131 tek panelden y\u00f6net, odalara g\u00f6re konfor profilleri olu\u015ftur ve g\u00fcnl\u00fck kullan\u0131m i\u00e7in haz\u0131r modlar kullan.": "Menaxho klimat dhe termostatet nga nj\u00eb panel, krijo profile rehatie p\u00ebr \u00e7do dhom\u00eb dhe p\u00ebrdor modalitete t\u00eb gatshme p\u00ebr p\u00ebrdorim t\u00eb p\u00ebrditsh\u00ebm.", // EN: Manage ACs and thermostats from one panel, create comfort profiles per room and use ready-made modes for everyday use.
+    "Klima \u00c7al\u0131\u015f\u0131yor": "Klima n\u00eb pun\u00eb", // EN: AC Running
+    "Klima, hava ve ortam cihazlar\u0131n\u0131 tek konfor paneli i\u00e7inde bir araya getir.": "Bashko klim\u00ebn, pajisjet e ajrit dhe ato t\u00eb ambientit n\u00eb nj\u00eb panel t\u00eb vet\u00ebm rehatie.", // EN: Bring AC, air and ambient devices together in one comfort panel.
+    "Klima, termostat ve hava cihazlar\u0131": "Klimat, termostatet dhe pajisjet e ajrit", // EN: ACs, thermostats and air devices
     "Klimay\u0131 22 dereceye ayarla": "Vendosni AC n\u00eb 22 grad\u00eb", // EN: Set the AC to 22 degrees
     "Kod 8 haneli olmal\u0131d\u0131r.": "Kodi duhet t\u00eb jet\u00eb 8 shifror.", // EN: The code must be 8 digits.
     "Kod g\u00f6nderildi \u2713": "Kodi u d\u00ebrgua \u2713", // EN: Code sent ✓
@@ -2754,48 +2754,48 @@ window.NEXUS_LANG = {
     "kontrol edilecek": "t\u00eb kontrollohet", // EN: to be checked
     "korumas\u0131 aktif.": "mbrojtja e aktivizuar.", // EN: protection on.
     "kurulum kodunu girin": "kodi i konfigurimit n\u00eb pajisjen tuaj", // EN: setup code on your device
-    "lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "", // EN: lamps added. You can manage them from Home.
-    "modelden se\u00e7ilir.": "", // EN: chosen from the model.
-    "oda g\u00f6r\u00fcn\u00fcm\u00fc haz\u0131r.": "", // EN: room view ready.
-    "oda g\u00f6r\u00fcn\u00fcm\u00fcnde, %": "", // EN: in room view, %
-    "olay": "", // EN: event
-    "oturum yok": "", // EN: no session
-    "parlakl\u0131k ve": "", // EN: brightness and
-    "plan sonland\u0131r\u0131ld\u0131.": "", // EN: plan ended.
-    "plan, \u00fccretsiz deneme ile ba\u015flad\u0131.": "", // EN: plan, started with a free trial.
-    "rahats\u0131z etme": "", // EN: do not disturb
-    "se\u00e7ildi.": "", // EN: selected.
-    "shelly-rpc: kimlik yok": "", // EN: shelly-rpc: no ID
-    "shelly: kimlik yok": "", // EN: shelly: no ID
-    "so\u011fut": "", // EN: cool
-    "sulama": "", // EN: watering
-    "s\u00fcp\u00fcrge": "", // EN: vacuum
-    "s\u0131cakl\u0131k": "", // EN: temperature
-    "tarihinde al\u0131nacak.": "", // EN: will be charged on
-    "tasmota: kimlik yok": "", // EN: tasmota: no ID
-    "te\u015fekk": "", // EN: thank
-    "tutar\u0131nda": "", // EN: amount
-    "t\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "", // EN: tap to run
-    "ula\u015f\u0131lam\u0131yor": "", // EN: unreachable
-    "uyguland\u0131.": "", // EN: applied.
-    "uyumlu bir cihaz ekle": "", // EN: add a compatible device
-    "ve": "", // EN: and
-    "vurgu rengi kullanan bir ak\u0131ll\u0131 uygulama olu\u015ftur.": "", // EN: create a smart app that uses an accent color.
-    "web_server bile\u015feniyle \u2014 DIY cihazlar": "", // EN: With the web_server component — DIY devices
-    "wled: s\u00fcr\u00fcm alan\u0131 yok": "", // EN: wled: no version field
-    "yeelight: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: yeelight: TCP only in the desktop app
-    "yeelight: yan\u0131t yok": "", // EN: yeelight: no response
-    "UDP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "", // EN: UDP only in the desktop app
-    "wiz: kimlik yok": "", // EN: wiz: no identity
-    "lifx: beklenmeyen yan\u0131t": "", // EN: lifx: unexpected response
-    "govee: kimlik yok": "", // EN: govee: no identity
-    "sonoff: kimlik yok": "", // EN: sonoff: no identity
-    "yeni cihaz\u0131": "", // EN: new device
-    "yerel a\u011f cihaz\u0131 kontrol edildi \u00b7": "", // EN: local network devices checked ·
-    "{0} Cihaz": "", // EN: {0} Devices
-    "{0} Oda": "", // EN: {0} Rooms
-    "{0} cihaz": "", // EN: {0} devices
-    "{0} cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "", // EN: {0} devices found · still scanning
+    "lamba eklendi. Ana sayfadan y\u00f6netebilirsin.": "llamba u shtuan. Mund t'i menaxhosh nga Kreu.", // EN: lamps added. You can manage them from Home.
+    "modelden se\u00e7ilir.": "zgjidhet nga modeli.", // EN: chosen from the model.
+    "oda g\u00f6r\u00fcn\u00fcm\u00fc haz\u0131r.": "pamja e dhom\u00ebs \u00ebsht\u00eb gati.", // EN: room view ready.
+    "oda g\u00f6r\u00fcn\u00fcm\u00fcnde, %": "n\u00eb pamjen e dhom\u00ebs, %", // EN: in room view, %
+    "olay": "ngjarje", // EN: event
+    "oturum yok": "pa sesion", // EN: no session
+    "parlakl\u0131k ve": "shk\u00eblqimi dhe", // EN: brightness and
+    "plan sonland\u0131r\u0131ld\u0131.": "plani p\u00ebrfundoi.", // EN: plan ended.
+    "plan, \u00fccretsiz deneme ile ba\u015flad\u0131.": "plani, filloi me prov\u00eb falas.", // EN: plan, started with a free trial.
+    "rahats\u0131z etme": "mos shqet\u00ebso", // EN: do not disturb
+    "se\u00e7ildi.": "u zgjodh.", // EN: selected.
+    "shelly-rpc: kimlik yok": "shelly-rpc: pa ID", // EN: shelly-rpc: no ID
+    "shelly: kimlik yok": "shelly: pa ID", // EN: shelly: no ID
+    "so\u011fut": "ftohje", // EN: cool
+    "sulama": "ujitje", // EN: watering
+    "s\u00fcp\u00fcrge": "fshes\u00eb me korrent", // EN: vacuum
+    "s\u0131cakl\u0131k": "temperatura", // EN: temperature
+    "tarihinde al\u0131nacak.": "do t\u00eb tarifohet m\u00eb", // EN: will be charged on
+    "tasmota: kimlik yok": "tasmota: pa ID", // EN: tasmota: no ID
+    "te\u015fekk": "faleminderit", // EN: thank
+    "tutar\u0131nda": "shum\u00eb", // EN: amount
+    "t\u0131kla ve \u00e7al\u0131\u015ft\u0131r": "prek p\u00ebr ta ekzekutuar", // EN: tap to run
+    "ula\u015f\u0131lam\u0131yor": "e paarritshme", // EN: unreachable
+    "uyguland\u0131.": "u zbatua.", // EN: applied.
+    "uyumlu bir cihaz ekle": "shto nj\u00eb pajisje t\u00eb p\u00ebrputhshme", // EN: add a compatible device
+    "ve": "dhe", // EN: and
+    "vurgu rengi kullanan bir ak\u0131ll\u0131 uygulama olu\u015ftur.": "krijo nj\u00eb aplikacion inteligjent q\u00eb p\u00ebrdor nj\u00eb ngjyr\u00eb theksi.", // EN: create a smart app that uses an accent color.
+    "web_server bile\u015feniyle \u2014 DIY cihazlar": "Me komponentin web_server \u2014 pajisje DIY", // EN: With the web_server component — DIY devices
+    "wled: s\u00fcr\u00fcm alan\u0131 yok": "wled: pa fush\u00eb versioni", // EN: wled: no version field
+    "yeelight: TCP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "yeelight: TCP vet\u00ebm n\u00eb aplikacionin desktop", // EN: yeelight: TCP only in the desktop app
+    "yeelight: yan\u0131t yok": "yeelight: pa p\u00ebrgjigje", // EN: yeelight: no response
+    "UDP yaln\u0131zca masa\u00fcst\u00fc uygulamas\u0131nda": "UDP vet\u00ebm n\u00eb aplikacionin desktop", // EN: UDP only in the desktop app
+    "wiz: kimlik yok": "wiz: pa identitet", // EN: wiz: no identity
+    "lifx: beklenmeyen yan\u0131t": "lifx: p\u00ebrgjigje e papritur", // EN: lifx: unexpected response
+    "govee: kimlik yok": "govee: pa identitet", // EN: govee: no identity
+    "sonoff: kimlik yok": "sonoff: pa identitet", // EN: sonoff: no identity
+    "yeni cihaz\u0131": "pajisje e re", // EN: new device
+    "yerel a\u011f cihaz\u0131 kontrol edildi \u00b7": "pajisje t\u00eb rrjetit lokal u kontrolluan \u00b7", // EN: local network devices checked ·
+    "{0} Cihaz": "{0} pajisje", // EN: {0} Devices
+    "{0} Oda": "{0} dhoma", // EN: {0} Rooms
+    "{0} cihaz": "{0} pajisje", // EN: {0} devices
+    "{0} cihaz bulundu \u00b7 tarama s\u00fcr\u00fcyor": "{0} pajisje u gjet\u00ebn \u00b7 skanimi vazhdon", // EN: {0} devices found · still scanning
     "{0} cihaz bulundu. Ekle'den panellere ta\u015f\u0131yabilirsin.": "{0} pajisje t\u00eb gjetura. P\u00ebrdor Shto p\u00ebr t'i l\u00ebvizur ato n\u00eb panelet tuaja.", // EN: {0} devices found. Use Add to move them to your panels.
     "{0} cihaz bulundu. Ekle'ye dokunarak listeye ekleyebilirsin.": "{0} pajisje t\u00eb gjetura. Shtyp Shto p\u00ebr t'i shtuar n\u00eb list\u00ebn t\u00ebnde.", // EN: {0} devices found. Tap Add to add them to your list.
     "{0} cihaz bulundu. Eklemek istediklerini se\u00e7.": "{0} pajisje t\u00eb gjetura. Zgjidh ato q\u00eb do t\u00eb shtohen.", // EN: {0} devices found. Choose the ones to add.
@@ -3202,18 +3202,18 @@ window.NEXUS_LANG = {
     "Davet e-postas\u0131ndaki kodu gir. Kod tek kullan\u0131ml\u0131kt\u0131r ve yaln\u0131zca davet edilen e-posta adresiyle \u00e7al\u0131\u015f\u0131r.": "Shkruani kodin nga emaili i ftes\u00ebs. Kodi \u00ebsht\u00eb p\u00ebr p\u00ebrdorim t\u00eb vet\u00ebm dhe funksionon vet\u00ebm me adres\u00ebn e ftuar t\u00eb emailit.", // EN: Enter the code from the invitation email. The code is single-use and only works with the invited email address.
     "Oturum gerekli": "K\u00ebrkohet hyrje", // EN: Sign-in required
     "\u00dcye davet etmek i\u00e7in \u00f6nce oturum a\u00e7; evin hesab\u0131na otomatik ba\u011flan\u0131r.": "Identifikohu m\u00eb par\u00eb p\u00ebr t\u00eb ftuar an\u00ebtar\u00ebt; do t\u00eb lidheni automatikisht me llogarin\u00eb e sht\u00ebpis\u00eb tuaj. Emaili nuk mund t\u00eb d\u00ebrgohej nga serveri Ftesa u krijua, por emaili automatik nuk mund t\u00eb d\u00ebrgohej. A d\u00ebshironi t\u00eb p\u00ebrgatitim tekstin e ftes\u00ebs me aplikacionin tuaj t\u00eb post\u00ebs? Hap Aplikacionin e Post\u00ebs Nivel i drit\u00ebs Presioni L\u00ebvizje e zbuluar Pa l\u00ebvizje Nuk arrit\u00ebm t\u00eb lidhemi me pajisjen. Sigurohuni q\u00eb t\u00eb jet\u00eb n\u00eb t\u00eb nj\u00ebjtin rrjet. Nuk arrit\u00ebm t\u00eb lidhemi me pajisjen. Sigurohuni q\u00eb t\u00eb jet\u00eb n\u00eb t\u00eb nj\u00ebjtin rrjet dhe q\u00eb adresa IP dhe \u00e7el\u00ebsi lokal jan\u00eb t\u00eb duhura. Ndez dritat n\u00eb nj\u00eb ton t\u00eb ngroht\u00eb, hap dyert e dritares dhe vendos kondicioner n\u00eb 22\u00b0. Ndez dritat dhe hap dyert e dritares, vendos kondicionerin n\u00eb 22\u00b0 dhe d\u00ebrgon robotin pastrues p\u00ebr karikim. Fik dritat, TV-n\u00eb dhe kondicionerin, mbyll dyert e dritares dhe ky\u00e7 der\u00ebn.", // EN: Sign in first to invite members; you'll be connected to your home's account automatically.
-    "E-posta sunucudan g\u00f6nderilemedi": "", // EN: The email couldn't be sent from the server
-    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
-    "Posta Uygulamas\u0131n\u0131 A\u00e7": "", // EN: Open Mail App
-    "I\u015f\u0131k d\u00fczeyi": "", // EN: Light level
-    "Bas\u0131n\u00e7": "", // EN: Pressure
-    "Hareket alg\u0131land\u0131": "", // EN: Motion detected
-    "Hareket yok": "", // EN: No motion
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network.
-    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
-    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
-    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
-    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
+    "E-posta sunucudan g\u00f6nderilemedi": "Email-i nuk mund t\u00eb d\u00ebrgohej nga serveri", // EN: The email couldn't be sent from the server
+    "Davet olu\u015fturuldu ama otomatik e-posta g\u00f6nderilemedi. Kendi posta uygulamanla davet metnini haz\u0131rlayal\u0131m m\u0131?": "Ftesa u krijua, por email-i automatik nuk mund t\u00eb d\u00ebrgohej. Ta p\u00ebrgatisim tekstin e ftes\u00ebs me aplikacionin t\u00ebnd t\u00eb post\u00ebs?", // EN: The invite was created but the automatic email couldn't be sent. Shall we prepare the invitation text with your own mail app?
+    "Posta Uygulamas\u0131n\u0131 A\u00e7": "Hap aplikacionin e post\u00ebs", // EN: Open Mail App
+    "I\u015f\u0131k d\u00fczeyi": "Niveli i drit\u00ebs", // EN: Light level
+    "Bas\u0131n\u00e7": "Presioni", // EN: Pressure
+    "Hareket alg\u0131land\u0131": "U zbulua l\u00ebvizje", // EN: Motion detected
+    "Hareket yok": "Pa l\u00ebvizje", // EN: No motion
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan emin ol.": "Nuk u lidh me pajisjen. Sigurohu q\u00eb \u00ebsht\u00eb n\u00eb t\u00eb nj\u00ebjtin rrjet.", // EN: Couldn't connect to the device. Make sure it's on the same network.
+    "Cihaza ba\u011flan\u0131lamad\u0131. Ayn\u0131 a\u011fda oldu\u011fundan, IP adresinin ve yerel anahtar\u0131n do\u011fru oldu\u011fundan emin ol.": "Nuk u lidh me pajisjen. Sigurohu q\u00eb \u00ebsht\u00eb n\u00eb t\u00eb nj\u00ebjtin rrjet dhe q\u00eb adresa IP dhe \u00e7el\u00ebsi lokal jan\u00eb t\u00eb sakta.", // EN: Couldn't connect to the device. Make sure it's on the same network and that the IP address and local key are correct.
+    "I\u015f\u0131klar\u0131 s\u0131cak tonda a\u00e7ar, perdeleri a\u00e7ar, klimay\u0131 22\u00b0 yapar.": "Ndez dritat me ton t\u00eb ngroht\u00eb, hap perdet dhe vendos klim\u00ebn n\u00eb 22\u00b0.", // EN: Turns the lights on in a warm tone, opens the curtains and sets the AC to 22°.
+    "I\u015f\u0131klar\u0131 ve perdeleri a\u00e7ar, klimay\u0131 22\u00b0 \u00e7al\u0131\u015ft\u0131r\u0131r, s\u00fcp\u00fcrgeyi \u015farja g\u00f6nderir.": "Ndez dritat dhe hap perdet, v\u00eb klim\u00ebn n\u00eb pun\u00eb me 22\u00b0 dhe e d\u00ebrgon fshes\u00ebn me korrent p\u00ebr t'u karikuar.", // EN: Turns on the lights and opens the curtains, runs the AC at 22° and sends the vacuum back to charge.
+    "I\u015f\u0131k, TV ve klimay\u0131 kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Fik dritat, televizorin dhe klim\u00ebn, mbyll perdet dhe ky\u00e7 der\u00ebn.", // EN: Turns off the lights, TV and AC, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 ve TV'yi kapat\u0131r, perdeleri kapat\u0131r, kap\u0131y\u0131 kilitler.": "Shkruan dritat dhe TV-n\u00eb, mbyll perdet dhe mbyll der\u00ebn me \u00e7el\u00ebs.", // EN: Turns off the lights and TV, closes the curtains and locks the door.
     "I\u015f\u0131klar\u0131 %15 s\u0131cak tona getirir, perdeleri kapat\u0131r, TV'yi a\u00e7ar.": "Vendos dritat n\u00eb nj\u00eb ton t\u00eb ngroht\u00eb n\u00eb 15%, mbyll perdet dhe ndiz TV-n\u00eb.", // EN: Sets the lights to a warm tone at 15%, closes the curtains and turns on the TV.
     "Kap\u0131y\u0131 kilitler, perdeleri kapat\u0131r.": "Mbyll der\u00ebn me \u00e7el\u00ebs dhe mbyll perdet.", // EN: Locks the door and closes the curtains.
