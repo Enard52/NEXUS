@@ -30,12 +30,25 @@ function langFlag(l) {
     ? `<img class="lang-flag" src="/assets/flags/${c}.svg" alt="" width="20" height="15" loading="lazy" decoding="async">`
     : '';
 }
+import { extractKeys, uiFor } from './site-ui.mjs';
 import { LEGAL_DOCS, getLegalDoc as getSiteLegalDoc } from './site-legal-content.mjs';
 import { createRequire } from 'node:module';
 
 // Gizlilik / Şartlar / İade: TR ve EN site-legal-content.mjs'ten; diğer diller scripts/legal-translations/<kod>.json
 // dosyalarından (kolaylık çevirisi; altında bunu belirten not yer alır). Çevirisi olmayan dil İngilizceye düşer.
 const legalCjs = createRequire(import.meta.url)('./legal-content.cjs');
+// Koda gömülü arayüz metinleri: TR kodun içinde, diğer diller scripts/site-ui/<kod>.json (bkz. scripts/site-ui.mjs).
+let CUR_UI = {};
+const tx = (s) => CUR_UI[s] ?? s;
+// Tarayıcıdaki nxU() için sözlük: yalnız istemci anahtarları sayfaya gömülür.
+const CLIENT_UI_KEYS = extractKeys().client;
+const clientUi = () => {
+  const o = {};
+  for (const k of CLIENT_UI_KEYS) if (CUR_UI[k]) o[k] = CUR_UI[k];
+  return JSON.stringify(o).replace(/</g, '\\u003c');
+};
+const OG_LOCALE = { en: 'en_US', tr: 'tr_TR', af: 'af_ZA', am: 'am_ET', ar: 'ar_AR', bg: 'bg_BG', bn: 'bn_IN', bs: 'bs_BA', ca: 'ca_ES', cs: 'cs_CZ', da: 'da_DK', de: 'de_DE', el: 'el_GR', es: 'es_ES', et: 'et_EE', eu: 'eu_ES', fa: 'fa_IR', fi: 'fi_FI', fil: 'fil_PH', fr: 'fr_FR', ga: 'ga_IE', gl: 'gl_ES', gu: 'gu_IN', he: 'he_IL', hi: 'hi_IN', hr: 'hr_HR', hu: 'hu_HU', hy: 'hy_AM', id: 'id_ID', is: 'is_IS', it: 'it_IT', ja: 'ja_JP', ka: 'ka_GE', km: 'km_KH', kn: 'kn_IN', ko: 'ko_KR', lt: 'lt_LT', lv: 'lv_LV', mk: 'mk_MK', ml: 'ml_IN', mn: 'mn_MN', mr: 'mr_IN', ms: 'ms_MY', my: 'my_MM', nb: 'nb_NO', ne: 'ne_NP', nl: 'nl_NL', pa: 'pa_IN', pl: 'pl_PL', 'pt-BR': 'pt_BR', ro: 'ro_RO', ru: 'ru_RU', si: 'si_LK', sk: 'sk_SK', sl: 'sl_SI', sq: 'sq_AL', sr: 'sr_RS', sv: 'sv_SE', sw: 'sw_KE', ta: 'ta_IN', te: 'te_IN', th: 'th_TH', uk: 'uk_UA', ur: 'ur_PK', vi: 'vi_VN', 'zh-Hans': 'zh_CN', 'zh-Hant': 'zh_TW', zu: 'zu_ZA' };
+const ogLocale = (lang) => OG_LOCALE[lang] || 'en_US';
 // Sağdan sola yazılan diller: sayfa yönü <html dir> ile verilir.
 const htmlDir = (lang) => (['ar', 'fa', 'he', 'ur'].includes(lang) ? ' dir="rtl"' : '');
 const legalEsc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -194,7 +207,7 @@ function platformMarks() {
 
 function platformDownloadBtn(href, btnClass = 'btn btn-primary', isTr = false) {
   // Düğme metni eylem odaklı: platformlar zaten ikonlarla ve güven listesinde söyleniyor.
-  const label = isTr ? 'NEXUS\u2019u \u0130ndir' : 'Download NEXUS';
+  const label = isTr ? 'NEXUS\u2019u \u0130ndir' : tx('Download NEXUS');
   return `<a class="${btnClass} btn-platforms" href="${href}">${platformMarks()}<span>${label}</span></a>`;
 }
 
@@ -1360,6 +1373,7 @@ a.nx-account-item{text-decoration:none;color:inherit;box-sizing:border-box}
 // ---------- Sayfa Davranış Betiği (site.js) ----------
 function pageJs() {
   return `
+window.nxU=window.nxU||function(k){var d=window.nxUi;return (d&&d[k])||k};
 function nxToggleTheme(){
   var d=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',d);
@@ -1594,7 +1608,7 @@ function nxShowAlert(msg, title, type, onOk){
   if(inputWrap)inputWrap.style.display='none';
   if(cancelBtn)cancelBtn.style.display='none';
   if(confirmBtn){
-    confirmBtn.textContent = isTr ? 'Anladım' : 'Got it';
+    confirmBtn.textContent = isTr ? 'Anladım' : nxU('Got it');
     confirmBtn.className = 'btn btn-primary w-full';
   }
 
@@ -1610,7 +1624,7 @@ function nxShowAlert(msg, title, type, onOk){
     }
   }
 
-  if(titleEl)titleEl.textContent = title || (isTr ? 'Bilgilendirme' : 'Notice');
+  if(titleEl)titleEl.textContent = title || (isTr ? 'Bilgilendirme' : nxU('Notice'));
   if(msgEl)msgEl.textContent = msg || '';
 
   nxDialogCallback = onOk || null;
@@ -1645,10 +1659,10 @@ function nxShowPrompt(title, msg, defaultValue, onConfirm){
   }
   if(cancelBtn){
     cancelBtn.style.display='inline-flex';
-    cancelBtn.textContent = isTr ? 'İptal' : 'Cancel';
+    cancelBtn.textContent = isTr ? 'İptal' : nxU('Cancel');
   }
   if(confirmBtn){
-    confirmBtn.textContent = isTr ? 'Kaydet' : 'Save';
+    confirmBtn.textContent = isTr ? 'Kaydet' : nxU('Save');
     confirmBtn.className = 'btn btn-primary';
   }
 
@@ -1857,7 +1871,7 @@ function nxChangeEmailPrompt(){
   var cur='';
   try{ cur=localStorage.getItem('nexusCurrentUser')||''; }catch(e){}
   nxShowPrompt(
-    isTr?'E-posta Adresini Değiştir':'Change Email Address',
+    isTr?'E-posta Adresini Değiştir':nxU('Change Email Address'),
     isTr
       ? ('Mevcut adres: '+(cur||'—')+'. Yeni adrese bir doğrulama bağlantısı gönderilir; bağlantıyı onaylayana kadar girişte eski adres kullanılır.')
       : ('Current address: '+(cur||'—')+'. A confirmation link will be sent to the new address; the old one keeps working for sign-in until you confirm.'),
@@ -1868,8 +1882,8 @@ function nxChangeEmailPrompt(){
 
 function nxSubmitEmailChange(val){
   var isTr=document.documentElement.lang==='tr';
-  if(!val){ nxShowAlert(isTr?'Yeni e-posta adresini girin.':'Enter the new email address.',isTr?'Eksik bilgi':'Missing info','warning'); return; }
-  if(val.indexOf('@')<1 || !/^\\S+@\\S+\\.\\S+$/.test(val)){ nxShowAlert(isTr?'Geçerli bir e-posta adresi girin.':'Enter a valid email address.',isTr?'Geçersiz adres':'Invalid address','warning'); return; }
+  if(!val){ nxShowAlert(isTr?'Yeni e-posta adresini girin.':nxU('Enter the new email address.'),isTr?'Eksik bilgi':nxU('Missing info'),'warning'); return; }
+  if(val.indexOf('@')<1 || !/^\\S+@\\S+\\.\\S+$/.test(val)){ nxShowAlert(isTr?'Geçerli bir e-posta adresi girin.':nxU('Enter a valid email address.'),isTr?'Geçersiz adres':nxU('Invalid address'),'warning'); return; }
   var s=nxCloudSession();
   var cfg=nxCloudConfig();
   if(!s||!s.accessToken||!cfg.url||!cfg.anonKey){ nxAuthUnavailable(); return; }
@@ -1884,7 +1898,7 @@ function nxSubmitEmailChange(val){
   })
   .then(function(res){
     return res.json().then(function(data){
-      if(!res.ok){ throw new Error(data.msg||data.message||data.error_description||(isTr?'E-posta değiştirilemedi.':'Could not change the email.')); }
+      if(!res.ok){ throw new Error(data.msg||data.message||data.error_description||(isTr?'E-posta değiştirilemedi.':nxU('Could not change the email.'))); }
       return data;
     });
   })
@@ -1893,15 +1907,15 @@ function nxSubmitEmailChange(val){
       isTr
         ? ('Doğrulama bağlantısı '+val+' adresine gönderildi. Bağlantıya tıkladığında adresin değişir; o zamana kadar girişte eski adres geçerli kalır.')
         : ('A confirmation link was sent to '+val+'. Your address changes once you click it; until then the old address keeps working for sign-in.'),
-      isTr?'Bağlantı gönderildi':'Link sent','success');
+      isTr?'Bağlantı gönderildi':nxU('Link sent'),'success');
   })
   .catch(function(err){
     var msg=String((err&&err.message)||'');
     var text=msg;
-    if(/already registered|already been registered|already exists|duplicate/i.test(msg)) text=isTr?'Bu e-posta zaten bir hesaba bağlı.':'That email is already registered.';
-    else if(/not allowed|not authorized/i.test(msg)) text=isTr?'Bu e-posta sağlayıcısıyla kayıt yapılamıyor.':'Signups with this email provider are not allowed.';
-    else if(/oturum/i.test(msg)) text=isTr?'Oturum bulunamadı. Çıkış yapıp tekrar giriş yap.':'Session not found. Sign out and sign in again.';
-    nxShowAlert(text,isTr?'Değiştirilemedi':'Not changed','warning');
+    if(/already registered|already been registered|already exists|duplicate/i.test(msg)) text=isTr?'Bu e-posta zaten bir hesaba bağlı.':nxU('That email is already registered.');
+    else if(/not allowed|not authorized/i.test(msg)) text=isTr?'Bu e-posta sağlayıcısıyla kayıt yapılamıyor.':nxU('Signups with this email provider are not allowed.');
+    else if(/oturum/i.test(msg)) text=isTr?'Oturum bulunamadı. Çıkış yapıp tekrar giriş yap.':nxU('Session not found. Sign out and sign in again.');
+    nxShowAlert(text,isTr?'Değiştirilemedi':nxU('Not changed'),'warning');
   });
 }
 
@@ -1933,7 +1947,7 @@ function nxUpdateNavAuth(){
     nxFetchSyncedAvatar();
   }else{
     btn.classList.remove('logged-in');
-    label.textContent = isTr ? 'Giriş Yap' : 'Sign In';
+    label.textContent = isTr ? 'Giriş Yap' : nxU('Sign In');
     label.title = '';
     if(avatarWrap){
       avatarWrap.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg>';
@@ -1985,9 +1999,9 @@ function nxOpenAuthModal(){
     var planTag=document.getElementById('nxProfilePlanTag');
     if(planTag){
       planTag.classList.toggle('is-free', !plusActive);
-      if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : 'Free';
-      else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : 'NEXUS+ · Yearly';
-      else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : 'NEXUS+ · Monthly';
+      if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : nxU('Free');
+      else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : nxU('NEXUS+ · Yearly');
+      else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : nxU('NEXUS+ · Monthly');
       else planTag.textContent = 'NEXUS+';
     }
     var perksFree=document.getElementById('nxProfilePerksFree');
@@ -2017,8 +2031,8 @@ function nxEditProfileName(){
   var curName='';
   try{curName=nxFixMojibake(localStorage.getItem('nexusUserName')||'');}catch(e){}
   nxShowPrompt(
-    isTr ? 'İsmi Düzenle' : 'Edit Display Name',
-    isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:',
+    isTr ? 'İsmi Düzenle' : nxU('Edit Display Name'),
+    isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : nxU('Enter your new display name:'),
     curName,
     function(newName){
       if(!newName)return;
@@ -2038,11 +2052,11 @@ function nxCloudConfig(){
 }
 function nxAuthUnavailableMsg(){
   var isTr=document.documentElement.lang==='tr';
-  return isTr?'Hesap işlemleri bu sürümde kapalı (bulut yapılandırması yok). Uygulamayı indirip oradan giriş yapabilirsin.':'Account actions are off in this build (no cloud config). Download the app and sign in there.';
+  return isTr?'Hesap işlemleri bu sürümde kapalı (bulut yapılandırması yok). Uygulamayı indirip oradan giriş yapabilirsin.':nxU('Account actions are off in this build (no cloud config). Download the app and sign in there.');
 }
 function nxAuthUnavailable(){
   var isTr=document.documentElement.lang==='tr';
-  nxShowAlert(nxAuthUnavailableMsg(),isTr?'Kullanımda değil':'Not available','warning');
+  nxShowAlert(nxAuthUnavailableMsg(),isTr?'Kullanımda değil':nxU('Not available'),'warning');
 }
 
 function nxSendPasswordReset(){
@@ -2060,15 +2074,15 @@ function nxSendPasswordReset(){
   })
   .then(function(){
     nxShowAlert(
-      isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : 'Password reset link sent to your email ('+user+').',
-      isTr ? 'Bağlantı Gönderildi' : 'Reset Link Sent',
+      isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : nxU('Password reset link sent to your email ({0}).').replace('{0}',user),
+      isTr ? 'Bağlantı Gönderildi' : nxU('Reset Link Sent'),
       'success'
     );
   })
   .catch(function(){
     nxShowAlert(
-      isTr ? 'Şifre sıfırlama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' : 'Could not send reset email. Please try again later.',
-      isTr ? 'Hata' : 'Error',
+      isTr ? 'Şifre sıfırlama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' : nxU('Could not send reset email. Please try again later.'),
+      isTr ? 'Hata' : nxU('Error'),
       'warning'
     );
   });
@@ -2100,16 +2114,16 @@ function nxToggleAuthMode(){
 
   if(nxAuthMode==='login'){
     nxAuthMode='signup';
-    if(title)title.textContent=isTr?'Yeni Hesap Oluştur':'Create Account';
-    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':'Sign up free to control your home with zero lock-in.';
-    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':'Sign Up')+'</span>';
-    if(switchPrompt)switchPrompt.textContent=isTr?'Zaten hesabınız var mı? Giriş Yap':'Already have an account? Sign In';
+    if(title)title.textContent=isTr?'Yeni Hesap Oluştur':nxU('Create Account');
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':nxU('Sign up free to control your home with zero lock-in.');
+    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':nxU('Sign Up'))+'</span>';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Zaten hesabınız var mı? Giriş Yap':nxU('Already have an account? Sign In');
   }else{
     nxAuthMode='login';
-    if(title)title.textContent=isTr?'Tekrar Hoş Geldin':'Welcome Back';
-    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için giriş yap.':'Sign in to manage your smart home.';
-    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':'Sign In')+'</span>';
-    if(switchPrompt)switchPrompt.textContent=isTr?'Hesabın yok mu? Yeni Hesap Oluştur':"Don't have an account? Sign up";
+    if(title)title.textContent=isTr?'Tekrar Hoş Geldin':nxU('Welcome Back');
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için giriş yap.':nxU('Sign in to manage your smart home.');
+    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':nxU('Sign In'))+'</span>';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Hesabın yok mu? Yeni Hesap Oluştur':nxU("Don't have an account? Sign up");
   }
 }
 
@@ -2137,8 +2151,8 @@ function nxForgotPassword(){
   var isTr=document.documentElement.lang==='tr';
   var email=(document.getElementById('nxAuthEmail').value||'').trim();
   nxShowPrompt(
-    isTr ? 'Şifremi Unuttum' : 'Forgot Password',
-    isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : 'Enter your email address to receive a password reset link:',
+    isTr ? 'Şifremi Unuttum' : nxU('Forgot Password'),
+    isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : nxU('Enter your email address to receive a password reset link:'),
     email,
     function(inputEmail){
       if(!inputEmail)return;
@@ -2153,15 +2167,15 @@ function nxForgotPassword(){
       })
       .then(function(){
         nxShowAlert(
-          isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+inputEmail+').' : 'Password reset link sent to your email ('+inputEmail+').',
-          isTr ? 'Bağlantı Gönderildi' : 'Reset Link Sent',
+          isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+inputEmail+').' : nxU('Password reset link sent to your email ({0}).').replace('{0}',inputEmail),
+          isTr ? 'Bağlantı Gönderildi' : nxU('Reset Link Sent'),
           'success'
         );
       })
       .catch(function(){
         nxShowAlert(
-          isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : 'Could not send reset email.',
-          isTr ? 'Hata' : 'Error',
+          isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : nxU('Could not send reset email.'),
+          isTr ? 'Hata' : nxU('Error'),
           'warning'
         );
       });
@@ -2208,13 +2222,13 @@ function nxSubmitRecovery(e){
   function fail(msg){
     if(alertEl){alertEl.textContent=msg;alertEl.style.display='block';}
   }
-  if(!nxRecoveryToken){fail(isTr?'Sıfırlama bağlantısı geçersiz. Yeni bir bağlantı isteyin.':'This reset link is invalid. Please request a new one.');return;}
-  if(a.length<6){fail(isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.');return;}
-  if(a!==b){fail(isTr?'Şifreler eşleşmiyor.':'Passwords do not match.');return;}
+  if(!nxRecoveryToken){fail(isTr?'Sıfırlama bağlantısı geçersiz. Yeni bir bağlantı isteyin.':nxU('This reset link is invalid. Please request a new one.'));return;}
+  if(a.length<6){fail(isTr?'Şifre en az 6 karakter olmalıdır.':nxU('Password must be at least 6 characters.'));return;}
+  if(a!==b){fail(isTr?'Şifreler eşleşmiyor.':nxU('Passwords do not match.'));return;}
   if(!cfg.url||!cfg.anonKey){fail(nxAuthUnavailableMsg());return;}
 
   var origText=btn?btn.innerHTML:'';
-  if(btn){btn.disabled=true;btn.innerHTML=isTr?'Kaydediliyor…':'Saving…';}
+  if(btn){btn.disabled=true;btn.innerHTML=isTr?'Kaydediliyor…':nxU('Saving…');}
   if(alertEl)alertEl.style.display='none';
 
   fetch(cfg.url+'/auth/v1/user',{
@@ -2229,7 +2243,7 @@ function nxSubmitRecovery(e){
   .then(function(res){
     return res.json().then(function(data){
       if(!res.ok){
-        throw new Error(data.msg||data.message||data.error_description||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+        throw new Error(data.msg||data.message||data.error_description||(isTr?'Şifre kaydedilemedi.':nxU('Could not save the password.')));
       }
       return data;
     });
@@ -2250,17 +2264,17 @@ function nxSubmitRecovery(e){
     nxCloseAuthModal();
     nxUpdateNavAuth();
     nxShowAlert(
-      isTr?'Şifreniz güncellendi ve hesabınıza giriş yapıldı.':'Your password has been updated and you are signed in.',
-      isTr?'Şifre Güncellendi':'Password Updated',
+      isTr?'Şifreniz güncellendi ve hesabınıza giriş yapıldı.':nxU('Your password has been updated and you are signed in.'),
+      isTr?'Şifre Güncellendi':nxU('Password Updated'),
       'success'
     );
   })
   .catch(function(err){
     if(btn){btn.disabled=false;btn.innerHTML=origText;}
     var msg=String((err&&err.message)||'');
-    if(/expired|invalid|jwt/i.test(msg))msg=isTr?'Bağlantının süresi dolmuş. Yeni bir sıfırlama bağlantısı isteyin.':'This link has expired. Please request a new reset link.';
-    else if(/same|different/i.test(msg))msg=isTr?'Yeni şifre eskisinden farklı olmalı.':'The new password must be different from the old one.';
-    fail(msg||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+    if(/expired|invalid|jwt/i.test(msg))msg=isTr?'Bağlantının süresi dolmuş. Yeni bir sıfırlama bağlantısı isteyin.':nxU('This link has expired. Please request a new reset link.');
+    else if(/same|different/i.test(msg))msg=isTr?'Yeni şifre eskisinden farklı olmalı.':nxU('The new password must be different from the old one.');
+    fail(msg||(isTr?'Şifre kaydedilemedi.':nxU('Could not save the password.')));
   });
 }
 
@@ -2276,7 +2290,7 @@ function nxSubmitAuth(e){
 
   btn.disabled=true;
   var origText=btn.innerHTML;
-  btn.innerHTML=isTr?'İşleniyor…':'Processing…';
+  btn.innerHTML=isTr?'İşleniyor…':nxU('Processing…');
   if(alertEl)alertEl.style.display='none';
 
   var SUPABASE_URL=nxCloudConfig().url;
@@ -2315,8 +2329,8 @@ function nxSubmitAuth(e){
       /* E-posta doğrulaması açık: oturum yok. Kullanıcıyı giriş yapmış gibi
          göstermek yanıltıcıydı; doğrulama bağlantısına yönlendiriyoruz. */
       nxShowAlert(
-        isTr ? 'Kayıt alındı. Giriş yapabilmek için e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.' : 'Account created. Click the verification link we sent to your email to sign in.',
-        isTr ? 'E-postanızı Kontrol Edin' : 'Check Your Email',
+        isTr ? 'Kayıt alındı. Giriş yapabilmek için e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.' : nxU('Account created. Click the verification link we sent to your email to sign in.'),
+        isTr ? 'E-postanızı Kontrol Edin' : nxU('Check Your Email'),
         'success'
       );
       return;
@@ -2347,11 +2361,11 @@ function nxSubmitAuth(e){
     if(alertEl){
       var msg=err.message||'';
       if(/invalid login credentials/i.test(msg)){
-        msg=isTr?'E-posta adresi veya şifre hatalı.':'Invalid email or password.';
+        msg=isTr?'E-posta adresi veya şifre hatalı.':nxU('Invalid email or password.');
       }else if(/already registered/i.test(msg)){
-        msg=isTr?'Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.':'This email is already registered. Please sign in.';
+        msg=isTr?'Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.':nxU('This email is already registered. Please sign in.');
       }else if(/Password should be at least/i.test(msg)){
-        msg=isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.';
+        msg=isTr?'Şifre en az 6 karakter olmalıdır.':nxU('Password must be at least 6 characters.');
       }
       alertEl.textContent=msg;
       alertEl.style.display='block';
@@ -2394,10 +2408,10 @@ function nxSetBilling(period){
 
   if(isYearly){
     if(priceVal)priceVal.textContent=bundle.price.perMonthOfYear;
-    if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':'/mo, billed yearly';
+    if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':nxU('/mo, billed yearly');
     if(priceNote)priceNote.textContent=isTr
       ? ('Yıllık ' + bundle.price.yearly + ' olarak faturalandırılır (%' + bundle.save + ' tasarruf)')
-      : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
+      : nxU('Billed as {0}/yr (Save {1}%)').replace('{0}', bundle.price.yearly).replace('{1}', bundle.save);
     if(cta){
       cta.dataset.plan=isYearly?cta.dataset.yearlyPlan:cta.dataset.monthlyPlan;
       if(cta.dataset.yearlyUrl && isYearly)cta.href=cta.dataset.yearlyUrl;
@@ -2406,8 +2420,8 @@ function nxSetBilling(period){
     }
   }else{
     if(priceVal)priceVal.textContent=bundle.price.monthly;
-    if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
-    if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
+    if(periodVal)periodVal.textContent=isTr?'/ay':nxU('/mo');
+    if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':nxU('Billed monthly');
     if(cta){
       cta.dataset.plan=cta.dataset.monthlyPlan;
       if(cta.dataset.monthlyUrl)cta.href=cta.dataset.monthlyUrl;
@@ -2448,7 +2462,7 @@ function nxRequireAccountForCheckout(){
   var sub=document.getElementById('nxAuthSubtitle');
   if(sub) sub.textContent=isTr
     ? 'NEXUS+ aboneliği hesabına tanımlanır. Önce ücretsiz hesap oluştur ya da giriş yap, sonra ödemeye geç.'
-    : 'NEXUS+ is attached to your account. Create a free account or sign in first, then continue to checkout.';
+    : nxU('NEXUS+ is attached to your account. Create a free account or sign in first, then continue to checkout.');
 }
 function nxCloseCheckout(){
   var modal=document.getElementById('nxCheckoutModal');
@@ -2477,11 +2491,11 @@ function nxLoadBilling(action){
   var session=nxCloudSession();
   var cfg=nxCloudConfig();
   if(!session||!session.accessToken||!cfg.url||!cfg.anonKey){
-    if(status) status.textContent=isTr?'Aboneliği görmek için yeniden giriş yap.':'Sign in again to see the subscription.';
+    if(status) status.textContent=isTr?'Aboneliği görmek için yeniden giriş yap.':nxU('Sign in again to see the subscription.');
     if(cancelBtn) cancelBtn.style.display='none';
     return;
   }
-  if(status) status.textContent=isTr?'Yükleniyor…':'Loading…';
+  if(status) status.textContent=isTr?'Yükleniyor…':nxU('Loading…');
   fetch(cfg.url+'/functions/v1/whop-account',{
     method:'POST',
     headers:{ Authorization:'Bearer '+session.accessToken, apikey:cfg.anonKey, 'Content-Type':'application/json' },
@@ -2490,17 +2504,17 @@ function nxLoadBilling(action){
     return r.json().then(function(d){ return { ok:r.ok, d:d }; });
   }).then(function(res){
     if(!res.ok){
-      if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+      if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':nxU('Could not load the subscription.');
       if(cancelBtn) cancelBtn.style.display='none';
       return;
     }
     var m=res.d.membership;
     if(!m){
-      if(status) status.textContent=isTr?'Bu hesapta NEXUS+ aboneliği yok.':'This account has no NEXUS+ subscription.';
+      if(status) status.textContent=isTr?'Bu hesapta NEXUS+ aboneliği yok.':nxU('This account has no NEXUS+ subscription.');
       if(cancelBtn) cancelBtn.style.display='none';
     }else{
       var when=m.periodEnd ? new Date(m.periodEnd).toLocaleDateString(isTr?'tr-TR':'en-US') : '';
-      if(status) status.textContent=(m.plan||'NEXUS+')+(m.cancelAtPeriodEnd?(isTr?' · dönem sonunda bitecek':' · ends at period end'):'')+(when?(isTr?' · yenileme ':' · renews ')+when:'');
+      if(status) status.textContent=(m.plan||'NEXUS+')+(m.cancelAtPeriodEnd?(isTr?' · dönem sonunda bitecek':nxU(' · ends at period end')):'')+(when?(isTr?' · yenileme ':nxU(' · renews '))+when:'');
       if(cancelBtn) cancelBtn.style.display=m.cancelAtPeriodEnd?'none':'flex';
     }
     if(pays){
@@ -2512,7 +2526,7 @@ function nxLoadBilling(action){
       });
     }
   }).catch(function(){
-    if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+    if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':nxU('Could not load the subscription.');
   });
 }
 
@@ -2805,8 +2819,8 @@ document.addEventListener('DOMContentLoaded',function(){
         nxShowAlert(
           isTr
             ? 'NEXUS+ ayrıcalıklarınız hesabınıza başarıyla tanımlandı. Uygulamayı indirip giriş yaparak tüm özelliklerin ve NEXUS AI yapay zekâsının tadını çıkarabilirsiniz.'
-            : 'Your NEXUS+ privileges are now active on your account. Download the app and sign in to enjoy all premium features and NEXUS AI.',
-          isTr ? 'Aboneliğiniz Başlatıldı!' : 'Subscription Activated!',
+            : nxU('Your NEXUS+ privileges are now active on your account. Download the app and sign in to enjoy all premium features and NEXUS AI.'),
+          isTr ? 'Aboneliğiniz Başlatıldı!' : nxU('Subscription Activated!'),
           'success',
           function(){
             var dl = document.getElementById('downloads');
@@ -2817,16 +2831,16 @@ document.addEventListener('DOMContentLoaded',function(){
         nxShowAlert(
           isTr
             ? 'Ödeme işlemi tamamlanamadı veya kartınız onaylanmadı. Lütfen kart bilgilerinizi kontrol edip tekrar deneyin veya bankanızla görüşün.'
-            : 'Payment could not be completed. Please check your card information and try again, or contact your issuing bank.',
-          isTr ? 'Ödeme Gerçekleştirilemedi' : 'Payment Failed',
+            : nxU('Payment could not be completed. Please check your card information and try again, or contact your issuing bank.'),
+          isTr ? 'Ödeme Gerçekleştirilemedi' : nxU('Payment Failed'),
           'warning'
         );
       } else if(payStatus === 'cancel' || payStatus === 'canceled' || payStatus === 'cancelled'){
         nxShowAlert(
           isTr
             ? 'Ödeme adımı tamamlanmadan sonlandırıldı. İstediğiniz zaman planınızı seçip ücretsiz denemenizi başlatabilirsiniz.'
-            : 'Checkout was not completed. You can start your free trial whenever you are ready.',
-          isTr ? 'Ödeme İptal Edildi' : 'Checkout Canceled',
+            : nxU('Checkout was not completed. You can start your free trial whenever you are ready.'),
+          isTr ? 'Ödeme İptal Edildi' : nxU('Checkout Canceled'),
           'info'
         );
       }
@@ -3166,7 +3180,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var topBtn = document.createElement('button');
     topBtn.type = 'button';
     topBtn.className = 'nx-to-top';
-    topBtn.setAttribute('aria-label', tr ? 'Sayfa başına dön' : 'Back to top');
+    topBtn.setAttribute('aria-label', tr ? 'Sayfa başına dön' : nxU('Back to top'));
     topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
     document.body.appendChild(topBtn);
     topBtn.addEventListener('click', function(){
@@ -3202,7 +3216,7 @@ document.addEventListener('DOMContentLoaded',function(){
           card.classList.add('dl-you');
           var badge = document.createElement('span');
           badge.className = 'dl-you-badge';
-          badge.textContent = tr ? 'Sizin için' : 'For you';
+          badge.textContent = tr ? 'Sizin için' : nxU('For you');
           card.appendChild(badge);
         });
       }
@@ -3281,11 +3295,11 @@ function renderHeader(c, currentPath = '') {
     return `<a href="${href}" class="lang-btn" onclick="nxSetLang('${l}')" lang="${l}" hreflang="${l}">${langFlag(l)}<span>${langName(l)}</span><small>${lUpper}</small></a>`;
   }).join('');
 
-  return `<a class="skip" href="#main">${isTr ? 'İçeriğe geç' : 'Skip to content'}</a>
+  return `<script>window.nxUi=${clientUi()};window.nxU=function(k){var d=window.nxUi;return (d&&d[k])||k};</script><a class="skip" href="#main">${isTr ? 'İçeriğe geç' : tx('Skip to content')}</a>
 <header class="hd">
   <div class="wrap">
     <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
-    <nav class="nav" aria-label="${isTr ? 'Ana menü' : 'Main menu'}">
+    <nav class="nav" aria-label="${isTr ? 'Ana menü' : tx('Main menu')}">
       ${c.nav
         .map(([href, label]) => {
           const h = currentPath && href.startsWith('#') ? c.canonical + href : href;
@@ -3294,16 +3308,16 @@ function renderHeader(c, currentPath = '') {
         .join('\n      ')}
     </nav>
     <div class="nav-controls">
-      <a class="gh-link" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener" aria-label="${isTr ? 'GitHub deposu' : 'GitHub repository'}" title="${isTr ? "Kaynak kodu GitHub'da" : 'Source on GitHub'}">${icon('github')}</a>
+      <a class="gh-link" href="https://github.com/Enard52/NEXUS" target="_blank" rel="noopener" aria-label="${isTr ? 'GitHub deposu' : tx('GitHub repository')}" title="${isTr ? "Kaynak kodu GitHub'da" : tx('Source on GitHub')}">${icon('github')}</a>
       <details class="lang-switch">
-        <summary aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">${langFlag(c.lang).replace(' loading="lazy"', '')}${c.lang.toUpperCase()}<svg class="lang-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-        <div class="lang-menu" role="group" aria-label="${isTr ? 'Dil seçimi' : 'Language selection'}">${langBtns}</div>
+        <summary aria-label="${isTr ? 'Dil seçimi' : tx('Language selection')}">${langFlag(c.lang).replace(' loading="lazy"', '')}${c.lang.toUpperCase()}<svg class="lang-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <div class="lang-menu" role="group" aria-label="${isTr ? 'Dil seçimi' : tx('Language selection')}">${langBtns}</div>
       </details>
-      <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="${isTr ? 'Giriş Yap veya Hesap' : 'Sign In or Account'}">
+      <button class="nx-auth-btn" id="nxNavAuthBtn" onclick="nxOpenAuthModal()" aria-label="${isTr ? 'Giriş Yap veya Hesap' : tx('Sign In or Account')}">
         <span id="nxNavAuthAvatar"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg></span>
-        <span id="nxNavAuthLabel" class="nx-nav-label">${isTr ? 'Giriş Yap' : 'Sign In'}</span>
+        <span id="nxNavAuthLabel" class="nx-nav-label">${isTr ? 'Giriş Yap' : tx('Sign In')}</span>
       </button>
-      <button class="theme-t" onclick="nxToggleTheme()" aria-label="${isTr ? 'Tema değiştir' : 'Toggle theme'}" title="${isTr ? 'Karanlık/Aydınlık Tema' : 'Toggle theme'}">
+      <button class="theme-t" onclick="nxToggleTheme()" aria-label="${isTr ? 'Tema değiştir' : tx('Toggle theme')}" title="${isTr ? 'Karanlık/Aydınlık Tema' : tx('Toggle theme')}">
         <span class="ic-sun">${icon('sun')}</span>
         <span class="ic-moon">${icon('moon')}</span>
       </button>
@@ -3320,14 +3334,14 @@ function renderHero(c, hasShots) {
   // acildigi icin hero'da "Cihaz bulunamadi" hata karti gorunuyordu (olculdu).
   const shots = hasShots
     ? [
-        { file: 'home', label: isTr ? 'Ana Ekran' : 'Home Screen', short: isTr ? 'Ana Ekran' : 'Home' },
-        { file: 'pair', label: isTr ? 'Cihaz Ekleme Merkezi' : 'Add-Device Hub', short: isTr ? 'Cihaz Ekle' : 'Add' },
-        { file: 'energy', label: isTr ? 'AI Enerji Tasarrufu' : 'AI Energy Saving', short: isTr ? 'Enerji' : 'Energy' },
-        { file: 'smart', label: isTr ? 'Akıllı Senaryolar' : 'Smart Automations', short: isTr ? 'Senaryolar' : 'Automations' },
-        { file: 'chat', label: isTr ? 'NEXUS AI Asistan' : 'NEXUS AI Assistant', short: isTr ? 'AI Sohbet' : 'AI Chat' },
-        { file: 'lighting', label: isTr ? 'Aydınlatma Ustası' : 'Lighting Master', short: isTr ? 'Aydınlatma' : 'Lighting' },
-        { file: 'scenes', label: isTr ? 'Film Modu' : 'Movie Mode', short: isTr ? 'Sinema' : 'Scenes' },
-        { file: 'settings', label: isTr ? 'Ayarlar' : 'Settings', short: isTr ? 'Ayarlar' : 'Settings' },
+        { file: 'home', label: isTr ? 'Ana Ekran' : tx('Home Screen'), short: isTr ? 'Ana Ekran' : tx('Home') },
+        { file: 'pair', label: isTr ? 'Cihaz Ekleme Merkezi' : tx('Add-Device Hub'), short: isTr ? 'Cihaz Ekle' : tx('Add') },
+        { file: 'energy', label: isTr ? 'AI Enerji Tasarrufu' : tx('AI Energy Saving'), short: isTr ? 'Enerji' : tx('Energy') },
+        { file: 'smart', label: isTr ? 'Akıllı Senaryolar' : tx('Smart Automations'), short: isTr ? 'Senaryolar' : tx('Automations') },
+        { file: 'chat', label: isTr ? 'NEXUS AI Asistan' : tx('NEXUS AI Assistant'), short: isTr ? 'AI Sohbet' : tx('AI Chat') },
+        { file: 'lighting', label: isTr ? 'Aydınlatma Ustası' : tx('Lighting Master'), short: isTr ? 'Aydınlatma' : tx('Lighting') },
+        { file: 'scenes', label: isTr ? 'Film Modu' : tx('Movie Mode'), short: isTr ? 'Sinema' : tx('Scenes') },
+        { file: 'settings', label: isTr ? 'Ayarlar' : tx('Settings'), short: isTr ? 'Ayarlar' : tx('Settings') },
       ]
     : [];
 
@@ -3357,20 +3371,20 @@ function renderHero(c, hasShots) {
         ? `
     <div class="phone-wrapper rv">
       <div class="phone-glow" aria-hidden="true"></div>
-      <div class="phone-case" id="phoneMockup" title="${isTr ? 'NEXUS ekranları' : 'NEXUS screens'}">
+      <div class="phone-case" id="phoneMockup" title="${isTr ? 'NEXUS ekranları' : tx('NEXUS screens')}">
         <div class="phone-inner-screen">
           <div class="phone-island">
             <span class="island-camera"></span>
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
+            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : tx('en/')}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
         </div>
       </div>
-      <span id="phonePreviewNote" class="sr-only">${isTr ? 'NEXUS arayüz ekranları' : 'NEXUS interface screens'}</span>
+      <span id="phonePreviewNote" class="sr-only">${isTr ? 'NEXUS arayüz ekranları' : tx('NEXUS interface screens')}</span>
     </div>`
         : ''
     }
@@ -3427,30 +3441,30 @@ function integrationGroups(c) {
   if (brands('all').length) {
     groups.push({
       kind: 'http',
-      kicker: isTr ? 'HTTP · her yüzey' : 'HTTP · every surface',
-      title: isTr ? 'Yerel HTTP' : 'Local HTTP',
+      kicker: isTr ? 'HTTP · her yüzey' : tx('HTTP · every surface'),
+      title: isTr ? 'Yerel HTTP' : tx('Local HTTP'),
       hint: isTr
         ? 'Masaüstü programı ve Android uygulaması aynı bağlayıcıları kullanır. Cihazın kendi HTTP arayüzüne, senin ağından.'
-        : 'The desktop program and the Android app share these connectors. Straight to the device HTTP API on your LAN.',
+        : tx('The desktop program and the Android app share these connectors. Straight to the device HTTP API on your LAN.'),
       items: brands('all'),
     });
   }
   if (brands('desktop').length) {
     groups.push({
       kind: 'desktop',
-      kicker: isTr ? 'Masaüstü programında ekstra' : 'Extra on the desktop program',
-      title: isTr ? 'Masaüstünde yerel TCP' : 'Local TCP on desktop',
+      kicker: isTr ? 'Masaüstü programında ekstra' : tx('Extra on the desktop program'),
+      title: isTr ? 'Masaüstünde yerel TCP' : tx('Local TCP on desktop'),
       hint: isTr
         ? 'Windows ve Linux programı yukarıdaki HTTP markalarının hepsini çalıştırır; buna yerel TCP/UDP ile aşağıdaki markalar eklenir. Android uygulamasında HTTP listesi durur. Hesap, anahtar ya da sunucu bilgisi gerekmez.'
-        : 'The Windows and Linux programs run every HTTP brand above, and add the brands below over local TCP or UDP. The Android app keeps the HTTP list. No account, key or server details are needed.',
+        : tx('The Windows and Linux programs run every HTTP brand above, and add the brands below over local TCP or UDP. The Android app keeps the HTTP list. No account, key or server details are needed.'),
       items: brands('desktop'),
     });
   }
   if (brands('soon').length) {
     groups.push({
       kind: 'soon',
-      kicker: isTr ? 'Yakında' : 'Coming soon',
-      title: isTr ? 'Doğrudan bağlayıcı yakında' : 'Direct connector coming soon',
+      kicker: isTr ? 'Yakında' : tx('Coming soon'),
+      title: isTr ? 'Doğrudan bağlayıcı yakında' : tx('Direct connector coming soon'),
       hint: '',
       items: brands('soon'),
     });
@@ -3489,18 +3503,18 @@ function renderIntegrations(c) {
     </div>
     <div class="int-note int-bridge rv">
       <div>
-        <p class="int-bridge-kicker">${icon('layers')} ${isTr ? 'Köprü ile eklenenler' : 'Added through a bridge'}</p>
-        <h3>${isTr ? 'Matter ve Zigbee' : 'Matter and Zigbee'}</h3>
+        <p class="int-bridge-kicker">${icon('layers')} ${isTr ? 'Köprü ile eklenenler' : tx('Added through a bridge')}</p>
+        <h3>${isTr ? 'Matter ve Zigbee' : tx('Matter and Zigbee')}</h3>
         <p>${isTr
           ? 'NEXUS’ta doğrudan Matter veya Zigbee bağlayıcısı yok. Bu cihazlar kendi Home Assistant sunucuna eklenir; NEXUS o sunucuyla yerel ağında konuşur.'
-          : 'NEXUS has no direct Matter or Zigbee connector. Those devices join your own Home Assistant server; NEXUS talks to that server on your LAN.'}</p>
+          : tx('NEXUS has no direct Matter or Zigbee connector. Those devices join your own Home Assistant server; NEXUS talks to that server on your LAN.')}</p>
       </div>
       <ul class="int-bridge-points">
-        <li>${getBrandLogo('Matter')}<span><b>Matter / Zigbee</b> — ${isTr ? 'yalnızca kendi Home Assistant sunucun üzerinden' : 'only through your own Home Assistant server'}</span></li>
-        <li>${icon('wifi')}<span><b>${isTr ? 'Diğer markalar' : 'Other brands'}</b> — ${isTr ? 'doğrudan yerel ağ, üretici bulutu yok' : 'direct LAN, no vendor cloud in the path'}</span></li>
+        <li>${getBrandLogo('Matter')}<span><b>Matter / Zigbee</b> — ${isTr ? 'yalnızca kendi Home Assistant sunucun üzerinden' : tx('only through your own Home Assistant server')}</span></li>
+        <li>${icon('wifi')}<span><b>${isTr ? 'Diğer markalar' : tx('Other brands')}</b> — ${isTr ? 'doğrudan yerel ağ, üretici bulutu yok' : tx('direct LAN, no vendor cloud in the path')}</span></li>
       </ul>
     </div>
-    <button type="button" class="int-more" onclick="nxOpenContactModal('${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}')">${esc(c.integrations.more)} ${icon('arrow')}</button>
+    <button type="button" class="int-more" onclick="nxOpenContactModal('${isTr ? 'Cihaz & Bağlayıcı İsteği' : tx('Connector Request')}')">${esc(c.integrations.more)} ${icon('arrow')}</button>
   </div>
 </section>`;
 }
@@ -3521,13 +3535,13 @@ function renderPricing(c) {
 
     <!-- Aylık / Yıllık Geçiş Düğmesi -->
     <div class="billing-toggle-wrap rv">
-      <div class="billing-toggle" role="group" aria-label="${isTr ? 'Faturalandırma dönemi' : 'Billing period'}">
+      <div class="billing-toggle" role="group" aria-label="${isTr ? 'Faturalandırma dönemi' : tx('Billing period')}">
         <button id="billingMonthly" class="billing-btn active" onclick="nxSetBilling('monthly')">
-          ${isTr ? 'Aylık' : 'Monthly'}
+          ${isTr ? 'Aylık' : tx('Monthly')}
         </button>
         <button id="billingYearly" class="billing-btn" onclick="nxSetBilling('yearly')">
-          ${isTr ? 'Yıllık' : 'Yearly'}
-          <span class="save-badge">${isTr ? `%${save} Tasarruf` : `Save ${save}%`}</span>
+          ${isTr ? 'Yıllık' : tx('Yearly')}
+          <span class="save-badge">${isTr ? `%${save} Tasarruf` : tx('Save {0}%').replace('{0}', save)}</span>
         </button>
       </div>
     </div>
@@ -3535,11 +3549,11 @@ function renderPricing(c) {
     <div class="plans">
       <!-- 1. Ücretsiz Plan -->
       <div class="plan rv">
-        <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">${isTr ? 'Temel Başlangıç' : 'Starter'}</span>
+        <span class="plan-badge" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border)">${isTr ? 'Temel Başlangıç' : tx('Starter')}</span>
         <div class="plan-head">
           <h3>${esc(c.pricing.plans[0].name)}</h3>
           <div class="price">${c.pricing.plans[0].price} <small>/ ${esc(c.pricing.plans[0].period)}</small></div>
-          <p class="price-note">${isTr ? 'Cihaz veya oda sınırı yok' : 'No device or room limits'}</p>
+          <p class="price-note">${isTr ? 'Cihaz veya oda sınırı yok' : tx('No device or room limits')}</p>
         </div>
         <ul>
           ${c.pricing.plans[0].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
@@ -3552,8 +3566,8 @@ function renderPricing(c) {
         <span class="plan-badge">${esc(c.pricing.plans[1].badge)}</span>
         <div class="plan-head">
           <h3>${esc(c.pricing.plans[1].name)}</h3>
-          <div class="price"><span id="planPriceVal">${p.monthly}</span> <small id="planPeriodVal">${isTr ? '/ay' : '/mo'}</small></div>
-          <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : 'Billed monthly'}</p>
+          <div class="price"><span id="planPriceVal">${p.monthly}</span> <small id="planPeriodVal">${isTr ? '/ay' : tx('/mo')}</small></div>
+          <p class="price-note" id="planPriceNote">${isTr ? 'Aylık faturalandırma' : tx('Billed monthly')}</p>
         </div>
         <ul>
           ${c.pricing.plans[1].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
@@ -3569,7 +3583,7 @@ function renderPricing(c) {
         <div class="plan-head">
           <h3>${esc(c.pricing.plans[2].name)}</h3>
           <div class="price">${esc(c.pricing.plans[2].price)} <small>/ ${esc(c.pricing.plans[2].period)}</small></div>
-          <p class="price-note">${isTr ? 'Tüm aile fertleri için hazır' : 'Ready for the whole family'}</p>
+          <p class="price-note">${isTr ? 'Tüm aile fertleri için hazır' : tx('Ready for the whole family')}</p>
         </div>
         <ul>
           ${c.pricing.plans[2].features.map((f) => `<li>${icon('check')}${esc(f)}</li>`).join('\n          ')}
@@ -3596,7 +3610,7 @@ function renderDownloads(c) {
     linux: 'SHA256SUMS-Linux.txt',
     android: 'NEXUS-Android.apk.sha256.txt',
   };
-  const sumsLabel = c.lang === 'tr' ? 'Sağlama değerini gör' : 'View the published checksum';
+  const sumsLabel = c.lang === 'tr' ? 'Sağlama değerini gör' : tx('View the published checksum');
   return `<section id="downloads">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.downloads.heading)}</h2><p>${esc(c.downloads.lead)}</p></div>
@@ -3616,9 +3630,9 @@ function renderDownloads(c) {
         </div>
         ${
           plat === 'windows'
-            ? `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? "EXE olarak indir" : 'Download the .exe'}</a>
-        <a class="dl-sums" style="display:block;margin-top:10px;text-align:center" href="${c.lang === 'tr' ? WINDOWS_STORE_URL_TR : WINDOWS_STORE_URL}" target="_blank" rel="noopener">${c.lang === 'tr' ? "Microsoft Store'dan indir" : 'Get it from Microsoft Store'}</a>`
-            : `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : 'Download'}</a>`
+            ? `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? "EXE olarak indir" : tx('Download the .exe')}</a>
+        <a class="dl-sums" style="display:block;margin-top:10px;text-align:center" href="${c.lang === 'tr' ? WINDOWS_STORE_URL_TR : WINDOWS_STORE_URL}" target="_blank" rel="noopener">${c.lang === 'tr' ? "Microsoft Store'dan indir" : tx('Get it from Microsoft Store')}</a>`
+            : `<a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : tx('Download')}</a>`
         }
       </div>`
         )
@@ -3626,13 +3640,13 @@ function renderDownloads(c) {
     </div>
     <p class="dl-note">${esc(c.downloads.smartScreenNote)}</p>
     <div class="dl-chips">
-      <a class="dl-chip" href="${INSTALLER_REPO}" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'macOS kurucusu (.dmg / .zip) kurulum deposunda' : 'The macOS installer (.dmg / .zip) is in the installer repository'}">${LOGO_APPLE}macOS</a>
+      <a class="dl-chip" href="${INSTALLER_REPO}" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'macOS kurucusu (.dmg / .zip) kurulum deposunda' : tx('The macOS installer (.dmg / .zip) is in the installer repository')}">${LOGO_APPLE}macOS</a>
       <a class="dl-chip" href="${DL_BASE}/NEXUS-linux.AppImage">${LOGO_LINUX}Linux AppImage</a>
       <a class="dl-chip" href="${DL_BASE}/NEXUS-linux.rpm">${LOGO_LINUX}Linux .rpm</a>
       <a class="dl-chip" href="${DL_BASE}/NEXUS-linux-arm64.AppImage">${LOGO_RPI}Linux ARM64 (Raspberry Pi)</a>
-      <a class="dl-chip" href="${INSTALLER_REPO}" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'iPhone paketi kurulum deposunda; ücretsiz Apple ID ile yüklenir' : 'The iPhone package is in the installer repository; install it with a free Apple ID'}">${LOGO_APPLE}iPhone</a>
+      <a class="dl-chip" href="${INSTALLER_REPO}" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'iPhone paketi kurulum deposunda; ücretsiz Apple ID ile yüklenir' : tx('The iPhone package is in the installer repository; install it with a free Apple ID')}">${LOGO_APPLE}iPhone</a>
     </div>
-    <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'Tüm kurucular, SHA-256 dosyaları ve güncelleme listeleri bu depoda' : 'Every installer, SHA-256 file and updater manifest lives in this repository'}">${icon('github')}${c.lang === 'tr' ? 'Kurulum deposunu gör' : 'View the installer repository'}</a></div>
+    <div class="dl-gh"><a class="btn btn-ghost" href="https://github.com/Enard52/nexus-releases" target="_blank" rel="noopener" title="${c.lang === 'tr' ? 'Tüm kurucular, SHA-256 dosyaları ve güncelleme listeleri bu depoda' : tx('Every installer, SHA-256 file and updater manifest lives in this repository')}">${icon('github')}${c.lang === 'tr' ? 'Kurulum deposunu gör' : tx('View the installer repository')}</a></div>
   </div>
 </section>`;
 }
@@ -3704,8 +3718,8 @@ function renderFooter(c) {
         <a class="logo" href="${c.canonical}">${brand.logoSvg}<span>NEXUS</span></a>
         <p>${esc(c.footer.tagline)}</p>
         <div class="ft-trust-row">
-          <span class="ft-trust-pill"><span class="ft-status-dot"></span>${c.lang === 'tr' ? '%100 Yerel Kontrol' : '100% Local Control'}</span>
-          <span class="ft-trust-pill">${icon('shield')}${c.lang === 'tr' ? 'Sıfır Bulut Bağımlılığı' : 'Zero Cloud Dependency'}</span>
+          <span class="ft-trust-pill"><span class="ft-status-dot"></span>${c.lang === 'tr' ? '%100 Yerel Kontrol' : tx('100% Local Control')}</span>
+          <span class="ft-trust-pill">${icon('shield')}${c.lang === 'tr' ? 'Sıfır Bulut Bağımlılığı' : tx('Zero Cloud Dependency')}</span>
         </div>
       </div>
       <div class="ft-links-group">
@@ -3726,50 +3740,50 @@ function renderContactModal(c) {
   return `
 <div id="nxContactModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseContactModal()" role="dialog" aria-modal="true" aria-labelledby="nxContactTitle">
   <div class="nx-modal-card">
-    <button class="nx-modal-close" onclick="nxCloseContactModal()" aria-label="${isTr ? 'Kapat' : 'Close'}">&times;</button>
+    <button class="nx-modal-close" onclick="nxCloseContactModal()" aria-label="${isTr ? 'Kapat' : tx('Close')}">&times;</button>
     
     <!-- Marka Rozeti & Başlık (Giriş Modülü ile Birebir Marka Kimliği) -->
     <div class="nx-auth-brand-badge">
       <div class="nx-app-logo">${brand.logoSvg}</div>
-      <h3 id="nxContactTitle">${isTr ? 'NEXUS Destek & İletişim' : 'NEXUS Support & Inquiries'}</h3>
-      <p id="nxContactSubtitle">${isTr ? 'Teknik destek, cihaz entegrasyonu ve tüm sorularınız için doğrudan ekibimize yazın.' : 'Reach out for technical inquiries, device connectors, and questions.'}</p>
+      <h3 id="nxContactTitle">${isTr ? 'NEXUS Destek & İletişim' : tx('NEXUS Support & Inquiries')}</h3>
+      <p id="nxContactSubtitle">${isTr ? 'Teknik destek, cihaz entegrasyonu ve tüm sorularınız için doğrudan ekibimize yazın.' : tx('Reach out for technical inquiries, device connectors, and questions.')}</p>
     </div>
 
-    <form id="nxContactForm" onsubmit="nxSubmitContact(event)" data-sending="${isTr ? 'Gönderiliyor…' : 'Sending…'}">
+    <form id="nxContactForm" onsubmit="nxSubmitContact(event)" data-sending="${isTr ? 'Gönderiliyor…' : tx('Sending…')}">
       <div class="nx-auth-field-wrap">
-        <label for="nxContactName" class="nx-field-label">${isTr ? 'Adınız Soyadınız' : 'Your Name'}</label>
-        <input type="text" id="nxContactName" class="nx-app-input" required placeholder="${isTr ? 'Örn. Can Demir' : 'e.g. Alex Morgan'}" autocomplete="name">
+        <label for="nxContactName" class="nx-field-label">${isTr ? 'Adınız Soyadınız' : tx('Your Name')}</label>
+        <input type="text" id="nxContactName" class="nx-app-input" required placeholder="${isTr ? 'Örn. Can Demir' : tx('e.g. Alex Morgan')}" autocomplete="name">
       </div>
       <div class="nx-auth-field-wrap">
-        <label for="nxContactEmail" class="nx-field-label">${isTr ? 'E-posta Adresiniz (Yanıt bu adrese iletilecektir)' : 'Your Email (We will reply here)'}</label>
-        <input type="email" id="nxContactEmail" class="nx-app-input" required placeholder="${isTr ? 'ornek@eposta.com' : 'name@example.com'}" autocomplete="email">
+        <label for="nxContactEmail" class="nx-field-label">${isTr ? 'E-posta Adresiniz (Yanıt bu adrese iletilecektir)' : tx('Your Email (We will reply here)')}</label>
+        <input type="email" id="nxContactEmail" class="nx-app-input" required placeholder="${isTr ? 'ornek@eposta.com' : tx('name@example.com')}" autocomplete="email">
       </div>
       <div class="nx-auth-field-wrap">
-        <label for="nxContactCategory" class="nx-field-label">${isTr ? 'Konu / Talep Türü' : 'Subject / Topic'}</label>
+        <label for="nxContactCategory" class="nx-field-label">${isTr ? 'Konu / Talep Türü' : tx('Subject / Topic')}</label>
         <select id="nxContactCategory" class="nx-app-input nx-app-select">
-          <option value="${isTr ? 'Teknik Destek' : 'Technical Support'}">${isTr ? 'Teknik Destek ve Kurulum' : 'Technical Support & Setup'}</option>
-          <option value="${isTr ? 'Cihaz & Bağlayıcı İsteği' : 'Connector Request'}">${isTr ? 'Yeni Cihaz & Bağlayıcı İsteği' : 'New Device / Connector Request'}</option>
-          <option value="${isTr ? 'NEXUS+ ve Abonelik' : 'NEXUS+ & Billing'}">${isTr ? 'NEXUS+ ve Fatura / Abonelik' : 'NEXUS+ & Billing Questions'}</option>
-          <option value="${isTr ? 'Geri Bildirim & Öneri' : 'Feedback & Suggestion'}">${isTr ? 'Geri Bildirim veya Öneri' : 'General Feedback or Suggestion'}</option>
+          <option value="${isTr ? 'Teknik Destek' : tx('Technical Support')}">${isTr ? 'Teknik Destek ve Kurulum' : tx('Technical Support & Setup')}</option>
+          <option value="${isTr ? 'Cihaz & Bağlayıcı İsteği' : tx('Connector Request')}">${isTr ? 'Yeni Cihaz & Bağlayıcı İsteği' : tx('New Device / Connector Request')}</option>
+          <option value="${isTr ? 'NEXUS+ ve Abonelik' : tx('NEXUS+ & Billing')}">${isTr ? 'NEXUS+ ve Fatura / Abonelik' : tx('NEXUS+ & Billing Questions')}</option>
+          <option value="${isTr ? 'Geri Bildirim & Öneri' : tx('Feedback & Suggestion')}">${isTr ? 'Geri Bildirim veya Öneri' : tx('General Feedback or Suggestion')}</option>
         </select>
       </div>
       <div class="nx-auth-field-wrap">
-        <label for="nxContactMsg" class="nx-field-label">${isTr ? 'Mesajınız' : 'Your Message'}</label>
-        <textarea id="nxContactMsg" class="nx-app-input nx-app-textarea" required rows="3" placeholder="${isTr ? 'Nasıl yardımcı olabiliriz? Lütfen detayları paylaşın…' : 'How can we help? Please describe your request in detail…'}"></textarea>
+        <label for="nxContactMsg" class="nx-field-label">${isTr ? 'Mesajınız' : tx('Your Message')}</label>
+        <textarea id="nxContactMsg" class="nx-app-input nx-app-textarea" required rows="3" placeholder="${isTr ? 'Nasıl yardımcı olabiliriz? Lütfen detayları paylaşın…' : tx('How can we help? Please describe your request in detail…')}"></textarea>
       </div>
       <button type="submit" id="nxContactSubmitBtn" class="btn btn-primary w-full nx-app-submit">
         <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 2-7 20-4-9-9-4Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13"/></svg>
-        <span>${isTr ? 'Mesajı Gönder' : 'Send Message'}</span>
+        <span>${isTr ? 'Mesajı Gönder' : tx('Send Message')}</span>
       </button>
       <p class="nx-contact-security-note">
-        ${icon('lock')} ${isTr ? 'Talebiniz geliştirici ekibimize doğrudan iletilir. En geç 24 saat içinde dönüş yapılır.' : 'Your message is sent directly to developers. Replies within 24h.'}
+        ${icon('lock')} ${isTr ? 'Talebiniz geliştirici ekibimize doğrudan iletilir. En geç 24 saat içinde dönüş yapılır.' : tx('Your message is sent directly to developers. Replies within 24h.')}
       </p>
     </form>
     <div id="nxContactSuccess" class="nx-form-success" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-      <h4>${isTr ? 'Mesajınız Başarıyla İletildi!' : 'Message Received!'}</h4>
-      <p>${isTr ? 'Talebiniz ekibimize ulaştı. Belirttiğiniz e-posta adresi üzerinden en kısa sürede sizinle iletişime geçeceğiz.' : 'Thank you for reaching out. Our team will review your message and reply to your email address shortly.'}</p>
-      <button type="button" class="btn btn-outline" onclick="nxCloseContactModal()">${isTr ? 'Kapat' : 'Close'}</button>
+      <h4>${isTr ? 'Mesajınız Başarıyla İletildi!' : tx('Message Received!')}</h4>
+      <p>${isTr ? 'Talebiniz ekibimize ulaştı. Belirttiğiniz e-posta adresi üzerinden en kısa sürede sizinle iletişime geçeceğiz.' : tx('Thank you for reaching out. Our team will review your message and reply to your email address shortly.')}</p>
+      <button type="button" class="btn btn-outline" onclick="nxCloseContactModal()">${isTr ? 'Kapat' : tx('Close')}</button>
     </div>
   </div>
 </div>`;
@@ -3808,44 +3822,44 @@ function renderAuthModal(c) {
   return `
 <div id="nxAuthModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseAuthModal()" role="dialog" aria-modal="true" aria-labelledby="nxAuthTitle">
   <div class="nx-modal-card">
-    <button class="nx-modal-close" onclick="nxCloseAuthModal()" aria-label="${isTr ? 'Kapat' : 'Close'}">&times;</button>
+    <button class="nx-modal-close" onclick="nxCloseAuthModal()" aria-label="${isTr ? 'Kapat' : tx('Close')}">&times;</button>
     
     <!-- Giriş / Kayıt Görünümü -->
     <div id="nxAuthFormView">
       <div class="nx-auth-brand-badge">
         <div class="nx-app-logo">${brand.logoSvg}</div>
-        <h3 id="nxAuthTitle">${isTr ? 'Tekrar Hoş Geldin' : 'Welcome Back'}</h3>
-        <p id="nxAuthSubtitle">${isTr ? 'Evini tek merkezden yönetmek için giriş yap.' : 'Sign in to manage your smart home.'}</p>
+        <h3 id="nxAuthTitle">${isTr ? 'Tekrar Hoş Geldin' : tx('Welcome Back')}</h3>
+        <p id="nxAuthSubtitle">${isTr ? 'Evini tek merkezden yönetmek için giriş yap.' : tx('Sign in to manage your smart home.')}</p>
       </div>
       <form id="nxAuthForm" onsubmit="nxSubmitAuth(event)">
         <div id="nxAuthAlert" class="nx-auth-alert" style="display:none"></div>
         <div class="nx-auth-field-wrap">
-          <label for="nxAuthEmail" class="nx-field-label">${isTr ? 'E-posta Adresi' : 'Email Address'}</label>
-          <input type="email" id="nxAuthEmail" class="nx-app-input" required placeholder="${isTr ? 'ornek@eposta.com' : 'name@example.com'}" autocomplete="email">
+          <label for="nxAuthEmail" class="nx-field-label">${isTr ? 'E-posta Adresi' : tx('Email Address')}</label>
+          <input type="email" id="nxAuthEmail" class="nx-app-input" required placeholder="${isTr ? 'ornek@eposta.com' : tx('name@example.com')}" autocomplete="email">
         </div>
         <div class="nx-auth-field-wrap">
-          <label for="nxAuthPassword" class="nx-field-label">${isTr ? 'Şifre' : 'Password'}</label>
+          <label for="nxAuthPassword" class="nx-field-label">${isTr ? 'Şifre' : tx('Password')}</label>
           <div style="position:relative">
             <input type="password" id="nxAuthPassword" class="nx-app-input" required placeholder="${isTr ? '••••••••' : '••••••••'}" autocomplete="current-password" style="padding-right:44px">
-            <button type="button" class="nx-pw-toggle" onclick="nxTogglePwVisible()" aria-label="${isTr ? 'Şifreyi Göster' : 'Show password'}">
+            <button type="button" class="nx-pw-toggle" onclick="nxTogglePwVisible()" aria-label="${isTr ? 'Şifreyi Göster' : tx('Show password')}">
               <span id="nxPwEyeIcon">${icon('eyeOff')}</span>
             </button>
           </div>
         </div>
         <button type="submit" id="nxAuthSubmitBtn" class="btn btn-primary w-full nx-app-submit">
-          <span>${isTr ? 'Giriş Yap' : 'Sign In'}</span>
+          <span>${isTr ? 'Giriş Yap' : tx('Sign In')}</span>
         </button>
         <button type="button" class="nx-google-btn" onclick="nxGoogleLogin()">
           <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
-          <span>${isTr ? 'Google ile devam et' : 'Continue with Google'}</span>
+          <span>${isTr ? 'Google ile devam et' : tx('Continue with Google')}</span>
         </button>
       </form>
       <div class="nx-auth-links">
         <button type="button" class="nx-auth-link" onclick="nxToggleAuthMode()">
-          <span id="nxAuthSwitchPrompt">${isTr ? 'Hesabın yok mu? Yeni Hesap Oluştur' : "Don't have an account? Sign up"}</span>
+          <span id="nxAuthSwitchPrompt">${isTr ? 'Hesabın yok mu? Yeni Hesap Oluştur' : tx("Don't have an account? Sign up")}</span>
         </button>
         <button type="button" class="nx-auth-link muted" onclick="nxForgotPassword()">
-          <span>${isTr ? 'Şifremi Unuttum' : 'Forgot Password?'}</span>
+          <span>${isTr ? 'Şifremi Unuttum' : tx('Forgot Password?')}</span>
         </button>
       </div>
     </div>
@@ -3854,27 +3868,27 @@ function renderAuthModal(c) {
     <div id="nxAuthRecoveryView" style="display:none">
       <div class="nx-auth-brand-badge">
         <div class="nx-app-logo">${brand.logoSvg}</div>
-        <h3 id="nxRecoveryTitle">${isTr ? 'Yeni Şifre Belirle' : 'Set a New Password'}</h3>
-        <p id="nxRecoverySubtitle">${isTr ? 'Hesabınız için yeni bir şifre girin.' : 'Choose a new password for your account.'}</p>
+        <h3 id="nxRecoveryTitle">${isTr ? 'Yeni Şifre Belirle' : tx('Set a New Password')}</h3>
+        <p id="nxRecoverySubtitle">${isTr ? 'Hesabınız için yeni bir şifre girin.' : tx('Choose a new password for your account.')}</p>
         <p id="nxRecoveryEmail" class="nx-profile-email-chip" style="margin-top:8px"></p>
       </div>
       <form id="nxRecoveryForm" onsubmit="nxSubmitRecovery(event)">
         <div id="nxRecoveryAlert" class="nx-auth-alert" style="display:none"></div>
         <div class="nx-auth-field-wrap">
-          <label for="nxRecoveryPassword" class="nx-field-label">${isTr ? 'Yeni Şifre' : 'New Password'}</label>
-          <input type="password" id="nxRecoveryPassword" class="nx-app-input" required placeholder="${isTr ? 'En az 6 karakter' : 'At least 6 characters'}" autocomplete="new-password">
+          <label for="nxRecoveryPassword" class="nx-field-label">${isTr ? 'Yeni Şifre' : tx('New Password')}</label>
+          <input type="password" id="nxRecoveryPassword" class="nx-app-input" required placeholder="${isTr ? 'En az 6 karakter' : tx('At least 6 characters')}" autocomplete="new-password">
         </div>
         <div class="nx-auth-field-wrap">
-          <label for="nxRecoveryPassword2" class="nx-field-label">${isTr ? 'Yeni Şifre (tekrar)' : 'New Password (again)'}</label>
+          <label for="nxRecoveryPassword2" class="nx-field-label">${isTr ? 'Yeni Şifre (tekrar)' : tx('New Password (again)')}</label>
           <input type="password" id="nxRecoveryPassword2" class="nx-app-input" required placeholder="${isTr ? '••••••••' : '••••••••'}" autocomplete="new-password">
         </div>
         <button type="submit" id="nxRecoverySubmitBtn" class="btn btn-primary w-full nx-app-submit">
-          <span>${isTr ? 'Şifreyi Kaydet' : 'Save Password'}</span>
+          <span>${isTr ? 'Şifreyi Kaydet' : tx('Save Password')}</span>
         </button>
       </form>
       <div class="nx-auth-links">
         <button type="button" class="nx-auth-link muted" onclick="nxCloseAuthModal()">
-          <span>${isTr ? 'Kapat' : 'Close'}</span>
+          <span>${isTr ? 'Kapat' : tx('Close')}</span>
         </button>
       </div>
     </div>
@@ -3885,18 +3899,18 @@ function renderAuthModal(c) {
           <svg viewBox="0 0 24 24" class="nx-user-icon" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
         </div>
         <div class="nx-avatar-actions" id="nxAvatarActions">
-          <button type="button" class="nx-avatar-change" onclick="nxSitePickAvatar()" aria-label="${isTr ? 'Profil fotoğrafını değiştir' : 'Change profile photo'}" title="${isTr ? 'Profil fotoğrafını değiştir' : 'Change profile photo'}">
+          <button type="button" class="nx-avatar-change" onclick="nxSitePickAvatar()" aria-label="${isTr ? 'Profil fotoğrafını değiştir' : tx('Change profile photo')}" title="${isTr ? 'Profil fotoğrafını değiştir' : tx('Change profile photo')}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <span>${isTr ? 'Fotoğrafı değiştir' : 'Change photo'}</span>
+            <span>${isTr ? 'Fotoğrafı değiştir' : tx('Change photo')}</span>
           </button>
-          <button type="button" id="nxAvatarRevertGoogle" style="display:none" onclick="nxSiteRevertGoogleAvatar()">${isTr ? 'Google fotoğrafına dön' : 'Back to Google photo'}</button>
-          <button type="button" class="is-danger" id="nxAvatarRemove" style="display:none" onclick="nxSiteRemoveAvatar()">${isTr ? 'Fotoğrafı kaldır' : 'Remove photo'}</button>
+          <button type="button" id="nxAvatarRevertGoogle" style="display:none" onclick="nxSiteRevertGoogleAvatar()">${isTr ? 'Google fotoğrafına dön' : tx('Back to Google photo')}</button>
+          <button type="button" class="is-danger" id="nxAvatarRemove" style="display:none" onclick="nxSiteRemoveAvatar()">${isTr ? 'Fotoğrafı kaldır' : tx('Remove photo')}</button>
         </div>
         <input type="file" id="nxAvatarFileInput" accept="image/*" style="display:none" onchange="nxSiteAvatarFile(this)">
         <div class="nx-profile-name-wrap">
           <div class="nx-profile-name-row">
-            <h3 id="nxProfileNameDisplay">${isTr ? 'Kullanıcı' : 'Account'}</h3>
-            <button type="button" class="nx-edit-name-btn" onclick="nxEditProfileName()" title="${isTr ? 'İsmi düzenle' : 'Edit name'}" aria-label="${isTr ? 'İsmi düzenle' : 'Edit name'}">
+            <h3 id="nxProfileNameDisplay">${isTr ? 'Kullanıcı' : tx('Account')}</h3>
+            <button type="button" class="nx-edit-name-btn" onclick="nxEditProfileName()" title="${isTr ? 'İsmi düzenle' : tx('Edit name')}" aria-label="${isTr ? 'İsmi düzenle' : tx('Edit name')}">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
             </button>
           </div>
@@ -3904,10 +3918,10 @@ function renderAuthModal(c) {
         </div>
       </div>
 
-      <section class="nx-offer" aria-label="${isTr ? 'Plan' : 'Plan'}">
+      <section class="nx-offer" aria-label="${isTr ? 'Plan' : tx('Plan')}">
         <div class="nx-offer-inner">
           <div class="nx-offer-top">
-            <span class="nx-plan-tag is-free" id="nxProfilePlanTag">${isTr ? 'Ücretsiz' : 'Free'}</span>
+            <span class="nx-plan-tag is-free" id="nxProfilePlanTag">${isTr ? 'Ücretsiz' : tx('Free')}</span>
           </div>
           <ul class="nx-offer-list" id="nxProfilePerksFree">
             ${freeLines.map((line) => `<li>${tick}<span>${line}</span></li>`).join('')}
@@ -3922,7 +3936,7 @@ function renderAuthModal(c) {
         <div class="nx-offer-inner">
           <p id="nxBillingStatus" class="nx-account-now" style="text-align:left;margin:0 0 8px"></p>
           <ul id="nxBillingPays" class="nx-offer-list"></ul>
-          <button type="button" id="nxBillingCancel" class="nx-account-upgrade" style="display:none" onclick="nxLoadBilling('cancel')">${isTr ? 'Dönem sonunda iptal et' : 'Cancel at period end'}</button>
+          <button type="button" id="nxBillingCancel" class="nx-account-upgrade" style="display:none" onclick="nxLoadBilling('cancel')">${isTr ? 'Dönem sonunda iptal et' : tx('Cancel at period end')}</button>
         </div>
       </div>
 
@@ -3930,47 +3944,47 @@ function renderAuthModal(c) {
         <a id="nxProfileUpgrade" class="nx-account-item" href="${c.canonical}#pricing" onclick="nxCloseAuthModal()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v8M8 12h8"/></svg></span>
           <span class="nx-account-item-copy">
-            <b>${isTr ? "NEXUS+'a geç" : 'Upgrade to NEXUS+'}</b>
-            <small>${isTr ? `Aylık ${p.monthly} · Yıllık ${p.yearly}` : `Monthly ${p.monthly} · Yearly ${p.yearly}`}</small>
+            <b>${isTr ? "NEXUS+'a geç" : tx('Upgrade to NEXUS+')}</b>
+            <small>${isTr ? `Aylık ${p.monthly} · Yıllık ${p.yearly}` : tx('Monthly {0} · Yearly {1}').replace('{0}', p.monthly).replace('{1}', p.yearly)}</small>
           </span>
           <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
         </a>
         <button type="button" class="nx-account-item" onclick="nxOpenBilling()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M2 10h20"/></svg></span>
           <span class="nx-account-item-copy">
-            <b>${isTr ? 'Aboneliği yönet' : 'Manage subscription'}</b>
-            <small>${isTr ? 'Durum, ödemeler ve iptal' : 'Status, payments, and cancellation'}</small>
+            <b>${isTr ? 'Aboneliği yönet' : tx('Manage subscription')}</b>
+            <small>${isTr ? 'Durum, ödemeler ve iptal' : tx('Status, payments, and cancellation')}</small>
           </span>
           <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
         </button>
         <button type="button" class="nx-account-item" onclick="nxSendPasswordReset()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg></span>
           <span class="nx-account-item-copy">
-            <b>${isTr ? 'Şifreyi sıfırla' : 'Reset password'}</b>
-            <small>${isTr ? 'Bağlantı e-postana gider' : 'A link goes to your email'}</small>
+            <b>${isTr ? 'Şifreyi sıfırla' : tx('Reset password')}</b>
+            <small>${isTr ? 'Bağlantı e-postana gider' : tx('A link goes to your email')}</small>
           </span>
           <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
         </button>
         <button type="button" class="nx-account-item" onclick="nxChangeEmailPrompt()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
           <span class="nx-account-item-copy">
-            <b>${isTr ? 'E-posta adresini değiştir' : 'Change email address'}</b>
-            <small>${isTr ? 'Doğrulama bağlantısı yeni adresine gider' : 'A confirmation link goes to the new address'}</small>
+            <b>${isTr ? 'E-posta adresini değiştir' : tx('Change email address')}</b>
+            <small>${isTr ? 'Doğrulama bağlantısı yeni adresine gider' : tx('A confirmation link goes to the new address')}</small>
           </span>
           <span class="nx-account-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></span>
         </button>
         <button type="button" class="nx-account-item nx-account-signout" onclick="nxSignOut()">
           <span class="nx-account-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></span>
-          <span class="nx-account-item-copy"><b>${isTr ? 'Oturumu kapat' : 'Sign out'}</b></span>
+          <span class="nx-account-item-copy"><b>${isTr ? 'Oturumu kapat' : tx('Sign out')}</b></span>
         </button>
       </div>
     </div>
 
   </div>
 </div>
-<div id="nxCheckoutModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseCheckout()" role="dialog" aria-modal="true" aria-label="${isTr ? 'Ödeme' : 'Checkout'}">
+<div id="nxCheckoutModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseCheckout()" role="dialog" aria-modal="true" aria-label="${isTr ? 'Ödeme' : tx('Checkout')}">
   <div class="nx-modal-card" style="max-width:480px;padding:18px 16px 16px">
-    <button class="nx-modal-close" onclick="nxCloseCheckout()" aria-label="${isTr ? 'Kapat' : 'Close'}">&times;</button>
+    <button class="nx-modal-close" onclick="nxCloseCheckout()" aria-label="${isTr ? 'Kapat' : tx('Close')}">&times;</button>
     <div id="nxCheckoutMount" style="min-height:420px"></div>
   </div>
 </div>`;
@@ -3988,8 +4002,8 @@ function renderCustomDialog(c) {
       <input type="text" id="nxDialogInput" class="nx-app-input" autocomplete="off">
     </div>
     <div class="nx-dialog-actions">
-      <button type="button" class="btn btn-outline" id="nxDialogCancelBtn" onclick="nxCloseDialog()">${isTr ? 'İptal' : 'Cancel'}</button>
-      <button type="button" class="btn btn-primary" id="nxDialogConfirmBtn">${isTr ? 'Tamam' : 'OK'}</button>
+      <button type="button" class="btn btn-outline" id="nxDialogCancelBtn" onclick="nxCloseDialog()">${isTr ? 'İptal' : tx('Cancel')}</button>
+      <button type="button" class="btn btn-primary" id="nxDialogConfirmBtn">${isTr ? 'Tamam' : tx('OK')}</button>
     </div>
   </div>
 </div>`;
@@ -4078,7 +4092,7 @@ ${xDefault}
 <meta name="theme-color" content="#ECE9FD"/>
 <meta property="og:type" content="${opts.ogType || 'website'}"/>
 <meta property="og:site_name" content="NEXUS"/>
-<meta property="og:locale" content="${c.lang === 'tr' ? 'tr_TR' : 'en_US'}"/>
+<meta property="og:locale" content="${ogLocale(c.lang)}"/>
 <meta property="og:title" content="${esc(opts.title || c.title)}"/>
 <meta property="og:description" content="${esc(opts.description || c.description)}"/>
 <meta property="og:url" content="${url}"/>
@@ -4114,15 +4128,15 @@ function landingSchema(c) {
       {
         '@type': 'Organization',
         name: 'NEXUS',
-        url: SITE_ORIGIN + (isTr ? '/tr/' : '/'),
+        url: SITE_ORIGIN + c.canonical,
         logo: SITE_ORIGIN + '/icon.svg',
         email: 'nexus.smarthome.app@gmail.com',
       },
       {
         '@type': 'WebSite',
         name: 'NEXUS',
-        url: SITE_ORIGIN + (isTr ? '/tr/' : '/'),
-        inLanguage: isTr ? 'tr' : 'en',
+        url: SITE_ORIGIN + c.canonical,
+        inLanguage: c.htmlLang,
       },
       ...apps,
       {
@@ -4242,7 +4256,7 @@ ${baseHead(c, path, {
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: isTr ? 'Ana sayfa' : 'Home', item: SITE_ORIGIN + (isTr ? '/tr/' : '/') },
+            { '@type': 'ListItem', position: 1, name: isTr ? 'Ana sayfa' : tx('Home'), item: SITE_ORIGIN + c.canonical },
             { '@type': 'ListItem', position: 2, name: c.about.title, item: SITE_ORIGIN + cleanPath(path) },
           ],
         },
@@ -4256,8 +4270,8 @@ ${baseHead(c, path, {
 ${renderHeader(c, path)}
 <main id="main" class="wrap" style="padding-bottom:60px">
   <div class="about-hero rv">
-    <a class="int-more about-back" href="${c.canonical}">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
-    <p class="about-kicker">${isTr ? 'Ürün' : 'Product'}</p>
+    <a class="int-more about-back" href="${c.canonical}">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : tx('Back to home')}</a>
+    <p class="about-kicker">${isTr ? 'Ürün' : tx('Product')}</p>
     <h1>${esc(ab.title)}</h1>
     <p class="lead">${esc(ab.lead)}</p>
   </div>
@@ -4268,8 +4282,8 @@ ${renderHeader(c, path)}
   </div>
 
   <div class="about-section">
-    <h2>${isTr ? 'Dört temel ilke' : 'Four principles'}</h2>
-    <p>${isTr ? 'NEXUS mimarisini şekillendiren kurallar.' : 'The rules that shape how NEXUS is built.'}</p>
+    <h2>${isTr ? 'Dört temel ilke' : tx('Four principles')}</h2>
+    <p>${isTr ? 'NEXUS mimarisini şekillendiren kurallar.' : tx('The rules that shape how NEXUS is built.')}</p>
     <div class="grid c2" style="gap:16px">
       ${ab.pillars.map((p, i) => `
         <div class="card rv" style="padding:24px">
@@ -4296,12 +4310,12 @@ ${renderHeader(c, path)}
   </div>
 
   <div class="about-card about-cta rv">
-    <h2>${isTr ? 'Kurulum dosyaları' : 'Get the apps'}</h2>
-    <p style="margin:0 0 18px">${isTr ? 'Tüm platformlar ücretsiz: Windows, Linux ve Android hazır kurulumla gelir; macOS ve iOS kaynaktan derlenir. Cihaz komutları yerel ağında kalır.' : 'Every platform is free: ready installers for Windows, Linux and Android; macOS and iOS build from source. Device commands stay on your LAN.'}</p>
+    <h2>${isTr ? 'Kurulum dosyaları' : tx('Get the apps')}</h2>
+    <p style="margin:0 0 18px">${isTr ? 'Tüm platformlar ücretsiz: Windows, Linux ve Android hazır kurulumla gelir; macOS ve iOS kaynaktan derlenir. Cihaz komutları yerel ağında kalır.' : tx('Every platform is free: ready installers for Windows, Linux and Android; macOS and iOS build from source. Device commands stay on your LAN.')}</p>
     <div class="about-cta-actions">
       ${platformDownloadBtn(`${c.canonical}#downloads`, 'btn btn-primary', isTr)}
-      <a href="${c.canonical}#features" class="btn btn-ghost">${isTr ? 'Özellikler' : 'Features'}</a>
-      <a href="${c.canonical}#pricing" class="btn btn-ghost">${isTr ? 'Fiyatlar' : 'Pricing'}</a>
+      <a href="${c.canonical}#features" class="btn btn-ghost">${isTr ? 'Özellikler' : tx('Features')}</a>
+      <a href="${c.canonical}#pricing" class="btn btn-ghost">${isTr ? 'Fiyatlar' : tx('Pricing')}</a>
     </div>
   </div>
 </main>
@@ -4336,7 +4350,7 @@ ${baseHead(c, path, {
       name: doc.title,
       url: canonicalUrl,
       inLanguage: c.htmlLang,
-      isPartOf: { '@type': 'WebSite', url: SITE_ORIGIN + (isTr ? '/tr/' : '/') },
+      isPartOf: { '@type': 'WebSite', url: SITE_ORIGIN + c.canonical },
     },
   })}
 <style>${CSS}</style>
@@ -4346,7 +4360,7 @@ ${baseHead(c, path, {
 ${renderHeader(c, path)}
 <main id="main" class="wrap">
   <div class="doc-hero rv">
-    <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
+    <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : tx('Back to home')}</a>
     <h1${legalDir}>${esc(doc.title)}</h1>
   </div>
   <div class="doc-body rv"${legalDir}>
@@ -4370,13 +4384,13 @@ ${renderCustomDialog(c)}
 function renderNotFound(c) {
   const isTr = c.lang === 'tr';
   const other = isTr ? content.en : content.tr;
-  const home = isTr ? '/tr/' : '/';
+  const home = c.canonical;
   return `<!DOCTYPE html>
 <html lang="${c.htmlLang}"${htmlDir(c.lang)} data-theme="light">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>${isTr ? 'Sayfa bulunamadı — NEXUS' : 'Page not found — NEXUS'}</title>
+<title>${isTr ? 'Sayfa bulunamadı — NEXUS' : tx('Page not found — NEXUS')}</title>
 <meta name="robots" content="noindex"/>
 <link rel="canonical" href="${SITE_ORIGIN}${home}"/>
 <link rel="alternate" hreflang="en" href="${SITE_ORIGIN}${isTr ? '/' : '/tr/'}"/>
@@ -4405,17 +4419,17 @@ function renderNotFound(c) {
   <main class="box">
     <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#lg)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <p class="code">404</p>
-    <h1>${isTr ? 'Bu adres NEXUS’ta yok' : 'This page isn’t part of NEXUS'}</h1>
+    <h1>${isTr ? 'Bu adres NEXUS’ta yok' : tx('This page isn’t part of NEXUS')}</h1>
     <p>${isTr
       ? 'Bağlantı taşınmış ya da yanlış yazılmış olabilir. Uygulama indirme ve fiyatlandırma ana sayfada.'
-      : 'The link may have moved or been mistyped. Downloads and pricing live on the home page.'}</p>
+      : tx('The link may have moved or been mistyped. Downloads and pricing live on the home page.')}</p>
     <div class="row">
-      <a class="btn primary" href="${home}">${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
+      <a class="btn primary" href="${home}">${isTr ? 'Ana sayfaya dön' : tx('Back to home')}</a>
       ${platformDownloadBtn(`${home}#downloads`, 'btn', isTr)}
     </div>
     <p class="lang">${isTr
       ? `Bu sayfayı İngilizce okumak istersen: <a href="/404.html">English</a>`
-      : `Read this page in Turkish: <a href="/tr/404.html">Türkçe</a>`}</p>
+      : tx(`Read this page in Turkish: <a href="/tr/404.html">Türkçe</a>`)}</p>
   </main>
 </body>
 </html>`;
@@ -4728,6 +4742,7 @@ window.NEXUS_CLOUD = {
     const langDir = isEn ? PUB : join(PUB, lang);
     mkdirSync(langDir, { recursive: true });
     const c = content[lang];
+    CUR_UI = uiFor(lang);
 
     writeFileSync(join(langDir, 'index.html'), renderLanding(c, hasShots), 'utf8');
     writeFileSync(join(langDir, 'about.html'), renderAbout(c), 'utf8');

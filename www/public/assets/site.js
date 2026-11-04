@@ -1,3 +1,4 @@
+window.nxU=window.nxU||function(k){var d=window.nxUi;return (d&&d[k])||k};
 function nxToggleTheme(){
   var d=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',d);
@@ -232,7 +233,7 @@ function nxShowAlert(msg, title, type, onOk){
   if(inputWrap)inputWrap.style.display='none';
   if(cancelBtn)cancelBtn.style.display='none';
   if(confirmBtn){
-    confirmBtn.textContent = isTr ? 'Anladım' : 'Got it';
+    confirmBtn.textContent = isTr ? 'Anladım' : nxU('Got it');
     confirmBtn.className = 'btn btn-primary w-full';
   }
 
@@ -248,7 +249,7 @@ function nxShowAlert(msg, title, type, onOk){
     }
   }
 
-  if(titleEl)titleEl.textContent = title || (isTr ? 'Bilgilendirme' : 'Notice');
+  if(titleEl)titleEl.textContent = title || (isTr ? 'Bilgilendirme' : nxU('Notice'));
   if(msgEl)msgEl.textContent = msg || '';
 
   nxDialogCallback = onOk || null;
@@ -283,10 +284,10 @@ function nxShowPrompt(title, msg, defaultValue, onConfirm){
   }
   if(cancelBtn){
     cancelBtn.style.display='inline-flex';
-    cancelBtn.textContent = isTr ? 'İptal' : 'Cancel';
+    cancelBtn.textContent = isTr ? 'İptal' : nxU('Cancel');
   }
   if(confirmBtn){
-    confirmBtn.textContent = isTr ? 'Kaydet' : 'Save';
+    confirmBtn.textContent = isTr ? 'Kaydet' : nxU('Save');
     confirmBtn.className = 'btn btn-primary';
   }
 
@@ -495,7 +496,7 @@ function nxChangeEmailPrompt(){
   var cur='';
   try{ cur=localStorage.getItem('nexusCurrentUser')||''; }catch(e){}
   nxShowPrompt(
-    isTr?'E-posta Adresini Değiştir':'Change Email Address',
+    isTr?'E-posta Adresini Değiştir':nxU('Change Email Address'),
     isTr
       ? ('Mevcut adres: '+(cur||'—')+'. Yeni adrese bir doğrulama bağlantısı gönderilir; bağlantıyı onaylayana kadar girişte eski adres kullanılır.')
       : ('Current address: '+(cur||'—')+'. A confirmation link will be sent to the new address; the old one keeps working for sign-in until you confirm.'),
@@ -506,8 +507,8 @@ function nxChangeEmailPrompt(){
 
 function nxSubmitEmailChange(val){
   var isTr=document.documentElement.lang==='tr';
-  if(!val){ nxShowAlert(isTr?'Yeni e-posta adresini girin.':'Enter the new email address.',isTr?'Eksik bilgi':'Missing info','warning'); return; }
-  if(val.indexOf('@')<1 || !/^\S+@\S+\.\S+$/.test(val)){ nxShowAlert(isTr?'Geçerli bir e-posta adresi girin.':'Enter a valid email address.',isTr?'Geçersiz adres':'Invalid address','warning'); return; }
+  if(!val){ nxShowAlert(isTr?'Yeni e-posta adresini girin.':nxU('Enter the new email address.'),isTr?'Eksik bilgi':nxU('Missing info'),'warning'); return; }
+  if(val.indexOf('@')<1 || !/^\S+@\S+\.\S+$/.test(val)){ nxShowAlert(isTr?'Geçerli bir e-posta adresi girin.':nxU('Enter a valid email address.'),isTr?'Geçersiz adres':nxU('Invalid address'),'warning'); return; }
   var s=nxCloudSession();
   var cfg=nxCloudConfig();
   if(!s||!s.accessToken||!cfg.url||!cfg.anonKey){ nxAuthUnavailable(); return; }
@@ -522,7 +523,7 @@ function nxSubmitEmailChange(val){
   })
   .then(function(res){
     return res.json().then(function(data){
-      if(!res.ok){ throw new Error(data.msg||data.message||data.error_description||(isTr?'E-posta değiştirilemedi.':'Could not change the email.')); }
+      if(!res.ok){ throw new Error(data.msg||data.message||data.error_description||(isTr?'E-posta değiştirilemedi.':nxU('Could not change the email.'))); }
       return data;
     });
   })
@@ -531,15 +532,15 @@ function nxSubmitEmailChange(val){
       isTr
         ? ('Doğrulama bağlantısı '+val+' adresine gönderildi. Bağlantıya tıkladığında adresin değişir; o zamana kadar girişte eski adres geçerli kalır.')
         : ('A confirmation link was sent to '+val+'. Your address changes once you click it; until then the old address keeps working for sign-in.'),
-      isTr?'Bağlantı gönderildi':'Link sent','success');
+      isTr?'Bağlantı gönderildi':nxU('Link sent'),'success');
   })
   .catch(function(err){
     var msg=String((err&&err.message)||'');
     var text=msg;
-    if(/already registered|already been registered|already exists|duplicate/i.test(msg)) text=isTr?'Bu e-posta zaten bir hesaba bağlı.':'That email is already registered.';
-    else if(/not allowed|not authorized/i.test(msg)) text=isTr?'Bu e-posta sağlayıcısıyla kayıt yapılamıyor.':'Signups with this email provider are not allowed.';
-    else if(/oturum/i.test(msg)) text=isTr?'Oturum bulunamadı. Çıkış yapıp tekrar giriş yap.':'Session not found. Sign out and sign in again.';
-    nxShowAlert(text,isTr?'Değiştirilemedi':'Not changed','warning');
+    if(/already registered|already been registered|already exists|duplicate/i.test(msg)) text=isTr?'Bu e-posta zaten bir hesaba bağlı.':nxU('That email is already registered.');
+    else if(/not allowed|not authorized/i.test(msg)) text=isTr?'Bu e-posta sağlayıcısıyla kayıt yapılamıyor.':nxU('Signups with this email provider are not allowed.');
+    else if(/oturum/i.test(msg)) text=isTr?'Oturum bulunamadı. Çıkış yapıp tekrar giriş yap.':nxU('Session not found. Sign out and sign in again.');
+    nxShowAlert(text,isTr?'Değiştirilemedi':nxU('Not changed'),'warning');
   });
 }
 
@@ -571,7 +572,7 @@ function nxUpdateNavAuth(){
     nxFetchSyncedAvatar();
   }else{
     btn.classList.remove('logged-in');
-    label.textContent = isTr ? 'Giriş Yap' : 'Sign In';
+    label.textContent = isTr ? 'Giriş Yap' : nxU('Sign In');
     label.title = '';
     if(avatarWrap){
       avatarWrap.innerHTML='<svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg>';
@@ -623,9 +624,9 @@ function nxOpenAuthModal(){
     var planTag=document.getElementById('nxProfilePlanTag');
     if(planTag){
       planTag.classList.toggle('is-free', !plusActive);
-      if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : 'Free';
-      else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : 'NEXUS+ · Yearly';
-      else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : 'NEXUS+ · Monthly';
+      if(!plusActive) planTag.textContent = isTr ? 'Ücretsiz' : nxU('Free');
+      else if(plusPlan === 'Yıllık') planTag.textContent = isTr ? 'NEXUS+ · Yıllık' : nxU('NEXUS+ · Yearly');
+      else if(plusPlan === 'Aylık') planTag.textContent = isTr ? 'NEXUS+ · Aylık' : nxU('NEXUS+ · Monthly');
       else planTag.textContent = 'NEXUS+';
     }
     var perksFree=document.getElementById('nxProfilePerksFree');
@@ -655,8 +656,8 @@ function nxEditProfileName(){
   var curName='';
   try{curName=nxFixMojibake(localStorage.getItem('nexusUserName')||'');}catch(e){}
   nxShowPrompt(
-    isTr ? 'İsmi Düzenle' : 'Edit Display Name',
-    isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : 'Enter your new display name:',
+    isTr ? 'İsmi Düzenle' : nxU('Edit Display Name'),
+    isTr ? 'Hesabınız için görünecek yeni bir isim girin:' : nxU('Enter your new display name:'),
     curName,
     function(newName){
       if(!newName)return;
@@ -676,11 +677,11 @@ function nxCloudConfig(){
 }
 function nxAuthUnavailableMsg(){
   var isTr=document.documentElement.lang==='tr';
-  return isTr?'Hesap işlemleri bu sürümde kapalı (bulut yapılandırması yok). Uygulamayı indirip oradan giriş yapabilirsin.':'Account actions are off in this build (no cloud config). Download the app and sign in there.';
+  return isTr?'Hesap işlemleri bu sürümde kapalı (bulut yapılandırması yok). Uygulamayı indirip oradan giriş yapabilirsin.':nxU('Account actions are off in this build (no cloud config). Download the app and sign in there.');
 }
 function nxAuthUnavailable(){
   var isTr=document.documentElement.lang==='tr';
-  nxShowAlert(nxAuthUnavailableMsg(),isTr?'Kullanımda değil':'Not available','warning');
+  nxShowAlert(nxAuthUnavailableMsg(),isTr?'Kullanımda değil':nxU('Not available'),'warning');
 }
 
 function nxSendPasswordReset(){
@@ -698,15 +699,15 @@ function nxSendPasswordReset(){
   })
   .then(function(){
     nxShowAlert(
-      isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : 'Password reset link sent to your email ('+user+').',
-      isTr ? 'Bağlantı Gönderildi' : 'Reset Link Sent',
+      isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+user+').' : nxU('Password reset link sent to your email ({0}).').replace('{0}',user),
+      isTr ? 'Bağlantı Gönderildi' : nxU('Reset Link Sent'),
       'success'
     );
   })
   .catch(function(){
     nxShowAlert(
-      isTr ? 'Şifre sıfırlama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' : 'Could not send reset email. Please try again later.',
-      isTr ? 'Hata' : 'Error',
+      isTr ? 'Şifre sıfırlama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' : nxU('Could not send reset email. Please try again later.'),
+      isTr ? 'Hata' : nxU('Error'),
       'warning'
     );
   });
@@ -738,16 +739,16 @@ function nxToggleAuthMode(){
 
   if(nxAuthMode==='login'){
     nxAuthMode='signup';
-    if(title)title.textContent=isTr?'Yeni Hesap Oluştur':'Create Account';
-    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':'Sign up free to control your home with zero lock-in.';
-    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':'Sign Up')+'</span>';
-    if(switchPrompt)switchPrompt.textContent=isTr?'Zaten hesabınız var mı? Giriş Yap':'Already have an account? Sign In';
+    if(title)title.textContent=isTr?'Yeni Hesap Oluştur':nxU('Create Account');
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için hemen ücretsiz kaydol.':nxU('Sign up free to control your home with zero lock-in.');
+    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Kayıt Ol':nxU('Sign Up'))+'</span>';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Zaten hesabınız var mı? Giriş Yap':nxU('Already have an account? Sign In');
   }else{
     nxAuthMode='login';
-    if(title)title.textContent=isTr?'Tekrar Hoş Geldin':'Welcome Back';
-    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için giriş yap.':'Sign in to manage your smart home.';
-    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':'Sign In')+'</span>';
-    if(switchPrompt)switchPrompt.textContent=isTr?'Hesabın yok mu? Yeni Hesap Oluştur':"Don't have an account? Sign up";
+    if(title)title.textContent=isTr?'Tekrar Hoş Geldin':nxU('Welcome Back');
+    if(sub)sub.textContent=isTr?'Evini tek merkezden yönetmek için giriş yap.':nxU('Sign in to manage your smart home.');
+    if(submitBtn)submitBtn.innerHTML='<span>'+(isTr?'Giriş Yap':nxU('Sign In'))+'</span>';
+    if(switchPrompt)switchPrompt.textContent=isTr?'Hesabın yok mu? Yeni Hesap Oluştur':nxU("Don't have an account? Sign up");
   }
 }
 
@@ -775,8 +776,8 @@ function nxForgotPassword(){
   var isTr=document.documentElement.lang==='tr';
   var email=(document.getElementById('nxAuthEmail').value||'').trim();
   nxShowPrompt(
-    isTr ? 'Şifremi Unuttum' : 'Forgot Password',
-    isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : 'Enter your email address to receive a password reset link:',
+    isTr ? 'Şifremi Unuttum' : nxU('Forgot Password'),
+    isTr ? 'Şifre sıfırlama bağlantısı gönderilecek e-posta adresinizi girin:' : nxU('Enter your email address to receive a password reset link:'),
     email,
     function(inputEmail){
       if(!inputEmail)return;
@@ -791,15 +792,15 @@ function nxForgotPassword(){
       })
       .then(function(){
         nxShowAlert(
-          isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+inputEmail+').' : 'Password reset link sent to your email ('+inputEmail+').',
-          isTr ? 'Bağlantı Gönderildi' : 'Reset Link Sent',
+          isTr ? 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi ('+inputEmail+').' : nxU('Password reset link sent to your email ({0}).').replace('{0}',inputEmail),
+          isTr ? 'Bağlantı Gönderildi' : nxU('Reset Link Sent'),
           'success'
         );
       })
       .catch(function(){
         nxShowAlert(
-          isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : 'Could not send reset email.',
-          isTr ? 'Hata' : 'Error',
+          isTr ? 'Şifre sıfırlama e-postası gönderilemedi.' : nxU('Could not send reset email.'),
+          isTr ? 'Hata' : nxU('Error'),
           'warning'
         );
       });
@@ -846,13 +847,13 @@ function nxSubmitRecovery(e){
   function fail(msg){
     if(alertEl){alertEl.textContent=msg;alertEl.style.display='block';}
   }
-  if(!nxRecoveryToken){fail(isTr?'Sıfırlama bağlantısı geçersiz. Yeni bir bağlantı isteyin.':'This reset link is invalid. Please request a new one.');return;}
-  if(a.length<6){fail(isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.');return;}
-  if(a!==b){fail(isTr?'Şifreler eşleşmiyor.':'Passwords do not match.');return;}
+  if(!nxRecoveryToken){fail(isTr?'Sıfırlama bağlantısı geçersiz. Yeni bir bağlantı isteyin.':nxU('This reset link is invalid. Please request a new one.'));return;}
+  if(a.length<6){fail(isTr?'Şifre en az 6 karakter olmalıdır.':nxU('Password must be at least 6 characters.'));return;}
+  if(a!==b){fail(isTr?'Şifreler eşleşmiyor.':nxU('Passwords do not match.'));return;}
   if(!cfg.url||!cfg.anonKey){fail(nxAuthUnavailableMsg());return;}
 
   var origText=btn?btn.innerHTML:'';
-  if(btn){btn.disabled=true;btn.innerHTML=isTr?'Kaydediliyor…':'Saving…';}
+  if(btn){btn.disabled=true;btn.innerHTML=isTr?'Kaydediliyor…':nxU('Saving…');}
   if(alertEl)alertEl.style.display='none';
 
   fetch(cfg.url+'/auth/v1/user',{
@@ -867,7 +868,7 @@ function nxSubmitRecovery(e){
   .then(function(res){
     return res.json().then(function(data){
       if(!res.ok){
-        throw new Error(data.msg||data.message||data.error_description||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+        throw new Error(data.msg||data.message||data.error_description||(isTr?'Şifre kaydedilemedi.':nxU('Could not save the password.')));
       }
       return data;
     });
@@ -888,17 +889,17 @@ function nxSubmitRecovery(e){
     nxCloseAuthModal();
     nxUpdateNavAuth();
     nxShowAlert(
-      isTr?'Şifreniz güncellendi ve hesabınıza giriş yapıldı.':'Your password has been updated and you are signed in.',
-      isTr?'Şifre Güncellendi':'Password Updated',
+      isTr?'Şifreniz güncellendi ve hesabınıza giriş yapıldı.':nxU('Your password has been updated and you are signed in.'),
+      isTr?'Şifre Güncellendi':nxU('Password Updated'),
       'success'
     );
   })
   .catch(function(err){
     if(btn){btn.disabled=false;btn.innerHTML=origText;}
     var msg=String((err&&err.message)||'');
-    if(/expired|invalid|jwt/i.test(msg))msg=isTr?'Bağlantının süresi dolmuş. Yeni bir sıfırlama bağlantısı isteyin.':'This link has expired. Please request a new reset link.';
-    else if(/same|different/i.test(msg))msg=isTr?'Yeni şifre eskisinden farklı olmalı.':'The new password must be different from the old one.';
-    fail(msg||(isTr?'Şifre kaydedilemedi.':'Could not save the password.'));
+    if(/expired|invalid|jwt/i.test(msg))msg=isTr?'Bağlantının süresi dolmuş. Yeni bir sıfırlama bağlantısı isteyin.':nxU('This link has expired. Please request a new reset link.');
+    else if(/same|different/i.test(msg))msg=isTr?'Yeni şifre eskisinden farklı olmalı.':nxU('The new password must be different from the old one.');
+    fail(msg||(isTr?'Şifre kaydedilemedi.':nxU('Could not save the password.')));
   });
 }
 
@@ -914,7 +915,7 @@ function nxSubmitAuth(e){
 
   btn.disabled=true;
   var origText=btn.innerHTML;
-  btn.innerHTML=isTr?'İşleniyor…':'Processing…';
+  btn.innerHTML=isTr?'İşleniyor…':nxU('Processing…');
   if(alertEl)alertEl.style.display='none';
 
   var SUPABASE_URL=nxCloudConfig().url;
@@ -953,8 +954,8 @@ function nxSubmitAuth(e){
       /* E-posta doğrulaması açık: oturum yok. Kullanıcıyı giriş yapmış gibi
          göstermek yanıltıcıydı; doğrulama bağlantısına yönlendiriyoruz. */
       nxShowAlert(
-        isTr ? 'Kayıt alındı. Giriş yapabilmek için e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.' : 'Account created. Click the verification link we sent to your email to sign in.',
-        isTr ? 'E-postanızı Kontrol Edin' : 'Check Your Email',
+        isTr ? 'Kayıt alındı. Giriş yapabilmek için e-posta adresinize gönderilen doğrulama bağlantısına tıklayın.' : nxU('Account created. Click the verification link we sent to your email to sign in.'),
+        isTr ? 'E-postanızı Kontrol Edin' : nxU('Check Your Email'),
         'success'
       );
       return;
@@ -985,11 +986,11 @@ function nxSubmitAuth(e){
     if(alertEl){
       var msg=err.message||'';
       if(/invalid login credentials/i.test(msg)){
-        msg=isTr?'E-posta adresi veya şifre hatalı.':'Invalid email or password.';
+        msg=isTr?'E-posta adresi veya şifre hatalı.':nxU('Invalid email or password.');
       }else if(/already registered/i.test(msg)){
-        msg=isTr?'Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.':'This email is already registered. Please sign in.';
+        msg=isTr?'Bu e-posta adresi zaten kayıtlı. Lütfen giriş yapın.':nxU('This email is already registered. Please sign in.');
       }else if(/Password should be at least/i.test(msg)){
-        msg=isTr?'Şifre en az 6 karakter olmalıdır.':'Password must be at least 6 characters.';
+        msg=isTr?'Şifre en az 6 karakter olmalıdır.':nxU('Password must be at least 6 characters.');
       }
       alertEl.textContent=msg;
       alertEl.style.display='block';
@@ -1029,10 +1030,10 @@ function nxSetBilling(period){
 
   if(isYearly){
     if(priceVal)priceVal.textContent=bundle.price.perMonthOfYear;
-    if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':'/mo, billed yearly';
+    if(periodVal)periodVal.textContent=isTr?'/ay, yıllık':nxU('/mo, billed yearly');
     if(priceNote)priceNote.textContent=isTr
       ? ('Yıllık ' + bundle.price.yearly + ' olarak faturalandırılır (%' + bundle.save + ' tasarruf)')
-      : ('Billed as ' + bundle.price.yearly + '/yr (Save ' + bundle.save + '%)');
+      : nxU('Billed as {0}/yr (Save {1}%)').replace('{0}', bundle.price.yearly).replace('{1}', bundle.save);
     if(cta){
       cta.dataset.plan=isYearly?cta.dataset.yearlyPlan:cta.dataset.monthlyPlan;
       if(cta.dataset.yearlyUrl && isYearly)cta.href=cta.dataset.yearlyUrl;
@@ -1041,8 +1042,8 @@ function nxSetBilling(period){
     }
   }else{
     if(priceVal)priceVal.textContent=bundle.price.monthly;
-    if(periodVal)periodVal.textContent=isTr?'/ay':'/mo';
-    if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':'Billed monthly';
+    if(periodVal)periodVal.textContent=isTr?'/ay':nxU('/mo');
+    if(priceNote)priceNote.textContent=isTr?'Aylık faturalandırma':nxU('Billed monthly');
     if(cta){
       cta.dataset.plan=cta.dataset.monthlyPlan;
       if(cta.dataset.monthlyUrl)cta.href=cta.dataset.monthlyUrl;
@@ -1083,7 +1084,7 @@ function nxRequireAccountForCheckout(){
   var sub=document.getElementById('nxAuthSubtitle');
   if(sub) sub.textContent=isTr
     ? 'NEXUS+ aboneliği hesabına tanımlanır. Önce ücretsiz hesap oluştur ya da giriş yap, sonra ödemeye geç.'
-    : 'NEXUS+ is attached to your account. Create a free account or sign in first, then continue to checkout.';
+    : nxU('NEXUS+ is attached to your account. Create a free account or sign in first, then continue to checkout.');
 }
 function nxCloseCheckout(){
   var modal=document.getElementById('nxCheckoutModal');
@@ -1112,11 +1113,11 @@ function nxLoadBilling(action){
   var session=nxCloudSession();
   var cfg=nxCloudConfig();
   if(!session||!session.accessToken||!cfg.url||!cfg.anonKey){
-    if(status) status.textContent=isTr?'Aboneliği görmek için yeniden giriş yap.':'Sign in again to see the subscription.';
+    if(status) status.textContent=isTr?'Aboneliği görmek için yeniden giriş yap.':nxU('Sign in again to see the subscription.');
     if(cancelBtn) cancelBtn.style.display='none';
     return;
   }
-  if(status) status.textContent=isTr?'Yükleniyor…':'Loading…';
+  if(status) status.textContent=isTr?'Yükleniyor…':nxU('Loading…');
   fetch(cfg.url+'/functions/v1/whop-account',{
     method:'POST',
     headers:{ Authorization:'Bearer '+session.accessToken, apikey:cfg.anonKey, 'Content-Type':'application/json' },
@@ -1125,17 +1126,17 @@ function nxLoadBilling(action){
     return r.json().then(function(d){ return { ok:r.ok, d:d }; });
   }).then(function(res){
     if(!res.ok){
-      if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+      if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':nxU('Could not load the subscription.');
       if(cancelBtn) cancelBtn.style.display='none';
       return;
     }
     var m=res.d.membership;
     if(!m){
-      if(status) status.textContent=isTr?'Bu hesapta NEXUS+ aboneliği yok.':'This account has no NEXUS+ subscription.';
+      if(status) status.textContent=isTr?'Bu hesapta NEXUS+ aboneliği yok.':nxU('This account has no NEXUS+ subscription.');
       if(cancelBtn) cancelBtn.style.display='none';
     }else{
       var when=m.periodEnd ? new Date(m.periodEnd).toLocaleDateString(isTr?'tr-TR':'en-US') : '';
-      if(status) status.textContent=(m.plan||'NEXUS+')+(m.cancelAtPeriodEnd?(isTr?' · dönem sonunda bitecek':' · ends at period end'):'')+(when?(isTr?' · yenileme ':' · renews ')+when:'');
+      if(status) status.textContent=(m.plan||'NEXUS+')+(m.cancelAtPeriodEnd?(isTr?' · dönem sonunda bitecek':nxU(' · ends at period end')):'')+(when?(isTr?' · yenileme ':nxU(' · renews '))+when:'');
       if(cancelBtn) cancelBtn.style.display=m.cancelAtPeriodEnd?'none':'flex';
     }
     if(pays){
@@ -1147,7 +1148,7 @@ function nxLoadBilling(action){
       });
     }
   }).catch(function(){
-    if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':'Could not load the subscription.';
+    if(status) status.textContent=isTr?'Abonelik bilgisi alınamadı.':nxU('Could not load the subscription.');
   });
 }
 
@@ -1440,8 +1441,8 @@ document.addEventListener('DOMContentLoaded',function(){
         nxShowAlert(
           isTr
             ? 'NEXUS+ ayrıcalıklarınız hesabınıza başarıyla tanımlandı. Uygulamayı indirip giriş yaparak tüm özelliklerin ve NEXUS AI yapay zekâsının tadını çıkarabilirsiniz.'
-            : 'Your NEXUS+ privileges are now active on your account. Download the app and sign in to enjoy all premium features and NEXUS AI.',
-          isTr ? 'Aboneliğiniz Başlatıldı!' : 'Subscription Activated!',
+            : nxU('Your NEXUS+ privileges are now active on your account. Download the app and sign in to enjoy all premium features and NEXUS AI.'),
+          isTr ? 'Aboneliğiniz Başlatıldı!' : nxU('Subscription Activated!'),
           'success',
           function(){
             var dl = document.getElementById('downloads');
@@ -1452,16 +1453,16 @@ document.addEventListener('DOMContentLoaded',function(){
         nxShowAlert(
           isTr
             ? 'Ödeme işlemi tamamlanamadı veya kartınız onaylanmadı. Lütfen kart bilgilerinizi kontrol edip tekrar deneyin veya bankanızla görüşün.'
-            : 'Payment could not be completed. Please check your card information and try again, or contact your issuing bank.',
-          isTr ? 'Ödeme Gerçekleştirilemedi' : 'Payment Failed',
+            : nxU('Payment could not be completed. Please check your card information and try again, or contact your issuing bank.'),
+          isTr ? 'Ödeme Gerçekleştirilemedi' : nxU('Payment Failed'),
           'warning'
         );
       } else if(payStatus === 'cancel' || payStatus === 'canceled' || payStatus === 'cancelled'){
         nxShowAlert(
           isTr
             ? 'Ödeme adımı tamamlanmadan sonlandırıldı. İstediğiniz zaman planınızı seçip ücretsiz denemenizi başlatabilirsiniz.'
-            : 'Checkout was not completed. You can start your free trial whenever you are ready.',
-          isTr ? 'Ödeme İptal Edildi' : 'Checkout Canceled',
+            : nxU('Checkout was not completed. You can start your free trial whenever you are ready.'),
+          isTr ? 'Ödeme İptal Edildi' : nxU('Checkout Canceled'),
           'info'
         );
       }
@@ -1801,7 +1802,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var topBtn = document.createElement('button');
     topBtn.type = 'button';
     topBtn.className = 'nx-to-top';
-    topBtn.setAttribute('aria-label', tr ? 'Sayfa başına dön' : 'Back to top');
+    topBtn.setAttribute('aria-label', tr ? 'Sayfa başına dön' : nxU('Back to top'));
     topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
     document.body.appendChild(topBtn);
     topBtn.addEventListener('click', function(){
@@ -1837,7 +1838,7 @@ document.addEventListener('DOMContentLoaded',function(){
           card.classList.add('dl-you');
           var badge = document.createElement('span');
           badge.className = 'dl-you-badge';
-          badge.textContent = tr ? 'Sizin için' : 'For you';
+          badge.textContent = tr ? 'Sizin için' : nxU('For you');
           card.appendChild(badge);
         });
       }
