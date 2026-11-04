@@ -110,11 +110,12 @@ export function getContent(lang) {
   if (fs.existsSync(langFile)) {
     try {
       // Dinamik senkron require veya okuma
-      const code = fs.readFileSync(langFile, "utf8");
+      const code = fs.readFileSync(langFile, "utf8").replace(/^﻿/, "").replace(/^import[^\n]*\n/gm, "");
       // JSON veya export edilen nesneyi al
       const fn = new Function("RELEASES_URL", `${code.replace(/export\s+const\s+\w+\s*=/, "return ")};`);
       specific = fn(RELEASES_URL);
-    } catch {
+    } catch (err) {
+      console.error(`[site-content] Error loading ${langFile}:`, err.message);
       specific = null;
     }
   }
