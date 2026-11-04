@@ -3378,7 +3378,7 @@ function renderHero(c, hasShots) {
             <span class="island-sensor"></span>
           </div>
           <div class="phone-screen-content">
-            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : tx('en/')}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
+            ${shots.map((s, i) => `<div class="shot-slide${i === 0 ? ' active' : ''}" data-shot="${s.file}" data-label="${esc(s.label)}"><img src="/images/shots/${isTr ? '' : 'en/'}${s.file}.png" alt="${esc(c.hero.shotAlt)} — ${esc(s.label)}" width="390" height="844" loading="lazy"></div>`).join('\n            ')}
           </div>
           <div class="phone-home-indicator"></div>
           <div class="phone-glass-shine"></div>
@@ -3408,7 +3408,7 @@ function renderHow(c) {
   const stepIcons = ['wifi', 'zap', 'home'];
   const stepBadges = isTr
     ? ['01 • AĞ KEŞFİ', '02 • ANINDA EŞLE', '03 • YEREL ÇALIŞTIR']
-    : ['01 • LAN SCAN', '02 • INSTANT PAIR', '03 • LOCAL RUN'];
+    : [tx('01 • LAN SCAN'), tx('02 • INSTANT PAIR'), tx('03 • LOCAL RUN')];
   return `<section id="how">
   <div class="wrap">
     <div class="sec-head rv"><h2>${esc(c.how.heading)}</h2><p>${esc(c.how.lead)}</p></div>
@@ -3682,14 +3682,16 @@ function renderFooter(c) {
         starBtn: 'Yıldız Ver',
       }
     : {
-        h: 'Built with the community', p: 'NEXUS is open source — every contribution is credited.',
-        note: 'Maintainers <a href="https://github.com/Enard52" target="_blank" rel="noopener">@Enard52</a> (owner) and <a href="https://github.com/hadesonline02" target="_blank" rel="noopener">@hadesonline02</a> are kept <b>out of this ranking</b> — the board is a friendly race among contributors.',
-        empty: 'No community contributors yet — be the first.',
-        emptyLink: 'Pick a good first issue',
-        more: 'Show the full ranking', unit: 'commits',
-        starCta: 'If NEXUS is useful to you, star it on GitHub',
-        starSub: "A star is the biggest motivation for new contributors",
-        starBtn: 'Star on GitHub',
+        h: tx('Built with the community'), p: tx('NEXUS is open source — every contribution is credited.'),
+        note: tx('Maintainers {0} (owner) and {1} are kept out of this ranking — the board is a friendly race among contributors.')
+          .replace('{0}', '<a href="https://github.com/Enard52" target="_blank" rel="noopener">@Enard52</a>')
+          .replace('{1}', '<a href="https://github.com/hadesonline02" target="_blank" rel="noopener">@hadesonline02</a>'),
+        empty: tx('No community contributors yet — be the first.'),
+        emptyLink: tx('Pick a good first issue'),
+        more: tx('Show the full ranking'), unit: tx('commits'),
+        starCta: tx('If NEXUS is useful to you, star it on GitHub'),
+        starSub: tx('A star is the biggest motivation for new contributors'),
+        starBtn: tx('Star on GitHub'),
       };
   const contribHtml = `<section id="community">
   <div class="wrap">
@@ -3801,10 +3803,10 @@ function renderAuthModal(c) {
         'Cihazlar arasında eşitleme',
       ]
     : [
-        'Unlimited devices and rooms',
-        'Local automations and scenes',
-        '30 AI commands a day',
-        'Sync across your devices',
+        tx('Unlimited devices and rooms'),
+        tx('Local automations and scenes'),
+        tx('30 AI commands a day'),
+        tx('Sync across your devices'),
       ];
   const offerLines = isTr
     ? [
@@ -3814,10 +3816,10 @@ function renderAuthModal(c) {
         'Dönem sonunda iptal',
       ]
     : [
-        '2,000 AI replies a month instead of 30 a day',
-        'Ask NEXUS AI to set scenes and answer in plain language',
-        'One account, valid on every device',
-        'Cancel at period end',
+        tx('2,000 AI replies a month instead of 30 a day'),
+        tx('Ask NEXUS AI to set scenes and answer in plain language'),
+        tx('One account, valid on every device'),
+        tx('Cancel at period end'),
       ];
   return `
 <div id="nxAuthModal" class="nx-modal-backdrop" onclick="if(event.target===this)nxCloseAuthModal()" role="dialog" aria-modal="true" aria-labelledby="nxAuthTitle">
@@ -4429,7 +4431,7 @@ function renderNotFound(c) {
     </div>
     <p class="lang">${isTr
       ? `Bu sayfayı İngilizce okumak istersen: <a href="/404.html">English</a>`
-      : tx(`Read this page in Turkish: <a href="/tr/404.html">Türkçe</a>`)}</p>
+      : `${tx('Read this page in Turkish:')} <a href="/tr/404.html">Türkçe</a>`}</p>
   </main>
 </body>
 </html>`;

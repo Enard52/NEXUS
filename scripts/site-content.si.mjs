@@ -114,7 +114,7 @@ export const si = {
     currencyNote: "මිල USD වලින්",
     plans: [
       {
-        name: "Free",
+        name: "නොමිලේ",
         price: "$0",
         period: "සදහටම",
         features: [
@@ -148,8 +148,8 @@ export const si = {
         },
       },
       {
-        name: "Family",
-        price: "Free",
+        name: "පවුල",
+        price: "නොමිලේ",
         period: "මුළු පවුලටම",
         badge: "මුළු නිවසටම",
         features: [

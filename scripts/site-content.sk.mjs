@@ -240,10 +240,10 @@ export const sk = {
     "smartScreenNote": "Na Windows je najjednoduchšia cesta Microsoft Store: balík je podpísaný spoločnosťou Microsoft a aktualizácie prichádzajú cez Store. Priamy .exe súbor nie je podpísaný, takže Windows môže upozorniť na „neznámeho vydavateľa“ — pozrite si kontrolné súčty. Dôležité otázky, odpovedané. Funguje NEXUS úplne v mojej lokálnej sieti?"
   },
   "faq": {
-    "heading": "The important questions, answered.",
+    "heading": "Dôležité otázky, zodpovedané.",
     "items": [
       [
-        "Does NEXUS operate entirely on my local network?",
+        "Funguje NEXUS výhradne v mojej lokálnej sieti?",
         "Áno. NEXUS je postavený na prísnej lokálnej architektúre typu „local-first“. Vaše zariadenia, miestnosti, scény a telemetria senzorov sa spracovávajú priamo na vašom domácom hardvéri. Dokonca aj počas výpadkov internetu všetka lokálna kontrola, osvetlenie a automatizácie pokračujú bez problémov s nulovou latenciou. Prihlásenie sa bezpečne synchronizuje s vašimi nastaveniami na všetkých obrazovkách."
       ],
       [

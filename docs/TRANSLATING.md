@@ -7,7 +7,7 @@ not be added.
 ## How it works
 
 - The application uses runtime localization overlays (`src/app/lang-<code>.js`) supporting 68 languages.
-- The marketing website and legal pages are pre-rendered for all 68 languages in `scripts/site-content.<kod>.mjs` and `scripts/legal-translations/<kod>.json`.
+- The marketing website and legal pages are pre-rendered for all 68 languages in `scripts/site-content.<kod>.mjs`, `scripts/site-ui/<kod>.json` (menu, forms and dialog texts hard-coded in the site generator; check with `node scripts/check-site-ui.mjs <kod>`) and `scripts/legal-translations/<kod>.json`.
 - When any string is missing, it safely falls back to English without breaking layout or showing blanks.
 - Payment plans and the AI assistant follow local currency and language preferences.
 

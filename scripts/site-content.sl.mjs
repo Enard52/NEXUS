@@ -247,7 +247,7 @@ export const sl = {
         "Ja. NEXUS je zasnovan na strogi arhitekturi, ki temelji predvsem na lokalnem delovanju. Vaše naprave, sobe, scene in telemetrija senzorjev se obdelujejo neposredno na vaši lastni domači strojni opremi. Tudi med izpadi interneta vsa lokalna upravljanja, svetlobni sistemi in avtomatizacije nadaljujejo delovanje brez zamika. Varnostna prijava sinhronizira vaše nastavitve na vseh vaših zaslonih. Ali moram namestiti NEXUS ali deluje v brskalniku?"
       ],
       [
-        "Do I need to install NEXUS, or does it run in the browser?",
+        "Ali moram NEXUS namestiti ali deluje v brskalniku?",
         "Namestite namizni program (Windows ali Linux) ali aplikacijo za Android. NEXUS ni na voljo kot brskalniška aplikacija. Naročila naprav potekajo preko vašega lastnega lokalnega omrežja. Shelly, Philips Hue, ESPHome, Tasmota, WLED in Home Assistant uporabljajo lokalni HTTP v namiznem programu in na Androidu. TP-Link Kasa in Yeelight potrebujejo surovi TCP, zato tečejo v namiznem programu. Ta stran je za račun, prenose in obračune."
       ],
       [
@@ -263,11 +263,11 @@ export const sl = {
         "Avtomatizacijski motor NEXUS ocenjuje vaše urnike in pravila senzorjev na napravi, ki jo imate vedno vklopljeno — namizna aplikacija ostane v sistemski vrstici in deluje ves čas, tako da se osvetlitev, energetske in varnostne rutine nikoli ne zanašajo na oblak. Scene in časovniki, sproženi iz vašega telefona, se takoj uveljavijo prek vašega LAN-a. Novi dogodki se širijo na obvestitvene kanale, ki jih omogočite na strani Instant Notifications: trak v aplikaciji, sistemska obvestila, ntfy, Telegram ali vaš lastni HTTPS webhook. Katere naprave in ekosistemi so podprti?"
       ],
       [
-        "Which devices and ecosystems are supported?",
+        "Katere naprave in ekosistemi so podprti?",
         "NEXUS govori lastni lokalni protokol vsake naprave: Shelly (Gen1 in Gen2+), Tasmota, WLED, ESPHome, Philips Hue in Home Assistant preko lokalnega HTTP na vseh platformah, poleg tega TP-Link Kasa, Yeelight, WiZ, Sonoff (DIY način) in Wake-on-LAN preko lokalnega omrežja v namizni aplikaciji, brez računa ali ključa. Vse drugo — naprave Matter ali Zigbee — se povežejo preko vašega lastnega Home Assistant strežnika, ki ga NEXUS obravnava kot en sam lokalni hub. Lokalno odkrivanje IP naslovov poveže naprave takoj, brez vmesnega oblaka proizvajalca. Kako so integrirane varnostne kamere in senzorji?"
       ],
       [
-        "How are security cameras and sensors integrated?",
+        "Kako so vključene varnostne kamere in senzorji?",
         "NEXUS združuje vaše varnostne kamere, senzorje gibanja in senzorje vhodov v centralizirano nadzorno ploščo za varnost. Lahko avtomatizirate zasebne načine, aktivirate nadzorne rutine ob odhodu od doma in vidite vsak gib ali dogodek stika v aplikaciji — poleg tega pa na obvestilnih kanalih, ki jih omogočite (sistemska obvestila, ntfy, Telegram ali vaš lastni webhook)."
       ],
       [
@@ -292,10 +292,10 @@ export const sl = {
       ],
       [
         "Ali lahko varnostno kopiram svoje nastavitve in jih prenesem na drugo napravo? Da. Nastavitve imajo razdelek za varnostno kopiranje, kjer lahko izvozite svoje nastavitve in avtomatizacije v datoteko JSON in jo uvozite na drugo napravo ali po ponovni namestitvi. Gesla, žetoni in lokalni ključi so odstranjeni s seznama povezanih naprav v datoteki, zato jih po obnovitvi znova vnesite. Datoteko varnostne kopije obdržite zasebno. Ali lahko izvozim svoje podatke o energiji?",
-        "Yes. Settings has a backup section where you can export your settings and automations to a JSON file and import it on another device or after a reinstall. Passwords, tokens and local keys are stripped from the paired device list in the file, so re-enter them after restoring. Keep the backup file private."
+        "Da. Nastavitve imajo razdelek za varnostno kopijo, kjer lahko nastavitve in avtomatizacije izvozite v datoteko JSON ter jih uvozite v drugi napravi ali po ponovni namestitvi. Gesla, žetoni in lokalni ključi so iz seznama seznanjenih naprav v datoteki odstranjeni, zato jih po obnovitvi znova vnesite. Datoteko z varnostno kopijo hranite zasebno."
       ],
       [
-        "Can I export my energy data?",
+        "Ali lahko izvozim svoje podatke o energiji?",
         "Da. Stran Energija lahko izvozi najnovejše meritve dejanske moči vaših naprav kot CSV ali JSON datoteko. NEXUS ima podatke samo za naprave, ki dejansko poročajo o moči; če ni povezanih naprav, ni ničesar za izvoz."
       ],
       [
