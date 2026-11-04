@@ -3,7 +3,9 @@ import { existsSync, readdirSync } from "node:fs";
 
 const APP = new URL("../../../src/app/", import.meta.url);
 const SCRIPTS = new URL("../../../scripts/", import.meta.url);
+// @ts-expect-error -- .mjs tool file without type declarations
 const checkUi = await import("../../../scripts/check-site-ui.mjs");
+// @ts-expect-error -- .mjs tool file without type declarations
 const checkContent = await import("../../../scripts/check-site-content.mjs");
 
 // Her topluluk dilinin pazarlama sitesi metni (site-content) ve koda gömülü arayüz sözlüğü (site-ui) olmalı;
