@@ -89,11 +89,10 @@ describe("legal pages and PDFs language-agnostic generation (Issue #191)", () =>
     expect(htmlTr).toContain("Bu belge nexus-smarthome.pages.dev");
   });
 
-  it("uses a translation file when one exists and keeps the convenience-translation notice", () => {
+  it("uses a translation file when one exists", () => {
     const htmlDe = renderHtml("terms", "de");
     expect(htmlDe).toContain("<title>Nutzungsbedingungen — NEXUS</title>");
     expect(htmlDe).toContain("Betrieben von: NEXUS");
-    expect(htmlDe).toContain("Bei Abweichungen gelten die türkische und die englische Fassung");
     expect(docs.terms.de.sections.length).toBe(docs.terms.en.sections.length);
     expect(UPDATED.de).toContain("2026");
   });

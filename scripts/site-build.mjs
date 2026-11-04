@@ -4314,6 +4314,8 @@ ${renderCustomDialog(c)}
 }
 
 function renderLegalDoc(c, slug, doc) {
+  // Site genelinde RTL düzeni yok; hukuki metinler sağdan sola yazılan dillerde en azından kendi içinde doğru hizalansın.
+  const legalDir = ['ar', 'fa', 'he', 'ur'].includes(c.lang) ? ' dir="rtl"' : '';
   const isTr = c.lang === 'tr';
   const path = c.lang === 'en' ? `/${slug}.html` : `/${c.lang}/${slug}.html`;
   const canonicalUrl = `${SITE_ORIGIN}${c.lang === 'en' ? '/' + slug : '/' + c.lang + '/' + slug}`;
@@ -4343,9 +4345,9 @@ ${renderHeader(c, path)}
 <main id="main" class="wrap">
   <div class="doc-hero rv">
     <a class="int-more" href="${c.canonical}" style="margin-bottom:12px">${icon('arrow', 'icon')} ${isTr ? 'Ana sayfaya dön' : 'Back to home'}</a>
-    <h1>${esc(doc.title)}</h1>
+    <h1${legalDir}>${esc(doc.title)}</h1>
   </div>
-  <div class="doc-body rv">
+  <div class="doc-body rv"${legalDir}>
     ${doc.body}
   </div>
 </main>

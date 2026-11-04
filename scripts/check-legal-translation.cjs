@@ -35,8 +35,10 @@ function check(code) {
   }
   if (j.code !== code) problems.push(`${code}: "code" alanı ${code} olmalı`);
   for (const k of ["updated"]) if (!j[k] || typeof j[k] !== "string") problems.push(`${code}: "${k}" eksik`);
-  for (const k of ["updated", "operatedBy", "footer", "notice"])
+  // notice isteğe bağlıdır (boş olabilir); diğerleri zorunlu.
+  for (const k of ["updated", "operatedBy", "footer"])
     if (!j.labels || !j.labels[k]) problems.push(`${code}: labels.${k} eksik`);
+  if (!j.labels || typeof j.labels.notice !== "string") problems.push(`${code}: labels.notice alanı (boş olabilir) eksik`);
   if (/Last updated/i.test(String(j.updated)) && code !== "en") problems.push(`${code}: "updated" çevrilmemiş`);
   for (const key of Object.keys(docs)) {
     const en = docs[key].en;
