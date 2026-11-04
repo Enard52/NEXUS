@@ -23,11 +23,13 @@ describe("marketing site is translated for every shipped UI language", () => {
   });
 
   it("keeps site-content structure identical to the English source", () => {
-    for (const c of codes) expect(checkContent.checkSiteContent(c).problems, `${c} site içeriği`).toEqual([]);
+    for (const c of codes)
+      expect(checkContent.checkSiteContent(c).problems, `${c} site içeriği`).toEqual([]);
   });
 
   it("translates every hard-coded site UI string without breaking placeholders", () => {
     expect(checkUi.allKeys().length).toBeGreaterThan(100);
-    for (const c of codes) expect(checkUi.checkSiteUi(c).problems, `${c} site arayüz metinleri`).toEqual([]);
+    for (const c of codes)
+      expect(checkUi.checkSiteUi(c).problems, `${c} site arayüz metinleri`).toEqual([]);
   });
 });
