@@ -1,0 +1,253 @@
+{
+ "code": "eu",
+ "updated": "Azken eguneratzea: 2026ko urriaren 31",
+ "labels": {
+  "updated": "Azken eguneratzea",
+  "operatedBy": "Eragilea",
+  "footer": "Dokumentu hau nexus-smarthome.pages.dev helbidean argitaratutako uneko testuarekin batera irakurri behar da.",
+  "notice": "Itzulpen hau erosotasunerako baino ez da ematen. Turkierazko edo ingelesezko bertsioarekin bat ez badator, turkierazko eta ingelesezko bertsioek lehentasuna dute."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Pribatutasun-politika",
+   "intro": "NEXUS-ek zure etxe adimenduna batez ere zure sare lokalean kudeatzen du. Politika honek argi azaltzen du kontu bat sortzen duzunean zer datu tratatzen ditugun, zergatik eta non.",
+   "sections": [
+    {
+     "h": "Laburbilduz",
+     "ul": [
+      "NEXUS erabiltzeko kontu bat behar da. Gailuen aginduak zure sare lokalean exekutatzen dira oraindik ere; ez dira fabrikatzaile baten hodeiaren bidez bidaltzen.",
+      "Zure ezarpenak, gailu-zerrenda eta txataren historia hodeian gordetzen dira, gailu guztietan bat etor daitezen.",
+      "Ez ditugu zure datuak saltzen, ez ditugu iragarkietarako erabiltzen eta ez dizugu profilik egiten.",
+      "Mikrofonorako sarbidea aukerakoa da eta NEXUS AI txatean mikrofonoa ukitzen duzunean soilik erabiltzen da; grabazioa transkribatu egiten da eta ez da gordetzen. Kamera QR kodeak eskaneatzeko soilik irekitzen da, eta irudiak ez du inoiz zure gailua uzten."
+     ]
+    },
+    {
+     "h": "Datuen tratamenduaren arduraduna",
+     "p": [
+      "Datuen tratamenduaren arduraduna NEXUS da. Kontaktua: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Zer datu tratatzen ditugun",
+     "ul": [
+      "Kontua: zure helbide elektronikoa eta (eman bada) zure izena. Google bidez saioa hasten baduzu, Googlek emandako helbide elektronikoa eta profileko izena. Zure pasahitza Supabase Auth-en norabide bakarreko hash gisa soilik gordetzen da; ezin dugu ikusi.",
+      "Aplikazioaren datu sinkronizatuak (saioa hasita dagoenean soilik): profileko izena eta argazkia, gaiaren/hizkuntzaren/unitateen ezarpenak, etxeko kideak, eszenak eta automatizazioak, gogoko txartelak, NEXUS AI txataren historia eta erabilera-kontagailua, gertaera-erregistroa, etxearen kokalekuaren/eguraldiaren lehentasuna eta zuk gehitutako gailuen zerrenda (izena, gela, protokoloa, sare lokaleko helbidea, azken egoera).",
+      "Harpidetza (NEXUS+ erosi baduzu): helbide elektronikoa, plana, egoera, aldiaren amaiera eta Whop-eko kide-IDa. Zure txartelaren datuak Whop-ek soilik tratatzen ditu eta ez dira inoiz guregana iristen.",
+      "Laguntza-mezuak: zure helbide elektronikoa eta mezua, guri idazten diguzunean.",
+      "Erregistro teknikoak: saio-hasieraren eta erroreen erregistroak (IP helbidea barne), gure ostatatze- eta autentifikazio-hornitzaileek denbora laburrez gordetzen dituztenak."
+     ]
+    },
+    {
+     "h": "Helburuak eta oinarri juridikoak",
+     "p": [
+      "Zure kontua kudeatzeko, zure datuak gailuen artean sinkronizatzeko, zure harpidetza eskaintzeko eta laguntza emateko (kontratuaren betetzea); zerbitzua seguru mantentzeko eta erabilera okerra saihesteko (interes legitimoa); eta atzerrirako transferentzietarako, zure berariazko adostasuna (ikus jarraian)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI-k bi zati ditu. (1) Gailuen aginduak (argi bat piztu, eszena bat exekutatu, egoera galdetu) zure gailuan lokalean tratatzen dira eta ez dira hodeira bidaltzen. (2) Gailu-aginduak ez diren mezuak, adibidez txat orokorra eta galderak, Cloudflare Workers AI-ra bidaltzen dira erantzun daitezen; zure gailuen izenak, motak eta gelak testuinguru gisa sartzen dira. Zure kontuaren datuak, helbide elektronikoa eta kokalekua ez dira bidaltzen. Ez dugu eduki hau AA ereduak entrenatzeko erabiltzen; Cloudflare-k zerbitzua emateko tratatzen du. Nahi baduzu, txatean gailu-aginduak soilik erabil ditzakezu. Saioa hasita badaukazu, zure txataren historia zure kontuarekin sinkronizatzen da, zure gainerako ezarpenak bezala.",
+      "Ahots-sarrera: NEXUS AI txateko mikrofono-botoia ukitzen duzunean, zure hizketa testu bihurtzen da. Nabigatzaile batean (Chrome/Edge) lehenik nabigatzailearen berezko ahots-ezagutza-zerbitzua erabiltzen da; eskuraezina bada, edo mahaigaineko eta mugikorreko aplikazioetan, grabazio laburra Cloudflare Workers AI-ra (Whisper) soilik bidaltzen da transkribatzeko, ez da gordetzen eta ez da zure kontuan gordetzen. Transkripzioa txataren sarrera-eremuan soilik jartzen da eta ez da inora bidaltzen bidali sakatu arte."
+     ]
+    },
+    {
+     "h": "Zerbitzu-hornitzaileak eta transferentziak",
+     "ul": [
+      "Supabase: autentifikazioa, datu-basea eta sistemaren mezu elektronikoak.",
+      "Cloudflare: webgunearen ostatatzea; Cloudflare Workers AI NEXUS AI txateko erantzunetarako eta ahotsetik testurako bihurketarako.",
+      "Whop: harpidetzaren ordainketak eta fakturazioa.",
+      "Google: Google bidezko saio-hasiera eta (Gmail bidez) egiaztapen- eta pasahitza berrezartzeko mezu elektronikoak.",
+      "GitHub: instalatzaileen banaketa.",
+      "Open-Meteo: eguraldirako hiria / gutxi gorabeherako koordenatuak.",
+      "OpenStreetMap / Nominatim: mapak eta lekuen bilaketa; Unsplash: ordezko irudi batzuk.",
+      "BigDataCloud: koordenatuetatik leku-izena lortzea (Nominatim eskuraezina denean ordezko gisa; etxearen kokalekua hautatzen duzunean ere erabiltzen da). Zerbitzu honek hautatzen duzun edo detektatzen den kokalekuaren koordenatu zehatzak jasotzen ditu."
+     ],
+     "p": [
+      "Hornitzaile horien zerbitzariak Türkiyetik kanpo egon daitezke. Kontua sortuz eta/edo ordainduz, zure datuak haiei eta atzerrira transferitzeko berariazko adostasuna ematen duzu; adostasuna kendu dezakezu zure kontua ezabatzeko eskatuz."
+     ]
+    },
+    {
+     "h": "Cookieak eta jarraipena",
+     "p": [
+      "Gure webguneak ez du cookierik erabiltzen eta ez du analitika- edo publizitate-jarraitzailerik. Aplikazioak zure ezarpenak zure gailuaren biltegiratze lokalean (localStorage) gordetzen ditu."
+     ]
+    },
+    {
+     "h": "Atxikitzea eta ezabatzea",
+     "p": [
+      "Zure datuak zure kontua irekita dagoen bitartean gordetzen ditugu. Zure kontua eta datuak ezabatzeko, idatzi helbide honetara: nexus.smarthome.app@gmail.com; eskaera 30 egunen barruan beteko dugu (legez gorde behar ditugun harpidetza-erregistroak izan ezik). Aplikazioan, ireki Ezarpenak eta gero Kontuaren segurtasuna, eta erabili Ezabatu nire kontua. Zerbitzariak ezin badu amaitu, pantailak hala adierazten du."
+     ]
+    },
+    {
+     "h": "Zure eskubideak",
+     "p": [
+      "Turkiako 6698 zenbakiko Legearen (KVKK) 11. artikuluaren arabera eta, aplikagarria denean, GDPRren arabera, zure datuak tratatzen diren galdetu dezakezu, haiek eskuratu, zuzendu, ezabatu, tratamenduaren aurka egin eta eramangarritasuna eskatu. Idatzi helbide honetara: nexus.smarthome.app@gmail.com. Turkiako Datu Pertsonalak Babesteko Agintaritzari ere kexa aurkez diezaiokezu."
+     ]
+    },
+    {
+     "h": "Segurtasuna",
+     "p": [
+      "Konexioak TLS bidez enkriptatzen dira. Datu-baseak errenkada mailako sarbide-kontrola ezartzen du: erabiltzaile bakoitzak bere datuak soilik irakur eta idatz ditzake. Ez dago sistema guztiz seguruik; pasahitz sendo bat erabiltzea eta zure gailuak eguneratuta mantentzea gomendatzen dugu."
+     ]
+    },
+    {
+     "h": "Hirugarrenen gailuak",
+     "p": [
+      "Konektatzen dituzun gailu adimendunek (adib. Shelly, WLED, ESPHome) beren fabrikatzaileen zerbitzariekin komunika daitezke, haien pribatutasun-politiken arabera. NEXUS-ek ez ditu zure datuak fabrikatzaile horiekin partekatzen."
+     ]
+    },
+    {
+     "h": "Haurrak",
+     "p": [
+      "NEXUS ez dago 13 urtetik beherako haurrei zuzendua, eta ez ditugu jakitun gisa haien datuak biltzen."
+     ]
+    },
+    {
+     "h": "Aldaketak",
+     "p": [
+      "Politika hau eguneratu dezakegu; aldaketa garrantzitsuak aplikazioan edo webgunean iragarriko ditugu."
+     ]
+    },
+    {
+     "h": "Kontaktua",
+     "p": [
+      "Galderak: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Zerbitzu-baldintzak",
+   "intro": "NEXUS aplikazioa eta lotutako zerbitzuak («Zerbitzuak») deskargatuz, instalatuz edo erabiliz baldintza hauek onartzen dituzu. Zerbitzuak NEXUS-ek eskaintzen ditu. Kontaktua: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Lizentzia",
+     "p": [
+      "Lizentzia pertsonal, esklusiboa ez, besterenezina eta indargabetu daitekeena ematen dizugu NEXUS softwarea zure jabetzakoak diren edo zuk kontrolatzen dituzun gailuetan erabiltzeko, etxeko automatizazio pertsonal eta ez-komertzialerako. Ezin duzu banatu, alokatu, saldu, azpilizentziatu edo alderantzizko ingeniaritza egin, ezta NEXUS-ekin zuzenean lehiatzen den produktu bat sortzeko erabili ere. Hirugarrenen osagaiei beren lizentziak aplikatzen zaizkie."
+     ]
+    },
+    {
+     "h": "Kontua",
+     "p": [
+      "NEXUS erabiltzeko kontu bat behar da. Zu zara arduraduna zure datuak zuzenak izateaz, pasahitza seguru gordetzeaz eta zure kontuaren pean egindako jarduera guztiaz. Baldintza hauek urratzen dituzten kontuak etendu edo itxi ditzakegu."
+     ]
+    },
+    {
+     "h": "Etxe adimendunaren segurtasuna",
+     "ul": [
+      "NEXUS erosotasun-tresna bat da; ez ezazu bakarrik horretan oinarritu funtzio kritikoetarako, hala nola suteen, gasaren, osasunaren edo bizitzaren segurtasunerako.",
+      "Zu zara arduraduna zure gailuetara bidalitako aginduez eta zure sarearen segurtasunaz. Mantendu gailuen firmwarea eta routerraren ezarpenak eguneratuta.",
+      "Segurtasunagatik, itxiturak ezin dira txatetik ireki."
+     ]
+    },
+    {
+     "h": "NEXUS AI eta kredituak",
+     "p": [
+      "Doako planak egunean 30 NEXUS AI kreditu ditu; NEXUS+ harpidetzak hilean 2000 ditu. Kredituak besterenezinak dira, ezin dira diruz aldatu eta aldiaren amaieran berrezartzen dira. NEXUS AI-k akatsak egin ditzake; emaitzak egiaztatzea zure ardura da."
+     ]
+    },
+    {
+     "h": "NEXUS+ harpidetza",
+     "ul": [
+      "Irismena: NEXUS+-ek hilean 2000 NEXUS AI kreditu ematen ditu eta gailu berriak konexio aurreratuen (Home Assistant) bidez gehitzeko aukera desblokeatzen du. Harpidetza amaitzean, lehendik gehitutako gailuek funtzionatzen jarraitzen dute; konexio horien bidez gailu berriak gehitzeko, berriro NEXUS+ behar da.",
+      "Planak: Hilekoa eta Urtekoa, Türkiyen TRYtan eta beste lekuetan USDtan prezioztatuak (gaur egun Hilekoa 499,99 ₺ / 11,99 $, Urtekoa 3999,99 ₺ / 89,99 $). Uneko prezioak ordainketan erakusten dira; ordainketan zergak gehi daitezke. Urteko planak 7 eguneko doako proba-aldia du eta hileko planak 3 egunekoa.",
+      "Ordainketak Whop bidez egiten dira. Harpidetza automatikoki berritzen da aldi bakoitzean utzi arte; proba-aldia amaitzean, hautatutako planaren prezioa kobratzen da.",
+      "Edonoiz utzi dezakezu aplikazioko Fakturazio atalean edo webgune honetako zure kontutik. Uzteak uneko aldiaren amaieran izango ditu ondorioak.",
+      "Ordainketan, erabili zure NEXUS kontuaren helbide elektronikoa; harpidetza helbide horrekin lotzen da.",
+      "Prezio-aldaketak indarrean sartu baino gutxienez 30 egun lehenago iragartzen ditugu; ez dute uneko aldian eraginik.",
+      "Itzulketa-baldintzak Itzulketa eta Bertan behera uzteko politikan daude."
+     ]
+    },
+    {
+     "h": "Aldaketak eta etenaldiak",
+     "p": [
+      "Zerbitzuak hobetu, aldatu edo mantentze-lanengatik aldi baterako eten ditzakegu. Ez dugu bermatzen zerbitzua etenik gabekoa edo akatsik gabekoa izango denik."
+     ]
+    },
+    {
+     "h": "Jabetza intelektuala",
+     "p": [
+      "NEXUS softwarearen, diseinuaren, markaren eta edukiaren gaineko eskubideak eragilearenak dira. Baldintza hauek goian aipatutako lizentzia soilik ematen dizute."
+     ]
+    },
+    {
+     "h": "Erantzukizunaren mugaketa",
+     "p": [
+      "Softwarea «dagoen bezala» eskaintzen da. Legeak onartzen duen gehienezko mailan, ez gara erantzule Zerbitzuen erabileratik eratorritako zeharkako kalteez (datu-galera edo gailuei zein ondasunei egindako kalteak barne); gure erantzukizun osoa azken 12 hilabeteetan guri ordaindu diguzun zenbatekora mugatzen da. Legez mugatu ezin diren kontsumitzaile-eskubideei ez zaie eragiten."
+     ]
+    },
+    {
+     "h": "Amaiera",
+     "p": [
+      "Zure kontua edonoiz itxi dezakezu (ikus Pribatutasun-politika). Zure sarbidea amaitu dezakegu baldintza hauek urratzen badituzu."
+     ]
+    },
+    {
+     "h": "Lege aplikagarria",
+     "p": [
+      "Baldintza hauek Türkiyeko Errepublikaren legeek arautzen dituzte. Kontsumitzaile gisa, kontsumo-arbitraje batzordeetara eta kontsumo-auzitegietara jotzeko eskubidea mantentzen duzu."
+     ]
+    },
+    {
+     "h": "Baldintza hauen aldaketak",
+     "p": [
+      "Baldintza hauek eguneratu ditzakegu eta aldaketa garrantzitsuak aplikazioan edo webgunean iragarriko ditugu. Aldaketa baten ondoren Zerbitzuak erabiltzen jarraitzeak baldintza berriak onartzen dituzula esan nahi du."
+     ]
+    },
+    {
+     "h": "Kontaktua",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Itzulketa eta Bertan behera uzteko politika",
+   "intro": "Politika honek NEXUS+ harpidetzaren proba-aldiaren, bertan behera uztearen eta itzulketaren baldintzak azaltzen ditu. Legez dagozkizun kontsumitzaile-eskubideei ez zaie eragiten.",
+   "sections": [
+    {
+     "h": "Doako proba-aldia",
+     "p": [
+      "Urteko planak 7 eguneko doako proba-aldia du eta hileko planak 3 egunekoa. Proba-aldia amaitu aurretik uzten baduzu, ez zaizu ezer kobratzen. Uzten ez baduzu, proba-aldia amaitzean hautatutako planaren prezioa kobratzen da."
+     ]
+    },
+    {
+     "h": "Nola utzi",
+     "ul": [
+      "Aplikazioan: Plus → Fakturazioa → Utzi aldiaren amaieran.",
+      "Webgunean: hasi saioa → kontua → utzi aldiaren amaieran.",
+      "Uzteak uneko fakturazio-aldiaren amaieran izango ditu ondorioak; ordura arte NEXUS+ eginbideak mantentzen dituzu eta hurrengo aldia ez zaizu kobratzen."
+     ]
+    },
+    {
+     "h": "Itzulketak",
+     "ul": [
+      "Lehen kobrantzaren ondorengo 14 egunen barruan itzulketa eskatu dezakezu arrazoirik eman gabe; ordainketa osoa itzultzen dugu.",
+      "Berritze automatikoetan, berritze-datatik 3 egunen barruan eskatzen baduzu, aldi horren kobrantza itzultzen dugu.",
+      "Epe horietatik kanpo, ez ditugu erabilitako aldiak itzultzen, baina itzulketak aztertuko ditugu kasu justifikatuetan, adibidez gure aldeko akats batengatik zerbitzua erabilezina izan bada.",
+      "Eskaera bat ukatu dezakegu gehiegikeria hautematen badugu (adibidez, kontu berean behin eta berriz itzulketak egitea)."
+     ]
+    },
+    {
+     "h": "Nola eskatu itzulketa",
+     "p": [
+      "Bidali mezu elektroniko bat nexus.smarthome.app@gmail.com helbidera, zure NEXUS kontuaren helbide elektronikoarekin eta zure eskaerarekin. Onartutako itzulketak Whop bidez egiten dira jatorrizko ordainbidera; normalean 5–10 lanegun behar dira agertzeko, zure bankuaren arabera."
+     ]
+    },
+    {
+     "h": "Legezko eskubideak",
+     "p": [
+      "Politika honek ez ditu mugatzen Turkiako 6502 zenbakiko Kontsumitzaileen Babesari buruzko Legeak eta Urrutiko Kontratuen Erregelamenduak ematen dizkizun legezko eskubideak (atzera egiteko eskubidea eta haren salbuespenak barne)."
+     ]
+    },
+    {
+     "h": "Kontaktua",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

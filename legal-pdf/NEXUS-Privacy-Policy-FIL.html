@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fil">
+<head>
+<meta charset="utf-8"/>
+<title>Patakaran sa Privacy — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Patakaran sa Privacy</h1>
+  <p class="meta">Huling na-update: Oktubre 31, 2026 · Pinapatakbo ng: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>Pangunahing pinamamahalaan ng NEXUS ang iyong smart home sa sarili mong lokal na network. Malinaw na ipinapaliwanag ng patakarang ito kung anong data ang pinoproseso namin kapag gumawa ka ng account, kung bakit, at saan.</p>
+  
+    <section>
+      <h2>Sa madaling sabi</h2>
+      
+      <ul><li>Kailangan ng account upang magamit ang NEXUS. Tumatakbo pa rin sa iyong lokal na network ang mga utos sa device; hindi ito ipinapadala sa pamamagitan ng cloud ng tagagawa.</li><li>Iniimbak sa cloud ang iyong mga setting, listahan ng device at kasaysayan ng chat para magkapareho ang mga ito sa bawat device.</li><li>Hindi namin ibinebenta ang iyong data, hindi ginagamit ito para sa advertising, at hindi ka namin ipo-profile.</li><li>Opsyonal ang access sa mikropono at ginagamit lamang kapag tinapik mo ang mic sa chat ng NEXUS AI; isinasalin sa teksto ang recording at hindi ito iniimbak. Bumubukas lamang ang camera para mag-scan ng mga QR code at hindi kailanman lumalabas sa iyong device ang larawan.</li></ul>
+    </section>
+    <section>
+      <h2>Tagapamahala ng data</h2>
+      <p>Ang tagapamahala ng data ay ang NEXUS. Makipag-ugnayan: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Anong data ang pinoproseso namin</h2>
+      
+      <ul><li>Account: ang iyong email address at (kung ibinigay) ang iyong pangalan. Sa pag-sign in gamit ang Google, ang email at pangalan ng profile na ibinibigay ng Google. Ang iyong password ay iniimbak lamang bilang one-way hash sa Supabase Auth; hindi namin ito nakikita.</li><li>Naka-sync na data ng app (kapag naka-sign in lamang): pangalan at larawan ng profile, mga setting ng tema/wika/unit, mga miyembro ng sambahayan, mga eksena at automation, mga paboritong card, kasaysayan ng chat ng NEXUS AI at bilang ng paggamit, log ng mga kaganapan, kagustuhan sa lokasyon ng tahanan/panahon, at ang listahan ng mga device na idinagdag mo (pangalan, silid, protocol, address sa lokal na network, huling estado).</li><li>Subscription (kung binili mo ang NEXUS+): email, plano, katayuan, katapusan ng panahon at Whop membership ID. Ang detalye ng iyong card ay pinoproseso lamang ng Whop at hindi kailanman umaabot sa amin.</li><li>Mga mensahe sa suporta: ang iyong email at mensahe kapag sumulat ka sa amin.</li><li>Mga teknikal na log: mga log ng pag-sign in at error (kasama ang IP address) na saglit na iniingatan ng aming mga provider ng hosting at authentication.</li></ul>
+    </section>
+    <section>
+      <h2>Mga layunin at legal na batayan</h2>
+      <p>Upang pamahalaan ang iyong account, i-sync ang iyong data sa mga device, ibigay ang iyong subscription at magbigay ng suporta (pagtupad sa kontrata); upang mapanatiling ligtas ang serbisyo at maiwasan ang pang-aabuso (lehitimong interes); at para sa paglilipat sa ibang bansa, ang iyong tahasang pahintulot (tingnan sa ibaba).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>May dalawang bahagi ang NEXUS AI. (1) Ang mga utos sa device (magbukas ng ilaw, magpatakbo ng eksena, magtanong ng status) ay pinoproseso nang lokal sa iyong device at hindi ipinapadala sa cloud. (2) Ang mga mensaheng hindi utos sa device, gaya ng pangkalahatang chat at mga tanong, ay ipinapadala sa Cloudflare Workers AI upang sagutin; isinasama bilang konteksto ang mga pangalan, uri at silid ng iyong mga device. Hindi ipinapadala ang detalye ng iyong account, email at lokasyon. Hindi namin ginagamit ang nilalamang ito sa pagsasanay ng mga modelo ng AI; pinoproseso ito ng Cloudflare upang maibigay ang serbisyo. Kung nais mo, maaari mong gamitin ang mga utos sa device lamang sa chat. Kung naka-sign in ka, nagsi-sync ang kasaysayan ng iyong chat sa iyong account tulad ng iba mong mga setting.</p><p>Voice input: kapag tinapik mo ang mic button sa chat ng NEXUS AI, ginagawang teksto ang iyong pagsasalita. Sa browser (Chrome/Edge), unang ginagamit ang sariling serbisyo ng browser sa pagkilala ng pananalita; kung hindi ito maabot, o sa mga desktop at mobile app, ang maikling recording ay ipinapadala lamang sa Cloudflare Workers AI (Whisper) para isalin sa teksto, hindi iniimbak at hindi sine-save sa iyong account. Inilalagay lamang ang transcript sa input ng chat at hindi ipinapadala kahit saan hanggang sa pindutin mo ang send.</p>
+      
+    </section>
+    <section>
+      <h2>Mga service provider at paglilipat</h2>
+      <p>Maaaring nasa labas ng Türkiye ang mga server ng mga provider na ito. Sa paggawa ng account at/o pagbabayad, tahasan kang pumapayag na ilipat ang iyong data sa kanila at sa ibang bansa; maaari mong bawiin ang pahintulot sa pamamagitan ng pagpapabura ng iyong account.</p>
+      <ul><li>Supabase: authentication, database at mga email ng system.</li><li>Cloudflare: hosting ng website; Cloudflare Workers AI para sa mga sagot sa chat ng NEXUS AI at speech-to-text.</li><li>Whop: mga bayad sa subscription at pag-iinvoice.</li><li>Google: pag-sign in gamit ang Google at (sa pamamagitan ng Gmail) mga email para sa beripikasyon / pag-reset ng password.</li><li>GitHub: pamamahagi ng mga installer.</li><li>Open-Meteo: lungsod / tinatayang coordinate para sa panahon.</li><li>OpenStreetMap / Nominatim: mga mapa at paghahanap ng lugar; Unsplash: ilang pamalit na larawan.</li><li>BigDataCloud: pagtukoy ng pangalan ng lugar mula sa mga coordinate (pamalit kapag hindi maabot ang Nominatim; ginagamit din kapag pinili mo ang lokasyon ng iyong tahanan). Natatanggap ng serbisyong ito ang eksaktong coordinate ng lokasyong pinili mo o natukoy.</li></ul>
+    </section>
+    <section>
+      <h2>Mga cookie at pagsubaybay</h2>
+      <p>Walang ginagamit na cookie ang aming website at walang analytics o advertising tracker. Iniingatan ng app ang iyong mga setting sa lokal na storage ng iyong device (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Pag-iingat at pagbura</h2>
+      <p>Iniingatan namin ang iyong data habang bukas ang iyong account. Upang burahin ang iyong account at data, sumulat sa nexus.smarthome.app@gmail.com; tatapusin namin ang kahilingan sa loob ng 30 araw (maliban sa mga tala ng subscription na kailangan naming itago ayon sa batas). Sa app, buksan ang Mga Setting at pagkatapos ay Seguridad ng account, at gamitin ang Burahin ang aking account. Kung hindi ito matapos ng server, sasabihin ito ng screen.</p>
+      
+    </section>
+    <section>
+      <h2>Ang iyong mga karapatan</h2>
+      <p>Alinsunod sa Batas Blg. 6698 ng Türkiye (KVKK) art. 11 at, kung naaangkop, ang GDPR, maaari mong itanong kung pinoproseso ang iyong data, ma-access ito, ipaitama ito, ipabura ito, tumutol sa pagproseso, at humiling ng data portability. Sumulat sa nexus.smarthome.app@gmail.com. Maaari ka ring magreklamo sa Awtoridad sa Proteksyon ng Personal na Data ng Türkiye.</p>
+      
+    </section>
+    <section>
+      <h2>Seguridad</h2>
+      <p>Naka-encrypt gamit ang TLS ang mga koneksyon. Ipinapatupad ng database ang row-level na kontrol sa access: ang bawat user ay makakabasa at makakasulat lamang ng sarili nilang data. Walang sistemang lubos na ligtas; inirerekomenda namin ang matibay na password at ang pagpapanatiling napapanahon ng iyong mga device.</p>
+      
+    </section>
+    <section>
+      <h2>Mga device ng ikatlong partido</h2>
+      <p>Ang mga smart device na ikinokonekta mo (hal. Shelly, WLED, ESPHome) ay maaaring makipag-ugnayan sa mga server ng kanilang mga tagagawa ayon sa sarili nilang patakaran sa privacy. Hindi ibinabahagi ng NEXUS ang iyong data sa mga tagagawang iyon.</p>
+      
+    </section>
+    <section>
+      <h2>Mga bata</h2>
+      <p>Hindi nakatuon ang NEXUS sa mga batang wala pang 13 taong gulang at hindi namin sinasadyang kumuha ng kanilang data.</p>
+      
+    </section>
+    <section>
+      <h2>Mga pagbabago</h2>
+      <p>Maaari naming i-update ang patakarang ito; ipapaalam namin ang mahahalagang pagbabago sa app o sa website.</p>
+      
+    </section>
+    <section>
+      <h2>Makipag-ugnayan</h2>
+      <p>Mga tanong: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Ang dokumentong ito ay binabasa kasama ng kasalukuyang teksto sa nexus-smarthome.pages.dev.<br/>Ang salin na ito ay ibinibigay para sa kaginhawahan lamang. Kung may pagkakaiba ito sa bersyong Turko o Ingles, mananaig ang mga bersyong Turko at Ingles.</footer>
+</body>
+</html>

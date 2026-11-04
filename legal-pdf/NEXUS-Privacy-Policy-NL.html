@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<title>Privacybeleid — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Privacybeleid</h1>
+  <p class="meta">Laatst bijgewerkt: 31 oktober 2026 · Beheerd door: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS beheert je slimme huis in de eerste plaats op je eigen lokale netwerk. Dit beleid legt duidelijk uit welke gegevens we verwerken wanneer je een account aanmaakt, waarom en waar.</p>
+  
+    <section>
+      <h2>Kort samengevat</h2>
+      
+      <ul><li>Voor het gebruik van NEXUS is een account nodig. Apparaatopdrachten blijven op je lokale netwerk draaien; ze worden niet via de cloud van een fabrikant verstuurd.</li><li>Je instellingen, apparaatlijst en chatgeschiedenis worden in de cloud opgeslagen zodat ze op elk apparaat gelijk zijn.</li><li>We verkopen je gegevens niet, gebruiken ze niet voor reclame en maken geen profielen van je.</li><li>Toegang tot de microfoon is optioneel en wordt alleen gebruikt wanneer je in de NEXUS AI-chat op de microfoon tikt; de opname wordt getranscribeerd en niet bewaard. De camera opent alleen om QR-codes te scannen en het beeld verlaat je apparaat nooit.</li></ul>
+    </section>
+    <section>
+      <h2>Verwerkingsverantwoordelijke</h2>
+      <p>De verwerkingsverantwoordelijke is NEXUS. Contact: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Welke gegevens we verwerken</h2>
+      
+      <ul><li>Account: je e-mailadres en (indien opgegeven) je naam. Bij inloggen met Google het e-mailadres en de profielnaam die Google levert. Je wachtwoord wordt alleen als eenrichtingshash in Supabase Auth bewaard; wij kunnen het niet zien.</li><li>Gesynchroniseerde app-gegevens (alleen wanneer je bent ingelogd): profielnaam en -foto, instellingen voor thema, taal en eenheden, huisgenoten, scènes en automatiseringen, favoriete kaarten, NEXUS AI-chatgeschiedenis en gebruiksteller, gebeurtenissenlogboek, voorkeur voor thuislocatie/weer en de lijst met apparaten die je hebt toegevoegd (naam, kamer, protocol, adres op het lokale netwerk, laatste status).</li><li>Abonnement (als je NEXUS+ hebt gekocht): e-mailadres, abonnement, status, einde van de periode en Whop-lidmaatschaps-ID. Je kaartgegevens worden uitsluitend door Whop verwerkt en bereiken ons nooit.</li><li>Supportberichten: je e-mailadres en bericht wanneer je ons schrijft.</li><li>Technische logboeken: inlog- en foutlogboeken (inclusief IP-adres) die onze hosting- en authenticatieproviders kort bewaren.</li></ul>
+    </section>
+    <section>
+      <h2>Doelen en rechtsgronden</h2>
+      <p>Om je account te beheren, je gegevens tussen apparaten te synchroniseren, je abonnement te leveren en support te bieden (uitvoering van een overeenkomst); om de dienst veilig te houden en misbruik te voorkomen (gerechtvaardigd belang); en voor doorgifte naar het buitenland je uitdrukkelijke toestemming (zie hieronder).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI bestaat uit twee delen. (1) Apparaatopdrachten (een lamp aanzetten, een scène uitvoeren, de status opvragen) worden lokaal op je apparaat verwerkt en niet naar de cloud gestuurd. (2) Berichten die geen apparaatopdrachten zijn, zoals algemene chat en vragen, worden ter beantwoording naar Cloudflare Workers AI gestuurd; de namen, typen en kamers van je apparaten worden als context meegestuurd. Je accountgegevens, e-mailadres en locatie worden niet verstuurd. We gebruiken deze inhoud niet om AI-modellen te trainen; Cloudflare verwerkt haar om de dienst te leveren. Als je wilt, kun je in de chat alleen apparaatopdrachten gebruiken. Als je bent ingelogd, wordt je chatgeschiedenis net als je andere instellingen met je account gesynchroniseerd.</p><p>Spraakinvoer: wanneer je in de NEXUS AI-chat op de microfoonknop tikt, wordt je spraak omgezet in tekst. In een browser (Chrome/Edge) wordt eerst de spraakherkenningsdienst van de browser zelf gebruikt; als die onbereikbaar is, of in de desktop- en mobiele apps, wordt de korte opname uitsluitend naar Cloudflare Workers AI (Whisper) gestuurd voor transcriptie, niet bewaard en niet in je account opgeslagen. De transcriptie wordt alleen in het chatinvoerveld geplaatst en nergens heen gestuurd totdat je op verzenden drukt.</p>
+      
+    </section>
+    <section>
+      <h2>Dienstverleners en doorgifte</h2>
+      <p>De servers van deze aanbieders kunnen zich buiten Türkiye bevinden. Door een account aan te maken en/of te betalen geef je uitdrukkelijke toestemming voor doorgifte van je gegevens aan hen en naar het buitenland; je kunt je toestemming intrekken door je account te laten verwijderen.</p>
+      <ul><li>Supabase: authenticatie, database en systeem-e-mails.</li><li>Cloudflare: hosting van de website; Cloudflare Workers AI voor antwoorden in de NEXUS AI-chat en spraak-naar-tekst.</li><li>Whop: abonnementsbetalingen en facturatie.</li><li>Google: inloggen met Google en (via Gmail) verificatie- en wachtwoordherstel-e-mails.</li><li>GitHub: distributie van de installatieprogramma’s.</li><li>Open-Meteo: stad / bij benadering coördinaten voor het weer.</li><li>OpenStreetMap / Nominatim: kaarten en plaatsen zoeken; Unsplash: enkele reserveafbeeldingen.</li><li>BigDataCloud: een plaatsnaam bepalen uit coördinaten (reserve wanneer Nominatim onbereikbaar is; ook gebruikt wanneer je je thuislocatie kiest). Deze dienst ontvangt de exacte coördinaten van de locatie die je kiest of die wordt gedetecteerd.</li></ul>
+    </section>
+    <section>
+      <h2>Cookies en tracking</h2>
+      <p>Onze website gebruikt geen cookies en bevat geen analyse- of advertentietrackers. De app bewaart je instellingen in de lokale opslag van je apparaat (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Bewaartermijn en verwijdering</h2>
+      <p>We bewaren je gegevens zolang je account open is. Om je account en gegevens te laten verwijderen, schrijf je naar nexus.smarthome.app@gmail.com; we handelen het verzoek binnen 30 dagen af (behalve abonnementsgegevens die we wettelijk moeten bewaren). Open in de app Instellingen en vervolgens Accountbeveiliging en gebruik Mijn account verwijderen. Als de server het niet kan afronden, meldt het scherm dat.</p>
+      
+    </section>
+    <section>
+      <h2>Je rechten</h2>
+      <p>Op grond van de Turkse wet nr. 6698 (KVKK), art. 11 en, waar van toepassing, de AVG kun je vragen of je gegevens worden verwerkt, inzage krijgen, ze laten corrigeren of verwijderen, bezwaar maken tegen verwerking en gegevensoverdraagbaarheid vragen. Schrijf naar nexus.smarthome.app@gmail.com. Je kunt ook een klacht indienen bij de Turkse autoriteit voor de bescherming van persoonsgegevens.</p>
+      
+    </section>
+    <section>
+      <h2>Beveiliging</h2>
+      <p>Verbindingen zijn versleuteld met TLS. De database dwingt toegangscontrole op rijniveau af: elke gebruiker kan alleen zijn eigen gegevens lezen en schrijven. Geen enkel systeem is volkomen veilig; we raden een sterk wachtwoord en actuele apparaten aan.</p>
+      
+    </section>
+    <section>
+      <h2>Apparaten van derden</h2>
+      <p>Slimme apparaten die je koppelt (bijv. Shelly, WLED, ESPHome) kunnen volgens hun eigen privacybeleid met de servers van hun fabrikanten communiceren. NEXUS deelt je gegevens niet met die fabrikanten.</p>
+      
+    </section>
+    <section>
+      <h2>Kinderen</h2>
+      <p>NEXUS is niet gericht op kinderen jonger dan 13 jaar en we verzamelen niet bewust hun gegevens.</p>
+      
+    </section>
+    <section>
+      <h2>Wijzigingen</h2>
+      <p>We kunnen dit beleid bijwerken; belangrijke wijzigingen kondigen we aan in de app of op de website.</p>
+      
+    </section>
+    <section>
+      <h2>Contact</h2>
+      <p>Vragen: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Dit document wordt samen met de actuele tekst op nexus-smarthome.pages.dev gelezen.<br/>Deze vertaling is uitsluitend ter informatie. Bij afwijkingen gelden de Turkse en de Engelse versie.</footer>
+</body>
+</html>

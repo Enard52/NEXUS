@@ -24,19 +24,19 @@ describe("legal pages and PDFs language-agnostic generation (Issue #191)", () =>
   });
 
   it("falls back to English for any unsupported language in legal-content.cjs", () => {
-    const privDe = getCjsLegalDoc("privacy", "de");
-    expect(privDe).toBeDefined();
-    expect(privDe.title).toBe("Privacy Policy");
-    expect(privDe.sections.length).toBeGreaterThan(0);
+    const privXx = getCjsLegalDoc("privacy", "xx");
+    expect(privXx).toBeDefined();
+    expect(privXx.title).toBe("Privacy Policy");
+    expect(privXx.sections.length).toBeGreaterThan(0);
 
     // Direct proxy access on docs
-    expect(docs.privacy.de.title).toBe("Privacy Policy");
-    expect(docs.terms.fr.title).toBe("Terms of Service");
-    expect(docs.refund.es.title).toBe("Refund and Cancellation Policy");
+    expect(docs.privacy.xx.title).toBe("Privacy Policy");
+    expect(docs.terms.xx.title).toBe("Terms of Service");
+    expect(docs.refund.xx.title).toBe("Refund and Cancellation Policy");
 
     // UPDATED and OPERATOR fallback
-    expect(UPDATED.de).toBe(UPDATED.en);
-    expect(OPERATOR.de).toBe("NEXUS");
+    expect(UPDATED.xx).toBe(UPDATED.en);
+    expect(OPERATOR.xx).toBe("NEXUS");
   });
 
   it("provides getLegalDoc in site-legal-content.mjs with English fallback", () => {
@@ -46,8 +46,8 @@ describe("legal pages and PDFs language-agnostic generation (Issue #191)", () =>
     const privEn = getLegalDoc("privacy", "en");
     expect(privEn.title).toBe("Privacy Policy");
 
-    const privDe = getLegalDoc("privacy", "de");
-    expect(privDe.title).toBe("Privacy Policy");
+    const privXx = getLegalDoc("privacy", "de");
+    expect(privXx.title).toBe("Privacy Policy");
 
     const termsDe = getLegalDoc("terms", "de");
     expect(termsDe.title).toBe("Terms of Service");
@@ -71,12 +71,13 @@ describe("legal pages and PDFs language-agnostic generation (Issue #191)", () =>
 
     expect(getDocTitle("privacy", "tr")).toBe("Gizlilik Politikası");
     expect(getDocTitle("privacy", "en")).toBe("Privacy Policy");
-    expect(getDocTitle("privacy", "de")).toBe("Privacy Policy");
+    expect(getDocTitle("privacy", "xx")).toBe("Privacy Policy");
+    expect(getDocTitle("privacy", "de")).toBe("Datenschutzerklärung");
   });
 
   it("renders valid HTML document for any language in legal-pdf.mjs", () => {
-    const htmlDe = renderHtml("privacy", "de");
-    expect(htmlDe).toContain('<html lang="de">');
+    const htmlDe = renderHtml("privacy", "xx");
+    expect(htmlDe).toContain('<html lang="xx">');
     expect(htmlDe).toContain("<title>Privacy Policy — NEXUS</title>");
     expect(htmlDe).toContain("Operated by: NEXUS");
     expect(htmlDe).toContain("This document is read together with the current text");
@@ -86,5 +87,20 @@ describe("legal pages and PDFs language-agnostic generation (Issue #191)", () =>
     expect(htmlTr).toContain("<title>Gizlilik Politikası — NEXUS</title>");
     expect(htmlTr).toContain("İşleten: NEXUS");
     expect(htmlTr).toContain("Bu belge nexus-smarthome.pages.dev");
+  });
+
+  it("uses a translation file when one exists and keeps the convenience-translation notice", () => {
+    const htmlDe = renderHtml("terms", "de");
+    expect(htmlDe).toContain("<title>Nutzungsbedingungen — NEXUS</title>");
+    expect(htmlDe).toContain("Betrieben von: NEXUS");
+    expect(htmlDe).toContain("Bei Abweichungen gelten die türkische und die englische Fassung");
+    expect(docs.terms.de.sections.length).toBe(docs.terms.en.sections.length);
+    expect(UPDATED.de).toContain("2026");
+  });
+
+  it("renders right-to-left languages with dir=rtl once their file exists", async () => {
+    const { existsSync } = await import("node:fs");
+    if (!existsSync(new URL("../../../scripts/legal-translations/ar.json", import.meta.url))) return;
+    expect(renderHtml("privacy", "ar")).toContain('<html lang="ar" dir="rtl">');
   });
 });

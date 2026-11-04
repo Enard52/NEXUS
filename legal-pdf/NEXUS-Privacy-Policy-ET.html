@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8"/>
+<title>Privaatsuspoliitika — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Privaatsuspoliitika</h1>
+  <p class="meta">Viimati uuendatud: 31. oktoober 2026 · Haldaja: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS haldab teie nutikat kodu peamiselt teie enda kohtvõrgus. See poliitika selgitab selgelt, milliseid andmeid me konto loomisel töötleme, miks ja kus.</p>
+  
+    <section>
+      <h2>Lühidalt</h2>
+      
+      <ul><li>NEXUSe kasutamiseks on vaja kontot. Seadme käsud töötavad endiselt teie kohtvõrgus; neid ei saadeta tootja pilve kaudu.</li><li>Teie seaded, seadmete loend ja vestluse ajalugu salvestatakse pilves, et need ühtiksid igas seadmes.</li><li>Me ei müü teie andmeid, ei kasuta neid reklaamiks ega koosta teie kohta profiili.</li><li>Mikrofoni juurdepääs on valikuline ning seda kasutatakse ainult siis, kui puudutate NEXUS AI vestluses mikrofoni; salvestis transkribeeritakse ja seda ei salvestata. Kaamera avatakse ainult QR-koodide skannimiseks ja pilt ei lahku kunagi teie seadmest.</li></ul>
+    </section>
+    <section>
+      <h2>Vastutav töötleja</h2>
+      <p>Vastutav töötleja on NEXUS. Kontakt: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Milliseid andmeid me töötleme</h2>
+      
+      <ul><li>Konto: teie e-posti aadress ja (kui esitatud) teie nimi. Google'iga sisselogimisel Google'i esitatud e-posti aadress ja profiili nimi. Teie parool salvestatakse Supabase Authis ainult ühesuunalise räsina; me ei näe seda.</li><li>Sünkroonitud rakenduse andmed (ainult sisselogituna): profiili nimi ja foto, teema-, keele- ja ühikuseaded, leibkonna liikmed, stseenid ja automatiseeringud, lemmikkaardid, NEXUS AI vestluse ajalugu ja kasutusloendur, sündmuste logi, kodu asukoha ja ilmaeelistus ning teie lisatud seadmete loend (nimi, tuba, protokoll, kohtvõrgu aadress, viimane olek).</li><li>Tellimus (kui ostsite NEXUS+): e-posti aadress, pakett, olek, perioodi lõpp ja Whopi liikmelisuse ID. Teie kaardiandmeid töötleb ainult Whop ja need ei jõua kunagi meieni.</li><li>Toe sõnumid: teie e-posti aadress ja sõnum, kui meile kirjutate.</li><li>Tehnilised logid: sisselogimise ja vigade logid (sh IP-aadress), mida meie majutus- ja autentimisteenuse pakkujad lühiajaliselt säilitavad.</li></ul>
+    </section>
+    <section>
+      <h2>Eesmärgid ja õiguslikud alused</h2>
+      <p>Teie konto haldamiseks, andmete sünkroonimiseks seadmete vahel, tellimuse pakkumiseks ja toe andmiseks (lepingu täitmine); teenuse turvalisuse tagamiseks ja kuritarvituste ennetamiseks (õigustatud huvi); ning välismaale edastamiseks teie selgesõnaline nõusolek (vt allpool).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI koosneb kahest osast. (1) Seadme käske (lülita tuli sisse, käivita stseen, küsi olekut) töödeldakse kohapeal teie seadmes ja neid ei saadeta pilve. (2) Sõnumid, mis ei ole seadme käsud, näiteks üldine vestlus ja küsimused, saadetakse vastamiseks Cloudflare Workers AI-le; kontekstina lisatakse teie seadmete nimed, tüübid ja toad. Teie konto andmeid, e-posti aadressi ja asukohta ei saadeta. Me ei kasuta seda sisu tehisintellekti mudelite treenimiseks; Cloudflare töötleb seda teenuse osutamiseks. Soovi korral võite vestluses kasutada ainult seadme käske. Kui olete sisse logitud, sünkroonitakse teie vestluse ajalugu teie kontoga nagu teie muud seaded.</p><p>Häälsisend: kui puudutate NEXUS AI vestluses mikrofoninuppu, muudetakse teie kõne tekstiks. Brauseris (Chrome/Edge) kasutatakse esmalt brauseri enda kõnetuvastusteenust; kui see ei ole kättesaadav või kasutate töölaua- ja mobiilirakendusi, saadetakse lühike salvestis transkribeerimiseks ainult Cloudflare Workers AI-le (Whisper), seda ei salvestata ega talletata teie kontole. Transkriptsioon pannakse ainult vestluse sisestusväljale ja seda ei saadeta kuhugi enne, kui vajutate nuppu Saada.</p>
+      
+    </section>
+    <section>
+      <h2>Teenusepakkujad ja edastamine</h2>
+      <p>Nende pakkujate serverid võivad asuda väljaspool Türkiyet. Konto loomise ja/või maksmisega annate selgesõnalise nõusoleku oma andmete edastamiseks neile ja välismaale; nõusoleku saate tagasi võtta, lastes oma konto kustutada.</p>
+      <ul><li>Supabase: autentimine, andmebaas ja süsteemsed e-kirjad.</li><li>Cloudflare: veebisaidi majutus; Cloudflare Workers AI NEXUS AI vestluse vastuste ja kõne tekstiks muutmise jaoks.</li><li>Whop: tellimuse maksed ja arvete esitamine.</li><li>Google: Google'iga sisselogimine ja (Gmaili kaudu) kinnitus- ning parooli lähtestamise e-kirjad.</li><li>GitHub: paigaldusfailide levitamine.</li><li>Open-Meteo: linn / ligikaudsed koordinaadid ilma jaoks.</li><li>OpenStreetMap / Nominatim: kaardid ja kohaotsing; Unsplash: mõned varupildid.</li><li>BigDataCloud: kohanime tuvastamine koordinaatide järgi (varulahendus, kui Nominatim ei ole kättesaadav; kasutatakse ka siis, kui valite oma kodu asukoha). See teenus saab teie valitud või tuvastatud asukoha täpsed koordinaadid.</li></ul>
+    </section>
+    <section>
+      <h2>Küpsised ja jälgimine</h2>
+      <p>Meie veebisait ei kasuta küpsiseid ega sisalda analüütika- ega reklaamijälgijaid. Rakendus hoiab teie seadeid teie seadme kohalikus salvestusruumis (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Säilitamine ja kustutamine</h2>
+      <p>Hoiame teie andmeid seni, kuni teie konto on avatud. Konto ja andmete kustutamiseks kirjutage aadressile nexus.smarthome.app@gmail.com; täidame taotluse 30 päeva jooksul (välja arvatud tellimusega seotud kirjed, mida peame seaduse alusel säilitama). Rakenduses avage Seaded, seejärel Konto turvalisus ja kasutage valikut Kustuta minu konto. Kui server ei saa toimingut lõpule viia, teatab ekraan sellest.</p>
+      
+    </section>
+    <section>
+      <h2>Teie õigused</h2>
+      <p>Türgi seaduse nr 6698 (KVKK) artikli 11 ning vajaduse korral isikuandmete kaitse üldmääruse (GDPR) alusel võite küsida, kas teie andmeid töödeldakse, neile juurde pääseda, neid parandada, lasta neid kustutada, töötlemisele vastu vaielda ja nõuda andmete ülekantavust. Kirjutage aadressile nexus.smarthome.app@gmail.com. Samuti võite esitada kaebuse Türgi isikuandmete kaitse ametile.</p>
+      
+    </section>
+    <section>
+      <h2>Turvalisus</h2>
+      <p>Ühendused on krüpteeritud TLS-iga. Andmebaas jõustab reapõhise juurdepääsukontrolli: iga kasutaja saab lugeda ja kirjutada ainult oma andmeid. Ükski süsteem ei ole täiesti turvaline; soovitame tugevat parooli ja seadmete ajakohasena hoidmist.</p>
+      
+    </section>
+    <section>
+      <h2>Kolmandate osapoolte seadmed</h2>
+      <p>Nutiseadmed, mille ühendate (nt Shelly, WLED, ESPHome), võivad suhelda oma tootjate serveritega vastavalt nende enda privaatsuspoliitikale. NEXUS ei jaga teie andmeid nende tootjatega.</p>
+      
+    </section>
+    <section>
+      <h2>Lapsed</h2>
+      <p>NEXUS ei ole suunatud alla 13-aastastele lastele ja me ei kogu teadlikult nende andmeid.</p>
+      
+    </section>
+    <section>
+      <h2>Muudatused</h2>
+      <p>Me võime seda poliitikat uuendada; olulistest muudatustest teavitame rakenduses või veebisaidil.</p>
+      
+    </section>
+    <section>
+      <h2>Kontakt</h2>
+      <p>Küsimused: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Seda dokumenti tuleb lugeda koos aadressil nexus-smarthome.pages.dev avaldatud kehtiva tekstiga.<br/>See tõlge on esitatud üksnes mugavuse huvides. Kui see erineb türgi või inglise keelsest versioonist, on ülimuslikud türgi ja inglise keelsed versioonid.</footer>
+</body>
+</html>

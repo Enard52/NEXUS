@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<title>プライバシーポリシー — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>プライバシーポリシー</h1>
+  <p class="meta">最終更新日: 2026年10月31日 · 運営者: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS は、主にお客様ご自身のローカルネットワーク上でスマートホームを管理します。本ポリシーでは、アカウントを作成された場合に、当社がどのようなデータを、なぜ、どこで処理するのかを分かりやすく説明します。</p>
+  
+    <section>
+      <h2>概要</h2>
+      
+      <ul><li>NEXUS のご利用にはアカウントが必要です。デバイスへのコマンドは引き続きローカルネットワーク上で実行され、メーカーのクラウドを経由して送信されることはありません。</li><li>設定、デバイス一覧、チャット履歴は、すべてのデバイスで同じ内容になるよう、クラウドに保存されます。</li><li>当社は、お客様のデータを販売せず、広告に利用せず、プロファイリングも行いません。</li><li>マイクへのアクセスは任意であり、NEXUS AI チャットでマイクをタップしたときにのみ使用されます。録音は文字起こしされ、保存されません。カメラは QR コードのスキャン時にのみ起動し、画像がお客様のデバイスの外に出ることはありません。</li></ul>
+    </section>
+    <section>
+      <h2>データ管理者</h2>
+      <p>データ管理者は NEXUS です。連絡先: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>処理するデータ</h2>
+      
+      <ul><li>アカウント: メールアドレスおよび(ご提供いただいた場合は)お名前。Google でサインインした場合は、Google が提供するメールアドレスとプロフィール名。パスワードは Supabase Auth に一方向ハッシュとしてのみ保存され、当社が確認することはできません。</li><li>同期されるアプリデータ(サインイン時のみ): プロフィール名と写真、テーマ・言語・単位の設定、世帯メンバー、シーンとオートメーション、お気に入りカード、NEXUS AI のチャット履歴と利用カウンター、イベントログ、自宅の位置情報・天気の設定、および追加したデバイスの一覧(名前、部屋、プロトコル、ローカルネットワークアドレス、最後の状態)。</li><li>サブスクリプション(NEXUS+ をご購入の場合): メールアドレス、プラン、ステータス、期間の終了日、Whop のメンバーシップ ID。カード情報は Whop のみが処理し、当社には届きません。</li><li>サポートへのメッセージ: 当社にご連絡いただいた際のメールアドレスとメッセージ内容。</li><li>技術ログ: サインインおよびエラーのログ(IP アドレスを含む)。当社のホスティング事業者および認証事業者により短期間保管されます。</li></ul>
+    </section>
+    <section>
+      <h2>利用目的と法的根拠</h2>
+      <p>アカウントの管理、複数のデバイス間でのデータ同期、サブスクリプションの提供、サポートの提供(契約の履行)、サービスの安全性の確保と不正利用の防止(正当な利益)、および国外への移転(お客様の明示的な同意。下記参照)のために処理します。</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI は二つの部分で構成されています。(1) デバイスコマンド(照明をつける、シーンを実行する、状態を尋ねるなど)は、お客様のデバイス上でローカルに処理され、クラウドには送信されません。(2) 一般的なチャットや質問など、デバイスコマンドではないメッセージは、回答のために Cloudflare Workers AI に送信されます。その際、コンテキストとしてデバイスの名前、種類、部屋が含まれます。アカウント情報、メールアドレス、位置情報は送信されません。当社はこの内容を AI モデルの学習には使用しません。Cloudflare はサービス提供のためにこれを処理します。ご希望の場合は、チャットでデバイスコマンドのみをご利用いただくこともできます。サインインしている場合、チャット履歴は他の設定と同様にアカウントと同期されます。</p><p>音声入力: NEXUS AI チャットでマイクボタンをタップすると、音声がテキストに変換されます。ブラウザ(Chrome/Edge)では、まずブラウザ自体の音声認識サービスが使用されます。これに接続できない場合、またはデスクトップアプリおよびモバイルアプリでは、短い録音が文字起こしのためにのみ Cloudflare Workers AI(Whisper)に送信され、保存されず、アカウントにも保存されません。文字起こしの結果はチャット入力欄に表示されるだけで、送信ボタンを押すまでどこにも送信されません。</p>
+      
+    </section>
+    <section>
+      <h2>サービス提供事業者と国外移転</h2>
+      <p>これらの事業者のサーバーは、Türkiye 国外にある場合があります。アカウントの作成および/またはお支払いにより、お客様のデータがこれらの事業者および国外へ移転されることに明示的に同意したものとみなされます。同意は、アカウントを削除することで撤回できます。</p>
+      <ul><li>Supabase: 認証、データベース、システムメール。</li><li>Cloudflare: ウェブサイトのホスティング、および NEXUS AI チャットの回答と音声のテキスト化のための Cloudflare Workers AI。</li><li>Whop: サブスクリプションの決済および請求書発行。</li><li>Google: Google サインイン、および(Gmail 経由の)認証メール・パスワード再設定メール。</li><li>GitHub: インストーラーの配布。</li><li>Open-Meteo: 天気のための都市名・おおよその座標。</li><li>OpenStreetMap / Nominatim: 地図および場所の検索。Unsplash: 一部の代替画像。</li><li>BigDataCloud: 座標から地名を割り出すため(Nominatim に接続できない場合の代替。自宅の位置を選択するときにも使用)。このサービスは、お客様が選択した、または検出された場所の正確な座標を受け取ります。</li></ul>
+    </section>
+    <section>
+      <h2>Cookie とトラッキング</h2>
+      <p>当社のウェブサイトは Cookie を使用せず、分析用または広告用のトラッカーも含みません。アプリは設定をお客様のデバイスのローカルストレージ(localStorage)に保存します。</p>
+      
+    </section>
+    <section>
+      <h2>保存期間と削除</h2>
+      <p>当社は、アカウントが有効な間、お客様のデータを保管します。アカウントとデータの削除をご希望の場合は、nexus.smarthome.app@gmail.com までご連絡ください。30 日以内に対応いたします(法律上保管が必要なサブスクリプション記録を除きます)。アプリでは、「設定」、「アカウントセキュリティ」の順に開き、「アカウントを削除」をご利用ください。サーバー側で完了できない場合は、画面にその旨が表示されます。</p>
+      
+    </section>
+    <section>
+      <h2>お客様の権利</h2>
+      <p>トルコ法 第 6698 号(KVKK)第 11 条、および該当する場合は GDPR に基づき、お客様は、データが処理されているかどうかの確認、データへのアクセス、訂正、削除、処理への異議申立て、およびデータポータビリティを請求することができます。ご請求は nexus.smarthome.app@gmail.com までお送りください。また、トルコ個人データ保護機関に苦情を申し立てることもできます。</p>
+      
+    </section>
+    <section>
+      <h2>セキュリティ</h2>
+      <p>通信は TLS で暗号化されています。データベースは行レベルのアクセス制御を適用しており、各ユーザーは自分自身のデータのみを読み書きできます。完全に安全なシステムは存在しません。強力なパスワードを使用し、デバイスを常に最新の状態に保つことをお勧めします。</p>
+      
+    </section>
+    <section>
+      <h2>第三者のデバイス</h2>
+      <p>お客様が接続するスマートデバイス(例: Shelly、WLED、ESPHome)は、各メーカーのプライバシーポリシーに従って、メーカーのサーバーと通信する場合があります。NEXUS がお客様のデータをそれらのメーカーと共有することはありません。</p>
+      
+    </section>
+    <section>
+      <h2>お子様</h2>
+      <p>NEXUS は 13 歳未満のお子様を対象としておらず、当社は意図してお子様のデータを収集することはありません。</p>
+      
+    </section>
+    <section>
+      <h2>変更</h2>
+      <p>当社は本ポリシーを更新することがあります。重要な変更は、アプリまたはウェブサイトでお知らせします。</p>
+      
+    </section>
+    <section>
+      <h2>お問い合わせ</h2>
+      <p>ご質問: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · 本書面は、nexus-smarthome.pages.dev に掲載されている最新の文面と併せてお読みください。<br/>本翻訳は利便性のためにのみ提供されるものです。トルコ語版または英語版と相違がある場合は、トルコ語版および英語版が優先します。</footer>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{
+ "code": "sw",
+ "updated": "Ilisasishwa mara ya mwisho: 31 Oktoba 2026",
+ "labels": {
+  "updated": "Ilisasishwa mara ya mwisho",
+  "operatedBy": "Inaendeshwa na",
+  "footer": "Hati hii inasomwa pamoja na maandishi ya sasa yaliyo kwenye nexus-smarthome.pages.dev.",
+  "notice": "Tafsiri hii imetolewa kwa urahisi wa msomaji tu. Ikiwa inatofautiana na toleo la Kituruki au Kiingereza, matoleo ya Kituruki na Kiingereza ndiyo yanayotumika."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Sera ya Faragha",
+   "intro": "NEXUS husimamia nyumba yako janja hasa kupitia mtandao wako wa ndani. Sera hii inaeleza wazi ni data gani tunayoichakata, kwa nini na wapi, unapofungua akaunti.",
+   "sections": [
+    {
+     "h": "Kwa ufupi",
+     "ul": [
+      "Akaunti inahitajika ili kutumia NEXUS. Amri za vifaa bado zinaendeshwa kwenye mtandao wako wa ndani; hazitumwi kupitia wingu la mtengenezaji.",
+      "Mipangilio yako, orodha ya vifaa na historia ya mazungumzo huhifadhiwa kwenye wingu ili zilingane kwenye kila kifaa.",
+      "Hatuuzi data yako, hatuitumii kwa matangazo wala hatukuundii wasifu.",
+      "Ufikiaji wa maikrofoni ni wa hiari na hutumika tu unapogusa maikrofoni kwenye gumzo la NEXUS AI; rekodi hunukuliwa kuwa maandishi na haihifadhiwi. Kamera hufunguka tu kuchanganua misimbo ya QR na picha haiachi kamwe kifaa chako."
+     ]
+    },
+    {
+     "h": "Mdhibiti wa data",
+     "p": [
+      "Mdhibiti wa data ni NEXUS. Mawasiliano: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Data tunayoichakata",
+     "ul": [
+      "Akaunti: anwani yako ya barua pepe na (ikiwa umetoa) jina lako. Kwa kuingia kupitia Google, barua pepe na jina la wasifu ambavyo Google hutoa. Nenosiri lako huhifadhiwa tu kama heshi ya njia moja katika Supabase Auth; hatuwezi kuliona.",
+      "Data ya programu iliyosawazishwa (ukiwa umeingia tu): jina na picha ya wasifu, mipangilio ya mandhari/lugha/vipimo, wanakaya, matukio na uendeshaji otomatiki, kadi pendwa, historia ya mazungumzo ya NEXUS AI na kihesabu cha matumizi, kumbukumbu ya matukio, eneo la nyumbani/mapendeleo ya hali ya hewa na orodha ya vifaa ulivyoongeza (jina, chumba, itifaki, anwani ya mtandao wa ndani, hali ya mwisho).",
+      "Usajili (ikiwa umenunua NEXUS+): barua pepe, mpango, hali, mwisho wa kipindi na kitambulisho cha uanachama cha Whop. Maelezo ya kadi yako huchakatwa na Whop pekee na hayatufikii kamwe.",
+      "Ujumbe wa msaada: barua pepe yako na ujumbe wako unapotuandikia.",
+      "Kumbukumbu za kiufundi: kumbukumbu za kuingia na za hitilafu (pamoja na anwani ya IP) zinazohifadhiwa kwa muda mfupi na watoa huduma wetu wa kuhifadhi tovuti na uthibitishaji."
+     ]
+    },
+    {
+     "h": "Madhumuni na misingi ya kisheria",
+     "p": [
+      "Kusimamia akaunti yako, kusawazisha data yako kwenye vifaa, kutoa usajili wako na kutoa msaada (utekelezaji wa mkataba); kuweka huduma salama na kuzuia matumizi mabaya (maslahi halali); na kwa uhamishaji nje ya nchi, idhini yako ya wazi (tazama hapa chini)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI ina sehemu mbili. (1) Amri za vifaa (washa taa, endesha tukio, uliza hali) huchakatwa ndani ya kifaa chako na hazitumwi kwenye wingu. (2) Ujumbe ambao si amri za vifaa, kama gumzo la kawaida na maswali, hutumwa kwa Cloudflare Workers AI ili ujibiwe; majina, aina na vyumba vya vifaa vyako hujumuishwa kama muktadha. Maelezo ya akaunti yako, barua pepe na eneo havitumwi. Hatutumii maudhui haya kufunza miundo ya AI; Cloudflare huyachakata ili kutoa huduma. Ukipenda, unaweza kutumia amri za vifaa pekee kwenye gumzo. Ikiwa umeingia, historia ya mazungumzo yako husawazishwa na akaunti yako kama mipangilio yako mingine.",
+      "Ingizo la sauti: unapogusa kitufe cha maikrofoni kwenye gumzo la NEXUS AI, usemi wako hugeuzwa kuwa maandishi. Kwenye kivinjari (Chrome/Edge) huduma ya utambuzi wa sauti ya kivinjari chenyewe hutumika kwanza; ikiwa haipatikani, au kwenye programu za kompyuta na simu, rekodi fupi hutumwa kwa Cloudflare Workers AI (Whisper) pekee ili inukuliwe, haihifadhiwi na haihifadhiwi kwenye akaunti yako. Nakala huwekwa tu kwenye sehemu ya kuingiza gumzo na haitumwi popote hadi ubonyeze tuma."
+     ]
+    },
+    {
+     "h": "Watoa huduma na uhamishaji",
+     "ul": [
+      "Supabase: uthibitishaji, hifadhidata na barua pepe za mfumo.",
+      "Cloudflare: kuhifadhi tovuti; Cloudflare Workers AI kwa majibu ya gumzo la NEXUS AI na ubadilishaji wa sauti kuwa maandishi.",
+      "Whop: malipo ya usajili na utoaji wa ankara.",
+      "Google: kuingia kupitia Google na (kupitia Gmail) barua pepe za uthibitishaji / kuweka upya nenosiri.",
+      "GitHub: usambazaji wa visakinishi.",
+      "Open-Meteo: jiji / viwianishi vya takriban kwa hali ya hewa.",
+      "OpenStreetMap / Nominatim: ramani na utafutaji wa maeneo; Unsplash: baadhi ya picha mbadala.",
+      "BigDataCloud: kutambua jina la mahali kutoka viwianishi (mbadala pale Nominatim isipopatikana; pia hutumika unapochagua eneo la nyumbani). Huduma hii hupokea viwianishi kamili vya eneo unalochagua au linalogunduliwa."
+     ],
+     "p": [
+      "Seva za watoa huduma hawa zinaweza kuwa nje ya Türkiye. Kwa kufungua akaunti na/au kulipa, unatoa idhini ya wazi kwa data yako kuhamishiwa kwao na nje ya nchi; unaweza kuondoa idhini kwa kufutiwa akaunti yako."
+     ]
+    },
+    {
+     "h": "Vidakuzi na ufuatiliaji",
+     "p": [
+      "Tovuti yetu haitumii vidakuzi na haina vifuatiliaji vya uchanganuzi wala vya matangazo. Programu huhifadhi mipangilio yako kwenye hifadhi ya ndani ya kifaa chako (localStorage)."
+     ]
+    },
+    {
+     "h": "Uhifadhi na ufutaji",
+     "p": [
+      "Tunahifadhi data yako wakati akaunti yako ingali wazi. Ili kufuta akaunti na data yako, andika kwa nexus.smarthome.app@gmail.com; tutakamilisha ombi ndani ya siku 30 (isipokuwa rekodi za usajili ambazo ni lazima tuzihifadhi kisheria). Ndani ya programu, fungua Mipangilio kisha Usalama wa akaunti, na utumie Futa akaunti yangu. Ikiwa seva haiwezi kukamilisha, skrini hukuambia hivyo."
+     ]
+    },
+    {
+     "h": "Haki zako",
+     "p": [
+      "Chini ya Sheria ya Kituruki Na. 6698 (KVKK) kifungu cha 11 na, pale inapohusika, GDPR, unaweza kuuliza kama data yako inachakatwa, kuipata, kuisahihisha, kuifutisha, kupinga uchakataji na kuomba kuhamishwa kwake. Andika kwa nexus.smarthome.app@gmail.com. Unaweza pia kulalamika kwa Mamlaka ya Ulinzi wa Data za Kibinafsi ya Uturuki."
+     ]
+    },
+    {
+     "h": "Usalama",
+     "p": [
+      "Miunganisho husimbwa kwa TLS. Hifadhidata hutekeleza udhibiti wa ufikiaji kwa kila safu: kila mtumiaji anaweza kusoma na kuandika data yake mwenyewe pekee. Hakuna mfumo ulio salama kikamilifu; tunapendekeza nenosiri imara na kuweka vifaa vyako vikiwa vimesasishwa."
+     ]
+    },
+    {
+     "h": "Vifaa vya wahusika wengine",
+     "p": [
+      "Vifaa janja unavyounganisha (k.m. Shelly, WLED, ESPHome) vinaweza kuwasiliana na seva za watengenezaji wao chini ya sera zao za faragha. NEXUS haishiriki data yako na watengenezaji hao."
+     ]
+    },
+    {
+     "h": "Watoto",
+     "p": [
+      "NEXUS haielekezwi kwa watoto walio chini ya umri wa miaka 13 na hatukusanyi data zao kwa kujua."
+     ]
+    },
+    {
+     "h": "Mabadiliko",
+     "p": [
+      "Tunaweza kusasisha sera hii; tutatangaza mabadiliko muhimu ndani ya programu au kwenye tovuti."
+     ]
+    },
+    {
+     "h": "Mawasiliano",
+     "p": [
+      "Maswali: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Masharti ya Huduma",
+   "intro": "Kwa kupakua, kusakinisha au kutumia programu ya NEXUS na huduma zinazohusiana (“Huduma”) unakubali masharti haya. Huduma zinatolewa na NEXUS. Mawasiliano: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Leseni",
+     "p": [
+      "Tunakupa leseni binafsi, isiyo ya kipekee, isiyohamishika na inayoweza kufutwa ya kutumia programu ya NEXUS kwenye vifaa unavyomiliki au kudhibiti, kwa uendeshaji otomatiki wa nyumbani wa kibinafsi usio wa kibiashara. Huruhusiwi kuisambaza, kuikodisha, kuiuza, kuitoa kwa leseni ndogo, kuichambua kwa kurudi nyuma (reverse-engineering), au kuitumia kujenga bidhaa inayoshindana moja kwa moja na NEXUS. Vipengele vya wahusika wengine vinategemea leseni zao wenyewe."
+     ]
+    },
+    {
+     "h": "Akaunti",
+     "p": [
+      "Kutumia NEXUS kunahitaji akaunti. Wewe unawajibika kuweka maelezo yako sahihi na nenosiri lako salama, na kwa shughuli zote chini ya akaunti yako. Tunaweza kusimamisha au kufunga akaunti zinazokiuka masharti haya."
+     ]
+    },
+    {
+     "h": "Usalama wa nyumba janja",
+     "ul": [
+      "NEXUS ni zana ya urahisi; usiitegemee peke yake kwa kazi muhimu kama usalama dhidi ya moto, gesi, afya au maisha.",
+      "Wewe unawajibika kwa amri zinazotumwa kwa vifaa vyako na kwa usalama wa mtandao wako. Weka programu dhibiti ya vifaa na mipangilio ya kipanga njia ikiwa imesasishwa.",
+      "Kwa sababu za usalama, makufuli hayawezi kufunguliwa kutoka kwenye gumzo."
+     ]
+    },
+    {
+     "h": "NEXUS AI na krediti",
+     "p": [
+      "Mpango wa bure unajumuisha krediti 30 za NEXUS AI kwa siku; usajili wa NEXUS+ unajumuisha 2,000 kwa mwezi. Krediti haziwezi kuhamishwa, haziwezi kubadilishwa kwa pesa taslimu na huwekwa upya mwishoni mwa kipindi. NEXUS AI inaweza kukosea; kukagua matokeo ni jukumu lako."
+     ]
+    },
+    {
+     "h": "Usajili wa NEXUS+",
+     "ul": [
+      "Wigo: NEXUS+ hutoa krediti 2,000 za NEXUS AI kwa mwezi na hufungua uwezo wa kuongeza vifaa vipya kupitia miunganisho ya hali ya juu (Home Assistant). Usajili ukiisha, vifaa ulivyokwisha kuongeza vinaendelea kufanya kazi; kuongeza vifaa vipya kupitia miunganisho hii kunahitaji NEXUS+ tena.",
+      "Mipango: Wa Kila Mwezi na Wa Kila Mwaka, bei zikiwa kwa TRY kwa Türkiye na kwa USD kwingineko (kwa sasa Kila Mwezi ₺499.99 / $11.99, Kila Mwaka ₺3,999.99 / $89.99). Bei za sasa huonyeshwa wakati wa malipo; kodi zinaweza kuongezwa wakati wa malipo. Mpango wa kila mwaka unajumuisha jaribio la bure la siku 7 na mpango wa kila mwezi jaribio la bure la siku 3.",
+      "Malipo hupokelewa kupitia Whop. Usajili hujirudia kiotomatiki kila kipindi hadi utakapoghairi; jaribio likiisha, bei ya mpango uliouchagua hutozwa.",
+      "Unaweza kughairi wakati wowote kupitia Malipo (Billing) ndani ya programu au kutoka kwenye akaunti yako kwenye tovuti hii. Kughairi kunaanza kutumika mwishoni mwa kipindi cha sasa.",
+      "Wakati wa malipo tumia anwani ya barua pepe ya akaunti yako ya NEXUS; usajili hulinganishwa na barua pepe hiyo.",
+      "Tunatangaza mabadiliko ya bei angalau siku 30 kabla hayajaanza kutumika; hayaathiri kipindi cha sasa.",
+      "Masharti ya kurejeshewa pesa yako kwenye Sera ya Kurejesha Pesa na Kughairi."
+     ]
+    },
+    {
+     "h": "Mabadiliko na kukatizwa",
+     "p": [
+      "Tunaweza kuboresha, kubadilisha au kusimamisha Huduma kwa muda kwa ajili ya matengenezo. Hatuahidi huduma isiyokatika au isiyo na hitilafu."
+     ]
+    },
+    {
+     "h": "Haki miliki",
+     "p": [
+      "Haki katika programu ya NEXUS, muundo, chapa na maudhui ni za mwendeshaji. Masharti haya yanakupa leseni iliyotajwa hapo juu pekee."
+     ]
+    },
+    {
+     "h": "Ukomo wa dhima",
+     "p": [
+      "Programu inatolewa “kama ilivyo”. Kwa kiwango cha juu kabisa kinachoruhusiwa na sheria hatuwajibiki kwa hasara zisizo za moja kwa moja (pamoja na upotevu wa data au uharibifu wa vifaa au mali) zinazotokana na matumizi ya Huduma; jumla ya dhima yetu inakomea kwenye kiasi ulichotulipa katika miezi 12 iliyopita. Haki za mtumiaji ambazo sheria hairuhusu kuzipunguza haziathiriwi."
+     ]
+    },
+    {
+     "h": "Kusitisha",
+     "p": [
+      "Unaweza kufunga akaunti yako wakati wowote (tazama Sera ya Faragha). Tunaweza kukomesha ufikiaji wako ukikiuka masharti haya."
+     ]
+    },
+    {
+     "h": "Sheria inayotawala",
+     "p": [
+      "Masharti haya yanatawaliwa na sheria za Jamhuri ya Türkiye. Kama mtumiaji unabaki na haki ya kuwasilisha malalamiko kwa kamati za usuluhishi wa watumiaji na mahakama za watumiaji."
+     ]
+    },
+    {
+     "h": "Mabadiliko ya masharti haya",
+     "p": [
+      "Tunaweza kusasisha masharti haya na tutatangaza mabadiliko muhimu ndani ya programu au kwenye tovuti. Kuendelea kutumia Huduma baada ya mabadiliko kunamaanisha unakubali masharti mapya."
+     ]
+    },
+    {
+     "h": "Mawasiliano",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Sera ya Kurejesha Pesa na Kughairi",
+   "intro": "Sera hii inaeleza masharti ya jaribio, kughairi na kurejesha pesa kwa usajili wa NEXUS+. Haki zako za kisheria kama mtumiaji haziathiriwi.",
+   "sections": [
+    {
+     "h": "Jaribio la bure",
+     "p": [
+      "Mpango wa kila mwaka unajumuisha jaribio la bure la siku 7 na mpango wa kila mwezi jaribio la bure la siku 3. Ukighairi kabla jaribio halijaisha hutozwi. Usipoghairi, bei ya mpango uliouchagua hutozwa jaribio linapoisha."
+     ]
+    },
+    {
+     "h": "Jinsi ya kughairi",
+     "ul": [
+      "Ndani ya programu: Plus → Malipo (Billing) → Ghairi mwishoni mwa kipindi.",
+      "Kwenye tovuti: ingia → akaunti → ghairi mwishoni mwa kipindi.",
+      "Kughairi kunaanza kutumika mwishoni mwa kipindi cha sasa cha malipo; unahifadhi vipengele vya NEXUS+ hadi wakati huo na hutozwi kwa kipindi kinachofuata."
+     ]
+    },
+    {
+     "h": "Kurejeshewa pesa",
+     "ul": [
+      "Unaweza kuomba kurejeshewa pesa ndani ya siku 14 tangu malipo yako ya kwanza bila kutoa sababu; tunarejesha malipo yote.",
+      "Kwa uhuishaji wa kiotomatiki, ukiomba ndani ya siku 3 tangu tarehe ya uhuishaji tunarejesha malipo ya kipindi hicho.",
+      "Nje ya vipindi hivi haturejeshi pesa za vipindi vilivyotumika, lakini tutazingatia kurejesha katika hali zenye msingi, kama huduma kutoweza kutumika kwa sababu ya hitilafu upande wetu.",
+      "Tunaweza kukataa ombi tukigundua matumizi mabaya (kwa mfano kurejeshewa pesa mara kwa mara kwenye akaunti ile ile)."
+     ]
+    },
+    {
+     "h": "Jinsi ya kuomba kurejeshewa pesa",
+     "p": [
+      "Tuma barua pepe kwa nexus.smarthome.app@gmail.com ukiambatanisha barua pepe ya akaunti yako ya NEXUS na ombi lako. Marejesho yaliyoidhinishwa hutolewa kupitia Whop kwa njia ya awali ya malipo; kwa kawaida huchukua siku 5–10 za kazi kuonekana, kutegemea benki yako."
+     ]
+    },
+    {
+     "h": "Haki za kisheria",
+     "p": [
+      "Sera hii haipunguzi haki zako za kisheria chini ya Sheria ya Kituruki ya Ulinzi wa Mtumiaji Na. 6502 na Kanuni ya Mikataba ya Mbali (ikiwa ni pamoja na haki ya kujiondoa na vighairi vyake)."
+     ]
+    },
+    {
+     "h": "Mawasiliano",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

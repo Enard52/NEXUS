@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8"/>
+<title>Adatvédelmi irányelvek — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Adatvédelmi irányelvek</h1>
+  <p class="meta">Utolsó frissítés: 2026. október 31. · Üzemeltető: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>A NEXUS az okosotthonát elsősorban a saját helyi hálózatán kezeli. Ez az irányelv érthetően ismerteti, hogy fiók létrehozásakor milyen adatokat dolgozunk fel, miért és hol.</p>
+  
+    <section>
+      <h2>Röviden</h2>
+      
+      <ul><li>A NEXUS használatához fiók szükséges. Az eszközparancsok továbbra is a helyi hálózaton futnak; nem a gyártó felhőszolgáltatásán keresztül kerülnek elküldésre.</li><li>A beállításait, az eszközlistát és a csevegési előzményeket a felhőben tároljuk, hogy minden eszközön azonosak legyenek.</li><li>Az adatait nem adjuk el, nem használjuk hirdetésekhez, és nem készítünk Önről profilt.</li><li>A mikrofonhozzáférés opcionális, és csak akkor használjuk, ha a NEXUS AI csevegésben megérinti a mikrofont; a felvételt átírjuk szöveggé, és nem tároljuk. A kamera kizárólag QR-kódok beolvasásához nyílik meg, és a kép soha nem hagyja el az eszközét.</li></ul>
+    </section>
+    <section>
+      <h2>Adatkezelő</h2>
+      <p>Az adatkezelő a NEXUS. Kapcsolat: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Milyen adatokat dolgozunk fel</h2>
+      
+      <ul><li>Fiók: az e-mail-címe és (megadás esetén) a neve. Google-fiókkal történő bejelentkezés esetén a Google által megadott e-mail-cím és profilnév. A jelszavát a Supabase Auth kizárólag egyirányú hash formájában tárolja; mi nem láthatjuk.</li><li>Szinkronizált alkalmazásadatok (csak bejelentkezett állapotban): profilnév és fénykép, téma-, nyelv- és mértékegység-beállítások, háztartási tagok, jelenetek és automatizálások, kedvenc kártyák, NEXUS AI csevegési előzmények és használati számláló, eseménynapló, az otthon helye/időjárási beállítás, valamint az Ön által hozzáadott eszközök listája (név, helyiség, protokoll, helyi hálózati cím, utolsó állapot).</li><li>Előfizetés (ha NEXUS+ csomagot vásárolt): e-mail-cím, csomag, állapot, az időszak vége és a Whop-tagsági azonosító. A bankkártyaadatait kizárólag a Whop dolgozza fel, és azok soha nem jutnak el hozzánk.</li><li>Ügyfélszolgálati üzenetek: az e-mail-címe és az üzenete, amikor írt nekünk.</li><li>Technikai naplók: bejelentkezési és hibanaplók (az IP-címet is beleértve), amelyeket tárhely- és hitelesítésszolgáltatóink rövid ideig őriznek.</li></ul>
+    </section>
+    <section>
+      <h2>Az adatkezelés céljai és jogalapjai</h2>
+      <p>A fiókja kezelése, az adatai eszközök közötti szinkronizálása, az előfizetés biztosítása és az ügyfélszolgálat nyújtása (szerződés teljesítése); a szolgáltatás biztonságának fenntartása és a visszaélések megelőzése (jogos érdek); valamint a külföldre történő adattovábbítás esetén az Ön kifejezett hozzájárulása (lásd alább).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>A NEXUS AI két részből áll. (1) Az eszközparancsokat (lámpa felkapcsolása, jelenet futtatása, állapot lekérdezése) helyben, az Ön eszközén dolgozzuk fel, és nem küldjük el a felhőbe. (2) Azokat az üzeneteket, amelyek nem eszközparancsok, például az általános csevegést és a kérdéseket, megválaszolás céljából a Cloudflare Workers AI szolgáltatásnak küldjük el; ennek során az eszközei nevei, típusai és helyiségei kontextusként szerepelnek. A fiókadatait, az e-mail-címét és a tartózkodási helyét nem küldjük el. Ezt a tartalmat nem használjuk AI-modellek tanítására; a Cloudflare a szolgáltatás nyújtása érdekében dolgozza fel. Ha szeretné, a csevegésben kizárólag eszközparancsokat is használhat. Bejelentkezett állapotban a csevegési előzményei a többi beállításhoz hasonlóan szinkronizálódnak a fiókjával.</p><p>Hangbevitel: amikor a NEXUS AI csevegésben megérinti a mikrofon gombot, a beszédét szöveggé alakítjuk. Böngészőben (Chrome/Edge) először a böngésző saját beszédfelismerő szolgáltatását használjuk; ha az nem érhető el, illetve az asztali és mobilalkalmazásokban, a rövid felvételt kizárólag a Cloudflare Workers AI (Whisper) szolgáltatásnak küldjük át átíráshoz; a felvételt nem tároljuk, és nem mentjük a fiókjába. Az átirat csak a csevegés beviteli mezőjébe kerül, és addig nem kerül sehová elküldésre, amíg Ön a küldés gombot meg nem nyomja.</p>
+      
+    </section>
+    <section>
+      <h2>Szolgáltatók és adattovábbítások</h2>
+      <p>E szolgáltatók szerverei Türkiye területén kívül is lehetnek. A fiók létrehozásával és/vagy a fizetéssel kifejezetten hozzájárul ahhoz, hogy az adatait számukra és külföldre továbbítsák; a hozzájárulását a fiókja törlésének kérésével visszavonhatja.</p>
+      <ul><li>Supabase: hitelesítés, adatbázis és rendszer-e-mailek.</li><li>Cloudflare: a weboldal tárhelye; Cloudflare Workers AI a NEXUS AI csevegési válaszaihoz és a beszédfelismeréshez.</li><li>Whop: előfizetési fizetések és számlázás.</li><li>Google: Google-bejelentkezés és (Gmailen keresztül) megerősítő / jelszó-visszaállító e-mailek.</li><li>GitHub: telepítőfájlok terjesztése.</li><li>Open-Meteo: város / hozzávetőleges koordináták az időjáráshoz.</li><li>OpenStreetMap / Nominatim: térképek és helykeresés; Unsplash: néhány tartalék kép.</li><li>BigDataCloud: helynév meghatározása koordinátákból (tartalék megoldás, ha a Nominatim nem érhető el; akkor is használjuk, amikor Ön kiválasztja az otthona helyét). Ez a szolgáltatás megkapja az Ön által kiválasztott vagy az észlelt hely pontos koordinátáit.</li></ul>
+    </section>
+    <section>
+      <h2>Sütik és nyomon követés</h2>
+      <p>A weboldalunk nem használ sütiket, és nem tartalmaz analitikai vagy hirdetési nyomkövetőket. Az alkalmazás a beállításait az eszköze helyi tárhelyén (localStorage) őrzi.</p>
+      
+    </section>
+    <section>
+      <h2>Megőrzés és törlés</h2>
+      <p>Az adatait addig őrizzük, amíg a fiókja nyitva van. A fiókja és az adatai törléséhez írjon a nexus.smarthome.app@gmail.com címre; a kérést 30 napon belül teljesítjük (kivéve azokat az előfizetési nyilvántartásokat, amelyeket jogszabály alapján meg kell őriznünk). Az alkalmazásban nyissa meg a Beállítások, majd a Fiókbiztonság menüt, és használja a Fiókom törlése lehetőséget. Ha a szerver nem tudja befejezni a törlést, a képernyő ezt jelzi.</p>
+      
+    </section>
+    <section>
+      <h2>Az Ön jogai</h2>
+      <p>A 6698. sz. török törvény (KVKK) 11. cikke alapján, illetve adott esetben a GDPR alapján kérheti annak tájékoztatást, hogy az adatait feldolgozzák-e, hozzáférhet azokhoz, kérheti helyesbítésüket vagy törlésüket, tiltakozhat az adatkezelés ellen, és kérheti az adathordozhatóságot. Írjon a nexus.smarthome.app@gmail.com címre. Panaszt a török személyes adatok védelméért felelős hatóságnál is tehet.</p>
+      
+    </section>
+    <section>
+      <h2>Biztonság</h2>
+      <p>A kapcsolatokat TLS titkosítja. Az adatbázis sorszintű hozzáférés-szabályozást alkalmaz: minden felhasználó csak a saját adatait olvashatja és írhatja. Egyetlen rendszer sem tökéletesen biztonságos; erős jelszót és az eszközei naprakészen tartását javasoljuk.</p>
+      
+    </section>
+    <section>
+      <h2>Harmadik felek eszközei</h2>
+      <p>Az Ön által csatlakoztatott okoseszközök (pl. Shelly, WLED, ESPHome) a saját adatvédelmi irányelveik szerint kommunikálhatnak a gyártóik szervereivel. A NEXUS nem osztja meg az adatait e gyártókkal.</p>
+      
+    </section>
+    <section>
+      <h2>Gyermekek</h2>
+      <p>A NEXUS nem 13 év alatti gyermekeknek szól, és tudatosan nem gyűjtjük az adataikat.</p>
+      
+    </section>
+    <section>
+      <h2>Módosítások</h2>
+      <p>Ezt az irányelvet frissíthetjük; a jelentős változásokról az alkalmazásban vagy a weboldalon tájékoztatunk.</p>
+      
+    </section>
+    <section>
+      <h2>Kapcsolat</h2>
+      <p>Kérdések: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Ez a dokumentum a nexus-smarthome.pages.dev oldalon elérhető aktuális szöveggel együtt értelmezendő.<br/>Ez a fordítás kizárólag tájékoztató jellegű. Ha eltér a török vagy az angol változattól, a török és az angol változat az irányadó.</footer>
+</body>
+</html>

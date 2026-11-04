@@ -1,0 +1,253 @@
+{
+ "code": "lv",
+ "updated": "Pēdējoreiz atjaunināts: 2026. gada 31. oktobrī",
+ "labels": {
+  "updated": "Pēdējoreiz atjaunināts",
+  "operatedBy": "Darbina",
+  "footer": "Šis dokuments jālasa kopā ar aktuālo tekstu vietnē nexus-smarthome.pages.dev.",
+  "notice": "Šis tulkojums sniegts tikai ērtības labad. Ja tas atšķiras no turku vai angļu versijas, noteicošās ir turku un angļu versijas."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Privātuma politika",
+   "intro": "NEXUS pārvalda jūsu viedo māju galvenokārt jūsu pašu lokālajā tīklā. Šī politika skaidri izklāsta, kādus datus, kāpēc un kur mēs apstrādājam, kad izveidojat kontu.",
+   "sections": [
+    {
+     "h": "Īsumā",
+     "ul": [
+      "NEXUS lietošanai ir nepieciešams konts. Ierīču komandas joprojām tiek izpildītas jūsu lokālajā tīklā; tās netiek sūtītas caur ražotāja mākoni.",
+      "Jūsu iestatījumi, ierīču saraksts un tērzēšanas vēsture tiek glabāti mākonī, lai tie sakristu visās ierīcēs.",
+      "Mēs nepārdodam jūsu datus, neizmantojam tos reklāmai un neveidojam jūsu profilu.",
+      "Piekļuve mikrofonam ir neobligāta un tiek izmantota tikai tad, kad NEXUS AI tērzēšanā pieskaraties mikrofonam; ieraksts tiek pārrakstīts tekstā un netiek glabāts. Kamera tiek atvērta tikai QR kodu skenēšanai, un attēls nekad neatstāj jūsu ierīci."
+     ]
+    },
+    {
+     "h": "Datu pārzinis",
+     "p": [
+      "Datu pārzinis ir NEXUS. Kontakti: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Kādus datus mēs apstrādājam",
+     "ul": [
+      "Konts: jūsu e-pasta adrese un (ja norādīts) vārds. Pierakstoties ar Google — Google sniegtā e-pasta adrese un profila vārds. Jūsu parole Supabase Auth tiek glabāta tikai kā vienvirziena jaucējkods; mēs to nevaram redzēt.",
+      "Sinhronizētie lietotnes dati (tikai pēc pierakstīšanās): profila vārds un foto, motīva, valodas un mērvienību iestatījumi, mājsaimniecības locekļi, ainas un automatizācijas, izlases kartes, NEXUS AI tērzēšanas vēsture un lietojuma skaitītājs, notikumu žurnāls, mājas atrašanās vietas un laikapstākļu izvēle un jūsu pievienoto ierīču saraksts (nosaukums, telpa, protokols, lokālā tīkla adrese, pēdējais stāvoklis).",
+      "Abonements (ja iegādājāties NEXUS+): e-pasts, plāns, statuss, perioda beigas un Whop dalības ID. Jūsu kartes datus apstrādā tikai Whop, un tie mūs nekad nesasniedz.",
+      "Atbalsta ziņojumi: jūsu e-pasts un ziņojums, kad mums rakstāt.",
+      "Tehniskie žurnāli: pierakstīšanās un kļūdu žurnāli (ieskaitot IP adresi), ko īslaicīgi glabā mūsu hostinga un autentifikācijas pakalpojumu sniedzēji."
+     ]
+    },
+    {
+     "h": "Nolūki un tiesiskais pamats",
+     "p": [
+      "Lai pārvaldītu jūsu kontu, sinhronizētu datus starp ierīcēm, nodrošinātu abonementu un sniegtu atbalstu (līguma izpilde); lai nodrošinātu pakalpojuma drošību un novērstu ļaunprātīgu izmantošanu (leģitīmās intereses); un datu nosūtīšanai uz ārvalstīm — jūsu nepārprotama piekrišana (skatiet tālāk)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI sastāv no divām daļām. (1) Ierīču komandas (ieslēgt gaismu, palaist ainu, pieprasīt stāvokli) tiek apstrādātas lokāli jūsu ierīcē un netiek sūtītas uz mākoni. (2) Ziņojumi, kas nav ierīču komandas, piemēram, vispārīga tērzēšana un jautājumi, tiek nosūtīti uz Cloudflare Workers AI, lai uz tiem atbildētu; kā konteksts tiek iekļauti jūsu ierīču nosaukumi, veidi un telpas. Jūsu konta dati, e-pasts un atrašanās vieta netiek sūtīti. Mēs neizmantojam šo saturu mākslīgā intelekta modeļu apmācībai; Cloudflare to apstrādā, lai sniegtu pakalpojumu. Ja vēlaties, tērzēšanā varat izmantot tikai ierīču komandas. Ja esat pierakstījies, jūsu tērzēšanas vēsture tiek sinhronizēta ar kontu tāpat kā citi iestatījumi.",
+      "Balss ievade: kad NEXUS AI tērzēšanā pieskaraties mikrofona pogai, jūsu runa tiek pārvērsta tekstā. Pārlūkprogrammā (Chrome/Edge) vispirms tiek izmantots paša pārlūka runas atpazīšanas pakalpojums; ja tas nav pieejams, vai darbvirsmas un mobilajās lietotnēs, īsais ieraksts tiek nosūtīts tikai uz Cloudflare Workers AI (Whisper) pārrakstīšanai, netiek glabāts un netiek saglabāts jūsu kontā. Pārraksts tiek ievietots tikai tērzēšanas ievades laukā un nekur netiek sūtīts, kamēr nospiežat sūtīt."
+     ]
+    },
+    {
+     "h": "Pakalpojumu sniedzēji un datu nosūtīšana",
+     "ul": [
+      "Supabase: autentifikācija, datubāze un sistēmas e-pasti.",
+      "Cloudflare: vietnes hostings; Cloudflare Workers AI NEXUS AI tērzēšanas atbildēm un runas pārvēršanai tekstā.",
+      "Whop: abonementa maksājumi un rēķinu izrakstīšana.",
+      "Google: pierakstīšanās ar Google un (caur Gmail) verifikācijas / paroles atiestatīšanas e-pasti.",
+      "GitHub: instalētāju izplatīšana.",
+      "Open-Meteo: pilsēta / aptuvenās koordinātes laikapstākļiem.",
+      "OpenStreetMap / Nominatim: kartes un vietu meklēšana; Unsplash: daži rezerves attēli.",
+      "BigDataCloud: vietas nosaukuma noteikšana pēc koordinātēm (rezerves variants, kad Nominatim nav pieejams; tiek izmantots arī, kad izvēlaties mājas atrašanās vietu). Šis pakalpojums saņem precīzas jūsu izvēlētās vai noteiktās vietas koordinātes."
+     ],
+     "p": [
+      "Šo sniedzēju serveri var atrasties ārpus Türkiye. Izveidojot kontu un/vai veicot maksājumu, jūs sniedzat nepārprotamu piekrišanu savu datu nosūtīšanai viņiem un uz ārvalstīm; piekrišanu varat atsaukt, dzēšot savu kontu."
+     ]
+    },
+    {
+     "h": "Sīkdatnes un izsekošana",
+     "p": [
+      "Mūsu vietne neizmanto sīkdatnes un nesatur analītikas vai reklāmas izsekotājus. Lietotne glabā jūsu iestatījumus jūsu ierīces lokālajā krātuvē (localStorage)."
+     ]
+    },
+    {
+     "h": "Glabāšana un dzēšana",
+     "p": [
+      "Mēs glabājam jūsu datus, kamēr jūsu konts ir aktīvs. Lai izdzēstu kontu un datus, rakstiet uz nexus.smarthome.app@gmail.com; pieprasījumu izpildīsim 30 dienu laikā (izņemot abonementa ierakstus, kas mums jāglabā saskaņā ar likumu). Lietotnē atveriet Iestatījumi, pēc tam Konta drošība un izmantojiet Dzēst manu kontu. Ja serveris to nespēj pabeigt, ekrānā tiek par to paziņots."
+     ]
+    },
+    {
+     "h": "Jūsu tiesības",
+     "p": [
+      "Saskaņā ar Turcijas likuma Nr. 6698 (KVKK) 11. pantu un, ja piemērojams, VDAR, varat vaicāt, vai jūsu dati tiek apstrādāti, piekļūt tiem, labot tos, panākt to dzēšanu, iebilst pret apstrādi un pieprasīt pārnesamību. Rakstiet uz nexus.smarthome.app@gmail.com. Varat arī iesniegt sūdzību Turcijas Personas datu aizsardzības iestādei."
+     ]
+    },
+    {
+     "h": "Drošība",
+     "p": [
+      "Savienojumi tiek šifrēti ar TLS. Datubāzē tiek ieviesta rindu līmeņa piekļuves kontrole: katrs lietotājs var lasīt un rakstīt tikai savus datus. Neviena sistēma nav pilnīgi droša; iesakām izmantot spēcīgu paroli un uzturēt savas ierīces atjauninātas."
+     ]
+    },
+    {
+     "h": "Trešo pušu ierīces",
+     "p": [
+      "Viedās ierīces, ko pievienojat (piemēram, Shelly, WLED, ESPHome), var sazināties ar to ražotāju serveriem saskaņā ar ražotāju pašu privātuma politikām. NEXUS nedala jūsu datus ar šiem ražotājiem."
+     ]
+    },
+    {
+     "h": "Bērni",
+     "p": [
+      "NEXUS nav paredzēts bērniem līdz 13 gadu vecumam, un mēs apzināti nevācam viņu datus."
+     ]
+    },
+    {
+     "h": "Izmaiņas",
+     "p": [
+      "Mēs varam atjaunināt šo politiku; par būtiskām izmaiņām paziņosim lietotnē vai vietnē."
+     ]
+    },
+    {
+     "h": "Kontakti",
+     "p": [
+      "Jautājumi: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Pakalpojumu sniegšanas noteikumi",
+   "intro": "Lejupielādējot, instalējot vai izmantojot NEXUS lietotni un saistītos pakalpojumus („Pakalpojumi“), jūs piekrītat šiem noteikumiem. Pakalpojumus sniedz NEXUS. Kontakti: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licence",
+     "p": [
+      "Mēs piešķiram jums personīgu, neekskluzīvu, nenododamu, atsaucamu licenci izmantot NEXUS programmatūru ierīcēs, kas pieder jums vai ir jūsu kontrolē, personīgai, nekomerciālai mājas automatizācijai. Jūs nedrīkstat to izplatīt, iznomāt, pārdot, apakšlicencēt, veikt tās reverso inženieriju vai izmantot, lai izveidotu produktu, kas tieši konkurē ar NEXUS. Trešo pušu komponentiem ir piemērojamas to pašu licences."
+     ]
+    },
+    {
+     "h": "Konts",
+     "p": [
+      "NEXUS lietošanai ir nepieciešams konts. Jūs esat atbildīgs par savu datu precizitāti, paroles drošību un darbībām savā kontā. Mēs varam apturēt vai slēgt kontus, kas pārkāpj šos noteikumus."
+     ]
+    },
+    {
+     "h": "Viedās mājas drošība",
+     "ul": [
+      "NEXUS ir ērtības rīks; nepaļaujieties tikai uz to kritiski svarīgām funkcijām, piemēram, ugunsdrošībai, gāzes, veselības vai dzīvības drošībai.",
+      "Jūs esat atbildīgs par komandām, kas tiek sūtītas uz jūsu ierīcēm, un par sava tīkla drošību. Uzturiet ierīču programmaparatūru un maršrutētāja iestatījumus atjauninātus.",
+      "Drošības nolūkos slēdzenes nevar atvērt no tērzēšanas."
+     ]
+    },
+    {
+     "h": "NEXUS AI un kredīti",
+     "p": [
+      "Bezmaksas plānā ir iekļauti 30 NEXUS AI kredīti dienā; NEXUS+ abonementā — 2,000 mēnesī. Kredīti nav nododami, nav apmaināmi pret naudu un tiek atiestatīti perioda beigās. NEXUS AI var kļūdīties; rezultātu pārbaude ir jūsu atbildība."
+     ]
+    },
+    {
+     "h": "NEXUS+ abonements",
+     "ul": [
+      "Apjoms: NEXUS+ nodrošina 2,000 NEXUS AI kredītus mēnesī un ļauj pievienot jaunas ierīces, izmantojot paplašinātos savienojumus (Home Assistant). Kad abonements beidzas, jau pievienotās ierīces turpina darboties; jaunu ierīču pievienošanai, izmantojot šos savienojumus, atkal nepieciešams NEXUS+.",
+      "Plāni: Mēneša un Gada, ar cenām TRY Türkiye un USD citur (pašlaik Mēneša ₺499.99 / $11.99, Gada ₺3,999.99 / $89.99). Aktuālās cenas tiek rādītas norēķinoties; norēķinoties var tikt pievienoti nodokļi. Gada plānam ir 7 dienu bezmaksas izmēģinājums, bet mēneša plānam — 3 dienu bezmaksas izmēģinājums.",
+      "Maksājumi tiek veikti caur Whop. Abonements tiek automātiski atjaunots katru periodu, līdz to atcelsiet; izmēģinājuma beigās tiek iekasēta jūsu izvēlētā plāna cena.",
+      "Abonementu varat atcelt jebkurā laikā sadaļā Norēķini lietotnē vai savā kontā šajā vietnē. Atcelšana stājas spēkā kārtējā perioda beigās.",
+      "Norēķinoties izmantojiet sava NEXUS konta e-pasta adresi; abonements tiek sasaistīts ar šo e-pastu.",
+      "Par cenu izmaiņām paziņojam vismaz 30 dienas pirms to stāšanās spēkā; tās neietekmē kārtējo periodu.",
+      "Atmaksas noteikumi ir sniegti Atmaksas un atcelšanas politikā."
+     ]
+    },
+    {
+     "h": "Izmaiņas un pārtraukumi",
+     "p": [
+      "Mēs varam uzlabot, mainīt vai īslaicīgi apturēt Pakalpojumus apkopes nolūkos. Mēs negarantējam nepārtrauktu vai bezkļūdu pakalpojumu."
+     ]
+    },
+    {
+     "h": "Intelektuālais īpašums",
+     "p": [
+      "Tiesības uz NEXUS programmatūru, dizainu, zīmolu un saturu pieder operatoram. Šie noteikumi jums piešķir tikai iepriekš minēto licenci."
+     ]
+    },
+    {
+     "h": "Atbildības ierobežojums",
+     "p": [
+      "Programmatūra tiek sniegta „tāda, kāda tā ir“. Likumā pieļautajā maksimālajā apmērā mēs neatbildam par netiešiem zaudējumiem (ieskaitot datu zudumu vai ierīču vai īpašuma bojājumus), kas rodas, izmantojot Pakalpojumus; mūsu kopējā atbildība ir ierobežota ar summu, ko mums samaksājāt iepriekšējo 12 mēnešu laikā. Patērētāju tiesības, ko ar likumu nevar ierobežot, netiek skartas."
+     ]
+    },
+    {
+     "h": "Izbeigšana",
+     "p": [
+      "Jūs varat slēgt savu kontu jebkurā laikā (skatiet Privātuma politiku). Mēs varam izbeigt jūsu piekļuvi, ja pārkāpjat šos noteikumus."
+     ]
+    },
+    {
+     "h": "Piemērojamie tiesību akti",
+     "p": [
+      "Šiem noteikumiem piemērojami Turcijas Republikas tiesību akti. Kā patērētājs jūs saglabājat tiesības vērsties patērētāju strīdu komisijās un patērētāju tiesās."
+     ]
+    },
+    {
+     "h": "Šo noteikumu izmaiņas",
+     "p": [
+      "Mēs varam atjaunināt šos noteikumus un par būtiskām izmaiņām paziņosim lietotnē vai vietnē. Turpinot izmantot Pakalpojumus pēc izmaiņām, jūs piekrītat jaunajiem noteikumiem."
+     ]
+    },
+    {
+     "h": "Kontakti",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Atmaksas un atcelšanas politika",
+   "intro": "Šī politika izskaidro NEXUS+ abonementa izmēģinājuma, atcelšanas un atmaksas noteikumus. Jūsu likumā noteiktās patērētāja tiesības netiek skartas.",
+   "sections": [
+    {
+     "h": "Bezmaksas izmēģinājums",
+     "p": [
+      "Gada plānam ir 7 dienu bezmaksas izmēģinājums, bet mēneša plānam — 3 dienu bezmaksas izmēģinājums. Ja atcelsiet pirms izmēģinājuma beigām, maksa netiks iekasēta. Ja neatcelsiet, izmēģinājuma beigās tiks iekasēta jūsu izvēlētā plāna cena."
+     ]
+    },
+    {
+     "h": "Kā atcelt",
+     "ul": [
+      "Lietotnē: Plus → Norēķini → Atcelt perioda beigās.",
+      "Vietnē: pierakstīties → konts → atcelt perioda beigās.",
+      "Atcelšana stājas spēkā kārtējā norēķinu perioda beigās; līdz tam jūs saglabājat NEXUS+ funkcijas, un par nākamo periodu maksa netiek iekasēta."
+     ]
+    },
+    {
+     "h": "Atmaksas",
+     "ul": [
+      "Jūs varat pieprasīt atmaksu 14 dienu laikā pēc pirmās iekasēšanas, nenorādot iemeslu; mēs atmaksājam visu maksājumu.",
+      "Automātiskas atjaunošanas gadījumā, ja pieprasāt 3 dienu laikā pēc atjaunošanas datuma, mēs atmaksājam šī perioda maksu.",
+      "Ārpus šiem termiņiem mēs neatmaksājam izmantotos periodus, taču pamatotos gadījumos, piemēram, ja pakalpojumu nevarēja izmantot mūsu puses kļūmes dēļ, atmaksas izskatīsim.",
+      "Mēs varam noraidīt pieprasījumu, ja konstatējam ļaunprātīgu izmantošanu (piemēram, atkārtotas atmaksas vienā kontā)."
+     ]
+    },
+    {
+     "h": "Kā pieprasīt atmaksu",
+     "p": [
+      "Rakstiet uz nexus.smarthome.app@gmail.com, norādot sava NEXUS konta e-pastu un savu pieprasījumu. Apstiprinātās atmaksas tiek veiktas caur Whop uz sākotnējo maksājuma veidu; parasti tās parādās 5–10 darba dienu laikā atkarībā no jūsu bankas."
+     ]
+    },
+    {
+     "h": "Likumā noteiktās tiesības",
+     "p": [
+      "Šī politika neierobežo jūsu likumā noteiktās tiesības saskaņā ar Turcijas Patērētāju tiesību aizsardzības likumu Nr. 6502 un Distances līgumu noteikumiem (ieskaitot atteikuma tiesības un to izņēmumus)."
+     ]
+    },
+    {
+     "h": "Kontakti",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

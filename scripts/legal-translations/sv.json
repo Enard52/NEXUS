@@ -1,0 +1,253 @@
+{
+ "code": "sv",
+ "updated": "Senast uppdaterad: 31 oktober 2026",
+ "labels": {
+  "updated": "Senast uppdaterad",
+  "operatedBy": "Drivs av",
+  "footer": "Detta dokument ska läsas tillsammans med den aktuella texten på nexus-smarthome.pages.dev.",
+  "notice": "Denna översättning tillhandahålls endast för bekvämlighets skull. Om den avviker från den turkiska eller engelska versionen gäller den turkiska och engelska versionen."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Integritetspolicy",
+   "intro": "NEXUS styr ditt smarta hem i första hand i ditt eget lokala nätverk. Denna policy förklarar tydligt vilka uppgifter vi behandlar när du skapar ett konto, varför och var.",
+   "sections": [
+    {
+     "h": "I korthet",
+     "ul": [
+      "Ett konto krävs för att använda NEXUS. Enhetskommandon körs fortfarande i ditt lokala nätverk; de skickas inte via en tillverkares moln.",
+      "Dina inställningar, din enhetslista och din chatthistorik lagras i molnet så att de är desamma på alla enheter.",
+      "Vi säljer inte dina uppgifter, använder dem inte för reklam och profilerar dig inte.",
+      "Mikrofonåtkomst är valfri och används endast när du trycker på mikrofonen i NEXUS AI-chatten; inspelningen transkriberas och lagras inte. Kameran öppnas endast för att skanna QR-koder och bilden lämnar aldrig din enhet."
+     ]
+    },
+    {
+     "h": "Personuppgiftsansvarig",
+     "p": [
+      "Personuppgiftsansvarig är NEXUS. Kontakt: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Vilka uppgifter vi behandlar",
+     "ul": [
+      "Konto: din e-postadress och (om du har angett det) ditt namn. Vid inloggning med Google den e-postadress och det profilnamn som Google tillhandahåller. Ditt lösenord lagras i Supabase Auth endast som en enkelriktad hash; vi kan inte se det.",
+      "Synkroniserade appdata (endast när du är inloggad): profilnamn och profilbild, inställningar för tema, språk och enheter, hushållsmedlemmar, scener och automatiseringar, favoritkort, NEXUS AI-chatthistorik och användningsräknare, händelselogg, inställning för hemplats och väder samt listan över enheter du har lagt till (namn, rum, protokoll, adress i det lokala nätverket, senaste status).",
+      "Prenumeration (om du har köpt NEXUS+): e-postadress, plan, status, periodens slut och Whop-medlems-ID. Dina kortuppgifter behandlas endast av Whop och når oss aldrig.",
+      "Supportmeddelanden: din e-postadress och ditt meddelande när du skriver till oss.",
+      "Tekniska loggar: inloggnings- och felloggar (inklusive IP-adress) som våra drift- och autentiseringsleverantörer sparar under en kort tid."
+     ]
+    },
+    {
+     "h": "Ändamål och rättsliga grunder",
+     "p": [
+      "För att hantera ditt konto, synkronisera dina data mellan enheter, tillhandahålla din prenumeration och ge support (fullgörande av avtal); för att hålla tjänsten säker och förhindra missbruk (berättigat intresse); och för överföringar utomlands, ditt uttryckliga samtycke (se nedan)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI har två delar. (1) Enhetskommandon (tänd en lampa, kör en scen, fråga efter status) behandlas lokalt på din enhet och skickas inte till molnet. (2) Meddelanden som inte är enhetskommandon, till exempel allmän chatt och frågor, skickas till Cloudflare Workers AI för att besvaras; namn, typer och rum för dina enheter ingår som kontext. Dina kontouppgifter, din e-postadress och din plats skickas inte. Vi använder inte detta innehåll för att träna AI-modeller; Cloudflare behandlar det för att tillhandahålla tjänsten. Om du föredrar det kan du endast använda enhetskommandon i chatten. Om du är inloggad synkroniseras din chatthistorik med ditt konto på samma sätt som dina övriga inställningar.",
+      "Röstinmatning: när du trycker på mikrofonknappen i NEXUS AI-chatten omvandlas ditt tal till text. I en webbläsare (Chrome/Edge) används först webbläsarens egen taligenkänningstjänst; om den inte kan nås, eller i skrivbords- och mobilapparna, skickas den korta inspelningen endast till Cloudflare Workers AI (Whisper) för transkribering, lagras inte och sparas inte på ditt konto. Transkriptionen placeras endast i chattens inmatningsfält och skickas ingenstans förrän du trycker på skicka."
+     ]
+    },
+    {
+     "h": "Tjänsteleverantörer och överföringar",
+     "ul": [
+      "Supabase: autentisering, databas och systemmejl.",
+      "Cloudflare: webbplatsens drift; Cloudflare Workers AI för svar i NEXUS AI-chatten och tal-till-text.",
+      "Whop: prenumerationsbetalningar och fakturering.",
+      "Google: Google-inloggning och (via Gmail) mejl för verifiering / återställning av lösenord.",
+      "GitHub: distribution av installationsprogram.",
+      "Open-Meteo: stad / ungefärliga koordinater för väder.",
+      "OpenStreetMap / Nominatim: kartor och platssökning; Unsplash: vissa reservbilder.",
+      "BigDataCloud: att ta fram ett platsnamn utifrån koordinater (reserv när Nominatim inte kan nås; används även när du väljer din hemplats). Den här tjänsten tar emot de exakta koordinaterna för den plats du väljer eller som identifieras."
+     ],
+     "p": [
+      "Dessa leverantörers servrar kan finnas utanför Türkiye. Genom att skapa ett konto och/eller betala ger du ditt uttryckliga samtycke till att dina uppgifter överförs till dem och utomlands; du kan återkalla ditt samtycke genom att låta radera ditt konto."
+     ]
+    },
+    {
+     "h": "Cookies och spårning",
+     "p": [
+      "Vår webbplats använder inga cookies och innehåller inga analys- eller reklamspårare. Appen sparar dina inställningar i enhetens lokala lagring (localStorage)."
+     ]
+    },
+    {
+     "h": "Lagring och radering",
+     "p": [
+      "Vi sparar dina uppgifter så länge ditt konto är öppet. För att radera ditt konto och dina uppgifter, skriv till nexus.smarthome.app@gmail.com; vi slutför begäran inom 30 dagar (förutom prenumerationsuppgifter som vi är skyldiga att spara enligt lag). I appen öppnar du Inställningar och sedan Kontosäkerhet och använder Radera mitt konto. Om servern inte kan slutföra raderingen anges det på skärmen."
+     ]
+    },
+    {
+     "h": "Dina rättigheter",
+     "p": [
+      "Enligt turkisk lag nr 6698 (KVKK) art. 11 och, i förekommande fall, GDPR kan du fråga om dina uppgifter behandlas, få tillgång till dem, få dem rättade, få dem raderade, invända mot behandling och begära dataportabilitet. Skriv till nexus.smarthome.app@gmail.com. Du kan också lämna in ett klagomål till den turkiska dataskyddsmyndigheten."
+     ]
+    },
+    {
+     "h": "Säkerhet",
+     "p": [
+      "Anslutningar är krypterade med TLS. Databasen tillämpar åtkomstkontroll på radnivå: varje användare kan endast läsa och skriva sina egna uppgifter. Inget system är helt säkert; vi rekommenderar ett starkt lösenord och att du håller dina enheter uppdaterade."
+     ]
+    },
+    {
+     "h": "Enheter från tredje part",
+     "p": [
+      "Smarta enheter som du ansluter (t.ex. Shelly, WLED, ESPHome) kan kommunicera med tillverkarnas servrar enligt deras egna integritetspolicyer. NEXUS delar inte dina uppgifter med dessa tillverkare."
+     ]
+    },
+    {
+     "h": "Barn",
+     "p": [
+      "NEXUS riktar sig inte till barn under 13 år och vi samlar medvetet inte in uppgifter om dem."
+     ]
+    },
+    {
+     "h": "Ändringar",
+     "p": [
+      "Vi kan uppdatera denna policy; väsentliga ändringar meddelas i appen eller på webbplatsen."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "Frågor: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Användarvillkor",
+   "intro": "Genom att ladda ner, installera eller använda appen NEXUS och tillhörande tjänster (»Tjänsterna«) godkänner du dessa villkor. Tjänsterna tillhandahålls av NEXUS. Kontakt: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licens",
+     "p": [
+      "Vi ger dig en personlig, icke-exklusiv, icke-överlåtbar och återkallelig licens att använda programvaran NEXUS på enheter som du äger eller kontrollerar, för personlig, icke-kommersiell hemautomation. Du får inte distribuera, hyra ut, sälja, vidarelicensiera eller dekompilera den, eller använda den för att bygga en produkt som direkt konkurrerar med NEXUS. Tredjepartskomponenter omfattas av sina egna licenser."
+     ]
+    },
+    {
+     "h": "Konto",
+     "p": [
+      "För att använda NEXUS krävs ett konto. Du ansvarar för att dina uppgifter är korrekta, för att ditt lösenord förvaras säkert och för aktiviteten på ditt konto. Vi kan stänga av eller avsluta konton som bryter mot dessa villkor."
+     ]
+    },
+    {
+     "h": "Säkerhet i det smarta hemmet",
+     "ul": [
+      "NEXUS är ett bekvämlighetsverktyg; förlita dig inte enbart på det för kritiska funktioner såsom brand, gas, hälsa eller livssäkerhet.",
+      "Du ansvarar för de kommandon som skickas till dina enheter och för säkerheten i ditt nätverk. Håll enheternas firmware och routerinställningar uppdaterade.",
+      "Av säkerhetsskäl kan lås inte öppnas från chatten."
+     ]
+    },
+    {
+     "h": "NEXUS AI och krediter",
+     "p": [
+      "Den kostnadsfria planen inkluderar 30 NEXUS AI-krediter per dag; en NEXUS+-prenumeration inkluderar 2 000 per månad. Krediter är inte överlåtbara, kan inte växlas mot kontanter och nollställs vid periodens slut. NEXUS AI kan göra misstag; det är ditt ansvar att kontrollera resultaten."
+     ]
+    },
+    {
+     "h": "NEXUS+-prenumeration",
+     "ul": [
+      "Omfattning: NEXUS+ ger 2 000 NEXUS AI-krediter per månad och låser upp tillägg av nya enheter via de avancerade anslutningarna (Home Assistant). När prenumerationen upphör fortsätter enheter som du redan har lagt till att fungera; för att lägga till nya enheter via dessa anslutningar krävs NEXUS+ igen.",
+      "Planer: Månadsvis och Årsvis, prissatta i TRY för Türkiye och i USD på andra håll (för närvarande Månadsvis ₺499,99 / $11,99, Årsvis ₺3 999,99 / $89,99). Aktuella priser visas i kassan; skatter kan tillkomma i kassan. Årsplanen inkluderar en 7-dagars gratis provperiod och månadsplanen en 3-dagars gratis provperiod.",
+      "Betalningar tas emot via Whop. Prenumerationen förnyas automatiskt varje period tills du avbryter den; när provperioden slutar debiteras priset för den plan du valt.",
+      "Du kan avbryta när som helst under Fakturering i appen eller från ditt konto på denna webbplats. Uppsägningen träder i kraft vid slutet av den pågående perioden.",
+      "Använd e-postadressen för ditt NEXUS-konto i kassan; prenumerationen kopplas till den e-postadressen.",
+      "Prisändringar meddelas minst 30 dagar innan de träder i kraft; de påverkar inte den pågående perioden.",
+      "Villkor för återbetalning finns i Policyn för återbetalning och uppsägning."
+     ]
+    },
+    {
+     "h": "Ändringar och avbrott",
+     "p": [
+      "Vi kan förbättra, ändra eller tillfälligt stänga av Tjänsterna för underhåll. Vi garanterar inte oavbruten eller felfri tjänst."
+     ]
+    },
+    {
+     "h": "Immateriella rättigheter",
+     "p": [
+      "Rättigheterna till programvaran NEXUS, designen, varumärket och innehållet tillhör operatören. Dessa villkor ger dig endast ovanstående licens."
+     ]
+    },
+    {
+     "h": "Ansvarsbegränsning",
+     "p": [
+      "Programvaran tillhandahålls »i befintligt skick«. I den utsträckning lagen tillåter ansvarar vi inte för indirekta skador (inklusive dataförlust eller skada på enheter eller egendom) som uppstår vid användning av Tjänsterna; vårt sammanlagda ansvar är begränsat till det belopp du har betalat oss under de senaste 12 månaderna. Konsumenträttigheter som inte kan begränsas enligt lag påverkas inte."
+     ]
+    },
+    {
+     "h": "Uppsägning",
+     "p": [
+      "Du kan avsluta ditt konto när som helst (se Integritetspolicyn). Vi kan avsluta din åtkomst om du bryter mot dessa villkor."
+     ]
+    },
+    {
+     "h": "Tillämplig lag",
+     "p": [
+      "Dessa villkor regleras av lagarna i Republiken Türkiye. Som konsument behåller du rätten att vända dig till konsumenttvistnämnder och konsumentdomstolar."
+     ]
+    },
+    {
+     "h": "Ändringar av dessa villkor",
+     "p": [
+      "Vi kan uppdatera dessa villkor och meddelar väsentliga ändringar i appen eller på webbplatsen. Om du fortsätter använda Tjänsterna efter en ändring godkänner du de nya villkoren."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Policy för återbetalning och uppsägning",
+   "intro": "Denna policy förklarar villkoren för provperiod, uppsägning och återbetalning för prenumerationen NEXUS+. Dina lagstadgade konsumenträttigheter påverkas inte.",
+   "sections": [
+    {
+     "h": "Gratis provperiod",
+     "p": [
+      "Årsplanen inkluderar en 7-dagars gratis provperiod och månadsplanen en 3-dagars gratis provperiod. Om du avbryter innan provperioden slutar debiteras du inte. Om du inte avbryter debiteras priset för den plan du valt när provperioden slutar."
+     ]
+    },
+    {
+     "h": "Så avbryter du",
+     "ul": [
+      "I appen: Plus → Fakturering → Avbryt vid periodens slut.",
+      "På webbplatsen: logga in → konto → avbryt vid periodens slut.",
+      "Uppsägningen träder i kraft vid slutet av den pågående faktureringsperioden; du behåller NEXUS+-funktionerna fram till dess och debiteras inte för nästa period."
+     ]
+    },
+    {
+     "h": "Återbetalningar",
+     "ul": [
+      "Du kan begära återbetalning inom 14 dagar efter din första debitering utan att ange något skäl; vi återbetalar hela betalningen.",
+      "Vid automatiska förnyelser återbetalar vi den periodens debitering om du begär det inom 3 dagar efter förnyelsedatumet.",
+      "Utanför dessa tidsfrister återbetalar vi inte använda perioder, men vi överväger återbetalning i motiverade fall, till exempel om tjänsten inte har kunnat användas på grund av ett fel hos oss.",
+      "Vi kan avslå en begäran om vi upptäcker missbruk (till exempel upprepade återbetalningar på samma konto)."
+     ]
+    },
+    {
+     "h": "Så begär du återbetalning",
+     "p": [
+      "Mejla nexus.smarthome.app@gmail.com med e-postadressen för ditt NEXUS-konto och din begäran. Godkända återbetalningar görs via Whop till den ursprungliga betalningsmetoden; det tar vanligtvis 5–10 arbetsdagar innan de syns, beroende på din bank."
+     ]
+    },
+    {
+     "h": "Lagstadgade rättigheter",
+     "p": [
+      "Denna policy begränsar inte dina lagstadgade rättigheter enligt den turkiska konsumentskyddslagen nr 6502 och förordningen om distansavtal (inklusive ångerrätten och dess undantag)."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

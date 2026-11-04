@@ -1,0 +1,253 @@
+{
+ "code": "fi",
+ "updated": "Päivitetty viimeksi: 31. lokakuuta 2026",
+ "labels": {
+  "updated": "Päivitetty viimeksi",
+  "operatedBy": "Ylläpitäjä",
+  "footer": "Tämä asiakirja on luettava yhdessä osoitteessa nexus-smarthome.pages.dev julkaistun ajantasaisen tekstin kanssa.",
+  "notice": "Tämä käännös on tarkoitettu vain käyttömukavuuden vuoksi. Jos se poikkeaa turkkilaisesta tai englanninkielisestä versiosta, turkkilainen ja englanninkielinen versio ovat ensisijaisia."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Tietosuojaseloste",
+   "intro": "NEXUS hallitsee älykotiasi ensisijaisesti omassa paikallisverkossasi. Tämä seloste kertoo selkeästi, mitä tietoja käsittelemme, kun luot tilin, sekä miksi ja missä.",
+   "sections": [
+    {
+     "h": "Lyhyesti",
+     "ul": [
+      "NEXUSin käyttö edellyttää tiliä. Laitekomennot suoritetaan edelleen paikallisverkossasi; niitä ei lähetetä valmistajan pilven kautta.",
+      "Asetuksesi, laiteluettelosi ja keskusteluhistoriasi tallennetaan pilveen, jotta ne vastaavat toisiaan kaikilla laitteilla.",
+      "Emme myy tietojasi, emme käytä niitä mainontaan emmekä profiloi sinua.",
+      "Mikrofonin käyttö on valinnaista, ja sitä käytetään vain, kun napautat mikrofonia NEXUS AI -keskustelussa; tallenne litteroidaan eikä sitä säilytetä. Kamera avataan vain QR-koodien skannaamiseen, eikä kuva poistu koskaan laitteeltasi."
+     ]
+    },
+    {
+     "h": "Rekisterinpitäjä",
+     "p": [
+      "Rekisterinpitäjä on NEXUS. Yhteystiedot: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Mitä tietoja käsittelemme",
+     "ul": [
+      "Tili: sähköpostiosoitteesi ja (jos annettu) nimesi. Googlella kirjauduttaessa Googlen antama sähköpostiosoite ja profiilinimi. Salasanasi tallennetaan Supabase Authiin vain yksisuuntaisena tiivisteenä; emme näe sitä.",
+      "Synkronoidut sovellustiedot (vain kirjautuneena): profiilinimi ja -kuva, teeman, kielen ja yksiköiden asetukset, kotitalouden jäsenet, skenaariot ja automaatiot, suosikkikortit, NEXUS AI -keskusteluhistoria ja käyttölaskuri, tapahtumaloki, kodin sijainti- ja säämääritys sekä lisäämiesi laitteiden luettelo (nimi, huone, protokolla, paikallisverkon osoite, viimeisin tila).",
+      "Tilaus (jos ostit NEXUS+:n): sähköposti, tilaussuunnitelma, tila, jakson loppu ja Whop-jäsentunnus. Korttitietosi käsittelee vain Whop, eivätkä ne koskaan tavoita meitä.",
+      "Tukiviestit: sähköpostiosoitteesi ja viestisi, kun kirjoitat meille.",
+      "Tekniset lokit: kirjautumis- ja virhelokit (mukaan lukien IP-osoite), joita palvelu- ja todennusalustojemme tarjoajat säilyttävät lyhyen aikaa."
+     ]
+    },
+    {
+     "h": "Käsittelyn tarkoitukset ja oikeusperusteet",
+     "p": [
+      "Tilisi hallinnointi, tietojesi synkronointi laitteiden välillä, tilauksesi toimittaminen ja tuen antaminen (sopimuksen täyttäminen); palvelun turvallisuuden ylläpito ja väärinkäytön estäminen (oikeutettu etu); ja ulkomaille tapahtuvat siirrot, nimenomainen suostumuksesi (katso jäljempänä)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI koostuu kahdesta osasta. (1) Laitekomennot (sytytä valo, suorita skenaario, kysy tila) käsitellään paikallisesti laitteellasi, eikä niitä lähetetä pilveen. (2) Viestit, jotka eivät ole laitekomentoja, kuten yleinen keskustelu ja kysymykset, lähetetään vastattavaksi Cloudflare Workers AI:lle; laitteidesi nimet, tyypit ja huoneet lähetetään taustatietona. Tilitietojasi, sähköpostiosoitettasi ja sijaintiasi ei lähetetä. Emme käytä tätä sisältöä tekoälymallien kouluttamiseen; Cloudflare käsittelee sen palvelun tarjoamiseksi. Halutessasi voit käyttää keskustelussa vain laitekomentoja. Jos olet kirjautuneena, keskusteluhistoriasi synkronoidaan tilisi kanssa kuten muut asetuksesi.",
+      "Puhesyöte: kun napautat mikrofonipainiketta NEXUS AI -keskustelussa, puheesi muunnetaan tekstiksi. Selaimessa (Chrome/Edge) käytetään ensin selaimen omaa puheentunnistuspalvelua; jos se ei ole tavoitettavissa tai käytät työpöytä- ja mobiilisovelluksia, lyhyt tallenne lähetetään litteroitavaksi vain Cloudflare Workers AI:lle (Whisper), sitä ei säilytetä eikä tallenneta tilillesi. Litteraatti sijoitetaan vain keskustelun syöttökenttään, eikä sitä lähetetä mihinkään ennen kuin painat lähetä."
+     ]
+    },
+    {
+     "h": "Palveluntarjoajat ja siirrot",
+     "ul": [
+      "Supabase: todennus, tietokanta ja järjestelmäsähköpostit.",
+      "Cloudflare: verkkosivuston isännöinti; Cloudflare Workers AI NEXUS AI -keskustelun vastauksiin ja puheen tekstiksi muuntamiseen.",
+      "Whop: tilausmaksut ja laskutus.",
+      "Google: Google-kirjautuminen ja (Gmailin kautta) vahvistus- ja salasanan palautussähköpostit.",
+      "GitHub: asennusohjelmien jakelu.",
+      "Open-Meteo: kaupunki / likimääräiset koordinaatit säätä varten.",
+      "OpenStreetMap / Nominatim: kartat ja paikkahaku; Unsplash: jotkin varakuvat.",
+      "BigDataCloud: paikannimen selvittäminen koordinaateista (varavaihtoehto, kun Nominatim ei ole tavoitettavissa; käytetään myös, kun valitset kotisi sijainnin). Tämä palvelu saa valitsemasi tai tunnistetun sijainnin tarkat koordinaatit."
+     ],
+     "p": [
+      "Näiden palveluntarjoajien palvelimet voivat sijaita Türkiyen ulkopuolella. Luomalla tilin ja/tai maksamalla annat nimenomaisen suostumuksesi tietojesi siirtämiseen heille ja ulkomaille; voit peruuttaa suostumuksen pyytämällä tilisi poistamista."
+     ]
+    },
+    {
+     "h": "Evästeet ja seuranta",
+     "p": [
+      "Verkkosivustomme ei käytä evästeitä eikä sisällä analytiikka- tai mainosseurantaa. Sovellus säilyttää asetuksesi laitteesi paikallisessa tallennustilassa (localStorage)."
+     ]
+    },
+    {
+     "h": "Säilytys ja poistaminen",
+     "p": [
+      "Säilytämme tietojasi niin kauan kuin tilisi on avoinna. Voit poistaa tilisi ja tietosi kirjoittamalla osoitteeseen nexus.smarthome.app@gmail.com; käsittelemme pyynnön 30 päivän kuluessa (lukuun ottamatta tilaustietoja, jotka meidän on lain mukaan säilytettävä). Avaa sovelluksessa Asetukset ja sitten Tilin turvallisuus ja valitse Poista tilini. Jos palvelin ei pysty viimeistelemään poistoa, näyttö kertoo siitä."
+     ]
+    },
+    {
+     "h": "Oikeutesi",
+     "p": [
+      "Turkin lain nro 6698 (KVKK) 11. artiklan ja soveltuvin osin GDPR:n nojalla voit tiedustella, käsitelläänkö tietojasi, saada pääsyn niihin, oikaista ne, poistattaa ne, vastustaa käsittelyä ja pyytää tietojen siirrettävyyttä. Kirjoita osoitteeseen nexus.smarthome.app@gmail.com. Voit myös tehdä valituksen Turkin henkilötietojen suojaviranomaiselle."
+     ]
+    },
+    {
+     "h": "Tietoturva",
+     "p": [
+      "Yhteydet salataan TLS:llä. Tietokanta pakottaa rivitason pääsynhallinnan: jokainen käyttäjä voi lukea ja kirjoittaa vain omia tietojaan. Mikään järjestelmä ei ole täysin turvallinen; suosittelemme vahvaa salasanaa ja laitteidesi pitämistä ajan tasalla."
+     ]
+    },
+    {
+     "h": "Kolmansien osapuolten laitteet",
+     "p": [
+      "Liittämäsi älylaitteet (esim. Shelly, WLED, ESPHome) voivat olla yhteydessä valmistajiensa palvelimiin omien tietosuojakäytäntöjensä mukaisesti. NEXUS ei jaa tietojasi näille valmistajille."
+     ]
+    },
+    {
+     "h": "Lapset",
+     "p": [
+      "NEXUS ei ole suunnattu alle 13-vuotiaille lapsille, emmekä tietoisesti kerää heidän tietojaan."
+     ]
+    },
+    {
+     "h": "Muutokset",
+     "p": [
+      "Voimme päivittää tätä selostetta; ilmoitamme merkittävistä muutoksista sovelluksessa tai verkkosivustolla."
+     ]
+    },
+    {
+     "h": "Yhteystiedot",
+     "p": [
+      "Kysymykset: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Käyttöehdot",
+   "intro": "Lataamalla, asentamalla tai käyttämällä NEXUS-sovellusta ja siihen liittyviä palveluja («Palvelut») hyväksyt nämä ehdot. Palvelut tarjoaa NEXUS. Yhteystiedot: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Lisenssi",
+     "p": [
+      "Myönnämme sinulle henkilökohtaisen, ei-yksinomaisen, siirtokelvottoman ja peruutettavissa olevan lisenssin käyttää NEXUS-ohjelmistoa omistamillasi tai hallitsemillasi laitteilla henkilökohtaiseen, ei-kaupalliseen kotiautomaatioon. Et saa jakaa, vuokrata, myydä, alilisensoida tai purkaa sitä takaisinmallintamalla etkä käyttää sitä sellaisen tuotteen rakentamiseen, joka kilpailee suoraan NEXUSin kanssa. Kolmansien osapuolten komponentteihin sovelletaan niiden omia lisenssejä."
+     ]
+    },
+    {
+     "h": "Tili",
+     "p": [
+      "NEXUSin käyttö edellyttää tiliä. Vastaat tietojesi paikkansapitävyydestä, salasanasi turvallisuudesta ja tililläsi tapahtuvasta toiminnasta. Voimme keskeyttää tai sulkea tilit, jotka rikkovat näitä ehtoja."
+     ]
+    },
+    {
+     "h": "Älykodin turvallisuus",
+     "ul": [
+      "NEXUS on mukavuustyökalu; älä luota pelkästään siihen kriittisissä toiminnoissa, kuten palo-, kaasu-, terveys- tai henkilöturvallisuudessa.",
+      "Vastaat laitteillesi lähetetyistä komennoista ja verkkosi turvallisuudesta. Pidä laitteiden laiteohjelmisto ja reitittimen asetukset ajan tasalla.",
+      "Turvallisuussyistä lukkoja ei voi avata keskustelusta."
+     ]
+    },
+    {
+     "h": "NEXUS AI ja krediitit",
+     "p": [
+      "Ilmainen suunnitelma sisältää 30 NEXUS AI -krediittiä päivässä; NEXUS+-tilaus sisältää 2000 kuukaudessa. Krediitit ovat siirtokelvottomia, niitä ei voi vaihtaa rahaksi ja ne nollataan jakson lopussa. NEXUS AI voi tehdä virheitä; tulosten tarkistaminen on sinun vastuullasi."
+     ]
+    },
+    {
+     "h": "NEXUS+-tilaus",
+     "ul": [
+      "Laajuus: NEXUS+ antaa 2000 NEXUS AI -krediittiä kuukaudessa ja avaa uusien laitteiden lisäämisen kehittyneiden yhteyksien (Home Assistant) kautta. Kun tilaus päättyy, jo lisäämäsi laitteet toimivat edelleen; uusien laitteiden lisääminen näiden yhteyksien kautta edellyttää jälleen NEXUS+:aa.",
+      "Suunnitelmat: Kuukausi- ja Vuositilaus, hinnoiteltu Türkiyessä TRY:nä ja muualla USD:nä (tällä hetkellä Kuukausi 499,99 ₺ / 11,99 $, Vuosi 3999,99 ₺ / 89,99 $). Voimassa olevat hinnat näytetään kassalla; kassalla voidaan lisätä verot. Vuositilaukseen sisältyy 7 päivän ja kuukausitilaukseen 3 päivän ilmainen kokeilujakso.",
+      "Maksut veloitetaan Whopin kautta. Tilaus uusiutuu automaattisesti jokaisen jakson jälkeen, kunnes peruutat sen; kokeilujakson päättyessä veloitetaan valitsemasi suunnitelman hinta.",
+      "Voit peruuttaa milloin tahansa sovelluksen Laskutus-osiosta tai tililtäsi tällä verkkosivustolla. Peruutus tulee voimaan kuluvan jakson lopussa.",
+      "Käytä kassalla NEXUS-tilisi sähköpostiosoitetta; tilaus yhdistetään tähän sähköpostiosoitteeseen.",
+      "Ilmoitamme hinnanmuutoksista vähintään 30 päivää ennen niiden voimaantuloa; ne eivät vaikuta kuluvaan jaksoon.",
+      "Hyvitysehdot ovat Hyvitys- ja peruutuskäytännössä."
+     ]
+    },
+    {
+     "h": "Muutokset ja keskeytykset",
+     "p": [
+      "Voimme parantaa, muuttaa tai keskeyttää Palvelut tilapäisesti huoltoa varten. Emme takaa keskeytyksetöntä tai virheetöntä palvelua."
+     ]
+    },
+    {
+     "h": "Immateriaalioikeudet",
+     "p": [
+      "NEXUS-ohjelmiston, ulkoasun, tavaramerkin ja sisällön oikeudet kuuluvat ylläpitäjälle. Nämä ehdot antavat sinulle vain edellä mainitun lisenssin."
+     ]
+    },
+    {
+     "h": "Vastuunrajoitus",
+     "p": [
+      "Ohjelmisto toimitetaan «sellaisenaan». Laissa sallitussa enimmäislaajuudessa emme vastaa välillisistä vahingoista (mukaan lukien tietojen menetys tai laitteille tai omaisuudelle aiheutuneet vahingot), jotka johtuvat Palvelujen käytöstä; kokonaisvastuumme on rajattu summaan, jonka olet maksanut meille edellisten 12 kuukauden aikana. Kuluttajan oikeuksiin, joita ei lain mukaan voi rajoittaa, tämä ei vaikuta."
+     ]
+    },
+    {
+     "h": "Päättäminen",
+     "p": [
+      "Voit sulkea tilisi milloin tahansa (katso Tietosuojaseloste). Voimme päättää pääsysi, jos rikot näitä ehtoja."
+     ]
+    },
+    {
+     "h": "Sovellettava laki",
+     "p": [
+      "Näihin ehtoihin sovelletaan Türkiyen tasavallan lakia. Kuluttajana säilytät oikeuden hakeutua kuluttajavalituslautakuntiin ja kuluttajatuomioistuimiin."
+     ]
+    },
+    {
+     "h": "Näiden ehtojen muutokset",
+     "p": [
+      "Voimme päivittää näitä ehtoja ja ilmoitamme merkittävistä muutoksista sovelluksessa tai verkkosivustolla. Palvelujen käytön jatkaminen muutoksen jälkeen tarkoittaa uusien ehtojen hyväksymistä."
+     ]
+    },
+    {
+     "h": "Yhteystiedot",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Hyvitys- ja peruutuskäytäntö",
+   "intro": "Tämä käytäntö selittää NEXUS+-tilauksen kokeilujaksoa, peruutusta ja hyvitystä koskevat ehdot. Lakisääteiset kuluttajan oikeutesi eivät muutu.",
+   "sections": [
+    {
+     "h": "Ilmainen kokeilujakso",
+     "p": [
+      "Vuositilaukseen sisältyy 7 päivän ja kuukausitilaukseen 3 päivän ilmainen kokeilujakso. Jos peruutat ennen kokeilujakson päättymistä, sinua ei veloiteta. Jos et peruuta, kokeilujakson päättyessä veloitetaan valitsemasi suunnitelman hinta."
+     ]
+    },
+    {
+     "h": "Näin peruutat",
+     "ul": [
+      "Sovelluksessa: Plus → Laskutus → Peruuta jakson lopussa.",
+      "Verkkosivustolla: kirjaudu sisään → tili → peruuta jakson lopussa.",
+      "Peruutus tulee voimaan kuluvan laskutusjakson lopussa; siihen asti säilytät NEXUS+-ominaisuudet, eikä seuraavaa jaksoa veloiteta."
+     ]
+    },
+    {
+     "h": "Hyvitykset",
+     "ul": [
+      "Voit pyytää hyvitystä 14 päivän kuluessa ensimmäisestä veloituksesta ilman perustelua; palautamme koko maksun.",
+      "Automaattisissa uusiutumisissa palautamme kyseisen jakson veloituksen, jos pyydät sitä 3 päivän kuluessa uusiutumispäivästä.",
+      "Näiden määräaikojen ulkopuolella emme palauta käytettyjä jaksoja, mutta harkitsemme hyvityksiä perustelluissa tapauksissa, esimerkiksi jos palvelu oli käyttökelvoton meidän puolellamme olleen vian vuoksi.",
+      "Voimme hylätä pyynnön, jos havaitsemme väärinkäytöstä (esimerkiksi toistuvia hyvityksiä samalle tilille)."
+     ]
+    },
+    {
+     "h": "Näin pyydät hyvitystä",
+     "p": [
+      "Lähetä sähköpostia osoitteeseen nexus.smarthome.app@gmail.com ja liitä mukaan NEXUS-tilisi sähköpostiosoite ja pyyntösi. Hyväksytyt hyvitykset maksetaan Whopin kautta alkuperäiselle maksutavalle; näkyminen kestää yleensä 5–10 arkipäivää pankistasi riippuen."
+     ]
+    },
+    {
+     "h": "Lakisääteiset oikeudet",
+     "p": [
+      "Tämä käytäntö ei rajoita lakisääteisiä oikeuksiasi Turkin kuluttajansuojalain nro 6502 ja etämyyntisopimuksia koskevan asetuksen nojalla (mukaan lukien peruuttamisoikeus ja sen poikkeukset)."
+     ]
+    },
+    {
+     "h": "Yhteystiedot",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

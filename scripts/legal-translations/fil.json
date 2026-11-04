@@ -1,0 +1,253 @@
+{
+ "code": "fil",
+ "updated": "Huling na-update: Oktubre 31, 2026",
+ "labels": {
+  "updated": "Huling na-update",
+  "operatedBy": "Pinapatakbo ng",
+  "footer": "Ang dokumentong ito ay binabasa kasama ng kasalukuyang teksto sa nexus-smarthome.pages.dev.",
+  "notice": "Ang salin na ito ay ibinibigay para sa kaginhawahan lamang. Kung may pagkakaiba ito sa bersyong Turko o Ingles, mananaig ang mga bersyong Turko at Ingles."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Patakaran sa Privacy",
+   "intro": "Pangunahing pinamamahalaan ng NEXUS ang iyong smart home sa sarili mong lokal na network. Malinaw na ipinapaliwanag ng patakarang ito kung anong data ang pinoproseso namin kapag gumawa ka ng account, kung bakit, at saan.",
+   "sections": [
+    {
+     "h": "Sa madaling sabi",
+     "ul": [
+      "Kailangan ng account upang magamit ang NEXUS. Tumatakbo pa rin sa iyong lokal na network ang mga utos sa device; hindi ito ipinapadala sa pamamagitan ng cloud ng tagagawa.",
+      "Iniimbak sa cloud ang iyong mga setting, listahan ng device at kasaysayan ng chat para magkapareho ang mga ito sa bawat device.",
+      "Hindi namin ibinebenta ang iyong data, hindi ginagamit ito para sa advertising, at hindi ka namin ipo-profile.",
+      "Opsyonal ang access sa mikropono at ginagamit lamang kapag tinapik mo ang mic sa chat ng NEXUS AI; isinasalin sa teksto ang recording at hindi ito iniimbak. Bumubukas lamang ang camera para mag-scan ng mga QR code at hindi kailanman lumalabas sa iyong device ang larawan."
+     ]
+    },
+    {
+     "h": "Tagapamahala ng data",
+     "p": [
+      "Ang tagapamahala ng data ay ang NEXUS. Makipag-ugnayan: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Anong data ang pinoproseso namin",
+     "ul": [
+      "Account: ang iyong email address at (kung ibinigay) ang iyong pangalan. Sa pag-sign in gamit ang Google, ang email at pangalan ng profile na ibinibigay ng Google. Ang iyong password ay iniimbak lamang bilang one-way hash sa Supabase Auth; hindi namin ito nakikita.",
+      "Naka-sync na data ng app (kapag naka-sign in lamang): pangalan at larawan ng profile, mga setting ng tema/wika/unit, mga miyembro ng sambahayan, mga eksena at automation, mga paboritong card, kasaysayan ng chat ng NEXUS AI at bilang ng paggamit, log ng mga kaganapan, kagustuhan sa lokasyon ng tahanan/panahon, at ang listahan ng mga device na idinagdag mo (pangalan, silid, protocol, address sa lokal na network, huling estado).",
+      "Subscription (kung binili mo ang NEXUS+): email, plano, katayuan, katapusan ng panahon at Whop membership ID. Ang detalye ng iyong card ay pinoproseso lamang ng Whop at hindi kailanman umaabot sa amin.",
+      "Mga mensahe sa suporta: ang iyong email at mensahe kapag sumulat ka sa amin.",
+      "Mga teknikal na log: mga log ng pag-sign in at error (kasama ang IP address) na saglit na iniingatan ng aming mga provider ng hosting at authentication."
+     ]
+    },
+    {
+     "h": "Mga layunin at legal na batayan",
+     "p": [
+      "Upang pamahalaan ang iyong account, i-sync ang iyong data sa mga device, ibigay ang iyong subscription at magbigay ng suporta (pagtupad sa kontrata); upang mapanatiling ligtas ang serbisyo at maiwasan ang pang-aabuso (lehitimong interes); at para sa paglilipat sa ibang bansa, ang iyong tahasang pahintulot (tingnan sa ibaba)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "May dalawang bahagi ang NEXUS AI. (1) Ang mga utos sa device (magbukas ng ilaw, magpatakbo ng eksena, magtanong ng status) ay pinoproseso nang lokal sa iyong device at hindi ipinapadala sa cloud. (2) Ang mga mensaheng hindi utos sa device, gaya ng pangkalahatang chat at mga tanong, ay ipinapadala sa Cloudflare Workers AI upang sagutin; isinasama bilang konteksto ang mga pangalan, uri at silid ng iyong mga device. Hindi ipinapadala ang detalye ng iyong account, email at lokasyon. Hindi namin ginagamit ang nilalamang ito sa pagsasanay ng mga modelo ng AI; pinoproseso ito ng Cloudflare upang maibigay ang serbisyo. Kung nais mo, maaari mong gamitin ang mga utos sa device lamang sa chat. Kung naka-sign in ka, nagsi-sync ang kasaysayan ng iyong chat sa iyong account tulad ng iba mong mga setting.",
+      "Voice input: kapag tinapik mo ang mic button sa chat ng NEXUS AI, ginagawang teksto ang iyong pagsasalita. Sa browser (Chrome/Edge), unang ginagamit ang sariling serbisyo ng browser sa pagkilala ng pananalita; kung hindi ito maabot, o sa mga desktop at mobile app, ang maikling recording ay ipinapadala lamang sa Cloudflare Workers AI (Whisper) para isalin sa teksto, hindi iniimbak at hindi sine-save sa iyong account. Inilalagay lamang ang transcript sa input ng chat at hindi ipinapadala kahit saan hanggang sa pindutin mo ang send."
+     ]
+    },
+    {
+     "h": "Mga service provider at paglilipat",
+     "ul": [
+      "Supabase: authentication, database at mga email ng system.",
+      "Cloudflare: hosting ng website; Cloudflare Workers AI para sa mga sagot sa chat ng NEXUS AI at speech-to-text.",
+      "Whop: mga bayad sa subscription at pag-iinvoice.",
+      "Google: pag-sign in gamit ang Google at (sa pamamagitan ng Gmail) mga email para sa beripikasyon / pag-reset ng password.",
+      "GitHub: pamamahagi ng mga installer.",
+      "Open-Meteo: lungsod / tinatayang coordinate para sa panahon.",
+      "OpenStreetMap / Nominatim: mga mapa at paghahanap ng lugar; Unsplash: ilang pamalit na larawan.",
+      "BigDataCloud: pagtukoy ng pangalan ng lugar mula sa mga coordinate (pamalit kapag hindi maabot ang Nominatim; ginagamit din kapag pinili mo ang lokasyon ng iyong tahanan). Natatanggap ng serbisyong ito ang eksaktong coordinate ng lokasyong pinili mo o natukoy."
+     ],
+     "p": [
+      "Maaaring nasa labas ng Türkiye ang mga server ng mga provider na ito. Sa paggawa ng account at/o pagbabayad, tahasan kang pumapayag na ilipat ang iyong data sa kanila at sa ibang bansa; maaari mong bawiin ang pahintulot sa pamamagitan ng pagpapabura ng iyong account."
+     ]
+    },
+    {
+     "h": "Mga cookie at pagsubaybay",
+     "p": [
+      "Walang ginagamit na cookie ang aming website at walang analytics o advertising tracker. Iniingatan ng app ang iyong mga setting sa lokal na storage ng iyong device (localStorage)."
+     ]
+    },
+    {
+     "h": "Pag-iingat at pagbura",
+     "p": [
+      "Iniingatan namin ang iyong data habang bukas ang iyong account. Upang burahin ang iyong account at data, sumulat sa nexus.smarthome.app@gmail.com; tatapusin namin ang kahilingan sa loob ng 30 araw (maliban sa mga tala ng subscription na kailangan naming itago ayon sa batas). Sa app, buksan ang Mga Setting at pagkatapos ay Seguridad ng account, at gamitin ang Burahin ang aking account. Kung hindi ito matapos ng server, sasabihin ito ng screen."
+     ]
+    },
+    {
+     "h": "Ang iyong mga karapatan",
+     "p": [
+      "Alinsunod sa Batas Blg. 6698 ng Türkiye (KVKK) art. 11 at, kung naaangkop, ang GDPR, maaari mong itanong kung pinoproseso ang iyong data, ma-access ito, ipaitama ito, ipabura ito, tumutol sa pagproseso, at humiling ng data portability. Sumulat sa nexus.smarthome.app@gmail.com. Maaari ka ring magreklamo sa Awtoridad sa Proteksyon ng Personal na Data ng Türkiye."
+     ]
+    },
+    {
+     "h": "Seguridad",
+     "p": [
+      "Naka-encrypt gamit ang TLS ang mga koneksyon. Ipinapatupad ng database ang row-level na kontrol sa access: ang bawat user ay makakabasa at makakasulat lamang ng sarili nilang data. Walang sistemang lubos na ligtas; inirerekomenda namin ang matibay na password at ang pagpapanatiling napapanahon ng iyong mga device."
+     ]
+    },
+    {
+     "h": "Mga device ng ikatlong partido",
+     "p": [
+      "Ang mga smart device na ikinokonekta mo (hal. Shelly, WLED, ESPHome) ay maaaring makipag-ugnayan sa mga server ng kanilang mga tagagawa ayon sa sarili nilang patakaran sa privacy. Hindi ibinabahagi ng NEXUS ang iyong data sa mga tagagawang iyon."
+     ]
+    },
+    {
+     "h": "Mga bata",
+     "p": [
+      "Hindi nakatuon ang NEXUS sa mga batang wala pang 13 taong gulang at hindi namin sinasadyang kumuha ng kanilang data."
+     ]
+    },
+    {
+     "h": "Mga pagbabago",
+     "p": [
+      "Maaari naming i-update ang patakarang ito; ipapaalam namin ang mahahalagang pagbabago sa app o sa website."
+     ]
+    },
+    {
+     "h": "Makipag-ugnayan",
+     "p": [
+      "Mga tanong: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Mga Tuntunin ng Serbisyo",
+   "intro": "Sa pag-download, pag-install o paggamit ng NEXUS app at mga kaugnay na serbisyo (ang «Mga Serbisyo»), tinatanggap mo ang mga tuntuning ito. Ang Mga Serbisyo ay ibinibigay ng NEXUS. Makipag-ugnayan: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Lisensya",
+     "p": [
+      "Binibigyan ka namin ng personal, hindi eksklusibo, hindi maililipat at maaaring bawiing lisensya para gamitin ang software ng NEXUS sa mga device na pag-aari o kontrolado mo, para sa personal at hindi pangkomersyal na home automation. Hindi mo ito maaaring ipamahagi, paupahan, ibenta, i-sublicense, i-reverse-engineer, o gamitin para bumuo ng produktong direktang kakumpitensya ng NEXUS. Ang mga bahagi ng ikatlong partido ay sakop ng sarili nilang mga lisensya."
+     ]
+    },
+    {
+     "h": "Account",
+     "p": [
+      "Kailangan ng account sa paggamit ng NEXUS. Responsibilidad mong panatilihing tama ang iyong mga detalye, ingatan ang iyong password, at managot sa aktibidad sa ilalim ng iyong account. Maaari naming suspindihin o isara ang mga account na lumalabag sa mga tuntuning ito."
+     ]
+    },
+    {
+     "h": "Kaligtasan ng smart home",
+     "ul": [
+      "Ang NEXUS ay kasangkapan para sa kaginhawahan; huwag umasa rito nang mag-isa para sa mga kritikal na tungkulin gaya ng kaligtasan sa sunog, gas, kalusugan o buhay.",
+      "Ikaw ang responsable sa mga utos na ipinapadala sa iyong mga device at sa seguridad ng iyong network. Panatilihing napapanahon ang firmware ng mga device at mga setting ng router.",
+      "Para sa kaligtasan, hindi mabubuksan ang mga kandado mula sa chat."
+     ]
+    },
+    {
+     "h": "NEXUS AI at mga credit",
+     "p": [
+      "Kasama sa libreng plano ang 30 credit ng NEXUS AI bawat araw; kasama sa subscription na NEXUS+ ang 2000 bawat buwan. Ang mga credit ay hindi maililipat, hindi maipapalit sa pera, at nire-reset sa katapusan ng panahon. Maaaring magkamali ang NEXUS AI; ikaw ang may pananagutan sa pagsusuri ng mga resulta."
+     ]
+    },
+    {
+     "h": "Subscription sa NEXUS+",
+     "ul": [
+      "Saklaw: nagbibigay ang NEXUS+ ng 2000 credit ng NEXUS AI bawat buwan at nagbubukas ng pagdaragdag ng mga bagong device sa pamamagitan ng mga advanced na koneksyon (Home Assistant). Kapag natapos ang subscription, patuloy na gagana ang mga device na naidagdag mo na; kakailanganin muli ang NEXUS+ para magdagdag ng mga bagong device sa mga koneksyong ito.",
+      "Mga plano: Buwanan at Taunan, naka-presyo sa TRY para sa Türkiye at sa USD sa ibang lugar (kasalukuyang Buwanan ₺499.99 / $11.99, Taunan ₺3,999.99 / $89.99). Ipinapakita sa checkout ang kasalukuyang mga presyo; maaaring idagdag ang mga buwis sa checkout. Kasama sa taunang plano ang 7-araw na libreng pagsubok at sa buwanang plano ang 3-araw na libreng pagsubok.",
+      "Ang mga bayad ay kinokolekta sa pamamagitan ng Whop. Awtomatikong nagre-renew ang subscription bawat panahon hanggang sa kanselahin mo ito; kapag natapos ang pagsubok, sinisingil ang presyo ng napili mong plano.",
+      "Maaari kang magkansela anumang oras mula sa Billing sa app o mula sa iyong account sa website na ito. Magiging epektibo ang pagkansela sa katapusan ng kasalukuyang panahon.",
+      "Sa checkout, gamitin ang email address ng iyong NEXUS account; itutugma ang subscription sa email na iyon.",
+      "Ipinapaalam namin ang mga pagbabago sa presyo nang hindi bababa sa 30 araw bago ito magkabisa; hindi nito naaapektuhan ang kasalukuyang panahon.",
+      "Nasa Patakaran sa Refund at Pagkansela ang mga tuntunin sa refund."
+     ]
+    },
+    {
+     "h": "Mga pagbabago at pagkaantala",
+     "p": [
+      "Maaari naming pagbutihin, baguhin, o pansamantalang suspindihin ang Mga Serbisyo para sa maintenance. Hindi namin ginagarantiyahan ang serbisyong walang patid o walang error."
+     ]
+    },
+    {
+     "h": "Intelektwal na ari-arian",
+     "p": [
+      "Ang mga karapatan sa software, disenyo, tatak at nilalaman ng NEXUS ay pag-aari ng operator. Ang mga tuntuning ito ay nagbibigay lamang sa iyo ng lisensyang nabanggit sa itaas."
+     ]
+    },
+    {
+     "h": "Limitasyon ng pananagutan",
+     "p": [
+      "Ang software ay ibinibigay «as is». Hanggang sa pinakamataas na saklaw na pinapayagan ng batas, hindi kami mananagot sa mga hindi direktang pinsala (kabilang ang pagkawala ng data o pinsala sa mga device o ari-arian) na nagmumula sa paggamit ng Mga Serbisyo; ang aming kabuuang pananagutan ay limitado sa halagang binayaran mo sa amin sa nakaraang 12 buwan. Hindi apektado ang mga karapatan ng mamimili na hindi maaaring limitahan ng batas."
+     ]
+    },
+    {
+     "h": "Pagwawakas",
+     "p": [
+      "Maaari mong isara ang iyong account anumang oras (tingnan ang Patakaran sa Privacy). Maaari naming wakasan ang iyong access kung lalabag ka sa mga tuntuning ito."
+     ]
+    },
+    {
+     "h": "Umiiral na batas",
+     "p": [
+      "Ang mga tuntuning ito ay sakop ng mga batas ng Republika ng Türkiye. Bilang mamimili, napapanatili mo ang karapatang dumulog sa mga komite ng arbitrasyon ng mamimili at mga hukuman ng mamimili."
+     ]
+    },
+    {
+     "h": "Mga pagbabago sa mga tuntuning ito",
+     "p": [
+      "Maaari naming i-update ang mga tuntuning ito at ipapaalam namin ang mahahalagang pagbabago sa app o sa website. Ang patuloy na paggamit ng Mga Serbisyo pagkatapos ng pagbabago ay nangangahulugang tinatanggap mo ang mga bagong tuntunin."
+     ]
+    },
+    {
+     "h": "Makipag-ugnayan",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Patakaran sa Refund at Pagkansela",
+   "intro": "Ipinapaliwanag ng patakarang ito ang mga tuntunin sa pagsubok, pagkansela at refund para sa subscription na NEXUS+. Hindi apektado ang iyong mga karapatan bilang mamimili na itinakda ng batas.",
+   "sections": [
+    {
+     "h": "Libreng pagsubok",
+     "p": [
+      "Kasama sa taunang plano ang 7-araw na libreng pagsubok at sa buwanang plano ang 3-araw na libreng pagsubok. Kung magkansela ka bago matapos ang pagsubok, hindi ka sisingilin. Kung hindi ka magkansela, sisingilin ang presyo ng napili mong plano kapag natapos ang pagsubok."
+     ]
+    },
+    {
+     "h": "Paano magkansela",
+     "ul": [
+      "Sa app: Plus → Billing → Kanselahin sa katapusan ng panahon.",
+      "Sa website: mag-sign in → account → kanselahin sa katapusan ng panahon.",
+      "Magiging epektibo ang pagkansela sa katapusan ng kasalukuyang billing period; mapapanatili mo ang mga tampok ng NEXUS+ hanggang noon at hindi ka sisingilin para sa susunod na panahon."
+     ]
+    },
+    {
+     "h": "Mga refund",
+     "ul": [
+      "Maaari kang humiling ng refund sa loob ng 14 na araw mula sa iyong unang singil nang hindi nagbibigay ng dahilan; ibabalik namin ang buong bayad.",
+      "Para sa mga awtomatikong renewal, kung hihilingin mo sa loob ng 3 araw mula sa petsa ng renewal, ire-refund namin ang singil ng panahong iyon.",
+      "Sa labas ng mga panahong ito, hindi namin ire-refund ang mga nagamit na panahon, ngunit isasaalang-alang namin ang mga refund sa mga makatwirang kaso gaya ng hindi magamit ang serbisyo dahil sa kapintasan sa panig namin.",
+      "Maaari naming tanggihan ang kahilingan kung makita naming may pang-aabuso (halimbawa, paulit-ulit na refund sa iisang account)."
+     ]
+    },
+    {
+     "h": "Paano humiling ng refund",
+     "p": [
+      "Mag-email sa nexus.smarthome.app@gmail.com kasama ang email ng iyong NEXUS account at ang iyong kahilingan. Ang mga naaprubahang refund ay ibinibigay sa pamamagitan ng Whop sa orihinal na paraan ng pagbabayad; karaniwang tumatagal ng 5–10 araw ng negosyo bago ito lumabas, depende sa iyong bangko."
+     ]
+    },
+    {
+     "h": "Mga karapatang itinakda ng batas",
+     "p": [
+      "Hindi nililimitahan ng patakarang ito ang iyong mga karapatang itinakda ng batas sa ilalim ng Batas Blg. 6502 ng Türkiye sa Proteksyon ng Mamimili at ng Regulasyon sa Mga Kontrata sa Malayuang Paraan (kabilang ang karapatang umatras at ang mga eksepsyon nito)."
+     ]
+    },
+    {
+     "h": "Makipag-ugnayan",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

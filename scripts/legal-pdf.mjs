@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { getSiteLanguages } from "./site-content.mjs";
 const _mod = await import("../scripts/legal-content.cjs");
-const { EMAIL, UPDATED, docs, getLegalDoc } = _mod.default || _mod;
+const { EMAIL, UPDATED, LABELS, docs, getLegalDoc } = _mod.default || _mod;
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "legal-pdf");
@@ -54,16 +54,17 @@ export function renderHtml(docKey, lang) {
   const doc = getLegalDoc ? getLegalDoc(docKey, lang) : (docs[docKey][lang] || docs[docKey].en);
   const t = getDocTitle(docKey, lang);
   const updatedVal = (typeof UPDATED === "object" ? (UPDATED[lang] || UPDATED.en) : UPDATED) || "";
-  const updated = String(updatedVal).replace(/^[^:]+:\s*/, "");
+  const updated = String(updatedVal).replace(/^[^:：៖՝]+[:：៖՝]\s*/, "");
   const sec = (s) => `
     <section>
       <h2>${esc(s.h)}</h2>
       ${s.p ? s.p.map((p) => `<p>${esc(p)}</p>`).join("") : ""}
       ${s.ul ? `<ul>${s.ul.map((li) => `<li>${esc(li)}</li>`).join("")}</ul>` : ""}
     </section>`;
-  const isTr = lang === "tr";
+  const L = (LABELS && LABELS[lang]) || {};
+  const rtl = ["ar", "fa", "he", "ur"].includes(lang);
   return `<!doctype html>
-<html lang="${lang}">
+<html lang="${lang}"${rtl ? ' dir="rtl"' : ""}>
 <head>
 <meta charset="utf-8"/>
 <title>${esc(t)} — NEXUS</title>
@@ -87,10 +88,10 @@ export function renderHtml(docKey, lang) {
     <b>NEXUS</b>
   </div>
   <h1>${esc(t)}</h1>
-  <p class="meta">${isTr ? "Son güncelleme" : "Last updated"}: ${esc(updated)} · ${isTr ? "İşleten" : "Operated by"}: NEXUS · ${esc(EMAIL)}</p>
+  <p class="meta">${esc(L.updated || "Last updated")}: ${esc(updated)} · ${esc(L.operatedBy || "Operated by")}: NEXUS · ${esc(EMAIL)}</p>
   <p>${esc(doc.intro)}</p>
   ${doc.sections.map(sec).join("")}
-  <footer>NEXUS · ${esc(EMAIL)} · ${isTr ? "Bu belge nexus-smarthome.pages.dev adresindeki yürürlükteki metinle birlikte okunur." : "This document is read together with the current text at nexus-smarthome.pages.dev."}</footer>
+  <footer>NEXUS · ${esc(EMAIL)} · ${esc(L.footer || "")}${L.notice ? `<br/>${esc(L.notice)}` : ""}</footer>
 </body>
 </html>`;
 }

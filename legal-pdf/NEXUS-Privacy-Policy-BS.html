@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8"/>
+<title>Politika privatnosti — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Politika privatnosti</h1>
+  <p class="meta">Posljednje ažuriranje: 31. oktobar 2026. · Operater: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS upravlja vašim pametnim domom prvenstveno unutar vaše lokalne mreže. Ova politika jasno objašnjava koje podatke obrađujemo kada kreirate račun, zašto ih obrađujemo i gdje.</p>
+  
+    <section>
+      <h2>Ukratko</h2>
+      
+      <ul><li>Za korištenje aplikacije NEXUS potreban je račun. Komande uređajima i dalje se izvršavaju u vašoj lokalnoj mreži; ne šalju se putem cloud servisa proizvođača.</li><li>Vaše postavke, lista uređaja i historija razgovora pohranjuju se u cloudu kako bi bile iste na svakom uređaju.</li><li>Ne prodajemo vaše podatke, ne koristimo ih u reklamne svrhe niti vas profiliramo.</li><li>Pristup mikrofonu je opcionalan i koristi se samo kada dodirnete mikrofon u NEXUS AI chatu; snimak se transkribuje i ne pohranjuje. Kamera se otvara isključivo za skeniranje QR kodova, a slika nikada ne napušta vaš uređaj.</li></ul>
+    </section>
+    <section>
+      <h2>Kontrolor podataka</h2>
+      <p>Kontrolor podataka je NEXUS. Kontakt: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Koje podatke obrađujemo</h2>
+      
+      <ul><li>Račun: vaša adresa e-pošte i (ako je navedeno) vaše ime. Kod prijave putem Googlea, e-pošta i ime profila koje Google dostavi. Vaša lozinka pohranjuje se isključivo kao jednosmjerni hash u servisu Supabase Auth; ne možemo je vidjeti.</li><li>Sinhronizirani podaci aplikacije (samo kada ste prijavljeni): ime i fotografija profila, postavke teme/jezika/mjernih jedinica, članovi domaćinstva, scene i automatizacije, omiljene kartice, historija NEXUS AI razgovora i brojač korištenja, dnevnik događaja, lokacija doma/postavke vremenske prognoze i lista uređaja koje ste dodali (naziv, prostorija, protokol, adresa u lokalnoj mreži, posljednje stanje).</li><li>Pretplata (ako ste kupili NEXUS+): e-pošta, plan, status, kraj perioda i ID članstva u servisu Whop. Podatke o vašoj kartici obrađuje isključivo Whop i oni nikada ne dolaze do nas.</li><li>Poruke podrške: vaša e-pošta i poruka kada nam pišete.</li><li>Tehnički zapisi: zapisi o prijavama i greškama (uključujući IP adresu) koje naši pružatelji usluga hostinga i autentifikacije kratko čuvaju.</li></ul>
+    </section>
+    <section>
+      <h2>Svrhe i pravni osnovi</h2>
+      <p>Radi upravljanja vašim računom, sinhronizacije vaših podataka između uređaja, pružanja pretplate i podrške (izvršenje ugovora); radi očuvanja sigurnosti usluge i sprječavanja zloupotreba (legitimni interes); te za prijenos podataka u inostranstvo, vaš izričit pristanak (vidi dolje).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI ima dva dijela. (1) Komande uređajima (upalite svjetlo, pokrenite scenu, zatražite status) obrađuju se lokalno na vašem uređaju i ne šalju se u cloud. (2) Poruke koje nisu komande uređajima, poput općeg razgovora i pitanja, šalju se servisu Cloudflare Workers AI radi odgovora; kao kontekst uključeni su nazivi, vrste i prostorije vaših uređaja. Podaci o vašem računu, e-pošta i lokacija se ne šalju. Ne koristimo ovaj sadržaj za treniranje AI modela; Cloudflare ga obrađuje radi pružanja usluge. Ako želite, u chatu možete koristiti samo komande uređajima. Ako ste prijavljeni, vaša historija razgovora sinhronizira se s vašim računom kao i druge postavke.</p><p>Glasovni unos: kada dodirnete dugme mikrofona u NEXUS AI chatu, vaš govor se pretvara u tekst. U pregledniku (Chrome/Edge) prvo se koristi vlastita usluga prepoznavanja govora preglednika; ako je nedostupna, ili u desktop i mobilnim aplikacijama, kratki snimak šalje se isključivo servisu Cloudflare Workers AI (Whisper) radi transkripcije, ne pohranjuje se i ne sprema se na vaš račun. Transkript se samo upisuje u polje za unos u chatu i nigdje se ne šalje dok ne pritisnete slanje.</p>
+      
+    </section>
+    <section>
+      <h2>Pružatelji usluga i prijenosi</h2>
+      <p>Serveri ovih pružatelja usluga mogu se nalaziti izvan Türkiye. Kreiranjem računa i/ili plaćanjem dajete izričit pristanak da se vaši podaci prenose njima i u inostranstvo; pristanak možete povući brisanjem svog računa.</p>
+      <ul><li>Supabase: autentifikacija, baza podataka i sistemske e-poruke.</li><li>Cloudflare: hosting web stranice; Cloudflare Workers AI za odgovore u NEXUS AI chatu i pretvaranje govora u tekst.</li><li>Whop: naplata pretplate i fakturisanje.</li><li>Google: prijava putem Googlea i (putem Gmaila) e-poruke za verifikaciju / poništavanje lozinke.</li><li>GitHub: distribucija instalacijskih paketa.</li><li>Open-Meteo: grad / približne koordinate za vremensku prognozu.</li><li>OpenStreetMap / Nominatim: karte i pretraga mjesta; Unsplash: neke rezervne slike.</li><li>BigDataCloud: određivanje naziva mjesta na osnovu koordinata (rezervno rješenje kada je Nominatim nedostupan; koristi se i kada birate lokaciju svog doma). Ovaj servis prima tačne koordinate lokacije koju odaberete ili koja se otkrije.</li></ul>
+    </section>
+    <section>
+      <h2>Kolačići i praćenje</h2>
+      <p>Naša web stranica ne koristi kolačiće i ne sadrži analitičke niti reklamne alate za praćenje. Aplikacija čuva vaše postavke u lokalnoj pohrani vašeg uređaja (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Čuvanje i brisanje</h2>
+      <p>Vaše podatke čuvamo dok je vaš račun otvoren. Da biste obrisali svoj račun i podatke, pišite na nexus.smarthome.app@gmail.com; zahtjev ćemo ispuniti u roku od 30 dana (osim evidencije o pretplati koju smo zakonom obavezni čuvati). U aplikaciji otvorite Postavke, zatim Sigurnost računa i koristite opciju Obriši moj račun. Ako server ne može završiti brisanje, ekran to navodi.</p>
+      
+    </section>
+    <section>
+      <h2>Vaša prava</h2>
+      <p>Prema turskom Zakonu br. 6698 (KVKK), čl. 11 i, gdje je primjenjivo, GDPR-u, možete zatražiti informaciju o tome obrađuju li se vaši podaci, pristupiti im, ispraviti ih, zatražiti njihovo brisanje, uložiti prigovor na obradu i zatražiti prenosivost. Pišite na nexus.smarthome.app@gmail.com. Također se možete obratiti pritužbom turskom tijelu za zaštitu ličnih podataka.</p>
+      
+    </section>
+    <section>
+      <h2>Sigurnost</h2>
+      <p>Veze su šifrirane pomoću TLS-a. Baza podataka provodi kontrolu pristupa na nivou redova: svaki korisnik može čitati i mijenjati samo svoje podatke. Nijedan sistem nije savršeno siguran; preporučujemo jaku lozinku i redovno ažuriranje vaših uređaja.</p>
+      
+    </section>
+    <section>
+      <h2>Uređaji trećih strana</h2>
+      <p>Pametni uređaji koje povežete (npr. Shelly, WLED, ESPHome) mogu komunicirati sa serverima svojih proizvođača u skladu s njihovim vlastitim politikama privatnosti. NEXUS ne dijeli vaše podatke s tim proizvođačima.</p>
+      
+    </section>
+    <section>
+      <h2>Djeca</h2>
+      <p>NEXUS nije namijenjen djeci mlađoj od 13 godina i svjesno ne prikupljamo njihove podatke.</p>
+      
+    </section>
+    <section>
+      <h2>Izmjene</h2>
+      <p>Ovu politiku možemo ažurirati; o značajnim izmjenama obavijestit ćemo u aplikaciji ili na web stranici.</p>
+      
+    </section>
+    <section>
+      <h2>Kontakt</h2>
+      <p>Pitanja: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Ovaj dokument se čita zajedno s aktuelnim tekstom na nexus-smarthome.pages.dev.<br/>Ovaj prijevod služi samo radi lakšeg razumijevanja. U slučaju razlika u odnosu na tursku ili englesku verziju, mjerodavne su turska i engleska verzija.</footer>
+</body>
+</html>

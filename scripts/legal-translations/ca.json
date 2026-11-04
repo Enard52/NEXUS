@@ -1,0 +1,253 @@
+{
+ "code": "ca",
+ "updated": "Darrera actualització: 31 d'octubre de 2026",
+ "labels": {
+  "updated": "Darrera actualització",
+  "operatedBy": "Operat per",
+  "footer": "Aquest document s'ha de llegir conjuntament amb el text vigent a nexus-smarthome.pages.dev.",
+  "notice": "Aquesta traducció es facilita només per comoditat. Si difereix de la versió turca o anglesa, prevalen les versions turca i anglesa."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Política de privadesa",
+   "intro": "NEXUS gestiona la vostra llar intel·ligent principalment a la vostra pròpia xarxa local. Aquesta política explica clarament quines dades tractem quan creeu un compte, per què i on.",
+   "sections": [
+    {
+     "h": "En resum",
+     "ul": [
+      "Per utilitzar NEXUS cal un compte. Les ordres als dispositius continuen executant-se a la vostra xarxa local; no s'envien a través del núvol d'un fabricant.",
+      "La vostra configuració, la llista de dispositius i l'historial de xat es desen al núvol perquè coincideixin a tots els dispositius.",
+      "No venem les vostres dades, no les utilitzem per a publicitat ni elaborem perfils sobre vós.",
+      "L'accés al micròfon és opcional i només s'utilitza quan toqueu el micròfon al xat de NEXUS AI; l'enregistrament es transcriu i no es conserva. La càmera només s'obre per escanejar codis QR i la imatge no surt mai del vostre dispositiu."
+     ]
+    },
+    {
+     "h": "Responsable del tractament",
+     "p": [
+      "El responsable del tractament és NEXUS. Contacte: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Quines dades tractem",
+     "ul": [
+      "Compte: la vostra adreça de correu electrònic i (si s'ha facilitat) el vostre nom. Amb l'inici de sessió amb Google, el correu electrònic i el nom de perfil que proporciona Google. La vostra contrasenya només es desa com a hash unidireccional a Supabase Auth; no la podem veure.",
+      "Dades de l'aplicació sincronitzades (només amb la sessió iniciada): nom i foto del perfil, configuració de tema, idioma i unitats, membres de la llar, escenes i automatitzacions, targetes preferides, historial de xat de NEXUS AI i comptador d'ús, registre d'esdeveniments, ubicació de la llar i preferència de meteorologia, i la llista de dispositius que heu afegit (nom, estança, protocol, adreça a la xarxa local, darrer estat).",
+      "Subscripció (si heu comprat NEXUS+): correu electrònic, pla, estat, final del període i identificador de membre de Whop. Les dades de la vostra targeta només les tracta Whop i mai no ens arriben.",
+      "Missatges de suport: el vostre correu electrònic i el missatge quan ens escriviu.",
+      "Registres tècnics: registres d'inici de sessió i d'errors (inclosa l'adreça IP) que els nostres proveïdors d'allotjament i d'autenticació conserven breument."
+     ]
+    },
+    {
+     "h": "Finalitats i bases jurídiques",
+     "p": [
+      "Per gestionar el vostre compte, sincronitzar les vostres dades entre dispositius, prestar la vostra subscripció i oferir suport (execució d'un contracte); per mantenir el servei segur i prevenir abusos (interès legítim); i, per a les transferències a l'estranger, el vostre consentiment explícit (vegeu més avall)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI té dues parts. (1) Les ordres als dispositius (encendre un llum, executar una escena, demanar l'estat) es tracten localment al vostre dispositiu i no s'envien al núvol. (2) Els missatges que no són ordres a dispositius, com ara la conversa general i les preguntes, s'envien a Cloudflare Workers AI perquè els respongui; s'hi inclouen com a context els noms, els tipus i les estances dels vostres dispositius. Les dades del vostre compte, el correu electrònic i la ubicació no s'envien. No utilitzem aquest contingut per entrenar models d'IA; Cloudflare el tracta per prestar el servei. Si ho preferiu, podeu utilitzar només ordres a dispositius al xat. Si heu iniciat la sessió, el vostre historial de xat se sincronitza amb el vostre compte com la resta de la configuració.",
+      "Entrada de veu: quan toqueu el botó del micròfon al xat de NEXUS AI, la vostra veu es converteix en text. En un navegador (Chrome/Edge) s'utilitza en primer lloc el servei de reconeixement de veu del mateix navegador; si no és accessible, o a les aplicacions d'escriptori i mòbils, l'enregistrament breu s'envia només a Cloudflare Workers AI (Whisper) per transcriure'l, no es conserva i no es desa al vostre compte. La transcripció només es col·loca al camp d'entrada del xat i no s'envia enlloc fins que premeu enviar."
+     ]
+    },
+    {
+     "h": "Proveïdors de serveis i transferències",
+     "ul": [
+      "Supabase: autenticació, base de dades i correus electrònics del sistema.",
+      "Cloudflare: allotjament del lloc web; Cloudflare Workers AI per a les respostes del xat de NEXUS AI i la conversió de veu en text.",
+      "Whop: pagaments de la subscripció i facturació.",
+      "Google: inici de sessió amb Google i (mitjançant Gmail) correus de verificació i de restabliment de contrasenya.",
+      "GitHub: distribució dels instal·ladors.",
+      "Open-Meteo: ciutat i coordenades aproximades per a la meteorologia.",
+      "OpenStreetMap / Nominatim: mapes i cerca de llocs; Unsplash: algunes imatges de reserva.",
+      "BigDataCloud: obtenció del nom d'un lloc a partir de coordenades (alternativa quan Nominatim no és accessible; també s'utilitza quan trieu la ubicació de la vostra llar). Aquest servei rep les coordenades exactes de la ubicació que trieu o que es detecta."
+     ],
+     "p": [
+      "Els servidors d'aquests proveïdors poden ser fora de Türkiye. En crear un compte i/o pagar, doneu el vostre consentiment explícit perquè les vostres dades se'ls transfereixin a ells i a l'estranger; podeu retirar el consentiment sol·licitant que se suprimeixi el vostre compte."
+     ]
+    },
+    {
+     "h": "Galetes i seguiment",
+     "p": [
+      "El nostre lloc web no utilitza galetes i no conté eines d'analítica ni de seguiment publicitari. L'aplicació desa la vostra configuració a l'emmagatzematge local del vostre dispositiu (localStorage)."
+     ]
+    },
+    {
+     "h": "Conservació i supressió",
+     "p": [
+      "Conservem les vostres dades mentre el vostre compte estigui obert. Per suprimir el vostre compte i les vostres dades, escriviu a nexus.smarthome.app@gmail.com; completarem la sol·licitud en un termini de 30 dies (excepte els registres de subscripció que hem de conservar per llei). A l'aplicació, obriu Configuració, després Seguretat del compte, i utilitzeu Suprimeix el meu compte. Si el servidor no ho pot completar, la pantalla ho indica."
+     ]
+    },
+    {
+     "h": "Els vostres drets",
+     "p": [
+      "D'acord amb la Llei turca núm. 6698 (KVKK), art. 11 i, quan sigui aplicable, el RGPD, podeu preguntar si es tracten les vostres dades, accedir-hi, rectificar-les, fer-les suprimir, oposar-vos al tractament i sol·licitar-ne la portabilitat. Escriviu a nexus.smarthome.app@gmail.com. També podeu presentar una queixa davant l'Autoritat turca de Protecció de Dades Personals."
+     ]
+    },
+    {
+     "h": "Seguretat",
+     "p": [
+      "Les connexions es xifren amb TLS. La base de dades aplica un control d'accés a nivell de fila: cada usuari només pot llegir i escriure les seves pròpies dades. Cap sistema és perfectament segur; us recomanem una contrasenya forta i mantenir els vostres dispositius actualitzats."
+     ]
+    },
+    {
+     "h": "Dispositius de tercers",
+     "p": [
+      "Els dispositius intel·ligents que connecteu (p. ex. Shelly, WLED, ESPHome) poden comunicar-se amb els servidors dels seus fabricants segons les seves pròpies polítiques de privadesa. NEXUS no comparteix les vostres dades amb aquests fabricants."
+     ]
+    },
+    {
+     "h": "Menors",
+     "p": [
+      "NEXUS no està dirigit a menors de 13 anys i no en recollim dades de manera conscient."
+     ]
+    },
+    {
+     "h": "Canvis",
+     "p": [
+      "Podem actualitzar aquesta política; anunciarem els canvis significatius a l'aplicació o al lloc web."
+     ]
+    },
+    {
+     "h": "Contacte",
+     "p": [
+      "Consultes: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Condicions del servei",
+   "intro": "En descarregar, instal·lar o utilitzar l'aplicació NEXUS i els serveis relacionats (els «Serveis»), accepteu aquestes condicions. Els Serveis els presta NEXUS. Contacte: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Llicència",
+     "p": [
+      "Us atorguem una llicència personal, no exclusiva, intransferible i revocable per utilitzar el programari NEXUS en dispositius que sigueu propietaris o que controleu, per a l'automatització de la llar personal i no comercial. No podeu distribuir-lo, llogar-lo, vendre'l, sublicenciar-lo, aplicar-hi enginyeria inversa ni utilitzar-lo per crear un producte que competeixi directament amb NEXUS. Els components de tercers estan subjectes a les seves pròpies llicències."
+     ]
+    },
+    {
+     "h": "Compte",
+     "p": [
+      "Utilitzar NEXUS requereix un compte. Sou responsable de mantenir exactes les vostres dades i segura la vostra contrasenya, així com de l'activitat sota el vostre compte. Podem suspendre o tancar els comptes que incompleixin aquestes condicions."
+     ]
+    },
+    {
+     "h": "Seguretat de la llar intel·ligent",
+     "ul": [
+      "NEXUS és una eina de comoditat; no hi confieu en exclusiva per a funcions crítiques com ara la seguretat davant d'incendis, gas, salut o vida.",
+      "Sou responsable de les ordres que s'envien als vostres dispositius i de la seguretat de la vostra xarxa. Mantingueu actualitzats el microprogramari dels dispositius i la configuració de l'encaminador.",
+      "Per seguretat, les portes amb pany no es poden obrir des del xat."
+     ]
+    },
+    {
+     "h": "NEXUS AI i crèdits",
+     "p": [
+      "El pla gratuït inclou 30 crèdits de NEXUS AI al dia; una subscripció a NEXUS+ n'inclou 2,000 al mes. Els crèdits són intransferibles, no es poden canviar per diners en efectiu i es restableixen al final del període. NEXUS AI pot cometre errors; comprovar els resultats és responsabilitat vostra."
+     ]
+    },
+    {
+     "h": "Subscripció a NEXUS+",
+     "ul": [
+      "Abast: NEXUS+ ofereix 2,000 crèdits de NEXUS AI al mes i desbloqueja l'addició de nous dispositius mitjançant les connexions avançades (Home Assistant). Quan s'acaba la subscripció, els dispositius que ja heu afegit continuen funcionant; per afegir nous dispositius mitjançant aquestes connexions cal tornar a tenir NEXUS+.",
+      "Plans: Mensual i Anual, amb preu en TRY per a Türkiye i en USD a la resta de llocs (actualment Mensual ₺499.99 / $11.99, Anual ₺3,999.99 / $89.99). Els preus vigents es mostren en el moment del pagament; en aquest moment s'hi poden afegir impostos. El pla anual inclou una prova gratuïta de 7 dies i el pla mensual una prova gratuïta de 3 dies.",
+      "Els pagaments es cobren mitjançant Whop. La subscripció es renova automàticament cada període fins que la cancel·leu; quan s'acaba la prova, es cobra el preu del pla que heu triat.",
+      "Podeu cancel·lar en qualsevol moment des de Facturació a l'aplicació o des del vostre compte en aquest lloc web. La cancel·lació té efecte al final del període en curs.",
+      "En el moment del pagament, utilitzeu l'adreça de correu electrònic del vostre compte NEXUS; la subscripció s'associa a aquest correu electrònic.",
+      "Anunciem els canvis de preu almenys 30 dies abans que entrin en vigor; no afecten el període en curs.",
+      "Les condicions de reemborsament figuren a la Política de reemborsament i cancel·lació."
+     ]
+    },
+    {
+     "h": "Canvis i interrupcions",
+     "p": [
+      "Podem millorar, modificar o suspendre temporalment els Serveis per manteniment. No garantim un servei ininterromput ni lliure d'errors."
+     ]
+    },
+    {
+     "h": "Propietat intel·lectual",
+     "p": [
+      "Els drets sobre el programari, el disseny, la marca i el contingut de NEXUS pertanyen a l'operador. Aquestes condicions us atorguen únicament la llicència indicada més amunt."
+     ]
+    },
+    {
+     "h": "Limitació de responsabilitat",
+     "p": [
+      "El programari es proporciona «tal qual». En la mesura màxima que permet la llei, no som responsables dels danys indirectes (inclosa la pèrdua de dades o els danys als dispositius o a béns) derivats de l'ús dels Serveis; la nostra responsabilitat total es limita a l'import que ens heu pagat en els 12 mesos anteriors. No s'afecten els drets dels consumidors que la llei no permet limitar."
+     ]
+    },
+    {
+     "h": "Extinció",
+     "p": [
+      "Podeu tancar el vostre compte en qualsevol moment (vegeu la Política de privadesa). Podem posar fi al vostre accés si incompliu aquestes condicions."
+     ]
+    },
+    {
+     "h": "Legislació aplicable",
+     "p": [
+      "Aquestes condicions es regeixen per les lleis de la República de Türkiye. Com a consumidor, conserveu el dret d'acudir a les comissions d'arbitratge de consum i als tribunals de consum."
+     ]
+    },
+    {
+     "h": "Canvis en aquestes condicions",
+     "p": [
+      "Podem actualitzar aquestes condicions i n'anunciarem els canvis significatius a l'aplicació o al lloc web. Continuar utilitzant els Serveis després d'un canvi implica que accepteu les noves condicions."
+     ]
+    },
+    {
+     "h": "Contacte",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Política de reemborsament i cancel·lació",
+   "intro": "Aquesta política explica les condicions de prova, cancel·lació i reemborsament de la subscripció a NEXUS+. Els vostres drets legals com a consumidor no es veuen afectats.",
+   "sections": [
+    {
+     "h": "Prova gratuïta",
+     "p": [
+      "El pla anual inclou una prova gratuïta de 7 dies i el pla mensual una prova gratuïta de 3 dies. Si cancel·leu abans que s'acabi la prova, no se us cobra res. Si no cancel·leu, es cobra el preu del pla que heu triat quan s'acabi la prova."
+     ]
+    },
+    {
+     "h": "Com cancel·lar",
+     "ul": [
+      "A l'aplicació: Plus → Facturació → Cancel·la al final del període.",
+      "Al lloc web: inicieu sessió → compte → cancel·la al final del període.",
+      "La cancel·lació té efecte al final del període de facturació en curs; fins aleshores conserveu les funcions de NEXUS+ i no se us cobra el període següent."
+     ]
+    },
+    {
+     "h": "Reemborsaments",
+     "ul": [
+      "Podeu sol·licitar un reemborsament dins dels 14 dies següents al vostre primer cobrament sense haver de donar cap motiu; us reemborsem l'import íntegre del pagament.",
+      "En les renovacions automàtiques, si ho sol·liciteu dins dels 3 dies següents a la data de renovació, reemborsem el cobrament d'aquell període.",
+      "Fora d'aquests terminis no reemborsem els períodes utilitzats, però estudiarem reemborsaments en casos justificats, com ara que el servei hagi quedat inutilitzable per una avaria de la nostra part.",
+      "Podem rebutjar una sol·licitud si detectem abús (per exemple, reemborsaments repetits en el mateix compte)."
+     ]
+    },
+    {
+     "h": "Com sol·licitar un reemborsament",
+     "p": [
+      "Envieu un correu electrònic a nexus.smarthome.app@gmail.com amb l'adreça de correu del vostre compte NEXUS i la vostra sol·licitud. Els reemborsaments aprovats s'emeten mitjançant Whop al mètode de pagament original; normalment triga entre 5–10 dies hàbils a aparèixer, segons el vostre banc."
+     ]
+    },
+    {
+     "h": "Drets legals",
+     "p": [
+      "Aquesta política no limita els vostres drets legals en virtut de la Llei turca de protecció del consumidor núm. 6502 i del Reglament sobre contractes a distància (inclòs el dret de desistiment i les seves excepcions)."
+     ]
+    },
+    {
+     "h": "Contacte",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,253 @@
+{
+ "code": "lt",
+ "updated": "Paskutinį kartą atnaujinta: 2026 m. spalio 31 d.",
+ "labels": {
+  "updated": "Paskutinį kartą atnaujinta",
+  "operatedBy": "Valdo",
+  "footer": "Šis dokumentas skaitomas kartu su aktualiu tekstu adresu nexus-smarthome.pages.dev.",
+  "notice": "Šis vertimas pateikiamas tik patogumui. Jei jis skiriasi nuo turkiškos ar angliškos versijos, viršenybę turi turkiška ir angliška versijos."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Privatumo politika",
+   "intro": "NEXUS valdo jūsų išmanųjį namą pirmiausia jūsų pačių vietiniame tinkle. Ši politika aiškiai paaiškina, kokius duomenis, kodėl ir kur tvarkome, kai susikuriate paskyrą.",
+   "sections": [
+    {
+     "h": "Trumpai",
+     "ul": [
+      "NEXUS naudoti reikia paskyros. Įrenginių komandos vis tiek vykdomos jūsų vietiniame tinkle; jos nesiunčiamos per gamintojo debesį.",
+      "Jūsų nustatymai, įrenginių sąrašas ir pokalbių istorija saugomi debesyje, kad sutaptų visuose įrenginiuose.",
+      "Neparduodame jūsų duomenų, nenaudojame jų reklamai ir nesudarome jūsų profilio.",
+      "Prieiga prie mikrofono yra neprivaloma ir naudojama tik tada, kai NEXUS AI pokalbyje paliečiate mikrofoną; įrašas transkribuojamas ir nesaugomas. Kamera atidaroma tik QR kodams nuskaityti, o vaizdas niekada nepalieka jūsų įrenginio."
+     ]
+    },
+    {
+     "h": "Duomenų valdytojas",
+     "p": [
+      "Duomenų valdytojas yra NEXUS. Kontaktai: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Kokius duomenis tvarkome",
+     "ul": [
+      "Paskyra: jūsų el. pašto adresas ir (jei pateikta) vardas. Prisijungiant per Google – Google pateikiamas el. paštas ir profilio vardas. Jūsų slaptažodis „Supabase Auth“ saugomas tik kaip vienpusė maišos reikšmė; mes jo nematome.",
+      "Sinchronizuojami programos duomenys (tik prisijungus): profilio vardas ir nuotrauka, temos, kalbos ir vienetų nustatymai, namų ūkio nariai, scenos ir automatizacijos, mėgstamiausios kortelės, NEXUS AI pokalbių istorija ir naudojimo skaitiklis, įvykių žurnalas, namų vietos ir orų nuostata bei jūsų pridėtų įrenginių sąrašas (pavadinimas, kambarys, protokolas, vietinio tinklo adresas, paskutinė būsena).",
+      "Prenumerata (jei įsigijote NEXUS+): el. paštas, planas, būsena, laikotarpio pabaiga ir Whop narystės ID. Jūsų kortelės duomenis tvarko tik Whop ir jie mūsų niekada nepasiekia.",
+      "Pagalbos žinutės: jūsų el. paštas ir žinutė, kai mums rašote.",
+      "Techniniai žurnalai: prisijungimo ir klaidų žurnalai (įskaitant IP adresą), trumpai saugomi mūsų prieglobos ir autentifikavimo paslaugų teikėjų."
+     ]
+    },
+    {
+     "h": "Tikslai ir teisinis pagrindas",
+     "p": [
+      "Tvarkyti jūsų paskyrą, sinchronizuoti duomenis tarp įrenginių, teikti prenumeratą ir pagalbą (sutarties vykdymas); užtikrinti paslaugos saugumą ir užkirsti kelią piktnaudžiavimui (teisėtas interesas); o perduodant duomenis į užsienį – jūsų aiškus sutikimas (žr. toliau)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI turi dvi dalis. (1) Įrenginių komandos (įjungti šviestuvą, paleisti sceną, paprašyti būsenos) apdorojamos vietoje jūsų įrenginyje ir nesiunčiamos į debesį. (2) Žinutės, kurios nėra įrenginių komandos, pavyzdžiui, bendras pokalbis ir klausimai, siunčiamos į Cloudflare Workers AI, kad būtų atsakyta; kaip kontekstas pateikiami jūsų įrenginių pavadinimai, tipai ir kambariai. Jūsų paskyros duomenys, el. paštas ir vieta nesiunčiami. Šio turinio nenaudojame AI modeliams mokyti; Cloudflare jį apdoroja paslaugai teikti. Jei norite, pokalbyje galite naudoti tik įrenginių komandas. Jei esate prisijungę, jūsų pokalbių istorija sinchronizuojama su paskyra kaip ir kiti nustatymai.",
+      "Balso įvestis: kai paliečiate mikrofono mygtuką NEXUS AI pokalbyje, jūsų kalba paverčiama tekstu. Naršyklėje (Chrome/Edge) pirmiausia naudojama paties naršyklės kalbos atpažinimo paslauga; jei ji nepasiekiama arba kompiuterio ir mobiliosiose programose, trumpas įrašas siunčiamas tik į Cloudflare Workers AI (Whisper) transkribuoti, nesaugomas ir neįrašomas į jūsų paskyrą. Transkripcija tik įterpiama į pokalbio įvesties lauką ir niekur nesiunčiama, kol nepaspausite siųsti."
+     ]
+    },
+    {
+     "h": "Paslaugų teikėjai ir duomenų perdavimas",
+     "ul": [
+      "Supabase: autentifikavimas, duomenų bazė ir sistemos el. laiškai.",
+      "Cloudflare: svetainės prieglobos paslauga; Cloudflare Workers AI – NEXUS AI pokalbių atsakymams ir kalbos pavertimui tekstu.",
+      "Whop: prenumeratos mokėjimai ir sąskaitų faktūrų išrašymas.",
+      "Google: prisijungimas per Google ir (per Gmail) patvirtinimo bei slaptažodžio atkūrimo el. laiškai.",
+      "GitHub: diegimo failų platinimas.",
+      "Open-Meteo: miestas / apytikslės koordinatės orams.",
+      "OpenStreetMap / Nominatim: žemėlapiai ir vietų paieška; Unsplash: kai kurie atsarginiai paveikslėliai.",
+      "BigDataCloud: vietos pavadinimo nustatymas pagal koordinates (atsarginė priemonė, kai Nominatim nepasiekiamas; taip pat naudojama, kai pasirenkate namų vietą). Ši paslauga gauna tikslias jūsų pasirinktos arba aptiktos vietos koordinates."
+     ],
+     "p": [
+      "Šių teikėjų serveriai gali būti už Türkiye ribų. Sukurdami paskyrą ir (arba) sumokėdami aiškiai sutinkate, kad jūsų duomenys būtų perduodami jiems ir į užsienį; sutikimą galite atšaukti ištrindami savo paskyrą."
+     ]
+    },
+    {
+     "h": "Slapukai ir sekimas",
+     "p": [
+      "Mūsų svetainė nenaudoja slapukų ir neturi analitikos ar reklamos sekiklių. Programa saugo jūsų nustatymus jūsų įrenginio vietinėje saugykloje (localStorage)."
+     ]
+    },
+    {
+     "h": "Saugojimas ir ištrynimas",
+     "p": [
+      "Jūsų duomenis saugome, kol jūsų paskyra yra aktyvi. Norėdami ištrinti paskyrą ir duomenis, rašykite adresu nexus.smarthome.app@gmail.com; prašymą įvykdysime per 30 dienų (išskyrus prenumeratos įrašus, kuriuos privalome saugoti pagal įstatymus). Programoje atidarykite Nustatymai, tada Paskyros sauga ir naudokite Ištrinti mano paskyrą. Jei serveris to negali užbaigti, ekrane apie tai pranešama."
+     ]
+    },
+    {
+     "h": "Jūsų teisės",
+     "p": [
+      "Pagal Turkijos įstatymą Nr. 6698 (KVKK) 11 straipsnį ir, kai taikoma, BDAR, galite teirautis, ar jūsų duomenys tvarkomi, susipažinti su jais, juos ištaisyti, prašyti ištrinti, nesutikti su tvarkymu ir prašyti perkeliamumo. Rašykite adresu nexus.smarthome.app@gmail.com. Taip pat galite pateikti skundą Turkijos asmens duomenų apsaugos institucijai."
+     ]
+    },
+    {
+     "h": "Sauga",
+     "p": [
+      "Ryšiai šifruojami naudojant TLS. Duomenų bazėje taikoma eilučių lygio prieigos kontrolė: kiekvienas naudotojas gali skaityti ir rašyti tik savo duomenis. Jokia sistema nėra visiškai saugi; rekomenduojame stiprų slaptažodį ir nuolat atnaujinti savo įrenginius."
+     ]
+    },
+    {
+     "h": "Trečiųjų šalių įrenginiai",
+     "p": [
+      "Prijungti išmanieji įrenginiai (pvz., Shelly, WLED, ESPHome) gali bendrauti su savo gamintojų serveriais pagal jų pačių privatumo politiką. NEXUS nesidalija jūsų duomenimis su tais gamintojais."
+     ]
+    },
+    {
+     "h": "Vaikai",
+     "p": [
+      "NEXUS nėra skirta jaunesniems nei 13 metų vaikams ir sąmoningai jų duomenų nerenkame."
+     ]
+    },
+    {
+     "h": "Pakeitimai",
+     "p": [
+      "Šią politiką galime atnaujinti; apie reikšmingus pakeitimus paskelbsime programoje arba svetainėje."
+     ]
+    },
+    {
+     "h": "Kontaktai",
+     "p": [
+      "Klausimai: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Paslaugų teikimo sąlygos",
+   "intro": "Atsisiųsdami, įdiegdami ar naudodami NEXUS programą ir susijusias paslaugas („Paslaugos“) sutinkate su šiomis sąlygomis. Paslaugas teikia NEXUS. Kontaktai: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licencija",
+     "p": [
+      "Suteikiame jums asmeninę, neišimtinę, neperleidžiamą, atšaukiamą licenciją naudoti NEXUS programinę įrangą jūsų turimuose ar valdomuose įrenginiuose asmeniniais, nekomerciniais namų automatizavimo tikslais. Jums draudžiama ją platinti, nuomoti, parduoti, sublicencijuoti, atlikti atvirkštinę inžineriją ar naudoti kuriant produktą, kuris tiesiogiai konkuruoja su NEXUS. Trečiųjų šalių komponentams taikomos jų pačių licencijos."
+     ]
+    },
+    {
+     "h": "Paskyra",
+     "p": [
+      "NEXUS naudoti reikia paskyros. Esate atsakingi už savo duomenų tikslumą, slaptažodžio saugumą ir veiklą savo paskyroje. Galime sustabdyti arba uždaryti paskyras, pažeidžiančias šias sąlygas."
+     ]
+    },
+    {
+     "h": "Išmaniojo namo sauga",
+     "ul": [
+      "NEXUS yra patogumo priemonė; nepasikliaukite vien ja svarbiausioms funkcijoms, tokioms kaip priešgaisrinė, dujų, sveikatos ar gyvybės sauga.",
+      "Esate atsakingi už į savo įrenginius siunčiamas komandas ir už savo tinklo saugumą. Nuolat atnaujinkite įrenginių programinę aparatinę įrangą ir maršrutizatoriaus nustatymus.",
+      "Saugumo sumetimais spynų atrakinti iš pokalbio negalima."
+     ]
+    },
+    {
+     "h": "NEXUS AI ir kreditai",
+     "p": [
+      "Nemokamas planas apima 30 NEXUS AI kreditų per dieną; NEXUS+ prenumerata apima 2,000 per mėnesį. Kreditai neperleidžiami, negali būti iškeičiami į pinigus ir laikotarpio pabaigoje atstatomi. NEXUS AI gali klysti; rezultatų tikrinimas yra jūsų atsakomybė."
+     ]
+    },
+    {
+     "h": "NEXUS+ prenumerata",
+     "ul": [
+      "Apimtis: NEXUS+ suteikia 2,000 NEXUS AI kreditų per mėnesį ir leidžia pridėti naujus įrenginius per pažangiuosius ryšius (Home Assistant). Pasibaigus prenumeratai, jau pridėti įrenginiai toliau veikia; norint pridėti naujus įrenginius per šiuos ryšius, vėl reikia NEXUS+.",
+      "Planai: Mėnesinis ir Metinis, kainos nurodytos TRY Türkiye ir USD kitur (šiuo metu Mėnesinis ₺499.99 / $11.99, Metinis ₺3,999.99 / $89.99). Aktualios kainos rodomos atsiskaitymo metu; atsiskaitant gali būti pridėti mokesčiai. Metinis planas apima 7 dienų nemokamą bandomąjį laikotarpį, o mėnesinis – 3 dienų nemokamą bandomąjį laikotarpį.",
+      "Mokėjimai priimami per Whop. Prenumerata automatiškai atnaujinama kiekvieną laikotarpį, kol ją atšauksite; pasibaigus bandomajam laikotarpiui nuskaičiuojama jūsų pasirinkto plano kaina.",
+      "Prenumeratą galite atšaukti bet kada skiltyje Atsiskaitymas programoje arba savo paskyroje šioje svetainėje. Atšaukimas įsigalioja einamojo laikotarpio pabaigoje.",
+      "Atsiskaitydami naudokite savo NEXUS paskyros el. pašto adresą; prenumerata susiejama su tuo el. paštu.",
+      "Apie kainų pokyčius pranešame ne vėliau kaip prieš 30 dienų iki jų įsigaliojimo; jie neturi įtakos einamajam laikotarpiui.",
+      "Grąžinimo sąlygos pateiktos Grąžinimo ir atšaukimo politikoje."
+     ]
+    },
+    {
+     "h": "Pakeitimai ir sutrikimai",
+     "p": [
+      "Galime tobulinti, keisti ar laikinai sustabdyti Paslaugas techninei priežiūrai. Negarantuojame nepertraukiamos ar be klaidų veikiančios paslaugos."
+     ]
+    },
+    {
+     "h": "Intelektinė nuosavybė",
+     "p": [
+      "NEXUS programinės įrangos, dizaino, prekių ženklo ir turinio teisės priklauso operatoriui. Šios sąlygos suteikia jums tik pirmiau nurodytą licenciją."
+     ]
+    },
+    {
+     "h": "Atsakomybės apribojimas",
+     "p": [
+      "Programinė įranga teikiama „tokia, kokia yra“. Kiek leidžia įstatymai, neatsakome už netiesioginę žalą (įskaitant duomenų praradimą ar įrenginių ar turto sugadinimą), kilusią naudojantis Paslaugomis; mūsų bendra atsakomybė ribojama suma, kurią mums sumokėjote per paskutinius 12 mėnesių. Vartotojų teisės, kurių įstatymai neleidžia apriboti, nepaveikiamos."
+     ]
+    },
+    {
+     "h": "Nutraukimas",
+     "p": [
+      "Savo paskyrą galite uždaryti bet kada (žr. Privatumo politiką). Galime nutraukti jūsų prieigą, jei pažeidžiate šias sąlygas."
+     ]
+    },
+    {
+     "h": "Taikytina teisė",
+     "p": [
+      "Šioms sąlygoms taikomi Turkijos Respublikos įstatymai. Kaip vartotojas išsaugote teisę kreiptis į vartotojų ginčų komisijas ir vartotojų teismus."
+     ]
+    },
+    {
+     "h": "Šių sąlygų pakeitimai",
+     "p": [
+      "Šias sąlygas galime atnaujinti ir apie reikšmingus pakeitimus paskelbsime programoje arba svetainėje. Toliau naudodamiesi Paslaugomis po pakeitimo sutinkate su naujomis sąlygomis."
+     ]
+    },
+    {
+     "h": "Kontaktai",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Grąžinimo ir atšaukimo politika",
+   "intro": "Ši politika paaiškina NEXUS+ prenumeratos bandomojo laikotarpio, atšaukimo ir grąžinimo sąlygas. Jūsų įstatymais nustatytos vartotojo teisės nepaveikiamos.",
+   "sections": [
+    {
+     "h": "Nemokamas bandomasis laikotarpis",
+     "p": [
+      "Metinis planas apima 7 dienų nemokamą bandomąjį laikotarpį, o mėnesinis – 3 dienų nemokamą bandomąjį laikotarpį. Jei atšauksite prieš pasibaigiant bandomajam laikotarpiui, nieko nenuskaičiuosime. Jei neatšauksite, pasibaigus bandomajam laikotarpiui bus nuskaičiuota jūsų pasirinkto plano kaina."
+     ]
+    },
+    {
+     "h": "Kaip atšaukti",
+     "ul": [
+      "Programoje: Plus → Atsiskaitymas → Atšaukti laikotarpio pabaigoje.",
+      "Svetainėje: prisijunkite → paskyra → atšaukti laikotarpio pabaigoje.",
+      "Atšaukimas įsigalioja einamojo atsiskaitymo laikotarpio pabaigoje; iki tol išlaikote NEXUS+ funkcijas ir už kitą laikotarpį nemokate."
+     ]
+    },
+    {
+     "h": "Grąžinimai",
+     "ul": [
+      "Galite prašyti grąžinti pinigus per 14 dienų nuo pirmojo nuskaitymo nenurodydami priežasties; grąžiname visą sumokėtą sumą.",
+      "Automatinio atnaujinimo atveju, jei paprašysite per 3 dienas nuo atnaujinimo datos, grąžinsime to laikotarpio mokestį.",
+      "Už šių terminų ribų pinigų už panaudotus laikotarpius negrąžiname, tačiau pagrįstais atvejais, pavyzdžiui, kai paslauga tapo netinkama naudoti dėl mūsų pusės gedimo, grąžinimus svarstysime.",
+      "Galime atmesti prašymą, jei nustatome piktnaudžiavimą (pavyzdžiui, pakartotinius grąžinimus toje pačioje paskyroje)."
+     ]
+    },
+    {
+     "h": "Kaip prašyti grąžinimo",
+     "p": [
+      "Parašykite el. paštu nexus.smarthome.app@gmail.com, nurodydami savo NEXUS paskyros el. paštą ir prašymą. Patvirtinti grąžinimai pervedami per Whop į pradinį mokėjimo būdą; paprastai jie atsiranda per 5–10 darbo dienų, priklausomai nuo jūsų banko."
+     ]
+    },
+    {
+     "h": "Įstatymais nustatytos teisės",
+     "p": [
+      "Ši politika neapriboja jūsų įstatymais nustatytų teisių pagal Turkijos vartotojų teisių apsaugos įstatymą Nr. 6502 ir Nuotolinių sutarčių reglamentą (įskaitant atsisakymo teisę ir jos išimtis)."
+     ]
+    },
+    {
+     "h": "Kontaktai",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

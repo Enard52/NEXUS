@@ -1,0 +1,253 @@
+{
+ "code": "vi",
+ "updated": "Cập nhật lần cuối: ngày 31 tháng 10 năm 2026",
+ "labels": {
+  "updated": "Cập nhật lần cuối",
+  "operatedBy": "Vận hành bởi",
+  "footer": "Tài liệu này được đọc cùng với văn bản hiện hành tại nexus-smarthome.pages.dev.",
+  "notice": "Bản dịch này chỉ được cung cấp nhằm mục đích tham khảo. Nếu có sự khác biệt so với bản tiếng Thổ Nhĩ Kỳ hoặc tiếng Anh, thì bản tiếng Thổ Nhĩ Kỳ và bản tiếng Anh sẽ được ưu tiên áp dụng."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Chính sách quyền riêng tư",
+   "intro": "NEXUS quản lý ngôi nhà thông minh của bạn chủ yếu trên mạng cục bộ của chính bạn. Chính sách này giải thích rõ ràng chúng tôi xử lý những dữ liệu nào, vì sao và ở đâu khi bạn tạo tài khoản.",
+   "sections": [
+    {
+     "h": "Tóm tắt",
+     "ul": [
+      "Cần có tài khoản để sử dụng NEXUS. Các lệnh thiết bị vẫn chạy trên mạng cục bộ của bạn; chúng không được gửi qua đám mây của nhà sản xuất.",
+      "Cài đặt, danh sách thiết bị và lịch sử trò chuyện của bạn được lưu trữ trên đám mây để đồng nhất trên mọi thiết bị.",
+      "Chúng tôi không bán dữ liệu của bạn, không dùng dữ liệu đó cho quảng cáo và không lập hồ sơ về bạn.",
+      "Quyền truy cập micrô là tùy chọn và chỉ được sử dụng khi bạn nhấn vào micrô trong cuộc trò chuyện NEXUS AI; bản ghi âm được chuyển thành văn bản và không được lưu trữ. Máy ảnh chỉ mở để quét mã QR và hình ảnh không bao giờ rời khỏi thiết bị của bạn."
+     ]
+    },
+    {
+     "h": "Bên kiểm soát dữ liệu",
+     "p": [
+      "Bên kiểm soát dữ liệu là NEXUS. Liên hệ: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Chúng tôi xử lý những dữ liệu nào",
+     "ul": [
+      "Tài khoản: địa chỉ email của bạn và (nếu có cung cấp) tên của bạn. Với đăng nhập bằng Google, là email và tên hồ sơ do Google cung cấp. Mật khẩu của bạn chỉ được lưu dưới dạng băm một chiều trong Supabase Auth; chúng tôi không thể xem được.",
+      "Dữ liệu ứng dụng được đồng bộ (chỉ khi đã đăng nhập): tên và ảnh hồ sơ, cài đặt giao diện/ngôn ngữ/đơn vị, các thành viên trong hộ gia đình, cảnh và tự động hóa, thẻ yêu thích, lịch sử trò chuyện NEXUS AI và bộ đếm mức sử dụng, nhật ký sự kiện, tùy chọn vị trí nhà/thời tiết và danh sách các thiết bị bạn đã thêm (tên, phòng, giao thức, địa chỉ mạng cục bộ, trạng thái gần nhất).",
+      "Gói đăng ký (nếu bạn đã mua NEXUS+): email, gói, trạng thái, thời điểm kết thúc kỳ và mã thành viên Whop. Thông tin thẻ của bạn chỉ do Whop xử lý và không bao giờ đến được chúng tôi.",
+      "Tin nhắn hỗ trợ: email và nội dung tin nhắn của bạn khi bạn liên hệ với chúng tôi.",
+      "Nhật ký kỹ thuật: nhật ký đăng nhập và lỗi (bao gồm địa chỉ IP) được các nhà cung cấp dịch vụ lưu trữ và xác thực của chúng tôi lưu giữ trong thời gian ngắn."
+     ]
+    },
+    {
+     "h": "Mục đích và cơ sở pháp lý",
+     "p": [
+      "Để quản lý tài khoản của bạn, đồng bộ dữ liệu giữa các thiết bị, cung cấp gói đăng ký và hỗ trợ (thực hiện hợp đồng); để giữ an toàn cho dịch vụ và ngăn chặn lạm dụng (lợi ích hợp pháp); và đối với việc chuyển dữ liệu ra nước ngoài, sự đồng ý rõ ràng của bạn (xem bên dưới)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI gồm hai phần. (1) Các lệnh thiết bị (bật đèn, chạy một cảnh, hỏi trạng thái) được xử lý cục bộ trên thiết bị của bạn và không được gửi lên đám mây. (2) Các tin nhắn không phải là lệnh thiết bị, chẳng hạn như trò chuyện thông thường và câu hỏi, được gửi đến Cloudflare Workers AI để trả lời; tên, loại và phòng của các thiết bị của bạn được đưa vào làm ngữ cảnh. Thông tin tài khoản, email và vị trí của bạn không được gửi đi. Chúng tôi không sử dụng nội dung này để huấn luyện các mô hình AI; Cloudflare xử lý nội dung đó để cung cấp dịch vụ. Nếu muốn, bạn có thể chỉ sử dụng các lệnh thiết bị trong cuộc trò chuyện. Nếu bạn đã đăng nhập, lịch sử trò chuyện của bạn được đồng bộ với tài khoản giống như các cài đặt khác.",
+      "Nhập bằng giọng nói: khi bạn nhấn nút micrô trong cuộc trò chuyện NEXUS AI, lời nói của bạn được chuyển thành văn bản. Trên trình duyệt (Chrome/Edge), dịch vụ nhận dạng giọng nói riêng của trình duyệt được dùng trước; nếu không truy cập được, hoặc trong ứng dụng máy tính và di động, bản ghi âm ngắn chỉ được gửi đến Cloudflare Workers AI (Whisper) để chuyển thành văn bản, không được lưu trữ và không được lưu vào tài khoản của bạn. Bản chép lời chỉ được đặt vào ô nhập của cuộc trò chuyện và không được gửi đi đâu cho đến khi bạn nhấn gửi."
+     ]
+    },
+    {
+     "h": "Nhà cung cấp dịch vụ và việc chuyển dữ liệu",
+     "ul": [
+      "Supabase: xác thực, cơ sở dữ liệu và email hệ thống.",
+      "Cloudflare: lưu trữ trang web; Cloudflare Workers AI cho câu trả lời trò chuyện NEXUS AI và chuyển giọng nói thành văn bản.",
+      "Whop: thanh toán gói đăng ký và lập hóa đơn.",
+      "Google: đăng nhập bằng Google và (qua Gmail) email xác minh / đặt lại mật khẩu.",
+      "GitHub: phân phối trình cài đặt.",
+      "Open-Meteo: thành phố / tọa độ gần đúng để lấy thời tiết.",
+      "OpenStreetMap / Nominatim: bản đồ và tìm kiếm địa điểm; Unsplash: một số hình ảnh dự phòng.",
+      "BigDataCloud: xác định tên địa điểm từ tọa độ (dự phòng khi không truy cập được Nominatim; cũng được dùng khi bạn chọn vị trí nhà). Dịch vụ này nhận tọa độ chính xác của vị trí bạn chọn hoặc được phát hiện."
+     ],
+     "p": [
+      "Máy chủ của các nhà cung cấp này có thể nằm ngoài Türkiye. Khi tạo tài khoản và/hoặc thanh toán, bạn đồng ý rõ ràng việc dữ liệu của bạn được chuyển cho họ và ra nước ngoài; bạn có thể rút lại sự đồng ý bằng cách yêu cầu xóa tài khoản."
+     ]
+    },
+    {
+     "h": "Cookie và theo dõi",
+     "p": [
+      "Trang web của chúng tôi không sử dụng cookie và không chứa công cụ phân tích hay trình theo dõi quảng cáo. Ứng dụng lưu cài đặt của bạn trong bộ nhớ cục bộ của thiết bị (localStorage)."
+     ]
+    },
+    {
+     "h": "Lưu giữ và xóa dữ liệu",
+     "p": [
+      "Chúng tôi lưu giữ dữ liệu của bạn trong thời gian tài khoản còn mở. Để xóa tài khoản và dữ liệu, hãy viết thư đến nexus.smarthome.app@gmail.com; chúng tôi sẽ hoàn tất yêu cầu trong vòng 30 ngày (trừ các hồ sơ đăng ký mà pháp luật yêu cầu chúng tôi phải lưu giữ). Trong ứng dụng, hãy mở Cài đặt, sau đó là Bảo mật tài khoản, rồi dùng Xóa tài khoản của tôi. Nếu máy chủ không thể hoàn tất, màn hình sẽ thông báo như vậy."
+     ]
+    },
+    {
+     "h": "Quyền của bạn",
+     "p": [
+      "Theo Luật số 6698 của Thổ Nhĩ Kỳ (KVKK) điều 11 và, khi áp dụng, GDPR, bạn có thể hỏi xem dữ liệu của mình có được xử lý hay không, truy cập dữ liệu, chỉnh sửa, yêu cầu xóa, phản đối việc xử lý và yêu cầu chuyển dữ liệu. Hãy viết thư đến nexus.smarthome.app@gmail.com. Bạn cũng có thể khiếu nại lên Cơ quan Bảo vệ Dữ liệu Cá nhân của Thổ Nhĩ Kỳ."
+     ]
+    },
+    {
+     "h": "Bảo mật",
+     "p": [
+      "Các kết nối được mã hóa bằng TLS. Cơ sở dữ liệu áp dụng kiểm soát truy cập ở cấp hàng: mỗi người dùng chỉ có thể đọc và ghi dữ liệu của chính mình. Không có hệ thống nào an toàn tuyệt đối; chúng tôi khuyến nghị dùng mật khẩu mạnh và luôn cập nhật thiết bị của bạn."
+     ]
+    },
+    {
+     "h": "Thiết bị của bên thứ ba",
+     "p": [
+      "Các thiết bị thông minh bạn kết nối (ví dụ Shelly, WLED, ESPHome) có thể giao tiếp với máy chủ của nhà sản xuất theo chính sách quyền riêng tư riêng của họ. NEXUS không chia sẻ dữ liệu của bạn với các nhà sản xuất đó."
+     ]
+    },
+    {
+     "h": "Trẻ em",
+     "p": [
+      "NEXUS không hướng đến trẻ em dưới 13 tuổi và chúng tôi không cố ý thu thập dữ liệu của các em."
+     ]
+    },
+    {
+     "h": "Thay đổi",
+     "p": [
+      "Chúng tôi có thể cập nhật chính sách này; chúng tôi sẽ thông báo các thay đổi quan trọng trong ứng dụng hoặc trên trang web."
+     ]
+    },
+    {
+     "h": "Liên hệ",
+     "p": [
+      "Câu hỏi: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Điều khoản dịch vụ",
+   "intro": "Bằng việc tải xuống, cài đặt hoặc sử dụng ứng dụng NEXUS và các dịch vụ liên quan («Dịch vụ»), bạn chấp nhận các điều khoản này. Dịch vụ do NEXUS cung cấp. Liên hệ: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Giấy phép",
+     "p": [
+      "Chúng tôi cấp cho bạn giấy phép cá nhân, không độc quyền, không thể chuyển nhượng và có thể bị thu hồi để sử dụng phần mềm NEXUS trên các thiết bị bạn sở hữu hoặc kiểm soát, cho mục đích tự động hóa nhà ở cá nhân, phi thương mại. Bạn không được phân phối, cho thuê, bán, cấp phép lại, dịch ngược phần mềm, hoặc dùng phần mềm để xây dựng sản phẩm cạnh tranh trực tiếp với NEXUS. Các thành phần của bên thứ ba tuân theo giấy phép riêng của chúng."
+     ]
+    },
+    {
+     "h": "Tài khoản",
+     "p": [
+      "Sử dụng NEXUS đòi hỏi phải có tài khoản. Bạn chịu trách nhiệm giữ thông tin của mình chính xác, bảo vệ mật khẩu và mọi hoạt động diễn ra dưới tài khoản của bạn. Chúng tôi có thể tạm ngưng hoặc đóng các tài khoản vi phạm các điều khoản này."
+     ]
+    },
+    {
+     "h": "An toàn nhà thông minh",
+     "ul": [
+      "NEXUS là một công cụ tiện ích; không được chỉ dựa vào nó cho các chức năng quan trọng như phòng cháy, khí gas, sức khỏe hoặc an toàn tính mạng.",
+      "Bạn chịu trách nhiệm về các lệnh được gửi đến thiết bị của mình và về an ninh mạng của bạn. Hãy luôn cập nhật firmware thiết bị và cài đặt bộ định tuyến.",
+      "Vì lý do an toàn, không thể mở khóa từ cuộc trò chuyện."
+     ]
+    },
+    {
+     "h": "NEXUS AI và tín dụng",
+     "p": [
+      "Gói miễn phí bao gồm 30 tín dụng NEXUS AI mỗi ngày; gói đăng ký NEXUS+ bao gồm 2,000 mỗi tháng. Tín dụng không thể chuyển nhượng, không thể quy đổi thành tiền mặt và được đặt lại vào cuối kỳ. NEXUS AI có thể mắc lỗi; việc kiểm tra kết quả là trách nhiệm của bạn."
+     ]
+    },
+    {
+     "h": "Gói đăng ký NEXUS+",
+     "ul": [
+      "Phạm vi: NEXUS+ cung cấp 2,000 tín dụng NEXUS AI mỗi tháng và mở khóa việc thêm thiết bị mới thông qua các kết nối nâng cao (Home Assistant). Khi gói đăng ký kết thúc, các thiết bị bạn đã thêm vẫn tiếp tục hoạt động; việc thêm thiết bị mới qua các kết nối này cần NEXUS+ trở lại.",
+      "Các gói: Hàng tháng và Hàng năm, được định giá bằng TRY cho Türkiye và bằng USD ở nơi khác (hiện tại Hàng tháng ₺499.99 / $11.99, Hàng năm ₺3,999.99 / $89.99). Giá hiện hành được hiển thị khi thanh toán; có thể cộng thêm thuế khi thanh toán. Gói hàng năm bao gồm 7 ngày dùng thử miễn phí và gói hàng tháng bao gồm 3 ngày dùng thử miễn phí.",
+      "Thanh toán được thực hiện qua Whop. Gói đăng ký tự động gia hạn mỗi kỳ cho đến khi bạn hủy; khi hết thời gian dùng thử, giá của gói bạn đã chọn sẽ được tính.",
+      "Bạn có thể hủy bất cứ lúc nào từ mục Thanh toán trong ứng dụng hoặc từ tài khoản của bạn trên trang web này. Việc hủy có hiệu lực vào cuối kỳ hiện tại.",
+      "Khi thanh toán, hãy dùng địa chỉ email của tài khoản NEXUS; gói đăng ký được đối chiếu với email đó.",
+      "Chúng tôi thông báo việc thay đổi giá ít nhất 30 ngày trước khi có hiệu lực; việc này không ảnh hưởng đến kỳ hiện tại.",
+      "Điều kiện hoàn tiền nằm trong Chính sách hoàn tiền và hủy dịch vụ."
+     ]
+    },
+    {
+     "h": "Thay đổi và gián đoạn",
+     "p": [
+      "Chúng tôi có thể cải tiến, thay đổi hoặc tạm ngưng Dịch vụ để bảo trì. Chúng tôi không đảm bảo dịch vụ không bị gián đoạn hoặc không có lỗi."
+     ]
+    },
+    {
+     "h": "Sở hữu trí tuệ",
+     "p": [
+      "Các quyền đối với phần mềm, thiết kế, thương hiệu và nội dung của NEXUS thuộc về đơn vị vận hành. Các điều khoản này chỉ cấp cho bạn giấy phép nêu trên."
+     ]
+    },
+    {
+     "h": "Giới hạn trách nhiệm",
+     "p": [
+      "Phần mềm được cung cấp «nguyên trạng». Trong phạm vi tối đa mà pháp luật cho phép, chúng tôi không chịu trách nhiệm đối với các thiệt hại gián tiếp (bao gồm mất dữ liệu hoặc hư hỏng thiết bị hay tài sản) phát sinh từ việc sử dụng Dịch vụ; tổng trách nhiệm của chúng tôi được giới hạn ở số tiền bạn đã trả cho chúng tôi trong 12 tháng trước đó. Các quyền của người tiêu dùng mà pháp luật không cho phép hạn chế không bị ảnh hưởng."
+     ]
+    },
+    {
+     "h": "Chấm dứt",
+     "p": [
+      "Bạn có thể đóng tài khoản bất cứ lúc nào (xem Chính sách quyền riêng tư). Chúng tôi có thể chấm dứt quyền truy cập của bạn nếu bạn vi phạm các điều khoản này."
+     ]
+    },
+    {
+     "h": "Luật áp dụng",
+     "p": [
+      "Các điều khoản này được điều chỉnh bởi pháp luật của Cộng hòa Türkiye. Với tư cách người tiêu dùng, bạn giữ quyền yêu cầu các hội đồng trọng tài người tiêu dùng và tòa án người tiêu dùng giải quyết."
+     ]
+    },
+    {
+     "h": "Thay đổi các điều khoản này",
+     "p": [
+      "Chúng tôi có thể cập nhật các điều khoản này và sẽ thông báo các thay đổi quan trọng trong ứng dụng hoặc trên trang web. Việc tiếp tục sử dụng Dịch vụ sau khi có thay đổi nghĩa là bạn chấp nhận các điều khoản mới."
+     ]
+    },
+    {
+     "h": "Liên hệ",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Chính sách hoàn tiền và hủy dịch vụ",
+   "intro": "Chính sách này giải thích các điều kiện dùng thử, hủy và hoàn tiền đối với gói đăng ký NEXUS+. Các quyền người tiêu dùng theo luật định của bạn không bị ảnh hưởng.",
+   "sections": [
+    {
+     "h": "Dùng thử miễn phí",
+     "p": [
+      "Gói hàng năm bao gồm 7 ngày dùng thử miễn phí và gói hàng tháng bao gồm 3 ngày dùng thử miễn phí. Nếu bạn hủy trước khi hết thời gian dùng thử, bạn sẽ không bị tính phí. Nếu bạn không hủy, giá của gói bạn đã chọn sẽ được tính khi kết thúc thời gian dùng thử."
+     ]
+    },
+    {
+     "h": "Cách hủy",
+     "ul": [
+      "Trong ứng dụng: Plus → Thanh toán → Hủy vào cuối kỳ.",
+      "Trên trang web: đăng nhập → tài khoản → hủy vào cuối kỳ.",
+      "Việc hủy có hiệu lực vào cuối kỳ thanh toán hiện tại; bạn vẫn giữ các tính năng NEXUS+ cho đến lúc đó và không bị tính phí cho kỳ tiếp theo."
+     ]
+    },
+    {
+     "h": "Hoàn tiền",
+     "ul": [
+      "Bạn có thể yêu cầu hoàn tiền trong vòng 14 ngày kể từ lần thanh toán đầu tiên mà không cần nêu lý do; chúng tôi hoàn lại toàn bộ khoản thanh toán.",
+      "Đối với các lần gia hạn tự động, nếu bạn yêu cầu trong vòng 3 ngày kể từ ngày gia hạn, chúng tôi hoàn lại khoản phí của kỳ đó.",
+      "Ngoài các khoảng thời gian này, chúng tôi không hoàn tiền cho các kỳ đã sử dụng, nhưng sẽ xem xét hoàn tiền trong các trường hợp chính đáng, chẳng hạn khi dịch vụ không thể sử dụng do lỗi từ phía chúng tôi.",
+      "Chúng tôi có thể từ chối yêu cầu nếu phát hiện lạm dụng (ví dụ hoàn tiền lặp lại trên cùng một tài khoản)."
+     ]
+    },
+    {
+     "h": "Cách yêu cầu hoàn tiền",
+     "p": [
+      "Hãy gửi email đến nexus.smarthome.app@gmail.com kèm email tài khoản NEXUS và yêu cầu của bạn. Các khoản hoàn tiền được chấp thuận sẽ được thực hiện qua Whop về phương thức thanh toán ban đầu; thường mất 5–10 ngày làm việc để hiển thị, tùy thuộc vào ngân hàng của bạn."
+     ]
+    },
+    {
+     "h": "Quyền theo luật định",
+     "p": [
+      "Chính sách này không hạn chế các quyền theo luật định của bạn theo Luật Bảo vệ người tiêu dùng số 6502 của Thổ Nhĩ Kỳ và Quy chế về hợp đồng từ xa (bao gồm quyền rút lui và các trường hợp ngoại lệ của quyền đó)."
+     ]
+    },
+    {
+     "h": "Liên hệ",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

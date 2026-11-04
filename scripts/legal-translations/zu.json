@@ -1,0 +1,253 @@
+{
+ "code": "zu",
+ "updated": "Kuvuselelwe kokugcina: 31 Okthoba 2026",
+ "labels": {
+  "updated": "Kuvuselelwe kokugcina",
+  "operatedBy": "Iqhutshwa yi-",
+  "footer": "Leli phepha kufundwa kanye nombhalo wamanje ku-nexus-smarthome.pages.dev.",
+  "notice": "Lo mbhalo ohunyushiwe unikezwa ukuze kube lula kuphela. Uma ehluka kuhlelo lwesiTurkish noma lwesiNgisi, izinguqulo zesiTurkish nezesiNgisi ziyabusa."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Inqubomgomo Yobumfihlo",
+   "intro": "I-NEXUS iphatha ikhaya lakho elihlakaniphile ikakhulukazi kunethiwekhi yakho yasendaweni. Le nqubomgomo ichaza ngokucacile ukuthi siyiphatha kanjani idatha, kungani nokuthi kuphi uma udala i-akhawunti.",
+   "sections": [
+    {
+     "h": "Ngamafuphi",
+     "ul": [
+      "I-akhawunti iyadingeka ukuze usebenzise i-NEXUS. Imiyalo yamadivayisi isasebenza kunethiwekhi yakho yasendaweni; ayithunyelwa nge-cloud yomkhiqizi.",
+      "Izilungiselelo zakho, uhlu lwamadivayisi nomlando wengxoxo kugcinwa ku-cloud ukuze zifane kuwo wonke amadivayisi.",
+      "Asiyidayisi idatha yakho, asiyisebenzisi ezikhangisweni futhi asikwenzeli iphrofayili.",
+      "Ukufinyelela kumakrofoni kuyazikhethela futhi kusetshenziswa kuphela uma uthinta imakrofoni engxoxweni ye-NEXUS AI; irekhodi liguqulelwa embhalweni futhi aligcinwa. Ikhamera ivulwa kuphela ukuskena amakhodi e-QR futhi isithombe asikaze siphume kudivayisi yakho."
+     ]
+    },
+    {
+     "h": "Umphathi wedatha",
+     "p": [
+      "Umphathi wedatha yi-NEXUS. Xhumana nathi: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Idatha esiyiphathayo",
+     "ul": [
+      "I-akhawunti: ikheli lakho le-imeyili futhi (uma linikeziwe) igama lakho. Ngokungena nge-Google, i-imeyili negama lephrofayili elinikezwa yi-Google. Iphasiwedi yakho igcinwa kuphela njenge-hash eya ngohlangothi olulodwa ku-Supabase Auth; asikwazi ukuyibona.",
+      "Idatha ye-app evumelanisiwe (kuphela uma ungenile): igama nesithombe sephrofayili, izilungiselelo zethimu/ulimi/amayunithi, amalungu omndeni, izigcawu nokuzenzakalelayo, amakhadi akhethekile, umlando wengxoxo ye-NEXUS AI nesibali sokusetshenziswa, irekhodi lemicimbi, okuncamelayo kwendawo yasekhaya/isimo sezulu nohlu lwamadivayisi owengeze (igama, ikamelo, iphrothokholi, ikheli lenethiwekhi yasendaweni, isimo sokugcina).",
+      "Ukubhalisela (uma uthenge i-NEXUS+): i-imeyili, uhlelo, isimo, ukuphela kwenkathi ne-ID yobulungu be-Whop. Imininingwane yekhadi lakho iphathwa yi-Whop kuphela futhi ayifiki kithi.",
+      "Imilayezo yokweseka: i-imeyili yakho nomlayezo uma usibhalela.",
+      "Amalogi obuchwepheshe: amalogi okungena namaphutha (kuhlanganise ikheli le-IP) agcinwa isikhashana ababoneleli bethu bokusingatha nobokuqinisekisa."
+     ]
+    },
+    {
+     "h": "Izinhloso nezisekelo zomthetho",
+     "p": [
+      "Ukuphatha i-akhawunti yakho, ukuvumelanisa idatha yakho phakathi kwamadivayisi, ukunikeza ukubhalisela kwakho nokunikeza usizo (ukufezekiswa kwenkontileka); ukugcina insizakalo iphephile nokuvimbela ukusetshenziswa kabi (inzuzo evumelekile); nokudluliselwa phesheya, imvume yakho ecacile (bheka ngezansi)."
+     ]
+    },
+    {
+     "h": "I-NEXUS AI",
+     "p": [
+      "I-NEXUS AI inezingxenye ezimbili. (1) Imiyalo yamadivayisi (ukukhanyisa isibani, ukuqalisa isigcawu, ukubuza isimo) iphethwe ngasendaweni kudivayisi yakho futhi ayithunyelwa ku-cloud. (2) Imilayezo engeyona imiyalo yamadivayisi, njengengxoxo evamile nemibuzo, ithunyelwa ku-Cloudflare Workers AI ukuze iphendulwe; amagama, izinhlobo namakamelo amadivayisi akho afakwa njengomongo. Imininingwane ye-akhawunti yakho, i-imeyili nendawo akuthunyelwa. Asisebenzisi lokhu okuqukethwe ukuqeqesha amamodeli e-AI; i-Cloudflare iyakuphatha ukuze inikeze insizakalo. Uma uthanda, ungasebenzisa imiyalo yamadivayisi kuphela engxoxweni. Uma ungenile, umlando wengxoxo yakho uvumelaniswa ne-akhawunti yakho njengezinye izilungiselelo zakho.",
+      "Okokufaka ngezwi: uma uthinta inkinobho yemakrofoni engxoxweni ye-NEXUS AI, inkulumo yakho iguqulelwa embhalweni. Ku-browser (Chrome/Edge) kuqala kusetshenziswa insizakalo yokuqaphela inkulumo ye-browser uqobo; uma ingafinyeleleki, noma ezinhlelweni zekhompyutha nezeselula, irekhodi elifushane lithunyelwa kuphela ku-Cloudflare Workers AI (Whisper) ukuze liguqulelwe embhalweni, aligcinwa futhi alilondolozwa ku-akhawunti yakho. Umbhalo oguqulelwe ubekwa kuphela ebhokisini lokufaka lengxoxo futhi awuthunyelwandawo kuze kube uthinta ukuthumela."
+     ]
+    },
+    {
+     "h": "Ababoneleli bezinsizakalo nokudluliselwa",
+     "ul": [
+      "Supabase: ukuqinisekisa, isizindalwazi nama-imeyili esistimu.",
+      "Cloudflare: ukusingatha iwebhusayithi; Cloudflare Workers AI yezimpendulo zengxoxo ye-NEXUS AI nokuguqula inkulumo ibe umbhalo.",
+      "Whop: ukukhokha kokubhalisela nokukhipha ama-invoyisi.",
+      "Google: ukungena nge-Google futhi (nge-Gmail) ama-imeyili okuqinisekisa / okusetha kabusha iphasiwedi.",
+      "GitHub: ukusabalalisa abafaki.",
+      "Open-Meteo: idolobha / izixhumanisi ezilinganiselwe zesimo sezulu.",
+      "OpenStreetMap / Nominatim: amamephu nokusesha izindawo; Unsplash: ezinye izithombe zokuhlala.",
+      "BigDataCloud: ukuthola igama lendawo ngezixhumanisi (okuhlala uma i-Nominatim ingafinyeleleki; futhi kusetshenziswa uma ukhetha indawo yasekhaya lakho). Lesi sevisi sithola izixhumanisi ezinembile zendawo oyikhethayo noma etholiwe."
+     ],
+     "p": [
+      "Amaseva alababoneleli angase abe ngaphandle kwe-Türkiye. Ngokudala i-akhawunti kanye/noma ngokukhokha unikeza imvume ecacile yokuba idatha yakho idluliselwe kubo naphesheya; ungayiphakamisa imvume ngokususa i-akhawunti yakho."
+     ]
+    },
+    {
+     "h": "Amakhukhi nokulandelela",
+     "p": [
+      "Iwebhusayithi yethu ayisebenzisi amakhukhi futhi ayinazo izilandeli zokuhlaziya noma zezikhangiso. I-app igcina izilungiselelo zakho esitoreji sendawo sedivayisi yakho (localStorage)."
+     ]
+    },
+    {
+     "h": "Ukugcinwa nokususwa",
+     "p": [
+      "Sigcina idatha yakho inqobo nje uma i-akhawunti yakho ivuliwe. Ukuze susise i-akhawunti yakho nedatha, bhalela ku-nexus.smarthome.app@gmail.com; sizoqeda isicelo ezinsukwini ezingu-30 (ngaphandle kwamarekhodi okubhalisela okufanele siwagcine ngokomthetho). Ku-app, vula Izilungiselelo, bese Ukuphepha kwe-akhawunti, futhi usebenzise Susa i-akhawunti yami. Uma iseva ingakwazi ukuqeda, isikrini siyakusho."
+     ]
+    },
+    {
+     "h": "Amalungelo akho",
+     "p": [
+      "Ngaphansi koMthetho waseTürkiye onguNombolo 6698 (KVKK) isigaba 11 futhi, lapho kusebenza, i-GDPR, ungabuza ukuthi idatha yakho iyaphathwa yini, uyifinyelele, uyilungise, uyisuse, uphikise ukuphathwa futhi ucele ukuhanjiswa kwayo. Bhalela ku-nexus.smarthome.app@gmail.com. Ungakwazi futhi ukukhalaza kuMgcinimandla Wokuvikelwa Kwedatha Yomuntu waseTürkiye."
+     ]
+    },
+    {
+     "h": "Ukuphepha",
+     "p": [
+      "Uxhumo luvikelwe nge-TLS. Isizindalwazi siphoqelela ukulawula ukufinyelela ezingeni lomugqa: umsebenzisi ngamunye angafunda futhi abhale idatha yakhe kuphela. Asikho isistimu ephephe ngokuphelele; sincoma iphasiwedi eqinile nokugcina amadivayisi akho esesikhathini."
+     ]
+    },
+    {
+     "h": "Amadivayisi ezinhlangothi zesithathu",
+     "p": [
+      "Amadivayisi ahlakaniphile owaxhumanisayo (isb. Shelly, WLED, ESPHome) angakhuluma namaseva abakhiqizi bawo ngaphansi kwenqubomgomo yabo yobumfihlo. I-NEXUS ayabelani idatha yakho nalabo bakhiqizi."
+     ]
+    },
+    {
+     "h": "Izingane",
+     "p": [
+      "I-NEXUS ayiqondiswe ezinganeni ezingaphansi kweminyaka engu-13 futhi asiyiqoqi ngamabomu idatha yazo."
+     ]
+    },
+    {
+     "h": "Izinguquko",
+     "p": [
+      "Singavuselela le nqubomgomo; sizamemezela izinguquko ezibalulekile ku-app noma ku-iwebhusayithi."
+     ]
+    },
+    {
+     "h": "Xhumana nathi",
+     "p": [
+      "Imibuzo: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Imigomo Yensizakalo",
+   "intro": "Ngokulanda, ukufaka noma ukusebenzisa i-app ye-NEXUS nezinsizakalo ezihlobene («Izinsizakalo») wamukela le migomo. Izinsizakalo zinikezwa yi-NEXUS. Xhumana nathi: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Ilayisense",
+     "p": [
+      "Sikunika ilayisense yomuntu siqu, engeyona eyokukhetha, engadluliseleki, ekwazi ukukhanselwa yokusebenzisa isofthiwe ye-NEXUS emadivayisini onawo noma owalawulayo, ukuze usebenzise ukuzenzakalelisa kwasekhaya komuntu siqu, okungezona zebhizinisi. Awukwazi ukuyisabalalisa, ukuyiqasha, ukuyidayisa, ukuyinika abanye ilayisense, ukuyihlaziya ngokuhlehlayo, noma ukuyisebenzisela ukwakha umkhiqizo ophikisana ngqo ne-NEXUS. Izingxenye zezinhlangothi zesithathu zingaphansi kwamalayisense azo."
+     ]
+    },
+    {
+     "h": "I-akhawunti",
+     "p": [
+      "Ukusebenzisa i-NEXUS kudinga i-akhawunti. Unesibopho sokugcina imininingwane yakho ilungile nephasiwedi yakho iphephile, nomsebenzi ongaphansi kwe-akhawunti yakho. Singamisa noma sivale ama-akhawunti aphula le migomo."
+     ]
+    },
+    {
+     "h": "Ukuphepha kwekhaya elihlakaniphile",
+     "ul": [
+      "I-NEXUS iyithuluzi lokwenza lula; ungayethembi yodwa emisebenzini ebalulekile njengomlilo, igesi, impilo noma ukuphepha kwempilo.",
+      "Unesibopho semiyalo ethunyelwa emadivayisini akho nokuphepha kwenethiwekhi yakho. Gcina i-firmware yamadivayisi nezilungiselelo zerutha zisesikhathini.",
+      "Ngenxa yokuphepha, izikhiya azikwazi ukuvulwa engxoxweni."
+     ]
+    },
+    {
+     "h": "I-NEXUS AI namakhredithi",
+     "p": [
+      "Uhlelo lwamahhala luhlanganisa amakhredithi e-NEXUS AI angu-30 ngosuku; ukubhalisela kwe-NEXUS+ kuhlanganisa angu-2,000 ngenyanga. Amakhredithi awadluliseleki, awakwazi ukushintshaniswa ngemali futhi asethwa kabusha ekupheleni kwenkathi. I-NEXUS AI ingenza amaphutha; ukuhlola imiphumela kuwumsebenzi wakho."
+     ]
+    },
+    {
+     "h": "Ukubhalisela kwe-NEXUS+",
+     "ul": [
+      "Ububanzi: I-NEXUS+ inikeza amakhredithi e-NEXUS AI angu-2,000 ngenyanga futhi ivula ukungeza amadivayisi amasha ngokuxhumana okuthuthukile (Home Assistant). Uma ukubhalisela kuphela, amadivayisi osuwengeziwe aqhubeka nokusebenza; ukungeza amadivayisi amasha ngalokhu kuxhumana kudinga i-NEXUS+ futhi.",
+      "Izinhlelo: Ngenyanga neNyakeni, zixakwe nge-TRY e-Türkiye nangeUSD kwenye indawo (okwamanje ngenyanga ₺499.99 / $11.99, Ngonyaka ₺3,999.99 / $89.99). Amanani amanje abonakala ekuhlawuleni; intela ingase ingezwe ekuhlawuleni. Uhlelo lonyaka luhlanganisa ukuzama kwamahhala kwezinsuku ezingu-7 kanti uhlelo lwenyanga lunokuzama kwamahhala kwezinsuku ezingu-3.",
+      "Inkokhelo ithathwa nge-Whop. Ukubhalisela kuvuselelwa ngokuzenzakalelayo njalo ngenkathi kuze kube uyakhansela; lapho ukuzama kuphela, inani loluhlelo olukhethile liyakhokhiswa.",
+      "Ungakhansela noma nini ku-Billing ku-app noma ku-akhawunti yakho kule webhusayithi. Ukukhansela kuqala ukusebenza ekupheleni kwenkathi yamanje.",
+      "Uma ukhokha, sebenzisa ikheli le-imeyili le-akhawunti yakho ye-NEXUS; ukubhalisela kuhlanganiswa naleyo imeyili.",
+      "Simemezela izinguquko zamanani okungenani izinsuku ezingu-30 ngaphambi kokuba ziqale ukusebenza; azithinti inkathi yamanje.",
+      "Imigomo yokubuyiselwa kwemali isenqubomgomweni Yokubuyiselwa Kwemali Nokukhansela."
+     ]
+    },
+    {
+     "h": "Izinguquko nokuphazamiseka",
+     "p": [
+      "Singathuthukisa, sishintshe noma simise isikhashana Izinsizakalo ngenxa yokunakekela. Asiqinisekisi insizakalo engaphazamiseki noma engenamaphutha."
+     ]
+    },
+    {
+     "h": "Impahla yengqondo",
+     "p": [
+      "Amalungelo kusofthiwe ye-NEXUS, idizayini, uhlobo nokuqukethwe ayeka kumqhubi. Le migomo ikunika kuphela ilayisense engenhla."
+     ]
+    },
+    {
+     "h": "Ukulinganiselwa kwesibopho",
+     "p": [
+      "Isofthiwe inikezwa «njengoba injalo». Ngezinga eliphezulu elivunyelwa umthetho asinasibopho sokulimala okungaqondile (kuhlanganise ukulahlekelwa kwedatha noma umonakalo emadivayisini noma impahla) okuvela ekusebenziseni Izinsizakalo; isibopho sethu sizonke silinganiselwe emalini oyikhokhele thina ezinyangeni ezingu-12 ezedlule. Amalungelo abathengi angakwazi ukulinganiselwa ngumthetho awathinteki."
+     ]
+    },
+    {
+     "h": "Ukunqamula",
+     "p": [
+      "Ungavala i-akhawunti yakho noma nini (bheka Inqubomgomo Yobumfihlo). Singaphelisa ukufinyelela kwakho uma uphula le migomo."
+     ]
+    },
+    {
+     "h": "Umthetho olawulayo",
+     "p": [
+      "Le migomo ilawulwa yimithetho yeRiphabhulikhi yeTürkiye. Njengomthengi ugcina ilungelo lokufinyelela amakomiti okulamula abathengi nezinkantolo zabathengi."
+     ]
+    },
+    {
+     "h": "Izinguquko kule migomo",
+     "p": [
+      "Singavuselela le migomo futhi sizamemezela izinguquko ezibalulekile ku-app noma ku-iwebhusayithi. Ukuqhubeka nokusebenzisa Izinsizakalo ngemuva kwenguquko kusho ukuthi wamukela imigomo emisha."
+     ]
+    },
+    {
+     "h": "Xhumana nathi",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Inqubomgomo Yokubuyiselwa Kwemali Nokukhansela",
+   "intro": "Le nqubomgomo ichaza imigomo yokuzama, yokukhansela neyokubuyiselwa kwemali yokubhalisela kwe-NEXUS+. Amalungelo akho abathengi esimiso somthetho awathinteki.",
+   "sections": [
+    {
+     "h": "Ukuzama kwamahhala",
+     "p": [
+      "Uhlelo lonyaka luhlanganisa ukuzama kwamahhala kwezinsuku ezingu-7 kanti uhlelo lwenyanga lunokuzama kwamahhala kwezinsuku ezingu-3. Uma ukhansela ngaphambi kokuba ukuzama kuphele awukhokhiswa. Uma ungakhansele, inani loluhlelo olukhethile liyakhokhiswa lapho ukuzama kuphela."
+     ]
+    },
+    {
+     "h": "Indlela yokukhansela",
+     "ul": [
+      "Ku-app: Plus → Billing → Khansela ekupheleni kwenkathi.",
+      "Kuwebhusayithi: ngena → i-akhawunti → khansela ekupheleni kwenkathi.",
+      "Ukukhansela kuqala ukusebenza ekupheleni kwenkathi yamanje yokukhokha; ugcina izici ze-NEXUS+ kuze kube yileso sikhathi futhi awukhokhiswa inkathi elandelayo."
+     ]
+    },
+    {
+     "h": "Ukubuyiselwa kwemali",
+     "ul": [
+      "Ungacela ukubuyiselwa kwemali ezinsukwini ezingu-14 zenkokhelo yakho yokuqala ngaphandle kokunikeza isizathu; sibuyisela inkokhelo yonke.",
+      "Ngokuvuselelwa okuzenzakalelayo, uma ucela ezinsukwini ezingu-3 zosuku lokuvuselelwa sibuyisela inkokhelo yaleyo nkathi.",
+      "Ngaphandle kwalezi zikhathi asibuyiseli izinkathi ezisetshenzisiwe, kodwa sizobheka ukubuyisela imali ezimeni ezinezizathu ezifana nokuthi insizakalo ayisebenziseki ngenxa yephutha ngasohlangothini lwethu.",
+      "Singenqaba isicelo uma sibona ukusetshenziswa kabi (isibonelo ukubuyiselwa kwemali okuphindaphindwayo ku-akhawunti efanayo)."
+     ]
+    },
+    {
+     "h": "Indlela yokucela ukubuyiselwa kwemali",
+     "p": [
+      "Thumela i-imeyili ku-nexus.smarthome.app@gmail.com nge-imeyili ye-akhawunti yakho ye-NEXUS nesicelo sakho. Ukubuyiselwa kwemali okuvunyiwe kukhishwa nge-Whop kuya endleleni yokukhokha yasekuqaleni; ngokuvamile kuthatha izinsuku zebhizinisi ezingu-5–10 ukuvela, kuye ngebhange lakho."
+     ]
+    },
+    {
+     "h": "Amalungelo esimiso somthetho",
+     "p": [
+      "Le nqubomgomo ayilinganisi amalungelo akho esimiso somthetho ngaphansi koMthetho Wokuvikelwa Kwabathengi waseTürkiye onguNombolo 6502 neMithethonqubo Yezinkontileka Zasebangeni (kuhlanganise ilungelo lokuhoxa nokuhlukile kwalo)."
+     ]
+    },
+    {
+     "h": "Xhumana nathi",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,253 @@
+{
+ "code": "nl",
+ "updated": "Laatst bijgewerkt: 31 oktober 2026",
+ "labels": {
+  "updated": "Laatst bijgewerkt",
+  "operatedBy": "Beheerd door",
+  "footer": "Dit document wordt samen met de actuele tekst op nexus-smarthome.pages.dev gelezen.",
+  "notice": "Deze vertaling is uitsluitend ter informatie. Bij afwijkingen gelden de Turkse en de Engelse versie."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Privacybeleid",
+   "intro": "NEXUS beheert je slimme huis in de eerste plaats op je eigen lokale netwerk. Dit beleid legt duidelijk uit welke gegevens we verwerken wanneer je een account aanmaakt, waarom en waar.",
+   "sections": [
+    {
+     "h": "Kort samengevat",
+     "ul": [
+      "Voor het gebruik van NEXUS is een account nodig. Apparaatopdrachten blijven op je lokale netwerk draaien; ze worden niet via de cloud van een fabrikant verstuurd.",
+      "Je instellingen, apparaatlijst en chatgeschiedenis worden in de cloud opgeslagen zodat ze op elk apparaat gelijk zijn.",
+      "We verkopen je gegevens niet, gebruiken ze niet voor reclame en maken geen profielen van je.",
+      "Toegang tot de microfoon is optioneel en wordt alleen gebruikt wanneer je in de NEXUS AI-chat op de microfoon tikt; de opname wordt getranscribeerd en niet bewaard. De camera opent alleen om QR-codes te scannen en het beeld verlaat je apparaat nooit."
+     ]
+    },
+    {
+     "h": "Verwerkingsverantwoordelijke",
+     "p": [
+      "De verwerkingsverantwoordelijke is NEXUS. Contact: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Welke gegevens we verwerken",
+     "ul": [
+      "Account: je e-mailadres en (indien opgegeven) je naam. Bij inloggen met Google het e-mailadres en de profielnaam die Google levert. Je wachtwoord wordt alleen als eenrichtingshash in Supabase Auth bewaard; wij kunnen het niet zien.",
+      "Gesynchroniseerde app-gegevens (alleen wanneer je bent ingelogd): profielnaam en -foto, instellingen voor thema, taal en eenheden, huisgenoten, scènes en automatiseringen, favoriete kaarten, NEXUS AI-chatgeschiedenis en gebruiksteller, gebeurtenissenlogboek, voorkeur voor thuislocatie/weer en de lijst met apparaten die je hebt toegevoegd (naam, kamer, protocol, adres op het lokale netwerk, laatste status).",
+      "Abonnement (als je NEXUS+ hebt gekocht): e-mailadres, abonnement, status, einde van de periode en Whop-lidmaatschaps-ID. Je kaartgegevens worden uitsluitend door Whop verwerkt en bereiken ons nooit.",
+      "Supportberichten: je e-mailadres en bericht wanneer je ons schrijft.",
+      "Technische logboeken: inlog- en foutlogboeken (inclusief IP-adres) die onze hosting- en authenticatieproviders kort bewaren."
+     ]
+    },
+    {
+     "h": "Doelen en rechtsgronden",
+     "p": [
+      "Om je account te beheren, je gegevens tussen apparaten te synchroniseren, je abonnement te leveren en support te bieden (uitvoering van een overeenkomst); om de dienst veilig te houden en misbruik te voorkomen (gerechtvaardigd belang); en voor doorgifte naar het buitenland je uitdrukkelijke toestemming (zie hieronder)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI bestaat uit twee delen. (1) Apparaatopdrachten (een lamp aanzetten, een scène uitvoeren, de status opvragen) worden lokaal op je apparaat verwerkt en niet naar de cloud gestuurd. (2) Berichten die geen apparaatopdrachten zijn, zoals algemene chat en vragen, worden ter beantwoording naar Cloudflare Workers AI gestuurd; de namen, typen en kamers van je apparaten worden als context meegestuurd. Je accountgegevens, e-mailadres en locatie worden niet verstuurd. We gebruiken deze inhoud niet om AI-modellen te trainen; Cloudflare verwerkt haar om de dienst te leveren. Als je wilt, kun je in de chat alleen apparaatopdrachten gebruiken. Als je bent ingelogd, wordt je chatgeschiedenis net als je andere instellingen met je account gesynchroniseerd.",
+      "Spraakinvoer: wanneer je in de NEXUS AI-chat op de microfoonknop tikt, wordt je spraak omgezet in tekst. In een browser (Chrome/Edge) wordt eerst de spraakherkenningsdienst van de browser zelf gebruikt; als die onbereikbaar is, of in de desktop- en mobiele apps, wordt de korte opname uitsluitend naar Cloudflare Workers AI (Whisper) gestuurd voor transcriptie, niet bewaard en niet in je account opgeslagen. De transcriptie wordt alleen in het chatinvoerveld geplaatst en nergens heen gestuurd totdat je op verzenden drukt."
+     ]
+    },
+    {
+     "h": "Dienstverleners en doorgifte",
+     "ul": [
+      "Supabase: authenticatie, database en systeem-e-mails.",
+      "Cloudflare: hosting van de website; Cloudflare Workers AI voor antwoorden in de NEXUS AI-chat en spraak-naar-tekst.",
+      "Whop: abonnementsbetalingen en facturatie.",
+      "Google: inloggen met Google en (via Gmail) verificatie- en wachtwoordherstel-e-mails.",
+      "GitHub: distributie van de installatieprogramma’s.",
+      "Open-Meteo: stad / bij benadering coördinaten voor het weer.",
+      "OpenStreetMap / Nominatim: kaarten en plaatsen zoeken; Unsplash: enkele reserveafbeeldingen.",
+      "BigDataCloud: een plaatsnaam bepalen uit coördinaten (reserve wanneer Nominatim onbereikbaar is; ook gebruikt wanneer je je thuislocatie kiest). Deze dienst ontvangt de exacte coördinaten van de locatie die je kiest of die wordt gedetecteerd."
+     ],
+     "p": [
+      "De servers van deze aanbieders kunnen zich buiten Türkiye bevinden. Door een account aan te maken en/of te betalen geef je uitdrukkelijke toestemming voor doorgifte van je gegevens aan hen en naar het buitenland; je kunt je toestemming intrekken door je account te laten verwijderen."
+     ]
+    },
+    {
+     "h": "Cookies en tracking",
+     "p": [
+      "Onze website gebruikt geen cookies en bevat geen analyse- of advertentietrackers. De app bewaart je instellingen in de lokale opslag van je apparaat (localStorage)."
+     ]
+    },
+    {
+     "h": "Bewaartermijn en verwijdering",
+     "p": [
+      "We bewaren je gegevens zolang je account open is. Om je account en gegevens te laten verwijderen, schrijf je naar nexus.smarthome.app@gmail.com; we handelen het verzoek binnen 30 dagen af (behalve abonnementsgegevens die we wettelijk moeten bewaren). Open in de app Instellingen en vervolgens Accountbeveiliging en gebruik Mijn account verwijderen. Als de server het niet kan afronden, meldt het scherm dat."
+     ]
+    },
+    {
+     "h": "Je rechten",
+     "p": [
+      "Op grond van de Turkse wet nr. 6698 (KVKK), art. 11 en, waar van toepassing, de AVG kun je vragen of je gegevens worden verwerkt, inzage krijgen, ze laten corrigeren of verwijderen, bezwaar maken tegen verwerking en gegevensoverdraagbaarheid vragen. Schrijf naar nexus.smarthome.app@gmail.com. Je kunt ook een klacht indienen bij de Turkse autoriteit voor de bescherming van persoonsgegevens."
+     ]
+    },
+    {
+     "h": "Beveiliging",
+     "p": [
+      "Verbindingen zijn versleuteld met TLS. De database dwingt toegangscontrole op rijniveau af: elke gebruiker kan alleen zijn eigen gegevens lezen en schrijven. Geen enkel systeem is volkomen veilig; we raden een sterk wachtwoord en actuele apparaten aan."
+     ]
+    },
+    {
+     "h": "Apparaten van derden",
+     "p": [
+      "Slimme apparaten die je koppelt (bijv. Shelly, WLED, ESPHome) kunnen volgens hun eigen privacybeleid met de servers van hun fabrikanten communiceren. NEXUS deelt je gegevens niet met die fabrikanten."
+     ]
+    },
+    {
+     "h": "Kinderen",
+     "p": [
+      "NEXUS is niet gericht op kinderen jonger dan 13 jaar en we verzamelen niet bewust hun gegevens."
+     ]
+    },
+    {
+     "h": "Wijzigingen",
+     "p": [
+      "We kunnen dit beleid bijwerken; belangrijke wijzigingen kondigen we aan in de app of op de website."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "Vragen: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Gebruiksvoorwaarden",
+   "intro": "Door de NEXUS-app en gerelateerde diensten (de “Diensten”) te downloaden, installeren of gebruiken, aanvaard je deze voorwaarden. De Diensten worden geleverd door NEXUS. Contact: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licentie",
+     "p": [
+      "We verlenen je een persoonlijke, niet-exclusieve, niet-overdraagbare en herroepbare licentie om de NEXUS-software te gebruiken op apparaten die je bezit of beheert, voor persoonlijke, niet-commerciële domotica. Je mag haar niet verspreiden, verhuren, verkopen, in sublicentie geven of reverse-engineeren, of gebruiken om een product te maken dat rechtstreeks met NEXUS concurreert. Voor onderdelen van derden gelden hun eigen licenties."
+     ]
+    },
+    {
+     "h": "Account",
+     "p": [
+      "Voor het gebruik van NEXUS is een account nodig. Je bent verantwoordelijk voor juiste gegevens, een veilig wachtwoord en alle activiteit onder je account. We kunnen accounts die deze voorwaarden schenden schorsen of sluiten."
+     ]
+    },
+    {
+     "h": "Veiligheid van het slimme huis",
+     "ul": [
+      "NEXUS is een gemakshulpmiddel; vertrouw er niet alleen op voor kritieke functies zoals brand-, gas-, gezondheids- of levensveiligheid.",
+      "Je bent verantwoordelijk voor de opdrachten die naar je apparaten worden gestuurd en voor de beveiliging van je netwerk. Houd de firmware van apparaten en de routerinstellingen actueel.",
+      "Om veiligheidsredenen kunnen sloten niet via de chat worden geopend."
+     ]
+    },
+    {
+     "h": "NEXUS AI en tegoed",
+     "p": [
+      "Het gratis abonnement bevat 30 NEXUS AI-credits per dag; een NEXUS+-abonnement bevat er 2.000 per maand. Credits zijn niet overdraagbaar, kunnen niet voor geld worden ingewisseld en worden aan het einde van de periode gereset. NEXUS AI kan fouten maken; het controleren van resultaten is jouw verantwoordelijkheid."
+     ]
+    },
+    {
+     "h": "NEXUS+-abonnement",
+     "ul": [
+      "Omvang: NEXUS+ geeft 2.000 NEXUS AI-credits per maand en ontgrendelt het toevoegen van nieuwe apparaten via de geavanceerde verbindingen (Home Assistant). Wanneer het abonnement eindigt, blijven reeds toegevoegde apparaten werken; voor het toevoegen van nieuwe apparaten via deze verbindingen is opnieuw NEXUS+ nodig.",
+      "Abonnementen: Maandelijks en Jaarlijks, geprijsd in TRY voor Türkiye en in USD elders (momenteel Maandelijks ₺499,99 / $ 11,99, Jaarlijks ₺3.999,99 / $ 89,99). De actuele prijzen worden bij het afrekenen getoond; bij het afrekenen kunnen belastingen worden toegevoegd. Het jaarabonnement bevat een gratis proefperiode van 7 dagen en het maandabonnement een van 3 dagen.",
+      "Betalingen verlopen via Whop. Het abonnement wordt elke periode automatisch verlengd totdat je opzegt; wanneer de proefperiode eindigt, wordt de prijs van je gekozen abonnement in rekening gebracht.",
+      "Je kunt op elk moment opzeggen via Facturering in de app of via je account op deze website. De opzegging gaat in aan het einde van de lopende periode.",
+      "Gebruik bij het afrekenen het e-mailadres van je NEXUS-account; het abonnement wordt aan dat e-mailadres gekoppeld.",
+      "Prijswijzigingen kondigen we ten minste 30 dagen voor ingang aan; ze hebben geen invloed op de lopende periode.",
+      "De terugbetalingsvoorwaarden staan in het Restitutie- en opzegbeleid."
+     ]
+    },
+    {
+     "h": "Wijzigingen en onderbrekingen",
+     "p": [
+      "We kunnen de Diensten verbeteren, wijzigen of voor onderhoud tijdelijk opschorten. We garanderen geen ononderbroken of foutloze dienst."
+     ]
+    },
+    {
+     "h": "Intellectueel eigendom",
+     "p": [
+      "De rechten op de NEXUS-software, het ontwerp, het merk en de inhoud berusten bij de beheerder. Deze voorwaarden geven je alleen de bovenstaande licentie."
+     ]
+    },
+    {
+     "h": "Beperking van aansprakelijkheid",
+     "p": [
+      "De software wordt geleverd “zoals ze is”. Voor zover wettelijk toegestaan zijn we niet aansprakelijk voor indirecte schade (inclusief gegevensverlies of schade aan apparaten of eigendommen) voortvloeiend uit het gebruik van de Diensten; onze totale aansprakelijkheid is beperkt tot het bedrag dat je ons in de voorgaande 12 maanden hebt betaald. Consumentenrechten die wettelijk niet kunnen worden beperkt, blijven onverlet."
+     ]
+    },
+    {
+     "h": "Beëindiging",
+     "p": [
+      "Je kunt je account op elk moment sluiten (zie het Privacybeleid). We kunnen je toegang beëindigen als je deze voorwaarden schendt."
+     ]
+    },
+    {
+     "h": "Toepasselijk recht",
+     "p": [
+      "Op deze voorwaarden is het recht van de Republiek Türkiye van toepassing. Als consument behoud je het recht om je te wenden tot consumentenarbitragecommissies en consumentenrechtbanken."
+     ]
+    },
+    {
+     "h": "Wijzigingen in deze voorwaarden",
+     "p": [
+      "We kunnen deze voorwaarden bijwerken en kondigen belangrijke wijzigingen aan in de app of op de website. Als je de Diensten na een wijziging blijft gebruiken, aanvaard je de nieuwe voorwaarden."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Restitutie- en opzegbeleid",
+   "intro": "Dit beleid legt de voorwaarden voor proefperiode, opzegging en restitutie van het NEXUS+-abonnement uit. Je wettelijke consumentenrechten blijven onverlet.",
+   "sections": [
+    {
+     "h": "Gratis proefperiode",
+     "p": [
+      "Het jaarabonnement bevat een gratis proefperiode van 7 dagen en het maandabonnement een van 3 dagen. Als je opzegt voordat de proefperiode eindigt, wordt er niets in rekening gebracht. Als je niet opzegt, wordt de prijs van je gekozen abonnement in rekening gebracht wanneer de proefperiode eindigt."
+     ]
+    },
+    {
+     "h": "Zo zeg je op",
+     "ul": [
+      "In de app: Plus → Facturering → Opzeggen aan het einde van de periode.",
+      "Op de website: inloggen → account → opzeggen aan het einde van de periode.",
+      "De opzegging gaat in aan het einde van de lopende factureringsperiode; tot dan behoud je de NEXUS+-functies en wordt de volgende periode niet in rekening gebracht."
+     ]
+    },
+    {
+     "h": "Restituties",
+     "ul": [
+      "Je kunt binnen 14 dagen na je eerste afschrijving zonder opgave van reden restitutie aanvragen; we betalen het volledige bedrag terug.",
+      "Bij automatische verlengingen betalen we de afschrijving van die periode terug als je binnen 3 dagen na de verlengingsdatum erom vraagt.",
+      "Buiten deze termijnen betalen we gebruikte periodes niet terug, maar we overwegen restituties in gerechtvaardigde gevallen, zoals wanneer de dienst door een fout aan onze kant onbruikbaar was.",
+      "We kunnen een verzoek weigeren als we misbruik constateren (bijvoorbeeld herhaalde restituties op hetzelfde account)."
+     ]
+    },
+    {
+     "h": "Restitutie aanvragen",
+     "p": [
+      "Stuur een e-mail naar nexus.smarthome.app@gmail.com met het e-mailadres van je NEXUS-account en je verzoek. Goedgekeurde restituties worden via Whop uitbetaald op de oorspronkelijke betaalmethode; het duurt meestal 5–10 werkdagen voordat ze zichtbaar zijn, afhankelijk van je bank."
+     ]
+    },
+    {
+     "h": "Wettelijke rechten",
+     "p": [
+      "Dit beleid beperkt je wettelijke rechten onder de Turkse consumentenwet nr. 6502 en de Verordening afstandscontracten niet (inclusief het herroepingsrecht en de uitzonderingen daarop)."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

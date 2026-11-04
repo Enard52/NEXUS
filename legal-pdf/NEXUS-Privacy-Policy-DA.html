@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8"/>
+<title>Privatlivspolitik — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Privatlivspolitik</h1>
+  <p class="meta">Senest opdateret: 31. oktober 2026 · Drevet af: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS styrer primært dit smarte hjem på dit eget lokale netværk. Denne politik forklarer tydeligt, hvilke data vi behandler, når du opretter en konto, hvorfor og hvor.</p>
+  
+    <section>
+      <h2>Kort fortalt</h2>
+      
+      <ul><li>Der kræves en konto for at bruge NEXUS. Enhedskommandoer kører stadig på dit lokale netværk; de sendes ikke via en producents cloud.</li><li>Dine indstillinger, din enhedsliste og din chathistorik gemmes i skyen, så de er ens på alle enheder.</li><li>Vi sælger ikke dine data, bruger dem ikke til reklamer og profilerer dig ikke.</li><li>Adgang til mikrofonen er valgfri og bruges kun, når du trykker på mikrofonen i NEXUS AI-chatten; optagelsen transskriberes og gemmes ikke. Kameraet åbnes kun for at scanne QR-koder, og billedet forlader aldrig din enhed.</li></ul>
+    </section>
+    <section>
+      <h2>Dataansvarlig</h2>
+      <p>Den dataansvarlige er NEXUS. Kontakt: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Hvilke data vi behandler</h2>
+      
+      <ul><li>Konto: din e-mailadresse og (hvis oplyst) dit navn. Ved login med Google den e-mail og det profilnavn, som Google leverer. Din adgangskode gemmes kun som en envejs-hash i Supabase Auth; vi kan ikke se den.</li><li>Synkroniserede appdata (kun når du er logget ind): profilnavn og -foto, indstillinger for tema, sprog og enheder, husstandsmedlemmer, scener og automatiseringer, foretrukne kort, chathistorik og forbrugstæller for NEXUS AI, hændelseslog, hjemmets placering og vejrpræference samt listen over enheder, du har tilføjet (navn, rum, protokol, adresse på det lokale netværk, seneste tilstand).</li><li>Abonnement (hvis du har købt NEXUS+): e-mail, abonnementstype, status, periodens slutning og Whop-medlemskabs-ID. Dine kortoplysninger behandles udelukkende af Whop og når aldrig til os.</li><li>Supporthenvendelser: din e-mail og din besked, når du skriver til os.</li><li>Tekniske logge: login- og fejllogge (herunder IP-adresse), som vores hosting- og autentificeringsleverandører opbevarer i en kort periode.</li></ul>
+    </section>
+    <section>
+      <h2>Formål og retsgrundlag</h2>
+      <p>For at administrere din konto, synkronisere dine data på tværs af enheder, levere dit abonnement og yde support (opfyldelse af en kontrakt); for at holde tjenesten sikker og forhindre misbrug (legitim interesse); og ved overførsler til udlandet dit udtrykkelige samtykke (se nedenfor).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI har to dele. (1) Enhedskommandoer (tænd et lys, kør en scene, bed om status) behandles lokalt på din enhed og sendes ikke til skyen. (2) Beskeder, der ikke er enhedskommandoer, såsom almindelig samtale og spørgsmål, sendes til Cloudflare Workers AI for at blive besvaret; navne, typer og rum for dine enheder medsendes som kontekst. Dine kontooplysninger, din e-mail og din placering sendes ikke. Vi bruger ikke dette indhold til at træne AI-modeller; Cloudflare behandler det for at levere tjenesten. Hvis du foretrækker det, kan du kun bruge enhedskommandoer i chatten. Hvis du er logget ind, synkroniseres din chathistorik med din konto ligesom dine øvrige indstillinger.</p><p>Stemmeinput: når du trykker på mikrofonknappen i NEXUS AI-chatten, omdannes din tale til tekst. I en browser (Chrome/Edge) bruges browserens egen talegenkendelsestjeneste først; hvis den ikke kan nås, eller i desktop- og mobilapps, sendes den korte optagelse udelukkende til Cloudflare Workers AI (Whisper) til transskription, gemmes ikke og gemmes ikke på din konto. Transskriptionen placeres kun i chattens inputfelt og sendes ikke nogen steder hen, før du trykker på send.</p>
+      
+    </section>
+    <section>
+      <h2>Tjenesteudbydere og overførsler</h2>
+      <p>Disse udbyderes servere kan befinde sig uden for Türkiye. Ved at oprette en konto og/eller betale giver du udtrykkeligt samtykke til, at dine data overføres til dem og til udlandet; du kan trække samtykket tilbage ved at få din konto slettet.</p>
+      <ul><li>Supabase: autentificering, database og systemmails.</li><li>Cloudflare: hosting af hjemmesiden; Cloudflare Workers AI til svar i NEXUS AI-chatten og tale-til-tekst.</li><li>Whop: abonnementsbetalinger og fakturering.</li><li>Google: login med Google og (via Gmail) bekræftelses- og nulstillingsmails til adgangskode.</li><li>GitHub: distribution af installationsprogrammer.</li><li>Open-Meteo: by / omtrentlige koordinater til vejret.</li><li>OpenStreetMap / Nominatim: kort og stedsøgning; Unsplash: nogle reservebilleder.</li><li>BigDataCloud: bestemmelse af et stednavn ud fra koordinater (reserveløsning, når Nominatim ikke kan nås; bruges også, når du vælger dit hjems placering). Denne tjeneste modtager de nøjagtige koordinater for den placering, du vælger, eller som registreres.</li></ul>
+    </section>
+    <section>
+      <h2>Cookies og sporing</h2>
+      <p>Vores hjemmeside bruger ingen cookies og indeholder ingen analyse- eller reklamesporere. Appen gemmer dine indstillinger i din enheds lokale lager (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Opbevaring og sletning</h2>
+      <p>Vi opbevarer dine data, så længe din konto er åben. For at slette din konto og dine data skal du skrive til nexus.smarthome.app@gmail.com; vi gennemfører anmodningen inden for 30 dage (bortset fra abonnementsoplysninger, som vi er forpligtet til at opbevare ifølge loven). I appen skal du åbne Indstillinger, derefter Kontosikkerhed og bruge Slet min konto. Hvis serveren ikke kan gennemføre sletningen, fremgår det af skærmen.</p>
+      
+    </section>
+    <section>
+      <h2>Dine rettigheder</h2>
+      <p>I henhold til tyrkisk lov nr. 6698 (KVKK), art. 11 og, hvor det er relevant, GDPR kan du spørge, om dine data behandles, få indsigt i dem, berigtige dem, få dem slettet, gøre indsigelse mod behandling og anmode om dataportabilitet. Skriv til nexus.smarthome.app@gmail.com. Du kan også klage til den tyrkiske myndighed for beskyttelse af personoplysninger.</p>
+      
+    </section>
+    <section>
+      <h2>Sikkerhed</h2>
+      <p>Forbindelser er krypteret med TLS. Databasen håndhæver adgangskontrol på rækkeniveau: hver bruger kan kun læse og skrive sine egne data. Intet system er fuldstændig sikkert; vi anbefaler en stærk adgangskode og at holde dine enheder opdaterede.</p>
+      
+    </section>
+    <section>
+      <h2>Tredjepartsenheder</h2>
+      <p>Smarte enheder, du tilslutter (f.eks. Shelly, WLED, ESPHome), kan kommunikere med deres producenters servere i henhold til deres egne privatlivspolitikker. NEXUS deler ikke dine data med disse producenter.</p>
+      
+    </section>
+    <section>
+      <h2>Børn</h2>
+      <p>NEXUS er ikke rettet mod børn under 13 år, og vi indsamler ikke bevidst data om dem.</p>
+      
+    </section>
+    <section>
+      <h2>Ændringer</h2>
+      <p>Vi kan opdatere denne politik; vi vil meddele væsentlige ændringer i appen eller på hjemmesiden.</p>
+      
+    </section>
+    <section>
+      <h2>Kontakt</h2>
+      <p>Spørgsmål: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Dette dokument skal læses sammen med den gældende tekst på nexus-smarthome.pages.dev.<br/>Denne oversættelse er udelukkende stillet til rådighed for nemheds skyld. Hvis den afviger fra den tyrkiske eller engelske version, har den tyrkiske og engelske version forrang.</footer>
+</body>
+</html>

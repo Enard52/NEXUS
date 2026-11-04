@@ -1,0 +1,253 @@
+{
+ "code": "ms",
+ "updated": "Dikemas kini terakhir: 31 Oktober 2026",
+ "labels": {
+  "updated": "Dikemas kini terakhir",
+  "operatedBy": "Dikendalikan oleh",
+  "footer": "Dokumen ini dibaca bersama teks semasa di nexus-smarthome.pages.dev.",
+  "notice": "Terjemahan ini disediakan untuk kemudahan semata-mata. Jika terdapat perbezaan daripada versi Turki atau Inggeris, versi Turki dan Inggeris akan diguna pakai."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Dasar Privasi",
+   "intro": "NEXUS mengurus rumah pintar anda terutamanya dalam rangkaian tempatan anda sendiri. Dasar ini menjelaskan dengan jelas data yang kami proses, sebab dan lokasinya apabila anda mencipta akaun.",
+   "sections": [
+    {
+     "h": "Secara ringkas",
+     "ul": [
+      "Akaun diperlukan untuk menggunakan NEXUS. Arahan peranti masih berjalan dalam rangkaian tempatan anda; arahan tersebut tidak dihantar melalui awan vendor.",
+      "Tetapan, senarai peranti dan sejarah sembang anda disimpan dalam awan supaya sama pada setiap peranti.",
+      "Kami tidak menjual data anda, tidak menggunakannya untuk pengiklanan dan tidak memprofilkan anda.",
+      "Akses mikrofon adalah pilihan dan hanya digunakan apabila anda mengetik mikrofon dalam sembang NEXUS AI; rakaman ditranskripsikan dan tidak disimpan. Kamera hanya dibuka untuk mengimbas kod QR dan imej tidak sekali-kali meninggalkan peranti anda."
+     ]
+    },
+    {
+     "h": "Pengawal data",
+     "p": [
+      "Pengawal data ialah NEXUS. Hubungan: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Data yang kami proses",
+     "ul": [
+      "Akaun: alamat e-mel anda dan (jika diberikan) nama anda. Dengan log masuk Google, e-mel dan nama profil yang disediakan oleh Google. Kata laluan anda disimpan hanya sebagai cincang sehala dalam Supabase Auth; kami tidak dapat melihatnya.",
+      "Data aplikasi yang disegerakkan (hanya apabila log masuk): nama dan foto profil, tetapan tema/bahasa/unit, ahli isi rumah, babak dan automasi, kad kegemaran, sejarah sembang NEXUS AI dan pembilang penggunaan, log peristiwa, lokasi rumah/keutamaan cuaca dan senarai peranti yang anda tambah (nama, bilik, protokol, alamat rangkaian tempatan, keadaan terakhir).",
+      "Langganan (jika anda membeli NEXUS+): e-mel, pelan, status, tarikh tamat tempoh dan ID keahlian Whop. Butiran kad anda diproses hanya oleh Whop dan tidak sekali-kali sampai kepada kami.",
+      "Mesej sokongan: e-mel dan mesej anda apabila anda menulis kepada kami.",
+      "Log teknikal: log log masuk dan ralat (termasuk alamat IP) yang disimpan seketika oleh penyedia pengehosan dan pengesahan kami."
+     ]
+    },
+    {
+     "h": "Tujuan dan asas undang-undang",
+     "p": [
+      "Untuk mengurus akaun anda, menyegerakkan data anda merentasi peranti, menyediakan langganan anda dan memberikan sokongan (pelaksanaan kontrak); untuk memastikan perkhidmatan selamat dan mencegah penyalahgunaan (kepentingan sah); dan bagi pemindahan ke luar negara, persetujuan nyata anda (lihat di bawah)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI mempunyai dua bahagian. (1) Arahan peranti (menghidupkan lampu, menjalankan babak, meminta status) diproses secara setempat pada peranti anda dan tidak dihantar ke awan. (2) Mesej yang bukan arahan peranti, seperti sembang am dan soalan, dihantar ke Cloudflare Workers AI untuk dijawab; nama, jenis dan bilik peranti anda disertakan sebagai konteks. Butiran akaun, e-mel dan lokasi anda tidak dihantar. Kami tidak menggunakan kandungan ini untuk melatih model AI; Cloudflare memprosesnya untuk menyediakan perkhidmatan. Jika anda mahu, anda boleh menggunakan arahan peranti sahaja dalam sembang. Jika anda log masuk, sejarah sembang anda disegerakkan dengan akaun anda seperti tetapan anda yang lain.",
+      "Input suara: apabila anda mengetik butang mikrofon dalam sembang NEXUS AI, pertuturan anda ditukar kepada teks. Dalam pelayar (Chrome/Edge), perkhidmatan pengecaman pertuturan pelayar itu sendiri digunakan dahulu; jika tidak dapat dicapai, atau dalam aplikasi desktop dan mudah alih, rakaman pendek itu dihantar hanya kepada Cloudflare Workers AI (Whisper) untuk transkripsi, tidak disimpan dan tidak disimpan ke akaun anda. Transkrip hanya diletakkan dalam ruang input sembang dan tidak dihantar ke mana-mana sehingga anda menekan hantar."
+     ]
+    },
+    {
+     "h": "Penyedia perkhidmatan dan pemindahan",
+     "ul": [
+      "Supabase: pengesahan, pangkalan data dan e-mel sistem.",
+      "Cloudflare: pengehosan laman web; Cloudflare Workers AI untuk jawapan sembang NEXUS AI dan ucapan-ke-teks.",
+      "Whop: pembayaran langganan dan pengeluaran invois.",
+      "Google: log masuk Google dan (melalui Gmail) e-mel pengesahan / tetapan semula kata laluan.",
+      "GitHub: pengedaran pemasang.",
+      "Open-Meteo: bandar / koordinat anggaran untuk cuaca.",
+      "OpenStreetMap / Nominatim: peta dan carian tempat; Unsplash: sesetengah imej sandaran.",
+      "BigDataCloud: menyelesaikan nama tempat daripada koordinat (sandaran apabila Nominatim tidak dapat dicapai; turut digunakan apabila anda memilih lokasi rumah). Perkhidmatan ini menerima koordinat tepat bagi lokasi yang anda pilih atau yang dikesan."
+     ],
+     "p": [
+      "Pelayan penyedia ini mungkin berada di luar Türkiye. Dengan mencipta akaun dan/atau membayar, anda memberikan persetujuan nyata supaya data anda dipindahkan kepada mereka dan ke luar negara; anda boleh menarik balik persetujuan dengan meminta akaun anda dipadamkan."
+     ]
+    },
+    {
+     "h": "Kuki dan penjejakan",
+     "p": [
+      "Laman web kami tidak menggunakan kuki dan tidak mengandungi penjejak analitik atau pengiklanan. Aplikasi menyimpan tetapan anda dalam storan tempatan peranti anda (localStorage)."
+     ]
+    },
+    {
+     "h": "Pengekalan dan pemadaman",
+     "p": [
+      "Kami menyimpan data anda selagi akaun anda dibuka. Untuk memadamkan akaun dan data anda, tulis kepada nexus.smarthome.app@gmail.com; kami akan melengkapkan permintaan itu dalam tempoh 30 hari (kecuali rekod langganan yang wajib kami simpan mengikut undang-undang). Dalam aplikasi, buka Tetapan, kemudian Keselamatan akaun, dan gunakan Padam akaun saya. Jika pelayan tidak dapat menyelesaikannya, skrin akan memaklumkannya."
+     ]
+    },
+    {
+     "h": "Hak anda",
+     "p": [
+      "Di bawah Undang-undang Turki No. 6698 (KVKK) perkara 11 dan, jika berkenaan, GDPR, anda boleh bertanya sama ada data anda diproses, mengakses data itu, membetulkannya, memadamkannya, membantah pemprosesan dan meminta kebolehpindahan. Tulis kepada nexus.smarthome.app@gmail.com. Anda juga boleh membuat aduan kepada Pihak Berkuasa Perlindungan Data Peribadi Turki."
+     ]
+    },
+    {
+     "h": "Keselamatan",
+     "p": [
+      "Sambungan disulitkan dengan TLS. Pangkalan data menguatkuasakan kawalan akses peringkat baris: setiap pengguna hanya boleh membaca dan menulis datanya sendiri. Tiada sistem yang selamat sepenuhnya; kami mengesyorkan kata laluan yang kukuh dan memastikan peranti anda sentiasa dikemas kini."
+     ]
+    },
+    {
+     "h": "Peranti pihak ketiga",
+     "p": [
+      "Peranti pintar yang anda sambungkan (contohnya Shelly, WLED, ESPHome) mungkin berhubung dengan pelayan pengeluarnya mengikut dasar privasi masing-masing. NEXUS tidak berkongsi data anda dengan pengeluar tersebut."
+     ]
+    },
+    {
+     "h": "Kanak-kanak",
+     "p": [
+      "NEXUS tidak ditujukan kepada kanak-kanak di bawah umur 13 tahun dan kami tidak dengan sengaja mengumpul data mereka."
+     ]
+    },
+    {
+     "h": "Perubahan",
+     "p": [
+      "Kami boleh mengemas kini dasar ini; kami akan mengumumkan perubahan penting dalam aplikasi atau di laman web."
+     ]
+    },
+    {
+     "h": "Hubungi",
+     "p": [
+      "Pertanyaan: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Syarat Perkhidmatan",
+   "intro": "Dengan memuat turun, memasang atau menggunakan aplikasi NEXUS dan perkhidmatan berkaitan («Perkhidmatan»), anda menerima syarat ini. Perkhidmatan disediakan oleh NEXUS. Hubungan: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Lesen",
+     "p": [
+      "Kami memberikan anda lesen peribadi, tidak eksklusif, tidak boleh dipindahkan dan boleh dibatalkan untuk menggunakan perisian NEXUS pada peranti yang anda miliki atau kawal, untuk automasi rumah peribadi dan bukan komersial. Anda tidak boleh mengedarkan, menyewakan, menjual, mensublesenkan, atau melakukan kejuruteraan balik ke atasnya, atau menggunakannya untuk membina produk yang bersaing secara langsung dengan NEXUS. Komponen pihak ketiga tertakluk kepada lesen masing-masing."
+     ]
+    },
+    {
+     "h": "Akaun",
+     "p": [
+      "Penggunaan NEXUS memerlukan akaun. Anda bertanggungjawab memastikan butiran anda tepat dan kata laluan anda selamat, serta atas aktiviti di bawah akaun anda. Kami boleh menggantung atau menutup akaun yang melanggar syarat ini."
+     ]
+    },
+    {
+     "h": "Keselamatan rumah pintar",
+     "ul": [
+      "NEXUS ialah alat kemudahan; jangan bergantung kepadanya semata-mata untuk fungsi kritikal seperti kebakaran, gas, kesihatan atau keselamatan nyawa.",
+      "Anda bertanggungjawab atas arahan yang dihantar kepada peranti anda dan atas keselamatan rangkaian anda. Pastikan perisian tegar peranti dan tetapan penghala sentiasa dikemas kini.",
+      "Demi keselamatan, kunci tidak boleh dibuka daripada sembang."
+     ]
+    },
+    {
+     "h": "NEXUS AI dan kredit",
+     "p": [
+      "Pelan percuma termasuk 30 kredit NEXUS AI sehari; langganan NEXUS+ termasuk 2,000 sebulan. Kredit tidak boleh dipindahkan, tidak boleh ditukar dengan wang tunai dan ditetapkan semula pada penghujung tempoh. NEXUS AI boleh membuat kesilapan; menyemak keputusan adalah tanggungjawab anda."
+     ]
+    },
+    {
+     "h": "Langganan NEXUS+",
+     "ul": [
+      "Skop: NEXUS+ memberikan 2,000 kredit NEXUS AI sebulan dan membuka kunci penambahan peranti baharu melalui sambungan lanjutan (Home Assistant). Apabila langganan tamat, peranti yang telah anda tambah terus berfungsi; menambah peranti baharu melalui sambungan ini memerlukan NEXUS+ semula.",
+      "Pelan: Bulanan dan Tahunan, berharga dalam TRY untuk Türkiye dan dalam USD di tempat lain (pada masa ini Bulanan ₺499.99 / $11.99, Tahunan ₺3,999.99 / $89.99). Harga semasa dipaparkan semasa pembayaran; cukai mungkin ditambah semasa pembayaran. Pelan tahunan termasuk percubaan percuma 7 hari dan pelan bulanan percubaan percuma 3 hari.",
+      "Pembayaran diambil melalui Whop. Langganan diperbaharui secara automatik setiap tempoh sehingga anda membatalkannya; apabila percubaan tamat, harga pelan pilihan anda akan dicaj.",
+      "Anda boleh membatalkan pada bila-bila masa daripada Pengebilan dalam aplikasi atau daripada akaun anda di laman web ini. Pembatalan berkuat kuasa pada penghujung tempoh semasa.",
+      "Semasa pembayaran, gunakan alamat e-mel akaun NEXUS anda; langganan dipadankan dengan e-mel tersebut.",
+      "Kami mengumumkan perubahan harga sekurang-kurangnya 30 hari sebelum berkuat kuasa; perubahan itu tidak menjejaskan tempoh semasa.",
+      "Syarat bayaran balik terdapat dalam Dasar Bayaran Balik dan Pembatalan."
+     ]
+    },
+    {
+     "h": "Perubahan dan gangguan",
+     "p": [
+      "Kami boleh menambah baik, mengubah atau menggantung Perkhidmatan buat sementara waktu untuk penyelenggaraan. Kami tidak menjamin perkhidmatan yang tidak terganggu atau bebas ralat."
+     ]
+    },
+    {
+     "h": "Harta intelek",
+     "p": [
+      "Hak dalam perisian, reka bentuk, jenama dan kandungan NEXUS adalah milik pengendali. Syarat ini hanya memberikan anda lesen di atas."
+     ]
+    },
+    {
+     "h": "Had liabiliti",
+     "p": [
+      "Perisian disediakan «sebagaimana adanya». Setakat yang dibenarkan oleh undang-undang, kami tidak bertanggungjawab atas kerosakan tidak langsung (termasuk kehilangan data atau kerosakan pada peranti atau harta benda) yang timbul daripada penggunaan Perkhidmatan; jumlah liabiliti kami dihadkan kepada amaun yang anda bayar kepada kami dalam tempoh 12 bulan sebelumnya. Hak pengguna yang tidak boleh dihadkan oleh undang-undang tidak terjejas."
+     ]
+    },
+    {
+     "h": "Penamatan",
+     "p": [
+      "Anda boleh menutup akaun anda pada bila-bila masa (lihat Dasar Privasi). Kami boleh menamatkan akses anda jika anda melanggar syarat ini."
+     ]
+    },
+    {
+     "h": "Undang-undang yang mengawal",
+     "p": [
+      "Syarat ini ditadbir oleh undang-undang Republik Türkiye. Sebagai pengguna, anda mengekalkan hak untuk merujuk kepada jawatankuasa timbang tara pengguna dan mahkamah pengguna."
+     ]
+    },
+    {
+     "h": "Perubahan pada syarat ini",
+     "p": [
+      "Kami boleh mengemas kini syarat ini dan akan mengumumkan perubahan penting dalam aplikasi atau di laman web. Meneruskan penggunaan Perkhidmatan selepas perubahan bermakna anda menerima syarat baharu."
+     ]
+    },
+    {
+     "h": "Hubungi",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Dasar Bayaran Balik dan Pembatalan",
+   "intro": "Dasar ini menjelaskan syarat percubaan, pembatalan dan bayaran balik bagi langganan NEXUS+. Hak pengguna berkanun anda tidak terjejas.",
+   "sections": [
+    {
+     "h": "Percubaan percuma",
+     "p": [
+      "Pelan tahunan termasuk percubaan percuma 7 hari dan pelan bulanan percubaan percuma 3 hari. Jika anda membatalkan sebelum percubaan tamat, anda tidak dicaj. Jika anda tidak membatalkan, harga pelan pilihan anda akan dicaj apabila percubaan tamat."
+     ]
+    },
+    {
+     "h": "Cara membatalkan",
+     "ul": [
+      "Dalam aplikasi: Plus → Pengebilan → Batalkan pada penghujung tempoh.",
+      "Di laman web: log masuk → akaun → batalkan pada penghujung tempoh.",
+      "Pembatalan berkuat kuasa pada penghujung tempoh pengebilan semasa; anda mengekalkan ciri NEXUS+ sehingga ketika itu dan tidak dicaj untuk tempoh seterusnya."
+     ]
+    },
+    {
+     "h": "Bayaran balik",
+     "ul": [
+      "Anda boleh memohon bayaran balik dalam tempoh 14 hari selepas caj pertama anda tanpa perlu memberikan sebab; kami memulangkan bayaran penuh.",
+      "Bagi pembaharuan automatik, jika anda memohon dalam tempoh 3 hari dari tarikh pembaharuan, kami memulangkan caj tempoh tersebut.",
+      "Di luar tempoh ini, kami tidak memulangkan bayaran bagi tempoh yang telah digunakan, tetapi kami akan mempertimbangkan bayaran balik dalam kes yang wajar seperti perkhidmatan tidak dapat digunakan disebabkan kerosakan di pihak kami.",
+      "Kami boleh menolak permohonan jika kami mengesan penyalahgunaan (contohnya bayaran balik berulang pada akaun yang sama)."
+     ]
+    },
+    {
+     "h": "Cara memohon bayaran balik",
+     "p": [
+      "E-mel nexus.smarthome.app@gmail.com dengan e-mel akaun NEXUS anda dan permohonan anda. Bayaran balik yang diluluskan dikeluarkan melalui Whop kepada kaedah pembayaran asal; ia biasanya mengambil masa 5–10 hari bekerja untuk dipaparkan, bergantung pada bank anda."
+     ]
+    },
+    {
+     "h": "Hak berkanun",
+     "p": [
+      "Dasar ini tidak menghadkan hak berkanun anda di bawah Undang-undang Perlindungan Pengguna Turki No. 6502 dan Peraturan Kontrak Jarak Jauh (termasuk hak penarikan balik dan pengecualiannya)."
+     ]
+    },
+    {
+     "h": "Hubungi",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,253 @@
+{
+ "code": "sk",
+ "updated": "Naposledy aktualizované: 31. októbra 2026",
+ "labels": {
+  "updated": "Naposledy aktualizované",
+  "operatedBy": "Prevádzkovateľ",
+  "footer": "Tento dokument sa číta spolu s aktuálnym znením na nexus-smarthome.pages.dev.",
+  "notice": "Tento preklad slúži len na informačné účely. Ak sa líši od tureckej alebo anglickej verzie, rozhodujúce sú turecká a anglická verzia."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Zásady ochrany osobných údajov",
+   "intro": "NEXUS riadi vašu inteligentnú domácnosť predovšetkým vo vašej vlastnej lokálnej sieti. Tieto zásady jasne vysvetľujú, aké údaje spracúvame, keď si vytvoríte účet, prečo ich spracúvame a kde.",
+   "sections": [
+    {
+     "h": "Stručne",
+     "ul": [
+      "Na používanie NEXUS je potrebný účet. Príkazy pre zariadenia sa naďalej vykonávajú vo vašej lokálnej sieti; neposielajú sa cez cloud výrobcu.",
+      "Vaše nastavenia, zoznam zariadení a história četu sa ukladajú v cloude, aby boli rovnaké na každom zariadení.",
+      "Vaše údaje nepredávame, nepoužívame ich na reklamu ani vás na ich základe neprofilujeme.",
+      "Prístup k mikrofónu je voliteľný a používa sa iba vtedy, keď v čete NEXUS AI ťuknete na mikrofón; nahrávka sa prepíše na text a neukladá sa. Kamera sa otvorí iba na skenovanie QR kódov a obraz nikdy neopustí vaše zariadenie."
+     ]
+    },
+    {
+     "h": "Prevádzkovateľ údajov",
+     "p": [
+      "Prevádzkovateľom údajov je NEXUS. Kontakt: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Aké údaje spracúvame",
+     "ul": [
+      "Účet: vaša e-mailová adresa a (ak ste ho uviedli) vaše meno. Pri prihlásení cez Google e-mail a meno profilu, ktoré poskytne Google. Vaše heslo sa v Supabase Auth ukladá iba ako jednosmerný hash; nemôžeme ho vidieť.",
+      "Synchronizované údaje aplikácie (iba pri prihlásení): meno a fotografia profilu, nastavenia témy, jazyka a jednotiek, členovia domácnosti, scény a automatizácie, obľúbené karty, história četu NEXUS AI a počítadlo využitia, denník udalostí, preferencia domácej polohy a počasia a zoznam zariadení, ktoré ste pridali (názov, miestnosť, protokol, adresa v lokálnej sieti, posledný stav).",
+      "Predplatné (ak ste si kúpili NEXUS+): e-mail, plán, stav, koniec obdobia a ID členstva vo Whop. Údaje o vašej karte spracúva výhradne Whop a k nám sa nikdy nedostanú.",
+      "Správy podpore: váš e-mail a správa, keď nám napíšete.",
+      "Technické záznamy: záznamy o prihlásení a chybách (vrátane IP adresy), ktoré krátko uchovávajú naši poskytovatelia hostingu a autentifikácie."
+     ]
+    },
+    {
+     "h": "Účely a právne základy",
+     "p": [
+      "Na správu vášho účtu, synchronizáciu údajov medzi zariadeniami, poskytovanie predplatného a podporu (plnenie zmluvy); na zabezpečenie služby a predchádzanie zneužitiu (oprávnený záujem); a pri prenosoch do zahraničia na základe vášho výslovného súhlasu (pozri nižšie)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI má dve časti. (1) Príkazy pre zariadenia (zapnúť svetlo, spustiť scénu, opýtať sa na stav) sa spracúvajú lokálne na vašom zariadení a neodosielajú sa do cloudu. (2) Správy, ktoré nie sú príkazmi pre zariadenia, napríklad všeobecný čet a otázky, sa odosielajú do Cloudflare Workers AI na zodpovedanie; ako kontext sa pripájajú názvy, typy a miestnosti vašich zariadení. Údaje o vašom účte, e-mail a poloha sa neodosielajú. Tento obsah nepoužívame na trénovanie modelov AI; Cloudflare ho spracúva na poskytnutie služby. Ak chcete, môžete v čete používať iba príkazy pre zariadenia. Ak ste prihlásený, vaša história četu sa synchronizuje s vaším účtom ako vaše ostatné nastavenia.",
+      "Hlasový vstup: keď ťuknete na tlačidlo mikrofónu v čete NEXUS AI, vaša reč sa prevedie na text. V prehliadači (Chrome/Edge) sa najprv použije vlastná služba rozpoznávania reči prehliadača; ak je nedostupná alebo v aplikáciách pre počítač a mobil, krátka nahrávka sa odošle iba do Cloudflare Workers AI (Whisper) na prepis, neukladá sa a neukladá sa do vášho účtu. Prepis sa iba vloží do vstupného poľa četu a nikam sa neodošle, kým nestlačíte tlačidlo odoslať."
+     ]
+    },
+    {
+     "h": "Poskytovatelia služieb a prenosy",
+     "ul": [
+      "Supabase: autentifikácia, databáza a systémové e-maily.",
+      "Cloudflare: hosting webovej stránky; Cloudflare Workers AI pre odpovede četu NEXUS AI a prevod reči na text.",
+      "Whop: platby za predplatné a fakturácia.",
+      "Google: prihlásenie cez Google a (prostredníctvom Gmailu) e-maily na overenie / obnovenie hesla.",
+      "GitHub: distribúcia inštalátorov.",
+      "Open-Meteo: mesto / približné súradnice pre počasie.",
+      "OpenStreetMap / Nominatim: mapy a vyhľadávanie miest; Unsplash: niektoré záložné obrázky.",
+      "BigDataCloud: určenie názvu miesta zo súradníc (záložné riešenie, keď je Nominatim nedostupný; používa sa aj pri výbere vašej domácej polohy). Táto služba dostáva presné súradnice miesta, ktoré vyberiete alebo ktoré sa zistí."
+     ],
+     "p": [
+      "Servery týchto poskytovateľov sa môžu nachádzať mimo Türkiye. Vytvorením účtu a/alebo platbou udeľujete výslovný súhlas s prenosom vašich údajov k nim a do zahraničia; súhlas môžete odvolať vymazaním svojho účtu."
+     ]
+    },
+    {
+     "h": "Cookies a sledovanie",
+     "p": [
+      "Naša webová stránka nepoužíva žiadne cookies a neobsahuje analytické ani reklamné sledovače. Aplikácia uchováva vaše nastavenia v lokálnom úložisku vášho zariadenia (localStorage)."
+     ]
+    },
+    {
+     "h": "Uchovávanie a vymazanie",
+     "p": [
+      "Vaše údaje uchovávame, kým je váš účet otvorený. Ak chcete vymazať svoj účet a údaje, napíšte na nexus.smarthome.app@gmail.com; žiadosť vybavíme do 30 dní (okrem záznamov o predplatnom, ktoré musíme uchovávať podľa zákona). V aplikácii otvorte Nastavenia, potom Zabezpečenie účtu a použite Vymazať môj účet. Ak to server nedokáže dokončiť, obrazovka to oznámi."
+     ]
+    },
+    {
+     "h": "Vaše práva",
+     "p": [
+      "Podľa tureckého zákona č. 6698 (KVKK), čl. 11 a, ak sa uplatňuje, podľa GDPR sa môžete pýtať, či sa vaše údaje spracúvajú, získať k nim prístup, opraviť ich, dať ich vymazať, namietať proti spracúvaniu a požadovať prenosnosť. Píšte na nexus.smarthome.app@gmail.com. Môžete sa tiež sťažovať tureckému Úradu na ochranu osobných údajov."
+     ]
+    },
+    {
+     "h": "Bezpečnosť",
+     "p": [
+      "Pripojenia sú šifrované pomocou TLS. Databáza vynucuje riadenie prístupu na úrovni riadkov: každý používateľ môže čítať a zapisovať iba svoje vlastné údaje. Žiadny systém nie je dokonale bezpečný; odporúčame silné heslo a aktualizáciu vašich zariadení."
+     ]
+    },
+    {
+     "h": "Zariadenia tretích strán",
+     "p": [
+      "Inteligentné zariadenia, ktoré pripojíte (napr. Shelly, WLED, ESPHome), môžu komunikovať so servermi svojich výrobcov podľa ich vlastných zásad ochrany osobných údajov. NEXUS s týmito výrobcami vaše údaje nezdieľa."
+     ]
+    },
+    {
+     "h": "Deti",
+     "p": [
+      "NEXUS nie je určený deťom mladším ako 13 rokov a vedome o nich nezhromažďujeme údaje."
+     ]
+    },
+    {
+     "h": "Zmeny",
+     "p": [
+      "Tieto zásady môžeme aktualizovať; významné zmeny oznámime v aplikácii alebo na webovej stránke."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "Otázky: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Podmienky používania",
+   "intro": "Stiahnutím, inštaláciou alebo používaním aplikácie NEXUS a súvisiacich služieb („Služby“) tieto podmienky prijímate. Služby poskytuje NEXUS. Kontakt: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licencia",
+     "p": [
+      "Udeľujeme vám osobnú, nevýhradnú, neprenosnú a odvolateľnú licenciu na používanie softvéru NEXUS na zariadeniach, ktoré vlastníte alebo ovládate, na osobnú, nekomerčnú domácu automatizáciu. Nesmiete ho distribuovať, prenajímať, predávať, poskytovať v podlicencii, spätne analyzovať ani ho použiť na vytvorenie produktu, ktorý priamo konkuruje NEXUS. Súčasti tretích strán podliehajú vlastným licenciám."
+     ]
+    },
+    {
+     "h": "Účet",
+     "p": [
+      "Používanie NEXUS vyžaduje účet. Zodpovedáte za správnosť svojich údajov, za bezpečnosť svojho hesla a za činnosť pod svojím účtom. Účty, ktoré porušujú tieto podmienky, môžeme pozastaviť alebo zrušiť."
+     ]
+    },
+    {
+     "h": "Bezpečnosť inteligentnej domácnosti",
+     "ul": [
+      "NEXUS je pomôcka na zjednodušenie; nespoliehajte sa naň samotný pri kritických funkciách, ako je ochrana pred požiarom, plynom, zdravie alebo bezpečnosť života.",
+      "Zodpovedáte za príkazy odoslané vašim zariadeniam a za bezpečnosť vašej siete. Udržiavajte firmvér zariadení a nastavenia routera aktuálne.",
+      "Z bezpečnostných dôvodov sa zámky nedajú otvoriť z četu."
+     ]
+    },
+    {
+     "h": "NEXUS AI a kredity",
+     "p": [
+      "Bezplatný plán zahŕňa 30 kreditov NEXUS AI denne; predplatné NEXUS+ zahŕňa 2 000 mesačne. Kredity sú neprenosné, nemožno ich vymeniť za hotovosť a na konci obdobia sa obnovujú. NEXUS AI sa môže mýliť; kontrola výsledkov je vašou zodpovednosťou."
+     ]
+    },
+    {
+     "h": "Predplatné NEXUS+",
+     "ul": [
+      "Rozsah: NEXUS+ poskytuje 2 000 kreditov NEXUS AI mesačne a odomyká pridávanie nových zariadení prostredníctvom pokročilých pripojení (Home Assistant). Po skončení predplatného zariadenia, ktoré ste už pridali, naďalej fungujú; na pridávanie nových zariadení cez tieto pripojenia je opäť potrebné NEXUS+.",
+      "Plány: mesačný a ročný, s cenou v TRY pre Türkiye a v USD inde (v súčasnosti mesačný ₺499.99 / $11.99, ročný ₺3,999.99 / $89.99). Aktuálne ceny sa zobrazujú pri pokladni; pri pokladni sa môžu pripočítať dane. Ročný plán zahŕňa 7-dňovú bezplatnú skúšobnú dobu a mesačný plán 3-dňovú bezplatnú skúšobnú dobu.",
+      "Platby sa spracúvajú cez Whop. Predplatné sa automaticky obnovuje na každé obdobie, kým ho nezrušíte; po skončení skúšobnej doby sa účtuje cena vami zvoleného plánu.",
+      "Predplatné môžete kedykoľvek zrušiť v časti Fakturácia v aplikácii alebo vo svojom účte na tejto webovej stránke. Zrušenie nadobúda účinnosť na konci aktuálneho obdobia.",
+      "Pri pokladni použite e-mailovú adresu svojho účtu NEXUS; predplatné sa k nemu priradí podľa tohto e-mailu.",
+      "Zmeny cien oznamujeme najmenej 30 dní pred ich nadobudnutím účinnosti; neovplyvňujú aktuálne obdobie.",
+      "Podmienky vrátenia peňazí sú uvedené v Zásadách vrátenia peňazí a zrušenia."
+     ]
+    },
+    {
+     "h": "Zmeny a prerušenia",
+     "p": [
+      "Služby môžeme vylepšovať, meniť alebo ich z dôvodu údržby dočasne pozastaviť. Nezaručujeme nepretržitú ani bezchybnú službu."
+     ]
+    },
+    {
+     "h": "Duševné vlastníctvo",
+     "p": [
+      "Práva k softvéru, dizajnu, značke a obsahu NEXUS patria prevádzkovateľovi. Tieto podmienky vám udeľujú iba vyššie uvedenú licenciu."
+     ]
+    },
+    {
+     "h": "Obmedzenie zodpovednosti",
+     "p": [
+      "Softvér sa poskytuje „tak, ako je“. V maximálnom rozsahu povolenom zákonom nezodpovedáme za nepriame škody (vrátane straty údajov alebo poškodenia zariadení či majetku) vyplývajúce z používania Služieb; naša celková zodpovednosť je obmedzená sumou, ktorú ste nám zaplatili za predchádzajúcich 12 mesiacov. Práva spotrebiteľa, ktoré zákon nedovoľuje obmedziť, zostávajú nedotknuté."
+     ]
+    },
+    {
+     "h": "Ukončenie",
+     "p": [
+      "Svoj účet môžete kedykoľvek zrušiť (pozri Zásady ochrany osobných údajov). Váš prístup môžeme ukončiť, ak tieto podmienky porušíte."
+     ]
+    },
+    {
+     "h": "Rozhodné právo",
+     "p": [
+      "Tieto podmienky sa riadia právom Tureckej republiky. Ako spotrebiteľ si zachovávate právo obrátiť sa na spotrebiteľské arbitrážne komisie a spotrebiteľské súdy."
+     ]
+    },
+    {
+     "h": "Zmeny týchto podmienok",
+     "p": [
+      "Tieto podmienky môžeme aktualizovať a významné zmeny oznámime v aplikácii alebo na webovej stránke. Pokračovaním v používaní Služieb po zmene vyjadrujete súhlas s novými podmienkami."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Zásady vrátenia peňazí a zrušenia",
+   "intro": "Tieto zásady vysvetľujú podmienky skúšobnej doby, zrušenia a vrátenia peňazí pre predplatné NEXUS+. Vaše zákonné spotrebiteľské práva zostávajú nedotknuté.",
+   "sections": [
+    {
+     "h": "Bezplatná skúšobná doba",
+     "p": [
+      "Ročný plán zahŕňa 7-dňovú bezplatnú skúšobnú dobu a mesačný plán 3-dňovú bezplatnú skúšobnú dobu. Ak zrušíte pred skončením skúšobnej doby, nebude vám nič účtované. Ak nezrušíte, po skončení skúšobnej doby sa vám účtuje cena vami zvoleného plánu."
+     ]
+    },
+    {
+     "h": "Ako zrušiť",
+     "ul": [
+      "V aplikácii: Plus → Fakturácia → Zrušiť na konci obdobia.",
+      "Na webovej stránke: prihlásiť sa → účet → zrušiť na konci obdobia.",
+      "Zrušenie nadobúda účinnosť na konci aktuálneho fakturačného obdobia; funkcie NEXUS+ si do tej doby ponechávate a za ďalšie obdobie sa vám nič neúčtuje."
+     ]
+    },
+    {
+     "h": "Vrátenie peňazí",
+     "ul": [
+      "O vrátenie peňazí môžete požiadať do 14 dní od prvej platby bez udania dôvodu; vrátime vám celú platbu.",
+      "Pri automatických obnoveniach vám vrátime platbu za dané obdobie, ak o to požiadate do 3 dní od dátumu obnovenia.",
+      "Mimo týchto lehôt použité obdobia nevraciame, ale vrátenie peňazí zvážime v odôvodnených prípadoch, napríklad ak bola služba nepoužiteľná z dôvodu chyby na našej strane.",
+      "Žiadosť môžeme zamietnuť, ak zistíme zneužitie (napríklad opakované vrátenia peňazí na tom istom účte)."
+     ]
+    },
+    {
+     "h": "Ako požiadať o vrátenie peňazí",
+     "p": [
+      "Napíšte e-mail na nexus.smarthome.app@gmail.com s e-mailom vášho účtu NEXUS a vašou žiadosťou. Schválené vrátenia peňazí sa vykonávajú cez Whop na pôvodný spôsob platby; zvyčajne trvá 5–10 pracovných dní, kým sa zobrazia, v závislosti od vašej banky."
+     ]
+    },
+    {
+     "h": "Zákonné práva",
+     "p": [
+      "Tieto zásady neobmedzujú vaše zákonné práva podľa tureckého zákona o ochrane spotrebiteľa č. 6502 a nariadenia o zmluvách uzavretých na diaľku (vrátane práva na odstúpenie od zmluvy a jeho výnimiek)."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

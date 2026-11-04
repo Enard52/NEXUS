@@ -1,0 +1,253 @@
+{
+ "code": "hu",
+ "updated": "Utolsó frissítés: 2026. október 31.",
+ "labels": {
+  "updated": "Utolsó frissítés",
+  "operatedBy": "Üzemeltető",
+  "footer": "Ez a dokumentum a nexus-smarthome.pages.dev oldalon elérhető aktuális szöveggel együtt értelmezendő.",
+  "notice": "Ez a fordítás kizárólag tájékoztató jellegű. Ha eltér a török vagy az angol változattól, a török és az angol változat az irányadó."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Adatvédelmi irányelvek",
+   "intro": "A NEXUS az okosotthonát elsősorban a saját helyi hálózatán kezeli. Ez az irányelv érthetően ismerteti, hogy fiók létrehozásakor milyen adatokat dolgozunk fel, miért és hol.",
+   "sections": [
+    {
+     "h": "Röviden",
+     "ul": [
+      "A NEXUS használatához fiók szükséges. Az eszközparancsok továbbra is a helyi hálózaton futnak; nem a gyártó felhőszolgáltatásán keresztül kerülnek elküldésre.",
+      "A beállításait, az eszközlistát és a csevegési előzményeket a felhőben tároljuk, hogy minden eszközön azonosak legyenek.",
+      "Az adatait nem adjuk el, nem használjuk hirdetésekhez, és nem készítünk Önről profilt.",
+      "A mikrofonhozzáférés opcionális, és csak akkor használjuk, ha a NEXUS AI csevegésben megérinti a mikrofont; a felvételt átírjuk szöveggé, és nem tároljuk. A kamera kizárólag QR-kódok beolvasásához nyílik meg, és a kép soha nem hagyja el az eszközét."
+     ]
+    },
+    {
+     "h": "Adatkezelő",
+     "p": [
+      "Az adatkezelő a NEXUS. Kapcsolat: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Milyen adatokat dolgozunk fel",
+     "ul": [
+      "Fiók: az e-mail-címe és (megadás esetén) a neve. Google-fiókkal történő bejelentkezés esetén a Google által megadott e-mail-cím és profilnév. A jelszavát a Supabase Auth kizárólag egyirányú hash formájában tárolja; mi nem láthatjuk.",
+      "Szinkronizált alkalmazásadatok (csak bejelentkezett állapotban): profilnév és fénykép, téma-, nyelv- és mértékegység-beállítások, háztartási tagok, jelenetek és automatizálások, kedvenc kártyák, NEXUS AI csevegési előzmények és használati számláló, eseménynapló, az otthon helye/időjárási beállítás, valamint az Ön által hozzáadott eszközök listája (név, helyiség, protokoll, helyi hálózati cím, utolsó állapot).",
+      "Előfizetés (ha NEXUS+ csomagot vásárolt): e-mail-cím, csomag, állapot, az időszak vége és a Whop-tagsági azonosító. A bankkártyaadatait kizárólag a Whop dolgozza fel, és azok soha nem jutnak el hozzánk.",
+      "Ügyfélszolgálati üzenetek: az e-mail-címe és az üzenete, amikor írt nekünk.",
+      "Technikai naplók: bejelentkezési és hibanaplók (az IP-címet is beleértve), amelyeket tárhely- és hitelesítésszolgáltatóink rövid ideig őriznek."
+     ]
+    },
+    {
+     "h": "Az adatkezelés céljai és jogalapjai",
+     "p": [
+      "A fiókja kezelése, az adatai eszközök közötti szinkronizálása, az előfizetés biztosítása és az ügyfélszolgálat nyújtása (szerződés teljesítése); a szolgáltatás biztonságának fenntartása és a visszaélések megelőzése (jogos érdek); valamint a külföldre történő adattovábbítás esetén az Ön kifejezett hozzájárulása (lásd alább)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "A NEXUS AI két részből áll. (1) Az eszközparancsokat (lámpa felkapcsolása, jelenet futtatása, állapot lekérdezése) helyben, az Ön eszközén dolgozzuk fel, és nem küldjük el a felhőbe. (2) Azokat az üzeneteket, amelyek nem eszközparancsok, például az általános csevegést és a kérdéseket, megválaszolás céljából a Cloudflare Workers AI szolgáltatásnak küldjük el; ennek során az eszközei nevei, típusai és helyiségei kontextusként szerepelnek. A fiókadatait, az e-mail-címét és a tartózkodási helyét nem küldjük el. Ezt a tartalmat nem használjuk AI-modellek tanítására; a Cloudflare a szolgáltatás nyújtása érdekében dolgozza fel. Ha szeretné, a csevegésben kizárólag eszközparancsokat is használhat. Bejelentkezett állapotban a csevegési előzményei a többi beállításhoz hasonlóan szinkronizálódnak a fiókjával.",
+      "Hangbevitel: amikor a NEXUS AI csevegésben megérinti a mikrofon gombot, a beszédét szöveggé alakítjuk. Böngészőben (Chrome/Edge) először a böngésző saját beszédfelismerő szolgáltatását használjuk; ha az nem érhető el, illetve az asztali és mobilalkalmazásokban, a rövid felvételt kizárólag a Cloudflare Workers AI (Whisper) szolgáltatásnak küldjük át átíráshoz; a felvételt nem tároljuk, és nem mentjük a fiókjába. Az átirat csak a csevegés beviteli mezőjébe kerül, és addig nem kerül sehová elküldésre, amíg Ön a küldés gombot meg nem nyomja."
+     ]
+    },
+    {
+     "h": "Szolgáltatók és adattovábbítások",
+     "ul": [
+      "Supabase: hitelesítés, adatbázis és rendszer-e-mailek.",
+      "Cloudflare: a weboldal tárhelye; Cloudflare Workers AI a NEXUS AI csevegési válaszaihoz és a beszédfelismeréshez.",
+      "Whop: előfizetési fizetések és számlázás.",
+      "Google: Google-bejelentkezés és (Gmailen keresztül) megerősítő / jelszó-visszaállító e-mailek.",
+      "GitHub: telepítőfájlok terjesztése.",
+      "Open-Meteo: város / hozzávetőleges koordináták az időjáráshoz.",
+      "OpenStreetMap / Nominatim: térképek és helykeresés; Unsplash: néhány tartalék kép.",
+      "BigDataCloud: helynév meghatározása koordinátákból (tartalék megoldás, ha a Nominatim nem érhető el; akkor is használjuk, amikor Ön kiválasztja az otthona helyét). Ez a szolgáltatás megkapja az Ön által kiválasztott vagy az észlelt hely pontos koordinátáit."
+     ],
+     "p": [
+      "E szolgáltatók szerverei Türkiye területén kívül is lehetnek. A fiók létrehozásával és/vagy a fizetéssel kifejezetten hozzájárul ahhoz, hogy az adatait számukra és külföldre továbbítsák; a hozzájárulását a fiókja törlésének kérésével visszavonhatja."
+     ]
+    },
+    {
+     "h": "Sütik és nyomon követés",
+     "p": [
+      "A weboldalunk nem használ sütiket, és nem tartalmaz analitikai vagy hirdetési nyomkövetőket. Az alkalmazás a beállításait az eszköze helyi tárhelyén (localStorage) őrzi."
+     ]
+    },
+    {
+     "h": "Megőrzés és törlés",
+     "p": [
+      "Az adatait addig őrizzük, amíg a fiókja nyitva van. A fiókja és az adatai törléséhez írjon a nexus.smarthome.app@gmail.com címre; a kérést 30 napon belül teljesítjük (kivéve azokat az előfizetési nyilvántartásokat, amelyeket jogszabály alapján meg kell őriznünk). Az alkalmazásban nyissa meg a Beállítások, majd a Fiókbiztonság menüt, és használja a Fiókom törlése lehetőséget. Ha a szerver nem tudja befejezni a törlést, a képernyő ezt jelzi."
+     ]
+    },
+    {
+     "h": "Az Ön jogai",
+     "p": [
+      "A 6698. sz. török törvény (KVKK) 11. cikke alapján, illetve adott esetben a GDPR alapján kérheti annak tájékoztatást, hogy az adatait feldolgozzák-e, hozzáférhet azokhoz, kérheti helyesbítésüket vagy törlésüket, tiltakozhat az adatkezelés ellen, és kérheti az adathordozhatóságot. Írjon a nexus.smarthome.app@gmail.com címre. Panaszt a török személyes adatok védelméért felelős hatóságnál is tehet."
+     ]
+    },
+    {
+     "h": "Biztonság",
+     "p": [
+      "A kapcsolatokat TLS titkosítja. Az adatbázis sorszintű hozzáférés-szabályozást alkalmaz: minden felhasználó csak a saját adatait olvashatja és írhatja. Egyetlen rendszer sem tökéletesen biztonságos; erős jelszót és az eszközei naprakészen tartását javasoljuk."
+     ]
+    },
+    {
+     "h": "Harmadik felek eszközei",
+     "p": [
+      "Az Ön által csatlakoztatott okoseszközök (pl. Shelly, WLED, ESPHome) a saját adatvédelmi irányelveik szerint kommunikálhatnak a gyártóik szervereivel. A NEXUS nem osztja meg az adatait e gyártókkal."
+     ]
+    },
+    {
+     "h": "Gyermekek",
+     "p": [
+      "A NEXUS nem 13 év alatti gyermekeknek szól, és tudatosan nem gyűjtjük az adataikat."
+     ]
+    },
+    {
+     "h": "Módosítások",
+     "p": [
+      "Ezt az irányelvet frissíthetjük; a jelentős változásokról az alkalmazásban vagy a weboldalon tájékoztatunk."
+     ]
+    },
+    {
+     "h": "Kapcsolat",
+     "p": [
+      "Kérdések: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Felhasználási feltételek",
+   "intro": "A NEXUS alkalmazás és a kapcsolódó szolgáltatások („Szolgáltatások”) letöltésével, telepítésével vagy használatával Ön elfogadja ezeket a feltételeket. A Szolgáltatásokat a NEXUS nyújtja. Kapcsolat: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licenc",
+     "p": [
+      "Személyes, nem kizárólagos, át nem ruházható és visszavonható licencet adunk Önnek a NEXUS szoftver használatára az Ön tulajdonában lévő vagy az Ön által ellenőrzött eszközökön, személyes, nem kereskedelmi célú otthonautomatizálásra. Nem terjesztheti, nem bérbe adhatja, nem értékesítheti, nem adhat róla allicencet, nem fejtheti vissza, és nem használhatja olyan termék létrehozására, amely közvetlenül versenyez a NEXUS-szal. A harmadik felek összetevőire azok saját licencei vonatkoznak."
+     ]
+    },
+    {
+     "h": "Fiók",
+     "p": [
+      "A NEXUS használatához fiók szükséges. Ön felelős az adatai pontosságáért, a jelszava biztonságáért és a fiókja alatt végzett tevékenységekért. Felfüggeszthetjük vagy megszüntethetjük azokat a fiókokat, amelyek megsértik ezeket a feltételeket."
+     ]
+    },
+    {
+     "h": "Okosotthon-biztonság",
+     "ul": [
+      "A NEXUS kényelmi eszköz; ne támaszkodjon kizárólag rá olyan kritikus funkciók esetén, mint a tűz-, gáz-, egészség- vagy életvédelem.",
+      "Ön felelős az eszközeinek küldött parancsokért és a hálózata biztonságáért. Tartsa naprakészen az eszközök firmware-ét és az útválasztó beállításait.",
+      "Biztonsági okokból a zárak nem nyithatók ki a csevegésből."
+     ]
+    },
+    {
+     "h": "NEXUS AI és kreditek",
+     "p": [
+      "Az ingyenes csomag naponta 30 NEXUS AI kreditet tartalmaz; a NEXUS+ előfizetés havonta 2,000 kreditet. A kreditek át nem ruházhatók, készpénzre nem válthatók, és az időszak végén nullázódnak. A NEXUS AI hibázhat; az eredmények ellenőrzése az Ön felelőssége."
+     ]
+    },
+    {
+     "h": "NEXUS+ előfizetés",
+     "ul": [
+      "Terjedelem: a NEXUS+ havonta 2,000 NEXUS AI kreditet biztosít, és feloldja az új eszközök hozzáadását a speciális kapcsolatokon (Home Assistant) keresztül. Az előfizetés megszűnése után a már hozzáadott eszközei tovább működnek; új eszközök ilyen kapcsolatokon keresztüli hozzáadásához ismét NEXUS+ szükséges.",
+      "Csomagok: havi és éves, Türkiye esetében TRY-ban, egyebütt USD-ben meghatározott áron (jelenleg havi ₺499.99 / $11.99, éves ₺3,999.99 / $89.99). Az aktuális árak a fizetéskor jelennek meg; a fizetéskor adók is hozzáadódhatnak. Az éves csomag 7 napos ingyenes próbaidőszakot, a havi csomag 3 napos ingyenes próbaidőszakot tartalmaz.",
+      "A fizetések a Whopon keresztül történnek. Az előfizetés minden időszakban automatikusan megújul, amíg Ön le nem mondja; a próbaidőszak végén az Ön által választott csomag ára kerül felszámításra.",
+      "Az előfizetést bármikor lemondhatja az alkalmazás Számlázás menüjében vagy a weboldalon lévő fiókjából. A lemondás az aktuális időszak végén lép hatályba.",
+      "Fizetéskor a NEXUS-fiókja e-mail-címét használja; az előfizetést ehhez az e-mail-címhez rendeljük.",
+      "Az áremeléseket legalább 30 nappal a hatálybalépésük előtt közzétesszük; ezek nem érintik az aktuális időszakot.",
+      "A visszatérítés feltételeit a Visszatérítési és lemondási irányelvek tartalmazzák."
+     ]
+    },
+    {
+     "h": "Módosítások és megszakítások",
+     "p": [
+      "A Szolgáltatásokat karbantartás céljából fejleszthetjük, módosíthatjuk vagy átmenetileg felfüggeszthetjük. Nem vállalunk garanciát a megszakítás- és hibamentes szolgáltatásra."
+     ]
+    },
+    {
+     "h": "Szellemi tulajdon",
+     "p": [
+      "A NEXUS szoftverhez, dizájnhoz, márkához és tartalomhoz fűződő jogok az üzemeltetőt illetik. Ezek a feltételek Önnek kizárólag a fenti licencet biztosítják."
+     ]
+    },
+    {
+     "h": "A felelősség korlátozása",
+     "p": [
+      "A szoftvert „adott állapotában” nyújtjuk. A jogszabályok által megengedett legteljesebb mértékben nem felelünk a Szolgáltatások használatából eredő közvetett károkért (ideértve az adatvesztést, illetve az eszközökben vagy vagyontárgyakban keletkezett kárt); teljes felelősségünk az Ön által az előző 12 hónapban nekünk megfizetett összegre korlátozódik. A jogszabály által nem korlátozható fogyasztói jogokat ez nem érinti."
+     ]
+    },
+    {
+     "h": "Megszüntetés",
+     "p": [
+      "A fiókját bármikor bezárhatja (lásd az Adatvédelmi irányelveket). A hozzáférését megszüntethetjük, ha megsérti ezeket a feltételeket."
+     ]
+    },
+    {
+     "h": "Irányadó jog",
+     "p": [
+      "Ezekre a feltételekre a Török Köztársaság joga az irányadó. Fogyasztóként Ön megtartja azt a jogot, hogy a fogyasztói választottbírósági testületekhez és a fogyasztói bíróságokhoz forduljon."
+     ]
+    },
+    {
+     "h": "E feltételek módosítása",
+     "p": [
+      "Ezeket a feltételeket frissíthetjük, és a jelentős változásokról az alkalmazásban vagy a weboldalon tájékoztatunk. Ha a változás után tovább használja a Szolgáltatásokat, azzal elfogadja az új feltételeket."
+     ]
+    },
+    {
+     "h": "Kapcsolat",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Visszatérítési és lemondási irányelvek",
+   "intro": "Ez az irányelv a NEXUS+ előfizetés próbaidőszakára, lemondására és visszatérítésére vonatkozó feltételeket ismerteti. A jogszabályban biztosított fogyasztói jogait ez nem érinti.",
+   "sections": [
+    {
+     "h": "Ingyenes próbaidőszak",
+     "p": [
+      "Az éves csomag 7 napos ingyenes próbaidőszakot, a havi csomag 3 napos ingyenes próbaidőszakot tartalmaz. Ha a próbaidőszak vége előtt lemondja, nem kerül felszámításra díj. Ha nem mondja le, a próbaidőszak végén az Ön által választott csomag ára kerül felszámításra."
+     ]
+    },
+    {
+     "h": "Hogyan mondható le",
+     "ul": [
+      "Az alkalmazásban: Plus → Számlázás → Lemondás az időszak végén.",
+      "A weboldalon: bejelentkezés → fiók → lemondás az időszak végén.",
+      "A lemondás az aktuális számlázási időszak végén lép hatályba; addig megtartja a NEXUS+ funkcióit, és a következő időszakra nem kerül felszámításra díj."
+     ]
+    },
+    {
+     "h": "Visszatérítések",
+     "ul": [
+      "Az első terhelésétől számított 14 napon belül indoklás nélkül kérhet visszatérítést; a teljes befizetett összeget visszatérítjük.",
+      "Automatikus megújítás esetén, ha a megújítás napjától számított 3 napon belül kéri, az adott időszak díját visszatérítjük.",
+      "Ezen határidőkön kívül a már igénybe vett időszakokat nem térítjük vissza, de indokolt esetben, például ha a szolgáltatás a részünkről fennálló hiba miatt használhatatlan volt, megfontoljuk a visszatérítést.",
+      "A kérelmet elutasíthatjuk, ha visszaélést észlelünk (például ugyanazon a fiókon ismételt visszatérítések)."
+     ]
+    },
+    {
+     "h": "Hogyan kérhető visszatérítés",
+     "p": [
+      "Írjon a nexus.smarthome.app@gmail.com címre a NEXUS-fiókja e-mail-címével és a kérelmével. A jóváhagyott visszatérítéseket a Whopon keresztül az eredeti fizetési módra utaljuk vissza; a megjelenés általában 5–10 munkanapot vesz igénybe, a bankjától függően."
+     ]
+    },
+    {
+     "h": "Törvényes jogok",
+     "p": [
+      "Ez az irányelv nem korlátozza az Önt a fogyasztóvédelemről szóló 6502. sz. török törvény és a távollévők közötti szerződésekről szóló rendelet alapján megillető jogokat (ideértve az elállási jogot és annak kivételeit)."
+     ]
+    },
+    {
+     "h": "Kapcsolat",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

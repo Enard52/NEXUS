@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<title>Zásady ochrany osobných údajov — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Zásady ochrany osobných údajov</h1>
+  <p class="meta">Naposledy aktualizované: 31. októbra 2026 · Prevádzkovateľ: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS riadi vašu inteligentnú domácnosť predovšetkým vo vašej vlastnej lokálnej sieti. Tieto zásady jasne vysvetľujú, aké údaje spracúvame, keď si vytvoríte účet, prečo ich spracúvame a kde.</p>
+  
+    <section>
+      <h2>Stručne</h2>
+      
+      <ul><li>Na používanie NEXUS je potrebný účet. Príkazy pre zariadenia sa naďalej vykonávajú vo vašej lokálnej sieti; neposielajú sa cez cloud výrobcu.</li><li>Vaše nastavenia, zoznam zariadení a história četu sa ukladajú v cloude, aby boli rovnaké na každom zariadení.</li><li>Vaše údaje nepredávame, nepoužívame ich na reklamu ani vás na ich základe neprofilujeme.</li><li>Prístup k mikrofónu je voliteľný a používa sa iba vtedy, keď v čete NEXUS AI ťuknete na mikrofón; nahrávka sa prepíše na text a neukladá sa. Kamera sa otvorí iba na skenovanie QR kódov a obraz nikdy neopustí vaše zariadenie.</li></ul>
+    </section>
+    <section>
+      <h2>Prevádzkovateľ údajov</h2>
+      <p>Prevádzkovateľom údajov je NEXUS. Kontakt: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Aké údaje spracúvame</h2>
+      
+      <ul><li>Účet: vaša e-mailová adresa a (ak ste ho uviedli) vaše meno. Pri prihlásení cez Google e-mail a meno profilu, ktoré poskytne Google. Vaše heslo sa v Supabase Auth ukladá iba ako jednosmerný hash; nemôžeme ho vidieť.</li><li>Synchronizované údaje aplikácie (iba pri prihlásení): meno a fotografia profilu, nastavenia témy, jazyka a jednotiek, členovia domácnosti, scény a automatizácie, obľúbené karty, história četu NEXUS AI a počítadlo využitia, denník udalostí, preferencia domácej polohy a počasia a zoznam zariadení, ktoré ste pridali (názov, miestnosť, protokol, adresa v lokálnej sieti, posledný stav).</li><li>Predplatné (ak ste si kúpili NEXUS+): e-mail, plán, stav, koniec obdobia a ID členstva vo Whop. Údaje o vašej karte spracúva výhradne Whop a k nám sa nikdy nedostanú.</li><li>Správy podpore: váš e-mail a správa, keď nám napíšete.</li><li>Technické záznamy: záznamy o prihlásení a chybách (vrátane IP adresy), ktoré krátko uchovávajú naši poskytovatelia hostingu a autentifikácie.</li></ul>
+    </section>
+    <section>
+      <h2>Účely a právne základy</h2>
+      <p>Na správu vášho účtu, synchronizáciu údajov medzi zariadeniami, poskytovanie predplatného a podporu (plnenie zmluvy); na zabezpečenie služby a predchádzanie zneužitiu (oprávnený záujem); a pri prenosoch do zahraničia na základe vášho výslovného súhlasu (pozri nižšie).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI má dve časti. (1) Príkazy pre zariadenia (zapnúť svetlo, spustiť scénu, opýtať sa na stav) sa spracúvajú lokálne na vašom zariadení a neodosielajú sa do cloudu. (2) Správy, ktoré nie sú príkazmi pre zariadenia, napríklad všeobecný čet a otázky, sa odosielajú do Cloudflare Workers AI na zodpovedanie; ako kontext sa pripájajú názvy, typy a miestnosti vašich zariadení. Údaje o vašom účte, e-mail a poloha sa neodosielajú. Tento obsah nepoužívame na trénovanie modelov AI; Cloudflare ho spracúva na poskytnutie služby. Ak chcete, môžete v čete používať iba príkazy pre zariadenia. Ak ste prihlásený, vaša história četu sa synchronizuje s vaším účtom ako vaše ostatné nastavenia.</p><p>Hlasový vstup: keď ťuknete na tlačidlo mikrofónu v čete NEXUS AI, vaša reč sa prevedie na text. V prehliadači (Chrome/Edge) sa najprv použije vlastná služba rozpoznávania reči prehliadača; ak je nedostupná alebo v aplikáciách pre počítač a mobil, krátka nahrávka sa odošle iba do Cloudflare Workers AI (Whisper) na prepis, neukladá sa a neukladá sa do vášho účtu. Prepis sa iba vloží do vstupného poľa četu a nikam sa neodošle, kým nestlačíte tlačidlo odoslať.</p>
+      
+    </section>
+    <section>
+      <h2>Poskytovatelia služieb a prenosy</h2>
+      <p>Servery týchto poskytovateľov sa môžu nachádzať mimo Türkiye. Vytvorením účtu a/alebo platbou udeľujete výslovný súhlas s prenosom vašich údajov k nim a do zahraničia; súhlas môžete odvolať vymazaním svojho účtu.</p>
+      <ul><li>Supabase: autentifikácia, databáza a systémové e-maily.</li><li>Cloudflare: hosting webovej stránky; Cloudflare Workers AI pre odpovede četu NEXUS AI a prevod reči na text.</li><li>Whop: platby za predplatné a fakturácia.</li><li>Google: prihlásenie cez Google a (prostredníctvom Gmailu) e-maily na overenie / obnovenie hesla.</li><li>GitHub: distribúcia inštalátorov.</li><li>Open-Meteo: mesto / približné súradnice pre počasie.</li><li>OpenStreetMap / Nominatim: mapy a vyhľadávanie miest; Unsplash: niektoré záložné obrázky.</li><li>BigDataCloud: určenie názvu miesta zo súradníc (záložné riešenie, keď je Nominatim nedostupný; používa sa aj pri výbere vašej domácej polohy). Táto služba dostáva presné súradnice miesta, ktoré vyberiete alebo ktoré sa zistí.</li></ul>
+    </section>
+    <section>
+      <h2>Cookies a sledovanie</h2>
+      <p>Naša webová stránka nepoužíva žiadne cookies a neobsahuje analytické ani reklamné sledovače. Aplikácia uchováva vaše nastavenia v lokálnom úložisku vášho zariadenia (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Uchovávanie a vymazanie</h2>
+      <p>Vaše údaje uchovávame, kým je váš účet otvorený. Ak chcete vymazať svoj účet a údaje, napíšte na nexus.smarthome.app@gmail.com; žiadosť vybavíme do 30 dní (okrem záznamov o predplatnom, ktoré musíme uchovávať podľa zákona). V aplikácii otvorte Nastavenia, potom Zabezpečenie účtu a použite Vymazať môj účet. Ak to server nedokáže dokončiť, obrazovka to oznámi.</p>
+      
+    </section>
+    <section>
+      <h2>Vaše práva</h2>
+      <p>Podľa tureckého zákona č. 6698 (KVKK), čl. 11 a, ak sa uplatňuje, podľa GDPR sa môžete pýtať, či sa vaše údaje spracúvajú, získať k nim prístup, opraviť ich, dať ich vymazať, namietať proti spracúvaniu a požadovať prenosnosť. Píšte na nexus.smarthome.app@gmail.com. Môžete sa tiež sťažovať tureckému Úradu na ochranu osobných údajov.</p>
+      
+    </section>
+    <section>
+      <h2>Bezpečnosť</h2>
+      <p>Pripojenia sú šifrované pomocou TLS. Databáza vynucuje riadenie prístupu na úrovni riadkov: každý používateľ môže čítať a zapisovať iba svoje vlastné údaje. Žiadny systém nie je dokonale bezpečný; odporúčame silné heslo a aktualizáciu vašich zariadení.</p>
+      
+    </section>
+    <section>
+      <h2>Zariadenia tretích strán</h2>
+      <p>Inteligentné zariadenia, ktoré pripojíte (napr. Shelly, WLED, ESPHome), môžu komunikovať so servermi svojich výrobcov podľa ich vlastných zásad ochrany osobných údajov. NEXUS s týmito výrobcami vaše údaje nezdieľa.</p>
+      
+    </section>
+    <section>
+      <h2>Deti</h2>
+      <p>NEXUS nie je určený deťom mladším ako 13 rokov a vedome o nich nezhromažďujeme údaje.</p>
+      
+    </section>
+    <section>
+      <h2>Zmeny</h2>
+      <p>Tieto zásady môžeme aktualizovať; významné zmeny oznámime v aplikácii alebo na webovej stránke.</p>
+      
+    </section>
+    <section>
+      <h2>Kontakt</h2>
+      <p>Otázky: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Tento dokument sa číta spolu s aktuálnym znením na nexus-smarthome.pages.dev.<br/>Tento preklad slúži len na informačné účely. Ak sa líši od tureckej alebo anglickej verzie, rozhodujúce sú turecká a anglická verzia.</footer>
+</body>
+</html>

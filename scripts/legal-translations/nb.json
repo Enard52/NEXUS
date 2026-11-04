@@ -1,0 +1,253 @@
+{
+ "code": "nb",
+ "updated": "Sist oppdatert: 31. oktober 2026",
+ "labels": {
+  "updated": "Sist oppdatert",
+  "operatedBy": "Drevet av",
+  "footer": "Dette dokumentet leses sammen med gjeldende tekst på nexus-smarthome.pages.dev.",
+  "notice": "Denne oversettelsen er kun ment som en service. Dersom den avviker fra den tyrkiske eller engelske versjonen, gjelder den tyrkiske og den engelske versjonen."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Personvernerklæring",
+   "intro": "NEXUS styrer smarthjemmet ditt primært i ditt eget lokale nettverk. Denne erklæringen forklarer tydelig hvilke data vi behandler når du oppretter en konto, hvorfor vi gjør det og hvor.",
+   "sections": [
+    {
+     "h": "Kort fortalt",
+     "ul": [
+      "Det kreves en konto for å bruke NEXUS. Enhetskommandoer kjører fortsatt i ditt lokale nettverk; de sendes ikke via en leverandørs sky.",
+      "Innstillingene dine, enhetslisten og chathistorikken lagres i skyen slik at de er like på alle enheter.",
+      "Vi selger ikke dataene dine, bruker dem ikke til reklame og profilerer deg ikke.",
+      "Mikrofontilgang er valgfri og brukes bare når du trykker på mikrofonen i NEXUS AI-chatten; opptaket transkriberes og lagres ikke. Kameraet åpnes bare for å skanne QR-koder, og bildet forlater aldri enheten din."
+     ]
+    },
+    {
+     "h": "Behandlingsansvarlig",
+     "p": [
+      "Behandlingsansvarlig er NEXUS. Kontakt: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Hvilke data vi behandler",
+     "ul": [
+      "Konto: e-postadressen din og (hvis oppgitt) navnet ditt. Ved pålogging med Google, e-postadressen og profilnavnet Google oppgir. Passordet ditt lagres bare som en enveis-hash i Supabase Auth; vi kan ikke se det.",
+      "Synkroniserte appdata (bare når du er pålogget): profilnavn og bilde, innstillinger for tema, språk og enheter, husstandsmedlemmer, scener og automatiseringer, favorittkort, NEXUS AI-chathistorikk og bruksteller, hendelseslogg, hjemmeposisjon og værpreferanse samt listen over enheter du har lagt til (navn, rom, protokoll, adresse i lokalt nettverk, siste tilstand).",
+      "Abonnement (hvis du har kjøpt NEXUS+): e-post, plan, status, periodeslutt og Whop-medlemskaps-ID. Kortopplysningene dine behandles bare av Whop og når oss aldri.",
+      "Henvendelser til brukerstøtte: e-postadressen din og meldingen din når du skriver til oss.",
+      "Tekniske logger: påloggings- og feillogger (inkludert IP-adresse) som oppbevares kort tid av våre drifts- og autentiseringsleverandører."
+     ]
+    },
+    {
+     "h": "Formål og rettslig grunnlag",
+     "p": [
+      "For å administrere kontoen din, synkronisere dataene dine mellom enheter, levere abonnementet ditt og gi støtte (oppfyllelse av en avtale); for å holde tjenesten sikker og hindre misbruk (berettiget interesse); og for overføringer til utlandet, ditt uttrykkelige samtykke (se nedenfor)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI har to deler. (1) Enhetskommandoer (slå på et lys, kjøre en scene, be om status) behandles lokalt på enheten din og sendes ikke til skyen. (2) Meldinger som ikke er enhetskommandoer, for eksempel generell chat og spørsmål, sendes til Cloudflare Workers AI for å bli besvart; navn, typer og rom for enhetene dine tas med som kontekst. Kontoopplysningene, e-postadressen og posisjonen din sendes ikke. Vi bruker ikke dette innholdet til å trene AI-modeller; Cloudflare behandler det for å levere tjenesten. Hvis du foretrekker det, kan du bruke bare enhetskommandoer i chatten. Hvis du er pålogget, synkroniseres chathistorikken din med kontoen din på samme måte som de andre innstillingene dine.",
+      "Taleinndata: når du trykker på mikrofonknappen i NEXUS AI-chatten, gjøres talen din om til tekst. I en nettleser (Chrome/Edge) brukes nettleserens egen talegjenkjenningstjeneste først; hvis den ikke er tilgjengelig, eller i skrivebords- og mobilappene, sendes det korte opptaket bare til Cloudflare Workers AI (Whisper) for transkribering, lagres ikke og lagres ikke på kontoen din. Transkripsjonen settes bare inn i chatfeltet og sendes ingen steder før du trykker på send."
+     ]
+    },
+    {
+     "h": "Tjenesteleverandører og overføringer",
+     "ul": [
+      "Supabase: autentisering, database og system-e-poster.",
+      "Cloudflare: hosting av nettstedet; Cloudflare Workers AI for svar i NEXUS AI-chatten og tale-til-tekst.",
+      "Whop: abonnementsbetalinger og fakturering.",
+      "Google: pålogging med Google og (via Gmail) e-poster for verifisering / tilbakestilling av passord.",
+      "GitHub: distribusjon av installasjonsprogrammer.",
+      "Open-Meteo: by / omtrentlige koordinater for vær.",
+      "OpenStreetMap / Nominatim: kart og stedssøk; Unsplash: noen reservebilder.",
+      "BigDataCloud: oppslag av stedsnavn fra koordinater (reserveløsning når Nominatim ikke er tilgjengelig; brukes også når du velger hjemmeposisjon). Denne tjenesten mottar de nøyaktige koordinatene til stedet du velger eller som oppdages."
+     ],
+     "p": [
+      "Disse leverandørenes servere kan ligge utenfor Türkiye. Ved å opprette en konto og/eller betale gir du uttrykkelig samtykke til at dataene dine overføres til dem og til utlandet; du kan trekke tilbake samtykket ved å la kontoen din slettes."
+     ]
+    },
+    {
+     "h": "Informasjonskapsler og sporing",
+     "p": [
+      "Nettstedet vårt bruker ingen informasjonskapsler og inneholder ingen analyse- eller reklamesporere. Appen lagrer innstillingene dine i enhetens lokale lagring (localStorage)."
+     ]
+    },
+    {
+     "h": "Lagring og sletting",
+     "p": [
+      "Vi oppbevarer dataene dine så lenge kontoen din er åpen. For å slette kontoen og dataene dine, skriv til nexus.smarthome.app@gmail.com; vi fullfører forespørselen innen 30 dager (unntatt abonnementsopplysninger vi er pålagt å oppbevare ved lov). I appen åpner du Innstillinger og deretter Kontosikkerhet, og bruker Slett kontoen min. Hvis serveren ikke kan fullføre slettingen, sier skjermbildet fra om dette."
+     ]
+    },
+    {
+     "h": "Dine rettigheter",
+     "p": [
+      "I henhold til tyrkisk lov nr. 6698 (KVKK) art. 11 og, der det er relevant, GDPR, kan du be om opplysninger om dataene dine behandles, få innsyn i dem, få dem rettet, få dem slettet, protestere mot behandlingen og be om dataportabilitet. Skriv til nexus.smarthome.app@gmail.com. Du kan også klage til den tyrkiske datatilsynsmyndigheten for personopplysninger."
+     ]
+    },
+    {
+     "h": "Sikkerhet",
+     "p": [
+      "Tilkoblinger er kryptert med TLS. Databasen håndhever tilgangskontroll på radnivå: hver bruker kan bare lese og skrive sine egne data. Intet system er helt sikkert; vi anbefaler et sterkt passord og at du holder enhetene dine oppdatert."
+     ]
+    },
+    {
+     "h": "Tredjepartsenheter",
+     "p": [
+      "Smarte enheter du kobler til (f.eks. Shelly, WLED, ESPHome) kan kommunisere med produsentenes servere i henhold til deres egne personvernerklæringer. NEXUS deler ikke dataene dine med disse produsentene."
+     ]
+    },
+    {
+     "h": "Barn",
+     "p": [
+      "NEXUS er ikke rettet mot barn under 13 år, og vi samler ikke bevisst inn data om dem."
+     ]
+    },
+    {
+     "h": "Endringer",
+     "p": [
+      "Vi kan oppdatere denne erklæringen; vi kunngjør vesentlige endringer i appen eller på nettstedet."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "Spørsmål: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Brukervilkår",
+   "intro": "Ved å laste ned, installere eller bruke NEXUS-appen og tilhørende tjenester («Tjenestene») aksepterer du disse vilkårene. Tjenestene leveres av NEXUS. Kontakt: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Lisens",
+     "p": [
+      "Vi gir deg en personlig, ikke-eksklusiv, ikke-overdragbar og tilbakekallelig lisens til å bruke NEXUS-programvaren på enheter du eier eller kontrollerer, til personlig, ikke-kommersiell hjemmeautomatisering. Du har ikke lov til å distribuere, leie ut, selge, underlisensiere eller foreta omvendt utvikling av programvaren, eller bruke den til å bygge et produkt som direkte konkurrerer med NEXUS. Komponenter fra tredjeparter er underlagt sine egne lisenser."
+     ]
+    },
+    {
+     "h": "Konto",
+     "p": [
+      "Bruk av NEXUS krever en konto. Du er ansvarlig for å holde opplysningene dine korrekte og passordet ditt sikkert, og for aktivitet under kontoen din. Vi kan suspendere eller stenge kontoer som bryter disse vilkårene."
+     ]
+    },
+    {
+     "h": "Sikkerhet i smarthjemmet",
+     "ul": [
+      "NEXUS er et bekvemmelighetsverktøy; ikke stol på det alene for kritiske funksjoner som brann, gass, helse eller livssikkerhet.",
+      "Du er ansvarlig for kommandoene som sendes til enhetene dine og for sikkerheten i nettverket ditt. Hold enhetenes fastvare og ruterinnstillingene oppdatert.",
+      "Av sikkerhetshensyn kan låser ikke åpnes fra chatten."
+     ]
+    },
+    {
+     "h": "NEXUS AI og kreditter",
+     "p": [
+      "Den gratis planen inkluderer 30 NEXUS AI-kreditter per dag; et NEXUS+-abonnement inkluderer 2,000 per måned. Kreditter kan ikke overdras, kan ikke byttes mot kontanter og nullstilles ved slutten av perioden. NEXUS AI kan gjøre feil; det er ditt ansvar å kontrollere resultatene."
+     ]
+    },
+    {
+     "h": "NEXUS+-abonnement",
+     "ul": [
+      "Omfang: NEXUS+ gir 2,000 NEXUS AI-kreditter per måned og låser opp muligheten til å legge til nye enheter via de avanserte tilkoblingene (Home Assistant). Når abonnementet avsluttes, fungerer enheter du allerede har lagt til videre; for å legge til nye enheter via disse tilkoblingene trengs NEXUS+ igjen.",
+      "Planer: Månedlig og Årlig, priset i TRY for Türkiye og i USD ellers (for øyeblikket Månedlig ₺499.99 / $11.99, Årlig ₺3,999.99 / $89.99). Gjeldende priser vises ved kassen; skatter og avgifter kan komme i tillegg ved kassen. Den årlige planen inkluderer en gratis prøveperiode på 7 dager og den månedlige planen en gratis prøveperiode på 3 dager.",
+      "Betalinger behandles via Whop. Abonnementet fornyes automatisk hver periode til du sier det opp; når prøveperioden er over, belastes prisen for den valgte planen.",
+      "Du kan når som helst si opp fra Fakturering i appen eller fra kontoen din på dette nettstedet. Oppsigelsen trer i kraft ved slutten av inneværende periode.",
+      "Bruk e-postadressen til NEXUS-kontoen din ved kassen; abonnementet knyttes til den e-postadressen.",
+      "Vi kunngjør prisendringer minst 30 dager før de trer i kraft; de påvirker ikke inneværende periode.",
+      "Vilkårene for refusjon står i Retningslinjer for refusjon og oppsigelse."
+     ]
+    },
+    {
+     "h": "Endringer og avbrudd",
+     "p": [
+      "Vi kan forbedre, endre eller midlertidig stanse Tjenestene for vedlikehold. Vi garanterer ikke uavbrutt eller feilfri tjeneste."
+     ]
+    },
+    {
+     "h": "Immaterielle rettigheter",
+     "p": [
+      "Rettighetene til NEXUS-programvaren, designet, merkevaren og innholdet tilhører operatøren. Disse vilkårene gir deg bare lisensen ovenfor."
+     ]
+    },
+    {
+     "h": "Ansvarsbegrensning",
+     "p": [
+      "Programvaren leveres «som den er». I den grad loven tillater det er vi ikke ansvarlige for indirekte tap (inkludert tap av data eller skade på enheter eller eiendom) som oppstår ved bruk av Tjenestene; vårt samlede ansvar er begrenset til beløpet du har betalt oss de siste 12 månedene. Forbrukerrettigheter som ikke kan begrenses ved lov, påvirkes ikke."
+     ]
+    },
+    {
+     "h": "Opphør",
+     "p": [
+      "Du kan når som helst stenge kontoen din (se Personvernerklæringen). Vi kan avslutte tilgangen din hvis du bryter disse vilkårene."
+     ]
+    },
+    {
+     "h": "Lovvalg",
+     "p": [
+      "Disse vilkårene reguleres av lovene i Republikken Türkiye. Som forbruker beholder du retten til å henvende deg til forbrukerklagenemnder og forbrukerdomstoler."
+     ]
+    },
+    {
+     "h": "Endringer i disse vilkårene",
+     "p": [
+      "Vi kan oppdatere disse vilkårene og vil kunngjøre vesentlige endringer i appen eller på nettstedet. Ved å fortsette å bruke Tjenestene etter en endring aksepterer du de nye vilkårene."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Retningslinjer for refusjon og oppsigelse",
+   "intro": "Disse retningslinjene forklarer vilkårene for prøveperiode, oppsigelse og refusjon for NEXUS+-abonnementet. Dine lovfestede forbrukerrettigheter påvirkes ikke.",
+   "sections": [
+    {
+     "h": "Gratis prøveperiode",
+     "p": [
+      "Den årlige planen inkluderer en gratis prøveperiode på 7 dager og den månedlige planen en gratis prøveperiode på 3 dager. Hvis du sier opp før prøveperioden er over, blir du ikke belastet. Hvis du ikke sier opp, belastes prisen for den valgte planen når prøveperioden er over."
+     ]
+    },
+    {
+     "h": "Slik sier du opp",
+     "ul": [
+      "I appen: Plus → Fakturering → Si opp ved periodeslutt.",
+      "På nettstedet: logg inn → konto → si opp ved periodeslutt.",
+      "Oppsigelsen trer i kraft ved slutten av inneværende faktureringsperiode; du beholder NEXUS+-funksjonene til da og blir ikke belastet for neste periode."
+     ]
+    },
+    {
+     "h": "Refusjon",
+     "ul": [
+      "Du kan be om refusjon innen 14 dager etter den første belastningen uten å oppgi noen grunn; vi refunderer hele betalingen.",
+      "Ved automatiske fornyelser refunderer vi belastningen for den perioden hvis du ber om det innen 3 dager etter fornyelsesdatoen.",
+      "Utenfor disse fristene refunderer vi ikke perioder som er brukt, men vi vil vurdere refusjon i begrunnede tilfeller, for eksempel hvis tjenesten ikke har vært brukbar på grunn av en feil hos oss.",
+      "Vi kan avslå en forespørsel hvis vi oppdager misbruk (for eksempel gjentatte refusjoner på samme konto)."
+     ]
+    },
+    {
+     "h": "Slik ber du om refusjon",
+     "p": [
+      "Send e-post til nexus.smarthome.app@gmail.com med e-postadressen til NEXUS-kontoen din og forespørselen din. Godkjente refusjoner utbetales via Whop til den opprinnelige betalingsmåten; det tar vanligvis 5–10 virkedager før beløpet vises, avhengig av banken din."
+     ]
+    },
+    {
+     "h": "Lovfestede rettigheter",
+     "p": [
+      "Disse retningslinjene begrenser ikke dine lovfestede rettigheter etter den tyrkiske forbrukervernloven nr. 6502 og forskriften om fjernsalgsavtaler (inkludert angreretten og unntakene fra den)."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

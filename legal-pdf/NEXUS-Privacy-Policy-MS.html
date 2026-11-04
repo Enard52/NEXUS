@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"/>
+<title>Dasar Privasi — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Dasar Privasi</h1>
+  <p class="meta">Dikemas kini terakhir: 31 Oktober 2026 · Dikendalikan oleh: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS mengurus rumah pintar anda terutamanya dalam rangkaian tempatan anda sendiri. Dasar ini menjelaskan dengan jelas data yang kami proses, sebab dan lokasinya apabila anda mencipta akaun.</p>
+  
+    <section>
+      <h2>Secara ringkas</h2>
+      
+      <ul><li>Akaun diperlukan untuk menggunakan NEXUS. Arahan peranti masih berjalan dalam rangkaian tempatan anda; arahan tersebut tidak dihantar melalui awan vendor.</li><li>Tetapan, senarai peranti dan sejarah sembang anda disimpan dalam awan supaya sama pada setiap peranti.</li><li>Kami tidak menjual data anda, tidak menggunakannya untuk pengiklanan dan tidak memprofilkan anda.</li><li>Akses mikrofon adalah pilihan dan hanya digunakan apabila anda mengetik mikrofon dalam sembang NEXUS AI; rakaman ditranskripsikan dan tidak disimpan. Kamera hanya dibuka untuk mengimbas kod QR dan imej tidak sekali-kali meninggalkan peranti anda.</li></ul>
+    </section>
+    <section>
+      <h2>Pengawal data</h2>
+      <p>Pengawal data ialah NEXUS. Hubungan: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Data yang kami proses</h2>
+      
+      <ul><li>Akaun: alamat e-mel anda dan (jika diberikan) nama anda. Dengan log masuk Google, e-mel dan nama profil yang disediakan oleh Google. Kata laluan anda disimpan hanya sebagai cincang sehala dalam Supabase Auth; kami tidak dapat melihatnya.</li><li>Data aplikasi yang disegerakkan (hanya apabila log masuk): nama dan foto profil, tetapan tema/bahasa/unit, ahli isi rumah, babak dan automasi, kad kegemaran, sejarah sembang NEXUS AI dan pembilang penggunaan, log peristiwa, lokasi rumah/keutamaan cuaca dan senarai peranti yang anda tambah (nama, bilik, protokol, alamat rangkaian tempatan, keadaan terakhir).</li><li>Langganan (jika anda membeli NEXUS+): e-mel, pelan, status, tarikh tamat tempoh dan ID keahlian Whop. Butiran kad anda diproses hanya oleh Whop dan tidak sekali-kali sampai kepada kami.</li><li>Mesej sokongan: e-mel dan mesej anda apabila anda menulis kepada kami.</li><li>Log teknikal: log log masuk dan ralat (termasuk alamat IP) yang disimpan seketika oleh penyedia pengehosan dan pengesahan kami.</li></ul>
+    </section>
+    <section>
+      <h2>Tujuan dan asas undang-undang</h2>
+      <p>Untuk mengurus akaun anda, menyegerakkan data anda merentasi peranti, menyediakan langganan anda dan memberikan sokongan (pelaksanaan kontrak); untuk memastikan perkhidmatan selamat dan mencegah penyalahgunaan (kepentingan sah); dan bagi pemindahan ke luar negara, persetujuan nyata anda (lihat di bawah).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI mempunyai dua bahagian. (1) Arahan peranti (menghidupkan lampu, menjalankan babak, meminta status) diproses secara setempat pada peranti anda dan tidak dihantar ke awan. (2) Mesej yang bukan arahan peranti, seperti sembang am dan soalan, dihantar ke Cloudflare Workers AI untuk dijawab; nama, jenis dan bilik peranti anda disertakan sebagai konteks. Butiran akaun, e-mel dan lokasi anda tidak dihantar. Kami tidak menggunakan kandungan ini untuk melatih model AI; Cloudflare memprosesnya untuk menyediakan perkhidmatan. Jika anda mahu, anda boleh menggunakan arahan peranti sahaja dalam sembang. Jika anda log masuk, sejarah sembang anda disegerakkan dengan akaun anda seperti tetapan anda yang lain.</p><p>Input suara: apabila anda mengetik butang mikrofon dalam sembang NEXUS AI, pertuturan anda ditukar kepada teks. Dalam pelayar (Chrome/Edge), perkhidmatan pengecaman pertuturan pelayar itu sendiri digunakan dahulu; jika tidak dapat dicapai, atau dalam aplikasi desktop dan mudah alih, rakaman pendek itu dihantar hanya kepada Cloudflare Workers AI (Whisper) untuk transkripsi, tidak disimpan dan tidak disimpan ke akaun anda. Transkrip hanya diletakkan dalam ruang input sembang dan tidak dihantar ke mana-mana sehingga anda menekan hantar.</p>
+      
+    </section>
+    <section>
+      <h2>Penyedia perkhidmatan dan pemindahan</h2>
+      <p>Pelayan penyedia ini mungkin berada di luar Türkiye. Dengan mencipta akaun dan/atau membayar, anda memberikan persetujuan nyata supaya data anda dipindahkan kepada mereka dan ke luar negara; anda boleh menarik balik persetujuan dengan meminta akaun anda dipadamkan.</p>
+      <ul><li>Supabase: pengesahan, pangkalan data dan e-mel sistem.</li><li>Cloudflare: pengehosan laman web; Cloudflare Workers AI untuk jawapan sembang NEXUS AI dan ucapan-ke-teks.</li><li>Whop: pembayaran langganan dan pengeluaran invois.</li><li>Google: log masuk Google dan (melalui Gmail) e-mel pengesahan / tetapan semula kata laluan.</li><li>GitHub: pengedaran pemasang.</li><li>Open-Meteo: bandar / koordinat anggaran untuk cuaca.</li><li>OpenStreetMap / Nominatim: peta dan carian tempat; Unsplash: sesetengah imej sandaran.</li><li>BigDataCloud: menyelesaikan nama tempat daripada koordinat (sandaran apabila Nominatim tidak dapat dicapai; turut digunakan apabila anda memilih lokasi rumah). Perkhidmatan ini menerima koordinat tepat bagi lokasi yang anda pilih atau yang dikesan.</li></ul>
+    </section>
+    <section>
+      <h2>Kuki dan penjejakan</h2>
+      <p>Laman web kami tidak menggunakan kuki dan tidak mengandungi penjejak analitik atau pengiklanan. Aplikasi menyimpan tetapan anda dalam storan tempatan peranti anda (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Pengekalan dan pemadaman</h2>
+      <p>Kami menyimpan data anda selagi akaun anda dibuka. Untuk memadamkan akaun dan data anda, tulis kepada nexus.smarthome.app@gmail.com; kami akan melengkapkan permintaan itu dalam tempoh 30 hari (kecuali rekod langganan yang wajib kami simpan mengikut undang-undang). Dalam aplikasi, buka Tetapan, kemudian Keselamatan akaun, dan gunakan Padam akaun saya. Jika pelayan tidak dapat menyelesaikannya, skrin akan memaklumkannya.</p>
+      
+    </section>
+    <section>
+      <h2>Hak anda</h2>
+      <p>Di bawah Undang-undang Turki No. 6698 (KVKK) perkara 11 dan, jika berkenaan, GDPR, anda boleh bertanya sama ada data anda diproses, mengakses data itu, membetulkannya, memadamkannya, membantah pemprosesan dan meminta kebolehpindahan. Tulis kepada nexus.smarthome.app@gmail.com. Anda juga boleh membuat aduan kepada Pihak Berkuasa Perlindungan Data Peribadi Turki.</p>
+      
+    </section>
+    <section>
+      <h2>Keselamatan</h2>
+      <p>Sambungan disulitkan dengan TLS. Pangkalan data menguatkuasakan kawalan akses peringkat baris: setiap pengguna hanya boleh membaca dan menulis datanya sendiri. Tiada sistem yang selamat sepenuhnya; kami mengesyorkan kata laluan yang kukuh dan memastikan peranti anda sentiasa dikemas kini.</p>
+      
+    </section>
+    <section>
+      <h2>Peranti pihak ketiga</h2>
+      <p>Peranti pintar yang anda sambungkan (contohnya Shelly, WLED, ESPHome) mungkin berhubung dengan pelayan pengeluarnya mengikut dasar privasi masing-masing. NEXUS tidak berkongsi data anda dengan pengeluar tersebut.</p>
+      
+    </section>
+    <section>
+      <h2>Kanak-kanak</h2>
+      <p>NEXUS tidak ditujukan kepada kanak-kanak di bawah umur 13 tahun dan kami tidak dengan sengaja mengumpul data mereka.</p>
+      
+    </section>
+    <section>
+      <h2>Perubahan</h2>
+      <p>Kami boleh mengemas kini dasar ini; kami akan mengumumkan perubahan penting dalam aplikasi atau di laman web.</p>
+      
+    </section>
+    <section>
+      <h2>Hubungi</h2>
+      <p>Pertanyaan: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Dokumen ini dibaca bersama teks semasa di nexus-smarthome.pages.dev.<br/>Terjemahan ini disediakan untuk kemudahan semata-mata. Jika terdapat perbezaan daripada versi Turki atau Inggeris, versi Turki dan Inggeris akan diguna pakai.</footer>
+</body>
+</html>

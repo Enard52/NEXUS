@@ -1,0 +1,253 @@
+{
+ "code": "sq",
+ "updated": "Përditësuar së fundi: 31 tetor 2026",
+ "labels": {
+  "updated": "Përditësuar së fundi",
+  "operatedBy": "Operohet nga",
+  "footer": "Ky dokument lexohet së bashku me tekstin aktual në nexus-smarthome.pages.dev.",
+  "notice": "Ky përkthim ofrohet vetëm për lehtësi. Nëse ndryshon nga versioni turk ose anglez, mbizotërojnë versionet turk dhe anglez."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Politika e Privatësisë",
+   "intro": "NEXUS e menaxhon shtëpinë tuaj inteligjente kryesisht në rrjetin tuaj lokal. Kjo politikë shpjegon qartë se çfarë të dhënash përpunojmë kur krijoni një llogari, pse i përpunojmë dhe ku.",
+   "sections": [
+    {
+     "h": "Shkurtimisht",
+     "ul": [
+      "Për të përdorur NEXUS kërkohet një llogari. Komandat e pajisjeve vazhdojnë të ekzekutohen në rrjetin tuaj lokal; ato nuk dërgohen përmes cloud-it të prodhuesit.",
+      "Cilësimet tuaja, lista e pajisjeve dhe historiku i bisedës ruhen në cloud, në mënyrë që të përputhen në çdo pajisje.",
+      "Nuk i shesim të dhënat tuaja, nuk i përdorim për reklama dhe nuk ju profilizojmë.",
+      "Qasja në mikrofon është opsionale dhe përdoret vetëm kur prekni mikrofonin në bisedën e NEXUS AI; regjistrimi transkriptohet dhe nuk ruhet. Kamera hapet vetëm për të skanuar kodet QR dhe imazhi nuk del kurrë nga pajisja juaj."
+     ]
+    },
+    {
+     "h": "Kontrolluesi i të dhënave",
+     "p": [
+      "Kontrolluesi i të dhënave është NEXUS. Kontakti: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Çfarë të dhënash përpunojmë",
+     "ul": [
+      "Llogaria: adresa juaj e emailit dhe (nëse e keni dhënë) emri juaj. Me hyrjen përmes Google, emaili dhe emri i profilit që jep Google. Fjalëkalimi juaj ruhet në Supabase Auth vetëm si hash njëkahësh; ne nuk mund ta shohim.",
+      "Të dhënat e sinkronizuara të aplikacionit (vetëm kur jeni i identifikuar): emri dhe fotoja e profilit, cilësimet e temës, gjuhës dhe njësive, anëtarët e familjes, skenat dhe automatizimet, kartat e preferuara, historiku i bisedës me NEXUS AI dhe numëruesi i përdorimit, regjistri i ngjarjeve, preferenca e vendndodhjes së shtëpisë/motit dhe lista e pajisjeve që keni shtuar (emri, dhoma, protokolli, adresa në rrjetin lokal, gjendja e fundit).",
+      "Abonimi (nëse keni blerë NEXUS+): emaili, plani, statusi, fundi i periudhës dhe ID-ja e anëtarësimit në Whop. Të dhënat e kartës suaj përpunohen vetëm nga Whop dhe nuk na arrijnë kurrë neve.",
+      "Mesazhet e mbështetjes: emaili juaj dhe mesazhi kur na shkruani.",
+      "Regjistrat teknikë: regjistrat e hyrjes dhe të gabimeve (përfshirë adresën IP) që ruhen për një kohë të shkurtër nga ofruesit tanë të strehimit dhe të vërtetimit."
+     ]
+    },
+    {
+     "h": "Qëllimet dhe bazat ligjore",
+     "p": [
+      "Për të menaxhuar llogarinë tuaj, për të sinkronizuar të dhënat tuaja nëpër pajisje, për të ofruar abonimin tuaj dhe mbështetjen (përmbushja e një kontrate); për të mbajtur shërbimin të sigurt dhe për të parandaluar abuzimin (interes legjitim); dhe për transferimet jashtë vendit, pëlqimi juaj i qartë (shihni më poshtë)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI ka dy pjesë. (1) Komandat e pajisjeve (ndiz një dritë, ekzekuto një skenë, kërko gjendjen) përpunohen lokalisht në pajisjen tuaj dhe nuk dërgohen në cloud. (2) Mesazhet që nuk janë komanda pajisjesh, si biseda e përgjithshme dhe pyetjet, dërgohen te Cloudflare Workers AI për t'u përgjigjur; emrat, llojet dhe dhomat e pajisjeve tuaja përfshihen si kontekst. Të dhënat e llogarisë suaj, emaili dhe vendndodhja nuk dërgohen. Nuk e përdorim këtë përmbajtje për të trajnuar modele të inteligjencës artificiale; Cloudflare e përpunon për të ofruar shërbimin. Nëse preferoni, mund të përdorni vetëm komanda pajisjesh në bisedë. Nëse jeni i identifikuar, historiku i bisedës sinkronizohet me llogarinë tuaj si cilësimet e tjera.",
+      "Hyrja me zë: kur prekni butonin e mikrofonit në bisedën e NEXUS AI, të folurit tuaj shndërrohet në tekst. Në një shfletues (Chrome/Edge) përdoret fillimisht shërbimi i vetë shfletuesit për njohjen e të folurit; nëse nuk arrihet dot, ose në aplikacionet për desktop dhe celular, regjistrimi i shkurtër dërgohet vetëm te Cloudflare Workers AI (Whisper) për transkriptim, nuk ruhet dhe nuk ruhet në llogarinë tuaj. Transkripti vendoset vetëm në fushën e hyrjes së bisedës dhe nuk dërgohet askund derisa të shtypni dërgo."
+     ]
+    },
+    {
+     "h": "Ofruesit e shërbimeve dhe transferimet",
+     "ul": [
+      "Supabase: vërtetimi, baza e të dhënave dhe emailet e sistemit.",
+      "Cloudflare: strehimi i faqes së internetit; Cloudflare Workers AI për përgjigjet e bisedës së NEXUS AI dhe shndërrimin e të folurit në tekst.",
+      "Whop: pagesat e abonimit dhe faturimi.",
+      "Google: hyrja me Google dhe (përmes Gmail) emailet e verifikimit / rivendosjes së fjalëkalimit.",
+      "GitHub: shpërndarja e instaluesve.",
+      "Open-Meteo: qyteti / koordinatat e përafërta për motin.",
+      "OpenStreetMap / Nominatim: hartat dhe kërkimi i vendeve; Unsplash: disa imazhe rezervë.",
+      "BigDataCloud: përcaktimi i emrit të vendit nga koordinatat (rezervë kur Nominatim nuk arrihet dot; përdoret edhe kur zgjidhni vendndodhjen e shtëpisë). Ky shërbim merr koordinatat e sakta të vendndodhjes që zgjidhni ose që zbulohet."
+     ],
+     "p": [
+      "Serverët e këtyre ofruesve mund të jenë jashtë Türkiye. Duke krijuar një llogari dhe/ose duke paguar, ju jepni pëlqimin e qartë që të dhënat tuaja të transferohen te ata dhe jashtë vendit; mund ta tërhiqni pëlqimin duke e fshirë llogarinë tuaj."
+     ]
+    },
+    {
+     "h": "Cookies dhe gjurmimi",
+     "p": [
+      "Faqja jonë e internetit nuk përdor cookies dhe nuk përmban gjurmues analitikë apo reklamash. Aplikacioni i ruan cilësimet tuaja në ruajtjen lokale të pajisjes suaj (localStorage)."
+     ]
+    },
+    {
+     "h": "Ruajtja dhe fshirja",
+     "p": [
+      "Të dhënat tuaja i ruajmë për sa kohë llogaria juaj është e hapur. Për të fshirë llogarinë dhe të dhënat tuaja, shkruani te nexus.smarthome.app@gmail.com; kërkesën do ta përfundojmë brenda 30 ditësh (përveç regjistrave të abonimit që duhet t'i ruajmë me ligj). Në aplikacion, hapni Cilësimet, pastaj Siguria e llogarisë dhe përdorni Fshi llogarinë time. Nëse serveri nuk mund ta përfundojë, ekrani e thotë këtë."
+     ]
+    },
+    {
+     "h": "Të drejtat tuaja",
+     "p": [
+      "Sipas Ligjit turk nr. 6698 (KVKK), neni 11 dhe, kur zbatohet, GDPR, mund të pyesni nëse të dhënat tuaja përpunohen, të qaseni në to, t'i korrigjoni, t'i fshini, të kundërshtoni përpunimin dhe të kërkoni bartshmëri. Shkruani te nexus.smarthome.app@gmail.com. Mund të ankoheni edhe te Autoriteti turk i Mbrojtjes së të Dhënave Personale."
+     ]
+    },
+    {
+     "h": "Siguria",
+     "p": [
+      "Lidhjet janë të enkriptuara me TLS. Baza e të dhënave zbaton kontroll qasjeje në nivel rreshti: çdo përdorues mund të lexojë dhe të shkruajë vetëm të dhënat e veta. Asnjë sistem nuk është plotësisht i sigurt; rekomandojmë një fjalëkalim të fortë dhe mbajtjen e pajisjeve tuaja të përditësuara."
+     ]
+    },
+    {
+     "h": "Pajisjet e palëve të treta",
+     "p": [
+      "Pajisjet inteligjente që lidhni (p.sh. Shelly, WLED, ESPHome) mund të komunikojnë me serverët e prodhuesve të tyre sipas politikave të tyre të privatësisë. NEXUS nuk i ndan të dhënat tuaja me ata prodhues."
+     ]
+    },
+    {
+     "h": "Fëmijët",
+     "p": [
+      "NEXUS nuk u drejtohet fëmijëve nën 13 vjeç dhe nuk mbledhim me dijeni të dhëna të tyre."
+     ]
+    },
+    {
+     "h": "Ndryshimet",
+     "p": [
+      "Mund ta përditësojmë këtë politikë; ndryshimet e rëndësishme do t'i njoftojmë në aplikacion ose në faqen e internetit."
+     ]
+    },
+    {
+     "h": "Kontakti",
+     "p": [
+      "Pyetje: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Kushtet e Shërbimit",
+   "intro": "Duke shkarkuar, instaluar ose përdorur aplikacionin NEXUS dhe shërbimet përkatëse («Shërbimet»), ju i pranoni këto kushte. Shërbimet ofrohen nga NEXUS. Kontakti: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licenca",
+     "p": [
+      "Ju japim një licencë personale, jo ekskluzive, të patransferueshme dhe të revokueshme për të përdorur softuerin NEXUS në pajisjet që zotëroni ose kontrolloni, për automatizim shtëpiak personal dhe jo komercial. Nuk keni të drejtë ta shpërndani, ta jepni me qira, ta shisni, ta nën-licensoni, ta zbërtheni (reverse-engineering) ose ta përdorni për të ndërtuar një produkt që konkurron drejtpërdrejt me NEXUS. Përbërësit e palëve të treta i nënshtrohen licencave të tyre."
+     ]
+    },
+    {
+     "h": "Llogaria",
+     "p": [
+      "Përdorimi i NEXUS kërkon një llogari. Ju jeni përgjegjës për saktësinë e të dhënave tuaja, për ruajtjen e sigurt të fjalëkalimit dhe për veprimtarinë nën llogarinë tuaj. Mund t'i pezullojmë ose mbyllim llogaritë që shkelin këto kushte."
+     ]
+    },
+    {
+     "h": "Siguria e shtëpisë inteligjente",
+     "ul": [
+      "NEXUS është një mjet komoditeti; mos u mbështetni vetëm te ai për funksione kritike si zjarri, gazi, shëndeti ose siguria e jetës.",
+      "Ju jeni përgjegjës për komandat e dërguara te pajisjet tuaja dhe për sigurinë e rrjetit tuaj. Mbani të përditësuar firmuerin e pajisjeve dhe cilësimet e ruterit.",
+      "Për siguri, bravat nuk mund të hapen nga biseda."
+     ]
+    },
+    {
+     "h": "NEXUS AI dhe kreditet",
+     "p": [
+      "Plani falas përfshin 30 kredite NEXUS AI në ditë; një abonim NEXUS+ përfshin 2,000 në muaj. Kreditet janë të patransferueshme, nuk shkëmbehen me para të gatshme dhe rivendosen në fund të periudhës. NEXUS AI mund të bëjë gabime; kontrollimi i rezultateve është përgjegjësia juaj."
+     ]
+    },
+    {
+     "h": "Abonimi NEXUS+",
+     "ul": [
+      "Përmbajtja: NEXUS+ jep 2,000 kredite NEXUS AI në muaj dhe zhbllokon shtimin e pajisjeve të reja përmes lidhjeve të avancuara (Home Assistant). Kur abonimi përfundon, pajisjet që keni shtuar tashmë vazhdojnë të funksionojnë; shtimi i pajisjeve të reja përmes këtyre lidhjeve kërkon sërish NEXUS+.",
+      "Planet: Mujor dhe Vjetor, me çmim në TRY për Türkiye dhe në USD gjetkë (aktualisht Mujor ₺499.99 / $11.99, Vjetor ₺3,999.99 / $89.99). Çmimet aktuale shfaqen në arkë; në arkë mund të shtohen taksa. Plani vjetor përfshin një provë falas 7-ditore dhe plani mujor një provë falas 3-ditore.",
+      "Pagesat merren përmes Whop. Abonimi rinovohet automatikisht çdo periudhë derisa ta anuloni; kur përfundon prova, tarifohet çmimi i planit që keni zgjedhur.",
+      "Mund ta anuloni në çdo kohë nga Faturimi në aplikacion ose nga llogaria juaj në këtë faqe interneti. Anulimi hyn në fuqi në fund të periudhës aktuale.",
+      "Në arkë përdorni adresën e emailit të llogarisë suaj NEXUS; abonimi lidhet me atë email.",
+      "Ndryshimet e çmimeve i njoftojmë të paktën 30 ditë përpara se të hyjnë në fuqi; ato nuk ndikojnë periudhën aktuale.",
+      "Kushtet e rimbursimit gjenden në Politikën e Rimbursimit dhe Anulimit."
+     ]
+    },
+    {
+     "h": "Ndryshimet dhe ndërprerjet",
+     "p": [
+      "Mund t'i përmirësojmë, t'i ndryshojmë ose t'i pezullojmë përkohësisht Shërbimet për mirëmbajtje. Nuk garantojmë shërbim të pandërprerë ose pa gabime."
+     ]
+    },
+    {
+     "h": "Prona intelektuale",
+     "p": [
+      "Të drejtat mbi softuerin, dizajnin, markën dhe përmbajtjen e NEXUS i përkasin operatorit. Këto kushte ju japin vetëm licencën e mësipërme."
+     ]
+    },
+    {
+     "h": "Kufizimi i përgjegjësisë",
+     "p": [
+      "Softueri ofrohet «ashtu siç është». Në masën maksimale që lejon ligji, nuk jemi përgjegjës për dëme të tërthorta (përfshirë humbjen e të dhënave ose dëmtimin e pajisjeve apo pronës) që rrjedhin nga përdorimi i Shërbimeve; përgjegjësia jonë totale kufizohet në shumën që na keni paguar në 12 muajt e mëparshëm. Të drejtat e konsumatorit që nuk mund të kufizohen me ligj nuk preken."
+     ]
+    },
+    {
+     "h": "Ndërprerja",
+     "p": [
+      "Mund ta mbyllni llogarinë tuaj në çdo kohë (shihni Politikën e Privatësisë). Mund ta ndërpresim qasjen tuaj nëse shkelni këto kushte."
+     ]
+    },
+    {
+     "h": "Ligji i zbatueshëm",
+     "p": [
+      "Këto kushte rregullohen nga ligjet e Republikës së Türkiye. Si konsumator ruani të drejtën t'i drejtoheni komisioneve të arbitrazhit të konsumatorit dhe gjykatave të konsumatorit."
+     ]
+    },
+    {
+     "h": "Ndryshimet e këtyre kushteve",
+     "p": [
+      "Mund t'i përditësojmë këto kushte dhe do t'i njoftojmë ndryshimet e rëndësishme në aplikacion ose në faqen e internetit. Vazhdimi i përdorimit të Shërbimeve pas një ndryshimi do të thotë se i pranoni kushtet e reja."
+     ]
+    },
+    {
+     "h": "Kontakti",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Politika e Rimbursimit dhe Anulimit",
+   "intro": "Kjo politikë shpjegon kushtet e provës, anulimit dhe rimbursimit për abonimin NEXUS+. Të drejtat tuaja ligjore si konsumator nuk preken.",
+   "sections": [
+    {
+     "h": "Prova falas",
+     "p": [
+      "Plani vjetor përfshin një provë falas 7-ditore dhe plani mujor një provë falas 3-ditore. Nëse anuloni përpara përfundimit të provës, nuk tarifoheni. Nëse nuk anuloni, çmimi i planit që keni zgjedhur tarifohet kur përfundon prova."
+     ]
+    },
+    {
+     "h": "Si të anuloni",
+     "ul": [
+      "Në aplikacion: Plus → Faturimi → Anulo në fund të periudhës.",
+      "Në faqen e internetit: hyni → llogaria → anulo në fund të periudhës.",
+      "Anulimi hyn në fuqi në fund të periudhës aktuale të faturimit; deri atëherë i mbani veçoritë e NEXUS+ dhe nuk tarifoheni për periudhën tjetër."
+     ]
+    },
+    {
+     "h": "Rimbursimet",
+     "ul": [
+      "Mund të kërkoni rimbursim brenda 14 ditësh nga tarifimi juaj i parë pa dhënë arsye; ne rimbursojmë pagesën e plotë.",
+      "Për rinovimet automatike, nëse e kërkoni brenda 3 ditësh nga data e rinovimit, rimbursojmë tarifimin e asaj periudhe.",
+      "Jashtë këtyre afateve nuk rimbursojmë periudhat e përdorura, por do të shqyrtojmë rimbursime në raste të justifikuara, si p.sh. kur shërbimi nuk mund të përdorej për shkak të një defekti nga ana jonë.",
+      "Mund ta refuzojmë një kërkesë nëse zbulojmë abuzim (për shembull rimbursime të përsëritura në të njëjtën llogari)."
+     ]
+    },
+    {
+     "h": "Si të kërkoni rimbursim",
+     "p": [
+      "Dërgoni email te nexus.smarthome.app@gmail.com me emailin e llogarisë suaj NEXUS dhe kërkesën tuaj. Rimbursimet e miratuara bëhen përmes Whop në mënyrën origjinale të pagesës; zakonisht duhen 5–10 ditë pune që të shfaqen, në varësi të bankës suaj."
+     ]
+    },
+    {
+     "h": "Të drejtat ligjore",
+     "p": [
+      "Kjo politikë nuk i kufizon të drejtat tuaja ligjore sipas Ligjit turk për Mbrojtjen e Konsumatorit nr. 6502 dhe Rregullores për Kontratat në Distancë (përfshirë të drejtën e tërheqjes dhe përjashtimet e saj)."
+     ]
+    },
+    {
+     "h": "Kontakti",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

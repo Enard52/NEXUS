@@ -4,3 +4,4 @@ export declare const OPERATOR: Record<string, string>;
 export declare const docs: Record<string, any>;
 export declare function getLegalDoc(key: string, lang: string): any;
 export declare function getLegalLanguages(): string[];
+export declare const LABELS: Record<string, { updated?: string; operatedBy?: string; footer?: string; notice?: string }>;

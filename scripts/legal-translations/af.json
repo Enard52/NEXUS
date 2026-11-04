@@ -1,0 +1,253 @@
+{
+ "code": "af",
+ "updated": "Laas opgedateer: 31 Oktober 2026",
+ "labels": {
+  "updated": "Laas opgedateer",
+  "operatedBy": "Bedryf deur",
+  "footer": "Hierdie dokument word saam met die huidige teks by nexus-smarthome.pages.dev gelees.",
+  "notice": "Hierdie vertaling word slegs vir gerief verskaf. Indien dit van die Turkse of Engelse weergawe verskil, geld die Turkse en Engelse weergawes."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Privaatheidsbeleid",
+   "intro": "NEXUS bestuur u slimhuis hoofsaaklik op u eie plaaslike netwerk. Hierdie beleid verduidelik duidelik watter data ons verwerk wanneer u 'n rekening skep, en hoekom en waar ons dit doen.",
+   "sections": [
+    {
+     "h": "Kortliks",
+     "ul": [
+      "'n Rekening is nodig om NEXUS te gebruik. Toestelopdragte word steeds op u plaaslike netwerk uitgevoer; hulle word nie deur 'n verskaffer se wolk gestuur nie.",
+      "U instellings, toestellys en klets-geskiedenis word in die wolk gestoor sodat dit op elke toestel ooreenstem.",
+      "Ons verkoop nie u data nie, gebruik dit nie vir advertensies nie en stel nie 'n profiel van u saam nie.",
+      "Mikrofoontoegang is opsioneel en word slegs gebruik wanneer u op die mikrofoon in die NEXUS AI-klets tik; die opname word getranskribeer en nie gestoor nie. Die kamera maak slegs oop om QR-kodes te skandeer en die beeld verlaat nooit u toestel nie."
+     ]
+    },
+    {
+     "h": "Verantwoordelike party vir data",
+     "p": [
+      "Die verantwoordelike party vir data is NEXUS. Kontak: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Watter data ons verwerk",
+     "ul": [
+      "Rekening: u e-posadres en (indien verskaf) u naam. By Google-aanmelding, die e-pos en profielnaam wat Google verskaf. U wagwoord word slegs as 'n eenrigting-hash in Supabase Auth gestoor; ons kan dit nie sien nie.",
+      "Gesinchroniseerde toepdata (slegs wanneer aangemeld): profielnaam en foto, instellings vir tema, taal en eenhede, huishoudelede, tonele en outomatiserings, gunstelingkaarte, NEXUS AI-kletsgeskiedenis en gebruikstelling, gebeurtenislogboek, tuisligging- en weervoorkeur, en die lys toestelle wat u bygevoeg het (naam, kamer, protokol, plaaslike netwerkadres, laaste toestand).",
+      "Intekening (indien u NEXUS+ gekoop het): e-pos, plan, status, einde van die tydperk en Whop-lidmaatskap-ID. U kaartbesonderhede word slegs deur Whop verwerk en bereik ons nooit.",
+      "Ondersteuningsboodskappe: u e-pos en boodskap wanneer u ons skryf.",
+      "Tegniese logboeke: aanmeld- en foutlogboeke (insluitend IP-adres) wat kortliks deur ons gasheer- en verifikasieverskaffers gehou word."
+     ]
+    },
+    {
+     "h": "Doeleindes en regsgrondslae",
+     "p": [
+      "Om u rekening te bestuur, u data oor toestelle te sinchroniseer, u intekening te voorsien en ondersteuning te bied (uitvoering van 'n kontrak); om die diens veilig te hou en misbruik te voorkom (wettige belang); en vir oordragte oor grense heen, u uitdruklike toestemming (sien hieronder)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI het twee dele. (1) Toestelopdragte (skakel 'n lig aan, laat loop 'n toneel, vra vir status) word plaaslik op u toestel verwerk en nie na die wolk gestuur nie. (2) Boodskappe wat nie toestelopdragte is nie, soos algemene klets en vrae, word na Cloudflare Workers AI gestuur om beantwoord te word; die name, tipes en kamers van u toestelle word as konteks ingesluit. U rekeningbesonderhede, e-pos en ligging word nie gestuur nie. Ons gebruik nie hierdie inhoud om KI-modelle op te lei nie; Cloudflare verwerk dit om die diens te lewer. Indien u verkies, kan u in die klets slegs toestelopdragte gebruik. Indien u aangemeld is, word u kletsgeskiedenis soos u ander instellings met u rekening gesinchroniseer.",
+      "Steminvoer: wanneer u op die mikrofoonknoppie in die NEXUS AI-klets tik, word u spraak in teks omgeskakel. In 'n blaaier (Chrome/Edge) word eers die blaaier se eie spraakherkenningsdiens gebruik; indien dit onbereikbaar is, of in die rekenaar- en mobiele toepassings, word die kort opname slegs na Cloudflare Workers AI (Whisper) gestuur vir transkripsie, word nie gestoor nie en word nie in u rekening gestoor nie. Die transkripsie word slegs in die kletsinvoer geplaas en nêrens heen gestuur totdat u op stuur druk nie."
+     ]
+    },
+    {
+     "h": "Diensverskaffers en oordragte",
+     "ul": [
+      "Supabase: verifikasie, databasis en stelsel-e-posse.",
+      "Cloudflare: aanbieding van die webwerf; Cloudflare Workers AI vir NEXUS AI-kletsantwoorde en spraak-na-teks.",
+      "Whop: intekeningbetalings en fakturering.",
+      "Google: Google-aanmelding en (via Gmail) verifikasie- en wagwoordterugstel-e-posse.",
+      "GitHub: verspreiding van installeerders.",
+      "Open-Meteo: stad en benaderde koördinate vir weer.",
+      "OpenStreetMap / Nominatim: kaarte en plekopsporing; Unsplash: sommige terugval-beelde.",
+      "BigDataCloud: bepaling van 'n plekke se naam uit koördinate (terugval wanneer Nominatim onbereikbaar is; ook gebruik wanneer u u tuisligging kies). Hierdie diens ontvang die presiese koördinate van die ligging wat u kies of wat bespeur word."
+     ],
+     "p": [
+      "Hierdie verskaffers se bedieners kan buite Türkiye wees. Deur 'n rekening te skep en/of te betaal, gee u uitdruklike toestemming dat u data na hulle en na die buiteland oorgedra word; u kan toestemming terugtrek deur u rekening te laat uitvee."
+     ]
+    },
+    {
+     "h": "Koekies en naspeuring",
+     "p": [
+      "Ons webwerf gebruik geen koekies nie en bevat geen ontleding- of advertensienaspeurders nie. Die toepassing hou u instellings in u toestel se plaaslike berging (localStorage)."
+     ]
+    },
+    {
+     "h": "Bewaring en uitvee",
+     "p": [
+      "Ons hou u data solank u rekening oop is. Om u rekening en data uit te vee, skryf aan nexus.smarthome.app@gmail.com; ons sal die versoek binne 30 dae voltooi (behalwe intekeningrekords wat ons volgens wet moet hou). Maak in die toepassing Instellings en dan Rekeningsekuriteit oop, en gebruik Vee my rekening uit. Indien die bediener dit nie kan voltooi nie, sê die skerm so."
+     ]
+    },
+    {
+     "h": "U regte",
+     "p": [
+      "Kragtens Turkse Wet Nr. 6698 (KVKK) art. 11 en, waar van toepassing, die GDPR, kan u vra of u data verwerk word, toegang daartoe kry, dit laat regstel, dit laat uitvee, beswaar teen verwerking maak en oordraagbaarheid versoek. Skryf aan nexus.smarthome.app@gmail.com. U kan ook by die Turkse Owerheid vir die Beskerming van Persoonlike Data kla."
+     ]
+    },
+    {
+     "h": "Sekuriteit",
+     "p": [
+      "Verbindings word met TLS geënkripteer. Die databasis dwing toegangsbeheer op ryvlak af: elke gebruiker kan slegs sy of haar eie data lees en skryf. Geen stelsel is volkome veilig nie; ons beveel 'n sterk wagwoord aan en dat u u toestelle op datum hou."
+     ]
+    },
+    {
+     "h": "Derdeparty-toestelle",
+     "p": [
+      "Slimtoestelle wat u koppel (bv. Shelly, WLED, ESPHome) kan met hul vervaardigers se bedieners kommunikeer ingevolge hul eie privaatheidsbeleide. NEXUS deel nie u data met daardie vervaardigers nie."
+     ]
+    },
+    {
+     "h": "Kinders",
+     "p": [
+      "NEXUS is nie op kinders onder 13 gerig nie en ons versamel nie willens en wetens hul data nie."
+     ]
+    },
+    {
+     "h": "Wysigings",
+     "p": [
+      "Ons kan hierdie beleid opdateer; ons sal belangrike wysigings in die toepassing of op die webwerf aankondig."
+     ]
+    },
+    {
+     "h": "Kontak",
+     "p": [
+      "Vrae: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Diensbepalings",
+   "intro": "Deur die NEXUS-toepassing en verwante dienste (die «Dienste») af te laai, te installeer of te gebruik, aanvaar u hierdie bepalings. Die Dienste word deur NEXUS verskaf. Kontak: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Lisensie",
+     "p": [
+      "Ons verleen aan u 'n persoonlike, nie-eksklusiewe, nie-oordraagbare, herroepbare lisensie om die NEXUS-sagteware te gebruik op toestelle wat u besit of beheer, vir persoonlike, nie-kommersiële huisoutomatisering. U mag dit nie versprei, verhuur, verkoop, onderlisensieer, of ontleed (reverse-engineer) nie, en ook nie gebruik om 'n produk te bou wat direk met NEXUS meeding nie. Derdeparty-komponente is onderworpe aan hul eie lisensies."
+     ]
+    },
+    {
+     "h": "Rekening",
+     "p": [
+      "Om NEXUS te gebruik, is 'n rekening nodig. U is verantwoordelik daarvoor om u besonderhede akkuraat te hou en u wagwoord veilig te bewaar, en vir aktiwiteit onder u rekening. Ons kan rekeninge wat hierdie bepalings oortree, opskort of sluit."
+     ]
+    },
+    {
+     "h": "Slimhuis-veiligheid",
+     "ul": [
+      "NEXUS is 'n gerieflikheidsinstrument; moenie slegs daarop staatmaak vir kritieke funksies soos brand-, gas-, gesondheids- of lewensveiligheid nie.",
+      "U is verantwoordelik vir die opdragte wat na u toestelle gestuur word en vir die sekuriteit van u netwerk. Hou toestel-firmware en roeteerderinstellings op datum.",
+      "Om veiligheidsredes kan slotte nie vanuit die klets oopgemaak word nie."
+     ]
+    },
+    {
+     "h": "NEXUS AI en krediete",
+     "p": [
+      "Die gratis plan sluit 30 NEXUS AI-krediete per dag in; 'n NEXUS+-intekening sluit 2,000 per maand in. Krediete is nie oordraagbaar nie, kan nie vir kontant verruil word nie en word aan die einde van die tydperk teruggestel. NEXUS AI kan foute maak; dit is u verantwoordelikheid om resultate na te gaan."
+     ]
+    },
+    {
+     "h": "NEXUS+-intekening",
+     "ul": [
+      "Omvang: NEXUS+ gee 2,000 NEXUS AI-krediete per maand en ontsluit die byvoeging van nuwe toestelle deur die gevorderde koppelings (Home Assistant). Wanneer die intekening eindig, hou toestelle wat u reeds bygevoeg het aan werk; om nuwe toestelle deur hierdie koppelings by te voeg, vereis weer NEXUS+.",
+      "Planne: Maandeliks en Jaarliks, geprys in TRY vir Türkiye en in USD elders (tans Maandeliks ₺499.99 / $11.99, Jaarliks ₺3,999.99 / $89.99). Huidige pryse word by afrekening gewys; belasting kan by afrekening bygevoeg word. Die jaarlikse plan sluit 'n 7-dae gratis proeftydperk in en die maandelikse plan 'n 3-dae gratis proeftydperk.",
+      "Betalings word deur Whop verwerk. Die intekening hernu outomaties elke tydperk totdat u kanselleer; wanneer die proeftydperk eindig, word die prys van u gekose plan gehef.",
+      "U kan te eniger tyd kanselleer vanaf Fakturering in die toepassing of vanaf u rekening op hierdie webwerf. Kansellasie tree aan die einde van die huidige tydperk in werking.",
+      "Gebruik by afrekening u NEXUS-rekening se e-posadres; die intekening word aan daardie e-pos gekoppel.",
+      "Ons kondig prysveranderinge minstens 30 dae voordat hulle in werking tree aan; hulle raak nie die huidige tydperk nie.",
+      "Terugbetalingsvoorwaardes is in die Terugbetalings- en Kansellasiebeleid."
+     ]
+    },
+    {
+     "h": "Veranderinge en onderbrekings",
+     "p": [
+      "Ons kan die Dienste verbeter, verander of tydelik vir instandhouding opskort. Ons waarborg nie ononderbroke of foutvrye diens nie."
+     ]
+    },
+    {
+     "h": "Intellektuele eiendom",
+     "p": [
+      "Regte in die NEXUS-sagteware, ontwerp, handelsmerk en inhoud behoort aan die bedryfsparty. Hierdie bepalings gee u slegs die lisensie hierbo."
+     ]
+    },
+    {
+     "h": "Beperking van aanspreeklikheid",
+     "p": [
+      "Die sagteware word «soos dit is» verskaf. Tot die mate wat deur wet toegelaat word, is ons nie aanspreeklik vir indirekte skade (insluitend dataverlies of skade aan toestelle of eiendom) wat uit die gebruik van die Dienste voortspruit nie; ons totale aanspreeklikheid is beperk tot die bedrag wat u ons gedurende die voorafgaande 12 maande betaal het. Verbruikersregte wat nie by wet beperk kan word nie, bly onaangetas."
+     ]
+    },
+    {
+     "h": "Beëindiging",
+     "p": [
+      "U kan te eniger tyd u rekening sluit (sien die Privaatheidsbeleid). Ons kan u toegang beëindig indien u hierdie bepalings oortree."
+     ]
+    },
+    {
+     "h": "Toepaslike reg",
+     "p": [
+      "Hierdie bepalings word deur die wette van die Republiek van Türkiye beheers. As verbruiker behou u die reg om hulle tot verbruikersgeskilkomitees en verbruikershowe te wend."
+     ]
+    },
+    {
+     "h": "Wysigings aan hierdie bepalings",
+     "p": [
+      "Ons kan hierdie bepalings opdateer en sal belangrike wysigings in die toepassing of op die webwerf aankondig. Indien u die Dienste ná 'n wysiging bly gebruik, beteken dit dat u die nuwe bepalings aanvaar."
+     ]
+    },
+    {
+     "h": "Kontak",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Terugbetalings- en Kansellasiebeleid",
+   "intro": "Hierdie beleid verduidelik die proef-, kansellasie- en terugbetalingsvoorwaardes vir die NEXUS+-intekening. U wettige verbruikersregte bly onaangetas.",
+   "sections": [
+    {
+     "h": "Gratis proeftydperk",
+     "p": [
+      "Die jaarlikse plan sluit 'n 7-dae gratis proeftydperk in en die maandelikse plan 'n 3-dae gratis proeftydperk. Indien u kanselleer voordat die proeftydperk eindig, word u nie gehef nie. Indien u nie kanselleer nie, word die prys van u gekose plan gehef wanneer die proeftydperk eindig."
+     ]
+    },
+    {
+     "h": "Hoe om te kanselleer",
+     "ul": [
+      "In die toepassing: Plus → Fakturering → Kanselleer aan die einde van die tydperk.",
+      "Op die webwerf: meld aan → rekening → kanselleer aan die einde van die tydperk.",
+      "Kansellasie tree aan die einde van die huidige faktureringstydperk in werking; u behou NEXUS+-kenmerke tot dan en word nie vir die volgende tydperk gehef nie."
+     ]
+    },
+    {
+     "h": "Terugbetalings",
+     "ul": [
+      "U kan binne 14 dae ná u eerste heffing sonder om 'n rede te gee 'n terugbetaling aanvra; ons betaal die volle bedrag terug.",
+      "By outomatiese hernuwings, indien u binne 3 dae ná die hernuwingsdatum vra, betaal ons die heffing vir daardie tydperk terug.",
+      "Buite hierdie tydperke betaal ons nie gebruikte tydperke terug nie, maar ons sal terugbetalings in geregverdigde gevalle oorweeg, soos wanneer die diens onbruikbaar was weens 'n fout aan ons kant.",
+      "Ons kan 'n versoek weier indien ons misbruik bespeur (byvoorbeeld herhaalde terugbetalings op dieselfde rekening)."
+     ]
+    },
+    {
+     "h": "Hoe om 'n terugbetaling aan te vra",
+     "p": [
+      "Stuur 'n e-pos aan nexus.smarthome.app@gmail.com met u NEXUS-rekening-e-pos en u versoek. Goedgekeurde terugbetalings word deur Whop na die oorspronklike betaalmetode uitgereik; dit neem gewoonlik 5–10 werksdae om te verskyn, afhangend van u bank."
+     ]
+    },
+    {
+     "h": "Wettige regte",
+     "p": [
+      "Hierdie beleid beperk nie u wettige regte kragtens die Turkse Verbruikersbeskermingswet Nr. 6502 en die Regulasie op Afstandskontrakte nie (insluitend die reg van onttrekking en die uitsonderings daarop)."
+     ]
+    },
+    {
+     "h": "Kontak",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

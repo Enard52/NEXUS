@@ -30,7 +30,30 @@ function langFlag(l) {
     ? `<img class="lang-flag" src="/assets/flags/${c}.svg" alt="" width="20" height="15" loading="lazy" decoding="async">`
     : '';
 }
-import { LEGAL_DOCS, getLegalDoc } from './site-legal-content.mjs';
+import { LEGAL_DOCS, getLegalDoc as getSiteLegalDoc } from './site-legal-content.mjs';
+import { createRequire } from 'node:module';
+
+// Gizlilik / Şartlar / İade: TR ve EN site-legal-content.mjs'ten; diğer diller scripts/legal-translations/<kod>.json
+// dosyalarından (kolaylık çevirisi; altında bunu belirten not yer alır). Çevirisi olmayan dil İngilizceye düşer.
+const legalCjs = createRequire(import.meta.url)('./legal-content.cjs');
+const legalEsc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const legalLink = (s) => legalEsc(s).replace(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,})/g, '<a href="mailto:$1">$1</a>');
+function getLegalDoc(name, lang = 'en') {
+  const d = legalCjs.docs[name];
+  if (d && lang !== 'en' && lang !== 'tr' && lang in d) {
+    const t = d[lang];
+    let body = `<p class="legal-updated">${legalEsc(legalCjs.UPDATED[lang])}</p>\n<p>${legalLink(t.intro)}</p>\n`;
+    for (const s of t.sections) {
+      body += `<h3>${legalEsc(s.h)}</h3>\n`;
+      for (const p of s.p || []) body += `<p>${legalLink(p)}</p>\n`;
+      if (s.ul) body += '<ul>\n' + s.ul.map((li) => `<li>${legalLink(li)}</li>`).join('\n') + '\n</ul>\n';
+    }
+    const notice = legalCjs.LABELS[lang] && legalCjs.LABELS[lang].notice;
+    if (notice) body += `<p class="legal-updated">${legalEsc(notice)}</p>\n`;
+    return { title: t.title, intro: t.intro, body };
+  }
+  return getSiteLegalDoc(name, lang);
+}
 import { siApple, siLinux, siRaspberrypi } from 'simple-icons';
 
 /* --- Platform logoları: resmi logo biçimleri (simple-icons) ---

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8"/>
+<title>Persónuverndarstefna — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Persónuverndarstefna</h1>
+  <p class="meta">Síðast uppfært: 31. október 2026 · Rekið af: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS stýrir snjallheimilinu þínu fyrst og fremst á þínu eigin staðarneti. Þessi stefna útskýrir skýrt hvaða gögn við vinnum þegar þú stofnar aðgang, hvers vegna og hvar.</p>
+  
+    <section>
+      <h2>Í stuttu máli</h2>
+      
+      <ul><li>Aðgangur er nauðsynlegur til að nota NEXUS. Skipanir til tækja keyra áfram á þínu staðarneti; þær eru ekki sendar í gegnum skýjaþjónustu framleiðanda.</li><li>Stillingar þínar, tækjalisti og spjallsaga eru vistuð í skýinu svo þau séu eins á öllum tækjum.</li><li>Við seljum ekki gögnin þín, notum þau ekki í auglýsingaskyni og búum ekki til persónusnið um þig.</li><li>Aðgangur að hljóðnema er valfrjáls og er aðeins notaður þegar þú ýtir á hljóðnemann í NEXUS AI spjallinu; upptakan er umrituð og ekki vistuð. Myndavélin opnast aðeins til að skanna QR-kóða og myndin yfirgefur aldrei tækið þitt.</li></ul>
+    </section>
+    <section>
+      <h2>Ábyrgðaraðili</h2>
+      <p>Ábyrgðaraðili er NEXUS. Samskipti: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Hvaða gögn við vinnum</h2>
+      
+      <ul><li>Aðgangur: netfangið þitt og (ef það er gefið upp) nafn þitt. Við innskráningu með Google, netfangið og prófílnafnið sem Google lætur í té. Lykilorðið þitt er aðeins geymt sem einstefnu-hakk (hash) í Supabase Auth; við getum ekki séð það.</li><li>Samstillt forritsgögn (aðeins þegar þú ert innskráð(ur)): prófílnafn og mynd, stillingar fyrir þema, tungumál og mælieiningar, heimilismeðlimir, senur og sjálfvirkni, uppáhaldsspjöld, NEXUS AI spjallsaga og notkunarteljari, atburðaskrá, staðsetning heimilis/veðurstillingar og listi yfir tæki sem þú bættir við (nafn, herbergi, samskiptamáti, staðarnetsfang, síðasta staða).</li><li>Áskrift (ef þú keyptir NEXUS+): netfang, áskriftarleið, staða, lok tímabils og Whop-aðildarauðkenni. Kortaupplýsingar þínar eru eingöngu unnar af Whop og berast okkur aldrei.</li><li>Skilaboð til þjónustuvers: netfangið þitt og skilaboðin þegar þú skrifar til okkar.</li><li>Tæknilegar skrár: innskráningar- og villuskrár (þar á meðal IP-tala) sem hýsingar- og auðkenningaraðilar okkar geyma í stuttan tíma.</li></ul>
+    </section>
+    <section>
+      <h2>Tilgangur og lagagrundvöllur</h2>
+      <p>Til að stýra aðgangi þínum, samstilla gögnin þín milli tækja, veita áskriftina og þjónustuver (efndir samnings); til að tryggja öryggi þjónustunnar og koma í veg fyrir misnotkun (lögmætir hagsmunir); og vegna flutnings úr landi, skýrt samþykki þitt (sjá hér að neðan).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI hefur tvo hluta. (1) Skipanir til tækja (kveikja á ljósi, keyra senu, spyrja um stöðu) eru unnar staðbundið í tækinu þínu og ekki sendar í skýið. (2) Skilaboð sem eru ekki skipanir til tækja, svo sem almennt spjall og spurningar, eru send til Cloudflare Workers AI til að fá svar; heiti, gerðir og herbergi tækjanna þinna fylgja með sem samhengi. Aðgangsupplýsingar þínar, netfang og staðsetning eru ekki send. Við notum ekki þetta efni til að þjálfa gervigreindarlíkön; Cloudflare vinnur það til að veita þjónustuna. Ef þú kýst getur þú eingöngu notað skipanir til tækja í spjallinu. Ef þú ert innskráð(ur) er spjallsagan þín samstillt við aðganginn þinn eins og aðrar stillingar.</p><p>Raddinntak: þegar þú ýtir á hljóðnemahnappinn í NEXUS AI spjallinu er tal þitt umbreytt í texta. Í vafra (Chrome/Edge) er fyrst notuð eigin talgreiningarþjónusta vafrans; ef hún næst ekki, eða í skjáborðs- og farsímaforritum, er stutta upptakan send eingöngu til Cloudflare Workers AI (Whisper) til umritunar, hún er ekki vistuð og ekki geymd á aðgangi þínum. Umritunin er aðeins sett í innsláttarreit spjallsins og er hvergi send fyrr en þú ýtir á senda.</p>
+      
+    </section>
+    <section>
+      <h2>Þjónustuaðilar og flutningur gagna</h2>
+      <p>Netþjónar þessara aðila kunna að vera utan Türkiye. Með því að stofna aðgang og/eða greiða veitir þú skýrt samþykki fyrir því að gögnin þín séu flutt til þeirra og úr landi; þú getur afturkallað samþykkið með því að láta eyða aðganginum þínum.</p>
+      <ul><li>Supabase: auðkenning, gagnagrunnur og kerfispóstur.</li><li>Cloudflare: hýsing vefsvæðisins; Cloudflare Workers AI fyrir svör í NEXUS AI spjalli og tal-í-texta.</li><li>Whop: áskriftargreiðslur og reikningagerð.</li><li>Google: innskráning með Google og (í gegnum Gmail) staðfestingar- / lykilorðsendurstillingarpóstur.</li><li>GitHub: dreifing uppsetningarforrita.</li><li>Open-Meteo: borg / áætluð hnit fyrir veður.</li><li>OpenStreetMap / Nominatim: kort og staðarleit; Unsplash: nokkrar varamyndir.</li><li>BigDataCloud: ákvörðun staðarheitis út frá hnitum (varaleið þegar Nominatim næst ekki; einnig notað þegar þú velur staðsetningu heimilis þíns). Þessi þjónusta fær nákvæm hnit staðsetningarinnar sem þú velur eða sem er greind.</li></ul>
+    </section>
+    <section>
+      <h2>Vefkökur og rakning</h2>
+      <p>Vefsvæðið okkar notar engar vefkökur og inniheldur hvorki greiningar- né auglýsingarakningartól. Forritið geymir stillingar þínar í staðbundinni geymslu tækisins þíns (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Varðveisla og eyðing</h2>
+      <p>Við varðveitum gögnin þín meðan aðgangur þinn er opinn. Til að eyða aðgangi þínum og gögnum skaltu skrifa á nexus.smarthome.app@gmail.com; við munum ljúka beiðninni innan 30 daga (að undanskildum áskriftarskrám sem okkur ber að varðveita samkvæmt lögum). Í forritinu skaltu opna Stillingar og síðan Öryggi aðgangs og nota Eyða aðganginum mínum. Ef netþjónninn getur ekki lokið því kemur það fram á skjánum.</p>
+      
+    </section>
+    <section>
+      <h2>Réttindi þín</h2>
+      <p>Samkvæmt tyrkneskum lögum nr. 6698 (KVKK), 11. gr., og eftir atvikum persónuverndarreglugerð ESB (GDPR), getur þú spurt hvort gögn þín séu unnin, fengið aðgang að þeim, látið leiðrétta þau, látið eyða þeim, andmælt vinnslu og óskað eftir flutningi gagna. Skrifaðu á nexus.smarthome.app@gmail.com. Þú getur einnig kvartað til tyrknesku persónuverndarstofnunarinnar.</p>
+      
+    </section>
+    <section>
+      <h2>Öryggi</h2>
+      <p>Tengingar eru dulkóðaðar með TLS. Gagnagrunnurinn framfylgir aðgangsstýringu á línustigi: hver notandi getur aðeins lesið og skrifað eigin gögn. Ekkert kerfi er fullkomlega öruggt; við mælum með sterku lykilorði og að tækin þín séu uppfærð.</p>
+      
+    </section>
+    <section>
+      <h2>Tæki þriðju aðila</h2>
+      <p>Snjalltæki sem þú tengir (t.d. Shelly, WLED, ESPHome) kunna að eiga samskipti við netþjóna framleiðenda sinna samkvæmt þeirra eigin persónuverndarstefnum. NEXUS deilir ekki gögnum þínum með þessum framleiðendum.</p>
+      
+    </section>
+    <section>
+      <h2>Börn</h2>
+      <p>NEXUS er ekki ætlað börnum yngri en 13 ára og við söfnum ekki vísvitandi gögnum um þau.</p>
+      
+    </section>
+    <section>
+      <h2>Breytingar</h2>
+      <p>Við kunnum að uppfæra þessa stefnu; við munum tilkynna verulegar breytingar í forritinu eða á vefsvæðinu.</p>
+      
+    </section>
+    <section>
+      <h2>Samskipti</h2>
+      <p>Fyrirspurnir: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Þetta skjal skal lesið samhliða gildandi texta á nexus-smarthome.pages.dev.<br/>Þessi þýðing er eingöngu veitt til hægðarauka. Ef hún er frábrugðin tyrknesku eða ensku útgáfunni gilda tyrkneska og enska útgáfan.</footer>
+</body>
+</html>

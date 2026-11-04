@@ -1,0 +1,253 @@
+{
+ "code": "sl",
+ "updated": "Nazadnje posodobljeno: 31. oktober 2026",
+ "labels": {
+  "updated": "Nazadnje posodobljeno",
+  "operatedBy": "Upravlja",
+  "footer": "Ta dokument je treba brati skupaj z veljavnim besedilom na nexus-smarthome.pages.dev.",
+  "notice": "Ta prevod je namenjen zgolj informativni uporabi. Če se razlikuje od turške ali angleške različice, veljata turška in angleška različica."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Pravilnik o zasebnosti",
+   "intro": "NEXUS upravlja vaš pametni dom predvsem v vašem lokalnem omrežju. Ta pravilnik jasno pojasnjuje, katere podatke obdelujemo, ko ustvarite račun, zakaj jih obdelujemo in kje.",
+   "sections": [
+    {
+     "h": "Na kratko",
+     "ul": [
+      "Za uporabo NEXUS je potreben račun. Ukazi napravam se še vedno izvajajo v vašem lokalnem omrežju; ne pošiljajo se prek oblaka proizvajalca.",
+      "Vaše nastavitve, seznam naprav in zgodovina klepeta so shranjeni v oblaku, da so enaki na vseh napravah.",
+      "Vaših podatkov ne prodajamo, ne uporabljamo jih za oglaševanje in vas na njihovi podlagi ne profiliramo.",
+      "Dostop do mikrofona je izbiren in se uporablja le, ko v klepetu NEXUS AI tapnete mikrofon; posnetek se pretvori v besedilo in se ne shrani. Kamera se odpre samo za skeniranje kod QR, slika pa nikoli ne zapusti vaše naprave."
+     ]
+    },
+    {
+     "h": "Upravljavec podatkov",
+     "p": [
+      "Upravljavec podatkov je NEXUS. Kontakt: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Katere podatke obdelujemo",
+     "ul": [
+      "Račun: vaš e-poštni naslov in (če ste ga navedli) vaše ime. Pri prijavi z Google e-poštni naslov in ime profila, ki ju posreduje Google. Vaše geslo je v Supabase Auth shranjeno le kot enosmerni zgoščeni zapis (hash); ne moremo ga videti.",
+      "Sinhronizirani podatki aplikacije (samo ob prijavi): ime in fotografija profila, nastavitve teme, jezika in enot, člani gospodinjstva, prizori in avtomatizacije, priljubljene kartice, zgodovina klepeta NEXUS AI in števec porabe, dnevnik dogodkov, nastavitev domače lokacije in vremena ter seznam naprav, ki ste jih dodali (ime, soba, protokol, naslov v lokalnem omrežju, zadnje stanje).",
+      "Naročnina (če ste kupili NEXUS+): e-poštni naslov, paket, stanje, konec obdobja in ID članstva pri Whop. Podatke o vaši kartici obdeluje izključno Whop in do nas nikoli ne pridejo.",
+      "Sporočila podpori: vaš e-poštni naslov in sporočilo, ko nam pišete.",
+      "Tehnični dnevniki: dnevniki prijav in napak (vključno z naslovom IP), ki jih naši ponudniki gostovanja in overjanja kratek čas hranijo."
+     ]
+    },
+    {
+     "h": "Nameni in pravne podlage",
+     "p": [
+      "Za upravljanje vašega računa, sinhronizacijo podatkov med napravami, zagotavljanje naročnine in podporo (izvajanje pogodbe); za zagotavljanje varnosti storitve in preprečevanje zlorab (zakoniti interes); ter za prenose v tujino na podlagi vaše izrecne privolitve (glejte spodaj)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI ima dva dela. (1) Ukazi napravam (prižgi luč, zaženi prizor, vprašaj za stanje) se obdelajo lokalno na vaši napravi in se ne pošiljajo v oblak. (2) Sporočila, ki niso ukazi napravam, na primer splošni klepet in vprašanja, se pošljejo v Cloudflare Workers AI, da nanje odgovori; kot kontekst so vključena imena, vrste in sobe vaših naprav. Podatki o vašem računu, e-poštni naslov in lokacija se ne pošiljajo. Te vsebine ne uporabljamo za učenje modelov umetne inteligence; Cloudflare jo obdeluje za zagotavljanje storitve. Če želite, lahko v klepetu uporabljate samo ukaze napravam. Če ste prijavljeni, se zgodovina klepeta sinhronizira z vašim računom kot vaše druge nastavitve.",
+      "Glasovni vnos: ko tapnete gumb za mikrofon v klepetu NEXUS AI, se vaš govor pretvori v besedilo. V brskalniku (Chrome/Edge) se najprej uporabi brskalnikova lastna storitev za prepoznavanje govora; če ta ni dosegljiva ali v namiznih in mobilnih aplikacijah, se kratek posnetek pošlje samo v Cloudflare Workers AI (Whisper) za prepis, se ne shrani in se ne shrani v vaš račun. Prepis se le vstavi v vnosno polje klepeta in se nikamor ne pošlje, dokler ne pritisnete pošlji."
+     ]
+    },
+    {
+     "h": "Ponudniki storitev in prenosi",
+     "ul": [
+      "Supabase: overjanje, zbirka podatkov in sistemska e-pošta.",
+      "Cloudflare: gostovanje spletnega mesta; Cloudflare Workers AI za odgovore v klepetu NEXUS AI in pretvorbo govora v besedilo.",
+      "Whop: plačila naročnine in izdajanje računov.",
+      "Google: prijava z Google in (prek Gmaila) e-pošta za preverjanje / ponastavitev gesla.",
+      "GitHub: distribucija namestitvenih programov.",
+      "Open-Meteo: mesto / približne koordinate za vreme.",
+      "OpenStreetMap / Nominatim: zemljevidi in iskanje krajev; Unsplash: nekatere nadomestne slike.",
+      "BigDataCloud: določanje imena kraja iz koordinat (nadomestna možnost, kadar Nominatim ni dosegljiv; uporablja se tudi pri izbiri vaše domače lokacije). Ta storitev prejme natančne koordinate lokacije, ki jo izberete ali ki je zaznana."
+     ],
+     "p": [
+      "Strežniki teh ponudnikov so lahko zunaj Türkiye. Z ustvarjanjem računa in/ali plačilom izrecno privolite v prenos svojih podatkov k njim in v tujino; privolitev lahko prekličete z izbrisom svojega računa."
+     ]
+    },
+    {
+     "h": "Piškotki in sledenje",
+     "p": [
+      "Naše spletno mesto ne uporablja piškotkov in ne vsebuje analitičnih ali oglaševalskih sledilnikov. Aplikacija shranjuje vaše nastavitve v lokalni pomnilnik naprave (localStorage)."
+     ]
+    },
+    {
+     "h": "Hramba in izbris",
+     "p": [
+      "Vaše podatke hranimo, dokler je vaš račun odprt. Če želite izbrisati račun in podatke, pišite na nexus.smarthome.app@gmail.com; zahtevo bomo izpolnili v 30 dneh (razen evidenc o naročnini, ki jih moramo hraniti po zakonu). V aplikaciji odprite Nastavitve, nato Varnost računa in uporabite Izbriši moj račun. Če strežnik postopka ne more dokončati, to sporoči zaslon."
+     ]
+    },
+    {
+     "h": "Vaše pravice",
+     "p": [
+      "Po turškem zakonu št. 6698 (KVKK), čl. 11 in, kjer se uporablja, po GDPR lahko zahtevate informacijo, ali se vaši podatki obdelujejo, dostop do njih, popravek, izbris, ugovarjate obdelavi in zahtevate prenosljivost. Pišite na nexus.smarthome.app@gmail.com. Pritožite se lahko tudi turškemu organu za varstvo osebnih podatkov."
+     ]
+    },
+    {
+     "h": "Varnost",
+     "p": [
+      "Povezave so šifrirane s TLS. Zbirka podatkov uveljavlja nadzor dostopa na ravni vrstic: vsak uporabnik lahko bere in zapisuje samo svoje podatke. Noben sistem ni popolnoma varen; priporočamo močno geslo in redno posodabljanje naprav."
+     ]
+    },
+    {
+     "h": "Naprave tretjih oseb",
+     "p": [
+      "Pametne naprave, ki jih povežete (npr. Shelly, WLED, ESPHome), lahko komunicirajo s strežniki svojih proizvajalcev v skladu z njihovimi lastnimi pravilniki o zasebnosti. NEXUS vaših podatkov s temi proizvajalci ne deli."
+     ]
+    },
+    {
+     "h": "Otroci",
+     "p": [
+      "NEXUS ni namenjen otrokom, mlajšim od 13 let, in njihovih podatkov zavestno ne zbiramo."
+     ]
+    },
+    {
+     "h": "Spremembe",
+     "p": [
+      "Ta pravilnik lahko posodobimo; pomembne spremembe bomo objavili v aplikaciji ali na spletnem mestu."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "Vprašanja: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Pogoji uporabe",
+   "intro": "Z prenosom, namestitvijo ali uporabo aplikacije NEXUS in povezanih storitev (»Storitve«) sprejemate te pogoje. Storitve zagotavlja NEXUS. Kontakt: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licenca",
+     "p": [
+      "Podeljujemo vam osebno, neizključno, neprenosljivo in preklicljivo licenco za uporabo programske opreme NEXUS na napravah, ki jih imate v lasti ali nadzorujete, za osebno, nekomercialno avtomatizacijo doma. Programske opreme ne smete distribuirati, dajati v najem, prodajati, podeljevati podlicence zanjo, je obratno prevajati ali z njo izdelati izdelka, ki je v neposredni konkurenci z NEXUS. Komponente tretjih oseb so predmet njihovih lastnih licenc."
+     ]
+    },
+    {
+     "h": "Račun",
+     "p": [
+      "Za uporabo NEXUS je potreben račun. Odgovorni ste za točnost svojih podatkov, za varnost svojega gesla in za dejavnost v svojem računu. Račune, ki kršijo te pogoje, lahko začasno onemogočimo ali zapremo."
+     ]
+    },
+    {
+     "h": "Varnost pametnega doma",
+     "ul": [
+      "NEXUS je pripomoček za udobje; nanj se ne zanašajte samostojno pri kritičnih funkcijah, kot so varnost pred požarom, plinom, zdravje ali varnost življenja.",
+      "Odgovorni ste za ukaze, poslane vašim napravam, in za varnost svojega omrežja. Strojno programsko opremo naprav in nastavitve usmerjevalnika posodabljajte.",
+      "Zaradi varnosti se ključavnic ne da odpreti iz klepeta."
+     ]
+    },
+    {
+     "h": "NEXUS AI in krediti",
+     "p": [
+      "Brezplačni paket vključuje 30 kreditov NEXUS AI na dan; naročnina NEXUS+ vključuje 2.000 na mesec. Krediti so neprenosljivi, jih ni mogoče zamenjati za denar in se ob koncu obdobja ponastavijo. NEXUS AI se lahko zmoti; preverjanje rezultatov je vaša odgovornost."
+     ]
+    },
+    {
+     "h": "Naročnina NEXUS+",
+     "ul": [
+      "Obseg: NEXUS+ omogoča 2.000 kreditov NEXUS AI na mesec in odklene dodajanje novih naprav prek naprednih povezav (Home Assistant). Ko naročnina poteče, že dodane naprave še naprej delujejo; za dodajanje novih naprav prek teh povezav je spet potreben NEXUS+.",
+      "Paketi: mesečni in letni, s ceno v TRY za Türkiye in v USD drugje (trenutno mesečni ₺499,99 / $11,99, letni ₺3.999,99 / $89,99). Trenutne cene so prikazane ob blagajni; ob blagajni se lahko dodajo davki. Letni paket vključuje 7-dnevno brezplačno preizkusno obdobje, mesečni paket pa 3-dnevno brezplačno preizkusno obdobje.",
+      "Plačila se obdelujejo prek Whop. Naročnina se samodejno obnavlja vsako obdobje, dokler je ne prekličete; ko preizkusno obdobje poteče, se zaračuna cena izbranega paketa.",
+      "Naročnino lahko kadar koli prekličete v razdelku Obračunavanje v aplikaciji ali v svojem računu na tem spletnem mestu. Preklic začne veljati ob koncu tekočega obdobja.",
+      "Ob blagajni uporabite e-poštni naslov svojega računa NEXUS; naročnina se poveže s tem e-poštnim naslovom.",
+      "Spremembe cen objavimo vsaj 30 dni, preden začnejo veljati; ne vplivajo na tekoče obdobje.",
+      "Pogoji vračila so v Pravilniku o vračilu in preklicu."
+     ]
+    },
+    {
+     "h": "Spremembe in prekinitve",
+     "p": [
+      "Storitve lahko izboljšamo, spremenimo ali jih zaradi vzdrževanja začasno ustavimo. Ne jamčimo za nemoteno ali brezhibno storitev."
+     ]
+    },
+    {
+     "h": "Intelektualna lastnina",
+     "p": [
+      "Pravice do programske opreme, oblikovanja, blagovne znamke in vsebine NEXUS pripadajo upravljavcu. Ti pogoji vam podeljujejo le zgoraj navedeno licenco."
+     ]
+    },
+    {
+     "h": "Omejitev odgovornosti",
+     "p": [
+      "Programska oprema se zagotavlja »takšna, kot je«. V največji meri, ki jo dopušča zakon, ne odgovarjamo za posredno škodo (vključno z izgubo podatkov ali poškodbo naprav ali premoženja), ki izhaja iz uporabe Storitev; naša skupna odgovornost je omejena na znesek, ki ste nam ga plačali v preteklih 12 mesecih. Pravice potrošnikov, ki jih zakon ne dovoljuje omejiti, ostanejo nedotaknjene."
+     ]
+    },
+    {
+     "h": "Prenehanje",
+     "p": [
+      "Svoj račun lahko kadar koli zaprete (glejte Pravilnik o zasebnosti). Vaš dostop lahko prekinemo, če kršite te pogoje."
+     ]
+    },
+    {
+     "h": "Merodajno pravo",
+     "p": [
+      "Za te pogoje se uporablja pravo Republike Türkiye. Kot potrošnik ohranite pravico, da se obrnete na potrošniške arbitražne komisije in potrošniška sodišča."
+     ]
+    },
+    {
+     "h": "Spremembe teh pogojev",
+     "p": [
+      "Te pogoje lahko posodobimo, pomembne spremembe pa bomo objavili v aplikaciji ali na spletnem mestu. Z nadaljnjo uporabo Storitev po spremembi sprejemate nove pogoje."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Pravilnik o vračilu in preklicu",
+   "intro": "Ta pravilnik pojasnjuje pogoje preizkusnega obdobja, preklica in vračila za naročnino NEXUS+. Vaše zakonske pravice potrošnika ostanejo nedotaknjene.",
+   "sections": [
+    {
+     "h": "Brezplačno preizkusno obdobje",
+     "p": [
+      "Letni paket vključuje 7-dnevno brezplačno preizkusno obdobje, mesečni paket pa 3-dnevno brezplačno preizkusno obdobje. Če prekličete pred koncem preizkusnega obdobja, vam ni zaračunano nič. Če ne prekličete, se ob koncu preizkusnega obdobja zaračuna cena izbranega paketa."
+     ]
+    },
+    {
+     "h": "Kako preklicati",
+     "ul": [
+      "V aplikaciji: Plus → Obračunavanje → Prekliči ob koncu obdobja.",
+      "Na spletnem mestu: prijava → račun → prekliči ob koncu obdobja.",
+      "Preklic začne veljati ob koncu tekočega obračunskega obdobja; do takrat obdržite funkcije NEXUS+ in za naslednje obdobje vam ni zaračunano nič."
+     ]
+    },
+    {
+     "h": "Vračila",
+     "ul": [
+      "Vračilo lahko zahtevate v 14 dneh od prvega plačila brez navedbe razloga; vrnemo celotno plačilo.",
+      "Pri samodejnih obnovitvah vam vrnemo plačilo za to obdobje, če vračilo zahtevate v 3 dneh od datuma obnovitve.",
+      "Zunaj teh rokov porabljenih obdobij ne vračamo, vendar bomo vračilo preučili v utemeljenih primerih, na primer če storitve ni bilo mogoče uporabljati zaradi napake na naši strani.",
+      "Zahtevo lahko zavrnemo, če zaznamo zlorabo (na primer ponavljajoča se vračila v istem računu)."
+     ]
+    },
+    {
+     "h": "Kako zahtevati vračilo",
+     "p": [
+      "Pošljite e-pošto na nexus.smarthome.app@gmail.com z e-poštnim naslovom svojega računa NEXUS in svojo zahtevo. Odobrena vračila se izvedejo prek Whop na prvotni način plačila; običajno traja 5–10 delovnih dni, da se prikažejo, odvisno od vaše banke."
+     ]
+    },
+    {
+     "h": "Zakonske pravice",
+     "p": [
+      "Ta pravilnik ne omejuje vaših zakonskih pravic po turškem zakonu o varstvu potrošnikov št. 6502 in uredbi o pogodbah na daljavo (vključno s pravico do odstopa od pogodbe in njenimi izjemami)."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

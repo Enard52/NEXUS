@@ -1,0 +1,253 @@
+{
+ "code": "ro",
+ "updated": "Ultima actualizare: 31 octombrie 2026",
+ "labels": {
+  "updated": "Ultima actualizare",
+  "operatedBy": "Operat de",
+  "footer": "Acest document trebuie citit împreună cu textul actual disponibil pe nexus-smarthome.pages.dev.",
+  "notice": "Această traducere este oferită doar pentru comoditate. În caz de diferențe față de versiunea în limba turcă sau engleză, prevalează versiunile în limba turcă și engleză."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Politica de confidențialitate",
+   "intro": "NEXUS administrează casa dumneavoastră inteligentă în principal în propria rețea locală. Această politică explică clar ce date prelucrăm atunci când creați un cont, în ce scop și unde.",
+   "sections": [
+    {
+     "h": "Pe scurt",
+     "ul": [
+      "Pentru a utiliza NEXUS este necesar un cont. Comenzile pentru dispozitive rulează în continuare în rețeaua dumneavoastră locală; ele nu sunt trimise prin cloudul unui producător.",
+      "Setările, lista de dispozitive și istoricul conversațiilor dumneavoastră sunt stocate în cloud, astfel încât să fie identice pe fiecare dispozitiv.",
+      "Nu vă vindem datele, nu le folosim în scopuri publicitare și nu vă creăm profiluri.",
+      "Accesul la microfon este opțional și este folosit numai atunci când apăsați pictograma microfonului din conversația NEXUS AI; înregistrarea este transcrisă și nu este stocată. Camera se deschide doar pentru scanarea codurilor QR, iar imaginea nu părăsește niciodată dispozitivul dumneavoastră."
+     ]
+    },
+    {
+     "h": "Operatorul de date",
+     "p": [
+      "Operatorul de date este NEXUS. Contact: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Ce date prelucrăm",
+     "ul": [
+      "Cont: adresa dumneavoastră de e-mail și (dacă este furnizat) numele dumneavoastră. În cazul autentificării cu Google, adresa de e-mail și numele de profil furnizate de Google. Parola dumneavoastră este stocată în Supabase Auth numai sub forma unui hash unidirecțional; nu o putem vedea.",
+      "Date de aplicație sincronizate (numai când sunteți autentificat): numele și fotografia de profil, setările de temă, limbă și unități, membrii gospodăriei, scenele și automatizările, cardurile favorite, istoricul conversațiilor NEXUS AI și contorul de utilizare, jurnalul de evenimente, locația locuinței și preferința pentru vreme, precum și lista dispozitivelor adăugate de dumneavoastră (nume, cameră, protocol, adresă în rețeaua locală, ultima stare).",
+      "Abonament (dacă ați cumpărat NEXUS+): e-mail, plan, stare, sfârșitul perioadei și ID-ul de membru Whop. Datele cardului dumneavoastră sunt prelucrate exclusiv de Whop și nu ajung niciodată la noi.",
+      "Mesaje către asistență: adresa dumneavoastră de e-mail și mesajul atunci când ne scrieți.",
+      "Jurnale tehnice: jurnale de autentificare și de erori (inclusiv adresa IP), păstrate pentru scurt timp de furnizorii noștri de găzduire și autentificare."
+     ]
+    },
+    {
+     "h": "Scopuri și temeiuri juridice",
+     "p": [
+      "Pentru administrarea contului dumneavoastră, sincronizarea datelor între dispozitive, furnizarea abonamentului și acordarea de asistență (executarea unui contract); pentru menținerea securității serviciului și prevenirea abuzurilor (interes legitim); iar pentru transferurile în străinătate, consimțământul dumneavoastră explicit (a se vedea mai jos)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI are două componente. (1) Comenzile pentru dispozitive (aprinderea unei lumini, rularea unei scene, solicitarea stării) sunt prelucrate local pe dispozitivul dumneavoastră și nu sunt trimise în cloud. (2) Mesajele care nu sunt comenzi pentru dispozitive, precum conversația generală și întrebările, sunt trimise către Cloudflare Workers AI pentru a primi un răspuns; numele, tipurile și camerele dispozitivelor dumneavoastră sunt incluse drept context. Datele contului, adresa de e-mail și locația dumneavoastră nu sunt trimise. Nu folosim acest conținut pentru antrenarea modelelor de IA; Cloudflare îl prelucrează pentru a furniza serviciul. Dacă preferați, puteți folosi în conversație numai comenzi pentru dispozitive. Dacă sunteți autentificat, istoricul conversațiilor dumneavoastră se sincronizează cu contul, la fel ca celelalte setări.",
+      "Intrare vocală: atunci când apăsați butonul microfonului din conversația NEXUS AI, vocea dumneavoastră este transformată în text. Într-un browser (Chrome/Edge) este utilizat mai întâi serviciul propriu de recunoaștere vocală al browserului; dacă acesta este inaccesibil, sau în aplicațiile pentru desktop și mobil, înregistrarea scurtă este trimisă exclusiv către Cloudflare Workers AI (Whisper) pentru transcriere, nu este stocată și nu este salvată în contul dumneavoastră. Transcrierea este doar plasată în câmpul de introducere al conversației și nu este trimisă nicăieri până când apăsați pe trimitere."
+     ]
+    },
+    {
+     "h": "Furnizori de servicii și transferuri",
+     "ul": [
+      "Supabase: autentificare, bază de date și e-mailuri de sistem.",
+      "Cloudflare: găzduirea site-ului; Cloudflare Workers AI pentru răspunsurile din conversația NEXUS AI și transformarea vorbirii în text.",
+      "Whop: plăți pentru abonament și facturare.",
+      "Google: autentificare cu Google și (prin Gmail) e-mailuri de verificare / resetare a parolei.",
+      "GitHub: distribuirea programelor de instalare.",
+      "Open-Meteo: oraș / coordonate aproximative pentru vreme.",
+      "OpenStreetMap / Nominatim: hărți și căutare de locuri; Unsplash: unele imagini de rezervă.",
+      "BigDataCloud: stabilirea numelui unui loc pe baza coordonatelor (soluție de rezervă atunci când Nominatim este inaccesibil; utilizat și atunci când alegeți locația locuinței). Acest serviciu primește coordonatele exacte ale locației pe care o alegeți sau care este detectată."
+     ],
+     "p": [
+      "Serverele acestor furnizori se pot afla în afara Türkiye. Prin crearea unui cont și/sau efectuarea unei plăți, vă dați consimțământul explicit pentru transferul datelor dumneavoastră către aceștia și în străinătate; vă puteți retrage consimțământul solicitând ștergerea contului dumneavoastră."
+     ]
+    },
+    {
+     "h": "Cookie-uri și urmărire",
+     "p": [
+      "Site-ul nostru nu folosește cookie-uri și nu conține instrumente de analiză sau de urmărire publicitară. Aplicația își păstrează setările în stocarea locală a dispozitivului dumneavoastră (localStorage)."
+     ]
+    },
+    {
+     "h": "Păstrare și ștergere",
+     "p": [
+      "Vă păstrăm datele cât timp contul dumneavoastră este deschis. Pentru a șterge contul și datele, scrieți-ne la nexus.smarthome.app@gmail.com; vom soluționa solicitarea în termen de 30 de zile (cu excepția evidențelor abonamentului pe care trebuie să le păstrăm conform legii). În aplicație, deschideți Setări, apoi Securitatea contului și folosiți opțiunea Șterge contul meu. Dacă serverul nu o poate finaliza, ecranul vă informează."
+     ]
+    },
+    {
+     "h": "Drepturile dumneavoastră",
+     "p": [
+      "În temeiul Legii turce nr. 6698 (KVKK), art. 11 și, după caz, al GDPR, puteți solicita să aflați dacă datele dumneavoastră sunt prelucrate, puteți accesa datele, le puteți rectifica, puteți cere ștergerea lor, vă puteți opune prelucrării și puteți solicita portabilitatea. Scrieți-ne la nexus.smarthome.app@gmail.com. De asemenea, puteți depune o plângere la Autoritatea turcă pentru Protecția Datelor cu Caracter Personal."
+     ]
+    },
+    {
+     "h": "Securitate",
+     "p": [
+      "Conexiunile sunt criptate cu TLS. Baza de date impune controlul accesului la nivel de rând: fiecare utilizator poate citi și scrie numai propriile date. Niciun sistem nu este perfect sigur; vă recomandăm o parolă puternică și menținerea dispozitivelor actualizate."
+     ]
+    },
+    {
+     "h": "Dispozitive ale terților",
+     "p": [
+      "Dispozitivele inteligente pe care le conectați (de ex. Shelly, WLED, ESPHome) pot comunica cu serverele producătorilor lor, în conformitate cu politicile proprii de confidențialitate ale acestora. NEXUS nu împarte datele dumneavoastră cu acești producători."
+     ]
+    },
+    {
+     "h": "Copii",
+     "p": [
+      "NEXUS nu se adresează copiilor sub 13 ani și nu colectăm cu bună știință datele acestora."
+     ]
+    },
+    {
+     "h": "Modificări",
+     "p": [
+      "Putem actualiza această politică; vom anunța modificările semnificative în aplicație sau pe site."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "Întrebări: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Termeni și condiții",
+   "intro": "Prin descărcarea, instalarea sau utilizarea aplicației NEXUS și a serviciilor aferente („Serviciile”), acceptați acești termeni. Serviciile sunt furnizate de NEXUS. Contact: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licență",
+     "p": [
+      "Vă acordăm o licență personală, neexclusivă, netransmisibilă și revocabilă de utilizare a software-ului NEXUS pe dispozitive pe care le dețineți sau le controlați, pentru automatizarea personală, necomercială a locuinței. Nu aveți dreptul să îl distribuiți, să îl închiriați, să îl vindeți, să îl sublicențiați, să îl supuneți ingineriei inverse sau să îl utilizați pentru a construi un produs care concurează direct cu NEXUS. Componentele terților sunt supuse propriilor licențe."
+     ]
+    },
+    {
+     "h": "Cont",
+     "p": [
+      "Utilizarea NEXUS necesită un cont. Sunteți responsabil pentru exactitatea datelor dumneavoastră, pentru păstrarea în siguranță a parolei și pentru activitatea desfășurată prin contul dumneavoastră. Putem suspenda sau închide conturile care încalcă acești termeni."
+     ]
+    },
+    {
+     "h": "Siguranța casei inteligente",
+     "ul": [
+      "NEXUS este un instrument de confort; nu vă bazați exclusiv pe el pentru funcții critice, precum protecția împotriva incendiilor, a gazelor, a sănătății sau a vieții.",
+      "Sunteți responsabil pentru comenzile trimise către dispozitivele dumneavoastră și pentru securitatea rețelei dumneavoastră. Mențineți actualizate firmware-ul dispozitivelor și setările routerului.",
+      "Din motive de siguranță, încuietorile nu pot fi deschise din conversație."
+     ]
+    },
+    {
+     "h": "NEXUS AI și credite",
+     "p": [
+      "Planul gratuit include 30 de credite NEXUS AI pe zi; un abonament NEXUS+ include 2,000 pe lună. Creditele sunt netransmisibile, nu pot fi schimbate pe numerar și se resetează la sfârșitul perioadei. NEXUS AI poate face greșeli; verificarea rezultatelor este responsabilitatea dumneavoastră."
+     ]
+    },
+    {
+     "h": "Abonamentul NEXUS+",
+     "ul": [
+      "Domeniu: NEXUS+ oferă 2,000 de credite NEXUS AI pe lună și deblochează adăugarea de dispozitive noi prin conexiunile avansate (Home Assistant). La încheierea abonamentului, dispozitivele pe care le-ați adăugat deja continuă să funcționeze; adăugarea de dispozitive noi prin aceste conexiuni necesită din nou NEXUS+.",
+      "Planuri: lunar și anual, cu prețuri în TRY pentru Türkiye și în USD în rest (în prezent lunar ₺499.99 / $11.99, anual ₺3,999.99 / $89.99). Prețurile actuale sunt afișate la finalizarea comenzii; la finalizare se pot adăuga taxe. Planul anual include o perioadă de probă gratuită de 7 zile, iar planul lunar o perioadă de probă gratuită de 3 zile.",
+      "Plățile se efectuează prin Whop. Abonamentul se reînnoiește automat la fiecare perioadă până când îl anulați; la încheierea perioadei de probă se percepe prețul planului ales.",
+      "Puteți anula oricând din secțiunea Facturare din aplicație sau din contul dumneavoastră de pe acest site. Anularea produce efecte la sfârșitul perioadei curente.",
+      "La finalizarea comenzii folosiți adresa de e-mail a contului dumneavoastră NEXUS; abonamentul este asociat cu acea adresă de e-mail.",
+      "Anunțăm modificările de preț cu cel puțin 30 de zile înainte de intrarea lor în vigoare; ele nu afectează perioada curentă.",
+      "Condițiile de rambursare se găsesc în Politica de rambursare și anulare."
+     ]
+    },
+    {
+     "h": "Modificări și întreruperi",
+     "p": [
+      "Putem îmbunătăți, modifica sau suspenda temporar Serviciile în scopul întreținerii. Nu garantăm un serviciu neîntrerupt sau fără erori."
+     ]
+    },
+    {
+     "h": "Proprietate intelectuală",
+     "p": [
+      "Drepturile asupra software-ului, designului, mărcii și conținutului NEXUS aparțin operatorului. Acești termeni vă acordă numai licența de mai sus."
+     ]
+    },
+    {
+     "h": "Limitarea răspunderii",
+     "p": [
+      "Software-ul este furnizat „ca atare”. În măsura maximă permisă de lege, nu răspundem pentru daune indirecte (inclusiv pierderea de date sau deteriorarea dispozitivelor ori a bunurilor) rezultate din utilizarea Serviciilor; răspunderea noastră totală este limitată la suma pe care ne-ați plătit-o în ultimele 12 luni. Drepturile consumatorului care nu pot fi limitate prin lege rămân neafectate."
+     ]
+    },
+    {
+     "h": "Încetare",
+     "p": [
+      "Vă puteți închide contul oricând (a se vedea Politica de confidențialitate). Putem pune capăt accesului dumneavoastră dacă încălcați acești termeni."
+     ]
+    },
+    {
+     "h": "Legea aplicabilă",
+     "p": [
+      "Acești termeni sunt guvernați de legile Republicii Türkiye. În calitate de consumator, vă păstrați dreptul de a vă adresa comisiilor de arbitraj pentru consumatori și instanțelor de consumatori."
+     ]
+    },
+    {
+     "h": "Modificarea acestor termeni",
+     "p": [
+      "Putem actualiza acești termeni și vom anunța modificările semnificative în aplicație sau pe site. Continuarea utilizării Serviciilor după o modificare înseamnă că acceptați noii termeni."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Politica de rambursare și anulare",
+   "intro": "Această politică explică condițiile privind perioada de probă, anularea și rambursarea pentru abonamentul NEXUS+. Drepturile dumneavoastră legale de consumator rămân neafectate.",
+   "sections": [
+    {
+     "h": "Perioada de probă gratuită",
+     "p": [
+      "Planul anual include o perioadă de probă gratuită de 7 zile, iar planul lunar o perioadă de probă gratuită de 3 zile. Dacă anulați înainte de încheierea perioadei de probă, nu vi se percepe nicio sumă. Dacă nu anulați, prețul planului ales se percepe la încheierea perioadei de probă."
+     ]
+    },
+    {
+     "h": "Cum anulați",
+     "ul": [
+      "În aplicație: Plus → Facturare → Anulează la sfârșitul perioadei.",
+      "Pe site: autentificați-vă → cont → anulați la sfârșitul perioadei.",
+      "Anularea produce efecte la sfârșitul perioadei de facturare curente; păstrați funcțiile NEXUS+ până atunci și nu vi se percepe nicio sumă pentru perioada următoare."
+     ]
+    },
+    {
+     "h": "Rambursări",
+     "ul": [
+      "Puteți solicita o rambursare în termen de 14 zile de la prima plată, fără a indica un motiv; rambursăm întreaga sumă plătită.",
+      "În cazul reînnoirilor automate, dacă solicitați în termen de 3 zile de la data reînnoirii, rambursăm suma percepută pentru acea perioadă.",
+      "În afara acestor termene nu rambursăm perioadele utilizate, dar vom analiza rambursările în cazuri justificate, precum situația în care serviciul nu a putut fi utilizat din cauza unei defecțiuni din partea noastră.",
+      "Putem refuza o solicitare dacă detectăm un abuz (de exemplu, rambursări repetate pe același cont)."
+     ]
+    },
+    {
+     "h": "Cum solicitați o rambursare",
+     "p": [
+      "Trimiteți un e-mail la nexus.smarthome.app@gmail.com cu adresa de e-mail a contului dumneavoastră NEXUS și cu solicitarea dumneavoastră. Rambursările aprobate sunt efectuate prin Whop către metoda de plată inițială; apariția sumei durează de obicei 5–10 zile lucrătoare, în funcție de banca dumneavoastră."
+     ]
+    },
+    {
+     "h": "Drepturi legale",
+     "p": [
+      "Această politică nu limitează drepturile dumneavoastră legale în temeiul Legii turce privind protecția consumatorului nr. 6502 și al Regulamentului privind contractele la distanță (inclusiv dreptul de retragere și excepțiile acestuia)."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

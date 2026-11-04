@@ -1,0 +1,253 @@
+{
+ "code": "ga",
+ "updated": "Nuashonraithe go deireanach: 31 Deireadh Fómhair 2026",
+ "labels": {
+  "updated": "Nuashonraithe go deireanach",
+  "operatedBy": "Arna oibriú ag",
+  "footer": "Ní mór an doiciméad seo a léamh i dteannta an téacs reatha ag nexus-smarthome.pages.dev.",
+  "notice": "Soláthraítear an t-aistriúchán seo ar mhaithe le háisiúlacht amháin. Má bhíonn difear idir é agus an leagan Tuircise nó Béarla, is iad na leaganacha Tuircise agus Béarla is rathúla."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Polasaí Príobháideachais",
+   "intro": "Bainistíonn NEXUS do theach cliste go príomha ar do líonra áitiúil féin. Míníonn an polasaí seo go soiléir na sonraí a phróiseálaimid, cén fáth agus cén áit, nuair a chruthaíonn tú cuntas.",
+   "sections": [
+    {
+     "h": "Go hachomair",
+     "ul": [
+      "Tá cuntas ag teastáil chun NEXUS a úsáid. Leanann orduithe feistí ag rith ar do líonra áitiúil; ní sheoltar iad trí scamall díoltóra.",
+      "Stóráiltear do shocruithe, do liosta feistí agus do stair comhrá sa scamall ionas go mbeidh siad ag teacht le chéile ar gach feiste.",
+      "Ní dhíolaimid do chuid sonraí, ní úsáidimid iad le haghaidh fógraíochta ná ní chruthaímid próifíl ort.",
+      "Tá rochtain ar an micreafón roghnach agus ní úsáidtear í ach nuair a thapálann tú an micreafón i gcomhrá NEXUS AI; déantar an taifeadadh a tras-scríobh agus ní stóráiltear é. Ní osclaítear an ceamara ach chun cóid QR a scanadh agus ní fhágann an íomhá do fheiste riamh."
+     ]
+    },
+    {
+     "h": "Rialaitheoir sonraí",
+     "p": [
+      "Is é NEXUS an rialaitheoir sonraí. Teagmháil: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Na sonraí a phróiseálaimid",
+     "ul": [
+      "Cuntas: do sheoladh ríomhphoist agus (más ann dó) d'ainm. Le síniú isteach Google, an ríomhphost agus ainm próifíle a sholáthraíonn Google. Ní stóráiltear do phasfhocal ach mar hais aontreoch in Supabase Auth; ní fheicimid é.",
+      "Sonraí aipe sioncronaithe (nuair atá tú sínithe isteach amháin): ainm agus grianghraf próifíle, socruithe téama/teanga/aonad, baill an teaghlaigh, radhairc agus uathoibriú, cártaí is fearr leat, stair comhrá NEXUS AI agus áireamh úsáide, loga imeachtaí, suíomh an bhaile/rogha aimsire agus liosta na bhfeistí a chuir tú leis (ainm, seomra, prótacal, seoladh líonra áitiúil, an staid dheireanach).",
+      "Síntiús (má cheannaigh tú NEXUS+): ríomhphost, plean, stádas, deireadh na tréimhse agus ID ballraíochta Whop. Ní phróiseálann ach Whop sonraí do chárta agus ní shroicheann siad muid choíche.",
+      "Teachtaireachtaí tacaíochta: do ríomhphost agus do theachtaireacht nuair a scríobhann tú chugainn.",
+      "Logaí teicniúla: logaí sínithe isteach agus earráide (seoladh IP san áireamh) a choinníonn ár soláthraithe óstála agus fíordheimhnithe go gairid."
+     ]
+    },
+    {
+     "h": "Cuspóirí agus bunúis dhlíthiúla",
+     "p": [
+      "Chun do chuntas a bhainistiú, do shonraí a shioncronú idir feistí, do shíntiús a sholáthar agus tacaíocht a thabhairt (cur i gcrích conartha); chun an tseirbhís a choinneáil slán agus mí-úsáid a chosc (leas dlisteanach); agus, maidir le haistrithe thar lear, do thoiliú sainráite (féach thíos)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "Tá dhá chuid ag NEXUS AI. (1) Próiseáiltear orduithe feistí (solas a chur ar siúl, radharc a rith, stádas a iarraidh) go háitiúil ar do fheiste agus ní sheoltar chuig an scamall iad. (2) Seoltar teachtaireachtaí nach orduithe feistí iad, amhail comhrá ginearálta agus ceisteanna, chuig Cloudflare Workers AI le freagra a fháil orthu; áirítear ainmneacha, cineálacha agus seomraí do fheistí mar chomhthéacs. Ní sheoltar sonraí do chuntais, do ríomhphost ná do shuíomh. Ní úsáidimid an t-ábhar seo chun samhlacha AI a oiliúint; próiseálann Cloudflare é chun an tseirbhís a sholáthar. Más fearr leat, is féidir leat orduithe feistí amháin a úsáid sa chomhrá. Má tá tú sínithe isteach, sioncronaítear do stair comhrá le do chuntas cosúil le do shocruithe eile.",
+      "Ionchur gutha: nuair a thapálann tú an cnaipe micreafóin i gcomhrá NEXUS AI, déantar do chaint a thiontú ina téacs. I mbrabhsálaí (Chrome/Edge) úsáidtear seirbhís aitheantais cainte an bhrabhsálaí féin ar dtús; mura féidir teagmháil a dhéanamh léi, nó sna haipeanna deisce agus soghluaiste, seoltar an taifeadadh gearr chuig Cloudflare Workers AI (Whisper) amháin lena thras-scríobh, ní stóráiltear é agus ní shábháiltear i do chuntas é. Ní chuirtear an tras-scríbhinn ach isteach i réimse ionchuir an chomhrá agus ní sheoltar áit ar bith í go dtí go mbrúnn tú seol."
+     ]
+    },
+    {
+     "h": "Soláthraithe seirbhíse agus aistrithe",
+     "ul": [
+      "Supabase: fíordheimhniú, bunachar sonraí agus ríomhphoist chórais.",
+      "Cloudflare: óstáil an láithreáin ghréasáin; Cloudflare Workers AI do fhreagraí chomhrá NEXUS AI agus tras-scríobh cainte.",
+      "Whop: íocaíochtaí síntiúis agus sceidealú sonraisc.",
+      "Google: síniú isteach Google agus (trí Gmail) ríomhphoist fíorúcháin / athshocraithe pasfhocail.",
+      "GitHub: dáileadh suiteálaithe.",
+      "Open-Meteo: cathair / comhordanáidí garbha don aimsir.",
+      "OpenStreetMap / Nominatim: léarscáileanna agus cuardach áiteanna; Unsplash: roinnt íomhánna cúltaca.",
+      "BigDataCloud: ainm áite a réiteach ó chomhordanáidí (cúltaca nuair nach féidir teagmháil a dhéanamh le Nominatim; úsáidtear freisin nuair a roghnaíonn tú suíomh do bhaile). Faigheann an tseirbhís seo comhordanáidí cruinne an tsuímh a roghnaíonn tú nó a bhraitear."
+     ],
+     "p": [
+      "Is féidir go bhfuil freastalaithe na soláthraithe seo lasmuigh de Türkiye. Trí chuntas a chruthú agus/nó íoc, tugann tú toiliú sainráite go n-aistreofar do chuid sonraí chucu agus thar lear; is féidir leat do thoiliú a tharraingt siar trí iarraidh ar do chuntas a scriosadh."
+     ]
+    },
+    {
+     "h": "Fianáin agus rianú",
+     "p": [
+      "Ní úsáideann ár suíomh gréasáin aon fhianáin agus níl aon anailísíocht ná rianaitheoirí fógraíochta ann. Coinníonn an aip do shocruithe i stóras áitiúil do fheiste (localStorage)."
+     ]
+    },
+    {
+     "h": "Coinneáil agus scriosadh",
+     "p": [
+      "Coinnímid do shonraí fad atá do chuntas oscailte. Chun do chuntas agus do shonraí a scriosadh, scríobh chuig nexus.smarthome.app@gmail.com; comhlíonfaimid an t-iarratas laistigh de 30 lá (seachas taifid síntiúis a gcaithfimid a choinneáil de réir dlí). San aip, oscail Socruithe agus ansin Slándáil cuntais, agus úsáid Scrios mo chuntas. Mura bhfuil an freastalaí in ann é a chur i gcrích, deir an scáileán amhlaidh."
+     ]
+    },
+    {
+     "h": "Do chearta",
+     "p": [
+      "Faoi Dhlí na Tuirce Uimh. 6698 (KVKK) airt. 11 agus, i gcás inarb infheidhme, an GDPR, is féidir leat fiafraí an bpróiseáiltear do shonraí, rochtain a fháil orthu, iad a cheartú, iad a scriosadh, agus agóid a dhéanamh i gcoinne próiseála agus iniompaitheacht a iarraidh. Scríobh chuig nexus.smarthome.app@gmail.com. Is féidir leat gearán a dhéanamh freisin le hÚdarás Cosanta Sonraí Pearsanta na Tuirce."
+     ]
+    },
+    {
+     "h": "Slándáil",
+     "p": [
+      "Tá naisc criptithe le TLS. Cuireann an bunachar sonraí rialú rochtana ar leibhéal na róa i bhfeidhm: ní féidir le gach úsáideoir ach a shonraí féin a léamh agus a scríobh. Níl aon chóras go hiomlán slán; molaimid pasfhocal láidir agus do chuid feistí a choinneáil cothrom le dáta."
+     ]
+    },
+    {
+     "h": "Feistí tríú páirtí",
+     "p": [
+      "D'fhéadfadh feistí cliste a nascann tú (m.sh. Shelly, WLED, ESPHome) cumarsáid a dhéanamh le freastalaithe a ndéantóirí faoina bpolasaithe príobháideachais féin. Ní roinneann NEXUS do shonraí leis na déantóirí sin."
+     ]
+    },
+    {
+     "h": "Leanaí",
+     "p": [
+      "Níl NEXUS dírithe ar leanaí faoi 13 bliana d'aois agus ní bhailímid a gcuid sonraí go feasach."
+     ]
+    },
+    {
+     "h": "Athruithe",
+     "p": [
+      "Is féidir linn an polasaí seo a nuashonrú; fógrófar athruithe suntasacha san aip nó ar an suíomh gréasáin."
+     ]
+    },
+    {
+     "h": "Teagmháil",
+     "p": [
+      "Ceisteanna: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Téarmaí Seirbhíse",
+   "intro": "Trí aip NEXUS agus na seirbhísí gaolmhara (na «Seirbhísí») a íoslódáil, a shuiteáil nó a úsáid, glacann tú leis na téarmaí seo. Soláthraíonn NEXUS na Seirbhísí. Teagmháil: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Ceadúnas",
+     "p": [
+      "Deonaímid duit ceadúnas pearsanta, neamhheisiach, do-aistrithe, in-aisghairthe chun bogearraí NEXUS a úsáid ar fheistí atá i do shealbhú nó faoi do smacht, le haghaidh uathoibrithe baile pearsanta, neamhthráchtála. Ní féidir leat é a dháileadh, a léasú, a dhíol, a fho-cheadúnú ná innealtóireacht inbhéartach a dhéanamh air, ná é a úsáid chun táirge a thógáil a chuireann go díreach in iomaíocht le NEXUS. Tá comhpháirteanna tríú páirtí faoi réir a gceadúnas féin."
+     ]
+    },
+    {
+     "h": "Cuntas",
+     "p": [
+      "Teastaíonn cuntas chun NEXUS a úsáid. Tá tú freagrach as do chuid sonraí a choinneáil cruinn agus do phasfhocal a choinneáil slán, agus as gníomhaíocht faoi do chuntas. Is féidir linn cuntais a bhriseann na téarmaí seo a chur ar fionraí nó a dhúnadh."
+     ]
+    },
+    {
+     "h": "Sábháilteacht an tí chliste",
+     "ul": [
+      "Is uirlis áise é NEXUS; ná bí ag brath air amháin le haghaidh feidhmeanna ríthábhachtacha amhail sábháilteacht tine, gháis, sláinte nó sábháilteacht beatha.",
+      "Tá tú freagrach as na horduithe a sheoltar chuig do fheistí agus as slándáil do líonra. Coinnigh dochtearraí na bhfeistí agus socruithe an ródaire cothrom le dáta.",
+      "Ar mhaithe le sábháilteacht, ní féidir glais a oscailt ón gcomhrá."
+     ]
+    },
+    {
+     "h": "NEXUS AI agus creidmheasanna",
+     "p": [
+      "Áirítear 30 creidmheas NEXUS AI in aghaidh an lae sa phlean saor in aisce; áirítear 2,000 in aghaidh na míosa i síntiús NEXUS+. Tá creidmheasanna do-aistrithe, ní féidir iad a mhalartú ar airgead tirim agus athshocraítear iad ag deireadh na tréimhse. Féadann NEXUS AI botúin a dhéanamh; is tusa atá freagrach as na torthaí a sheiceáil."
+     ]
+    },
+    {
+     "h": "Síntiús NEXUS+",
+     "ul": [
+      "Raon feidhme: Tugann NEXUS+ 2,000 creidmheas NEXUS AI in aghaidh na míosa agus ligeann sé feistí nua a chur leis trí na naisc chun cinn (Home Assistant). Nuair a chríochnaíonn an síntiús, leanann na feistí a chuir tú leis cheana ag obair; chun feistí nua a chur leis trí na naisc seo, teastaíonn NEXUS+ arís.",
+      "Pleananna: Míosúil agus Bliantúil, praghsáilte i TRY do Türkiye agus i USD in áiteanna eile (faoi láthair Míosúil ₺499.99 / $11.99, Bliantúil ₺3,999.99 / $89.99). Taispeántar na praghsanna reatha ag an tseiceáil amach; féadfar cánacha a chur leis ag an tseiceáil amach. Áirítear triail saor in aisce 7 lá sa phlean bliantúil agus triail saor in aisce 3 lá sa phlean míosúil.",
+      "Glactar le híocaíochtaí trí Whop. Athnuaitear an síntiús go huathoibríoch gach tréimhse go dtí go gcuireann tú ar ceal é; nuair a chríochnaíonn an triail, muirearaítear praghas do phlean roghnaithe.",
+      "Is féidir leat é a chur ar ceal am ar bith ó Billing san aip nó ó do chuntas ar an suíomh gréasáin seo. Tagann an cealú i bhfeidhm ag deireadh na tréimhse reatha.",
+      "Ag an tseiceáil amach, úsáid seoladh ríomhphoist do chuntais NEXUS; meaitseáiltear an síntiús leis an ríomhphost sin.",
+      "Fógraímid athruithe praghais 30 lá ar a laghad sula dtagann siad i bhfeidhm; ní dhéanann siad difear don tréimhse reatha.",
+      "Tá téarmaí aisíocaíochta sa Pholasaí Aisíocaíochta agus Cealaithe."
+     ]
+    },
+    {
+     "h": "Athruithe agus cur isteach",
+     "p": [
+      "Is féidir linn na Seirbhísí a fheabhsú, a athrú nó a chur ar fionraí go sealadach le haghaidh cothabhála. Ní ráthaímid seirbhís gan idirbhriseadh ná gan earráidí."
+     ]
+    },
+    {
+     "h": "Maoin intleachtúil",
+     "p": [
+      "Is leis an oibreoir na cearta i mbogearraí, i ndearadh, i mbrandaíocht agus in ábhar NEXUS. Ní thugann na téarmaí seo duit ach an ceadúnas thuas."
+     ]
+    },
+    {
+     "h": "Teorannú dliteanais",
+     "p": [
+      "Soláthraítear na bogearraí «mar atá». A mhéid is mó a cheadaíonn an dlí, nílimid faoi dhliteanas as damáistí indíreacha (lena n-áirítear cailliúint sonraí nó damáiste do fheistí nó do mhaoin) a eascraíonn as úsáid na Seirbhísí; tá ár ndliteanas iomlán teoranta don mhéid a d'íoc tú linn sna 12 mhí roimhe sin. Ní dhéantar difear do chearta tomhaltóra nach féidir leis an dlí a theorannú."
+     ]
+    },
+    {
+     "h": "Foirceannadh",
+     "p": [
+      "Is féidir leat do chuntas a dhúnadh am ar bith (féach an Polasaí Príobháideachais). Is féidir linn do rochtain a chur i gcrích má bhriseann tú na téarmaí seo."
+     ]
+    },
+    {
+     "h": "Dlí rialaithe",
+     "p": [
+      "Tá na téarmaí seo faoi rialú dhlíthe Phoblacht na Tuirce (Türkiye). Mar thomhaltóir, coinníonn tú an ceart iarratas a dhéanamh chuig coistí eadrána tomhaltóirí agus cúirteanna tomhaltóirí."
+     ]
+    },
+    {
+     "h": "Athruithe ar na téarmaí seo",
+     "p": [
+      "Is féidir linn na téarmaí seo a nuashonrú agus fógróimid athruithe suntasacha san aip nó ar an suíomh gréasáin. Má leanann tú ag úsáid na Seirbhísí tar éis athraithe, ciallaíonn sé go nglacann tú leis na téarmaí nua."
+     ]
+    },
+    {
+     "h": "Teagmháil",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Polasaí Aisíocaíochta agus Cealaithe",
+   "intro": "Míníonn an polasaí seo na téarmaí trialach, cealaithe agus aisíocaíochta do shíntiús NEXUS+. Ní dhéantar difear do do chearta reachtúla tomhaltóra.",
+   "sections": [
+    {
+     "h": "Triail saor in aisce",
+     "p": [
+      "Áirítear triail saor in aisce 7 lá sa phlean bliantúil agus triail saor in aisce 3 lá sa phlean míosúil. Má chuireann tú ar ceal sula gcríochnaíonn an triail, ní mhuirearaítear thú. Mura gcuireann tú ar ceal, muirearaítear praghas do phlean roghnaithe nuair a chríochnaíonn an triail."
+     ]
+    },
+    {
+     "h": "Conas cealú",
+     "ul": [
+      "San aip: Plus → Billing → Cuir ar ceal ag deireadh na tréimhse.",
+      "Ar an suíomh gréasáin: sínigh isteach → cuntas → cuir ar ceal ag deireadh na tréimhse.",
+      "Tagann an cealú i bhfeidhm ag deireadh na tréimhse billeála reatha; coinníonn tú gnéithe NEXUS+ go dtí sin agus ní mhuirearaítear thú don chéad tréimhse eile."
+     ]
+    },
+    {
+     "h": "Aisíocaíochtaí",
+     "ul": [
+      "Is féidir leat aisíocaíocht a iarraidh laistigh de 14 lá ó do chéad mhuirear gan cúis a thabhairt; aisíocaimid an íocaíocht iomlán.",
+      "I gcás athnuachana uathoibríche, má iarrann tú laistigh de 3 lá ó dháta na hathnuachana, aisíocaimid muirear na tréimhse sin.",
+      "Lasmuigh de na fuinneoga seo ní aisíocaimid tréimhsí úsáidte, ach breithneoimid aisíocaíochtaí i gcásanna údaraithe amhail nuair nach féidir an tseirbhís a úsáid mar gheall ar locht ar ár dtaobh féin.",
+      "Is féidir linn iarratas a dhiúltú má bhraithimid mí-úsáid (mar shampla aisíocaíochtaí arís agus arís eile ar an gcuntas céanna)."
+     ]
+    },
+    {
+     "h": "Conas aisíocaíocht a iarraidh",
+     "p": [
+      "Seol ríomhphost chuig nexus.smarthome.app@gmail.com le do ríomhphost cuntais NEXUS agus d'iarratas. Eisítear aisíocaíochtaí formheasta trí Whop chuig an modh íocaíochta bunaidh; de ghnáth tógann sé 5–10 lá oibre le dealraitheach, ag brath ar do bhanc."
+     ]
+    },
+    {
+     "h": "Cearta reachtúla",
+     "p": [
+      "Ní theorannaíonn an polasaí seo do chearta reachtúla faoi Dhlí Cosanta Tomhaltóirí na Tuirce Uimh. 6502 agus an Rialachán um Chonarthaí Cianda (lena n-áirítear an ceart aistarraingthe agus a eisceachtaí)."
+     ]
+    },
+    {
+     "h": "Teagmháil",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

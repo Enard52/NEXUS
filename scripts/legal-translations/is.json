@@ -1,0 +1,253 @@
+{
+ "code": "is",
+ "updated": "Síðast uppfært: 31. október 2026",
+ "labels": {
+  "updated": "Síðast uppfært",
+  "operatedBy": "Rekið af",
+  "footer": "Þetta skjal skal lesið samhliða gildandi texta á nexus-smarthome.pages.dev.",
+  "notice": "Þessi þýðing er eingöngu veitt til hægðarauka. Ef hún er frábrugðin tyrknesku eða ensku útgáfunni gilda tyrkneska og enska útgáfan."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Persónuverndarstefna",
+   "intro": "NEXUS stýrir snjallheimilinu þínu fyrst og fremst á þínu eigin staðarneti. Þessi stefna útskýrir skýrt hvaða gögn við vinnum þegar þú stofnar aðgang, hvers vegna og hvar.",
+   "sections": [
+    {
+     "h": "Í stuttu máli",
+     "ul": [
+      "Aðgangur er nauðsynlegur til að nota NEXUS. Skipanir til tækja keyra áfram á þínu staðarneti; þær eru ekki sendar í gegnum skýjaþjónustu framleiðanda.",
+      "Stillingar þínar, tækjalisti og spjallsaga eru vistuð í skýinu svo þau séu eins á öllum tækjum.",
+      "Við seljum ekki gögnin þín, notum þau ekki í auglýsingaskyni og búum ekki til persónusnið um þig.",
+      "Aðgangur að hljóðnema er valfrjáls og er aðeins notaður þegar þú ýtir á hljóðnemann í NEXUS AI spjallinu; upptakan er umrituð og ekki vistuð. Myndavélin opnast aðeins til að skanna QR-kóða og myndin yfirgefur aldrei tækið þitt."
+     ]
+    },
+    {
+     "h": "Ábyrgðaraðili",
+     "p": [
+      "Ábyrgðaraðili er NEXUS. Samskipti: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Hvaða gögn við vinnum",
+     "ul": [
+      "Aðgangur: netfangið þitt og (ef það er gefið upp) nafn þitt. Við innskráningu með Google, netfangið og prófílnafnið sem Google lætur í té. Lykilorðið þitt er aðeins geymt sem einstefnu-hakk (hash) í Supabase Auth; við getum ekki séð það.",
+      "Samstillt forritsgögn (aðeins þegar þú ert innskráð(ur)): prófílnafn og mynd, stillingar fyrir þema, tungumál og mælieiningar, heimilismeðlimir, senur og sjálfvirkni, uppáhaldsspjöld, NEXUS AI spjallsaga og notkunarteljari, atburðaskrá, staðsetning heimilis/veðurstillingar og listi yfir tæki sem þú bættir við (nafn, herbergi, samskiptamáti, staðarnetsfang, síðasta staða).",
+      "Áskrift (ef þú keyptir NEXUS+): netfang, áskriftarleið, staða, lok tímabils og Whop-aðildarauðkenni. Kortaupplýsingar þínar eru eingöngu unnar af Whop og berast okkur aldrei.",
+      "Skilaboð til þjónustuvers: netfangið þitt og skilaboðin þegar þú skrifar til okkar.",
+      "Tæknilegar skrár: innskráningar- og villuskrár (þar á meðal IP-tala) sem hýsingar- og auðkenningaraðilar okkar geyma í stuttan tíma."
+     ]
+    },
+    {
+     "h": "Tilgangur og lagagrundvöllur",
+     "p": [
+      "Til að stýra aðgangi þínum, samstilla gögnin þín milli tækja, veita áskriftina og þjónustuver (efndir samnings); til að tryggja öryggi þjónustunnar og koma í veg fyrir misnotkun (lögmætir hagsmunir); og vegna flutnings úr landi, skýrt samþykki þitt (sjá hér að neðan)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI hefur tvo hluta. (1) Skipanir til tækja (kveikja á ljósi, keyra senu, spyrja um stöðu) eru unnar staðbundið í tækinu þínu og ekki sendar í skýið. (2) Skilaboð sem eru ekki skipanir til tækja, svo sem almennt spjall og spurningar, eru send til Cloudflare Workers AI til að fá svar; heiti, gerðir og herbergi tækjanna þinna fylgja með sem samhengi. Aðgangsupplýsingar þínar, netfang og staðsetning eru ekki send. Við notum ekki þetta efni til að þjálfa gervigreindarlíkön; Cloudflare vinnur það til að veita þjónustuna. Ef þú kýst getur þú eingöngu notað skipanir til tækja í spjallinu. Ef þú ert innskráð(ur) er spjallsagan þín samstillt við aðganginn þinn eins og aðrar stillingar.",
+      "Raddinntak: þegar þú ýtir á hljóðnemahnappinn í NEXUS AI spjallinu er tal þitt umbreytt í texta. Í vafra (Chrome/Edge) er fyrst notuð eigin talgreiningarþjónusta vafrans; ef hún næst ekki, eða í skjáborðs- og farsímaforritum, er stutta upptakan send eingöngu til Cloudflare Workers AI (Whisper) til umritunar, hún er ekki vistuð og ekki geymd á aðgangi þínum. Umritunin er aðeins sett í innsláttarreit spjallsins og er hvergi send fyrr en þú ýtir á senda."
+     ]
+    },
+    {
+     "h": "Þjónustuaðilar og flutningur gagna",
+     "ul": [
+      "Supabase: auðkenning, gagnagrunnur og kerfispóstur.",
+      "Cloudflare: hýsing vefsvæðisins; Cloudflare Workers AI fyrir svör í NEXUS AI spjalli og tal-í-texta.",
+      "Whop: áskriftargreiðslur og reikningagerð.",
+      "Google: innskráning með Google og (í gegnum Gmail) staðfestingar- / lykilorðsendurstillingarpóstur.",
+      "GitHub: dreifing uppsetningarforrita.",
+      "Open-Meteo: borg / áætluð hnit fyrir veður.",
+      "OpenStreetMap / Nominatim: kort og staðarleit; Unsplash: nokkrar varamyndir.",
+      "BigDataCloud: ákvörðun staðarheitis út frá hnitum (varaleið þegar Nominatim næst ekki; einnig notað þegar þú velur staðsetningu heimilis þíns). Þessi þjónusta fær nákvæm hnit staðsetningarinnar sem þú velur eða sem er greind."
+     ],
+     "p": [
+      "Netþjónar þessara aðila kunna að vera utan Türkiye. Með því að stofna aðgang og/eða greiða veitir þú skýrt samþykki fyrir því að gögnin þín séu flutt til þeirra og úr landi; þú getur afturkallað samþykkið með því að láta eyða aðganginum þínum."
+     ]
+    },
+    {
+     "h": "Vefkökur og rakning",
+     "p": [
+      "Vefsvæðið okkar notar engar vefkökur og inniheldur hvorki greiningar- né auglýsingarakningartól. Forritið geymir stillingar þínar í staðbundinni geymslu tækisins þíns (localStorage)."
+     ]
+    },
+    {
+     "h": "Varðveisla og eyðing",
+     "p": [
+      "Við varðveitum gögnin þín meðan aðgangur þinn er opinn. Til að eyða aðgangi þínum og gögnum skaltu skrifa á nexus.smarthome.app@gmail.com; við munum ljúka beiðninni innan 30 daga (að undanskildum áskriftarskrám sem okkur ber að varðveita samkvæmt lögum). Í forritinu skaltu opna Stillingar og síðan Öryggi aðgangs og nota Eyða aðganginum mínum. Ef netþjónninn getur ekki lokið því kemur það fram á skjánum."
+     ]
+    },
+    {
+     "h": "Réttindi þín",
+     "p": [
+      "Samkvæmt tyrkneskum lögum nr. 6698 (KVKK), 11. gr., og eftir atvikum persónuverndarreglugerð ESB (GDPR), getur þú spurt hvort gögn þín séu unnin, fengið aðgang að þeim, látið leiðrétta þau, látið eyða þeim, andmælt vinnslu og óskað eftir flutningi gagna. Skrifaðu á nexus.smarthome.app@gmail.com. Þú getur einnig kvartað til tyrknesku persónuverndarstofnunarinnar."
+     ]
+    },
+    {
+     "h": "Öryggi",
+     "p": [
+      "Tengingar eru dulkóðaðar með TLS. Gagnagrunnurinn framfylgir aðgangsstýringu á línustigi: hver notandi getur aðeins lesið og skrifað eigin gögn. Ekkert kerfi er fullkomlega öruggt; við mælum með sterku lykilorði og að tækin þín séu uppfærð."
+     ]
+    },
+    {
+     "h": "Tæki þriðju aðila",
+     "p": [
+      "Snjalltæki sem þú tengir (t.d. Shelly, WLED, ESPHome) kunna að eiga samskipti við netþjóna framleiðenda sinna samkvæmt þeirra eigin persónuverndarstefnum. NEXUS deilir ekki gögnum þínum með þessum framleiðendum."
+     ]
+    },
+    {
+     "h": "Börn",
+     "p": [
+      "NEXUS er ekki ætlað börnum yngri en 13 ára og við söfnum ekki vísvitandi gögnum um þau."
+     ]
+    },
+    {
+     "h": "Breytingar",
+     "p": [
+      "Við kunnum að uppfæra þessa stefnu; við munum tilkynna verulegar breytingar í forritinu eða á vefsvæðinu."
+     ]
+    },
+    {
+     "h": "Samskipti",
+     "p": [
+      "Fyrirspurnir: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Þjónustuskilmálar",
+   "intro": "Með því að sækja, setja upp eða nota NEXUS forritið og tengda þjónustu („þjónustan“) samþykkir þú þessa skilmála. Þjónustan er veitt af NEXUS. Samskipti: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Leyfi",
+     "p": [
+      "Við veitum þér persónulegt, óeinkarétt, óframseljanlegt og afturkallanlegt leyfi til að nota NEXUS hugbúnaðinn í tækjum sem þú átt eða stjórnar, til persónulegrar heimilissjálfvirkni sem ekki er í atvinnuskyni. Þér er óheimilt að dreifa honum, leigja, selja, veita undirleyfi, afturþýða hann (reverse-engineer) eða nota hann til að smíða vöru sem keppir beint við NEXUS. Íhlutir þriðju aðila lúta eigin leyfum."
+     ]
+    },
+    {
+     "h": "Aðgangur",
+     "p": [
+      "Til að nota NEXUS þarf aðgang. Þú berð ábyrgð á að upplýsingar þínar séu réttar, að lykilorðið þitt sé öruggt og á athöfnum undir aðgangi þínum. Við kunnum að fresta eða loka aðgöngum sem brjóta gegn þessum skilmálum."
+     ]
+    },
+    {
+     "h": "Öryggi snjallheimilis",
+     "ul": [
+      "NEXUS er þægindatól; reiddu þig ekki eingöngu á það varðandi mikilvæga virkni, svo sem öryggi vegna elds, gass, heilsu eða lífs.",
+      "Þú berð ábyrgð á skipunum sem sendar eru til tækja þinna og á öryggi netsins þíns. Haltu fastbúnaði tækja og stillingum beinis uppfærðum.",
+      "Af öryggisástæðum er ekki hægt að opna lása úr spjallinu."
+     ]
+    },
+    {
+     "h": "NEXUS AI og einingar",
+     "p": [
+      "Ókeypis áskriftarleiðin felur í sér 30 NEXUS AI einingar á dag; NEXUS+ áskrift felur í sér 2,000 á mánuði. Einingar eru óframseljanlegar, ekki er hægt að skipta þeim fyrir reiðufé og þær núllstillast í lok tímabils. NEXUS AI getur gert mistök; það er á þína ábyrgð að yfirfara niðurstöður."
+     ]
+    },
+    {
+     "h": "NEXUS+ áskrift",
+     "ul": [
+      "Umfang: NEXUS+ veitir 2,000 NEXUS AI einingar á mánuði og opnar fyrir að bæta við nýjum tækjum í gegnum ítarlegar tengingar (Home Assistant). Þegar áskrift lýkur halda tæki sem þú hefur þegar bætt við áfram að virka; til að bæta við nýjum tækjum í gegnum þessar tengingar þarf NEXUS+ aftur.",
+      "Áskriftarleiðir: mánaðarleg og árleg, verðlögð í TRY fyrir Türkiye og í USD annars staðar (nú mánaðarleg ₺499.99 / $11.99, árleg ₺3,999.99 / $89.99). Núgildandi verð eru sýnd við greiðslu; skattar kunna að bætast við við greiðslu. Árlega áskriftarleiðin felur í sér 7 daga ókeypis prufutímabil og sú mánaðarlega 3 daga ókeypis prufutímabil.",
+      "Greiðslur eru teknar í gegnum Whop. Áskriftin endurnýjast sjálfkrafa á hverju tímabili þar til þú segir henni upp; þegar prufutímabilinu lýkur er verð valinnar áskriftarleiðar skuldfært.",
+      "Þú getur sagt upp hvenær sem er undir Greiðslur í forritinu eða af aðgangi þínum á þessu vefsvæði. Uppsögn tekur gildi í lok yfirstandandi tímabils.",
+      "Notaðu netfang NEXUS aðgangsins þíns við greiðslu; áskriftin er tengd við það netfang.",
+      "Við tilkynnum verðbreytingar með að minnsta kosti 30 daga fyrirvara áður en þær taka gildi; þær hafa ekki áhrif á yfirstandandi tímabil.",
+      "Skilmálar um endurgreiðslu er að finna í stefnu um endurgreiðslu og uppsögn."
+     ]
+    },
+    {
+     "h": "Breytingar og truflanir",
+     "p": [
+      "Við kunnum að bæta, breyta eða tímabundið stöðva þjónustuna vegna viðhalds. Við ábyrgjumst ekki truflanalausa eða villulausa þjónustu."
+     ]
+    },
+    {
+     "h": "Hugverkaréttindi",
+     "p": [
+      "Réttindi yfir NEXUS hugbúnaðinum, hönnun, vörumerki og efni eru í eigu rekstraraðila. Þessir skilmálar veita þér aðeins leyfið hér að ofan."
+     ]
+    },
+    {
+     "h": "Takmörkun ábyrgðar",
+     "p": [
+      "Hugbúnaðurinn er veittur „eins og hann er“. Að því marki sem lög leyfa berum við ekki ábyrgð á óbeinu tjóni (þar á meðal gagnatapi eða skemmdum á tækjum eða eignum) sem hlýst af notkun þjónustunnar; heildarábyrgð okkar takmarkast við þá fjárhæð sem þú greiddir okkur síðustu 12 mánuði. Neytendaréttindi sem lög leyfa ekki að takmarka haldast óbreytt."
+     ]
+    },
+    {
+     "h": "Uppsögn samnings",
+     "p": [
+      "Þú getur lokað aðgangi þínum hvenær sem er (sjá persónuverndarstefnuna). Við kunnum að svipta þig aðgangi ef þú brýtur gegn þessum skilmálum."
+     ]
+    },
+    {
+     "h": "Lög sem gilda",
+     "p": [
+      "Um þessa skilmála gilda lög lýðveldisins Türkiye. Sem neytandi heldur þú rétti til að leita til úrskurðarnefnda neytendamála og neytendadómstóla."
+     ]
+    },
+    {
+     "h": "Breytingar á þessum skilmálum",
+     "p": [
+      "Við kunnum að uppfæra þessa skilmála og munum tilkynna verulegar breytingar í forritinu eða á vefsvæðinu. Áframhaldandi notkun þjónustunnar eftir breytingu felur í sér að þú samþykkir nýju skilmálana."
+     ]
+    },
+    {
+     "h": "Samskipti",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Stefna um endurgreiðslu og uppsögn",
+   "intro": "Þessi stefna útskýrir skilmála um prufutímabil, uppsögn og endurgreiðslu vegna NEXUS+ áskriftar. Lögbundin neytendaréttindi þín haldast óbreytt.",
+   "sections": [
+    {
+     "h": "Ókeypis prufutímabil",
+     "p": [
+      "Árlega áskriftarleiðin felur í sér 7 daga ókeypis prufutímabil og sú mánaðarlega 3 daga ókeypis prufutímabil. Ef þú segir upp áður en prufutímabilinu lýkur er ekkert skuldfært. Ef þú segir ekki upp er verð valinnar áskriftarleiðar skuldfært þegar prufutímabilinu lýkur."
+     ]
+    },
+    {
+     "h": "Hvernig á að segja upp",
+     "ul": [
+      "Í forritinu: Plus → Greiðslur → Segja upp í lok tímabils.",
+      "Á vefsvæðinu: innskráning → aðgangur → segja upp í lok tímabils.",
+      "Uppsögn tekur gildi í lok yfirstandandi greiðslutímabils; þú heldur NEXUS+ eiginleikum þar til og ekkert er skuldfært fyrir næsta tímabil."
+     ]
+    },
+    {
+     "h": "Endurgreiðslur",
+     "ul": [
+      "Þú getur óskað eftir endurgreiðslu innan 14 daga frá fyrstu skuldfærslu án þess að tilgreina ástæðu; við endurgreiðum alla greiðsluna.",
+      "Við sjálfvirkar endurnýjanir, ef þú óskar eftir því innan 3 daga frá endurnýjunardegi, endurgreiðum við gjald þess tímabils.",
+      "Utan þessara tímamarka endurgreiðum við ekki notuð tímabil, en við munum íhuga endurgreiðslu í rökstuddum tilvikum, svo sem ef þjónustan var ónothæf vegna bilunar af okkar hálfu.",
+      "Við kunnum að hafna beiðni ef við verðum vör við misnotkun (til dæmis endurteknar endurgreiðslur á sama aðgangi)."
+     ]
+    },
+    {
+     "h": "Hvernig á að óska eftir endurgreiðslu",
+     "p": [
+      "Sendu tölvupóst á nexus.smarthome.app@gmail.com með netfangi NEXUS aðgangsins þíns og beiðni þinni. Samþykktar endurgreiðslur eru greiddar í gegnum Whop á upphaflega greiðslumátann; það tekur venjulega 5–10 virka daga að koma fram, eftir banka þínum."
+     ]
+    },
+    {
+     "h": "Lögbundin réttindi",
+     "p": [
+      "Þessi stefna takmarkar ekki lögbundin réttindi þín samkvæmt tyrkneskum lögum um neytendavernd nr. 6502 og reglugerð um fjarsamninga (þar á meðal réttinn til að falla frá samningi og undantekningar frá honum)."
+     ]
+    },
+    {
+     "h": "Samskipti",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

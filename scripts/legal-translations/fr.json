@@ -1,0 +1,253 @@
+{
+ "code": "fr",
+ "updated": "Dernière mise à jour : 31 octobre 2026",
+ "labels": {
+  "updated": "Dernière mise à jour",
+  "operatedBy": "Exploité par",
+  "footer": "Ce document se lit conjointement avec le texte en vigueur disponible sur nexus-smarthome.pages.dev.",
+  "notice": "Cette traduction est fournie à titre indicatif. En cas de divergence, les versions turque et anglaise font foi."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Politique de confidentialité",
+   "intro": "NEXUS gère votre maison connectée principalement sur votre propre réseau local. Cette politique explique clairement quelles données nous traitons lorsque vous créez un compte, pourquoi et où.",
+   "sections": [
+    {
+     "h": "En bref",
+     "ul": [
+      "Un compte est nécessaire pour utiliser NEXUS. Les commandes d’appareils continuent de s’exécuter sur votre réseau local ; elles ne transitent pas par le cloud d’un fabricant.",
+      "Vos réglages, la liste de vos appareils et l’historique de vos conversations sont stockés dans le cloud afin d’être identiques sur chaque appareil.",
+      "Nous ne vendons pas vos données, ne les utilisons pas à des fins publicitaires et ne vous profilons pas.",
+      "L’accès au microphone est facultatif et n’est utilisé que lorsque vous touchez le micro dans le chat NEXUS AI ; l’enregistrement est transcrit et n’est pas conservé. L’appareil photo ne s’ouvre que pour scanner des codes QR et l’image ne quitte jamais votre appareil."
+     ]
+    },
+    {
+     "h": "Responsable du traitement",
+     "p": [
+      "Le responsable du traitement est NEXUS. Contact : nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Données que nous traitons",
+     "ul": [
+      "Compte : votre adresse e-mail et (si vous l’indiquez) votre nom. Avec la connexion Google, l’e-mail et le nom de profil fournis par Google. Votre mot de passe n’est stocké que sous forme de hachage à sens unique dans Supabase Auth ; nous ne pouvons pas le voir.",
+      "Données d’application synchronisées (uniquement lorsque vous êtes connecté) : nom et photo de profil, réglages de thème, de langue et d’unités, membres du foyer, scènes et automatisations, cartes favorites, historique des conversations NEXUS AI et compteur d’utilisation, journal d’événements, préférence de localisation/météo du domicile et liste des appareils que vous avez ajoutés (nom, pièce, protocole, adresse sur le réseau local, dernier état).",
+      "Abonnement (si vous avez souscrit NEXUS+) : e-mail, formule, statut, fin de période et identifiant d’adhésion Whop. Vos données de carte sont traitées uniquement par Whop et ne nous parviennent jamais.",
+      "Messages d’assistance : votre e-mail et votre message lorsque vous nous écrivez.",
+      "Journaux techniques : journaux de connexion et d’erreurs (y compris l’adresse IP) conservés brièvement par nos prestataires d’hébergement et d’authentification."
+     ]
+    },
+    {
+     "h": "Finalités et bases juridiques",
+     "p": [
+      "Pour gérer votre compte, synchroniser vos données entre vos appareils, fournir votre abonnement et assurer l’assistance (exécution d’un contrat) ; pour garantir la sécurité du service et prévenir les abus (intérêt légitime) ; et, pour les transferts à l’étranger, votre consentement explicite (voir ci-dessous)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI comporte deux parties. (1) Les commandes d’appareils (allumer une lumière, lancer une scène, demander un état) sont traitées localement sur votre appareil et ne sont pas envoyées au cloud. (2) Les messages qui ne sont pas des commandes d’appareils, comme les discussions générales et les questions, sont envoyés à Cloudflare Workers AI pour obtenir une réponse ; les noms, types et pièces de vos appareils sont inclus comme contexte. Les informations de votre compte, votre e-mail et votre localisation ne sont pas envoyés. Nous n’utilisons pas ces contenus pour entraîner des modèles d’IA ; Cloudflare les traite pour fournir le service. Si vous préférez, vous pouvez n’utiliser que des commandes d’appareils dans le chat. Si vous êtes connecté, l’historique de vos conversations est synchronisé avec votre compte comme vos autres réglages.",
+      "Saisie vocale : lorsque vous touchez le bouton micro dans le chat NEXUS AI, votre voix est convertie en texte. Dans un navigateur (Chrome/Edge), le service de reconnaissance vocale du navigateur est utilisé en premier ; s’il est inaccessible, ou dans les applications de bureau et mobiles, le court enregistrement est envoyé uniquement à Cloudflare Workers AI (Whisper) pour transcription, n’est pas conservé et n’est pas enregistré dans votre compte. La transcription est simplement placée dans la zone de saisie du chat et n’est envoyée nulle part tant que vous n’appuyez pas sur envoyer."
+     ]
+    },
+    {
+     "h": "Prestataires et transferts",
+     "ul": [
+      "Supabase : authentification, base de données et e-mails système.",
+      "Cloudflare : hébergement du site web ; Cloudflare Workers AI pour les réponses du chat NEXUS AI et la transcription vocale.",
+      "Whop : paiements d’abonnement et facturation.",
+      "Google : connexion Google et (via Gmail) e-mails de vérification et de réinitialisation du mot de passe.",
+      "GitHub : distribution des programmes d’installation.",
+      "Open-Meteo : ville / coordonnées approximatives pour la météo.",
+      "OpenStreetMap / Nominatim : cartes et recherche de lieux ; Unsplash : quelques images de secours.",
+      "BigDataCloud : détermination d’un nom de lieu à partir de coordonnées (solution de secours lorsque Nominatim est inaccessible ; également utilisé lorsque vous choisissez l’emplacement de votre domicile). Ce service reçoit les coordonnées exactes du lieu que vous choisissez ou qui est détecté."
+     ],
+     "p": [
+      "Les serveurs de ces prestataires peuvent se trouver hors de Türkiye. En créant un compte et/ou en payant, vous consentez explicitement au transfert de vos données vers eux et à l’étranger ; vous pouvez retirer votre consentement en faisant supprimer votre compte."
+     ]
+    },
+    {
+     "h": "Cookies et suivi",
+     "p": [
+      "Notre site web n’utilise aucun cookie et ne contient aucun traceur d’analyse ou de publicité. L’application conserve vos réglages dans le stockage local de votre appareil (localStorage)."
+     ]
+    },
+    {
+     "h": "Conservation et suppression",
+     "p": [
+      "Nous conservons vos données tant que votre compte est ouvert. Pour supprimer votre compte et vos données, écrivez à nexus.smarthome.app@gmail.com ; nous traiterons la demande sous 30 jours (hors données d’abonnement que la loi nous oblige à conserver). Dans l’application, ouvrez Réglages puis Sécurité du compte, et utilisez Supprimer mon compte. Si le serveur ne peut pas terminer l’opération, l’écran l’indique."
+     ]
+    },
+    {
+     "h": "Vos droits",
+     "p": [
+      "En vertu de la loi turque n° 6698 (KVKK), art. 11 et, le cas échéant, du RGPD, vous pouvez demander si vos données sont traitées, y accéder, les rectifier, les faire supprimer, vous opposer au traitement et demander la portabilité. Écrivez à nexus.smarthome.app@gmail.com. Vous pouvez également déposer une plainte auprès de l’autorité turque de protection des données personnelles."
+     ]
+    },
+    {
+     "h": "Sécurité",
+     "p": [
+      "Les connexions sont chiffrées avec TLS. La base de données applique un contrôle d’accès au niveau des lignes : chaque utilisateur ne peut lire et écrire que ses propres données. Aucun système n’est parfaitement sûr ; nous recommandons un mot de passe robuste et des appareils à jour."
+     ]
+    },
+    {
+     "h": "Appareils tiers",
+     "p": [
+      "Les appareils connectés que vous associez (par ex. Shelly, WLED, ESPHome) peuvent communiquer avec les serveurs de leurs fabricants selon leurs propres politiques de confidentialité. NEXUS ne partage pas vos données avec ces fabricants."
+     ]
+    },
+    {
+     "h": "Enfants",
+     "p": [
+      "NEXUS ne s’adresse pas aux enfants de moins de 13 ans et nous ne collectons pas sciemment leurs données."
+     ]
+    },
+    {
+     "h": "Modifications",
+     "p": [
+      "Nous pouvons mettre à jour cette politique ; nous annoncerons les changements importants dans l’application ou sur le site web."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "Questions : nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Conditions d’utilisation",
+   "intro": "En téléchargeant, installant ou utilisant l’application NEXUS et les services associés (les « Services »), vous acceptez les présentes conditions. Les Services sont fournis par NEXUS. Contact : nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Licence",
+     "p": [
+      "Nous vous accordons une licence personnelle, non exclusive, non transférable et révocable pour utiliser le logiciel NEXUS sur des appareils que vous possédez ou contrôlez, pour une domotique personnelle et non commerciale. Vous ne pouvez ni le distribuer, le louer, le vendre, le sous-licencier ou le décompiler, ni l’utiliser pour créer un produit directement concurrent de NEXUS. Les composants tiers sont soumis à leurs propres licences."
+     ]
+    },
+    {
+     "h": "Compte",
+     "p": [
+      "L’utilisation de NEXUS nécessite un compte. Vous êtes responsable de l’exactitude de vos informations, de la sécurité de votre mot de passe et de l’activité réalisée sous votre compte. Nous pouvons suspendre ou fermer les comptes qui enfreignent ces conditions."
+     ]
+    },
+    {
+     "h": "Sécurité de la maison connectée",
+     "ul": [
+      "NEXUS est un outil de confort ; ne vous y fiez pas seul pour des fonctions critiques telles que la protection contre l’incendie, le gaz, la santé ou la sécurité des personnes.",
+      "Vous êtes responsable des commandes envoyées à vos appareils et de la sécurité de votre réseau. Maintenez à jour le micrologiciel des appareils et les réglages du routeur.",
+      "Pour votre sécurité, les serrures ne peuvent pas être ouvertes depuis le chat."
+     ]
+    },
+    {
+     "h": "NEXUS AI et crédits",
+     "p": [
+      "La formule gratuite comprend 30 crédits NEXUS AI par jour ; un abonnement NEXUS+ en comprend 2 000 par mois. Les crédits ne sont pas transférables, ne peuvent pas être échangés contre de l’argent et sont réinitialisés à la fin de la période. NEXUS AI peut se tromper ; la vérification des résultats vous incombe."
+     ]
+    },
+    {
+     "h": "Abonnement NEXUS+",
+     "ul": [
+      "Contenu : NEXUS+ offre 2 000 crédits NEXUS AI par mois et permet d’ajouter de nouveaux appareils via les connexions avancées (Home Assistant). Lorsque l’abonnement prend fin, les appareils déjà ajoutés continuent de fonctionner ; l’ajout de nouveaux appareils via ces connexions nécessite à nouveau NEXUS+.",
+      "Formules : Mensuelle et Annuelle, tarifées en TRY pour la Türkiye et en USD ailleurs (actuellement Mensuelle 499,99 ₺ / 11,99 $, Annuelle 3 999,99 ₺ / 89,99 $). Les prix en vigueur sont affichés au paiement ; des taxes peuvent s’y ajouter. La formule annuelle comprend un essai gratuit de 7 jours et la formule mensuelle un essai gratuit de 3 jours.",
+      "Les paiements sont effectués via Whop. L’abonnement se renouvelle automatiquement à chaque période jusqu’à votre résiliation ; à la fin de l’essai, le prix de la formule choisie est prélevé.",
+      "Vous pouvez résilier à tout moment depuis Facturation dans l’application ou depuis votre compte sur ce site web. La résiliation prend effet à la fin de la période en cours.",
+      "Lors du paiement, utilisez l’adresse e-mail de votre compte NEXUS ; l’abonnement est associé à cette adresse.",
+      "Nous annonçons les changements de prix au moins 30 jours avant leur entrée en vigueur ; ils n’affectent pas la période en cours.",
+      "Les conditions de remboursement figurent dans la Politique de remboursement et d’annulation."
+     ]
+    },
+    {
+     "h": "Modifications et interruptions",
+     "p": [
+      "Nous pouvons améliorer, modifier ou suspendre temporairement les Services pour maintenance. Nous ne garantissons pas un service ininterrompu ou exempt d’erreurs."
+     ]
+    },
+    {
+     "h": "Propriété intellectuelle",
+     "p": [
+      "Les droits sur le logiciel NEXUS, son design, sa marque et son contenu appartiennent à l’exploitant. Ces conditions ne vous accordent que la licence ci-dessus."
+     ]
+    },
+    {
+     "h": "Limitation de responsabilité",
+     "p": [
+      "Le logiciel est fourni « en l’état ». Dans la mesure maximale permise par la loi, nous ne sommes pas responsables des dommages indirects (y compris la perte de données ou les dommages aux appareils ou aux biens) résultant de l’utilisation des Services ; notre responsabilité totale est limitée au montant que vous nous avez versé au cours des 12 derniers mois. Les droits des consommateurs auxquels la loi interdit de déroger ne sont pas affectés."
+     ]
+    },
+    {
+     "h": "Résiliation",
+     "p": [
+      "Vous pouvez fermer votre compte à tout moment (voir la Politique de confidentialité). Nous pouvons mettre fin à votre accès si vous enfreignez ces conditions."
+     ]
+    },
+    {
+     "h": "Droit applicable",
+     "p": [
+      "Les présentes conditions sont régies par le droit de la République de Türkiye. En tant que consommateur, vous conservez le droit de saisir les commissions d’arbitrage de la consommation et les tribunaux de la consommation."
+     ]
+    },
+    {
+     "h": "Modification des conditions",
+     "p": [
+      "Nous pouvons mettre à jour ces conditions et annoncerons les changements importants dans l’application ou sur le site web. Continuer à utiliser les Services après une modification vaut acceptation des nouvelles conditions."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Politique de remboursement et d’annulation",
+   "intro": "Cette politique explique les conditions d’essai, d’annulation et de remboursement de l’abonnement NEXUS+. Vos droits légaux de consommateur ne sont pas affectés.",
+   "sections": [
+    {
+     "h": "Essai gratuit",
+     "p": [
+      "La formule annuelle comprend un essai gratuit de 7 jours et la formule mensuelle un essai gratuit de 3 jours. Si vous annulez avant la fin de l’essai, rien ne vous est facturé. Si vous n’annulez pas, le prix de la formule choisie est prélevé à la fin de l’essai."
+     ]
+    },
+    {
+     "h": "Comment annuler",
+     "ul": [
+      "Dans l’application : Plus → Facturation → Annuler à la fin de la période.",
+      "Sur le site web : connexion → compte → annuler à la fin de la période.",
+      "L’annulation prend effet à la fin de la période de facturation en cours ; vous conservez les fonctions NEXUS+ jusque-là et la période suivante ne vous est pas facturée."
+     ]
+    },
+    {
+     "h": "Remboursements",
+     "ul": [
+      "Vous pouvez demander un remboursement dans les 14 jours suivant votre premier prélèvement sans donner de motif ; nous remboursons l’intégralité du paiement.",
+      "Pour les renouvellements automatiques, si vous en faites la demande dans les 3 jours suivant la date de renouvellement, nous remboursons le prélèvement de cette période.",
+      "En dehors de ces délais, nous ne remboursons pas les périodes utilisées, mais nous examinerons les remboursements dans les cas justifiés, par exemple lorsque le service était inutilisable à cause d’une défaillance de notre part.",
+      "Nous pouvons refuser une demande si nous détectons un abus (par exemple des remboursements répétés sur le même compte)."
+     ]
+    },
+    {
+     "h": "Comment demander un remboursement",
+     "p": [
+      "Écrivez à nexus.smarthome.app@gmail.com en indiquant l’e-mail de votre compte NEXUS et votre demande. Les remboursements approuvés sont effectués via Whop sur le moyen de paiement d’origine ; ils apparaissent généralement sous 5 à 10 jours ouvrés, selon votre banque."
+     ]
+    },
+    {
+     "h": "Droits légaux",
+     "p": [
+      "Cette politique ne limite pas vos droits légaux au titre de la loi turque n° 6502 sur la protection du consommateur et du règlement sur les contrats à distance (y compris le droit de rétractation et ses exceptions)."
+     ]
+    },
+    {
+     "h": "Contact",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}

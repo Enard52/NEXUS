@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8"/>
+<title>Política de privadesa — NEXUS</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  body { font: 11pt/1.65 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .brand svg { width: 34px; height: 34px; }
+  .brand b { font-size: 20px; letter-spacing: -.02em; }
+  h1 { font-size: 21px; margin: 14px 0 4px; letter-spacing: -.01em; }
+  .meta { color: #64748B; font-size: 9.5pt; margin: 0 0 18px; }
+  h2 { font-size: 13pt; margin: 18px 0 6px; }
+  p, li { font-size: 10.5pt; margin: 6px 0; }
+  ul { padding-left: 18px; margin: 6px 0; }
+  footer { margin-top: 26px; padding-top: 10px; border-top: 1px solid #E2E8F0; color: #64748B; font-size: 9pt; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="3" y1="2" x2="29" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6f9bff"/><stop offset=".55" stop-color="#5b8dff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><path d="M10.5 22.5V10.5L21.5 22.5V10.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>NEXUS</b>
+  </div>
+  <h1>Política de privadesa</h1>
+  <p class="meta">Darrera actualització: 31 d'octubre de 2026 · Operat per: NEXUS · nexus.smarthome.app@gmail.com</p>
+  <p>NEXUS gestiona la vostra llar intel·ligent principalment a la vostra pròpia xarxa local. Aquesta política explica clarament quines dades tractem quan creeu un compte, per què i on.</p>
+  
+    <section>
+      <h2>En resum</h2>
+      
+      <ul><li>Per utilitzar NEXUS cal un compte. Les ordres als dispositius continuen executant-se a la vostra xarxa local; no s'envien a través del núvol d'un fabricant.</li><li>La vostra configuració, la llista de dispositius i l'historial de xat es desen al núvol perquè coincideixin a tots els dispositius.</li><li>No venem les vostres dades, no les utilitzem per a publicitat ni elaborem perfils sobre vós.</li><li>L'accés al micròfon és opcional i només s'utilitza quan toqueu el micròfon al xat de NEXUS AI; l'enregistrament es transcriu i no es conserva. La càmera només s'obre per escanejar codis QR i la imatge no surt mai del vostre dispositiu.</li></ul>
+    </section>
+    <section>
+      <h2>Responsable del tractament</h2>
+      <p>El responsable del tractament és NEXUS. Contacte: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+    <section>
+      <h2>Quines dades tractem</h2>
+      
+      <ul><li>Compte: la vostra adreça de correu electrònic i (si s'ha facilitat) el vostre nom. Amb l'inici de sessió amb Google, el correu electrònic i el nom de perfil que proporciona Google. La vostra contrasenya només es desa com a hash unidireccional a Supabase Auth; no la podem veure.</li><li>Dades de l'aplicació sincronitzades (només amb la sessió iniciada): nom i foto del perfil, configuració de tema, idioma i unitats, membres de la llar, escenes i automatitzacions, targetes preferides, historial de xat de NEXUS AI i comptador d'ús, registre d'esdeveniments, ubicació de la llar i preferència de meteorologia, i la llista de dispositius que heu afegit (nom, estança, protocol, adreça a la xarxa local, darrer estat).</li><li>Subscripció (si heu comprat NEXUS+): correu electrònic, pla, estat, final del període i identificador de membre de Whop. Les dades de la vostra targeta només les tracta Whop i mai no ens arriben.</li><li>Missatges de suport: el vostre correu electrònic i el missatge quan ens escriviu.</li><li>Registres tècnics: registres d'inici de sessió i d'errors (inclosa l'adreça IP) que els nostres proveïdors d'allotjament i d'autenticació conserven breument.</li></ul>
+    </section>
+    <section>
+      <h2>Finalitats i bases jurídiques</h2>
+      <p>Per gestionar el vostre compte, sincronitzar les vostres dades entre dispositius, prestar la vostra subscripció i oferir suport (execució d'un contracte); per mantenir el servei segur i prevenir abusos (interès legítim); i, per a les transferències a l'estranger, el vostre consentiment explícit (vegeu més avall).</p>
+      
+    </section>
+    <section>
+      <h2>NEXUS AI</h2>
+      <p>NEXUS AI té dues parts. (1) Les ordres als dispositius (encendre un llum, executar una escena, demanar l'estat) es tracten localment al vostre dispositiu i no s'envien al núvol. (2) Els missatges que no són ordres a dispositius, com ara la conversa general i les preguntes, s'envien a Cloudflare Workers AI perquè els respongui; s'hi inclouen com a context els noms, els tipus i les estances dels vostres dispositius. Les dades del vostre compte, el correu electrònic i la ubicació no s'envien. No utilitzem aquest contingut per entrenar models d'IA; Cloudflare el tracta per prestar el servei. Si ho preferiu, podeu utilitzar només ordres a dispositius al xat. Si heu iniciat la sessió, el vostre historial de xat se sincronitza amb el vostre compte com la resta de la configuració.</p><p>Entrada de veu: quan toqueu el botó del micròfon al xat de NEXUS AI, la vostra veu es converteix en text. En un navegador (Chrome/Edge) s'utilitza en primer lloc el servei de reconeixement de veu del mateix navegador; si no és accessible, o a les aplicacions d'escriptori i mòbils, l'enregistrament breu s'envia només a Cloudflare Workers AI (Whisper) per transcriure'l, no es conserva i no es desa al vostre compte. La transcripció només es col·loca al camp d'entrada del xat i no s'envia enlloc fins que premeu enviar.</p>
+      
+    </section>
+    <section>
+      <h2>Proveïdors de serveis i transferències</h2>
+      <p>Els servidors d'aquests proveïdors poden ser fora de Türkiye. En crear un compte i/o pagar, doneu el vostre consentiment explícit perquè les vostres dades se'ls transfereixin a ells i a l'estranger; podeu retirar el consentiment sol·licitant que se suprimeixi el vostre compte.</p>
+      <ul><li>Supabase: autenticació, base de dades i correus electrònics del sistema.</li><li>Cloudflare: allotjament del lloc web; Cloudflare Workers AI per a les respostes del xat de NEXUS AI i la conversió de veu en text.</li><li>Whop: pagaments de la subscripció i facturació.</li><li>Google: inici de sessió amb Google i (mitjançant Gmail) correus de verificació i de restabliment de contrasenya.</li><li>GitHub: distribució dels instal·ladors.</li><li>Open-Meteo: ciutat i coordenades aproximades per a la meteorologia.</li><li>OpenStreetMap / Nominatim: mapes i cerca de llocs; Unsplash: algunes imatges de reserva.</li><li>BigDataCloud: obtenció del nom d'un lloc a partir de coordenades (alternativa quan Nominatim no és accessible; també s'utilitza quan trieu la ubicació de la vostra llar). Aquest servei rep les coordenades exactes de la ubicació que trieu o que es detecta.</li></ul>
+    </section>
+    <section>
+      <h2>Galetes i seguiment</h2>
+      <p>El nostre lloc web no utilitza galetes i no conté eines d'analítica ni de seguiment publicitari. L'aplicació desa la vostra configuració a l'emmagatzematge local del vostre dispositiu (localStorage).</p>
+      
+    </section>
+    <section>
+      <h2>Conservació i supressió</h2>
+      <p>Conservem les vostres dades mentre el vostre compte estigui obert. Per suprimir el vostre compte i les vostres dades, escriviu a nexus.smarthome.app@gmail.com; completarem la sol·licitud en un termini de 30 dies (excepte els registres de subscripció que hem de conservar per llei). A l'aplicació, obriu Configuració, després Seguretat del compte, i utilitzeu Suprimeix el meu compte. Si el servidor no ho pot completar, la pantalla ho indica.</p>
+      
+    </section>
+    <section>
+      <h2>Els vostres drets</h2>
+      <p>D'acord amb la Llei turca núm. 6698 (KVKK), art. 11 i, quan sigui aplicable, el RGPD, podeu preguntar si es tracten les vostres dades, accedir-hi, rectificar-les, fer-les suprimir, oposar-vos al tractament i sol·licitar-ne la portabilitat. Escriviu a nexus.smarthome.app@gmail.com. També podeu presentar una queixa davant l'Autoritat turca de Protecció de Dades Personals.</p>
+      
+    </section>
+    <section>
+      <h2>Seguretat</h2>
+      <p>Les connexions es xifren amb TLS. La base de dades aplica un control d'accés a nivell de fila: cada usuari només pot llegir i escriure les seves pròpies dades. Cap sistema és perfectament segur; us recomanem una contrasenya forta i mantenir els vostres dispositius actualitzats.</p>
+      
+    </section>
+    <section>
+      <h2>Dispositius de tercers</h2>
+      <p>Els dispositius intel·ligents que connecteu (p. ex. Shelly, WLED, ESPHome) poden comunicar-se amb els servidors dels seus fabricants segons les seves pròpies polítiques de privadesa. NEXUS no comparteix les vostres dades amb aquests fabricants.</p>
+      
+    </section>
+    <section>
+      <h2>Menors</h2>
+      <p>NEXUS no està dirigit a menors de 13 anys i no en recollim dades de manera conscient.</p>
+      
+    </section>
+    <section>
+      <h2>Canvis</h2>
+      <p>Podem actualitzar aquesta política; anunciarem els canvis significatius a l'aplicació o al lloc web.</p>
+      
+    </section>
+    <section>
+      <h2>Contacte</h2>
+      <p>Consultes: nexus.smarthome.app@gmail.com</p>
+      
+    </section>
+  <footer>NEXUS · nexus.smarthome.app@gmail.com · Aquest document s'ha de llegir conjuntament amb el text vigent a nexus-smarthome.pages.dev.<br/>Aquesta traducció es facilita només per comoditat. Si difereix de la versió turca o anglesa, prevalen les versions turca i anglesa.</footer>
+</body>
+</html>

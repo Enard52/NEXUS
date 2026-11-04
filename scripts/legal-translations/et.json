@@ -1,0 +1,253 @@
+{
+ "code": "et",
+ "updated": "Viimati uuendatud: 31. oktoober 2026",
+ "labels": {
+  "updated": "Viimati uuendatud",
+  "operatedBy": "Haldaja",
+  "footer": "Seda dokumenti tuleb lugeda koos aadressil nexus-smarthome.pages.dev avaldatud kehtiva tekstiga.",
+  "notice": "See tõlge on esitatud üksnes mugavuse huvides. Kui see erineb türgi või inglise keelsest versioonist, on ülimuslikud türgi ja inglise keelsed versioonid."
+ },
+ "docs": {
+  "privacy": {
+   "title": "Privaatsuspoliitika",
+   "intro": "NEXUS haldab teie nutikat kodu peamiselt teie enda kohtvõrgus. See poliitika selgitab selgelt, milliseid andmeid me konto loomisel töötleme, miks ja kus.",
+   "sections": [
+    {
+     "h": "Lühidalt",
+     "ul": [
+      "NEXUSe kasutamiseks on vaja kontot. Seadme käsud töötavad endiselt teie kohtvõrgus; neid ei saadeta tootja pilve kaudu.",
+      "Teie seaded, seadmete loend ja vestluse ajalugu salvestatakse pilves, et need ühtiksid igas seadmes.",
+      "Me ei müü teie andmeid, ei kasuta neid reklaamiks ega koosta teie kohta profiili.",
+      "Mikrofoni juurdepääs on valikuline ning seda kasutatakse ainult siis, kui puudutate NEXUS AI vestluses mikrofoni; salvestis transkribeeritakse ja seda ei salvestata. Kaamera avatakse ainult QR-koodide skannimiseks ja pilt ei lahku kunagi teie seadmest."
+     ]
+    },
+    {
+     "h": "Vastutav töötleja",
+     "p": [
+      "Vastutav töötleja on NEXUS. Kontakt: nexus.smarthome.app@gmail.com"
+     ]
+    },
+    {
+     "h": "Milliseid andmeid me töötleme",
+     "ul": [
+      "Konto: teie e-posti aadress ja (kui esitatud) teie nimi. Google'iga sisselogimisel Google'i esitatud e-posti aadress ja profiili nimi. Teie parool salvestatakse Supabase Authis ainult ühesuunalise räsina; me ei näe seda.",
+      "Sünkroonitud rakenduse andmed (ainult sisselogituna): profiili nimi ja foto, teema-, keele- ja ühikuseaded, leibkonna liikmed, stseenid ja automatiseeringud, lemmikkaardid, NEXUS AI vestluse ajalugu ja kasutusloendur, sündmuste logi, kodu asukoha ja ilmaeelistus ning teie lisatud seadmete loend (nimi, tuba, protokoll, kohtvõrgu aadress, viimane olek).",
+      "Tellimus (kui ostsite NEXUS+): e-posti aadress, pakett, olek, perioodi lõpp ja Whopi liikmelisuse ID. Teie kaardiandmeid töötleb ainult Whop ja need ei jõua kunagi meieni.",
+      "Toe sõnumid: teie e-posti aadress ja sõnum, kui meile kirjutate.",
+      "Tehnilised logid: sisselogimise ja vigade logid (sh IP-aadress), mida meie majutus- ja autentimisteenuse pakkujad lühiajaliselt säilitavad."
+     ]
+    },
+    {
+     "h": "Eesmärgid ja õiguslikud alused",
+     "p": [
+      "Teie konto haldamiseks, andmete sünkroonimiseks seadmete vahel, tellimuse pakkumiseks ja toe andmiseks (lepingu täitmine); teenuse turvalisuse tagamiseks ja kuritarvituste ennetamiseks (õigustatud huvi); ning välismaale edastamiseks teie selgesõnaline nõusolek (vt allpool)."
+     ]
+    },
+    {
+     "h": "NEXUS AI",
+     "p": [
+      "NEXUS AI koosneb kahest osast. (1) Seadme käske (lülita tuli sisse, käivita stseen, küsi olekut) töödeldakse kohapeal teie seadmes ja neid ei saadeta pilve. (2) Sõnumid, mis ei ole seadme käsud, näiteks üldine vestlus ja küsimused, saadetakse vastamiseks Cloudflare Workers AI-le; kontekstina lisatakse teie seadmete nimed, tüübid ja toad. Teie konto andmeid, e-posti aadressi ja asukohta ei saadeta. Me ei kasuta seda sisu tehisintellekti mudelite treenimiseks; Cloudflare töötleb seda teenuse osutamiseks. Soovi korral võite vestluses kasutada ainult seadme käske. Kui olete sisse logitud, sünkroonitakse teie vestluse ajalugu teie kontoga nagu teie muud seaded.",
+      "Häälsisend: kui puudutate NEXUS AI vestluses mikrofoninuppu, muudetakse teie kõne tekstiks. Brauseris (Chrome/Edge) kasutatakse esmalt brauseri enda kõnetuvastusteenust; kui see ei ole kättesaadav või kasutate töölaua- ja mobiilirakendusi, saadetakse lühike salvestis transkribeerimiseks ainult Cloudflare Workers AI-le (Whisper), seda ei salvestata ega talletata teie kontole. Transkriptsioon pannakse ainult vestluse sisestusväljale ja seda ei saadeta kuhugi enne, kui vajutate nuppu Saada."
+     ]
+    },
+    {
+     "h": "Teenusepakkujad ja edastamine",
+     "ul": [
+      "Supabase: autentimine, andmebaas ja süsteemsed e-kirjad.",
+      "Cloudflare: veebisaidi majutus; Cloudflare Workers AI NEXUS AI vestluse vastuste ja kõne tekstiks muutmise jaoks.",
+      "Whop: tellimuse maksed ja arvete esitamine.",
+      "Google: Google'iga sisselogimine ja (Gmaili kaudu) kinnitus- ning parooli lähtestamise e-kirjad.",
+      "GitHub: paigaldusfailide levitamine.",
+      "Open-Meteo: linn / ligikaudsed koordinaadid ilma jaoks.",
+      "OpenStreetMap / Nominatim: kaardid ja kohaotsing; Unsplash: mõned varupildid.",
+      "BigDataCloud: kohanime tuvastamine koordinaatide järgi (varulahendus, kui Nominatim ei ole kättesaadav; kasutatakse ka siis, kui valite oma kodu asukoha). See teenus saab teie valitud või tuvastatud asukoha täpsed koordinaadid."
+     ],
+     "p": [
+      "Nende pakkujate serverid võivad asuda väljaspool Türkiyet. Konto loomise ja/või maksmisega annate selgesõnalise nõusoleku oma andmete edastamiseks neile ja välismaale; nõusoleku saate tagasi võtta, lastes oma konto kustutada."
+     ]
+    },
+    {
+     "h": "Küpsised ja jälgimine",
+     "p": [
+      "Meie veebisait ei kasuta küpsiseid ega sisalda analüütika- ega reklaamijälgijaid. Rakendus hoiab teie seadeid teie seadme kohalikus salvestusruumis (localStorage)."
+     ]
+    },
+    {
+     "h": "Säilitamine ja kustutamine",
+     "p": [
+      "Hoiame teie andmeid seni, kuni teie konto on avatud. Konto ja andmete kustutamiseks kirjutage aadressile nexus.smarthome.app@gmail.com; täidame taotluse 30 päeva jooksul (välja arvatud tellimusega seotud kirjed, mida peame seaduse alusel säilitama). Rakenduses avage Seaded, seejärel Konto turvalisus ja kasutage valikut Kustuta minu konto. Kui server ei saa toimingut lõpule viia, teatab ekraan sellest."
+     ]
+    },
+    {
+     "h": "Teie õigused",
+     "p": [
+      "Türgi seaduse nr 6698 (KVKK) artikli 11 ning vajaduse korral isikuandmete kaitse üldmääruse (GDPR) alusel võite küsida, kas teie andmeid töödeldakse, neile juurde pääseda, neid parandada, lasta neid kustutada, töötlemisele vastu vaielda ja nõuda andmete ülekantavust. Kirjutage aadressile nexus.smarthome.app@gmail.com. Samuti võite esitada kaebuse Türgi isikuandmete kaitse ametile."
+     ]
+    },
+    {
+     "h": "Turvalisus",
+     "p": [
+      "Ühendused on krüpteeritud TLS-iga. Andmebaas jõustab reapõhise juurdepääsukontrolli: iga kasutaja saab lugeda ja kirjutada ainult oma andmeid. Ükski süsteem ei ole täiesti turvaline; soovitame tugevat parooli ja seadmete ajakohasena hoidmist."
+     ]
+    },
+    {
+     "h": "Kolmandate osapoolte seadmed",
+     "p": [
+      "Nutiseadmed, mille ühendate (nt Shelly, WLED, ESPHome), võivad suhelda oma tootjate serveritega vastavalt nende enda privaatsuspoliitikale. NEXUS ei jaga teie andmeid nende tootjatega."
+     ]
+    },
+    {
+     "h": "Lapsed",
+     "p": [
+      "NEXUS ei ole suunatud alla 13-aastastele lastele ja me ei kogu teadlikult nende andmeid."
+     ]
+    },
+    {
+     "h": "Muudatused",
+     "p": [
+      "Me võime seda poliitikat uuendada; olulistest muudatustest teavitame rakenduses või veebisaidil."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "Küsimused: nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "terms": {
+   "title": "Kasutustingimused",
+   "intro": "NEXUS rakenduse ja sellega seotud teenuste („Teenused“) allalaadimisega, paigaldamisega või kasutamisega nõustute nende tingimustega. Teenuseid pakub NEXUS. Kontakt: nexus.smarthome.app@gmail.com",
+   "sections": [
+    {
+     "h": "Litsents",
+     "p": [
+      "Anname teile isikliku, mitteainuõigusliku, üleantamatu ja tühistatava litsentsi NEXUSe tarkvara kasutamiseks teie omandis või kontrolli all olevates seadmetes isiklikuks, mittekaubanduslikuks kodu automatiseerimiseks. Te ei tohi seda levitada, rentida, müüa, alallitsentsida ega pöördprojekteerida ega kasutada seda NEXUSega otseselt konkureeriva toote loomiseks. Kolmandate osapoolte komponentide suhtes kehtivad nende enda litsentsid."
+     ]
+    },
+    {
+     "h": "Konto",
+     "p": [
+      "NEXUSe kasutamiseks on vaja kontot. Vastutate oma andmete õigsuse ja parooli turvalisuse eest ning oma konto all toimuva tegevuse eest. Me võime peatada või sulgeda kontod, mis rikuvad neid tingimusi."
+     ]
+    },
+    {
+     "h": "Nutikodu ohutus",
+     "ul": [
+      "NEXUS on mugavusvahend; ärge tuginege sellele üksi kriitiliste funktsioonide puhul, nagu tule-, gaasi-, tervise- või elu ohutus.",
+      "Vastutate oma seadmetele saadetud käskude ja oma võrgu turvalisuse eest. Hoidke seadmete püsivara ja ruuteri seaded ajakohasena.",
+      "Ohutuse huvides ei saa lukke vestlusest avada."
+     ]
+    },
+    {
+     "h": "NEXUS AI ja krediidid",
+     "p": [
+      "Tasuta pakett sisaldab 30 NEXUS AI krediiti päevas; NEXUS+ tellimus sisaldab 2000 krediiti kuus. Krediidid on üleantamatud, neid ei saa sularahaks vahetada ja need lähtestatakse perioodi lõpus. NEXUS AI võib eksida; tulemuste kontrollimine on teie vastutus."
+     ]
+    },
+    {
+     "h": "NEXUS+ tellimus",
+     "ul": [
+      "Ulatus: NEXUS+ annab 2000 NEXUS AI krediiti kuus ja avab uute seadmete lisamise täiustatud ühenduste (Home Assistant) kaudu. Kui tellimus lõpeb, jäävad juba lisatud seadmed tööle; uute seadmete lisamiseks nende ühenduste kaudu on taas vaja NEXUS+.",
+      "Paketid: Kuine ja Aastane, hind on Türkiyes TRY-des ja mujal USD-des (praegu Kuine 499,99 ₺ / 11,99 $, Aastane 3999,99 ₺ / 89,99 $). Kehtivad hinnad kuvatakse vormistamisel; vormistamisel võidakse lisada maksud. Aastane pakett sisaldab 7-päevast ja kuine pakett 3-päevast tasuta prooviperioodi.",
+      "Makseid võetakse Whopi kaudu. Tellimus uueneb iga perioodi lõpus automaatselt, kuni selle tühistate; prooviperioodi lõppedes arvestatakse teie valitud paketi hind.",
+      "Saate igal ajal tühistada rakenduse jaotises Arveldus või oma kontolt sellel veebisaidil. Tühistamine jõustub jooksva perioodi lõpus.",
+      "Vormistamisel kasutage oma NEXUS konto e-posti aadressi; tellimus seotakse selle e-posti aadressiga.",
+      "Hinnamuudatustest teavitame vähemalt 30 päeva enne nende jõustumist; need ei mõjuta jooksvat perioodi.",
+      "Tagasimaksetingimused on tagasimaksete ja tühistamise poliitikas."
+     ]
+    },
+    {
+     "h": "Muudatused ja katkestused",
+     "p": [
+      "Me võime Teenuseid täiustada, muuta või hoolduseks ajutiselt peatada. Me ei garanteeri katkestusteta ega veatut teenust."
+     ]
+    },
+    {
+     "h": "Intellektuaalomand",
+     "p": [
+      "NEXUSe tarkvara, kujunduse, kaubamärgi ja sisu õigused kuuluvad haldajale. Need tingimused annavad teile ainult ülalnimetatud litsentsi."
+     ]
+    },
+    {
+     "h": "Vastutuse piiramine",
+     "p": [
+      "Tarkvara pakutakse „sellisena, nagu see on“. Seadusega lubatud maksimaalses ulatuses me ei vastuta kaudse kahju eest (sh andmete kadu või seadmete või vara kahjustamine), mis tuleneb Teenuste kasutamisest; meie kogu vastutus on piiratud summaga, mille olete meile viimase 12 kuu jooksul maksnud. Tarbijaõigused, mida seadusega piirata ei saa, jäävad puutumata."
+     ]
+    },
+    {
+     "h": "Lõpetamine",
+     "p": [
+      "Võite oma konto igal ajal sulgeda (vt privaatsuspoliitikat). Me võime teie juurdepääsu lõpetada, kui rikute neid tingimusi."
+     ]
+    },
+    {
+     "h": "Kohaldatav õigus",
+     "p": [
+      "Neile tingimustele kohaldub Türgi Vabariigi õigus. Tarbijana säilitate õiguse pöörduda tarbijavaidluste komisjonide ja tarbijakohtute poole."
+     ]
+    },
+    {
+     "h": "Nende tingimuste muudatused",
+     "p": [
+      "Me võime neid tingimusi uuendada ning teavitame olulistest muudatustest rakenduses või veebisaidil. Teenuste jätkuv kasutamine pärast muudatust tähendab uute tingimustega nõustumist."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  },
+  "refund": {
+   "title": "Tagasimaksete ja tühistamise poliitika",
+   "intro": "See poliitika selgitab NEXUS+ tellimuse prooviperioodi, tühistamise ja tagasimakse tingimusi. Teie seadusjärgsed tarbijaõigused jäävad puutumata.",
+   "sections": [
+    {
+     "h": "Tasuta prooviperiood",
+     "p": [
+      "Aastane pakett sisaldab 7-päevast ja kuine pakett 3-päevast tasuta prooviperioodi. Kui tühistate enne prooviperioodi lõppu, tasu ei võeta. Kui te ei tühista, arvestatakse prooviperioodi lõppedes teie valitud paketi hind."
+     ]
+    },
+    {
+     "h": "Kuidas tühistada",
+     "ul": [
+      "Rakenduses: Plus → Arveldus → Tühista perioodi lõpus.",
+      "Veebisaidil: logi sisse → konto → tühista perioodi lõpus.",
+      "Tühistamine jõustub jooksva arveldusperioodi lõpus; kuni selleni säilitate NEXUS+ funktsioonid ja järgmise perioodi eest tasu ei võeta."
+     ]
+    },
+    {
+     "h": "Tagasimaksed",
+     "ul": [
+      "Võite 14 päeva jooksul pärast esimest tasu võtmist küsida tagasimakset põhjust esitamata; tagastame kogu makse.",
+      "Automaatsete uuenduste puhul tagastame selle perioodi tasu, kui küsite seda 3 päeva jooksul pärast uuenemiskuupäeva.",
+      "Väljaspool neid tähtaegu me kasutatud perioode ei tagasta, kuid kaalume tagasimakseid põhjendatud juhtudel, näiteks kui teenus oli kasutamiskõlbmatu meie poolse vea tõttu.",
+      "Me võime taotluse tagasi lükata, kui tuvastame kuritarvitamise (näiteks korduvad tagasimaksed samale kontole)."
+     ]
+    },
+    {
+     "h": "Kuidas tagasimakset taotleda",
+     "p": [
+      "Saatke e-kiri aadressile nexus.smarthome.app@gmail.com, lisades oma NEXUS konto e-posti aadressi ja taotluse. Heakskiidetud tagasimaksed tehakse Whopi kaudu algsele makseviisile; need ilmuvad tavaliselt 5–10 tööpäeva jooksul, olenevalt teie pangast."
+     ]
+    },
+    {
+     "h": "Seadusjärgsed õigused",
+     "p": [
+      "See poliitika ei piira teie seadusjärgseid õigusi Türgi tarbijakaitseseaduse nr 6502 ja kaugsidelepingute määruse alusel (sh taganemisõigus ja selle erandid)."
+     ]
+    },
+    {
+     "h": "Kontakt",
+     "p": [
+      "nexus.smarthome.app@gmail.com"
+     ]
+    }
+   ]
+  }
+ }
+}
