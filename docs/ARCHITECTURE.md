@@ -62,7 +62,7 @@ WebView) identical. Big modules:
 - `automation-engine.js` — runs schedules/sunset triggers on-device.
 - `cloud-sync.js` — optional Supabase profile/settings sync. Device
   credentials never leave the LAN.
-- `lang-en.js` — English overlay over the Turkish base string table.
+- `lang-*.js` — runtime localization overlays supporting 68 languages.
 
 Transport selection cascades, in order: Electron `lan:` bridge (privileged,
 main-process) → `CapacitorHttp` (native, bypasses WebView mixed-content) →

@@ -11,5 +11,5 @@ about: Change summary / Değişiklik özeti
 
 - [ ] `pnpm test` passes
 - [ ] No secrets / fake data introduced (CLAUDE.md rules)
-- [ ] UI strings TR+EN; design language kept (shell metrics, colors)
+- [ ] UI strings localized / translatable; design language kept (shell metrics, colors)
 - [ ] Screenshots for UI changes

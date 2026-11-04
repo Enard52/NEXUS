@@ -5,11 +5,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        NEXUS ships in 68 languages; English and Turkish are fully covered (enforced by a test)
-        and every other language falls back to English per string. Write in any language you like.
-        Community languages are welcome! A language is added by contributing one
-        dictionary file (`src/app/lang-<code>.js`) and one registry line in
-        `src/app/theme.js`. The step-by-step guide is docs/TRANSLATING.md.
+        NEXUS ships in 68 languages across the application and marketing website.
+        Write in any language you like. Community contributions are welcome! A language is updated
+        or added by contributing dictionary files (`src/app/lang-<code>.js` and `scripts/site-content.<code>.mjs`).
+        The step-by-step guide is docs/TRANSLATING.md.
   - type: dropdown
     id: kind
     attributes:

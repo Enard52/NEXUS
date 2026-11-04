@@ -8,7 +8,7 @@ Thanks for helping NEXUS!
 2. **Secrets never enter the repo.** Supabase/GitHub Secrets only.
 3. **Prices and plan texts come from the single source** (`cloud-sync.js` PRICES ↔ `scripts/site-content.mjs`, enforced by tests).
 4. **New device connectors** follow the real protocol docs and ship packet/response tests in `packages/web/src/lan-*.test.ts`; note if untested with real hardware.
-5. **Design language stays consistent**: Inter, `#4C7DFF→#22D3EE`, rounded cards, the shared shell metrics (`--nx-header-h`, `--nx-nav-h`). User-visible strings live in the i18n dictionary — Turkish and English are the reference languages and 66 more ship as community overlays; more are welcome (see [docs/TRANSLATING.md](docs/TRANSLATING.md) and the translation issues).
+5. **Design language stays consistent**: Inter, `#4C7DFF→#22D3EE`, rounded cards, the shared shell metrics (`--nx-header-h`, `--nx-nav-h`). User-visible strings live in the i18n dictionary across 68 supported languages; more are welcome (see [docs/TRANSLATING.md](docs/TRANSLATING.md) and the translation issues).
 
 ## Dev loop
 

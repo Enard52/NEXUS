@@ -16,8 +16,8 @@ place — here is what exists, what was just fixed, and the short list still ope
 - **Scroll stability:** site modals no longer shift the page horizontally
   (scrollbar-width compensation, 27 Oct).
 - **Accessibility:** full `prefers-reduced-motion` support + a kill switch for
-  sounds/motion/haptics in Settings; all icon-only buttons labeled; EN/TR
-  complete (653/653 strings, automated coverage gate).
+  sounds/motion/haptics in Settings; all icon-only buttons labeled; 68 languages
+  supported out of the box with automated coverage gates.
 - **Honesty UX:** unsupported devices/features say so in the UI instead of
   pretending — the single most trust-building usability choice in the project.
 - **Onboarding & empty states:** fresh-account walkthrough exists; empty device

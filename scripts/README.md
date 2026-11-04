@@ -27,7 +27,7 @@ Helper scripts for building, verifying and releasing NEXUS. Run everything from 
 | `site-build.mjs`                                         | Builds the marketing site (uses `site-content.mjs`, `site-legal-content.mjs`, `site-seo.cjs`, `site-icons.mjs`, `site-pricing.cjs`, ...) | `pnpm site:build`                    | yes (`web-deploy.yml`) |
 | `site-pricing.cjs`                                       | Single source for prices and plan texts (CLAUDE.md rule 4)                                                                               | imported                             | via site build         |
 | `site-shots.mjs`, `site-icons.mjs`                       | Site screenshots / icons                                                                                                                 | `pnpm site:shots`, `pnpm site:icons` | no                     |
-| `legal-content.cjs`, `legal-pdf.mjs`, `legal-pdf-en.mjs` | Legal text and PDF generation                                                                                                            | `node scripts/legal-pdf.mjs`         | no                     |
+| `legal-content.cjs`, `legal-pdf.mjs`                     | Legal text and PDF generation                                                                                                            | `node scripts/legal-pdf.mjs`         | no                     |
 | `serve-site.mjs`, `local-dev-server.cjs`                 | Local static servers (see `docs/QA.md`)                                                                                                  | `node scripts/local-dev-server.cjs`  | no                     |
 
 ## Verification & QA

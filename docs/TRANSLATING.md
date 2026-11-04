@@ -1,17 +1,15 @@
 # Translating NEXUS
 
-NEXUS ships in 68 languages. Turkish and English are the reference languages (fully covered, enforced by tests);
-every other language is a community overlay. A new or missing language is added with **one dictionary file**
+NEXUS ships in 68 languages across the application and the marketing website. A new or updated language is added with **one dictionary file**
 plus one registry line. No paid tool or account is needed, and a language you cannot verify yourself should
 not be added.
 
 ## How it works
 
-- The screens are written in Turkish. English is a dictionary (`src/app/lang-en.js`) applied at runtime.
-- A community language is an **overlay** on top of English: `src/app/lang-<code>.js`.
-  Every value you fill in replaces the English text; every value you leave `""` stays English.
-  So a half-finished language is safe to ship; it never shows Turkish or blanks.
-- Payment plans and the AI assistant follow the English base for every community language.
+- The application uses runtime localization overlays (`src/app/lang-<code>.js`) supporting 68 languages.
+- The marketing website and legal pages are pre-rendered for all 68 languages in `scripts/site-content.<kod>.mjs` and `scripts/legal-translations/<kod>.json`.
+- When any string is missing, it safely falls back to English without breaking layout or showing blanks.
+- Payment plans and the AI assistant follow local currency and language preferences.
 
 ## Add a language
 
@@ -46,16 +44,13 @@ not be added.
 
 The language then appears in Settings, Language, and is chosen automatically for devices set to it.
 
-## Not covered yet (tracked as issues)
+## Localization scope
 
-These surfaces are still fixed to Turkish/English; a language file alone does not translate them:
+The application and marketing site support 68 languages out of the box:
 
-- The marketing site and the legal pages/PDFs (`scripts/site-build.mjs`, `scripts/site-content.mjs`,
-  `scripts/legal-content.cjs`, `scripts/legal-pdf*.mjs`).
-- The desktop menu and tray (`desktop/main.cjs`), push notification text sent from servers, and voice input
-  (the speech-to-text worker accepts `tr`/`en` only).
-- Messages assembled from several variables in code (not literal pairs) and the assistant's built-in local replies.
-- Store listings and the checkout page (maintained in each store/Whop console by the owner).
+- The desktop app, web app and mobile app share the 68 community language dictionaries.
+- Legal documents (privacy, terms, refund) and marketing pages are pre-rendered across all 68 languages.
+- The language picker in Settings offers full-text search across all 68 languages.
 
 Dates and numbers follow the `locale` you register. The language picker is a searchable full-screen list, so it
 scales to many languages.
