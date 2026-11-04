@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
+PackageIdentifier: Enard52.NEXUS
+PackageVersion: 1.0.56
+InstallerType: nullsoft
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/Enard52/nexus-releases/releases/download/v1.0.56/NEXUS-Setup.exe
+    InstallerSha256: FE7B18CBE21615D975752229F3CF4E1CDBC1650A53E22418D7EC4DBF48CB2457
+ManifestType: installer
+ManifestVersion: 1.6.0

@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+PackageIdentifier: Enard52.NEXUS
+PackageVersion: 1.0.56
+PackageLocale: en-US
+Publisher: Enard52
+PublisherUrl: https://github.com/Enard52
+PackageName: NEXUS
+PackageUrl: https://github.com/Enard52/NEXUS
+License: See repository
+ShortDescription: Local-first smart home control with no hub and no vendor cloud.
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0
