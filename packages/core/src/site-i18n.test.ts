@@ -25,12 +25,17 @@ describe("marketing site multi-language generation (Issue #190)", () => {
     expect(tr.pricing.currencyNote).toBe("Fiyatlar TL cinsinden");
   });
 
-  it("falls back gracefully to English with USD pricing for any registered or unregistered language", () => {
-    const de = getContent("de");
+  it("falls back gracefully to English with USD pricing for any unregistered language", () => {
+    const unk = getContent("unregistered");
     // Deep fallback should provide all keys from English
-    expect(de.features.heading).toBe("Powerful infrastructure. Effortless control.");
-    expect(de.pricing.currencyNote).toBe("Prices in USD");
-    expect(de.footer.rights).toContain("All rights reserved");
+    expect(unk.features.heading).toBe("Powerful infrastructure. Effortless control.");
+    expect(unk.pricing.currencyNote).toBe("Prices in USD");
+    expect(unk.footer.rights).toContain("All rights reserved");
+  });
+
+  it("provides translated content for community languages like de", () => {
+    const de = getContent("de");
+    expect(de.features.heading).toBe("Leistungsstarke Infrastruktur. Mühelose Steuerung.");
   });
 
   it("builds pages for all registered site languages with correct canonical and hreflang tags", () => {
