@@ -194,7 +194,7 @@ export const en = {
       cta: { label: "Download NEXUS", href: "#downloads" },
     },
     smartScreenNote:
-      "On Windows the easiest route is the Microsoft Store: the package is signed by Microsoft and updates come through the Store. The direct .exe is unsigned, so Windows may warn about an “unknown publisher” — see checksums.",
+      "The direct Windows .exe is unsigned, so Windows may show an “unknown publisher” warning — you can verify it using the SHA-256 checksums above.",
   },
   faq: {
     heading: "The important questions, answered.",

@@ -194,7 +194,7 @@ export const tr = {
       cta: { label: "NEXUS'u İndir", href: "#downloads" },
     },
     smartScreenNote:
-      "Windows için en kolay yol Microsoft Store: kurulum Microsoft tarafından imzalanır ve güncellemeler Store'dan gelir. Doğrudan .exe imzasızdır; Windows “bilinmeyen yayıncı” uyarısı verebilir — sağlama değerlerine bak.",
+      "Doğrudan indirilen Windows .exe imzasızdır; Windows “bilinmeyen yayıncı” uyarısı verebilir — dosya sağlama değerlerini (SHA-256) yukarıdaki bağlantıdan karşılaştırabilirsiniz.",
   },
   faq: {
     heading: "Önemli sorular, net yanıtlar.",
