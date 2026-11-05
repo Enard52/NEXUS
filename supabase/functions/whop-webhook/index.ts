@@ -73,7 +73,9 @@ function pick(d: Json) {
   const memRaw = d?.membership?.id ?? d?.membership_id ?? (typeof d?.id === "string" && d.id.startsWith("mem_") ? d.id : "");
   const end = d?.renewal_period_end ?? d?.renewal_period_end_at ?? d?.expires_at ?? d?.membership?.renewal_period_end ?? null;
   const cancel = d?.cancel_at_period_end ?? d?.membership?.cancel_at_period_end;
-  return { email, whopUserId, planId: String(planRaw || ""), membershipId: String(memRaw || ""), periodEnd: end ? new Date(end).toISOString() : null, cancel: typeof cancel === "boolean" ? cancel : undefined };
+  // whop-checkout oturumu metadata'ya Supabase kullanıcı kimliğini yazar; Whop onu ödemeye ve üyeliğe kopyalar.
+  const nexusUserId = String(d?.metadata?.nexus_user_id ?? d?.membership?.metadata?.nexus_user_id ?? "").trim();
+  return { email, whopUserId, nexusUserId, planId: String(planRaw || ""), membershipId: String(memRaw || ""), periodEnd: end ? new Date(end).toISOString() : null, cancel: typeof cancel === "boolean" ? cancel : undefined };
 }
 
 async function rest(path: string, init: RequestInit): Promise<Response> {
@@ -83,6 +85,22 @@ async function rest(path: string, init: RequestInit): Promise<Response> {
     ...init,
     headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json", ...(init.headers ?? {}) },
   });
+}
+
+// Metadata'daki kullanıcı kimliğinin hesap e-postası. Kimlik bulunamazsa boş döner
+// ve çağıran taraf kasadaki e-postaya geri düşer.
+async function accountEmail(userId: string): Promise<string> {
+  if (!/^[0-9a-f-]{36}$/i.test(userId)) return "";
+  const url = Deno.env.get("SUPABASE_URL")!;
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  try {
+    const res = await fetch(`${url}/auth/v1/admin/users/${userId}`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+    if (!res.ok) return "";
+    const u = await res.json();
+    return String(u?.email ?? u?.user?.email ?? "").trim().toLowerCase();
+  } catch {
+    return "";
+  }
 }
 
 // Discord bildirimi (isteğe bağlı): adres yalnızca DISCORD_WEBHOOK_URL ortam değişkeninden okunur; e-posta maskelenir.
@@ -118,12 +136,14 @@ Deno.serve(async (req) => {
   if (!activates && !deactivates && !cancelChange) return Response.json({ ok: true, ignored: type });
 
   if (activates) {
-    if (!def || !p.email) return Response.json({ ok: true, ignored: "unknown plan or email" });
-    const row = { email: p.email, whop_user_id: p.whopUserId || null, plan: def.plan, currency: def.currency, status: "active", cancel_at_period_end: p.cancel ?? false, whop_membership_id: p.membershipId || null, whop_plan_id: p.planId, period_end: p.periodEnd, updated_at: new Date().toISOString() };
+    // Önce ödeme oturumundaki hesap kimliği (kasada farklı e-posta yazılsa bile doğru hesap), yoksa kasa e-postası.
+    const email = (p.nexusUserId ? await accountEmail(p.nexusUserId) : "") || p.email;
+    if (!def || !email) return Response.json({ ok: true, ignored: "unknown plan or email" });
+    const row = { email, whop_user_id: p.whopUserId || null, plan: def.plan, currency: def.currency, status: "active", cancel_at_period_end: p.cancel ?? false, whop_membership_id: p.membershipId || null, whop_plan_id: p.planId, period_end: p.periodEnd, updated_at: new Date().toISOString() };
     const res = await rest("nexus_entitlements?on_conflict=email", { method: "POST", headers: { Prefer: "resolution=merge-duplicates" }, body: JSON.stringify(row) });
     if (!res.ok) return new Response("db error", { status: 500 });
-    await notify(`💳 NEXUS+ ${type.includes("payment") ? "ödeme alındı" : "üyelik başladı"}: ${def.plan} · ${def.currency} · ${mask(p.email)}`);
-    return Response.json({ ok: true, active: p.email, plan: def.plan, currency: def.currency });
+    await notify(`💳 NEXUS+ ${type.includes("payment") ? "ödeme alındı" : "üyelik başladı"}: ${def.plan} · ${def.currency} · ${mask(email)}`);
+    return Response.json({ ok: true, active: email, plan: def.plan, currency: def.currency });
   }
 
   // Kapanış / iptal bilgisi: önce üyelik kimliğiyle, yoksa e-postayla eşleştir.

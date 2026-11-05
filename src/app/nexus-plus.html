@@ -318,6 +318,17 @@
     var url = window.nexusCloud.checkoutUrl(selectedPlan, email, currency);
     closeCheckout();
     if (!planId && !url) { toast('Ödeme bağlantısı bulunamadı.'); return; }
+    // Ödeme oturumu hesabın kimliğini Whop'a taşır; açılamazsa plan kimliğiyle (e-posta eşleşmesi) devam edilir.
+    var opening = window.nexusCloud.createCheckoutSession
+      ? window.nexusCloud.createCheckoutSession(selectedPlan, currency).catch(function () { return null; })
+      : Promise.resolve(null);
+    opening.then(function (co) {
+      if (co && co.purchaseUrl) url = co.purchaseUrl;
+      mountCheckout(planId, co && co.session, email, url);
+    });
+  }
+
+  function mountCheckout(planId, sessionId, email, url) {
     var mount = document.getElementById('checkout-embed-mount');
     var sheet = document.getElementById('checkout-embed');
     if (!mount || !sheet || !planId) {
@@ -329,6 +340,8 @@
     var box = document.createElement('div');
     box.id = 'whop-embedded-checkout';
     box.setAttribute('data-whop-checkout-plan-id', planId);
+    if (sessionId) box.setAttribute('data-whop-checkout-session', sessionId);
+    if (email) box.setAttribute('data-whop-checkout-prefill-email', email);
     box.setAttribute('data-whop-checkout-return-url', location.href.split('#')[0]);
     mount.appendChild(box);
     var old = document.getElementById('nxWhopLoader');

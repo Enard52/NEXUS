@@ -1420,7 +1420,7 @@
         body: JSON.stringify({ action: action === "cancel" ? "cancel" : "status" }),
       }).then(function (d) {
         var m = d && d.membership;
-        if (m && (m.plan === "Aylık" || m.plan === "Yıllık")) {
+        if (m && !m.ended && (m.plan === "Aylık" || m.plan === "Yıllık")) {
           applyEntitlement({
             status: "active",
             plan: m.plan,
@@ -1432,6 +1432,26 @@
           applyEntitlement(null);
         }
         return d || { membership: null, payments: [] };
+      });
+    });
+  }
+
+  // Ödeme oturumu: whop-checkout, oturumdaki hesabın kimliğini Whop metadata'sına yazar;
+  // webhook aboneliği bu kimlikle bağlar (kasada başka e-posta yazılsa bile).
+  // Hata olursa çağıran taraf plan kimliğiyle açılan kasaya döner (o zaman eşleşme e-postayladır).
+  function createCheckoutSession(plan, currency) {
+    if (!enabled()) return Promise.reject(new Error("bulut yapılandırması yok"));
+    return session().then(function (current) {
+      if (!current || !current.accessToken) return Promise.reject(new Error("oturum yok"));
+      return api("/functions/v1/whop-checkout", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + current.accessToken },
+        body: JSON.stringify({ plan: String(plan || ""), currency: currency === "USD" ? "USD" : "TRY" }),
+      }).then(function (d) {
+        if (!d || typeof d.session !== "string" || d.session.indexOf("ch_") !== 0) {
+          return Promise.reject(new Error("ödeme oturumu açılamadı"));
+        }
+        return { session: d.session, purchaseUrl: String(d.purchaseUrl || "") };
       });
     });
   }
@@ -1789,6 +1809,7 @@
     syncState: syncState,
     pullEntitlement: pullEntitlement,
     checkoutUrl: checkoutUrl,
+    createCheckoutSession: createCheckoutSession,
     sendHouseholdInvite: sendHouseholdInvite,
     sendNotifyEmail: sendNotifyEmail,
     pushRegisterToken: pushRegisterToken,

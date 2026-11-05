@@ -1005,6 +1005,111 @@ describe("NEXUS+ aboneliği (Whop webhook'u → nexus_entitlements)", () => {
     expect(JSON.parse(String(accountCalls[1].body)).action).toBe("cancel");
   });
 
+  it("ödeme oturumu whop-checkout uçundan alınır; plan adı ve para birimi gider, kimlik gitmez", async () => {
+    const { cloud, calls } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: (call: Call) => {
+        const u = new URL(call.url);
+        if (u.pathname === "/auth/v1/token") {
+          return {
+            access_token: "tok",
+            refresh_token: "ref",
+            expires_in: 3600,
+            user: { id: "u1", email: "a@b.co" },
+          };
+        }
+        if (u.pathname === "/functions/v1/whop-checkout") {
+          return {
+            session: "ch_abc",
+            purchaseUrl: "https://whop.com/checkout/plan_x?session=ch_abc",
+          };
+        }
+        return {};
+      },
+    });
+    await cloud.signIn("a@b.co", "parola-123");
+    const co = await cloud.createCheckoutSession("Yıllık", "USD");
+    expect(co.session).toBe("ch_abc");
+    expect(co.purchaseUrl).toContain("session=ch_abc");
+    const call = calls.find((c) => c.url.includes("/functions/v1/whop-checkout"))!;
+    expect(call.method).toBe("POST");
+    expect(JSON.parse(String(call.body))).toEqual({ plan: "Yıllık", currency: "USD" });
+  });
+
+  it("ödeme oturumu geçersiz yanıt dönerse reddedilir (sahte başarı yok)", async () => {
+    const { cloud } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: (call: Call) => {
+        const u = new URL(call.url);
+        if (u.pathname === "/auth/v1/token") {
+          return {
+            access_token: "tok",
+            refresh_token: "ref",
+            expires_in: 3600,
+            user: { id: "u1", email: "a@b.co" },
+          };
+        }
+        return {};
+      },
+    });
+    await cloud.signIn("a@b.co", "parola-123");
+    await expect(cloud.createCheckoutSession("Aylık", "TRY")).rejects.toThrow();
+  });
+
+  it("bitmiş Whop üyeliği aktif abonelik sayılmaz", async () => {
+    const { cloud, storage } = load({
+      config: CONFIG,
+      user: "a@b.co",
+      handler: (call: Call) => {
+        const u = new URL(call.url);
+        if (u.pathname === "/auth/v1/token") {
+          return {
+            access_token: "tok",
+            refresh_token: "ref",
+            expires_in: 3600,
+            user: { id: "u1", email: "a@b.co" },
+          };
+        }
+        if (u.pathname === "/functions/v1/whop-account") {
+          return {
+            membership: { plan: "Aylık", currency: "TRY", status: "expired", ended: true },
+            payments: [],
+          };
+        }
+        return {};
+      },
+    });
+    await cloud.signIn("a@b.co", "parola-123");
+    storage.setItem("a@b.co_nexusPlusPlan", "Aylık");
+    await cloud.billingAccount("status");
+    expect(storage.getItem("a@b.co_nexusPlusPlan")).toBe(null);
+  });
+
+  it("webhook aboneliği önce ödeme oturumundaki hesap kimliğiyle bağlar", () => {
+    const hook = readFileSync(
+      join(REPO_ROOT, "supabase", "functions", "whop-webhook", "index.ts"),
+      "utf8",
+    );
+    expect(hook).toContain("metadata?.nexus_user_id");
+    expect(hook).toContain("/auth/v1/admin/users/");
+    const checkout = readFileSync(
+      join(REPO_ROOT, "supabase", "functions", "whop-checkout", "index.ts"),
+      "utf8",
+    );
+    expect(checkout).toContain("nexus_user_id: user.id");
+    expect(checkout).toContain("anon.auth.getUser()");
+    for (const id of [
+      "plan_fAMBHwTVE0hR2",
+      "plan_UEXO1F5mjIgWB",
+      "plan_HIySYESquBqlg",
+      "plan_XlA3SacShoiJU",
+    ]) {
+      expect(checkout).toContain(id);
+    }
+  });
+
   it("USD planları yurt dışı için ayrı Whop bağlantılarına gider ve fiyatlar dile göre gelir", () => {
     const { cloud } = load({ config: CONFIG });
     expect(cloud.checkoutUrl("Yıllık", "", "USD")).toBe(

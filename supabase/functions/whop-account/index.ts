@@ -10,6 +10,9 @@ const PLANS: Record<string, { plan: "Aylık" | "Yıllık"; currency: "TRY" | "US
   plan_XlA3SacShoiJU: { plan: "Yıllık", currency: "USD" },
 };
 
+// Erişimi bitmiş üyelik durumları; istemci bunları aktif abonelik saymaz.
+const ENDED = new Set(["canceled", "cancelled", "expired", "completed", "drafted", "unresolved"]);
+
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, content-type, apikey",
@@ -110,9 +113,18 @@ Deno.serve(async (req) => {
     const member = row.member as Record<string, unknown> | undefined;
     return String(row.user_id ?? user?.id ?? member?.user?.id ?? "").trim();
   }
+  function nexusUserOf(row: Record<string, unknown>): string {
+    const meta = row.metadata as Record<string, unknown> | undefined;
+    return String(meta?.nexus_user_id ?? "").trim();
+  }
+  // Aynı kullanıcının eski (bitmiş) üyeliği yenisinin önüne geçmesin: önce geçerli olanlar.
+  const ended = (row: Record<string, unknown>) => ENDED.has(String(row.status || "").toLowerCase());
+  const ordered = [...rows.filter((row) => !ended(row)), ...rows.filter(ended)];
+  // Eşleşme sırası: whop-checkout'un yazdığı hesap kimliği, webhook'un sakladığı Whop kullanıcı kimliği, e-posta.
   const mine =
-    (storedWhopUser ? rows.find((row) => whopUserIdOf(row) === storedWhopUser && PLANS[planIdOf(row)]) : undefined) ??
-    rows.find((row) => emailOf(row) === email && PLANS[planIdOf(row)]);
+    ordered.find((row) => nexusUserOf(row) === user!.id && PLANS[planIdOf(row)]) ??
+    (storedWhopUser ? ordered.find((row) => whopUserIdOf(row) === storedWhopUser && PLANS[planIdOf(row)]) : undefined) ??
+    ordered.find((row) => emailOf(row) === email && PLANS[planIdOf(row)]);
 
   if (action === "cancel") {
     if (!mine) return json({ error: "no_membership" }, 404);
@@ -159,6 +171,7 @@ Deno.serve(async (req) => {
           plan: def?.plan || "",
           currency: def?.currency || "",
           status: String(current.status || ""),
+          ended: ENDED.has(String(current.status || "").toLowerCase()),
           cancelAtPeriodEnd: Boolean(current.cancel_at_period_end),
           periodEnd: current.renewal_period_end || current.expires_at || null,
         }
