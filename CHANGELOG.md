@@ -2,9 +2,20 @@
 
 _Bu dosya `node scripts/bump-version.mjs --changelog` ile Conventional Commits'ten üretilir; elle düzenlenmez._
 
-## Unreleased
+## v1.0.57
+
+### 🐛 Fixed
+- billing: link NEXUS+ payments to the account id, not the checkout email
+
+### 📚 Docs
+- store: refine Store listing drafts with clear purpose and benefits
+- add comprehensive Microsoft Store Partner Center listing drafts for v1.0.56
+
+### 🛠 Maintenance
+- release: complete v1.0.56 changelog, winget manifest and site version chips
 
 ### 🧩 Other
+- v1.0.57
 - fix prettier formatting in site-translations.test.ts
 
 ## v1.0.56
