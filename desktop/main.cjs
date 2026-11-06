@@ -194,6 +194,50 @@ function detectLang() {
   }
   return "en";
 }
+const COUNTRY_TO_LANG = {
+  TR: 'tr', AZ: 'tr', KZ: 'tr', UZ: 'tr', KG: 'tr', TM: 'tr', CY: 'tr',
+  DE: 'de', AT: 'de', CH: 'de', LI: 'de',
+  FR: 'fr', BE: 'fr', MC: 'fr',
+  ES: 'es', MX: 'es', AR: 'es', CO: 'es', CL: 'es', PE: 'es',
+  IT: 'it', SM: 'it', VA: 'it',
+  PT: 'pt-BR', BR: 'pt-BR',
+  RU: 'ru', BY: 'ru', UA: 'uk', PL: 'pl', CZ: 'cs', SK: 'sk', BG: 'bg',
+  NL: 'nl', SE: 'sv', NO: 'nb', DK: 'da', FI: 'fi',
+  JP: 'ja', KR: 'ko', CN: 'zh-Hans', TW: 'zh-Hant', HK: 'zh-Hant',
+  SA: 'ar', AE: 'ar', EG: 'ar',
+  US: 'en', GB: 'en', CA: 'en', AU: 'en', NZ: 'en', IE: 'en',
+};
+
+function asyncCheckGeoCountry() {
+  try {
+    const s = loadDesktopSettings();
+    if (s.uiLangManual) return;
+    const https = require('node:https');
+    const req = https.get('https://nexus-smarthome.pages.dev/cdn-cgi/trace', { timeout: 3500 }, (res) => {
+      let data = '';
+      res.on('data', (c) => { data += c; });
+      res.on('end', () => {
+        const m = data.match(/\bloc=([A-Z]{2})\b/i);
+        if (!m || !m[1]) return;
+        const cc = m[1].toUpperCase();
+        const target = COUNTRY_TO_LANG[cc] || 'en';
+        if (target && isSupportedLanguage(target) && target !== uiLang) {
+          uiLang = target;
+          persistDesktopSettings({ uiLang: target });
+          try {
+            if (win && !win.isDestroyed()) win.webContents.send('app:language', target);
+          } catch {}
+          try {
+            updateTrayMenu();
+          } catch {}
+        }
+      });
+    });
+    req.on('error', () => {});
+    req.on('timeout', () => { req.destroy(); });
+  } catch {}
+}
+
 let uiLang = detectLang();
 const L = (tr, en) => localize(uiLang, tr, en);
 
@@ -1450,6 +1494,7 @@ ipcMain.on("app:title-theme", (_e, dark) => {
 });
 
 ipcMain.on("app:language", (_e, lang) => {
+  if (isSupportedLanguage(lang)) persistDesktopSettings({ uiLangManual: true });
   if (isSupportedLanguage(lang) && lang !== uiLang) {
     uiLang = lang;
     buildMenu();
@@ -1836,6 +1881,7 @@ app.on("before-quit", () => {
   app.isQuitting = true;
 });
 
+asyncCheckGeoCountry();
 app.whenReady().then(() => {
   uiLang = detectLang();
   registerWindowsToastIdentity();

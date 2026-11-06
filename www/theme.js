@@ -164,10 +164,52 @@
   window.nexusSetLanguage = function (next) {
     // Dil seçimi tüm kullanıcılara açık: EN kullanıcısı TR'ye, TR kullanıcısı EN'ye geçebilir.
     if (next !== 'tr' && next !== 'en' && !Object.prototype.hasOwnProperty.call(COMMUNITY_LANGS, next)) return;
-    try { localStorage.setItem(KEY, next); } catch (e) {}
+    try {
+      localStorage.setItem(KEY, next);
+      localStorage.setItem('nexusLanguageManual', '1');
+    } catch (e) {}
     try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(next); } catch (e) {}
     location.reload();
   };
+
+  // IP / Ülke tabanlı otomatik dil algılama (VPN veya yurt dışı bağlantılarında otomatik ilk dil uyumu)
+  (function detectGeoCountry() {
+    try {
+      if (typeof window === 'undefined' || typeof fetch !== 'function') return;
+      if (localStorage.getItem('nexusLanguageManual') === '1') return;
+      var endpoint = (location.hostname && (location.hostname.endsWith('pages.dev') || location.hostname.endsWith('github.io')))
+        ? '/cdn-cgi/trace'
+        : 'https://nexus-smarthome.pages.dev/cdn-cgi/trace';
+      fetch(endpoint, { cache: 'no-store' })
+        .then(function (res) { return res.text(); })
+        .then(function (txt) {
+          var m = txt.match(/\bloc=([A-Z]{2})\b/i);
+          if (!m || !m[1]) return;
+          var cc = m[1].toUpperCase();
+          var COUNTRY_MAP = {
+            TR:'tr',AZ:'tr',KZ:'tr',UZ:'tr',KG:'tr',TM:'tr',CY:'tr',
+            DE:'de',AT:'de',CH:'de',LI:'de',
+            FR:'fr',BE:'fr',MC:'fr',
+            ES:'es',MX:'es',AR:'es',CO:'es',CL:'es',PE:'es',
+            IT:'it',SM:'it',VA:'it',
+            PT:'pt-BR',BR:'pt-BR',
+            RU:'ru',BY:'ru',UA:'uk',PL:'pl',CZ:'cs',SK:'sk',BG:'bg',
+            NL:'nl',SE:'sv',NO:'nb',DK:'da',FI:'fi',
+            JP:'ja',KR:'ko',CN:'zh-Hans',TW:'zh-Hant',HK:'zh-Hant',
+            SA:'ar',AE:'ar',EG:'ar',IQ:'ar',JO:'ar',
+            US:'en',GB:'en',CA:'en',AU:'en',NZ:'en',IE:'en'
+          };
+          var target = COUNTRY_MAP[cc];
+          if (!target) target = 'en';
+          var current = localStorage.getItem(KEY);
+          if (target && target !== current && (target === 'tr' || target === 'en' || COMMUNITY_LANGS[target])) {
+            localStorage.setItem(KEY, target);
+            location.reload();
+          }
+        })
+        .catch(function () {});
+    } catch (e) {}
+  })();
   document.documentElement.setAttribute('lang', uiLang);
   if (COMMUNITY_LANGS[uiLang] && COMMUNITY_LANGS[uiLang].rtl) document.documentElement.setAttribute('dir', 'rtl');
   try { if (window.nexusDesktop && typeof nexusDesktop.setLanguage === 'function') nexusDesktop.setLanguage(uiLang); } catch (e) {}
