@@ -37,7 +37,7 @@ jobs:
           if [ -z "$KS_B64" ] || [ -z "$KS_PASS" ] || [ -z "$GH_TOKEN" ]; then echo "::notice::Android imza anahtarları tanımlı değil; APK derlemesi atlandı."; echo "run=false" >> "$GITHUB_OUTPUT"; else echo "run=true" >> "$GITHUB_OUTPUT"; fi
       - uses: pnpm/action-setup@v4
         if: steps.gate.outputs.run == 'true'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.gate.outputs.run == 'true'
         with:
           node-version: 22
