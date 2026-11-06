@@ -61,7 +61,7 @@
   "devDependencies": {
     "@capacitor/android": "^8.6.0",
     "@capacitor/cli": "^8.6.0",
-    "@homebridge/hap-client": "^5.3.0",
+    "@homebridge/hap-client": "^5.4.0",
     "@types/node": "^24.0.0",
     "autoprefixer": "^10.6.2",
     "hap-controller": "^0.10.2",
@@ -75,7 +75,7 @@
     "tsx": "^4.23.15",
     "typescript": "^5.6.3",
     "vitest": "^4.1.12",
-    "wrangler": "^4.155.0"
+    "wrangler": "^4.156.2"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.2",
