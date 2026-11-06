@@ -20,7 +20,7 @@
     "dist:linux": "npm run prepare-app && electron-builder --linux"
   },
   "dependencies": {
-    "@noble/ciphers": "1.3.0",
+    "@noble/ciphers": "2.4.0",
     "electron-updater": "6.8.11",
     "hap-nodejs": "^0.14.3"
   },
