@@ -3628,7 +3628,7 @@ function renderDownloads(c) {
           <span>${plat === 'windows' ? '.exe' : plat === 'android' ? 'APK' : '.deb'}</span>
           <a class="dl-sums" href="${DL_BASE}/${SUMS[plat]}" target="_blank" rel="noopener" title="${sumsLabel}">SHA-256</a>
         </div>
-        <a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${plat === 'windows' ? (c.lang === 'tr' ? 'EXE olarak indir' : tx('Download the .exe')) : (c.lang === 'tr' ? 'İndir' : tx('Download'))}</a>
+        <a class="btn btn-primary" href="${DL_BASE}/${file}" download>${icon('download')}${c.lang === 'tr' ? 'İndir' : tx('Download')}</a>
       </div>`
         )
         .join('\n      ')}
