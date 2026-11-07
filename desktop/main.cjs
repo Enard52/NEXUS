@@ -61,7 +61,9 @@ const launchPage = pageFromArgv(process.argv);
 const START_URL = `${SCHEME}://app/${launchPage || "index.html"}`;
 
 app.setName("NEXUS");
-if (process.platform === "win32") app.setAppUserModelId("app.nexus.desktop");
+// Geliştirme çalıştırması (`npm start`, çıplak electron.exe) ayrı kimlik kullanır: aynı kimliği paylaşan
+// bir "Electron.lnk" kısayolu oluşursa Windows kurulu NEXUS'u görev çubuğunda/bildirimlerde "Electron" gösterir.
+if (process.platform === "win32") app.setAppUserModelId(app.isPackaged ? "app.nexus.desktop" : "app.nexus.desktop.dev");
 
 // Windows bildirimleri uygulama adını/simgesini AppUserModelID kaydından okur. Kısayol bu kimliği
 // taşımıyorsa (taşınmış/elle oluşturulmuş kısayol, portable çalıştırma) Windows varsayılan simge gösterir.
