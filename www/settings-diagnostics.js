@@ -21,6 +21,10 @@
       var order = [];
       paired().forEach(function (d) {
         if (!d || typeof d.host !== 'string' || !/^https?:\/\//i.test(d.host)) return;
+        // Uzak adres yalnız HTTP ile konuşan cihazlarda anlamlı: Wake-on-LAN (UDP yayını) gibi UDP protokollerinde
+        // yedek adres hiçbir zaman denenmez/işe yaramaz; sahte ayar göstermemek için listelenmez.
+        var proto = window.nexusLan && window.nexusLan.protocolFor && window.nexusLan.protocolFor(d.protocol);
+        if (d.protocol === 'wol' || (proto && proto.needsUdp)) return;
         if (!groups[d.host]) { groups[d.host] = []; order.push(d.host); }
         groups[d.host].push(d.name || '?');
       });
@@ -45,7 +49,9 @@
         input.value = map[h] ? map[h].replace(/^http:\/\//i, '') : '';
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'nx-reset mt-2 text-sm font-semibold text-[#4C7DFF] cursor-pointer';
+        btn.className = 'nx-reset mt-3 inline-flex items-center justify-center min-h-[40px] px-5 rounded-full text-sm font-bold cursor-pointer';
+        // Hap düğme: açık vurgu zemin + vurgu rengi çerçeve (sayfa içi diğer eylem düğmeleriyle aynı dil)
+        btn.style.cssText = 'color:var(--nx-accent,#4C7DFF);background:rgba(76,125,255,.10);border:1px solid rgba(76,125,255,.35)';
         btn.textContent = nexusT('Kaydet', 'Save');
         btn.addEventListener('click', function () {
           var v = input.value.trim();

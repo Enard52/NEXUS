@@ -86,15 +86,17 @@ function setScanStatus(message, tone, retry) {
   el.appendChild(body);
   if (tone === "error" && typeof retry === "function") {
     var row = document.createElement("span");
-    row.className = "mt-1 flex items-center gap-3";
+    row.className = "nx-notice__actions";
+    // Ana eylem dolu hap düğme, ikincil eylem çerçeveli (css/nexus-ui.css .nx-notice__btn)
     var again = document.createElement("button");
     again.type = "button";
-    again.className = "font-bold underline";
-    again.textContent = "Tekrar dene";
+    again.className = "nx-notice__btn nx-notice__btn--primary";
+    again.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg>';
+    again.appendChild(document.createTextNode("Tekrar dene"));
     again.addEventListener("click", retry);
     var help = document.createElement("a");
     help.href = "nexus-feedback.html";
-    help.className = "font-bold underline";
+    help.className = "nx-notice__btn";
     help.textContent = "Yardım al";
     row.appendChild(again);
     row.appendChild(help);

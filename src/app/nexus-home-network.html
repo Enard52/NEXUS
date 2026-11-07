@@ -23,6 +23,16 @@
         -webkit-font-smoothing: antialiased;
       }
     </style>
+    <style data-purpose="net-check-btn">
+      /* "Kontrol et": düz metin yerine dokunulabilir hap düğme (rozetle aynı genişlikte hizalanır) */
+      .net-check-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; min-width: 112px; padding: 0 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; color: var(--nx-accent,#4C7DFF); background: rgba(76,125,255,0.10); border: 1px solid rgba(76,125,255,0.35); }
+      .net-check-btn:active { transform: scale(0.97); }
+      .net-check-btn[disabled] { opacity: 0.6; }
+      .net-check-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+      .net-check-btn[disabled] svg { animation: net-spin 0.9s linear infinite; }
+      @keyframes net-spin { to { transform: rotate(360deg); } }
+      .net-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 112px; }
+    </style>
     <style data-purpose="custom-layout">
       .bg-gradient-custom {
         background: linear-gradient(to bottom, #ece9fd 0%, #f5f3ff 40%, #ffffff 100%);
@@ -43,6 +53,7 @@
     <script src="data.js"></script>
     <script src="supported-devices.js"></script>
     <script src="lan-connectors.js"></script>
+    <script src="device-controls.js"></script>
     <script src="ai-fab.js"></script>
   </head>
   <body class="bg-gradient-custom text-slate-900 min-h-screen flex flex-col">
@@ -194,7 +205,7 @@
           fail: ["bg-red-50 text-red-600", nexusT("Ulaşılamıyor", "Not reachable")]
         };
         var pick = map[state] || map.idle;
-        return el("span", "text-[11px] font-bold rounded-full px-2.5 py-1 whitespace-nowrap " + pick[0], pick[1]);
+        return el("span", "net-badge text-[11px] font-bold rounded-full px-2.5 py-1 whitespace-nowrap " + pick[0], pick[1]);
       }
 
       function renderList() {
@@ -224,15 +235,26 @@
           var d = row.device;
           var state = results[row.index] || "idle";
           var card = el("div", "bg-white rounded-2xl menu-container-shadow p-4 flex items-center justify-between gap-3");
-          var left = el("div", "min-w-0");
-          left.appendChild(el("p", "font-bold leading-tight truncate", d.name || nexusT("Adsız cihaz", "Unnamed device")));
+          var left = el("div", "min-w-0 flex items-center gap-3");
+          // Diğer ekranlarla aynı görsel kimlik: ürün görseli (görsel bulunamazsa hiçbir şey çizilmez)
+          if (window.NX && NX.thumbHtml) {
+            var thumb = document.createElement("span");
+            thumb.className = "shrink-0 flex";
+            thumb.innerHTML = NX.thumbHtml(d, "w-11 h-11 object-contain shrink-0");
+            if (thumb.firstChild) left.appendChild(thumb);
+          }
+          var info = el("div", "min-w-0");
+          info.appendChild(el("p", "font-bold leading-tight truncate", d.name || nexusT("Adsız cihaz", "Unnamed device")));
           var addr = el("p", "text-xs text-slate-400 mt-0.5 truncate", plainHost(d.host));
           addr.setAttribute("data-no-i18n", "");
-          left.appendChild(addr);
+          info.appendChild(addr);
+          left.appendChild(info);
           var right = el("div", "flex flex-col items-end gap-2 flex-shrink-0");
           right.appendChild(badge(state));
           if (lanReady()) {
-            var btn = el("button", "text-xs font-bold text-[#4C7DFF]", nexusT("Kontrol et", "Check"));
+            var btn = el("button", "net-check-btn");
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg>';
+            btn.appendChild(el("span", null, nexusT("Kontrol et", "Check")));
             btn.type = "button";
             btn.disabled = state === "busy";
             btn.addEventListener("click", function () { checkOne(row); });

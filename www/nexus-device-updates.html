@@ -171,7 +171,12 @@
 
       document.getElementById('update-count').textContent = devices.length + ' cihaz kontrol bekliyor';
       // Toplu kontrol yalnız sürüm okunabilen cihaz varsa anlamlı; yoksa düğme gizlenir.
-      document.getElementById('check-all-btn').style.display = devices.some(supportsFirmware) ? '' : 'none';
+      var anyCheckable = devices.some(supportsFirmware);
+      document.getElementById('check-all-btn').style.display = anyCheckable ? '' : 'none';
+      var refreshBtn = document.getElementById('refresh-updates');
+      refreshBtn.style.visibility = anyCheckable ? '' : 'hidden';
+      var refreshIcon = refreshBtn.querySelector('svg') || refreshBtn.querySelector('i');
+      if (refreshIcon) refreshIcon.classList.toggle('nx-upd-spin', Object.keys(BUSY).some(function (k) { return BUSY[k]; }));
       var REFRESH_SVG = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg>';
       function checkButton(index) {
         var busy = !!BUSY[index];
@@ -240,7 +245,7 @@
         .replace(/'/g, '&#39;');
     }
 
-    document.getElementById('check-all-btn').addEventListener('click', function () {
+    function checkAll() {
       const devices = getRealDevices();
       if (!devices.length) {
         window.nexusDialog({
@@ -255,15 +260,13 @@
       var checkable = 0;
       devices.forEach(function (device, index) { if (supportsFirmware(device)) { checkable++; runCheck(index); } });
       if (checkable) showUpdatesToast(checkable + ' cihaz kontrol ediliyor…');
-    });
+    }
+    document.getElementById('check-all-btn').addEventListener('click', checkAll);
 
+    // Üstteki yenile simgesi de gerçekten sürüm sorgusu yapar (eskiden yalnız listeyi yeniden çiziyordu).
+    // Sürüm okuyabilen cihaz yoksa simge gizlenir (renderDevices).
     document.getElementById('refresh-updates').addEventListener('click', function () {
-      const icon = this.querySelector('svg') || this.querySelector('i');
-      if (icon) {
-        icon.style.transition = 'transform 0.6s ease';
-        icon.style.transform = 'rotate(360deg)';
-        setTimeout(() => { icon.style.transition = 'none'; icon.style.transform = 'none'; }, 600);
-      }
+      checkAll();
       renderDevices();
       renderHistory();
       lucide.createIcons();

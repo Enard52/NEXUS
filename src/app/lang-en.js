@@ -3510,8 +3510,8 @@ window.NEXUS_EN = {
     "Uzak Erişim Adresi": "Remote Access Address",
     "Evin dışındayken (VPN ya da port yönlendirme) bir cihaza veya hub'a başka bir adresten ulaşıyorsan, yerel adres yanıt vermediğinde bu adres denenir. Yalnız bu cihazda saklanır.":
       "If you reach a device or hub from another address while away from home (VPN or port forwarding), that address is tried when the local address does not answer. It is stored only on this device.",
-    "Önce bir cihaz ekle; sonra ona uzak adres verebilirsin.":
-      "Add a device first; then you can give it a remote address.",
+    "Uzak adres, ağ üzerinden HTTP ile konuşan cihazlar (ör. Shelly, Hue) için kullanılır. Şu an böyle bir cihazın yok.":
+      "A remote address is used for devices that talk HTTP over the network (e.g. Shelly, Hue). You don't have one right now.",
     "Eve gelince": "When arriving home",
     "Evden çıkınca": "When leaving home",
     "Konum tetikleyicisi yalnızca mobil uygulamada çalışır; bu cihazda kurulamaz.":

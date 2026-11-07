@@ -47,7 +47,7 @@
       { icon: "circle-plus", label: T("Cihaz Ekle", "Add device"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-pair.html"; } },
       { icon: "bell", label: T("Mesaj Merkezi", "Message Center"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-messages.html"; } },
       { icon: "bell-ring", label: T("Anlık Bildirimler", "Instant Notifications"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-instant-notifications.html"; } },
-      { icon: "plug", label: T("Entegrasyonlar", "Integrations"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-integrations.html"; } },
+      { icon: "plug", label: T("Entegrasyonlar", "Integrations"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-services.html"; } },
       { icon: "users", label: T("Hanedan", "Household"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-household.html"; } },
       { icon: "zap", label: T("AI Enerji Tasarrufu", "AI Energy Saving"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-energy.html"; } },
       { icon: "settings", label: T("Ayarlar", "Settings"), hint: T("Sayfa", "Page"), run: function () { location.href = "nexus-settings.html"; } },

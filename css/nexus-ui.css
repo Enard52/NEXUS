@@ -834,6 +834,19 @@ html.dark .nx-mode.is-on { background: var(--nx-accent, #4C7DFF); color: #fff; b
 }
 .nx-notice > svg, .nx-notice > i { flex: none; width: 18px; height: 18px; margin-top: 1px; }
 .nx-notice a { color: inherit; font-weight: 800; text-decoration: underline; }
+/* Kutu içi eylemler (ör. "Tekrar dene" / "Yardım al"): metnin altında soldan hizalı hap düğmeler.
+   Ana eylem dolu, ikincil eylem çerçeveli; dar ekranda sarılır, dokunma yüksekliği 40px. */
+.nx-notice__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.nx-notice .nx-notice__btn, .nx-notice a.nx-notice__btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box;
+  min-height: 40px; padding: 0 16px; border-radius: 9999px; border: 1.5px solid var(--nx-n-fg);
+  background: transparent; color: var(--nx-n-fg); font: inherit; font-size: 13px; font-weight: 800; line-height: 1;
+  text-decoration: none; cursor: pointer;
+}
+.nx-notice__btn svg { width: 15px; height: 15px; flex: none; }
+.nx-notice .nx-notice__btn--primary, .nx-notice a.nx-notice__btn--primary { background: var(--nx-n-fg); color: #fff; }
+html.dark .nx-notice .nx-notice__btn--primary { color: #1a0b10; }
+.nx-notice__btn:active { transform: scale(0.97); }
 .nx-notice--warn { --nx-n-bg: #fffbeb; --nx-n-bd: #fde68a; --nx-n-fg: #92400e;
   --nx-n-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'/%3E%3Cpath d='M12 9v4M12 17h.01'/%3E%3C/svg%3E"); }
 .nx-notice--error { --nx-n-bg: #fff1f2; --nx-n-bd: #fecdd3; --nx-n-fg: #be123c;
