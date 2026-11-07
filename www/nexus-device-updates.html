@@ -15,6 +15,12 @@
   body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #F3F2F9; min-height: 100dvh; }
   .shadow-nexus { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
   .nexus-gradient-bg { background: linear-gradient(135deg, var(--nx-accent,#4C7DFF) 0%, #22D3EE 100%); }
+  @keyframes nx-upd-spin { to { transform: rotate(360deg); } }
+  .nx-upd-spin { animation: nx-upd-spin 0.9s linear infinite; }
+  /* Sürüm kontrolü düğmesi: cihaz kontrolüyle (koyu dolu düğme) karışmasın diye açık vurgulu, yenile simgeli */
+  .nx-upd-btn { color: var(--nx-accent,#4C7DFF); background: rgba(76,125,255,0.10); border: 1px solid rgba(76,125,255,0.35); }
+  .dark .nx-upd-btn { color: #8FB0FF; background: rgba(143,176,255,0.12); border-color: rgba(143,176,255,0.35); }
+  .nx-upd-btn[disabled] { opacity: 0.6; cursor: default; }
 </style>
 <script src="auth.js"></script>
   <script src="theme.js"></script>
@@ -45,7 +51,7 @@
           <div class="min-w-0 flex-1">
             <p class="text-sm font-semibold text-slate-500 uppercase tracking-widest leading-none mb-1">Durum</p>
             <h2 class="text-lg font-extrabold leading-snug" id="update-count">Cihazlar kontrol bekliyor</h2>
-            <p class="text-xs text-slate-500 mt-1" id="update-subtitle">Güncelleme sonuçları harici servis bağlanınca alınacak.</p>
+            <p class="text-xs text-slate-500 mt-1" id="update-subtitle">Sürüm bilgisi her cihazın kendisinden okunur.</p>
           </div>
         </div>
       </section>
@@ -63,19 +69,8 @@
         <div id="update-history" class="bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-nexus border border-slate-50 dark:border-slate-800"></div>
       </section>
 
-      <section class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-sm border border-slate-100/50 dark:border-slate-800">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-semibold">Otomatik kontrol bildirimi</p>
-            <p class="text-xs text-slate-500 mt-1">Servis bağlandığında yeni sürüm uyarıları gelsin.</p>
-          </div>
-          <label class="relative inline-block w-[52px] h-8">
-            <input type="checkbox" id="auto-update-alerts" class="peer sr-only">
-            <span class="absolute inset-0 rounded-full bg-slate-200 transition peer-checked:bg-[#4C7DFF]"></span>
-            <span class="absolute left-[3px] bottom-[3px] h-[26px] w-[26px] rounded-full bg-white transition peer-checked:translate-x-5"></span>
-          </label>
-        </div>
-      </section>
+      <!-- "Otomatik kontrol bildirimi" anahtarı kaldırıldı: tercihi kaydediyordu ama hiçbir kod onu okumuyor,
+           arka planda sürüm kontrolü de yok. İşlevi olmayan bir anahtar gösterilmez (CLAUDE.md §1). -->
 
       <div class="h-20"></div>
     </main>
@@ -137,13 +132,24 @@
       });
     }
 
+    // Sürüm okuma yalnız bağlayıcısında firmware() olan yerel ağ cihazlarında var (ör. Shelly);
+    // WoL gibi protokollerde ve katalog cihazlarında "Kontrol Et" düğmesi hiç gösterilmez (CLAUDE.md §7).
+    function supportsFirmware(device) {
+      if (!device || !device.host || !device.protocol || device.protocol === 'unknown' || !window.nexusLan) return false;
+      var p = window.nexusLan.protocolFor && window.nexusLan.protocolFor(device.protocol);
+      return !!(p && typeof p.firmware === 'function');
+    }
+
     var LAST = {};
+    var BUSY = {};
     function runCheck(index) {
       var device = getRealDevices()[index];
-      if (!device) return;
+      if (!device || BUSY[index] || !supportsFirmware(device)) return;
+      BUSY[index] = true;
       LAST[index] = 'Kontrol ediliyor…';
       renderDevices();
       checkDevice(device).then(function (r) {
+        BUSY[index] = false;
         LAST[index] = r.text;
         logCheck(r.name, r.text);
         renderDevices();
@@ -164,6 +170,16 @@
       }
 
       document.getElementById('update-count').textContent = devices.length + ' cihaz kontrol bekliyor';
+      // Toplu kontrol yalnız sürüm okunabilen cihaz varsa anlamlı; yoksa düğme gizlenir.
+      document.getElementById('check-all-btn').style.display = devices.some(supportsFirmware) ? '' : 'none';
+      var REFRESH_SVG = '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg>';
+      function checkButton(index) {
+        var busy = !!BUSY[index];
+        return '<button type="button" onclick="runCheck(' + index + ')"' + (busy ? ' disabled aria-busy="true"' : '') +
+          ' class="nx-upd-btn shrink-0 min-h-[40px] px-4 py-2 inline-flex items-center gap-1.5 rounded-full text-xs font-bold">' +
+          REFRESH_SVG.replace('class="', 'class="' + (busy ? 'nx-upd-spin ' : '')) +
+          '<span>' + (busy ? 'Kontrol ediliyor…' : 'Kontrol Et') + '</span></button>';
+      }
       // Ana sayfadaki cihaz kartıyla aynı görsel kimliği: satırda ürün görseli de görünsün
       list.innerHTML = devices.map((device, index) => (
         '<div class="bg-white rounded-3xl p-5 shadow-nexus border border-slate-50">' +
@@ -175,13 +191,14 @@
                 '<p class="text-xs text-slate-500 mt-0.5 dark:text-slate-300">' + escapeHtml(device.host && device.protocol ? 'Yerel ağ · ' + device.protocol : 'Katalogdan eklendi') + '</p>' +
               '</div>' +
             '</div>' +
-            '<button type="button" onclick="runCheck(' + index + ')" class="shrink-0 min-h-[40px] px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold dark:bg-slate-100 dark:text-slate-900">Kontrol Et</button>' +
+            (supportsFirmware(device) ? checkButton(index) : '') +
           '</div>' +
-          // Aynı "Kontrol Et ile sürüm cihazdan okunur" notu her kartta tekrarlanmasın: yalnızca gerçek bir sonuç ya da farklı bir durum varsa gösterilir.
-          ((LAST[index] || !(device.host && device.protocol)) ?
+          // Aynı "Kontrol Et ile sürüm cihazdan okunur" notu her kartta tekrarlanmasın: yalnızca gerçek bir sonuç
+          // (yükleniyor durumu düğmede görünür) ya da düğmesiz bir durum varsa gösterilir.
+          (((LAST[index] && !BUSY[index]) || !supportsFirmware(device)) ?
           '<div class="mt-3 pt-3 border-t border-slate-50 flex items-center gap-2 text-[11px] text-slate-400">' +
             '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01" stroke-linecap="round"></path></svg>' +
-            '<span class="truncate">' + escapeHtml(LAST[index] || 'Sürüm bilgisi cihazın kendi uygulamasında') + '</span>' +
+            '<span class="truncate">' + escapeHtml((!BUSY[index] && LAST[index]) || (device.host && device.protocol ? 'Bu cihaz sürüm bilgisi paylaşmıyor' : 'Sürüm bilgisi cihazın kendi uygulamasında')) + '</span>' +
           '</div>' : '') +
         '</div>'
       )).join('');
@@ -235,8 +252,9 @@
         });
         return;
       }
-      showUpdatesToast(devices.length + ' cihaz kontrol ediliyor…');
-      devices.forEach(function (device, index) { runCheck(index); });
+      var checkable = 0;
+      devices.forEach(function (device, index) { if (supportsFirmware(device)) { checkable++; runCheck(index); } });
+      if (checkable) showUpdatesToast(checkable + ' cihaz kontrol ediliyor…');
     });
 
     document.getElementById('refresh-updates').addEventListener('click', function () {
@@ -249,11 +267,6 @@
       renderDevices();
       renderHistory();
       lucide.createIcons();
-    });
-
-    document.getElementById('auto-update-alerts').checked = nexusGetItem('nexusAutoUpdateAlerts') !== 'false';
-    document.getElementById('auto-update-alerts').addEventListener('change', function () {
-      nexusSetItem('nexusAutoUpdateAlerts', this.checked.toString());
     });
 
     renderDevices();

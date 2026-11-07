@@ -1545,7 +1545,7 @@ window.NEXUS_LANG = {
     "Günaydın Rutini": "Guten-Morgen-Routine", // EN: Good Morning Routine
     "Günaydın Senaryosu": "Guten-Morgen-Szene", // EN: Good Morning Scene
     "Günaydın senaryosu": "Guten Morgen Szene", // EN: Good morning scene
-    "Güncelleme sonuçları harici servis bağlanınca alınacak.": "Aktualisierungsergebnisse werden eintreffen, sobald ein externer Dienst verbunden ist.", // EN: Update results will arrive once an external service is connected.
+    "Sürüm bilgisi her cihazın kendisinden okunur.": "Versionsinformationen werden direkt vom jeweiligen Gerät gelesen.", // EN: Version info is read directly from each device.
     "Gündüz": "Tagsüber", // EN: Daytime
     "Güne başlarken seçili cihazları sırayla hazırlar.": "Bereitet ausgewählte Geräte zu Beginn des Tages der Reihe nach vor.", // EN: Prepares selected devices in order as you start the day.
     "Güneş Enerjili Avlu Işığı": "Solar-Terrassenleuchte", // EN: Solar Patio Light

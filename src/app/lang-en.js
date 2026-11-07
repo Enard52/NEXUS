@@ -1769,8 +1769,8 @@ window.NEXUS_EN = {
     "Günaydın Rutini": "Good Morning Routine",
     "Günaydın Senaryosu": "Good Morning Scene",
     "Günaydın senaryosu": "Good morning scene",
-    "Güncelleme sonuçları harici servis bağlanınca alınacak.":
-      "Update results will arrive once an external service is connected.",
+    "Sürüm bilgisi her cihazın kendisinden okunur.":
+      "Version info is read directly from each device.",
     Gündüz: "Daytime",
     "Güne başlarken seçili cihazları sırayla hazırlar.":
       "Prepares selected devices in order as you start the day.",
